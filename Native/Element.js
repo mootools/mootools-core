@@ -128,7 +128,6 @@ function $$(){
 	items.each(function(item){
 		if ($(item)) elements.push(item);
 	});
-	if (!elements || elements.length == 0) return false;
 	elements._elements_extended_ = true;
 	return Object.extend(elements, new Elements);
 };
