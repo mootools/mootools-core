@@ -27,7 +27,7 @@ Function.extend({
 			'arguments': null,
 			'delay': false,
 			'periodical': false,
-			'try': false
+			'attempt': false
 		}, options || {});
 		if (options.arguments != null && typeof options.arguments != 'undefined' && !(options.arguments instanceof Array))
 			options.arguments = [options.arguments];
@@ -42,7 +42,7 @@ Function.extend({
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);
-			if (options.try){
+			if (options.attempt){
 				try {
 					var result = returns();
 				} catch(err){
@@ -74,7 +74,7 @@ Function.extend({
 	},
 	
 	/*
-	Property: try
+	Property: attempt
 		Tries to execute the function, returns either the function results or the error.
 
 	Arguments:
@@ -82,11 +82,11 @@ Function.extend({
 		bind - optional, the object that the "this" of the function will refer to.
 
 	Example:
-		>myFunction.try([arg1, arg2], myElement);
+		>myFunction.attempt([arg1, arg2], myElement);
 	*/
 
-	try: function(args, bind){
-		return this.create({'arguments': args, 'bind': bind, 'try': true})();
+	attempt: function(args, bind){
+		return this.create({'arguments': args, 'bind': bind, 'attempt': true})();
 	},
 
 	/*

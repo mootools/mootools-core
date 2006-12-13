@@ -865,19 +865,6 @@ function $Element(el, method, args){
 	return Element.prototype[method].apply(el, args);
 };
 
-/* Section: Browser Detection */
-
-/*
-Properties:
-	window.ie - will be set to true if the current browser is internet explorer (any).
-	window.ie6 - will be set to true if the current browser is internet explorer 6.
-	window.ie7 - will be set to true if the current browser is internet explorer 7.
-	window.khtml - will be set to true if the current browser is Safari/Konqueror.
-*/
-
-if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
-else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
-
 var Window = window;
 
 window.addEvent = document.addEvent = Element.prototype.addEvent;

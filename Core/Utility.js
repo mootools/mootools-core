@@ -39,7 +39,6 @@ function $type(obj){
 	if (obj.toLowerCase) return 'string';
 	if (obj instanceof Array) return 'array';
 	if (obj instanceof Function) return 'function';
-	if (obj instanceof HTMLCollection) return 'elements';
 	if (obj.nodeName){
 		switch (obj.nodeType){
 			case 1: return 'element';
@@ -107,3 +106,18 @@ function $clear(timer){
 	clearInterval(timer);
 	return null;
 };
+
+/* Section: Browser Detection */
+
+/*
+Properties:
+	window.ie - will be set to true if the current browser is internet explorer (any).
+	window.ie6 - will be set to true if the current browser is internet explorer 6.
+	window.ie7 - will be set to true if the current browser is internet explorer 7.
+	window.khtml - will be set to true if the current browser is Safari/Konqueror.
+	window.gecko - will be set to true if the current browser is Mozilla/Gecko.
+*/
+
+if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
+else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
+else if (document.getBoxObjectFor != null) window.gecko = true;
