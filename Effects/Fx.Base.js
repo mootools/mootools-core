@@ -9,7 +9,7 @@ License:
 	MIT-style license.
 */
 
-var Fx, fx; Fx = fx = {};
+var Fx = {};
 
 /*
 Class: Fx.Base

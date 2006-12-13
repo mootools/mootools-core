@@ -365,7 +365,7 @@ if (!console || !console.warn){
 			'name': 'Run Time Error'
 		});
 	};
-	Ajax = ajax = Ajax.extend({
+	Ajax = Ajax.extend({
 		onStateChange: function(){
 			this.parent();
 			this.log();
@@ -378,7 +378,6 @@ if (!console || !console.warn){
 						if($chk(txt) && txt.length > 100) txt = txt.substring(0, 100) + " ...";
 						else if(!$chk(txt)) txt = 'undefined';
 						var breaker = "\n";
-						//if(window.ie6 || window.ie7) breaker = "<br>";
 						debug.log('%s: %s'+breaker+'status: %s'+breaker+'responseText: %s', this.options.method, this.url, this.transport.status, txt);
 					}
 				}catch(e){}

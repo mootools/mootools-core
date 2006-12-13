@@ -118,5 +118,3 @@ var Accordion = Fx.Elements.extend({
 	}
 
 });
-
-Fx.Accordion = Accordion;

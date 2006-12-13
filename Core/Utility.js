@@ -10,30 +10,6 @@ License:
 */
 
 /*
-Function: $clear
-	clears a timeout or an Interval.
-
-Returns:
-	null
-
-Arguments:
-	timer - the setInterval or setTimeout to clear.
-
-Example:
-	>var myTimer = myFunction.delay(5000); //wait 5 seconds and execute my function.
-	>myTimer = $clear(myTimer); //nevermind
-
-See also:
-	<Function.delay>, <Function.periodical>
-*/
-
-function $clear(timer){
-	clearTimeout(timer);
-	clearInterval(timer);
-	return null;
-};
-
-/*
 Function: $type
 	Returns the type of object that matches the element passed in.
 
@@ -106,4 +82,28 @@ Returns:
 
 function $random(min, max){
 	return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+/*
+Function: $clear
+	clears a timeout or an Interval.
+
+Returns:
+	null
+
+Arguments:
+	timer - the setInterval or setTimeout to clear.
+
+Example:
+	>var myTimer = myFunction.delay(5000); //wait 5 seconds and execute my function.
+	>myTimer = $clear(myTimer); //nevermind
+
+See also:
+	<Function.delay>, <Function.periodical>
+*/
+
+function $clear(timer){
+	clearTimeout(timer);
+	clearInterval(timer);
+	return null;
 };

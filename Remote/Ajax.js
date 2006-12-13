@@ -90,9 +90,7 @@ XHR.implement(new Chain);
 XHR.implement(new Events);
 XHR.implement(new Options);
 
-var Ajax, ajax;
-
-Ajax = ajax = XHR.extend({
+var Ajax = XHR.extend({
 
 	moreOptions: function(){
 		return {
