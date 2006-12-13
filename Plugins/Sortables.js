@@ -35,9 +35,10 @@ var Sortables = new Class({
 
 	initialize: function(elements, options){
 		this.setOptions(this.getOptions(), options);
-		var handles = this.options.handles || elements;
-		$each(elements, function(el, i){
-			handles[i].addEvent('mousedown', this.start.bindWithEvent(this, el));
+		this.elements = $$(elements);
+		var handles = $$(this.options.handles) || this.elements;
+		elements.each(function(el, i){
+			this.handles[i].addEvent('mousedown', this.start.bindWithEvent(this, el));
 		}, this);
 	},
 
@@ -45,7 +46,6 @@ var Sortables = new Class({
 		document.addEvent('mousemove', this.move.bindWithEvent(this, el));
 		document.addEvent('mouseup', this.end.bind(this, el));
 		this.fireEvent('onStart', el);
-
 		event.stop();
 	},
 

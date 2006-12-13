@@ -21,10 +21,7 @@ Arguments:
 Fx.Elements = Fx.Base.extend({
 
 	initialize: function(elements, options){
-		this.elements = [];
-		$each(elements, function(el, i){
-			this.elements[i] = $(el);
-		}, this);
+		this.elements = $$(elements);
 		this.parent(options);
 	},
 

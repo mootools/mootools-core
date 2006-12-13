@@ -37,6 +37,7 @@ Drag.Move = Drag.Base.extend({
 		this.setOptions(this.getExtended(), options);
 		this.element = $(el);
 		this.position = this.element.getStyle('position');
+		this.droppables = $$(this.options.droppables);
 		this.position = (['absolute', 'relative'].test(this.position)) ? this.position : 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
@@ -82,7 +83,7 @@ Drag.Move = Drag.Base.extend({
 	drag: function(event){
 		this.parent(event);
 		if (this.out) return this;
-		this.options.droppables.each(function(drop){
+		this.droppables.each(function(drop){
 			if (this.checkAgainst($(drop))){
 				if (!drop.overing) drop.fireEvent('over', [this.element, this]);
 				drop.overing = true;
@@ -103,7 +104,7 @@ Drag.Move = Drag.Base.extend({
 		this.parent();
 		this.timer = $clear(this.timer);
 		if (this.out) return this;
-		this.options.droppables.each(function(drop){
+		this.droppables.each(function(drop){
 			if (this.checkAgainst(drop)) drop.fireEvent('drop', [this.element, this]);
 		}, this);
 		return this;

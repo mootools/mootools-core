@@ -11,35 +11,6 @@ License:
 
 /* Section: Utility Functions */
 
-/*
-Function: $$(), $S()
-	Selects DOM elements based on css selector(s). Extends the elements upon matching.
-
-Arguments:
-	any number of css selectors
-
-Example:
-	>$S('a') //an array of all anchor tags on the page
-	>$S('a', 'b') //an array of all anchor and bold tags on the page
-	>$S('#myElement') //array containing only the element with id = myElement
-	>$S('#myElement a.myClass') //an array of all anchor tags with the class "myClass" within the DOM element with id "myElement"
-
-Returns:
-	array - array of all the dom elements matched
-*/
-
-var $$, $S;
-
-$$ = $S = function(){
-	var els = [];
-	$each(arguments, function(selector){
-		if ($type(selector) == 'string') els.extend(document.getElementsBySelector(selector));
-		else if ($type(selector) == 'element') els.push($(selector));
-		else if (selector.length) $each(selector, function(sel){els.push(sel)});
-	});
-	return $$$(els);
-};
-
 /* 
 Function: $E 
 	Selects a single (i.e. the first found) Element based on the selector passed in and an optional filter element.
@@ -117,17 +88,13 @@ Element.extend({
 					filters = $A(this.getElementsByTagName(param[1]));
 				}
 			} else {
-				filters = $$$(filters).filterByTagName(param[1]);
-				if (param[2]) filters = $$$(filters).filterById(param[2]);
+				filters = Elements.prototype.filterByTagName.call(filters, param[1]);
+				if (param[2]) filters = Elements.prototype.filterById.call(filters, param[2]);
 			}
-			if (param[3]) filters = $$$(filters).filterByClassName(param[3]);
-			if (param[4]) filters = $$$(filters).filterByAttribute(param[4], param[6], param[5]);
-
+			if (param[3]) filters = Elements.prototype.filterByClassName.call(filters, param[3]);
+			if (param[4]) filters = Elements.prototype.filterByAttribute.call(filters, param[4], param[6], param[5]);
 		}, this);
-		filters.each(function(el){
-			$(el);
-		});
-		return $$$(filters);
+		return $$(filters);
 	},
 
 	/*
@@ -167,7 +134,7 @@ Element.extend({
 		selector.split(',').each(function(sel){
 			els.extend(this.getElements(sel));
 		}, this);
-		return $$$(els);
+		return $$(els);
 	}
 
 });
@@ -198,48 +165,6 @@ Class: Elements
 */
 
 Elements.extend({
-
-	/*
-	Property: action
-		Applies the supplied actions collection to each Element in the collection.
-
-	Arguments:
-		actions - an Object with key/value pairs for the actions to apply. 
-		The initialize key is executed immediatly.
-		Keys beginning with on will add a simple event (onclick for example).
-		Keys ending with event will add an event with <Element.addEvent>.
-		Other keys are useless.
-
-	Example:
-		(start code)
-		$S('a').action({
-			initialize: function() {
-				this.addClass("anchor");
-			},
-			onclick: function(){
-				alert('clicked!');
-			},
-			mouseoverevent: function(){
-				alert('mouseovered!');
-			}
-		});
-		(end code)
-	*/
-
-	action: function(actions){
-		this.each(function(el){
-			el = $(el);
-			if (actions.initialize) actions.initialize.apply(el);
-			for(var action in actions){
-				if (action.test('^on\\w+$')){
-					el[action] = actions[action];
-				} else {
-					var evt = action.match('^(\\w+)event$');
-					if (evt) el.addEvent(evt[1], actions[action]);
-				}
-			}
-		});
-	},
 
 	//internal methods
 

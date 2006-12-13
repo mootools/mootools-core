@@ -55,16 +55,16 @@ var Accordion = Fx.Elements.extend({
 		if (this.options.alwaysHide) this.options.wait = true;
 		if ($chk(this.options.show)) this.options.display = false;
 
-		this.togglers = [];
+		this.togglers = $$(togglers);
+		this.elements = $$(elements);
 
 		this.previous = -1;
 
-		$each(togglers, function(tog, i){
-			this.togglers[i] = $(tog);
-			this.togglers[i].addEvent('click', this.display.bind(this, i));
+		this.togglers.each(function(tog, i){
+			tog.addEvent('click', this.display.bind(this, i));
 		}, this);
 
-		$each(elements, function(el, i){
+		this.elements.each(function(el, i){
 			el.fullOpacity = 1;
 			el.fullWidth = this.options.fixedWidth || el.offsetWidth;
 			el.fullHeight = this.options.fixedHeight || el.scrollHeight;
@@ -78,13 +78,13 @@ var Accordion = Fx.Elements.extend({
 		if (this.options.width) this.effects.width = ['fullWidth', 0];
 
 		for (var fx in this.effects){
-			$each(elements, function(el, i){
-				if (this.options.show === i) return this.fireEvent('onActive', [this.togglers[i], $(elements[i])]);
+			this.elements.each(function(el, i){
+				if (this.options.show === i) return this.fireEvent('onActive', [this.togglers[i], el]);
 				else return el.setStyle(fx, this.effects[fx][1]);
 			}, this);
 		}
 
-		this.parent(elements, this.options);
+		this.parent(this.elements, this.options);
 
 		if ($chk(this.options.display)) this.display(this.options.display);
 	},

@@ -67,6 +67,7 @@ function $type(obj){
 			case 1: return 'element';
 		}
 	}
+	if (obj.item) return 'elements';
 	if (obj instanceof Function) return 'function';
 	if (obj instanceof Array) return 'array';
 	return type || false;

@@ -37,48 +37,122 @@ var Element = new Class({
 
 });
 
-function $$$(elements){
-	return Object.extend(elements, new Elements);
-};
-
-function $$(){
-	var els = [];
-	$each(arguments, function(selector){
-		if ($type(selector) == 'string') els.extend(document.getElementsByTagName(selector));
-		else if ($type(selector) == 'element') els.push($(selector));
-		else if (selector.length) $each(selector, function(sel){els.push(sel)});
-	});
-	return $$$(els);
-};
-
-var Elements = new Class({});
-
-new Object.Native(Elements);
-
-Elements.Multi = function(property){
-	return function(){
-		var args = arguments;
-		$each(this, function(el){
-			$(el)[property].apply(el, args);
-		});
-		return this;
-	};
-};
+//htmlelement mapping
 
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = Class.empty;
 	HTMLElement.prototype = {};
 }
 
-Element.extend = function(properties){
+/*
+Function: $()
+	returns the element passed in with all the Element prototypes applied.
 
+Arguments:
+	el - a reference to an actual element or a string representing the id of an element
+
+Example:
+	>$('myElement') // gets a DOM element by id with all the Element prototypes applied.
+	>var div = document.getElementById('myElement');
+	>$(div) //returns an Element also with all the mootools extentions applied.
+
+	You'll use this when you aren't sure if a variable is an actual element or an id, as
+	well as just shorthand for document.getElementById().
+
+Returns:
+	a DOM element or false (if no id was found).
+
+Note:
+	you need to call $ on an element only once to get all the prototypes.
+	But its no harm to call it multiple times, as it will detect if it has been already extended.
+*/
+
+function $(el){
+	if (!el) return false;
+	if (el._element_extended_) return el;
+	if ($type(el) == 'string') el = document.getElementById(el);
+	if ([window, document].test(el)) return el;
+	if ($type(el) != 'element') return false;
+	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
+	el._element_extended_ = true;
+	Garbage.collect(el);
+	el.extend = Object.extend;
+	if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
+	return el;
+};
+
+//elements class
+
+var Elements = new Class({});
+
+new Object.Native(Elements);
+
+document.getElementsBySelector = document.getElementsByTagName;
+
+/*
+Function: $$(), $S()
+	Selects, and extends DOM elements.
+
+Arguments:
+	HTMLCollection(document.getElementsByTagName, element.childNodes), an array of elements, a string.
+
+Note:
+	if you loaded <Dom.js>, $$ will also accept CSS Selectors.
+
+Example:
+	>$S('a') //an array of all anchor tags on the page
+	>$S('a', 'b') //an array of all anchor and bold tags on the page
+	>$S('#myElement') //array containing only the element with id = myElement. (only with <Dom.js>)
+	>$S('#myElement a.myClass') //an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (only with <Dom.js>)
+
+Returns:
+	array - array of all the dom elements matched
+*/
+
+function $$(){
+	if (!arguments) return false;
+	if (arguments.length == 1 && arguments[0]._elements_extended_) return arguments[0];
+	var items = [];
+	var elements = [];
+	$each(arguments, function(selector){
+		if ($type(selector) == 'string') items.extend(document.getElementsBySelector(selector));
+		else if ($type(selector) == 'element') items.push($(selector));
+		else if (selector.length){
+			$each(selector, function(sel){
+				items.push(sel);
+			});
+		}
+	});
+	items.each(function(item){
+		if ($(item)) elements.push(item);
+	});
+	if (!elements || elements.length == 0) return false;
+	elements._elements_extended_ = true;
+	return Object.extend(elements, new Elements);
+};
+
+Elements.Multi = function(property){
+	return function(){
+		var args = arguments;
+		var items = [];
+		var elements = true;
+		$each(this, function(el){
+			var returns = el[property].apply(el, args);
+			var type = $type(returns);
+			if (type != 'element') elements = false;
+			items.push(returns);
+		});
+		if (elements) items = $$(items);
+		return items;
+	};
+};
+
+Element.extend = function(properties){
 	for (var property in properties){
 		HTMLElement.prototype[property] = properties[property];
 		Element.prototype[property] = properties[property];
-		var pro = property;
 		Elements.prototype[property] = Elements.Multi(property);
 	}
-
 };
 
 Element.extend({
@@ -161,8 +235,8 @@ Element.extend({
 	*/
 
 	remove: function(){
-		this.removeEvents();
 		this.parentNode.removeChild(this);
+		return this;
 	},
 
 	/*
@@ -510,7 +584,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getNext
+	Property: getFirst
 		Works as <Element.getPrevious>, but tries to find the firstChild.
 	*/
 
@@ -529,6 +603,24 @@ Element.extend({
 		var el = this.lastChild;
 		while ($type(el) == 'whitespace') el = el.previousSibling;
 		return $(el);
+	},
+	
+	/*
+	Property: getParent
+		returns the $(element.parentNode)
+	*/
+
+	getParent: function(){
+		return $(this.parentNode);
+	},
+	
+	/*
+	Property: getChildren
+		returns all the $(element.childNodes), excluding text nodes. Returns as <Elements>.
+	*/
+
+	getChildren: function(){
+		return $$(this.childNodes);
 	},
 
 	/*
@@ -787,42 +879,6 @@ if (window.ActiveXObject){
 } else if (document.childNodes && !document.all && !navigator.taintEnabled){
 	window.khtml = true;
 }
-
-/*
-Function: $()
-	returns the element passed in with all the Element prototypes applied.
-
-Arguments:
-	el - a reference to an actual element or a string representing the id of an element
-
-Example:
-	>$('myElement') // gets a DOM element by id with all the Element prototypes applied.
-	>var div = document.getElementById('myElement');
-	>$(div) //returns an Element also with all the mootools extentions applied.
-
-	You'll use this when you aren't sure if a variable is an actual element or an id, as
-	well as just shorthand for document.getElementById().
-
-Returns:
-	a DOM element or false (if no id was found).
-
-Note:
-	you need to call $ on an element only once to get all the prototypes.
-	But its no harm to call it multiple times, as it will detect if it has been already extended.
-*/
-
-function $(el){
-	if ($type(el) == 'string') el = document.getElementById(el);
-	if ([window, document].test(el)) return el;
-	if ($type(el) != 'element') return false;
-	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
-	if (!el.extend){
-		Garbage.collect(el);
-		el.extend = Object.extend;
-		if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
-	}
-	return el;
-};
 
 var Window = window;
 
