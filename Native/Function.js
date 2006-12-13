@@ -26,7 +26,8 @@ Function.extend({
 			'event': false,
 			'arguments': null,
 			'delay': false,
-			'periodical': false
+			'periodical': false,
+			'try': false
 		}, options || {});
 		if (options.arguments != null && typeof options.arguments != 'undefined' && !(options.arguments instanceof Array))
 			options.arguments = [options.arguments];
@@ -36,12 +37,20 @@ Function.extend({
 				event = (options.event === true) ? event || window.event : new options.event(event);
 				args = [event].concat(args);
 			}
-			var ret = function(){
+			var returns = function(){
 				return fn.apply(options.bind, args);
 			};
-			if (options.delay) return setTimeout(ret, options.delay);
-			if (options.periodical) return setInterval(ret, options.periodical);
-			return ret();
+			if (options.delay) return setTimeout(returns, options.delay);
+			if (options.periodical) return setInterval(returns, options.periodical);
+			if (options.try){
+				try {
+					var result = returns();
+				} catch(err){
+					result = err;
+				} finally {
+					return result;
+				}
+			} else return returns();
 		};
 	},
 
@@ -62,6 +71,22 @@ Function.extend({
 
 	pass: function(args, bind){
 		return this.create({'arguments': args, 'bind': bind});
+	},
+	
+	/*
+	Property: try
+		Tries to execute the function, returns either the function results or the error.
+
+	Arguments:
+		args - the arguments passed. must be an array if arguments > 1
+		bind - optional, the object that the "this" of the function will refer to.
+
+	Example:
+		>myFunction.try([arg1, arg2], myElement);
+	*/
+
+	try: function(args, bind){
+		return this.create({'arguments': args, 'bind': bind, 'try': true})();
 	},
 
 	/*

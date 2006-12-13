@@ -34,19 +34,19 @@ Returns:
 
 function $type(obj){
 	if (obj === false || obj === true) return 'boolean';
-	if (obj === null) return false;
-	var type = typeof obj;
-	if (type == 'undefined') return false;
+	if (obj === null || obj === undefined) return false;
+	if (obj instanceof HTMLElement) return 'element';
+	if (obj.toLowerCase) return 'string';
+	if (obj instanceof Array) return 'array';
+	if (obj instanceof Function) return 'function';
+	if (obj instanceof HTMLCollection) return 'elements';
 	if (obj.nodeName){
 		switch (obj.nodeType){
-			case 3: return (!obj.nodeValue.test('\\S')) ? 'whitespace' : 'textnode';
 			case 1: return 'element';
+			case 3: return (!obj.nodeValue.test('\\S')) ? 'whitespace' : 'textnode';
 		}
 	}
-	if (obj.item) return 'elements';
-	if (obj instanceof Function) return 'function';
-	if (obj instanceof Array) return 'array';
-	return type || false;
+	return typeof obj || false;
 };
 
 /*

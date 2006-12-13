@@ -70,8 +70,8 @@ Note:
 function $(el){
 	if (!el) return false;
 	if (el._element_extended_) return el;
-	if ($type(el) == 'string') el = document.getElementById(el);
 	if ([window, document].test(el)) return el;
+	if ($type(el) == 'string') el = document.getElementById(el);
 	if ($type(el) != 'element') return false;
 	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
 	if (!el.extend){
