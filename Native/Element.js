@@ -74,10 +74,12 @@ function $(el){
 	if ([window, document].test(el)) return el;
 	if ($type(el) != 'element') return false;
 	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
-	el._element_extended_ = true;
-	Garbage.collect(el);
-	el.extend = Object.extend;
-	if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
+	if (!el.extend){
+		el._element_extended_ = true;
+		Garbage.collect(el);
+		el.extend = Object.extend;
+		if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
+	}
 	return el;
 };
 
@@ -874,11 +876,8 @@ Properties:
 	window.khtml - will be set to true if the current browser is Safari/Konqueror.
 */
 
-if (window.ActiveXObject){
-	window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
-} else if (document.childNodes && !document.all && !navigator.taintEnabled){
-	window.khtml = true;
-}
+if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
+else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
 
 var Window = window;
 
