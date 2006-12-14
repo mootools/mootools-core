@@ -77,12 +77,14 @@ var Event = new Class({
 			this.key = special || String.fromCharCode(this.code).toLowerCase();
 
 		} else if (this.type.test('mouse') || this.type == 'click'){
-			this.client = {};
-			this.page = {};
-			this.page.x = this.event.pageX || this.event.clientX + document.documentElement.scrollLeft;
-			this.page.y = this.event.pageY || this.event.clientY + document.documentElement.scrollTop;
-			this.client.x = (this.event.pageX) ? this.event.pageX - window.pageXOffset : this.event.clientX;
-			this.client.y = (this.event.pageY) ? this.event.pageY - window.pageYOffset : this.event.clientY;
+			this.page = {
+				'x': this.event.pageX || this.event.clientX + document.documentElement.scrollLeft,
+				'y': this.event.pageY || this.event.clientY + document.documentElement.scrollTop
+			};
+			this.client = {
+				'x': this.event.pageX ? this.event.pageX - window.pageXOffset : this.event.clientX,
+				'y': this.event.pageY ? this.event.pageY - window.pageYOffset : this.event.clientY
+			};
 			this.rightClick = (((this.event.which) && (this.event.which == 3)) || ((this.event.button) && (this.event.button == 2)));
 			switch (this.type){
 				case 'mouseover': this.relatedTarget = this.event.relatedTarget || this.event.fromElement; break;
