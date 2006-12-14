@@ -135,8 +135,7 @@ Elements.Multi = function(property){
 		var elements = true;
 		$each(this, function(el){
 			var returns = el[property].apply(el, args);
-			var type = $type(returns);
-			if (type != 'element') elements = false;
+			if ($type(returns) != 'element') elements = false;
 			items.push(returns);
 		});
 		if (elements) items = $$(items);
@@ -484,20 +483,18 @@ Element.extend({
 		if (this.events[type][fn]) return this;
 		if (this.addEventListener){
 			this.events[type][fn] = fn;
-			var realType = type;
-			if (type == 'mousewheel' && !window.khtml) realType = 'DOMMouseScroll';
-			this.addEventListener(realType, this.events[type][fn], false);
+			this.addEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
 		} else {
-			var binded = fn.bind(this);
-			this.events[type][fn] = binded;
+			this.events[type][fn] = fn.bind(this);
 			this.attachEvent('on'+type, this.events[type][fn]);
 		}
 		return this;
 	},
 
 	addEvents: function(source){
-		if (!source) return this;
-		for (var type in source) this.addEvent(type, source[type]);
+		if (source){
+			for (var type in source) this.addEvent(type, source[type]);
+		}
 		return this;
 	},
 
@@ -507,13 +504,9 @@ Element.extend({
 	*/
 
 	removeEvent: function(type, fn){
-		if (!this.events) return this;
-		if (!this.events[type]) return this;
-		if (!this.events[type][fn]) return this;
+		if (!this.events || !this.events[type] || !this.events[type][fn]) return this;
 		if (this.removeEventListener){
-			var realType = type;
-			if (type == 'mousewheel' && !window.khtml) realType = 'DOMMouseScroll';
-			this.removeEventListener(realType, this.events[type][fn], false);
+			this.removeEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
 		}
 		else this.detachEvent('on'+type, this.events[type][fn]);
 		this.events[type][fn] = null;
@@ -546,7 +539,7 @@ Element.extend({
 	fireEvent: function(type, args){
 		if (!this.events || !this.events[type]) return;
 		for (var fn in this.events[type]){
-			if (this.events[type][fn]) this.events[type][fn].apply(this, args);
+			if (this.events[type][fn]) this.events[type][fn].apply(this, args || []);
 		}
 	},
 
