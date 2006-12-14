@@ -23,24 +23,24 @@
 	
 		'String': {
 			'deps': ['Moo'],
-			'desc': 'Contains String Prototypes, like camelCase, capitalize, test, toInt.'
+			'desc': 'Contains String and Number Prototypes, like camelCase, capitalize, test, toInt.'
 		},
 	
 		'Function': {
 			'deps': ['Moo'],
-			'desc': 'Contains Function Prototypes, like bind, pass, delay, periodical, and utility functions like $type.'
+			'desc': 'Contains Function Prototypes, like create, bind, pass, delay, periodical.'
 		},
 	
 		'Element': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility'],
-			'desc': 'One of the most important item of mootools, contains the dollar function and an handful of cross-browser, time-saver methods to let you easily work with class names, styles, get real siblings, get offsets, add events and dom injections'
+			'desc': 'One of the most important item of mootools, contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with Elements.'
 		},
 		
 		'Event': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
-			'desc': 'The Event class, has many properties, like making the event object crossbrowser and easily accessible.'
+			'desc': 'The Event class, has many properties, like making the event object crossbrowser and its properties easily accessible.'
 		}
-			
+
 	},
 	
 	'Addons': {
@@ -52,21 +52,21 @@
 		
 		'Dom': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
-			'desc': 'Enhanched version of moo.dom. Supports every kind of css selector, lets you filter by element. Also contains the action method'
+			'desc': 'Allows to select elements by css selectors. Additionally, lets you filter by element.'
 		}
-		
+
 	},
 	
 	'Window': {
 			
 		'Window.Base': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
-			'desc': 'contains the DomReady event'
+			'desc': 'contains the domready event.'
 		},
 		
 		'Window.Size': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
-			'desc': 'Enhanched version of moo.dom. Supports every kind of css selector, lets you filter by element. Also contains the action method'
+			'desc': 'Function to get window dimensions in a crossbrowser fashion.'
 		}
 
 	},
@@ -75,42 +75,42 @@
 
 		'Fx.Base': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common'],
-			'desc': 'contains the basic animation logic.'
+			'desc': 'Contains the basic animation logic.'
 		},
 		
 		'Fx.CSS': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base'],
-			'desc': 'contains the basic css animation logic.'
+			'desc': 'Contains the basic css animation logic.'
 		},
 		
 		'Fx.Style': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS'],
-			'desc': 'effect to change any css property for an element.'
+			'desc': 'Effect to change any css property for an element.'
 		},
 		
 		'Fx.Styles': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS'],
-			'desc': 'effect so change any number of css properties for an element.'
+			'desc': 'Effect so change any number of css properties for an element.'
 		},
 		
 		'Fx.Elements': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS'],
-			'desc': 'effect to change any number of css properties to any number of elements.'
+			'desc': 'Effect to change any number of css properties to any number of elements.'
 		},
 		
 		'Fx.Scroll': {
-			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Fx.Base'],
-			'desc': 'effect to scroll any element, including the window.'
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Window.Size', 'Fx.Base'],
+			'desc': 'Effect to scroll any element, including the window.'
 		},
 		
 		'Fx.Slide': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base'],
-			'desc': 'effect to slide an element.'
+			'desc': 'Effect to slide an element.'
 		},
 		
 		'Fx.Transitions': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base'],
-			'desc': 'contains transitions to be used with any of the above effects.'
+			'desc': 'Contains transitions to be used with any of the above effects.'
 		}
 			
 	},
@@ -133,7 +133,7 @@
 			
 		'Ajax': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common'],
-			'desc': 'Lets you submit forms via ajax with one function, and contains the usual Ajax construction kit.'
+			'desc': 'Lets you submit forms via XMLHTTP with one function, and contains the usual Ajax construction kit.'
 		},
 		
 		'Cookie': {
@@ -143,7 +143,7 @@
 		
 		'Json': {
 			'deps': ['Moo', 'Utility'],
-			'desc': 'Json Parser/Stringyfier.'
+			'desc': 'Json encoder/decoder.'
 		},
 		
 		'Assets': {
@@ -157,7 +157,7 @@
 			
 		'Accordion': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS', 'Fx.Elements'],
-			'desc': 'does it need a description?'
+			'desc': 'Does it need a description?'
 		},
 		
 		'Scroller': {
@@ -171,7 +171,7 @@
 		},
 		
 		'SmoothScroll': {
-			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Fx.Base', 'Fx.Scroll'],
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Window.Size', 'Fx.Base', 'Fx.Scroll'],
 			'desc': 'Smooth scroll your internal links.'
 		},
 		
