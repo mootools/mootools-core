@@ -9,6 +9,13 @@ License:
 	MIT-style license.
 */
 
+//htmlelement mapping
+
+if (typeof HTMLElement == 'undefined'){
+	var HTMLElement = Class.empty;
+	HTMLElement.prototype = {};
+}
+
 /*
 Function: $type
 	Returns the type of object that matches the element passed in.

@@ -37,13 +37,6 @@ var Element = new Class({
 
 });
 
-//htmlelement mapping
-
-if (typeof HTMLElement == 'undefined'){
-	var HTMLElement = Class.empty;
-	HTMLElement.prototype = {};
-}
-
 /*
 Function: $()
 	returns the element passed in with all the Element prototypes applied.
@@ -92,7 +85,7 @@ new Object.Native(Elements);
 document.getElementsBySelector = document.getElementsByTagName;
 
 /*
-Function: $$(), $S()
+Function: $$()
 	Selects, and extends DOM elements.
 
 Arguments:
@@ -102,10 +95,10 @@ Note:
 	if you loaded <Dom.js>, $$ will also accept CSS Selectors.
 
 Example:
-	>$S('a') //an array of all anchor tags on the page
-	>$S('a', 'b') //an array of all anchor and bold tags on the page
-	>$S('#myElement') //array containing only the element with id = myElement. (only with <Dom.js>)
-	>$S('#myElement a.myClass') //an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (only with <Dom.js>)
+	>$$('a') //an array of all anchor tags on the page
+	>$$('a', 'b') //an array of all anchor and bold tags on the page
+	>$$('#myElement') //array containing only the element with id = myElement. (only with <Dom.js>)
+	>$$('#myElement a.myClass') //an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (only with <Dom.js>)
 
 Returns:
 	array - array of all the dom elements matched
@@ -113,7 +106,10 @@ Returns:
 
 function $$(){
 	if (!arguments) return false;
-	if (arguments.length == 1 && arguments[0]._elements_extended_) return arguments[0];
+	if (arguments.length == 1){
+		if (!arguments[0]) return false;
+		if (arguments[0]._elements_extended_) return arguments[0];
+	}
 	var items = [];
 	var elements = [];
 	$each(arguments, function(selector){

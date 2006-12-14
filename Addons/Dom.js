@@ -43,7 +43,7 @@ Arguments:
 	filter - optional; a DOM element to limit the scope of the selector match; defaults to document.
 
 Examples:
-	>$ES("a") //gets all the anchor tags; synonymous with $S("a")
+	>$ES("a") //gets all the anchor tags; synonymous with $$("a")
 	>$ES('a','myElement') //get all the anchor tags within $('myElement')
 */
 
@@ -125,7 +125,7 @@ Element.extend({
 
 	/*
 	Property: getElementsBySelector
-		Same as <Element.getElements>, but allows for comma separated selectors, as in css. Alternate syntax for <$S>, where filter is the Element.
+		Same as <Element.getElements>, but allows for comma separated selectors, as in css. Alternate syntax for <$$>, where filter is the Element.
 
 	*/
 
@@ -147,7 +147,7 @@ document.extend({
 	/*
 	Function: document.getElementsByClassName 
 		Returns all the elements that match a specific class name. 
-		Here for compatibility purposes. can also be written: document.getElements('.className'), or $S('.className')
+		Here for compatibility purposes. can also be written: document.getElements('.className'), or $$('.className')
 	*/
 
 	getElementsByClassName: function(className){
@@ -161,7 +161,7 @@ document.extend({
 
 /*
 Class: Elements
-	Methods for dom queries arrays, as <$S>.
+	Methods for dom queries arrays, as <$$>.
 */
 
 Elements.extend({

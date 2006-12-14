@@ -60,11 +60,9 @@ Drag.Base = new Class({
 		this.setOptions(this.getOptions(), options);
 		this.element = $(el);
 		this.handle = $(this.options.handle) || this.element;
-		this.handle.addEvent('mousedown', this.start.bindWithEvent(this));
-
 		this.mouse = {'start': {}, 'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
-
+		this.handle.addEvent('mousedown', this.start.bindWithEvent(this));
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -74,12 +72,9 @@ Drag.Base = new Class({
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			this.mouse.start[z] = event.page[z];
 		}
-
 		if (this.options.snap) document.addEvent('mousemove', this.checkAndDrag.bindWithEvent(this));
 		else document.addEvent('mousemove', this.drag.bindWithEvent(this));
-
 		document.addEvent('mouseup', this.stop.bind(this));
-
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
@@ -125,6 +120,10 @@ Drag.Base = new Class({
 		}
 		this.fireEvent('onDrag', this.element);
 		event.stop();
+	},
+	
+	detach: function(){
+		this.handle.removeEvent('mousedown', this.start.bindWithEvent(this));
 	},
 
 	stop: function(){

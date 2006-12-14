@@ -33,11 +33,13 @@ var Sortables = new Class({
 		};
 	},
 
-	initialize: function(elements, options){
+	initialize: function(list, options){
 		this.setOptions(this.getOptions(), options);
-		this.elements = $$(elements);
-		var handles = $$(this.options.handles) || this.elements;
-		elements.each(function(el, i){
+		this.list = $(list);
+		this.elements = this.list.getChildren();
+		this.handles = $$(this.options.handles) || this.elements;
+		
+		this.elements.each(function(el, i){
 			this.handles[i].addEvent('mousedown', this.start.bindWithEvent(this, el));
 		}, this);
 	},
@@ -56,16 +58,30 @@ var Sortables = new Class({
 			var prevPos = prev.getPosition();
 			if (event.page.y < prevPos.bottom) el.injectBefore(prev);
 		}
-
 		if (next){
 			var nextPos = next.getPosition();
 			if (event.page.y > nextPos.top) el.injectAfter(next);
 		}
 		event.stop();
 	},
+	
+	detach: function(){
+		this.elements.each(function(el, i){
+			this.handles[i].removeEvent('mousedown', this.start.bindWithEvent(this, el));
+		}, this);
+	},
+	
+	serialize: function(){
+		var serial = [];
+		this.list.getChildren().each(function(el, i){
+			serial[i] = this.elements.indexOf(el);
+		}, this);
+		return serial;
+	},
 
 	end: function(el){
 		document.removeEvent('mousemove', this.move.bindWithEvent(this));
+		document.removeEvent('mouseup', this.end.bind(this, el));
 		this.fireEvent('onComplete', el);
 	}
 

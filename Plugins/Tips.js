@@ -44,7 +44,7 @@ Example:
 	(start code)
 	<img src="/images/i.png" title="The body of the tooltip is stored in the title" class="toolTipImg"/>
 	<script>
-		var myTips = new Tips($S('.toolTipImg'), {
+		var myTips = new Tips($$('.toolTipImg'), {
 			maxTitleChars: 50, //I like my captions a little long
 		});
 	</script>

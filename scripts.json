@@ -85,12 +85,12 @@
 		
 		'Fx.Style': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS'],
-			'desc': 'effect to change any css property.'
+			'desc': 'effect to change any css property for an element.'
 		},
 		
 		'Fx.Styles': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS'],
-			'desc': 'effect so change any number of css properties.'
+			'desc': 'effect so change any number of css properties for an element.'
 		},
 		
 		'Fx.Elements': {
@@ -100,7 +100,7 @@
 		
 		'Fx.Scroll': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Fx.Base'],
-			'desc': 'effect to scroll any element, including the window'
+			'desc': 'effect to scroll any element, including the window.'
 		},
 		
 		'Fx.Slide': {
@@ -110,7 +110,7 @@
 		
 		'Fx.Transitions': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base'],
-			'desc': 'contains transitions to be used with any effect.'
+			'desc': 'contains transitions to be used with any of the above effects.'
 		}
 			
 	},
@@ -133,7 +133,7 @@
 			
 		'Ajax': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common'],
-			'desc': 'Lets you submit forms via ajax with one function, also contains the usual Ajax construction kit.'
+			'desc': 'Lets you submit forms via ajax with one function, and contains the usual Ajax construction kit.'
 		},
 		
 		'Cookie': {
@@ -148,8 +148,9 @@
 		
 		'Assets': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
-			'desc': 'Contains useful functions to load external files, like images, css, javascript.'
+			'desc': 'Contains functions to load external files on the fly: images, css, javascript.'
 		}
+		
 	},
 	
 	'Plugins': {
@@ -166,22 +167,22 @@
 		
 		'Slider': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Drag.Base'],
-			'desc': 'lets you create horizontal and vertical sliders.'
+			'desc': 'Lets you create horizontal and vertical sliders.'
 		},
 		
 		'SmoothScroll': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Fx.Base', 'Fx.Scroll'],
-			'desc': 'Contains useful functions to load external files, like images, css, javascript.'
+			'desc': 'Smooth scroll your internal links.'
 		},
 		
 		'Sortables': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common'],
-			'desc': 'Lets you resort a list items'
+			'desc': 'Lets you resort list items.'
 		},
 		
 		'Tips': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common'],
-			'desc': 'The tooltips'
+			'desc': 'The Tooltips.'
 		}
 
 	}
