@@ -15,80 +15,22 @@ License:
 
 /*
 Class: Ajax
-	For all your asynchronous needs. Note: this class implements <Chain>
+	An Ajax class, For all your asynchronous needs. Inherits methods and properties from <XHR>.
 
 Arguments:
 	url - the url pointing to the server-side script.
 	options - optional, an object containing options.
 
 Options:
-	method - 'post' or 'get' - the prototcol for the request; optional, defaults to 'post'.
 	postBody - if method is post, you can write parameters here. Can be a querystring, an object or a Form element.
-	async - boolean: asynchronous option; true uses asynchronous requests. Defaults to true.
 	onComplete - function to execute when the ajax request completes.
-	onStateChange - function to execute when the state of the XMLHttpRequest changes.
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete.
+	evalResponse - boolean; should you eval the whole responsetext? I dont know, but this option makes it possible.
 
 Example:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();
 */
-
-var XHR = new Class({
-
-	getOptions: function(){
-		return {
-			method: 'post',
-			async: true,
-			onRequest: Class.empty,
-			onStateChange: Class.empty,
-			onComplete: Class.empty,
-			onFailure: Class.empty,
-			headers: {}
-		}
-	},
-
-	initialize: function(options){
-		this.setOptions(this.getOptions(), options);
-		this.transport = window.XMLHttpRequest ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
-		if (this.transport && this.options.initialize) this.options.initialize.call(this);
-	},
-
-	onStateChange: function(){
-		this.fireEvent('onStateChange', this.transport);
-		if (this.transport.readyState != 4) return;
-		var status = 0;
-		try {status = this.transport.status} catch (e){}
-		if (status >= 200 && status < 300){
-			this.fireEvent('onComplete', [this.transport.responseText, this.transport.responseXML]);
-			this.callChain();
-		} else this.fireEvent('onFailure', this.transport);
-	},
-
-	setHeaders: function(source){
-		for (var type in source) this.transport.setRequestHeader(type, source[type]);
-		return this;
-	},
-
-	send: function(url, data){
-		this.fireEvent('onRequest');
-		this.transport.open(this.options.method, url, this.options.async);
-		this.transport.onreadystatechange = this.onStateChange.bind(this);
-		this.setHeaders({'X-Requested-With': 'XMLHttpRequest'});
-		this.setHeaders(this.options.headers);
-		if (this.options.method == 'post'){
-			this.setHeaders({'Content-type' : 'application/x-www-form-urlencoded'});
-			if (this.transport.overrideMimeType) this.setHeaders({'Connection': 'close'});
-		}
-		this.transport.send(data);
-		return this;
-	}
-
-});
-
-XHR.implement(new Chain);
-XHR.implement(new Events);
-XHR.implement(new Options);
 
 var Ajax = XHR.extend({
 
@@ -96,21 +38,29 @@ var Ajax = XHR.extend({
 		return {
 			postBody: null,
 			update: null,
+			onComplete: Class.empty,
 			evalScripts: false,
-			onStateChange: Class.empty
+			evalResponse: false,
+			method: 'post'
 		};
 	},
 
 	initialize: function(url, options){
-		this.addEvent('onComplete', this.onComplete);
+		this.addEvent('onSuccess', this.onComplete);
 		this.setOptions(this.moreOptions(), options);
+		if (!['post', 'get'].test(this.options.method)){
+			this._method = '_method='+this.options.method;
+			this.options.method = 'post';
+		}
 		this.parent(this.options);
 		this.url = url;
 	},
 
 	onComplete: function(){
-		if (this.options.update) $(this.options.update).setHTML(this.transport.responseText);
+		if (this.options.update) $(this.options.update).setHTML(this.response.text);
+		if (this.options.evalResponse) eval(this.response.text);
 		if (this.options.evalScripts) this.evalScripts.delay(30, this);
+		this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
 	},
 
 	/*
@@ -127,13 +77,15 @@ var Ajax = XHR.extend({
 	*/
 
 	request: function(){
+		var data = null;
 		switch ($type(this.options.postBody)){
-			case 'element': this.options.postBody = $(this.options.postBody).toQueryString(); break;
-			case 'object': this.options.postBody = Object.toQueryString(this.options.postBody); break;
-			case 'string': break;
-			default: this.options.postBody = null;
+			case 'element': data = $(this.options.postBody).toQueryString(); break;
+			case 'object': data = Object.toQueryString(this.options.postBody); break;
+			case 'string': data = this.options.postBody;
 		}
-		return this.send(this.url, this.options.postBody);
+		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
+		this.setHeader('X-Requested-With', 'XMLHttpRequest');
+		return this.send(this.url, data);
 	},
 
 	/*
@@ -142,7 +94,7 @@ var Ajax = XHR.extend({
 	*/
 
 	evalScripts: function(){
-		var scripts = this.transport.responseText.match(/<script[^>]*>([\s\S]*?)<\/script>/gi);
+		var scripts = this.response.text.match(/<script[^>]*>([\s\S]*?)<\/script>/gi);
 		if (scripts) for (var i = 0; i < scripts.length; i++) eval(scripts[i]);
 	}
 
@@ -223,13 +175,13 @@ Element.extend({
 		Returns:
 			email=bob@bob.com&zipCode=90210
 	*/
-	
+
 	toObject: function(){
 		var obj = {};
 		$each(this.getElementsByTagName('*'), function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if (value && name) obj[encodeURIComponent(name)] = encodeURIComponent(value);
+			if (value && name) obj[name] = value;
 		});
 		return obj;
 	},

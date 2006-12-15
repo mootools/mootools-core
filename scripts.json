@@ -53,6 +53,11 @@
 		'Dom': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
 			'desc': 'Allows to select elements by css selectors. Additionally, lets you filter by element.'
+		},
+		
+		'Hash': {
+			'deps': ['Moo'],
+			'desc': 'Object wrapper, allows to use custom methods on javascript Objects. By Christophe Beyls.'
 		}
 
 	},
@@ -130,10 +135,15 @@
 	},
 	
 	'Remote': {
+		
+		'XHR': {
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common'],
+			'desc': 'Basic XMLHttpRequest Object Class Wrapper.'
+		},
 			
 		'Ajax': {
-			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common'],
-			'desc': 'Lets you submit forms via XMLHTTP with one function, and contains the usual Ajax construction kit.'
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'XHR'],
+			'desc': 'Extends the basic XHR with additional methods and utility functions.'
 		},
 		
 		'Cookie': {
@@ -187,4 +197,3 @@
 
 	}
 }
-
