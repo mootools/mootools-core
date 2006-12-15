@@ -63,8 +63,8 @@ var XHR = new Class({
 			};
 			this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
 			this.callChain();
-			this.transport.onreadystatechange = Class.empty;
 		} else this.fireEvent('onFailure', this.transport);
+		this.transport.onreadystatechange = Class.empty;
 	},
 
 	setHeader: function(name, value){
