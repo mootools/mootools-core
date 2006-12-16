@@ -208,7 +208,7 @@ Number.extend({
 	},
 
 	toFloat: function(){
-		return this;
+		return parseFloat(this);
 	}
 
 });
