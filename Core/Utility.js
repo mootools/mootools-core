@@ -49,7 +49,7 @@ function $type(obj){
 		if (obj.nodeName){
 			switch (obj.nodeType){
 				case 1: return 'element';
-				case 3: return (!obj.nodeValue.test('\\S')) ? 'whitespace' : 'textnode';
+				case 3: return obj.nodeValue.test('\\S') ? 'textnode' : 'whitespace';
 			}
 		}
 	}
