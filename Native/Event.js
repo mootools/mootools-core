@@ -54,10 +54,7 @@ var Event = new Class({
 		this.alt = this.event.altKey;
 		this.meta = this.event.metaKey;
 		if (['DOMMouseScroll', 'mousewheel'].test(this.type)){
-			var wheel = 0;
-			if (this.event.wheelDelta) wheel = this.event.wheelDelta/120;
-			else if (this.event.detail) wheel = -this.event.detail/3;
-			this.wheel = (window.opera) ? -wheel : wheel;
+			this.wheel = this.event.wheelDelta ? (this.event.wheelDelta / (window.opera ? -120 : 120)) : -(this.event.detail || 0) / 3;
 		} else if (this.type.test('key')){
 			this.code = this.event.which || this.event.keyCode;
 			var specials = {
@@ -85,12 +82,11 @@ var Event = new Class({
 				'x': this.event.pageX ? this.event.pageX - window.pageXOffset : this.event.clientX,
 				'y': this.event.pageY ? this.event.pageY - window.pageYOffset : this.event.clientY
 			};
-			this.rightClick = (((this.event.which) && (this.event.which == 3)) || 
-				((this.event.button) && (this.event.button == 2)) || 
-				(navigator.platform.test('Mac') && this.control));
+			this.rightClick = (this.event.which == 3) || (this.event.button == 2) || 
+				(this.control && navigator.platform.test('Mac'));
 			switch (this.type){
 				case 'mouseover': this.relatedTarget = this.event.relatedTarget || this.event.fromElement; break;
-				case 'mouseout': this.relatedTarget = this.event.relatedTarget || this.event.toElement; break;
+				case 'mouseout': this.relatedTarget = this.event.relatedTarget || this.event.toElement;
 			}
 		}
 	},
