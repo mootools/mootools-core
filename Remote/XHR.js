@@ -56,15 +56,22 @@ var XHR = new Class({
 		if (this.transport.readyState != 4) return;
 		var status = 0;
 		try {status = this.transport.status} catch (e){}
-		if (status >= 200 && status < 300){
-			this.response = {
-				'text': this.transport.responseText,
-				'xml': this.transport.responseXML
-			};
-			this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
-			this.callChain();
-		} else this.fireEvent('onFailure', this.transport);
+		if (status >= 200 && status < 300) this.onSuccess();
+		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;
+	},
+	
+	onSuccess: function(){
+		this.response = {
+			'text': this.transport.responseText,
+			'xml': this.transport.responseXML
+		};
+		this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
+		this.callChain();
+	},
+	
+	onFailure: function(){
+		this.fireEvent('onFailure', this.transport);
 	},
 
 	setHeader: function(name, value){
