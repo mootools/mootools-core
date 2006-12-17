@@ -43,13 +43,14 @@ Returns:
 function $typ(obj){
 	if (obj === null || obj === undefined) return false;
 	var type = typeof obj;
-	if (type != 'object') return type;
-	if (obj instanceof HTMLElement) return 'element';
-	if (obj instanceof Array) return 'array';
-	if (obj.nodeName){
-		switch (obj.nodeType){
-			case 1: return 'element';
-			case 3: return (!obj.nodeValue.test('\\S')) ? 'whitespace' : 'textnode';
+	if (type == 'object'){
+		if (obj instanceof HTMLElement) return 'element';
+		if (obj instanceof Array) return 'array';
+		if (obj.nodeName){
+			switch (obj.nodeType){
+				case 1: return 'element';
+				case 3: return (!obj.nodeValue.test('\\S')) ? 'whitespace' : 'textnode';
+			}
 		}
 	}
 	return type;
