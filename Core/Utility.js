@@ -28,31 +28,31 @@ Example:
 	>$type(myString); //returns "string"
 
 Returns:
-	'function' - if obj is a function
-	'whitespace' - if obj is a node but not an element
-	'element' - if obj is a DOM element
+	'element' - if obj is a DOM element node
+	'textnode' - if obj is a DOM text node
+	'whitespace' - if obj is a DOM whitespace node
 	'array' - if obj is an array
 	'object' - if obj is an object
 	'string' - if obj is a string
 	'number' - if obj is a number
 	'boolean' - if obj is a boolean
-	false - (boolean) if the object is not defined or none of the above, or if it's an empty string.
+	'function' - if obj is a function
+	false - (boolean) if the object is not defined or none of the above.
 */
 
-function $type(obj){
-	if (obj === false || obj === true) return 'boolean';
+function $typ(obj){
 	if (obj === null || obj === undefined) return false;
+	var type = typeof obj;
+	if (type != 'object') return type;
 	if (obj instanceof HTMLElement) return 'element';
-	if (obj.toLowerCase) return 'string';
 	if (obj instanceof Array) return 'array';
-	if (obj instanceof Function) return 'function';
 	if (obj.nodeName){
 		switch (obj.nodeType){
 			case 1: return 'element';
 			case 3: return (!obj.nodeValue.test('\\S')) ? 'whitespace' : 'textnode';
 		}
 	}
-	return typeof obj || false;
+	return type;
 };
 
 /*
