@@ -20,7 +20,7 @@ Arguments:
 	filter - optional; a DOM element to limit the scope of the selector match; defaults to document.
 
 Example:
->$E('a', 'myElement') //find the first anchor tag inside the DOM element with id 'myElement'
+	>$E('a', 'myElement') //find the first anchor tag inside the DOM element with id 'myElement'
 
 Returns:
 	a DOM element - the first element that matches the selector
@@ -35,8 +35,8 @@ Function: $ES
 	Returns a collection of Elements that match the selector passed in limited to the scope of the optional filter.
 	See Also: <Element.getElements> for an alternate syntax.
 
-Retunrs:
-	array - an array of dom elements that match the selector within the filter
+Returns:
+	an array of dom elements that match the selector within the filter
 
 Arguments:
 	selector - css selector to match
