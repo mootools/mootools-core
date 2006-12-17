@@ -40,7 +40,7 @@ Returns:
 	false - (boolean) if the object is not defined or none of the above.
 */
 
-function $typ(obj){
+function $type(obj){
 	if (obj === null || obj === undefined) return false;
 	var type = typeof obj;
 	if (type == 'object'){
