@@ -92,9 +92,11 @@ var Events = new Class({
 	*/
 
 	addEvent: function(type, fn){
-		this.events = this.events || {};
-		this.events[type] = this.events[type] || [];
-		if (fn != Class.empty && !this.events[type].test(fn)) this.events[type].push(fn);
+		if (fn != Class.empty){
+			this.events = this.events || {};
+			this.events[type] = this.events[type] || [];
+			if (!this.events[type].test(fn)) this.events[type].push(fn);
+		}
 		return this;
 	},
 
@@ -104,10 +106,11 @@ var Events = new Class({
 	*/
 
 	fireEvent: function(type, args, delay){
-		if (!this.events || !this.events[type]) return this;
-		this.events[type].each(function(fn){
-			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
-		}, this);
+		if (this.events && this.events[type]){
+			this.events[type].each(function(fn){
+				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+			}, this);
+		}
 		return this;
 	},
 
@@ -117,8 +120,7 @@ var Events = new Class({
 	*/
 
 	removeEvent: function(type, fn){
-		if (!this.events || !this.events[type]) return this;
-		this.events[type].remove(fn);
+		if (this.events && this.events[type]) this.events[type].remove(fn);
 		return this;
 	}
 
@@ -146,9 +148,10 @@ var Options = new Class({
 
 	setOptions: function(defaults, options){
 		this.options = Object.extend(defaults, options);
-		if (!this.addEvent) return this;
-		for (var option in this.options){
-			if (option.test('^on[A-Z]') && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
+		if (this.addEvent){
+			for (var option in this.options){
+				if (option.test('^on[A-Z]') && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
+			}
 		}
 		return this;
 	}
