@@ -65,12 +65,11 @@ function $(el){
 	if (el._element_extended_ || [window, document].test(el)) return el;
 	if ($type(el) == 'string') el = document.getElementById(el);
 	if ($type(el) != 'element') return false;
-	if (!['object', 'embed'].test(el.tagName.toLowerCase()) && !el.extend){
-		el._element_extended_ = true;
-		Garbage.collect(el);
-		el.extend = Object.extend;
-		if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
-	}
+	if (['object', 'embed'].test(el.tagName.toLowerCase()) || el.extend) return el;
+	el._element_extended_ = true;
+	Garbage.collect(el);
+	el.extend = Object.extend;
+	if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
 	return el;
 };
 
@@ -542,6 +541,8 @@ Element.extend({
 
 	fireEvent: function(type, args){
 		if (this.events && this.events[type]){
+			args = args || [];
+			if ($type(args) != 'array') args = [args];
 			for (var fn in this.events[type]){
 				if (this.events[type][fn]) this.events[type][fn].apply(this, args || []);
 			}
