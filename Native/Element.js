@@ -62,12 +62,10 @@ Note:
 
 function $(el){
 	if (!el) return false;
-	if (el._element_extended_) return el;
-	if ([window, document].test(el)) return el;
+	if (el._element_extended_ || [window, document].test(el)) return el;
 	if ($type(el) == 'string') el = document.getElementById(el);
 	if ($type(el) != 'element') return false;
-	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
-	if (!el.extend){
+	if (!['object', 'embed'].test(el.tagName.toLowerCase()) && !el.extend){
 		el._element_extended_ = true;
 		Garbage.collect(el);
 		el.extend = Object.extend;
@@ -110,19 +108,18 @@ function $$(){
 		if (!arguments[0]) return false;
 		if (arguments[0]._elements_extended_) return arguments[0];
 	}
-	var items = [];
 	var elements = [];
 	$each(arguments, function(selector){
-		if ($type(selector) == 'string') items.extend(document.getElementsBySelector(selector));
-		else if ($type(selector) == 'element') items.push($(selector));
-		else if (selector.length){
-			$each(selector, function(sel){
-				items.push(sel);
-			});
+		switch ($type(selector)){
+			case 'element': elements.push($(selector)); break;
+			case 'string': selector = document.getElementsBySelector(selector);
+			default:
+			if (selector.length){
+				$each(selector, function(el){
+					if ($(el)) elements.push(el);
+				});
+			}
 		}
-	});
-	items.each(function(item){
-		if ($(item)) elements.push(item);
 	});
 	elements._elements_extended_ = true;
 	return Object.extend(elements, new Elements);
@@ -456,9 +453,10 @@ Element.extend({
 		if (!$chk(style)){
 			if (property == 'opacity') return (this.opacity != undefined) ? this.opacity : 1;
 			if (['margin', 'padding'].test(property)){
-				var top = this.getStyle(property+'-top') || 0; var right = this.getStyle(property+'-right') || 0;
-				var bottom = this.getStyle(property+'-bottom') || 0; var left = this.getStyle(property+'-left') || 0;
-				return top+' '+right+' '+bottom+' '+left;
+				return [this.getStyle(property+'-top') || 0,
+						this.getStyle(property+'-right') || 0,
+						this.getStyle(property+'-bottom') || 0,
+						this.getStyle(property+'-left') || 0].join(' ');
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this,null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
@@ -481,13 +479,14 @@ Element.extend({
 	addEvent: function(type, fn){
 		this.events = this.events || {};
 		this.events[type] = this.events[type] || {};
-		if (this.events[type][fn]) return this;
-		if (this.addEventListener){
-			this.events[type][fn] = fn;
-			this.addEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
-		} else {
-			this.events[type][fn] = fn.bind(this);
-			this.attachEvent('on'+type, this.events[type][fn]);
+		if (!this.events[type][fn]){
+			if (this.addEventListener){
+				this.events[type][fn] = fn;
+				this.addEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
+			} else {
+				this.events[type][fn] = fn.bind(this);
+				this.attachEvent('on'+type, this.events[type][fn]);
+			}
 		}
 		return this;
 	},
@@ -505,12 +504,15 @@ Element.extend({
 	*/
 
 	removeEvent: function(type, fn){
-		if (!this.events || !this.events[type] || !this.events[type][fn]) return this;
-		if (this.removeEventListener){
-			this.removeEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
+		if (this.events && this.events[type] && this.events[type][fn]){
+			if (this.removeEventListener){
+				this.removeEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
+			}
+			else {
+				this.detachEvent('on'+type, this.events[type][fn]);
+			}
+			this.events[type][fn] = null;
 		}
-		else this.detachEvent('on'+type, this.events[type][fn]);
-		this.events[type][fn] = null;
 		return this;
 	},
 
@@ -520,14 +522,16 @@ Element.extend({
 	*/
 
 	removeEvents: function(type){
-		if (!this.events) return this;
-		if (type){
-			if (!this.events[type]) return this;
-			for (var fn in this.events[type]) this.removeEvent(type, fn);
-			this.events[type] = null;
-		} else {
-			for (var evType in this.events) this.removeEvents(evType);
-			this.events = null;
+		if (this.events){
+			if (type){
+				if (this.events[type]){
+					for (var fn in this.events[type]) this.removeEvent(type, fn);
+					this.events[type] = null;
+				}
+			} else {
+				for (var evType in this.events) this.removeEvents(evType);
+				this.events = null;
+			}
 		}
 		return this;
 	},
@@ -538,9 +542,10 @@ Element.extend({
 	*/
 
 	fireEvent: function(type, args){
-		if (!this.events || !this.events[type]) return;
-		for (var fn in this.events[type]){
-			if (this.events[type][fn]) this.events[type][fn].apply(this, args || []);
+		if (this.events && this.events[type]){
+			for (var fn in this.events[type]){
+				if (this.events[type][fn]) this.events[type][fn].apply(this, args || []);
+			}
 		}
 	},
 
@@ -627,7 +632,6 @@ Element.extend({
 	*/
 
 	setProperty: function(property, value){
-		var el = false;
 		switch (property){
 			case 'class': this.className = value; break;
 			case 'style': this.setStyles(value); break;
@@ -637,11 +641,11 @@ Element.extend({
 					if (attribute.name != 'name') el.setProperty(attribute.name, attribute.value);
 				});
 				if (this.parentNode) this.replaceWith(el);
-				break;
-			};
+				return el;
+			}
 			default: this.setAttribute(property, value);
 		}
-		return el || this;
+		return this;
 	},
 
 	/*
@@ -808,10 +812,15 @@ Element.extend({
 	*/
 
 	getPosition: function(){
-		var obj = {}, offs = this.getOffsets();
-		obj.width = this.offsetWidth; obj.height = this.offsetHeight;
-		obj.left = offs.x; obj.top = offs.y;
-		obj.right = obj.left + obj.width; obj.bottom = obj.top + obj.height;
+		var offs = this.getOffsets();
+		var obj = {
+			'width': this.offsetWidth,
+			'height': this.offsetHeight,
+			'left': offs.x,
+			'top': offs.y
+		};
+		obj.right = obj.left + obj.width;
+		obj.bottom = obj.top + obj.height;
 		return obj;
 	},
 
@@ -823,8 +832,7 @@ Element.extend({
 	getValue: function(){
 		switch (this.getTag()){
 			case 'select': if (this.selectedIndex != -1) return this.options[this.selectedIndex].value; break;
-			case 'input': if ((this.checked && ['checkbox', 'radio'].test(this.type)) || ['hidden', 'text', 'password'].test(this.type)) 
-				return this.value; break;
+			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
 			case 'textarea': return this.value;
 		}
 		return false;
@@ -873,10 +881,7 @@ var Garbage = {
 		Garbage.elements.each(function(el){
 			el.removeEvents();
 			for (var p in Element.prototype){
-				HTMLElement[p] = null;
-				window[p] = null;
-				document[p] = null;
-				el[p] = null;
+				HTMLElement[p] = window[p] = document[p] = el[p] = null;
 			}
 			el.extend = null;
 		});
