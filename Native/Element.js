@@ -458,7 +458,7 @@ Element.extend({
 						this.getStyle(property+'-bottom') || 0,
 						this.getStyle(property+'-left') || 0].join(' ');
 			}
-			if (document.defaultView) style = document.defaultView.getComputedStyle(this,null).getPropertyValue(property.hyphenate());
+			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
 		return (style && property.test('color', 'i') && style.test('rgb')) ? style.rgbToHex() : style;
@@ -507,8 +507,7 @@ Element.extend({
 		if (this.events && this.events[type] && this.events[type][fn]){
 			if (this.removeEventListener){
 				this.removeEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
-			}
-			else {
+			} else {
 				this.detachEvent('on'+type, this.events[type][fn]);
 			}
 			this.events[type][fn] = null;
@@ -880,9 +879,7 @@ var Garbage = {
 		window.removeEvent('unload', Garbage.trash);
 		Garbage.elements.each(function(el){
 			el.removeEvents();
-			for (var p in Element.prototype){
-				HTMLElement[p] = window[p] = document[p] = el[p] = null;
-			}
+			for (var p in Element.prototype) HTMLElement[p] = window[p] = document[p] = el[p] = null;
 			el.extend = null;
 		});
 	}

@@ -156,6 +156,11 @@
 			'desc': 'Json encoder/decoder.'
 		},
 		
+		'Json.Remote': {
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Json', 'XHR'],
+			'desc': 'Shortcut Class to send and receive Javascript Objects.'
+		},
+		
 		'Assets': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
 			'desc': 'Contains functions to load external files on the fly: images, css, javascript.'
