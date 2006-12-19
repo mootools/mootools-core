@@ -33,16 +33,15 @@ var Json = {
 	*/
 
 	toString: function(obj){
-		var string = [];
 		switch ($type(obj)){
 			case 'string':
 				return '"'+obj.replace(new RegExp('(["\\\\])', 'g'), '\\$1')+'"';
 			case 'array':
-				obj.each(function(ar){
-					string.push(Json.toString(ar));
-				});
-				return '['+string.join(',')+']';
+				return '['+ obj.map(function(ar){
+					return Json.toString(ar);
+				}).join(',') +']';
 			case 'object':
+				var string = [];
 				for (var property in obj) string.push('"'+property+'":'+Json.toString(obj[property]));
 				return '{'+string.join(',')+'}';
 		}

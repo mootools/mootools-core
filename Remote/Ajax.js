@@ -181,7 +181,7 @@ Element.extend({
 		$each(this.getElementsByTagName('*'), function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if (value && name) obj[name] = value;
+			if ((value !== false) && name) obj[name] = value;
 		});
 		return obj;
 	},
