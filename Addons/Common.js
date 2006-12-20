@@ -135,7 +135,7 @@ Class: Options
 var Options = new Class({
 
 	/*
-	Property: fireEvent
+	Property: setOptions
 		sets this.options
 
 	Arguments:
@@ -143,14 +143,14 @@ var Options = new Class({
 		options - the user entered options. can be empty too.
 
 	Note:
-		if your Class has <Events> implemented, every option beginning with on, foloowed by a capital letter (onComplete) becomes an Class instance event.
+		if your Class has <Events> implemented, every option beginning with on, followed by a capital letter (onComplete) becomes an Class instance event.
 	*/
 
 	setOptions: function(defaults, options){
 		this.options = Object.extend(defaults, options);
 		if (this.addEvent){
 			for (var option in this.options){
-				if (option.test('^on[A-Z]') && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
+				if (($type(this.options[option]) == 'function') && option.test('^on[A-Z]')) this.addEvent(option, this.options[option]);
 			}
 		}
 		return this;
