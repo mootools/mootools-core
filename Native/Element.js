@@ -549,7 +549,7 @@ Element.extend({
 			args = args || [];
 			if ($type(args) != 'array') args = [args];
 			this.events[type].keys.each(function(fn){
-				fn.apply(this, args || []);
+				fn.apply(this, args);
 			}, this);
 		}
 	},
