@@ -477,14 +477,15 @@ Element.extend({
 
 	addEvent: function(type, fn){
 		this.events = this.events || {};
-		this.events[type] = this.events[type] || {};
-		if (!this.events[type][fn]){
+		this.events[type] = this.events[type] || {keys: [], values: []};
+		if (!this.events[type].keys.test(fn)){
+			this.events[type].keys.push(fn);
 			if (this.addEventListener){
-				this.events[type][fn] = fn;
-				this.addEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
+				this.addEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, fn, false);
 			} else {
-				this.events[type][fn] = fn.bind(this);
-				this.attachEvent('on'+type, this.events[type][fn]);
+				fn = fn.bind(this);
+				this.attachEvent('on'+type, fn);
+				this.events[type].values.push(fn);
 			}
 		}
 		return this;
@@ -503,13 +504,15 @@ Element.extend({
 	*/
 
 	removeEvent: function(type, fn){
-		if (this.events && this.events[type] && this.events[type][fn]){
+		if (this.events && this.events[type]){
+			var pos = this.events[type].keys.indexOf(fn);
+			if (pos == -1) return this;
+			var key = this.events[type].keys.splice(pos,1)[0];
 			if (this.removeEventListener){
-				this.removeEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, this.events[type][fn], false);
+				this.removeEventListener((type == 'mousewheel' && !window.khtml) ? 'DOMMouseScroll' : type, key, false);
 			} else {
-				this.detachEvent('on'+type, this.events[type][fn]);
+				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
 			}
-			this.events[type][fn] = null;
 		}
 		return this;
 	},
@@ -523,7 +526,9 @@ Element.extend({
 		if (this.events){
 			if (type){
 				if (this.events[type]){
-					for (var fn in this.events[type]) this.removeEvent(type, fn);
+					this.events[type].keys.each(function(fn){
+						this.removeEvent(type, fn);
+					});
 					this.events[type] = null;
 				}
 			} else {
@@ -543,9 +548,9 @@ Element.extend({
 		if (this.events && this.events[type]){
 			args = args || [];
 			if ($type(args) != 'array') args = [args];
-			for (var fn in this.events[type]){
-				if (this.events[type][fn]) this.events[type][fn].apply(this, args || []);
-			}
+			this.events[type].keys.each(function(fn){
+				fn.apply(this, args || []);
+			}, this);
 		}
 	},
 
