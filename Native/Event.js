@@ -57,19 +57,8 @@ var Event = new Class({
 			this.wheel = this.event.wheelDelta ? (this.event.wheelDelta / (window.opera ? -120 : 120)) : -(this.event.detail || 0) / 3;
 		} else if (this.type.test('key')){
 			this.code = this.event.which || this.event.keyCode;
-			var specials = {
-				'enter': 13,
-				'up': 38,
-				'down': 40,
-				'left': 37,
-				'right': 39,
-				'esc': 27,
-				'space': 32,
-				'backspace': 8,
-				'delete': 46
-			};
-			for (var name in specials){
-				if (specials[name] == this.code) var special = name;
+			for (var name in Event.keys){
+				if (Event.keys[name] == this.code) var special = name;
 			}
 			this.key = special || String.fromCharCode(this.code).toLowerCase();
 
@@ -124,6 +113,18 @@ var Event = new Class({
 	}
 
 });
+
+Event.keys = {
+	'enter': 13,
+	'up': 38,
+	'down': 40,
+	'left': 37,
+	'right': 39,
+	'esc': 27,
+	'space': 32,
+	'backspace': 8,
+	'delete': 46
+};
 
 Function.extend({
 

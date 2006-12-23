@@ -372,7 +372,7 @@ Element.extend({
 
 	setStyle: function(property, value){
 		if (property == 'opacity') this.setOpacity(parseFloat(value));
-		else this.style[property.camelCase()] = value;
+		else this.style[property.camelCase()] = (value.push) ? value.rgbToHex() : value;
 		return this;
 	},
 
@@ -528,7 +528,7 @@ Element.extend({
 				if (this.events[type]){
 					this.events[type].keys.each(function(fn){
 						this.removeEvent(type, fn);
-					});
+					}, this);
 					this.events[type] = null;
 				}
 			} else {

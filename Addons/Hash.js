@@ -6,7 +6,7 @@ Author:
 	Christophe Beyls <http://digitalia.be>
 
 License:
-	MIT-style license. (?)
+	MIT-style license.
 */
 
 /*
@@ -40,14 +40,14 @@ var Hash = new Class({
 	},
 
 	set: function(key, value) {
-		if (value == null) throw 'Cannot put null values in the map';
+		if (value == null) return false;
 		if (this.obj[key] == undefined) this.length++;
 		this.obj[key] = value;
 		return this;
 	},
 
 	remove: function(key) {
-		if (this.obj[key] == undefined) return;
+		if (this.obj[key] == undefined) return false;
 		var obj = {};
 		this.length--;
 		for (var property in this.obj){

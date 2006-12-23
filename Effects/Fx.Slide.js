@@ -34,7 +34,7 @@ Fx.Slide = Fx.Base.extend({
 		this.wrapper = new Element('div').injectAfter(this.element).setStyle('overflow', 'hidden').adopt(this.element);
 		this.setOptions({'mode': 'vertical'}, options);
 		this.now = [];
-		this.parent(options);
+		this.parent(this.options);
 	},
 
 	setNow: function(){

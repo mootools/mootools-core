@@ -153,14 +153,7 @@ String.extend({
 
 	rgbToHex: function(array){
 		var rgb = this.match(/\d{1,3}/g);
-		if (!rgb || rgb.length < 3) return false;
-		if (rgb[3] && rgb[3] == 0) return 'transparent';
-		var hex = [];
-		for (var i = 0; i < 3; i++){
-			var bit = (rgb[i]-0).toString(16);
-			hex.push(bit.length == 1 ? '0'+bit : bit);
-		}
-		return array ? hex : '#'+hex.join('');
+		return (rgb) ? rgb.rgbToHex(array) : false;
 	},
 
 	/*
@@ -180,11 +173,30 @@ String.extend({
 
 	hexToRgb: function(array){
 		var hex = this.match('^#?(\\w{1,2})(\\w{1,2})(\\w{1,2})$');
-		if (!hex) return false;
+		return (hex) ? hex.hexToRgb(array) : false;
+	}
+
+});
+
+Array.extend({
+	
+	rgbToHex: function(array){
+		if (this.length < 3) return false;
+		if (this[3] && this[3] == 0) return 'transparent';
+		var hex = [];
+		for (var i = 0; i < 3; i++){
+			var bit = (this[i]-0).toString(16);
+			hex.push(bit.length == 1 ? '0'+bit : bit);
+		}
+		return array ? hex : '#'+hex.join('');
+	},
+	
+	hexToRgb: function(array){
+		if (this.length != 4) return false;
 		var rgb = [];
 		for (var i = 1; i < 4; i++){
-			if (hex[i].length == 1) hex[i] += hex[i];
-			rgb.push(parseInt(hex[i], 16));
+			if (this[i].length == 1) this[i] += this[i];
+			rgb.push(parseInt(this[i], 16));
 		}
 		return array ? rgb : 'rgb('+rgb.join(',')+')';
 	}
