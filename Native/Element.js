@@ -452,10 +452,8 @@ Element.extend({
 		if (!$chk(style)){
 			if (property == 'opacity') return (this.opacity != undefined) ? this.opacity : 1;
 			if (['margin', 'padding'].test(property)){
-				return [this.getStyle(property+'-top') || 0,
-						this.getStyle(property+'-right') || 0,
-						this.getStyle(property+'-bottom') || 0,
-						this.getStyle(property+'-left') || 0].join(' ');
+				return [this.getStyle(property+'-top') || 0, this.getStyle(property+'-right') || 0,
+						this.getStyle(property+'-bottom') || 0, this.getStyle(property+'-left') || 0].join(' ');
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
@@ -477,7 +475,7 @@ Element.extend({
 
 	addEvent: function(type, fn){
 		this.events = this.events || {};
-		this.events[type] = this.events[type] || {keys: [], values: []};
+		this.events[type] = this.events[type] || {'keys': [], 'values': []};
 		if (!this.events[type].keys.test(fn)){
 			this.events[type].keys.push(fn);
 			if (this.addEventListener){

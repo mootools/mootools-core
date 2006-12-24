@@ -62,7 +62,8 @@ Drag.Base = new Class({
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'start': {}, 'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
-		this.handle.addEvent('mousedown', this.start.bindWithEvent(this));
+		this.bound = {'start': this.start.bindWithEvent(this)};
+		this.handle.addEvent('mousedown', this.bound.start);
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -72,9 +73,14 @@ Drag.Base = new Class({
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			this.mouse.start[z] = event.page[z];
 		}
-		if (this.options.snap) document.addEvent('mousemove', this.checkAndDrag.bindWithEvent(this));
-		else document.addEvent('mousemove', this.drag.bindWithEvent(this));
-		document.addEvent('mouseup', this.stop.bind(this));
+		
+		this.bound.drag = this.checkAndDrag.bindWithEvent(this);
+		this.bound.checkAndDrag = this.checkAndDrag.bindWithEvent(this);
+		this.bound.stop = this.stop.bind(this);
+		
+		if (this.options.snap) document.addEvent('mousemove', this.bound.checkAndDrag);
+		else document.addEvent('mousemove', this.bound.drag);
+		document.addEvent('mouseup', this.bound.stop);
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
@@ -94,8 +100,8 @@ Drag.Base = new Class({
 	checkAndDrag: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2)+Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			document.removeEvent('mousemove', this.checkAndDrag.bindWithEvent(this));
-			document.addEvent('mousemove', this.drag.bindWithEvent(this));
+			document.removeEvent('mousemove', this.bound.checkAndDrag);
+			document.addEvent('mousemove', this.bound.drag);
 			this.drag(event);
 			this.fireEvent('onSnap', this.element);
 		}
@@ -123,12 +129,12 @@ Drag.Base = new Class({
 	},
 	
 	detach: function(){
-		this.handle.removeEvent('mousedown', this.start.bindWithEvent(this));
+		this.handle.removeEvent('mousedown', this.bound.start);
 	},
 
 	stop: function(){
-		document.removeEvent('mousemove', this.drag.bindWithEvent(this));
-		document.removeEvent('mouseup', this.stop.bind(this));
+		document.removeEvent('mousemove', this.bound.drag);
+		document.removeEvent('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
 	}
 

@@ -38,15 +38,18 @@ var Sortables = new Class({
 		this.list = $(list);
 		this.elements = this.list.getChildren();
 		this.handles = $$(this.options.handles) || this.elements;
-		
+		this.bound = {'start': []};
 		this.elements.each(function(el, i){
+			this.bound.start[i] = this.start.bindWithEvent(this, el);
 			this.handles[i].addEvent('mousedown', this.start.bindWithEvent(this, el));
 		}, this);
 	},
 
 	start: function(event, el){
-		document.addEvent('mousemove', this.move.bindWithEvent(this, el));
-		document.addEvent('mouseup', this.end.bind(this, el));
+		this.bound.move = this.move.bindWithEvent(this, el);
+		this.bound.end = this.end.bind(this, el);
+		document.addEvent('mousemove', this.bound.move);
+		document.addEvent('mouseup', this.bound.end);
 		this.fireEvent('onStart', el);
 		event.stop();
 	},
@@ -67,7 +70,7 @@ var Sortables = new Class({
 	
 	detach: function(){
 		this.elements.each(function(el, i){
-			this.handles[i].removeEvent('mousedown', this.start.bindWithEvent(this, el));
+			this.handles[i].removeEvent('mousedown', this.bound.start[i]);
 		}, this);
 	},
 	
@@ -80,8 +83,8 @@ var Sortables = new Class({
 	},
 
 	end: function(el){
-		document.removeEvent('mousemove', this.move.bindWithEvent(this));
-		document.removeEvent('mouseup', this.end.bind(this, el));
+		document.removeEvent('mousemove', this.bound.move);
+		document.removeEvent('mouseup', this.bound.end);
 		this.fireEvent('onComplete', el);
 	}
 
