@@ -62,3 +62,26 @@ Elements.extend({
 		});
 	}
 };
+
+/* Section: Utility Functions */
+
+/*
+Function: $Element
+	Applies a method with the passed in args to the passed in element. Useful if you dont want to extend the element
+
+	Arguments:
+		el - the element
+		method - a string representing the Element Class method to execute on that element
+		args - an array representing the arguments to pass to that method
+
+	Example:
+		>$Element(el, 'hasClass', className) //true or false
+*/
+
+function $Element(el, method, args){
+	if ($type(el) == 'string') el = document.getElementById(el);
+	if ($type(el) != 'element') return false;
+	if (!args) args = [];
+	else if ($type(args) != 'array') args = [args];
+	return Element.prototype[method].apply(el, args);
+};

@@ -44,11 +44,6 @@
 	},
 	
 	'Addons': {
-	
-		'Color': {
-			'deps': ['Moo', 'Array', 'String'],
-			'desc': 'Class for creating and manipulating colors in JavaScript.'
-		},
 			
 		'Common': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
@@ -63,6 +58,11 @@
 		'Hash': {
 			'deps': ['Moo'],
 			'desc': 'Object wrapper, allows to use custom methods on javascript Objects. By Christophe Beyls.'
+		},
+		
+		'Color': {
+			'deps': ['Moo', 'Array', 'String'],
+			'desc': 'Class for creating and manipulating colors in JavaScript.'
 		}
 
 	},

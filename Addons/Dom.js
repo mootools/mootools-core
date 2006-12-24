@@ -82,7 +82,7 @@ Element.extend({
 			if (i == 0){
 				if (param[2]){
 					var el = this.getElementById(param[2]);
-					if (!el || ((param[1] != '*') && ($Element(el, 'getTag') != param[1]))) return;
+					if (!el || ((param[1] != '*') && (Element.prototype.getTag.call(el) != param[1]))) return;
 					filters = [el];
 				} else {
 					filters = $A(this.getElementsByTagName(param[1]));
@@ -179,7 +179,7 @@ Elements.extend({
 	filterByClassName: function(className){
 		var found = [];
 		this.each(function(el){
-			if ($Element(el, 'hasClass', className)) found.push(el);
+			if (Element.prototype.hasClass.call(el, className)) found.push(el);
 		});
 		return found;
 	},
