@@ -74,21 +74,18 @@ Drag.Base = new Class({
 			this.mouse.start[z] = event.page[z];
 		}
 		
-		this.bound.drag = this.checkAndDrag.bindWithEvent(this);
+		this.bound.drag = this.drag.bindWithEvent(this);
 		this.bound.checkAndDrag = this.checkAndDrag.bindWithEvent(this);
 		this.bound.stop = this.stop.bind(this);
 		
-		if (this.options.snap) document.addEvent('mousemove', this.bound.checkAndDrag);
-		else document.addEvent('mousemove', this.bound.drag);
+		document.addEvent('mousemove', this.options.snap ? this.bound.checkAndDrag : this.bound.drag);
 		document.addEvent('mouseup', this.bound.stop);
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
 			if (limit && limit[z]){
 				for (var i = 0; i < 2; i++){
-					if (!$chk(limit[z][i])) continue;
-					if (limit[z][i].apply) this.limit[z][i] = limit[z][i].call(this);
-					else this.limit[z][i] = limit[z][i];
+					if ($chk(limit[z][i])) this.limit[z][i] = limit[z][i].apply ? limit[z][i].call(this) : limit[z][i];
 				}
 			}
 		}
@@ -114,10 +111,10 @@ Drag.Base = new Class({
 		for (var z in this.options.modifiers){
 			this.value.now[z] = event.page[z] - this.mouse.pos[z];
 			if (this.limit[z]){
-				if ($chk(this.limit[z][1]) && this.value.now[z] > this.limit[z][1]){
+				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
 					this.value.now[z] = this.limit[z][1];
 					this.out = true;
-				} else if ($chk(this.limit[z][0]) && this.value.now[z] < this.limit[z][0]){
+				} else if ($chk(this.limit[z][0]) && (this.value.now[z] < this.limit[z][0])){
 					this.value.now[z] = this.limit[z][0];
 					this.out = true;
 				}
