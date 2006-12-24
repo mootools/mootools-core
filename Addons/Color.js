@@ -35,12 +35,12 @@ var Color = new Class({
 		var colors = $A(arguments);
 		var alpha = 50;
 		if ($type(colors[colors.length-1]) == 'number') alpha = colors.pop();
-		var mixed = this.copy();
+		var rgb = this.copy();
 		colors.each(function(color){
 			color = new Color(color);
-			for (var i = 0; i < 3; i++) mixed[i] = Math.round((mixed[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha));
+			for (var i = 0; i < 3; i++) rgb[i] = Math.round((rgb[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha));
 		});
-		return mixed;
+		return new Color(rgb);
 	},
 
 	invert: function(){
