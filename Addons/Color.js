@@ -3,7 +3,7 @@ Script: Color.js
 	Contains the Color class.
 
 Author:
-	Michael Jackson <http://ajaxon.com>
+	Michael Jackson <http://ajaxon.com/michael>
 
 License:
 	MIT-style license.
@@ -15,14 +15,18 @@ Class: Color
 
 Example:
 	(start code)
-
+	var black = new Color('#000');
+	var purple = new Color([255,0,255]);
+	// mix black with white and purple, each time at 10% of the new color
+	var darkpurple = black.mix('#fff', purple, 10);
+	$('myDiv').setStyle('background-color', darkpurple);
 	(end)
 */
 
 var Color = new Class({
 
 	initialize: function(color){
-		if (color.blend && color.mix) return color;
+		if (color.mix && color.invert) return color;
 		var rgb = (color.push) ? color : color.hexToRgb(true);
 		return Object.extend(rgb, Color.prototype);
 	},
@@ -30,16 +34,11 @@ var Color = new Class({
 	mix: function(){
 		var colors = $A(arguments);
 		var alpha = 50;
-		if (colors.length == 2 && $type(colors[1]) == 'number'){
-			alpha = colors[1];
-			colors.pop();
-		}
-		var mixed = this;
+		if ($type(colors[colors.length-1]) == 'number') alpha = colors.pop();
+		var mixed = this.copy();
 		colors.each(function(color){
-			var rgb = [];
 			color = new Color(color);
-			for (var i = 0; i < 3; i++) rgb.push(Math.round((mixed[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha)));
-			mixed = new Color(rgb);
+			for (var i = 0; i < 3; i++) mixed[i] = Math.round((mixed[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha));
 		});
 		return mixed;
 	},

@@ -44,6 +44,11 @@
 	},
 	
 	'Addons': {
+	
+		'Color': {
+			'deps': ['Moo', 'Array', 'String'],
+			'desc': 'Class for creating and manipulating colors in JavaScript.'
+		},
 			
 		'Common': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element'],
