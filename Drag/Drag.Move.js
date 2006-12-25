@@ -38,15 +38,15 @@ Drag.Move = Drag.Base.extend({
 		this.element = $(el);
 		this.position = this.element.getStyle('position');
 		this.droppables = $$(this.options.droppables);
-		this.position = (['absolute', 'relative'].test(this.position)) ? this.position : 'absolute';
+		if (!['absolute', 'relative'].test(this.position)) this.position = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
 		if (this.position == 'absolute'){
-			top = (top) ? top : this.element.getTop();
-			left = (left) ? left : this.element.getLeft();
+			top = top || this.element.getTop();
+			left = left || this.element.getLeft();
 		} else {
-			top = (top) ? top : 0;
-			left = (left) ? left : 0;
+			top = top || 0;
+			left = left || 0;
 		}
 		this.element.setStyles({
 			'top': top+'px',
@@ -67,10 +67,8 @@ Drag.Move = Drag.Base.extend({
 					'y': [cont.top, cont.bottom - el.height]
 				};
 			} else {
-				var top = this.element.getStyle('top').toInt();
-				var left = this.element.getStyle('left').toInt();
-				var diffx = el.left - left;
-				var diffy = el.top - top;
+				var diffx = el.left - this.element.getStyle('left').toInt();
+				var diffy = el.top - this.element.getStyle('top').toInt();
 				this.options.limit = {
 					'y': [-(diffy) + cont.top, cont.bottom - diffy - el.height],
 					'x': [-(diffx) + cont.left, cont.right - diffx - el.width]

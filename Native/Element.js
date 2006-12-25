@@ -450,7 +450,7 @@ Element.extend({
 		property = property.camelCase();
 		var style = this.style[property] || false;
 		if (!$chk(style)){
-			if (property == 'opacity') return (this.opacity != undefined) ? this.opacity : 1;
+			if (property == 'opacity') return $chk(this.opacity) ? this.opacity : 1;
 			if (['margin', 'padding'].test(property)){
 				return [this.getStyle(property+'-top') || 0, this.getStyle(property+'-right') || 0,
 						this.getStyle(property+'-bottom') || 0, this.getStyle(property+'-left') || 0].join(' ');
