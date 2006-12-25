@@ -196,7 +196,7 @@
 		},
 		
 		'Sortables': {
-			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common'],
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Drag.Base'],
 			'desc': 'Lets you resort list items.'
 		},
 		

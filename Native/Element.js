@@ -372,7 +372,7 @@ Element.extend({
 
 	setStyle: function(property, value){
 		if (property == 'opacity') this.setOpacity(parseFloat(value));
-		else this.style[property.camelCase()] = (value.push) ? value.rgbToHex() : value;
+		else this.style[property.camelCase()] = (value.push) ? 'rgb('+value.join(',')+')' : value;
 		return this;
 	},
 

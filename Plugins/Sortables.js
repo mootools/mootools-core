@@ -29,7 +29,15 @@ var Sortables = new Class({
 		return {
 			handles: false,
 			onStart: Class.empty,
-			onComplete: Class.empty
+			onComplete: Class.empty,
+			ghost: true,
+			snap: 3,
+			onDragStart: function(element, ghost){
+				ghost.setStyle('opacity', 0.5);
+			},
+			onDragComplete: function(element, ghost){
+				ghost.remove();
+			}
 		};
 	},
 
@@ -38,11 +46,37 @@ var Sortables = new Class({
 		this.list = $(list);
 		this.elements = this.list.getChildren();
 		this.handles = $$(this.options.handles) || this.elements;
+		this.drag = [];
 		this.bound = {'start': []};
 		this.elements.each(function(el, i){
 			this.bound.start[i] = this.start.bindWithEvent(this, el);
+			if (this.options.ghost){
+				this.trash = new Element('div').injectInside(document.body);
+				var limit = this.list.getPosition();
+				this.drag[i] = new Drag.Base(el, {
+					handle: this.handles[i],
+					snap: this.options.snap,
+					modifiers: {y: 'top'},
+					limit: {y: [limit.top, limit.bottom - el.offsetHeight]},
+					onBeforeStart: function(element){
+						var offsets = element.getOffsets();
+						this.old = element;
+						this.drag[i].element = this.ghost = element.clone().setStyles({
+							'position': 'absolute',
+							'top': offsets.y+'px',
+							'left': offsets.x+'px'
+						}).injectInside(this.trash);
+						this.fireEvent('onDragStart', [el, this.ghost]);
+					}.bind(this),
+					onComplete: function(element){
+						this.drag[i].element = this.old;
+						this.fireEvent('onDragComplete', [el, this.ghost]);
+					}.bind(this)
+				});
+			}
 			this.handles[i].addEvent('mousedown', this.start.bindWithEvent(this, el));
 		}, this);
+		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
 	start: function(event, el){

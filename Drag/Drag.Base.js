@@ -43,7 +43,8 @@ Drag.Base = new Class({
 		return {
 			handle: false,
 			unit: 'px',
-			onStart: Class.empty, 
+			onStart: Class.empty,
+			onBeforeStart: Class.empty,
 			onComplete: Class.empty,
 			onSnap: Class.empty,
 			onDrag: Class.empty,
@@ -65,6 +66,7 @@ Drag.Base = new Class({
 	},
 
 	start: function(event){
+		this.fireEvent('onBeforeStart', this.element);
 		this.mouse.start = event.page;
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
@@ -101,7 +103,7 @@ Drag.Base = new Class({
 		this.out = false;
 		this.mouse.now = event.page;
 		for (var z in this.options.modifiers){
-			this.value.now[z] = event.page[z] - this.mouse.pos[z];
+			this.value.now[z] = this.mouse.now[z] - this.mouse.pos[z];
 			if (this.limit[z]){
 				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
 					this.value.now[z] = this.limit[z][1];
