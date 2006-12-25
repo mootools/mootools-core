@@ -478,12 +478,12 @@ Element.extend({
 		this.events[type] = this.events[type] || {'keys': [], 'values': []};
 		if (!this.events[type].keys.test(fn)){
 			this.events[type].keys.push(fn);
-			if (this.attachEvent){
+			if (this.addEventListener){
+				this.addEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, fn, false);
+			} else {
 				fn = fn.bind(this);
 				this.attachEvent('on'+type, fn);
 				this.events[type].values.push(fn);
-			} else {
-				this.addEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, fn, false);
 			}
 		}
 		return this;
@@ -506,10 +506,10 @@ Element.extend({
 			var pos = this.events[type].keys.indexOf(fn);
 			if (pos == -1) return this;
 			var key = this.events[type].keys.splice(pos,1)[0];
-			if (this.detachEvent){
-				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
-			} else {
+			if (this.removeEventListener){
 				this.removeEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, key, false);
+			} else {
+				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
 			}
 		}
 		return this;
