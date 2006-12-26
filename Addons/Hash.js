@@ -11,7 +11,7 @@ License:
 
 /*
 Class: Hash
-	It wraps an object that it uses internally as a map. The user must use put(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. With this implementation, null values are not allowed.
+	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null values are allowed.
 
 Example:
 	(start code)
@@ -26,28 +26,30 @@ Example:
 var Hash = new Class({
 
 	length: 0,
+	
+	obj: {},
 
 	initialize: function(obj) {
-		this.obj = {};
-		for (var property in obj) {
-			this.obj[property] = obj[property];
-			this.length++;
-		}
+		this.extend(obj);
 	},
 
 	get: function(key) {
 		return this.obj[key];
 	},
+	
+	hasKey: function(key) {
+		return this.obj[key] !== undefined;
+	},
 
 	set: function(key, value) {
-		if (value == null) return false;
-		if (this.obj[key] == undefined) this.length++;
+		if (value === undefined) return false;
+		if (this.obj[key] === undefined) this.length++;
 		this.obj[key] = value;
 		return this;
 	},
 
 	remove: function(key) {
-		if (this.obj[key] == undefined) return false;
+		if (this.obj[key] === undefined) return this;
 		var obj = {};
 		this.length--;
 		for (var property in this.obj){
@@ -61,8 +63,11 @@ var Hash = new Class({
 		for (var property in this.obj) fn.call(bind || this, property, this.obj[property]);
 	},
 	
-	extend: function(obj){
-		this.initialize(Object.extend(this.obj, obj));
+	extend: function(obj) {
+		for (var property in obj){
+			if (this.obj[property] === undefined) this.length++;
+			this.obj[property] = obj[property];
+		}
 		return this;
 	},
 
