@@ -30,7 +30,7 @@ var Color = new Class({
 	initialize: function(color, type){
 		if (color.isColor) return color;
 		type = type || 'rgb';
-		var hsb = [], rgb = [];
+		var rgb, hsb;
 		switch(type){
 			case 'rgb':
 				rgb = color;
@@ -51,8 +51,7 @@ var Color = new Class({
 	
 	mix: function(){
 		var colors = $A(arguments);
-		var alpha = 50;
-		if ($type(colors[colors.length-1]) == 'number') alpha = colors.pop();
+		var alpha = ($type(colors[colors.length-1]) == 'number') ? colors.pop() : 50;
 		var rgb = this.copy();
 		colors.each(function(color){
 			color = new Color(color);
@@ -62,9 +61,9 @@ var Color = new Class({
 	},
 
 	invert: function(){
-		var rgb = [];
-		for (var i = 0; i < 3; i++) rgb.push(255 - this[i]);
-		return new Color(rgb);
+		return new Color(this.map(function(value){
+			return 255 - value;
+		}));
 	},
 	
 	setHue: function(value){
@@ -94,17 +93,16 @@ Array.extend({
 	rgbToHsb: function(){
 		var red = this[0], green = this[1], blue = this[2];
 		var hue, saturation, brightness;
-		var max = Math.max(red, green, blue);
-		var min = Math.min(red, green, blue);
+		var max = Math.max(red, green, blue), min = Math.min(red, green, blue);
+		var delta = max - min;
 		brightness = max / 255;
-		if (max != 0) saturation = (max - min) / max;
-		else saturation = 0;
+		saturation = (max != 0) ? delta / max : 0;
 		if (saturation == 0){
 			hue = 0;
 		} else {
-			var rr = (max - red) / (max - min);
-			var gr = (max - green) / (max - min);
-			var br = (max - blue) / (max - min);
+			var rr = (max - red) / delta;
+			var gr = (max - green) / delta;
+			var br = (max - blue) / delta;
 			if (red == max) hue = br - gr;
 			else if (green == max) hue = 2 + rr - br;
 			else hue = 4 + gr - rr;
@@ -115,18 +113,14 @@ Array.extend({
 	},
 	
 	hsbToRgb: function(){
-		var red = 0, green = 0, blue = 0;
-		var hue = this[0], saturation = this[1], brightness = this[2];
-		hue = Math.round(hue);
-		saturation = Math.round(saturation / 100 * 255);
-		brightness = Math.round(brightness / 100 * 255);
+		var red, green, blue;
+		var hue = Math.round(this[0]), saturation = Math.round(this[1] / 100 * 255), brightness = Math.round(this[2] / 100 * 255);
 		if (saturation == 0){
 			red = green = blue = brightness;
 		} else {
 			var t1 = brightness;
 			var t2 = (255 - saturation) * brightness / 255;
-			var t3 = hue % 60;
-			t3 = (t1 - t2) * t3 / 60;
+			var t3 = (t1 - t2) * (hue % 60) / 60;
 			if (hue < 60) red = t1, green = t2 + t3, blue = t2;
 			else if (hue < 120) red = t1 - t3, green = t1, blue = t2;
 			else if (hue < 180) red = t2, green = t1, blue = t2 + t3;
