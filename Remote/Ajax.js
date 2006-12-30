@@ -103,8 +103,8 @@ var Ajax = XHR.extend({
 /* Section: Object related Functions */
 
 /*
-Function: Object.toQuerySTring
-	Generates a querysting from a key/pair values in an object
+Function: Object.toQueryString
+	Generates a querystring from key/pair values in an object
 
 Arguments:
 	source - the object to generate the querystring from.

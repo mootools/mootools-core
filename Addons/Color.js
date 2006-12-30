@@ -29,7 +29,7 @@ var Color = new Class({
 
 	initialize: function(color, type){
 		if (color.isColor) return color;
-		type = type || 'rgb';
+		type = type || (color.push) ? 'rgb' : 'hex';
 		var rgb, hsb;
 		switch(type){
 			case 'rgb':
@@ -40,7 +40,7 @@ var Color = new Class({
 				rgb = color.hsbToRgb();
 				hsb = color;
 				break;
-			default:
+			case 'hex':
 				rgb = color.hexToRgb(true);
 				hsb = rgb.rgbToHsb();
 				break;
@@ -57,13 +57,13 @@ var Color = new Class({
 			color = new Color(color);
 			for (var i = 0; i < 3; i++) rgb[i] = Math.round((rgb[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha));
 		});
-		return new Color(rgb);
+		return new Color(rgb, 'rgb');
 	},
 
 	invert: function(){
 		return new Color(this.map(function(value){
 			return 255 - value;
-		}));
+		}), 'rgb');
 	},
 	
 	setHue: function(value){
