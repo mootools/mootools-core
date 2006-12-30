@@ -45,7 +45,7 @@ Function.extend({
 				try {
 					var result = returns();
 				} catch(err){
-					result = err;
+					var result = err;
 				} finally {
 					return result;
 				}

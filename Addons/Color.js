@@ -2,8 +2,8 @@
 Script: Color.js
 	Contains the Color class.
 
-Author:
-	Michael Jackson <http://ajaxon.com/michael>
+Authors:
+	Michael Jackson <http://ajaxon.com/michael>, Valerio Proietti <http://mad4milk.net>
 
 License:
 	MIT-style license.
@@ -12,6 +12,10 @@ License:
 /*
 Class: Color
 	Creates a new Color Object, which is an array with some color specific methods.
+	
+Arguments:
+	color - the hex, the RGB array or the HSB array of the color to create. For HSB colors, you need to specify the second argument.
+	type - a string representing the type of the color to create. needs to be specified if you intend to create the color with HSB values, or an array of HEX values. Can be 'rgb', 'hsb' or 'hex'.
 
 Example:
 	(start code)
@@ -24,11 +28,10 @@ Example:
 */
 
 var Color = new Class({
-	
-	isColor: true,
 
 	initialize: function(color, type){
 		if (color.isColor) return color;
+		color.isColor = true;
 		type = type || (color.push) ? 'rgb' : 'hex';
 		var rgb, hsb;
 		switch(type){
@@ -49,6 +52,15 @@ var Color = new Class({
 		return Object.extend(rgb, Color.prototype);
 	},
 	
+	/*
+	Property: mix
+		Mixes two or more colors with the Color.
+		
+	Arguments:
+		color - a color to mix. you can use as arguments how many colors as you want to mix with the original one.
+		alpha - if you use a number as the last argument, it will be threated as the amount of the color to mix.
+	*/
+	
 	mix: function(){
 		var colors = $A(arguments);
 		var alpha = ($type(colors[colors.length-1]) == 'number') ? colors.pop() : 50;
@@ -59,6 +71,11 @@ var Color = new Class({
 		});
 		return new Color(rgb, 'rgb');
 	},
+	
+	/*
+	Property: invert
+		Inverts the Color.
+	*/
 
 	invert: function(){
 		return new Color(this.map(function(value){
@@ -66,29 +83,76 @@ var Color = new Class({
 		}), 'rgb');
 	},
 	
+	/*
+	Property: setHue
+		Modifies the hue of the Color, and returns a new one.
+		
+	Arguments:
+		value - the hue to set
+	*/
+
 	setHue: function(value){
 		return new Color([value, this.hsb[1], this.hsb[2]], 'hsb');
 	},
 	
+	/*
+	Property: setSaturation
+		Changes the saturation of the Color, and returns a new one.
+		
+	Arguments:
+		percent - the percentage of the saturation to set
+	*/
+
 	setSaturation: function(percent){
 		return new Color([this.hsb[0], percent, this.hsb[2]], 'hsb');
 	},
 	
+	/*
+	Property: setBrightness
+		Changes the brightness of the Color, and returns a new one.
+		
+	Arguments:
+		percent - the percentage of the brightness to set
+	*/
+
 	setBrightness: function(percent){
 		return new Color([this.hsb[0], this.hsb[1], percent], 'hsb');
 	}
 
 });
 
-function $RGB(color){
-	return new Color(color, 'rgb');
+/*
+Function: $RGB
+	Shortcut to create a new color, based on red, green, blue values.
+*/
+
+function $RGB(r, g, b){
+	return new Color([r, g, b], 'rgb');
 };
 
-function $HSB(color){
-	return new Color(color, 'hsb');
+/*
+Function: $HSB
+	Shortcut to create a new color, based on hue, saturation, brightness values.
+*/
+
+function $HSB(h, s, b){
+	return new Color([h, s, b], 'hsb');
 };
+
+/*
+Class: Array
+	A collection of The Array Object prototype methods.
+*/
 
 Array.extend({
+	
+	/*
+	Property: rgbToHsb
+		Converts a RGB array to an HSB array.
+
+	Returns:
+		the HSB array.
+	*/
 	
 	rgbToHsb: function(){
 		var red = this[0], green = this[1], blue = this[2];
@@ -111,6 +175,14 @@ Array.extend({
 		}
 		return [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100)];
 	},
+	
+	/*
+	Property: hsbToRgb
+		Converts an HSB array to an RGB array.
+
+	Returns:
+		the RGB array.
+	*/
 	
 	hsbToRgb: function(){
 		var red, green, blue;

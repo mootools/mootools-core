@@ -847,6 +847,7 @@ var Window = window;
 
 window.addEvent = document.addEvent = Element.prototype.addEvent;
 window.removeEvent = document.removeEvent = Element.prototype.removeEvent;
+window.removeEvents = document.removeEvents = Element.prototype.removeEvents;
 
 var Garbage = {
 
@@ -857,10 +858,11 @@ var Garbage = {
 	},
 
 	trash: function(){
-		window.removeEvent('unload', Garbage.trash);
+		Garbage.collect(window);
+		Garbage.collect(document);
 		Garbage.elements.each(function(el){
 			el.removeEvents();
-			for (var p in Element.prototype) HTMLElement[p] = window[p] = document[p] = el[p] = null;
+			for (var p in Element.prototype) el[p] = null;
 			el.extend = null;
 		});
 	}

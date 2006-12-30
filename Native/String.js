@@ -180,6 +180,11 @@ String.extend({
 
 Array.extend({
 	
+	/*
+	Property: rgbToHex
+		see <String.rgbToHex>, but as an array method.
+	*/
+	
 	rgbToHex: function(array){
 		if (this.length < 3) return false;
 		if (this[3] && this[3] == 0) return 'transparent';
@@ -190,6 +195,11 @@ Array.extend({
 		}
 		return array ? hex : '#'+hex.join('');
 	},
+	
+	/*
+	Property: hexToRgb
+		same as <String.hexToRgb>, but as an array method.
+	*/
 	
 	hexToRgb: function(array){
 		if (this.length != 4) return false;

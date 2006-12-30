@@ -39,7 +39,8 @@ var XHR = new Class({
 			onStateChange: Class.empty,
 			onSuccess: Class.empty,
 			onFailure: Class.empty,
-			headers: {}
+			headers: {},
+			isSuccess: this.isSuccess
 		}
 	},
 
@@ -48,6 +49,7 @@ var XHR = new Class({
 		this.setOptions(this.getOptions(), options);
 		if (!this.transport) return;
 		this.headers = {};
+		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -56,9 +58,14 @@ var XHR = new Class({
 		if (this.transport.readyState != 4) return;
 		var status = 0;
 		try {status = this.transport.status} catch (e){}
-		if (status >= 200 && status < 300) this.onSuccess();
+		if (this.options.isSuccess(status)) this.onSuccess();
 		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;
+	},
+	
+	isSuccess: function(status){
+		if (status >= 200 && status < 300) return true;
+		else return false;
 	},
 	
 	onSuccess: function(){
