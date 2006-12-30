@@ -49,7 +49,6 @@ var XHR = new Class({
 		this.setOptions(this.getOptions(), options);
 		if (!this.transport) return;
 		this.headers = {};
-		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -90,10 +89,7 @@ var XHR = new Class({
 		this.fireEvent('onRequest');
 		this.transport.open(this.options.method, url, this.options.async);
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
-		if (this.options.method == 'post'){
-			this.setHeader('Content-type', 'application/x-www-form-urlencoded');
-			if (this.transport.overrideMimeType) this.setHeader('Connection', 'close');
-		}
+		if (this.options.method == 'post' && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 		Object.extend(this.headers, this.options.headers);
 		for (var type in this.headers) this.transport.setRequestHeader(type, this.headers[type]);
 		this.transport.send(data);

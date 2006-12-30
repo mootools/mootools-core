@@ -27,6 +27,7 @@ Options:
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete.
 	evalResponse - boolean; should you eval the whole responsetext? I dont know, but this option makes it possible.
+	encoding - the encoding, defaults to utf-8.
 
 Example:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();
@@ -41,18 +42,24 @@ var Ajax = XHR.extend({
 			onComplete: Class.empty,
 			evalScripts: false,
 			evalResponse: false,
-			method: 'post'
+			encoding: 'utf-8'
 		};
 	},
 
 	initialize: function(url, options){
 		this.addEvent('onSuccess', this.onComplete);
 		this.setOptions(this.moreOptions(), options);
+		this.parent(this.options);
 		if (!['post', 'get'].test(this.options.method)){
 			this._method = '_method='+this.options.method;
 			this.options.method = 'post';
 		}
-		this.parent(this.options);
+		if (this.options.method == 'post'){
+			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
+			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
+		}
+		this.setHeader('X-Requested-With', 'XMLHttpRequest');
+		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
 		this.url = url;
 	},
 
@@ -84,7 +91,6 @@ var Ajax = XHR.extend({
 			case 'string': data = this.options.postBody;
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
-		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 		return this.send(this.url, data);
 	},
 
