@@ -29,8 +29,7 @@ Function.extend({
 			'periodical': false,
 			'attempt': false
 		}, options || {});
-		if (options.arguments != null && typeof options.arguments != 'undefined' && !(options.arguments instanceof Array))
-			options.arguments = [options.arguments];
+		if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
 		return function(event){
 			var args = options.arguments || arguments;
 			if (options.event){

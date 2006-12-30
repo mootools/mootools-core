@@ -14,6 +14,8 @@ License:
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = Class.empty;
 	HTMLElement.prototype = {};
+} else {
+	HTMLElement.prototype.htmlElement = true;
 }
 
 /*
@@ -44,8 +46,8 @@ function $type(obj){
 	if (obj === null || obj === undefined) return false;
 	var type = typeof obj;
 	if (type == 'object'){
-		if (obj instanceof HTMLElement) return 'element';
-		if (obj instanceof Array) return 'array';
+		if (obj.htmlElement) return 'element';
+		if (obj.push) return 'array';
 		if (obj.nodeName){
 			switch (obj.nodeType){
 				case 1: return 'element';

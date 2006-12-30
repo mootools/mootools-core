@@ -69,7 +69,7 @@ function $(el){
 	el._element_extended_ = true;
 	Garbage.collect(el);
 	el.extend = Object.extend;
-	if (!(el instanceof HTMLElement)) el.extend(Element.prototype);
+	if (!(el.htmlElement)) el.extend(Element.prototype);
 	return el;
 };
 
