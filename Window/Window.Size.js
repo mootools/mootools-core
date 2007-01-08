@@ -20,7 +20,7 @@ window.extend({
 
 	/*
 	Property: getWidth
-		Returns an integer representing the width of the browser.
+		Returns an integer representing the width of the browser window (without the scrollbar).
 	*/
 
 	getWidth: function(){
@@ -31,7 +31,7 @@ window.extend({
 
 	/*
 	Property: getHeight
-		Returns an integer representing the height of the browser.
+		Returns an integer representing the height of the browser window (without the scrollbar).
 	*/
 
 	getHeight: function(){
@@ -43,7 +43,7 @@ window.extend({
 	/*
 	Property: getScrollHeight
 		Returns an integer representing the scrollHeight of the window.
-		This value is equal or bigger than window.getHeight().
+		This value is equal to or bigger than <getHeight>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
@@ -58,7 +58,7 @@ window.extend({
 	/*
 	Property: getScrollWidth
 		Returns an integer representing the scrollWidth of the window.
-		This value is equal or bigger than window.getWidth().
+		This value is equal to or bigger than <getWidth>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
