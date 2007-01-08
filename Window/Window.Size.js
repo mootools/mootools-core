@@ -2,13 +2,18 @@
 Script: Window.Size.js
 	Window cross-browser dimensions methods.
 
+Authors:
+	Christophe Beyls, <http://www.digitalia.be>
+	Valerio Proietti, <http://mad4milk.net>
+
 License:
 	MIT-style license.
 */
 
 /*
 Class: window
-	Cross browser methods to get the window size, onDomReady method.
+	Cross browser methods to get various window dimensions.
+	Warning: All these methods require that the browser operates in strict mode, not quirks mode.
 */
 
 window.extend({
@@ -19,8 +24,9 @@ window.extend({
 	*/
 
 	getWidth: function(){
-		if (this.khtml || this.opera) return this.innerWidth;
-		else return document.documentElement.clientWidth || document.body.clientWidth;
+		if (this.khtml) return this.innerWidth;
+		if (this.opera) return document.body.clientWidth;
+		return document.documentElement.clientWidth;
 	},
 
 	/*
@@ -29,31 +35,38 @@ window.extend({
 	*/
 
 	getHeight: function(){
-		if (this.khtml || this.opera) return this.innerHeight;
-		return document.documentElement.clientHeight || document.body.clientHeight;
+		if (this.khtml) return this.innerHeight;
+		if (this.opera) return document.body.clientHeight;
+		return document.documentElement.clientHeight;
 	},
 
 	/*
 	Property: getScrollHeight
 		Returns an integer representing the scrollHeight of the window.
+		This value is equal or bigger than window.getHeight().
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
 	*/
 
 	getScrollHeight: function(){
+		if (this.ie) return document.documentElement.offsetHeight;
+		if (this.khtml) return document.body.scrollHeight;
 		return document.documentElement.scrollHeight;
 	},
 
 	/*
 	Property: getScrollWidth
 		Returns an integer representing the scrollWidth of the window.
+		This value is equal or bigger than window.getWidth().
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
 	*/
 
 	getScrollWidth: function(){
+		if (this.ie) return document.documentElement.offsetWidth;
+		if (this.khtml) return document.body.scrollWidth;
 		return document.documentElement.scrollWidth;
 	},
 
