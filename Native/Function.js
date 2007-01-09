@@ -43,13 +43,12 @@ Function.extend({
 			if (options.periodical) return setInterval(returns, options.periodical);
 			if (options.attempt){
 				try {
-					var result = returns();
+					return returns();
 				} catch(err){
-					var result = err;
-				} finally {
-					return result;
+					return err;
 				}
-			} else return returns();
+			}
+			return returns();
 		};
 	},
 
