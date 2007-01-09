@@ -52,7 +52,7 @@ var Chain = new Class({
 	*/
 
 	callChain: function(){
-		if (this.chains && this.chains.length) this.chains.splice(0, 1)[0].delay(10, this);
+		if (this.chains && this.chains.length) this.chains.shift().delay(10, this);
 	},
 
 	/*
