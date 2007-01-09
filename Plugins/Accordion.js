@@ -15,20 +15,20 @@ Class: Accordion
 
 Arguments:
 	elements - required, a collection of elements the transitions will be applied to.
-	togglers - required, a collection of elements, the elements handlers.
+	togglers - required, a collection of elements, the elements handlers that will be clickable.
 	options - optional, see options below, and <Fx.Base> options.
 
 Options:
 	show - integer, the Index of the element to show at start.
-	display - integer, the Index of the element to show at start (with a transition).
-	fixedHeight - integer, if you want your accordion to have a fixed height. defaults to false.
-	fixedWidth - integer, if you want your accordion to have a fixed width. defaults to false.
+	display - integer, the Index of the element to show at start (with a transition). defaults to 0.
+	fixedHeight - integer, if you want the elements to have a fixed height. defaults to false.
+	fixedWidth - integer, if you want the elements to have a fixed width. defaults to false.
 	onActive - function to execute when an element starts to show
 	onBackground - function to execute when an element starts to hide
 	height - boolean, will add a height transition to the accordion if true. defaults to true.
 	opacity - boolean, will add an opacity transition to the accordion if true. defaults to true.
 	width - boolean, will add a width transition to the accordion if true. defaults to false, css mastery is required to make this work!
-	alwaysHide - 
+	alwaysHide - boolean, will allow to hide all elements if true, instead of always keeping one element shown. defaults to false.
 */
 
 var Accordion = Fx.Elements.extend({
@@ -52,13 +52,16 @@ var Accordion = Fx.Elements.extend({
 	initialize: function(togglers, elements, options){
 		this.setOptions(this.getExtended(), options);
 
+		this.previous = -1;
+
 		if (this.options.alwaysHide) this.options.wait = true;
-		if ($chk(this.options.show)) this.options.display = false;
+		if ($chk(this.options.show)){
+			this.options.display = false;
+			this.previous = this.options.show;
+		}
 
 		this.togglers = $$(togglers);
 		this.elements = $$(elements);
-
-		this.previous = -1;
 
 		this.togglers.each(function(tog, i){
 			tog.addEvent('click', this.display.bind(this, i));
@@ -66,23 +69,21 @@ var Accordion = Fx.Elements.extend({
 
 		this.elements.each(function(el, i){
 			el.fullOpacity = 1;
-			el.fullWidth = this.options.fixedWidth || el.offsetWidth;
-			el.fullHeight = this.options.fixedHeight || el.scrollHeight;
+			if (this.options.fixedWidth) el.fullWidth = this.options.fixedWidth;
+			if (this.options.fixedHeight) el.fullHeight = this.options.fixedHeight;
 			el.setStyle('overflow', 'hidden');
 		}, this);
 
 		this.effects = {};
 
-		if (this.options.height) this.effects.height = ['fullHeight', 0];
-		if (this.options.opacity) this.effects.opacity = ['fullOpacity', 0];
-		if (this.options.width) this.effects.width = ['fullWidth', 0];
+		if (this.options.opacity) this.effects.opacity = 'fullOpacity';
+		if (this.options.width) this.effects.width = this.options.fixedWidth ? 'fullWidth' : 'offsetWidth';
+		if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
 
-		for (var fx in this.effects){
-			this.elements.each(function(el, i){
-				if (this.options.show === i) return this.fireEvent('onActive', [this.togglers[i], el]);
-				else return el.setStyle(fx, this.effects[fx][1]);
-			}, this);
-		}
+		this.elements.each(function(el, i){
+			if (this.options.show === i) this.fireEvent('onActive', [this.togglers[i], el]);
+			else for (var fx in this.effects) el.setStyle(fx, 0);
+		}, this);
 
 		this.parent(this.elements, this.options);
 
@@ -98,22 +99,20 @@ var Accordion = Fx.Elements.extend({
 	*/
 
 	display: function(index){
-		if (this.timer && this.options.wait) return this;
-		if (index === this.previous && !this.options.wait) return this;
+		if ((this.timer && this.options.wait) || (index === this.previous && !this.options.alwaysHide)) return this;
 		this.previous = index;
 		var obj = {};
-		for (var fx in this.effects){
-			this.elements.each(function(el, i){
-				obj[i] = obj[i] || {};
-				if (i != index || (this.options.alwaysHide && i == index && el.offsetHeight > 0)){
-					this.fireEvent('onBackground', [this.togglers[i], this.elements[i]]);
-					obj[i][fx] = this.effects[fx][1];
-				} else if (i == index){
-					this.fireEvent('onActive', [this.togglers[i], this.elements[i]]);
-					obj[i][fx] = el[this.effects[fx][0]];
-				}
-			}, this);
-		}
+
+		this.elements.each(function(el, i){
+			obj[i] = {};
+			if ((i != index) || (this.options.alwaysHide && (el.offsetHeight > 0))){
+				this.fireEvent('onBackground', [this.togglers[i], el]);
+				for (var fx in this.effects) obj[i][fx] = 0;
+			} else {
+				this.fireEvent('onActive', [this.togglers[i], el]);
+				for (var fx in this.effects) obj[i][fx] = el[this.effects[fx]];
+			}
+		}, this);
 		return this.start(obj);
 	}
 
