@@ -143,7 +143,7 @@ String.extend({
 		array - boolean value, defaults to false. Use true if you want the array ['FF','33','00'] as output instead of "#FF3300"
 
 	Returns:
-		hex string or array. returns transparent if the fourth value of rgba in input string is 0,
+		hex string or array. returns "transparent" if the output is set as string and the fourth value of rgba in input string is 0.
 
 	Example:
 		>"rgb(17,34,51)".rgbToHex(); //"#112233"
@@ -187,7 +187,7 @@ Array.extend({
 	
 	rgbToHex: function(array){
 		if (this.length < 3) return false;
-		if (this[3] && this[3] == 0) return 'transparent';
+		if (this[3] && (this[3] == 0) && !array) return 'transparent';
 		var hex = [];
 		for (var i = 0; i < 3; i++){
 			var bit = (this[i]-0).toString(16);
