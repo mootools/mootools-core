@@ -137,10 +137,10 @@ String.extend({
 
 	/*
 	Property: rgbToHex
-		Converts an RGB value to hexidecimal. The string must be in the format of "rgb(255, 255, 255)" or "rgba(255, 255, 255, 1)";
+		Converts an RGB value to hexidecimal. The string must be in the format of "rgb(255,255,255)" or "rgba(255,255,255,1)";
 
 	Arguments:
-		array - boolean value, defaults to false. Use true if you want the array ['FF', '33', '00'] as output instead of #FF3300
+		array - boolean value, defaults to false. Use true if you want the array ['FF','33','00'] as output instead of "#FF3300"
 
 	Returns:
 		hex string or array. returns transparent if the fourth value of rgba in input string is 0,
@@ -148,7 +148,7 @@ String.extend({
 	Example:
 		>"rgb(17,34,51)".rgbToHex(); //"#112233"
 		>"rgba(17,34,51,0)".rgbToHex(); //"transparent"
-		>"rgb(17,34,51)".rgbToHex(true); //[11,22,33]
+		>"rgb(17,34,51)".rgbToHex(true); //['11','22','33']
 	*/
 
 	rgbToHex: function(array){
@@ -161,7 +161,7 @@ String.extend({
 		Converts a hexidecimal color value to RGB. Input string must be the hex color value (with or without the hash). Also accepts triplets ('333');
 
 	Arguments:
-		array - boolean value, defaults to false. Use true if you want the array ['255', '255', '255'] as output instead of "rgb(255,255,255)";
+		array - boolean value, defaults to false. Use true if you want the array [255,255,255] as output instead of "rgb(255,255,255)";
 
 	Returns:
 		rgb string or array.
@@ -173,7 +173,7 @@ String.extend({
 
 	hexToRgb: function(array){
 		var hex = this.match('^#?(\\w{1,2})(\\w{1,2})(\\w{1,2})$');
-		return (hex) ? hex.hexToRgb(array) : false;
+		return (hex) ? hex.slice(1).hexToRgb(array) : false;
 	}
 
 });
@@ -191,7 +191,7 @@ Array.extend({
 		var hex = [];
 		for (var i = 0; i < 3; i++){
 			var bit = (this[i]-0).toString(16);
-			hex.push(bit.length == 1 ? '0'+bit : bit);
+			hex.push((bit.length == 1) ? '0'+bit : bit);
 		}
 		return array ? hex : '#'+hex.join('');
 	},
@@ -202,11 +202,10 @@ Array.extend({
 	*/
 	
 	hexToRgb: function(array){
-		if (this.length != 4) return false;
+		if (this.length != 3) return false;
 		var rgb = [];
-		for (var i = 1; i < 4; i++){
-			if (this[i].length == 1) this[i] += this[i];
-			rgb.push(parseInt(this[i], 16));
+		for (var i = 0; i < 3; i++){
+			rgb.push(parseInt((this[i].length == 1) ? this[i]+this[i] : this[i], 16));
 		}
 		return array ? rgb : 'rgb('+rgb.join(',')+')';
 	}
