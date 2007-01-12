@@ -2,6 +2,9 @@
 Script: Cookie.js
 	A cookie reader/creator
 
+Author:
+	Christophe Beyls, <http://www.digitalia.be>
+
 Credits: 
 	based on the functions by Peter-Paul Koch (http://quirksmode.org)
 */
@@ -23,8 +26,9 @@ var Cookie = {
 		options: an object representing the Cookie options. See Options below:
 
 	Options:
-		domain - the domain the Cookie belongs to. Defaults to current domain.
-		duration - the duration in days of the Cookie. Defaults to 365 days.
+		domain - the domain the Cookie belongs to. Defaults to current domain ('/').
+		duration - the duration of the Cookie before it expires, in days. Defaults to 365 days.
+		session - boolean: if set to true, the cookie will expire when the browser is closed (duration will be ignored). Defaults to false.
 
 	Example:
 		>Cookie.set("username", "Aaron", {duration: 5}); //save this for 5 days
@@ -33,11 +37,17 @@ var Cookie = {
 
 	set: function(key, value, options){
 		options = Object.extend({
-			domain: '/', duration: 365
+			domain: '/',
+			duration: 365,
+			session: false
 		}, options || {});
-		var date = new Date();
-		date.setTime(date.getTime() + ((options.duration) * 86400000));
-		document.cookie = key + "=" + value + "; expires=" + date.toGMTString() + "; path="+options.domain;
+		var cookie = key + "=" + escape(value) + "; path=" + options.domain;
+		if (!options.session){
+			var date = new Date();
+			date.setTime(date.getTime() + (options.duration * 86400000));
+			cookie += "; expires=" + date.toGMTString();
+		}
+		document.cookie = cookie;
 	},
 
 	/*
@@ -56,7 +66,7 @@ var Cookie = {
 
 	get: function(key){
 		var value = document.cookie.match('(?:^|;)\\s*'+key+'=([^;]*)');
-		return value ? value[1] : false;
+		return value ? unescape(value[1]) : false;
 	},
 
 	/*
@@ -71,7 +81,7 @@ var Cookie = {
 	*/
 
 	remove: function(key){
-		this.set(key, '', -1);
+		this.set(key, '', {duration: -1});
 	}
 
 };
