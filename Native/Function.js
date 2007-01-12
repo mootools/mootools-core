@@ -19,23 +19,45 @@ Class: Function
 
 Function.extend({
 
+	/*
+	Property: create
+		Main function to create closures.
+	
+	Returns:
+		a function.
+	
+	Arguments:
+		options - An Options object.
+	
+	Options:
+		bind - The object that the "this" of the function will refer to. Default is the current function.
+		event - If set to true, the function will act as an event listener and receive an event as first argument.
+				If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
+				Default is false.
+		arguments - A single argument or array of arguments that will be passed to the function when called.
+					If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+					Default is no custom arguments, the function will receive the standard arguments when called.
+		delay - Numeric value: if set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
+				Default is no delay.
+		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
+				Default is no periodical execution.
+		attempt - If set to true, the returned function will try to execute and return either the results or the error when called. Default is false.
+	*/
+
 	create: function(options){
 		var fn = this;
 		options = Object.extend({
-			'bind': fn,
-			'event': false,
-			'arguments': null,
-			'delay': false,
-			'periodical': false,
-			'attempt': false
+			'bind': fn
 		}, options || {});
 		if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
 		return function(event){
-			var args = options.arguments || arguments;
+			var args;
 			if (options.event){
-				event = (options.event === true) ? event || window.event : new options.event(event);
-				args = [event].concat(args);
+				event = event || window.event;
+				args = [(options.event === true) ? event : new options.event(event)];
+				if (options.arguments) args = args.concat(options.arguments);
 			}
+			else args = options.arguments || arguments;
 			var returns = function(){
 				return fn.apply(options.bind, args);
 			};
