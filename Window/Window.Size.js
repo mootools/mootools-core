@@ -41,21 +41,6 @@ window.extend({
 	},
 
 	/*
-	Property: getScrollHeight
-		Returns an integer representing the scrollHeight of the window.
-		This value is equal to or bigger than <getHeight>.
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
-	*/
-
-	getScrollHeight: function(){
-		if (this.ie) return document.documentElement.offsetHeight;
-		if (this.khtml) return document.body.scrollHeight;
-		return document.documentElement.scrollHeight;
-	},
-
-	/*
 	Property: getScrollWidth
 		Returns an integer representing the scrollWidth of the window.
 		This value is equal to or bigger than <getWidth>.
@@ -71,15 +56,18 @@ window.extend({
 	},
 
 	/*
-	Property: getScrollTop
-		Returns an integer representing the scrollTop of the window (the number of pixels the window has scrolled from the top).
+	Property: getScrollHeight
+		Returns an integer representing the scrollHeight of the window.
+		This value is equal to or bigger than <getHeight>.
 
 	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
+		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
 	*/
 
-	getScrollTop: function(){
-		return this.pageYOffset || document.documentElement.scrollTop;
+	getScrollHeight: function(){
+		if (this.ie) return document.documentElement.offsetHeight;
+		if (this.khtml) return document.body.scrollHeight;
+		return document.documentElement.scrollHeight;
 	},
 
 	/*
@@ -95,15 +83,27 @@ window.extend({
 	},
 
 	/*
+	Property: getScrollTop
+		Returns an integer representing the scrollTop of the window (the number of pixels the window has scrolled from the top).
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
+	*/
+
+	getScrollTop: function(){
+		return this.pageYOffset || document.documentElement.scrollTop;
+	},
+
+	/*
 	Property: getSize
 		Same as <Element.getSize>
 	*/
 
 	getSize: function(){
 		return {
-			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()},
 			'size': {'x': this.getWidth(), 'y': this.getHeight()},
-			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()}
+			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()},
+			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()}
 		};
 	},
 
