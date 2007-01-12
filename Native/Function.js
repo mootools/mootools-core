@@ -47,7 +47,12 @@ Function.extend({
 	create: function(options){
 		var fn = this;
 		options = Object.extend({
-			'bind': fn
+			'bind': fn, 
+			'event': false, 
+			'arguments': null, 
+			'delay': false, 
+			'periodical': false, 
+			'attempt': false
 		}, options || {});
 		if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
 		return function(event){

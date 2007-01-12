@@ -99,7 +99,7 @@ var Tips = new Class({
 		} else {
 			el.myText = false;
 		}
-		if (el.myTitle && el.myTitle.length > this.options.maxTitleChars) el.myTitle = el.myTitle.substr(0,this.options.maxTitleChars-1)+"&hellip;";
+		if (el.myTitle && el.myTitle.length > this.options.maxTitleChars) el.myTitle = el.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
 		el.addEvent('mouseover', function(event){
 			this.start(el);
 			this.locate(event);

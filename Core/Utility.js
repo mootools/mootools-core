@@ -9,7 +9,7 @@ License:
 	MIT-style license.
 */
 
-//htmlelement mapping
+//htmlelement
 
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = Class.empty;
@@ -17,6 +17,10 @@ if (typeof HTMLElement == 'undefined'){
 } else {
 	HTMLElement.prototype.htmlElement = true;
 }
+
+//window = Window
+
+var Window = window;
 
 /*
 Function: $type

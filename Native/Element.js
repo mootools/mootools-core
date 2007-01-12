@@ -843,8 +843,6 @@ Element.extend({
 
 });
 
-var Window = window;
-
 window.addEvent = document.addEvent = Element.prototype.addEvent;
 window.removeEvent = document.removeEvent = Element.prototype.removeEvent;
 window.removeEvents = document.removeEvents = Element.prototype.removeEvents;
