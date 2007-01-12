@@ -27,27 +27,27 @@ var Cookie = {
 
 	Options:
 		domain - the domain the Cookie belongs to. Defaults to current domain ('/').
-		duration - the duration of the Cookie before it expires, in days. Defaults to 365 days.
-		session - boolean: if set to true, the cookie will expire when the browser is closed (duration will be ignored). Defaults to false.
+		duration - the duration of the Cookie before it expires, in days.
+				   If set to false or 0, the cookie will be a session cookie and will expire when the browser is closed. Defaults to 365 days.
 
 	Example:
 		>Cookie.set("username", "Aaron", {duration: 5}); //save this for 5 days
+		>Cookie.set("username", "Jack", {duration: false}); //session cookie
 
 	*/
 
 	set: function(key, value, options){
 		options = Object.extend({
 			domain: '/',
-			duration: 365,
-			session: false
+			duration: 365
 		}, options || {});
-		var cookie = key + "=" + escape(value) + "; path=" + options.domain;
-		if (!options.session){
+		value = escape(value);
+		if (options.duration){
 			var date = new Date();
 			date.setTime(date.getTime() + (options.duration * 86400000));
-			cookie += "; expires=" + date.toGMTString();
+			value += "; expires=" + date.toGMTString();
 		}
-		document.cookie = cookie;
+		document.cookie = key + "=" + value + "; path=" + options.domain;
 	},
 
 	/*
