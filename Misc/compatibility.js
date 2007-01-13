@@ -59,7 +59,7 @@ Elements.extend({
 			}
 		});
 	}
-};
+});
 
 /* Section: Utility Functions */
 
