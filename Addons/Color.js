@@ -3,7 +3,8 @@ Script: Color.js
 	Contains the Color class.
 
 Authors:
-	Michael Jackson <http://ajaxon.com/michael>, Valerio Proietti <http://mad4milk.net>
+	Michael Jackson, <http://ajaxon.com/michael>
+	Valerio Proietti, <http://mad4milk.net>
 
 License:
 	MIT-style license.

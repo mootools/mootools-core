@@ -2,8 +2,9 @@
 Script: Array.js
 	Contains Array prototypes and the function <$A>;
 
-Author:
+Authors:
 	Valerio Proietti, <http://mad4milk.net>
+	Michael Jackson, <http://ajaxon.com/michael>
 
 License:
 	MIT-style license.
@@ -167,28 +168,6 @@ Array.extend({
 			else i++;
 		}
 		return this;
-	},
-	
-	/*
-	Property: without
-		Returns a copy of the array with the specified items ommitted.
-
-	Arguments:
-		items - the item (or array of items) to ommit
-	
-	Returns:
-		an Array
-
-	Example:
-		>var letters = ["a","b","c","d","c","b"];
-		>var AandBs = letters.without(["c","d"]); // ["a","b","b"]
-	*/
-	
-	without: function(items){
-		items = items.push ? items : [items];
-		return this.select(function(item){
-			return !items.test(item);
-		});
 	},
 
 	/*
