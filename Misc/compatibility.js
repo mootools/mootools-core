@@ -7,8 +7,6 @@ var fx = Fx;
 Fx.Base = Fx.Base || new Class();
 
 Fx.Base.implement({
-	custom: function(from, to){return this.start(from, to)},
-	clearTimer: function(end){return this.stop(end)},
 	goTo: function(to){return this.start(to)}
 });
 

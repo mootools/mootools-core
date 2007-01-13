@@ -174,7 +174,6 @@ Array.extend({
 			hue /= 6;
 			if (hue < 0) hue++;
 		}
-		//return [hue, saturation, brightness];
 		return [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100)];
 	},
 	
