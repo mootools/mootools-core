@@ -3,10 +3,7 @@ Script: Assets.js
 	provides dynamic loading for images, css and javascript files.
 
 Authors:
-	Valerio Proietti, <http://mad4milk.net>
-	Fredrik Branstrom, <http://fredrik.branstrom.name>
-	Yaroslaff Fedin, <http://inviz.ru>
-	Michael Jackson, <http://ajaxon.com/michael>
+	Valerio Proietti, <http://mad4milk.net>, Fredrik Branstrom <http://fredrik.branstrom.name>, Yaroslaff Fedin <http://inviz.ru>
 
 License:
 	MIT-style license.

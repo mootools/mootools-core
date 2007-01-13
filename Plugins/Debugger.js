@@ -3,8 +3,7 @@ Script: Debugger.js
 	Creates fiebug <http://www.getfirebug.com> style debugging for browsers without firefox & firebug.
 		
 Authors:
-	Valerio Proietti, <http://mad4milk.net>
-	Aaron Newton, (http://clientside.cnet.com)
+	Valerio Proietti, <http://mad4milk.net> && Aaron Newton (http://clientside.cnet.com)
 
 License:
 	MIT-style license.
