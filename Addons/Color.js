@@ -3,7 +3,9 @@ Script: Color.js
 	Contains the Color class.
 
 Authors:
-	Michael Jackson <http://ajaxon.com/michael>, Valerio Proietti <http://mad4milk.net>
+	Michael Jackson, <http://ajaxon.com/michael>
+	Valerio Proietti, <http://mad4milk.net>
+	Christophe Beyls, <http://www.digitalia.be>
 
 License:
 	MIT-style license.
@@ -32,7 +34,7 @@ var Color = new Class({
 	initialize: function(color, type){
 		if (color.isColor) return color;
 		color.isColor = true;
-		type = type || (color.push) ? 'rgb' : 'hex';
+		type = type || (color.push ? 'rgb' : 'hex');
 		var rgb, hsb;
 		switch(type){
 			case 'rgb':
@@ -43,10 +45,9 @@ var Color = new Class({
 				rgb = color.hsbToRgb();
 				hsb = color;
 				break;
-			case 'hex':
+			default:
 				rgb = color.hexToRgb(true);
 				hsb = rgb.rgbToHsb();
-				break;
 		}
 		rgb.hsb = hsb;
 		return Object.extend(rgb, Color.prototype);
@@ -80,7 +81,7 @@ var Color = new Class({
 	invert: function(){
 		return new Color(this.map(function(value){
 			return 255 - value;
-		}), 'rgb');
+		}));
 	},
 	
 	/*
@@ -173,6 +174,7 @@ Array.extend({
 			hue /= 6;
 			if (hue < 0) hue++;
 		}
+		//return [hue, saturation, brightness];
 		return [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100)];
 	},
 	
@@ -185,22 +187,24 @@ Array.extend({
 	*/
 	
 	hsbToRgb: function(){
-		var red, green, blue;
-		var hue = Math.round(this[0]), saturation = Math.round(this[1] / 100 * 255), brightness = Math.round(this[2] / 100 * 255);
-		if (saturation == 0){
-			red = green = blue = brightness;
+		var br = Math.round(this[2] / 100 * 255);
+		if (this[1] == 0){
+			return [br, br, br];
 		} else {
-			var t1 = brightness;
-			var t2 = (255 - saturation) * brightness / 255;
-			var t3 = (t1 - t2) * (hue % 60) / 60;
-			if (hue < 60) red = t1, green = t2 + t3, blue = t2;
-			else if (hue < 120) red = t1 - t3, green = t1, blue = t2;
-			else if (hue < 180) red = t2, green = t1, blue = t2 + t3;
-			else if (hue < 240) red = t2, green = t1 - t3, blue = t1;
-			else if (hue < 300) red = t2 + t3, green = t2, blue = t1;
-			else if (hue < 360) red = t1, green = t2, blue = t1 - t3;
+			var hue = this[0] % 360;
+			var f = hue % 60;
+			var p = Math.round((this[2] * (100 - this[1])) / 10000 * 255);
+			var q = Math.round((this[2] * (6000 - this[1] * f)) / 600000 * 255);
+			var t = Math.round((this[2] * (6000 - this[1] * (60 - f))) / 600000 * 255);
+			switch (Math.floor(hue / 60)){
+				case 0: return [br, t, p];
+				case 1: return [q, br, p];
+				case 2: return [p, br, t];
+				case 3: return [p, q, br];
+				case 4: return [t, p, br];
+				case 5: return [br, p, q];
+			}
 		}
-		return [Math.round(red), Math.round(green), Math.round(blue)];
 	}
 
 });
