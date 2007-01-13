@@ -2,8 +2,9 @@
 Script: Moo.js
 	My Object Oriented javascript.
 
-Author:
+Authors:
 	Valerio Proietti, <http://mad4milk.net>
+	Michael Jackson, <http://ajaxon.com/michael>
 
 License:
 	MIT-style license.
@@ -12,7 +13,6 @@ Credits:
 	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
 	- Some functions are based on those found in prototype.js <http://prototype.conio.net/> (c) 2005 Sam Stephenson sam [at] conio [dot] net, MIT-style license
 	- Documentation by Aaron Newton (aaron.newton [at] cnet [dot] com) and Valerio Proietti.
-	- Michael Jackson <http://ajaxon.com/michael> made it look nice and shortened the code.
 */
 
 /*
@@ -21,25 +21,26 @@ Function: Object.extend
 	If you do myWhatever.extend = Object.extend the first parameter will become myWhatever, and your extend function will only need one parameter.
 
 Example:
-	(start code)
-	var firstOb = {
-		'name': 'John',
-		'lastName': 'Doe'
-	};
-	var secondOb = {
-		'age': '20',
-		'sex': 'male',
-		'lastName': 'Dorian'
-	};
-	Object.extend(firstOb, secondOb);
-	//firstOb will become: 
-	{
-		'name': 'John',
-		'lastName': 'Dorian',
-		'age': '20',
-		'sex': 'male'
-	};
-	(end)
+	>var john = {
+	>	name: 'John',
+	>	last: 'Doe'
+	>}
+	
+	>var dorian = {
+	>	age: 20,
+	>	sex: 'male',
+	>	last: 'Dorian'
+	>}
+	
+	>Object.extend(john, dorian);
+	
+	>//john is now the following:
+	>john = {
+	>	name: 'John',
+	>	last: 'Dorian',
+	>	age: 20,
+	>	sex: 'male'
+	>}
 
 Returns:
 	The first object, extended.
@@ -59,15 +60,13 @@ Arguments:
 	properties - the collection of properties that apply to the class. Creates a new class, its initialize method will fire upon class instantiation.
 
 Example:
-	(start code)
-	var Cat = new Class({
-		initialize: function(name){
-			this.name = name;
-		}
-	});
-	var myCat = new Cat('Micia');
-	alert myCat.name; //alerts 'Micia'
-	(end)
+	>var Cat = new Class({
+	>	initialize: function(name){
+	>		this.name = name;
+	>	}
+	>});
+	>var myCat = new Cat('Micia');
+	>alert myCat.name; //alerts 'Micia'
 */
 
 var Class = function(properties){
@@ -95,22 +94,20 @@ Class.prototype = {
 		properties - the properties to add to the base class in this new Class.
 
 	Example:
-		(start code)
-		var Animal = new Class({
-			initialize: function(age){
-				this.age = age;
-			}
-		});
-		var Cat = Animal.extend({
-			initialize: function(name, age){
-				this.parent(age); //will call the previous initialize;
-				this.name = name;
-			}
-		});
-		var myCat = new Cat('Micia', 20);
-		alert myCat.name; //alerts 'Micia'
-		alert myCat.age; //alerts 20
-		(end)
+		>var Animal = new Class({
+		>	initialize: function(age){
+		>		this.age = age;
+		>	}
+		>});
+		>var Cat = Animal.extend({
+		>	initialize: function(name, age){
+		>		this.parent(age); //will call the previous initialize;
+		>		this.name = name;
+		>	}
+		>});
+		>var myCat = new Cat('Micia', 20);
+		>alert myCat.name; //alerts 'Micia'
+		>alert myCat.age; //alerts 20
 	*/
 
 	extend: function(properties){
@@ -139,21 +136,19 @@ Class.prototype = {
 		properties - the properties to add to the base class.
 
 	Example:
-		(start code)
-		var Animal = new Class({
-			initialize: function(age){
-				this.age = age;
-			}
-		});
-		Animal.implement({
-			setName: function(name){
-				this.name = name
-			}
-		});
-		var myAnimal = new Animal(20);
-		myAnimal.setName('Micia');
-		alert(myAnimal.name); //alerts 'Micia'
-		(end)
+		>var Animal = new Class({
+		>	initialize: function(age){
+		>		this.age = age;
+		>	}
+		>});
+		>Animal.implement({
+		>	setName: function(name){
+		>		this.name = name
+		>	}
+		>});
+		>var myAnimal = new Animal(20);
+		>myAnimal.setName('Micia');
+		>alert(myAnimal.name); //alerts 'Micia'
 	*/
 
 	implement: function(properties){
