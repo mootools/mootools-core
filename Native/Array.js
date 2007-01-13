@@ -103,10 +103,10 @@ Array.extend({
 
 	/*
 	Property: copy
-		Copy the array and returns it.
+		returns a copy of the array.
 
 	Returns:
-		an Array
+		a new array which is a copy of the current one.
 
 	Example:
 		>var letters = ["a","b","c"];
@@ -136,7 +136,7 @@ Array.extend({
 	remove: function(item){
 		var i = 0;
 		while (i < this.length){
-			if (this[i] == item) this.splice(i, 1);
+			if (this[i] === item) this.splice(i, 1);
 			else i++;
 		}
 		return this;
