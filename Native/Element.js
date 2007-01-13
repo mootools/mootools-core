@@ -834,7 +834,12 @@ Element.extend({
 
 	getValue: function(){
 		switch (this.getTag()){
-			case 'select': if (this.selectedIndex != -1) return this.options[this.selectedIndex].value; break;
+			case 'select':
+				if (this.selectedIndex != -1){
+					var opt = this.options[this.selectedIndex];
+					return opt.value || opt.text;
+				}
+				break;
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
 			case 'textarea': return this.value;
 		}
