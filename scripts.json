@@ -61,7 +61,7 @@
 		
 		'Color': {
 			'deps': ['Moo', 'Array', 'String'],
-			'desc': 'Class for creating and manipulating colors in JavaScript.'
+			'desc': 'Class for easily creating and manipulating colors.'
 		}
 
 	},
