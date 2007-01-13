@@ -12,7 +12,44 @@ Credits:
 	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
 	- Some functions are based on those found in prototype.js <http://prototype.conio.net/> (c) 2005 Sam Stephenson sam [at] conio [dot] net, MIT-style license
 	- Documentation by Aaron Newton (aaron.newton [at] cnet [dot] com) and Valerio Proietti.
+	- Michael Jackson <http://ajaxon.com/michael> made it look nice and shortened the code.
 */
+
+/*
+Function: Object.extend
+	Copies all the properties from the second passed object to the first passed Object.
+	If you do myWhatever.extend = Object.extend the first parameter will become myWhatever, and your extend function will only need one parameter.
+
+Example:
+	(start code)
+	var firstOb = {
+		'name': 'John',
+		'lastName': 'Doe'
+	};
+	var secondOb = {
+		'age': '20',
+		'sex': 'male',
+		'lastName': 'Dorian'
+	};
+	Object.extend(firstOb, secondOb);
+	//firstOb will become: 
+	{
+		'name': 'John',
+		'lastName': 'Dorian',
+		'age': '20',
+		'sex': 'male'
+	};
+	(end)
+
+Returns:
+	The first object, extended.
+*/
+
+Object.extend = function(obj, properties){
+	obj = properties ? [obj, properties] : [this, obj];
+	for (var property in obj[1]) obj[0][property] = obj[1][property];
+	return obj[0];
+};
 
 /*
 Class: Class
@@ -34,11 +71,9 @@ Example:
 */
 
 var Class = function(properties){
-	var klass = function(){
-		if (this.initialize && arguments[0] != 'noinit') return this.initialize.apply(this, arguments);
-		else return this;
-	};
-	for (var property in this) klass[property] = this[property];
+	var klass = Object.extend(function(){
+		return this.initialize ? this.initialize.apply(this, arguments) : this;
+	}, this);
 	klass.prototype = properties;
 	return klass;
 };
@@ -79,23 +114,21 @@ Class.prototype = {
 	*/
 
 	extend: function(properties){
-		var pr0t0typ3 = new this('noinit');
-
-		var parentize = function(previous, current){
-			if (!previous.apply || !current.apply) return false;
-			return function(){
-				this.parent = previous;
-				return current.apply(this, arguments);
-			};
-		};
+		var proto = Object.extend({}, this.prototype);
 
 		for (var property in properties){
-			var previous = pr0t0typ3[property];
-			var current = properties[property];
-			if (previous && previous != current) current = parentize(previous, current) || current;
-			pr0t0typ3[property] = current;
+			if (proto[property] && proto[property] != properties[property])
+				properties[property] = function(previous, current){
+					if (!previous.apply || !current.apply) return current;
+					return function(){
+						this.parent = previous;
+						return current.apply(this, arguments);
+					}
+				}(proto[property], properties[property]);
+			proto[property] = properties[property];
 		}
-		return new Class(pr0t0typ3);
+		
+		return new Class(proto);
 	},
 
 	/*
@@ -124,48 +157,9 @@ Class.prototype = {
 	*/
 
 	implement: function(properties){
-		for (var property in properties) this.prototype[property] = properties[property];
+		Object.extend(this.prototype, properties);
 	}
 
-};
-
-/* Section: Object related Functions */
-
-/*
-Function: Object.extend
-	Copies all the properties from the second passed object to the first passed Object.
-	If you do myWhatever.extend = Object.extend the first parameter will become myWhatever, and your extend function will only need one parameter.
-
-Example:
-	(start code)
-	var firstOb = {
-		'name': 'John',
-		'lastName': 'Doe'
-	};
-	var secondOb = {
-		'age': '20',
-		'sex': 'male',
-		'lastName': 'Dorian'
-	};
-	Object.extend(firstOb, secondOb);
-	//firstOb will become: 
-	{
-		'name': 'John',
-		'lastName': 'Dorian',
-		'age': '20',
-		'sex': 'male'
-	};
-	(end)
-
-Returns:
-	The first object, extended.
-*/
-
-Object.extend = function(){
-	var args = arguments;
-	args = (args[1]) ? [args[0], args[1]] : [this, args[0]];
-	for (var property in args[1]) args[0][property] = args[1][property];
-	return args[0];
 };
 
 /*
@@ -181,4 +175,4 @@ Object.Native = function(){
 	for (var i = 0; i < arguments.length; i++) arguments[i].extend = Class.prototype.implement;
 };
 
-new Object.Native(Function, Array, String, Number, Class);
+Object.Native(Function, Array, String, Number, Class);
