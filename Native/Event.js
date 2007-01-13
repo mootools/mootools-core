@@ -58,9 +58,12 @@ var Event = new Class({
 		} else if (this.type.test('key')){
 			this.code = this.event.which || this.event.keyCode;
 			for (var name in Event.keys){
-				if (Event.keys[name] == this.code) var special = name;
+				if (Event.keys[name] == this.code){
+					this.key = name;
+					break;
+				}
 			}
-			this.key = special || String.fromCharCode(this.code).toLowerCase();
+			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
 
 		} else if (this.type.test('mouse') || this.type == 'click'){
 			this.page = {
