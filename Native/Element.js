@@ -543,10 +543,8 @@ Element.extend({
 
 	fireEvent: function(type, args){
 		if (this.events && this.events[type]){
-			args = args || [];
-			if ($type(args) != 'array') args = [args];
 			this.events[type].keys.each(function(fn){
-				fn.apply(this, args);
+				fn.bind(this, args)();
 			}, this);
 		}
 	},
