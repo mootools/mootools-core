@@ -381,7 +381,7 @@ Element.extend({
 		Applies a collection of styles to the Element.
 
 	Arguments:
-		source - an object or string containing all the styles to apply
+		source - an object or string containing all the styles to apply. You cannot set the opacity using a string.
 
 	Examples:
 		>$('myElement').setStyles({
@@ -401,8 +401,7 @@ Element.extend({
 				for (var property in source) this.setStyle(property, source[property]);
 				break;
 			case 'string':
-				if (window.ie) this.cssText = source;
-				else this.setAttribute('style', source);
+				this.style.cssText = source;
 		}
 		return this;
 	},
