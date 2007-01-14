@@ -45,7 +45,7 @@ Example:
 	<img src="/images/i.png" title="The body of the tooltip is stored in the title" class="toolTipImg"/>
 	<script>
 		var myTips = new Tips($$('.toolTipImg'), {
-			maxTitleChars: 50, //I like my captions a little long
+			maxTitleChars: 50	//I like my captions a little long
 		});
 	</script>
 	(end)
@@ -131,8 +131,8 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var win = {'x': Window.getWidth(), 'y': Window.getHeight()};
-		var scroll = {'x': Window.getScrollLeft(), 'y': Window.getScrollTop()};
+		var win = {'x': window.getWidth(), 'y': window.getHeight()};
+		var scroll = {'x': window.getScrollLeft(), 'y': window.getScrollTop()};
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){
