@@ -132,11 +132,12 @@ var Tips = new Class({
 
 	locate: function(event){
 		var win = {'x': Window.getWidth(), 'y': Window.getHeight()};
+		var scroll = {'x': Window.getScrollLeft(), 'y': Window.getScrollTop()};
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){
 			var pos = event.page[z] + this.options.offsets[z];
-			if (pos + tip[z] > win[z]) pos = pos - tip[z] - (this.options.offsets[z]*2);
+			if ((pos + tip[z] - scroll[z]) > win[z]) pos = event.page[z] - this.options.offsets[z] - tip[z];
 			this.toolTip.setStyle(prop[z], pos + 'px');
 		};
 		event.stop();
