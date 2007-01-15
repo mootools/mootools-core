@@ -107,15 +107,22 @@ Array.extend({
 
 	Returns:
 		a new array which is a copy of the current one.
+	
+	Arguments:
+		start - optional, the index where to start the copy, default is 0. If negative, it is taken as the offset from the end of the array.
+		length - optional, the number of elements to copy. By default, copies all elements from start to the end of the array.
 
 	Example:
 		>var letters = ["a","b","c"];
-		>var copy = ["a","b","c"].copy();
+		>var copy = letters.copy();		// ["a","b","c"] (new instance)
 	*/
 
-	copy: function(){
+	copy: function(start, length){
+		start = start || 0;
+		if (start < 0) start = this.length + start;
+		length = length || (this.length - start);
 		var newArray = [];
-		for (var i = 0; i < this.length; i++) newArray[i] = this[i];
+		for (var i = 0; i < length; i++) newArray[i] = this[start++];
 		return newArray;
 	},
 
@@ -226,8 +233,8 @@ Example:
 	(end)
 */
 
-function $A(array){
-	return Array.prototype.copy.call(array);
+function $A(array, start, length){
+	return Array.prototype.copy.call(array, start, length);
 };
 
 /*
