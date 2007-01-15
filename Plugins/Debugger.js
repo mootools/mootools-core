@@ -1,17 +1,17 @@
 /*
 Script: Debugger.js
-	Creates fiebug <http://www.getfirebug.com> style debugging for browsers without firefox & firebug.
+	Creates Firebug <http://www.getfirebug.com> style debugger for browsers without Firebug.
 		
 Authors:
-	Valerio Proietti, <http://mad4milk.net> && Aaron Newton (http://clientside.cnet.com)
+	Valerio Proietti, <http://mad4milk.net>
+	Aaron Newton (http://clientside.cnet.com)
+	Christophe Beyls, <http://www.digitalia.be>
 
 License:
 	MIT-style license.
 */
 
 var debug = {
-	
-	messages: (Cookie.get('mootools-debugger-history')) ? Cookie.get('mootools-debugger-history').replace(/%%%/g, ';').split('-:-:-') : [],
 	
 	timers: {},
 	
@@ -33,10 +33,6 @@ var debug = {
 		debug._scroll.toBottom();
 	},
 
-	write: function(text){
-		debug.pre('>>> ' + text, '#3e72b2');
-	},
-
 	error: function(error){
 		debug.pre(error.name + ': ' + error.message, '#c92f2f', '#fffef0');
 	},
@@ -50,30 +46,28 @@ var debug = {
 	},
 
 	result: function(args, spacer){
-		spacer = $type(spacer)?spacer:' ';
+		spacer = $type(spacer) ? spacer : ' ';
 		var chunks = [];
-		$A(args).each(function(argument){
-				var type = $type(argument);
+		$each(args, function(argument){
+			var type = $type(argument);
 			if (type){
-					if (type == 'string') chunks.push({'type': 'string', 'message': argument});
-					else if(type == "element") chunks.push({'type':'element','message':argument});
-					else {
-						try {
-							var jsonString = Json.toString(argument);
-							chunks.push({'type': type, 'message': Json.toString(argument)});
-						} catch(e) {
-							chunks.push({'type': type, 'message': 'object not compatable with Json parser'});
-						}
+				if ((type != 'string') && (type != 'element')){
+					try {
+						argument = Json.toString(argument);
+					} catch(e) {
+						argument = 'object not compatible with Json parser';
 					}
+				}
+				chunks.push({'type': type, 'message': argument});
 			}
 		});
 		
 		var holder = new Element('div');
 		
-		if (chunks.length <= 0) return;
+		if (!chunks.length) return;
 		chunks.each(function(chunk){
 			var color = '#222';
-			switch(chunk.type){
+			switch (chunk.type){
 				case 'object': color = '#612fc9'; break;
 				case 'string': color = '#85b23e'; break;
 				case 'element': 
@@ -83,21 +77,26 @@ var debug = {
 				case 'boolean': color = '#ff3300'; break;
 				case 'array': color = '#953eb2'; break;
 			}
-			if(chunk.type == 'element') {
-				chunk.message.setStyle('color', color).injectInside(holder);
-				holder.appendText(spacer);
-			} else if(chunk.type == 'string')
-				new Element('span').appendText(chunk.message+spacer).setStyle('color', color).injectInside(holder);
-			else  new Element('span').setHTML(chunk.message+spacer).setStyle('color', color).injectInside(holder);
-		}.bind(this));
+			switch (chunk.type){
+				case 'element':
+					chunk.message.setStyle('color', color).injectInside(holder);
+					holder.appendText(spacer);
+					break;
+				case 'string':
+					new Element('span').appendText(chunk.message+spacer).setStyle('color', color).injectInside(holder);
+					break;
+				default:
+					new Element('span').setHTML(chunk.message+spacer).setStyle('color', color).injectInside(holder);
+			}
+		}, this);
 		debug.pre(holder);
 	},
-	
+
 	makeElementMsg: function(el){
 		var a = new Element('a').addEvent('click', function(e){
-			new Fx.Style(el, 'opacity').custom(0,1);
-			e = new Event(e).stop();
-		}).setStyles({'cursor':'pointer','text-decoration':'none'}).setProperty('href','javascript:void(0)');
+			new Fx.Style(el, 'opacity').start(0,1);
+			e.stop();
+		}.bindWithEvent()).setStyles({'cursor': 'pointer', 'text-decoration': 'none'}).setProperty('href', 'javascript:void(0)');
 		var htm = ['&lt;'+el.tagName.toLowerCase()];
 		['id', 'className', 'name', 'href', 'title', 'rel', 'type'].each(function(attr){
 			if (el[attr]) htm.push(attr+'="'+el[attr]+'"');
@@ -106,13 +105,14 @@ var debug = {
 		return a;
 	},
 
-/*	Property: log
+	/*
+	Property: log
 		sends a message to the debugger.
 		
-		Arguments:
+	Arguments:
 		messages - any number of strings, objects, etc. to print out
 		
-		Note:
+	Note:
 		The debugger will allow firebug style log messages:
 		
 		%s	- String
@@ -120,127 +120,147 @@ var debug = {
 		%f	- Floating point number (numeric formatting is not yet supported)
 		%o	- Object hyperlink
 		
-		Example:
+	Example:
 		
 		>console.log("the value of x is %s and this paragraph is %o", x, $('id'));
 		> the value of x is <some value> and this paragraph is <p>
-	*/	
+	*/
+
 	log: function(){
 		var args = $A(arguments);
 		var spacer = ' ';
 		if ($type(args[0]) == 'string'){
 			spacer = '';
-			var tokens = args[0].match(/(%[.\w\d]+)/g);
-			var logCollection = [];
-			if (!tokens) return debug.result(args);
-			tokens.each(function(token, i){
-				logCollection.push(args[0].substring(0, args[0].indexOf(token)));
-				logCollection.push(args[i+1]);
-				args[0] = args[0].substring(args[0].indexOf(token)+token.length,args[0].length);
-			});
-			args = logCollection
+			var logCollection = [], lastIndex = 0;
+			var regexp = /%[sdifo]/gi;
+			for (var i = 1; (i < args.length) && (token = regexp.exec(args[0])); i++){
+				logCollection.push(args[0].substring(lastIndex, token.index), args[i]);
+				lastIndex = regexp.lastIndex;
+			}
+			regexp.lastIndex = 0;
+			if (!lastIndex) return debug.result(args);
+			logCollection.push(args[0].substring(lastIndex));
+			args = logCollection;
 		}
 		return debug.result(args, spacer);
 	},
-/*	Property: time
+
+	/*
+	Property: assert
+		Tests that an expression is true. If not, logs a message and throws an error.
+
+	Arguments:
+		condition - a boolean expression. If false, message will be logged and an error will be thrown.
+		messages - optional, any number of strings, objects, etc. to print out when thruth is false.
+
+	Example:
+		>console.assert((value > 0) && (value <= max), "value (%i) was not properly initialized", value);
+	*/
+
+	assert: function(condition){
+		if (!condition){
+			var args = $A(arguments, 1);
+			debug.log.apply(debug, args.length ? args : ["Assertion Failure"]);
+			throw new Error("Assertion Failure");
+		}
+	},
+
+	/*
+	Property: time
 		Starts a timer.
-		
-		Argument:
+	
+	Argument:
 		name - the name of the timer
 	*/
+
 	time: function(name){
 		debug.timers[name] = new Date().getTime();
 	},
-/*	Property: timeEnd
+
+	/*
+	Property: timeEnd
 		Ends a timer and logs that value to the console.
 		
-		Argument:
+	Argument:
 		name - the name of the timer
 	*/
+
 	timeEnd: function(name){
 		if (debug.timers[name]) debug.log('%s: %s', name, new Date().getTime() - debug.timers[name]);
 		else debug.log('no such timer: %s', name);
 	},
 
-/*	Property: create
+	/*
+	Property: create
 		Displays the console area.
 	*/
+	
 	create: function(){
 		
 		//main element
 		debug._body = new Element('div').setStyles({
-			'width': '100%',
-			'position':'fixed',
-			'background':'#fff',
+			'position': window.ie6 ? 'absolute' : 'fixed',
+			'background': '#fff',
 			'font': '11px Andale Mono, Monaco, Courier New',
-			'z-index':'996'
+			'z-index': '996'
 		}).injectInside(document.body);
 
-		if (window.ie6) debug._body.setStyles({
-			'position':'absolute',
-			'width': Window.getWidth()-13+'px'
-		})
-		
 		//links
 		debug._actions = new Element('div').setStyles({
-			'text-align':'right',
-			'background-color':'#f5f5f5',
-			'border-bottom':'1px solid #ddd',
-			'border-top':'1px solid #ddd',
+			'text-align': 'right',
+			'background-color': '#f5f5f5',
+			'border-bottom': '1px solid #ddd',
+			'border-top': '1px solid #ddd',
 			'padding': '2px 10px',
-			'margin':'0px',
+			'margin': '0px',
 			'font-size': '10px'
 		}).injectInside(debug._body);
-		new Element('span').setHTML('CLEAR').injectInside(debug._actions).addEvent('click',function(){
-				debug._contents.setHTML('');
-		}).setStyle('cursor','pointer');
+		new Element('span').setHTML('CLEAR').injectInside(debug._actions).addEvent('click', function(){
+			debug._contents.setHTML('');
+		}).setStyle('cursor', 'pointer');
 		new Element('span').setHTML('&nbsp;|&nbsp;').injectInside(debug._actions);
-		debug._minLink = new Element('span').setHTML('MIN').injectInside(debug._actions).addEvent('click',function(){
-			this.setStyle('display', 'none');
-			debug._maxLink.setStyle('display','inline');
-			debug.minimize();
-		}).setStyle('cursor','pointer');
-		debug._maxLink = new Element('span').setHTML('MAX').injectInside(debug._actions).addEvent('click',function(){
-			this.setStyle('display', 'none');
-			debug._minLink.setStyle('display','inline');
-			debug.maximize();
-		}).setStyle('cursor','pointer');
-		if(Cookie.get('mootools-debugger-status') && Cookie.get('mootools-debugger-status').toInt() < 50)
-			debug._minLink.setStyle('display','none');
-		else debug._maxLink.setStyle('display','none');
-			
+		debug._minLink = new Element('span').setHTML('MIN').injectInside(debug._actions).addEvent('click', function(){
+			debug.minmax();
+		}).setStyle('cursor', 'pointer');
+		debug._maxLink = new Element('span').setHTML('MAX').injectInside(debug._actions).addEvent('click', function(){
+			debug.minmax(true);
+		}).setStyle('cursor', 'pointer');
+
+		var debuggerStatus = Cookie.get('mootools-debugger-status');
+		((debuggerStatus && (debuggerStatus.toInt() < 50)) ? debug._minLink : debug._maxLink).setStyle('display', 'none');
+
 		new Element('span').setHTML('&nbsp;|&nbsp;').injectInside(debug._actions);
-		new Element('span').setHTML('CLOSE').injectInside(debug._actions).addEvent('click',function(){
+		new Element('span').setHTML('CLOSE').injectInside(debug._actions).addEvent('click', function(){
+			window.removeEvent('resize', debug.resize);
 			debug._body.remove();
 			debug._body = false;
-		}).setStyle('cursor','pointer');
-		
+		}).setStyle('cursor', 'pointer');
+
 		//messages container
 		debug._contents = new Element('div').setStyles({
 			'position': 'relative',
 			'z-index': '9997',
-			'height': (Cookie.get('mootools-debugger-status')) ? Cookie.get('mootools-debugger-status') : '112px',
+			'height': debuggerStatus || '112px',
 			'border-bottom': '1px solid #ddd',
 			'overflow': 'auto',
 			'background': '#fff'
 		}).injectInside(debug._body);
-		if(window.ie6)debug._contents.setStyle('width','101%');
+		if (window.ie6) debug._contents.setStyle('width', '101%');
+
 		//input box
-		debug._input = new Element('input').setProperties({
-			'type': 'text'
-		}).setStyles({
+		debug._input = new Element('input').setProperty('type', 'text').setStyles({
 			'z-index': '9996',
 			'width': '98%',
 			'background': '#fff',
 			'color': '#222',
 			'font': '12px Andale Mono, Monaco, Courier New',
-			'height':'16px',
+			'height': '16px',
 			'border': '0',
 			'padding': '2px 2px 2px 31px',
 			'position': 'relative',
 			'margin-top': '-1px'
 		}).injectInside(debug._body);
-		
+
 		//>>>
 		debug._gts = new Element('div').setHTML("&gt;&gt;&gt;").setStyles({
 			'color': '#3e72b2',
@@ -250,7 +270,7 @@ var debug = {
 			'position': 'absolute',
 			'left': '0'
 		}).injectInside(debug._body);
-		
+
 		if (window.khtml){
 			debug._input.setStyles({
 				'margin-top': '-2px',
@@ -259,130 +279,127 @@ var debug = {
 				'opacity': '0.99'
 			});
 		};
-		
+
 		debug._scroll = new Fx.Scroll(debug._contents, {duration: 300, wait: false});
 		debug.resetHeight();
-		if(window.ie6)window.addEvent('scroll', debug.resetHeight);
+		window.addEvent('resize', debug.resize);
+		if (window.ie6) window.addEvent('scroll', debug.resetHeight);
 
 		debug._input.onkeydown = debug.parseKey.bindWithEvent(debug);
 	},
-	
+
 	resetHeight: function(){
-		var hgt = debug._body.offsetHeight;
-		
-		if (window.khtml) hgt = hgt-3;
-		var resize = function(){
-			if (debug._body) debug._body.setStyles({
-					'top': Window.getHeight()-hgt+1+'px',
-				'width': Window.getWidth()-13+'px'
-				});
-			else window.removeEvent('resize', resize);
-		};
-		window.removeEvent('resize', resize);
-		window.addEvent('resize', resize);
-		debug._gts.setStyle('top', hgt-debug._gts.offsetHeight-1+'px');
-		debug._body.setStyle('top', Window.getHeight()-hgt+1+'px');
+		debug._hgt = debug._body.offsetHeight;
+		if (window.khtml) debug._hgt -= 3;
+
+		debug._gts.setStyle('top', (debug._hgt-debug._gts.offsetHeight-1)+'px');
+		debug.resize();
 		debug._scroll.toBottom();
 	},
-	minimize: function(){
-				debug._contents.setStyle('height', '18px');
-				Cookie.set('mootools-debugger-status', '18px');
-				debug.resetHeight();
+
+	resize: function(){
+		debug._body.setStyles({
+			'top': (window.getHeight()-debug._hgt+1)+'px',
+			'width': (window.getWidth()-13)+'px'
+		});
 	},
-	maximize: function(){
-				debug._contents.setStyle('height', '112px');
-				Cookie.set('mootools-debugger-status', '112px');
-				debug.resetHeight();
+
+	minmax: function(maximize){
+		debug._maxLink.setStyle('display', maximize ? 'none' : '');
+		debug._minLink.setStyle('display', maximize ? '' : 'none');
+		var size = maximize ? '112px' : '18px';
+		debug._contents.style.height = size;
+		Cookie.set('mootools-debugger-status', size);
+		debug.resetHeight();
 	},
 
 	parseKey: function(e){
-		
 		var value = debug._input.value;
-		
-		var error = false;
-		
-		if (e.key == 'enter'){
-			if (!value) return false;
-			
-			if (value == 'exit'){
-				debug._body.remove();
-				debug._body = false;
-				return debug._input.value = '';
-			} else if (['clear', 'clr'].test(value)){
-				debug._contents.setHTML('');
-				return debug._input.value = '';
-			} else if (value == 'max'){
-				this.maximize();
-				return debug._input.value = '';
-			} else if (value == 'min'){
-				this.minimize();
-				return debug._input.value = '';
-			}
 
-			debug.write(value);
-
-			try {
-				var evaluation = eval(value);
-				if (evaluation) debug.result([evaluation]);
-			} catch (err){
-				error = true;
-				debug.error(err);
-			} finally {
-				if (!error){
-					debug.register(value);
-					debug._input.value = '';
-				}
-			}
-		} else if (e.key == 'up'){
-			e.stop();
-			var i = debug.idx-1;
-			if (debug.messages[i]){
-				debug._input.value = debug.messages[i];
-				debug.idx = i;
-			}
-		} else if (e.key == 'down'){
-			e.stop();
-			var i = debug.idx+1;
-			if (debug.messages[i]){
-				debug._input.value = debug.messages[i];
-				debug.idx = i;
-			} else {
+		switch (e.key){
+			case 'enter':
+				if (!value) return false;
 				debug._input.value = '';
-				debug.idx = debug.messages.length;
-			}
+
+				switch (value){
+					case 'exit': debug._body.remove(); debug._body = false; return;
+					case 'clear':
+					case 'clr': debug._contents.setHTML(''); return;
+					case 'max': this.minmax(true); return;
+					case 'min': this.minmax(); return;
+				}
+
+				debug.pre('>>> '+value, '#3e72b2');
+
+				try {
+					var evaluation = eval(value);
+					if (evaluation) debug.result([evaluation]);
+					debug.register(value);
+				} catch (err){
+					debug.error(err);
+				}
+				break;
+
+			case 'up':
+				e.stop();
+				var i = debug.idx-1;
+				if (debug.messages[i]){
+					debug._input.value = debug.messages[i];
+					debug.idx = i;
+				}
+				break;
+
+			case 'down':
+				e.stop();
+				var i = debug.idx+1;
+				if (debug.messages[i]){
+					debug._input.value = debug.messages[i];
+					debug.idx = i;
+				} else {
+					debug._input.value = '';
+					debug.idx = debug.messages.length;
+				}
 		}
 	}
 
 };
 
+debug.messages = Cookie.get('mootools-debugger-history');
+debug.messages = debug.messages ? debug.messages.replace(/%%%/g, ';').split('-:-:-') : [];
 debug.idx = debug.messages.length;
 
-if (!console || !console.warn){
+if ((typeof console == 'undefined') || !console.warn){
 	var console = debug;
-	window.onerror = function(msg, url, line) {
-	  console.error({
-		 	'message': msg+"\n >>>>> "+url+" ("+line+")",
+	window.onerror = function(msg, url, line){
+		console.error({
+			'message': msg+"\n >>>>> "+url+" ("+line+")",
 			'name': 'Run Time Error'
 		});
 	};
+}
+
+if (typeof Ajax != 'undefined'){
 	Ajax = Ajax.extend({
+
 		onStateChange: function(){
 			this.parent();
 			this.log();
 		},
+
 		log: function(){
-			if(this.transport.readyState == 4) {
+			if (this.transport.readyState == 4){
 				try {
-					if(debug._body) {
+					if (debug._body){
 						var txt = this.transport.responseText;
-						if($chk(txt) && txt.length > 100) txt = txt.substring(0, 100) + " ...";
-						else if(!$chk(txt)) txt = 'undefined';
-						var breaker = "\n";
-						debug.log('%s: %s'+breaker+'status: %s'+breaker+'responseText: %s', this.options.method, this.url, this.transport.status, txt);
+						if ($chk(txt)){
+							if (txt.length > 100) txt = txt.substring(0, 100) + " ...";
+						} else {
+							txt = 'undefined';
+						}
+						debug.log("%s: %s"+"\n"+"status: %s"+"\n"+"responseText: %s", this.options.method, this.url, this.transport.status, txt);
 					}
 				}catch(e){}
 			}
 		}
 	});
 }
-
