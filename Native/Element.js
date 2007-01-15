@@ -309,7 +309,7 @@ Element.extend({
 	*/
 
 	hasClass: function(className){
-		return this.className.test('(?:^|\\s+)' + className + '(?:\\s+|$)');
+		return this.className.test('(?:^|\\s)'+className+'(?:\\s|$)');
 	},
 
 	/*
@@ -335,7 +335,7 @@ Element.extend({
 	*/
 
 	removeClass: function(className){
-		if (this.hasClass(className)) this.className = this.className.replace(className, '').clean();
+		this.className = this.className.replace(new RegExp('(^|\\s)'+className+'(?:\\s|$)'), '$1').clean();
 		return this;
 	},
 
