@@ -75,7 +75,7 @@ Element.extend({
 	getElements: function(selector){
 		var filters = [];
 		selector.clean().split(' ').each(function(sel, i){
-			var param = sel.match('^(\\w*|\\*)(?:#([\\w_-]+)|\\.([\\w_-]+))?(?:\\[["\']?(\\w+)["\']?(?:([\\*\\^\\$]?=)["\']?(\\w*)["\']?)?\\])?$');
+			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
 			//PARAM ARRAY: 0 = full string: 1 = tag; 2 = id; 3 = class; 4 = attribute; 5 = operator; 6 = value;
 			if (!param) return;
 			param[1] = param[1] || '*';

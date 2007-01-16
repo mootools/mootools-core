@@ -50,10 +50,10 @@ Elements.extend({
 			el = $(el);
 			if (actions.initialize) actions.initialize.apply(el);
 			for(var action in actions){
-				if (action.test('^on\\w+$')){
+				if (action.test(/^on\w+$/)){
 					el[action] = actions[action];
 				} else {
-					var evt = action.match('^(\\w+)event$');
+					var evt = action.match(/^(\w+)event$/);
 					if (evt) el.addEvent(evt[1], actions[action]);
 				}
 			}

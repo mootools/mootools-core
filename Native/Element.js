@@ -457,7 +457,7 @@ Element.extend({
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
-		return (style && property.test('color', 'i') && style.test('rgb')) ? style.rgbToHex() : style;
+		return (style && property.test(/color/i) && style.test(/rgb/)) ? style.rgbToHex() : style;
 	},
 
 	/*

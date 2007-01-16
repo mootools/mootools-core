@@ -21,8 +21,8 @@ String.extend({
 		Tests a string with a regular expression.
 
 	Arguments:
-		regex - the regular expression you want to match the string with
-		params - optional, any parameters you want to pass to the regex ('g' has no effect)
+		regex - a string or regular expression object, the regular expression you want to match the string with
+		params - optional, if first parameter is a string, any parameters you want to pass to the regex ('g' has no effect)
 
 	Returns:
 		true if a match for the regular expression is found in the string, false if not.
@@ -35,7 +35,7 @@ String.extend({
 	*/
 
 	test: function(regex, params){
-		return new RegExp(regex, params).test(this);
+		return ((typeof regex == 'string') ? new RegExp(regex, params) : regex).test(this);
 	},
 
 	/*
@@ -172,7 +172,7 @@ String.extend({
 	*/
 
 	hexToRgb: function(array){
-		var hex = this.match('^#?(\\w{1,2})(\\w{1,2})(\\w{1,2})$');
+		var hex = this.match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
 		return (hex) ? hex.slice(1).hexToRgb(array) : false;
 	}
 

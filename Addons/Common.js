@@ -150,7 +150,7 @@ var Options = new Class({
 		this.options = Object.extend(defaults, options);
 		if (this.addEvent){
 			for (var option in this.options){
-				if (($type(this.options[option]) == 'function') && option.test('^on[A-Z]')) this.addEvent(option, this.options[option]);
+				if (($type(this.options[option]) == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);
 			}
 		}
 		return this;

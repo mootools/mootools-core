@@ -24,7 +24,7 @@ var SmoothScroll = Fx.Scroll.extend({
 
 	initialize: function(options){
 		this.addEvent('onCancel', this.clearChain);
-		var location = window.location.href.match('^[^#]*')[0] + '#';
+		var location = window.location.href.match(/^[^#]*/)[0] + '#';
 		$each(document.links, function(lnk){
 			if (lnk.href.indexOf(location) != 0) return;
 			var anchor = lnk.href.substr(location.length);

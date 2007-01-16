@@ -55,7 +55,7 @@ var Event = new Class({
 		this.meta = this.event.metaKey;
 		if (['DOMMouseScroll', 'mousewheel'].test(this.type)){
 			this.wheel = this.event.wheelDelta ? (this.event.wheelDelta / (window.opera ? -120 : 120)) : -(this.event.detail || 0) / 3;
-		} else if (this.type.test('key')){
+		} else if (this.type.test(/key/)){
 			this.code = this.event.which || this.event.keyCode;
 			for (var name in Event.keys){
 				if (Event.keys[name] == this.code){
@@ -65,7 +65,7 @@ var Event = new Class({
 			}
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
 
-		} else if (this.type.test('mouse') || this.type == 'click'){
+		} else if (this.type.test(/mouse/) || (this.type == 'click')){
 			this.page = {
 				'x': this.event.pageX || this.event.clientX + document.documentElement.scrollLeft,
 				'y': this.event.pageY || this.event.clientY + document.documentElement.scrollTop

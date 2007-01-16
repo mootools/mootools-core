@@ -13,7 +13,7 @@ License:
 Fx.CSS = {
 
 	select: function(property, to){
-		if (property.test('color', 'i')) return this.Color;
+		if (property.test(/color/i)) return this.Color;
 		if (to.test && to.test(' ')) return this.Multi;
 		return this.Single;
 	},
