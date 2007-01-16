@@ -11,8 +11,6 @@ Class: Window
 	Cross browser methods to get the window size, onDomReady method.
 */
 
-window.extend = Object.extend;
-
 window.extend({
 
 	/*

@@ -16,8 +16,6 @@ Class: window
 	Warning: All these methods require that the browser operates in strict mode, not quirks mode.
 */
 
-window.extend = Object.extend;
-
 window.extend({
 
 	/*

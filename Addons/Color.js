@@ -204,6 +204,7 @@ Array.extend({
 				case 5: return [br, p, q];
 			}
 		}
+		return false;
 	}
 
 });

@@ -139,8 +139,6 @@ Element.extend({
 
 });
 
-document.extend = Object.extend;
-
 /* Section: document related functions */
 
 document.extend({

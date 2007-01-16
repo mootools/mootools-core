@@ -18,8 +18,9 @@ if (typeof HTMLElement == 'undefined'){
 	HTMLElement.prototype.htmlElement = true;
 }
 
-//window = Window
+//window, document
 
+window.extend = document.extend = Object.extend;
 var Window = window;
 
 /*
