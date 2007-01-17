@@ -392,7 +392,7 @@ Element.extend({
 
 		OR
 
-		>$('myElement').setStyle('border: 1px solid #000; width: 300px; height: 400px;');
+		>$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;');
 	*/
 
 	setStyles: function(source){
