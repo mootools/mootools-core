@@ -14,7 +14,7 @@ Class: Sortables
 	Creates an interface for <Drag> and drop, resorting of a list.
 
 Arguments:
-	elements - requires, the collection of elements that will become sortables.
+	list - required, the list that will become sortable.
 	options - an Object, see options below.
 
 Options:

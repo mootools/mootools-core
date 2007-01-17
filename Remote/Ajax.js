@@ -101,7 +101,7 @@ var Ajax = XHR.extend({
 
 	evalScripts: function(){
 		var script, regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
-		while (script = regexp.exec(this.response.text)) eval(script[1]);
+		while ((script = regexp.exec(this.response.text))) eval(script[1]);
 	}
 
 });
