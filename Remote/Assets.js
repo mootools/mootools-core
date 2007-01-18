@@ -65,15 +65,20 @@ var Asset = {
 	image: function(source, properties){
 		properties = Object.extend({
 			'src': source,
-			'onload': Class.empty
+			'onload': Class.empty,
+			'onabort': Class.empty,
+			'onerror': Class.empty
 		}, properties || {});
 		var image = new Image();
-		image.src = properties.src;
 		image.onload = function(){
 			if (arguments.callee.done) return false;
 			arguments.callee.done = true;
-			return properties.onload();
+			return properties.onload.call(this);
+			this.onload = null;
 		};
+		img.onerror = properties.onerror;
+		img.onabort = properties.onabort;
+		image.src = properties.src;
 		return Asset.create('img', properties);
 	},
 
