@@ -184,7 +184,7 @@ Element.extend({
 
 	toObject: function(){
 		var obj = {};
-		$each(this.getElementsByTagName('*'), function(el){
+		$$('input', 'select', 'textarea').each(function(el){
 			var name = $(el).name;
 			var value = el.getValue();
 			if ((value !== false) && name) obj[name] = value;
