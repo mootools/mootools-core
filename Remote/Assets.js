@@ -73,8 +73,8 @@ var Asset = {
 		image.onload = function(){
 			if (arguments.callee.done) return false;
 			arguments.callee.done = true;
-			return properties.onload.call(this);
 			this.onload = null;
+			return properties.onload.call(this);
 		};
 		img.onerror = properties.onerror;
 		img.onabort = properties.onabort;
