@@ -76,8 +76,8 @@ var Asset = {
 			this.onload = null;
 			return properties.onload.call(this);
 		};
-		img.onerror = properties.onerror;
-		img.onabort = properties.onabort;
+		image.onerror = properties.onerror;
+		image.onabort = properties.onabort;
 		image.src = properties.src;
 		return Asset.create('img', properties);
 	},

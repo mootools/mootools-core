@@ -136,3 +136,7 @@ Properties:
 if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
 else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
 else if (document.getBoxObjectFor != null) window.gecko = true;
+
+//enables background image cache for internet explorer 6
+
+if (window.ie6) try {document.execCommand("BackgroundImageCache", false, true);} catch (e){};

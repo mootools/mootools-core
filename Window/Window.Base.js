@@ -1,6 +1,6 @@
 /*
 Script: Window.Base.js
-	Contains Window.onDomReady and Window.disableImageCache
+	Contains Window.onDomReady
 
 License:
 	MIT-style license.
@@ -12,19 +12,6 @@ Class: Window
 */
 
 window.extend({
-
-	/*
-	Function: window.disableImageCache
-		Disables background image chache for internex explorer, to prevent flickering. 
-		To be called if you have effects with background images, and they flicker.
-
-	Example:
-		Window.disableImageCache();
-	*/
-
-	disableImageCache: function(){
-		if (this.ie6) try {document.execCommand("BackgroundImageCache", false, true);} catch (e){};
-	},
 
 	addEvent: function(type, fn){
 		if (type == 'domready'){
