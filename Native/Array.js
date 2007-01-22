@@ -27,6 +27,20 @@ Array.prototype.forEach = Array.prototype.forEach || function(fn, bind){
 };
 
 /*
+Property: filter
+	This method is provided only for browsers without native *filter* support.
+	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
+*/
+
+Array.prototype.filter = Array.prototype.filter || function(fn, bind){
+	var results = [];
+	for (var i = 0; i < this.length; i++){
+		if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+	}
+	return results;
+};
+
+/*
 Property: map
 	This method is provided only for browsers without native *map* support.
 	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>

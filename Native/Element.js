@@ -680,8 +680,8 @@ Element.extend({
 		>$('myElement').setHTML(newHTML) //the innerHTML of myElement is now = newHTML
 	*/
 
-	setHTML: function(html){
-		this.innerHTML = html;
+	setHTML: function(){
+		this.innerHTML = $A(arguments).join('');
 		return this;
 	},
 

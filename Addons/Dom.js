@@ -73,28 +73,29 @@ Element.extend({
 	*/
 
 	getElements: function(selector){
-		var filters = [];
+		var elements = [];
 		selector.clean().split(' ').each(function(sel, i){
 			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
 			//PARAM ARRAY: 0 = full string: 1 = tag; 2 = id; 3 = class; 4 = attribute; 5 = operator; 6 = value;
 			if (!param) return;
+			Filters.selector = param;
 			param[1] = param[1] || '*';
 			if (i == 0){
 				if (param[2]){
 					var el = this.getElementById(param[2]);
 					if (!el || ((param[1] != '*') && (Element.prototype.getTag.call(el) != param[1]))) return;
-					filters = [el];
+					elements = [el];
 				} else {
-					filters = $A(this.getElementsByTagName(param[1]));
+					elements = $A(this.getElementsByTagName(param[1]));
 				}
 			} else {
-				filters = Elements.prototype.filterByTagName.call(filters, param[1]);
-				if (param[2]) filters = Elements.prototype.filterById.call(filters, param[2]);
+				elements = Elements.prototype.getElementsByTagName.call(elements, param[1], true);
+				if (param[2]) elements = elements.filter(Filters.id);
 			}
-			if (param[3]) filters = Elements.prototype.filterByClassName.call(filters, param[3]);
-			if (param[4]) filters = Elements.prototype.filterByAttribute.call(filters, param[4], param[6], param[5]);
+			if (param[3]) elements = elements.filter(Filters.className);
+			if (param[4]) elements = elements.filter(Filters.attribute);
 		}, this);
-		return $$(filters);
+		return $$(elements);
 	},
 
 	/*
@@ -157,53 +158,48 @@ document.extend({
 
 });
 
+//dom filters, internal methods.
+
+var Filters = {
+	
+	selector: [],
+
+	id: function(el){
+		return (el.id == Filters.selector[2]);
+	},
+
+	className: function(el){
+		return (Element.prototype.hasClass.call(el, Filters.selector[3]));
+	},
+
+	attribute: function(el){
+		var current = el.getAttribute(Filters.selector[4]);
+		if (!current) return false;
+		var operator = Filters.selector[5];
+		if (!operator) return true;
+		var value = Filters.selector[6];
+		switch (operator){
+			case '*=': return (current.test(value));
+			case '=': return (current == value);
+			case '^=': return (current.test('^'+value));
+			case '$=': return (current.test(value+'$'));
+		}
+		return false;
+	}
+
+};
+
 /*
 Class: Elements
-	Methods for dom queries arrays, as <$$>.
+	Methods for dom queries arrays, <$$>.
 */
 
 Elements.extend({
 
-	//internal methods
-
-	filterById: function(id, tag){
-		var found = [];
-		this.each(function(el){
-			if (el.id == id) found.push(el);
-		});
-		return found;
-	},
-
-	filterByClassName: function(className){
-		var found = [];
-		this.each(function(el){
-			if (Element.prototype.hasClass.call(el, className)) found.push(el);
-		});
-		return found;
-	},
-
-	filterByTagName: function(tagName){
+	getElementsByTagName: function(tagName){
 		var found = [];
 		this.each(function(el){
 			found.extend(el.getElementsByTagName(tagName));
-		});
-		return found;
-	},
-
-	filterByAttribute: function(name, value, operator){
-		var found = [];
-		this.each(function(el){
-			var att = el.getAttribute(name);
-			if (!att) return found;
-			if (!operator) return found.push(el);
-
-			switch (operator){
-				case '*=': if (att.test(value)) found.push(el); break;
-				case '=': if (att == value) found.push(el); break;
-				case '^=': if (att.test('^'+value)) found.push(el); break;
-				case '$=': if (att.test(value+'$')) found.push(el);
-			}
-			return found;
 		});
 		return found;
 	}
