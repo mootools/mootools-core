@@ -42,7 +42,7 @@ var debug = {
 		debug.messages.push(text);
 		debug.idx = debug.messages.length;
 		var toCookie = debug.messages.join('-:-:-').replace(/;/g, '%%%');
-		Cookie.set('mootools-debugger-history', toCookie, 2);
+		Cookie.set('mootools-debugger-history', toCookie, {duration: 2});
 	},
 
 	result: function(args, spacer){
@@ -378,7 +378,7 @@ if ((typeof console == 'undefined') || !console.warn){
 	};
 }
 
-if (typeof Ajax != 'undefined'){
+if (Ajax){
 	Ajax = Ajax.extend({
 
 		onStateChange: function(){
@@ -398,7 +398,7 @@ if (typeof Ajax != 'undefined'){
 						}
 						debug.log("%s: %s"+"\n"+"status: %s"+"\n"+"responseText: %s", this.options.method, this.url, this.transport.status, txt);
 					}
-				}catch(e){}
+				} catch(e){}
 			}
 		}
 	});
