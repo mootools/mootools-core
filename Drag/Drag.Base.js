@@ -61,7 +61,6 @@ Drag.Base = new Class({
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
 		this.bound = {'start': this.start.bindWithEvent(this)};
-		//this.handle.addEvent('mousedown', this.bound.start);
 		this.attach();
 		if (this.options.initialize) this.options.initialize.call(this);
 	},

@@ -94,6 +94,7 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	checkAgainst: function(el){
+		if (!this.mouse.now.x || !this.mouse.now.y) return false;
 		el = el.getPosition();
 		return (this.mouse.now.x > el.left && this.mouse.now.x < el.right && this.mouse.now.y < el.bottom && this.mouse.now.y > el.top);
 	},
@@ -102,9 +103,14 @@ Drag.Move = Drag.Base.extend({
 		this.parent();
 		this.timer = $clear(this.timer);
 		if (this.out) return this;
+		var dropped = false;
 		this.droppables.each(function(drop){
-			if (this.checkAgainst(drop)) drop.fireEvent('drop', [this.element, this]);
+			if (this.checkAgainst(drop)){
+				drop.fireEvent('drop', [this.element, this]);
+				dropped = true;
+			}
 		}, this);
+		if (!dropped) this.element.fireEvent('drop', this);
 		return this;
 	}
 

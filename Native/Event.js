@@ -2,9 +2,9 @@
 Script: Event.js
 	Event class
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-	Michael Jackson, <http://ajaxon.com/michael>
+Authors:
+	- Valerio Proietti, <http://mad4milk.net>
+	- Michael Jackson, <http://ajaxon.com/michael>
 
 License:
 	MIT-style license.
