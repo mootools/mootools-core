@@ -94,7 +94,7 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	checkAgainst: function(el){
-		if (!this.mouse.now.x || !this.mouse.now.y) return false;
+		if (!$chk(this.mouse.now.x) || !$chk(this.mouse.now.y)) return false;
 		el = el.getPosition();
 		return (this.mouse.now.x > el.left && this.mouse.now.x < el.right && this.mouse.now.y < el.bottom && this.mouse.now.y > el.top);
 	},
