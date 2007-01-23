@@ -3,7 +3,8 @@ Script: Dom.js
 	Css Query related function and <Element> extensions
 
 Author:
-	Valerio Proietti, <http://mad4milk.net>
+	Valerio Proietti, <http://mad4milk.net>,
+	Christophe Beyls <http://digitalia.be>
 
 License:
 	MIT-style license.
@@ -67,9 +68,6 @@ Element.extend({
 
 	Example:
 		>$('myElement').getElements('a'); // get all anchors within myElement
-
-	Credits:
-		Say thanks to Christophe Beyls <http://digitalia.be> for the new regular expression that rules getElements, a big step forward in terms of speed.
 	*/
 
 	getElements: function(selector){

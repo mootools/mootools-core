@@ -40,8 +40,8 @@ var Accordion = Fx.Elements.extend({
 			display: 0,
 			show: false,
 			height: true,
-			opacity: true,
 			width: false,
+			opacity: true,
 			fixedHeight: false,
 			fixedWidth: false,
 			wait: false,
@@ -51,42 +51,36 @@ var Accordion = Fx.Elements.extend({
 
 	initialize: function(togglers, elements, options){
 		this.setOptions(this.getExtended(), options);
-
 		this.previous = -1;
-
 		if (this.options.alwaysHide) this.options.wait = true;
 		if ($chk(this.options.show)){
 			this.options.display = false;
 			this.previous = this.options.show;
 		}
-
+		if (this.options.start){
+			this.options.display = false;
+			this.options.show = false;
+		}
 		this.togglers = $$(togglers);
 		this.elements = $$(elements);
-
 		this.togglers.each(function(tog, i){
 			tog.addEvent('click', this.display.bind(this, i));
 		}, this);
-
 		this.elements.each(function(el, i){
 			el.fullOpacity = 1;
 			if (this.options.fixedWidth) el.fullWidth = this.options.fixedWidth;
 			if (this.options.fixedHeight) el.fullHeight = this.options.fixedHeight;
 			el.setStyle('overflow', 'hidden');
 		}, this);
-
 		this.effects = {};
-
 		if (this.options.opacity) this.effects.opacity = 'fullOpacity';
 		if (this.options.width) this.effects.width = this.options.fixedWidth ? 'fullWidth' : 'offsetWidth';
 		if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
-
 		this.elements.each(function(el, i){
 			if (this.options.show === i) this.fireEvent('onActive', [this.togglers[i], el]);
 			else for (var fx in this.effects) el.setStyle(fx, 0);
 		}, this);
-
 		this.parent(this.elements, this.options);
-
 		if ($chk(this.options.display)) this.display(this.options.display);
 	},
 
@@ -102,7 +96,6 @@ var Accordion = Fx.Elements.extend({
 		if ((this.timer && this.options.wait) || (index === this.previous && !this.options.alwaysHide)) return this;
 		this.previous = index;
 		var obj = {};
-
 		this.elements.each(function(el, i){
 			obj[i] = {};
 			if ((i != index) || (this.options.alwaysHide && (el.offsetHeight > 0))){
@@ -114,6 +107,10 @@ var Accordion = Fx.Elements.extend({
 			}
 		}, this);
 		return this.start(obj);
-	}
+	},
+
+	showThisHideOpen: function(index){return this.display(index)}
 
 });
+
+Fx.Accordion = Accordion;
