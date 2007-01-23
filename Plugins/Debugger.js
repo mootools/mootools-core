@@ -290,7 +290,8 @@ var debug = {
 
 	resetHeight: function(){
 		debug._hgt = debug._body.offsetHeight;
-		if (window.khtml) debug._hgt -= 3;
+		if (!window.khtml) debug._hgt -= 3;
+		else debug._hgt -= 1;
 
 		debug._gts.setStyle('top', (debug._hgt-debug._gts.offsetHeight-1)+'px');
 		debug.resize();
@@ -300,7 +301,7 @@ var debug = {
 	resize: function(){
 		debug._body.setStyles({
 			'top': (window.getHeight()-debug._hgt+1)+'px',
-			'width': (window.getWidth()-13)+'px'
+			'width': (window.getWidth())+'px'
 		});
 	},
 
@@ -318,7 +319,7 @@ var debug = {
 
 		switch (e.key){
 			case 'enter':
-				if (!value) return false;
+				if (!value) return;
 				debug._input.value = '';
 
 				switch (value){
@@ -378,7 +379,7 @@ if ((typeof console == 'undefined') || !console.warn){
 	};
 }
 
-if (Ajax){
+if (typeof Ajax != 'undefined'){
 	Ajax = Ajax.extend({
 
 		onStateChange: function(){
