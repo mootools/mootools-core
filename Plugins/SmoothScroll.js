@@ -1,6 +1,6 @@
 /*
-Script: Fx.SmoothScroll.js
-	Contains <Fx.SmoothScroll>
+Script: SmoothScroll.js
+	Contains <SmoothScroll>
 
 Author:
 	Valerio Proietti, <http://mad4milk.net>

@@ -1,9 +1,10 @@
 /*
 Script: Array.js
-	Contains Array prototypes and the function <$A>;
+	Contains Array prototypes, <$A>, <$each>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
+Authors:
+	- Christophe Beyls, <http://digitalia.be>
+	- Valerio Proietti, <http://mad4milk.net>
 
 License:
 	MIT-style license.

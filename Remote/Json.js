@@ -2,8 +2,9 @@
 Script: Json.js
 	Simple Json parser and Stringyfier, See: <http://www.json.org/>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net> & Christophe Beyls <http://www.digitalia.be>.
+Authors:
+	- Christophe Beyls, <http://www.digitalia.be>
+	- Valerio Proietti, <http://mad4milk.net>
 
 License:
 	MIT-style license.
@@ -49,7 +50,7 @@ var Json = {
 	},
 
 	/*
-	Function: evaluate
+	Property: evaluate
 		converts a json string to an javascript Object.
 
 	Arguments:

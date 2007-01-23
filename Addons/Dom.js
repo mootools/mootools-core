@@ -2,9 +2,9 @@
 Script: Dom.js
 	Css Query related function and <Element> extensions
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>,
-	Christophe Beyls <http://digitalia.be>
+Authors:
+	- Valerio Proietti, <http://mad4milk.net>
+	- Christophe Beyls, <http://digitalia.be>
 
 License:
 	MIT-style license.

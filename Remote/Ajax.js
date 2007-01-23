@@ -4,10 +4,10 @@ Script: Ajax.js
 
 Author:
 	Valerio Proietti, <http://mad4milk.net>
+	Christophe Beyls, <http://digitalia.be>
 
 Credits:
 	Loosely based on the version from prototype.js <prototype.conio.net>
-	Christophe Beyls <http://digitalia.be>, for the implementation of onFailure and optimization of evalScripts;
 
 License:
 	MIT-style license.
@@ -15,7 +15,7 @@ License:
 
 /*
 Class: Ajax
-	An Ajax class, For all your asynchronous needs. Inherits methods and properties from <XHR>.
+	An Ajax class, For all your asynchronous needs. Inherits methods, properties and options from <XHR>.
 
 Arguments:
 	url - the url pointing to the server-side script.

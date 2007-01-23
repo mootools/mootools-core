@@ -3,9 +3,9 @@ Script: Debugger.js
 	Creates Firebug <http://www.getfirebug.com> style debugger for browsers without Firebug.
 		
 Authors:
-	Valerio Proietti, <http://mad4milk.net>
-	Aaron Newton (http://clientside.cnet.com)
-	Christophe Beyls, <http://www.digitalia.be>
+	- Valerio Proietti, <http://mad4milk.net>
+	- Aaron Newton, <http://clientside.cnet.com>
+	- Christophe Beyls, <http://www.digitalia.be>
 
 License:
 	MIT-style license.

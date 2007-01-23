@@ -122,9 +122,10 @@ function $clear(timer){
 	return null;
 };
 
-/* Section: Browser Detection */
-
 /*
+Class: window
+	Some properties are attached to the window object by the browser detection.
+
 Properties:
 	window.ie - will be set to true if the current browser is internet explorer (any).
 	window.ie6 - will be set to true if the current browser is internet explorer 6.

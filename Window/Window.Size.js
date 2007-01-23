@@ -3,8 +3,8 @@ Script: Window.Size.js
 	Window cross-browser dimensions methods.
 
 Authors:
-	Christophe Beyls, <http://www.digitalia.be>
-	Valerio Proietti, <http://mad4milk.net>
+	- Christophe Beyls, <http://www.digitalia.be>
+	- Valerio Proietti, <http://mad4milk.net>
 
 License:
 	MIT-style license.

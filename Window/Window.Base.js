@@ -1,6 +1,10 @@
 /*
 Script: Window.Base.js
 	Contains Window.onDomReady
+	
+Authors:
+	- Christophe Beyls, <http://www.digitalia.be>
+	- Valerio Proietti, <http://mad4milk.net>
 
 License:
 	MIT-style license.
@@ -12,6 +16,20 @@ Class: Window
 */
 
 window.extend({
+	
+	/*
+	Property: window.addEvent
+		same as <Element.addEvent> but allows the event 'domready', which is the same as <Window.onDomReady>
+
+	Credits:
+		(c) Dean Edwards/Matthias Miller/John Resig, remastered for mootools.
+
+	Arguments:
+		init - the function to execute when the DOM is ready
+
+	Example:
+		> window.addEvent('domready', function(){alert('the dom is ready')});
+	*/
 
 	addEvent: function(type, fn){
 		if (type == 'domready'){
@@ -47,10 +65,7 @@ window.extend({
 	/*
 	Function: window.onDomReady
 		Executes the passed in function when the DOM is ready (when the document tree has loaded, not waiting for images).
-		Same as window.addEvent('domready', init);
-
-	Credits:
-		(c) Dean Edwards/Matthias Miller/John Resig, remastered for mootools. Later touched up by Christophe Beyls <http://digitalia.be>.
+		Same as <window.addEvent>('domready', init);
 
 	Arguments:
 		init - the function to execute when the DOM is ready

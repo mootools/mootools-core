@@ -3,7 +3,7 @@ Script: Hash.js
 	Contains the class Hash.
 
 Author:
-	Christophe Beyls <http://digitalia.be>
+	Christophe Beyls, <http://digitalia.be>
 
 License:
 	MIT-style license.

@@ -8,7 +8,7 @@ Author:
 License:
 	MIT-style license.
 
-Credits:
+Mootools Credits:
 	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
 	- Some functions are based on those found in prototype.js <http://prototype.conio.net/> (c) 2005 Sam Stephenson sam [at] conio [dot] net, MIT-style license
 	- Documentation by Aaron Newton (aaron.newton [at] cnet [dot] com) and Valerio Proietti.

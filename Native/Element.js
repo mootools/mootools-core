@@ -2,8 +2,9 @@
 Script: Element.js
 	Contains useful Element prototypes, to be used with the dollar function <$>.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
+Authors:
+	- Valerio Proietti, <http://mad4milk.net>
+	- Christophe Beyls, <http://digitalia.be>
 
 License:
 	MIT-style license.
@@ -408,7 +409,7 @@ Element.extend({
 
 	/*
 	Property: setOpacity
-		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity == 1.
+		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
 
 	Arguments:
 		opacity - Accepts numbers from 0 to 1.
@@ -657,11 +658,13 @@ Element.extend({
 		source - an object with key/value pairs.
 
 	Example:
-		>$('myElement').setProperties({
-		>	src: 'whatever.gif',
-		>	alt: 'whatever dude'
-		>});
-		><img src="whatever.gif" alt="whatever dude">
+		(start code)
+		$('myElement').setProperties({
+			src: 'whatever.gif',
+			alt: 'whatever dude'
+		});
+		<img src="whatever.gif" alt="whatever dude">
+		(end)
 	*/
 
 	setProperties: function(source){
