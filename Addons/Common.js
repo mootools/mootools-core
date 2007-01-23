@@ -1,6 +1,6 @@
 /*
 Script: Common.js
-	Contains common implementations for custom classes. In Mootools is implemented in <Ajax> and <Fx>.
+	Contains common implementations for custom classes. In Mootools is implemented in <Ajax>, <XHR> and <Fx.Base>.
 
 Author:
 	Valerio Proietti, <http://mad4milk.net>
@@ -12,7 +12,7 @@ License:
 /*
 Class: Chain
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	Currently implemented in <Fx> and <Ajax>. In <Fx> for example, is used to execute a list of function, one after another, once the effect is completed.
+	Currently implemented in <Fx.Base>, <XHR> and <Ajax>. In <Fx.Base> for example, is used to execute a list of function, one after another, once the effect is completed.
 	The functions will not be fired all togheter, but one every completion, to create custom complex animations.
 
 Example:
@@ -69,7 +69,7 @@ var Chain = new Class({
 /*
 Class: Events
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	In <Fx> Class, for example, is used to give the possibility add any number of functions to the Effects events, like onComplete, onStart, onCancel
+	In <Fx.Base> Class, for example, is used to give the possibility add any number of functions to the Effects events, like onComplete, onStart, onCancel
 
 Example:
 	(start code)

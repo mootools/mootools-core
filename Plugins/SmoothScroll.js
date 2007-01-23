@@ -10,7 +10,7 @@ License:
 */
 
 /*
-Class: Fx.SmoothScroll
+Class: SmoothScroll
 	Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
 
 Arguments:
@@ -34,13 +34,13 @@ var SmoothScroll = Fx.Scroll.extend({
 	},
 
 	useLink: function(lnk, anchor){
-		lnk.onclick = function(){
+		lnk.addEvent('click', function(event){
 			if(!window.khtml) this.chain(function(){
 				window.location.href = '#'+anchor;
 			});
 			this.toElement(anchor);
-			return false;
-		}.bind(this);
+			event.stop();
+		}.bindWithEvent(this));
 	}
 
 });

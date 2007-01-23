@@ -39,7 +39,9 @@ var Element = new Class({
 });
 
 /*
-Function: $()
+Section: Utility Functions
+
+Function: $
 	returns the element passed in with all the Element prototypes applied.
 
 Arguments:
@@ -83,7 +85,7 @@ new Object.Native(Elements);
 document.getElementsBySelector = document.getElementsByTagName;
 
 /*
-Function: $$()
+Function: $$
 	Selects, and extends DOM elements.
 
 Arguments:
@@ -147,6 +149,11 @@ Element.extend = function(properties){
 		Elements.prototype[property] = Elements.Multi(property);
 	}
 };
+
+/*
+Class: Element
+	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
+*/
 
 Element.extend({
 

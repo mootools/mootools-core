@@ -19,7 +19,7 @@ window.extend({
 	
 	/*
 	Property: window.addEvent
-		same as <Element.addEvent> but allows the event 'domready', which is the same as <Window.onDomReady>
+		same as <Element.addEvent> but allows the event 'domready', which is the same as <window.onDomReady>
 
 	Credits:
 		(c) Dean Edwards/Matthias Miller/John Resig, remastered for mootools.
@@ -63,9 +63,9 @@ window.extend({
 	},
 
 	/*
-	Function: window.onDomReady
+	Property: window.onDomReady
 		Executes the passed in function when the DOM is ready (when the document tree has loaded, not waiting for images).
-		Same as <window.addEvent>('domready', init);
+		Same as <window.addEvent> ('domready', init).
 
 	Arguments:
 		init - the function to execute when the DOM is ready

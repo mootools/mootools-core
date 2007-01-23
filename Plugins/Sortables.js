@@ -11,7 +11,7 @@ License:
 
 /*
 Class: Sortables
-	Creates an interface for <Drag> and drop, resorting of a list.
+	Creates an interface for <Drag.Base> and drop, resorting of a list.
 
 Arguments:
 	list - required, the list that will become sortable.

@@ -34,7 +34,7 @@ Fx.Style = Fx.Base.extend({
 
 	/*
 	Property: hide
-		Same as <Fx.Base.set>(0)
+		Same as <Fx.Base.set> (0)
 	*/
 
 	hide: function(){

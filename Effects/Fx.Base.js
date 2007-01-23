@@ -133,10 +133,10 @@ Fx.Base.implement(new Options);
 
 /*
 Class: Fx.Transitions
-	A collection of transition equations for use with the <Fx> Class.
+	A collection of transition equations for use with the <Fx.Base> Class.
 
 See Also:
-	<Fxtransitions.js> for a whole bunch of transitions.
+	<Fx.Transitions.js> for a whole bunch of transitions.
 
 Credits:
 	Easing Equations, (c) 2003 Robert Penner (http://www.robertpenner.com/easing/), Open Source BSD License.

@@ -2,12 +2,12 @@
 Script: Ajax.js
 	Contains the <Ajax> class. Also contains methods to generate querystings from forms and Objects.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-	Christophe Beyls, <http://digitalia.be>
+Authors:
+	- Valerio Proietti, <http://mad4milk.net>
+	- Christophe Beyls, <http://digitalia.be>
 
 Credits:
-	Loosely based on the version from prototype.js <prototype.conio.net>
+	Loosely based on the version from prototype.js <http://prototype.conio.net>
 
 License:
 	MIT-style license.
@@ -140,7 +140,7 @@ Element.extend({
 		Sends a form with an ajax post request
 
 	Arguments:
-		options - option collection for ajax request. See <Ajax.initialize> for option list.
+		options - option collection for ajax request. See <Ajax> for the options list.
 
 	Returns:
 		The Ajax Class Instance

@@ -10,7 +10,7 @@ License:
 */
 
 /*
-Class: <Json.Remote>
+Class: Json.Remote
 	Wrapped XHR with automated sending and receiving of Javascript Objects in Json Format.
 
 Arguments:
