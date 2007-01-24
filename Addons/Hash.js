@@ -29,26 +29,65 @@ var Hash = new Class({
 	
 	obj: {},
 
-	initialize: function(obj) {
+	initialize: function(obj){
 		this.extend(obj);
 	},
 
-	get: function(key) {
+	/*
+	Property: get
+		Retrieves a value from the hash.
+
+	Arguments:
+		key - The key
+
+	Returns:
+		The value
+	*/
+
+	get: function(key){
 		return this.obj[key];
 	},
-	
-	hasKey: function(key) {
+
+	/*
+	Property: hasKey
+		Check the presence of a specified key-value pair in the hash.
+
+	Arguments:
+		key - The key
+
+	Returns:
+		True if the Hash contains an value for the specified key, otherwise false
+	*/
+
+	hasKey: function(key){
 		return this.obj[key] !== undefined;
 	},
 
-	set: function(key, value) {
+	/*
+	Property: set
+		Adds a key-value pair to the hash or replaces a previous value associated with the key.
+
+	Arguments:
+		key - The key
+		value - The value
+	*/
+
+	set: function(key, value){
 		if (value === undefined) return false;
 		if (this.obj[key] === undefined) this.length++;
 		this.obj[key] = value;
 		return this;
 	},
 
-	remove: function(key) {
+	/*
+	Property: remove
+		Removes a key-value pair from the hash.
+
+	Arguments:
+		key - The key
+	*/
+
+	remove: function(key){
 		if (this.obj[key] === undefined) return this;
 		var obj = {};
 		this.length--;
@@ -59,11 +98,28 @@ var Hash = new Class({
 		return this;
 	},
 
-	each: function(fn, bind) {
+	/*
+	Property: each
+		Calls a function for each key-value pair. The first argument passed to the function will be the key, the second one will be the value.
+
+	Arguments:
+		fn - The function to call for each key-value pair
+		bind - Optional, the object that will be referred to as "this" in the function
+	*/
+
+	each: function(fn, bind){
 		for (var property in this.obj) fn.call(bind || this, property, this.obj[property]);
 	},
-	
-	extend: function(obj) {
+
+	/*
+	Property: extend
+		Extends the current hash with an object containing key-value pairs. Values for duplicate keys will be replaced by the new ones.
+
+	Arguments:
+		obj - An object containing key-value pairs
+	*/
+
+	extend: function(obj){
 		for (var property in obj){
 			if (this.obj[property] === undefined) this.length++;
 			this.obj[property] = obj[property];
@@ -71,17 +127,41 @@ var Hash = new Class({
 		return this;
 	},
 
-	empty: function() {
+	/*
+	Property: empty
+		Checks if the hash is empty.
+
+	Returns:
+		True if the hash is empty, otherwise false
+	*/
+
+	empty: function(){
 		return (this.length == 0);
 	},
 
-	keys: function() {
+	/*
+	Property: keys
+		Returns an array containing all the keys, in the same order as the values returned by <Hash.values>.
+
+	Returns:
+		An array containing all the keys of the hash
+	*/
+
+	keys: function(){
 		var keys = [];
 		for (var property in this.obj) keys.push(property);
 		return keys;
 	},
 
-	values: function() {
+	/*
+	Property: values
+		Returns an array containing all the values, in the same order as the keys returned by <Hash.keys>.
+
+	Returns:
+		An array containing all the values of the hash
+	*/
+
+	values: function(){
 		var values = [];
 		for (var property in this.obj) values.push(this.obj[property]);
 		return values;
@@ -91,9 +171,9 @@ var Hash = new Class({
 
 /*
 Function: $H
-	Shortcut to create an Hash from an Object.
+	Shortcut to create a Hash from an Object.
 */
 
-function $H(obj) {
+function $H(obj){
 	return new Hash(obj);
 };
