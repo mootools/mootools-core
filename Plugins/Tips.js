@@ -23,7 +23,6 @@ Arguments:
 Options:
 	maxTitleChars - the maximum number of characters to display in the title of the tip. defaults to 30.
 	timeOut - the delay to wait to show the tip (how long the user must hover to have the tooltip appear). defaults to 100.
-	className - the class name to apply to the tooltip
 
 	onShow - optionally you can alter the default onShow behaviour with this option (like displaying a fade in effect);
 	onHide - optionally you can alter the default onHide behaviour with this option (like displaying a fade out effect);
