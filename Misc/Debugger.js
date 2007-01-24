@@ -245,7 +245,7 @@ var debug = {
 			'overflow': 'auto',
 			'background': '#fff'
 		}).injectInside(debug._body);
-		if (window.ie6) debug._contents.setStyle('width', '101%');
+		if (window.ie6) debug._contents.setStyle('width', '100%');
 
 		//input box
 		debug._input = new Element('input').setProperty('type', 'text').setStyles({
@@ -292,17 +292,24 @@ var debug = {
 		debug._hgt = debug._body.offsetHeight;
 		if (!window.khtml) debug._hgt -= 3;
 		else debug._hgt -= 1;
-
 		debug._gts.setStyle('top', (debug._hgt-debug._gts.offsetHeight-1)+'px');
 		debug.resize();
 		debug._scroll.toBottom();
 	},
 
 	resize: function(){
-		debug._body.setStyles({
-			'top': (window.getHeight()-debug._hgt+1)+'px',
-			'width': (window.getWidth())+'px'
-		});
+		if (window.ie6){
+			debug._body.setStyles({
+				'top': (window.getScrollTop()+window.getHeight()-debug._hgt-5)+'px',
+				'width': (window.getWidth()-16)+'px'
+			});
+		} else {
+			debug._body.setStyles({
+				'top': (window.getHeight()-debug._hgt+1)+'px',
+				'width': (window.getWidth())+'px'
+			});			
+		}
+
 	},
 
 	minmax: function(maximize){
