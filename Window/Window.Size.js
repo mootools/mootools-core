@@ -50,7 +50,7 @@ window.extend({
 	*/
 
 	getScrollWidth: function(){
-		if (this.ie) return document.documentElement.offsetWidth;
+		if (this.ie) return Math.max(document.documentElement.offsetWidth, document.documentElement.scrollWidth);
 		if (this.khtml) return document.body.scrollWidth;
 		return document.documentElement.scrollWidth;
 	},
@@ -65,7 +65,7 @@ window.extend({
 	*/
 
 	getScrollHeight: function(){
-		if (this.ie) return document.documentElement.offsetHeight;
+		if (this.ie) return Math.max(document.documentElement.offsetHeight, document.documentElement.scrollHeight);
 		if (this.khtml) return document.body.scrollHeight;
 		return document.documentElement.scrollHeight;
 	},
