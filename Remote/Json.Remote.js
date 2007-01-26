@@ -20,7 +20,7 @@ Arguments:
 Example:
 	this code will send user information based on name/last name
 	(start code)
-	var jSonRequest = new Json.Remote(http://site.com/tellMeAge.php, onComplete: function(person){
+	var jSonRequest = new Json.Remote("http://site.com/tellMeAge.php", onComplete: function(person){
 		alert(person.age); //is 25 years
 		alert(person.height); //is 170 cm
 		alert(person.weight); //is 120 kg
