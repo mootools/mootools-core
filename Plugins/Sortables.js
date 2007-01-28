@@ -52,14 +52,14 @@ var Sortables = new Class({
 			this.bound.start[i] = this.start.bindWithEvent(this, el);
 			if (this.options.ghost){
 				this.trash = new Element('div').injectInside(document.body);
-				var limit = this.list.getPosition();
+				var limit = this.list.getCoordinates();
 				this.drag[i] = new Drag.Base(el, {
 					handle: this.handles[i],
 					snap: this.options.snap,
 					modifiers: {y: 'top'},
 					limit: {y: [limit.top, limit.bottom - el.offsetHeight]},
 					onBeforeStart: function(element){
-						var offsets = element.getOffsets();
+						var offsets = element.getPosition();
 						this.old = element;
 						this.drag[i].element = this.ghost = element.clone().setStyles({
 							'position': 'absolute',
@@ -92,11 +92,11 @@ var Sortables = new Class({
 		var prev = el.getPrevious();
 		var next = el.getNext();
 		if (prev){
-			var prevPos = prev.getPosition();
+			var prevPos = prev.getCoordinates();
 			if (event.page.y < prevPos.bottom) el.injectBefore(prev);
 		}
 		if (next){
-			var nextPos = next.getPosition();
+			var nextPos = next.getCoordinates();
 			if (event.page.y > nextPos.top) el.injectAfter(next);
 		}
 		event.stop();

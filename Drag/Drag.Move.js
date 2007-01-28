@@ -29,7 +29,8 @@ Drag.Move = Drag.Base.extend({
 	getExtended: function(){
 		return {
 			droppables: [],
-			container: false
+			container: false,
+			overflown: []
 		}
 	},
 
@@ -59,8 +60,8 @@ Drag.Move = Drag.Base.extend({
 	start: function(event){
 		this.container = $(this.options.container);
 		if (this.container){
-			var cont = this.container.getPosition();
-			var el = this.element.getPosition();
+			var cont = this.container.getCoordinates();
+			var el = this.element.getCoordinates();
 			if (this.position == 'absolute'){
 				this.options.limit = {
 					'x': [cont.left, cont.right - el.width],
@@ -94,7 +95,7 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	checkAgainst: function(el){
-		el = el.getPosition();
+		el = el.getCoordinates(this.options.overflown);
 		return (this.mouse.now.x > el.left && this.mouse.now.x < el.right && this.mouse.now.y < el.bottom && this.mouse.now.y > el.top);
 	},
 

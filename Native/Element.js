@@ -728,16 +728,6 @@ Element.extend({
 		return this.tagName.toLowerCase();
 	},
 
-	getOffsets: function(){
-		var el = this, offsetLeft = 0, offsetTop = 0;
-		do {
-			offsetLeft += el.offsetLeft || 0;
-			offsetTop += el.offsetTop || 0;
-			el = el.offsetParent;
-		} while (el);
-		return {'x': offsetLeft, 'y': offsetTop};
-	},
-
 	/*
 	Property: scrollTo
 		scrolls the element to the specified coordinated (if the element has an overflow)
@@ -755,6 +745,25 @@ Element.extend({
 		this.scrollTop = y;
 	},
 
+	/*
+	Property: getValue
+		Returns the value of the Element, if its tag is textarea, select or input. no multiple select support.
+	*/
+
+	getValue: function(){
+		switch (this.getTag()){
+			case 'select':
+				if (this.selectedIndex != -1){
+					var opt = this.options[this.selectedIndex];
+					return opt.value || opt.text;
+				}
+				break;
+			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
+			case 'textarea': return this.value;
+		}
+		return false;
+	},
+	
 	/*
 	Property: getSize
 		return an Object representing the size/scroll values of the element.
@@ -783,12 +792,38 @@ Element.extend({
 	},
 
 	/*
+	Property: getPosition
+		Returns the real offsets of the element.
+
+	Example:
+		>$('element').getPosition();
+
+	Returns:
+		>{x: 100, y:500};
+	*/
+	
+	getPosition: function(overflown){
+		overflown = overflown || [];
+		var el = this, left = 0, top = 0;
+		do {
+			left += el.offsetLeft || 0;
+			top += el.offsetTop || 0;
+			el = el.offsetParent;
+		} while (el);
+		overflown.each(function(element){
+			left -= element.scrollLeft || 0;
+			top -= element.scrollTop || 0;
+		});
+		return {'x': left, 'y': top};
+	},
+	
+	/*
 	Property: getTop
 		Returns the distance from the top of the window to the Element.
 	*/
 
 	getTop: function(){
-		return this.getOffsets().y;
+		return this.getPosition().y;
 	},
 
 	/*
@@ -797,16 +832,16 @@ Element.extend({
 	*/
 
 	getLeft: function(){
-		return this.getOffsets().x;
+		return this.getPosition().x;
 	},
-
+	
 	/*
-	Property: getPosition
+	Property: getCoordinates
 		Returns an object with width, height, left, right, top, and bottom, representing the values of the Element
 
 	Example:
 		(start code)
-		var myValues = $('myElement').getPosition();
+		var myValues = $('myElement').getCoordinates();
 		(end)
 
 	Returns:
@@ -821,37 +856,18 @@ Element.extend({
 		}
 		(end)
 	*/
-
-	getPosition: function(){
-		var offs = this.getOffsets();
+	
+	getCoordinates: function(overflown){
+		var position = this.getPosition(overflown);
 		var obj = {
 			'width': this.offsetWidth,
 			'height': this.offsetHeight,
-			'left': offs.x,
-			'top': offs.y
+			'left': position.x,
+			'top': position.y
 		};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
 		return obj;
-	},
-
-	/*
-	Property: getValue
-		Returns the value of the Element, if its tag is textarea, select or input. no multiple select support.
-	*/
-
-	getValue: function(){
-		switch (this.getTag()){
-			case 'select':
-				if (this.selectedIndex != -1){
-					var opt = this.options[this.selectedIndex];
-					return opt.value || opt.text;
-				}
-				break;
-			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
-			case 'textarea': return this.value;
-		}
-		return false;
 	}
 
 });

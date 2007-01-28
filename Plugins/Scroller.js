@@ -70,7 +70,7 @@ var Scroller = new Class({
 
 	scroll: function(){
 		var el = this.element.getSize();
-		var pos = this.element.getOffsets();
+		var pos = this.element.getPosition();
 
 		var change = {'x': 0, 'y': 0};
 		for (var z in this.page){
