@@ -26,7 +26,7 @@ Fx.Transitions = {
 		return c*(t/=d)*t + b;
 	},
 
-	/* Property: quatOut */
+	/* Property: quadOut */
 	quadOut: function(t, b, c, d){
 		return -c *(t/=d)*(t-2) + b;
 	},
