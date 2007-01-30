@@ -19,17 +19,16 @@ Example:
 	hash.remove('b'); // b is removed.
 	hash.set('c', 'hello');
 	hash.get('c'); // returns 'hello'
-	hash.length // returns 2 (a and b)
+	hash.length // returns 2 (a and c)
 	(end)
 */
 
 var Hash = new Class({
 
 	length: 0,
-	
-	obj: {},
 
 	initialize: function(obj){
+		this.obj = {};
 		this.extend(obj);
 	},
 
@@ -56,7 +55,7 @@ var Hash = new Class({
 		key - The key
 
 	Returns:
-		True if the Hash contains an value for the specified key, otherwise false
+		True if the Hash contains a value for the specified key, otherwise false
 	*/
 
 	hasKey: function(key){
