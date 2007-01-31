@@ -24,7 +24,9 @@ Property: forEach
 */
 
 Array.prototype.forEach = Array.prototype.forEach || function(fn, bind){
-	for (var i = 0; i < this.length; i++) fn.call(bind, this[i], i, this);
+	for (var i = 0; i < this.length; i++){
+		if (i in this) fn.call(bind, this[i], i, this);
+	}
 };
 
 /*
@@ -36,7 +38,7 @@ Property: filter
 Array.prototype.filter = Array.prototype.filter || function(fn, bind){
 	var results = [];
 	for (var i = 0; i < this.length; i++){
-		if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+		if ((i in this) && fn.call(bind, this[i], i, this)) results.push(this[i]);
 	}
 	return results;
 };
@@ -49,7 +51,9 @@ Property: map
 
 Array.prototype.map = Array.prototype.map || function(fn, bind){
 	var results = [];
-	for (var i = 0; i < this.length; i++) results[i] = fn.call(bind, this[i], i, this);
+	for (var i = 0; i < this.length; i++){
+		if (i in this) results[i] = fn.call(bind, this[i], i, this);
+	}
 	return results;
 };
 
@@ -61,7 +65,7 @@ Property: every
 
 Array.prototype.every = Array.prototype.every || function(fn, bind){
 	for (var i = 0; i < this.length; i++){
-		if (!fn.call(bind, this[i], i, this)) return false;
+		if ((i in this) && !fn.call(bind, this[i], i, this)) return false;
 	}
 	return true;
 };
@@ -74,7 +78,7 @@ Property: some
 
 Array.prototype.some = Array.prototype.some || function(fn, bind){
 	for (var i = 0; i < this.length; i++){
-		if (fn.call(bind, this[i], i, this)) return true;
+		if ((i in this) && fn.call(bind, this[i], i, this)) return true;
 	}
 	return false;
 };
@@ -137,7 +141,9 @@ Array.extend({
 		if (start < 0) start = this.length + start;
 		length = length || (this.length - start);
 		var newArray = [];
-		for (var i = 0; i < length; i++) newArray[i] = this[start++];
+		for (var i = 0; i < length; i++, start++){
+			if (start in this) newArray[i] = this[start];
+		}
 		return newArray;
 	},
 
@@ -187,7 +193,7 @@ Array.extend({
 
 	/*
 	Property: extend
-		Extends an array with another
+		Extends an array with another one.
 
 	Arguments:
 		newArray - the array to extend ours with
@@ -199,7 +205,10 @@ Array.extend({
 	*/
 
 	extend: function(newArray){
-		for (var i = 0; i < newArray.length; i++) this.push(newArray[i]);
+		var pos = this.length;
+		for (var i = 0; i < newArray.length; i++, pos++){
+			if (i in newArray) this[pos] = newArray[i];
+		}
 		return this;
 	},
 
