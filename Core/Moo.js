@@ -29,7 +29,7 @@ Example:
 		}
 	});
 	var myCat = new Cat('Micia');
-	alert myCat.name; //alerts 'Micia'
+	alert(myCat.name); //alerts 'Micia'
 	(end)
 */
 
@@ -73,8 +73,8 @@ Class.prototype = {
 			}
 		});
 		var myCat = new Cat('Micia', 20);
-		alert myCat.name; //alerts 'Micia'
-		alert myCat.age; //alerts 20
+		alert(myCat.name); //alerts 'Micia'
+		alert(myCat.age); //alerts 20
 		(end)
 	*/
 
