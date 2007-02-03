@@ -17,7 +17,7 @@ Arguments:
 	
 
 Options:
-	method - 'post' or 'get' - the prototcol for the request; optional, defaults to 'post'.
+	method - 'post' or 'get' - the protocol for the request; optional, defaults to 'post'.
 	async - boolean: asynchronous option; true uses asynchronous requests. Defaults to true.
 	onRequest - function to execute when the XHR request is fired.
 	onSuccess - function to execute when the XHR request completes.
