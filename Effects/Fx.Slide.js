@@ -42,17 +42,15 @@ Fx.Slide = Fx.Base.extend({
 	},
 
 	vertical: function(){
-		this.margin = 'top';
+		this.margin = 'margin-top';
 		this.layout = 'height';
 		this.offset = this.element.offsetHeight;
-		return [this.element.getStyle('margin-top').toInt(), this.wrapper.getStyle('height').toInt()];
 	},
 
 	horizontal: function(){
-		this.margin = 'left';
+		this.margin = 'margin-left';
 		this.layout = 'width';
 		this.offset = this.element.offsetWidth;
-		return [this.element.getStyle('margin-left').toInt(), this.wrapper.getStyle('width').toInt()];
 	},
 
 	/*
@@ -61,7 +59,8 @@ Fx.Slide = Fx.Base.extend({
 	*/
 
 	slideIn: function(mode){
-		return this.start(this[mode || this.options.mode](), [0, this.offset]);
+		this[mode || this.options.mode]();
+		return this.start([this.element.getStyle(this.margin).toInt(), this.wrapper.getStyle(this.layout).toInt()], [0, this.offset]);
 	},
 
 	/*
@@ -70,7 +69,8 @@ Fx.Slide = Fx.Base.extend({
 	*/
 
 	slideOut: function(mode){
-		return this.start(this[mode || this.options.mode](), [-this.offset, 0]);
+		this[mode || this.options.mode]();
+		return this.start([this.element.getStyle(this.margin).toInt(), this.wrapper.getStyle(this.layout).toInt()], [-this.offset, 0]);
 	},
 
 	/*
@@ -100,11 +100,11 @@ Fx.Slide = Fx.Base.extend({
 
 	toggle: function(mode){
 		if (this.wrapper.offsetHeight == 0 || this.wrapper.offsetWidth == 0) return this.slideIn(mode);
-		else return this.slideOut(mode);
+		return this.slideOut(mode);
 	},
 
 	increase: function(){
-		this.element.setStyle('margin-'+this.margin, this.now[0]+this.options.unit);
+		this.element.setStyle(this.margin, this.now[0]+this.options.unit);
 		this.wrapper.setStyle(this.layout, this.now[1]+this.options.unit);
 	}
 
