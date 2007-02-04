@@ -1,4 +1,4 @@
-var Physics = new Class({ 
+var Physics = new Class({
 	
 	getOptions: function(options){
 		return {
