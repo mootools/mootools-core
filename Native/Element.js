@@ -305,12 +305,12 @@ Element.extend({
 		Tests the Element to see if it has the passed in className.
 
 	Returns:
-	 	true - the Element has the class
-	 	false - it doesn't
-	 
+		true - the Element has the class
+		false - it doesn't
+	
 	Arguments:
 		className - the class name to test.
-	 
+	
 	Example:
 		><div id="myElement" class="testClass"></div>
 		>$('myElement').hasClass('testClass'); //returns true
@@ -753,10 +753,11 @@ Element.extend({
 	getValue: function(){
 		switch (this.getTag()){
 			case 'select':
-				if (this.selectedIndex != -1){
-					var opt = this.options[this.selectedIndex];
-					return opt.value || opt.text;
-				}
+				var values = [];
+				$each(this.getElementsByTagName('option'), function(opt, index){
+					if(opt.selected) values.push(opt.value || opt.text);
+				});
+				return values.toString()||false;
 				break;
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
 			case 'textarea': return this.value;
