@@ -164,7 +164,13 @@ Returns:
 Object.extend = function(){
 	var args = arguments;
 	args = (args[1]) ? [args[0], args[1]] : [this, args[0]];
-	for (var property in args[1]) args[0][property] = args[1][property];
+	for (var property in args[1]) { 
+		var val1 = args[0][property];
+		var val2 = args[1][property];
+		if(typeof val1 == "object" && !val1 instanceof Array && typeof val2 == "object" && !val2 instanceof Array)
+			args[0][property] = Object.extend(val1, val2); 
+		else args[0][property] = val2;
+	}
 	return args[0];
 };
 
