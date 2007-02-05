@@ -455,7 +455,7 @@ Element.extend({
 
 	getStyle: function(property){
 		property = property.camelCase();
-		var style = this.style[property] || false;
+		var style = this.style[property];
 		if (!$chk(style)){
 			if (property == 'opacity') return $chk(this.opacity) ? this.opacity : 1;
 			if (['margin', 'padding'].test(property)){
