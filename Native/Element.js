@@ -487,7 +487,7 @@ Element.extend({
 		var result = {};
 		$each(args, function(arg, index, name){
 			result[name] = this.getStyle(arg);
-		}
+		});
 		return result;
 	},
 	
