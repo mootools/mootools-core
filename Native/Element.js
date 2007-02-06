@@ -484,9 +484,9 @@ Element.extend({
 
 	getStyles: function(){
 		var result = {};
-		$each(arguments, function(argument, index, name){
-			result[name] = this.getStyle(argument);
-		});
+		$each(arguments, function(argument, index){
+			result[argument] = this.getStyle(argument);
+		}, this);
 		return result;
 	},
 	
