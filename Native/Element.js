@@ -470,6 +470,28 @@ Element.extend({
 	},
 
 	/*
+	Property: getStyle
+		Returns an object of styles of the Element for each argument passed in.
+		
+	Arguments:
+		properties - any number of style properties
+	
+	Example:
+		>$('myElement').getStyles('width','height','padding');
+		>//returns an object like:
+		>{width: "10px", height: "10px", padding: "10px 0px 10px 0px"}
+	*/
+
+	getStyles: function(){
+		var args = arguments;
+		var result = {};
+		$each(args, function(arg, index, name){
+			result[name] = this.getStyle(arg);
+		}
+		return result;
+	},
+	
+	/*
 	Property: addEvent
 		Attaches an event listener to a DOM element.
 

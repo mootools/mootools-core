@@ -263,14 +263,45 @@ function $A(array, start, length){
 
 /*
 Function: $each
-	use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, or arguments of a function.
+	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
 
 Arguments:
-	iterable - an iterable element.
+	iterable - an iterable element or an objct.
 	function - function to apply to the iterable.
 	bind - optional, the 'this' of the function will refer to this object.
+
+Function argument:
+	The function argument will be passed the following arguments.
+	
+	item - the current item in the iterator being procesed
+	index - the index of the item
+	name - (**only** in the case of iterating over object) the name (the key) of the item in the object.
+	
+Examples:
+(start code)
+$each(['Sun','Mon','Tue'], function(day, index) {
+	alert('name:' + day + ', index: ' + index);
+});
+//alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+
+//over an object
+$each({
+		first: "Sunday",
+		second: "Monday",
+		third: "Tuesday"
+	}, function(value, index, key){
+		alert("the " + key + " day of the week is " + value);
+	});
+//alerts "the first day of the week is Sunday",
+//	"the second day of the week is Monday", etc.
+(end)
 */
 
 function $each(iterable, fn, bind){
-	return Array.prototype.forEach.call(iterable, fn, bind);
+	if (iterable.length) return Array.prototype.forEach.call(iterable, fn, bind)
+	var i=0;
+	for (name in iterable){
+		fn.call(bind, iterable[name], i, name);
+		i++;
+	}
 };
