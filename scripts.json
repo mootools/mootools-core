@@ -200,7 +200,7 @@
 		},
 		
 		'Tips': {
-			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common'],
+			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Event', 'Common', 'Window.Size'],
 			'desc': 'The Tooltips.'
 		}
 
