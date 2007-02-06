@@ -483,10 +483,9 @@ Element.extend({
 	*/
 
 	getStyles: function(){
-		var args = arguments;
 		var result = {};
-		$each(args, function(arg, index, name){
-			result[name] = this.getStyle(arg);
+		$each(arguments, function(argument, index, name){
+			result[name] = this.getStyle(argument);
 		});
 		return result;
 	},
@@ -777,9 +776,9 @@ Element.extend({
 			case 'select':
 				var values = [];
 				$each(this.getElementsByTagName('option'), function(opt, index){
-					if(opt.selected) values.push(opt.value || opt.text);
+					if (opt.selected) values.push(opt.value || opt.text);
 				});
-				return values.toString()||false;
+				return values.join(',') || false;
 				break;
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
 			case 'textarea': return this.value;

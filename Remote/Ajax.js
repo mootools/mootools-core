@@ -124,7 +124,7 @@ Example:
 
 Object.toQueryString = function(source){
 	var queryString = [];
-	for (var property in source) queryString.push(encodeURIComponent(property)+'='+encodeURIComponent(source[property]));
+	for (var property in source) queryString.push(encodeURIComponent(property) + '=' + encodeURIComponent(source[property]));
 	return queryString.join('&');
 };
 
@@ -182,18 +182,18 @@ Element.extend({
 			email=bob@bob.com&zipCode=90210
 	*/
 
-	toObject: function(){
-		var obj = {};
+	toQueryString: function(){
+		var queryString = [];
 		$$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea')).each(function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if ((value !== false) && name) obj[name] = value;
+			if ((value !== false) && name){
+				value.split(',').each(function(val){
+					queryString.push(encodeURIComponent(name) + '=' + encodeURIComponent(val));
+				});
+			}
 		});
-		return obj;
-	},
-
-	toQueryString: function(){
-		return Object.toQueryString(this.toObject());
+		return queryString.join('&');
 	}
 
 });

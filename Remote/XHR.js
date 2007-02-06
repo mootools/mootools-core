@@ -56,7 +56,7 @@ var XHR = new Class({
 		this.fireEvent('onStateChange', this.transport);
 		if (this.transport.readyState != 4) return;
 		var status = 0;
-		try {status = this.transport.status} catch (e){}
+		try {status = this.transport.status} catch(e){}
 		if (this.options.isSuccess(status)) this.onSuccess();
 		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;

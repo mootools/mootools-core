@@ -278,30 +278,31 @@ Function argument:
 	name - (**only** in the case of iterating over object) the name (the key) of the item in the object.
 	
 Examples:
-(start code)
-$each(['Sun','Mon','Tue'], function(day, index) {
-	alert('name:' + day + ', index: ' + index);
-});
-//alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
-
-//over an object
-$each({
-		first: "Sunday",
-		second: "Monday",
-		third: "Tuesday"
-	}, function(value, index, key){
-		alert("the " + key + " day of the week is " + value);
+	(start code)
+	$each(['Sun','Mon','Tue'], function(day, index) {
+		alert('name:' + day + ', index: ' + index);
 	});
-//alerts "the first day of the week is Sunday",
-//	"the second day of the week is Monday", etc.
-(end)
+	//alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+
+	//over an object
+	$each({
+			first: "Sunday",
+			second: "Monday",
+			third: "Tuesday"
+		}, function(value, index, key){
+			alert("the " + key + " day of the week is " + value);
+		});
+	//alerts "the first day of the week is Sunday",
+	//	"the second day of the week is Monday", etc.
+	(end)
 */
 
 function $each(iterable, fn, bind){
-	if (iterable.length) return Array.prototype.forEach.call(iterable, fn, bind)
-	var i=0;
+	if (iterable.length) return Array.prototype.forEach.call(iterable, fn, bind);
+	var i = 0;
 	for (name in iterable){
 		fn.call(bind, iterable[name], i, name);
 		i++;
 	}
+	return null;
 };

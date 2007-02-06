@@ -14,8 +14,8 @@ Class: Accordion
 	The Accordion class creates a group of elements that are toggled when their handles are clicked. When one elements toggles in, the others toggles back.
 
 Arguments:
-	elements - required, a collection of elements the transitions will be applied to.
 	togglers - required, a collection of elements, the elements handlers that will be clickable.
+	elements - required, a collection of elements the transitions will be applied to.
 	options - optional, see options below, and <Fx.Base> options.
 
 Options:

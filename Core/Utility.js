@@ -140,4 +140,4 @@ else if (document.getBoxObjectFor != null) window.gecko = true;
 
 //enables background image cache for internet explorer 6
 
-if (window.ie6) try {document.execCommand("BackgroundImageCache", false, true);} catch (e){};
+if (window.ie6) try {document.execCommand("BackgroundImageCache", false, true);} catch(e){};
