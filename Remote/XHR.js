@@ -38,13 +38,13 @@ var XHR = new Class({
 		onStateChange: Class.empty,
 		onSuccess: Class.empty,
 		onFailure: Class.empty,
-		headers: {},
-		isSuccess: this.isSuccess
+		headers: {}
 	},
 
 	initialize: function(options){
 		this.transport = window.XMLHttpRequest ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
 		this.setOptions(this.options, options);
+		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		if (!this.transport) return;
 		this.headers = {};
 		if (this.options.initialize) this.options.initialize.call(this);
