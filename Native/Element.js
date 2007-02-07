@@ -158,7 +158,7 @@ Class: Element
 Element.extend({
 
 	inject: function(el, where){
-		el = $(el) || new Element(el);
+		$(el);
 		switch (where){
 			case "before": $(el.parentNode).insertBefore(this, el); break;
 			case "after":
@@ -221,8 +221,10 @@ Element.extend({
 		If you pass div or another tag, the element will be created.
 	*/
 
-	adopt: function(el){
-		this.appendChild($(el) || new Element(el));
+	adopt: function(){
+		$$(arguments).each(function(el){
+			this.appendChild(el);
+		});
 		return this;
 	},
 
@@ -272,7 +274,7 @@ Element.extend({
 	*/
 
 	replaceWith: function(el){
-		el = $(el) || new Element(el);
+		$(el);
 		this.parentNode.replaceChild(el, this);
 		return el;
 	},

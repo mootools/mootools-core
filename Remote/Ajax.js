@@ -81,12 +81,11 @@ var Ajax = XHR.extend({
 		>new Ajax(url, {method: 'get'}).request();
 	*/
 
-	request: function(){
-		var data = null;
-		switch ($type(this.options.postBody)){
-			case 'element': data = $(this.options.postBody).toQueryString(); break;
-			case 'object': data = Object.toQueryString(this.options.postBody); break;
-			case 'string': data = this.options.postBody;
+	request: function(data){
+		data = data || this.options.postBody;
+		switch ($type(data)){
+			case 'element': data = $(data).toQueryString(); break;
+			case 'object': data = Object.toQueryString(data);
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
 		return this.send(this.url, data);

@@ -64,6 +64,8 @@ var Event = new Class({
 					break;
 				}
 			}
+			var fKey = this.code - 111;
+			if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
 
 		} else if (this.type.test(/mouse/) || (this.type == 'click')){
