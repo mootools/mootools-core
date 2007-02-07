@@ -48,7 +48,7 @@ var Accordion = Fx.Elements.extend({
 	},
 
 	initialize: function(togglers, elements, options){
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.previous = -1;
 		if (this.options.alwaysHide) this.options.wait = true;
 		if ($chk(this.options.show)){

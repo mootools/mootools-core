@@ -40,7 +40,7 @@ var Sortables = new Class({
 	},
 
 	initialize: function(list, options){
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.list = $(list);
 		this.elements = this.list.getChildren();
 		this.handles = $$(this.options.handles) || this.elements;

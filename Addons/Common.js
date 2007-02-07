@@ -146,8 +146,9 @@ var Options = new Class({
 		if your Class has <Events> implemented, every option beginning with on, followed by a capital letter (onComplete) becomes an Class instance event.
 	*/
 
-	setOptions: function(defaults, options){
-		this.options = $merge(defaults, options);
+	setOptions: function(){
+		var args = (arguments.length == 1) ? [this.options, arguments[0]] : arguments;
+		this.options = $merge.apply(this, args);
 		if (this.addEvent){
 			for (var option in this.options){
 				if (($type(this.options[option]) == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);

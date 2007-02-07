@@ -14,7 +14,7 @@ var Physics = new Class({
 	},
 	
 	initialize: function(element, container, options){
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.element = $(element);
 		this.container = $(container);
 		

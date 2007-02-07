@@ -33,7 +33,7 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	initialize: function(el, options){
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.element = $(el);
 		this.position = this.element.getStyle('position');
 		this.droppables = $$(this.options.droppables);

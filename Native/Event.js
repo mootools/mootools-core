@@ -105,7 +105,7 @@ var Event = new Class({
 		if (this.event.stopPropagation) this.event.stopPropagation();
 		else this.event.cancelBubble = true;
 		return this;
-    },
+	},
 
 	/*
 	Property: preventDefault

@@ -67,7 +67,7 @@ var Tips = new Class({
 	},
 
 	initialize: function(elements, options){
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.toolTip = new Element('div').addClass(this.options.className+'-tip').setStyles({
 			'position': 'absolute',
 			'top': '0',

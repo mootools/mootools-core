@@ -29,7 +29,7 @@ var Cookie = {
 		domain - the domain the Cookie belongs to. If you want to share the cookie with pages located on a different domain, you have to set this value. Defaults to the current domain.
 		path - the path the Cookie belongs to. If you want to share the cookie with pages located in a different path, you have to set this value, for example to "/" to share the cookie with all pages on the domain. Defaults to the current path.
 		duration - the duration of the Cookie before it expires, in days.
-				   If set to false or 0, the cookie will be a session cookie that expires when the browser is closed. Defaults to 365 days.
+					If set to false or 0, the cookie will be a session cookie that expires when the browser is closed. Defaults to 365 days.
 
 	Example:
 		>Cookie.set("username", "Aaron", {duration: 5}); //save this for 5 days

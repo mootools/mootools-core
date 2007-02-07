@@ -44,7 +44,7 @@ var Slider = new Class({
 	initialize: function(el, knob, options){
 		this.element = $(el);
 		this.knob = $(knob);
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 
 		this.previousChange = -1;
 		this.previousEnd = -1;

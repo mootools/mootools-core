@@ -43,7 +43,7 @@ var XHR = new Class({
 
 	initialize: function(options){
 		this.transport = window.XMLHttpRequest ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		if (!this.transport) return;
 		this.headers = {};

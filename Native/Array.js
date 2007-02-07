@@ -265,7 +265,7 @@ Function argument:
 
 	item - the current item in the iterator being procesed
 	index - the index of the item, or key in case of an object.
-       
+
 Examples:
 	(start code)
 	$each(['Sun','Mon','Tue'], function(day, index) {

@@ -65,7 +65,7 @@ Fx.Base = new Class({
 
 	initialize: function(options){
 		this.element = this.element || null;
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 

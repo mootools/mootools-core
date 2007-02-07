@@ -53,7 +53,7 @@ Drag.Base = new Class({
 	},
 
 	initialize: function(el, options){
-		this.setOptions(this.options, options);
+		this.setOptions(options);
 		this.element = $(el);
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
