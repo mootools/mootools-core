@@ -162,7 +162,7 @@ function $type(obj){
 
 /*
 Function: $merge
-	merges a number of objects recursively without referencing them.
+	merges a number of objects recursively without referencing them or their sub-objects.
 
 Arguments:
 	any number of objects.
