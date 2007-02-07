@@ -189,7 +189,7 @@ Element.extend({
 				var fn = function(val){
 					queryString.push(encodeURIComponent(name) + '=' + encodeURIComponent(val));
 				};
-				if (el.getTag() == 'select') value.split(',').each(fn);
+				if (el.getTag() == 'select' && el.multiple) value.split(',').each(fn);
 				else fn(value);
 			}
 		});
