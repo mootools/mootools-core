@@ -12,6 +12,31 @@ License:
 var Fx = {};
 
 /*
+Class: Fx.Transitions
+	A collection of transition equations for use with the <Fx.Base> Class.
+
+See Also:
+	<Fx.Transitions.js> for a whole bunch of transitions.
+
+Credits:
+	Easing Equations, (c) 2003 Robert Penner (http://www.robertpenner.com/easing/), Open Source BSD License.
+*/
+
+Fx.Transitions = {
+
+	/* Property: linear */
+	linear: function(t, b, c, d){
+		return c*t/d + b;
+	},
+
+	/* Property: sineInOut */
+	sineInOut: function(t, b, c, d){
+		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+	}
+
+};
+
+/*
 Class: Fx.Base
 	Base class for the Mootools Effects (Moo.Fx) library.
 
@@ -27,22 +52,20 @@ Options:
 
 Fx.Base = new Class({
 
-	getOptions: function(){
-		return {
-			onStart: Class.empty,
-			onComplete: Class.empty,
-			onCancel: Class.empty,
-			transition: Fx.Transitions.sineInOut,
-			duration: 500,
-			unit: 'px',
-			wait: true,
-			fps: 50
-		};
+	options: {
+		onStart: Class.empty,
+		onComplete: Class.empty,
+		onCancel: Class.empty,
+		transition: Fx.Transitions.sineInOut,
+		duration: 500,
+		unit: 'px',
+		wait: true,
+		fps: 50
 	},
 
 	initialize: function(options){
 		this.element = this.element || null;
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -130,28 +153,3 @@ Fx.Base = new Class({
 Fx.Base.implement(new Chain);
 Fx.Base.implement(new Events);
 Fx.Base.implement(new Options);
-
-/*
-Class: Fx.Transitions
-	A collection of transition equations for use with the <Fx.Base> Class.
-
-See Also:
-	<Fx.Transitions.js> for a whole bunch of transitions.
-
-Credits:
-	Easing Equations, (c) 2003 Robert Penner (http://www.robertpenner.com/easing/), Open Source BSD License.
-*/
-
-Fx.Transitions = {
-
-	/* Property: linear */
-	linear: function(t, b, c, d){
-		return c*t/d + b;
-	},
-
-	/* Property: sineInOut */
-	sineInOut: function(t, b, c, d){
-		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
-	}
-
-};

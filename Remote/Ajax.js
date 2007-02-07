@@ -35,20 +35,18 @@ Example:
 
 var Ajax = XHR.extend({
 
-	moreOptions: function(){
-		return {
-			postBody: null,
-			update: null,
-			onComplete: Class.empty,
-			evalScripts: false,
-			evalResponse: false,
-			encoding: 'utf-8'
-		};
+	options: {
+		postBody: null,
+		update: null,
+		onComplete: Class.empty,
+		evalScripts: false,
+		evalResponse: false,
+		encoding: 'utf-8'
 	},
 
 	initialize: function(url, options){
 		this.addEvent('onSuccess', this.onComplete);
-		this.setOptions(this.moreOptions(), options);
+		this.setOptions(this.options, options);
 		this.parent(this.options);
 		if (!['post', 'get'].test(this.options.method)){
 			this._method = '_method='+this.options.method;

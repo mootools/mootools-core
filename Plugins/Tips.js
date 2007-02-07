@@ -52,25 +52,23 @@ Example:
 
 var Tips = new Class({
 
-	getOptions: function(){
-		return {
-			onShow: function(tip){
-				tip.setStyle('visibility', 'visible');
-			},
-			onHide: function(tip){
-				tip.setStyle('visibility', 'hidden');
-			},
-			maxTitleChars: 30,
-			showDelay: 100,
-			hideDelay: 100,
-			className: 'tool',
-			offsets: {'x': 16, 'y': 16},
-			fixed: false
-		};
+	options: {
+		onShow: function(tip){
+			tip.setStyle('visibility', 'visible');
+		},
+		onHide: function(tip){
+			tip.setStyle('visibility', 'hidden');
+		},
+		maxTitleChars: 30,
+		showDelay: 100,
+		hideDelay: 100,
+		className: 'tool',
+		offsets: {'x': 16, 'y': 16},
+		fixed: false
 	},
 
 	initialize: function(elements, options){
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		this.toolTip = new Element('div').addClass(this.options.className+'-tip').setStyles({
 			'position': 'absolute',
 			'top': '0',

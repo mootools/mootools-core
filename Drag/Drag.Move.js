@@ -26,16 +26,14 @@ Options:
 
 Drag.Move = Drag.Base.extend({
 
-	getExtended: function(){
-		return {
-			droppables: [],
-			container: false,
-			overflown: []
-		}
+	options: {
+		droppables: [],
+		container: false,
+		overflown: []
 	},
 
 	initialize: function(el, options){
-		this.setOptions(this.getExtended(), options);
+		this.setOptions(this.options, options);
 		this.element = $(el);
 		this.position = this.element.getStyle('position');
 		this.droppables = $$(this.options.droppables);

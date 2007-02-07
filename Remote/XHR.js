@@ -31,22 +31,20 @@ Example:
 
 var XHR = new Class({
 
-	getOptions: function(){
-		return {
-			method: 'post',
-			async: true,
-			onRequest: Class.empty,
-			onStateChange: Class.empty,
-			onSuccess: Class.empty,
-			onFailure: Class.empty,
-			headers: {},
-			isSuccess: this.isSuccess
-		}
+	options: {
+		method: 'post',
+		async: true,
+		onRequest: Class.empty,
+		onStateChange: Class.empty,
+		onSuccess: Class.empty,
+		onFailure: Class.empty,
+		headers: {},
+		isSuccess: this.isSuccess
 	},
 
 	initialize: function(options){
 		this.transport = window.XMLHttpRequest ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		if (!this.transport) return;
 		this.headers = {};
 		if (this.options.initialize) this.options.initialize.call(this);

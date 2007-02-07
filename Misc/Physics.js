@@ -1,22 +1,20 @@
 var Physics = new Class({
 	
-	getOptions: function(options){
-		return {
-			onComplete: Class.empty,
-			onStart: Class.empty,
-			onStep: Class.empty,
-			gravity: 1,
-			restitution: 0.6,
-			friction: 0.9,
-			unit: 'px',
-			fps: 30,
-			airFriction: false,
-			blockers: []
-		};
+	options: {
+		onComplete: Class.empty,
+		onStart: Class.empty,
+		onStep: Class.empty,
+		gravity: 1,
+		restitution: 0.6,
+		friction: 0.9,
+		unit: 'px',
+		fps: 30,
+		airFriction: false,
+		blockers: []
 	},
 	
 	initialize: function(element, container, options){
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		this.element = $(element);
 		this.container = $(container);
 		

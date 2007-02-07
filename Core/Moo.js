@@ -35,7 +35,7 @@ Example:
 
 var Class = function(properties){
 	var klass = function(){
-		if (this.initialize && arguments[0] != 'noinit') return this.initialize.apply(this, arguments);
+		if (this.initialize && $type(this.initialize) == 'function') return this.initialize.apply(this, arguments);
 		else return this;
 	};
 	for (var property in this) klass[property] = this[property];
@@ -79,23 +79,12 @@ Class.prototype = {
 	*/
 
 	extend: function(properties){
-		var pr0t0typ3 = new this('noinit');
-
-		var parentize = function(previous, current){
-			if (!previous.apply || !current.apply) return false;
-			return function(){
-				this.parent = previous;
-				return current.apply(this, arguments);
-			};
-		};
-
+		var proto = $merge(this.prototype);
 		for (var property in properties){
-			var previous = pr0t0typ3[property];
-			var current = properties[property];
-			if (previous && previous != current) current = parentize(previous, current) || current;
-			pr0t0typ3[property] = current;
+			var pp = proto[property];
+			proto[property] = $mergeClass(pp, properties[property]);
 		}
-		return new Class(pr0t0typ3);
+		return new Class(proto);
 	},
 
 	/*
@@ -127,6 +116,86 @@ Class.prototype = {
 		for (var property in properties) this.prototype[property] = properties[property];
 	}
 
+};
+
+/* Section: Utility Functions */
+
+/*
+Function: $type
+	Returns the type of object that matches the element passed in.
+
+Arguments:
+	obj - the object to inspect.
+
+Example:
+	>var myString = 'hello';
+	>$type(myString); //returns "string"
+
+Returns:
+	'element' - if obj is a DOM element node
+	'textnode' - if obj is a DOM text node
+	'whitespace' - if obj is a DOM whitespace node
+	'array' - if obj is an array
+	'object' - if obj is an object
+	'string' - if obj is a string
+	'number' - if obj is a number
+	'boolean' - if obj is a boolean
+	'function' - if obj is a function
+	false - (boolean) if the object is not defined or none of the above.
+*/
+
+function $type(obj){
+	if (obj === null || obj === undefined) return false;
+	var type = typeof obj;
+	if (type == 'object'){
+		if (obj.htmlElement) return 'element';
+		if (obj.push) return 'array';
+		if (obj.nodeName){
+			switch (obj.nodeType){
+				case 1: return 'element';
+				case 3: return obj.nodeValue.test(/\S/) ? 'textnode' : 'whitespace';
+			}
+		}
+	}
+	return type;
+};
+
+/*
+Function: $merge
+	merges a number of objects recursively without referencing them.
+
+Arguments:
+	any number of objects.
+*/
+
+function $merge(){
+	var mix = {};
+	for (var i = 0; i < arguments.length; i++){
+		for (var property in arguments[i]){
+			var ap = arguments[i][property];
+			var mp = mix[property];
+			if (mp && $type(ap) == 'object' && $type(mp) == 'object') mix[property] = $merge(mp, ap);
+			else mix[property] = ap;
+		}
+	}
+	return mix;
+};
+
+//internal
+
+function $mergeClass(previous, current){
+	if (previous && previous != current){
+		var ptype = $type(previous);
+		var ctype = $type(current);
+		if (ptype == 'function' && ctype == 'function'){
+			return function(){
+				this.parent = previous;
+				return current.apply(this, arguments);
+			};
+		}
+		if (ptype == 'object' && ctype == 'object') return $merge(previous, current);
+	}
+	return current;
 };
 
 /* Section: Object related Functions */

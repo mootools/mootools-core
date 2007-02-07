@@ -147,7 +147,7 @@ var Options = new Class({
 	*/
 
 	setOptions: function(defaults, options){
-		this.options = Object.extend(defaults, options);
+		this.options = $merge(defaults, options);
 		if (this.addEvent){
 			for (var option in this.options){
 				if (($type(this.options[option]) == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);

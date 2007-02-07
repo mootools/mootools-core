@@ -25,24 +25,22 @@ Options:
 
 var Sortables = new Class({
 
-	getOptions: function() {
-		return {
-			handles: false,
-			onStart: Class.empty,
-			onComplete: Class.empty,
-			ghost: true,
-			snap: 3,
-			onDragStart: function(element, ghost){
-				ghost.setStyle('opacity', 0.5);
-			},
-			onDragComplete: function(element, ghost){
-				ghost.remove();
-			}
-		};
+	options: {
+		handles: false,
+		onStart: Class.empty,
+		onComplete: Class.empty,
+		ghost: true,
+		snap: 3,
+		onDragStart: function(element, ghost){
+			ghost.setStyle('opacity', 0.5);
+		},
+		onDragComplete: function(element, ghost){
+			ghost.remove();
+		}
 	},
 
 	initialize: function(list, options){
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		this.list = $(list);
 		this.elements = this.list.getChildren();
 		this.handles = $$(this.options.handles) || this.elements;

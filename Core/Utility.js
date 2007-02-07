@@ -24,46 +24,6 @@ window.extend = document.extend = Object.extend;
 var Window = window;
 
 /*
-Function: $type
-	Returns the type of object that matches the element passed in.
-
-Arguments:
-	obj - the object to inspect.
-
-Example:
-	>var myString = 'hello';
-	>$type(myString); //returns "string"
-
-Returns:
-	'element' - if obj is a DOM element node
-	'textnode' - if obj is a DOM text node
-	'whitespace' - if obj is a DOM whitespace node
-	'array' - if obj is an array
-	'object' - if obj is an object
-	'string' - if obj is a string
-	'number' - if obj is a number
-	'boolean' - if obj is a boolean
-	'function' - if obj is a function
-	false - (boolean) if the object is not defined or none of the above.
-*/
-
-function $type(obj){
-	if (obj === null || obj === undefined) return false;
-	var type = typeof obj;
-	if (type == 'object'){
-		if (obj.htmlElement) return 'element';
-		if (obj.push) return 'array';
-		if (obj.nodeName){
-			switch (obj.nodeType){
-				case 1: return 'element';
-				case 3: return obj.nodeValue.test(/\S/) ? 'textnode' : 'whitespace';
-			}
-		}
-	}
-	return type;
-};
-
-/*
 Function: $chk
 	Returns true if the passed in value/object exists or is 0, otherwise returns false.
 	Useful to accept zeroes.

@@ -33,24 +33,22 @@ Options:
 
 var Accordion = Fx.Elements.extend({
 
-	getExtended: function(){
-		return {
-			onActive: Class.empty,
-			onBackground: Class.empty,
-			display: 0,
-			show: false,
-			height: true,
-			width: false,
-			opacity: true,
-			fixedHeight: false,
-			fixedWidth: false,
-			wait: false,
-			alwaysHide: false
-		};
+	options: {
+		onActive: Class.empty,
+		onBackground: Class.empty,
+		display: 0,
+		show: false,
+		height: true,
+		width: false,
+		opacity: true,
+		fixedHeight: false,
+		fixedWidth: false,
+		wait: false,
+		alwaysHide: false
 	},
 
 	initialize: function(togglers, elements, options){
-		this.setOptions(this.getExtended(), options);
+		this.setOptions(this.options, options);
 		this.previous = -1;
 		if (this.options.alwaysHide) this.options.wait = true;
 		if ($chk(this.options.show)){

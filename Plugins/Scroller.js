@@ -27,18 +27,16 @@ Options:
 
 var Scroller = new Class({
 
-	getOptions: function(){
-		return {
-			area: 20,
-			velocity: 1,
-			onChange: function(x, y){
-				this.element.scrollTo(x, y);
-			}
-		};
+	options: {
+		area: 20,
+		velocity: 1,
+		onChange: function(x, y){
+			this.element.scrollTo(x, y);
+		}
 	},
 
 	initialize: function(element, options){
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		this.element = $(element);
 		this.mousemover = ([window, document].test(element)) ? $(document.body) : this.element;
 	},

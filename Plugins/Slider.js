@@ -30,23 +30,21 @@ Options:
 
 var Slider = new Class({
 
-	getOptions: function(){
-		return {
-			onChange: Class.empty,
-			onComplete: Class.empty,
-			onTick: function(pos){
-				this.knob.setStyle(this.p, pos+'px');
-			},
-			steps: 100,
-			mode: 'horizontal',
-			wheel: false
-		};
+	options: {
+		onChange: Class.empty,
+		onComplete: Class.empty,
+		onTick: function(pos){
+			this.knob.setStyle(this.p, pos+'px');
+		},
+		steps: 100,
+		mode: 'horizontal',
+		wheel: false
 	},
 
 	initialize: function(el, knob, options){
 		this.element = $(el);
 		this.knob = $(knob);
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 
 		this.previousChange = -1;
 		this.previousEnd = -1;

@@ -39,23 +39,21 @@ Options:
 
 Drag.Base = new Class({
 
-	getOptions: function(){
-		return {
-			handle: false,
-			unit: 'px',
-			onStart: Class.empty,
-			onBeforeStart: Class.empty,
-			onComplete: Class.empty,
-			onSnap: Class.empty,
-			onDrag: Class.empty,
-			limit: false,
-			modifiers: {x: 'left', y: 'top'},
-			snap: 6
-		};
+	options: {
+		handle: false,
+		unit: 'px',
+		onStart: Class.empty,
+		onBeforeStart: Class.empty,
+		onComplete: Class.empty,
+		onSnap: Class.empty,
+		onDrag: Class.empty,
+		limit: false,
+		modifiers: {x: 'left', y: 'top'},
+		snap: 6
 	},
 
 	initialize: function(el, options){
-		this.setOptions(this.getOptions(), options);
+		this.setOptions(this.options, options);
 		this.element = $(el);
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};

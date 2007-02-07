@@ -15,8 +15,6 @@ Class: Array
 	A collection of The Array Object prototype methods.
 */
 
-//emulated methods
-
 /*
 Property: forEach
 	Iterates through an array; This method is only available for browsers without native *forEach* support.
@@ -255,29 +253,35 @@ function $A(array, start, length){
 
 /*
 Function: $each
-	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls or arguments of a function.
-
+	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
+	
 Arguments:
-	iterable - an iterable element.
+	iterable - an iterable element or an objct.
 	function - function to apply to the iterable.
 	bind - optional, the 'this' of the function will refer to this object.
 
 Function argument:
-	The function argument will be passed the following arguments. The function does not need to declare them all.
-	
-	item - the current item in the iterator being processed
-	index - the index of the item
-	iterable - the iterable element
+	The function argument will be passed the following arguments.
 
+	item - the current item in the iterator being procesed
+	index - the index of the item, or key in case of an object.
+       
 Examples:
 	(start code)
 	$each(['Sun','Mon','Tue'], function(day, index) {
 		alert('name:' + day + ', index: ' + index);
 	});
 	//alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+	//over an object
+	$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+		alert("the " + key + " day of the week is " + value);
+	});
+	//alerts "the first day of the week is Sunday",
+	//"the second day of the week is Monday", etc.
 	(end)
 */
 
 function $each(iterable, fn, bind){
-	return Array.prototype.forEach.call(iterable, fn, bind);
+	if (iterable.length) Array.prototype.forEach.call(iterable, fn, bind);
+	else for (var name in iterable) fn.call(bind, iterable[name], name);
 };
