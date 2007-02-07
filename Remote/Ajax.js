@@ -4,7 +4,7 @@ Script: Ajax.js
 
 Authors:
 	- Valerio Proietti, <http://mad4milk.net>
-	- Christophe Beyls, <http://digitalia.be>
+	- Christophe Beyls, <http://www.digitalia.be>
 
 Credits:
 	Loosely based on the version from prototype.js <http://prototype.conio.net>
@@ -187,10 +187,12 @@ Element.extend({
 		$$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea')).each(function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if ((value !== false) && name){
-				value.split(',').each(function(val){
+			if (!el.disabled && (value !== false) && name){
+				var fn = function(val){
 					queryString.push(encodeURIComponent(name) + '=' + encodeURIComponent(val));
-				});
+				};
+				if (el.getTag() == 'select') value.split(',').each(fn);
+				else fn(value);
 			}
 		});
 		return queryString.join('&');

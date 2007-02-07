@@ -470,7 +470,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getStyle
+	Property: getStyles
 		Returns an object of styles of the Element for each argument passed in.
 		
 	Arguments:
@@ -484,12 +484,12 @@ Element.extend({
 
 	getStyles: function(){
 		var result = {};
-		$each(arguments, function(argument, index){
+		$each(arguments, function(argument){
 			result[argument] = this.getStyle(argument);
 		}, this);
 		return result;
 	},
-	
+
 	/*
 	Property: addEvent
 		Attaches an event listener to a DOM element.
@@ -630,7 +630,7 @@ Element.extend({
 		while ($type(el) == 'whitespace') el = el.previousSibling;
 		return $(el);
 	},
-	
+
 	/*
 	Property: getParent
 		returns the $(element.parentNode)
@@ -775,17 +775,16 @@ Element.extend({
 		switch (this.getTag()){
 			case 'select':
 				var values = [];
-				$each(this.getElementsByTagName('option'), function(opt, index){
+				$each(this.options, function(opt){
 					if (opt.selected) values.push(opt.value || opt.text);
 				});
 				return values.join(',') || false;
-				break;
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
 			case 'textarea': return this.value;
 		}
 		return false;
 	},
-	
+
 	/*
 	Property: getSize
 		return an Object representing the size/scroll values of the element.
