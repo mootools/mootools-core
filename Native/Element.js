@@ -439,7 +439,7 @@ Element.extend({
 		return this;
 	},
 
-/*
+	/*
 	Property: getStyle
 		Returns the style of the Element given the property passed in.
 
@@ -452,83 +452,23 @@ Element.extend({
 		>$('myElement').getStyle('width').toInt(); //returns "400"
 
 	Returns:
-		the style as a string, with the exception of border, see below. note that
-		if you ask for a multi-value style (like margin) you will get back a string
-		with each value represented ("10px 20px 30px 40px") *unless* they are all
-		the same (so you won't get "10px 10px 10px 10px", you'll just get "10px").
-		
-	Border styles:
-		Retrieving border values has several options. You can request border values
-		using any combination of "border", the property you want, and the side you want.
-		Leaving out any of these (except "border") will return a multi-value string,
-		unless they are all the same value. Additionally, *if you just request "border"
-		you will receive an object back* ({width: "1px", style: "solid", color: "#000000"}).
-		
-		Examples:
-(start code)
-$(el).getStyle('border');
-//might return {width: "1px", style: "solid", color: "#000000"}
-//but if the border isn't the same on all sides:
-//{width: "1px 2px 3px 4px", style: "solid dashed solid solid", color: "#000000"}
-
-$(el).getStyle('borderTop');
-//{width: "1px", style: "solid", color: "#000000"}
-
-$(el).getStyle('borderWidthTop');
-//"1px"
-
-//this is the same as above; the order doesn't matter
-$(el).getStyle('borderTopWidth');
-//"1px"
-
-$(el).getStyle('borderStyleTop');
-//"solid"
-
-$(el).getStyle('borderColorTop');
-//"#000000"
-(end)
+		the style as a string
 	*/
 
 	getStyle: function(property){
 		property = property.camelCase();
 		var style = this.style[property];
-		function checkEvery(styles){
-			return (styles.every(function(val){ return val == styles[0]; }))?styles[0]:styles.join(' ');
-		};
 		if (!$chk(style)){
 			if (property == 'opacity') return $chk(this.opacity) ? this.opacity : 1;
 			if (['margin', 'padding'].test(property)){
-				var styles = [this.getStyle(property+'-top') || 0, this.getStyle(property+'-right') || 0,
-						this.getStyle(property+'-bottom') || 0, this.getStyle(property+'-left') || 0];
-				return checkEvery(styles);
+				return [this.getStyle(property+'-top') || 0, this.getStyle(property+'-right') || 0,
+						this.getStyle(property+'-bottom') || 0, this.getStyle(property+'-left') || 0].join(' ');
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
 		if (style == 'auto' && ['height', 'width'].test(property)) return this['offset'+property.capitalize()]+'px';
-		style = (style && property.test(/color/i) && style.test(/rgb/)) ? style.rgbToHex() : style;
-		if (!style && property.test('border')){
-			function getProp(el, prop, side){
-				if (side) return el.getStyle('border-'+side+'-'+prop);
-				return checkEvery([el.getStyle('border-top-'+prop) || 0, el.getStyle('border-right-'+prop) || 0,
-						el.getStyle('border-bottom-'+prop) || 0, el.getStyle('border-left-'+prop) || 0]);
-			};
-			var borderStyles = {
-				width: getProp(this, 'width'), 
-				style: getProp(this, 'style'), 
-				color: getProp(this, 'color')};
-			['top','left','right','bottom'].each(function(val){
-				if(property.test(val))
-					borderStyles = {width: getProp(this,'width', val), 
-													style: getProp(this,'style', val), 
-													color: getProp(this,'color', val)}
-			});
-			$each(borderStyles, function(styles, name){
-				if (property.test(name, 'i')) borderStyles = styles;
-			});
-			return borderStyles;
-		}
-		return style;
+		return (style && property.test(/color/i) && style.test(/rgb/)) ? style.rgbToHex() : style;
 	},
 
 	/*
