@@ -71,7 +71,7 @@ function $(el){
 	if (['object', 'embed'].test(el.tagName.toLowerCase()) || el.extend) return el;
 	el._element_extended_ = true;
 	Garbage.collect(el);
-	el.extend = Object.extend;
+	el.extend = $extend;
 	if (!(el.htmlElement)) el.extend(Element.prototype);
 	return el;
 };
@@ -80,7 +80,7 @@ function $(el){
 
 var Elements = new Class({});
 
-new Object.Native(Elements);
+$native(Elements);
 
 document.getElementsBySelector = document.getElementsByTagName;
 
@@ -124,7 +124,7 @@ function $$(){
 		}
 	});
 	elements._elements_extended_ = true;
-	return Object.extend(elements, new Elements);
+	return $extend(elements, new Elements);
 };
 
 Elements.Multi = function(property){
@@ -224,7 +224,7 @@ Element.extend({
 	adopt: function(){
 		$$(arguments).each(function(el){
 			this.appendChild(el);
-		});
+		}, this);
 		return this;
 	},
 
@@ -770,7 +770,7 @@ Element.extend({
 
 	/*
 	Property: getValue
-		Returns the value of the Element, if its tag is textarea, select or input. no multiple select support.
+		Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
 	*/
 
 	getValue: function(){
@@ -780,7 +780,7 @@ Element.extend({
 				$each(this.options, function(opt){
 					if (opt.selected) values.push(opt.value || opt.text);
 				});
-				return values.join(',') || false;
+				return (this.multiple) ? values : values[0];
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
 			case 'textarea': return this.value;
 		}

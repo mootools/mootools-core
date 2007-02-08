@@ -48,7 +48,7 @@ var Event = new Class({
 	initialize: function(event){
 		this.event = event || window.event;
 		this.type = this.event.type;
-		this.target = this.event.target || this.event.srcElement;
+		this.target = $(this.event.target) || $(this.event.srcElement);
 		if (this.target.nodeType == 3) this.target = this.target.parentNode; // Safari
 		this.shift = this.event.shiftKey;
 		this.control = this.event.ctrlKey;
@@ -67,7 +67,6 @@ var Event = new Class({
 			var fKey = this.code - 111;
 			if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
-
 		} else if (this.type.test(/mouse/) || (this.type == 'click')){
 			this.page = {
 				'x': this.event.pageX || this.event.clientX + document.documentElement.scrollLeft,
@@ -79,8 +78,8 @@ var Event = new Class({
 			};
 			this.rightClick = (this.event.which == 3) || (this.event.button == 2);
 			switch (this.type){
-				case 'mouseover': this.relatedTarget = this.event.relatedTarget || this.event.fromElement; break;
-				case 'mouseout': this.relatedTarget = this.event.relatedTarget || this.event.toElement;
+				case 'mouseover': this.relatedTarget = $(this.event.relatedTarget) || $(this.event.fromElement); break;
+				case 'mouseout': this.relatedTarget = $(this.event.relatedTarget) || $(this.event.toElement);
 			}
 		}
 	},

@@ -50,7 +50,7 @@ var Color = new Class({
 				hsb = rgb.rgbToHsb();
 		}
 		rgb.hsb = hsb;
-		return Object.extend(rgb, Color.prototype);
+		return $extend(rgb, Color.prototype);
 	},
 	
 	/*

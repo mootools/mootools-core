@@ -14,7 +14,7 @@ Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside. Extends <Fx.Base>, inherits all its properties.
 
 Note:
-	This effect works on any block element, but the element *cannot be positioned*; no margins or absolute positions. To position the element, put it inside another element (a wrapper div, for instance) and position that instead.
+	This effect works on any block element, but the element doesnt allow absolute positions. To position the element, put it inside another element (a wrapper div, for instance) and position that instead.
 
 Options:
 	mode - set it to vertical or horizontal. Defaults to vertical.
@@ -28,11 +28,16 @@ Example:
 */
 
 Fx.Slide = Fx.Base.extend({
+	
+	options: {
+		mode: 'vertical'
+	},
 
 	initialize: function(el, options){
-		this.element = $(el).setStyle('margin', 0);
-		this.wrapper = new Element('div').injectAfter(this.element).setStyle('overflow', 'hidden').adopt(this.element);
-		this.setOptions({'mode': 'vertical'}, options);
+		this.element = $(el);
+		this.wrapper = new Element('div').injectAfter(this.element).adopt(this.element).setStyles($extend(this.element.getStyles('margin'), {'overflow': 'hidden'}));
+		this.element.setStyle('margin', 0);
+		this.setOptions(options);
 		this.now = [];
 		this.parent(this.options);
 	},
@@ -106,6 +111,18 @@ Fx.Slide = Fx.Base.extend({
 	increase: function(){
 		this.element.setStyle(this.margin, this.now[0]+this.options.unit);
 		this.wrapper.setStyle(this.layout, this.now[1]+this.options.unit);
+	}
+
+});
+
+Element.extend({
+	
+	slideIn: function(options){
+		return new Fx.Slide(this, options).slideIn();
+	},
+	
+	slideOut: function(options){
+		return new Fx.Slide(this, options).slideOut();
 	}
 
 });

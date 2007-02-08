@@ -98,17 +98,17 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	stop: function(){
+		if (!this.out){
+			var dropped = false;
+			this.droppables.each(function(drop){
+				if (this.checkAgainst(drop)){
+					drop.fireEvent('drop', [this.element, this]);
+					dropped = true;
+				}
+			}, this);
+			if (!dropped) this.element.fireEvent('drop', this);	
+		}
 		this.parent();
-		this.timer = $clear(this.timer);
-		if (this.out) return this;
-		var dropped = false;
-		this.droppables.each(function(drop){
-			if (this.checkAgainst(drop)){
-				drop.fireEvent('drop', [this.element, this]);
-				dropped = true;
-			}
-		}, this);
-		if (!dropped) this.element.fireEvent('drop', this);
 		return this;
 	}
 

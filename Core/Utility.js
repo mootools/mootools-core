@@ -20,7 +20,7 @@ if (typeof HTMLElement == 'undefined'){
 
 //window, document
 
-window.extend = document.extend = Object.extend;
+window.extend = document.extend = $extend;
 var Window = window;
 
 /*

@@ -38,11 +38,11 @@ var Cookie = {
 	*/
 
 	set: function(key, value, options){
-		options = Object.extend({
+		options = $merge({
 			domain: false,
 			path: false,
 			duration: 365
-		}, options || {});
+		}, options);
 		value = escape(value);
 		if (options.domain) value += "; domain=" + options.domain;
 		if (options.path) value += "; path=" + options.path;

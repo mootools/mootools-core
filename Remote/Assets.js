@@ -65,12 +65,12 @@ var Asset = {
 	*/
 
 	image: function(source, properties){
-		properties = Object.extend({
+		properties = $merge({
 			'src': source,
 			'onload': Class.empty,
 			'onabort': Class.empty,
 			'onerror': Class.empty
-		}, properties || {});
+		}, properties);
 		var image = new Image();
 		image.onload = function(){
 			if (arguments.callee.done) return false;
@@ -110,10 +110,10 @@ var Asset = {
 	*/
 
 	images: function(sources, options){
-		options = Object.extend({
+		options = $merge({
 			onComplete: Class.empty,
 			onProgress: Class.empty
-		}, options || {});
+		}, options);
 		if (!sources.push) sources = [sources];
 		var images = [];
 		counter = 0;
@@ -131,7 +131,7 @@ var Asset = {
 	},
 
 	create: function(type, defaults, properties, inject){
-		Object.extend(defaults, properties || {});
+		defaults = $merge(defaults, properties);
 		var element = new Element(type).setProperties(defaults);
 		if (inject) element.injectInside($$('head')[0]);
 		return element;

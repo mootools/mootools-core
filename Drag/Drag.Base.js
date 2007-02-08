@@ -153,7 +153,7 @@ Element.extend({
 	*/
 
 	makeResizable: function(options){
-		return new Drag.Base(this, Object.extend(options || {}, {modifiers: {x: 'width', y: 'height'}}));
+		return new Drag.Base(this, $merge({modifiers: {x: 'width', y: 'height'}}, options));
 	}
 
 });

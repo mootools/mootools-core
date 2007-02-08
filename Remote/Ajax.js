@@ -155,8 +155,7 @@ Element.extend({
 	*/
 
 	send: function(options){
-		options = Object.extend(options || {}, {postBody: this.toQueryString(), method: 'post'});
-		return new Ajax(this.getProperty('action'), options).request();
+		return new Ajax(this.getProperty('action'), $merge({postBody: this.toQueryString()}, options, {method: 'post'})).request();
 	},
 
 	/*
@@ -184,12 +183,12 @@ Element.extend({
 		$$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea')).each(function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if (!el.disabled && (value !== false) && name){
-				var fn = function(val){
+			if (!el.disabled){
+				var qs = function(val){
 					queryString.push(encodeURIComponent(name) + '=' + encodeURIComponent(val));
 				};
-				if (el.getTag() == 'select' && el.multiple) value.split(',').each(fn);
-				else fn(value);
+				if ($type(value) == 'array') value.each(qs);
+				else qs(value);
 			}
 		});
 		return queryString.join('&');

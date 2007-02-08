@@ -65,6 +65,8 @@ var Accordion = Fx.Elements.extend({
 			tog.addEvent('click', this.display.bind(this, i));
 		}, this);
 		this.elements.each(function(el, i){
+			if (this.options.height) el.setStyles({'padding-top': 0, 'border-top': 'none', 'padding-bottom': 0, 'border-bottom': 'none'});
+			if (this.options.width) el.setStyles({'padding-left': 0, 'border-left': 'none', 'padding-right': 0, 'border-right': 'none'});
 			el.fullOpacity = 1;
 			if (this.options.fixedWidth) el.fullWidth = this.options.fixedWidth;
 			if (this.options.fixedHeight) el.fullHeight = this.options.fixedHeight;

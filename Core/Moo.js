@@ -38,7 +38,7 @@ var Class = function(properties){
 		if (this.initialize && $type(this.initialize) == 'function') return this.initialize.apply(this, arguments);
 		else return this;
 	};
-	for (var property in this) klass[property] = this[property];
+	$extend(klass, this);
 	klass.prototype = properties;
 	return klass;
 };
@@ -113,7 +113,7 @@ Class.prototype = {
 	*/
 
 	implement: function(properties){
-		for (var property in properties) this.prototype[property] = properties[property];
+		$extend(this.prototype, properties);
 	}
 
 };
@@ -198,12 +198,10 @@ function $mergeClass(previous, current){
 	return current;
 };
 
-/* Section: Object related Functions */
-
 /*
-Function: Object.extend
+Function: $extend
 	Copies all the properties from the second passed object to the first passed Object.
-	If you do myWhatever.extend = Object.extend the first parameter will become myWhatever, and your extend function will only need one parameter.
+	If you do myWhatever.extend = $extend the first parameter will become myWhatever, and your extend function will only need one parameter.
 
 Example:
 	(start code)
@@ -216,7 +214,7 @@ Example:
 		'sex': 'male',
 		'lastName': 'Dorian'
 	};
-	Object.extend(firstOb, secondOb);
+	$extend(firstOb, secondOb);
 	//firstOb will become: 
 	{
 		'name': 'John',
@@ -230,7 +228,7 @@ Returns:
 	The first object, extended.
 */
 
-Object.extend = function(){
+var $extend = Object.extend = function(){
 	var args = arguments;
 	if (!args[1]) args = [this, args[0]];
 	for (var property in args[1]) args[0][property] = args[1][property];
@@ -246,8 +244,8 @@ Arguments:
 
 */
 
-Object.Native = function(){
+var $native = Object.Native = function(){
 	for (var i = 0; i < arguments.length; i++) arguments[i].extend = Class.prototype.implement;
 };
 
-new Object.Native(Function, Array, String, Number, Class);
+$native(Function, Array, String, Number, Class);

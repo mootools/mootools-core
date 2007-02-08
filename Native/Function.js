@@ -46,14 +46,14 @@ Function.extend({
 
 	create: function(options){
 		var fn = this;
-		options = Object.extend({
+		options = $merge({
 			'bind': fn, 
 			'event': false, 
 			'arguments': null, 
 			'delay': false, 
 			'periodical': false, 
 			'attempt': false
-		}, options || {});
+		}, options);
 		if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
 		return function(event){
 			var args;

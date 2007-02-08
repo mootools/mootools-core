@@ -87,7 +87,7 @@ var XHR = new Class({
 		this.transport.open(this.options.method, url, this.options.async);
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
-		Object.extend(this.headers, this.options.headers);
+		$extend(this.headers, this.options.headers);
 		for (var type in this.headers) this.transport.setRequestHeader(type, this.headers[type]);
 		this.transport.send(data);
 		return this;
