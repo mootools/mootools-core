@@ -14,7 +14,6 @@ License:
 /*
 Class: Color
 	Creates a new Color Object, which is an array with some color specific methods.
-	
 Arguments:
 	color - the hex, the RGB array or the HSB array of the color to create. For HSB colors, you need to specify the second argument.
 	type - a string representing the type of the color to create. needs to be specified if you intend to create the color with HSB values, or an array of HEX values. Can be 'rgb', 'hsb' or 'hex'.
@@ -52,16 +51,15 @@ var Color = new Class({
 		rgb.hsb = hsb;
 		return $extend(rgb, Color.prototype);
 	},
-	
+
 	/*
 	Property: mix
 		Mixes two or more colors with the Color.
-		
-	Arguments:
+		Arguments:
 		color - a color to mix. you can use as arguments how many colors as you want to mix with the original one.
 		alpha - if you use a number as the last argument, it will be threated as the amount of the color to mix.
 	*/
-	
+
 	mix: function(){
 		var colors = $A(arguments);
 		var alpha = ($type(colors[colors.length-1]) == 'number') ? colors.pop() : 50;
@@ -72,7 +70,7 @@ var Color = new Class({
 		});
 		return new Color(rgb, 'rgb');
 	},
-	
+
 	/*
 	Property: invert
 		Inverts the Color.
@@ -83,36 +81,33 @@ var Color = new Class({
 			return 255 - value;
 		}));
 	},
-	
+
 	/*
 	Property: setHue
 		Modifies the hue of the Color, and returns a new one.
-		
-	Arguments:
+		Arguments:
 		value - the hue to set
 	*/
 
 	setHue: function(value){
 		return new Color([value, this.hsb[1], this.hsb[2]], 'hsb');
 	},
-	
+
 	/*
 	Property: setSaturation
 		Changes the saturation of the Color, and returns a new one.
-		
-	Arguments:
+		Arguments:
 		percent - the percentage of the saturation to set
 	*/
 
 	setSaturation: function(percent){
 		return new Color([this.hsb[0], percent, this.hsb[2]], 'hsb');
 	},
-	
+
 	/*
 	Property: setBrightness
 		Changes the brightness of the Color, and returns a new one.
-		
-	Arguments:
+		Arguments:
 		percent - the percentage of the brightness to set
 	*/
 
@@ -146,7 +141,6 @@ Class: Array
 */
 
 Array.extend({
-	
 	/*
 	Property: rgbToHsb
 		Converts a RGB array to an HSB array.
@@ -154,7 +148,6 @@ Array.extend({
 	Returns:
 		the HSB array.
 	*/
-	
 	rgbToHsb: function(){
 		var red = this[0], green = this[1], blue = this[2];
 		var hue, saturation, brightness;
@@ -176,7 +169,7 @@ Array.extend({
 		}
 		return [Math.round(hue * 360), Math.round(saturation * 100), Math.round(brightness * 100)];
 	},
-	
+
 	/*
 	Property: hsbToRgb
 		Converts an HSB array to an RGB array.
@@ -184,7 +177,7 @@ Array.extend({
 	Returns:
 		the RGB array.
 	*/
-	
+
 	hsbToRgb: function(){
 		var br = Math.round(this[2] / 100 * 255);
 		if (this[1] == 0){

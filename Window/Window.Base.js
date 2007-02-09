@@ -1,7 +1,6 @@
 /*
 Script: Window.Base.js
 	Contains Window.onDomReady
-	
 Authors:
 	- Christophe Beyls, <http://www.digitalia.be>
 	- Valerio Proietti, <http://mad4milk.net>
@@ -16,7 +15,6 @@ Class: Window
 */
 
 window.extend({
-	
 	/*
 	Property: window.addEvent
 		same as <Element.addEvent> but allows the event 'domready', which is the same as <window.onDomReady>

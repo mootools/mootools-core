@@ -62,7 +62,7 @@ Drag.Base = new Class({
 		this.attach();
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
-	
+
 	attach: function(){
 		this.handle.addEvent('mousedown', this.bound.start);
 	},
@@ -73,6 +73,7 @@ Drag.Base = new Class({
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
+			if (!$chk(this.options.modifiers[z])) continue;
 			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			if (limit && limit[z]){
@@ -106,6 +107,7 @@ Drag.Base = new Class({
 		this.out = false;
 		this.mouse.now = event.page;
 		for (var z in this.options.modifiers){
+			if (!$chk(this.options.modifiers[z])) continue;
 			this.value.now[z] = this.mouse.now[z] - this.mouse.pos[z];
 			if (this.limit[z]){
 				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
@@ -121,7 +123,7 @@ Drag.Base = new Class({
 		this.fireEvent('onDrag', this.element);
 		event.stop();
 	},
-	
+
 	detach: function(){
 		this.handle.removeEvent('mousedown', this.bound.start);
 	},

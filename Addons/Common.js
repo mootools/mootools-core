@@ -171,7 +171,7 @@ var Group = new Class({
 		this.events = {};
 		this.checker = {};
 	},
-	
+
 	addEvent: function(type, fn){
 		this.checker[type] = this.checker[type] || {};
 		this.events[type] = this.events[type] || [];
@@ -182,7 +182,7 @@ var Group = new Class({
 		}, this);
 		return this;
 	},
-	
+
 	check: function(type, instance, i){
 		this.checker[type][i] = true;
 		var every = this.instances.every(function(current, j){

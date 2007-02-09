@@ -14,7 +14,6 @@ Class: XHR
 	Basic XMLHttpRequest Wrapper.
 
 Arguments:
-	
 
 Options:
 	method - 'post' or 'get' - the protocol for the request; optional, defaults to 'post'.
@@ -59,11 +58,9 @@ var XHR = new Class({
 		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;
 	},
-	
 	isSuccess: function(status){
 		return ((status >= 200) && (status < 300));
 	},
-	
 	onSuccess: function(){
 		this.response = {
 			'text': this.transport.responseText,
@@ -72,7 +69,6 @@ var XHR = new Class({
 		this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
 		this.callChain();
 	},
-	
 	onFailure: function(){
 		this.fireEvent('onFailure', this.transport);
 	},

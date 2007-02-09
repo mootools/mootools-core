@@ -106,7 +106,7 @@ Drag.Move = Drag.Base.extend({
 					dropped = true;
 				}
 			}, this);
-			if (!dropped) this.element.fireEvent('drop', this);	
+			if (!dropped) this.element.fireEvent('emptydrop', this);
 		}
 		this.parent();
 		return this;

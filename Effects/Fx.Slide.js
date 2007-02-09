@@ -28,7 +28,7 @@ Example:
 */
 
 Fx.Slide = Fx.Base.extend({
-	
+
 	options: {
 		mode: 'vertical'
 	},
@@ -116,11 +116,11 @@ Fx.Slide = Fx.Base.extend({
 });
 
 Element.extend({
-	
+
 	slideIn: function(options){
 		return new Fx.Slide(this, options).slideIn();
 	},
-	
+
 	slideOut: function(options){
 		return new Fx.Slide(this, options).slideOut();
 	}

@@ -309,10 +309,8 @@ Element.extend({
 	Returns:
 		true - the Element has the class
 		false - it doesn't
-	
 	Arguments:
 		className - the class name to test.
-	
 	Example:
 		><div id="myElement" class="testClass"></div>
 		>$('myElement').hasClass('testClass'); //returns true
@@ -467,7 +465,10 @@ Element.extend({
 				['top', 'right', 'bottom', 'left'].each(function(prop){
 					result.push(this.getStyle(property + '-' + prop) || '0');
 				}, this);
-				return (result.every(function(val){ return val == result[0]; }))?result[0]:result.join(' ');
+				var every = result.every(function(val){
+					return val == result[0];
+				});
+				return (every) ? result[0] : result;
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
@@ -479,10 +480,8 @@ Element.extend({
 	/*
 	Property: getStyles
 		Returns an object of styles of the Element for each argument passed in.
-		
-	Arguments:
+		Arguments:
 		properties - any number of style properties
-	
 	Example:
 		>$('myElement').getStyles('width','height','padding');
 		>//returns an object like:
@@ -587,8 +586,8 @@ Element.extend({
 	},
 
 	getBrother: function(what){
-		var el = this[what+'Sibling'];
-		while ($type(el) == 'whitespace') el = el[what+'Sibling'];
+		var el = this[what + 'Sibling'];
+		while ($type(el) == 'whitespace') el = el[what + 'Sibling'];
 		return $(el);
 	},
 
@@ -646,7 +645,6 @@ Element.extend({
 	getParent: function(){
 		return $(this.parentNode);
 	},
-	
 	/*
 	Property: getChildren
 		returns all the $(element.childNodes), excluding text nodes. Returns as <Elements>.
@@ -673,7 +671,7 @@ Element.extend({
 			case 'class': this.className = value; break;
 			case 'style': this.setStyles(value); break;
 			case 'name': if (window.ie6){
-				var el = $(document.createElement('<'+this.getTag()+' name="'+value+'" />'));
+				var el = $(document.createElement('<' + this.getTag() + ' name="' + value + '" />'));
 				$each(this.attributes, function(attribute){
 					if (attribute.name != 'name') el.setProperty(attribute.name, attribute.value);
 				});
@@ -829,7 +827,7 @@ Element.extend({
 	Returns:
 		>{x: 100, y:500};
 	*/
-	
+
 	getPosition: function(overflown){
 		overflown = overflown || [];
 		var el = this, left = 0, top = 0;
@@ -844,7 +842,7 @@ Element.extend({
 		});
 		return {'x': left, 'y': top};
 	},
-	
+
 	/*
 	Property: getTop
 		Returns the distance from the top of the window to the Element.
@@ -862,7 +860,6 @@ Element.extend({
 	getLeft: function(){
 		return this.getPosition().x;
 	},
-	
 	/*
 	Property: getCoordinates
 		Returns an object with width, height, left, right, top, and bottom, representing the values of the Element
@@ -884,7 +881,7 @@ Element.extend({
 		}
 		(end)
 	*/
-	
+
 	getCoordinates: function(overflown){
 		var position = this.getPosition(overflown);
 		var obj = {

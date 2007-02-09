@@ -34,7 +34,7 @@ var Slider = new Class({
 		onChange: Class.empty,
 		onComplete: Class.empty,
 		onTick: function(pos){
-			this.knob.setStyle(this.p, pos+'px');
+			this.knob.setStyle(this.p, pos + 'px');
 		},
 		steps: 100,
 		mode: 'horizontal',
@@ -45,38 +45,36 @@ var Slider = new Class({
 		this.element = $(el);
 		this.knob = $(knob);
 		this.setOptions(options);
-
 		this.previousChange = -1;
 		this.previousEnd = -1;
 		this.step = -1;
-
 		this.element.addEvent('mousedown', this.clickedElement.bindWithEvent(this));
-
 		if (this.options.wheel) this.element.addEvent('mousewheel', this.scrolledElement.bindWithEvent(this));
-
+		var mod;
 		if (this.options.mode == 'horizontal'){
-			this.z = 'x'; this.p = 'left';
+			this.z = 'x';
+			this.p = 'left';
+			mod = {'x': 'left', 'y': false};
 			this.max = this.element.offsetWidth-this.knob.offsetWidth;
 			this.half = this.knob.offsetWidth/2;
 			this.getPos = this.element.getLeft.bind(this.element);
 		} else if (this.options.mode == 'vertical'){
-			this.z = 'y'; this.p = 'top';
+			this.z = 'y';
+			this.p = 'top';
+			mod = {'x': false, 'y': 'top'};
 			this.max = this.element.offsetHeight-this.knob.offsetHeight;
 			this.half = this.knob.offsetHeight/2;
 			this.getPos = this.element.getTop.bind(this.element);
 		}
-
 		this.knob.setStyle('position', 'relative').setStyle(this.p, 0);
-
-		var modSlide = {}, limSlide = {};
-
+		var limSlide = {};
+		//var modSlide = {};
 		limSlide[this.z] = [0, this.max];
-		modSlide[this.z] = this.p;
-
+		//modSlide[this.z] = this.p;
 		this.drag = new Drag.Base(this.knob, {
 			limit: limSlide,
+			modifiers: mod,
 			snap: 0,
-			modifiers: modSlide,
 			onStart: function(){
 				this.draggedKnob();
 			}.bind(this),
@@ -122,7 +120,7 @@ var Slider = new Class({
 		this.step = this.toStep(position);
 		this.checkStep();
 		this.end();
-		this.fireEvent('onTick', position+'');
+		this.fireEvent('onTick', position + '');
 	},
 
 	draggedKnob: function(){
@@ -140,7 +138,7 @@ var Slider = new Class({
 	end: function(){
 		if (this.previousEnd !== this.step){
 			this.previousEnd = this.step;
-			this.fireEvent('onComplete', this.step+'');
+			this.fireEvent('onComplete', this.step + '');
 		}
 	},
 

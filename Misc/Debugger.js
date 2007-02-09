@@ -1,8 +1,7 @@
 /*
 Script: Debugger.js
 	Creates Firebug <http://www.getfirebug.com> style debugger for browsers without Firebug.
-		
-Authors:
+	Authors:
 	- Valerio Proietti, <http://mad4milk.net>
 	- Aaron Newton, <http://clientside.cnet.com>
 	- Christophe Beyls, <http://www.digitalia.be>
@@ -12,9 +11,7 @@ License:
 */
 
 var debug = {
-	
 	timers: {},
-	
 	pre: function(content, color, bgcolor){
 		if (debug.disabled) return;
 		if (!debug._body) debug.create();
@@ -61,10 +58,8 @@ var debug = {
 				chunks.push({'type': type, 'message': argument});
 			}
 		});
-		
-		var holder = new Element('div');
-		
-		if (!chunks.length) return;
+			var holder = new Element('div');
+			if (!chunks.length) return;
 		chunks.each(function(chunk){
 			var color = '#222';
 			switch(chunk.type){
@@ -108,21 +103,16 @@ var debug = {
 	/*
 	Property: log
 		sends a message to the debugger.
-		
-	Arguments:
+		Arguments:
 		messages - any number of strings, objects, etc. to print out
-		
-	Note:
+		Note:
 		The debugger will allow firebug style log messages:
-		
-		%s	- String
+			%s	- String
 		%d, %i	- Integer (numeric formatting is not yet supported)
 		%f	- Floating point number (numeric formatting is not yet supported)
 		%o	- Object hyperlink
-		
-	Example:
-		
-		>console.log("the value of x is %s and this paragraph is %o", x, $('id'));
+		Example:
+			>console.log("the value of x is %s and this paragraph is %o", x, $('id'));
 		> the value of x is <some value> and this paragraph is <p>
 	*/
 
@@ -168,7 +158,6 @@ var debug = {
 	/*
 	Property: time
 		Starts a timer.
-	
 	Argument:
 		name - the name of the timer
 	*/
@@ -180,8 +169,7 @@ var debug = {
 	/*
 	Property: timeEnd
 		Ends a timer and logs that value to the console.
-		
-	Argument:
+		Argument:
 		name - the name of the timer
 	*/
 
@@ -194,10 +182,8 @@ var debug = {
 	Property: create
 		Displays the console area.
 	*/
-	
 	create: function(){
-		
-		//main element
+			//main element
 		debug._body = new Element('div').setStyles({
 			'position': window.ie6 ? 'absolute' : 'fixed',
 			'background': '#fff',
@@ -307,7 +293,7 @@ var debug = {
 			debug._body.setStyles({
 				'top': (window.getHeight()-debug._hgt+1)+'px',
 				'width': (window.getWidth())+'px'
-			});			
+			});
 		}
 
 	},
@@ -328,7 +314,6 @@ var debug = {
 			case 'enter':
 				if (!value) return;
 				debug._input.value = '';
-
 				switch(value){
 					case 'exit': debug._body.remove(); debug._body = false; return;
 					case 'clear':

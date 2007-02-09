@@ -62,7 +62,7 @@ Fx.CSS.Multi = {
 	},
 
 	getValue: function(value, unit){
-		return value.join(unit+' ')+unit;
+		return value.join(unit + ' ')+unit;
 	}
 
 };

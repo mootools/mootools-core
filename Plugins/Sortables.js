@@ -61,8 +61,8 @@ var Sortables = new Class({
 						this.old = element;
 						this.drag[i].element = this.ghost = element.clone().setStyles({
 							'position': 'absolute',
-							'top': offsets.y+'px',
-							'left': offsets.x+'px'
+							'top': offsets.y + 'px',
+							'left': offsets.x + 'px'
 						}).injectInside(this.trash);
 						this.fireEvent('onDragStart', [el, this.ghost]);
 					}.bind(this),
@@ -99,13 +99,13 @@ var Sortables = new Class({
 		}
 		event.stop();
 	},
-	
+
 	detach: function(){
 		this.elements.each(function(el, i){
 			this.handles[i].removeEvent('mousedown', this.bound.start[i]);
 		}, this);
 	},
-	
+
 	serialize: function(){
 		var serial = [];
 		this.list.getChildren().each(function(el, i){

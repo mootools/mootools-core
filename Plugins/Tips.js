@@ -68,7 +68,7 @@ var Tips = new Class({
 
 	initialize: function(elements, options){
 		this.setOptions(options);
-		this.toolTip = new Element('div').addClass(this.options.className+'-tip').setStyles({
+		this.toolTip = new Element('div').addClass(this.options.className + '-tip').setStyles({
 			'position': 'absolute',
 			'top': '0',
 			'left': '0',
@@ -108,12 +108,12 @@ var Tips = new Class({
 		this.wrapper.setHTML('');
 		if (el.myTitle){
 			new Element('span').injectInside(
-				new Element('div').addClass(this.options.className+'-title').injectInside(this.wrapper)
+				new Element('div').addClass(this.options.className + '-title').injectInside(this.wrapper)
 			).setHTML(el.myTitle);
 		}
 		if (el.myText){
 			new Element('span').injectInside(
-				new Element('div').addClass(this.options.className+'-text').injectInside(this.wrapper)
+				new Element('div').addClass(this.options.className + '-text').injectInside(this.wrapper)
 			).setHTML(el.myText);
 		}
 		$clear(this.timer);

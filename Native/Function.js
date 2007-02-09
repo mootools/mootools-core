@@ -22,13 +22,10 @@ Function.extend({
 	/*
 	Property: create
 		Main function to create closures.
-	
 	Returns:
 		a function.
-	
 	Arguments:
 		options - An Options object.
-	
 	Options:
 		bind - The object that the "this" of the function will refer to. Default is the current function.
 		event - If set to true, the function will act as an event listener and receive an event as first argument.
@@ -97,7 +94,7 @@ Function.extend({
 	pass: function(args, bind){
 		return this.create({'arguments': args, 'bind': bind});
 	},
-	
+
 	/*
 	Property: attempt
 		Tries to execute the function, returns either the function results or the error.

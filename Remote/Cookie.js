@@ -69,7 +69,7 @@ var Cookie = {
 	*/
 
 	get: function(key){
-		var value = document.cookie.match('(?:^|;)\\s*'+key+'=([^;]*)');
+		var value = document.cookie.match('(?:^|;)\\s*' + key + '=([^;]*)');
 		return value ? unescape(value[1]) : false;
 	},
 

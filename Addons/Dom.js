@@ -148,7 +148,7 @@ document.extend({
 	*/
 
 	getElementsByClassName: function(className){
-		return document.getElements('.'+className);
+		return document.getElements('.' + className);
 	},
 	getElement: Element.prototype.getElement,
 	getElements: Element.prototype.getElements,
@@ -159,7 +159,6 @@ document.extend({
 //dom filters, internal methods.
 
 var Filters = {
-	
 	selector: [],
 
 	id: function(el){
@@ -179,8 +178,8 @@ var Filters = {
 		switch(operator){
 			case '*=': return (current.test(value));
 			case '=': return (current == value);
-			case '^=': return (current.test('^'+value));
-			case '$=': return (current.test(value+'$'));
+			case '^=': return (current.test('^' + value));
+			case '$=': return (current.test(value + '$'));
 		}
 		return false;
 	}
