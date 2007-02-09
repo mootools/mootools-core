@@ -195,7 +195,7 @@ Array.extend({
 			var p = Math.round((this[2] * (100 - this[1])) / 10000 * 255);
 			var q = Math.round((this[2] * (6000 - this[1] * f)) / 600000 * 255);
 			var t = Math.round((this[2] * (6000 - this[1] * (60 - f))) / 600000 * 255);
-			switch (Math.floor(hue / 60)){
+			switch(Math.floor(hue / 60)){
 				case 0: return [br, t, p];
 				case 1: return [q, br, p];
 				case 2: return [p, br, t];

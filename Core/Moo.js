@@ -151,7 +151,7 @@ function $type(obj){
 		if (obj.htmlElement) return 'element';
 		if (obj.push) return 'array';
 		if (obj.nodeName){
-			switch (obj.nodeType){
+			switch(obj.nodeType){
 				case 1: return 'element';
 				case 3: return obj.nodeValue.test(/\S/) ? 'textnode' : 'whitespace';
 			}

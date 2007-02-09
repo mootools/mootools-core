@@ -34,7 +34,7 @@ var Json = {
 	*/
 
 	toString: function(obj){
-		switch ($type(obj)){
+		switch($type(obj)){
 			case 'string':
 				return '"'+obj.replace(/(["\\])/g, '\\$1')+'"';
 			case 'array':

@@ -176,7 +176,7 @@ var Filters = {
 		var operator = Filters.selector[5];
 		if (!operator) return true;
 		var value = Filters.selector[6];
-		switch (operator){
+		switch(operator){
 			case '*=': return (current.test(value));
 			case '=': return (current == value);
 			case '^=': return (current.test('^'+value));

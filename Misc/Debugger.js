@@ -67,7 +67,7 @@ var debug = {
 		if (!chunks.length) return;
 		chunks.each(function(chunk){
 			var color = '#222';
-			switch (chunk.type){
+			switch(chunk.type){
 				case 'object': color = '#612fc9'; break;
 				case 'string': color = '#85b23e'; break;
 				case 'element': 
@@ -77,7 +77,7 @@ var debug = {
 				case 'boolean': color = '#ff3300'; break;
 				case 'array': color = '#953eb2'; break;
 			}
-			switch (chunk.type){
+			switch(chunk.type){
 				case 'element':
 					chunk.message.setStyle('color', color).injectInside(holder);
 					holder.appendText(spacer);
@@ -324,12 +324,12 @@ var debug = {
 	parseKey: function(e){
 		var value = debug._input.value;
 
-		switch (e.key){
+		switch(e.key){
 			case 'enter':
 				if (!value) return;
 				debug._input.value = '';
 
-				switch (value){
+				switch(value){
 					case 'exit': debug._body.remove(); debug._body = false; return;
 					case 'clear':
 					case 'clr': debug._contents.setHTML(''); return;

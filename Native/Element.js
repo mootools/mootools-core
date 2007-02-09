@@ -112,7 +112,7 @@ function $$(){
 	}
 	var elements = [];
 	$each(arguments, function(selector){
-		switch ($type(selector)){
+		switch($type(selector)){
 			case 'element': elements.push($(selector)); break;
 			case 'string': selector = document.getElementsBySelector(selector);
 			default:
@@ -159,7 +159,7 @@ Element.extend({
 
 	inject: function(el, where){
 		$(el);
-		switch (where){
+		switch(where){
 			case "before": $(el.parentNode).insertBefore(this, el); break;
 			case "after":
 				if (!el.getNext()) $(el.parentNode).appendChild(this);
@@ -381,8 +381,11 @@ Element.extend({
 	*/
 
 	setStyle: function(property, value){
-		if (property == 'opacity') this.setOpacity(parseFloat(value));
-		else this.style[property.camelCase()] = (value.push) ? 'rgb('+value.join(',')+')' : value;
+		switch(property){
+			case 'opacity': return this.setOpacity(parseFloat(value));
+			case 'float': property = (window.ie) ? 'styleFloat' : 'cssFloat';
+		}
+		this.style[property.camelCase()] = (value.push) ? 'rgb('+value.join(',')+')' : value;
 		return this;
 	},
 
@@ -406,12 +409,11 @@ Element.extend({
 	*/
 
 	setStyles: function(source){
-		switch ($type(source)){
+		switch($type(source)){
 			case 'object':
 				for (var property in source) this.setStyle(property, source[property]);
 				break;
-			case 'string':
-				this.style.cssText = source;
+			case 'string': this.style.cssText = source;
 		}
 		return this;
 	},
@@ -434,7 +436,7 @@ Element.extend({
 			if(this.style.visibility != "visible") this.style.visibility = "visible";
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (window.ie) this.style.filter = "alpha(opacity=" + opacity*100 + ")";
+		if (window.ie) this.style.filter = "alpha(opacity=" + opacity * 100 + ")";
 		this.style.opacity = this.opacity = opacity;
 		return this;
 	},
@@ -461,8 +463,11 @@ Element.extend({
 		if (!$chk(style)){
 			if (property == 'opacity') return $chk(this.opacity) ? this.opacity : 1;
 			if (['margin', 'padding'].test(property)){
-				return [this.getStyle(property+'-top') || 0, this.getStyle(property+'-right') || 0,
-						this.getStyle(property+'-bottom') || 0, this.getStyle(property+'-left') || 0].join(' ');
+				var result = [];
+				['top', 'right', 'bottom', 'left'].each(function(prop){
+					result.push(this.getStyle(property + '-' + prop) || '0');
+				}, this);
+				return result.join(' ');
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
@@ -664,7 +669,7 @@ Element.extend({
 	*/
 
 	setProperty: function(property, value){
-		switch (property){
+		switch(property){
 			case 'class': this.className = value; break;
 			case 'style': this.setStyles(value); break;
 			case 'name': if (window.ie6){
@@ -774,7 +779,7 @@ Element.extend({
 	*/
 
 	getValue: function(){
-		switch (this.getTag()){
+		switch(this.getTag()){
 			case 'select':
 				var values = [];
 				$each(this.options, function(opt){

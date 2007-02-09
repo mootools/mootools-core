@@ -83,7 +83,7 @@ var Ajax = XHR.extend({
 
 	request: function(data){
 		data = data || this.options.postBody;
-		switch ($type(data)){
+		switch($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
