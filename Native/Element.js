@@ -467,7 +467,7 @@ Element.extend({
 				['top', 'right', 'bottom', 'left'].each(function(prop){
 					result.push(this.getStyle(property + '-' + prop) || '0');
 				}, this);
-				return result.join(' ');
+				return (result.every(function(val){ return val == result[0]; }))?result[0]:result.join(' ');
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
