@@ -70,7 +70,7 @@ Element.extend({
 		>$('myElement').getElements('a'); // get all anchors within myElement
 		
 	Notes:
-		Supports attribute selectors, specigfically these operators:
+		Supports these operators in attribute selectors:
 		
 		- = : is equal to
 		- ^= : starts-with
@@ -247,14 +247,6 @@ Elements.extend({
 		var found = [];
 		this.each(function(el){
 			found.extend(el.getElementsByTagName(tagName));
-		});
-		return found;
-	},
-	
-	getElementsByXpath: function(xp){
-		var found = [];
-		this.each(function(el){
-			found.extend(Element.prototype.getElementsByXpath.call(el, xp));
 		});
 		return found;
 	}
