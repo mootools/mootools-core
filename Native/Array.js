@@ -22,7 +22,7 @@ Property: forEach
 */
 
 Array.prototype.forEach = Array.prototype.forEach || function(fn, bind){
-	for (var i = 0; i < this.length; i++) fn.call(bind, this[i], i, this);
+	for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
 };
 
 /*
@@ -33,7 +33,7 @@ Property: filter
 
 Array.prototype.filter = Array.prototype.filter || function(fn, bind){
 	var results = [];
-	for (var i = 0; i < this.length; i++){
+	for (var i = 0, j = this.length; i < j; i++){
 		if (fn.call(bind, this[i], i, this)) results.push(this[i]);
 	}
 	return results;
@@ -47,7 +47,7 @@ Property: map
 
 Array.prototype.map = Array.prototype.map || function(fn, bind){
 	var results = [];
-	for (var i = 0; i < this.length; i++) results[i] = fn.call(bind, this[i], i, this);
+	for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
 	return results;
 };
 
@@ -58,7 +58,7 @@ Property: every
 */
 
 Array.prototype.every = Array.prototype.every || function(fn, bind){
-	for (var i = 0; i < this.length; i++){
+	for (var i = 0, j = this.length; i < j; i++){
 		if (!fn.call(bind, this[i], i, this)) return false;
 	}
 	return true;
@@ -71,7 +71,7 @@ Property: some
 */
 
 Array.prototype.some = Array.prototype.some || function(fn, bind){
-	for (var i = 0; i < this.length; i++){
+	for (var i = 0, j = this.length; i < j; i++){
 		if (fn.call(bind, this[i], i, this)) return true;
 	}
 	return false;
@@ -85,8 +85,9 @@ Property: indexOf
 
 Array.prototype.indexOf = Array.prototype.indexOf || function(item, from){
 	from = from || 0;
-	if (from < 0) from = Math.max(0, this.length + from);
-	while (from < this.length){
+	var len = this.length;
+	if (from < 0) from = Math.max(0, len + from);
+	while (from < len){
 		if(this[from] === item) return from;
 		from++;
 	}
@@ -154,7 +155,8 @@ Array.extend({
 
 	remove: function(item){
 		var i = 0;
-		while (i < this.length){
+		var len = this.length;
+		while (i < len){
 			if (this[i] === item) this.splice(i, 1);
 			else i++;
 		}
@@ -197,7 +199,7 @@ Array.extend({
 
 	extend: function(newArray){
 		var pos = this.length;
-		for (var i = 0; i < newArray.length; i++) this[pos++] = newArray[i];
+		for (var i = 0, j = newArray.length; i < j; i++) this[pos++] = newArray[i];
 		return this;
 	},
 

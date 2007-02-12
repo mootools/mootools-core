@@ -68,32 +68,78 @@ Element.extend({
 
 	Example:
 		>$('myElement').getElements('a'); // get all anchors within myElement
+		
+	Notes:
+		Supports attribute selectors, specigfically these operators:
+		
+		- = : is equal to
+		- ^= : starts-with
+		- $= : ends-with
+		- != : is not equal to
+		
+		Xpath is used automatically for compliant browsers.
 	*/
 
 	getElements: function(selector){
-		var elements = [];
-		selector.clean().split(' ').each(function(sel, i){
+		var items = [];
+		var xpath = (document.evaluate) ? true : false;
+		
+		selector = selector.clean().split(' ');
+		for (var i = 0, j = selector.length; i < j; i++){
+			var sel = selector[i];
 			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
 			//PARAM ARRAY: 0 = full string: 1 = tag; 2 = id; 3 = class; 4 = attribute; 5 = operator; 6 = value;
-			if (!param) return;
-			Filters.selector = param;
+
+			if (!param) break;
 			param[1] = param[1] || '*';
+			
+			//only if xpath
+			if (xpath){
+				var temp = [param[1]];
+				if (param[2]) temp.push('[@id="', param[2], '"]');		
+				if (param[3]) temp.push('[contains(concat(" ", @class, " "), "', param[3], '")]');
+				if (param[4]){
+					if (param[5] && param[6]){
+						switch(param[5]){
+							case '*=':  temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
+							case '^=':  temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
+							case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
+							case '=':  temp.push('[@', param[4], '="', param[6], '"]'); break;
+							case '!=':  temp.push('[@', param[4], '!="', param[6], '"]');
+						}
+					} else temp.push('[@', param[4], ']');
+				}
+				items.push(temp.join(''));
+				continue;
+			}
+			
+			Filters.selector = param;
 			if (i == 0){
 				if (param[2]){
 					var el = this.getElementById(param[2]);
-					if (!el || ((param[1] != '*') && (Element.prototype.getTag.call(el) != param[1]))) return;
-					elements = [el];
+					if (!el || ((param[1] != '*') && (Element.prototype.getTag.call(el) != param[1]))) break;
+					items = [el];
 				} else {
-					elements = $A(this.getElementsByTagName(param[1]));
+					items = $A(this.getElementsByTagName(param[1]));
 				}
 			} else {
-				elements = Elements.prototype.getElementsByTagName.call(elements, param[1], true);
-				if (param[2]) elements = elements.filter(Filters.id);
+				items = Elements.prototype.getElementsByTagName.call(items, param[1], true);
+				if (param[2]) items = items.filter(Filters.id);
 			}
-			if (param[3]) elements = elements.filter(Filters.className);
-			if (param[4]) elements = elements.filter(Filters.attribute);
-		}, this);
-		return $$(elements);
+			if (param[3]) items = items.filter(Filters.className);
+			if (param[4]) items = items.filter(Filters.attribute);
+		}
+		
+		return (xpath) ? $$(this.getElementsByXpath(items.join(' /'))) : $$(items);
+		
+	},
+	
+	getElementsByXpath: function(xp){
+		var result = [];
+		if (this == document) xp = '//' + xp;
+		var xpath = document.evaluate(xp, this, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		for (var i = 0, j = xpath.snapshotLength; i < j; i++) result.push(xpath.snapshotItem(i));
+		return result;
 	},
 
 	/*
@@ -141,6 +187,7 @@ Element.extend({
 /* Section: document related functions */
 
 document.extend({
+
 	/*
 	Function: document.getElementsByClassName 
 		Returns all the elements that match a specific class name. 
@@ -152,13 +199,15 @@ document.extend({
 	},
 	getElement: Element.prototype.getElement,
 	getElements: Element.prototype.getElements,
-	getElementsBySelector: Element.prototype.getElementsBySelector
+	getElementsBySelector: Element.prototype.getElementsBySelector,
+	getElementsByXpath: Element.prototype.getElementsByXpath
 
 });
 
 //dom filters, internal methods.
 
 var Filters = {
+
 	selector: [],
 
 	id: function(el){
@@ -176,10 +225,11 @@ var Filters = {
 		if (!operator) return true;
 		var value = Filters.selector[6];
 		switch(operator){
-			case '*=': return (current.test(value));
 			case '=': return (current == value);
+			case '*=': return (current.test(value));
 			case '^=': return (current.test('^' + value));
 			case '$=': return (current.test(value + '$'));
+			case '!=': return (current != value);
 		}
 		return false;
 	}
@@ -197,6 +247,14 @@ Elements.extend({
 		var found = [];
 		this.each(function(el){
 			found.extend(el.getElementsByTagName(tagName));
+		});
+		return found;
+	},
+	
+	getElementsByXpath: function(xp){
+		var found = [];
+		this.each(function(el){
+			found.extend(Element.prototype.getElementsByXpath.call(el, xp));
 		});
 		return found;
 	}
