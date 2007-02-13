@@ -80,23 +80,18 @@ Element.extend({
 		Xpath is used automatically for compliant browsers.
 	*/
 
-	getElements: function(selector){
+	getElements: function(selector, nocash){
 		var items = [];
 		var xpath = (document.evaluate) ? true : false;
-		
 		selector = selector.clean().split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
 			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
-			//PARAM ARRAY: 0 = full string: 1 = tag; 2 = id; 3 = class; 4 = attribute; 5 = operator; 6 = value;
-
 			if (!param) break;
 			param[1] = param[1] || '*';
-			
-			//only if xpath
 			if (xpath){
 				var temp = [param[1]];
-				if (param[2]) temp.push('[@id="', param[2], '"]');		
+				if (param[2]) temp.push('[@id="', param[2], '"]');
 				if (param[3]) temp.push('[contains(concat(" ", @class, " "), "', param[3], '")]');
 				if (param[4]){
 					if (param[5] && param[6]){
@@ -112,7 +107,6 @@ Element.extend({
 				items.push(temp.join(''));
 				continue;
 			}
-			
 			Filters.selector = param;
 			if (i == 0){
 				if (param[2]){
@@ -129,9 +123,9 @@ Element.extend({
 			if (param[3]) items = items.filter(Filters.className);
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
-		
-		return (xpath) ? $$(this.getElementsByXpath(items.join(' /'))) : $$(items);
-		
+		if (xpath) items = this.getElementsByXpath(items.join(' /'));
+		return (nocash) ? items : $$(items);
+
 	},
 	
 	getElementsByXpath: function(xp){
@@ -174,12 +168,13 @@ Element.extend({
 
 	*/
 
-	getElementsBySelector: function(selector){
+	getElementsBySelector: function(selector, nocash){
 		var els = [];
-		selector.split(',').each(function(sel){
-			els.extend(this.getElements(sel));
-		}, this);
-		return $$(els);
+		var sel = selector.split(',');
+		for (var i = 0, j = sel.length; i < j; i++){
+			els.extend(this.getElements(sel[i], true));
+		}
+		return (nocash) ? els : $$(els);
 	}
 
 });
@@ -245,9 +240,7 @@ Elements.extend({
 
 	getElementsByTagName: function(tagName){
 		var found = [];
-		this.each(function(el){
-			found.extend(el.getElementsByTagName(tagName));
-		});
+		for (var i = 0, j = this.length; i < j; i++) found.extend(this[i].getElementsByTagName(tagName));
 		return found;
 	}
 

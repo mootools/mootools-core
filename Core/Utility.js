@@ -9,15 +9,6 @@ License:
 	MIT-style license.
 */
 
-//htmlelement
-
-if (typeof HTMLElement == 'undefined'){
-	var HTMLElement = Class.empty;
-	HTMLElement.prototype = {};
-} else {
-	HTMLElement.prototype.htmlElement = true;
-}
-
 //window, document
 
 window.extend = document.extend = $extend;
@@ -97,6 +88,15 @@ Properties:
 if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
 else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
 else if (document.getBoxObjectFor != null) window.gecko = true;
+
+//htmlelement
+
+if (typeof HTMLElement == 'undefined'){
+	var HTMLElement = Class.empty;
+	if (window.khtml) document.createElement("iframe"); //fixes safari
+	HTMLElement.prototype = (window.khtml) ? window["[[DOMElement.prototype]]"] : {};
+}
+HTMLElement.prototype.htmlElement = true;
 
 //enables background image cache for internet explorer 6
 

@@ -65,14 +65,13 @@ Note:
 
 function $(el){
 	if (!el) return false;
-	if (el._element_extended_ || [window, document].test(el)) return el;
+	if (el.htmlElement || [window, document].test(el)) return el;
 	if ($type(el) == 'string') el = document.getElementById(el);
 	if ($type(el) != 'element') return false;
-	if (['object', 'embed'].test(el.tagName.toLowerCase()) || el.extend) return el;
-	el._element_extended_ = true;
+	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
 	Garbage.collect(el);
-	el.extend = $extend;
-	if (!(el.htmlElement)) el.extend(Element.prototype);
+	$extend(el, Element.prototype);
+	el.htmlElement = true;
 	return el;
 };
 
@@ -106,24 +105,21 @@ Returns:
 
 function $$(){
 	if (!arguments) return false;
-	if (arguments.length == 1){
-		if (!arguments[0]) return false;
-		if (arguments[0]._elements_extended_) return arguments[0];
-	}
 	var elements = [];
-	$each(arguments, function(selector){
+	for (var i = 0, j = arguments.length; i < j; i++){
+		var selector = arguments[i];
 		switch($type(selector)){
 			case 'element': elements.push($(selector)); break;
-			case 'string': selector = document.getElementsBySelector(selector);
+			case 'string': selector = document.getElementsBySelector(selector, true);
 			default:
 			if (selector.length){
-				$each(selector, function(el){
-					if ($(el)) elements.push(el);
-				});
+				for (var i = 0, j = selector.length; i < j; i++){
+					var el = $(selector[i]);
+					if (el) elements.push(el);
+				}
 			}
-		}
-	});
-	elements._elements_extended_ = true;
+		}	
+	}
 	return $extend(elements, new Elements);
 };
 
