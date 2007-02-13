@@ -25,15 +25,47 @@ var Element = new Class({
 		Creates a new element of the type passed in.
 
 	Arguments:
-		el - the tag name for the element you wish to create.
+		el - the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
+		props - an object, the properties you want to add to your element.
+		
+	Props:
+		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
 
 	Example:
-		>var div = new Element('div');
+		(start code)
+		new Element('a', {
+			'styles': {
+				'display': 'block',
+				'border': '1px solid black'
+			},
+			'events': {
+				'click': function(){
+					//aaa
+				},
+				'mousedown': function(){
+					//aaa
+				}
+			},
+			'class': 'myClassSuperClass',
+			'href': 'http://mad4milk.net'
+		});
+		
+		(end)
 	*/
 
-	initialize: function(el){
+	initialize: function(el, props){
 		if ($type(el) == 'string') el = document.createElement(el);
-		return $(el);
+		el = $(el);
+		if (!props || !el) return el;
+		for (var prop in props){
+			switch(prop){
+				case 'styles': el.setStyles(props[prop]); break;
+				case 'events': el.addEvents(props[prop]); break;
+				case 'attributes': el.setProperties(props[prop]); break;
+				default: el.setProperty(prop, props[prop]);
+			}
+		}
+		return el;
 	}
 
 });

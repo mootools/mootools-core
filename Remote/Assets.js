@@ -132,7 +132,7 @@ var Asset = {
 
 	create: function(type, defaults, properties, inject){
 		defaults = $merge(defaults, properties);
-		var element = new Element(type).setProperties(defaults);
+		var element = new Element(type, {'attributes': defaults});
 		if (inject) element.injectInside($$('head')[0]);
 		return element;
 	}
