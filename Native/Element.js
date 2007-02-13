@@ -113,12 +113,12 @@ function $$(){
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default:
 			if (selector.length){
-				for (var i = 0, j = selector.length; i < j; i++){
-					var el = $(selector[i]);
+				for (var k = 0, l = selector.length; k < l; k++){
+					var el = $(selector[k]);
 					if (el) elements.push(el);
 				}
 			}
-		}	
+		}
 	}
 	return $extend(elements, new Elements);
 };
@@ -777,7 +777,7 @@ Element.extend({
 			case 'select':
 				var values = [];
 				$each(this.options, function(opt){
-					if (opt.selected) values.push(opt.value || opt.text);
+					if (opt.selected) values.push((opt.value !== null) ? opt.value : opt.text);
 				});
 				return (this.multiple) ? values : values[0];
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;

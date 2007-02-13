@@ -183,9 +183,9 @@ Element.extend({
 		$$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea')).each(function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if (!el.disabled){
+			if (!el.disabled && $chk(value)){
 				var qs = function(val){
-					queryString.push(encodeURIComponent(name) + '=' + encodeURIComponent(val));
+					queryString.push(name + '=' + encodeURIComponent(val));
 				};
 				if ($type(value) == 'array') value.each(qs);
 				else qs(value);
