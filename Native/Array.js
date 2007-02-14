@@ -15,88 +15,88 @@ Class: Array
 	A collection of The Array Object prototype methods.
 */
 
-/*
-Property: forEach
-	Iterates through an array; This method is only available for browsers without native *forEach* support.
-	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
-*/
-
-Array.prototype.forEach = Array.prototype.forEach || function(fn, bind){
-	for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
-};
-
-/*
-Property: filter
-	This method is provided only for browsers without native *filter* support.
-	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
-*/
-
-Array.prototype.filter = Array.prototype.filter || function(fn, bind){
-	var results = [];
-	for (var i = 0, j = this.length; i < j; i++){
-		if (fn.call(bind, this[i], i, this)) results.push(this[i]);
-	}
-	return results;
-};
-
-/*
-Property: map
-	This method is provided only for browsers without native *map* support.
-	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
-*/
-
-Array.prototype.map = Array.prototype.map || function(fn, bind){
-	var results = [];
-	for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
-	return results;
-};
-
-/*
-Property: every
-	This method is provided only for browsers without native *every* support.
-	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
-*/
-
-Array.prototype.every = Array.prototype.every || function(fn, bind){
-	for (var i = 0, j = this.length; i < j; i++){
-		if (!fn.call(bind, this[i], i, this)) return false;
-	}
-	return true;
-};
-
-/*
-Property: some
-	This method is provided only for browsers without native *some* support.
-	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
-*/
-
-Array.prototype.some = Array.prototype.some || function(fn, bind){
-	for (var i = 0, j = this.length; i < j; i++){
-		if (fn.call(bind, this[i], i, this)) return true;
-	}
-	return false;
-};
-
-/*
-Property: indexOf
-	This method is provided only for browsers without native *indexOf* support.
-	For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
-*/
-
-Array.prototype.indexOf = Array.prototype.indexOf || function(item, from){
-	from = from || 0;
-	var len = this.length;
-	if (from < 0) from = Math.max(0, len + from);
-	while (from < len){
-		if(this[from] === item) return from;
-		from++;
-	}
-	return -1;
-};
-
 //custom methods
 
 Array.extend({
+	
+	/*
+	Property: forEach
+		Iterates through an array; This method is only available for browsers without native *forEach* support.
+		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
+	*/
+	
+	forEach: function(fn, bind){
+		for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
+	},
+	
+	/*
+	Property: filter
+		This method is provided only for browsers without native *filter* support.
+		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
+	*/
+	
+	filter: function(fn, bind){
+		var results = [];
+		for (var i = 0, j = this.length; i < j; i++){
+			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+		}
+		return results;
+	},
+	
+	/*
+	Property: map
+		This method is provided only for browsers without native *map* support.
+		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
+	*/
+	
+	map: function(fn, bind){
+		var results = [];
+		for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
+		return results;
+	},
+	
+	/*
+	Property: every
+		This method is provided only for browsers without native *every* support.
+		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
+	*/
+	
+	every: function(fn, bind){
+		for (var i = 0, j = this.length; i < j; i++){
+			if (!fn.call(bind, this[i], i, this)) return false;
+		}
+		return true;
+	},
+	
+	/*
+	Property: some
+		This method is provided only for browsers without native *some* support.
+		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
+	*/
+	
+	some: function(fn, bind){
+		for (var i = 0, j = this.length; i < j; i++){
+			if (fn.call(bind, this[i], i, this)) return true;
+		}
+		return false;
+	},
+	
+	/*
+	Property: indexOf
+		This method is provided only for browsers without native *indexOf* support.
+		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
+	*/
+	
+	indexOf: function(item, from){
+		from = from || 0;
+		var len = this.length;
+		if (from < 0) from = Math.max(0, len + from);
+		while (from < len){
+			if(this[from] === item) return from;
+			from++;
+		}
+		return -1;
+	},
 
 	/*
 	Property: each
@@ -108,12 +108,10 @@ Array.extend({
 
 	Example:
 		>var Animals = ['Cat', 'Dog', 'Coala'];
-		>Animals.forEach(function(animal){
+		>Animals.each(function(animal){
 		>	document.write(animal)
 		>});
 	*/
-
-	each: Array.prototype.forEach,
 
 	/*
 	Property: copy
@@ -229,6 +227,8 @@ Array.extend({
 	}
 
 });
+
+Array.prototype.each = 	Array.prototype.forEach;
 
 /* Section: Utility Functions */
 

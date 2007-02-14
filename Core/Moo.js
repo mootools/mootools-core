@@ -236,8 +236,10 @@ var $extend = Object.extend = function(){
 };
 
 /*
-Function: Object.Native
-	Will add a .extend method to the objects passed as a parameter, equivalent to <Class.implement>
+Function: $native
+	Will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if non previously existent.
+	Its handy if you dont want the .extend method of an object to overwrite existing methods.
+	Used automatically in mootools to implement Array/String/Function/Number methods to browser that dont support them whitout manual checking.
 
 Arguments:
 	a number of classes/native javascript objects
@@ -245,7 +247,13 @@ Arguments:
 */
 
 var $native = Object.Native = function(){
-	for (var i = 0; i < arguments.length; i++) arguments[i].extend = Class.prototype.implement;
+	for (var i = 0; i < arguments.length; i++) arguments[i].extend = $native.extend;
+};
+
+$native.extend = function(props){
+	for (var prop in props){
+		if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+	}
 };
 
 $native(Function, Array, String, Number, Class);
