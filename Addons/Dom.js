@@ -88,11 +88,11 @@ Element.extend({
 			var sel = selector[i];
 			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
 			if (!param) break;
-			param[1] = param[1] || '*';
+			param[1] = (param[1]) ? param[1].toLowerCase() : '*';
 			if (xpath){
 				var temp = [param[1]];
 				if (param[2]) temp.push('[@id="', param[2], '"]');
-				if (param[3]) temp.push('[contains(concat(" ", @class, " "), "', param[3], '")]');
+				if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
 				if (param[4]){
 					if (param[5] && param[6]){
 						switch(param[5]){
