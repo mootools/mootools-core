@@ -123,7 +123,7 @@ Element.extend({
 			if (param[3]) items = items.filter(Filters.className);
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
-		if (xpath) items = this.getElementsByXpath(items.join(' /'));
+		if (xpath) items = this.getElementsByXpath(items.join(' //'));
 		return (nocash) ? items : $$(items);
 
 	},
