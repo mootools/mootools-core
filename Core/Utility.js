@@ -49,6 +49,10 @@ function $random(min, max){
 	return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+function $time(){
+	return new Date().getTime();
+};
+
 /*
 Function: $clear
 	clears a timeout or an Interval.

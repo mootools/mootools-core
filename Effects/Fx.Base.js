@@ -70,7 +70,7 @@ Fx.Base = new Class({
 	},
 
 	step: function(){
-		var time = new Date().getTime();
+		var time = $time();
 		if (time < this.time + this.options.duration){
 			this.cTime = time - this.time;
 			this.setNow();
@@ -126,7 +126,7 @@ Fx.Base = new Class({
 		else if (this.timer) return this;
 		this.from = from;
 		this.to = to;
-		this.time = new Date().getTime();
+		this.time = $time();
 		this.timer = this.step.periodical(Math.round(1000/this.options.fps), this);
 		this.fireEvent('onStart', this.element);
 		return this;
