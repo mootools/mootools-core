@@ -123,15 +123,13 @@ Element.extend({
 			if (param[3]) items = items.filter(Filters.className);
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
-		if (xpath) items = this.getElementsByXpath(items.join(' //'));
+		if (xpath) items = this.getElementsByXpath(items.join('//'));
 		return (nocash) ? items : $$(items);
-
 	},
 	
 	getElementsByXpath: function(xp){
 		var result = [];
-		if (this == document) xp = '//' + xp;
-		var xpath = document.evaluate(xp, this, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		var xpath = document.evaluate('.//' + xp, this, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) result.push(xpath.snapshotItem(i));
 		return result;
 	},
