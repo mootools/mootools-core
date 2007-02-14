@@ -86,7 +86,7 @@ Element.extend({
 		selector = selector.clean().split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
-			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
+			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
 			if (!param) break;
 			param[1] = (param[1]) ? param[1].toLowerCase() : '*';
 			if (xpath){

@@ -47,6 +47,9 @@ Example:
 		});
 	</script>
 	(end)
+
+Note:
+	The title of the element will always be used as the tooltip body. If you put :: on your title, the text before :: will become the tooltip title.
 */
 
 var Tips = new Class({
