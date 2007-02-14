@@ -97,14 +97,18 @@ Note:
 
 function $(el){
 	if (!el) return false;
-	if (el.htmlElement || [window, document].test(el)) return el;
-	if ($type(el) == 'string') el = document.getElementById(el);
-	if ($type(el) != 'element') return false;
+	if (el.htmlElement) return Garbage.collect(el);
+	if ([window, document].test(el)) return el;
+	var type = $type(el);
+	if (type == 'string'){
+		el = document.getElementById(el);
+		type = (el) ? 'element' : false;
+	}
+	if (type != 'element') return false;
 	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
-	Garbage.collect(el);
 	$extend(el, Element.prototype);
 	el.htmlElement = true;
-	return el;
+	return Garbage.collect(el);
 };
 
 //elements class
@@ -141,15 +145,15 @@ function $$(){
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
 		switch($type(selector)){
-			case 'element': elements.push($(selector)); break;
+			case 'element': elements.include($(selector)); break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default:
-			if (selector.length){
-				for (var k = 0, l = selector.length; k < l; k++){
-					var el = $(selector[k]);
-					if (el) elements.push(el);
+				if (selector.length){
+					for (var k = 0, l = selector.length; k < l; k++){
+						var el = $(selector[k]);
+						if (el) elements.include(el);
+					}
 				}
-			}
 		}
 	}
 	return $extend(elements, new Elements);
@@ -933,8 +937,10 @@ var Garbage = {
 
 	elements: [],
 
-	collect: function(element){
-		Garbage.elements.push(element);
+	collect: function(el){
+		if (!el.collected) Garbage.elements.push(el);
+		el.collected = true;
+		return el;
 	},
 
 	trash: function(){
@@ -943,7 +949,8 @@ var Garbage = {
 		Garbage.elements.each(function(el){
 			el.removeEvents();
 			for (var p in Element.prototype) el[p] = null;
-			el.extend = null;
+			el.htmlElement = null;
+			el.collected = null;
 		});
 	}
 

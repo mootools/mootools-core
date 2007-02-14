@@ -224,6 +224,11 @@ Array.extend({
 		var obj = {}, length = Math.min(this.length, keys.length);
 		for (var i = 0; i < length; i++) obj[keys[i]] = this[i];
 		return obj;
+	},
+	
+	include: function(item){
+		if (!this.test(item)) this.push(item);
+		return this;
 	}
 
 });

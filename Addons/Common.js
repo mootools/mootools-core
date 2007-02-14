@@ -95,7 +95,7 @@ var Events = new Class({
 		if (fn != Class.empty){
 			this.events = this.events || {};
 			this.events[type] = this.events[type] || [];
-			if (!this.events[type].test(fn)) this.events[type].push(fn);
+			this.events[type].include(fn);
 		}
 		return this;
 	},
