@@ -11,7 +11,7 @@ License:
 
 //window, document
 
-window.extend = document.extend = $native.implement;
+window.extend = document.extend = $extend;
 var Window = window;
 
 /*

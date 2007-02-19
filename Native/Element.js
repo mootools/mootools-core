@@ -568,8 +568,8 @@ Element.extend({
 		if (this.events && this.events[type]){
 			var pos = this.events[type].keys.indexOf(fn);
 			if (pos == -1) return this;
+			var key = this.events[type].keys.splice(pos,1)[0];
 			if (this.removeEventListener){
-				var key = this.events[type].keys.splice(pos,1)[0];
 				this.removeEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, key, false);
 			} else {
 				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);

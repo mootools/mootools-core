@@ -259,10 +259,4 @@ $native.extend = function(props){
 	}
 };
 
-$native.implement = function(props){
-	for (var prop in props){
-		if (!this[prop]) this[prop] = props[prop];
-	}
-};
-
 $native(Function, Array, String, Number, Class);

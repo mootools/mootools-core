@@ -194,11 +194,10 @@ document.extend({
 	},
 	getElement: Element.prototype.getElement,
 	getElements: Element.prototype.getElements,
-	getElementsByXpath: Element.prototype.getElementsByXpath
+	getElementsByXpath: Element.prototype.getElementsByXpath,
+	getElementsBySelector: Element.prototype.getElementsBySelector
 
 });
-
-document.getElementsBySelector = Element.prototype.getElementsBySelector;
 
 //dom filters, internal methods.
 
