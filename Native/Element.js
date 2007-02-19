@@ -190,12 +190,12 @@ Class: Element
 Element.extend({
 
 	inject: function(el, where){
-		$(el);
 		switch(where){
-			case "before": $(el.parentNode).insertBefore(this, el); break;
+			case "before": el.parentNode.insertBefore(this, el); break;
 			case "after":
-				if (!el.getNext()) $(el.parentNode).appendChild(this);
-				else $(el.parentNode).insertBefore(this, el.getNext());
+				var next = Element.prototype.getNext.call(el);
+				if (!next) el.parentNode.appendChild(this);
+				else el.parentNode.insertBefore(this, next);
 				break;
 			case "inside": el.appendChild(this);
 		}
@@ -286,8 +286,7 @@ Element.extend({
 	*/
 
 	clone: function(contents){
-		var el = this.cloneNode(contents !== false);
-		return $(el);
+		return = $(this.cloneNode(contents !== false));
 	},
 
 	/*
@@ -306,9 +305,8 @@ Element.extend({
 	*/
 
 	replaceWith: function(el){
-		$(el);
 		this.parentNode.replaceChild(el, this);
-		return el;
+		return $(el);
 	},
 
 	/*
