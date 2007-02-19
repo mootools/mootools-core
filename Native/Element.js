@@ -613,9 +613,10 @@ Element.extend({
 		}
 	},
 
-	getBrother: function(what){
-		var el = this[what + 'Sibling'];
-		while ($type(el) == 'whitespace') el = el[what + 'Sibling'];
+	walk: function(direction, start){
+		var el = (start) ? this[start] : this;
+		do el = el[direction + 'Sibling'];
+		while ($type(el) == 'whitespace');
 		return $(el);
 	},
 
@@ -631,7 +632,7 @@ Element.extend({
 	*/
 
 	getPrevious: function(){
-		return this.getBrother('previous');
+		return this.walk('previous');
 	},
 
 	/*
@@ -640,7 +641,7 @@ Element.extend({
 	*/
 
 	getNext: function(){
-		return this.getBrother('next');
+		return this.walk('next');
 	},
 
 	/*
@@ -649,9 +650,7 @@ Element.extend({
 	*/
 
 	getFirst: function(){
-		var el = this.firstChild;
-		while ($type(el) == 'whitespace') el = el.nextSibling;
-		return $(el);
+		return this.walk('next', 'firstChild');
 	},
 
 	/*
@@ -660,9 +659,7 @@ Element.extend({
 	*/
 
 	getLast: function(){
-		var el = this.lastChild;
-		while ($type(el) == 'whitespace') el = el.previousSibling;
-		return $(el);
+		return this.walk('previous', 'lastChild');
 	},
 
 	/*
@@ -673,6 +670,7 @@ Element.extend({
 	getParent: function(){
 		return $(this.parentNode);
 	},
+
 	/*
 	Property: getChildren
 		returns all the $(element.childNodes), excluding text nodes. Returns as <Elements>.

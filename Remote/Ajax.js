@@ -49,7 +49,7 @@ var Ajax = XHR.extend({
 		this.setOptions(options);
 		this.parent(this.options);
 		if (!['post', 'get'].test(this.options.method)){
-			this._method = '_method='+this.options.method;
+			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
 		}
 		if (this.options.method == 'post'){
