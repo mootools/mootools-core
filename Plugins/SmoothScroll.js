@@ -35,7 +35,7 @@ var SmoothScroll = Fx.Scroll.extend({
 
 	useLink: function(link, anchor){
 		link.addEvent('click', function(event){
-			if(!window.khtml){
+			if (!window.khtml){
 				this.chain(function(){
 					window.location.href = '#'+anchor;
 				});

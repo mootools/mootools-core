@@ -92,7 +92,7 @@ Array.extend({
 		var len = this.length;
 		if (from < 0) from = Math.max(0, len + from);
 		while (from < len){
-			if(this[from] === item) return from;
+			if (this[from] === item) return from;
 			from++;
 		}
 		return -1;

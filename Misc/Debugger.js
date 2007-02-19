@@ -23,7 +23,7 @@ var debug = {
 			'color': color || '#222',
 			'background-color': bgcolor || '#fff'
 		});
-		if($type(content) == "string") pre.appendText(content);
+		if ($type(content) == "string") pre.appendText(content);
 		else pre.adopt(content);
 		pre.injectInside(debug._contents);
 

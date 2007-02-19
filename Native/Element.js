@@ -286,7 +286,7 @@ Element.extend({
 	*/
 
 	clone: function(contents){
-		return = $(this.cloneNode(contents !== false));
+		return $(this.cloneNode(contents !== false));
 	},
 
 	/*
@@ -459,9 +459,9 @@ Element.extend({
 
 	setOpacity: function(opacity){
 		if (opacity == 0){
-			if(this.style.visibility != "hidden") this.style.visibility = "hidden";
+			if (this.style.visibility != "hidden") this.style.visibility = "hidden";
 		} else {
-			if(this.style.visibility != "visible") this.style.visibility = "visible";
+			if (this.style.visibility != "visible") this.style.visibility = "visible";
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
 		if (window.ie) this.style.filter = "alpha(opacity=" + opacity * 100 + ")";
@@ -555,9 +555,7 @@ Element.extend({
 	},
 
 	addEvents: function(source){
-		if (source){
-			for (var type in source) this.addEvent(type, source[type]);
-		}
+		for (var type in source) this.addEvent(type, source[type]);
 		return this;
 	},
 
@@ -570,8 +568,8 @@ Element.extend({
 		if (this.events && this.events[type]){
 			var pos = this.events[type].keys.indexOf(fn);
 			if (pos == -1) return this;
-			var key = this.events[type].keys.splice(pos,1)[0];
 			if (this.removeEventListener){
+				var key = this.events[type].keys.splice(pos,1)[0];
 				this.removeEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, key, false);
 			} else {
 				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
