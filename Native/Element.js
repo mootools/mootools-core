@@ -702,14 +702,15 @@ Element.extend({
 		switch(property){
 			case 'class': this.className = value; break;
 			case 'style': this.setStyles(value); break;
-			case 'name': if (window.ie6){
-				var el = $(document.createElement('<' + this.getTag() + ' name="' + value + '" />'));
-				$each(this.attributes, function(attribute){
-					if (attribute.name != 'name') el.setProperty(attribute.name, attribute.value);
-				});
-				if (this.parentNode) this.replaceWith(el);
-				return el;
-			}
+			case 'name': 
+				if (window.ie6){
+					var el = new Element('<' + this.getTag() + ' name="' + value + '" />');
+					['value', 'id', 'className', 'style'].each(function(attribute){
+						el[attribute] = this[attribute];
+					});
+					if (this.parentNode) this.replaceWith(el);
+					return el;
+				}
 			default: this.setAttribute(property, value);
 		}
 		return this;

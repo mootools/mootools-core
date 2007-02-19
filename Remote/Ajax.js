@@ -22,7 +22,7 @@ Arguments:
 	options - optional, an object containing options.
 
 Options:
-	postBody - if method is post, you can write parameters here. Can be a querystring, an object or a Form element.
+	data - you can write parameters here. Can be a querystring, an object or a Form element.
 	onComplete - function to execute when the ajax request completes.
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete.
@@ -36,7 +36,7 @@ Example:
 var Ajax = XHR.extend({
 
 	options: {
-		postBody: null,
+		data: null,
 		update: null,
 		onComplete: Class.empty,
 		evalScripts: false,
@@ -82,12 +82,13 @@ var Ajax = XHR.extend({
 	*/
 
 	request: function(data){
-		data = data || this.options.postBody;
+		data = data || this.options.data || this.options.postBody;
 		switch($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
+		if (this.method == 'get' && !this.url.test(/^\?/)) data = '?' + data;
 		return this.send(this.url, data);
 	},
 

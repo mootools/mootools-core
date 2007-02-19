@@ -90,7 +90,8 @@ Element.extend({
 			if (!param) break;
 			param[1] = (param[1]) ? param[1].toLowerCase() : '*';
 			if (xpath){
-				var temp = [param[1]];
+				var temp = this.namespaceURI ? ['xhtml:'] : [];
+				temp.push(param[1]);
 				if (param[2]) temp.push('[@id="', param[2], '"]');
 				if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
 				if (param[4]){
@@ -129,7 +130,10 @@ Element.extend({
 	
 	getElementsByXpath: function(xp){
 		var result = [];
-		var xpath = document.evaluate('.//' + xp, this, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		var resolver = function(prefix){
+			return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
+		};
+		var xpath = document.evaluate('.//' + xp, this, resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) result.push(xpath.snapshotItem(i));
 		return result;
 	},
@@ -169,9 +173,7 @@ Element.extend({
 	getElementsBySelector: function(selector, nocash){
 		var els = [];
 		var sel = selector.split(',');
-		for (var i = 0, j = sel.length; i < j; i++){
-			els.extend(this.getElements(sel[i], true));
-		}
+		for (var i = 0, j = sel.length; i < j; i++) els.extend(this.getElements(sel[i], true));
 		return (nocash) ? els : $$(els);
 	}
 
@@ -192,10 +194,11 @@ document.extend({
 	},
 	getElement: Element.prototype.getElement,
 	getElements: Element.prototype.getElements,
-	getElementsBySelector: Element.prototype.getElementsBySelector,
 	getElementsByXpath: Element.prototype.getElementsByXpath
 
 });
+
+document.getElementsBySelector = Element.prototype.getElementsBySelector;
 
 //dom filters, internal methods.
 

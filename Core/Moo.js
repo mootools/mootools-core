@@ -188,12 +188,15 @@ function $mergeClass(previous, current){
 		var ptype = $type(previous);
 		var ctype = $type(current);
 		if (ptype == 'function' && ctype == 'function'){
-			return function(){
-				this.parent = previous;
+			var merged = function(){
+				this.parent = arguments.callee.parent;
 				return current.apply(this, arguments);
 			};
+			merged.parent = previous;
+			return merged;
+		} else if (ptype == 'object' && ctype == 'object'){
+			return $merge(previous, current);
 		}
-		if (ptype == 'object' && ctype == 'object') return $merge(previous, current);
 	}
 	return current;
 };
@@ -253,6 +256,12 @@ var $native = Object.Native = function(){
 $native.extend = function(props){
 	for (var prop in props){
 		if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+	}
+};
+
+$native.implement = function(props){
+	for (var prop in props){
+		if (!this[prop]) this[prop] = props[prop];
 	}
 };
 

@@ -287,6 +287,6 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable.length) Array.prototype.forEach.call(iterable, fn, bind);
+	if ($chk(iterable.length)) Array.prototype.forEach.call(iterable, fn, bind);
 	else for (var name in iterable) fn.call(bind, iterable[name], name);
 };

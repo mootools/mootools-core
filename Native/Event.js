@@ -22,6 +22,7 @@ Properties:
 	control - true if the user pressed the control 
 	alt - true if the user pressed the alt
 	meta - true if the user pressed the meta key
+	wheel - the amount of third button scrolling
 	code - the keycode of the key pressed
 	page.x - the x position of the mouse, relative to the full window
 	page.y - the y position of the mouse, relative to the full window
