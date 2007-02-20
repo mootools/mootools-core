@@ -253,10 +253,9 @@ Element.extend({
 		If you pass div or another tag, the element will be created.
 	*/
 
-	adopt: function(){
-		$$(arguments).each(function(el){
-			this.appendChild(el);
-		}, this);
+	adopt: function(el){
+		if (!this.parentNode) this.injectAfter(el);
+		this.appendChild(el);
 		return this;
 	},
 
