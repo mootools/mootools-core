@@ -47,6 +47,7 @@ var Ajax = XHR.extend({
 	initialize: function(url, options){
 		this.addEvent('onSuccess', this.onComplete);
 		this.setOptions(options);
+		this.options.data = this.options.data || this.options.postBody;
 		this.parent(this.options);
 		if (!['post', 'get'].test(this.options.method)){
 			this._method = '_method=' + this.options.method;
@@ -82,13 +83,13 @@ var Ajax = XHR.extend({
 	*/
 
 	request: function(data){
-		data = data || this.options.data || this.options.postBody;
+		data = data || this.options.data;
 		switch($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
-		if (this.method == 'get' && !this.url.test(/^\?/)) data = '?' + data;
+		if (this.options.method == 'get' && !this.url.test(/^\?/)) data = '?' + data;
 		return this.send(this.url, data);
 	},
 
