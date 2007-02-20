@@ -7,7 +7,7 @@
 		},
 
 		'Utility': {
-			'deps': ['Utility'],
+			'deps': ['Moo', 'Utility'],
 			'desc': 'Mootools utility functions.'
 		}
 
@@ -99,7 +99,7 @@
 
 		'Fx.Styles': {
 			'deps': ['Moo', 'Array', 'String', 'Function', 'Utility', 'Element', 'Common', 'Fx.Base', 'Fx.CSS'],
-			'desc': 'Effect so change any number of css properties for an element.'
+			'desc': 'Effect to change any number of css properties for an element.'
 		},
 
 		'Fx.Elements': {

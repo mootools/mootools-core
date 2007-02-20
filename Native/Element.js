@@ -190,10 +190,11 @@ Class: Element
 Element.extend({
 
 	inject: function(el, where){
+		el = $(el);
 		switch(where){
 			case "before": el.parentNode.insertBefore(this, el); break;
 			case "after":
-				var next = Element.prototype.getNext.call(el);
+				var next = el.getNext();
 				if (!next) el.parentNode.appendChild(this);
 				else el.parentNode.insertBefore(this, next);
 				break;
@@ -253,9 +254,10 @@ Element.extend({
 		If you pass div or another tag, the element will be created.
 	*/
 
-	adopt: function(el){
-		if (!this.parentNode) this.injectAfter(el);
-		this.appendChild(el);
+	adopt: function(){
+		$each(arguments, function(el){
+			this.appendChild($(el));
+		}, this);
 		return this;
 	},
 
@@ -612,10 +614,10 @@ Element.extend({
 		}
 	},
 
-	walk: function(direction, start){
-		var el = (start) ? this[start] : this;
-		do el = el[direction + 'Sibling'];
-		while ($type(el) == 'whitespace');
+	walk: function(brother, start){
+		brother += 'Sibling';
+		var el = (start) ? this[start] : this[brother];
+		while ($type(el) == 'whitespace') el = el[brother];
 		return $(el);
 	},
 
