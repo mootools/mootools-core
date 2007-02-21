@@ -57,7 +57,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.extend({
+Element.domMethods = {
 
 	/*
 	Property: getElements 
@@ -139,23 +139,6 @@ Element.extend({
 	},
 
 	/*
-	Property: getElementById
-		Targets an element with the specified id found inside the Element. Does not overwrite document.getElementById.
-
-	Arguments:
-		id - the id of the element to find.
-	*/
-
-	getElementById: function(id){
-		var el = document.getElementById(id);
-		if (!el) return false;
-		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
-			if (!parent) return false;
-		}
-		return el;
-	},
-
-	/*
 	Property: getElement
 		Same as <Element.getElements>, but returns only the first. Alternate syntax for <$E>, where filter is the Element.
 	*/
@@ -175,29 +158,44 @@ Element.extend({
 		var sel = selector.split(',');
 		for (var i = 0, j = sel.length; i < j; i++) els.extend(this.getElements(sel[i], true));
 		return (nocash) ? els : $$(els);
-	}
-
-});
-
-/* Section: document related functions */
-
-document.extend({
-
+	},
+	
 	/*
-	Function: document.getElementsByClassName 
-		Returns all the elements that match a specific class name. 
+	Property: getElementsByClassName 
+		Returns all the elements that match a specific class name.
 		Here for compatibility purposes. can also be written: document.getElements('.className'), or $$('.className')
 	*/
 
 	getElementsByClassName: function(className){
-		return document.getElements('.' + className);
-	},
-	getElement: Element.prototype.getElement,
-	getElements: Element.prototype.getElements,
-	getElementsByXpath: Element.prototype.getElementsByXpath,
-	getElementsBySelector: Element.prototype.getElementsBySelector
+		return this.getElements('.' + className);
+	}
 
+};
+
+Element.extend({
+
+	/*
+	Property: getElementById
+		Targets an element with the specified id found inside the Element. Does not overwrite document.getElementById.
+
+	Arguments:
+		id - the id of the element to find.
+	*/
+
+	getElementById: function(id){
+		var el = document.getElementById(id);
+		if (!el) return false;
+		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
+			if (!parent) return false;
+		}
+		return el;
+	}
+	
 });
+
+/* Section: document related functions */
+
+document.extend(Element.domMethods);
 
 //dom filters, internal methods.
 

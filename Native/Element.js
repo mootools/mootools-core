@@ -61,7 +61,7 @@ var Element = new Class({
 			switch(prop){
 				case 'styles': el.setStyles(props[prop]); break;
 				case 'events': el.addEvents(props[prop]); break;
-				case 'attributes': el.setProperties(props[prop]); break;
+				case 'properties': el.setProperties(props[prop]); break;
 				default: el.setProperty(prop, props[prop]);
 			}
 		}
@@ -532,93 +532,6 @@ Element.extend({
 		return result;
 	},
 
-	/*
-	Property: addEvent
-		Attaches an event listener to a DOM element.
-
-	Arguments:
-		type - the event to monitor ('click', 'load', etc) without the prefix 'on'.
-		fn - the function to execute
-
-	Example:
-		>$('myElement').addEvent('click', function(){alert('clicked!')});
-	*/
-
-	addEvent: function(type, fn){
-		this.events = this.events || {};
-		this.events[type] = this.events[type] || {'keys': [], 'values': []};
-		if (!this.events[type].keys.test(fn)){
-			this.events[type].keys.push(fn);
-			if (this.addEventListener){
-				this.addEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, fn, false);
-			} else {
-				fn = fn.bind(this);
-				this.attachEvent('on'+type, fn);
-				this.events[type].values.push(fn);
-			}
-		}
-		return this;
-	},
-
-	addEvents: function(source){
-		for (var type in source) this.addEvent(type, source[type]);
-		return this;
-	},
-
-	/*
-	Property: removeEvent
-		Works as Element.addEvent, but instead removes the previously added event listener.
-	*/
-
-	removeEvent: function(type, fn){
-		if (this.events && this.events[type]){
-			var pos = this.events[type].keys.indexOf(fn);
-			if (pos == -1) return this;
-			var key = this.events[type].keys.splice(pos,1)[0];
-			if (this.removeEventListener){
-				this.removeEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, key, false);
-			} else {
-				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
-			}
-		}
-		return this;
-	},
-
-	/*
-	Property: removeEvents
-		removes all events of a certain type from an element. if no argument is passed in, removes all events.
-	*/
-
-	removeEvents: function(type){
-		if (this.events){
-			if (type){
-				if (this.events[type]){
-					this.events[type].keys.each(function(fn){
-						this.removeEvent(type, fn);
-					}, this);
-					this.events[type] = null;
-				}
-			} else {
-				for (var evType in this.events) this.removeEvents(evType);
-				this.events = null;
-			}
-		}
-		return this;
-	},
-
-	/*
-	Property: fireEvent
-		executes all events of the specified type present in the element.
-	*/
-
-	fireEvent: function(type, args){
-		if (this.events && this.events[type]){
-			this.events[type].keys.each(function(fn){
-				fn.bind(this, args)();
-			}, this);
-		}
-	},
-
 	walk: function(brother, start){
 		brother += 'Sibling';
 		var el = (start) ? this[start] : this[brother];
@@ -687,7 +600,7 @@ Element.extend({
 	},
 	
 	/*
-	Property: getChildren
+	Property: hasChild
 		returns true if the passed in element is a child of the $(element).
 	*/
 	
@@ -939,9 +852,100 @@ Element.extend({
 
 });
 
-window.addEvent = document.addEvent = Element.prototype.addEvent;
-window.removeEvent = document.removeEvent = Element.prototype.removeEvent;
-window.removeEvents = document.removeEvents = Element.prototype.removeEvents;
+Element.eventMethods = {
+
+	/*
+	Property: addEvent
+		Attaches an event listener to a DOM element.
+
+	Arguments:
+		type - the event to monitor ('click', 'load', etc) without the prefix 'on'.
+		fn - the function to execute
+
+	Example:
+		>$('myElement').addEvent('click', function(){alert('clicked!')});
+	*/
+
+	addEvent: function(type, fn){
+		this.events = this.events || {};
+		this.events[type] = this.events[type] || {'keys': [], 'values': []};
+		if (!this.events[type].keys.test(fn)){
+			this.events[type].keys.push(fn);
+			if (this.addEventListener){
+				this.addEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, fn, false);
+			} else {
+				fn = fn.bind(this);
+				this.attachEvent('on'+type, fn);
+				this.events[type].values.push(fn);
+			}
+		}
+		return this;
+	},
+
+	addEvents: function(source){
+		for (var type in source) this.addEvent(type, source[type]);
+		return this;
+	},
+
+	/*
+	Property: removeEvent
+		Works as Element.addEvent, but instead removes the previously added event listener.
+	*/
+
+	removeEvent: function(type, fn){
+		if (this.events && this.events[type]){
+			var pos = this.events[type].keys.indexOf(fn);
+			if (pos == -1) return this;
+			var key = this.events[type].keys.splice(pos,1)[0];
+			if (this.removeEventListener){
+				this.removeEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, key, false);
+			} else {
+				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
+			}
+		}
+		return this;
+	},
+
+	/*
+	Property: removeEvents
+		removes all events of a certain type from an element. if no argument is passed in, removes all events.
+	*/
+
+	removeEvents: function(type){
+		if (this.events){
+			if (type){
+				if (this.events[type]){
+					this.events[type].keys.each(function(fn){
+						this.removeEvent(type, fn);
+					}, this);
+					this.events[type] = null;
+				}
+			} else {
+				for (var evType in this.events) this.removeEvents(evType);
+				this.events = null;
+			}
+		}
+		return this;
+	},
+
+	/*
+	Property: fireEvent
+		executes all events of the specified type present in the element.
+	*/
+
+	fireEvent: function(type, args){
+		if (this.events && this.events[type]){
+			this.events[type].keys.each(function(fn){
+				fn.bind(this, args)();
+			}, this);
+		}
+	}
+
+};
+
+window.extend(Element.eventMethods);
+document.extend(Element.eventMethods);
+Element.extend(Element.eventMethods);
 
 var Garbage = {
 

@@ -226,6 +226,11 @@ Array.extend({
 		return obj;
 	},
 	
+	/*
+	Property: include
+		includes the passed in element in the array, only if its not already present.
+	*/
+	
 	include: function(item){
 		if (!this.test(item)) this.push(item);
 		return this;
