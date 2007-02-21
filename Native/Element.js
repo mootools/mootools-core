@@ -685,6 +685,15 @@ Element.extend({
 	getChildren: function(){
 		return $$(this.childNodes);
 	},
+	
+	/*
+	Property: getChildren
+		returns true if the passed in element is a child of the $(element).
+	*/
+	
+	hasChild: function(el) {
+		return ($A(this.getElementsByTagName('*')).test(el)) ? true : false;
+	},
 
 	/*
 	Property: setProperty

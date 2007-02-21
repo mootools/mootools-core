@@ -32,10 +32,13 @@ var Sortables = new Class({
 		ghost: true,
 		snap: 3,
 		onDragStart: function(element, ghost){
-			ghost.setStyle('opacity', 0.5);
+			ghost.setStyle('opacity', 0.7);
+			element.setStyle('opacity', 0.7);
 		},
 		onDragComplete: function(element, ghost){
+			element.setStyle('opacity', 1);
 			ghost.remove();
+			this.trash.remove();
 		}
 	},
 
@@ -43,41 +46,41 @@ var Sortables = new Class({
 		this.setOptions(options);
 		this.list = $(list);
 		this.elements = this.list.getChildren();
-		this.handles = $$(this.options.handles) || this.elements;
-		this.drag = [];
-		this.bound = {'start': []};
-		this.elements.each(function(el, i){
-			this.bound.start[i] = this.start.bindWithEvent(this, el);
-			if (this.options.ghost){
-				this.trash = new Element('div').injectInside(document.body);
-				var limit = this.list.getCoordinates();
-				this.drag[i] = new Drag.Base(el, {
-					handle: this.handles[i],
-					snap: this.options.snap,
-					modifiers: {y: 'top'},
-					limit: {y: [limit.top, limit.bottom - el.offsetHeight]},
-					onBeforeStart: function(element){
-						var offsets = element.getPosition();
-						this.old = element;
-						this.drag[i].element = this.ghost = element.clone().setStyles({
-							'position': 'absolute',
-							'top': offsets.y + 'px',
-							'left': offsets.x + 'px'
-						}).injectInside(this.trash);
-						this.fireEvent('onDragStart', [el, this.ghost]);
-					}.bind(this),
-					onComplete: function(element){
-						this.drag[i].element = this.old;
-						this.fireEvent('onDragComplete', [el, this.ghost]);
-					}.bind(this)
-				});
-			}
-			this.handles[i].addEvent('mousedown', this.start.bindWithEvent(this, el));
-		}, this);
+		this.handles = (this.options.handles) ? $$(this.options.handles) : this.elements;
+		this.bound = {'start': [], 'moveGhost': this.moveGhost.bindWithEvent(this)};
+		for (var i = 0, l = this.handles.length; i < l; i++){
+			this.bound.start[i] = this.start.bindWithEvent(this, this.elements[i]);
+		}
+		this.attach();
 		if (this.options.initialize) this.options.initialize.call(this);
+	},
+	
+	attach: function(){
+		this.handles.each(function(handle, i){
+			handle.addEvent('mousedown', this.bound.start[i]);
+		}, this);
+	},
+
+	detach: function(){
+		this.handles.each(function(handle, i){
+			handle.removeEvent('mousedown', this.bound.start[i]);
+		}, this);
 	},
 
 	start: function(event, el){
+		this.coordinates = this.list.getCoordinates();
+		if (this.options.ghost){
+			var position = el.getPosition();
+			this.offset = event.page.y - position.y;
+			this.trash = new Element('div').injectInside(document.body);
+			this.ghost = el.clone().injectInside(this.trash).setStyles({
+				'position': 'absolute',
+				'left': position.x,
+				'top': event.page.y - this.offset
+			});
+			document.addEvent('mousemove', this.bound.moveGhost);
+			this.fireEvent('onDragStart', [el, this.ghost]);
+		}
 		this.bound.move = this.move.bindWithEvent(this, el);
 		this.bound.end = this.end.bind(this, el);
 		document.addEvent('mousemove', this.bound.move);
@@ -85,25 +88,29 @@ var Sortables = new Class({
 		this.fireEvent('onStart', el);
 		event.stop();
 	},
-
-	move: function(event, el){
-		var prev = el.getPrevious();
-		var next = el.getNext();
-		if (prev){
-			var prevPos = prev.getCoordinates();
-			if (event.page.y < prevPos.bottom) el.injectBefore(prev);
-		}
-		if (next){
-			var nextPos = next.getCoordinates();
-			if (event.page.y > nextPos.top) el.injectAfter(next);
-		}
+	
+	moveGhost: function(event){
+		var goingto = event.page.y - this.offset;
+		if (!(goingto < this.coordinates.top) && !(goingto+this.ghost.offsetHeight > this.coordinates.bottom)) this.ghost.setStyle('top', goingto);
 		event.stop();
 	},
 
-	detach: function(){
-		this.elements.each(function(el, i){
-			this.handles[i].removeEvent('mousedown', this.bound.start[i]);
-		}, this);
+	move: function(event, el){
+		el.active = true;
+		this.previous = this.previous || event.page.y;
+		this.now = event.page.y;
+		var direction = ((this.previous - this.now) < 0) ? 'down' : 'up';
+		var prev = el.getPrevious();
+		var next = el.getNext();
+		if (prev && direction == 'up'){
+			var prevPos = prev.getCoordinates();
+			if (event.page.y < prevPos.bottom) el.injectBefore(prev);
+		}
+		if (next && direction == 'down'){
+			var nextPos = next.getCoordinates();
+			if (event.page.y > nextPos.top) el.injectAfter(next);
+		}
+		this.previous = event.page.y;
 	},
 
 	serialize: function(){
@@ -115,8 +122,13 @@ var Sortables = new Class({
 	},
 
 	end: function(el){
+		this.previous = null;
 		document.removeEvent('mousemove', this.bound.move);
 		document.removeEvent('mouseup', this.bound.end);
+		if (this.options.ghost){
+			document.removeEvent('mousemove', this.bound.moveGhost);
+			this.fireEvent('onDragComplete', [el, this.ghost]);
+		}
 		this.fireEvent('onComplete', el);
 	}
 
