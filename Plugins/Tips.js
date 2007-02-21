@@ -140,7 +140,7 @@ var Tips = new Class({
 		for (var z in prop){
 			var pos = event.page[z] + this.options.offsets[z];
 			if ((pos + tip[z] - scroll[z]) > win[z]) pos = event.page[z] - this.options.offsets[z] - tip[z];
-			this.toolTip.setStyle(prop[z], pos + 'px');
+			this.toolTip.setStyle(prop[z], pos);
 		};
 	},
 

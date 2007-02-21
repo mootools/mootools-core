@@ -414,7 +414,12 @@ Element.extend({
 			case 'opacity': return this.setOpacity(parseFloat(value));
 			case 'float': property = (window.ie) ? 'styleFloat' : 'cssFloat';
 		}
-		this.style[property.camelCase()] = (value.push) ? 'rgb('+value.join(',')+')' : value;
+		property = property.camelCase();
+		switch($type(value)){
+			case 'number': if (property != 'zIndex') value += 'px'; break;
+			case 'array': value = 'rgb(' + value.join(',') + ')';
+		}
+		this.style[property] = value;
 		return this;
 	},
 
@@ -504,7 +509,7 @@ Element.extend({
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
-		if (style == 'auto' && ['height', 'width'].test(property)) return this['offset'+property.capitalize()]+'px';
+		if (style == 'auto' && ['height', 'width'].test(property)) return this['offset'+property.capitalize()] + 'px';
 		return (style && property.test(/color/i) && style.test(/rgb/)) ? style.rgbToHex() : style;
 	},
 

@@ -34,7 +34,7 @@ var Slider = new Class({
 		onChange: Class.empty,
 		onComplete: Class.empty,
 		onTick: function(pos){
-			this.knob.setStyle(this.p, pos + 'px');
+			this.knob.setStyle(this.p, pos);
 		},
 		steps: 100,
 		mode: 'horizontal',

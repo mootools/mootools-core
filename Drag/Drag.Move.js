@@ -48,8 +48,8 @@ Drag.Move = Drag.Base.extend({
 			left = $chk(left) ? left : 0;
 		}
 		this.element.setStyles({
-			'top': top + 'px',
-			'left': left + 'px',
+			'top': top,
+			'left': left,
 			'position': this.position
 		});
 		this.parent(this.element, this.options);
