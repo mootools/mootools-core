@@ -16,12 +16,12 @@ var Window = window;
 
 /*
 Function: $chk
-	Returns true if the passed in value/object exists or is 0 or '', otherwise returns false.
+	Returns true if the passed in value/object exists or is 0, otherwise returns false.
 	Useful to accept zeroes.
 */
 
 function $chk(obj){
-	return !!(obj || obj === 0 || obj === '');
+	return !!(obj || obj === 0);
 };
 
 /*
