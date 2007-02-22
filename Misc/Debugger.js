@@ -39,7 +39,7 @@ var debug = {
 		debug.messages.push(text);
 		debug.idx = debug.messages.length;
 		var toCookie = debug.messages.join('-:-:-').replace(/;/g, '%%%');
-		Cookie.set('mootools-debugger-history', toCookie, {duration: 2});
+		Cookie.set('mootools-debugger-history', toCookie, {duration: {days: 2}});
 	},
 
 	result: function(args, spacer){
@@ -65,8 +65,8 @@ var debug = {
 			switch(chunk.type){
 				case 'object': color = '#612fc9'; break;
 				case 'string': color = '#85b23e'; break;
-				case 'element': 
-					color = '#3e72b2'; 
+				case 'element':
+					color = '#3e72b2';
 					chunk.message = this.makeElementMsg(chunk.message);
 					break;
 				case 'boolean': color = '#ff3300'; break;

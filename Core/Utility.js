@@ -16,12 +16,12 @@ var Window = window;
 
 /*
 Function: $chk
-	Returns true if the passed in value/object exists or is 0, otherwise returns false.
+	Returns true if the passed in value/object exists or is 0 or '', otherwise returns false.
 	Useful to accept zeroes.
 */
 
 function $chk(obj){
-	return !!(obj || obj === 0);
+	return !!(obj || obj === 0 || obj === '');
 };
 
 /*
@@ -30,7 +30,7 @@ Function: $pick
 */
 
 function $pick(obj, picked){
-	return ($type(obj)) ? obj : picked;
+	return (obj !== null && obj !== undefined) ? obj : picked;
 };
 
 /*
@@ -49,9 +49,37 @@ function $random(min, max){
 	return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
+/*
+Function: $time
+	Returns the current timestamp
+
+Returns:
+	a timestamp integer.
+*/
+
 function $time(){
 	return new Date().getTime();
 };
+
+/*
+Function: $duration
+	Returns a time interval in seconds from the given time units
+
+Arguments:
+	data - Object with values for years, months, days, hours, seconds, milliseconds. For non-objects it returns the parsed argument as integer.
+	ms - Boolean, if true return ms, otherwise seconds
+
+Returns:
+	an integer for the duration in seconds or ms if second parameter is true.
+*/
+
+function $duration(data, ms){
+	if ($type(data) != 'object') return parseInt(data);
+	this.units = this.units || {years: 31556926, months: 2629743.83, days: 86400, hours: 3600, minutes: 60, seconds: 1, milliseconds: 0.001};
+	var sum = 0;
+	for (var unit in data) sum += $pick(data[unit], 0) * this.units[unit];
+	return parseInt(sum * (ms ? 1000 : 1));
+}
 
 /*
 Function: $clear
