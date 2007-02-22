@@ -75,10 +75,13 @@ Returns:
 
 function $duration(data, ms){
 	if ($type(data) != 'object') return parseInt(data);
-	this.units = this.units || {years: 31556926, months: 2629743.83, days: 86400, hours: 3600, minutes: 60, seconds: 1, milliseconds: 0.001};
-	var sum = 0;
-	for (var unit in data) sum += $pick(data[unit], 0) * this.units[unit];
-	return parseInt(sum * (ms ? 1000 : 1));
+	this.units = this.units || {years: 'FullYear', months: 'Month', days: 'Date', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds', milliseconds: 'Milliseconds'};
+	var date = new Date();
+	for (var unit in data){
+		var fn = this.units[unit];
+		if (fn) date['set' + fn](date['get' + fn]() + $pick(data[unit], 0));
+	}
+	return parseInt((date.getTime() - $time()) / (ms ? 1 : 1000));
 }
 
 /*
