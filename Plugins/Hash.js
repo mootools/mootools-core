@@ -86,6 +86,7 @@ var Hash = new Class({
 	remove: function(key){
 		if (this.obj[key] === undefined) return this;
 		delete this.obj[key];
+		this.length--;
 		return this;
 	},
 
