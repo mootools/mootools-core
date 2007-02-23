@@ -31,7 +31,7 @@
 		},
 
 		"Function": {
-			"deps": ["Moo"],
+			"deps": ["Moo", "Utility"],
 			"desc": "Contains Function Prototypes, like create, bind, pass, delay, periodical."
 		},
 

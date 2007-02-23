@@ -44,11 +44,11 @@ Function.extend({
 	create: function(options){
 		var fn = this;
 		options = $merge({
-			'bind': fn, 
-			'event': false, 
-			'arguments': null, 
-			'delay': false, 
-			'periodical': false, 
+			'bind': fn,
+			'event': false,
+			'arguments': null,
+			'delay': false,
+			'periodical': false,
 			'attempt': false
 		}, options);
 		if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
@@ -63,8 +63,8 @@ Function.extend({
 			var returns = function(){
 				return fn.apply(options.bind, args);
 			};
-			if (options.delay) return setTimeout(returns, options.delay);
-			if (options.periodical) return setInterval(returns, options.periodical);
+			if (options.delay) return setTimeout(returns, $duration(options.delay));
+			if (options.periodical) return setInterval(returns, $duration(options.periodical));
 			if (options.attempt){
 				try {
 					return returns();
@@ -163,7 +163,7 @@ Function.extend({
 		Delays the execution of a function by a specified duration.
 
 	Arguments:
-		ms - the duration to wait in milliseconds
+		delay - the duration to wait in milliseconds. Supports <$duration> syntax.
 		bind - optional, the object that the "this" of the function will refer to.
 		args - optional, the arguments passed. must be an array if arguments > 1
 
@@ -172,8 +172,8 @@ Function.extend({
 		>(function(){alert('one second later...')}).delay(1000); //wait a second and alert
 	*/
 
-	delay: function(ms, bind, args){
-		return this.create({'delay': ms, 'bind': bind, 'arguments': args})();
+	delay: function(delay, bind, args){
+		return this.create({'delay': delay, 'bind': bind, 'arguments': args})();
 	},
 
 	/*
@@ -181,13 +181,13 @@ Function.extend({
 		Executes a function in the specified intervals of time
 
 	Arguments:
-		ms - the duration of the intervals between executions.
+		interval - the duration of the intervals between executions. Supports <$duration> syntax.
 		bind - optional, the object that the "this" of the function will refer to.
 		args - optional, the arguments passed. must be an array if arguments > 1
 	*/
 
-	periodical: function(ms, bind, args){
-		return this.create({'periodical': ms, 'bind': bind, 'arguments': args})();
+	periodical: function(interval, bind, args){
+		return this.create({'periodical': interval, 'bind': bind, 'arguments': args})();
 	}
 
 });
