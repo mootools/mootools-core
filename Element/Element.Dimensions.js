@@ -1,3 +1,16 @@
+/*
+Script: Element.Dimensions.js
+	Contains Element prototypes to deal with Element size and position in space.
+
+License:
+	MIT-style license.
+*/
+
+/*
+Class: Element
+	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
+*/
+
 Element.extend({
 	
 	/*

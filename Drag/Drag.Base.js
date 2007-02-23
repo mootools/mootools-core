@@ -2,9 +2,6 @@
 Script: Drag.Base.js
 	Contains <Drag.Base>, <Element.makeResizable>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

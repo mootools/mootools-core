@@ -2,9 +2,6 @@
 Script: Fx.Styles.js
 	Contains <Fx.Styles>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

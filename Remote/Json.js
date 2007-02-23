@@ -2,10 +2,6 @@
 Script: Json.js
 	Simple Json parser and Stringyfier, See: <http://www.json.org/>
 
-Authors:
-	- Christophe Beyls, <http://www.digitalia.be>
-	- Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

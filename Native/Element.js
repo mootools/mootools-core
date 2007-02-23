@@ -2,10 +2,6 @@
 Script: Element.js
 	Contains useful Element prototypes, to be used with the dollar function <$>.
 
-Authors:
-	- Valerio Proietti, <http://mad4milk.net>
-	- Christophe Beyls, <http://digitalia.be>
-
 License:
 	MIT-style license.
 

@@ -2,9 +2,6 @@
 Script: Scroller.js
 	Contains the <Scroller>.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

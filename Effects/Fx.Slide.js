@@ -2,9 +2,6 @@
 Script: Fx.Slide.js
 	Contains <Fx.Slide>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

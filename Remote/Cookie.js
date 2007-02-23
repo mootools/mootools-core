@@ -2,10 +2,6 @@
 Script: Cookie.js
 	A cookie reader/creator
 
-Author:
-	- Christophe Beyls, <http://www.digitalia.be>
-	- Harald Kirschner, <http://digitarald.de>
-
 Credits:
 	based on the functions by Peter-Paul Koch (http://quirksmode.org)
 */

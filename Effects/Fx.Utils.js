@@ -3,9 +3,6 @@ Script: Fx.Utils.js
 	Contains Fx.Height, Fx.Width, Fx.Opacity. Only useful if you really, really need to toggle those values, and toggling only works in STRICT DOCTYPE.
 	See <Fx.Style> for a better alternative.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

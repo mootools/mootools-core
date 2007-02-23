@@ -2,9 +2,6 @@
 Script: XHR.js
 	Contains the basic XMLHttpRequest Class Wrapper.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

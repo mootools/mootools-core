@@ -2,10 +2,6 @@
 Script: Fx.CSS.js
 	Css parsing class for effects. Required by <Fx.Style>, <Fx.Styles>, <Fx.Elements>. No documentation needed, as its used internally.
 
-Authors:
-	- Christophe Beyls, <http://www.digitalia.be>
-	- Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

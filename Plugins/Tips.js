@@ -2,9 +2,6 @@
 Script: Tips.js
 	Tooltips, BubbleTips, whatever they are, they will appear on mouseover
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 

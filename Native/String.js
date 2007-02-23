@@ -2,9 +2,6 @@
 Script: String.js
 	Contains String prototypes and Number prototypes.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

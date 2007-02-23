@@ -2,9 +2,6 @@
 Script: Utility.js
 	Contains Utility functions
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

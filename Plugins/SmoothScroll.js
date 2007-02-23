@@ -2,9 +2,6 @@
 Script: SmoothScroll.js
 	Contains <SmoothScroll>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

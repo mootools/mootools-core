@@ -2,10 +2,6 @@
 Script: Array.js
 	Contains Array prototypes, <$A>, <$each>
 
-Authors:
-	- Christophe Beyls, <http://digitalia.be>
-	- Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

@@ -2,9 +2,6 @@
 Script: Fx.Base.js
 	Contains <Fx.Base> and two Transitions.
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

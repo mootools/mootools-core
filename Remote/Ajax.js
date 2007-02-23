@@ -2,10 +2,6 @@
 Script: Ajax.js
 	Contains the <Ajax> class. Also contains methods to generate querystings from forms and Objects.
 
-Authors:
-	- Valerio Proietti, <http://mad4milk.net>
-	- Christophe Beyls, <http://www.digitalia.be>
-
 Credits:
 	Loosely based on the version from prototype.js <http://prototype.conio.net>
 

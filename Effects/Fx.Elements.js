@@ -2,9 +2,6 @@
 Script: Fx.Elements.js
 	Contains <Fx.Elements>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

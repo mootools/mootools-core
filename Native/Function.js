@@ -2,9 +2,6 @@
 Script: Function.js
 	Contains Function prototypes and utility functions .
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 

@@ -2,9 +2,6 @@
 Script: Drag.Move.js
 	Contains <Drag.Move>, <Element.makeDraggable>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */

@@ -2,9 +2,6 @@
 Script: Accordion.js
 	Contains <Accordion>
 
-Author:
-	Valerio Proietti, <http://mad4milk.net>
-
 License:
 	MIT-style license.
 */
