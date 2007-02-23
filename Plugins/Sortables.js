@@ -101,7 +101,7 @@ var Sortables = new Class({
 		el.active = true;
 		this.previous = this.previous || event.page.y;
 		this.now = event.page.y;
-		var direction = ((this.previous - this.now) < 0) ? 'down' : 'up';
+		var direction = ((this.previous - this.now) <= 0) ? 'down' : 'up';
 		var prev = el.getPrevious();
 		var next = el.getNext();
 		if (prev && direction == 'up'){

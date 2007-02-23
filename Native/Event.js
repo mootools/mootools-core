@@ -146,7 +146,7 @@ Function.extend({
 
 	Example:
 		>function myFunction(event){
-		>	alert(event.clientx) //returns the coordinates of the mouse..
+		>	alert(event.client.x) //returns the coordinates of the mouse..
 		>};
 		>myElement.onclick = myFunction.bindWithEvent(myElement);
 	*/

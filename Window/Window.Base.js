@@ -62,7 +62,7 @@ window.extend({
 
 	/*
 	Property: window.onDomReady
-		Executes the passed in function when the DOM is ready (when the document tree has loaded, not waiting for images).
+		DEPRECATED: Executes the passed in function when the DOM is ready (when the document tree has loaded, not waiting for images).
 		Same as <window.addEvent> ('domready', init).
 
 	Arguments:

@@ -67,12 +67,10 @@ var Slider = new Class({
 			this.getPos = this.element.getTop.bind(this.element);
 		}
 		this.knob.setStyle('position', 'relative').setStyle(this.p, 0);
-		var limSlide = {};
-		//var modSlide = {};
-		limSlide[this.z] = [0, this.max];
-		//modSlide[this.z] = this.p;
+		var lim = {};
+		lim[this.z] = [0, this.max];
 		this.drag = new Drag.Base(this.knob, {
-			limit: limSlide,
+			limit: lim,
 			modifiers: mod,
 			snap: 0,
 			onStart: function(){
@@ -103,7 +101,7 @@ var Slider = new Class({
 		this.step = step;
 		this.checkStep();
 		this.end();
-		this.fireEvent('onTick', this.toPosition(this.step)+'');
+		this.fireEvent('onTick', this.toPosition(this.step));
 		return this;
 	},
 
@@ -120,7 +118,7 @@ var Slider = new Class({
 		this.step = this.toStep(position);
 		this.checkStep();
 		this.end();
-		this.fireEvent('onTick', position + '');
+		this.fireEvent('onTick', position);
 	},
 
 	draggedKnob: function(){

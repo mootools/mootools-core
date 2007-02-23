@@ -158,42 +158,6 @@ Element.extend({
 
 	send: function(options){
 		return new Ajax(this.getProperty('action'), $merge({postBody: this.toQueryString()}, options, {method: 'post'})).request();
-	},
-
-	/*
-	Property: toQueryString
-		Reads the children inputs of the Element and generates a query string, based on their values. Used internally in <Ajax>
-
-	Example:
-		(start code)
-		<form id="myForm" action="submit.php">
-		<input name="email" value="bob@bob.com">
-		<input name="zipCode" value="90210">
-		</form>
-
-		<script>
-		 $('myForm').toQueryString()
-		</script>
-		(end)
-
-		Returns:
-			email=bob@bob.com&zipCode=90210
-	*/
-
-	toQueryString: function(){
-		var queryString = [];
-		$$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea')).each(function(el){
-			var name = $(el).name;
-			var value = el.getValue();
-			if (!el.disabled && $chk(value)){
-				var qs = function(val){
-					queryString.push(name + '=' + encodeURIComponent(val));
-				};
-				if ($type(value) == 'array') value.each(qs);
-				else qs(value);
-			}
-		});
-		return queryString.join('&');
 	}
 
 });
