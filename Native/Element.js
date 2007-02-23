@@ -23,7 +23,7 @@ var Element = new Class({
 	Arguments:
 		el - the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
 		props - an object, the properties you want to add to your element.
-		
+
 	Props:
 		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
 
@@ -45,7 +45,7 @@ var Element = new Class({
 			'class': 'myClassSuperClass',
 			'href': 'http://mad4milk.net'
 		});
-		
+
 		(end)
 	*/
 
@@ -160,13 +160,12 @@ Elements.Multi = function(property){
 		var args = arguments;
 		var items = [];
 		var elements = true;
-		$each(this, function(el){
-			var returns = el[property].apply(el, args);
+		for (var i = 0, j = this.length, returns; i < j; i++){
+			returns = this[i][property].apply(this[i], args);
 			if ($type(returns) != 'element') elements = false;
 			items.push(returns);
-		});
-		if (elements) items = $$(items);
-		return items;
+		};
+		return (elements) ? $$(items) : items;
 	};
 };
 
@@ -274,7 +273,7 @@ Element.extend({
 	Property: clone
 		Clones the Element and returns the cloned one.
 
-	Returns: 
+	Returns:
 		the cloned element
 
 	Example:
@@ -354,7 +353,7 @@ Element.extend({
 	Arguments:
 		className - the class name to add
 
-	Example: 
+	Example:
 		><div id="myElement" class="testClass"></div>
 		>$('myElement').addClass('newClass'); //<div id="myElement" class="testClass newClass"></div>
 	*/
@@ -594,12 +593,12 @@ Element.extend({
 	getChildren: function(){
 		return $$(this.childNodes);
 	},
-	
+
 	/*
 	Property: hasChild
 		returns true if the passed in element is a child of the $(element).
 	*/
-	
+
 	hasChild: function(el) {
 		return ($A(this.getElementsByTagName('*')).test(el)) ? true : false;
 	},
@@ -620,7 +619,7 @@ Element.extend({
 		switch(property){
 			case 'class': this.className = value; break;
 			case 'style': this.setStyles(value); break;
-			case 'name': 
+			case 'name':
 				if (window.ie6){
 					var el = new Element('<' + this.getTag() + ' name="' + value + '" />');
 					['value', 'id', 'className', 'style'].each(function(attribute){

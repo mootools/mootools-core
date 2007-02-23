@@ -68,15 +68,33 @@ var XHR = new Class({
 		this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
 		this.callChain();
 	},
-	
+
 	onFailure: function(){
 		this.fireEvent('onFailure', this.transport);
 	},
+
+	/*
+	Property: setHeader
+		Add/modify an header for the request. It will not override headers from the options.
+
+	Example:
+		>var myAjax = new Ajax(url, {method: 'get', headers: {'X-Request': 'JSON'}});
+		>myAjax.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
+	*/
 
 	setHeader: function(name, value){
 		this.headers[name] = value;
 		return this;
 	},
+
+	/*
+	Property: send
+		Opens the xhr connection and sends the data. Data has to be null or a string.
+
+	Example:
+		>var myAjax = new Ajax(url, {method: 'get'});
+		>myAjax.send(null);
+	*/
 
 	send: function(url, data){
 		this.fireEvent('onRequest');
@@ -84,7 +102,7 @@ var XHR = new Class({
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 		$extend(this.headers, this.options.headers);
-		for (var type in this.headers) this.transport.setRequestHeader(type, this.headers[type]);
+		for (var type in this.headers) try { this.transport.setRequestHeader(type, this.headers[type]);} catch(e){}
 		this.transport.send(data);
 		return this;
 	}
