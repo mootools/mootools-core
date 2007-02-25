@@ -14,23 +14,23 @@ Class: Array
 //custom methods
 
 Array.extend({
-	
+
 	/*
 	Property: forEach
 		Iterates through an array; This method is only available for browsers without native *forEach* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
 	*/
-	
+
 	forEach: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
 	},
-	
+
 	/*
 	Property: filter
 		This method is provided only for browsers without native *filter* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
 	*/
-	
+
 	filter: function(fn, bind){
 		var results = [];
 		for (var i = 0, j = this.length; i < j; i++){
@@ -38,51 +38,51 @@ Array.extend({
 		}
 		return results;
 	},
-	
+
 	/*
 	Property: map
 		This method is provided only for browsers without native *map* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
 	*/
-	
+
 	map: function(fn, bind){
 		var results = [];
 		for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
 		return results;
 	},
-	
+
 	/*
 	Property: every
 		This method is provided only for browsers without native *every* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
 	*/
-	
+
 	every: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++){
 			if (!fn.call(bind, this[i], i, this)) return false;
 		}
 		return true;
 	},
-	
+
 	/*
 	Property: some
 		This method is provided only for browsers without native *some* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
 	*/
-	
+
 	some: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++){
 			if (fn.call(bind, this[i], i, this)) return true;
 		}
 		return false;
 	},
-	
+
 	/*
 	Property: indexOf
 		This method is provided only for browsers without native *indexOf* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
 	*/
-	
+
 	indexOf: function(item, from){
 		from = from || 0;
 		var len = this.length;
@@ -221,14 +221,14 @@ Array.extend({
 		for (var i = 0; i < length; i++) obj[keys[i]] = this[i];
 		return obj;
 	},
-	
+
 	/*
 	Property: include
 		includes the passed in element in the array, only if its not already present.
 	*/
-	
+
 	include: function(item){
-		if (!this.test(item)) this.push(item);
+		if (this.indexOf(item) != -1) this.push(item);
 		return this;
 	}
 

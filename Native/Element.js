@@ -806,22 +806,30 @@ var Garbage = {
 	elements: [],
 
 	collect: function(el){
-		if (!el.collected) Garbage.elements.push(el);
-		el.collected = true;
+		if (!el.collected){
+			Garbage.elements.push(el);
+			el.collected = true;
+		}
 		return el;
 	},
 
-	trash: function(){
-		Garbage.collect(window);
-		Garbage.collect(document);
-		Garbage.elements.each(function(el){
+	trash: function(dispose){
+		var els = dispose ? $A(dispose.getElementsByTagName('*')).include(dispose) : Garbage.elements;
+		for (var i = 0, j = els.length, el; i < j; i++){
+			if (!(el = els[i]) || !el.collected) return;
 			el.removeEvents();
 			for (var p in Element.prototype) el[p] = null;
-			el.htmlElement = null;
-			el.collected = null;
-		});
+			el.htmlElement = el.collected = null;
+		}
+	},
+
+	unload: function(){
+		Garbage.collect(window);
+		Garbage.collect(document);
+		Garbage.trash();
+		Garbage.elements = [];
 	}
 
 };
 
-window.addEvent('unload', Garbage.trash);
+window.addEvent('unload', Garbage.unload);
