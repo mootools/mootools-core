@@ -228,7 +228,7 @@ Array.extend({
 	*/
 
 	include: function(item){
-		if (this.indexOf(item) == -1) this.push(item);
+		if (!this.test(item)) this.push(item);
 		return this;
 	}
 

@@ -823,7 +823,7 @@ var Garbage = {
 		}
 	},
 
-	unload: function(){
+	empty: function(){
 		Garbage.collect(window);
 		Garbage.collect(document);
 		Garbage.trash();
@@ -832,4 +832,4 @@ var Garbage = {
 
 };
 
-window.addEvent('unload', Garbage.unload);
+window.addEvent('unload', Garbage.empty);

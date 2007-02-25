@@ -38,7 +38,6 @@ var XHR = new Class({
 		method: 'post',
 		async: true,
 		onRequest: Class.empty,
-		onStateChange: Class.empty,
 		onSuccess: Class.empty,
 		onFailure: Class.empty,
 		urlEncoded: true,
@@ -53,7 +52,6 @@ var XHR = new Class({
 		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = {};
-		this.running = false;
 		if (this.options.urlEncoded && this.options.method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
@@ -62,7 +60,6 @@ var XHR = new Class({
 	},
 
 	onStateChange: function(){
-		this.fireEvent('onStateChange', this.transport);
 		if (this.transport.readyState != 4 || !this.running) return;
 		this.running = false;
 		var status = 0;
@@ -118,13 +115,13 @@ var XHR = new Class({
 		this.running = true;
 		(function(){
 			this.transport.open(this.options.method, url, this.options.async);
-			this.fireEvent('onRequest');
 			this.transport.onreadystatechange = this.onStateChange.bind(this);
 			if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 			$extend(this.headers, this.options.headers);
-			for (var type in this.headers) try { this.transport.setRequestHeader(type, this.headers[type]);} catch(e){}
+			for (var type in this.headers) try { this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
 			this.transport.send(data);
 		}).delay(1, this);
+		this.fireEvent('onRequest');
 		return this;
 	},
 	
