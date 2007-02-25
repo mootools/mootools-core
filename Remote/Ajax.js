@@ -21,9 +21,8 @@ Options:
 	data - you can write parameters here. Can be a querystring, an object or a Form element.
 	onComplete - function to execute when the ajax request completes.
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
-	evalScripts - boolean; default is false. Execute scripts in the response text onComplete.
-	evalResponse - boolean; should you eval the whole responsetext? I dont know, but this option makes it possible.
-	encoding - the encoding, defaults to utf-8.
+	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
+	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
 
 Example:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();
@@ -55,8 +54,7 @@ var Ajax = XHR.extend({
 
 	onComplete: function(){
 		if (this.options.update) $(this.options.update).setHTML(this.response.text);
-		if (this.options.evalResponse) eval(this.response.text);
-		if (this.options.evalScripts) this.evalScripts.delay(30, this);
+		if (this.options.evalScripts || this.options.evalResponse) this.evalScripts();
 		this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
 	},
 
@@ -90,9 +88,24 @@ var Ajax = XHR.extend({
 	*/
 
 	evalScripts: function(){
-		var script, regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
-		while ((script = regexp.exec(this.response.text))) eval(script[1]);
-	}
+		if (this.options.evalResponse || /(ecma|java)script/.test(this.getHeader('Content-type'))) var scripts = this.response.text;
+		else {
+			var script, scripts = [], regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
+			scripts = scripts.join('');
+		}
+		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
+	},
+	
+	/*
+	Property: getHeader
+		Returns the given response header or null
+	*/
+
+	getHeader: function(name) {
+		try { return this.transport.getResponseHeader(name); } catch (e){}
+		return null;
+	},
 
 });
 

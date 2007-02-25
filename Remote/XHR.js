@@ -20,6 +20,7 @@ Options:
 	onSuccess - function to execute when the XHR request completes.
 	onStateChange - function to execute when the state of the XMLHttpRequest changes.
 	onFailure - function to execute when the state of the XMLHttpRequest changes.
+	encoding - the encoding, defaults to utf-8.
 	autoCancel - cancels the already running request if another one is sent. defaults to false.
 	headers - accepts an object, that will be set to request headers.
 	
@@ -52,6 +53,7 @@ var XHR = new Class({
 		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = {};
+		this.running = false;
 		if (this.options.urlEncoded && this.options.method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
@@ -61,7 +63,8 @@ var XHR = new Class({
 
 	onStateChange: function(){
 		this.fireEvent('onStateChange', this.transport);
-		if (this.transport.readyState != 4) return;
+		if (this.transport.readyState != 4 || !this.running) return;
+		this.running = false;
 		var status = 0;
 		try {status = this.transport.status} catch(e){};
 		if (this.options.isSuccess(status)) this.onSuccess();
@@ -74,8 +77,6 @@ var XHR = new Class({
 	},
 
 	onSuccess: function(){
-		if (!this.running) return;
-		this.running = false;
 		this.response = {
 			'text': this.transport.responseText,
 			'xml': this.transport.responseXML
@@ -85,8 +86,6 @@ var XHR = new Class({
 	},
 
 	onFailure: function(){
-		if (!this.running) return;
-		this.running = false;
 		this.fireEvent('onFailure', this.transport);
 	},
 
@@ -116,10 +115,10 @@ var XHR = new Class({
 	send: function(url, data){
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
-		this.fireEvent('onRequest');
+		this.running = true;
 		(function(){
 			this.transport.open(this.options.method, url, this.options.async);
-			this.running = true;
+			this.fireEvent('onRequest');
 			this.transport.onreadystatechange = this.onStateChange.bind(this);
 			if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 			$extend(this.headers, this.options.headers);
@@ -131,11 +130,11 @@ var XHR = new Class({
 	
 	/*
 	Property: cancel
-		cancels the running request. No effect is the request is not running.
+		cancels the running request. No effect if the request is not running.
 
 	Example:
-		>var myAjax = new Ajax(url, {method: 'get'});
-		>myAjax.send(null);
+		>var myAjax = new Ajax(url, {method: 'get'}).request();
+		>myAjax.cancel();
 	*/
 
 	cancel: function(){
