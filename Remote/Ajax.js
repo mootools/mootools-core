@@ -36,8 +36,7 @@ var Ajax = XHR.extend({
 		update: null,
 		onComplete: Class.empty,
 		evalScripts: false,
-		evalResponse: false,
-		encoding: 'utf-8'
+		evalResponse: false
 	},
 
 	initialize: function(url, options){
@@ -48,10 +47,6 @@ var Ajax = XHR.extend({
 		if (!['post', 'get'].test(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
-		}
-		if (this.options.method == 'post'){
-			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
 		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');

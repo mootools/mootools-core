@@ -411,7 +411,7 @@ Element.extend({
 		}
 		property = property.camelCase();
 		switch($type(value)){
-			case 'number': if (property != 'zIndex') value += 'px'; break;
+			case 'number': if (!['zIndex', 'zoom'].test(property)) value += 'px'; break;
 			case 'array': value = 'rgb(' + value.join(',') + ')';
 		}
 		this.style[property] = value;
