@@ -530,7 +530,7 @@ Element.extend({
 	walk: function(brother, start){
 		brother += 'Sibling';
 		var el = (start) ? this[start] : this[brother];
-		while ($type(el) == 'whitespace') el = el[brother];
+		while (el && $type(el) != 'element') el = el[brother];
 		return $(el);
 	},
 

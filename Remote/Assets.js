@@ -133,3 +133,5 @@ var Asset = {
 	}
 
 };
+
+Asset.extend = $extend;

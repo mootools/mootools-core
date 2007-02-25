@@ -22,16 +22,20 @@ Credits:
 Fx.Transitions = {
 
 	/* Property: linear */
+	
 	linear: function(t, b, c, d){
 		return c*t/d + b;
 	},
 
 	/* Property: sineInOut */
+	
 	sineInOut: function(t, b, c, d){
 		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
 	}
 
 };
+
+Fx.Transitions.extend = $extend;
 
 /*
 Class: Fx.Base
