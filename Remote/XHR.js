@@ -85,6 +85,7 @@ var XHR = new Class({
 	},
 
 	onFailure: function(){
+		if (!this.running) return;
 		this.running = false;
 		this.fireEvent('onFailure', this.transport);
 	},
