@@ -192,8 +192,17 @@ Array.extend({
 	*/
 
 	extend: function(newArray){
-		var pos = this.length;
-		for (var i = 0, j = newArray.length; i < j; i++) this[pos++] = newArray[i];
+		for (var i = 0, j = newArray.length; i < j; i++) this.push(newArray[i]);
+		return this;
+	},
+	
+	/*
+	Property: implement
+		includes an array in another array, without duplicating.
+	*/
+	
+	implement: function(array){
+		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
 		return this;
 	},
 

@@ -84,7 +84,7 @@ Element.domMethods = {
 			var sel = selector[i];
 			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
 			if (!param) break;
-			param[1] = (param[1]) ? param[1].toLowerCase() : '*';
+			param[1] = (param[1]) ? param[1] : '*';
 			if (xpath){
 				var temp = this.namespaceURI ? ['xhtml:'] : [];
 				temp.push(param[1]);
@@ -121,7 +121,7 @@ Element.domMethods = {
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
 		if (xpath) items = this.getElementsByXpath(items.join('//'));
-		return (nocash) ? items : $$(items);
+		return (nocash) ? items : $extend(items.map($), new Elements);
 	},
 	
 	getElementsByXpath: function(xp){
@@ -150,10 +150,15 @@ Element.domMethods = {
 	*/
 
 	getElementsBySelector: function(selector, nocash){
-		var els = [];
-		var sel = selector.split(',');
-		for (var i = 0, j = sel.length; i < j; i++) els.extend(this.getElements(sel[i], true));
-		return (nocash) ? els : $$(els);
+		var elements = [];
+		selector = selector.split(',');
+		if (selector.length == 1) return this.getElements(selector[0], nocash);
+		for (var i = 0, j = selector.length; i < j; i++){
+			var temp = this.getElements(selector[i], true);
+			if (i == 0) elements = temp;
+			else elements.implement(temp);
+		}
+		return (nocash) ? elements : $extend(elements.map($), new Elements);
 	},
 	
 	/*

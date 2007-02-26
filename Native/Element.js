@@ -111,9 +111,7 @@ function $(el){
 
 var Elements = new Class({});
 
-$native(Elements);
-
-document.getElementsBySelector = document.getElementsByTagName;
+Elements.extend = Class.prototype.implement;
 
 /*
 Function: $$
@@ -135,24 +133,37 @@ Returns:
 	array - array of all the dom elements matched
 */
 
+document.getElementsBySelector = document.getElementsByTagName;
+
 function $$(){
 	if (!arguments) return false;
+	if (arguments.length == 1 && typeof arguments[0] == 'string') return document.getElementsBySelector(arguments[0]);
 	var elements = [];
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
 		switch($type(selector)){
-			case 'element': elements.include($(selector)); break;
-			case 'string': selector = document.getElementsBySelector(selector, true);
-			default:
-				if (selector.length){
-					for (var k = 0, l = selector.length; k < l; k++){
-						var el = $(selector[k]);
-						if (el) elements.include(el);
-					}
-				}
+			case 'element':
+				if (i == 0) elements = element;
+				else elements.include(element);
+			break;
+			case 'string':
+				var temp = document.getElementsBySelector(selector, true);
+				if (i == 0) elements = temp;
+				else elements.implement(temp);
+			break;
+			case 'object':
+				if (i == 0) elements = selector;
+				else elements.implement(selector);
+			break;
+			case 'array': elements.implement(selector);
+		}
+		var returned = [];
+		for (var k = 0, l = elements.length; k < l; k++){
+			var element = $(elements[k]);
+			if (element) returned.push(element);
 		}
 	}
-	return $extend(elements, new Elements);
+	return $extend(returned, new Elements);
 };
 
 Elements.Multi = function(property){
