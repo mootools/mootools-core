@@ -78,7 +78,6 @@ var Ajax = XHR.extend({
 			case 'object': data = Object.toQueryString(data);
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
-		if (this.options.method == 'get' && !this.url.test(/^\?/)) data = '?' + data;
 		return this.send(this.url, data);
 	},
 

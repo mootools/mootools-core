@@ -813,10 +813,9 @@ var Garbage = {
 		return el;
 	},
 
-	trash: function(dispose){
-		var els = dispose ? $A(dispose.getElementsByTagName('*')).include(dispose) : Garbage.elements;
-		for (var i = 0, j = els.length, el; i < j; i++){
-			if (!(el = els[i]) || !el.collected) return;
+	trash: function(elements){
+		for (var i = 0, j = elements.length, el; i < j; i++){
+			if (!(el = elements[i]) || !el.collected) return;
 			el.removeEvents();
 			for (var p in Element.prototype) el[p] = null;
 			el.htmlElement = el.collected = null;
@@ -826,7 +825,7 @@ var Garbage = {
 	empty: function(){
 		Garbage.collect(window);
 		Garbage.collect(document);
-		Garbage.trash();
+		Garbage.trash(Garbage.elements);
 		Garbage.elements = [];
 	}
 
