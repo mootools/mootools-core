@@ -151,7 +151,7 @@ Array.extend({
 		var i = 0;
 		var len = this.length;
 		while (i < len){
-			if (this[i] === item) this.splice(i, 1);
+			if (this[i] && this[i] === item) this.splice(i, 1);
 			else i++;
 		}
 		return this;
