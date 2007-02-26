@@ -209,7 +209,7 @@ var Filters = {
 	},
 
 	attribute: function(el){
-		var current = Element.prototype.getProperty.call(el Filters.selector[4]);
+		var current = Element.prototype.getProperty.call(el, Filters.selector[4]);
 		if (!current) return false;
 		var operator = Filters.selector[5];
 		if (!operator) return true;
