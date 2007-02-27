@@ -357,7 +357,7 @@ Element.extend({
 	*/
 
 	hasClass: function(className){
-		return this.className.test('(?:^|\\s)'+className+'(?:\\s|$)');
+		return this.className.test('(?:^|\\s)' + className + '(?:\\s|$)');
 	},
 
 	/*
