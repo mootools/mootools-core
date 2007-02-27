@@ -76,7 +76,7 @@ var Asset = {
 		image.onerror = properties.onerror;
 		image.onabort = properties.onabort;
 		image.src = properties.src;
-		return Asset.create('img', properties);
+		return Asset.create('img', {'src': properties.src});
 	},
 
 	/*
@@ -101,7 +101,7 @@ var Asset = {
 		(end)
 
 	Returns:
-		the img element. you can inject it anywhere you want with <Element.injectInside>/<Element.injectAfter>/<Element.injectBefore>
+		the img elements as $$. you can inject them anywhere you want with <Element.injectInside>/<Element.injectAfter>/<Element.injectBefore>
 	*/
 
 	images: function(sources, options){
@@ -122,7 +122,7 @@ var Asset = {
 			});
 			images.push(img);
 		});
-		return images;
+		return $extend(images, new Elements);
 	},
 
 	create: function(type, defaults, properties, inject){

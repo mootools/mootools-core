@@ -159,12 +159,14 @@ function $$(){
 		}
 		var returned = [];
 		for (var k = 0, l = elements.length; k < l; k++){
-			var element = $(elements[k]);
+			var element = $(elements[k], $$.nocash);
 			if (element) returned.push(element);
 		}
 	}
 	return $extend(returned, new Elements);
 };
+
+$$.nocash = false;
 
 Elements.Multi = function(property){
 	return function(){

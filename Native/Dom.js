@@ -121,6 +121,7 @@ Element.domMethods = {
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
 		if (xpath) items = this.getElementsByXpath(items.join('//'));
+		else if (selector.length > 1) items = [].implement(items);
 		return (nocash) ? items : $extend(items.map($), new Elements);
 	},
 	
