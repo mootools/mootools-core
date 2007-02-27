@@ -209,6 +209,11 @@
 			"desc": "The Tooltips."
 		},
 		
+		"Group": {
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Common"],
+			"desc": "The Group."
+		},
+		
 		"Accordion": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Common", "Fx.Base", "Fx.CSS", "Fx.Elements"],
 			"desc": "Does it need a description?"
