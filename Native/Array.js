@@ -242,9 +242,10 @@ Array.extend({
 		return this;
 	},
 	
-	clean: function(){
-		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
-		return this;
+	getClean: function(){
+		var newArray = [];
+		for (var i = 0, l = this.length; i < l; i++) newArray.include(this[i]);
+		return newArray;
 	}
 
 });

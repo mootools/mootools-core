@@ -145,7 +145,7 @@ function $$(){
 			case 'element': elements.include(element); break;
 			case 'string': elements.implement(document.getElementsBySelector(selector, true)); break;
 			case 'object': elements.implement(selector); break;
-			case 'array': elements = selector.clean();
+			case 'array': elements = selector.getClean();
 		}
 		var returned = [];
 		for (var k = 0, l = elements.length; k < l; k++){
