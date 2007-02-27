@@ -115,7 +115,8 @@ Elements.extend = Class.prototype.implement;
 
 /*
 Function: $$
-	Selects, and extends DOM elements.
+	Selects, and extends DOM elements. Elements arrays returned with $$ will also accept all the <Element> methods.
+	The return type of element methods run through $$ is always an array. If the return array is only made by elements, $$ will be applied automatically.
 
 Arguments:
 	HTMLCollection(document.getElementsByTagName, element.childNodes), an array of elements, a string.
@@ -143,9 +144,9 @@ function $$(){
 		var selector = arguments[i];
 		switch($type(selector)){
 			case 'element': elements.include(element); break;
-			case 'string': elements.implement(document.getElementsBySelector(selector, true)); break;
-			case 'object': elements.implement(selector); break;
-			case 'array': elements = selector.getClean();
+			case 'string': elements = $$.merge(elements, document.getElementsBySelector(selector, true)); break;
+			case 'object': elements = $$.merge(elements, selector); break;
+			case 'array': elements.merge(selector);
 		}
 		var returned = [];
 		for (var k = 0, l = elements.length; k < l; k++){
@@ -154,6 +155,18 @@ function $$(){
 		}
 	}
 	return $extend(returned, new Elements);
+};
+
+$$.merge = function(array1, array2){
+	var newArray2 = (array2.push) ? array2 : $A(array2);
+	if (!array1.length) return newArray2;
+	var newArray1 = array1;
+	for (var i = 0, l = newArray2.length; i < l; i++) newArray1.include(newArray2[i]);
+	return newArray1;
+};
+
+$$.map = function(elements){
+	return $extend(elements.map($), new Elements);
 };
 
 Elements.Multi = function(property){
@@ -166,7 +179,7 @@ Elements.Multi = function(property){
 			if ($type(returns) != 'element') elements = false;
 			items.push(returns);
 		};
-		return (elements) ? $$(items) : items;
+		return (elements) ? $$.map(items) : items;
 	};
 };
 

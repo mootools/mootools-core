@@ -208,7 +208,7 @@ Array.extend({
 		Extends an array with another one.
 
 	Arguments:
-		newArray - the array to extend ours with
+		array - the array to extend ours with
 
 	Example:
 		>var Animals = ['Cat', 'Dog', 'Coala'];
@@ -216,18 +216,20 @@ Array.extend({
 		>//Animals is now: ['Cat', 'Dog', 'Coala', 'Lizard'];
 	*/
 
-	extend: function(newArray){
-		for (var i = 0, j = newArray.length; i < j; i++) this.push(newArray[i]);
+	extend: function(array){
+		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
 	
 	/*
-	Property: implement
-		includes an array in another array, without duplicates.
+	Property: merge
+		merges an array in another array, without duplicates.
+		
+	Arguments:
+		array - the array to merge from.
 	*/
 	
-	implement: function(array){
-		if (!this.length) return this.extend(array);
+	merge: function(array){
 		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
 		return this;
 	},
@@ -240,12 +242,6 @@ Array.extend({
 	include: function(item){
 		if (!this.length || !this.test(item)) this.push(item);
 		return this;
-	},
-	
-	getClean: function(){
-		var newArray = [];
-		for (var i = 0, l = this.length; i < l; i++) newArray.include(this[i]);
-		return newArray;
 	}
 
 });

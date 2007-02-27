@@ -136,7 +136,7 @@ Element.domMethods = {
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
 		if (xpath) items = this.getElementsByXpath(items.join('//'));
-		return (nocash) ? items : $extend(items.map($), new Elements);
+		return (nocash) ? items : $$.map(items);
 	},
 	
 	getElementsByXpath: function(xp){
@@ -168,8 +168,8 @@ Element.domMethods = {
 		var elements = [];
 		selector = selector.split(',');
 		if (selector.length == 1) return this.getElements(selector[0], nocash);
-		for (var i = 0, j = selector.length; i < j; i++) elements.implement(this.getElements(selector[i], true));
-		return (nocash) ? elements : $extend(elements.map($), new Elements);
+		for (var i = 0, j = selector.length; i < j; i++) elements = $$.merge(elements, this.getElements(selector[i], true));
+		return (nocash) ? elements : $$.map(elements);
 	},
 	
 	/*
@@ -251,7 +251,7 @@ Elements.extend({
 
 	getElementsByTagName: function(tagName){
 		var found = [];
-		for (var i = 0, j = this.length; i < j; i++) found.implement(this[i].getElementsByTagName(tagName));
+		for (var i = 0, j = this.length; i < j; i++) found = $$.merge(found, this[i].getElementsByTagName(tagName));
 		return found;
 	}
 
