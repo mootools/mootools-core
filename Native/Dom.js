@@ -48,6 +48,9 @@ function $ES(selector, filter){
 	return ($(filter) || document).getElementsBySelector(selector);
 };
 
+$$.cache = {};
+$$.regexp = /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/;
+
 /*
 Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
@@ -82,10 +85,20 @@ Element.domMethods = {
 		selector = selector.clean().split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
-			var param = sel.match(/^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/);
-			if (!param) break;
-			param[1] = (param[1]) ? param[1] : '*';
+			var param;
+			if ($$.cache[sel]){
+				param = $$.cache[sel].param;
+			} else {
+				param = sel.match($$.regexp);
+				if (!param) break;
+				param[1] = param[1] || '*';
+				$$.cache[sel] = {'param': param};
+			}
 			if (xpath){
+				if ($$.cache[sel].xpath){
+					items.push($$.cache[sel].xpath);
+					continue;
+				}
 				var temp = this.namespaceURI ? ['xhtml:'] : [];
 				temp.push(param[1]);
 				if (param[2]) temp.push('[@id="', param[2], '"]');
@@ -101,7 +114,9 @@ Element.domMethods = {
 						}
 					} else temp.push('[@', param[4], ']');
 				}
-				items.push(temp.join(''));
+				temp = temp.join('');
+				$$.cache[sel].xpath = temp;
+				items.push(temp);
 				continue;
 			}
 			Filters.selector = param;
@@ -121,7 +136,6 @@ Element.domMethods = {
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
 		if (xpath) items = this.getElementsByXpath(items.join('//'));
-		else if (selector.length > 1) items = [].implement(items);
 		return (nocash) ? items : $extend(items.map($), new Elements);
 	},
 	
@@ -154,11 +168,7 @@ Element.domMethods = {
 		var elements = [];
 		selector = selector.split(',');
 		if (selector.length == 1) return this.getElements(selector[0], nocash);
-		for (var i = 0, j = selector.length; i < j; i++){
-			var temp = this.getElements(selector[i], true);
-			if (i == 0) elements = temp;
-			else elements.implement(temp);
-		}
+		for (var i = 0, j = selector.length; i < j; i++) elements.implement(this.getElements(selector[i], true));
 		return (nocash) ? elements : $extend(elements.map($), new Elements);
 	},
 	
@@ -241,7 +251,7 @@ Elements.extend({
 
 	getElementsByTagName: function(tagName){
 		var found = [];
-		for (var i = 0, j = this.length; i < j; i++) found.extend(this[i].getElementsByTagName(tagName));
+		for (var i = 0, j = this.length; i < j; i++) found.implement(this[i].getElementsByTagName(tagName));
 		return found;
 	}
 

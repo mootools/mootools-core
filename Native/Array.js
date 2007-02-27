@@ -177,35 +177,7 @@ Array.extend({
 	test: function(item, from){
 		return this.indexOf(item, from) != -1;
 	},
-
-	/*
-	Property: extend
-		Extends an array with another one.
-
-	Arguments:
-		newArray - the array to extend ours with
-
-	Example:
-		>var Animals = ['Cat', 'Dog', 'Coala'];
-		>Animals.extend(['Lizard']);
-		>//Animals is now: ['Cat', 'Dog', 'Coala', 'Lizard'];
-	*/
-
-	extend: function(newArray){
-		for (var i = 0, j = newArray.length; i < j; i++) this.push(newArray[i]);
-		return this;
-	},
 	
-	/*
-	Property: implement
-		includes an array in another array, without duplicating.
-	*/
-	
-	implement: function(array){
-		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
-		return this;
-	},
-
 	/*
 	Property: associate
 		Creates an object with key-value pairs based on the array of keywords passed in
@@ -232,12 +204,46 @@ Array.extend({
 	},
 
 	/*
+	Property: extend
+		Extends an array with another one.
+
+	Arguments:
+		newArray - the array to extend ours with
+
+	Example:
+		>var Animals = ['Cat', 'Dog', 'Coala'];
+		>Animals.extend(['Lizard']);
+		>//Animals is now: ['Cat', 'Dog', 'Coala', 'Lizard'];
+	*/
+
+	extend: function(newArray){
+		for (var i = 0, j = newArray.length; i < j; i++) this.push(newArray[i]);
+		return this;
+	},
+	
+	/*
+	Property: implement
+		includes an array in another array, without duplicates.
+	*/
+	
+	implement: function(array){
+		if (!this.length) return this.extend(array);
+		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
+		return this;
+	},
+
+	/*
 	Property: include
 		includes the passed in element in the array, only if its not already present.
 	*/
 
 	include: function(item){
-		if (!this.test(item)) this.push(item);
+		if (!this.length || !this.test(item)) this.push(item);
+		return this;
+	},
+	
+	clean: function(){
+		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
 		return this;
 	}
 
