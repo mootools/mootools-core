@@ -480,7 +480,7 @@ Element.extend({
 			if (this.style.visibility != "visible") this.style.visibility = "visible";
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (window.ie) this.style.filter = "alpha(opacity=" + opacity * 100 + ")";
+		if (window.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
 		this.style.opacity = this.opacity = opacity;
 		return this;
 	},
