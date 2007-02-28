@@ -365,30 +365,31 @@ if ((typeof console == 'undefined') || !console.warn){
 			'name': 'Run Time Error'
 		});
 	};
-}
-
-if (typeof Ajax != 'undefined'){
-	Ajax = Ajax.extend({
-
-		onStateChange: function(){
-			this.parent();
-			this.log();
-		},
-
-		log: function(){
-			if (this.transport.readyState == 4){
-				try {
-					if (debug._body){
-						var txt = this.transport.responseText;
-						if ($chk(txt)){
-							if (txt.length > 100) txt = txt.substring(0, 100) + " ...";
-						} else {
-							txt = 'undefined';
+	if (typeof Ajax != 'undefined'){
+		Ajax = Ajax.extend({
+	
+			onStateChange: function(){
+				this.parent();
+				this.log();
+			},
+	
+			log: function(){
+				if (this.transport.readyState == 4){
+					try {
+						if (debug._body){
+							var txt = this.transport.responseText;
+							if ($chk(txt)){
+								if (txt.length > 100) txt = txt.substring(0, 100) + " ...";
+							} else {
+								txt = 'undefined';
+							}
+							debug.log("%s: %s"+"\n"+"status: %s"+"\n"+"responseText: %s", this.options.method, this.url, this.transport.status, txt);
 						}
-						debug.log("%s: %s"+"\n"+"status: %s"+"\n"+"responseText: %s", this.options.method, this.url, this.transport.status, txt);
-					}
-				} catch(e){}
+					} catch(e){}
+				}
 			}
-		}
-	});
+		});
+	}
 }
+
+
