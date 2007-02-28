@@ -119,7 +119,7 @@ var XHR = new Class({
 			this.transport.onreadystatechange = this.onStateChange.bind(this);
 			if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 			$extend(this.headers, this.options.headers);
-			for (var type in this.headers) try { this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
+			for (var type in this.headers) try {this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
 			this.transport.send(data);
 		}).delay(1, this);
 		this.fireEvent('onRequest');

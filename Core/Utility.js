@@ -120,6 +120,7 @@ Properties:
 if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
 else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
 else if (document.getBoxObjectFor != null) window.gecko = true;
+window.xpath = (document.evaluate) ? true : false;
 
 //htmlelement
 

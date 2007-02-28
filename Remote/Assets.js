@@ -111,7 +111,7 @@ var Asset = {
 		}, options);
 		if (!sources.push) sources = [sources];
 		var images = [];
-		counter = 0;
+		var counter = 0;
 		sources.each(function(source){
 			var img = new Asset.image(source, {
 				'onload': function(){

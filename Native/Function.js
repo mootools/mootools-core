@@ -62,13 +62,7 @@ Function.extend({
 			};
 			if (options.delay) return setTimeout(returns, $duration(options.delay));
 			if (options.periodical) return setInterval(returns, $duration(options.periodical));
-			if (options.attempt){
-				try {
-					return returns();
-				} catch(err){
-					return err;
-				}
-			}
+			if (options.attempt) try {return returns();} catch(err){return false;};
 			return returns();
 		};
 	},

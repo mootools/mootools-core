@@ -42,11 +42,11 @@ var Ajax = XHR.extend({
 		this.addEvent('onSuccess', this.onComplete);
 		this.setOptions(options);
 		this.options.data = this.options.data || this.options.postBody;
-		this.parent(this.options);
 		if (!['post', 'get'].test(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
 		}
+		this.parent(this.options);
 		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
 		this.url = url;

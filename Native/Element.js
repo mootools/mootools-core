@@ -98,6 +98,7 @@ function $(el){
 	var type = $type(el);
 	if (type == 'string'){
 		el = document.getElementById(el);
+		if (el.htmlElement) return Garbage.collect(el);
 		type = (el) ? 'element' : false;
 	}
 	if (type != 'element') return false;

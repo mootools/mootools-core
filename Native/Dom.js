@@ -82,7 +82,6 @@ Element.domMethods = {
 
 	getElements: function(selector, nocash){
 		var items = [];
-		var xpath = (document.evaluate) ? true : false;
 		selector = selector.clean().split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
@@ -95,7 +94,7 @@ Element.domMethods = {
 				param[1] = param[1] || '*';
 				$$.cache[sel] = {'param': param};
 			}
-			if (xpath){
+			if (window.xpath){
 				if ($$.cache[sel].xpath){
 					items.push($$.cache[sel].xpath);
 					continue;
@@ -136,7 +135,7 @@ Element.domMethods = {
 			if (param[3]) items = items.filter(Filters.className);
 			if (param[4]) items = items.filter(Filters.attribute);
 		}
-		if (xpath) items = this.getElementsByXpath(items.join('//'));
+		if (window.xpath) items = this.getElementsByXpath(items.join('//'));
 		return (nocash) ? items : $$.map(items);
 	},
 	
