@@ -98,10 +98,10 @@ function $(el){
 	var type = $type(el);
 	if (type == 'string'){
 		el = document.getElementById(el);
-		if (el.htmlElement) return Garbage.collect(el);
 		type = (el) ? 'element' : false;
 	}
 	if (type != 'element') return false;
+	if (el.htmlElement) return Garbage.collect(el);
 	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
 	el.htmlElement = true;
