@@ -323,10 +323,10 @@ var debug = {
 				try {
 					var evaluation = eval(value);
 					if (evaluation !== undefined) debug.result([evaluation]);
-					debug.register(value);
 				} catch (err){
 					debug.error(err);
 				}
+				debug.register(value);
 				break;
 
 			case 'up':
