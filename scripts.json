@@ -41,10 +41,10 @@
 		},
 
 		"Event": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events"],
 			"desc": "The Event class, has many properties, like making the event object crossbrowser and its properties easily accessible."
 		},
-		
+
 		"Dom": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
 			"desc": "Allows to select elements by css selectors. Additionally, lets you filter by element."
@@ -62,14 +62,19 @@
 		"Element.Dimensions": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
 			"desc": "Contains Element methods to work with element size, scroll, or position in space."
+		},
+		
+		"Element.Events": {
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
+			"desc": "Contains Element methods to work with events."
 		}
 
 	},
 
 	"Window": {
 
-		"Window.Base": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
+		"Window.DomReady": {
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events"],
 			"desc": "Contains the domready event."
 		},
 
@@ -108,7 +113,7 @@
 		},
 
 		"Fx.Scroll": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Dimensions", "Event", "Common", "Window.Size", "Fx.Base"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Element.Dimensions", "Event", "Common", "Window.Size", "Fx.Base"],
 			"desc": "Effect to scroll any element, including the window."
 		},
 
@@ -127,12 +132,12 @@
 	"Drag": {
 
 		"Drag.Base": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Event", "Common"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Event", "Common"],
 			"desc": "the basic drag class. you can use this to drag, resize and whatever you want to do when dragging the mouse."
 		},
 
 		"Drag.Move": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Dimensions", "Event", "Common", "Drag.Base"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Element.Dimensions", "Event", "Common", "Drag.Base"],
 			"desc": "Drag.Move extends Drag.Base, adding support for draggable containers and droppables."
 		}
 
@@ -190,22 +195,22 @@
 		},
 
 		"Slider": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Dimensions", "Event", "Common", "Drag.Base"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Element.Dimensions", "Event", "Common", "Drag.Base"],
 			"desc": "Lets you create horizontal and vertical sliders."
 		},
 
 		"SmoothScroll": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Dimensions", "Event", "Common", "Window.Size", "Fx.Base", "Fx.Scroll"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Element.Dimensions", "Event", "Common", "Window.Size", "Fx.Base", "Fx.Scroll"],
 			"desc": "Smooth scroll your internal links."
 		},
 
 		"Sortables": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Dimensions", "Event", "Common"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Element.Dimensions", "Event", "Common"],
 			"desc": "Lets you resort list items. Supports optional ghosting & handles"
 		},
 
 		"Tips": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Event", "Common", "Window.Size"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Event", "Common", "Window.Size"],
 			"desc": "The Tooltips."
 		},
 		
@@ -215,7 +220,7 @@
 		},
 		
 		"Accordion": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Common", "Fx.Base", "Fx.CSS", "Fx.Elements"],
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Common", "Fx.Base", "Fx.CSS", "Fx.Elements"],
 			"desc": "Does it need a description?"
 		}
 

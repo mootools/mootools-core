@@ -102,9 +102,9 @@ var Tips = new Class({
 		el.addEvent('mouseenter', function(event){
 			this.start(el);
 			this.locate(event);
-		}.bindWithEvent(this));
+		}.bind(this));
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
-		el.addEvent('mouseleave', this.end.bindWithEvent(this));
+		el.addEvent('mouseleave', this.end.bind(this));
 	},
 
 	start: function(el){
