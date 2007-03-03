@@ -47,7 +47,7 @@ var Event = new Class({
 		this.event = event;
 		this.type = event.type;
 		this.target = event.target || event.srcElement;
-		if (this.target.nodeType == 3) this.target = this.target.parentNode; // Safari
+		if (this.target.nodeType == 3) this.target = this.target.parentNode;
 		this.shift = event.shiftKey;
 		this.control = event.ctrlKey;
 		this.alt = event.altKey;
@@ -62,8 +62,10 @@ var Event = new Class({
 					break;
 				}
 			}
-			var fKey = this.code - 111;
-			if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
+			if (this.type == 'keydown'){
+				var fKey = this.code - 111;
+				if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
+			}
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
 		} else if (this.type.test(/mouse/) || (this.type == 'click')){
 			this.page = {
@@ -79,6 +81,7 @@ var Event = new Class({
 				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}
+			if (this.relatedTarget && this.relatedTarget.nodeType == 3) this.relatedTarget = this.relatedTarget.parentNode;
 		}
 	},
 
@@ -129,6 +132,28 @@ Event.keys = {
 };
 
 Event.keys.extend = $extend;
+
+Element.Events.extend({
+
+	'mouseenter': {
+		type: 'mouseover',
+		map: function(event){
+			event = new Event(event);
+			if (event.relatedTarget == this || this.hasChild(event.relatedTarget)) return;
+			this.fireEvent('mouseenter', event);
+		}
+	},
+	
+	'mouseleave': {
+		type: 'mouseout',
+		map: function(event){
+			event = new Event(event);
+			if (event.relatedTarget == this || this.hasChild(event.relatedTarget)) return;
+			this.fireEvent('mouseleave', event);
+		}
+	}
+	
+});
 
 Function.extend({
 

@@ -99,12 +99,12 @@ var Tips = new Class({
 			el.myText = false;
 		}
 		if (el.myTitle && el.myTitle.length > this.options.maxTitleChars) el.myTitle = el.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
-		el.addEvent('mouseover', function(event){
+		el.addEvent('mouseenter', function(event){
 			this.start(el);
 			this.locate(event);
 		}.bindWithEvent(this));
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
-		el.addEvent('mouseout', this.end.bindWithEvent(this));
+		el.addEvent('mouseleave', this.end.bindWithEvent(this));
 	},
 
 	start: function(el){
@@ -126,7 +126,6 @@ var Tips = new Class({
 	end: function(event){
 		$clear(this.timer);
 		this.timer = this.hide.delay(this.options.hideDelay, this);
-		event.stop();
 	},
 
 	locate: function(event){

@@ -821,24 +821,6 @@ Element.eventMethods = {
 
 Element.Events = {
 	
-	'mouseenter': {
-		type: 'mouseover',
-		map: function(event){
-			var related = event.relatedTarget || event.fromElement;
-			if (related === this || $type(related) != 'element' || this.hasChild(related)) return;
-			this.fireEvent('mouseenter', event);
-		}
-	},
-	
-	'mouseleave': {
-		type: 'mouseout',
-		map: function(event){
-			var related = event.relatedTarget || event.toElement;
-			if (related === this || this.hasChild(related)) return;
-			this.fireEvent('mouseleave', event);
-		}
-	},
-	
 	'mousewheel': {
 		type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
 	}
@@ -876,7 +858,6 @@ var Garbage = {
 		Garbage.collect(window);
 		Garbage.collect(document);
 		Garbage.trash(Garbage.elements);
-		Garbage.elements = [];
 	}
 
 };
