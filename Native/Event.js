@@ -43,18 +43,19 @@ Example:
 var Event = new Class({
 
 	initialize: function(event){
-		this.event = event || window.event;
-		this.type = this.event.type;
-		this.target = this.event.target || this.event.srcElement;
+		event = event || window.event;
+		this.event = event;
+		this.type = event.type;
+		this.target = event.target || event.srcElement;
 		if (this.target.nodeType == 3) this.target = this.target.parentNode; // Safari
-		this.shift = this.event.shiftKey;
-		this.control = this.event.ctrlKey;
-		this.alt = this.event.altKey;
-		this.meta = this.event.metaKey;
+		this.shift = event.shiftKey;
+		this.control = event.ctrlKey;
+		this.alt = event.altKey;
+		this.meta = event.metaKey;
 		if (['DOMMouseScroll', 'mousewheel'].test(this.type)){
-			this.wheel = this.event.wheelDelta ? (this.event.wheelDelta / (window.opera ? -120 : 120)) : -(this.event.detail || 0) / 3;
+			this.wheel = event.wheelDelta ? (event.wheelDelta / (window.opera ? -120 : 120)) : -(event.detail || 0) / 3;
 		} else if (this.type.test(/key/)){
-			this.code = this.event.which || this.event.keyCode;
+			this.code = event.which || event.keyCode;
 			for (var name in Event.keys){
 				if (Event.keys[name] == this.code){
 					this.key = name;
@@ -66,17 +67,17 @@ var Event = new Class({
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
 		} else if (this.type.test(/mouse/) || (this.type == 'click')){
 			this.page = {
-				'x': this.event.pageX || this.event.clientX + document.documentElement.scrollLeft,
-				'y': this.event.pageY || this.event.clientY + document.documentElement.scrollTop
+				'x': event.pageX || event.clientX + document.documentElement.scrollLeft,
+				'y': event.pageY || event.clientY + document.documentElement.scrollTop
 			};
 			this.client = {
-				'x': this.event.pageX ? this.event.pageX - window.pageXOffset : this.event.clientX,
-				'y': this.event.pageY ? this.event.pageY - window.pageYOffset : this.event.clientY
+				'x': event.pageX ? event.pageX - window.pageXOffset : event.clientX,
+				'y': event.pageY ? event.pageY - window.pageYOffset : event.clientY
 			};
-			this.rightClick = (this.event.which == 3) || (this.event.button == 2);
+			this.rightClick = (event.which == 3) || (event.button == 2);
 			switch(this.type){
-				case 'mouseover': this.relatedTarget = this.event.relatedTarget || this.event.fromElement; break;
-				case 'mouseout': this.relatedTarget = this.event.relatedTarget || this.event.toElement;
+				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
+				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}
 		}
 	},
@@ -87,9 +88,7 @@ var Event = new Class({
 	*/
 
 	stop: function() {
-		this.stopPropagation();
-		this.preventDefault();
-		return this;
+		return this.stopPropagation().preventDefault();
 	},
 
 	/*
@@ -125,8 +124,11 @@ Event.keys = {
 	'esc': 27,
 	'space': 32,
 	'backspace': 8,
+	'tab': 9,
 	'delete': 46
 };
+
+Event.keys.extend = $extend;
 
 Function.extend({
 

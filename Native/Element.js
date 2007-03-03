@@ -738,15 +738,20 @@ Element.eventMethods = {
 	addEvent: function(type, fn){
 		this.events = this.events || {};
 		this.events[type] = this.events[type] || {'keys': [], 'values': []};
-		if (!this.events[type].keys.test(fn)){
-			this.events[type].keys.push(fn);
-			if (this.addEventListener){
-				this.addEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, fn, false);
-			} else {
-				fn = fn.bind(this);
-				this.attachEvent('on'+type, fn);
-				this.events[type].values.push(fn);
-			}
+		if (this.events[type].keys.test(fn)) return this;
+		this.events[type].keys.push(fn);
+		var realType = type;
+		if (Element.Events[type]){
+			if (Element.Events[type].map) fn = Element.Events[type].map.bindAsEventListener(this);
+			realType = Element.Events[type].type || type;
+		}
+		this.events[type].values.push(fn);
+		
+		if (this.addEventListener){
+			this.addEventListener(realType, fn, false);
+		} else {
+			fn = fn.bindAsEventListener(this);
+			this.attachEvent('on' + realType, fn);
 		}
 		return this;
 	},
@@ -762,15 +767,18 @@ Element.eventMethods = {
 	*/
 
 	removeEvent: function(type, fn){
-		if (this.events && this.events[type]){
-			var pos = this.events[type].keys.indexOf(fn);
-			if (pos == -1) return this;
-			var key = this.events[type].keys.splice(pos,1)[0];
-			if (this.removeEventListener){
-				this.removeEventListener((type == 'mousewheel' && window.gecko) ? 'DOMMouseScroll' : type, key, false);
-			} else {
-				this.detachEvent('on'+type, this.events[type].values.splice(pos,1)[0]);
-			}
+		if (!this.events || !this.events[type]) return this;
+		var pos = this.events[type].keys.indexOf(fn);
+		if (pos == -1) return this;
+		var key = this.events[type].keys.splice(pos,1)[0];
+		var value = this.events[type].values.splice(pos,1)[0];
+		
+		if (Element.Events[type]) type = Element.Events[type].type || type;
+		
+		if (this.removeEventListener){
+			this.removeEventListener(type, value, false);
+		} else {
+			this.detachEvent('on' + type, value);
 		}
 		return this;
 	},
@@ -781,18 +789,17 @@ Element.eventMethods = {
 	*/
 
 	removeEvents: function(type){
-		if (this.events){
-			if (type){
-				if (this.events[type]){
-					this.events[type].keys.each(function(fn){
-						this.removeEvent(type, fn);
-					}, this);
-					this.events[type] = null;
-				}
-			} else {
-				for (var evType in this.events) this.removeEvents(evType);
-				this.events = null;
+		if (!this.events) return this;
+		if (type){
+			if (this.events[type]){
+				this.events[type].keys.each(function(fn){
+					this.removeEvent(type, fn);
+				}, this);
+				this.events[type] = null;
 			}
+		} else {
+			for (var evType in this.events) this.removeEvents(evType);
+			this.events = null;
 		}
 		return this;
 	},
@@ -811,6 +818,34 @@ Element.eventMethods = {
 	}
 
 };
+
+Element.Events = {
+	
+	'mouseenter': {
+		type: 'mouseover',
+		map: function(event){
+			var related = event.relatedTarget || event.fromElement;
+			if (related === this || $type(related) != 'element' || this.hasChild(related)) return;
+			this.fireEvent('mouseenter', event);
+		}
+	},
+	
+	'mouseleave': {
+		type: 'mouseout',
+		map: function(event){
+			var related = event.relatedTarget || event.toElement;
+			if (related === this || this.hasChild(related)) return;
+			this.fireEvent('mouseleave', event);
+		}
+	},
+	
+	'mousewheel': {
+		type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+	}
+	
+};
+
+Element.Events.extend = $extend;
 
 window.extend(Element.eventMethods);
 document.extend(Element.eventMethods);
