@@ -115,8 +115,8 @@ var Asset = {
 		sources.each(function(source){
 			var img = new Asset.image(source, {
 				'onload': function(){
+					options.onProgress.call(this, counter);
 					counter++;
-					options.onProgress();
 					if (counter == sources.length) options.onComplete();
 				}
 			});
