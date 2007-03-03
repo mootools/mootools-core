@@ -61,7 +61,7 @@ Element.extend({
 		this.getFormElements().each(function(el){
 			var name = $(el).name;
 			var value = el.getValue();
-			if (!el.disabled && $chk(value)){
+			if (!el.disabled && value !== false){
 				var qs = function(val){
 					queryString.push(name + '=' + encodeURIComponent(val));
 				};
