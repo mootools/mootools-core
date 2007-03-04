@@ -63,6 +63,10 @@ Drag.Base = new Class({
 	attach: function(){
 		this.handle.addEvent('mousedown', this.bound.start);
 	},
+	
+	detach: function(){
+		this.handle.removeEvent('mousedown', this.bound.start);
+	},
 
 	start: function(event){
 		this.fireEvent('onBeforeStart', this.element);
@@ -82,8 +86,8 @@ Drag.Base = new Class({
 		this.bound.drag = this.drag.bindWithEvent(this);
 		this.bound.stop = this.stop.bind(this);
 		this.bound.move = this.options.snap ? this.checkAndDrag.bindWithEvent(this) : this.bound.drag;
-		document.addEvent('mousemove', this.bound.move);
-		document.addEvent('mouseup', this.bound.stop);
+		document.addListener('mousemove', this.bound.move);
+		document.addListener('mouseup', this.bound.stop);
 		this.fireEvent('onStart', this.element);
 		event.stop();
 	},
@@ -91,9 +95,9 @@ Drag.Base = new Class({
 	checkAndDrag: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			document.removeEvent('mousemove', this.bound.move);
+			document.removeListener('mousemove', this.bound.move);
 			this.bound.move = this.bound.drag;
-			document.addEvent('mousemove', this.bound.move);
+			document.addListener('mousemove', this.bound.move);
 			this.drag(event);
 			this.fireEvent('onSnap', this.element);
 		}
@@ -121,13 +125,9 @@ Drag.Base = new Class({
 		event.stop();
 	},
 
-	detach: function(){
-		this.handle.removeEvent('mousedown', this.bound.start);
-	},
-
 	stop: function(){
-		document.removeEvent('mousemove', this.bound.move);
-		document.removeEvent('mouseup', this.bound.stop);
+		document.removeListener('mousemove', this.bound.move);
+		document.removeListener('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
 	}
 

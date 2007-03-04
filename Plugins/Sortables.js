@@ -75,13 +75,13 @@ var Sortables = new Class({
 				'left': position.x,
 				'top': event.page.y - this.offset
 			});
-			document.addEvent('mousemove', this.bound.moveGhost);
+			document.addListener('mousemove', this.bound.moveGhost);
 			this.fireEvent('onDragStart', [el, this.ghost]);
 		}
 		this.bound.move = this.move.bindWithEvent(this, el);
 		this.bound.end = this.end.bind(this, el);
-		document.addEvent('mousemove', this.bound.move);
-		document.addEvent('mouseup', this.bound.end);
+		document.addListener('mousemove', this.bound.move);
+		document.addListener('mouseup', this.bound.end);
 		this.fireEvent('onStart', el);
 		event.stop();
 	},
@@ -122,10 +122,10 @@ var Sortables = new Class({
 
 	end: function(el){
 		this.previous = null;
-		document.removeEvent('mousemove', this.bound.move);
-		document.removeEvent('mouseup', this.bound.end);
+		document.removeListener('mousemove', this.bound.move);
+		document.removeListener('mouseup', this.bound.end);
 		if (this.options.ghost){
-			document.removeEvent('mousemove', this.bound.moveGhost);
+			document.removeListener('mousemove', this.bound.moveGhost);
 			this.fireEvent('onDragComplete', [el, this.ghost]);
 		}
 		this.fireEvent('onComplete', el);

@@ -18,23 +18,29 @@ Example:
 */
 
 var SmoothScroll = Fx.Scroll.extend({
+	
+	options: {
+		links: document.links
+	},
 
 	initialize: function(options){
+		this.parent(window, options);
 		this.addEvent('onCancel', this.clearChain);
+		this.links = $$(this.options.links);
 		var location = window.location.href.match(/^[^#]*/)[0] + '#';
-		$$(document.links).each(function(link){
+		this.links.each(function(link){
 			if (link.href.indexOf(location) != 0) return;
 			var anchor = link.href.substr(location.length);
 			if (anchor && $(anchor)) this.useLink(link, anchor);
 		}, this);
-		this.parent(window, options);
 	},
 
 	useLink: function(link, anchor){
 		link.addEvent('click', function(event){
 			if (!window.khtml){
+				this.clearChain();
 				this.chain(function(){
-					window.location.href = '#'+anchor;
+					window.location.href = '#' + anchor;
 				});
 			}
 			this.toElement(anchor);
