@@ -64,7 +64,7 @@ var XHR = new Class({
 		this.running = false;
 		var status = 0;
 		try {status = this.transport.status} catch(e){};
-		if (this.options.isSuccess(status)) this.onSuccess();
+		if (this.options.isSuccess.call(this, status)) this.onSuccess();
 		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;
 	},
