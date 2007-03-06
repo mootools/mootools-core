@@ -35,7 +35,7 @@ Example:
 
 var Class = function(properties){
 	var klass = function(){
-		if (this.initialize && $type(this.initialize) == 'function') return this.initialize.apply(this, arguments);
+		if (arguments[0] !== null && this.initialize && $type(this.initialize) == 'function') return this.initialize.apply(this, arguments);
 		else return this;
 	};
 	$extend(klass, this);
@@ -79,7 +79,7 @@ Class.prototype = {
 	*/
 
 	extend: function(properties){
-		var proto = $merge(this.prototype);
+		var proto = new this(null);
 		for (var property in properties){
 			var pp = proto[property];
 			proto[property] = $mergeClass(pp, properties[property]);
