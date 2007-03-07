@@ -21,8 +21,8 @@ var Element = new Class({
 		Creates a new element of the type passed in.
 
 	Arguments:
-		el - the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
-		props - an object, the properties you want to add to your element.
+		el - string; the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
+		props - object; the properties you want to add to your element.
 
 	Props:
 		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
@@ -350,8 +350,10 @@ Element.extend({
 	Returns:
 		true - the Element has the class
 		false - it doesn't
+
 	Arguments:
-		className - the class name to test.
+		className - string; the class name to test.
+
 	Example:
 		><div id="myElement" class="testClass"></div>
 		>$('myElement').hasClass('testClass'); //returns true
@@ -366,7 +368,7 @@ Element.extend({
 		Adds the passed in class to the Element, if the element doesnt already have it.
 
 	Arguments:
-		className - the class name to add
+		className - string; the class name to add
 
 	Example:
 		><div id="myElement" class="testClass"></div>
@@ -413,10 +415,11 @@ Element.extend({
 
 		Arguments:
 			property - the property to set
-			value - the value to which to set it
+			value - the value to which to set it; for numeric values that require "px" you can pass an integer
 
 		Example:
 			>$('myElement').setStyle('width', '300px'); //the width is now 300px
+			>$('myElement').setStyle('width', 300); //the width is now 300px
 	*/
 
 	setStyle: function(property, value){
@@ -443,8 +446,8 @@ Element.extend({
 	Examples:
 		>$('myElement').setStyles({
 		>	border: '1px solid #000',
-		>	width: '300px',
-		>	height: '400px'
+		>	width: 300,
+		>	height: 400
 		>});
 
 		OR
@@ -467,7 +470,7 @@ Element.extend({
 		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
 
 	Arguments:
-		opacity - Accepts numbers from 0 to 1.
+		opacity - float; Accepts values from 0 to 1.
 
 	Example:
 		>$('myElement').setOpacity(0.5) //make it 50% transparent
@@ -527,7 +530,7 @@ Element.extend({
 	Property: getStyles
 		Returns an object of styles of the Element for each argument passed in.
 		Arguments:
-		properties - any number of style properties
+		properties - strings; any number of style properties
 	Example:
 		>$('myElement').getStyles('width','height','padding');
 		>//returns an object like:
@@ -623,7 +626,7 @@ Element.extend({
 		Sets an attribute for the Element.
 
 	Arguments:
-		property - the property to assign the value passed in
+		property - string; the property to assign the value passed in
 		value - the value to assign to the property passed in
 
 	Example:
@@ -675,7 +678,7 @@ Element.extend({
 		Sets the innerHTML of the Element.
 
 	Arguments:
-		html - the new innerHTML for the element.
+		html - string; the new innerHTML for the element.
 
 	Example:
 		>$('myElement').setHTML(newHTML) //the innerHTML of myElement is now = newHTML
@@ -691,7 +694,7 @@ Element.extend({
 		Gets the an attribute of the Element.
 
 	Arguments:
-		property - the attribute to retrieve
+		property - string; the attribute to retrieve
 
 	Example:
 		>$('myImage').getProperty('src') // returns whatever.gif

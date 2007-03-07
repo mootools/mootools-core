@@ -13,7 +13,7 @@ Function: $E
 	Selects a single (i.e. the first found) Element based on the selector passed in and an optional filter element.
 
 Arguments:
-	selector - the css selector to match
+	selector - string; the css selector to match
 	filter - optional; a DOM element to limit the scope of the selector match; defaults to document.
 
 Example:
@@ -36,7 +36,7 @@ Returns:
 	an array of dom elements that match the selector within the filter
 
 Arguments:
-	selector - css selector to match
+	selector - string; css selector to match
 	filter - optional; a DOM element to limit the scope of the selector match; defaults to document.
 
 Examples:
@@ -64,10 +64,12 @@ Element.domMethods = {
 		Gets all the elements within an element that match the given (single) selector.
 
 	Arguments:
-		selector - the css selector to match
+		selector - string; the css selector to match
 
-	Example:
+	Examples:
 		>$('myElement').getElements('a'); // get all anchors within myElement
+		>$('myElement').getElements('input[name=dialog]') //get all input tags with name 'dialog'
+		>$('myElement').getElements('input[name$=log]') //get all input tags with names ending with 'log'
 		
 	Notes:
 		Supports these operators in attribute selectors:
@@ -152,6 +154,9 @@ Element.domMethods = {
 	/*
 	Property: getElement
 		Same as <Element.getElements>, but returns only the first. Alternate syntax for <$E>, where filter is the Element.
+
+	Arguments:
+		selector - string; css selector
 	*/
 
 	getElement: function(selector){
@@ -162,6 +167,8 @@ Element.domMethods = {
 	Property: getElementsBySelector
 		Same as <Element.getElements>, but allows for comma separated selectors, as in css. Alternate syntax for <$$>, where filter is the Element.
 
+	Arguments:
+		selector - string; css selector
 	*/
 
 	getElementsBySelector: function(selector, nocash){
@@ -176,6 +183,9 @@ Element.domMethods = {
 	Property: getElementsByClassName 
 		Returns all the elements that match a specific class name.
 		Here for compatibility purposes. can also be written: document.getElements('.className'), or $$('.className')
+
+	Arguments:
+		className - string; css classname
 	*/
 
 	getElementsByClassName: function(className){
@@ -191,7 +201,7 @@ Element.extend({
 		Targets an element with the specified id found inside the Element. Does not overwrite document.getElementById.
 
 	Arguments:
-		id - the id of the element to find.
+		id - string; the id of the element to find.
 	*/
 
 	getElementById: function(id){

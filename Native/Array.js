@@ -19,6 +19,15 @@ Array.extend({
 	Property: forEach
 		Iterates through an array; This method is only available for browsers without native *forEach* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
+	
+	Arguments:
+		fn - function to execute with each item in the array; passed the item and the index of that item in the array
+		bind - the object to bind "this" to (see <Function.bind>)
+	
+	Example:
+		>['apple','banana','lemon'].each(function(item, index) {
+		>	alert(index + " = " + item); //alerts "0 = apple" etc.
+		>}, bindObj); //optional second arg for binding, not used here
 	*/
 
 	forEach: function(fn, bind){
@@ -29,6 +38,18 @@ Array.extend({
 	Property: filter
 		This method is provided only for browsers without native *filter* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
+		
+		*filter* calls a provided callback function once for each element in an array, and constructs a new array of all the values for which callback returns a true value. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values. Array elements which do not pass the callback test are simply skipped, and are not included in the new array.
+	
+	Arguments:
+		fn - function to execute with each item in the array; passed the item and the index of that item in the array
+		bind - the object to bind "this" to (see <Function.bind>)
+	
+	Example:
+		>var biggerThanTwenty = [10,3,25,100].filter(function(item, index) {
+		> return item > 20;
+		>});
+		>//biggerThanTwenty = [25,100]
 	*/
 
 	filter: function(fn, bind){
@@ -43,6 +64,18 @@ Array.extend({
 	Property: map
 		This method is provided only for browsers without native *map* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
+
+		*map* calls a provided callback function once for each element in an array, in order, and constructs a new array from the results. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
+
+	Arguments:
+		fn - function to execute with each item in the array; passed the item and the index of that item in the array
+		bind - the object to bind "this" to (see <Function.bind>)
+
+	Example:
+		>var timesTwo = [1,2,3].map(function(item, index){
+		> return item*2;
+		>};
+		>//timesTwo = [2,4,6];
 	*/
 
 	map: function(fn, bind){
@@ -55,6 +88,18 @@ Array.extend({
 	Property: every
 		This method is provided only for browsers without native *every* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
+
+		*every* executes the provided callback function once for each element present in the array until it finds one where callback returns a false value. If such an element is found, the every method immediately returns false. Otherwise, if callback returned a true value for all elements, every will return true. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
+
+	Arguments:
+		fn - function to execute with each item in the array; passed the item and the index of that item in the array
+		bind - the object to bind "this" to (see <Function.bind>)
+
+	Example:
+		>var areAllBigEnough = [10,4,25,100].every(function(item, index){
+		> return item > 20;
+		>});
+		>//areAllBigEnough = false
 	*/
 
 	every: function(fn, bind){
@@ -68,6 +113,18 @@ Array.extend({
 	Property: some
 		This method is provided only for browsers without native *some* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
+
+		*some* executes the callback function once for each element present in the array until it finds one where callback returns a true value. If such an element is found, some immediately returns true. Otherwise, some returns false. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
+
+	Arguments:
+		fn - function to execute with each item in the array; passed the item and the index of that item in the array
+		bind - the object to bind "this" to (see <Function.bind>)
+		
+	Example:
+		>var isAnyBigEnough = [10,4,25,100].some(function(item, index){
+		> return item > 20;
+		>});
+		>//isAnyBigEnough = true
 	*/
 
 	some: function(fn, bind){
@@ -81,6 +138,15 @@ Array.extend({
 	Property: indexOf
 		This method is provided only for browsers without native *indexOf* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
+
+		indexOf compares a search element to elements of the Array using strict equality (the same method used by the ===, or triple-equals, operator).
+
+	Arguments:
+		item - any type of object; element to locate in the array
+		from - integer; optional; the index of the array at which to begin the search (defaults to 0)
+		
+	Example:
+		>['apple','lemon','banana'].indexOf('lemon'); //returns 1
 	*/
 
 	indexOf: function(item, from){
@@ -99,7 +165,7 @@ Array.extend({
 		Same as <Array.forEach>.
 
 	Arguments:
-		fn - the function to execute with each item in the array
+		fn - function to execute with each item in the array; passed the item and the index of that item in the array
 		bind - optional, the object that the "this" of the function will refer to.
 
 	Example:
@@ -116,8 +182,8 @@ Array.extend({
 	Returns:
 		a new array which is a copy of the current one.
 	Arguments:
-		start - optional, the index where to start the copy, default is 0. If negative, it is taken as the offset from the end of the array.
-		length - optional, the number of elements to copy. By default, copies all elements from start to the end of the array.
+		start - integer; optional; the index where to start the copy, default is 0. If negative, it is taken as the offset from the end of the array.
+		length - integer; optional; the number of elements to copy. By default, copies all elements from start to the end of the array.
 
 	Example:
 		>var letters = ["a","b","c"];
@@ -163,7 +229,7 @@ Array.extend({
 
 	Arguments:
 		item - the item to search for in the array.
-		from - optional, the index at which to begin the search, default is 0. If negative, it is taken as the offset from the end of the array.
+		from - integer; optional; the index at which to begin the search, default is 0. If negative, it is taken as the offset from the end of the array.
 
 	Returns:
 		true - the item was found
@@ -227,6 +293,9 @@ Array.extend({
 		
 	Arguments:
 		array - the array to merge from.
+	
+	Example:
+		>['Cat','Dog'].merge(['Dog','Coala']); //returns ['Cat','Dog','Coala']
 	*/
 	
 	merge: function(array){
@@ -237,6 +306,13 @@ Array.extend({
 	/*
 	Property: include
 		includes the passed in element in the array, only if its not already present.
+		
+	Arguments:
+		item - item to add to the array (if not present)
+	
+	Example:
+		>['Cat','Dog'].include('Dog'); //returns ['Cat','Dog']
+		>['Cat','Dog'].include('Coala'); //returns ['Cat','Dog','Coala']
 	*/
 
 	include: function(item){
@@ -282,7 +358,7 @@ Function argument:
 	The function argument will be passed the following arguments.
 
 	item - the current item in the iterator being procesed
-	index - the index of the item, or key in case of an object.
+	index - integer; the index of the item, or key in case of an object.
 
 Examples:
 	(start code)

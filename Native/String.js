@@ -50,6 +50,16 @@ String.extend({
 		return parseInt(this);
 	},
 
+	/*
+	Property: toFloat
+		parses a string to an float.
+
+	Returns:
+		either a float or "NaN" if the string is not a number.
+
+	Example:
+		>var value = "10.848".toFloat(); // value is 10.848
+	*/
 	toFloat: function(){
 		return parseFloat(this);
 	},
@@ -224,6 +234,11 @@ Number.extend({
 	toInt: function(){
 		return parseInt(this);
 	},
+
+	/*
+	Property: toFloat
+		Returns this number as a float; useful because toFloat must work on both Strings and Numbers.
+	*/
 
 	toFloat: function(){
 		return parseFloat(this);

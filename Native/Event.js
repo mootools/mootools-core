@@ -134,7 +134,15 @@ Event.keys = {
 Event.keys.extend = $extend;
 
 Element.Events.extend({
+/*	Section: mouseenter/mouseleave
+			In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events.
 
+			mouseenter - this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
+			mouseleave - this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
+
+		Example usage:
+			>$(myElement).addEvent('mouseenter', myFunction);
+	*/
 	'mouseenter': {
 		type: 'mouseover',
 		map: function(event){
@@ -163,6 +171,7 @@ Function.extend({
 
 	Arguments:
 		bind - optional, the object that the "this" of the function will refer to.
+		args - optional, an argument to pass to the function; if more than one argument, it must be an array of arguments.
 
 	Returns:
 		a function with the parameter bind as its "this" and as a pre-passed argument event or window.event, depending on the browser.
