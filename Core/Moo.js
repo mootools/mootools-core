@@ -166,6 +166,10 @@ Function: $merge
 
 Arguments:
 	any number of objects.
+
+Example:
+	>var mergedObj = $merge(obj1, obj2, obj3);
+	>//obj1, obj2, and obj3 are unaltered
 */
 
 function $merge(){

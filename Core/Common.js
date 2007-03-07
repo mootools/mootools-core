@@ -66,7 +66,8 @@ var Chain = new Class({
 /*
 Class: Events
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	In <Fx.Base> Class, for example, is used to give the possibility add any number of functions to the Effects events, like onComplete, onStart, onCancel
+
+	In <Fx.Base> Class, for example, is used to give the possibility add any number of functions to the Effects events, like onComplete, onStart, onCancel.
 
 Example:
 	(start code)
@@ -79,6 +80,24 @@ Example:
 	myFx.start(0,1);
 	//upon completion it will display the 2 alerts, in order.
 	(end)
+
+	Implementing:
+		This class can be implemented into other classes to add the functionality to them. 
+		Goes well with the <Options> class.
+
+	Example:
+		(start code)
+		var Widget = new Class({
+			initialize: function(){},
+			finish: function(){
+				this.fireEvent('onComplete');
+			}
+		});
+		Widget.implement(new Events);
+		//later...
+		var myWidget = new Widget();
+		myWidget.addEvent('onComplete', myfunction);
+		(end)
 */
 
 var Events = new Class({
@@ -86,6 +105,10 @@ var Events = new Class({
 	/*
 	Property: addEvent
 		adds an event to the stack of events of the Class instance.
+	
+	Arguments:
+		type - string; the event name (e.g. 'onComplete')
+		fn - function to execute
 	*/
 
 	addEvent: function(type, fn){
@@ -100,6 +123,11 @@ var Events = new Class({
 	/*
 	Property: fireEvent
 		fires all events of the specified type in the Class instance.
+	
+	Arguments:
+		type - string; the event name (e.g. 'onComplete')
+		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
+		delay - (integer) delay (in ms) to wait to execute the event
 	*/
 
 	fireEvent: function(type, args, delay){
@@ -114,6 +142,10 @@ var Events = new Class({
 	/*
 	Property: removeEvent
 		removes an event from the stack of events of the Class instance.
+	
+	Arguments:
+		type - string; the event name (e.g. 'onComplete')
+		fn - function that was added
 	*/
 
 	removeEvent: function(type, fn){
@@ -127,6 +159,33 @@ var Events = new Class({
 Class: Options
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	Used to automate the options settings, also adding Class <Events> when the option begins with on.
+	
+	Example:
+		(start code)
+		var Widget = new Class({
+			options: {
+				color: '#fff',
+				size: {
+					width: 100
+					height: 100
+				}
+			},
+			initialize: function(options){
+				this.setOptions(options);
+			}
+		});
+		Widget.implement(new Options);
+		//later...
+		var myWidget = new Widget({
+			color: '#f00',
+			size: {
+				width: 200
+			}
+		});
+		//myWidget.options = {color: #f00, size: {width: 200, height: 100}}
+		(end)
+
+	
 */
 
 var Options = new Class({
@@ -136,8 +195,8 @@ var Options = new Class({
 		sets this.options
 
 	Arguments:
-		defaults - the default set of options
-		options - the user entered options. can be empty too.
+		defaults - object; the default set of options
+		options - object; the user entered options. can be empty too.
 
 	Note:
 		if your Class has <Events> implemented, every option beginning with on, followed by a capital letter (onComplete) becomes an Class instance event.

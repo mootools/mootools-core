@@ -15,6 +15,9 @@ var Window = window;
 Function: $chk
 	Returns true if the passed in value/object exists or is 0, otherwise returns false.
 	Useful to accept zeroes.
+	
+Arguments:
+	obj - object to inspect
 */
 
 function $chk(obj){
@@ -24,6 +27,17 @@ function $chk(obj){
 /*
 Function: $pick
 	Returns the first object if defined, otherwise returns the second.
+
+Arguments:
+	obj - object to test
+	picked - the default to return
+
+Example:
+	(start code)
+		function say(msg){
+			alert($pick(msg, 'no meessage supplied'));
+		}
+	(end)
 */
 
 function $pick(obj, picked){
@@ -68,6 +82,17 @@ Arguments:
 
 Returns:
 	an integer for the duration in seconds or ms if second parameter is true.
+
+Example:
+	(start code)
+	var howLong = $duration({
+		months: 1,
+		days: 4,
+		minutes: 2,
+		seconds: 4
+	});
+	//howLong = 2937724 (seconds)
+	(end)
 */
 
 function $duration(data, ms){
