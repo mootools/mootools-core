@@ -48,9 +48,87 @@ function $ES(selector, filter){
 	return ($(filter) || document).getElementsBySelector(selector);
 };
 
-$$.cache = {};
+$$.shared = {
+	
+	cache: {},
 
-$$.regexp = /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/;
+	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
+
+	getNormalParam: function(selector, items, context, param, i){
+		Filters.selector = param;
+		if (i == 0){
+			if (param[2]){
+				var el = context.getElementById(param[2]);
+				if (!el || ((param[1] != '*') && (el.tagName.toLowerCase() != param[1]))) return false;
+				items = [el];
+			} else {
+				items = $A(context.getElementsByTagName(param[1]));
+			}
+		} else {
+			items = $$.shared.getElementsByTagName(items, param[1]);
+			if (param[2]) items = items.filter(Filters.id);
+		}
+		if (param[3]) items = items.filter(Filters.className);
+		if (param[4]) items = items.filter(Filters.attribute);
+		return items;
+	},
+	
+	getXpathParam: function(selector, items, context, param, i){
+		if ($$.shared.cache[selector].xpath){
+			items.push($$.shared.cache[selector].xpath);
+			return items;
+		}
+		var temp = context.namespaceURI ? ['xhtml:'] : [];
+		temp.push(param[1]);
+		if (param[2]) temp.push('[@id="', param[2], '"]');
+		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
+		if (param[4]){
+			if (param[5] && param[6]){
+				switch(param[5]){
+					case '*=': temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
+					case '^=': temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
+					case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
+					case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
+					case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
+				}
+			} else temp.push('[@', param[4], ']');
+		}
+		temp = temp.join('');
+		$$.shared.cache[selector].xpath = temp;
+		items.push(temp);
+		return items;
+	},
+	
+	getNormalItems: function(items, context, nocash){
+		return (nocash) ? items : $$.$$(items);
+	},
+	
+	getXpathItems: function(items, context, nocash){
+		var elements = [];
+		var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
+		return (nocash) ? elements : $extend(elements.map($), new Elements);
+	},
+	
+	resolver: function(prefix){
+		return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
+	},
+	
+	getElementsByTagName: function(context, tagName){
+		var found = [];
+		for (var i = 0, j = context.length; i < j; i++) found = $$.put(found, context[i].getElementsByTagName(tagName));
+		return found;
+	}
+
+};
+
+if (window.xpath){
+	$$.shared.getParam = $$.shared.getXpathParam;
+	$$.shared.getItems = $$.shared.getXpathItems;
+} else {
+	$$.shared.getParam = $$.shared.getNormalParam;
+	$$.shared.getItems = $$.shared.getNormalItems;
+}
 
 /*
 Class: Element
@@ -84,71 +162,23 @@ Element.domMethods = {
 
 	getElements: function(selector, nocash){
 		var items = [];
-		selector = selector.clean().split(' ');
+		selector = selector.split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
 			var param;
-			if ($$.cache[sel]){
-				param = $$.cache[sel].param;
+			if ($$.shared.cache[sel]){
+				param = $$.shared.cache[sel].param;
 			} else {
-				param = sel.match($$.regexp);
+				param = sel.match($$.shared.regexp);
 				if (!param) break;
 				param[1] = param[1] || '*';
-				$$.cache[sel] = {'param': param};
+				$$.shared.cache[sel] = {'param': param};
 			}
-			if (window.xpath){
-				if ($$.cache[sel].xpath){
-					items.push($$.cache[sel].xpath);
-					continue;
-				}
-				var temp = this.namespaceURI ? ['xhtml:'] : [];
-				temp.push(param[1]);
-				if (param[2]) temp.push('[@id="', param[2], '"]');
-				if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
-				if (param[4]){
-					if (param[5] && param[6]){
-						switch(param[5]){
-							case '*=':  temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
-							case '^=':  temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
-							case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
-							case '=':  temp.push('[@', param[4], '="', param[6], '"]'); break;
-							case '!=':  temp.push('[@', param[4], '!="', param[6], '"]');
-						}
-					} else temp.push('[@', param[4], ']');
-				}
-				temp = temp.join('');
-				$$.cache[sel].xpath = temp;
-				items.push(temp);
-				continue;
-			}
-			Filters.selector = param;
-			if (i == 0){
-				if (param[2]){
-					var el = this.getElementById(param[2]);
-					if (!el || ((param[1] != '*') && (Element.prototype.getTag.call(el) != param[1]))) break;
-					items = [el];
-				} else {
-					items = $A(this.getElementsByTagName(param[1]));
-				}
-			} else {
-				items = Elements.prototype.getElementsByTagName.call(items, param[1], true);
-				if (param[2]) items = items.filter(Filters.id);
-			}
-			if (param[3]) items = items.filter(Filters.className);
-			if (param[4]) items = items.filter(Filters.attribute);
+			var temp = $$.shared.getParam(sel, items, this, param, i);
+			if (!temp) break;
+			items = temp;
 		}
-		if (window.xpath) items = this.getElementsByXpath(items.join('//'));
-		return (nocash) ? items : $$.map(items);
-	},
-	
-	getElementsByXpath: function(xp){
-		var result = [];
-		var resolver = function(prefix){
-			return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
-		};
-		var xpath = document.evaluate('.//' + xp, this, resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-		for (var i = 0, j = xpath.snapshotLength; i < j; i++) result.push(xpath.snapshotItem(i));
-		return result;
+		return $$.shared.getItems(items, this, nocash);
 	},
 
 	/*
@@ -175,8 +205,8 @@ Element.domMethods = {
 		var elements = [];
 		selector = selector.split(',');
 		if (selector.length == 1) return this.getElements(selector[0], nocash);
-		for (var i = 0, j = selector.length; i < j; i++) elements = $$.merge(elements, this.getElements(selector[i], true));
-		return (nocash) ? elements : $$.map(elements);
+		for (var i = 0, j = selector.length; i < j; i++) elements = $$.put(elements, this.getElements(selector[i], true));
+		return (nocash) ? elements : $$.$$(elements);
 	},
 	
 	/*
@@ -251,18 +281,3 @@ var Filters = {
 	}
 
 };
-
-/*
-Class: Elements
-	Methods for dom queries arrays, <$$>.
-*/
-
-Elements.extend({
-
-	getElementsByTagName: function(tagName){
-		var found = [];
-		for (var i = 0, j = this.length; i < j; i++) found = $$.merge(found, this[i].getElementsByTagName(tagName));
-		return found;
-	}
-
-});

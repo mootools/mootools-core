@@ -144,30 +144,32 @@ function $$(){
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
 		switch($type(selector)){
-			case 'element': elements.include(element); break;
-			case 'string': elements = $$.merge(elements, document.getElementsBySelector(selector, true)); break;
-			case 'object': elements = $$.merge(elements, selector); break;
-			case 'array': elements.merge(selector);
-		}
-		var returned = [];
-		for (var k = 0, l = elements.length; k < l; k++){
-			var element = $(elements[k]);
-			if (element) returned.push(element);
+			case 'element': elements.push(element); break;
+			case 'string': elements = $$.put(elements, document.getElementsBySelector(selector, true)); break;
+			default: elements = $$.put(elements, selector);
 		}
 	}
-	return $extend(returned, new Elements);
+	return $$.$$(elements);
 };
 
-$$.merge = function(array1, array2){
+$$.put = function(array1, array2){
 	var newArray2 = (array2.push) ? array2 : $A(array2);
 	if (!array1.length) return newArray2;
 	var newArray1 = array1;
-	for (var i = 0, l = newArray2.length; i < l; i++) newArray1.include(newArray2[i]);
+	for (var i = 0, l = newArray2.length; i < l; i++) newArray1.push(newArray2[i]);
 	return newArray1;
 };
 
-$$.map = function(elements){
-	return $extend(elements.map($), new Elements);
+$$.$$ = function(array){
+	var elements = [];
+	for (var i = 0, l = array.length; i < l; i++){
+		if (array[i].included) continue;
+		array[i].included = true;
+		var element = $(array[i]);
+		if (element) elements.push(element);
+	}
+	for (var i = 0, l = elements.length; i < l; i++) elements[i].included = null;
+	return $extend(elements, new Elements);
 };
 
 Elements.Multi = function(property){
@@ -180,7 +182,7 @@ Elements.Multi = function(property){
 			if ($type(returns) != 'element') elements = false;
 			items.push(returns);
 		};
-		return (elements) ? $$.map(items) : items;
+		return (elements) ? $$.$$(items) : items;
 	};
 };
 
@@ -219,7 +221,6 @@ Element.extend({
 
 	Parameteres:
 		el - a string representing the element to be injected in (myElementId, or div), or an element reference.
-		If you pass div or another tag, the element will be created.
 
 	Example:
 		>html:
