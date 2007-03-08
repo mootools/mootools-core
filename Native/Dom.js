@@ -245,8 +245,6 @@ Element.extend({
 	
 });
 
-/* Section: document related functions */
-
 document.extend(Element.domMethods);
 Element.extend(Element.domMethods);
 

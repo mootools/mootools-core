@@ -67,7 +67,7 @@ var Event = new Class({
 				if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
 			}
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
-		} else if (this.type.test(/mouse/) || (this.type == 'click')){
+		} else if (this.type.test(/mouse/) || this.type.test(/click/) || this.type.test(/menu/)){
 			this.page = {
 				'x': event.pageX || event.clientX + document.documentElement.scrollLeft,
 				'y': event.pageY || event.clientY + document.documentElement.scrollTop
