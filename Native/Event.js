@@ -55,7 +55,7 @@ var Event = new Class({
 		if (['DOMMouseScroll', 'mousewheel'].test(this.type)){
 			this.wheel = event.wheelDelta ? (event.wheelDelta / (window.opera ? -120 : 120)) : -(event.detail || 0) / 3;
 		} else if (this.type.test(/key/)){
-			this.code = $pick(event.which, event.keyCode);
+			this.code = event.which || event.keyCode;
 			for (var name in Event.keys){
 				if (Event.keys[name] == this.code){
 					this.key = name;
@@ -134,15 +134,17 @@ Event.keys = {
 Event.keys.extend = $extend;
 
 Element.Events.extend({
-/*	Section: mouseenter/mouseleave
+
+	/*	Section: mouseenter/mouseleave
 			In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events.
 
-			mouseenter - this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
-			mouseleave - this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
+		mouseenter - this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
+		mouseleave - this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
 
 		Example usage:
 			>$(myElement).addEvent('mouseenter', myFunction);
 	*/
+
 	'mouseenter': {
 		type: 'mouseover',
 		map: function(event){
