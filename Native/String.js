@@ -181,6 +181,11 @@ String.extend({
 	hexToRgb: function(array){
 		var hex = this.match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
 		return (hex) ? hex.slice(1).hexToRgb(array) : false;
+	},
+	
+	hasListed: function(string, s){
+		s = s || ' ';
+		return (s + this + s).indexOf(s + string + s) > -1;
 	}
 
 });

@@ -116,7 +116,7 @@ $$.shared = {
 	
 	getElementsByTagName: function(context, tagName){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++) found = $$.put(found, context[i].getElementsByTagName(tagName));
+		for (var i = 0, j = context.length; i < j; i++) found = found.concat($A(context[i].getElementsByTagName(tagName)));
 		return found;
 	}
 
@@ -190,7 +190,7 @@ Element.domMethods = {
 	*/
 
 	getElement: function(selector){
-		return this.getElementsBySelector(selector)[0];
+		return $(this.getElements(selector, true)[0] || false);
 	},
 
 	/*
@@ -204,8 +204,7 @@ Element.domMethods = {
 	getElementsBySelector: function(selector, nocash){
 		var elements = [];
 		selector = selector.split(',');
-		if (selector.length == 1) return this.getElements(selector[0], nocash);
-		for (var i = 0, j = selector.length; i < j; i++) elements = $$.put(elements, this.getElements(selector[i], true));
+		for (var i = 0, j = selector.length; i < j; i++) elements = elements.concat(this.getElements(selector[i], true));
 		return (nocash) ? elements : $$.$$(elements);
 	},
 	
@@ -242,7 +241,7 @@ Element.extend({
 		}
 		return el;
 	}
-	
+
 });
 
 document.extend(Element.domMethods);
@@ -259,7 +258,7 @@ var Filters = {
 	},
 
 	className: function(el){
-		return (Element.prototype.hasClass.call(el, Filters.selector[3]));
+		return el.className.hasListed(Filters.selector[3]);
 	},
 
 	attribute: function(el){
@@ -274,6 +273,7 @@ var Filters = {
 			case '^=': return (current.test('^' + value));
 			case '$=': return (current.test(value + '$'));
 			case '!=': return (current != value);
+			case '~=': return current.hasListed(value);
 		}
 		return false;
 	}

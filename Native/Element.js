@@ -120,19 +120,28 @@ Function: $$
 	The return type of element methods run through $$ is always an array. If the return array is only made by elements, $$ will be applied automatically.
 
 Arguments:
-	HTMLCollection(document.getElementsByTagName, element.childNodes), an array of elements, a string.
+	HTML Collections, arrays of elements, arrays of strings as element ids, elements, strings as selectors.
+	Any number of the above as arguments are accepted.
 
 Note:
-	if you loaded <Dom.js>, $$ will also accept CSS Selectors.
+	if you load <Dom.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 
 Example:
 	>$$('a') //an array of all anchor tags on the page
 	>$$('a', 'b') //an array of all anchor and bold tags on the page
 	>$$('#myElement') //array containing only the element with id = myElement. (only with <Dom.js>)
 	>$$('#myElement a.myClass') //an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (only with <Dom.js>)
-
+	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div')) //an array containing:
+	>// the element referenced as myelement if existing,
+	>// the element referenced as myelement2 if existing,
+	>// all the elements with a as tag in the page,
+	>// the element with id = myid if existing
+	>// the element with id = myid2 if existing
+	>// the element with id = myid3 if existing
+	>// all the elements with div as tag in the page
+	
 Returns:
-	array - array of all the dom elements matched
+	array - array of all the dom elements matched, extended with <$>
 */
 
 document.getElementsBySelector = document.getElementsByTagName;
@@ -145,19 +154,11 @@ function $$(){
 		var selector = arguments[i];
 		switch($type(selector)){
 			case 'element': elements.push(element); break;
-			case 'string': elements = $$.put(elements, document.getElementsBySelector(selector, true)); break;
-			default: elements = $$.put(elements, selector);
+			case 'string': selector = document.getElementsBySelector(selector, true);
+			default: elements = elements.concat((selector.push) ? selector : $A(selector));
 		}
 	}
 	return $$.$$(elements);
-};
-
-$$.put = function(array1, array2){
-	var newArray2 = (array2.push) ? array2 : $A(array2);
-	if (!array1.length) return newArray2;
-	var newArray1 = array1;
-	for (var i = 0, l = newArray2.length; i < l; i++) newArray1.push(newArray2[i]);
-	return newArray1;
 };
 
 $$.$$ = function(array){
@@ -361,7 +362,7 @@ Element.extend({
 	*/
 
 	hasClass: function(className){
-		return this.className.test('(?:^|\\s)' + className + '(?:\\s|$)');
+		return this.className.hasListed(className);
 	},
 
 	/*
@@ -377,7 +378,7 @@ Element.extend({
 	*/
 
 	addClass: function(className){
-		if (!this.hasClass(className)) this.className = (this.className+' '+className).clean();
+		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
 		return this;
 	},
 
@@ -387,7 +388,7 @@ Element.extend({
 	*/
 
 	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)'+className+'(?:\\s|$)'), '$1').clean();
+		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1').clean();
 		return this;
 	},
 

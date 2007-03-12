@@ -29,7 +29,7 @@ Properties:
 	response - object, text and xml as keys. You can access this property in the onSuccess event.
 
 Example:
-	>var myXHR = new XHR({method: 'get'}).send('http://site.com/requestHandler.php', 'name=john&lastname=doe');
+	>var myXHR = new XHR({method: 'get'}).send('http://site.com/requestHandler.php', 'name=john&lastname=dorian');
 */
 
 var XHR = new Class({
