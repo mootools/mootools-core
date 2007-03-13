@@ -40,7 +40,7 @@ Element.Events.domready = {
 				if (['loaded','complete'].test(document.readyState)) domReady();
 			}.periodical(50);
 		} else if (document.readyState && window.ie){
-			document.write("<script id=ie_ready defer src=javascript:void(0)><\/script>");
+			document.write("<script id=ie_ready defer src='://0'><\/script>");
 			$('ie_ready').onreadystatechange = function(){
 				if (this.readyState == 'complete') domReady();
 			};
