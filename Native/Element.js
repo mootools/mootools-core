@@ -50,9 +50,15 @@ var Element = new Class({
 	*/
 
 	initialize: function(el, props){
-		if ($type(el) == 'string') el = document.createElement(el);
-		el = $(el);
-		if (!props || !el) return el;
+		if (window.ie && props && (props.name || props.type)){
+			var name = (props.name) ? ' name="' + props.name + '"' : '';
+			var type = (props.type) ? ' type="' + props.type + '"' : '';
+			delete props.name;
+			delete props.type;
+			el = '<' + el + name + type + '>';
+		}
+		el = $(document.createElement(el));
+		if (!props) return el;
 		for (var prop in props){
 			switch(prop){
 				case 'styles': el.setStyles(props[prop]); break;
@@ -639,15 +645,7 @@ Element.extend({
 		switch(property){
 			case 'class': this.className = value; break;
 			case 'style': this.setStyles(value); break;
-			case 'name':
-				if (window.ie6){
-					var el = new Element('<' + this.getTag() + ' name="' + value + '" />');
-					['value', 'id', 'className', 'style'].each(function(attribute){
-						el[attribute] = this[attribute];
-					});
-					if (this.parentNode) this.replaceWith(el);
-					return el;
-				}
+			case 'for': this.htmlFor = value; break;
 			default: this.setAttribute(property, value);
 		}
 		return this;
@@ -706,7 +704,11 @@ Element.extend({
 	*/
 
 	getProperty: function(property){
-		return (property == 'class') ? this.className : this.getAttribute(property);
+		switch(property){
+			case 'class': return this.className;
+			case 'for': return this.htmlFor;
+			default: return this.getAttribute(property);
+		}
 	},
 
 	/*
