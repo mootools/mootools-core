@@ -11,8 +11,8 @@ Class: Accordion
 	The Accordion class creates a group of elements that are toggled when their handles are clicked. When one elements toggles in, the others toggles back.
 
 Arguments:
-	togglers - required, a collection of elements, the elements handlers that will be clickable.
-	elements - required, a collection of elements the transitions will be applied to.
+	togglers - a collection of elements, the elements handlers that will be clickable.
+	elements - a collection of elements the transitions will be applied to.
 	options - optional, see options below, and <Fx.Base> options.
 
 Options:
@@ -45,40 +45,68 @@ var Accordion = Fx.Elements.extend({
 	},
 
 	initialize: function(togglers, elements, options){
-		this.setOptions(options);
-		this.previous = -1;
-		if (this.options.alwaysHide) this.options.wait = true;
-		if ($chk(this.options.show)){
-			this.options.display = false;
-			this.previous = this.options.show;
-		}
-		if (this.options.start){
-			this.options.display = false;
-			this.options.show = false;
-		}
-		this.togglers = $$(togglers);
-		this.elements = $$(elements);
-		this.togglers.each(function(tog, i){
-			tog.addEvent('click', this.display.bind(this, i));
-		}, this);
-		this.elements.each(function(el, i){
-			if (this.options.height) el.setStyles({'padding-top': 0, 'border-top': 'none', 'padding-bottom': 0, 'border-bottom': 'none'});
-			if (this.options.width) el.setStyles({'padding-left': 0, 'border-left': 'none', 'padding-right': 0, 'border-right': 'none'});
-			el.fullOpacity = 1;
-			if (this.options.fixedWidth) el.fullWidth = this.options.fixedWidth;
-			if (this.options.fixedHeight) el.fullHeight = this.options.fixedHeight;
-			el.setStyle('overflow', 'hidden');
-		}, this);
-		this.effects = {};
-		if (this.options.opacity) this.effects.opacity = 'fullOpacity';
-		if (this.options.width) this.effects.width = this.options.fixedWidth ? 'fullWidth' : 'offsetWidth';
-		if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
-		this.elements.each(function(el, i){
-			if (this.options.show === i) this.fireEvent('onActive', [this.togglers[i], el]);
-			else for (var fx in this.effects) el.setStyle(fx, 0);
-		}, this);
-		this.parent(this.elements, this.options);
-		if ($chk(this.options.display)) this.display(this.options.display);
+			this.setOptions(options);
+			this.previous = -1;
+			if (this.options.alwaysHide) this.options.wait = true;
+			if ($chk(this.options.show)){
+				this.options.display = false;
+				this.previous = this.options.show;
+			}
+			if (this.options.start){
+				this.options.display = false;
+				this.options.show = false;
+			}
+			this.togglers = [];
+			this.elements = [];
+			this.effects = {};
+			if (this.options.opacity) this.effects.opacity = 'fullOpacity';
+			if (this.options.width) this.effects.width = this.options.fixedWidth ? 'fullWidth' : 'offsetWidth';
+			if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
+			togglers.each(function(tog, i){
+				this.addTog(tog, i);
+			}, this);
+			elements.each(function(el, i){
+				this.addEl(el, i, (this.options.show === i));
+			}, this);
+			this.parent(this.elements, this.options);
+			if ($chk(this.options.display)) this.display(this.options.display);
+	},
+	
+/*	Property: addSection
+		Add a new section to the accordion.
+		
+		Arguments:
+		tog - the toggle element (or id)
+		el - the stretcher element (or id)
+		show - optional; boolean; true: expand this section after adding; false: just add the section; defaults to false
+	*/
+	addSection: function(tog, el, show) {
+		this.addTog(tog);
+		this.addEl(el);
+		if(show)this.display(this.togglers.indexOf(tog));
+	},
+	
+	addTog: function(tog, i){
+			if(!this.togglers.test(tog)) {
+				this.togglers.push(tog);
+				i = $pick($pick(this.togglers.indexOf(tog), i), 0);
+				tog.addEvent('click', this.display.bind(this, i));
+			}
+	},
+	
+	addEl: function(el, i, show){
+			if(!this.elements.test(el)) {
+				this.elements.push(el);
+				i = $pick($pick(this.elements.indexOf(el), i), 0);
+				if (this.options.height) el.setStyles({'padding-top': 0, 'border-top': 'none', 'padding-bottom': 0, 'border-bottom': 'none'});
+				if (this.options.width) el.setStyles({'padding-left': 0, 'border-left': 'none', 'padding-right': 0, 'border-right': 'none'});
+				el.fullOpacity = 1;
+				if (this.options.fixedWidth) el.fullWidth = this.options.fixedWidth;
+				if (this.options.fixedHeight) el.fullHeight = this.options.fixedHeight;
+				el.setStyle('overflow', 'hidden');
+				if (show) this.fireEvent('onActive', [this.togglers[i], el]); //show it
+				for (var fx in this.effects) el.setStyle(fx, 0); //hide it
+			}
 	},
 
 	/*
