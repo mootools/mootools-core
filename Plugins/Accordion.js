@@ -11,8 +11,8 @@ Class: Accordion
 	The Accordion class creates a group of elements that are toggled when their handles are clicked. When one elements toggles in, the others toggles back.
 
 Arguments:
-	togglers - a collection of elements, the elements handlers that will be clickable.
-	elements - a collection of elements the transitions will be applied to.
+	togglers - required, a collection of elements, the elements handlers that will be clickable.
+	elements - required, a collection of elements the transitions will be applied to.
 	options - optional, see options below, and <Fx.Base> options.
 
 Options:
@@ -44,69 +44,70 @@ var Accordion = Fx.Elements.extend({
 		alwaysHide: false
 	},
 
-	initialize: function(togglers, elements, options){
-			this.setOptions(options);
-			this.previous = -1;
-			if (this.options.alwaysHide) this.options.wait = true;
-			if ($chk(this.options.show)){
-				this.options.display = false;
-				this.previous = this.options.show;
+	initialize: function(){
+		var options, togglers, elements, container;
+		$each(arguments, function(argument, i){
+			switch($type(argument)){
+				case 'object': options = argument; break;
+				case 'element': container = $(argument); break;
+				default:
+					var temp = $$(argument);
+					if (!togglers) togglers = temp;
+					else elements = temp;
 			}
-			if (this.options.start){
-				this.options.display = false;
-				this.options.show = false;
-			}
-			this.togglers = [];
-			this.elements = [];
-			this.effects = {};
-			if (this.options.opacity) this.effects.opacity = 'fullOpacity';
-			if (this.options.width) this.effects.width = this.options.fixedWidth ? 'fullWidth' : 'offsetWidth';
-			if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
-			togglers.each(function(tog, i){
-				this.addTog(tog, i);
-			}, this);
-			elements.each(function(el, i){
-				this.addEl(el, i, (this.options.show === i));
-			}, this);
-			this.parent(this.elements, this.options);
-			if ($chk(this.options.display)) this.display(this.options.display);
+		});
+		this.togglers = togglers || [];
+		this.elements = elements || [];
+		this.container = $(container);
+		this.setOptions(options);
+		this.previous = -1;
+		if (this.options.alwaysHide) this.options.wait = true;
+		if ($chk(this.options.show)){
+			this.options.display = false;
+			this.previous = this.options.show;
+		}
+		if (this.options.start){
+			this.options.display = false;
+			this.options.show = false;
+		}
+		this.effects = {};
+		if (this.options.opacity) this.effects.opacity = 'fullOpacity';
+		if (this.options.width) this.effects.width = this.options.fixedWidth ? 'fullWidth' : 'offsetWidth';
+		if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
+		for (var i = 0, l = this.togglers.length; i < l; i++) this.addSection(this.togglers[i], this.elements[i]);
+		this.elements.each(function(el, i){
+			if (this.options.show === i) this.fireEvent('onActive', [this.togglers[i], el]);
+			else for (var fx in this.effects) el.setStyle(fx, 0);
+		}, this);
+		this.parent(this.elements, this.options);
+		if ($chk(this.options.display)) this.display(this.options.display);
 	},
 	
-/*	Property: addSection
-		Add a new section to the accordion.
-		
-		Arguments:
-		tog - the toggle element (or id)
-		el - the stretcher element (or id)
-		show - optional; boolean; true: expand this section after adding; false: just add the section; defaults to false
-	*/
-	addSection: function(tog, el, show) {
-		this.addTog(tog);
-		this.addEl(el);
-		if(show)this.display(this.togglers.indexOf(tog));
-	},
-	
-	addTog: function(tog, i){
-			if(!this.togglers.test(tog)) {
-				this.togglers.push(tog);
-				i = $pick($pick(this.togglers.indexOf(tog), i), 0);
-				tog.addEvent('click', this.display.bind(this, i));
-			}
-	},
-	
-	addEl: function(el, i, show){
-			if(!this.elements.test(el)) {
-				this.elements.push(el);
-				i = $pick($pick(this.elements.indexOf(el), i), 0);
-				if (this.options.height) el.setStyles({'padding-top': 0, 'border-top': 'none', 'padding-bottom': 0, 'border-bottom': 'none'});
-				if (this.options.width) el.setStyles({'padding-left': 0, 'border-left': 'none', 'padding-right': 0, 'border-right': 'none'});
-				el.fullOpacity = 1;
-				if (this.options.fixedWidth) el.fullWidth = this.options.fixedWidth;
-				if (this.options.fixedHeight) el.fullHeight = this.options.fixedHeight;
-				el.setStyle('overflow', 'hidden');
-				if (show) this.fireEvent('onActive', [this.togglers[i], el]); //show it
-				for (var fx in this.effects) el.setStyle(fx, 0); //hide it
-			}
+	addSection: function(toggler, element, pos){
+		toggler = $(toggler);
+		element = $(element);
+		var test = this.togglers.test(toggler);
+		var len = this.togglers.length;
+		this.togglers.include(toggler);
+		this.elements.include(element);
+		if (len && (!test || pos)){
+			pos = $pick(pos, len -1);
+			toggler.injectBefore(this.togglers[pos]);
+			element.injectAfter(toggler);
+		} else if (this.container && !test){
+			toggler.injectInside(this.container);
+			element.injectInside(this.container);
+		}
+		var idx = this.togglers.indexOf(toggler);
+		toggler.addEvent('click', this.display.bind(this, idx));
+		if (this.options.height) element.setStyles({'padding-top': 0, 'border-top': 'none', 'padding-bottom': 0, 'border-bottom': 'none'});
+		if (this.options.width) element.setStyles({'padding-left': 0, 'border-left': 'none', 'padding-right': 0, 'border-right': 'none'});
+		element.fullOpacity = 1;
+		if (this.options.fixedWidth) element.fullWidth = this.options.fixedWidth;
+		if (this.options.fixedHeight) element.fullHeight = this.options.fixedHeight;
+		element.setStyle('overflow', 'hidden');
+		if (!test) for (var fx in this.effects) element.setStyle(fx, 0);
+		return this;
 	},
 
 	/*
@@ -114,10 +115,11 @@ var Accordion = Fx.Elements.extend({
 		Shows a specific section and hides all others. Useful when triggering an accordion from outside.
 
 	Arguments:
-		index - integer, the index of the item to show.
+		index - integer, the index of the item to show, or the actual element to show.
 	*/
 
 	display: function(index){
+		index = ($type(index) == 'element') ? this.elements.indexOf(index) : index;
 		if ((this.timer && this.options.wait) || (index === this.previous && !this.options.alwaysHide)) return this;
 		this.previous = index;
 		var obj = {};

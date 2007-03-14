@@ -100,7 +100,7 @@ var Hash = new Class({
 	*/
 
 	each: function(fn, bind){
-		for (var property in this.obj) fn.call(bind || this, property, this.obj[property]);
+		$each(this.obj, fn, bind);
 	},
 
 	/*

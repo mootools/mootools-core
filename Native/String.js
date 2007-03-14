@@ -183,6 +183,16 @@ String.extend({
 		return (hex) ? hex.slice(1).hexToRgb(array) : false;
 	},
 	
+	/*
+	Property: hasListed
+		checks if the passed in string is listed in the String.
+		
+	Example:
+		>'a b c'.hasListed('c'); //true
+		>'a bc'.hasListed('c'); //false
+		>'a,b,c'.hasListed('c', ','); //true
+	*/
+	
 	hasListed: function(string, s){
 		s = s || ' ';
 		return (s + this + s).indexOf(s + string + s) > -1;

@@ -626,7 +626,7 @@ Element.extend({
 	*/
 
 	hasChild: function(el) {
-		return ($A(this.getElementsByTagName('*')).test(el)) ? true : false;
+		return !!$A(this.getElementsByTagName('*')).test(el);
 	},
 
 	/*
