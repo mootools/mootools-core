@@ -318,11 +318,21 @@ Array.extend({
 	include: function(item){
 		if (!this.length || !this.test(item)) this.push(item);
 		return this;
+	},
+	
+	/*
+	Property: random
+		returns a random item in the Array
+	*/
+	
+	random: function(){
+		return this[$random(0, this.length - 1)];
 	}
 
 });
 
-Array.prototype.each = 	Array.prototype.forEach;
+Array.prototype.each = Array.prototype.forEach;
+Array.prototype.removeItem = Array.prototype.remove;
 
 /* Section: Utility Functions */
 
@@ -377,5 +387,5 @@ Examples:
 
 function $each(iterable, fn, bind){
 	if ($chk(iterable.length)) Array.prototype.forEach.call(iterable, fn, bind);
-	else for (var name in iterable) fn.call(bind, iterable[name], name);
+	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
 };
