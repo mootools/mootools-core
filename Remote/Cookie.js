@@ -37,21 +37,23 @@ var Cookie = {
 	Example:
 		>Cookie.set("username", "Aaron", {duration: {days: 5}}); //save this for 5 days
 		>Cookie.set("username", "Harald", {duration: 3600}}); //save this for 1 hour
-		>Cookie.set("username", "Jack", {duration: false}); //session cookie
+		>Cookie.set("username", "JackBauer", {duration: false}); //session cookie
 
 	*/
 
 	set: function(key, value, options){
 		options = $merge(this.options, options);
 		value = escape(value);
-		if (options.domain) value += "; domain=" + options.domain;
-		if (options.path) value += "; path=" + options.path;
+		options.domain = (options.domain) ? '; domain=' + options.domain : '';
+		options.path = (options.path) ? '; path=' + options.path : '';
+		value += options.domain + options.path;
 		if (options.duration){
 			var date = new Date();
 			date.setTime(date.getTime() + $duration(options.duration));
-			value += "; expires=" + date.toGMTString();
+			value += '; expires=' + date.toGMTString();
 		}
-		document.cookie = key + "=" + value;
+		document.cookie = key + '=' + value;
+		return $extend(options, {'key': key, 'value': value});
 	},
 
 	/*
@@ -78,14 +80,18 @@ var Cookie = {
 		Removes a cookie from the browser.
 
 	Arguments:
-		key - the name of the cookie to remove
+		cookie - the name of the cookie to remove or a previous cookie (for domains)
+		options - optional. you can also pass the domain and path here. Same as options in <Cookie.set>
 
 	Examples:
 		>Cookie.remove("username") //bye-bye Aaron
+		>var myCookie = Cookie.set('user', 'jackbauer', {domain: 'mootools.net'});
+		>Cookie.remove(myCookie);
 	*/
 
-	remove: function(key){
-		this.set(key, '', {duration: -1});
+	remove: function(cookie, options){
+		if ($type(cookie) == 'object') this.set(cookie.key, '', $merge(cookie, {duration: -1}));
+		else this.set(cookie, '', $merge(options, {duration: -1}));
 	}
 
 };
