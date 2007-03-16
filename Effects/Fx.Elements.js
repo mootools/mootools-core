@@ -54,7 +54,7 @@ Fx.Elements = Fx.Base.extend({
 				'opacity': [0,1],
 				'width': [100,200]
 			},
-			'1': { //and the second one's opacity
+			'4': { //and the fifth one's opacity
 				'opacity': [0.2, 0.5]
 			}
 		});

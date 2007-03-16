@@ -56,10 +56,10 @@ Fx.Styles = Fx.Base.extend({
 
 	/*
 	Property: start
-		The function you'll actually use to execute a transition.
+		Executes a transition for any number of css properties in tandem.
 
 	Arguments:
-		an object
+		obj - an object containing keys that specify css properties to alter and values that specify either the from/to values (as an array) or just the end value (an integer).
 
 	Example:
 		see <Fx.Styles>

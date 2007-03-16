@@ -15,7 +15,7 @@ Note:
 
 Options:
 	mode - set it to vertical or horizontal. Defaults to vertical.
-	and all the <Fx.Base> options
+	options - all the <Fx.Base> options
 
 Example:
 	(start code)
@@ -57,7 +57,10 @@ Fx.Slide = Fx.Base.extend({
 
 	/*
 	Property: slideIn
-		slides the elements in view horizontally or vertically, depending on the mode parameter or options.mode.
+		slides the elements in view horizontally or vertically.
+
+	Arguments:
+		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
 	*/
 
 	slideIn: function(mode){
@@ -67,7 +70,10 @@ Fx.Slide = Fx.Base.extend({
 
 	/*
 	Property: slideOut
-		slides the elements out of the view horizontally or vertically, depending on the mode parameter or options.mode.
+		slides the elements out of view horizontally or vertically.
+
+	Arguments:
+		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
 	*/
 
 	slideOut: function(mode){
@@ -78,6 +84,9 @@ Fx.Slide = Fx.Base.extend({
 	/*
 	Property: hide
 		Hides the element without a transition.
+
+	Arguments:
+		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
 	*/
 
 	hide: function(mode){
@@ -88,6 +97,9 @@ Fx.Slide = Fx.Base.extend({
 	/*
 	Property: show
 		Shows the element without a transition.
+
+	Arguments:
+		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
 	*/
 
 	show: function(mode){
@@ -98,6 +110,10 @@ Fx.Slide = Fx.Base.extend({
 	/*
 	Property: toggle
 		Slides in or Out the element, depending on its state
+
+	Arguments:
+		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
+
 	*/
 
 	toggle: function(mode){
@@ -112,12 +128,34 @@ Fx.Slide = Fx.Base.extend({
 
 });
 
+/*	Class: Element
+		Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
+	*/
 Element.extend({
-
+	/*
+	Property: slideIn
+	Creates a new Fx.Slide and slides the element into view. Requires a bit of CSS foresight to look good.
+	
+	Arguments:
+	options - see <Fx.Slide> for options.
+	
+	Example:
+	>$(myElement).slideIn({duration: 1000});
+	*/
 	slideIn: function(options){
 		return new Fx.Slide(this, options).slideIn();
 	},
 
+	/*
+	Property: slideOut
+	Creates a new Fx.Slide and slides the element out of view.
+	
+	Arguments:
+	options - see <Fx.Slide> for options.
+	
+	Example:
+	>$(myElement).slideOut({duration: 1000});
+	*/
 	slideOut: function(options){
 		return new Fx.Slide(this, options).slideOut();
 	}

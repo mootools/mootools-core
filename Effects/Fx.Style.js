@@ -31,7 +31,7 @@ Fx.Style = Fx.Base.extend({
 
 	/*
 	Property: hide
-		Same as <Fx.Base.set> (0)
+		Same as <Fx.Base.set> (0); hides the element immediately without transition.
 	*/
 
 	hide: function(){
@@ -42,6 +42,17 @@ Fx.Style = Fx.Base.extend({
 		this.now = this.css.getNow(this.from, this.to, this);
 	},
 
+	/*
+	Property: set
+		Sets the element's css property (specified at instantiation) to the specified value immediately.
+
+	Example:
+		(start code)
+		var marginChange = new Fx.Style('myElement', 'margin-top', {duration:500});
+		marginChange.set(10); //margin-top is set to 10px immediately
+		(end)
+	*/
+
 	set: function(to){
 		this.css = Fx.CSS.select(this.property, to);
 		return this.parent(this.css.parse(to));
@@ -51,9 +62,16 @@ Fx.Style = Fx.Base.extend({
 	Property: start
 		displays the transition to the value/values passed in
 
+	Arguments:
+		from - (integer; optional) the starting position for the transition
+		to - (integer) the ending position for the transition
+
+	Note:
+		If you provide only one argument, the transition will use the current css value for its starting value.
+
 	Example:
 		(start code)
-		var var marginChange = new Fx.Style('myElement', 'margin-top', {duration:500});
+		var marginChange = new Fx.Style('myElement', 'margin-top', {duration:500});
 		marginChange.start(10); //tries to read current margin top value and goes from current to 10
 		(end)
 	*/
@@ -81,10 +99,16 @@ Element.extend({
 	/*
 	Property: effect
 		Applies an <Fx.Style> to the Element; This a shortcut for <Fx.Style>.
+	
+	Arguments:
+		property - (string) the css property to alter
+		options - (object; optional) key/value set of options (see <Fx.Style>)
 
 	Example:
 		>var myEffect = $('myElement').effect('height', {duration: 1000, transition: Fx.Transitions.linear});
 		>myEffect.start(10, 100);
+		>//OR
+		>$('myElement').effect('height', {duration: 1000, transition: Fx.Transitions.linear}).start(10,100);
 	*/
 
 	effect: function(property, options){
