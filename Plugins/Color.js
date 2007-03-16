@@ -115,6 +115,12 @@ var Color = new Class({
 /*
 Function: $RGB
 	Shortcut to create a new color, based on red, green, blue values.
+
+Arguments:
+	r - (integer) red value (0-255)
+	g - (integer) green value (0-255)
+	b - (integer) blue value (0-255)
+
 */
 
 function $RGB(r, g, b){
@@ -124,6 +130,11 @@ function $RGB(r, g, b){
 /*
 Function: $HSB
 	Shortcut to create a new color, based on hue, saturation, brightness values.
+
+Arguments:
+	h - (integer) hue value (0-100)
+	s - (integer) saturation value (0-100)
+	b - (integer) brightness value (0-100)
 */
 
 function $HSB(h, s, b){

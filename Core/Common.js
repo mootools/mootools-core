@@ -128,6 +128,17 @@ var Events = new Class({
 		type - string; the event name (e.g. 'onComplete')
 		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
 		delay - (integer) delay (in ms) to wait to execute the event
+
+	Example:
+	(start code)
+	var Widget = new Class({
+		initialize: function(arg1, arg2){
+			...
+			this.fireEvent("onInitialize", [arg1, arg2], 50);
+		}
+	});
+	Widget.implement(new Events);
+	(end)
 	*/
 
 	fireEvent: function(type, args, delay){

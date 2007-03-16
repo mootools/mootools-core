@@ -10,6 +10,9 @@ License:
 Class: Hash
 	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null values are allowed.
 
+Arguments:
+	obj - an object to convert into a Hash instance.
+
 Example:
 	(start code)
 	var hash = new Hash({a: 'hi', b: 'world', c: 'howdy'});
