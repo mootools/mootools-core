@@ -127,37 +127,3 @@ Fx.Slide = Fx.Base.extend({
 	}
 
 });
-
-/*	Class: Element
-		Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
-	*/
-Element.extend({
-	/*
-	Property: slideIn
-	Creates a new Fx.Slide and slides the element into view. Requires a bit of CSS foresight to look good.
-	
-	Arguments:
-	options - see <Fx.Slide> for options.
-	
-	Example:
-	>$(myElement).slideIn({duration: 1000});
-	*/
-	slideIn: function(options){
-		return new Fx.Slide(this, options).slideIn();
-	},
-
-	/*
-	Property: slideOut
-	Creates a new Fx.Slide and slides the element out of view.
-	
-	Arguments:
-	options - see <Fx.Slide> for options.
-	
-	Example:
-	>$(myElement).slideOut({duration: 1000});
-	*/
-	slideOut: function(options){
-		return new Fx.Slide(this, options).slideOut();
-	}
-
-});

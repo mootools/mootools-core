@@ -321,12 +321,21 @@ Array.extend({
 	},
 	
 	/*
-	Property: random
+	Property: getRandom
 		returns a random item in the Array
 	*/
 	
-	random: function(){
+	getRandom: function(){
 		return this[$random(0, this.length - 1)];
+	},
+	
+	/*
+	Property: getLast
+		returns the last item in the Array
+	*/
+	
+	getLast: function(){
+		return this[this.length - 1];
 	}
 
 });
