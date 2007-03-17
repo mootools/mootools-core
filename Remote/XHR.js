@@ -23,7 +23,7 @@ Options:
 	encoding - the encoding, defaults to utf-8.
 	autoCancel - cancels the already running request if another one is sent. defaults to false.
 	headers - accepts an object, that will be set to request headers.
-	
+
 Properties:
 	running - true if the request is running.
 	response - object, text and xml as keys. You can access this property in the onSuccess event.
@@ -105,8 +105,12 @@ var XHR = new Class({
 		Opens the xhr connection and sends the data. Data has to be null or a string.
 
 	Example:
-		>var myAjax = new Ajax(url, {method: 'get'});
-		>myAjax.send(null);
+		>var myXhr = new Xhr({method: 'post'});
+		>myXhr.send(url, querystring);
+		>
+		>var syncXhr = new Xhr({async: false, method: 'post'});
+		>syncXhr.send(url, null);
+		>
 	*/
 
 	send: function(url, data){
@@ -120,12 +124,12 @@ var XHR = new Class({
 			if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 			$extend(this.headers, this.options.headers);
 			for (var type in this.headers) try {this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
-			this.transport.send(data);
-		}).delay(1, this);
+			this.transport.send($pick(data, null));
+		}).delay(this.options.async ? 1 : false, this);
 		this.fireEvent('onRequest');
 		return this;
 	},
-	
+
 	/*
 	Property: cancel
 		cancels the running request. No effect if the request is not running.
