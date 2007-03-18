@@ -44,12 +44,17 @@ var Sortables = new Class({
 		this.list = $(list);
 		this.elements = this.list.getChildren();
 		this.handles = (this.options.handles) ? $$(this.options.handles) : this.elements;
-		this.bound = {'start': [], 'moveGhost': this.moveGhost.bindWithEvent(this)};
+		this.bound = {
+			'start': [],
+			'moveGhost': this.moveGhost.bindWithEvent(this)
+		};
 		for (var i = 0, l = this.handles.length; i < l; i++){
 			this.bound.start[i] = this.start.bindWithEvent(this, this.elements[i]);
 		}
 		this.attach();
 		if (this.options.initialize) this.options.initialize.call(this);
+		this.bound.move = this.move.bindWithEvent(this);
+		this.bound.end = this.end.bind(this);
 	},
 	
 	attach: function(){
@@ -65,6 +70,7 @@ var Sortables = new Class({
 	},
 
 	start: function(event, el){
+		this.active = el;
 		this.coordinates = this.list.getCoordinates();
 		if (this.options.ghost){
 			var position = el.getPosition();
@@ -78,8 +84,6 @@ var Sortables = new Class({
 			document.addListener('mousemove', this.bound.moveGhost);
 			this.fireEvent('onDragStart', [el, this.ghost]);
 		}
-		this.bound.move = this.move.bindWithEvent(this, el);
-		this.bound.end = this.end.bind(this, el);
 		document.addListener('mousemove', this.bound.move);
 		document.addListener('mouseup', this.bound.end);
 		this.fireEvent('onStart', el);
@@ -94,20 +98,20 @@ var Sortables = new Class({
 		event.stop();
 	},
 
-	move: function(event, el){
-		el.active = true;
+	move: function(event){
+		this.active.active = true;
 		this.previous = this.previous || event.page.y;
 		this.now = event.page.y;
 		var direction = ((this.previous - this.now) <= 0) ? 'down' : 'up';
-		var prev = el.getPrevious();
-		var next = el.getNext();
+		var prev = this.active.getPrevious();
+		var next = this.active.getNext();
 		if (prev && direction == 'up'){
 			var prevPos = prev.getCoordinates();
-			if (event.page.y < prevPos.bottom) el.injectBefore(prev);
+			if (event.page.y < prevPos.bottom) this.active.injectBefore(prev);
 		}
 		if (next && direction == 'down'){
 			var nextPos = next.getCoordinates();
-			if (event.page.y > nextPos.top) el.injectAfter(next);
+			if (event.page.y > nextPos.top) this.active.injectAfter(next);
 		}
 		this.previous = event.page.y;
 	},
@@ -120,15 +124,15 @@ var Sortables = new Class({
 		return serial;
 	},
 
-	end: function(el){
+	end: function(){
 		this.previous = null;
 		document.removeListener('mousemove', this.bound.move);
 		document.removeListener('mouseup', this.bound.end);
 		if (this.options.ghost){
 			document.removeListener('mousemove', this.bound.moveGhost);
-			this.fireEvent('onDragComplete', [el, this.ghost]);
+			this.fireEvent('onDragComplete', [this.active, this.ghost]);
 		}
-		this.fireEvent('onComplete', el);
+		this.fireEvent('onComplete', this.active);
 	}
 
 });

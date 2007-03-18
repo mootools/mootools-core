@@ -25,22 +25,22 @@ var Json = {
 
 	Example:
 		(start code)
-		Json.toString({apple: 'red', lemon: 'yellow'}); "{"apple":"red","lemon":"yellow"}" //don't get hung up on the quotes; it's just a string.
+		Json.toString({apple: 'red', lemon: 'yellow'}); '{"apple":"red","lemon":"yellow"}'
 		(end)
 	*/
 
 	toString: function(obj){
 		switch($type(obj)){
 			case 'string':
-				return '"'+obj.replace(/(["\\])/g, '\\$1')+'"';
+				return '"' + obj.replace(/(["\\])/g, '\\$1')+'"';
 			case 'array':
-				return '['+ obj.map(function(ar){
+				return '[' + obj.map(function(ar){
 					return Json.toString(ar);
-				}).join(',') +']';
+				}).join(',') + ']';
 			case 'object':
 				var string = [];
-				for (var property in obj) string.push(Json.toString(property)+':'+Json.toString(obj[property]));
-				return '{'+string.join(',')+'}';
+				for (var property in obj) string.push(Json.toString(property) + ':' + Json.toString(obj[property]));
+				return '{' + string.join(',') + '}';
 		}
 		return String(obj);
 	},

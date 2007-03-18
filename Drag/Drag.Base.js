@@ -55,7 +55,12 @@ Drag.Base = new Class({
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
-		this.bound = {'start': this.start.bindWithEvent(this)};
+		this.bound = {
+			'start': this.start.bindWithEvent(this),
+			'check': this.check.bindWithEvent(this),
+			'drag': this.drag.bindWithEvent(this),
+			'stop': this.stop.bind(this)
+		};
 		this.attach();
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
@@ -74,7 +79,7 @@ Drag.Base = new Class({
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
-			if (!$chk(this.options.modifiers[z])) continue;
+			if (!this.options.modifiers[z]) continue;
 			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			if (limit && limit[z]){
@@ -83,21 +88,17 @@ Drag.Base = new Class({
 				}
 			}
 		}
-		this.bound.drag = this.drag.bindWithEvent(this);
-		this.bound.stop = this.stop.bind(this);
-		this.bound.move = this.options.snap ? this.checkAndDrag.bindWithEvent(this) : this.bound.drag;
-		document.addListener('mousemove', this.bound.move);
+		document.addListener('mousemove', this.bound.check);
 		document.addListener('mouseup', this.bound.stop);
 		this.fireEvent('onStart', this.element);
 		event.stop();
 	},
 
-	checkAndDrag: function(event){
+	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			document.removeListener('mousemove', this.bound.move);
-			this.bound.move = this.bound.drag;
-			document.addListener('mousemove', this.bound.move);
+			document.removeListener('mousemove', this.bound.check);
+			document.addListener('mousemove', this.bound.drag);
 			this.drag(event);
 			this.fireEvent('onSnap', this.element);
 		}
@@ -108,7 +109,7 @@ Drag.Base = new Class({
 		this.out = false;
 		this.mouse.now = event.page;
 		for (var z in this.options.modifiers){
-			if (!$chk(this.options.modifiers[z])) continue;
+			if (!this.options.modifiers[z]) continue;
 			this.value.now[z] = this.mouse.now[z] - this.mouse.pos[z];
 			if (this.limit[z]){
 				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
@@ -126,7 +127,8 @@ Drag.Base = new Class({
 	},
 
 	stop: function(){
-		document.removeListener('mousemove', this.bound.move);
+		document.removeListener('mousemove', this.bound.check);
+		document.removeListener('mousemove', this.bound.drag);
 		document.removeListener('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
 	}
