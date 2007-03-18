@@ -26,10 +26,10 @@ Element.eventMethods = {
 	*/
 
 	addEvent: function(type, fn){
-		this.events = this.events || {};
-		this.events[type] = this.events[type] || {'keys': [], 'values': []};
-		if (this.events[type].keys.test(fn)) return this;
-		this.events[type].keys.push(fn);
+		this.$events = this.$events || {};
+		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
+		if (this.$events[type].keys.test(fn)) return this;
+		this.$events[type].keys.push(fn);
 		var realType = type;
 		var bound = false;
 		if (Element.Events[type]){
@@ -39,7 +39,7 @@ Element.eventMethods = {
 		}
 		if (!this.addEventListener) bound = bound || fn.bindAsEventListener(this);
 		else bound = bound || fn;
-		this.events[type].values.push(bound);
+		this.$events[type].values.push(bound);
 		return this.addListener(realType, bound);
 	},
 
@@ -49,20 +49,20 @@ Element.eventMethods = {
 	*/
 
 	removeEvent: function(type, fn){
-		if (!this.events || !this.events[type]) return this;
-		var pos = this.events[type].keys.indexOf(fn);
+		if (!this.$events || !this.$events[type]) return this;
+		var pos = this.$events[type].keys.indexOf(fn);
 		if (pos == -1) return this;
-		var key = this.events[type].keys.splice(pos,1)[0];
-		var value = this.events[type].values.splice(pos,1)[0];
+		var key = this.$events[type].keys.splice(pos,1)[0];
+		var value = this.$events[type].values.splice(pos,1)[0];
 		if (Element.Events[type]) type = Element.Events[type].type || type;
 		return this.removeListener(type, value);
 	},
-	
+
 	/*
 	Property: addEvents
 		as <addEvent>, but acceprs an object and add multiple events at once.
 	*/
-	
+
 	addEvents: function(source){
 		for (var type in source) this.addEvent(type, source[type]);
 		return this;
@@ -74,17 +74,17 @@ Element.eventMethods = {
 	*/
 
 	removeEvents: function(type){
-		if (!this.events) return this;
+		if (!this.$events) return this;
 		if (type){
-			if (this.events[type]){
-				this.events[type].keys.each(function(fn){
+			if (this.$events[type]){
+				this.$events[type].keys.each(function(fn){
 					this.removeEvent(type, fn);
 				}, this);
-				this.events[type] = null;
+				this.$events[type] = null;
 			}
 		} else {
-			for (var evType in this.events) this.removeEvents(evType);
-			this.events = null;
+			for (var evType in this.$events) this.removeEvents(evType);
+			this.$events = null;
 		}
 		return this;
 	},

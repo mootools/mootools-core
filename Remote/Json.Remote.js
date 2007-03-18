@@ -35,7 +35,7 @@ Json.Remote = XHR.extend({
 	},
 
 	send: function(obj){
-		return this.parent(this.url, 'json='+Json.toString(obj));
+		return this.parent(this.url, 'json=' + Json.toString(obj));
 	},
 
 	onComplete: function(){

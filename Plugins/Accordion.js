@@ -82,7 +82,7 @@ var Accordion = Fx.Elements.extend({
 		this.parent(this.elements, this.options);
 		if ($chk(this.options.display)) this.display(this.options.display);
 	},
-	
+
 	addSection: function(toggler, element, pos){
 		toggler = $(toggler);
 		element = $(element);
@@ -91,7 +91,7 @@ var Accordion = Fx.Elements.extend({
 		this.togglers.include(toggler);
 		this.elements.include(element);
 		if (len && (!test || pos)){
-			pos = $pick(pos, len -1);
+			pos = $pick(pos, len - 1);
 			toggler.injectBefore(this.togglers[pos]);
 			element.injectAfter(toggler);
 		} else if (this.container && !test){

@@ -32,7 +32,7 @@ var Json = {
 	toString: function(obj){
 		switch($type(obj)){
 			case 'string':
-				return '"' + obj.replace(/(["\\])/g, '\\$1')+'"';
+				return '"' + obj.replace(/(["\\])/g, '\\$1') + '"';
 			case 'array':
 				return '[' + obj.map(function(ar){
 					return Json.toString(ar);

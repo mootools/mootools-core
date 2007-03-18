@@ -74,10 +74,10 @@ var debug = {
 					holder.appendText(spacer);
 					break;
 				case 'string':
-					new Element('span').appendText(chunk.message+spacer).setStyle('color', color).injectInside(holder);
+					new Element('span').appendText(chunk.message + spacer).setStyle('color', color).injectInside(holder);
 					break;
 				default:
-					new Element('span').setHTML(chunk.message+spacer).setStyle('color', color).injectInside(holder);
+					new Element('span').setHTML(chunk.message + spacer).setStyle('color', color).injectInside(holder);
 			}
 		}, this);
 		debug.pre(holder);
@@ -88,11 +88,11 @@ var debug = {
 			new Fx.Style(el, 'opacity').start(0,1);
 			e.stop();
 		}.bindWithEvent()).setStyles({'cursor': 'pointer', 'text-decoration': 'none'}).setProperty('href', 'javascript:void(0)');
-		var htm = ['&lt;'+el.tagName.toLowerCase()];
+		var htm = ['&lt;' + el.tagName.toLowerCase()];
 		['id', 'className', 'name', 'href', 'title', 'rel', 'type'].each(function(attr){
-			if (el[attr]) htm.push(attr+'="'+el[attr]+'"');
+			if (el[attr]) htm.push(attr + '="' + el[attr] + '"');
 		});
-		a.innerHTML = htm.join(' ')+'&gt;';
+		a.innerHTML = htm.join(' ') + '&gt;';
 		return a;
 	},
 
@@ -274,7 +274,7 @@ var debug = {
 		debug._hgt = debug._body.offsetHeight;
 		if (!window.khtml) debug._hgt -= 3;
 		else debug._hgt -= 1;
-		debug._gts.setStyle('top', (debug._hgt-debug._gts.offsetHeight-1)+'px');
+		debug._gts.setStyle('top', (debug._hgt - debug._gts.offsetHeight - 1));
 		debug.resize();
 		debug._scroll.toBottom();
 	},
@@ -282,13 +282,13 @@ var debug = {
 	resize: function(){
 		if (window.ie6){
 			debug._body.setStyles({
-				'top': (window.getScrollTop()+window.getHeight()-debug._hgt-5)+'px',
-				'width': (window.getWidth()-16)+'px'
+				'top': (window.getScrollTop() + window.getHeight() - debug._hgt - 5),
+				'width': (window.getWidth() - 16)
 			});
 		} else {
 			debug._body.setStyles({
-				'top': (window.getHeight()-debug._hgt+1)+'px',
-				'width': (window.getWidth())+'px'
+				'top': (window.getHeight() - debug._hgt + 1),
+				'width': (window.getWidth())
 			});
 		}
 
@@ -318,7 +318,7 @@ var debug = {
 					case 'min': this.minmax(); return;
 				}
 
-				debug.pre('>>> '+value, '#3e72b2');
+				debug.pre('>>> ' + value, '#3e72b2');
 
 				try {
 					var evaluation = eval(value);
@@ -331,7 +331,7 @@ var debug = {
 
 			case 'up':
 				e.stop();
-				var i = debug.idx-1;
+				var i = debug.idx - 1;
 				if (debug.messages[i]){
 					debug._input.value = debug.messages[i];
 					debug.idx = i;
@@ -340,7 +340,7 @@ var debug = {
 
 			case 'down':
 				e.stop();
-				var i = debug.idx+1;
+				var i = debug.idx + 1;
 				if (debug.messages[i]){
 					debug._input.value = debug.messages[i];
 					debug.idx = i;
@@ -361,18 +361,18 @@ if ((typeof console == 'undefined') || !console.warn){
 	var console = debug;
 	window.onerror = function(msg, url, line){
 		console.error({
-			'message': msg+"\n >>>>> "+url+" ("+line+")",
+			'message': msg + '\n >>>>> ' + url + ' (' + line + ')',
 			'name': 'Run Time Error'
 		});
 	};
 	if (typeof Ajax != 'undefined'){
 		Ajax = Ajax.extend({
-	
+
 			onStateChange: function(){
 				this.parent();
 				this.log();
 			},
-	
+
 			log: function(){
 				if (this.transport.readyState == 4){
 					try {

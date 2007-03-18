@@ -18,7 +18,7 @@ Arguments:
 Options:
 	onChange - a function to fire when the value changes.
 	onComplete - a function to fire when you're done dragging.
-	onTick - optionally, you can alter the onTick behavior, for example displaying an effect of the knob moving to the desired position. 
+	onTick - optionally, you can alter the onTick behavior, for example displaying an effect of the knob moving to the desired position.
 		Passes as parameter the new position.
 	steps - the number of steps for your slider.
 	mode - either 'horizontal' or 'vertical'. defaults to horizontal.
@@ -52,14 +52,14 @@ var Slider = new Class({
 			this.z = 'x';
 			this.p = 'left';
 			mod = {'x': 'left', 'y': false};
-			this.max = this.element.offsetWidth-this.knob.offsetWidth;
+			this.max = this.element.offsetWidth - this.knob.offsetWidth;
 			this.half = this.knob.offsetWidth/2;
 			this.getPos = this.element.getLeft.bind(this.element);
 		} else if (this.options.mode == 'vertical'){
 			this.z = 'y';
 			this.p = 'top';
 			mod = {'x': false, 'y': 'top'};
-			this.max = this.element.offsetHeight-this.knob.offsetHeight;
+			this.max = this.element.offsetHeight - this.knob.offsetHeight;
 			this.half = this.knob.offsetHeight/2;
 			this.getPos = this.element.getTop.bind(this.element);
 		}

@@ -38,7 +38,7 @@ Fx.CSS.Single = {
 	},
 
 	getValue: function(value, unit){
-		return value+unit;
+		return value + unit;
 	}
 
 };
@@ -58,7 +58,7 @@ Fx.CSS.Multi = {
 	},
 
 	getValue: function(value, unit){
-		return value.join(unit + ' ')+unit;
+		return value.join(unit + ' ') + unit;
 	}
 
 };
@@ -76,7 +76,7 @@ Fx.CSS.Color = {
 	},
 
 	getValue: function(value){
-		return 'rgb('+value.join(',')+')';
+		return 'rgb(' + value.join(',') + ')';
 	}
 
 };

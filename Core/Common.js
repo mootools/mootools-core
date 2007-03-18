@@ -82,7 +82,7 @@ Example:
 	(end)
 
 	Implementing:
-		This class can be implemented into other classes to add the functionality to them. 
+		This class can be implemented into other classes to add the functionality to them.
 		Goes well with the <Options> class.
 
 	Example:
@@ -105,7 +105,7 @@ var Events = new Class({
 	/*
 	Property: addEvent
 		adds an event to the stack of events of the Class instance.
-	
+
 	Arguments:
 		type - string; the event name (e.g. 'onComplete')
 		fn - function to execute
@@ -113,9 +113,9 @@ var Events = new Class({
 
 	addEvent: function(type, fn){
 		if (fn != Class.empty){
-			this.events = this.events || {};
-			this.events[type] = this.events[type] || [];
-			this.events[type].include(fn);
+			this.$events = this.$events || {};
+			this.$events[type] = this.$events[type] || [];
+			this.$events[type].include(fn);
 		}
 		return this;
 	},
@@ -123,7 +123,7 @@ var Events = new Class({
 	/*
 	Property: fireEvent
 		fires all events of the specified type in the Class instance.
-	
+
 	Arguments:
 		type - string; the event name (e.g. 'onComplete')
 		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
@@ -142,8 +142,8 @@ var Events = new Class({
 	*/
 
 	fireEvent: function(type, args, delay){
-		if (this.events && this.events[type]){
-			this.events[type].each(function(fn){
+		if (this.$events && this.$events[type]){
+			this.$events[type].each(function(fn){
 				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
 			}, this);
 		}
@@ -153,14 +153,14 @@ var Events = new Class({
 	/*
 	Property: removeEvent
 		removes an event from the stack of events of the Class instance.
-	
+
 	Arguments:
 		type - string; the event name (e.g. 'onComplete')
 		fn - function that was added
 	*/
 
 	removeEvent: function(type, fn){
-		if (this.events && this.events[type]) this.events[type].remove(fn);
+		if (this.$events && this.$events[type]) this.$events[type].remove(fn);
 		return this;
 	}
 
@@ -170,7 +170,7 @@ var Events = new Class({
 Class: Options
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	Used to automate the options settings, also adding Class <Events> when the option begins with on.
-	
+
 	Example:
 		(start code)
 		var Widget = new Class({
@@ -196,7 +196,7 @@ Class: Options
 		//myWidget.options = {color: #f00, size: {width: 200, height: 100}}
 		(end)
 
-	
+
 */
 
 var Options = new Class({

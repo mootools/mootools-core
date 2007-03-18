@@ -122,8 +122,8 @@ Fx.Slide = Fx.Base.extend({
 	},
 
 	increase: function(){
-		this.element.setStyle(this.margin, this.now[0]+this.options.unit);
-		this.wrapper.setStyle(this.layout, this.now[1]+this.options.unit);
+		this.element.setStyle(this.margin, this.now[0] + this.options.unit);
+		this.wrapper.setStyle(this.layout, this.now[1] + this.options.unit);
 	}
 
 });

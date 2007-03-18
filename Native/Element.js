@@ -145,7 +145,7 @@ Example:
 	>// the element with id = myid2 if existing
 	>// the element with id = myid3 if existing
 	>// all the elements with div as tag in the page
-	
+
 Returns:
 	array - array of all the dom elements matched, extended with <$>
 */
@@ -159,8 +159,7 @@ function $$(){
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
 		switch($type(selector)){
-			case 'element': elements.push(selector); break;
-			case 'boolean': break;
+			case 'element': elements.push(element); break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default: elements = elements.concat((selector.push) ? selector : $A(selector));
 		}
@@ -171,12 +170,12 @@ function $$(){
 $$.$$ = function(array){
 	var elements = [];
 	for (var i = 0, l = array.length; i < l; i++){
-		if (array[i].included) continue;
-		array[i].included = true;
+		if (array[i].$included) continue;
+		array[i].$included = true;
 		var element = $(array[i]);
 		if (element) elements.push(element);
 	}
-	for (var i = 0, l = elements.length; i < l; i++) elements[i].included = null;
+	for (var i = 0, l = elements.length; i < l; i++) elements[i].$included = null;
 	return $extend(elements, new Elements);
 };
 
@@ -757,19 +756,23 @@ var Garbage = {
 	elements: [],
 
 	collect: function(el){
-		if (!el.collected){
+		if (!el.$){
 			Garbage.elements.push(el);
-			el.collected = true;
+			el.$ = {};
 		}
 		return el;
 	},
 
 	trash: function(elements){
 		for (var i = 0, j = elements.length, el; i < j; i++){
-			if (!(el = elements[i]) || !el.collected) return;
-			if (el.removeEvents) el.removeEvents();
+			if (!(el = elements[i]) || !el.$) return;
+			if (el.$events) {
+				el.fireEvent('onTrash');
+				el.removeEvents();
+			}
+			for (var p in el.$) el.$[p] = null;
 			for (var p in Element.prototype) el[p] = null;
-			el.htmlElement = el.collected = null;
+			el.htmlElement = el.$ = null;
 		}
 	},
 

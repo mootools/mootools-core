@@ -91,7 +91,7 @@ String.extend({
 
 	hyphenate: function(){
 		return this.replace(/\w[A-Z]/g, function(match){
-			return (match.charAt(0)+'-'+match.charAt(1).toLowerCase());
+			return (match.charAt(0) + '-' + match.charAt(1).toLowerCase());
 		});
 	},
 
@@ -182,17 +182,17 @@ String.extend({
 		var hex = this.match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
 		return (hex) ? hex.slice(1).hexToRgb(array) : false;
 	},
-	
+
 	/*
 	Property: hasListed
 		checks if the passed in string is listed in the String.
-		
+
 	Example:
 		>'a b c'.hasListed('c'); //true
 		>'a bc'.hasListed('c'); //false
 		>'a,b,c'.hasListed('c', ','); //true
 	*/
-	
+
 	hasListed: function(string, s){
 		s = s || ' ';
 		return (s + this + s).indexOf(s + string + s) > -1;
@@ -212,10 +212,10 @@ Array.extend({
 		if (this[3] && (this[3] == 0) && !array) return 'transparent';
 		var hex = [];
 		for (var i = 0; i < 3; i++){
-			var bit = (this[i]-0).toString(16);
-			hex.push((bit.length == 1) ? '0'+bit : bit);
+			var bit = (this[i] - 0).toString(16);
+			hex.push((bit.length == 1) ? '0' + bit : bit);
 		}
-		return array ? hex : '#'+hex.join('');
+		return array ? hex : '#' + hex.join('');
 	},
 
 	/*
@@ -227,9 +227,9 @@ Array.extend({
 		if (this.length != 3) return false;
 		var rgb = [];
 		for (var i = 0; i < 3; i++){
-			rgb.push(parseInt((this[i].length == 1) ? this[i]+this[i] : this[i], 16));
+			rgb.push(parseInt((this[i].length == 1) ? this[i] + this[i] : this[i], 16));
 		}
-		return array ? rgb : 'rgb('+rgb.join(',')+')';
+		return array ? rgb : 'rgb(' + rgb.join(',') + ')';
 	}
 
 });

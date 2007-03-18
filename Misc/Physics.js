@@ -117,8 +117,8 @@ var Physics = new Class({
 			this.velocity.x *= this.options.friction;
 		}
 		this.element.setStyles({
-			'left': this.position.x+'px',
-			'top': this.position.y+'px'
+			'left': this.position.x,
+			'top': this.position.y
 		});
 	},
 
