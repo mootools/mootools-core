@@ -95,8 +95,8 @@ Element.eventMethods = {
 	*/
 
 	fireEvent: function(type, args){
-		if (this.events && this.events[type]){
-			this.events[type].keys.each(function(fn){
+		if (this.$events && this.$events[type]){
+			this.$events[type].keys.each(function(fn){
 				fn.bind(this, args)();
 			}, this);
 		}
