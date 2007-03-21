@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Asset = {
+var Asset = new Abstract({
 
 	/*
 	Property: javascript
@@ -132,6 +132,4 @@ var Asset = {
 		return element;
 	}
 
-};
-
-Asset.extend = $extend;
+});

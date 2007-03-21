@@ -14,6 +14,10 @@ MooTools Credits:
 	- Documentation by Aaron Newton (aaron.newton [at] cnet [dot] com) and Valerio Proietti.
 */
 
+var MooTools = {
+	version: '1.1dev'
+};
+
 /*
 Class: Class
 	The base class object of the <http://mootools.net> framework.

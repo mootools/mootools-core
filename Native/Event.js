@@ -118,7 +118,7 @@ var Event = new Class({
 
 });
 
-Event.keys = {
+Event.keys = new Abstract({
 	'enter': 13,
 	'up': 38,
 	'down': 40,
@@ -129,9 +129,7 @@ Event.keys = {
 	'backspace': 8,
 	'tab': 9,
 	'delete': 46
-};
-
-Event.keys.extend = $extend;
+});
 
 Element.Events.extend({
 

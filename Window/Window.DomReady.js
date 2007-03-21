@@ -24,7 +24,7 @@ Example:
 
 Element.Events.domready = {
 
-	initialize: function(fn){
+	add: function(fn){
 		if (window.loaded){
 			fn.call(this);
 			return;

@@ -749,8 +749,7 @@ window.extend(Element.listenerMethods);
 document.extend(Element.listenerMethods);
 Element.extend(Element.listenerMethods);
 
-Element.Events = {};
-Element.Events.extend = $extend;
+Element.Events = new Abstract({});
 
 var Garbage = {
 

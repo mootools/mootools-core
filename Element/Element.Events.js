@@ -33,7 +33,7 @@ Element.eventMethods = {
 		var realType = type;
 		var bound = false;
 		if (Element.Events[type]){
-			if (Element.Events[type].initialize) Element.Events[type].initialize.call(this, fn);
+			if (Element.Events[type].add) Element.Events[type].add.call(this, fn);
 			if (Element.Events[type].map) bound = Element.Events[type].map.bindAsEventListener(this);
 			realType = Element.Events[type].type || type;
 		}
@@ -54,7 +54,10 @@ Element.eventMethods = {
 		if (pos == -1) return this;
 		var key = this.$events[type].keys.splice(pos,1)[0];
 		var value = this.$events[type].values.splice(pos,1)[0];
-		if (Element.Events[type]) type = Element.Events[type].type || type;
+		if (Element.Events[type]){
+			if (Element.Events[type].remove) Element.Events[type].remove.call(this, fn);
+			type = Element.Events[type].type || type;
+		}
 		return this.removeListener(type, value);
 	},
 

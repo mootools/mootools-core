@@ -6,10 +6,24 @@ License:
 	MIT-style license.
 */
 
+/*
+Class: Abstract
+	Abstract class, to be used as singleton. Will add .extend to any object
+
+Arguments:
+	an object
+
+*/
+
+var Abstract = function(obj){
+	obj.extend = $extend;
+	return obj;
+};
+
 //window, document
 
-window.extend = document.extend = $extend;
-var Window = window;
+var Window = new Abstract(window);
+var Document = new Abstract(document);
 
 /*
 Function: $chk

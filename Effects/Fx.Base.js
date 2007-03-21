@@ -19,7 +19,7 @@ Credits:
 	Easing Equations, (c) 2003 Robert Penner (http://www.robertpenner.com/easing/), Open Source BSD License.
 */
 
-Fx.Transitions = {
+Fx.Transitions = new Abstract({
 
 	/* Property: linear */
 	
@@ -33,9 +33,7 @@ Fx.Transitions = {
 		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
 	}
 
-};
-
-Fx.Transitions.extend = $extend;
+});
 
 /*
 Class: Fx.Base

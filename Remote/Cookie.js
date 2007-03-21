@@ -11,7 +11,7 @@ Class: Cookie
 	Class for creating, getting, and removing cookies.
 */
 
-var Cookie = {
+var Cookie = new Abstract({
 
 	options: {
 		domain: false,
@@ -94,4 +94,4 @@ var Cookie = {
 		else this.set(cookie, '', $merge(options, {duration: -1}));
 	}
 
-};
+});
