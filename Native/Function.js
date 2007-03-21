@@ -58,7 +58,7 @@ Function.extend({
 			}
 			else args = options.arguments || arguments;
 			var returns = function(){
-				return fn.apply(options.bind, args);
+				return fn.apply($pick(options.bind, fn), args);
 			};
 			if (options.delay) return setTimeout(returns, $duration(options.delay));
 			if (options.periodical) return setInterval(returns, $duration(options.periodical));
