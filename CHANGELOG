@@ -4,7 +4,7 @@ MOOTOOLS CHANGELOG
 
 1.1 (??? ??, 2007) http://svn.mootools.net/trunk/
 
-ADD: Added simple Abstract, to automatically add .extend to objects. Converted singletons to Abstract (kamicane)
+ADD: Added simple Abstract, to automatically add .extend to objects. Converted singletons to Abstract (Inviz)
 ADD: Added global MooTools object, with version property
 ADD: Added Array.getLast and .getRandom (kamicane)
 ADD: Accordion now allows you to add elements to it after its creation (addSection) (kamicane)
