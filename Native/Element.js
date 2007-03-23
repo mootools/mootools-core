@@ -531,7 +531,18 @@ Element.extend({
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
-		if (style == 'auto' && ['height', 'width'].test(property)) return this['offset'+property.capitalize()] + 'px';
+		if (window.ie && !parseInt(style)){
+			if (['height', 'width'].test(property)){
+				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
+				var size = 0;
+				values.each(function(value){
+					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+				}, this);
+				return this['offset' + property.capitalize()] - size + 'px';
+			} else if (property.test(/border/)){
+				return 0 + 'px';
+			}
+		}
 		return (style && property.test(/color/i) && style.test(/rgb/)) ? style.rgbToHex() : style;
 	},
 
