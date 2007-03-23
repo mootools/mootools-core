@@ -16,6 +16,7 @@ Arguments:
 */
 
 var Abstract = function(obj){
+	obj = obj || {};
 	obj.extend = $extend;
 	return obj;
 };
@@ -55,7 +56,7 @@ Example:
 */
 
 function $pick(obj, picked){
-	return (obj !== null && obj !== undefined) ? obj : picked;
+	return (obj != undefined) ? obj : picked;
 };
 
 /*
