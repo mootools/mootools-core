@@ -395,6 +395,6 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable.length || iterable.length === 0) Array.prototype.forEach.call(iterable, fn, bind);
+	if (iterable.length != undefined) Array.prototype.forEach.call(iterable, fn, bind);
 	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
 };
