@@ -493,7 +493,7 @@ Element.extend({
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
 		if (window.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
-		this.style.opacity = this.opacity = opacity;
+		this.style.opacity = this.$.opacity = opacity;
 		return this;
 	},
 
@@ -517,29 +517,51 @@ Element.extend({
 		property = property.camelCase();
 		var style = this.style[property];
 		if (!$chk(style)){
-			if (property == 'opacity') return $chk(this.opacity) ? this.opacity : 1;
+			if (property == 'opacity') return this.$.opacity;
+			var dirs = ['top', 'right', 'bottom', 'left'];
+			var result = [];
 			if (['margin', 'padding'].test(property)){
-				var result = [];
-				['top', 'right', 'bottom', 'left'].each(function(prop){
-					result.push(this.getStyle(property + '-' + prop) || '0');
+				dirs.each(function(dir){
+					result.push(this.getStyle(property + '-' + dir));
 				}, this);
-				var every = result.every(function(val){
-					return val == result[0];
-				});
-				return (every) ? result[0] : result;
+			} else if (property.test(/border/)){
+				var matches = property.hyphenate().split('-');
+				matches = matches.remove(matches[0]);
+				var recurse = function(el, property){
+					var temp = [];
+					['width', 'style', 'color'].each(function(prop, i){
+						temp.push(el.getStyle(property + '-' + prop));
+					});
+					return temp;
+				};
+				if (!matches[0]){
+					dirs.each(function(dir){
+						result.push(recurse(this, property + '-' + dir));
+					}, this);
+				} else if (!matches[1]){
+					result = recurse(this, property);
+				}
 			}
+			if (result.length){
+				var every = result.every(function(val){
+					return val.toString() == result[0].toString();
+				});
+				if (!every && property == 'border') return false;
+				if (every) result = result[0];
+				return result.toString().replace(/,/ig, ' ');
+			}	
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
-		if (window.ie && !parseInt(style)){
+		if (window.ie && !$chk(parseInt(style))){
 			if (['height', 'width'].test(property)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
 				var size = 0;
 				values.each(function(value){
 					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
 				}, this);
-				return this['offset' + property.capitalize()] - size + 'px';
-			} else if (property.test(/border/)){
+				return this['offset' + property.capitalize()] - size + 'px';	
+			} else if (property.test(/border-[\w]-width/)){
 				return 0 + 'px';
 			}
 		}
@@ -769,7 +791,7 @@ var Garbage = {
 	collect: function(el){
 		if (!el.$){
 			Garbage.elements.push(el);
-			el.$ = {};
+			el.$ = {'opacity': 1};
 		}
 		return el;
 	},
