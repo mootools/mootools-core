@@ -67,8 +67,7 @@ Element.eventMethods = {
 	*/
 
 	addEvents: function(source){
-		for (var type in source) this.addEvent(type, source[type]);
-		return this;
+		return Element.setMany(this, 'addEvent', source);
 	},
 
 	/*

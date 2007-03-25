@@ -47,7 +47,7 @@ String.extend({
 	*/
 
 	toInt: function(){
-		return parseInt(this);
+		return parseInt(this, 10);
 	},
 
 	/*
@@ -60,6 +60,7 @@ String.extend({
 	Example:
 		>var value = "10.848".toFloat(); // value is 10.848
 	*/
+
 	toFloat: function(){
 		return parseFloat(this);
 	},

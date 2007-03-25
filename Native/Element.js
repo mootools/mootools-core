@@ -450,7 +450,7 @@ Element.extend({
 		Applies a collection of styles to the Element.
 
 	Arguments:
-		source - an object or string containing all the styles to apply. You cannot set the opacity using a string.
+		source - an object containing all the styles to apply.
 
 	Examples:
 		>$('myElement').setStyles({
@@ -465,13 +465,7 @@ Element.extend({
 	*/
 
 	setStyles: function(source){
-		switch($type(source)){
-			case 'object':
-				for (var property in source) this.setStyle(property, source[property]);
-				break;
-			case 'string': this.style.cssText = source;
-		}
-		return this;
+		return Element.setMany(this, 'setStyle', source);
 	},
 
 	/*
@@ -580,11 +574,7 @@ Element.extend({
 	*/
 
 	getStyles: function(){
-		var result = {};
-		$each(arguments, function(argument){
-			result[argument] = this.getStyle(argument);
-		}, this);
-		return result;
+		return Element.getMany(this, 'getStyle', arguments);
 	},
 
 	walk: function(brother, start){
@@ -662,6 +652,46 @@ Element.extend({
 	hasChild: function(el) {
 		return !!$A(this.getElementsByTagName('*')).test(el);
 	},
+	
+	/*
+	Property: getProperty
+		Gets the an attribute of the Element.
+
+	Arguments:
+		property - string; the attribute to retrieve
+
+	Example:
+		>$('myImage').getProperty('src') // returns whatever.gif
+
+	Returns:
+		the value, or an empty string
+	*/
+
+	getProperty: function(property){
+		return (Element.Properties[property]) ? this[Element.Properties[property]] : this.getAttribute(property);
+	},
+	
+	/*
+	Property: removeProperty
+		Removes an attribute from the Element
+		
+	Arguments:
+		property - string; the attribute to remove
+	*/
+	
+	removeProperty: function(property){
+		if (Element.Properties[property]) this[Element.Properties[property]] = '';
+		else this.removeAttribute(property);
+	},
+	
+	/*
+	Property: getProperties
+		same as <Element.getStyles>, but for properties
+	*/
+	
+	getProperties: function(){
+		return Element.getMany(this, 'getProperty', arguments);
+	},
 
 	/*
 	Property: setProperty
@@ -676,12 +706,8 @@ Element.extend({
 	*/
 
 	setProperty: function(property, value){
-		switch(property){
-			case 'class': this.className = value; break;
-			case 'style': this.setStyles(value); break;
-			case 'for': this.htmlFor = value; break;
-			default: this.setAttribute(property, value);
-		}
+		if (Element.Properties[property]) this[Element.Properties[property]] = value;
+		else this.setAttribute(property, value);
 		return this;
 	},
 
@@ -703,8 +729,7 @@ Element.extend({
 	*/
 
 	setProperties: function(source){
-		for (var property in source) this.setProperty(property, source[property]);
-		return this;
+		return Element.setMany(this, 'setProperty', source);
 	},
 
 	/*
@@ -724,28 +749,6 @@ Element.extend({
 	},
 
 	/*
-	Property: getProperty
-		Gets the an attribute of the Element.
-
-	Arguments:
-		property - string; the attribute to retrieve
-
-	Example:
-		>$('myImage').getProperty('src') // returns whatever.gif
-
-	Returns:
-		the value, or an empty string
-	*/
-
-	getProperty: function(property){
-		switch(property){
-			case 'class': return this.className;
-			case 'for': return this.htmlFor;
-			default: return this.getAttribute(property);
-		}
-	},
-
-	/*
 	Property: getTag
 		Returns the tagName of the element in lower case.
 
@@ -759,6 +762,27 @@ Element.extend({
 	getTag: function(){
 		return this.tagName.toLowerCase();
 	}
+
+});
+
+Element.getMany = function(el, method, keys){
+	var result = {};
+	$each(keys, function(key){
+		result[key] = el[method](key);
+	});
+	return result;
+};
+
+Element.setMany = function(el, method, pairs){
+	for (var key in pairs) el[method](key, pairs[key]);
+	return el;
+};
+
+Element.Properties = new Abstract({
+
+	'class': 'className',
+	'value': 'value',
+	'for': 'htmlFor'
 
 });
 
