@@ -33,10 +33,11 @@ var Slider = new Class({
 		onTick: function(pos){
 			this.knob.setStyle(this.p, pos);
 		},
-		steps: 100,
 		mode: 'horizontal',
+		clickDrags: true,
+		steps: 100,
 		wheel: false,
-		clickDrags: true
+		offset: 0
 	},
 
 	initialize: function(el, knob, options){
@@ -48,25 +49,24 @@ var Slider = new Class({
 		this.step = -1;
 		this.element.addEvent('mousedown', this.clickedElement.bindWithEvent(this));
 		if (this.options.wheel) this.element.addEvent('mousewheel', this.scrolledElement.bindWithEvent(this));
-		var mod;
+		var mod, offset;
 		if (this.options.mode == 'horizontal'){
 			this.z = 'x';
 			this.p = 'left';
 			mod = {'x': 'left', 'y': false};
-			this.max = this.element.offsetWidth - this.knob.offsetWidth;
-			this.half = this.knob.offsetWidth/2;
-			this.getPos = this.element.getLeft.bind(this.element);
+			offset = 'offsetWidth';
 		} else if (this.options.mode == 'vertical'){
 			this.z = 'y';
 			this.p = 'top';
 			mod = {'x': false, 'y': 'top'};
-			this.max = this.element.offsetHeight - this.knob.offsetHeight;
-			this.half = this.knob.offsetHeight/2;
-			this.getPos = this.element.getTop.bind(this.element);
+			offset = 'offsetHeight';
 		}
-		this.knob.setStyle('position', 'relative').setStyle(this.p, 0);
+		this.max = this.element[offset] - this.knob[offset] + (this.options.offset * 2);
+		this.half = this.knob[offset]/2;
+		this.getPos = this.element['get' + this.p.capitalize()].bind(this.element);
+		this.knob.setStyle('position', 'relative').setStyle(this.p, - this.options.offset);
 		var lim = {};
-		lim[this.z] = [0, this.max];
+		lim[this.z] = [- this.options.offset, this.max - this.options.offset];
 		this.drag = new Drag.Base(this.knob, {
 			limit: lim,
 			modifiers: mod,
@@ -113,7 +113,7 @@ var Slider = new Class({
 	clickedElement: function(event){
 		var position = event.page[this.z] - this.getPos() - this.half;
 		if (position > this.max) position = this.max;
-		else if (position < 0) position = 0;
+		else if (position < - this.options.offset) position = - this.options.offset;
 		this.step = this.toStep(position);
 		this.checkStep();
 		this.end();
@@ -140,11 +140,11 @@ var Slider = new Class({
 	},
 
 	toStep: function(position){
-		return Math.round(position/this.max*this.options.steps);
+		return Math.round((position + this.options.offset) / this.max * this.options.steps);
 	},
 
 	toPosition: function(step){
-		return (this.max)*step/this.options.steps;
+		return (this.max) * step / this.options.steps;
 	}
 
 });

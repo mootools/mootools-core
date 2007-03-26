@@ -46,6 +46,7 @@ Drag.Base = new Class({
 		onDrag: Class.empty,
 		limit: false,
 		modifiers: {x: 'left', y: 'top'},
+		grid: false,
 		snap: 6
 	},
 
@@ -122,6 +123,7 @@ Drag.Base = new Class({
 					this.out = true;
 				}
 			}
+			if (this.options.grid) this.value.now[z] -= (this.value.now[z] % this.options.grid);
 			this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
 		}
 		this.fireEvent('onDrag', this.element);
