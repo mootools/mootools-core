@@ -67,10 +67,12 @@ Drag.Base = new Class({
 
 	attach: function(){
 		this.handle.addEvent('mousedown', this.bound.start);
+		return this;
 	},
 	
 	detach: function(){
 		this.handle.removeEvent('mousedown', this.bound.start);
+		return this;
 	},
 
 	start: function(event){

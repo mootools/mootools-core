@@ -26,8 +26,6 @@ Example:
 var Color = new Class({
 
 	initialize: function(color, type){
-		if (color.isColor) return color;
-		color.isColor = true;
 		type = type || (color.push ? 'rgb' : 'hex');
 		var rgb, hsb;
 		switch(type){
@@ -44,6 +42,7 @@ var Color = new Class({
 				hsb = rgb.rgbToHsb();
 		}
 		rgb.hsb = hsb;
+		rgb.hex = rgb.rgbToHex();
 		return $extend(rgb, Color.prototype);
 	},
 
@@ -147,6 +146,7 @@ Class: Array
 */
 
 Array.extend({
+	
 	/*
 	Property: rgbToHsb
 		Converts a RGB array to an HSB array.
@@ -154,6 +154,7 @@ Array.extend({
 	Returns:
 		the HSB array.
 	*/
+
 	rgbToHsb: function(){
 		var red = this[0], green = this[1], blue = this[2];
 		var hue, saturation, brightness;

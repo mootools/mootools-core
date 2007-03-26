@@ -35,7 +35,8 @@ var Slider = new Class({
 		},
 		steps: 100,
 		mode: 'horizontal',
-		wheel: false
+		wheel: false,
+		clickDrags: true
 	},
 
 	initialize: function(el, knob, options){
@@ -81,6 +82,7 @@ var Slider = new Class({
 				this.end();
 			}.bind(this)
 		});
+		if (this.options.clickDrags) this.element.addEvent('mousedown', this.drag.start.bindWithEvent(this.drag));
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
