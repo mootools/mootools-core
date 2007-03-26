@@ -117,7 +117,7 @@ var XHR = new Class({
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;
-		if (data && this.options.method == 'get' && !url.test(/\?/)) url = url + '?' + data, data = null;
+		if (data && this.options.method == 'get') url = url + (url.test(/\?/) ? '?' : '&') + data, data = null;
 		(function(){
 			this.transport.open(this.options.method, url, this.options.async);
 			this.transport.onreadystatechange = this.onStateChange.bind(this);
