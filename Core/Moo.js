@@ -4,7 +4,7 @@ Script: Moo.js
 
 License:
 	MIT-style license.
-	
+
 MooTools Copyright:
 	copyright (c) 2007 Valerio Proietti, <http://mad4milk.net>
 
@@ -149,7 +149,7 @@ Returns:
 */
 
 function $type(obj){
-	if (obj === null || obj === undefined) return false;
+	if (obj == undefined) return false;
 	var type = typeof obj;
 	if (type == 'object'){
 		if (obj.htmlElement) return 'element';
@@ -161,6 +161,7 @@ function $type(obj){
 			}
 		}
 	}
+	if ((type == 'object' || type == 'function') && obj.exec) return 'regexp';
 	return type;
 };
 
@@ -226,7 +227,7 @@ Example:
 		'lastName': 'Dorian'
 	};
 	$extend(firstOb, secondOb);
-	//firstOb will become: 
+	//firstOb will become:
 	{
 		'name': 'John',
 		'lastName': 'Dorian',

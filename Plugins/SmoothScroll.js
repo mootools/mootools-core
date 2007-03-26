@@ -36,7 +36,7 @@ var SmoothScroll = Fx.Scroll.extend({
 			if (!window.khtml){
 				this.clearChain();
 				this.chain(function(){
-					window.location.href = '#' + anchor;
+					window.location.hash = anchor;
 				});
 			}
 			this.toElement(anchor);

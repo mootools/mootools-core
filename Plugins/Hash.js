@@ -95,7 +95,7 @@ var Hash = new Class({
 
 	/*
 	Property: each
-		Calls a function for each key-value pair. The first argument passed to the function will be the key, the second one will be the value.
+		Calls a function for each key-value pair. The first argument passed to the function will be the value, the second one will be the key, like $each.
 
 	Arguments:
 		fn - The function to call for each key-value pair
