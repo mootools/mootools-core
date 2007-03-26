@@ -4,14 +4,16 @@ MOOTOOLS CHANGELOG
 
 1.1 (??? ??, 2007) http://svn.mootools.net/trunk/
 
-ADD: Added simple Abstract, to automatically add .extend to objects. Converted singletons to Abstract (Inviz)
+ADD: Added Element::removeProperty (kamicane)
+ADD: Element::getStyle: Full paddings/margins/borders support, correct width/height for ie. (kamicane)
+ADD: Added simple Abstract, to automatically add .extend to objects. Converted singletons to Abstract (kamicane)
 ADD: Added global MooTools object, with version property
 ADD: Added Array.getLast and .getRandom (kamicane)
 ADD: Accordion now allows you to add elements to it after its creation (addSection) (kamicane)
 ADD: Group class to collect events from several class instances
 ADD: Garbage.trash automatically cleans up the internal $ property for elements and fires onTrash before cleaning elements
 ADD: Implemented custom events, with some defaults as mouseenter, mouseleave and domready (kamicane)
-ADD: Added Array::merge and Array::include (similar to extend/push but with duplicate check) (kamicane) 
+ADD: Added Array::merge and Array::include (similar to extend/push but with duplicate check) (kamicane)
 ADD: Ajax::evalScripts with global eval and automated eval for javascript response, can be forced with evalResponse , added Ajax::getHeader (digitarald)
 ADD: XHR now has a 'cancel' method, the option 'autoCancel' and the running property for active requests (digitarald, kamicane)
 ADD: UrlEncoding moved from Ajax to XHR to allow get/post encoding for Xhr/Json.Request (digitarald, kamicane)
@@ -29,7 +31,12 @@ ADD: Added $merge, merging objects recursively (aaron)
 ADD: Added Element.getStyles() (aaron)
 ADD: $each iterates objects and arrays (aaron)
 
-CHG: Object.extend is now $extend, still compatible 
+CHG: Drag.Base grid option, for snap-to-grid movement. Return this to Drag::attach/detach (kamicane)
+CHG: Slider offset option (kamicane)
+CHG: When you click the Slider Container you can also drag with the same click. Option clickDrags (default true), in case you're ticking with an effect (kamicane)
+CHG: $type does now recognize 'regexp' [#163] (digitarald)
+CHG: BREAKING CHANGE: Hash::each callback arguments are now (value, key) to be consistent with all each's (blame digitarald)
+CHG: Object.extend is now $extend, still compatible
 CHG: Object.native is now $native, still compatible
 CHG: Renamed internal element properties with prepended $ ($events, $included) (digitarald)
 CHG: Cookie.remove with paths and domains [#127] (kamicane)
@@ -59,7 +66,10 @@ CHG: Removed new Element in adopt, inject and replaceWith (kamicane)
 CHG: Fixed Element.getValue/Element.toQueryString with support for multiple-selects (digitarald)
 CHG: Moved $type to Moo.js
 
-FIX: Fixed the drag bug about the element getting stuck to the cursor when right-clicking or clicking outside of the window [#84] (kamicane) 
+FIX: Couple of fixes to the Color class, now it also carries hex values. (kamicane)
+FIX: String::toInt fixed [#125]
+FIX: SmoothScroll now sets hash, not href [#149] (digitarald)
+FIX: Fixed the drag bug about the element getting stuck to the cursor when right-clicking or clicking outside of the window [#84] (kamicane)
 FIX: little fix for $each, provided default binding (kamicane)
 FIX: Fixed domready problem in secure sites [#139]
 FIX: Element.setOpacity with opacity/clear-type fix for ie (digitarald)

@@ -23,6 +23,7 @@ Options:
 	onComplete - optional, function to execute when the user completes the drag.
 	onDrag - optional, function to execute at every step of the drag
 	limit - an object, see Limit below.
+	grid - optional, distance in px for snap-to-grid dragging
 	snap - optional, the distance you have to drag before the element starts to respond to the drag. defaults to false
 
 	modifiers:
@@ -70,7 +71,7 @@ Drag.Base = new Class({
 		this.handle.addEvent('mousedown', this.bound.start);
 		return this;
 	},
-	
+
 	detach: function(){
 		this.handle.removeEvent('mousedown', this.bound.start);
 		return this;

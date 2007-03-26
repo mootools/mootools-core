@@ -22,6 +22,7 @@ Options:
 		Passes as parameter the new position.
 	steps - the number of steps for your slider.
 	mode - either 'horizontal' or 'vertical'. defaults to horizontal.
+	offset - relative offset for knob position. default to 0.
 	wheel - experimental! Also use the mouse wheel to control the slider. defaults to false.
 */
 
