@@ -683,6 +683,7 @@ Element.extend({
 	removeProperty: function(property){
 		if (Element.Properties[property]) this[Element.Properties[property]] = '';
 		else this.removeAttribute(property);
+		return this;
 	},
 
 	/*
