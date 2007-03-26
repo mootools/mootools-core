@@ -212,13 +212,18 @@ Element.extend({
 	inject: function(el, where){
 		el = $(el);
 		switch(where){
-			case "before": el.parentNode.insertBefore(this, el); break;
-			case "after":
+			case 'before': el.parentNode.insertBefore(this, el); break;
+			case 'after':
 				var next = el.getNext();
 				if (!next) el.parentNode.appendChild(this);
 				else el.parentNode.insertBefore(this, next);
 				break;
-			case "inside": el.appendChild(this);
+			case 'top':
+				if (el.firstChild) {
+					el.insertBefore(this, el.firstChild);
+					break;
+				}
+			default: el.appendChild(this);
 		}
 		return this;
 	},
@@ -228,7 +233,7 @@ Element.extend({
 		Inserts the Element before the passed element.
 
 	Parameteres:
-		el - a string representing the element to be injected in (myElementId, or div), or an element reference.
+		el - an element reference or the id of the element to be injected in.
 
 	Example:
 		>html:
@@ -266,17 +271,14 @@ Element.extend({
 
 	/*
 	Property: adopt
-		Inserts the passed element inside the Element. Works as <Element.injectInside> but in reverse.
+		Inserts the passed element(s) inside the Element. Works as <Element.injectInside> but in reverse and with any number of elements.
 
 	Parameteres:
-		el - a string representing the element to be injected in (myElementId, or div), or an element reference.
-		If you pass div or another tag, the element will be created.
+		el - an element reference or the id of the element to be injected in.
 	*/
 
 	adopt: function(){
-		$each(arguments, function(el){
-			this.appendChild($(el));
-		}, this);
+		$$.$$(arguments).injectInside(this);
 		return this;
 	},
 
@@ -289,8 +291,7 @@ Element.extend({
 	*/
 
 	remove: function(){
-		this.parentNode.removeChild(this);
-		return this;
+		return this.parentNode.removeChild(this);
 	},
 
 	/*
@@ -543,7 +544,7 @@ Element.extend({
 				if (!every && property == 'border') return false;
 				if (every) result = result[0];
 				return result.toString().replace(/,/ig, ' ');
-			}	
+			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
@@ -554,7 +555,7 @@ Element.extend({
 				values.each(function(value){
 					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
 				}, this);
-				return this['offset' + property.capitalize()] - size + 'px';	
+				return this['offset' + property.capitalize()] - size + 'px';
 			} else if (property.test(/border-[\w]-width/)){
 				return 0 + 'px';
 			}
@@ -652,7 +653,7 @@ Element.extend({
 	hasChild: function(el) {
 		return !!$A(this.getElementsByTagName('*')).test(el);
 	},
-	
+
 	/*
 	Property: getProperty
 		Gets the an attribute of the Element.
@@ -670,25 +671,25 @@ Element.extend({
 	getProperty: function(property){
 		return (Element.Properties[property]) ? this[Element.Properties[property]] : this.getAttribute(property);
 	},
-	
+
 	/*
 	Property: removeProperty
 		Removes an attribute from the Element
-		
+
 	Arguments:
 		property - string; the attribute to remove
 	*/
-	
+
 	removeProperty: function(property){
 		if (Element.Properties[property]) this[Element.Properties[property]] = '';
 		else this.removeAttribute(property);
 	},
-	
+
 	/*
 	Property: getProperties
 		same as <Element.getStyles>, but for properties
 	*/
-	
+
 	getProperties: function(){
 		return Element.getMany(this, 'getProperty', arguments);
 	},

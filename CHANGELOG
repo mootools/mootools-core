@@ -4,6 +4,9 @@ MOOTOOLS CHANGELOG
 
 1.1 (??? ??, 2007) http://svn.mootools.net/trunk/
 
+ADD: Drag.Base grid option, for snap-to-grid movement. return this to Drag::attach/detach (kamicane)
+ADD: Slider with offset option for exact knob position (kamicane)
+ADD: When you click the Slider Container you can also drag with the same click. Option clickDrags (default true), in case you're ticking with an effect (kamicane)
 ADD: Added Element::removeProperty (kamicane)
 ADD: Element::getStyle: Full paddings/margins/borders support, correct width/height for ie. (kamicane)
 ADD: Added simple Abstract, to automatically add .extend to objects. Converted singletons to Abstract (kamicane)
@@ -31,9 +34,6 @@ ADD: Added $merge, merging objects recursively (aaron)
 ADD: Added Element.getStyles() (aaron)
 ADD: $each iterates objects and arrays (aaron)
 
-CHG: Drag.Base grid option, for snap-to-grid movement. Return this to Drag::attach/detach (kamicane)
-CHG: Slider offset option (kamicane)
-CHG: When you click the Slider Container you can also drag with the same click. Option clickDrags (default true), in case you're ticking with an effect (kamicane)
 CHG: $type does now recognize 'regexp' [#163] (digitarald)
 CHG: BREAKING CHANGE: Hash::each callback arguments are now (value, key) to be consistent with all each's (blame digitarald)
 CHG: Object.extend is now $extend, still compatible
@@ -50,6 +50,8 @@ CHG: Splitted Element.js in Element, Element.Dimensions, Element.Events and Elem
 CHG: Fast Element.walk for getNext/Previous/Last/First (Inviz)
 CHG: onProgress of Asset.Images is now binded to the current image and the index is passed. (kamicane)
 CHG: In Event class keys are now only computed for 'keydown' (kamicane)
+CHG: DEPRECATED window.onDomReady, use window.addEvent('domready', fn)
+CHG: Window.Base.js renamed to Window.DomReady.js
 CHG: Tips now use 'mouseenter' and 'mouseleave' instead of 'mouseover' and 'mouseout' (kamicane)
 CHG: Moved 'get' fallback from Ajax to XHR (kamicane)
 CHG: Garbage.trash now take as input an array of elements (kamicane)
@@ -62,7 +64,7 @@ CHG: Element.setStyle also supports float now (kamicane)
 CHG: Fx.Slide allows borders and margins. Positioning is now possible. (kamicane)
 CHG: Ajax.request can take data as first argument to override options [#69] (Inviz)
 CHG: Element.adopt allows multiple arguments [#71] (Inviz)
-CHG: Removed new Element in adopt, inject and replaceWith (kamicane)
+CHG: Removed new Element in adopt, inject and replaceWith, now only id's and element references are allows (kamicane)
 CHG: Fixed Element.getValue/Element.toQueryString with support for multiple-selects (digitarald)
 CHG: Moved $type to Moo.js
 
@@ -96,5 +98,7 @@ FIX: Several missing dependency fixed
 FIX: Several space fixed
 
 1.0 (January 29, 2007) http://svn.mootools.net/tags/1-00/
+
+CHG: BREAKING CHANGES:
 
 0.87 (December 12, 2006) http://svn.mootools.net/tags/0-87/
