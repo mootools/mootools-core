@@ -112,7 +112,7 @@ var Slider = new Class({
 
 	clickedElement: function(event){
 		var position = event.page[this.z] - this.getPos() - this.half;
-		if (position > this.max) position = this.max;
+		if (position > this.max - this.options.offset) position = this.max - this.options.offset;
 		else if (position < - this.options.offset) position = - this.options.offset;
 		this.step = this.toStep(position);
 		this.checkStep();
