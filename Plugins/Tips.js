@@ -85,39 +85,40 @@ var Tips = new Class({
 	},
 
 	build: function(el){
-		el.myTitle = el.href ? el.href.replace('http://', '') : (el.rel || false);
+		el.$.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
 		if (el.title){
 			var dual = el.title.split('::');
 			if (dual.length > 1) {
-				el.myTitle = dual[0].trim();
-				el.myText = dual[1].trim();
+				el.$.myTitle = dual[0].trim();
+				el.$.myText = dual[1].trim();
 			} else {
-				el.myText = el.title;
+				el.$.myText = el.title;
 			}
 			el.removeAttribute('title');
 		} else {
-			el.myText = false;
+			el.$.myText = false;
 		}
-		if (el.myTitle && el.myTitle.length > this.options.maxTitleChars) el.myTitle = el.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
+		if (el.$.myTitle && el.$.myTitle.length > this.options.maxTitleChars) el.$.myTitle = el.$.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
 		el.addEvent('mouseenter', function(event){
 			this.start(el);
-			this.locate(event);
+			if (!this.options.fixed) this.locate(event);
+			else this.position(el);
 		}.bind(this));
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
 		el.addEvent('mouseleave', this.end.bind(this));
 	},
 
 	start: function(el){
-		this.wrapper.setHTML('');
-		if (el.myTitle){
-			new Element('span').injectInside(
+		this.wrapper.getChildren().remove();
+		if (el.$.myTitle){
+			this.title = new Element('span').injectInside(
 				new Element('div', {'class': this.options.className + '-title'}).injectInside(this.wrapper)
-			).setHTML(el.myTitle);
+			).setHTML(el.$.myTitle);
 		}
-		if (el.myText){
-			new Element('span').injectInside(
+		if (el.$.myText){
+			this.text = new Element('span').injectInside(
 				new Element('div', {'class': this.options.className + '-text'}).injectInside(this.wrapper)
-			).setHTML(el.myText);
+			).setHTML(el.$.myText);
 		}
 		$clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);
@@ -126,6 +127,14 @@ var Tips = new Class({
 	end: function(event){
 		$clear(this.timer);
 		this.timer = this.hide.delay(this.options.hideDelay, this);
+	},
+	
+	position: function(element){
+		var pos = element.getPosition();
+		this.toolTip.setStyles({
+			'left': pos.x + this.options.offsets.x,
+			'top': pos.y + this.options.offsets.y
+		});
 	},
 
 	locate: function(event){
