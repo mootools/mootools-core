@@ -219,8 +219,9 @@ Element.extend({
 				else el.parentNode.insertBefore(this, next);
 				break;
 			case 'top':
-				if (el.firstChild) {
-					el.insertBefore(this, el.firstChild);
+				var first = el.firstChild;
+				if (first){
+					el.insertBefore(this, first);
 					break;
 				}
 			default: el.appendChild(this);
@@ -244,7 +245,6 @@ Element.extend({
 		>resulting html:
 		><div id="mySecondElement"></div>
 		><div id="myElement"></div>
-
 	*/
 
 	injectBefore: function(el){
@@ -326,8 +326,9 @@ Element.extend({
 	*/
 
 	replaceWith: function(el){
+		el = $(el);
 		this.parentNode.replaceChild(el, this);
-		return $(el);
+		return el;
 	},
 
 	/*

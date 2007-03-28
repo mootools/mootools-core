@@ -92,14 +92,16 @@ Fx.Scroll = Fx.Base.extend({
 
 	/*
 	Property: toElement
-		Scrolls the specified element to the position the passed in element is found. Only usable if the chosen element is == window.
+		Scrolls the specified element to the position the passed in element is found.
 
 	Arguments:
 		el - the $(element) to scroll the window to
 	*/
 
 	toElement: function(el){
-		return this.scrollTo($(el).getLeft(), $(el).getTop());
+		var parent = this.element.getPosition();
+		var target = $(el).getPosition();
+		return this.scrollTo(target.x - parent.x, target.y - parent.y);
 	},
 
 	increase: function(){
