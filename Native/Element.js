@@ -765,20 +765,20 @@ Element.extend({
 
 	getTag: function(){
 		return this.tagName.toLowerCase();
-	}
+	},
 
 	/*
-	Property: flush
+	Property: empty
 		Empties an element of all its children.
 
 	Example:
-		>$('myDiv').flush() // empties the Div and returns it
+		>$('myDiv').empty() // empties the Div and returns it
 
 	Returns:
 		The element.
 	*/
 	
-	flush: function(){
+	empty: function(){
 		Garbage.trash(this.getElementsByTagName('*'));
 		return this.setHTML('');
 	}
