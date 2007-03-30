@@ -49,7 +49,7 @@ var Cookie = new Abstract({
 		value += options.domain + options.path;
 		if (options.duration){
 			var date = new Date();
-			date.setTime(date.getTime() + $duration(options.duration));
+			date.setTime(date.getTime() + $duration(options.duration, true));
 			value += '; expires=' + date.toGMTString();
 		}
 		document.cookie = key + '=' + value;
