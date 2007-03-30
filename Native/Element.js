@@ -767,6 +767,22 @@ Element.extend({
 		return this.tagName.toLowerCase();
 	}
 
+	/*
+	Property: flush
+		Empties an element of all its children.
+
+	Example:
+		>$('myDiv').flush() // empties the Div and returns it
+
+	Returns:
+		The element.
+	*/
+	
+	flush: function(){
+		Garbage.trash(this.getElementsByTagName('*'));
+		return this.setHTML('');
+	}
+
 });
 
 Element.getMany = function(el, method, keys){
