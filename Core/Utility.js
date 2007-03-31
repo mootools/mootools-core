@@ -93,33 +93,53 @@ Function: $duration
 
 Arguments:
 	data - Object with values for years, months, days, hours, seconds, milliseconds. For non-objects it returns the parsed argument as integer.
-	ms - Boolean, if true return ms, otherwise seconds
+	seconds - Boolean, only when first argument is passed as number, if true the first argument is treated as seconds, if false as milliseconds. defaults to false.
 
 Returns:
-	an integer for the duration in seconds or ms if second parameter is true.
+	an object containing:
+		milliseconds
+		seconds
+		minutes
+		hours
+		days
 
 Example:
 	(start code)
 	var howLong = $duration({
-		months: 1,
-		days: 4,
-		minutes: 2,
-		seconds: 4
+		seconds: 3600
 	});
-	//howLong = 2937724 (seconds)
+	//returns
+	{
+		hours: 1,
+		minutes: 60,
+		seconds: 3600,
+		milliseconds: 36000,
+		hours: 0.041666666666666664
+	}
 	(end)
 */
 
-function $duration(data, ms){
-	if ($type(data) != 'object') return parseInt(data);
-	this.units = this.units || {years: 'FullYear', months: 'Month', days: 'Date', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds', milliseconds: 'Milliseconds'};
+function $duration(data, seconds){
+	if ($type(data) != 'object'){
+		data = parseInt(data);
+		data = seconds ? {seconds: data} : {milliseconds: data};
+	}
+	this.units = this.units || {
+		years: 'FullYear', months: 'Month', days: 'Date', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds', milliseconds: 'Milliseconds'
+	};
 	var date = new Date();
 	for (var unit in data){
 		var fn = this.units[unit];
 		if (fn) date['set' + fn](date['get' + fn]() + $pick(data[unit], 0));
 	}
-	return parseInt((date.getTime() - $time()) / (ms ? 1 : 1000));
-}
+	var time = {};
+	time.milliseconds = date.getTime() - $time();
+	time.seconds = time.milliseconds / 1000;
+	time.minutes = time.seconds / 60;
+	time.hours = time.minutes / 60;
+	time.days = time.hours / 24;
+	return time;
+};
 
 /*
 Function: $clear
