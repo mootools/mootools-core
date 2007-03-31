@@ -256,7 +256,7 @@ Array.extend({
 		(start code)
 		var Animals = ['Cat', 'Dog', 'Coala', 'Lizard'];
 		var Speech = ['Miao', 'Bau', 'Fruuu', 'Mute'];
-		var Speeches = Animals.associate(speech);
+		var Speeches = Animals.associate(Speech);
 		//Speeches['Miao'] is now Cat.
 		//Speeches['Bau'] is now Dog.
 		//...

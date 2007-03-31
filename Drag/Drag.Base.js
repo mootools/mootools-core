@@ -92,6 +92,7 @@ Drag.Base = new Class({
 				}
 			}
 		}
+		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
 		document.addListener('mousemove', this.bound.check);
 		document.addListener('mouseup', this.bound.stop);
 		this.fireEvent('onStart', this.element);
@@ -124,7 +125,7 @@ Drag.Base = new Class({
 					this.out = true;
 				}
 			}
-			if (this.options.grid) this.value.now[z] -= (this.value.now[z] % this.options.grid);
+			if (this.options.grid[z]) this.value.now[z] -= (this.value.now[z] % this.options.grid[z]);
 			this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
 		}
 		this.fireEvent('onDrag', this.element);

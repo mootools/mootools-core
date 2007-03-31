@@ -850,6 +850,7 @@ var Garbage = {
 			for (var p in el.$) el.$[p] = null;
 			for (var p in Element.prototype) el[p] = null;
 			el.htmlElement = el.$ = null;
+			Garbage.elements.remove(el);
 		}
 	},
 
