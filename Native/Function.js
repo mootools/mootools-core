@@ -60,8 +60,8 @@ Function.extend({
 			var returns = function(){
 				return fn.apply($pick(options.bind, fn), args);
 			};
-			if (options.delay) return setTimeout(returns, $duration(options.delay).milliseconds);
-			if (options.periodical) return setInterval(returns, $duration(options.periodical).milliseconds);
+			if (options.delay) return setTimeout(returns, $duration(options.delay));
+			if (options.periodical) return setInterval(returns, $duration(options.periodical));
 			if (options.attempt) try {return returns();} catch(err){return false;};
 			return returns();
 		};
