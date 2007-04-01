@@ -10,7 +10,7 @@
 			"deps": ["Moo", "Utility"],
 			"desc": "Mootools utility functions."
 		},
-		
+
 		"Common": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
 			"desc": "Shared components between Classes. Contains Queuing and Events Class Utilities. Can be used in your own classes too."
@@ -51,7 +51,7 @@
 		}
 
 	},
-	
+
 	"Element": {
 
 		"Element.Form": {
@@ -63,7 +63,7 @@
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
 			"desc": "Contains Element methods to work with element size, scroll, or position in space."
 		},
-		
+
 		"Element.Events": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
 			"desc": "Contains Element methods to work with events."
@@ -156,7 +156,7 @@
 		},
 
 		"Cookie": {
-			"deps": ["Moo", "Utility"],
+			"deps": ["Moo", "Utility", "String"],
 			"desc": "Lets you Create/Read/Delete Cookies."
 		},
 
@@ -213,12 +213,12 @@
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Event", "Common", "Window.Size"],
 			"desc": "The Tooltips."
 		},
-		
+
 		"Group": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Common"],
 			"desc": "The Group."
 		},
-		
+
 		"Accordion": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events", "Common", "Fx.Base", "Fx.CSS", "Fx.Elements"],
 			"desc": "Does it need a description?"

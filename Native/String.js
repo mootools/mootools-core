@@ -261,3 +261,18 @@ Number.extend({
 	}
 
 });
+
+/*
+Function: RegExp.escape
+	Escapes regular expression characters
+
+Example:
+	>RegExp.escape('animals.sheeps[1]'); // 'animals\.sheeps\[1\]'
+
+Returns:
+	Escaped string
+*/
+
+RegExp.escape = function(str) {
+	return str.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+};

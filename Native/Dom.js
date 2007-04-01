@@ -8,8 +8,8 @@ License:
 
 /* Section: Utility Functions */
 
-/* 
-Function: $E 
+/*
+Function: $E
 	Selects a single (i.e. the first found) Element based on the selector passed in and an optional filter element.
 
 Arguments:
@@ -49,7 +49,7 @@ function $ES(selector, filter){
 };
 
 $$.shared = {
-	
+
 	cache: {},
 
 	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
@@ -72,7 +72,7 @@ $$.shared = {
 		if (param[4]) items = items.filter(Filters.attribute);
 		return items;
 	},
-	
+
 	getXpathParam: function(selector, items, context, param, i){
 		if ($$.shared.cache[selector].xpath){
 			items.push($$.shared.cache[selector].xpath);
@@ -98,22 +98,22 @@ $$.shared = {
 		items.push(temp);
 		return items;
 	},
-	
+
 	getNormalItems: function(items, context, nocash){
 		return (nocash) ? items : $$.$$(items);
 	},
-	
+
 	getXpathItems: function(items, context, nocash){
 		var elements = [];
 		var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
 		return (nocash) ? elements : $extend(elements.map($), new Elements);
 	},
-	
+
 	resolver: function(prefix){
 		return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
 	},
-	
+
 	getElementsByTagName: function(context, tagName){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++) found = found.concat($A(context[i].getElementsByTagName(tagName)));
@@ -138,7 +138,7 @@ Class: Element
 Element.domMethods = {
 
 	/*
-	Property: getElements 
+	Property: getElements
 		Gets all the elements within an element that match the given (single) selector.
 
 	Arguments:
@@ -148,15 +148,15 @@ Element.domMethods = {
 		>$('myElement').getElements('a'); // get all anchors within myElement
 		>$('myElement').getElements('input[name=dialog]') //get all input tags with name 'dialog'
 		>$('myElement').getElements('input[name$=log]') //get all input tags with names ending with 'log'
-		
+
 	Notes:
 		Supports these operators in attribute selectors:
-		
+
 		- = : is equal to
 		- ^= : starts-with
 		- $= : ends-with
 		- != : is not equal to
-		
+
 		Xpath is used automatically for compliant browsers.
 	*/
 
@@ -207,9 +207,9 @@ Element.domMethods = {
 		for (var i = 0, j = selector.length; i < j; i++) elements = elements.concat(this.getElements(selector[i], true));
 		return (nocash) ? elements : $$.$$(elements);
 	},
-	
+
 	/*
-	Property: getElementsByClassName 
+	Property: getElementsByClassName
 		Returns all the elements that match a specific class name.
 		Here for compatibility purposes. can also be written: document.getElements('.className'), or $$('.className')
 
@@ -269,9 +269,9 @@ var Filters = {
 		var value = Filters.selector[6];
 		switch(operator){
 			case '=': return (current == value);
-			case '*=': return (current.test(value));
-			case '^=': return (current.test('^' + value));
-			case '$=': return (current.test(value + '$'));
+			case '*=': return (current.indexOf(value) != -1);
+			case '^=': return (!current.indexOf(value));
+			case '$=': return (current.lastIndexOf(value) != current.length - value.length);
 			case '!=': return (current != value);
 			case '~=': return current.hasListed(value);
 		}

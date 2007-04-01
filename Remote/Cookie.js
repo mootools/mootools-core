@@ -16,7 +16,8 @@ var Cookie = new Abstract({
 	options: {
 		domain: false,
 		path: false,
-		duration: false
+		duration: false,
+		secure: false
 	},
 
 	/*
@@ -33,25 +34,26 @@ var Cookie = new Abstract({
 		path - the path the Cookie belongs to. If you want to share the cookie with pages located in a different path, you have to set this value, for example to "/" to share the cookie with all pages on the domain. Defaults to the current path.
 		duration - the duration of the Cookie before it expires, in seconds. You can also use $duration notation {days: 1, hours: 12}.
 					If set to false or 0, the cookie will be a session cookie that expires when the browser is closed. This is default.
+		secure - Stored cookie information can be accessed only from a secure environment.
 
 	Example:
 		>Cookie.set("username", "Aaron", {duration: {days: 5}}); //save this for 5 days
-		>Cookie.set("username", "Harald", {duration: 3600}}); //save this for 1 hour
+		>Cookie.set("username", "Harald", {duration: 3600}); //save this for 1 hour
 		>Cookie.set("username", "JackBauer", {duration: false}); //session cookie
 
 	*/
 
 	set: function(key, value, options){
 		options = $merge(this.options, options);
-		value = escape(value);
-		options.domain = (options.domain) ? '; domain=' + options.domain : '';
-		options.path = (options.path) ? '; path=' + options.path : '';
-		value += options.domain + options.path;
+		value = encodeURIComponent(value);
+		if (options.domain) value += '; domain=' + options.domain;
+		if (options.path) value += '; path=' + options.path;
 		if (options.duration){
 			var date = new Date();
 			date.setTime(date.getTime() + $duration(options.duration, true).milliseconds);
 			value += '; expires=' + date.toGMTString();
 		}
+		if (options.secure) value += '; secure';
 		document.cookie = key + '=' + value;
 		return $extend(options, {'key': key, 'value': value});
 	},
@@ -71,8 +73,8 @@ var Cookie = new Abstract({
 	*/
 
 	get: function(key){
-		var value = document.cookie.match('(?:^|;)\\s*' + key + '=([^;]*)');
-		return value ? unescape(value[1]) : false;
+		var value = document.cookie.match('(?:^|;)\\s*' + RegExp.escape(key) + '=([^;]*)');
+		return value ? decodeURIComponent(value[1]) : false;
 	},
 
 	/*

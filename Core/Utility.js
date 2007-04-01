@@ -30,7 +30,7 @@ var Document = new Abstract(document);
 Function: $chk
 	Returns true if the passed in value/object exists or is 0, otherwise returns false.
 	Useful to accept zeroes.
-	
+
 Arguments:
 	obj - object to inspect
 */
@@ -92,7 +92,7 @@ Function: $duration
 	Returns a time interval in seconds from the given time units
 
 Arguments:
-	data - Object with values for years, months, days, hours, seconds, milliseconds. For non-objects it returns the parsed argument as integer.
+	data - Object with values for years, months, days, hours, seconds, milliseconds. You can also give milliseconds or seconds (with true for second argument)
 	seconds - Boolean, only when first argument is passed as number, if true the first argument is treated as seconds, if false as milliseconds. defaults to false.
 
 Returns:
@@ -110,12 +110,13 @@ Example:
 	});
 	//returns
 	{
-		hours: 1,
-		minutes: 60,
+		milliseconds: 3600000,
 		seconds: 3600,
-		milliseconds: 36000,
-		hours: 0.041666666666666664
+		minutes: 60,
+		hours: 1,
+		days: 0.041666666666666664
 	}
+	// same result for $duration(3600, true) and $duration(3600000)
 	(end)
 */
 
@@ -132,13 +133,14 @@ function $duration(data, seconds){
 		var fn = this.units[unit];
 		if (fn) date['set' + fn](date['get' + fn]() + $pick(data[unit], 0));
 	}
-	var time = {};
-	time.milliseconds = date.getTime() - $time();
-	time.seconds = time.milliseconds / 1000;
-	time.minutes = time.seconds / 60;
-	time.hours = time.minutes / 60;
-	time.days = time.hours / 24;
-	return time;
+	var time = date.getTime() - $time();
+	return {
+		milliseconds: time,
+		seconds: time / 1000,
+		minutes: time / 60000,
+		hours: time / 3600000,
+		days: time / 86400000
+	};
 };
 
 /*
