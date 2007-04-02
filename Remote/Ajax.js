@@ -91,11 +91,11 @@ var Ajax = XHR.extend({
 		else {
 			var script, scripts = [], regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
 			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
-			scripts = scripts.join('');
+			scripts = scripts.join('\n');
 		}
 		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
 	},
-	
+
 	/*
 	Property: getHeader
 		Returns the given response header or null
