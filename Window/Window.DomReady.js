@@ -36,14 +36,17 @@ Element.Events.domready = {
 			this.fireEvent('domready');
 		}.bind(this);
 		if (document.readyState && window.khtml){
-			this.timer = function(){
+			window.timer = function(){
 				if (['loaded','complete'].test(document.readyState)) domReady();
 			}.periodical(50);
 		} else if (document.readyState && window.ie){
-			document.write("<script id=ie_ready defer src='://0'><\/script>");
-			$('ie_ready').onreadystatechange = function(){
-				if (this.readyState == 'complete') domReady();
-			};
+			if (!$('ie_ready')){
+				var src = (window.location.protocol == 'https:') ? '://0' : 'javascript:void(0)';
+				document.write('<script id="ie_ready" defer src="' + src + '"><\/script>');
+				$('ie_ready').onreadystatechange = function(){
+					if (this.readyState == 'complete') domReady();
+				};
+			}
 		} else {
 			window.addListener("load", domReady);
 			document.addListener("DOMContentLoaded", domReady);
