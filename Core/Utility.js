@@ -96,7 +96,7 @@ Arguments:
 	seconds - Boolean, only when first argument is passed as number, if true the first argument is treated as seconds, if false as milliseconds. defaults to false.
 
 Returns:
-	the time in milliseconds
+	The time in milliseconds
 
 Example:
 	(start code)
