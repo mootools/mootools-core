@@ -13,7 +13,7 @@ Credits:
 Class: Tips
 	Display a tip on any element with a title and/or href.
 
-Arguments: 
+Arguments:
 	elements - a collection of elements to apply the tooltips to on mouseover.
 	options - an object. See options Below.
 
@@ -26,7 +26,7 @@ Options:
 	showDelay - the delay the onShow method is called. (defaults to 100 ms)
 	hideDelay - the delay the onHide method is called. (defaults to 100 ms)
 
-	className - the prefix for your tooltip classNames. defaults to 'tool'. 
+	className - the prefix for your tooltip classNames. defaults to 'tool'.
 		the whole tooltip will have as classname: tool-tip
 		the title will have as classname: tool-title
 		the text will have as classname: tool-text
@@ -109,7 +109,7 @@ var Tips = new Class({
 	},
 
 	start: function(el){
-		this.wrapper.getChildren().remove();
+		this.wrapper.empty();
 		if (el.$.myTitle){
 			this.title = new Element('span').injectInside(
 				new Element('div', {'class': this.options.className + '-title'}).injectInside(this.wrapper)
@@ -128,7 +128,7 @@ var Tips = new Class({
 		$clear(this.timer);
 		this.timer = this.hide.delay(this.options.hideDelay, this);
 	},
-	
+
 	position: function(element){
 		var pos = element.getPosition();
 		this.toolTip.setStyles({

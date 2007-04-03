@@ -1,10 +1,13 @@
 MOOTOOLS CHANGELOG
------- r400 ------
+------ r431 ------
 
 
 1.1 (??? ??, 2007) http://svn.mootools.net/trunk/
 
-ADD: Drag.Base grid option, for snap-to-grid movement. return this to Drag::attach/detach (kamicane)
+ADD: Added RegExp.escape, escapes expression characters in string
+ADD: Added Cookie option: secure for secure connections
+ADD: Added Element.empty, trashes all child elements and sets innerHTML to ''
+ADD: Drag.Base grid option, for snap-to-grid movement, also accepts an object with the usual x/y values. (kamicane)
 ADD: Slider with offset option for exact knob position (kamicane)
 ADD: When you click the Slider Container you can also drag with the same click. Option clickDrags (default true), in case you're ticking with an effect (kamicane)
 ADD: Added Element::removeProperty (kamicane)
@@ -34,6 +37,9 @@ ADD: Added $merge, merging objects recursively (aaron)
 ADD: Added Element.getStyles() (aaron)
 ADD: $each iterates objects and arrays (aaron)
 
+CHG: Drag.Base, return this to Drag::attach/detach (kamicane)
+CHG: Behavior of fixed tooltips is different, is not anymore relative to the mouse position, but to the element position.
+CHG: Element::inject allows 'top'
 CHG: $type does now recognize 'regexp' [#163] (digitarald)
 CHG: BREAKING CHANGE: Hash::each callback arguments are now (value, key) to be consistent with all each's (blame digitarald)
 CHG: Object.extend is now $extend, still compatible
@@ -68,6 +74,8 @@ CHG: Removed new Element in adopt, inject and replaceWith, now only id's and ele
 CHG: Fixed Element.getValue/Element.toQueryString with support for multiple-selects (digitarald)
 CHG: Moved $type to Moo.js
 
+FIX: Fixed ie-domready-problem with secure sites
+FIX: Better behvaiour for Fx.Scroll::toElement [#169] (Yuffster)
 FIX: Couple of fixes to the Color class, now it also carries hex values. (kamicane)
 FIX: String::toInt fixed [#125]
 FIX: SmoothScroll now sets hash, not href [#149] (digitarald)
