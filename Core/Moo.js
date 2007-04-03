@@ -145,6 +145,7 @@ Returns:
 	'number' - if obj is a number
 	'boolean' - if obj is a boolean
 	'function' - if obj is a function
+	'regexp' - if obj is a regular expression
 	false - (boolean) if the object is not defined or none of the above.
 */
 
