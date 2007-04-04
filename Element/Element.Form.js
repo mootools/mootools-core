@@ -12,7 +12,7 @@ Class: Element
 */
 
 Element.extend({
-	
+
 	/*
 	Property: getValue
 		Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
@@ -31,7 +31,7 @@ Element.extend({
 		}
 		return false;
 	},
-	
+
 	getFormElements: function(){
 		return $$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea'));
 	},
@@ -59,15 +59,14 @@ Element.extend({
 	toQueryString: function(){
 		var queryString = [];
 		this.getFormElements().each(function(el){
-			var name = $(el).name;
+			var name = el.name;
 			var value = el.getValue();
-			if (!el.disabled && value !== false){
-				var qs = function(val){
-					queryString.push(name + '=' + encodeURIComponent(val));
-				};
-				if ($type(value) == 'array') value.each(qs);
-				else qs(value);
-			}
+			if (value === false || !name || el.disabled) return;
+			var qs = function(val){
+				queryString.push(name + '=' + encodeURIComponent(val));
+			};
+			if ($type(value) == 'array') value.each(qs);
+			else qs(value);
 		});
 		return queryString.join('&');
 	}
