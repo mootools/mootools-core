@@ -679,7 +679,7 @@ Element.extend({
 	*/
 
 	getProperty: function(property){
-		var index = Element.Properties[property]
+		var index = Element.Properties[property];
 		return (index) ? this[index] : this.getAttribute(property);
 	},
 
