@@ -22,7 +22,7 @@ var Element = new Class({
 
 	Arguments:
 		el - string; the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
-		props - object; the properties you want to add to your element.
+		props - object; the properties you want to add to your element. same argument like Element::setProperties
 
 	Props:
 		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
@@ -50,21 +50,26 @@ var Element = new Class({
 	*/
 
 	initialize: function(el, props){
-		if (window.ie && props && (props.name || props.type)){
-			var name = (props.name) ? ' name="' + props.name + '"' : '';
-			var type = (props.type) ? ' type="' + props.type + '"' : '';
-			delete props.name;
-			delete props.type;
-			el = '<' + el + name + type + '>';
+		switch ($type(el)){
+			case 'string':
+				if (window.ie && props && (props.name || props.type)){
+					var name = (props.name) ? ' name="' + props.name + '"' : '';
+					var type = (props.type) ? ' type="' + props.type + '"' : '';
+					delete props.name;
+					delete props.type;
+					el = '<' + el + name + type + '>';
+				}
+				el = document.createElement(el);
+			case 'element': el = $(el);
 		}
-		el = $(document.createElement(el));
-		if (!props) return el;
+		if (!props || !el) return el;
 		for (var prop in props){
+			var val = props[prop];
 			switch(prop){
-				case 'styles': el.setStyles(props[prop]); break;
-				case 'events': if (el.addEvents) el.addEvents(props[prop]); break;
-				case 'properties': el.setProperties(props[prop]); break;
-				default: el.setProperty(prop, props[prop]);
+				case 'styles': el.setStyles(val); break;
+				case 'events': if (el.addEvents) el.addEvents(val); break;
+				case 'properties': el.setProperties(val); break;
+				default: el.setProperty(prop, val);
 			}
 		}
 		return el;
@@ -348,7 +353,7 @@ Element.extend({
 		if (window.ie){
 			switch(this.getTag()){
 				case 'style': this.styleSheet.cssText = text; return this;
-				case 'script': this.setProperty('text', text); return this;
+				case 'script': return this.setProperty('text', text);
 			}
 		}
 		this.appendChild(document.createTextNode(text));
@@ -453,7 +458,7 @@ Element.extend({
 		Applies a collection of styles to the Element.
 
 	Arguments:
-		source - an object containing all the styles to apply.
+		source - an object or string containing all the styles to apply. When its a string it overrides old style.
 
 	Examples:
 		>$('myElement').setStyles({
@@ -468,7 +473,11 @@ Element.extend({
 	*/
 
 	setStyles: function(source){
-		return Element.setMany(this, 'setStyle', source);
+		switch($type(source)){
+			case 'object': Element.setMany(this, 'setStyle', source); break;
+			case 'string': this.style.cssText = source;
+		}
+		return this;
 	},
 
 	/*
@@ -671,7 +680,8 @@ Element.extend({
 	*/
 
 	getProperty: function(property){
-		return (Element.Properties[property]) ? this[Element.Properties[property]] : this.getAttribute(property);
+		var index = Element.Properties[property]
+		return (index) ? this[index] : this.getAttribute(property);
 	},
 
 	/*
@@ -683,7 +693,8 @@ Element.extend({
 	*/
 
 	removeProperty: function(property){
-		if (Element.Properties[property]) this[Element.Properties[property]] = '';
+		var index = Element.Properties[property];
+		if (index) this[index] = '';
 		else this.removeAttribute(property);
 		return this;
 	},
@@ -710,7 +721,8 @@ Element.extend({
 	*/
 
 	setProperty: function(property, value){
-		if (Element.Properties[property]) this[Element.Properties[property]] = value;
+		var index = Element.Properties[property];
+		if (index) this[index] = value;
 		else this.setAttribute(property, value);
 		return this;
 	},
