@@ -50,18 +50,17 @@ var Element = new Class({
 	*/
 
 	initialize: function(el, props){
-		switch ($type(el)){
-			case 'string':
-				if (window.ie && props && (props.name || props.type)){
-					var name = (props.name) ? ' name="' + props.name + '"' : '';
-					var type = (props.type) ? ' type="' + props.type + '"' : '';
-					delete props.name;
-					delete props.type;
-					el = '<' + el + name + type + '>';
-				}
-				el = document.createElement(el);
-			case 'element': el = $(el);
+		switch ($type(el) == 'string'){
+			if (window.ie && props && (props.name || props.type)){
+				var name = (props.name) ? ' name="' + props.name + '"' : '';
+				var type = (props.type) ? ' type="' + props.type + '"' : '';
+				delete props.name;
+				delete props.type;
+				el = '<' + el + name + type + '>';
+			}
+			el = document.createElement(el);
 		}
+		el = $(el);
 		if (!props || !el) return el;
 		for (var prop in props){
 			var val = props[prop];
