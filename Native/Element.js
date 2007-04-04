@@ -159,8 +159,8 @@ function $$(){
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
 		switch($type(selector)){
-			case 'element': elements.push(selector); break;
-			case 'boolean': break;
+			case 'element': elements.push(selector);
+			case 'boolean':
 			case false: break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default: elements = elements.concat((selector.push) ? selector : $A(selector));
@@ -777,7 +777,7 @@ Element.extend({
 	Returns:
 		The element.
 	*/
-	
+
 	empty: function(){
 		Garbage.trash(this.getElementsByTagName('*'));
 		return this.setHTML('');
@@ -799,11 +799,18 @@ Element.setMany = function(el, method, pairs){
 };
 
 Element.Properties = new Abstract({
-
 	'class': 'className',
+	'for': 'htmlFor',
+	'colspan': 'colSpan',
+	'rowspan': 'rowSpan',
+	'accesskey': 'accessKey',
+	'tabindex': 'tabIndex',
+	'maxlength': 'maxLength',
+	'readonly': 'readOnly',
 	'value': 'value',
-	'for': 'htmlFor'
-
+	'disabled': 'disabled',
+	'checked': 'checked',
+	'multiple': 'multiple'
 });
 
 Element.listenerMethods = {
