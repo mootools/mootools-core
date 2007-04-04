@@ -50,7 +50,7 @@ var Element = new Class({
 	*/
 
 	initialize: function(el, props){
-		switch ($type(el) == 'string'){
+		if ($type(el) == 'string'){
 			if (window.ie && props && (props.name || props.type)){
 				var name = (props.name) ? ' name="' + props.name + '"' : '';
 				var type = (props.type) ? ' type="' + props.type + '"' : '';
