@@ -19,11 +19,13 @@ Array.extend({
 	Property: forEach
 		Iterates through an array; This method is only available for browsers without native *forEach* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
-	
+
+		*forEach* executes the provided function (callback) once for each element present in the array. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
+
 	Arguments:
 		fn - function to execute with each item in the array; passed the item and the index of that item in the array
 		bind - the object to bind "this" to (see <Function.bind>)
-	
+
 	Example:
 		>['apple','banana','lemon'].each(function(item, index) {
 		>	alert(index + " = " + item); //alerts "0 = apple" etc.
@@ -31,20 +33,20 @@ Array.extend({
 	*/
 
 	forEach: function(fn, bind){
-		for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
+		for (var i = 0, j = this.length; i < j; i++) if (i in this) fn.call(bind, this[i], i, this);
 	},
 
 	/*
 	Property: filter
 		This method is provided only for browsers without native *filter* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
-		
+
 		*filter* calls a provided callback function once for each element in an array, and constructs a new array of all the values for which callback returns a true value. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values. Array elements which do not pass the callback test are simply skipped, and are not included in the new array.
-	
+
 	Arguments:
 		fn - function to execute with each item in the array; passed the item and the index of that item in the array
 		bind - the object to bind "this" to (see <Function.bind>)
-	
+
 	Example:
 		>var biggerThanTwenty = [10,3,25,100].filter(function(item, index) {
 		> return item > 20;
@@ -55,7 +57,7 @@ Array.extend({
 	filter: function(fn, bind){
 		var results = [];
 		for (var i = 0, j = this.length; i < j; i++){
-			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+			if (i in this && fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
 	},
@@ -80,7 +82,7 @@ Array.extend({
 
 	map: function(fn, bind){
 		var results = [];
-		for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
+		for (var i = 0, j = this.length; i < j; i++) if (i in this) results[i] = fn.call(bind, this[i], i, this);
 		return results;
 	},
 
@@ -104,7 +106,7 @@ Array.extend({
 
 	every: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++){
-			if (!fn.call(bind, this[i], i, this)) return false;
+			if (i in this && !fn.call(bind, this[i], i, this)) return false;
 		}
 		return true;
 	},
@@ -119,7 +121,7 @@ Array.extend({
 	Arguments:
 		fn - function to execute with each item in the array; passed the item and the index of that item in the array
 		bind - the object to bind "this" to (see <Function.bind>)
-		
+
 	Example:
 		>var isAnyBigEnough = [10,4,25,100].some(function(item, index){
 		> return item > 20;
@@ -129,7 +131,7 @@ Array.extend({
 
 	some: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++){
-			if (fn.call(bind, this[i], i, this)) return true;
+			if (i in this && fn.call(bind, this[i], i, this)) return true;
 		}
 		return false;
 	},
@@ -139,14 +141,15 @@ Array.extend({
 		This method is provided only for browsers without native *indexOf* support.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
 
-		indexOf compares a search element to elements of the Array using strict equality (the same method used by the ===, or triple-equals, operator).
+		*indexOf* compares a search element to elements of the Array using strict equality (the same method used by the ===, or triple-equals, operator).
 
 	Arguments:
 		item - any type of object; element to locate in the array
 		from - integer; optional; the index of the array at which to begin the search (defaults to 0)
-		
+
 	Example:
 		>['apple','lemon','banana'].indexOf('lemon'); //returns 1
+		>['apple','lemon'].indexOf('banana'); //returns -1
 	*/
 
 	indexOf: function(item, from){
@@ -243,7 +246,7 @@ Array.extend({
 	test: function(item, from){
 		return this.indexOf(item, from) != -1;
 	},
-	
+
 	/*
 	Property: associate
 		Creates an object with key-value pairs based on the array of keywords passed in
@@ -286,18 +289,18 @@ Array.extend({
 		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
-	
+
 	/*
 	Property: merge
-		merges an array in another array, without duplicates.
-		
+		merges an array in another array, without duplicates. (case- and type-sensitive)
+
 	Arguments:
 		array - the array to merge from.
-	
+
 	Example:
 		>['Cat','Dog'].merge(['Dog','Coala']); //returns ['Cat','Dog','Coala']
 	*/
-	
+
 	merge: function(array){
 		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
 		return this;
@@ -305,11 +308,11 @@ Array.extend({
 
 	/*
 	Property: include
-		includes the passed in element in the array, only if its not already present.
-		
+		includes the passed in element in the array, only if its not already present. (case- and type-sensitive)
+
 	Arguments:
 		item - item to add to the array (if not present)
-	
+
 	Example:
 		>['Cat','Dog'].include('Dog'); //returns ['Cat','Dog']
 		>['Cat','Dog'].include('Coala'); //returns ['Cat','Dog','Coala']
@@ -319,21 +322,21 @@ Array.extend({
 		if (!this.length || !this.test(item)) this.push(item);
 		return this;
 	},
-	
+
 	/*
 	Property: getRandom
 		returns a random item in the Array
 	*/
-	
+
 	getRandom: function(){
 		return this[$random(0, this.length - 1)];
 	},
-	
+
 	/*
 	Property: getLast
 		returns the last item in the Array
 	*/
-	
+
 	getLast: function(){
 		return this[this.length - 1];
 	}

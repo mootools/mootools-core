@@ -170,10 +170,10 @@ function $$(){
 			default: elements = elements.concat((selector.push) ? selector : $A(selector));
 		}
 	}
-	return $$.$$(elements);
+	return $$.unique(elements);
 };
 
-$$.$$ = function(array){
+$$.unique = function(array){
 	var elements = [];
 	for (var i = 0, l = array.length; i < l; i++){
 		if (array[i].$included) continue;
@@ -195,7 +195,7 @@ Elements.Multi = function(property){
 			if ($type(returns) != 'element') elements = false;
 			items.push(returns);
 		};
-		return (elements) ? $$.$$(items) : items;
+		return (elements) ? $$.unique(items) : items;
 	};
 };
 
@@ -283,7 +283,7 @@ Element.extend({
 	*/
 
 	adopt: function(){
-		$$.$$(arguments).injectInside(this);
+		$$.unique(arguments).injectInside(this);
 		return this;
 	},
 

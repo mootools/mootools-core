@@ -100,7 +100,7 @@ $$.shared = {
 	},
 
 	getNormalItems: function(items, context, nocash){
-		return (nocash) ? items : $$.$$(items);
+		return (nocash) ? items : $$.unique(items);
 	},
 
 	getXpathItems: function(items, context, nocash){
@@ -205,7 +205,7 @@ Element.domMethods = {
 		var elements = [];
 		selector = selector.split(',');
 		for (var i = 0, j = selector.length; i < j; i++) elements = elements.concat(this.getElements(selector[i], true));
-		return (nocash) ? elements : $$.$$(elements);
+		return (nocash) ? elements : $$.unique(elements);
 	},
 
 	/*

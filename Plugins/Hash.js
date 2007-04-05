@@ -8,7 +8,7 @@ License:
 
 /*
 Class: Hash
-	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null values are allowed.
+	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null/undefined values are allowed.
 
 Arguments:
 	obj - an object to convert into a Hash instance.
@@ -59,7 +59,7 @@ var Hash = new Class({
 	*/
 
 	hasKey: function(key){
-		return this.obj[key] !== undefined;
+		return (key in this.obj);
 	},
 
 	/*
@@ -72,8 +72,7 @@ var Hash = new Class({
 	*/
 
 	set: function(key, value){
-		if (value === undefined) return false;
-		if (this.obj[key] === undefined) this.length++;
+		if (key in this.obj) this.length++;
 		this.obj[key] = value;
 		return this;
 	},
@@ -87,7 +86,7 @@ var Hash = new Class({
 	*/
 
 	remove: function(key){
-		if (this.obj[key] === undefined) return this;
+		if (!(key in this.obj)) return this;
 		delete this.obj[key];
 		this.length--;
 		return this;
@@ -115,10 +114,7 @@ var Hash = new Class({
 	*/
 
 	extend: function(obj){
-		for (var property in obj){
-			if (this.obj[property] === undefined) this.length++;
-			this.obj[property] = obj[property];
-		}
+		for (var key in obj) this.set(key, obj[key]);
 		return this;
 	},
 
@@ -132,6 +128,17 @@ var Hash = new Class({
 
 	empty: function(){
 		return (this.length == 0);
+	},
+
+	/*
+	Property: clear
+		Clears all hash values properties and values.
+	*/
+
+	clear: function(){
+		this.obj = {};
+		this.length = 0;
+		return this;
 	},
 
 	/*
