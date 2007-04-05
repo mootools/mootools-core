@@ -36,27 +36,6 @@ String.extend({
 	},
 
 	/*
-	Property: has
-		Returns if a string has the given needle, case sensitive.
-
-	Arguments:
-		needle - a string representing the value to search for.
-		from - the location within the string to start the search from. default is 0.
-
-	Returns:
-		true if the needle is found in the string, false if not.
-
-	Example:
-		>"I think mootools".has("moo"); // returns true
-		>"Mootools is the coffee, u add the sugar!".has("Coffee") // returns false
-		>"This is nothing important".has("This", 5) // returns false
-	*/
-
-	has: function(needle, from){
-		return this.indexOf(needle, from) != -1;
-	},
-
-	/*
 	Property: toInt
 		parses a string to an integer.
 
