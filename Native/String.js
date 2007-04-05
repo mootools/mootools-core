@@ -36,6 +36,27 @@ String.extend({
 	},
 
 	/*
+	Property: has
+		Returns if a string has the given needle, case sensitive.
+
+	Arguments:
+		needle - a string representing the value to search for.
+		from - the location within the string to start the search from. default is 0.
+
+	Returns:
+		true if the needle is found in the string, false if not.
+
+	Example:
+		>"I think mootools".has("moo"); // returns true
+		>"Mootools is the coffee, u add the sugar!".has("Coffee") // returns false
+		>"This is nothing important".has("This", 5) // returns false
+	*/
+
+	has: function(needle, from){
+		return this.indexOf(needle, from) != -1;
+	},
+
+	/*
 	Property: toInt
 		parses a string to an integer.
 
@@ -197,6 +218,21 @@ String.extend({
 	hasListed: function(string, s){
 		s = s || ' ';
 		return (s + this + s).indexOf(s + string + s) > -1;
+	},
+
+	/*
+	Property: escapeRegex
+		Returns string with escaped regular expression characters
+
+	Example:
+		>var search = 'animals.sheeps[1]'.escapeRegex(); // search is now 'animals\.sheeps\[1\]'
+
+	Returns:
+		Escaped string
+	*/
+
+	escapeRegex: function(){
+		return this.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
 	}
 
 });
@@ -261,18 +297,3 @@ Number.extend({
 	}
 
 });
-
-/*
-Function: RegExp.escape
-	Escapes regular expression characters
-
-Example:
-	>RegExp.escape('animals.sheeps[1]'); // 'animals\.sheeps\[1\]'
-
-Returns:
-	Escaped string
-*/
-
-RegExp.escape = function(str) {
-	return str.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
-};

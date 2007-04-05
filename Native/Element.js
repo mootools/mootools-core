@@ -529,7 +529,7 @@ Element.extend({
 				dirs.each(function(dir){
 					result.push(this.getStyle(property + '-' + dir));
 				}, this);
-			} else if (property.test(/border/)){
+			} else if (property.has('border')){
 				var matches = property.hyphenate().split('-');
 				matches = matches.remove(matches[0]);
 				var recurse = function(el, property){
