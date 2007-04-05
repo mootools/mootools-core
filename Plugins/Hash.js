@@ -120,22 +120,10 @@ var Hash = new Class({
 
 	/*
 	Property: empty
-		Checks if the hash is empty.
-
-	Returns:
-		True if the hash is empty, otherwise false
+		Empties all hash values properties and values.
 	*/
 
 	empty: function(){
-		return (this.length == 0);
-	},
-
-	/*
-	Property: clear
-		Clears all hash values properties and values.
-	*/
-
-	clear: function(){
 		this.obj = {};
 		this.length = 0;
 		return this;

@@ -33,7 +33,7 @@ Array.extend({
 	*/
 
 	forEach: function(fn, bind){
-		for (var i = 0, j = this.length; i < j; i++) if (i in this) fn.call(bind, this[i], i, this);
+		for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
 	},
 
 	/*
@@ -57,7 +57,7 @@ Array.extend({
 	filter: function(fn, bind){
 		var results = [];
 		for (var i = 0, j = this.length; i < j; i++){
-			if (i in this && fn.call(bind, this[i], i, this)) results.push(this[i]);
+			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
 	},
@@ -82,7 +82,7 @@ Array.extend({
 
 	map: function(fn, bind){
 		var results = [];
-		for (var i = 0, j = this.length; i < j; i++) if (i in this) results[i] = fn.call(bind, this[i], i, this);
+		for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
 		return results;
 	},
 
@@ -106,7 +106,7 @@ Array.extend({
 
 	every: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++){
-			if (i in this && !fn.call(bind, this[i], i, this)) return false;
+			if (!fn.call(bind, this[i], i, this)) return false;
 		}
 		return true;
 	},
@@ -131,7 +131,7 @@ Array.extend({
 
 	some: function(fn, bind){
 		for (var i = 0, j = this.length; i < j; i++){
-			if (i in this && fn.call(bind, this[i], i, this)) return true;
+			if (fn.call(bind, this[i], i, this)) return true;
 		}
 		return false;
 	},
