@@ -185,32 +185,31 @@ String.extend({
 	},
 
 	/*
-	Property: hasListed
-		checks if the passed in string is listed in the String.
+	Property: contains
+		checks if the passed in string is contained in the String. also accepts an optional second parameter, to check if the string is contained in a list of separated values.
 
 	Example:
-		>'a b c'.hasListed('c'); //true
-		>'a bc'.hasListed('c'); //false
-		>'a,b,c'.hasListed('c', ','); //true
+		>'a b c'.contains('c', ' '); //true
+		>'a bc'.contains('bc'); //true
+		>'a bc'.contains('b', ' '); //false
 	*/
-
-	hasListed: function(string, s){
-		s = s || ' ';
-		return (s + this + s).indexOf(s + string + s) > -1;
+	
+	contains: function(string, s){
+		return (s) ? (s + this + s).indexOf(s + string + s) > -1 : this.indexOf(string) > -1;
 	},
 
 	/*
-	Property: escapeRegex
+	Property: escapeRegExp
 		Returns string with escaped regular expression characters
 
 	Example:
-		>var search = 'animals.sheeps[1]'.escapeRegex(); // search is now 'animals\.sheeps\[1\]'
+		>var search = 'animals.sheeps[1]'.escapeRegExp(); // search is now 'animals\.sheeps\[1\]'
 
 	Returns:
 		Escaped string
 	*/
 
-	escapeRegex: function(){
+	escapeRegExp: function(){
 		return this.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
 	}
 

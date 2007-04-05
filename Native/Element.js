@@ -104,7 +104,7 @@ Note:
 function $(el){
 	if (!el) return false;
 	if (el.htmlElement) return Garbage.collect(el);
-	if ([window, document].test(el)) return el;
+	if ([window, document].contains(el)) return el;
 	var type = $type(el);
 	if (type == 'string'){
 		el = document.getElementById(el);
@@ -112,7 +112,7 @@ function $(el){
 	}
 	if (type != 'element') return false;
 	if (el.htmlElement) return Garbage.collect(el);
-	if (['object', 'embed'].test(el.tagName.toLowerCase())) return el;
+	if (['object', 'embed'].contains(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
 	el.htmlElement = true;
 	return Garbage.collect(el);
@@ -376,7 +376,7 @@ Element.extend({
 	*/
 
 	hasClass: function(className){
-		return this.className.hasListed(className);
+		return this.className.contains(className, ' ');
 	},
 
 	/*
@@ -445,7 +445,7 @@ Element.extend({
 		}
 		property = property.camelCase();
 		switch($type(value)){
-			case 'number': if (!['zIndex', 'zoom'].test(property)) value += 'px'; break;
+			case 'number': if (!['zIndex', 'zoom'].contains(property)) value += 'px'; break;
 			case 'array': value = 'rgb(' + value.join(',') + ')';
 		}
 		this.style[property] = value;
@@ -525,11 +525,11 @@ Element.extend({
 			if (property == 'opacity') return this.$.opacity;
 			var dirs = ['top', 'right', 'bottom', 'left'];
 			var result = [];
-			if (['margin', 'padding'].test(property)){
+			if (['margin', 'padding'].contains(property)){
 				dirs.each(function(dir){
 					result.push(this.getStyle(property + '-' + dir));
 				}, this);
-			} else if (property.test(/border/)){
+			} else if (property.contains('border')){
 				var matches = property.hyphenate().split('-');
 				matches = matches.remove(matches[0]);
 				var recurse = function(el, property){
@@ -559,7 +559,7 @@ Element.extend({
 			else if (this.currentStyle) style = this.currentStyle[property];
 		}
 		if (window.ie && !$chk(parseInt(style))){
-			if (['height', 'width'].test(property)){
+			if (['height', 'width'].contains(property)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
 				var size = 0;
 				values.each(function(value){
@@ -570,7 +570,7 @@ Element.extend({
 				return 0 + 'px';
 			}
 		}
-		return (style && property.test(/color/i) && style.test(/rgb/)) ? style.rgbToHex() : style;
+		return (style && property.test(/color/i) && style.contains('rgb')) ? style.rgbToHex() : style;
 	},
 
 	/*
@@ -661,7 +661,7 @@ Element.extend({
 	*/
 
 	hasChild: function(el) {
-		return !!$A(this.getElementsByTagName('*')).test(el);
+		return !!$A(this.getElementsByTagName('*')).contains(el);
 	},
 
 	/*

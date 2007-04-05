@@ -22,7 +22,7 @@ var Group = new Class({
 	addEvent: function(type, fn){
 		this.checker[type] = this.checker[type] || {};
 		this.events[type] = this.events[type] || [];
-		if (this.events[type].test(fn)) return false;
+		if (this.events[type].contains(fn)) return false;
 		else this.events[type].push(fn);
 		this.instances.each(function(instance, i){
 			instance.addEvent(type, this.check.bind(this, [type, instance, i]));

@@ -258,7 +258,7 @@ var Filters = {
 	},
 
 	className: function(el){
-		return el.className.hasListed(Filters.selector[3]);
+		return el.className.contains(Filters.selector[3], ' ');
 	},
 
 	attribute: function(el){
@@ -269,11 +269,11 @@ var Filters = {
 		var value = Filters.selector[6];
 		switch(operator){
 			case '=': return (current == value);
-			case '*=': return (current.indexOf(value) != -1);
+			case '*=': return (current.contains(value));
 			case '^=': return (!current.indexOf(value));
 			case '$=': return (current.lastIndexOf(value) != current.length - value.length);
 			case '!=': return (current != value);
-			case '~=': return current.hasListed(value);
+			case '~=': return current.contains(value, ' ');
 		}
 		return false;
 	}

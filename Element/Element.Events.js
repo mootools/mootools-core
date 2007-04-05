@@ -28,7 +28,7 @@ Element.eventMethods = {
 	addEvent: function(type, fn){
 		this.$events = this.$events || {};
 		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
-		if (this.$events[type].keys.test(fn)) return this;
+		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
 		var realType = type;
 		var bound = false;

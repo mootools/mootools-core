@@ -34,7 +34,7 @@ Drag.Move = Drag.Base.extend({
 		this.element = $(el);
 		this.position = this.element.getStyle('position');
 		this.droppables = $$(this.options.droppables);
-		if (!['absolute', 'relative'].test(this.position)) this.position = 'absolute';
+		if (!['absolute', 'relative'].contains(this.position)) this.position = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
 		if (this.position == 'absolute'){

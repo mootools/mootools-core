@@ -73,7 +73,7 @@ var Cookie = new Abstract({
 	*/
 
 	get: function(key){
-		var value = document.cookie.match('(?:^|;)\\s*' + RegExp.escape(key) + '=([^;]*)');
+		var value = document.cookie.match('(?:^|;)\\s*' + key.escapeRegExp() + '=([^;]*)');
 		return value ? decodeURIComponent(value[1]) : false;
 	},
 

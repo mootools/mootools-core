@@ -227,7 +227,7 @@ Array.extend({
 	},
 
 	/*
-	Property: test
+	Property: contains
 		Tests an array for the presence of an item.
 
 	Arguments:
@@ -239,11 +239,11 @@ Array.extend({
 		false - it wasn't
 
 	Example:
-		>["a","b","c"].test("a"); // true
-		>["a","b","c"].test("d"); // false
+		>["a","b","c"].contains("a"); // true
+		>["a","b","c"].contains("d"); // false
 	*/
 
-	test: function(item, from){
+	contains: function(item, from){
 		return this.indexOf(item, from) != -1;
 	},
 
@@ -319,7 +319,7 @@ Array.extend({
 	*/
 
 	include: function(item){
-		if (!this.length || !this.test(item)) this.push(item);
+		if (!this.length || !this.contains(item)) this.push(item);
 		return this;
 	},
 
@@ -343,7 +343,10 @@ Array.extend({
 
 });
 
+//copies
+
 Array.prototype.each = Array.prototype.forEach;
+Array.prototype.test = Array.prototype.contains;
 Array.prototype.removeItem = Array.prototype.remove;
 
 /* Section: Utility Functions */

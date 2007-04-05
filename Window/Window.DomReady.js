@@ -37,7 +37,7 @@ Element.Events.domready = {
 		}.bind(this);
 		if (document.readyState && window.khtml){
 			window.timer = function(){
-				if (['loaded','complete'].test(document.readyState)) domReady();
+				if (['loaded','complete'].contains(document.readyState)) domReady();
 			}.periodical(50);
 		} else if (document.readyState && window.ie){
 			if (!$('ie_ready')){

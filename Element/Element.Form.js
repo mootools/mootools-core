@@ -26,7 +26,7 @@ Element.extend({
 					if (opt.selected) values.push($pick(opt.value, opt.text));
 				});
 				return (this.multiple) ? values : values[0];
-			case 'input': if (!(this.checked && ['checkbox', 'radio'].test(this.type)) && !['hidden', 'text', 'password'].test(this.type)) break;
+			case 'input': if (!(this.checked && ['checkbox', 'radio'].contains(this.type)) && !['hidden', 'text', 'password'].contains(this.type)) break;
 			case 'textarea': return this.value;
 		}
 		return false;

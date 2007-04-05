@@ -52,9 +52,9 @@ var Event = new Class({
 		this.control = event.ctrlKey;
 		this.alt = event.altKey;
 		this.meta = event.metaKey;
-		if (['DOMMouseScroll', 'mousewheel'].test(this.type)){
+		if (['DOMMouseScroll', 'mousewheel'].contains(this.type)){
 			this.wheel = event.wheelDelta ? (event.wheelDelta / (window.opera ? -120 : 120)) : -(event.detail || 0) / 3;
-		} else if (this.type.test(/key/)){
+		} else if (this.type.contains('key')){
 			this.code = event.which || event.keyCode;
 			for (var name in Event.keys){
 				if (Event.keys[name] == this.code){

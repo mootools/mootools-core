@@ -86,7 +86,7 @@ var Accordion = Fx.Elements.extend({
 	addSection: function(toggler, element, pos){
 		toggler = $(toggler);
 		element = $(element);
-		var test = this.togglers.test(toggler);
+		var test = this.togglers.contains(toggler);
 		var len = this.togglers.length;
 		this.togglers.include(toggler);
 		this.elements.include(element);
