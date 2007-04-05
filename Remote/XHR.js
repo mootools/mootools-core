@@ -124,9 +124,9 @@ var XHR = new Class({
 			if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 			$extend(this.headers, this.options.headers);
 			for (var type in this.headers) try {this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
+			this.fireEvent('onRequest');
 			this.transport.send($pick(data, null));
 		}).delay(this.options.async ? 1 : false, this);
-		this.fireEvent('onRequest');
 		return this;
 	},
 
