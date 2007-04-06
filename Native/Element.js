@@ -22,7 +22,7 @@ var Element = new Class({
 
 	Arguments:
 		el - string; the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
-		props - object; the properties you want to add to your element. same argument like Element::setProperties
+		props - object; the properties you want to add to your element.
 
 	Props:
 		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
