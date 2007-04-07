@@ -82,9 +82,7 @@ Array.extend({
 
 	map: function(fn, bind){
 		var results = [];
-		for (var i = 0, j = this.length; i < j; i++){
-			results[i] = fn.call(bind, this[i], i, this);
-		}
+		for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
 		return results;
 	},
 

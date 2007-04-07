@@ -23,6 +23,7 @@ var Element = new Class({
 	Arguments:
 		el - string; the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
 		props - object; the properties you want to add to your element.
+		Accepts the same keys as <Element.setProperties>, but also allows events and styles
 
 	Props:
 		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
@@ -127,7 +128,8 @@ Elements.extend = Class.prototype.implement;
 /*
 Function: $$
 	Selects, and extends DOM elements. Elements arrays returned with $$ will also accept all the <Element> methods.
-	The return type of element methods run through $$ is always an array. If the return array is only made by elements, $$ will be applied automatically.
+	The return type of element methods run through $$ is always an array. If the return array is only made by elements,
+	$$ will be applied automatically.
 
 Arguments:
 	HTML Collections, arrays of elements, arrays of strings as element ids, elements, strings as selectors.
@@ -140,7 +142,8 @@ Example:
 	>$$('a') //an array of all anchor tags on the page
 	>$$('a', 'b') //an array of all anchor and bold tags on the page
 	>$$('#myElement') //array containing only the element with id = myElement. (only with <Dom.js>)
-	>$$('#myElement a.myClass') //an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (only with <Dom.js>)
+	>$$('#myElement a.myClass') //an array of all anchor tags with the class "myClass"
+	>//within the DOM element with id "myElement" (only with <Dom.js>)
 	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div')) //an array containing:
 	>// the element referenced as myelement if existing,
 	>// the element referenced as myelement2 if existing,
@@ -271,7 +274,7 @@ Element.extend({
 	*/
 
 	injectInside: function(el){
-		return this.inject(el, 'inside');
+		return this.inject(el);
 	},
 
 	/*

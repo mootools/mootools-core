@@ -50,7 +50,7 @@ var Asset = new Abstract({
 
 	Arguments:
 		source - the path of the image file
-		properties - additional attributes for the img element (like second parameter for Element.initialize with additional support for onload/onerror/onabort)
+		properties - some additional attributes you might want to add to the img element
 
 	Example:
 		> new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
@@ -61,27 +61,22 @@ var Asset = new Abstract({
 
 	image: function(source, properties){
 		properties = $merge({
-			src: source,
+			'src': source,
 			'onload': Class.empty,
 			'onabort': Class.empty,
 			'onerror': Class.empty
 		}, properties);
-		var img = new Image();
-		var el;
-		var handle = function(fn, evt){
-			if (evt == 'load' && !img.width) img.onerror();
-			else {
-				img.onload = img.onabort = img.onerror = null;
-				fn.call(el);
-			}
+		var image = new Image();
+		image.onload = function(){
+			if (arguments.callee.done) return false;
+			arguments.callee.done = true;
+			this.onload = null;
+			return properties.onload.call(this);
 		};
-		['load', 'abort', 'error'].each(function(evt){
-			var key = 'on' + evt;
-			img[key] = handle.pass(properties[key], evt);
-			delete properties[key];
-		});
-		img.src = properties.src;
-		return (el = Asset.create('img', properties));
+		image.onerror = properties.onerror;
+		image.onabort = properties.onabort;
+		image.src = properties.src;
+		return Asset.create('img', {'src': properties.src});
 	},
 
 	/*
@@ -94,8 +89,7 @@ var Asset = new Abstract({
 
 	Options:
 		onComplete - a function to execute when all image files are loaded in the browser's cache
-		onProgress - a function to execute when one image file is successfully loaded in the browser's cache, first argument is the image index
-		onFailure - a function to execute when image-loading failed, is called then instead of onProgress, first argument is the image index
+		onProgress - a function to execute when one image file is loaded in the browser's cache
 
 	Example:
 		(start code)
@@ -113,30 +107,27 @@ var Asset = new Abstract({
 	images: function(sources, options){
 		options = $merge({
 			onComplete: Class.empty,
-			onFailure: Class.empty,
 			onProgress: Class.empty
 		}, options);
 		if (!sources.push) sources = [sources];
 		var images = [];
 		var counter = 0;
-		var success = function(failed){
-			options[failed ? 'onFailure' : 'onProgress'].call(this, counter);
-			counter++;
-			if (counter == sources.length) options.onComplete();
-		};
-		var failure = success.pass(true);
 		sources.each(function(source){
-			images.push(Asset.image(source, {
-				'onload': success,
-				'onerror': failure,
-				'onabort': failure
-			}));
+			var img = new Asset.image(source, {
+				'onload': function(){
+					options.onProgress.call(this, counter);
+					counter++;
+					if (counter == sources.length) options.onComplete();
+				}
+			});
+			images.push(img);
 		});
 		return $extend(images, new Elements);
 	},
 
 	create: function(type, defaults, properties, inject){
-		var element = new Element(type, $merge(defaults, properties));
+		defaults = $merge(defaults, properties);
+		var element = new Element(type, defaults);
 		if (inject) element.injectInside($$('head')[0]);
 		return element;
 	}
