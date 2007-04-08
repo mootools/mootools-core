@@ -78,6 +78,28 @@ var Element = new Class({
 });
 
 /*
+Class: Elements
+	- Every dom function such as <$$>, or in general every function that returns a collection of nodes in mootools, returns them as an Elements class.
+	- The purpose of the Elements class is to allow <Element> methods to work also on <Elements> array.
+	- Elements is aso an Array, so it accepts all the <Array> methods.
+	- Every node of the Elements instance is already extended with <$>.
+
+Example:
+	>$$('myselector').each(function(el){
+	> //...
+	>});
+	
+	some iterations here, $$('myselector') is also an array.
+	
+	>$$('myselector').setStyle('color', 'red');
+	every element returned by $$('myselector') also accepts <Element> methods, in this example every element will be made red.
+*/
+
+var Elements = new Class({});
+
+Elements.extend = Class.prototype.implement;
+
+/*
 Section: Utility Functions
 
 Function: $
@@ -119,12 +141,6 @@ function $(el){
 	return Garbage.collect(el);
 };
 
-//elements class
-
-var Elements = new Class({});
-
-Elements.extend = Class.prototype.implement;
-
 /*
 Function: $$
 	Selects, and extends DOM elements. Elements arrays returned with $$ will also accept all the <Element> methods.
@@ -154,7 +170,7 @@ Example:
 	>// all the elements with div as tag in the page
 
 Returns:
-	array - array of all the dom elements matched, extended with <$>
+	array - array of all the dom elements matched, extended with <$>.  Returns as <Elements>.
 */
 
 document.getElementsBySelector = document.getElementsByTagName;

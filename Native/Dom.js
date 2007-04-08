@@ -11,6 +11,7 @@ License:
 /*
 Function: $E
 	Selects a single (i.e. the first found) Element based on the selector passed in and an optional filter element.
+	Returns as <Element>.
 
 Arguments:
 	selector - string; the css selector to match
@@ -31,6 +32,7 @@ function $E(selector, filter){
 Function: $ES
 	Returns a collection of Elements that match the selector passed in limited to the scope of the optional filter.
 	See Also: <Element.getElements> for an alternate syntax.
+	Returns as <Elements>.
 
 Returns:
 	an array of dom elements that match the selector within the filter
@@ -140,6 +142,7 @@ Element.domMethods = {
 	/*
 	Property: getElements
 		Gets all the elements within an element that match the given (single) selector.
+		Returns as <Elements>.
 
 	Arguments:
 		selector - string; the css selector to match
@@ -184,6 +187,7 @@ Element.domMethods = {
 	/*
 	Property: getElement
 		Same as <Element.getElements>, but returns only the first. Alternate syntax for <$E>, where filter is the Element.
+		Returns as <Element>.
 
 	Arguments:
 		selector - string; css selector
@@ -196,6 +200,7 @@ Element.domMethods = {
 	/*
 	Property: getElementsBySelector
 		Same as <Element.getElements>, but allows for comma separated selectors, as in css. Alternate syntax for <$$>, where filter is the Element.
+		Returns as <Elements>.
 
 	Arguments:
 		selector - string; css selector
@@ -212,6 +217,7 @@ Element.domMethods = {
 	Property: getElementsByClassName
 		Returns all the elements that match a specific class name.
 		Here for compatibility purposes. can also be written: document.getElements('.className'), or $$('.className')
+		Returns as <Elements>.
 
 	Arguments:
 		className - string; css classname
