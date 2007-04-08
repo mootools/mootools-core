@@ -131,6 +131,8 @@ Event.keys = new Abstract({
 	'delete': 46
 });
 
+/* Section: Custom Events */
+
 Element.Events.extend({
 
 	/*	Event: mouseenter

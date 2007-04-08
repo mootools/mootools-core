@@ -111,6 +111,8 @@ var Color = new Class({
 
 });
 
+/* Section: Utility Functions */
+
 /*
 Function: $RGB
 	Shortcut to create a new color, based on red, green, blue values.

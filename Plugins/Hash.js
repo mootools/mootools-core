@@ -159,6 +159,8 @@ var Hash = new Class({
 
 });
 
+/* Section: Utility Functions */
+
 /*
 Function: $H
 	Shortcut to create a Hash from an Object.

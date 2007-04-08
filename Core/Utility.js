@@ -12,7 +12,9 @@ Class: Abstract
 
 Arguments:
 	an object
-
+	
+Returns:
+	the object with an .extend property, equivalent to <$extend>.
 */
 
 var Abstract = function(obj){
@@ -25,6 +27,8 @@ var Abstract = function(obj){
 
 var Window = new Abstract(window);
 var Document = new Abstract(document);
+
+/* Section: Utility Functions */
 
 /*
 Function: $chk

@@ -6,6 +6,8 @@ License:
 	MIT-style license.
 */
 
+/* Section: Custom Events */
+
 /*
 Event: domready
 	executes a function when the dom tree is loaded, without waiting for images. Only works when called from window. 
@@ -54,6 +56,8 @@ Element.Events.domready = {
 	}
 
 };
+
+/* Section: Utility Functions */
 
 /*
 Function: window.onDomReady
