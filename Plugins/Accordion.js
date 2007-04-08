@@ -95,8 +95,8 @@ var Accordion = Fx.Elements.extend({
 			toggler.injectBefore(this.togglers[pos]);
 			element.injectAfter(toggler);
 		} else if (this.container && !test){
-			toggler.injectInside(this.container);
-			element.injectInside(this.container);
+			toggler.inject(this.container);
+			element.inject(this.container);
 		}
 		var idx = this.togglers.indexOf(toggler);
 		toggler.addEvent('click', this.display.bind(this, idx));

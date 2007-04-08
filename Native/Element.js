@@ -274,7 +274,16 @@ Element.extend({
 	*/
 
 	injectInside: function(el){
-		return this.inject(el);
+		return this.inject(el, 'bottom');
+	},
+	
+	/*
+	Property: injectTop
+		Same as <Element.injectInside>, but inserts the element inside, at the top.
+	*/
+	
+	injectTop: function(el){
+		return this.inject(el, 'top');
 	},
 
 	/*

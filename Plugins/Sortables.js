@@ -75,8 +75,8 @@ var Sortables = new Class({
 		if (this.options.ghost){
 			var position = el.getPosition();
 			this.offset = event.page.y - position.y;
-			this.trash = new Element('div').injectInside(document.body);
-			this.ghost = el.clone().injectInside(this.trash).setStyles({
+			this.trash = new Element('div').inject(document.body);
+			this.ghost = el.clone().inject(this.trash).setStyles({
 				'position': 'absolute',
 				'left': position.x,
 				'top': event.page.y - this.offset

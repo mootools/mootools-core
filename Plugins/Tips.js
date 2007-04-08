@@ -76,8 +76,8 @@ var Tips = new Class({
 				'left': '0',
 				'visibility': 'hidden'
 			}
-		}).injectInside(document.body);
-		this.wrapper = new Element('div').injectInside(this.toolTip);
+		}).inject(document.body);
+		this.wrapper = new Element('div').inject(this.toolTip);
 		$each(elements, function(el){
 			this.build($(el));
 		}, this);
@@ -111,13 +111,13 @@ var Tips = new Class({
 	start: function(el){
 		this.wrapper.empty();
 		if (el.$.myTitle){
-			this.title = new Element('span').injectInside(
-				new Element('div', {'class': this.options.className + '-title'}).injectInside(this.wrapper)
+			this.title = new Element('span').inject(
+				new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)
 			).setHTML(el.$.myTitle);
 		}
 		if (el.$.myText){
-			this.text = new Element('span').injectInside(
-				new Element('div', {'class': this.options.className + '-text'}).injectInside(this.wrapper)
+			this.text = new Element('span').inject(
+				new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)
 			).setHTML(el.$.myText);
 		}
 		$clear(this.timer);

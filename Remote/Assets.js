@@ -21,9 +21,17 @@ var Asset = new Abstract({
 	*/
 
 	javascript: function(source, properties){
-		return Asset.create('script', {
-			'type': 'text/javascript', 'src': source
-		}, properties, true);
+		properties = $merge({
+			'onload': Class.empty
+		}, properties);
+		var script = new Element('script', {'src': source}).addEvents({
+			'load': properties.onload,
+			'readystatechange': function(){
+				if (this.readyState == 'complete') this.fireEvent('load');
+			}
+		});
+		delete properties.onload;
+		return script.setProperties(properties).inject($$('head')[0]);
 	},
 
 	/*
@@ -39,9 +47,9 @@ var Asset = new Abstract({
 	*/
 
 	css: function(source, properties){
-		return Asset.create('link', {
+		return new Element('link', $merge({
 			'rel': 'stylesheet', 'media': 'screen', 'type': 'text/css', 'href': source
-		}, properties, true);
+		}, properties)).inject($$('head')[0]);
 	},
 
 	/*
@@ -61,22 +69,23 @@ var Asset = new Abstract({
 
 	image: function(source, properties){
 		properties = $merge({
-			'src': source,
 			'onload': Class.empty,
 			'onabort': Class.empty,
 			'onerror': Class.empty
 		}, properties);
 		var image = new Image();
-		image.onload = function(){
-			if (arguments.callee.done) return false;
-			arguments.callee.done = true;
-			this.onload = null;
-			return properties.onload.call(this);
-		};
-		image.onerror = properties.onerror;
-		image.onabort = properties.onabort;
-		image.src = properties.src;
-		return Asset.create('img', {'src': properties.src});
+		image.src = source;
+		var element = new Element('img', {'src': source});
+		['load', 'abort', 'error'].each(function(type){
+			var event = properties['on' + type];
+			delete properties['on' + type];
+			element.addEvent(type, function(){
+				this.removeEvent(type, arguments.callee);
+				event.call(this);
+			});
+		});
+		if (image.width && image.height) element.fireEvent('load');
+		return element.setProperties(properties);
 	},
 
 	/*
@@ -123,13 +132,6 @@ var Asset = new Abstract({
 			images.push(img);
 		});
 		return $extend(images, new Elements);
-	},
-
-	create: function(type, defaults, properties, inject){
-		defaults = $merge(defaults, properties);
-		var element = new Element(type, defaults);
-		if (inject) element.injectInside($$('head')[0]);
-		return element;
 	}
 
 });
