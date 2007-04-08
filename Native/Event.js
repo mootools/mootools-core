@@ -133,13 +133,12 @@ Event.keys = new Abstract({
 
 Element.Events.extend({
 
-	/*	Section: mouseenter/mouseleave
-			In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events.
+	/*	Event: mouseenter
+			In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events
+			this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
+		
 
-		mouseenter - this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
-		mouseleave - this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
-
-		Example usage:
+		Example:
 			>$(myElement).addEvent('mouseenter', myFunction);
 	*/
 
@@ -152,6 +151,14 @@ Element.Events.extend({
 		}
 	},
 	
+	/*	Event: mouseleave
+			this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
+		
+
+		Example:
+			>$(myElement).addEvent('mouseleave', myFunction);
+	*/
+	
 	'mouseleave': {
 		type: 'mouseout',
 		map: function(event){
@@ -162,6 +169,11 @@ Element.Events.extend({
 	}
 	
 });
+
+/*
+Class: Function
+	A collection of The Function Object prototype methods.
+*/
 
 Function.extend({
 
