@@ -1,9 +1,9 @@
 /*
 Script: Fx.Transitions.js
-	Cool transitions, to be used with all the effects.
+	Effects transitions, to be used with all the effects.
 
 Author:
-	Robert Penner, <http://www.robertpenner.com/easing/>, modified to be used with mootools.
+	Transitions are by Robert Penner, <http://www.robertpenner.com/easing/>, modified to be used with mootools.
 
 License:
 	Easing Equations v1.5, (c) 2003 Robert Penner, all rights reserved. Open Source BSD License.
@@ -12,7 +12,33 @@ License:
 /*
 Class: Fx.Transitions
 	A collection of tweaning transitions for use with the <Fx.Base> classes.
+	Some transition accepts additional parameters. You can set them using the .set property of each transition type.
+	
+Example:
+	>new Fx.Style('margin', {transition: Fx.Transitions.elasticInOut});
+	>//elasticInOut with default values
+	>new Fx.Style('margin', {transition: Fx.Transitions.elasticInOut.set(3, 10)});
+	>//elasticInOut with user-defined values. for elasticity and other geek stuff.
+	
+See also:
+	http://www.robertpenner.com/easing/
 */
+
+Fx.Transitions.extend = function(transitions){
+	for (var type in transitions){
+		transitions[type].set = this.set(transitions[type]);
+		this[type] = transitions[type];
+	};
+};
+
+Fx.Transitions.set = function(transition){
+	return function(){
+		var args = $A(arguments);
+		return function(){
+			return transition.apply(transition, $A(arguments).concat(args));
+		};
+	}
+};
 
 Fx.Transitions.extend({
 
@@ -168,7 +194,7 @@ Fx.Transitions.extend({
 		a = a || 1;
 		if (a < Math.abs(c)){
 			a = c;
-			var s = p/4;
+			var s = p / 4;
 		} else var s = p / (2 * Math.PI) * Math.asin(c / a);
 		return a*Math.pow(2, -10 * t) * Math.sin((t * d - s)*(2 * Math.PI) / p) + c + b;
 	},
@@ -184,7 +210,7 @@ Fx.Transitions.extend({
 			a = c;
 			var s = p / 4;
 		} else var s = p / (2 * Math.PI) * Math.asin(c / a);
-		if (t < 1) return - 0.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI)/p)) + b;
+		if (t < 1) return - 0.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
 		return a * Math.pow(2, - 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI)/p) * 0.5 + c + b;
 	},
 
@@ -220,9 +246,9 @@ Fx.Transitions.extend({
 
 	bounceOut: function(t, b, c, d){
 		if ((t /= d) < (1 / 2.75)) return c * (7.5625 * t * t) + b;
-		else if (t < (2/2.75)) return c * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75) + b;
+		else if (t < (2 / 2.75)) return c * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75) + b;
 		else if (t < (2.5 / 2.75)) return c * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375) + b;
-		else return c * (7.5625 * (t -= (2.625/2.75)) * t + 0.984375) + b;
+		else return c * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375) + b;
 	},
 
 	/* Property: bounceInOut */
