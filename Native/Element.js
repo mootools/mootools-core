@@ -81,7 +81,7 @@ var Element = new Class({
 Class: Elements
 	- Every dom function such as <$$>, or in general every function that returns a collection of nodes in mootools, returns them as an Elements class.
 	- The purpose of the Elements class is to allow <Element> methods to work also on <Elements> array.
-	- Elements is aso an Array, so it accepts all the <Array> methods.
+	- Elements is also an Array, so it accepts all the <Array> methods.
 	- Every node of the Elements instance is already extended with <$>.
 
 Example:
@@ -177,7 +177,6 @@ document.getElementsBySelector = document.getElementsByTagName;
 
 function $$(){
 	if (!arguments) return false;
-	if (arguments.length == 1 && typeof arguments[0] == 'string') return document.getElementsBySelector(arguments[0]);
 	var elements = [];
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
@@ -196,9 +195,11 @@ $$.unique = function(array){
 	var elements = [];
 	for (var i = 0, l = array.length; i < l; i++){
 		if (array[i].$included) continue;
-		array[i].$included = true;
 		var element = $(array[i]);
-		if (element) elements.push(element);
+		if (element && !element.$included){
+			element.$included = true;
+			elements.push(element);
+		}
 	}
 	for (var i = 0, l = elements.length; i < l; i++) elements[i].$included = null;
 	return $extend(elements, new Elements);

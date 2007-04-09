@@ -24,13 +24,13 @@ Fx.Transitions = new Abstract({
 	/* Property: linear */
 	
 	linear: function(t, b, c, d){
-		return c*t/d + b;
+		return c * t / d + b;
 	},
 
 	/* Property: sineInOut */
 	
 	sineInOut: function(t, b, c, d){
-		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+		return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b;
 	}
 
 });
@@ -126,7 +126,7 @@ Fx.Base = new Class({
 		this.from = from;
 		this.to = to;
 		this.time = $time();
-		this.timer = this.step.periodical(Math.round(1000/this.options.fps), this);
+		this.timer = this.step.periodical(Math.round(1000 / this.options.fps), this);
 		this.fireEvent('onStart', this.element);
 		return this;
 	},
