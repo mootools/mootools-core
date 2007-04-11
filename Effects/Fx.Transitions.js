@@ -56,6 +56,7 @@ Fx.Shared.CreateTransitionEases = function(transition, type){
 	});
 	//compatibility
 	['In', 'Out', 'InOut'].each(function(mode){
+		transition['ease' + mode].set = Fx.Shared.SetTransitionValues(transition['ease' + mode]);
 		Fx.Transitions[type.toLowerCase() + mode] = transition['ease' + mode];
 	});
 };
@@ -64,15 +65,15 @@ Fx.Shared.SetTransitionValues = function(transition){
 	return function(){
 		var args = $A(arguments);
 		return function(){
-			return transition.apply(Transitions, $A(arguments).concat(args));
+			return transition.apply(Fx.Transitions, $A(arguments).concat(args));
 		};
 	}
 };
 
 Fx.Transitions.extend = function(transitions){
 	for (var type in transitions){
-		Fx.Shared.CreateTransitionEases(transitions[type], type);
-		for (var ease in transitions[type]) transitions[type][ease].set = Fx.Shared.SetTransitionValues(transitions[type][ease]);
+		if (type.test(/^[A-Z]/)) Fx.Shared.CreateTransitionEases(transitions[type], type);
+		else transitions[type].set = Fx.Shared.SetTransitionValues(transitions[type]);
 		Fx.Transitions[type] = transitions[type];
 	}
 };
