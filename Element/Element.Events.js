@@ -79,7 +79,7 @@ Element.eventMethods = {
 		if (!this.$events) return this;
 		if (type){
 			if (this.$events[type]){
-				this.$events[type].keys.each(function(fn){
+				$A(this.$events[type].keys).each(function(fn, i){
 					this.removeEvent(type, fn);
 				}, this);
 				this.$events[type] = null;

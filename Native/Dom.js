@@ -276,8 +276,8 @@ var Filters = {
 		switch(operator){
 			case '=': return (current == value);
 			case '*=': return (current.contains(value));
-			case '^=': return (!current.indexOf(value));
-			case '$=': return (current.lastIndexOf(value) != current.length - value.length);
+			case '^=': return (current.test('^' + value));
+			case '$=': return (current.test(value + '$'));
 			case '!=': return (current != value);
 			case '~=': return current.contains(value, ' ');
 		}

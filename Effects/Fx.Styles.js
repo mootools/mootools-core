@@ -97,7 +97,7 @@ Element.extend({
 		Applies an <Fx.Styles> to the Element; This a shortcut for <Fx.Styles>.
 
 	Example:
-		>var myEffects = $(myElement).effects({duration: 1000, transition: Fx.Transitions.sineInOut});
+		>var myEffects = $(myElement).effects({duration: 1000, transition: Fx.Transitions.Sine.easeInOut});
  		>myEffects.start({'height': [10, 100], 'width': [900, 300]});
 	*/
 

@@ -6,34 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Fx = {};
-
-/*
-Class: Fx.Transitions
-	A collection of transition equations for use with the <Fx.Base> Class.
-
-See Also:
-	<Fx.Transitions.js> for a whole bunch of transitions.
-
-Credits:
-	Easing Equations, (c) 2003 Robert Penner (http://www.robertpenner.com/easing/), Open Source BSD License.
-*/
-
-Fx.Transitions = new Abstract({
-
-	/* Property: linear */
-	
-	linear: function(t, b, c, d){
-		return c * t / d + b;
-	},
-
-	/* Property: sineInOut */
-	
-	sineInOut: function(t, b, c, d){
-		return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b;
-	}
-
-});
+var Fx = {Shared: {}};
 
 /*
 Class: Fx.Base
@@ -42,7 +15,7 @@ Class: Fx.Base
 Options:
 	onStart - the function to execute as the effect begins; nothing (<Class.empty>) by default.
 	onComplete - the function to execute after the effect has processed; nothing (<Class.empty>) by default.
-	transition - the equation to use for the effect see <Fx.Transitions>; default is <Fx.Transitions.sineInOut>
+	transition - the equation to use for the effect see <Fx.Transitions>; default is <Fx.Transitions.Sine.easeInOut>
 	duration - the duration of the effect in ms; 500 is the default.
 	unit - the unit is 'px' by default (other values include things like 'em' for fonts or '%').
 	wait - boolean: to wait or not to wait for a current transition to end before running another of the same instance. defaults to true.
@@ -55,7 +28,9 @@ Fx.Base = new Class({
 		onStart: Class.empty,
 		onComplete: Class.empty,
 		onCancel: Class.empty,
-		transition: Fx.Transitions.sineInOut,
+		transition: function(t, c, d){
+			return -c / 2 * (Math.cos(Math.PI * t / d) - 1);
+		},
 		duration: 500,
 		unit: 'px',
 		wait: true,
@@ -105,7 +80,7 @@ Fx.Base = new Class({
 	},
 
 	compute: function(from, to){
-		return this.options.transition(this.cTime, from, (to - from), this.options.duration);
+		return this.options.transition(this.cTime, (to - from), this.options.duration) + from;
 	},
 
 	/*

@@ -3,7 +3,7 @@ Script: Fx.Transitions.js
 	Effects transitions, to be used with all the effects.
 
 Author:
-	Transitions are by Robert Penner, <http://www.robertpenner.com/easing/>, modified to be used with mootools.
+	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified & optimized to be used with mootools.
 
 License:
 	Easing Equations v1.5, (c) 2003 Robert Penner, all rights reserved. Open Source BSD License.
@@ -11,251 +11,169 @@ License:
 
 /*
 Class: Fx.Transitions
-	A collection of tweaning transitions for use with the <Fx.Base> classes.
-	Some transition accepts additional parameters. You can set them using the .set property of each transition type.
+	A collection of tweening transitions for use with the <Fx.Base> classes.
+	Some transitions accept additional parameters. You can set them using the .set property of each transition type.
 	
 Example:
-	>new Fx.Style('margin', {transition: Fx.Transitions.elasticInOut});
-	>//elasticInOut with default values
-	>new Fx.Style('margin', {transition: Fx.Transitions.elasticInOut.set(3, 10)});
-	>//elasticInOut with user-defined values. for elasticity and other geek stuff.
-	
+	>new Fx.Style('margin', {transition: Fx.Transitions.Elastic.easeInOut});
+	>//Elastic.easeInOut with default values
+	>new Fx.Style('margin', {transition: Fx.Transitions.Elastic.easeInOut.set(3)});
+	>//Elastic.easeInOut with user-defined value for elasticity.
+	>p, t, c, d means: // p: current time / duration, t: current time, c: change in value (distance), d: duration
+
 See also:
 	http://www.robertpenner.com/easing/
 */
 
-Fx.Transitions.extend = function(transitions){
-	for (var type in transitions){
-		transitions[type].set = this.set(transitions[type]);
-		this[type] = transitions[type];
-	};
+Fx.Transitions = new Abstract({
+	
+	/*
+	Property: linear
+		displays a linear transition.
+	*/
+	
+	linear: function(t, c, d){
+		return c * (t / d);
+	}
+	
+});
+
+Fx.Shared.CreateTransitionEases = function(transition, type){
+	$extend(transition, {
+		easeIn: function(t, c, d, x, y, z){
+			return c - c * transition((d - t) / d, t, c, d, x, y, z);
+		},
+
+		easeOut: function(t, c, d, x, y, z){
+			return c * transition(t / d, t, c, d, x, y, z);
+		},
+
+		easeInOut: function(t, c, d, x, y, z){
+			d /= 2, c /= 2;
+			var p = t / d;
+			return (p < 1) ? transition.easeIn(t, c, d, x, y, z) : c * (transition(p - 1, t, c, d, x, y, z) + 1);
+		}
+	});
+	//compatibility
+	['In', 'Out', 'InOut'].each(function(mode){
+		Fx.Transitions[type.toLowerCase() + mode] = transition['ease' + mode];
+	});
 };
 
-Fx.Transitions.set = function(transition){
+Fx.Shared.SetTransitionValues = function(transition){
 	return function(){
 		var args = $A(arguments);
 		return function(){
-			return transition.apply(transition, $A(arguments).concat(args));
+			return transition.apply(Transitions, $A(arguments).concat(args));
 		};
 	}
 };
 
+Fx.Transitions.extend = function(transitions){
+	for (var type in transitions){
+		Fx.Shared.CreateTransitionEases(transitions[type], type);
+		for (var ease in transitions[type]) transitions[type][ease].set = Fx.Shared.SetTransitionValues(transitions[type][ease]);
+		Fx.Transitions[type] = transitions[type];
+	}
+};
+
 Fx.Transitions.extend({
+	
+	/*
+	Property: Sine
+		displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut
+	*/
 
-	/* Property: quadIn */
-
-	quadIn: function(t, b, c, d){
-		return c * (t /= d) * t + b;
+	Sine: function(p){
+		return Math.sin(p * (Math.PI / 2));
 	},
+	
+	/*
+	Property: Quad
+		displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut
+	*/
 
-	/* Property: quadOut */
-
-	quadOut: function(t, b, c, d){
-		return - c * (t /= d) * (t - 2) + b;
+	Quad: function(p){
+		return -(Math.pow(p - 1, 2) - 1);
 	},
+	
+	/*
+	Property: Cubic
+		displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut
+	*/
 
-	/* Property: quadInOut */
-
-	quadInOut: function(t, b, c, d){
-		if ((t /= d / 2) < 1) return c / 2 * t * t + b;
-		return - c / 2 * ((--t) * (t - 2) - 1) + b;
+	Cubic: function(p){
+		return Math.pow(p - 1, 3) + 1;
 	},
+	
+	/*
+	Property: Quart
+		displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut
+	*/
 
-	/* Property: cubicIn */
-
-	cubicIn: function(t, b, c, d){
-		return c * (t /= d) * t * t + b;
+	Quart: function(p){
+		return -(Math.pow(p - 1, 4) - 1);
 	},
+	
+	/*
+	Property: Quint
+		displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut
+	*/
 
-	/* Property: cubicOut */
-
-	cubicOut: function(t, b, c, d){
-		return c * ((t = t / d - 1) * t * t + 1) + b;
+	Quint: function(p){
+		return Math.pow(p - 1, 5) + 1;
 	},
+	
+	/*
+	Property: Expo
+		displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut
+	*/
 
-	/* Property: cubicInOut */
-
-	cubicInOut: function(t, b, c, d){
-		if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
-		return c / 2 * ((t -= 2) * t * t + 2) + b;
+	Expo: function(p){
+		return -Math.pow(2, -10 * p) + 1;
 	},
+	
+	/*
+	Property: Circ
+		displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut
+	*/
 
-	/* Property: quartIn */
-
-	quartIn: function(t, b, c, d){
-		return c * (t /= d) * t * t * t + b;
+	Circ: function(p){
+		return Math.sqrt(1 - Math.pow(p - 1, 2));
 	},
+	
+	/*
+	Property: Bounce
+		makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut
+	*/
 
-	/* Property: quartOut */
-
-	quartOut: function(t, b, c, d){
-		return - c * ((t = t / d - 1) * t * t * t - 1) + b;
+	Bounce: function(p){
+		var b = 7.5625;
+		if (p < (1 / 2.75)) return b * Math.pow(p, 2);
+		else if (p < (2 / 2.75)) return b * (p -= (1.5 / 2.75)) * p + 0.75;
+		else if (p < (2.5 / 2.75)) return b * (p -= (2.25 / 2.75)) * p + 0.9375;
+		else return b * (p -= (2.625 / 2.75)) * p + 0.984375;
 	},
+	
+	/*
+	Property: Back
+		makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut
+	*/
 
-	/* Property: quartInOut */
-
-	quartInOut: function(t, b, c, d){
-		if (( t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
-		return - c / 2 * ((t -= 2) * t * t * t - 2) + b;
+	Back: function(p, t, c, d, x){
+		x = x || 1.70158;
+		p -= 1;
+		return Math.pow(p, 2) * ((x + 1) * p + x) + 1;
 	},
+	
+	/*
+	Property: Elastic
+		Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
+	*/
 
-	/* Property: quintIn */
-
-	quintIn: function(t, b, c, d){
-		return c * (t /= d) * t * t * t * t + b;
-	},
-
-	/* Property: quintOut */
-
-	quintOut: function(t, b, c, d){
-		return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
-	},
-
-	/* Property: quintInOut */
-
-	quintInOut: function(t, b, c, d){
-		if ((t /= d / 2) < 1) return c/2 * t * t * t * t * t + b;
-		return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
-	},
-
-	/* Property: sineIn */
-
-	sineIn: function(t, b, c, d){
-		return - c * Math.cos(t / d * (Math.PI / 2)) + c + b;
-	},
-
-	/* Property: sineOut */
-
-	sineOut: function(t, b, c, d){
-		return c * Math.sin(t / d * (Math.PI / 2)) + b;
-	},
-
-	/* Property: expoIn */
-
-	expoIn: function(t, b, c, d){
-		return (t == 0) ? b : c * Math.pow(2, 10 * (t / d - 1)) + b;
-	},
-
-	/* Property: expoOut */
-
-	expoOut: function(t, b, c, d){
-		return (t == d) ? b + c : c * (- Math.pow(2, -10 * t / d) + 1) + b;
-	},
-
-	/* Property: expoInOut */
-
-	expoInOut: function(t, b, c, d){
-		if (t == 0) return b;
-		if (t == d) return b + c;
-		if ((t /= d / 2) < 1) return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
-		return c / 2 * (- Math.pow(2, - 10 * --t) + 2) + b;
-	},
-
-	/* Property: circIn */
-
-	circIn: function(t, b, c, d){
-		return - c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
-	},
-
-	/* Property: circOut */
-
-	circOut: function(t, b, c, d){
-		return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
-	},
-
-	/* Property: circInOut */
-
-	circInOut: function(t, b, c, d){
-		if ((t /= d / 2) < 1) return - c / 2 * (Math.sqrt(1 - t * t) - 1) + b;
-		return c / 2 * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
-	},
-
-	/* Property: elasticIn */
-
-	elasticIn: function(t, b, c, d, a, p){
-		if (t == 0) return b;
-		if ((t /= d) == 1) return b + c;
-		p = p || d * 0.3;
-		a = a || 1;
-		if (a < Math.abs(c)){
-			a = c;
-			var s = p / 4;
-		}
-		else var s = p / (2 * Math.PI) * Math.asin(c / a);
-		return - (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI)/p)) + b;
-	},
-
-	/* Property: elasticOut */
-
-	elasticOut: function(t, b, c, d, a, p){
-		if (t == 0) return b;
-		if ((t /= d) == 1) return b + c;
-		p = p || d * 0.3;
-		a = a || 1;
-		if (a < Math.abs(c)){
-			a = c;
-			var s = p / 4;
-		} else var s = p / (2 * Math.PI) * Math.asin(c / a);
-		return a*Math.pow(2, -10 * t) * Math.sin((t * d - s)*(2 * Math.PI) / p) + c + b;
-	},
-
-	/* Property: elasticInOut */
-
-	elasticInOut: function(t, b, c, d, a, p){
-		if (t == 0) return b;
-		if ((t /= d / 2) == 2) return b + c;
-		p = p || d * (0.3 * 1.5);
-		a = a || 1;
-		if (a < Math.abs(c)){
-			a = c;
-			var s = p / 4;
-		} else var s = p / (2 * Math.PI) * Math.asin(c / a);
-		if (t < 1) return - 0.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
-		return a * Math.pow(2, - 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI)/p) * 0.5 + c + b;
-	},
-
-	/* Property: backIn */
-
-	backIn: function(t, b, c, d, s){
-		s = s || 1.70158;
-		return c * (t /= d) * t * ((s + 1) * t - s) + b;
-	},
-
-	/* Property: backOut */
-
-	backOut: function(t, b, c, d, s){
-		s = s || 1.70158;
-		return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
-	},
-
-	/* Property: backInOut */
-
-	backInOut: function(t, b, c, d, s){
-		s = s || 1.70158;
-		if ((t /= d / 2) < 1) return c / 2 * (t * t * (((s *= 1.525) +1) * t - s)) + b;
-		return c / 2 * ((t -= 2) * t *(((s *= 1.525) + 1) * t + s) + 2) + b;
-	},
-
-	/* Property: bounceIn */
-
-	bounceIn: function(t, b, c, d){
-		return c - Fx.Transitions.bounceOut(d - t, 0, c, d) + b;
-	},
-
-	/* Property: bounceOut */
-
-	bounceOut: function(t, b, c, d){
-		if ((t /= d) < (1 / 2.75)) return c * (7.5625 * t * t) + b;
-		else if (t < (2 / 2.75)) return c * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75) + b;
-		else if (t < (2.5 / 2.75)) return c * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375) + b;
-		else return c * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375) + b;
-	},
-
-	/* Property: bounceInOut */
-
-	bounceInOut: function(t, b, c, d){
-		if (t < d / 2) return Fx.Transitions.bounceIn(t * 2, 0, c, d) * 0.5 + b;
-		return Fx.Transitions.bounceOut(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b;
+	Elastic: function(p, t, c, d, x){
+		x = x || d * 0.3;
+		return (c * Math.pow(2, -10 * p) * Math.sin((p * d - x / 4) * (2 * Math.PI) / x) + c) / c;
 	}
 
 });

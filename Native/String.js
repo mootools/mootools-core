@@ -108,7 +108,7 @@ String.extend({
 	*/
 
 	capitalize: function(){
-		return this.toLowerCase().replace(/\b[a-z]/g, function(match){
+		return this.replace(/\b[a-z]/g, function(match){
 			return match.toUpperCase();
 		});
 	},
