@@ -165,7 +165,7 @@ Element.domMethods = {
 
 	getElements: function(selector, nocash){
 		var items = [];
-		selector = selector.split(' ');
+		selector = selector.trim().split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
 			var param;
