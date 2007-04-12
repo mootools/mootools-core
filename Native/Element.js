@@ -582,7 +582,7 @@ Element.extend({
 				});
 				if (!every && property == 'border') return false;
 				if (every) result = result[0];
-				return result.toString().replace(/,/ig, ' ');
+				return result.toString().replace(/,/g, ' ');
 			}
 			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) style = this.currentStyle[property];
@@ -595,7 +595,7 @@ Element.extend({
 					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
-			} else if (property.test(/border-[\w]-width/)){
+			} else if (property.test(/border(.+)width/i)){
 				return 0 + 'px';
 			}
 		}
