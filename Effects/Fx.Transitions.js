@@ -30,12 +30,15 @@ Fx.Transitions = new Abstract({
 	/*
 	Property: linear
 		displays a linear transition.
+		
+	Graph:
+		(see Linear.png)
 	*/
 	
 	linear: function(t, c, d){
 		return c * (t / d);
 	}
-	
+
 });
 
 Fx.Shared.CreateTransitionEases = function(transition, type){
@@ -83,6 +86,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Sine
 		displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut
+		
+	Graph:
+		(see Sine.png)
 	*/
 
 	Sine: function(p){
@@ -92,6 +98,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Quad
 		displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut
+		
+	Graph:
+		(see Quad.png)
 	*/
 
 	Quad: function(p){
@@ -101,6 +110,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Cubic
 		displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut
+		
+	Graph:
+		(see Cubic.png)
 	*/
 
 	Cubic: function(p){
@@ -110,6 +122,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Quart
 		displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut
+		
+	Graph:
+		(see Quart.png)
 	*/
 
 	Quart: function(p){
@@ -119,6 +134,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Quint
 		displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut
+		
+	Graph:
+		(see Quint.png)
 	*/
 
 	Quint: function(p){
@@ -128,6 +146,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Expo
 		displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut
+		
+	Graph:
+		(see Expo.png)
 	*/
 
 	Expo: function(p){
@@ -137,6 +158,9 @@ Fx.Transitions.extend({
 	/*
 	Property: Circ
 		displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut
+		
+	Graph:
+		(see Circ.png)
 	*/
 
 	Circ: function(p){
@@ -146,6 +170,10 @@ Fx.Transitions.extend({
 	/*
 	Property: Bounce
 		makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut
+		
+	
+	Graph:
+		(see Bounce.png)
 	*/
 
 	Bounce: function(p){
@@ -159,6 +187,10 @@ Fx.Transitions.extend({
 	/*
 	Property: Back
 		makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut
+		set() changes the way it overshoots the target, default is 1.70158
+
+	Graph:
+		(see Back.png)
 	*/
 
 	Back: function(p, t, c, d, x){
@@ -170,10 +202,14 @@ Fx.Transitions.extend({
 	/*
 	Property: Elastic
 		Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
+		set() works as a multiplier of the elasicity effect. set(2) makes it twice as strong
+	
+	Graph:
+		(see Elastic.png)
 	*/
 
 	Elastic: function(p, t, c, d, x){
-		x = x || d * 0.3;
+		x = d * 0.3 / (x || 1);
 		return (c * Math.pow(2, -10 * p) * Math.sin((p * d - x / 4) * (2 * Math.PI) / x) + c) / c;
 	}
 

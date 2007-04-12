@@ -1,5 +1,5 @@
 /*
-Script: Element.Dimensions.js
+Script: Element.Form.js
 	Contains Element prototypes to deal with Forms and their elements.
 
 License:
