@@ -1,6 +1,9 @@
 /*
 Script: Window.Size.js
 	Window cross-browser dimensions methods.
+	
+Note:
+	The Functions in this script require an XHTML strict doctype.
 
 License:
 	MIT-style license.

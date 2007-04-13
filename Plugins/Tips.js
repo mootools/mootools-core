@@ -12,6 +12,9 @@ Credits:
 /*
 Class: Tips
 	Display a tip on any element with a title and/or href.
+	
+Note:
+	Tips requires an XHTML strict doctype.
 
 Arguments:
 	elements - a collection of elements to apply the tooltips to on mouseover.

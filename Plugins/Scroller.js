@@ -10,6 +10,9 @@ License:
 Class: Scroller
 	The Scroller is a class to scroll any element with an overflow (including the window) when the mouse cursor reaches certain buondaries of that element.
 	You must call its start method to start listening to mouse movements.
+	
+Note:
+	The Scroller requires an XHTML strict doctype.
 
 Arguments:
 	element - required, the element to scroll.
