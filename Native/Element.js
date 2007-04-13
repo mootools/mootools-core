@@ -427,7 +427,7 @@ Element.extend({
 
 	/*
 	Property: removeClass
-		works like <Element.addClass>, but removes the class from the element.
+		Works like <Element.addClass>, but removes the class from the element.
 	*/
 
 	removeClass: function(className){
@@ -541,7 +541,7 @@ Element.extend({
 	Example:
 		>$('myElement').getStyle('width'); //returns "400px"
 		>//but you can also use
-		>$('myElement').getStyle('width').toInt(); //returns "400"
+		>$('myElement').getStyle('width').toInt(); //returns 400
 
 	Returns:
 		the style as a string
@@ -549,57 +549,35 @@ Element.extend({
 
 	getStyle: function(property){
 		property = property.camelCase();
-		var style = this.style[property];
-		if (!$chk(style)){
+		var result = this.style[property];
+		if (!$chk(result)){
 			if (property == 'opacity') return this.$.opacity;
-			var dirs = ['top', 'right', 'bottom', 'left'];
 			var result = [];
-			if (['margin', 'padding'].contains(property)){
-				dirs.each(function(dir){
-					result.push(this.getStyle(property + '-' + dir));
-				}, this);
-			} else if (property.contains('border')){
-				var matches = property.hyphenate().split('-');
-				matches = matches.remove(matches[0]);
-				var recurse = function(el, property){
-					var temp = [];
-					['width', 'style', 'color'].each(function(prop, i){
-						temp.push(el.getStyle(property + '-' + prop));
-					});
-					return temp;
-				};
-				if (!matches[0]){
-					dirs.each(function(dir){
-						result.push(recurse(this, property + '-' + dir));
+			for (var style in Element.Styles){
+				if (property == style){
+					Element.Styles[style].each(function(s){
+						result.push(this.getStyle(s));
 					}, this);
-				} else if (!matches[1]){
-					result = recurse(this, property);
+					if (property == 'border'){
+						var every = result.every(function(bit){
+							return (bit == result[0]);
+						});
+						return (every) ? result[0] : false;
+					}
+					return result.join(' ');
 				}
 			}
-			if (result.length){
-				var every = result.every(function(val){
-					return val.toString() == result[0].toString();
-				});
-				if (!every && property == 'border') return false;
-				if (every) result = result[0];
-				return result.toString().replace(/,/g, ' ');
-			}
-			if (document.defaultView) style = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
-			else if (this.currentStyle) style = this.currentStyle[property];
-		}
-		if (window.ie && !$chk(parseInt(style))){
-			if (['height', 'width'].contains(property)){
-				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
-				var size = 0;
-				values.each(function(value){
-					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+			if (Element.Styles.border.contains(property)){
+				['Width', 'Color', 'Style'].each(function(p){
+					result.push(this.getStyle(property + p));
 				}, this);
-				return this['offset' + property.capitalize()] - size + 'px';
-			} else if (property.test(/border(.+)width/i)){
-				return 0 + 'px';
+				return result.join(' ');
 			}
+			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
+			else if (this.currentStyle) result = this.currentStyle[property];
 		}
-		return (style && property.test(/color/i) && style.contains('rgb')) ? style.rgbToHex() : style;
+		if (window.ie) result = Element.fixStyle(property, result, this);
+		return (result && property.test(/color/i) && result.contains('rgb')) ? result.rgbToHex() : result;
 	},
 
 	/*
@@ -825,6 +803,26 @@ Element.extend({
 
 });
 
+Element.fixStyle = function(property, result, element){
+	if ($chk(parseInt(result))) return result;
+	if (['height', 'width'].contains(property)){
+		var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
+		var size = 0;
+		values.each(function(value){
+			size += element.getStyle('border-' + value + '-width').toInt() + element.getStyle('padding-' + value).toInt();
+		});
+		return element['offset' + property.capitalize()] - size + 'px';
+	} else if (property.test(/border(.+)Width/)){
+		return '0px';
+	}
+	return result;
+};
+
+Element.Styles = {'border': [], 'padding': [], 'margin': []};
+['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
+	for (var style in Element.Styles) Element.Styles[style].push(style + direction);
+});
+
 Element.getMany = function(el, method, keys){
 	var result = {};
 	$each(keys, function(key){
@@ -839,18 +837,10 @@ Element.setMany = function(el, method, pairs){
 };
 
 Element.Properties = new Abstract({
-	'class': 'className',
-	'for': 'htmlFor',
-	'colspan': 'colSpan',
-	'rowspan': 'rowSpan',
-	'accesskey': 'accessKey',
-	'tabindex': 'tabIndex',
-	'maxlength': 'maxLength',
-	'readonly': 'readOnly',
-	'value': 'value',
-	'disabled': 'disabled',
-	'checked': 'checked',
-	'multiple': 'multiple'
+	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan',
+	'rowspan': 'rowSpan', 'accesskey': 'accessKey', 'tabindex': 'tabIndex',
+	'maxlength': 'maxLength', 'readonly': 'readOnly', 'value': 'value',
+	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple'
 });
 
 Element.listenerMethods = {

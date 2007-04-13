@@ -21,9 +21,11 @@ var MooTools = {
 /*
 Class: Class
 	The base class object of the <http://mootools.net> framework.
+	Creates a new class, its initialize method will fire upon class instantiation.
+	Initialize wont fire on instantiation when you pass *null*.
 
 Arguments:
-	properties - the collection of properties that apply to the class. Creates a new class, its initialize method will fire upon class instantiation.
+	properties - the collection of properties that apply to the class.
 
 Example:
 	(start code)

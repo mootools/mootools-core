@@ -49,7 +49,8 @@ var Color = new Class({
 	/*
 	Property: mix
 		Mixes two or more colors with the Color.
-		Arguments:
+		
+	Arguments:
 		color - a color to mix. you can use as arguments how many colors as you want to mix with the original one.
 		alpha - if you use a number as the last argument, it will be threated as the amount of the color to mix.
 	*/
@@ -79,7 +80,8 @@ var Color = new Class({
 	/*
 	Property: setHue
 		Modifies the hue of the Color, and returns a new one.
-		Arguments:
+	
+	Arguments:
 		value - the hue to set
 	*/
 
@@ -90,7 +92,8 @@ var Color = new Class({
 	/*
 	Property: setSaturation
 		Changes the saturation of the Color, and returns a new one.
-		Arguments:
+	
+	Arguments:
 		percent - the percentage of the saturation to set
 	*/
 
@@ -101,7 +104,8 @@ var Color = new Class({
 	/*
 	Property: setBrightness
 		Changes the brightness of the Color, and returns a new one.
-		Arguments:
+	
+	Arguments:
 		percent - the percentage of the brightness to set
 	*/
 

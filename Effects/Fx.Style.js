@@ -60,7 +60,7 @@ Fx.Style = Fx.Base.extend({
 
 	/*
 	Property: start
-		displays the transition to the value/values passed in
+		Displays the transition to the value/values passed in
 
 	Arguments:
 		from - (integer; optional) the starting position for the transition

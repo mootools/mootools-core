@@ -184,6 +184,7 @@ Array.extend({
 
 	Returns:
 		a new array which is a copy of the current one.
+
 	Arguments:
 		start - integer; optional; the index where to start the copy, default is 0. If negative, it is taken as the offset from the end of the array.
 		length - integer; optional; the number of elements to copy. By default, copies all elements from start to the end of the array.
@@ -374,6 +375,7 @@ function $A(array, start, length){
 /*
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
+	
 Arguments:
 	iterable - an iterable element or an objct.
 	function - function to apply to the iterable.

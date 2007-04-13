@@ -132,7 +132,7 @@ var XHR = new Class({
 
 	/*
 	Property: cancel
-		cancels the running request. No effect if the request is not running.
+		Cancels the running request. No effect if the request is not running.
 
 	Example:
 		>var myAjax = new Ajax(url, {method: 'get'}).request();

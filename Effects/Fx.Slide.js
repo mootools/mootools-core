@@ -10,9 +10,6 @@ License:
 Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside. Extends <Fx.Base>, inherits all its properties.
 
-Note:
-	This effect works on any block element, but the element doesnt allow absolute positions. To position the element, put it inside another element (a wrapper div, for instance) and position that instead.
-
 Options:
 	mode - set it to vertical or horizontal. Defaults to vertical.
 	options - all the <Fx.Base> options
@@ -57,7 +54,7 @@ Fx.Slide = Fx.Base.extend({
 
 	/*
 	Property: slideIn
-		slides the elements in view horizontally or vertically.
+		Slides the elements in view horizontally or vertically.
 
 	Arguments:
 		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
@@ -70,7 +67,7 @@ Fx.Slide = Fx.Base.extend({
 
 	/*
 	Property: slideOut
-		slides the elements out of view horizontally or vertically.
+		Sides the elements out of view horizontally or vertically.
 
 	Arguments:
 		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.

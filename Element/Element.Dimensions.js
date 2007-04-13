@@ -15,7 +15,7 @@ Element.extend({
 	
 	/*
 	Property: scrollTo
-		scrolls the element to the specified coordinated (if the element has an overflow)
+		Scrolls the element to the specified coordinated (if the element has an overflow)
 
 	Arguments:
 		x - the x coordinate
@@ -32,7 +32,7 @@ Element.extend({
 
 	/*
 	Property: getSize
-		return an Object representing the size/scroll values of the element.
+		Return an Object representing the size/scroll values of the element.
 
 	Example:
 		(start code)

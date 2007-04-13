@@ -19,18 +19,24 @@ Function.extend({
 	/*
 	Property: create
 		Main function to create closures.
+
 	Returns:
 		a function.
+
 	Arguments:
 		options - An Options object.
+
 	Options:
 		bind - The object that the "this" of the function will refer to. Default is the current function.
 		event - If set to true, the function will act as an event listener and receive an event as first argument.
 				If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
 				Default is false.
 		arguments - A single argument or array of arguments that will be passed to the function when called.
+		
 					If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+					
 					Default is no custom arguments, the function will receive the standard arguments when called.
+					
 		delay - Numeric value: if set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
 				Default is no delay.
 		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
@@ -60,8 +66,8 @@ Function.extend({
 			var returns = function(){
 				return fn.apply($pick(options.bind, fn), args);
 			};
-			if (options.delay) return setTimeout(returns, $duration(options.delay));
-			if (options.periodical) return setInterval(returns, $duration(options.periodical));
+			if (options.delay) return setTimeout(returns, options.delay);
+			if (options.periodical) return setInterval(returns, options.periodical);
 			if (options.attempt) try {return returns();} catch(err){return false;};
 			return returns();
 		};
@@ -154,7 +160,7 @@ Function.extend({
 		Delays the execution of a function by a specified duration.
 
 	Arguments:
-		delay - the duration to wait in milliseconds. Supports <$duration> syntax.
+		delay - the duration to wait in milliseconds.
 		bind - optional, the object that the "this" of the function will refer to.
 		args - optional, the arguments passed. must be an array if arguments > 1
 
@@ -172,7 +178,7 @@ Function.extend({
 		Executes a function in the specified intervals of time
 
 	Arguments:
-		interval - the duration of the intervals between executions. Supports <$duration> syntax.
+		interval - the duration of the intervals between executions.
 		bind - optional, the object that the "this" of the function will refer to.
 		args - optional, the arguments passed. must be an array if arguments > 1
 	*/

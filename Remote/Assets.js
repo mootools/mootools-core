@@ -10,7 +10,7 @@ var Asset = new Abstract({
 
 	/*
 	Property: javascript
-		injects into the page a javascript file.
+		Injects a javascript file in the page.
 
 	Arguments:
 		source - the path of the javascript file
@@ -31,12 +31,12 @@ var Asset = new Abstract({
 			}
 		});
 		delete properties.onload;
-		return script.setProperties(properties).inject($$('head')[0]);
+		return script.setProperties(properties).inject(document.head);
 	},
 
 	/*
 	Property: css
-		injects into the page a css file.
+		Injects a css file in the page.
 
 	Arguments:
 		source - the path of the css file
@@ -49,7 +49,7 @@ var Asset = new Abstract({
 	css: function(source, properties){
 		return new Element('link', $merge({
 			'rel': 'stylesheet', 'media': 'screen', 'type': 'text/css', 'href': source
-		}, properties)).inject($$('head')[0]);
+		}, properties)).inject(document.head);
 	},
 
 	/*

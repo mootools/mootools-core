@@ -27,6 +27,7 @@ var Abstract = function(obj){
 
 var Window = new Abstract(window);
 var Document = new Abstract(document);
+document.head = document.getElementsByTagName('head')[0];
 
 /* Section: Utility Functions */
 
@@ -89,45 +90,6 @@ Returns:
 
 function $time(){
 	return new Date().getTime();
-};
-
-/*
-Function: $duration
-	Returns a time interval in milliseconds from the given time units
-
-Arguments:
-	data - Number in milliseconds or seconds (second parameter true) or an Object with values for years, months, days, hours, minutes, seconds, milliseconds
-	seconds - Boolean, needs to be true when first argument is a number in seconds, otherwise its handled as milliseconds
-	only when first argument is passed as number, if true the first argument is treated as seconds, if false as milliseconds. defaults to false.
-
-Returns:
-	The time in milliseconds
-
-Example:
-	(start code)
-	var howLong = $duration({
-		seconds: 3600
-	});
-	//returns
-	3600000
-	//same result for $duration(3600, true) or $duration(3600000)
-	(end)
-*/
-
-function $duration(data, seconds){
-	if ($type(data) != 'object'){
-		data = parseInt(data, 10);
-		data = seconds ? {seconds: data} : {milliseconds: data};
-	}
-	this.units = this.units || {
-		years: 'FullYear', months: 'Month', days: 'Date', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds', milliseconds: 'Milliseconds'
-	};
-	var date = new Date();
-	for (var unit in data){
-		var fn = this.units[unit];
-		if (fn) date['set' + fn](date['get' + fn]() + $pick(data[unit], 0));
-	}
-	return date.getTime() - $time();
 };
 
 /*

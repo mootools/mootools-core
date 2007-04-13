@@ -27,12 +27,14 @@ Options:
 	hideDelay - the delay the onHide method is called. (defaults to 100 ms)
 
 	className - the prefix for your tooltip classNames. defaults to 'tool'.
+	
 		the whole tooltip will have as classname: tool-tip
+		
 		the title will have as classname: tool-title
+		
 		the text will have as classname: tool-text
 
 	offsets - the distance of your tooltip from the mouse. an Object with x/y properties.
-
 	fixed - if set to true, the toolTip will not follow the mouse.
 
 Example:

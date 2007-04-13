@@ -63,7 +63,7 @@ Element.eventMethods = {
 
 	/*
 	Property: addEvents
-		as <addEvent>, but acceprs an object and add multiple events at once.
+		As <addEvent>, but accepts an object and add multiple events at once.
 	*/
 
 	addEvents: function(source){
