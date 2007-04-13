@@ -153,12 +153,9 @@ Array.extend({
 	*/
 
 	indexOf: function(item, from){
-		from = from || 0;
 		var len = this.length;
-		if (from < 0) from = Math.max(0, len + from);
-		while (from < len){
-			if (this[from] === item) return from;
-			from++;
+		for (var i = (from < 0) ? Math.max(0, len + from) : from || 0; i < len; i++){
+			if (this[i] === item) return i;
 		}
 		return -1;
 	},
@@ -221,8 +218,10 @@ Array.extend({
 		var i = 0;
 		var len = this.length;
 		while (i < len){
-			if (this[i] && this[i] === item) this.splice(i, 1);
-			else i++;
+			if (this[i] === item){
+				this.splice(i, 1);
+				len--;
+			} else i++;
 		}
 		return this;
 	},
@@ -375,7 +374,7 @@ function $A(array, start, length){
 /*
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
-	
+
 Arguments:
 	iterable - an iterable element or an objct.
 	function - function to apply to the iterable.
