@@ -221,7 +221,9 @@ Array.extend({
 			if (this[i] === item){
 				this.splice(i, 1);
 				len--;
-			} else i++;
+			} else {
+				i++;
+			}
 		}
 		return this;
 	},

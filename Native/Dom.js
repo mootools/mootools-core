@@ -93,7 +93,9 @@ $$.shared = {
 					case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
 					case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
 				}
-			} else temp.push('[@', param[4], ']');
+			} else {
+				temp.push('[@', param[4], ']');
+			}
 		}
 		temp = temp.join('');
 		$$.shared.cache[selector].xpath = temp;

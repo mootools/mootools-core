@@ -4,7 +4,7 @@ Script: Cookie.Json.js
 
 Credits:
 	based on the CookieJar class by Lalit Patel (http://www.lalit.org/lab/jsoncookies)
-	*/
+*/
 	
 /*
 Class: Cookie.Json
@@ -47,17 +47,9 @@ Example:
 
 Cookie.Json = new Class({
 
-	options: {
-		domain: false,
-		path: false,
-		duration: false,
-		secure: false
-	},
-
-	initialize: function(name, options) {
-		if (!name) return false;
+	initialize: function(name, options){
 		this.name = name;
-		this.setOptions(options);
+		this.options = options;
 		return;
 	},
 
@@ -70,17 +62,17 @@ Cookie.Json = new Class({
 		value - (object) the object to store (can be a string, number, object, etc.)
 	*/
 
-	set: function(key, value) {
-		var val = this.get() || {};
-		val[key] = value;
-		this.save(val);
+	set: function(key, value){
+		var object = this.get() || {};
+		object[key] = value;
+		this.save(object);
 		return this;
 	},
 
-	save: function(obj) {
-		var val = Json.toString(obj);
-		if (val.length > 4096) return false; //cookie would be truncated!
-		Cookie.set(this.name, val);
+	save: function(object){
+		object = Json.toString(object);
+		if (object.length > 4096) return false; //cookie would be truncated!
+		Cookie.set(this.name, object, this.options);
 		return this;
 	},
 
@@ -92,10 +84,10 @@ Cookie.Json = new Class({
 		key - (string) the name of the item
 	*/
 
-	remove: function(key) {
-		var val = this.get();
-		delete val[key];
-		this.save(val);
+	remove: function(key){
+		var object = this.get();
+		delete object[key];
+		this.save(object);
 		return this;
 	},
 
@@ -107,17 +99,17 @@ Cookie.Json = new Class({
 		key - (string) the name of the item; if not provided, the entire object is returned.
 	*/
 
-	get: function(key) {
-		var value = Json.evaluate(Cookie.get(this.name));
-		return ($pick(key, false)) ? value[key] : value;
+	get: function(key){
+		var object = Json.evaluate(Cookie.get(this.name));
+		return (key) ? object[key] : object;
 	},
 
 	/*
 	Property: empty
-		Removes all items from the collection.
+		Removes the cookie.
 	*/
 
-	empty: function() {
+	empty: function(){
 		this.save(null);
 	},
 
@@ -140,5 +132,3 @@ Cookie.Json = new Class({
 	}
 
 });
-
-Cookie.Json.implement(new Options);

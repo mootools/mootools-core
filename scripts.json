@@ -160,6 +160,11 @@
 			"desc": "Lets you Create/Read/Delete Cookies."
 		},
 
+		"Cookie.Json": {
+			"deps": ["Moo", "Utility", "String", "Cookie"],
+			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
+		},
+
 		"Json": {
 			"deps": ["Moo", "Utility"],
 			"desc": "Json encoder/decoder."
