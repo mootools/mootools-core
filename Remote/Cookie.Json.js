@@ -68,6 +68,14 @@ Cookie.Json = new Class({
 		this.save(object);
 		return this;
 	},
+	
+	/*	
+	Property: save
+		Saves an object for the entire value of this Json.Cookie, overwriting any previous data.
+
+	Arguments: 	
+		object - the value to save
+	*/
 
 	save: function(object){
 		object = Json.toString(object);
