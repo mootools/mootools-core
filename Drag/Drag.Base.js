@@ -1,6 +1,9 @@
 /*
 Script: Drag.Base.js
 	Contains <Drag.Base>, <Element.makeResizable>
+	
+Note:
+	Drag.Base requires an XHTML doctype.
 
 License:
 	MIT-style license.

@@ -11,7 +11,7 @@ Class: Accordion
 	The Accordion class creates a group of elements that are toggled when their handles are clicked. When one elements toggles in, the others toggles back.
 	
 Note:
-	The Accordion requires an XHTML strict doctype.
+	The Accordion requires an XHTML doctype.
 
 Arguments:
 	togglers - required, a collection of elements, the elements handlers that will be clickable.

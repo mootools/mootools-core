@@ -11,7 +11,7 @@ Class: Slider
 	Creates a slider with two elements: a knob and a container. Returns the values.
 	
 Note:
-	The Slider requires an XHTML strict doctype.
+	The Slider requires an XHTML doctype.
 
 Arguments:
 	element - the knob container

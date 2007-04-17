@@ -3,7 +3,7 @@ Script: Element.Dimensions.js
 	Contains Element prototypes to deal with Element size and position in space.
 	
 Note:
-	The functions in this script require n XHTML strict doctype.
+	The functions in this script require n XHTML doctype.
 
 License:
 	MIT-style license.

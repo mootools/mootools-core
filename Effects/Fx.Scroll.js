@@ -11,7 +11,7 @@ Class: Fx.Scroll
 	Scroll any element with an overflow, including the window element.
 	
 Note:
-	Fx.Scroll requires an XHTML strict doctype.
+	Fx.Scroll requires an XHTML doctype.
 
 Arguments:
 	element - the element to scroll

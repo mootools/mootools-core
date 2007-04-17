@@ -12,7 +12,7 @@ Class: Scroller
 	You must call its start method to start listening to mouse movements.
 	
 Note:
-	The Scroller requires an XHTML strict doctype.
+	The Scroller requires an XHTML doctype.
 
 Arguments:
 	element - required, the element to scroll.

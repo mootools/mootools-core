@@ -1,6 +1,9 @@
 /*
 Script: Drag.Move.js
 	Contains <Drag.Move>, <Element.makeDraggable>
+	
+Note:
+	Drag.Base requires an XHTML doctype.
 
 License:
 	MIT-style license.

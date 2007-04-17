@@ -11,7 +11,7 @@ Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside. Extends <Fx.Base>, inherits all its properties.
 	
 Note:
-	Fx.Slide requires an XHTML strict doctype.
+	Fx.Slide requires an XHTML doctype.
 
 Options:
 	mode - set it to vertical or horizontal. Defaults to vertical.

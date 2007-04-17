@@ -11,7 +11,7 @@ Class: SmoothScroll
 	Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
 	
 Note:
-	SmoothScroll requires an XHTML strict doctype.
+	SmoothScroll requires an XHTML doctype.
 
 Arguments:
 	options - the Fx.Base options (see: <Fx.Base>) plus links, a collection of elements you want your smoothscroll on. Defaults to document.links.

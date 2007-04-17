@@ -11,7 +11,7 @@ Class: Sortables
 	Creates an interface for <Drag.Base> and drop, resorting of a list.
 	
 Note:
-	The Sortables require an XHTML strict doctype.
+	The Sortables require an XHTML doctype.
 
 Arguments:
 	list - required, the list that will become sortable.
