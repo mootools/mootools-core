@@ -26,7 +26,6 @@ Options:
 	steps - the number of steps for your slider.
 	mode - either 'horizontal' or 'vertical'. defaults to horizontal.
 	offset - relative offset for knob position. default to 0.
-	wheel - experimental! Also use the mouse wheel to control the slider. defaults to false.
 */
 
 var Slider = new Class({
@@ -38,9 +37,7 @@ var Slider = new Class({
 			this.knob.setStyle(this.p, pos);
 		},
 		mode: 'horizontal',
-		clickDrags: true,
 		steps: 100,
-		wheel: false,
 		offset: 0
 	},
 
@@ -52,7 +49,6 @@ var Slider = new Class({
 		this.previousEnd = -1;
 		this.step = -1;
 		this.element.addEvent('mousedown', this.clickedElement.bindWithEvent(this));
-		if (this.options.wheel) this.element.addEvent('mousewheel', this.scrolledElement.bindWithEvent(this));
 		var mod, offset;
 		if (this.options.mode == 'horizontal'){
 			this.z = 'x';
@@ -86,7 +82,6 @@ var Slider = new Class({
 				this.end();
 			}.bind(this)
 		});
-		if (this.options.clickDrags) this.element.addEvent('mousedown', this.drag.start.bindWithEvent(this.drag));
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -106,12 +101,6 @@ var Slider = new Class({
 		this.end();
 		this.fireEvent('onTick', this.toPosition(this.step));
 		return this;
-	},
-
-	scrolledElement: function(event){
-		if (event.wheel < 0) this.set(this.step + 1);
-		else if (event.wheel > 0) this.set(this.step - 1);
-		event.stop();
 	},
 
 	clickedElement: function(event){

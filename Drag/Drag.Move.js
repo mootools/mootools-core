@@ -1,9 +1,6 @@
 /*
 Script: Drag.Move.js
 	Contains <Drag.Move>, <Element.makeDraggable>
-	
-Note:
-	Drag.Base requires an XHTML doctype.
 
 License:
 	MIT-style license.
@@ -13,6 +10,9 @@ License:
 Class: Drag.Move
 	Extends <Drag.Base>, has additional functionality for dragging an element, support snapping and droppables.
 	Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
+	
+Note:
+	Drag.Move requires an XHTML doctype.
 
 Arguments:
 	el - the $(element) to apply the drag to.

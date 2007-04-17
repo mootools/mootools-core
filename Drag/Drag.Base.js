@@ -1,9 +1,6 @@
 /*
 Script: Drag.Base.js
 	Contains <Drag.Base>, <Element.makeResizable>
-	
-Note:
-	Drag.Base requires an XHTML doctype.
 
 License:
 	MIT-style license.
@@ -14,6 +11,9 @@ var Drag = {};
 /*
 Class: Drag.Base
 	Modify two css properties of an element based on the position of the mouse.
+	
+Note:
+	Drag.Base requires an XHTML doctype.
 
 Arguments:
 	el - the $(element) to apply the transformations to.
