@@ -50,7 +50,7 @@ var Cookie = new Abstract({
 		if (options.path) value += '; path=' + options.path;
 		if (options.duration){
 			var date = new Date();
-			date.setTime(date.getTime() + options.duration / 1000);
+			date.setTime(date.getTime() + options.duration * 1000);
 			value += '; expires=' + date.toGMTString();
 		}
 		if (options.secure) value += '; secure';
