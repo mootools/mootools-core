@@ -66,7 +66,7 @@ function $pick(obj, picked){
 
 /*
 Function: $iterable
-	Returns true for arrays and iterable objects, otherwise false
+	Returns true for arrays and iterable objects, otherwise false.
 
 Arguments:
 	obj - object to test
@@ -77,7 +77,7 @@ Example:
 */
 
 function $iterable(obj){
-	return (obj && obj.length != undefined && !obj.match && !obj.initialize);
+	return (typeof obj == 'object' && typeof obj.length == 'number' && !obj.initialize);
 }
 
 /*
