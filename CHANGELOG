@@ -1,15 +1,20 @@
 MOOTOOLS CHANGELOG
------- r431 ------
+------ r474 ------
 
 
 1.1 (??? ??, 2007) http://svn.mootools.net/trunk/
 
-ADD: Added RegExp.escape, escapes expression characters in string
-ADD: Added Cookie option: secure for secure connections
-ADD: Added Element.empty, trashes all child elements and sets innerHTML to ''
+ADD: Added $iterable to Utility.js - returns true for arrays and iterable objects (digitarald)
+ADD: Added: document.head holds a shortcut to the <head> element (kamicane)
+ADD: Fx.Transitions allows now configurable transitions parameters for effects (kamicane)
+ADD: Added Element::injectTop to inject Elements as first child (kamicane)
+ADD: Added String::contains, which checks occurence of string, second parameter is an optional seperator. (kamicane)
+ADD: Added String::escapeRegExp, escapes expression characters in string (kamicane)
+ADD: Added Cookie option: secure for secure connections (digitarald)
+ADD: Added Element::empty, trashes all child elements and sets innerHTML to '' (aaron)
 ADD: Drag.Base grid option, for snap-to-grid movement, also accepts an object with the usual x/y values. (kamicane)
 ADD: Slider with offset option for exact knob position (kamicane)
-ADD: When you click the Slider Container you can also drag with the same click. Option clickDrags (default true), in case you're ticking with an effect (kamicane)
+ADD: When you click the Slider Container you can also drag with the same click (kamicane)
 ADD: Added Element::removeProperty (kamicane)
 ADD: Element::getStyle: Full paddings/margins/borders support, correct width/height for ie. (kamicane)
 ADD: Added simple Abstract, to automatically add .extend to objects. Converted singletons to Abstract (kamicane)
@@ -23,7 +28,6 @@ ADD: Added Array::merge and Array::include (similar to extend/push but with dupl
 ADD: Ajax::evalScripts with global eval and automated eval for javascript response, can be forced with evalResponse , added Ajax::getHeader (digitarald)
 ADD: XHR now has a 'cancel' method, the option 'autoCancel' and the running property for active requests (digitarald, kamicane)
 ADD: UrlEncoding moved from Ajax to XHR to allow get/post encoding for Xhr/Json.Request (digitarald, kamicane)
-ADD: Added $duration (Utility.js), used for Fn.delay, Fn.periodical, Fx duration and Cookie duration (digitarald)
 ADD: Added Element::hasChild() (kamicane)
 CHG: Element::setStyle does not require anymore "+ 'px'", automatically added to number values (kamicane)
 ADD: BREAKING CHANGE: Ajax: postBody renamed in data. It now works also with method=get. (kamicane)
@@ -37,6 +41,9 @@ ADD: Added $merge, merging objects recursively (aaron)
 ADD: Added Element.getStyles() (aaron)
 ADD: $each iterates objects and arrays (aaron)
 
+CHG: Refractored Element::getStyle. Now smaller, safer, better, up to 40% faster. (kamicane)
+CHG: DEPRECATED Array::test is now Array::contains (kamicane)
+CHG: BREAKING CHANGE: Hash::empty now clears the Hash values (kamicane)
 CHG: Drag.Base, return this to Drag::attach/detach (kamicane)
 CHG: Behavior of fixed tooltips is different, is not anymore relative to the mouse position, but to the element position.
 CHG: Element::inject allows 'top'
@@ -74,6 +81,8 @@ CHG: Removed new Element in adopt, inject and replaceWith, now only id's and ele
 CHG: Fixed Element.getValue/Element.toQueryString with support for multiple-selects (digitarald)
 CHG: Moved $type to Moo.js
 
+FIX: Array::remove now also works with null/undefined/0
+FIX: Fixed several bugs with Assets.image and Assets.images, cleaner and better behaviour (digitarald)
 FIX: Fixed ie-domready-problem with secure sites
 FIX: Better behvaiour for Fx.Scroll::toElement [#169] (Yuffster)
 FIX: Couple of fixes to the Color class, now it also carries hex values. (kamicane)
