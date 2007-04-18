@@ -12,7 +12,7 @@ Class: Abstract
 
 Arguments:
 	an object
-	
+
 Returns:
 	the object with an .extend property, equivalent to <$extend>.
 */
@@ -63,6 +63,22 @@ Example:
 function $pick(obj, picked){
 	return (obj != undefined) ? obj : picked;
 };
+
+/*
+Function: $iterable
+	Returns true for arrays and iterable objects, otherwise false
+
+Arguments:
+	obj - object to test
+
+Example:
+	>var childs = el.childNodes;
+	>$iterable(childs) //true
+*/
+
+function $iterable(obj){
+	return (obj && obj.length != undefined && !obj.match && !obj.initialize);
+}
 
 /*
 Function: $random
