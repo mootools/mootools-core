@@ -108,15 +108,11 @@ Cookie.Json = new Class({
 	*/
 
 	get: function(key){
-		try {
-			var value = Cookie.get(this.name);
-			if(value && !value.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/)) {
-				var object = Json.evaluate(value);
-				return (key) ? object[key] : object;
-			} else return false;
-		} catch (e){
-			return null;
-		}
+		var value = Cookie.get(this.name);
+		if(value && !value.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/)) {
+			var object = Json.evaluate(value);
+			return (key) ? object[key] : object;
+		} else return false;
 	},
 
 	/*
