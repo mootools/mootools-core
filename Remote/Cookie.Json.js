@@ -109,10 +109,11 @@ Cookie.Json = new Class({
 
 	get: function(key){
 		var value = Cookie.get(this.name);
-		if(value && !value.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/)) {
-			var object = Json.evaluate(value);
-			return (key) ? object[key] : object;
-		} else return false;
+		if (value){
+			var object = Json.evaluate(value, true);
+			value = (object && key) ? object[key] : object;
+		}
+		return value;
 	},
 
 	/*

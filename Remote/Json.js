@@ -51,13 +51,18 @@ var Json = {
 
 	Arguments:
 		str - the string to evaluate.
+		secure - optionally, performs syntax check on json string. Defaults to false.
+		
+	Credits:
+		Json test regexp is by Douglas Crockford <http://crockford.org>.
 
 	Example:
 		>var myObject = Json.evaluate('{"apple":"red","lemon":"yellow"}');
 		>//myObject will become {apple: 'red', lemon: 'yellow'}
 	*/
 
-	evaluate: function(str){
+	evaluate: function(str, secure){
+		if (secure && !str.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/)) return false;
 		return eval('(' + str + ')');
 	}
 
