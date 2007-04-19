@@ -62,17 +62,7 @@ var Element = new Class({
 			el = document.createElement(el);
 		}
 		el = $(el);
-		if (!props || !el) return el;
-		for (var prop in props){
-			var val = props[prop];
-			switch(prop){
-				case 'styles': el.setStyles(val); break;
-				case 'events': if (el.addEvents) el.addEvents(val); break;
-				case 'properties': el.setProperties(val); break;
-				default: el.setProperty(prop, val);
-			}
-		}
-		return el;
+		return (!props || !el) ? el : el.set(props);
 	}
 
 });
@@ -233,6 +223,24 @@ Class: Element
 */
 
 Element.extend({
+	
+	/*
+	Property: set
+		you can set events, styles and properties with this shortcut. same as calling new Element.
+	*/
+	
+	set: function(props){
+		for (var prop in props){
+			var val = props[prop];
+			switch(prop){
+				case 'styles': this.setStyles(val); break;
+				case 'events': if (this.addEvents) this.addEvents(val); break;
+				case 'properties': this.setProperties(val); break;
+				default: this.setProperty(prop, val);
+			}
+		}
+		return this;
+	},
 
 	inject: function(el, where){
 		el = $(el);
