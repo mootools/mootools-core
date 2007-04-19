@@ -102,6 +102,7 @@ Element.eventMethods = {
 				fn.bind(this, args)();
 			}, this);
 		}
+		return this;
 	}
 
 };

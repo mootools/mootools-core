@@ -10,7 +10,7 @@ License:
 Class: Drag.Move
 	Extends <Drag.Base>, has additional functionality for dragging an element, support snapping and droppables.
 	Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
-	
+
 Note:
 	Drag.Move requires an XHTML doctype.
 
@@ -37,6 +37,7 @@ Drag.Move = Drag.Base.extend({
 		this.element = $(el);
 		this.position = this.element.getStyle('position');
 		this.droppables = $$(this.options.droppables);
+		this.container = $(this.options.container);
 		if (!['absolute', 'relative'].contains(this.position)) this.position = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
@@ -56,7 +57,7 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	start: function(event){
-		this.container = $(this.options.container);
+		this.overed = null;
 		if (this.container){
 			var cont = this.container.getCoordinates();
 			var el = this.element.getCoordinates();
@@ -80,33 +81,25 @@ Drag.Move = Drag.Base.extend({
 	drag: function(event){
 		this.parent(event);
 		if (this.out) return this;
-		this.droppables.each(function(drop){
-			if (this.checkAgainst($(drop))){
-				if (!drop.overing) drop.fireEvent('over', [this.element, this]);
-				drop.overing = true;
-			} else {
-				if (drop.overing) drop.fireEvent('leave', [this.element, this]);
-				drop.overing = false;
-			}
-		}, this);
+		var overed = false;
+		var overed = this.droppables.filter(this.checkAgainst, this).getLast();
+		if (this.overed != overed){
+			if (this.overed) this.overed.fireEvent('leave', [this.element, this]);
+			this.overed = overed ? overed.fireEvent('over', [this.element, this]) : null;
+		}
 		return this;
 	},
 
 	checkAgainst: function(el){
 		el = el.getCoordinates(this.options.overflown);
-		return (this.mouse.now.x > el.left && this.mouse.now.x < el.right && this.mouse.now.y < el.bottom && this.mouse.now.y > el.top);
+		var now = this.mouse.now;
+		return (now.x > el.left && now.x < el.right && now.y < el.bottom && now.y > el.top);
 	},
 
 	stop: function(){
 		if (!this.out){
-			var dropped = false;
-			this.droppables.each(function(drop){
-				if (this.checkAgainst(drop)){
-					drop.fireEvent('drop', [this.element, this]);
-					dropped = true;
-				}
-			}, this);
-			if (!dropped) this.element.fireEvent('emptydrop', this);
+			if (this.overed) this.overed.fireEvent('drop', [this.element, this]);
+			else this.element.fireEvent('emptydrop', this);
 		}
 		this.parent();
 		return this;
