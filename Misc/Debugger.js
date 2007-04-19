@@ -253,7 +253,7 @@ var debug = {
 			'left': '0'
 		}).injectInside(debug._body);
 
-		if (window.khtml){
+		if (window.webkit){
 			debug._input.setStyles({
 				'margin-top': '-2px',
 				'margin-left': '29px',
@@ -272,7 +272,7 @@ var debug = {
 
 	resetHeight: function(){
 		debug._hgt = debug._body.offsetHeight;
-		if (!window.khtml) debug._hgt -= 3;
+		if (!window.webkit) debug._hgt -= 3;
 		else debug._hgt -= 1;
 		debug._gts.setStyle('top', (debug._hgt - debug._gts.offsetHeight - 1));
 		debug.resize();

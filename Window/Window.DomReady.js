@@ -37,7 +37,7 @@ Element.Events.domready = {
 			window.timer = $clear(window.timer);
 			this.fireEvent('domready');
 		}.bind(this);
-		if (document.readyState && window.khtml){
+		if (document.readyState && window.webkit){
 			window.timer = function(){
 				if (['loaded','complete'].contains(document.readyState)) domReady();
 			}.periodical(50);

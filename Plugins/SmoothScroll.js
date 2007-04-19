@@ -36,7 +36,7 @@ var SmoothScroll = Fx.Scroll.extend({
 
 	useLink: function(link, anchor){
 		link.addEvent('click', function(event){
-			if (!window.khtml){
+			if (!window.webkit419){
 				this.clearChain();
 				this.chain(function(){
 					window.location.hash = anchor;

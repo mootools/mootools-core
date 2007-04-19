@@ -140,21 +140,24 @@ Properties:
 	window.ie - will be set to true if the current browser is internet explorer (any).
 	window.ie6 - will be set to true if the current browser is internet explorer 6.
 	window.ie7 - will be set to true if the current browser is internet explorer 7.
-	window.khtml - will be set to true if the current browser is Safari/Konqueror.
 	window.gecko - will be set to true if the current browser is Mozilla/Gecko.
+	window.webkit - will be set to true if the current browser is Safari/Konqueror.
+	window.webkit419 - will be set to true if the current browser is Safari2 / webkit till version 419.
+	window.webkit420 - will be set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
+	window.opera - is set to true by opera itself.
 */
 
-if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
-else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = true;
-else if (document.getBoxObjectFor != null) window.gecko = true;
 window.xpath = !!(document.evaluate);
+if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
+else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
+else if (document.getBoxObjectFor != null) window.gecko = true;
 
 //htmlelement
 
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = Class.empty;
-	if (window.khtml) document.createElement("iframe"); //fixes safari
-	HTMLElement.prototype = (window.khtml) ? window["[[DOMElement.prototype]]"] : {};
+	if (window.webkit) document.createElement("iframe"); //fixes safari
+	HTMLElement.prototype = (window.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
 HTMLElement.prototype.htmlElement = true;
 
