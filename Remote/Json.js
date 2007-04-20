@@ -34,9 +34,7 @@ var Json = {
 			case 'string':
 				return '"' + obj.replace(/(["\\])/g, '\\$1') + '"';
 			case 'array':
-				return '[' + obj.map(function(ar){
-					return Json.toString(ar);
-				}).join(',') + ']';
+				return '[' + obj.map(Json.toString).join(',') + ']';
 			case 'object':
 				var string = [];
 				for (var property in obj) string.push(Json.toString(property) + ':' + Json.toString(obj[property]));
@@ -52,7 +50,7 @@ var Json = {
 	Arguments:
 		str - the string to evaluate.
 		secure - optionally, performs syntax check on json string. Defaults to false.
-		
+
 	Credits:
 		Json test regexp is by Douglas Crockford <http://crockford.org>.
 
@@ -62,7 +60,7 @@ var Json = {
 	*/
 
 	evaluate: function(str, secure){
-		if (secure && !str.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/)) return false;
+		if (secure && !/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(str)) return false;
 		return eval('(' + str + ')');
 	}
 
