@@ -81,7 +81,6 @@ Drag.Move = Drag.Base.extend({
 	drag: function(event){
 		this.parent(event);
 		if (this.out) return this;
-		var overed = false;
 		var overed = this.droppables.filter(this.checkAgainst, this).getLast();
 		if (this.overed != overed){
 			if (this.overed) this.overed.fireEvent('leave', [this.element, this]);
