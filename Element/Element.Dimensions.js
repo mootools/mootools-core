@@ -1,7 +1,7 @@
 /*
 Script: Element.Dimensions.js
 	Contains Element prototypes to deal with Element size and position in space.
-
+	
 Note:
 	The functions in this script require n XHTML doctype.
 
@@ -15,7 +15,7 @@ Class: Element
 */
 
 Element.extend({
-
+	
 	/*
 	Property: scrollTo
 		Scrolls the element to the specified coordinated (if the element has an overflow)
@@ -79,9 +79,9 @@ Element.extend({
 			top += el.offsetTop || 0;
 			el = el.offsetParent;
 		} while (el);
-		overflown.each(function(el){
-			left -= el.scrollLeft || 0;
-			top -= el.scrollTop || 0;
+		overflown.each(function(element){
+			left -= element.scrollLeft || 0;
+			top -= element.scrollTop || 0;
 		});
 		return {'x': left, 'y': top};
 	},
@@ -128,14 +128,15 @@ Element.extend({
 
 	getCoordinates: function(overflown){
 		var position = this.getPosition(overflown);
-		return {
+		var obj = {
 			'width': this.offsetWidth,
 			'height': this.offsetHeight,
 			'left': position.x,
-			'top': position.y,
-			'right': position.x + this.offsetWidth,
-			'bottom': position.y + this.offsetHeight
+			'top': position.y
 		};
+		obj.right = obj.left + obj.width;
+		obj.bottom = obj.top + obj.height;
+		return obj;
 	}
 
 });
