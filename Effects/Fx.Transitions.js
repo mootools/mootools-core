@@ -44,17 +44,16 @@ Fx.Transitions = new Abstract({
 Fx.Shared.CreateTransitionEases = function(transition, type){
 	$extend(transition, {
 		easeIn: function(t, c, d, x, y, z){
-			return c - c * transition((d - t) / d, t, c, d, x, y, z);
+			return c * transition(t, c, d, x, y, z);
 		},
 
 		easeOut: function(t, c, d, x, y, z){
-			return c * transition(t / d, t, c, d, x, y, z);
+			return c * (1 - transition(d - t, c, d, x, y, z));
 		},
 
 		easeInOut: function(t, c, d, x, y, z){
 			d /= 2, c /= 2;
-			var p = t / d;
-			return (p < 1) ? transition.easeIn(t, c, d, x, y, z) : c * (transition(p - 1, t, c, d, x, y, z) + 1);
+			return (t <= d) ? c * transition(t, c, d, x, y, z) : c + c * (1 - transition(t, c, d, x, y, z));
 		}
 	});
 	//compatibility
@@ -84,29 +83,15 @@ Fx.Transitions.extend = function(transitions){
 Fx.Transitions.extend({
 	
 	/*
-	Property: Sine
-		displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut
-		
-	Graph:
-		(see Sine.png)
-	*/
-
-	Sine: function(p){
-		return Math.sin(p * (Math.PI / 2));
-	},
-	
-	/*
 	Property: Quad
 		displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut
 		
 	Graph:
 		(see Quad.png)
 	*/
-
-	Quad: function(p){
-		return -(Math.pow(p - 1, 2) - 1);
-	},
 	
+	//auto generated
+
 	/*
 	Property: Cubic
 		displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut
@@ -114,11 +99,9 @@ Fx.Transitions.extend({
 	Graph:
 		(see Cubic.png)
 	*/
-
-	Cubic: function(p){
-		return Math.pow(p - 1, 3) + 1;
-	},
 	
+	//auto generated
+
 	/*
 	Property: Quart
 		displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut
@@ -126,10 +109,8 @@ Fx.Transitions.extend({
 	Graph:
 		(see Quart.png)
 	*/
-
-	Quart: function(p){
-		return -(Math.pow(p - 1, 4) - 1);
-	},
+	
+	//auto generated
 	
 	/*
 	Property: Quint
@@ -139,10 +120,22 @@ Fx.Transitions.extend({
 		(see Quint.png)
 	*/
 
-	Quint: function(p){
-		return Math.pow(p - 1, 5) + 1;
-	},
+	//auto generated
 	
+	/*
+	Property: Pow
+		Used to generate Quad, Cubic, Quart and Quint.
+		By default is p^6.
+		
+	Graph:
+		(see Pow.png)
+	*/
+	
+	Pow: function(t, c, d, x){
+		x = x || 6;
+		return Math.pow(t / d, x);
+	},
+
 	/*
 	Property: Expo
 		displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut
@@ -150,11 +143,11 @@ Fx.Transitions.extend({
 	Graph:
 		(see Expo.png)
 	*/
-
-	Expo: function(p){
-		return -Math.pow(2, -10 * p) + 1;
-	},
 	
+	Expo: function(t, c, d){
+		return Math.pow(2, 8 * (t / d - 1));
+	},
+
 	/*
 	Property: Circ
 		displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut
@@ -162,55 +155,77 @@ Fx.Transitions.extend({
 	Graph:
 		(see Circ.png)
 	*/
-
-	Circ: function(p){
-		return Math.sqrt(1 - Math.pow(p - 1, 2));
+	
+	Circ: function(t, c, d){
+		return -Math.sin(Math.acos(t / d)) + 1;
 	},
 	
+
 	/*
-	Property: Bounce
-		makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut
+	Property: Sine
+		displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut
 		
-	
 	Graph:
-		(see Bounce.png)
+		(see Sine.png)
 	*/
-
-	Bounce: function(p){
-		var b = 7.5625;
-		if (p < (1 / 2.75)) return b * Math.pow(p, 2);
-		else if (p < (2 / 2.75)) return b * (p -= (1.5 / 2.75)) * p + 0.75;
-		else if (p < (2.5 / 2.75)) return b * (p -= (2.25 / 2.75)) * p + 0.9375;
-		else return b * (p -= (2.625 / 2.75)) * p + 0.984375;
-	},
 	
+	Sine: function(t, c, d){
+		return 1 - Math.sin((1 - t / d) * Math.PI / 2);
+	},
+
 	/*
 	Property: Back
 		makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut
-		set() changes the way it overshoots the target, default is 1.70158
-
+		set(x) changes the way it overshoots the target, default is 1.61803398874989 (PHI - "The Golden Ratio")
+		
 	Graph:
 		(see Back.png)
 	*/
 
-	Back: function(p, t, c, d, x){
-		x = x || 1.70158;
-		p -= 1;
-		return Math.pow(p, 2) * ((x + 1) * p + x) + 1;
+	Back: function(t, c, d, x){
+		x = x || 1.6180;
+		var p = t / d;
+		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
+
+	/*
+	Property: Bounce
+		makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut
+		
+	Graph:
+		(see Bounce.png)
+	*/
 	
+	Bounce: function(t, c, d){
+		var y, b = 7.5625, p = 1 - t / d;
+		if (p < (1 / 2.75)) y = b * Math.pow(p, 2);
+		else if (p < (2 / 2.75)) y = b * (p -= (1.5 / 2.75)) * p + 0.75;
+		else if (p < (2.5 / 2.75)) y = b * (p -= (2.25 / 2.75)) * p + 0.9375;
+		else y = b * (p -= (2.625 / 2.75)) * p + 0.984375;
+		return - y + 1;
+	},
+
 	/*
 	Property: Elastic
 		Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
-		set() works as a multiplier of the elasicity effect. set(2) makes it twice as strong
-	
+		set(x) works as a multiplier of the elasicity effect. set(2) makes it twice as strong
+		
 	Graph:
 		(see Elastic.png)
 	*/
-
-	Elastic: function(p, t, c, d, x){
-		x = d * 0.3 / (x || 1);
-		return (c * Math.pow(2, -10 * p) * Math.sin((p * d - x / 4) * (2 * Math.PI) / x) + c) / c;
+	
+	Elastic: function(t, c, d, x, y){
+		var p = t / d;
+		x = y || 1 * 300 / (x || 1);
+		return -Math.pow(2, 10 * (p -= 1)) * Math.sin((p * d - x / 4) * (2 * Math.PI) / x);
 	}
 
+});
+
+['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
+	var obj = {};
+	obj[transition] = function(t, c, d){
+		return Fx.Transitions.Pow(t, d, d, i + 2);
+	};
+	Fx.Transitions.extend(obj);
 });

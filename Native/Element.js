@@ -349,7 +349,9 @@ Element.extend({
 	*/
 
 	clone: function(contents){
-		return $(this.cloneNode(contents !== false));
+		var el = $(this.cloneNode(contents !== false));
+		if (this.id && $(this.id)) el.id = null;
+		return el;
 	},
 
 	/*
