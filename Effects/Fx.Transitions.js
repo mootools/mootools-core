@@ -44,16 +44,16 @@ Fx.Transitions = new Abstract({
 Fx.Shared.CreateTransitionEases = function(transition, type){
 	$extend(transition, {
 		easeIn: function(t, c, d, x, y, z){
-			return c * transition(t, c, d, x, y, z);
+			return c * transition(t / d, x, y, z);
 		},
 
 		easeOut: function(t, c, d, x, y, z){
-			return c * (1 - transition(d - t, c, d, x, y, z));
+			return c * (1 - transition((d - t) / d, x, y, z));
 		},
 
 		easeInOut: function(t, c, d, x, y, z){
 			d /= 2, c /= 2;
-			return (t <= d) ? c * transition(t, c, d, x, y, z) : c + c * (1 - transition(t, c, d, x, y, z));
+			return (t <= d) ? c * transition(t / d, x, y, z) : c + c * (1 - transition(2 - t / d, x, y, z));
 		}
 	});
 	//compatibility
@@ -131,9 +131,9 @@ Fx.Transitions.extend({
 		(see Pow.png)
 	*/
 	
-	Pow: function(t, c, d, x){
+	Pow: function(p, x){
 		x = x || 6;
-		return Math.pow(t / d, x);
+		return Math.pow(p, x);
 	},
 
 	/*
@@ -144,8 +144,8 @@ Fx.Transitions.extend({
 		(see Expo.png)
 	*/
 	
-	Expo: function(t, c, d){
-		return Math.pow(2, 8 * (t / d - 1));
+	Expo: function(p){
+		return Math.pow(2, 8 * (p - 1));
 	},
 
 	/*
@@ -156,8 +156,8 @@ Fx.Transitions.extend({
 		(see Circ.png)
 	*/
 	
-	Circ: function(t, c, d){
-		return -Math.sin(Math.acos(t / d)) + 1;
+	Circ: function(p){
+		return 1 - Math.sin(Math.acos(p));
 	},
 	
 
@@ -169,8 +169,8 @@ Fx.Transitions.extend({
 		(see Sine.png)
 	*/
 	
-	Sine: function(t, c, d){
-		return 1 - Math.sin((1 - t / d) * Math.PI / 2);
+	Sine: function(p){
+		return 1 - Math.sin((1 - p) * Math.PI / 2);
 	},
 
 	/*
@@ -182,9 +182,8 @@ Fx.Transitions.extend({
 		(see Back.png)
 	*/
 
-	Back: function(t, c, d, x){
+	Back: function(p, x){
 		x = x || 1.6180;
-		var p = t / d;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -196,8 +195,9 @@ Fx.Transitions.extend({
 		(see Bounce.png)
 	*/
 	
-	Bounce: function(t, c, d){
-		var y, b = 7.5625, p = 1 - t / d;
+	Bounce: function(p){
+		var y, b = 7.5625;
+		p = 1 - p;
 		if (p < (1 / 2.75)) y = b * Math.pow(p, 2);
 		else if (p < (2 / 2.75)) y = b * (p -= (1.5 / 2.75)) * p + 0.75;
 		else if (p < (2.5 / 2.75)) y = b * (p -= (2.25 / 2.75)) * p + 0.9375;
@@ -214,18 +214,18 @@ Fx.Transitions.extend({
 		(see Elastic.png)
 	*/
 	
-	Elastic: function(t, c, d, x, y){
-		var p = t / d;
-		x = y || 1 * 300 / (x || 1);
-		return -Math.pow(2, 10 * (p -= 1)) * Math.sin((p * d - x / 4) * (2 * Math.PI) / x);
+	Elastic: function(p, x, y){
+		y = y || 1000;
+		x = y * 0.3 / (x || 1);
+		return -Math.pow(2, 10 * (p -= 1)) * Math.sin((p * y - x / 4) * (2 * Math.PI) / x);
 	}
 
 });
 
 ['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
 	var obj = {};
-	obj[transition] = function(t, c, d){
-		return Fx.Transitions.Pow(t, d, d, i + 2);
+	obj[transition] = function(p){
+		return Fx.Transitions.Pow(p, i + 2);
 	};
 	Fx.Transitions.extend(obj);
 });

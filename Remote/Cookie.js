@@ -37,7 +37,7 @@ var Cookie = new Abstract({
 		secure - Stored cookie information can be accessed only from a secure environment.
 
 	Example:
-		>Cookie.set("username", "Harald", {duration: 3600}); //save this for 1 hour
+		>Cookie.set("username", "Harald", {duration: 1}); //save this for 1 hour
 		>Cookie.set("username", "JackBauer", {duration: false}); //session cookie
 
 	*/
