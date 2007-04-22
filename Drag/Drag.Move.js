@@ -43,8 +43,8 @@ Drag.Move = Drag.Base.extend({
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
 		if (this.position == 'absolute'){
-			top = $chk(top) ? top : this.getTop(this.options.overflown);
-			left = $chk(left) ? left : this.getLeft(this.options.overflown);
+			top = $chk(top) ? top : this.element.getTop(this.options.overflown);
+			left = $chk(left) ? left : this.element.getLeft(this.options.overflown);
 		} else {
 			top = $chk(top) ? top : 0;
 			left = $chk(left) ? left : 0;
