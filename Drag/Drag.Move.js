@@ -22,6 +22,7 @@ Options:
 	all the drag.Base options, plus:
 	container - an element, will fill automatically limiting options based on the $(element) size and position. defaults to false (no limiting)
 	droppables - an array of elements you can drop your draggable to.
+	overflown - an array of nested scrolling containers, see Element::getPosition
 */
 
 Drag.Move = Drag.Base.extend({
@@ -42,8 +43,8 @@ Drag.Move = Drag.Base.extend({
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
 		if (this.position == 'absolute'){
-			top = $chk(top) ? top : this.element.getTop();
-			left = $chk(left) ? left : this.element.getLeft();
+			top = $chk(top) ? top : this.getTop(this.options.overflown);
+			left = $chk(left) ? left : this.getLeft(this.options.overflown);
 		} else {
 			top = $chk(top) ? top : 0;
 			left = $chk(left) ? left : 0;

@@ -1,7 +1,7 @@
 /*
 Script: Element.Dimensions.js
 	Contains Element prototypes to deal with Element size and position in space.
-	
+
 Note:
 	The functions in this script require n XHTML doctype.
 
@@ -15,7 +15,7 @@ Class: Element
 */
 
 Element.extend({
-	
+
 	/*
 	Property: scrollTo
 		Scrolls the element to the specified coordinated (if the element has an overflow)
@@ -64,6 +64,9 @@ Element.extend({
 	Property: getPosition
 		Returns the real offsets of the element.
 
+	Arguments:
+		overflown - optional, an array of nested scrolling containers for scroll offset calculation, use this if your element is inside any element containing scrollbars
+
 	Example:
 		>$('element').getPosition();
 
@@ -89,24 +92,33 @@ Element.extend({
 	/*
 	Property: getTop
 		Returns the distance from the top of the window to the Element.
+
+	Arguments:
+		overflown - optional, an array of nested scrolling containers, see Element::getPosition
 	*/
 
-	getTop: function(){
-		return this.getPosition().y;
+	getTop: function(overflown){
+		return this.getPosition(overflown).y;
 	},
 
 	/*
 	Property: getLeft
 		Returns the distance from the left of the window to the Element.
+
+	Arguments:
+		overflown - optional, an array of nested scrolling containers, see Element::getPosition
 	*/
 
-	getLeft: function(){
-		return this.getPosition().x;
+	getLeft: function(overflown){
+		return this.getPosition(overflown).x;
 	},
 
 	/*
 	Property: getCoordinates
 		Returns an object with width, height, left, right, top, and bottom, representing the values of the Element
+
+	Arguments:
+		overflown - optional, an array of nested scrolling containers, see Element::getPosition
 
 	Example:
 		(start code)

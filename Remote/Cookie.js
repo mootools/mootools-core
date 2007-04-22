@@ -36,6 +36,9 @@ var Cookie = new Abstract({
 					If set to false or 0, the cookie will be a session cookie that expires when the browser is closed. This is default.
 		secure - Stored cookie information can be accessed only from a secure environment.
 
+	Returns:
+		An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
+
 	Example:
 		>Cookie.set("username", "Harald", {duration: 1}); //save this for 1 hour
 		>Cookie.set("username", "JackBauer", {duration: false}); //session cookie

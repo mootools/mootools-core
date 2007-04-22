@@ -21,8 +21,8 @@
 	"Native": {
 
 		"Array": {
-			"deps": ["Moo"],
-			"desc": "Contains Array Prototypes, like copy, each, test, remove."
+			"deps": ["Moo", "Utility"],
+			"desc": "Contains Array Prototypes, like copy, each, contains, remove."
 		},
 
 		"String": {
@@ -160,13 +160,8 @@
 			"desc": "Lets you Create/Read/Delete Cookies."
 		},
 
-		"Cookie.Json": {
-			"deps": ["Moo", "Utility", "String", "Cookie"],
-			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
-		},
-
 		"Json": {
-			"deps": ["Moo", "Utility"],
+			"deps": ["Moo", "Utility", "Array"],
 			"desc": "Json encoder/decoder."
 		},
 
@@ -185,8 +180,13 @@
 	"Plugins": {
 
 		"Hash": {
-			"deps": ["Moo"],
+			"deps": ["Moo", "Utility", "Array"],
 			"desc": "Object wrapper, allows to use custom methods on javascript Objects. By Christophe Beyls."
+		},
+
+		"Hash.Cookie": {
+			"deps": ["Moo", "Utility", "String", "Cookie", "Hash"],
+			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
 		},
 
 		"Color": {

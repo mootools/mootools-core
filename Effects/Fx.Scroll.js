@@ -9,16 +9,24 @@ License:
 /*
 Class: Fx.Scroll
 	Scroll any element with an overflow, including the window element.
-	
+
 Note:
 	Fx.Scroll requires an XHTML doctype.
 
 Arguments:
 	element - the element to scroll
-	options - same as <Fx.Base> options.
+	options - optional, see Options below.
+
+Options:
+	all the Fx.Base options, plus:
+	overflown - an array of nested scrolling containers, see Element::getPosition
 */
 
 Fx.Scroll = Fx.Base.extend({
+
+	options: {
+		overflown: []
+	},
 
 	initialize: function(element, options){
 		this.now = [];
@@ -102,8 +110,8 @@ Fx.Scroll = Fx.Base.extend({
 	*/
 
 	toElement: function(el){
-		var parent = this.element.getPosition();
-		var target = $(el).getPosition();
+		var parent = this.element.getPosition(this.options.overflown);
+		var target = $(el).getPosition(this.options.overflown);
 		return this.scrollTo(target.x - parent.x, target.y - parent.y);
 	},
 
