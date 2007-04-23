@@ -43,17 +43,16 @@ Fx.Transitions = new Abstract({
 
 Fx.Shared.CreateTransitionEases = function(transition, type){
 	$extend(transition, {
-		easeIn: function(t, c, d, x, y, z){
-			return c * transition(t / d, x, y, z);
+		easeIn: function(p, x, y, z){
+			return transition(p, x, y, z);
 		},
 
-		easeOut: function(t, c, d, x, y, z){
-			return c * (1 - transition(1 - t / d, x, y, z));
+		easeOut: function(p, x, y, z){
+			return 1 - transition(1 - p, x, y, z);
 		},
 
-		easeInOut: function(t, c, d, x, y, z){
-			d /= 2, c /= 2;
-			return (t <= d) ? c * transition(t / d, x, y, z) : c * (2 - transition(2 - t / d, x, y, z));
+		easeInOut: function(p, x, y, z){
+			return (p <= 0.5) ? transition(2 * p, x, y, z) / 2 : (2 - transition(2 * (1 - p), x, y, z)) / 2;
 		}
 	});
 	//compatibility
