@@ -142,8 +142,6 @@ Returns:
 	'element' - if obj is a DOM element node
 	'textnode' - if obj is a DOM text node
 	'whitespace' - if obj is a DOM whitespace node
-	'array' - if obj is an array
-	'collection' - if obj is an collection
 	'arguments' - if obj is an arguments object
 	'object' - if obj is an object
 	'string' - if obj is a string
