@@ -38,7 +38,6 @@ Hash.Cookie = Hash.extend({
 	initialize: function(name, options){
 		this.name = name;
 		this.options = options;
-		console.log('inited');
 		window.addEvent('unload', this.save.bind(this));
 		this.load();
 	},
