@@ -5,7 +5,7 @@ Script: Hash.Cookie.js
 
 /*
 Class: Hash.Cookie
-	Inherits all the methods from <Hash>, additional methods are save, load and delete.
+	Inherits all the methods from <Hash>, additional methods are save, load and erase.
 	Hash json string has a limit of 4kb (4096byte), so be careful with your Hash size.
 	Creating a new instance automatically loads the data from the Cookie.
 	The cookie is actually saved on page unload, or by directly calling save.
@@ -29,7 +29,7 @@ Example:
 	var fruits = new Hash.Cookie('myCookieName', {duration: 365});
 	fruits.get('melon'); // green
 
-	fruits.delete(); // delete cookie
+	fruits.erase(); // delete cookie
 	(end)
 */
 
@@ -82,17 +82,17 @@ Hash.Cookie = Hash.extend({
 	},
 
 	/*
-	Property: delete
+	Property: erase
 		Deletes the cookie.
 
 	Example:
 		(start code)
 		var login = new Hash.Cookie('userstatus');
-		login.delete(); // delete cookie
+		login.erase(); // deletes the cookie, and empties the object.
 		(end)
 	*/
 
-	delete: function(){
+	erase: function(){
 		this.empty();
 		Cookie.remove(this.name, this.options);
 		return this;
