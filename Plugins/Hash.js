@@ -28,8 +28,8 @@ var Hash = new Class({
 	length: 0,
 
 	initialize: function(object){
-		this.obj = this.object = {};
-		this.extend(object);
+		this.obj = object;
+		this.setLength();
 	},
 
 	/*
@@ -44,7 +44,7 @@ var Hash = new Class({
 	*/
 
 	get: function(key){
-		return this.object[key];
+		return (key in this.obj) ? this.obj[key] : false;
 	},
 
 	/*
@@ -59,7 +59,7 @@ var Hash = new Class({
 	*/
 
 	hasKey: function(key){
-		return (key in this.object);
+		return (key in this.obj);
 	},
 
 	/*
@@ -72,14 +72,14 @@ var Hash = new Class({
 	*/
 
 	set: function(key, value){
-		if (!(key in this.object)) this.length++;
-		this.object[key] = value;
+		if (!(key in this.obj)) this.length++;
+		this.obj[key] = value;
 		return this;
 	},
 	
 	setLength: function(){
 		this.length = 0;
-		for (var p in this) this.length++;
+		for (var p in this.obj) this.length++;
 		return this;
 	},
 
@@ -92,8 +92,8 @@ var Hash = new Class({
 	*/
 
 	remove: function(key){
-		if (!(key in this.object)) return this;
-		delete this.object[key];
+		if (!(key in this.obj)) return this;
+		delete this.obj[key];
 		this.length--;
 		return this;
 	},
@@ -108,7 +108,7 @@ var Hash = new Class({
 	*/
 
 	each: function(fn, bind){
-		$each(this.object, fn, bind);
+		$each(this.obj, fn, bind);
 	},
 
 	/*
@@ -120,7 +120,7 @@ var Hash = new Class({
 	*/
 
 	extend: function(obj){
-		$extend(this.object, obj);
+		$extend(this.obj, obj);
 		return this.setLength();
 	},
 	
@@ -130,7 +130,7 @@ var Hash = new Class({
 	*/
 	
 	merge: function(){
-		this.object = $merge.apply(null, [this.object].concat($A(arguments)));
+		this.obj = $merge.apply(null, [this.obj].concat($A(arguments)));
 		return this.setLength();
 	},
 
@@ -140,7 +140,7 @@ var Hash = new Class({
 	*/
 
 	empty: function(){
-		this.object = {};
+		this.obj = {};
 		this.length = 0;
 		return this;
 	},
@@ -155,7 +155,7 @@ var Hash = new Class({
 
 	keys: function(){
 		var keys = [];
-		for (var property in this.object) keys.push(property);
+		for (var property in this.obj) keys.push(property);
 		return keys;
 	},
 
@@ -169,7 +169,7 @@ var Hash = new Class({
 
 	values: function(){
 		var values = [];
-		for (var property in this.object) values.push(this.object[property]);
+		for (var property in this.obj) values.push(this.obj[property]);
 		return values;
 	}
 

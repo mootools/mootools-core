@@ -163,7 +163,6 @@ Fx.Transitions.extend({
 	/*
 	Property: Back
 		makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut
-		set(x) changes the way it overshoots the target, default is 1.61803398874989 (PHI - "The Golden Ratio")
 		
 	Graph:
 		(see Back.png)
@@ -195,16 +194,15 @@ Fx.Transitions.extend({
 	/*
 	Property: Elastic
 		Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
-		set(x) works as a multiplier of the elasicity effect. set(2) makes it twice as strong
 		
 	Graph:
 		(see Elastic.png)
 	*/
 	
 	Elastic: function(p, x){
-		x = x[0] || 300;
-		var y = x * 0.3 / (x[1] || 1);
-		return Math.pow(2, 10 * (p -= 1)) * Math.cos(2 * Math.PI * p * x / y);
+		var z = x[0] || 300;
+		var y = z * 0.3 / (x[1] || 1);
+		return Math.pow(2, 10 * (p -= 1)) * Math.cos(2 * Math.PI * p * z / y);
 	}
 
 });
