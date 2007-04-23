@@ -143,6 +143,8 @@ Returns:
 	'textnode' - if obj is a DOM text node
 	'whitespace' - if obj is a DOM whitespace node
 	'array' - if obj is an array
+	'collection' - if obj is an collection
+	'arguments' - if obj is an arguments object
 	'object' - if obj is an object
 	'string' - if obj is a string
 	'number' - if obj is a number
@@ -156,20 +158,18 @@ function $type(obj){
 	if (obj == undefined) return false;
 	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
-	if (type == 'object'){
-		if (obj.nodeName){
-			switch(obj.nodeType){
-				case 1: return 'element';
-				case 3: return /\S/.test(obj.nodeValue) ? 'textnode' : 'whitespace';
-			}
+	if (type == 'object' && obj.nodeName){
+		switch(obj.nodeType){
+			case 1: return 'element';
+			case 3: return /\S/.test(obj.nodeValue) ? 'textnode' : 'whitespace';
 		}
 	}
-	switch(obj.constructor){
-		case Array: return 'array';
-		case RegExp: return 'regexp';
-		case Class: return 'class';
-	}
 	if (type == 'object' || type == 'function'){
+		switch(obj.constructor){
+			case Array: return 'array';
+			case RegExp: return 'regexp';
+			case Class: return 'class';
+		}
 		if (typeof obj.length == 'number'){
 			if (obj.item) return 'collection';
 			if (obj.callee) return 'arguments';
