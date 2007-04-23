@@ -404,6 +404,7 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if ($iterable(iterable)) Array.prototype.forEach.call(iterable, fn, bind);
-	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
+	var type = $type(iterable);
+	if (['arguments', 'collection', 'array'].contains(type)) Array.prototype.forEach.call(iterable, fn, bind);
+	else if (type == 'object') for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
 };

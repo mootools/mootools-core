@@ -172,7 +172,7 @@ function $$(){
 		var selector = arguments[i];
 		switch($type(selector)){
 			case 'element': elements.push(selector);
-			case 'boolean':
+			case 'boolean': break;
 			case false: break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default: elements = elements.concat((selector.push) ? selector : $A(selector));

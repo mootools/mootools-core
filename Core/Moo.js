@@ -46,6 +46,7 @@ var Class = function(properties){
 	};
 	$extend(klass, this);
 	klass.prototype = properties;
+	klass.constructor = Class;
 	return klass;
 };
 
@@ -153,18 +154,27 @@ Returns:
 
 function $type(obj){
 	if (obj == undefined) return false;
+	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
 	if (type == 'object'){
-		if (obj.htmlElement) return 'element';
-		if (obj.push) return 'array';
 		if (obj.nodeName){
 			switch(obj.nodeType){
 				case 1: return 'element';
-				case 3: return obj.nodeValue.test(/\S/) ? 'textnode' : 'whitespace';
+				case 3: return /\S/.test(obj.nodeValue) ? 'textnode' : 'whitespace';
 			}
 		}
 	}
-	if ((type == 'object' || type == 'function') && obj.exec) return 'regexp';
+	switch(obj.constructor){
+		case Array: return 'array';
+		case RegExp: return 'regexp';
+		case Class: return 'class';
+	}
+	if (type == 'object' || type == 'function'){
+		if (typeof obj.length == 'number'){
+			if (obj.item) return 'collection';
+			if (obj.callee) return 'arguments';
+		}
+	}
 	return type;
 };
 

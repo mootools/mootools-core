@@ -65,22 +65,6 @@ function $pick(obj, picked){
 };
 
 /*
-Function: $iterable
-	Returns true for arrays and iterable objects, otherwise false.
-
-Arguments:
-	obj - object to test
-
-Example:
-	>var childs = el.childNodes;
-	>$iterable(childs) //true
-*/
-
-function $iterable(obj){
-	return (typeof obj == 'object' && typeof obj.length == 'number' && !obj.initialize);
-}
-
-/*
 Function: $random
 	Returns a random integer number between the two passed in values.
 

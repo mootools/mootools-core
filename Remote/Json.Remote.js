@@ -39,7 +39,7 @@ Json.Remote = XHR.extend({
 	},
 
 	onComplete: function(){
-		this.fireEvent('onComplete', Json.evaluate(this.response.text));
+		this.fireEvent('onComplete', Json.evaluate(this.response.text, this.options.secure));
 	}
 
 });

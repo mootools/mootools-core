@@ -32,7 +32,7 @@ String.extend({
 	*/
 
 	test: function(regex, params){
-		return ((typeof regex == 'string') ? new RegExp(regex, params) : regex).test(this);
+		return (($type(regex) == 'string') ? new RegExp(regex, params) : regex).test(this);
 	},
 
 	/*
