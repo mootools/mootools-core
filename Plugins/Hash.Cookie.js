@@ -7,12 +7,13 @@ Script: Hash.Cookie.js
 Class: Hash.Cookie
 	Inherits all the methods from <Hash>, additional methods are save and load.
 	Hash json string has a limit of 4kb (4096byte), so be careful with your Hash size.
-	Creating a new instance automatically loads the data from the Cookie.
-	The cookie is actually saved on page unload, or by directly calling save. If the Hash is empty, the cookie is removed.
+	Creating a new instance automatically loads the data from the Cookie into the Hash.
+	If the Hash is emptied, the cookie is also removed.
 
 Arguments:
 	name - the key (name) for the cookie
 	options - options are identical to <Cookie> and are simply passed along to it.
+		In addition, it has the autoSave option, to save the cookie at every operation. defaults to true.
 
 Example:
 	(start code)
@@ -37,8 +38,7 @@ Hash.Cookie = Hash.extend({
 
 	initialize: function(name, options){
 		this.name = name;
-		this.options = options || {};
-		window.addEvent('unload', this.save.bind(this));
+		this.options = $extend({'autoSave': true}, options || {});
 		this.load();
 	},
 
@@ -85,3 +85,13 @@ Hash.Cookie = Hash.extend({
 	}
 
 });
+
+Hash.Cookie.Methods = {};
+['extend', 'set', 'merge', 'empty', 'remove'].each(function(method){
+	Hash.Cookie.Methods[method] = function(){
+		Hash.prototype[method].apply(this, arguments);
+		if (this.options.autoSave) this.save();
+		return this;
+	};
+});
+Hash.Cookie.implement(Hash.Cookie.Methods);

@@ -44,7 +44,7 @@ var Hash = new Class({
 	*/
 
 	get: function(key){
-		return (key in this.obj) ? this.obj[key] : false;
+		return (this.hasKey(key)) ? this.obj[key] : null;
 	},
 
 	/*
@@ -72,7 +72,7 @@ var Hash = new Class({
 	*/
 
 	set: function(key, value){
-		if (!(key in this.obj)) this.length++;
+		if (!this.hasKey(key)) this.length++;
 		this.obj[key] = value;
 		return this;
 	},
@@ -92,7 +92,7 @@ var Hash = new Class({
 	*/
 
 	remove: function(key){
-		if (!(key in this.obj)) return this;
+		if (!this.hasKey(key)) return this;
 		delete this.obj[key];
 		this.length--;
 		return this;
