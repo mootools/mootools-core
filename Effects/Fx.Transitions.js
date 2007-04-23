@@ -48,12 +48,12 @@ Fx.Shared.CreateTransitionEases = function(transition, type){
 		},
 
 		easeOut: function(t, c, d, x, y, z){
-			return c * (1 - transition((d - t) / d, x, y, z));
+			return c * (1 - transition(1 - t / d, x, y, z));
 		},
 
 		easeInOut: function(t, c, d, x, y, z){
 			d /= 2, c /= 2;
-			return (t <= d) ? c * transition(t / d, x, y, z) : c + c * (1 - transition(2 - t / d, x, y, z));
+			return (t <= d) ? c * transition(t / d, x, y, z) : c * (2 - transition(2 - t / d, x, y, z));
 		}
 	});
 	//compatibility
@@ -215,9 +215,9 @@ Fx.Transitions.extend({
 	*/
 	
 	Elastic: function(p, x, y){
-		y = y || 1000;
+		y = y || 300;
 		x = y * 0.3 / (x || 1);
-		return -Math.pow(2, 10 * (p -= 1)) * Math.sin((p * y - x / 4) * (2 * Math.PI) / x);
+		return Math.pow(2, 10 * (p -= 1)) * Math.cos(2 * Math.PI * p * y / x);
 	}
 
 });
