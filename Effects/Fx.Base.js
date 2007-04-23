@@ -28,8 +28,8 @@ Fx.Base = new Class({
 		onStart: Class.empty,
 		onComplete: Class.empty,
 		onCancel: Class.empty,
-		transition: function(t, c, d){
-			return -c / 2 * (Math.cos(Math.PI * t / d) - 1);
+		transition: function(p){
+			return -(Math.cos(Math.PI * p) - 1) / 2;
 		},
 		duration: 500,
 		unit: 'px',
@@ -46,13 +46,12 @@ Fx.Base = new Class({
 	step: function(){
 		var time = $time();
 		if (time < this.time + this.options.duration){
-			this.cTime = time - this.time;
+			this.delta = this.options.transition((time - this.time) / this.options.duration);
 			this.setNow();
 			this.increase();
 		} else {
 			this.stop(true);
-			this.now = this.to;
-			this.increase();
+			this.set(this.to);
 			this.fireEvent('onComplete', this.element, 10);
 			this.callChain();
 		}
@@ -74,14 +73,22 @@ Fx.Base = new Class({
 		this.increase();
 		return this;
 	},
-
+	
 	setNow: function(){
+		this.now = this.compute(this.from, this.to);
+	},
+	
+	compute: function(from, to){
+		return (to - from) * this.delta + from;
+	},
+
+	/*setNow: function(){
 		this.now = this.compute(this.from, this.to);
 	},
 
 	compute: function(from, to){
 		return (to - from) * this.options.transition(this.cTime / this.options.duration) + from;
-	},
+	},*/
 
 	/*
 	Property: start
@@ -100,6 +107,7 @@ Fx.Base = new Class({
 		else if (this.timer) return this;
 		this.from = from;
 		this.to = to;
+		this.change = this.to - this.from;
 		this.time = $time();
 		this.timer = this.step.periodical(Math.round(1000 / this.options.fps), this);
 		this.fireEvent('onStart', this.element);

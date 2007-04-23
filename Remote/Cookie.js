@@ -32,7 +32,7 @@ var Cookie = new Abstract({
 	Options:
 		domain - the domain the Cookie belongs to. If you want to share the cookie with pages located on a different domain, you have to set this value. Defaults to the current domain.
 		path - the path the Cookie belongs to. If you want to share the cookie with pages located in a different path, you have to set this value, for example to "/" to share the cookie with all pages on the domain. Defaults to the current path.
-		duration - the duration of the Cookie before it expires, in hours.
+		duration - the duration of the Cookie before it expires, in days.
 					If set to false or 0, the cookie will be a session cookie that expires when the browser is closed. This is default.
 		secure - Stored cookie information can be accessed only from a secure environment.
 
@@ -40,7 +40,7 @@ var Cookie = new Abstract({
 		An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
 
 	Example:
-		>Cookie.set("username", "Harald", {duration: 1}); //save this for 1 hour
+		>Cookie.set("username", "Harald", {duration: 1}); //save this for 1 day
 		>Cookie.set("username", "JackBauer", {duration: false}); //session cookie
 
 	*/

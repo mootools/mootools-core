@@ -2,28 +2,41 @@
 Script: Fx.Transitions.js
 	Effects transitions, to be used with all the effects.
 
-Author:
-	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified & optimized to be used with mootools.
-
 License:
-	Easing Equations v1.5, (c) 2003 Robert Penner, all rights reserved. Open Source BSD License.
+	MIT-style license.
+	
+Credits:
+	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified & optimized to be used with mootools.
 */
 
 /*
 Class: Fx.Transitions
 	A collection of tweening transitions for use with the <Fx.Base> classes.
-	Some transitions accept additional parameters. You can set them using the .set property of each transition type.
 	
 Example:
-	>new Fx.Style('margin', {transition: Fx.Transitions.Elastic.easeInOut});
-	>//Elastic.easeInOut with default values
-	>new Fx.Style('margin', {transition: Fx.Transitions.Elastic.easeInOut.set(3)});
-	>//Elastic.easeInOut with user-defined value for elasticity.
-	>p, t, c, d means: // p: current time / duration, t: current time, c: change in value (distance), d: duration
+	>//Elastic.easeOut with default values:
+	>new Fx.Style('margin', {transition: Fx.Transitions.Elastic.easeOut});
+	>//Elastic.easeOut with user-defined value for elasticity.
+	> var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
+	>new Fx.Style('margin', {transition: myTransition.easeOut});
 
 See also:
 	http://www.robertpenner.com/easing/
 */
+
+Fx.Transition = function(transition, params){
+	params = params || [];
+	if ($type(params) != 'array') params = [params];
+	this.easeIn = function(pos){
+		return transition(pos, params);
+	};
+	this.easeOut = function(pos){
+		return 1 - transition(1 - pos, params);
+	};
+	this.easeInOut = function(pos){
+		return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+	}
+};
 
 Fx.Transitions = new Abstract({
 	
@@ -35,48 +48,23 @@ Fx.Transitions = new Abstract({
 		(see Linear.png)
 	*/
 	
-	linear: function(t, c, d){
-		return c * (t / d);
+	linear: function(p){
+		return p;
 	}
 
 });
 
-Fx.Shared.CreateTransitionEases = function(transition, type){
-	$extend(transition, {
-		easeIn: function(p, x, y, z){
-			return transition(p, x, y, z);
-		},
-
-		easeOut: function(p, x, y, z){
-			return 1 - transition(1 - p, x, y, z);
-		},
-
-		easeInOut: function(p, x, y, z){
-			return (p <= 0.5) ? transition(2 * p, x, y, z) / 2 : (2 - transition(2 * (1 - p), x, y, z)) / 2;
-		}
-	});
-	//compatibility
-	['In', 'Out', 'InOut'].each(function(mode){
-		transition['ease' + mode].set = Fx.Shared.SetTransitionValues(transition['ease' + mode]);
-		Fx.Transitions[type.toLowerCase() + mode] = transition['ease' + mode];
-	});
-};
-
-Fx.Shared.SetTransitionValues = function(transition){
-	return function(){
-		var args = $A(arguments);
-		return function(){
-			return transition.apply(Fx.Transitions, $A(arguments).concat(args));
-		};
-	}
-};
-
 Fx.Transitions.extend = function(transitions){
-	for (var type in transitions){
-		if (type.test(/^[A-Z]/)) Fx.Shared.CreateTransitionEases(transitions[type], type);
-		else transitions[type].set = Fx.Shared.SetTransitionValues(transitions[type]);
-		Fx.Transitions[type] = transitions[type];
-	}
+	for (var transition in transitions){
+		Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
+		Fx.Transitions.compat(transition);
+	};
+};
+
+Fx.Transitions.compat = function(transition){
+	['In', 'Out', 'InOut'].each(function(easeType){
+		Fx.Transitions[transition.toLowerCase() + easeType] = Fx.Transitions[transition]['ease' + easeType];
+	});
 };
 
 Fx.Transitions.extend({
@@ -131,7 +119,7 @@ Fx.Transitions.extend({
 	*/
 	
 	Pow: function(p, x){
-		x = x || 6;
+		x = x[0] || 6;
 		return Math.pow(p, x);
 	},
 
@@ -182,7 +170,7 @@ Fx.Transitions.extend({
 	*/
 
 	Back: function(p, x){
-		x = x || 1.6180;
+		x = x[0] || 1.6180;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -213,18 +201,17 @@ Fx.Transitions.extend({
 		(see Elastic.png)
 	*/
 	
-	Elastic: function(p, x, y){
-		y = y || 300;
-		x = y * 0.3 / (x || 1);
-		return Math.pow(2, 10 * (p -= 1)) * Math.cos(2 * Math.PI * p * y / x);
+	Elastic: function(p, x){
+		x = x[0] || 300;
+		var y = x * 0.3 / (x[1] || 1);
+		return Math.pow(2, 10 * (p -= 1)) * Math.cos(2 * Math.PI * p * x / y);
 	}
 
 });
 
 ['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
-	var obj = {};
-	obj[transition] = function(p){
-		return Fx.Transitions.Pow(p, i + 2);
-	};
-	Fx.Transitions.extend(obj);
+	Fx.Transitions[transition] = new Fx.Transition(function(p){
+		return Math.pow(p, [i + 2]);
+	});
+	Fx.Transitions.compat(transition);
 });

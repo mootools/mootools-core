@@ -60,8 +60,7 @@ var Json = {
 	*/
 
 	evaluate: function(str, secure){
-		if (secure && !/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/.test(str)) return false;
-		return eval('(' + str + ')');
+		return (secure && !str.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/)) ? false : eval('(' + str + ')');
 	}
 
 };
