@@ -82,14 +82,6 @@ Fx.Base = new Class({
 		return (to - from) * this.delta + from;
 	},
 
-	/*setNow: function(){
-		this.now = this.compute(this.from, this.to);
-	},
-
-	compute: function(from, to){
-		return (to - from) * this.options.transition(this.cTime / this.options.duration) + from;
-	},*/
-
 	/*
 	Property: start
 		Executes an effect from one position to the other.
