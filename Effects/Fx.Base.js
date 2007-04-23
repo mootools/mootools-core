@@ -80,7 +80,7 @@ Fx.Base = new Class({
 	},
 
 	compute: function(from, to){
-		return this.options.transition(this.cTime, (to - from), this.options.duration) + from;
+		return (to - from) * this.options.transition(this.cTime / this.options.duration) + from;
 	},
 
 	/*
