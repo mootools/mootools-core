@@ -27,15 +27,17 @@ See also:
 Fx.Transition = function(transition, params){
 	params = params || [];
 	if ($type(params) != 'array') params = [params];
-	this.easeIn = function(pos){
-		return transition(pos, params);
-	};
-	this.easeOut = function(pos){
-		return 1 - transition(1 - pos, params);
-	};
-	this.easeInOut = function(pos){
-		return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
-	}
+	return $extend(transition, {
+		easeIn: function(pos){
+			return transition(pos, params);
+		},
+		easeOut: function(pos){
+			return 1 - transition(1 - pos, params);
+		},
+		easeInOut: function(pos){
+			return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+		}
+	});
 };
 
 Fx.Transitions = new Abstract({
