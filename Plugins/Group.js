@@ -9,6 +9,26 @@ License:
 /*
 Class: Group
 	An "Utility" Class.
+
+Arguments:
+	List of Class instances
+
+Example:
+	(start code)
+	xhr1 = new Ajax('data.js', {evalScript: true});
+	xhr2 = new Ajax('abstraction.js', {evalScript: true});
+	xhr3 = new Ajax('template.js', {evalScript: true});
+
+	var group = new Group(xhr1, xhr2, xhr3);
+	group.addEvent('onComplete', function(){
+		alert('All Scripts loaded');
+	});
+
+	xhr1.request();
+	xhr2.request();
+	xhr3.request();
+	(end)
+
 */
 
 var Group = new Class({
@@ -18,6 +38,15 @@ var Group = new Class({
 		this.events = {};
 		this.checker = {};
 	},
+
+	/*
+	Property: addEvent
+		adds an event to the stack of events of the Class instances.
+
+	Arguments:
+		type - string; the event name (e.g. 'onComplete')
+		fn - function to execute when all instances fired this event
+	*/
 
 	addEvent: function(type, fn){
 		this.checker[type] = this.checker[type] || {};

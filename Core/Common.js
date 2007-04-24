@@ -81,23 +81,23 @@ Example:
 	//upon completion it will display the 2 alerts, in order.
 	(end)
 
-	Implementing:
-		This class can be implemented into other classes to add the functionality to them.
-		Goes well with the <Options> class.
+Implementing:
+	This class can be implemented into other classes to add the functionality to them.
+	Goes well with the <Options> class.
 
-	Example:
-		(start code)
-		var Widget = new Class({
-			initialize: function(){},
-			finish: function(){
-				this.fireEvent('onComplete');
-			}
-		});
-		Widget.implement(new Events);
-		//later...
-		var myWidget = new Widget();
-		myWidget.addEvent('onComplete', myfunction);
-		(end)
+Example:
+	(start code)
+	var Widget = new Class({
+		initialize: function(){},
+		finish: function(){
+			this.fireEvent('onComplete');
+		}
+	});
+	Widget.implement(new Events);
+	//later...
+	var myWidget = new Widget();
+	myWidget.addEvent('onComplete', myfunction);
+	(end)
 */
 
 var Events = new Class({
