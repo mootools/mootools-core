@@ -214,6 +214,7 @@ Element.extend = function(properties){
 		HTMLElement.prototype[property] = properties[property];
 		Element.prototype[property] = properties[property];
 		Elements.prototype[property] = Elements.Multi(property);
+		if (Array.prototype[property]) Elements.prototype[property + 'Item'] = Array.prototype[property];
 	}
 };
 
