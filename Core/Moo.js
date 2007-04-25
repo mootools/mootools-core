@@ -157,9 +157,9 @@ Returns:
 
 function $type(obj){
 	if (obj == undefined) return false;
-	if (obj.htmlElement && !obj.item) return 'element'; //line needed for fast element detection.
+	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
-	if (type == 'object' && obj.nodeName && !obj.item){
+	if (type == 'object' && obj.nodeName){
 		switch(obj.nodeType){
 			case 1: return 'element';
 			case 3: return /\S/.test(obj.nodeValue) ? 'textnode' : 'whitespace';

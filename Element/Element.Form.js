@@ -22,8 +22,8 @@ Element.extend({
 		switch(this.getTag()){
 			case 'select':
 				var values = [];
-				$each(this.options, function(opt){
-					if (opt.selected) values.push($pick(opt.value, opt.text));
+				$each(this.getElementsByTagName('option'), function(option){
+					if (option.selected) values.push($pick(option.value, option.text));
 				});
 				return (this.multiple) ? values : values[0];
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].contains(this.type)) && !['hidden', 'text', 'password'].contains(this.type)) break;

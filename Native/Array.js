@@ -350,6 +350,7 @@ Array.extend({
 Array.prototype.each = Array.prototype.forEach;
 Array.prototype.test = Array.prototype.contains;
 Array.prototype.removeItem = Array.prototype.remove;
+Array.prototype.getLastItem = Array.prototype.getLast;
 
 /* Section: Utility Functions */
 
@@ -404,7 +405,6 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	var type = $type(iterable);
-	if (['arguments', 'collection', 'array'].contains(type)) Array.prototype.forEach.call(iterable, fn, bind);
-	else if (type == 'object') for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
+	if ($type(iterable.length == 'number') && $type(iterable) != 'object') Array.prototype.forEach.call(iterable, fn, bind);
+	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
 };
