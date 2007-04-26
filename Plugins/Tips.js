@@ -83,9 +83,7 @@ var Tips = new Class({
 			}
 		}).inject(document.body);
 		this.wrapper = new Element('div').inject(this.toolTip);
-		$each(elements, function(el){
-			this.build($(el));
-		}, this);
+		$$(elements).each(this.build);
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -155,6 +153,7 @@ var Tips = new Class({
 	},
 
 	show: function(){
+		if (this.options.timeout) this.timer = this.hide.delay(this.options.timeout, this);
 		this.fireEvent('onShow', [this.toolTip]);
 	},
 
