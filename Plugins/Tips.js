@@ -12,7 +12,7 @@ Credits:
 /*
 Class: Tips
 	Display a tip on any element with a title and/or href.
-	
+
 Note:
 	Tips requires an XHTML doctype.
 
@@ -30,11 +30,11 @@ Options:
 	hideDelay - the delay the onHide method is called. (defaults to 100 ms)
 
 	className - the prefix for your tooltip classNames. defaults to 'tool'.
-	
+
 		the whole tooltip will have as classname: tool-tip
-		
+
 		the title will have as classname: tool-title
-		
+
 		the text will have as classname: tool-text
 
 	offsets - the distance of your tooltip from the mouse. an Object with x/y properties.
@@ -90,20 +90,20 @@ var Tips = new Class({
 	},
 
 	build: function(el){
-		el.$.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
+		el.$tmp.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
 		if (el.title){
 			var dual = el.title.split('::');
 			if (dual.length > 1) {
-				el.$.myTitle = dual[0].trim();
-				el.$.myText = dual[1].trim();
+				el.$tmp.myTitle = dual[0].trim();
+				el.$tmp.myText = dual[1].trim();
 			} else {
-				el.$.myText = el.title;
+				el.$tmp.myText = el.title;
 			}
 			el.removeAttribute('title');
 		} else {
-			el.$.myText = false;
+			el.$tmp.myText = false;
 		}
-		if (el.$.myTitle && el.$.myTitle.length > this.options.maxTitleChars) el.$.myTitle = el.$.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
+		if (el.$tmp.myTitle && el.$tmp.myTitle.length > this.options.maxTitleChars) el.$tmp.myTitle = el.$tmp.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
 		el.addEvent('mouseenter', function(event){
 			this.start(el);
 			if (!this.options.fixed) this.locate(event);
@@ -115,15 +115,15 @@ var Tips = new Class({
 
 	start: function(el){
 		this.wrapper.empty();
-		if (el.$.myTitle){
+		if (el.$tmp.myTitle){
 			this.title = new Element('span').inject(
 				new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)
-			).setHTML(el.$.myTitle);
+			).setHTML(el.$tmp.myTitle);
 		}
-		if (el.$.myText){
+		if (el.$tmp.myText){
 			this.text = new Element('span').inject(
 				new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)
-			).setHTML(el.$.myText);
+			).setHTML(el.$tmp.myText);
 		}
 		$clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);

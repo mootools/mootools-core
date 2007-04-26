@@ -78,9 +78,9 @@ Example:
 	>$$('myselector').each(function(el){
 	> //...
 	>});
-	
+
 	some iterations here, $$('myselector') is also an array.
-	
+
 	>$$('myselector').setStyle('color', 'red');
 	every element returned by $$('myselector') also accepts <Element> methods, in this example every element will be made red.
 */
@@ -224,12 +224,12 @@ Class: Element
 */
 
 Element.extend({
-	
+
 	/*
 	Property: set
 		you can set events, styles and properties with this shortcut. same as calling new Element.
 	*/
-	
+
 	set: function(props){
 		for (var prop in props){
 			var val = props[prop];
@@ -302,12 +302,12 @@ Element.extend({
 	injectInside: function(el){
 		return this.inject(el, 'bottom');
 	},
-	
+
 	/*
 	Property: injectTop
 		Same as <Element.injectInside>, but inserts the element inside, at the top.
 	*/
-	
+
 	injectTop: function(el){
 		return this.inject(el, 'top');
 	},
@@ -538,7 +538,7 @@ Element.extend({
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
 		if (window.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
-		this.style.opacity = this.$.opacity = opacity;
+		this.style.opacity = this.$tmp.opacity = opacity;
 		return this;
 	},
 
@@ -562,7 +562,7 @@ Element.extend({
 		property = property.camelCase();
 		var result = this.style[property];
 		if (!$chk(result)){
-			if (property == 'opacity') return this.$.opacity;
+			if (property == 'opacity') return this.$tmp.opacity;
 			var result = [];
 			for (var style in Element.Styles){
 				if (property == style){
@@ -881,23 +881,23 @@ var Garbage = {
 	elements: [],
 
 	collect: function(el){
-		if (!el.$){
+		if (!el.$tmp){
 			Garbage.elements.push(el);
-			el.$ = {'opacity': 1};
+			el.$tmp = {'opacity': 1};
 		}
 		return el;
 	},
 
 	trash: function(elements){
 		for (var i = 0, j = elements.length, el; i < j; i++){
-			if (!(el = elements[i]) || !el.$) return;
+			if (!(el = elements[i]) || !el.$tmp) return;
 			if (el.$events) {
 				el.fireEvent('onTrash');
 				el.removeEvents();
 			}
-			for (var p in el.$) el.$[p] = null;
+			for (var p in el.$tmp) el.$tmp[p] = null;
 			for (var p in Element.prototype) el[p] = null;
-			el.htmlElement = el.$ = null;
+			el.htmlElement = el.$tmp = null;
 			Garbage.elements.remove(el);
 		}
 	},
