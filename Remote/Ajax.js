@@ -53,7 +53,7 @@ var Ajax = XHR.extend({
 	},
 
 	onComplete: function(){
-		if (this.options.update) $(this.options.update).setHTML(this.response.text);
+		if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
 		if (this.options.evalScripts || this.options.evalResponse) this.evalScripts();
 		this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
 	},

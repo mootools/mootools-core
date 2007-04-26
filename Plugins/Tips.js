@@ -83,7 +83,7 @@ var Tips = new Class({
 			}
 		}).inject(document.body);
 		this.wrapper = new Element('div').inject(this.toolTip);
-		$$(elements).each(this.build);
+		$$(elements).each(this.build, this);
 		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
@@ -108,7 +108,9 @@ var Tips = new Class({
 			else this.position(el);
 		}.bind(this));
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
-		el.addEvent('mouseleave', this.end.bind(this));
+		var eventEnd = this.end.bind(this);
+		el.addEvent('mouseleave', eventEnd);
+		el.addEvent('onTrash', eventEnd);
 	},
 
 	start: function(el){

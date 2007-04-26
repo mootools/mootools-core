@@ -890,7 +890,7 @@ var Garbage = {
 
 	trash: function(elements){
 		for (var i = 0, j = elements.length, el; i < j; i++){
-			if (!(el = elements[i]) || !el.$tmp) return;
+			if (!(el = elements[i]) || !el.$tmp) continue;
 			if (el.$events) {
 				el.fireEvent('onTrash');
 				el.removeEvents();
