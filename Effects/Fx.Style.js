@@ -84,7 +84,7 @@ Fx.Style = Fx.Base.extend({
 	},
 
 	increase: function(){
-		this.element.setStyle(this.property, this.css.getValue(this.now, this.options.unit, p));
+		this.element.setStyle(this.property, this.css.getValue(this.now, this.options.unit, this.property));
 	}
 
 });
@@ -99,7 +99,7 @@ Element.extend({
 	/*
 	Property: effect
 		Applies an <Fx.Style> to the Element; This a shortcut for <Fx.Style>.
-	
+
 	Arguments:
 		property - (string) the css property to alter
 		options - (object; optional) key/value set of options (see <Fx.Style>)
