@@ -81,7 +81,7 @@ Fx.Elements = Fx.Base.extend({
 	increase: function(){
 		for (var i in this.now){
 			var iNow = this.now[i], iCss = this.css[i];
-			for (var p in iNow) this.elements[i].setStyle(p, iCss[p].getValue(iNow[p], this.options.unit));
+			for (var p in iNow) this.elements[i].setStyle(p, iCss[p].getValue(iNow[p], this.options.unit, p));
 		}
 	}
 

@@ -195,8 +195,6 @@ Class: Options
 		});
 		//myWidget.options = {color: #f00, size: {width: 200, height: 100}}
 		(end)
-
-
 */
 
 var Options = new Class({

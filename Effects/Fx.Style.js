@@ -84,7 +84,7 @@ Fx.Style = Fx.Base.extend({
 	},
 
 	increase: function(){
-		this.element.setStyle(this.property, this.css.getValue(this.now, this.options.unit));
+		this.element.setStyle(this.property, this.css.getValue(this.now, this.options.unit, p));
 	}
 
 });

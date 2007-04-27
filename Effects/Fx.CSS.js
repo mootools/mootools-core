@@ -37,7 +37,8 @@ Fx.CSS.Single = {
 		return fx.compute(from, to);
 	},
 
-	getValue: function(value, unit){
+	getValue: function(value, unit, property){
+		if (unit == 'px' && property != 'opacity') value = Math.round(value);
 		return value + unit;
 	}
 
@@ -57,7 +58,8 @@ Fx.CSS.Multi = {
 		return now;
 	},
 
-	getValue: function(value, unit){
+	getValue: function(value, unit, property){
+		if (unit == 'px' && property != 'opacity') value = value.map(Math.round);
 		return value.join(unit + ' ') + unit;
 	}
 

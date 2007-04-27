@@ -349,8 +349,6 @@ Array.extend({
 
 Array.prototype.each = Array.prototype.forEach;
 Array.prototype.test = Array.prototype.contains;
-Array.prototype.removeItem = Array.prototype.remove;
-Array.prototype.getLastItem = Array.prototype.getLast;
 
 /* Section: Utility Functions */
 
@@ -405,6 +403,6 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') Array.prototype.forEach.call(iterable, fn, bind);
+	if (iterable && $type(iterable.length) == 'number' && $type(iterable) != 'object') Array.prototype.forEach.call(iterable, fn, bind);
 	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
 };
