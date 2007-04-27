@@ -267,7 +267,7 @@ Element.extend({
 	Property: injectBefore
 		Inserts the Element before the passed element.
 
-	Parameteres:
+	Arguments:
 		el - an element reference or the id of the element to be injected in.
 
 	Example:
@@ -316,7 +316,7 @@ Element.extend({
 	Property: adopt
 		Inserts the passed element(s) inside the Element. Works as <Element.injectInside> but in reverse and with any number of elements.
 
-	Parameteres:
+	Arguments:
 		el - an element reference or the id of the element to be injected in.
 	*/
 
@@ -341,6 +341,9 @@ Element.extend({
 	Property: clone
 		Clones the Element and returns the cloned one.
 
+	Arguments:
+		contents - boolean, when true the Element is cloned with childNodes, default true
+
 	Returns:
 		the cloned element
 
@@ -359,7 +362,7 @@ Element.extend({
 	Property: replaceWith
 		Replaces the Element with an element passed.
 
-	Parameteres:
+	Arguments:
 		el - a string representing the element to be injected in (myElementId, or div), or an element reference.
 		If you pass div or another tag, the element will be created.
 
@@ -892,8 +895,8 @@ var Garbage = {
 		for (var i = 0, j = elements.length, el; i < j; i++){
 			if (!(el = elements[i]) || !el.$tmp) continue;
 			if (el.$events){
-				el.removeEvents();
 				el.fireEvent('trash');
+				el.removeEvents();
 			}
 			for (var p in el.$tmp) el.$tmp[p] = null;
 			for (var p in Element.prototype) el[p] = null;

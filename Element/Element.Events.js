@@ -73,20 +73,21 @@ Element.eventMethods = {
 	/*
 	Property: removeEvents
 		removes all events of a certain type from an element. if no argument is passed in, removes all events.
+
+	Arguments:
+		type - string; the event name (e.g. 'click')
 	*/
 
 	removeEvents: function(type){
 		if (!this.$events) return this;
-		if (type){
-			if (this.$events[type]){
-				$A(this.$events[type].keys).each(function(fn, i){
-					this.removeEvent(type, fn);
-				}, this);
-				this.$events[type] = null;
-			}
-		} else {
+		if (!type){
 			for (var evType in this.$events) this.removeEvents(evType);
 			this.$events = null;
+		} else if (this.$events[type]){
+			this.$events[type].keys.each(function(fn){
+				this.removeEvent(type, fn);
+			}, this);
+			this.$events[type] = null;
 		}
 		return this;
 	},
@@ -94,12 +95,17 @@ Element.eventMethods = {
 	/*
 	Property: fireEvent
 		executes all events of the specified type present in the element.
+
+	Arguments:
+		type - string; the event name (e.g. 'click')
+		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
+		delay - (integer) delay (in ms) to wait to execute the event
 	*/
 
-	fireEvent: function(type, args){
+	fireEvent: function(type, args, delay){
 		if (this.$events && this.$events[type]){
 			this.$events[type].keys.each(function(fn){
-				fn.bind(this, args)();
+				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
 			}, this);
 		}
 		return this;
@@ -107,9 +113,19 @@ Element.eventMethods = {
 
 };
 
-Element.Events.mousewheel = {
-	type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
-};
+Element.Events.extend({
+
+	'mousewheel': {
+		type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+	},
+
+	'unload': {
+		add: function(fn){
+			window.removeListener('unload', Garbage.empty).addListener.delay(1, window, ['unload', Garbage.empty]);
+		}
+	}
+
+});
 
 window.extend(Element.eventMethods);
 document.extend(Element.eventMethods);
