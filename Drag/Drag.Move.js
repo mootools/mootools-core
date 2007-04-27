@@ -54,7 +54,7 @@ Drag.Move = Drag.Base.extend({
 			'left': left,
 			'position': this.position
 		});
-		this.parent(this.element, this.options);
+		this.parent(this.element);
 	},
 
 	start: function(event){

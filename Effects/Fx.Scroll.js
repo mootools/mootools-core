@@ -19,14 +19,15 @@ Arguments:
 
 Options:
 	all the Fx.Base options, plus:
-	offsets - the distance for the scrollTo point/element. an Object with x/y properties.
+	offset - the distance for the scrollTo point/element. an Object with x/y properties.
+	overflown - an array of nested scrolling containers, see <Element.getPosition>
 */
 
 Fx.Scroll = Fx.Base.extend({
 
 	options: {
 		overflown: [],
-		offsets: {'x': 0, 'y': 0}
+		offset: {'x': 0, 'y': 0}
 	},
 
 	initialize: function(element, options){
@@ -62,7 +63,7 @@ Fx.Scroll = Fx.Base.extend({
 			var max = el.scrollSize[z] - el.size[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? Math.max(Math.min(values[z], max), 0) : max;
 			else values[z] = el.scroll[z];
-			values[z] += this.options.offsets[z];
+			values[z] += this.options.offset[z];
 		}
 		return this.start([el.scroll.x, el.scroll.y], [values.x, values.y]);
 	},

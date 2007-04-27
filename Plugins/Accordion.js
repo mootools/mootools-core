@@ -82,7 +82,7 @@ var Accordion = Fx.Elements.extend({
 			if (this.options.show === i) this.fireEvent('onActive', [this.togglers[i], el]);
 			else for (var fx in this.effects) el.setStyle(fx, 0);
 		}, this);
-		this.parent(this.elements, this.options);
+		this.parent(this.elements);
 		if ($chk(this.options.display)) this.display(this.options.display);
 	},
 

@@ -113,19 +113,9 @@ Element.eventMethods = {
 
 };
 
-Element.Events.extend({
-
-	'mousewheel': {
-		type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
-	},
-
-	'unload': {
-		add: function(fn){
-			window.removeListener('unload', Garbage.empty).addListener.delay(1, window, ['unload', Garbage.empty]);
-		}
-	}
-
-});
+Element.Events.mousewheel = {
+	type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+};
 
 window.extend(Element.eventMethods);
 document.extend(Element.eventMethods);
