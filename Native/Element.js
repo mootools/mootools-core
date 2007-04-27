@@ -213,8 +213,8 @@ Element.extend = function(properties){
 	for (var property in properties){
 		HTMLElement.prototype[property] = properties[property];
 		Element.prototype[property] = properties[property];
-		Elements.prototype[property] = Elements.Multi(property);
-		if (Array.prototype[property]) Elements.prototype[property + 'Item'] = Array.prototype[property];
+		var elementsProperty = (Array.prototype[property]) ? property + 'Elements' : property;
+		Elements.prototype[elementsProperty] = Elements.Multi(property);
 	}
 };
 
