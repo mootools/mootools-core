@@ -135,7 +135,7 @@ var XHR = new Class({
 		Cancels the running request. No effect if the request is not running.
 
 	Example:
-		>var myXhr = new XHR(url, {method: 'get'}).request();
+		>var myXhr = new XHR({method: 'get'}).send(url);
 		>myXhr.cancel();
 	*/
 
