@@ -102,13 +102,13 @@ var XHR = new Class({
 
 	/*
 	Property: send
-		Opens the xhr connection and sends the data. Data has to be null or a string.
+		Opens the XHR connection and sends the data. Data has to be null or a string.
 
 	Example:
-		>var myXhr = new Xhr({method: 'post'});
+		>var myXhr = new XHR({method: 'post'});
 		>myXhr.send(url, querystring);
 		>
-		>var syncXhr = new Xhr({async: false, method: 'post'});
+		>var syncXhr = new XHR({async: false, method: 'post'});
 		>syncXhr.send(url, null);
 		>
 	*/
@@ -135,8 +135,8 @@ var XHR = new Class({
 		Cancels the running request. No effect if the request is not running.
 
 	Example:
-		>var myAjax = new Ajax(url, {method: 'get'}).request();
-		>myAjax.cancel();
+		>var myXhr = new XHR(url, {method: 'get'}).request();
+		>myXhr.cancel();
 	*/
 
 	cancel: function(){
