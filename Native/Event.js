@@ -81,7 +81,7 @@ var Event = new Class({
 				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}
-			if (this.relatedTarget && this.relatedTarget.nodeType == 3) this.relatedTarget = this.relatedTarget.parentNode;
+			this.fixRelatedTarget();
 		}
 	},
 
@@ -117,6 +117,34 @@ var Event = new Class({
 	}
 
 });
+
+Event.fix = {
+
+	relatedTarget: function(){
+		if (this.relatedTarget && this.relatedTarget.nodeType == 3) this.relatedTarget = this.relatedTarget.parentNode;
+	},
+
+	relatedTargetGecko: function(){
+		try {Event.fix.relatedTarget.call(this)} catch(e){this.relatedTarget = this.target};
+	}
+
+};
+
+Event.prototype.fixRelatedTarget = (window.gecko) ? Event.fix.relatedTargetGecko : Event.fix.relatedTarget;
+
+/*
+Property: keys
+	you can add additional Event keys codes this way:
+
+Example:
+	(start code)
+	Event.keys.whatever = 80;
+	$(myelement).addEvent(keydown, function(event){
+		event = new Event(event);
+		if (event.key == 'whatever') console.log(whatever key clicked).
+	});
+	(end)
+*/
 
 Event.keys = new Abstract({
 	'enter': 13,
