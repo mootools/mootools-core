@@ -128,6 +128,18 @@ Class.prototype = {
 /* Section: Utility Functions */
 
 /*
+Function: $defined
+	Returns true if the passed in value/object is defined, that means is not null or undefined.
+
+Arguments:
+	obj - object to inspect
+*/
+
+function $defined(obj){
+	return (obj != undefined);
+};
+
+/*
 Function: $type
 	Returns the type of object that matches the element passed in.
 
@@ -156,7 +168,7 @@ Returns:
 */
 
 function $type(obj){
-	if (obj == undefined) return false;
+	if (!$defined(obj)) return false;
 	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
 	if (type == 'object' && obj.nodeName){

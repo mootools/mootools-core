@@ -61,7 +61,7 @@ Example:
 */
 
 function $pick(obj, picked){
-	return (obj != undefined) ? obj : picked;
+	return $defined(obj) ? obj : picked;
 };
 
 /*
