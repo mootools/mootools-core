@@ -52,8 +52,6 @@ function $ES(selector, filter){
 
 $$.shared = {
 
-	cache: {},
-
 	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
 
 	getNormalParam: function(selector, items, context, param, i){
@@ -75,10 +73,6 @@ $$.shared = {
 	},
 
 	getXpathParam: function(selector, items, context, param, i){
-		if ($$.shared.cache[selector].xpath){
-			items.push($$.shared.cache[selector].xpath);
-			return items;
-		}
 		var temp = context.namespaceURI ? ['xhtml:'] : [];
 		temp.push(param[1]);
 		if (param[2]) temp.push('[@id="', param[2], '"]');
@@ -97,7 +91,6 @@ $$.shared = {
 			}
 		}
 		temp = temp.join('');
-		$$.shared.cache[selector].xpath = temp;
 		items.push(temp);
 		return items;
 	},
@@ -169,15 +162,9 @@ Element.domMethods = {
 		selector = selector.trim().split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
-			var param;
-			if ($$.shared.cache[sel]){
-				param = $$.shared.cache[sel].param;
-			} else {
-				param = sel.match($$.shared.regexp);
-				if (!param) break;
-				param[1] = param[1] || '*';
-				$$.shared.cache[sel] = {'param': param};
-			}
+			var param = sel.match($$.shared.regexp);
+			if (!param) break;
+			param[1] = param[1] || '*';
 			var temp = $$.shared.getParam(sel, items, this, param, i);
 			if (!temp) break;
 			items = temp;
