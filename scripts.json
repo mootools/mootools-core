@@ -43,16 +43,21 @@
 		"Event": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Events"],
 			"desc": "The Event class, has many properties, like making the event object crossbrowser and its properties easily accessible."
-		},
-
-		"Dom": {
-			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
-			"desc": "Allows to select elements by css selectors. Additionally, lets you filter by element."
 		}
 
 	},
 
 	"Element": {
+
+		"Element.Selectors": {
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element", "Element.Filters"],
+			"desc": "Allows to select elements by css selectors, at any depth."
+		},
+		
+		"Element.Filters": {
+			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
+			"desc": "Adds Filtering Capabilities to Element Collections."
+		},
 
 		"Element.Form": {
 			"deps": ["Moo", "Array", "String", "Function", "Utility", "Element"],
