@@ -57,7 +57,6 @@ $$.shared = {
 	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
 
 	getNormalParam: function(selector, items, context, param, i){
-		Filters.selector = param;
 		if (i == 0){
 			if (param[2]){
 				var el = context.getElementById(param[2]);
@@ -68,10 +67,10 @@ $$.shared = {
 			}
 		} else {
 			items = $$.shared.getElementsByTagName(items, param[1]);
-			if (param[2]) items = items.filter(Filters.id);
+			if (param[2]) items = Elements.prototype.filterById.call(items, param[2], true);
 		}
-		if (param[3]) items = items.filter(Filters.className);
-		if (param[4]) items = items.filter(Filters.attribute);
+		if (param[3]) items = Elements.prototype.filterByClass.call(items, param[3], true);
+		if (param[4]) items = Elements.prototype.filterByAttribute.call(items, param[4], param[5], param[6], true);
 		return items;
 	},
 
@@ -255,35 +254,77 @@ Element.extend({
 document.extend(Element.domMethods);
 Element.extend(Element.domMethods);
 
-//dom filters, internal methods.
+/*
+Class: Elements
+	A collection of methods to be used with <$$> elements collections.
+*/
 
-var Filters = {
-
-	selector: [],
-
-	id: function(el){
-		return (el.id == Filters.selector[2]);
+Elements.extend({
+	
+	/*
+	Property: filterByTag
+		Filters the collection by a specified tag name.
+		Returns a new Elements collection, while the original remains untouched.
+	*/
+	
+	filterByTag: function(tag){
+		return this.filter(function(el){
+			return (el.tagName.toLowerCase() == tag);
+		});
 	},
-
-	className: function(el){
-		return el.className.contains(Filters.selector[3], ' ');
+	
+	/*
+	Property: filterByClass
+		Filters the collection by a specified class name.
+		Returns a new Elements collection, while the original remains untouched.
+	*/
+	
+	filterByClass: function(className, nocash){
+		var elements = this.filter(function(el){
+			return el.className.contains(className, ' ');
+		});
+		return (nocash) ? elements : $extend(elements, new Elements);
 	},
-
-	attribute: function(el){
-		var current = Element.prototype.getProperty.call(el, Filters.selector[4]);
-		if (!current) return false;
-		var operator = Filters.selector[5];
-		if (!operator) return true;
-		var value = Filters.selector[6];
-		switch(operator){
-			case '=': return (current == value);
-			case '*=': return (current.contains(value));
-			case '^=': return (current.test('^' + value));
-			case '$=': return (current.test(value + '$'));
-			case '!=': return (current != value);
-			case '~=': return current.contains(value, ' ');
-		}
-		return false;
+	
+	/*
+	Property: filterById
+		Filters the collection by a specified ID.
+		Returns a new Elements collection, while the original remains untouched.
+	*/
+	
+	filterById: function(id, nocash){
+		var elements = this.filter(function(el){
+			return (el.id == id);
+		});
+		return (nocash) ? elements : $extend(elements, new Elements);
+	},
+	
+	/*
+	Property: filterByAttribute
+		Filters the collection by a specified attribute.
+		Returns a new Elements collection, while the original remains untouched.
+		
+	Arguments:
+		name - the attribute name.
+		operator - optional, the attribute operator.
+		value - optional, the attribute value, only valid if the operator is specified.
+	*/
+	
+	filterByAttribute: function(name, operator, value, nocash){
+		var elements = this.filter(function(el){
+			var current = Element.prototype.getProperty.call(el, name);
+			if (!current || !operator) return false;
+			switch(operator){
+				case '=': return (current == value);
+				case '*=': return (current.contains(value));
+				case '^=': return (current.substr(0, value.length) == value);
+				case '$=': return (current.substr(current.length - value.length) == value);
+				case '!=': return (current != value);
+				case '~=': return current.contains(value, ' ');
+			}
+			return false;
+		});
+		return (nocash) ? elements : $extend(elements, new Elements);
 	}
 
-};
+});
