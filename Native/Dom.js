@@ -313,7 +313,8 @@ Elements.extend({
 	filterByAttribute: function(name, operator, value, nocash){
 		var elements = this.filter(function(el){
 			var current = Element.prototype.getProperty.call(el, name);
-			if (!current || !operator) return false;
+			if (!current) return false;
+			if (!operator) return true;
 			switch(operator){
 				case '=': return (current == value);
 				case '*=': return (current.contains(value));
