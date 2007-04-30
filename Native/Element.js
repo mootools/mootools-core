@@ -85,7 +85,13 @@ Example:
 	every element returned by $$('myselector') also accepts <Element> methods, in this example every element will be made red.
 */
 
-var Elements = new Class({});
+var Elements = new Class({
+	
+	initialize: function(elements){
+		return (elements) ? $extend(elements, this) : this;
+	}
+
+});
 
 Elements.extend = Class.prototype.implement;
 
@@ -192,7 +198,7 @@ $$.unique = function(array){
 		}
 	}
 	for (var i = 0, l = elements.length; i < l; i++) elements[i].$included = null;
-	return $extend(elements, new Elements);
+	return new Elements(elements);
 };
 
 Elements.Multi = function(property){
@@ -901,7 +907,7 @@ var Garbage = {
 			if (el.$events) el.fireEvent('trash').removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;
 			for (var p in Element.prototype) el[p] = null;
-			el.htmlElement = el.$tmp = null;
+			el.htmlElement = el.$tmp = el = null;
 			Garbage.elements.remove(el);
 		}
 	},

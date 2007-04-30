@@ -20,9 +20,9 @@ Elements.extend({
 	*/
 	
 	filterByTag: function(tag){
-		return this.filter(function(el){
+		return new Elements(this.filter(function(el){
 			return (el.tagName.toLowerCase() == tag);
-		});
+		}));
 	},
 	
 	/*
@@ -35,7 +35,7 @@ Elements.extend({
 		var elements = this.filter(function(el){
 			return el.className.contains(className, ' ');
 		});
-		return (nocash) ? elements : $extend(elements, new Elements);
+		return (nocash) ? elements : new Elements(elements);
 	},
 	
 	/*
@@ -48,7 +48,7 @@ Elements.extend({
 		var elements = this.filter(function(el){
 			return (el.id == id);
 		});
-		return (nocash) ? elements : $extend(elements, new Elements);
+		return (nocash) ? elements : new Elements(elements);
 	},
 	
 	/*
@@ -77,7 +77,7 @@ Elements.extend({
 			}
 			return false;
 		});
-		return (nocash) ? elements : $extend(elements, new Elements);
+		return (nocash) ? elements : new Elements(elements);
 	}
 
 });

@@ -103,7 +103,7 @@ $$.shared = {
 		var elements = [];
 		var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
-		return (nocash) ? elements : $extend(elements.map($), new Elements);
+		return (nocash) ? elements : new Elements(elements.map($));
 	},
 
 	resolver: function(prefix){

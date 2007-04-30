@@ -131,7 +131,7 @@ var Asset = new Abstract({
 			});
 			images.push(img);
 		});
-		return $extend(images, new Elements);
+		return new Elements(images);
 	}
 
 });
