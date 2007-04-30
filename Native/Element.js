@@ -877,8 +877,6 @@ window.extend(Element.listenerMethods);
 document.extend(Element.listenerMethods);
 Element.extend(Element.listenerMethods);
 
-Element.Events = new Abstract({});
-
 var Garbage = {
 
 	elements: [],

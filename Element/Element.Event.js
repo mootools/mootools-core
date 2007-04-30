@@ -274,7 +274,7 @@ Element.extend(Element.eventMethods);
 
 /* Section: Custom Events */
 
-Element.Events.extend({
+Element.Events = new Abstract({
 
 	/*
 	Event: mouseenter
