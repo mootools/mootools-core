@@ -142,14 +142,14 @@ Arguments:
 	Any number of the above as arguments are accepted.
 
 Note:
-	if you load <Dom.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
+	if you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 
 Example:
 	>$$('a') //an array of all anchor tags on the page
 	>$$('a', 'b') //an array of all anchor and bold tags on the page
-	>$$('#myElement') //array containing only the element with id = myElement. (only with <Dom.js>)
+	>$$('#myElement') //array containing only the element with id = myElement. (only with <Element.Selectors.js>)
 	>$$('#myElement a.myClass') //an array of all anchor tags with the class "myClass"
-	>//within the DOM element with id "myElement" (only with <Dom.js>)
+	>//within the DOM element with id "myElement" (only with <Element.Selectors.js>)
 	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div')) //an array containing:
 	>// the element referenced as myelement if existing,
 	>// the element referenced as myelement2 if existing,
@@ -314,10 +314,11 @@ Element.extend({
 
 	/*
 	Property: adopt
-		Inserts the passed element(s) inside the Element. Works as <Element.injectInside> but in reverse and with any number of elements.
+		Inserts the passed elements inside the Element. Works with the same arguments as <$$>.
+		Works as <Element.injectInside> but in reverse and with any number of elements. Does not accept string as id.
 
 	Arguments:
-		el - an element reference or the id of the element to be injected in.
+		same arguments as <$$>.
 	*/
 
 	adopt: function(){
