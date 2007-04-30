@@ -321,7 +321,11 @@ Element.extend({
 	*/
 
 	adopt: function(){
-		$$.unique(arguments).injectInside(this);
+		$each(arguments, function(argument){
+			var type = $type(argument);
+			if (['string', 'element'].contains(type)) $(argument).inject(this);
+			else $$(argument).inject(this);
+		}, this);
 		return this;
 	},
 
