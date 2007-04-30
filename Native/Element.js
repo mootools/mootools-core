@@ -321,11 +321,12 @@ Element.extend({
 	*/
 
 	adopt: function(){
+		var elements = [];
 		$each(arguments, function(argument){
-			var type = $type(argument);
-			if (['string', 'element'].contains(type)) $(argument).inject(this);
-			else $$(argument).inject(this);
-		}, this);
+			if ($type(argument) == 'string') elements.push([argument]);
+			else elements = elements.concat(argument);
+		});
+		$$(elements).inject(this);
 		return this;
 	},
 
