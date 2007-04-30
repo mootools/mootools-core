@@ -320,18 +320,16 @@ Element.extend({
 
 	/*
 	Property: adopt
-		Inserts the passed elements inside the Element. Works with the same arguments as <$$>.
-		Works as <Element.injectInside> but in reverse and with any number of elements. Does not accept string as id.
+		Inserts the passed elements inside the Element.
 
 	Arguments:
-		same arguments as <$$>.
+		accepts elements references, element ids as string, selectors ($$('stuff')) / array of elements, array of ids as strings and collections.
 	*/
 
 	adopt: function(){
 		var elements = [];
 		$each(arguments, function(argument){
-			if ($type(argument) == 'string') elements.push([argument]);
-			else elements = elements.concat(argument);
+			elements = elements.concat(argument);
 		});
 		$$(elements).inject(this);
 		return this;
