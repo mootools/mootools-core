@@ -15,7 +15,7 @@ Arguments:
 
 Properties:
 	shift - true if the user pressed the shift
-	control - true if the user pressed the control 
+	control - true if the user pressed the control
 	alt - true if the user pressed the alt
 	meta - true if the user pressed the meta key
 	wheel - the amount of third button scrolling
@@ -264,6 +264,27 @@ Element.Methods.Events = {
 			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
 		}, this);
 		return this;
+	},
+
+	/*
+	Property: cloneEvents
+		Clones all events from an element to this element.
+
+	Arguments:
+		from - element, copy all events from this element
+		type - optional, copies only events of this type
+	*/
+
+	cloneEvents: function(from, type){
+		if (!from.$events) return this;
+		if (!type){
+			for (var evType in from.$events) this.cloneEvents(from, evType);
+		} else if (from.$events[type]){
+			from.$events[type].keys.each(function(fn){
+				this.addEvent(type, fn);
+			}, this);
+		}
+		return this;
 	}
 
 };
@@ -280,7 +301,7 @@ Element.Events = new Abstract({
 	Event: mouseenter
 		In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events
 		this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
-		
+
 
 	Example:
 		>$(myElement).addEvent('mouseenter', myFunction);
@@ -294,16 +315,16 @@ Element.Events = new Abstract({
 			this.fireEvent('mouseenter', event);
 		}
 	},
-	
-	/*	
+
+	/*
 	Event: mouseleave
 		this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
-	
+
 
 	Example:
 		>$(myElement).addEvent('mouseleave', myFunction);
 	*/
-	
+
 	'mouseleave': {
 		type: 'mouseout',
 		map: function(event){
@@ -312,7 +333,7 @@ Element.Events = new Abstract({
 			this.fireEvent('mouseleave', event);
 		}
 	},
-	
+
 	'mousewheel': {
 		type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
 	}

@@ -86,7 +86,7 @@ Example:
 */
 
 var Elements = new Class({
-	
+
 	initialize: function(elements){
 		return (elements) ? $extend(elements, this) : this;
 	}
@@ -363,7 +363,15 @@ Element.extend({
 	*/
 
 	clone: function(contents){
-		return $(this.cloneNode(contents !== false));
+		var el = $(this.cloneNode(contents !== false));
+		if (el.$events){
+			el.$events = {};
+			for (var type in this.$events){
+				el.$events[type] = {'keys': $A(this.$events[type].keys), 'values': $A(this.$events[type].values)};
+			}
+			el.removeEvents();
+		}
+		return el;
 	},
 
 	/*
