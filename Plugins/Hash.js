@@ -25,6 +25,15 @@ Example:
 
 var Hash = new Class({
 
+	/*
+	Property: length
+		The length of the key/value pairs in the Hash.
+
+	Returns:
+		The length (integer).
+	*/
+
+
 	length: 0,
 
 	initialize: function(object){
