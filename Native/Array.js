@@ -368,8 +368,8 @@ Example:
 	(end)
 */
 
-function $A(array, start, length){
-	return Array.prototype.copy.call(array, start, length);
+function $A(array){
+	return ($type(array) == 'array') ? array.slice(0) : Array.prototype.copy.call(array);
 };
 
 /*
