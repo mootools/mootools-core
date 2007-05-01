@@ -9,6 +9,9 @@ License:
 /*
 Class: Hash
 	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null/undefined values are allowed.
+	
+Note:
+	Each hash instance has the length property.
 
 Arguments:
 	obj - an object to convert into a Hash instance.
@@ -24,15 +27,6 @@ Example:
 */
 
 var Hash = new Class({
-
-	/*
-	Property: length
-		The length of the key/value pairs in the Hash.
-
-	Returns:
-		The length (integer).
-	*/
-
 
 	length: 0,
 
@@ -139,7 +133,7 @@ var Hash = new Class({
 	*/
 	
 	merge: function(){
-		this.obj = $merge.apply(null, [this.obj].concat($A(arguments)));
+		this.obj = $merge.apply(null, [this.obj].extend(arguments));
 		return this.setLength();
 	},
 

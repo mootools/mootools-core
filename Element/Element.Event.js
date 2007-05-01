@@ -167,7 +167,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.eventMethods = {
+Element.Methods.Events = {
 
 	/*
 	Property: addEvent
@@ -268,9 +268,9 @@ Element.eventMethods = {
 
 };
 
-window.extend(Element.eventMethods);
-document.extend(Element.eventMethods);
-Element.extend(Element.eventMethods);
+window.extend(Element.Methods.Events);
+document.extend(Element.Methods.Events);
+Element.extend(Element.Methods.Events);
 
 /* Section: Custom Events */
 

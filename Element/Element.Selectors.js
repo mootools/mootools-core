@@ -53,6 +53,8 @@ function $ES(selector, filter){
 $$.shared = {
 
 	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
+	
+	ns: document.namespaceURI ? 'xhtml:' : '',
 
 	getNormalParam: function(selector, items, context, param, i){
 		if (i == 0){
@@ -73,8 +75,7 @@ $$.shared = {
 	},
 
 	getXpathParam: function(selector, items, context, param, i){
-		var temp = context.namespaceURI ? ['xhtml:'] : [];
-		temp.push(param[1]);
+		var temp = [$$.shared.ns, param[1]];
 		if (param[2]) temp.push('[@id="', param[2], '"]');
 		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
 		if (param[4]){
@@ -112,7 +113,7 @@ $$.shared = {
 
 	getElementsByTagName: function(context, tagName){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++) found = found.concat($A(context[i].getElementsByTagName(tagName)));
+		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tagName));
 		return found;
 	}
 
@@ -131,7 +132,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.domMethods = {
+Element.Methods.Dom = {
 
 	/*
 	Property: getElements
@@ -238,5 +239,5 @@ Element.extend({
 
 });
 
-document.extend(Element.domMethods);
-Element.extend(Element.domMethods);
+document.extend(Element.Methods.Dom);
+Element.extend(Element.Methods.Dom);

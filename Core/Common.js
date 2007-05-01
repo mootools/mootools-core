@@ -212,7 +212,7 @@ var Options = new Class({
 	*/
 
 	setOptions: function(){
-		this.options = $merge.apply(null, [this.options].concat($A(arguments)));
+		this.options = $merge.apply(null, [this.options].extend(arguments));
 		if (this.addEvent){
 			for (var option in this.options){
 				if (($type(this.options[option]) == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);

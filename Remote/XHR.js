@@ -45,11 +45,14 @@ var XHR = new Class({
 		autoCancel: false,
 		headers: {}
 	},
+	
+	setTransport: function(){
+		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
+		return this;
+	},
 
 	initialize: function(options){
-		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
-		if (!this.transport) return;
-		this.setOptions(options);
+		this.setTransport().setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = {};
 		if (this.options.urlEncoded && this.options.method == 'post'){
@@ -118,15 +121,13 @@ var XHR = new Class({
 		else if (this.running) return this;
 		this.running = true;
 		if (data && this.options.method == 'get') url = url + (url.contains('?') ? '&' : '?') + data, data = null;
-		(function(){
-			this.transport.open(this.options.method, url, this.options.async);
-			this.transport.onreadystatechange = this.onStateChange.bind(this);
-			if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
-			$extend(this.headers, this.options.headers);
-			for (var type in this.headers) try {this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
-			this.fireEvent('onRequest');
-			this.transport.send($pick(data, null));
-		}).delay(this.options.async ? 1 : false, this);
+		this.transport.open(this.options.method, url, this.options.async);
+		this.transport.onreadystatechange = this.onStateChange.bind(this);
+		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
+		$extend(this.headers, this.options.headers);
+		for (var type in this.headers) try {this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
+		this.fireEvent('onRequest');
+		this.transport.send($pick(data, null));
 		return this;
 	},
 
@@ -144,6 +145,7 @@ var XHR = new Class({
 		this.running = false;
 		this.transport.abort();
 		this.transport.onreadystatechange = Class.empty;
+		this.setTransport();
 		this.fireEvent('onCancel');
 		return this;
 	}

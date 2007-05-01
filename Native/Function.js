@@ -60,7 +60,7 @@ Function.extend({
 			if (options.event){
 				event = event || window.event;
 				args = [(options.event === true) ? event : new options.event(event)];
-				if (options.arguments) args = args.concat(options.arguments);
+				if (options.arguments) args.extend(options.arguments);
 			}
 			else args = options.arguments || arguments;
 			var returns = function(){

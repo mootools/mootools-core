@@ -181,7 +181,7 @@ function $$(){
 			case 'boolean': break;
 			case false: break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
-			default: elements = elements.concat((selector.push) ? selector : $A(selector));
+			default: elements.extend(selector);
 		}
 	}
 	return $$.unique(elements);
@@ -866,25 +866,25 @@ Element.Properties = new Abstract({
 	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple'
 });
 
-Element.listenerMethods = {
+Element.Methods = {
+	Listeners: {
+		addListener: function(type, fn){
+			if (this.addEventListener) this.addEventListener(type, fn, false);
+			else this.attachEvent('on' + type, fn);
+			return this;
+		},
 
-	addListener: function(type, fn){
-		if (this.addEventListener) this.addEventListener(type, fn, false);
-		else this.attachEvent('on' + type, fn);
-		return this;
-	},
-
-	removeListener: function(type, fn){
-		if (this.removeEventListener) this.removeEventListener(type, fn, false);
-		else this.detachEvent('on' + type, fn);
-		return this;
+		removeListener: function(type, fn){
+			if (this.removeEventListener) this.removeEventListener(type, fn, false);
+			else this.detachEvent('on' + type, fn);
+			return this;
+		}
 	}
-
 };
 
-window.extend(Element.listenerMethods);
-document.extend(Element.listenerMethods);
-Element.extend(Element.listenerMethods);
+window.extend(Element.Methods.Listeners);
+document.extend(Element.Methods.Listeners);
+Element.extend(Element.Methods.Listeners);
 
 var Garbage = {
 

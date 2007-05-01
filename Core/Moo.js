@@ -41,8 +41,7 @@ Example:
 
 var Class = function(properties){
 	var klass = function(){
-		if (arguments[0] !== null && this.initialize && $type(this.initialize) == 'function') return this.initialize.apply(this, arguments);
-		else return this;
+		return (arguments[0] !== null && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
 	};
 	$extend(klass, this);
 	klass.prototype = properties;
