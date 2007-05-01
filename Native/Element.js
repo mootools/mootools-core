@@ -578,7 +578,8 @@ Element.extend({
 			for (var style in Element.Styles){
 				if (property == style){
 					Element.Styles[style].each(function(s){
-						result.push(this.getStyle(s));
+						var style = this.getStyle(s);
+						result.push(parseInt(style) ? style : '0px');
 					}, this);
 					if (property == 'border'){
 						var every = result.every(function(bit){
@@ -834,7 +835,7 @@ Element.fixStyle = function(property, result, element){
 			size += element.getStyle('border-' + value + '-width').toInt() + element.getStyle('padding-' + value).toInt();
 		});
 		return element['offset' + property.capitalize()] - size + 'px';
-	} else if (property.test(/border(.+)Width/)){
+	} else if (property.test(/border(.+)Width|margin|padding/)){
 		return '0px';
 	}
 	return result;
