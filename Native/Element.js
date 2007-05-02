@@ -723,7 +723,10 @@ Element.extend({
 
 	getProperty: function(property){
 		var index = Element.Properties[property];
-		return (index) ? this[index] : this.getAttribute(property);
+		if (index) return this[index];
+		if (window.ie) return this.getAttribute(property);
+		var node = this.attributes[property];
+		return (node) ? node.nodeValue : null;
 	},
 
 	/*

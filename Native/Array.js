@@ -321,7 +321,7 @@ Array.extend({
 	*/
 
 	include: function(item){
-		if (!this.length || !this.contains(item)) this.push(item);
+		if (!this.contains(item)) this.push(item);
 		return this;
 	},
 
