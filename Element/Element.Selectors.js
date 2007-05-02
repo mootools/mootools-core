@@ -52,57 +52,64 @@ function $ES(selector, filter){
 
 $$.shared = {
 
-	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
+	'regexp': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
+	
+	'xpath': {
 
-	getNormalParam: function(selector, items, context, param, i){
-		if (i == 0){
-			if (param[2]){
-				var el = context.getElementById(param[2]);
-				if (!el || ((param[1] != '*') && (el.tagName.toLowerCase() != param[1]))) return false;
-				items = [el];
-			} else {
-				items = $A(context.getElementsByTagName(param[1]));
+		getParam: function(selector, items, context, param, i){
+			var temp = [context.namespaceURI ? 'xhtml:' : '', param[1]];
+			if (param[2]) temp.push('[@id="', param[2], '"]');
+			if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
+			if (param[4]){
+				if (param[5] && param[6]){
+					switch(param[5]){
+						case '*=': temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
+						case '^=': temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
+						case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
+						case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
+						case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
+					}
+				} else {
+					temp.push('[@', param[4], ']');
+				}
 			}
-		} else {
-			items = $$.shared.getElementsByTagName(items, param[1]);
-			if (param[2]) items = Elements.prototype.filterById.call(items, param[2], true);
+			items.push(temp.join(''));
+			return items;
+		},
+		
+		getItems: function(items, context, nocash){
+			var elements = [];
+			var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+			for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
+			return (nocash) ? elements : new Elements(elements.map($));
 		}
-		if (param[3]) items = Elements.prototype.filterByClass.call(items, param[3], true);
-		if (param[4]) items = Elements.prototype.filterByAttribute.call(items, param[4], param[5], param[6], true);
-		return items;
-	},
 
-	getXpathParam: function(selector, items, context, param, i){
-		var temp = [context.namespaceURI ? 'xhtml:' : '', param[1]];
-		if (param[2]) temp.push('[@id="', param[2], '"]');
-		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
-		if (param[4]){
-			if (param[5] && param[6]){
-				switch(param[5]){
-					case '*=': temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
-					case '^=': temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
-					case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
-					case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
-					case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
+	},
+	
+	'normal': {
+		
+		getParam: function(selector, items, context, param, i){
+			if (i == 0){
+				if (param[2]){
+					var el = context.getElementById(param[2]);
+					if (!el || ((param[1] != '*') && (el.tagName.toLowerCase() != param[1]))) return false;
+					items = [el];
+				} else {
+					items = $A(context.getElementsByTagName(param[1]));
 				}
 			} else {
-				temp.push('[@', param[4], ']');
+				items = $$.shared.getElementsByTagName(items, param[1]);
+				if (param[2]) items = Elements.prototype.filterById.call(items, param[2], true);
 			}
+			if (param[3]) items = Elements.prototype.filterByClass.call(items, param[3], true);
+			if (param[4]) items = Elements.prototype.filterByAttribute.call(items, param[4], param[5], param[6], true);
+			return items;
+		},
+
+		getItems: function(items, context, nocash){
+			return (nocash) ? items : $$.unique(items);
 		}
-		temp = temp.join('');
-		items.push(temp);
-		return items;
-	},
 
-	getNormalItems: function(items, context, nocash){
-		return (nocash) ? items : $$.unique(items);
-	},
-
-	getXpathItems: function(items, context, nocash){
-		var elements = [];
-		var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
-		return (nocash) ? elements : new Elements(elements.map($));
 	},
 
 	resolver: function(prefix){
@@ -117,13 +124,7 @@ $$.shared = {
 
 };
 
-if (window.xpath){
-	$$.shared.getParam = $$.shared.getXpathParam;
-	$$.shared.getItems = $$.shared.getXpathItems;
-} else {
-	$$.shared.getParam = $$.shared.getNormalParam;
-	$$.shared.getItems = $$.shared.getNormalItems;
-}
+$$.shared.method = (window.xpath) ? 'xpath' : 'normal';
 
 /*
 Class: Element
@@ -164,11 +165,11 @@ Element.Methods.Dom = {
 			var param = sel.match($$.shared.regexp);
 			if (!param) break;
 			param[1] = param[1] || '*';
-			var temp = $$.shared.getParam(sel, items, this, param, i);
+			var temp = $$.shared[$$.shared.method].getParam(sel, items, this, param, i);
 			if (!temp) break;
 			items = temp;
 		}
-		return $$.shared.getItems(items, this, nocash);
+		return $$.shared[$$.shared.method].getItems(items, this, nocash);
 	},
 
 	/*
