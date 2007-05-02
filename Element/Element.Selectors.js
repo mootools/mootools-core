@@ -92,7 +92,7 @@ $$.shared = {
 			if (i == 0){
 				if (param[2]){
 					var el = context.getElementById(param[2]);
-					if (!el || ((param[1] != '*') && (el.tagName.toLowerCase() != param[1]))) return false;
+					if (!el || ((param[1] != '*') && (Element.getTag(el) != param[1]))) return false;
 					items = [el];
 				} else {
 					items = $A(context.getElementsByTagName(param[1]));
