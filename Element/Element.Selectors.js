@@ -53,8 +53,6 @@ function $ES(selector, filter){
 $$.shared = {
 
 	regexp: /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
-	
-	ns: document.namespaceURI ? 'xhtml:' : '',
 
 	getNormalParam: function(selector, items, context, param, i){
 		if (i == 0){
@@ -75,7 +73,7 @@ $$.shared = {
 	},
 
 	getXpathParam: function(selector, items, context, param, i){
-		var temp = [$$.shared.ns, param[1]];
+		var temp = [context.namespaceURI ? 'xhtml:' : '', param[1]];
 		if (param[2]) temp.push('[@id="', param[2], '"]');
 		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
 		if (param[4]){
