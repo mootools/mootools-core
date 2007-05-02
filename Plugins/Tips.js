@@ -165,5 +165,4 @@ var Tips = new Class({
 
 });
 
-Tips.implement(new Events);
-Tips.implement(new Options);
+Tips.implement(new Events, new Options);

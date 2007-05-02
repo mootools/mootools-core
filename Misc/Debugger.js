@@ -35,7 +35,7 @@ var debug = {
 		debug.messages.push(text);
 		debug.idx = debug.messages.length;
 		var toCookie = debug.messages.join('-:-:-').replace(/;/g, '%%%');
-		Cookie.set('mootools-debugger-history', toCookie, {duration: {days: 2}});
+		Cookie.set('mootools-debugger-history', toCookie, {duration: 10});
 	},
 
 	result: function(args, spacer){

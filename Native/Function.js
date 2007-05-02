@@ -41,7 +41,7 @@ Function.extend({
 				Default is no delay.
 		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
 				Default is no periodical execution.
-		attempt - If set to true, the returned function will try to execute and return either the results or the error when called. Default is false.
+		attempt - If set to true, the returned function will try to execute and return either the results or false on error. Default is false.
 	*/
 
 	create: function(options){
@@ -94,7 +94,7 @@ Function.extend({
 
 	/*
 	Property: attempt
-		Tries to execute the function, returns either the function results or the error.
+		Tries to execute the function, returns either the result of the function or false on error.
 
 	Arguments:
 		args - the arguments passed. must be an array if arguments > 1

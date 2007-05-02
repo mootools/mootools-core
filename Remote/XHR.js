@@ -152,6 +152,4 @@ var XHR = new Class({
 
 });
 
-XHR.implement(new Chain);
-XHR.implement(new Events);
-XHR.implement(new Options);
+XHR.implement(new Chain, new Events, new Options);

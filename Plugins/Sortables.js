@@ -140,5 +140,4 @@ var Sortables = new Class({
 
 });
 
-Sortables.implement(new Events);
-Sortables.implement(new Options);
+Sortables.implement(new Events, new Options);

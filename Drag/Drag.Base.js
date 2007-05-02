@@ -144,8 +144,7 @@ Drag.Base = new Class({
 
 });
 
-Drag.Base.implement(new Events);
-Drag.Base.implement(new Options);
+Drag.Base.implement(new Events, new Options);
 
 /*
 Class: Element

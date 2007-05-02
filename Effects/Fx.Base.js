@@ -124,6 +124,4 @@ Fx.Base = new Class({
 
 });
 
-Fx.Base.implement(new Chain);
-Fx.Base.implement(new Events);
-Fx.Base.implement(new Options);
+Fx.Base.implement(new Chain, new Events, new Options);

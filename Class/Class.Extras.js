@@ -1,5 +1,5 @@
 /*
-Script: Common.js
+Script: Class.Extras.js
 	Contains common implementations for custom classes. In Mootools is implemented in <Ajax>, <XHR> and <Fx.Base> and many more.
 
 License:
@@ -213,10 +213,9 @@ var Options = new Class({
 
 	setOptions: function(){
 		this.options = $merge.apply(null, [this.options].extend(arguments));
-		if (this.addEvent){
-			for (var option in this.options){
-				if (($type(this.options[option]) == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);
-			}
+		if (!this.addEvent) return this;
+		for (var option in this.options){
+			if ($type(this.options[option] == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);
 		}
 		return this;
 	}

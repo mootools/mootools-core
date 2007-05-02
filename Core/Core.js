@@ -1,6 +1,6 @@
 /*
-Script: Moo.js
-	My Object Oriented javascript.
+Script: Core.js
+	Mootools - My Object Oriented javascript.
 
 License:
 	MIT-style license.
@@ -17,114 +17,6 @@ MooTools Credits:
 var MooTools = {
 	version: '1.1dev'
 };
-
-/*
-Class: Class
-	The base class object of the <http://mootools.net> framework.
-	Creates a new class, its initialize method will fire upon class instantiation.
-	Initialize wont fire on instantiation when you pass *null*.
-
-Arguments:
-	properties - the collection of properties that apply to the class.
-
-Example:
-	(start code)
-	var Cat = new Class({
-		initialize: function(name){
-			this.name = name;
-		}
-	});
-	var myCat = new Cat('Micia');
-	alert(myCat.name); //alerts 'Micia'
-	(end)
-*/
-
-var Class = function(properties){
-	var klass = function(){
-		return (arguments[0] !== null && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
-	};
-	$extend(klass, this);
-	klass.prototype = properties;
-	klass.constructor = Class;
-	return klass;
-};
-
-/*
-Property: empty
-	Returns an empty function
-*/
-
-Class.empty = function(){};
-
-Class.prototype = {
-
-	/*
-	Property: extend
-		Returns the copy of the Class extended with the passed in properties.
-
-	Arguments:
-		properties - the properties to add to the base class in this new Class.
-
-	Example:
-		(start code)
-		var Animal = new Class({
-			initialize: function(age){
-				this.age = age;
-			}
-		});
-		var Cat = Animal.extend({
-			initialize: function(name, age){
-				this.parent(age); //will call the previous initialize;
-				this.name = name;
-			}
-		});
-		var myCat = new Cat('Micia', 20);
-		alert(myCat.name); //alerts 'Micia'
-		alert(myCat.age); //alerts 20
-		(end)
-	*/
-
-	extend: function(properties){
-		var proto = new this(null);
-		for (var property in properties){
-			var pp = proto[property];
-			proto[property] = $mergeClass(pp, properties[property]);
-		}
-		return new Class(proto);
-	},
-
-	/*
-	Property: implement
-		Implements the passed in properties to the base Class prototypes, altering the base class, unlike <Class.extend>.
-
-	Arguments:
-		properties - the properties to add to the base class.
-
-	Example:
-		(start code)
-		var Animal = new Class({
-			initialize: function(age){
-				this.age = age;
-			}
-		});
-		Animal.implement({
-			setName: function(name){
-				this.name = name
-			}
-		});
-		var myAnimal = new Animal(20);
-		myAnimal.setName('Micia');
-		alert(myAnimal.name); //alerts 'Micia'
-		(end)
-	*/
-
-	implement: function(properties){
-		$extend(this.prototype, properties);
-	}
-
-};
-
-/* Section: Utility Functions */
 
 /*
 Function: $defined
@@ -215,26 +107,6 @@ function $merge(){
 	return mix;
 };
 
-//internal
-
-function $mergeClass(previous, current){
-	if (previous && previous != current){
-		var ptype = $type(previous);
-		var ctype = $type(current);
-		if (ptype == 'function' && ctype == 'function'){
-			var merged = function(){
-				this.parent = arguments.callee.parent;
-				return current.apply(this, arguments);
-			};
-			merged.parent = previous;
-			return merged;
-		} else if (ptype == 'object' && ctype == 'object'){
-			return $merge(previous, current);
-		}
-	}
-	return current;
-};
-
 /*
 Function: $extend
 	Copies all the properties from the second passed object to the first passed Object.
@@ -284,13 +156,156 @@ Arguments:
 */
 
 var $native = Object.Native = function(){
-	for (var i = 0; i < arguments.length; i++) arguments[i].extend = $native.extend;
-};
-
-$native.extend = function(props){
-	for (var prop in props){
-		if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+	for (var i = 0, l = arguments.length; i < l; i++){
+		arguments[i].extend = function(props){
+			for (var prop in props){
+				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+			}
+		};
 	}
 };
 
-$native(Function, Array, String, Number, Class);
+$native(Function, Array, String, Number);
+
+/*
+Class: Abstract
+	Abstract class, to be used as singleton. Will add .extend to any object
+
+Arguments:
+	an object
+
+Returns:
+	the object with an .extend property, equivalent to <$extend>.
+*/
+
+var Abstract = function(obj){
+	obj = obj || {};
+	obj.extend = $extend;
+	return obj;
+};
+
+//window, document
+
+var Window = new Abstract(window);
+var Document = new Abstract(document);
+document.head = document.getElementsByTagName('head')[0];
+
+/* Section: Utility Functions */
+
+/*
+Function: $chk
+	Returns true if the passed in value/object exists or is 0, otherwise returns false.
+	Useful to accept zeroes.
+
+Arguments:
+	obj - object to inspect
+*/
+
+function $chk(obj){
+	return !!(obj || obj === 0);
+};
+
+/*
+Function: $pick
+	Returns the first object if defined, otherwise returns the second.
+
+Arguments:
+	obj - object to test
+	picked - the default to return
+
+Example:
+	(start code)
+		function say(msg){
+			alert($pick(msg, 'no meessage supplied'));
+		}
+	(end)
+*/
+
+function $pick(obj, picked){
+	return $defined(obj) ? obj : picked;
+};
+
+/*
+Function: $random
+	Returns a random integer number between the two passed in values.
+
+Arguments:
+	min - integer, the minimum value (inclusive).
+	max - integer, the maximum value (inclusive).
+
+Returns:
+	a random integer between min and max.
+*/
+
+function $random(min, max){
+	return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+/*
+Function: $time
+	Returns the current timestamp
+
+Returns:
+	a timestamp integer.
+*/
+
+function $time(){
+	return new Date().getTime();
+};
+
+/*
+Function: $clear
+	clears a timeout or an Interval.
+
+Returns:
+	null
+
+Arguments:
+	timer - the setInterval or setTimeout to clear.
+
+Example:
+	>var myTimer = myFunction.delay(5000); //wait 5 seconds and execute my function.
+	>myTimer = $clear(myTimer); //nevermind
+
+See also:
+	<Function.delay>, <Function.periodical>
+*/
+
+function $clear(timer){
+	clearTimeout(timer);
+	clearInterval(timer);
+	return null;
+};
+
+/*
+Class: window
+	Some properties are attached to the window object by the browser detection.
+
+Properties:
+	window.ie - will be set to true if the current browser is internet explorer (any).
+	window.ie6 - will be set to true if the current browser is internet explorer 6.
+	window.ie7 - will be set to true if the current browser is internet explorer 7.
+	window.gecko - will be set to true if the current browser is Mozilla/Gecko.
+	window.webkit - will be set to true if the current browser is Safari/Konqueror.
+	window.webkit419 - will be set to true if the current browser is Safari2 / webkit till version 419.
+	window.webkit420 - will be set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
+	window.opera - is set to true by opera itself.
+*/
+
+window.xpath = !!(document.evaluate);
+if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
+else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
+else if (document.getBoxObjectFor != null) window.gecko = true;
+
+//htmlelement
+
+if (typeof HTMLElement == 'undefined'){
+	var HTMLElement = Class.empty;
+	if (window.webkit) document.createElement("iframe"); //fixes safari
+	HTMLElement.prototype = (window.webkit) ? window["[[DOMElement.prototype]]"] : {};
+}
+HTMLElement.prototype.htmlElement = true;
+
+//enables background image cache for internet explorer 6
+
+if (window.ie6) try {document.execCommand("BackgroundImageCache", false, true);} catch(e){};

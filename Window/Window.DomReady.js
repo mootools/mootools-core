@@ -57,14 +57,6 @@ Element.Events.domready = {
 
 };
 
-/* Section: Utility Functions */
-
-/*
-Function: window.onDomReady
-	DEPRECATED: Executes the passed in function when the DOM is ready (when the document tree has loaded, not waiting for images).
-	Same as <window.addEvent> ('domready', init).
-*/
-
 window.onDomReady = function(fn){
 	return this.addEvent('domready', fn);
 };

@@ -82,5 +82,4 @@ var Scroller = new Class({
 
 });
 
-Scroller.implement(new Events);
-Scroller.implement(new Options);
+Scroller.implement(new Events, new Options);

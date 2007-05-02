@@ -121,8 +121,7 @@ Fx.Transitions.extend({
 	*/
 	
 	Pow: function(p, x){
-		x = x[0] || 6;
-		return Math.pow(p, x);
+		return Math.pow(p, x[0] || 6);
 	},
 
 	/*
@@ -171,7 +170,7 @@ Fx.Transitions.extend({
 	*/
 
 	Back: function(p, x){
-		x = x[0] || 1.6180;
+		x = x[0] || 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -184,13 +183,9 @@ Fx.Transitions.extend({
 	*/
 	
 	Bounce: function(p){
-		var y, b = 7.5625;
-		p = 1 - p;
-		if (p < (1 / 2.75)) y = b * Math.pow(p, 2);
-		else if (p < (2 / 2.75)) y = b * (p -= (1.5 / 2.75)) * p + 0.75;
-		else if (p < (2.5 / 2.75)) y = b * (p -= (2.25 / 2.75)) * p + 0.9375;
-		else y = b * (p -= (2.625 / 2.75)) * p + 0.984375;
-		return - y + 1;
+		for (var a = 0, b = 1; ; a += b, b /= 2){
+			if(p >= (7 - 4 * a) / 11) return - Math.pow((11 - 6 * a - 11 * p) / 4, 2) + b * b;
+		}
 	},
 
 	/*
@@ -202,9 +197,7 @@ Fx.Transitions.extend({
 	*/
 	
 	Elastic: function(p, x){
-		var z = x[0] || 300;
-		var y = z * 0.3 / (x[1] || 1);
-		return Math.pow(2, 10 * (p -= 1)) * Math.cos(2 * Math.PI * p * z / y);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
 	}
 
 });

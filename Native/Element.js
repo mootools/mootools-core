@@ -364,14 +364,13 @@ Element.extend({
 
 	clone: function(contents){
 		var el = $(this.cloneNode(contents !== false));
-		if (el.$events){
-			el.$events = {};
-			for (var type in this.$events){
-				el.$events[type] = {'keys': $A(this.$events[type].keys), 'values': $A(this.$events[type].values)};
-			}
-			el.removeEvents();
-		}
-		return el;
+		if (!el.$events) return el;
+		el.$events = {};
+		for (var type in this.$events) el.$events[type] = {
+			'keys': $A(this.$events[type].keys),
+			'values': $A(this.$events[type].values)
+		};
+		return el.removeEvents();
 	},
 
 	/*
