@@ -64,7 +64,7 @@ Elements.extend({
 	
 	filterByAttribute: function(name, operator, value, nocash){
 		var elements = this.filter(function(el){
-			var current = Element.prototype.getProperty.call(el, name);
+			var current = Element.getProperty(el, name);
 			if (!current) return false;
 			if (!operator) return true;
 			switch(operator){

@@ -369,7 +369,7 @@ Example:
 */
 
 function $A(array){
-	return Array.prototype.copy.call(array);
+	return Array.copy(array);
 };
 
 /*
@@ -403,6 +403,6 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') Array.prototype.forEach.call(iterable, fn, bind);
+	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') Array.forEach(iterable, fn, bind);
 	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
 };

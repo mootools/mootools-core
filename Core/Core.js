@@ -160,9 +160,16 @@ var $native = Object.Native = function(){
 		arguments[i].extend = function(props){
 			for (var prop in props){
 				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+				if (!this[prop]) this[prop] = $native.generic(prop);
 			}
 		};
 	}
+};
+
+$native.generic = function(prop){
+	return function(bind){
+		return this.prototype[prop].apply(bind, Array.prototype.slice.call(arguments, 1));
+	};
 };
 
 $native(Function, Array, String, Number);

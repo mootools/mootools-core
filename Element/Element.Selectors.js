@@ -56,7 +56,7 @@ $$.shared = {
 	
 	'xpath': {
 
-		getParam: function(selector, items, context, param, i){
+		getParam: function(items, context, param, i){
 			var temp = [context.namespaceURI ? 'xhtml:' : '', param[1]];
 			if (param[2]) temp.push('[@id="', param[2], '"]');
 			if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
@@ -88,7 +88,7 @@ $$.shared = {
 	
 	'normal': {
 		
-		getParam: function(selector, items, context, param, i){
+		getParam: function(items, context, param, i){
 			if (i == 0){
 				if (param[2]){
 					var el = context.getElementById(param[2]);
@@ -99,10 +99,10 @@ $$.shared = {
 				}
 			} else {
 				items = $$.shared.getElementsByTagName(items, param[1]);
-				if (param[2]) items = Elements.prototype.filterById.call(items, param[2], true);
+				if (param[2]) items = Elements.filterById(items, param[2], true);
 			}
-			if (param[3]) items = Elements.prototype.filterByClass.call(items, param[3], true);
-			if (param[4]) items = Elements.prototype.filterByAttribute.call(items, param[4], param[5], param[6], true);
+			if (param[3]) items = Elements.filterByClass(items, param[3], true);
+			if (param[4]) items = Elements.filterByAttribute(items, param[4], param[5], param[6], true);
 			return items;
 		},
 
@@ -165,7 +165,7 @@ Element.Methods.Dom = {
 			var param = sel.match($$.shared.regexp);
 			if (!param) break;
 			param[1] = param[1] || '*';
-			var temp = $$.shared[$$.shared.method].getParam(sel, items, this, param, i);
+			var temp = $$.shared[$$.shared.method].getParam(items, this, param, i);
 			if (!temp) break;
 			items = temp;
 		}

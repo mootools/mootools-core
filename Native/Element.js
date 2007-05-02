@@ -93,7 +93,12 @@ var Elements = new Class({
 
 });
 
-Elements.extend = Class.prototype.implement;
+Elements.extend = function(props){
+	for (var prop in props){
+		this.prototype[prop] = props[prop];
+		if (!this[prop]) this[prop] = $native.generic(prop);
+	}
+};
 
 /*
 Section: Utility Functions
@@ -219,6 +224,7 @@ Element.extend = function(properties){
 	for (var property in properties){
 		HTMLElement.prototype[property] = properties[property];
 		Element.prototype[property] = properties[property];
+		if (!Element[property]) Element[property] = $native.generic(property);
 		var elementsProperty = (Array.prototype[property]) ? property + 'Elements' : property;
 		Elements.prototype[elementsProperty] = Elements.Multi(property);
 	}
