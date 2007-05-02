@@ -724,7 +724,7 @@ Element.extend({
 	getProperty: function(property){
 		var index = Element.Properties[property];
 		if (index) return this[index];
-		if (window.ie) return this.getAttribute(property);
+		if (!window.ie) return this.getAttribute(property);
 		var node = this.attributes[property];
 		return (node) ? node.nodeValue : null;
 	},
