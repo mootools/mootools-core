@@ -300,7 +300,7 @@ else if (document.getBoxObjectFor != null) window.gecko = true;
 //htmlelement
 
 if (typeof HTMLElement == 'undefined'){
-	var HTMLElement = Class.empty;
+	var HTMLElement = function(){};
 	if (window.webkit) document.createElement("iframe"); //fixes safari
 	HTMLElement.prototype = (window.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
