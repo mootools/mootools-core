@@ -50,7 +50,7 @@ Drag.Move = Drag.Base.extend({
 			top = $chk(top) ? top : 0;
 			left = $chk(left) ? left : 0;
 		}
-		this.element.setStyles({'top': top, 'left': left, 'position': this.position});
+		this.element.setStyles({'top': top, 'left': left, 'position': this.position.element});
 		this.parent(this.element);
 	},
 
