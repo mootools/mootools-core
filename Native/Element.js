@@ -177,7 +177,6 @@ Returns:
 document.getElementsBySelector = document.getElementsByTagName;
 
 function $$(){
-	if (!arguments) return false;
 	var elements = [];
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];

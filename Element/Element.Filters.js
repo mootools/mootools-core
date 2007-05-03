@@ -21,7 +21,7 @@ Elements.extend({
 	
 	filterByTag: function(tag){
 		return new Elements(this.filter(function(el){
-			return (el.tagName.toLowerCase() == tag);
+			return (Element.getTag(el) == tag);
 		}));
 	},
 	
@@ -33,7 +33,7 @@ Elements.extend({
 	
 	filterByClass: function(className, nocash){
 		var elements = this.filter(function(el){
-			return el.className.contains(className, ' ');
+			return (el.className && el.className.contains(className, ' '));
 		});
 		return (nocash) ? elements : new Elements(elements);
 	},
