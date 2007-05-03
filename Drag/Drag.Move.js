@@ -43,7 +43,7 @@ Drag.Move = Drag.Base.extend({
 		if (!['absolute', 'relative'].contains(this.position.element)) this.position.element = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
-		if (this.position.element == 'absolute' && this.position.container != 'relative'){
+		if (this.position.element == 'absolute' && !['relative', 'absolute', 'fixed'].contains(this.position.container)){
 			top = $chk(top) ? top : this.element.getTop(this.options.overflown);
 			left = $chk(left) ? left : this.element.getLeft(this.options.overflown);
 		} else {
@@ -59,7 +59,7 @@ Drag.Move = Drag.Base.extend({
 		if (this.container){
 			var cont = this.container.getCoordinates();
 			var el = this.element.getCoordinates();
-			if (this.position.element == 'absolute' && this.position.container != 'relative'){
+			if (this.position.element == 'absolute' && !['relative', 'absolute', 'fixed'].contains(this.position.container)){
 				this.options.limit = {
 					'x': [cont.left, cont.right - el.width],
 					'y': [cont.top, cont.bottom - el.height]
