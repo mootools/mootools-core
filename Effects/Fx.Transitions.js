@@ -183,9 +183,14 @@ Fx.Transitions.extend({
 	*/
 
 	Bounce: function(p){
+		var value;
 		for (var a = 0, b = 1; 1; a += b, b /= 2){
-			if (p >= (7 - 4 * a) / 11) return - Math.pow((11 - 6 * a - 11 * p) / 4, 2) + b * b;
+			if (p >= (7 - 4 * a) / 11){
+				value = - Math.pow((11 - 6 * a - 11 * p) / 4, 2) + b * b;
+				continue;
+			}
 		}
+		return value;
 	},
 
 	/*

@@ -36,24 +36,21 @@ Drag.Move = Drag.Base.extend({
 	initialize: function(el, options){
 		this.setOptions(options);
 		this.element = $(el);
-		this.position = this.element.getStyle('position');
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
-		if (!['absolute', 'relative'].contains(this.position)) this.position = 'absolute';
+		this.position = {'element': this.element.getStyle('position'), 'container': false};
+		if (this.container) this.position.container = this.container.getStyle('position');
+		if (!['absolute', 'relative'].contains(this.position.element)) this.position.element = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
-		if (this.position == 'absolute'){
+		if (this.position.element == 'absolute' && this.position.container != 'relative'){
 			top = $chk(top) ? top : this.element.getTop(this.options.overflown);
 			left = $chk(left) ? left : this.element.getLeft(this.options.overflown);
 		} else {
 			top = $chk(top) ? top : 0;
 			left = $chk(left) ? left : 0;
 		}
-		this.element.setStyles({
-			'top': top,
-			'left': left,
-			'position': this.position
-		});
+		this.element.setStyles({'top': top, 'left': left, 'position': this.position});
 		this.parent(this.element);
 	},
 
@@ -62,17 +59,15 @@ Drag.Move = Drag.Base.extend({
 		if (this.container){
 			var cont = this.container.getCoordinates();
 			var el = this.element.getCoordinates();
-			if (this.position == 'absolute'){
+			if (this.position.element == 'absolute' && this.position.container != 'relative'){
 				this.options.limit = {
 					'x': [cont.left, cont.right - el.width],
 					'y': [cont.top, cont.bottom - el.height]
 				};
 			} else {
-				var diffx = el.left - this.element.getStyle('left').toInt();
-				var diffy = el.top - this.element.getStyle('top').toInt();
 				this.options.limit = {
-					'y': [-(diffy) + cont.top, cont.bottom - diffy - el.height],
-					'x': [-(diffx) + cont.left, cont.right - diffx - el.width]
+					'y': [0, cont.height - el.height],
+					'x': [0, cont.width - el.width]
 				};
 			}
 		}
