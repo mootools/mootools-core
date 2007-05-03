@@ -95,8 +95,7 @@ var Sortables = new Class({
 	
 	moveGhost: function(event){
 		var value = event.page.y - this.offset;
-		if (value < this.coordinates.top) value = this.coordinates.top;
-		else if (value + this.ghost.offsetHeight > this.coordinates.bottom) value = this.coordinates.bottom - this.ghost.offsetHeight;
+		value = value.limit(this.coordinates.top, this.coordinates.bottom - this.ghost.offsetHeight);
 		this.ghost.setStyle('top', value);
 		event.stop();
 	},

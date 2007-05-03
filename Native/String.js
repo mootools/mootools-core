@@ -248,30 +248,3 @@ Array.extend({
 	}
 
 });
-
-/*
-Class: Number
-	contains the internal method toInt.
-*/
-
-Number.extend({
-
-	/*
-	Property: toInt
-		Returns this number; useful because toInt must work on both Strings and Numbers.
-	*/
-
-	toInt: function(){
-		return parseInt(this);
-	},
-
-	/*
-	Property: toFloat
-		Returns this number as a float; useful because toFloat must work on both Strings and Numbers.
-	*/
-
-	toFloat: function(){
-		return parseFloat(this);
-	}
-
-});

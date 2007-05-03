@@ -116,17 +116,17 @@ Class.prototype = {
 
 Class.Merge = function(previous, current){
 	if (previous && previous != current){
-		var ptype = $type(previous);
-		var ctype = $type(current);
-		if (ptype == 'function' && ctype == 'function'){
-			var merged = function(){
-				this.parent = arguments.callee.parent;
-				return current.apply(this, arguments);
-			};
-			merged.parent = previous;
-			return merged;
-		} else if (ptype == 'object' && ctype == 'object'){
-			return $merge(previous, current);
+		var type = $type(previous);
+		if (type != $type(previous)) return current;
+		switch(type){
+			case 'function':
+				var merged = function(){
+					this.parent = arguments.callee.parent;
+					return current.apply(this, arguments);
+				};
+				merged.parent = previous;
+				return merged;
+			case 'object': return $merge(previous, current);
 		}
 	}
 	return current;

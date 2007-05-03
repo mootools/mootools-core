@@ -61,7 +61,7 @@ Fx.Scroll = Fx.Base.extend({
 		var values = {'x': x, 'y': y};
 		for (var z in el.size){
 			var max = el.scrollSize[z] - el.size[z];
-			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? Math.max(Math.min(values[z], max), 0) : max;
+			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
 			else values[z] = el.scroll[z];
 			values[z] += this.options.offset[z];
 		}
