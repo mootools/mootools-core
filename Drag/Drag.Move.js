@@ -76,8 +76,7 @@ Drag.Move = Drag.Base.extend({
 
 	drag: function(event){
 		this.parent(event);
-		if (this.out) return this;
-		var overed = this.droppables.filter(this.checkAgainst, this).getLast();
+		var overed = this.out ? false : this.droppables.filter(this.checkAgainst, this).getLast();
 		if (this.overed != overed){
 			if (this.overed) this.overed.fireEvent('leave', [this.element, this]);
 			this.overed = overed ? overed.fireEvent('over', [this.element, this]) : null;
@@ -92,10 +91,8 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	stop: function(){
-		if (!this.out){
-			if (this.overed) this.overed.fireEvent('drop', [this.element, this]);
-			else this.element.fireEvent('emptydrop', this);
-		}
+		if (this.overed && !this.out) this.overed.fireEvent('drop', [this.element, this]);
+		else this.element.fireEvent('emptydrop', this);
 		this.parent();
 		return this;
 	}
