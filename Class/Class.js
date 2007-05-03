@@ -116,7 +116,7 @@ Class.prototype = {
 
 Class.Merge = function(previous, current){
 	if (previous && previous != current){
-		var type = $type(previous);
+		var type = $type(current);
 		if (type != $type(previous)) return current;
 		switch(type){
 			case 'function':
