@@ -25,23 +25,20 @@ var SmoothScroll = Fx.Scroll.extend({
 	initialize: function(options){
 		this.parent(window, options);
 		this.links = (this.options.links) ? $$(this.options.links) : $$(document.links);
-		this.addEvent('onCancel', this.clearChain);
 		var location = window.location.href.match(/^[^#]*/)[0] + '#';
 		this.links.each(function(link){
 			if (link.href.indexOf(location) != 0) return;
 			var anchor = link.href.substr(location.length);
 			if (anchor && $(anchor)) this.useLink(link, anchor);
 		}, this);
+		this.addEvent('onComplete', function(){
+			if (!window.webkit419) window.location.hash = this.anchor;
+		});
 	},
 
 	useLink: function(link, anchor){
 		link.addEvent('click', function(event){
-			if (!window.webkit419){
-				this.clearChain();
-				this.chain(function(){
-					window.location.hash = anchor;
-				});
-			}
+			this.anchor = anchor;
 			this.toElement(anchor);
 			event.stop();
 		}.bindWithEvent(this));

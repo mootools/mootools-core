@@ -37,7 +37,7 @@ Fx.Slide = Fx.Base.extend({
 		this.setOptions(options);
 		this.now = [];
 		this.parent(this.options);
-		this.addEvent('onComplete', function(){
+		if (window.webkit419) this.addEvent('onComplete', function(){
 			this.element.remove().inject(this.wrapper);
 		});
 	},

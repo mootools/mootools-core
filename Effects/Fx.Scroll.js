@@ -33,11 +33,12 @@ Fx.Scroll = Fx.Base.extend({
 	initialize: function(element, options){
 		this.now = [];
 		this.element = $(element);
+		this.bound = {'stop': this.stop.bind(this, false)};
 		this.addEvent('onStart', function(){
-			this.element.addEvent('mousewheel', this.stop.bind(this, false));
+			document.addEvent('mousewheel', this.bound.stop);
 		}.bind(this));
 		this.removeEvent('onComplete', function(){
-			this.element.removeEvent('mousewheel', this.stop.bind(this, false));
+			document.removeEvent('mousewheel', this.bound.stop);
 		}.bind(this));
 		this.parent(options);
 	},
