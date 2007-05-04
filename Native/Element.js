@@ -935,5 +935,5 @@ var Garbage = {
 
 window.addListener('beforeunload', function(){
 	window.addListener('unload', Garbage.empty);
-	if (window.ie) window.addEvent('unload', CollectGarbage);
+	if (window.ie) window.addListener('unload', CollectGarbage);
 });
