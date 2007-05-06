@@ -603,16 +603,20 @@ Element.extend({
 				}
 			}
 			if (Element.Styles.border.contains(property)){
-				['Width', 'Color', 'Style'].each(function(p){
-					result.push(this.getStyle(property + p));
-				}, this);
-				return result.join(' ');
+				return ['Width', 'Color', 'Style'].map(function(p){
+					return this.getStyle(property + p);
+				}, this).join(' ');
 			}
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
 		if (window.ie) result = Element.fixStyle(property, result, this);
-		return (result && property.test(/color/i) && result.contains('rgb')) ? result.rgbToHex() : result;
+		if (result && property.test(/color/i) && result.contains('rgb')){
+			return result.split('rgb').splice(1,4).map(function(color){
+				return color.rgbToHex();
+			}).join(' ');
+		}
+		return result;
 	},
 
 	/*
