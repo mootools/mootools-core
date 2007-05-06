@@ -602,10 +602,16 @@ Element.extend({
 					return result.join(' ');
 				}
 			}
-			if (Element.Styles.border.contains(property)){
-				return ['Width', 'Color', 'Style'].map(function(p){
-					return this.getStyle(property + p);
-				}, this).join(' ');
+			if (property.contains('border')){
+				if (Element.Styles.border.contains(property)){
+					return ['Width', 'Style', 'Color'].map(function(p){
+						return this.getStyle(property + p);
+					}, this).join(' ');
+				} else if (Element.borderShort.contains(property)){
+					return ['Top', 'Right', 'Bottom', 'Left'].map(function(p){
+						return this.getStyle('border' + p + property.replace('border', ''));
+					}, this).join(' ');
+				}
 			}
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
@@ -864,6 +870,8 @@ Element.Styles = {'border': [], 'padding': [], 'margin': []};
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
 	for (var style in Element.Styles) Element.Styles[style].push(style + direction);
 });
+
+Element.borderShort = ['borderWidth', 'borderStyle', 'borderColor'];
 
 Element.getMany = function(el, method, keys){
 	var result = {};
