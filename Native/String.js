@@ -224,7 +224,7 @@ Array.extend({
 
 	rgbToHex: function(array){
 		if (this.length < 3) return false;
-		if (this[3] && (this[3] == 0) && !array) return 'transparent';
+		if (this.length == 4 && this[3] == 0 && !array) return 'transparent';
 		var hex = [];
 		for (var i = 0; i < 3; i++){
 			var bit = (this[i] - 0).toString(16);
