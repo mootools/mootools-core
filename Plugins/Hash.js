@@ -9,7 +9,7 @@ License:
 /*
 Class: Hash
 	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null/undefined values are allowed.
-	
+
 Note:
 	Each hash instance has the length property.
 
@@ -31,7 +31,7 @@ var Hash = new Class({
 	length: 0,
 
 	initialize: function(object){
-		this.obj = object;
+		this.obj = object || {};
 		this.setLength();
 	},
 
@@ -79,7 +79,7 @@ var Hash = new Class({
 		this.obj[key] = value;
 		return this;
 	},
-	
+
 	setLength: function(){
 		this.length = 0;
 		for (var p in this.obj) this.length++;
@@ -126,12 +126,12 @@ var Hash = new Class({
 		$extend(this.obj, obj);
 		return this.setLength();
 	},
-	
+
 	/*
 	Property: merge
 		Merges the current hash with multiple objects.
 	*/
-	
+
 	merge: function(){
 		this.obj = $merge.apply(null, [this.obj].extend(arguments));
 		return this.setLength();
