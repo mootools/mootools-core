@@ -15,7 +15,7 @@ MooTools Credits:
 */
 
 var MooTools = {
-	version: '1.1dev'
+	'version': 1.1
 };
 
 /*
