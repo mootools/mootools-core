@@ -10,7 +10,7 @@ License:
 Class: Scroller
 	The Scroller is a class to scroll any element with an overflow (including the window) when the mouse cursor reaches certain buondaries of that element.
 	You must call its start method to start listening to mouse movements.
-	
+
 Note:
 	The Scroller requires an XHTML doctype.
 
@@ -58,7 +58,7 @@ var Scroller = new Class({
 	*/
 
 	stop: function(){
-		this.mousemover.removeListener('mousemove', this.coord).removeEvent('trash', this.coord);
+		this.mousemover.removeListener('mousemove', this.coord).removeEvent('trash', this.trash);
 		this.timer = $clear(this.timer);
 	},
 
