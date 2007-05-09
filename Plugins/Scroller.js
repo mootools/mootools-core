@@ -49,7 +49,7 @@ var Scroller = new Class({
 	start: function(){
 		this.coord = this.getCoords.bindWithEvent(this);
 		this.trash = this.stop.bind(this);
-		this.mousemover.addListener('mousemove', this.coord).addListener('trash', this.trash);
+		this.mousemover.addListener('mousemove', this.coord).addEvent('trash', this.trash);
 	},
 
 	/*
@@ -58,7 +58,7 @@ var Scroller = new Class({
 	*/
 
 	stop: function(){
-		this.mousemover.removeListener('mousemove', this.coord).removeListener('trash', this.coord);
+		this.mousemover.removeListener('mousemove', this.coord).removeEvent('trash', this.coord);
 		this.timer = $clear(this.timer);
 	},
 
