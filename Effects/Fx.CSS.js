@@ -10,7 +10,7 @@ Fx.CSS = {
 
 	select: function(property, to){
 		if (property.test(/color/i)) return this.Color;
-		if (to.contains && to.contains(' ')) return this.Multi;
+		if ((to.contains && to.contains(' ')) || to.push) return this.Multi;
 		return this.Single;
 	},
 
