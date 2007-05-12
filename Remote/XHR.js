@@ -45,7 +45,7 @@ var XHR = new Class({
 		autoCancel: false,
 		headers: {}
 	},
-	
+
 	setTransport: function(){
 		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
 		return this;
@@ -121,7 +121,7 @@ var XHR = new Class({
 		else if (this.running) return this;
 		this.running = true;
 		if (data && this.options.method == 'get') url = url + (url.contains('?') ? '&' : '?') + data, data = null;
-		this.transport.open(this.options.method, url, this.options.async);
+		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 		$extend(this.headers, this.options.headers);
