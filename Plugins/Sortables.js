@@ -101,20 +101,14 @@ var Sortables = new Class({
 	},
 
 	move: function(event){
-		this.previous = this.previous || event.page.y;
-		this.now = event.page.y;
-		var direction = ((this.previous - this.now) <= 0);
+		var now = event.page.y;
+		this.previous = this.previous || now;
+		var direction = ((this.previous - now) <= 0);
 		var prev = this.active.getPrevious();
 		var next = this.active.getNext();
-		if (prev && !direction){
-			var prevPos = prev.getCoordinates();
-			if (event.page.y < prevPos.bottom) this.active.injectBefore(prev);
-		}
-		if (next && direction){
-			var nextPos = next.getCoordinates();
-			if (event.page.y > nextPos.top) this.active.injectAfter(next);
-		}
-		this.previous = event.page.y;
+		if (prev && !direction && now < prev.getCoordinates().bottom) this.active.injectBefore(prev);
+		if (next && direction && now > next.getCoordinates().top) this.active.injectAfter(next);
+		this.previous = now;
 	},
 
 	serialize: function(){
