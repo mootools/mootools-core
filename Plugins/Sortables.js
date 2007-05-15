@@ -9,7 +9,7 @@ License:
 /*
 Class: Sortables
 	Creates an interface for <Drag.Base> and drop, resorting of a list.
-	
+
 Note:
 	The Sortables require an XHTML doctype.
 
@@ -59,7 +59,7 @@ var Sortables = new Class({
 		this.bound.move = this.move.bindWithEvent(this);
 		this.bound.end = this.end.bind(this);
 	},
-	
+
 	attach: function(){
 		this.handles.each(function(handle, i){
 			handle.addEvent('mousedown', this.bound.start[i]);
@@ -92,7 +92,7 @@ var Sortables = new Class({
 		this.fireEvent('onStart', el);
 		event.stop();
 	},
-	
+
 	moveGhost: function(event){
 		var value = event.page.y - this.offset;
 		value = value.limit(this.coordinates.top, this.coordinates.bottom - this.ghost.offsetHeight);
@@ -101,17 +101,16 @@ var Sortables = new Class({
 	},
 
 	move: function(event){
-		this.active.active = true;
 		this.previous = this.previous || event.page.y;
 		this.now = event.page.y;
-		var direction = ((this.previous - this.now) <= 0) ? 'down' : 'up';
+		var direction = ((this.previous - this.now) <= 0);
 		var prev = this.active.getPrevious();
 		var next = this.active.getNext();
-		if (prev && direction == 'up'){
+		if (prev && !direction){
 			var prevPos = prev.getCoordinates();
 			if (event.page.y < prevPos.bottom) this.active.injectBefore(prev);
 		}
-		if (next && direction == 'down'){
+		if (next && direction){
 			var nextPos = next.getCoordinates();
 			if (event.page.y > nextPos.top) this.active.injectAfter(next);
 		}
@@ -119,11 +118,9 @@ var Sortables = new Class({
 	},
 
 	serialize: function(){
-		var serial = [];
-		this.list.getChildren().each(function(el, i){
-			serial[i] = this.elements.indexOf(el);
+		return this.list.getChildren().map(function(el){
+			return this.elements.indexOf(el);
 		}, this);
-		return serial;
 	},
 
 	end: function(){

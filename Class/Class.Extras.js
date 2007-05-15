@@ -143,9 +143,9 @@ var Events = new Class({
 
 	fireEvent: function(type, args, delay){
 		if (this.$events && this.$events[type]){
-			this.$events[type].each(function(fn){
-				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
-			}, this);
+			for (var i = 0, l = this.$events[type].length; i < l; i++) {
+				this.$events[type][i].create({'bind': this, 'delay': delay, 'arguments': args})();
+			}
 		}
 		return this;
 	},
@@ -213,9 +213,10 @@ var Options = new Class({
 
 	setOptions: function(){
 		this.options = $merge.apply(null, [this.options].extend(arguments));
-		if (!this.addEvent) return this;
-		for (var option in this.options){
-			if ($type(this.options[option] == 'function') && option.test(/^on[A-Z]/)) this.addEvent(option, this.options[option]);
+		if (this.addEvent){
+			for (var option in this.options){
+				if ($type(this.options[option] == 'function') && /^on[A-Z]/.test(option)) this.addEvent(option, this.options[option]);
+			}
 		}
 		return this;
 	}

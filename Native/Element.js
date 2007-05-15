@@ -931,8 +931,8 @@ var Garbage = {
 			if (el.$events) el.fireEvent('trash').removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;
 			for (var p in Element.prototype) el[p] = null;
-			el.htmlElement = el.$tmp = el = null;
 			Garbage.elements.remove(el);
+			el.htmlElement = el.$tmp = el = null;
 		}
 	},
 
