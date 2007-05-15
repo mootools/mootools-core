@@ -143,9 +143,9 @@ var Events = new Class({
 
 	fireEvent: function(type, args, delay){
 		if (this.$events && this.$events[type]){
-			for (var i = 0, l = this.$events[type].length; i < l; i++) {
-				this.$events[type][i].create({'bind': this, 'delay': delay, 'arguments': args})();
-			}
+			this.$events[type].each(function(fn){
+				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+			}, this);
 		}
 		return this;
 	},

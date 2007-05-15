@@ -259,10 +259,11 @@ Element.Methods.Events = {
 	*/
 
 	fireEvent: function(type, args, delay){
-		if (!this.$events || !this.$events[type]) return this;
-		this.$events[type].keys.each(function(fn){
-			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
-		}, this);
+		if (this.$events && this.$events[type]){
+			this.$events[type].keys.each(function(fn){
+				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+			}, this);
+		}
 		return this;
 	},
 

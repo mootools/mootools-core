@@ -73,11 +73,11 @@ Fx.Base = new Class({
 		this.increase();
 		return this;
 	},
-	
+
 	setNow: function(){
 		this.now = this.compute(this.from, this.to);
 	},
-	
+
 	compute: function(from, to){
 		return (to - from) * this.delta + from;
 	},
@@ -116,11 +116,7 @@ Fx.Base = new Class({
 		this.timer = $clear(this.timer);
 		if (!end) this.fireEvent('onCancel', this.element);
 		return this;
-	},
-
-	//compat
-	custom: function(from, to){return this.start(from, to)},
-	clearTimer: function(end){return this.stop(end)}
+	}
 
 });
 

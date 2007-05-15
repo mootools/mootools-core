@@ -348,7 +348,7 @@ Array.extend({
 //copies
 
 Array.prototype.each = Array.prototype.forEach;
-Array.prototype.test = Array.prototype.contains;
+Array.each = Array.forEach;
 
 /* Section: Utility Functions */
 

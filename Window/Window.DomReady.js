@@ -10,7 +10,7 @@ License:
 
 /*
 Event: domready
-	executes a function when the dom tree is loaded, without waiting for images. Only works when called from window. 
+	executes a function when the dom tree is loaded, without waiting for images. Only works when called from window.
 
 Credits:
 	(c) Dean Edwards/Matthias Miller/John Resig, remastered for mootools.
@@ -55,8 +55,4 @@ Element.Events.domready = {
 		}
 	}
 
-};
-
-window.onDomReady = function(fn){
-	return this.addEvent('domready', fn);
 };

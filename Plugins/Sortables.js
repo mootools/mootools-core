@@ -103,11 +103,11 @@ var Sortables = new Class({
 	move: function(event){
 		var now = event.page.y;
 		this.previous = this.previous || now;
-		var direction = ((this.previous - now) <= 0);
+		var down = ((this.previous - now) <= 0);
 		var prev = this.active.getPrevious();
 		var next = this.active.getNext();
-		if (prev && !direction && now < prev.getCoordinates().bottom) this.active.injectBefore(prev);
-		if (next && direction && now > next.getCoordinates().top) this.active.injectAfter(next);
+		if (prev && !down && now < prev.getCoordinates().bottom) this.active.injectBefore(prev);
+		if (next && down && now > next.getCoordinates().top) this.active.injectAfter(next);
 		this.previous = now;
 	},
 
