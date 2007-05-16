@@ -10,19 +10,20 @@ Fx.CSS = {
 
 	select: function(property, to){
 		if (property.test(/color/i)) return this.Color;
-		if ((to.contains && to.contains(' ')) || to.push) return this.Multi;
+		var type = $type(to);
+		if ((type == 'array') || (type == 'string' && to.contains(' '))) return this.Multi;
 		return this.Single;
 	},
 
 	parse: function(el, property, fromTo){
 		if (!fromTo.push) fromTo = [fromTo];
 		var from = fromTo[0], to = fromTo[1];
-		if (!to && to != 0){
+		if (!$chk(to)){
 			to = from;
 			from = el.getStyle(property);
 		}
 		var css = this.select(property, to);
-		return {from: css.parse(from), to: css.parse(to), css: css};
+		return {'from': css.parse(from), 'to': css.parse(to), 'css': css};
 	}
 
 };

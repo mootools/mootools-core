@@ -199,20 +199,6 @@ Element.Methods.Dom = {
 		selector = selector.split(',');
 		for (var i = 0, j = selector.length; i < j; i++) elements = elements.concat(this.getElements(selector[i], true));
 		return (nocash) ? elements : $$.unique(elements);
-	},
-
-	/*
-	Property: getElementsByClassName
-		Returns all the elements that match a specific class name.
-		Here for compatibility purposes. can also be written: document.getElements('.className'), or $$('.className')
-		Returns as <Elements>.
-
-	Arguments:
-		className - string; css classname
-	*/
-
-	getElementsByClassName: function(className){
-		return this.getElements('.' + className);
 	}
 
 };
