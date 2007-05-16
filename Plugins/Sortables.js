@@ -111,8 +111,8 @@ var Sortables = new Class({
 		this.previous = now;
 	},
 
-	serialize: function(){
-		return this.list.getChildren().map(function(el){
+	serialize: function(converter){
+		return this.list.getChildren().map(converter || function(el){
 			return this.elements.indexOf(el);
 		}, this);
 	},

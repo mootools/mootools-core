@@ -733,8 +733,10 @@ Element.extend({
 	getProperty: function(property){
 		var index = Element.Properties[property];
 		if (index) return this[index];
-		if (!window.ie) return this.getAttribute(property);
+		var flag = Element.PropertiesIFlag[property] || 0;
+		if (!window.ie || flag) return this.getAttribute(property, flag);
 		var node = this.attributes[property];
+		return this.getAttribute(property);
 		return (node) ? node.nodeValue : null;
 	},
 
@@ -892,6 +894,9 @@ Element.Properties = new Abstract({
 	'maxlength': 'maxLength', 'readonly': 'readOnly', 'value': 'value',
 	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple'
 });
+Element.PropertiesIFlag = {
+	'href': 2, 'src': 2
+};
 
 Element.Methods = {
 	Listeners: {
