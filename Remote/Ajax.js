@@ -41,7 +41,6 @@ var Ajax = XHR.extend({
 	initialize: function(url, options){
 		this.addEvent('onSuccess', this.onComplete);
 		this.setOptions(options);
-		this.options.data = this.options.data;
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
