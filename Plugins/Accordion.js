@@ -86,6 +86,16 @@ var Accordion = Fx.Elements.extend({
 		if ($chk(this.options.display)) this.display(this.options.display);
 	},
 
+	/*
+	Property: addSection
+		Dynamically adds a new section into the accordion at the specified position.
+
+	Arguments:
+		toggler - (dom element) the element that toggles the accordion section open.
+		element - (dom element) the element that stretches open when the toggler is clicked.
+		pos - (integer) the index where these objects are to be inserted within the accordion.
+	*/
+
 	addSection: function(toggler, element, pos){
 		toggler = $(toggler);
 		element = $(element);
