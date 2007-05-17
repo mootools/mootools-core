@@ -736,7 +736,6 @@ Element.extend({
 		var flag = Element.PropertiesIFlag[property] || 0;
 		if (!window.ie || flag) return this.getAttribute(property, flag);
 		var node = this.attributes[property];
-		return this.getAttribute(property);
 		return (node) ? node.nodeValue : null;
 	},
 
