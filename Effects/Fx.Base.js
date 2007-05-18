@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Fx = {Shared: {}};
+var Fx = {};
 
 /*
 Class: Fx.Base

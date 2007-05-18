@@ -137,7 +137,7 @@ Returns:
 	The first object, extended.
 */
 
-var $extend = Object.extend = function(){
+var $extend = function(){
 	var args = arguments;
 	if (!args[1]) args = [this, args[0]];
 	for (var property in args[1]) args[0][property] = args[1][property];
@@ -155,7 +155,7 @@ Arguments:
 
 */
 
-var $native = Object.Native = function(){
+var $native = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		arguments[i].extend = function(props){
 			for (var prop in props){
@@ -301,7 +301,7 @@ Properties:
 
 window.xpath = !!(document.evaluate);
 if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
-else if (document.childNodes && !document.all && !navigator.taintEnabled) window.khtml = window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
+else if (document.childNodes && !document.all && !navigator.taintEnabled) window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
 else if (document.getBoxObjectFor != null) window.gecko = true;
 
 //htmlelement
@@ -311,7 +311,7 @@ if (typeof HTMLElement == 'undefined'){
 	if (window.webkit) document.createElement("iframe"); //fixes safari
 	HTMLElement.prototype = (window.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
-HTMLElement.prototype.htmlElement = true;
+HTMLElement.prototype.htmlElement = function(){};
 
 //enables background image cache for internet explorer 6
 

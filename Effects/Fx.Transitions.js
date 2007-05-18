@@ -57,16 +57,7 @@ Fx.Transitions = new Abstract({
 });
 
 Fx.Transitions.extend = function(transitions){
-	for (var transition in transitions){
-		Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
-		Fx.Transitions.compat(transition);
-	};
-};
-
-Fx.Transitions.compat = function(transition){
-	['In', 'Out', 'InOut'].each(function(easeType){
-		Fx.Transitions[transition.toLowerCase() + easeType] = Fx.Transitions[transition]['ease' + easeType];
-	});
+	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
 };
 
 Fx.Transitions.extend({
@@ -211,5 +202,4 @@ Fx.Transitions.extend({
 	Fx.Transitions[transition] = new Fx.Transition(function(p){
 		return Math.pow(p, [i + 2]);
 	});
-	Fx.Transitions.compat(transition);
 });
