@@ -94,8 +94,8 @@ var XHR = new Class({
 		Add/modify an header for the request. It will not override headers from the options.
 
 	Example:
-		>var myAjax = new Ajax(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-		>myAjax.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
+		>var myXhr = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
+		>myXhr.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
 	*/
 
 	setHeader: function(name, value){
