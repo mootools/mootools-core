@@ -40,8 +40,8 @@ var Cookie = new Abstract({
 		An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
 
 	Example:
-		>Cookie.set("username", "Harald", {duration: 1}); //save this for 1 day
-		>Cookie.set("username", "JackBauer", {duration: false}); //session cookie
+		>Cookie.set('username', 'Harald'); // session cookie (duration is false), or ...
+		>Cookie.set('username', 'JackBauer', {duration: 1}); // save this for 1 day
 
 	*/
 
@@ -71,7 +71,7 @@ var Cookie = new Abstract({
 		The cookie string value, or false if not found.
 
 	Example:
-		>Cookie.get("username") //returns Aaron
+		>Cookie.get("username") //returns JackBauer
 	*/
 
 	get: function(key){
@@ -88,8 +88,9 @@ var Cookie = new Abstract({
 		options - optional. you can also pass the domain and path here. Same as options in <Cookie.set>
 
 	Examples:
-		>Cookie.remove("username") //bye-bye Aaron
-		>var myCookie = Cookie.set('user', 'jackbauer', {domain: 'mootools.net'});
+		>Cookie.remove('username') //bye-bye JackBauer, cya in 24 hours
+		>
+		>var myCookie = Cookie.set('username', 'Aaron', {domain: 'mootools.net'}); // Cookie.set returns an object with all values need to remove the cookie
 		>Cookie.remove(myCookie);
 	*/
 

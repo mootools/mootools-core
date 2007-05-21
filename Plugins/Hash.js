@@ -95,9 +95,10 @@ var Hash = new Class({
 	*/
 
 	remove: function(key){
-		if (!this.hasKey(key)) return this;
-		delete this.obj[key];
-		this.length--;
+		if (this.hasKey(key)){
+			delete this.obj[key];
+			this.length--;
+		}
 		return this;
 	},
 

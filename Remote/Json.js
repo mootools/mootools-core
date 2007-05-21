@@ -39,6 +39,10 @@ var Json = {
 				var string = [];
 				for (var property in obj) string.push(Json.toString(property) + ':' + Json.toString(obj[property]));
 				return '{' + string.join(',') + '}';
+			case 'number':
+				if (isFinite(obj)) break;
+			case false:
+				return 'null';
 		}
 		return String(obj);
 	},
