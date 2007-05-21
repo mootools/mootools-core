@@ -888,10 +888,10 @@ Element.setMany = function(el, method, pairs){
 };
 
 Element.Properties = new Abstract({
-	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan',
-	'rowspan': 'rowSpan', 'accesskey': 'accessKey', 'tabindex': 'tabIndex',
-	'maxlength': 'maxLength', 'readonly': 'readOnly', 'value': 'value',
-	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple'
+	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
+	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
+	'readonly': 'readOnly', 'frameborder': 'frameBorder', 'value': 'value',
+	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple', 'selected': 'selected'
 });
 Element.PropertiesIFlag = {
 	'href': 2, 'src': 2
