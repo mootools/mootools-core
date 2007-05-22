@@ -155,7 +155,7 @@
 	"Remote": {
 
 		"XHR": {
-			"deps": ["Class.Extras", "Element"],
+			"deps": ["Class.Extras", "String"],
 			"desc": "Basic XMLHttpRequest Object Class Wrapper."
 		},
 

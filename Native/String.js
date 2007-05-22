@@ -1,6 +1,6 @@
 /*
 Script: String.js
-	Contains String prototypes and Number prototypes.
+	Contains String prototypes.
 
 License:
 	MIT-style license.
@@ -193,7 +193,7 @@ String.extend({
 		>'a bc'.contains('bc'); //true
 		>'a bc'.contains('b', ' '); //false
 	*/
-	
+
 	contains: function(string, s){
 		return (s) ? (s + this + s).indexOf(s + string + s) > -1 : this.indexOf(string) > -1;
 	},

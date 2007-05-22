@@ -1,4 +1,12 @@
 /*
+Script: Number.js
+	Contains the Number prototypes.
+
+License:
+	MIT-style license.
+*/
+
+/*
 Class: Number
 	A collection of The Number Object prototype methods.
 */
@@ -26,14 +34,14 @@ Number.extend({
 	/*
 	Property: limit
 		Limits the number.
-		
+
 	Arguments:
 		min - number, minimum value
 		max - number, maximum value
-		
+
 	Returns:
 		the number in the given limits.
-		
+
 	Example:
 		>(12).limit(2, 6.5)  // returns 6.5
 		>(-4).limit(2, 6.5)  // returns 2
@@ -55,7 +63,7 @@ Number.extend({
 		>12.45.round() // returns 12
 		>12.45.round(1) // returns 12.5
 		>12.45.round(-1) // returns 10
-		
+
 	Returns:
 		The rounded number.
 	*/
