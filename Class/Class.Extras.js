@@ -215,7 +215,7 @@ var Options = new Class({
 		this.options = $merge.apply(null, [this.options].extend(arguments));
 		if (this.addEvent){
 			for (var option in this.options){
-				if ($type(this.options[option] == 'function') && /^on[A-Z]/.test(option)) this.addEvent(option, this.options[option]);
+				if ($type(this.options[option] == 'function') && (/^on[A-Z]/).test(option)) this.addEvent(option, this.options[option]);
 			}
 		}
 		return this;

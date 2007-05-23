@@ -145,7 +145,7 @@ var Accordion = Fx.Elements.extend({
 		return this.start(obj);
 	},
 
-	showThisHideOpen: function(index){return this.display(index)}
+	showThisHideOpen: function(index){return this.display(index);}
 
 });
 

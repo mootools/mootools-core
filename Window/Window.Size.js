@@ -107,6 +107,6 @@ window.extend({
 	},
 
 	//ignore
-	getPosition: function(){return {'x': 0, 'y': 0}}
+	getPosition: function(){return {'x': 0, 'y': 0};}
 
 });

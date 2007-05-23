@@ -66,7 +66,7 @@ var XHR = new Class({
 		if (this.transport.readyState != 4 || !this.running) return;
 		this.running = false;
 		var status = 0;
-		try {status = this.transport.status} catch(e){};
+		try {status = this.transport.status;} catch(e){};
 		if (this.options.isSuccess.call(this, status)) this.onSuccess();
 		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;
@@ -120,7 +120,10 @@ var XHR = new Class({
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;
-		if (data && this.options.method == 'get') url = url + (url.contains('?') ? '&' : '?') + data, data = null;
+		if (data && this.options.method == 'get'){
+			url = url + (url.contains('?') ? '&' : '?') + data;
+			data = null;
+		}
 		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');

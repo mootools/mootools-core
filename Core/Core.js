@@ -65,7 +65,7 @@ function $type(obj){
 	if (type == 'object' && obj.nodeName){
 		switch(obj.nodeType){
 			case 1: return 'element';
-			case 3: return /\S/.test(obj.nodeValue) ? 'textnode' : 'whitespace';
+			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
 		}
 	}
 	if (type == 'object' || type == 'function'){
@@ -148,7 +148,7 @@ var $extend = function(){
 Function: $native
 	Will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if non previously existent.
 	Its handy if you dont want the .extend method of an object to overwrite existing methods.
-	Used automatically in mootools to implement Array/String/Function/Number methods to browser that dont support them whitout manual checking.
+	Used automatically in MooTools to implement Array/String/Function/Number methods to browser that dont support them whitout manual checking.
 
 Arguments:
 	a number of classes/native javascript objects

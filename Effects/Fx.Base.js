@@ -1,6 +1,6 @@
 /*
 Script: Fx.Base.js
-	Contains <Fx.Base> and two Transitions.
+	Contains <Fx.Base>, the foundamentals of the MooTools Effects.
 
 License:
 	MIT-style license.

@@ -128,7 +128,7 @@ Event.fix = {
 	},
 
 	relatedTargetGecko: function(){
-		try {Event.fix.relatedTarget.call(this)} catch(e){this.relatedTarget = this.target};
+		try {Event.fix.relatedTarget.call(this);} catch(e){this.relatedTarget = this.target;}
 	}
 
 };
@@ -348,7 +348,7 @@ Function.extend({
 
 	/*
 	Property: bindWithEvent
-		automatically passes mootools Event Class.
+		automatically passes MooTools Event Class.
 
 	Arguments:
 		bind - optional, the object that the "this" of the function will refer to.
