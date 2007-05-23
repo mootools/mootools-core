@@ -93,7 +93,7 @@ var Event = new Class({
 		cross browser method to stop an event
 	*/
 
-	stop: function() {
+	stop: function(){
 		return this.stopPropagation().preventDefault();
 	},
 

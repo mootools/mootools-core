@@ -27,7 +27,7 @@ Array.extend({
 		bind - the object to bind "this" to (see <Function.bind>)
 
 	Example:
-		>['apple','banana','lemon'].each(function(item, index) {
+		>['apple','banana','lemon'].each(function(item, index){
 		>	alert(index + " = " + item); //alerts "0 = apple" etc.
 		>}, bindObj); //optional second arg for binding, not used here
 	*/
@@ -48,7 +48,7 @@ Array.extend({
 		bind - the object to bind "this" to (see <Function.bind>)
 
 	Example:
-		>var biggerThanTwenty = [10,3,25,100].filter(function(item, index) {
+		>var biggerThanTwenty = [10,3,25,100].filter(function(item, index){
 		> return item > 20;
 		>});
 		>//biggerThanTwenty = [25,100]
@@ -389,7 +389,7 @@ Function argument:
 
 Examples:
 	(start code)
-	$each(['Sun','Mon','Tue'], function(day, index) {
+	$each(['Sun','Mon','Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
 	});
 	//alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.

@@ -100,7 +100,7 @@ var Ajax = XHR.extend({
 		Returns the given response header or null
 	*/
 
-	getHeader: function(name) {
+	getHeader: function(name){
 		try {return this.transport.getResponseHeader(name);} catch(e){};
 		return null;
 	}

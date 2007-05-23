@@ -91,7 +91,7 @@ var Tips = new Class({
 		el.$tmp.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
 		if (el.title){
 			var dual = el.title.split('::');
-			if (dual.length > 1) {
+			if (dual.length > 1){
 				el.$tmp.myTitle = dual[0].trim();
 				el.$tmp.myText = dual[1].trim();
 			} else {

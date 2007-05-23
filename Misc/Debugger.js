@@ -47,7 +47,7 @@ var debug = {
 				if ((type != 'string') && (type != 'element')){
 					try {
 						argument = Json.toString(argument);
-					} catch(e) {
+					} catch(e){
 						argument = 'object not compatible with Json parser';
 					}
 				}

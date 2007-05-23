@@ -84,7 +84,7 @@ Number.extend({
 		>(4).times(alert);
 	*/
 
-	times: function(fn) {
+	times: function(fn){
 		for (var i = 0; i < this; i++) fn(i);
 	}
 

@@ -27,20 +27,23 @@ Fx.Scroll = Fx.Base.extend({
 
 	options: {
 		overflown: [],
-		offset: {'x': 0, 'y': 0}
+		offset: {'x': 0, 'y': 0},
+		wheelStops: true
 	},
 
 	initialize: function(element, options){
 		this.now = [];
 		this.element = $(element);
 		this.bound = {'stop': this.stop.bind(this, false)};
-		this.addEvent('onStart', function(){
-			document.addEvent('mousewheel', this.bound.stop);
-		}.bind(this));
-		this.removeEvent('onComplete', function(){
-			document.removeEvent('mousewheel', this.bound.stop);
-		}.bind(this));
 		this.parent(options);
+		if (this.options.wheelStops){
+			this.addEvent('onStart', function(){
+				document.addEvent('mousewheel', this.bound.stop);
+			}.bind(this));
+			this.addEvent('onComplete', function(){
+				document.removeEvent('mousewheel', this.bound.stop);
+			}.bind(this));
+		}
 	},
 
 	setNow: function(){

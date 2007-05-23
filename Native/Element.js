@@ -712,7 +712,7 @@ Element.extend({
 		returns true if the passed in element is a child of the $(element).
 	*/
 
-	hasChild: function(el) {
+	hasChild: function(el){
 		return !!$A(this.getElementsByTagName('*')).contains(el);
 	},
 
