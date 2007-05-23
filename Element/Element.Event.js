@@ -312,8 +312,7 @@ Element.Events = new Abstract({
 		type: 'mouseover',
 		map: function(event){
 			event = new Event(event);
-			if (event.relatedTarget == this || this.hasChild(event.relatedTarget)) return;
-			this.fireEvent('mouseenter', event);
+			if (event.relatedTarget != this && !this.hasChild(event.relatedTarget)) this.fireEvent('mouseenter', event);
 		}
 	},
 
@@ -330,8 +329,7 @@ Element.Events = new Abstract({
 		type: 'mouseout',
 		map: function(event){
 			event = new Event(event);
-			if (event.relatedTarget == this || this.hasChild(event.relatedTarget)) return;
-			this.fireEvent('mouseleave', event);
+			if (event.relatedTarget != this && !this.hasChild(event.relatedTarget)) this.fireEvent('mouseleave', event);
 		}
 	},
 

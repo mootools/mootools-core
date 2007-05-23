@@ -10,7 +10,7 @@ var Fx = {};
 
 /*
 Class: Fx.Base
-	Base class for the Mootools Effects (Moo.Fx) library.
+	Base class for the Effects.
 
 Options:
 	onStart - the function to execute as the effect begins; nothing (<Class.empty>) by default.
@@ -19,7 +19,7 @@ Options:
 	duration - the duration of the effect in ms; 500 is the default.
 	unit - the unit is 'px' by default (other values include things like 'em' for fonts or '%').
 	wait - boolean: to wait or not to wait for a current transition to end before running another of the same instance. defaults to true.
-	fps - the frames per second for the transition; default is 30
+	fps - the frames per second for the transition; default is 50
 */
 
 Fx.Base = new Class({

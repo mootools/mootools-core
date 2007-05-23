@@ -138,13 +138,9 @@ var Accordion = Fx.Elements.extend({
 		var obj = {};
 		this.elements.each(function(el, i){
 			obj[i] = {};
-			if ((i != index) || (this.options.alwaysHide && (el.offsetHeight > 0))){
-				this.fireEvent('onBackground', [this.togglers[i], el]);
-				for (var fx in this.effects) obj[i][fx] = 0;
-			} else {
-				this.fireEvent('onActive', [this.togglers[i], el]);
-				for (var fx in this.effects) obj[i][fx] = el[this.effects[fx]];
-			}
+			var hide = (i != index) || (this.options.alwaysHide && (el.offsetHeight > 0));
+			this.fireEvent(hide ? 'onBackground' : 'onActive', [this.togglers[i], el]);
+			for (var fx in this.effects) obj[i][fx] = hide ? 0 : el[this.effects[fx]];
 		}, this);
 		return this.start(obj);
 	},

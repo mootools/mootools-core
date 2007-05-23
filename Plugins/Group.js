@@ -65,9 +65,7 @@ var Group = new Class({
 			return this.checker[type][j] || false;
 		}, this);
 		if (!every) return;
-		this.instances.each(function(current, j){
-			this.checker[type][j] = false;
-		}, this);
+		this.checker[type] = {};
 		this.events[type].each(function(event){
 			event.call(this, this.instances, instance);
 		}, this);
