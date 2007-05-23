@@ -86,9 +86,11 @@ var Ajax = XHR.extend({
 	*/
 
 	evalScripts: function(){
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) var scripts = this.response.text;
+		var script, scripts;
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) scripts = this.response.text;
 		else {
-			var script, scripts = [], regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+			scripts = [];
+			var regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
 			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
 			scripts = scripts.join('\n');
 		}

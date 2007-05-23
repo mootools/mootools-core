@@ -201,7 +201,7 @@ $$.unique = function(array){
 			elements.push(element);
 		}
 	}
-	for (var i = 0, l = elements.length; i < l; i++) elements[i].$included = null;
+	for (var n = 0, d = elements.length; n < d; n++) elements[n].$included = null;
 	return new Elements(elements);
 };
 
@@ -586,7 +586,7 @@ Element.extend({
 		var result = this.style[property];
 		if (!$chk(result)){
 			if (property == 'opacity') return this.$tmp.opacity;
-			var result = [];
+			result = [];
 			for (var style in Element.Styles){
 				if (property == style){
 					Element.Styles[style].each(function(s){
@@ -934,7 +934,7 @@ var Garbage = {
 			if (!(el = elements[i]) || !el.$tmp) continue;
 			if (el.$events) el.fireEvent('trash').removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;
-			for (var p in Element.prototype) el[p] = null;
+			for (var d in Element.prototype) el[d] = null;
 			Garbage.elements.remove(el);
 			el.htmlElement = el.$tmp = el = null;
 		}

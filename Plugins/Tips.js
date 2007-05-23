@@ -116,14 +116,10 @@ var Tips = new Class({
 	start: function(el){
 		this.wrapper.empty();
 		if (el.$tmp.myTitle){
-			this.title = new Element('span').inject(
-				new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)
-			).setHTML(el.$tmp.myTitle);
+			this.title = new Element('span').inject(new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)).setHTML(el.$tmp.myTitle);
 		}
 		if (el.$tmp.myText){
-			this.text = new Element('span').inject(
-				new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)
-			).setHTML(el.$tmp.myText);
+			this.text = new Element('span').inject(new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)).setHTML(el.$tmp.myText);
 		}
 		$clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);

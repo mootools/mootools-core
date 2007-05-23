@@ -79,8 +79,11 @@ var Accordion = Fx.Elements.extend({
 		if (this.options.height) this.effects.height = this.options.fixedHeight ? 'fullHeight' : 'scrollHeight';
 		for (var i = 0, l = this.togglers.length; i < l; i++) this.addSection(this.togglers[i], this.elements[i]);
 		this.elements.each(function(el, i){
-			if (this.options.show === i) this.fireEvent('onActive', [this.togglers[i], el]);
-			else for (var fx in this.effects) el.setStyle(fx, 0);
+			if (this.options.show === i){
+				this.fireEvent('onActive', [this.togglers[i], el]);
+			} else {
+				for (var fx in this.effects) el.setStyle(fx, 0);
+			}
 		}, this);
 		this.parent(this.elements);
 		if ($chk(this.options.display)) this.display(this.options.display);
@@ -119,7 +122,9 @@ var Accordion = Fx.Elements.extend({
 		if (this.options.fixedWidth) element.fullWidth = this.options.fixedWidth;
 		if (this.options.fixedHeight) element.fullHeight = this.options.fixedHeight;
 		element.setStyle('overflow', 'hidden');
-		if (!test) for (var fx in this.effects) element.setStyle(fx, 0);
+		if (!test){
+			for (var fx in this.effects) element.setStyle(fx, 0);
+		}
 		return this;
 	},
 

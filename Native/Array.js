@@ -403,6 +403,9 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') Array.forEach(iterable, fn, bind);
-	else for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
+	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object'){
+		Array.forEach(iterable, fn, bind);
+	} else {
+		 for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
+	}
 };
