@@ -331,7 +331,7 @@ Array.extend({
 	*/
 
 	getRandom: function(){
-		return this[$random(0, this.length - 1)] || false;
+		return this[$random(0, this.length - 1)] || null;
 	},
 
 	/*
@@ -340,7 +340,7 @@ Array.extend({
 	*/
 
 	getLast: function(){
-		return this[this.length - 1] || false;
+		return this[this.length - 1] || null;
 	}
 
 });

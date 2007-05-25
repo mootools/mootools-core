@@ -195,7 +195,7 @@ Element.Methods.Events = {
 		}
 		if (!this.addEventListener) fn = fn.create({'bind': this, 'event': true});
 		this.$events[type].values.push(fn);
-		return this.addListener(realType, fn);
+		return (Element.NativeEvents.contains(realType)) ? this.addListener(realType, fn) : this;
 	},
 
 	/*
@@ -214,7 +214,7 @@ Element.Methods.Events = {
 			if (custom.remove) custom.remove.call(this, fn);
 			if (custom.type) type = custom.type;
 		}
-		return this.removeListener(type, value);
+		return (Element.NativeEvents.contains(type)) ? this.removeListener(type, value) : this;
 	},
 
 	/*
@@ -338,6 +338,16 @@ Element.Events = new Abstract({
 	}
 
 });
+
+Element.NativeEvents = [
+	'click', 'dblclick', 'mouseup', 'mousedown', //mouse buttons
+	'mousewheel', 'DOMMouseScroll', //mouse wheel
+	'mouseover', 'mouseout', 'mousemove', //mouse movement
+	'keydown', 'keypress', 'keyup', //keys
+	'load', 'unload', 'beforeunload', 'resize', 'move', //window
+	'focus', 'blur', 'change', 'submit', 'reset', 'select', //forms elements
+	'error', 'abort' //misc
+];
 
 /*
 Class: Function
