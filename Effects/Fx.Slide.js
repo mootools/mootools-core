@@ -37,8 +37,12 @@ Fx.Slide = Fx.Base.extend({
 		this.setOptions(options);
 		this.now = [];
 		this.parent(this.options);
+		this.open = true;
+		this.addEvent('onComplete', function(){
+			this.open = (this.now[0] === 0);
+		});
 		if (window.webkit419) this.addEvent('onComplete', function(){
-			this.element.remove().inject(this.wrapper);
+			if (this.open) this.element.remove().inject(this.wrapper);
 		});
 	},
 
@@ -94,6 +98,7 @@ Fx.Slide = Fx.Base.extend({
 
 	hide: function(mode){
 		this[mode || this.options.mode]();
+		this.open = false;
 		return this.set([-this.offset, 0]);
 	},
 
@@ -107,6 +112,7 @@ Fx.Slide = Fx.Base.extend({
 
 	show: function(mode){
 		this[mode || this.options.mode]();
+		this.open = true;
 		return this.set([0, this.offset]);
 	},
 
