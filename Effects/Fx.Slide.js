@@ -8,7 +8,8 @@ License:
 
 /*
 Class: Fx.Slide
-	The slide effect; slides an element in horizontally or vertically, the contents will fold inside. Extends <Fx.Base>, inherits all its properties.
+	The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
+	Inherits methods, properties, options and events from <Fx.Base>.
 	
 Note:
 	Fx.Slide requires an XHTML doctype.

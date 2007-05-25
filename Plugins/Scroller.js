@@ -21,6 +21,8 @@ Arguments:
 Options:
 	area - integer, the necessary boundaries to make the element scroll.
 	velocity - integer, velocity ratio, the modifier for the window scrolling speed.
+
+Events:
 	onChange - optionally, when the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
 		Automatically passes as parameters x and y values.
 */

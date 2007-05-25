@@ -9,6 +9,7 @@ License:
 /*
 Class: Fx.Elements
 	Fx.Elements allows you to apply any number of styles transitions to a selection of elements. Includes colors (must be in hex format).
+	Inherits methods, properties, options and events from <Fx.Base>.
 
 Arguments:
 	elements - a collection of elements the effects will be applied to.

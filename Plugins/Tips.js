@@ -22,10 +22,6 @@ Arguments:
 
 Options:
 	maxTitleChars - the maximum number of characters to display in the title of the tip. defaults to 30.
-
-	onShow - optionally you can alter the default onShow behaviour with this option (like displaying a fade in effect);
-	onHide - optionally you can alter the default onHide behaviour with this option (like displaying a fade out effect);
-
 	showDelay - the delay the onShow method is called. (defaults to 100 ms)
 	hideDelay - the delay the onHide method is called. (defaults to 100 ms)
 
@@ -39,6 +35,10 @@ Options:
 
 	offsets - the distance of your tooltip from the mouse. an Object with x/y properties.
 	fixed - if set to true, the toolTip will not follow the mouse.
+	
+Events:
+	onShow - optionally you can alter the default onShow behaviour with this option (like displaying a fade in effect);
+	onHide - optionally you can alter the default onHide behaviour with this option (like displaying a fade out effect);
 
 Example:
 	(start code)

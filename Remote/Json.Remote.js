@@ -9,6 +9,7 @@ License:
 /*
 Class: Json.Remote
 	Wrapped XHR with automated sending and receiving of Javascript Objects in Json Format.
+	Inherits methods, properties, options and events from <XHR>.
 
 Arguments:
 	url - the url you want to send your object to.

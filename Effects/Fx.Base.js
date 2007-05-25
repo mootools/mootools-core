@@ -13,14 +13,16 @@ Class: Fx.Base
 	Base class for the Effects.
 
 Options:
-	onStart - the function to execute as the effect begins; nothing (<Class.empty>) by default.
-	onComplete - the function to execute after the effect has processed; nothing (<Class.empty>) by default.
-	onCancel - the function to execute when you manually stop the effect.
 	transition - the equation to use for the effect see <Fx.Transitions>; default is <Fx.Transitions.Sine.easeInOut>
 	duration - the duration of the effect in ms; 500 is the default.
 	unit - the unit is 'px' by default (other values include things like 'em' for fonts or '%').
 	wait - boolean: to wait or not to wait for a current transition to end before running another of the same instance. defaults to true.
 	fps - the frames per second for the transition; default is 50
+	
+Events:
+	onStart - the function to execute as the effect begins; nothing (<Class.empty>) by default.
+	onComplete - the function to execute after the effect has processed; nothing (<Class.empty>) by default.
+	onCancel - the function to execute when you manually stop the effect.
 */
 
 Fx.Base = new Class({

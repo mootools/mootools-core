@@ -22,9 +22,6 @@ Arguments:
 Options:
 	handle - the $(element) to act as the handle for the draggable element. defaults to the $(element) itself.
 	modifiers - an object. see Modifiers Below.
-	onStart - optional, function to execute when the user starts to drag (on mousedown);
-	onComplete - optional, function to execute when the user completes the drag.
-	onDrag - optional, function to execute at every step of the drag
 	limit - an object, see Limit below.
 	grid - optional, distance in px for snap-to-grid dragging
 	snap - optional, the distance you have to drag before the element starts to respond to the drag. defaults to false
@@ -36,6 +33,11 @@ Options:
 	limit:
 		x - array with start and end limit relative to modifiers.x
 		y - array with start and end limit relative to modifiers.y
+		
+Events:
+	onStart - optional, function to execute when the user starts to drag (on mousedown);
+	onComplete - optional, function to execute when the user completes the drag.
+	onDrag - optional, function to execute at every step of the drag
 */
 
 Drag.Base = new Class({

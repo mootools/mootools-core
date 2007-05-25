@@ -19,6 +19,8 @@ Arguments:
 
 Options:
 	handles - a collection of elements to be used for drag handles. defaults to the elements.
+	
+Events:
 	onStart - function executed when the item starts dragging
 	onComplete - function executed when the item ends dragging
 */

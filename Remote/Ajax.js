@@ -11,7 +11,8 @@ License:
 
 /*
 Class: Ajax
-	An Ajax class, For all your asynchronous needs. Inherits methods, properties and options from <XHR>.
+	An Ajax class, For all your asynchronous needs.
+	Inherits methods, properties, options and events from <XHR>.
 
 Arguments:
 	url - the url pointing to the server-side script.
@@ -19,10 +20,12 @@ Arguments:
 
 Options:
 	data - you can write parameters here. Can be a querystring, an object or a Form element.
-	onComplete - function to execute when the ajax request completes.
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
 	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
+	
+Events:
+	onComplete - function to execute when the ajax request completes.
 
 Example:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();

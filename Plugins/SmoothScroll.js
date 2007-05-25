@@ -9,6 +9,7 @@ License:
 /*
 Class: SmoothScroll
 	Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
+	Inherits methods, properties, options and events from <Fx.Scroll>.
 
 Note:
 	SmoothScroll requires an XHTML doctype.

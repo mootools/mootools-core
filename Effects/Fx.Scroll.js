@@ -9,6 +9,7 @@ License:
 /*
 Class: Fx.Scroll
 	Scroll any element with an overflow, including the window element.
+	Inherits methods, properties, options and events from <Fx.Base>.
 
 Note:
 	Fx.Scroll requires an XHTML doctype.
@@ -18,7 +19,7 @@ Arguments:
 	options - optional, see Options below.
 
 Options:
-	all the Fx.Base options, plus:
+	all the Fx.Base options and events, plus:
 	offset - the distance for the scrollTo point/element. an Object with x/y properties.
 	overflown - an array of nested scrolling containers, see <Element.getPosition>
 */

@@ -8,8 +8,9 @@ License:
 
 /*
 Class: Fx.Style
-	The Style effect; Extends <Fx.Base>, inherits all its properties. Used to transition any css property from one value to another. Includes colors.
+	The Style effect, used to transition any css property from one value to another. Includes colors.
 	Colors must be in hex format.
+	Inherits methods, properties, options and events from <Fx.Base>.
 
 Arguments:
 	el - the $(element) to apply the style transition to

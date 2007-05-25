@@ -66,8 +66,8 @@ var Chain = new Class({
 /*
 Class: Events
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-
 	In <Fx.Base> Class, for example, is used to give the possibility add any number of functions to the Effects events, like onComplete, onStart, onCancel.
+	Events in a Class that implements <Events> can be either added as an option, or with addEvent. Never with .options.onEventName.
 
 Example:
 	(start code)

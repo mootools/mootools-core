@@ -8,8 +8,9 @@ License:
 
 /*
 Class: Fx.Styles
-	Allows you to animate multiple css properties at once; Extends <Fx.Base>, inherits all its properties. Includes colors.
+	Allows you to animate multiple css properties at once;
 	Colors must be in hex format.
+	Inherits methods, properties, options and events from <Fx.Base>.
 
 Arguments:
 	el - the $(element) to apply the styles transition to
