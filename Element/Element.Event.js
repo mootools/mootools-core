@@ -346,7 +346,7 @@ Element.NativeEvents = [
 	'keydown', 'keypress', 'keyup', //keys
 	'load', 'unload', 'beforeunload', 'resize', 'move', //window
 	'focus', 'blur', 'change', 'submit', 'reset', 'select', //forms elements
-	'error', 'abort', 'contextmenu' //misc
+	'error', 'abort', 'contextmenu', 'scroll' //misc
 ];
 
 /*
