@@ -935,9 +935,10 @@ var Garbage = {
 			if (el.$events) el.fireEvent('trash').removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;
 			for (var d in Element.prototype) el[d] = null;
-			Garbage.elements.remove(el);
+			Garbage.elements[Garbage.elements.indexOf(el)] = null;
 			el.htmlElement = el.$tmp = el = null;
 		}
+		Garbage.elements.remove(null);
 	},
 
 	empty: function(){
