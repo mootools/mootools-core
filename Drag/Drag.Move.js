@@ -41,7 +41,7 @@ Drag.Move = Drag.Base.extend({
 		this.container = $(this.options.container);
 		this.position = {'element': this.element.getStyle('position'), 'container': false};
 		if (this.container) this.position.container = this.container.getStyle('position');
-		if (!['absolute', 'relative'].contains(this.position.element)) this.position.element = 'absolute';
+		if (!['relative', 'absolute', 'fixed'].contains(this.position.element)) this.position.element = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
 		if (this.position.element == 'absolute' && !['relative', 'absolute', 'fixed'].contains(this.position.container)){
