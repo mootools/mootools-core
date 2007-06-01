@@ -412,12 +412,6 @@ Element.extend({
 	*/
 
 	appendText: function(text){
-		if (window.ie){
-			switch(this.getTag()){
-				case 'style': this.styleSheet.cssText = text; return this;
-				case 'script': return this.setProperty('text', text);
-			}
-		}
 		this.appendChild(document.createTextNode(text));
 		return this;
 	},
@@ -818,6 +812,36 @@ Element.extend({
 		this.innerHTML = $A(arguments).join('');
 		return this;
 	},
+	
+	setText: function(text){
+		var tag = this.getTag();
+		if (['style', 'script'].contains(tag)){
+			if (window.ie){
+				if (tag == 'style') this.styleSheet.cssText = text;
+				else if (tag ==  'script') this.setProperty('text', text);
+				return this;
+			} else {
+				this.removeChild(this.firstChild);
+				return this.appendText(text);
+			}
+		}
+		property = this.innerText ? 'innerText' : 'textContent';
+		this[property] = text;
+		return this;
+	},
+	
+	getText: function(){
+		var tag = this.getTag();
+		if (['style', 'script'].contains(tag)){
+			if (window.ie){
+				if (tag == 'style') return this.styleSheet.cssText;
+				else if (tag ==  'script') return this.getProperty('text');
+			} else {
+				return this.innerHTML;
+			}
+		}
+		return (this.innerText || this.textContent);
+	},
 
 	/*
 	Property: getTag
@@ -948,7 +972,6 @@ var Garbage = {
 	}
 
 };
-
 
 window.addListener('beforeunload', function(){
 	window.addListener('unload', Garbage.empty);
