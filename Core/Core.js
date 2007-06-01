@@ -18,6 +18,8 @@ var MooTools = {
 	version: '1.2dev'
 };
 
+/* Section: Core Functions */
+
 /*
 Function: $defined
 	Returns true if the passed in value/object is defined, that means is not null or undefined.
@@ -175,31 +177,6 @@ $native.generic = function(prop){
 $native(Function, Array, String, Number);
 
 /*
-Class: Abstract
-	Abstract class, to be used as singleton. Will add .extend to any object
-
-Arguments:
-	an object
-
-Returns:
-	the object with an .extend property, equivalent to <$extend>.
-*/
-
-var Abstract = function(obj){
-	obj = obj || {};
-	obj.extend = $extend;
-	return obj;
-};
-
-//window, document
-
-var Window = new Abstract(window);
-var Document = new Abstract(document);
-document.head = document.getElementsByTagName('head')[0];
-
-/* Section: Utility Functions */
-
-/*
 Function: $chk
 	Returns true if the passed in value/object exists or is 0, otherwise returns false.
 	Useful to accept zeroes.
@@ -285,8 +262,34 @@ function $clear(timer){
 };
 
 /*
+Class: Abstract
+	Abstract class, to be used as singleton. Will add .extend to any object
+
+Arguments:
+	an object
+
+Returns:
+	the object with an .extend property, equivalent to <$extend>.
+*/
+
+var Abstract = function(obj){
+	obj = obj || {};
+	obj.extend = $extend;
+	return obj;
+};
+
+//window, document
+
+var Window = new Abstract(window);
+var Document = new Abstract(document);
+document.head = document.getElementsByTagName('head')[0];
+
+/*
 Class: window
 	Some properties are attached to the window object by the browser detection.
+	
+Note:
+	browser detection is entirely object-based. We dont sniff.
 
 Properties:
 	window.ie - will be set to true if the current browser is internet explorer (any).

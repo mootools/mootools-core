@@ -841,7 +841,7 @@ Element.extend({
 	},
 	
 	/*
-	Property: setText
+	Property: getText
 		Gets the inner text of the Element.
 	*/
 	
