@@ -126,7 +126,7 @@ Note:
 */
 
 function $(el){
-	if (!el) return false;
+	if (!el) return null;
 	if (el.htmlElement) return Garbage.collect(el);
 	if ([window, document].contains(el)) return el;
 	var type = $type(el);
@@ -134,7 +134,7 @@ function $(el){
 		el = document.getElementById(el);
 		type = (el) ? 'element' : false;
 	}
-	if (type != 'element') return false;
+	if (type != 'element') return null;
 	if (el.htmlElement) return Garbage.collect(el);
 	if (['object', 'embed'].contains(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
@@ -813,6 +813,17 @@ Element.extend({
 		return this;
 	},
 	
+	/*
+	Property: setText
+		Sets the inner text of the Element.
+
+	Arguments:
+		text - string; the new text content for the element.
+
+	Example:
+		>$('myElement').setText('some text') //the text of myElement is now = 'some text'
+	*/
+	
 	setText: function(text){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
@@ -829,6 +840,11 @@ Element.extend({
 		this[property] = text;
 		return this;
 	},
+	
+	/*
+	Property: setText
+		Gets the inner text of the Element.
+	*/
 	
 	getText: function(){
 		var tag = this.getTag();
