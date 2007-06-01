@@ -836,8 +836,7 @@ Element.extend({
 				return this.appendText(text);
 			}
 		}
-		property = this.innerText ? 'innerText' : 'textContent';
-		this[property] = text;
+		this[(this.innerText) ? 'innerText' : 'textContent'] = text;
 		return this;
 	},
 	
