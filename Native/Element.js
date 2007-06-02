@@ -812,7 +812,7 @@ Element.extend({
 		this.innerHTML = $A(arguments).join('');
 		return this;
 	},
-	
+
 	/*
 	Property: setText
 		Sets the inner text of the Element.
@@ -823,7 +823,7 @@ Element.extend({
 	Example:
 		>$('myElement').setText('some text') //the text of myElement is now = 'some text'
 	*/
-	
+
 	setText: function(text){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
@@ -836,15 +836,15 @@ Element.extend({
 				return this.appendText(text);
 			}
 		}
-		this[(this.innerText) ? 'innerText' : 'textContent'] = text;
+		this[$defined(this.innerText) ? 'innerText' : 'textContent'] = text;
 		return this;
 	},
-	
+
 	/*
 	Property: getText
 		Gets the inner text of the Element.
 	*/
-	
+
 	getText: function(){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
