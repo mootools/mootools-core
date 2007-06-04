@@ -97,7 +97,7 @@ var Ajax = XHR.extend({
 			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
 			scripts = scripts.join('\n');
 		}
-		if (scripts) (window.execScript) ? window.execScript(scripts) : eval.call(window, scripts);
+		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
 	},
 
 	/*

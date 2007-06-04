@@ -855,7 +855,7 @@ Element.extend({
 				return this.innerHTML;
 			}
 		}
-		return (this.innerText || this.textContent);
+		return ($pick(this.innerText, this.textContent));
 	},
 
 	/*

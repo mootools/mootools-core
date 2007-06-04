@@ -55,7 +55,6 @@ Returns:
 	'function' - if obj is a function
 	'regexp' - if obj is a regular expression
 	'class' - if obj is a Class. (created with new Class, or the extend of another class).
-	'arguments' - if obj is the arguments object.
 	'collection' - if obj is a native htmlelements collection, such as childNodes, getElementsByTagName .. etc.
 	false - (boolean) if the object is not defined or none of the above.
 */
