@@ -53,7 +53,7 @@ Function.extend({
 			'periodical': false,
 			'attempt': false
 		}, options);
-		options.arguments = $asterisk(options.arguments);
+		options.arguments = $splat(options.arguments);
 		return function(){
 			var args = options.arguments || arguments;
 			var returns = function(){

@@ -48,6 +48,7 @@ Returns:
 	'textnode' - if obj is a DOM text node
 	'whitespace' - if obj is a DOM whitespace node
 	'arguments' - if obj is an arguments object
+	'array' - if obj is an array
 	'object' - if obj is an object
 	'string' - if obj is a string
 	'number' - if obj is a number
@@ -261,7 +262,7 @@ function $clear(timer){
 };
 
 function $try(fn, args, bind){
-	args = $asterisk(args);
+	args = $splat(args);
 	try {
 		return fn.apply(bind || fn, args);
 	} catch(e){
@@ -269,10 +270,8 @@ function $try(fn, args, bind){
 	}
 };
 
-function $asterisk(args){
-	var type = $type(args);
-	if (type && type != 'array') args = [args];
-	return args;
+function $splat(args){
+	return ($type(args) == 'array') ? args : [args];
 };
 
 /*

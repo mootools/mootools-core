@@ -34,6 +34,7 @@ var Class = function(properties){
 	$extend(klass, this);
 	klass.prototype = properties;
 	klass.constructor = Class;
+	klass['@'] = {};
 	return klass;
 };
 

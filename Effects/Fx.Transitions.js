@@ -26,7 +26,7 @@ See also:
 
 Fx.Transition = function(transition, params){
 	params = params || [];
-	params = $asterisk(params);
+	params = $splat(params);
 	return $extend(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
