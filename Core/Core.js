@@ -262,7 +262,7 @@ function $clear(timer){
 };
 
 function $try(fn, args, bind){
-	args = $asterisk(args);
+	args = $splat(args);
 	try {
 		return fn.apply(bind || fn, args);
 	} catch(e){
