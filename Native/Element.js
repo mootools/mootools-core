@@ -530,7 +530,7 @@ Element.extend({
 
 	setStyles: function(source){
 		switch($type(source)){
-			case 'object': Element['@'].setMany(this, 'setStyle', source); break;
+			case 'object': Element.$.setMany(this, 'setStyle', source); break;
 			case 'string': this.style.cssText = source;
 		}
 		return this;
@@ -581,9 +581,9 @@ Element.extend({
 		if (!$chk(result)){
 			if (property == 'opacity') return this.$tmp.opacity;
 			result = [];
-			for (var style in Element['@'].styles){
+			for (var style in Element.$.styles){
 				if (property == style){
-					Element['@'].styles[style].each(function(s){
+					Element.$.styles[style].each(function(s){
 						var style = this.getStyle(s);
 						result.push(parseInt(style) ? style : '0px');
 					}, this);
@@ -597,11 +597,11 @@ Element.extend({
 				}
 			}
 			if (property.contains('border')){
-				if (Element['@'].styles.border.contains(property)){
+				if (Element.$.styles.border.contains(property)){
 					return ['Width', 'Style', 'Color'].map(function(p){
 						return this.getStyle(property + p);
 					}, this).join(' ');
-				} else if (Element['@'].borderShort.contains(property)){
+				} else if (Element.$.borderShort.contains(property)){
 					return ['Top', 'Right', 'Bottom', 'Left'].map(function(p){
 						return this.getStyle('border' + p + property.replace('border', ''));
 					}, this).join(' ');
@@ -610,7 +610,7 @@ Element.extend({
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
-		if (window.ie) result = Element['@'].fixStyle(property, result, this);
+		if (window.ie) result = Element.$.fixStyle(property, result, this);
 		if (result && property.test(/color/i) && result.contains('rgb')){
 			return result.split('rgb').splice(1,4).map(function(color){
 				return color.rgbToHex();
@@ -631,7 +631,7 @@ Element.extend({
 	*/
 
 	getStyles: function(){
-		return Element['@'].getMany(this, 'getStyle', arguments);
+		return Element.$.getMany(this, 'getStyle', arguments);
 	},
 
 	walk: function(brother, start){
@@ -725,9 +725,9 @@ Element.extend({
 	*/
 
 	getProperty: function(property){
-		var index = Element['@'].properties[property];
+		var index = Element.$.properties[property];
 		if (index) return this[index];
-		var flag = Element['@'].propertiesIFlag[property] || 0;
+		var flag = Element.$.propertiesIFlag[property] || 0;
 		if (!window.ie || flag) return this.getAttribute(property, flag);
 		var node = this.attributes[property];
 		return (node) ? node.nodeValue : null;
@@ -742,7 +742,7 @@ Element.extend({
 	*/
 
 	removeProperty: function(property){
-		var index = Element['@'].properties[property];
+		var index = Element.$.properties[property];
 		if (index) this[index] = '';
 		else this.removeAttribute(property);
 		return this;
@@ -754,7 +754,7 @@ Element.extend({
 	*/
 
 	getProperties: function(){
-		return Element['@'].getMany(this, 'getProperty', arguments);
+		return Element.$.getMany(this, 'getProperty', arguments);
 	},
 
 	/*
@@ -770,7 +770,7 @@ Element.extend({
 	*/
 
 	setProperty: function(property, value){
-		var index = Element['@'].properties[property];
+		var index = Element.$.properties[property];
 		if (index) this[index] = value;
 		else this.setAttribute(property, value);
 		return this;
@@ -794,7 +794,7 @@ Element.extend({
 	*/
 
 	setProperties: function(source){
-		return Element['@'].setMany(this, 'setProperty', source);
+		return Element.$.setMany(this, 'setProperty', source);
 	},
 
 	/*
@@ -891,7 +891,7 @@ Element.extend({
 
 });
 
-Element['@'].fixStyle = function(property, result, element){
+Element.$.fixStyle = function(property, result, element){
 	if ($chk(parseInt(result))) return result;
 	if (['height', 'width'].contains(property)){
 		var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
@@ -906,14 +906,14 @@ Element['@'].fixStyle = function(property, result, element){
 	return result;
 };
 
-Element['@'].styles = {'border': [], 'padding': [], 'margin': []};
+Element.$.styles = {'border': [], 'padding': [], 'margin': []};
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-	for (var style in Element['@'].styles) Element['@'].styles[style].push(style + direction);
+	for (var style in Element.$.styles) Element.$.styles[style].push(style + direction);
 });
 
-Element['@'].borderShort = ['borderWidth', 'borderStyle', 'borderColor'];
+Element.$.borderShort = ['borderWidth', 'borderStyle', 'borderColor'];
 
-Element['@'].getMany = function(el, method, keys){
+Element.$.getMany = function(el, method, keys){
 	var result = {};
 	$each(keys, function(key){
 		result[key] = el[method](key);
@@ -921,23 +921,23 @@ Element['@'].getMany = function(el, method, keys){
 	return result;
 };
 
-Element['@'].setMany = function(el, method, pairs){
+Element.$.setMany = function(el, method, pairs){
 	for (var key in pairs) el[method](key, pairs[key]);
 	return el;
 };
 
-Element['@'].properties = new Abstract({
+Element.$.properties = new Abstract({
 	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
 	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
 	'readonly': 'readOnly', 'frameborder': 'frameBorder', 'value': 'value',
 	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple', 'selected': 'selected'
 });
 
-Element['@'].propertiesIFlag = {
+Element.$.propertiesIFlag = {
 	'href': 2, 'src': 2
 };
 
-Element['@'].listenerMethods = {
+Element.$.listenerMethods = {
 
 	addListener: function(type, fn){
 		if (this.addEventListener) this.addEventListener(type, fn, false);
@@ -953,9 +953,9 @@ Element['@'].listenerMethods = {
 
 };
 
-window.extend(Element['@'].listenerMethods);
-document.extend(Element['@'].listenerMethods);
-Element.extend(Element['@'].listenerMethods);
+window.extend(Element.$.listenerMethods);
+document.extend(Element.$.listenerMethods);
+Element.extend(Element.$.listenerMethods);
 
 var Garbage = {
 

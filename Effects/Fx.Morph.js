@@ -63,9 +63,9 @@ Fx.CSS.Styles = [
 	'textIndent', 'opacity'
 ];
 
-Fx.CSS.Styles.extend(Element['@'].styles.padding);
-Fx.CSS.Styles.extend(Element['@'].styles.margin);
+Fx.CSS.Styles.extend(Element.$.styles.padding);
+Fx.CSS.Styles.extend(Element.$.styles.margin);
 
-Element['@'].styles.border.each(function(border){
+Element.$.styles.border.each(function(border){
 	Fx.CSS.Styles.push(border + 'Width', border + 'Color');
 });
