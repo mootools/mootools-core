@@ -1,6 +1,6 @@
 /*
 Script: Element.Event.js
-	Contains the Event Class, Element methods to deal with Element events, custom Events, and the Function prototype bindWithEvent.
+	Contains the Event Class, Element methods to deal with Element events, custom Events.
 
 License:
 	MIT-style license.
@@ -50,10 +50,12 @@ var Event = new Class({
 		this.type = event.type;
 		this.target = event.target || event.srcElement;
 		if (this.target.nodeType == 3) this.target = this.target.parentNode;
-		this.shift = event.shiftKey;
-		this.control = event.ctrlKey;
-		this.alt = event.altKey;
-		this.meta = event.metaKey;
+		$extend(this, {
+			'shift': event.shiftKey,
+			'control': event.ctrlKey,
+			'alt': event.altKey,
+			'meta': event.metaKey
+		});
 		if (['DOMMouseScroll', 'mousewheel'].contains(this.type)){
 			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		} else if (this.type.contains('key')){
@@ -83,7 +85,7 @@ var Event = new Class({
 				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}
-			this.fixRelatedTarget();
+			if (this.fixRelatedTarget.create({'bind': this, 'attempt': window.gecko})() === false) this.relatedTarget = this.target;
 		}
 		return this;
 	},
@@ -117,23 +119,13 @@ var Event = new Class({
 		if (this.event.preventDefault) this.event.preventDefault();
 		else this.event.returnValue = false;
 		return this;
+	},
+	
+	fixRelatedTarget: function(){
+		if (this.relatedTarget && this.relatedTarget.nodeType == 3) this.relatedTarget = this.relatedTarget.parentNode;
 	}
 
 });
-
-Event.fix = {
-
-	relatedTarget: function(){
-		if (this.relatedTarget && this.relatedTarget.nodeType == 3) this.relatedTarget = this.relatedTarget.parentNode;
-	},
-
-	relatedTargetGecko: function(){
-		try {Event.fix.relatedTarget.call(this);} catch(e){this.relatedTarget = this.target;}
-	}
-
-};
-
-Event.prototype.fixRelatedTarget = (window.gecko) ? Event.fix.relatedTargetGecko : Event.fix.relatedTarget;
 
 /*
 Property: keys
@@ -186,6 +178,7 @@ Element.Methods.Events = {
 		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
 		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
+		var self = this;
 		var realType = type;
 		var custom = Element.Events[type];
 		if (custom){
@@ -193,9 +186,17 @@ Element.Methods.Events = {
 			if (custom.map) fn = custom.map;
 			if (custom.type) realType = custom.type;
 		}
-		if (!this.addEventListener) fn = fn.create({'bind': this, 'event': true});
-		this.$events[type].values.push(fn);
-		return (Element.NativeEvents.contains(realType)) ? this.addListener(realType, fn) : this;
+		var nativeEvent = Element.NativeEvents.contains(realType);
+		var defn = fn;
+		if (nativeEvent){
+			defn = function(event){
+				event = new Event(event);
+				if (fn.call(self, event) === false) event.stop();
+			};
+			this.addListener(realType, defn);
+		}
+		this.$events[type].values.push(defn);
+		return this;
 	},
 
 	/*
@@ -223,7 +224,7 @@ Element.Methods.Events = {
 	*/
 
 	addEvents: function(source){
-		return Element.setMany(this, 'addEvent', source);
+		return Element.SetMany(this, 'addEvent', source);
 	},
 
 	/*
@@ -311,7 +312,6 @@ Element.Events = new Abstract({
 	'mouseenter': {
 		type: 'mouseover',
 		map: function(event){
-			event = new Event(event);
 			if (event.relatedTarget != this && !this.hasChild(event.relatedTarget)) this.fireEvent('mouseenter', event);
 		}
 	},
@@ -328,7 +328,6 @@ Element.Events = new Abstract({
 	'mouseleave': {
 		type: 'mouseout',
 		map: function(event){
-			event = new Event(event);
 			if (event.relatedTarget != this && !this.hasChild(event.relatedTarget)) this.fireEvent('mouseleave', event);
 		}
 	},
@@ -344,38 +343,7 @@ Element.NativeEvents = [
 	'mousewheel', 'DOMMouseScroll', //mouse wheel
 	'mouseover', 'mouseout', 'mousemove', //mouse movement
 	'keydown', 'keypress', 'keyup', //keys
-	'load', 'unload', 'beforeunload', 'resize', 'move', //window
+	'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', //window
 	'focus', 'blur', 'change', 'submit', 'reset', 'select', //forms elements
 	'error', 'abort', 'contextmenu', 'scroll' //misc
 ];
-
-/*
-Class: Function
-	A collection of The Function Object prototype methods.
-*/
-
-Function.extend({
-
-	/*
-	Property: bindWithEvent
-		automatically passes MooTools Event Class.
-
-	Arguments:
-		bind - optional, the object that the "this" of the function will refer to.
-		args - optional, an argument to pass to the function; if more than one argument, it must be an array of arguments.
-
-	Returns:
-		a function with the parameter bind as its "this" and as a pre-passed argument event or window.event, depending on the browser.
-
-	Example:
-		>function myFunction(event){
-		>	alert(event.client.x) //returns the coordinates of the mouse..
-		>};
-		>myElement.addEvent('click', myFunction.bindWithEvent(myElement));
-	*/
-
-	bindWithEvent: function(bind, args){
-		return this.create({'bind': bind, 'arguments': args, 'event': Event});
-	}
-
-});

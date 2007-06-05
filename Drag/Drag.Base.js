@@ -63,9 +63,9 @@ Drag.Base = new Class({
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
 		this.bound = {
-			'start': this.start.bindWithEvent(this),
-			'check': this.check.bindWithEvent(this),
-			'drag': this.drag.bindWithEvent(this),
+			'start': this.start.bind(this),
+			'check': this.check.bind(this),
+			'drag': this.drag.bind(this),
 			'stop': this.stop.bind(this)
 		};
 		this.attach();
@@ -98,8 +98,8 @@ Drag.Base = new Class({
 			}
 		}
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
-		document.addListener('mousemove', this.bound.check);
-		document.addListener('mouseup', this.bound.stop);
+		document.addEvent('mousemove', this.bound.check);
+		document.addEvent('mouseup', this.bound.stop);
 		this.fireEvent('onStart', this.element);
 		event.stop();
 	},
@@ -107,8 +107,8 @@ Drag.Base = new Class({
 	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			document.removeListener('mousemove', this.bound.check);
-			document.addListener('mousemove', this.bound.drag);
+			document.removeEvent('mousemove', this.bound.check);
+			document.addEvent('mousemove', this.bound.drag);
 			this.drag(event);
 			this.fireEvent('onSnap', this.element);
 		}
@@ -138,9 +138,9 @@ Drag.Base = new Class({
 	},
 
 	stop: function(){
-		document.removeListener('mousemove', this.bound.check);
-		document.removeListener('mousemove', this.bound.drag);
-		document.removeListener('mouseup', this.bound.stop);
+		document.removeEvent('mousemove', this.bound.check);
+		document.removeEvent('mousemove', this.bound.drag);
+		document.removeEvent('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
 	}
 

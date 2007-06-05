@@ -48,21 +48,14 @@ Function.extend({
 		var fn = this;
 		options = $merge({
 			'bind': fn,
-			'event': false,
 			'arguments': null,
 			'delay': false,
 			'periodical': false,
 			'attempt': false
 		}, options);
-		if ($chk(options.arguments) && $type(options.arguments) != 'array') options.arguments = [options.arguments];
-		return function(event){
-			var args;
-			if (options.event){
-				event = event || window.event;
-				args = [(options.event === true) ? event : new options.event(event)];
-				if (options.arguments) args.extend(options.arguments);
-			}
-			else args = options.arguments || arguments;
+		options.arguments = $asterisk(options.arguments);
+		return function(){
+			var args = options.arguments || arguments;
 			var returns = function(){
 				return fn.apply($pick(options.bind, fn), args);
 			};
@@ -131,28 +124,6 @@ Function.extend({
 
 	bind: function(bind, args){
 		return this.create({'bind': bind, 'arguments': args});
-	},
-
-	/*
-	Property: bindAsEventListener
-		cross browser method to pass event firer
-
-	Arguments:
-		bind - optional, the object that the "this" of the function will refer to.
-		args - optional, the arguments passed. must be an array if arguments > 1
-
-	Returns:
-		a function with the parameter bind as its "this" and as a pre-passed argument event or window.event, depending on the browser.
-
-	Example:
-		>function myFunction(event){
-		>	alert(event.clientx) //returns the coordinates of the mouse..
-		>};
-		>myElement.onclick = myFunction.bindAsEventListener(myElement);
-	*/
-
-	bindAsEventListener: function(bind, args){
-		return this.create({'bind': bind, 'event': true, 'arguments': args});
 	},
 
 	/*

@@ -67,15 +67,17 @@ var XHR = new Class({
 	onStateChange: function(){
 		if (this.transport.readyState != 4 || !this.running) return;
 		this.running = false;
-		var status = 0;
-		try {status = this.transport.status;} catch(e){};
-		if (this.options.isSuccess.call(this, status)) this.onSuccess();
+		this.status = 0;
+		$try(function(){
+			this.status = this.transport.status;
+		}, this);
+		if (this.options.isSuccess.call(this, this.status)) this.onSuccess();
 		else this.onFailure();
 		this.transport.onreadystatechange = Class.empty;
 	},
 
-	isSuccess: function(status){
-		return ((status >= 200) && (status < 300));
+	isSuccess: function(){
+		return ((this.status >= 200) && (this.status < 300));
 	},
 
 	onSuccess: function(){
@@ -130,7 +132,7 @@ var XHR = new Class({
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 		$extend(this.headers, this.options.headers);
-		for (var type in this.headers) try {this.transport.setRequestHeader(type, this.headers[type]);} catch(e){};
+		for (var type in this.headers) $try(this.transport.setRequestHeader, this.transport, [type, this.headers[type]]);
 		this.fireEvent('onRequest');
 		this.transport.send($pick(data, null));
 		return this;

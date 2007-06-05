@@ -107,7 +107,7 @@ var Tips = new Class({
 			if (!this.options.fixed) this.locate(event);
 			else this.position(el);
 		}.bind(this));
-		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bindWithEvent(this));
+		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
 		var end = this.end.bind(this);
 		el.addEvent('mouseleave', end);
 		el.addEvent('trash', end);

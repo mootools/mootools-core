@@ -55,7 +55,7 @@
 
 		"Element.Event": {
 			"deps": ["Element"],
-			"desc": "Contains the Event Class, Element methods to deal with Element events, custom Events, and the Function prototype bindWithEvent."
+			"desc": "Contains the Event Class, Element methods to deal with Element events, custom Events."
 		},
 
 		"Element.Filters": {

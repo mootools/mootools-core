@@ -260,6 +260,21 @@ function $clear(timer){
 	return null;
 };
 
+function $try(fn, args, bind){
+	args = $asterisk(args);
+	try {
+		return fn.apply(bind || fn, args);
+	} catch(e){
+		return false;
+	}
+};
+
+function $asterisk(args){
+	var type = $type(args);
+	if (type && type != 'array') args = [args];
+	return args;
+};
+
 /*
 Class: Abstract
 	Abstract class, to be used as singleton. Will add .extend to any object
@@ -315,6 +330,8 @@ if (typeof HTMLElement == 'undefined'){
 }
 HTMLElement.prototype.htmlElement = function(){};
 
+//window["[[DOMEvent.prototype]]"].test = 'hello';
+
 //enables background image cache for internet explorer 6
 
-if (window.ie6) try {document.execCommand("BackgroundImageCache", false, true);} catch(e){};
+if (window.ie6) $try(document.execCommand, document, ["BackgroundImageCache", false, true]);

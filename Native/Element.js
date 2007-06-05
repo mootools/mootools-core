@@ -530,7 +530,7 @@ Element.extend({
 
 	setStyles: function(source){
 		switch($type(source)){
-			case 'object': Element.setMany(this, 'setStyle', source); break;
+			case 'object': Element.SetMany(this, 'setStyle', source); break;
 			case 'string': this.style.cssText = source;
 		}
 		return this;
@@ -631,7 +631,7 @@ Element.extend({
 	*/
 
 	getStyles: function(){
-		return Element.getMany(this, 'getStyle', arguments);
+		return Element.GetMany(this, 'getStyle', arguments);
 	},
 
 	walk: function(brother, start){
@@ -754,7 +754,7 @@ Element.extend({
 	*/
 
 	getProperties: function(){
-		return Element.getMany(this, 'getProperty', arguments);
+		return Element.GetMany(this, 'getProperty', arguments);
 	},
 
 	/*
@@ -794,7 +794,7 @@ Element.extend({
 	*/
 
 	setProperties: function(source){
-		return Element.setMany(this, 'setProperty', source);
+		return Element.SetMany(this, 'setProperty', source);
 	},
 
 	/*
@@ -913,7 +913,7 @@ Element.Styles = {'border': [], 'padding': [], 'margin': []};
 
 Element.borderShort = ['borderWidth', 'borderStyle', 'borderColor'];
 
-Element.getMany = function(el, method, keys){
+Element.GetMany = function(el, method, keys){
 	var result = {};
 	$each(keys, function(key){
 		result[key] = el[method](key);
@@ -921,7 +921,7 @@ Element.getMany = function(el, method, keys){
 	return result;
 };
 
-Element.setMany = function(el, method, pairs){
+Element.SetMany = function(el, method, pairs){
 	for (var key in pairs) el[method](key, pairs[key]);
 	return el;
 };

@@ -42,7 +42,7 @@ var SmoothScroll = Fx.Scroll.extend({
 			this.anchor = anchor;
 			this.toElement(anchor);
 			event.stop();
-		}.bindWithEvent(this));
+		}.bind(this));
 	}
 
 });

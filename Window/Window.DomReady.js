@@ -39,7 +39,7 @@ Element.Events.domready = {
 		}.bind(this);
 		if (document.readyState && window.webkit){
 			window.timer = function(){
-				if (['loaded','complete'].contains(document.readyState)) domReady();
+				if (['loaded', 'complete'].contains(document.readyState)) domReady();
 			}.periodical(50);
 		} else if (document.readyState && window.ie){
 			if (!$('ie_ready')){
@@ -50,8 +50,8 @@ Element.Events.domready = {
 				};
 			}
 		} else {
-			window.addListener("load", domReady);
-			document.addListener("DOMContentLoaded", domReady);
+			window.addEvent("load", domReady);
+			document.addEvent("DOMContentLoaded", domReady);
 		}
 	}
 

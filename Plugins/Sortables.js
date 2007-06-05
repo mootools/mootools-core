@@ -51,14 +51,14 @@ var Sortables = new Class({
 		this.handles = (this.options.handles) ? $$(this.options.handles) : this.elements;
 		this.bound = {
 			'start': [],
-			'moveGhost': this.moveGhost.bindWithEvent(this)
+			'moveGhost': this.moveGhost.bind(this)
 		};
 		for (var i = 0, l = this.handles.length; i < l; i++){
-			this.bound.start[i] = this.start.bindWithEvent(this, this.elements[i]);
+			this.bound.start[i] = this.start.bind(this, this.elements[i]);
 		}
 		this.attach();
 		if (this.options.initialize) this.options.initialize.call(this);
-		this.bound.move = this.move.bindWithEvent(this);
+		this.bound.move = this.move.bind(this);
 		this.bound.end = this.end.bind(this);
 	},
 
@@ -86,11 +86,11 @@ var Sortables = new Class({
 				'left': position.x,
 				'top': event.page.y - this.offset
 			});
-			document.addListener('mousemove', this.bound.moveGhost);
+			document.addEvent('mousemove', this.bound.moveGhost);
 			this.fireEvent('onDragStart', [el, this.ghost]);
 		}
-		document.addListener('mousemove', this.bound.move);
-		document.addListener('mouseup', this.bound.end);
+		document.addEvent('mousemove', this.bound.move);
+		document.addEvent('mouseup', this.bound.end);
 		this.fireEvent('onStart', el);
 		event.stop();
 	},
@@ -121,10 +121,10 @@ var Sortables = new Class({
 
 	end: function(){
 		this.previous = null;
-		document.removeListener('mousemove', this.bound.move);
-		document.removeListener('mouseup', this.bound.end);
+		document.removeEvent('mousemove', this.bound.move);
+		document.removeEvent('mouseup', this.bound.end);
 		if (this.options.ghost){
-			document.removeListener('mousemove', this.bound.moveGhost);
+			document.removeEvent('mousemove', this.bound.moveGhost);
 			this.fireEvent('onDragComplete', [this.active, this.ghost]);
 		}
 		this.fireEvent('onComplete', this.active);

@@ -106,8 +106,7 @@ var Ajax = XHR.extend({
 	*/
 
 	getHeader: function(name){
-		try {return this.transport.getResponseHeader(name);} catch(e){};
-		return null;
+		return $try(this.transport.getResponseHeader, this.transport, name);
 	}
 
 });
