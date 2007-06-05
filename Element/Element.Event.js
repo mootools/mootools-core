@@ -159,7 +159,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.$.eventMethods = {
+Element.$eventMethods = {
 
 	/*
 	Property: addEvent
@@ -186,7 +186,7 @@ Element.$.eventMethods = {
 			if (custom.map) fn = custom.map;
 			if (custom.type) realType = custom.type;
 		}
-		var nativeEvent = Element.$.nativeEvents.contains(realType);
+		var nativeEvent = Element.$nativeEvents.contains(realType);
 		var defn = fn;
 		if (nativeEvent){
 			defn = function(event){
@@ -215,7 +215,7 @@ Element.$.eventMethods = {
 			if (custom.remove) custom.remove.call(this, fn);
 			if (custom.type) type = custom.type;
 		}
-		return (Element.$.nativeEvents.contains(type)) ? this.removeListener(type, value) : this;
+		return (Element.$nativeEvents.contains(type)) ? this.removeListener(type, value) : this;
 	},
 
 	/*
@@ -224,7 +224,7 @@ Element.$.eventMethods = {
 	*/
 
 	addEvents: function(source){
-		return Element.$.setMany(this, 'addEvent', source);
+		return Element.$setMany(this, 'addEvent', source);
 	},
 
 	/*
@@ -291,9 +291,9 @@ Element.$.eventMethods = {
 
 };
 
-window.extend(Element.$.eventMethods);
-document.extend(Element.$.eventMethods);
-Element.extend(Element.$.eventMethods);
+window.extend(Element.$eventMethods);
+document.extend(Element.$eventMethods);
+Element.extend(Element.$eventMethods);
 
 /* Section: Custom Events */
 
@@ -338,7 +338,7 @@ Element.Events = new Abstract({
 
 });
 
-Element.$.nativeEvents = [
+Element.$nativeEvents = [
 	'click', 'dblclick', 'mouseup', 'mousedown', //mouse buttons
 	'mousewheel', 'DOMMouseScroll', //mouse wheel
 	'mouseover', 'mouseout', 'mousemove', //mouse movement

@@ -131,7 +131,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.$.domMethods = {
+Element.$domMethods = {
 
 	/*
 	Property: getElements
@@ -224,5 +224,5 @@ Element.extend({
 
 });
 
-document.extend(Element.$.domMethods);
-Element.extend(Element.$.domMethods);
+document.extend(Element.$domMethods);
+Element.extend(Element.$domMethods);
