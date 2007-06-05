@@ -262,7 +262,7 @@ function $clear(timer){
 };
 
 function $try(fn, args, bind){
-	args = $splat(args);
+	args = $asterisk(args);
 	try {
 		return fn.apply(bind || fn, args);
 	} catch(e){
@@ -271,7 +271,9 @@ function $try(fn, args, bind){
 };
 
 function $splat(args){
-	return ($type(args) == 'array') ? args : [args];
+	var type = $type(args);
+	if (type && type != 'array') args = [args];
+	return args;
 };
 
 /*
