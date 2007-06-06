@@ -392,8 +392,6 @@ if (typeof HTMLElement == 'undefined'){
 }
 HTMLElement.prototype.htmlElement = Function.empty;
 
-//window["[[DOMEvent.prototype]]"].test = 'hello';
-
 //enables background image cache for internet explorer 6
 
 if (Client.engine.ie6) $try(document.execCommand, document, ["BackgroundImageCache", false, true]);

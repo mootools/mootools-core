@@ -150,28 +150,28 @@ var Hash = new Class({
 	},
 
 	/*
-	Property: keys
+	Property: getKeys
 		Returns an array containing all the keys, in the same order as the values returned by <Hash.values>.
 
 	Returns:
 		An array containing all the keys of the hash
 	*/
 
-	keys: function(){
+	getKeys: function(){
 		var keys = [];
 		for (var property in this.obj) keys.push(property);
 		return keys;
 	},
 
 	/*
-	Property: values
+	Property: getValues
 		Returns an array containing all the values, in the same order as the keys returned by <Hash.keys>.
 
 	Returns:
 		An array containing all the values of the hash
 	*/
 
-	values: function(){
+	getValues: function(){
 		var values = [];
 		for (var property in this.obj) values.push(this.obj[property]);
 		return values;
