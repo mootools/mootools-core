@@ -179,6 +179,10 @@ var Hash = new Class({
 
 });
 
+//compat
+Hash.prototype.keys = Hash.prototype.getKeys;
+Hash.prototype.values = Hash.prototype.getValues;
+
 /* Section: Utility Functions */
 
 /*

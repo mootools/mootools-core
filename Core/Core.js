@@ -298,7 +298,7 @@ Returns:
 
 Warning:
 	If the function you pass can return false, there will be no way to know if it has been executed or not.
-	
+
 */
 
 function $try(fn, bind, args){
@@ -342,7 +342,7 @@ document.head = document.getElementsByTagName('head')[0];
 /*
 Class: Client
 	Some browser properties are attached to the Client object for browser detection.
-	
+
 Note:
 	engine detection is entirely object-based.
 
@@ -356,7 +356,7 @@ Client.engine:
 	Client.engine.webkit420 - is set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
 	Client.engine.opera - is set to true if the current browser is opera.
 	Client.engine.name - is set to the name of the engine.
-	
+
 Platform:
 	Client.platform.mac - is set to true if the platform is mac
 	Client.platform.windows - is set to true if the platform is windows
@@ -382,6 +382,9 @@ Client.engine[Client.engine.name] = Client.engine[Client.engine.name + Client.en
 Client.platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'];
 Client.platform.name = Client.platform.name[0].toLowerCase();
 Client.platform[Client.platform.name] = true;
+
+//compat
+window.extend(Client.engine);
 
 //htmlelement
 
