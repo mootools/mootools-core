@@ -261,19 +261,52 @@ function $clear(timer){
 	return null;
 };
 
-function $try(fn, args, bind){
-	args = $splat(args);
+/*
+Function: $splat
+	returns the argument as array if its defined and if its not already. Otherwise returns null.
+
+Arguments:
+	obj - anything
+
+Example:
+	>var obj = 'hello';
+	>$splat(obj); // ['hello']
+	>var obj2 = ['a', 'b', 'c'];
+	>$splat(obj2); // ['a', 'b', 'c']
+*/
+
+function $splat(obj){
+	var type = $type(obj);
+	if (type && type != 'array') obj = [obj];
+	return obj;
+};
+
+/*
+Function: $try
+	Tries to execute a function. Returns false if it fails.
+
+Arguments:
+	fn - the function to execute
+	bind - the context of the function
+	args - an array of arguments or one argument
+
+Example:
+	>$try(eval, window, 'some invalid javascript') //false;
+
+Returns:
+	Whatever the function returns, or false if it fails.
+
+Warning:
+	If the function you pass can return false, there will be no way to know if it has been executed or not.
+	
+*/
+
+function $try(fn, bind, args){
 	try {
-		return fn.apply(bind || fn, args);
+		return fn.apply(bind || fn, $splat(args));
 	} catch(e){
 		return false;
 	}
-};
-
-function $splat(args){
-	var type = $type(args);
-	if (type && type != 'array') args = [args];
-	return args;
 };
 
 /*

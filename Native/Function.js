@@ -53,9 +53,8 @@ Function.extend({
 			'periodical': false,
 			'attempt': false
 		}, options);
-		options.arguments = $splat(options.arguments);
 		return function(){
-			var args = options.arguments || arguments;
+			var args = $splat(options.arguments) || arguments;
 			var returns = function(){
 				return fn.apply($pick(options.bind, fn), args);
 			};
