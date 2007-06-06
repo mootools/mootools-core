@@ -45,18 +45,20 @@ Function.extend({
 	*/
 
 	create: function(options){
-		var fn = this;
+		var self = this;
 		options = $merge({
-			'bind': fn,
+			'bind': self,
 			'arguments': null,
 			'delay': false,
 			'periodical': false,
-			'attempt': false
+			'attempt': false,
+			'event': false
 		}, options);
-		return function(){
+		return function(event){
 			var args = $splat(options.arguments) || arguments;
+			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
-				return fn.apply($pick(options.bind, fn), args);
+				return self.apply($pick(options.bind, self), args);
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);

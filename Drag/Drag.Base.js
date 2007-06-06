@@ -98,8 +98,10 @@ Drag.Base = new Class({
 			}
 		}
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
-		document.addEvent('mousemove', this.bound.check);
-		document.addEvent('mouseup', this.bound.stop);
+		document.addEvents({
+			'mousemove': this.bound.check,
+			'mouseup': this.bound.stop
+		});
 		this.fireEvent('onStart', this.element);
 		event.stop();
 	},

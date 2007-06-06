@@ -151,7 +151,7 @@ var Hash = new Class({
 
 	/*
 	Property: getKeys
-		Returns an array containing all the keys, in the same order as the values returned by <Hash.values>.
+		Returns an array containing all the keys, in the same order as the values returned by <Hash.getValues>.
 
 	Returns:
 		An array containing all the keys of the hash
@@ -165,7 +165,7 @@ var Hash = new Class({
 
 	/*
 	Property: getValues
-		Returns an array containing all the values, in the same order as the keys returned by <Hash.keys>.
+		Returns an array containing all the values, in the same order as the keys returned by <Hash.getKeys>.
 
 	Returns:
 		An array containing all the values of the hash
@@ -178,10 +178,6 @@ var Hash = new Class({
 	}
 
 });
-
-//compat
-Hash.prototype.keys = Hash.prototype.getKeys;
-Hash.prototype.values = Hash.prototype.getValues;
 
 /* Section: Utility Functions */
 

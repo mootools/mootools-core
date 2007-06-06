@@ -383,9 +383,6 @@ Client.platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) ||
 Client.platform.name = Client.platform.name[0].toLowerCase();
 Client.platform[Client.platform.name] = true;
 
-//compat
-window.extend(Client.engine);
-
 //htmlelement
 
 if (typeof HTMLElement == 'undefined'){
