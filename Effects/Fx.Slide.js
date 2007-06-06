@@ -42,7 +42,7 @@ Fx.Slide = Fx.Base.extend({
 		this.addEvent('onComplete', function(){
 			this.open = (this.now[0] === 0);
 		});
-		if (window.webkit419) this.addEvent('onComplete', function(){
+		if (Client.engine.webkit419) this.addEvent('onComplete', function(){
 			if (this.open) this.element.remove().inject(this.wrapper);
 		});
 	},

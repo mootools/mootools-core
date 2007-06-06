@@ -52,7 +52,7 @@ var Element = new Class({
 
 	initialize: function(el, props){
 		if ($type(el) == 'string'){
-			if (window.ie && props && (props.name || props.type)){
+			if (Client.engine.ie && props && (props.name || props.type)){
 				var name = (props.name) ? ' name="' + props.name + '"' : '';
 				var type = (props.type) ? ' type="' + props.type + '"' : '';
 				delete props.name;
@@ -498,7 +498,7 @@ Element.extend({
 	setStyle: function(property, value){
 		switch(property){
 			case 'opacity': return this.setOpacity(parseFloat(value));
-			case 'float': property = (window.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = (Client.engine.ie) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
 		switch($type(value)){
@@ -554,7 +554,7 @@ Element.extend({
 			if (this.style.visibility != "visible") this.style.visibility = "visible";
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (window.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
+		if (Client.engine.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
 		this.style.opacity = this.$tmp.opacity = opacity;
 		return this;
 	},
@@ -610,7 +610,7 @@ Element.extend({
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
-		if (window.ie) result = Element.$fixStyle(property, result, this);
+		if (Client.engine.ie) result = Element.$fixStyle(property, result, this);
 		if (result && property.test(/color/i) && result.contains('rgb')){
 			return result.split('rgb').splice(1,4).map(function(color){
 				return color.rgbToHex();
@@ -728,7 +728,7 @@ Element.extend({
 		var index = Element.$properties[property];
 		if (index) return this[index];
 		var flag = Element.$propertiesIFlag[property] || 0;
-		if (!window.ie || flag) return this.getAttribute(property, flag);
+		if (!Client.engine.ie || flag) return this.getAttribute(property, flag);
 		var node = this.attributes[property];
 		return (node) ? node.nodeValue : null;
 	},
@@ -827,7 +827,7 @@ Element.extend({
 	setText: function(text){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (window.ie){
+			if (Client.engine.ie){
 				if (tag == 'style') this.styleSheet.cssText = text;
 				else if (tag ==  'script') this.setProperty('text', text);
 				return this;
@@ -848,7 +848,7 @@ Element.extend({
 	getText: function(){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (window.ie){
+			if (Client.engine.ie){
 				if (tag == 'style') return this.styleSheet.cssText;
 				else if (tag ==  'script') return this.getProperty('text');
 			} else {
@@ -991,5 +991,5 @@ var Garbage = {
 
 window.addListener('beforeunload', function(){
 	window.addListener('unload', Garbage.empty);
-	if (window.ie) window.addListener('unload', CollectGarbage);
+	if (Client.engine.ie) window.addListener('unload', CollectGarbage);
 });

@@ -181,7 +181,7 @@ var debug = {
 	create: function(){
 			//main element
 		debug._body = new Element('div').setStyles({
-			'position': window.ie6 ? 'absolute' : 'fixed',
+			'position': Client.engine.ie6 ? 'absolute' : 'fixed',
 			'background': '#fff',
 			'font': '11px Andale Mono, Monaco, Courier New',
 			'z-index': '996'
@@ -227,7 +227,7 @@ var debug = {
 			'overflow': 'auto',
 			'background': '#fff'
 		}).injectInside(debug._body);
-		if (window.ie6) debug._contents.setStyle('width', '100%');
+		if (Client.engine.ie6) debug._contents.setStyle('width', '100%');
 
 		//input box
 		debug._input = new Element('input').setProperty('type', 'text').setStyles({
@@ -253,7 +253,7 @@ var debug = {
 			'left': '0'
 		}).injectInside(debug._body);
 
-		if (window.webkit){
+		if (Client.engine.webkit){
 			debug._input.setStyles({
 				'margin-top': '-2px',
 				'margin-left': '29px',
@@ -265,14 +265,14 @@ var debug = {
 		debug._scroll = new Fx.Scroll(debug._contents, {duration: 300, wait: false});
 		debug.resetHeight();
 		window.addEvent('resize', debug.resize);
-		if (window.ie6) window.addEvent('scroll', debug.resetHeight);
+		if (Client.engine.ie6) window.addEvent('scroll', debug.resetHeight);
 
 		debug._input.onkeydown = debug.parseKey.bindWithEvent(debug);
 	},
 
 	resetHeight: function(){
 		debug._hgt = debug._body.offsetHeight;
-		if (!window.webkit) debug._hgt -= 3;
+		if (!Client.engine.webkit) debug._hgt -= 3;
 		else debug._hgt -= 1;
 		debug._gts.setStyle('top', (debug._hgt - debug._gts.offsetHeight - 1));
 		debug.resize();
@@ -280,7 +280,7 @@ var debug = {
 	},
 
 	resize: function(){
-		if (window.ie6){
+		if (Client.engine.ie6){
 			debug._body.setStyles({
 				'top': (window.getScrollTop() + window.getHeight() - debug._hgt - 5),
 				'width': (window.getWidth() - 16)

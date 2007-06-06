@@ -49,7 +49,7 @@ var XHR = new Class({
 	},
 
 	setTransport: function(){
-		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (window.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
+		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Client.engine.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
 		return this;
 	},
 

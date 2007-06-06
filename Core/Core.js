@@ -340,34 +340,55 @@ var Document = new Abstract(document);
 document.head = document.getElementsByTagName('head')[0];
 
 /*
-Class: window
-	Some properties are attached to the window object by the browser detection.
+Class: Client
+	Some browser properties are attached to the Client object for browser detection.
 	
 Note:
-	browser detection is entirely object-based. We dont sniff.
+	engine detection is entirely object-based.
 
-Properties:
-	window.ie - will be set to true if the current browser is internet explorer (any).
-	window.ie6 - will be set to true if the current browser is internet explorer 6.
-	window.ie7 - will be set to true if the current browser is internet explorer 7.
-	window.gecko - will be set to true if the current browser is Mozilla/Gecko.
-	window.webkit - will be set to true if the current browser is Safari/Konqueror.
-	window.webkit419 - will be set to true if the current browser is Safari2 / webkit till version 419.
-	window.webkit420 - will be set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
-	window.opera - is set to true by opera itself.
+Client.engine:
+	Client.engine.ie - is set to true if the current browser is internet explorer (any).
+	Client.engine.ie6 - is set to true if the current browser is internet explorer 6.
+	Client.engine.ie7 - is set to true if the current browser is internet explorer 7.
+	Client.engine.gecko - is set to true if the current browser is Mozilla/Gecko.
+	Client.engine.webkit - is set to true if the current browser is Safari/Konqueror.
+	Client.engine.webkit419 - is set to true if the current browser is Safari2 / webkit till version 419.
+	Client.engine.webkit420 - is set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
+	Client.engine.opera - is set to true if the current browser is opera.
+	Client.engine.name - is set to the name of the engine.
+	
+Platform:
+	Client.platform.mac - is set to true if the platform is mac
+	Client.platform.windows - is set to true if the platform is windows
+	Client.platform.linux - is set to true if the platform is linux
+	Client.platform.other - is set to true if the platform is neither mac, windows or linux
+	Client.platform.name - is set to the name of the platform
 */
 
-window.xpath = !!(document.evaluate);
-if (window.ActiveXObject) window.ie = window[window.XMLHttpRequest ? 'ie7' : 'ie6'] = true;
-else if (document.childNodes && !document.all && !navigator.taintEnabled) window.webkit = window[window.xpath ? 'webkit420' : 'webkit419'] = true;
-else if (document.getBoxObjectFor != null) window.gecko = true;
+var Client = {'engine': {'name': 'unknown', 'version': ''}, 'platform': {}, 'features': {}};
+
+//features
+Client.features.xhr = !!(window.XMLHttpRequest);
+Client.features.xpath = !!(document.evaluate);
+
+//engine
+if (window.opera) Client.engine.name = 'opera';
+else if (window.ActiveXObject) Client.engine = {'name': 'ie', 'version': (Client.features.xhr) ? 7 : 6};
+else if (!navigator.taintEnabled) Client.engine = {'name': 'webkit', 'version': (Client.features.xpath) ? 420 : 419};
+else if (document.getBoxObjectFor != null) Client.engine.name = 'gecko';
+Client.engine[Client.engine.name] = Client.engine[Client.engine.name + Client.engine.version] = true;
+
+//platform
+Client.platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'];
+Client.platform.name = Client.platform.name[0].toLowerCase();
+Client.platform[Client.platform.name] = true;
 
 //htmlelement
 
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = Function.empty;
-	if (window.webkit) document.createElement("iframe"); //fixes safari
-	HTMLElement.prototype = (window.webkit) ? window["[[DOMElement.prototype]]"] : {};
+	if (Client.engine.webkit) document.createElement("iframe"); //fixes safari
+	HTMLElement.prototype = (Client.engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
 HTMLElement.prototype.htmlElement = Function.empty;
 
@@ -375,4 +396,4 @@ HTMLElement.prototype.htmlElement = Function.empty;
 
 //enables background image cache for internet explorer 6
 
-if (window.ie6) $try(document.execCommand, document, ["BackgroundImageCache", false, true]);
+if (Client.engine.ie6) $try(document.execCommand, document, ["BackgroundImageCache", false, true]);

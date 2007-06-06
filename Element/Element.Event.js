@@ -85,7 +85,7 @@ var Event = new Class({
 				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}
-			if (this.fixRelatedTarget.create({'bind': this, 'attempt': window.gecko})() === false) this.relatedTarget = this.target;
+			if (this.fixRelatedTarget.create({'bind': this, 'attempt': Client.engine.gecko})() === false) this.relatedTarget = this.target;
 		}
 		return this;
 	},
@@ -333,7 +333,7 @@ Element.Events = new Abstract({
 	},
 
 	'mousewheel': {
-		type: (window.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		type: (Client.engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
 	}
 
 });

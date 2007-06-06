@@ -124,7 +124,7 @@ $$.shared = {
 
 };
 
-$$.shared.method = (window.xpath) ? 'xpath' : 'normal';
+$$.shared.method = (Client.features.xpath) ? 'xpath' : 'normal';
 
 /*
 Class: Element
