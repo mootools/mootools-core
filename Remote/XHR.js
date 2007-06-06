@@ -19,7 +19,7 @@ Options:
 	encoding - the encoding, defaults to utf-8.
 	autoCancel - cancels the already running request if another one is sent. defaults to false.
 	headers - accepts an object, that will be set to request headers.
-	
+
 Events:
 	onRequest - function to execute when the XHR request is fired.
 	onSuccess - function to execute when the XHR request completes.
@@ -135,6 +135,7 @@ var XHR = new Class({
 		for (var type in this.headers) $try(this.transport.setRequestHeader, this.transport, [type, this.headers[type]]);
 		this.fireEvent('onRequest');
 		this.transport.send($pick(data, null));
+		if (!this.options.async) this.onStateChange();
 		return this;
 	},
 
