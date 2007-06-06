@@ -112,7 +112,7 @@ var Events = new Class({
 	*/
 
 	addEvent: function(type, fn){
-		if (fn != Class.empty){
+		if (fn != Function.empty){
 			this.$events = this.$events || {};
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);

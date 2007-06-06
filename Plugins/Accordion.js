@@ -37,8 +37,8 @@ Events:
 var Accordion = Fx.Elements.extend({
 
 	options: {
-		onActive: Class.empty,
-		onBackground: Class.empty,
+		onActive: Function.empty,
+		onBackground: Function.empty,
 		display: 0,
 		show: false,
 		height: true,

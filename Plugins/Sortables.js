@@ -29,8 +29,8 @@ var Sortables = new Class({
 
 	options: {
 		handles: false,
-		onStart: Class.empty,
-		onComplete: Class.empty,
+		onStart: Function.empty,
+		onComplete: Function.empty,
 		ghost: true,
 		snap: 3,
 		onDragStart: function(element, ghost){

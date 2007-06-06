@@ -1,9 +1,9 @@
 var Physics = new Class({
 
 	options: {
-		onComplete: Class.empty,
-		onStart: Class.empty,
-		onStep: Class.empty,
+		onComplete: Function.empty,
+		onStart: Function.empty,
+		onStep: Function.empty,
 		gravity: 1,
 		restitution: 0.6,
 		friction: 0.9,

@@ -37,12 +37,7 @@ var Class = function(properties){
 	return klass;
 };
 
-/*
-Property: empty
-	Returns an empty function
-*/
-
-Class.empty = function(){};
+Class.empty = Function.empty;
 
 Class.prototype = {
 

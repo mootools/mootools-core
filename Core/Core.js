@@ -310,6 +310,13 @@ function $try(fn, bind, args){
 };
 
 /*
+Function: Function.empty
+	That's it. An empty function.
+*/
+
+Function.empty = function(){};
+
+/*
 Class: Abstract
 	Abstract class, to be used as singleton. Will add .extend to any object
 
@@ -358,11 +365,11 @@ else if (document.getBoxObjectFor != null) window.gecko = true;
 //htmlelement
 
 if (typeof HTMLElement == 'undefined'){
-	var HTMLElement = function(){};
+	var HTMLElement = Function.empty;
 	if (window.webkit) document.createElement("iframe"); //fixes safari
 	HTMLElement.prototype = (window.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
-HTMLElement.prototype.htmlElement = function(){};
+HTMLElement.prototype.htmlElement = Function.empty;
 
 //window["[[DOMEvent.prototype]]"].test = 'hello';
 

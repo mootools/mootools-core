@@ -39,9 +39,9 @@ var XHR = new Class({
 	options: {
 		method: 'post',
 		async: true,
-		onRequest: Class.empty,
-		onSuccess: Class.empty,
-		onFailure: Class.empty,
+		onRequest: Function.empty,
+		onSuccess: Function.empty,
+		onFailure: Function.empty,
 		urlEncoded: true,
 		encoding: 'utf-8',
 		autoCancel: false,
@@ -73,7 +73,7 @@ var XHR = new Class({
 		}, this);
 		if (this.options.isSuccess.call(this, this.status)) this.onSuccess();
 		else this.onFailure();
-		this.transport.onreadystatechange = Class.empty;
+		this.transport.onreadystatechange = Function.empty;
 	},
 
 	isSuccess: function(){
@@ -151,7 +151,7 @@ var XHR = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.transport.abort();
-		this.transport.onreadystatechange = Class.empty;
+		this.transport.onreadystatechange = Function.empty;
 		this.setTransport();
 		this.fireEvent('onCancel');
 		return this;
