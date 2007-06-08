@@ -50,81 +50,126 @@ function $ES(selector, filter){
 	return ($(filter) || document).getElementsBySelector(selector);
 };
 
-$$.shared = {
-
-	'regexp': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
+var DOM = {
 	
-	'xpath': {
+	'REGEXP': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
 
-		getParam: function(items, context, param, i){
-			var temp = [context.namespaceURI ? 'xhtml:' : '', param[1]];
-			if (param[2]) temp.push('[@id="', param[2], '"]');
-			if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
-			if (param[4]){
-				if (param[5] && param[6]){
-					switch(param[5]){
-						case '*=': temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
-						case '^=': temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
-						case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
-						case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
-						case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
-					}
-				} else {
-					temp.push('[@', param[4], ']');
-				}
-			}
-			items.push(temp.join(''));
-			return items;
-		},
-		
-		getItems: function(items, context, nocash){
-			var elements = [];
-			var xpath = document.evaluate('.//' + items.join('//'), context, $$.shared.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-			for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
-			return (nocash) ? elements : new Elements(elements.map($));
+	'SREGEXP': /\s\>\s|\s\+\s|\s\~\s|\s/g
+	
+};
+
+DOM.XPATH = {
+
+	GET_PARAM: function(items, separator, context, param){
+		var temp = [context.namespaceURI ? 'xhtml:' : ''];
+		switch(separator){
+			case ' ~ ': temp.push('/following-sibling::'); break;
+			case ' > ': temp.push('/'); break;
+			case ' + ': temp.push('/following-sibling::'); break;
+			case ' ': temp.push('//'); break;
 		}
-
-	},
-	
-	'normal': {
-		
-		getParam: function(items, context, param, i){
-			if (i == 0){
-				if (param[2]){
-					var el = context.getElementById(param[2]);
-					if (!el || ((param[1] != '*') && (Element.getTag(el) != param[1]))) return false;
-					items = [el];
-				} else {
-					items = $A(context.getElementsByTagName(param[1]));
+		temp.push(param[1]);
+		if (separator == ' + ') temp.push('[1]');
+		if (param[2]) temp.push('[@id="', param[2], '"]');
+		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
+		if (param[4]){
+			if (param[5] && param[6]){
+				switch(param[5]){
+					case '*=': temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
+					case '^=': temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
+					case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
+					case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
+					case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
 				}
 			} else {
-				items = $$.shared.getElementsByTagName(items, param[1]);
-				if (param[2]) items = Elements.filterById(items, param[2], true);
+				temp.push('[@', param[4], ']');
 			}
-			if (param[3]) items = Elements.filterByClass(items, param[3], true);
-			if (param[4]) items = Elements.filterByAttribute(items, param[4], param[5], param[6], true);
-			return items;
-		},
-
-		getItems: function(items, context, nocash){
-			return (nocash) ? items : $$.unique(items);
 		}
-
+		items.push(temp.join(''));
+		return items;
 	},
-
-	resolver: function(prefix){
+	
+	GET_ITEMS: function(items, context, nocash){
+		var elements = [];
+		var xpath = document.evaluate('.//' + items.join(''), context, DOM.XPATH.RESOLVER, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
+		return (nocash) ? elements : new Elements(elements.map($));
+	},
+	
+	RESOLVER: function(prefix){
 		return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
+	}
+	
+};
+
+DOM.NORMAL = {
+
+	GET_PARAM: function(items, separator, context, param){
+		if (separator){
+			var name = 'GET_FOLLOWING_BY_TAG';
+			switch(separator){
+				case ' ': name = 'GET_NESTED_BY_TAG'; break;
+				case ' > ': name = 'GET_CHILDREN_BY_TAG';
+			}
+			items = DOM.NORMAL[name](items, param[1], (separator == ' ~ '));
+			if (param[2]) items = Elements.filterById(items, param[2], true);
+		} else {
+			if (param[2]){
+				var el = context.getElementById(param[2]);
+				if (!el || ((param[1] != '*') && (Element.getTag(el) != param[1]))) return false;
+				items = [el];
+			} else {
+				items = $A(context.getElementsByTag(param[1]));
+			}
+		}
+		if (param[3]) items = Elements.filterByClass(items, param[3], true);
+		if (param[4]) items = Elements.filterByAttribute(items, param[4], param[5], param[6], true);
+		return items;
 	},
 
-	getElementsByTagName: function(context, tagName){
+	GET_ITEMS: function(items, context, nocash){
+		return (nocash) ? items : $$.unique(items);
+	},
+	
+	HAS_TAG: function(el, tag){
+		return ($type(el) == 'element' && (Element.getTag(el) == tag || tag == '*'));
+	},
+	
+	GET_FOLLOWING_BY_TAG: function(context, tag, all){
+		var found = [];
+		for (var i = 0, j = context.length; i < j; i++){
+			var next = context[i].nextSibling;
+			while (next){
+				if (DOM.NORMAL.HAS_TAG(next, tag)){
+					found.push(next);
+					if (!all) break;
+				}
+				next = next.nextSibling;
+			}
+		}
+		return found;
+	},
+	
+	GET_CHILDREN_BY_TAG: function(context, tag){
+		var found = [];
+		for (var i = 0, j = context.length; i < j; i++){
+			var children = context[i].childNodes;
+			for (var k = 0, l = children.length; k < l; k++){
+				if (DOM.NORMAL.HAS_TAG(children[k], tag)) found.push(children[k]);
+			}
+		}
+		return found;
+	},
+
+	GET_NESTED_BYTAG: function(context, tagName){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tagName));
 		return found;
 	}
-
+	
 };
 
-$$.shared.method = (Client.features.xpath) ? 'xpath' : 'normal';
+DOM.METHOD = (Client.features.xpath) ? 'XPATH' : 'NORMAL';
 
 /*
 Class: Element
@@ -159,17 +204,22 @@ Element.$domMethods = {
 
 	getElements: function(selector, nocash){
 		var items = [];
-		selector = selector.trim().split(' ');
+		var separators = [];
+		selector = selector.trim().replace(DOM.SREGEXP, function(match){
+			separators.push(match);
+			return ' ';
+		});
+		selector = selector.split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
-			var param = sel.match($$.shared.regexp);
+			var param = sel.match(DOM.REGEXP);
 			if (!param) break;
 			param[1] = param[1] || '*';
-			var temp = $$.shared[$$.shared.method].getParam(items, this, param, i);
+			var temp = DOM[DOM.METHOD].GET_PARAM(items, separators[i - 1] || false, this, param);
 			if (!temp) break;
 			items = temp;
 		}
-		return $$.shared[$$.shared.method].getItems(items, this, nocash);
+		return DOM[DOM.METHOD].GET_ITEMS(items, this, nocash);
 	},
 
 	/*

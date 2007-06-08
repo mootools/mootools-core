@@ -123,8 +123,8 @@ Function.extend({
 		>myBoundFunction(); // this will make the element myElement red.
 	*/
 
-	bind: function(bind, args){
-		return this.create({'bind': bind, 'arguments': args});
+	bind: function(bind, args, evt){
+		return this.create({'bind': bind, 'arguments': args, 'event': evt});
 	},
 
 	/*
