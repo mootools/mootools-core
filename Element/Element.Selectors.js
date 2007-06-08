@@ -69,12 +69,13 @@ DOM.XPath = {
 			case ' > ': temp += '/'; break;
 			case ' ': temp += '//'; break;
 		}
-		temp.push(param[1]);
+		temp += param[1];
 		if (separator == ' + ') temp += '[1]';
 		if (param[2]) temp += '[@id="' + param[2] + '"]';
 		if (param[3]) temp += '[contains(concat(" ", @class, " "), " ' + param[3] + ' ")]';
 		if (param[4]){
 			var attr = param[4].match(DOM.aRegExp);
+			if (!attr) throw new Error('bad attribute selector');
 			if (attr[2] && attr[3]){
 				switch(attr[2]){
 					case '=': temp += '[@' + attr[1] + '="' + attr[3] + '"]'; break;
@@ -128,6 +129,7 @@ DOM.Walker = {
 		if (param[3]) items = Elements.filterByClass(items, param[3], true);
 		if (param[4]){
 			var attr = param[4].match(DOM.aRegExp);
+			if (!attr) throw new Error('bad attribute selector');
 			items = Elements.filterByAttribute(items, attr[1], attr[2], attr[3], true);
 		}
 		return items;
