@@ -52,20 +52,19 @@ function $ES(selector, filter){
 
 var DOM = {
 	
-	'REGEXP': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
+	'regexp': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
 
-	'SREGEXP': /\s\>\s|\s\+\s|\s\~\s|\s/g
+	'sRegexp': /\s\>\s|\s\+\s|\s\~\s|\s/g
 	
 };
 
 DOM.XPATH = {
 
-	GET_PARAM: function(items, separator, context, param){
+	getParam: function(items, separator, context, param){
 		var temp = [context.namespaceURI ? 'xhtml:' : ''];
 		switch(separator){
-			case ' ~ ': temp.push('/following-sibling::'); break;
+			case ' ~ ': case ' + ': temp.push('/following-sibling::'); break;
 			case ' > ': temp.push('/'); break;
-			case ' + ': temp.push('/following-sibling::'); break;
 			case ' ': temp.push('//'); break;
 		}
 		temp.push(param[1]);
@@ -89,29 +88,29 @@ DOM.XPATH = {
 		return items;
 	},
 	
-	GET_ITEMS: function(items, context, nocash){
+	getItems: function(items, context, nocash){
 		var elements = [];
-		var xpath = document.evaluate('.//' + items.join(''), context, DOM.XPATH.RESOLVER, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		var xpath = document.evaluate('.//' + items.join(''), context, DOM.XPATH.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
 		return (nocash) ? elements : new Elements(elements.map($));
 	},
 	
-	RESOLVER: function(prefix){
+	resolver: function(prefix){
 		return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
 	}
 	
 };
 
-DOM.NORMAL = {
+DOM.Walker = {
 
-	GET_PARAM: function(items, separator, context, param){
+	getParam: function(items, separator, context, param){
 		if (separator){
-			var name = 'GET_FOLLOWING_BY_TAG';
+			var name = 'getFollowingByTag';
 			switch(separator){
-				case ' ': name = 'GET_NESTED_BY_TAG'; break;
-				case ' > ': name = 'GET_CHILDREN_BY_TAG';
+				case ' ': name = 'getNestedByTag'; break;
+				case ' > ': name = 'getChildrenByTag';
 			}
-			items = DOM.NORMAL[name](items, param[1], (separator == ' ~ '));
+			items = DOM.Walker[name](items, param[1], (separator == ' ~ '));
 			if (param[2]) items = Elements.filterById(items, param[2], true);
 		} else {
 			if (param[2]){
@@ -127,20 +126,20 @@ DOM.NORMAL = {
 		return items;
 	},
 
-	GET_ITEMS: function(items, context, nocash){
+	getItems: function(items, context, nocash){
 		return (nocash) ? items : $$.unique(items);
 	},
 	
-	HAS_TAG: function(el, tag){
+	hasTag: function(el, tag){
 		return ($type(el) == 'element' && (Element.getTag(el) == tag || tag == '*'));
 	},
 	
-	GET_FOLLOWING_BY_TAG: function(context, tag, all){
+	getFollowingByTag: function(context, tag, all){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++){
 			var next = context[i].nextSibling;
 			while (next){
-				if (DOM.NORMAL.HAS_TAG(next, tag)){
+				if (DOM.Walker.hasTag(next, tag)){
 					found.push(next);
 					if (!all) break;
 				}
@@ -150,18 +149,18 @@ DOM.NORMAL = {
 		return found;
 	},
 	
-	GET_CHILDREN_BY_TAG: function(context, tag){
+	getChildrenByTag: function(context, tag){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++){
 			var children = context[i].childNodes;
 			for (var k = 0, l = children.length; k < l; k++){
-				if (DOM.NORMAL.HAS_TAG(children[k], tag)) found.push(children[k]);
+				if (DOM.Walker.hasTag(children[k], tag)) found.push(children[k]);
 			}
 		}
 		return found;
 	},
 
-	GET_NESTED_BYTAG: function(context, tagName){
+	GET_NESTED_BY_TAG: function(context, tagName){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tagName));
 		return found;
@@ -169,7 +168,7 @@ DOM.NORMAL = {
 	
 };
 
-DOM.METHOD = (Client.features.xpath) ? 'XPATH' : 'NORMAL';
+DOM.Method = (Client.features.xpath) ? DOM.XPATH : DOM.Walker;
 
 /*
 Class: Element
@@ -205,21 +204,21 @@ Element.$domMethods = {
 	getElements: function(selector, nocash){
 		var items = [];
 		var separators = [];
-		selector = selector.trim().replace(DOM.SREGEXP, function(match){
+		selector = selector.trim().replace(DOM.sRegexp, function(match){
 			separators.push(match);
 			return ' ';
 		});
 		selector = selector.split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
-			var param = sel.match(DOM.REGEXP);
+			var param = sel.match(DOM.regexp);
 			if (!param) break;
 			param[1] = param[1] || '*';
-			var temp = DOM[DOM.METHOD].GET_PARAM(items, separators[i - 1] || false, this, param);
+			var temp = DOM.Method.getParam(items, separators[i - 1] || false, this, param);
 			if (!temp) break;
 			items = temp;
 		}
-		return DOM[DOM.METHOD].GET_ITEMS(items, this, nocash);
+		return DOM.Method.getItems(items, this, nocash);
 	},
 
 	/*
