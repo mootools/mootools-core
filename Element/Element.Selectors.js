@@ -60,41 +60,41 @@ var DOM = {
 	
 };
 
-DOM.XPATH = {
+DOM.XPath = {
 
 	getParam: function(items, separator, context, param){
-		var temp = [context.namespaceURI ? 'xhtml:' : ''];
+		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch(separator){
-			case ' ~ ': case ' + ': temp.push('/following-sibling::'); break;
-			case ' > ': temp.push('/'); break;
-			case ' ': temp.push('//'); break;
+			case ' ~ ': case ' + ': temp += '/following-sibling::'; break;
+			case ' > ': temp += '/'; break;
+			case ' ': temp += '//'; break;
 		}
 		temp.push(param[1]);
-		if (separator == ' + ') temp.push('[1]');
-		if (param[2]) temp.push('[@id="', param[2], '"]');
-		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ' + param[3] + ' ")]');
+		if (separator == ' + ') temp += '[1]';
+		if (param[2]) temp += '[@id="' + param[2] + '"]';
+		if (param[3]) temp += '[contains(concat(" ", @class, " "), " ' + param[3] + ' ")]';
 		if (param[4]){
 			var attr = param[4].match(DOM.aRegExp);
 			if (attr[2] && attr[3]){
 				switch(attr[2]){
-					case '=': temp.push('[@' + attr[1] + '="' + attr[3] + '"]'); break;
-					case '*=': temp.push('[contains(@' + attr[1] + ', "' + attr[3] + '")]'); break;
-					case '^=': temp.push('[starts-with(@' + attr[1] + ', "' + attr[3] + '")]'); break;
-					case '$=': temp.push('[substring(@' + attr[1] + ', string-length(@' + attr[1] + ') - ' + attr[3].length + ' + 1) = "' + attr[3] + '"]'); break;
-					case '!=': temp.push('[@' + attr[1] + '!="' + attr[3] + '"]'); break;
-					case '~=': temp.push('[contains(concat(" ", @' + attr[1] + ', " "), " ' + attr[3] + ' ")]');
+					case '=': temp += '[@' + attr[1] + '="' + attr[3] + '"]'; break;
+					case '*=': temp += '[contains(@' + attr[1] + ', "' + attr[3] + '")]'; break;
+					case '^=': temp += '[starts-with(@' + attr[1] + ', "' + attr[3] + '")]'; break;
+					case '$=': temp += '[substring(@' + attr[1] + ', string-length(@' + attr[1] + ') - ' + attr[3].length + ' + 1) = "' + attr[3] + '"]'; break;
+					case '!=': temp += '[@' + attr[1] + '!="' + attr[3] + '"]'; break;
+					case '~=': temp += '[contains(concat(" ", @' + attr[1] + ', " "), " ' + attr[3] + ' ")]';
 				}
 			} else {
-				temp.push('[@' + attr[1] + ']');
+				temp += '[@' + attr[1] + ']';
 			}
 		}
-		items.push(temp.join(''));
+		items.push(temp);
 		return items;
 	},
 	
 	getItems: function(items, context, nocash){
 		var elements = [];
-		var xpath = document.evaluate('.//' + items.join(''), context, DOM.XPATH.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+		var xpath = document.evaluate('.//' + items.join(''), context, DOM.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
 		return (nocash) ? elements : new Elements(elements.map($));
 	},
@@ -175,7 +175,7 @@ DOM.Walker = {
 	
 };
 
-DOM.Method = (Client.features.xpath) ? DOM.XPATH : DOM.Walker;
+DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Walker;
 
 /*
 Class: Element
