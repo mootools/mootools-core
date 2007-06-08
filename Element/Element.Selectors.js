@@ -52,9 +52,11 @@ function $ES(selector, filter){
 
 var DOM = {
 	
-	'regexp': /^(\w*|\*)(?:#([\w-]+)|\.([\w-]+))?(?:\[(\w+)(?:([!*^$]?=)["']?([^"'\]]*)["']?)?])?$/,
-
-	'sRegexp': /\s\>\s|\s\+\s|\s\~\s|\s/g
+	'regExp': /^(\w*|\*)(?:#([\w-]+))?(?:\.([\w-]+))?(?:\[([\w\W]+)\])?$/,
+	
+	'aRegExp': /^(\w+)(?:([!*^$\~]?=)["']?([^"'\]]*)["']?)?$/,
+	
+	'sRegExp': /\s\~\s|\s\+\s|\s\>\s|\s/g
 	
 };
 
@@ -70,18 +72,20 @@ DOM.XPATH = {
 		temp.push(param[1]);
 		if (separator == ' + ') temp.push('[1]');
 		if (param[2]) temp.push('[@id="', param[2], '"]');
-		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ', param[3], ' ")]');
+		if (param[3]) temp.push('[contains(concat(" ", @class, " "), " ' + param[3] + ' ")]');
 		if (param[4]){
-			if (param[5] && param[6]){
-				switch(param[5]){
-					case '*=': temp.push('[contains(@', param[4], ', "', param[6], '")]'); break;
-					case '^=': temp.push('[starts-with(@', param[4], ', "', param[6], '")]'); break;
-					case '$=': temp.push('[substring(@', param[4], ', string-length(@', param[4], ') - ', param[6].length, ' + 1) = "', param[6], '"]'); break;
-					case '=': temp.push('[@', param[4], '="', param[6], '"]'); break;
-					case '!=': temp.push('[@', param[4], '!="', param[6], '"]');
+			var attr = param[4].match(DOM.aRegExp);
+			if (attr[2] && attr[3]){
+				switch(attr[2]){
+					case '=': temp.push('[@' + attr[1] + '="' + attr[3] + '"]'); break;
+					case '*=': temp.push('[contains(@' + attr[1] + ', "' + attr[3] + '")]'); break;
+					case '^=': temp.push('[starts-with(@' + attr[1] + ', "' + attr[3] + '")]'); break;
+					case '$=': temp.push('[substring(@' + attr[1] + ', string-length(@' + attr[1] + ') - ' + attr[3].length + ' + 1) = "' + attr[3] + '"]'); break;
+					case '!=': temp.push('[@' + attr[1] + '!="' + attr[3] + '"]'); break;
+					case '~=': temp.push('[contains(concat(" ", @' + attr[1] + ', " "), " ' + attr[3] + ' ")]');
 				}
 			} else {
-				temp.push('[@', param[4], ']');
+				temp.push('[@' + attr[1] + ']');
 			}
 		}
 		items.push(temp.join(''));
@@ -118,11 +122,14 @@ DOM.Walker = {
 				if (!el || ((param[1] != '*') && (Element.getTag(el) != param[1]))) return false;
 				items = [el];
 			} else {
-				items = $A(context.getElementsByTag(param[1]));
+				items = $A(context.getElementsByTagName(param[1]));
 			}
 		}
 		if (param[3]) items = Elements.filterByClass(items, param[3], true);
-		if (param[4]) items = Elements.filterByAttribute(items, param[4], param[5], param[6], true);
+		if (param[4]){
+			var attr = param[4].match(DOM.aRegExp);
+			items = Elements.filterByAttribute(items, attr[1], attr[2], attr[3], true);
+		}
 		return items;
 	},
 
@@ -160,7 +167,7 @@ DOM.Walker = {
 		return found;
 	},
 
-	GET_NESTED_BY_TAG: function(context, tagName){
+	getNestedByTag: function(context, tagName){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tagName));
 		return found;
@@ -204,15 +211,15 @@ Element.$domMethods = {
 	getElements: function(selector, nocash){
 		var items = [];
 		var separators = [];
-		selector = selector.trim().replace(DOM.sRegexp, function(match){
+		selector = selector.trim().replace(DOM.sRegExp, function(match){
 			separators.push(match);
 			return ' ';
 		});
 		selector = selector.split(' ');
 		for (var i = 0, j = selector.length; i < j; i++){
 			var sel = selector[i];
-			var param = sel.match(DOM.regexp);
-			if (!param) break;
+			var param = sel.match(DOM.regExp);
+			if (!param) throw new Error('bad selector');
 			param[1] = param[1] || '*';
 			var temp = DOM.Method.getParam(items, separators[i - 1] || false, this, param);
 			if (!temp) break;
