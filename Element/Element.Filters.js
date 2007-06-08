@@ -19,10 +19,11 @@ Elements.extend({
 		Returns a new Elements collection, while the original remains untouched.
 	*/
 	
-	filterByTag: function(tag){
-		return new Elements(this.filter(function(el){
+	filterByTag: function(tag, nocash){
+		var elements = this.filter(function(el){
 			return (Element.getTag(el) == tag);
-		}));
+		});
+		return (nocash) ? elements : new Elements(elements);
 	},
 	
 	/*
@@ -78,6 +79,35 @@ Elements.extend({
 			return false;
 		});
 		return (nocash) ? elements : new Elements(elements);
+	},
+	
+	filterByNth: function(interval, n, start, nocash){
+		var found = [];
+		var parents = [];
+		var is = [];
+		switch(n){
+			case 'n': is = [interval, start]; break;
+			case 'odd': is = [2, 1]; break;
+			case 'even': is = [2, 0];
+		}
+		for (var i = 0, l = this.length; i < l; i++){
+			var parent = this[i].parentNode;
+			if (!parent || parent.$included) continue;
+			parent.$included = true;
+			parents.push(parent);
+			var children = Array.filter(parent.childNodes, function(el){
+				return (this.contains(el));
+			}, this);
+			if (n){
+				for (var o = 0, p = children.length; o < p; o++){
+					if (o % is[0] == is[1]) found.push(children[o]);
+				}
+			} else {
+				found.push(children[interval]);
+			}
+		}
+		for (var r = 0, s = parents.length; r < s; r++) parents[r].$included = null;
+		return (nocash) ? found : new Elements(found);
 	}
 
 });

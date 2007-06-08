@@ -52,12 +52,32 @@ function $ES(selector, filter){
 
 var DOM = {
 	
-	'regExp': /^(\w*|\*)(?:#([\w-]+))?(?:\.([\w-]+))?(?:\[([\w\W]+)\])?$/,
+	'regExp': /^(\w*|\*)(?:#([\w-]+))?(?:\.([\w-]+))?(?:\[(.*)\])?(?::(.*))?$/,
 	
 	'aRegExp': /^(\w+)(?:([!*^$\~]?=)["']?([^"'\]]*)["']?)?$/,
 	
+	'pRegExp': /^([\w-]+)(?:\((.*)\))?$/,
+	
+	'nRegExp': /^([+]?\d*)?([nodev]+)?([+]?\d*)?$/,
+	
 	'sRegExp': /\s\~\s|\s\+\s|\s\>\s|\s/g
 	
+};
+
+DOM.parsePseudo = function(pseudo){
+	pseudo = pseudo.match(DOM.pRegExp);
+	if (!pseudo) throw new Error('bad pseudo selector');
+	var pparam = [];
+	switch(pseudo[1].split('-')[0]){
+		case 'nth':
+			pparam = pseudo[2].match(DOM.nRegExp);
+			if (!pparam) throw new Error('bad nth pseudo selector parameters');
+			if (!$chk(parseInt(pparam[1]))) pparam[1] = 1;
+			pparam[2] = pparam[2] || false;
+			pparam[3] = parseInt(pparam[3]) || 0;
+		break;
+	}
+	return {'name': pseudo[1], 'params': pparam};
 };
 
 DOM.XPath = {
@@ -67,10 +87,25 @@ DOM.XPath = {
 		switch(separator){
 			case ' ~ ': case ' + ': temp += '/following-sibling::'; break;
 			case ' > ': temp += '/'; break;
-			case ' ': temp += '//'; break;
+			case ' ': temp += '//';
 		}
 		temp += param[1];
 		if (separator == ' + ') temp += '[1]';
+		if (param[5]){
+			var pseudo = DOM.parsePseudo(param[5]);
+			switch(pseudo.name){
+				case 'nth':
+					var nth = '';
+					switch(pseudo.params[2]){
+						case 'n': nth = 'mod ' + pseudo.params[1] + ' = ' + pseudo.params[3]; break;
+						case 'odd': nth = 'mod 2 = 1'; break;
+						case 'even': nth =  'mod 2 = 0'; break;
+						case false: nth = '= ' + pseudo.params[1];
+					}
+					temp += '[count(./preceding-sibling::*) ' + nth + ']';
+				break;
+			}
+		}
 		if (param[2]) temp += '[@id="' + param[2] + '"]';
 		if (param[3]) temp += '[contains(concat(" ", @class, " "), " ' + param[3] + ' ")]';
 		if (param[4]){
@@ -110,12 +145,12 @@ DOM.Walker = {
 
 	getParam: function(items, separator, context, param){
 		if (separator){
-			var name = 'getFollowingByTag';
 			switch(separator){
-				case ' ': name = 'getNestedByTag'; break;
-				case ' > ': name = 'getChildrenByTag';
+				case ' ': items = Elements.getNestedByTag(items, param[1], true); break;
+				case ' > ': items = Elements.getChildrenByTag(items, param[1], true); break;
+				case ' + ': items = Elements.getFollowingByTag(items, param[1], true, false); break;
+				case ' ~ ': items = Elements.getFollowingByTag(items, param[1], true, true);
 			}
-			items = DOM.Walker[name](items, param[1], (separator == ' ~ '));
 			if (param[2]) items = Elements.filterById(items, param[2], true);
 		} else {
 			if (param[2]){
@@ -132,6 +167,12 @@ DOM.Walker = {
 			if (!attr) throw new Error('bad attribute selector');
 			items = Elements.filterByAttribute(items, attr[1], attr[2], attr[3], true);
 		}
+		if (param[5]){
+			var pseudo = DOM.parsePseudo(param[5]);
+			switch(pseudo.name){
+				case 'nth': items = Elements.filterByNth(items, pseudo.params[1], pseudo.params[2], pseudo.params[3], true); break;
+			}
+		}
 		return items;
 	},
 
@@ -141,12 +182,20 @@ DOM.Walker = {
 	
 	hasTag: function(el, tag){
 		return ($type(el) == 'element' && (Element.getTag(el) == tag || tag == '*'));
-	},
+	}
 	
-	getFollowingByTag: function(context, tag, all){
+};
+
+DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Walker;
+
+//elements
+
+Elements.extend({
+	
+	getFollowingByTag: function(tag, all, nocash){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++){
-			var next = context[i].nextSibling;
+		for (var i = 0, j = this.length; i < j; i++){
+			var next = this[i].nextSibling;
 			while (next){
 				if (DOM.Walker.hasTag(next, tag)){
 					found.push(next);
@@ -155,29 +204,27 @@ DOM.Walker = {
 				next = next.nextSibling;
 			}
 		}
-		return found;
+		return (nocash) ? found : $$.unique(found);
 	},
 	
-	getChildrenByTag: function(context, tag){
+	getChildrenByTag: function(tag, nocash){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++){
-			var children = context[i].childNodes;
+		for (var i = 0, j = this.length; i < j; i++){
+			var children = this[i].childNodes;
 			for (var k = 0, l = children.length; k < l; k++){
 				if (DOM.Walker.hasTag(children[k], tag)) found.push(children[k]);
 			}
 		}
-		return found;
+		return (nocash) ? found : $$.unique(found);
 	},
-
-	getNestedByTag: function(context, tagName){
+	
+	getNestedByTag: function(tag, nocash){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tagName));
-		return found;
+		for (var i = 0, j = this.length; i < j; i++) found.extend(this[i].getElementsByTagName(tagName));
+		return (nocash) ? found : $$.unique(found);
 	}
 	
-};
-
-DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Walker;
+});
 
 /*
 Class: Element
