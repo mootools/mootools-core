@@ -81,32 +81,32 @@ Elements.extend({
 		return (nocash) ? elements : new Elements(elements);
 	},
 	
-	filterByNth: function(interval, n, start, nocash){
+	filterByNth: function(a, nth, b, nocash){
 		var found = [];
 		var parents = [];
-		var is = [];
-		switch(n){
-			case 'n': is = [interval, start]; break;
-			case 'odd': is = [2, 1]; break;
-			case 'even': is = [2, 0];
+		var ab = [];
+		switch(nth){
+			case 'n': ab = [a, b]; break;
+			case 'odd': ab = [2, 1]; break;
+			case 'even': ab = [2, 0];
 		}
-		for (var i = 0, l = this.length; i < l; i++){
+		for (var i = 0, j = this.length; i < j; i++){
 			var parent = this[i].parentNode;
 			if (!parent || parent.$included) continue;
 			parent.$included = true;
 			parents.push(parent);
 			var children = Array.filter(parent.childNodes, function(el){
-				return (this.contains(el));
-			}, this);
-			if (n){
-				for (var o = 0, p = children.length; o < p; o++){
-					if (o % is[0] == is[1]) found.push(children[o]);
+				return ($type(el) == 'element');
+			});
+			if (nth){
+				for (var k = 0, l = children.length; k < l; k++){
+					if ((k % ab[0] == ab[1]) && (this.contains(children[k]))) found.push(children[k]);
 				}
 			} else {
-				found.push(children[interval]);
+				if (this.contains(children[a])) found.push(children[a]);
 			}
 		}
-		for (var r = 0, s = parents.length; r < s; r++) parents[r].$included = null;
+		for (var m = 0, n = parents.length; m < n; m++) parents[m].$included = null;
 		return (nocash) ? found : new Elements(found);
 	}
 

@@ -60,7 +60,7 @@ var DOM = {
 	
 	'nRegExp': /^([+]?\d*)?([nodev]+)?([+]?\d*)?$/,
 	
-	'sRegExp': /\s\~\s|\s\+\s|\s\>\s|\s/g
+	'sRegExp': /\s*([+>~\s])\s*/
 	
 };
 
@@ -82,17 +82,17 @@ DOM.parsePseudo = function(pseudo){
 
 DOM.XPath = {
 
-	getParam: function(items, separator, context, param){
+	getParam: function(items, separator, context, tag, id, klass, attribute, pseudo){
 		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch(separator){
-			case ' ~ ': case ' + ': temp += '/following-sibling::'; break;
-			case ' > ': temp += '/'; break;
+			case '~': case '+': temp += '/following-sibling::'; break;
+			case '>': temp += '/'; break;
 			case ' ': temp += '//';
 		}
-		temp += param[1];
-		if (separator == ' + ') temp += '[1]';
-		if (param[5]){
-			var pseudo = DOM.parsePseudo(param[5]);
+		temp += tag;
+		if (separator == '+') temp += '[1]';
+		if (pseudo){
+			pseudo = DOM.parsePseudo(pseudo);
 			switch(pseudo.name){
 				case 'nth':
 					var nth = '';
@@ -102,26 +102,26 @@ DOM.XPath = {
 						case 'even': nth =  'mod 2 = 0'; break;
 						case false: nth = '= ' + pseudo.params[1];
 					}
-					temp += '[count(./preceding-sibling::*) ' + nth + ']';
+					temp += '[count(preceding-sibling::*) ' + nth + ']';
 				break;
 			}
 		}
-		if (param[2]) temp += '[@id="' + param[2] + '"]';
-		if (param[3]) temp += '[contains(concat(" ", @class, " "), " ' + param[3] + ' ")]';
-		if (param[4]){
-			var attr = param[4].match(DOM.aRegExp);
-			if (!attr) throw new Error('bad attribute selector');
-			if (attr[2] && attr[3]){
-				switch(attr[2]){
-					case '=': temp += '[@' + attr[1] + '="' + attr[3] + '"]'; break;
-					case '*=': temp += '[contains(@' + attr[1] + ', "' + attr[3] + '")]'; break;
-					case '^=': temp += '[starts-with(@' + attr[1] + ', "' + attr[3] + '")]'; break;
-					case '$=': temp += '[substring(@' + attr[1] + ', string-length(@' + attr[1] + ') - ' + attr[3].length + ' + 1) = "' + attr[3] + '"]'; break;
-					case '!=': temp += '[@' + attr[1] + '!="' + attr[3] + '"]'; break;
-					case '~=': temp += '[contains(concat(" ", @' + attr[1] + ', " "), " ' + attr[3] + ' ")]';
+		if (id) temp += '[@id="' + id + '"]';
+		if (klass) temp += '[contains(concat(" ", @class, " "), " ' + klass + ' ")]';
+		if (attribute){
+			attribute = attribute.match(DOM.aRegExp);
+			if (!attribute) throw new Error('bad attribute selector');
+			if (attribute[2] && attribute[3]){
+				switch(attribute[2]){
+					case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
+					case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
+					case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
+					case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
+					case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
+					case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]';
 				}
 			} else {
-				temp += '[@' + attr[1] + ']';
+				temp += '[@' + attribute[1] + ']';
 			}
 		}
 		items.push(temp);
@@ -143,32 +143,32 @@ DOM.XPath = {
 
 DOM.Walker = {
 
-	getParam: function(items, separator, context, param){
+	getParam: function(items, separator, context, tag, id, klass, attribute, pseudo){
 		if (separator){
 			switch(separator){
-				case ' ': items = Elements.getNestedByTag(items, param[1], true); break;
-				case ' > ': items = Elements.getChildrenByTag(items, param[1], true); break;
-				case ' + ': items = Elements.getFollowingByTag(items, param[1], true, false); break;
-				case ' ~ ': items = Elements.getFollowingByTag(items, param[1], true, true);
+				case ' ': items = Elements.getNestedByTag(items, tag, true); break;
+				case '>': items = Elements.getChildrenByTag(items, tag, true); break;
+				case '+': items = Elements.getFollowingByTag(items, tag, true, false); break;
+				case '~': items = Elements.getFollowingByTag(items, tag, true, true);
 			}
-			if (param[2]) items = Elements.filterById(items, param[2], true);
+			if (id) items = Elements.filterById(items, id, true);
 		} else {
-			if (param[2]){
-				var el = context.getElementById(param[2]);
-				if (!el || ((param[1] != '*') && (Element.getTag(el) != param[1]))) return false;
+			if (id){
+				var el = context.getElementById(id);
+				if (!el || ((tag != '*') && (Element.getTag(el) != tag))) return false;
 				items = [el];
 			} else {
-				items = $A(context.getElementsByTagName(param[1]));
+				items = $A(context.getElementsByTagName(tag));
 			}
 		}
-		if (param[3]) items = Elements.filterByClass(items, param[3], true);
-		if (param[4]){
-			var attr = param[4].match(DOM.aRegExp);
-			if (!attr) throw new Error('bad attribute selector');
-			items = Elements.filterByAttribute(items, attr[1], attr[2], attr[3], true);
+		if (klass) items = Elements.filterByClass(items, klass, true);
+		if (attribute){
+			attribute = attribute.match(DOM.aRegExp);
+			if (!attribute) throw new Error('bad attribute selector');
+			items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
 		}
-		if (param[5]){
-			var pseudo = DOM.parsePseudo(param[5]);
+		if (pseudo){
+			pseudo = DOM.parsePseudo(pseudo);
 			switch(pseudo.name){
 				case 'nth': items = Elements.filterByNth(items, pseudo.params[1], pseudo.params[2], pseudo.params[3], true); break;
 			}
@@ -220,7 +220,7 @@ Elements.extend({
 	
 	getNestedByTag: function(tag, nocash){
 		var found = [];
-		for (var i = 0, j = this.length; i < j; i++) found.extend(this[i].getElementsByTagName(tagName));
+		for (var i = 0, j = this.length; i < j; i++) found.extend(this[i].getElementsByTagName(tag));
 		return (nocash) ? found : $$.unique(found);
 	}
 	
@@ -260,17 +260,12 @@ Element.$domMethods = {
 	getElements: function(selector, nocash){
 		var items = [];
 		var separators = [];
-		selector = selector.trim().replace(DOM.sRegExp, function(match){
-			separators.push(match);
-			return ' ';
-		});
-		selector = selector.split(' ');
-		for (var i = 0, j = selector.length; i < j; i++){
-			var sel = selector[i];
-			var param = sel.match(DOM.regExp);
+		selector = selector.trim().replace(/~=/g, '%=').split(DOM.sRegExp);
+		for (var i = 0, j = selector.length; i < j; i+=2){
+			var param = selector[i].match(DOM.regExp);
 			if (!param) throw new Error('bad selector');
-			param[1] = param[1] || '*';
-			var temp = DOM.Method.getParam(items, separators[i - 1] || false, this, param);
+			if (param[4]) param[4] = param[4].replace('%=', '~=');
+			var temp = DOM.Method.getParam(items, selector[i - 1] || false, this, param[1] || '*', param[2], param[3], param[4], param[5]);
 			if (!temp) break;
 			items = temp;
 		}
@@ -320,9 +315,9 @@ Element.extend({
 
 	getElementById: function(id){
 		var el = document.getElementById(id);
-		if (!el) return false;
+		if (!el) return null;
 		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
-			if (!parent) return false;
+			if (!parent) return null;
 		}
 		return el;
 	}
