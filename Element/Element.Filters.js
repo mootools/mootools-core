@@ -84,23 +84,17 @@ Elements.extend({
 	filterByNth: function(a, nth, b, nocash){
 		var found = [];
 		var parents = [];
-		var ab = [];
-		switch(nth){
-			case 'n': ab = [a, b]; break;
-			case 'odd': ab = [2, 1]; break;
-			case 'even': ab = [2, 0];
-		}
 		for (var i = 0, j = this.length; i < j; i++){
 			var parent = this[i].parentNode;
 			if (!parent || parent.$included) continue;
 			parent.$included = true;
 			parents.push(parent);
 			var children = Array.filter(parent.childNodes, function(el){
-				return ($type(el) == 'element');
+				return (el.nodeName && el.nodeType == 1);
 			});
 			if (nth){
 				for (var k = 0, l = children.length; k < l; k++){
-					if ((k % ab[0] == ab[1]) && (this.contains(children[k]))) found.push(children[k]);
+					if ((k % a == b) && (this.contains(children[k]))) found.push(children[k]);
 				}
 			} else {
 				if (this.contains(children[a])) found.push(children[a]);

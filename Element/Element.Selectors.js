@@ -56,11 +56,11 @@ var DOM = {
 	
 	'aRegExp': /^(\w+)(?:([!*^$\~]?=)["']?([^"'\]]*)["']?)?$/,
 	
-	'pRegExp': /^([\w-]+)(?:\((.*)\))?$/,
-	
 	'nRegExp': /^([+]?\d*)?([nodev]+)?([+]?\d*)?$/,
 	
-	'sRegExp': /\s*([+>~\s])\s*/
+	'sRegExp': /\s*([+>~\s])[a-zA-Z#.*\s]/g,
+	
+	'pRegExp': /^([\w-]+)(?:\((.*)\))?$/
 	
 };
 
@@ -68,21 +68,29 @@ DOM.parsePseudo = function(pseudo){
 	pseudo = pseudo.match(DOM.pRegExp);
 	if (!pseudo) throw new Error('bad pseudo selector');
 	var pparam = [];
-	switch(pseudo[1].split('-')[0]){
+	var name = pseudo[1].split('-')[0];
+	switch(name){
 		case 'nth':
-			pparam = pseudo[2].match(DOM.nRegExp);
+			pparam = (pseudo[2]) ? pseudo[2].match(DOM.nRegExp) : [null, 1, 'n', 0];
 			if (!pparam) throw new Error('bad nth pseudo selector parameters');
-			if (!$chk(parseInt(pparam[1]))) pparam[1] = 1;
+			var int1 = parseInt(pparam[1]);
+			pparam[1] = ($chk(int1)) ? int1 : 1;
 			pparam[2] = pparam[2] || false;
 			pparam[3] = parseInt(pparam[3]) || 0;
+			switch(pparam[2]){
+				case 'n': pparam = [pparam[1], true, pparam[3]]; break;
+				case 'odd': pparam = [2, true, 0]; break;
+				case 'even': pparam = [2, true, 1]; break;
+				case false: pparam = [pparam[1], false];
+			}
 		break;
 	}
-	return {'name': pseudo[1], 'params': pparam};
+	return {'name': name, 'params': pparam};
 };
 
 DOM.XPath = {
 
-	getParam: function(items, separator, context, tag, id, klass, attribute, pseudo){
+	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
 		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch(separator){
 			case '~': case '+': temp += '/following-sibling::'; break;
@@ -95,19 +103,13 @@ DOM.XPath = {
 			pseudo = DOM.parsePseudo(pseudo);
 			switch(pseudo.name){
 				case 'nth':
-					var nth = '';
-					switch(pseudo.params[2]){
-						case 'n': nth = 'mod ' + pseudo.params[1] + ' = ' + pseudo.params[3]; break;
-						case 'odd': nth = 'mod 2 = 1'; break;
-						case 'even': nth =  'mod 2 = 0'; break;
-						case false: nth = '= ' + pseudo.params[1];
-					}
+					var nth = (pseudo.params[1]) ? 'mod ' + pseudo.params[0] + ' = ' + pseudo.params[2] : '= ' + pseudo.params[0];
 					temp += '[count(preceding-sibling::*) ' + nth + ']';
 				break;
 			}
 		}
 		if (id) temp += '[@id="' + id + '"]';
-		if (klass) temp += '[contains(concat(" ", @class, " "), " ' + klass + ' ")]';
+		if (className) temp += '[contains(concat(" ", @class, " "), " ' + className + ' ")]';
 		if (attribute){
 			attribute = attribute.match(DOM.aRegExp);
 			if (!attribute) throw new Error('bad attribute selector');
@@ -143,25 +145,25 @@ DOM.XPath = {
 
 DOM.Walker = {
 
-	getParam: function(items, separator, context, tag, id, klass, attribute, pseudo){
+	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
 		if (separator){
 			switch(separator){
-				case ' ': items = Elements.getNestedByTag(items, tag, true); break;
-				case '>': items = Elements.getChildrenByTag(items, tag, true); break;
-				case '+': items = Elements.getFollowingByTag(items, tag, true, false); break;
-				case '~': items = Elements.getFollowingByTag(items, tag, true, true);
+				case ' ': items = DOM.Walker.getNestedByTag(items, tag); break;
+				case '>': items = DOM.Walker.getChildrenByTag(items, tag); break;
+				case '+': items = DOM.Walker.getFollowingByTag(items, tag); break;
+				case '~': items = DOM.Walker.getFollowingByTag(items, tag, true);
 			}
 			if (id) items = Elements.filterById(items, id, true);
 		} else {
 			if (id){
 				var el = context.getElementById(id);
-				if (!el || ((tag != '*') && (Element.getTag(el) != tag))) return false;
+				if (!el || ((tag != '*') && (el.tagName.toLowerCase() != tag))) return false;
 				items = [el];
 			} else {
 				items = $A(context.getElementsByTagName(tag));
 			}
 		}
-		if (klass) items = Elements.filterByClass(items, klass, true);
+		if (className) items = Elements.filterByClass(items, className, true);
 		if (attribute){
 			attribute = attribute.match(DOM.aRegExp);
 			if (!attribute) throw new Error('bad attribute selector');
@@ -170,7 +172,7 @@ DOM.Walker = {
 		if (pseudo){
 			pseudo = DOM.parsePseudo(pseudo);
 			switch(pseudo.name){
-				case 'nth': items = Elements.filterByNth(items, pseudo.params[1], pseudo.params[2], pseudo.params[3], true); break;
+				case 'nth': items = Elements.filterByNth(items, pseudo.params[0], pseudo.params[1], pseudo.params[2], true); break;
 			}
 		}
 		return items;
@@ -181,21 +183,13 @@ DOM.Walker = {
 	},
 	
 	hasTag: function(el, tag){
-		return ($type(el) == 'element' && (Element.getTag(el) == tag || tag == '*'));
-	}
+		return (el.nodeName && el.nodeType == 1 && (tag == '*' || el.tagName.toLowerCase() == tag));
+	},
 	
-};
-
-DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Walker;
-
-//elements
-
-Elements.extend({
-	
-	getFollowingByTag: function(tag, all, nocash){
+	getFollowingByTag: function(context, tag, all){
 		var found = [];
-		for (var i = 0, j = this.length; i < j; i++){
-			var next = this[i].nextSibling;
+		for (var i = 0, j = context.length; i < j; i++){
+			var next = context[i].nextSibling;
 			while (next){
 				if (DOM.Walker.hasTag(next, tag)){
 					found.push(next);
@@ -204,27 +198,29 @@ Elements.extend({
 				next = next.nextSibling;
 			}
 		}
-		return (nocash) ? found : $$.unique(found);
+		return found;
 	},
 	
-	getChildrenByTag: function(tag, nocash){
+	getChildrenByTag: function(context, tag){
 		var found = [];
-		for (var i = 0, j = this.length; i < j; i++){
-			var children = this[i].childNodes;
+		for (var i = 0, j = context.length; i < j; i++){
+			var children = context[i].childNodes;
 			for (var k = 0, l = children.length; k < l; k++){
 				if (DOM.Walker.hasTag(children[k], tag)) found.push(children[k]);
 			}
 		}
-		return (nocash) ? found : $$.unique(found);
+		return found;
 	},
 	
-	getNestedByTag: function(tag, nocash){
+	getNestedByTag: function(context, tag){
 		var found = [];
-		for (var i = 0, j = this.length; i < j; i++) found.extend(this[i].getElementsByTagName(tag));
-		return (nocash) ? found : $$.unique(found);
+		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tag));
+		return found;
 	}
 	
-});
+};
+
+DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Walker;
 
 /*
 Class: Element
@@ -260,12 +256,15 @@ Element.$domMethods = {
 	getElements: function(selector, nocash){
 		var items = [];
 		var separators = [];
-		selector = selector.trim().replace(/~=/g, '%=').split(DOM.sRegExp);
-		for (var i = 0, j = selector.length; i < j; i+=2){
+		selector = selector.trim().replace(DOM.sRegExp, function(match){
+			if (match.charAt(2)) match = match.trim();
+			separators.push(match.charAt(0));
+			return '%' + match.charAt(1);
+		}).split('%');
+		for (var i = 0, j = selector.length; i < j; i++){
 			var param = selector[i].match(DOM.regExp);
 			if (!param) throw new Error('bad selector');
-			if (param[4]) param[4] = param[4].replace('%=', '~=');
-			var temp = DOM.Method.getParam(items, selector[i - 1] || false, this, param[1] || '*', param[2], param[3], param[4], param[5]);
+			var temp = DOM.Method.getParam(items, separators[i - 1] || false, this, param[1] || '*', param[2], param[3], param[4], param[5]);
 			if (!temp) break;
 			items = temp;
 		}
