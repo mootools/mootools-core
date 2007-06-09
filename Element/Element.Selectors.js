@@ -161,15 +161,15 @@ DOM.XPath = {
 	
 };
 
-DOM.Walker = {
+DOM.Filter = {
 
 	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
 		if (separator){
 			switch(separator){
-				case ' ': items = DOM.Walker.getNestedByTag(items, tag); break;
-				case '>': items = DOM.Walker.getChildrenByTag(items, tag); break;
-				case '+': items = DOM.Walker.getFollowingByTag(items, tag); break;
-				case '~': items = DOM.Walker.getFollowingByTag(items, tag, true);
+				case ' ': items = DOM.Filter.getNestedByTag(items, tag); break;
+				case '>': items = DOM.Filter.getChildrenByTag(items, tag); break;
+				case '+': items = DOM.Filter.getFollowingByTag(items, tag); break;
+				case '~': items = DOM.Filter.getFollowingByTag(items, tag, true);
 			}
 			if (id) items = Elements.filterById(items, id, true);
 		} else {
@@ -207,7 +207,7 @@ DOM.Walker = {
 		for (var i = 0, j = context.length; i < j; i++){
 			var next = context[i].nextSibling;
 			while (next){
-				if (DOM.Walker.hasTag(next, tag)){
+				if (DOM.Filter.hasTag(next, tag)){
 					found.push(next);
 					if (!all) break;
 				}
@@ -222,7 +222,7 @@ DOM.Walker = {
 		for (var i = 0, j = context.length; i < j; i++){
 			var children = context[i].childNodes;
 			for (var k = 0, l = children.length; k < l; k++){
-				if (DOM.Walker.hasTag(children[k], tag)) found.push(children[k]);
+				if (DOM.Filter.hasTag(children[k], tag)) found.push(children[k]);
 			}
 		}
 		return found;
@@ -236,7 +236,7 @@ DOM.Walker = {
 	
 };
 
-DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Walker;
+DOM.Method = (Client.features.xpath) ? DOM.XPath : DOM.Filter;
 
 /*
 Class: Element

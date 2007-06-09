@@ -101,9 +101,9 @@ Elements.extend({
 						return (el.nodeName && el.nodeType == 1);
 					});
 					if (param[1]){
-						elements = children.filter(function(el, i){
-							if ((i % param[0] == param[2]) && (this.contains(el)));
-						}, this);
+						for (var m = 0, n = children.length; m < n; m++){
+							if ((m % param[0] == param[2]) && (this.contains(children[m]))) elements.push(children[m]);
+						}
 					} else {
 						switch(variation){
 							case false: if (this.contains(children[param[0]])) elements.push(children[param[0]]); break;
