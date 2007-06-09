@@ -67,7 +67,7 @@ var DOM = {
 DOM.parsePseudo = function(pseudo){
 	pseudo = pseudo.match(DOM.pRegExp);
 	if (!pseudo) throw new Error('bad pseudo selector');
-	var pparam = [];
+	var pparam = false;
 	var name = pseudo[1].split('-')[0];
 	switch(name){
 		case 'nth':
@@ -84,8 +84,17 @@ DOM.parsePseudo = function(pseudo){
 				case false: pparam = [pparam[1], false];
 			}
 		break;
+		case 'contains': pparam = pseudo[2]; break;
+		case 'odd':
+			name = 'nth';
+			pparam = [2, true, 0];
+		break;
+		case 'even':
+			name = 'nth';
+			pparam = [2, true, 1];
+		break;
 	}
-	return {'name': name, 'params': pparam};
+	return {'name': name, 'param': pparam};
 };
 
 DOM.XPath = {
@@ -103,9 +112,18 @@ DOM.XPath = {
 			pseudo = DOM.parsePseudo(pseudo);
 			switch(pseudo.name){
 				case 'nth':
-					var nth = (pseudo.params[1]) ? 'mod ' + pseudo.params[0] + ' = ' + pseudo.params[2] : '= ' + pseudo.params[0];
+					var nth = (pseudo.param[1]) ? 'mod ' + pseudo.param[0] + ' = ' + pseudo.param[2] : '= ' + pseudo.param[0];
 					temp += '[count(preceding-sibling::*) ' + nth + ']';
-				break;
+					break;
+				case 'first': temp += '[1]'; break;
+				case 'last': temp += '[last()]'; break;
+				case 'empty': temp += '[not(node())]'; break;
+				case 'only': temp += '[not(preceding-sibling::* or following-sibling::*)]'; break;
+				case 'contains': temp += '[contains(text(), "' + pseudo.param + '")]'; break;
+				case 'enabled': temp += '[not(@disabled)]'; break;
+				default:
+					temp += '[@' + pseudo.name;
+					temp += (pseudo.param) ? '="' + pseudo.param + '"]' : ']';
 			}
 		}
 		if (id) temp += '[@id="' + id + '"]';
@@ -171,9 +189,7 @@ DOM.Walker = {
 		}
 		if (pseudo){
 			pseudo = DOM.parsePseudo(pseudo);
-			switch(pseudo.name){
-				case 'nth': items = Elements.filterByNth(items, pseudo.params[0], pseudo.params[1], pseudo.params[2], true); break;
-			}
+			items = Elements.filterByPseudo(items, pseudo.name, pseudo.param, true);
 		}
 		return items;
 	},

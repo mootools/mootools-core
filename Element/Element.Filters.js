@@ -81,27 +81,71 @@ Elements.extend({
 		return (nocash) ? elements : new Elements(elements);
 	},
 	
-	filterByNth: function(a, nth, b, nocash){
-		var found = [];
-		var parents = [];
-		for (var i = 0, j = this.length; i < j; i++){
-			var parent = this[i].parentNode;
-			if (!parent || parent.$included) continue;
-			parent.$included = true;
-			parents.push(parent);
-			var children = Array.filter(parent.childNodes, function(el){
-				return (el.nodeName && el.nodeType == 1);
-			});
-			if (nth){
-				for (var k = 0, l = children.length; k < l; k++){
-					if ((k % a == b) && (this.contains(children[k]))) found.push(children[k]);
-				}
-			} else {
-				if (this.contains(children[a])) found.push(children[a]);
-			}
+	filterByPseudo: function(name, param, nocash){
+		var elements = [];
+		var filter = false;
+		var variation = false;
+		if (name == 'first' || name == 'last' || name == 'only'){
+			variation = name;
+			name = 'nth';
 		}
-		for (var m = 0, n = parents.length; m < n; m++) parents[m].$included = null;
-		return (nocash) ? found : new Elements(found);
+		switch(name){
+			case 'nth':
+				var parents = [];
+				for (var i = 0, j = this.length; i < j; i++){
+					var parent = this[i].parentNode;
+					if (!parent || parent.$included) continue;
+					parent.$included = true;
+					parents.push(parent);
+					var children = Array.filter(parent.childNodes, function(el){
+						return (el.nodeName && el.nodeType == 1);
+					});
+					if (param[1]){
+						elements = children.filter(function(el, i){
+							if ((i % param[0] == param[2]) && (this.contains(el)));
+						}, this);
+					} else {
+						switch(variation){
+							case false: if (this.contains(children[param[0]])) elements.push(children[param[0]]); break;
+							case 'last':
+								var last = children.getLast();
+								if (this.contains(last)) elements.push(last);
+							break;
+							case 'first':
+								var first = children[0];
+								if (this.contains(first)) elements.push(first);
+							break;
+							case 'only': if (children.length == 1 && this.contains(children[0])) elements.push(children[0]);
+						}
+					}
+				}
+				for (var k = 0, l = parents.length; k < l; k++) parents[k].$included = null;
+			break;
+			case 'empty':
+				filter = function(el){
+					return (Element.getText(el).length === 0);
+				};
+			break;
+			case 'enabled':
+				filter = function(el){
+					return (el.disabled || el.disabled === false);
+				};
+			break;
+			case 'contains':
+				filter = function(el){
+					var test = Element.getText(el);
+					return (test && test.contains(param));
+				};
+			break;
+			default:
+				filter = function(el){
+					var property = Element.getProperty(el, name);
+					return (param) ? (property == param) : property;
+				};
+			break;
+		}
+		if (filter) elements = this.filter(filter);
+		return (nocash) ? elements : new Elements(elements);
 	}
 
 });
