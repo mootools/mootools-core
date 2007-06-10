@@ -63,11 +63,6 @@
 			"desc": "Adds Filtering Capabilities to Element Collections."
 		},
 
-		"Element.Selectors": {
-			"deps": ["Element.Filters"],
-			"desc": "Allows to select elements by css selectors, at any depth."
-		},
-
 		"Element.Form": {
 			"deps": ["Element"],
 			"desc": "Contains Element methods to work with forms."
@@ -78,6 +73,20 @@
 			"desc": "Contains Element methods to work with element size, scroll, or position in space."
 		}
 
+	},
+	
+	"Selectors": {
+		
+		"Selectors": {
+			"deps": ["Element.Filters"],
+			"desc": "Adds Advanced Css Selectors capability to Elements."
+		},
+		
+		"Selectors.Pseudo": {
+			"deps": ["Selectors"],
+			"desc": "Adds the default Pseudo Selectors."
+		}
+		
 	},
 
 	"Window": {
