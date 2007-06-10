@@ -92,7 +92,6 @@ DOM.parsePseudo = function(pseudo){
 		case 'even':
 			name = 'nth';
 			pparam = [2, true, 1];
-		break;
 	}
 	return {'name': name, 'param': pparam};
 };
@@ -115,8 +114,8 @@ DOM.XPath = {
 					var nth = (pseudo.param[1]) ? 'mod ' + pseudo.param[0] + ' = ' + pseudo.param[2] : '= ' + pseudo.param[0];
 					temp += '[count(preceding-sibling::*) ' + nth + ']';
 					break;
-				case 'first': temp += '[1]'; break;
-				case 'last': temp += '[last()]'; break;
+				case 'first': temp += '[count(preceding-sibling::*) = 0]'; break;
+				case 'last': temp += '[count(following-sibling::*) = 0]'; break;
 				case 'empty': temp += '[not(node())]'; break;
 				case 'only': temp += '[not(preceding-sibling::* or following-sibling::*)]'; break;
 				case 'contains': temp += '[contains(text(), "' + pseudo.param + '")]'; break;

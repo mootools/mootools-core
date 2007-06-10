@@ -133,8 +133,11 @@ Elements.extend({
 			break;
 			case 'contains':
 				filter = function(el){
-					var test = Element.getText(el);
-					return (test && test.contains(param));
+					for (var o = 0, p = el.childNodes.length; o < p; o++){
+						var child = el.childNodes[o];
+						if (child.nodeName && child.nodeType == 3 && child.nodeValue.contains(param)) return true;
+					}
+					return false;
 				};
 			break;
 			default:
