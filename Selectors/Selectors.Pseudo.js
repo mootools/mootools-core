@@ -56,8 +56,8 @@ Selectors.Pseudo.nth = {
 		argument[3] = parseInt(argument[3]) || 0;
 		switch(argument[2]){
 			case 'n': return {'a': argument[1], 'b': argument[3], 'special': 'n'};
-			case 'odd': return {'a': 2, 'b': 0, 'special': 'n'};
-			case 'even': return {'a': 2, 'b': 1, 'special': 'n'};
+			case 'odd': return {'a': 2, 'b': 1, 'special': 'n'};
+			case 'even': return {'a': 2, 'b': 0, 'special': 'n'};
 			case 'first': return {'a': 0, 'special': 'index'};
 			case 'last': return {'special': 'last'};
 			case 'only': return {'special': 'only'};
@@ -102,12 +102,12 @@ Selectors.Pseudo.extend({
 	
 	'odd': {
 		'name': 'nth',
-		'parser': {'a': 2, 'b': 0, 'special': 'n'}
+		'parser': {'a': 2, 'b': 1, 'special': 'n'}
 	},
 	
 	'even': {
 		'name': 'nth',
-		'parser': {'a': 2, 'b': 1, 'special': 'n'}
+		'parser': {'a': 2, 'b': 0, 'special': 'n'}
 	},
 	
 	'first': {
