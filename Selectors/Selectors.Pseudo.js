@@ -99,27 +99,27 @@ Selectors.Pseudo.nth = {
 };
 
 Selectors.Pseudo.extend({
-	
+
 	'odd': {
 		'name': 'nth',
 		'parser': {'a': 2, 'b': 1, 'special': 'n'}
 	},
-	
+
 	'even': {
 		'name': 'nth',
 		'parser': {'a': 2, 'b': 2, 'special': 'n'}
 	},
-	
+
 	'first': {
 		'name': 'nth',
 		'parser': {'a': 1, 'special': 'index'}
 	},
-	
+
 	'last': {
 		'name': 'nth',
 		'parser': {'special': 'last'}
 	},
-	
+
 	'only': {
 		'name': 'nth',
 		'parser': {'special': 'only'}
