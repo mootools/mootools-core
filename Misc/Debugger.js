@@ -87,7 +87,7 @@ var debug = {
 		var a = new Element('a').addEvent('click', function(e){
 			new Fx.Style(el, 'opacity').start(0,1);
 			e.stop();
-		}.bindWithEvent()).setStyles({'cursor': 'pointer', 'text-decoration': 'none'}).setProperty('href', 'javascript:void(0)');
+		}.bind()).setStyles({'cursor': 'pointer', 'text-decoration': 'none'}).setProperty('href', 'javascript:void(0)');
 		var htm = ['&lt;' + el.tagName.toLowerCase()];
 		['id', 'className', 'name', 'href', 'title', 'rel', 'type'].each(function(attr){
 			if (el[attr]) htm.push(attr + '="' + el[attr] + '"');
@@ -267,7 +267,7 @@ var debug = {
 		window.addEvent('resize', debug.resize);
 		if (Client.engine.ie6) window.addEvent('scroll', debug.resetHeight);
 
-		debug._input.onkeydown = debug.parseKey.bindWithEvent(debug);
+		debug._input.onkeydown = debug.parseKey.bind(debug);
 	},
 
 	resetHeight: function(){
@@ -357,7 +357,7 @@ debug.messages = Cookie.get('mootools-debugger-history');
 debug.messages = debug.messages ? debug.messages.replace(/%%%/g, ';').split('-:-:-') : [];
 debug.idx = debug.messages.length;
 
-if ((typeof console == 'undefined') || !console.warn){
+if ((typeof console == 'undefined') || !console.group){
 	var console = debug;
 	window.onerror = function(msg, url, line){
 		console.error({

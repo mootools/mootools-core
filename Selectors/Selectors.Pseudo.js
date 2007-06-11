@@ -61,7 +61,7 @@ Selectors.Pseudo.nth = {
 			case 'first': return {'a': 0, 'special': 'index'};
 			case 'last': return {'special': 'last'};
 			case 'only': return {'special': 'only'};
-			default: return {'a': argument[1], 'b': 0, 'special': 'n'};
+			default: return {'a': argument[1], 'special': 'index'};
 		}
 	},
 	
