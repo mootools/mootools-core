@@ -19,12 +19,13 @@ Options:
 	encoding - the encoding, defaults to utf-8.
 	autoCancel - cancels the already running request if another one is sent. defaults to false.
 	headers - accepts an object, that will be set to request headers.
+	isSuccess - overrides the in-build isSuccess, that checks the response status code
 
 Events:
 	onRequest - function to execute when the XHR request is fired.
 	onSuccess - function to execute when the XHR request completes.
-	onStateChange - function to execute when the state of the XMLHttpRequest changes.
-	onFailure - function to execute when the state of the XMLHttpRequest changes.
+	onFailure - function to execute when the request failes (error status code).
+	onException - function to execute when setting a request header failes.
 
 Properties:
 	running - true if the request is running.
@@ -42,10 +43,12 @@ var XHR = new Class({
 		onRequest: Function.empty,
 		onSuccess: Function.empty,
 		onFailure: Function.empty,
+		onException: Function.empty,
 		urlEncoded: true,
 		encoding: 'utf-8',
 		autoCancel: false,
-		headers: {}
+		headers: {},
+		isSuccess: null
 	},
 
 	setTransport: function(){
@@ -82,8 +85,8 @@ var XHR = new Class({
 
 	onSuccess: function(){
 		this.response = {
-			'text': this.transport.responseText,
-			'xml': this.transport.responseXML
+			text: this.transport.responseText,
+			xml: this.transport.responseXML
 		};
 		this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
 		this.callChain();
@@ -132,7 +135,13 @@ var XHR = new Class({
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 		$extend(this.headers, this.options.headers);
-		for (var type in this.headers) $try(this.transport.setRequestHeader, this.transport, [type, this.headers[type]]);
+		for (var type in this.headers){
+			try{
+				this.transport.setRequestHeader(type, this.headers[type]);
+			} catch(e){
+				this.fireEvent('onException', [e, type, this.headers[type]]);
+			}
+		}
 		this.fireEvent('onRequest');
 		this.transport.send($pick(data, null));
 		if (!this.options.async) this.onStateChange();
