@@ -48,29 +48,32 @@ Selectors.Pseudo.contains = {
 Selectors.Pseudo.nth = {
 	
 	parser: function(argument){
-		argument = (argument) ? argument.match(/^([+]?\d*)?([nodev]+)?([+]?\d*)?$/) : [null, 1, 'n', 0];
+		argument = (argument) ? argument.match(/^([+-]?\d*)?([nodev]+)?([+-]?\d*)?$/) : [null, 1, 'n', 0];
 		if (!argument) throw new Error('bad nth pseudo selector arguments');
-		var int1 = parseInt(argument[1]);
-		argument[1] = ($chk(int1)) ? int1 : 1;
-		argument[2] = argument[2] || false;
-		argument[3] = parseInt(argument[3]) || 0;
-		switch(argument[2]){
-			case 'n': return {'a': argument[1], 'b': argument[3], 'special': 'n'};
-			case 'odd': return {'a': 2, 'b': 1, 'special': 'n'};
-			case 'even': return {'a': 2, 'b': 0, 'special': 'n'};
+		var inta = parseInt(argument[1]);
+		var a = ($chk(inta)) ? inta : 1;
+		var special = argument[2] || false;
+		var b = parseInt(argument[3]) || 0;
+		b = b - 1;
+		while (b < 1) b += a;
+		while (b >= a) b -= a;
+		switch(special){
+			case 'n': return {'a': a, 'b': b, 'special': 'n'};
+			case 'odd': return {'a': 2, 'b': 0, 'special': 'n'};
+			case 'even': return {'a': 2, 'b': 1, 'special': 'n'};
 			case 'first': return {'a': 0, 'special': 'index'};
 			case 'last': return {'special': 'last'};
 			case 'only': return {'special': 'only'};
-			default: return {'a': argument[1], 'special': 'index'};
+			default: return {'a': (a - 1), 'special': 'index'};
 		}
 	},
 	
 	xpath: function(argument){
 		switch(argument.special){
-			case 'n': return '[count(preceding-sibling::*) mod ' + argument.a + ' = ' + argument.b + ']';
+			case 'n': return '[(position() - 1) mod ' + argument.a + ' = ' + argument.b + ']';
 			case 'last': return '[count(following-sibling::*) = 0]';
 			case 'only': return '[not(preceding-sibling::* or following-sibling::*)]';
-			default: return '[count(preceding-sibling::*) = ' + argument.a + ']';
+			default: return '[(position() - 1) = ' + argument.a + ']';
 		}
 	},
 	
@@ -100,29 +103,34 @@ Selectors.Pseudo.nth = {
 
 Selectors.Pseudo.extend({
 	
-	'odd': {
-		'name': 'nth',
-		'parser': {'a': 2, 'b': 1, 'special': 'n'}
+	'even': {
+		'parser': {'a': 2, 'b': 1, 'special': 'n'},
+		'xpath': Selectors.Pseudo.nth.xpath,
+		'filter': Selectors.Pseudo.nth.xpath
 	},
 	
-	'even': {
-		'name': 'nth',
-		'parser': {'a': 2, 'b': 0, 'special': 'n'}
+	'odd': {
+		'parser': {'a': 2, 'b': 0, 'special': 'n'},
+		'xpath': Selectors.Pseudo.nth.xpath,
+		'filter': Selectors.Pseudo.nth.xpath
 	},
 	
 	'first': {
-		'name': 'nth',
-		'parser': {'a': 0, 'special': 'index'}
+		'parser': {'a': 0, 'special': 'index'},
+		'xpath': Selectors.Pseudo.nth.xpath,
+		'filter': Selectors.Pseudo.nth.xpath
 	},
 	
 	'last': {
-		'name': 'nth',
-		'parser': {'special': 'last'}
+		'parser': {'special': 'last'},
+		'xpath': Selectors.Pseudo.nth.xpath,
+		'filter': Selectors.Pseudo.nth.xpath
 	},
 	
 	'only': {
-		'name': 'nth',
-		'parser': {'special': 'only'}
+		'parser': {'special': 'only'},
+		'xpath': Selectors.Pseudo.nth.xpath,
+		'filter': Selectors.Pseudo.nth.xpath
 	}
 
 });
