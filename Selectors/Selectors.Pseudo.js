@@ -106,31 +106,31 @@ Selectors.Pseudo.extend({
 	'even': {
 		'parser': {'a': 2, 'b': 1, 'special': 'n'},
 		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.xpath
+		'filter': Selectors.Pseudo.nth.filter
 	},
 	
 	'odd': {
 		'parser': {'a': 2, 'b': 0, 'special': 'n'},
 		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.xpath
+		'filter': Selectors.Pseudo.nth.filter
 	},
 	
 	'first': {
 		'parser': {'a': 0, 'special': 'index'},
 		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.xpath
+		'filter': Selectors.Pseudo.nth.filter
 	},
 	
 	'last': {
 		'parser': {'special': 'last'},
 		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.xpath
+		'filter': Selectors.Pseudo.nth.filter
 	},
 	
 	'only': {
 		'parser': {'special': 'only'},
 		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.xpath
+		'filter': Selectors.Pseudo.nth.filter
 	}
 
 });
