@@ -70,10 +70,10 @@ Selectors.Pseudo.nth = {
 	
 	xpath: function(argument){
 		switch(argument.special){
-			case 'n': return '[(position() - 1) mod ' + argument.a + ' = ' + argument.b + ']';
+			case 'n': return '[count(preceding-sibling::*) mod ' + argument.a + ' = ' + argument.b + ']';
 			case 'last': return '[count(following-sibling::*) = 0]';
 			case 'only': return '[not(preceding-sibling::* or following-sibling::*)]';
-			default: return '[(position() - 1) = ' + argument.a + ']';
+			default: return '[count(preceding-sibling::*) = ' + argument.a + ']';
 		}
 	},
 	
