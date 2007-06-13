@@ -945,7 +945,7 @@ Element.$setMany = function(el, method, pairs){
 Element.$properties = new Abstract({
 	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
 	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
-	'readonly': 'readOnly', 'frameborder': 'frameBorder', 'value': 'value', 'height': 'height', 'width': 'width',
+	'readonly': 'readOnly', 'frameborder': 'frameBorder', 'value': 'value',
 	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple', 'selected': 'selected'
 });
 
