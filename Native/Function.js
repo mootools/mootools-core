@@ -1,4 +1,4 @@
-/* 
+/*
 Script: Function.js
 	Contains Function prototypes and utility functions .
 
@@ -32,11 +32,11 @@ Function.extend({
 				If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
 				Default is false.
 		arguments - A single argument or array of arguments that will be passed to the function when called.
-		
+
 					If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-					
+
 					Default is no custom arguments, the function will receive the standard arguments when called.
-					
+
 		delay - Numeric value: if set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
 				Default is no delay.
 		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
@@ -62,7 +62,7 @@ Function.extend({
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);
-			if (options.attempt) try {return returns();} catch(err){return false;};
+			if (options.attempt) return $try(returns);
 			return returns();
 		};
 	},

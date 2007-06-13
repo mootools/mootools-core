@@ -23,7 +23,7 @@ Options:
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
 	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
-	
+
 Events:
 	onComplete - function to execute when the ajax request completes.
 
@@ -106,7 +106,9 @@ var Ajax = XHR.extend({
 	*/
 
 	getHeader: function(name){
-		return $try(this.transport.getResponseHeader, this.transport, name) || null;
+		return $try(function(name) {
+			return this.getResponseHeader(name);
+		}, this.transport, name) || null;
 	}
 
 });
