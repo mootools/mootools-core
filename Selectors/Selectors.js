@@ -65,7 +65,7 @@ Element.$domMethods = {
 	*/
 
 	getElement: function(selector){
-		return $(this.getElements(selector, true)[0] || false);
+		return $(this.getElements(selector, true)[0]);
 	},
 
 	/*
@@ -109,6 +109,15 @@ Element.extend({
 
 document.extend(Element.$domMethods);
 Element.extend(Element.$domMethods);
+
+/* Section: Utility Functions */
+
+/*
+Function: $E
+	Alias for <Element.getElement>, using document as context.
+*/
+
+var $E = document.getElement;
 
 var Selectors = {
 	
