@@ -303,7 +303,7 @@ Warning:
 
 function $try(fn, bind, args){
 	try {
-		return fn.apply(bind || fn, $splat(args));
+		return fn.apply(bind || fn, $splat(args) || []);
 	} catch(e){
 		return false;
 	}
