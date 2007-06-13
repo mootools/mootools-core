@@ -65,7 +65,7 @@ Element.$domMethods = {
 	*/
 
 	getElement: function(selector){
-		return $(this.getElements(selector, true)[0]);
+		return $(this.getElements(selector, true)[0] || null);
 	},
 
 	/*
