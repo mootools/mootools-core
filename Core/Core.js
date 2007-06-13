@@ -394,4 +394,6 @@ HTMLElement.prototype.htmlElement = Function.empty;
 
 //enables background image cache for internet explorer 6
 
-if (Client.engine.ie6) $try(function(){document.execCommand("BackgroundImageCache", false, true);});
+if (Client.engine.ie6) $try(function(){
+	document.execCommand("BackgroundImageCache", false, true);
+});

@@ -189,7 +189,7 @@ Element.$eventMethods = {
 		var nativeEvent = Element.$nativeEvents.contains(realType);
 		var defn = fn;
 		if (nativeEvent){
-			if (this.tagName) defn = function(event){
+			if (this !== window) defn = function(event){
 				event = new Event(event);
 				if (fn.call(self, event) === false) event.stop();
 			};
