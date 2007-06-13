@@ -117,18 +117,18 @@ Function: $E
 	Alias for <Element.getElement>, using document as context.
 */
 
-var $E = document.getElement;
+var $E = document.getElement.bind(document);
 
 var Selectors = {
-	
+
 	'regExp': /^(\w*|\*)(?:#([\w-]+))?(?:\.([\w-]+))?(?:\[(.*)\])?(?::(.*))?$/,
-	
+
 	'aRegExp': /^(\w+)(?:([!*^$~]?=)["']?([^"'\]]*)["']?)?$/,
-	
+
 	'sRegExp': /\s*([+>~\s])[a-zA-Z#.*\s]/g,
-	
+
 	'pRegExp': /^([\w-]+)(?:\((.*)\))?$/
-	
+
 };
 
 Selectors.Pseudo = new Abstract();
@@ -181,18 +181,18 @@ Selectors.XPath = {
 		items.push(temp);
 		return items;
 	},
-	
+
 	getItems: function(items, context, nocash){
 		var elements = [];
 		var xpath = document.evaluate('.//' + items.join(''), context, Selectors.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
 		return (nocash) ? elements : new Elements(elements.map($));
 	},
-	
+
 	resolver: function(prefix){
 		return (prefix == 'xhtml') ? 'http://www.w3.org/1999/xhtml' : false;
 	}
-	
+
 };
 
 Selectors.Filter = {
@@ -240,11 +240,11 @@ Selectors.Filter = {
 	getItems: function(items, context, nocash){
 		return (nocash) ? items : $$.unique(items);
 	},
-	
+
 	hasTag: function(el, tag){
 		return (el.nodeName && el.nodeType == 1 && (tag == '*' || el.tagName.toLowerCase() == tag));
 	},
-	
+
 	getFollowingByTag: function(context, tag, all){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++){
@@ -259,7 +259,7 @@ Selectors.Filter = {
 		}
 		return found;
 	},
-	
+
 	getChildrenByTag: function(context, tag){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++){
@@ -270,13 +270,13 @@ Selectors.Filter = {
 		}
 		return found;
 	},
-	
+
 	getNestedByTag: function(context, tag){
 		var found = [];
 		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tag));
 		return found;
 	}
-	
+
 };
 
 Selectors.Method = (Client.features.xpath) ? Selectors.XPath : Selectors.Filter;
