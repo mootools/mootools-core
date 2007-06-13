@@ -887,6 +887,22 @@ Element.extend({
 	empty: function(){
 		Garbage.trash(this.getElementsByTagName('*'));
 		return this.setHTML('');
+	},
+	
+	/*
+	Property: destroy
+		Empties an element of all its children, removes and garbages the element.
+
+	Example:
+		>$('myDiv').destroy() // Div is no more.
+		
+	Returns:
+		null
+	*/
+	
+	destroy: function(){
+		Garbage.trash([this.empty().remove()]);
+		return null;
 	}
 
 });
