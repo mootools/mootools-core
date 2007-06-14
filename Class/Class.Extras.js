@@ -9,8 +9,8 @@ License:
 /*
 Class: Chain
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	Currently implemented in <Fx.Base>, <XHR> and <Ajax>. In <Fx.Base> for example, is used to execute a list of function, one after another, once the effect is completed.
-	The functions will not be fired all togheter, but one every completion, to create custom complex animations.
+	Currently implemented in <Fx.Base>, <XHR> and <Ajax>. In <Fx.Base> for example, is used to execute a list of functions, one after another, once an effect has completed.
+	The functions will not be fired all at once, but rather in succession upon completion of the one before to create custom complex animations.
 
 Example:
 	(start code)
@@ -23,7 +23,7 @@ Example:
 	}).chain(function(){
 		myFx.start(0,1);
 	});
-	//the element will appear and disappear three times
+	//the element will fade in and out three time
 	(end)
 */
 
@@ -31,10 +31,10 @@ var Chain = new Class({
 
 	/*
 	Property: chain
-		adds a function to the Chain instance stack.
+		Adds a function to the Chain instance stack.
 
 	Arguments:
-		fn - the function to append.
+		fn - the function to append to the call stack
 	*/
 
 	chain: function(fn){
@@ -66,8 +66,8 @@ var Chain = new Class({
 /*
 Class: Events
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	In <Fx.Base> Class, for example, is used to give the possibility add any number of functions to the Effects events, like onComplete, onStart, onCancel.
-	Events in a Class that implements <Events> can be either added as an option, or with addEvent. Never with .options.onEventName.
+	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, onCancel.
+	Events in a Class that implements <Events> can be either added as an option, or with addEvent, but never directly through .options.onEventName.
 
 Example:
 	(start code)
@@ -104,11 +104,11 @@ var Events = new Class({
 
 	/*
 	Property: addEvent
-		adds an event to the stack of events of the Class instance.
+		Adds an event to the stack of events of the Class instance.
 
 	Arguments:
 		type - string; the event name (e.g. 'onComplete')
-		fn - function to execute
+		fn - the function to execute
 	*/
 
 	addEvent: function(type, fn){
@@ -122,23 +122,23 @@ var Events = new Class({
 
 	/*
 	Property: fireEvent
-		fires all events of the specified type in the Class instance.
+		Fires all events of the specified type in the Class instance.
 
 	Arguments:
 		type - string; the event name (e.g. 'onComplete')
 		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
-		delay - (integer) delay (in ms) to wait to execute the event
+		delay - integer; delay (in ms) to wait before executing the event
 
 	Example:
-	(start code)
-	var Widget = new Class({
-		initialize: function(arg1, arg2){
-			...
-			this.fireEvent("onInitialize", [arg1, arg2], 50);
-		}
-	});
-	Widget.implement(new Events);
-	(end)
+		(start code)
+		var Widget = new Class({
+			initialize: function(arg1, arg2){
+				...
+				this.fireEvent("onInitialize", [arg1, arg2], 50);
+			}
+		});
+		Widget.implement(new Events);
+		(end)
 	*/
 
 	fireEvent: function(type, args, delay){
@@ -156,7 +156,7 @@ var Events = new Class({
 
 	Arguments:
 		type - string; the event name (e.g. 'onComplete')
-		fn - function that was added
+		fn - the function that was added
 	*/
 
 	removeEvent: function(type, fn){
@@ -169,7 +169,7 @@ var Events = new Class({
 /*
 Class: Options
 	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	Used to automate the options settings, also adding Class <Events> when the option begins with on.
+	Used to automate the options settings, also adding Class <Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
 
 	Example:
 		(start code)
@@ -201,14 +201,14 @@ var Options = new Class({
 
 	/*
 	Property: setOptions
-		sets this.options
+		Sets this.options.
 
 	Arguments:
 		defaults - object; the default set of options
-		options - object; the user entered options. can be empty too.
+		options - object; the user defined options, may be empty as well
 
 	Note:
-		if your Class has <Events> implemented, every option beginning with on, followed by a capital letter (onComplete) becomes an Class instance event.
+		If your Class has <Events> implemented, every option beginning with on, followed by a capital letter (e.g. 'onComplete') becomes a Class instance event.
 	*/
 
 	setOptions: function(){

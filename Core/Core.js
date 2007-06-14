@@ -62,32 +62,6 @@ var $extend = function(){
 };
 
 /*
-Function: $merge
-	Merges a number of objects recursively without referencing them or their sub-objects.
-
-Arguments:
-	any number of objects
-
-Example:
-	(start code)
-	var mergedObj = $merge(obj1, obj2, obj3); //obj1, obj2, and obj3 are unaltered
-	(end)
-*/
-
-function $merge(){
-	var mix = {};
-	for (var i = 0; i < arguments.length; i++){
-		for (var property in arguments[i]){
-			var ap = arguments[i][property];
-			var mp = mix[property];
-			if (mp && $type(ap) == 'object' && $type(mp) == 'object') mix[property] = $merge(mp, ap);
-			else mix[property] = ap;
-		}
-	}
-	return mix;
-};
-
-/*
 Function: $native
 	Will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
 	Its handy if you dont want the .extend method of an object to overwrite existing methods.
@@ -167,6 +141,32 @@ Arguments:
 
 function $defined(obj){
 	return (obj != undefined);
+};
+
+/*
+Function: $merge
+	Merges a number of objects recursively without referencing them or their sub-objects.
+
+Arguments:
+	any number of objects
+
+Example:
+	(start code)
+	var mergedObj = $merge(obj1, obj2, obj3); //obj1, obj2, and obj3 are unaltered
+	(end)
+*/
+
+function $merge(){
+	var mix = {};
+	for (var i = 0; i < arguments.length; i++){
+		for (var property in arguments[i]){
+			var ap = arguments[i][property];
+			var mp = mix[property];
+			if (mp && $type(ap) == 'object' && $type(mp) == 'object') mix[property] = $merge(mp, ap);
+			else mix[property] = ap;
+		}
+	}
+	return mix;
 };
 
 /*

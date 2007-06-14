@@ -10,10 +10,10 @@ License:
 Class: Class
 	The base class object of the <http://mootools.net> framework.
 	Creates a new class, its initialize method will fire upon class instantiation.
-	Initialize wont fire on instantiation when you pass *null*.
+	Initialize wont fire on instantiation when you pass *null* to the constructor.
 
 Arguments:
-	properties - the collection of properties that apply to the class.
+	properties - the collection of properties that apply to the class
 
 Example:
 	(start code)
@@ -46,7 +46,7 @@ Class.prototype = {
 		Returns the copy of the Class extended with the passed in properties.
 
 	Arguments:
-		properties - the properties to add to the base class in this new Class.
+		properties - the properties to add to the base class in this new Class
 
 	Example:
 		(start code)
@@ -57,7 +57,7 @@ Class.prototype = {
 		});
 		var Cat = Animal.extend({
 			initialize: function(name, age){
-				this.parent(age); //will call the previous initialize;
+				this.parent(age); //will call initalize of Animal
 				this.name = name;
 			}
 		});
@@ -81,7 +81,7 @@ Class.prototype = {
 		Implements the passed in properties to the base Class prototypes, altering the base class, unlike <Class.extend>.
 
 	Arguments:
-		properties - the properties to add to the base class.
+		properties - the properties to add to the base class
 
 	Example:
 		(start code)
