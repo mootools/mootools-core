@@ -23,7 +23,7 @@ Example:
 	}).chain(function(){
 		myFx.start(0,1);
 	});
-	//the element will fade in and out three time
+	//the element will fade in and out three times
 	(end)
 */
 
