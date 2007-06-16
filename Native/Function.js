@@ -160,3 +160,5 @@ Function.extend({
 	}
 
 });
+
+Function.empty = $empty;

@@ -36,7 +36,7 @@ var Ajax = XHR.extend({
 	options: {
 		data: null,
 		update: null,
-		onComplete: Function.empty,
+		onComplete: $empty,
 		evalScripts: false,
 		evalResponse: false
 	},

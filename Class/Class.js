@@ -29,7 +29,7 @@ Example:
 
 var Class = function(properties){
 	var klass = function(){
-		return (arguments[0] !== null && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
+		return (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
 	};
 	$extend(klass, this);
 	klass.prototype = properties;
@@ -37,7 +37,7 @@ var Class = function(properties){
 	return klass;
 };
 
-Class.empty = Function.empty;
+Class.empty = $empty;
 
 Class.prototype = {
 
@@ -68,7 +68,7 @@ Class.prototype = {
 	*/
 
 	extend: function(properties){
-		var proto = new this(null);
+		var proto = new this($empty);
 		for (var property in properties){
 			var pp = proto[property];
 			proto[property] = Class.Merge(pp, properties[property]);

@@ -22,7 +22,7 @@ var Asset = new Abstract({
 
 	javascript: function(source, properties){
 		properties = $merge({
-			'onload': Function.empty
+			'onload': $empty
 		}, properties);
 		var script = new Element('script', {'src': source}).addEvents({
 			'load': properties.onload,
@@ -69,9 +69,9 @@ var Asset = new Abstract({
 
 	image: function(source, properties){
 		properties = $merge({
-			'onload': Function.empty,
-			'onabort': Function.empty,
-			'onerror': Function.empty
+			'onload': $empty,
+			'onabort': $empty,
+			'onerror': $empty
 		}, properties);
 		var image = new Image();
 		image.src = source;
@@ -115,8 +115,8 @@ var Asset = new Abstract({
 
 	images: function(sources, options){
 		options = $merge({
-			onComplete: Function.empty,
-			onProgress: Function.empty
+			onComplete: $empty,
+			onProgress: $empty
 		}, options);
 		if (!sources.push) sources = [sources];
 		var images = [];

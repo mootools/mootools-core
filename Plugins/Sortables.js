@@ -49,14 +49,14 @@ var Sortables = new Class({
 	
 	options: {
 		clone: true,
-		cloneOpacity: .7,
-		elementOpacity: .7,
+		cloneOpacity: 0.7,
+		elementOpacity: 0.7,
 		revert: false,
 		revertOptions: { duration: 250 },
 		handle: false,
 		constrain : false,
-		onStart: Class.empty,
-		onComplete: Class.empty
+		onStart: $empty,
+		onComplete: $empty
 	},
 
 	initialize: function(lists, options){
@@ -90,7 +90,8 @@ var Sortables = new Class({
 	reinitialize: function(){
 		if(this.handles) this.detach();
 		
-		this.elements = [], this.handles = [];
+		this.elements = [];
+		this.handles = [];
 		
 		this.lists.each(function(e,i){
 			this.elements.extend(e.getChildren());
@@ -136,7 +137,7 @@ var Sortables = new Class({
 			right: element.right - this.list.scrollLeft,
 			top: element.top - this.list.scrollTop,
 			bottom: element.bottom - this.list.scrollTop
-		}
+		};
 		return (this.curr.x > coords.left && this.curr.x < coords.right && this.curr.y > coords.top && this.curr.y < coords.bottom);
 	},
 	
@@ -161,7 +162,7 @@ var Sortables = new Class({
 		if (!this.idle) return;
 
 		this.idle = false;
-		this.prev = { x : event.page.x, y : event.page.y };
+		this.prev = {x : event.page.x, y : event.page.y};
 		
 		this.styles = element.getStyles('margin-top', 'margin-left', 'padding-top', 'padding-left', 'border-top-width', 'border-left-width', 'opacity');
 		this.margin = {

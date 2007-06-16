@@ -33,8 +33,8 @@ Events:
 var Slider = new Class({
 
 	options: {
-		onChange: Function.empty,
-		onComplete: Function.empty,
+		onChange: $empty,
+		onComplete: $empty,
 		onTick: function(pos){
 			this.knob.setStyle(this.p, pos);
 		},

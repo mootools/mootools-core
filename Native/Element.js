@@ -138,7 +138,7 @@ function $(el){
 	if (el.htmlElement) return Garbage.collect(el);
 	if (['object', 'embed'].contains(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
-	el.htmlElement = Function.empty;
+	el.htmlElement = $empty;
 	return Garbage.collect(el);
 };
 

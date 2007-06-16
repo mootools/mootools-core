@@ -20,17 +20,17 @@ Options:
 	fps - the frames per second for the transition; default is 50
 	
 Events:
-	onStart - the function to execute as the effect begins; nothing (<Function.empty>) by default.
-	onComplete - the function to execute after the effect has processed; nothing (<Function.empty>) by default.
+	onStart - the function to execute as the effect begins; nothing (<$empty>) by default.
+	onComplete - the function to execute after the effect has processed; nothing (<$empty>) by default.
 	onCancel - the function to execute when you manually stop the effect.
 */
 
 Fx.Base = new Class({
 
 	options: {
-		onStart: Function.empty,
-		onComplete: Function.empty,
-		onCancel: Function.empty,
+		onStart: $empty,
+		onComplete: $empty,
+		onCancel: $empty,
 		transition: function(p){
 			return -(Math.cos(Math.PI * p) - 1) / 2;
 		},

@@ -144,6 +144,13 @@ function $defined(obj){
 };
 
 /*
+Function: $empty
+	An empty function, that's it.
+*/
+
+function $empty(){};
+
+/*
 Function: $merge
 	Merges a number of objects recursively without referencing them or their sub-objects.
 
@@ -325,13 +332,6 @@ function $type(obj){
 };
 
 /*
-Function: Function.empty
-	An empty function, that's it.
-*/
-
-Function.empty = function(){};
-
-/*
 Class: Abstract
 	Abstract class, to be used as singleton. Will add .extend to any object.
 
@@ -357,7 +357,7 @@ document.head = document.getElementsByTagName('head')[0];
 Class: Client
 	Some browser properties are attached to the Client object for browser detection.
 
-Client.engine:
+Engine:
 	Client.engine.ie - is set to true if the current browser is internet explorer (any)
 	Client.engine.ie6 - is set to true if the current browser is internet explorer 6
 	Client.engine.ie7 - is set to true if the current browser is internet explorer 7
@@ -399,11 +399,11 @@ Client.platform[Client.platform.name] = true;
 
 //htmlelement
 if (typeof HTMLElement == 'undefined'){
-	var HTMLElement = Function.empty;
+	var HTMLElement = $empty;
 	if (Client.engine.webkit) document.createElement("iframe"); //fixes safari
 	HTMLElement.prototype = (Client.engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
-HTMLElement.prototype.htmlElement = Function.empty;
+HTMLElement.prototype.htmlElement = $empty;
 
 //enable background image cache for internet explorer 6
 if (Client.engine.ie6) $try(function(){
