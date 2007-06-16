@@ -40,7 +40,7 @@ Example:
 	//creates a new Sortable instance over the list with id 'list-1' with some extra options for the revert effect
 	
 	var mySortables = new Sortables(['list-1', 'list-2', 'list-3']);
-	//creates a new Sortable instance allowing sorting between the elements with id's 'list-1', 'list-2, and 'list-3'
+	//creates a new Sortable instance allowing sorting between the lists with id's 'list-1', 'list-2, and 'list-3'
 	(end)
 
 */
@@ -48,13 +48,13 @@ Example:
 var Sortables = new Class({
 	
 	options: {
+		constrain : false,
 		clone: true,
 		cloneOpacity: 0.7,
 		elementOpacity: 0.7,
+		handle: false,
 		revert: false,
 		revertOptions: { duration: 250 },
-		handle: false,
-		constrain : false,
 		onStart: $empty,
 		onComplete: $empty
 	},
@@ -177,7 +177,7 @@ var Sortables = new Class({
 		
 		var coords,
 		    children = this.list.getChildren(),
-				bounds = children.shift().getCoordinates();
+		    bounds = children.shift().getCoordinates();
 		children.each(function(element){
 			coords = element.getCoordinates();
 			bounds.left = Math.min(coords.left, bounds.left);

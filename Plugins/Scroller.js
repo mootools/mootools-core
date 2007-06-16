@@ -41,6 +41,7 @@ var Scroller = new Class({
 		this.setOptions(options);
 		this.element = $(element);
 		this.mousemover = ([window, document].contains(element)) ? $(document.body) : this.element;
+		this.timer = null;
 	},
 
 	/*
