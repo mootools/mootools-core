@@ -90,19 +90,19 @@ var Sortables = new Class({
 	reinitialize: function(){
 		if(this.handles) this.detach();
 		
-		this.elements = [];
 		this.handles = [];
+		var elements = [];
 		
-		this.lists.each(function(e,i){
-			this.elements.extend(e.getChildren());
-		}, this);
+		this.lists.each(function(list){
+			elements.extend(list.getChildren());
+		});
 		
-		this.handles = !this.options.handle ? this.elements : this.elements.map(function(element){
+		this.handles = !this.options.handle ? elements : elements.map(function(element){
 			return element.getElement(this.options.handle) || element;
 		}.bind(this));
 		
 		this.handles.each(function(handle, i) {
-			this.bound.start[i] = this.start.bind(this, this.elements[i], true);
+			this.bound.start[i] = this.start.bind(this, elements[i], true);
 		}, this);
 
 		this.attach();
@@ -175,16 +175,17 @@ var Sortables = new Class({
 		this.list.hovering = this.hovering = true;
 		this.list.positioned = this.list.getStyle('position').test('relative|absolute|fixed');
 		
-		var coords, children = this.list.getChildren();
-		this.bounds = children[0].getCoordinates();
-		children.shift();
-		children.each(function(e){
-			coords = e.getCoordinates();
-			this.bounds.left = Math.min(coords.left, this.bounds.left);
-			this.bounds.right = Math.max(coords.right, this.bounds.right);
-			this.bounds.top = Math.min(coords.top, this.bounds.top);
-			this.bounds.bottom = Math.max(coords.bottom, this.bounds.bottom);
-		}, this);
+		var coords,
+		    children = this.list.getChildren(),
+				bounds = children.shift().getCoordinates();
+		children.each(function(element){
+			coords = element.getCoordinates();
+			bounds.left = Math.min(coords.left, bounds.left);
+			bounds.right = Math.max(coords.right, bounds.right);
+			bounds.top = Math.min(coords.top, bounds.top);
+			bounds.bottom = Math.max(coords.bottom, bounds.bottom);
+		});
+		this.bounds = bounds;
 		
 		this.position = this.element.getPosition([this.list]);
 		this.offset = {
