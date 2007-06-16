@@ -211,6 +211,11 @@
 			"deps": ["Element"],
 			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
 		},
+		
+		"Sortables": {
+			"deps": ["Fx.Styles", "Element.Event", "Element.Dimensions"],
+			"desc": "Creates an interface for drag and drop sorting of a list or lists."
+		},
 
 		"Scroller": {
 			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions"],
@@ -225,11 +230,6 @@
 		"SmoothScroll": {
 			"deps": ["Fx.Scroll"],
 			"desc": "Smooth scroll your internal links."
-		},
-
-		"Sortables": {
-			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions"],
-			"desc": "Lets you resort list items. Supports optional ghosting & handles"
 		},
 
 		"Tips": {

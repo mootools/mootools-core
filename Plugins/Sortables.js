@@ -9,7 +9,6 @@ License:
 /*
 Class: Sortables
 	Creates an interface for drag and drop sorting of a list or lists.
-	Requires version 1.2dev of MooTools
 
 Arguments:
 	list - required, the list or lists that will become sortable.
@@ -71,11 +70,11 @@ var Sortables = new Class({
 			'move': this.move.bind(this)
 		};
 		
-		switch ($type(lists)) {
-			case 'array'  : for (var i = 0, l = lists.length; i < l; i++) this.lists[i] = $(lists[i]); break;
-			case 'object' : for (var e in lists) this.lists.push($(lists[e])); break;
-			case 'string' :	case 'element' : this.lists.push($(lists)); break;
-			default : return;
+		switch($type(lists)){
+			case 'array': for (var i = 0, l = lists.length; i < l; i++) this.lists[i] = $(lists[i]); break;
+			case 'object': for (var e in lists) this.lists.push($(lists[e])); break;
+			case 'string': case 'element': this.lists.push($(lists)); break;
+			default: return;
 		}
 		
 		this.reinitialize();
@@ -88,7 +87,7 @@ var Sortables = new Class({
 	*/
 	
 	reinitialize: function(){
-		if(this.handles) this.detach();
+		if (this.handles) this.detach();
 		
 		this.handles = [];
 		var elements = [];
@@ -301,21 +300,21 @@ var Sortables = new Class({
 		modifier - function to override the default output of the sortables.  See Examples below
 		
 	Examples:
-	(start code)
-	mySortables.serialize(1);
-	//returns the second list serialized (remember, arrays are 0 based...);
-	//['item_1-1', 'item_1-2', 'item_1-3']
+		(start code)
+		mySortables.serialize(1);
+		//returns the second list serialized (remember, arrays are 0 based...);
+		//['item_1-1', 'item_1-2', 'item_1-3']
 	
-	mySortables.serialize();
-	//returns a nested array of all lists serialized, or if only one list exists, that lists order
-	//[['item_1-1', 'item_1-2', 'item_1-3'], ['item_2-1', 'item_2-2', 'item_2-3'], ['item_3-1', 'item_3-2', 'item_3-3']]
+		mySortables.serialize();
+		//returns a nested array of all lists serialized, or if only one list exists, that lists order
+		//[['item_1-1', 'item_1-2', 'item_1-3'], ['item_2-1', 'item_2-2', 'item_2-3'], ['item_3-1', 'item_3-2', 'item_3-3']]
 	
-	mySortables.serialize(2, function(element, index){
-		return element.getProperty('id').replace('item_','') + '=' + index;
-	}).join('&');
-	//joins the array with a '&' to return a string of the formatted ids of all the elmements in list 3 with their position
-	//'3-0=0&3-1=1&3-2=2'
-	(end)
+		mySortables.serialize(2, function(element, index){
+			return element.getProperty('id').replace('item_','') + '=' + index;
+		}).join('&');
+		//joins the array with a '&' to return a string of the formatted ids of all the elmements in list 3 with their position
+		//'3-0=0&3-1=1&3-2=2'
+		(end)
 	*/
 	
 	serialize: function(index, modifier){
@@ -327,7 +326,7 @@ var Sortables = new Class({
 			return list.getChildren().map(map, this);
 		}, this);
 		
-		if(this.lists.length == 1) index = 0;
+		if (this.lists.length == 1) index = 0;
 		return $chk(index) && index >= 0 && index < this.lists.length ? serial[index] : serial;
 	}
 

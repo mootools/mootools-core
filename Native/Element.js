@@ -235,6 +235,14 @@ Class: Element
 */
 
 Element.extend({
+	
+	getElement: function(tag){
+		return $(this.getElementsByTagName(tag)[0] || null);
+	},
+	
+	getElements: function(tag){
+		return $$(this.getElementsByTagName(tag));
+	},
 
 	/*
 	Property: set
