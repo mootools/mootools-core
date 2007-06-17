@@ -43,7 +43,7 @@ Element.Events.domready = {
 			}.periodical(50);
 		} else if (document.readyState && Client.engine.ie){
 			if (!$('ie_ready')){
-				var src = (window.location.protocol == 'https:') ? '://0' : 'javascript:void(0)';
+				var src = (window.location.protocol == 'https:') ? '//0' : 'javascript:void(0)';
 				document.write('<script id="ie_ready" defer src="' + src + '"><\/script>');
 				$('ie_ready').onreadystatechange = function(){
 					if (this.readyState == 'complete') domReady();
