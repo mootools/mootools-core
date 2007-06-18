@@ -37,11 +37,11 @@ Element.Events.domready = {
 			window.timer = $clear(window.timer);
 			this.fireEvent('domready');
 		}.bind(this);
-		if (document.readyState && Client.engine.webkit){
+		if (document.readyState && Client.Engine.webkit){
 			window.timer = function(){
 				if (['loaded', 'complete'].contains(document.readyState)) domReady();
 			}.periodical(50);
-		} else if (document.readyState && Client.engine.ie){
+		} else if (document.readyState && Client.Engine.ie){
 			if (!$('ie_ready')){
 				var src = (window.location.protocol == 'https:') ? '//0' : 'javascript:void(0)';
 				document.write('<script id="ie_ready" defer src="' + src + '"><\/script>');

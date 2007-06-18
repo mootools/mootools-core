@@ -151,7 +151,7 @@ var Sortables = new Class({
 			this.position.y -= this.offset.list.y - this.list.scrollTop;
 			this.position.x -= this.offset.list.x - this.list.scrollLeft;
 		}
-		else if (Client.engine.opera) {
+		else if (Client.Engine.opera) {
 			this.position.y += this.list.scrollTop;
 			this.position.x += this.list.scrollLeft;
 		}

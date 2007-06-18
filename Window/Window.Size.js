@@ -23,8 +23,8 @@ window.extend({
 	*/
 
 	getWidth: function(){
-		if (Client.engine.webkit419) return this.innerWidth;
-		if (Client.engine.opera) return document.body.clientWidth;
+		if (Client.Engine.webkit419) return this.innerWidth;
+		if (Client.Engine.opera) return document.body.clientWidth;
 		return document.documentElement.clientWidth;
 	},
 
@@ -34,8 +34,8 @@ window.extend({
 	*/
 
 	getHeight: function(){
-		if (Client.engine.webkit419) return this.innerHeight;
-		if (Client.engine.opera) return document.body.clientHeight;
+		if (Client.Engine.webkit419) return this.innerHeight;
+		if (Client.Engine.opera) return document.body.clientHeight;
 		return document.documentElement.clientHeight;
 	},
 
@@ -49,8 +49,8 @@ window.extend({
 	*/
 
 	getScrollWidth: function(){
-		if (Client.engine.ie) return Math.max(document.documentElement.offsetWidth, document.documentElement.scrollWidth);
-		if (Client.engine.webkit) return document.body.scrollWidth;
+		if (Client.Engine.ie) return Math.max(document.documentElement.offsetWidth, document.documentElement.scrollWidth);
+		if (Client.Engine.webkit) return document.body.scrollWidth;
 		return document.documentElement.scrollWidth;
 	},
 
@@ -64,8 +64,8 @@ window.extend({
 	*/
 
 	getScrollHeight: function(){
-		if (Client.engine.ie) return Math.max(document.documentElement.offsetHeight, document.documentElement.scrollHeight);
-		if (Client.engine.webkit) return document.body.scrollHeight;
+		if (Client.Engine.ie) return Math.max(document.documentElement.offsetHeight, document.documentElement.scrollHeight);
+		if (Client.Engine.webkit) return document.body.scrollHeight;
 		return document.documentElement.scrollHeight;
 	},
 

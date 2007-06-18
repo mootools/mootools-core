@@ -32,7 +32,7 @@ var SmoothScroll = Fx.Scroll.extend({
 			var anchor = link.href.substr(location.length);
 			if (anchor && $(anchor)) this.useLink(link, anchor);
 		}, this);
-		if (!Client.engine.webkit419) this.addEvent('onComplete', function(){
+		if (!Client.Engine.webkit419) this.addEvent('onComplete', function(){
 			window.location.hash = this.anchor;
 		});
 	},

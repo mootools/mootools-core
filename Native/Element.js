@@ -52,7 +52,7 @@ var Element = new Class({
 
 	initialize: function(el, props){
 		if ($type(el) == 'string'){
-			if (Client.engine.ie && props && (props.name || props.type)){
+			if (Client.Engine.ie && props && (props.name || props.type)){
 				var name = (props.name) ? ' name="' + props.name + '"' : '';
 				var type = (props.type) ? ' type="' + props.type + '"' : '';
 				delete props.name;
@@ -201,7 +201,10 @@ $$.unique = function(array){
 			elements.push(element);
 		}
 	}
-	for (var n = 0, d = elements.length; n < d; n++) elements[n].$included = null;
+	for (var n = 0, d = elements.length; n < d; n++){
+		elements[n].$included = null;
+		if (Client.Engine.ie) elements[n].removeAttribute('$included');
+	}
 	return new Elements(elements);
 };
 
@@ -506,7 +509,7 @@ Element.extend({
 	setStyle: function(property, value){
 		switch(property){
 			case 'opacity': return this.setOpacity(parseFloat(value));
-			case 'float': property = (Client.engine.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = (Client.Engine.ie) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
 		switch($type(value)){
@@ -562,7 +565,7 @@ Element.extend({
 			if (this.style.visibility != "visible") this.style.visibility = "visible";
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Client.engine.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
+		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
 		this.style.opacity = this.$tmp.opacity = opacity;
 		return this;
 	},
@@ -618,7 +621,7 @@ Element.extend({
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
-		if (Client.engine.ie) result = Element.$fixStyle(property, result, this);
+		if (Client.Engine.ie) result = Element.$fixStyle(property, result, this);
 		if (result && property.test(/color/i) && result.contains('rgb')){
 			return result.split('rgb').splice(1,4).map(function(color){
 				return color.rgbToHex();
@@ -736,7 +739,7 @@ Element.extend({
 		var index = Element.$properties[property];
 		if (index) return this[index];
 		var flag = Element.$propertiesIFlag[property] || 0;
-		if (!Client.engine.ie || flag) return this.getAttribute(property, flag);
+		if (!Client.Engine.ie || flag) return this.getAttribute(property, flag);
 		var node = this.attributes[property];
 		return (node) ? node.nodeValue : null;
 	},
@@ -835,7 +838,7 @@ Element.extend({
 	setText: function(text){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (Client.engine.ie){
+			if (Client.Engine.ie){
 				if (tag == 'style') this.styleSheet.cssText = text;
 				else if (tag ==  'script') this.setProperty('text', text);
 				return this;
@@ -856,7 +859,7 @@ Element.extend({
 	getText: function(){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (Client.engine.ie){
+			if (Client.Engine.ie){
 				if (tag == 'style') return this.styleSheet.cssText;
 				else if (tag ==  'script') return this.getProperty('text');
 			} else {
@@ -1018,5 +1021,5 @@ var Garbage = {
 
 window.addListener('beforeunload', function(){
 	window.addListener('unload', Garbage.empty);
-	if (Client.engine.ie) window.addListener('unload', CollectGarbage);
+	if (Client.Engine.ie) window.addListener('unload', CollectGarbage);
 });

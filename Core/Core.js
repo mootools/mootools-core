@@ -358,54 +358,54 @@ Class: Client
 	Some browser properties are attached to the Client object for browser detection.
 
 Engine:
-	Client.engine.ie - is set to true if the current browser is internet explorer (any)
-	Client.engine.ie6 - is set to true if the current browser is internet explorer 6
-	Client.engine.ie7 - is set to true if the current browser is internet explorer 7
-	Client.engine.gecko - is set to true if the current browser is Mozilla/Gecko
-	Client.engine.webkit - is set to true if the current browser is Safari/Konqueror
-	Client.engine.webkit419 - is set to true if the current browser is Safari2 / webkit till version 419
-	Client.engine.webkit420 - is set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419
-	Client.engine.opera - is set to true if the current browser is opera
-	Client.engine.name - is set to the name of the engine
+	Client.Engine.ie - is set to true if the current browser is internet explorer (any)
+	Client.Engine.ie6 - is set to true if the current browser is internet explorer 6
+	Client.Engine.ie7 - is set to true if the current browser is internet explorer 7
+	Client.Engine.gecko - is set to true if the current browser is Mozilla/Gecko
+	Client.Engine.webkit - is set to true if the current browser is Safari/Konqueror
+	Client.Engine.webkit419 - is set to true if the current browser is Safari2 / webkit till version 419
+	Client.Engine.webkit420 - is set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419
+	Client.Engine.opera - is set to true if the current browser is opera
+	Client.Engine.name - is set to the name of the engine
 
 Platform:
-	Client.platform.mac - is set to true if the platform is mac
-	Client.platform.windows - is set to true if the platform is windows
-	Client.platform.linux - is set to true if the platform is linux
-	Client.platform.other - is set to true if the platform is neither mac, windows or linux
-	Client.platform.name - is set to the name of the platform
+	Client.Platform.mac - is set to true if the platform is mac
+	Client.Platform.windows - is set to true if the platform is windows
+	Client.Platform.linux - is set to true if the platform is linux
+	Client.Platform.other - is set to true if the platform is neither mac, windows or linux
+	Client.Platform.name - is set to the name of the platform
 
 Note:
 	Engine detection is entirely object-based.
 */
 
-var Client = {'engine': {'name': 'unknown', 'version': ''}, 'platform': {}, 'features': {}};
+var Client = {Engine: {'name': 'unknown', 'version': ''}, Platform: {}, 'features': {}};
 
 //features
 Client.features.xhr = !!(window.XMLHttpRequest);
 Client.features.xpath = !!(document.evaluate);
 
 //engine
-if (window.opera) Client.engine.name = 'opera';
-else if (window.ActiveXObject) Client.engine = {'name': 'ie', 'version': (Client.features.xhr) ? 7 : 6};
-else if (!navigator.taintEnabled) Client.engine = {'name': 'webkit', 'version': (Client.features.xpath) ? 420 : 419};
-else if (document.getBoxObjectFor != null) Client.engine.name = 'gecko';
-Client.engine[Client.engine.name] = Client.engine[Client.engine.name + Client.engine.version] = true;
+if (window.opera) Client.Engine.name = 'opera';
+else if (window.ActiveXObject) Client.Engine = {'name': 'ie', 'version': (Client.features.xhr) ? 7 : 6};
+else if (!navigator.taintEnabled) Client.Engine = {'name': 'webkit', 'version': (Client.features.xpath) ? 420 : 419};
+else if (document.getBoxObjectFor != null) Client.Engine.name = 'gecko';
+Client.Engine[Client.Engine.name] = Client.Engine[Client.Engine.name + Client.Engine.version] = true;
 
 //platform
-Client.platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'];
-Client.platform.name = Client.platform.name[0].toLowerCase();
-Client.platform[Client.platform.name] = true;
+Client.Platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'];
+Client.Platform.name = Client.Platform.name[0].toLowerCase();
+Client.Platform[Client.Platform.name] = true;
 
 //htmlelement
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = $empty;
-	if (Client.engine.webkit) document.createElement("iframe"); //fixes safari
-	HTMLElement.prototype = (Client.engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
+	if (Client.Engine.webkit) document.createElement("iframe"); //fixes safari
+	HTMLElement.prototype = (Client.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
 HTMLElement.prototype.htmlElement = $empty;
 
 //enable background image cache for internet explorer 6
-if (Client.engine.ie6) $try(function(){
+if (Client.Engine.ie6) $try(function(){
 	document.execCommand("BackgroundImageCache", false, true);
 });

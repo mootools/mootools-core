@@ -94,7 +94,10 @@ Selectors.Pseudo.nth = {
 			case 'index': if (parent.$children[argument.a] == el) include = true;
 		}
 		if (i == all.length - 1){
-			for (var j = 0, l = temp.parents.length; j < l; j++) temp.parents[j].$children = null;
+			for (var j = 0, l = temp.parents.length; j < l; j++){
+				temp.parents[j].$children = null;
+				if (Client.Engine.ie) temp.parents[j].removeAttribute('$children');
+			}
 		}
 		return include;
 	}
