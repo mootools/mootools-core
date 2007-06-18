@@ -997,7 +997,7 @@ var Garbage = {
 
 	trash: function(elements){
 		for (var i = 0, j = elements.length, el; i < j; i++){
-			if ([Element.$badTags].contains(el.tagName.toLowerCase())) continue;
+			if (Element.$badTags.contains(el.tagName.toLowerCase())) continue;
 			if (!(el = elements[i]) || !el.$tmp) continue;
 			if (el.$events) el.fireEvent('trash').removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;

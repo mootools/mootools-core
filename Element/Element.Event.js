@@ -178,7 +178,6 @@ Element.$eventMethods = {
 		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
 		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
-		var self = this;
 		var realType = type;
 		var custom = Element.Events[type];
 		if (custom){
@@ -186,13 +185,16 @@ Element.$eventMethods = {
 			if (custom.map) fn = custom.map;
 			if (custom.type) realType = custom.type;
 		}
-		var nativeEvent = Element.$nativeEvents.contains(realType);
 		var defn = fn;
+		var nativeEvent = Element.$nativeEvents[realType] || 0;
 		if (nativeEvent){
-			if (this.nodeName) defn = function(event){
-				event = new Event(event);
-				if (fn.call(self, event) === false) event.stop();
-			};
+			if (nativeEvent == 2){
+				var self = this;
+				defn = function(event){
+					event = new Event(event);
+					if (fn.call(self, event) === false) event.stop();
+				};
+			}
 			this.addListener(realType, defn);
 		}
 		this.$events[type].values.push(defn);
@@ -215,7 +217,7 @@ Element.$eventMethods = {
 			if (custom.remove) custom.remove.call(this, fn);
 			if (custom.type) type = custom.type;
 		}
-		return (Element.$nativeEvents.contains(type)) ? this.removeListener(type, value) : this;
+		return (Element.$nativeEvents[type]) ? this.removeListener(type, value) : this;
 	},
 
 	/*
@@ -338,12 +340,13 @@ Element.Events = new Abstract({
 
 });
 
-Element.$nativeEvents = [
-	'click', 'dblclick', 'mouseup', 'mousedown', //mouse buttons
-	'mousewheel', 'DOMMouseScroll', //mouse wheel
-	'mouseover', 'mouseout', 'mousemove', //mouse movement
-	'keydown', 'keypress', 'keyup', //keys
-	'load', 'unload', 'beforeunload', 'resize', 'move', 'DOMContentLoaded', //window
-	'focus', 'blur', 'change', 'submit', 'reset', 'select', //forms elements
-	'error', 'abort', 'contextmenu', 'scroll' //misc
-];
+Element.$nativeEvents = {
+	'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, //mouse buttons
+	'mousewheel': 2, 'DOMMouseScroll': 2, //mouse wheel
+	'mouseover': 2, 'mouseout': 2, 'mousemove': 2, //mouse movement
+	'keydown': 2, 'keypress': 2, 'keyup': 2, //keys
+	'contextmenu': 2, 'submit': 2, //misc
+	'load': 1, 'unload': 1, 'beforeunload': 1, 'resize': 1, 'move': 1, 'DOMContentLoaded': 1, //window
+	'focus': 1, 'blur': 1, 'change': 1, 'reset': 1, 'select': 1, //forms elements
+	'error': 1, 'abort': 1, 'scroll': 1 //misc
+};
