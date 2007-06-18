@@ -136,7 +136,7 @@ function $(el){
 	}
 	if (type != 'element') return null;
 	if (el.htmlElement) return Garbage.collect(el);
-	if ([Element.$badTags].contains(el.tagName.toLowerCase())) return el;
+	if (Element.$badTags.contains(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
 	el.htmlElement = $empty;
 	return Garbage.collect(el);
