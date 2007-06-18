@@ -136,7 +136,7 @@ function $(el){
 	}
 	if (type != 'element') return null;
 	if (el.htmlElement) return Garbage.collect(el);
-	if (['object', 'embed'].contains(el.tagName.toLowerCase())) return el;
+	if ([Element.$badTags].contains(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
 	el.htmlElement = $empty;
 	return Garbage.collect(el);
@@ -840,7 +840,7 @@ Element.extend({
 				else if (tag ==  'script') this.setProperty('text', text);
 				return this;
 			} else {
-				this.removeChild(this.firstChild);
+				if (this.firstChild) this.removeChild(this.firstChild);
 				return this.appendText(text);
 			}
 		}
@@ -930,6 +930,8 @@ Element.$fixStyle = function(property, result, element){
 	return result;
 };
 
+Element.$badTags = ['object', 'embed'];
+
 Element.$styles = {'border': [], 'padding': [], 'margin': []};
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
 	for (var style in Element.$styles) Element.$styles[style].push(style + direction);
@@ -995,6 +997,7 @@ var Garbage = {
 
 	trash: function(elements){
 		for (var i = 0, j = elements.length, el; i < j; i++){
+			if ([Element.$badTags].contains(el.tagName.toLowerCase())) continue;
 			if (!(el = elements[i]) || !el.$tmp) continue;
 			if (el.$events) el.fireEvent('trash').removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;
