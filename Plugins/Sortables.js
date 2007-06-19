@@ -18,9 +18,8 @@ Arguments:
 
 Options:
 	constrain - whether or not to constrain the element being dragged to its parent element. defaults to false.
-	clone - whether or not to display a copy of the actual element while dragging. defaults to true.
-	cloneOpacity - opacity of the place holding element
-	elementOpacity - opacity of the element being dragged for sorting
+	clone - whether or not to display a copy of the actual element while dragging. defaults to true with opacity of 0.7, you can refine styles using an object.
+	opacity - opacity of the element being dragged for sorting
 	handle - a selector which be used to select the element inside each item to be used as a handle for sorting that item.  if no match is found, the element is used as its own handle.
 	revert - whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be treated as true and used as aditional options for the revert effect. defaults to false.
 
@@ -53,11 +52,9 @@ var Sortables = new Class({
 	options: {
 		constrain : false,
 		clone: true,
-		cloneOpacity: 0.7,
-		elementOpacity: 0.7,
+		opacity: 0.7,
 		handle: false,
 		revert: false,
-		revertOptions: { duration: 250 },
 		onStart: $empty,
 		onComplete: $empty
 	},
@@ -67,17 +64,16 @@ var Sortables = new Class({
 		this.idle = true;
 		this.hovering = false;
 		this.newInsert = false;
-		this.revert = this.options.revert ? $merge({ duration: 250, wait: false }, this.options.revert) : false;
+		this.revert = (this.options.revert) ? $merge({duration: 250, wait: false}, this.options.revert) : false;
+		this.cloneContents = !!(this.options.clone);
+		this.options.clone = (this.cloneContents) ? $merge({'opacity': 0.7}, this.options.clone) : {'visibility': 'hidden'};
 		this.bound = {
 			'start': [],
 			'end': this.end.bind(this),
 			'move': this.move.bind(this)
 		};
 		
-		switch($type(lists)){
-			case 'string': case 'element': this.lists = $splat($(lists)); break;
-			case 'array': this.lists = $$(lists); break;
-		}
+		this.lists = $$($(lists) || lists);
 		
 		this.reinitialize();
 		if (this.options.initialize) this.options.initialize.call(this);
@@ -102,7 +98,7 @@ var Sortables = new Class({
 			return element.getElement(this.options.handle) || element;
 		}.bind(this));
 		
-		this.handles.each(function(handle, i) {
+		this.handles.each(function(handle, i){
 			this.bound.start[i] = this.start.bind(this, elements[i], true);
 		}, this);
 
@@ -143,8 +139,11 @@ var Sortables = new Class({
 	},
 	
 	where: function(element){
-		if (this.newInsert) { this.newInsert = false; return 'before'; }
-		var dif = { x : this.curr.x - this.prev.x, y : this.curr.y - this.prev.y };
+		if (this.newInsert){
+			this.newInsert = false;
+			return 'before';
+		}
+		var dif = {'x': this.curr.x - this.prev.x, 'y': this.curr.y - this.prev.y};
 		return dif[['y', 'x'][(Math.abs(dif.x) >= Math.abs(dif.y)) + 0]] <= 0 ? 'before' : 'after';
 	},
 	
@@ -163,7 +162,7 @@ var Sortables = new Class({
 		if (!this.idle) return;
 
 		this.idle = false;
-		this.prev = {x : event.page.x, y : event.page.y};
+		this.prev = {'x': event.page.x, 'y': event.page.y};
 		
 		this.styles = element.getStyles('margin-top', 'margin-left', 'padding-top', 'padding-left', 'border-top-width', 'border-left-width', 'opacity');
 		this.margin = {
@@ -175,12 +174,11 @@ var Sortables = new Class({
 		this.list = this.element.getParent();
 		this.list.hovering = this.hovering = true;
 		this.list.positioned = this.list.getStyle('position').test('relative|absolute|fixed');
-		
-		var coords,
-		    children = this.list.getChildren(),
-		    bounds = children.shift().getCoordinates();
+
+		var children = this.list.getChildren();
+		var bounds = children.shift().getCoordinates();
 		children.each(function(element){
-			coords = element.getCoordinates();
+			var coords = element.getCoordinates();
 			bounds.left = Math.min(coords.left, bounds.left);
 			bounds.right = Math.max(coords.right, bounds.right);
 			bounds.top = Math.min(coords.top, bounds.top);
@@ -195,13 +193,13 @@ var Sortables = new Class({
 		};
 		this.reposition();
 		
-		if (this.options.clone) this.clone = this.element.clone().setOpacity(this.options.cloneOpacity);
-		else this.clone = new Element(this.element.getTag()).setStyles({'visibility' : 'hidden'}).setHTML('&nbsp;');
+		this.clone = this.element.clone(this.cloneContents).setStyles(this.options.clone);
+		
 		this.clone.injectBefore(this.element.setStyles({
-			'position' : 'absolute',
-			'top' : this.position.y - this.margin.top,
-			'left' : this.position.x - this.margin.left,
-			'opacity': this.options.elementOpacity
+			'position': 'absolute',
+			'top': this.position.y - this.margin.top,
+			'left': this.position.x - this.margin.left,
+			'opacity': this.options.opacity
 		}));
 
 		document.addEvent('mousemove', this.bound.move);
@@ -231,7 +229,7 @@ var Sortables = new Class({
 				else if (!list.hovering) {
 					this.list = list;
 					this.list.hovering = this.newInsert = true;
-					this.list.positioned = this.list.getStyle('position').test('relative|absolute|fixed');
+					this.list.positioned = this.list.getStyle('position').test(/relative|absolute|fixed/);
 					oldSize = this.clone.getSize().size;
 					this.list.adopt(this.clone, this.element);
 					newSize = this.clone.getSize().size;
@@ -247,9 +245,10 @@ var Sortables = new Class({
 		}
 		
 		if (this.list.hovering){
-			this.list.getChildren().each(function(element) {
-				if (!this.check(element)) element.hovering = false;
-				else if (!element.hovering && element != this.clone) {
+			this.list.getChildren().each(function(element){
+				if (!this.check(element)){
+					element.hovering = false;
+				} else if (!element.hovering && element != this.clone){
 					element.hovering = true;
 					this.clone.inject(element, this.where(element));
 				}
@@ -268,8 +267,9 @@ var Sortables = new Class({
 		this.position = this.clone.getPosition([this.list]);
 		this.reposition();
 
-		if (!this.revert) this.reset();
-		else {
+		if (!this.revert){
+			this.reset();
+		} else {
 			if (!this.effect) this.effect = this.element.effects(this.revert).addEvent('onComplete', this.reset.bind(this));
 			else this.effect.element = this.element;
 			this.effect.start({
