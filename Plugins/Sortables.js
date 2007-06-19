@@ -224,9 +224,10 @@ var Sortables = new Class({
 
 		if (!this.options.constrain) {
 			var oldSize, newSize;
-			this.lists.each(function(list) {
-				if (!this.check(list, true)) list.hovering = false;
-				else if (!list.hovering) {
+			this.lists.each(function(list){
+				if (!this.check(list, true)){
+					list.hovering = false;
+				} else if (!list.hovering){
 					this.list = list;
 					this.list.hovering = this.newInsert = true;
 					this.list.positioned = this.list.getStyle('position').test(/relative|absolute|fixed/);
