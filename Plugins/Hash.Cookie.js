@@ -94,4 +94,5 @@ Hash.Cookie.Methods = {};
 		return this;
 	};
 });
+
 Hash.Cookie.implement(Hash.Cookie.Methods);

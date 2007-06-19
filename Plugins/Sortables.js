@@ -12,19 +12,17 @@ Class: Sortables
 
 Arguments:
 	list - required, the list or lists that will become sortable.
-		This argument can be a string id, an element, or an object or array of either strings or elements. When a single
-		list (or id) is passed, that list will be sortable only with itself. To enable sorting between lists, one or more
-		lists or id's must be passed using an array or an object. See Examples below.
+		This argument can be an Element, or array of Elements. When a single list (or id) is passed, that list will be sortable only with itself.
+		To enable sorting between lists, one or more lists or id's must be passed using an array or an object. See Examples below.
 	options - an Object, see options and events below.
 
 Options:
+	constrain - whether or not to constrain the element being dragged to its parent element. defaults to false.
 	clone - whether or not to display a copy of the actual element while dragging. defaults to true.
 	cloneOpacity - opacity of the place holding element
 	elementOpacity - opacity of the element being dragged for sorting
-	revert - whether or not to use an effect to slide the element into its final location after sorting. defaults to false.
-	revertOptions - an object specifying extra options to be passed to the revert effect, if used.
 	handle - a selector which be used to select the element inside each item to be used as a handle for sorting that item.  if no match is found, the element is used as its own handle.
-	constrain - whether or not to constrain the element being dragged to its parent element. defaults to false.
+	revert - whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be treated as true and used as aditional options for the revert effect. defaults to false.
 
 Events:
 	onStart - function executed when the item starts dragging
@@ -33,15 +31,21 @@ Events:
 Example:
 	(start code)
 	var mySortables = new Sortables('list-1', {
-		revert: true,
-		revertOptions: {duration: 500, transition: Fx.Transitions.Elastic.easeOut}
+		revert: { duration: 500, transition: Fx.Transitions.Elastic.easeOut }
 	});
 	//creates a new Sortable instance over the list with id 'list-1' with some extra options for the revert effect
+
+	var mySortables = new Sortables(['list-1', 'list-2'], {
+		constrain: true,
+		clone: false,
+		revert: true
+	});
+	//creates a new Sortable instance allowing the sorting of the lists with id's 'list-1' and 'list-2' with extra options
+	//since constrain was set to false, the items will not be able to be dragged from one list to the other
 	
 	var mySortables = new Sortables(['list-1', 'list-2', 'list-3']);
 	//creates a new Sortable instance allowing sorting between the lists with id's 'list-1', 'list-2, and 'list-3'
 	(end)
-
 */
 
 var Sortables = new Class({
@@ -61,9 +65,9 @@ var Sortables = new Class({
 	initialize: function(lists, options){
 		this.setOptions(options);
 		this.idle = true;
-		this.lists = [];
 		this.hovering = false;
 		this.newInsert = false;
+		this.revert = this.options.revert ? $merge({ duration: 250, wait: false }, this.options.revert) : false;
 		this.bound = {
 			'start': [],
 			'end': this.end.bind(this),
@@ -71,10 +75,8 @@ var Sortables = new Class({
 		};
 		
 		switch($type(lists)){
-			case 'array': for (var i = 0, l = lists.length; i < l; i++) this.lists[i] = $(lists[i]); break;
-			case 'object': for (var e in lists) this.lists.push($(lists[e])); break;
-			case 'string': case 'element': this.lists.push($(lists)); break;
-			default: return;
+			case 'string': case 'element': this.lists = $splat($(lists)); break;
+			case 'array': this.lists = $$(lists); break;
 		}
 		
 		this.reinitialize();
@@ -266,9 +268,9 @@ var Sortables = new Class({
 		this.position = this.clone.getPosition([this.list]);
 		this.reposition();
 
-		if (!this.options.revert) this.reset();
+		if (!this.revert) this.reset();
 		else {
-			if (!this.effect) this.effect = this.element.effects($merge(this.options.revertOptions, {wait: false, onComplete: this.reset.bind(this)}));
+			if (!this.effect) this.effect = this.element.effects(this.revert).addEvent('onComplete', this.reset.bind(this));
 			else this.effect.element = this.element;
 			this.effect.start({
 				'top' : this.position.y - this.margin.top,

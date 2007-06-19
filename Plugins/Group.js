@@ -28,7 +28,6 @@ Example:
 	xhr2.request();
 	xhr3.request();
 	(end)
-
 */
 
 var Group = new Class({

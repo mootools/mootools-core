@@ -143,5 +143,4 @@ var Slider = new Class({
 
 });
 
-Slider.implement(new Events);
-Slider.implement(new Options);
+Slider.implement(new Events, new Options);
