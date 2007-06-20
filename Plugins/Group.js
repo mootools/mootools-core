@@ -11,7 +11,7 @@ Class: Group
 	An "Utility" Class.
 
 Arguments:
-	List of Class instances
+	any number of Class instances, or arrays containing class instances.
 
 Example:
 	(start code)
@@ -33,7 +33,10 @@ Example:
 var Group = new Class({
 
 	initialize: function(){
-		this.instances = $A(arguments);
+		this.instances = [];
+		$each(arguments, function(argument){
+			this.instances = this.instances.concat(argument);
+		});
 		this.events = {};
 		this.checker = {};
 	},
