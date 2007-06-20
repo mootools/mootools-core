@@ -36,7 +36,7 @@ var Group = new Class({
 		this.instances = [];
 		$each(arguments, function(argument){
 			this.instances = this.instances.concat(argument);
-		});
+		}, this);
 		this.events = {};
 		this.checker = {};
 	},
