@@ -47,7 +47,7 @@ Element.Events.domready = {
 		} else if (document.readyState && Client.Engine.ie){
 			var script = $('ie_domready');
 			if (!script){
-				var src = (window.location.protocol == 'https:') ? '//0' : 'javascript:void(0)';
+				var src = (window.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
 				document.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
 				script = $('ie_domready');
 			}

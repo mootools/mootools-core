@@ -231,7 +231,7 @@ Selectors.Filter = {
 				});
 				temp = null;
 			} else {
-				items = Elements.filterByAttribute(items, param.name, '=', param.arg, true);
+				items = Elements.filterByAttribute(items, pseudo.name, ($chk(pseudo.argument)) ? '=' : false, pseudo.argument, true);
 			}
 		}
 		return items;

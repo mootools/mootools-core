@@ -180,9 +180,14 @@ Element.$eventMethods = {
 		this.$events[type].keys.push(fn);
 		var realType = type;
 		var custom = Element.Events[type];
+		var map = fn;
 		if (custom){
 			if (custom.add) custom.add.call(this, fn);
-			if (custom.map) fn = custom.map;
+			if (custom.map){
+				map = function(event){
+					if (custom.map.call(this, event)) return fn.call(this, event);
+				};
+			}
 			if (custom.type) realType = custom.type;
 		}
 		var defn = fn;
@@ -192,7 +197,7 @@ Element.$eventMethods = {
 				var self = this;
 				defn = function(event){
 					event = new Event(event);
-					if (fn.call(self, event) === false) event.stop();
+					if (map.call(self, event) === false) event.stop();
 				};
 			}
 			this.addListener(realType, defn);
@@ -314,7 +319,7 @@ Element.Events = new Abstract({
 	'mouseenter': {
 		type: 'mouseover',
 		map: function(event){
-			if (event.relatedTarget != this && !this.hasChild(event.relatedTarget)) this.fireEvent('mouseenter', event);
+			return (event.relatedTarget != this && !this.hasChild(event.relatedTarget));
 		}
 	},
 
@@ -330,7 +335,7 @@ Element.Events = new Abstract({
 	'mouseleave': {
 		type: 'mouseout',
 		map: function(event){
-			if (event.relatedTarget != this && !this.hasChild(event.relatedTarget)) this.fireEvent('mouseleave', event);
+			return (event.relatedTarget != this && !this.hasChild(event.relatedTarget));
 		}
 	},
 
