@@ -348,7 +348,7 @@ var Abstract = function(obj){
 	return obj;
 };
 
-//window, document
+//document, window
 var Window = new Abstract(window);
 var Document = new Abstract(document);
 document.head = document.getElementsByTagName('head')[0];
@@ -379,7 +379,11 @@ Note:
 	Engine detection is entirely object-based.
 */
 
-var Client = {Engine: {'name': 'unknown', 'version': ''}, Platform: {}, Features: {}};
+var Client = new Abstract({
+	Engine: {'name': 'unknown', 'version': ''},
+	Platform: {},
+	Features: {}
+});
 
 //Client.Features
 Client.Features.xhr = !!(window.XMLHttpRequest);

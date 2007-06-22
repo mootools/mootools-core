@@ -23,7 +23,7 @@ window.extend({
 	*/
 
 	getWidth: function(){
-		if (Client.Engine.webkit419) return this.innerWidth;
+		if (Client.Engine.webkit419) return window.innerWidth;
 		if (Client.Engine.opera) return document.body.clientWidth;
 		return document.documentElement.clientWidth;
 	},
@@ -34,7 +34,7 @@ window.extend({
 	*/
 
 	getHeight: function(){
-		if (Client.Engine.webkit419) return this.innerHeight;
+		if (Client.Engine.webkit419) return window.innerHeight;
 		if (Client.Engine.opera) return document.body.clientHeight;
 		return document.documentElement.clientHeight;
 	},
@@ -78,7 +78,7 @@ window.extend({
 	*/
 
 	getScrollLeft: function(){
-		return this.pageXOffset || document.documentElement.scrollLeft;
+		return window.pageXOffset || document.documentElement.scrollLeft;
 	},
 
 	/*
@@ -90,7 +90,7 @@ window.extend({
 	*/
 
 	getScrollTop: function(){
-		return this.pageYOffset || document.documentElement.scrollTop;
+		return window.pageYOffset || document.documentElement.scrollTop;
 	},
 
 	/*
@@ -100,9 +100,9 @@ window.extend({
 
 	getSize: function(){
 		return {
-			'size': {'x': this.getWidth(), 'y': this.getHeight()},
-			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()},
-			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()}
+			'size': {'x': window.getWidth(), 'y': window.getHeight()},
+			'scrollSize': {'x': this.getScrollWidth(), 'y': window.getScrollHeight()},
+			'scroll': {'x': window.getScrollLeft(), 'y': window.getScrollTop()}
 		};
 	},
 

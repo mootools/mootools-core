@@ -27,32 +27,40 @@ Example:
 Element.Events.domready = {
 
 	add: function(fn){
-		if (window.loaded){
-			fn.call(this);
-			return;
-		}
+		if (Client.loaded) return fn.call(this);
+		var self = this;
 		var domReady = function(){
-			if (window.loaded) return;
-			window.loaded = true;
-			window.timer = $clear(window.timer);
-			this.fireEvent('domready');
-		}.bind(this);
+			if (!arguments.callee.done){
+				arguments.callee.done = true;
+				fn.call(self);
+			};
+			return true;
+		};
+		var check = function(context){
+			if (['loaded', 'complete'].contains(context.readyState)) return domReady();
+			return false;
+		};
 		if (document.readyState && Client.Engine.webkit){
-			window.timer = function(){
-				if (['loaded', 'complete'].contains(document.readyState)) domReady();
-			}.periodical(50);
+			(function(){
+				if (!check(document)) arguments.callee.delay(50);
+			})();
 		} else if (document.readyState && Client.Engine.ie){
-			if (!$('ie_ready')){
+			var script = $('ie_domready');
+			if (!script){
 				var src = (window.location.protocol == 'https:') ? '//0' : 'javascript:void(0)';
-				document.write('<script id="ie_ready" defer src="' + src + '"><\/script>');
-				$('ie_ready').onreadystatechange = function(){
-					if (this.readyState == 'complete') domReady();
-				};
+				document.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
+				script = $('ie_domready');
 			}
+			if (!check(script)) script.addEvent('readystatechange', check);
 		} else {
-			window.addEvent("load", domReady);
-			document.addEvent("DOMContentLoaded", domReady);
+			window.addEvent('load', domReady);
+			document.addEvent('DOMContentLoaded', domReady);
 		}
+		return this;
 	}
 
 };
+
+window.addEvent('domready', function(){
+	Client.loaded = true;
+});
