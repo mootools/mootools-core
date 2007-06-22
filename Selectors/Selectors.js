@@ -279,4 +279,4 @@ Selectors.Filter = {
 
 };
 
-Selectors.Method = (Client.features.xpath) ? Selectors.XPath : Selectors.Filter;
+Selectors.Method = (Client.Features.xpath) ? Selectors.XPath : Selectors.Filter;

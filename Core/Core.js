@@ -54,7 +54,7 @@ Example:
 	(end)
 */
 
-var $extend = function(){
+function $extend(){
 	var args = arguments;
 	if (!args[1]) args = [this, args[0]];
 	for (var property in args[1]) args[0][property] = args[1][property];
@@ -71,7 +71,7 @@ Arguments:
 	any number of classes/native javascript objects
 */
 
-var $native = function(){
+function $native(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		arguments[i].extend = function(props){
 			for (var prop in props){
@@ -379,20 +379,20 @@ Note:
 	Engine detection is entirely object-based.
 */
 
-var Client = {Engine: {'name': 'unknown', 'version': ''}, Platform: {}, 'features': {}};
+var Client = {Engine: {'name': 'unknown', 'version': ''}, Platform: {}, Features: {}};
 
-//features
-Client.features.xhr = !!(window.XMLHttpRequest);
-Client.features.xpath = !!(document.evaluate);
+//Client.Features
+Client.Features.xhr = !!(window.XMLHttpRequest);
+Client.Features.xpath = !!(document.evaluate);
 
-//engine
+//Client.Engine
 if (window.opera) Client.Engine.name = 'opera';
-else if (window.ActiveXObject) Client.Engine = {'name': 'ie', 'version': (Client.features.xhr) ? 7 : 6};
-else if (!navigator.taintEnabled) Client.Engine = {'name': 'webkit', 'version': (Client.features.xpath) ? 420 : 419};
+else if (window.ActiveXObject) Client.Engine = {'name': 'ie', 'version': (Client.Features.xhr) ? 7 : 6};
+else if (!navigator.taintEnabled) Client.Engine = {'name': 'webkit', 'version': (Client.Features.xpath) ? 420 : 419};
 else if (document.getBoxObjectFor != null) Client.Engine.name = 'gecko';
 Client.Engine[Client.Engine.name] = Client.Engine[Client.Engine.name + Client.Engine.version] = true;
 
-//platform
+//Client.Platform
 Client.Platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'];
 Client.Platform.name = Client.Platform.name[0].toLowerCase();
 Client.Platform[Client.Platform.name] = true;
