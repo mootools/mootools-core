@@ -15,7 +15,8 @@ var Json = {
 
 	/*
 	Property: toString
-		Converts an object to a string, to be passed in server-side scripts as a parameter. Although its not normal usage for this class, this method can also be used to convert functions and arrays to strings.
+		Converts an object to a string, to be passed in server-side scripts as a parameter.
+		Although its not normal usage for this class, this method can also be used to convert functions and arrays to strings.
 
 	Arguments:
 		obj - the object to convert to string
@@ -63,8 +64,10 @@ var Json = {
 		>//myObject will become {apple: 'red', lemon: 'yellow'}
 	*/
 
-	evaluate: function(str, secure){
-		return (($type(str) != 'string') || (!str.length) || (secure && !str.test(/^("(\\.|[^"\\\n\r])*?"|[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t])+?$/))) ? null : eval('(' + str + ')');
+	evaluate: function(string, secure){
+		if ($type(string) != 'string' || !string.length) return null;
+		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
+		return eval('(' + string + ')');
 	}
 
 };
