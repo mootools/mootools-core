@@ -186,6 +186,7 @@ Element.$eventMethods = {
 			if (custom.map){
 				map = function(event){
 					if (custom.map.call(this, event)) return fn.call(this, event);
+					return false;
 				};
 			}
 			if (custom.type) realType = custom.type;
