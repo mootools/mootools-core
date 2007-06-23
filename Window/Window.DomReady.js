@@ -27,7 +27,10 @@ Example:
 Element.Events.domready = {
 
 	add: function(fn){
-		if (Client.loaded) return fn.call(this);
+		if (Client.loaded){
+			fn.call(this);
+			return this;
+		}
 		var self = this;
 		var domReady = function(){
 			if (!arguments.callee.done){
@@ -37,7 +40,7 @@ Element.Events.domready = {
 			return true;
 		};
 		var check = function(context){
-			if (['loaded', 'complete'].contains(context.readyState)) return domReady();
+			if ((Client.Engine.webkit ? ['loaded', 'complete'] : 'complete').contains(context.readyState)) return domReady();
 			return false;
 		};
 		if (document.readyState && Client.Engine.webkit){
@@ -51,7 +54,7 @@ Element.Events.domready = {
 				document.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
 				script = $('ie_domready');
 			}
-			if (!check(script)) script.addEvent('readystatechange', check);
+			if (!check(script)) script.addEvent('readystatechange', check.pass(script));
 		} else {
 			window.addEvent('load', domReady);
 			document.addEvent('DOMContentLoaded', domReady);
