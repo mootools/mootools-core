@@ -159,13 +159,37 @@ Element.extend({
 		<input name="zipCode" value="90210">
 		</form>
 		<script>
-		$('myForm').send()
+		$('myForm').send();
 		</script>
 		(end)
 	*/
 
 	send: function(options){
-		return new Ajax(this.getProperty('action'), $merge({data: this.toQueryString()}, options, {method: 'post'})).request();
+		return new Ajax(this.getProperty('action'), $merge({method: 'post'}, options)).request(this.toQueryString());
+	},
+
+	/*
+	Property: update
+		Updates the content of the element with an ajax get request
+
+	Arguments:
+		url - the url pointing to the server-side document.
+		options - option collection for ajax request. See <Ajax> for the options list.
+
+	Returns:
+		The Ajax Class Instance
+
+	Example:
+		(start code)
+		<div id="content">Loading content ...</>
+		<script>
+		$('content').update('page_1.html');
+		</script>
+		(end)
+	*/
+
+	update: function(url, options){
+		return new Ajax(url, $merge({method: 'get', update: this}, options)).request();
 	}
 
 });
