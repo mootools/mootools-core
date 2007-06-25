@@ -63,7 +63,7 @@ var Json = {
 		converts a json string to an javascript Object.
 
 	Arguments:
-		str - the string to evaluate. if its not a string, it returns false.
+		str - the string to evaluate. if its not a string, it returns null.
 		secure - optionally, performs syntax check on json string. Defaults to false.
 
 	Credits:
