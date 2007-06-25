@@ -15,8 +15,7 @@ var Json = {
 
 	/*
 	Property: toString
-		Converts an object to a string, to be passed in server-side scripts as a parameter.
-		Although its not normal usage for this class, this method can also be used to convert functions and arrays to strings.
+		Converts an object or an array to a string, to be passed in server-side scripts as a parameter.
 
 	Arguments:
 		obj - the object to convert to string
@@ -33,19 +32,30 @@ var Json = {
 	toString: function(obj){
 		switch($type(obj)){
 			case 'string':
-				return '"' + obj.replace(/(["\\])/g, '\\$1') + '"';
+				return '"' + obj.replace(/[\x00-\x1f\\"]/g, Json.$replaceChars) + '"';
 			case 'array':
-				return '[' + obj.map(Json.toString).join(',') + ']';
+				return '[' + obj.map(Json.toString).filter($defined).join(',') + ']';
 			case 'object':
 				var string = [];
-				for (var property in obj) string.push(Json.toString(property) + ':' + Json.toString(obj[property]));
+				for (var prop in obj){
+					var val = Json.toString(obj[prop]);
+					if ($defined(val)) string.push(Json.toString(prop), ':', val);
+				}
 				return '{' + string.join(',') + '}';
 			case 'number':
-				if (isFinite(obj)) break;
+				if (!isFinite(obj)) break;
+			case 'boolean':
+				return String(obj);
 			case false:
 				return 'null';
 		}
-		return String(obj);
+		return null;
+	},
+
+	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
+
+	$replaceChars: function(chr){
+		return Json.$specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
 	},
 
 	/*
@@ -71,3 +81,6 @@ var Json = {
 	}
 
 };
+
+Json.encode = Json.toString;
+Json.decode = Json.evaluate;
