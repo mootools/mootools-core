@@ -36,11 +36,11 @@ Json.Remote = XHR.extend({
 	},
 
 	send: function(obj){
-		return this.parent(this.url, 'json=' + Json.toString(obj));
+		return this.parent(this.url, 'json=' + Json.encode(obj));
 	},
 
 	onComplete: function(){
-		this.fireEvent('onComplete', [Json.evaluate(this.response.text, this.options.secure)]);
+		this.fireEvent('onComplete', [Json.decode(this.response.text, this.options.secure)]);
 	}
 
 });

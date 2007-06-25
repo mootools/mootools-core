@@ -328,6 +328,7 @@ function $type(obj){
 			if (obj.callee) return 'arguments';
 		}
 	}
+	if (type == 'number' && !isFinite(obj)) return false;
 	return type;
 };
 

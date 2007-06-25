@@ -25,21 +25,21 @@ var Json = {
 
 	Example:
 		(start code)
-		Json.toString({apple: 'red', lemon: 'yellow'}); '{"apple":"red","lemon":"yellow"}'
+		Json.encode({apple: 'red', lemon: 'yellow'}); '{"apple":"red","lemon":"yellow"}'
 		(end)
 	*/
 
-	toString: function(obj){
+	encode: function(obj){
 		switch($type(obj)){
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, Json.$replaceChars) + '"';
 			case 'array':
-				return '[' + obj.map(Json.toString).filter($defined).join(',') + ']';
+				return '[' + obj.map(Json.encode).filter($defined).join(',') + ']';
 			case 'object':
 				var string = [];
 				for (var prop in obj){
-					var val = Json.toString(obj[prop]);
-					if ($defined(val)) string.push(Json.toString(prop), ':', val);
+					var val = Json.encode(obj[prop]);
+					if ($defined(val)) string.push(Json.encode(prop), ':', val);
 				}
 				return '{' + string.join(',') + '}';
 			case 'number':
@@ -70,17 +70,14 @@ var Json = {
 		Json test regexp is by Douglas Crockford <http://crockford.org>.
 
 	Example:
-		>var myObject = Json.evaluate('{"apple":"red","lemon":"yellow"}');
+		>var myObject = Json.decode('{"apple":"red","lemon":"yellow"}');
 		>//myObject will become {apple: 'red', lemon: 'yellow'}
 	*/
 
-	evaluate: function(string, secure){
+	decode: function(string, secure){
 		if ($type(string) != 'string' || !string.length) return null;
 		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 		return eval('(' + string + ')');
 	}
 
 };
-
-Json.encode = Json.toString;
-Json.decode = Json.evaluate;

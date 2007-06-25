@@ -68,19 +68,19 @@ Hash.Cookie = Hash.extend({
 			Cookie.remove(this.name, this.options);
 			return true;
 		}
-		var str = Json.toString(this.obj);
+		var str = Json.encode(this.obj);
 		if (str.length > 4096) return false; //cookie would be truncated!
 		Cookie.set(this.name, str, this.options);
 		return true;
 	},
-	
+
 	/*
 	Property: load
 		Loads the cookie and assigns it to the Hash.
 	*/
 
 	load: function(){
-		this.obj = Json.evaluate(Cookie.get(this.name), true) || {};
+		this.obj = Json.decode(Cookie.get(this.name), true) || {};
 		this.setLength();
 	}
 
