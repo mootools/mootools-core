@@ -10,12 +10,12 @@ License:
 */
 
 /*
-Class: window
+Class: Client
 	Cross browser methods to get various window dimensions.
 	Warning: All these methods require that the browser operates in strict mode, not quirks mode.
 */
 
-window.extend({
+Client.extend({
 
 	/*
 	Property: getWidth
@@ -91,7 +91,16 @@ window.extend({
 
 	getScrollTop: function(){
 		return window.pageYOffset || document.documentElement.scrollTop;
-	},
+	}
+
+});
+
+/*
+Class: window
+	Utility methods attached to the window object to match Element's equivalents
+*/
+	
+window.extend({
 
 	/*
 	Property: getSize
@@ -100,13 +109,15 @@ window.extend({
 
 	getSize: function(){
 		return {
-			'size': {'x': window.getWidth(), 'y': window.getHeight()},
-			'scrollSize': {'x': this.getScrollWidth(), 'y': window.getScrollHeight()},
-			'scroll': {'x': window.getScrollLeft(), 'y': window.getScrollTop()}
+			'size': {'x': Client.getWidth(), 'y': Client.getHeight()},
+			'scrollSize': {'x': Client.getScrollWidth(), 'y': Client.getScrollHeight()},
+			'scroll': {'x': Client.getScrollLeft(), 'y': Client.getScrollTop()}
 		};
 	},
 
 	//ignore
-	getPosition: function(){return {'x': 0, 'y': 0};}
+	getPosition: function(){
+		return {'x': 0, 'y': 0};
+	}
 
 });

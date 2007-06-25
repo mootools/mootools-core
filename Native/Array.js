@@ -269,9 +269,35 @@ Array.extend({
 	*/
 
 	associate: function(keys){
-		var obj = {}, length = Math.min(this.length, keys.length);
-		for (var i = 0; i < length; i++) obj[keys[i]] = this[i];
-		return obj;
+		var routed = {};
+		for (var i = 0, j = this.length; i < j; i++){
+			for (var k = 0, l = keys.length; k < l; k++){
+				if (!routed[keys[k]] && $defined(this[i])){
+					routed[keys[k]] = this[i];
+					break;
+				}
+			}
+		}
+		return routed;
+	},
+	
+	/*
+	Property: assign
+		routes an array to an object based on the <$type> of its elements.
+	*/
+	
+	assign: function(obj){
+		var routed = {};
+		for (var i = 0, l = this.length; i < l; i++){
+			var type = $type(this[i]);
+			for (var name in obj){
+				if (!routed[name] && (type == obj[name] || obj[name] == 'any')){
+					routed[name] = this[i];
+					break;
+				}
+			}
+		}
+		return routed;
 	},
 
 	/*

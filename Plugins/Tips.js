@@ -139,8 +139,8 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var win = {'x': window.getWidth(), 'y': window.getHeight()};
-		var scroll = {'x': window.getScrollLeft(), 'y': window.getScrollTop()};
+		var win = {'x': Client.getWidth(), 'y': Client.getHeight()};
+		var scroll = {'x': Client.getScrollLeft(), 'y': Client.getScrollTop()};
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){

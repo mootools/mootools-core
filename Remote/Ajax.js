@@ -41,9 +41,10 @@ var Ajax = XHR.extend({
 		evalResponse: false
 	},
 
-	initialize: function(url, options){
+	initialize: function(){
+		var params = Array.assign(arguments, {'url': 'string', 'options': 'object'});
 		this.addEvent('onSuccess', this.onComplete);
-		this.setOptions(options);
+		this.setOptions(params.options);
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
@@ -51,7 +52,7 @@ var Ajax = XHR.extend({
 		this.parent();
 		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
-		this.url = url;
+		this.url = params.url;
 	},
 
 	onComplete: function(){
@@ -73,8 +74,10 @@ var Ajax = XHR.extend({
 		>new Ajax(url, {method: 'get'}).request();
 	*/
 
-	request: function(data){
-		data = data || this.options.data;
+	request: function(){
+		var params = $A(arguments).reverse().associate('data', 'url');
+		var data = params.data || this.options.data;
+		var url = params.url || this.url;
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
@@ -189,7 +192,7 @@ Element.extend({
 	*/
 
 	update: function(url, options){
-		return new Ajax(url, $merge({method: 'get', update: this}, options)).request();
+		return new Ajax(url, $merge({method: 'post', update: this}, options)).request();
 	}
 
 });

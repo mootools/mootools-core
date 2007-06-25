@@ -56,8 +56,10 @@ var XHR = new Class({
 		return this;
 	},
 
-	initialize: function(options){
-		this.setTransport().setOptions(options);
+	initialize: function(){
+		var params = Array.assign(arguments, {'url': 'string', 'options': 'object'});
+		this.url = params.url;
+		this.setTransport().setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = {};
 		if (this.options.urlEncoded && this.options.method == 'post'){
@@ -123,7 +125,10 @@ var XHR = new Class({
 		>
 	*/
 
-	send: function(url, data){
+	send: function(){
+		var params = $A(arguments).reverse().associate('data', 'url');
+		var url = params.url || this.url;
+		var data = params.data || this.options.data;
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;

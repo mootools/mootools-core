@@ -51,21 +51,11 @@ var Accordion = Fx.Elements.extend({
 	},
 
 	initialize: function(){
-		var options, togglers, elements, container;
-		$each(arguments, function(argument, i){
-			switch ($type(argument)){
-				case 'object': options = argument; break;
-				case 'element': container = $(argument); break;
-				default:
-					var temp = $$(argument);
-					if (!togglers) togglers = temp;
-					else elements = temp;
-			}
-		});
-		this.togglers = togglers || [];
-		this.elements = elements || [];
-		this.container = $(container);
-		this.setOptions(options);
+		var params = Array.assign(arguments, {'container': 'element', 'options': 'object', 'togglers': 'any', 'elements': 'any'});
+		this.togglers = $$(params.togglers);
+		this.elements = $$(params.elements);
+		this.container = $(params.container);
+		this.setOptions(params.options);
 		this.previous = -1;
 		if (this.options.alwaysHide) this.options.wait = true;
 		if ($chk(this.options.show)){

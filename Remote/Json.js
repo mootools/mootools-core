@@ -14,7 +14,7 @@ Class: Json
 var Json = {
 
 	/*
-	Property: toString
+	Property: encode
 		Converts an object or an array to a string, to be passed in server-side scripts as a parameter.
 
 	Arguments:
@@ -56,7 +56,7 @@ var Json = {
 	},
 
 	/*
-	Property: evaluate
+	Property: decode
 		converts a json string to an javascript Object.
 
 	Arguments:
