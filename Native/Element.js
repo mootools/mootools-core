@@ -71,7 +71,8 @@ var Element = new Class({
 Class: Elements
 	- Every dom function such as <$$>, or in general every function that returns a collection of nodes in mootools, returns them as an Elements class.
 	- The purpose of the Elements class is to allow <Element> methods to work also on <Elements> array.
-	- Elements is also an Array, so it accepts all the <Array> methods.
+	- Elements is an Array in first place, so it accepts all the <Array> methods.
+	- Array methods have priority, so overlapping Element methods (remove, getLast) are changed to "method + Elements" (removeElements, getLastElements)
 	- Every node of the Elements instance is already extended with <$>.
 
 Example:
@@ -112,7 +113,7 @@ Arguments:
 Example:
 	>$('myElement') // gets a DOM element by id with all the Element prototypes applied.
 	>var div = document.getElementById('myElement');
-	>$(div) //returns an Element also with all the mootools extentions applied.
+	>$(div) //returns an Element also with all the mootools extensions applied.
 
 	You'll use this when you aren't sure if a variable is an actual element or an id, as
 	well as just shorthand for document.getElementById().
@@ -238,11 +239,11 @@ Class: Element
 */
 
 Element.extend({
-	
+
 	getElement: function(tag){
 		return $(this.getElementsByTagName(tag)[0] || null);
 	},
-	
+
 	getElements: function(tag){
 		return $$(this.getElementsByTagName(tag));
 	},
@@ -354,6 +355,9 @@ Element.extend({
 	/*
 	Property: remove
 		Removes the Element from the DOM.
+
+	Note:
+		For <Elements> this method is named removeElements, because <Array.remove> has priority.
 
 	Example:
 		>$('myElement').remove() //bye bye
@@ -688,6 +692,9 @@ Element.extend({
 	/*
 	Property: getLast
 		Works as <Element.getPrevious>, but tries to find the lastChild.
+
+	Note:
+		For <Elements> this method is named getLastElements, because <Array.getLast> has priority.
 	*/
 
 	getLast: function(){
@@ -899,18 +906,18 @@ Element.extend({
 		Garbage.trash(this.getElementsByTagName('*'));
 		return this.setHTML('');
 	},
-	
+
 	/*
 	Property: destroy
 		Empties an element of all its children, removes and garbages the element.
 
 	Example:
 		>$('myDiv').destroy() // Div is no more.
-		
+
 	Returns:
 		null
 	*/
-	
+
 	destroy: function(){
 		Garbage.trash([this.empty().remove()]);
 		return null;
