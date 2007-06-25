@@ -181,7 +181,7 @@ function $$(){
 	var elements = [];
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
-		switch($type(selector)){
+		switch ($type(selector)){
 			case 'element': elements.push(selector);
 			case 'boolean': break;
 			case false: break;
@@ -256,7 +256,7 @@ Element.extend({
 	set: function(props){
 		for (var prop in props){
 			var val = props[prop];
-			switch(prop){
+			switch (prop){
 				case 'styles': this.setStyles(val); break;
 				case 'events': if (this.addEvents) this.addEvents(val); break;
 				case 'properties': this.setProperties(val); break;
@@ -268,7 +268,7 @@ Element.extend({
 
 	inject: function(el, where){
 		el = $(el);
-		switch(where){
+		switch (where){
 			case 'before': el.parentNode.insertBefore(this, el); break;
 			case 'after':
 				var next = el.getNext();
@@ -511,12 +511,12 @@ Element.extend({
 	*/
 
 	setStyle: function(property, value){
-		switch(property){
+		switch (property){
 			case 'opacity': return this.setOpacity(parseFloat(value));
 			case 'float': property = (Client.Engine.ie) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
-		switch($type(value)){
+		switch ($type(value)){
 			case 'number': if (!['zIndex', 'zoom'].contains(property)) value += 'px'; break;
 			case 'array': value = 'rgb(' + value.join(',') + ')';
 		}
@@ -544,7 +544,7 @@ Element.extend({
 	*/
 
 	setStyles: function(source){
-		switch($type(source)){
+		switch ($type(source)){
 			case 'object': Element.$setMany(this, 'setStyle', source); break;
 			case 'string': this.style.cssText = source;
 		}

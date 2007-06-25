@@ -68,7 +68,7 @@ Elements.extend({
 			var current = Element.getProperty(el, name);
 			if (!current) return false;
 			if (!operator) return true;
-			switch(operator){
+			switch (operator){
 				case '=': return (current == value);
 				case '*=': return (current.contains(value));
 				case '^=': return (current.substr(0, value.length) == value);

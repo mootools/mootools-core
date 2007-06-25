@@ -53,7 +53,7 @@ var Accordion = Fx.Elements.extend({
 	initialize: function(){
 		var options, togglers, elements, container;
 		$each(arguments, function(argument, i){
-			switch($type(argument)){
+			switch ($type(argument)){
 				case 'object': options = argument; break;
 				case 'element': container = $(argument); break;
 				default:

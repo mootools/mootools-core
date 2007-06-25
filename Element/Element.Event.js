@@ -81,7 +81,7 @@ var Event = new Class({
 				'y': event.pageY ? event.pageY - window.pageYOffset : event.clientY
 			};
 			this.rightClick = (event.which == 3) || (event.button == 2);
-			switch(this.type){
+			switch (this.type){
 				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}

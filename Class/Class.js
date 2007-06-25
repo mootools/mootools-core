@@ -113,7 +113,7 @@ Class.Merge = function(previous, current){
 	if (previous && previous != current){
 		var type = $type(current);
 		if (type != $type(previous)) return current;
-		switch(type){
+		switch (type){
 			case 'function':
 				var merged = function(){
 					this.parent = arguments.callee.parent;

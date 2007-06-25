@@ -312,13 +312,13 @@ function $type(obj){
 	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
 	if (type == 'object' && obj.nodeName){
-		switch(obj.nodeType){
+		switch (obj.nodeType){
 			case 1: return 'element';
 			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
 		}
 	}
 	if (type == 'object' || type == 'function'){
-		switch(obj.constructor){
+		switch (obj.constructor){
 			case Array: return 'array';
 			case RegExp: return 'regexp';
 			case Class: return 'class';

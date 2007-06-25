@@ -52,7 +52,7 @@ var Slider = new Class({
 		this.step = -1;
 		this.element.addEvent('mousedown', this.clickedElement.bind(this));
 		var mod, offset;
-		switch(this.options.mode){
+		switch (this.options.mode){
 			case 'horizontal':
 				this.z = 'x';
 				this.p = 'left';

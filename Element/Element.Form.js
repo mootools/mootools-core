@@ -19,7 +19,7 @@ Element.extend({
 	*/
 
 	getValue: function(){
-		switch(this.getTag()){
+		switch (this.getTag()){
 			case 'select':
 				var values = [];
 				$each(this.options, function(option){

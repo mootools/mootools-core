@@ -147,7 +147,7 @@ Selectors.XPath = {
 
 	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
 		var temp = context.namespaceURI ? 'xhtml:' : '';
-		switch(separator){
+		switch (separator){
 			case '~': case '+': temp += '/following-sibling::'; break;
 			case '>': temp += '/'; break;
 			case ' ': temp += '//';
@@ -166,7 +166,7 @@ Selectors.XPath = {
 			attribute = attribute.match(Selectors.aRegExp);
 			if (!attribute) throw new Error('bad attribute selector');
 			if (attribute[2] && attribute[3]){
-				switch(attribute[2]){
+				switch (attribute[2]){
 					case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
 					case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
 					case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
@@ -199,7 +199,7 @@ Selectors.Filter = {
 
 	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
 		if (separator){
-			switch(separator){
+			switch (separator){
 				case ' ': items = Selectors.Filter.getNestedByTag(items, tag); break;
 				case '>': items = Selectors.Filter.getChildrenByTag(items, tag); break;
 				case '+': items = Selectors.Filter.getFollowingByTag(items, tag); break;

@@ -30,7 +30,7 @@ var Json = {
 	*/
 
 	encode: function(obj){
-		switch($type(obj)){
+		switch ($type(obj)){
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, Json.$replaceChars) + '"';
 			case 'array':
@@ -43,11 +43,8 @@ var Json = {
 				}
 				return '{' + string.join(',') + '}';
 			case 'number':
-				if (!isFinite(obj)) break;
-			case 'boolean':
-				return String(obj);
-			case false:
-				return 'null';
+			case 'boolean': return String(obj);
+			case false: return 'null';
 		}
 		return null;
 	},

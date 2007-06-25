@@ -57,7 +57,7 @@ Selectors.Pseudo.nth = {
 		b = b - 1;
 		while (b < 1) b += a;
 		while (b >= a) b -= a;
-		switch(special){
+		switch (special){
 			case 'n': return {'a': a, 'b': b, 'special': 'n'};
 			case 'odd': return {'a': 2, 'b': 0, 'special': 'n'};
 			case 'even': return {'a': 2, 'b': 1, 'special': 'n'};
@@ -69,7 +69,7 @@ Selectors.Pseudo.nth = {
 	},
 	
 	xpath: function(argument){
-		switch(argument.special){
+		switch (argument.special){
 			case 'n': return '[count(preceding-sibling::*) mod ' + argument.a + ' = ' + argument.b + ']';
 			case 'last': return '[count(following-sibling::*) = 0]';
 			case 'only': return '[not(preceding-sibling::* or following-sibling::*)]';
@@ -87,7 +87,7 @@ Selectors.Pseudo.nth = {
 			});
 		}
 		var include = false;
-		switch(argument.special){
+		switch (argument.special){
 			case 'n': if (parent.$children.indexOf(el) % argument.a == argument.b) include = true; break;
 			case 'last': if (parent.$children.getLast() == el) include = true; break;
 			case 'only': if (parent.$children.length == 1) include = true; break;
