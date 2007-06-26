@@ -39,12 +39,13 @@ Drag.Move = Drag.Base.extend({
 		this.element = $(el);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
+		this.positions = ['relative', 'absolute', 'fixed'];
 		this.position = {'element': this.element.getStyle('position'), 'container': false};
 		if (this.container) this.position.container = this.container.getStyle('position');
-		if (!['relative', 'absolute', 'fixed'].contains(this.position.element)) this.position.element = 'absolute';
+		if (!this.positions.contains(this.position.element)) this.position.element = 'absolute';
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
-		if (this.position.element == 'absolute' && !['relative', 'absolute', 'fixed'].contains(this.position.container)){
+		if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
 			top = $chk(top) ? top : this.element.getTop(this.options.overflown);
 			left = $chk(left) ? left : this.element.getLeft(this.options.overflown);
 		} else {
@@ -57,10 +58,11 @@ Drag.Move = Drag.Base.extend({
 
 	start: function(event){
 		this.overed = null;
+		this.droppables.fireEvent('leave', [this.element, this]);
 		if (this.container){
 			var cont = this.container.getCoordinates();
 			var el = this.element.getCoordinates();
-			if (this.position.element == 'absolute' && !['relative', 'absolute', 'fixed'].contains(this.position.container)){
+			if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
 				this.options.limit = {
 					'x': [cont.left, cont.right - el.width],
 					'y': [cont.top, cont.bottom - el.height]
@@ -77,12 +79,15 @@ Drag.Move = Drag.Base.extend({
 
 	drag: function(event){
 		this.parent(event);
+		this.checkDroppables();
+	},
+	
+	checkDroppables: function(){
 		var overed = this.out ? false : this.droppables.filter(this.checkAgainst, this).getLast();
 		if (this.overed != overed){
 			if (this.overed) this.overed.fireEvent('leave', [this.element, this]);
 			this.overed = overed ? overed.fireEvent('over', [this.element, this]) : null;
 		}
-		return this;
 	},
 
 	checkAgainst: function(el){
@@ -92,6 +97,7 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	stop: function(){
+		this.checkDroppables();
 		if (this.overed && !this.out) this.overed.fireEvent('drop', [this.element, this]);
 		else this.element.fireEvent('emptydrop', this);
 		this.parent();

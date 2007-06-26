@@ -248,7 +248,20 @@ Array.extend({
 	contains: function(item, from){
 		return this.indexOf(item, from) != -1;
 	},
-
+	
+	setValues: function(values){
+		var obj = {};
+		var vtype = $type(values);
+		for (var i = 0, l = this.length; i < l; i++) obj[this[i]] = (vtype == 'array') ? values[i] : values;
+		return obj;
+	},
+	
+	setKeys: function(keys){
+		var obj = {};
+		for (var i = 0, l = keys.length; i < l; i++) obj[keys[i]] = this[i];
+		return obj;
+	},
+	
 	/*
 	Property: associate
 		Creates an object with key-value pairs based on the array of keywords passed in
@@ -267,31 +280,16 @@ Array.extend({
 		//...
 		(end)
 	*/
-
-	associate: function(keys){
-		var routed = {};
-		for (var i = 0, j = this.length; i < j; i++){
-			for (var k = 0, l = keys.length; k < l; k++){
-				if (!routed[keys[k]] && $defined(this[i])){
-					routed[keys[k]] = this[i];
-					break;
-				}
-			}
-		}
-		return routed;
-	},
 	
-	/*
-	Property: assign
-		routes an array to an object based on the <$type> of its elements.
-	*/
-	
-	assign: function(obj){
+	associate: function(obj){
 		var routed = {};
+		var obtype = $type(obj);
+		if (obtype == 'array') obj = obj.setValues(true);
+		for (var oname in obj) routed[oname] = null;
 		for (var i = 0, l = this.length; i < l; i++){
-			var type = $type(this[i]);
+			var res = (obtype == 'array') ? $defined(this[i]) : $type(this[i]);
 			for (var name in obj){
-				if (!routed[name] && (type == obj[name] || obj[name] == 'any')){
+				if (!$defined(routed[name]) && [res, 'any'].contains(obj[name])){
 					routed[name] = this[i];
 					break;
 				}

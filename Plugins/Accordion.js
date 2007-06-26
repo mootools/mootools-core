@@ -51,7 +51,7 @@ var Accordion = Fx.Elements.extend({
 	},
 
 	initialize: function(){
-		var params = Array.assign(arguments, {'container': 'element', 'options': 'object', 'togglers': 'any', 'elements': 'any'});
+		var params = $A(arguments).associate({'container': 'element', 'options': 'object', 'togglers': 'any', 'elements': 'any'});
 		this.togglers = $$(params.togglers);
 		this.elements = $$(params.elements);
 		this.container = $(params.container);

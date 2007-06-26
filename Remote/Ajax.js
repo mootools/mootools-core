@@ -42,7 +42,7 @@ var Ajax = XHR.extend({
 	},
 
 	initialize: function(){
-		var params = Array.assign(arguments, {'url': 'string', 'options': 'object'});
+		var params = $A(arguments).associate({'url': 'string', 'options': 'object'});
 		this.addEvent('onSuccess', this.onComplete);
 		this.setOptions(params.options);
 		if (!['post', 'get'].contains(this.options.method)){
@@ -75,7 +75,7 @@ var Ajax = XHR.extend({
 	*/
 
 	request: function(){
-		var params = $A(arguments).reverse().associate('data', 'url');
+		var params = $A(arguments).reverse().setKeys('data', 'url');
 		var data = params.data || this.options.data;
 		var url = params.url || this.url;
 		switch ($type(data)){
@@ -192,7 +192,7 @@ Element.extend({
 	*/
 
 	update: function(url, options){
-		return new Ajax(url, $merge({method: 'post', update: this}, options)).request();
+		return new Ajax(url, $merge({update: this}, options)).request();
 	}
 
 });

@@ -57,7 +57,7 @@ var XHR = new Class({
 	},
 
 	initialize: function(){
-		var params = Array.assign(arguments, {'url': 'string', 'options': 'object'});
+		var params = $A(arguments).associate({'url': 'string', 'options': 'object'});
 		this.url = params.url;
 		this.setTransport().setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
@@ -126,7 +126,7 @@ var XHR = new Class({
 	*/
 
 	send: function(){
-		var params = $A(arguments).reverse().associate('data', 'url');
+		var params = $A(arguments).reverse().setKeys('data', 'url');
 		var url = params.url || this.url;
 		var data = params.data || this.options.data;
 		if (this.options.autoCancel) this.cancel();
