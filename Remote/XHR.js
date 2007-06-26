@@ -126,7 +126,7 @@ var XHR = new Class({
 	*/
 
 	send: function(){
-		var params = $A(arguments).reverse().setKeys('data', 'url');
+		var params = $A(arguments).reverse().setKeys(['data', 'url']);
 		var url = params.url || this.url;
 		var data = params.data || this.options.data;
 		if (this.options.autoCancel) this.cancel();
