@@ -39,7 +39,7 @@ var Json = {
 				var string = [];
 				for (var prop in obj){
 					var val = Json.encode(obj[prop]);
-					if ($defined(val)) string.push(Json.encode(prop), ':', val);
+					if ($defined(val)) string.push(Json.encode(prop) + ':' + val);
 				}
 				return '{' + string.join(',') + '}';
 			case 'number':
