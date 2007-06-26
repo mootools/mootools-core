@@ -57,8 +57,10 @@ Drag.Move = Drag.Base.extend({
 	},
 
 	start: function(event){
-		this.overed = null;
-		this.droppables.fireEvent('leave', [this.element, this]);
+		if (this.overed){
+			this.overed.fireEvent('leave', [this.element, this]);
+			this.overed = null;
+		}
 		if (this.container){
 			var cont = this.container.getCoordinates();
 			var el = this.element.getCoordinates();
