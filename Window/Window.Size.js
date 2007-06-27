@@ -91,6 +91,18 @@ Client.extend({
 
 	getScrollTop: function(){
 		return window.pageYOffset || document.documentElement.scrollTop;
+	},
+
+	/*
+	Property: getSize
+		Same as <Element.getSize>, but for window
+	*/
+	getSize: function(){
+		return {
+			'size': {'x': Client.getWidth(), 'y': Client.getHeight()},
+			'scrollSize': {'x': Client.getScrollWidth(), 'y': Client.getScrollHeight()},
+			'scroll': {'x': Client.getScrollLeft(), 'y': Client.getScrollTop()}
+		};
 	}
 
 });
@@ -99,23 +111,15 @@ Client.extend({
 Class: window
 	Utility methods attached to the window object to match Element's equivalents
 */
-	
+
 window.extend({
 
 	/*
 	Property: getSize
-		Same as <Element.getSize>
+		Same as <Client.getSize>
 	*/
+	getSize: Client.getSize,
 
-	getSize: function(){
-		return {
-			'size': {'x': Client.getWidth(), 'y': Client.getHeight()},
-			'scrollSize': {'x': Client.getScrollWidth(), 'y': Client.getScrollHeight()},
-			'scroll': {'x': Client.getScrollLeft(), 'y': Client.getScrollTop()}
-		};
-	},
-
-	//ignore
 	getPosition: function(){
 		return {'x': 0, 'y': 0};
 	}

@@ -75,7 +75,7 @@ var Ajax = XHR.extend({
 	*/
 
 	request: function(){
-		var params = $A(arguments).reverse().associate(['data', 'url']);
+		var params = $A(arguments).reverse().associate(['url', 'data']);
 		var data = params.data || this.options.data;
 		var url = params.url || this.url;
 		switch ($type(data)){
