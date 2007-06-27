@@ -18,10 +18,14 @@ Options:
 	mode - set it to vertical or horizontal. Defaults to vertical.
 	options - all the <Fx.Base> options
 
+Properties:
+	open - (boolean) true: the slide element is visible.
+
 Example:
 	(start code)
 	var mySlider = new Fx.Slide('myElement', {duration: 500});
 	mySlider.toggle() //toggle the slider up and down.
+	mySlider.open //true
 	(end)
 */
 
