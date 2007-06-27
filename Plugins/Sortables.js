@@ -64,14 +64,18 @@ var Sortables = new Class({
 		this.idle = true;
 		this.hovering = false;
 		this.newInsert = false;
-		this.revert = (this.options.revert) ? $merge({duration: 250, wait: false}, this.options.revert) : false;
+		this.bound = {
+			start: [],
+			end: this.end.bind(this),
+			move: this.move.bind(this),
+			reset: this.reset.bind(this)
+		};
+		if (this.options.revert){
+			var revertOptions = $merge({duration: 250, wait: false}, this.options.revert);
+			this.effect = new Fx.Styles(this.element, revertOptions).addEvent('onComplete', this.bound.reset, true);
+		}
 		this.cloneContents = !!(this.options.clone);
 		this.options.clone = (this.cloneContents) ? $merge({'opacity': 0.7}, this.options.clone) : {'visibility': 'hidden'};
-		this.bound = {
-			'start': [],
-			'end': this.end.bind(this),
-			'move': this.move.bind(this)
-		};
 		
 		this.lists = $$($(lists) || lists);
 		
@@ -148,11 +152,10 @@ var Sortables = new Class({
 	},
 	
 	reposition: function(){
-		if (this.list.positioned) {
+		if (this.list.positioned){
 			this.position.y -= this.offset.list.y - this.list.scrollTop;
 			this.position.x -= this.offset.list.x - this.list.scrollLeft;
-		}
-		else if (Client.Engine.opera) {
+		} else if (Client.Engine.opera){
 			this.position.y += this.list.scrollTop;
 			this.position.x += this.list.scrollLeft;
 		}
@@ -173,7 +176,7 @@ var Sortables = new Class({
 		this.element = element;
 		this.list = this.element.getParent();
 		this.list.hovering = this.hovering = true;
-		this.list.positioned = this.list.getStyle('position').test('relative|absolute|fixed');
+		this.list.positioned = this.list.getStyle('position').test(/relative|absolute|fixed/);
 
 		var children = this.list.getChildren();
 		var bounds = children.shift().getCoordinates();
@@ -187,6 +190,7 @@ var Sortables = new Class({
 		this.bounds = bounds;
 		
 		this.position = this.element.getPosition([this.list]);
+		
 		this.offset = {
 			'list': this.list.getPosition(),
 			'element': {'x': event.page.x - this.position.x, 'y': event.page.y - this.position.y}
@@ -222,7 +226,7 @@ var Sortables = new Class({
 			'left' : this.position.x - this.margin.left
 		});
 
-		if (!this.options.constrain) {
+		if (!this.options.constrain){
 			var oldSize, newSize;
 			this.lists.each(function(list){
 				if (!this.check(list, true)){
@@ -268,11 +272,10 @@ var Sortables = new Class({
 		this.position = this.clone.getPosition([this.list]);
 		this.reposition();
 
-		if (!this.revert){
+		if (!this.effect){
 			this.reset();
 		} else {
-			if (!this.effect) this.effect = this.element.effects(this.revert).addEvent('onComplete', this.reset.bind(this));
-			else this.effect.element = this.element;
+			this.effect.element = this.element;
 			this.effect.start({
 				'top' : this.position.y - this.margin.top,
 				'left' : this.position.x - this.margin.left,
