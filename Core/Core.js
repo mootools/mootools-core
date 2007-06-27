@@ -62,7 +62,7 @@ function $extend(){
 };
 
 /*
-Function: $native
+Function: Native
 	Will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
 	Its handy if you dont want the .extend method of an object to overwrite existing methods.
 	Used automatically in MooTools to implement Array/Function/Number/String methods to browsers that dont natively support them whitout manual checking.
@@ -71,24 +71,24 @@ Arguments:
 	any number of classes/native javascript objects
 */
 
-function $native(){
+var Native = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		arguments[i].extend = function(props){
 			for (var prop in props){
 				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
-				if (!this[prop]) this[prop] = $native.generic(prop);
+				if (!this[prop]) this[prop] = Native.generic(prop);
 			}
 		};
 	}
 };
 
-$native.generic = function(prop){
+Native.generic = function(prop){
 	return function(bind){
 		return this.prototype[prop].apply(bind, Array.prototype.slice.call(arguments, 1));
 	};
 };
 
-$native(Array, Function, Number, String);
+Native(Array, Function, Number, String);
 
 /* Section: Utility Functions */
 
@@ -344,14 +344,49 @@ Returns:
 */
 
 var Abstract = function(obj){
-	obj = obj || {};
-	obj.extend = $extend;
-	return obj;
+	$extend(this, obj);
+};
+
+Abstract.prototype = {
+
+	extend: function(properties){
+		for (var property in properties){
+			var tp = this[property];
+			this[property] = Abstract.merge(tp, properties[property]);
+		}
+	},
+	
+	implement: function(properties){
+		$extend(this, properties);
+	}
+
+};
+
+Abstract.merge = function(previous, current){
+	if (previous && previous != current){
+		var type = $type(current);
+		if (type != $type(previous)) return current;
+		switch (type){
+			case 'function':
+				var merged = function(){
+					this.parent = arguments.callee.parent;
+					return current.apply(this, arguments);
+				};
+				merged.parent = previous;
+				return merged;
+			case 'object':
+				for (var property in current){
+					var pp = previous[property];
+					previous[property] = Abstract.merge(pp, current[property]);
+				}
+				return previous;
+		}
+	}
+	return current;
 };
 
 //document, window
-var Window = new Abstract(window);
-var Document = new Abstract(document);
+window.extend = document.extend = $extend;
 document.head = document.getElementsByTagName('head')[0];
 
 /*

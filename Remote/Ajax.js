@@ -43,7 +43,7 @@ var Ajax = XHR.extend({
 
 	initialize: function(){
 		var params = $A(arguments).associate({'url': 'string', 'options': 'object'});
-		this.addEvent('onSuccess', this.onComplete);
+		this.addEvent('onSuccess', this.onComplete, true);
 		this.setOptions(params.options);
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
@@ -75,7 +75,7 @@ var Ajax = XHR.extend({
 	*/
 
 	request: function(){
-		var params = $A(arguments).reverse().setKeys(['data', 'url']);
+		var params = $A(arguments).reverse().associate(['data', 'url']);
 		var data = params.data || this.options.data;
 		var url = params.url || this.url;
 		switch ($type(data)){

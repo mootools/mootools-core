@@ -249,26 +249,14 @@ Array.extend({
 		return this.indexOf(item, from) != -1;
 	},
 	
-	setValues: function(values){
-		var obj = {};
-		var vtype = $type(values);
-		for (var i = 0, l = this.length; i < l; i++) obj[this[i]] = (vtype == 'array') ? values[i] : values;
-		return obj;
-	},
-	
-	setKeys: function(keys){
-		var obj = {};
-		for (var i = 0, l = keys.length; i < l; i++) obj[keys[i]] = this[i];
-		return obj;
-	},
-	
 	/*
 	Property: associate
 		Creates an object with key-value pairs based on the array of keywords passed in
 		and the current content of the array.
+		Can also accept an object of key/types to assign values.
 
 	Arguments:
-		keys - the array of keywords.
+		keys - an array of keys, or an objects of keys/types
 
 	Example:
 		(start code)
@@ -277,20 +265,27 @@ Array.extend({
 		var Speeches = Animals.associate(Speech);
 		//Speeches['Miao'] is now Cat.
 		//Speeches['Bau'] is now Dog.
-		//...
+		
+		var Values = [100, 'Hello', {foo: 'bar'}, $('myelement')];
+		Values.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
+		//returns {myNumber: 100, myElement: <div id="myelement">, myObject: {foo: bar}, myString: Hello}
 		(end)
 	*/
 	
 	associate: function(obj){
 		var routed = {};
-		var obtype = $type(obj);
-		if (obtype == 'array') obj = obj.setValues(true);
+		var objtype = $type(obj);
+		if (objtype == 'array'){
+			var temp = {};
+			for (var i = 0, j = obj.length; i < j; i++) temp[obj[i]] = true;
+			obj = temp;
+		}
 		for (var oname in obj) routed[oname] = null;
-		for (var i = 0, l = this.length; i < l; i++){
-			var res = (obtype == 'array') ? $defined(this[i]) : $type(this[i]);
+		for (var k = 0, l = this.length; k < l; k++){
+			var res = (objtype == 'array') ? $defined(this[k]) : $type(this[k]);
 			for (var name in obj){
 				if (!$defined(routed[name]) && [res, 'any'].contains(obj[name])){
-					routed[name] = this[i];
+					routed[name] = this[k];
 					break;
 				}
 			}

@@ -30,7 +30,7 @@ Json.Remote = XHR.extend({
 
 	initialize: function(url, options){
 		this.url = url;
-		this.addEvent('onSuccess', this.onComplete);
+		this.addEvent('onSuccess', this.onComplete, true);
 		this.parent(options);
 		this.setHeader('X-Request', 'JSON');
 	},

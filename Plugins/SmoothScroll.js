@@ -34,7 +34,7 @@ var SmoothScroll = Fx.Scroll.extend({
 		}, this);
 		if (!Client.Engine.webkit419) this.addEvent('onComplete', function(){
 			window.location.hash = this.anchor;
-		});
+		}, true);
 	},
 
 	useLink: function(link, anchor){

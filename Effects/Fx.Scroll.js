@@ -40,10 +40,10 @@ Fx.Scroll = Fx.Base.extend({
 		if (this.options.wheelStops){
 			this.addEvent('onStart', function(){
 				document.addEvent('mousewheel', this.bound.stop);
-			}.bind(this));
+			}.bind(this), true);
 			this.addEvent('onComplete', function(){
 				document.removeEvent('mousewheel', this.bound.stop);
-			}.bind(this));
+			}.bind(this), true);
 		}
 	},
 

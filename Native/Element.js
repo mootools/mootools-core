@@ -97,7 +97,7 @@ var Elements = new Class({
 Elements.extend = function(props){
 	for (var prop in props){
 		this.prototype[prop] = props[prop];
-		this[prop] = $native.generic(prop);
+		this[prop] = Native.generic(prop);
 	}
 };
 
@@ -227,7 +227,7 @@ Element.extend = function(properties){
 	for (var property in properties){
 		HTMLElement.prototype[property] = properties[property];
 		Element.prototype[property] = properties[property];
-		Element[property] = $native.generic(property);
+		Element[property] = Native.generic(property);
 		var elementsProperty = (Array.prototype[property]) ? property + 'Elements' : property;
 		Elements.prototype[elementsProperty] = Elements.Multi(property);
 	}
@@ -962,12 +962,12 @@ Element.$setMany = function(el, method, pairs){
 	return el;
 };
 
-Element.$properties = new Abstract({
+Element.$properties = {
 	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
 	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
 	'readonly': 'readOnly', 'frameborder': 'frameBorder', 'value': 'value',
 	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple', 'selected': 'selected'
-});
+};
 
 Element.$propertiesIFlag = {
 	'href': 2, 'src': 2

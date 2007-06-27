@@ -111,12 +111,18 @@ var Events = new Class({
 		fn - the function to execute
 	*/
 
-	addEvent: function(type, fn){
+	addEvent: function(type, fn, internal){
 		if (fn != $empty){
 			this.$events = this.$events || {};
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
+			if (internal) fn.internal = true;
 		}
+		return this;
+	},
+	
+	addEvents: function(events){
+		for (var type in events) this.addEvent(type, events[type]);
 		return this;
 	},
 
@@ -160,7 +166,19 @@ var Events = new Class({
 	*/
 
 	removeEvent: function(type, fn){
-		if (this.$events && this.$events[type]) this.$events[type].remove(fn);
+		if (this.$events && this.$events[type]){
+			if (!fn.internal) this.$events[type].remove(fn);
+		}
+		return this;
+	},
+	
+	removeEvents: function(evType){
+		for (var type in this.$events){
+			if (evType && evType != type) continue;
+			this.$events[type].each(function(fn){
+				this.removeEvent(type, fn);
+			});
+		}
 		return this;
 	}
 
