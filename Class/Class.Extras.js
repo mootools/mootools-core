@@ -177,7 +177,7 @@ var Events = new Class({
 			if (evType && evType != type) continue;
 			this.$events[type].each(function(fn){
 				this.removeEvent(type, fn);
-			});
+			}, this);
 		}
 		return this;
 	}
