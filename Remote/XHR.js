@@ -15,6 +15,7 @@ Arguments:
 
 Options:
 	method - 'post' or 'get' - the protocol for the request; optional, defaults to 'post'.
+	data - you can write parameters here. Can be a querystring, an object or a Form element.
 	async - boolean: asynchronous option; true uses asynchronous requests. Defaults to true.
 	encoding - the encoding, defaults to utf-8.
 	autoCancel - cancels the already running request if another one is sent. defaults to false.
@@ -126,10 +127,9 @@ var XHR = new Class({
 		>
 	*/
 
-	send: function(){
-		var params = $A(arguments).reverse().associate(['data', 'url']);
-		var url = params.url || this.url;
-		var data = params.data || this.options.data;
+	send: function(url, data){
+		url = url || this.url;
+		data = data || this.options.data;
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;

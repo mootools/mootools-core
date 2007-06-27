@@ -19,7 +19,6 @@ Arguments:
 	options - optional, an object containing options.
 
 Options:
-	data - you can write parameters here. Can be a querystring, an object or a Form element.
 	update - $(element) to insert the response text of the XHR into, upon completion of the request.
 	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
 	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
@@ -34,7 +33,6 @@ Example:
 var Ajax = XHR.extend({
 
 	options: {
-		data: null,
 		update: null,
 		onComplete: $empty,
 		evalScripts: false,
@@ -74,16 +72,14 @@ var Ajax = XHR.extend({
 		>new Ajax(url, {method: 'get'}).request();
 	*/
 
-	request: function(){
-		var params = $A(arguments).reverse().associate(['url', 'data']);
-		var data = params.data || this.options.data;
-		var url = params.url || this.url;
+	request: function(data, url){
+		data = data || this.options.data;
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
-		return this.send(this.url, data);
+		return this.send(url, data);
 	},
 
 	/*
