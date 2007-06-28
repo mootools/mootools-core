@@ -194,7 +194,7 @@
 		},
 
 		"Hash.Cookie": {
-			"deps": ["Hash", "Cookie"],
+			"deps": ["Hash", "Cookie", "Json"],
 			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
 		},
 
