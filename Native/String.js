@@ -42,12 +42,15 @@ String.extend({
 	Returns:
 		either an int or "NaN" if the string is not a number.
 
+	Arguments:
+		base - number, optional; base to use, defaults to 10
+
 	Example:
 		>var value = "10px".toInt(); // value is 10
 	*/
 
-	toInt: function(){
-		return parseInt(this, 10);
+	toInt: function(base){
+		return parseInt(this, base || 10);
 	},
 
 	/*

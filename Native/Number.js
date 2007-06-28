@@ -16,10 +16,17 @@ Number.extend({
 	/*
 	Property: toInt
 		Returns this number; useful because toInt must work on both Strings and Numbers.
+
+	Arguments:
+		base - number, optional; base to use, defaults to 10
+
+	Example:
+		(111).toInt() // returns 111
+		(111).toInt(2); // returns 7
 	*/
 
-	toInt: function(){
-		return parseInt(this);
+	toInt: function(base){
+		return parseInt(this, base || 10);
 	},
 
 	/*
