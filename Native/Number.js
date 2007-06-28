@@ -86,7 +86,7 @@ Number.extend({
 	*/
 
 	times: function(fn, bind){
-		for (var i = 0; i < this; i++) fn.call(this, i, this);
+		for (var i = 0; i < this; i++) fn.call(bind, i, this);
 	}
 
 });
