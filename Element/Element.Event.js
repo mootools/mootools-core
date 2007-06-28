@@ -120,9 +120,10 @@ var Event = new Class({
 		else this.event.returnValue = false;
 		return this;
 	},
-	
+
 	fixRelatedTarget: function(){
-		if (this.relatedTarget && this.relatedTarget.nodeType == 3) this.relatedTarget = this.relatedTarget.parentNode;
+		var rel = this.relatedTarget;
+		if (rel && rel.nodeType == 3) this.relatedTarget = rel.parentNode;
 	}
 
 });
@@ -320,7 +321,8 @@ Element.Events = new Abstract({
 	'mouseenter': {
 		type: 'mouseover',
 		map: function(event){
-			return (event.relatedTarget != this && !this.hasChild(event.relatedTarget));
+			var rel = event.relatedTarget;
+			return (rel && rel != this && !this.hasChild(rel));
 		}
 	},
 
@@ -336,7 +338,8 @@ Element.Events = new Abstract({
 	'mouseleave': {
 		type: 'mouseout',
 		map: function(event){
-			return (event.relatedTarget != this && !this.hasChild(event.relatedTarget));
+			var rel = event.relatedTarget;
+			return (rel && rel != this && !this.hasChild(rel));
 		}
 	},
 

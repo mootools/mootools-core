@@ -49,7 +49,7 @@ Number.extend({
 	*/
 
 	limit: function(min, max){
-		return Math.min(max, Math.max(min, this));
+		return Math.min($pick(max, Number.MAX_VALUE), Math.max($pick(min, Number.MIN_VALUE), this));
 	},
 
 	/*
@@ -79,13 +79,14 @@ Number.extend({
 
 	Arguments:
 		function - the function to be executed on each iteration of the loop
+		bind - the object to bind "this" to (see <Function.bind>)
 
 	Example:
 		>(4).times(alert);
 	*/
 
-	times: function(fn){
-		for (var i = 0; i < this; i++) fn(i);
+	times: function(fn, bind){
+		for (var i = 0; i < this; i++) fn.call(this, i, this);
 	}
 
 });
