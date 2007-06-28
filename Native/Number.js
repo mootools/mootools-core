@@ -26,7 +26,7 @@ Number.extend({
 	*/
 
 	toInt: function(base){
-		return parseInt(this, base || 10);
+		return parseInt(this, base);
 	},
 
 	/*

@@ -50,7 +50,7 @@ String.extend({
 	*/
 
 	toInt: function(base){
-		return parseInt(this, base || 10);
+		return parseInt(this, base);
 	},
 
 	/*
@@ -245,7 +245,7 @@ Array.extend({
 		if (this.length != 3) return false;
 		var rgb = [];
 		for (var i = 0; i < 3; i++){
-			rgb.push(parseInt((this[i].length == 1) ? this[i] + this[i] : this[i], 16));
+			rgb.push(((this[i].length == 1) ? this[i] + this[i] : this[i]).toInt(16));
 		}
 		return array ? rgb : 'rgb(' + rgb.join(',') + ')';
 	}
