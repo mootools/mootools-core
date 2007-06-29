@@ -50,12 +50,12 @@ var Event = new Class({
 		this.type = event.type;
 		this.target = event.target || event.srcElement;
 		if (this.target.nodeType == 3) this.target = this.target.parentNode;
-		$extend(this, {
-			'shift': event.shiftKey,
-			'control': event.ctrlKey,
-			'alt': event.altKey,
-			'meta': event.metaKey
-		});
+
+		this.shift = event.shiftKey;
+		this.control = event.ctrlKey;
+		this.alt = event.altKey;
+		this.meta = event.metaKey;
+
 		if (['DOMMouseScroll', 'mousewheel'].contains(this.type)){
 			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		} else if (this.type.contains('key')){
