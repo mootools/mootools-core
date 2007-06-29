@@ -1005,23 +1005,23 @@ var Garbage = {
 		return el;
 	},
 
-	trash: function(elements){
+	trash: function(elements, unload){
 		for (var i = 0, j = elements.length, el; i < j; i++){
 			if (!(el = elements[i]) || !el.$tmp) continue;
 			if (el.tagName && Element.$badTags.contains(el.tagName.toLowerCase())) continue;
-			if (el.$events) el.fireEvent('trash').removeEvents();
+			if (el.$events) el.fireEvent('trash', [!!(unload)]).removeEvents();
 			for (var p in el.$tmp) el.$tmp[p] = null;
 			for (var d in Element.prototype) el[d] = null;
-			Garbage.elements[Garbage.elements.indexOf(el)] = null;
+			if (!unload) Garbage.elements[Garbage.elements.indexOf(el)] = null;
 			el.htmlElement = el.$tmp = el = null;
 		}
-		Garbage.elements.remove(null);
+		if (!unload) Garbage.elements.remove(null);
 	},
 
 	empty: function(){
 		Garbage.collect(window);
 		Garbage.collect(document);
-		Garbage.trash(Garbage.elements);
+		Garbage.trash(Garbage.elements, true);
 	}
 
 };
