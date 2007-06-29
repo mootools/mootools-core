@@ -56,9 +56,10 @@ Drag.Base = new Class({
 		snap: 6
 	},
 
-	initialize: function(el, options){
-		this.setOptions(options);
-		this.element = $(el);
+	initialize: function(){
+		var params = $A(arguments).associate({'options': 'object', 'element': ['element', 'string']});
+		this.element = $(params.element);
+		this.setOptions(params.options);
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
@@ -69,7 +70,6 @@ Drag.Base = new Class({
 			'stop': this.stop.bind(this)
 		};
 		this.attach();
-		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
 	attach: function(){

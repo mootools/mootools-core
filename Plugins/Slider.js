@@ -66,7 +66,7 @@ var Slider = new Class({
 				offset = 'offsetHeight';
 		}
 		this.max = this.element[offset] - this.knob[offset] + (this.options.offset * 2);
-		this.half = this.knob[offset]/2;
+		this.half = this.knob[offset] / 2;
 		this.getPos = this.element['get' + this.p.capitalize()].bind(this.element);
 		this.knob.setStyle('position', 'relative').setStyle(this.p, - this.options.offset);
 		var lim = {};
@@ -86,7 +86,6 @@ var Slider = new Class({
 				this.end();
 			}.bind(this)
 		});
-		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
 	/*

@@ -55,20 +55,19 @@ var XHR = new Class({
 
 	setTransport: function(){
 		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Client.Engine.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
-		return this;
 	},
 
 	initialize: function(){
 		var params = $A(arguments).associate({'url': 'string', 'options': 'object'});
 		this.url = params.url;
-		this.setTransport().setOptions(params.options);
+		this.setTransport();
+		this.setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = {};
 		if (this.options.urlEncoded && this.options.method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
-		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
 	onStateChange: function(){
@@ -113,6 +112,17 @@ var XHR = new Class({
 		this.headers[name] = value;
 		return this;
 	},
+	
+	/*
+	Property: getHeader
+		Returns the given response header or null
+	*/
+
+	getHeader: function(name){
+		return $try(function(name){
+			return this.getResponseHeader(name);
+		}, this.transport, name) || null;
+	},
 
 	/*
 	Property: send
@@ -128,8 +138,6 @@ var XHR = new Class({
 	*/
 
 	send: function(url, data){
-		url = url || this.url;
-		data = data || this.options.data;
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;
@@ -152,6 +160,10 @@ var XHR = new Class({
 		this.transport.send($pick(data, null));
 		if (!this.options.async) this.onStateChange();
 		return this;
+	},
+	
+	request: function(data){
+		return this.send(this.url, data || this.options.data);
 	},
 
 	/*

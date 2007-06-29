@@ -39,18 +39,15 @@ var Ajax = XHR.extend({
 		evalResponse: false
 	},
 
-	initialize: function(){
-		var params = $A(arguments).associate({'url': 'string', 'options': 'object'});
+	initialize: function(url, options){
+		this.parent(url, options);
 		this.addEvent('onSuccess', this.onComplete, true);
-		this.setOptions(params.options);
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
 		}
-		this.parent();
 		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
-		this.url = params.url;
 	},
 
 	onComplete: function(){
@@ -72,14 +69,14 @@ var Ajax = XHR.extend({
 		>new Ajax(url, {method: 'get'}).request();
 	*/
 
-	request: function(data, url){
+	request: function(data){
 		data = data || this.options.data;
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
-		return this.send(url, data);
+		return this.parent(data);
 	},
 
 	/*
@@ -89,25 +86,15 @@ var Ajax = XHR.extend({
 
 	evalScripts: function(){
 		var script, scripts;
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) scripts = this.response.text;
-		else {
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))){
+			scripts = this.response.text;
+		} else {
 			scripts = [];
 			var regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
 			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
 			scripts = scripts.join('\n');
 		}
 		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
-	},
-
-	/*
-	Property: getHeader
-		Returns the given response header or null
-	*/
-
-	getHeader: function(name){
-		return $try(function(name) {
-			return this.getResponseHeader(name);
-		}, this.transport, name) || null;
 	}
 
 });

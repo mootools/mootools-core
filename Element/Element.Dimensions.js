@@ -75,7 +75,7 @@ Element.extend({
 	*/
 
 	getPosition: function(overflown){
-		overflown = overflown || [];
+		overflown = $splat(overflown) || [];
 		var el = this, left = 0, top = 0;
 		do {
 			left += el.offsetLeft || 0;

@@ -284,7 +284,7 @@ Array.extend({
 		for (var k = 0, l = this.length; k < l; k++){
 			var res = (objtype == 'array') ? $defined(this[k]) : $type(this[k]);
 			for (var name in obj){
-				if (!$defined(routed[name]) && [res, 'any'].contains(obj[name])){
+				if (!$defined(routed[name]) && ((res && obj[name] === true) || obj[name].contains(res))){
 					routed[name] = this[k];
 					break;
 				}

@@ -19,8 +19,8 @@ Arguments:
 Fx.Elements = Fx.Base.extend({
 
 	initialize: function(elements, options){
-		this.elements = $$(elements);
-		this.parent(options);
+		this.parent(elements, options);
+		this.elements = $$(this.element);
 	},
 
 	setNow: function(){

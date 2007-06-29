@@ -35,20 +35,22 @@ Fx.Slide = Fx.Base.extend({
 		mode: 'vertical'
 	},
 
-	initialize: function(el, options){
-		this.element = $(el);
-		this.wrapper = new Element('div', {'styles': $extend(this.element.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
+	initialize: function(element, options){
+		this.parent(element, options);
+		this.element = $(this.element);
+		if (!this.element.$tmp.wrapped){
+			this.wrapper = new Element('div', {'styles': $extend(this.element.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
+			this.element.$tmp.wrapped = true;
+		}
 		this.element.setStyle('margin', 0);
-		this.setOptions(options);
 		this.now = [];
-		this.parent(this.options);
 		this.open = true;
 		this.addEvent('onComplete', function(){
 			this.open = (this.now[0] === 0);
-		});
+		}, true);
 		if (Client.Engine.webkit419) this.addEvent('onComplete', function(){
 			if (this.open) this.element.remove().inject(this.wrapper);
-		});
+		}, true);
 	},
 
 	setNow: function(){

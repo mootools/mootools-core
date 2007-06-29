@@ -40,10 +40,10 @@ Fx.Base = new Class({
 		fps: 50
 	},
 
-	initialize: function(options){
-		this.element = this.element || null;
-		this.setOptions(options);
-		if (this.options.initialize) this.options.initialize.call(this);
+	initialize: function(){
+		var params = $A(arguments).associate({'options': 'object', 'element': true});
+		this.element = params.element;
+		this.setOptions(params.options);
 	},
 
 	step: function(){

@@ -321,8 +321,8 @@ Element.Events = new Abstract({
 	'mouseenter': {
 		type: 'mouseover',
 		map: function(event){
-			var rel = event.relatedTarget;
-			return (rel && rel != this && !this.hasChild(rel));
+			var related = event.relatedTarget;
+			return (related && related != this && !this.hasChild(related));
 		}
 	},
 
@@ -338,8 +338,8 @@ Element.Events = new Abstract({
 	'mouseleave': {
 		type: 'mouseout',
 		map: function(event){
-			var rel = event.relatedTarget;
-			return (rel && rel != this && !this.hasChild(rel));
+			var related = event.relatedTarget;
+			return (related && related != this && !this.hasChild(related));
 		}
 	},
 

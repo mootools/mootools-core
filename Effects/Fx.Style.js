@@ -24,10 +24,10 @@ Example:
 
 Fx.Style = Fx.Base.extend({
 
-	initialize: function(el, property, options){
-		this.element = $(el);
+	initialize: function(element, property, options){
+		this.parent(element, options);
 		this.property = property;
-		this.parent(options);
+		this.element = $(this.element);
 	},
 
 	/*

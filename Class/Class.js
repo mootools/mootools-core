@@ -29,7 +29,9 @@ Example:
 
 var Class = function(properties){
 	var klass = function(){
-		return (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
+		var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
+		if (this.options && this.options.initialize) this.options.initialize.call(this);
+		return self;
 	};
 	$extend(klass, this);
 	klass.prototype = properties;

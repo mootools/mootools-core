@@ -51,11 +51,10 @@ var Accordion = Fx.Elements.extend({
 	},
 
 	initialize: function(){
-		var params = $A(arguments).associate({'container': 'element', 'options': 'object', 'togglers': 'any', 'elements': 'any'});
+		var params = $A(arguments).associate({'container': 'element', 'options': 'object', 'togglers': true, 'elements': true});
+		this.parent(params.elements, params.options);
 		this.togglers = $$(params.togglers);
-		this.elements = $$(params.elements);
 		this.container = $(params.container);
-		this.setOptions(params.options);
 		this.previous = -1;
 		if (this.options.alwaysHide) this.options.wait = true;
 		if ($chk(this.options.show)){
@@ -78,7 +77,6 @@ var Accordion = Fx.Elements.extend({
 				for (var fx in this.effects) el.setStyle(fx, 0);
 			}
 		}, this);
-		this.parent(this.elements);
 		if ($chk(this.options.display)) this.display(this.options.display);
 	},
 

@@ -36,9 +36,9 @@ Example:
 
 Fx.Styles = Fx.Base.extend({
 
-	initialize: function(el, options){
-		this.element = $(el);
-		this.parent(options);
+	initialize: function(element, options){
+		this.parent(element, options);
+		this.element = $(this.element);
 	},
 
 	setNow: function(){

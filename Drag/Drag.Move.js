@@ -34,9 +34,8 @@ Drag.Move = Drag.Base.extend({
 		overflown: []
 	},
 
-	initialize: function(el, options){
-		this.setOptions(options);
-		this.element = $(el);
+	initialize: function(element, options){
+		this.parent(element, options);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
 		this.positions = ['relative', 'absolute', 'fixed'];
@@ -53,7 +52,6 @@ Drag.Move = Drag.Base.extend({
 			left = $chk(left) ? left : 0;
 		}
 		this.element.setStyles({'top': top, 'left': left, 'position': this.position.element});
-		this.parent(this.element);
 	},
 
 	start: function(event){

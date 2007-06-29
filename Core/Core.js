@@ -356,8 +356,8 @@ Abstract.prototype = {
 		}
 	},
 	
-	implement: function(properties){
-		$extend(this, properties);
+	implement: function(){
+		for (var i = 0, l = arguments.length; i < l; i++) $extend(this, arguments[i]);
 	}
 
 };
@@ -374,12 +374,7 @@ Abstract.merge = function(previous, current){
 				};
 				merged.parent = previous;
 				return merged;
-			case 'object':
-				for (var property in current){
-					var pp = previous[property];
-					previous[property] = Abstract.merge(pp, current[property]);
-				}
-				return previous;
+			case 'object': return $merge(previous, current);
 		}
 	}
 	return current;

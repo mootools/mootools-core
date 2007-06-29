@@ -29,9 +29,8 @@ Example:
 Json.Remote = XHR.extend({
 
 	initialize: function(url, options){
-		this.url = url;
+		this.parent(url, options);
 		this.addEvent('onSuccess', this.onComplete, true);
-		this.parent(options);
 		this.setHeader('X-Request', 'JSON');
 	},
 

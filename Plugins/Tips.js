@@ -84,7 +84,6 @@ var Tips = new Class({
 		}).inject(document.body);
 		this.wrapper = new Element('div').inject(this.toolTip);
 		$$(elements).each(this.build, this);
-		if (this.options.initialize) this.options.initialize.call(this);
 	},
 
 	build: function(el){

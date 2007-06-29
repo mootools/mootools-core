@@ -97,6 +97,7 @@ Client.extend({
 	Property: getSize
 		Same as <Element.getSize>, but for window
 	*/
+
 	getSize: function(){
 		return {
 			'size': {'x': Client.getWidth(), 'y': Client.getHeight()},
@@ -118,6 +119,7 @@ window.extend({
 	Property: getSize
 		Same as <Client.getSize>
 	*/
+
 	getSize: Client.getSize,
 
 	getPosition: function(){
