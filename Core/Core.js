@@ -88,7 +88,15 @@ Native.generic = function(prop){
 	};
 };
 
-Native(Array, Function, Number, String);
+Native.type = function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		var obj = arguments[i];
+		window[obj].prototype.$family = obj.toLowerCase();
+	}
+};
+
+Native(Array, Function, String, RegExp, Number);
+Native.type('Array', 'Function', 'String', 'RegExp');
 
 /* Section: Utility Functions */
 
@@ -308,7 +316,8 @@ Example:
 */
 
 function $type(obj){
-	if (!$defined(obj)) return false;
+	if (obj == undefined) return false;
+	if (obj.$family) return obj.$family;
 	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
 	if (type == 'object' && obj.nodeName){
@@ -318,11 +327,6 @@ function $type(obj){
 		}
 	}
 	if (type == 'object' || type == 'function'){
-		switch (obj.constructor){
-			case Array: return 'array';
-			case RegExp: return 'regexp';
-			case Class: return 'class';
-		}
 		if (typeof obj.length == 'number'){
 			if (obj.item) return 'collection';
 			if (obj.callee) return 'arguments';
@@ -382,6 +386,8 @@ Abstract.merge = function(previous, current){
 
 //document, window
 window.extend = document.extend = $extend;
+window.$family = 'window';
+document.$family = 'document';
 document.head = document.getElementsByTagName('head')[0];
 
 /*
@@ -435,10 +441,11 @@ Client.Platform[Client.Platform.name] = true;
 //htmlelement
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = $empty;
-	if (Client.Engine.webkit) document.createElement("iframe"); //fixes safari
+	if (Client.Engine.webkit) document.createElement("iframe"); //fixes safari 2
 	HTMLElement.prototype = (Client.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 }
 HTMLElement.prototype.htmlElement = $empty;
+HTMLElement.prototype.$family = 'element';
 
 //enable background image cache for internet explorer 6
 if (Client.Engine.ie6) $try(function(){

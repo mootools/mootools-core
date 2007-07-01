@@ -11,7 +11,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any Selectors element via the dollar function <$>.
 */
 
-Element.$domMethods = {
+Element.$DOMMethods = {
 
 	/*
 	Property: getElements
@@ -81,7 +81,7 @@ Element.$domMethods = {
 		var elements = [];
 		selector = selector.split(',');
 		for (var i = 0, j = selector.length; i < j; i++) elements = elements.concat(this.getElements(selector[i], true));
-		return (nocash) ? elements : $$.unique(elements);
+		return (nocash) ? elements : new Elements(elements);
 	}
 
 };
@@ -107,8 +107,8 @@ Element.extend({
 
 });
 
-document.extend(Element.$domMethods);
-Element.extend(Element.$domMethods);
+document.extend(Element.$DOMMethods);
+Element.extend(Element.$DOMMethods);
 
 /* Section: Utility Functions */
 
@@ -185,8 +185,8 @@ Selectors.XPath = {
 	getItems: function(items, context, nocash){
 		var elements = [];
 		var xpath = document.evaluate('.//' + items.join(''), context, Selectors.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements.push(xpath.snapshotItem(i));
-		return (nocash) ? elements : new Elements(elements.map($));
+		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements[i] = (nocash) ? xpath.snapshotItem(i) : $(xpath.snapshotItem(i));
+		return (nocash) ? elements : new Elements(elements, true);
 	},
 
 	resolver: function(prefix){
@@ -238,7 +238,7 @@ Selectors.Filter = {
 	},
 
 	getItems: function(items, context, nocash){
-		return (nocash) ? items : $$.unique(items);
+		return (nocash) ? items : new Elements(items);
 	},
 
 	hasTag: function(el, tag){

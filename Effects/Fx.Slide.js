@@ -36,12 +36,8 @@ Fx.Slide = Fx.Base.extend({
 	},
 
 	initialize: function(element, options){
-		this.parent(element, options);
-		this.element = $(this.element);
-		if (!this.element.$tmp.wrapped){
-			this.wrapper = new Element('div', {'styles': $extend(this.element.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
-			this.element.$tmp.wrapped = true;
-		}
+		this.parent($(element), options);
+		this.wrapper = new Element('div', {'styles': $extend(this.element.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
 		this.element.setStyle('margin', 0);
 		this.now = [];
 		this.open = true;

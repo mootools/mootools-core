@@ -87,20 +87,20 @@ var Tips = new Class({
 	},
 
 	build: function(el){
-		el.$tmp.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
+		el.$attributes.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
 		if (el.title){
 			var dual = el.title.split('::');
 			if (dual.length > 1){
-				el.$tmp.myTitle = dual[0].trim();
-				el.$tmp.myText = dual[1].trim();
+				el.$attributes.myTitle = dual[0].trim();
+				el.$attributes.myText = dual[1].trim();
 			} else {
-				el.$tmp.myText = el.title;
+				el.$attributes.myText = el.title;
 			}
-			el.removeAttribute('title');
+			el.removeProperty('title');
 		} else {
-			el.$tmp.myText = false;
+			el.$attributes.myText = false;
 		}
-		if (el.$tmp.myTitle && el.$tmp.myTitle.length > this.options.maxTitleChars) el.$tmp.myTitle = el.$tmp.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
+		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars) el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
 		el.addEvent('mouseenter', function(event){
 			this.start(el);
 			if (!this.options.fixed) this.locate(event);
@@ -114,11 +114,11 @@ var Tips = new Class({
 
 	start: function(el){
 		this.wrapper.empty();
-		if (el.$tmp.myTitle){
-			this.title = new Element('span').inject(new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)).setHTML(el.$tmp.myTitle);
+		if (el.$attributes.myTitle){
+			this.title = new Element('span').inject(new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)).setHTML(el.$attributes.myTitle);
 		}
-		if (el.$tmp.myText){
-			this.text = new Element('span').inject(new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)).setHTML(el.$tmp.myText);
+		if (el.$attributes.myText){
+			this.text = new Element('span').inject(new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)).setHTML(el.$attributes.myText);
 		}
 		$clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);

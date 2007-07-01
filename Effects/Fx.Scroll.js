@@ -33,8 +33,7 @@ Fx.Scroll = Fx.Base.extend({
 	},
 
 	initialize: function(element, options){
-		this.parent(element, options);
-		this.element = $(this.element);
+		this.parent($(element), options);
 		this.now = [];
 		this.bound = {'stop': this.stop.bind(this, false)};
 		if (this.options.wheelStops){

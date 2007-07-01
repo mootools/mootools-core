@@ -42,7 +42,7 @@ Fx.Base = new Class({
 
 	initialize: function(){
 		var params = $A(arguments).associate({'options': 'object', 'element': true});
-		this.element = params.element;
+		this.element = this.element || params.element;
 		this.setOptions(params.options);
 	},
 

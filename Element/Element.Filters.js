@@ -23,7 +23,7 @@ Elements.extend({
 		var elements = this.filter(function(el){
 			return (Element.getTag(el) == tag);
 		});
-		return (nocash) ? elements : new Elements(elements);
+		return (nocash) ? elements : new Elements(elements, true);
 	},
 	
 	/*
@@ -36,7 +36,7 @@ Elements.extend({
 		var elements = this.filter(function(el){
 			return (el.className && el.className.contains(className, ' '));
 		});
-		return (nocash) ? elements : new Elements(elements);
+		return (nocash) ? elements : new Elements(elements, true);
 	},
 	
 	/*
@@ -49,7 +49,7 @@ Elements.extend({
 		var elements = this.filter(function(el){
 			return (el.id == id);
 		});
-		return (nocash) ? elements : new Elements(elements);
+		return (nocash) ? elements : new Elements(elements, true);
 	},
 	
 	/*
@@ -78,7 +78,7 @@ Elements.extend({
 			}
 			return false;
 		});
-		return (nocash) ? elements : new Elements(elements);
+		return (nocash) ? elements : new Elements(elements, true);
 	}
 
 });

@@ -14,7 +14,7 @@ Class: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-var Element = new Class({
+var Element = function(el, props){
 
 	/*
 	Property: initialize
@@ -50,22 +50,19 @@ var Element = new Class({
 		(end)
 	*/
 
-	initialize: function(el, props){
-		if ($type(el) == 'string'){
-			if (Client.Engine.ie && props && (props.name || props.type)){
-				var name = (props.name) ? ' name="' + props.name + '"' : '';
-				var type = (props.type) ? ' type="' + props.type + '"' : '';
-				delete props.name;
-				delete props.type;
-				el = '<' + el + name + type + '>';
-			}
-			el = document.createElement(el);
+	if ($type(el) == 'string'){
+		if (Client.Engine.ie && props && (props.name || props.type)){
+			var name = (props.name) ? ' name="' + props.name + '"' : '';
+			var type = (props.type) ? ' type="' + props.type + '"' : '';
+			delete props.name;
+			delete props.type;
+			el = '<' + el + name + type + '>';
 		}
-		el = $(el);
-		return (!props || !el) ? el : el.set(props);
+		el = document.createElement(el);
 	}
-
-});
+	el = $(el);
+	return (!props || !el) ? el : el.set(props);
+};
 
 /*
 Class: Elements
@@ -86,19 +83,18 @@ Example:
 	every element returned by $$('myselector') also accepts <Element> methods, in this example every element will be made red.
 */
 
-var Elements = new Class({
-
-	initialize: function(elements){
-		return (elements) ? $extend(elements, this) : this;
+var Elements = function(elements, nocheck){
+	elements = elements || [];
+	if (nocheck) return $extend(elements, this);
+	var uniques = {};
+	var returned = [];
+	for (var i = 0, j = elements.length; i < j; i++){
+		var el = $(elements[i]);
+		if (!el || uniques[el.$attributes.uid]) continue;
+		uniques[el.$attributes.uid] = true;
+		returned.push(el);
 	}
-
-});
-
-Elements.extend = function(props){
-	for (var prop in props){
-		this.prototype[prop] = props[prop];
-		this[prop] = Native.generic(prop);
-	}
+	return $extend(returned, this);
 };
 
 /*
@@ -129,13 +125,12 @@ Note:
 function $(el){
 	if (!el) return null;
 	if (el.htmlElement) return Garbage.collect(el);
-	if ([window, document].contains(el)) return el;
 	var type = $type(el);
 	if (type == 'string'){
 		el = document.getElementById(el);
 		type = (el) ? 'element' : false;
 	}
-	if (type != 'element') return null;
+	if (type != 'element') return (['window', 'document'].contains(type)) ? el : null;
 	if (el.htmlElement) return Garbage.collect(el);
 	if (Element.$badTags.contains(el.tagName.toLowerCase())) return el;
 	$extend(el, Element.prototype);
@@ -182,55 +177,41 @@ function $$(){
 	for (var i = 0, j = arguments.length; i < j; i++){
 		var selector = arguments[i];
 		switch ($type(selector)){
-			case 'element': elements.push(selector);
-			case 'boolean': break;
+			case 'element': elements.push(selector); break;
 			case false: break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default: elements.extend(selector);
 		}
 	}
-	return $$.unique(elements);
-};
-
-$$.unique = function(array){
-	var elements = [];
-	for (var i = 0, l = array.length; i < l; i++){
-		if (array[i].$included) continue;
-		var element = $(array[i]);
-		if (element && !element.$included){
-			element.$included = true;
-			elements.push(element);
-		}
-	}
-	for (var n = 0, d = elements.length; n < d; n++){
-		elements[n].$included = null;
-		if (Client.Engine.ie) elements[n].removeAttribute('$included');
-	}
 	return new Elements(elements);
-};
-
-Elements.Multi = function(property){
-	return function(){
-		var args = arguments;
-		var items = [];
-		var elements = true;
-		for (var i = 0, j = this.length, returns; i < j; i++){
-			returns = this[i][property].apply(this[i], args);
-			if ($type(returns) != 'element') elements = false;
-			items.push(returns);
-		};
-		return (elements) ? $$.unique(items) : items;
-	};
 };
 
 Element.extend = function(properties){
 	for (var property in properties){
-		HTMLElement.prototype[property] = properties[property];
-		Element.prototype[property] = properties[property];
+		HTMLElement.prototype[property] = Element.prototype[property] = properties[property];
 		Element[property] = Native.generic(property);
-		var elementsProperty = (Array.prototype[property]) ? property + 'Elements' : property;
-		Elements.prototype[elementsProperty] = Elements.Multi(property);
+		Elements.prototype[(Array.prototype[property]) ? property + 'Elements' : property] = Elements.$multiply(property);
 	}
+};
+
+Elements.extend = function(properties){
+	for (var property in properties){
+		Elements.prototype[property] = properties[property];
+		Elements[property] = Native.generic(property);
+	}
+};
+
+Elements.$multiply = function(property){
+	return function(){
+		var args = arguments;
+		var items = [];
+		var elements = this.every(function(element){
+			var returns = element[property].apply(element, args);
+			items.push(returns);
+			return ($type(returns) == 'element');
+		});
+		return (elements) ? new Elements(items) : items;
+	};
 };
 
 /*
@@ -570,7 +551,7 @@ Element.extend({
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
 		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
-		this.style.opacity = this.$tmp.opacity = opacity;
+		this.style.opacity = this.$attributes.opacity = opacity;
 		return this;
 	},
 
@@ -594,7 +575,7 @@ Element.extend({
 		property = property.camelCase();
 		var result = this.style[property];
 		if (!$chk(result)){
-			if (property == 'opacity') return this.$tmp.opacity;
+			if (property == 'opacity') return this.$attributes.opacity;
 			result = [];
 			for (var style in Element.$styles){
 				if (property == style){
@@ -993,35 +974,43 @@ window.extend(Element.$listenerMethods);
 document.extend(Element.$listenerMethods);
 Element.extend(Element.$listenerMethods);
 
+Element.UID = 0;
+
 var Garbage = {
 
-	elements: [],
+	elements: {},
 
 	collect: function(el){
-		if (!el.$tmp){
-			Garbage.elements.push(el);
-			el.$tmp = {'opacity': 1};
+		if (!el.$attributes){
+			el.$attributes = {'opacity': 1, 'uid': Element.UID++};
+			Garbage.elements[el.$attributes.uid] = el;
 		}
 		return el;
 	},
 
-	trash: function(elements, unload){
+	trash: function(elements){
 		for (var i = 0, j = elements.length, el; i < j; i++){
-			if (!(el = elements[i]) || !el.$tmp) continue;
+			if (!(el = elements[i]) || !el.$attributes) continue;
 			if (el.tagName && Element.$badTags.contains(el.tagName.toLowerCase())) continue;
-			if (el.$events) el.fireEvent('trash', [!!(unload)]).removeEvents();
-			for (var p in el.$tmp) el.$tmp[p] = null;
-			for (var d in Element.prototype) el[d] = null;
-			if (!unload) Garbage.elements[Garbage.elements.indexOf(el)] = null;
-			el.htmlElement = el.$tmp = el = null;
+			Garbage.kill(el);
 		}
-		if (!unload) Garbage.elements.remove(null);
 	},
-
+	
+	kill: function(el){
+		delete Garbage.elements[String(el.$attributes.uid)];
+		if (el.$events){
+			el.fireEvent('trash');
+			el.removeEvents();
+		}
+		for (var p in el.$attributes) el.$attributes[p] = null;
+		for (var d in Element.prototype) el[d] = null;
+		el.htmlElement = el.$attributes = el = null;
+	},
+	
 	empty: function(){
 		Garbage.collect(window);
 		Garbage.collect(document);
-		Garbage.trash(Garbage.elements, true);
+		for (var uid in Garbage.elements) Garbage.kill(Garbage.elements[uid]);
 	}
 
 };
