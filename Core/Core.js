@@ -320,13 +320,13 @@ function $type(obj){
 	if (obj.$family) return obj.$family;
 	if (obj.htmlElement) return 'element';
 	var type = typeof obj;
-	if (type == 'object' && obj.nodeName){
-		switch (obj.nodeType){
-			case 1: return 'element';
-			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
+	if (type == 'object'){
+		if (obj.nodeName){
+			switch (obj.nodeType){
+				case 1: return 'element';
+				case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
+			}
 		}
-	}
-	if (type == 'object' || type == 'function'){
 		if (typeof obj.length == 'number'){
 			if (obj.item) return 'collection';
 			if (obj.callee) return 'arguments';
