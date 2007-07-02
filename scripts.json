@@ -53,6 +53,11 @@
 
 	"Element": {
 
+		"Element.Dimensions": {
+			"deps": ["Element"],
+			"desc": "Contains Element methods to work with element size, scroll, or position in space."
+		},
+
 		"Element.Event": {
 			"deps": ["Element"],
 			"desc": "Contains the Event Class, Element methods to deal with Element events, custom Events."
@@ -66,11 +71,6 @@
 		"Element.Form": {
 			"deps": ["Element"],
 			"desc": "Contains Element methods to work with forms."
-		},
-
-		"Element.Dimensions": {
-			"deps": ["Element"],
-			"desc": "Contains Element methods to work with element size, scroll, or position in space."
 		}
 
 	},
@@ -115,6 +115,11 @@
 			"desc": "Contains the CSS animation logic. Used by Styles based Effects."
 		},
 
+		"Fx.Elements": {
+			"deps": ["Fx.CSS"],
+			"desc": "Effect to change any number of css properties to any number of elements."
+		},
+
 		"Fx.Style": {
 			"deps": ["Fx.CSS"],
 			"desc": "Effect to change any css property for an element."
@@ -125,9 +130,9 @@
 			"desc": "Effect to change any number of css properties for an element."
 		},
 
-		"Fx.Elements": {
-			"deps": ["Fx.CSS"],
-			"desc": "Effect to change any number of css properties to any number of elements."
+		"Fx.Morph": {
+			"deps": ["Fx.Styles"],
+			"desc": "Effect to morph an element from one css class to another."
 		},
 
 		"Fx.Scroll": {
@@ -197,6 +202,21 @@
 
 	"Plugins": {
 
+		"Accordion": {
+			"deps": ["Fx.Elements", "Element.Event"],
+			"desc": "Does it need a description?"
+		},
+
+		"Color": {
+			"deps": ["Element"],
+			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
+		},
+		
+		"Group": {
+			"deps": ["Class.Extras", "Element"],
+			"desc": "The Group."
+		},
+
 		"Hash": {
 			"deps": ["Element"],
 			"desc": "Object wrapper, allows to use custom methods on javascript Objects. By Christophe Beyls."
@@ -205,16 +225,6 @@
 		"Hash.Cookie": {
 			"deps": ["Hash", "Cookie", "Json"],
 			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
-		},
-
-		"Color": {
-			"deps": ["Element"],
-			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
-		},
-		
-		"Sortables": {
-			"deps": ["Fx.Styles", "Element.Event", "Element.Dimensions"],
-			"desc": "Creates an interface for drag and drop sorting of a list or lists."
 		},
 
 		"Scroller": {
@@ -232,19 +242,14 @@
 			"desc": "Smooth scroll your internal links."
 		},
 
+		"Sortables": {
+			"deps": ["Fx.Styles", "Element.Event", "Element.Dimensions"],
+			"desc": "Creates an interface for drag and drop sorting of a list or lists."
+		},
+
 		"Tips": {
 			"deps": ["Class.Extras", "Element.Event", "Window.Size"],
 			"desc": "The Tooltips."
-		},
-
-		"Group": {
-			"deps": ["Class.Extras", "Element"],
-			"desc": "The Group."
-		},
-
-		"Accordion": {
-			"deps": ["Fx.Elements", "Element.Event"],
-			"desc": "Does it need a description?"
 		}
 
 	}
