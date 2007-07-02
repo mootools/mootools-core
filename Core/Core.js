@@ -64,8 +64,8 @@ function $extend(){
 /*
 Function: Native
 	Will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
-	Its handy if you dont want the .extend method of an object to overwrite existing methods.
-	Used automatically in MooTools to implement Array/Function/Number/String methods to browsers that dont natively support them whitout manual checking.
+	The purpose of Native is also to create generics methods (Class Methods) from the prototypes passed in.
+	Used automatically in MooTools to implement Array/Function/Number/String/RegExp methods to browsers that dont natively support them whitout manual checking.
 
 Arguments:
 	any number of classes/native javascript objects
@@ -106,7 +106,7 @@ Function: $chk
 	Useful for accepting zeroes.
 
 Arguments:
-	obj - the object to inspect
+	obj - any type, the object to inspect
 */
 
 function $chk(obj){
@@ -186,7 +186,7 @@ function $merge(){
 
 /*
 Function: $pick
-	Returns the first defined argument passed in, or the last argument if none are defined.
+	Returns the first defined argument passed in, or null.
 
 Arguments:
 	any number of vars to pick from
@@ -227,7 +227,7 @@ Function: $splat
 	Returns the argument as an array if it is defined and not already an array. Otherwise returns null.
 
 Arguments:
-	obj - any var
+	obj - any type
 
 Example:
 	(start code)
@@ -261,9 +261,9 @@ Function: $try
 	Tries to execute a function. Returns false if it fails.
 
 Arguments:
-	fn - the function to execute
-	bind - the context of the function
-	args - an array of arguments or one argument
+	fn - function, the function to execute
+	bind - any type, the context of the function
+	args - any type, single item or array of items, the arguments to be passed to the function
 
 Returns:
 	whatever the function returns, or false if it fails
@@ -293,20 +293,22 @@ Arguments:
 	obj - the object to inspect
 
 Returns:
-	'element' - if obj is a DOM element node
-	'textnode' - if obj is a DOM text node
-	'whitespace' - if obj is a DOM whitespace node
-	'arguments' - if obj is an arguments object
-	'array' - if obj is an array
-	'object' - if obj is an object
-	'string' - if obj is a string
-	'number' - if obj is a number
-	'boolean' - if obj is a boolean
-	'function' - if obj is a function
-	'regexp' - if obj is a regular expression
-	'class' - if obj is a Class (created with new Class, or the extend of another class)
-	'collection' - if obj is a native htmlelements collection, such as childNodes, getElementsByTagName .. etc
-	false - (boolean) if the object is undefined or none of the above
+	'element' - string, obj is a DOM element node
+	'textnode' - string, obj is a DOM text node
+	'whitespace' - string, obj is a DOM whitespace node
+	'arguments' - string, obj is an arguments object
+	'array' - string, obj is an array
+	'object' - string, obj is an object
+	'string' - string, obj is a string
+	'number' - string, obj is a number
+	'boolean' - string, obj is a boolean
+	'function' - string, obj is a function
+	'regexp' - string, obj is a regular expression
+	'class' - string, obj is a Class (created with new Class, or the extend of another class)
+	'collection' - string, obj is a native htmlelements collection, such as childNodes, getElementsByTagName .. etc
+	'window' - string, obj is the window object
+	'document' - string, obj is the document object
+	false - boolean, the object is undefined, null, NaN or none of the above
 
 Example:
 	(start code)
@@ -335,13 +337,13 @@ function $type(obj){
 
 /*
 Class: Abstract
-	Abstract class, to be used as singleton. Will add .extend to any object.
+	-doc missing-
 
 Arguments:
-	an object to be abstracted
+	-doc missing-
 
 Returns:
-	the object with an .extend property, equivalent to <$extend>
+	-doc missing-
 */
 
 var Abstract = function(obj){
@@ -390,24 +392,28 @@ document.head = document.getElementsByTagName('head')[0];
 /*
 Class: Client
 	Some browser properties are attached to the Client object for browser detection.
+	
+Features:
+	Client.Features.xpath - boolean, browser supports dom queries using xpath
+	Client.Features.xhr - boolean, browser supports native XMLHTTP object
 
 Engine:
-	Client.Engine.ie - is set to true if the current browser is internet explorer (any)
-	Client.Engine.ie6 - is set to true if the current browser is internet explorer 6
-	Client.Engine.ie7 - is set to true if the current browser is internet explorer 7
-	Client.Engine.gecko - is set to true if the current browser is Mozilla/Gecko
-	Client.Engine.webkit - is set to true if the current browser is Safari/Konqueror
-	Client.Engine.webkit419 - is set to true if the current browser is Safari2 / webkit till version 419
-	Client.Engine.webkit420 - is set to true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419
-	Client.Engine.opera - is set to true if the current browser is opera
-	Client.Engine.name - is set to the name of the engine
+	Client.Engine.ie - boolean, true if the current browser is internet explorer (any)
+	Client.Engine.ie6 - boolean, true if the current browser is internet explorer 6
+	Client.Engine.ie7 - boolean, true if the current browser is internet explorer 7
+	Client.Engine.gecko - boolean, true if the current browser is Mozilla/Gecko
+	Client.Engine.webkit - boolean, true if the current browser is Safari/Konqueror
+	Client.Engine.webkit419 - boolean, true if the current browser is Safari2 / webkit till version 419
+	Client.Engine.webkit420 - boolean, true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419
+	Client.Engine.opera - boolean, true if the current browser is opera
+	Client.Engine.name - string, the name of the engine
 
 Platform:
-	Client.Platform.mac - is set to true if the platform is mac
-	Client.Platform.windows - is set to true if the platform is windows
-	Client.Platform.linux - is set to true if the platform is linux
-	Client.Platform.other - is set to true if the platform is neither mac, windows or linux
-	Client.Platform.name - is set to the name of the platform
+	Client.Platform.mac - true if the platform is mac
+	Client.Platform.windows - boolean, true if the platform is windows
+	Client.Platform.linux - boolean, true if the platform is linux
+	Client.Platform.other - boolean, true if the platform is neither mac, windows or linux
+	Client.Platform.name - string, the name of the platform
 
 Note:
 	Engine detection is entirely object-based.
