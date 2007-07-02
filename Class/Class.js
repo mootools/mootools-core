@@ -35,7 +35,7 @@ var Class = function(properties){
 	};
 	$extend(klass, this);
 	klass.prototype = properties;
-	klass.$family = Class;
+	klass.$family = 'class';
 	return klass;
 };
 
