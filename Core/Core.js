@@ -347,7 +347,7 @@ Returns:
 */
 
 var Abstract = function(obj){
-	$extend(this, obj);
+	return $extend(obj || {}, this);
 };
 
 Abstract.prototype = {
