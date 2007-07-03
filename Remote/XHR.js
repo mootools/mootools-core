@@ -64,7 +64,7 @@ var XHR = new Class({
 		this.setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = this.options.headers;
-		if (this.options.urlEncoded && this.options.method == 'post'){
+		if (this.options.urlEncoded && this.options.method != 'get'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
