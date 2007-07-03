@@ -63,7 +63,8 @@ var XHR = new Class({
 		this.setTransport();
 		this.setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = this.options.headers;
+		this.headers = $merge(this.options.headers);
+		console.log(params, this.options.method);
 		if (this.options.urlEncoded && this.options.method != 'get'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
@@ -112,7 +113,7 @@ var XHR = new Class({
 		this.headers[name] = value;
 		return this;
 	},
-	
+
 	/*
 	Property: getHeader
 		Returns the given response header or null
@@ -160,7 +161,7 @@ var XHR = new Class({
 		if (!this.options.async) this.onStateChange();
 		return this;
 	},
-	
+
 	request: function(data){
 		return this.send(this.url, data || this.options.data);
 	},
