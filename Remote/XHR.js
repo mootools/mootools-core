@@ -63,7 +63,7 @@ var XHR = new Class({
 		this.setTransport();
 		this.setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = {};
+		this.headers = this.options.headers;
 		if (this.options.urlEncoded && this.options.method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
@@ -148,7 +148,6 @@ var XHR = new Class({
 		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
 		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
-		$extend(this.headers, this.options.headers);
 		for (var type in this.headers){
 			try{
 				this.transport.setRequestHeader(type, this.headers[type]);
