@@ -15,7 +15,8 @@ MooTools Credits:
 */
 
 var MooTools = {
-	version: '%version%'
+	'version': '1.2dev',
+	'build': '%build%'
 };
 
 /* Section: Core Functions */
