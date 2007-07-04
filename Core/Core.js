@@ -15,7 +15,7 @@ MooTools Credits:
 */
 
 var MooTools = {
-	version: '1.2dev'
+	version: '%version%'
 };
 
 /* Section: Core Functions */
@@ -335,54 +335,6 @@ function $type(obj){
 	return type;
 };
 
-/*
-Class: Abstract
-	-doc missing-
-
-Arguments:
-	-doc missing-
-
-Returns:
-	-doc missing-
-*/
-
-var Abstract = function(obj){
-	return $extend(obj || {}, this);
-};
-
-Abstract.prototype = {
-
-	extend: function(properties){
-		for (var property in properties){
-			var tp = this[property];
-			this[property] = Abstract.merge(tp, properties[property]);
-		}
-	},
-	
-	implement: function(){
-		for (var i = 0, l = arguments.length; i < l; i++) $extend(this, arguments[i]);
-	}
-
-};
-
-Abstract.merge = function(previous, current){
-	if (previous && previous != current){
-		var type = $type(current);
-		if (type != $type(previous)) return current;
-		switch (type){
-			case 'function':
-				var merged = function(){
-					this.parent = arguments.callee.parent;
-					return current.apply(this, arguments);
-				};
-				merged.parent = previous;
-				return merged;
-			case 'object': return $merge(previous, current);
-		}
-	}
-	return current;
-};
-
 //document, window
 window.extend = document.extend = $extend;
 window.$family = 'window';
@@ -419,11 +371,11 @@ Note:
 	Engine detection is entirely object-based.
 */
 
-var Client = new Abstract({
+var Client = {
 	Engine: {'name': 'unknown', 'version': ''},
 	Platform: {},
 	Features: {}
-});
+};
 
 //Client.Features
 Client.Features.xhr = !!(window.XMLHttpRequest);

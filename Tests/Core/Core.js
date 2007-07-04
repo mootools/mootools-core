@@ -68,7 +68,7 @@ Tests.Core = new Test.Suite('Core', {
 			$equals(ob3.a.a, 3) &&
 			$equals(merged.a.a, 3) &&
 			$equals(merged.a.b, 8) &&
-			$equals(merged.a.c, false)
+			$equals(merged.c, false)
 		);
 	},
 	

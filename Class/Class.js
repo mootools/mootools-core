@@ -1,6 +1,6 @@
 /*
 Script: Class.js
-	Contains the Class Function, aims to ease the creation of reusable Classes.
+	Contains Class and Abstract.
 
 License:
 	MIT-style license.
@@ -108,3 +108,53 @@ Class.prototype = {
 	}
 
 };
+
+/*
+Class: Abstract
+	-doc missing-
+
+Arguments:
+	-doc missing-
+
+Returns:
+	-doc missing-
+*/
+
+var Abstract = function(obj){
+	return $extend(obj || {}, this);
+};
+
+Abstract.prototype = {
+
+	extend: function(properties){
+		for (var property in properties){
+			var tp = this[property];
+			this[property] = Abstract.merge(tp, properties[property]);
+		}
+	},
+	
+	implement: function(){
+		for (var i = 0, l = arguments.length; i < l; i++) $extend(this, arguments[i]);
+	}
+
+};
+
+Abstract.merge = function(previous, current){
+	if (previous && previous != current){
+		var type = $type(current);
+		if (type != $type(previous)) return current;
+		switch (type){
+			case 'function':
+				var merged = function(){
+					this.parent = arguments.callee.parent;
+					return current.apply(this, arguments);
+				};
+				merged.parent = previous;
+				return merged;
+			case 'object': return $merge(previous, current);
+		}
+	}
+	return current;
+};
+
+Client = new Abstract(Client);
