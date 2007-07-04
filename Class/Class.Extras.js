@@ -1,6 +1,6 @@
 /*
 Script: Class.Extras.js
-	Contains common implementations for custom classes. In Mootools is implemented in <Ajax>, <XHR> and <Fx.Base> and many more.
+	Contains common implementations for custom classes. In Mootools these Utilities are implemented in <Ajax>, <XHR>, <Fx.Base> and many other Classes to provide rich functionality.
 
 License:
 	MIT-style license.
@@ -8,14 +8,15 @@ License:
 
 /*
 Class: Chain
-	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
+	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	Currently implemented in <Fx.Base>, <XHR> and <Ajax>. In <Fx.Base> for example, is used to execute a list of functions, one after another, once an effect has completed.
 	The functions will not be fired all at once, but rather in succession upon completion of the one before to create custom complex animations.
 
 Example:
 	(start code)
 	var myFx = new Fx.Style('element', 'opacity');
-
+	
+	//fade the element in and out three times
 	myFx.start(1,0).chain(function(){
 		myFx.start(0,1);
 	}).chain(function(){
@@ -23,7 +24,6 @@ Example:
 	}).chain(function(){
 		myFx.start(0,1);
 	});
-	//the element will fade in and out three times
 	(end)
 */
 
@@ -34,7 +34,7 @@ var Chain = new Class({
 		Adds a function to the Chain instance stack.
 
 	Arguments:
-		fn - the function to append to the call stack
+		fn - (function) The function to append to the call stack.
 	*/
 
 	chain: function(fn){
@@ -65,38 +65,41 @@ var Chain = new Class({
 
 /*
 Class: Events
-	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, onCancel.
+	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
+	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
 	Events in a Class that implements <Events> can be either added as an option, or with addEvent, but never directly through .options.onEventName.
 
 Example:
 	(start code)
-	var myFx = new Fx.Style('element', 'opacity').addEvent('onComplete', function(){
-		alert('the effect is completed');
+	var myFx = new Fx.Style('element', 'opacity');
+	myFx.addEvent('onStart', function(){
+		alert('the effect has started');
 	}).addEvent('onComplete', function(){
-		alert('I told you the effect is completed');
+		alert('the effect has completed');
 	});
 
+	//will display an alert on start, and another on complete.
 	myFx.start(0,1);
-	//upon completion it will display the 2 alerts, in order.
 	(end)
 
 Implementing:
-	This class can be implemented into other classes to add the functionality to them.
-	Goes well with the <Options> class.
+	This class can be implemented into other classes to add its functionality to them.
+	It has been designed to work well with the <Options> class.
 
 Example:
 	(start code)
 	var Widget = new Class({
-		initialize: function(){},
-		finish: function(){
+		initialize: function(element){
+			...
+		},
+		complete: function(){
 			this.fireEvent('onComplete');
 		}
 	});
 	Widget.implement(new Events);
 	//later...
 	var myWidget = new Widget();
-	myWidget.addEvent('onComplete', myfunction);
+	myWidget.addEvent('onComplete', myFunction);
 	(end)
 */
 
@@ -104,11 +107,15 @@ var Events = new Class({
 
 	/*
 	Property: addEvent
-		Adds an event to the stack of events of the Class instance.
+		Adds an event to the Class instance's event stack.
 
 	Arguments:
-		type - string; the event name (e.g. 'onComplete')
-		fn - the function to execute
+		type - (string)   The type of event (e.g. 'onComplete').
+		fn   - (function) The function to execute.
+
+	Example:
+		var myFx = new Fx.Style('element', 'opacity');
+		myFx.addEvent('onStart', myStartFunction);
 	*/
 
 	addEvent: function(type, fn, internal){
@@ -121,6 +128,21 @@ var Events = new Class({
 		return this;
 	},
 	
+	/*
+	Property: addEvents
+		Works as <addEvent>, but accepts an object to add multiple events at once.
+
+	Arguments:
+		events - (object) An object containing the event type / function pairs.
+
+	Example:
+		var myFx = new Fx.Style('element', 'opacity');
+		myFx.addEvents({
+			'onStart': myStartFunction,
+			'onComplete': myCompleteFunction
+		});
+	*/
+
 	addEvents: function(events){
 		for (var type in events) this.addEvent(type, events[type]);
 		return this;
@@ -131,9 +153,9 @@ var Events = new Class({
 		Fires all events of the specified type in the Class instance.
 
 	Arguments:
-		type - string; the event name (e.g. 'onComplete')
-		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
-		delay - integer; delay (in ms) to wait before executing the event
+		type  - (string)  The type of event (e.g. 'onComplete').
+		args  - (mixed)   Array or single object. Arguments to pass to the function. To pass more than one argument, the arguments must be in an array.
+		delay - (integer) Delay in miliseconds to wait before executing the event.
 
 	Example:
 		(start code)
@@ -146,7 +168,7 @@ var Events = new Class({
 		Widget.implement(new Events);
 		(end)
 	*/
-
+	
 	fireEvent: function(type, args, delay){
 		if (this.$events && this.$events[type]){
 			this.$events[type].each(function(fn){
@@ -158,11 +180,11 @@ var Events = new Class({
 
 	/*
 	Property: removeEvent
-		removes an event from the stack of events of the Class instance.
+		Removes an event from the stack of events of the Class instance.
 
 	Arguments:
-		type - string; the event name (e.g. 'onComplete')
-		fn - the function that was added
+		type - (string)   The type of event (e.g. 'onComplete').
+		fn   - (function) The function to remove.
 	*/
 
 	removeEvent: function(type, fn){
@@ -172,11 +194,23 @@ var Events = new Class({
 		return this;
 	},
 	
-	removeEvents: function(evType){
-		for (var type in this.$events){
-			if (evType && evType != type) continue;
-			this.$events[type].each(function(fn){
-				this.removeEvent(type, fn);
+	/*
+	Property: removeEvents
+		Works as <removeEvent>, but removes all events of the given type. If no type is specified, removes all events of all types.
+
+	Arguments:
+		type - (string) [optional] The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
+
+	Example:
+		var myFx = new Fx.Style('element', 'opacity');
+		myFx.removeEvents('onComplete');
+	*/
+
+	removeEvents: function(type){
+		for (var e in this.$events){
+			if (type && type != e) continue;
+			this.$events[e].each(function(fn){
+				this.removeEvent(e, fn);
 			}, this);
 		}
 		return this;
@@ -186,8 +220,8 @@ var Events = new Class({
 
 /*
 Class: Options
-	An "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	Used to automate the options settings, also adding Class <Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
+	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
+	Used to automate the setting of a Class instance's options. Will also add Class <Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
 
 	Example:
 		(start code)
@@ -211,7 +245,7 @@ Class: Options
 				width: 200
 			}
 		});
-		//myWidget.options = {color: #f00, size: {width: 200, height: 100}}
+		//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
 		(end)
 */
 
@@ -219,13 +253,13 @@ var Options = new Class({
 
 	/*
 	Property: setOptions
-		Sets this.options.
+		Merges the default options of the Class with the options passed in.
 
 	Arguments:
-		defaults - object; the default set of options
-		options - object; the user defined options, may be empty as well
+		options - (object) [optional] The user defined options to merge with the defaults.
 
 	Note:
+		Your Class must have its default options defined in its options object.
 		If your Class has <Events> implemented, every option beginning with on, followed by a capital letter (e.g. 'onComplete') becomes a Class instance event.
 	*/
 
