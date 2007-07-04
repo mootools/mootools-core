@@ -8,12 +8,12 @@ License:
 
 /*
 Class: Class
-	The base class object of the <http://mootools.net> framework.
-	Creates a new class, its initialize method will fire upon class instantiation.
+	The base Class object of the <http://mootools.net> framework.
+	Creates a new Class whose initialize method will fire upon class instantiation.
 	Initialize wont fire on instantiation when you pass *null* to the constructor.
 
 Arguments:
-	properties - the collection of properties that apply to the class
+	properties - (object) The collection of properties that apply to the Class.
 
 Example:
 	(start code)
@@ -45,10 +45,10 @@ Class.prototype = {
 
 	/*
 	Property: extend
-		Returns the copy of the Class extended with the passed in properties.
+		Returns a copy of the Class extended with the properties passed in. The original Class will be unaltered.
 
 	Arguments:
-		properties - the properties to add to the base class in this new Class
+		properties - (object) The properties to add to the base class in this new Class.
 
 	Example:
 		(start code)
@@ -80,10 +80,10 @@ Class.prototype = {
 
 	/*
 	Property: implement
-		Implements the passed in properties to the base Class prototypes, altering the base class, unlike <Class.extend>.
+		Implements the passed in properties into the base Class prototypes, altering the base Class, unlike <Class.extend>.
 
 	Arguments:
-		properties - the properties to add to the base class
+		properties - (object) The properties to add to the base class.
 
 	Example:
 		(start code)

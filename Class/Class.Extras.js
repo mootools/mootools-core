@@ -114,8 +114,10 @@ var Events = new Class({
 		fn   - (function) The function to execute.
 
 	Example:
+		(start code)
 		var myFx = new Fx.Style('element', 'opacity');
 		myFx.addEvent('onStart', myStartFunction);
+		(end)
 	*/
 
 	addEvent: function(type, fn, internal){
@@ -136,11 +138,13 @@ var Events = new Class({
 		events - (object) An object containing the event type / function pairs.
 
 	Example:
+		(start code)
 		var myFx = new Fx.Style('element', 'opacity');
 		myFx.addEvents({
 			'onStart': myStartFunction,
 			'onComplete': myCompleteFunction
 		});
+		(end)
 	*/
 
 	addEvents: function(events){
@@ -202,8 +206,10 @@ var Events = new Class({
 		type - (string) [optional] The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
 
 	Example:
+		(start code)
 		var myFx = new Fx.Style('element', 'opacity');
 		myFx.removeEvents('onComplete');
+		(end)
 	*/
 
 	removeEvents: function(type){
