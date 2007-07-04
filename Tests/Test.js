@@ -75,14 +75,15 @@ Test.Case = function(name, test, options){
 Test.Case.prototype.start = function(){
 		
 	this.options.onStart.call(this);
-		
+	var result = true;
+	var startTime = new Date().getTime();
 	try {
-		var startTime = new Date().getTime();
-		var result = this.test();
-		var endTime = new Date().getTime();
+		result = this.test();
 	} catch(e){
 		this.options.onException.call(this, e);
+		result = false;
 	}
+	var endTime = new Date().getTime();
 	
 	this.failed = (result === false);
 	

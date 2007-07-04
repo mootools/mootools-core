@@ -34,7 +34,6 @@ var Class = function(properties){
 		return self;
 	};
 	$extend(klass, this);
-	klass.constructor = Class;
 	klass.prototype = properties;
 	klass.prototype.constructor = klass;
 	klass.$family = 'class';
@@ -44,6 +43,8 @@ var Class = function(properties){
 Class.empty = $empty;
 
 Class.prototype = {
+	
+	constructor: Class,
 
 	/*
 	Property: extend
