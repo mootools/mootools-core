@@ -34,7 +34,9 @@ var Class = function(properties){
 		return self;
 	};
 	$extend(klass, this);
+	klass.constructor = Class;
 	klass.prototype = properties;
+	klass.prototype.constructor = klass;
 	klass.$family = 'class';
 	return klass;
 };
