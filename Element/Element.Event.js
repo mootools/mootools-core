@@ -31,7 +31,7 @@ Properties:
 Example:
 	(start code)
 	$('myLink').onkeydown = function(event){
-		var event = new Event(event);
+		event = new Event(event);
 		//event is now the Event class.
 		alert(event.key); //returns the lowercase letter pressed
 		alert(event.shift); //returns true if the key pressed is shift
