@@ -171,4 +171,12 @@ Test.Assert = {
 
 };
 
+Test.all = function(){
+	var allOk = true;
+	for (var i = 0, l = arguments.length; i < l; i++){
+		if (arguments[i] === false) allOk = false;
+	}
+	return allOk;
+};
+
 var $equals = Test.Assert.equals;
