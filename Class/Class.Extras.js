@@ -15,7 +15,7 @@ Class: Chain
 Example:
 	(start code)
 	var myFx = new Fx.Style('element', 'opacity');
-	
+
 	//fade the element in and out three times
 	myFx.start(1,0).chain(function(){
 		myFx.start(0,1);
@@ -129,7 +129,7 @@ var Events = new Class({
 		}
 		return this;
 	},
-	
+
 	/*
 	Property: addEvents
 		Works as <addEvent>, but accepts an object to add multiple events at once.
@@ -172,7 +172,7 @@ var Events = new Class({
 		Widget.implement(new Events);
 		(end)
 	*/
-	
+
 	fireEvent: function(type, args, delay){
 		if (this.$events && this.$events[type]){
 			this.$events[type].each(function(fn){
@@ -197,7 +197,7 @@ var Events = new Class({
 		}
 		return this;
 	},
-	
+
 	/*
 	Property: removeEvents
 		Works as <removeEvent>, but removes all events of the given type. If no type is specified, removes all events of all types.
@@ -273,7 +273,7 @@ var Options = new Class({
 		this.options = $merge(this.options, options);
 		if (this.addEvent){
 			for (var option in this.options){
-				if ($type(this.options[option] == 'function') && (/^on[A-Z]/).test(option)) this.addEvent(option, this.options[option]);
+				if ((/^on[A-Z]/).test(option) && $type(this.options[option] == 'function')) this.addEvent(option, this.options[option]);
 			}
 		}
 		return this;
