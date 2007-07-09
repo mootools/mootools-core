@@ -89,15 +89,12 @@ Native.generic = function(prop){
 	};
 };
 
-Native.type = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		var obj = arguments[i];
-		window[obj].prototype.$family = obj.toLowerCase();
-	}
+Native.setFamily = function(natives){
+	for (var type in natives) natives[type].prototype.$family = type;
 };
 
 Native(Array, Function, String, RegExp, Number);
-Native.type('Array', 'Function', 'String', 'RegExp');
+Native.setFamily({'array': Array, 'function': Function, 'string': String, 'regexp': RegExp});
 
 /* Section: Utility Functions */
 

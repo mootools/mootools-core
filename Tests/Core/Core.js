@@ -1,3 +1,11 @@
+/*
+Script: Core.js
+	Unit Tests for Core.js
+
+License:
+	MIT-style license.
+*/
+
 Tests.Core = new Test.Suite('Core', {
 	
 	$type: function(){
@@ -7,12 +15,14 @@ Tests.Core = new Test.Suite('Core', {
 		var objects = [10, '', [], {}, document.getElementsByTagName('*'), element, new Class({}), function(){}, arguments, false, true, null, undefined];
 
 		var types = ['number', 'string', 'array', 'object', 'collection', 'element', 'class', 'function', 'arguments', 'boolean', 'boolean', false, false];
+		
+		var all = true;
 
 		for (var i = 0; i < objects.length; i++){
-			if (!$equals($type(objects[i]), types[i])) return false;
+			if (!$equals($type(objects[i]), types[i])) all = false;
 		}
 
-		return true;
+		return all;
 	},
 	
 	$random: function(){
@@ -130,13 +140,13 @@ Tests.Core = new Test.Suite('Core', {
 	},
 	
 	Native: function(){
-		window.Instrument = function(name){
+		var Instrument = function(name){
 			this.name = name;
 		};
 		
 		Native(Instrument);
 		
-		Native.type('Instrument');
+		Native.setFamily({'instrument': Instrument});
 		
 		Instrument.extend({
 			

@@ -49,7 +49,7 @@ Selectors.Pseudo.nth = {
 	
 	parser: function(argument){
 		argument = (argument) ? argument.match(/^([+-]?\d*)?([nodev]+)?([+-]?\d*)?$/) : [null, 1, 'n', 0];
-		if (!argument) throw new Error('bad nth pseudo selector arguments');
+		if (!argument) throw new Error('bad :nth pseudo selector arguments');
 		var inta = parseInt(argument[1]);
 		var a = ($chk(inta)) ? inta : 1;
 		var special = argument[2] || false;

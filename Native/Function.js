@@ -38,9 +38,10 @@ Function.extend({
 					Default is no custom arguments, the function will receive the standard arguments when called.
 
 		delay - Numeric value: if set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-				Default is no delay.
-		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
-				Default is no periodical execution.
+			Default is no delay.
+		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval
+			and return a timer handle when called.
+			Default is no periodical execution.
 		attempt - If set to true, the returned function will try to execute and return either the results or false on error. Default is false.
 	*/
 

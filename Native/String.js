@@ -94,8 +94,8 @@ String.extend({
 	*/
 
 	hyphenate: function(){
-		return this.replace(/\w[A-Z]/g, function(match){
-			return (match.charAt(0) + '-' + match.charAt(1).toLowerCase());
+		return this.replace(/[A-Z]/g, function(match){
+			return ('-' + match.charAt(0).toLowerCase());
 		});
 	},
 
