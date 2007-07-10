@@ -1,6 +1,6 @@
 /*
 Script: Class.js
-	Contains Class and Abstract.
+	Contains the Class and Abstract implementations.
 
 License:
 	MIT-style license.
@@ -11,6 +11,9 @@ Class: Class
 	The base Class object of the <http://mootools.net> framework.
 	Creates a new Class whose initialize method will fire upon class instantiation.
 	Initialize wont fire on instantiation when you pass *null* to the constructor.
+
+Syntax:
+	>var MyClass = new Class(properties);
 
 Arguments:
 	properties - (object) The collection of properties that apply to the Class.
@@ -43,15 +46,18 @@ var Class = function(properties){
 Class.empty = $empty;
 
 Class.prototype = {
-	
+
 	constructor: Class,
 
 	/*
 	Property: extend
 		Returns a copy of the Class extended with the properties passed in. The original Class will be unaltered.
 
+	Syntax:
+		>var MyExtendedClass = MyClass.extend(properties);
+
 	Arguments:
-		properties - (object) The properties to add to the base class in this new Class.
+		properties - (object) The properties to add to the base Class in this new Class.
 
 	Example:
 		(start code)
@@ -85,8 +91,11 @@ Class.prototype = {
 	Property: implement
 		Implements the passed in properties into the base Class prototypes, altering the base Class, unlike <Class.extend>.
 
+	Syntax:
+		>MyClass.implement(properties);
+
 	Arguments:
-		properties - (object) The properties to add to the base class.
+		properties - (object) The properties to add to the base Class.
 
 	Example:
 		(start code)
@@ -116,10 +125,13 @@ Class.prototype = {
 Class: Abstract
 	-doc missing-
 
+Syntax:
+	-doc missing-
+
 Arguments:
 	-doc missing-
 
-Returns:
+Example:
 	-doc missing-
 */
 
@@ -129,13 +141,41 @@ var Abstract = function(obj){
 
 Abstract.prototype = {
 
+	/*
+	Property: extend
+		-doc missing-
+
+	Syntax:
+		-doc missing-
+
+	Arguments:
+		-doc missing-
+
+	Example:
+		-doc missing-
+	*/
+
 	extend: function(properties){
 		for (var property in properties){
 			var tp = this[property];
 			this[property] = Abstract.merge(tp, properties[property]);
 		}
 	},
-	
+
+	/*
+	Property: implement
+		-doc missing-
+
+	Syntax:
+		-doc missing-
+
+	Arguments:
+		-doc missing-
+
+	Example:
+		-doc missing-
+	*/
+
 	implement: function(){
 		for (var i = 0, l = arguments.length; i < l; i++) $extend(this, arguments[i]);
 	}

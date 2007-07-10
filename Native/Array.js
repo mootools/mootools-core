@@ -8,148 +8,116 @@ License:
 
 /*
 Class: Array
-	A collection of The Array Object prototype methods.
+	A collection of custom Array prototype methods.
+	For more information on all available JavaScript Array methods see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods>
 */
-
-//custom methods
 
 Array.extend({
 
 	/*
-	Property: forEach
-		Iterates through an array; This method is only available for browsers without native *forEach* support.
-		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
-
-		*forEach* executes the provided function (callback) once for each element present in the array. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
-
-	Arguments:
-		fn - function to execute with each item in the array; passed the item and the index of that item in the array
-		bind - the object to bind "this" to (see <Function.bind>)
-
-	Example:
-		>['apple','banana','lemon'].each(function(item, index){
-		>	alert(index + " = " + item); //alerts "0 = apple" etc.
-		>}, bindObj); //optional second arg for binding, not used here
-	*/
-
-	forEach: function(fn, bind){
-		for (var i = 0, j = this.length; i < j; i++) fn.call(bind, this[i], i, this);
-	},
-
-	/*
-	Property: filter
-		This method is provided only for browsers without native *filter* support.
-		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:filter>
-
-		*filter* calls a provided callback function once for each element in an array, and constructs a new array of all the values for which callback returns a true value. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values. Array elements which do not pass the callback test are simply skipped, and are not included in the new array.
-
-	Arguments:
-		fn - function to execute with each item in the array; passed the item and the index of that item in the array
-		bind - the object to bind "this" to (see <Function.bind>)
-
-	Example:
-		>var biggerThanTwenty = [10,3,25,100].filter(function(item, index){
-		> return item > 20;
-		>});
-		>//biggerThanTwenty = [25,100]
-	*/
-
-	filter: function(fn, bind){
-		var results = [];
-		for (var i = 0, j = this.length; i < j; i++){
-			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
-		}
-		return results;
-	},
-
-	/*
-	Property: map
-		This method is provided only for browsers without native *map* support.
-		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
-
-		*map* calls a provided callback function once for each element in an array, in order, and constructs a new array from the results. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
-
-	Arguments:
-		fn - function to execute with each item in the array; passed the item and the index of that item in the array
-		bind - the object to bind "this" to (see <Function.bind>)
-
-	Example:
-		>var timesTwo = [1,2,3].map(function(item, index){
-		> return item*2;
-		>});
-		>//timesTwo = [2,4,6];
-	*/
-
-	map: function(fn, bind){
-		var results = [];
-		for (var i = 0, j = this.length; i < j; i++) results[i] = fn.call(bind, this[i], i, this);
-		return results;
-	},
-
-	/*
 	Property: every
-		This method is provided only for browsers without native *every* support.
-		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
+		Returns true if every element in the array satisfies the provided testing function.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
 
-		*every* executes the provided callback function once for each element present in the array until it finds one where callback returns a false value. If such an element is found, the every method immediately returns false. Otherwise, if callback returned a true value for all elements, every will return true. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
+		This method is provided only for browsers without native *every* support.
+
+	Syntax:
+		>var allPassed = myArray.every(fn[, bind]);
 
 	Arguments:
-		fn - function to execute with each item in the array; passed the item and the index of that item in the array
-		bind - the object to bind "this" to (see <Function.bind>)
+		fn   - (function) The function to test for each element. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 	Example:
-		>var areAllBigEnough = [10,4,25,100].every(function(item, index){
-		> return item > 20;
-		>});
-		>//areAllBigEnough = false
+		(start code)
+		var areAllBigEnough = [10,4,25,100].every(function(item, index){
+			return item > 20;
+		}); //areAllBigEnough = false
+		(end)
 	*/
 
 	every: function(fn, bind){
-		for (var i = 0, j = this.length; i < j; i++){
+		for (var i = 0, l = this.length; i < l; i++){
 			if (!fn.call(bind, this[i], i, this)) return false;
 		}
 		return true;
 	},
 
 	/*
-	Property: some
-		This method is provided only for browsers without native *some* support.
-		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
+	Property: filter
+		Creates a new array with all of the elements of the array for which the provided filtering function returns true.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>
 
-		*some* executes the callback function once for each element present in the array until it finds one where callback returns a true value. If such an element is found, some immediately returns true. Otherwise, some returns false. callback is invoked only for indexes of the array which have assigned values; it is not invoked for indexes which have been deleted or which have never been assigned values.
+		This method is provided only for browsers without native *filter* support.
+
+	Syntax:
+		>var filteredArray = myArray.filter(fn[, bind]);
 
 	Arguments:
-		fn - function to execute with each item in the array; passed the item and the index of that item in the array
-		bind - the object to bind "this" to (see <Function.bind>)
+		fn   - (function) The function to test each element of the array. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 	Example:
-		>var isAnyBigEnough = [10,4,25,100].some(function(item, index){
-		> return item > 20;
-		>});
-		>//isAnyBigEnough = true
+		(start code)
+		var biggerThanTwenty = [10,3,25,100].filter(function(item, index){
+			return item > 20;
+		}); //biggerThanTwenty = [25,100]
+		(end)
 	*/
 
-	some: function(fn, bind){
-		for (var i = 0, j = this.length; i < j; i++){
-			if (fn.call(bind, this[i], i, this)) return true;
+	filter: function(fn, bind){
+		var results = [];
+		for (var i = 0, l = this.length; i < l; i++){
+			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
-		return false;
+		return results;
+	},
+
+	/*
+	Property: forEach
+		Calls a function for each element in the array.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>.
+
+		This method is only available for browsers without native *forEach* support.
+
+	Syntax:
+		>myArray.forEach(fn[, bind]);
+
+	Arguments:
+		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+	Example:
+		(start code)
+		['apple','banana','lemon'].forEach(function(item, index){
+			alert(index + " = " + item); //alerts "0 = apple" etc.
+		}, bind); //optional second argument for binding, not used here
+		(end)
+	*/
+
+	forEach: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
 	},
 
 	/*
 	Property: indexOf
-		This method is provided only for browsers without native *indexOf* support.
+		Returns the first (least) index of an element within the array equal to the specified value, or -1 if none is found.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
+		
+		This method is provided only for browsers without native *indexOf* support.
 
-		*indexOf* compares a search element to elements of the Array using strict equality (the same method used by the ===, or triple-equals, operator).
+	Syntax:
+		>var index = myArray.indexOf(item[, from]);
 
 	Arguments:
-		item - any type of object; element to locate in the array
-		from - integer; optional; the index of the array at which to begin the search (defaults to 0)
+		item - (object) The item to search for in the array.
+		from - (integer, optional) The index of the array at which to begin the search. (defaults to 0)
 
 	Example:
-		>['apple','lemon','banana'].indexOf('lemon'); //returns 1
-		>['apple','lemon'].indexOf('banana'); //returns -1
+		(start code)
+		['apple', 'lemon', 'banana'].indexOf('lemon'); //returns 1
+		['apple', 'lemon'].indexOf('banana'); //returns -1
+		(end)
 	*/
 
 	indexOf: function(item, from){
@@ -161,117 +129,90 @@ Array.extend({
 	},
 
 	/*
-	Property: each
-		Same as <Array.forEach>.
+	Property: map
+		Creates a new array with the results of calling a provided function on every element in the array.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
+
+		This method is provided only for browsers without native *map* support.
+
+	Syntax:
+		>var mappedArray = array.map(fn[, bind]);
 
 	Arguments:
-		fn - function to execute with each item in the array; passed the item and the index of that item in the array
-		bind - optional, the object that the "this" of the function will refer to.
-
-	Example:
-		>var Animals = ['Cat', 'Dog', 'Coala'];
-		>Animals.each(function(animal){
-		>	document.write(animal)
-		>});
-	*/
-
-	/*
-	Property: copy
-		returns a copy of the array.
-
-	Returns:
-		a new array which is a copy of the current one.
-
-	Arguments:
-		start - integer; optional; the index where to start the copy, default is 0. If negative, it is taken as the offset from the end of the array.
-		length - integer; optional; the number of elements to copy. By default, copies all elements from start to the end of the array.
-
-	Example:
-		>var letters = ["a","b","c"];
-		>var copy = letters.copy();		// ["a","b","c"] (new instance)
-	*/
-
-	copy: function(start, length){
-		start = start || 0;
-		if (start < 0) start = this.length + start;
-		length = length || (this.length - start);
-		var newArray = [];
-		for (var i = 0; i < length; i++) newArray[i] = this[start++];
-		return newArray;
-	},
-
-	/*
-	Property: remove
-		Removes all occurrences of an item from the array.
-
-	Arguments:
-		item - the item to remove
-
-	Returns:
-		the Array with all occurrences of the item removed.
-
-	Example:
-		>["1","2","3","2"].remove("2") // ["1","3"];
-	*/
-
-	remove: function(item){
-		var i = 0;
-		var len = this.length;
-		while (i < len){
-			if (this[i] === item){
-				this.splice(i, 1);
-				len--;
-			} else {
-				i++;
-			}
-		}
-		return this;
-	},
-
-	/*
-	Property: contains
-		Tests an array for the presence of an item.
-
-	Arguments:
-		item - the item to search for in the array.
-		from - integer; optional; the index at which to begin the search, default is 0. If negative, it is taken as the offset from the end of the array.
-
-	Returns:
-		true - the item was found
-		false - it wasn't
-
-	Example:
-		>["a","b","c"].contains("a"); // true
-		>["a","b","c"].contains("d"); // false
-	*/
-
-	contains: function(item, from){
-		return this.indexOf(item, from) != -1;
-	},
-	
-	/*
-	Property: associate
-		Creates an object with key-value pairs based on the array of keywords passed in
-		and the current content of the array.
-		Can also accept an object of key/types to assign values.
-
-	Arguments:
-		keys - an array of keys, or an objects of keys/types
+		fn   - (function) The function to produce an element of the new Array from an element of the current one. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 	Example:
 		(start code)
-		var Animals = ['Cat', 'Dog', 'Coala', 'Lizard'];
-		var Speech = ['Miao', 'Bau', 'Fruuu', 'Mute'];
-		var Speeches = Animals.associate(Speech);
-		//Speeches['Miao'] is now Cat.
-		//Speeches['Bau'] is now Dog.
+		var timesTwo = [1,2,3].map(function(item, index){
+			return item * 2;
+		}); //timesTwo = [2,4,6];
+		(end)
+	*/
+
+	map: function(fn, bind){
+		var results = [];
+		for (var i = 0, l = this.length; i < l; i++) results[i] = fn.call(bind, this[i], i, this);
+		return results;
+	},
+
+	/*
+	Property: some
+		Returns true if at least one element in the array satisfies the provided testing function.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
+
+		This method is provided only for browsers without native *some* support.
+
+	Syntax:
+		>var somePassed = myArray.some(fn[, bind]);
+
+	Arguments:
+		fn   - (function) The function to test for each element. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+	Example:
+		(start code)
+		var isAnyBigEnough = [10,4,25,100].some(function(item, index){
+			return item > 20;
+		}); //isAnyBigEnough = true
+		(end)
+	*/
+
+	some: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (fn.call(bind, this[i], i, this)) return true;
+		}
+		return false;
+	},
+
+	/*
+	Property: associate
+		Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
+		Can also accept an object of key / type pairs to assign values.
+
+	Syntax:
+		>var associated = myArray.associate(obj);
+
+	Arguments:
+		obj - (array or object) If an array is passed, its items will be used as the keys of the object that will be created. Alternatively, an object containing key / type pairs may be passed and used as a template for associating values with the different keys.
+
+	Examples:
+		array example
+		(start code)
+		var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
+		var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
+		animals.associate(sounds);
+		//returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
+		(end)
 		
-		var Values = [100, 'Hello', {foo: 'bar'}, $('myelement')];
-		Values.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
+		object example
+		(start code)
+		var values = [100, 'Hello', {foo: 'bar'}, $('myelement')];
+		values.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
 		//returns {myNumber: 100, myElement: <div id="myelement">, myObject: {foo: bar}, myString: Hello}
 		(end)
 	*/
-	
+
 	associate: function(obj){
 		var routed = {};
 		var objtype = $type(obj);
@@ -294,16 +235,88 @@ Array.extend({
 	},
 
 	/*
-	Property: extend
-		Extends an array with another one.
+	Property: contains
+		Tests an array for the presence of an item.
+
+	Syntax:
+		>var inArray = myArray.contains(item[, from])
 
 	Arguments:
-		array - the array to extend ours with
+		item - (object) The item to search for in the array.
+		from - (integer, optional) The index of the array at which to begin the search (defaults to 0).
 
 	Example:
-		>var Animals = ['Cat', 'Dog', 'Coala'];
-		>Animals.extend(['Lizard']);
-		>//Animals is now: ['Cat', 'Dog', 'Coala', 'Lizard'];
+		(start code)
+		["a","b","c"].contains("a"); //returns true
+		["a","b","c"].contains("d"); //returns false
+		(end)
+	*/
+
+	contains: function(item, from){
+		return this.indexOf(item, from) != -1;
+	},
+
+	/*
+	Property: copy
+		Returns a copy of the array.
+
+	Syntax:
+		>var copiedArray = myArray.copy([start, [length]]);
+
+	Arguments:
+		start  - (integer, optional) The index from which the copy should be started. If a negative number is provided, the offset is taken from the end of the array (defaults to 0).
+		length - (integer, optional) The number of elements to copy (defaults to array.length - start).
+
+	Example:
+		(start code)
+		var letters = ["a","b","c"];
+		var copy = letters.copy(); //copy = ["a", "b", "c"]
+		(end)
+	*/
+
+	copy: function(start, length){
+		start = start || 0;
+		if (start < 0) start = this.length + start;
+		length = length || (this.length - start);
+		var newArray = [];
+		for (var i = 0; i < length; i++) newArray[i] = this[start++];
+		return newArray;
+	},
+
+	/*
+	Property: each
+		Same as <Array.forEach>.
+
+	Syntax:
+		>myArray.each(fn[, bind]);
+
+	Arguments:
+		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+	Example:
+		(start code)
+		['apple','banana','lemon'].each(function(item, index){
+			alert(index + " = " + item); //alerts "0 = apple" etc.
+		}, bind); //optional second argument for binding, not used here
+		(end)
+	*/
+
+	/*
+	Property: extend
+		Extends an array with all the items of another.
+
+	Syntax:
+		>myArray.extend(array);
+
+	Arguments:
+		array - (array) The array whose items should be extended into this array.
+
+	Example:
+		(start code)
+		var animals = ['Cow', 'Pig', 'Dog'];
+		animals.extend(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat', 'Dog'];
+		(end)
 	*/
 
 	extend: function(array){
@@ -312,31 +325,54 @@ Array.extend({
 	},
 
 	/*
-	Property: merge
-		merges an array in another array, without duplicates. (case- and type-sensitive)
+	Property: getLast
+		Returns the last item in the Array.
 
-	Arguments:
-		array - the array to merge from.
+	Syntax:
+		>myArray.getLast();
 
 	Example:
-		>['Cat','Dog'].merge(['Dog','Coala']); //returns ['Cat','Dog','Coala']
+		(start code)
+		['Cow', 'Pig', 'Dog', 'Cat'].getLast(); //returns 'Cat'
+		(end)
 	*/
 
-	merge: function(array){
-		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
-		return this;
+	getLast: function(){
+		return (this.length) ? this[this.length - 1] : null;
+	},
+
+	/*
+	Property: getRandom
+		Returns a random item in the Array.
+
+	Syntax:
+		>myArray.getRandom();
+
+	Example:
+		(start code)
+		['Cow', 'Pig', 'Dog', 'Cat'].getRandom(); //returns one of the items
+		(end)
+	*/
+
+	getRandom: function(){
+		return (this.length) ? this[$random(0, this.length - 1)] : null;
 	},
 
 	/*
 	Property: include
-		includes the passed in element in the array, only if its not already present. (case- and type-sensitive)
+		Pushes the passed element into the array if it's not already present (case and type sensitive).
+
+	Syntax:
+		>myArray.include(item);
 
 	Arguments:
-		item - item to add to the array (if not present)
+		item - (object) The item that should be added to this array.
 
 	Example:
-		>['Cat','Dog'].include('Dog'); //returns ['Cat','Dog']
-		>['Cat','Dog'].include('Coala'); //returns ['Cat','Dog','Coala']
+		(start code)
+		['Cow', 'Pig', 'Dog'].include('Cat'); //returns ['Cow', 'Pig', 'Dog', 'Cat']
+		['Cow', 'Pig', 'Dog'].include('Dog'); //returns ['Cow', 'Pig', 'Dog']
+		(end)
 	*/
 
 	include: function(item){
@@ -345,27 +381,59 @@ Array.extend({
 	},
 
 	/*
-	Property: getRandom
-		returns a random item in the Array
+	Property: merge
+		Merges an array with all the items of another. Does not allow duplicates (case and type sensitive).
+
+	Syntax:
+		>myArray.merge(array);
+
+	Arguments:
+		array - (array) The array whose items should be merged into this array.
+
+	Example:
+		(start code)
+		var animals = ['Cow', 'Pig', 'Dog'];
+		animals.merge(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat'];
+		(end)
 	*/
 
-	getRandom: function(){
-		return (this.length) ? this[$random(0, this.length - 1)] : null;
+	merge: function(array){
+		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
+		return this;
 	},
 
 	/*
-	Property: getLast
-		returns the last item in the Array
+	Property: remove
+		Removes all occurrences of an item from the array.
+
+	Syntax:
+		>myArray.remove(item);
+
+	Arguments:
+		item - (object) The item to search for in the array.
+
+	Example:
+		['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
+		['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
 	*/
 
-	getLast: function(){
-		return (this.length) ? this[this.length - 1] : null;
+	remove: function(item){
+		var i = 0;
+		var len = this.length;
+		while (i < len){
+			if (this[i] === item){
+				this.splice(i, 1);
+				len--;
+			} else {
+				i++;
+			}
+		}
+		return this;
 	}
 
 });
 
-//copies
-
+//copied functions
 Array.prototype.each = Array.prototype.forEach;
 Array.each = Array.forEach;
 
@@ -374,16 +442,21 @@ Array.each = Array.forEach;
 /*
 Function: $A()
 	Same as <Array.copy>, but as function.
-	Useful to apply Array prototypes to iterable objects, as a collection of DOM elements or the arguments object.
+	Useful for applying the Array prototypes to iterable objects such as a DOM Element collection or the arguments object.
+
+Syntax:
+	>var copiedArray = $A(array);
+
+Arguments:
+	array - (array) The array to copy.
 
 Example:
 	(start code)
 	function myFunction(){
-		$A(arguments).each(argument, function(){
+		$A(arguments).each(function(argument, index){
 			alert(argument);
 		});
-	};
-	//the above will alert all the arguments passed to the function myFunction.
+	}; //will alert all the arguments passed to the function myFunction.
 	(end)
 */
 
@@ -395,29 +468,27 @@ function $A(array){
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
 
+Syntax:
+	>$each(iterable, fn[, bind]);
+
 Arguments:
-	iterable - an iterable element or an objct.
-	function - function to apply to the iterable.
-	bind - optional, the 'this' of the function will refer to this object.
-
-Function argument:
-	The function argument will be passed the following arguments.
-
-	item - the current item in the iterator being procesed
-	index - integer; the index of the item, or key in case of an object.
+	iterable - (object or array) The object or array to iterate through.
+	fn       - (function) The function to test for each element. This function is passed the item and its index in the array. In the case of an object, it is passed the key of that item rather than the index.
+	bind     - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 Examples:
+	array example
 	(start code)
 	$each(['Sun','Mon','Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
-	});
-	//alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
-	//over an object
+	}); //alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+	(end)
+
+	object example
+	(start code)
 	$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 		alert("the " + key + " day of the week is " + value);
-	});
-	//alerts "the first day of the week is Sunday",
-	//"the second day of the week is Monday", etc.
+	}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
 	(end)
 */
 

@@ -12,18 +12,19 @@ Class: Chain
 	Currently implemented in <Fx.Base>, <XHR> and <Ajax>. In <Fx.Base> for example, is used to execute a list of functions, one after another, once an effect has completed.
 	The functions will not be fired all at once, but rather in succession upon completion of the one before to create custom complex animations.
 
+Syntax:
+	>MyClass.implement(new Chain);
+
 Example:
 	(start code)
 	var myFx = new Fx.Style('element', 'opacity');
-
-	//fade the element in and out three times
 	myFx.start(1,0).chain(function(){
 		myFx.start(0,1);
 	}).chain(function(){
 		myFx.start(1,0);
 	}).chain(function(){
 		myFx.start(0,1);
-	});
+	});	//this will fade the element in and out three times
 	(end)
 */
 
@@ -69,6 +70,9 @@ Class: Events
 	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
 	Events in a Class that implements <Events> can be either added as an option, or with addEvent, but never directly through .options.onEventName.
 
+Syntax:
+	>MyClass.implement(new Events);
+
 Example:
 	(start code)
 	var myFx = new Fx.Style('element', 'opacity');
@@ -109,6 +113,9 @@ var Events = new Class({
 	Property: addEvent
 		Adds an event to the Class instance's event stack.
 
+	Syntax:
+		>myClass.addEvent(type, fn);
+
 	Arguments:
 		type - (string)   The type of event (e.g. 'onComplete').
 		fn   - (function) The function to execute.
@@ -134,6 +141,9 @@ var Events = new Class({
 	Property: addEvents
 		Works as <addEvent>, but accepts an object to add multiple events at once.
 
+	Syntax:
+		>myClass.addEvents(events);
+
 	Arguments:
 		events - (object) An object containing the event type / function pairs.
 
@@ -156,10 +166,13 @@ var Events = new Class({
 	Property: fireEvent
 		Fires all events of the specified type in the Class instance.
 
+	Syntax:
+		>myClass.fireEvent(type[, args[, delay]]);
+
 	Arguments:
-		type  - (string)  The type of event (e.g. 'onComplete').
-		args  - (mixed)   Array or single object. Arguments to pass to the function. To pass more than one argument, the arguments must be in an array.
-		delay - (integer) Delay in miliseconds to wait before executing the event.
+		type  - (string) The type of event (e.g. 'onComplete').
+		args  - (mixed, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
+		delay - (integer, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
 	Example:
 		(start code)
@@ -186,8 +199,11 @@ var Events = new Class({
 	Property: removeEvent
 		Removes an event from the stack of events of the Class instance.
 
+	Syntax:
+		>myClass.removeEvent(type, fn);
+
 	Arguments:
-		type - (string)   The type of event (e.g. 'onComplete').
+		type - (string) The type of event (e.g. 'onComplete').
 		fn   - (function) The function to remove.
 	*/
 
@@ -202,8 +218,11 @@ var Events = new Class({
 	Property: removeEvents
 		Works as <removeEvent>, but removes all events of the given type. If no type is specified, removes all events of all types.
 
+	Syntax:
+		>myClass.removeEvents([type]);
+
 	Arguments:
-		type - (string) [optional] The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
+		type - (string, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
 
 	Example:
 		(start code)
@@ -229,30 +248,33 @@ Class: Options
 	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	Used to automate the setting of a Class instance's options. Will also add Class <Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
 
-	Example:
-		(start code)
-		var Widget = new Class({
-			options: {
-				color: '#fff',
-				size: {
-					width: 100
-					height: 100
-				}
-			},
-			initialize: function(options){
-				this.setOptions(options);
-			}
-		});
-		Widget.implement(new Options);
-		//later...
-		var myWidget = new Widget({
-			color: '#f00',
+Syntax:
+	>MyClass.implement(new Options);
+
+Example:
+	(start code)
+	var Widget = new Class({
+		options: {
+			color: '#fff',
 			size: {
-				width: 200
+				width: 100
+				height: 100
 			}
-		});
-		//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
-		(end)
+		},
+		initialize: function(options){
+			this.setOptions(options);
+		}
+	});
+	Widget.implement(new Options);
+	//later...
+	var myWidget = new Widget({
+		color: '#f00',
+		size: {
+			width: 200
+		}
+	});
+	//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
+	(end)
 */
 
 var Options = new Class({
@@ -261,8 +283,11 @@ var Options = new Class({
 	Property: setOptions
 		Merges the default options of the Class with the options passed in.
 
+	Syntax:
+		>myClass.setOptions([options]);
+
 	Arguments:
-		options - (object) [optional] The user defined options to merge with the defaults.
+		options - (object, optional) The user defined options to merge with the defaults.
 
 	Note:
 		Your Class must have its default options defined in its options object.
