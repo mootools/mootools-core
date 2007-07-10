@@ -146,37 +146,42 @@ Test.Suite.prototype.start = function(){
 	this.options.onComplete.call(this, endTime - startTime);
 };
 
-Test.Messages = {
-	
-	expected: function(a, b){
-		return 'Expecting "' + a + '" but found "' + b + '".';
-	},
-	
-	type: function(a, type, aType){
-		return 'Expecting type of "' + a + '" to be "' + type + '" but was "' + b + '" instead.';
-	}
-
-};
-
-Test.Assert = {
+var Assert = {
 
 	type: function(a, type){
 		var aType = $type(a);
-		return (aType != type) ? Test.Output.error(Test.Messages.type(a, type, aType)) : true;
+		return (aType != type) ? Test.Output.error('Expecting type of "' + a + '" to be "' + type + '" but was "' + b + '" instead.') : true;
 	},
-	
+
 	equals: function(a, b){
-		return (a != b) ? Test.Output.error(Test.Messages.expected(b, a)) : true;
-	}
+		return (a !== b) ? Test.Output.error('Expecting "' + a + '" but found "' + b + '".') : true;
+	},
 
+	isTrue: function(a){
+		return (a !== true) ? Test.Output.error('Object "' + a + '" is not true.') : true;
+	},
+
+	isFalse: function(a){
+		return (a !== false) ? Test.Output.error('Object "' + a + '" is not false.') : true;
+	},
+
+	stringEquals: function(a, b){
+		a = String(a);
+		b = String(b);
+		return (a != b) ? Test.Output.error('String representation "' + a + '" is different than String representation "' + b + '".') : true;
+	},
+
+	all: function(){
+		var allOk = true;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			if (arguments[i] === false) allOk = false;
+		}
+		return allOk;
+	}
 };
 
-Test.all = function(){
-	var allOk = true;
-	for (var i = 0, l = arguments.length; i < l; i++){
-		if (arguments[i] === false) allOk = false;
+Tests.start = function(){
+	for (var test in Tests){
+		if (Tests[test].start) Tests[test].start();
 	}
-	return allOk;
 };
-
-var $equals = Test.Assert.equals;

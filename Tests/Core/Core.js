@@ -19,7 +19,7 @@ Tests.Core = new Test.Suite('Core', {
 		var all = true;
 
 		for (var i = 0; i < objects.length; i++){
-			if (!$equals($type(objects[i]), types[i])) all = false;
+			if (!Assert.type(objects[i], types[i])) all = false;
 		}
 
 		return all;
@@ -27,9 +27,9 @@ Tests.Core = new Test.Suite('Core', {
 	
 	$random: function(){
 		var num = $random(0, 10);
-		return Test.all(
-			$equals(num >= 0, true),
-			$equals(num <= 10, true)
+		return Assert.all(
+			Assert.isTrue(num >= 0),
+			Assert.isTrue(num <= 10)
 		);
 	},
 	
@@ -50,11 +50,11 @@ Tests.Core = new Test.Suite('Core', {
 			return 'success';
 		});
 		
-		return Test.all(
-			$equals(x, false),
-			$equals(y, binder),
-			$equals(z, argument),
-			$equals(k, 'success')
+		return Assert.all(
+			Assert.isFalse(x),
+			Assert.equals(y, binder),
+			Assert.equals(z, argument),
+			Assert.equals(k, 'success')
 		);
 	},
 	
@@ -62,11 +62,11 @@ Tests.Core = new Test.Suite('Core', {
 		var ob1 = {a: 1, b: 2};
 		var ob2 = {a: 5, b: 3, c: 4};
 		$extend(ob1, ob2);
-		return Test.all(
-			$equals(ob1.b, 3),
-			$equals(ob2.b, 3),
-			$equals(ob1.c, 4),
-			$equals(ob1.a, 5)
+		return Assert.all(
+			Assert.equals(ob1.b, 3),
+			Assert.equals(ob2.b, 3),
+			Assert.equals(ob1.c, 4),
+			Assert.equals(ob1.a, 5)
 		);
 	},
 	
@@ -75,13 +75,13 @@ Tests.Core = new Test.Suite('Core', {
 		var ob2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
 		var ob3 = {a: {a: 3}, b: 3, c: false};
 		var merged = $merge(ob1, ob2, ob3);
-		return Test.all(
-			$equals(ob1.a.a, 1),
-			$equals(ob2.a.a, 2),
-			$equals(ob3.a.a, 3),
-			$equals(merged.a.a, 3),
-			$equals(merged.a.b, 8),
-			$equals(merged.c, false)
+		return Assert.all(
+			Assert.equals(ob1.a.a, 1),
+			Assert.equals(ob2.a.a, 2),
+			Assert.equals(ob3.a.a, 3),
+			Assert.equals(merged.a.a, 3),
+			Assert.equals(merged.a.b, 8),
+			Assert.isFalse(merged.c)
 		);
 	},
 	
@@ -92,19 +92,19 @@ Tests.Core = new Test.Suite('Core', {
 		timeout = $clear(timeout);
 		periodical = $clear(periodical);
 		
-		return Test.all(
-			$equals(timeout, null),
-			$equals(periodical, null)
+		return Assert.all(
+			Assert.equals(timeout, null),
+			Assert.equals(periodical, null)
 		);
 	},
 	
 	$splat: function(){
 		var arr = [1, 2, 3];
 		var val = 1;
-		return Test.all(
-			$equals($splat(val).toString(), [1].toString()),
-			$equals($splat(arr), arr),
-			$equals($splat(null), null)
+		return Assert.all(
+			Assert.stringEquals($splat(val), [1]),
+			Assert.equals($splat(arr), arr),
+			Assert.equals($splat(null), null)
 		);
 	},
 	
@@ -113,29 +113,29 @@ Tests.Core = new Test.Suite('Core', {
 		var picked1 = $pick(null, undefined, false, arr, {});
 		var picked2 = $pick(null, undefined, arr);
 
-		return Test.all(
-			$equals(picked1, false),
-			$equals(picked2, arr)
+		return Assert.all(
+			Assert.isFalse(picked1),
+			Assert.equals(picked2, arr)
 		);
 	},
 	
 	$chk: function(){
-		return Test.all(
-			$equals($chk(0), true),
-			$equals($chk(false), false),
-			$equals($chk(true), true),
-			$equals($chk(undefined), false),
-			$equals($chk(''), false)
+		return Assert.all(
+			Assert.isTrue($chk(0)),
+			Assert.isFalse($chk(false)),
+			Assert.isTrue($chk(true)),
+			Assert.isFalse($chk(undefined)),
+			Assert.isFalse($chk(''))
 		);
 	},
 	
 	$defined: function(){
-		return Test.all(
-			$equals($defined(''), true),
-			$equals($defined(false), true),
-			$equals($defined(0), true),
-			$equals($defined(null), false),
-			$equals($defined(undefined), false)
+		return Assert.all(
+			Assert.isTrue($defined('')),
+			Assert.isTrue($defined(false)),
+			Assert.isTrue($defined(0)),
+			Assert.isFalse($defined(null)),
+			Assert.isFalse($defined(undefined))
 		);
 	},
 	
@@ -166,10 +166,10 @@ Tests.Core = new Test.Suite('Core', {
 		
 		var myInstrument = new Instrument('xeelophone');
 		
-		return Test.all(
-			$equals(myInstrument.method('a', 'b', 'c'), 'stuffabcxeelophone'),
-			$equals(Instrument.method(myInstrument, 'a', 'b', 'c'), 'stuffabcxeelophone'),
-			$equals($type(myInstrument), 'instrument')
+		return Assert.all(
+			Assert.equals(myInstrument.method('a', 'b', 'c'), 'stuffabcxeelophone'),
+			Assert.equals(Instrument.method(myInstrument, 'a', 'b', 'c'), 'stuffabcxeelophone'),
+			Assert.equals($type(myInstrument), 'instrument')
 		);
 	}
 	
