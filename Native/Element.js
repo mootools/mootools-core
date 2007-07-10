@@ -205,10 +205,11 @@ Elements.$multiply = function(property){
 	return function(){
 		var args = arguments;
 		var items = [];
-		var elements = this.every(function(element){
+		var elements = true;
+		this.each(function(element){
 			var returns = element[property].apply(element, args);
 			items.push(returns);
-			return ($type(returns) == 'element');
+			if (elements) elements = ($type(returns) == 'element');
 		});
 		return (elements) ? new Elements(items) : items;
 	};
