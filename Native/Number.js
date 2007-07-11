@@ -56,7 +56,7 @@ Number.extend({
 	*/
 
 	limit: function(min, max){
-		return Math.min($pick(max, Number.MAX_VALUE), Math.max($pick(min, Number.MIN_VALUE), this));
+		return Math.min(max, Math.max(min, this));
 	},
 
 	/*

@@ -10,11 +10,11 @@ Tests.String = new Test.Suite('String', {
 	
 	test: function(){
 		return Assert.all(
-			Assert.equals('i like teh cookies'.test('cookies'), true),
-			Assert.equals('i like cookies'.test('ke coo'), true),
-			Assert.equals('i like cookies'.test('cookiez'), false),
-			Assert.equals('i like cookies'.test(/like/), true),
-			Assert.equals('i like cookies'.test(/^l/), false)
+			Assert.isTrue('i like teh cookies'.test('cookies')),
+			Assert.isTrue('i like cookies'.test('ke coo')),
+			Assert.isFalse('i like cookies'.test('cookiez')),
+			Assert.isTrue('i like cookies'.test(/like/)),
+			Assert.isFalse('i like cookies'.test(/^l/))
 		);
 	},
 	
@@ -83,12 +83,12 @@ Tests.String = new Test.Suite('String', {
 	
 	contains: function(){
 		return Assert.all(
-			Assert.equals('i like cookies'.contains('cookies'), true),
-			Assert.equals('i like cookies'.contains('cookies', ' '), true),
-			Assert.equals('i like cookies'.contains('cookies', ','), false),
-			Assert.equals('i,like,cookies'.contains('cookies'), true),
-			Assert.equals('i,like,cookies'.contains('cookies', ' '), false),
-			Assert.equals('i,like,cookies'.contains('cookies', ','), true)
+			Assert.isTrue('i like cookies'.contains('cookies')),
+			Assert.isTrue('i like cookies'.contains('cookies', ' ')),
+			Assert.isFalse('i like cookies'.contains('cookies', ',')),
+			Assert.isTrue('i,like,cookies'.contains('cookies')),
+			Assert.isFalse('i,like,cookies'.contains('cookies', ' ')),
+			Assert.isTrue('i,like,cookies'.contains('cookies', ','))
 		);
 	}
 

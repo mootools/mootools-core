@@ -29,10 +29,7 @@ Tests.Number = new Test.Suite('Number', {
 	limit: function(){
 		return Assert.all(
 			Assert.equals((-1).limit(0,1), 0),
-			Assert.equals((3).limit(1,2), 2),
-			Assert.equals((-Infinity).limit(null, 2), Number.MIN_VALUE),
-			Assert.equals((0).limit(null,2), Number.MIN_VALUE),
-			Assert.equals((Infinity).limit(), Number.MAX_VALUE)
+			Assert.equals((3).limit(1,2), 2)
 		);
 	},
 	
@@ -63,7 +60,7 @@ Tests.Number = new Test.Suite('Number', {
 		var aTest = 'hi';
 		var found3 = false;
 		(1).times(function(i){
-			found3 = this.$family == 'string';
+			found3 = (this == aTest);
 		}, aTest);
 		
 		return Assert.all(
