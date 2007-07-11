@@ -28,9 +28,12 @@ Array.extend({
 		fn   - (function) The function to test for each element. This function is passed the item and its index in the array.
 		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
+	Returns:
+		(boolean) If every element in the array satisfies the provided testing function, returns true. Otherwise, returns false.
+
 	Example:
 		(start code)
-		var areAllBigEnough = [10,4,25,100].every(function(item, index){
+		var areAllBigEnough = [10, 4, 25, 100].every(function(item, index){
 			return item > 20;
 		}); //areAllBigEnough = false
 		(end)
@@ -57,11 +60,14 @@ Array.extend({
 		fn   - (function) The function to test each element of the array. This function is passed the item and its index in the array.
 		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
+	Returns:
+		(array) The new filtered array.
+
 	Example:
 		(start code)
-		var biggerThanTwenty = [10,3,25,100].filter(function(item, index){
+		var biggerThanTwenty = [10, 3, 25, 100].filter(function(item, index){
 			return item > 20;
-		}); //biggerThanTwenty = [25,100]
+		}); //biggerThanTwenty = [25, 100]
 		(end)
 	*/
 
@@ -89,7 +95,7 @@ Array.extend({
 
 	Example:
 		(start code)
-		['apple','banana','lemon'].forEach(function(item, index){
+		['apple', 'banana', 'lemon'].forEach(function(item, index){
 			alert(index + " = " + item); //alerts "0 = apple" etc.
 		}, bind); //optional second argument for binding, not used here
 		(end)
@@ -101,13 +107,16 @@ Array.extend({
 
 	/*
 	Property: indexOf
-		Returns the first (least) index of an element within the array equal to the specified value, or -1 if none is found.
+		Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.
 		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
 		
 		This method is provided only for browsers without native *indexOf* support.
 
 	Syntax:
 		>var index = myArray.indexOf(item[, from]);
+
+	Returns:
+		(integer) The index of the first element within the array equal to the specified value. If not found, returns -1.
 
 	Arguments:
 		item - (object) The item to search for in the array.
@@ -142,11 +151,14 @@ Array.extend({
 		fn   - (function) The function to produce an element of the new Array from an element of the current one. This function is passed the item and its index in the array.
 		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
+	Returns:
+		(array) The new mapped array.
+
 	Example:
 		(start code)
-		var timesTwo = [1,2,3].map(function(item, index){
+		var timesTwo = [1, 2, 3].map(function(item, index){
 			return item * 2;
-		}); //timesTwo = [2,4,6];
+		}); //timesTwo = [2, 4, 6];
 		(end)
 	*/
 
@@ -166,13 +178,16 @@ Array.extend({
 	Syntax:
 		>var somePassed = myArray.some(fn[, bind]);
 
+	Returns:
+		(boolean) If at least one element in the array satisfies the provided testing function returns true. Otherwise, returns false.
+
 	Arguments:
 		fn   - (function) The function to test for each element. This function is passed the item and its index in the array.
 		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 	Example:
 		(start code)
-		var isAnyBigEnough = [10,4,25,100].some(function(item, index){
+		var isAnyBigEnough = [10, 4, 25, 100].some(function(item, index){
 			return item > 20;
 		}); //isAnyBigEnough = true
 		(end)
@@ -194,7 +209,10 @@ Array.extend({
 		>var associated = myArray.associate(obj);
 
 	Arguments:
-		obj - (array or object) If an array is passed, its items will be used as the keys of the object that will be created. Alternatively, an object containing key / type pairs may be passed and used as a template for associating values with the different keys.
+		obj - (mixed) If an array is passed, its items will be used as the keys of the object that will be created. Alternatively, an object containing key / type pairs may be passed and used as a template for associating values with the different keys.
+
+	Returns:
+		(object) The new associated object.
 
 	Examples:
 		array example
@@ -245,6 +263,9 @@ Array.extend({
 		item - (object) The item to search for in the array.
 		from - (integer, optional) The index of the array at which to begin the search (defaults to 0).
 
+	Returns:
+		(boolean) If the array contains the item specified, returns true. Otherwise, returns false.
+
 	Example:
 		(start code)
 		["a","b","c"].contains("a"); //returns true
@@ -266,6 +287,9 @@ Array.extend({
 	Arguments:
 		start  - (integer, optional) The index from which the copy should be started. If a negative number is provided, the offset is taken from the end of the array (defaults to 0).
 		length - (integer, optional) The number of elements to copy (defaults to array.length - start).
+
+	Returns:
+		(array) The new copied array.
 
 	Example:
 		(start code)
@@ -312,6 +336,9 @@ Array.extend({
 	Arguments:
 		array - (array) The array whose items should be extended into this array.
 
+	Returns:
+		(array) This array, extended.
+
 	Example:
 		(start code)
 		var animals = ['Cow', 'Pig', 'Dog'];
@@ -326,10 +353,13 @@ Array.extend({
 
 	/*
 	Property: getLast
-		Returns the last item in the Array.
+		Returns the last item from the array.
 
 	Syntax:
 		>myArray.getLast();
+
+	Returns:
+		(mixed) The last item in this array.
 
 	Example:
 		(start code)
@@ -343,10 +373,13 @@ Array.extend({
 
 	/*
 	Property: getRandom
-		Returns a random item in the Array.
+		Returns a random item from the array.
 
 	Syntax:
 		>myArray.getRandom();
+
+	Returns:
+		(mixed) A random item from this array.
 
 	Example:
 		(start code)
@@ -367,6 +400,9 @@ Array.extend({
 
 	Arguments:
 		item - (object) The item that should be added to this array.
+
+	Returns:
+		(array) This array with the new item included.
 
 	Example:
 		(start code)
@@ -390,6 +426,9 @@ Array.extend({
 	Arguments:
 		array - (array) The array whose items should be merged into this array.
 
+	Returns:
+		(array) This array merged with the new items.
+
 	Example:
 		(start code)
 		var animals = ['Cow', 'Pig', 'Dog'];
@@ -411,6 +450,9 @@ Array.extend({
 
 	Arguments:
 		item - (object) The item to search for in the array.
+
+	Returns:
+		(array) This array with all occurrences of the item removed.
 
 	Example:
 		['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
@@ -449,6 +491,9 @@ Syntax:
 
 Arguments:
 	array - (array) The array to copy.
+
+Returns:
+	(array) The new copied array.
 
 Example:
 	(start code)
