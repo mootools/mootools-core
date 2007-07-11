@@ -145,6 +145,26 @@ Tests.Array = new Test.Suite('Array', {
 	getLast: function(){
 		var arr1 = [1,2,3,4];
 		return Assert.equals(arr1.getLast(), 4);
+	},
+	
+	$each: function(){
+		var daysArr = [];
+		$each(['Sun','Mon','Tue'], function(value, key){
+			daysArr[key] = value;
+		});
+
+		var daysObj = [];
+		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+			daysObj[key] = value;
+		});
+		
+		return Assert.all(
+			Assert.stringEquals(daysArr, ['Sun','Mon','Tue']),
+			Assert.equals(daysObj.first, 'Sunday'),
+			Assert.equals(daysObj.second, 'Monday'),
+			Assert.equals(daysObj.third, 'Tuesday')
+		);
+		
 	}
 	
 });
