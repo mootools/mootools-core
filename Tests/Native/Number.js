@@ -9,7 +9,7 @@ License:
 Tests.Number = new Test.Suite('Number', {
 	
 	toInt: function(){
-		return Assert.all(
+		this.end(
 			Assert.equals((111).toInt(), 111),
 			Assert.equals((111).toInt(2), 7),
 			Assert.equals((0x16).toInt(10), 22), // ECMA standard, radix is optional so if starts with 0x then parsed as hexadecimal
@@ -18,7 +18,7 @@ Tests.Number = new Test.Suite('Number', {
 	},
 	
 	toFloat: function(){
-		return Assert.all(
+		this.end(
 			Assert.equals((1.00).toFloat(), 1),
 			Assert.equals((1.12 - 0.12).toFloat(), 1),
 			Assert.equals((0.0010).toFloat(), 0.001),
@@ -27,14 +27,14 @@ Tests.Number = new Test.Suite('Number', {
 	},
 	
 	limit: function(){
-		return Assert.all(
+		this.end(
 			Assert.equals((-1).limit(0,1), 0),
 			Assert.equals((3).limit(1,2), 2)
 		);
 	},
 	
 	round: function(){
-		return Assert.all(
+		this.end(
 			Assert.equals((0.01).round(), 0),
 			Assert.equals((0.01).round(2), 0.01),
 			Assert.equals((1).round(3), 1),
@@ -63,7 +63,7 @@ Tests.Number = new Test.Suite('Number', {
 			found3 = (this == aTest);
 		}, aTest);
 		
-		return Assert.all(
+		this.end(
 			Assert.equals(found, 2),
 			Assert.equals(found2, -1),
 			Assert.isTrue(found3)

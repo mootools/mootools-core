@@ -22,12 +22,12 @@ Tests.Core = new Test.Suite('Core', {
 			if (!Assert.type(objects[i], types[i])) all = false;
 		}
 
-		return all;
+		this.end(all);
 	},
 	
 	$random: function(){
 		var num = $random(0, 10);
-		return Assert.all(
+		this.end(
 			Assert.isTrue(num >= 0),
 			Assert.isTrue(num <= 10)
 		);
@@ -50,7 +50,7 @@ Tests.Core = new Test.Suite('Core', {
 			return 'success';
 		});
 		
-		return Assert.all(
+		this.end(
 			Assert.isFalse(x),
 			Assert.equals(y, binder),
 			Assert.equals(z, argument),
@@ -62,7 +62,7 @@ Tests.Core = new Test.Suite('Core', {
 		var ob1 = {a: 1, b: 2};
 		var ob2 = {a: 5, b: 3, c: 4};
 		$extend(ob1, ob2);
-		return Assert.all(
+		this.end(
 			Assert.equals(ob1.b, 3),
 			Assert.equals(ob2.b, 3),
 			Assert.equals(ob1.c, 4),
@@ -75,7 +75,7 @@ Tests.Core = new Test.Suite('Core', {
 		var ob2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
 		var ob3 = {a: {a: 3}, b: 3, c: false};
 		var merged = $merge(ob1, ob2, ob3);
-		return Assert.all(
+		this.end(
 			Assert.equals(ob1.a.a, 1),
 			Assert.equals(ob2.a.a, 2),
 			Assert.equals(ob3.a.a, 3),
@@ -92,7 +92,7 @@ Tests.Core = new Test.Suite('Core', {
 		timeout = $clear(timeout);
 		periodical = $clear(periodical);
 		
-		return Assert.all(
+		this.end(
 			Assert.equals(timeout, null),
 			Assert.equals(periodical, null)
 		);
@@ -101,7 +101,7 @@ Tests.Core = new Test.Suite('Core', {
 	$splat: function(){
 		var arr = [1, 2, 3];
 		var val = 1;
-		return Assert.all(
+		this.end(
 			Assert.stringEquals($splat(val), [1]),
 			Assert.equals($splat(arr), arr),
 			Assert.equals($splat(null), null)
@@ -113,14 +113,14 @@ Tests.Core = new Test.Suite('Core', {
 		var picked1 = $pick(null, undefined, false, arr, {});
 		var picked2 = $pick(null, undefined, arr);
 
-		return Assert.all(
+		this.end(
 			Assert.isFalse(picked1),
 			Assert.equals(picked2, arr)
 		);
 	},
 	
 	$chk: function(){
-		return Assert.all(
+		this.end(
 			Assert.isTrue($chk(0)),
 			Assert.isFalse($chk(false)),
 			Assert.isTrue($chk(true)),
@@ -130,7 +130,7 @@ Tests.Core = new Test.Suite('Core', {
 	},
 	
 	$defined: function(){
-		return Assert.all(
+		this.end(
 			Assert.isTrue($defined('')),
 			Assert.isTrue($defined(false)),
 			Assert.isTrue($defined(0)),
@@ -166,7 +166,7 @@ Tests.Core = new Test.Suite('Core', {
 		
 		var myInstrument = new Instrument('xeelophone');
 		
-		return Assert.all(
+		this.end(
 			Assert.equals(myInstrument.method('a', 'b', 'c'), 'stuffabcxeelophone'),
 			Assert.equals(Instrument.method(myInstrument, 'a', 'b', 'c'), 'stuffabcxeelophone'),
 			Assert.equals($type(myInstrument), 'instrument')

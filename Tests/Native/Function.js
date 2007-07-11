@@ -21,7 +21,7 @@ Tests.Function = new Test.Suite('Function', {
 		
 		var fn2 = fnTest2.create({'arguments': ['lame', 'noob'], 'bind': 'jack', 'event': true});
 		
-		return Assert.all(
+		this.end(
 			Assert.equals(fn(), 'john is beautiful and stupid'),
 			Assert.equals(fn2(), 'jack is lame and noob')
 		);

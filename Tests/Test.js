@@ -67,27 +67,42 @@ Test.Case = function(name, test, options){
 	};
 	
 	for (var option in options) this.options[option] = options[option];
-
+	
+	this.onCaseEnd = function(){};
+	
 	this.test = test;
 	this.name = name;
 };
 
-Test.Case.prototype.start = function(){
+Test.Case.prototype = {
+
+	start: function(){
 		
-	this.options.onStart.call(this);
-	var result = true;
-	var startTime = new Date().getTime();
-	try {
-		result = this.test();
-	} catch(e){
-		this.options.onException.call(this, e);
-		result = false;
+		this.options.onStart.call(this);
+		this.startTime = new Date().getTime();
+
+		try {
+			this.test();
+		} catch(e){
+			this.options.onException.call(this, e);
+		}
+
+	},
+	
+	check: function(result){
+		var endTime = new Date().getTime();
+		this.failed = (result === false);
+		this.options.onComplete.call(this, endTime - this.startTime);
+	},
+	
+	end: function(){
+		var allOk = true;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			if (arguments[i] === false) allOk = false;
+		}
+		this.check(allOk);
+		this.onCaseEnd.call(this);
 	}
-	var endTime = new Date().getTime();
-	
-	this.failed = (result === false);
-	
-	this.options.onComplete.call(this, endTime - startTime);
 
 };
 
@@ -113,6 +128,8 @@ Test.Suite = function(name, cases, options){
 	
 	for (var option in options) this.options[option] = options[option];
 	
+	this.onSuiteEnd = function(){};
+	
 	this.name = name;
 	
 	this.testCases = [];
@@ -134,16 +151,33 @@ Test.Suite = function(name, cases, options){
 	
 };
 
-Test.Suite.prototype.start = function(){
-	this.options.onStart.call(this);
+Test.Suite.prototype = {
+	start: function(){
+		this.options.onStart.call(this);
 	
-	var startTime = new Date().getTime();
+		this.startTime = new Date().getTime();
+		
+		for (var i = 0, l = this.testCases.length; i < l; i++) this.testCases[i].onCaseEnd = this.make(i);
+		
+		this.testCases[0].start();
+	},
 	
-	for (var i = 0, l = this.testCases.length; i < l; i++) this.testCases[i].start();
+	make: function(i){
+		var self = this;
+		
+		if (this.testCases[i + 1]) return function(){
+			self.testCases[i + 1].start();
+		};
+		return function(){
+			self.end();
+		};
+	},
 	
-	var endTime = new Date().getTime();
-	
-	this.options.onComplete.call(this, endTime - startTime);
+	end: function(){
+		var endTime = new Date().getTime();
+		this.options.onComplete.call(this, endTime - this.startTime);
+		this.onSuiteEnd.call(this);
+	}
 };
 
 var Assert = {
@@ -169,19 +203,24 @@ var Assert = {
 		a = String(a);
 		b = String(b);
 		return (a != b) ? Test.Output.error('String representation "' + a + '" is different than String representation "' + b + '".') : true;
-	},
-
-	all: function(){
-		var allOk = true;
-		for (var i = 0, l = arguments.length; i < l; i++){
-			if (arguments[i] === false) allOk = false;
-		}
-		return allOk;
 	}
 };
 
 Tests.start = function(){
-	for (var test in Tests){
-		if (Tests[test].start) Tests[test].start();
+	Tests.all = [];
+	var make = function(i){
+		if (!Tests.all[i + 1]) return function(){};
+		return function(){
+			Tests.all[i + 1].start();
+		};
+	};
+	
+	for (var suite in Tests){
+		if (Tests[suite].start) Tests.all.push(Tests[suite]);
 	}
+	
+	for (var i = 0, l = Tests.all.length; i < l; i++) Tests.all[i].onSuiteEnd = make(i);
+	
+	Tests.all[0].start();
+
 };
