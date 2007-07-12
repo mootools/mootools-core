@@ -9,26 +9,32 @@ License:
 /*
 Class: String
 	A collection of The String Object prototype methods.
+	For more information on all available JavaScript String methods see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String#Methods>
 */
 
 String.extend({
 
 	/*
 	Property: test
-		Tests a string with a regular expression.
+		Searches for a match between the string and a regular expression.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test>.
+
+	Syntax:
+		>myString.test(regex[,params]);
 
 	Arguments:
-		regex - a string or regular expression object, the regular expression you want to match the string with
-		params - optional, if first parameter is a string, any parameters you want to pass to the regex ('g' has no effect)
+		regex  - (mixed) The string or regular expression you want to match the string with.
+		params - (string, optional) If first parameter is a string, any parameters you want to pass to the regular expression ('g' has no effect).
 
 	Returns:
-		true if a match for the regular expression is found in the string, false if not.
-		See <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test>
+		(boolean) If a match for the regular expression is found in this string returns true. Otherwise, returns false.
 
 	Example:
-		>"I like cookies".test("cookie"); // returns true
-		>"I like cookies".test("COOKIE", "i") // ignore case, returns true
-		>"I like cookies".test("cake"); // returns false
+		(start code)
+		"I like cookies".test("cookie"); //returns true
+		"I like cookies".test("COOKIE", "i") //returns true (ignore case)
+		"I like cookies".test("cake"); //returns false
+		(end)
 	*/
 
 	test: function(regex, params){
@@ -36,47 +42,85 @@ String.extend({
 	},
 
 	/*
-	Property: toInt
-		parses a string to an integer.
+	Property: contains
+		Checks to see if the string passed in is contained in this string. If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
 
-	Returns:
-		either an int or "NaN" if the string is not a number.
+	Syntax:
+		>myString.contains(string[, separator]);
 
 	Arguments:
-		base - number, optional; base to use, defaults to 10
+		string    - (string) The string to search for.
+		separator - (string, optional) The string that separates the values in this string (eg. Element classNames are separated by a ' ').
+
+	Returns:
+		(boolean) If the string is contained in this string, returns true. Otherwise, returns false.
 
 	Example:
-		>var value = "10px".toInt(); // value is 10
+		(start code)
+		'a bc'.contains('bc'); //returns true
+		'a b c'.contains('c', ' '); //returns true
+		'a bc'.contains('b', ' '); //returns false
+		(end)
 	*/
 
-	toInt: function(base){
-		return parseInt(this, base || 10);
+	contains: function(string, separator){
+		return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : this.indexOf(string) > -1;
 	},
 
 	/*
-	Property: toFloat
-		parses a string to an float.
+	Property: trim
+		Trims the leading and trailing spaces off a string.
+
+	Syntax:
+		>myString.trim();
 
 	Returns:
-		either a float or "NaN" if the string is not a number.
+		(string) The trimmed string.
 
 	Example:
-		>var value = "10.848".toFloat(); // value is 10.848
+		(start code)
+		"    i like cookies     ".trim(); //"i like cookies"
+		(end)
 	*/
 
-	toFloat: function(){
-		return parseFloat(this);
+	trim: function(){
+		return this.replace(/^\s+|\s+$/g, '');
+	},
+
+	/*
+	Property: clean
+		Removes all extraneous whitespace from a string and trims (<String.trim>) it.
+
+	Syntax:
+		>myString.clean();
+
+	Returns:
+		(string) The cleaned string.
+
+	Example:
+		(start code)
+		" i      like     cookies      \n\n".clean(); //returns "i like cookies"
+		(end)
+	*/
+
+	clean: function(){
+		return this.replace(/\s{2,}/g, ' ').trim();
 	},
 
 	/*
 	Property: camelCase
-		Converts a hiphenated string to a camelcase string.
+		Converts a hyphenated string to a camelcased string.
 
-	Example:
-		>"I-like-cookies".camelCase(); //"ILikeCookies"
+	Syntax:
+		>myString.camelCase();
 
 	Returns:
-		the camel cased string
+		(string) The camelcased string.
+
+	Example:
+		(start code)
+		"I-like-cookies".camelCase(); //returns "ILikeCookies"
+		(end)
 	*/
 
 	camelCase: function(){
@@ -87,10 +131,18 @@ String.extend({
 
 	/*
 	Property: hyphenate
-		Converts a camelCased string to a hyphen-ated string.
+		Converts a camelcased string to a hyphenated string.
+
+	Syntax:
+		>myString.hyphenate();
+
+	Returns:
+		(string) The hyphenated string.
 
 	Example:
-		>"ILikeCookies".hyphenate(); //"I-like-cookies"
+		(start code)
+		"ILikeCookies".hyphenate(); //returns "I-like-cookies"
+		(end)
 	*/
 
 	hyphenate: function(){
@@ -101,13 +153,18 @@ String.extend({
 
 	/*
 	Property: capitalize
-		Converts the first letter in each word of a string to Uppercase.
+		Converts the first letter of each word in a string to uppercase.
 
-	Example:
-		>"i like cookies".capitalize(); //"I Like Cookies"
+	Syntax:
+		>myString.capitalize();
 
 	Returns:
-		the capitalized string
+		(string) The capitalized string.
+
+	Example:
+		(start code)
+		"i like cookies".capitalize(); //returns "I Like Cookies"
+		(end)
 	*/
 
 	capitalize: function(){
@@ -117,69 +174,96 @@ String.extend({
 	},
 
 	/*
-	Property: trim
-		Trims the leading and trailing spaces off a string.
+	Property: escapeRegExp
+		Escapes all regular expression characters from the string.
 
-	Example:
-		>"    i like cookies     ".trim() //"i like cookies"
+	Syntax:
+		>myString.escapeRegExp();
 
 	Returns:
-		the trimmed string
+		(string) The escaped string.
+
+	Example:
+		(start code)
+		'animals.sheep[1]'.escapeRegExp(); //returns 'animals\.sheep\[1\]'
+		(end)
 	*/
 
-	trim: function(){
-		return this.replace(/^\s+|\s+$/g, '');
+	escapeRegExp: function(){
+		return this.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
 	},
 
 	/*
-	Property: clean
-		trims (<String.trim>) a string AND removes all the double spaces in a string.
+	Property: toInt
+		Parses this string and returns an integer of the specified radix or base.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt>.
 
-	Returns:
-		the cleaned string
-
-	Example:
-		>" i      like     cookies      \n\n".clean() //"i like cookies"
-	*/
-
-	clean: function(){
-		return this.replace(/\s{2,}/g, ' ').trim();
-	},
-
-	/*
-	Property: rgbToHex
-		Converts an RGB value to hexidecimal. The string must be in the format of "rgb(255,255,255)" or "rgba(255,255,255,1)";
+	Syntax:
+		>myString.toInt(base);
 
 	Arguments:
-		array - boolean value, defaults to false. Use true if you want the array ['FF','33','00'] as output instead of "#FF3300"
+		base - (integer, optional) The base to use (defaults to 10).
 
 	Returns:
-		hex string or array. returns "transparent" if the output is set as string and the fourth value of rgba in input string is 0.
+		(mixed) The integer. If the string is not numeric, returns NaN.
 
 	Example:
-		>"rgb(17,34,51)".rgbToHex(); //"#112233"
-		>"rgba(17,34,51,0)".rgbToHex(); //"transparent"
-		>"rgb(17,34,51)".rgbToHex(true); //['11','22','33']
+		(start code)
+		"4em".toInt(); //returns 4
+		"10px".toInt(); //returns 10
+		(end)
 	*/
 
-	rgbToHex: function(array){
-		var rgb = this.match(/\d{1,3}/g);
-		return (rgb) ? rgb.rgbToHex(array) : false;
+
+	toInt: function(base){
+		return parseInt(this, base || 10);
+	},
+
+	/*
+	Property: toFloat
+		Parses this string and returns a floating point number.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat>.
+
+	Syntax:
+		>myString.toFloat();
+
+	Returns:
+		(mixed) The float. If the string is not numeric, returns NaN.
+
+	Example:
+		(start code)
+		"95.25%".toFloat(); //returns 95.25
+		"10.848".toFloat(); //returns 10.848
+		(end)
+	*/
+
+	toFloat: function(){
+		return parseFloat(this);
 	},
 
 	/*
 	Property: hexToRgb
-		Converts a hexidecimal color value to RGB. Input string must be the hex color value (with or without the hash). Also accepts triplets ('333');
+		Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
+		>'#ffffff', #fff', 'ffffff', or 'fff'
+
+	Syntax:
+		myString.hexToRgb([array]);
 
 	Arguments:
-		array - boolean value, defaults to false. Use true if you want the array [255,255,255] as output instead of "rgb(255,255,255)";
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 	Returns:
-		rgb string or array.
+		(mixed) A string representing the color in RGB. If the array flag is set, an array will be returned instead.
 
 	Example:
-		>"#112233".hexToRgb(); //"rgb(17,34,51)"
-		>"#112233".hexToRgb(true); //[17,34,51]
+		(start code)
+		"#123".hexToRgb(); //returns "rgb(17,34,51)"
+		"112233".hexToRgb(); //returns "rgb(17,34,51)"
+		"#112233".hexToRgb(true); //returns [17,34,51]
+		(end)
+
+	See Also:
+		 <Array.hexToRgb>
 	*/
 
 	hexToRgb: function(array){
@@ -188,32 +272,33 @@ String.extend({
 	},
 
 	/*
-	Property: contains
-		checks if the passed in string is contained in the String. also accepts an optional second parameter, to check if the string is contained in a list of separated values.
+	Property: rgbToHex
+		Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.
+		>"rgb(255,255,255)", or "rgba(255,255,255,1)"
 
-	Example:
-		>'a b c'.contains('c', ' '); //true
-		>'a bc'.contains('bc'); //true
-		>'a bc'.contains('b', ' '); //false
-	*/
+	Syntax:
+		>myString.rgbToHex([array]);
 
-	contains: function(string, s){
-		return (s) ? (s + this + s).indexOf(s + string + s) > -1 : this.indexOf(string) > -1;
-	},
-
-	/*
-	Property: escapeRegExp
-		Returns string with escaped regular expression characters
-
-	Example:
-		>var search = 'animals.sheeps[1]'.escapeRegExp(); // search is now 'animals\.sheeps\[1\]'
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 	Returns:
-		Escaped string
+		(mixed) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input string is 0. If the array flag is set, an array will be returned instead.
+
+	Example:
+		(start code)
+		"rgb(17,34,51)".rgbToHex(); //returns "#112233"
+		"rgb(17,34,51)".rgbToHex(true); //returns ['11','22','33']
+		"rgba(17,34,51,0)".rgbToHex(); //returns "transparent"
+		(end)
+
+	See Also:
+		 <Array.rgbToHex>
 	*/
 
-	escapeRegExp: function(){
-		return this.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+	rgbToHex: function(array){
+		var rgb = this.match(/\d{1,3}/g);
+		return (rgb) ? rgb.rgbToHex(array) : false;
 	}
 
 });
@@ -221,8 +306,62 @@ String.extend({
 Array.extend({
 
 	/*
+	Property: hexToRgb
+		Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.
+		>['ff', 'ff', 'ff'], or ['f', 'f', 'f']
+
+	Syntax:
+		myArray.hexToRgb([array]);
+
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+	Returns:
+		(mixed) A string representing the color in RGB. If the array flag is set, an array will be returned instead.
+
+	Example:
+		(start code)
+		["1", "2", "3"].hexToRgb(); //returns "rgb(17,34,51)"
+		["11", "22", "33"].hexToRgb(); //returns "rgb(17,34,51)"
+		["11", "22", "33"].hexToRgb(true); //returns [17,34,51]
+		(end)
+
+	See Also:
+		 <String.hexToRgb>
+	*/
+
+	hexToRgb: function(array){
+		if (this.length != 3) return false;
+		var rgb = [];
+		for (var i = 0; i < 3; i++){
+			rgb.push(((this[i].length == 1) ? this[i] + this[i] : this[i]).toInt(16));
+		}
+		return array ? rgb : 'rgb(' + rgb.join(',') + ')';
+	},
+
+	/*
 	Property: rgbToHex
-		see <String.rgbToHex>, but as an array method.
+		Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
+		>[255,255,255], or [255,255,255,1]
+
+	Syntax:
+		>myArray.rgbToHex([array]);
+
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+	Returns:
+		(mixed) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input array is 0. If the array flag is set, an array will be returned instead.
+
+	Example:
+		(start code)
+		[17,34,51].rgbToHex(); //returns "#112233"
+		[17,34,51].rgbToHex(true); //returns ['11','22','33']
+		[17,34,51,0].rgbToHex(); //returns "transparent"
+		(end)
+
+	See Also:
+		 <String.rgbToHex>
 	*/
 
 	rgbToHex: function(array){
@@ -234,20 +373,6 @@ Array.extend({
 			hex.push((bit.length == 1) ? '0' + bit : bit);
 		}
 		return array ? hex : '#' + hex.join('');
-	},
-
-	/*
-	Property: hexToRgb
-		same as <String.hexToRgb>, but as an array method.
-	*/
-
-	hexToRgb: function(array){
-		if (this.length != 3) return false;
-		var rgb = [];
-		for (var i = 0; i < 3; i++){
-			rgb.push(((this[i].length == 1) ? this[i] + this[i] : this[i]).toInt(16));
-		}
-		return array ? rgb : 'rgb(' + rgb.join(',') + ')';
 	}
 
 });

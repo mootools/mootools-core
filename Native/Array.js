@@ -1,6 +1,6 @@
 /*
 Script: Array.js
-	Contains Array prototypes, <$A>, <$each>
+	Contains Array prototypes, <$A>, <$each>.
 
 License:
 	MIT-style license.
@@ -8,8 +8,8 @@ License:
 
 /*
 Class: Array
-	A collection of custom Array prototype methods.
-	For more information on all available JavaScript Array methods see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods>
+	A collection of The Array Object prototype methods.
+	For more information on all available JavaScript Array methods see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods>.
 */
 
 Array.extend({
@@ -17,7 +17,7 @@ Array.extend({
 	/*
 	Property: every
 		Returns true if every element in the array satisfies the provided testing function.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>.
 
 		This method is provided only for browsers without native *every* support.
 
@@ -49,7 +49,7 @@ Array.extend({
 	/*
 	Property: filter
 		Creates a new array with all of the elements of the array for which the provided filtering function returns true.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>.
 
 		This method is provided only for browsers without native *filter* support.
 
@@ -108,7 +108,7 @@ Array.extend({
 	/*
 	Property: indexOf
 		Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.
-		For more info see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>.
 		
 		This method is provided only for browsers without native *indexOf* support.
 
@@ -140,7 +140,7 @@ Array.extend({
 	/*
 	Property: map
 		Creates a new array with the results of calling a provided function on every element in the array.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>.
 
 		This method is provided only for browsers without native *map* support.
 
@@ -171,7 +171,7 @@ Array.extend({
 	/*
 	Property: some
 		Returns true if at least one element in the array satisfies the provided testing function.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>.
 
 		This method is provided only for browsers without native *some* support.
 
@@ -359,7 +359,7 @@ Array.extend({
 		>myArray.getLast();
 
 	Returns:
-		(mixed) The last item in this array.
+		(mixed) The last item in this array. If this array is empty, returns null.
 
 	Example:
 		(start code)
@@ -379,7 +379,7 @@ Array.extend({
 		>myArray.getRandom();
 
 	Returns:
-		(mixed) A random item from this array.
+		(mixed) A random item from this array. If this array is empty, returns null.
 
 	Example:
 		(start code)
