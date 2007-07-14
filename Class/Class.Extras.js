@@ -8,9 +8,9 @@ License:
 
 /*
 Class: Chain
-	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	Currently implemented in <Fx.Base>, <XHR> and <Ajax>. In <Fx.Base> for example, is used to execute a list of functions, one after another, once an effect has completed.
-	The functions will not be fired all at once, but rather in succession upon completion of the one before to create custom complex animations.
+	A "Utility" Class which executes functions one after another, with each function firing after completion of the previous. 
+	Its methods can be implemented with <Class.implement> into any <Class>, and it is currently implemented in <Fx.Base>, <XHR> and <Ajax>.
+	In <Fx.Base>, for example, it is used to create custom, complex animations.
 
 Syntax:
 	>MyClass.implement(new Chain);
@@ -46,7 +46,7 @@ var Chain = new Class({
 
 	/*
 	Property: callChain
-		Executes the first function of the Chain instance stack, then removes it. The first function will then become the second.
+		Removes the first function of the Chain instance stack and executes it.  The next function will then become first in the array.
 	*/
 
 	callChain: function(){
@@ -77,9 +77,9 @@ Example:
 	(start code)
 	var myFx = new Fx.Style('element', 'opacity');
 	myFx.addEvent('onStart', function(){
-		alert('the effect has started');
+		alert('The effect has started.');
 	}).addEvent('onComplete', function(){
-		alert('the effect has completed');
+		alert('The effect is complete.');
 	});
 
 	//will display an alert on start, and another on complete.
@@ -216,7 +216,7 @@ var Events = new Class({
 
 	/*
 	Property: removeEvents
-		Works as <removeEvent>, but removes all events of the given type. If no type is specified, removes all events of all types.
+		Removes all events of the given type from the stack of events of a Class instance. If no type is specified, removes all events of all types.
 
 	Syntax:
 		>myClass.removeEvents([type]);
@@ -290,8 +290,11 @@ var Options = new Class({
 		options - (object, optional) The user defined options to merge with the defaults.
 
 	Note:
-		Your Class must have its default options defined in its options object.
-		If your Class has <Events> implemented, every option beginning with on, followed by a capital letter (e.g. 'onComplete') becomes a Class instance event.
+		Relies on the default options of a Class defined in its options object.
+		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+
+	Example:
+		See above.
 	*/
 
 	setOptions: function(options){

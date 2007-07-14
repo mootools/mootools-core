@@ -9,8 +9,7 @@ License:
 /*
 Class: Class
 	The base Class object of the <http://mootools.net> framework.
-	Creates a new Class whose initialize method will fire upon class instantiation.
-	Initialize wont fire on instantiation when you pass *null* to the constructor.
+	Creates a new Class.  Its initialize method will fire upon class instantiation unless *null* is passed to the Class constructor.
 
 Syntax:
 	>var MyClass = new Class(properties);

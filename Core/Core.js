@@ -24,14 +24,14 @@ var MooTools = {
 /*
 Function: $extend
 	Copies all the properties from the second object passed in to the first object passed in.
-	If you do myWhatever.extend = $extend the first parameter will become myWhatever, and your extend function will only need one parameter.
+	In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.
 
 Arguments:
-	obj1 - the object to be extended
-	obj2 - the object whose properties will be extended to obj1
+	obj1 - The object to be extended.
+	obj2 - The object whose properties will be extended to obj1.
 
 Returns:
-	the first object, extended
+	The first object, extended.
 
 Example:
 	(start code)
@@ -64,12 +64,12 @@ function $extend(){
 
 /*
 Function: Native
-	Will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
+	This will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
 	The purpose of Native is also to create generics methods (Class Methods) from the prototypes passed in.
-	Used automatically in MooTools to implement Array/Function/Number/String/RegExp methods to browsers that dont natively support them whitout manual checking.
+	Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
 
 Arguments:
-	any number of classes/native javascript objects
+	Any number of Classes/native JavaScript objects.
 */
 
 var Native = function(){
@@ -139,10 +139,10 @@ function $clear(timer){
 
 /*
 Function: $defined
-	Returns true if the passed in value/object is defined, meaning it is not null or undefined.
+	Returns true if the passed value/object isn't null or undefined, otherwise false.
 
 Arguments:
-	obj - the object to inspect
+	obj - (object) The object to inspect.
 */
 
 function $defined(obj){
@@ -161,7 +161,7 @@ Function: $merge
 	Merges a number of objects recursively without referencing them or their sub-objects.
 
 Arguments:
-	any number of objects
+	Any number of objects.
 
 Example:
 	(start code)
@@ -187,7 +187,7 @@ Function: $pick
 	Returns the first defined argument passed in, or null.
 
 Arguments:
-	any number of vars to pick from
+	Any number of variables to choose from.
 
 Example:
 	(start code)
@@ -209,11 +209,11 @@ Function: $random
 	Returns a random integer number between the two passed in values.
 
 Arguments:
-	min - integer, the minimum value (inclusive)
-	max - integer, the maximum value (inclusive)
+	min - (integer) The minimum value (inclusive).
+	max - (integer) The maximum value (inclusive).
 
 Returns:
-	a random integer between min and max
+	(integer) - A random integer between min and max.
 */
 
 function $random(min, max){
@@ -225,7 +225,7 @@ Function: $splat
 	Returns the argument as an array if it is defined and not already an array. Otherwise returns null.
 
 Arguments:
-	obj - any type
+	obj - (mixed) Any type of variable.
 
 Example:
 	(start code)
@@ -247,7 +247,7 @@ Function: $time
 	Returns the current time as a timestamp.
 
 Returns:
-	a timestamp integer
+	(integer) - Timestamp.
 */
 
 function $time(){
@@ -259,20 +259,20 @@ Function: $try
 	Tries to execute a function. Returns false if it fails.
 
 Arguments:
-	fn - function, the function to execute
-	bind - any type, the context of the function
-	args - any type, single item or array of items, the arguments to be passed to the function
+	fn   - (function) The function to execute
+	bind - (mixed)    The context of the function
+	args - (mixed)    Single item or array of items as arguments to be passed to the function.
 
 Returns:
-	whatever the function returns, or false if it fails
+	Standard return of the called function, or false on failure.
 
 Example:
 	(start code)
-	$try(eval, window, 'some invalid javascript') //false;
+	$try(eval, window, 'some invalid javascript'); //false
 	(end)
 
 Warning:
-	If the function you pass can return false, there will be no way to know if it has been executed or not.
+	If the function passed can return false, there will be no way to know if it has been successfully executed or not.
 */
 
 function $try(fn, bind, args){
@@ -288,25 +288,25 @@ Function: $type
 	Returns the type of object that matches the element passed in.
 
 Arguments:
-	obj - the object to inspect
+	obj - (object) The object to inspect.
 
 Returns:
-	'element' - string, obj is a DOM element node
-	'textnode' - string, obj is a DOM text node
-	'whitespace' - string, obj is a DOM whitespace node
-	'arguments' - string, obj is an arguments object
-	'array' - string, obj is an array
-	'object' - string, obj is an object
-	'string' - string, obj is a string
-	'number' - string, obj is a number
-	'boolean' - string, obj is a boolean
-	'function' - string, obj is a function
-	'regexp' - string, obj is a regular expression
-	'class' - string, obj is a Class (created with new Class, or the extend of another class)
-	'collection' - string, obj is a native htmlelements collection, such as childNodes, getElementsByTagName .. etc
-	'window' - string, obj is the window object
-	'document' - string, obj is the document object
-	false - boolean, the object is undefined, null, NaN or none of the above
+	'element'    - (string) If passed object is a DOM element node.
+	'textnode'   - (string) If passed object is a DOM text node.
+	'whitespace' - (string) If passed object is a DOM whitespace node.
+	'arguments'  - (string) If passed object is an arguments object.
+	'array'      - (string) If passed object is an array.
+	'object'     - (string) If passed object is an object.
+	'string'     - (string) If passed object is a string.
+	'number'     - (string) If passed object is a number.
+	'boolean'    - (string) If passed object is a boolean.
+	'function'   - (string) If passed object is a function.
+	'regexp'     - (string) If passed object is a regular expression.
+	'class'      - (string) If passed object is a Class (created with new Class, or the extend of another class).
+	'collection' - (string) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
+	'window'     - (string) If object passed is the window object.
+	'document'   - (string) If passed object is the document object.
+	false        - (boolean) If passed object is undefined, null, NaN or none of the above.
 
 Example:
 	(start code)
