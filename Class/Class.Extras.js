@@ -39,7 +39,7 @@ var Chain = new Class({
 	*/
 
 	chain: function(fn){
-		this.$chain = this.$chain || [fn];
+		this.$chain = this.$chain || [];
 		this.$chain.push(fn);
 		return this;
 	},
