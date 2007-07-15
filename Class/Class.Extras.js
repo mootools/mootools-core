@@ -8,7 +8,7 @@ License:
 
 /*
 Class: Chain
-	A "Utility" Class which executes functions one after another, with each function firing after completion of the previous. 
+	A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
 	Its methods can be implemented with <Class.implement> into any <Class>, and it is currently implemented in <Fx.Base>, <XHR> and <Ajax>.
 	In <Fx.Base>, for example, it is used to create custom, complex animations.
 
@@ -30,6 +30,8 @@ Example:
 
 var Chain = new Class({
 
+	$chains: [],
+
 	/*
 	Property: chain
 		Adds a function to the Chain instance stack.
@@ -39,8 +41,7 @@ var Chain = new Class({
 	*/
 
 	chain: function(fn){
-		this.chains = this.chains || [];
-		this.chains.push(fn);
+		this.$chains.push(fn);
 		return this;
 	},
 
@@ -50,7 +51,7 @@ var Chain = new Class({
 	*/
 
 	callChain: function(){
-		if (this.chains && this.chains.length) this.chains.shift().delay(10, this);
+		if (this.$chains.length) this.$chains.shift().delay(10, this);
 	},
 
 	/*
@@ -59,7 +60,7 @@ var Chain = new Class({
 	*/
 
 	clearChain: function(){
-		this.chains = [];
+		this.$chains.empty();
 	}
 
 });

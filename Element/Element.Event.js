@@ -91,7 +91,7 @@ var Event = new Class({
 
 	/*
 	Property: stop
-		Stop an Event from propigating and also execute preventDefault
+		Stop an Event from propagating and also execute preventDefault
 	*/
 
 	stop: function(){

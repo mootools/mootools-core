@@ -216,18 +216,18 @@ Array.extend({
 		(array) This array, empty.
 
 	Example:
-		Sum ap all values
+		Sum up numbers
 		(start code)
-		var sum = [0, 1, 2, 3, 4].reduce(function(previousValue, currentValue, index, array){
-			return previousValue + currentValue;
-		}, 10); // sum is 20
+		var sum = [1, 2, 3, 4, 6].reduce(function(previousItem, currentItem){
+			return previousItem + currentItem;
+		}, 10); // sum is 26
 		(end)
 
-		Collect all arrays in an array
+		Collect arrays in an array
 		(start code)
-		var flattened = [[0,1], [2,3], [4,5]].reduce(function(a,b) {
-			return a.concat(b);
-		}, []); // flattened is [0, 1, 2, 3, 4, 5]
+		var collected = [['a', 'b'], ['c', 'd'], ['e', 'f', 'g']].reduce(function(previousItem, currentItem) {
+			return previousItem.concat(currentItem);
+		}, []); // collected is ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 		(end)
 	*/
 
