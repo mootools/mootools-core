@@ -996,22 +996,22 @@ var Garbage = {
 			Garbage.kill(el);
 		}
 	},
-	
-	kill: function(el){
+
+	kill: function(el, isUnload){
 		delete Garbage.elements[String(el.$attributes.uid)];
 		if (el.$events){
-			el.fireEvent('trash');
+			el.fireEvent('trash', [isUnload]);
 			el.removeEvents();
 		}
 		for (var p in el.$attributes) el.$attributes[p] = null;
 		for (var d in Element.prototype) el[d] = null;
 		el.htmlElement = el.$attributes = el = null;
 	},
-	
+
 	empty: function(){
 		Garbage.collect(window);
 		Garbage.collect(document);
-		for (var uid in Garbage.elements) Garbage.kill(Garbage.elements[uid]);
+		for (var uid in Garbage.elements) Garbage.kill(Garbage.elements[uid], true);
 	}
 
 };

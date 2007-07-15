@@ -74,6 +74,35 @@ Tests.Array = new Test.Suite('Array', {
 		);
 	},
 
+	reduce: function(){
+		var arr1 = [1,2,3];
+		var sum1 = arr1.reduce(function(a, b) {
+			return a + b;
+		});
+		var sum2 = arr1.reduce(function(a, b) {
+			return a + b;
+		}, 1);
+
+		var arr3 = ['answer', 'is', 42];
+		var sum3 = arr1.reduce(function(a, b) {
+			return a.concat(' ', b);
+		}, 'The');
+
+		var sum4 = [].reduce(function(a, b) {
+			return a + b;
+		});
+		var sum5 = [].reduce(function(a, b) {
+			return a + b;
+		}, 1);
+		this.end(
+			Assert.equals(6, sum1),
+			Assert.equals(7, sum2),
+			Assert.stringEquals('The answer is 42', sum3),
+			Assert.equals(sum4, undefined),
+			Assert.equals(sum5, 1)
+		);
+	},
+
 	copy: function(){
 		this.end(
 			Assert.equals()
@@ -96,39 +125,39 @@ Tests.Array = new Test.Suite('Array', {
 			Assert.isFalse(cnt2)
 		);
 	},
-	
+
 	associate: function(){
 		var arr1 = [1,2,3,4];
 		var assoc = arr1.associate(['a', 'b', 'c', 'd']);
-		
+
 		var arr2 = [100, 'Hello', {foo: 'bar'}, document.createElement('div')];
 		var assoc2 = arr2.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
-		
+
 		this.end(
 			Assert.equals(assoc.a, 1),
 			Assert.equals(assoc.b, 2),
 			Assert.equals(assoc.c, 3),
 			Assert.equals(assoc.d, 4),
-			
+
 			Assert.equals(assoc2.myNumber, arr2[0]),
 			Assert.equals(assoc2.myElement, arr2[3]),
 			Assert.equals(assoc2.myObject, arr2[2]),
 			Assert.equals(assoc2.myString, arr2[1])
-			
+
 		);
 	},
 
 	extend: function(){
 		var arr1 = [1,2,3,4];
 		arr1.extend([1,2,3,4,5,6,7]);
-		
+
 		this.end(Assert.stringEquals(arr1, [1,2,3,4,1,2,3,4,5,6,7]));
 	},
 
 	merge: function(){
 		var arr1 = [1,2,3,4];
 		arr1.merge([1,2,3,4,5,6,7]);
-		
+
 		this.end(Assert.stringEquals(arr1, [1,2,3,4,5,6,7]));
 	},
 
@@ -138,7 +167,7 @@ Tests.Array = new Test.Suite('Array', {
 		arr1.include(1);
 		arr1.include(5);
 		arr1.include(5);
-		
+
 		this.end(Assert.stringEquals(arr1, [1,2,3,4,5]));
 	},
 
@@ -146,7 +175,15 @@ Tests.Array = new Test.Suite('Array', {
 		var arr1 = [1,2,3,4];
 		this.end(Assert.equals(arr1.getLast(), 4));
 	},
-	
+
+	empty: function(){
+		var arr1 = [1,2,3,4];
+		this.end(
+			Assert.equals([].empty().length, 0),
+			Assert.equals(arr1.empty().length, 0)
+		);
+	},
+
 	$each: function(){
 		var daysArr = [];
 		$each(['Sun','Mon','Tue'], function(value, key){
@@ -157,14 +194,14 @@ Tests.Array = new Test.Suite('Array', {
 		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 			daysObj[key] = value;
 		});
-		
+
 		this.end(
 			Assert.stringEquals(daysArr, ['Sun','Mon','Tue']),
 			Assert.equals(daysObj.first, 'Sunday'),
 			Assert.equals(daysObj.second, 'Monday'),
 			Assert.equals(daysObj.third, 'Tuesday')
 		);
-		
+
 	}
-	
+
 });

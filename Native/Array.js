@@ -109,7 +109,7 @@ Array.extend({
 	Property: indexOf
 		Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.
 		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>.
-		
+
 		This method is provided only for browsers without native *indexOf* support.
 
 	Syntax:
@@ -200,6 +200,44 @@ Array.extend({
 		return false;
 	},
 
+
+	/*
+	Property: reduce
+		Apply a function simultaneously against two values of the array (from left-to-right) as to reduce it to a single value.
+		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:reduce>.
+
+		This method is provided only for browsers without native *reduce* support.
+
+	Arguments:
+		fn    - (function) Function to execute on each value in the array. This function is passed the previous item, the current item, current index and the array.
+		value - (object, optional) Object to use as the first argument to the first call of the callback.
+
+	Returns:
+		(array) This array, empty.
+
+	Example:
+		Sum ap all values
+		(start code)
+		var sum = [0, 1, 2, 3, 4].reduce(function(previousValue, currentValue, index, array){
+			return previousValue + currentValue;
+		}, 10); // sum is 20
+		(end)
+
+		Collect all arrays in an array
+		(start code)
+		var flattened = [[0,1], [2,3], [4,5]].reduce(function(a,b) {
+			return a.concat(b);
+		}, []); // flattened is [0, 1, 2, 3, 4, 5]
+		(end)
+	*/
+
+	reduce: function(fn, value){
+		var i = 0;
+		if (arguments.length < 2 && this.length) value = this[i++];
+		for (l = this.length; i < l; i++) value = fn.call(null, value, this[i], i, this);
+		return value;
+	},
+
 	/*
 	Property: associate
 		Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
@@ -222,7 +260,7 @@ Array.extend({
 		animals.associate(sounds);
 		//returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
 		(end)
-		
+
 		object example
 		(start code)
 		var values = [100, 'Hello', {foo: 'bar'}, $('myelement')];
@@ -455,8 +493,8 @@ Array.extend({
 		(array) This array with all occurrences of the item removed.
 
 	Example:
-		['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
-		['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
+		>['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
+		>['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
 	*/
 
 	remove: function(item){
@@ -470,6 +508,26 @@ Array.extend({
 				i++;
 			}
 		}
+		return this;
+	},
+
+	/*
+	Property: empty
+		Empties an array.
+
+	Syntax:
+		>myArray.empty();
+
+	Returns:
+		(array) This array, emptied.
+
+	Example:
+		>var myArray = ['old', 'data'];
+		>myArray.empty(); // now myArray.length is 0
+	*/
+
+	empty: function(){
+		this.length = 0;
 		return this;
 	}
 

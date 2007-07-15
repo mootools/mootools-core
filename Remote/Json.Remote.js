@@ -13,7 +13,11 @@ Class: Json.Remote
 
 Arguments:
 	url - the url you want to send your object to.
-	options - see <XHR> options
+	options - optional, an object containing options.
+
+Options:
+	varName - string, default to 'json'; Name for the variable that holds the Json data. Set it null to send raw data.
+	secure - boolean, optional, default true; secure argument for Json.decode.
 
 Example:
 	this code will send user information based on name/last name
@@ -28,18 +32,25 @@ Example:
 
 Json.Remote = XHR.extend({
 
+	options: {
+		varName: 'json',
+		secure: true
+	},
+
 	initialize: function(url, options){
 		this.parent(url, options);
 		this.addEvent('onSuccess', this.onComplete, true);
+		this.setHeader('Accept', 'application/json');
 		this.setHeader('X-Request', 'JSON');
 	},
 
 	send: function(obj){
-		return this.parent(this.url, 'json=' + Json.encode(obj));
+		return this.parent(this.url, ((this.options.varName) ? this.options.varName + '=' : '') + Json.encode(obj));
 	},
 
-	onComplete: function(){
-		this.fireEvent('onComplete', [Json.decode(this.response.text, this.options.secure)]);
+	onComplete: function(text){
+		this.response.json = Json.decode(text, this.options.secure);
+		this.fireEvent('onComplete', [this.response.json]);
 	}
 
 });

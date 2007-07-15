@@ -68,6 +68,7 @@ var XHR = new Class({
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
+		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 	},
 
 	onStateChange: function(){

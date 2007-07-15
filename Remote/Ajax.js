@@ -46,7 +46,6 @@ var Ajax = XHR.extend({
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
 		}
-		this.setHeader('X-Requested-With', 'XMLHttpRequest');
 		this.setHeader('Accept', 'text/javascript, text/html, application/xml, text/xml, */*');
 	},
 
