@@ -30,8 +30,6 @@ Example:
 
 var Chain = new Class({
 
-	$chains: [],
-
 	/*
 	Property: chain
 		Adds a function to the Chain instance stack.
@@ -41,7 +39,8 @@ var Chain = new Class({
 	*/
 
 	chain: function(fn){
-		this.$chains.push(fn);
+		this.$chain = this.$chain || [fn];
+		this.$chain.push(fn);
 		return this;
 	},
 
@@ -51,7 +50,7 @@ var Chain = new Class({
 	*/
 
 	callChain: function(){
-		if (this.$chains.length) this.$chains.shift().delay(10, this);
+		if (this.$chain && this.$chain.length) this.$chain.shift().delay(10, this);
 	},
 
 	/*
@@ -60,7 +59,7 @@ var Chain = new Class({
 	*/
 
 	clearChain: function(){
-		this.$chains.empty();
+		if (this.$chain) this.$chain.empty();
 	}
 
 });
