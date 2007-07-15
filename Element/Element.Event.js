@@ -30,13 +30,12 @@ Properties:
 
 Example:
 	(start code)
-	$('myLink').onkeydown = function(event){
-		event = new Event(event);
-		//event is now the Event class.
+	$('myLink').addEvent('keydown', function(event){
+		//event is already the Event class, if you use el.onkeydown you have to write e = new Event(e);
 		alert(event.key); //returns the lowercase letter pressed
 		alert(event.shift); //returns true if the key pressed is shift
 		if (event.key == 's' && event.control) alert('document saved');
-	};
+	});
 	(end)
 */
 
@@ -92,7 +91,7 @@ var Event = new Class({
 
 	/*
 	Property: stop
-		cross browser method to stop an event
+		Stop an Event from propigating and also execute preventDefault
 	*/
 
 	stop: function(){
@@ -101,7 +100,7 @@ var Event = new Class({
 
 	/*
 	Property: stopPropagation
-		cross browser method to stop the propagation of an event
+		cross browser method to stop the propagation of an event (will not allow the event to bubble up through the DOM)
 	*/
 
 	stopPropagation: function(){
@@ -136,7 +135,6 @@ Example:
 	(start code)
 	Event.keys.whatever = 80;
 	$(myelement).addEvent(keydown, function(event){
-		event = new Event(event);
 		if (event.key == 'whatever') console.log(whatever key clicked).
 	});
 	(end)
@@ -161,12 +159,14 @@ Class: Element
 */
 
 Element.$Event = {
-	
+
 	Methods: {
-		
+
 		/*
 		Property: addEvent
 			Attaches an event listener to a DOM element.
+			The listener has the instance of the Event class as first argument.
+			You can stop the Event by returning false in the listener or calling <Event.stop>.
 
 		Arguments:
 			type - the event to monitor ('click', 'load', etc) without the prefix 'on'.
@@ -299,9 +299,9 @@ Element.$Event = {
 			}
 			return this;
 		}
-		
+
 	},
-	
+
 	natives: {
 		'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, //mouse buttons
 		'mousewheel': 2, 'DOMMouseScroll': 2, //mouse wheel
@@ -310,7 +310,7 @@ Element.$Event = {
 		'contextmenu': 2, 'submit': 2, //misc
 		'load': 1, 'unload': 1, 'beforeunload': 1, 'resize': 1, 'move': 1, 'DOMContentLoaded': 1, 'readystatechange': 1, //window
 		'focus': 1, 'blur': 1, 'change': 1, 'reset': 1, 'select': 1, //forms elements
-		'error': 1, 'abort': 1, 'scroll': 1 //misc	
+		'error': 1, 'abort': 1, 'scroll': 1 //misc
 	}
 };
 
