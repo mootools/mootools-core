@@ -200,7 +200,6 @@ Array.extend({
 		return false;
 	},
 
-
 	/*
 	Property: reduce
 		Apply a function simultaneously against two values of the array (from left-to-right) as to reduce it to a single value.
@@ -209,13 +208,13 @@ Array.extend({
 		This method is provided only for browsers without native *reduce* support.
 
 	Arguments:
-		fn    - (function) Function to execute on each value in the array. This function is passed the previous item, the current item, current index and the array.
-		value - (object, optional) Object to use as the first argument to the first call of the callback.
+		fn    - (function) Function to execute on each value in the array. This function is passed the previous item, the current item, the current index and the array itself.
+		value - (object, optional) Object to use as the initial argument to the first call of the callback.
 
 	Returns:
-		(array) This array, empty.
+		(mixed) The result of reducing this array according to fn.
 
-	Example:
+	Examples:
 		Sum up numbers
 		(start code)
 		var sum = [1, 2, 3, 4, 6].reduce(function(previousItem, currentItem){
@@ -493,8 +492,10 @@ Array.extend({
 		(array) This array with all occurrences of the item removed.
 
 	Example:
-		>['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
-		>['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
+		(start code)
+		['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
+		['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
+		(end)
 	*/
 
 	remove: function(item){
@@ -522,8 +523,10 @@ Array.extend({
 		(array) This array, emptied.
 
 	Example:
-		>var myArray = ['old', 'data'];
-		>myArray.empty(); // now myArray.length is 0
+		(start code)
+		var myArray = ['old', 'data'];
+		myArray.empty(); // now myArray.length is 0
+		(end code)
 	*/
 
 	empty: function(){

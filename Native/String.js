@@ -32,7 +32,7 @@ String.extend({
 	Example:
 		(start code)
 		"I like cookies".test("cookie"); //returns true
-		"I like cookies".test("COOKIE", "i") //returns true (ignore case)
+		"I like cookies".test("COOKIE", "i"); //returns true (ignore case)
 		"I like cookies".test("cake"); //returns false
 		(end)
 	*/

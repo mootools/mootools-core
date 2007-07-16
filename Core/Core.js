@@ -26,9 +26,12 @@ Function: $extend
 	Copies all the properties from the second object passed in to the first object passed in.
 	In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.
 
+Syntax:
+	>$extend(obj1, obj2);
+
 Arguments:
 	obj1 - The object to be extended.
-	obj2 - The object whose properties will be extended to obj1.
+	obj2 - The object whose properties will be copied to obj1.
 
 Returns:
 	The first object, extended.
@@ -45,13 +48,7 @@ Example:
 		'lastName': 'Dorian'
 	};
 	$extend(firstOb, secondOb);
-	//firstOb is now:
-	{
-		'name': 'John',
-		'lastName': 'Dorian',
-		'age': '20',
-		'sex': 'male'
-	};
+	//firstOb is { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
 	(end)
 */
 
@@ -100,11 +97,24 @@ Native.setFamily({'array': Array, 'function': Function, 'string': String, 'regex
 
 /*
 Function: $chk
-	Returns true if the passed in value/object exists or is 0, otherwise returns false.
-	Useful for accepting zeroes.
+	Checks to see if a value exists or is 0. Useful for allowing 0.
+
+Syntax:
+	>$chk(obj);
 
 Arguments:
-	obj - any type, the object to inspect
+	obj - (mixed) The object to inspect.
+
+Returns:
+	(boolean) If the object passed in exists or is 0, returns true. Otherwise, returns false.
+
+Example:
+	(start code)
+	function myFunction(arg){
+		if($chk(arg)) alert('The object exists or is 0.');
+		else alert('The object is either null, undefined, false, or ""');
+	}
+	(end)
 */
 
 function $chk(obj){
@@ -115,16 +125,19 @@ function $chk(obj){
 Function: $clear
 	Clears a timeout or an Interval.
 
+Syntax:
+	>$clear(timer)
+
 Arguments:
-	timer - the setInterval or setTimeout to clear
+	timer - (integer) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
 
 Returns:
 	null
 
 Example:
 	(start code)
-	var myTimer = myFunction.delay(5000); //wait 5 seconds and execute my function.
-	myTimer = $clear(myTimer); //nevermind
+	var myTimer = myFunction.delay(5000); //Wait 5 seconds and execute myFunction.
+	myTimer = $clear(myTimer); //Nevermind.
 	(end)
 
 See also:
@@ -139,10 +152,24 @@ function $clear(timer){
 
 /*
 Function: $defined
-	Returns true if the passed value/object isn't null or undefined, otherwise false.
+	Checks to see if a value is defined.
+
+Syntax:
+	>$defined(obj);
 
 Arguments:
-	obj - (object) The object to inspect.
+	obj - (mixed) The object to inspect.
+
+Returns:
+	(boolean) If the object passed is not null or undefined, returns true. Otherwise, returns false.
+
+Example:
+	(start code)
+	function myFunction(arg){
+		if($defined(arg)) alert('The object is defined.');
+		else alert('The object is null or undefined.');
+	}
+	(end)
 */
 
 function $defined(obj){
@@ -158,14 +185,20 @@ function $empty(){};
 
 /*
 Function: $merge
-	Merges a number of objects recursively without referencing them or their sub-objects.
+	Merges any number of objects recursively without referencing them or their sub-objects.
+
+Syntax:
+	>var merged = $merge(obj1, obj2[, obj3[, ...]]);
 
 Arguments:
-	Any number of objects.
+	(objects) Any number of objects.
+
+Returns:
+	(object) The object that is created as a result of merging all the objects passed in.
 
 Example:
 	(start code)
-	var mergedObj = $merge(obj1, obj2, obj3); //obj1, obj2, and obj3 are unaltered
+	$merge(obj1, obj2, obj3); //returns the merged object (obj1, obj2, and obj3 are unaltered)
 	(end)
 */
 
@@ -186,13 +219,19 @@ function $merge(){
 Function: $pick
 	Returns the first defined argument passed in, or null.
 
+Syntax:
+	>var picked = $pick(var1, var2[, var3[, ...]]);
+
 Arguments:
-	Any number of variables to choose from.
+	(mixed) Any number of variables.
+
+Returns:
+	(mixed) The first variable that is defined. If all variables passed in are null or undefined, returns null.
 
 Example:
 	(start code)
-		function say(msg){
-			alert($pick(msg, 'no meessage supplied'));
+		function say(infoMessage, errorMessage){
+			alert($pick(errorMessage, infoMessage, 'There was no meessage supplied.'));
 		}
 	(end)
 */
@@ -208,12 +247,20 @@ function $pick(){
 Function: $random
 	Returns a random integer number between the two passed in values.
 
+Syntax:
+	>var random = $random(min, max);
+
 Arguments:
 	min - (integer) The minimum value (inclusive).
 	max - (integer) The maximum value (inclusive).
 
 Returns:
-	(integer) - A random integer between min and max.
+	(integer) A random integer between min and max.
+
+Example:
+	(start code)
+	alert($random(5, 20)); //alerts a random number between 5 and 20
+	(end)
 */
 
 function $random(min, max){
@@ -222,17 +269,23 @@ function $random(min, max){
 
 /*
 Function: $splat
-	Returns the argument as an array if it is defined and not already an array. Otherwise returns null.
+	Array-ifies the argument passed in if it is defined and not already an array.
+
+Syntax:
+	>var splatted = $splat(obj);
 
 Arguments:
 	obj - (mixed) Any type of variable.
 
-Example:
+Returns:
+	(array) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
+
+Examples:
 	(start code)
 	var obj = 'hello';
-	$splat(obj); //['hello']
+	$splat(obj); //returns ['hello']
 	var obj2 = ['a', 'b', 'c'];
-	$splat(obj2); //['a', 'b', 'c']
+	$splat(obj2); //returns ['a', 'b', 'c']
 	(end)
 */
 
@@ -246,6 +299,9 @@ function $splat(obj){
 Function: $time
 	Returns the current time as a timestamp.
 
+Syntax:
+	>var time = $time();
+
 Returns:
 	(integer) - Timestamp.
 */
@@ -258,13 +314,16 @@ function $time(){
 Function: $try
 	Tries to execute a function. Returns false if it fails.
 
+Syntax:
+	>$try(fn, bind, args);
+
 Arguments:
-	fn   - (function) The function to execute
-	bind - (mixed)    The context of the function
-	args - (mixed)    Single item or array of items as arguments to be passed to the function.
+	fn   - (function) The function to execute.
+	bind - (object) The object to use as 'this' in the function. For more information see <Function.bind>.
+	args - (mixed) Single item or array of items as arguments to be passed to the function.
 
 Returns:
-	Standard return of the called function, or false on failure.
+	(mixed) Standard return of the called function, or false on failure.
 
 Example:
 	(start code)
@@ -286,6 +345,9 @@ function $try(fn, bind, args){
 /*
 Function: $type
 	Returns the type of object that matches the element passed in.
+
+Syntax:
+	>$type(obj);
 
 Arguments:
 	obj - (object) The object to inspect.
@@ -341,29 +403,29 @@ document.head = document.getElementsByTagName('head')[0];
 
 /*
 Class: Client
-	Some browser properties are attached to the Client object for browser detection.
+	Some browser properties are attached to the Client object for browser and platform detection.
 	
 Features:
-	Client.Features.xpath - boolean, browser supports dom queries using xpath
-	Client.Features.xhr - boolean, browser supports native XMLHTTP object
+	Client.Features.xpath - (boolean) Browser supports dom queries using xpath.
+	Client.Features.xhr   - (boolean) Browser supports native XMLHTTP object.
 
 Engine:
-	Client.Engine.ie - boolean, true if the current browser is internet explorer (any)
-	Client.Engine.ie6 - boolean, true if the current browser is internet explorer 6
-	Client.Engine.ie7 - boolean, true if the current browser is internet explorer 7
-	Client.Engine.gecko - boolean, true if the current browser is Mozilla/Gecko
-	Client.Engine.webkit - boolean, true if the current browser is Safari/Konqueror
-	Client.Engine.webkit419 - boolean, true if the current browser is Safari2 / webkit till version 419
-	Client.Engine.webkit420 - boolean, true if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419
-	Client.Engine.opera - boolean, true if the current browser is opera
-	Client.Engine.name - string, the name of the engine
+	Client.Engine.ie        - (boolean) True if the current browser is internet explorer (any).
+	Client.Engine.ie6       - (boolean) True if the current browser is internet explorer 6.
+	Client.Engine.ie7       - (boolean) True if the current browser is internet explorer 7.
+	Client.Engine.gecko     - (boolean) True if the current browser is Mozilla/Gecko.
+	Client.Engine.webkit    - (boolean) True if the current browser is Safari/Konqueror.
+	Client.Engine.webkit419 - (boolean) True if the current browser is Safari2 / webkit till version 419.
+	Client.Engine.webkit420 - (boolean) True if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
+	Client.Engine.opera     - (boolean) True if the current browser is opera.
+	Client.Engine.name      - (string) The name of the engine.
 
 Platform:
-	Client.Platform.mac - true if the platform is mac
-	Client.Platform.windows - boolean, true if the platform is windows
-	Client.Platform.linux - boolean, true if the platform is linux
-	Client.Platform.other - boolean, true if the platform is neither mac, windows or linux
-	Client.Platform.name - string, the name of the platform
+	Client.Platform.mac     - (boolean) True if the platform is mac.
+	Client.Platform.windows - (boolean) True if the platform is windows.
+	Client.Platform.linux   - (boolean) True if the platform is linux.
+	Client.Platform.other   - (boolean) True if the platform is neither mac, windows or linux.
+	Client.Platform.name    - (string) The name of the platform.
 
 Note:
 	Engine detection is entirely object-based.
