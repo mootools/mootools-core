@@ -29,7 +29,7 @@ Events:
 
 var Scroller = new Class({
 	
-	Implements: [Class.Events, Class.Options],
+	Implements: [Events, Options],
 
 	options: {
 		area: 20,

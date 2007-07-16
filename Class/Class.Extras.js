@@ -8,16 +8,16 @@ License:
 */
 
 /*
-Class: Class.Chain
+Class: Chain
 	A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
 	Its methods can be implemented with <Class.implement> into any <Class>, and it is currently implemented in <Fx.Base>, <XHR> and <Ajax>.
 	In <Fx.Base>, for example, it is used to create custom, complex animations.
 
 Syntax:
 	for new classes:
-	> var MyClass = new Class({Implements: Class.Chain});
+	> var MyClass = new Class({Implements: Chain});
 	for existing classes:
-	> MyClass.implement(new Class.Chain);
+	> MyClass.implement(new Chain);
 
 Example:
 	(start code)
@@ -32,7 +32,7 @@ Example:
 	(end)
 */
 
-Class.Chain = new Class({
+var Chain = new Class({
 
 	/*
 	Property: chain
@@ -69,16 +69,16 @@ Class.Chain = new Class({
 });
 
 /*
-Class: Class.Events
+Class: Events
 	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
-	Events in a Class that implements <Class.Events> must be either added as an option or with addEvent, not directly through .options.onEventName.
+	Events in a Class that implements <Events> must be either added as an option or with addEvent, not directly through .options.onEventName.
 
 Syntax:
 	for new classes:
-	> var MyClass = new Class({Implements: Class.Events});
+	> var MyClass = new Class({Implements: Events});
 	for existing classes:
-	> MyClass.implement(new Class.Events);
+	> MyClass.implement(new Events);
 
 Example:
 	(start code)
@@ -95,7 +95,7 @@ Example:
 
 Implementing:
 	This class can be implemented into other classes to add its functionality to them.
-	It has been designed to work well with the <Class.Options> class.
+	It has been designed to work well with the <Options> class.
 
 Example:
 	(start code)
@@ -107,14 +107,14 @@ Example:
 			this.fireEvent('onComplete');
 		}
 	});
-	Widget.implement(new Class.Events);
+	Widget.implement(new Events);
 	//later...
 	var myWidget = new Widget();
 	myWidget.addEvent('onComplete', myFunction);
 	(end)
 */
 
-Class.Events = new Class({
+var Events = new Class({
 
 	/*
 	Property: addEvent
@@ -189,7 +189,7 @@ Class.Events = new Class({
 				this.fireEvent("onInitialize", [arg1, arg2], 50);
 			}
 		});
-		Widget.implement(Class.Events);
+		Widget.implement(Events);
 		(end)
 	*/
 
@@ -251,16 +251,16 @@ Class.Events = new Class({
 });
 
 /*
-Class: Class.Options
+Class: Options
 	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	Used to automate the setting of a Class instance's options.
-	Will also add Class <Class.Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
+	Will also add Class <Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
 
 Syntax:
 	for new classes:
-	> var MyClass = new Class({Implements: Class.Options});
+	> var MyClass = new Class({Implements: Options});
 	for existing classes:
-	> MyClass.implement(Class.Options);
+	> MyClass.implement(Options);
 
 Example:
 	(start code)
@@ -276,7 +276,7 @@ Example:
 			this.setOptions(options);
 		}
 	});
-	Widget.implement(new Class.Options);
+	Widget.implement(new Options);
 	//later...
 	var myWidget = new Widget({
 		color: '#f00',
@@ -288,7 +288,7 @@ Example:
 	(end)
 */
 
-Class.Options = new Class({
+var Options = new Class({
 
 	/*
 	Property: setOptions
@@ -302,7 +302,7 @@ Class.Options = new Class({
 
 	Note:
 		Relies on the default options of a Class defined in its options object.
-		If a Class has <Class.Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event,
+		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event,
 		assuming the value of the option is a function.
 
 	Example:

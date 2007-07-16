@@ -42,7 +42,7 @@ Events:
 
 Drag.Base = new Class({
 	
-	Implements: [Class.Events, Class.Options],
+	Implements: [Events, Options],
 
 	options: {
 		handle: false,

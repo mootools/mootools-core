@@ -56,7 +56,7 @@ Note:
 
 var Tips = new Class({
 	
-	Implements: [Class.Events, Class.Options],
+	Implements: [Events, Options],
 
 	options: {
 		onShow: function(tip){

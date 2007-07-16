@@ -32,7 +32,7 @@ Events:
 
 var Slider = new Class({
 	
-	Implements: [Class.Events, Class.Options],
+	Implements: [Events, Options],
 
 	options: {
 		onChange: $empty,
