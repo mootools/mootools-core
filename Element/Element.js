@@ -224,11 +224,11 @@ Elements.$multiply = function(property){
 };
 
 Element.Setters = new Abstract({
-	
+
 	attributes: function(properties){
 		this.setProperties(properties);
 	}
-	
+
 });
 
 Element.Setters.properties = Element.Setters.attributes;
@@ -255,7 +255,7 @@ Element.extend({
 
 	set: function(props){
 		for (var prop in props){
-			if (Element.Setters[prop]) Element.setters[prop].call(this, props[prop]);
+			if (Element.Setters[prop]) Element.Setters[prop].call(this, props[prop]);
 			else this.setProperty(prop, props[prop]);
 		}
 		return this;

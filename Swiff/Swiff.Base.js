@@ -119,14 +119,14 @@ Swiff.extend({
 	fix: function(){
 		Swiff.fixed = true;
 		window.addEvent('beforeunload', function(){
-			__flash_unloadHandler = __flash_savedUnloadHandler = Class.empty;
+			__flash_unloadHandler = __flash_savedUnloadHandler = $empty;
 		});
 		if (!Client.Engine.ie) return;
 		window.addEvent('unload', function(){
 			Array.each(document.getElementsByTagName('object'), function(swf){
 				swf.style.display = 'none';
 				for (var p in swf){
-					if (typeof swf[p] == 'function') swf[p] = Class.empty;
+					if (typeof swf[p] == 'function') swf[p] = $empty;
 				}
 			});
 		});
