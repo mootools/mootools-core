@@ -18,23 +18,23 @@ Selectors.Pseudo.enabled = {
 };
 
 Selectors.Pseudo.empty = {
-	
+
 	xpath: function(){
 		return '[not(node())]';
 	},
-	
+
 	filter: function(el){
 		return (Element.getText(el).length === 0);
 	}
-	
+
 };
 
 Selectors.Pseudo.contains = {
-	
+
 	xpath: function(argument){
 		return '[contains(text(), "' + argument + '")]';
 	},
-	
+
 	filter: function(el, argument){
 		for (var i = 0, l = el.childNodes.length; i < l; i++){
 			var child = el.childNodes[i];
@@ -46,10 +46,10 @@ Selectors.Pseudo.contains = {
 };
 
 Selectors.Pseudo.nth = {
-	
+
 	parser: function(argument){
 		argument = (argument) ? argument.match(/^([+-]?\d*)?([nodev]+)?([+-]?\d*)?$/) : [null, 1, 'n', 0];
-		if (!argument) throw new Error('bad :nth pseudo selector arguments');
+		if (!argument) return false;
 		var inta = parseInt(argument[1]);
 		var a = ($chk(inta)) ? inta : 1;
 		var special = argument[2] || false;
@@ -67,7 +67,7 @@ Selectors.Pseudo.nth = {
 			default: return {'a': (a - 1), 'special': 'index'};
 		}
 	},
-	
+
 	xpath: function(argument){
 		switch (argument.special){
 			case 'n': return '[count(preceding-sibling::*) mod ' + argument.a + ' = ' + argument.b + ']';
@@ -76,7 +76,7 @@ Selectors.Pseudo.nth = {
 			default: return '[count(preceding-sibling::*) = ' + argument.a + ']';
 		}
 	},
-	
+
 	filter: function(el, argument, i, all, temp){
 		if (i == 0) temp.parents = [];
 		var parent = el.parentNode;
@@ -105,31 +105,31 @@ Selectors.Pseudo.nth = {
 };
 
 Selectors.Pseudo.extend({
-	
+
 	'even': {
 		'parser': {'a': 2, 'b': 1, 'special': 'n'},
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	'odd': {
 		'parser': {'a': 2, 'b': 0, 'special': 'n'},
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	'first': {
 		'parser': {'a': 0, 'special': 'index'},
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	'last': {
 		'parser': {'special': 'last'},
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	'only': {
 		'parser': {'special': 'only'},
 		'xpath': Selectors.Pseudo.nth.xpath,

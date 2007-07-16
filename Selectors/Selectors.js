@@ -46,9 +46,18 @@ Element.$DOMMethods = {
 			return '%' + match.charAt(1);
 		}).split('%');
 		for (var i = 0, j = selector.length; i < j; i++){
-			var param = selector[i].match(Selectors.regExp);
-			if (!param) throw new Error('bad selector');
-			var temp = Selectors.Method.getParam(items, separators[i - 1] || false, this, param[1] || '*', param[2], param[3], param[4], param[5]);
+			var param = {tag: '*', id: null, classes: [], attributes: [], pseudos: []};
+			if (selector[i].replace(Selectors.regExp, function(str) {
+				switch (str.charAt(0)){
+					case ':': param.pseudos.push(str.slice(1)); break;
+					case '[': param.attributes.push(str.slice(1, str.length - 1)); break;
+					case '.': param.classes.push(str.slice(1)); break;
+					case '#': param.id = str.slice(1); break;
+					default: param.tag = str;
+				}
+				return '';
+			})) break;
+			var temp = Selectors.Method.getParam(items, separators[i - 1] || false, this, param.tag, param.id, param.classes, param.attributes, param.pseudos);
 			if (!temp) break;
 			items = temp;
 		}
@@ -121,7 +130,7 @@ var $E = document.getElement.bind(document);
 
 var Selectors = {
 
-	'regExp': /^(\w*|\*)(?:#([\w-]+))?(?:\.([\w-]+))?(?:\[(.*)\])?(?::(.*))?$/,
+	'regExp': /:[^:]+|\[[^\]]+\]|\.[\w-]+|#[\w-]+|\w+|\*/g,
 
 	'aRegExp': /^(\w+)(?:([!*^$~]?=)["']?([^"'\]]*)["']?)?$/,
 
@@ -134,8 +143,7 @@ var Selectors = {
 Selectors.Pseudo = new Abstract();
 
 Selectors.Pseudo.$parse = function(pseudo){
-	pseudo = pseudo.match(Selectors.pRegExp);
-	if (!pseudo) throw new Error('bad pseudo selector');
+	if (!(pseudo = pseudo.match(Selectors.pRegExp))) return false;
 	var name = pseudo[1].split('-')[0];
 	var argument = pseudo[2] || false;
 	var xparser = Selectors.Pseudo[name];
@@ -145,7 +153,8 @@ Selectors.Pseudo.$parse = function(pseudo){
 
 Selectors.XPath = {
 
-	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
+	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
+		var i;
 		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch (separator){
 			case '~': case '+': temp += '/following-sibling::'; break;
@@ -154,28 +163,35 @@ Selectors.XPath = {
 		}
 		temp += tag;
 		if (separator == '+') temp += '[1]';
-		if (pseudo){
-			pseudo = Selectors.Pseudo.$parse(pseudo);
-			var xparser = Selectors.Pseudo[pseudo.name];
-			if (xparser && xparser.xpath) temp += xparser.xpath(pseudo.argument);
-			else temp += ($chk(pseudo.argument)) ? '[@' + pseudo.name + '="' + pseudo.argument + '"]' : '[@' + pseudo.name + ']';
+		if (i = pseudos.length){
+			while (i--){
+				var pseudo = Selectors.Pseudo.$parse(pseudos[i]);
+				var xparser = Selectors.Pseudo[pseudo.name];
+				if (xparser && xparser.xpath) temp += xparser.xpath(pseudo.argument);
+				else temp += ($chk(pseudo.argument)) ? '[@' + pseudo.name + '="' + pseudo.argument + '"]' : '[@' + pseudo.name + ']';
+			}
 		}
 		if (id) temp += '[@id="' + id + '"]';
-		if (className) temp += '[contains(concat(" ", @class, " "), " ' + className + ' ")]';
-		if (attribute){
-			attribute = attribute.match(Selectors.aRegExp);
-			if (!attribute) throw new Error('bad attribute selector');
-			if (attribute[2] && attribute[3]){
-				switch (attribute[2]){
-					case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
-					case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
-					case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
-					case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
-					case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
-					case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]';
+		if (i = classNames.length){
+			while (i--) temp += '[contains(concat(" ", @class, " "), " ' + classNames[i] + ' ")]';
+		}
+		if (i = attributes.length){
+			while (i--){
+				var attribute = attributes[i].match(Selectors.aRegExp);
+				if (!attribute) continue;
+				if (attribute[2] && attribute[3]){
+					switch (attribute[2]){
+						case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
+						case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
+						case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
+						case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
+						case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
+						case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]';
+						case '|=': temp += '[contains(concat("-", @' + attribute[1] + ', "-"), "-' + attribute[3] + '-")]';
+					}
+				} else {
+					temp += '[@' + attribute[1] + ']';
 				}
-			} else {
-				temp += '[@' + attribute[1] + ']';
 			}
 		}
 		items.push(temp);
@@ -197,7 +213,8 @@ Selectors.XPath = {
 
 Selectors.Filter = {
 
-	getParam: function(items, separator, context, tag, id, className, attribute, pseudo){
+	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
+		var i;
 		if (separator){
 			switch (separator){
 				case ' ': items = Selectors.Filter.getNestedByTag(items, tag); break;
@@ -215,23 +232,28 @@ Selectors.Filter = {
 				items = $A(context.getElementsByTagName(tag));
 			}
 		}
-		if (className) items = Elements.filterByClass(items, className, true);
-		if (attribute){
-			attribute = attribute.match(Selectors.aRegExp);
-			if (!attribute) throw new Error('bad attribute selector');
-			items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
+		if (i = classNames.length){
+			while (i--) items = Elements.filterByClass(items, classNames[i], true);
 		}
-		if (pseudo){
-			pseudo = Selectors.Pseudo.$parse(pseudo);
-			var xparser = Selectors.Pseudo[pseudo.name];
-			if (xparser && xparser.filter){
-				var temp = {};
-				items = items.filter(function(el, i, array){
-					return xparser.filter(el, pseudo.argument, i, array, temp);
-				});
-				temp = null;
-			} else {
-				items = Elements.filterByAttribute(items, pseudo.name, ($chk(pseudo.argument)) ? '=' : false, pseudo.argument, true);
+		if (i = attributes.length){
+			while (i--){
+				var attribute = attributes[i].match(Selectors.aRegExp);
+				if (attribute) items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
+			}
+		}
+		if (i = pseudos.length){
+			while (i--){
+				var pseudo = Selectors.Pseudo.$parse(pseudos[i]);
+				var xparser = Selectors.Pseudo[pseudo.name];
+				if (xparser && xparser.filter){
+					var temp = {};
+					items = items.filter(function(el, i, array){
+						return xparser.filter(el, pseudo.argument, i, array, temp);
+					});
+					temp = null;
+				} else {
+					items = Elements.filterByAttribute(items, pseudo.name, ($chk(pseudo.argument)) ? '=' : false, pseudo.argument, true);
+				}
 			}
 		}
 		return items;
