@@ -211,7 +211,8 @@ var Assert = {
 			if (a[i] != b[i]) isEqual = false;
 		}
 		return (!isEqual) ? Test.Output.error('Enumerable ["' + a + '"] is different than Enumerable ["' + b + '"].') : true;
-	},
+	}
+
 };
 
 Tests.start = function(){

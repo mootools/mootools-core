@@ -24,7 +24,9 @@ Options:
 	overflown - an array of nested scrolling containers, see <Element.getPosition>
 */
 
-Fx.Scroll = Fx.Base.extend({
+Fx.Scroll = new Class({
+	
+	Extends: Fx.Base,
 
 	options: {
 		overflown: [],

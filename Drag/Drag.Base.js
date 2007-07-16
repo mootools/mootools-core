@@ -41,6 +41,8 @@ Events:
 */
 
 Drag.Base = new Class({
+	
+	Implements: [Class.Events, Class.Options],
 
 	options: {
 		handle: false,
@@ -147,8 +149,6 @@ Drag.Base = new Class({
 	}
 
 });
-
-Drag.Base.implement(new Events, new Options);
 
 /*
 Class: Element

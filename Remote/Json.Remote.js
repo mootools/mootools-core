@@ -30,7 +30,9 @@ Example:
 	(end)
 */
 
-Json.Remote = XHR.extend({
+Json.Remote = new Class({
+	
+	Extends: XHR,
 
 	options: {
 		varName: 'json',

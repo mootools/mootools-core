@@ -26,7 +26,9 @@ Options:
 	overflown - an array of nested scrolling containers, see Element::getPosition
 */
 
-Drag.Move = Drag.Base.extend({
+Drag.Move = new Class({
+	
+	Extends: Drag.Base,
 
 	options: {
 		droppables: [],

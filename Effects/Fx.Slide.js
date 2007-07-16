@@ -29,7 +29,9 @@ Example:
 	(end)
 */
 
-Fx.Slide = Fx.Base.extend({
+Fx.Slide = new Class({
+	
+	Extends: Fx.Base,
 
 	options: {
 		mode: 'vertical'

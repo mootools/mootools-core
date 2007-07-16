@@ -8,7 +8,9 @@ License:
 
 /*
 Class: Hash
-	It wraps an object that it uses internally as a map. The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly. null/undefined values are allowed.
+	It wraps an object that it uses internally as a map.
+	The user must use set(), get(), and remove() to add/change, retrieve and remove values, it must not access the internal object directly.
+	Null/undefined values are allowed.
 
 Note:
 	Each hash instance has the length property.

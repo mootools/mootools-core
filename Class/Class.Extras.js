@@ -1,19 +1,23 @@
 /*
 Script: Class.Extras.js
-	Contains common implementations for custom classes. In Mootools these Utilities are implemented in <Ajax>, <XHR>, <Fx.Base> and many other Classes to provide rich functionality.
+	Contains common implementations for custom classes.
+	In Mootools these Utilities are implemented in <Ajax>, <XHR>, <Fx.Base> and many other Classes to provide rich functionality.
 
 License:
 	MIT-style license.
 */
 
 /*
-Class: Chain
+Class: Class.Chain
 	A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
 	Its methods can be implemented with <Class.implement> into any <Class>, and it is currently implemented in <Fx.Base>, <XHR> and <Ajax>.
 	In <Fx.Base>, for example, it is used to create custom, complex animations.
 
 Syntax:
-	>MyClass.implement(new Chain);
+	for new classes:
+	> var MyClass = new Class({Implements: Class.Chain});
+	for existing classes:
+	> MyClass.implement(new Class.Chain);
 
 Example:
 	(start code)
@@ -28,7 +32,7 @@ Example:
 	(end)
 */
 
-var Chain = new Class({
+Class.Chain = new Class({
 
 	/*
 	Property: chain
@@ -65,13 +69,16 @@ var Chain = new Class({
 });
 
 /*
-Class: Events
+Class: Class.Events
 	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
 	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
-	Events in a Class that implements <Events> must be either added as an option or with addEvent, not directly through .options.onEventName.
+	Events in a Class that implements <Class.Events> must be either added as an option or with addEvent, not directly through .options.onEventName.
 
 Syntax:
-	>MyClass.implement(new Events);
+	for new classes:
+	> var MyClass = new Class({Implements: Class.Events});
+	for existing classes:
+	> MyClass.implement(new Class.Events);
 
 Example:
 	(start code)
@@ -88,7 +95,7 @@ Example:
 
 Implementing:
 	This class can be implemented into other classes to add its functionality to them.
-	It has been designed to work well with the <Options> class.
+	It has been designed to work well with the <Class.Options> class.
 
 Example:
 	(start code)
@@ -100,14 +107,14 @@ Example:
 			this.fireEvent('onComplete');
 		}
 	});
-	Widget.implement(new Events);
+	Widget.implement(new Class.Events);
 	//later...
 	var myWidget = new Widget();
 	myWidget.addEvent('onComplete', myFunction);
 	(end)
 */
 
-var Events = new Class({
+Class.Events = new Class({
 
 	/*
 	Property: addEvent
@@ -182,7 +189,7 @@ var Events = new Class({
 				this.fireEvent("onInitialize", [arg1, arg2], 50);
 			}
 		});
-		Widget.implement(new Events);
+		Widget.implement(Class.Events);
 		(end)
 	*/
 
@@ -244,12 +251,16 @@ var Events = new Class({
 });
 
 /*
-Class: Options
+Class: Class.Options
 	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	Used to automate the setting of a Class instance's options. Will also add Class <Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
+	Used to automate the setting of a Class instance's options.
+	Will also add Class <Class.Events> when the option begins with on, followed by a capital letter (e.g. 'onComplete').
 
 Syntax:
-	>MyClass.implement(new Options);
+	for new classes:
+	> var MyClass = new Class({Implements: Class.Options});
+	for existing classes:
+	> MyClass.implement(Class.Options);
 
 Example:
 	(start code)
@@ -265,7 +276,7 @@ Example:
 			this.setOptions(options);
 		}
 	});
-	Widget.implement(new Options);
+	Widget.implement(new Class.Options);
 	//later...
 	var myWidget = new Widget({
 		color: '#f00',
@@ -277,7 +288,7 @@ Example:
 	(end)
 */
 
-var Options = new Class({
+Class.Options = new Class({
 
 	/*
 	Property: setOptions
@@ -291,7 +302,8 @@ var Options = new Class({
 
 	Note:
 		Relies on the default options of a Class defined in its options object.
-		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+		If a Class has <Class.Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event,
+		assuming the value of the option is a function.
 
 	Example:
 		See above.

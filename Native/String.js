@@ -9,7 +9,8 @@ License:
 /*
 Class: String
 	A collection of The String Object prototype methods.
-	For more information on all available JavaScript String methods see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String#Methods>
+	For more information on all available JavaScript String methods
+	see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String#Methods>
 */
 
 String.extend({
@@ -43,7 +44,8 @@ String.extend({
 
 	/*
 	Property: contains
-		Checks to see if the string passed in is contained in this string. If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
+		Checks to see if the string passed in is contained in this string.
+		If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
 
 	Syntax:
 		>myString.contains(string[, separator]);
@@ -283,7 +285,8 @@ String.extend({
 		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 	Returns:
-		(mixed) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input string is 0. If the array flag is set, an array will be returned instead.
+		(mixed) A string representing the color in hexadecimal,
+		or transparent if the fourth value of rgba in the input string is 0. If the array flag is set, an array will be returned instead.
 
 	Example:
 		(start code)
@@ -351,7 +354,8 @@ Array.extend({
 		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 	Returns:
-		(mixed) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input array is 0. If the array flag is set, an array will be returned instead.
+		(mixed) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input array is 0.
+		If the array flag is set, an array will be returned instead.
 
 	Example:
 		(start code)

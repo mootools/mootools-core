@@ -11,7 +11,8 @@ Class: Color
 	Creates a new Color Object, which is an array with some color specific methods.
 Arguments:
 	color - the hex, the RGB array or the HSB array of the color to create. For HSB colors, you need to specify the second argument.
-	type - a string representing the type of the color to create. needs to be specified if you intend to create the color with HSB values, or an array of HEX values. Can be 'rgb', 'hsb' or 'hex'.
+	type - a string representing the type of the color to create.
+		Needs to be specified if you intend to create the color with HSB values, or an array of HEX values. Can be 'rgb', 'hsb' or 'hex'.
 
 Example:
 	(start code)

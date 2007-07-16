@@ -22,7 +22,9 @@ Example:
 	>marginChange.start(10, 100);
 */
 
-Fx.Style = Fx.Base.extend({
+Fx.Style = new Class({
+	
+	Extends: Fx.Base,
 
 	initialize: function(element, property, options){
 		this.parent($(element), options);

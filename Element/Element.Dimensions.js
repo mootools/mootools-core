@@ -65,7 +65,8 @@ Element.extend({
 		Returns the real offsets of the element.
 
 	Arguments:
-		overflown - optional, an array of nested scrolling containers for scroll offset calculation, use this if your element is inside any element containing scrollbars
+		overflown - optional, an array of nested scrolling containers for scroll offset calculation,
+		use this if your element is inside any element containing scrollbars
 
 	Example:
 		>$('element').getPosition();

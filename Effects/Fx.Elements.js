@@ -16,7 +16,9 @@ Arguments:
 	options - same as <Fx.Base> options.
 */
 
-Fx.Elements = Fx.Base.extend({
+Fx.Elements = new Class({
+	
+	Extends: Fx.Base,
 
 	initialize: function(elements, options){
 		this.parent(elements, options);
@@ -45,7 +47,8 @@ Fx.Elements = Fx.Base.extend({
 
 	/*
 	Property: start
-		Applies the passed in style transitions to each object named (see example). Each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+		Applies the passed in style transitions to each object named (see example).
+		Each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
 
 	Example:
 		(start code)

@@ -28,6 +28,8 @@ Events:
 */
 
 var Scroller = new Class({
+	
+	Implements: [Class.Events, Class.Options],
 
 	options: {
 		area: 20,
@@ -84,5 +86,3 @@ var Scroller = new Class({
 	}
 
 });
-
-Scroller.implement(new Events, new Options);

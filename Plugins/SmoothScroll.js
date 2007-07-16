@@ -21,7 +21,9 @@ Example:
 	>new SmoothScroll();
 */
 
-var SmoothScroll = Fx.Scroll.extend({
+var SmoothScroll = new Class({
+	
+	Extends: Fx.Scroll,
 
 	initialize: function(options){
 		this.parent(window, options);

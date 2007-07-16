@@ -37,6 +37,8 @@ Example:
 */
 
 var XHR = new Class({
+	
+	Implements: [Class.Chain, Class.Events, Class.Options],
 
 	options: {
 		method: 'post',
@@ -186,5 +188,3 @@ var XHR = new Class({
 	}
 
 });
-
-XHR.implement(new Chain, new Events, new Options);

@@ -55,6 +55,8 @@ Note:
 */
 
 var Tips = new Class({
+	
+	Implements: [Class.Events, Class.Options],
 
 	options: {
 		onShow: function(tip){
@@ -100,7 +102,8 @@ var Tips = new Class({
 		} else {
 			el.$attributes.myText = false;
 		}
-		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars) el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
+		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
+			el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
 		el.addEvent('mouseenter', function(event){
 			this.start(el);
 			if (!this.options.fixed) this.locate(event);
@@ -115,10 +118,14 @@ var Tips = new Class({
 	start: function(el){
 		this.wrapper.empty();
 		if (el.$attributes.myTitle){
-			this.title = new Element('span').inject(new Element('div', {'class': this.options.className + '-title'}).inject(this.wrapper)).setHTML(el.$attributes.myTitle);
+			this.title = new Element('span').inject(
+				new Element('div', {'class': this.options.className + '-title'}
+			).inject(this.wrapper)).setHTML(el.$attributes.myTitle);
 		}
 		if (el.$attributes.myText){
-			this.text = new Element('span').inject(new Element('div', {'class': this.options.className + '-text'}).inject(this.wrapper)).setHTML(el.$attributes.myText);
+			this.text = new Element('span').inject(
+				new Element('div', {'class': this.options.className + '-text'}
+			).inject(this.wrapper)).setHTML(el.$attributes.myText);
 		}
 		$clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);
@@ -159,5 +166,3 @@ var Tips = new Class({
 	}
 
 });
-
-Tips.implement(new Events, new Options);

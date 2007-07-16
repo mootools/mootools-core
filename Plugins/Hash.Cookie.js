@@ -34,7 +34,9 @@ Example:
 	(end)
 */
 
-Hash.Cookie = Hash.extend({
+Hash.Cookie = new Class({
+	
+	Extends: Hash,
 
 	initialize: function(name, options){
 		this.name = name;

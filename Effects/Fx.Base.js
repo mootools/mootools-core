@@ -26,6 +26,8 @@ Events:
 */
 
 Fx.Base = new Class({
+	
+	Implements: [Class.Chain, Class.Events, Class.Options],
 
 	options: {
 		onStart: $empty,
@@ -122,5 +124,3 @@ Fx.Base = new Class({
 	}
 
 });
-
-Fx.Base.implement(new Chain, new Events, new Options);

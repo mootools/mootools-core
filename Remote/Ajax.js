@@ -30,7 +30,9 @@ Example:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();
 */
 
-var Ajax = XHR.extend({
+var Ajax = new Class({
+	
+	Extends: XHR,
 
 	options: {
 		update: null,

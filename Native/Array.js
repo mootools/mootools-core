@@ -148,7 +148,8 @@ Array.extend({
 		>var mappedArray = array.map(fn[, bind]);
 
 	Arguments:
-		fn   - (function) The function to produce an element of the new Array from an element of the current one. This function is passed the item and its index in the array.
+		fn   - (function) The function to produce an element of the new Array from an element of the current one.
+			This function is passed the item and its index in the array.
 		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 	Returns:
@@ -246,7 +247,8 @@ Array.extend({
 		>var associated = myArray.associate(obj);
 
 	Arguments:
-		obj - (mixed) If an array is passed, its items will be used as the keys of the object that will be created. Alternatively, an object containing key / type pairs may be passed and used as a template for associating values with the different keys.
+		obj - (mixed) If an array is passed, its items will be used as the keys of the object that will be created.
+			Alternatively, an object containing key / type pairs may be passed and used as a template for associating values with the different keys.
 
 	Returns:
 		(object) The new associated object.
@@ -322,7 +324,8 @@ Array.extend({
 		>var copiedArray = myArray.copy([start, [length]]);
 
 	Arguments:
-		start  - (integer, optional) The index from which the copy should be started. If a negative number is provided, the offset is taken from the end of the array (defaults to 0).
+		start  - (integer, optional) The index from which the copy should be started.
+			If a negative number is provided, the offset is taken from the end of the array (defaults to 0).
 		length - (integer, optional) The number of elements to copy (defaults to array.length - start).
 
 	Returns:
@@ -336,12 +339,7 @@ Array.extend({
 	*/
 
 	copy: function(start, length){
-		start = start || 0;
-		if (start < 0) start = this.length + start;
-		length = length || (this.length - start);
-		var newArray = [];
-		for (var i = 0; i < length; i++) newArray[i] = this[start++];
-		return newArray;
+		return $A(this, start, length);
 	},
 
 	/*
@@ -543,34 +541,6 @@ Array.each = Array.forEach;
 /* Section: Utility Functions */
 
 /*
-Function: $A()
-	Same as <Array.copy>, but as function.
-	Useful for applying the Array prototypes to iterable objects such as a DOM Element collection or the arguments object.
-
-Syntax:
-	>var copiedArray = $A(array);
-
-Arguments:
-	array - (array) The array to copy.
-
-Returns:
-	(array) The new copied array.
-
-Example:
-	(start code)
-	function myFunction(){
-		$A(arguments).each(function(argument, index){
-			alert(argument);
-		});
-	}; //will alert all the arguments passed to the function myFunction.
-	(end)
-*/
-
-function $A(array){
-	return Array.copy(array);
-};
-
-/*
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
 
@@ -579,7 +549,8 @@ Syntax:
 
 Arguments:
 	iterable - (object or array) The object or array to iterate through.
-	fn       - (function) The function to test for each element. This function is passed the item and its index in the array. In the case of an object, it is passed the key of that item rather than the index.
+	fn       - (function) The function to test for each element. This function is passed the item and its index in the array.
+		In the case of an object, it is passed the key of that item rather than the index.
 	bind     - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 Examples:
@@ -602,6 +573,8 @@ function $each(iterable, fn, bind){
 	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object'){
 		Array.forEach(iterable, fn, bind);
 	} else {
-		 for (var name in iterable) fn.call(bind || iterable, iterable[name], name);
+		 for (var name in iterable){
+			if (iterable.hasOwnProperty(name)) fn.call(bind || iterable, iterable[name], name);
+		}
 	}
 };

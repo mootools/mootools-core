@@ -15,6 +15,10 @@ Class: Function
 */
 
 Function.extend({
+	
+	extend: function(properties){
+		for (var property in properties) this[property] = properties[property];
+	},
 
 	/*
 	Property: create

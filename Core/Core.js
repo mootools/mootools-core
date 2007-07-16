@@ -61,7 +61,8 @@ function $extend(){
 
 /*
 Function: Native
-	This will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
+	This will add a .extend method to the objects passed as a parameter,
+	but the property passed in will be copied to the object's prototype only if not previously existent.
 	The purpose of Native is also to create generics methods (Class Methods) from the prototypes passed in.
 	Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
 
@@ -94,6 +95,38 @@ Native(Array, Function, String, RegExp, Number);
 Native.setFamily({'array': Array, 'function': Function, 'string': String, 'regexp': RegExp});
 
 /* Section: Utility Functions */
+
+/*
+Function: $A()
+	Useful for applying the Array prototypes to iterable objects such as a DOM Element collection or the arguments object.
+
+Syntax:
+	>var copiedArray = $A(array);
+
+Arguments:
+	array - (array) The array to copy.
+
+Returns:
+	(array) The new copied array.
+
+Example:
+	(start code)
+	function myFunction(){
+		$A(arguments).each(function(argument, index){
+			alert(argument);
+		});
+	}; //will alert all the arguments passed to the function myFunction.
+	(end)
+*/
+
+function $A(iterable, start, length){
+	start = start || 0;
+	if (start < 0) start = iterable.length + start;
+	length = length || (iterable.length - start);
+	var newArray = [];
+	for (var i = 0; i < length; i++) newArray[i] = iterable[start++];
+	return newArray;
+};
 
 /*
 Function: $chk

@@ -15,8 +15,8 @@ Syntax:
 	>var MyClass = new Class(properties);
 
 Arguments:
-	properties - (object) The collection of properties that apply to the Class.
-
+	properties - (object) The collection of properties that apply to the Class. Also accepts Extends and Implements. See below.
+	
 Example:
 	(start code)
 	var Cat = new Class({
@@ -27,14 +27,74 @@ Example:
 	var myCat = new Cat('Micia');
 	alert(myCat.name); //alerts 'Micia'
 	(end)
+	
+Implements:
+	Implements the passed in Class properties into the base Class prototypes. Similar to Extends, but it simply overrides the properties.
+	Useful when implementing a Class properties in multiple classes.
+
+	Implements Syntax:
+		>var MyClass = new Class({Implements: SomeOtherClass});
+
+	Implements Example:
+		(start code)
+		var Animal = new Class({
+			initialize: function(age){
+				this.age = age;
+			}
+		});
+		var Cat = new Class({Implements: Animal,
+			setName: function(name){
+				this.name = name
+			}
+		});
+		var myCat = new Cat(20);
+		myAnimal.setName('Micia');
+		alert(myAnimal.name); //alerts 'Micia'
+		(end)
+	
+Extends:
+	this class will be extended from the other class you pass in.
+
+	Extends Syntax:
+		>var MyExtendedClass = new Class({Extends: SomeOtherClass});
+
+	Extends Example:
+		(start code)
+		var Animal = new Class({
+			initialize: function(age){
+				this.age = age;
+			}
+		});
+		var Cat = new Class({Extends: Animal
+			initialize: function(name, age){
+				this.parent(age); //will call initalize of Animal
+				this.name = name;
+			}
+		});
+		var myCat = new Cat('Micia', 20);
+		alert(myCat.name); //alerts 'Micia'
+		alert(myCat.age); //alerts 20
+		(end)
 */
 
 var Class = function(properties){
+	properties = properties || {};
 	var klass = function(){
 		var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
 		if (this.options && this.options.initialize) this.options.initialize.call(this);
 		return self;
 	};
+	
+	if (properties.Implements){
+		$extend(properties, Class.implement($splat(properties.Implements)));
+		delete properties.Implements;
+	}
+	
+	if (properties.Extends){
+		properties = Class.extend(properties.Extends, properties);
+		delete properties.Extends;
+	}
+	
 	$extend(klass, this);
 	klass.prototype = properties;
 	klass.prototype.constructor = klass;
@@ -47,7 +107,7 @@ Class.empty = $empty;
 Class.prototype = {
 
 	constructor: Class,
-
+	
 	/*
 	Property: extend
 		Returns a copy of the Class extended with the properties passed in. The original Class will be unaltered.
@@ -78,14 +138,9 @@ Class.prototype = {
 	*/
 
 	extend: function(properties){
-		var proto = new this($empty);
-		for (var property in properties){
-			var pp = proto[property];
-			proto[property] = Abstract.merge(pp, properties[property]);
-		}
-		return new Class(proto);
+		return new Class(Class.extend(this, properties));
 	},
-
+	
 	/*
 	Property: implement
 		Implements the passed in properties into the base Class prototypes, altering the base Class, unlike <Class.extend>.
@@ -115,74 +170,29 @@ Class.prototype = {
 	*/
 
 	implement: function(){
-		for (var i = 0, l = arguments.length; i < l; i++) $extend(this.prototype, arguments[i]);
+		$extend(this.prototype, Class.implement($A(arguments)));
+		return this;
 	}
 
 };
 
-/*
-Class: Abstract
-	-doc missing-
-
-Syntax:
-	-doc missing-
-
-Arguments:
-	-doc missing-
-
-Example:
-	-doc missing-
-*/
-
-var Abstract = function(obj){
-	return $extend(obj || {}, this);
+Class.implement = function(sets){
+	var all = {};
+	for (var i = 0, l = sets.length; i < l; i++) $extend(all, ($type(sets[i]) == 'class') ? new sets[i]($empty) : sets[i]);
+	return all;
 };
 
-Abstract.prototype = {
-
-	/*
-	Property: extend
-		-doc missing-
-
-	Syntax:
-		-doc missing-
-
-	Arguments:
-		-doc missing-
-
-	Example:
-		-doc missing-
-	*/
-
-	extend: function(properties){
-		for (var property in properties){
-			var tp = this[property];
-			this[property] = Abstract.merge(tp, properties[property]);
-		}
-	},
-
-	/*
-	Property: implement
-		-doc missing-
-
-	Syntax:
-		-doc missing-
-
-	Arguments:
-		-doc missing-
-
-	Example:
-		-doc missing-
-	*/
-
-	implement: function(){
-		for (var i = 0, l = arguments.length; i < l; i++) $extend(this, arguments[i]);
+Class.extend = function(klass, properties){
+	var proto = new klass($empty);
+	for (var property in properties){
+		var pp = proto[property];
+		proto[property] = Class.merge(pp, properties[property]);
 	}
-
+	return proto;
 };
 
-Abstract.merge = function(previous, current){
-	if (previous && previous != current){
+Class.merge = function(previous, current){
+	if ($defined(previous) && previous != current){
 		var type = $type(current);
 		if (type != $type(previous)) return current;
 		switch (type){
@@ -198,5 +208,33 @@ Abstract.merge = function(previous, current){
 	}
 	return current;
 };
+
+/*
+Class: Abstract
+	-doc missing-
+*/
+
+var Abstract = function(obj){
+	return $extend(this, obj || {});
+};
+
+Native(Abstract);
+
+Abstract.extend({
+	
+	each: function(fn, bind){
+		for (var property in this){
+			if (this.hasOwnProperty(property)) fn.call(this || bind, this[property], property);
+		}
+	},
+	
+	remove: function(property){
+		delete this[property];
+		return this;
+	},
+
+	extend: $extend
+
+});
 
 Client = new Abstract(Client);

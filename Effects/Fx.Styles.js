@@ -34,7 +34,9 @@ Example:
 	(end)
 */
 
-Fx.Styles = Fx.Base.extend({
+Fx.Styles = new Class({
+	
+	Extends: Fx.Base,
 
 	initialize: function(element, options){
 		this.parent($(element), options);
@@ -59,7 +61,8 @@ Fx.Styles = Fx.Base.extend({
 		Executes a transition for any number of css properties in tandem.
 
 	Arguments:
-		obj - an object containing keys that specify css properties to alter and values that specify either the from/to values (as an array) or just the end value (an integer).
+		obj - an object containing keys that specify css properties to alter and values that specify either the from/to values (as an array)
+		or just the end value (an integer).
 
 	Example:
 		see <Fx.Styles>

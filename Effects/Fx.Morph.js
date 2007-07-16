@@ -25,14 +25,17 @@ Example:
 	>myMorph.start('myClassName');
 */
 
-Fx.Morph = Fx.Styles.extend({
+Fx.Morph = new Class({
+	
+	Extends: Fx.Morph,
 	
 	/*
 	Property: start
 		Executes a transition to the current properties of the specified className.
 
 	Arguments:
-		obj - an object containing keys that specify css properties to alter and values that specify either the from/to values (as an array) or just the end value (an integer).
+		obj - an object containing keys that specify css properties to alter and values that specify either the from/to values (as an array)
+		or just the end value (an integer).
 
 	Example:
 		see <Fx.Styles>

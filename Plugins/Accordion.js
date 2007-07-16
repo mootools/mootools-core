@@ -34,7 +34,9 @@ Events:
 	onBackground - function to execute when an element starts to hide
 */
 
-var Accordion = Fx.Elements.extend({
+var Accordion = new Class({
+	
+	Extends: Fx.Elements,
 
 	options: {
 		onActive: $empty,

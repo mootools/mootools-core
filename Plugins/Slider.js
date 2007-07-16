@@ -31,6 +31,8 @@ Events:
 */
 
 var Slider = new Class({
+	
+	Implements: [Class.Events, Class.Options],
 
 	options: {
 		onChange: $empty,
@@ -141,5 +143,3 @@ var Slider = new Class({
 	}
 
 });
-
-Slider.implement(new Events, new Options);
