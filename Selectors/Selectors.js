@@ -154,7 +154,6 @@ Selectors.Pseudo.$parse = function(pseudo){
 Selectors.XPath = {
 
 	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
-		var i;
 		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch (separator){
 			case '~': case '+': temp += '/following-sibling::'; break;
@@ -163,7 +162,8 @@ Selectors.XPath = {
 		}
 		temp += tag;
 		if (separator == '+') temp += '[1]';
-		if (i = pseudos.length){
+		var i;
+		if ((i = pseudos.length)){
 			while (i--){
 				var pseudo = Selectors.Pseudo.$parse(pseudos[i]);
 				var xparser = Selectors.Pseudo[pseudo.name];
@@ -172,10 +172,10 @@ Selectors.XPath = {
 			}
 		}
 		if (id) temp += '[@id="' + id + '"]';
-		if (i = classNames.length){
+		if ((i = classNames.length)){
 			while (i--) temp += '[contains(concat(" ", @class, " "), " ' + classNames[i] + ' ")]';
 		}
-		if (i = attributes.length){
+		if ((i = attributes.length)){
 			while (i--){
 				var attribute = attributes[i].match(Selectors.aRegExp);
 				if (!attribute) continue;
@@ -214,7 +214,6 @@ Selectors.XPath = {
 Selectors.Filter = {
 
 	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
-		var i;
 		if (separator){
 			switch (separator){
 				case ' ': items = Selectors.Filter.getNestedByTag(items, tag); break;
@@ -232,16 +231,17 @@ Selectors.Filter = {
 				items = $A(context.getElementsByTagName(tag));
 			}
 		}
-		if (i = classNames.length){
+		var i;
+		if ((i = classNames.length)){
 			while (i--) items = Elements.filterByClass(items, classNames[i], true);
 		}
-		if (i = attributes.length){
+		if ((i = attributes.length)){
 			while (i--){
 				var attribute = attributes[i].match(Selectors.aRegExp);
 				if (attribute) items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
 			}
 		}
-		if (i = pseudos.length){
+		if ((i = pseudos.length)){
 			while (i--){
 				var pseudo = Selectors.Pseudo.$parse(pseudos[i]);
 				var xparser = Selectors.Pseudo[pseudo.name];
