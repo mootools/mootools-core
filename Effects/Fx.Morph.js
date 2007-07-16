@@ -27,7 +27,7 @@ Example:
 
 Fx.Morph = new Class({
 	
-	Extends: Fx.Morph,
+	Extends: Fx.Styles,
 	
 	/*
 	Property: start
@@ -41,34 +41,20 @@ Fx.Morph = new Class({
 		see <Fx.Styles>
 	*/
 
-	start: function(){
+	start: function(className){
 		var to = {};
 		$each(document.styleSheets, function(style){
 			var rules = style.rules || style.cssRules;
 			$each(rules, function(rule){
 				if (!rule.selectorText.test('\.' + className + '$')) return;
-				Fx.CSS.Styles.each(function(style){
+				for (var style in Element.Styles.All){
 					if (!rule.style || !rule.style[style]) return;
 					var ruleStyle = rule.style[style];
 					to[style] = (style.test(/color/i) && ruleStyle.test(/^rgb/)) ? ruleStyle.rgbToHex() : ruleStyle;
-				});
+				};
 			});
 		});
 		return this.parent(to);
 	}
 	
-});
-
-Fx.CSS.Styles = [
-	'backgroundColor', 'backgroundPosition', 'color',
-	'width', 'height', 'left', 'top', 'bottom', 'right',
-	'fontSize', 'letterSpacing', 'lineHeight',
-	'textIndent', 'opacity'
-];
-
-Fx.CSS.Styles.extend(Element.$styles.padding);
-Fx.CSS.Styles.extend(Element.$styles.margin);
-
-Element.$styles.border.each(function(border){
-	Fx.CSS.Styles.push(border + 'Width', border + 'Color');
 });
