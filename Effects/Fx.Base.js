@@ -56,7 +56,8 @@ Fx.Base = new Class({
 			this.increase();
 		} else {
 			this.stop(true);
-			this.set(this.to);
+			this.now = this.to;
+			this.increase();
 			this.fireEvent('onComplete', this.element, 10);
 			this.callChain();
 		}

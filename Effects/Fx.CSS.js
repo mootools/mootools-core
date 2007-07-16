@@ -1,6 +1,6 @@
 /*
 Script: Fx.CSS.js
-	Css parsing class for effects. Required by <Fx.Style>, <Fx.Styles>, <Fx.Elements>. No documentation needed, as its used internally.
+	Css parsing class for effects. Required by <Fx.Style>, <Fx.Styles>, <Fx.Elements>.
 
 License:
 	MIT-style license.
@@ -8,78 +8,96 @@ License:
 
 Fx.CSS = {
 
-	select: function(property, to){
-		if (property.test(/color/i)) return this.Color;
-		var type = $type(to);
-		if ((type == 'array') || (type == 'string' && to.contains(' '))) return this.Multi;
-		return this.Single;
-	},
-
-	parse: function(el, property, fromTo){
-		if (!fromTo.push) fromTo = [fromTo];
-		var from = fromTo[0], to = fromTo[1];
-		if (!$chk(to)){
-			to = from;
-			from = el.getStyle(property);
+	prepare: function(element, property, values){
+		values = $splat(values);
+		if (!$chk(values[1])){
+			values[1] = values[0];
+			values[0] = element.getStyle(property);
 		}
-		var css = this.select(property, to);
-		return {'from': css.parse(from), 'to': css.parse(to), 'css': css};
-	}
-
-};
-
-Fx.CSS.Single = {
-
-	parse: function(value){
-		return parseFloat(value);
+		var parsed = values.map(function(value){
+			return Fx.CSS.set(value);
+		});
+		
+		return {'from': parsed[0], 'to': parsed[1]};
 	},
-
-	getNow: function(from, to, fx){
-		return fx.compute(from, to);
-	},
-
-	getValue: function(value, unit, property){
-		if (unit == 'px' && property != 'opacity') value = Math.round(value);
-		return value + unit;
-	}
-
-};
-
-Fx.CSS.Multi = {
-
-	parse: function(value){
-		return value.push ? value : value.split(' ').map(function(v){
-			return parseFloat(v);
+	
+	set: function(value){
+		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
+		return value.map(function(val){
+			val = String(val);
+			var found = false;
+			Fx.CSS.Parsers.each(function(parser, key){
+				if (found || !parser.match) return;
+				var match = parser.match(val);
+				if ($chk(match)) found = {'type': key, 'value': match};
+			});
+			return found || {'type': 'string', 'value': val};
 		});
 	},
-
-	getNow: function(from, to, fx){
-		var now = [];
-		for (var i = 0; i < from.length; i++) now[i] = fx.compute(from[i], to[i]);
-		return now;
+	
+	compute: function(from, to, fx){
+		return from.map(function(obj, i){
+			return {'type': obj.type, 'value': Fx.CSS.Parsers[obj.type].compute(from[i].value, to[i].value, fx)};
+		});
 	},
-
-	getValue: function(value, unit, property){
-		if (unit == 'px' && property != 'opacity') value = value.map(Math.round);
-		return value.join(unit + ' ') + unit;
+	
+	serve: function(now, unit){
+		return now.map(function(obj){
+			return Fx.CSS.Parsers[obj.type].serve(obj.value, unit);
+		});
 	}
 
 };
 
-Fx.CSS.Color = {
+Fx.CSS.Parsers = new Abstract({
+	
+	'color': {
 
-	parse: function(value){
-		return value.push ? value : value.hexToRgb(true);
+		match: function(value){
+			if (value.match(/^#[\w]{3,6}$/)) return value.hexToRgb(true);
+			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
+		},
+
+		compute: function(from, to, fx){
+			return from.map(function(value, i){
+				return Math.round(fx.compute(value, to[i]));
+			});
+		},
+
+		serve: function(value, unit){
+			return value.map(function(value){
+				return parseInt(value);
+			});
+		}
+
 	},
+	
+	'number': {
 
-	getNow: function(from, to, fx){
-		var now = [];
-		for (var i = 0; i < from.length; i++) now[i] = Math.round(fx.compute(from[i], to[i]));
-		return now;
+		match: function(value){
+			return parseFloat(value);
+		},
+		
+		compute: function(from, to, fx){
+			return fx.compute(from, to);
+		},
+		
+		serve: function(value, unit){
+			return (unit == 'px') ? value : value + unit;
+		}
+
 	},
+	
+	'string': {
 
-	getValue: function(value){
-		return 'rgb(' + value.join(',') + ')';
+		compute: function(from, to, fx){
+			return to;
+		},
+
+		serve: function(value, unit){
+			return value;
+		}
+
 	}
 
-};
+});

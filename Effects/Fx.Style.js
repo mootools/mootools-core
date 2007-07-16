@@ -41,7 +41,7 @@ Fx.Style = new Class({
 	},
 
 	setNow: function(){
-		this.now = this.css.getNow(this.from, this.to, this);
+		this.now = Fx.CSS.compute(this.from, this.to, this);
 	},
 
 	/*
@@ -56,8 +56,7 @@ Fx.Style = new Class({
 	*/
 
 	set: function(to){
-		this.css = Fx.CSS.select(this.property, to);
-		return this.parent(this.css.parse(to));
+		return this.parent(Fx.CSS.set(to));
 	},
 
 	/*
@@ -80,13 +79,12 @@ Fx.Style = new Class({
 
 	start: function(from, to){
 		if (this.timer && this.options.wait) return this;
-		var parsed = Fx.CSS.parse(this.element, this.property, [from, to]);
-		this.css = parsed.css;
+		var parsed = Fx.CSS.prepare(this.element, this.property, [from, to]);
 		return this.parent(parsed.from, parsed.to);
 	},
 
 	increase: function(){
-		this.element.setStyle(this.property, this.css.getValue(this.now, this.options.unit, this.property));
+		this.element.setStyle(this.property, Fx.CSS.serve(this.now, this.options.unit));
 	}
 
 });

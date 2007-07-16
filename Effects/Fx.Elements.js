@@ -27,8 +27,8 @@ Fx.Elements = new Class({
 
 	setNow: function(){
 		for (var i in this.from){
-			var iFrom = this.from[i], iTo = this.to[i], iCss = this.css[i], iNow = this.now[i] = {};
-			for (var p in iFrom) iNow[p] = iCss[p].getNow(iFrom[p], iTo[p], this);
+			var iFrom = this.from[i], iTo = this.to[i], iNow = this.now[i] = {};
+			for (var p in iFrom) iNow[p] = Fx.CSS.compute(iFrom[p], iTo[p], this);
 		}
 	},
 
@@ -36,11 +36,8 @@ Fx.Elements = new Class({
 		var parsed = {};
 		this.css = {};
 		for (var i in to){
-			var iTo = to[i], iCss = this.css[i] = {}, iParsed = parsed[i] = {};
-			for (var p in iTo){
-				iCss[p] = Fx.CSS.select(p, iTo[p]);
-				iParsed[p] = iCss[p].parse(iTo[p]);
-			}
+			var iTo = to[i], iParsed = parsed[i] = {};
+			for (var p in iTo) iParsed[p] = Fx.CSS.set(iTo[p]);
 		}
 		return this.parent(parsed);
 	},
@@ -71,12 +68,11 @@ Fx.Elements = new Class({
 		this.css = {};
 		var from = {}, to = {};
 		for (var i in obj){
-			var iProps = obj[i], iFrom = from[i] = {}, iTo = to[i] = {}, iCss = this.css[i] = {};
+			var iProps = obj[i], iFrom = from[i] = {}, iTo = to[i] = {};
 			for (var p in iProps){
-				var parsed = Fx.CSS.parse(this.elements[i], p, iProps[p]);
+				var parsed = Fx.CSS.prepare(this.elements[i], p, iProps[p]);
 				iFrom[p] = parsed.from;
 				iTo[p] = parsed.to;
-				iCss[p] = parsed.css;
 			}
 		}
 		return this.parent(from, to);
@@ -84,8 +80,8 @@ Fx.Elements = new Class({
 
 	increase: function(){
 		for (var i in this.now){
-			var iNow = this.now[i], iCss = this.css[i];
-			for (var p in iNow) this.elements[i].setStyle(p, iCss[p].getValue(iNow[p], this.options.unit, p));
+			var iNow = this.now[i];
+			for (var p in iNow) this.elements[i].setStyle(p, Fx.CSS.serve(iNow[p], this.options.unit));
 		}
 	}
 

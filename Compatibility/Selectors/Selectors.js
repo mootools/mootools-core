@@ -1,8 +1,9 @@
-Element.$domCompatMethods = {
+Client.expand({
 	getElementsByClassName: function(className){
-		return this.getElements('.' + className);
+		var self = (this == window) ? document : this;
+		return self.getElements('.' + className);
 	}
-};
+});
 
 function $E(selector, filter){
 	return ($(filter) || document).getElement(selector);
@@ -11,6 +12,3 @@ function $E(selector, filter){
 function $ES(selector, filter){
 	return ($(filter) || document).getElementsBySelector(selector);
 };
-
-Element.extend(Element.$domCompatMethods);
-document.extend(Element.$domCompatMethods);
