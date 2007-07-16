@@ -33,6 +33,8 @@ callBacks:
 */
 
 Swiff.Uploader = new Class({
+	
+	Implements: Options,
 
 	options: {
 		types: false,
@@ -131,8 +133,6 @@ Swiff.Uploader = new Class({
 
 });
 
-Swiff.Uploader.implement(new Options);
-
 Swiff.Uploader.factory = $extend;
 
 Swiff.Uploader.factory({
@@ -140,20 +140,18 @@ Swiff.Uploader.factory({
 	onLoads: [],
 
 	register: function(onLoad, movie, inject){
-		if (!this.object || !this.loaded) {
+		if (!this.object || !this.loaded){
 			this.onLoads.push(onLoad);
 			if (!this.object) {
 				this.object = new Swiff(movie, {
-					callBacks: {
-						'onLoad': this.onLoad.create({create: 10, bind: this})
-					},
-					params: {
-						wmode: 'transparent'
-					},
+					callBacks: {'onLoad': this.onLoad.create({create: 10, bind: this})},
+					params: {wmode: 'transparent'},
 					inject: $(inject) || document.body
 				});
 			}
-		} else onLoad.delay(10);
+		} else {
+			onLoad.delay(10);
+		}
 		return this.object;
 	},
 

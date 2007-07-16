@@ -54,7 +54,7 @@ Example:
 	(end)
 */
 
-var Swiff = new Abstract(function(movie, options){
+var Swiff = function(movie, options){
 	if (!Swiff.fixed) Swiff.fix();
 	options = $merge(Swiff.options, options || {});
 
@@ -90,7 +90,7 @@ var Swiff = new Abstract(function(movie, options){
 	var obj = new Element('div').setHTML(build).firstChild;
 	if (options.inject) $(options.inject).appendChild(obj);
 	return obj;
-});
+};
 
 Swiff.extend({
 
@@ -142,17 +142,16 @@ Swiff.extend({
 
 	getVersion: function(){
 		if (!$defined(Swiff.pluginVersion)){
-			var x;
+			var version;
 			if (navigator.plugins && navigator.mimeTypes.length){
-				x = navigator.plugins["Shockwave Flash"];
-				if(x && x.description) x = x.description;
+				version = navigator.plugins["Shockwave Flash"];
+				if (version && version.description) version = version.description;
 			} else if (Client.Engine.ie){
-				try {
-					x = new ActiveXObject("ShockwaveFlash.ShockwaveFlash");
-					x = x.GetVariable("$version");
-				} catch(e){}
+				version = $try(function(){
+					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
+				});
 			}
-			Swiff.pluginVersion = ($type(x) == 'string') ? parseInt(x.match(/\d+/)[0]) : 0;
+			Swiff.pluginVersion = ($type(version) == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
 		}
 		return Swiff.pluginVersion;
 	},
