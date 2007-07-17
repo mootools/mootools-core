@@ -46,18 +46,9 @@ Element.$DOMMethods = {
 			return '%' + match.charAt(1);
 		}).split('%');
 		for (var i = 0, j = selector.length; i < j; i++){
-			var param = {tag: '*', id: null, classes: [], attributes: [], pseudos: []};
-			if (selector[i].replace(Selectors.regExp, function(str) {
-				switch (str.charAt(0)){
-					case ':': param.pseudos.push(str.slice(1)); break;
-					case '[': param.attributes.push(str.slice(1, str.length - 1)); break;
-					case '.': param.classes.push(str.slice(1)); break;
-					case '#': param.id = str.slice(1); break;
-					default: param.tag = str;
-				}
-				return '';
-			})) break;
-			var temp = Selectors.Method.getParam(items, separators[i - 1] || false, this, param.tag, param.id, param.classes, param.attributes, param.pseudos);
+			var params = Selectors.$parse(selector[i]);
+			if (!params) break;
+			var temp = Selectors.Method.getParam(items, separators[i - 1] || false, this, params.tag, params.id, params.classes, params.attributes, params.pseudos);
 			if (!temp) break;
 			items = temp;
 		}
@@ -132,7 +123,7 @@ var Selectors = {
 
 	'regExp': /:[^:]+|\[[^\]]+\]|\.[\w-]+|#[\w-]+|\w+|\*/g,
 
-	'aRegExp': /^(\w+)(?:([!*^$~]?=)["']?([^"'\]]*)["']?)?$/,
+	'aRegExp': /^(\w+)(?:([!*^$~|]?=)["']?([^"'\]]*)["']?)?$/,
 
 	'sRegExp': /\s*([+>~\s])[a-zA-Z#.*\s]/g,
 
@@ -140,15 +131,34 @@ var Selectors = {
 
 };
 
+Selectors.$parse = function(selector){
+	var params = {tag: '*', id: null, classes: [], attributes: [], pseudos: []};
+	selector = selector.replace(Selectors.regExp, function(bit) {
+		switch (bit.charAt(0)){
+			case '.': params.classes.push(bit.slice(1)); break;
+			case '#': params.id = bit.slice(1); break;
+			case '[':
+				if ((bit = bit.slice(1, bit.length - 1).match(Selectors.aRegExp))) params.attributes.push(bit);
+				break;
+			case ':':
+				if ((bit = Selectors.Pseudo.$parse(bit.slice(1)))) params.pseudos.push(bit);
+				break;
+			default: params.tag = bit;
+		}
+		return '';
+	});
+	return params;
+}
+
 Selectors.Pseudo = new Abstract();
 
 Selectors.Pseudo.$parse = function(pseudo){
 	if (!(pseudo = pseudo.match(Selectors.pRegExp))) return false;
 	var name = pseudo[1].split('-')[0];
-	var argument = pseudo[2] || false;
 	var xparser = Selectors.Pseudo[name];
-	if (xparser && xparser.parser) return {'name': name, 'argument': (xparser.parser.apply) ? xparser.parser(argument) : xparser.parser};
-	else return {'name': name, 'argument': argument};
+	var params = {'name': name, 'parser': xparser, 'argument': pseudo[2] || false};
+	if (xparser && xparser.parser) params.argument = (xparser.parser.apply) ? xparser.parser(params.argument) : xparser.parser;
+	return params;
 };
 
 Selectors.XPath = {
@@ -163,35 +173,27 @@ Selectors.XPath = {
 		temp += tag;
 		if (separator == '+') temp += '[1]';
 		var i;
-		if ((i = pseudos.length)){
-			while (i--){
-				var pseudo = Selectors.Pseudo.$parse(pseudos[i]);
-				var xparser = Selectors.Pseudo[pseudo.name];
-				if (xparser && xparser.xpath) temp += xparser.xpath(pseudo.argument);
-				else temp += ($chk(pseudo.argument)) ? '[@' + pseudo.name + '="' + pseudo.argument + '"]' : '[@' + pseudo.name + ']';
-			}
+		for (i = pseudos.length; i--; i){
+			var pseudo = pseudos[i];
+			if (pseudo.parser && pseudo.parser.xpath) temp += pseudo.parser.xpath(pseudo.argument);
+			else temp += ($chk(pseudo.argument)) ? '[@' + pseudo.name + '="' + pseudo.argument + '"]' : '[@' + pseudo.name + ']';
 		}
 		if (id) temp += '[@id="' + id + '"]';
-		if ((i = classNames.length)){
-			while (i--) temp += '[contains(concat(" ", @class, " "), " ' + classNames[i] + ' ")]';
-		}
-		if ((i = attributes.length)){
-			while (i--){
-				var attribute = attributes[i].match(Selectors.aRegExp);
-				if (!attribute) continue;
-				if (attribute[2] && attribute[3]){
-					switch (attribute[2]){
-						case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
-						case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
-						case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
-						case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
-						case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
-						case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]';
-						case '|=': temp += '[contains(concat("-", @' + attribute[1] + ', "-"), "-' + attribute[3] + '-")]';
-					}
-				} else {
-					temp += '[@' + attribute[1] + ']';
+		for (i = classNames.length; i--; i) temp += '[contains(concat(" ", @class, " "), " ' + classNames[i] + ' ")]';
+		for (i = attributes.length; i--; i){
+			var attribute = attributes[i];
+			if (attribute[2] && attribute[3]){
+				switch (attribute[2]){
+					case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
+					case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
+					case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
+					case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
+					case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
+					case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]';
+					case '|=': temp += '[contains(concat("-", @' + attribute[1] + ', "-"), "-' + attribute[3] + '-")]';
 				}
+			} else {
+				temp += '[@' + attribute[1] + ']';
 			}
 		}
 		items.push(temp);
@@ -232,28 +234,21 @@ Selectors.Filter = {
 			}
 		}
 		var i;
-		if ((i = classNames.length)){
-			while (i--) items = Elements.filterByClass(items, classNames[i], true);
+		for (i = classNames.length; i--; i) items = Elements.filterByClass(items, classNames[i], true);
+		for (i = attributes.length; i--; i){
+			var attribute = attributes[i];
+			items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
 		}
-		if ((i = attributes.length)){
-			while (i--){
-				var attribute = attributes[i].match(Selectors.aRegExp);
-				if (attribute) items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
-			}
-		}
-		if ((i = pseudos.length)){
-			while (i--){
-				var pseudo = Selectors.Pseudo.$parse(pseudos[i]);
-				var xparser = Selectors.Pseudo[pseudo.name];
-				if (xparser && xparser.filter){
-					var temp = {};
-					items = items.filter(function(el, i, array){
-						return xparser.filter(el, pseudo.argument, i, array, temp);
-					});
-					temp = null;
-				} else {
-					items = Elements.filterByAttribute(items, pseudo.name, ($chk(pseudo.argument)) ? '=' : false, pseudo.argument, true);
-				}
+		for (i = pseudos.length; i--; i){
+			var pseudo = pseudos[i];
+			if (pseudo.parser && pseudo.parser.filter){
+				var temp = {}, xparser = pseudo.parser, argument = pseudo.argument;
+				items = items.filter(function(el, i, array){
+					return xparser.filter(el, argument, i, array, temp);
+				});
+				temp = null;
+			} else {
+				items = Elements.filterByAttribute(items, pseudo.name, ($chk(pseudo.argument)) ? '=' : false, pseudo.argument, true);
 			}
 		}
 		return items;

@@ -24,7 +24,7 @@ Selectors.Pseudo.empty = {
 	},
 
 	filter: function(el){
-		return (Element.getText(el).length === 0);
+		return !(el.innerText || el.textContent || '').length;
 	}
 
 };
@@ -36,11 +36,7 @@ Selectors.Pseudo.contains = {
 	},
 
 	filter: function(el, argument){
-		for (var i = 0, l = el.childNodes.length; i < l; i++){
-			var child = el.childNodes[i];
-			if (child.nodeName && child.nodeType == 3 && child.nodeValue.contains(argument)) return true;
-		}
-		return false;
+		return (el.innerText || el.textContent || '').contains(argument);
 	}
 
 };
