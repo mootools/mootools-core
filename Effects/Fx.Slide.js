@@ -152,7 +152,7 @@ $each(Fx.Slide.Accessory, function(method, accessory){
 			slide = new Fx.Slide(this, $merge(options, {wait: false}));
 			this.$attributes.slide = slide.wrapper.$attributes.slide = slide;
 		}
-		return slide[method]();
+		return slide[method]().element;
 	}
 });
 
