@@ -10,7 +10,7 @@ License:
 Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
 	Inherits methods, properties, options and events from <Fx>.
-	
+
 Note:
 	Fx.Slide requires an XHTML doctype.
 
@@ -30,7 +30,7 @@ Example:
 */
 
 Fx.Slide = new Class({
-	
+
 	Extends: Fx,
 
 	options: {
@@ -45,9 +45,10 @@ Fx.Slide = new Class({
 		this.open = true;
 		this.addEvent('onComplete', function(){
 			this.open = (this.now[0] === 0);
-		}, true);
-		if (Client.Engine.webkit419) this.addEvent('onComplete', function(){
-			if (this.open) this.element.remove().inject(this.wrapper);
+			if (this.open){
+				this.wrapper.setStyle(this.layout, '');
+				if (Client.Engine.webkit419) this.element.remove().inject(this.wrapper);
+			}
 		}, true);
 	},
 
@@ -141,3 +142,18 @@ Fx.Slide = new Class({
 	}
 
 });
+
+Fx.Slide.Accessory = {'slideIn': 'slideIn', 'slideOut': 'slideOut', 'slideToggle': 'toggle', 'slideHide': 'hide', 'slideShow': 'show'};
+
+$each(Fx.Slide.Accessory, function(method, accessory){
+	Fx.Slide.Accessory[accessory] = function(options){
+		var slide = this.$attributes.slide;
+		if (!slide){
+			slide = new Fx.Slide(this, $merge(options, {wait: false}));
+			this.$attributes.slide = slide.wrapper.$attributes.slide = slide;
+		}
+		return slide[method]();
+	}
+});
+
+Element.extend(Fx.Slide.Accessory);
