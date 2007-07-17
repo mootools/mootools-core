@@ -10,14 +10,14 @@ Fx.CSS = {
 
 	prepare: function(element, property, values){
 		values = $splat(values);
-		if (!$chk(values[1])){
+		var values1 = values[1];
+		if (!$chk(values1)){
 			values[1] = values[0];
 			values[0] = element.getStyle(property);
 		}
 		var parsed = values.map(function(value){
 			return Fx.CSS.set(value);
 		});
-		
 		return {'from': parsed[0], 'to': parsed[1]};
 	},
 	
@@ -54,7 +54,7 @@ Fx.CSS.Parsers = new Abstract({
 	'color': {
 
 		match: function(value){
-			if (value.match(/^#[\w]{3,6}$/)) return value.hexToRgb(true);
+			if (value.match(/^#[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
 			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
 		},
 
@@ -65,9 +65,7 @@ Fx.CSS.Parsers = new Abstract({
 		},
 
 		serve: function(value, unit){
-			return value.map(function(value){
-				return parseInt(value);
-			});
+			return 'rgb(' + value.join(',') + ')';
 		}
 
 	},

@@ -36,26 +36,24 @@ Element.extend({
 			case 'float': property = (Client.Engine.ie) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
-		
-		var replaces = (Element.Styles.All[property] || '@').split(' ');
-		
-		var index = 0;
-		
-		var compute = function(value){
-			return $splat(value).map(function(val){
-				var bit = replaces[index];
-				if (!bit) return '';
-				switch($type(val)){
-					case 'number': index++; return bit.replace('@', Math.round(val));
-					case 'array': return compute(val);
-				};
-				index++;
-				return val;
-			}).join(' ');
-		};
-		
-		value = compute(value);
-		
+		if ($type(value) != 'string'){
+			var map = (Element.Styles.All[property] || '@').split(' ');
+			var index = 0;
+			var compute = function(value){
+				return $splat(value).map(function(val){
+					var bit = map[index];
+					if (!bit) return '';
+					switch($type(val)){
+						case 'number': index++; return bit.replace('@', Math.round(val));
+						case 'array': return compute(val);
+					};
+					index++;
+					return val;
+				}).join(' ');
+
+			};
+			value = compute(value);
+		}
 		this.style[property] = value;
 		return this;
 	},
@@ -129,19 +127,23 @@ Element.extend({
 	getStyle: function(property){
 		property = property.camelCase();
 		var result = this.style[property];
-		if ($chk(result)) return result;
-		if (property == 'opacity') return this.$attributes.opacity;
-		result = [];
-		for (var style in Element.Styles.Short){
-			if (property != style) continue;
-			for (var s in Element.Styles.Short[style]) result.push(this.getStyle(s));
-			return (result.every(function(item){
-				return item == result[0];
-			})) ? result[0] : result.join(' ');
-		}	
-		if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
-		else if (this.currentStyle) result = this.currentStyle[property];
-		if (result && result.test(/^[rgba]{3,4}\([\d\s,]+\)$/)) result = result.rgbToHex();
+		if (!$chk(result)){
+			if (property == 'opacity') return this.$attributes.opacity;
+			result = [];
+			for (var style in Element.Styles.Short){
+				if (property != style) continue;
+				for (var s in Element.Styles.Short[style]) result.push(this.getStyle(s));
+				return (result.every(function(item){
+					return item == result[0];
+				})) ? result[0] : result.join(' ');
+			}	
+			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
+			else if (this.currentStyle) result = this.currentStyle[property];
+		}
+		if (result){
+			var color = result.match(/[rgba]{3,4}\([\d\s,]+\)/);
+			if (color) result = result.replace(color[0], color[0].rgbToHex());
+		}
 		return (Client.Engine.ie) ? Element.$fixStyle(property, result, this) : result;
 	},
 
