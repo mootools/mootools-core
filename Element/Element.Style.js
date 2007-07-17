@@ -38,21 +38,10 @@ Element.extend({
 		property = property.camelCase();
 		if ($type(value) != 'string'){
 			var map = (Element.Styles.All[property] || '@').split(' ');
-			var index = 0;
-			var compute = function(value){
-				return $splat(value).map(function(val){
-					var bit = map[index];
-					if (!bit) return '';
-					switch($type(val)){
-						case 'number': index++; return bit.replace('@', Math.round(val));
-						case 'array': return compute(val);
-					};
-					index++;
-					return val;
-				}).join(' ');
-
-			};
-			value = compute(value);
+			value = $splat(value).map(function(val, i){
+				if (!map[i]) return '';
+				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
+			}).join(' ');
 		}
 		this.style[property] = value;
 		return this;

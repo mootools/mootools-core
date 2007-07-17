@@ -42,9 +42,10 @@ Fx.CSS = {
 	},
 	
 	serve: function(now, unit){
-		return now.map(function(obj){
-			return Fx.CSS.Parsers[obj.type].serve(obj.value, unit);
-		});
+		return now.reduce(function(prev, cur){
+			var server = Fx.CSS.Parsers[cur.type].serve;
+			return prev.concat((server) ? server(cur.value, unit) : cur.value);
+		}, []);
 	}
 
 };
@@ -63,9 +64,9 @@ Fx.CSS.Parsers = new Abstract({
 				return Math.round(fx.compute(value, to[i]));
 			});
 		},
-
-		serve: function(value, unit){
-			return 'rgb(' + value.join(',') + ')';
+		
+		serve: function(value){
+			return value.map(Number);
 		}
 
 	},
@@ -88,12 +89,8 @@ Fx.CSS.Parsers = new Abstract({
 	
 	'string': {
 
-		compute: function(from, to, fx){
+		compute: function(from, to){
 			return to;
-		},
-
-		serve: function(value, unit){
-			return value;
 		}
 
 	}

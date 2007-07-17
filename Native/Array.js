@@ -234,7 +234,7 @@ Array.extend({
 	reduce: function(fn, value){
 		var i = 0;
 		if (arguments.length < 2 && this.length) value = this[i++];
-		for (l = this.length; i < l; i++) value = fn.call(null, value, this[i], i, this);
+		for (var l = this.length; i < l; i++) value = fn.call(null, value, this[i], i, this);
 		return value;
 	},
 

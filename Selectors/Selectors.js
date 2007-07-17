@@ -137,29 +137,27 @@ Selectors.$parse = function(selector){
 		switch (bit.charAt(0)){
 			case '.': params.classes.push(bit.slice(1)); break;
 			case '#': params.id = bit.slice(1); break;
-			case '[':
-				if ((bit = bit.slice(1, bit.length - 1).match(Selectors.aRegExp))) params.attributes.push(bit);
-				break;
-			case ':':
-				if ((bit = Selectors.Pseudo.$parse(bit.slice(1)))) params.pseudos.push(bit);
-				break;
+			case '[': if ((bit = bit.slice(1, bit.length - 1).match(Selectors.aRegExp))) params.attributes.push(bit); break;
+			case ':': if ((bit = Selectors.Pseudo.$parse(bit.slice(1)))) params.pseudos.push(bit); break;
 			default: params.tag = bit;
 		}
 		return '';
 	});
 	return params;
-}
-
-Selectors.Pseudo = new Abstract();
-
-Selectors.Pseudo.$parse = function(pseudo){
-	if (!(pseudo = pseudo.match(Selectors.pRegExp))) return false;
-	var name = pseudo[1].split('-')[0];
-	var xparser = Selectors.Pseudo[name];
-	var params = {'name': name, 'parser': xparser, 'argument': pseudo[2] || false};
-	if (xparser && xparser.parser) params.argument = (xparser.parser.apply) ? xparser.parser(params.argument) : xparser.parser;
-	return params;
 };
+
+Selectors.Pseudo = new Abstract({
+
+	$parse: function(pseudo){
+		if (!(pseudo = pseudo.match(Selectors.pRegExp))) return false;
+		var name = pseudo[1].split('-')[0];
+		var xparser = Selectors.Pseudo[name];
+		var params = {'name': name, 'parser': xparser, 'argument': pseudo[2] || false};
+		if (xparser && xparser.parser) params.argument = (xparser.parser.apply) ? xparser.parser(params.argument) : xparser.parser;
+		return params;
+	}
+
+});
 
 Selectors.XPath = {
 
