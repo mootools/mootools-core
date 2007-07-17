@@ -269,11 +269,6 @@
 		"Swiff.Base": {
 			"deps": ["Element.Event"],
 			"desc": "Wrapper for embedding swf movies."
-		},
-
-		"Swiff.Uploader": {
-			"deps": ["Class.Extras", "Element.Event"],
-			"desc": "Interface for uploading files using swf with FileReference and ExternalInterface."
 		}
 
 	}
