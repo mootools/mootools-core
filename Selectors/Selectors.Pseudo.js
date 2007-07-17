@@ -36,7 +36,11 @@ Selectors.Pseudo.contains = {
 	},
 
 	filter: function(el, argument){
-		return (el.innerText || el.textContent || '').contains(argument);
+		for (var i = 0, l = el.childNodes.length; i < l; i++){
+			var child = el.childNodes[i];
+			if (child.nodeName && child.nodeType == 3 && child.nodeValue.contains(argument)) return true;
+		}
+		return false;
 	}
 
 };
