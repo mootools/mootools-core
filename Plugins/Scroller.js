@@ -16,7 +16,7 @@ Note:
 
 Arguments:
 	element - required, the element to scroll.
-	options - optional, see options below, and <Fx.Base> options.
+	options - optional, see options below, and <Fx> options.
 
 Options:
 	area - integer, the necessary boundaries to make the element scroll.

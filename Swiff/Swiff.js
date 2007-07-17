@@ -1,5 +1,5 @@
 /*
-Script: Swiff.Base.js
+Script: Swiff.js
 	Contains <Swiff>, <Swiff.getVersion>, <Swiff.remote>
 
 Credits:
@@ -56,7 +56,18 @@ Example:
 
 var Swiff = function(movie, options){
 	if (!Swiff.fixed) Swiff.fix();
-	options = $merge(Swiff.options, options || {});
+	options = $merge({
+		width: 1,
+		height: 1,
+		id: null,
+		inject: null,
+		params: {
+			allowScriptAccess: 'sameDomain'
+		},
+		properties: {},
+		callBacks: {},
+		vars: {}
+	}, options);
 
 	var instance = Swiff.nextInstance();
 	var properties = $merge(options.properties, {
@@ -94,19 +105,6 @@ var Swiff = function(movie, options){
 
 Swiff.extend({
 
-	options: {
-		width: 1,
-		height: 1,
-		id: null,
-		inject: null,
-		params: {
-			allowScriptAccess: 'sameDomain'
-		},
-		properties: {},
-		callBacks: {},
-		vars: {}
-	},
-
 	UID: 0,
 
 	callBacks: {},
@@ -116,6 +114,7 @@ Swiff.extend({
 	},
 
 	//from swfObject, fixes bugs in ie+fp9
+
 	fix: function(){
 		Swiff.fixed = true;
 		window.addEvent('beforeunload', function(){

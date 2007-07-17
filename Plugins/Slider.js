@@ -73,7 +73,7 @@ var Slider = new Class({
 		this.knob.setStyle('position', 'relative').setStyle(this.p, - this.options.offset);
 		var lim = {};
 		lim[this.z] = [- this.options.offset, this.max - this.options.offset];
-		this.drag = new Drag.Base(this.knob, {
+		this.drag = new Drag(this.knob, {
 			limit: lim,
 			modifiers: mod,
 			snap: 0,

@@ -11,7 +11,7 @@ Credits:
 
 /*
 Class: Fx.Transitions
-	A collection of tweening transitions for use with the <Fx.Base> classes.
+	A collection of tweening transitions for use with the <Fx> classes.
 
 Example:
 	>//Elastic.easeOut with default values:

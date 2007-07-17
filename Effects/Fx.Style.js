@@ -10,12 +10,12 @@ License:
 Class: Fx.Style
 	The Style effect, used to transition any css property from one value to another. Includes colors.
 	Colors must be in hex format.
-	Inherits methods, properties, options and events from <Fx.Base>.
+	Inherits methods, properties, options and events from <Fx>.
 
 Arguments:
 	el - the $(element) to apply the style transition to
 	property - the property to transition
-	options - the Fx.Base options (see: <Fx.Base>)
+	options - the Fx options (see: <Fx>)
 
 Example:
 	>var marginChange = new Fx.Style('myElement', 'margin-top', {duration:500});
@@ -24,7 +24,7 @@ Example:
 
 Fx.Style = new Class({
 	
-	Extends: Fx.Base,
+	Extends: Fx,
 
 	initialize: function(element, property, options){
 		this.parent($(element), options);
@@ -33,7 +33,7 @@ Fx.Style = new Class({
 
 	/*
 	Property: hide
-		Same as <Fx.Base.set> (0); hides the element immediately without transition.
+		Same as <Fx.set> (0); hides the element immediately without transition.
 	*/
 
 	hide: function(){

@@ -8,9 +8,9 @@ License:
 
 /*
 Class: Drag.Move
-	Extends <Drag.Base>, has additional functionality for dragging an element, support snapping and droppables.
+	Extends <Drag>, has additional functionality for dragging an element, support snapping and droppables.
 	Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
-	Inherits methods, properties, options and events from <Drag.Base>.
+	Inherits methods, properties, options and events from <Drag>.
 
 Note:
 	Drag.Move requires an XHTML doctype.
@@ -20,7 +20,7 @@ Arguments:
 	options - optional. see Options below.
 
 Options:
-	all the drag.Base options, plus:
+	all the drag options, plus:
 	container - an element, will fill automatically limiting options based on the $(element) size and position. defaults to false (no limiting)
 	droppables - an array of elements you can drop your draggable to.
 	overflown - an array of nested scrolling containers, see Element::getPosition
@@ -28,7 +28,7 @@ Options:
 
 Drag.Move = new Class({
 	
-	Extends: Drag.Base,
+	Extends: Drag,
 
 	options: {
 		droppables: [],
@@ -120,7 +120,7 @@ Element.extend({
 		Makes an element draggable with the supplied options.
 
 	Arguments:
-		options - see <Drag.Move> and <Drag.Base> for acceptable options.
+		options - see <Drag.Move> and <Drag> for acceptable options.
 	*/
 
 	makeDraggable: function(options){

@@ -115,13 +115,13 @@
 
 	"Effects": {
 
-		"Fx.Base": {
+		"Fx": {
 			"deps": ["Class.Extras", "Element"],
 			"desc": "Contains the basic animation logic."
 		},
 
 		"Fx.CSS": {
-			"deps": ["Fx.Base", "Element.Style"],
+			"deps": ["Fx", "Element.Style"],
 			"desc": "Contains the CSS animation logic. Used by Styles based Effects."
 		},
 
@@ -146,17 +146,17 @@
 		},
 
 		"Fx.Scroll": {
-			"deps": ["Fx.Base", "Element.Event", "Element.Dimensions", "Window.Size"],
+			"deps": ["Fx", "Element.Event", "Element.Dimensions", "Window.Size"],
 			"desc": "Effect to scroll any element, including the window."
 		},
 
 		"Fx.Slide": {
-			"deps": ["Fx.Base", "Element.Style"],
+			"deps": ["Fx", "Element.Style"],
 			"desc": "Effect to slide an element."
 		},
 
 		"Fx.Transitions": {
-			"deps": ["Fx.Base"],
+			"deps": ["Fx"],
 			"desc": "Contains transitions to be used with any of the above effects."
 		}
 
@@ -164,14 +164,14 @@
 
 	"Drag": {
 
-		"Drag.Base": {
+		"Drag": {
 			"deps": ["Class.Extras", "Element.Event", "Element.Style"],
 			"desc": "the basic drag class. you can use this to drag, resize and whatever you want to do when dragging the mouse."
 		},
 
 		"Drag.Move": {
-			"deps": ["Drag.Base", "Element.Dimensions"],
-			"desc": "Drag.Move extends Drag.Base, adding support for draggable containers and droppables."
+			"deps": ["Drag", "Element.Dimensions"],
+			"desc": "Drag.Move extends Drag, adding support for draggable containers and droppables."
 		}
 
 	},
@@ -243,7 +243,7 @@
 		},
 
 		"Slider": {
-			"deps": ["Drag.Base", "Element.Dimensions"],
+			"deps": ["Drag", "Element.Dimensions"],
 			"desc": "Lets you create horizontal and vertical sliders."
 		},
 
@@ -266,7 +266,7 @@
 
 	"Swiff": {
 
-		"Swiff.Base": {
+		"Swiff": {
 			"deps": ["Element.Event"],
 			"desc": "Wrapper for embedding swf movies."
 		}

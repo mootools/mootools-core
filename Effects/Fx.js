@@ -1,15 +1,13 @@
 /*
-Script: Fx.Base.js
-	Contains <Fx.Base>, the foundamentals of the MooTools Effects.
+Script: Fx.js
+	Contains <Fx>, the foundamentals of the MooTools Effects.
 
 License:
 	MIT-style license.
 */
 
-var Fx = {};
-
 /*
-Class: Fx.Base
+Class: Fx
 	Base class for the Effects.
 
 Options:
@@ -25,7 +23,7 @@ Events:
 	onCancel - the function to execute when you manually stop the effect.
 */
 
-Fx.Base = new Class({
+var Fx = new Class({
 	
 	Implements: [Chain, Events, Options],
 

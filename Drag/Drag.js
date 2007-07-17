@@ -1,19 +1,17 @@
 /*
-Script: Drag.Base.js
-	Contains <Drag.Base>, <Element.makeResizable>
+Script: Drag.js
+	Contains <Drag>, <Element.makeResizable>
 
 License:
 	MIT-style license.
 */
 
-var Drag = {};
-
 /*
-Class: Drag.Base
+Class: Drag
 	Modify two css properties of an element based on the position of the mouse.
 	
 Note:
-	Drag.Base requires an XHTML doctype.
+	Drag requires an XHTML doctype.
 
 Arguments:
 	el - the $(element) to apply the transformations to.
@@ -40,7 +38,7 @@ Events:
 	onDrag - optional, function to execute at every step of the drag
 */
 
-Drag.Base = new Class({
+var Drag = new Class({
 	
 	Implements: [Events, Options],
 
@@ -162,11 +160,11 @@ Element.extend({
 		Makes an element resizable (by dragging) with the supplied options.
 
 	Arguments:
-		options - see <Drag.Base> for acceptable options.
+		options - see <Drag> for acceptable options.
 	*/
 
 	makeResizable: function(options){
-		return new Drag.Base(this, $merge({modifiers: {x: 'width', y: 'height'}}, options));
+		return new Drag(this, $merge({modifiers: {x: 'width', y: 'height'}}, options));
 	}
 
 });

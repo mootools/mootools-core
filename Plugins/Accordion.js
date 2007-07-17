@@ -17,7 +17,7 @@ Note:
 Arguments:
 	togglers - required, a collection of elements, the elements handlers that will be clickable.
 	elements - required, a collection of elements the transitions will be applied to.
-	options - optional, see options below, and <Fx.Base> options and events.
+	options - optional, see options below, and <Fx> options and events.
 
 Options:
 	show - integer, the Index of the element to show at start.

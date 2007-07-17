@@ -86,8 +86,8 @@ Swiff.Uploader = new Class({
 
 	Arguments:
 		url - (string, optional) Upload URL, sets URL also for all following uploads.
-
 	*/
+
 	send: function(url){
 		Swiff.remote(this.object, 'upload', this.instance, url);
 	},
@@ -100,6 +100,7 @@ Swiff.Uploader = new Class({
 		name - (string) Filename
 		name - (string) Filesize in byte
 	*/
+
 	remove: function(name, size){
 		Swiff.remote(this.object, 'remove', this.instance, name, size);
 	},
@@ -114,8 +115,8 @@ Swiff.Uploader = new Class({
 
 	Returns:
 		(number) The index of the file or -1 when the file is not found.
-
 	*/
+
 	fileIndex: function(name, size){
 		return Swiff.remote(this.object, 'fileIndex', this.instance, name, size);
 	},
@@ -127,6 +128,7 @@ Swiff.Uploader = new Class({
 	Returns:
 		(array) An array with [name, size] items
 	*/
+
 	fileList: function(){
 		return Swiff.remote(this.object, 'filelist', this.instance);
 	}

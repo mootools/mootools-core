@@ -9,16 +9,16 @@ License:
 /*
 Class: Fx.Elements
 	Fx.Elements allows you to apply any number of styles transitions to a selection of elements. Includes colors (must be in hex format).
-	Inherits methods, properties, options and events from <Fx.Base>.
+	Inherits methods, properties, options and events from <Fx>.
 
 Arguments:
 	elements - a collection of elements the effects will be applied to.
-	options - same as <Fx.Base> options.
+	options - same as <Fx> options.
 */
 
 Fx.Elements = new Class({
 	
-	Extends: Fx.Base,
+	Extends: Fx,
 
 	initialize: function(elements, options){
 		this.parent(elements, options);

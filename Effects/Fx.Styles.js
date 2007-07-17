@@ -10,11 +10,11 @@ License:
 Class: Fx.Styles
 	Allows you to animate multiple css properties at once;
 	Colors must be in hex format.
-	Inherits methods, properties, options and events from <Fx.Base>.
+	Inherits methods, properties, options and events from <Fx>.
 
 Arguments:
 	el - the $(element) to apply the styles transition to
-	options - the fx options (see: <Fx.Base>)
+	options - the fx options (see: <Fx>)
 
 Example:
 	(start code)
@@ -36,7 +36,7 @@ Example:
 
 Fx.Styles = new Class({
 	
-	Extends: Fx.Base,
+	Extends: Fx,
 
 	initialize: function(element, options){
 		this.parent($(element), options);

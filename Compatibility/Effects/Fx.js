@@ -1,4 +1,4 @@
-Fx.Base.implement({
+Fx.implement({
 	
 	custom: function(from, to){
 		return this.start(from, to);
@@ -9,3 +9,5 @@ Fx.Base.implement({
 	}
 	
 });
+
+Fx.Base = Fx;

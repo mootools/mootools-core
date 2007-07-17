@@ -1,7 +1,7 @@
 /*
 Script: Class.Extras.js
 	Contains common implementations for custom classes.
-	In Mootools these Utilities are implemented in <Ajax>, <XHR>, <Fx.Base> and many other Classes to provide rich functionality.
+	In Mootools these Utilities are implemented in <Ajax>, <XHR>, <Fx> and many other Classes to provide rich functionality.
 
 License:
 	MIT-style license.
@@ -10,8 +10,8 @@ License:
 /*
 Class: Chain
 	A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
-	Its methods can be implemented with <Class.implement> into any <Class>, and it is currently implemented in <Fx.Base>, <XHR> and <Ajax>.
-	In <Fx.Base>, for example, it is used to create custom, complex animations.
+	Its methods can be implemented with <Class.implement> into any <Class>, and it is currently implemented in <Fx>, <XHR> and <Ajax>.
+	In <Fx>, for example, it is used to create custom, complex animations.
 
 Syntax:
 	for new classes:
@@ -71,7 +71,7 @@ var Chain = new Class({
 /*
 Class: Events
 	A "Utility" Class. Its methods can be implemented with <Class.implement> into any <Class>.
-	In <Fx.Base>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
+	In <Fx>, for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
 	Events in a Class that implements <Events> must be either added as an option or with addEvent, not directly through .options.onEventName.
 
 Syntax:
