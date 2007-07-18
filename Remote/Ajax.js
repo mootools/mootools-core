@@ -31,7 +31,7 @@ Example:
 */
 
 var Ajax = new Class({
-	
+
 	Extends: XHR,
 
 	options: {
@@ -176,7 +176,11 @@ Element.extend({
 	*/
 
 	update: function(url, options){
-		return new Ajax(url, $merge({update: this}, options)).request();
+		var update = this.$attributes.update;
+		if (!update) update = this.$attributes.update = new Ajax({update: this, method: 'get', autoCancel: true});
+		if (options) update.setOptions(options);
+		update.url = url;
+		return update.request();
 	}
 
 });

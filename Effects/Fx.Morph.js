@@ -43,14 +43,15 @@ Fx.Morph = new Class({
 
 	start: function(className){
 		var to = {};
-		$each(document.styleSheets, function(style){
-			var rules = style.rules || style.cssRules;
-			$each(rules, function(rule){
-				if (!rule.selectorText.test('\.' + className + '$')) return;
+		Array.each(document.styleSheets, function(sheet, j){
+			var rules = sheet.rules || sheet.cssRules;
+			Array.each(rules, function(rule, i){
+				if (!rule.selectorText.test('\.' + className + '$') || !rule.style) return;
 				for (var style in Element.Styles.All){
-					if (!rule.style || !rule.style[style]) return;
-					var ruleStyle = rule.style[style];
-					to[style] = (style.test(/color/i) && ruleStyle.test(/^rgb/)) ? ruleStyle.rgbToHex() : ruleStyle;
+					if (rule.style[style]){
+						var ruleStyle = rule.style[style];
+						to[style] = (style.test(/color/i) && ruleStyle.test(/^rgb/)) ? ruleStyle.rgbToHex() : ruleStyle;
+					}
 				};
 			});
 		});
@@ -63,8 +64,8 @@ Element.extend({
 
 	morph: function(className, options){
 		var morph = this.$attributes.morph;
-		if (!morph) this.$attributes.morph = morph = new Fx.Morph(this, $merge(options, {wait: false}));
-		else if (options) morph.setOptions(options);
+		if (!morph) this.$attributes.morph = morph = new Fx.Morph(this, {wait: false});
+		if (options) morph.setOptions(options);
 		return morph.start(className);
 	}
 

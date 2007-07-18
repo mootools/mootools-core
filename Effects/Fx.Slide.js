@@ -145,17 +145,14 @@ Fx.Slide = new Class({
 
 Fx.Slide.Accessory = {'slideIn': 'slideIn', 'slideOut': 'slideOut', 'slideToggle': 'toggle', 'slideHide': 'hide', 'slideShow': 'show'};
 
-$each(Fx.Slide.Accessory, function(method, accessory){
+Element.extend($each(Fx.Slide.Accessory, function(method, accessory){
 	Fx.Slide.Accessory[accessory] = function(options){
 		var slide = this.$attributes.slide;
 		if (!slide){
-			slide = new Fx.Slide(this, $merge(options, {wait: false}));
+			slide = new Fx.Slide(this, {wait: false});
 			this.$attributes.slide = slide.wrapper.$attributes.slide = slide;
-		} else {
-			if (options) slide.setOptions(options);
 		}
+		if (options) slide.setOptions(options);
 		return slide[method]();
 	}
-});
-
-Element.extend(Fx.Slide.Accessory);
+}));
