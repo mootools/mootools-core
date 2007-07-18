@@ -10,7 +10,7 @@ License:
 Class: Fx.Morph
 	Smoothly Morph the element reflecting the properties of a specified class name defined in anywhere in the CSS.
 	Inherits methods, properties, options and events from <Fx.Styles>.
-	
+
 Notes:
 	- This is still a wip.
 	- It only works with 'transitionable' properties.
@@ -26,9 +26,9 @@ Example:
 */
 
 Fx.Morph = new Class({
-	
+
 	Extends: Fx.Styles,
-	
+
 	/*
 	Property: start
 		Executes a transition to the current properties of the specified className.
@@ -56,5 +56,16 @@ Fx.Morph = new Class({
 		});
 		return this.parent(to);
 	}
-	
+
+});
+
+Element.extend({
+
+	morph: function(className, options){
+		var morph = this.$attributes.morph;
+		if (!morph) this.$attributes.morph = morph = new Fx.Morph(this, $merge(options, {wait: false}));
+		else if (options) morph.setOptions(options);
+		return morph.start(className).element;
+	}
+
 });

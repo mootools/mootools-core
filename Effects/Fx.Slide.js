@@ -151,6 +151,8 @@ $each(Fx.Slide.Accessory, function(method, accessory){
 		if (!slide){
 			slide = new Fx.Slide(this, $merge(options, {wait: false}));
 			this.$attributes.slide = slide.wrapper.$attributes.slide = slide;
+		} else {
+			if (options) slide.setOptions(options);
 		}
 		return slide[method]().element;
 	}
