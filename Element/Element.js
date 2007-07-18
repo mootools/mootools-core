@@ -90,7 +90,7 @@ var Elements = function(elements, nocheck){
 	if (nocheck) return $extend(elements, this);
 	var uniques = {};
 	var returned = [];
-	for (var i = 0, j = elements.length; i < j; i++){
+	for (var i = elements.length; i--;){
 		var el = $(elements[i]);
 		if (!el || uniques[el.$attributes.uid]) continue;
 		uniques[el.$attributes.uid] = true;
@@ -817,10 +817,9 @@ var Garbage = {
 	},
 
 	trash: function(elements){
-		for (var i = 0, j = elements.length, el; i < j; i++){
+		for (var i = elements.length, el; i--;){
 			if (!(el = elements[i]) || !el.$attributes) continue;
-			if (el.tagName && Element.$badTags.contains(el.tagName.toLowerCase())) continue;
-			Garbage.kill(el);
+			if (!el.tagName || Element.$badTags.contains(el.tagName.toLowerCase())) Garbage.kill(el);
 		}
 	},
 

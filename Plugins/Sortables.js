@@ -159,7 +159,7 @@ var Sortables = new Class({
 
 		var found = false;
 
-		for (var i = 0, l = this.items.length; i < l; i++){
+		for (var i = this.items.length; i--;){
 			var item = this.items[i];
 			if (item == this.item) continue;
 
@@ -173,7 +173,7 @@ var Sortables = new Class({
 		}
 
 		if (!found){
-			for (var j = 0, k = this.lists.length; j < k; j++){
+			for (var j = this.lists.length; j--;){
 				var current = this.lists[j];
 				if (current == this.list) continue;
 

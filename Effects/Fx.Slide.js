@@ -53,7 +53,7 @@ Fx.Slide = new Class({
 	},
 
 	setNow: function(){
-		for (var i = 0; i < 2; i++) this.now[i] = this.compute(this.from[i], this.to[i]);
+		for (var i = 2; i--;) this.now[i] = this.compute(this.from[i], this.to[i]);
 	},
 
 	vertical: function(){

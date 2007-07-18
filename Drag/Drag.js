@@ -9,7 +9,7 @@ License:
 /*
 Class: Drag
 	Modify two css properties of an element based on the position of the mouse.
-	
+
 Note:
 	Drag requires an XHTML doctype.
 
@@ -31,7 +31,7 @@ Options:
 	limit:
 		x - array with start and end limit relative to modifiers.x
 		y - array with start and end limit relative to modifiers.y
-		
+
 Events:
 	onStart - optional, function to execute when the user starts to drag (on mousedown);
 	onComplete - optional, function to execute when the user completes the drag.
@@ -39,7 +39,7 @@ Events:
 */
 
 var Drag = new Class({
-	
+
 	Implements: [Events, Options],
 
 	options: {
@@ -92,7 +92,7 @@ var Drag = new Class({
 			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			if (limit && limit[z]){
-				for (var i = 0; i < 2; i++){
+				for (var i = 2; i--;){
 					if ($chk(limit[z][i])) this.limit[z][i] = ($type(limit[z][i]) == 'function') ? limit[z][i]() : limit[z][i];
 				}
 			}

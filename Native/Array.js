@@ -571,10 +571,10 @@ Examples:
 
 function $each(iterable, fn, bind){
 	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object'){
-		Array.forEach(iterable, fn, bind);
-	} else {
-		 for (var name in iterable){
-			if (iterable.hasOwnProperty(name)) fn.call(bind || iterable, iterable[name], name);
-		}
+		return Array.forEach(iterable, fn, bind);
 	}
+	for (var name in iterable){
+		if (iterable.hasOwnProperty(name)) fn.call(bind || iterable, iterable[name], name);
+	}
+	return iterable;
 };

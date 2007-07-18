@@ -36,7 +36,7 @@ Selectors.Pseudo.contains = {
 	},
 
 	filter: function(el, argument){
-		for (var i = 0, l = el.childNodes.length; i < l; i++){
+		for (var i = el.childNodes.length; i--;){
 			var child = el.childNodes[i];
 			if (child.nodeName && child.nodeType == 3 && child.nodeValue.contains(argument)) return true;
 		}
@@ -94,7 +94,7 @@ Selectors.Pseudo.nth = {
 			case 'index': if (parent.$children[argument.a] == el) include = true;
 		}
 		if (i == all.length - 1){
-			for (var j = 0, l = temp.parents.length; j < l; j++){
+			for (var j = temp.parents.length; j--;){
 				temp.parents[j].$children = null;
 				if (Client.Engine.ie) temp.parents[j].removeAttribute('$children');
 			}

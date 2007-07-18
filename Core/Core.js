@@ -71,7 +71,7 @@ Arguments:
 */
 
 var Native = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
+	for (var i = arguments.length; i--;){
 		arguments[i].extend = function(props){
 			for (var prop in props){
 				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
@@ -437,7 +437,7 @@ document.head = document.getElementsByTagName('head')[0];
 /*
 Class: Client
 	Some browser properties are attached to the Client object for browser and platform detection.
-	
+
 Features:
 	Client.Features.xpath - (boolean) Browser supports dom queries using xpath.
 	Client.Features.xhr   - (boolean) Browser supports native XMLHTTP object.
