@@ -224,7 +224,7 @@ Abstract.extend({
 	
 	each: function(fn, bind){
 		for (var property in this){
-			if (this.hasOwnProperty(property)) fn.call(this || bind, this[property], property);
+			if (this.hasOwnProperty(property)) fn.call(bind || this, this[property], property);
 		}
 	},
 	
