@@ -154,7 +154,7 @@ $each(Fx.Slide.Accessory, function(method, accessory){
 		} else {
 			if (options) slide.setOptions(options);
 		}
-		return slide[method]().element;
+		return slide[method]();
 	}
 });
 

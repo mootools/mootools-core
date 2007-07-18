@@ -65,7 +65,7 @@ Element.extend({
 		var morph = this.$attributes.morph;
 		if (!morph) this.$attributes.morph = morph = new Fx.Morph(this, $merge(options, {wait: false}));
 		else if (options) morph.setOptions(options);
-		return morph.start(className).element;
+		return morph.start(className);
 	}
 
 });
