@@ -660,6 +660,7 @@ Element.extend({
 
 	setProperties: function(properties){
 		for (var property in properties) this.setProperty(property, properties[property]);
+		return this;
 	},
 
 	/*

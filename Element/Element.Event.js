@@ -60,8 +60,8 @@ var Event = new Class({
 			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		} else if (this.type.contains('key')){
 			this.code = event.which || event.keyCode;
-			for (var name in Event.keys){
-				if (Event.keys[name] == this.code){
+			for (var name in Event.Keys){
+				if (Event.Keys[name] == this.code){
 					this.key = name;
 					break;
 				}
@@ -134,7 +134,7 @@ Property: keys
 
 Example:
 	(start code)
-	Event.keys.whatever = 80;
+	Event.Keys.whatever = 80;
 	$(myelement).addEvent(keydown, function(event){
 		event = new Event(event);
 		if (event.key == 'whatever') console.log(whatever key clicked).
