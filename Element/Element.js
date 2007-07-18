@@ -90,7 +90,7 @@ var Elements = function(elements, nocheck){
 	if (nocheck) return $extend(elements, this);
 	var uniques = {};
 	var returned = [];
-	for (var i = elements.length; i--;){
+	for (var i = 0, j = elements.length; i < j; i++){
 		var el = $(elements[i]);
 		if (!el || uniques[el.$attributes.uid]) continue;
 		uniques[el.$attributes.uid] = true;
