@@ -31,8 +31,8 @@ Properties:
 
 Example:
 	(start code)
-	$('myLink').addEvent('keydown', function(event){ 
-	 	/event is already the Event class, if you use el.onkeydown you have to write e = new Event(e);
+	$('myLink').addEvent('keydown', function(event){
+	 	// event is already the Event class, if you use el.onkeydown you have to write e = new Event(e);
 		alert(event.key); //returns the lowercase letter pressed
 		alert(event.shift); //returns true if the key pressed is shift
 		if (event.key == 's' && event.control) alert('document saved');
@@ -92,7 +92,7 @@ var Event = new Class({
 
 	/*
 	Property: stop
-		Stop an Event from propigating and also execute preventDefault 
+		Stop an Event from propagating and also executes preventDefault
 	*/
 
 	stop: function(){
@@ -170,7 +170,7 @@ Client.expand({
 	/*
 	Property: addEvent
 		Attaches an event listener to a DOM element.
-		The listener has the instance of the Event class as first argument. 
+		The listener has the instance of the Event class as first argument.
 		You can stop the Event by returning false in the listener or calling <Event.stop>.
 
 	Arguments:

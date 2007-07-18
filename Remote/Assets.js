@@ -54,11 +54,13 @@ var Asset = new Abstract({
 
 	/*
 	Property: image
-		Preloads an image and returns the img element. does not inject it to the page.
+		Preloads an image and returns the img element. Does not inject it to the page.
+		DO NOT use addEvent for load/error/abort on the returned element, give them as
+		onload/onerror/onabort in the properties argument.
 
 	Arguments:
 		source - the path of the image file
-		properties - some additional attributes you might want to add to the img element
+		properties - some additional attributes you might want to add to the img element including onload/onerror/onabout events.
 
 	Example:
 		> new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
@@ -74,17 +76,24 @@ var Asset = new Abstract({
 			'onerror': $empty
 		}, properties);
 		var image = new Image();
-		image.src = source;
-		var element = new Element('img', {'src': source});
-		['load', 'abort', 'error'].each(function(type){
-			var event = properties['on' + type];
-			delete properties['on' + type];
-			element.addEvent(type, function(){
-				this.removeEvent(type, arguments.callee);
-				event.call(this);
-			});
+		var element = $(image) || new Element('img');
+		['load', 'abort', 'error'].each(function(name){
+			var type = 'on' + name;
+			var event = properties[type];
+			delete properties[type];
+			image[type] = function(){
+				if (!image) return;
+				if (!element.parentNode){
+					element.width = image.width;
+					element.height = image.height;
+				}
+				image = image.onload = image.onabort = image.onerror = null;
+				event.call(element);
+				element.fireEvent(name, element, 1);
+			}
 		});
-		if (image.width && image.height) element.fireEvent('load', element, 1);
+		image.src = element.src = source;
+		if (image && image.width) image.onload.delay(1);
 		return element.setProperties(properties);
 	},
 
@@ -124,7 +133,7 @@ var Asset = new Abstract({
 		sources.each(function(source){
 			var img = new Asset.image(source, {
 				'onload': function(){
-					options.onProgress.call(this, counter);
+					options.onProgress.call(this, counter, sources.indexOf(source));
 					counter++;
 					if (counter == sources.length) options.onComplete();
 				}

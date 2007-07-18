@@ -824,9 +824,9 @@ var Garbage = {
 		}
 	},
 
-	kill: function(el){
+	kill: function(el, unload){
 		delete Garbage.elements[String(el.$attributes.uid)];
-		if (el.$events) el.fireEvent('trash').removeEvents();
+		if (el.$events) el.fireEvent('trash', unload).removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
 		if (window.ie){
 			for (var d in Element.prototype) el[d] = null;
