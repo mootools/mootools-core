@@ -145,7 +145,7 @@ Fx.Slide = new Class({
 
 Fx.Slide.Accessory = {'slideIn': 'slideIn', 'slideOut': 'slideOut', 'slideToggle': 'toggle', 'slideHide': 'hide', 'slideShow': 'show'};
 
-Element.extend($each(Fx.Slide.Accessory, function(method, accessory){
+$each(Fx.Slide.Accessory, function(method, accessory){
 	Fx.Slide.Accessory[accessory] = function(options){
 		var slide = this.$attributes.slide;
 		if (!slide){
@@ -155,4 +155,5 @@ Element.extend($each(Fx.Slide.Accessory, function(method, accessory){
 		if (options) slide.setOptions(options);
 		return slide[method]();
 	}
-}));
+});
+Element.extend(Fx.Slide.Accessory);
