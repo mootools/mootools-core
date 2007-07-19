@@ -8,7 +8,7 @@ License:
 
 /*
 Class: Drag
-	Modify two css properties of an element based on the position of the mouse.
+	Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is held down.
 
 Note:
 	Drag requires an XHTML doctype.
@@ -18,24 +18,24 @@ Arguments:
 	options - optional. The options object.
 
 Options:
-	handle - the $(element) to act as the handle for the draggable element. defaults to the $(element) itself.
-	modifiers - an object. see Modifiers Below.
-	limit - an object, see Limit below.
-	grid - optional, distance in px for snap-to-grid dragging
-	snap - optional, the distance you have to drag before the element starts to respond to the drag. defaults to false
+	handle    - (Element) [this.element] The Element to act as the handle for the draggable element.  Defaults to the Element itself.
+	modifiers - (object)  [object]   See Modifiers Below.
+	limit     - (object)  [false]    See Limit below.
+	grid      - (integer) [optional] Distance in px for snap-to-grid dragging
+	snap      - (integer) [false]    The distance to drag before the Element starts to respond to the drag.
 
-	modifiers:
-		x - string, the style you want to modify when the mouse moves in an horizontal direction. defaults to 'left'
-		y - string, the style you want to modify when the mouse moves in a vertical direction. defaults to 'top'
+	Modifiers:
+		x - (string) [left] The style to modify when the mouse moves in an horizontal direction.
+		y - (string) [top]  The style to modify when the mouse moves in a vertical direction.
 
-	limit:
-		x - array with start and end limit relative to modifiers.x
-		y - array with start and end limit relative to modifiers.y
+	Limit:
+		x - (array) [false] Start and end limit relative to the 'x' setting of Modifiers. 
+		y - (array) [false] Start and end limit relative to the 'y' setting of Modifiers.
 
 Events:
-	onStart - optional, function to execute when the user starts to drag (on mousedown);
-	onComplete - optional, function to execute when the user completes the drag.
-	onDrag - optional, function to execute at every step of the drag
+	onStart    - (function) Executed when the user starts to drag (on mousedown).
+	onComplete - (function) Executed when the user completes the drag.
+	onDrag     - (function) Executed at every step of the drag.
 */
 
 var Drag = new Class({
@@ -157,10 +157,10 @@ Element.extend({
 
 	/*
 	Property: makeResizable
-		Makes an element resizable (by dragging) with the supplied options.
+		Adds drag-to-resize behaviour to an Element using supplied options.
 
 	Arguments:
-		options - see <Drag> for acceptable options.
+		options - (object) See <Drag> for acceptable options.
 	*/
 
 	makeResizable: function(options){
