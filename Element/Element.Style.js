@@ -115,9 +115,9 @@ Element.extend({
 
 	getStyle: function(property){
 		property = property.camelCase();
+		if (property == 'opacity') return this.$attributes.opacity;
 		var result = this.style[property];
 		if (!$chk(result)){
-			if (property == 'opacity') return this.$attributes.opacity;
 			result = [];
 			for (var style in Element.Styles.Short){
 				if (property != style) continue;
