@@ -76,11 +76,6 @@
 		"Element.Form": {
 			"deps": ["Element"],
 			"desc": "Contains Element methods to work with forms."
-		},
-
-		"Element.Builder": {
-			"deps": ["Element", "Selectors"],
-			"desc": "Contains Element Builder to build Elements from short notation."
 		}
 
 	},
