@@ -497,16 +497,7 @@ Array.extend({
 	*/
 
 	remove: function(item){
-		var i = 0;
-		var len = this.length;
-		while (i < len){
-			if (this[i] === item){
-				this.splice(i, 1);
-				len--;
-			} else {
-				i++;
-			}
-		}
+		for (var i = this.length; i--;) if (this[i] === item) this.splice(i, 1);
 		return this;
 	},
 
