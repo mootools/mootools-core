@@ -87,10 +87,11 @@ Example:
 
 var Elements = function(elements, nocheck){
 	elements = elements || [];
-	if (nocheck || elements.length < 2) return $extend(elements, this);
+	var l = elements.length;
+	if (nocheck || l < 2) return $extend(elements, this);
 	var uniques = {};
 	var returned = [];
-	for (var i = 0, j = elements.length; i < j; i++){
+	for (var i = 0; i < l; i++){
 		var el = $(elements[i]);
 		if (!el || uniques[el.$attributes.uid]) continue;
 		uniques[el.$attributes.uid] = true;
