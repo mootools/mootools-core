@@ -88,7 +88,7 @@ Example:
 var Elements = function(elements, nocheck){
 	elements = elements || [];
 	var l = elements.length;
-	if (nocheck || l < 2) return $extend(elements, this);
+	if (nocheck || !l) return $extend(elements, this);
 	var uniques = {};
 	var returned = [];
 	for (var i = 0; i < l; i++){
