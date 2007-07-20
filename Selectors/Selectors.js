@@ -98,11 +98,10 @@ Element.extend({
 
 	getElementById: function(id){
 		var el = document.getElementById(id);
-		if (!el) return null;
-		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
-			if (!parent) return null;
+		if (el){
+			while ((el = el.parentNode)) if (el == this) return el;
 		}
-		return el;
+		return null;
 	}
 
 });
@@ -187,7 +186,7 @@ Selectors.XPath = {
 					case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
 					case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
 					case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
-					case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]';
+					case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]'; break;
 					case '|=': temp += '[contains(concat("-", @' + attribute[1] + ', "-"), "-' + attribute[3] + '-")]';
 				}
 			} else {
@@ -262,7 +261,7 @@ Selectors.Filter = {
 
 	getFollowingByTag: function(context, tag, all){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++){
+		for (var i = 0, j = context.length, next; i < j; i++){
 			var next = context[i].nextSibling;
 			while (next){
 				if (Selectors.Filter.hasTag(next, tag)){

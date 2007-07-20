@@ -224,8 +224,8 @@ Client.expand({
 		if (!this.$events || !this.$events[type]) return this;
 		var pos = this.$events[type].keys.indexOf(fn);
 		if (pos == -1) return this;
-		var key = this.$events[type].keys.splice(pos,1)[0];
-		var value = this.$events[type].values.splice(pos,1)[0];
+		var key = this.$events[type].keys.splice(pos, 1)[0];
+		var value = this.$events[type].values.splice(pos, 1)[0];
 		var custom = Element.Events[type];
 		if (custom){
 			if (custom.remove) custom.remove.call(this, fn);
