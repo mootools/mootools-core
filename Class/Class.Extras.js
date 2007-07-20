@@ -240,10 +240,10 @@ var Events = new Class({
 
 	removeEvents: function(type){
 		for (var e in this.$events){
-			if (type && type != e) continue;
-			this.$events[e].each(function(fn){
-				this.removeEvent(e, fn);
-			}, this);
+			if (!type || type == e){
+				var fns = this.$events[e];
+				for (var i = fns.length; i--;) this.removeEvent(e, fns[i]);
+			}
 		}
 		return this;
 	}

@@ -258,9 +258,7 @@ Client.expand({
 			for (var evType in this.$events) this.removeEvents(evType);
 			this.$events = null;
 		} else if (this.$events[type]){
-			this.$events[type].keys.each(function(fn){
-				this.removeEvent(type, fn);
-			}, this);
+			while (this.$events[type].keys[0]) this.removeEvent(type, this.$events[type].keys[0]);
 			this.$events[type] = null;
 		}
 		return this;
