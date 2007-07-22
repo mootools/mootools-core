@@ -263,9 +263,9 @@ Returns:
 
 Example:
 	(start code)
-		function say(infoMessage, errorMessage){
-			alert($pick(errorMessage, infoMessage, 'There was no meessage supplied.'));
-		}
+	function say(infoMessage, errorMessage){
+		alert($pick(errorMessage, infoMessage, 'There was no meessage supplied.'));
+	}
 	(end)
 */
 

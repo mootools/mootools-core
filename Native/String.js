@@ -8,9 +8,8 @@ License:
 
 /*
 Class: String
-	A collection of The String Object prototype methods.
-	For more information on all available JavaScript String methods
-	see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String#Methods>
+	A collection of the String Object prototype methods.
+	For more information on the JavaScript String Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String>
 */
 
 String.extend({

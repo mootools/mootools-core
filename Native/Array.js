@@ -8,8 +8,8 @@ License:
 
 /*
 Class: Array
-	A collection of The Array Object prototype methods.
-	For more information on all available JavaScript Array methods see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array#Methods>.
+	A collection of the Array Object prototype methods.
+	For more information on the JavaScript Array Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>.
 */
 
 Array.extend({
@@ -120,7 +120,7 @@ Array.extend({
 
 	Arguments:
 		item - (object) The item to search for in the array.
-		from - (integer, optional) The index of the array at which to begin the search. (defaults to 0)
+		from - (integer, optional) The index of the array at which to begin the search (defaults to 0).
 
 	Example:
 		(start code)
@@ -145,7 +145,7 @@ Array.extend({
 		This method is provided only for browsers without native *map* support.
 
 	Syntax:
-		>var mappedArray = array.map(fn[, bind]);
+		>var mappedArray = myArray.map(fn[, bind]);
 
 	Arguments:
 		fn   - (function) The function to produce an element of the new Array from an element of the current one.
@@ -208,6 +208,9 @@ Array.extend({
 
 		This method is provided only for browsers without native *reduce* support.
 
+	Syntax:
+		>var reduced = myArray.reduce(fn[, value]);
+
 	Arguments:
 		fn    - (function) Function to execute on each value in the array. This function is passed the previous item, the current item, the current index and the array itself.
 		value - (object, optional) Object to use as the initial argument to the first call of the callback.
@@ -223,7 +226,7 @@ Array.extend({
 		}, 10); // sum is 26
 		(end)
 
-		Collect arrays in an array
+		Collect elements of many arrays into an array
 		(start code)
 		var collected = [['a', 'b'], ['c', 'd'], ['e', 'f', 'g']].reduce(function(previousItem, currentItem) {
 			return previousItem.concat(currentItem);
