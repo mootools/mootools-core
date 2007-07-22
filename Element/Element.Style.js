@@ -86,13 +86,14 @@ Element.extend({
 	*/
 
 	setOpacity: function(opacity){
-		if (opacity == 0){
-			if (this.style.visibility != "hidden") this.style.visibility = "hidden";
-		} else {
-			if (this.style.visibility != "visible") this.style.visibility = "visible";
+		var hidden = (this.style.visibility == 'hidden');
+		if (!opacity){
+			if (!hidden) this.style.visibility = 'hidden';
+		} else if (hidden){
+			this.style.visibility = 'visible';
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
+		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = this.$attributes.opacity = opacity;
 		return this;
 	},
