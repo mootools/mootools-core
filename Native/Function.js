@@ -15,10 +15,8 @@ Class: Function
 */
 
 Function.extend({
-	
-	extend: function(properties){
-		for (var property in properties) this[property] = properties[property];
-	},
+
+	extend: $extend,
 
 	/*
 	Property: create
@@ -51,14 +49,7 @@ Function.extend({
 
 	create: function(options){
 		var self = this;
-		options = $merge({
-			'bind': self,
-			'arguments': null,
-			'delay': false,
-			'periodical': false,
-			'attempt': false,
-			'event': false
-		}, options);
+		options = options || {};
 		return function(event){
 			var args = $splat(options.arguments) || arguments;
 			if (options.event) args = [event || window.event].extend(args);

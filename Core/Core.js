@@ -52,11 +52,13 @@ Example:
 	(end)
 */
 
-function $extend(){
-	var args = arguments;
-	if (!args[1]) args = [this, args[0]];
-	for (var property in args[1]) args[0][property] = args[1][property];
-	return args[0];
+function $extend(src, add){
+	if (!add){
+		add = src;
+		src = this;
+	}
+	for (var prop in add) src[prop] = add[prop];
+	return src;
 };
 
 /*
