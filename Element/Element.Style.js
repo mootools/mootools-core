@@ -130,7 +130,7 @@ Element.extend({
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
 		if (result){
-			var color = result.match(/[rgba]{3,4}\([\d\s,]+\)/);
+			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
 		return (Client.Engine.ie) ? Element.$fixStyle(property, result, this) : result;

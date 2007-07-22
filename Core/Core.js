@@ -8,7 +8,7 @@ License:
 MooTools Copyright:
 	copyright (c) 2007 Valerio Proietti, <http://mad4milk.net>
 	
-Code & Documentation:
+MooTools Code & Documentation:
 	The MooTools team <http://mootools.net/developers>.
 
 MooTools Credits:
