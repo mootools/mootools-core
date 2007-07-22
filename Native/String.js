@@ -200,7 +200,7 @@ String.extend({
 		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt>.
 
 	Syntax:
-		>myString.toInt(base);
+		>myString.toInt([base]);
 
 	Arguments:
 		base - (integer, optional) The base to use (defaults to 10).
@@ -333,7 +333,7 @@ Array.extend({
 	*/
 
 	hexToRgb: function(array){
-		if (this.length != 3) return false;
+		if (this.length != 3) return null;
 		var rgb = [];
 		for (var i = 0; i < 3; i++){
 			rgb.push(((this[i].length == 1) ? this[i] + this[i] : this[i]).toInt(16));
@@ -368,7 +368,7 @@ Array.extend({
 	*/
 
 	rgbToHex: function(array){
-		if (this.length < 3) return false;
+		if (this.length < 3) return null;
 		if (this.length == 4 && this[3] == 0 && !array) return 'transparent';
 		var hex = [];
 		for (var i = 0; i < 3; i++){

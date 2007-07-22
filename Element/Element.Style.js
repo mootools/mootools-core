@@ -16,7 +16,7 @@ Element.Setters.styles = function(styles){
 };
 
 Element.extend({
-	
+
 	/*
 	Property: setStyle
 		Sets a css property to the Element.
@@ -125,12 +125,12 @@ Element.extend({
 				return (result.every(function(item){
 					return item == result[0];
 				})) ? result[0] : result.join(' ');
-			}	
+			}
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
 		if (result){
-			var color = result.match(/[rgba]{3,4}\([\d\s,]+\)/);
+			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
 		return (Client.Engine.ie) ? Element.$fixStyle(property, result, this) : result;
@@ -154,7 +154,7 @@ Element.extend({
 		}, this);
 		return result;
 	}
-	
+
 });
 
 Element.$fixStyle = function(property, result, element){
@@ -183,7 +183,7 @@ Element.Styles = {
 		'zIndex' : '@', 'zoom': '@', 'fontWeight': '@',
 		'textIndent': '@px', 'opacity': '@'
 	},
-	
+
 	Short: {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}}
 
 };

@@ -135,9 +135,8 @@ Property: keys
 Example:
 	(start code)
 	Event.Keys.whatever = 80;
-	$(myelement).addEvent(keydown, function(event){
-		event = new Event(event);
-		if (event.key == 'whatever') console.log(whatever key clicked).
+	$('myInput').addEvent(keydown, function(event){
+		if (event.key == 'whatever') alert('whatever key clicked').
 	});
 	(end)
 */
