@@ -64,7 +64,7 @@ Element.extend({
 
 	morph: function(className, options){
 		var morph = this.$attributes.morph;
-		if (!morph) this.$attributes.morph = morph = new Fx.Morph(this, {wait: false});
+		if (!morph) this.$attributes.morph = new Fx.Morph(this, {wait: false});
 		if (options) morph.setOptions(options);
 		return morph.start(className);
 	}

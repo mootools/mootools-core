@@ -154,6 +154,6 @@ $each(Fx.Slide.Accessory, function(method, accessory){
 		}
 		if (options) slide.setOptions(options);
 		return slide[method]();
-	}
+	};
 });
 Element.extend(Fx.Slide.Accessory);

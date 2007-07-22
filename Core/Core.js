@@ -1,17 +1,19 @@
 /*
 Script: Core.js
-	Mootools - My Object Oriented javascript.
+	Mootools - My Object Oriented Javascript.
 
 License:
 	MIT-style license.
 
 MooTools Copyright:
 	copyright (c) 2007 Valerio Proietti, <http://mad4milk.net>
+	
+Code & Documentation:
+	The MooTools team <http://mootools.net/developers>.
 
 MooTools Credits:
 	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
 	- Some functions are inspired by those found in prototype.js <http://prototypejs.org/> (c) 2005 Sam Stephenson (sam [at] conio [dot] net), MIT-style license
-	- Documentation by Aaron Newton (aaron.newton [at] cnet [dot] com) and Valerio Proietti.
 */
 
 var MooTools = {
@@ -125,9 +127,9 @@ function $A(iterable, start, length){
 	start = start || 0;
 	if (start < 0) start = iterable.length + start;
 	length = length || (iterable.length - start);
-	var newArray = [];
-	for (var i = 0; i < length; i++) newArray[i] = iterable[start++];
-	return newArray;
+	var array = [];
+	for (var i = 0; i < length; i++) array[i] = iterable[start++];
+	return array;
 };
 
 /*

@@ -35,7 +35,7 @@ var Fx = new Class({
 			return -(Math.cos(Math.PI * p) - 1) / 2;
 		},
 		duration: 500,
-		unit: 'px',
+		unit: false,
 		wait: true,
 		fps: 50
 	},

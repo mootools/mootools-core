@@ -212,7 +212,8 @@ Array.extend({
 		>var reduced = myArray.reduce(fn[, value]);
 
 	Arguments:
-		fn    - (function) Function to execute on each value in the array. This function is passed the previous item, the current item, the current index and the array itself.
+		fn    - (function) Function to execute on each value in the array.
+			This function is passed the previous item, the current item, the current index and the array itself.
 		value - (object, optional) Object to use as the initial argument to the first call of the callback.
 
 	Returns:
@@ -564,6 +565,5 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') Array.forEach(iterable, fn, bind);
-	else Abstract.each(iterable, fn, bind);
+	((iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') ? Array : Abstract).each(iterable, fn, bind);
 };

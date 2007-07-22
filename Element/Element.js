@@ -181,7 +181,7 @@ function $$(){
 		var selector = arguments[i];
 		switch ($type(selector)){
 			case 'element': elements.push(selector); break;
-			case false: break;
+			case false: case null: break;
 			case 'string': selector = document.getElementsBySelector(selector, true);
 			default: elements.extend(selector);
 		}
