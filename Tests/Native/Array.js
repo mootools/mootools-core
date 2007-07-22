@@ -84,7 +84,7 @@ Tests.Array = new Test.Suite('Array', {
 		}, 1);
 
 		var arr3 = ['answer', 'is', 42];
-		var sum3 = arr1.reduce(function(a, b) {
+		var sum3 = arr3.reduce(function(a, b) {
 			return a.concat(' ', b);
 		}, 'The');
 
