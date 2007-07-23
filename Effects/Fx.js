@@ -11,25 +11,27 @@ Class: Fx
 	Base class for the Effects.
 
 Options:
-	transition - the equation to use for the effect see <Fx.Transitions>; default is <Fx.Transitions.Sine.easeInOut>
-	duration - the duration of the effect in ms; 500 is the default.
-	unit - the unit is 'px' by default (other values include things like 'em' for fonts or '%').
-	wait - boolean: to wait or not to wait for a current transition to end before running another of the same instance. defaults to true.
-	fps - the frames per second for the transition; default is 50
-	
+	transition - (function) The equation to use for the effect see <Fx.Transitions>; default is <Fx.Transitions.Sine.easeInOut>
+	duration - (number) The duration of the effect in ms (defaults to 500).
+	unit - (string) The unit, e.g. 'px', 'em' for fonts or '%' (defaults to false).
+	wait - (boolean) to wait or not to wait for a current transition to end before running another of the same instance (defaults to true).
+	fps - (number) the frames per second for the transition (defaults to 50)
+
 Events:
-	onStart - the function to execute as the effect begins; nothing (<$empty>) by default.
-	onComplete - the function to execute after the effect has processed; nothing (<$empty>) by default.
-	onCancel - the function to execute when you manually stop the effect.
+	onStart - The function to execute as the effect begins.
+	onSet - The function to execute when value is setted without transition.
+	onComplete - The function to execute after the effect has processed.
+	onCancel - The function to execute when you manually stop the effect.
 */
 
 var Fx = new Class({
-	
+
 	Implements: [Chain, Events, Options],
 
 	options: {
 		onStart: $empty,
 		onComplete: $empty,
+		onSet: $empty,
 		onCancel: $empty,
 		transition: function(p){
 			return -(Math.cos(Math.PI * p) - 1) / 2;
@@ -75,6 +77,7 @@ var Fx = new Class({
 	set: function(to){
 		this.now = to;
 		this.increase();
+		this.fireEvent('onSet', this.element);
 		return this;
 	},
 
