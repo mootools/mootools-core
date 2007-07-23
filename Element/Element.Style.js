@@ -16,7 +16,7 @@ Element.Setters.styles = function(styles){
 };
 
 Element.extend({
-	
+
 	/*
 	Property: setStyle
 		Sets a css property to the Element.
@@ -87,12 +87,12 @@ Element.extend({
 
 	setOpacity: function(opacity){
 		if (opacity == 0){
-			if (this.style.visibility != "hidden") this.style.visibility = "hidden";
+			if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
 		} else {
-			if (this.style.visibility != "visible") this.style.visibility = "visible";
+			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : "alpha(opacity=" + opacity * 100 + ")";
+		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = this.$attributes.opacity = opacity;
 		return this;
 	},
@@ -125,7 +125,7 @@ Element.extend({
 				return (result.every(function(item){
 					return item == result[0];
 				})) ? result[0] : result.join(' ');
-			}	
+			}
 			if (document.defaultView) result = document.defaultView.getComputedStyle(this, null).getPropertyValue(property.hyphenate());
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
@@ -154,7 +154,7 @@ Element.extend({
 		}, this);
 		return result;
 	}
-	
+
 });
 
 Element.$fixStyle = function(property, result, element){
@@ -183,7 +183,7 @@ Element.Styles = {
 		'zIndex' : '@', 'zoom': '@', 'fontWeight': '@',
 		'textIndent': '@px', 'opacity': '@'
 	},
-	
+
 	Short: {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}}
 
 };

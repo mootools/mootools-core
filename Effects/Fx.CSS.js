@@ -18,7 +18,7 @@ Fx.CSS = {
 		var parsed = values.map(Fx.CSS.set);
 		return {'from': parsed[0], 'to': parsed[1]};
 	},
-	
+
 	set: function(value){
 		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
 		return value.map(function(val){
@@ -27,29 +27,29 @@ Fx.CSS = {
 			Fx.CSS.Parsers.each(function(parser, key){
 				if (found || !parser.match) return;
 				var match = parser.match(val);
-				if ($chk(match)) found = {'type': key, 'value': match};
+				if ($chk(match)) found = {value: match, parser: parser};
 			});
-			return found || {'type': 'string', 'value': val};
+			return found || {value: val, parser: Fx.CSS.Parsers.string};
 		});
 	},
-	
+
 	compute: function(from, to, fx){
 		return from.map(function(obj, i){
-			return {'type': obj.type, 'value': Fx.CSS.Parsers[obj.type].compute(from[i].value, to[i].value, fx)};
+			return {value: obj.parser.compute(obj.value, to[i].value, fx), parser: obj.parser};
 		});
 	},
-	
+
 	serve: function(now, unit){
 		return now.reduce(function(prev, cur){
-			var server = Fx.CSS.Parsers[cur.type].serve;
-			return prev.concat((server) ? server(cur.value, unit) : cur.value);
+			var serve = cur.parser.serve;
+			return prev.concat((serve) ? serve(cur.value, unit) : cur.value);
 		}, []);
 	}
 
 };
 
 Fx.CSS.Parsers = new Abstract({
-	
+
 	'color': {
 
 		match: function(value){
@@ -62,29 +62,29 @@ Fx.CSS.Parsers = new Abstract({
 				return Math.round(fx.compute(value, to[i]));
 			});
 		},
-		
+
 		serve: function(value){
 			return value.map(Number);
 		}
 
 	},
-	
+
 	'number': {
 
 		match: function(value){
 			return parseFloat(value);
 		},
-		
+
 		compute: function(from, to, fx){
 			return fx.compute(from, to);
 		},
-		
+
 		serve: function(value, unit){
 			return (unit) ? value + unit : value;
 		}
 
 	},
-	
+
 	'string': {
 
 		compute: function(from, to){
