@@ -29,10 +29,10 @@ var Fx = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {
-		onStart: $empty,
+		/*onStart: $empty,
 		onComplete: $empty,
 		onSet: $empty,
-		onCancel: $empty,
+		onCancel: $empty,*/
 		transition: function(p){
 			return -(Math.cos(Math.PI * p) - 1) / 2;
 		},

@@ -29,6 +29,9 @@ Properties:
 	target - the event target
 	relatedTarget - the event related target
 
+Note:
+	Accessing event.page / event.client requires an XHTML doctype.
+
 Example:
 	(start code)
 	$('myLink').addEvent('keydown', function(event){
@@ -323,7 +326,8 @@ Element.Events = new Abstract({
 	/*
 	Event: mouseenter
 		In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events
-		this event fires when the mouse enters the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseover)
+		this event fires when the mouse enters the area of the dom element;
+		will not be fired again if the mouse crosses over children of the element (unlike mouseover)
 
 
 	Example:

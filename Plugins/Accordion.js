@@ -39,8 +39,8 @@ var Accordion = new Class({
 	Extends: Fx.Elements,
 
 	options: {
-		onActive: $empty,
-		onBackground: $empty,
+		/*onActive: $empty,
+		onBackground: $empty,*/
 		display: 0,
 		show: false,
 		height: true,

@@ -43,13 +43,13 @@ var Drag = new Class({
 	Implements: [Events, Options],
 
 	options: {
-		handle: false,
-		unit: 'px',
-		onStart: $empty,
+		/*onStart: $empty,
 		onBeforeStart: $empty,
 		onComplete: $empty,
 		onSnap: $empty,
-		onDrag: $empty,
+		onDrag: $empty,*/
+		handle: false,
+		unit: 'px',
 		limit: false,
 		modifiers: {x: 'left', y: 'top'},
 		grid: false,

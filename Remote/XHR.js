@@ -41,13 +41,13 @@ var XHR = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {
+		/*onRequest: $empty,
+		onSuccess: $empty,
+		onFailure: $empty,
+		onException: $empty,*/
 		method: 'post',
 		async: true,
 		data: null,
-		onRequest: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,
 		urlEncoded: true,
 		encoding: 'utf-8',
 		autoCancel: false,

@@ -25,17 +25,22 @@ Fx.CSS = {
 			val = String(val);
 			var found = false;
 			Fx.CSS.Parsers.each(function(parser, key){
-				if (found || !parser.match) return;
-				var match = parser.match(val);
-				if ($chk(match)) found = {value: match, parser: parser};
+				if (!found){
+					var match = parser.match(val);
+					if ($chk(match)) found = {'value': match, 'parser': parser};
+				}
 			});
-			return found || {value: val, parser: Fx.CSS.Parsers.string};
+			return found || {'value': val, parser: {
+				compute: function(from, to){
+					return to;
+				}
+			}};
 		});
 	},
 
 	compute: function(from, to, fx){
 		return from.map(function(obj, i){
-			return {value: obj.parser.compute(obj.value, to[i].value, fx), parser: obj.parser};
+			return {'value': obj.parser.compute(obj.value, to[i].value, fx), 'parser': obj.parser};
 		});
 	},
 
@@ -81,14 +86,6 @@ Fx.CSS.Parsers = new Abstract({
 
 		serve: function(value, unit){
 			return (unit) ? value + unit : value;
-		}
-
-	},
-
-	'string': {
-
-		compute: function(from, to){
-			return to;
 		}
 
 	}
