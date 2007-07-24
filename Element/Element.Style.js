@@ -42,6 +42,8 @@ Element.extend({
 				if (!map[i]) return '';
 				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
 			}).join(' ');
+		} else if (value == Number(value) + ''){
+			value = Math.round(value);
 		}
 		this.style[property] = value;
 		return this;
@@ -130,6 +132,7 @@ Element.extend({
 			else if (this.currentStyle) result = this.currentStyle[property];
 		}
 		if (result){
+			result = String(result);
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
