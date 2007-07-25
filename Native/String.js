@@ -305,6 +305,12 @@ String.extend({
 
 });
 
+/*
+Class: Array
+	A collection of the Array Object prototype methods.
+	For more information on the JavaScript Array Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>.
+*/
+
 Array.extend({
 
 	/*

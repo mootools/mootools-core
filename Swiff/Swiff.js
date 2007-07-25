@@ -10,12 +10,12 @@ License:
 */
 
 /*
-Function: Swiff
-	creates a flash object with supplied parameters.
+Class: Swiff
+	Creates a flash object with supplied parameters.
 
 Arguments:
-	moview - string; The path to the swf movie.
-	options - an object with options names as keys. See options below.
+	movie - (string) The path to the swf movie.
+	options - (object) an object with options names as keys. See options below.
 
 Options:
 	width - (number) the width of the flash object. defaults to 1.
@@ -28,7 +28,7 @@ Options:
 	callBacks - (object) Functions you want to pass to your flash movie.
 
 Returns:
-	The object element
+	The object element.
 	Important: the $ function on the OBJECT element wont extend it, will just target the movie by its id/reference.
 	So its not possible to use the <Element> methods on it.
 
