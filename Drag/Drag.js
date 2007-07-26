@@ -29,7 +29,7 @@ Options:
 		y - (string) [top]  The style to modify when the mouse moves in a vertical direction.
 
 	Limit:
-		x - (array) [false] Start and end limit relative to the 'x' setting of Modifiers. 
+		x - (array) [false] Start and end limit relative to the 'x' setting of Modifiers.
 		y - (array) [false] Start and end limit relative to the 'y' setting of Modifiers.
 
 Events:
@@ -61,8 +61,8 @@ var Drag = new Class({
 		this.element = $(params.element);
 		this.setOptions(params.options);
 		this.handle = $(this.options.handle) || this.element;
-		this.mouse = {'now': {}, 'pos': {}};
-		this.value = {'start': {}, 'now': {}};
+		this.mouse = {now: {}, pos: {}};
+		this.value = {start: {}, now: {}};
 		this.bound = {
 			'start': this.start.bind(this),
 			'check': this.check.bind(this),
@@ -72,10 +72,26 @@ var Drag = new Class({
 		this.attach();
 	},
 
+	/*
+	Property: attach
+		Attaches the mouse listener to the handle. Its automatically called during initialize.
+
+	Returns:
+		This Drag instance
+	*/
+
 	attach: function(){
 		this.handle.addEvent('mousedown', this.bound.start);
 		return this;
 	},
+
+	/*
+	Property: attach
+		Detaches the mouse listener from the handle.
+
+	Returns:
+		This Drag instance
+	*/
 
 	detach: function(){
 		this.handle.removeEvent('mousedown', this.bound.start);
@@ -86,7 +102,7 @@ var Drag = new Class({
 		this.fireEvent('onBeforeStart', this.element);
 		this.mouse.start = event.page;
 		var limit = this.options.limit;
-		this.limit = {'x': [], 'y': []};
+		this.limit = {x: [], y: []};
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
 			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
@@ -140,8 +156,8 @@ var Drag = new Class({
 	},
 
 	stop: function(){
-		document.removeEvent('mousemove', this.bound.check);
-		document.removeEvent('mousemove', this.bound.drag);
+		document.removeEvent('mousemove', this.bound.check)
+		document.removeEvent('mousemove', this.bound.drag)
 		document.removeEvent('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
 	}
@@ -161,6 +177,9 @@ Element.extend({
 
 	Arguments:
 		options - (object) See <Drag> for acceptable options.
+
+	Returns:
+		The created Drag instance
 	*/
 
 	makeResizable: function(options){

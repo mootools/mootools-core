@@ -16,18 +16,48 @@ Note:
 	Drag.Move requires an XHTML doctype.
 
 Arguments:
-	el - the $(element) to apply the drag to.
-	options - optional. see Options below.
+	el - (element) The $(element) to apply the drag to.
+	options - optional. The options object.
 
 Options:
 	all the drag options, plus:
-	container - an element, will fill automatically limiting options based on the $(element) size and position. defaults to false (no limiting)
-	droppables - an array of elements you can drop your draggable to.
-	overflown - an array of nested scrolling containers, see Element::getPosition
+	container - (element) Will fill automatically limiting options based on the $(element) size and position. (defaults to false, no limiting)
+	droppables - (elements) Elements you can drop your draggable to.
+	overflown - (array) Array of nested scrolling containers, see <Element.getPosition>
+
+Droppables:
+	Interaction with droppable work with events fired on the doppable element or, for 'emptydrop', on the dragged element.
+	The Events 'over', 'leave' and 'drop' get fired on the droppable element with the dragged element as first argument
+	when the dragged element hovers, leaves or get dropped on the droppable.
+
+Example:
+	(start code)
+	var droppables = $$('li.placements');
+	droppables.addEvents({
+		'over': function() {
+			this.addClass('overed');
+		},
+		'leave': function() {
+			this.removeClass('overed');
+		},
+		'drop': function(el) {
+			alert(el.id + ' dropped');
+		}
+	});
+	new Drag.Move($('product-placement'), {
+		'droppables': droppables
+	});
+	(end)
+
+Demos:
+	Drag.Cart - http://demos.mootools.net/Drag.Cart
+	Drag.Absolutely - http://demos.mootools.net/Drag.Absolutely
+	DragDrop - http://demos.mootools.net/DragDrop
+
 */
 
 Drag.Move = new Class({
-	
+
 	Extends: Drag,
 
 	options: {
@@ -66,13 +96,13 @@ Drag.Move = new Class({
 			var el = this.element.getCoordinates();
 			if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
 				this.options.limit = {
-					'x': [cont.left, cont.right - el.width],
-					'y': [cont.top, cont.bottom - el.height]
+					x: [cont.left, cont.right - el.width],
+					y: [cont.top, cont.bottom - el.height]
 				};
 			} else {
 				this.options.limit = {
-					'y': [0, cont.height - el.height],
-					'x': [0, cont.width - el.width]
+					y: [0, cont.height - el.height],
+					x: [0, cont.width - el.width]
 				};
 			}
 		}
