@@ -52,8 +52,8 @@ var Ajax = new Class({
 	},
 
 	onComplete: function(){
+		this.evalScripts();
 		if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
-		if (this.options.evalScripts || this.options.evalResponse) this.evalScripts();
 		this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
 	},
 
@@ -86,15 +86,13 @@ var Ajax = new Class({
 	*/
 
 	evalScripts: function(){
-		var script, scripts;
+		var script, scripts = '', regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
 		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))){
 			scripts = this.response.text;
-		} else {
-			scripts = [];
-			var regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
-			while ((script = regexp.exec(this.response.text))) scripts.push(script[1]);
-			scripts = scripts.join('\n');
+		} else if (this.options.evalScripts){
+			while ((script = regexp.exec(this.response.text))) scripts += script[1] + '\n';
 		}
+		this.response.text = this.response.text.replace(regexp, '');
 		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
 	}
 
