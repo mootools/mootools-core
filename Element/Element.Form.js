@@ -23,7 +23,7 @@ Element.extend({
 			case 'select':
 				var values = [];
 				$each(this.options, function(option){
-					if (option.selected) values.push($pick(option.value, option.text));
+					if (option.selected) values.push(option.value);
 				});
 				return (this.multiple) ? values : values[0];
 			case 'input': if (!(this.checked && ['checkbox', 'radio'].contains(this.type)) && !['hidden', 'text', 'password'].contains(this.type)) break;
