@@ -95,15 +95,9 @@ Drag.Move = new Class({
 			var cont = this.container.getCoordinates();
 			var el = this.element.getCoordinates();
 			if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
-				this.options.limit = {
-					x: [cont.left, cont.right - el.width],
-					y: [cont.top, cont.bottom - el.height]
-				};
+				this.options.limit = {'x': [cont.left, cont.right - el.width], 'y': [cont.top, cont.bottom - el.height]};
 			} else {
-				this.options.limit = {
-					y: [0, cont.height - el.height],
-					x: [0, cont.width - el.width]
-				};
+				this.options.limit = {'y': [0, cont.height - el.height], 'x': [0, cont.width - el.width]};
 			}
 		}
 		this.parent(event);

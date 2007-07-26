@@ -61,8 +61,8 @@ var Drag = new Class({
 		this.element = $(params.element);
 		this.setOptions(params.options);
 		this.handle = $(this.options.handle) || this.element;
-		this.mouse = {now: {}, pos: {}};
-		this.value = {start: {}, now: {}};
+		this.mouse = {'now': {}, 'pos': {}};
+		this.value = {'start': {}, 'now': {}};
 		this.bound = {
 			'start': this.start.bind(this),
 			'check': this.check.bind(this),
@@ -102,7 +102,7 @@ var Drag = new Class({
 		this.fireEvent('onBeforeStart', this.element);
 		this.mouse.start = event.page;
 		var limit = this.options.limit;
-		this.limit = {x: [], y: []};
+		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
 			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
@@ -156,8 +156,8 @@ var Drag = new Class({
 	},
 
 	stop: function(){
-		document.removeEvent('mousemove', this.bound.check)
-		document.removeEvent('mousemove', this.bound.drag)
+		document.removeEvent('mousemove', this.bound.check);
+		document.removeEvent('mousemove', this.bound.drag);
 		document.removeEvent('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
 	}
