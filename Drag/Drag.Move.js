@@ -50,9 +50,9 @@ Example:
 	(end)
 
 Demos:
-	Drag.Cart - http://demos.mootools.net/Drag.Cart
-	Drag.Absolutely - http://demos.mootools.net/Drag.Absolutely
-	DragDrop - http://demos.mootools.net/DragDrop
+	Drag.Cart - <http://demos.mootools.net/Drag.Cart>
+	Drag.Absolutely - <http://demos.mootools.net/Drag.Absolutely>
+	DragDrop - <http://demos.mootools.net/DragDrop>
 
 */
 
