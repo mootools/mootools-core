@@ -201,14 +201,35 @@ Selectors.XPath = {
 Selectors.Filter = {
 
 	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
+		var i;
 		if (separator){
+			var found = [], j = items.length;
 			switch (separator){
-				case ' ': items = Selectors.Filter.getNestedByTag(items, tag); break;
-				case '>': items = Selectors.Filter.getChildrenByTag(items, tag); break;
-				case '+': items = Selectors.Filter.getFollowingByTag(items, tag); break;
-				case '~': items = Selectors.Filter.getFollowingByTag(items, tag, true);
+				case ' ':
+					for (i = 0; i < j; i++) found.extend(items[i].getElementsByTagName(tag));
+					break;
+				case '>':
+					for (i = 0; i < j; i++){
+						var children = items[i].childNodes;
+						for (var k = 0, l = children.length; k < l; k++){
+							if (Selectors.Filter.hasTag(children[k], tag)) found.push(children[k]);
+						}
+					}
+					break;
+				default:
+					var all = !!(separator == '~');
+					for (i = 0; i < j; i++){
+						var next = items[i].nextSibling;
+						while (next){
+							if (Selectors.Filter.hasTag(next, tag)){
+								found.push(next);
+								if (!all) break;
+							}
+							next = next.nextSibling;
+						}
+					}
 			}
-			if (id) items = Elements.filterById(items, id, true);
+			items = (id) ? Elements.filterById(found, id, true) : found;
 		} else {
 			if (id){
 				var el = context.getElementById(id);
@@ -218,7 +239,6 @@ Selectors.Filter = {
 				items = $A(context.getElementsByTagName(tag));
 			}
 		}
-		var i;
 		for (i = classNames.length; i--; i) items = Elements.filterByClass(items, classNames[i], true);
 		for (i = attributes.length; i--; i){
 			var bits = attributes[i];
@@ -245,38 +265,6 @@ Selectors.Filter = {
 
 	hasTag: function(el, tag){
 		return (el.nodeName && el.nodeType == 1 && (tag == '*' || el.tagName.toLowerCase() == tag));
-	},
-
-	getFollowingByTag: function(context, tag, all){
-		var found = [];
-		for (var i = 0, j = context.length, next; i < j; i++){
-			var next = context[i].nextSibling;
-			while (next){
-				if (Selectors.Filter.hasTag(next, tag)){
-					found.push(next);
-					if (!all) break;
-				}
-				next = next.nextSibling;
-			}
-		}
-		return found;
-	},
-
-	getChildrenByTag: function(context, tag){
-		var found = [];
-		for (var i = 0, j = context.length; i < j; i++){
-			var children = context[i].childNodes;
-			for (var k = 0, l = children.length; k < l; k++){
-				if (Selectors.Filter.hasTag(children[k], tag)) found.push(children[k]);
-			}
-		}
-		return found;
-	},
-
-	getNestedByTag: function(context, tag){
-		var found = [];
-		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tag));
-		return found;
 	}
 
 };
