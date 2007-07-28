@@ -66,17 +66,18 @@ Elements.extend({
 	filterByAttribute: function(name, operator, value, nocash){
 		var elements = this.filter(function(el){
 			var current = Element.getProperty(el, name);
-			if (!current) return false;
-			if (!operator) return true;
-			switch (operator){
-				case '=': return (current == value);
-				case '*=': return (current.contains(value));
-				case '^=': return (current.substr(0, value.length) == value);
-				case '$=': return (current.substr(current.length - value.length) == value);
-				case '!=': return (current != value);
-				case '~=': return current.contains(value, ' ');
-				case '|=': return current.contains(value, '-');
-			}
+			if (current){
+				switch (operator){
+					case '=': return (current == value);
+					case '*=': return (current.contains(value));
+					case '^=': return (current.substr(0, value.length) == value);
+					case '$=': return (current.substr(current.length - value.length) == value);
+					case '!=': return (current != value);
+					case '~=': return current.contains(value, ' ');
+					case '|=': return current.contains(value, '-');
+					default: return true;
+				}
+			};
 			return false;
 		});
 		return (nocash) ? elements : new Elements(elements, true);

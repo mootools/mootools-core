@@ -120,13 +120,9 @@ var $E = document.getElement.bind(document);
 
 var Selectors = {
 
-	'regExp': /:[^:]+|\[[^\]]+\]|\.[\w-]+|#[\w-]+|\w+|\*/g,
+	'regExp': /:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g,
 
-	'aRegExp': /^(\w+)(?:([!*^$~|]?=)["']?([^"'\]]*)["']?)?$/,
-
-	'sRegExp': /\s*([+>~\s])[a-zA-Z#.*\s]/g,
-
-	'pRegExp': /^([\w-]+)(?:\((.*)\))?$/
+	'sRegExp': /\s*([+>~\s])[a-zA-Z#.*\s]/g
 
 };
 
@@ -136,8 +132,14 @@ Selectors.$parse = function(selector){
 		switch (bit.charAt(0)){
 			case '.': params.classes.push(bit.slice(1)); break;
 			case '#': params.id = bit.slice(1); break;
-			case '[': if ((bit = bit.slice(1, bit.length - 1).match(Selectors.aRegExp))) params.attributes.push(bit); break;
-			case ':': if ((bit = Selectors.Pseudo.$parse(bit.slice(1)))) params.pseudos.push(bit); break;
+			case '[': params.attributes.push([arguments[4], arguments[5], arguments[7]]); break;
+			case ':':
+				var name = arguments[1];
+				var xparser = Selectors.Pseudo[name];
+				var pseudo = {'name': name, 'parser': xparser, 'argument': arguments[3]};
+				if (xparser && xparser.parser) pseudo.argument = (xparser.parser.apply) ? xparser.parser(pseudo.argument) : xparser.parser;
+				params.pseudos.push(pseudo);
+				break;
 			default: params.tag = bit;
 		}
 		return '';
@@ -145,18 +147,7 @@ Selectors.$parse = function(selector){
 	return params;
 };
 
-Selectors.Pseudo = new Abstract({
-
-	$parse: function(pseudo){
-		if (!(pseudo = pseudo.match(Selectors.pRegExp))) return false;
-		var name = pseudo[1].split('-')[0];
-		var xparser = Selectors.Pseudo[name];
-		var params = {'name': name, 'parser': xparser, 'argument': pseudo[2] || false};
-		if (xparser && xparser.parser) params.argument = (xparser.parser.apply) ? xparser.parser(params.argument) : xparser.parser;
-		return params;
-	}
-
-});
+Selectors.Pseudo = new Abstract();
 
 Selectors.XPath = {
 
@@ -178,19 +169,16 @@ Selectors.XPath = {
 		if (id) temp += '[@id="' + id + '"]';
 		for (i = classNames.length; i--; i) temp += '[contains(concat(" ", @class, " "), " ' + classNames[i] + ' ")]';
 		for (i = attributes.length; i--; i){
-			var attribute = attributes[i];
-			if (attribute[2] && attribute[3]){
-				switch (attribute[2]){
-					case '=': temp += '[@' + attribute[1] + '="' + attribute[3] + '"]'; break;
-					case '*=': temp += '[contains(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
-					case '^=': temp += '[starts-with(@' + attribute[1] + ', "' + attribute[3] + '")]'; break;
-					case '$=': temp += '[substring(@' + attribute[1] + ', string-length(@' + attribute[1] + ') - ' + attribute[3].length + ' + 1) = "' + attribute[3] + '"]'; break;
-					case '!=': temp += '[@' + attribute[1] + '!="' + attribute[3] + '"]'; break;
-					case '~=': temp += '[contains(concat(" ", @' + attribute[1] + ', " "), " ' + attribute[3] + ' ")]'; break;
-					case '|=': temp += '[contains(concat("-", @' + attribute[1] + ', "-"), "-' + attribute[3] + '-")]';
-				}
-			} else {
-				temp += '[@' + attribute[1] + ']';
+			var bits = attributes[i];
+			switch (bits[1]){
+				case '=': temp += '[@' + bits[0] + '="' + bits[2] + '"]'; break;
+				case '*=': temp += '[contains(@' + bits[0] + ', "' + bits[2] + '")]'; break;
+				case '^=': temp += '[starts-with(@' + bits[0] + ', "' + bits[2] + '")]'; break;
+				case '$=': temp += '[substring(@' + bits[0] + ', string-length(@' + bits[0] + ') - ' + bits[2].length + ' + 1) = "' + bits[2] + '"]'; break;
+				case '!=': temp += '[@' + bits[0] + '!="' + bits[2] + '"]'; break;
+				case '~=': temp += '[contains(concat(" ", @' + bits[0] + ', " "), " ' + bits[2] + ' ")]'; break;
+				case '|=': temp += '[contains(concat("-", @' + bits[0] + ', "-"), "-' + bits[2] + '-")]'; break;
+				default: temp += '[@' + bits[0] + ']';
 			}
 		}
 		items.push(temp);
@@ -233,8 +221,8 @@ Selectors.Filter = {
 		var i;
 		for (i = classNames.length; i--; i) items = Elements.filterByClass(items, classNames[i], true);
 		for (i = attributes.length; i--; i){
-			var attribute = attributes[i];
-			items = Elements.filterByAttribute(items, attribute[1], attribute[2], attribute[3], true);
+			var bits = attributes[i];
+			items = Elements.filterByAttribute(items, bits[0], bits[1], bits[2], true);
 		}
 		for (i = pseudos.length; i--; i){
 			var pseudo = pseudos[i];
