@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 
 Credits:
-	- Some functions are inspired by those found in prototype.js <http://prototype.conio.net/> (c) 2005 Sam Stephenson sam [at] conio [dot] net, MIT-style license
+	- Some functions are inspired by those found in prototype.js <http://prototype.conio.net/> (c) 2005 Sam Stephenson sam [at] conio [dot] net, MIT-style license.
 */
 
 /*
@@ -18,15 +18,14 @@ var Element = function(el, props){
 
 	/*
 	Property: initialize
-		Creates a new element of the type passed in.
+		Creates a new Element of the type passed in.
 
 	Arguments:
-		el - string; the tag name for the element you wish to create. you can also pass in an element reference, in which case it will be extended.
-		props - object; the properties you want to add to your element.
-		Accepts the same keys as <Element.setProperties>, but also allows events and styles
+		el - (mixed) The tag name for the Element to be created.  It's also possible to add an Element for reference, in which case it will be extended.
+		props - (object) [optional] The properties to be added to the new Element. Accepts the same keys as <Element.setProperties>, as well as Events and styles.
 
 	Props:
-		the key styles will be used as setStyles, the key events will be used as addEvents. any other key is used as setProperty.
+		The key styles will be used as setStyles, the key events will be used as addEvents. Any other key is used as setProperty.
 
 	Example:
 		(start code)
@@ -37,10 +36,10 @@ var Element = function(el, props){
 			},
 			'events': {
 				'click': function(){
-					//aaa
+					alert('omg u clicked');
 				},
 				'mousedown': function(){
-					//aaa
+					alert('omg ur gonna click');
 				}
 			},
 			'class': 'myClassSuperClass',
@@ -68,21 +67,20 @@ Element.prototype = HTMLElement.prototype;
 
 /*
 Class: Elements
-	- Every dom function such as <$$>, or in general every function that returns a collection of nodes in mootools, returns them as an Elements class.
+	- In Mootools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
 	- The purpose of the Elements class is to allow <Element> methods to work also on <Elements> array.
-	- Elements is an Array in first place, so it accepts all the <Array> methods.
-	- Array methods have priority, so overlapping Element methods (remove, getLast) are changed to "method + Elements" (removeElements, getLastElements)
+	- Because Elements is an Array, it accepts all the <Arrray> methods.
+	- Array methods have priority, so overlapping Element methods (remove, getLast) are changed to "method + Elements" (removeElements, getLastElements).
 	- Every node of the Elements instance is already extended with <$>.
 
 Example:
-	>$$('myselector').each(function(el){
-	> //...
+	The following code would set the color of every paragraph to 'red'.
+	>$$('p').each(function(el){
+	>  el.setStyle('color', 'red'); 
 	>});
 
-	some iterations here, $$('myselector') is also an array.
-
-	>$$('myselector').setStyle('color', 'red');
-	every element returned by $$('myselector') also accepts <Element> methods, in this example every element will be made red.
+	However, because $$('myselector') also accepts <Element> methods, the below example would have the same effect as the one above.
+	>$$('p').setStyle('color', 'red');
 */
 
 var Elements = function(elements, nocheck){
@@ -104,10 +102,10 @@ var Elements = function(elements, nocheck){
 Section: Utility Functions
 
 Function: $
-	returns the element passed in with all the Element prototypes applied.
+	Returns the element passed in with all the Element prototypes applied.
 
 Arguments:
-	el - a reference to an actual element or a string representing the id of an element
+	el - (mixed) A string containing the id of the DOM element desired or a reference to an actual DOM element.
 
 Example:
 	>$('myElement') // gets a DOM element by id with all the Element prototypes applied.
@@ -121,8 +119,7 @@ Returns:
 	a DOM element or false (if no id was found).
 
 Note:
-	you need to call $ on an element only once to get all the prototypes.
-	But its no harm to call it multiple times, as it will detect if it has been already extended.
+	While the $ function needs to be called only once on an element in order to get all the prototypes, extended Elements can be passed to this function multiple times without ill effects. 
 */
 
 function $(el){
@@ -155,19 +152,23 @@ Note:
 	if you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 
 Example:
-	>$$('a') //an array of all anchor tags on the page
-	>$$('a', 'b') //an array of all anchor and bold tags on the page
-	>$$('#myElement') //array containing only the element with id = myElement. (only with <Element.Selectors.js>)
-	>$$('#myElement a.myClass') //an array of all anchor tags with the class "myClass"
-	>//within the DOM element with id "myElement" (only with <Element.Selectors.js>)
-	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div')) //an array containing:
-	>// the element referenced as myelement if existing,
-	>// the element referenced as myelement2 if existing,
-	>// all the elements with a as tag in the page,
-	>// the element with id = myid if existing
-	>// the element with id = myid2 if existing
-	>// the element with id = myid3 if existing
-	>// all the elements with div as tag in the page
+
+	>$$('a');
+	Returns an array of all anchor tags on the page.
+
+	>$$('a', 'b'); 
+	Returns an array of all anchor and bold tags on the page.
+
+	>$$('#myElement');
+	Returns an array containing only the element with id = myElement (requires Element.Selectors.js).
+
+	>$$('#myElement a.myClass');
+	Returns an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (requires Element.Selectors.js).
+
+	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
+	Returns a collection of the element referenced as myelement, the element referenced as myelement2, all of the link tags on the page,
+	the element with the id 'myid', followed by the elements with the ids of 'myid2' and 'myid3', and finally all the div elements on the page.
+	NOTE: If an element is not found, nothing will be included into the array (not even *null*).
 
 Returns:
 	array - array of all the dom elements matched, extended with <$>.  Returns as <Elements>.
@@ -287,17 +288,19 @@ Element.extend({
 		Inserts the Element before the passed element.
 
 	Arguments:
-		el - an element reference or the id of the element to be injected in.
+		el - (mixed) An element reference or the id of the Element to be injected before.
 
 	Example:
-		>html:
 		><div id="myElement"></div>
 		><div id="mySecondElement"></div>
-		>js:
+		HTML
+
 		>$('mySecondElement').injectBefore('myElement');
-		>resulting html:
+		JS
+
 		><div id="mySecondElement"></div>
 		><div id="myElement"></div>
+		Resulting HTML
 	*/
 
 	injectBefore: function(el){
@@ -306,7 +309,10 @@ Element.extend({
 
 	/*
 	Property: injectAfter
-		Same as <Element.injectBefore>, but inserts the element after.
+		Inserts the Element after the passed element.
+	
+	Arguments: 
+		el - (mixed) An element reference or the id of the Element to be injected afer.
 	*/
 
 	injectAfter: function(el){

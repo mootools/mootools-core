@@ -36,7 +36,7 @@ var Chain = new Class({
 
 	/*
 	Property: chain
-		Adds a function to the Chain instance stack.
+		Adds a function to the end of the call stack of the Chain instance.
 
 	Arguments:
 		fn - (function) The function to append to the call stack.
@@ -152,7 +152,7 @@ var Events = new Class({
 		>myClass.addEvents(events);
 
 	Arguments:
-		events - (object) An object containing the event type / function pairs.
+		events - (object) An object containing a collection of event type / function pairs.
 
 	Example:
 		(start code)

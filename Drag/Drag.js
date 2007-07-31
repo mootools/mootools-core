@@ -14,8 +14,8 @@ Note:
 	Drag requires an XHTML doctype.
 
 Arguments:
-	el - the $(element) to apply the transformations to.
-	options - optional. The options object.
+	el - (Element) The Element to apply the transformations to.
+	options - (object) [optional] The options object.
 
 Options:
 	handle    - (Element) [this.element] The Element to act as the handle for the draggable element.  Defaults to the Element itself.
@@ -74,10 +74,10 @@ var Drag = new Class({
 
 	/*
 	Property: attach
-		Attaches the mouse listener to the handle. Its automatically called during initialize.
+		Attaches the mouse listener to the handle; automatically called during initialize.
 
 	Returns:
-		This Drag instance
+		The current Drag instance (this).
 	*/
 
 	attach: function(){
@@ -90,7 +90,7 @@ var Drag = new Class({
 		Detaches the mouse listener from the handle.
 
 	Returns:
-		This Drag instance
+		The current Drag instance (this). 
 	*/
 
 	detach: function(){
@@ -179,7 +179,7 @@ Element.extend({
 		options - (object) See <Drag> for acceptable options.
 
 	Returns:
-		The created Drag instance
+		The created Drag instance.
 	*/
 
 	makeResizable: function(options){

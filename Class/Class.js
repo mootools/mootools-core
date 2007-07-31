@@ -53,7 +53,7 @@ Implements:
 		(end)
 	
 Extends:
-	this class will be extended from the other class you pass in.
+	This class will be extended from the other class passed in.
 
 	Extends Syntax:
 		>var MyExtendedClass = new Class({Extends: SomeOtherClass});

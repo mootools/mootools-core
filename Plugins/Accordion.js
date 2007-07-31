@@ -8,30 +8,30 @@ License:
 
 /*
 Class: Accordion
-	The Accordion class creates a group of elements that are toggled when their handles are clicked. When one elements toggles in, the others toggles back.
+	The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.
 	Inherits methods, properties, options and events from <Fx.Elements>.
 	
 Note:
 	The Accordion requires an XHTML doctype.
 
 Arguments:
-	togglers - required, a collection of elements, the elements handlers that will be clickable.
-	elements - required, a collection of elements the transitions will be applied to.
-	options - optional, see options below, and <Fx> options and events.
+	togglers - (array) [required] The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
+	elements - (array) [required] The collection of Elements the transitions will be applied to.
+	options - (object) [optional] See "Options" below.  Also utilizes <Fx> options and events.
 
 Options:
-	show - integer, the Index of the element to show at start.
-	display - integer, the Index of the element to show at start (with a transition). defaults to 0.
-	fixedHeight - integer, if you want the elements to have a fixed height. defaults to false.
-	fixedWidth - integer, if you want the elements to have a fixed width. defaults to false.
-	height - boolean, will add a height transition to the accordion if true. defaults to true.
-	opacity - boolean, will add an opacity transition to the accordion if true. defaults to true.
-	width - boolean, will add a width transition to the accordion if true. defaults to false, css mastery is required to make this work!
-	alwaysHide - boolean, will allow to hide all elements if true, instead of always keeping one element shown. defaults to false.
-	
+	show - (integer) [0] The index of the element to be shown initially.
+	display - (integer) [0] The index of the element to show at start (with a transition). defaults to 0.
+	fixedHeight - (boolean) [false] If set to false, displayed elements will have a fixed height. 
+	fixedWidth - (boolean) [false] If set to true, displayed elements will have a fixed width. 
+	height - (boolean) [true] If set to true, a height transition effect will take place when switching between displayed elements.	
+	opacity - (boolean) [true] If set to true, an opacity transition effect will take place when switching between displayed elements. 
+	width - (boolean) [false]  If set to true, a width transition will take place when switching between displayed elements.  WARNING: CSS mastery is required to make this work!
+	alwaysHide - (boolean) [false] If set to true, it will be possible to close all displayable elements.  Otherwise, one will remain open at all time.	
+
 Events:
-	onActive - function to execute when an element starts to show
-	onBackground - function to execute when an element starts to hide
+	onActive - (function) Function to execute when an element starts to show.
+	onBackground - (function) Function to execute when an element starts to hide.
 */
 
 var Accordion = new Class({
@@ -84,12 +84,12 @@ var Accordion = new Class({
 
 	/*
 	Property: addSection
-		Dynamically adds a new section into the accordion at the specified position.
+		Dynamically adds a new section into the Accordion at the specified position.
 
 	Arguments:
-		toggler - (dom element) the element that toggles the accordion section open.
-		element - (dom element) the element that stretches open when the toggler is clicked.
-		pos - (integer) the index where these objects are to be inserted within the accordion.
+		toggler - (Element) The Element that toggles the Accordion section open.
+		element - (Element) The Element that should stretch open when the toggler is clicked.
+		pos - (integer) The index at which these objects are to be inserted within the Accordion.
 	*/
 
 	addSection: function(toggler, element, pos){
@@ -126,7 +126,7 @@ var Accordion = new Class({
 		Shows a specific section and hides all others. Useful when triggering an accordion from outside.
 
 	Arguments:
-		index - integer, the index of the item to show, or the actual element to show.
+		index - (mixed) [required] The index of the item to show, or the actual element to be displayed.
 	*/
 
 	display: function(index){
