@@ -278,9 +278,9 @@ Client.expand({
 
 	fireEvent: function(type, args, delay){
 		if (this.$events && this.$events[type]){
-			this.$events[type].keys.each(function(fn){
-				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
-			}, this);
+			$A(this.$events[type].keys).each(function(fn){
+				fn.create({'bind': this, 'delay': delay, 'arguments': args})()
+			});
 		}
 		return this;
 	},

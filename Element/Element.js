@@ -76,7 +76,7 @@ Class: Elements
 Example:
 	The following code would set the color of every paragraph to 'red'.
 	>$$('p').each(function(el){
-	>  el.setStyle('color', 'red'); 
+	>  el.setStyle('color', 'red');
 	>});
 
 	However, because $$('myselector') also accepts <Element> methods, the below example would have the same effect as the one above.
@@ -119,7 +119,7 @@ Returns:
 	a DOM element or false (if no id was found).
 
 Note:
-	While the $ function needs to be called only once on an element in order to get all the prototypes, extended Elements can be passed to this function multiple times without ill effects. 
+	While the $ function needs to be called only once on an element in order to get all the prototypes, extended Elements can be passed to this function multiple times without ill effects.
 */
 
 function $(el){
@@ -156,7 +156,7 @@ Example:
 	>$$('a');
 	Returns an array of all anchor tags on the page.
 
-	>$$('a', 'b'); 
+	>$$('a', 'b');
 	Returns an array of all anchor and bold tags on the page.
 
 	>$$('#myElement');
@@ -213,14 +213,13 @@ Elements.extend = function(properties){
 
 Elements.$multiply = function(property){
 	return function(){
-		var args = arguments;
 		var items = [];
 		var elements = true;
-		this.each(function(element){
-			var returns = element[property].apply(element, args);
+		for (var i = 0, j = this.length, returns; i < i; i++){
+			returns = this[i][property].apply(this[i], arguments);
 			items.push(returns);
 			if (elements) elements = ($type(returns) == 'element');
-		});
+		}
 		return (elements) ? new Elements(items) : items;
 	};
 };
@@ -310,8 +309,8 @@ Element.extend({
 	/*
 	Property: injectAfter
 		Inserts the Element after the passed element.
-	
-	Arguments: 
+
+	Arguments:
 		el - (mixed) An element reference or the id of the Element to be injected afer.
 	*/
 
@@ -597,7 +596,7 @@ Element.extend({
 		if (index) return this[index];
 		var flag = Element.$attributesIFlag[property] || 0;
 		if (!Client.Engine.ie || flag) return this.getAttribute(property, flag);
-		var node = this.attributes[property];
+		var node = (this.attributes) ? this.attributes[property] : null;
 		return (node) ? node.nodeValue : null;
 	},
 
@@ -834,7 +833,7 @@ var Garbage = {
 		delete Garbage.elements[String(el.$attributes.uid)];
 		if (el.$events) el.fireEvent('trash', unload).removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
-		if (window.ie){
+		if (Client.Engine.ie){
 			for (var d in Element.prototype) el[d] = null;
 		}
 		el.htmlElement = el.$attributes = el = null;
