@@ -178,7 +178,7 @@ Client.expand({
 	Arguments:
 		type - (string) [required] The event name to monitor ('click', 'load', etc) without the prefix 'on'.
 		fn - (funtion) [required] The function to execute.
-		nativeType - (number) [optional] Overrides automated native Event check, not needed in most situations. Can be 0, 1 or 2:
+		nativeEvent - (number) [optional] Overrides automated native Event check, not needed in most situations. Can be 0, 1 or 2:
 			0: Event is added without native event listener, can be fired only with <Element.fireEvent>
 			1: Event function is attached with <Element.addListener> to the Element as native event.
 			2: Like 1, but listener also receives the Event instance and can be stopped with return false;
@@ -206,9 +206,9 @@ Client.expand({
 			if (custom.type) realType = custom.type;
 		}
 		var defn = fn;
-		if (!$defined(nativeEvent)) nativeEvent = Element.$events[realType] || 0;
-		if (nativeEvent){
-			if (nativeEvent == 2){
+		if (!$defined(nativeType)) nativeType = Element.$events[realType] || 0;
+		if (nativeType){
+			if (nativeType == 2){
 				var self = this;
 				defn = function(event){
 					event = new Event(event);
