@@ -8,26 +8,26 @@ License:
 
 /*
 Class: Event
-	Cross browser methods to manage events.
+	Cross browser class to manage events.
 
 Arguments:
-	event - the event
+	event - (event) The event
 
 Properties:
-	shift - true if the user pressed the shift
-	control - true if the user pressed the control
-	alt - true if the user pressed the alt
-	meta - true if the user pressed the meta key
-	wheel - the amount of third button scrolling
-	code - the keycode of the key pressed
-	page.x - the x position of the mouse, relative to the full window
-	page.y - the y position of the mouse, relative to the full window
-	client.x - the x position of the mouse, relative to the viewport
-	client.y - the y position of the mouse, relative to the viewport
-	key - the key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
+	shift - (boolean) True if the user pressed the shift
+	control - (boolean) True if the user pressed the control
+	alt - (boolean) True if the user pressed the alt
+	meta - (boolean) True if the user pressed the meta key
+	wheel - (integer) The amount of third button scrolling
+	code - (integer) The keycode of the key pressed
+	page.x - (integer) The x position of the mouse, relative to the full window
+	page.y - (integer) The y position of the mouse, relative to the full window
+	client.x - (integer) The x position of the mouse, relative to the viewport
+	client.y - (integer) The y position of the mouse, relative to the viewport
+	key - (string) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
 		Handy for these special keys.
-	target - the event target
-	relatedTarget - the event related target
+	target - (element) The event target, not extended with <$> for performance reasons.
+	relatedTarget - (element) The event related target, not extended with <$> for performance reasons.
 
 Note:
 	Accessing event.page / event.client requires an XHTML doctype.
@@ -104,7 +104,7 @@ var Event = new Class({
 
 	/*
 	Property: stopPropagation
-		cross browser method to stop the propagation of an event (will not allow the event to bubble up through the DOM)
+		Cross browser method to stop the propagation of an event (will not allow the event to bubble up through the DOM)
 	*/
 
 	stopPropagation: function(){
@@ -115,7 +115,7 @@ var Event = new Class({
 
 	/*
 	Property: preventDefault
-		cross browser method to prevent the default action of the event
+		Cross browser method to prevent the default action of the event
 	*/
 
 	preventDefault: function(){
@@ -133,7 +133,7 @@ var Event = new Class({
 
 /*
 Property: keys
-	you can add additional Event keys codes this way:
+	You can add additional Event keys codes this way:
 
 Example:
 	(start code)
@@ -176,14 +176,18 @@ Client.expand({
 		You can stop the Event by returning false in the listener or calling <Event.stop>.
 
 	Arguments:
-		type - the event to monitor ('click', 'load', etc) without the prefix 'on'.
-		fn - the function to execute
+		type - (string) [required] The event name to monitor ('click', 'load', etc) without the prefix 'on'.
+		fn - (funtion) [required] The function to execute.
+		nativeType - (number) [optional] Overrides automated native Event check, not needed in most situations. Can be 0, 1 or 2:
+			0: Event is added without native event listener, can be fired only with <Element.fireEvent>
+			1: Event function is attached with <Element.addListener> to the Element as native event.
+			2: Like 1, but listener also receives the Event instance and can be stopped with return false;
 
 	Example:
-		>$('myElement').addEvent('click', function(){alert('clicked!')});
+		>$('myElement').addEvent('click', function(){ alert('clicked!'); });
 	*/
 
-	addEvent: function(type, fn){
+	addEvent: function(type, fn, nativeType){
 		this.$events = this.$events || {};
 		if (!this.$events[type]) this.$events[type] = {'keys': [], 'values': []};
 		if (this.$events[type].keys.contains(fn)) return this;
@@ -202,7 +206,7 @@ Client.expand({
 			if (custom.type) realType = custom.type;
 		}
 		var defn = fn;
-		var nativeEvent = Element.$events[realType] || 0;
+		if (!$defined(nativeEvent)) nativeEvent = Element.$events[realType] || 0;
 		if (nativeEvent){
 			if (nativeEvent == 2){
 				var self = this;
@@ -220,6 +224,34 @@ Client.expand({
 	/*
 	Property: removeEvent
 		Works as Element.addEvent, but instead removes the previously added event listener.
+
+	Arguments:
+		type - (string) [required] The event name.
+		fn - (funtion) [required] The function to remove.
+
+	Note:
+		When the function was added using <Function.bind> or <Function.pass> a new reference
+		was created and you can not use removeEvent with the original function.
+
+	Example:
+		Standard usage:
+		(start code)
+		var destroy = function(){ alert('Boom: ' + this.id); } // this is the element
+		$('myElement').addEvent('click', destroy);
+		// later in the code
+		$('myElement').removeEvent('click', destroy);
+		(end)
+
+		Example with bind:
+		(start code)
+		var destroy = function(){ alert('Boom: ' + this.id); } // this is the element
+		var destroy2 = destroy.bind($('anotherElement'));
+		$('myElement').addEvent('click', destroy2); // this is now another element
+		// later in the code
+		$('myElement').removeEvent('click', destroy); // DOES NOT WORK
+		$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // DOES ALSO NOT WORK
+		$('myElement').removeEvent('click', destroy2); // Finally, this works
+		(end)
 	*/
 
 	removeEvent: function(type, fn){
@@ -248,10 +280,10 @@ Client.expand({
 
 	/*
 	Property: removeEvents
-		removes all events of a certain type from an element. if no argument is passed in, removes all events.
+		Removes all events of a certain type from an element. if no argument is passed in, removes all events.
 
 	Arguments:
-		type - string; the event name (e.g. 'click')
+		type - (string) [required] The event name (e.g. 'click')
 	*/
 
 	removeEvents: function(type){
@@ -268,12 +300,12 @@ Client.expand({
 
 	/*
 	Property: fireEvent
-		executes all events of the specified type present in the element.
+		Executes all events of the specified type present in the element.
 
 	Arguments:
-		type - string; the event name (e.g. 'click')
-		args - array or single object; arguments to pass to the function; if more than one argument, must be an array
-		delay - (integer) delay (in ms) to wait to execute the event
+		type - (string) [required] The event name (e.g. 'click')
+		args - (mixed) [optional] Array or single object, arguments to pass to the function; if more than one argument, must be an array.
+		delay - (integer) [optional] Delay (in ms) to wait to execute the event.
 	*/
 
 	fireEvent: function(type, args, delay){
@@ -290,8 +322,8 @@ Client.expand({
 		Clones all events from an element to this element.
 
 	Arguments:
-		from - element, copy all events from this element
-		type - optional, copies only events of this type
+		from - (element) [required] Copy all events from this element.
+		type - (string) [optional] Copies only events of this type.
 	*/
 
 	cloneEvents: function(from, type){
@@ -329,7 +361,6 @@ Element.Events = new Abstract({
 		this event fires when the mouse enters the area of the dom element;
 		will not be fired again if the mouse crosses over children of the element (unlike mouseover)
 
-
 	Example:
 		>$(myElement).addEvent('mouseenter', myFunction);
 	*/
@@ -344,8 +375,7 @@ Element.Events = new Abstract({
 
 	/*
 	Event: mouseleave
-		this event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
-
+		This event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
 
 	Example:
 		>$(myElement).addEvent('mouseleave', myFunction);
