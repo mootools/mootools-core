@@ -11,33 +11,34 @@ Class: XHR
 	Basic XMLHttpRequest Wrapper.
 
 Arguments:
-	options - an object with options names as keys. See options below.
+	url - (string) [optional] The url pointing to the server-side script.
+	options - (object) [optional] See "Options" below.
 
 Options:
-	method - 'post' or 'get' - the protocol for the request; optional, defaults to 'post'.
-	data - you can write parameters here. Can be a querystring, an object or a Form element.
-	async - boolean: asynchronous option; true uses asynchronous requests. Defaults to true.
-	encoding - the encoding, defaults to utf-8.
-	autoCancel - cancels the already running request if another one is sent. defaults to false.
-	headers - accepts an object, that will be set to request headers.
-	isSuccess - overrides the in-build isSuccess, that checks the response status code
+	method - (string) ['post'] The HTTP method for the request, 'post' or 'get'.
+	data - (string) [null] The default data for <XHR.send>, used when no data is given.
+	async - (boolean) [true] Asynchronous option; true uses asynchronous requests.
+	encoding - (string) ["utf-8"] The encoding (Note: This sets the correct request header, it does not encode the data).
+	autoCancel - (boolean) [false] Cancels the already running request if another one is sent. When false, it will ignore another send when a request is already running.
+	headers - (object) Accepts an object, that will be set to request headers.
+	isSuccess - (function) Overrides the in-build isSuccess, that checks the response status code
 
 Events:
-	onRequest - function to execute when the XHR request is fired.
-	onSuccess - function to execute when the XHR request completes.
-	onFailure - function to execute when the request failes (error status code).
-	onException - function to execute when setting a request header failes.
+	onRequest - (function) Function to execute when the XHR request is fired. Argument is the transport instance.
+	onSuccess - (function) Function to execute when the XHR request completes. Arguments are response text and xml.
+	onFailure - (function) Function to execute when the request failes (error status code). Argument is the transport instance.
+	onException - (function) Function to execute when setting a request header failes. Arguments are the header name and value.
 
 Properties:
-	running - true if the request is running.
-	response - object, text and xml as keys. You can access this property in the onSuccess event.
+	running - (boolean) True if the request is running.
+	response - (object) Object with text and xml as keys. You can access this property in the onSuccess event.
 
 Example:
 	>var myXHR = new XHR({method: 'get'}).send('http://site.com/requestHandler.php', 'name=john&lastname=dorian');
 */
 
 var XHR = new Class({
-	
+
 	Implements: [Chain, Events, Options],
 
 	options: {
@@ -129,21 +130,28 @@ var XHR = new Class({
 
 	/*
 	Property: send
-		Opens the XHR connection and sends the data. Data has to be null or a string.
+		Opens the XHR connection and sends the data.
+
+	Arguments:
+		data - (string) [optional] The request data as query string or null.
 
 	Example:
-		>var myXhr = new XHR({method: 'post'});
-		>myXhr.send(url, querystring);
-		>
-		>var syncXhr = new XHR({async: false, method: 'post'});
-		>syncXhr.send(url, null);
-		>
+		Simple POST request:
+		>var myXhr = new XHR().send(url, "save=username&name=John"); // method is 'post' by default
+
+		Synchron request (freezes browser during request):
+		(start code)
+		var syncXhr = new XHR({async: false}); // sync request
+		syncXhr.send(url, null);
+		alert(syncXhr.response.text); // alerts the response text
+		(end)
 	*/
 
 	send: function(url, data){
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;
+		data = data || this.options.data;
 		if (data && this.options.method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
@@ -165,7 +173,7 @@ var XHR = new Class({
 	},
 
 	request: function(data){
-		return this.send(this.url, data || this.options.data);
+		return this.send(this.url, data);
 	},
 
 	/*

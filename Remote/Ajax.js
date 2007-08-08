@@ -15,19 +15,41 @@ Class: Ajax
 	Inherits methods, properties, options and events from <XHR>.
 
 Arguments:
-	url - the url pointing to the server-side script.
-	options - optional, an object containing options.
+	url - (string) [required] The url pointing to the server-side script.
+	options - (object) [optional] See "Options" below. Also utilizes <XHR> options and events.
 
 Options:
-	update - $(element) to insert the response text of the XHR into, upon completion of the request.
-	evalScripts - boolean; default is false. Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
-	evalResponse - boolean; default is false. Force global evalulation of the whole response, no matter what content-type it is.
+	update - (element) [optional] To insert the response text of the XHR into, upon completion of the request.
+	evalScripts - (boolean) [false] Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
+	evalResponse - (boolean) [false] Force global evalulation of the whole response, no matter what content-type it is.
 
 Events:
-	onComplete - function to execute when the ajax request completes.
+	onComplete - (function) Function to execute when the ajax request completes. Arguments are response text and xml.
 
 Example:
+	Simple GET request:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();
+
+	POST request with data as string
+	>var myAjax = new Ajax('save/').request("user_id=25&save=true");
+
+	Data from object via GET
+	>var myAjax = new Ajax('load/').request({'user_id': 25}); // loads url "load/?user_id=25"
+
+	Data from Element via POST
+	(start code)
+	<form action="save/" method="post" id="user-form">
+	Search:
+	<input type="text" name="search" />
+	Search in description:
+	<input type="checkbox" name="search_description" value="yes" />
+	<input type="submit" />
+	</form>
+	<script>
+	// Needs to be in a submit event or your form handler
+	var myAjax = new Ajax('save/').request($('user-form'));
+	</script>
+	(end)
 */
 
 var Ajax = new Class({
@@ -52,14 +74,27 @@ var Ajax = new Class({
 	},
 
 	onComplete: function(){
-		this.evalScripts();
+		var scripts;
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))){
+			scripts = this.response.text;
+		} else{
+			scripts = (this.options.evalScripts) ? '' : null;
+			this.response.text = this.response.text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
+				if (scripts !== null) scripts += arguments[1] + '\n';
+				return '';
+			});
+		}
 		if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
+		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
 		this.fireEvent('onComplete', [this.response.text, this.response.xml], 20);
 	},
 
 	/*
 	Property: request
 		Executes the ajax request.
+
+	Arguments:
+		data - (mixed) [optional] The request data, can be a String, an Object (used in <Object.toQueryString>) or an Element holding input elements (used in <Element.toQueryString>).
 
 	Example:
 		>var myAjax = new Ajax(url, {method: 'get'});
@@ -78,22 +113,6 @@ var Ajax = new Class({
 		}
 		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
 		return this.parent(data);
-	},
-
-	/*
-	Property: evalScripts
-		Executes scripts in the response text
-	*/
-
-	evalScripts: function(){
-		var script, scripts = '', regexp = /<script[^>]*>([\s\S]*?)<\/script>/gi;
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))){
-			scripts = this.response.text;
-		} else if (this.options.evalScripts){
-			while ((script = regexp.exec(this.response.text))) scripts += script[1] + '\n';
-		}
-		this.response.text = this.response.text.replace(regexp, '');
-		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
 	}
 
 });
@@ -105,10 +124,10 @@ Function: Object.toQueryString
 	Generates a querystring from key/pair values in an object
 
 Arguments:
-	source - the object to generate the querystring from.
+	source - (object) The object to generate the querystring from.
 
 Returns:
-	the query string.
+	(string) The querystring.
 
 Example:
 	>Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
@@ -132,7 +151,7 @@ Element.extend({
 		Sends a form with an ajax post request
 
 	Arguments:
-		options - option collection for ajax request. See <Ajax> for the options list.
+		options - (object) [optional] Option collection for Ajax request. See <Ajax> for the options list.
 
 	Returns:
 		The Ajax Class Instance
@@ -155,11 +174,12 @@ Element.extend({
 
 	/*
 	Property: update
-		Updates the content of the element with an ajax get request
+		Updates the content of the element with an Ajax get request.
+		It saves the Ajax instance to the Element, so it uses the same instance every update call.
 
 	Arguments:
-		url - the url pointing to the server-side document.
-		options - option collection for ajax request. See <Ajax> for the options list.
+		url - (string) [required] The url pointing to the server-side document.
+		options - (object) [optional] Option collection for Ajax request. See <Ajax> for the options list.
 
 	Returns:
 		The Ajax Class Instance

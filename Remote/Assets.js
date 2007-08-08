@@ -24,7 +24,7 @@ var Asset = new Abstract({
 		properties = $merge({
 			'onload': $empty
 		}, properties);
-		var script = new Element('script', {'src': source}).addEvents({
+		var script = new Element('script', {'src': source, 'type': 'text/javascript'}).addEvents({
 			'load': properties.onload,
 			'readystatechange': function(){
 				if (this.readyState == 'complete') this.fireEvent('load');
@@ -88,12 +88,12 @@ var Asset = new Abstract({
 					element.height = image.height;
 				}
 				image = image.onload = image.onabort = image.onerror = null;
-				event.call(element);
+				event.delay(1, element, element);
 				element.fireEvent(name, element, 1);
 			}
 		});
 		image.src = element.src = source;
-		if (image && image.width) image.onload.delay(1);
+		if (image && image.complete) image.onload.delay(1);
 		return element.setProperties(properties);
 	},
 
