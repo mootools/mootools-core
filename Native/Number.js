@@ -100,9 +100,7 @@ Number.extend({
 		(end)
 	*/
 
-	toFloat: function(){
-		return parseFloat(this);
-	},
+	toFloat: String.prototype.toFloat,
 
 	/*
 	Property: toInt
@@ -125,8 +123,6 @@ Number.extend({
 		(end)
 	*/
 
-	toInt: function(base){
-		return parseInt(this, base || 10);
-	}
+	toInt: String.prototype.toInt
 
 });

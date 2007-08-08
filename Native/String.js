@@ -305,6 +305,10 @@ String.extend({
 
 });
 
+'charAt,charCodeAt,concat,indexOf,lastIndexOf,match,replace,search,slice,split,substr,substring,toLowerCase,toUpperCase'.split(',').each(function(prop) {
+	if (!String[prop]) String[prop] = Native.generic(prop);
+});
+
 /*
 Class: Array
 	A collection of the Array Object prototype methods.
