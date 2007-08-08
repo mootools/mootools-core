@@ -215,8 +215,8 @@ Elements.$multiply = function(property){
 	return function(){
 		var items = [];
 		var elements = true;
-		for (var i = 0, j = this.length, returns; i < i; i++){
-			returns = this[i][property].apply(this[i], arguments);
+		for (var i = 0, j = this.length; i < j; i++){
+			var returns = this[i][property].apply(this[i], arguments);
 			items.push(returns);
 			if (elements) elements = ($type(returns) == 'element');
 		}
