@@ -534,7 +534,7 @@ Array.prototype.each = Array.prototype.forEach;
 Array.each = Array.forEach;
 
 //Array generics
-'concat,join,pop,push,reverse,shift,slice,sort,splice,unshift'.split(',').each(function(prop) {
+['concat', 'join', 'pop', 'push', 'reverse', 'shift', 'slice', 'sort', 'splice', 'unshift'].each(function(prop) {
 	if (!Array[prop]) Array[prop] = Native.generic(prop);
 });
 
