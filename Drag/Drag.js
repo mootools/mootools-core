@@ -57,7 +57,7 @@ var Drag = new Class({
 	},
 
 	initialize: function(){
-		var params = $A(arguments).associate({'options': 'object', 'element': ['element', 'string']});
+		var params = Array.associate(arguments, {'options': 'object', 'element': ['element', 'string']});
 		this.element = $(params.element);
 		this.setOptions(params.options);
 		this.handle = $(this.options.handle) || this.element;
@@ -86,11 +86,11 @@ var Drag = new Class({
 	},
 
 	/*
-	Property: attach
+	Property: detach
 		Detaches the mouse listener from the handle.
 
 	Returns:
-		The current Drag instance (this). 
+		The current Drag instance (this).
 	*/
 
 	detach: function(){

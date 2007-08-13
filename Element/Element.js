@@ -681,7 +681,7 @@ Element.extend({
 	*/
 
 	setHTML: function(){
-		this.innerHTML = $A(arguments).join('');
+		this.innerHTML = Array.join(arguments, '');
 		return this;
 	},
 

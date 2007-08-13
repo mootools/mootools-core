@@ -73,7 +73,7 @@ Example:
 */
 
 var $build = function() {
-	var args = $A(arguments).associate({'inline': 'string', 'properties': 'object', 'text': 'string', 'children': 'array', 'callback': 'function'});
+	var args = Array.associate(arguments, {'inline': 'string', 'properties': 'object', 'text': 'string', 'children': 'array', 'callback': 'function'});
 	var element = false;
 	var parent = ($type(this) == 'element') ? this : false;
 	if (!$build.root){

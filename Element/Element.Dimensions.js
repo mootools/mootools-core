@@ -76,14 +76,14 @@ Element.extend({
 	*/
 
 	getPosition: function(overflown){
-		overflown = $splat(overflown) || [];
+		overflown = $splat(overflown);
 		var el = this, left = 0, top = 0;
 		do {
 			left += el.offsetLeft || 0;
 			top += el.offsetTop || 0;
 			el = el.offsetParent;
 		} while (el);
-		overflown.each(function(element){
+		if (overflown) overflown.each(function(element){
 			left -= element.scrollLeft || 0;
 			top -= element.scrollTop || 0;
 		});

@@ -61,7 +61,7 @@ var XHR = new Class({
 	},
 
 	initialize: function(){
-		var params = $A(arguments).associate({'url': 'string', 'options': 'object'});
+		var params = Array.associate(arguments, {'url': 'string', 'options': 'object'});
 		this.url = params.url;
 		this.setTransport();
 		this.setOptions(params.options);

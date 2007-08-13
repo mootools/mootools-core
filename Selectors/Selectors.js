@@ -219,13 +219,12 @@ Selectors.Filter = {
 				default:
 					var all = !!(separator == '~');
 					for (i = 0; i < j; i++){
-						var next = items[i].nextSibling;
-						while (next){
+						var next = items[i];
+						while ((next = next.nextSibling)){
 							if (Selectors.Filter.hasTag(next, tag)){
 								found.push(next);
 								if (!all) break;
 							}
-							next = next.nextSibling;
 						}
 					}
 			}
@@ -233,7 +232,7 @@ Selectors.Filter = {
 		} else {
 			if (id){
 				var el = context.getElementById(id);
-				if (!el || ((tag != '*') && (el.tagName.toLowerCase() != tag))) return false;
+				if (!el || ((tag != '*') && (tag != el.tagName.toLowerCase()))) return false;
 				items = [el];
 			} else {
 				items = $A(context.getElementsByTagName(tag));

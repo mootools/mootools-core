@@ -43,7 +43,7 @@ var Fx = new Class({
 	},
 
 	initialize: function(){
-		var params = $A(arguments).associate({'options': 'object', 'element': true});
+		var params = Array.associate(arguments, {'options': 'object', 'element': true});
 		this.element = this.element || params.element;
 		this.setOptions(params.options);
 	},

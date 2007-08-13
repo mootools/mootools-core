@@ -269,7 +269,7 @@ String.extend({
 
 	hexToRgb: function(array){
 		var hex = this.match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
-		return (hex) ? hex.slice(1).hexToRgb(array) : false;
+		return (hex) ? hex.slice(1).hexToRgb(array) : null;
 	},
 
 	/*
@@ -300,7 +300,7 @@ String.extend({
 
 	rgbToHex: function(array){
 		var rgb = this.match(/\d{1,3}/g);
-		return (rgb) ? rgb.rgbToHex(array) : false;
+		return (rgb) ? rgb.rgbToHex(array) : null;
 	}
 
 });

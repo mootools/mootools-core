@@ -10,7 +10,7 @@ License:
 Class: Accordion
 	The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.
 	Inherits methods, properties, options and events from <Fx.Elements>.
-	
+
 Note:
 	The Accordion requires an XHTML doctype.
 
@@ -22,12 +22,12 @@ Arguments:
 Options:
 	show - (integer) [0] The index of the element to be shown initially.
 	display - (integer) [0] The index of the element to show at start (with a transition). defaults to 0.
-	fixedHeight - (boolean) [false] If set to false, displayed elements will have a fixed height. 
-	fixedWidth - (boolean) [false] If set to true, displayed elements will have a fixed width. 
-	height - (boolean) [true] If set to true, a height transition effect will take place when switching between displayed elements.	
-	opacity - (boolean) [true] If set to true, an opacity transition effect will take place when switching between displayed elements. 
+	fixedHeight - (boolean) [false] If set to false, displayed elements will have a fixed height.
+	fixedWidth - (boolean) [false] If set to true, displayed elements will have a fixed width.
+	height - (boolean) [true] If set to true, a height transition effect will take place when switching between displayed elements.
+	opacity - (boolean) [true] If set to true, an opacity transition effect will take place when switching between displayed elements.
 	width - (boolean) [false]  If set to true, a width transition will take place when switching between displayed elements.  WARNING: CSS mastery is required to make this work!
-	alwaysHide - (boolean) [false] If set to true, it will be possible to close all displayable elements.  Otherwise, one will remain open at all time.	
+	alwaysHide - (boolean) [false] If set to true, it will be possible to close all displayable elements.  Otherwise, one will remain open at all time.
 
 Events:
 	onActive - (function) Function to execute when an element starts to show.
@@ -35,7 +35,7 @@ Events:
 */
 
 var Accordion = new Class({
-	
+
 	Extends: Fx.Elements,
 
 	options: {
@@ -53,7 +53,7 @@ var Accordion = new Class({
 	},
 
 	initialize: function(){
-		var params = $A(arguments).associate({'container': 'element', 'options': 'object', 'togglers': true, 'elements': true});
+		var params = Array.associate(arguments, {'container': 'element', 'options': 'object', 'togglers': true, 'elements': true});
 		this.parent(params.elements, params.options);
 		this.togglers = $$(params.togglers);
 		this.container = $(params.container);

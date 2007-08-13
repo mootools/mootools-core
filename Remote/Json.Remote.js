@@ -31,7 +31,7 @@ Example:
 */
 
 Json.Remote = new Class({
-	
+
 	Extends: XHR,
 
 	options: {
@@ -47,7 +47,7 @@ Json.Remote = new Class({
 	},
 
 	send: function(obj){
-		return this.parent(this.url, ((this.options.varName) ? this.options.varName + '=' : '') + Json.encode(obj));
+		return this.parent(this.url, $defined(obj) ? ((this.options.varName) ? this.options.varName + '=' : '') + encodeURIComponent(Json.encode(obj)) : null);
 	},
 
 	onComplete: function(text){

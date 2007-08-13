@@ -13,10 +13,16 @@ Class: Fx.Slide
 
 Note:
 	Fx.Slide requires an XHTML doctype.
+	To create the slide effect an additional Element ('div' by default) is wrapped around the
+	given Element. This wrapper adapts the margin from the Element.
+
+Arguments:
+	elements - (element) [required] The element to slide.
+	options - (object) [optional] See "Options" below. Also utilizes <Fx> options and events.
 
 Options:
-	mode - set it to vertical or horizontal. Defaults to vertical.
-	options - all the <Fx> options
+	mode - (string) ['vertical'] Set it to 'vertical' or 'horizontal'.
+	wrapper - (element) Allows to set another Element as wrapper.
 
 Properties:
 	open - (boolean) true: the slide element is visible.
@@ -34,12 +40,13 @@ Fx.Slide = new Class({
 	Extends: Fx,
 
 	options: {
-		mode: 'vertical'
+		mode: 'vertical',
+		wrapper: null
 	},
 
 	initialize: function(element, options){
 		this.parent($(element), options);
-		this.wrapper = new Element('div', {'styles': $extend(this.element.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
+		this.wrapper = $(this.options.wrapper) || new Element('div', {'styles': $extend(this.element.getStyles('margin'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
 		this.element.setStyle('margin', 0);
 		this.now = [];
 		this.open = true;
