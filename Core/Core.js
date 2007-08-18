@@ -1,15 +1,15 @@
 /*
 Script: Core.js
-	Mootools - My Object Oriented Javascript.
+	Mootools - My Object Oriented JavaScript.
 
 License:
 	MIT-style license.
 
 MooTools Copyright:
-	copyright (c) 2007 Valerio Proietti, <http://mad4milk.net>
-	
+	Copyright (c) 2007 Valerio Proietti, <http://mad4milk.net/>
+
 MooTools Code & Documentation:
-	The MooTools team <http://mootools.net/developers>.
+	The MooTools team <http://mootools.net/developers/>.
 
 MooTools Credits:
 	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
@@ -21,36 +21,39 @@ var MooTools = {
 	'build': '%build%'
 };
 
-/* Section: Core Functions */
-
 /*
 Function: $extend
 	Copies all the properties from the second object passed in to the first object passed in.
 	In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.
 
 Syntax:
-	>$extend(obj1, obj2);
+	>$extend(src[, add]);
 
 Arguments:
-	obj1 - The object to be extended.
-	obj2 - The object whose properties will be copied to obj1.
+	src - (object) The object to be extended.
+	add - (object, optional) The object whose properties will be copied to src.
 
 Returns:
-	The first object, extended.
+	(object) The extended object.
 
 Example:
 	(start code)
-	var firstOb = {
+	var firstObj = {
 		'name': 'John',
 		'lastName': 'Doe'
 	};
-	var secondOb = {
+	var secondObj = {
 		'age': '20',
 		'sex': 'male',
 		'lastName': 'Dorian'
 	};
-	$extend(firstOb, secondOb);
-	//firstOb is { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
+	$extend(firstObj, secondObj);
+	//firstObj is { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
+
+	var myFunction = function(){ ... };
+	myFunction.extend = $extend;
+	myFunction.extend(secondObj);
+	//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respected values.
 	(end)
 */
 
@@ -59,16 +62,14 @@ function $extend(src, add){
 		add = src;
 		src = this;
 	}
-	for (var prop in add) src[prop] = add[prop];
+	for (var property in add) src[property] = add[property];
 	return src;
 };
 
 /*
 Function: Native
-	This will add a .extend method to the objects passed as a parameter,
-	but the property passed in will be copied to the object's prototype only if not previously existent.
-	The purpose of Native is also to create generics methods (Class Methods) from the prototypes passed in.
-	Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
+	This will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
+	The purpose of Native is also to create generics methods (Class Methods) from the prototypes passed in. Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
 
 Arguments:
 	Any number of Classes/native JavaScript objects.
@@ -76,18 +77,18 @@ Arguments:
 
 var Native = function(){
 	for (var i = arguments.length; i--;){
-		arguments[i].extend = function(props){
-			for (var prop in props){
-				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
-				if (!this[prop]) this[prop] = Native.generic(prop);
+		arguments[i].extend = function(properties){
+			for (var property in properties){
+				if (!this.prototype[property]) this.prototype[property] = properties[property];
+				if (!this[property]) this[property] = Native.generic(property);
 			}
 		};
 	}
 };
 
-Native.generic = function(prop){
+Native.generic = function(property){
 	return function(bind){
-		return this.prototype[prop].apply(bind, Array.prototype.slice.call(arguments, 1));
+		return this.prototype[property].apply(bind, Array.prototype.slice.call(arguments, 1));
 	};
 };
 
@@ -98,17 +99,17 @@ Native.setFamily = function(natives){
 Native(Array, Function, String, RegExp, Number);
 Native.setFamily({'array': Array, 'function': Function, 'string': String, 'regexp': RegExp});
 
-/* Section: Utility Functions */
-
 /*
-Function: $A()
-	Useful for applying the Array prototypes to iterable objects such as a DOM Element collection or the arguments object.
+Function: $A
+	Creates a copy of an Array, optionally from only a specific range. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
 
 Syntax:
-	>var copiedArray = $A(array);
+	>var copiedArray = $A(iterable[, start[, length]]);
 
 Arguments:
-	array - (array) The array to copy.
+	iterable - (array) The iterable to copy.
+	start    - (integer, optional) The starting index.
+	length   - (integer, optional) The length of the resulting copied array. If not provided, the length of the returned array will be the length of the iterable minus the start value.
 
 Returns:
 	(array) The new copied array.
@@ -120,6 +121,11 @@ Example:
 			alert(argument);
 		});
 	}; //will alert all the arguments passed to the function myFunction.
+
+	var anArray = [0, 1, 2, 3, 4];
+	var copiedArray = $A(anArray); // Returns: [0, 1, 2, 3, 4]
+	var slicedArray1 = $A(anArray, 2, 3); // Returns: [2, 3, 4]
+	var slicedArray2 = $A(anArray, -1); // Returns: [4]
 	(end)
 */
 
@@ -160,10 +166,10 @@ function $chk(obj){
 
 /*
 Function: $clear
-	Clears a timeout or an Interval.
+	Clears a Timeout or an Interval.
 
 Syntax:
-	>$clear(timer)
+	>$clear(timer);
 
 Arguments:
 	timer - (integer) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
@@ -215,7 +221,15 @@ function $defined(obj){
 
 /*
 Function: $empty
-	An empty function, that's it.
+	An empty function, that's it. Typically used for as a placeholder inside classes event methods.
+
+Syntax:
+	>var emptyFn = $empty;
+
+Example:
+	(start code)
+	var myFunc = $empty;
+	(end)
 */
 
 function $empty(){};
@@ -235,7 +249,14 @@ Returns:
 
 Example:
 	(start code)
-	$merge(obj1, obj2, obj3); //returns the merged object (obj1, obj2, and obj3 are unaltered)
+	var obj1 = {a: 0, b: 1};
+	var obj2 = {c: 2, d: 3};
+	var obj3 = {a: 4, d: 5};
+	var merged = $merge(obj1, obj2, obj3); //returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
+
+	var nestedObj1 = {a: {b: 1, c: 1}};
+	var nestedObj2 = {a: {b: 2}};
+	var nested = $merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
 	(end)
 */
 
@@ -257,7 +278,7 @@ Function: $pick
 	Returns the first defined argument passed in, or null.
 
 Syntax:
-	>var picked = $pick(var1, var2[, var3[, ...]]);
+	>var picked = $pick(var1[, var2[, var3[, ...]]]);
 
 Arguments:
 	(mixed) Any number of variables.
@@ -364,7 +385,7 @@ Returns:
 
 Example:
 	(start code)
-	$try(eval, window, 'some invalid javascript'); //false
+	var result = $try(eval, window, 'some invalid javascript'); //false
 	(end)
 
 Warning:
@@ -465,13 +486,13 @@ Platform:
 	Client.Platform.name    - (string) The name of the platform.
 
 Note:
-	Engine detection is entirely object-based.
+	Engine detection is entirely feature-based.
 */
 
 var Client = {
 	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {},
-	Features: {}
+	Features: {},
+	Platform: {}
 };
 
 //Client.Features
@@ -490,7 +511,7 @@ Client.Platform.name = navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) ||
 Client.Platform.name = Client.Platform.name[0].toLowerCase();
 Client.Platform[Client.Platform.name] = true;
 
-//htmlelement
+//HTMLElement
 if (typeof HTMLElement == 'undefined'){
 	var HTMLElement = $empty;
 	if (Client.Engine.webkit) document.createElement("iframe"); //fixes safari 2
