@@ -1,6 +1,6 @@
 /*
 Script: Core.js
-	Mootools - My Object Oriented JavaScript.
+	MooTools - My Object Oriented JavaScript Tools.
 
 License:
 	MIT-style license.

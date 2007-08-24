@@ -1,6 +1,6 @@
 /*
 Script: Array.js
-	Contains Array prototypes, <$A>, <$each>.
+	Contains Array prototypes, <$each>.
 
 License:
 	MIT-style license.
@@ -9,7 +9,9 @@ License:
 /*
 Class: Array
 	A collection of the Array Object prototype methods.
-	For more information on the JavaScript Array Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>.
+
+See Also:
+	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>
 */
 
 Array.extend({
@@ -17,7 +19,6 @@ Array.extend({
 	/*
 	Property: every
 		Returns true if every element in the array satisfies the provided testing function.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>.
 
 		This method is provided only for browsers without native *every* support.
 
@@ -37,6 +38,9 @@ Array.extend({
 			return item > 20;
 		}); //areAllBigEnough = false
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every>
 	*/
 
 	every: function(fn, bind){
@@ -49,7 +53,6 @@ Array.extend({
 	/*
 	Property: filter
 		Creates a new array with all of the elements of the array for which the provided filtering function returns true.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>.
 
 		This method is provided only for browsers without native *filter* support.
 
@@ -69,6 +72,9 @@ Array.extend({
 			return item > 20;
 		}); //biggerThanTwenty = [25, 100]
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter>
 	*/
 
 	filter: function(fn, bind){
@@ -82,7 +88,6 @@ Array.extend({
 	/*
 	Property: forEach
 		Calls a function for each element in the array.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>.
 
 		This method is only available for browsers without native *forEach* support.
 
@@ -99,6 +104,9 @@ Array.extend({
 			alert(index + " = " + item); //alerts "0 = apple" etc.
 		}, bind); //optional second argument for binding, not used here
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
 	*/
 
 	forEach: function(fn, bind){
@@ -108,7 +116,6 @@ Array.extend({
 	/*
 	Property: indexOf
 		Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>.
 
 		This method is provided only for browsers without native *indexOf* support.
 
@@ -127,6 +134,9 @@ Array.extend({
 		['apple', 'lemon', 'banana'].indexOf('lemon'); //returns 1
 		['apple', 'lemon'].indexOf('banana'); //returns -1
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf>
 	*/
 
 	indexOf: function(item, from){
@@ -140,7 +150,6 @@ Array.extend({
 	/*
 	Property: map
 		Creates a new array with the results of calling a provided function on every element in the array.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>.
 
 		This method is provided only for browsers without native *map* support.
 
@@ -161,6 +170,9 @@ Array.extend({
 			return item * 2;
 		}); //timesTwo = [2, 4, 6];
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map>
 	*/
 
 	map: function(fn, bind){
@@ -172,7 +184,6 @@ Array.extend({
 	/*
 	Property: some
 		Returns true if at least one element in the array satisfies the provided testing function.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>.
 
 		This method is provided only for browsers without native *some* support.
 
@@ -192,6 +203,9 @@ Array.extend({
 			return item > 20;
 		}); //isAnyBigEnough = true
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some>
 	*/
 
 	some: function(fn, bind){
@@ -204,7 +218,6 @@ Array.extend({
 	/*
 	Property: reduce
 		Apply a function simultaneously against two values of the array (from left-to-right) as to reduce it to a single value.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:reduce>.
 
 		This method is provided only for browsers without native *reduce* support.
 
@@ -233,6 +246,9 @@ Array.extend({
 			return previousItem.concat(currentItem);
 		}, []); // collected is ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:reduce>
 	*/
 
 	reduce: function(fn, value){
@@ -314,6 +330,9 @@ Array.extend({
 		["a","b","c"].contains("a"); //returns true
 		["a","b","c"].contains("d"); //returns false
 		(end)
+
+	See Also:
+		<Array.indexOf>
 	*/
 
 	contains: function(item, from){
@@ -325,7 +344,7 @@ Array.extend({
 		Returns a copy of the array.
 
 	Syntax:
-		>var copiedArray = myArray.copy([start, [length]]);
+		>var copiedArray = myArray.copy([start[, length]]);
 
 	Arguments:
 		start  - (integer, optional) The index from which the copy should be started.
@@ -340,30 +359,14 @@ Array.extend({
 		var letters = ["a","b","c"];
 		var copy = letters.copy(); //copy = ["a", "b", "c"]
 		(end)
+
+	See Also:
+		<$A>
 	*/
 
 	copy: function(start, length){
 		return $A(this, start, length);
 	},
-
-	/*
-	Property: each
-		Same as <Array.forEach>.
-
-	Syntax:
-		>myArray.each(fn[, bind]);
-
-	Arguments:
-		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
-
-	Example:
-		(start code)
-		['apple','banana','lemon'].each(function(item, index){
-			alert(index + " = " + item); //alerts "0 = apple" etc.
-		}, bind); //optional second argument for binding, not used here
-		(end)
-	*/
 
 	/*
 	Property: extend
@@ -501,7 +504,9 @@ Array.extend({
 	*/
 
 	remove: function(item){
-		for (var i = this.length; i--;) if (this[i] === item) this.splice(i, 1);
+		for (var i = this.length; i--;){
+			if (this[i] === item) this.splice(i, 1);
+		}
 		return this;
 	},
 
@@ -530,15 +535,29 @@ Array.extend({
 });
 
 //copied functions
-Array.prototype.each = Array.prototype.forEach;
-Array.each = Array.forEach;
+Array.extend({
 
-//Array generics
-['concat', 'join', 'pop', 'push', 'reverse', 'shift', 'slice', 'sort', 'splice', 'unshift'].each(function(prop) {
-	if (!Array[prop]) Array[prop] = Native.generic(prop);
+	/*
+	Property: each
+		Same as <Array.forEach>.
+
+	Syntax:
+		>myArray.each(fn[, bind]);
+
+	Arguments:
+		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+	Example:
+		(start code)
+		['apple','banana','lemon'].each(function(item, index){
+			alert(index + " = " + item); //alerts "0 = apple" etc.
+		}, bind); //optional second argument for binding, not used here
+		(end)
+	*/
+	each: Array.prototype.forEach
+
 });
-
-/* Section: Utility Functions */
 
 /*
 Function: $each
@@ -571,4 +590,4 @@ Examples:
 
 function $each(iterable, fn, bind){
 	((iterable && typeof iterable.length == 'number' && $type(iterable) != 'object') ? Array : Abstract).each(iterable, fn, bind);
-};
+}

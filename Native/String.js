@@ -9,7 +9,9 @@ License:
 /*
 Class: String
 	A collection of the String Object prototype methods.
-	For more information on the JavaScript String Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String>
+
+See Also:
+	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String>
 */
 
 String.extend({
@@ -35,6 +37,9 @@ String.extend({
 		"I like cookies".test("COOKIE", "i"); //returns true (ignore case)
 		"I like cookies".test("cake"); //returns false
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions>
 	*/
 
 	test: function(regex, params){
@@ -197,7 +202,6 @@ String.extend({
 	/*
 	Property: toInt
 		Parses this string and returns an integer of the specified radix or base.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt>.
 
 	Syntax:
 		>myString.toInt([base]);
@@ -213,6 +217,9 @@ String.extend({
 		"4em".toInt(); //returns 4
 		"10px".toInt(); //returns 10
 		(end)
+
+	See Also:
+		 <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt>
 	*/
 
 
@@ -223,7 +230,6 @@ String.extend({
 	/*
 	Property: toFloat
 		Parses this string and returns a floating point number.
-		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat>.
 
 	Syntax:
 		>myString.toFloat();
@@ -236,6 +242,9 @@ String.extend({
 		"95.25%".toFloat(); //returns 95.25
 		"10.848".toFloat(); //returns 10.848
 		(end)
+
+		See Also:
+			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat>
 	*/
 
 	toFloat: function(){
@@ -248,7 +257,7 @@ String.extend({
 		>'#ffffff', #fff', 'ffffff', or 'fff'
 
 	Syntax:
-		myString.hexToRgb([array]);
+		>myString.hexToRgb([array]);
 
 	Arguments:
 		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
@@ -311,8 +320,10 @@ String.extend({
 
 /*
 Class: Array
-	A collection of the Array Object prototype methods.
-	For more information on the JavaScript Array Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>.
+	Contains Array prototypes.
+	
+See Also:
+	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>
 */
 
 Array.extend({

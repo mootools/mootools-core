@@ -9,7 +9,9 @@ License:
 /*
 Class: Number
 	A collection of the Number Object prototype methods.
-	For more information on the JavaScript Number Object see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Number>.
+
+See Also:
+	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Number>
 */
 
 Number.extend({
@@ -29,9 +31,11 @@ Number.extend({
 		(number) The number bounded between the given limits.
 
 	Example:
-		>(12).limit(2, 6.5); //returns 6.5
-		>(-4).limit(2, 6.5); //returns 2
-		>(4.3).limit(2, 6.5); //returns 4.3
+	(start code)
+	(12).limit(2, 6.5); //returns 6.5
+	(-4).limit(2, 6.5); //returns 2
+	(4.3).limit(2, 6.5); //returns 4.3
+	(end)
 	*/
 
 	limit: function(min, max){
@@ -52,9 +56,11 @@ Number.extend({
 		(number) The number, rounded.
 
 	Example:
-		>(12.45).round() //returns 12
-		>(12.45).round(1) //returns 12.5
-		>(12.45).round(-1) //returns 10
+		(start code)
+		(12.45).round() //returns 12
+		(12.45).round(1) //returns 12.5
+		(12.45).round(-1) //returns 10
+		(end)
 	*/
 
 	round: function(precision){
