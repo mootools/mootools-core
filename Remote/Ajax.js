@@ -111,7 +111,7 @@ var Ajax = new Class({
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
-		if (this._method) data = (data) ? [this._method, data].join('&') : this._method;
+		if (this._method) data = (data) ? this._method + '&' + data : this._method;
 		return this.parent(data);
 	}
 
@@ -148,7 +148,8 @@ Element.extend({
 
 	/*
 	Property: send
-		Sends a form with an ajax post request
+		Sends a form with an ajax request.
+		The url is taken from the action attribute, also the method which defaults to post. 
 
 	Arguments:
 		options - (object) [optional] Option collection for Ajax request. See <Ajax> for the options list.
@@ -169,7 +170,10 @@ Element.extend({
 	*/
 
 	send: function(options){
-		return new Ajax(this.getProperty('action'), $merge({method: 'post'}, options)).request(this.toQueryString());
+		var send = this.$attributes.send;
+		if (!send) send = this.$attributes.send = new Ajax(this.getProperty('action'), {method: this.method || 'post', autoCancel: true});
+		if (options) send.setOptions(options);
+		return send.request(this);
 	},
 
 	/*

@@ -74,7 +74,7 @@ Example:
 
 var $build = function() {
 	var args = Array.associate(arguments, {'inline': 'string', 'properties': 'object', 'text': 'string', 'children': 'array', 'callback': 'function'});
-	var element = false;
+	var element;
 	var parent = ($type(this) == 'element') ? this : false;
 	if (!$build.root){
 		$build.root = parent || true;
@@ -86,29 +86,23 @@ var $build = function() {
 		var attributes = $merge(args.properties || {});
 		if (inline.id) attributes.id = inline.id;
 		inline.attributes.each(function(item) {
-			attributes[item[1]] = item[3];
+			attributes[item[0]] = item[2];
 		});
 		inline.pseudos.each(function(item) {
-			switch (item.name){
-				case 'ref': args.ref = item.argument; break;
-			}
+			if (item.name == 'ref') args.ref = item.argument;
 		});
 		if (inline.classes.length) attributes['class'] = ((attributes['class'] || '') + ' ' + inline.classes.join(' ')).trim();
 		element = new Element(inline.tag, attributes);
 		if (args.text) element.appendText(args.text);
-		if (args.callback) element = args.callback(element, args);
+		if (args.callback) element = args.callback.call(element, element, args);
 		if (args.ref) $build.refs[args.ref] = element;
 	}
 	if (args.children && args.children.length){
-		var childs = (element) ? args.children : $A(arguments);
-		if ($type(childs[0]) == 'string'){
-			$build.apply(element || parent, childs);
-		} else{
-			var collect = childs.map(function(child) {
-				return $build.apply(element || parent, child);
-			});
-			if (!element) return new Elements(collect, true);
-		}
+		var children = (element) ? args.children : $A(arguments);
+		children.each(function(child) {
+			$build.apply(element || parent, child);
+		});
+		if (!element) return new Elements(collect, true);
 	}
 	return (parent) ? element.inject(parent) : element;
 };
