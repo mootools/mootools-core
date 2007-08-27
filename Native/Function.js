@@ -66,13 +66,11 @@ Function.extend({
 	create: function(options){
 		var self = this;
 		options = options || {};
-		options.bind = $pick(options.bind, self); 
-		options.arguments = $splat(options.arguments || null); 
 		return function(event){
-			var args = options.arguments || arguments;
-			if (options.event) args = [event || window.event].concat(args);
+			var args = $splat(options.arguments) || arguments;
+			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
-				return self.apply(options.bind, args);
+				return self.apply($pick(options.bind, self), args);
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);
