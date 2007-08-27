@@ -559,6 +559,11 @@ Array.extend({
 
 });
 
+//Array generics
+['concat', 'join', 'pop', 'push', 'reverse', 'shift', 'slice', 'sort', 'splice', 'unshift'].each(function(prop) {
+	if (!Array[prop]) Array[prop] = Native.generic(prop);
+});
+
 /*
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
