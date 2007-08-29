@@ -4,6 +4,9 @@ Script: Drag.Move.js
 
 License:
 	MIT-style license.
+
+Note:
+	Drag.Move requires an XHTML doctype.
 */
 
 /*
@@ -12,18 +15,18 @@ Class: Drag.Move
 	Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
 	Inherits methods, properties, options and events from <Drag>.
 
-Note:
-	Drag.Move requires an XHTML doctype.
+Syntax:
+	>var myMove = new Drag.Move(myElement[, options]);
 
 Arguments:
-	el - (Element) The Element to apply the drag to.
-	options - (object) [optional] The options object.
+	el - (element) The Element to apply the drag to.
+	options - (object, optional) The options object. See below.
 
 Options:
 	All the base <Drag> options, in addition to:
-	container - (Element) [false] If an Element is passed, drag will be limited to the passed Element's size and position.
-	droppables - (Elements) The Elements to be droppable into the draggable.
-	overflown - (array) Array of nested scrolling containers, see <Element.getPosition>.
+	container - (element) If an Element is passed, drag will be limited to the passed Element's size and position.
+	droppables - (array) The Elements that the draggable can drop into.
+	overflown - (array) Array of nested scrolling containers. See <Element.getPosition>.
 
 Droppables:
 	Interaction with droppable work with events fired on the doppable element or, for 'emptydrop', on the dragged element.
@@ -32,8 +35,7 @@ Droppables:
 
 Example:
 	(start code)
-	var droppables = $$('li.placements');
-	droppables.addEvents({
+	var droppables = $$('li.placements').addEvents({
 		'over': function() {
 			this.addClass('overed');
 		},
@@ -44,15 +46,18 @@ Example:
 			alert(el.id + ' dropped');
 		}
 	});
-	new Drag.Move($('product-placement'), {
+	var myMove = new Drag.Move('product-placement', {
 		'droppables': droppables
 	});
 	(end)
 
-Demos:
-	Drag.Cart - <http://demos.mootools.net/Drag.Cart>
-	Drag.Absolutely - <http://demos.mootools.net/Drag.Absolutely>
-	DragDrop - <http://demos.mootools.net/DragDrop>
+See Also:
+	<Drag>, <$$>, <Element.addEvents>
+
+	Demos:
+		Drag.Cart - <http://demos.mootools.net/Drag.Cart>
+		Drag.Absolutely - <http://demos.mootools.net/Drag.Absolutely>
+		DragDrop - <http://demos.mootools.net/DragDrop>
 
 */
 
@@ -122,6 +127,36 @@ Drag.Move = new Class({
 		return (now.x > el.left && now.x < el.right && now.y < el.bottom && now.y > el.top);
 	},
 
+	/*
+	Property: stop
+		Checks if the Element is above a droppable and fires the drop event. Else, fires the 'emptydrop' event that is attached to this Element. Lastly, calls <Drag.stop> method.
+
+	Syntax:
+		>myMove.stop();
+
+	Returns:
+		(object) This Drag.Move instance.
+
+	Example:
+		(start code)
+		var myElement = $('myElement').addEvent('emptydrop', function(){
+			alert('no drop occurred');
+		});
+
+		var myMove = new Drag.Move(myElement,
+			onSnap: function(){ // due to MooTool's inheritance, all <Drag>'s Events are also available.
+				this.moved = this.moved || 0;
+				this.moved++;
+				if(this.moved > 1000){
+					alert("You've gone far enough.");
+					this.stop();
+				}
+			}
+		(end)
+
+	See Also:
+		<Drag.stop>
+	*/
 	stop: function(){
 		this.checkDroppables();
 		if (this.overed && !this.out) this.overed.fireEvent('drop', [this.element, this]);
@@ -143,8 +178,33 @@ Element.extend({
 	Property: makeDraggable
 		Makes an element draggable with the supplied options.
 
+	Syntax:
+		>var myDrag = myElement.makeDraggable([options]);
+
 	Arguments:
 		options - (object) See <Drag.Move> and <Drag> for acceptable options.
+
+	Returns:
+		(object) A new Drag.Move instance.
+
+	Example:
+		(start code)
+		var myDrag = $('myElement').makeDraggable({
+			snap: 0,
+			onStart: function(){
+				this.moved = 0;
+			},
+			onSnap: function(){
+				this.moved++;
+			},
+			onComplete: function()[
+				alert("You'ved moved: " + this.moved + " times");
+			}
+		});
+		(end)
+
+	See Also:
+		<Drag.Move>, <Drag>, <Options.setOptions>
 	*/
 
 	makeDraggable: function(options){

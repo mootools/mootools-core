@@ -6,22 +6,32 @@ License:
 	MIT-style license.
 
 Credits:
-	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified & optimized to be used with mootools.
+	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
 */
 
 /*
-Class: Fx.Transitions
-	A collection of tweening transitions for use with the <Fx> classes.
+Class: Fx.Transition
+	Returns a <Fx> transition function with 'easeIn', 'easeOut', and 'easeInOut' methods..
+
+Syntax:
+	>var myTransition = new Fx.Transition(transition[, params]);
+
+Arguments:
+	transition - (function) Can be a <Fx.Transitions> function or a user-provided function which will be extended with easing functions.
+	params - (mixed, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
+
+Returns:
+	(function) A function with easing functions.
 
 Example:
-	>//Elastic.easeOut with default values:
-	>new Fx.Style('margin', {transition: Fx.Transitions.Elastic.easeOut});
-	>//Elastic.easeOut with user-defined value for elasticity.
-	> var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
-	>new Fx.Style('margin', {transition: myTransition.easeOut});
+	(start code)
+	//Elastic.easeOut with user-defined value for elasticity.
+	var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
+	var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
+	(end)
 
-See also:
-	http://www.robertpenner.com/easing/
+See Also:
+	<Fx.Transitions>
 */
 
 Fx.Transition = function(transition, params){
@@ -39,11 +49,25 @@ Fx.Transition = function(transition, params){
 	});
 };
 
+
+/*
+Class: Fx.Transitions
+	A collection of tweening transitions for use with the <Fx> classes.
+
+Example:
+	(start code)
+	//Elastic.easeOut with default values:
+	var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
+
+See also:
+	<http://www.robertpenner.com/easing/>, <Element.effect>
+*/
+
 Fx.Transitions = new Abstract({
 
 	/*
 	Property: linear
-		displays a linear transition.
+		Displays a linear transition.
 
 	Graph:
 		(see Linear.png)
@@ -63,7 +87,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Quad
-		displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut
+		Displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut.
 
 	Graph:
 		(see Quad.png)
@@ -73,7 +97,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Cubic
-		displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut
+		Displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut.
 
 	Graph:
 		(see Cubic.png)
@@ -83,7 +107,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Quart
-		displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut
+		Displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut.
 
 	Graph:
 		(see Quart.png)
@@ -93,7 +117,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Quint
-		displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut
+		Displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut.
 
 	Graph:
 		(see Quint.png)
@@ -104,6 +128,8 @@ Fx.Transitions.extend({
 	/*
 	Property: Pow
 		Used to generate Quad, Cubic, Quart and Quint.
+
+	Note:
 		By default is p^6.
 
 	Graph:
@@ -116,7 +142,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Expo
-		displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut
+		Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
 	Graph:
 		(see Expo.png)
@@ -128,7 +154,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Circ
-		displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut
+		Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
 
 	Graph:
 		(see Circ.png)
@@ -138,10 +164,9 @@ Fx.Transitions.extend({
 		return 1 - Math.sin(Math.acos(p));
 	},
 
-
 	/*
 	Property: Sine
-		displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut
+		Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
 	Graph:
 		(see Sine.png)
@@ -153,7 +178,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Back
-		makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut
+		Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
 
 	Graph:
 		(see Back.png)
@@ -166,7 +191,7 @@ Fx.Transitions.extend({
 
 	/*
 	Property: Bounce
-		makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut
+		Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
 
 	Graph:
 		(see Bounce.png)

@@ -95,7 +95,36 @@ var Event = new Class({
 
 	/*
 	Property: stop
-		Stop an Event from propagating and also executes preventDefault
+		Stop an Event from propagating and also executes preventDefault.
+
+	Syntax:
+		>myEvent.stop();
+
+	Returns:
+		(object) This Event instance.
+
+	Example:
+		HTML
+		(start html)
+		<a id="myAnchor" href="http://google.com/">Visit Google.com</a>
+		(end)
+
+		(start code)
+		$('myAnchor').addEvent('click', function(event){
+			event.stop(); // prevent the user from leaving the site.
+			this.setText("Where do you think you're going?"); //'this' is Element that fire's the Event.
+
+			(function(){
+				this.setText("Instead visit the Blog.").setProperty('href', 'http://blog.mootools.net');
+			}).delay(500, this);
+		});
+		(end)
+
+	Note:
+		Returning false within the function can also stop the propagation of the Event.
+
+	See Also:
+		<Element.addEvent>, <Event.stopPropagation>, <Event.preventDefault>, <Function.delay>
 	*/
 
 	stop: function(){
@@ -104,7 +133,36 @@ var Event = new Class({
 
 	/*
 	Property: stopPropagation
-		Cross browser method to stop the propagation of an event (will not allow the event to bubble up through the DOM)
+		Cross browser method to stop the propagation of an event (will not allow the event to bubble up through the DOM).
+
+	Syntax:
+		>myEvent.stopPropagation();
+
+	Returns:
+		(object) This Event object.
+
+	Example:
+		HTML
+		(start code)
+		<!-- #myChild does not cover the same area as myElement. Therefore, the 'click' differs from parent and child depending on the click location. -->
+		<div id="myElement">
+			<div id="myChild"></div>
+		</div>
+		(end)
+
+		(start code)
+		$('myElement').addEvent('click', function(){
+			alert('click');
+			return false; // equivalent to stopPropagation.
+		});
+
+		$('myChild').addEvent('click', function(event){
+			event.stopPropagation(); // this will prevent the event to bubble up, and fire the parent's click event.
+		});
+		(end)
+
+	See Also:
+		<Element.addEvent>, <http://developer.mozilla.org/en/docs/DOM:event.stopPropagation>
 	*/
 
 	stopPropagation: function(){
@@ -115,7 +173,31 @@ var Event = new Class({
 
 	/*
 	Property: preventDefault
-		Cross browser method to prevent the default action of the event
+		Cross browser method to prevent the default action of the event.
+
+	Syntax:
+		>myEvent.preventDefault();
+
+	Returns:
+		(object) This Event object.
+
+	Example:
+		HTML
+		(start html)
+		<!-- credits: mozilla.org/en/docs/DOM:event.preventDefault -->
+		<form>
+			<input id="myCheckbox" type="checkbox" />
+		</form>
+		(end)
+
+		(start code)
+		$('myCheckbox').addEvent('click', function(event){
+			event.preventDefault(); // will not allow the checkbox to be "checked"
+		});
+		(end)
+
+	See Also:
+		<Element.addEvent>, <http://developer.mozilla.org/en/docs/DOM:event.preventDefault>
 	*/
 
 	preventDefault: function(){
@@ -132,7 +214,7 @@ var Event = new Class({
 });
 
 /*
-Property: keys
+Property: Keys
 	You can add additional Event keys codes this way:
 
 Example:
@@ -173,18 +255,39 @@ Client.expand({
 	Property: addEvent
 		Attaches an event listener to a DOM element.
 		The listener has the instance of the Event class as first argument.
-		You can stop the Event by returning false in the listener or calling <Event.stop>.
+
+	Syntax:
+		>myElement.addEvent(type, fn[, nativeType]);
 
 	Arguments:
-		type - (string) [required] The event name to monitor ('click', 'load', etc) without the prefix 'on'.
-		fn - (funtion) [required] The function to execute.
-		nativeType - (number) [optional] Overrides automated native Event check, not needed in most situations. Can be 0, 1 or 2:
+		type - (string) The event name to monitor ('click', 'load', etc) without the prefix 'on'.
+		fn - (funtion) The function to execute.
+		nativeType - (number, optional) Overrides automated native Event check, not needed in most situations.
+
+	nativeType:
+		Can be 0, 1 or 2:
 			0: Event is added without native event listener, can be fired only with <Element.fireEvent>
 			1: Event function is attached with <Element.addListener> to the Element as native event.
 			2: Like 1, but listener also receives the Event instance and can be stopped with return false;
 
+	Returns:
+		(element) This Element.
+
 	Example:
-		>$('myElement').addEvent('click', function(){ alert('clicked!'); });
+		HTML
+		(start html)
+		<div id="myElement">Click me.</div>
+		(end)
+
+		(start code)
+		$('myElement').addEvent('click', function(){ alert('clicked!'); });
+		(end)
+
+	Note:
+		You can stop the Event by returning false in the listener or calling <Event.stop>.
+
+	See Also:
+		<http://www.w3schools.com/html/html_eventattributes.asp>
 	*/
 
 	addEvent: function(type, fn, nativeType){
@@ -227,18 +330,20 @@ Client.expand({
 	Property: removeEvent
 		Works as Element.addEvent, but instead removes the previously added event listener.
 
-	Arguments:
-		type - (string) [required] The event name.
-		fn - (funtion) [required] The function to remove.
+	Syntax:
+		>myElement.removeEvent(type, fn);
 
-	Note:
-		When the function was added using <Function.bind> or <Function.pass> a new reference
-		was created and you can not use removeEvent with the original function.
+	Arguments:
+		type - (string) The event name.
+		fn - (funtion) The function to remove.
+
+	Returns:
+		(element) This Element.
 
 	Example:
 		Standard usage:
 		(start code)
-		var destroy = function(){ alert('Boom: ' + this.id); } // this is the element
+		var destroy = function(){ alert('Boom: ' + this.id); } // this is the Element
 		$('myElement').addEvent('click', destroy);
 		// later in the code
 		$('myElement').removeEvent('click', destroy);
@@ -246,14 +351,18 @@ Client.expand({
 
 		Example with bind:
 		(start code)
-		var destroy = function(){ alert('Boom: ' + this.id); } // this is the element
+		var destroy = function(){ alert('Boom: ' + this.id); } // this is the Element
 		var destroy2 = destroy.bind($('anotherElement'));
-		$('myElement').addEvent('click', destroy2); // this is now another element
+		$('myElement').addEvent('click', destroy2); // this is now another Element
 		// later in the code
 		$('myElement').removeEvent('click', destroy); // DOES NOT WORK
 		$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // DOES ALSO NOT WORK
 		$('myElement').removeEvent('click', destroy2); // Finally, this works
 		(end)
+
+	Note:
+		When the function was added using <Function.bind> or <Function.pass> a new reference
+		was created and you can not use removeEvent with the original function.
 	*/
 
 	removeEvent: function(type, fn){
@@ -273,6 +382,30 @@ Client.expand({
 	/*
 	Property: addEvents
 		As <addEvent>, but accepts an object and add multiple events at once.
+
+	Syntax:
+		>myElement.addEvents(events);
+
+	Arguments:
+		events - (object) An object with key/value representing: key the event name, and value the function that is called when the Event occurs.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		(start code)
+		$('myElement').addEvents({
+			'mouseover': function(){
+				alert('mouse over');
+			},
+			'click': function(){
+				alert('clicked');
+			}
+		});
+		(end)
+
+	See Also:
+		<Element.addEvent>
 	*/
 
 	addEvents: function(events){
@@ -282,10 +415,36 @@ Client.expand({
 
 	/*
 	Property: removeEvents
-		Removes all events of a certain type from an element. if no argument is passed in, removes all events.
+		Removes all events of a certain type from an Element. If no argument is passed in, removes all events.
+
+	Syntax:
+		>myElements.removeEvents([type]);
 
 	Arguments:
-		type - (string) [required] The event name (e.g. 'click')
+		type - (string, optional) The event name (e.g. 'click').
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		var myElement = $('myElement');
+		myElement.addEvents({
+			'mouseover': function(){
+				alert('mouse over');
+			},
+			'click': function(){
+				alert('clicked');
+			}
+		});
+
+		myElement.addEvent('click': function(){ alert('clicked again'); });
+		myElement.addEvent('click': function(){ alert('clicked and again :('); });
+		// addEvent will keep appending each function. Unfortunately for the visitors, that'll be three alerts they'll receive.
+
+		myElement.removeEvents('click'); //ahhh saved the visitor's finger.
+
+	See Also:
+		<Element.removeEvent>
 	*/
 
 	removeEvents: function(type){
@@ -302,12 +461,26 @@ Client.expand({
 
 	/*
 	Property: fireEvent
-		Executes all events of the specified type present in the element.
+		Executes all events of the specified type present in the Element.
+
+	Syntax:
+		>myElement.fireEvent(type[, args[, delay]]);
 
 	Arguments:
-		type - (string) [required] The event name (e.g. 'click')
-		args - (mixed) [optional] Array or single object, arguments to pass to the function; if more than one argument, must be an array.
-		delay - (integer) [optional] Delay (in ms) to wait to execute the event.
+		type - (string) The event name (e.g. 'click')
+		args - (mixed, optional) Array or single object, arguments to pass to the function. If more than one argument, must be an array.
+		delay - (integer, optional) Delay (in ms) to wait to execute the event.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		(start code)
+		$('myElement').fireEvent('click', $('anElement'), 1000);  // Fires all the added 'click' events and passes the element 'anElement' after 1 sec.
+		(end)
+
+	Note:
+		This will not fire the DOM Event (this concerns all inline events ie. onmousedown="..").
 	*/
 
 	fireEvent: function(type, args, delay){
@@ -321,11 +494,23 @@ Client.expand({
 
 	/*
 	Property: cloneEvents
-		Clones all events from an element to this element.
+		Clones all events from an Element to this Element.
+
+	Syntax:
+		>myElement.cloneEvents(from[, type]);
 
 	Arguments:
-		from - (element) [required] Copy all events from this element.
-		type - (string) [optional] Copies only events of this type.
+		from - (element) Copy all events from this Element.
+		type - (string, optional) Copies only events of this type.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		(start code)
+		var myElement = $('myElement');
+		var myClone = myElement.clone().cloneEvents(myElement); //clones the element and its events
+		(end)
 	*/
 
 	cloneEvents: function(from, type){
@@ -359,12 +544,13 @@ Element.Events = new Abstract({
 
 	/*
 	Event: mouseenter
-		In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events
-		this event fires when the mouse enters the area of the dom element;
-		will not be fired again if the mouse crosses over children of the element (unlike mouseover)
+		In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events this event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover)
 
 	Example:
 		>$(myElement).addEvent('mouseenter', myFunction);
+
+	See Also:
+		<Element.addEvent>
 	*/
 
 	'mouseenter': {
@@ -377,10 +563,13 @@ Element.Events = new Abstract({
 
 	/*
 	Event: mouseleave
-		This event fires when the mouse exits the area of the dom element; will not be fired again if the mouse crosses over children of the element (unlike mouseout)
+		This event fires when the mouse exits the area of the dom Element; will not be fired again if the mouse crosses over children of the Element (unlike mouseout)
 
 	Example:
 		>$(myElement).addEvent('mouseleave', myFunction);
+
+	See Also:
+		<Element.addEvent>
 	*/
 
 	'mouseleave': {

@@ -8,16 +8,43 @@ License:
 
 /*
 Class: Fx.Elements
-	Fx.Elements allows you to apply any number of styles transitions to a selection of elements. Includes colors (must be in hex format).
+	Fx.Elements allows you to apply any number of styles transitions to a collection of Elements.
 	Inherits methods, properties, options and events from <Fx>.
 
+Syntax:
+	>myFx = new Fx.Elements(elements[, options]);
+
 Arguments:
-	elements - a collection of elements the effects will be applied to.
-	options - same as <Fx> options.
+	elements - (array) A collection of Elements the effects will be applied to.
+	options - (object, optional) Same as <Fx> options.
+
+Returns:
+	(class) A new Fx.Elements instance.
+
+Example:
+	(start code)
+	var myFx = new Fx.Elements($$('.myElementClass'), {
+		onComplete: function(){
+			alert('complete');
+		}
+	}).start({
+		'0': {
+			'height': [200, 300],
+			'opacity': [0,1]
+		},
+		'1': {
+			'width': [200, 300],
+			'opacity': [1,0]
+		}
+	});
+	(end)
+
+Note:
+	Includes colors but must be in hex format.
 */
 
 Fx.Elements = new Class({
-	
+
 	Extends: Fx,
 
 	initialize: function(elements, options){
@@ -32,6 +59,34 @@ Fx.Elements = new Class({
 		}
 	},
 
+	/*
+	Property: set
+		Applies the passed in style transitions to each object named immediately (see example).
+
+	Syntax:
+		>myFx.set(to);
+
+	Arguments:
+		to - (object) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+
+	Returns:
+		(class) This Fx.Elements instance.
+
+	Example:
+		(start code)
+		var myFx = new Fx.Elements($$('.myClass')).set({
+			'0': {
+				'height': 200,
+				'opacity': 0
+			},
+			'1': {
+				'width': 300,
+				'opacity': 1
+			}
+		});
+		(end)
+	*/
+	
 	set: function(to){
 		var parsed = {};
 		this.css = {};
@@ -45,7 +100,15 @@ Fx.Elements = new Class({
 	/*
 	Property: start
 		Applies the passed in style transitions to each object named (see example).
-		Each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+
+	Syntax:
+		>myFx.start(obj);
+
+	Arguments:
+		obj - (object) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+
+	Returns:
+		(class) This Fx.Elements instance.
 
 	Example:
 		(start code)

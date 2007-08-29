@@ -4,35 +4,38 @@ Script: Fx.Slide.js
 
 License:
 	MIT-style license.
+
+Note:
+	Fx.Slide requires an XHTML doctype.
 */
 
 /*
 Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
-	Inherits methods, properties, options and events from <Fx>.
 
-Note:
-	Fx.Slide requires an XHTML doctype.
-	To create the slide effect an additional Element ('div' by default) is wrapped around the
-	given Element. This wrapper adapts the margin from the Element.
+Syntax:
+	>var myFx = new Fx.Slide(element[, options]);
 
 Arguments:
-	elements - (element) [required] The element to slide.
-	options - (object) [optional] See "Options" below. Also utilizes <Fx> options and events.
+	elements - (element) The element to slide.
+	options - (object, optional) An object for this instance's options. See "Options" below.
 
 Options:
-	mode - (string) ['vertical'] Set it to 'vertical' or 'horizontal'.
-	wrapper - (element) Allows to set another Element as wrapper.
+	mode - (string) String to indicate what type of sliding. Can be set to 'vertical' or 'horizontal' (defaults to 'vertical').
+	wrapper - (element) Allows to set another Element as wrapper (defaults in creating and adapting from current Element).
 
 Properties:
-	open - (boolean) true: the slide element is visible.
+	open - (boolean) Indicates whether the slide element is visible.
 
 Example:
 	(start code)
-	var mySlider = new Fx.Slide('myElement', {duration: 500});
-	mySlider.toggle() //toggle the slider up and down.
-	mySlider.open //true
+	var mySlider = new Fx.Slide('container').hide().toggle().chain(function(){ //hides, toggles (which acts like slideOut), and chains an alert.
+		alert(mySlider.open); //true
+	});
 	(end)
+
+Note:
+	To create the slide effect an additional Element ('div' by default) is wrapped around the given Element. This wrapper adapts the margin from the Element.
 */
 
 Fx.Slide = new Class({
@@ -77,10 +80,23 @@ Fx.Slide = new Class({
 
 	/*
 	Property: slideIn
-		Slides the elements in view horizontally or vertically.
+		Slides the Element in view horizontally or vertically.
+
+	Syntax:
+		>myFx.slideIn([mode]);
 
 	Arguments:
-		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
+		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+
+	Returns:
+		(class) This Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = new Fx.Slide('myElement').slideOut().chain(function(){
+			this.show().slideOut('horizontal');
+		});
+		(end)
 	*/
 
 	slideIn: function(mode){
@@ -90,10 +106,26 @@ Fx.Slide = new Class({
 
 	/*
 	Property: slideOut
-		Sides the elements out of view horizontally or vertically.
+		Slides the Element out of view horizontally or vertically.
+
+	Syntax:
+		>myFx.slideOut([mode]);
 
 	Arguments:
-		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
+		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+
+	Returns:
+		(class) This Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = new Fx.Slide('myElement', {
+			mode: 'horizontal',
+			onComplete: function(){ // due to inheritance we have all the <Fx> Options.
+				alert('poof!');
+			}
+		}).slideOut();
+		(end)
 	*/
 
 	slideOut: function(mode){
@@ -105,8 +137,24 @@ Fx.Slide = new Class({
 	Property: hide
 		Hides the element without a transition.
 
+	Syntax:
+		>myFx.hide([mode]);
+
 	Arguments:
-		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
+		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+
+	Returns:
+		(class) This Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = new Fx.Slide('myElement', {
+			duration: 1000,
+			transition: Fx.Transitions.Bounce.easeOut
+		});
+
+		myFx.hide().slideIn(); //automatically hide and show myElement.
+		(end)
 	*/
 
 	hide: function(mode){
@@ -119,8 +167,26 @@ Fx.Slide = new Class({
 	Property: show
 		Shows the element without a transition.
 
+	Syntax:
+		>myFx.show([mode]);
+
 	Arguments:
-		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
+		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+
+	Returns:
+		(class) This Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = new Fx.Slide('myElement', {
+			duration: 1000,
+			transition: Fx.Transitions.Bounce.easeOut
+		});
+
+		myFx.slideOut().chain(function(){
+			this.show.delay(1000, this); //after 1sec show the slid Element.
+		});
+		(end)
 	*/
 
 	show: function(mode){
@@ -131,11 +197,26 @@ Fx.Slide = new Class({
 
 	/*
 	Property: toggle
-		Slides in or Out the element, depending on its state
+		Slides in or Out the element depending on its state.
+
+	Syntax:
+		>myFx.toggle([mode]);
 
 	Arguments:
-		mode - (optional, string) 'horizontal' or 'vertical'; defaults to options.mode.
+		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
+	Returns:
+		(class) This Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = new Fx.Slide('myElement', {
+			duration: 1000,
+			transition: Fx.Transitions.Pow.easeOut
+		});
+
+		myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
+		(end)
 	*/
 
 	toggle: function(mode){
@@ -163,4 +244,140 @@ $each(Fx.Slide.Accessory, function(method, accessory){
 		return slide[method]();
 	};
 });
-Element.extend(Fx.Slide.Accessory);
+
+Element.extend(
+	Fx.Slide.Accessory
+
+	/*
+	Property: slideIn
+		Slides this Element in view horizontally or vertically.
+
+	Syntax:
+		>myElement.slideIn([options]);
+
+	Arguments:
+		options - (object, optional) The <Fx.Slide> options parameter.
+
+	Returns:
+		(class) An Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = $('myElement').slideHide().slideIn();
+		(end)
+
+	See Also:
+		<Fx.Slide.slideIn>
+	*/
+
+	//auto generated
+
+	/*
+	Property: slideOut
+		Slides this Element out of view horizontally or vertically.
+
+	Syntax:
+		>myElement.slideOut([options]);
+
+	Arguments:
+		options - (object, optional) The <Fx.Slide> options parameter.
+
+	Returns:
+		(class) An Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = $('myElement').slideOut({
+			duration: 1000,
+			transition: Fx.Transitions.Sine.easeOut
+		});
+		(end)
+
+	See Also:
+		<Fx.Slide.slideOut>
+	*/
+
+	//auto generated
+
+	/*
+	Property: slideHide
+		Hides this element without a transition.
+
+	Syntax:
+		>myElement.slideHide([options]);
+
+	Arguments:
+		options - (object, optional) The <Fx.Slide> options parameter.
+
+	Returns:
+		(class) An Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = $('myElement').slideHide({
+			duration: 1000,
+			transition: Fx.Transitions.Bounce.easeOut
+		}).slideIn(); //automatically hide and show myElement.
+		(end)
+
+	See Also:
+		<Fx.Slide.hide>
+	*/
+
+	//auto generated
+
+	/*
+	Property: slideShow
+		Shows this element without a transition.
+
+	Syntax:
+		>myElement.slideShow([options]);
+
+	Arguments:
+		options - (object, optional) The <Fx.Slide> options parameter.
+
+	Returns:
+		(class) An Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myElement = $('myElement');
+		myElement.slideHide().chain(function(){
+			myElement.slideShow.delay(1000, myElement);
+		});
+		(end)
+
+	See Also:
+		<Fx.Slide.show>
+	*/
+
+	//auto generated
+
+	/*
+	Property: slideToggle
+		Slides in or Out this element depending on its state.
+
+	Syntax:
+		>myElement.slideToggle([options]);
+
+	Arguments:
+		options - (object, optional) The <Fx.Slide> options parameter.
+
+	Returns:
+		(class) An Fx.Slide instance.
+
+	Example:
+		(start code)
+		var myFx = $('myElement').slideToggle({
+			duration: 1000,
+			transition: Fx.Transitions.Pow.easeOut
+		}).chain(myFx.toggle); // toggle the between slideIn and Out twice. Note that myFx becomes an instance of Fx.Slide therefore toggle becomes available.
+		(end)
+
+	See Also:
+		<Fx.Slide.toggle>
+	*/
+
+	//auto generated
+
+);

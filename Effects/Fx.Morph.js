@@ -8,8 +8,23 @@ License:
 
 /*
 Class: Fx.Morph
-	Smoothly Morph the element reflecting the properties of a specified class name defined in anywhere in the CSS.
-	Inherits methods, properties, options and events from <Fx.Styles>.
+	Smoothly Morph the Element reflecting the properties of a specified class name defined in anywhere in the CSS.
+
+Syntax:
+	>var myFx = new Fx.Morph(el[, options]);
+
+Arguments:
+	el - (mixed) A string ID of the Element or an Element to apply the style transitions to.
+	options - (object, optional) The <Fx> options object.
+
+Returns:
+	(class) A new Fx.Morph class instance.
+
+Example:
+	(start code)
+	var myMorph = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+	myMorph.start('myClassName');
+	(end)
 
 Notes:
 	- This is still a wip.
@@ -17,12 +32,8 @@ Notes:
 	- The className will NOT be added onComplete.
 	- This Effect is intended to work only with properties found in external styesheet. For custom properties see <Fx.Styles>
 
-Arguments:
-	el - the $(element) to apply the style transition to
-
-Example:
-	>var myMorph = new Fx.Morph('myElement', {duration:500});
-	>myMorph.start('myClassName');
+See Also:
+	<http://www.w3.org/TR/CSS21/propidx.html>, <Fx.Styles>
 */
 
 Fx.Morph = new Class({
@@ -33,12 +44,19 @@ Fx.Morph = new Class({
 	Property: start
 		Executes a transition to the current properties of the specified className.
 
+	Syntax:
+		>myFx.start(className);
+
 	Arguments:
-		obj - an object containing keys that specify css properties to alter and values that specify either the from/to values (as an array)
-		or just the end value (an integer).
+		className - (string) The string of the CSS class to match.
+
+	Returns:
+		(class) This Fx.Morph class instance.
 
 	Example:
-		see <Fx.Styles>
+		(start code)
+		var myFx = new Fx.Morph('myElement').start('.myClass');
+		(end)
 	*/
 
 	start: function(className){
@@ -62,6 +80,34 @@ Fx.Morph = new Class({
 
 Element.extend({
 
+	/*
+	Property: morph
+		Transform this Element to the CSS properties as defined by the className.
+
+	Syntax:
+		>myElement.morph(className[, options]);
+
+	Arguments:
+		className - (string) The string of the CSS class to match.
+		options - (object, optional) The <Fx> options object.
+
+	Returns:
+		(class) A Fx.Morph instance.
+
+	Example:
+		(start code)
+		var myFx = $('myElement', {
+			duration: 1000,
+			transition: Fx.Transitions.Pow.easeOut,
+			onStart: function(){
+				alert("It's morphing time!");
+			},
+			onComplete: function(){
+				alert("Go Power Mooers! Go!");
+			}
+		}).morph('.myClass');
+		(end)
+	*/
 	morph: function(className, options){
 		var morph = this.$attributes.morph;
 		if (!morph) this.$attributes.morph = new Fx.Morph(this, {wait: false});

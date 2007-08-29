@@ -11,7 +11,10 @@ Credits:
 
 /*
 Class: Element
-	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
+	Custom class to allow all of its methods to be used with any DOM Element via the dollar function <$>.
+
+See Also:
+	<$>
 */
 
 var Element = function(el, props){
@@ -20,9 +23,12 @@ var Element = function(el, props){
 	Property: initialize
 		Creates a new Element of the type passed in.
 
+	Syntax:
+		>var myEl = new Element(el[, props]);
+
 	Arguments:
 		el - (mixed) The tag name for the Element to be created.  It's also possible to add an Element for reference, in which case it will be extended.
-		props - (object) [optional] The properties to be added to the new Element. Accepts the same keys as <Element.setProperties>, as well as Events and styles.
+		props - (object, optional) The properties to be added to the new Element. Accepts the same keys as <Element.setProperties>, as well as Events and styles.
 
 	Props:
 		The key styles will be used as setStyles, the key events will be used as addEvents. Any other key is used as setProperty.
@@ -45,8 +51,10 @@ var Element = function(el, props){
 			'class': 'myClassSuperClass',
 			'href': 'http://mad4milk.net'
 		});
-
 		(end)
+
+	See Also:
+		<Element.set>
 	*/
 
 	if ($type(el) == 'string'){
@@ -67,20 +75,32 @@ Element.prototype = HTMLElement.prototype;
 
 /*
 Class: Elements
-	- In Mootools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
+	- In MooTools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
 	- The purpose of the Elements class is to allow <Element> methods to work also on <Elements> array.
-	- Because Elements is an Array, it accepts all the <Arrray> methods.
+	- Because Elements is an Array, it accepts all the <Array> methods.
 	- Array methods have priority, so overlapping Element methods (remove, getLast) are changed to "method + Elements" (removeElements, getLastElements).
 	- Every node of the Elements instance is already extended with <$>.
 
-Example:
-	The following code would set the color of every paragraph to 'red'.
-	>$$('p').each(function(el){
-	>  el.setStyle('color', 'red');
-	>});
+Syntax:
+	>var myElements = new Elements([elements[, nocheck]]);
 
-	However, because $$('myselector') also accepts <Element> methods, the below example would have the same effect as the one above.
-	>$$('p').setStyle('color', 'red');
+Arguments:
+	elements - (array)
+	nocheck - (boolean)
+
+Returns:
+	(array) An extended array with the Elements methods.
+
+Example:
+	(start code);
+	//The following code would set the color of every paragraph to 'red'.
+	$$('p').each(function(el){
+	  el.setStyle('color', 'red');
+	});
+
+	//However, because $$('myselector') also accepts <Element> methods, the below example would have the same effect as the one above.
+	$$('p').setStyle('color', 'red');
+	(end)
 */
 
 var Elements = function(elements, nocheck){
@@ -102,24 +122,30 @@ var Elements = function(elements, nocheck){
 Section: Utility Functions
 
 Function: $
-	Returns the element passed in with all the Element prototypes applied.
+	Returns the Element passed in with all the Element prototypes applied.
+
+Syntax:
+	>var myEl = $(el);
 
 Arguments:
-	el - (mixed) A string containing the id of the DOM element desired or a reference to an actual DOM element.
+	el - (mixed) A string containing the id of the DOM Element desired or a reference to an actual DOM Element.
 
 Example:
-	>$('myElement') // gets a DOM element by id with all the Element prototypes applied.
+	(start code)
+	>$('myElement') // gets a DOM Element by id with all the Element prototypes applied.
 	>var div = document.getElementById('myElement');
 	>$(div) //returns an Element also with all the mootools extensions applied.
 
-	You'll use this when you aren't sure if a variable is an actual element or an id, as
+	You'll use this when you aren't sure if a variable is an actual Element or an id, as
 	well as just shorthand for document.getElementById().
+	(end)
 
 Returns:
-	a DOM element or false (if no id was found).
+	a DOM Element or false (if no id was found).
 
 Note:
-	While the $ function needs to be called only once on an element in order to get all the prototypes, extended Elements can be passed to this function multiple times without ill effects.
+	 - While the $ function needs to be called only once on an Element in order to get all the prototypes, extended Elements can be passed to this function multiple times without ill effects.
+	 - Any Element whose tags are considered "bad" will not be extended. See: <Element.$badTags>
 */
 
 function $(el){
@@ -138,43 +164,43 @@ function $(el){
 	return Garbage.collect(el);
 };
 
+document.getElementsBySelector = document.getElementsByTagName;
+
 /*
 Function: $$
-	Selects, and extends DOM elements. Elements arrays returned with $$ will also accept all the <Element> methods.
-	The return type of element methods run through $$ is always an array. If the return array is only made by elements,
+	Selects, and extends DOM Elements. Elements arrays returned with $$ will also accept all the <Element> methods.
+	The return type of Element methods run through $$ is always an array. If the return array is only made by Elements,
 	$$ will be applied automatically.
 
+Syntax:
+	>var elements = $$(selector, [selector2[, selector3[, ...]]]);
+
 Arguments:
-	HTML Collections, arrays of elements, arrays of strings as element ids, elements, strings as selectors.
+	HTML Collections, arrays of Elements, arrays of strings as Element ids, Elements, strings as selectors.
 	Any number of the above as arguments are accepted.
 
 Note:
-	if you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
+	If you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 
 Example:
+	(start code)
+	$$('a'); //returns an array of all anchor tags on the page.
 
-	>$$('a');
-	Returns an array of all anchor tags on the page.
+	$$('a', 'b'); //returns an array of all anchor and bold tags on the page.
 
-	>$$('a', 'b');
-	Returns an array of all anchor and bold tags on the page.
+	$$('#myElement'); //returns an array containing only the Element with id = myElement (requires Element.Selectors.js).
 
-	>$$('#myElement');
-	Returns an array containing only the element with id = myElement (requires Element.Selectors.js).
+	$$('#myElement a.myClass'); //returns an array of all anchor tags with the class "myClass" within the DOM Element with id "myElement" (requires Element.Selectors.js).
+	(end)
 
-	>$$('#myElement a.myClass');
-	Returns an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (requires Element.Selectors.js).
-
-	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
-	Returns a collection of the element referenced as myelement, the element referenced as myelement2, all of the link tags on the page,
-	the element with the id 'myid', followed by the elements with the ids of 'myid2' and 'myid3', and finally all the div elements on the page.
-	NOTE: If an element is not found, nothing will be included into the array (not even *null*).
+	Returns a collection of the Element referenced as myelement, the Element referenced as myelement2, all of the anchor tags on the page, the Element with the id 'myid', followed by the Elements with the ids of 'myid2' and 'myid3', and finally all the div Elements on the page. NOTE: If an Element is not found, nothing will be included into the array (not even *null*).
+	(start code)
+	$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
+	(end)
 
 Returns:
-	array - array of all the dom elements matched, extended with <$>.  Returns as <Elements>.
+	(array) An array of all the dom Elements matched with all its items extended with <$>.  Returns as <Elements>.
 */
-
-document.getElementsBySelector = document.getElementsByTagName;
 
 function $$(){
 	var elements = [];
@@ -211,6 +237,7 @@ Elements.extend = function(properties){
 	}
 };
 
+
 Elements.$multiply = function(property){
 	return function(){
 		var items = [];
@@ -236,14 +263,64 @@ Element.Setters.properties = Element.Setters.attributes;
 
 /*
 Class: Element
-	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
+	Custom class to allow all of its methods to be used with any DOM Element via the dollar function <$>.
 */
 
 Element.extend({
 
+	/*
+	Property: getElement
+		Searches all descendents for the first Element whose tag matches the tag provided. getElement method will also automatically extend the Element.
+
+	Syntax:
+		>var element = myElement.getElement(tag);
+
+	Arguments:
+		tag - (string) String of the tag to match.
+
+	Returns:
+		(mixed) If found returns an extended Element, else returns null.
+
+	Example:
+		(start code)
+		var body = $(document.body);
+		var firstDiv = body.getElement('div');
+		// or
+		var firstDiv = $(document.body).getElement('div');
+		(end)
+
+	Note:
+		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElement so that it maches with CSS selectors.
+	*/
+
 	getElement: function(tag){
 		return $(this.getElementsByTagName(tag)[0] || null);
 	},
+
+	/*
+	Property: getElements
+		Searches and returns all descendant Elements that match the tag provided.
+
+	Syntax:
+		>var elements = myElement.getElements(tag);
+
+	Arguments:
+		tag - (string) String of the tag to match.
+
+	Returns:
+		(array) An array of all matched Elements. If none of the descendants matched the tag, will return an empty array.
+
+	Example:
+		(start code)
+		var body = $(document.body);
+		var allAnchors = body.getElements('a');
+		// or
+		var allAnchors = $(document.body).getElement('a');
+		(end)
+
+	Note:
+		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElements so that it maches with CSS selectors.
+	*/
 
 	getElements: function(tag){
 		return $$(this.getElementsByTagName(tag));
@@ -251,9 +328,36 @@ Element.extend({
 
 	/*
 	Property: set
-		you can set events, styles and properties with this shortcut. same as calling new Element.
-	*/
+		With this method you can set events, styles and properties to the Element (same as calling new Element with the second paramater).
 
+	Syntax:
+		>myElement.set(props);
+
+	Arguments:
+		props - (object) An object with various properties used to modify the current Element. Keyword properties are: 'styles' and 'events' all other are considered properties. See also: new <Element>
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		(start code)
+		var body = $(document.body);
+		body.set({
+			'styles': { // property styles passes the object to <Element.setStyles>
+				'font': '12px Arial',
+				'color': 'blue'
+			},
+			'events': { // property events passes the object to <Element.addEvents>
+				'click': function(){ alert('click'); },
+				'scroll': function(){
+			},
+			'id': 'documentBody' //any other property uses setProperty
+		});
+		(end)
+
+	See Also:
+		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>
+	*/
 	set: function(props){
 		for (var prop in props){
 			if (Element.Setters[prop]) Element.Setters[prop].call(this, props[prop]);
@@ -261,6 +365,34 @@ Element.extend({
 		}
 		return this;
 	},
+
+	/*
+	Property: inject
+		Injects, or inserts, the Element at a particular place relative to the Element's children (specified by the second the paramter).
+
+	Syntax:
+		>myElement.inject(el[, where]);
+
+	Arguments:
+		el    - (mixed) el can be: the string of the id of the Element or an Element.
+		where - (string, optional) The place to inject this Element to (defaults to the bottom of the el's child nodes).
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		(start code)
+		var myDiv = new Element('div', {id: 'mydiv'});
+		myDiv.inject(document.body);
+		// or inline
+		var myDiv = new Element('div', {id: 'mydiv'}).inject(document.body);
+
+		new Element('a').inject('mydiv'); // is also valid since myDiv is now inside the body
+		(end)
+
+	See Also:
+		<Element.adopt>
+	*/
 
 	inject: function(el, where){
 		el = $(el);
@@ -284,22 +416,36 @@ Element.extend({
 
 	/*
 	Property: injectBefore
-		Inserts the Element before the passed element.
+		Inserts the Element before the passed Element.
+
+	Syntax:
+		>myElement.injectBefore(el);
 
 	Arguments:
-		el - (mixed) An element reference or the id of the Element to be injected before.
+		el - (mixed) An Element reference or the id of the Element to be injected before.
+
+	Returns:
+		(element) This Element.
 
 	Example:
-		><div id="myElement"></div>
-		><div id="mySecondElement"></div>
 		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		(end)
 
-		>$('mySecondElement').injectBefore('myElement');
-		JS
+		(start code)
+		$('mySecondElement').injectBefore('myElement');
+		(end)
 
-		><div id="mySecondElement"></div>
-		><div id="myElement"></div>
-		Resulting HTML
+		Result
+		(start html)
+		<div id="mySecondElement"></div>
+		<div id="myElement"></div>
+		(end)
+
+	See Also:
+		<Element.inject>
 	*/
 
 	injectBefore: function(el){
@@ -308,10 +454,36 @@ Element.extend({
 
 	/*
 	Property: injectAfter
-		Inserts the Element after the passed element.
+		Inserts the Element after the passed Element.
+
+	Syntax:
+		>myElement.injectAfter(el);
 
 	Arguments:
-		el - (mixed) An element reference or the id of the Element to be injected afer.
+		el - (mixed) An Element reference or the id of the Element to be injected after.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="mySecondElement"></div>
+		<div id="myElement"></div>
+		(end)
+
+		(start code)
+		$('mySecondElement').injectBefore('myElement');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		(end)
+
+	See Also:
+		<Element.inject>, <Element.injectBefore>
 	*/
 
 	injectAfter: function(el){
@@ -320,7 +492,37 @@ Element.extend({
 
 	/*
 	Property: injectInside
-		Same as <Element.injectBefore>, but inserts the element inside.
+		Injects the Element inside and at the end of the child nodes of the passed in Element.
+
+	Syntax:
+		>myElement.injectInside(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected inside.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		(end)
+
+		(start code)
+		$('mySecondElement').injectInside('myElement');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement">
+			<div id="mySecondElement"></div>
+		</div>
+		(end)
+
+	See Also:
+		<Element.inject>
 	*/
 
 	injectInside: function(el){
@@ -329,7 +531,42 @@ Element.extend({
 
 	/*
 	Property: injectTop
-		Same as <Element.injectInside>, but inserts the element inside, at the top.
+		Same as <Element.injectInside>, but inserts the Element inside, at the top.
+
+	Syntax:
+		>myElement.injectTop(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected top.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div id="mySecondElement"></div>
+			<div id="myThirdElement"></div>
+		</div>
+		<div id="myFourthElement"></div>
+		(end)
+
+		(start code)
+		$('myFourthElement').injectTop('myElement');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement">
+			<div id="myFourthElement"></div>
+			<div id="mySecondElement"></div>
+			<div id="myThirdElement"></div>
+		</div>
+		(end)
+
+	See Also:
+		<Element.inject>
 	*/
 
 	injectTop: function(el){
@@ -338,10 +575,41 @@ Element.extend({
 
 	/*
 	Property: adopt
-		Inserts the passed elements inside the Element.
+		Inserts the passed Elements inside the Element.
+
+	Syntax:
+		>myElement.adopt(el[, el2[, ...]]);
 
 	Arguments:
-		accepts elements references, element ids as string, selectors ($$('stuff')) / array of elements, array of ids as strings and collections.
+		Accepts Elements references, Element ids as string, selectors ($$('stuff')) / array of Elements, array of ids as strings and collections.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		<div id="myThirdElement"></div>
+		<div id="myFourthElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').adopt('mySecondElement', 'myThirdElement', 'myFourthElement');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement">
+			<div id="myFourthElement"></div>
+			<div id="mySecondElement"></div>
+			<div id="myThirdElement"></div>
+		</div>
+		(end)
+
+	See Also:
+		<Element.inject>
 	*/
 
 	adopt: function(){
@@ -357,11 +625,33 @@ Element.extend({
 	Property: remove
 		Removes the Element from the DOM.
 
+	Syntax:
+		>var removedElement = myElement.remove();
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').remove() //bye bye
+		(end)
+
+		Results
+		(start html)
+		<div id="mySecondElement"></div>
+		(end)
+
 	Note:
 		For <Elements> this method is named removeElements, because <Array.remove> has priority.
 
-	Example:
-		>$('myElement').remove() //bye bye
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.removeChild>
 	*/
 
 	remove: function(){
@@ -372,15 +662,36 @@ Element.extend({
 	Property: clone
 		Clones the Element and returns the cloned one.
 
+	Syntax:
+		>var copy = myElement.clone([contents]);
+
 	Arguments:
-		contents - boolean, when true the Element is cloned with childNodes, default true
+		contents - (boolean, optional) When true the Element is cloned with childNodes, default true
 
 	Returns:
-		the cloned element
+		(element) The cloned Element without Events.
 
 	Example:
-		>var clone = $('myElement').clone().injectAfter('myElement');
-		>//clones the Element and append the clone after the Element.
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		(end)
+
+		(start code)
+		var clone = $('myElement').clone().injectAfter('myElement'); //clones the Element and append the clone after the Element.
+		(end)
+
+		Results:
+		(start html)
+		<div id="myElement"></div>
+		<div id=""></div>
+		(end)
+
+	Note:
+		The returned Element does not have an attached events. To clone the events use <Element.cloneEvents>.
+
+	See Also:
+		<Element.cloneEvents>
 	*/
 
 	clone: function(contents){
@@ -396,17 +707,22 @@ Element.extend({
 
 	/*
 	Property: replaceWith
-		Replaces the Element with an element passed.
+		Replaces the Element with an Element passed.
+
+	Syntax:
+		>var replacingElement = myElement.replaceWidth(el);
 
 	Arguments:
-		el - a string representing the element to be injected in (myElementId, or div), or an element reference.
-		If you pass div or another tag, the element will be created.
+		el - (mixed) A string id representing the Element to be injected in, or an Element reference. In addition, if you pass div or another tag, the Element will be created.
 
 	Returns:
-		the passed in element
+		(element) The passed in Element.
 
 	Example:
 		>$('myOldElement').replaceWith($('myNewElement')); //$('myOldElement') is gone, and $('myNewElement') is in its place.
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.replaceChild>
 	*/
 
 	replaceWith: function(el){
@@ -417,14 +733,30 @@ Element.extend({
 
 	/*
 	Property: appendText
-		Appends text node to a DOM element.
+		Appends text node to a DOM Element.
+
+	Syntax:
+		>myElement.appendText(text);
 
 	Arguments:
-		text - the text to append.
+		text - (string) The text to append.
+
+	Returns:
+		(element) This Element.
 
 	Example:
-		><div id="myElement">hey</div>
-		>$('myElement').appendText(' howdy'); //myElement innerHTML is now "hey howdy"
+		HTML
+		(start html)
+		<div id="myElement">hey</div>
+		(end)
+
+		(start code)
+		$('myElement').appendText(' howdy'); //myElement innerHTML is now "hey howdy"
+		(end)
+
+		(start html)
+		<div id="myElement">hey howdy</div>
+		(end)
 	*/
 
 	appendText: function(text){
@@ -436,16 +768,23 @@ Element.extend({
 	Property: hasClass
 		Tests the Element to see if it has the passed in className.
 
-	Returns:
-		true - the Element has the class
-		false - it doesn't
+	Syntax:
+		>var result = myElement.hasClass(className);
 
 	Arguments:
-		className - string; the class name to test.
+		className - (string) The class name to test.
+
+	Returns:
+		(boolean) Returns true if the Element has the class, otherwise false.
 
 	Example:
-		><div id="myElement" class="testClass"></div>
-		>$('myElement').hasClass('testClass'); //returns true
+		(start html)
+		<div id="myElement" class="testClass"></div>
+		(end)
+
+		(start code)
+		$('myElement').hasClass('testClass'); //returns true
+		(end)
 	*/
 
 	hasClass: function(className){
@@ -454,14 +793,31 @@ Element.extend({
 
 	/*
 	Property: addClass
-		Adds the passed in class to the Element, if the element doesnt already have it.
+		Adds the passed in class to the Element, if the Element doesnt already have it.
+
+	Syntax:
+		>myElement.addClass(className);
 
 	Arguments:
-		className - string; the class name to add
+		className - (string) The class name to add.
+
+	Returns:
+		(element) This Element.
 
 	Example:
-		><div id="myElement" class="testClass"></div>
-		>$('myElement').addClass('newClass'); //<div id="myElement" class="testClass newClass"></div>
+		HTML
+		(start html)
+		<div id="myElement" class="testClass"></div>
+		(end)
+
+		(start code)
+		$('myElement').addClass('newClass');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement" class="testClass newClass"></div>
+		(end)
 	*/
 
 	addClass: function(className){
@@ -471,7 +827,31 @@ Element.extend({
 
 	/*
 	Property: removeClass
-		Works like <Element.addClass>, but removes the class from the element.
+		Works like <Element.addClass>, but removes the class from the Element.
+
+	Syntax:
+		>myElement.removeClass(className);
+
+	Arguments:
+		className - (string) The class name to remove.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement" class="testClass newClass"></div>
+		(end)
+
+		(start code)
+		$('myElement').removeClass('newClass');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement" class="testClass"></div>
+		(end)
 	*/
 
 	removeClass: function(className){
@@ -481,21 +861,43 @@ Element.extend({
 
 	/*
 	Property: toggleClass
-		Adds or removes the passed in class name to the element, depending on if it's present or not.
+		Adds or removes the passed in class name to the Element, depending on if it's present or not.
+
+	Syntax:
+		>myElement.toggleClass(className);
 
 	Arguments:
-		className - the class to add or remove
+		className - (string) The class to add or remove.
+
+	Returns:
+		(element) This Element.
 
 	Example:
-		><div id="myElement" class="myClass"></div>
-		>$('myElement').toggleClass('myClass');
-		><div id="myElement" class=""></div>
-		>$('myElement').toggleClass('myClass');
-		><div id="myElement" class="myClass"></div>
+		(start html)
+		<div id="myElement" class="myClass"></div>
+		(end)
+
+		(start code)
+		$('myElement').toggleClass('myClass');
+		(end)
+
+		Results
+		(start html)
+		<div id="myElement" class=""></div>
+		(end)
+
+		(start code)
+		$('myElement').toggleClass('myClass');
+		(end)
+
+		Results
+		(start html)
+		<div id="myElement" class="myClass"></div>
+		(end)
 	*/
 
 	toggleClass: function(className){
-		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
+		return this[this.hasClass(className) ? 'removeClass' : 'addClass'](className);
 	},
 
 	walk: function(brother, start){
@@ -507,13 +909,32 @@ Element.extend({
 
 	/*
 	Property: getPrevious
-		Returns the previousSibling of the Element, excluding text nodes.
+		Returns the previousSibling of the Element (excluding text nodes).
 
-	Example:
-		>$('myElement').getPrevious(); //get the previous DOM element from myElement
+	Syntax:
+		>var previousSibling = myElement.getPrevious();
 
 	Returns:
-		the sibling element or undefined if none found.
+		(mixed) The previous sibling Element, or returns null if none found.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		(end)
+
+		(start code)
+		$('mySecondElement').getPrevious().remove(); //get the previous DOM Element from mySecondElement and removes.
+		(end)
+
+		Result
+		(start html)
+		<div id="mySecondElement"></div>
+		(end)
+
+		See Also:
+			<Element.remove>
 	*/
 
 	getPrevious: function(){
@@ -522,7 +943,33 @@ Element.extend({
 
 	/*
 	Property: getNext
-		Works as Element.getPrevious, but tries to find the nextSibling.
+		Works as Element.getPrevious, but tries to find the nextSibling (excluding text nodes).
+
+	Syntax:
+		>var nextSibling = myElement.getNext();
+
+	Returns:
+		(mixed) The next sibling Element, or returns null if none found.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').getNext().addClass('found'); //get the next DOM Element from myElement and adds class 'found'.
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement" class="found"></div>
+		(end)
+
+	See Also:
+		<Element.addClass>
 	*/
 
 	getNext: function(){
@@ -531,7 +978,36 @@ Element.extend({
 
 	/*
 	Property: getFirst
-		Works as <Element.getPrevious>, but tries to find the firstChild.
+		Works as <Element.getPrevious>, but tries to find the firstChild (excluding text nodes).
+
+	Syntax:
+		>var firstElement = myElement.getFirst();
+
+	Returns:
+		(mixed) The first sibling Element, or returns null if none found.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		<div id="myThirdElement"></div>
+		(end)
+
+		(start code)
+		$('myThirdElement').getFirst().inject('mySecondElement'); //gets the first DOM Element from myThirdElement and injects inside mySecondElement.
+		(end)
+
+		Result
+		(start html)
+		<div id="mySecondElement">
+			<div id="myElement"></div>
+		</div>
+		<div id="myThirdElement"></div>
+		(end)
+
+	See Also:
+		<Element.inject>
 	*/
 
 	getFirst: function(){
@@ -542,8 +1018,37 @@ Element.extend({
 	Property: getLast
 		Works as <Element.getPrevious>, but tries to find the lastChild.
 
+	Syntax:
+		>var lastElement = myElement.getLast();
+
+	Returns:
+		(mixed) The first sibling Element, or returns null if none found.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		<div id="mySecondElement"></div>
+		<div id="myThirdElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').getLast().adopt('mySecondElement'); //gets the last DOM Element from myElement and adopts mySecondElement.
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement"></div>
+		<div id="myThirdElement">
+			<div id="mySecondElement"></div>
+		</div>
+		(end)
+
 	Note:
 		For <Elements> this method is named getLastElements, because <Array.getLast> has priority.
+
+	See Also:
+		<Element.adopt>
 	*/
 
 	getLast: function(){
@@ -552,7 +1057,34 @@ Element.extend({
 
 	/*
 	Property: getParent
-		returns the $(element.parentNode)
+		Returns the parent node extended.
+
+	Syntax:
+		>var parent = myElement.getParent();
+
+	Returns:
+		(element) This Element's parent.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div id="mySecondElement"></div>
+		</div>
+		(end)
+
+		(start code)
+		$('mySecondElement').getParent().addClass('papa');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement" class="papa">
+			<div id="mySecondElement"></div>
+		</div>
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.parentNode>
 	*/
 
 	getParent: function(){
@@ -561,7 +1093,34 @@ Element.extend({
 
 	/*
 	Property: getChildren
-		returns all the $(element.childNodes), excluding text nodes. Returns as <Elements>.
+		Returns all the Element's children (excluding text nodes). Returns as <Elements>.
+
+	Syntax:
+		>var children = myElement.getChildren();
+
+	Returns:
+		(array) A <Elements> array with all of the Element's children except the text nodes.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div id="mySecondElement"></div>
+			<div id="myThirdElement"></div>
+		</div>
+		(end)
+
+		(start code)
+		$('myElement').getChildren().removeElements(); // notice how <Element.remove> is renamed removeElements due to Array precedence.
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement"></div>
+		(end)
+
+	See Also:
+		<Elements>, <Elements.remove>
 	*/
 
 	getChildren: function(){
@@ -570,7 +1129,28 @@ Element.extend({
 
 	/*
 	Property: hasChild
-		returns true if the passed in element is a child of the $(element).
+		Checks all children (including text nodes) for a match.
+
+	Syntax:
+		>var result = myElement.hasChild(el);
+
+	Arguments:
+		el - (mixed) Can be a Element reference or string id.
+
+	Returns:
+		(boolean) Returns true if the passed in Element is a child of the Element, otherwise false.
+
+	Example:
+		HTML
+		(start html)
+		<div id="Darth_Vader">
+			<div id="Luke"></div>
+		</div>
+		(end)
+
+		(start code)
+		if($('Darth_Vader').hasChild('Luke')) alert('Luke, I am your father.'); // tan tan tannn.....
+		(end)
 	*/
 
 	hasChild: function(el){
@@ -581,14 +1161,24 @@ Element.extend({
 	Property: getProperty
 		Gets the an attribute of the Element.
 
-	Arguments:
-		property - string; the attribute to retrieve
+	Syntax:
+		>myElement.getProperty(property);
 
-	Example:
-		>$('myImage').getProperty('src') // returns whatever.gif
+	Arguments:
+		property - (string) The attribute to retrieve.
 
 	Returns:
-		the value, or an empty string
+		(mixed) The value of the property, or an empty string.
+
+	Example:
+		HTML
+		(start html)
+		<img id="myImage" src="mootools.png" />
+		(end)
+
+		(start code)
+		$('myImage').getProperty('src') // returns mootools.png
+		(end)
 	*/
 
 	getProperty: function(property){
@@ -602,10 +1192,31 @@ Element.extend({
 
 	/*
 	Property: removeProperty
-		Removes an attribute from the Element
+		Removes an attribute from the Element.
+
+	Syntax:
+		>myElement.removeProperty(property);
 
 	Arguments:
-		property - string; the attribute to remove
+		property - (string) The attribute to remove.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML
+		(start html)
+		<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
+		(end)
+
+		(start code)
+		$('myAnchor').removeProperty('onmousedown'); //eww inline javascript is bad! Let's get rid of it.
+		(end)
+
+		Result
+		(start html)
+		<a id="myAnchor" href="#"></a>
+		(end)
 	*/
 
 	removeProperty: function(property){
@@ -617,7 +1228,26 @@ Element.extend({
 
 	/*
 	Property: getProperties
-		same as <Element.getStyles>, but for properties
+		Same as <Element.getStyles>, but for properties.
+
+	Syntax:
+		>var myProps = myElement.getProperties();
+
+	Returns:
+		(object) An object containing all of the Element's properties.
+
+	Example:
+		HTML
+		(start html)
+		<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
+		(end)
+
+		(start code)
+		var imgProps = $('myImage').getProperties(); // returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+		(end)
+
+	See Also:
+		<Element.getProperty>
 	*/
 
 	getProperties: function(){
@@ -633,11 +1263,26 @@ Element.extend({
 		Sets an attribute for the Element.
 
 	Arguments:
-		property - string; the property to assign the value passed in
-		value - the value to assign to the property passed in
+		property - (string) The property to assign the value passed in.
+		value - (mixed) The value to assign to the property passed in.
+
+	Return:
+		(element) - This Element.
 
 	Example:
-		>$('myImage').setProperty('src', 'whatever.gif'); //myImage now points to whatever.gif for its source
+		HTML
+		(start html)
+		<img id="myImage" />
+		(end)
+
+		(start code)
+		$('myImage').setProperty('src', 'mootools.png');
+		(end)
+
+		Result
+		(start html)
+		<img id="myImage" src="mootools.png" />
+		(end)
 	*/
 
 	setProperty: function(property, value){
@@ -652,15 +1297,27 @@ Element.extend({
 		Sets numerous attributes for the Element.
 
 	Arguments:
-		source - an object with key/value pairs.
+		properties - (object) An object with key/value pairs.
+
+	Returns:
+		(element) This Element.
 
 	Example:
+		HTML
+		(start html)
+		<img id="myImage" />
+		(end)
+
 		(start code)
-		$('myElement').setProperties({
+		$('myImage').setProperties({
 			src: 'whatever.gif',
 			alt: 'whatever dude'
 		});
-		<img src="whatever.gif" alt="whatever dude">
+		(end)
+
+		Result
+		(start html)
+		<img id="myImage" src="whatever.gif" alt="whatever dude" />
 		(end)
 	*/
 
@@ -673,11 +1330,37 @@ Element.extend({
 	Property: setHTML
 		Sets the innerHTML of the Element.
 
+	Syntax:
+		>myElement.setHTML([htmlString[, htmlString2[, htmlString3[, ..]]]);
+
 	Arguments:
-		html - string; the new innerHTML for the element.
+		Any number of string paramters with html.
+
+	Returns:
+		(element) This Element.
 
 	Example:
-		>$('myElement').setHTML(newHTML) //the innerHTML of myElement is now = newHTML
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').setHTML('<div></div>', '<p></p>');
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement">
+			<div></div>
+			<p></p>
+		</div>
+
+	Note:
+		Any Elements added with setHTML will not be <Garbage> collected. This may be a source of memory leak.
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
 	*/
 
 	setHTML: function(){
@@ -689,11 +1372,28 @@ Element.extend({
 	Property: setText
 		Sets the inner text of the Element.
 
+	Syntax:
+		>myElement.setText(text);
+
 	Arguments:
-		text - string; the new text content for the element.
+		text - (string) The new text content for the Element.
+
+	Returns:
+		(element) This Element.
 
 	Example:
-		>$('myElement').setText('some text') //the text of myElement is now = 'some text'
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').setText('some text') //the text of myElement is now = 'some text'
+		(end)
+
+		(start html)
+		<div id="myElement">some text</div>
+		(end)
 	*/
 
 	setText: function(text){
@@ -715,6 +1415,22 @@ Element.extend({
 	/*
 	Property: getText
 		Gets the inner text of the Element.
+
+	Syntax:
+		>var myText = myElement.getText();
+
+	Returns:
+		(string) The text of the Element.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">my text</div>
+		(end)
+
+		(start code)
+		var myText = $('myElement').getText(); //myText = 'my text';
+		(end)
 	*/
 
 	getText: function(){
@@ -727,18 +1443,31 @@ Element.extend({
 				return this.innerHTML;
 			}
 		}
-		return ($pick(this.innerText, this.textContent));
+		return $pick(this.innerText, this.textContent);
 	},
 
 	/*
 	Property: getTag
-		Returns the tagName of the element in lower case.
+		Returns the tagName of the Element in lower case.
 
-	Example:
-		>$('myImage').getTag() // returns 'img'
+	Syntax:
+		>var myTag = myElement.getTag();
 
 	Returns:
-		The tag name in lower case
+		(string) The tag name in lower case
+
+	Example:
+		HTML
+		(start html)
+		<img id="myImage" />
+		(end)
+
+		(start code)
+		var myTag = $('myImage').getTag() // myTag = 'img';
+		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.tagName>
 	*/
 
 	getTag: function(){
@@ -747,13 +1476,31 @@ Element.extend({
 
 	/*
 	Property: empty
-		Empties an element of all its children.
+		Empties an Element of all its children.
 
-	Example:
-		>$('myDiv').empty() // empties the Div and returns it
+	Syntax:
+		>myElement.empty();
 
 	Returns:
-		The element.
+		(element) This Element..
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<p></p>
+			<span></span>
+		</div>
+		(end)
+
+		(start code)
+		$('myElement').empty() // empties the Div and returns it
+		(end)
+
+		Result
+		(start html)
+		<div id="myElement"></div>
+		(end)
 	*/
 
 	empty: function(){
@@ -763,13 +1510,26 @@ Element.extend({
 
 	/*
 	Property: destroy
-		Empties an element of all its children, removes and garbages the element.
+		Empties an Element of all its children, removes and garbages the Element.
 
-	Example:
-		>$('myDiv').destroy() // Div is no more.
+	Syntax:
+		>myElement.destroy();
 
 	Returns:
-		null
+		(null)
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement"></div>
+		(end)
+
+		(start code)
+		$('myElement').destroy() // the Element is no more.
+		(end)
+
+	See Also:
+		<Element.empty>
 	*/
 
 	destroy: function(){

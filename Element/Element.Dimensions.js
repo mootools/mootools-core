@@ -3,7 +3,10 @@ Script: Element.Dimensions.js
 	Contains Element prototypes to deal with Element size and position in space.
 
 Note:
-	The functions in this script require n XHTML doctype.
+	The functions in this script require a XHTML doctype.
+
+See Also:
+	<http://en.wikipedia.org/wiki/XHTML>
 
 License:
 	MIT-style license.
@@ -20,12 +23,18 @@ Element.extend({
 	Property: scrollTo
 		Scrolls the element to the specified coordinated (if the element has an overflow)
 
+	Syntax:
+		>myElement.scrollTo(x, y);
+
 	Arguments:
-		x - the x coordinate
-		y - the y coordinate
+		x - (integer) The x coordinate.
+		y - (integer) The y coordinate.
 
 	Example:
 		>$('myElement').scrollTo(0, 100)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>, <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
 	*/
 
 	scrollTo: function(x, y){
@@ -35,7 +44,13 @@ Element.extend({
 
 	/*
 	Property: getSize
-		Return an Object representing the size/scroll values of the element.
+		Returns an Object representing the size/scroll values of the element.
+
+	Syntax:
+		>var size = myElement.getSize();
+
+	Returns:
+		(object) An object containing, 'scroll', 'size', and 'scrollSize' (x,y) values.
 
 	Example:
 		(start code)
@@ -50,6 +65,9 @@ Element.extend({
 			'scrollSize': {'x': 300, 'y': 500}
 		}
 		(end)
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>, <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>, <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>, <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>, <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>, <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
 	*/
 
 	getSize: function(){
@@ -64,15 +82,25 @@ Element.extend({
 	Property: getPosition
 		Returns the real offsets of the element.
 
-	Arguments:
-		overflown - optional, an array of nested scrolling containers for scroll offset calculation,
-		use this if your element is inside any element containing scrollbars
+	Syntax:
+		>var position = myElement.getPosition([overflown]);
 
-	Example:
-		>$('element').getPosition();
+	Arguments:
+		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
 
 	Returns:
-		>{x: 100, y:500};
+		(object) An object with properties: x and y coordinates of the Element's position.
+
+	Example:
+		(start code)
+		$('element').getPosition(); //returns {x: 100, y:500};
+		(end)
+
+	Note:
+		Use the overflown parameter if your element is inside any element containing scrollbars.
+
+	See Also:
+		<http://www.quirksmode.org/js/findpos.html>
 	*/
 
 	getPosition: function(overflown){
@@ -94,8 +122,22 @@ Element.extend({
 	Property: getTop
 		Returns the distance from the top of the window to the Element.
 
+	Syntax:
+		>var top = myElement.getTop([overflown]);
+
 	Arguments:
-		overflown - optional, an array of nested scrolling containers, see Element::getPosition
+		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+
+	Returns:
+		(integer) The top position of this Element.
+
+	Example:
+		(start code)
+		$('myElement').getTop(); //returns 20
+		(end)
+
+	See Also:
+		<Element.getPosition>
 	*/
 
 	getTop: function(overflown){
@@ -106,8 +148,22 @@ Element.extend({
 	Property: getLeft
 		Returns the distance from the left of the window to the Element.
 
+	Syntax:
+		>var left = myElement.getLeft([overflown]);
+
 	Arguments:
-		overflown - optional, an array of nested scrolling containers, see Element::getPosition
+		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+
+	Returns:
+		(integer) The left position of this Element.
+
+	Example:
+		(start code)
+		$('myElement').getLeft(); // returns 20
+		(end)
+
+	See Also:
+		<Element.getPosition>
 	*/
 
 	getLeft: function(overflown){
@@ -118,8 +174,14 @@ Element.extend({
 	Property: getCoordinates
 		Returns an object with width, height, left, right, top, and bottom, representing the values of the Element
 
+	Syntax:
+		>var coords = myElement.getCoordinates([overflown]);
+
 	Arguments:
-		overflown - optional, an array of nested scrolling containers, see Element::getPosition
+		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+
+	Returns:
+		(object)
 
 	Example:
 		(start code)
@@ -137,6 +199,9 @@ Element.extend({
 			bottom: 350
 		}
 		(end)
+
+	See Also:
+		<Element.getPosition>
 	*/
 
 	getCoordinates: function(overflown){

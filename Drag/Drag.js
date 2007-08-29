@@ -4,38 +4,68 @@ Script: Drag.js
 
 License:
 	MIT-style license.
+
+Note:
+	This Script requires an XHTML doctype.
 */
 
 /*
 Class: Drag
-	Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is held down.
+	Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is down.
 
-Note:
-	Drag requires an XHTML doctype.
+Syntax:
+	>var myDragInstance = new Drag(el[, options]);
 
 Arguments:
-	el - (Element) The Element to apply the transformations to.
-	options - (object) [optional] The options object.
+	el - (element) The Element to apply the transformations to.
+	options - (object, optional) The options object.
+
+Returns:
+	(object) A new Drag class instance.
 
 Options:
-	handle    - (Element) [this.element] The Element to act as the handle for the draggable element.  Defaults to the Element itself.
-	modifiers - (object)  [object]   See Modifiers Below.
-	limit     - (object)  [false]    See Limit below.
-	grid      - (integer) [optional] Distance in px for snap-to-grid dragging
-	snap      - (integer) [false]    The distance to drag before the Element starts to respond to the drag.
+	handle - (element) The Element to act as the handle for the draggable element.  Defaults to the Element itself.
+	unit - (string) A string indicating the CSS unit to append to all integer values. Defaults to 'px'.
+	limit - (object) An object with x and y properties used to limit the movement of the Element. Defaults to false. See Limit below.
+	modifiers - (object) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left'). See Modifiers Below.
+	grid - (integer) Distance in px for snap-to-grid dragging. Defaults to false.
+	snap - (integer) The distance to drag before the Element starts to respond to the drag. Defaults to 6.
 
 	Modifiers:
-		x - (string) [left] The style to modify when the mouse moves in an horizontal direction.
-		y - (string) [top]  The style to modify when the mouse moves in a vertical direction.
+		x - (string) The style to modify when the mouse moves in an horizontal direction. Defaults to 'left'.
+		y - (string) The style to modify when the mouse moves in a vertical direction. Defaults to 'top'.
 
 	Limit:
-		x - (array) [false] Start and end limit relative to the 'x' setting of Modifiers.
-		y - (array) [false] Start and end limit relative to the 'y' setting of Modifiers.
+		x - (array) Start and end limit relative to the 'x' setting of Modifiers.
+		y - (array) Start and end limit relative to the 'y' setting of Modifiers.
 
 Events:
-	onStart    - (function) Executed when the user starts to drag (on mousedown).
-	onComplete - (function) Executed when the user completes the drag.
-	onDrag     - (function) Executed at every step of the drag.
+	onStart - (function) Executed when the user starts to drag (on mousedown). Receives the dragged Element.
+	onBeforeStart - (function) Executed before the Drag instance attaches the events. Receives the dragged Element.
+	onComplete - (function) Executed when the user completes the drag. Receives the dragged Element.
+	onSnap - (function) Executed when the user has dragged past the snap option. Receives the dragged Element.
+	onDrag - (function) Executed at every step of the drag. Receives the dragged Element.
+
+Example:
+	(start code)
+	var myInstance = new Drag('myDraggable', {
+		onStart: function(el){
+			this.moved = 0;
+			el.addClass('dragging');
+		},
+		onComplete: function(el){
+			el.removeClass('dragging');
+			alert('you displaced ' + el.id + ' ' + this.moved + ' pixels');
+		},
+		onSnap: function(el){
+			this.moved++;
+		}
+		snap: 0
+	});
+	(end)
+
+See Also:
+	<Options.setOptions>, <http://www.w3schools.com/css/css_units.asp>
 */
 
 var Drag = new Class({
@@ -74,10 +104,26 @@ var Drag = new Class({
 
 	/*
 	Property: attach
-		Attaches the mouse listener to the handle; automatically called during initialize.
+		Attaches the mouse listener to the handle.
+
+	Syntax:
+		>myDrag.attach();
 
 	Returns:
-		The current Drag instance (this).
+		(object) This Drag instance.
+
+	Example:
+		(start code)
+		var myDrag = new Drag('myElement').detach(); // the element is inert
+
+		$('myActivator').addEvent('click', function(){
+			alert('ok now you can drag.');
+			myDrag.attach();
+		});
+		(end)
+
+	See Also:
+		<$>, <Element.makeDraggable>, <Drag.detach>, <Element.addEvent>
 	*/
 
 	attach: function(){
@@ -89,8 +135,23 @@ var Drag = new Class({
 	Property: detach
 		Detaches the mouse listener from the handle.
 
+	Syntax:
+		>myDrag.detach();
+
 	Returns:
-		The current Drag instance (this).
+		(object) This Drag instance.
+
+	Example:
+		(start code)
+		var myDrag = new Drag('myElement');
+		$('myDeactivator').addEvent('click', function(){
+			alert('no more dragging for you mr.');
+			myDrag.detach();
+		});
+		(end)
+
+	See Also:
+		<$>, <Element.makeDraggable>, <Element.addEvent>
 	*/
 
 	detach: function(){
@@ -155,6 +216,27 @@ var Drag = new Class({
 		event.stop();
 	},
 
+	/*
+	Property: stop
+		Stops (removes) all attached events from the Drag instance and executes the onComplete Event.
+
+	Syntax:
+		>myDrag.stop();
+
+	Example:
+		(start code)
+		var myDrag = new Drag('myElement', {
+			onSnap: function(){
+				this.moved = this.moved || 0;
+				this.moved++;
+				if(this.moved > 100) {
+					this.stop();
+					alert("Stop! You'll make the Element angry.");
+				}
+			}
+		});
+		(end)
+	*/
 	stop: function(){
 		document.removeEvent('mousemove', this.bound.check);
 		document.removeEvent('mousemove', this.bound.drag);
@@ -175,11 +257,26 @@ Element.extend({
 	Property: makeResizable
 		Adds drag-to-resize behaviour to an Element using supplied options.
 
+	Syntax:
+		>var myResize = myElement.makeResizable([options]);
+
 	Arguments:
-		options - (object) See <Drag> for acceptable options.
+		options - (object, optional) See <Drag> for acceptable options.
 
 	Returns:
-		The created Drag instance.
+		(object) The created Drag instance.
+
+	Example:
+		(start code)
+		var myResize = $('myElement').makeResizable({
+			onComplete: function(){
+				alert('complete');
+			}
+		});
+		(end)
+
+	See Also:
+		<Drag>
 	*/
 
 	makeResizable: function(options){

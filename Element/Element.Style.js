@@ -21,13 +21,25 @@ Element.extend({
 	Property: setStyle
 		Sets a css property to the Element.
 
-		Arguments:
-			property - the property to set
-			value - the value to which to set it; for numeric values that require "px" you can pass an integer
+	Syntax:
+		>myElement.setStyle(property, value);
 
-		Example:
-			>$('myElement').setStyle('width', '300px'); //the width is now 300px
-			>$('myElement').setStyle('width', 300); //the width is now 300px
+	Arguments:
+		property - (string) The property to set.
+		value - (mixed) The value to which to set it. For numeric values that require "px" you can pass an integer.
+
+	Returns:
+		(element) This element.
+
+	Example:
+		(start code)
+		$('myElement').setStyle('width', '300px'); //the width is now 300px
+		//or
+		$('myElement').setStyle('width', 300); //the width is now 300px
+		(end)
+
+	Note:
+		All integer values will automatically be rounded to the nearest whole number.
 	*/
 
 	setStyle: function(property, value){
@@ -53,19 +65,33 @@ Element.extend({
 	Property: setStyles
 		Applies a collection of styles to the Element.
 
+	Syntax:
+		>myElement.setStyles(styles);
+
 	Arguments:
-		source - an object or string containing all the styles to apply. When its a string it overrides old style.
+		styles - (mixed) An object, or string, containing all the styles to apply.
+
+	Returns:
+		(element) This element.
 
 	Examples:
-		>$('myElement').setStyles({
-		>	border: '1px solid #000',
-		>	width: 300,
-		>	height: 400
-		>});
+		(start code)
+		$('myElement').setStyles({
+			border: '1px solid #000',
+			width: 300,
+			height: 400
+		});
 
-		OR
+		//or
 
-		>$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;');
+		$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;');
+		(end)
+
+	Note:
+		When styles is a CSS string, all the CSS styles are overridden.
+
+	See Also:
+		<Element.setStyle>
 	*/
 
 	setStyles: function(styles){
@@ -80,11 +106,19 @@ Element.extend({
 	Property: setOpacity
 		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
 
+	Syntax:
+		>Element.setOpacity(opacity);
+
 	Arguments:
-		opacity - float; Accepts values from 0 to 1.
+		opacity - (float) A values from 0.0 to 1.0, where 1.0 is visible and 0.0 is hidden.
+
+	Returns:
+		(element) This element.
 
 	Example:
-		>$('myElement').setOpacity(0.5) //make it 50% transparent
+		(start code)
+		$('myElement').setOpacity(0.5) //make it 50% transparent
+		(end)
 	*/
 
 	setOpacity: function(opacity){
@@ -103,16 +137,21 @@ Element.extend({
 	Property: getStyle
 		Returns the style of the Element given the property passed in.
 
-	Arguments:
-		property - the css style property you want to retrieve
+	Syntax:
+		>var style = myElement.getStyle(property);
 
-	Example:
-		>$('myElement').getStyle('width'); //returns "400px"
-		>//but you can also use
-		>$('myElement').getStyle('width').toInt(); //returns 400
+	Arguments:
+		property - (string) The css style property you want to retrieve.
 
 	Returns:
-		the style as a string
+		(string) The style value.
+
+	Example:
+		(start code)
+		$('myElement').getStyle('width'); //returns "400px"
+		//but you can also use
+		$('myElement').getStyle('width').toInt(); //returns 400
+		(end)
 	*/
 
 	getStyle: function(property){
@@ -142,12 +181,24 @@ Element.extend({
 	/*
 	Property: getStyles
 		Returns an object of styles of the Element for each argument passed in.
-		Arguments:
-		properties - strings; any number of style properties
+
+	Syntax:
+		>var styles = myElement.getStyles(property[, property2[, property3[, ...]]]);
+
+	Arguments:
+		properties - (strings) Any number of style properties.
+
+	Returns:
+		(object) An key/value object with the CSS styles as computed by the browser.
+
 	Example:
-		>$('myElement').getStyles('width','height','padding');
-		>//returns an object like:
-		>{width: "10px", height: "10px", padding: "10px 0px 10px 0px"}
+		(start code)
+		$('myElement').getStyles('width', 'height', 'padding');
+		//returns {width: "10px", height: "10px", padding: "10px 0px 10px 0px"}
+		(end)
+
+	See Also:
+		<Element.getStyle>
 	*/
 
 	getStyles: function(){

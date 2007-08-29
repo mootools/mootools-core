@@ -16,7 +16,36 @@ Elements.extend({
 	/*
 	Property: filterByTag
 		Filters the collection by a specified tag name.
-		Returns a new Elements collection, while the original remains untouched.
+
+	Syntax:
+		>var filteredElements = myElements.filterByTag(tag[, nocash]);
+
+	Arguments:
+		tag    - (string) The tag to match against throughout the Elements collection.
+		nocash - (boolean, optional) Optionally return a new Elements collection from the filtered elements.
+
+	Returns:
+		(array) Returns a new Elements collection, while the original remains untouched.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div></div>
+			<a></a>
+			<p></p>
+			<div></div>
+			<a></a>
+			<p></p>
+		</div>
+		(end)
+
+		(start code)
+		$('myElement').getChildren().filterByTag('div'); //returns [<div>, <div>]
+		(end)
+
+	See Also:
+		<$>, <Element.getChildren()>
 	*/
 
 	filterByTag: function(tag, nocash){
@@ -29,7 +58,36 @@ Elements.extend({
 	/*
 	Property: filterByClass
 		Filters the collection by a specified class name.
-		Returns a new Elements collection, while the original remains untouched.
+
+	Syntax:
+		>var filteredElements = myElements.filterByClass(className[, nocash]);
+
+	Arguments:
+		className - (string) The class to match against throughout the Elements collection.
+		nocash    - (boolean, optional) Optionally return a new Elements collection from the filtered elements.
+
+	Returns:
+		(array) Returns a new Elements collection, while the original remains untouched.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div></div>
+			<a class="findMe"></a>
+			<p class="findMe"></p>
+			<div class="findMe"></div>
+			<a></a>
+			<p></p>
+		</div>
+		(end)
+
+		(start code)
+		$('myElement').getChildren().filterByClass('findMe'); //returns [<a>, <p>, <div>]
+		(end)
+
+	See Also:
+		<$>, <Element.getChildren()>
 	*/
 
 	filterByClass: function(className, nocash){
@@ -42,7 +100,36 @@ Elements.extend({
 	/*
 	Property: filterById
 		Filters the collection by a specified ID.
-		Returns a new Elements collection, while the original remains untouched.
+
+	Syntax:
+		>var filteredElements = myElements.filterById(id[, nocash]);
+
+	Arguments:
+		id     - (string) The class to match against throughout the Elements collection.
+		nocash - (boolean, optional) Optionally return a new Elements collection from the filtered elements.
+
+	Returns:
+		(array) Returns a new Elements collection, while the original remains untouched.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div></div>
+			<a></a>
+			<p></p>
+			<div id="findMe"</div>
+			<a></a>
+			<p></p>
+		</div>
+		(end)
+
+		(start code)
+		$('myElement').getChildren().filterById('findMe'); //returns [<div>]
+		(end)
+
+	See Also:
+		<$>, <Element.getChildren()>
 	*/
 
 	filterById: function(id, nocash){
@@ -55,12 +142,42 @@ Elements.extend({
 	/*
 	Property: filterByAttribute
 		Filters the collection by a specified attribute.
-		Returns a new Elements collection, while the original remains untouched.
+
+	Syntax:
+		>var filteredElements = myElements.filterByAttribute(name[, operator[, value[, nocash]]]);
 
 	Arguments:
-		name - the attribute name.
-		operator - optional, the attribute operator.
-		value - optional, the attribute value, only valid if the operator is specified.
+		name - (string) The attribute name.
+		operator - (string, optional) The attribute operator. If the operator is unsupported the match will always return true.
+		value - (mixed, optional) The attribute value, only valid if the operator is specified.
+		nocash - (boolean, optional) Optionally return a new Elements collection from the filtered elements.
+
+	Returns:
+		(array) Returns a new Elements collection, while the original remains untouched.
+
+	Example:
+		HTML
+		(start html)
+		<div id="myElement">
+			<div></div>
+			<a></a>
+			<img src="mootools.png" alt="findMe" />
+			<img src="whatever.gif" alt="findMe" />
+			<iframe src="http://mootools.net/"></iframe>
+			<script src="mootools.js"></script>
+			<a></a>
+			<p></p>
+		</div>
+		(end)
+
+		(start code)
+		var found = $('myElement').getChildren().filterByAttribute('src'); //returns [<img>, <img>, <iframe>, <script>]
+		//could go further and:
+		found = found.filterByAttribute('alt', '=', 'findMe'); //returns [<img>, <img>]
+		(end)
+
+	See Also:
+		<$>, <Element.getChildren()>
 	*/
 
 	filterByAttribute: function(name, operator, value, nocash){
