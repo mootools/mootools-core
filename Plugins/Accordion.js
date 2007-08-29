@@ -4,6 +4,9 @@ Script: Accordion.js
 
 License:
 	MIT-style license.
+
+Note:
+	The Accordion requires an XHTML doctype.
 */
 
 /*
@@ -11,27 +14,41 @@ Class: Accordion
 	The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.
 	Inherits methods, properties, options and events from <Fx.Elements>.
 
-Note:
-	The Accordion requires an XHTML doctype.
+Syntax:
+	>var myAccordion = new Accordion(togglers, elements[, options]);
 
 Arguments:
-	togglers - (array) [required] The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
-	elements - (array) [required] The collection of Elements the transitions will be applied to.
-	options - (object) [optional] See "Options" below.  Also utilizes <Fx> options and events.
+	togglers - (array) The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
+	elements - (array) The collection of Elements the transitions will be applied to.
+	options - (object, optional) See "Options" below.  Also utilizes <Fx> options and events.
+
+Returns:
+	(class) A new Accordion instance.
 
 Options:
-	show - (integer) [0] The index of the element to be shown initially.
-	display - (integer) [0] The index of the element to show at start (with a transition). defaults to 0.
-	fixedHeight - (boolean) [false] If set to false, displayed elements will have a fixed height.
-	fixedWidth - (boolean) [false] If set to true, displayed elements will have a fixed width.
-	height - (boolean) [true] If set to true, a height transition effect will take place when switching between displayed elements.
-	opacity - (boolean) [true] If set to true, an opacity transition effect will take place when switching between displayed elements.
-	width - (boolean) [false]  If set to true, a width transition will take place when switching between displayed elements.  WARNING: CSS mastery is required to make this work!
-	alwaysHide - (boolean) [false] If set to true, it will be possible to close all displayable elements.  Otherwise, one will remain open at all time.
+	display - (integer) The index of the element to show at start (with a transition) (defaults to 0).
+	show - (integer) The index of the element to be shown initially (defaults to 0).
+	height - (boolean) If set to true, a height transition effect will take place when switching between displayed elements (defaults to true).
+	width - (boolean) If set to true, a width transition will take place when switching between displayed elements.  WARNING: CSS mastery is required to make this work! (defaults to false).
+	opacity - (boolean) If set to true, an opacity transition effect will take place when switching between displayed elements (defaults to true).
+	fixedHeight - (boolean) If set to false, displayed elements will have a fixed height (defaults to false).
+	fixedWidth - (boolean) If set to true, displayed elements will have a fixed width (defaults to false).
+	alwaysHide - (boolean) If set to true, it will be possible to close all displayable elements.  Otherwise, one will remain open at all time (defaults to false).
 
 Events:
 	onActive - (function) Function to execute when an element starts to show.
 	onBackground - (function) Function to execute when an element starts to hide.
+
+Example:
+	(start code)
+	var myAccordion = new Accordion($$('.togglers'), $$('.elements'), {
+		display: 2,
+		alwaysHide: true
+	});
+	(end)
+
+See Also:
+	<http://demos.mootools.net/Accordion>
 */
 
 var Accordion = new Class({
@@ -86,10 +103,23 @@ var Accordion = new Class({
 	Property: addSection
 		Dynamically adds a new section into the Accordion at the specified position.
 
+	Syntax:
+		>myAccordion.addSection(toggler, element[, pos]);
+
 	Arguments:
-		toggler - (Element) The Element that toggles the Accordion section open.
-		element - (Element) The Element that should stretch open when the toggler is clicked.
-		pos - (integer) The index at which these objects are to be inserted within the Accordion.
+		toggler - (element) The Element that toggles the Accordion section open.
+		element - (element) The Element that should stretch open when the toggler is clicked.
+		pos - (integer, optional) The index at which these objects are to be inserted within the Accordion (defaults to the end).
+
+	Returns:
+		(class) This Accordion instance.
+
+	Example:
+		(start code)
+		var myAccordion = new Fx.Accordion($$('.togglers'), $$('.elements'));
+		myAccordion.addSection('myToggler1', 'myElement1'); // add the section at the end sections.
+		myAccordion.addSection('myToggler2', 'myElement2', 0); //add the section at the beginning of the sections.
+		(end)
 	*/
 
 	addSection: function(toggler, element, pos){
@@ -125,8 +155,24 @@ var Accordion = new Class({
 	Property: display
 		Shows a specific section and hides all others. Useful when triggering an accordion from outside.
 
+	Syntax:
+		>myAccordion.display(index);
+
 	Arguments:
-		index - (mixed) [required] The index of the item to show, or the actual element to be displayed.
+		index - (mixed) The index of the item to show, or the actual element to be displayed.
+
+	Returns:
+		(class) This Accordion instance.
+
+	Example:
+		(start code)
+		// Make a ticker-like accordion. Kids don't try this at home.
+		var myAccordion = new Accordion('.togglers', '.elements', {
+			onComplete: function(){
+				this.display.delay(2500, this, (this.previous + 1) % this.togglers.length);
+			}
+		});
+		(end)
 	*/
 
 	display: function(index){
@@ -143,8 +189,16 @@ var Accordion = new Class({
 		return this.start(obj);
 	},
 
+	/*
+	Property: showThisHideOpen
+		See <Accordion.display>.
+	*/
 	showThisHideOpen: function(index){return this.display(index);}
 
 });
 
+/*
+Class: Fx.Accordion
+	See <Accordion>
+*/
 Fx.Accordion = Accordion;
