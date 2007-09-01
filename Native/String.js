@@ -17,7 +17,7 @@ See Also:
 String.extend({
 
 	/*
-	Property: test
+	Method: test
 		Searches for a match between the string and a regular expression.
 		For more information see <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test>.
 
@@ -32,11 +32,11 @@ String.extend({
 		(boolean) If a match for the regular expression is found in this string returns true. Otherwise, returns false.
 
 	Example:
-		(start code)
-		"I like cookies".test("cookie"); //returns true
-		"I like cookies".test("COOKIE", "i"); //returns true (ignore case)
-		"I like cookies".test("cake"); //returns false
-		(end)
+		[javascript]
+			"I like cookies".test("cookie"); //returns true
+			"I like cookies".test("COOKIE", "i"); //returns true (ignore case)
+			"I like cookies".test("cake"); //returns false
+		[/javascript]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions>
@@ -47,7 +47,7 @@ String.extend({
 	},
 
 	/*
-	Property: contains
+	Method: contains
 		Checks to see if the string passed in is contained in this string.
 		If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
 
@@ -62,11 +62,11 @@ String.extend({
 		(boolean) If the string is contained in this string, returns true. Otherwise, returns false.
 
 	Example:
-		(start code)
-		'a bc'.contains('bc'); //returns true
-		'a b c'.contains('c', ' '); //returns true
-		'a bc'.contains('b', ' '); //returns false
-		(end)
+		[javascript]
+			'a bc'.contains('bc'); //returns true
+			'a b c'.contains('c', ' '); //returns true
+			'a bc'.contains('b', ' '); //returns false
+		[/javascript]
 	*/
 
 	contains: function(string, separator){
@@ -74,7 +74,7 @@ String.extend({
 	},
 
 	/*
-	Property: trim
+	Method: trim
 		Trims the leading and trailing spaces off a string.
 
 	Syntax:
@@ -84,9 +84,9 @@ String.extend({
 		(string) The trimmed string.
 
 	Example:
-		(start code)
-		"    i like cookies     ".trim(); //"i like cookies"
-		(end)
+		[javascript]
+			"    i like cookies     ".trim(); //"i like cookies"
+		[/javascript]
 	*/
 
 	trim: function(){
@@ -94,7 +94,7 @@ String.extend({
 	},
 
 	/*
-	Property: clean
+	Method: clean
 		Removes all extraneous whitespace from a string and trims (<String.trim>) it.
 
 	Syntax:
@@ -104,9 +104,9 @@ String.extend({
 		(string) The cleaned string.
 
 	Example:
-		(start code)
-		" i      like     cookies      \n\n".clean(); //returns "i like cookies"
-		(end)
+		[javascript]
+			" i      like     cookies      \n\n".clean(); //returns "i like cookies"
+		[/javascript]
 	*/
 
 	clean: function(){
@@ -114,7 +114,7 @@ String.extend({
 	},
 
 	/*
-	Property: camelCase
+	Method: camelCase
 		Converts a hyphenated string to a camelcased string.
 
 	Syntax:
@@ -124,9 +124,9 @@ String.extend({
 		(string) The camelcased string.
 
 	Example:
-		(start code)
-		"I-like-cookies".camelCase(); //returns "ILikeCookies"
-		(end)
+		[javascript]
+			"I-like-cookies".camelCase(); //returns "ILikeCookies"
+		[/javascript]
 	*/
 
 	camelCase: function(){
@@ -136,7 +136,7 @@ String.extend({
 	},
 
 	/*
-	Property: hyphenate
+	Method: hyphenate
 		Converts a camelcased string to a hyphenated string.
 
 	Syntax:
@@ -146,9 +146,9 @@ String.extend({
 		(string) The hyphenated string.
 
 	Example:
-		(start code)
-		"ILikeCookies".hyphenate(); //returns "I-like-cookies"
-		(end)
+		[javascript]
+			"ILikeCookies".hyphenate(); //returns "I-like-cookies"
+		[/javascript]
 	*/
 
 	hyphenate: function(){
@@ -158,7 +158,7 @@ String.extend({
 	},
 
 	/*
-	Property: capitalize
+	Method: capitalize
 		Converts the first letter of each word in a string to uppercase.
 
 	Syntax:
@@ -168,9 +168,9 @@ String.extend({
 		(string) The capitalized string.
 
 	Example:
-		(start code)
-		"i like cookies".capitalize(); //returns "I Like Cookies"
-		(end)
+		[javascript]
+			"i like cookies".capitalize(); //returns "I Like Cookies"
+		[/javascript]
 	*/
 
 	capitalize: function(){
@@ -180,7 +180,7 @@ String.extend({
 	},
 
 	/*
-	Property: escapeRegExp
+	Method: escapeRegExp
 		Escapes all regular expression characters from the string.
 
 	Syntax:
@@ -190,9 +190,9 @@ String.extend({
 		(string) The escaped string.
 
 	Example:
-		(start code)
-		'animals.sheep[1]'.escapeRegExp(); //returns 'animals\.sheep\[1\]'
-		(end)
+		[javascript]
+			'animals.sheep[1]'.escapeRegExp(); //returns 'animals\.sheep\[1\]'
+		[/javascript]
 	*/
 
 	escapeRegExp: function(){
@@ -200,7 +200,7 @@ String.extend({
 	},
 
 	/*
-	Property: toInt
+	Method: toInt
 		Parses this string and returns an integer of the specified radix or base.
 
 	Syntax:
@@ -213,10 +213,10 @@ String.extend({
 		(mixed) The integer. If the string is not numeric, returns NaN.
 
 	Example:
-		(start code)
-		"4em".toInt(); //returns 4
-		"10px".toInt(); //returns 10
-		(end)
+		[javascript]
+			"4em".toInt(); //returns 4
+			"10px".toInt(); //returns 10
+		[/javascript]
 
 	See Also:
 		 <http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt>
@@ -228,7 +228,7 @@ String.extend({
 	},
 
 	/*
-	Property: toFloat
+	Method: toFloat
 		Parses this string and returns a floating point number.
 
 	Syntax:
@@ -238,10 +238,10 @@ String.extend({
 		(mixed) The float. If the string is not numeric, returns NaN.
 
 	Example:
-		(start code)
-		"95.25%".toFloat(); //returns 95.25
-		"10.848".toFloat(); //returns 10.848
-		(end)
+		[javascript]
+			"95.25%".toFloat(); //returns 95.25
+			"10.848".toFloat(); //returns 10.848
+		[/javascript]
 
 		See Also:
 			<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat>
@@ -252,7 +252,7 @@ String.extend({
 	},
 
 	/*
-	Property: hexToRgb
+	Method: hexToRgb
 		Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
 		>'#ffffff', #fff', 'ffffff', or 'fff'
 
@@ -266,11 +266,11 @@ String.extend({
 		(mixed) A string representing the color in RGB. If the array flag is set, an array will be returned instead.
 
 	Example:
-		(start code)
-		"#123".hexToRgb(); //returns "rgb(17,34,51)"
-		"112233".hexToRgb(); //returns "rgb(17,34,51)"
-		"#112233".hexToRgb(true); //returns [17,34,51]
-		(end)
+		[javascript]
+			"#123".hexToRgb(); //returns "rgb(17,34,51)"
+			"112233".hexToRgb(); //returns "rgb(17,34,51)"
+			"#112233".hexToRgb(true); //returns [17,34,51]
+		[/javascript]
 
 	See Also:
 		 <Array.hexToRgb>
@@ -282,7 +282,7 @@ String.extend({
 	},
 
 	/*
-	Property: rgbToHex
+	Method: rgbToHex
 		Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.
 		>"rgb(255,255,255)", or "rgba(255,255,255,1)"
 
@@ -297,11 +297,11 @@ String.extend({
 		or transparent if the fourth value of rgba in the input string is 0. If the array flag is set, an array will be returned instead.
 
 	Example:
-		(start code)
-		"rgb(17,34,51)".rgbToHex(); //returns "#112233"
-		"rgb(17,34,51)".rgbToHex(true); //returns ['11','22','33']
-		"rgba(17,34,51,0)".rgbToHex(); //returns "transparent"
-		(end)
+		[javascript]
+			"rgb(17,34,51)".rgbToHex(); //returns "#112233"
+			"rgb(17,34,51)".rgbToHex(true); //returns ['11','22','33']
+			"rgba(17,34,51,0)".rgbToHex(); //returns "transparent"
+		[/javascript]
 
 	See Also:
 		 <Array.rgbToHex>
@@ -321,7 +321,7 @@ String.extend({
 /*
 Class: Array
 	Contains Array prototypes.
-	
+
 See Also:
 	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>
 */
@@ -329,7 +329,7 @@ See Also:
 Array.extend({
 
 	/*
-	Property: hexToRgb
+	Method: hexToRgb
 		Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.
 		>['ff', 'ff', 'ff'], or ['f', 'f', 'f']
 
@@ -343,11 +343,11 @@ Array.extend({
 		(mixed) A string representing the color in RGB. If the array flag is set, an array will be returned instead.
 
 	Example:
-		(start code)
-		["1", "2", "3"].hexToRgb(); //returns "rgb(17,34,51)"
-		["11", "22", "33"].hexToRgb(); //returns "rgb(17,34,51)"
-		["11", "22", "33"].hexToRgb(true); //returns [17,34,51]
-		(end)
+		[javascript]
+			["1", "2", "3"].hexToRgb(); //returns "rgb(17,34,51)"
+			["11", "22", "33"].hexToRgb(); //returns "rgb(17,34,51)"
+			["11", "22", "33"].hexToRgb(true); //returns [17,34,51]
+		[/javascript]
 
 	See Also:
 		 <String.hexToRgb>
@@ -363,7 +363,7 @@ Array.extend({
 	},
 
 	/*
-	Property: rgbToHex
+	Method: rgbToHex
 		Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
 		>[255,255,255], or [255,255,255,1]
 
@@ -378,11 +378,11 @@ Array.extend({
 		If the array flag is set, an array will be returned instead.
 
 	Example:
-		(start code)
-		[17,34,51].rgbToHex(); //returns "#112233"
-		[17,34,51].rgbToHex(true); //returns ['11','22','33']
-		[17,34,51,0].rgbToHex(); //returns "transparent"
-		(end)
+		[javascript]
+			[17,34,51].rgbToHex(); //returns "#112233"
+			[17,34,51].rgbToHex(true); //returns ['11','22','33']
+			[17,34,51,0].rgbToHex(); //returns "transparent"
+		[/javascript]
 
 	See Also:
 		 <String.rgbToHex>

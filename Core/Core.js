@@ -36,25 +36,29 @@ Arguments:
 Returns:
 	(object) The extended object.
 
-Example:
-	(start code)
-	var firstObj = {
-		'name': 'John',
-		'lastName': 'Doe'
-	};
-	var secondObj = {
-		'age': '20',
-		'sex': 'male',
-		'lastName': 'Dorian'
-	};
-	$extend(firstObj, secondObj);
-	//firstObj is { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
+Examples:
+	Normal extension:
+	[javascript]
+		var firstObj = {
+			'name': 'John',
+			'lastName': 'Doe'
+		};
+		var secondObj = {
+			'age': '20',
+			'sex': 'male',
+			'lastName': 'Dorian'
+		};
+		$extend(firstObj, secondObj);
+		//firstObj is { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
+	[/javascript]
 
-	var myFunction = function(){ ... };
-	myFunction.extend = $extend;
-	myFunction.extend(secondObj);
-	//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respected values.
-	(end)
+	Without the second parameter:
+	[javascript]
+		var myFunction = function(){ ... };
+		myFunction.extend = $extend;
+		myFunction.extend(secondObj);
+		//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respected values.
+	[/javascript]
 */
 
 function $extend(src, add){
@@ -114,19 +118,23 @@ Arguments:
 Returns:
 	(array) The new copied array.
 
-Example:
-	(start code)
-	function myFunction(){
-		$A(arguments).each(function(argument, index){
-			alert(argument);
-		});
-	}; //will alert all the arguments passed to the function myFunction.
+Examples:
+	Apply Array to arguments:
+	[javascript]
+		function myFunction(){
+			$A(arguments).each(function(argument, index){
+				alert(argument);
+			});
+		}; //will alert all the arguments passed to the function myFunction.
+	[/javascript]
 
-	var anArray = [0, 1, 2, 3, 4];
-	var copiedArray = $A(anArray); // Returns: [0, 1, 2, 3, 4]
-	var slicedArray1 = $A(anArray, 2, 3); // Returns: [2, 3, 4]
-	var slicedArray2 = $A(anArray, -1); // Returns: [4]
-	(end)
+	Copy an Array:
+	[javascript]
+		var anArray = [0, 1, 2, 3, 4];
+		var copiedArray = $A(anArray); // Returns: [0, 1, 2, 3, 4]
+		var slicedArray1 = $A(anArray, 2, 3); // Returns: [2, 3, 4]
+		var slicedArray2 = $A(anArray, -1); // Returns: [4]
+	[/javascript]
 */
 
 function $A(iterable, start, length){
@@ -152,12 +160,12 @@ Returns:
 	(boolean) If the object passed in exists or is 0, returns true. Otherwise, returns false.
 
 Example:
-	(start code)
-	function myFunction(arg){
-		if($chk(arg)) alert('The object exists or is 0.');
-		else alert('The object is either null, undefined, false, or ""');
-	}
-	(end)
+	[javascript]
+		function myFunction(arg){
+			if($chk(arg)) alert('The object exists or is 0.');
+			else alert('The object is either null, undefined, false, or ""');
+		}
+	[/javascript]
 */
 
 function $chk(obj){
@@ -178,10 +186,10 @@ Returns:
 	null
 
 Example:
-	(start code)
-	var myTimer = myFunction.delay(5000); //Wait 5 seconds and execute myFunction.
-	myTimer = $clear(myTimer); //Nevermind.
-	(end)
+	[javascript]
+		var myTimer = myFunction.delay(5000); //Wait 5 seconds and execute myFunction.
+		myTimer = $clear(myTimer); //Nevermind.
+	[/javascript]
 
 See also:
 	<Function.delay>, <Function.periodical>
@@ -207,12 +215,12 @@ Returns:
 	(boolean) If the object passed is not null or undefined, returns true. Otherwise, returns false.
 
 Example:
-	(start code)
-	function myFunction(arg){
-		if($defined(arg)) alert('The object is defined.');
-		else alert('The object is null or undefined.');
-	}
-	(end)
+	[javascript]
+		function myFunction(arg){
+			if($defined(arg)) alert('The object is defined.');
+			else alert('The object is null or undefined.');
+		}
+	[/javascript]
 */
 
 function $defined(obj){
@@ -227,9 +235,9 @@ Syntax:
 	>var emptyFn = $empty;
 
 Example:
-	(start code)
-	var myFunc = $empty;
-	(end)
+	[javascript]
+		var myFunc = $empty;
+	[/javascript]
 */
 
 function $empty(){};
@@ -248,16 +256,16 @@ Returns:
 	(object) The object that is created as a result of merging all the objects passed in.
 
 Example:
-	(start code)
-	var obj1 = {a: 0, b: 1};
-	var obj2 = {c: 2, d: 3};
-	var obj3 = {a: 4, d: 5};
-	var merged = $merge(obj1, obj2, obj3); //returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
+	[javascript]
+		var obj1 = {a: 0, b: 1};
+		var obj2 = {c: 2, d: 3};
+		var obj3 = {a: 4, d: 5};
+		var merged = $merge(obj1, obj2, obj3); //returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
 
-	var nestedObj1 = {a: {b: 1, c: 1}};
-	var nestedObj2 = {a: {b: 2}};
-	var nested = $merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
-	(end)
+		var nestedObj1 = {a: {b: 1, c: 1}};
+		var nestedObj2 = {a: {b: 2}};
+		var nested = $merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
+	[/javascript]
 */
 
 function $merge(){
@@ -287,11 +295,11 @@ Returns:
 	(mixed) The first variable that is defined. If all variables passed in are null or undefined, returns null.
 
 Example:
-	(start code)
-	function say(infoMessage, errorMessage){
-		alert($pick(errorMessage, infoMessage, 'There was no message supplied.'));
-	}
-	(end)
+	[javascript]
+		function say(infoMessage, errorMessage){
+			alert($pick(errorMessage, infoMessage, 'There was no message supplied.'));
+		}
+	[/javascript]
 */
 
 function $pick(){
@@ -316,9 +324,9 @@ Returns:
 	(integer) A random integer between min and max.
 
 Example:
-	(start code)
-	alert($random(5, 20)); //alerts a random number between 5 and 20
-	(end)
+	[javascript]
+		alert($random(5, 20)); //alerts a random number between 5 and 20
+	[/javascript]
 */
 
 function $random(min, max){
@@ -339,12 +347,13 @@ Returns:
 	(array) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
 
 Examples:
-	(start code)
-	var obj = 'hello';
-	$splat(obj); //returns ['hello']
-	var obj2 = ['a', 'b', 'c'];
-	$splat(obj2); //returns ['a', 'b', 'c']
-	(end)
+	[javascript]
+		var obj = 'hello';
+		$splat(obj); //returns ['hello']
+
+		var obj2 = ['a', 'b', 'c'];
+		$splat(obj2); //returns ['a', 'b', 'c']
+	[/javascript]
 */
 
 function $splat(obj){
@@ -361,7 +370,7 @@ Syntax:
 	>var time = $time();
 
 Returns:
-	(integer) - Timestamp.
+	(integer) - Current timestamp.
 */
 
 function $time(){
@@ -373,23 +382,23 @@ Function: $try
 	Tries to execute a function. Returns false if it fails.
 
 Syntax:
-	>$try(fn, bind, args);
+	>$try(fn[, bind[, args]]);
 
 Arguments:
 	fn   - (function) The function to execute.
-	bind - (object) The object to use as 'this' in the function. For more information see <Function.bind>.
-	args - (mixed) Single item or array of items as arguments to be passed to the function.
+	bind - (object, optional: defaults to the function passed in) The object to use as 'this' in the function. For more information see <Function.bind>.
+	args - (mixed, optional) Single item or array of items as arguments to be passed to the function.
 
 Returns:
 	(mixed) Standard return of the called function, or false on failure.
 
 Example:
-	(start code)
-	var result = $try(eval, window, 'some invalid javascript'); //false
-	(end)
+	[javascript]
+		var result = $try(eval, window, 'some invalid javascript'); //false
+	[/javascript]
 
-Warning:
-	If the function passed can return false, there will be no way to know if it has been successfully executed or not.
+Note:
+	Warning: if the function passed can return false, there will be no way to know if it has been successfully executed or not.
 */
 
 function $try(fn, bind, args){
@@ -429,10 +438,10 @@ Returns:
 	false        - (boolean) If passed object is undefined, null, NaN or none of the above.
 
 Example:
-	(start code)
-	var myString = 'hello';
-	$type(myString); //returns "string"
-	(end)
+	[javascript]
+		var myString = 'hello';
+		$type(myString); //returns "string"
+	[/javascript]
 */
 
 function $type(obj){

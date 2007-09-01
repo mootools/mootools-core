@@ -20,49 +20,78 @@ Arguments:
 	el - (element) The Element to apply the transformations to.
 	options - (object, optional) The options object.
 
-Returns:
-	(object) A new Drag class instance.
+	options (continued):
+		handle - (element: defaults to the element passed in) The Element to act as the handle for the draggable element.
+		unit - (string: defaults to 'px') A string indicating the CSS unit to append to all integer values.
+		limit - (object: defaults to false) An object with x and y properties used to limit the movement of the Element.
+		modifiers - (object) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left').
+		grid - (integer: defaults to: false) Distance in px for snap-to-grid dragging.
+		snap - (integer: defaults to 6) The distance to drag before the Element starts to respond to the drag.
 
-Options:
-	handle - (element) The Element to act as the handle for the draggable element.  Defaults to the Element itself.
-	unit - (string) A string indicating the CSS unit to append to all integer values. Defaults to 'px'.
-	limit - (object) An object with x and y properties used to limit the movement of the Element. Defaults to false. See Limit below.
-	modifiers - (object) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left'). See Modifiers Below.
-	grid - (integer) Distance in px for snap-to-grid dragging. Defaults to false.
-	snap - (integer) The distance to drag before the Element starts to respond to the drag. Defaults to 6.
+		limit (continued):
+			x - (array) Start and end limit relative to the 'x' setting of Modifiers.
+			y - (array) Start and end limit relative to the 'y' setting of Modifiers.
 
-	Modifiers:
-		x - (string) The style to modify when the mouse moves in an horizontal direction. Defaults to 'left'.
-		y - (string) The style to modify when the mouse moves in a vertical direction. Defaults to 'top'.
-
-	Limit:
-		x - (array) Start and end limit relative to the 'x' setting of Modifiers.
-		y - (array) Start and end limit relative to the 'y' setting of Modifiers.
+		modifiers (continued):
+			x - (string: defaults to 'left') The style to modify when the mouse moves in an horizontal direction.
+			y - (string: defaults to 'top') The style to modify when the mouse moves in a vertical direction.
 
 Events:
-	onStart - (function) Executed when the user starts to drag (on mousedown). Receives the dragged Element.
-	onBeforeStart - (function) Executed before the Drag instance attaches the events. Receives the dragged Element.
+	onStart - (function) Executed when the user starts to drag (on mousedown).
+		Signature:
+			>onStart(element);
+
+		Arguments:
+			element - (element) The dragged Element.
+
+	onBeforeStart - (function) Executed before the Drag instance attaches the events.
+		Signature:
+			>onBeforeStart(element);
+
+		Arguments:
+			element - (element) The dragged Element.
+
 	onComplete - (function) Executed when the user completes the drag. Receives the dragged Element.
-	onSnap - (function) Executed when the user has dragged past the snap option. Receives the dragged Element.
+		Signature:
+			>onComplete(element);
+
+		Arguments:
+			element - (element) The dragged Element.
+
+	onSnap - (function) Executed when the user has dragged past the snap option.
+		Signature:
+			>onSnap(element)
+
+		Arguments:
+			element - (element) The dragged Element.
+
 	onDrag - (function) Executed at every step of the drag. Receives the dragged Element.
+		Signature:
+			>onDrag(element)
+
+		Arguments:
+			element - (element) The dragged Element.
+
+Returns:
+	(class) A new Drag class instance.
 
 Example:
-	(start code)
-	var myInstance = new Drag('myDraggable', {
-		onStart: function(el){
-			this.moved = 0;
-			el.addClass('dragging');
-		},
-		onComplete: function(el){
-			el.removeClass('dragging');
-			alert('you displaced ' + el.id + ' ' + this.moved + ' pixels');
-		},
-		onSnap: function(el){
-			this.moved++;
-		}
-		snap: 0
-	});
-	(end)
+	[javascript]
+		var myInstance = new Drag('myDraggable', {
+			onStart: function(el){
+				this.moved = 0;
+				el.addClass('dragging');
+			},
+			onComplete: function(el){
+				el.removeClass('dragging');
+				alert('you displaced ' + el.id + ' ' + this.moved + ' pixels');
+			},
+			onSnap: function(el){
+				this.moved++;
+			}
+			snap: 0
+		});
+	[/javascript]
 
 See Also:
 	<Options.setOptions>, <http://www.w3schools.com/css/css_units.asp>
@@ -103,24 +132,24 @@ var Drag = new Class({
 	},
 
 	/*
-	Property: attach
+	Method: attach
 		Attaches the mouse listener to the handle.
 
 	Syntax:
 		>myDrag.attach();
 
 	Returns:
-		(object) This Drag instance.
+		(class) This Drag instance.
 
 	Example:
-		(start code)
-		var myDrag = new Drag('myElement').detach(); // the element is inert
+		[javascript]
+			var myDrag = new Drag('myElement').detach(); // the element is inert
 
-		$('myActivator').addEvent('click', function(){
-			alert('ok now you can drag.');
-			myDrag.attach();
-		});
-		(end)
+			$('myActivator').addEvent('click', function(){
+				alert('ok now you can drag.');
+				myDrag.attach();
+			});
+		[/javascript]
 
 	See Also:
 		<$>, <Element.makeDraggable>, <Drag.detach>, <Element.addEvent>
@@ -132,23 +161,23 @@ var Drag = new Class({
 	},
 
 	/*
-	Property: detach
+	Method: detach
 		Detaches the mouse listener from the handle.
 
 	Syntax:
 		>myDrag.detach();
 
 	Returns:
-		(object) This Drag instance.
+		(class) This Drag instance.
 
 	Example:
-		(start code)
-		var myDrag = new Drag('myElement');
-		$('myDeactivator').addEvent('click', function(){
-			alert('no more dragging for you mr.');
-			myDrag.detach();
-		});
-		(end)
+		[javascript]
+			var myDrag = new Drag('myElement');
+			$('myDeactivator').addEvent('click', function(){
+				alert('no more dragging for you mr.');
+				myDrag.detach();
+			});
+		[/javascript]
 
 	See Also:
 		<$>, <Element.makeDraggable>, <Element.addEvent>
@@ -217,25 +246,25 @@ var Drag = new Class({
 	},
 
 	/*
-	Property: stop
+	Method: stop
 		Stops (removes) all attached events from the Drag instance and executes the onComplete Event.
 
 	Syntax:
 		>myDrag.stop();
 
 	Example:
-		(start code)
-		var myDrag = new Drag('myElement', {
-			onSnap: function(){
-				this.moved = this.moved || 0;
-				this.moved++;
-				if(this.moved > 100) {
-					this.stop();
-					alert("Stop! You'll make the Element angry.");
+		[javascript]
+			var myDrag = new Drag('myElement', {
+				onSnap: function(){
+					this.moved = this.moved || 0;
+					this.moved++;
+					if(this.moved > 100) {
+						this.stop();
+						alert("Stop! You'll make the Element angry.");
+					}
 				}
-			}
-		});
-		(end)
+			});
+		[/javascript]
 	*/
 	stop: function(){
 		document.removeEvent('mousemove', this.bound.check);
@@ -254,7 +283,7 @@ Class: Element
 Element.extend({
 
 	/*
-	Property: makeResizable
+	Method: makeResizable
 		Adds drag-to-resize behaviour to an Element using supplied options.
 
 	Syntax:
@@ -264,16 +293,16 @@ Element.extend({
 		options - (object, optional) See <Drag> for acceptable options.
 
 	Returns:
-		(object) The created Drag instance.
+		(class) The created Drag instance.
 
 	Example:
-		(start code)
-		var myResize = $('myElement').makeResizable({
-			onComplete: function(){
-				alert('complete');
-			}
-		});
-		(end)
+		[javascript]
+			var myResize = $('myElement').makeResizable({
+				onComplete: function(){
+					alert('complete');
+				}
+			});
+		[/javascript]
 
 	See Also:
 		<Drag>

@@ -19,48 +19,41 @@ Function.extend({
 	extend: $extend,
 
 	/*
-	Property: create
+	Method: create
 		Base function for creating functional closures which is used by all other Function prototypes.
 
 	Syntax:
 		>var createdFunction = myFunction.create([options]);
 
 	Arguments:
-		options - (object, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.  All members are optional, see below for details.
+		options - (object, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
 
-	Options:
-		bind  - (object) The object that the "this" of the function will refer to. Default is the current function.
-		event - (mixed) If set to true, the function will act as an event listener and receive an event as its first argument.
-			If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-			Default is false.
-		arguments - A single argument or array of arguments that will be passed as arguments to the function when called.
-			If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-			Default is no custom arguments; the function will receive the standard arguments when called.
-		delay - (integer) if set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-			Default is no delay.
-		periodical - Numeric value: if set, the returned function will periodically perform the actual execution with this specified interval
-			and return a timer handle when called.
-			Default is no periodical execution.
-		attempt - If set to true, the returned function will try to execute and return either the results or false on error. Default is false.
+		options (continued):
+			bind       - (object: defaults to this function) The object that the "this" of the function will refer to.
+			event      - (mixed: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
+			arguments  - (mixed: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+			delay      - (integer: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
+			periodical - (integer: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
+			attempt    - (boolean: false) If set to true, the returned function will try to execute and return either the results or false on error.
 
 	Returns:
 		(function) The function that was created as a result of the options passed in.
 
 	Example:
-		(start code)
-		var aFunction = function(){
-			alert("I'm a function :)");
-		};
+		[javascript]
+			var aFunction = function(){
+				alert("I'm a function :)");
+			};
 
-		var aFn = aFunction.create(); //just a simple copy
+			var aFn = aFunction.create(); //just a simple copy
 
-		var advancedFn = aFunction.create({ //when called, this function will attempt
-			arguments: [0,1,2,3],
-			attempt: true,
-			delay: 1000,
-			bind: anElement
-		});
-		(end)
+			var advancedFn = aFunction.create({ //when called, this function will attempt
+				arguments: [0,1,2,3],
+				attempt: true,
+				delay: 1000,
+				bind: anElement
+			});
+		[/javascript]
 	*/
 
 	create: function(options){
@@ -80,7 +73,7 @@ Function.extend({
 	},
 
 	/*
-	Property: pass
+	Method: pass
 		Returns a closure with arguments and bind.
 
 	Syntax:
@@ -94,7 +87,7 @@ Function.extend({
 		(function) The function whose arguments are passed when called.
 
 	Example:
-		(start code)
+		[javascript]
 			var myFunction = function(){
 				var result = 'Passed: ';
 				for(var i = 0, l = arguments.length; i < l; i++){
@@ -108,7 +101,7 @@ Function.extend({
 			//when ready I can execute the functions.
 			alert(myHello());
 			alert(myItems());
-		(end)
+		[/javascript]
 	*/
 
 	pass: function(args, bind){
@@ -116,32 +109,32 @@ Function.extend({
 	},
 
 	/*
-	Property: attempt
+	Method: attempt
 		Tries to execute the function.
 
 	Syntax:
 		>var result = myFunction.attempt([args[, bind]]);
 
 	Arguments:
-		args - (mixed) The arguments to pass to the function (must be an array if passing more than one argument).
+		args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
 		bind - (object, optional) The object that the "this" of the function will refer to.
 
 	Returns:
 		(mixed) False if an exception is thrown, else the function's return.
 
 	Example:
-		(start code)
-		var myObject = {
-			'cow': 'moo!'
-		};
+		[javascript]
+			var myObject = {
+				'cow': 'moo!'
+			};
 
-		var myFunction = function(){
-			for(var i = 0; i < arguments.length; i++){
-				if(!this[arguments[i]]) throw('doh!');
-			}
-		};
-		var result = myFunction.attempt(['pig', 'cow'], myObject); // false
-		(end)
+			var myFunction = function(){
+				for(var i = 0; i < arguments.length; i++){
+					if(!this[arguments[i]]) throw('doh!');
+				}
+			};
+			var result = myFunction.attempt(['pig', 'cow'], myObject); // false
+		[/javascript]
 	*/
 
 	attempt: function(args, bind){
@@ -149,7 +142,7 @@ Function.extend({
 	},
 
 	/*
-	Property: bind
+	Method: bind
 		Returns a function whose "this" is altered.
 
 	Syntax:
@@ -164,15 +157,15 @@ Function.extend({
 		(function) The binded function.
 
 	Example:
-		(start code)
-		function myFunction(){
-			this.setStyle('color', 'red');
-			// note that 'this' here refers to myFunction, not an element
-			// we'll need to bind this function to the element we want to alter
-		};
-		var myBoundFunction = myFunction.bind(myElement);
-		myBoundFunction(); // this will make the element myElement red.
-		(end)
+		[javascript]
+			function myFunction(){
+				this.setStyle('color', 'red');
+				// note that 'this' here refers to myFunction, not an element
+				// we'll need to bind this function to the element we want to alter
+			};
+			var myBoundFunction = myFunction.bind(myElement);
+			myBoundFunction(); // this will make the element myElement red.
+		[/javascript]
 	*/
 
 	bind: function(bind, args, evt){
@@ -180,7 +173,7 @@ Function.extend({
 	},
 
 	/*
-	Property: delay
+	Method: delay
 		Delays the execution of a function by a specified duration.
 
 	Syntax:
@@ -195,14 +188,14 @@ Function.extend({
 		(integer) The JavaScript Timeout ID (useful for clearing delays).
 
 	Example:
-		(start code)
-		var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
-		//wait 50 milliseconds, then call myFunction and bind myElement to it
-		myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
+		[javascript]
+			var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
+			//wait 50 milliseconds, then call myFunction and bind myElement to it
+			myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
 
-		// An anonymous function, example
-		(function(){ alert('one second later...'); }).delay(1000); //wait a second and alert
-		(end)
+			// An anonymous function, example
+			(function(){ alert('one second later...'); }).delay(1000); //wait a second and alert
+		[/javascript]
 
 	See Also:
 		<$clear>, <http://developer.mozilla.org/en/docs/DOM:window.setTimeout>
@@ -213,7 +206,7 @@ Function.extend({
 	},
 
 	/*
-	Property: periodical
+	Method: periodical
 		Executes a function in the specified intervals of time
 
 	Syntax:
@@ -228,11 +221,11 @@ Function.extend({
 		(integer) The Interval ID (useful for clearing a periodical).
 
 	Example:
-		(start code)
-		var Site = { counter: 0 };
-		var addCount = function(){ this.counter++; };
-		addCount.periodical(1000, Site); // will add the number of seconds at the Site
-		(end)
+		[javascript]
+			var Site = { counter: 0 };
+			var addCount = function(){ this.counter++; };
+			addCount.periodical(1000, Site); // will add the number of seconds at the Site
+		[/javascript]
 
 	See Also:
 		<$clear>, <http://developer.mozilla.org/en/docs/DOM:window.setInterval>

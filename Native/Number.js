@@ -17,7 +17,7 @@ See Also:
 Number.extend({
 
 	/*
-	Property: limit
+	Method: limit
 		Limits this number between two bounds.
 
 	Syntax:
@@ -31,11 +31,11 @@ Number.extend({
 		(number) The number bounded between the given limits.
 
 	Example:
-	(start code)
-	(12).limit(2, 6.5); //returns 6.5
-	(-4).limit(2, 6.5); //returns 2
-	(4.3).limit(2, 6.5); //returns 4.3
-	(end)
+		[javascript]
+			(12).limit(2, 6.5); //returns 6.5
+			(-4).limit(2, 6.5); //returns 2
+			(4.3).limit(2, 6.5); //returns 4.3
+		[/javascript]
 	*/
 
 	limit: function(min, max){
@@ -43,24 +43,27 @@ Number.extend({
 	},
 
 	/*
-	Property: round
+	Method: round
 		Returns this number rounded to the specified precision.
 
 	Syntax:
 		>myNumber.round([precision]);
 
 	Arguments:
-		precision - (integer, optional) The number of digits after the decimal place (defaults to 0). Argument may also be negative.
+		precision - (integer, optional: defaults to 0) The number of digits after the decimal place.
 
 	Returns:
 		(number) The number, rounded.
 
+	Note:
+		Argument may also be negative.
+
 	Example:
-		(start code)
-		(12.45).round() //returns 12
-		(12.45).round(1) //returns 12.5
-		(12.45).round(-1) //returns 10
-		(end)
+		[javascript]
+			(12.45).round() //returns 12
+			(12.45).round(1) //returns 12.5
+			(12.45).round(-1) //returns 10
+		[/javascript]
 	*/
 
 	round: function(precision){
@@ -69,7 +72,7 @@ Number.extend({
 	},
 
 	/*
-	Property: times
+	Method: times
 		Executes the function passed in the specified number of times.
 
 	Syntax:
@@ -80,9 +83,9 @@ Number.extend({
 		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
 
 	Example:
-		(start code)
-		(4).times(alert); //alerts 0, 1, 2, 3
-		(end)
+		[javascript]
+			(4).times(alert); //alerts 0, 1, 2, 3
+		[/javascript]
 	*/
 
 	times: function(fn, bind){
@@ -90,7 +93,7 @@ Number.extend({
 	},
 
 	/*
-	Property: toFloat
+	Method: toFloat
 		Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.
 
 	Syntax:
@@ -100,33 +103,33 @@ Number.extend({
 		(number) The number as a float.
 
 	Example:
-		(start code)
-		(111).toFloat(); //returns 111
-		(111.1).toFloat(); //returns 111.1
-		(end)
+		[javascript]
+			(111).toFloat(); //returns 111
+			(111.1).toFloat(); //returns 111.1
+		[/javascript]
 	*/
 
 	toFloat: String.prototype.toFloat,
 
 	/*
-	Property: toInt
+	Method: toInt
 		Returns this number as an integer in the base passed in. Useful because toInt must work on both Strings and Numbers.
 
 	Syntax:
 		>myNumber.toInt([base]);
 
 	Arguments:
-		base - (integer, optional) The base to use (defaults to 10).
+		base - (integer, optional: defaults to 10) The base to use.
 
 	Returns:
 		(integer) The number as an integer in the base provided.
 
 	Example:
-		(start code)
-		(111).toInt(); //returns 111
-		(111.1).toInt(); //returns 111
-		(111).toInt(2); //returns 7
-		(end)
+		[javascript]
+			(111).toInt(); //returns 111
+			(111.1).toInt(); //returns 111
+			(111).toInt(2); //returns 7
+		[/javascript]
 	*/
 
 	toInt: String.prototype.toInt

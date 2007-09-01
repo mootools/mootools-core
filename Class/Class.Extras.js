@@ -1,7 +1,7 @@
 /*
 Script: Class.Extras.js
 	Contains common implementations for custom classes.
-	In Mootools these Utilities are implemented in <Ajax>, <XHR>, <Fx> and many other Classes to provide rich functionality.
+	In MooTools these Utilities are implemented in <Ajax>, <XHR>, <Fx> and many other Classes to provide rich functionality.
 
 License:
 	MIT-style license.
@@ -14,27 +14,28 @@ Class: Chain
 	In <Fx>, for example, it is used to create custom, complex animations.
 
 Syntax:
-	for new classes:
-	> var MyClass = new Class({Implements: Chain});
-	for existing classes:
-	> MyClass.implement(new Chain);
+	For new classes:
+	>var MyClass = new Class({Implements: Chain});
+
+	For existing classes:
+	>MyClass.implement(new Chain);
 
 Example:
-	(start code)
-	var Todo = new Class({
-		Implements: Chain,
-		initialize: function(){
-			this.chain.apply(this, arguments);
-		}
-	});
+	[javascript]
+		var Todo = new Class({
+			Implements: Chain,
+			initialize: function(){
+				this.chain.apply(this, arguments);
+			}
+		});
 
-	var myTodoList = new Todo(
-		function(){ alert('get groceries');	},
-		function(){ alert('go workout'); },
-		function(){ alert('code mootools documentation until eyes close involuntarily'); },
-		function(){ alert('sleep');	}
-	); //will call all functions sequentially
-	(end)
+		var myTodoList = new Todo(
+			function(){ alert('get groceries');	},
+			function(){ alert('go workout'); },
+			function(){ alert('code mootools documentation until eyes close involuntarily'); },
+			function(){ alert('sleep');	}
+		);
+	[/javascript]
 
 See Also:
 	<Class>
@@ -43,7 +44,7 @@ See Also:
 var Chain = new Class({
 
 	/*
-	Property: chain
+	Method: chain
 		Adds functions to the end of the call stack of the Chain instance.
 
 	Syntax:
@@ -53,17 +54,18 @@ var Chain = new Class({
 		Any number of functions.
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Style('myElement', 'opacity'); //Fx.Style has implemented class Chain because of inheritance.
-		myFx.start(1,0).chain(
-			function(){ this.start(0,1); }, //notice that "this" refers to the calling object. In this case: myFx object.
-			function(){ this.start(1,0); },
-			function(){ this.start(0,1); }
-		);	//this will fade the element in and out three times
-		(end)
+		[javascript]
+			//will fade the element in and out three times
+			var myFx = new Fx.Style('myElement', 'opacity'); //Fx.Style has implemented class Chain because of inheritance.
+			myFx.start(1,0).chain(
+				function(){ this.start(0,1); }, //notice that "this" refers to the calling object. In this case: myFx object.
+				function(){ this.start(1,0); },
+				function(){ this.start(0,1); }
+			);
+		[/javascript]
 
 	See Also:
 		<Fx>, <Fx.Style>
@@ -75,29 +77,29 @@ var Chain = new Class({
 	},
 
 	/*
-	Property: callChain
-		Removes the first function of the Chain instance stack and executes it.  The next function will then become first in the array.
+	Method: callChain
+		Removes the first function of the Chain instance stack and executes it. The next function will then become first in the array.
 
 	Syntax:
 		>myClass.callChain();
 
 	Example:
-		(start code)
-		var Queue = new Class({
-			Implements: Chain,
-			initialize: function(){
-				this.chain.apply(this, arguments);
-			}
-		});
-		var myQ = new Queue();
-		myQ.chain(
-			function(){ alert('do dishes'); },
-			function(){ alert('put away clean dishes'); }
-		);
+		[javascript]
+			var Queue = new Class({
+				Implements: Chain,
+				initialize: function(){
+					this.chain.apply(this, arguments);
+				}
+			});
+			var myQ = new Queue();
+			myQ.chain(
+				function(){ alert('do dishes'); },
+				function(){ alert('put away clean dishes'); }
+			);
 
-		myQ.callChain(); // alerts 'do dishes'
-		myQ.callChain(); // alerts 'put away clean dishes'
-		(end)
+			myQ.callChain(); // alerts 'do dishes'
+			myQ.callChain(); // alerts 'put away clean dishes'
+		[/javascript]
 	*/
 
 	callChain: function(){
@@ -105,18 +107,18 @@ var Chain = new Class({
 	},
 
 	/*
-	Property: clearChain
+	Method: clearChain
 		Clears the stack of a Chain instance.
 
 	Syntax:
 		>myClass.clearChain();
 
 	Example:
-		(start code)
-		var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
-		myFx.chain(function(){ while(true) alert('doh!'); }); // don't try this at home, kids.
-		myFx.clearChain(); // .. that was a close one ...
-		(end)
+		[javascript]
+			var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
+			myFx.chain(function(){ while(true) alert('doh!'); }); // don't try this at home, kids.
+			myFx.clearChain(); // .. that was a close one ...
+		[/javascript]
 
 	See Also:
 		<Fx>, <Fx.Style>
@@ -135,39 +137,40 @@ Class: Events
 	Events in a Class that implements <Events> must be either added as an option or with addEvent, not directly through .options.onEventName.
 
 Syntax:
-	for new classes:
-	> var MyClass = new Class({Implements: Events});
-	for existing classes:
-	> MyClass.implement(new Events);
+	For new classes:
+	>var MyClass = new Class({Implements: Events});
+
+	For existing classes:
+	>MyClass.implement(new Events);
 
 Implementing:
 	This class can be implemented into other classes to add its functionality to them.
 	It has been designed to work well with the <Options> class.
 
 Example:
-	(start code)
-	var Widget = new Class({
-		Implements: Events,
-		initialize: function(element){
-			...
-		},
-		complete: function(){
-			this.fireEvent('onComplete');
-		}
-	});
+	[javascript]
+		var Widget = new Class({
+			Implements: Events,
+			initialize: function(element){
+				...
+			},
+			complete: function(){
+				this.fireEvent('onComplete');
+			}
+		});
 
-	var myWidget = new Widget();
-	myWidget.addEvent('onComplete', myFunction);
-	(end)
+		var myWidget = new Widget();
+		myWidget.addEvent('onComplete', myFunction);
+	[/javascript]
 
 See Also:
-	<Class>
+	<Class>, <Options>
 */
 
 var Events = new Class({
 
 	/*
-	Property: addEvent
+	Method: addEvent
 		Adds an event to the Class instance's event stack.
 
 	Syntax:
@@ -179,13 +182,13 @@ var Events = new Class({
 		internal - (boolean, optional) Sets the function property: internal to true. Internal property is used to prevent removal.
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Style('element', 'opacity');
-		myFx.addEvent('onStart', myStartFunction);
-		(end)
+		[javascript]
+			var myFx = new Fx.Style('element', 'opacity');
+			myFx.addEvent('onStart', myStartFunction);
+		[/javascript]
 	*/
 
 	addEvent: function(type, fn, internal){
@@ -199,7 +202,7 @@ var Events = new Class({
 	},
 
 	/*
-	Property: addEvents
+	Method: addEvents
 		Works as <addEvent>, but accepts an object to add multiple events at once.
 
 	Syntax:
@@ -209,16 +212,16 @@ var Events = new Class({
 		events - (object) An object containing a collection of event type / function pairs.
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Style('element', 'opacity');
-		myFx.addEvents({
-			'onStart': myStartFunction,
-			'onComplete': myCompleteFunction
-		});
-		(end)
+		[javascript]
+			var myFx = new Fx.Style('element', 'opacity');
+			myFx.addEvents({
+				'onStart': myStartFunction,
+				'onComplete': myCompleteFunction
+			});
+		[/javascript]
 	*/
 
 	addEvents: function(events){
@@ -227,7 +230,7 @@ var Events = new Class({
 	},
 
 	/*
-	Property: fireEvent
+	Method: fireEvent
 		Fires all events of the specified type in the Class instance.
 
 	Syntax:
@@ -239,18 +242,18 @@ var Events = new Class({
 		delay - (integer, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
 
 	Example:
-		(start code)
-		var Widget = new Class({
-			initialize: function(arg1, arg2){
-				...
-				this.fireEvent("onInitialize", [arg1, arg2], 50);
-			}
-		});
-		Widget.implement(Events);
-		(end)
+		[javascript]
+			var Widget = new Class({
+				initialize: function(arg1, arg2){
+					...
+					this.fireEvent("onInitialize", [arg1, arg2], 50);
+				}
+			});
+			Widget.implement(Events);
+		[/javascript]
 	*/
 
 	fireEvent: function(type, args, delay){
@@ -263,7 +266,7 @@ var Events = new Class({
 	},
 
 	/*
-	Property: removeEvent
+	Method: removeEvent
 		Removes an event from the stack of events of the Class instance.
 
 	Syntax:
@@ -274,7 +277,7 @@ var Events = new Class({
 		fn   - (function) The function to remove. Note: this argument is not optional. You must pass the exact function that was added as an event in order to remove it.
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
 
 	Note:
 		If the function has the property internal and is set to true, then the event will not be removed.
@@ -288,7 +291,7 @@ var Events = new Class({
 	},
 
 	/*
-	Property: removeEvents
+	Method: removeEvents
 		Removes all events of the given type from the stack of events of a Class instance. If no type is specified, removes all events of all types.
 
 	Syntax:
@@ -298,13 +301,13 @@ var Events = new Class({
 		type - (string, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Style('element', 'opacity');
-		myFx.removeEvents('onComplete');
-		(end)
+		[javascript]
+			var myFx = new Fx.Style('element', 'opacity');
+			myFx.removeEvents('onComplete');
+		[/javascript]
 
 	Note:
 		Will not remove internal events. See <Events.removeEvent>.
@@ -329,16 +332,17 @@ Class: Options
 	Will also add Class <Events> when the option property begins with on, followed by a capital letter (e.g. 'onComplete').
 
 Syntax:
-	for new classes:
-	> var MyClass = new Class({Implements: Options});
-	for existing classes:
-	> MyClass.implement(Options);
+	For new classes:
+	>var MyClass = new Class({Implements: Options});
+
+	For existing classes:
+	>MyClass.implement(Options);
 */
 
 var Options = new Class({
 
 	/*
-	Property: setOptions
+	Method: setOptions
 		Merges the default options of the Class with the options passed in.
 
 	Syntax:
@@ -348,37 +352,36 @@ var Options = new Class({
 		options - (object, optional) The user defined options to merge with the defaults.
 
 	Returns:
-		(object) This Class instance.
+		(class) This Class instance.
+
+	Example:
+		[javascript]
+			var Widget = new Class({
+				Implements: Options,
+				options: {
+					color: '#fff',
+					size: {
+						width: 100
+						height: 100
+					}
+				},
+				initialize: function(options){
+					this.setOptions(options);
+				}
+			});
+
+			var myWidget = new Widget({
+				color: '#f00',
+				size: {
+					width: 200
+				}
+			});
+			//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
+		[/javascript]
 
 	Note:
 		Relies on the default options of a Class defined in its options object.
-		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event,
-		assuming the value of the option is a function.
-
-	Example:
-		(start code)
-		var Widget = new Class({
-			Implements: Options,
-			options: {
-				color: '#fff',
-				size: {
-					width: 100
-					height: 100
-				}
-			},
-			initialize: function(options){
-				this.setOptions(options);
-			}
-		});
-
-		var myWidget = new Widget({
-			color: '#f00',
-			size: {
-				width: 200
-			}
-		});
-		//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
-		(end)
+		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
 	*/
 
 	setOptions: function(options){
