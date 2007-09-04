@@ -76,7 +76,7 @@ Function: Native
 	The purpose of Native is also to create generics methods (Class methods) from the prototypes passed in. Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
 
 Arguments:
-	Any number of Classes/native JavaScript objects.
+	Any number of Classes/Native JavaScript objects.
 */
 
 var Native = function(){
@@ -394,7 +394,7 @@ Returns:
 
 Example:
 	[javascript]
-		var result = $try(eval, window, 'some invalid javascript'); //false
+		var result = $try(eval, window, 'some invalid javascript'); //returns false
 	[/javascript]
 
 Note:
