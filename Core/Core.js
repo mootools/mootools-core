@@ -12,8 +12,8 @@ MooTools Code & Documentation:
 	The MooTools team <http://mootools.net/developers/>.
 
 MooTools Credits:
-	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
-	- Some functions are inspired by those found in prototype.js <http://prototypejs.org/> (c) 2005 Sam Stephenson (sam [at] conio [dot] net), MIT-style license
+	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>.
+	- Some functions are inspired by those found in prototype.js <http://prototypejs.org/> (c) 2005 Sam Stephenson (sam [at] conio [dot] net), MIT-style license.
 */
 
 var MooTools = {
@@ -72,8 +72,8 @@ function $extend(src, add){
 
 /*
 Function: Native
-	This will add a .extend method to the objects passed as a parameter, but the property passed in will be copied to the object's prototype only if not previously existent.
-	The purpose of Native is also to create generics methods (Class Methods) from the prototypes passed in. Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
+	This will add a .extend method to the objects passed as a parameter, but the property passed in will only be copied to the object's prototype if it doesn't currently exist.
+	The purpose of Native is also to create generics methods (Class methods) from the prototypes passed in. Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
 
 Arguments:
 	Any number of Classes/native JavaScript objects.
@@ -105,7 +105,7 @@ Native.setFamily({'array': Array, 'function': Function, 'string': String, 'regex
 
 /*
 Function: $A
-	Creates a copy of an Array, optionally from only a specific range. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
+	Creates a copy of an Array, optionally from a specific range. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
 
 Syntax:
 	>var copiedArray = $A(iterable[, start[, length]]);

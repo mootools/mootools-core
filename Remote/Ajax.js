@@ -14,30 +14,38 @@ Class: Ajax
 	An Ajax class, For all your asynchronous needs.
 	Inherits methods, properties, options and events from <XHR>.
 
-Arguments:
-	url - (string) [required] The url pointing to the server-side script.
-	options - (object) [optional] See "Options" below. Also utilizes <XHR> options and events.
+Extends:
+	<XHR>
 
-Options:
-	update - (element) [optional] To insert the response text of the XHR into, upon completion of the request.
-	evalScripts - (boolean) [false] Execute scripts in the response text onComplete. When the response is javascript the whole response is evaluated.
-	evalResponse - (boolean) [false] Force global evalulation of the whole response, no matter what content-type it is.
+Arguments:
+	url - (string) The url pointing to the server-side script.
+	options - (object, optional) See "Options" below. Also utilizes <XHR> options and events.
+
+Options (continued):
+	update - (element, optional) The Element to insert the response text of the XHR into upon completion of the request.
+	evalScripts - (boolean, optional: defaults to false) If set to true, JavaScript inside the reponseText will be evaluated. If the response's content-type is JavaScript, everything is evaluated.
+	evalResponse - (boolean, optional: defaults to false) If set to true, the entire response will be evaluated, regardless of its content-type.
 
 Events:
-	onComplete - (function) Function to execute when the ajax request completes. Arguments are response text and xml.
+	onComplete - (function) Function to execute when the AJAX request completes. The response text and XML will be passed as arguments.
+		Signature: 
+			>onComplete(responseText);
+
+		Arguments:
+			responseText - (string) The content of the remote response.
 
 Example:
 	Simple GET request:
 	>var myAjax = new Ajax(url, {method: 'get'}).request();
 
-	POST request with data as string
+	POST request with data as string:
 	>var myAjax = new Ajax('save/').request("user_id=25&save=true");
 
-	Data from object via GET
+	Data from object passed via GET:
 	>var myAjax = new Ajax('load/').request({'user_id': 25}); // loads url "load/?user_id=25"
 
-	Data from Element via POST
-	(start code)
+	Data from Element via POST:
+	[html]
 	<form action="save/" method="post" id="user-form">
 	Search:
 	<input type="text" name="search" />
@@ -45,11 +53,11 @@ Example:
 	<input type="checkbox" name="search_description" value="yes" />
 	<input type="submit" />
 	</form>
-	<script>
-	// Needs to be in a submit event or your form handler
+	[/html]
+	[javascript]
+	// Needs to be in a submit event or the form handler
 	var myAjax = new Ajax('save/').request($('user-form'));
-	</script>
-	(end)
+	[/javascript]
 */
 
 var Ajax = new Class({
@@ -91,18 +99,23 @@ var Ajax = new Class({
 
 	/*
 	Property: request
-		Executes the ajax request.
+		Executes the AJAX request.
 
 	Arguments:
-		data - (mixed) [optional] The request data, can be a String, an Object (used in <Object.toQueryString>) or an Element holding input elements (used in <Element.toQueryString>).
+		data - (mixed, optional) The request data. Can be a String, an Object (used in <Object.toQueryString>) or an Element holding input elements (used in <Element.toQueryString>).
 
 	Example:
-		>var myAjax = new Ajax(url, {method: 'get'});
-		>myAjax.request();
 
-		OR
+		Verbose Syntax:
+		[javascript]
+			var myAjax = new Ajax(url, {method: 'get'});
+			myAjax.request();
+		[/javascript]
 
-		>new Ajax(url, {method: 'get'}).request();
+		Brief Syntax: 
+		[javascript]
+			new Ajax(url, {method: 'get'}).request();
+		[/javascript]
 	*/
 
 	request: function(data){
@@ -121,16 +134,19 @@ var Ajax = new Class({
 
 /*
 Function: Object.toQueryString
-	Generates a querystring from key/pair values in an object
+	Generates a query string from key/pair values in an object.
 
 Arguments:
-	source - (object) The object to generate the querystring from.
+	source - (object) The object to generate the query string from.
 
 Returns:
-	(string) The querystring.
+	(string) The query string.
 
 Example:
-	>Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
+
+	[javascript]
+		Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
+	[/javascript]
 */
 
 Object.toQueryString = function(source){
@@ -148,25 +164,25 @@ Element.extend({
 
 	/*
 	Property: send
-		Sends a form with an ajax request.
-		The url is taken from the action attribute, also the method which defaults to post. 
+		Sends a form with an Ajax request.
+		The URL is taken from the action attribute, as well as the method, which defaults to post if not found. 
 
 	Arguments:
-		options - (object) [optional] Option collection for Ajax request. See <Ajax> for the options list.
+		options - (object, optional) Option collection for Ajax request. See <Ajax> for the options list.
 
 	Returns:
-		The Ajax Class Instance
+		(Ajax) The Ajax Class instance.
 
 	Example:
-		(start code)
-		<form id="myForm" action="submit.php">
-		<input name="email" value="bob@bob.com">
-		<input name="zipCode" value="90210">
-		</form>
-		<script>
-		$('myForm').send();
-		</script>
-		(end)
+		[html]
+			<form id="myForm" action="submit.php">
+			<input name="email" value="bob@bob.com">
+			<input name="zipCode" value="90210">
+			</form>
+			<script>
+				$('myForm').send();
+			</script>
+		[/html]	
 	*/
 
 	send: function(options){
@@ -182,19 +198,19 @@ Element.extend({
 		It saves the Ajax instance to the Element, so it uses the same instance every update call.
 
 	Arguments:
-		url - (string) [required] The url pointing to the server-side document.
+		url - (string) The URL pointing to the server-side document.
 		options - (object) [optional] Option collection for Ajax request. See <Ajax> for the options list.
 
 	Returns:
-		The Ajax Class Instance
+		(Ajax) The Ajax Class instance.
 
 	Example:
-		(start code)
-		<div id="content">Loading content ...</>
-		<script>
-		$('content').update('page_1.html');
-		</script>
-		(end)
+		[html]
+			<div id="content">Loading content ...</>
+			<script>
+				$('content').update('page_1.html');
+			</script>
+		[/html]
 	*/
 
 	update: function(url, options){
