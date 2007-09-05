@@ -14,7 +14,7 @@ Class: Elements
 Elements.extend({
 
 	/*
-	Property: filterByTag
+	Method: filterByTag
 		Filters the collection by a specified tag name.
 
 	Syntax:
@@ -28,21 +28,21 @@ Elements.extend({
 		(array) Returns a new Elements collection, while the original remains untouched.
 
 	Example:
-		HTML
-		(start html)
-		<div id="myElement">
-			<div></div>
-			<a></a>
-			<p></p>
-			<div></div>
-			<a></a>
-			<p></p>
-		</div>
-		(end)
+		HTML:
+		[html]
+			<div id="myElement">
+				<div></div>
+				<a></a>
+				<p></p>
+				<div></div>
+				<a></a>
+				<p></p>
+			</div>
+		[/javascript]
 
-		(start code)
-		$('myElement').getChildren().filterByTag('div'); //returns [<div>, <div>]
-		(end)
+		[javascript]
+			$('myElement').getChildren().filterByTag('div'); //returns [<div>, <div>]
+		[/javascript]
 
 	See Also:
 		<$>, <Element.getChildren()>
@@ -56,7 +56,7 @@ Elements.extend({
 	},
 
 	/*
-	Property: filterByClass
+	Method: filterByClass
 		Filters the collection by a specified class name.
 
 	Syntax:
@@ -70,21 +70,21 @@ Elements.extend({
 		(array) Returns a new Elements collection, while the original remains untouched.
 
 	Example:
-		HTML
-		(start html)
-		<div id="myElement">
-			<div></div>
-			<a class="findMe"></a>
-			<p class="findMe"></p>
-			<div class="findMe"></div>
-			<a></a>
-			<p></p>
-		</div>
-		(end)
+		HTML:
+		[html]
+			<div id="myElement">
+				<div></div>
+				<a class="findMe"></a>
+				<p class="findMe"></p>
+				<div class="findMe"></div>
+				<a></a>
+				<p></p>
+			</div>
+		[/html]
 
-		(start code)
-		$('myElement').getChildren().filterByClass('findMe'); //returns [<a>, <p>, <div>]
-		(end)
+		[javascript]
+			$('myElement').getChildren().filterByClass('findMe'); //returns [<a>, <p>, <div>]
+		[/javascript]
 
 	See Also:
 		<$>, <Element.getChildren()>
@@ -98,7 +98,7 @@ Elements.extend({
 	},
 
 	/*
-	Property: filterById
+	Method: filterById
 		Filters the collection by a specified ID.
 
 	Syntax:
@@ -112,21 +112,21 @@ Elements.extend({
 		(array) Returns a new Elements collection, while the original remains untouched.
 
 	Example:
-		HTML
-		(start html)
-		<div id="myElement">
-			<div></div>
-			<a></a>
-			<p></p>
-			<div id="findMe"</div>
-			<a></a>
-			<p></p>
-		</div>
-		(end)
+		HTML:
+		[html]
+			<div id="myElement">
+				<div></div>
+				<a></a>
+				<p></p>
+				<div id="findMe"</div>
+				<a></a>
+				<p></p>
+			</div>
+		[/html]
 
-		(start code)
-		$('myElement').getChildren().filterById('findMe'); //returns [<div>]
-		(end)
+		[javascript]
+			$('myElement').getChildren().filterById('findMe'); //returns [<div>]
+		[/javascript]
 
 	See Also:
 		<$>, <Element.getChildren()>
@@ -140,41 +140,41 @@ Elements.extend({
 	},
 
 	/*
-	Property: filterByAttribute
+	Method: filterByAttribute
 		Filters the collection by a specified attribute.
 
 	Syntax:
 		>var filteredElements = myElements.filterByAttribute(name[, operator[, value[, nocash]]]);
 
 	Arguments:
-		name - (string) The attribute name.
+		name     - (string) The attribute name.
 		operator - (string, optional) The attribute operator. If the operator is unsupported the match will always return true.
-		value - (mixed, optional) The attribute value, only valid if the operator is specified.
-		nocash - (boolean, optional) Optionally return a new Elements collection from the filtered elements.
+		value    - (mixed, optional) The attribute value, only valid if the operator is specified.
+		nocash   - (boolean, optional) Optionally return a new Elements collection from the filtered elements.
 
 	Returns:
 		(array) Returns a new Elements collection, while the original remains untouched.
 
 	Example:
-		HTML
-		(start html)
-		<div id="myElement">
-			<div></div>
-			<a></a>
-			<img src="mootools.png" alt="findMe" />
-			<img src="whatever.gif" alt="findMe" />
-			<iframe src="http://mootools.net/"></iframe>
-			<script src="mootools.js"></script>
-			<a></a>
-			<p></p>
-		</div>
-		(end)
+		HTML:
+		[html]
+			<div id="myElement">
+				<div></div>
+				<a></a>
+				<img src="mootools.png" alt="findMe" />
+				<img src="whatever.gif" alt="findMe" />
+				<iframe src="http://mootools.net/"></iframe>
+				<script src="mootools.js"></script>
+				<a></a>
+				<p></p>
+			</div>
+		[/html]
 
-		(start code)
-		var found = $('myElement').getChildren().filterByAttribute('src'); //returns [<img>, <img>, <iframe>, <script>]
-		//could go further and:
-		found = found.filterByAttribute('alt', '=', 'findMe'); //returns [<img>, <img>]
-		(end)
+		[javascript]
+			var found = $('myElement').getChildren().filterByAttribute('src'); //returns [<img>, <img>, <iframe>, <script>]
+			//could go further and:
+			found = found.filterByAttribute('alt', '=', 'findMe'); //returns [<img>, <img>]
+		[/javascript]
 
 	See Also:
 		<$>, <Element.getChildren()>

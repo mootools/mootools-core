@@ -8,68 +8,93 @@ License:
 
 /*
 Function: $build
-	Creating Element on-the-fly with selector notation.
-	Optional arguments mean that you can omit them.
+	Utility function for creating Elements on-the-fly with selector notation.
+
+Syntax:
+	>var myElement = $build(selector[, properties][, text][, children][, callback]);
 
 Arguments:
-	Building Element:
-	selector - (string) the selector of the element
-	properties - (object, optional) More properties, same as for <Element.initialize>
-	text - (string, optional) Text content for the Element, using <Element.setText>
-	children - (array, optional) An array of $build arguments to build and adopt those Elements
-	callback - (function, optional) An optional callback that gets called with the element and the argument.
-	Building Elements:
-	Unlimited amount of children arrays
+	selector   - (string) The selector of the element.
+	properties - (object, optional) More properties, same as for <Element.set>.
+	text       - (string, optional) Text content for the Element, using <Element.setText>.
+	children   - (array, optional) An array of $build arguments to build and adopt those Elements.
+	callback   - (function, optional) An optional callback that gets called with the element and the argument.
 
-Selector:
-	Supports notation for classnames, id, attributes and special pseudo selectors:
-	'tag#myId.myClass1.myClass2[attribute1="value"][attribute2="value"]'
-	When you use the pseudo selector :ref(name) like 'div.classX:ref(wrap)' the element
-	is saved as reference in $build.refs.wrap to target it. $build.refs is emptied on
-	every $build call.
+	selector (continued):
+		Supports notation for class names, ID, attributes and special pseudo selectors. When you use the pseudo selector :ref(name) the element is saved as reference in $build.refs.wrap to target it.
 
-Children:
-	This array can be a notation for a single element ( ['div', 'Text'] ) for building
-	only one Element or an array of notations ( [['div#id-1'], ['a#link-1', 'Link Me'], ['div', 'Footer']] )
+		Examples:
+			Notation for Class, ID, Attributes and Special Pseudo Selctors:
+			[javascript]
+				'tag#myId.myClass1.myClass2[attribute1="value"][attribute2="value"]'
+			[/javascript]
 
-Example:
-	One Element, with additional properties
-	(start code)
-	var div = $build('div#id-1.classX', {
-		'styles': {'color': 'red'}
-	});
-	(end)
+			Referencing an Element:
+			[javascript]
+				'div.classX:ref(wrap)'
+			[/javascript]
 
-	... with more children (syntax for one child element and more children)
-	(start code)
-	var list = $build('ul.menu', [
-		['li', 'Item 1', ['img[src="item1.jpg"]']],
-		['li', 'Item 2', ['img[src="item2.jpg"]']],
-		['li', 'Item 3', ['img[src="item3.jpg"]']]
-	]);
-	(end)
+	children (continued):
+		This array can be a notation for a single element for building only one Element or an array of notations.
 
-	Creating a link
-	(start code)
-	var toggle = $build('a.toggler[href=#][title="Click for more Content"]', {
-		'events': {
-			'click': function(){
-				this.getNext().slideToggle();
-				return false;
+		Examples:
+			Single Element Notation:
+			[javascript]
+				['div', 'Text']
+			[/javascript]
+
+			Array Notation:
+			[javascript]
+				[['div#id-1'], ['a#link-1', 'Link Me'], ['div', 'Footer']]
+			[/javascript]
+
+	callback (continued):
+		An optional function callback that receives the Element matched and the <$build> arguments.
+
+		Signature:
+			>callback(element, args)
+
+Examples:
+	An Element and Additional Properties:
+	[javascript]
+		var div = $build('div#id-1.classX', {
+			'styles': {'color': 'red'}
+		});
+	[/javascript]
+
+	An Un-ordered List with Children:
+	[javascript]
+		var list = $build('ul.menu', [
+			['li', 'Item 1', ['img[src="item1.jpg"]']],
+			['li', 'Item 2', ['img[src="item2.jpg"]']],
+			['li', 'Item 3', ['img[src="item3.jpg"]']]
+		]);
+	[/javascript]
+
+	Creating an Anchor/Link:
+	[javascript]
+		var toggle = $build('a.toggler[href=#][title="Click for more Content"]', {
+			'events': {
+				'click': function(){
+					this.getNext().slideToggle();
+					return false;
+				}
 			}
-		}
-	}, 'Open').inject(target);
-	(end)
+		}, 'Open').inject(target);
+	[/javascript]
 
-	Creating Elements
-	(start code)
-	var links = $build(
-		['a[href=#part-1]', 'Link 1'],
-		['a[href=#part-2]', 'Link 2'],
-		['a[href=#top]:ref(top)', 'Top']
-	); // links is now an instance of Elements
-	var topLink = $build.refs.top; // referenced using :ref()
-	(end)
+	Creating Elements:
+	[javascript]
+		var links = $build(
+			['a[href=#part-1]', 'Link 1'],
+			['a[href=#part-2]', 'Link 2'],
+			['a[href=#top]:ref(top)', 'Top']
+		); // links is now an instance of Elements
+		var topLink = $build.refs.top; // referenced using :ref()
+	[/javascript]
+
+Note:
+	$build.refs is emptied on every $build call.
 */
 
 var $build = function() {

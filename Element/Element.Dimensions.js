@@ -20,8 +20,8 @@ Class: Element
 Element.extend({
 
 	/*
-	Property: scrollTo
-		Scrolls the element to the specified coordinated (if the element has an overflow)
+	Method: scrollTo
+		Scrolls the element to the specified coordinated (if the element has an overflow).
 
 	Syntax:
 		>myElement.scrollTo(x, y);
@@ -43,7 +43,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getSize
+	Method: getSize
 		Returns an Object representing the size/scroll values of the element.
 
 	Syntax:
@@ -53,18 +53,18 @@ Element.extend({
 		(object) An object containing, 'scroll', 'size', and 'scrollSize' (x,y) values.
 
 	Example:
-		(start code)
-		$('myElement').getSize();
-		(end)
+		[javascript]
+			$('myElement').getSize();
+		[/javascript]
 
 	Returns:
-		(start code)
-		{
-			'scroll': {'x': 100, 'y': 100},
-			'size': {'x': 200, 'y': 400},
-			'scrollSize': {'x': 300, 'y': 500}
-		}
-		(end)
+		[javascript]
+			{
+				'scroll': {'x': 100, 'y': 100},
+				'size': {'x': 200, 'y': 400},
+				'scrollSize': {'x': 300, 'y': 500}
+			}
+		[/javascript]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>, <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>, <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>, <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>, <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>, <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
@@ -79,7 +79,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getPosition
+	Method: getPosition
 		Returns the real offsets of the element.
 
 	Syntax:
@@ -92,9 +92,9 @@ Element.extend({
 		(object) An object with properties: x and y coordinates of the Element's position.
 
 	Example:
-		(start code)
-		$('element').getPosition(); //returns {x: 100, y:500};
-		(end)
+		[javascript]
+			$('element').getPosition(); //returns {x: 100, y:500};
+		[/javascript]
 
 	Note:
 		Use the overflown parameter if your element is inside any element containing scrollbars.
@@ -119,7 +119,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getTop
+	Method: getTop
 		Returns the distance from the top of the window to the Element.
 
 	Syntax:
@@ -132,9 +132,9 @@ Element.extend({
 		(integer) The top position of this Element.
 
 	Example:
-		(start code)
-		$('myElement').getTop(); //returns 20
-		(end)
+		[javascript]
+			$('myElement').getTop(); //returns 20
+		[/javascript]
 
 	See Also:
 		<Element.getPosition>
@@ -145,7 +145,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getLeft
+	Method: getLeft
 		Returns the distance from the left of the window to the Element.
 
 	Syntax:
@@ -158,9 +158,9 @@ Element.extend({
 		(integer) The left position of this Element.
 
 	Example:
-		(start code)
-		$('myElement').getLeft(); // returns 20
-		(end)
+		[javascript]
+			$('myElement').getLeft(); // returns 20
+		[/javascript]
 
 	See Also:
 		<Element.getPosition>
@@ -171,7 +171,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getCoordinates
+	Method: getCoordinates
 		Returns an object with width, height, left, right, top, and bottom, representing the values of the Element
 
 	Syntax:
@@ -181,24 +181,24 @@ Element.extend({
 		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
 
 	Returns:
-		(object)
+		(object) An object containing the Element's current: width, height, left, top, right, and bottom.
 
 	Example:
-		(start code)
-		var myValues = $('myElement').getCoordinates();
-		(end)
+		[javascript]
+			var myValues = $('myElement').getCoordinates();
+		[/javascript]
 
 	Returns:
-		(start code)
-		{
-			width: 200,
-			height: 300,
-			left: 100,
-			top: 50,
-			right: 300,
-			bottom: 350
-		}
-		(end)
+		[javascript]
+			{
+				width: 200,
+				height: 300,
+				left: 100,
+				top: 50,
+				right: 300,
+				bottom: 350
+			}
+		[/javascript]
 
 	See Also:
 		<Element.getPosition>

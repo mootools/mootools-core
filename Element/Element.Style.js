@@ -18,25 +18,25 @@ Element.Setters.styles = function(styles){
 Element.extend({
 
 	/*
-	Property: setStyle
-		Sets a css property to the Element.
+	Method: setStyle
+		Sets a CSS property to the Element.
 
 	Syntax:
 		>myElement.setStyle(property, value);
 
 	Arguments:
 		property - (string) The property to set.
-		value - (mixed) The value to which to set it. For numeric values that require "px" you can pass an integer.
+		value    - (mixed) The value to which to set it. For numeric values that require "px" you can pass an integer.
 
 	Returns:
 		(element) This element.
 
 	Example:
-		(start code)
-		$('myElement').setStyle('width', '300px'); //the width is now 300px
-		//or
-		$('myElement').setStyle('width', 300); //the width is now 300px
-		(end)
+		[javascript]
+			$('myElement').setStyle('width', '300px'); //the width is now 300px
+			//or
+			$('myElement').setStyle('width', 300); //the width is now 300px
+		[/javascript]
 
 	Note:
 		All integer values will automatically be rounded to the nearest whole number.
@@ -62,7 +62,7 @@ Element.extend({
 	},
 
 	/*
-	Property: setStyles
+	Method: setStyles
 		Applies a collection of styles to the Element.
 
 	Syntax:
@@ -75,17 +75,15 @@ Element.extend({
 		(element) This element.
 
 	Examples:
-		(start code)
-		$('myElement').setStyles({
-			border: '1px solid #000',
-			width: 300,
-			height: 400
-		});
-
-		//or
-
-		$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;');
-		(end)
+		[javascript]
+			$('myElement').setStyles({
+				border: '1px solid #000',
+				width: 300,
+				height: 400
+			});
+			//or
+			$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;'); // See the Note
+		[/javascript]
 
 	Note:
 		When styles is a CSS string, all the CSS styles are overridden.
@@ -103,7 +101,7 @@ Element.extend({
 	},
 
 	/*
-	Property: setOpacity
+	Method: setOpacity
 		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
 
 	Syntax:
@@ -116,9 +114,9 @@ Element.extend({
 		(element) This element.
 
 	Example:
-		(start code)
-		$('myElement').setOpacity(0.5) //make it 50% transparent
-		(end)
+		[javascript]
+			$('myElement').setOpacity(0.5) //make it 50% transparent
+		[/javascript]
 	*/
 
 	setOpacity: function(opacity){
@@ -134,7 +132,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getStyle
+	Method: getStyle
 		Returns the style of the Element given the property passed in.
 
 	Syntax:
@@ -147,11 +145,11 @@ Element.extend({
 		(string) The style value.
 
 	Example:
-		(start code)
-		$('myElement').getStyle('width'); //returns "400px"
-		//but you can also use
-		$('myElement').getStyle('width').toInt(); //returns 400
-		(end)
+		[javascript]
+			$('myElement').getStyle('width'); //returns "400px"
+			//but you can also use
+			$('myElement').getStyle('width').toInt(); //returns 400
+		[/javascript]
 	*/
 
 	getStyle: function(property){
@@ -179,7 +177,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getStyles
+	Method: getStyles
 		Returns an object of styles of the Element for each argument passed in.
 
 	Syntax:
@@ -192,10 +190,9 @@ Element.extend({
 		(object) An key/value object with the CSS styles as computed by the browser.
 
 	Example:
-		(start code)
-		$('myElement').getStyles('width', 'height', 'padding');
-		//returns {width: "10px", height: "10px", padding: "10px 0px 10px 0px"}
-		(end)
+		[javascript]
+			$('myElement').getStyles('width', 'height', 'padding'); //returns {width: "10px", height: "10px", padding: "10px 0px 10px 0px"}
+		[/javascript]
 
 	See Also:
 		<Element.getStyle>

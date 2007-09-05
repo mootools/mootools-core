@@ -14,7 +14,7 @@ Class: Element
 Element.extend({
 
 	/*
-	Property: getValue
+	Method: getValue
 		Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
 
 	Syntax:
@@ -24,21 +24,22 @@ Element.extend({
 		(mixed) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
 
 	Example:
-		HTML
-		(start html)
-		<form id="myForm">
-			<select>
-				<option value="volvo">Volvo</option>
-				<option value="saab" selected="yes">Saab</option>
-				<option value="opel">Opel</option>
-				<option value="audi">Audi</option>
-			</select>
-		</form>
-		(end)
+		HTML:
+		[html]
+			<form id="myForm">
+				<select>
+					<option value="volvo">Volvo</option>
+					<option value="saab" selected="yes">Saab</option>
+					<option value="opel">Opel</option>
+					<option value="audi">Audi</option>
+				</select>
+			</form>
+		[/html]
 
-		(start code)
-		var result = $('myForm').getElement('select').getValue(); // returns 'Saab'
-		(end)
+		Result:
+		[javascript]
+			var result = $('myForm').getElement('select').getValue(); // returns 'Saab'
+		[/javascript]
 	*/
 
 	getValue: function(){
@@ -56,7 +57,7 @@ Element.extend({
 	},
 
 	/*
-	Property: getFormElements
+	Method: getFormElements
 		Finds, extends, and returns all descendant form Elements: 'input, 'select', and 'textarea'.
 
 	Syntax:
@@ -66,19 +67,20 @@ Element.extend({
 		(array) A collection of Elements.
 
 	Example:
-		(start code)
-		<form id="myForm">
-			<select>
-				<option value="volvo">Volvo</option>
-				<option value="saab" selected="yes">Saab</option>
-			</select>
-			<textarea></textarea>
-		</form>
-		(end)
+		HTML:
+		[html]
+			<form id="myForm">
+				<select>
+					<option value="volvo">Volvo</option>
+					<option value="saab" selected="yes">Saab</option>
+				</select>
+				<textarea></textarea>
+			</form>
+		[/html]
 
-		(start code)
-		$('myForm').getFormElements(); // returns: [<select>, <textarea>];
-		(end)
+		[javascript]
+			$('myForm').getFormElements(); // returns: [<select>, <textarea>];
+		[/javascript]
 
 	See Also:
 		<$$>
@@ -88,7 +90,7 @@ Element.extend({
 	},
 
 	/*
-	Property: toQueryString
+	Method: toQueryString
 		Reads the children inputs of the Element and generates a query string, based on their values.
 
 	Syntax:
@@ -98,16 +100,16 @@ Element.extend({
 		(string) A string representation of a Form element and its children.
 
 	Example:
-		(start code)
-		<form id="myForm" action="submit.php">
-			<input name="email" value="bob@bob.com">
-			<input name="zipCode" value="90210">
-		</form>
+		[html]
+			<form id="myForm" action="submit.php">
+				<input name="email" value="bob@bob.com">
+				<input name="zipCode" value="90210">
+			</form>
+		[/html]
 
-		<script>
-		$('myForm').toQueryString() //email=bob@bob.com&zipCode=90210
-		</script>
-		(end)
+		[/javascript]
+			$('myForm').toQueryString() //email=bob@bob.com&zipCode=90210\
+		[/javascript]
 
 	Note:
 		Used internally in <Ajax>.
