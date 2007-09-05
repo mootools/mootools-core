@@ -88,7 +88,6 @@ Fx.Elements = new Class({
 			});
 		[/javascript]
 	*/
-	Method:
 	set: function(to){
 		var parsed = {};
 		this.css = {};
