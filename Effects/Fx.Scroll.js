@@ -201,7 +201,7 @@ Fx.Scroll = new Class({
 				duration: 5000,
 				wait: false
 			}).toRight();
-	Method:
+
 			myFx.toBottom.delay(2000, myFx);
 		[/javascript]
 	*/

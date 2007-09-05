@@ -177,7 +177,7 @@ Returns:
 	(array) An array of all the dom Elements matched with all its items extended with <$>.  Returns as <Elements>.
 
 Examples:
-	Simple Selection.
+	Simple Selection:
 	[javascript]
 		$$('a'); //returns an array of all anchor tags on the page.
 

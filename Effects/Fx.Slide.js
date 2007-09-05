@@ -155,7 +155,7 @@ Fx.Slide = new Class({
 				duration: 1000,
 				transition: Fx.Transitions.Bounce.easeOut
 			});
-	Method:
+
 			myFx.hide().slideIn(); //automatically hide and show myElement.
 		[/javascript]
 	*/
@@ -185,7 +185,7 @@ Fx.Slide = new Class({
 				duration: 1000,
 				transition: Fx.Transitions.Bounce.easeOut
 			});
-	Method:
+
 			myFx.slideOut().chain(function(){
 				this.show.delay(1000, this); //after 1sec show the slid Element.
 			});
@@ -217,7 +217,7 @@ Fx.Slide = new Class({
 				duration: 1000,
 				transition: Fx.Transitions.Pow.easeOut
 			});
-	Method:
+
 			myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
 		[/javascript]
 	*/

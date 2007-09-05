@@ -37,7 +37,7 @@ Returns:
 	(object) The extended object.
 
 Examples:
-	Normal extension:
+	Normal Extension:
 	[javascript]
 		var firstObj = {
 			'name': 'John',
@@ -52,7 +52,7 @@ Examples:
 		//firstObj is { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
 	[/javascript]
 
-	Without the second parameter:
+	Without the Second Parameter:
 	[javascript]
 		var myFunction = function(){ ... };
 		myFunction.extend = $extend;
@@ -139,14 +139,14 @@ Syntax:
 
 Arguments:
 	iterable - (array) The iterable to copy.
-	start    - (integer, optional) The starting index.
-	length   - (integer, optional) The length of the resulting copied array. If not provided, the length of the returned array will be the length of the iterable minus the start value.
+	start    - (number, optional) The starting index.
+	length   - (number, optional) The length of the resulting copied array. If not provided, the length of the returned array will be the length of the iterable minus the start value.
 
 Returns:
 	(array) The new copied array.
 
 Examples:
-	Apply Array prototypes to arguments:
+	Apply Array Prototypes to Arguments:
 	[javascript]
 		function myFunction(){
 			$A(arguments).each(function(argument, index){
@@ -207,7 +207,7 @@ Syntax:
 	>$clear(timer);
 
 Arguments:
-	timer - (integer) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
+	timer - (number) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
 
 Returns:
 	null
@@ -338,17 +338,17 @@ function $pick(){
 
 /*
 Function: $random
-	Returns a random integer number between the two values passed in.
+	Returns a random number between the two values passed in.
 
 Syntax:
 	>var random = $random(min, max);
 
 Arguments:
-	min - (integer) The minimum value (inclusive).
-	max - (integer) The maximum value (inclusive).
+	min - (number) The minimum value (inclusive).
+	max - (number) The maximum value (inclusive).
 
 Returns:
-	(integer) A random integer between min and max.
+	(number) A random number between min and max.
 
 Example:
 	[javascript]
@@ -373,7 +373,7 @@ Arguments:
 Returns:
 	(array) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
 
-Examples:
+Example:
 	[javascript]
 		$splat('hello'); //returns ['hello']
 		$splat(['a', 'b', 'c']); //returns ['a', 'b', 'c']
@@ -394,7 +394,7 @@ Syntax:
 	>var time = $time();
 
 Returns:
-	(integer) - Current timestamp.
+	(number) - Current timestamp.
 */
 
 function $time(){

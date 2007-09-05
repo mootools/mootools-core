@@ -12,7 +12,7 @@ Class: Fx
 
 Implements:
 	<Chain>, <Events>, <Options>
-	Method:
+
 Syntax:
 	>var myFx = new Fx([el[, options]]);
 
@@ -22,37 +22,37 @@ Arguments:
 
 	options (continued):
 		transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>.
-		duration   - (integer: defaults to 500) The duration of the effect in ms.
+		duration   - (number: defaults to 500) The duration of the effect in ms.
 		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
 		wait       - (boolean: defaults to true) Option to wait for a current transition to end before running another of the same instance.
 		fps        - (number: defaults to 50) The frames per second for the transition.
 
 Events:
-	onStart - (function) The function to execute as the effect begins.	Method:
+	onStart - (function) The function to execute as the effect begins.
 		Signature:
 			>onStart(element)
-	Method:
+
 		Arguments:
 			element - (element) This Element.
-	Method:
+
 	onSet - (function) The function to execute when value is setted without transition.
 		Signature:
 			>onSet(element)
-	Method:
+
 		Arguments:
 			element - (element) This Element.
-	Method:
+
 	onComplete - (function) The function to execute after the effect has processed.
 		Signature:
 			>onComplete(element)
-	Method:
+
 		Arguments:
 			element - (element) This Element.
-	Method:
+
 	onCancel - (function) The function to execute when you manually stop the effect.
 		Signature:
 			>onCancel(element)
-	Method:
+
 		Arguments:
 			element - (element) This Element.
 
@@ -66,11 +66,11 @@ Example:
 				alert('woah it faded');
 			}
 		});
-	Method:
+
 		myFx.increase = function(){ // The Fx class is just a skeleton. We need to implement an increase method.
 			this.element.setOpacity(this.now);
 		};
-	Method:
+
 		myFx.start(1,0).chain(function(){
 			this.start(0,1);
 		});
@@ -126,7 +126,7 @@ var Fx = new Class({
 		>myFx.set(to);
 
 	Arguments:
-		to - (integer) The value to set.
+		to - (number) The value to set.
 
 	Returns:
 		(class) This Fx instance.
@@ -171,8 +171,8 @@ var Fx = new Class({
 		>myFx.start(from, to);
 
 	Arguments:
-		from - (integer) A staring value.
-		to   - (integer) An ending value for the effect.
+		from - (number) A staring value.
+		to   - (number) An ending value for the effect.
 
 	Returns:
 		(object) This Fx instance.
@@ -221,7 +221,7 @@ var Fx = new Class({
 					alert("Doh! I've stopped.");
 				}
 			}).start(to);
-	Method:
+
 			(function(){ myFx.stop(true).start.delay(1000, myFx, to); }).delay(1000); // myFx is tired, let's be patient.
 			(function(){ myFx.stop(); }).delay(3000); // Let's cancel the effect.
 		[/javascript]

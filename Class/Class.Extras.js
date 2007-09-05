@@ -238,7 +238,7 @@ var Events = new Class({
 	Arguments:
 		type  - (string) The type of event (e.g. 'onComplete').
 		args  - (mixed, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
-		delay - (integer, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
+		delay - (number, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
 	Returns:
 		(class) This Class instance.

@@ -21,12 +21,12 @@ Properties:
 	control       - (boolean) True if the user pressed the control
 	alt           - (boolean) True if the user pressed the alt
 	meta          - (boolean) True if the user pressed the meta key
-	wheel         - (integer) The amount of third button scrolling
-	code          - (integer) The keycode of the key pressed
-	page.x        - (integer) The x position of the mouse, relative to the full window
-	page.y        - (integer) The y position of the mouse, relative to the full window
-	client.x      - (integer) The x position of the mouse, relative to the viewport
-	client.y      - (integer) The y position of the mouse, relative to the viewport
+	wheel         - (number) The amount of third button scrolling
+	code          - (number) The keycode of the key pressed
+	page.x        - (number) The x position of the mouse, relative to the full window
+	page.y        - (number) The y position of the mouse, relative to the full window
+	client.x      - (number) The x position of the mouse, relative to the viewport
+	client.y      - (number) The y position of the mouse, relative to the viewport
 	key           - (string) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
 	target        - (element) The event target, not extended with <$> for performance reasons.
 	relatedTarget - (element) The event related target, not extended with <$> for performance reasons.
@@ -266,7 +266,7 @@ Client.expand({
 		nativeType - (number, optional) Overrides automated native Event check, not needed in most situations.
 
 		nativeType (continued):
-			number - (integer) Can be:
+			number - (number) Can be:
 				0: Event is added without native event listener, can be fired only with <Element.fireEvent>
 				1: Event function is attached with <Element.addListener> to the Element as native event.
 				2: Like 1, but listener also receives the Event instance and can be stopped with return false;
@@ -472,7 +472,7 @@ Client.expand({
 	Arguments:
 		type  - (string) The event name (e.g. 'click')
 		args  - (mixed, optional) Array or single object, arguments to pass to the function. If more than one argument, must be an array.
-		delay - (integer, optional) Delay (in ms) to wait to execute the event.
+		delay - (number, optional) Delay (in ms) to wait to execute the event.
 
 	Returns:
 		(element) This Element.

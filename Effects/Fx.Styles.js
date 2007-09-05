@@ -17,7 +17,7 @@ Syntax:
 	>var myFx = new Fx.Styles(element[, options]);
 
 Arguments:
-	el - (mixed) A string ID of the Element or an Element to apply the style transitions to.
+	el      - (mixed) A string ID of the Element or an Element to apply the style transitions to.
 	options - (object, optional) The <Fx> options object.
 
 Returns:
@@ -27,7 +27,7 @@ Examples:
 	From, To:
 	[javascript]
 		var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
-	Method:
+
 		//height from 10 to 100 and width from 900 to 300
 		myEffects.start({
 			'height': [10, 100],
@@ -38,7 +38,7 @@ Examples:
 	To:
 	[javascript]
 		var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
-	Method:
+
 		//or height from current height to 100 and width from current width to 300
 		myEffects.start({
 			'height': 100,
@@ -107,7 +107,7 @@ Fx.Styles = new Class({
 	Example:
 		[javascript]
 			var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
-	Method:
+
 			myEffects.start({
 				'height': [10, 100],
 				'width': [900, 300],

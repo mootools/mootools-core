@@ -17,16 +17,16 @@ Syntax:
 	>var myDragInstance = new Drag(el[, options]);
 
 Arguments:
-	el - (element) The Element to apply the transformations to.
+	el      - (element) The Element to apply the transformations to.
 	options - (object, optional) The options object.
 
 	options (continued):
-		handle - (element: defaults to the element passed in) The Element to act as the handle for the draggable element.
-		unit - (string: defaults to 'px') A string indicating the CSS unit to append to all integer values.
-		limit - (object: defaults to false) An object with x and y properties used to limit the movement of the Element.
+		handle    - (element: defaults to the element passed in) The Element to act as the handle for the draggable element.
+		unit      - (string: defaults to 'px') A string indicating the CSS unit to append to all integer values.
+		limit     - (object: defaults to false) An object with x and y properties used to limit the movement of the Element.
 		modifiers - (object) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left').
-		grid - (integer: defaults to: false) Distance in px for snap-to-grid dragging.
-		snap - (integer: defaults to 6) The distance to drag before the Element starts to respond to the drag.
+		grid      - (integer: defaults to: false) Distance in px for snap-to-grid dragging.
+		snap      - (integer: defaults to 6) The distance to drag before the Element starts to respond to the drag.
 
 		limit (continued):
 			x - (array) Start and end limit relative to the 'x' setting of Modifiers.
@@ -102,11 +102,6 @@ var Drag = new Class({
 	Implements: [Events, Options],
 
 	options: {
-		/*onStart: $empty,
-		onBeforeStart: $empty,
-		onComplete: $empty,
-		onSnap: $empty,
-		onDrag: $empty,*/
 		handle: false,
 		unit: 'px',
 		limit: false,

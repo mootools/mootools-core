@@ -50,7 +50,7 @@ Number.extend({
 		>myNumber.round([precision]);
 
 	Arguments:
-		precision - (integer, optional: defaults to 0) The number of digits after the decimal place.
+		precision - (number, optional: defaults to 0) The number of digits after the decimal place.
 
 	Returns:
 		(number) The number, rounded.
@@ -113,16 +113,16 @@ Number.extend({
 
 	/*
 	Method: toInt
-		Returns this number as an integer in the base passed in. Useful because toInt must work on both Strings and Numbers.
+		Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.
 
 	Syntax:
 		>myNumber.toInt([base]);
 
 	Arguments:
-		base - (integer, optional: defaults to 10) The base to use.
+		base - (number, optional: defaults to 10) The base to use.
 
 	Returns:
-		(integer) The number as an integer in the base provided.
+		(number) A number with the base provided.
 
 	Example:
 		[javascript]

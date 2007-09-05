@@ -26,7 +26,7 @@ Element.extend({
 
 	Arguments:
 		property - (string) The property to set.
-		value    - (mixed) The value to which to set it. For numeric values that require "px" you can pass an integer.
+		value    - (mixed) The value to which to set it. For numeric values that require "px" you can pass an number.
 
 	Returns:
 		(element) This element.
@@ -39,7 +39,7 @@ Element.extend({
 		[/javascript]
 
 	Note:
-		All integer values will automatically be rounded to the nearest whole number.
+		All number values will automatically be rounded to the nearest whole number.
 	*/
 
 	setStyle: function(property, value){
@@ -74,7 +74,7 @@ Element.extend({
 	Returns:
 		(element) This element.
 
-	Examples:
+	Example:
 		[javascript]
 			$('myElement').setStyles({
 				border: '1px solid #000',

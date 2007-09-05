@@ -18,7 +18,7 @@ Syntax:
 
 Arguments:
 	elements - (array) A collection of Elements the effects will be applied to.
-	options - (object, optional) Same as <Fx> options.
+	options  - (object, optional) Same as <Fx> options.
 
 Returns:
 	(class) A new Fx.Elements instance.

@@ -34,8 +34,8 @@ Array.extend({
 				>fn(item, index)
 
 			Arguments:
-				item - (mixed) The current item in the array.
-				index - (integer) The current item's index in the array.
+				item  - (mixed) The current item in the array.
+				index - (number) The current item's index in the array.
 
 	Returns:
 		(boolean) If every element in the array satisfies the provided testing function, returns true. Otherwise, returns false.
@@ -76,8 +76,8 @@ Array.extend({
 				>fn(item, index)
 
 			Arguments:
-				item - (mixed) The current item in the array.
-				index - (integer) The current item's index in the array.
+				item  - (mixed) The current item in the array.
+				index - (number) The current item's index in the array.
 
 	Returns:
 		(array) The new filtered array.
@@ -119,8 +119,8 @@ Array.extend({
 				>fn(item, index)
 
 			Arguments:
-				item - (mixed) The current item in the array.
-				index - (integer) The current item's index in the array.
+				item  - (mixed) The current item in the array.
+				index - (number) The current item's index in the array.
 
 	Example:
 		[javascript]
@@ -147,11 +147,11 @@ Array.extend({
 		>var index = myArray.indexOf(item[, from]);
 
 	Returns:
-		(integer) The index of the first element within the array equal to the specified value. If not found, returns -1.
+		(number) The index of the first element within the array equal to the specified value. If not found, returns -1.
 
 	Arguments:
 		item - (object) The item to search for in the array.
-		from - (integer, optional: defaults to 0) The index of the array at which to begin the search.
+		from - (number, optional: defaults to 0) The index of the array at which to begin the search.
 
 	Example:
 		[javascript]
@@ -189,8 +189,8 @@ Array.extend({
 				>fn(item, index)
 
 			Arguments:
-				item - (mixed) The current item in the array.
-				index - (integer) The current item's index in the array.
+				item  - (mixed) The current item in the array.
+				index - (number) The current item's index in the array.
 
 	Returns:
 		(array) The new mapped array.
@@ -233,8 +233,8 @@ Array.extend({
 				>fn(item, index)
 
 			Arguments:
-				item - (mixed) The current item in the array.
-				index - (integer) The current item's index in the array.
+				item  - (mixed) The current item in the array.
+				index - (number) The current item's index in the array.
 
 	Example:
 		[javascript]
@@ -274,21 +274,21 @@ Array.extend({
 			Arguments:
 				previous - (mixed) The item prior to the current item in the array.
 				current  - (mixed) The current item in the array.
-				index    - (integer) The current item's index in the array.
+				index    - (number) The current item's index in the array.
 				array    - (array) The actual array.
 
 	Returns:
 		(mixed) The result of reducing this array according to fn.
 
 	Examples:
-		Sum up numbers:
+		Sum Up Numbers:
 		[javascript]
 			var sum = [1, 2, 3, 4, 6].reduce(function(previousItem, currentItem){
 				return previousItem + currentItem;
 			}, 10); // sum is 26
 		[/javascript]
 
-		Collect elements of many arrays into an array:
+		Collect Elements of Many Arrays Into an Array:
 		[javascript]
 			var collected = [['a', 'b'], ['c', 'd'], ['e', 'f', 'g']].reduce(function(previousItem, currentItem) {
 				return previousItem.concat(currentItem);
@@ -322,7 +322,7 @@ Array.extend({
 		(object) The new associated object.
 
 	Examples:
-		Array example:
+		Array Example:
 		[javascript]
 			var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
 			var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
@@ -330,7 +330,7 @@ Array.extend({
 			//returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
 		[/javascript]
 
-		Object example:
+		Object Example:
 		[javascript]
 			var values = [100, 'Hello', {foo: 'bar'}, $('myelement')];
 			values.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
@@ -368,7 +368,7 @@ Array.extend({
 
 	Arguments:
 		item - (object) The item to search for in the array.
-		from - (integer, optional: defaults to 0) The index of the array at which to begin the search.
+		from - (number, optional: defaults to 0) The index of the array at which to begin the search.
 
 	Returns:
 		(boolean) If the array contains the item specified, returns true. Otherwise, returns false.
@@ -395,8 +395,8 @@ Array.extend({
 		>var copiedArray = myArray.copy([start[, length]]);
 
 	Arguments:
-		start  - (integer, optional: defaults to 0) The index from which the copy should be started. If a negative number is provided, the offset is taken from the end of the array.
-		length - (integer, optional: defaults to array.length - start) The number of elements to copy.
+		start  - (number, optional: defaults to 0) The index from which the copy should be started. If a negative number is provided, the offset is taken from the end of the array.
+		length - (number, optional: defaults to array.length - start) The number of elements to copy.
 
 	Returns:
 		(array) The new copied array.
@@ -600,8 +600,8 @@ Array.extend({
 				>fn(item, index)
 
 			Arguments:
-				item - (mixed) The current item in the array.
-				index - (integer) The current item's index in the array.
+				item  - (mixed) The current item in the array.
+				index - (number) The current item's index in the array.
 
 	Example:
 		[javascript]
@@ -636,8 +636,8 @@ Arguments:
 			>fn(item, index)
 
 		Arguments:
-			item - (mixed) The current item in the array.
-			index - (integer) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
+			item  - (mixed) The current item in the array.
+			index - (number) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
 
 Examples:
 	Array example:

@@ -32,8 +32,8 @@ Function.extend({
 			bind       - (object: defaults to this function) The object that the "this" of the function will refer to.
 			event      - (mixed: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
 			arguments  - (mixed: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-			delay      - (integer: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-			periodical - (integer: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
+			delay      - (number: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
+			periodical - (number: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
 			attempt    - (boolean: false) If set to true, the returned function will try to execute and return either the results or false on error.
 
 	Returns:
@@ -180,12 +180,12 @@ Function.extend({
 		>var timeoutID = myFunction.delay([delay[, bind[, args]]]);
 
 	Arguments:
-		delay - (integer, optional) The duration to wait (in milliseconds).
+		delay - (number, optional) The duration to wait (in milliseconds).
 		bind  - (object, optional) The object that the "this" of the function will refer to.
 		args  - (mixed, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 	Returns:
-		(integer) The JavaScript Timeout ID (useful for clearing delays).
+		(number) The JavaScript Timeout ID (useful for clearing delays).
 
 	Example:
 		[javascript]
@@ -213,12 +213,12 @@ Function.extend({
 		>var intervalID = myFunction.periodical([period[, bind[, args]]]);
 
 	Arguments:
-		period - (integer, optional) The duration of the intervals between executions.
+		period - (number, optional) The duration of the intervals between executions.
 		bind   - (object, optional) The object that the "this" of the function will refer to.
 		args   - (mixed, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 	Returns:
-		(integer) The Interval ID (useful for clearing a periodical).
+		(number) The Interval ID (useful for clearing a periodical).
 
 	Example:
 		[javascript]

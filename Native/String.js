@@ -201,16 +201,16 @@ String.extend({
 
 	/*
 	Method: toInt
-		Parses this string and returns an integer of the specified radix or base.
+		Parses this string and returns a number of the specified radix or base.
 
 	Syntax:
 		>myString.toInt([base]);
 
 	Arguments:
-		base - (integer, optional) The base to use (defaults to 10).
+		base - (number, optional) The base to use (defaults to 10).
 
 	Returns:
-		(mixed) The integer. If the string is not numeric, returns NaN.
+		(mixed) The number. If the string is not numeric, returns NaN.
 
 	Example:
 		[javascript]
