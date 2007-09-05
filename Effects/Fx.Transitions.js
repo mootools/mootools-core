@@ -11,24 +11,24 @@ Credits:
 
 /*
 Class: Fx.Transition
-	Returns a <Fx> transition function with 'easeIn', 'easeOut', and 'easeInOut' methods..
+	Returns a <Fx> transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
 
 Syntax:
 	>var myTransition = new Fx.Transition(transition[, params]);
 
 Arguments:
 	transition - (function) Can be a <Fx.Transitions> function or a user-provided function which will be extended with easing functions.
-	params - (mixed, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
+	params     - (mixed, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
 
 Returns:
 	(function) A function with easing functions.
 
 Example:
-	(start code)
-	//Elastic.easeOut with user-defined value for elasticity.
-	var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
-	var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
-	(end)
+	[javascript]
+		//Elastic.easeOut with user-defined value for elasticity.
+		var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
+		var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
+	[/javascript]
 
 See Also:
 	<Fx.Transitions>
@@ -55,9 +55,10 @@ Class: Fx.Transitions
 	A collection of tweening transitions for use with the <Fx> classes.
 
 Example:
-	(start code)
-	//Elastic.easeOut with default values:
-	var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
+	[javascript]
+		//Elastic.easeOut with default values:
+		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
+	[/javascript]
 
 See also:
 	<http://www.robertpenner.com/easing/>, <Element.effect>
@@ -66,7 +67,7 @@ See also:
 Fx.Transitions = new Abstract({
 
 	/*
-	Property: linear
+	Method: linear
 		Displays a linear transition.
 
 	Graph:
@@ -86,7 +87,7 @@ Fx.Transitions.extend = function(transitions){
 Fx.Transitions.extend({
 
 	/*
-	Property: Quad
+	Method: Quad
 		Displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut.
 
 	Graph:
@@ -96,7 +97,7 @@ Fx.Transitions.extend({
 	//auto generated
 
 	/*
-	Property: Cubic
+	Method: Cubic
 		Displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut.
 
 	Graph:
@@ -106,7 +107,7 @@ Fx.Transitions.extend({
 	//auto generated
 
 	/*
-	Property: Quart
+	Method: Quart
 		Displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut.
 
 	Graph:
@@ -116,7 +117,7 @@ Fx.Transitions.extend({
 	//auto generated
 
 	/*
-	Property: Quint
+	Method: Quint
 		Displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut.
 
 	Graph:
@@ -126,7 +127,7 @@ Fx.Transitions.extend({
 	//auto generated
 
 	/*
-	Property: Pow
+	Method: Pow
 		Used to generate Quad, Cubic, Quart and Quint.
 
 	Note:
@@ -141,7 +142,7 @@ Fx.Transitions.extend({
 	},
 
 	/*
-	Property: Expo
+	Method: Expo
 		Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
 	Graph:
@@ -153,7 +154,7 @@ Fx.Transitions.extend({
 	},
 
 	/*
-	Property: Circ
+	Method: Circ
 		Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
 
 	Graph:
@@ -165,7 +166,7 @@ Fx.Transitions.extend({
 	},
 
 	/*
-	Property: Sine
+	Method: Sine
 		Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
 	Graph:
@@ -177,7 +178,7 @@ Fx.Transitions.extend({
 	},
 
 	/*
-	Property: Back
+	Method: Back
 		Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
 
 	Graph:
@@ -190,7 +191,7 @@ Fx.Transitions.extend({
 	},
 
 	/*
-	Property: Bounce
+	Method: Bounce
 		Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
 
 	Graph:
@@ -209,7 +210,7 @@ Fx.Transitions.extend({
 	},
 
 	/*
-	Property: Elastic
+	Method: Elastic
 		Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
 
 	Graph:

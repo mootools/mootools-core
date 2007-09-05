@@ -10,24 +10,27 @@ License:
 Class: Fx.Morph
 	Smoothly Morph the Element reflecting the properties of a specified class name defined in anywhere in the CSS.
 
+Extends:
+	<Fx.Styles>
+
 Syntax:
 	>var myFx = new Fx.Morph(el[, options]);
 
 Arguments:
-	el - (mixed) A string ID of the Element or an Element to apply the style transitions to.
+	el      - (mixed) A string ID of the Element or an Element to apply the style transitions to.
 	options - (object, optional) The <Fx> options object.
 
 Returns:
 	(class) A new Fx.Morph class instance.
 
 Example:
-	(start code)
-	var myMorph = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
-	myMorph.start('myClassName');
-	(end)
+	[javascript]
+		var myMorph = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+		myMorph.start('myClassName');
+	[/javascript]
 
 Notes:
-	- This is still a wip.
+	- This is still experimental.
 	- It only works with 'transitionable' properties.
 	- The className will NOT be added onComplete.
 	- This Effect is intended to work only with properties found in external styesheet. For custom properties see <Fx.Styles>
@@ -41,7 +44,7 @@ Fx.Morph = new Class({
 	Extends: Fx.Styles,
 
 	/*
-	Property: start
+	Method: start
 		Executes a transition to the current properties of the specified className.
 
 	Syntax:
@@ -54,9 +57,9 @@ Fx.Morph = new Class({
 		(class) This Fx.Morph class instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Morph('myElement').start('.myClass');
-		(end)
+		[javascript]
+			var myFx = new Fx.Morph('myElement').start('.myClass');
+		[/javascript]
 	*/
 
 	start: function(className){
@@ -81,7 +84,7 @@ Fx.Morph = new Class({
 Element.extend({
 
 	/*
-	Property: morph
+	Method: morph
 		Transform this Element to the CSS properties as defined by the className.
 
 	Syntax:
@@ -89,24 +92,24 @@ Element.extend({
 
 	Arguments:
 		className - (string) The string of the CSS class to match.
-		options - (object, optional) The <Fx> options object.
+		options   - (object, optional) The <Fx> options object.
 
 	Returns:
 		(class) A Fx.Morph instance.
 
 	Example:
-		(start code)
-		var myFx = $('myElement', {
-			duration: 1000,
-			transition: Fx.Transitions.Pow.easeOut,
-			onStart: function(){
-				alert("It's morphing time!");
-			},
-			onComplete: function(){
-				alert("Go Power Mooers! Go!");
-			}
-		}).morph('.myClass');
-		(end)
+		[javascript]
+			var myFx = $('myElement', {
+				duration: 1000,
+				transition: Fx.Transitions.Pow.easeOut,
+				onStart: function(){
+					alert("It's morphing time!");
+				},
+				onComplete: function(){
+					alert("Go Power Mooers! Go!");
+				}
+			}).morph('.myClass');
+		[/javascript]
 	*/
 	morph: function(className, options){
 		var morph = this.$attributes.morph;

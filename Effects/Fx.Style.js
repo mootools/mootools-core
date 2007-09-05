@@ -9,24 +9,22 @@ License:
 /*
 Class: Fx.Style
 	The Style effect, used to transition any css property from one value to another. Includes colors.
-	Colors must be in hex format.
-	Inherits methods, properties, options and events from <Fx>.
 
 Syntax:
 	>var myFx = new Fx.Style(element, property[, options]);
 
 Arguments:
-	el - (mixed) A string ID of the Element or an Element to apply the style transitions to.
+	el       - (mixed) A string ID of the Element or an Element to apply the style transitions to.
 	property - (string) The property to transition.
-	options - (object, optional) The <Fx> options object.
+	options  - (object, optional) The <Fx> options object.
 
 Returns:
 	(class) A new Fx.Style instance.
 
 Example:
-	(start code)
-	var marginFx = new Fx.Style('myElement', 'margin-top', {duration:500}).start(10, 100);
-	(end)
+	[javascript]
+		var marginFx = new Fx.Style('myElement', 'margin-top', {duration:500}).start(10, 100);
+	[/javascript]
 
 Note:
 	Colors must be in hex format.
@@ -45,7 +43,7 @@ Fx.Style = new Class({
 	},
 
 	/*
-	Property: hide
+	Method: hide
 		Same as <Fx.set>(0). Hides the element immediately without transition.
 
 	Syntax:
@@ -55,9 +53,9 @@ Fx.Style = new Class({
 		(class) This Fx.Style instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Style('myElement', 'opacity').hide(); // *poof*
-		(end)
+		[javascript]
+			var myFx = new Fx.Style('myElement', 'opacity').hide(); // *poof*
+		[/javascript]
 
 	Note:
 		Due to inheritance the Event 'onSet' will be fired.
@@ -72,7 +70,7 @@ Fx.Style = new Class({
 	},
 
 	/*
-	Property: set
+	Method: set
 		Sets the Element's css property to the specified value immediately.
 
 	Syntax:
@@ -85,9 +83,9 @@ Fx.Style = new Class({
 		(class) This Fx.Style instance.
 
 	Example:
-		(start code)
-		var marginFx = new Fx.Style('myElement', 'margin-top').set(10); //margin-top is set to 10px immediately
-		(end)
+		[javascript]
+			var marginFx = new Fx.Style('myElement', 'margin-top').set(10); //margin-top is set to 10px immediately
+		[/javascript]
 	*/
 
 	set: function(to){
@@ -95,23 +93,23 @@ Fx.Style = new Class({
 	},
 
 	/*
-	Property: start
+	Method: start
 		Displays the transition to the value/values passed in
 
 	Syntax:
 		>myFx.start([from,] to);
 
 	Arguments:
-		from - (integer, optional) The starting value for the transition.
-		to - (integer) The ending value for the transition.
+		from - (integer, optional: defaults to the current style value) The starting value for the transition.
+		to   - (integer) The ending value for the transition.
 
 	Returns:
 		(class) This Fx.Style instance.
 
 	Example:
-		(start code)
-		var marginFx = new Fx.Style('myElement', 'margin-top').start(10); //tries to read current margin top value and goes from current to 10
-		(end)
+		[javascript]
+			var marginFx = new Fx.Style('myElement', 'margin-top').start(10); //tries to read current margin top value and goes from current to 10
+		[/javascript]
 
 	Note:
 		If you provide only one argument, the transition will use the current css value for its starting value.
@@ -137,7 +135,7 @@ Class: Element
 Element.extend({
 
 	/*
-	Property: effect
+	Method: effect
 		Applies an <Fx.Style> to the Element. This a shortcut for <Fx.Style>.
 
 	Syntax:
@@ -145,15 +143,15 @@ Element.extend({
 
 	Arguments:
 		property - (string) The css property to alter.
-		options - (object, optional) The <Fx> options object.
+		options  - (object, optional) The <Fx.Style> options object.
 
 	Returns:
 		(class) A new Fx.Style instance.
 
 	Example:
-		(start code)
-		var myEffect = $('myElement').effect('height', {duration: 1000, transition: Fx.Transitions.Sine.easeOut}).start(10, 100);
-		(end)
+		[javascript]
+			var myEffect = $('myElement').effect('height', {duration: 1000, transition: Fx.Transitions.Sine.easeOut}).start(10, 100);
+		[/javascript]
 
 	See Also:
 		<Fx.Style>

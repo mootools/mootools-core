@@ -9,7 +9,9 @@ License:
 /*
 Class: Fx.Elements
 	Fx.Elements allows you to apply any number of styles transitions to a collection of Elements.
-	Inherits methods, properties, options and events from <Fx>.
+
+Extends:
+	<Fx>
 
 Syntax:
 	>myFx = new Fx.Elements(elements[, options]);
@@ -22,22 +24,22 @@ Returns:
 	(class) A new Fx.Elements instance.
 
 Example:
-	(start code)
-	var myFx = new Fx.Elements($$('.myElementClass'), {
-		onComplete: function(){
-			alert('complete');
-		}
-	}).start({
-		'0': {
-			'height': [200, 300],
-			'opacity': [0,1]
-		},
-		'1': {
-			'width': [200, 300],
-			'opacity': [1,0]
-		}
-	});
-	(end)
+	[javascript]
+		var myFx = new Fx.Elements($$('.myElementClass'), {
+			onComplete: function(){
+				alert('complete');
+			}
+		}).start({
+			'0': {
+				'height': [200, 300],
+				'opacity': [0,1]
+			},
+			'1': {
+				'width': [200, 300],
+				'opacity': [1,0]
+			}
+		});
+	[/javascript]
 
 Note:
 	Includes colors but must be in hex format.
@@ -60,7 +62,7 @@ Fx.Elements = new Class({
 	},
 
 	/*
-	Property: set
+	Method: set
 		Applies the passed in style transitions to each object named immediately (see example).
 
 	Syntax:
@@ -73,20 +75,20 @@ Fx.Elements = new Class({
 		(class) This Fx.Elements instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Elements($$('.myClass')).set({
-			'0': {
-				'height': 200,
-				'opacity': 0
-			},
-			'1': {
-				'width': 300,
-				'opacity': 1
-			}
-		});
-		(end)
+		[javascript]
+			var myFx = new Fx.Elements($$('.myClass')).set({
+				'0': {
+					'height': 200,
+					'opacity': 0
+				},
+				'1': {
+					'width': 300,
+					'opacity': 1
+				}
+			});
+		[/javascript]
 	*/
-	
+	Method:
 	set: function(to){
 		var parsed = {};
 		this.css = {};
@@ -98,7 +100,7 @@ Fx.Elements = new Class({
 	},
 
 	/*
-	Property: start
+	Method: start
 		Applies the passed in style transitions to each object named (see example).
 
 	Syntax:
@@ -111,18 +113,18 @@ Fx.Elements = new Class({
 		(class) This Fx.Elements instance.
 
 	Example:
-		(start code)
-		var myElementsEffects = new Fx.Elements($$('a'));
-		myElementsEffects.start({
-			'0': { //let's change the first element's opacity and width
-				'opacity': [0,1],
-				'width': [100,200]
-			},
-			'4': { //and the fifth one's opacity
-				'opacity': [0.2, 0.5]
-			}
-		});
-		(end)
+		[javascript]
+			var myElementsEffects = new Fx.Elements($$('a'));
+			myElementsEffects.start({
+				'0': { //let's change the first element's opacity and width
+					'opacity': [0,1],
+					'width': [100,200]
+				},
+				'4': { //and the fifth one's opacity
+					'opacity': [0.2, 0.5]
+				}
+			});
+		[/javascript]
 	*/
 
 	start: function(obj){

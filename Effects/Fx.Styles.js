@@ -10,6 +10,9 @@ License:
 Class: Fx.Styles
 	Allows you to animate multiple css properties at once. Inherits methods, properties, options and events from <Fx>.
 
+Extends:
+	<Fx>
+
 Syntax:
 	>var myFx = new Fx.Styles(element[, options]);
 
@@ -20,29 +23,28 @@ Arguments:
 Returns:
 	(class) A new Fx.Styles instance.
 
-Example:
-	Instantiate:
-	(start code)
-	var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
-	(end)
-
+Examples:
 	From, To:
-	(start code)
-	//height from 10 to 100 and width from 900 to 300
-	myEffects.start({
-		'height': [10, 100],
-		'width': [900, 300]
-	});
-	(end)
+	[javascript]
+		var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+	Method:
+		//height from 10 to 100 and width from 900 to 300
+		myEffects.start({
+			'height': [10, 100],
+			'width': [900, 300]
+		});
+	[/javascript]
 
 	To:
-	(start code)
-	//or height from current height to 100 and width from current width to 300
-	myEffects.start({
-		'height': 100,
-		'width': 300
-	});
-	(end)
+	[javascript]
+		var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+	Method:
+		//or height from current height to 100 and width from current width to 300
+		myEffects.start({
+			'height': 100,
+			'width': 300
+		});
+	[/javascript]
 
 See Also:
 	<Fx>
@@ -61,7 +63,7 @@ Fx.Styles = new Class({
 	},
 
 	/*
-	Property: set
+	Method: set
 		Sets the Element's css properties to the specified values immediately.
 
 	Syntax:
@@ -74,14 +76,14 @@ Fx.Styles = new Class({
 		(class) This Fx.Style instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Styles('myElement').set({
-			'height': 200,
-			'width': 200,
-			'background-color': '#f00',
-			'opacity': 0
-		});
-		(end)
+		[javascript]
+			var myFx = new Fx.Styles('myElement').set({
+				'height': 200,
+				'width': 200,
+				'background-color': '#f00',
+				'opacity': 0
+			});
+		[/javascript]
 	*/
 	set: function(to){
 		var parsed = {};
@@ -90,7 +92,7 @@ Fx.Styles = new Class({
 	},
 
 	/*
-	Property: start
+	Method: start
 		Executes a transition for any number of css properties in tandem.
 
 	Syntax:
@@ -103,17 +105,16 @@ Fx.Styles = new Class({
 		(class) This Fx.Styles instance.
 
 	Example:
-		Instantiate:
-		(start code)
-		var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
-
-		myEffects.start({
-			'height': [10, 100],
-			'width': [900, 300],
-			'opacity': 0,
-			'background-color': '#00f'
-		});
-		(end)
+		[javascript]
+			var myEffects = new Fx.Styles('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+	Method:
+			myEffects.start({
+				'height': [10, 100],
+				'width': [900, 300],
+				'opacity': 0,
+				'background-color': '#00f'
+			});
+		[/javascript]
 	*/
 
 	start: function(obj){
@@ -142,32 +143,32 @@ Class: Element
 Element.extend({
 
 	/*
-	Property: effects
+	Method: effects
 		Applies an <Fx.Styles> to the Element. This a shortcut for <Fx.Styles>.
 
 	Syntax:
 		>var myFx = myElement.effects([options]);
 
 	Arguments:
-		options - (object, optional) The <Fx> options object.
+		options - (object, optional) The <Fx.Styles> options object.
 
 	Returns:
 		(class) A new Fx.Styles instance.
 
 	Example:
-		(start code)
-		var myEffects = $(myElement).effects({
-			duration: 1000,
-			transition: Fx.Transitions.Sine.easeInOut,
-			wait: false
-		}).set({
-			'opacity': 0
-			'width': 0
-		}).start({
-			'height': [10, 100],
-			'width': 300
-		});
-		(end)
+		[javascript]
+			var myEffects = $(myElement).effects({
+				duration: 1000,
+				transition: Fx.Transitions.Sine.easeInOut,
+				wait: false
+			}).set({
+				'opacity': 0
+				'width': 0
+			}).start({
+				'height': [10, 100],
+				'width': 300
+			});
+		[/javascript]
 
 	See Also:
 		<Fx>, <Fx.Styles>

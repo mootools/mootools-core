@@ -10,45 +10,71 @@ License:
 Class: Fx
 	Base class for the Effects.
 
+Implements:
+	<Chain>, <Events>, <Options>
+	Method:
 Syntax:
 	>var myFx = new Fx([el[, options]]);
 
 Arguments:
-	el - (element, optional) The Element to apply an effect to (defaults to this.element if it is defined).
+	el      - (element, optional: defaults to this.element) The Element to apply an effect to.
 	options - (object, optional) An object with options for the effect. See below.
 
-Options:
-	transition - (function) The equation to use for the effect see <Fx.Transitions> (defaults to <Fx.Transitions.Sine.easeInOut>).
-	duration - (number) The duration of the effect in ms (defaults to 500).
-	unit - (string) The unit, e.g. 'px', 'em' for fonts or '%' (defaults to false, see <Element.setStyle>).
-	wait - (boolean) to wait or not to wait for a current transition to end before running another of the same instance (defaults to true).
-	fps - (number) the frames per second for the transition (defaults to 50)
+	options (continued):
+		transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>.
+		duration   - (integer: defaults to 500) The duration of the effect in ms.
+		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
+		wait       - (boolean: defaults to true) Option to wait for a current transition to end before running another of the same instance.
+		fps        - (number: defaults to 50) The frames per second for the transition.
 
 Events:
-	onStart - (function) The function to execute as the effect begins. Receives this Element.
-	onSet - (function) The function to execute when value is setted without transition.Receives this Element.
-	onComplete - (function) The function to execute after the effect has processed. Receives this Element.
-	onCancel - (function) The function to execute when you manually stop the effect. Receives this Element.
+	onStart - (function) The function to execute as the effect begins.	Method:
+		Signature:
+			>onStart(element)
+	Method:
+		Arguments:
+			element - (element) This Element.
+	Method:
+	onSet - (function) The function to execute when value is setted without transition.
+		Signature:
+			>onSet(element)
+	Method:
+		Arguments:
+			element - (element) This Element.
+	Method:
+	onComplete - (function) The function to execute after the effect has processed.
+		Signature:
+			>onComplete(element)
+	Method:
+		Arguments:
+			element - (element) This Element.
+	Method:
+	onCancel - (function) The function to execute when you manually stop the effect.
+		Signature:
+			>onCancel(element)
+	Method:
+		Arguments:
+			element - (element) This Element.
 
 Returns:
-	(object) A new FX instance.
+	(class) A new FX instance.
 
 Example:
-	(start code)
-	var myFx = new Fx($('container'), {
-		onComplete: function(){
-			alert('woah it faded');
-		}
-	});
-
-	myFx.increase = function(){ // The Fx class is just a skeleton. We need to implement an increase method.
-		this.element.setOpacity(this.now);
-	};
-
-	myFx.start(1,0).chain(function(){
-		this.start(0,1);
-	});
-	(end)
+	[javascript]
+		var myFx = new Fx($('container'), {
+			onComplete: function(){
+				alert('woah it faded');
+			}
+		});
+	Method:
+		myFx.increase = function(){ // The Fx class is just a skeleton. We need to implement an increase method.
+			this.element.setOpacity(this.now);
+		};
+	Method:
+		myFx.start(1,0).chain(function(){
+			this.start(0,1);
+		});
+	[/javascript]
 
 Note:
 	The Fx Class is just a skeleton for other Classes to extend the original functionality. Look at the example above to run the Fx Class directly.
@@ -62,10 +88,6 @@ var Fx = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {
-		/*onStart: $empty,
-		onComplete: $empty,
-		onSet: $empty,
-		onCancel: $empty,*/
 		transition: function(p){
 			return -(Math.cos(Math.PI * p) - 1) / 2;
 		},
@@ -97,7 +119,7 @@ var Fx = new Class({
 	},
 
 	/*
-	Property: set
+	Method: set
 		Immediately sets the value with no transition and fires the 'onSet' Event.
 
 	Syntax:
@@ -107,20 +129,20 @@ var Fx = new Class({
 		to - (integer) The value to set.
 
 	Returns:
-		(object) This Fx instance.
+		(class) This Fx instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Style('myElement', 'opacity', {
-			onSet: function(){ // due to inheritence we can set the onSet Event
-				alert("Woah! Where did it go?");
-			}
-		});
-
-		$('myElement').addEvents('mouseenter', function(){
-			myFx.set(0); //will make it immediately transparent
-		});
-		(end)
+		[javascript]
+			var myFx = new Fx.Style('myElement', 'opacity', {
+				onSet: function(){ // due to inheritence we can set the onSet Event
+					alert("Woah! Where did it go?");
+				}
+			});
+	Method:
+			$('myElement').addEvents('mouseenter', function(){
+				myFx.set(0); //will make it immediately transparent
+			});
+		[/javascript]
 
 	See Also:
 		<Fx.Style>
@@ -142,7 +164,7 @@ var Fx = new Class({
 	},
 
 	/*
-	Property: start
+	Method: start
 		Executes an effect from one position to the other and fires the 'onStart' Event.
 
 	Syntax:
@@ -150,15 +172,15 @@ var Fx = new Class({
 
 	Arguments:
 		from - (integer) A staring value.
-		to - (integer) An ending value for the effect.
+		to   - (integer) An ending value for the effect.
 
 	Returns:
 		(object) This Fx instance.
 
 	Example:
-		(start code)
-		var myFx = $('myElement').effect('color').start('#000', '#f00');
-		(end)
+		[javascript]
+			var myFx = $('myElement').effect('color').start('#000', '#f00');
+		[/javascript]
 
 	See Also:
 		<Element.effect>
@@ -177,7 +199,7 @@ var Fx = new Class({
 	},
 
 	/*
-	Property: stop
+	Method: stop
 		Stops the transition and fires the 'onCancel' Event if ignore parameter is not supplied or is false.
 
 	Syntax:
@@ -190,19 +212,19 @@ var Fx = new Class({
 		(object) This Fx instance.
 
 	Example:
-		(start code)
-		var myElement = $('myElement');
-		var to = myElement.offsetLeft + myElement.offsetWidth;
-		var myFx = myElement.setStyle('position', 'absolute').effect('left', {
-			duration: 5000,
-			onCancel: function(){
-				alert("Doh! I've stopped.");
-			}
-		}).start(to);
-
-		(function(){ myFx.stop(true).start.delay(1000, myFx, to); }).delay(1000); // myFx is tired, let's be patient.
-		(function(){ myFx.stop(); }).delay(3000); // Let's cancel the effect.
-		(end)
+		[javascript]
+			var myElement = $('myElement');
+			var to = myElement.offsetLeft + myElement.offsetWidth;
+			var myFx = myElement.setStyle('position', 'absolute').effect('left', {
+				duration: 5000,
+				onCancel: function(){
+					alert("Doh! I've stopped.");
+				}
+			}).start(to);
+	Method:
+			(function(){ myFx.stop(true).start.delay(1000, myFx, to); }).delay(1000); // myFx is tired, let's be patient.
+			(function(){ myFx.stop(); }).delay(3000); // Let's cancel the effect.
+		[/javascript]
 	*/
 
 	stop: function(ignore){

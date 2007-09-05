@@ -13,26 +13,29 @@ Note:
 Class: Fx.Slide
 	The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
 
+Extends:
+	<Fx>
+
 Syntax:
 	>var myFx = new Fx.Slide(element[, options]);
 
 Arguments:
 	elements - (element) The element to slide.
-	options - (object, optional) An object for this instance's options. See "Options" below.
+	options  - (object, optional) All of <Fx> options in addition to mode and wrapper.
 
-Options:
-	mode - (string) String to indicate what type of sliding. Can be set to 'vertical' or 'horizontal' (defaults to 'vertical').
-	wrapper - (element) Allows to set another Element as wrapper (defaults in creating and adapting from current Element).
+	options (continued):
+		mode    - (string: defaults to 'vertical') String to indicate what type of sliding. Can be set to 'vertical' or 'horizontal'.
+		wrapper - (element: defaults to this.element) Allows to set another Element as wrapper.
 
 Properties:
 	open - (boolean) Indicates whether the slide element is visible.
 
 Example:
-	(start code)
+	[javascript]
 	var mySlider = new Fx.Slide('container').hide().toggle().chain(function(){ //hides, toggles (which acts like slideOut), and chains an alert.
 		alert(mySlider.open); //true
 	});
-	(end)
+	[/javascript]
 
 Note:
 	To create the slide effect an additional Element ('div' by default) is wrapped around the given Element. This wrapper adapts the margin from the Element.
@@ -79,7 +82,7 @@ Fx.Slide = new Class({
 	},
 
 	/*
-	Property: slideIn
+	Method: slideIn
 		Slides the Element in view horizontally or vertically.
 
 	Syntax:
@@ -92,11 +95,11 @@ Fx.Slide = new Class({
 		(class) This Fx.Slide instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Slide('myElement').slideOut().chain(function(){
-			this.show().slideOut('horizontal');
-		});
-		(end)
+		[javascript]
+			var myFx = new Fx.Slide('myElement').slideOut().chain(function(){
+				this.show().slideOut('horizontal');
+			});
+		[/javascript]
 	*/
 
 	slideIn: function(mode){
@@ -105,7 +108,7 @@ Fx.Slide = new Class({
 	},
 
 	/*
-	Property: slideOut
+	Method: slideOut
 		Slides the Element out of view horizontally or vertically.
 
 	Syntax:
@@ -118,14 +121,14 @@ Fx.Slide = new Class({
 		(class) This Fx.Slide instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Slide('myElement', {
-			mode: 'horizontal',
-			onComplete: function(){ // due to inheritance we have all the <Fx> Options.
-				alert('poof!');
-			}
-		}).slideOut();
-		(end)
+		[javascript]
+			var myFx = new Fx.Slide('myElement', {
+				mode: 'horizontal',
+				onComplete: function(){ // due to inheritance we have all the <Fx> Options.
+					alert('poof!');
+				}
+			}).slideOut();
+		[/javascript]
 	*/
 
 	slideOut: function(mode){
@@ -134,7 +137,7 @@ Fx.Slide = new Class({
 	},
 
 	/*
-	Property: hide
+	Method: hide
 		Hides the element without a transition.
 
 	Syntax:
@@ -147,14 +150,14 @@ Fx.Slide = new Class({
 		(class) This Fx.Slide instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Slide('myElement', {
-			duration: 1000,
-			transition: Fx.Transitions.Bounce.easeOut
-		});
-
-		myFx.hide().slideIn(); //automatically hide and show myElement.
-		(end)
+		[javascript]
+			var myFx = new Fx.Slide('myElement', {
+				duration: 1000,
+				transition: Fx.Transitions.Bounce.easeOut
+			});
+	Method:
+			myFx.hide().slideIn(); //automatically hide and show myElement.
+		[/javascript]
 	*/
 
 	hide: function(mode){
@@ -164,7 +167,7 @@ Fx.Slide = new Class({
 	},
 
 	/*
-	Property: show
+	Method: show
 		Shows the element without a transition.
 
 	Syntax:
@@ -177,16 +180,16 @@ Fx.Slide = new Class({
 		(class) This Fx.Slide instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Slide('myElement', {
-			duration: 1000,
-			transition: Fx.Transitions.Bounce.easeOut
-		});
-
-		myFx.slideOut().chain(function(){
-			this.show.delay(1000, this); //after 1sec show the slid Element.
-		});
-		(end)
+		[javascript]
+			var myFx = new Fx.Slide('myElement', {
+				duration: 1000,
+				transition: Fx.Transitions.Bounce.easeOut
+			});
+	Method:
+			myFx.slideOut().chain(function(){
+				this.show.delay(1000, this); //after 1sec show the slid Element.
+			});
+		[/javascript]
 	*/
 
 	show: function(mode){
@@ -196,7 +199,7 @@ Fx.Slide = new Class({
 	},
 
 	/*
-	Property: toggle
+	Method: toggle
 		Slides in or Out the element depending on its state.
 
 	Syntax:
@@ -209,14 +212,14 @@ Fx.Slide = new Class({
 		(class) This Fx.Slide instance.
 
 	Example:
-		(start code)
-		var myFx = new Fx.Slide('myElement', {
-			duration: 1000,
-			transition: Fx.Transitions.Pow.easeOut
-		});
-
-		myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
-		(end)
+		[javascript]
+			var myFx = new Fx.Slide('myElement', {
+				duration: 1000,
+				transition: Fx.Transitions.Pow.easeOut
+			});
+	Method:
+			myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
+		[/javascript]
 	*/
 
 	toggle: function(mode){
@@ -232,7 +235,7 @@ Fx.Slide = new Class({
 });
 
 /*
-Property: slideIn
+Method: slideIn
 	Slides this Element in view horizontally or vertically.
 
 Syntax:
@@ -245,16 +248,18 @@ Returns:
 	(class) An Fx.Slide instance.
 
 Example:
-	(start code)
-	var myFx = $('myElement').slideHide().slideIn();
-	(end)
+	[javascript]
+		var myFx = $('myElement').slideHide().slideIn();
+	[/javascript]
 
 See Also:
 	<Fx.Slide.slideIn>
 */
 
+//auto generated
+
 /*
-Property: slideOut
+Method: slideOut
 	Slides this Element out of view horizontally or vertically.
 
 Syntax:
@@ -267,19 +272,21 @@ Returns:
 	(class) An Fx.Slide instance.
 
 Example:
-	(start code)
-	var myFx = $('myElement').slideOut({
-		duration: 1000,
-		transition: Fx.Transitions.Sine.easeOut
-	});
-	(end)
+	[javascript]
+		var myFx = $('myElement').slideOut({
+			duration: 1000,
+			transition: Fx.Transitions.Sine.easeOut
+		});
+	[/javascript]
 
 See Also:
 	<Fx.Slide.slideOut>
 */
 
+//auto generated
+
 /*
-Property: slideHide
+Method: slideHide
 	Hides this element without a transition.
 
 Syntax:
@@ -292,19 +299,21 @@ Returns:
 	(class) An Fx.Slide instance.
 
 Example:
-	(start code)
-	var myFx = $('myElement').slideHide({
-		duration: 1000,
-		transition: Fx.Transitions.Bounce.easeOut
-	}).slideIn(); //automatically hide and show myElement.
-	(end)
+	[javascript]
+		var myFx = $('myElement').slideHide({
+			duration: 1000,
+			transition: Fx.Transitions.Bounce.easeOut
+		}).slideIn(); //automatically hide and show myElement.
+	[/javascript]
 
 See Also:
 	<Fx.Slide.hide>
 */
 
+//auto generated
+
 /*
-Property: slideShow
+Method: slideShow
 	Shows this element without a transition.
 
 Syntax:
@@ -317,19 +326,21 @@ Returns:
 	(class) An Fx.Slide instance.
 
 Example:
-	(start code)
-	var myElement = $('myElement');
-	myElement.slideHide().chain(function(){
-		myElement.slideShow.delay(1000, myElement);
-	});
-	(end)
+	[javascript]
+		var myElement = $('myElement');
+		myElement.slideHide().chain(function(){
+			myElement.slideShow.delay(1000, myElement);
+		});
+	[/javascript]
 
 See Also:
 	<Fx.Slide.show>
 */
 
+//auto generated
+
 /*
-Property: slideToggle
+Method: slideToggle
 	Slides in or Out this element depending on its state.
 
 Syntax:
@@ -342,16 +353,18 @@ Returns:
 	(class) An Fx.Slide instance.
 
 Example:
-	(start code)
-	var myFx = $('myElement').slideToggle({
-		duration: 1000,
-		transition: Fx.Transitions.Pow.easeOut
-	}).chain(myFx.toggle); // toggle the between slideIn and Out twice. Note that myFx becomes an instance of Fx.Slide therefore toggle becomes available.
-	(end)
+	[javascript]
+		var myFx = $('myElement').slideToggle({
+			duration: 1000,
+			transition: Fx.Transitions.Pow.easeOut
+		}).chain(myFx.toggle); // toggle the between slideIn and Out twice. Note that myFx becomes an instance of Fx.Slide therefore toggle becomes available.
+	[/javascript]
 
 See Also:
 	<Fx.Slide.toggle>
 */
+
+//auto generated
 
 Fx.Slide.Accessory = {'slideIn': 'slideIn', 'slideOut': 'slideOut', 'slideToggle': 'toggle', 'slideHide': 'hide', 'slideShow': 'show'};
 
