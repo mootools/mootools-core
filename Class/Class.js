@@ -14,14 +14,15 @@ Syntax:
 	>var MyClass = new Class(properties);
 
 Arguments:
-	properties - (object) The collection of properties that apply to the Class. Also accepts Extends and Implements properties (see below).
+	properties - (object) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
 
 	properties (continued):
-		Extends - (class) That this class will extend.
-		Implements - (mixed) An object or an array of objects that the Class implements. Similar to Extends, but it simply overrides the properties. Useful when implementing a Class properties in multiple classes.
+		Extends    - (class) The Class that this Class will extend. All properties that have the same name as a property in the parent class will have access to the parent method that was replaced.
+		Implements - (mixed) An object or an array of objects that the Class implements. Similar to Extends, but simply overrides the properties of the implementing classes. Useful when implementing the properties of a Class in multiple classes.
+		initialize - (function) The initialize function will be the constructor for this class when new instances are created.
 
 Returns:
-	(class) The Class created.
+	(class) The Class that is created.
 
 Examples:
 	Class Example:
@@ -49,7 +50,8 @@ Examples:
 				this.age = age;
 			}
 		});
-		var Cat = new Class({Extends: Animal
+		var Cat = new Class({
+			Extends: Animal
 			initialize: function(name, age){
 				this.parent(age); //will call initalize of Animal
 				this.name = name;
@@ -148,7 +150,7 @@ Class.prototype = {
 
 	/*
 	Method: implement
-		Implements the passed in properties into the base Class prototypes, altering the base Class, unlike <Class.extend>.
+		Implements the properties passed in into the base Class prototypes, altering the base Class, unlike <Class.extend>.
 
 	Syntax:
 		>MyClass.implement(properties);
@@ -230,12 +232,13 @@ Returns:
 Example:
 	[javascript]
 		var Site = new Abstract({
-			name: 'MooTools-O-Fun',
+			name: 'MooTools',
 			welcome: function(){
-				alert('welcome');
+				alert('Welcome to ' + this.name + '!');
 			}
 		});
-		alert(Site.name); //alerts 'MooTools-O-Fun'
+		alert(Site.name); //alerts 'MooTools'
+		Site.welcome(); //alerts 'Welcome to MooTools!'
 	[/javascript]
 */
 
@@ -256,7 +259,15 @@ Abstract.extend({
 
 	Arguments:
 		fn   - (function) The function to call with the property value and key as its parameters.
-		bind - (object, optional) The object to bind the function with.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+		
+		fn (continued):
+			Signature:
+				>fn(property, key)
+
+			Arguments:
+				property - (mixed) The current property in the Abstract.
+				key - (string) The current property's key in the Abstract.
 
 	Example:
 		[javascript]
@@ -287,10 +298,10 @@ Abstract.extend({
 		>myAbstract.remove(property);
 
 	Arguments:
-		property - (string) Property that is removed from the object.
+		property - (string) Property to remove from the Abstract.
 
 	Returns:
-		(object) The same abstract object. Used for chaining purposes.
+		(object) This Abstract object. Useful for chaining.
 
 	Example:
 		[javascript]

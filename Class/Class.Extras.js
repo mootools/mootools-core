@@ -15,7 +15,7 @@ Class: Chain
 
 Syntax:
 	For new classes:
-	>var MyClass = new Class({Implements: Chain});
+	>var MyClass = new Class({ Implements: Chain });
 
 	For existing classes:
 	>MyClass.implement(new Chain);
@@ -54,7 +54,7 @@ var Chain = new Class({
 		Any number of functions.
 
 	Returns:
-		(class) This Class instance.
+		(class) This Class instance. Calls to chain can also be chained.
 
 	Example:
 		[javascript]
@@ -91,14 +91,13 @@ var Chain = new Class({
 					this.chain.apply(this, arguments);
 				}
 			});
-			var myQ = new Queue();
-			myQ.chain(
+			var myQueue = new Queue();
+			myQueue.chain(
 				function(){ alert('do dishes'); },
 				function(){ alert('put away clean dishes'); }
 			);
-
-			myQ.callChain(); // alerts 'do dishes'
-			myQ.callChain(); // alerts 'put away clean dishes'
+			myQueue.callChain(); //alerts 'do dishes'
+			myQueue.callChain(); //alerts 'put away clean dishes'
 		[/javascript]
 	*/
 
@@ -116,7 +115,7 @@ var Chain = new Class({
 	Example:
 		[javascript]
 			var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
-			myFx.chain(function(){ while(true) alert('doh!'); }); // don't try this at home, kids.
+			myFx.chain(function(){ while(true) alert('doh!'); }); //don't try this at home, kids.
 			myFx.clearChain(); // .. that was a close one ...
 		[/javascript]
 
@@ -138,7 +137,7 @@ Class: Events
 
 Syntax:
 	For new classes:
-	>var MyClass = new Class({Implements: Events});
+	>var MyClass = new Class({ Implements: Events });
 
 	For existing classes:
 	>MyClass.implement(new Events);
@@ -171,7 +170,7 @@ var Events = new Class({
 
 	/*
 	Method: addEvent
-		Adds an event to the Class instance's event stack.
+		Adds an event to the Class instance's events stack.
 
 	Syntax:
 		>myClass.addEvent(type, fn[, internal]);
@@ -247,12 +246,12 @@ var Events = new Class({
 	Example:
 		[javascript]
 			var Widget = new Class({
+				Implements: Events,
 				initialize: function(arg1, arg2){
 					...
 					this.fireEvent("onInitialize", [arg1, arg2], 50);
 				}
 			});
-			Widget.implement(Events);
 		[/javascript]
 	*/
 
@@ -267,7 +266,7 @@ var Events = new Class({
 
 	/*
 	Method: removeEvent
-		Removes an event from the stack of events of the Class instance.
+		Removes an event from the events stack of this Class instance.
 
 	Syntax:
 		>myClass.removeEvent(type, fn);
@@ -333,7 +332,7 @@ Class: Options
 
 Syntax:
 	For new classes:
-	>var MyClass = new Class({Implements: Options});
+	>var MyClass = new Class({ Implements: Options });
 
 	For existing classes:
 	>MyClass.implement(Options);
@@ -381,7 +380,7 @@ var Options = new Class({
 
 	Note:
 		Relies on the default options of a Class defined in its options object.
-		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the option is a function.
 	*/
 
 	setOptions: function(options){

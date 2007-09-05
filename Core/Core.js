@@ -75,8 +75,16 @@ Function: Native
 	This will add a .extend method to the objects passed as a parameter, but the property passed in will only be copied to the object's prototype if it doesn't currently exist.
 	The purpose of Native is also to create generics methods (Class methods) from the prototypes passed in. Used in MooTools to automatically implement Array/Function/Number/String/RegExp methods to browsers that don't natively support them.
 
+Syntax:
+	>Native(native1[, native2[, native3[, ...]]]);
+
 Arguments:
 	Any number of Classes/Native JavaScript objects.
+
+Example:
+	[javascript]
+		Native(Date);
+	[/javascript]
 */
 
 var Native = function(){
@@ -95,6 +103,25 @@ Native.generic = function(property){
 		return this.prototype[property].apply(bind, Array.prototype.slice.call(arguments, 1));
 	};
 };
+
+/*
+Function: Native.setFamily
+	This function will set the $family property of all instances of this Native type.
+
+Syntax:
+	>Native.setFamily(types);
+
+Arguments:
+	types - (object) An object containing they type / Native pairs to be applied.
+
+Example:
+	[javascript]
+		Native.setFamily({'date': Date});
+	[/javascript]
+
+Note:
+	This function is used internally by all Native types extended by MooTools. Accordingly, (most) Native instances know their type.
+*/
 
 Native.setFamily = function(natives){
 	for (var type in natives) natives[type].prototype.$family = type;
@@ -119,7 +146,7 @@ Returns:
 	(array) The new copied array.
 
 Examples:
-	Apply Array to arguments:
+	Apply Array prototypes to arguments:
 	[javascript]
 		function myFunction(){
 			$A(arguments).each(function(argument, index){
@@ -130,10 +157,10 @@ Examples:
 
 	Copy an Array:
 	[javascript]
-		var anArray = [0, 1, 2, 3, 4];
-		var copiedArray = $A(anArray); // Returns: [0, 1, 2, 3, 4]
-		var slicedArray1 = $A(anArray, 2, 3); // Returns: [2, 3, 4]
-		var slicedArray2 = $A(anArray, -1); // Returns: [4]
+		var myArray = [0, 1, 2, 3, 4];
+		var copiedArray = $A(myArray); //returns [0, 1, 2, 3, 4]
+		var slicedArray1 = $A(myArray, 2, 3); //returns [2, 3, 4]
+		var slicedArray2 = $A(myArray, -1); //returns [4]
 	[/javascript]
 */
 
@@ -250,7 +277,7 @@ Syntax:
 	>var merged = $merge(obj1, obj2[, obj3[, ...]]);
 
 Arguments:
-	(objects) Any number of objects.
+	objects - (objects) Any number of objects.
 
 Returns:
 	(object) The object that is created as a result of merging all the objects passed in.
@@ -289,7 +316,7 @@ Syntax:
 	>var picked = $pick(var1[, var2[, var3[, ...]]]);
 
 Arguments:
-	(mixed) Any number of variables.
+	variables - (mixed) Any number of variables.
 
 Returns:
 	(mixed) The first variable that is defined. If all variables passed in are null or undefined, returns null.
@@ -311,7 +338,7 @@ function $pick(){
 
 /*
 Function: $random
-	Returns a random integer number between the two passed in values.
+	Returns a random integer number between the two values passed in.
 
 Syntax:
 	>var random = $random(min, max);
@@ -348,11 +375,8 @@ Returns:
 
 Examples:
 	[javascript]
-		var obj = 'hello';
-		$splat(obj); //returns ['hello']
-
-		var obj2 = ['a', 'b', 'c'];
-		$splat(obj2); //returns ['a', 'b', 'c']
+		$splat('hello'); //returns ['hello']
+		$splat(['a', 'b', 'c']); //returns ['a', 'b', 'c']
 	[/javascript]
 */
 
@@ -420,27 +444,26 @@ Arguments:
 	obj - (object) The object to inspect.
 
 Returns:
-	'element'    - (string) If passed object is a DOM element node.
-	'textnode'   - (string) If passed object is a DOM text node.
-	'whitespace' - (string) If passed object is a DOM whitespace node.
-	'arguments'  - (string) If passed object is an arguments object.
-	'array'      - (string) If passed object is an array.
-	'object'     - (string) If passed object is an object.
-	'string'     - (string) If passed object is a string.
-	'number'     - (string) If passed object is a number.
-	'boolean'    - (string) If passed object is a boolean.
-	'function'   - (string) If passed object is a function.
-	'regexp'     - (string) If passed object is a regular expression.
-	'class'      - (string) If passed object is a Class (created with new Class, or the extend of another class).
+	'element'    - (string) If object is a DOM element node.
+	'textnode'   - (string) If object is a DOM text node.
+	'whitespace' - (string) If object is a DOM whitespace node.
+	'arguments'  - (string) If object is an arguments object.
+	'array'      - (string) If object is an array.
+	'object'     - (string) If object is an object.
+	'string'     - (string) If object is a string.
+	'number'     - (string) If object is a number.
+	'boolean'    - (string) If object is a boolean.
+	'function'   - (string) If object is a function.
+	'regexp'     - (string) If object is a regular expression.
+	'class'      - (string) If object is a Class (created with new Class, or the extend of another class).
 	'collection' - (string) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
-	'window'     - (string) If object passed is the window object.
-	'document'   - (string) If passed object is the document object.
-	false        - (boolean) If passed object is undefined, null, NaN or none of the above.
+	'window'     - (string) If object is the window object.
+	'document'   - (string) If object is the document object.
+	false        - (boolean) If object is undefined, null, NaN or none of the above.
 
 Example:
 	[javascript]
-		var myString = 'hello';
-		$type(myString); //returns "string"
+		$type('hello'); //returns "string"
 	[/javascript]
 */
 
@@ -477,9 +500,9 @@ Features:
 	Client.Features.xhr   - (boolean) Browser supports native XMLHTTP object.
 
 Engine:
-	Client.Engine.ie        - (boolean) True if the current browser is internet explorer (any).
-	Client.Engine.ie6       - (boolean) True if the current browser is internet explorer 6.
-	Client.Engine.ie7       - (boolean) True if the current browser is internet explorer 7.
+	Client.Engine.ie        - (boolean) True if the current browser is Internet Explorer (any).
+	Client.Engine.ie6       - (boolean) True if the current browser is Internet Explorer 6.
+	Client.Engine.ie7       - (boolean) True if the current browser is Internet Explorer 7.
 	Client.Engine.gecko     - (boolean) True if the current browser is Mozilla/Gecko.
 	Client.Engine.webkit    - (boolean) True if the current browser is Safari/Konqueror.
 	Client.Engine.webkit419 - (boolean) True if the current browser is Safari2 / webkit till version 419.

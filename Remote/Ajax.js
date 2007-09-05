@@ -170,7 +170,7 @@ Element.extend({
 		options - (object, optional) Option collection for Ajax request. See <Ajax> for the options list.
 
 	Returns:
-		(Ajax) This Ajax Class instance.
+		(object) This Ajax Class instance.
 
 	Example:
 		[html]
@@ -201,7 +201,7 @@ Element.extend({
 		options - (object, optional) Option collection for Ajax request. See <Ajax> for the options list.
 
 	Returns:
-		(Ajax) This Ajax Class instance.
+		(object) This Ajax Class instance.
 
 	Example:
 		[html]
