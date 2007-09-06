@@ -83,6 +83,9 @@ var Chain = new Class({
 	Syntax:
 		>myClass.callChain();
 
+	Returns:
+		(class) This Class instance.
+
 	Example:
 		[javascript]
 			var Queue = new Class({
@@ -103,6 +106,7 @@ var Chain = new Class({
 
 	callChain: function(){
 		if (this.$chain && this.$chain.length) this.$chain.shift().delay(10, this);
+		return this;
 	},
 
 	/*
@@ -111,6 +115,9 @@ var Chain = new Class({
 
 	Syntax:
 		>myClass.clearChain();
+
+	Returns:
+		(class) This Class instance.
 
 	Example:
 		[javascript]
@@ -125,6 +132,7 @@ var Chain = new Class({
 
 	clearChain: function(){
 		if (this.$chain) this.$chain.empty();
+		return this;
 	}
 
 });
@@ -313,6 +321,7 @@ var Events = new Class({
 	*/
 
 	removeEvents: function(type){
+		if (!this.$events) return this;
 		for (var e in this.$events){
 			if (!type || type == e){
 				var fns = this.$events[e];
