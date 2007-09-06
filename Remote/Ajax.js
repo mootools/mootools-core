@@ -26,10 +26,11 @@ Arguments:
 Events:
 	onComplete - (function) Function to execute when the AJAX request completes. The response text and XML will be passed as arguments.
 		Signature:
-			>onComplete(responseText);
+			>onComplete(responseText, responseXML);
 
 		Arguments:
 			responseText - (string) The content of the remote response.
+			responseXML - (string) The content of the remote response XML.
 
 Examples:
 	Simple GET request:
@@ -44,7 +45,7 @@ Examples:
 
 	Data from object passed via GET:
 	[javascript]
-		var myAjax = new Ajax('load/').request({'user_id': 25}); //loads url "load/?user_id=25"
+		var myAjax = new Ajax('load/', {'method': 'get'}).request({'user_id': 25}); //loads url "load/?user_id=25"
 	[javascript]
 
 	Data from Element via POST:
@@ -58,7 +59,7 @@ Examples:
 		</form>
 	[/html]
 	[javascript]
-		//Needs to be in a submit event or the form handler
+		// Should to be in a submit event or the form handler
 		var myAjax = new Ajax('save/').request($('user-form'));
 	[/javascript]
 */
@@ -74,8 +75,8 @@ var Ajax = new Class({
 	},
 
 	initialize: function(url, options){
-		this.parent(url, options);
 		this.addEvent('onSuccess', this.onComplete, true);
+		this.parent(url, options);
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
@@ -164,7 +165,7 @@ Element.extend({
 	/*
 	Method: send
 		Sends a form with an Ajax request.
-		The URL is taken from the action attribute, as well as the method, which defaults to post if not found. 
+		The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
 
 	Arguments:
 		options - (object, optional) Option collection for Ajax request. See <Ajax> for the options list.
@@ -178,7 +179,7 @@ Element.extend({
 				<input name="email" value="bob@bob.com">
 				<input name="zipCode" value="90210">
 			</form>
-		[/html]	
+		[/html]
 		[javascript]
 			$('myForm').send();
 		[/javascript]
