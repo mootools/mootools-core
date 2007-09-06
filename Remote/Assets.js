@@ -1,23 +1,38 @@
 /*
 Script: Assets.js
-	provides dynamic loading for images, css and javascript files.
+
+	Contains the <Asset> class, which provides methods to dynamically load JavaScript, CSS, and image files into the document.
 
 License:
 	MIT-style license.
 */
 
+/*
+Class: Asset
+	Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.
+
+*/
+
 var Asset = new Abstract({
 
 	/*
-	Property: javascript
-		Injects a javascript file in the page.
+	Method: javascript
+		Injects a script tag into the head section of the document, pointing to the src specified.
+
+	Syntax:
+		>Asset.javascript(source[, properties]);
 
 	Arguments:
-		source - the path of the javascript file
-		properties - some additional attributes you might want to add to the script element
+		source - (string) The location of the JavaScript file to be loaded.
+		properties - (object, optional) Additional attributes to be included into the script Element. 
+
+	Returns:
+		The created script Element.
 
 	Example:
-		> new Asset.javascript('/scripts/myScript.js', {id: 'myScript'});
+		[javascript]
+			new Asset.javascript('/scripts/myScript.js', {id: 'myScript'});
+		[/javascript]
 	*/
 
 	javascript: function(source, properties){
@@ -35,15 +50,23 @@ var Asset = new Abstract({
 	},
 
 	/*
-	Property: css
-		Injects a css file in the page.
+	Method: css
+		Creates a new link Element for the inclusion of a CSS stylesheet and injects it into the head section of the document. 
+
+	Syntax:
+		>Asset.css(source[, properties]);
 
 	Arguments:
-		source - the path of the css file
-		properties - some additional attributes you might want to add to the link element
+		source - (string) The path of the CSS file to include.
+		properties - (object, optional) Additional attributes to be added to the link Element.
+
+	Returns:
+		The created link Element.
 
 	Example:
-		> new Asset.css('/css/myStyle.css', {id: 'myStyle', title: 'myStyle'});
+		[javascript]
+			new Asset.css('/css/myStyle.css', {id: 'myStyle', title: 'myStyle'});
+		[/javascript]
 	*/
 
 	css: function(source, properties){
@@ -53,20 +76,26 @@ var Asset = new Abstract({
 	},
 
 	/*
-	Property: image
-		Preloads an image and returns the img element. Does not inject it to the page.
-		DO NOT use addEvent for load/error/abort on the returned element, give them as
-		onload/onerror/onabort in the properties argument.
+	Method: image
+		Preloads an image and returns the img Element.  
+	Syntax:
+		>Asset.image(source[, properties]);
 
 	Arguments:
-		source - the path of the image file
-		properties - some additional attributes you might want to add to the img element including onload/onerror/onabout events.
-
-	Example:
-		> new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
+		source - (string) The location of the image file to load. 
+		properties - (object, optional) Additional attributes to be added to the image Element.
 
 	Returns:
-		the img element. you can inject it anywhere you want with <Element.injectInside>/<Element.injectAfter>/<Element.injectBefore>
+		The img Element. 
+
+	Example:
+		[javascript]
+			new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
+		[/javascript]
+
+	Note:
+		DO NOT use addEvent for load/error/abort on the returned element; give them as onload/onerror/onabort in the properties argument instead.
+
 	*/
 
 	image: function(source, properties){
@@ -99,27 +128,27 @@ var Asset = new Abstract({
 
 	/*
 	Property: images
-		Preloads an array of images (as strings) and returns an array of img elements. does not inject them to the page.
+		Preloads an array of images and returns an array of img Elements.
 
 	Arguments:
-		sources - array, the paths of the image files
-		options - object, see below
+		sources - (array) An array of strings representing the location of the image files to be loaded.
+		options - (object, optional) See below.
 
-	Options:
-		onComplete - a function to execute when all image files are loaded in the browser's cache
-		onProgress - a function to execute when one image file is loaded in the browser's cache
-
-	Example:
-		(start code)
-		new Asset.images(['/images/myImage.png', '/images/myImage2.gif'], {
-			onComplete: function(){
-				alert('all images loaded!');
-			}
-		});
-		(end)
+	Options (continued):
+		onComplete - (function, optional) The function to execute when all image files are loaded into the browser's cache.
+		onProgress - (function, optional) The function to execute when one image file is loaded in the browser's cache.
 
 	Returns:
-		the img elements as $$. you can inject them anywhere you want with <Element.injectInside>/<Element.injectAfter>/<Element.injectBefore>
+		The img Elements as a $$ array. 
+
+	Example:
+		[javascript]
+			new Asset.images(['/images/myImage.png', '/images/myImage2.gif'], {
+				onComplete: function(){
+					alert('All images loaded!');
+				}
+			});
+		[/javascript]
 	*/
 
 	images: function(sources, options){
