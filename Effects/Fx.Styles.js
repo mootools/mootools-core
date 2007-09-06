@@ -20,6 +20,9 @@ Arguments:
 	el      - (mixed) A string ID of the Element or an Element to apply the style transitions to.
 	options - (object, optional) The <Fx> options object.
 
+Properties:
+	now - (object) An object containing keys that specify css properties being altered and values for their current state.
+
 Returns:
 	(class) A new Fx.Styles instance.
 

@@ -58,6 +58,12 @@ Events:
 			toggler - (element) The toggler for the Element being displayed.
 			element - (element) The Element being displayed.
 
+Properties:
+	togglers  - (array) The collection of Elements that are clicked to open sections of the Accordion.
+	elements  - (array) The collection of Elements representing the sections that expand and collapse.
+	container - (element or boolean false) An element that contains all the togglers and elements. The container is optional, so if not specified in the options this property is false.
+	previous  - (integer) The current open section.
+
 Example:
 	[javascript]
 		var myAccordion = new Accordion($$('.togglers'), $$('.elements'), {

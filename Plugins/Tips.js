@@ -36,6 +36,12 @@ Arguments:
 			- The title will have as classname: tool-title
 			- The text will have as classname: tool-text
 
+Properties:
+	toolTip - (element) The Element containing the tip content; this element is the one positioned around the document relative to the target.
+	wrapper - (element) An Element inside the toolTip Element that contains the body of the tip.
+	title   - (element) The Element generated each time a tip is shown for the title of each tooltip.
+	text    - (element) The Element generated each time a tip is shown for the body of each tooltip.
+
 Events:
 	onShow - (function) Fires when the Tip is starting to show and by default sets the tip visible.
 		Signature:

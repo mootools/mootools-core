@@ -28,7 +28,8 @@ Arguments:
 		wrapper - (element: defaults to this.element) Allows to set another Element as wrapper.
 
 Properties:
-	open - (boolean) Indicates whether the slide element is visible.
+	wrapper - (element) The Element wrapping the element being slid.
+	open    - (boolean) Indicates whether the slide element is visible.
 
 Example:
 	[javascript]

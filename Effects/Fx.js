@@ -56,6 +56,10 @@ Events:
 		Arguments:
 			element - (element) This Element.
 
+Properties:
+	element - (element) The Element being effected.
+	now     - (integer) The current value of the css property being changed.
+
 Returns:
 	(class) A new FX instance.
 

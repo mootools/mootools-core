@@ -32,6 +32,10 @@ Arguments:
 			The Events 'over', 'leave' and 'drop' get fired on the droppable element with the dragged element as first argument
 			when the dragged element hovers, leaves or get dropped on the droppable.
 
+Properties:
+	All the properties in <Drag> in addition to:
+	droppables - (element) The Elements that the draggable can drop into.
+
 Example:
 	[javascript]
 		var droppables = $$('li.placements').addEvents({

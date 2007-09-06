@@ -18,6 +18,10 @@ Arguments:
 	property - (string) The property to transition.
 	options  - (object, optional) The <Fx> options object.
 
+Properties:
+	All the properties in <Fx> in addition to:
+	property - (string) The property being transitioned.
+
 Returns:
 	(class) A new Fx.Style instance.
 

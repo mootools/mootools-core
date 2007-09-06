@@ -46,6 +46,9 @@ Events:
 		Arguments:
 			element - (element) The Element that had been dragged.
 
+Properties:
+	idle - (boolean) The state of the interaction; true if the user is sorting.
+
 Examples:
 	A Simple Sortables:
 	[javascript]

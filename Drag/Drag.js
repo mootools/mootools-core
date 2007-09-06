@@ -72,6 +72,10 @@ Events:
 		Arguments:
 			element - (element) The dragged Element.
 
+Properties:
+	element - (element) The Element being transformed.
+	handle  - (element) The Element acting as the handle for the draggable element.
+
 Returns:
 	(class) A new Drag class instance.
 
