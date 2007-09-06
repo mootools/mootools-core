@@ -1,61 +1,76 @@
 /*
 Script: Tips.js
-	Tooltips, BubbleTips, whatever they are, they will appear on mouseover
+	Tooltips, BubbleTips, whatever they are, they will appear on mouseover.
 
 License:
 	MIT-style license.
 
 Credits:
-	The idea behind Tips.js is based on Bubble Tooltips (<http://web-graphics.com/mtarchive/001717.php>) by Alessandro Fulcitiniti <http://web-graphics.com>
+	The idea behind Tips.js is based on Bubble Tooltips (<http://web-graphics.com/mtarchive/001717.php>) by Alessandro Fulcitiniti <http://web-graphics.com/>
+
+Note:
+	Tips requires an XHTML doctype.
 */
 
 /*
 Class: Tips
 	Display a tip on any element with a title and/or href.
 
-Note:
-	Tips requires an XHTML doctype.
+Implements:
+	<Events>, <Options>
 
 Arguments:
-	elements - a collection of elements to apply the tooltips to on mouseover.
-	options - an object. See options Below.
+	elements - (mixed) A collection of elements, a string Selector, or an Element to apply the tooltips to on mouseover.
+	options  - (object) An object to customize this Tips instance.
 
-Options:
-	maxTitleChars - the maximum number of characters to display in the title of the tip. defaults to 30.
-	showDelay - the delay the onShow method is called. (defaults to 100 ms)
-	hideDelay - the delay the onHide method is called. (defaults to 100 ms)
+	options (continued):
+		maxTitleChars - (number: defaults to 30) The maximum number of characters to display in the title of the tip.
+		showDelay     - (number: defaults to 100) The delay the onShow method is called.
+		hideDelay     - (number: defaults to 100) The delay the onHide method is called.
+		className     - (string: defaults to 'tool') The prefix for your tooltip classNames.
+		offsets       - (object: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
+		fixed         - (boolean: defaults to false) If set to true, the toolTip will not follow the mouse.
 
-	className - the prefix for your tooltip classNames. defaults to 'tool'.
+		className (continued):
+			- The whole tooltip will have as classname: tool-tip
+			- The title will have as classname: tool-title
+			- The text will have as classname: tool-text
 
-		the whole tooltip will have as classname: tool-tip
-
-		the title will have as classname: tool-title
-
-		the text will have as classname: tool-text
-
-	offsets - the distance of your tooltip from the mouse. an Object with x/y properties.
-	fixed - if set to true, the toolTip will not follow the mouse.
-	
 Events:
-	onShow - optionally you can alter the default onShow behaviour with this option (like displaying a fade in effect);
-	onHide - optionally you can alter the default onHide behaviour with this option (like displaying a fade out effect);
+	onShow - (function) Fires when the Tip is starting to show and by default sets the tip visible.
+		Signature:
+			>onShow(tip)
+
+		Arguments:
+			tip - (element) The Tip Element that is showing.
+
+	onHide - (function) Fires when the Tip is starting to hide and by default sets the tip hidden.
+		Signature:
+			>onHide(tip)
+
+		Arguments:
+			tip - (element) The Tip Element that is hiding.
+
+Returns:
+	(class) A new Tips class instance.
 
 Example:
-	(start code)
-	<img src="/images/i.png" title="The body of the tooltip is stored in the title" class="toolTipImg"/>
-	<script>
+	[html]
+		<img src="/images/i.png" title="The body of the tooltip is stored in the title" class="toolTipImg"/>
+	[/html]
+
+	[javascript]
 		var myTips = new Tips($$('.toolTipImg'), {
 			maxTitleChars: 50	//I like my captions a little long
 		});
-	</script>
-	(end)
+	[/javascript]
 
 Note:
 	The title of the element will always be used as the tooltip body. If you put :: on your title, the text before :: will become the tooltip title.
 */
 
 var Tips = new Class({
-	
+
 	Implements: [Events, Options],
 
 	options: {

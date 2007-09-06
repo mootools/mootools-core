@@ -4,6 +4,9 @@ Script: Scroller.js
 
 License:
 	MIT-style license.
+
+Note:
+	The Scroller.js requires an XHTML doctype.
 */
 
 /*
@@ -11,24 +14,44 @@ Class: Scroller
 	The Scroller is a class to scroll any element with an overflow (including the window) when the mouse cursor reaches certain buondaries of that element.
 	You must call its start method to start listening to mouse movements.
 
-Note:
-	The Scroller requires an XHTML doctype.
+Syntax:
+	>var myScroller = new Scroller(element[, options]);
+
+Implements:
+	<Events>, <Options>
 
 Arguments:
-	element - required, the element to scroll.
-	options - optional, see options below, and <Fx> options.
+	element - (element) The element to scroll.
+	options - (object, optional) An object for the Scroller instance's options.
 
-Options:
-	area - integer, the necessary boundaries to make the element scroll.
-	velocity - integer, velocity ratio, the modifier for the window scrolling speed.
+	options (continue):
+		area - (number: defaults to 20) The necessary boundaries to make the element scroll.
+		velocity - (number: defaults to 1) The modifier for the window scrolling speed.
 
 Events:
-	onChange - optionally, when the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
-		Automatically passes as parameters x and y values.
+	onChange - (function) When the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
+		Signature:
+			>onChange(x, y);
+
+		Arguments:
+			x - (number) Current x-mouse position.
+			y - (number) Current y-mouse position.
+
+Example:
+	[javascript]
+		var myScroller = new Scroller(window, {
+			area: Math.round(Client.getWidth() / 5)
+		});
+
+		(function(){
+			this.stop();
+			this.start();
+		}).periodical(1000, myScroller);
+	[/javascript]
 */
 
 var Scroller = new Class({
-	
+
 	Implements: [Events, Options],
 
 	options: {
@@ -47,8 +70,17 @@ var Scroller = new Class({
 	},
 
 	/*
-	Property: start
+	Method: start
 		The scroller starts listening to mouse movements.
+
+	Syntax:
+		>myScroller.start();
+
+	Example:
+		[javascript]
+			var myScroller = new Scroller('myElement');
+			myScroller.start();
+		[/javascript]
 	*/
 
 	start: function(){
@@ -57,8 +89,20 @@ var Scroller = new Class({
 	},
 
 	/*
-	Property: stop
+	Method: stop
 		The scroller stops listening to mouse movements.
+
+	Syntax:
+		>myScroller.start();
+
+	Example:
+		[javascript]
+			var myElement = $('myElement');
+			var myScroller = new Scroller(myElement);
+			myScroller.start();
+
+			myElement.addEvent('click', myScroller.stop.bind(myScroller)); //stop scrolling when the user clicks.
+		[/javascript]
 	*/
 
 	stop: function(){

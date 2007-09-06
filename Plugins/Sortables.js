@@ -10,41 +10,67 @@ License:
 Class: Sortables
 	Creates an interface for drag and drop sorting of a list or lists.
 
-Arguments:
-	list - required, the list or lists that will become sortable.
-		This argument can be an Element, or array of Elements. When a single list (or id) is passed, that list will be sortable only with itself.
-		To enable sorting between lists, one or more lists or id's must be passed using an array or an object. See Examples below.
-	options - an Object, see options and events below.
+Implements:
+	<Events>, <Options>
 
-Options:
-	constrain - whether or not to constrain the element being dragged to its parent element. defaults to false.
-	clone - whether or not to display a copy of the actual element while dragging. defaults to true with opacity of 0.7, you can refine styles using an object.
-	opacity - opacity of the element being dragged for sorting
-	handle - a selector which be used to select the element inside each item to be used as a handle for sorting that item.  if no match is found, the element is used as its own handle.
-	revert - whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be treated as true and used as aditional options for the revert effect. defaults to false.
+Syntax:
+	>var mySortables = new Sortables(list[, options]);
+
+Arguments:
+	list    - (mixed) The list or lists that will be sortable.
+	options - (object) An object to customize this Sortable's instance.
+
+	list (continued):
+		This argument can be an Element, or an array of Elements. When a single list (or ID) is passed, that list will be sortable only with itself.
+		To enable sorting between lists, one or more lists or id's must be passed using an array or an object. See Example below.
+
+	options (continued):
+		constrain - (boolean: defaults to false) Whether or not to constrain the element being dragged to its parent element.
+		clone     - (boolean: defaults to true) Whether or not to display a copy of the actual element while dragging.
+		opacity   - (number: defaults to 0.7) Opacity of the element being dragged for sorting.
+		handle    - (mixed: defaults to false) A Selector which can be used to select the element inside each item. The matched element will be used as a handle for sorting that item. If no match is found, the element is used as its own handle.
+		revert    - (mixed: defaults to false) Whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be used as additional options for the revert effect.
 
 Events:
-	onStart - function executed when the item starts dragging
-	onComplete - function executed when the item ends dragging
+	onStart - (function) Fires when the item starts dragging.
+		Signature:
+			>onStart(element)
 
-Example:
-	(start code)
-	var mySortables = new Sortables('list-1', {
-		revert: { duration: 500, transition: Fx.Transitions.Elastic.easeOut }
-	});
-	//creates a new Sortable instance over the list with id 'list-1' with some extra options for the revert effect
+		Arguments:
+			element - (element) The current Element being dragged.
 
-	var mySortables = new Sortables(['list-1', 'list-2'], {
-		constrain: true,
-		clone: false,
-		revert: true
-	});
-	//creates a new Sortable instance allowing the sorting of the lists with id's 'list-1' and 'list-2' with extra options
-	//since constrain was set to false, the items will not be able to be dragged from one list to the other
+	onComplete - (function) Fires when the item ends dragging.
+		Signature:
+			>onComplete(element)
 
-	var mySortables = new Sortables(['list-1', 'list-2', 'list-3']);
-	//creates a new Sortable instance allowing sorting between the lists with id's 'list-1', 'list-2, and 'list-3'
-	(end)
+		Arguments:
+			element - (element) The Element that had been dragged.
+
+Examples:
+	A Simple Sortables:
+	[javascript]
+		var mySortables = new Sortables('list-1', {
+			revert: { duration: 500, transition: Fx.Transitions.Elastic.easeOut }
+		});
+	[/javascript]
+
+	Sorting Between Lists:
+	[javascript]
+		//creates a new Sortable instance allowing sorting between the lists with id's 'list-1', 'list-2, and 'list-3'
+		var mySortables = new Sortables(['list-1', 'list-2', 'list-3']);
+	[/javascript]
+
+	A Sortables with Options:
+	[javascript]
+		//creates a new Sortable instance over the list with id 'list-1' with some extra options for the revert effect
+		var mySortables = new Sortables(['list-1', 'list-2'], {
+			constrain: true,
+			clone: false,
+			revert: true
+		});
+		//creates a new Sortable instance allowing the sorting of the lists with id's 'list-1' and 'list-2' with extra options
+		//since constrain was set to false, the items will not be able to be dragged from one list to the other
+	[/javascript]
 */
 
 var Sortables = new Class({
@@ -52,13 +78,11 @@ var Sortables = new Class({
 	Implements: [Events, Options],
 
 	options: {
-		constrain : false,
+		constrain: false,
 		clone: true,
 		opacity: 0.7,
 		handle: false,
-		revert: false,
-		onStart: $empty,
-		onComplete: $empty
+		revert: false
 	},
 
 	initialize: function(lists, options){
@@ -85,8 +109,20 @@ var Sortables = new Class({
 	},
 
 	/*
-	Property: reinitialize
-		Allows the sortables instance to be reinitialized after making modifications to the DOM such as adding or removing elements from any of the lists.
+	Method: reinitialize
+		Allows the sortables instance to be reinitialized after making modifications to the DOM. Such as adding or removing elements from any of the lists.
+
+	Syntax:
+		>mySortables.reinitialize();
+
+	Example:
+		[javascript]
+			var myList = $$('#myList li');
+			var mySortables = new Sortables(myList);
+			myList.getLast().remove(); // poof gone from the DOM .. this will cause trouble.
+
+			mySortables.reinitialize();
+		[/javascript]
 	*/
 
 	reinitialize: function(){
@@ -111,8 +147,21 @@ var Sortables = new Class({
 	},
 
 	/*
-	Property: attach
-		Attaches the mousedown event to all the handles, enabling sorting.
+	Method: attach
+		Enables sorting by attaching the mousedown event to all the handles.
+
+	Syntax:
+		>mySortables.attach();
+
+	Example:
+		[javascript]
+			var mySortables = new Sortables('.mySortables').detach();
+
+			$('activator').addEvent('click', function(){
+				alert('Sorting activated');
+				mySortables.attach();
+			});
+		[/javascript]
 	*/
 
 	attach: function(){
@@ -122,8 +171,16 @@ var Sortables = new Class({
 	},
 
 	/*
-	Property: detach
+	Method: detach
 		Detaches the mousedown event from the handles, disabling sorting.
+
+	Syntax:
+		>mySortables.detach();
+
+	Example:
+		[javascript]
+			var mySortables = new Sortables('.mySortables').detach();
+		[/javascript]
 	*/
 
 	detach: function(){
@@ -302,31 +359,33 @@ var Sortables = new Class({
 	},
 
 	/*
-	Property: serialize
+	Method: serialize
 		Function to get the order of the elements in the lists of this sortables instance.
-		For each list, an array containing the order of the elements will be returned.
 		If more than one list is being used, all lists will be serialized and returned in an array.
 
+	Syntax:
+		>var serial = mySortables.serialize([index[, modifier]]);
+
 	Arguments:
-		index - int or false; index of the list to serialize. Omit or pass false to serialize all lists.
-		modifier - function to override the default output of the sortables.  See Examples below
+		index    - (number, optional) The index to serialize from the lists. Omit or pass false to serialize all lists.
+		modifier - (function, optional) A function which returns important information, ie. the ID of the Element. See below.
+
+	Returns:
+		(array) An array containing the order of the elements.
 
 	Examples:
-		(start code)
-		mySortables.serialize(1);
-		//returns the second list serialized (remember, arrays are 0 based...);
-		//['item_1-1', 'item_1-2', 'item_1-3']
+		[javascript]
+			//returns the second list serialized (remember, arrays are 0 based...)
+			mySortables.serialize(1); //['item_1-1', 'item_1-2', 'item_1-3']
 
-		mySortables.serialize();
-		//returns a nested array of all lists serialized, or if only one list exists, that lists order
-		//[['item_1-1', 'item_1-2', 'item_1-3'], ['item_2-1', 'item_2-2', 'item_2-3'], ['item_3-1', 'item_3-2', 'item_3-3']]
+			//returns a nested array of all lists serialized, or if only one list exists, that lists order
+			mySortables.serialize(); //[['item_1-1', 'item_1-2', 'item_1-3'], ['item_2-1', 'item_2-2', 'item_2-3'], ['item_3-1', 'item_3-2', 'item_3-3']]
 
-		mySortables.serialize(2, function(element, index){
-			return element.getProperty('id').replace('item_','') + '=' + index;
-		}).join('&');
-		//joins the array with a '&' to return a string of the formatted ids of all the elmements in list 3 with their position
-		//'3-0=0&3-1=1&3-2=2'
-		(end)
+			//joins the array with a '&' to return a string of the formatted ids of all the elmements in list 3 with their position
+			mySortables.serialize(2, function(element, index){
+				return element.getProperty('id').replace('item_','') + '=' + index;
+			}).join('&'); //'3-0=0&3-1=1&3-2=2'
+		[/javascript]
 	*/
 
 	serialize: function(index, modifier){
