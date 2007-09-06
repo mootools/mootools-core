@@ -1,6 +1,5 @@
 /*
 Script: Assets.js
-
 	Contains the <Asset> class, which provides methods to dynamically load JavaScript, CSS, and image files into the document.
 
 License:
@@ -10,7 +9,6 @@ License:
 /*
 Class: Asset
 	Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.
-
 */
 
 var Asset = new Abstract({
@@ -20,18 +18,18 @@ var Asset = new Abstract({
 		Injects a script tag into the head section of the document, pointing to the src specified.
 
 	Syntax:
-		>Asset.javascript(source[, properties]);
+		>var myScript = Asset.javascript(source[, properties]);
 
 	Arguments:
-		source - (string) The location of the JavaScript file to be loaded.
+		source     - (string) The location of the JavaScript file to be loaded.
 		properties - (object, optional) Additional attributes to be included into the script Element. 
 
 	Returns:
-		The created script Element.
+		(element) A new script Element.;
 
 	Example:
 		[javascript]
-			new Asset.javascript('/scripts/myScript.js', {id: 'myScript'});
+			var myScript = new Asset.javascript('/scripts/myScript.js', {id: 'myScript'});
 		[/javascript]
 	*/
 
@@ -54,18 +52,18 @@ var Asset = new Abstract({
 		Creates a new link Element for the inclusion of a CSS stylesheet and injects it into the head section of the document. 
 
 	Syntax:
-		>Asset.css(source[, properties]);
+		>var myCSS = Asset.css(source[, properties]);
 
 	Arguments:
-		source - (string) The path of the CSS file to include.
+		source     - (string) The path of the CSS file to include.
 		properties - (object, optional) Additional attributes to be added to the link Element.
 
 	Returns:
-		The created link Element.
+		(element) A new link Element.
 
 	Example:
 		[javascript]
-			new Asset.css('/css/myStyle.css', {id: 'myStyle', title: 'myStyle'});
+			var myCSS = new Asset.css('/css/myStyle.css', {id: 'myStyle', title: 'myStyle'});
 		[/javascript]
 	*/
 
@@ -78,24 +76,24 @@ var Asset = new Abstract({
 	/*
 	Method: image
 		Preloads an image and returns the img Element.  
+		
 	Syntax:
-		>Asset.image(source[, properties]);
+		>var myImage = Asset.image(source[, properties]);
 
 	Arguments:
-		source - (string) The location of the image file to load. 
+		source     - (string) The location of the image file to load. 
 		properties - (object, optional) Additional attributes to be added to the image Element.
 
 	Returns:
-		The img Element. 
+		(element) A new img Element. 
 
 	Example:
 		[javascript]
-			new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
+			var myImage = new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
 		[/javascript]
 
 	Note:
 		DO NOT use addEvent for load/error/abort on the returned element; give them as onload/onerror/onabort in the properties argument instead.
-
 	*/
 
 	image: function(source, properties){
@@ -129,21 +127,24 @@ var Asset = new Abstract({
 	/*
 	Property: images
 		Preloads an array of images and returns an array of img Elements.
+	
+	Syntax:
+		>var myImages = new Assets.images(sources[, options]);
 
 	Arguments:
 		sources - (array) An array of strings representing the location of the image files to be loaded.
 		options - (object, optional) See below.
 
-	Options (continued):
-		onComplete - (function, optional) The function to execute when all image files are loaded into the browser's cache.
-		onProgress - (function, optional) The function to execute when one image file is loaded in the browser's cache.
+		options (continued):
+			onComplete - (function) The function to execute when all image files are loaded into the browser's cache.
+			onProgress - (function) The function to execute when one image file is loaded in the browser's cache.
 
 	Returns:
-		The img Elements as a $$ array. 
+		(array) A new Collection of <Elements>.
 
 	Example:
 		[javascript]
-			new Asset.images(['/images/myImage.png', '/images/myImage2.gif'], {
+			var myImages = new Asset.images(['/images/myImage.png', '/images/myImage2.gif'], {
 				onComplete: function(){
 					alert('All images loaded!');
 				}
