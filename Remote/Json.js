@@ -1,6 +1,6 @@
 /*
 Script: Json.js
-	Simple Json parser and Stringyfier, See: <http://www.json.org/>
+	Simple JSON parser and Stringyfier. See: <http://www.json.org/>.
 
 License:
 	MIT-style license.
@@ -8,25 +8,29 @@ License:
 
 /*
 Class: Json
-	Simple Json parser and Stringyfier, See: <http://www.json.org/>
+	Simple Json parser and encoder. See: <http://www.json.org/>.
 */
 
 var Json = {
 
 	/*
-	Property: encode
-		Converts an object or an array to a string, to be passed in server-side scripts as a parameter.
+	Method: encode
+		Converts an object or array to a JSON string.
+	
+	Syntax:
+		>var jsobj = Json.encode(obj);	
 
 	Arguments:
-		obj - the object to convert to string
+		obj - (object) The object to convert to string.
 
 	Returns:
-		A json string
+		(string) A JSON string.
 
 	Example:
-		(start code)
-		Json.encode({apple: 'red', lemon: 'yellow'}); '{"apple":"red","lemon":"yellow"}'
-		(end)
+		Returns the string '{"apple":"red","lemon":"yellow"}':
+		[javascript]
+			var fruitsJSON = Json.encode({apple: 'red', lemon: 'yellow'});
+		[/javascript]
 	*/
 
 	encode: function(obj){
@@ -56,19 +60,27 @@ var Json = {
 	},
 
 	/*
-	Property: decode
-		converts a json string to an javascript Object.
+	Method: decode
+		Converts a JSON string into an JavaScript object.
+
+	Syntax:
+		var object = Json.decode(string[, secure]);
 
 	Arguments:
-		str - the string to evaluate. if its not a string, it returns null.
-		secure - optionally, performs syntax check on json string. Defaults to false.
+		str    - (string) The string to evaluate.
+		secure - (boolean, optional: defaults to false) If set to true, a syntax check will be performed on the string. Defaults to false.
 
-	Credits:
-		Json test regexp is by Douglas Crockford <http://crockford.org>.
+	Returns:
+		(object) The object represented by the JSON string.
 
 	Example:
-		>var myObject = Json.decode('{"apple":"red","lemon":"yellow"}');
-		>//myObject will become {apple: 'red', lemon: 'yellow'}
+		myObject will become {apple: 'red', lemon: 'yellow'}:
+		[javascript]
+			var myObject = Json.decode('{"apple":"red","lemon":"yellow"}');
+		[/javascript]
+	
+	Credits:
+		JSON test regexp is by Douglas Crockford <http://crockford.org>.
 	*/
 
 	decode: function(string, secure){
