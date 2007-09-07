@@ -1,14 +1,14 @@
 /*
 Script: Cookie.js
-	A cookie reader/creator
+	A cookie reader/creator.
 
 Credits:
-	based on the functions by Peter-Paul Koch (http://quirksmode.org)
+	Based on the functions by Peter-Paul Koch (http://quirksmode.org).
 */
 
 /*
 Class: Cookie
-	Class for creating, getting, and removing cookies.
+	Class for creating, accessing, and removing cookies.
 */
 
 var Cookie = new Abstract({
@@ -21,30 +21,36 @@ var Cookie = new Abstract({
 	},
 
 	/*
-	Property: set
+	Method: set
 		Sets a cookie in the browser.
 
-	Arguments:
-		key - the key (name) for the cookie
-		value - the value to set, cannot contain semicolons
-		options - an object representing the Cookie options. See Options below. Default values are stored in Cookie.options.
+	Syntax: 
+		>var myCookie = Cookie.set(key, value[, options]);
 
-	Options:
-		domain - the domain the Cookie belongs to. If you want to share the cookie with pages located on a different domain, you have to set this value.
-			Defaults to the current domain.
-		path - the path the Cookie belongs to. If you want to share the cookie with pages located in a different path,
-			you have to set this value, for example to "/" to share the cookie with all pages on the domain. Defaults to the current path.
-		duration - the duration of the Cookie before it expires, in days.
-					If set to false or 0, the cookie will be a session cookie that expires when the browser is closed. This is default.
-		secure - Stored cookie information can be accessed only from a secure environment.
+	Arguments:
+		key     - (string) The key (or name) of the cookie. 
+		value   - (string) The value to set.  Cannot contain semicolons.
+		options - (mixed, optional) See below.
+
+	options (continued):
+		domain   - (string: defaults to current) The domain the Cookie belongs to. If you want to share the cookie with pages located on a different domain, you have to set this value.  Defaults to the current domain.
+		path     - (string: defaults to current) The path the Cookie belongs to. Defaults to the current path.  In order to share the cookie with pages located in a different path, this value must be set.
+		duration - (number: defaults to 0) The duration of the Cookie before it expires, in days.  If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
+		secure   - (boolean: defaults to false) Stored cookie information can be accessed only from a secure environment.
 
 	Returns:
-		An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
+		(object) An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
 
 	Example:
-		>Cookie.set('username', 'Harald'); // session cookie (duration is false), or ...
-		>Cookie.set('username', 'JackBauer', {duration: 1}); // save this for 1 day
+		Saves the cookie for the duration of the session:
+		[javascript]
+			var myCookie = Cookie.set('username', 'Harald');
+		[/javascript]
 
+		Saves the cookie for a day:
+		[javavascript]
+			var myCookie  = Cookie.set('username', 'JackBauer', {duration: 1});
+		[/javascript]
 	*/
 
 	set: function(key, value, options){
@@ -63,17 +69,22 @@ var Cookie = new Abstract({
 	},
 
 	/*
-	Property: get
+	Method: get
 		Gets the value of a cookie.
 
 	Arguments:
-		key - the name of the cookie you wish to retrieve.
+		key - (string) The name of the cookie to be retrieved.
+
+	Syntax:
+		var myCookie = Cookie.get(key);
 
 	Returns:
-		The cookie string value, or false if not found.
+		(mixed) The cookie string value, or false if not found.
 
 	Example:
-		>Cookie.get("username") //returns JackBauer
+		[javascript]
+			Cookie.get("username");
+		[/javascript]
 	*/
 
 	get: function(key){
@@ -82,18 +93,32 @@ var Cookie = new Abstract({
 	},
 
 	/*
-	Property: remove
+	Method: remove
 		Removes a cookie from the browser.
 
+	Syntax: 
+		>var oldCookie = Cookie.remove(cookie[, options]);
+
 	Arguments:
-		cookie - the name of the cookie to remove or a previous cookie (for domains)
-		options - optional. you can also pass the domain and path here. Same as options in <Cookie.set>
+		cookie  - (string) The name of the cookie to remove or a previously saved Cookie instance.
+		options - (object, optional) See below.
+
+		options (continuted):
+			domain - (string: defaults to current) The domain the Cookie belongs to. If you want to share the cookie with pages located on a different domain, you have to set this value.  Defaults to the current domain.
+			path   - (string: defaults to current) The path the Cookie belongs to. Defaults to the current path.  In order to share the cookie with pages located in a different path, this value must be set.
 
 	Examples:
-		>Cookie.remove('username') //bye-bye JackBauer, cya in 24 hours
-		>
-		>var myCookie = Cookie.set('username', 'Aaron', {domain: 'mootools.net'}); // Cookie.set returns an object with all values need to remove the cookie
-		>Cookie.remove(myCookie);
+		Remove a cookie:
+		[javascript]
+			Cookie.remove('username'); //Bye-bye JackBauer! Seeya in 24 Hours.
+		[/javascript]
+
+		Creating a Cookie and removing it right away: 
+		[javascript]
+			//Cookie.set returns an object with all values need to remove the cookie.
+			var myCookie = Cookie.set('username', 'Aaron', {domain: 'mootools.net'});
+			if (Cookie.get('username') == 'Aaron') { Cookie.remove(myCookie); }
+		[/javascript]
 	*/
 
 	remove: function(cookie, options){
