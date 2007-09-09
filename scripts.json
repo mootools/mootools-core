@@ -36,7 +36,7 @@
 		},
 
 		"Function": {
-			"deps": ["Core", "String"],
+			"deps": ["Core"],
 			"desc": "Contains Function Prototypes, like create, bind, pass, delay, periodical."
 		},
 
