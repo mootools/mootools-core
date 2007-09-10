@@ -216,7 +216,7 @@ Array.extend({
 	Method: some
 		Returns true if at least one element in the array satisfies the provided testing function.
 
-		This method is provided only for browsers without native *some* support.
+		This method is provided only for browsers without native <Array.some> support.
 
 	Syntax:
 		>var somePassed = myArray.some(fn[, bind]);
@@ -285,14 +285,14 @@ Array.extend({
 		[javascript]
 			var sum = [1, 2, 3, 4, 6].reduce(function(previousItem, currentItem){
 				return previousItem + currentItem;
-			}, 10); // sum is 26
+			}, 10); //sum is 26
 		[/javascript]
 
-		Collect Elements of Many Arrays Into an Array:
+		Collect Elements of Many Arrays Into a Single Array:
 		[javascript]
 			var collected = [['a', 'b'], ['c', 'd'], ['e', 'f', 'g']].reduce(function(previousItem, currentItem) {
 				return previousItem.concat(currentItem);
-			}, []); // collected is ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+			}, []); //collected is ['a', 'b', 'c', 'd', 'e', 'f', 'g']
 		[/javascript]
 
 	See Also:
@@ -364,7 +364,7 @@ Array.extend({
 		Tests an array for the presence of an item.
 
 	Syntax:
-		>var inArray = myArray.contains(item[, from])
+		>var inArray = myArray.contains(item[, from]);
 
 	Arguments:
 		item - (object) The item to search for in the array.
@@ -570,7 +570,7 @@ Array.extend({
 	Example:
 		[javascript]
 			var myArray = ['old', 'data'];
-			myArray.empty(); // now myArray.length is 0
+			myArray.empty(); //myArray is now []
 		(end code)
 	*/
 

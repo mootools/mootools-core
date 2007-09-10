@@ -41,17 +41,17 @@ Function.extend({
 
 	Example:
 		[javascript]
-			var aFunction = function(){
+			var myFunction = function(){
 				alert("I'm a function :)");
 			};
 
-			var aFn = aFunction.create(); //just a simple copy
+			var mySimpleFunction = myFunction.create(); //just a simple copy
 
-			var advancedFn = aFunction.create({ //when called, this function will attempt
+			var myAdvancedFunction = myFunction.create({ //when called, this function will attempt
 				arguments: [0,1,2,3],
 				attempt: true,
 				delay: 1000,
-				bind: anElement
+				bind: myElement
 			});
 		[/javascript]
 	*/
