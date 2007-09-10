@@ -8,23 +8,36 @@ License:
 
 /*
 Class: Json.Remote
-	Wrapped XHR with automated sending and receiving of Javascript Objects in Json Format.
-	Inherits methods, properties, options and events from <XHR>.
+	Wrapped XHR with automated sending and receiving of Javascript Objects in JSON Format.
 
 Extends:
 	<XHR>
 
+Syntax:
+	>var myJsonRemote = new Json.Remote(url[, options]);
+
 Arguments:
 	url     - (string) The URL to send the object to.
-	options - (object, optional) See below. 
+	options - (object, optional) See below.
 
-options (continued):
-	varName - (string: defaults to 'json') The name for the variable that holds the Json data. Set it null to send raw data.
-	secure  - (boolean: defaults to true) If set to true, a syntax check will be done on the result JSON. 
+	options (continued):
+		varName - (string: defaults to 'json') The name for the variable that holds the Json data. Set it to null to send raw data.
+		secure  - (boolean: defaults to true) If set to true, a syntax check will be done on the result JSON (see <Json.decode>).
+
+Events:
+	onComplete - (function) Executes when the Json returns successfully.
+		Signature:
+			>onComplete(responseJson)
+
+		Arguments:
+			responseJson - (string) The JSON response from the remote request.
+
+Returns:
+	(class) A new Json.Remote class instance.
 
 Example:
-	This code will send user information based on name/last name:
 	[javascript]
+		//This code will send user information based on name/last name:
 		var jsonRequest = new Json.Remote("http://site.com/tellMeAge.php", {onComplete: function(person){
 			alert(person.age); //is 25 years
 			alert(person.height); //is 170 cm
@@ -51,20 +64,20 @@ Json.Remote = new Class({
 
 	/*
 	Method: send
-		Sends the JSON-encoded object to the request URL.  Inherits core functianlity from <XHR>, which should be referred to for further detail.
+		Sends the JSON-encoded object to the request URL.
 
 	Syntax:
-		> jsonRequest.send(obj);
+		>myJsonRemote.send(obj);
 
 	Arguments:
 		obj - (object) The JavaScript object to be encoded and sent.
 
 	Returns:
-		Current instance of Json.Remote.
+		(class) This Json.Remote instance.
 
 	Example:
 		[javascript]
-			jsonRequest.send('name': 'John', 'age': 25);
+			jsonRequest.send({'name': 'John', 'age': 25});
 		[/javascript]
 	*/
 

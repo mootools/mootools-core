@@ -21,11 +21,11 @@ var Asset = new Abstract({
 		>var myScript = Asset.javascript(source[, properties]);
 
 	Arguments:
-		source     - (string) The location of the JavaScript file to be loaded.
-		properties - (object, optional) Additional attributes to be included into the script Element. 
+		source     - (string) The location of the JavaScript file to load.
+		properties - (object, optional) Additional attributes to be included into the script Element (see <Element.setProperties>).
 
 	Returns:
-		(element) A new script Element.;
+		(element) A new script Element.
 
 	Example:
 		[javascript]
@@ -49,14 +49,14 @@ var Asset = new Abstract({
 
 	/*
 	Method: css
-		Creates a new link Element for the inclusion of a CSS stylesheet and injects it into the head section of the document. 
+		Injects a css file in the page.
 
 	Syntax:
-		>var myCSS = Asset.css(source[, properties]);
+		>var myCSS = new Asset.css(source[, properties]);
 
 	Arguments:
-		source     - (string) The path of the CSS file to include.
-		properties - (object, optional) Additional attributes to be added to the link Element.
+		source     - (string) The path of the CSS file.
+		properties - (object) Some additional attributes you might want to add to the link Element.
 
 	Returns:
 		(element) A new link Element.
@@ -75,17 +75,17 @@ var Asset = new Abstract({
 
 	/*
 	Method: image
-		Preloads an image and returns the img Element.  
-		
+		Preloads an image and returns the img element.
+
 	Syntax:
-		>var myImage = Asset.image(source[, properties]);
+		>var myImage = new Asset.image(source[, properties]);
 
 	Arguments:
-		source     - (string) The location of the image file to load. 
-		properties - (object, optional) Additional attributes to be added to the image Element.
+		source     - (string) The path of the image file.
+		properties - (object) Some additional attributes you might want to add to the img Element including the onload/onerror/onabout events.
 
 	Returns:
-		(element) A new img Element. 
+		(element) A new HTML img Element.
 
 	Example:
 		[javascript]
@@ -93,7 +93,8 @@ var Asset = new Abstract({
 		[/javascript]
 
 	Note:
-		DO NOT use addEvent for load/error/abort on the returned element; give them as onload/onerror/onabort in the properties argument instead.
+		- Does not inject the image into the page.
+		- DO NOT use addEvent for load/error/abort on the returned element, give them as onload/onerror/onabort in the properties argument.
 	*/
 
 	image: function(source, properties){
@@ -125,22 +126,31 @@ var Asset = new Abstract({
 	},
 
 	/*
-	Property: images
-		Preloads an array of images and returns an array of img Elements.
-	
+	Method: images
+		Preloads an array of images (as strings) and returns an array of img elements. does not inject them to the page.
+
 	Syntax:
-		>var myImages = new Assets.images(sources[, options]);
+		>var myImages = new Asset.images(source[, options]);
 
 	Arguments:
-		sources - (array) An array of strings representing the location of the image files to be loaded.
+		sources - (mixed) An array or a string, of the paths of the image files.
 		options - (object, optional) See below.
 
 		options (continued):
-			onComplete - (function) The function to execute when all image files are loaded into the browser's cache.
-			onProgress - (function) The function to execute when one image file is loaded in the browser's cache.
+			onComplete - (function) Executes when all image files are loaded.
+				Signature:
+					>onComplete()
+	
+			onProgress - (function) Executes when one image file is loaded.
+				Signature:
+					>onProgress(counter, index)
+	
+				Arguments:
+					counter - (number) The number of loaded images.
+					index   - (number) The index of the loaded image.
 
 	Returns:
-		(array) A new Collection of <Elements>.
+		(array) An <Elements> collection.
 
 	Example:
 		[javascript]

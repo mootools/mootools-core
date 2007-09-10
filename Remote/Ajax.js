@@ -9,59 +9,70 @@ License:
 /*
 Class: Ajax
 	An Ajax class, For all your asynchronous needs.
-	Inherits methods, properties, options, and events from <XHR>.
 
 Extends:
 	<XHR>
 
+Syntax:
+	>var myAjax = new Ajax(url[, options]);
+
 Arguments:
-	url - (string) The url pointing to the server-side script.
-	options - (object, optional) See "Options" below. Also utilizes <XHR> options and events.
+	url     - (string) The url pointing to the server-side script.
+	options - (object, optional) In addition to <XHR>'s options object, see "Options" below.
 
 	options (continued):
-		update - (element, optional) The Element to insert the response text of the XHR into upon completion of the request.
-		evalScripts - (boolean, optional: defaults to false) If set to true, JavaScript inside the reponseText will be evaluated. If the response's content-type is JavaScript, everything is evaluated.
-		evalResponse - (boolean, optional: defaults to false) If set to true, the entire response will be evaluated, regardless of its content-type.
+		update       - (element: defaults to null) The Element to insert the response text of the XHR into upon completion of the request.
+		evalScripts  - (boolean: defaults to false) If set to true, HTMLScript tags inside the response is evaluated.
+		evalResponse - (boolean: defaults to false) If set to true, the entire response is evaluated.
 
 Events:
-	onComplete - (function) Function to execute when the AJAX request completes. The response text and XML will be passed as arguments.
+	onComplete - (function) Function to execute when the AJAX request completes.
 		Signature:
-			>onComplete(responseText, responseXML);
+			>onComplete(responseText, responseXML)
 
 		Arguments:
 			responseText - (string) The content of the remote response.
-			responseXML - (string) The content of the remote response XML.
+			responseXML  - (string) The XML response of the request.
+
+Returns:
+	(class) A new Ajax instance.
 
 Examples:
-	Simple GET request:
+	Simple GET Request:
 	[javascript]
 		var myAjax = new Ajax(url, {method: 'get'}).request();
 	[/javascript]
 
-	POST request with data as string:
+	POST Request with Data as String:
 	[javascript]
 		var myAjax = new Ajax('save/').request("user_id=25&save=true");
 	[/javascript]
 
-	Data from object passed via GET:
+	Data from Object Passed via GET:
 	[javascript]
-		var myAjax = new Ajax('load/', {'method': 'get'}).request({'user_id': 25}); //loads url "load/?user_id=25"
+		var myAjax = new Ajax('load/').request({'user_id': 25}); //loads url "load/?user_id=25"
 	[javascript]
 
 	Data from Element via POST:
 	[html]
 		<form action="save/" method="post" id="user-form">
-			Search:
-			<input type="text" name="search" />
-			Search in description:
-			<input type="checkbox" name="search_description" value="yes" />
-			<input type="submit" />
+			<p>
+				Search: <input type="text" name="search" />
+				Search in description: <input type="checkbox" name="search_description" value="yes" />
+				<input type="submit" />
+			</p>
 		</form>
 	[/html]
 	[javascript]
-		// Should to be in a submit event or the form handler
+		//Needs to be in a submit event or the form handler
 		var myAjax = new Ajax('save/').request($('user-form'));
 	[/javascript]
+
+Note:
+	If the response's content-type is JavaScript or EcmaScript, everything is evaluated.
+
+See Also:
+	<XHR>
 */
 
 var Ajax = new Class({
@@ -104,10 +115,16 @@ var Ajax = new Class({
 	Method: request
 		Executes the AJAX request.
 
-	Arguments:
-		data - (mixed, optional) The request data. Can be a String, an Object (used in <Object.toQueryString>) or an Element holding input elements (used in <Element.toQueryString>).
+	Syntax:
+		>myAjax.request([data]);
 
-	Example:
+	Arguments:
+		data - (mixed, optional: defaults to options.data) A String, Object (used in <Object.toQueryString>), or an Element with input elements (used in <Element.toQueryString>) which represents the data to request.
+
+	Returns:
+		(class) This Ajax instance.
+
+	Examples:
 		Reusable Example:
 		[javascript]
 			var myAjax = new Ajax(url, {method: 'get'});
@@ -134,7 +151,10 @@ var Ajax = new Class({
 
 /*
 Function: Object.toQueryString
-	Generates a query string from key/pair values in an object.
+	Generates a query string from key/pair values in an object and URI encodes the values.
+
+Syntax:
+	>var myQuery = Object.toQueryString(source);
 
 Arguments:
 	source - (object) The object to generate the query string from.
@@ -143,10 +163,12 @@ Returns:
 	(string) The query string.
 
 Example:
-
 	[javascript]
 		Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
 	[/javascript]
+
+Note:
+	This function gets added to the Object, not to the Object.prototypes.
 */
 
 Object.toQueryString = function(source){
@@ -165,24 +187,31 @@ Element.extend({
 	/*
 	Method: send
 		Sends a form with an Ajax request.
-		The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
+
+	Syntax:
+		>myElement.send([options]);
 
 	Arguments:
-		options - (object, optional) Option collection for Ajax request. See <Ajax> for the options list.
+		options - (object, optional) Options object for the <Ajax> request.
 
 	Returns:
-		(object) This Ajax Class instance.
+		(class) An Ajax Class instance.
 
 	Example:
 		[html]
 			<form id="myForm" action="submit.php">
-				<input name="email" value="bob@bob.com">
-				<input name="zipCode" value="90210">
+				<p>
+					<input name="email" value="bob@bob.com">
+					<input name="zipCode" value="90210">
+				</p>
 			</form>
 		[/html]
 		[javascript]
 			$('myForm').send();
 		[/javascript]
+
+	Note:
+		The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
 	*/
 
 	send: function(options){
@@ -195,14 +224,16 @@ Element.extend({
 	/*
 	Method: update
 		Updates the content of the element with an Ajax get request.
-		It saves the Ajax instance to the Element, so it uses the same instance every update call.
+
+	Syntax:
+		>myElement.update(url[, options]);
 
 	Arguments:
-		url - (string) The URL pointing to the server-side document.
-		options - (object, optional) Option collection for Ajax request. See <Ajax> for the options list.
+		url     - (string) The URL pointing to the server-side document.
+		options - (object, optional) Options object for the <Ajax> request.
 
 	Returns:
-		(object) This Ajax Class instance.
+		(class) An Ajax Class instance.
 
 	Example:
 		[html]
@@ -211,6 +242,9 @@ Element.extend({
 		[javascript]
 			$('content').update('page_1.html');
 		[/javascript]
+
+	Note:
+		It saves the Ajax instance to the Element, so it uses the same instance every update call.
 	*/
 
 	update: function(url, options){

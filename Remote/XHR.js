@@ -8,60 +8,76 @@ License:
 
 /*
 Class: XHR
-	Basic XMLHttpRequest Wrapper.
+	An XMLHttpRequest Wrapper.
+
+Implements:
+	<Chain>, <Events>, <Options>
+
+Syntax:
+	>var myXHR = new XHR([url][, options]);
 
 Arguments:
 	url     - (string, optional) The URL pointing to the server-side script.
 	options - (object, optional) See below.
 
-options (continued):
-	method     - (string: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
-	data       - (string) The default data for <XHR.send>, used when no data is given.
-	async      - (boolean: defaults to true) Asynchronous option; if set to true, the requests will be asynchronous.  If set to false, the requests will be synchronous and freeze the browser during request.
-	encoding   - (string: defaults to "utf-8") The encoding to be set in the request header.
-	autoCancel - (boolean: defaults to false) When set to true, automatically cancels the already running request if another one is sent. When false, it will ignore another send when a request is already running.
-	headers    - (object) An object to use in order to set the request headers. 
-	isSuccess  - (function) Overrides the in-build isSuccess which checks the response status code.
+	options (continued):
+		method     - (string: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
+		data       - (string) The default data for <XHR.send>, used when no data is given.
+		async      - (boolean: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
+		encoding   - (string: defaults to "utf-8") The encoding to be set in the request header.
+		autoCancel - (boolean: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
+		headers    - (object) An object to use in order to set the request headers.
+		isSuccess  - (function) Overrides the built-in isSuccess function.
 
 Events:
 	onRequest   - (function) Function to execute when the XHR request is fired.
 		Signature:
-			> onRequest(instance);
+			>onRequest(instance)
 
 		Arguments:
 			instance - (XHR) The transport instance.
 
-	onSuccess   - (function) Function to execute when the XHR request completes. Arguments are response text and xml.
+	onSuccess   - (function) Function to execute when the XHR request completes.
 		Signature:
-			> onSuccess(reponseText, XML);
+			>onSuccess(reponseText, responseXML)
 
 		Arguments:
 			responseText - (string) The returned text from the request.
-			XML          - (string) The response XML.
+			responseXML  - (string) The response XML from the request.
 
-	onFailure   - (function) Function to execute when the request failes (error status code). Argument is the transport instance.
+	onFailure   - (function) Function to execute when the request failes (error status code).
 		Signature:
-			> onFailure(instance);
+			>onFailure(instance)
 
 		Arguments:
 			instance - (XHR) The transport instance.
 
-	onException - (function) Function to execute when setting a request header fails. Arguments are the header name and value.
+	onException - (function) Function to execute when setting a request header fails.
 		Signature:
-			> onException(headerName, value);
+			>onException(headerName, value)
 
 		Arguments:
 			headerName - (string) The name of the failing header.
 			value      - (string) The value of the failing header.
 
+	onCancel    - (function) Function to execute when a request has been cancelled.
+		Signature:
+			>onCancel()
+
 Properties:
 	running  - (boolean) True if the request is running.
 	response - (object) Object with text and xml as keys. You can access this property in the onSuccess event.
+
+Returns:
+	(class) A new XHR instance.
 
 Example:
 	[javascript]
 		var myXHR = new XHR({method: 'get'}).send('http://site.com/requestHandler.php', 'name=john&lastname=dorian');
 	[/javascript]
+
+See Also:
+	<http://en.wikipedia.org/wiki/XMLHttpRequest>
 */
 
 var XHR = new Class({
@@ -69,10 +85,6 @@ var XHR = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {
-		/*onRequest: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
 		method: 'post',
 		async: true,
 		data: null,
@@ -132,22 +144,22 @@ var XHR = new Class({
 
 	/*
 	Method: setHeader
-		Add/modify an header for the request. It will not override headers from the options.
+		Add or modify a header for the request. It will not override headers from the options.
 
 	Syntax:
-		> myRequest.setHeader(name, value);
+		>myXHR.setHeader(name, value);
 
 	Arguments:
 		name  - (string) The name for the header.
 		value - (string) The value to be assigned.
 
 	Returns:
-		(XHR) The current instance.  
+		(class) This XHR instance.
 
 	Example:
 		[javascript]
-			var myXhr = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-			myXhr.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
+			var myXHR = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
+			myXHR.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
 		[/javscript]
 	*/
 
@@ -159,8 +171,9 @@ var XHR = new Class({
 	/*
 	Method: getHeader
 		Returns the given response header or null if not found.
+
 	Syntax:
-		> myRequest.getHeader(name);
+		>myXHR.getHeader(name);
 
 	Arguments:
 		name - (string) The name of the header to retrieve the value of.
@@ -168,6 +181,9 @@ var XHR = new Class({
 	Returns:
 		(string) The value of the retrieved header.
 
+	Example:
+		var myXHR = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
+		var headers = myXHR.getHeader('X-Request'); // returns 'JSON'
 	*/
 
 	getHeader: function(name){
@@ -181,23 +197,23 @@ var XHR = new Class({
 		Opens the XHR connection and sends the provided data.
 
 	Syntax:
-		> myRequest.send(url[, data]);
+		>myXHR.send(url[, data]);
 
 	Arguments:
 		url  - (string) The URL to make the request to.
-		data - (string, optional) The request data as query string.  This can be null.
+		data - (string, optional) The request data as query string.
 
 	Examples:
 		Simple POST request:
 		[javascript]
-			var myXhr = new XHR().send(url, "save=username&name=John");
+			var myXHR = new XHR().send(url, "save=username&name=John");
 		[/javacript]
 
-		Synchronous request (freezes browser during request):
+		Synchronous Request:
 		[javascript]
-			var syncXhr = new XHR({async: false});
-			syncXhr.send(url, null);
-			alert(syncXhr.response.text);
+			var syncXHR = new XHR({async: false});
+			syncXHR.send(url, null);
+			alert(syncXHR.response.text);
 		[/javascript]
 	*/
 
@@ -226,6 +242,25 @@ var XHR = new Class({
 		return this;
 	},
 
+	/*
+	Method: request
+		Uses the internal url (passed in <XHR>'s instantiation) to send the passed in data.
+
+	Syntax:
+		>myXHR.request([data]);
+
+	Arguments:
+		data - (string, optional) The request data as query string.
+
+	Returns:
+		(class) This XHR instance.
+
+	Example:
+		[javascript]
+			var myXHR = new XHR(url);
+			myXHR.send("save=username&name=John");
+		[/javacript]
+	*/
 	request: function(data){
 		return this.send(this.url, data);
 	},
@@ -235,15 +270,15 @@ var XHR = new Class({
 		Cancels the currently running request, if any.
 
 	Syntax:
-		> myRequest.cancel();
+		>myRequest.cancel();
 
-	Arguments:
-		None.
+	Returns:
+		(class) This XHR instance.
 
 	Example:
 		[javascript]
-			var myXhr = new XHR({method: 'get'}).send(url);
-			myXhr.cancel();
+			var myXHR = new XHR({method: 'get'}).send(url);
+			myXHR.cancel();
 		[/javascript]
 	*/
 

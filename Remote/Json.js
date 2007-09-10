@@ -1,6 +1,6 @@
 /*
 Script: Json.js
-	Simple JSON parser and Stringyfier. See: <http://www.json.org/>.
+	Simple JSON encoder and decoder.
 
 License:
 	MIT-style license.
@@ -8,7 +8,10 @@ License:
 
 /*
 Class: Json
-	Simple Json parser and encoder. See: <http://www.json.org/>.
+	Simple Json parser and encoder.
+
+See Also:
+	<http://www.json.org/>
 */
 
 var Json = {
@@ -16,9 +19,9 @@ var Json = {
 	/*
 	Method: encode
 		Converts an object or array to a JSON string.
-	
+
 	Syntax:
-		>var jsobj = Json.encode(obj);	
+		>var myJson = Json.encode(obj);
 
 	Arguments:
 		obj - (object) The object to convert to string.
@@ -27,9 +30,8 @@ var Json = {
 		(string) A JSON string.
 
 	Example:
-		Returns the string '{"apple":"red","lemon":"yellow"}':
 		[javascript]
-			var fruitsJSON = Json.encode({apple: 'red', lemon: 'yellow'});
+			var fruitsJSON = Json.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
 		[/javascript]
 	*/
 
@@ -67,20 +69,19 @@ var Json = {
 		var object = Json.decode(string[, secure]);
 
 	Arguments:
-		str    - (string) The string to evaluate.
-		secure - (boolean, optional: defaults to false) If set to true, a syntax check will be performed on the string. Defaults to false.
+		string - (string) The string to evaluate.
+		secure - (boolean, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
 
 	Returns:
 		(object) The object represented by the JSON string.
 
 	Example:
-		myObject will become {apple: 'red', lemon: 'yellow'}:
 		[javascript]
-			var myObject = Json.decode('{"apple":"red","lemon":"yellow"}');
+			var myObject = Json.decode('{"apple":"red","lemon":"yellow"}'); //returns: {apple: 'red', lemon: 'yellow'}
 		[/javascript]
-	
+
 	Credits:
-		JSON test regexp is by Douglas Crockford <http://crockford.org>.
+		JSON test regexp is by Douglas Crockford <http://crockford.org/>.
 	*/
 
 	decode: function(string, secure){
