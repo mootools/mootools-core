@@ -10,48 +10,55 @@ License:
 */
 
 /*
-Class: Swiff
-	Creates a flash object with supplied parameters.
+Function: Swiff
+	Creates a Flash object with supplied parameters.
+
+Syntax:
+	>var mySwiff = Swiff(movie[, options]);
 
 Arguments:
-	movie - (string) The path to the swf movie.
+	movie   - (string) The path to the swf movie.
 	options - (object) an object with options names as keys. See options below.
 
-Options:
-	width - (number) the width of the flash object. defaults to 1.
-	height - number) the height of the flash object. defaults to 1.
-	id - (string) the id of the flash object. defaults to 'SwiffX' (X is the Swiff UID).
-	inject - (element) the target container for the swf object
-	params - (object) object params (wmode, bgcolor, allowScriptAccess, loop, etc.), default: allowScriptAccess to sameDomain.
-	properties - (object) additional attributes for the object element.
-	vars - (object) given to the swf as querystring in flashVars.
-	callBacks - (object) Functions you want to pass to your flash movie.
+	options (continued):
+		width      - (number: defaults to 1) The width of the flash object.
+		height     - (number: defaults to 1) The height of the flash object.
+		id         - (string: defaults to 'Swiff' + UID) The id of the flash object.
+		inject     - (element) The target container for the SWF object.
+		params     - (object) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
+		properties - (object) Additional attributes for the object element.
+		vars       - (object) Given to the SWF as querystring in flashVars.
+		callBacks  - (object) Functions you want to pass to your Flash movie.
+
+		params (continued):
+			allowScriptAccess - (string: defaults to sameDomain) The domain that the SWF object allows access to.
 
 Returns:
-	The object element.
-	Important: the $ function on the OBJECT element wont extend it, will just target the movie by its id/reference.
-	So its not possible to use the <Element> methods on it.
+	(element) A new HTML object element.
 
 Example:
-	(start code)
-	var obj = Swiff('myMovie.swf', {
-		inject: $('myElement')
-		width: 500,
-		height: 400,
-		id: 'myBeautifulMovie'
-		parameters: {
-			wmode: 'opaque',
-			bgcolor: '#ff3300',
-		},
-		vars: {
-			myVariable: myJsVar,
-			myVariableString: 'hello'
-		}
-		callBacks: {
-			onLoad: myOnloadFunc
-		}
-	});
-	(end)
+	[javascript]
+		var obj = Swiff('myMovie.swf', {
+			inject: $('myElement')
+			width: 500,
+			height: 400,
+			id: 'myBeautifulMovie'
+			parameters: {
+				wmode: 'opaque',
+				bgcolor: '#ff3300',
+			},
+			vars: {
+				myVariable: myJsVar,
+				myVariableString: 'hello'
+			}
+			callBacks: {
+				onLoad: myOnloadFunc
+			}
+		});
+	[/javascript]
+
+Note:
+	The <$> function on the OBJECT element will not extend. The <$> will just target the movie by its id/reference. Therefore, its not possible to use the <Element> methods on the Element.
 */
 
 var Swiff = function(movie, options){
@@ -113,8 +120,13 @@ Swiff.extend({
 		return 'Swiff' + (++Swiff.UID);
 	},
 
-	//from swfObject, fixes bugs in ie+fp9
+	/*
+	Function: Swiff.fix
+		Fixes bugs in ie+fp9.
 
+	Credits:
+		From swfObject, <http://blog.deconcept.com/swfobject/>
+	*/
 	fix: function(){
 		Swiff.fixed = true;
 		window.addEvent('beforeunload', function(){
@@ -135,8 +147,16 @@ Swiff.extend({
 	Function: Swiff.getVersion
 		Gets the major version of the flash player installed.
 
+	Syntax:
+		>var version = Swiff.getVersion();
+
 	Returns:
-		A number representing the (major) flash version installed, or 0 if no player is installed.
+		(number) A number representing the (major) flash version installed, or 0 if no player is installed.
+
+	Example:
+		[javascript]
+			alert(Swiff.getVersion());
+		[/javascript]
 	*/
 
 	getVersion: function(){
@@ -157,10 +177,26 @@ Swiff.extend({
 
 	/*
 	Function: Swiff.remote
-		Calls an ActionScript function from javascript. Requires ExternalInterface.
+		Calls an ActionScript function from javascript.
+
+	Syntax:
+		>var result = Swiff.remote(obj, fn);
+
+	Arguments:
+		obj - (element) A Swiff instance (an HTML object Element).
+		fn  - (string) The name of the function to execute in the Flash movie.
 
 	Returns:
-		Whatever the ActionScript Returns
+		(mixed) The ActionScrip function's result.
+
+	Example:
+		[javascript]
+			var obj = Swiff('myMovie.swf');
+			alert(Swiff.remote(obj, 'myFlashFn'));
+		[/javascript]
+
+	Note:
+		The SWF file should have been compiled with ExternalInterface component.
 	*/
 
 	remote: function(obj, fn){

@@ -9,27 +9,105 @@ License:
 /*
 Class: Swiff.Uploader
 	Creates an uploader instance.
-	All instances use the first injected swf instance
+
+Implements:
+	<Options>
+
+Syntax:
+	>var myUploader = new Swiff.Uploader(callBacks, onLoad[, options]);
 
 Arguments:
-	callBacks - an object, containing key/value pairs, representing the possible callbacks. See below.
-	onLoaded - Callback when the swf is initialized
-	options - types, multiple, queued, swf, url, container
+	callBacks - (object) An object containing key/value pairs representing the possible callbacks. See below.
+	onLoad    - (function) Function that gets called when the SWF file is initialized.
+	options   - (object) An options object to customize this Swiff.Uploader. See below.
 
-Options:
-	types - (object) description/filter pairs for file browser (e.g. {'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'} ), default false
-	multiple - (boolean) Allow upload of multiple files, default true.
-	queued - (boolean) Queued start for multiple upload, default true.
-	swf - (string) URL to the swf file, default 'Swf.Uploader.swf'.
-	url - (string) default upload URL, can be overridden in upload. Absolute URLs are recommended.
+	callBacks (continued):
+		onOpen     - (function) Executes when the user opens a file.
+			Signature:
+				>onOpen(name, size)
 
-callBacks:
-	onOpen - a function to fire when the user opens a file.
-	onProgress - a function to fire when the file is uploading. passes the name, the current uploaded size and the full size.
-	onSelect - a function to fire when the user selects a file.
-	onComplete - a function to fire when the file finishes uploading
-	onError - a function to fire when there is an error.
-	onCancel - a function to fire when the user cancels the file uploading.
+			Arguments:
+				name - (string) The name of the file.
+				size - (number) The size of the file.
+
+		onProgress - (function) Executes when the file is uploading.
+			Signature:
+				>onProgress(name, size, fullSize)
+
+			Arguments:
+				name     - (string) The name of the current file in progress.
+				size     - (number) The total amount uploaded.
+				fullSize - (number) The full size of the amount.
+
+		onSelect   - (function) Executes when the user selects a file.
+			Signature:
+				>onSelect(name, size)
+
+			Arguments:
+				name - (string) The name of the file.
+				size - (number) The size of the file.
+
+		onComplete - (function) Executes when the file finishes uploading.
+			Signature:
+				>onComplete(name, size)
+
+			Arguments:
+				name - (string) The name of the file.
+				size - (number) The size of the file.
+
+		onError    - (function) Executes when there is an error.
+			Signature:
+				>onError(name, size, error)
+
+			Arguments:
+				name  - (string) The name of the file.
+				size  - (number) The size of the file.
+				error - (number) The error code from the HTTP protocol.
+
+			See Also:
+				<http://www.w3.org/Protocols/HTTP/HTRESP.html>
+
+		onCancel   - (function) Executes when the user cancels the file upload.
+			Signature:
+				>onCancel(name, size)
+
+			Arguments:
+				name - (string) The name of the file.
+				size - (number) The size of the file.
+
+	options (continued):
+		types    - (object: defaults to false) An object with description/filter pairs for file browsing.
+		multiple - (boolean: defaults to true) Allow upload of multiple files.
+		queued   - (boolean: defaults to true) Queued start for multiple upload.
+		swf      - (string: defaults to 'Swf.Uploader.swf') URL to the swf file.
+		url      - (string) The default upload URL.
+
+Returns:
+	(class) This Swiff.Uploader instance.
+
+Example:
+	[javascript]
+		var myStatus = $('myStatus');
+		var myUpload = new Swiff.Uploader({
+			onOpen: function(){
+				myStatus.setHTML('opening');
+			},
+			onSelect: function(){
+				this.send();
+			}
+		}, function(){
+			myStatus.setHTML('initialized');
+			this.browse();
+		},{
+			types: {
+				'JavaScript files': '*.js'
+			}
+		});
+	[/javascript]
+
+Note:
+	- All instances use the first injected swf instance.
+	- Absolute URLs are recommended for the options.url.
 */
 
 Swiff.Uploader = new Class({
@@ -72,8 +150,14 @@ Swiff.Uploader = new Class({
 	},
 
 	/*
-	Property: browse
+	Method: browse
 		Open the file browser.
+
+	Syntax:
+		>myUploader.browse();
+
+	Example:
+		See <Swiff.Uploader>.
 	*/
 
 	browse: function(){
@@ -84,8 +168,14 @@ Swiff.Uploader = new Class({
 	Property: send
 		Starts the upload of all selected files.
 
+	Syntax:
+		>myUploader.send([url]);
+
 	Arguments:
-		url - (string, optional) Upload URL, sets URL also for all following uploads.
+		url - (string, optional) The upload URL.
+
+	Note:
+		This method also sets the URL for all the following uploads.
 	*/
 
 	send: function(url){
@@ -94,11 +184,14 @@ Swiff.Uploader = new Class({
 
 	/*
 	Property: remove
-		For multiple uploads cancels and removes the given file from queue.
+		For multiple uploads, cancels and removes the given file from queue.
+
+	Syntax:
+		>myUploader.remove(name, size);
 
 	Arguments:
-		name - (string) Filename
-		name - (string) Filesize in byte
+		name - (string) The filename of the file.
+		size - (string) The filesize of the file.
 	*/
 
 	remove: function(name, size){
@@ -109,12 +202,15 @@ Swiff.Uploader = new Class({
 	Property: fileIndex
 		Returns the internal index of the given file
 
+	Syntax:
+		>var index = myUploader.fileIndex(name, size);
+
 	Arguments:
-		name - (string) Filename
-		name - (string) Filesize in byte
+		name - (string) The filename of the file.
+		size - (string) The filesize of the file.
 
 	Returns:
-		(number) The index of the file or -1 when the file is not found.
+		(number) The index of the file, or -1 if the file is not found.
 	*/
 
 	fileIndex: function(name, size){
@@ -125,8 +221,11 @@ Swiff.Uploader = new Class({
 	Property: fileList
 		Returns one Array with with arrays containing name and size of the file.
 
+	Syntax:
+		>var info = myUploader.fileList();
+
 	Returns:
-		(array) An array with [name, size] items
+		(array) An array with [name, size] items.
 	*/
 
 	fileList: function(){
