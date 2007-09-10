@@ -2,17 +2,20 @@
 Script: Window.Size.js
 	Window cross-browser dimensions methods.
 
-Note:
-	The Functions in this script require an XHTML doctype.
-
 License:
 	MIT-style license.
+
+Note:
+	- The Window.Size.js requires an XHTML doctype.
+	- All these methods require that the browser operates in strict mode, not quirks mode.
+
+See Also:
+	<http://www.quirksmode.org/js/elementdimensions.html>
 */
 
 /*
 Class: Client
 	Cross browser methods to get various window dimensions.
-	Warning: All these methods require that the browser operates in strict mode, not quirks mode.
 */
 
 Client.extend({
@@ -20,6 +23,12 @@ Client.extend({
 	/*
 	Property: getWidth
 		Returns an integer representing the width of the browser window (without the scrollbar).
+
+	Syntax:
+		>var width = Client.getWidth();
+
+	Returns:
+		(number) The width (without the scrollbar width) of the browser window.
 	*/
 
 	getWidth: function(){
@@ -31,6 +40,12 @@ Client.extend({
 	/*
 	Property: getHeight
 		Returns an integer representing the height of the browser window (without the scrollbar).
+
+	Syntax:
+		>var height = Client.getHeight();
+
+	Returns:
+		(number) The height (without the scrollbar height) of the browser window.
 	*/
 
 	getHeight: function(){
@@ -42,7 +57,22 @@ Client.extend({
 	/*
 	Property: getScrollWidth
 		Returns an integer representing the scrollWidth of the window.
-		This value is equal to or bigger than <getWidth>.
+
+	Syntax:
+		>var scrollWidth = Client.getScrollWidth();
+
+	Returns:
+		(number) The scroll width of the browser window.
+
+	Example:
+		[javascript]
+			window.addEvent('resize', function(){
+				alert(Client.getScrollWidth());
+			});
+		[/javascript]
+
+	Note:
+		This value is equal to or bigger than <Client.getWidth>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
@@ -57,7 +87,22 @@ Client.extend({
 	/*
 	Property: getScrollHeight
 		Returns an integer representing the scrollHeight of the window.
-		This value is equal to or bigger than <getHeight>.
+
+	Syntax:
+		>var scrollHeight = Client.getScrollHeight();
+
+	Returns:
+		(number) The scroll height of the browser window.
+
+	Example:
+		[javascript]
+			window.addEvent('resize', function(){
+				alert(Client.getScrollHeight());
+			});
+		[/javascript]
+
+	Note:
+		This value is equal to or bigger than <Client.getHeight>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
@@ -71,7 +116,20 @@ Client.extend({
 
 	/*
 	Property: getScrollLeft
-		Returns an integer representing the scrollLeft of the window (the number of pixels the window has scrolled from the left).
+		Returns an integer representing the scrollLeft of the window.
+
+	Syntax:
+		>var scrollLeft = Client.getScrollLeft();
+
+	Returns:
+		(number) The number of pixels the window has scrolled from the left.
+
+	Example:
+		[javascript]
+			window.addEvent('scroll', function(){
+				alert(Client.getScrollLeft());
+			});
+		[/javascript]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>
@@ -83,7 +141,20 @@ Client.extend({
 
 	/*
 	Property: getScrollTop
-		Returns an integer representing the scrollTop of the window (the number of pixels the window has scrolled from the top).
+		Returns an integer representing the scrollTop of the window.
+
+	Syntax:
+		>var scrollTop = Client.getScrollTop();
+
+	Returns:
+		(number) The number of pixels the window has scrolled from the top.
+
+	Example:
+		[javascript]
+			window.addEvent('scroll', function(){
+				alert(Client.getScrollTop());
+			});
+		[/javascript]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
@@ -95,7 +166,18 @@ Client.extend({
 
 	/*
 	Property: getSize
-		Same as <Element.getSize>, but for window
+		Same as <Element.getSize>, but for window.
+
+	Syntax:
+		>var size = Client.getSize();
+
+	Returns:
+		(object) An object with size, scrollSize, scroll properties. Each property has a value of an object with x and y properties representing the width/height, scrollWidth/scrollHeight, or getScrollLeft/getScrollTop.
+
+	Example:
+		[javascript]
+			var size = Client.getSize();
+		[/javascript]
 	*/
 
 	getSize: function(){
@@ -110,14 +192,14 @@ Client.extend({
 
 /*
 Class: window
-	Utility methods attached to the window object to match Element's equivalents
+	Utility methods attached to the window object to match Element's equivalents.
 */
 
 window.extend({
 
 	/*
 	Property: getSize
-		Same as <Client.getSize>
+		Same as <Client.getSize>.
 	*/
 
 	getSize: Client.getSize,
