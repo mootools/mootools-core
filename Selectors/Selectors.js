@@ -16,15 +16,40 @@ Element.$DOMMethods = {
 	/*
 	Property: getElements
 		Gets all the elements within an element that match the given (single) selector.
-		Returns as <Elements>.
+
+	Syntax:
+		>var myElements = myElement.getElements(selector[, nocash]);
 
 	Arguments:
-		selector - string; the css selector to match
+		selector - (string) The CSS Selector to match.
+		nocash   - (boolean, optional: defaults to false) If true, the found Elements are not extended.
+
+	Returns:
+		(array) An <Elements> collections.
 
 	Examples:
-		>$('myElement').getElements('a'); // get all anchors within myElement
-		>$('myElement').getElements('input[name=dialog]') //get all input tags with name 'dialog'
-		>$('myElement').getElements('input[name$=log]') //get all input tags with names ending with 'log'
+		[javascript]
+			$('myElement').getElements('a'); // get all anchors within myElement
+		[/javascript]
+
+		[javascript]
+			$('myElement').getElements('input[name=dialog]') //get all input tags with name 'dialog'
+		[/javscript]
+
+		[javascript]
+			$('myElement').getElements('input[name$=log]') //get all input tags with names ending with 'log'
+		[/javascript]
+
+		[javascript]
+			$(document.body).getElements('a.email').addEvents({
+				'mouseenter': function(){
+					this.href = 'real@email.com';
+				},
+				'mouseleave': function(){
+					this.href = '#';
+				}
+			});
+		[/javascript]
 
 	Notes:
 		Supports these operators in attribute selectors:
@@ -57,11 +82,24 @@ Element.$DOMMethods = {
 
 	/*
 	Property: getElement
-		Same as <Element.getElements>, but returns only the first. Alternate syntax for <$E>, where filter is the Element.
-		Returns as <Element>.
+		Same as <Element.getElements>, but returns only the first.
+
+	Syntax:
+		>var anElement = myElement.getElement(selector);
 
 	Arguments:
-		selector - string; css selector
+		selector - (string) The CSS Selector to match.
+
+	Returns:
+		(mixed) An extended Element, or null if not found.
+
+	Example:
+		[javascript]
+			var found = $('myElement').getElement('.findMe').setStyle('color', '#f00');
+		[/javascript]
+
+	Note:
+		Alternate syntax for <$E>, where filter is the Element.
 	*/
 
 	getElement: function(selector){
@@ -70,11 +108,25 @@ Element.$DOMMethods = {
 
 	/*
 	Property: getElementsBySelector
-		Same as <Element.getElements>, but allows for comma separated selectors, as in css. Alternate syntax for <$$>, where filter is the Element.
-		Returns as <Elements>.
+		Same as <Element.getElements>, but allows for comma separated selectors, as in css.
+
+	Syntax:
+		>var myElements = myElement.getElementsBySelector(selector, nocash);
 
 	Arguments:
-		selector - string; css selector
+		selector - (string) The CSS Selector to match.
+		nocash   - (boolean, optional: defaults to false) If true, the found Elements are not extended.
+
+	Returns:
+		(array) An <Elements> collection.
+
+	Example:
+		[javascript]
+			var myElements = $('myElement').getElementsBySelector('div#scene1, a, span.myClass');
+		[/javascript]
+
+	Note:
+		Alternate syntax for <$$>, where filter is the Element.
 	*/
 
 	getElementsBySelector: function(selector, nocash){
@@ -90,10 +142,24 @@ Element.extend({
 
 	/*
 	Property: getElementById
-		Targets an element with the specified id found inside the Element. Does not overwrite document.getElementById.
+		Targets an element with the specified id found inside the Element.
+
+	Syntax:
+		>var anElement = myElement.getElementById(id);
 
 	Arguments:
-		id - string; the id of the element to find.
+		id - (string) The string ID of the element to find.
+
+	Returns:
+		(mixed) Returns the found element, otherwise null.
+
+	Example:
+		[javascript]
+			var anElement = $('myElement').getElementById('anElement').addClass('found');
+		[/javascript]
+
+	Note:
+		Does not override document.getElementById.
 	*/
 
 	getElementById: function(id){
