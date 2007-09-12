@@ -30,7 +30,7 @@ Events:
 			>onComplete(responseJson)
 
 		Arguments:
-			responseJson - (string) The JSON response from the remote request.
+			responseJson - (string) The JSON response object from the remote request.
 
 Returns:
 	(class) A new Json.Remote class instance.
@@ -85,10 +85,6 @@ Json.Remote = new Class({
 		return this.parent(this.url, $defined(obj) ? ((this.options.varName) ? this.options.varName + '=' : '') + encodeURIComponent(Json.encode(obj)) : null);
 	},
 
-	/*
-	Private Method: onComplete
-		Fires the onComplete event for and passes the JSON reponse to the user-defined event handler.
-	*/
 	onComplete: function(text){
 		this.response.json = Json.decode(text, this.options.secure);
 		this.fireEvent('onComplete', [this.response.json]);

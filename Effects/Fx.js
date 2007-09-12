@@ -142,7 +142,7 @@ var Fx = new Class({
 					alert("Woah! Where did it go?");
 				}
 			});
-	Method:
+
 			$('myElement').addEvents('mouseenter', function(){
 				myFx.set(0); //will make it immediately transparent
 			});
