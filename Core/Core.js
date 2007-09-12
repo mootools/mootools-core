@@ -104,25 +104,6 @@ Native.generic = function(property){
 	};
 };
 
-/*
-Function: Native.setFamily
-	This function will set the $family property of all instances of this Native type.
-
-Syntax:
-	>Native.setFamily(types);
-
-Arguments:
-	types - (object) An object containing they type / Native pairs to be applied.
-
-Example:
-	[javascript]
-		Native.setFamily({'date': Date});
-	[/javascript]
-
-Note:
-	This function is used internally by all Native types extended by MooTools. Accordingly, (most) Native instances know their type.
-*/
-
 Native.setFamily = function(natives){
 	for (var type in natives) natives[type].prototype.$family = type;
 };
