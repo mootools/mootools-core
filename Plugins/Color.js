@@ -245,7 +245,7 @@ Syntax:
 	>var myColor = $HSB(h, s, b);
 
 Arguments:
-	h - (number) A hue value from 0 to 100.
+	h - (number) A hue value from 0 to 359.
 	s - (number) A saturation value from 0 to 100.
 	b - (number) A brightness value from 0 to 100.
 

@@ -22,7 +22,7 @@ Arguments:
 	options - (object) An optional object for customizing the Slider.
 
 	options (continued):
-		steps  - (number: defaults to 100) The number of steps the Slider should move/tick.
+		steps  - (number: defaults to 100) The number (greater than 0) of steps the Slider should move/tick.
 		mode   - (string: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
 		offset - (number: defaults to: 0) Relative offset for knob position at start.
 
