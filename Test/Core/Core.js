@@ -140,15 +140,17 @@ Tests.Core = new Test.Suite('Core', {
 	},
 	
 	Native: function(){
-		var Instrument = function(name){
-			this.name = name;
-		};
+		var Instrument = new Native({
+			
+			name: 'instrument',
+			
+			initialize: function(name){
+				this.name = name;
+			}
+
+		});
 		
-		Native(Instrument);
-		
-		Native.setFamily({'instrument': Instrument});
-		
-		Instrument.extend({
+		Instrument.implement({
 			
 			method: function(a, b, c){
 				return this.property + a + b + c + this.name;
@@ -158,7 +160,7 @@ Tests.Core = new Test.Suite('Core', {
 			
 		});
 		
-		Instrument.extend({
+		Instrument.implement({
 			
 			property: 'staff'
 			
@@ -167,8 +169,8 @@ Tests.Core = new Test.Suite('Core', {
 		var myInstrument = new Instrument('xeelophone');
 		
 		this.end(
-			Assert.equals(myInstrument.method('a', 'b', 'c'), 'stuffabcxeelophone'),
-			Assert.equals(Instrument.method(myInstrument, 'a', 'b', 'c'), 'stuffabcxeelophone'),
+			Assert.equals(myInstrument.method('a', 'b', 'c'), 'staffabcxeelophone'),
+			Assert.equals(Instrument.method(myInstrument, 'a', 'b', 'c'), 'staffabcxeelophone'),
 			Assert.equals($type(myInstrument), 'instrument')
 		);
 	}

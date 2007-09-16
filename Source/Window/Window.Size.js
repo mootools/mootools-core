@@ -14,11 +14,12 @@ See Also:
 */
 
 /*
-Class: Client
+Native: Window
 	Cross browser methods to get various window dimensions.
+	Warning: All these methods require that the browser operates in strict mode, not quirks mode.
 */
 
-Client.extend({
+Window.implement({
 
 	/*
 	Property: getWidth
@@ -32,9 +33,9 @@ Client.extend({
 	*/
 
 	getWidth: function(){
-		if (Client.Engine.webkit419) return window.innerWidth;
-		if (Client.Engine.opera) return document.body.clientWidth;
-		return document.documentElement.clientWidth;
+		if (Client.Engine.webkit419) return this.innerWidth;
+		if (Client.Engine.opera) return this.body.clientWidth;
+		return this.document.documentElement.clientWidth;
 	},
 
 	/*
@@ -47,11 +48,10 @@ Client.extend({
 	Returns:
 		(number) The height (without the scrollbar height) of the browser window.
 	*/
-
 	getHeight: function(){
-		if (Client.Engine.webkit419) return window.innerHeight;
-		if (Client.Engine.opera) return document.body.clientHeight;
-		return document.documentElement.clientHeight;
+		if (Client.Engine.webkit419) return this.innerHeight;
+		if (Client.Engine.opera) return this.document.body.clientHeight;
+		return this.document.documentElement.clientHeight;
 	},
 
 	/*
@@ -79,9 +79,9 @@ Client.extend({
 	*/
 
 	getScrollWidth: function(){
-		if (Client.Engine.ie) return Math.max(document.documentElement.offsetWidth, document.documentElement.scrollWidth);
-		if (Client.Engine.webkit) return document.body.scrollWidth;
-		return document.documentElement.scrollWidth;
+		if (Client.Engine.ie) return Math.max(this.document.documentElement.offsetWidth, this.document.documentElement.scrollWidth);
+		if (Client.Engine.webkit) return this.document.body.scrollWidth;
+		return this.document.documentElement.scrollWidth;
 	},
 
 	/*
@@ -109,9 +109,9 @@ Client.extend({
 	*/
 
 	getScrollHeight: function(){
-		if (Client.Engine.ie) return Math.max(document.documentElement.offsetHeight, document.documentElement.scrollHeight);
-		if (Client.Engine.webkit) return document.body.scrollHeight;
-		return document.documentElement.scrollHeight;
+		if (Client.Engine.ie) return Math.max(this.document.documentElement.offsetHeight, this.document.documentElement.scrollHeight);
+		if (Client.Engine.webkit) return this.document.body.scrollHeight;
+		return this.document.documentElement.scrollHeight;
 	},
 
 	/*
@@ -136,7 +136,7 @@ Client.extend({
 	*/
 
 	getScrollLeft: function(){
-		return window.pageXOffset || document.documentElement.scrollLeft;
+		return this.pageXOffset || this.document.documentElement.scrollLeft;
 	},
 
 	/*
@@ -161,7 +161,7 @@ Client.extend({
 	*/
 
 	getScrollTop: function(){
-		return window.pageYOffset || document.documentElement.scrollTop;
+		return this.pageYOffset || this.document.documentElement.scrollTop;
 	},
 
 	/*
@@ -182,28 +182,12 @@ Client.extend({
 
 	getSize: function(){
 		return {
-			'size': {'x': Client.getWidth(), 'y': Client.getHeight()},
-			'scrollSize': {'x': Client.getScrollWidth(), 'y': Client.getScrollHeight()},
-			'scroll': {'x': Client.getScrollLeft(), 'y': Client.getScrollTop()}
+			'size': {'x': this.getWidth(), 'y': this.getHeight()},
+			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()},
+			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()}
 		};
-	}
-
-});
-
-/*
-Class: window
-	Utility methods attached to the window object to match Element's equivalents.
-*/
-
-window.extend({
-
-	/*
-	Property: getSize
-		Same as <Client.getSize>.
-	*/
-
-	getSize: Client.getSize,
-
+	},
+	
 	getPosition: function(){
 		return {'x': 0, 'y': 0};
 	}

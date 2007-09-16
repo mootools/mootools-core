@@ -152,6 +152,7 @@ Test.Suite = function(name, cases, options){
 };
 
 Test.Suite.prototype = {
+
 	start: function(){
 		this.options.onStart.call(this);
 
@@ -178,6 +179,7 @@ Test.Suite.prototype = {
 		this.options.onComplete.call(this, endTime - this.startTime);
 		this.onSuiteEnd.call(this);
 	}
+
 };
 
 var Assert = {

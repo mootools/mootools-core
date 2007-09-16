@@ -43,21 +43,21 @@ Element.Events.domready = {
 			if ((Client.Engine.webkit ? ['loaded', 'complete'] : 'complete').contains(context.readyState)) return domReady();
 			return false;
 		};
-		if (document.readyState && Client.Engine.webkit){
+		if (this.document.readyState && Client.Engine.webkit){
 			(function(){
-				if (!check(document)) arguments.callee.delay(50);
+				if (!check(self.document)) arguments.callee.delay(50);
 			})();
-		} else if (document.readyState && Client.Engine.ie){
+		} else if (this.document.readyState && Client.Engine.ie){
 			var script = $('ie_domready');
 			if (!script){
-				var src = (window.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
-				document.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
+				var src = (this.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
+				this.document.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
 				script = $('ie_domready');
 			}
 			if (!check(script)) script.addEvent('readystatechange', check.pass(script));
 		} else {
-			window.addEvent('load', domReady);
-			document.addEvent('DOMContentLoaded', domReady);
+			this.addEvent('load', domReady);
+			this.document.addEvent('DOMContentLoaded', domReady);
 		}
 		return this;
 	}

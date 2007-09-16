@@ -9,7 +9,9 @@ License:
 Tests.Class = new Test.Suite('Class', {
 
 	empty: function(){
-		this.end(Assert.equals(Class.empty, $empty));	
+		this.end(
+			Assert.equals(Class.empty, $empty)
+		);	
 	},
 	
 	initialize: function(){
@@ -222,51 +224,6 @@ Tests.Class = new Test.Suite('Class', {
 			Assert.equals(Animal.constructor, 'class'),
 			Assert.equals(myCat.age, 20),
 			Assert.isTrue(myLion.roaring)
-		);
-	},
-	
-	Abstract: function(){
-		var emptyAbstract = new Abstract();
-		var anAbstract = new Abstract({
-			methodA: function(){
-				return true;	
-			},
-			
-			methodB: function(){
-				return 'methodB';
-			},
-			
-			methodC: $empty
-		});
-		
-		anAbstract.remove('methodC');
-		
-		var eachRes = true;
-		anAbstract.each(function(fn) {
-			switch(fn()) {
-				true: 'methodB': break;	
-				default: eachRes = false;
-			}
-		});
-		
-		var abs = new Abstract({
-			a: function(){
-				return this.methodA();	
-			}
-		});
-		
-		var bindEachRes = true;
-		abs.each(function(fn) {
-			if(!fn()) bindEachRes = false;
-		}, anAbstract);
-		
-		this.end(
-			Assert.isType(emptyAbstract.extend, 'function'),
-			Assert.isType(emptyAbstract.each, 'function'),
-			Assert.isType(emptyAbstract.remove, 'function'),
-			Assert.isFalse($defined(anAbstract.methodC)),
-			eachRes,
-			bindEachRes
 		);
 	}
 

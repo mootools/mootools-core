@@ -86,6 +86,7 @@ Tests.Chain = new Test.Suite('Class.Extras.js, Chain', {
 	}
 
 });
+
 Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 
 	addEvent: function(){
@@ -278,6 +279,7 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 	}
 
 });
+
 Tests.Options = new Test.Suite('Class.Extras.js, Options', {
 
 	setOptions: function(){
