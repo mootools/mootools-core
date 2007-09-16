@@ -19,7 +19,7 @@ Tests.Core = new Test.Suite('Core', {
 		var all = true;
 
 		for (var i = 0; i < objects.length; i++){
-			if (!Assert.type(objects[i], types[i])) all = false;
+			if (!Assert.isType(objects[i], types[i])) all = false;
 		}
 
 		this.end(all);
@@ -103,8 +103,8 @@ Tests.Core = new Test.Suite('Core', {
 		var val = 1;
 		this.end(
 			Assert.stringEquals($splat(val), [1]),
-			Assert.equals($splat(arr), arr),
-			Assert.equals($splat(null), null)
+			Assert.stringEquals($splat(null), []),
+			Assert.equals($splat(arr), arr)
 		);
 	},
 	
@@ -171,7 +171,7 @@ Tests.Core = new Test.Suite('Core', {
 		this.end(
 			Assert.equals(myInstrument.method('a', 'b', 'c'), 'staffabcxeelophone'),
 			Assert.equals(Instrument.method(myInstrument, 'a', 'b', 'c'), 'staffabcxeelophone'),
-			Assert.equals($type(myInstrument), 'instrument')
+			Assert.isType(myInstrument, 'instrument')
 		);
 	}
 	

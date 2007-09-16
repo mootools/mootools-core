@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>index</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script type="text/javascript" charset="utf-8" src="Test.js"></script>
+	<script type="text/javascript" charset="utf-8" src="Builder.js"></script>
+	<style type="text/css" media="screen">
+		body {
+			padding:20px;
+			color:#B3B3BB;
+			background:#1D1D20;
+			font-family:"Lucida Grande","Arial","Helvetica","Verdana","sans-serif";
+		}
+		
+		a {
+			margin:5px;
+			padding:5px;
+			display:block;
+			color:#fff;
+			background-color:#7389AE;
+			text-decoration:none;
+		}
+		a:hover { background-color:#78BA91; }
+		
+		ul {
+			width:300px;
+			margin:0px auto;
+			list-style-type:none;
+		}
+	</style>
+</head>
+<body>
+	
+	<ul id="list"></ul>
+	
+	<script type="text/javascript" charset="utf-8">
+		function createLink(href, html){
+			var item = document.createElement('li'),
+			    link = document.createElement('a');
+			link.href = href;
+			link.innerHTML = html;
+			item.appendChild(link);
+			return item;
+		}
+		
+		var list = document.getElementById('list');
+		
+		var link = createLink('javascript:Tests.start()', 'Run All Tests');
+		link.style.marginBottom = '15px';
+		list.appendChild(link);
+		
+		for(var test in Tests){
+			if(test == 'start') continue;
+			list.appendChild(document.createElement('li'));
+			list.appendChild(createLink('javascript:Tests.' + test + '.start()', Tests[test].name));
+		}
+	</script>
+</body>
+</html>

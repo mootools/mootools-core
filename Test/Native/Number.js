@@ -7,7 +7,7 @@ License:
 */
 
 Tests.Number = new Test.Suite('Number', {
-	
+
 	toInt: function(){
 		this.end(
 			Assert.equals((111).toInt(), 111),
@@ -16,7 +16,7 @@ Tests.Number = new Test.Suite('Number', {
 			Assert.equals((016).toInt(10), 14) // ECMA standard, radix is optional so if starts with 0 then parsed as octal
 		);
 	},
-	
+
 	toFloat: function(){
 		this.end(
 			Assert.equals((1.00).toFloat(), 1),
@@ -25,14 +25,14 @@ Tests.Number = new Test.Suite('Number', {
 			Assert.equals((Number.MIN_VALUE).toFloat(), Number.MIN_VALUE)
 		);
 	},
-	
+
 	limit: function(){
 		this.end(
 			Assert.equals((-1).limit(0,1), 0),
 			Assert.equals((3).limit(1,2), 2)
 		);
 	},
-	
+
 	round: function(){
 		this.end(
 			Assert.equals((0.01).round(), 0),
@@ -45,29 +45,29 @@ Tests.Number = new Test.Suite('Number', {
 			Assert.equals((100).round(-5), 0)
 		);
 	},
-	
+
 	times: function(){
 		var found = 0;
 		(3).times(function(i){
 			found = i;
 		});
-		
+
 		var found2 = -1;
 		(0).times(function(i){
 			found2 = i;
 		});
-		
+
 		var aTest = 'hi';
 		var found3 = false;
 		(1).times(function(i){
 			found3 = (this == aTest);
 		}, aTest);
-		
+
 		this.end(
 			Assert.equals(found, 2),
 			Assert.equals(found2, -1),
 			Assert.isTrue(found3)
 		);
 	}
-	
+
 });

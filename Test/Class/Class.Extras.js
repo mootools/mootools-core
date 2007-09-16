@@ -22,8 +22,7 @@ Tests.Chain = new Test.Suite('Class.Extras.js, Chain', {
 		var myChain = new ChainTest();
 
 		this.end(
-			Assert.isTrue($defined(myChain.$chain)),
-			Assert.equals(myChain.res, myChain.chain),
+			Assert.isDefined(myChain.$chain),
 			Assert.isType(myChain.$chain[0], 'function'),
 			Assert.isTrue(myChain.$chain[0]())
 		);
@@ -50,14 +49,16 @@ Tests.Chain = new Test.Suite('Class.Extras.js, Chain', {
 
 		for(var i = 0; i < 3; i++) myChain.callChain();
 
-		this.end(
-			Assert.equals(myChain.arr.length, 3),
-			Assert.equals(myChain.arr[0], 0),
-			Assert.equals(myChain.arr[1], 1),
-			Assert.equals(myChain.arr[2], 2)
-		);
+		(function(){
+			this.end(
+				Assert.equals(myChain.arr.length, 3),
+				Assert.equals(myChain.arr[0], 0),
+				Assert.equals(myChain.arr[1], 1),
+				Assert.equals(myChain.arr[2], 2)
+			);
+		}).delay(100, this);
 	},
-
+	
 	clearChain: function(){
 		var ChainTest = new Class({
 			Implements: Chain,
@@ -77,21 +78,23 @@ Tests.Chain = new Test.Suite('Class.Extras.js, Chain', {
 
 		var myChain = new ChainTest();
 		myChain.clearChain();
+		myChain.callChain();
 
-		this.end(
-			Assert.equals(myChain.$chain.length, 0),
-			Assert.isFalse($chk(myChain.arr))
-		);
-
+		(function(){
+			this.end(
+				Assert.equals(myChain.$chain.length, 0),
+				Assert.isFalse($chk(myChain.arr[0]))
+			);
+		}).delay(100, this);
 	}
-
+	
 });
+
 
 Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 
 	addEvent: function(){
-		var ClassEvents = new Class({
-			Implements: Events,
+		var ClassEvents = new Class({ Implements: Events,
 			initialize: function(){
 				var self = this;
 				var called = 0;
@@ -108,17 +111,15 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 		});
 
 		var TestAddEvent = new ClassEvents();
-
+		
 		this.end(
-			Assert.isTrue($defined(TestAddEvent.$events)),
-			Assert.equals(TestAddEvent.$events.length, 2),
+			Assert.isDefined(TestAddEvent.$events),
+			Assert.isDefined(TestAddEvent.$events['onFirst']),
+			Assert.isDefined(TestAddEvent.$events['onFirst'][0]),
+			Assert.notDefined(TestAddEvent.$events['onFirst'][1]),
 
-			Assert.isTrue($defined(TestAddEvent.$events['onFirst'])),
-			Assert.isTrue($defined(TestAddEvent.$events['onFirst'][0])),
-			Assert.isFalse($defined(TestAddEvent.$events['onFirst'][1])),
-
-			Assert.isTrue($defined(TestAddEvent.$events['onSecond'])),
-			Assert.isTrue($defined(TestAddEvent.$events['onSecond'][0])),
+			Assert.isDefined(TestAddEvent.$events['onSecond']),
+			Assert.isDefined(TestAddEvent.$events['onSecond'][0]),
 			Assert.equals(TestAddEvent.$events['onSecond'].length, 2),
 
 			Assert.isTrue(TestAddEvent.$events['onSecond'][0].internal),
@@ -127,7 +128,7 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 			Assert.equals(TestAddEvent.$events['onSecond'][1](), 2)
 		);
 	},
-
+	
 	addEvents: function(){
 		var ClassEvents = new Class({
 			Implements: Events,
@@ -153,15 +154,13 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 		var TestAddEvents = new ClassEvents();
 
 		this.end(
-			Assert.isTrue($defined(TestAddEvents.$events)),
-			Assert.equals(TestAddEvents.$events.length, 2),
+			Assert.isDefined(TestAddEvents.$events),
+			Assert.isDefined(TestAddEvents.$events['onFirst']),
+			Assert.isDefined(TestAddEvents.$events['onFirst'][0]),
+			Assert.notDefined(TestAddEvents.$events['onFirst'][1]),
 
-			Assert.isTrue($defined(TestAddEvents.$events['onFirst'])),
-			Assert.isTrue($defined(TestAddEvents.$events['onFirst'][0])),
-			Assert.isFalse($defined(TestAddEvents.$events['onFirst'][1])),
-
-			Assert.isTrue($defined(TestAddEvents.$events['onSecond'])),
-			Assert.isTrue($defined(TestAddEvents.$events['onSecond'][0])),
+			Assert.isDefined(TestAddEvents.$events['onSecond']),
+			Assert.isDefined(TestAddEvents.$events['onSecond'][0]),
 			Assert.equals(TestAddEvents.$events['onSecond'].length, 2),
 
 			Assert.equals(TestAddEvents.$events['onFirst'][0](), 0),
@@ -222,7 +221,7 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 			}
 		});
 
-		var firstRemvoe = new RemoveEvent();
+		var firstRemove = new RemoveEvent();
 		firstRemove.removeEvent('onFirst', fn);
 		firstRemove.fireEvent('onFirst');
 
@@ -257,7 +256,7 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 			}
 		});
 
-		var firstRemvoe = new RemoveEvent();
+		var firstRemove = new RemoveEvent();
 		firstRemove.removeEvents('onFirst');
 		firstRemove.fireEvent('onFirst');
 
@@ -265,19 +264,20 @@ Tests.Events = new Test.Suite('Class.Extras.js, Events', {
 		secondRemove.removeEvents();
 		secondRemove.fireEvent('onFirst');
 		secondRemove.fireEvent('onSecond');
+		
 
 		this.end(
 			Assert.equals(firstRemove.called, 0),
 			Assert.equals(secondRemove.called, 0),
 
-			Assert.isFalse($defined(firstRemove.$events['onFirst'])),
-			Assert.isTrue($defined(firstRemove.$events['onSecond'])),
+			Assert.notDefined(firstRemove.$events['onFirst'][0]),
+			Assert.isDefined(firstRemove.$events['onSecond']),
 
-			Assert.isFalse($defined(secondRemove.$events['onFirst'])),
-			Assert.isFalse($defined(secondRemove.$events['onSecond']))
+			Assert.notDefined(secondRemove.$events['onFirst'][0]),
+			Assert.notDefined(secondRemove.$events['onSecond'][0])
 		);
 	}
-
+	
 });
 
 Tests.Options = new Test.Suite('Class.Extras.js, Options', {
@@ -325,16 +325,14 @@ Tests.Options = new Test.Suite('Class.Extras.js, Options', {
 		});
 
 		this.end(
-			Assert.isTrue($defined(NullInput.options)),
-			Assert.isTrue($defined(NullInput.prototype.options)),
+			Assert.isDefined(NullInput.options),
 			Assert.isType(NullInput.options, 'object'),
 			Assert.equals(NullInput.options.a, 1),
 
 			Assert.equals(MergedInput.options.a, 2),
 			Assert.equals(MergedInput.options.b, 3),
 
-			Assert.isTrue($defined(NullInputE.options)),
-			Assert.isTrue($defined(NullInputE.prototype.options)),
+			Assert.isDefined(NullInputE.options),
 			Assert.isType(NullInputE.options, 'object'),
 			Assert.equals(NullInputE.options.a, 1),
 			Assert.isType(NullInputE.options.onStart, 'function'),

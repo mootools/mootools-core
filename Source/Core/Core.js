@@ -367,9 +367,6 @@ Examples:
 function $splat(obj){
 	var type = $type(obj);
 	return (type) ? ((type != 'array' && type != 'arguments') ? [obj] : obj) : [];
-	/*if (!type) return [];
-	if (type != 'array' && type != 'arguments') return [obj];
-	return obj;*/
 };
 
 /*

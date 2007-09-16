@@ -6,9 +6,12 @@ License:
 	MIT-style license.
 */
 
-var Test = {};
+var Test = {}, Tests = {}, Fixtures = {};
 
-var Tests = {};
+/*
+Object: Test.Output
+	Test Ouput methods. Can be overridden 
+*/
 
 Test.Output = {
 
@@ -17,7 +20,7 @@ Test.Output = {
 	},
 
 	groupEnd: function(name){
-		return console.groupEnd(name);
+		return console.groupEnd();
 	},
 
 	info: function(data){
@@ -48,6 +51,8 @@ Test.Case = function(name, test, options){
 
 	options = options || {};
 
+	this.numAssertions = this.numFailures = 0;
+
 	this.options = {
 
 		onStart: function(){
@@ -55,8 +60,9 @@ Test.Case = function(name, test, options){
 		},
 
 		onComplete: function(time){
-			if (this.failed) Test.Output.error('Test Case failed.');
-			else Test.Output.success('Test Case succeeded. Time taken: ' + time + ' ms');
+			var message = 'Time taken: '+ time + ' ms.\n' + (this.numAssertions - this.numFailures) + ' assertions, ' + this.numFailures + ' failures';
+			if (this.failed) Test.Output.error('Test Case failed.' + message);
+			else Test.Output.success('Test Case succeeded.' + message);
 			Test.Output.groupEnd('Test Case: ' + this.name);
 		},
 
@@ -72,6 +78,7 @@ Test.Case = function(name, test, options){
 
 	this.test = test;
 	this.name = name;
+
 };
 
 Test.Case.prototype = {
@@ -98,7 +105,11 @@ Test.Case.prototype = {
 	end: function(){
 		var allOk = true;
 		for (var i = 0, l = arguments.length; i < l; i++){
-			if (arguments[i] === false) allOk = false;
+			this.numAssertions++;
+			if (arguments[i] === false) {
+				this.numFailures++;
+				allOk = false;
+			}
 		}
 		this.check(allOk);
 		this.onCaseEnd.call(this);
@@ -110,7 +121,7 @@ Test.Suite = function(name, cases, options){
 
 	options = options || {};
 
-	this.errors = 0;
+	this.numAssertions = this.numErrors = this.numTests = 0;
 
 	this.options = {
 
@@ -119,8 +130,9 @@ Test.Suite = function(name, cases, options){
 		},
 
 		onComplete: function(time){
-			if (!this.errors) Test.Output.success('Test Suite succeeded. Time taken: ' + time + ' ms');
-			else Test.Output.error('Test Suite failed. There were ' + this.errors + ' errors.');
+			var message = 'Time taken: ' + time + ' ms' + '\n' + this.numTests + ' tests, ' + (this.numTests - this.numErrors) + ' assertions, ' + this.numErrors + ' failures';
+			if (!this.numErrors) Test.Output.success('Test Suite succeeded. ' + message);
+			else Test.Output.error('Test Suite failed. ' + message);
 			Test.Output.groupEnd('Test Suite: ' + this.name);
 		}
 
@@ -137,13 +149,15 @@ Test.Suite = function(name, cases, options){
 	var self = this;
 
 	for (var caseName in cases){
+		this.numTests++;
+
 		var current = new Test.Case(caseName, cases[caseName]);
 
 		var oldComplete = current.options.onComplete;
 
 		current.options.onComplete = function(time){
 			oldComplete.call(this, time);
-			if (this.failed) self.errors++;
+			if (this.failed) self.numErrors++;
 		};
 
 		this.testCases.push(current);
@@ -184,13 +198,8 @@ Test.Suite.prototype = {
 
 var Assert = {
 
-	type: function(a, type){
-		var aType = $type(a);
-		return (aType != type) ? Test.Output.error('Expecting type of "' + a + '" to be "' + type + '" but was "' + b + '" instead.') : true;
-	},
-
 	equals: function(a, b){
-		return (a !== b) ? Test.Output.error('Expecting "' + a + '" but found "' + b + '".') : true;
+		return (a !== b) ? Test.Output.error('Expecting "' + b + '" but found "' + a + '".') : true;
 	},
 
 	isTrue: function(a){
@@ -201,13 +210,26 @@ var Assert = {
 		return (a !== false) ? Test.Output.error('Object "' + a + '" is not false.') : true;
 	},
 
+	isType: function(a, type){ 
+		var aType = $type(a);
+		return (aType != type) ? Test.Output.error('Expecting type of "' + a + '" to be "' + type + '" but was "' + b + '" instead.') : true;
+	},
+	
+	isDefined: function(a){
+		return (!$defined(a)) ? Test.Output.error('Object is not defined') : true;
+	},
+	
+	notDefined: function(a){
+		return ($defined(a)) ? Test.Output.error('Expected Object not to be defined, but Object is defined as "' + a + '".') : true;
+	},
+
 	stringEquals: function(a, b){
 		a = String(a);
 		b = String(b);
 		return (a != b) ? Test.Output.error('String representation "' + a + '" is different than String representation "' + b + '".') : true;
 	},
 
-	enumEquals: function(a, b) {
+	enumEquals: function(a, b){
 		var isEqual = (a.length == b.length);
 		for (var i = 0, j = a.length; i < j; i++) {
 			if (a[i] != b[i]) isEqual = false;
