@@ -54,7 +54,7 @@ See Also:
 */
 
 Fx.Styles = new Class({
-	
+
 	Extends: Fx,
 
 	initialize: function(element, options){
@@ -64,7 +64,7 @@ Fx.Styles = new Class({
 	setNow: function(){
 		for (var p in this.from) this.now[p] = Fx.CSS.compute(this.from[p], this.to[p], this);
 	},
-	
+
 	/*
 	Method: set
 		Sets the Element's css properties to the specified values immediately.

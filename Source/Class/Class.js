@@ -14,11 +14,12 @@ Syntax:
 	>var MyClass = new Class(properties);
 
 Arguments:
-	properties - (object) The collection of properties that apply to the Class. Also accepts Extends and Implements properties (see below).
+	properties - (object) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
 
 	properties (continued):
 		Extends - (class) That this class will extend.
 		Implements - (mixed) An object or an array of objects that the Class implements. Similar to Extends, but it simply overrides the properties. Useful when implementing a Class properties in multiple classes.
+		initialize - (function) The initialize function will be the constructor for this class when new instances are created.
 
 Returns:
 	(class) The Class created.

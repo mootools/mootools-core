@@ -11,10 +11,11 @@ Class: Event
 	Cross browser Class to manage Events.
 
 Syntax:
-	>var myEvent = new Event([event]);
+	>var myEvent = new Event([event[, win]]);
 
 Arguments:
 	event - (event, optional) An Event that needs to be extended.
+	win   - (win, optional) The context of the event.
 
 Properties:
 	shift         - (boolean) True if the user pressed the shift
@@ -263,13 +264,6 @@ Native.implement([Element, Window, Document], {
 	Arguments:
 		type       - (string) The event name to monitor ('click', 'load', etc) without the prefix 'on'.
 		fn         - (funtion) The function to execute.
-		nativeType - (number, optional) Overrides automated native Event check, not needed in most situations.
-
-		nativeType (continued):
-			number - (number) Can be:
-				0: Event is added without native event listener, can be fired only with <Element.fireEvent>
-				1: Event function is attached with <Element.addListener> to the Element as native event.
-				2: Like 1, but listener also receives the Event instance and can be stopped with return false;
 
 	Returns:
 		(element) This Element.

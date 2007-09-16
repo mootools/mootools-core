@@ -243,11 +243,11 @@ Function.implement({
 		>var myFunctionResult = myFunction.run(args[, bind]);
 
 	Arguments:
-		args - (mixed) an argument or array of arguments to run the function with.
-		bind - (mixed) optional, the object that the "this" of the function will refer to.
+		args - (mixed) An argument, or array of arguments to run the function with.
+		bind - (object, optional) The object that the "this" of the function will refer to.
 		
 	Returns:
-		(mixed) whatever the function returns.
+		(mixed) This Function's return.
 		
 	Examples:
 		Simple run:

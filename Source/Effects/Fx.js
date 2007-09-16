@@ -207,13 +207,13 @@ var Fx = new Class({
 
 	/*
 	Method: stop
-		Stops the transition and fires the 'onCancel' Event if ignore parameter is not supplied or is false.
+		Stops the transition and fires the 'onCancel' Event if end parameter is not supplied or is false.
 
 	Syntax:
 		>myFx.stop([end]);
 
 	Arguments:
-		ignore - (boolean, optional) If the true the 'onCancel' Event will not be fired.
+		end - (boolean, optional) If the true the 'onCancel' Event will not be fired.
 
 	Returns:
 		(object) This Fx instance.

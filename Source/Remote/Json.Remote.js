@@ -47,7 +47,7 @@ Example:
 */
 
 Json.Remote = new Class({
-	
+
 	Extends: XHR,
 
 	options: {

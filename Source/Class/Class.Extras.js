@@ -15,7 +15,7 @@ Class: Chain
 
 Syntax:
 	For new classes:
-	>var MyClass = new Class({Implements: Chain});
+	>var MyClass = new Class({ Implements: Chain });
 
 	For existing classes:
 	>MyClass.implement(new Chain);
@@ -54,7 +54,7 @@ var Chain = new Class({
 		Any number of functions.
 
 	Returns:
-		(class) This Class instance.
+		(class) This Class instance. Calls to chain can also be chained.
 
 	Example:
 		[javascript]
@@ -71,9 +71,8 @@ var Chain = new Class({
 		<Fx>, <Fx.Style>
 	*/
 
-	chain: function(fn){
-		this.$chain = this.$chain || [];
-		this.$chain.push(fn);
+	chain: function(){
+		this.$chain = (this.$chain || []).extend(arguments);
 		return this;
 	},
 
@@ -84,6 +83,9 @@ var Chain = new Class({
 	Syntax:
 		>myClass.callChain();
 
+	Returns:
+		(class) This Class instance.
+
 	Example:
 		[javascript]
 			var Queue = new Class({
@@ -92,19 +94,19 @@ var Chain = new Class({
 					this.chain.apply(this, arguments);
 				}
 			});
-			var myQ = new Queue();
-			myQ.chain(
+			var myQueue = new Queue();
+			myQueue.chain(
 				function(){ alert('do dishes'); },
 				function(){ alert('put away clean dishes'); }
 			);
-
-			myQ.callChain(); // alerts 'do dishes'
-			myQ.callChain(); // alerts 'put away clean dishes'
+			myQueue.callChain(); //alerts 'do dishes'
+			myQueue.callChain(); //alerts 'put away clean dishes'
 		[/javascript]
 	*/
 
 	callChain: function(){
 		if (this.$chain && this.$chain.length) this.$chain.shift().delay(10, this);
+		return this;
 	},
 
 	/*
@@ -114,10 +116,13 @@ var Chain = new Class({
 	Syntax:
 		>myClass.clearChain();
 
+	Returns:
+		(class) This Class instance.
+
 	Example:
 		[javascript]
 			var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
-			myFx.chain(function(){ while(true) alert('doh!'); }); // don't try this at home, kids.
+			myFx.chain(function(){ while(true) alert('doh!'); }); //don't try this at home, kids.
 			myFx.clearChain(); // .. that was a close one ...
 		[/javascript]
 
@@ -127,6 +132,7 @@ var Chain = new Class({
 
 	clearChain: function(){
 		if (this.$chain) this.$chain.empty();
+		return this;
 	}
 
 });
@@ -139,7 +145,7 @@ Class: Events
 
 Syntax:
 	For new classes:
-	>var MyClass = new Class({Implements: Events});
+	>var MyClass = new Class({ Implements: Events });
 
 	For existing classes:
 	>MyClass.implement(new Events);
@@ -240,7 +246,7 @@ var Events = new Class({
 	Arguments:
 		type  - (string) The type of event (e.g. 'onComplete').
 		args  - (mixed, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
-		delay - (integer, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
+		delay - (number, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
 	Returns:
 		(class) This Class instance.
@@ -248,12 +254,12 @@ var Events = new Class({
 	Example:
 		[javascript]
 			var Widget = new Class({
+				Implements: Events,
 				initialize: function(arg1, arg2){
 					...
 					this.fireEvent("onInitialize", [arg1, arg2], 50);
 				}
 			});
-			Widget.implement(Events);
 		[/javascript]
 	*/
 
@@ -285,6 +291,7 @@ var Events = new Class({
 	*/
 
 	removeEvent: function(type, fn){
+		if (!this.$events) return this; 
 		if (this.$events && this.$events[type]){
 			if (!fn.internal) this.$events[type].remove(fn);
 		}
@@ -389,7 +396,7 @@ var Options = new Class({
 		this.options = $merge(this.options, options);
 		if (this.addEvent){
 			for (var option in this.options){
-				if ((/^on[A-Z]/).test(option) && $type(this.options[option] == 'function')) this.addEvent(option, this.options[option]);
+				if ((/^on[A-Z]/).test(option) && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
 			}
 		}
 		return this;

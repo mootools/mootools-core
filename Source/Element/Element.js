@@ -15,37 +15,40 @@ Native: Element
 */
 
 /*
-Method: constructor
-	Creates a new Element of the type passed in.
+Method: constructor 
+ 	Creates a new Element of the type passed in. 
+Syntax:
+	>var myEl = new Element(el[, props]);
 
 Arguments:
-	el - (mixed) The tag name for the Element to be created.  It's also possible to add an Element for reference, in which case it will be extended.
-	props - (object) [optional] The properties to be added to the new Element. Accepts the same keys as <Element.setProperties>, as well as Events and styles.
-	Accepts the same keys as <Element.setProperties>, but also allows events and styles
+	el    - (mixed) The tag name for the Element to be created. It's also possible to add an Element for reference, in which case it will be extended.
+	props - (object, optional) The properties to be applied to the new Element.
 
-Props:
-	The key styles will be used as setStyles, the key events will be used as addEvents. Any other key is used as setProperty.
+	props (continued):
+		Assumes that all keys are properties that the <Element.setProperties receives, there are special keys, however: the 'styles' key whos value is passed to <Element.setStyles> and the 'events' key whos value is passed to <Element.addEvents>.
 
 Example:
-	(start code)
-	new Element('a', {
-		'styles': {
-			'display': 'block',
-			'border': '1px solid black'
-		},
-		'events': {
-			'click': function(){
-				alert('omg u clicked');
+	[javascript]
+		var myAnchor = new Element('a', {
+			'styles': {
+				'display': 'block',
+				'border': '1px solid black'
 			},
-			'mousedown': function(){
-				alert('omg ur gonna click');
-			}
-		},
-		'class': 'myClassSuperClass',
-		'href': 'http://mad4milk.net'
-	});
+			'events': {
+				'click': function(){
+					alert('omg u clicked');
+				},
+				'mousedown': function(){
+					alert('omg ur gonna click');
+				}
+			},
+			'class': 'myClassSuperClass',
+			'href': 'http://mad4milk.net'
+		});
+	[/javascript]
 
-	(end)
+See Also:
+	<$>, <Element.set>
 */
 
 var Element = new Native({

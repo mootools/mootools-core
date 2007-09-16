@@ -142,7 +142,7 @@ Fx.Transitions.extend({
 
 	/*
 	Method: Expo
-		displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut
+		Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
 	Graph:
 		(see Expo.png)
@@ -154,7 +154,7 @@ Fx.Transitions.extend({
 
 	/*
 	Method: Circ
-		displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut
+		Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
 
 	Graph:
 		(see Circ.png)
@@ -164,10 +164,9 @@ Fx.Transitions.extend({
 		return 1 - Math.sin(Math.acos(p));
 	},
 
-
 	/*
 	Method: Sine
-		displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut
+		Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
 	Graph:
 		(see Sine.png)
@@ -179,7 +178,7 @@ Fx.Transitions.extend({
 
 	/*
 	Method: Back
-		makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut
+		Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
 
 	Graph:
 		(see Back.png)
@@ -192,7 +191,7 @@ Fx.Transitions.extend({
 
 	/*
 	Method: Bounce
-		makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut
+		Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
 
 	Graph:
 		(see Bounce.png)

@@ -417,25 +417,6 @@ Array.implement({
 	},
 
 	/*
-	Method: each
-		Same as <Array.forEach>.
-
-	Syntax:
-		>myArray.each(fn[, bind]);
-
-	Arguments:
-		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
-
-	Example:
-		(start code)
-		['apple','banana','lemon'].each(function(item, index){
-			alert(index + " = " + item); //alerts "0 = apple" etc.
-		}, bind); //optional second argument for binding, not used here
-		(end)
-	*/
-
-	/*
 	Method: extend
 		Extends an array with all the items of another.
 

@@ -17,10 +17,11 @@ Extends:
 	<Fx.Scroll>
 
 Syntax:
-	>var mySmoothScroll = new SmoothScroll([options]);
+	>var mySmoothScroll = new SmoothScroll([options[, win]]);
 
 Arguments:
 	options - (object, optional) In addition to all the <Fx.Scroll> options, SmoothScroll has links option incase you had a predefined links collection.
+	win     - (object, optional) The context of the SmoothScroll.
 
 	options (continued):
 		links - (mixed) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
@@ -41,7 +42,7 @@ See Also:
 */
 
 var SmoothScroll = new Class({
-	
+
 	Extends: Fx.Scroll,
 
 	initialize: function(options, win){

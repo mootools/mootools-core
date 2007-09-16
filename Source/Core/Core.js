@@ -31,8 +31,8 @@ Syntax:
 
 Arguments:
 	iterable - (array) The iterable to copy.
-	start    - (integer, optional) The starting index.
-	length   - (integer, optional) The length of the resulting copied array. If not provided, the length of the returned array will be the length of the iterable minus the start value.
+	start    - (number, optional) The starting index.
+	length   - (number, optional) The length of the resulting copied array. If not provided, the length of the returned array will be the length of the iterable minus the start value.
 
 Returns:
 	(array) The new copied array.
@@ -138,7 +138,7 @@ Syntax:
 	>$clear(timer);
 
 Arguments:
-	timer - (integer) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
+	timer - (number) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
 
 Returns:
 	null
@@ -216,7 +216,7 @@ Returns:
 	(object) The extended object.
 
 Examples:
-	Normal extension:
+	Normal Extension:
 	[javascript]
 		var firstObj = {
 			'name': 'John',
@@ -231,7 +231,7 @@ Examples:
 		//firstObj is now: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
 	[/javascript]
 
-	Without the second parameter:
+	Without the Second Parameter:
 	[javascript]
 		var myFunction = function(){ ... };
 		myFunction.extend = $extend;
@@ -325,11 +325,11 @@ Syntax:
 	>var random = $random(min, max);
 
 Arguments:
-	min - (integer) The minimum value (inclusive).
-	max - (integer) The maximum value (inclusive).
+	min - (number) The minimum value (inclusive).
+	max - (number) The maximum value (inclusive).
 
 Returns:
-	(integer) A random integer between min and max.
+	(number) A random number between min and max.
 
 Example:
 	[javascript]
@@ -377,7 +377,7 @@ Syntax:
 	>var time = $time();
 
 Returns:
-	(integer) - Current timestamp.
+	(number) - Current timestamp.
 */
 
 function $time(){
@@ -427,18 +427,18 @@ Arguments:
 	obj - (object) The object to inspect.
 
 Returns:
-	'element'    - (string) If passed object is a DOM element node.
-	'textnode'   - (string) If passed object is a DOM text node.
-	'whitespace' - (string) If passed object is a DOM whitespace node.
-	'arguments'  - (string) If passed object is an arguments object.
-	'array'      - (string) If passed object is an array.
-	'object'     - (string) If passed object is an object.
-	'string'     - (string) If passed object is a string.
-	'number'     - (string) If passed object is a number.
-	'boolean'    - (string) If passed object is a boolean.
-	'function'   - (string) If passed object is a function.
-	'regexp'     - (string) If passed object is a regular expression.
-	'class'      - (string) If passed object is a Class (created with new Class, or the extend of another class).
+	'element'    - (string) If object is a DOM element node.
+	'textnode'   - (string) If object is a DOM text node.
+	'whitespace' - (string) If object is a DOM whitespace node.
+	'arguments'  - (string) If object is an arguments object.
+	'array'      - (string) If object is an array.
+	'object'     - (string) If object is an object.
+	'string'     - (string) If object is a string.
+	'number'     - (string) If object is a number.
+	'boolean'    - (string) If object is a boolean.
+	'function'   - (string) If object is a function.
+	'regexp'     - (string) If object is a regular expression.
+	'class'      - (string) If object is a Class (created with new Class, or the extend of another class).
 	'collection' - (string) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
 	'window'     - (string) If object passed is the window object.
 	'document'   - (string) If passed object is the document object.
@@ -519,9 +519,9 @@ Features:
 	Client.Features.xhr   - (boolean) Browser supports native XMLHTTP object.
 
 Engine:
-	Client.Engine.ie        - (boolean) True if the current browser is internet explorer (any).
-	Client.Engine.ie6       - (boolean) True if the current browser is internet explorer 6.
-	Client.Engine.ie7       - (boolean) True if the current browser is internet explorer 7.
+	Client.Engine.ie        - (boolean) True if the current browser is Internet Explorer (any).
+	Client.Engine.ie6       - (boolean) True if the current browser is Internet Explorer 6.
+	Client.Engine.ie7       - (boolean) True if the current browser is Internet Explorer 7.
 	Client.Engine.gecko     - (boolean) True if the current browser is Mozilla/Gecko.
 	Client.Engine.webkit    - (boolean) True if the current browser is Safari/Konqueror.
 	Client.Engine.webkit419 - (boolean) True if the current browser is Safari2 / webkit till version 419.
@@ -537,7 +537,7 @@ Platform:
 	Client.Platform.name    - (string) The name of the platform.
 
 Note:
-	Engine detection is entirely object-based.
+	Engine detection is entirely feature-based.
 */
 
 var Client = {

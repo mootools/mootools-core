@@ -81,7 +81,7 @@ var Sortables = new Class({
 	Implements: [Events, Options],
 
 	options: {
-		constrain : false,
+		constrain: false,
 		clone: true,
 		opacity: 0.7,
 		handle: false,

@@ -194,7 +194,7 @@ Selectors.Pseudo.nth = {
 };
 
 Selectors.Pseudo.extend({
-	
+
 	/*
 	Selector: even
 		Matches every even child.
@@ -214,7 +214,7 @@ Selectors.Pseudo.extend({
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	/*
 	Selector: odd
 		Matches every odd child.
@@ -234,7 +234,7 @@ Selectors.Pseudo.extend({
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	/*
 	Selector: first
 		Matches the first child.
@@ -254,7 +254,7 @@ Selectors.Pseudo.extend({
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	/*
 	Selector: last
 		Matches the last child.
@@ -274,7 +274,7 @@ Selectors.Pseudo.extend({
 		'xpath': Selectors.Pseudo.nth.xpath,
 		'filter': Selectors.Pseudo.nth.filter
 	},
-	
+
 	/*
 	Selector: only
 		Matches only child of its parent Element.

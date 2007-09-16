@@ -77,7 +77,7 @@ See Also:
 */
 
 var Accordion = new Class({
-	
+
 	Extends: Fx.Elements,
 
 	options: {

@@ -79,7 +79,7 @@ Example:
 */
 
 var Slider = new Class({
-	
+
 	Implements: [Events, Options],
 
 	options: {
@@ -93,8 +93,8 @@ var Slider = new Class({
 		offset: 0
 	},
 
-	initialize: function(el, knob, options){
-		this.element = $(el);
+	initialize: function(element, knob, options){
+		this.element = $(element);
 		this.knob = $(knob);
 		this.setOptions(options);
 		this.previousChange = -1;

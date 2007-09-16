@@ -38,7 +38,7 @@ See Also:
 */
 
 Fx.Style = new Class({
-	
+
 	Extends: Fx,
 
 	initialize: function(element, property, options){

@@ -245,7 +245,7 @@ var XHR = new Class({
 		if (!this.options.async) this.onStateChange();
 		return this;
 	},
-	
+
 	/*
 	Method: request
 		Uses the internal url (passed in <XHR>'s instantiation) to send the passed in data.

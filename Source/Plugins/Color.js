@@ -96,7 +96,7 @@ var Color = new Class({
 
 	mix: function(){
 		var colors = $A(arguments);
-		var alpha = ($type(colors[colors.length - 1]) == 'number') ? colors.pop() : 50;
+		var alpha = ($type(colors.getLast()) == 'number') ? colors.pop() : 50;
 		var rgb = this.copy();
 		colors.each(function(color){
 			color = new Color(color);

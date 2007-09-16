@@ -30,6 +30,7 @@ Arguments:
 		className     - (string: defaults to 'tool') The prefix for your tooltip classNames.
 		offsets       - (object: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
 		fixed         - (boolean: defaults to false) If set to true, the toolTip will not follow the mouse.
+		window        - (object: defaults to window) The context of the Tips elements.
 
 		className (continued):
 			- The whole tooltip will have as classname: tool-tip
@@ -76,7 +77,7 @@ Note:
 */
 
 var Tips = new Class({
-	
+
 	Implements: [Events, Options],
 
 	options: {
