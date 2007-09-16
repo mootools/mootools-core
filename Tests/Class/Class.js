@@ -9,9 +9,7 @@ License:
 Tests.Class = new Test.Suite('Class', {
 
 	empty: function(){
-		this.end(
-			Assert.equals(Class.empty, $empty);	
-		);	
+		this.end(Assert.equals(Class.empty, $empty));	
 	},
 	
 	initialize: function(){
