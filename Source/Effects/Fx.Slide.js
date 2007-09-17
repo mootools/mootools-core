@@ -47,16 +47,11 @@ Fx.Slide = new Class({
 	Extends: Fx,
 
 	options: {
-		mode: 'vertical',
-		wrapper: null
+		mode: 'vertical'
+		/*wrapper: null*/
 	},
 
 	initialize: function(element, options){
-		arguments.callee.parent($(element), options);
-		this.wrapper = $(this.options.wrapper) || new Element('div', {'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
-		this.element.setStyle('margin', 0);
-		this.now = [];
-		this.open = true;
 		this.addEvent('onComplete', function(){
 			this.open = (this.now[0] === 0);
 			if (this.open){
@@ -64,6 +59,11 @@ Fx.Slide = new Class({
 				if (Client.Engine.webkit419) this.element.remove().inject(this.wrapper);
 			}
 		}, true);
+		arguments.callee.parent($(element), options);
+		this.wrapper = $(this.options.wrapper) || new Element('div', {'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
+		this.element.setStyle('margin', 0);
+		this.now = [];
+		this.open = true;
 	},
 
 	setNow: function(){
