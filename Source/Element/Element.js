@@ -107,7 +107,7 @@ var IFrame = new Native({
 			new Document(frame.document);
 			onload.call(frame);
 		};
-		return $extend($extend(iframe, this), props);
+		return $extend(iframe, this).set(props);
 	},
 	
 	generics: false
