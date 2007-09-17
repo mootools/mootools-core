@@ -22,6 +22,51 @@ Tests.Hash = new Test.Suite('Hash', {
 		);
 	},
 
+	hasKey: function(){
+		var hash = new Hash({a:1, b:null, c:false});
+		this.end(
+			Assert.isTrue(hash.contains('a')),
+			Assert.isTrue(hash.contains('b')),
+			Assert.isTrue(hash.contains('c')),
+			Assert.isFalse(hash.contains('d')),
+			Assert.isFalse(hash.contains('each'))
+		);
+	},
+
+	get: function(){
+		var hash = new Hash({a:1, b:false});
+		this.end(
+			Assert.equals(hash.get('a'), 1),
+			Assert.equals(hash.get('b'), false),
+			Assert.equals(hash.get('c'), null),
+			Assert.equals(hash.get('each'), null)
+		);
+	},
+
+	set: function(){
+		var hash = new Hash({a:1});
+		var keys = hash.set('a', 2);
+		var keys = hash.set('b', null);
+		var keys = hash.set('each', null);
+		this.end(
+			Assert.equals(hash.a, 2),
+			Assert.equals(hash.b, null),
+			Assert.isType(hash.each, 'function')
+		);
+	},
+
+	getKeys: function(){
+		var hash = new Hash({a:1, b:2, c:3});
+		var keys = hash.getKeys();
+		this.end(Assert.enumEquals(keys, ['a', 'b', 'c']));
+	},
+
+	getValues: function(){
+		var hash = new Hash({a:1, b:2, c:3});
+		var values = hash.getValues();
+		this.end(Assert.enumEquals(values, [1, 2, 3]));
+	},
+
 	filter: function(){
 		var oldHash = new Hash({a:1, b:2, c:3, d: 'no'});
 		var newHash = oldHash.filter(function(item){

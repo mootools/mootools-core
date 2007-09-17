@@ -87,8 +87,8 @@ var Ajax = new Class({
 	},
 
 	initialize: function(url, options){
-		arguments.callee.parent(url, options);
 		this.addEvent('onSuccess', this.onComplete, true);
+		arguments.callee.parent(url, options);
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
@@ -173,7 +173,7 @@ Examples:
 	[javascript]
 		Hash.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
 	[/javascript]
-	
+
 	Using Hash instance:
 	[javascript]
 		var myHash = new Hash({apple: "red", lemon: "yellow"});
@@ -182,7 +182,7 @@ Examples:
 */
 
 Hash.implement({
-	
+
 	toQueryString: function(){
 		var queryString = [];
 		this.each(function(value, key){
@@ -190,7 +190,7 @@ Hash.implement({
 		});
 		return queryString.join('&');
 	}
-	
+
 });
 
 /*

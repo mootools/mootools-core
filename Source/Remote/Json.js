@@ -45,7 +45,7 @@ var Json = new Hash({
 				var string = [];
 				Hash.each(obj, function(value, key){
 					var json = Json.encode(value);
-					if ($defined(json)) string.push(Json.encode(key) + ':' + json);
+					if (json) string.push(Json.encode(key) + ':' + json);
 				});
 				return '{' + String(string) + '}';
 			case 'number': case 'boolean': return String(obj);

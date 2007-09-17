@@ -230,6 +230,44 @@ Hash.implement({
 	},
 
 	/*
+	Property: getKeys
+		Returns an array containing all the keys, in the same order as the values returned by <Hash.getValues>.
+
+	Syntax:
+		>var keys = myHash.getKeys();
+
+	Returns:
+		(array) An array containing all the keys of the hash.
+	*/
+
+	getKeys: function(){
+		var keys = [];
+		for (var key in this){
+			if (this.hasOwnProperty(key)) keys.push(key);
+		}
+		return keys;
+	},
+
+	/*
+	Property: getValues
+		Returns an array containing all the values, in the same order as the keys returned by <Hash.getKeys>.
+
+	Syntax:
+		>var values = myHash.getValues();
+
+	Returns:
+		(array) An array containing all the values of the hash.
+	*/
+
+	getValues: function(){
+		var values = [];
+		for (var key in this){
+			if (this.hasOwnProperty(key)) values.push(this[key]);
+		}
+		return values;
+	},
+
+	/*
 	Method: set
 		Adds a key-value pair to the hash or replaces a previous value associated with the specified key.
 

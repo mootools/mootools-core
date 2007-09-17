@@ -210,7 +210,10 @@ Tests.Class = new Test.Suite('Class', {
 				this.age = age;
 			}
 		});
-		var Cat = Animal.extend({
+		var Cat = new Class({
+
+			Extends: Animal,
+
 			initialize: function(name, age, coloring){
 				this.coloring = coloring;
 				this.parent(age);
@@ -269,7 +272,7 @@ Tests.Class = new Test.Suite('Class', {
 			Assert.isType(emptyHash.extend, 'function'),
 			Assert.isType(emptyHash.each, 'function'),
 			Assert.isType(emptyHash.remove, 'function'),
-			Assert.isTrue(!$defined(aHash.methodC)),
+			Assert.notDefined(aHash.methodC),
 			eachRes
 		);
 	}

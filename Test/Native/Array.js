@@ -9,7 +9,7 @@ License:
 Tests.Array = new Test.Suite('Array', {
 
 	forEach: function(){
-		var arr = [1, 2, 3, false, null, 0];
+		var oldArr = [1, 2, 3, false, null, 0];
 		var newArr = [];
 		oldArr.each(function(item, i){
 			newArr[i] = item;
@@ -29,7 +29,7 @@ Tests.Array = new Test.Suite('Array', {
 		var arr = (function() {
 			return arguments;
 		})(1, 2, 3, false, null, 0);
-		arr = Array.map(arr, function(item){
+		arr = Array.filter(arr, function(item){
 			return ($type(item) == 'number');
 		});
 		this.end(Assert.enumEquals(arr, [1,2,3,0]));
