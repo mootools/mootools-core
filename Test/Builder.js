@@ -35,7 +35,7 @@ var Builder = {
 		tests: {
 			"Core"      : ["Core"],
 			"Class"     : ["Class", "Class.Extras"],
-			"Native"    : ["Array", "String", "Function", "Number"]
+			"Native"    : ["Array", "String", "Function", "Number", "Hash"]
 		}
 	}
 

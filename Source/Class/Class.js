@@ -1,6 +1,6 @@
 /*
 Script: Class.js
-	Contains the Class and Abstract implementations.
+	Contains the Class implementations.
 
 License:
 	MIT-style license.
@@ -90,17 +90,17 @@ var Class = function(properties){
 		if (this.options && this.options.initialize) this.options.initialize.call(this);
 		return self;
 	};
-	
+
 	if (properties.Implements){
 		$extend(properties, Class.Implements.run(properties.Implements));
 		delete properties.Implements;
 	}
-	
+
 	if (properties.Extends){
 		properties = Class.Extends(properties.Extends, properties);
 		delete properties.Extends;
 	}
-	
+
 	$extend(klass, this);
 	klass.prototype = properties;
 	klass.prototype.constructor = klass;
@@ -113,7 +113,7 @@ Class.empty = $empty;
 Class.prototype = {
 
 	constructor: Class,
-	
+
 	/*
 	Method: implement
 		Implements the passed in properties into the base Class prototypes, altering the base Class, unlike <Class.extend>.

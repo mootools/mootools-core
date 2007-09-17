@@ -12,9 +12,9 @@ Native: Hash
 */
 
 var Hash = new Native({
-	
+
 	name: 'Hash',
-	
+
 	initialize: function(object){
 		if (object){
 			if ($type(object) == 'hash') return object;
@@ -44,11 +44,12 @@ Hash.implement({
 
 		fn (continued):
 			Signature:
-				>fn(value, key)
+				>fn(value, key, hash)
 
 			Arguments:
 				value - (mixed) The current value in the hash.
 				key   - (string) The current value's key in the hash.
+				hash  - (hash) The actual hash.
 
 	Example:
 		[javascript]
@@ -58,13 +59,13 @@ Hash.implement({
 			}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
 		[/javascript]
 	*/
-	
+
 	each: function(fn, bind){
 		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind || this, this[key], key);
+			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
 		}
 	},
-	
+
 	/*
 	Method: contains
 		Tests for the presence of a specified key in the Hash.
@@ -88,11 +89,11 @@ Hash.implement({
 	Notes:
 		Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
 	*/
-	
+
 	contains: function(key){
 		return this.hasOwnProperty(key);
 	},
-	
+
 	/*
 	Method: extend
 		Extends this Hash with the key-value pairs from the object passed in.
@@ -128,7 +129,7 @@ Hash.implement({
 		}, this);
 		return this;
 	},
-	
+
 	/*
 	Method: merge
 		Merges this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.
@@ -157,14 +158,14 @@ Hash.implement({
 			//hash now holds an object containing: { 'name': 'John', 'lastName': 'Doe', 'age': '20', 'sex': 'male' };
 		[/javascript]
 	*/
-	
+
 	merge: function(properties){
 		Hash.each(properties, function(value, key){
 			this.include(key, value);
 		}, this);
 		return this;
 	},
-	
+
 	/*
 	Method: remove
 		Removes the specified key from the Hash.
@@ -188,12 +189,12 @@ Hash.implement({
 			//hash now holds an object containing: { 'name': 'John' };
 		[/javascript]
 	*/
-	
+
 	remove: function(key){
 		if (this.contains(key)) delete this[key];
 		return this;
 	},
-	
+
 	/*
 	Method: get
 		Retrieves a value from the hash, or if no key is specified, returns a clean copy of the object that this Hash holds.
@@ -218,7 +219,7 @@ Hash.implement({
 			hash.get(); //returns { 'name': 'John', 'lastName': 'Doe' }
 		[/javascript]
 	*/
-	
+
 	get: function(key){
 		if (key) return (this.contains(key)) ? this[key] : null;
 		var clean = {};
@@ -227,7 +228,7 @@ Hash.implement({
 		});
 		return clean;
 	},
-	
+
 	/*
 	Method: set
 		Adds a key-value pair to the hash or replaces a previous value associated with the specified key.
@@ -251,12 +252,12 @@ Hash.implement({
 			hash.set('name', 'Michelle'); //hash.name is now 'Michelle'
 		[/javascript]
 	*/
-	
+
 	set: function(key, value){
 		if (!this[key] || this.contains(key)) this[key] = value;
 		return this;
 	},
-	
+
 	/*
 	Method: empty
 		Empties the hash.
@@ -274,13 +275,13 @@ Hash.implement({
 			//hash now holds an empty object: {}
 		[/javascript]
 	*/
-	
+
 	empty: function(){
 		this.each(function(value, key){
 			delete this[key];
 		}, this);
 	},
-	
+
 	/*
 	Method: include
 		Includes the specified key-value pair in the Hash if the key doesn't already exist.
@@ -305,12 +306,12 @@ Hash.implement({
 			hash.include('age', 25); //hash.age is now 25
 		[/javascript]
 	*/
-	
+
 	include: function(key, value){
 		if (!this[key]) this[key] = value;
 		return this;
 	},
-	
+
 	/*
 	Method: map
 		Creates a new map with the results of calling a provided function on every value in the map.
@@ -324,11 +325,12 @@ Hash.implement({
 
 		fn (continued):
 			Signature:
-				>fn(value, key)
+				>fn(value, key, hash)
 
 			Arguments:
 				value - (mixed) The current value in the hash.
 				key   - (string) The current value's key in the hash.
+				hash  - (hash) The actual hash.
 
 	Returns:
 		(array) The new mapped hash.
@@ -340,15 +342,15 @@ Hash.implement({
 			}); //timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
 		[/javascript]
 	*/
-	
+
 	map: function(fn, bind){
 		var results = new Hash;
-		this.each(function(value, key){
-			results.set(key, fn.call(bind, value, key, this));
-		}, this);
+		for (var key in this){
+			if (this.hasOwnProperty(key)) results.set(key, fn.call(bind, this[key], key, this));
+		}
 		return results;
 	},
-	
+
 	/*
 	Method: filter
 		Creates a new Hash with all of the elements of the Hash for which the provided filtering function returns true.
@@ -362,11 +364,12 @@ Hash.implement({
 
 		fn (continued):
 			Signature:
-				>fn(value, key)
+				>fn(value, key, hash)
 
 			Arguments:
 				value - (mixed) The current value in the hash.
 				key   - (string) The current value's key in the hash.
+				hash  - (hash) The actual hash.
 
 	Returns:
 		(hash) The new filtered hash.
@@ -378,15 +381,15 @@ Hash.implement({
 		}); //biggerThanTwenty now holds an object containing: {c: 30}
 		[/javascript]
 	*/
-	
+
 	filter: function(fn, bind){
 		var results = new Hash;
-		this.each(function(value, key){
-			if (fn.call(bind, value, key, this)) results.set(key, value);
-		}, this);
+		for (var key in this){
+			if (this.hasOwnProperty(key) && fn.call(bind, this[key], key, this)) results.set(key, this[key]);
+		}
 		return results;
 	},
-	
+
 	/*
 	Method: every
 		Returns true if every value in the object satisfies the provided testing function.
@@ -400,11 +403,12 @@ Hash.implement({
 
 		fn (continued):
 			Signature:
-				>fn(value, key)
+				>fn(value, key, hash)
 
 			Arguments:
 				value - (mixed) The current value in the hash.
 				key   - (string) The current value's key in the hash.
+				hash  - (hash) The actual hash.
 
 	Returns:
 		(boolean) If every value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
@@ -416,15 +420,14 @@ Hash.implement({
 			}); //areAllBigEnough = false
 		[/javascript]
 	*/
-	
+
 	every: function(fn, bind){
-		var returns = true;
-		this.each(function(value, key){
-			if (returns && !fn.call(bind, value, key, this)) returns = false;
-		}, this);
-		return returns;
+		for (var key in this){
+			if (this.hasOwnProperty(key) && !fn.call(bind, this[key], key)) return false;
+		}
+		return true;
 	},
-	
+
 	/*
 	Method: some
 		Returns true if at least one value in the object satisfies the provided testing function.
@@ -438,11 +441,12 @@ Hash.implement({
 
 		fn (continued):
 			Signature:
-				>fn(value, key)
+				>fn(value, key, hash)
 
 			Arguments:
 				value - (mixed) The current value in the hash.
 				key   - (string) The current value's key in the hash.
+				hash  - (hash) The actual hash.
 
 	Returns:
 		(boolean) If any value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
@@ -454,13 +458,12 @@ Hash.implement({
 			}); //isAnyBigEnough = true
 		[/javascript]
 	*/
-	
+
 	some: function(fn, bind){
-		var returns = false;
-		this.each(function(value, key){
-			if (!returns && fn.call(bind, value, key, this)) returns = true;
-		}, this);
-		return returns;
+		for (var key in this){
+			if (this.hasOwnProperty(key) && fn.call(bind, this[key], key)) return true;
+		}
+		return false;
 	}
 
 });

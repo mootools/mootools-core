@@ -28,7 +28,18 @@ Tests.Hash = new Test.Suite('Hash', {
 			return ($type(item) == 'number');
 		});
 		this.end(
-			newHash.d == undefined,
+			Assert.isTrue(newHash.d === undefined),
+			Assert.equals(newHash.a, 1)
+		);
+	},
+
+	filterGeneric: function(){
+		var oldHash = {a:1, b:2, c:3, d: 'no'};
+		var newHash = Hash.filter(oldHash, function(item){
+			return ($type(item) == 'number');
+		});
+		this.end(
+			Assert.isTrue(newHash.d === undefined),
 			Assert.equals(newHash.a, 1)
 		);
 	},
@@ -36,6 +47,18 @@ Tests.Hash = new Test.Suite('Hash', {
 	map: function(){
 		var oldHash = new Hash({a:1, b:2, c:3});
 		var newHash = oldHash.map(function(value){
+			return (value + 1);
+		});
+		this.end(
+			Assert.equals(newHash.a, 2),
+			Assert.equals(newHash.b, 3),
+			Assert.equals(newHash.c, 4)
+		);
+	},
+
+	mapGeneric: function(){
+		var oldHash = {a:1, b:2, c:3};
+		var newHash = Hash.map(oldHash, function(value){
 			return (value + 1);
 		});
 		this.end(

@@ -42,11 +42,11 @@ Tests.Class = new Test.Suite('Class', {
 
 		var Aux = new Class({
 			radio: function(){
-				this.listening = true;	
+				this.listening = true;
 			},
 
 			wipers: function(){
-				this.wiping = true;	
+				this.wiping = true;
 			}
 		});
 
@@ -110,14 +110,14 @@ Tests.Class = new Test.Suite('Class', {
 			},
 
 			radio: function(){
-				return 'XM';	
+				return 'XM';
 			}
 		});
 
 		var myCar = new Car();
 		var myMercedes = new Mercedes();
 
-		this.end(			
+		this.end(
 			Assert.equals(myCar.move(), 'vroooom'),
 			Assert.equals(myCar.radio(), 'FM'),
 			Assert.equals(myMercedes.move(), 'vroooom'),
@@ -131,7 +131,7 @@ Tests.Class = new Test.Suite('Class', {
 				return 'method';
 			}
 		});
-		
+
 		var ClassB = new Class({
 			trueMethod: function(){
 				return true;
@@ -140,10 +140,10 @@ Tests.Class = new Test.Suite('Class', {
 				return false;
 			}
 		});
-		
+
 		ClassA.implement(new ClassB);
 		var myClass = new ClassA();
-		
+
 		this.end(
 			Assert.isTrue(myClass.trueMethod()),
 			Assert.isFalse(myClass.falseMethod()),
@@ -153,7 +153,7 @@ Tests.Class = new Test.Suite('Class', {
 
 	genericMerge: function(){
 		var fn = function(){
-			return 'parent fn';	
+			return 'parent fn';
 		};
 
 		var mergeFn = Class.merge(fn, function(){
@@ -175,16 +175,16 @@ Tests.Class = new Test.Suite('Class', {
 	genericExtends: function(){
 		var Tools = new Class({
 			methodA: function(){
-				return this.parent();	
+				return this.parent();
 			},
 			methodB: function(){
-				return 'methodB';	
+				return 'methodB';
 			}
 		});
 
 		var myClass = new Class({
 			initialize: function(name) {
-				this.name = name;	
+				this.name = name;
 			},
 
 			methodA: function(){
@@ -192,7 +192,7 @@ Tests.Class = new Test.Suite('Class', {
 			},
 
 			methodB: function(){
-				return 'parent methodB';	
+				return 'parent methodB';
 			}
 		});
 
@@ -201,8 +201,8 @@ Tests.Class = new Test.Suite('Class', {
 		this.end(
 			Assert.equals(res.methodA(), 'parent methodA'),
 			Assert.equals(res.methodB(), 'methodB')
-		);		
-	},	
+		);
+	},
 
 	proto: function(){
 		var Animal = new Class({
@@ -211,12 +211,13 @@ Tests.Class = new Test.Suite('Class', {
 			}
 		});
 		var Cat = Animal.extend({
-			initialize: function(name, age){
+			initialize: function(name, age, coloring){
+				this.coloring = coloring;
 				this.parent(age);
 				this.name = name;
 			}
 		});
-		var myCat = new Cat('Micia', 20);
+		var myCat = new Cat('Micia', 20, 'tortoiseshell');
 
 		var Mammal = new Class({
 			initialize: function(family){
@@ -233,7 +234,11 @@ Tests.Class = new Test.Suite('Class', {
 
 		this.end(
 			Assert.equals(Animal.constructor, Class),
+			Assert.equals(myCat.constructor, Cat),
+			Assert.equals(myCat.coloring, 'tortoiseshell'),
 			Assert.equals(myCat.age, 20),
+			Assert.equals(myCat.name, 'Micia'),
+			Assert.equals(myLion.family, 'Felidae'),
 			Assert.isTrue(myLion.roaring)
 		);
 	},
@@ -242,7 +247,7 @@ Tests.Class = new Test.Suite('Class', {
 		var emptyHash = new Hash();
 		var aHash = new Hash({
 			methodA: function(){
-				return true;	
+				return true;
 			},
 
 			methodB: function(){

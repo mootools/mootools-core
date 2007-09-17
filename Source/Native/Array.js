@@ -32,11 +32,12 @@ Array.implement({
 
 		fn (continued):
 			Signature:
-				>fn(item, index)
+				>fn(item, index, array)
 
 			Arguments:
-				item  - (mixed) The current item in the array.
-				index - (number) The current item's index in the array.
+				item   - (mixed) The current item in the array.
+				index  - (number) The current item's index in the array.
+				array  - (array) The actual array.
 
 	Returns:
 		(boolean) If every element in the array satisfies the provided testing function, returns true. Otherwise, returns false.
@@ -74,11 +75,12 @@ Array.implement({
 
 		fn (continued):
 			Signature:
-				>fn(item, index)
+				>fn(item, index, array)
 
 			Arguments:
-				item  - (mixed) The current item in the array.
-				index - (number) The current item's index in the array.
+				item   - (mixed) The current item in the array.
+				index  - (number) The current item's index in the array.
+				array  - (array) The actual array.
 
 	Returns:
 		(array) The new filtered array.
@@ -117,11 +119,12 @@ Array.implement({
 
 		fn (continued):
 			Signature:
-				>fn(item, index)
+				>fn(item, index, array)
 
 			Arguments:
-				item  - (mixed) The current item in the array.
-				index - (number) The current item's index in the array.
+				item   - (mixed) The current item in the array.
+				index  - (number) The current item's index in the array.
+				array  - (array) The actual array.
 
 	Example:
 		[javascript]
@@ -187,11 +190,12 @@ Array.implement({
 
 		fn (continued):
 			Signature:
-				>fn(item, index)
+				>fn(item, index, array)
 
 			Arguments:
-				item  - (mixed) The current item in the array.
-				index - (number) The current item's index in the array.
+				item   - (mixed) The current item in the array.
+				index  - (number) The current item's index in the array.
+				array  - (array) The actual array.
 
 	Returns:
 		(array) The new mapped array.
@@ -231,11 +235,12 @@ Array.implement({
 
 		fn (continued):
 			Signature:
-				>fn(item, index)
+				>fn(item, index, array)
 
 			Arguments:
-				item  - (mixed) The current item in the array.
-				index - (number) The current item's index in the array.
+				item   - (mixed) The current item in the array.
+				index  - (number) The current item's index in the array.
+				array  - (array) The actual array.
 
 	Example:
 		[javascript]
@@ -595,11 +600,12 @@ Arguments:
 
 	fn (continued):
 		Signature:
-			>fn(item, index)
+			>fn(item, index, array)
 
 		Arguments:
-			item  - (mixed) The current item in the array.
-			index - (number) The current item's index in the array.
+			item   - (mixed) The current item in the array.
+			index  - (number) The current item's index in the array.
+			array  - (array) The actual array.
 
 Example:
 	[javascript]
@@ -629,11 +635,12 @@ Arguments:
 
 	fn (continued):
 		Signature:
-			>fn(item, index)
+			>fn(item, index, object)
 
 		Arguments:
-			item  - (mixed) The current item in the array.
-			index - (number) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
+			item   - (mixed) The current item in the array.
+			index  - (number) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
+			object - (mixed) The actual array/object.
 
 Examples:
 	Array example:

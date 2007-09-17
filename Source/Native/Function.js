@@ -234,7 +234,7 @@ Function.implement({
 	periodical: function(interval, bind, args){
 		return this.create({'periodical': interval, 'bind': bind, 'arguments': args})();
 	},
-	
+
 	/*
 	Method: run
 		Runs the Function with specified arguments and binding. Kinda like .apply but reversed and with support for single argument.
@@ -245,10 +245,10 @@ Function.implement({
 	Arguments:
 		args - (mixed) An argument, or array of arguments to run the function with.
 		bind - (object, optional) The object that the "this" of the function will refer to.
-		
+
 	Returns:
 		(mixed) This Function's return.
-		
+
 	Examples:
 		Simple run:
 		[javascript]
@@ -258,7 +258,7 @@ Function.implement({
 			var myArgs = [1,2,3];
 			myFn.run(args); //returns 6
 		[/javascript]
-		
+
 		Run with binding:
 		[javascript]
 			var myFn = function(a, b, c){
@@ -268,9 +268,9 @@ Function.implement({
 			myFn.run(args, 6); //returns 12
 		[/javascript]
 	*/
-	
+
 	run: function(args, bind){
-		return this.apply(bind || this, $splat(args));
+		return this.apply(bind, $splat(args));
 	}
 
 });

@@ -10,7 +10,7 @@ var Test = {}, Tests = {}, Fixtures = {};
 
 /*
 Object: Test.Output
-	Test Ouput methods. Can be overridden 
+	Test Ouput methods. Can be overridden
 */
 
 Test.Output = {
@@ -210,15 +210,15 @@ var Assert = {
 		return (a !== false) ? Test.Output.error('Object "' + a + '" is not false.') : true;
 	},
 
-	isType: function(a, type){ 
+	isType: function(a, type){
 		var aType = $type(a);
 		return (aType != type) ? Test.Output.error('Expecting type of "' + a + '" to be "' + type + '" but was "' + b + '" instead.') : true;
 	},
-	
+
 	isDefined: function(a){
 		return (!$defined(a)) ? Test.Output.error('Object is not defined') : true;
 	},
-	
+
 	notDefined: function(a){
 		return ($defined(a)) ? Test.Output.error('Expected Object not to be defined, but Object is defined as "' + a + '".') : true;
 	},
@@ -232,7 +232,7 @@ var Assert = {
 	enumEquals: function(a, b){
 		var isEqual = (a.length == b.length);
 		for (var i = 0, j = a.length; i < j; i++) {
-			if (a[i] != b[i]) isEqual = false;
+			if (a[i] !== b[i]) isEqual = false;
 		}
 		return (!isEqual) ? Test.Output.error('Enumerable ["' + a + '"] is different than Enumerable ["' + b + '"].') : true;
 	}

@@ -9,32 +9,52 @@ License:
 Tests.Array = new Test.Suite('Array', {
 
 	forEach: function(){
-		var oldArr = [1,2,3,false,null,0];
+		var arr = [1, 2, 3, false, null, 0];
 		var newArr = [];
 		oldArr.each(function(item, i){
 			newArr[i] = item;
 		});
-		this.end(Assert.stringEquals(oldArr, newArr));
+		this.end(Assert.enumEquals(oldArr, newArr));
 	},
 
 	filter: function(){
-		var arr = [1,2,3,false,null,0];
+		var arr = [1, 2, 3, false, null, 0];
 		arr = arr.filter(function(item){
 			return ($type(item) == 'number');
 		});
-		this.end(Assert.stringEquals(arr, [1,2,3,0]));
+		this.end(Assert.enumEquals(arr, [1,2,3,0]));
+	},
+
+	filterGeneric: function(){
+		var arr = (function() {
+			return arguments;
+		})(1, 2, 3, false, null, 0);
+		arr = Array.map(arr, function(item){
+			return ($type(item) == 'number');
+		});
+		this.end(Assert.enumEquals(arr, [1,2,3,0]));
 	},
 
 	map: function(){
-		var arr = [1,2,3,0];
+		var arr = [1, 2, 3, 0];
 		arr = arr.map(function(item){
 			return (item + 1);
 		});
-		this.end(Assert.stringEquals(arr, [2,3,4,1]));
+		this.end(Assert.enumEquals(arr, [2,3,4,1]));
+	},
+
+	mapGeneric: function(){
+		var arr = (function() {
+			return arguments;
+		})(1, 2, 3, 0);
+		arr = Array.map(arr, function(item){
+			return (item + 1);
+		});
+		this.end(Assert.enumEquals(arr, [2,3,4,1]));
 	},
 
 	every: function(){
-		var arr1 = [1,2,3,0];
+		var arr1 = [1, 2, 3, 0];
 		var every1 = arr1.every(function(item){
 			return ($type(item) == 'number');
 		});
