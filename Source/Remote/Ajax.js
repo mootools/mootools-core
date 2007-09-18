@@ -142,7 +142,7 @@ var Ajax = new Class({
 		data = data || this.options.data;
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
-			caase 'hash': case 'object': data = Hash.toQueryString(data);
+			case 'hash': case 'object': data = Hash.toQueryString(data);
 		}
 		if (this._method) data = (data) ? this._method + '&' + data : this._method;
 		return arguments.callee.parent(data);
