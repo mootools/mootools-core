@@ -20,7 +20,7 @@ Test.Output = {
 	},
 
 	groupEnd: function(name){
-		return console.groupEnd();
+		return console.groupEnd(name);
 	},
 
 	info: function(data){
