@@ -242,9 +242,9 @@ Hash.implement({
 
 	getKeys: function(){
 		var keys = [];
-		for (var key in this){
-			if (this.hasOwnProperty(key)) keys.push(key);
-		}
+		Hash.each(this, function(value, key){
+			keys.push(key);
+		});
 		return keys;
 	},
 
@@ -261,9 +261,9 @@ Hash.implement({
 
 	getValues: function(){
 		var values = [];
-		for (var key in this){
-			if (this.hasOwnProperty(key)) values.push(this[key]);
-		}
+		Hash.each(this, function(value, key){
+			values.push(value);
+		});
 		return values;
 	},
 
@@ -315,7 +315,7 @@ Hash.implement({
 	*/
 
 	empty: function(){
-		this.each(function(value, key){
+		Hash.each(this, function(value, key){
 			delete this[key];
 		}, this);
 	},
@@ -383,9 +383,9 @@ Hash.implement({
 
 	map: function(fn, bind){
 		var results = new Hash;
-		for (var key in this){
-			if (this.hasOwnProperty(key)) results.set(key, fn.call(bind, this[key], key, this));
-		}
+		Hash.each(this, function(value, key){
+			results.set(key, fn.call(bind, value, key, this));
+		}, this);
 		return results;
 	},
 
@@ -422,9 +422,9 @@ Hash.implement({
 
 	filter: function(fn, bind){
 		var results = new Hash;
-		for (var key in this){
-			if (this.hasOwnProperty(key) && fn.call(bind, this[key], key, this)) results.set(key, this[key]);
-		}
+		Hash.each(this, function(value, key){
+			if (fn.call(bind, value, key, this)) results.set(key, value);
+		}, this);
 		return results;
 	},
 

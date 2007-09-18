@@ -185,7 +185,7 @@ Hash.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		this.each(function(value, key){
+		Hash.each(this, function(value, key){
 			queryString.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
 		});
 		return queryString.join('&');
