@@ -120,7 +120,7 @@ var Ajax = new Class({
 		>myAjax.request([data]);
 
 	Arguments:
-		data - (mixed, optional: defaults to options.data) A String, Object (used in <Object.toQueryString>), or an Element with input elements (used in <Element.toQueryString>) which represents the data to request.
+		data - (mixed, optional: defaults to options.data) A String, Object (used in <Hash.toQueryString>), or an Element with input elements (used in <Element.toQueryString>) which represents the data to request.
 
 	Returns:
 		(class) This Ajax instance.
@@ -142,7 +142,7 @@ var Ajax = new Class({
 		data = data || this.options.data;
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
-			case 'object': data = Object.toQueryString(data);
+			caase 'hash': case 'object': data = Hash.toQueryString(data);
 		}
 		if (this._method) data = (data) ? this._method + '&' + data : this._method;
 		return arguments.callee.parent(data);

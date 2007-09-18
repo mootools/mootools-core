@@ -89,7 +89,7 @@ var Swiff = function(movie, options){
 		Swiff.callBacks[instance][prop] = options.callBacks[prop];
 		vars[prop] = 'Swiff.callBacks.' + instance + '.' + prop;
 	}
-	if ($type(vars) == 'object') vars = Object.toQueryString(vars);
+	if ($type(vars) == 'object') vars = Hash.toQueryString(vars);
 	if (vars) params.FlashVars = (params.FlashVars) ? (params.FlashVars + '&' + vars) : vars;
 
 	if (Client.Engine.ie){
