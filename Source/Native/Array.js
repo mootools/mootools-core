@@ -394,34 +394,6 @@ Array.implement({
 	},
 
 	/*
-	Method: copy
-		Returns a copy of the array.
-
-	Syntax:
-		>var copiedArray = myArray.copy([start[, length]]);
-
-	Arguments:
-		start  - (number, optional: defaults to 0) The index from which the copy should be started. If a negative number is provided, the offset is taken from the end of the array.
-		length - (number, optional: defaults to array.length - start) The number of elements to copy.
-
-	Returns:
-		(array) The new copied array.
-
-	Example:
-		[javascript]
-			var letters = ["a","b","c"];
-			var copy = letters.copy(); //copy = ["a", "b", "c"]
-		[/javascript]
-
-	See Also:
-		<$A>
-	*/
-
-	copy: function(start, length){
-		return $A(this, start, length);
-	},
-
-	/*
 	Method: extend
 		Extends an array with all the items of another.
 

@@ -97,7 +97,7 @@ var Color = new Class({
 	mix: function(){
 		var colors = $A(arguments);
 		var alpha = ($type(colors.getLast()) == 'number') ? colors.pop() : 50;
-		var rgb = this.copy();
+		var rgb = this.slice();
 		colors.each(function(color){
 			color = new Color(color);
 			for (var i = 0; i < 3; i++) rgb[i] = Math.round((rgb[i] / 100 * (100 - alpha)) + (color[i] / 100 * alpha));

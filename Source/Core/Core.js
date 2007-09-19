@@ -24,15 +24,13 @@ var MooTools = {
 
 /*
 Function: $A
-	Creates a copy of an Array, optionally from only a specific range. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
+	Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
 
 Syntax:
-	>var copiedArray = $A(iterable[, start[, length]]);
+	>var copiedArray = $A(iterable);
 
 Arguments:
 	iterable - (array) The iterable to copy.
-	start    - (number, optional) The starting index.
-	length   - (number, optional) The length of the resulting copied array. If not provided, the length of the returned array will be the length of the iterable minus the start value.
 
 Returns:
 	(array) The new copied array.
@@ -51,18 +49,16 @@ Examples:
 	[javascript]
 		var anArray = [0, 1, 2, 3, 4];
 		var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
-		var slicedArray1 = $A(anArray, 2, 3); //returns [2, 3, 4]
-		var slicedArray2 = $A(anArray, -1); //returns [4]
 	[/javascript]
 */
 
-function $A(iterable, start, length){
-	start = start || 0;
-	if (start < 0) start = iterable.length + start;
-	length = length || (iterable.length - start);
-	var array = [];
-	for (var i = 0; i < length; i++) array[i] = iterable[start++];
-	return array;
+function $A(iterable){
+	if (Client.Engine.ie && $type(iterable) == 'collection'){
+		var array = [];
+		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+		return array;
+	}
+	return Array.prototype.slice.call(iterable);
 };
 
 /*
@@ -380,7 +376,7 @@ Returns:
 	(number) - Current timestamp.
 */
 
-function $time(){
+var $time = Date.now || function(){
 	return new Date().getTime();
 };
 
@@ -489,9 +485,8 @@ var Native = function(options){
 
 Native.generic = function(object, property){
 	return function(){
-		var args = arguments;
-		var bind = Array.prototype.shift.call(args);
-		return object.prototype[property].apply(bind, args);
+		var args = Array.prototype.slice.call(arguments);
+		return object.prototype[property].apply(args.shift(), args);
 	};
 };
 
