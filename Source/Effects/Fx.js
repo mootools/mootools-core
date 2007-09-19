@@ -158,7 +158,6 @@ var Fx = new Class({
 	set: function(to){
 		this.now = to;
 		this.increase();
-		this.fireEvent('onComplete', this.element);
 		return this;
 	},
 
