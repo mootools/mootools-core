@@ -1502,7 +1502,6 @@ function customFunction(){
 	function toggler(h4){
 		h4.onclick = function(){
 			var div = h4.parentNode.getElementsByTagName('div')[0];
-			console.log(h4.parentNode);
 			if (!div || div.parentNode.className != 'exception') return false;
 			div.style.display = (div.style.display == 'block') ? 'none' : 'block';
 			return false;
