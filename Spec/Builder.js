@@ -1,32 +1,52 @@
 var Builder = {
-
-	include: function(path){
-		document.write('\n\t<script type="text/javascript" src="' + path + '.js"></script>');
+	
+	includeType: function(type){
+		for (var folder in this.scripts[type]) this.includeFolder(type, folder);
 	},
 	
-	includeSpecFolder: function(folder){
-		var scripts = this.scripts.spec[folder];
-		for (var i = 0, l = scripts.length; i < l; i++) this.include(this.paths.spec + folder + '/' + scripts[i]);
+	includeFolder: function(type, folder){
+		var scripts = this.scripts[type][folder];
+		for (var i = 0, l = scripts.length; i < l; i++) this.includeFile(type, folder, scripts[i]);
 	},
-
-	build: function(build){
-		var path = this.paths[build];
-		var scripts = this.scripts[build];
-		for (var folder in scripts){
-			for (var i = 0, l = scripts[folder].length; i < l; i++) this.include(path + folder + '/' + scripts[folder][i]);
+	
+	includeFile: function(type, folder, file){
+		folder = folder || this.getFolder(type, file);
+		if (!folder) return false;
+		this.included[type][folder] = this.included[type][folder] || [];
+		var files = this.included[type][folder];
+		for (var i = 0; i < files.length; i++){
+			if (files[i] == file) return false;
 		}
+		this.included[type][folder].push(file);
+		return document.write('\n\t<script type="text/javascript" src="' + this.paths[type] + '/' + folder + '/' + file + '.js"></script>');
 	},
-
+	
+	getFolder: function(type, file){
+		var scripts = this.scripts[type];
+		for (var folder in scripts){
+			for (var i = 0; i < scripts[folder].length; i++){
+				var script = scripts[folder][i];
+				if (script == file) return folder;
+			}
+		}
+		return false;
+	},
+	
 	paths: {
-		source: '../Source/',
-		spec: '../Spec/'
+		source: '../Source',
+		spec: '../Spec'
+	},
+	
+	included: {
+		source: {},
+		spec: {}
 	},
 
 	scripts: {
 		source: {
 			"Core"      : ["Core"],
-			"Class"     : ["Class", "Class.Extras"],
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
+			"Class"     : ["Class", "Class.Extras"],
 			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form", "Element.Visibility"],
 			"Selectors" : ["Selectors", "Selectors.Pseudo", "Selectors.Pseudo.Children"],
 			"Window"    : ["Window.DomReady", "Window.Size"],
@@ -37,7 +57,9 @@ var Builder = {
 		},
 
 		spec: {
-			"Core"      : ["Core"]
+			"Core"      : ["Core"],
+			"Native"    : ["Array"],
+			"Class"     : []
 		}
 	},
 	
@@ -51,14 +73,17 @@ var Builder = {
 		return obj;
 	},
 	
-	includeRequest: function(){
+	includeRequest: function(type){
 		var req = this.getRequest();
-		if (!req.specs) return;
-		var specs = req.specs.split('+');
-		for (var i = 0, l = specs.length; i < l; i++) this.includeSpecFolder(specs[i]);
+		if (!req.files && !req.folders) return false;
+		var files = (req.files) ? req.files.split('+') : [];
+		var folders = (req.folders) ? req.folders.split('+') : [];
+		for (var j = 0; j < files.length; j++) this.includeFile(type, null, files[j]);
+		for (var i = 0; i < folders.length; i++) this.includeFolder(type, folders[i]);
+		return true;
 	}
 
 };
 
-Builder.build('source');
-Builder.includeRequest();
+Builder.includeType('source');
+if (!Builder.includeRequest('spec')) Builder.includeType('spec');

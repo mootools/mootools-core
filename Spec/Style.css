@@ -60,23 +60,6 @@ a:hover, a:active {
 	color: #D2E0E6;
 }
 
-/*a#runner:link,  a#runner:visited {
-	margin: 6px 10px 0 20px;
-	font-size: 13px;
-	font-weight: bold;
-	float: left;
-	background: #eee;
-	padding: 1px 7px;
-	text-decoration: none;
-	color: #528CE0;
-}
-
-a.disabled:link, a.disabled:visited, a.disabled:hover, a.disabled:active {
-	cursor: default !important;
-	color: #D0C8C8 !important;
-	background: #8A7575 !important;
-}*/
-
 #title ul li {
 	font-weight: bold;
 	font-size: 12px;
