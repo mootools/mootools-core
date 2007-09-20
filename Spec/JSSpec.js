@@ -442,12 +442,12 @@ JSSpec.Logger = function(){
 
 JSSpec.Logger.prototype.onRunnerStart = function(){
 	this.startedAt = new Date();
-	var container = document.getElementById('jsspec_container');
+	var container = document.getElementById('container');
 	if(container){
 		container.innerHTML = "";
 	} else {
 		container = document.createElement("DIV");
-		container.id = "jsspec_container";
+		container.id = "container";
 		document.body.appendChild(container);
 	}
 	
@@ -468,6 +468,7 @@ JSSpec.Logger.prototype.onRunnerStart = function(){
 	var list = document.createElement("DIV");
 	list.id = "list";
 	list.innerHTML = [
+		'<div id="list-wrapper">',
 		'<h2 id="runner">Run All Examples</h2>',
 		'<h2>List</h2>',
 		'<ul class="specs">',
@@ -480,13 +481,16 @@ JSSpec.Logger.prototype.onRunnerStart = function(){
 			}
 			return sb.join("");
 		}(),
-		'</ul>'
+		'</ul>',
+		'</div>',
+		'<span class="spc"></span>'
 	].join("");
 	container.appendChild(list);
 	
 	var log = document.createElement("DIV");
 	log.id = "log";
 	log.innerHTML = [
+		'<div id="log-wrapper">',
 		'<h2>Log</h2>',
 		'<ul class="specs">',
 		function(){
@@ -508,13 +512,11 @@ JSSpec.Logger.prototype.onRunnerStart = function(){
 			}
 			return sb.join("");
 		}(),
-		'</ul>'
+		'</ul>',
+		'</div>',
+		'<p id="footer">powered by <a href="http://jania.pe.kr/aw/moin.cgi/JSSpec">JSSpec</a></p><span class="spc"></span>'
 	].join("");
 	container.appendChild(log);
-	
-	var foot = document.createElement("DIV");
-	foot.innerHTML = '<p class="footer">powered by <a href="http://jania.pe.kr/aw/moin.cgi/JSSpec">JSSpec</a></p>';
-	container.appendChild(foot);
 };
 
 JSSpec.Logger.prototype.onRunnerEnd = function(){
