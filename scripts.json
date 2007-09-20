@@ -3,7 +3,7 @@
 	"Core": {
 
 		"Core": {
-			"deps": [],
+			"deps": ["Core"],
 			"desc": "The core of mootools. Is required by all the others, but has no dependancies and can be used stand-alone. Contains Basic functions and Initializers."
 		}
 
