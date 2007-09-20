@@ -205,7 +205,7 @@ describe('$type', {
 	},
 	
 	for_arguments: function(){
-		value_of($type(arguments)).should_be('arguments');
+		value_of($type(arguments)).should_be((window.opera) ? 'array' : 'arguments'); //opera's arguments behave like arrays--which is actually better.
 	},
 	
 	for_nulls: function(){
@@ -321,4 +321,4 @@ describe('Native', {
 
 });
 
-delete window.instrument;
+if(window.instrument) delete window.instrument;

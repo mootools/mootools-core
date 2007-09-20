@@ -451,17 +451,15 @@ function $type(obj){
 	if (obj == undefined) return false;
 	if (obj.htmlElement) return 'element';
 	if (obj.$family) return (obj.$family == 'number' && !isFinite(obj)) ? false : obj.$family;
-	var type = typeof obj;
 	if (obj.nodeName){
 		switch (obj.nodeType){
 			case 1: return 'element';
 			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
 		}
 	} else if (typeof obj.length == 'number'){
-		if (obj.item) return 'collection';
-		if (obj.callee) return 'arguments';
+		return (obj.callee) ? 'arguments' : 'collection';
 	}
-	return type;
+	return typeof obj;
 };
 
 var Native = function(options){
