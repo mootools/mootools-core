@@ -22,7 +22,7 @@ Examples:
 	[/javascript]
 
 	[javascript]
-		$('myElement').getElementsBySelector(':enabled');
+		$('myElement').getElements(':enabled');
 	[/javascript]
 */
 

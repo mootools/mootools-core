@@ -534,8 +534,6 @@ Element.$events = {
 	'error': 1, 'abort': 1, 'scroll': 1 //misc
 };
 
-/* Section: Custom Events */
-
 Element.Events = new Hash({
 
 	/*

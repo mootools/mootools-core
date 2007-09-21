@@ -388,7 +388,7 @@ var Options = new Class({
 		[/javascript]
 
 	Note:
-		Relies on the default options of a Class defined in its options object.
+		Relies on the default options of a Class defined in its options property.
 		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
 	*/
 

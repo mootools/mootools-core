@@ -67,6 +67,38 @@ Hash.implement({
 	},
 
 	/*
+	Method: keyOf
+		Returns the key of the specified value. Synonymous with <Array.indexOf>.
+
+	Syntax:
+		>var key = myHash.keyOf(item);
+
+	Arguments:
+		item - (mixed) The item to search for in the Hash.
+
+	Returns:
+		(mixed) If the Hash has a the specified item in it, returns the key of that item. Otherwise, returns false.
+
+	Example:
+		[javascript]
+			var hash = new Hash({'a': 'one', 'b': 'two', 'c': 3});
+			hash.keyOf('two'); //returns 'b'
+			hash.keyOf(3); //returns 'c'
+			hash.keyOf('four') //returns false
+		[/javascript]
+
+	Notes:
+		Testing for a Hash prototype will never return its key. Only the actual properties of the Hash will return their associated key.
+	*/
+
+	keyOf: function(value){
+		for(var key in this){
+			if(this.hasOwnProperty(key) && this[key] === value) return key;
+		}
+		return false;
+	},
+
+	/*
 	Method: contains
 		Tests for the presence of a specified key in the Hash.
 
@@ -505,3 +537,5 @@ Hash.implement({
 	}
 
 });
+
+Native.alias(Hash, 'indexOf', 'keyOf');

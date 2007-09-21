@@ -88,7 +88,7 @@ Number.implement({
 		[/javascript]
 	*/
 
-	times: function(fn, bind){
+	each: function(fn, bind){
 		for (var i = 0; i < this; i++) fn.call(bind, i, this);
 	},
 
@@ -139,3 +139,5 @@ Number.implement({
 	}
 
 });
+
+Native.alias(Number, 'times', 'each');

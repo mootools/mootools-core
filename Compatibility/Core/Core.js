@@ -1,8 +1,7 @@
 window.extend = document.extend = $extend;
 window.extend(Client.Engine);
 
-
-function $A(iterable, start, length){
+$A = function(iterable, start, length){
 	if (Client.Engine.ie && $type(iterable) == 'collection'){
 		start = start || 0;
 		if (start < 0) start = iterable.length + start;

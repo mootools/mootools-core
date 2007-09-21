@@ -16,6 +16,7 @@ describe('Array', {
 			return ($type(item) == 'number');
 		});
 		value_of(arr).should_be([1,2,3,0]);
+		value_of(arr).should_have(4, 'items');
 	},
 	
 	filter_using_generics: function(){
@@ -26,6 +27,7 @@ describe('Array', {
 			return ($type(item) == 'number');
 		});
 		value_of(arr).should_be([1,2,3,0]);
+		value_of(arr).should_have(4, 'items');
 	},
 	
 	map: function(){
@@ -34,6 +36,7 @@ describe('Array', {
 			return (item + 1);
 		});
 		value_of(arr).should_be([2,3,4,1]);
+		value_of(arr).should_have(4, 'items');
 	},
 	
 	map_using_generics: function(){
@@ -44,6 +47,7 @@ describe('Array', {
 			return (item + 1);
 		});
 		value_of(arr).should_be([2,3,4,1]);
+		value_of(arr).should_have(4, 'items');
 	},
 	
 	every: function(){

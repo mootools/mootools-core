@@ -6,21 +6,20 @@ License:
 	MIT-style license.
 
 MooTools Copyright:
-	Copyright (c) 2007 Valerio Proietti, <http://mad4milk.net/>
+	Copyright (c) 2006-2007 Valerio Proietti, <http://mad4milk.net/>
 
 MooTools Code & Documentation:
 	The MooTools team <http://mootools.net/developers/>.
 
 MooTools Credits:
-	- Class is slightly based on Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
+	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
+	- Some functionality inspired by that found in Prototype.js <http://prototypejs.org> (c) 2005-2007 Sam Stephenson, MIT-style license
 */
 
 var MooTools = {
 	'version': '1.2dev',
 	'build': '%build%'
 };
-
-/* Section: Utility Functions */
 
 /*
 Function: $A
@@ -352,11 +351,8 @@ Returns:
 
 Examples:
 	[javascript]
-		var obj = 'hello';
-		$splat(obj); //returns ['hello']
-
-		var obj2 = ['a', 'b', 'c'];
-		$splat(obj2); //returns ['a', 'b', 'c']
+		$splat('hello'); //returns ['hello']
+		$splat(['a', 'b', 'c']); //returns ['a', 'b', 'c']
 	[/javascript]
 */
 
@@ -436,9 +432,9 @@ Returns:
 	'regexp'     - (string) If object is a regular expression.
 	'class'      - (string) If object is a Class (created with new Class, or the extend of another class).
 	'collection' - (string) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
-	'window'     - (string) If object passed is the window object.
-	'document'   - (string) If passed object is the document object.
-	false        - (boolean) If passed object is undefined, null, NaN or none of the above.
+	'window'     - (string) If object is the window object.
+	'document'   - (string) If object is the document object.
+	false        - (boolean) If object is undefined, null, NaN or none of the above.
 
 Example:
 	[javascript]
@@ -479,8 +475,6 @@ var Native = function(options){
 	return initialize;
 };
 
-//Native.Methods = {};
-
 Native.generic = function(object, property){
 	return function(){
 		var args = Array.prototype.slice.call(arguments);
@@ -499,6 +493,11 @@ Native.prototype = {
 
 };
 
+Native.alias = function(object, property, existing){
+	object.prototype[property] = object.prototype[existing];
+	object[property] = object[existing];
+};
+
 Native.implement = function(objects, properties){
 	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
 };
@@ -508,8 +507,8 @@ Object: Client
 	Some browser properties are attached to the Client Object for browser and platform detection.
 
 Features:
-	Client.Features.xpath - (boolean) Browser supports dom queries using xpath.
-	Client.Features.xhr   - (boolean) Browser supports native XMLHTTP object.
+	Client.Features.xpath - (boolean) True if the browser supports dom queries using xpath.
+	Client.Features.xhr   - (boolean) True if the browser supports native XMLHTTP object.
 
 Engine:
 	Client.Engine.ie        - (boolean) True if the current browser is Internet Explorer (any).

@@ -591,8 +591,6 @@ Example:
 Array.prototype.each = Array.prototype.forEach;
 Array.each = Array.forEach;
 
-/* Section: Utility Functions */
-
 /*
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.

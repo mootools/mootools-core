@@ -112,8 +112,6 @@ Native.implement([Element, Document], {
 
 });
 
-/* Section: Utility Functions */
-
 /*
 Function: $E
 	Alias for <Element.getElement>, using document as context.

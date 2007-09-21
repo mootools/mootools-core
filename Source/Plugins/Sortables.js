@@ -103,7 +103,7 @@ var Sortables = new Class({
 		};
 		if (this.options.revert){
 			var revertOptions = $merge({duration: 250, wait: false}, this.options.revert);
-			this.effect = new Fx.Styles(this.element, revertOptions).addEvent('onComplete', this.bound.reset, true);
+			this.effect = new Fx.Styles(null, revertOptions).addEvent('onComplete', this.bound.reset, true);
 		}
 		this.cloneContents = !!(this.options.clone);
 

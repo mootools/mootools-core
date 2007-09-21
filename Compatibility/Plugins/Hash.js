@@ -1,4 +1,2 @@
-Hash.implement({
-	'keys': Hash.prototype.getKeys,
-	'values': Hash.prototype.getValues
-});
+Native.alias(Hash, 'keys', 'getKeys');
+Native.alias(Hash, 'values', 'getValues');
