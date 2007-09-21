@@ -40,7 +40,7 @@ Events:
 Example:
 	[javascript]
 		var myScroller = new Scroller(window, {
-			area: Math.round(Client.getWidth() / 5)
+			area: Math.round(window.getWidth() / 5)
 		});
 
 		(function(){

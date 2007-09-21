@@ -104,10 +104,9 @@ var Fx = new Class({
 		fps: 50
 	},
 
-	initialize: function(){
-		var params = Array.associate(arguments, {'options': 'object', 'element': true});
-		this.element = this.element || params.element;
-		this.setOptions(params.options);
+	initialize: function(element, options){
+		this.element = element;
+		this.setOptions(options);
 	},
 
 	step: function(){

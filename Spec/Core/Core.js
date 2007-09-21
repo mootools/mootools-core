@@ -51,7 +51,7 @@ describe('$try', {
 			return me_invented_this();
 		});
 		
-		value_of(k).should_be(false);
+		value_of(k).should_be_false();
 	}
 
 });
@@ -122,7 +122,7 @@ describe('$pick', {
 	
 	choose_false_out_of_null_and_undefined: function(){
 		var picked1 = $pick(null, undefined, false, [1,2,3], {});
-		value_of(picked1).should_be(false);
+		value_of(picked1).should_be_false();
 	},
 	
 	choose_the_first_defined_value: function(){
@@ -135,15 +135,15 @@ describe('$pick', {
 describe('$chk', {
 	
 	return_false_on_false: function(){
-		value_of($chk(false)).should_be(false);
+		value_of($chk(false)).should_be_false();
 	},
 	
 	return_false_on_null: function(){
-		value_of($chk(null)).should_be(false);
+		value_of($chk(null)).should_be_false();
 	},
 	
 	return_false_on_undefined: function(){
-		value_of($chk(undefined)).should_be(false);
+		value_of($chk(undefined)).should_be_false();
 	},
 	
 	return_true_on_0: function(){
@@ -159,11 +159,11 @@ describe('$defined', {
 	},
 	
 	return_false_on_null: function(){
-		value_of($defined(null)).should_be(false);
+		value_of($defined(null)).should_be_false();
 	},
 	
 	return_false_on_undefined: function(){
-		value_of($defined(undefined)).should_be(false);
+		value_of($defined(undefined)).should_be_false();
 	},
 	
 	return_true_on_0: function(){
@@ -209,11 +209,11 @@ describe('$type', {
 	},
 	
 	for_nulls: function(){
-		value_of($type(null)).should_be(false);
+		value_of($type(null)).should_be_false();
 	},
 	
 	for_undefineds: function(){
-		value_of($type(undefined)).should_be(false);
+		value_of($type(undefined)).should_be_false();
 	},
 	
 	for_elements_collections: function(){

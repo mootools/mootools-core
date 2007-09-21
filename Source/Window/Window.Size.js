@@ -26,7 +26,7 @@ Window.implement({
 		Returns an integer representing the width of the browser window (without the scrollbar).
 
 	Syntax:
-		>var width = Client.getWidth();
+		>var width = window.getWidth();
 
 	Returns:
 		(number) The width (without the scrollbar width) of the browser window.
@@ -43,7 +43,7 @@ Window.implement({
 		Returns an integer representing the height of the browser window (without the scrollbar).
 
 	Syntax:
-		>var height = Client.getHeight();
+		>var height = window.getHeight();
 
 	Returns:
 		(number) The height (without the scrollbar height) of the browser window.
@@ -59,7 +59,7 @@ Window.implement({
 		Returns an integer representing the scrollWidth of the window.
 
 	Syntax:
-		>var scrollWidth = Client.getScrollWidth();
+		>var scrollWidth = window.getScrollWidth();
 
 	Returns:
 		(number) The scroll width of the browser window.
@@ -67,12 +67,12 @@ Window.implement({
 	Example:
 		[javascript]
 			window.addEvent('resize', function(){
-				alert(Client.getScrollWidth());
+				alert(window.getScrollWidth());
 			});
 		[/javascript]
 
 	Note:
-		This value is equal to or bigger than <Client.getWidth>.
+		This value is equal to or bigger than <window.getWidth>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
@@ -89,7 +89,7 @@ Window.implement({
 		Returns an integer representing the scrollHeight of the window.
 
 	Syntax:
-		>var scrollHeight = Client.getScrollHeight();
+		>var scrollHeight = window.getScrollHeight();
 
 	Returns:
 		(number) The scroll height of the browser window.
@@ -97,12 +97,12 @@ Window.implement({
 	Example:
 		[javascript]
 			window.addEvent('resize', function(){
-				alert(Client.getScrollHeight());
+				alert(window.getScrollHeight());
 			});
 		[/javascript]
 
 	Note:
-		This value is equal to or bigger than <Client.getHeight>.
+		This value is equal to or bigger than <window.getHeight>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
@@ -119,7 +119,7 @@ Window.implement({
 		Returns an integer representing the scrollLeft of the window.
 
 	Syntax:
-		>var scrollLeft = Client.getScrollLeft();
+		>var scrollLeft = window.getScrollLeft();
 
 	Returns:
 		(number) The number of pixels the window has scrolled from the left.
@@ -127,7 +127,7 @@ Window.implement({
 	Example:
 		[javascript]
 			window.addEvent('scroll', function(){
-				alert(Client.getScrollLeft());
+				alert(window.getScrollLeft());
 			});
 		[/javascript]
 
@@ -144,7 +144,7 @@ Window.implement({
 		Returns an integer representing the scrollTop of the window.
 
 	Syntax:
-		>var scrollTop = Client.getScrollTop();
+		>var scrollTop = window.getScrollTop();
 
 	Returns:
 		(number) The number of pixels the window has scrolled from the top.
@@ -152,7 +152,7 @@ Window.implement({
 	Example:
 		[javascript]
 			window.addEvent('scroll', function(){
-				alert(Client.getScrollTop());
+				alert(window.getScrollTop());
 			});
 		[/javascript]
 
@@ -169,14 +169,14 @@ Window.implement({
 		Same as <Element.getSize>, but for window.
 
 	Syntax:
-		>var size = Client.getSize();
+		>var size = window.getSize();
 
 	Returns:
 		(object) An object with size, scrollSize, scroll properties. Each property has a value of an object with x and y properties representing the width/height, scrollWidth/scrollHeight, or getScrollLeft/getScrollTop.
 
 	Example:
 		[javascript]
-			var size = Client.getSize();
+			var size = window.getSize();
 		[/javascript]
 	*/
 
