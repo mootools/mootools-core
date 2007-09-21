@@ -99,7 +99,7 @@ var Tips = new Class({
 	initialize: function(elements, options){
 		this.setOptions(options);
 		elements = $$(elements);
-		this.document = elements[0].ownerDocument;
+		this.document = (elements.length) ? elements[0].ownerDocument : document;
 		this.window = this.document.window;
 		this.toolTip = new Element('div', {
 			'class': this.options.className + '-tip',

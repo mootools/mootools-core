@@ -1,10 +1,9 @@
 Native.implement([Element, Document], {
 	getElementsByClassName: function(className){
 		return this.getElements('.' + className);
-	}
+	},
+	getElementsBySelector: document.getElements
 });
-
-document.getElementsBySelector = document.getElements;
 
 function $E(selector, filter){
 	return ($(filter) || document).getElement(selector);
