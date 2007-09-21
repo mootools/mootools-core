@@ -95,7 +95,7 @@ Hash.implement({
 		for(var key in this){
 			if(this.hasOwnProperty(key) && this[key] === value) return key;
 		}
-		return false;
+		return null;
 	},
 
 	/*

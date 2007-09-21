@@ -1,13 +1,12 @@
 describe('Array', {
 	
-	forEach_iteration: function(){
+	forEach: function(){
 		var oldArr = [1, 2, 3, false, null, 0];
 		var newArr = [];
 		oldArr.each(function(item, i){
 			newArr[i] = item;
 		});
 		value_of(newArr).should_be(oldArr);
-		value_of(newArr).should_have(6, 'items');
 	},
 	
 	filter: function(){
@@ -16,18 +15,6 @@ describe('Array', {
 			return ($type(item) == 'number');
 		});
 		value_of(arr).should_be([1,2,3,0]);
-		value_of(arr).should_have(4, 'items');
-	},
-	
-	filter_using_generics: function(){
-		var arr = (function(){
-			return arguments;
-		})(1, 2, 3, false, null, 0);
-		arr = Array.filter(arr, function(item){
-			return ($type(item) == 'number');
-		});
-		value_of(arr).should_be([1,2,3,0]);
-		value_of(arr).should_have(4, 'items');
 	},
 	
 	map: function(){
@@ -36,18 +23,6 @@ describe('Array', {
 			return (item + 1);
 		});
 		value_of(arr).should_be([2,3,4,1]);
-		value_of(arr).should_have(4, 'items');
-	},
-	
-	map_using_generics: function(){
-		var arr = (function() {
-			return arguments;
-		})(1, 2, 3, 0);
-		arr = Array.map(arr, function(item){
-			return (item + 1);
-		});
-		value_of(arr).should_be([2,3,4,1]);
-		value_of(arr).should_have(4, 'items');
 	},
 	
 	every: function(){
@@ -76,7 +51,7 @@ describe('Array', {
 		value_of(some2).should_be_true();
 		value_of(some1).should_be_false();
 	},
-	
+
 	indexOf: function(){
 		var arr1 = [1,2,3,0];
 		var idx1 = arr1.indexOf(0);
@@ -132,14 +107,14 @@ describe('Array', {
 			
 	},
 
-	simple_association: function(){
+	associate: function(){
 		var arr1 = [1,2,3,4];
 		var assoc = arr1.associate(['a', 'b', 'c', 'd']);
 		
 		value_of(assoc).should_be({a:1,b:2,c:3,d:4});
 	},
 	
-	type_association: function(){
+	associate_by_type: function(){
 		var el = document.createElement('div');
 		var arr2 = [100, 'Hello', {foo: 'bar'}, el];
 		var assoc2 = arr2.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
@@ -180,6 +155,186 @@ describe('Array', {
 		var arr1 = [1,2,3,4];
 		value_of([].empty()).should_be_empty();
 		value_of(arr1.empty).should_be_empty();
+	}
+
+});
+
+describe('Array Generics', {
+
+	forEach: function(){
+		var oldArr = [1, 2, 3, false, null, 0];
+		var newArr = [];
+		Array.each(oldArr, function(item, i){
+			newArr[i] = item;
+		});
+		value_of(newArr).should_be(oldArr);
+	},
+
+	filter: function(){
+		var arr = (function(){
+			return arguments;
+		})(1, 2, 3, false, null, 0);
+		arr = Array.filter(arr, function(item){
+			return ($type(item) == 'number');
+		});
+		value_of(arr).should_be([1,2,3,0]);
+	},
+	
+	map: function(){
+		var arr = (function() {
+			return arguments;
+		})(1, 2, 3, 0);
+		arr = Array.map(arr, function(item){
+			return (item + 1);
+		});
+		value_of(arr).should_be([2,3,4,1]);
+	},
+	
+	every: function(){
+		var arr1 = [1, 2, 3, 0];
+		var every1 = Array.every(arr1, function(item){
+			return ($type(item) == 'number');
+		});
+		var arr2 = ['1',2,3,0];
+		var every2 = Array.every(arr2, function(item){
+			return ($type(item) == 'number');
+		});
+		value_of(every1).should_be_true();
+		value_of(every2).should_be_false();
+	},
+
+	some: function(){
+		var arr1 = [1,2,3,0];
+		var some1 = Array.some(arr1, function(item){
+			return ($type(item) == 'string');
+		});
+		var arr2 = ['1',2,3,0];
+		var some2 = Array.some(arr2, function(item){
+			return ($type(item) == 'string');
+		});
+		
+		value_of(some2).should_be_true();
+		value_of(some1).should_be_false();
+	},
+	
+	indexOf: function(){
+		var arr1 = [1,2,3,0];
+		var idx1 = Array.indexOf(arr1, 0);
+		var arr2 = ['1',2,3,0];
+		var idx2 = Array.indexOf(arr2, 1);
+		
+		value_of(idx1).should_be(3);
+		value_of(idx2).should_be(-1);
+	},
+
+	reduce: function(){
+		var arr1 = [1,2,3];
+		var sum1 = Array.reduce(arr1, function(a, b) {
+			return a + b;
+		});
+		var sum2 = Array.reduce(arr1, function(a, b) {
+			return a + b;
+		}, 1);
+
+		var arr3 = ['answer', 'is', 42];
+		var sum3 = Array.reduce(arr3, function(a, b) {
+			return a.concat(' ', b);
+		}, 'The');
+
+		var sum4 = Array.reduce([], function(a, b) {
+			return a + b;
+		});
+		var sum5 = Array.reduce([], function(a, b) {
+			return a + b;
+		}, 1);
+		
+		value_of(sum1).should_be(6);
+		value_of(sum2).should_be(7);
+		value_of(sum3).should_be('The answer is 42');
+		value_of(sum4).should_be_undefined();
+		value_of(sum5).should_be(1);
+	},
+
+	remove: function(){
+		var arr1 = [1,2,3,0,0,0];
+		Array.remove(arr1, 0);
+		
+		value_of(arr1).should_be([1,2,3]);
+	},
+
+	contains: function(){
+		var arr1 = [1,2,3,0];
+		var cnt1 = Array.contains(arr1, 0);
+		var arr2 = ['1',2,3,0];
+		var cnt2 = Array.contains(arr2, 1);
+		value_of(cnt1).should_be_true();
+		value_of(cnt2).should_be_false();
+			
+	},
+
+	associate: function(){
+		var arr1 = [1,2,3,4];
+		var assoc = Array.associate(arr1, ['a', 'b', 'c', 'd']);
+		
+		value_of(assoc).should_be({a:1,b:2,c:3,d:4});
+	},
+	
+	associate_by_type: function(){
+		var el = document.createElement('div');
+		var arr2 = [100, 'Hello', {foo: 'bar'}, el];
+		var assoc2 = Array.associate(arr2, {myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
+		
+		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello'});
+	},
+
+	extend: function(){
+		var arr1 = [1,2,3,4];
+		Array.extend(arr1, [1,2,3,4,5,6,7]);
+		
+		value_of(arr1).should_be([1,2,3,4,1,2,3,4,5,6,7]);
+	},
+
+	merge: function(){
+		var arr1 = [1,2,3,4];
+		Array.merge(arr1, [1,2,3,4,5,6,7]);
+		
+		value_of(arr1).should_be([1,2,3,4,5,6,7]);
+	},
+
+	include: function(){
+		var arr1 = [1,2,3,4];
+		Array.include(arr1, 1);
+		Array.include(arr1, 1);
+		Array.include(arr1, 5);
+		Array.include(arr1, 5);
+		
+		value_of(arr1).should_be([1,2,3,4,5]);
+	},
+
+	getLast: function(){
+		var arr1 = [1,2,3,4];
+		value_of(Array.getLast(arr1)).should_be(4);
+	},
+
+	empty: function(){
+		var arr1 = [1,2,3,4];
+		value_of(Array.empty([])).should_be_empty();
+		value_of(Array.empty(arr1)).should_be_empty();
+	}
+
+});
+
+describe('$each', {
+
+	$each_on_arguments: function(){
+		var daysArr = [];
+		var eachFunc = function(){
+			$each(arguments, function(value, key){
+				daysArr[key] = value;
+			});
+		};
+		eachFunc('Sun','Mon','Tue');
+		value_of(daysArr).should_be(['Sun','Mon','Tue']);
 	},
 
 	$each_on_array: function(){
@@ -187,18 +342,15 @@ describe('Array', {
 		$each(['Sun','Mon','Tue'], function(value, key){
 			daysArr[key] = value;
 		});
-		
 		value_of(daysArr).should_be(['Sun','Mon','Tue']);
 	},
-	
+
 	$each_on_object: function(){
 		var daysObj = {};
 		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 			daysObj[key] = value;
 		});
-		
 		value_of(daysObj).should_be({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
 	}
-	
-	
+
 });
