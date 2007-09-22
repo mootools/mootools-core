@@ -395,6 +395,7 @@ var Native = function(options){
 	var initialize = options.initialize;
 	
 	initialize.prototype.constructor = initialize;
+	
 	if (options.name){
 		var family = options.name.toLowerCase();
 		initialize.prototype.$family = family;
@@ -418,7 +419,7 @@ var Native = function(options){
 	return $extend(initialize, this);
 };
 
-Native.prototype.aliasOf = function(existing, property){
+Native.prototype.alias = function(existing, property){
 	this.prototype[property] = this.prototype[existing];
 	this[property] = this[existing];
 };

@@ -7,7 +7,7 @@ License:
 */
 
 /*
-Function: Class
+Native: Class
 	The base Class object of the <http://mootools.net/> framework. Creates a new Class. The Class's initialize method will fire upon class instantiation unless <$empty> is passed to the Class constructor.
 
 Syntax:
@@ -80,37 +80,41 @@ Examples:
 	[/javascript]
 */
 
-var Class = function(properties){
-	properties = properties || {};
-	var klass = function(){
-		for (var property in this){
-			if ($type(this[property]) == 'object') this[property] = $merge(this[property]);
+var Class = new Native({
+	
+	name: 'Class',
+	
+	initialize: function(properties){
+		properties = properties || {};
+		var klass = function(){
+			for (var property in this){
+				if ($type(this[property]) == 'object') this[property] = $merge(this[property]);
+			}
+			var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
+			if (this.options && this.options.initialize) this.options.initialize.call(this);
+			return self;
+		};
+
+		if (properties.Implements){
+			$extend(properties, Class.Implements.run(properties.Implements));
+			delete properties.Implements;
 		}
-		var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
-		if (this.options && this.options.initialize) this.options.initialize.call(this);
-		return self;
-	};
 
-	if (properties.Implements){
-		$extend(properties, Class.Implements.run(properties.Implements));
-		delete properties.Implements;
+		if (properties.Extends){
+			properties = Class.Extends(properties.Extends, properties);
+			delete properties.Extends;
+		}
+
+		$extend(klass, this);
+		klass.prototype = properties;
+		klass.prototype.constructor = klass;
+		klass.$family = 'class';
+		return klass;
 	}
 
-	if (properties.Extends){
-		properties = Class.Extends(properties.Extends, properties);
-		delete properties.Extends;
-	}
+});
 
-	$extend(klass, this);
-	klass.prototype = properties;
-	klass.prototype.constructor = klass;
-	klass.$family = 'class';
-	return klass;
-};
-
-Class.prototype = {
-
-	constructor: Class,
+Class.implement({
 
 	/*
 	Method: implement
@@ -145,7 +149,7 @@ Class.prototype = {
 		return this;
 	}
 
-};
+});
 
 Class.Implements = function(){
 	var all = {};

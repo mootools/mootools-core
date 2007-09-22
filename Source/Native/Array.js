@@ -636,7 +636,7 @@ Example:
 	[/javascript]
 */
 
-Array.aliasOf('forEach', 'each');
+Array.alias('forEach', 'each');
 
 /*
 Function: $each

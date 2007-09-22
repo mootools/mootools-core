@@ -1,2 +1,2 @@
-Hash.aliasOf('getKeys', 'keys');
-Hash.aliasOf('getValues', 'values');
+Hash.alias('getKeys', 'keys');
+Hash.alias('getValues', 'values');

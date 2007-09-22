@@ -538,4 +538,4 @@ Hash.implement({
 
 });
 
-Hash.aliasOf('keyOf', 'indexOf');
+Hash.alias('keyOf', 'indexOf');
