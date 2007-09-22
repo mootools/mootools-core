@@ -1,3 +1,14 @@
+/*
+Script: Builder.js
+	Automatically includes MooTools files right from the project folder.
+	
+Note:
+	If you use this script in your own page, you must be out of your mind.
+
+License:
+	MIT-style license.
+*/
+
 var Builder = {
 	
 	includeType: function(type){
@@ -58,8 +69,7 @@ var Builder = {
 
 		spec: {
 			"Core"      : ["Core"],
-			"Native"    : ["Array"],
-			"Class"     : []
+			"Native"    : ["Array", "Function"]
 		}
 	},
 	

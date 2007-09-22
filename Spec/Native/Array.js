@@ -1,3 +1,40 @@
+/*
+Script: Array.js
+	Examples for Array.js
+
+License:
+	MIT-style license.
+*/
+
+describe('$A', {
+	
+	return_array_copy_for_array: function(){
+		value_of($A([1,2,3])).should_be([1,2,3]);
+	},
+	
+	return_array_for_elements_collection: function(){
+		
+		var div = document.createElement('div');
+		var div2 = document.createElement('div');
+		var div3 = document.createElement('div');
+		
+		div.appendChild(div2);
+		div.appendChild(div3);
+		
+		value_of($A(div.getElementsByTagName('*'))).should_be([div2, div3]);
+	},
+	
+	return_array_for_arguments: function(){
+		
+		var fun = function(){
+			value_of($A(arguments)).should_be([1,2,3]);
+		};
+		
+		fun(1,2,3);
+	}
+
+});
+
 describe('Array', {
 	
 	forEach: function(){
