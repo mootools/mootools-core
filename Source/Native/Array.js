@@ -14,6 +14,44 @@ See Also:
 	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>
 */
 
+/*
+Function: $A
+	Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
+
+Syntax:
+	>var copiedArray = $A(iterable);
+
+Arguments:
+	iterable - (array) The iterable to copy.
+
+Returns:
+	(array) The new copied array.
+
+Examples:
+	Apply Array to arguments:
+	[javascript]
+		function myFunction(){
+			$A(arguments).each(function(argument, index){
+				alert(argument);
+			});
+		}; //will alert all the arguments passed to the function myFunction.
+	[/javascript]
+
+	Copy an Array:
+	[javascript]
+		var anArray = [0, 1, 2, 3, 4];
+		var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
+	[/javascript]
+*/
+
+function $A(iterable){
+	if (Client.Engine.ie && $type(iterable) == 'collection'){
+		var array = [];
+		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+		return array;
+	}
+	return Array.prototype.slice.call(iterable);
+};
 
 Array.implement({
 
@@ -315,54 +353,65 @@ Array.implement({
 	/*
 	Method: associate
 		Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
-		Can also accept an object of key / type pairs to assign values.
 
 	Syntax:
 		>var associated = myArray.associate(obj);
 
 	Arguments:
-		obj - (mixed) If an array is passed, its items will be used as the keys of the object that will be created.
-			Alternatively, an object containing key / type pairs may be passed and used as a template for associating values with the different keys.
+		obj - (array) Its items will be used as the keys of the object that will be created.
 
 	Returns:
 		(object) The new associated object.
 
-	Examples:
-		Array Example:
+	Example:
 		[javascript]
 			var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
 			var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
 			animals.associate(sounds);
 			//returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
 		[/javascript]
+	*/
 
-		Object Example:
+	associate: function(keys){
+		var obj = {}, length = Math.min(this.length, keys.length);
+		for (var i = 0; i < length; i++) obj[keys[i]] = this[i];
+		return obj;
+	},
+	
+	/*
+	Method: link
+		Accepts an object of key / function pairs to assign values.
+
+	Syntax:
+		>var result = Array.link(array, object);
+
+	Arguments:
+		object - (object)  An object containing key / function pairs must be passed to be used as a template for associating values with the different keys.
+
+	Returns:
+		(object) The new associated object.
+
+	Example:
 		[javascript]
-			var values = [100, 'Hello', {foo: 'bar'}, $('myelement')];
-			values.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
-			//returns {myNumber: 100, myElement: <div id="myelement">, myObject: {foo: bar}, myString: Hello}
+			var el = document.createElement('div');
+			var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
+			arr2.link({myNumber: $type.number, myElement: $type.element, myObject: $type.object, myString: $type.string, myBoolean: $defined});
+			//returns {myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false}
 		[/javascript]
 	*/
 
-	associate: function(obj){
-		var routed = {};
-		var objtype = $type(obj);
-		if (objtype == 'array'){
-			var temp = {};
-			for (var i = 0, j = obj.length; i < j; i++) temp[obj[i]] = true;
-			obj = temp;
-		}
-		for (var oname in obj) routed[oname] = null;
-		for (var k = 0, l = this.length; k < l; k++){
-			var res = (objtype == 'array') ? $defined(this[k]) : $type(this[k]);
-			for (var name in obj){
-				if (!$defined(routed[name]) && ((res && obj[name] === true) || obj[name].contains(res))){
-					routed[name] = this[k];
+	link: function(object){
+		var result = {};
+		for (var i = 0, l = this.length; i < l; i++){
+			for (var key in object){
+				if (object[key](this[i])){
+					result[key] = this[i];
+					delete object[key];
 					break;
 				}
 			}
 		}
-		return routed;
+		return result;
 	},
 
 	/*
@@ -529,7 +578,7 @@ Array.implement({
 	*/
 
 	remove: function(item){
-		for (var i = this.length; i--;){
+		for (var i = this.length; i--; i){
 			if (this[i] === item) this.splice(i, 1);
 		}
 		return this;
@@ -587,9 +636,7 @@ Example:
 	[/javascript]
 */
 
-
-Array.prototype.each = Array.prototype.forEach;
-Array.each = Array.forEach;
+Array.aliasOf('forEach', 'each');
 
 /*
 Function: $each

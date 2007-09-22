@@ -54,7 +54,7 @@ See Also:
 var Element = new Native({
 
 	initialize: function(){
-		var params = Array.associate(arguments, {'document': 'document', 'properties': 'object', 'element': true});
+		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object, 'element': $defined});
 		var props = params.properties || {}, el = params.element, doc = params.document || document;
 		if (el == 'iframe') return new IFrame(props, doc);
 		if ($type(el) == 'string'){
@@ -71,9 +71,9 @@ var Element = new Native({
 		return (!props || !el) ? el : el.set(props);
 	},
 	
-	implement: function(properties){
-		HTMLElement.implement(properties);
-		for (var key in properties) Elements.prototype[(Array.prototype[key]) ? key + 'Elements' : key] = Elements.$multiply(key);
+	afterImplement: function(key, value){
+		HTMLElement.prototype[key] = value;
+		Elements.prototype[(Array.prototype[key]) ? key + 'Elements' : key] = Elements.$multiply(key);
 	}
 
 });
@@ -94,7 +94,7 @@ var IFrame = new Native({
 	name: 'IFrame',
 
 	initialize: function(){
-		var params = Array.associate(arguments, {'document': 'document', 'properties': 'object'});
+		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object});
 		var props = params.properties || {}, doc = params.document || document;
 		var iframe = $(document.createElement('iframe'));
 		iframe.name = props.name || 'iframe-' + iframe.$attributes.uid;
@@ -1648,7 +1648,7 @@ var Garbage = {
 	},
 
 	trash: function(elements){
-		for (var i = elements.length, el; i--;){
+		for (var i = elements.length, el; i--; i){
 			if (!(el = elements[i]) || !el.$attributes) continue;
 			if (el.tagName && !Element.$badTags.contains(el.tagName.toLowerCase())) Garbage.kill(el);
 		}

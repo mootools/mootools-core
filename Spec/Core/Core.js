@@ -56,17 +56,6 @@ describe('$try', {
 
 });
 
-describe('$augment', {
-	
-	augment_objects: function(){
-		var ob1 = {a: 1, b: 2};
-		var ob2 = {b: 3, c: 4};
-		$augment(ob1, ob2);
-		value_of(ob1).should_be({a: 1, b: 2, c: 4});
-	}
-
-});
-
 describe('$extend', {
 	
 	extend_objects: function(){
@@ -95,8 +84,8 @@ describe('$clear', {
 		var timeout = setTimeout(function(){}, 100);
 		var periodical = setTimeout(function(){}, 100);
 		
-		value_of($clear(timeout)).should_be(null);
-		value_of($clear(periodical)).should_be(null);
+		value_of($clear(timeout)).should_be_null();
+		value_of($clear(periodical)).should_be_null();
 	}
 
 });
@@ -147,7 +136,7 @@ describe('$chk', {
 	},
 	
 	return_true_on_0: function(){
-		value_of($chk(0)).should_be(true);
+		value_of($chk(0)).should_be_true();
 	}
 
 });
@@ -155,7 +144,7 @@ describe('$chk', {
 describe('$defined', {
 	
 	return_true_on_false: function(){
-		value_of($defined(false)).should_be(true);
+		value_of($defined(false)).should_be_true();
 	},
 	
 	return_false_on_null: function(){
@@ -167,7 +156,7 @@ describe('$defined', {
 	},
 	
 	return_true_on_0: function(){
-		value_of($defined(0)).should_be(true);
+		value_of($defined(0)).should_be_true();
 	}
 
 });
@@ -176,6 +165,8 @@ describe('$type', {
 	
 	for_arrays: function(){
 		value_of($type([1,2])).should_be('array');
+		value_of($type.array([1,2])).should_be_true();
+		value_of($type.array({})).should_be_false();
 	},
 	
 	for_strings: function(){
@@ -283,7 +274,7 @@ describe('Native', {
 		
 	},
 	
-	allow_implementation_over_existing_methods_when_browser_options_is_not_set: function(){
+	allow_implementation_over_existing_methods_when_browser_option_is_not_set: function(){
 		
 		this.local.Instrument.implement({
 			
@@ -296,7 +287,7 @@ describe('Native', {
 		value_of(myInstrument.method()).should_be('staff xeelophone');
 	},
 	
-	not_allow_implementation_over_existing_methods_when_browser_options_is_set: function(){
+	not_allow_implementation_over_existing_methods_when_browser_option_is_set: function(){
 		
 		this.local.Car.implement({
 			
@@ -320,5 +311,3 @@ describe('Native', {
 	}
 
 });
-
-if(window.instrument) delete window.instrument;

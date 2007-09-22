@@ -92,8 +92,8 @@ Hash.implement({
 	*/
 
 	keyOf: function(value){
-		for(var key in this){
-			if(this.hasOwnProperty(key) && this[key] === value) return key;
+		for (var key in this){
+			if (this.hasOwnProperty(key) && this[key] === value) return key;
 		}
 		return null;
 	},
@@ -538,4 +538,4 @@ Hash.implement({
 
 });
 
-Native.alias(Hash, 'indexOf', 'keyOf');
+Hash.aliasOf('keyOf', 'indexOf');

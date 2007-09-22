@@ -140,4 +140,4 @@ Number.implement({
 
 });
 
-Native.alias(Number, 'each', 'times');
+Number.aliasOf('times', 'each');

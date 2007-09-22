@@ -108,8 +108,6 @@ var Class = function(properties){
 	return klass;
 };
 
-Class.empty = $empty;
-
 Class.prototype = {
 
 	constructor: Class,

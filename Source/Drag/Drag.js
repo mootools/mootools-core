@@ -120,7 +120,7 @@ var Drag = new Class({
 	},
 
 	initialize: function(){
-		var params = Array.associate(arguments, {'options': 'object', 'element': ['element', 'string']});
+		var params = Array.link(arguments, {'options': $type.object, 'element': $defined});
 		this.element = $(params.element);
 		this.document = this.element.ownerDocument;
 		this.setOptions(params.options);
@@ -203,7 +203,7 @@ var Drag = new Class({
 			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			if (limit && limit[z]){
-				for (var i = 2; i--;){
+				for (var i = 2; i--; i){
 					if ($chk(limit[z][i])) this.limit[z][i] = ($type(limit[z][i]) == 'function') ? limit[z][i]() : limit[z][i];
 				}
 			}

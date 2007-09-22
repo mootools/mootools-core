@@ -90,7 +90,7 @@ Function.implement({
 		[javascript]
 			var myFunction = function(){
 				var result = 'Passed: ';
-				for(var i = 0, l = arguments.length; i < l; i++){
+				for (var i = 0, l = arguments.length; i < l; i++){
 					result += (arguments[i] + ' ');
 				}
 				return result;
@@ -129,7 +129,7 @@ Function.implement({
 			};
 
 			var myFunction = function(){
-				for(var i = 0; i < arguments.length; i++){
+				for (var i = 0; i < arguments.length; i++){
 					if(!this[arguments[i]]) throw('doh!');
 				}
 			};
@@ -274,5 +274,3 @@ Function.implement({
 	}
 
 });
-
-Function.empty = $empty;

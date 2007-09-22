@@ -114,12 +114,12 @@ describe('Array', {
 		value_of(assoc).should_be({a:1,b:2,c:3,d:4});
 	},
 	
-	associate_by_type: function(){
+	link: function(){
 		var el = document.createElement('div');
-		var arr2 = [100, 'Hello', {foo: 'bar'}, el];
-		var assoc2 = arr2.associate({myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
-		
-		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello'});
+		var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
+		var assoc2 = arr2.link({myNumber: $type.number, myElement: $type.element, myObject: $type.object, myString: $type.string, myBoolean: $defined});
+
+		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false});
 	},
 
 	extend: function(){
@@ -279,12 +279,12 @@ describe('Array Generics', {
 		value_of(assoc).should_be({a:1,b:2,c:3,d:4});
 	},
 	
-	associate_by_type: function(){
+	link: function(){
 		var el = document.createElement('div');
-		var arr2 = [100, 'Hello', {foo: 'bar'}, el];
-		var assoc2 = Array.associate(arr2, {myNumber: 'number', myElement: 'element', myObject: 'object', myString: 'string'});
-		
-		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello'});
+		var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
+		var assoc2 = Array.link(arr2, {myNumber: $type.number, myElement: $type.element, myObject: $type.object, myString: $type.string, myBoolean: $defined});
+
+		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false});
 	},
 
 	extend: function(){

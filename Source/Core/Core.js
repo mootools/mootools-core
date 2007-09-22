@@ -22,84 +22,6 @@ var MooTools = {
 };
 
 /*
-Function: $A
-	Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
-
-Syntax:
-	>var copiedArray = $A(iterable);
-
-Arguments:
-	iterable - (array) The iterable to copy.
-
-Returns:
-	(array) The new copied array.
-
-Examples:
-	Apply Array to arguments:
-	[javascript]
-		function myFunction(){
-			$A(arguments).each(function(argument, index){
-				alert(argument);
-			});
-		}; //will alert all the arguments passed to the function myFunction.
-	[/javascript]
-
-	Copy an Array:
-	[javascript]
-		var anArray = [0, 1, 2, 3, 4];
-		var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
-	[/javascript]
-*/
-
-function $A(iterable){
-	if (Client.Engine.ie && $type(iterable) == 'collection'){
-		var array = [];
-		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
-		return array;
-	}
-	return Array.prototype.slice.call(iterable);
-};
-
-/*
-Function: $augment
-	Augments the first object with all the properties of the second object that are not already defined.
-	Similar to extend except that it does not overwrite properties that are already defined.
-
-Syntax:
-	>$augment(original, augumentation);
-
-Arguments:
-	original     - (object) The object to copy properties to.
-	augmentation - (object) The object to copy properties from.
-
-Returns:
-	(object) The augmented object.
-
-Example:
-	[javascript]
-		var firstObj = {
-			'name': 'John',
-			'lastName': 'Doe'
-		};
-		var secondObj = {
-			'age': '20',
-			'sex': 'male',
-			'lastName': 'Dorian'
-		};
-		$augment(firstObj, secondObj);
-		//firstObj is now { 'name': 'John', 'lastName': 'Doe', 'age': '20', 'sex': 'male' };
-	[/javascript]
-*/
-
-function $augment(original, augmentation){
-	for (var property in augmentation){
-		var old = original[property];
-		if (!$defined(old)) original[property] = augmentation[property];
-	}
-	return original;
-};
-
-/*
 Function: $chk
 	Checks to see if a value exists or is 0. Useful for allowing 0.
 
@@ -402,7 +324,7 @@ Note:
 
 function $try(fn, bind, args){
 	try {
-		return fn.apply(bind || null, $splat(args));
+		return fn.apply(bind, $splat(args));
 	} catch(e){
 		return false;
 	}
@@ -458,21 +380,47 @@ function $type(obj){
 	return typeof obj;
 };
 
+(function(types){
+
+	for (var i = 0, l = types.length; i < l; i++) $type[types[i]] = (function(type){
+		return function(item){
+			return ($type(item) === type);
+		};
+	})(types[i]);
+
+})(['element', 'textnode', 'whitespace', 'collection', 'boolean', 'native', 'object']);
+
 var Native = function(options){
-	options = $extend({name: false, generics: true, browser: false, initialize: $empty, implement: $empty}, options || {});
-	var name = options.name, generics = options.generics, initialize = options.initialize, implement = options.implement, browser = options.browser;
+	options = $extend({name: false, generics: true, browser: false, initialize: $empty, afterImplement: $empty}, options || {});
+	var initialize = options.initialize;
+	
 	initialize.prototype.constructor = initialize;
-	var self = this;
-	initialize.implement = function(properties){
-		((browser) ? $augment : $extend)(this.prototype, properties);
-		if (generics) self.genericize(this, properties);
-		implement.call(this, properties);
-		return this;
-	};
-	if (name) initialize.prototype.$family = name.toLowerCase();
+	if (options.name){
+		var family = options.name.toLowerCase();
+		initialize.prototype.$family = family;
+		if (!$type[family]) $type[family] = function(item){
+			return $type(item) === family;
+		};
+	}
+	
 	initialize.$family = 'native';
 	initialize.constructor = Native;
-	return initialize;
+	
+	initialize.implement = function(properties){
+		for (var property in properties){
+			if (!options.browser || !this.prototype[property]) this.prototype[property] = properties[property];
+			if (options.generics && !this[property] && typeof this.prototype[property] == 'function') this[property] = Native.generic(this, property);
+			options.afterImplement.call(this, property, properties[property]);
+		}
+		return this;
+	};
+
+	return $extend(initialize, this);
+};
+
+Native.prototype.aliasOf = function(existing, property){
+	this.prototype[property] = this.prototype[existing];
+	this[property] = this[existing];
 };
 
 Native.generic = function(object, property){
@@ -482,23 +430,8 @@ Native.generic = function(object, property){
 	};
 };
 
-Native.prototype = {
-	
-	genericize: function(object, properties){
-		for (var property in properties){
-			if (object[property] || typeof object.prototype[property] != 'function') continue;
-			object[property] = Native.generic(object, property);
-		}
-	}
-
-};
-
-Native.alias = function(object, property, existing){
-	object.prototype[property] = object.prototype[existing];
-	object[property] = object[existing];
-};
-
 Native.implement = function(objects, properties){
+	objects = $splat(objects);
 	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
 };
 
@@ -557,11 +490,16 @@ var Document = new Native({
 		Document.instances.push(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.window = doc.defaultView || doc.parentWindow;
+		
+		if (Client.Engine.ie6) $try(function(){
+			doc.execCommand("BackgroundImageCache", false, true);
+		});
+		
 		return $extend(doc, this);
 	},
 	
-	implement: function(properties){
-		for (var i = 0, l = Document.instances.length; i < l; i++) $extend(Document.instances[i], properties);
+	afterImplement: function(key, value){
+		for (var i = 0, l = Document.instances.length; i < l; i++) Document.instances[i][key] = value;
 	}
 
 });
@@ -598,8 +536,8 @@ var Window = new Native({
 		return $extend(win, this);
 	},
 	
-	implement: function(properties){
-		for (var i = 0, l = Window.instances.length; i < l; i++) $extend(Window.instances[i], properties);
+	afterImplement: function(key, value){
+		for (var i = 0, l = Window.instances.length; i < l; i++) Window.instances[i][key] = value;
 	}
 	
 });

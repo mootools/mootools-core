@@ -85,7 +85,7 @@ Selectors.Pseudo.contains = {
 	},
 
 	filter: function(el, argument){
-		for (var i = el.childNodes.length; i--;){
+		for (var i = el.childNodes.length; i--; i){
 			var child = el.childNodes[i];
 			if (child.nodeName && child.nodeType == 3 && child.nodeValue.contains(argument)) return true;
 		}

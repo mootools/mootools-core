@@ -1,2 +1,2 @@
-Native.alias(Hash, 'keys', 'getKeys');
-Native.alias(Hash, 'values', 'getValues');
+Hash.aliasOf('getKeys', 'keys');
+Hash.aliasOf('getValues', 'values');

@@ -95,7 +95,7 @@ var Accordion = new Class({
 	},
 
 	initialize: function(){
-		var params = Array.associate(arguments, {'container': 'element', 'options': 'object', 'togglers': true, 'elements': true});
+		var params = Array.link(arguments, {'container': $type.element, 'options': $type.object, 'togglers': $defined, 'elements': $defined});
 		arguments.callee.parent(params.elements, params.options);
 		this.togglers = $$(params.togglers);
 		this.container = $(params.container);

@@ -325,7 +325,7 @@ var Events = new Class({
 		for (var e in this.$events){
 			if (!type || type == e){
 				var fns = this.$events[e];
-				for (var i = fns.length; i--;) this.removeEvent(e, fns[i]);
+				for (var i = fns.length; i--; i) this.removeEvent(e, fns[i]);
 			}
 		}
 		return this;
