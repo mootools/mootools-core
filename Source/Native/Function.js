@@ -133,7 +133,7 @@ Function.implement({
 					if(!this[arguments[i]]) throw('doh!');
 				}
 			};
-			var result = myFunction.attempt(['pig', 'cow'], myObject); // false
+			var result = myFunction.attempt(['pig', 'cow'], myObject); //result = false
 		[/javascript]
 	*/
 
@@ -160,8 +160,8 @@ Function.implement({
 		[javascript]
 			function myFunction(){
 				this.setStyle('color', 'red');
-				// note that 'this' here refers to myFunction, not an element
-				// we'll need to bind this function to the element we want to alter
+				//note that 'this' here refers to myFunction, not an element
+				//we'll need to bind this function to the element we want to alter
 			};
 			var myBoundFunction = myFunction.bind(myElement);
 			myBoundFunction(); // this will make the element myElement red.
@@ -193,7 +193,7 @@ Function.implement({
 			//wait 50 milliseconds, then call myFunction and bind myElement to it
 			myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
 
-			// An anonymous function, example
+			//An anonymous function, example
 			(function(){ alert('one second later...'); }).delay(1000); //wait a second and alert
 		[/javascript]
 

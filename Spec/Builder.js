@@ -11,13 +11,55 @@ License:
 
 var Builder = {
 	
-	includeType: function(type){
-		for (var folder in this.scripts[type]) this.includeFolder(type, folder);
+	included: {
+		source: {},
+		spec: {}
+	},
+
+	paths: {
+		source: '../Source',
+		spec: '../Spec'
+	},
+
+	scripts: {
+		source: {
+			"Core"      : ["Core"],
+			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
+			"Class"     : ["Class", "Class.Extras"],
+			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form"],
+			"Selectors" : ["Selectors", "Selectors.Pseudo", "Selectors.Pseudo.Children"],
+			"Window"    : ["Window.DomReady", "Window.Size"],
+			"Effects"   : ["Fx", "Fx.CSS", "Fx.Elements", "Fx.Style", "Fx.Styles", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
+			"Drag"      : ["Drag", "Drag.Move"],
+			"Remote"    : ["XHR", "Ajax", "Cookie", "Json", "Json.Remote", "Assets"],
+			"Plugins"   : ["Accordion", "Color", "Group", "Hash.Cookie", "Scroller", "Slider", "SmoothScroll", "Sortables", "Tips"]
+		},
+
+		spec: {
+			"Core"      : ["Core"],
+			"Native"    : ["Array", "String", "Function", "Number"]
+		}
 	},
 	
-	includeFolder: function(type, folder){
-		var scripts = this.scripts[type][folder];
-		for (var i = 0, l = scripts.length; i < l; i++) this.includeFile(type, folder, scripts[i]);
+	getFolder: function(type, file){
+		var scripts = this.scripts[type];
+		for (var folder in scripts){
+			for (var i = 0; i < scripts[folder].length; i++){
+				var script = scripts[folder][i];
+				if (script == file) return folder;
+			}
+		}
+		return false;
+	},
+	
+	getRequest: function(){
+		var pairs = window.location.search.substring(1).split('&');
+		var obj = {};
+		for (var i = 0, l = pairs.length; i < l; i++){
+			var pair = pairs[i].split('=');
+			obj[pair[0]] = pair[1];
+		}
+		return obj;
 	},
 	
 	includeFile: function(type, folder, file){
@@ -32,55 +74,13 @@ var Builder = {
 		return document.write('\n\t<script type="text/javascript" src="' + this.paths[type] + '/' + folder + '/' + file + '.js"></script>');
 	},
 	
-	getFolder: function(type, file){
-		var scripts = this.scripts[type];
-		for (var folder in scripts){
-			for (var i = 0; i < scripts[folder].length; i++){
-				var script = scripts[folder][i];
-				if (script == file) return folder;
-			}
-		}
-		return false;
+	includeFolder: function(type, folder){
+		var scripts = this.scripts[type][folder];
+		for (var i = 0, l = scripts.length; i < l; i++) this.includeFile(type, folder, scripts[i]);
 	},
 	
-	paths: {
-		source: '../Source',
-		spec: '../Spec'
-	},
-	
-	included: {
-		source: {},
-		spec: {}
-	},
-
-	scripts: {
-		source: {
-			"Core"      : ["Core"],
-			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
-			"Class"     : ["Class", "Class.Extras"],
-			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form", "Element.Visibility"],
-			"Selectors" : ["Selectors", "Selectors.Pseudo", "Selectors.Pseudo.Children"],
-			"Window"    : ["Window.DomReady", "Window.Size"],
-			"Effects"   : ["Fx", "Fx.CSS", "Fx.Elements", "Fx.Style", "Fx.Styles", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
-			"Drag"      : ["Drag", "Drag.Move"],
-			"Remote"    : ["XHR", "Ajax", "Cookie", "Json", "Json.Remote", "Assets"],
-			"Plugins"   : ["Accordion", "Color", "Group", "Hash.Cookie", "Scroller", "Slider", "SmoothScroll", "Sortables", "Tips"]
-		},
-
-		spec: {
-			"Core"      : ["Core"],
-			"Native"    : ["Array", "Function"]
-		}
-	},
-	
-	getRequest: function(){
-		var pairs = window.location.search.substring(1).split('&');
-		var obj = {};
-		for (var i = 0, l = pairs.length; i < l; i++){
-			var pair = pairs[i].split('=');
-			obj[pair[0]] = pair[1];
-		}
-		return obj;
+	includeType: function(type){
+		for (var folder in this.scripts[type]) this.includeFolder(type, folder);
 	},
 	
 	includeRequest: function(type){

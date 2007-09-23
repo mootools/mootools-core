@@ -1,6 +1,6 @@
 /*
 Script: Array.js
-	Examples for Array.js
+	Specs for Array.js
 
 License:
 	MIT-style license.
@@ -13,7 +13,6 @@ describe('$A', {
 	},
 	
 	return_array_for_elements_collection: function(){
-		
 		var div = document.createElement('div');
 		var div2 = document.createElement('div');
 		var div3 = document.createElement('div');
@@ -25,7 +24,6 @@ describe('$A', {
 	},
 	
 	return_array_for_arguments: function(){
-		
 		var fun = function(){
 			value_of($A(arguments)).should_be([1,2,3]);
 		};
@@ -364,14 +362,14 @@ describe('Array Generics', {
 describe('$each', {
 
 	$each_on_arguments: function(){
-		var daysArr = [];
-		var eachFunc = function(){
+		var fun = function(){
+			var daysArr = [];
 			$each(arguments, function(value, key){
 				daysArr[key] = value;
 			});
+			value_of(daysArr).should_be(['Sun','Mon','Tue']);
 		};
-		eachFunc('Sun','Mon','Tue');
-		value_of(daysArr).should_be(['Sun','Mon','Tue']);
+		fun('Sun','Mon','Tue');
 	},
 
 	$each_on_array: function(){

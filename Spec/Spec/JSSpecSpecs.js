@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 
 Note:
-	All these examples should fail do demonstrate the different types of output that can be produced with JSSpec.
+	All examples should fail to demonstrate the usage and output of all the availible types of specs in JSSpec.
 */
 
 describe('Should be', {
