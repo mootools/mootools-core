@@ -38,6 +38,10 @@ body, #container {
 	overflow: hidden;
 }
 
+a {
+	text-decoration:none;
+}
+
 #title {
 	position: absolute;
 	top: 0;

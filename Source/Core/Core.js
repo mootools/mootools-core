@@ -12,8 +12,8 @@ MooTools Code & Documentation:
 	The MooTools team <http://mootools.net/developers/>.
 
 MooTools Credits:
-	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, License <http://creativecommons.org/licenses/LGPL/2.1/>
-	- Some functionality inspired by that found in Prototype.js <http://prototypejs.org> (c) 2005-2007 Sam Stephenson, MIT-style license
+	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+	- Some functionality inspired by that found in Prototype.js <http://prototypejs.org> (c) 2005-2007 Sam Stephenson, MIT License <http://opensource.org/licenses/mit-license.php>
 */
 
 var MooTools = {
