@@ -73,7 +73,7 @@ Fx.Morph = new Class({
 						var ruleStyle = rule.style[style];
 						to[style] = (style.test(/color/i) && ruleStyle.test(/^rgb/)) ? ruleStyle.rgbToHex() : ruleStyle;
 					}
-				};
+				}
 			});
 		});
 		return arguments.callee.parent(to);

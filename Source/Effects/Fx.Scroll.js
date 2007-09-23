@@ -64,7 +64,7 @@ Fx.Scroll = new Class({
 			case 'window': this.document = this.element.document; break;
 			case 'document': this.document = this.element; break;
 			case 'element': this.document = this.element.ownerDocument;
-		};
+		}
 		if (this.options.wheelStops){
 			this.addEvent('onStart', function(){
 				this.document.addEvent('mousewheel', this.bound.stop);
