@@ -404,6 +404,7 @@ Array.implement({
 		var result = {};
 		for (var i = 0, l = this.length; i < l; i++){
 			for (var key in object){
+				result[key] = null;
 				if (object[key](this[i])){
 					result[key] = this[i];
 					delete object[key];
@@ -639,19 +640,6 @@ Example:
 Array.alias('forEach', 'each');
 
 /*
-Function: $type.iterable
-	Returns true for when the object is iterable with Array methods (i.e. type of array, arguments or collection).
-
-See Also:
-	<$type>
-*/
-
-$type.iterable = function(iterable){
-	var type = $type(iterable);
-	return type == 'array' || type == 'arguments' || type == 'collection';
-};
-
-/*
 Function: $each
 	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
 
@@ -689,5 +677,7 @@ Examples:
 */
 
 function $each(iterable, fn, bind){
-	if (iterable) ($type.iterable(iterable)) ? Array : Hash).each(iterable, fn, bind);
+	var type = $type(iterable);
+	if (!type) return;
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
 };
