@@ -1,9 +1,9 @@
 /*
 Script: Swiff.js
-	Contains <Swiff>, <Swiff.getVersion>, <Swiff.remote>
+	Contains <Swiff>, <Swiff.getVersion>
 
 Credits:
-	Flash detection 'borrowed' from SWFObject.
+	Flash detection & Explorer + flash player 9 fix 'borrowed' from SWFObject.
 
 License:
 	MIT-style license.
@@ -14,168 +14,111 @@ Function: Swiff
 	Creates a Flash object with supplied parameters.
 
 Syntax:
-	>var mySwiff = Swiff(movie[, options]);
+	>var mySwiff = new Swiff(path[, options]);
 
 Arguments:
-	movie   - (string) The path to the swf movie.
+	path    - (string) The path to the swf movie.
 	options - (object) an object with options names as keys. See options below.
 
 	options (continued):
-		width      - (number: defaults to 1) The width of the flash object.
-		height     - (number: defaults to 1) The height of the flash object.
-		id         - (string: defaults to 'Swiff' + UID) The id of the flash object.
-		inject     - (element) The target container for the SWF object.
-		params     - (object) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
+		id - (string: defaults to 'Swiff_' + UID) The id of the flash object.
+		liveConnect  - (boolean: defaults to true) uses the swLiveConnect param to allow remote scripting.
+		params - (object) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
 		properties - (object) Additional attributes for the object element.
-		vars       - (object) Given to the SWF as querystring in flashVars.
-		callBacks  - (object) Functions you want to pass to your Flash movie.
+		vars - (object) Given to the SWF as querystring in flashVars.
+		events - (object) Functions you need to call from the flash movie. Those will be available globally in the movie, and bound to the object.
 
 		params (continued):
 			allowScriptAccess - (string: defaults to sameDomain) The domain that the SWF object allows access to.
+			
+		properties (continued):
+			width - (number: defaults to 1) The width of the flash object.
+			height - (number: defaults to 1) The height of the flash object.
 
 Returns:
 	(element) A new HTML object element.
 
 Example:
 	[javascript]
-		var obj = Swiff('myMovie.swf', {
-			inject: $('myElement')
-			width: 500,
-			height: 400,
+		var obj = new Swiff('myMovie.swf', {
 			id: 'myBeautifulMovie'
-			parameters: {
+			params: {
 				wmode: 'opaque',
-				bgcolor: '#ff3300',
+				bgcolor: '#ff3300'
+			},
+			properties: {
+				width: 500,
+				height: 400
 			},
 			vars: {
 				myVariable: myJsVar,
 				myVariableString: 'hello'
-			}
-			callBacks: {
+			},
+			events: {
 				onLoad: myOnloadFunc
 			}
 		});
 	[/javascript]
 
 Note:
-	The <$> function on the OBJECT element will not extend. The <$> will just target the movie by its id/reference. Therefore, its not possible to use the <Element> methods on the Element.
+	Swiff does not return the object, as the object is not extensible. Swiff will return its instance and it will reference the object internally.
 */
 
-var Swiff = function(movie, options){
+var Swiff = function(path, options){
+
 	if (!Swiff.fixed) Swiff.fix();
+
+	var instance = 'Swiff_' + Swiff.UID++;
+	
 	options = $merge({
-		width: 1,
-		height: 1,
-		id: null,
-		inject: null,
+		id: instance,
+		liveConnect: true,
+		properties: {
+			width: 1,
+			height: 1
+		},
 		params: {
 			allowScriptAccess: 'sameDomain'
 		},
-		properties: {},
-		callBacks: {},
+		events: {},
 		vars: {}
 	}, options);
 
-	var instance = Swiff.nextInstance();
-	var properties = $merge(options.properties, {
-		id: options.id || instance,
-		width: options.width,
-		height: options.height
-	});
-	var params = options.params;
-	var vars = options.vars;
-	Swiff.callBacks[instance] = {};
-	for (var prop in options.callBacks){
-		Swiff.callBacks[instance][prop] = options.callBacks[prop];
-		vars[prop] = 'Swiff.callBacks.' + instance + '.' + prop;
-	}
-	if ($type(vars) == 'object') vars = Hash.toQueryString(vars);
-	if (vars) params.FlashVars = (params.FlashVars) ? (params.FlashVars + '&' + vars) : vars;
-
+	var properties = options.properties, params = options.params, vars = options.vars, id = options.id;
+	
+	if (options.liveConnect) params.swLiveConnect = true;
+	Swiff.Events[instance] = {};
+	for (var evt in options.events) vars[evt] = 'Swiff.Events.' + instance + '.' + evt;
+	params.flashVars = Hash.toQueryString(vars);
 	if (Client.Engine.ie){
 		properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
-		params.movie = movie;
-	} else{
-		properties.type = 'application/x-shockwave-flash';
-		properties.data = movie;
+		params.movie = path;
 	}
-
-	var build = '<object ';
-	for (var attr in properties) build += attr + '="' + properties[attr] + '" ';
+	properties.type = 'application/x-shockwave-flash';
+	properties.data = path;
+	
+	var build = '<object id="' + options.id + '"';
+	for (var attr in properties) build += ' ' + attr + '="' + properties[attr] + '"';
 	build += '>';
 	for (var name in params) build += '<param name="' + name + '" value="' + params[name] + '" />';
 	build += '</object>';
-	var obj = new Element('div').setHTML(build).firstChild;
-	if (options.inject) $(options.inject).appendChild(obj);
-	return obj;
+	
+	var object = new Element('div').setHTML(build).firstChild;
+	for (var event in options.events) Swiff.Events[instance][event] = options.events[event].bind(object);
+	return object;
+	
+};
+
+Element.Builders.flash = function(path, props){
+	return new Swiff(path, props);
 };
 
 Swiff.extend({
-
+	
 	UID: 0,
-
-	callBacks: {},
-
-	nextInstance: function(){
-		return 'Swiff' + (++Swiff.UID);
-	},
-
-	/*
-	Function: Swiff.fix
-		Fixes bugs in ie+fp9.
-
-	Credits:
-		From swfObject, <http://blog.deconcept.com/swfobject/>
-	*/
-
-	fix: function(){
-		Swiff.fixed = true;
-		window.addEvent('beforeunload', function(){
-			__flash_unloadHandler = __flash_savedUnloadHandler = $empty;
-		});
-		if (!Client.Engine.ie) return;
-		window.addEvent('unload', function(){
-			Array.each(document.getElementsByTagName('object'), function(swf){
-				swf.style.display = 'none';
-				for (var p in swf){
-					if (typeof swf[p] == 'function') swf[p] = $empty;
-				}
-			});
-		});
-	},
-
-	/*
-	Function: Swiff.getVersion
-		Gets the major version of the flash player installed.
-
-	Syntax:
-		>var version = Swiff.getVersion();
-
-	Returns:
-		(number) A number representing the (major) flash version installed, or 0 if no player is installed.
-
-	Example:
-		[javascript]
-			alert(Swiff.getVersion());
-		[/javascript]
-	*/
-
-	getVersion: function(){
-		if (!$defined(Swiff.pluginVersion)){
-			var version;
-			if (navigator.plugins && navigator.mimeTypes.length){
-				version = navigator.plugins["Shockwave Flash"];
-				if (version && version.description) version = version.description;
-			} else if (Client.Engine.ie){
-				version = $try(function(){
-					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
-				});
-			}
-			Swiff.pluginVersion = ($type(version) == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
-		}
-		return Swiff.pluginVersion;
-	},
-
+	
+	Events: {},
+	
 	/*
 	Function: Swiff.remote
 		Calls an ActionScript function from javascript.
@@ -192,17 +135,65 @@ Swiff.extend({
 
 	Example:
 		[javascript]
-			var obj = Swiff('myMovie.swf');
+			var obj = new Swiff('myMovie.swf');
 			alert(Swiff.remote(obj, 'myFlashFn'));
 		[/javascript]
 
 	Note:
-		The SWF file should have been compiled with ExternalInterface component.
+		The SWF file must be compiled with ExternalInterface component.
 	*/
-
+	
 	remote: function(obj, fn){
-		var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 2) + '</invoke>');
+		var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 1) + '</invoke>');
 		return eval(rs);
-	}
+	},
+	
+	/*
+	Function: Swiff.getVersion
+		Gets the major version of the flash player installed.
 
+	Syntax:
+		>var version = Swiff.getVersion();
+
+	Returns:
+		(number) A number representing the (major) flash version installed, or 0 if no player is installed.
+
+	Example:
+		[javascript]
+			alert(Swiff.getVersion());
+		[/javascript]
+	*/
+	
+	getVersion: function(){
+		if (!$defined(Swiff.pluginVersion)){
+			var version;
+			if (navigator.plugins && navigator.mimeTypes.length){
+				version = navigator.plugins["Shockwave Flash"];
+				if (version && version.description) version = version.description;
+			} else if (Client.Engine.ie){
+				version = $try(function(){
+					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
+				});
+			}
+			Swiff.pluginVersion = ($type(version) == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
+		}
+		return Swiff.pluginVersion;
+	},
+	
+	fix: function(){
+		Swiff.fixed = true;
+		window.addEvent('beforeunload', function(){
+			__flash_unloadHandler = __flash_savedUnloadHandler = $empty;
+		});
+		if (!Client.Engine.ie) return;
+		window.addEvent('unload', function(){	
+			Array.each(document.getElementsByTagName('object'), function(obj){
+				obj.style.display = 'none';
+				for (var p in obj){
+					if (typeof obj[p] == 'function') obj[p] = $empty;
+				}
+			});
+		});
+	}
+	
 });

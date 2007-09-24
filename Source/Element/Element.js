@@ -53,10 +53,10 @@ See Also:
 
 var Element = new Native({
 
-	initialize: function(){
-		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object, 'element': $defined});
-		var props = params.properties || {}, el = params.element, doc = params.document || document;
-		if (el == 'iframe') return new IFrame(props, doc);
+	initialize: function(el){
+		if (Element.Builders[el]) return Element.Builders[el].run(Array.slice(arguments, 1));
+		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object});
+		var props = params.properties || {}, doc = params.document || document;
 		if ($type(el) == 'string'){
 			if (Client.Engine.ie && props && (props.name || props.type)){
 				var name = (props.name) ? ' name="' + props.name + '"' : '';
@@ -93,11 +93,9 @@ var IFrame = new Native({
 	
 	name: 'IFrame',
 
-	initialize: function(){
-		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object});
-		var props = params.properties || {}, doc = params.document || document;
+	initialize: function(props){
 		var iframe = $(document.createElement('iframe'));
-		iframe.name = props.name || 'iframe-' + iframe.$attributes.uid;
+		iframe.name = props.name || 'IFrame_' + iframe.$attributes.uid;
 		delete props.name;
 		var onload = props.onload || $empty;
 		delete props.onload;
@@ -358,6 +356,14 @@ Element.Setters = new Hash({
 		this.setProperties(properties);
 	}
 
+});
+
+Element.Builders = new Hash({
+	
+	iframe: function(props){
+		return new IFrame(props);
+	}
+	
 });
 
 Element.Setters.properties = Element.Setters.attributes;
