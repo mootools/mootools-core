@@ -117,7 +117,7 @@ var Swiff = function(path, options){
 	
 };
 
-Element.Builders.flash = function(path, props){
+Element.Builders.swf = function(path, props){
 	return new Swiff(path, props);
 };
 
