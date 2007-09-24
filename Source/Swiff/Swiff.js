@@ -22,14 +22,15 @@ Arguments:
 
 	options (continued):
 		id - (string: defaults to 'Swiff_' + UID) The id of the flash object.
-		liveConnect  - (boolean: defaults to true) uses the swLiveConnect param to allow remote scripting.
 		params - (object) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
 		properties - (object) Additional attributes for the object element.
 		vars - (object) Given to the SWF as querystring in flashVars.
 		events - (object) Functions you need to call from the flash movie. Those will be available globally in the movie, and bound to the object.
 
 		params (continued):
-			allowScriptAccess - (string: defaults to sameDomain) The domain that the SWF object allows access to.
+			allowScriptAccess - (string: defaults to always) The domain that the SWF object allows access to.
+			swLiveConnect - (boolean: defaults to true) the swLiveConnect param to allow remote scripting.
+			quality - (string: defaults to high) the render quality of the movie.
 			
 		properties (continued):
 			width - (number: defaults to 1) The width of the flash object.
@@ -72,13 +73,15 @@ var Swiff = function(path, options){
 	
 	options = $merge({
 		id: instance,
-		liveConnect: true,
+		container: null,
 		properties: {
 			width: 1,
 			height: 1
 		},
 		params: {
-			allowScriptAccess: 'sameDomain'
+			quality: 'high',
+			allowScriptAccess: 'always',
+			swLiveConnect: true
 		},
 		events: {},
 		vars: {}
@@ -86,26 +89,31 @@ var Swiff = function(path, options){
 
 	var properties = options.properties, params = options.params, vars = options.vars, id = options.id;
 	
-	if (options.liveConnect) params.swLiveConnect = true;
 	Swiff.Events[instance] = {};
-	for (var evt in options.events) vars[evt] = 'Swiff.Events.' + instance + '.' + evt;
+	for (var event in options.events){
+		Swiff.Events[instance][event] = function(){
+			options.events[event].call($(options.id));
+		};
+		vars[event] = 'Swiff.Events.' + instance + '.' + event;
+	}
+	
 	params.flashVars = Hash.toQueryString(vars);
+	
 	if (Client.Engine.ie){
 		properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 		params.movie = path;
+	} else {
+		properties.type = 'application/x-shockwave-flash';
+		properties.data = path;
 	}
-	properties.type = 'application/x-shockwave-flash';
-	properties.data = path;
 	
 	var build = '<object id="' + options.id + '"';
-	for (var attr in properties) build += ' ' + attr + '="' + properties[attr] + '"';
+	for (var property in properties) build += ' ' + property + '="' + properties[property] + '"';
 	build += '>';
-	for (var name in params) build += '<param name="' + name + '" value="' + params[name] + '" />';
+	for (var param in params) build += '<param name="' + param + '" value="' + params[param] + '" />';
 	build += '</object>';
 	
-	var object = new Element('div').setHTML(build).firstChild;
-	for (var event in options.events) Swiff.Events[instance][event] = options.events[event].bind(object);
-	return object;
+	return ($(options.container) || new Element('div')).setHTML(build).firstChild;
 	
 };
 

@@ -138,7 +138,6 @@ var Tips = new Class({
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
 		var end = this.end.bind(this);
 		el.addEvent('mouseleave', end);
-		el.addEvent('trash', end);
 	},
 
 	start: function(el){

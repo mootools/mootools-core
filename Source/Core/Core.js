@@ -526,14 +526,7 @@ var Window = new Native({
 		}
 		
 		win.HTMLElement.prototype.htmlElement = $empty;
-		
-		new Native({
-			name: 'HTMLElement',
-			initialize: win.HTMLElement,
-			browser: false,
-			generics: false
-		});
-		
+
 		return $extend(win, this);
 	},
 	

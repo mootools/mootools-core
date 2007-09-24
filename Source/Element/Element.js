@@ -213,19 +213,11 @@ Window.implement({
 	*/
 
 	$: function(el){
-		if (!el) return null;
-		if (el.htmlElement) return Garbage.collect(el);
 		var type = $type(el);
-		if (type == 'string'){
-			el = this.document.getElementById(el);
-			type = (el) ? 'element' : false;
-		}
-		if (type != 'element') return (['window', 'document'].contains(type)) ? el : null;
-		if (el.htmlElement) return Garbage.collect(el);
-		if (Element.$badTags.contains(el.tagName.toLowerCase())) return el;
-		$extend(el, Element.prototype);
-		el.htmlElement = $empty;
-		return Garbage.collect(el);
+		if (type == 'string') type = (el = this.document.getElementById(el)) ? 'element' : false;
+		if (type != 'element') return el || null;
+		if (Garbage.collect(el) && !el.htmlElement) $extend($extend(el, {htmlElement: $empty}), Element.prototype);
+		return el;
 	},
 
 	/*
@@ -1610,8 +1602,6 @@ Element.implement({
 
 });
 
-Element.$badTags = ['object', 'embed'];
-
 Element.$attributes = {
 	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
 	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
@@ -1643,37 +1633,36 @@ Element.UID = 0;
 
 var Garbage = {
 
-	elements: {},
+	Elements: {},
 
 	collect: function(el){
+		if (({'OBJECT': 1, 'EMBED': 1})[el.nodeName]) return false;
 		if (!el.$attributes){
 			el.$attributes = {'opacity': 1, 'uid': Element.UID++};
-			Garbage.elements[el.$attributes.uid] = el;
+			Garbage.Elements[el.$attributes.uid] = el;
 		}
-		return el;
+		return true;
 	},
 
 	trash: function(elements){
 		for (var i = elements.length, el; i--; i){
 			if (!(el = elements[i]) || !el.$attributes) continue;
-			if (el.tagName && !Element.$badTags.contains(el.tagName.toLowerCase())) Garbage.kill(el);
+			Garbage.kill(el);
 		}
 	},
 
-	kill: function(el, unload){
-		delete Garbage.elements[String(el.$attributes.uid)];
-		if (el.$events) el.fireEvent('trash', unload).removeEvents();
+	kill: function(el){
+		delete Garbage.Elements[String(el.$attributes.uid)];
+		if (el.$events) el.removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
 		if (Client.Engine.ie){
 			for (var d in Element.prototype) el[d] = null;
 		}
-		el.htmlElement = el.$attributes = el = null;
+		el.$attributes = null;
 	},
 
 	empty: function(){
-		Garbage.collect(window);
-		Garbage.collect(document);
-		for (var uid in Garbage.elements) Garbage.kill(Garbage.elements[uid], true);
+		for (var uid in Garbage.Elements) Garbage.kill(Garbage.Elements[uid]);
 	}
 
 };
