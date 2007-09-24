@@ -151,7 +151,6 @@ Function.implement({
 	Arguments:
 		bind - (object, optional) The object that the "this" of the function will refer to.
 		args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-		evt  - (mixed, optional) Used to signifiy that the function is an Event Listener. See <Function.create> Options section for more information.
 
 	Returns:
 		(function) The binded function.
@@ -160,7 +159,7 @@ Function.implement({
 		[javascript]
 			function myFunction(){
 				this.setStyle('color', 'red');
-				//note that 'this' here refers to myFunction, not an element
+				//note that 'this' here refers to window, not an element
 				//we'll need to bind this function to the element we want to alter
 			};
 			var myBoundFunction = myFunction.bind(myElement);
@@ -168,8 +167,39 @@ Function.implement({
 		[/javascript]
 	*/
 
-	bind: function(bind, args, evt){
-		return this.create({'bind': bind, 'arguments': args, 'event': evt});
+	bind: function(bind, args){
+		return this.create({'bind': bind, 'arguments': args});
+	},
+	
+	/*
+	Method: bindWithEvent
+		Returns a function whose "this" is altered. It also makes "space" for an event.
+		This makes the method indicate for using in conjunction with <Element.addEvent> and arguments.
+
+	Syntax:
+		>myFunction.bindWithEvent([bind[, args[, evt]]]);
+
+	Arguments:
+		bind - (object, optional) The object that the "this" of the function will refer to.
+		args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+
+	Returns:
+		(function) The binded function.
+
+	Example:
+		[javascript]
+			function myFunction(e, add){
+				this.setStyle('top', e.client.x + add);
+				//note that 'this' here refers to window, not an element
+				//we'll need to bind this function to the element we want to alter
+			};
+			$(myElement).addEvent('click', myFunction.bindWithEvent(myElement, 100);
+			//when clicked the element will move to the position of the mouse + 100;
+		[/javascript]
+	*/
+	
+	bindWithEvent: function(bind, args){
+		return this.create({'bind': bind, 'event': true, 'arguments': args});
 	},
 
 	/*

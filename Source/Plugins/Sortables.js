@@ -145,7 +145,7 @@ var Sortables = new Class({
 		}.bind(this));
 
 		this.handles.each(function(handle, i){
-			this.bound.start[i] = this.start.bind(this, elements[i], true);
+			this.bound.start[i] = this.start.bindWithEvent(this, elements[i]);
 		}, this);
 
 		this.attach();
