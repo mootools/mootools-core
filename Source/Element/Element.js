@@ -215,7 +215,7 @@ Window.implement({
 	$: function(el){
 		var type = $type(el);
 		if (type == 'string') type = (el = this.document.getElementById(el)) ? 'element' : false;
-		if (type != 'element') return el || null;
+		if (type != 'element') return (type == 'window' || type == 'document') ? el : null;
 		if (Garbage.collect(el) && !el.htmlElement) $extend($extend(el, {htmlElement: $empty}), Element.prototype);
 		return el;
 	},
