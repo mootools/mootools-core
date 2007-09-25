@@ -1636,7 +1636,7 @@ var Garbage = {
 	Elements: {},
 
 	collect: function(el){
-		if (({'OBJECT': 1, 'EMBED': 1})[el.nodeName]) return false;
+		if (({'object': 1, 'embed': 1})[el.tagName.toLowerCase()]) return false;
 		if (!el.$attributes){
 			el.$attributes = {'opacity': 1, 'uid': Element.UID++};
 			Garbage.Elements[el.$attributes.uid] = el;

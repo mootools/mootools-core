@@ -394,10 +394,9 @@ var Options = new Class({
 
 	setOptions: function(options){
 		this.options = $merge(this.options, options);
-		if (this.addEvent){
-			for (var option in this.options){
-				if ((/^on[A-Z]/).test(option) && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
-			}
+		if (!this.addEvent) return this;
+		for (var option in this.options){
+			if ((/^on[A-Z]/).test(option) && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
 		}
 		return this;
 	}

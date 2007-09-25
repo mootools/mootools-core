@@ -33,7 +33,7 @@ describe('Function', {
 			return this + ' is ' + adj1 + ' and ' + adj2;
 		};
 
-		var fn = fnTest.bind('MooTools', ['beautiful', 'elegant'], true);
+		var fn = fnTest.bindWithEvent('MooTools', ['beautiful', 'elegant']);
 		
 		value_of(fn()).should_be('MooTools is beautiful and elegant');
 	},

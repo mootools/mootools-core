@@ -39,7 +39,7 @@ describe('Class', {
 			Extends: Animal,
 
 			initialize: function(name, color){
-				this.parent(name);
+				arguments.callee.parent(name);
 				this.color = color;
 				this.ferocious = false;
 			},
@@ -53,7 +53,7 @@ describe('Class', {
 			Extends: Cat,
 
 			initialize: function(name, type){
-				this.parent(name, 'gold');
+				arguments.callee.parent(name, 'gold');
 				this.type = type;
 				this.ferocious = true;
 			},
