@@ -68,7 +68,7 @@ var Color = new Class({
 		}
 		rgb.hsb = hsb;
 		rgb.hex = rgb.rgbToHex();
-		return $extend(rgb, Color.prototype);
+		return $extend(rgb, this);
 	},
 
 	/*
@@ -203,6 +203,7 @@ var Color = new Class({
 			});
 		[/javascript]
 	*/
+
 	setBrightness: function(percent){
 		return new Color([this.hsb[0], this.hsb[1], percent], 'hsb');
 	}

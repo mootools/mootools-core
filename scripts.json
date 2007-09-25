@@ -86,35 +86,30 @@
 
 	},
 
-	"Selectors": {
-
-		"Selectors": {
-			"deps": ["Element.Filters"],
-			"desc": "Adds Advanced Css Selectors capability to Elements."
-		},
-
-		"Selectors.Pseudo": {
-			"deps": ["Selectors"],
-			"desc": "Adds the default Pseudo Selectors."
-		},
-
-		"Selectors.Pseudo.Children": {
-			"deps": ["Selectors"],
-			"desc": "Adds the :children Selector."
-		}
-
-	},
-
 	"Window": {
 
 		"Window.DomReady": {
 			"deps": ["Element.Event"],
-			"desc": "Contains the domready event."
+			"desc": "Contains the domready custom window event."
 		},
 
 		"Window.Size": {
 			"deps": ["Element"],
-			"desc": "Function to get window dimensions in a crossbrowser fashion."
+			"desc": "Contains methods to get window dimensions in a crossbrowser fashion."
+		}
+
+	},
+	
+	"Selectors": {
+
+		"Selectors": {
+			"deps": ["Element.Filters"],
+			"desc": "Adds the advanced CSS Selectors capability."
+		},
+
+		"Selectors.Pseudo": {
+			"deps": ["Selectors"],
+			"desc": "Adds the advanced CSS3 Pseudo Selectors capability."
 		}
 
 	},
@@ -131,11 +126,6 @@
 			"desc": "Contains the CSS animation logic. Used by Styles based Effects."
 		},
 
-		"Fx.Elements": {
-			"deps": ["Fx.CSS"],
-			"desc": "Effect to change any number of css properties to any number of elements."
-		},
-
 		"Fx.Style": {
 			"deps": ["Fx.CSS"],
 			"desc": "Effect to change any css property for an element."
@@ -144,11 +134,6 @@
 		"Fx.Styles": {
 			"deps": ["Fx.CSS"],
 			"desc": "Effect to change any number of css properties for an element."
-		},
-
-		"Fx.Morph": {
-			"deps": ["Fx.Styles"],
-			"desc": "Effect to morph an element from one css class to another."
 		},
 
 		"Fx.Scroll": {
@@ -164,20 +149,6 @@
 		"Fx.Transitions": {
 			"deps": ["Fx"],
 			"desc": "Contains transitions to be used with any of the above effects."
-		}
-
-	},
-
-	"Drag": {
-
-		"Drag": {
-			"deps": ["Class.Extras", "Element.Event", "Element.Style"],
-			"desc": "the basic drag class. you can use this to drag, resize and whatever you want to do when dragging the mouse."
-		},
-
-		"Drag.Move": {
-			"deps": ["Drag", "Element.Dimensions"],
-			"desc": "Drag.Move extends Drag, adding support for draggable containers and droppables."
 		}
 
 	},
@@ -202,27 +173,35 @@
 		"Json": {
 			"deps": ["Core", "Array", "String", "Function", "Number"],
 			"desc": "Json encoder/decoder."
-		},
-
-		"Json.Remote": {
-			"deps": ["XHR", "Json"],
-			"desc": "Shortcut Class to send and receive Javascript Objects."
-		},
-
-		"Assets": {
-			"deps": ["Element.Event"],
-			"desc": "Contains functions to load external files on the fly: images, css, javascript."
 		}
 
 	},
+	
+	"Swiff": {
 
-	"Plugins": {
+		"Swiff": {
+			"deps": ["Element.Event"],
+			"desc": "Wrapper for embedding swf movies. Supports and fixes External Interface Communication."
+		}
 
-		"Accordion": {
-			"deps": ["Fx.Elements", "Element.Event"],
-			"desc": "Does it need a description?"
+	},
+	
+	"Drag": {
+
+		"Drag": {
+			"deps": ["Class.Extras", "Element.Event", "Element.Style"],
+			"desc": "the basic drag class. you can use this to drag, resize and whatever you want to do when dragging the mouse."
 		},
 
+		"Drag.Move": {
+			"deps": ["Drag", "Element.Dimensions"],
+			"desc": "Drag.Move extends Drag, adding support for draggable containers and droppables."
+		}
+
+	},
+	
+	"Plugins": {
+		
 		"Color": {
 			"deps": ["Core", "Class", "Array", "String", "Function", "Number"],
 			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
@@ -232,10 +211,40 @@
 			"deps": ["Class.Extras"],
 			"desc": "The Group."
 		},
+		
+		"Assets": {
+			"deps": ["Element.Event"],
+			"desc": "Contains functions to load external files on the fly: images, css, javascript."
+		},
+		
+		"Fx.Morph": {
+			"deps": ["Fx.Styles"],
+			"desc": "Effect to morph an element from one css class to another."
+		},
+		
+		"Fx.Elements": {
+			"deps": ["Fx.CSS"],
+			"desc": "Effect to change any number of css properties to any number of elements."
+		},
+		
+		"Selectors.Children": {
+			"deps": ["Selectors"],
+			"desc": "Adds the :children Selector."
+		},
 
 		"Hash.Cookie": {
 			"deps": ["Hash", "Cookie", "Json"],
 			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
+		},
+		
+		"Json.Remote": {
+			"deps": ["XHR", "Json"],
+			"desc": "Shortcut Class to send and receive Javascript Objects."
+		},
+		
+		"Sortables": {
+			"deps": ["Element.Event", "Element.Dimensions", "Element.Style"],
+			"desc": "Creates an interface for drag and drop sorting of a list or lists."
 		},
 
 		"Scroller": {
@@ -253,23 +262,14 @@
 			"desc": "Smooth scroll your internal links."
 		},
 
-		"Sortables": {
-			"deps": ["Element.Event", "Element.Dimensions", "Element.Style"],
-			"desc": "Creates an interface for drag and drop sorting of a list or lists."
-		},
-
 		"Tips": {
 			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Window.Size"],
 			"desc": "The Tooltips."
-		}
-
-	},
-
-	"Swiff": {
-
-		"Swiff": {
-			"deps": ["Element.Event"],
-			"desc": "Wrapper for embedding swf movies."
+		},
+		
+		"Accordion": {
+			"deps": ["Fx.Elements", "Element.Event"],
+			"desc": "Does it need a description?"
 		}
 
 	}

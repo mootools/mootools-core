@@ -1,5 +1,5 @@
 /*
-Script: Selectors.Pseudo.Children.js
+Script: Selectors.Children.js
 	custom :children() pseudo selecor
 
 License:

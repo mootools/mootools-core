@@ -7,7 +7,7 @@ License:
 */
 
 /*
-Class: Asset
+Hash: Asset
 	Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.
 */
 
