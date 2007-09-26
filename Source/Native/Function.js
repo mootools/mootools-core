@@ -170,7 +170,7 @@ Function.implement({
 	bind: function(bind, args){
 		return this.create({'bind': bind, 'arguments': args});
 	},
-	
+
 	/*
 	Method: bindWithEvent
 		Returns a function whose "this" is altered. It also makes "space" for an event.
@@ -197,7 +197,7 @@ Function.implement({
 			//when clicked the element will move to the position of the mouse + 100;
 		[/javascript]
 	*/
-	
+
 	bindWithEvent: function(bind, args){
 		return this.create({'bind': bind, 'event': true, 'arguments': args});
 	},

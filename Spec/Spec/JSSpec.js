@@ -31,9 +31,9 @@
 
 var JSSpec = {
 	specs: [],
-	
+
 	EMPTY_FUNCTION: function(){},
-	
+
 	Browser: {
 		Trident: navigator.appName == "Microsoft Internet Explorer",
 		Webkit: navigator.userAgent.indexOf('AppleWebKit/') > -1,
@@ -50,7 +50,7 @@ JSSpec.Executor = function(target, onSuccess, onException){
 	this.target = target;
 	this.onSuccess = typeof onSuccess == 'function' ? onSuccess : JSSpec.EMPTY_FUNCTION;
 	this.onException = typeof onException == 'function' ? onException : JSSpec.EMPTY_FUNCTION;
-	
+
 	if(JSSpec.Browser.Trident){
 		// Exception handler for Trident. It helps to collect exact line number where exception occured.
 		window.onerror = function(message, fileName, lineNumber){
@@ -61,7 +61,7 @@ JSSpec.Executor = function(target, onSuccess, onException){
 				ex = self.mergeExceptions(JSSpec._assertionFailure, ex);
 				delete JSSpec._secondPass;
 				delete JSSpec._assertionFailure;
-				
+
 				ex.type = "failure";
 				self.onException(self, ex);
 			} else if(JSSpec._assertionFailure){
@@ -70,7 +70,7 @@ JSSpec.Executor = function(target, onSuccess, onException){
 			} else {
 				self.onException(self, ex);
 			}
-			
+
 			return true;
 		};
 	}
@@ -82,7 +82,7 @@ JSSpec.Executor.prototype.mergeExceptions = function(assertionFailure, normalExc
 		fileName:normalException.fileName,
 		lineNumber:normalException.lineNumber
 	};
-	
+
 	return merged;
 };
 
@@ -92,13 +92,13 @@ JSSpec.Executor.prototype.run = function(){
 	var target = this.target;
 	var onSuccess = this.onSuccess;
 	var onException = this.onException;
-	
+
 	window.setTimeout(
 		function(){
 			var result;
 			if(JSSpec.Browser.Trident){
 				window._curExecutor = self;
-				
+
 				result = self.target();
 				self.onSuccess(self, result);
 			} else {
@@ -107,12 +107,12 @@ JSSpec.Executor.prototype.run = function(){
 					self.onSuccess(self, result);
 				} catch(ex){
 					if(JSSpec.Browser.Webkit) ex = {message:ex.message, fileName:ex.sourceURL, lineNumber:ex.line};
-					
+
 					if(JSSpec._secondPass)  {
 						ex = self.mergeExceptions(JSSpec._assertionFailure, ex);
 						delete JSSpec._secondPass;
 						delete JSSpec._assertionFailure;
-						
+
 						ex.type = "failure";
 						self.onException(self, ex);
 					} else if(JSSpec._assertionFailure){
@@ -149,7 +149,7 @@ JSSpec.CompositeExecutor.prototype.addExecutor = function(executor){
 	if(last){
 		last.next = executor;
 	}
-	
+
 	executor.parent = this;
 	executor.onSuccessBackup = executor.onSuccess;
 	executor.onSuccess = function(result){
@@ -241,7 +241,7 @@ JSSpec.Spec.prototype.extractOutSpecialEntries = function(entries){
 	this.beforeAll = JSSpec.EMPTY_FUNCTION;
 	this.afterEach = JSSpec.EMPTY_FUNCTION;
 	this.afterAll = JSSpec.EMPTY_FUNCTION;
-	
+
 	for(name in entries){
 		if(name == 'before' || name == 'before each'){
 			this.beforeEach = entries[name];
@@ -253,7 +253,7 @@ JSSpec.Spec.prototype.extractOutSpecialEntries = function(entries){
 			this.afterAll = entries[name];
 		}
 	}
-	
+
 	delete entries['before'];
 	delete entries['before each'];
 	delete entries['before all'];
@@ -290,14 +290,14 @@ JSSpec.Spec.prototype.getExecutor = function(){
 	var onException = function(executor, ex){
 		self.exception = ex;
 	};
-	
+
 	var composite = new JSSpec.CompositeExecutor();
 	composite.addFunction(function(){JSSpec.log.onSpecStart(self);});
 	composite.addExecutor(new JSSpec.Executor(this.beforeAll, null, function(exec, ex){
 		self.exception = ex;
 		JSSpec.log.onSpecEnd(self);
 	}));
-	
+
 	var exampleAndAfter = new JSSpec.CompositeExecutor(null,null,true);
 	for(var i = 0; i < this.examples.length; i++){
 		exampleAndAfter.addExecutor(this.examples[i].getExecutor());
@@ -306,7 +306,7 @@ JSSpec.Spec.prototype.getExecutor = function(){
 	exampleAndAfter.addExecutor(new JSSpec.Executor(function(){window.temp = {};}, null, onException));
 	exampleAndAfter.addFunction(function(){JSSpec.log.onSpecEnd(self);});
 	composite.addExecutor(exampleAndAfter);
-	
+
 	return composite;
 };
 
@@ -335,22 +335,22 @@ JSSpec.Example.prototype.getExecutor = function(){
 	var onException = function(executor, ex){
 		self.exception = ex;
 	};
-	
+
 	var composite = new JSSpec.CompositeExecutor();
 	composite.addFunction(function(){JSSpec.log.onExampleStart(self);});
 	composite.addExecutor(new JSSpec.Executor(this.before, null, function(exec, ex){
 		self.exception = ex;
 		JSSpec.log.onExampleEnd(self);
 	}));
-	
+
 	var targetAndAfter = new JSSpec.CompositeExecutor(null,null,true);
-	
+
 	targetAndAfter.addExecutor(new JSSpec.Executor(this.target, null, onException));
 	targetAndAfter.addExecutor(new JSSpec.Executor(this.after, null, onException));
 	targetAndAfter.addFunction(function(){JSSpec.log.onExampleEnd(self);});
-	
+
 	composite.addExecutor(targetAndAfter);
-	
+
 	return composite;
 };
 
@@ -360,7 +360,7 @@ JSSpec.Example.prototype.getExecutor = function(){
 
 JSSpec.Runner = function(specs, logger){
 	JSSpec.log = logger;
-	
+
 	this.totalExamples = 0;
 	this.specs = [];
 	this.specsMap = {};
@@ -448,7 +448,7 @@ JSSpec.Logger.prototype.onRunnerStart = function(){
 		container.id = "container";
 		document.body.appendChild(container);
 	}
-	
+
 	var title = document.createElement("DIV");
 	title.id = "title";
 	title.innerHTML = [
@@ -484,7 +484,7 @@ JSSpec.Logger.prototype.onRunnerStart = function(){
 		'<span class="spc"></span>'
 	].join("");
 	container.appendChild(list);
-	
+
 	var log = document.createElement("DIV");
 	log.id = "log";
 	log.innerHTML = [
@@ -518,13 +518,13 @@ JSSpec.Logger.prototype.onRunnerStart = function(){
 };
 
 JSSpec.Logger.prototype.onRunnerEnd = function(){
-	
+
 };
 
 JSSpec.Logger.prototype.onSpecStart = function(spec){
 	var spec_list = document.getElementById("spec_" + spec.id + "_list");
 	var spec_log = document.getElementById("spec_" + spec.id);
-	
+
 	spec_list.className = "ongoing";
 	spec_log.className = "ongoing";
 };
@@ -539,7 +539,7 @@ JSSpec.Logger.prototype.onSpecEnd = function(spec){
 	spec_log.className = className;
 
 	if(JSSpec.options.autocollapse && !spec.hasException()) examples.style.display = "none";
-	
+
 	if(spec.exception){
 		heading.appendChild(document.createTextNode(" - " + spec.exception.message));
 	}
@@ -553,18 +553,18 @@ JSSpec.Logger.prototype.onExampleStart = function(example){
 JSSpec.Logger.prototype.onExampleEnd = function(example){
 	var li = document.getElementById("example_" + example.id);
 	li.className = example.exception ? "exception" : "success";
-	
+
 	if(example.exception){
 		var div = document.createElement("DIV");
 		div.innerHTML = example.exception.message + "<p class='uri'><br />" + " at " + example.exception.fileName + ", line " + example.exception.lineNumber + "</p>";
 		li.appendChild(div);
 	}
-	
+
 	var title = document.getElementById("title");
 	var runner = JSSpec.runner;
-	
+
 	title.className = runner.hasException() ? "exception" : "success";
-	
+
 	this.finishedExamples++;
 	document.getElementById("total_failures").innerHTML = runner.getTotalFailures();
 	document.getElementById("total_errors").innerHTML = runner.getTotalErrors();
@@ -633,9 +633,9 @@ JSSpec.IncludeMatcher.prototype.makeExplainForArray = function(){
 			}
 		}
 	}
-	
+
 	if(this.match) return "";
-	
+
 	var sb = [];
 	sb.push('<p>actual value:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.actual, false, this.condition ? null : i) + '</p>');
@@ -655,7 +655,7 @@ JSSpec.PropertyLengthMatcher = function(num, property, o, condition){
 	if((property == 'characters' || property == 'items') && typeof o.length != 'undefined'){
 		this.property = 'length';
 	}
-	
+
 	this.condition = condition;
 	this.conditionMet = function(x){
 		if(condition == 'exactly') return x.length == num;
@@ -669,7 +669,7 @@ JSSpec.PropertyLengthMatcher = function(num, property, o, condition){
 };
 
 JSSpec.PropertyLengthMatcher.prototype.makeExplain = function(){
-	
+
 	if(this.o._type && this.o._type == 'String' && this.property == 'length'){
 		this.match = this.conditionMet(this.o);
 		return this.match ? '' : this.makeExplainForString();
@@ -685,27 +685,27 @@ JSSpec.PropertyLengthMatcher.prototype.makeExplain = function(){
 	}
 
 	this.match = true;
-	
+
 	return null;
 };
 
 JSSpec.PropertyLengthMatcher.prototype.makeExplainForString = function(){
 	var sb = [];
-	
+
 	var exp = this.num == 0 ?
 		'be an <strong>empty string</strong>' :
 		'have <strong>' + this.condition + ' ' + this.num + ' characters</strong>';
-	
+
 	sb.push('<p>actual value has <strong>' + this.o.length + ' characters</strong>:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.o) + '</p>');
 	sb.push('<p>but it should ' + exp + '.</p>');
-	
+
 	return sb.join("");
 };
 
 JSSpec.PropertyLengthMatcher.prototype.makeExplainForArray = function(){
 	var sb = [];
-	
+
 	var exp = this.num == 0 ?
 		'be an <strong>empty array</strong>' :
 		'have <strong>' + this.condition + ' ' + this.num + ' items</strong>';
@@ -713,7 +713,7 @@ JSSpec.PropertyLengthMatcher.prototype.makeExplainForArray = function(){
 	sb.push('<p>actual value has <strong>' + this.o.length + ' items</strong>:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.o) + '</p>');
 	sb.push('<p>but it should ' + exp + '.</p>');
-	
+
 	return sb.join("");
 };
 
@@ -727,17 +727,17 @@ JSSpec.PropertyLengthMatcher.prototype.makeExplainForObject = function(){
 	sb.push('<p>actual value has <strong>' + this.o[this.property].length + ' ' + this.property + '</strong>:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.o, false, this.property) + '</p>');
 	sb.push('<p>but it should ' + exp + '.</p>');
-	
+
 	return sb.join("");
 };
 
 JSSpec.PropertyLengthMatcher.prototype.makeExplainForNoProperty = function(){
 	var sb = [];
-	
+
 	sb.push('<p>actual value:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.o) + '</p>');
 	sb.push('<p>should have <strong>' + this.condition + ' ' + this.num + ' ' + this.property + '</strong> but there\'s no such property.</p>');
-	
+
 	return sb.join("");
 };
 
@@ -763,7 +763,7 @@ JSSpec.PropertyLengthMatcher.createInstance = function(num, property, o, conditi
 JSSpec.EqualityMatcher = {};
 
 JSSpec.EqualityMatcher.createInstance = function(expected, actual){
-	
+
 	if(expected == null || actual == null){
 		return new JSSpec.NullEqualityMatcher(expected, actual);
 	} else if(expected._type && expected._type == actual._type){
@@ -779,18 +779,18 @@ JSSpec.EqualityMatcher.createInstance = function(expected, actual){
 			return new JSSpec.BooleanEqualityMatcher(expected, actual);
 		}
 	}
-	
+
 	return new JSSpec.ObjectEqualityMatcher(expected, actual);
 };
 
 JSSpec.EqualityMatcher.basicExplain = function(expected, actual, expectedDesc, actualDesc){
 	var sb = [];
-	
+
 	sb.push(actualDesc || '<p>actual value:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(actual) + '</p>');
 	sb.push(expectedDesc || '<p>should be:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(expected) + '</p>');
-	
+
 	return sb.join("");
 };
 
@@ -799,15 +799,15 @@ JSSpec.EqualityMatcher.diffExplain = function(expected, actual){
 
 	sb.push('<p>diff:</p>');
 	sb.push('<p class="left">');
-	
+
 	var dmp = new diff_match_patch();
 	var diff = dmp.diff_main(expected, actual);
 	dmp.diff_cleanupEfficiency(diff);
-	
+
 	sb.push(JSSpec.util.inspect(dmp.diff_prettyHtml(diff), true));
-	
+
 	sb.push('</p>');
-	
+
 	return sb.join("");
 };
 
@@ -822,12 +822,12 @@ JSSpec.BooleanEqualityMatcher = function(expected, actual){
 
 JSSpec.BooleanEqualityMatcher.prototype.explain = function(){
 	var sb = [];
-	
+
 	sb.push('<p>actual value:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.actual) + '</p>');
 	sb.push('<p>should be:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.expected) + '</p>');
-	
+
 	return sb.join("");
 };
 
@@ -863,7 +863,7 @@ JSSpec.DateEqualityMatcher.prototype.matches = function(){
 
 JSSpec.DateEqualityMatcher.prototype.explain = function(){
 	var sb = [];
-	
+
 	sb.push(JSSpec.EqualityMatcher.basicExplain(this.expected, this.actual));
 	sb.push(JSSpec.EqualityMatcher.diffExplain(this.expected.toString(), this.actual.toString()));
 
@@ -890,13 +890,13 @@ JSSpec.ObjectEqualityMatcher.prototype.makeExplain = function(){
 		this.match = true;
 		return "";
 	}
-	
+
 	if(JSSpec.util.isDomNode(this.expected)){
 		return this.makeExplainForDomNode();
 	}
-	
+
 	var key, expectedHasItem, actualHasItem;
-	
+
 	for(key in this.expected){
 		expectedHasItem = this.expected[key] != null && typeof this.expected[key] != 'undefined';
 		actualHasItem = this.actual[key] != null && typeof this.actual[key] != 'undefined';
@@ -907,22 +907,22 @@ JSSpec.ObjectEqualityMatcher.prototype.makeExplain = function(){
 		actualHasItem = this.actual[key] != null && typeof this.actual[key] != 'undefined';
 		if(actualHasItem && !expectedHasItem) return this.makeExplainForUnknownItem(key);
 	}
-	
+
 	for(key in this.expected){
 		var matcher = JSSpec.EqualityMatcher.createInstance(this.expected[key], this.actual[key]);
 		if(!matcher.matches()) return this.makeExplainForItemMismatch(key);
 	}
-		
+
 	this.match = true;
-	
+
 	return null;
 };
 
 JSSpec.ObjectEqualityMatcher.prototype.makeExplainForDomNode = function(key){
 	var sb = [];
-	
+
 	sb.push(JSSpec.EqualityMatcher.basicExplain(this.expected, this.actual));
-	
+
 	return sb.join("");
 };
 
@@ -933,7 +933,7 @@ JSSpec.ObjectEqualityMatcher.prototype.makeExplainForMissingItem = function(key)
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.actual, false, key) + '</p>');
 	sb.push('<p>but it should have the item whose value is <strong>' + JSSpec.util.inspect(this.expected[key]) + '</strong></p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.expected, false, key) + '</p>');
-	
+
 	return sb.join("");
 };
 
@@ -944,7 +944,7 @@ JSSpec.ObjectEqualityMatcher.prototype.makeExplainForUnknownItem = function(key)
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.actual, false, key) + '</p>');
 	sb.push('<p>but there should be no such item</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.expected, false, key) + '</p>');
-	
+
 	return sb.join("");
 };
 
@@ -955,7 +955,7 @@ JSSpec.ObjectEqualityMatcher.prototype.makeExplainForItemMismatch = function(key
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.actual, false, key) + '</p>');
 	sb.push('<p>but it\'s value should be <strong>' + JSSpec.util.inspect(this.expected[key]) + '</strong></p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.expected, false, key) + '</p>');
-	
+
 	return sb.join("");
 };
 
@@ -975,14 +975,14 @@ JSSpec.ArrayEqualityMatcher.prototype.explain = function(){return this.explainat
 
 JSSpec.ArrayEqualityMatcher.prototype.makeExplain = function(){
 	if(this.expected.length != this.actual.length) return this.makeExplainForLengthMismatch();
-	
+
 	for(var i = 0; i < this.expected.length; i++){
 		var matcher = JSSpec.EqualityMatcher.createInstance(this.expected[i], this.actual[i]);
 		if(!matcher.matches()) return this.makeExplainForItemMismatch(i);
 	}
-		
+
 	this.match = true;
-	
+
 	return null;
 };
 
@@ -997,14 +997,14 @@ JSSpec.ArrayEqualityMatcher.prototype.makeExplainForLengthMismatch = function(){
 
 JSSpec.ArrayEqualityMatcher.prototype.makeExplainForItemMismatch = function(index){
 	var postfix = ["th", "st", "nd", "rd", "th"][Math.min((index + 1) % 10,4)];
-	
+
 	var sb = [];
 
 	sb.push('<p>' + (index + 1) + postfix + ' item (index ' + index + ') of actual value is <strong>' + JSSpec.util.inspect(this.actual[index]) + '</strong>:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.actual, false, index) + '</p>');
 	sb.push('<p>but it should be <strong>' + JSSpec.util.inspect(this.expected[index]) + '</strong>:</p>');
 	sb.push('<p class="left">' + JSSpec.util.inspect(this.expected, false, index) + '</p>');
-	
+
 	return sb.join("");
 };
 
@@ -1075,7 +1075,7 @@ JSSpec.PatternMatcher.prototype.makeExplain = function(){
 	} else {
 		this.match = this.condition == !!this.actual.match(this.pattern);
 		if(this.match) return "";
-		
+
 		sb = [];
 		sb.push('<p>actual value:</p>');
 		sb.push('<p class="left">' + JSSpec.util.inspect(this.actual) + '</p>');
@@ -1083,7 +1083,7 @@ JSSpec.PatternMatcher.prototype.makeExplain = function(){
 		sb.push('<p class="left">' + JSSpec.util.inspect(this.pattern) + '</p>');
 		return sb.join("");
 	}
-	
+
 };
 
 JSSpec.PatternMatcher.prototype.matches = function(){
@@ -1102,46 +1102,46 @@ JSSpec.DSL = {};
 JSSpec.DSL.forString = {
 	asHtml: function(){
 		var html = this;
-		
+
 		// Uniformize quotation, turn tag names and attribute names into lower case
 		html = html.replace(/<(\/?)(\w+)([^>]*?)>/img, function(str, closingMark, tagName, attrs){
 			var sortedAttrs = JSSpec.util.sortHtmlAttrs(JSSpec.util.correctHtmlAttrQuotation(attrs).toLowerCase());
 			return "<" + closingMark + tagName.toLowerCase() + sortedAttrs + ">";
 		});
-		
+
 		// validation self-closing tags
 		html = html.replace(/<br([^>]*?)>/mg, function(str, attrs){
 			return "<br" + attrs + " />";
 		});
-		
+
 		html = html.replace(/<hr([^>]*?)>/mg, function(str, attrs){
 			return "<hr" + attrs + " />";
 		});
-		
+
 		html = html.replace(/<img([^>]*?)>/mg, function(str, attrs){
 			return "<img" + attrs + " />";
 		});
-		
+
 		// append semi-colon at the end of style value
 		html = html.replace(/style="(.*)"/mg, function(str, styleStr){
 			styleStr = JSSpec.util.sortStyleEntries(styleStr.strip()); // for Safari
 			if(styleStr.charAt(styleStr.length - 1) != ';') styleStr += ";";
-			
+
 			return 'style="' + styleStr + '"';
 		});
-		
+
 		// sort style entries
-		
+
 		// remove empty style attributes
 		html = html.replace(/ style=";"/mg, "");
-		
+
 		// remove new-lines
 		html = html.replace(/\r/mg, '');
 		html = html.replace(/\n/mg, '');
-		
+
 		// TODO remove this?
 		//html = html.replace(/(>[^<>]*?)\s+([^<>]*?<)/mg, '$1$2')
-			
+
 		return html;
 	}
 };
@@ -1152,7 +1152,7 @@ JSSpec.DSL.describe = function(context, entries){
 
 JSSpec.DSL.expect = function(target){
 	if(JSSpec._secondPass) return {};
-	
+
 	var subject = new JSSpec.DSL.Subject(target);
 	return subject;
 };
@@ -1293,25 +1293,25 @@ JSSpec.DSL.Subject.prototype.getType = function(){
 JSSpec.util = {
 	parseOptions: function(defaults){
 		var options = defaults;
-		
+
 		var url = location.href;
 		var queryIndex = url.indexOf('?');
 		if(queryIndex == -1) return options;
-		
+
 		var query = url.substring(queryIndex + 1);
 		var pairs = query.split('&');
 		for(var i = 0; i < pairs.length; i++){
 			var tokens = pairs[i].split('=');
 			options[tokens[0]] = tokens[1];
 		}
-		
+
 		return options;
 	},
 	correctHtmlAttrQuotation: function(html){
 		html = html.replace(/(\w+)=['"]([^'"]+)['"]/mg,function (str, name, value){return name + '=' + '"' + value + '"';});
 		html = html.replace(/(\w+)=([^ '"]+)/mg,function (str, name, value){return name + '=' + '"' + value + '"';});
 		html = html.replace(/'/mg, '"');
-		
+
 		return html;
 	},
 	sortHtmlAttrs: function(html){
@@ -1358,7 +1358,7 @@ JSSpec.util = {
 			sb.push('<span class="dom_value">');
 			sb.push("&lt;");
 			sb.push(o.nodeName);
-			
+
 			var attrs = o.attributes;
 			for(var i = 0; i < attrs.length; i++){
 				if(
@@ -1382,19 +1382,19 @@ JSSpec.util = {
 	},
 	inspect: function(o, dontEscape, emphasisKey){
 		var sb, inspected;
-		
+
 		if(typeof o == 'undefined') return '<span class="undefined_value">undefined</span>';
 
 		if(o == null) return '<span class="null_value">null</span>';
-		
+
 		if(o._type && o._type == 'String') return '<span class="string_value">"' + (dontEscape ? o : JSSpec.util.escapeHtml(o)) + '"</span>';
 
 		if(o._type && o._type == 'Date'){
 			return '<span class="date_value">"' + o.toString() + '"</span>';
 		}
-		
+
 		if(o._type && o._type == 'Number') return '<span class="number_value">' + (dontEscape ? o : JSSpec.util.escapeHtml(o)) + '</span>';
-		
+
 		if(o._type && o._type == 'Boolean') return '<span class="boolean_value">' + o + '</span>';
 
 		if(o._type && o._type == 'RegExp') return '<span class="regexp_value">' + JSSpec.util.escapeHtml(o.toString()) + '</span>';
@@ -1409,12 +1409,12 @@ JSSpec.util = {
 			}
 			return '<span class="array_value">[' + sb.join(', ') + ']</span>';
 		}
-		
+
 		// object
 		sb = [];
 		for(var key in o){
 			if(key == 'should') continue;
-			
+
 			inspected = JSSpec.util.inspect(key) + ":" + JSSpec.util.inspect(o[key]);
 			sb.push(key == emphasisKey ? ('<strong>' + inspected + '</strong>') : inspected);
 		}
@@ -1479,7 +1479,7 @@ window.onload = function(){
 		var frameContainer = document.createElement('DIV');
 		frameContainer.style.display = 'none';
 		document.body.appendChild(frameContainer);
-		
+
 		for(var j = 0; j < links.length; j++){
 			var frame = document.createElement('IFRAME');
 			frame.src = links[j].href + '?inSuite=0&specIdBeginsWith=' + (j * 10000) + '&exampleIdBeginsWith=' + (j * 10000);
@@ -1496,9 +1496,9 @@ function customFunction(){
 		runner.onclick = null;
 		return false;
 	};
-	
+
 	var h4s = document.getElementsByTagName('h4');
-	
+
 	function toggler(h4){
 		h4.onclick = function(){
 			var div = h4.parentNode.getElementsByTagName('div')[0];
@@ -1507,6 +1507,6 @@ function customFunction(){
 			return false;
 		};
 	};
-	
+
 	for (var i = 0, l = h4s.length; i < l; i++) toggler(h4s[i]);
 };

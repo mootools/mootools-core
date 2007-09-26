@@ -187,7 +187,7 @@ Window.implement({
 			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()}
 		};
 	},
-	
+
 	getPosition: function(){
 		return {'x': 0, 'y': 0};
 	}

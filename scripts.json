@@ -30,14 +30,14 @@
 			"deps": ["Core"],
 			"desc": "Contains Number prototypes."
 		},
-		
+
 		"Hash": {
 			"deps": ["Core"],
 			"desc": "the Hash, allows to attach prototypes, to overcome the javascript practical impossibility to extend [Object object]s."
 		}
 
 	},
-	
+
 	"Class": {
 
 		"Class": {
@@ -99,7 +99,7 @@
 		}
 
 	},
-	
+
 	"Selectors": {
 
 		"Selectors": {
@@ -176,7 +176,7 @@
 		}
 
 	},
-	
+
 	"Swiff": {
 
 		"Swiff": {
@@ -185,7 +185,7 @@
 		}
 
 	},
-	
+
 	"Drag": {
 
 		"Drag": {
@@ -199,9 +199,9 @@
 		}
 
 	},
-	
+
 	"Plugins": {
-		
+
 		"Color": {
 			"deps": ["Core", "Class", "Array", "String", "Function", "Number"],
 			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
@@ -211,22 +211,22 @@
 			"deps": ["Class.Extras"],
 			"desc": "The Group."
 		},
-		
+
 		"Assets": {
 			"deps": ["Element.Event"],
 			"desc": "Contains functions to load external files on the fly: images, css, javascript."
 		},
-		
+
 		"Fx.Morph": {
 			"deps": ["Fx.Styles"],
 			"desc": "Effect to morph an element from one css class to another."
 		},
-		
+
 		"Fx.Elements": {
 			"deps": ["Fx.CSS"],
 			"desc": "Effect to change any number of css properties to any number of elements."
 		},
-		
+
 		"Selectors.Children": {
 			"deps": ["Selectors"],
 			"desc": "Adds the :children Selector."
@@ -236,12 +236,12 @@
 			"deps": ["Hash", "Cookie", "Json"],
 			"desc": "Lets you Create/Read/Delete Cookies in Json Format."
 		},
-		
+
 		"Json.Remote": {
 			"deps": ["XHR", "Json"],
 			"desc": "Shortcut Class to send and receive Javascript Objects."
 		},
-		
+
 		"Sortables": {
 			"deps": ["Element.Event", "Element.Dimensions", "Element.Style"],
 			"desc": "Creates an interface for drag and drop sorting of a list or lists."
@@ -266,7 +266,7 @@
 			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Window.Size"],
 			"desc": "The Tooltips."
 		},
-		
+
 		"Accordion": {
 			"deps": ["Fx.Elements", "Element.Event"],
 			"desc": "Does it need a description?"

@@ -249,7 +249,7 @@ var Drag = new Class({
 		this.fireEvent('onDrag', this.element);
 		event.stop();
 	},
-	
+
 	/*
 	Method: stop
 		Stops (removes) all attached events from the Drag instance and executes the onComplete Event.

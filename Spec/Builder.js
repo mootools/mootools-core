@@ -1,7 +1,7 @@
 /*
 Script: Builder.js
 	Automatically includes MooTools files right from the project folder.
-	
+
 Note:
 	If you use this script in your own page, you must be out of your mind.
 
@@ -10,7 +10,7 @@ License:
 */
 
 var Builder = {
-	
+
 	included: {
 		source: {},
 		spec: {}
@@ -27,22 +27,23 @@ var Builder = {
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
 			"Class"     : ["Class", "Class.Extras"],
 			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form"],
-			"Selectors" : ["Selectors", "Selectors.Pseudo", "Selectors.Pseudo.Children"],
+			"Selectors" : ["Selectors", "Selectors.Pseudo"],
 			"Window"    : ["Window.DomReady", "Window.Size"],
-			"Effects"   : ["Fx", "Fx.CSS", "Fx.Elements", "Fx.Style", "Fx.Styles", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
+			"Effects"   : ["Fx", "Fx.CSS", "Fx.Style", "Fx.Styles", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
 			"Drag"      : ["Drag", "Drag.Move"],
-			"Remote"    : ["XHR", "Ajax", "Cookie", "Json", "Json.Remote", "Assets"],
-			"Plugins"   : ["Accordion", "Color", "Group", "Hash.Cookie", "Scroller", "Slider", "SmoothScroll", "Sortables", "Tips"]
+			"Remote"    : ["XHR", "Ajax", "Cookie", "Json"],
+			"Swiff"     : ["Swiff"],
+			"Plugins"   : ["Color", "Group", "Assets", "Fx.Morph", "Fx.Elements", "Selectors.Children", "Hash.Cookie", "Json.Remote", "Sortables", "Scroller", "Slider", "SmoothScroll", "Tips", "Accordion"]
 		},
 
 		spec: {
-			"Core"      : ["Core"],
-			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
-			"Class"     : ["Class", "Class.Extras"],
-			"Element"   : ["Element"]
+			"Core"    : ["Core"],
+			"Native"  : ["Array", "String", "Function", "Number", "Hash"],
+			"Class"   : ["Class", "Class.Extras"],
+			"Element" : ["Element"]
 		}
 	},
-	
+
 	getFolder: function(type, file){
 		var scripts = this.scripts[type];
 		for (var folder in scripts){
@@ -53,7 +54,7 @@ var Builder = {
 		}
 		return false;
 	},
-	
+
 	getRequest: function(){
 		var pairs = window.location.search.substring(1).split('&');
 		var obj = {};
@@ -63,7 +64,7 @@ var Builder = {
 		}
 		return obj;
 	},
-	
+
 	includeFile: function(type, folder, file){
 		folder = folder || this.getFolder(type, file);
 		if (!folder) return false;
@@ -75,16 +76,16 @@ var Builder = {
 		this.included[type][folder].push(file);
 		return document.write('\n\t<script type="text/javascript" src="' + this.paths[type] + '/' + folder + '/' + file + '.js"></script>');
 	},
-	
+
 	includeFolder: function(type, folder){
 		var scripts = this.scripts[type][folder];
 		for (var i = 0, l = scripts.length; i < l; i++) this.includeFile(type, folder, scripts[i]);
 	},
-	
+
 	includeType: function(type){
 		for (var folder in this.scripts[type]) this.includeFolder(type, folder);
 	},
-	
+
 	includeRequest: function(type){
 		var req = this.getRequest();
 		if (!req.files && !req.folders) return false;

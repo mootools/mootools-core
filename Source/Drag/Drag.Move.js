@@ -132,7 +132,7 @@ Drag.Move = new Class({
 		var now = this.mouse.now;
 		return (now.x > el.left && now.x < el.right && now.y < el.bottom && now.y > el.top);
 	},
-	
+
 	/*
 	Method: stop
 		Checks if the Element is above a droppable and fires the drop event. Else, fires the 'emptydrop' event that is attached to this Element. Lastly, calls <Drag.stop> method.

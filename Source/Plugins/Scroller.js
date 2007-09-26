@@ -51,7 +51,7 @@ Example:
 */
 
 var Scroller = new Class({
-	
+
 	Implements: [Events, Options],
 
 	options: {

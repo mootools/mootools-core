@@ -50,7 +50,7 @@ Note:
 
 
 Fx.Elements = new Class({
-	
+
 	Extends: Fx,
 
 	initialize: function(elements, options){
@@ -64,7 +64,7 @@ Fx.Elements = new Class({
 			for (var p in iFrom) iNow[p] = Fx.CSS.compute(iFrom[p], iTo[p], this);
 		}
 	},
-	
+
 	/*
 	Method: set
 		Applies the passed in style transitions to each object named immediately (see example).

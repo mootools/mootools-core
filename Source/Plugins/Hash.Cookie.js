@@ -54,9 +54,9 @@ See Also:
 */
 
 Hash.Cookie = new Class({
-	
+
 	Implements: Options,
-	
+
 	options: {
 		autoSave: true
 	},

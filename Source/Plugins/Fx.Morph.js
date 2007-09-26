@@ -87,7 +87,7 @@ Native: Element
 */
 
 Element.implement({
-	
+
 	/*
 	Method: morph
 		Transform this Element to the CSS properties as defined by the className.

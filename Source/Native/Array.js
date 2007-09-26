@@ -377,7 +377,7 @@ Array.implement({
 		for (var i = 0; i < length; i++) obj[keys[i]] = this[i];
 		return obj;
 	},
-	
+
 	/*
 	Method: link
 		Accepts an object of key / function pairs to assign values.

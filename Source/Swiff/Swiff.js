@@ -31,7 +31,7 @@ Arguments:
 			allowScriptAccess - (string: defaults to always) The domain that the SWF object allows access to.
 			swLiveConnect - (boolean: defaults to true) the swLiveConnect param to allow remote scripting.
 			quality - (string: defaults to high) the render quality of the movie.
-			
+
 		properties (continued):
 			width - (number: defaults to 1) The width of the flash object.
 			height - (number: defaults to 1) The height of the flash object.
@@ -70,7 +70,7 @@ var Swiff = function(path, options){
 	if (!Swiff.fixed) Swiff.fix();
 
 	var instance = 'Swiff_' + Swiff.UID++;
-	
+
 	options = $merge({
 		id: instance,
 		container: null,
@@ -88,7 +88,7 @@ var Swiff = function(path, options){
 	}, options);
 
 	var properties = options.properties, params = options.params, vars = options.vars, id = options.id;
-	
+
 	Swiff.Events[instance] = {};
 	for (var event in options.events){
 		Swiff.Events[instance][event] = function(){
@@ -96,9 +96,9 @@ var Swiff = function(path, options){
 		};
 		vars[event] = 'Swiff.Events.' + instance + '.' + event;
 	}
-	
+
 	params.flashVars = Hash.toQueryString(vars);
-	
+
 	if (Client.Engine.ie){
 		properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 		params.movie = path;
@@ -106,15 +106,15 @@ var Swiff = function(path, options){
 		properties.type = 'application/x-shockwave-flash';
 		properties.data = path;
 	}
-	
+
 	var build = '<object id="' + options.id + '"';
 	for (var property in properties) build += ' ' + property + '="' + properties[property] + '"';
 	build += '>';
 	for (var param in params) build += '<param name="' + param + '" value="' + params[param] + '" />';
 	build += '</object>';
-	
+
 	return ($(options.container) || new Element('div')).setHTML(build).firstChild;
-	
+
 };
 
 Element.Builders.swf = function(path, props){
@@ -122,11 +122,11 @@ Element.Builders.swf = function(path, props){
 };
 
 Swiff.extend({
-	
+
 	UID: 0,
-	
+
 	Events: {},
-	
+
 	/*
 	Function: Swiff.remote
 		Calls an ActionScript function from javascript.
@@ -150,12 +150,12 @@ Swiff.extend({
 	Note:
 		The SWF file must be compiled with ExternalInterface component.
 	*/
-	
+
 	remote: function(obj, fn){
 		var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 1) + '</invoke>');
 		return eval(rs);
 	},
-	
+
 	/*
 	Function: Swiff.getVersion
 		Gets the major version of the flash player installed.
@@ -171,7 +171,7 @@ Swiff.extend({
 			alert(Swiff.getVersion());
 		[/javascript]
 	*/
-	
+
 	getVersion: function(){
 		if (!$defined(Swiff.pluginVersion)){
 			var version;
@@ -187,7 +187,7 @@ Swiff.extend({
 		}
 		return Swiff.pluginVersion;
 	},
-	
+
 	fix: function(){
 		Swiff.fixed = true;
 		window.addEvent('beforeunload', function(){

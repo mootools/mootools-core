@@ -393,9 +393,9 @@ function $type(obj){
 var Native = function(options){
 	options = $extend({name: false, generics: true, browser: false, initialize: $empty, afterImplement: $empty}, options || {});
 	var initialize = options.initialize;
-	
+
 	initialize.prototype.constructor = initialize;
-	
+
 	if (options.name){
 		var family = options.name.toLowerCase();
 		initialize.prototype.$family = family;
@@ -403,10 +403,10 @@ var Native = function(options){
 			return $type(item) === family;
 		};
 	}
-	
+
 	initialize.$family = 'native';
 	initialize.constructor = Native;
-	
+
 	initialize.implement = function(properties){
 		for (var property in properties){
 			if (!options.browser || !this.prototype[property]) this.prototype[property] = properties[property];
@@ -483,22 +483,22 @@ Client.Platform[Client.Platform.name] = true;
 /* Native: Document */
 
 var Document = new Native({
-	
+
 	name: 'Document',
-	
+
 	initialize: function(doc){
 		if ($type(doc) == 'document') return doc;
 		Document.instances.push(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.window = doc.defaultView || doc.parentWindow;
-		
+
 		if (Client.Engine.ie6) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
-		
+
 		return $extend(doc, this);
 	},
-	
+
 	afterImplement: function(key, value){
 		for (var i = 0, l = Document.instances.length; i < l; i++) Document.instances[i][key] = value;
 	}
@@ -512,28 +512,28 @@ new Document(document);
 /* Native: Window */
 
 var Window = new Native({
-	
+
 	name: 'Window',
-	
+
 	initialize: function(win){
 		if ($type(win) == 'window') return win;
 		Window.instances.push(win);
-		
+
 		if (typeof win.HTMLElement == 'undefined'){
 			win.HTMLElement = $empty;
 			if (Client.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.HTMLElement.prototype = (Client.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
 		}
-		
+
 		win.HTMLElement.prototype.htmlElement = $empty;
 
 		return $extend(win, this);
 	},
-	
+
 	afterImplement: function(key, value){
 		for (var i = 0, l = Window.instances.length; i < l; i++) Window.instances[i][key] = value;
 	}
-	
+
 });
 
 Window.instances = [];
@@ -541,7 +541,7 @@ Window.instances = [];
 new Window(window);
 
 (function(){
-	
+
 	function natives(){
 		for (var i = 0, l = arguments.length; i < l; i++){
 			new Native({
@@ -551,15 +551,15 @@ new Window(window);
 			});
 		}
 	};
-	
+
 	natives('String', 'Function', 'Number', 'Array', 'RegExp');
-	
+
 	function generic(object, methods){
 		for (var i = 0, l = methods.length; i < l; i++){
 			if (!object[methods[i]]) object[methods[i]] = Native.generic(object, methods[i]);
 		}
 	};
-	
+
 	generic(Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf']);
 	generic(String, ['charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'valueOf']);
 

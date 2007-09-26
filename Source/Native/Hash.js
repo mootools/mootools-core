@@ -121,11 +121,11 @@ Hash.implement({
 	Notes:
 		Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
 	*/
-	
+
 	has: function(key){
 		return this.hasOwnProperty(key);
 	},
-	
+
 	/*
 	Method: hasValue
 		Tests for the presence of a specified value in the Hash.
@@ -146,7 +146,7 @@ Hash.implement({
 			hash.hasValue('four'); //returns false
 		[/javascript]
 	*/
-	
+
 	hasValue: function(value){
 		return (Hash.keyOf(this, value) !== null);
 	},
@@ -516,7 +516,7 @@ Hash.implement({
 		}
 		return false;
 	},
-	
+
 	/*
 	Method: getClean
 		Returns a a clean object from an Hash.
@@ -537,7 +537,7 @@ Hash.implement({
 			hash.each() //error!
 		[/javascript]
 	*/
-	
+
 	getClean: function(){
 		var clean = {};
 		Hash.each(this, function(value, key){

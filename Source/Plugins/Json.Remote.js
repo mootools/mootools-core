@@ -61,7 +61,7 @@ Json.Remote = new Class({
 		this.setHeader('Accept', 'application/json');
 		this.setHeader('X-Request', 'JSON');
 	},
-	
+
 	/*
 	Method: send
 		Sends the JSON-encoded object to the request URL.

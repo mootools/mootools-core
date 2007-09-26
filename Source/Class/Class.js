@@ -81,25 +81,25 @@ Examples:
 */
 
 var Class = new Native({
-	
+
 	name: 'Class',
-	
+
 	initialize: function(properties){
-		
+
 		properties = properties || {};
-		
+
 		var klass = function(){
-			
+
 			for (var property in this){
 				if ($type(this[property]) == 'object') this[property] = $merge(this[property]);
 			}
-			
+
 			['Implements', 'Extends'].each(function(Property){
 				if (!this[Property]) return;
 				Class[Property](this, this[Property]);
 				delete this[Property];
 			}, this);
-			
+
 			var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
 			return self;

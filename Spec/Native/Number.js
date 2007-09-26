@@ -23,8 +23,8 @@ describe('Number', {
 	},
 
 	limit: function(){
-		value_of((-1).limit(0,1)).should_be(0);
-		value_of((3).limit(1,2)).should_be(2);
+		value_of((-1).limit(0, 1)).should_be(0);
+		value_of((3).limit(1, 2)).should_be(2);
 	},
 
 	round: function(){
@@ -59,5 +59,61 @@ describe('Number', {
 		value_of(found2).should_be(-1);
 		value_of(found3).should_be_true();
 	}
-	
+
+});
+
+describe('Number Generics', {
+
+	toInt: function(){
+		value_of(Number.toInt(111)).should_be(111);
+		value_of(Number.toInt(111, 2)).should_be(7);
+		value_of(Number.toInt(0x16, 10)).should_be(22); //ECMA standard, radix is optional so if starts with 0x then parsed as hexadecimal
+		value_of(Number.toInt(016, 10)).should_be(14); //ECMA standard, radix is optional so if starts with 0 then parsed as octal
+	},
+
+	toFloat: function(){
+		value_of(Number.toFloat(1.00)).should_be(1);
+		value_of(Number.toFloat(1.12 - 0.12)).should_be(1);
+		value_of(Number.toFloat(0.0010)).should_be(0.001);
+		value_of(Number.toFloat(Number.MIN_VALUE)).should_be(Number.MIN_VALUE);
+	},
+
+	limit: function(){
+		value_of(Number.limit(-1, 0, 1)).should_be(0);
+		value_of(Number.limit(3, 1, 2)).should_be(2);
+	},
+
+	round: function(){
+		value_of(Number.round(0.01)).should_be(0);
+		value_of(Number.round(0.01, 2)).should_be(0.01);
+		value_of(Number.round(1, 3)).should_be(1);
+		value_of(Number.round(-1.01)).should_be(-1);
+		value_of(Number.round(-1.01, 2)).should_be(-1.01);
+		value_of(Number.round(111, -1)).should_be(110);
+		value_of(Number.round(-111, -2)).should_be(-100);
+		value_of(Number.round(100, -5)).should_be(0);
+	},
+
+	times: function(){
+		var found = 0;
+		Number.times(3, function(i){
+			found = i;
+		});
+
+		var found2 = -1;
+		Number.times(0, function(i){
+			found2 = i;
+		});
+
+		var aTest = 'hi';
+		var found3 = false;
+		Number.times(1, function(i){
+			found3 = (this == aTest);
+		}, aTest);
+
+		value_of(found).should_be(2);
+		value_of(found2).should_be(-1);
+		value_of(found3).should_be_true();
+	}
+
 });

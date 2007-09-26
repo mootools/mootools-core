@@ -70,7 +70,7 @@ var Element = new Native({
 		el = $(el);
 		return (!props || !el) ? el : el.set(props);
 	},
-	
+
 	afterImplement: function(key, value){
 		HTMLElement.prototype[key] = value;
 		Elements.prototype[(Array.prototype[key]) ? key + 'Elements' : key] = Elements.$multiply(key);
@@ -90,7 +90,7 @@ Method: constructor
 */
 
 var IFrame = new Native({
-	
+
 	name: 'IFrame',
 
 	initialize: function(props){
@@ -107,7 +107,7 @@ var IFrame = new Native({
 		};
 		return $extend(iframe, this).set(props);
 	},
-	
+
 	generics: false
 
 });
@@ -151,7 +151,7 @@ See Also:
 */
 
 var Elements = new Native({
-	
+
 	initialize: function(elements, nocheck){
 		elements = elements || [];
 		var length = elements.length;
@@ -188,7 +188,7 @@ Native: Window
 */
 
 Window.implement({
-	
+
 	/*
 	Function: $
 		Returns the element passed in with all the Element prototypes applied.
@@ -277,7 +277,7 @@ Native: Element
 */
 
 Native.implement([Element, Document], {
-	
+
 	/*
 	Method: getElement
 		Searches all descendents for the first Element whose tag matches the tag provided. getElement method will also automatically extend the Element.
@@ -303,12 +303,12 @@ Native.implement([Element, Document], {
 		This method is also available for the Document instances.
 		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElement so that it maches with CSS selectors.
 	*/
-	
+
 	getElement: function(tag, nocash){
 		var element = this.getElementsByTagName(tag)[0] || null;
 		return (nocash) ? element : $(element);
 	},
-	
+
 	/*
 	Method: getElements
 		Searches and returns all descendant Elements that match the tag provided.
@@ -351,24 +351,24 @@ Element.Setters = new Hash({
 });
 
 Element.Builders = new Hash({
-	
+
 	iframe: function(props){
 		return new IFrame(props);
 	}
-	
+
 });
 
 Element.Setters.properties = Element.Setters.attributes;
 
 Element.implement({
-	
+
 	/*
 	Method: getElementById
 		Targets an element with the specified id found inside the Element. Does not overwrite document.getElementById.
 
 	Arguments:
 		id - (string) the id of the element to find.
-		
+
 	Returns:
 		(mixed) The element you find or null if none found.
 	*/
@@ -421,7 +421,7 @@ Element.implement({
 		}
 		return this;
 	},
-	
+
 	/*
 	Method: inject
 		Injects, or inserts, the Element at a particular place relative to the Element's children (specified by the second the paramter).
