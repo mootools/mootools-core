@@ -99,11 +99,11 @@ Hash.implement({
 	},
 
 	/*
-	Method: contains
+	Method: has
 		Tests for the presence of a specified key in the Hash.
 
 	Syntax:
-		>var inHash = myHash.contains(item);
+		>var inHash = myHash.has(item);
 
 	Arguments:
 		key - (string) The key to search for in the Hash.
@@ -114,16 +114,41 @@ Hash.implement({
 	Example:
 		[javascript]
 			var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
-			hash.contains('a'); //returns true
-			hash.contains('d'); //returns false
+			hash.has('a'); //returns true
+			hash.has('d'); //returns false
 		[/javascript]
 
 	Notes:
 		Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
 	*/
-
-	contains: function(key){
+	
+	has: function(key){
 		return this.hasOwnProperty(key);
+	},
+	
+	/*
+	Method: hasValue
+		Tests for the presence of a specified value in the Hash.
+
+	Syntax:
+		>var inHash = myHash.hasvalue(value);
+
+	Arguments:
+		value - (mixed) The value to search for in the Hash.
+
+	Returns:
+		(boolean) If the Hash has the passed in value in any of the keys, returns true. Otherwise, returns false.
+
+	Example:
+		[javascript]
+			var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
+			hash.hasValue('one'); //returns true
+			hash.hasValue('four'); //returns false
+		[/javascript]
+	*/
+	
+	hasValue: function(value){
+		return (Hash.keyOf(this, value) !== null);
 	},
 
 	/*
@@ -193,7 +218,7 @@ Hash.implement({
 
 	merge: function(properties){
 		Hash.each(properties, function(value, key){
-			this.include(key, value);
+			Hash.include(this, key, value);
 		}, this);
 		return this;
 	},
@@ -223,23 +248,22 @@ Hash.implement({
 	*/
 
 	remove: function(key){
-		if (this.contains(key)) delete this[key];
+		if (this.hasOwnProperty(key)) delete this[key];
 		return this;
 	},
 
 	/*
 	Method: get
-		Retrieves a value from the hash, or if no key is specified, returns a clean copy of the object that this Hash holds.
+		Retrieves a value from the hash.
 
 	Syntax:
-		>myHash.get([key]);
+		>myHash.get(key);
 
 	Arguments:
-		key - (string, optional) The key to search for in the Hash.
+		key - (string) The key to retrieve in the Hash.
 
 	Returns:
-		(mixed) If a key is specified, returns the value that corresponds to the key if found, or null if the key doesn't exist.
-			If no argument is passed, a clean copy of the object this Hash holds is returned.
+		(mixed) Returns the value that corresponds to the key if found, or null if the key doesn't exist.
 
 	Example:
 		[javascript]
@@ -248,55 +272,11 @@ Hash.implement({
 				'lastName': 'Doe'
 			});
 			hash.get('name'); //returns 'John'
-			hash.get(); //returns { 'name': 'John', 'lastName': 'Doe' }
 		[/javascript]
 	*/
 
 	get: function(key){
-		if (key) return (this.contains(key)) ? this[key] : null;
-		var clean = {};
-		this.each(function(value, key){
-			clean[key] = value;
-		});
-		return clean;
-	},
-
-	/*
-	Property: getKeys
-		Returns an array containing all the keys, in the same order as the values returned by <Hash.getValues>.
-
-	Syntax:
-		>var keys = myHash.getKeys();
-
-	Returns:
-		(array) An array containing all the keys of the hash.
-	*/
-
-	getKeys: function(){
-		var keys = [];
-		Hash.each(this, function(value, key){
-			keys.push(key);
-		});
-		return keys;
-	},
-
-	/*
-	Property: getValues
-		Returns an array containing all the values, in the same order as the keys returned by <Hash.getKeys>.
-
-	Syntax:
-		>var values = myHash.getValues();
-
-	Returns:
-		(array) An array containing all the values of the hash.
-	*/
-
-	getValues: function(){
-		var values = [];
-		Hash.each(this, function(value, key){
-			values.push(value);
-		});
-		return values;
+		return (this.hasOwnProperty(key)) ? this[key] : null;
 	},
 
 	/*
@@ -324,7 +304,7 @@ Hash.implement({
 	*/
 
 	set: function(key, value){
-		if (!this[key] || this.contains(key)) this[key] = value;
+		if (!this[key] || this.hasOwnProperty(key)) this[key] = value;
 		return this;
 	},
 
@@ -350,6 +330,7 @@ Hash.implement({
 		Hash.each(this, function(value, key){
 			delete this[key];
 		}, this);
+		return this;
 	},
 
 	/*
@@ -534,8 +515,76 @@ Hash.implement({
 			if (this.hasOwnProperty(key) && fn.call(bind, this[key], key)) return true;
 		}
 		return false;
+	},
+	
+	/*
+	Method: getClean
+		Returns a a clean object from an Hash.
+
+	Syntax:
+		>myHash.getClean();
+
+	Returns:
+		(object) a clean objecy
+
+	Example:
+		[javascript]
+			var hash = new Hash({
+				'name': 'John',
+				'lastName': 'Doe'
+			});
+			hash = hash.getClean(); // hash doesnt contain Hash prototypes anymore
+			hash.each() //error!
+		[/javascript]
+	*/
+	
+	getClean: function(){
+		var clean = {};
+		Hash.each(this, function(value, key){
+			clean[key] = value;
+		});
+		return clean;
+	},
+
+	/*
+	Property: getKeys
+		Returns an array containing all the keys, in the same order as the values returned by <Hash.getValues>.
+
+	Syntax:
+		>var keys = myHash.getKeys();
+
+	Returns:
+		(array) An array containing all the keys of the hash.
+	*/
+
+	getKeys: function(){
+		var keys = [];
+		Hash.each(this, function(value, key){
+			keys.push(key);
+		});
+		return keys;
+	},
+
+	/*
+	Property: getValues
+		Returns an array containing all the values, in the same order as the keys returned by <Hash.getKeys>.
+
+	Syntax:
+		>var values = myHash.getValues();
+
+	Returns:
+		(array) An array containing all the values of the hash.
+	*/
+
+	getValues: function(){
+		var values = [];
+		Hash.each(this, function(value, key){
+			values.push(value);
+		});
+		return values;
 	}
 
 });
 
 Hash.alias('keyOf', 'indexOf');
+Hash.alias('hasValue', 'contains');
