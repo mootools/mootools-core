@@ -22,6 +22,8 @@ Arguments:
 
 	options (continued):
 		id - (string: defaults to 'Swiff_' + UID) The id of the flash object.
+		width - (number: defaults to 1) The width of the flash object.
+		height - (number: defaults to 1) The height of the flash object.
 		params - (object) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
 		properties - (object) Additional attributes for the object element.
 		vars - (object) Given to the SWF as querystring in flashVars.
@@ -32,9 +34,6 @@ Arguments:
 			swLiveConnect - (boolean: defaults to true) the swLiveConnect param to allow remote scripting.
 			quality - (string: defaults to high) the render quality of the movie.
 
-		properties (continued):
-			width - (number: defaults to 1) The width of the flash object.
-			height - (number: defaults to 1) The height of the flash object.
 
 Returns:
 	(element) A new HTML object element.
@@ -43,13 +42,11 @@ Example:
 	[javascript]
 		var obj = new Swiff('myMovie.swf', {
 			id: 'myBeautifulMovie'
+			width: 500,
+			height: 400,
 			params: {
 				wmode: 'opaque',
 				bgcolor: '#ff3300'
-			},
-			properties: {
-				width: 500,
-				height: 400
 			},
 			vars: {
 				myVariable: myJsVar,
@@ -62,22 +59,19 @@ Example:
 	[/javascript]
 
 Note:
-	Swiff does not return the object, as the object is not extensible. Swiff will return its instance and it will reference the object internally.
+	Swiff returns the Object tag, but its not extensible by the $ function.
+	The $ function on an object/embed tag will only return its reference without further processing.
 */
 
 var Swiff = function(path, options){
-
 	if (!Swiff.fixed) Swiff.fix();
-
 	var instance = 'Swiff_' + Swiff.UID++;
-
 	options = $merge({
 		id: instance,
+		height: 1,
+		width: 1,
 		container: null,
-		properties: {
-			width: 1,
-			height: 1
-		},
+		properties: {},
 		params: {
 			quality: 'high',
 			allowScriptAccess: 'always',
@@ -86,9 +80,8 @@ var Swiff = function(path, options){
 		events: {},
 		vars: {}
 	}, options);
-
-	var properties = options.properties, params = options.params, vars = options.vars, id = options.id;
-
+	var params = options.params, vars = options.vars, id = options.id;
+	var properties = $extend({height: options.height, width: options.width}, options.properties);
 	Swiff.Events[instance] = {};
 	for (var event in options.events){
 		Swiff.Events[instance][event] = function(){
@@ -96,9 +89,7 @@ var Swiff = function(path, options){
 		};
 		vars[event] = 'Swiff.Events.' + instance + '.' + event;
 	}
-
 	params.flashVars = Hash.toQueryString(vars);
-
 	if (Client.Engine.ie){
 		properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 		params.movie = path;
@@ -106,15 +97,12 @@ var Swiff = function(path, options){
 		properties.type = 'application/x-shockwave-flash';
 		properties.data = path;
 	}
-
 	var build = '<object id="' + options.id + '"';
 	for (var property in properties) build += ' ' + property + '="' + properties[property] + '"';
 	build += '>';
 	for (var param in params) build += '<param name="' + param + '" value="' + params[param] + '" />';
 	build += '</object>';
-
 	return ($(options.container) || new Element('div')).setHTML(build).firstChild;
-
 };
 
 Element.Builders.swf = function(path, props){
@@ -194,7 +182,7 @@ Swiff.extend({
 			__flash_unloadHandler = __flash_savedUnloadHandler = $empty;
 		});
 		if (!Client.Engine.ie) return;
-		window.addEvent('unload', function(){	
+		window.addEvent('unload', function(){
 			Array.each(document.getElementsByTagName('object'), function(obj){
 				obj.style.display = 'none';
 				for (var p in obj){

@@ -7,6 +7,12 @@
 	<script src="Spec/JSSpec.js" type="text/javascript"></script>
 	<script src="Spec/DiffMatchPatch.js" type="text/javascript"></script>
 	<script src="Builder.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	
+		Builder.includeType('source');
+		if (!Builder.includeRequest('spec')) Builder.includeType('spec');
+		
+	</script>
 </head>
 <body>
 </body>

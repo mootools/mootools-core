@@ -97,6 +97,3 @@ var Builder = {
 	}
 
 };
-
-Builder.includeType('source');
-if (!Builder.includeRequest('spec')) Builder.includeType('spec');

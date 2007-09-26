@@ -60,7 +60,7 @@ Function.implement({
 		var self = this;
 		options = options || {};
 		return function(event){
-			var args = $splat($pick(options.arguments, arguments));
+			var args = $splat($pick(options.arguments || null, arguments));
 			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
