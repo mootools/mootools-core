@@ -38,7 +38,8 @@ var Builder = {
 		spec: {
 			"Core"      : ["Core"],
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
-			"Class"     : ["Class", "Class.Extras"]
+			"Class"     : ["Class", "Class.Extras"],
+			"Element"   : ["Element"]
 		}
 	},
 	
