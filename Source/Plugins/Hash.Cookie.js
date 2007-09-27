@@ -45,9 +45,11 @@ Example:
 	[/javascript]
 
 Note:
-	- Hash JSON string has a limit of 4kb (4096 bytes). Therefore, be careful with your Hash size.
-	- Creating a new instance automatically loads the data from the Cookie into the Hash.
-	- If the Hash is emptied, the cookie is also removed.
+	- All Hash methods are available in your Hash.Cookie instance. if autoSave options is set, every method call will result in your Cookie being saved.
+	- Cookies have a limit of 4kb (4096 bytes). Therefore, be careful with your Hash size.
+	- All Hash methods used on Hash.Cookie return the return value of the Hash method, unless you exceeded the Cookie size limit. In that case the result will be false.
+	- If you plan to use large Cookies consider turning autoSave to off, and check the status of .save() everytime.
+	- Creating a new instance automatically loads the data from the Cookie into the Hash. Cool Huh?
 
 See Also:
 	<Hash>
@@ -130,11 +132,11 @@ Hash.Cookie = new Class({
 
 (function(){
 	var methods = {};
-	['extend', 'set', 'merge', 'empty', 'remove'].each(function(method){
+	Hash.getKeys(Hash.prototype).each(function(method){
 		methods[method] = function(){
-			this.hash[method].apply(this.hash, arguments);
+			var value = Hash.prototype[method].apply(this.hash, arguments);
 			if (this.options.autoSave) this.save();
-			return this;
+			return value;
 		};
 	});
 	Hash.Cookie.implement(methods);
