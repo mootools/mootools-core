@@ -66,12 +66,7 @@ var Event = new Class({
 			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		} else if (this.type.contains('key')){
 			this.code = event.which || event.keyCode;
-			for (var name in Event.Keys){
-				if (Event.Keys[name] == this.code){
-					this.key = name;
-					break;
-				}
-			}
+			this.key = Event.Keys.keyOf(this.code);
 			if (this.type == 'keydown'){
 				var fKey = this.code - 111;
 				if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
@@ -291,7 +286,7 @@ Native.implement([Element, Window, Document], {
 		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
 		var realType = type;
-		var custom = Element.Events[type];
+		var custom = Element.Events.get(type);
 		var map = fn;
 		if (custom){
 			if (custom.add) custom.add.call(this, fn);
@@ -365,7 +360,7 @@ Native.implement([Element, Window, Document], {
 		if (pos == -1) return this;
 		var key = this.$events[type].keys.splice(pos, 1)[0];
 		var value = this.$events[type].values.splice(pos, 1)[0];
-		var custom = Element.Events[type];
+		var custom = Element.Events.get(type);
 		if (custom){
 			if (custom.remove) custom.remove.call(this, fn);
 			if (custom.type) type = custom.type;

@@ -75,6 +75,7 @@ var Swiff = function(path, options){
 		params: {
 			quality: 'high',
 			allowScriptAccess: 'always',
+			wMode: 'transparent',
 			swLiveConnect: true
 		},
 		events: {},

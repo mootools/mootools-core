@@ -54,7 +54,7 @@ See Also:
 var Element = new Native({
 
 	initialize: function(el){
-		if (Element.Builders[el]) return Element.Builders[el].run(Array.slice(arguments, 1));
+		if (Element.Builders.has(el)) return Element.Builders[el].run(Array.slice(arguments, 1));
 		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object});
 		var props = params.properties || {}, doc = params.document || document;
 		if ($type(el) == 'string'){
@@ -344,7 +344,7 @@ Native.implement([Element, Document], {
 
 Element.Setters = new Hash({
 
-	attributes: function(properties){
+	properties: function(properties){
 		this.setProperties(properties);
 	}
 
@@ -357,8 +357,6 @@ Element.Builders = new Hash({
 	}
 
 });
-
-Element.Setters.properties = Element.Setters.attributes;
 
 Element.implement({
 
@@ -416,7 +414,7 @@ Element.implement({
 
 	set: function(props){
 		for (var prop in props){
-			if (Element.Setters[prop]) Element.Setters[prop].call(this, props[prop]);
+			if (Element.Setters.has(prop)) Element.Setters[prop].call(this, props[prop]);
 			else this.setProperty(prop, props[prop]);
 		}
 		return this;

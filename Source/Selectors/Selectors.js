@@ -142,7 +142,7 @@ Selectors.$parse = function(selector){
 			case '[': params.attributes.push([arguments[4], arguments[5], arguments[7]]); break; 
 			case ':': 
 				var name = arguments[1]; 
-				var xparser = Selectors.Pseudo[name];
+				var xparser = Selectors.Pseudo.get(name);
 				var pseudo = {'name': name, 'parser': xparser, 'argument': arguments[3]};
 				if (xparser && xparser.parser) pseudo.argument = (xparser.parser.apply) ? xparser.parser(pseudo.argument) : xparser.parser;
 				params.pseudos.push(pseudo);
