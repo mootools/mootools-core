@@ -100,11 +100,11 @@ var XHR = new Class({
 	},
 
 	setTransport: function(){
-		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Client.Engine.ie ? new ActiveXObject('Microsoft.XMLHTTP') : false);
+		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Client.Engine.trident ? new ActiveXObject('Microsoft.XMLHTTP') : false);
 	},
 
 	initialize: function(){
-		var params = Array.link(arguments, {'url': $type.string, 'options': $type.object});
+		var params = Array.link(arguments, {'url': String.type, 'options': Object.type});
 		this.url = params.url;
 		this.setTransport();
 		this.setOptions(params.options);

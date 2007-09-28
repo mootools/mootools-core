@@ -1,8 +1,12 @@
 window.extend = document.extend = $extend;
 window.extend(Client.Engine);
 
+window.ie = window.trident;
+window.ie6 = window.trident4;
+window.ie7 = window.trident5;
+
 $A = function(iterable, start, length){
-	if (Client.Engine.ie && $type(iterable) == 'collection'){
+	if (Client.Engine.trident && $type(iterable) == 'collection'){
 		start = start || 0;
 		if (start < 0) start = iterable.length + start;
 		length = length || (iterable.length - start);

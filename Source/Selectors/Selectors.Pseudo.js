@@ -185,7 +185,7 @@ Selectors.Pseudo.nth = {
 		if (i == all.length - 1){
 			for (var j = temp.parents.length; j--;){
 				temp.parents[j].$children = null;
-				if (Client.Engine.ie) temp.parents[j].removeAttribute('$children');
+				if (Client.Engine.trident) temp.parents[j].removeAttribute('$children');
 			}
 		}
 		return include;

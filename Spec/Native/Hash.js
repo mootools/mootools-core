@@ -97,30 +97,30 @@ describe('Hash', {
 	map: function(fn, bind){
 		var myHash = new Hash({a:'string',b:233,c:{}});
 
-		value_of(myHash.map($type.number)).should_be(new Hash({a:false,b:true,c:false}));
+		value_of(myHash.map(Number.type)).should_be(new Hash({a:false,b:true,c:false}));
 	},
 
 	filter: function(fn, bind){
 
 		var myHash = new Hash({a:'string',b:233,c:{}});
 
-		value_of(myHash.filter($type.number)).should_be(new Hash({b:233}));
+		value_of(myHash.filter(Number.type)).should_be(new Hash({b:233}));
 
 	},
 
 	every: function(fn, bind){
 		var myHash = new Hash({a:'string',b:233,c:{}});
 
-		value_of(myHash.every($type.number)).should_be_false();
+		value_of(myHash.every(Number.type)).should_be_false();
 		value_of(myHash.every($defined)).should_be_true();
 	},
 
 	some: function(fn, bind){
 		var myHash = new Hash({a:'string',b:233,c:{}});
 
-		value_of(myHash.some($type.number)).should_be_true();
+		value_of(myHash.some(Number.type)).should_be_true();
 		value_of(myHash.some($defined)).should_be_true();
-		value_of(myHash.some($type.array)).should_be_false();
+		value_of(myHash.some(Array.type)).should_be_false();
 	},
 
 	getKeys: function(){
@@ -228,30 +228,30 @@ describe('Hash Generics', {
 	map: function(fn, bind){
 		var myHash = {a:'string',b:233,c:{}};
 
-		value_of(Hash.map(myHash, $type.number)).should_be(new Hash({a:false,b:true,c:false}));
+		value_of(Hash.map(myHash, Number.type)).should_be(new Hash({a:false,b:true,c:false}));
 	},
 
 	filter: function(fn, bind){
 
 		var myHash = {a:'string',b:233,c:{}};
 
-		value_of(Hash.filter(myHash, $type.number)).should_be(new Hash({b:233}));
+		value_of(Hash.filter(myHash, Number.type)).should_be(new Hash({b:233}));
 
 	},
 
 	every: function(fn, bind){
 		var myHash = {a:'string',b:233,c:{}};
 
-		value_of(Hash.every(myHash, $type.number)).should_be_false();
+		value_of(Hash.every(myHash, Number.type)).should_be_false();
 		value_of(Hash.every(myHash, $defined)).should_be_true();
 	},
 
 	some: function(fn, bind){
 		var myHash = {a:'string',b:233,c:{}};
 
-		value_of(Hash.some(myHash, $type.number)).should_be_true();
+		value_of(Hash.some(myHash, Number.type)).should_be_true();
 		value_of(Hash.some(myHash, $defined)).should_be_true();
-		value_of(Hash.some(myHash, $type.array)).should_be_false();
+		value_of(Hash.some(myHash, Array.type)).should_be_false();
 	},
 
 	getKeys: function(){

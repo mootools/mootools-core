@@ -34,7 +34,7 @@ Window.implement({
 
 	getWidth: function(){
 		if (Client.Engine.webkit419) return this.innerWidth;
-		if (Client.Engine.opera) return this.body.clientWidth;
+		if (Client.Engine.opera) return this.document.body.clientWidth;
 		return this.document.documentElement.clientWidth;
 	},
 
@@ -48,6 +48,7 @@ Window.implement({
 	Returns:
 		(number) The height (without the scrollbar height) of the browser window.
 	*/
+
 	getHeight: function(){
 		if (Client.Engine.webkit419) return this.innerHeight;
 		if (Client.Engine.opera) return this.document.body.clientHeight;
@@ -79,7 +80,7 @@ Window.implement({
 	*/
 
 	getScrollWidth: function(){
-		if (Client.Engine.ie) return Math.max(this.document.documentElement.offsetWidth, this.document.documentElement.scrollWidth);
+		if (Client.Engine.trident) return Math.max(this.document.documentElement.offsetWidth, this.document.documentElement.scrollWidth);
 		if (Client.Engine.webkit) return this.document.body.scrollWidth;
 		return this.document.documentElement.scrollWidth;
 	},
@@ -109,7 +110,7 @@ Window.implement({
 	*/
 
 	getScrollHeight: function(){
-		if (Client.Engine.ie) return Math.max(this.document.documentElement.offsetHeight, this.document.documentElement.scrollHeight);
+		if (Client.Engine.trident) return Math.max(this.document.documentElement.offsetHeight, this.document.documentElement.scrollHeight);
 		if (Client.Engine.webkit) return this.document.body.scrollHeight;
 		return this.document.documentElement.scrollHeight;
 	},

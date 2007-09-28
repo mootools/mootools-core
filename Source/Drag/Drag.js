@@ -120,7 +120,7 @@ var Drag = new Class({
 	},
 
 	initialize: function(){
-		var params = Array.link(arguments, {'options': $type.object, 'element': $defined});
+		var params = Array.link(arguments, {'options': Object.type, 'element': $defined});
 		this.element = $(params.element);
 		this.document = this.element.ownerDocument;
 		this.setOptions(params.options);

@@ -156,7 +156,7 @@ describe('Array', {
 	link: function(){
 		var el = document.createElement('div');
 		var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
-		var assoc2 = arr2.link({myNumber: $type.number, myElement: $type.element, myObject: $type.object, myString: $type.string, myBoolean: $defined});
+		var assoc2 = arr2.link({myNumber: Number.type, myElement: Element.type, myObject: Object.type, myString: String.type, myBoolean: $defined});
 
 		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false});
 	},
@@ -328,7 +328,7 @@ describe('Array Generics', {
 	link: function(){
 		var el = document.createElement('div');
 		var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
-		var assoc2 = Array.link(arr2, {myNumber: $type.number, myElement: $type.element, myObject: $type.object, myString: $type.string, myBoolean: $defined});
+		var assoc2 = Array.link(arr2, {myNumber: Number.type, myElement: Element.type, myObject: Object.type, myString: String.type, myBoolean: $defined});
 
 		value_of(assoc2).should_be({myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false});
 	},

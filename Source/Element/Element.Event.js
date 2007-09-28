@@ -46,12 +46,14 @@ Note:
 	Accessing event.page / event.client requires an XHTML doctype.
 */
 
-var Event = new Class({
+var Event = new Native({
+	
+	name: 'Event',
 
 	initialize: function(event, win){
-		if (event && event.$extended) return event;
-		this.$extended = true;
 		event = event || (win || window).event;
+		if (event.$extended) return event;
+		this.$extended = true;
 		this.event = event;
 		this.type = event.type;
 		this.target = event.target || event.srcElement;
@@ -89,7 +91,11 @@ var Event = new Class({
 			if (this.fixRelatedTarget.create({'bind': this, 'attempt': Client.Engine.gecko})() === false) this.relatedTarget = this.target;
 		}
 		return this;
-	},
+	}
+
+});
+
+Event.implement({
 
 	/*
 	Method: stop

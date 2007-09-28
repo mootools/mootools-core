@@ -52,13 +52,17 @@ See Also:
 */
 
 var Element = new Native({
-
+	
+	name: 'Element',
+	
+	legacy: true,
+	
 	initialize: function(el){
 		if (Element.Builders.has(el)) return Element.Builders[el].run(Array.slice(arguments, 1));
-		var params = Array.link(arguments, {'document': $type.document, 'properties': $type.object});
+		var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
 		var props = params.properties || {}, doc = params.document || document;
 		if ($type(el) == 'string'){
-			if (Client.Engine.ie && props && (props.name || props.type)){
+			if (Client.Engine.trident && props && (props.name || props.type)){
 				var name = (props.name) ? ' name="' + props.name + '"' : '';
 				var type = (props.type) ? ' type="' + props.type + '"' : '';
 				delete props.name;
@@ -72,7 +76,6 @@ var Element = new Native({
 	},
 
 	afterImplement: function(key, value){
-		HTMLElement.prototype[key] = value;
 		Elements.prototype[(Array.prototype[key]) ? key + 'Elements' : key] = Elements.$multiply(key);
 	}
 
@@ -94,6 +97,7 @@ var IFrame = new Native({
 	name: 'IFrame',
 
 	initialize: function(props){
+		props = props || {};
 		var iframe = $(document.createElement('iframe'));
 		iframe.name = props.name || 'IFrame_' + iframe.$attributes.uid;
 		delete props.name;
@@ -216,7 +220,7 @@ Window.implement({
 		var type = $type(el);
 		if (type == 'string') type = (el = this.document.getElementById(el)) ? 'element' : false;
 		if (type != 'element') return (type == 'window' || type == 'document') ? el : null;
-		if (Garbage.collect(el) && !el.htmlElement) $extend($extend(el, {htmlElement: $empty}), Element.prototype);
+		if (Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
 		return el;
 	},
 
@@ -676,11 +680,11 @@ Element.implement({
 	},
 
 	/*
-	Method: remove
+	Method: dispose
 		Removes the Element from the DOM.
 
 	Syntax:
-		>var removedElement = myElement.remove();
+		>var removedElement = myElement.dispose();
 
 	Returns:
 		(element) This Element.
@@ -693,7 +697,7 @@ Element.implement({
 		[/html]
 
 		[javascript]
-			$('myElement').remove() //bye bye
+			$('myElement').dispose() //bye bye
 		[/javascript]
 
 		Results:
@@ -701,14 +705,11 @@ Element.implement({
 			<div id="mySecondElement"></div>
 		[/html]
 
-	Note:
-		For <Elements> this method is named removeElements, because <Array.remove> has priority.
-
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.removeChild>
 	*/
 
-	remove: function(){
+	dispose: function(){
 		return this.parentNode.removeChild(this);
 	},
 
@@ -983,7 +984,7 @@ Element.implement({
 		[/html]
 
 		[javascript]
-			$('mySecondElement').getPrevious().remove(); //get the previous DOM Element from mySecondElement and removes.
+			$('mySecondElement').getPrevious().dispose(); //get the previous DOM Element from mySecondElement and removes.
 		[/javascript]
 
 		Result:
@@ -1244,7 +1245,7 @@ Element.implement({
 		var index = Element.$attributes[property];
 		if (index) return this[index];
 		var flag = Element.$attributesIFlag[property] || 0;
-		if (!Client.Engine.ie || flag) return this.getAttribute(property, flag);
+		if (!Client.Engine.trident || flag) return this.getAttribute(property, flag);
 		var node = (this.attributes) ? this.attributes[property] : null;
 		return (node) ? node.nodeValue : null;
 	},
@@ -1460,7 +1461,7 @@ Element.implement({
 	setText: function(text){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (Client.Engine.ie){
+			if (Client.Engine.trident){
 				if (tag == 'style') this.styleSheet.cssText = text;
 				else if (tag ==  'script') this.setProperty('text', text);
 				return this;
@@ -1497,7 +1498,7 @@ Element.implement({
 	getText: function(){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (Client.Engine.ie){
+			if (Client.Engine.trident){
 				if (tag == 'style') return this.styleSheet.cssText;
 				else if (tag ==  'script') return this.getProperty('text');
 			} else {
@@ -1565,8 +1566,13 @@ Element.implement({
 	*/
 
 	empty: function(){
-		Garbage.trash(this.getElementsByTagName('*'));
-		return this.setHTML('');
+		var elements = $A(this.getElementsByTagName('*'));
+		elements.each(function(element){
+			Element.dispose.attempt(element);
+		});
+		Garbage.trash(elements);
+		Element.setHTML.attempt([this, '']);
+		return this;
 	},
 
 	/*
@@ -1594,11 +1600,13 @@ Element.implement({
 	*/
 
 	destroy: function(){
-		Garbage.kill(this.empty().remove());
+		Garbage.kill(this.empty().dispose());
 		return null;
 	}
 
 });
+
+Element.alias('dispose', 'remove');
 
 Element.$attributes = {
 	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
@@ -1643,17 +1651,15 @@ var Garbage = {
 	},
 
 	trash: function(elements){
-		for (var i = elements.length, el; i--; i){
-			if (!(el = elements[i]) || !el.$attributes) continue;
-			Garbage.kill(el);
-		}
+		for (var i = elements.length, el; i--; i) Garbage.kill(elements[i]);
 	},
 
 	kill: function(el){
+		if (!el || !el.$attributes) return;
 		delete Garbage.Elements[String(el.$attributes.uid)];
 		if (el.$events) el.removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
-		if (Client.Engine.ie){
+		if (Client.Engine.trident){
 			for (var d in Element.prototype) el[d] = null;
 		}
 		el.$attributes = null;
@@ -1667,5 +1673,5 @@ var Garbage = {
 
 window.addListener('beforeunload', function(){
 	window.addListener('unload', Garbage.empty);
-	if (Client.Engine.ie) window.addListener('unload', CollectGarbage);
+	if (Client.Engine.trident) window.addListener('unload', CollectGarbage);
 });

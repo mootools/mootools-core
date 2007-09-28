@@ -45,7 +45,7 @@ Examples:
 */
 
 function $A(iterable){
-	if (Client.Engine.ie && $type(iterable) == 'collection'){
+	if (Client.Engine.trident && $type(iterable) == 'collection'){
 		var array = [];
 		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
 		return array;
@@ -395,7 +395,7 @@ Array.implement({
 		[javascript]
 			var el = document.createElement('div');
 			var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
-			arr2.link({myNumber: $type.number, myElement: $type.element, myObject: $type.object, myString: $type.string, myBoolean: $defined});
+			arr2.link({myNumber: Number.type, myElement: Element.type, myObject: Object.type, myString: String.type, myBoolean: $defined});
 			//returns {myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false}
 		[/javascript]
 	*/

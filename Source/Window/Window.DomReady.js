@@ -47,7 +47,7 @@ Element.Events.domready = {
 			(function(){
 				if (!check(self.document)) arguments.callee.delay(50);
 			})();
-		} else if (this.document.readyState && Client.Engine.ie){
+		} else if (this.document.readyState && Client.Engine.trident){
 			var script = $('ie_domready');
 			if (!script){
 				var src = (this.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';

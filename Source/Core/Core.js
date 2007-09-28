@@ -367,8 +367,7 @@ Example:
 
 function $type(obj){
 	if (obj == undefined) return false;
-	if (obj.htmlElement) return 'element';
-	if (obj.$family) return (obj.$family == 'number' && !isFinite(obj)) ? false : obj.$family;
+	if (obj.$family) return (obj.$family.name == 'number' && !isFinite(obj)) ? false : obj.$family.name;
 	if (obj.nodeName){
 		switch (obj.nodeType){
 			case 1: return 'element';
@@ -380,52 +379,59 @@ function $type(obj){
 	return typeof obj;
 };
 
-(function(types){
-
-	for (var i = 0, l = types.length; i < l; i++) $type[types[i]] = (function(type){
-		return function(item){
-			return ($type(item) === type);
-		};
-	})(types[i]);
-
-})(['element', 'textnode', 'whitespace', 'collection', 'boolean', 'native', 'object']);
-
 var Native = function(options){
-	options = $extend({name: false, generics: true, browser: false, initialize: $empty, afterImplement: $empty}, options || {});
-	var initialize = options.initialize;
+	
+	options = $extend({
+		name: false,
+		initialize: false,
+		generics: true,
+		browser: false,
+		legacy: false,
+		afterImplement: $empty
+	}, options || {});
 
-	initialize.prototype.constructor = initialize;
-
+	var legacy = (options.legacy) ? window[options.name] : false;
+	
+	var object = options.initialize || legacy;
+	
+	object.constructor = Native;
+	object.$family = {name: 'native'};
+	
+	if (legacy && options.initialize) object.prototype = legacy.prototype;
+	object.prototype.constructor = object;
+	
 	if (options.name){
 		var family = options.name.toLowerCase();
-		initialize.prototype.$family = family;
-		if (!$type[family]) $type[family] = function(item){
-			return $type(item) === family;
-		};
+		object.prototype.$family = {name: family};
+		Native.typize(object, family);
 	}
-
-	initialize.$family = 'native';
-	initialize.constructor = Native;
-
-	initialize.implement = function(properties){
+	
+	object.implement = function(properties, force){
 		for (var property in properties){
-			if (!options.browser || !this.prototype[property]) this.prototype[property] = properties[property];
-			if (options.generics && !this[property] && typeof this.prototype[property] == 'function') this[property] = Native.generic(this, property);
+			if (!options.browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
+			if (options.generics) Native.genericize(this, property);
 			options.afterImplement.call(this, property, properties[property]);
 		}
-		return this;
 	};
+	
+	object.alias = function(existing, property, force){
+		if (!options.browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
+		if (options.generics && !this[property]) this[property] = this[existing];
+		options.afterImplement.call(this, property, this[property]);
+	};
+	
+	return object;
 
-	return $extend(initialize, this);
 };
 
-Native.prototype.alias = function(existing, property){
-	this.prototype[property] = this.prototype[existing];
-	this[property] = this[existing];
+Native.typize = function(object, family){
+	if (!object.type) object.type = function(item){
+		return ($type(item) === family);
+	};
 };
 
-Native.generic = function(object, property){
-	return function(){
+Native.genericize = function(object, property){
+	if (!object[property] && $type(object.prototype[property]) == 'function') object[property] = function(){
 		var args = Array.prototype.slice.call(arguments);
 		return object.prototype[property].apply(args.shift(), args);
 	};
@@ -436,6 +442,21 @@ Native.implement = function(objects, properties){
 	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
 };
 
+(function(obj){
+	for (var i = 0, l = arguments.length; i < l; i++) Native.typize(window[arguments[i]], arguments[i].toLowerCase());
+})('Boolean', 'Native', 'Object');
+
+(function(){
+	for (var i = 0, l = arguments.length; i < l; i++) new Native({name: arguments[i], initialize: window[arguments[i]], browser: true});
+})('String', 'Function', 'Number', 'Array', 'RegExp');
+
+(function(object, methods){
+	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i]);
+	return arguments.callee;
+})
+(Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf'])
+(String, ['charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'valueOf']);
+
 /*
 Object: Client
 	Some browser properties are attached to the Client Object for browser and platform detection.
@@ -445,9 +466,9 @@ Features:
 	Client.Features.xhr   - (boolean) True if the browser supports native XMLHTTP object.
 
 Engine:
-	Client.Engine.ie        - (boolean) True if the current browser is Internet Explorer (any).
-	Client.Engine.ie6       - (boolean) True if the current browser is Internet Explorer 6.
-	Client.Engine.ie7       - (boolean) True if the current browser is Internet Explorer 7.
+	Client.Engine.trident        - (boolean) True if the current browser is Internet Explorer (any).
+	Client.Engine.trident4       - (boolean) True if the current browser is Internet Explorer 6.
+	Client.Engine.trident5       - (boolean) True if the current browser is Internet Explorer 7.
 	Client.Engine.gecko     - (boolean) True if the current browser is Mozilla/Gecko.
 	Client.Engine.webkit    - (boolean) True if the current browser is Safari/Konqueror.
 	Client.Engine.webkit419 - (boolean) True if the current browser is Safari2 / webkit till version 419.
@@ -473,94 +494,60 @@ var Client = {
 };
 
 if (window.opera) Client.Engine.name = 'opera';
-else if (window.ActiveXObject) Client.Engine = {'name': 'ie', 'version': (Client.Features.xhr) ? 7 : 6};
+else if (window.ActiveXObject) Client.Engine = {'name': 'trident', 'version': (Client.Features.xhr) ? 5 : 4};
 else if (!navigator.taintEnabled) Client.Engine = {'name': 'webkit', 'version': (Client.Features.xpath) ? 420 : 419};
 else if (document.getBoxObjectFor != null) Client.Engine.name = 'gecko';
 Client.Engine[Client.Engine.name] = Client.Engine[Client.Engine.name + Client.Engine.version] = true;
-
 Client.Platform[Client.Platform.name] = true;
-
-/* Native: Document */
-
-var Document = new Native({
-
-	name: 'Document',
-
-	initialize: function(doc){
-		if ($type(doc) == 'document') return doc;
-		Document.instances.push(doc);
-		doc.head = doc.getElementsByTagName('head')[0];
-		doc.window = doc.defaultView || doc.parentWindow;
-
-		if (Client.Engine.ie6) $try(function(){
-			doc.execCommand("BackgroundImageCache", false, true);
-		});
-
-		return $extend(doc, this);
-	},
-
-	afterImplement: function(key, value){
-		for (var i = 0, l = Document.instances.length; i < l; i++) Document.instances[i][key] = value;
-	}
-
-});
-
-Document.instances = [];
-
-new Document(document);
-
-/* Native: Window */
 
 var Window = new Native({
 
 	name: 'Window',
 
+	legacy: true,
+
 	initialize: function(win){
-		if ($type(win) == 'window') return win;
-		Window.instances.push(win);
-
-		if (typeof win.HTMLElement == 'undefined'){
-			win.HTMLElement = $empty;
+		Window.$instances.push(win);
+		if (!win.Element){
+			win.Element = $empty;
 			if (Client.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
-			win.HTMLElement.prototype = (Client.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
+			win.Element.prototype = (Client.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
 		}
-
-		win.HTMLElement.prototype.htmlElement = $empty;
-
-		return $extend(win, this);
+		return ($type(win) == 'window') ? win : $extend(win, this);
 	},
-
-	afterImplement: function(key, value){
-		for (var i = 0, l = Window.instances.length; i < l; i++) Window.instances[i][key] = value;
+	
+	afterImplement: function(property, value){
+		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
 	}
 
 });
 
-Window.instances = [];
+Window.$instances = [];
 
 new Window(window);
 
-(function(){
+var Document = new Native({
 
-	function natives(){
-		for (var i = 0, l = arguments.length; i < l; i++){
-			new Native({
-				name: arguments[i],
-				initialize: window[arguments[i]],
-				browser: true
-			});
-		}
-	};
+	name: 'Document',
 
-	natives('String', 'Function', 'Number', 'Array', 'RegExp');
+	legacy: true,
 
-	function generic(object, methods){
-		for (var i = 0, l = methods.length; i < l; i++){
-			if (!object[methods[i]]) object[methods[i]] = Native.generic(object, methods[i]);
-		}
-	};
+	initialize: function(doc){
+		Document.$instances.push(doc);
+		doc.head = doc.getElementsByTagName('head')[0];
+		doc.window = doc.defaultView || doc.parentWindow;
+		if (Client.Engine.trident4) $try(function(){
+			doc.execCommand("BackgroundImageCache", false, true);
+		});
+		return ($type(doc) == 'document') ? doc : $extend(doc, this);
+	},
+	
+	afterImplement: function(property, value){
+		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
+	}
 
-	generic(Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf']);
-	generic(String, ['charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'valueOf']);
+});
 
-})();
+Document.$instances = [];
+
+new Document(document);

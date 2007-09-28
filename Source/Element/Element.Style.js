@@ -45,7 +45,7 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.setOpacity(parseFloat(value));
-			case 'float': property = (Client.Engine.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = (Client.Engine.trident) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
 		if ($type(value) != 'string'){
@@ -126,7 +126,7 @@ Element.implement({
 			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Client.Engine.ie) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		if (Client.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = this.$attributes.opacity = opacity;
 		return this;
 	},
@@ -172,7 +172,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		return (Client.Engine.ie) ? Element.$fixStyle(property, result, this) : result;
+		return (Client.Engine.trident) ? Element.$fixStyle(property, result, this) : result;
 	},
 
 	/*

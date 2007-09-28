@@ -50,10 +50,9 @@ Element.implement({
 					if (option.selected) values.push(option.value);
 				});
 				return (this.multiple) ? values : values[0];
-			case 'input': if (!(this.checked && ['checkbox', 'radio'].contains(this.type)) && !['search', 'hidden', 'text', 'password'].contains(this.type)) break;
-			case 'textarea': return this.value;
+			case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
+			default: return $chk(this.value) ? this.value : false;
 		}
-		return false;
 	},
 
 	/*

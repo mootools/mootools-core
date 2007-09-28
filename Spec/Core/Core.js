@@ -144,8 +144,8 @@ describe('$type', {
 
 	for_arrays: function(){
 		value_of($type([1,2])).should_be('array');
-		value_of($type.array([1,2])).should_be_true();
-		value_of($type.array({})).should_be_false();
+		value_of(Array.type([1,2])).should_be_true();
+		value_of(Array.type({})).should_be_false();
 	},
 
 	for_strings: function(){

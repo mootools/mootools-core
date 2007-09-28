@@ -124,7 +124,7 @@ var Sortables = new Class({
 		[javascript]
 			var myList = $$('#myList li');
 			var mySortables = new Sortables(myList);
-			myList.getLast().remove(); // poof gone from the DOM .. this will cause trouble.
+			myList.getLast().dispose(); // poof gone from the DOM .. this will cause trouble.
 
 			mySortables.reinitialize();
 		[/javascript]
@@ -357,7 +357,7 @@ var Sortables = new Class({
 			'position': 'static',
 			'opacity': this.styles.opacity
 		}).injectBefore(this.clone);
-		this.clone.empty().remove();
+		this.clone.empty().dispose();
 
 		this.fireEvent('onComplete', this.element);
 		this.idle = true;
