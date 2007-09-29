@@ -5,7 +5,7 @@ Native.implement([Element, Document], {
 	getElementsBySelector: document.getElements
 });
 
-function $E(selector, filter){
+$E = function(selector, filter){
 	return ($(filter) || document).getElement(selector);
 };
 

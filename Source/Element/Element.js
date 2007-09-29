@@ -217,6 +217,7 @@ Window.implement({
 	*/
 
 	$: function(el){
+		if (el && el.$attributes) return el;
 		var type = $type(el);
 		if (type == 'string') type = (el = this.document.getElementById(el)) ? 'element' : false;
 		if (type != 'element') return (type == 'window' || type == 'document') ? el : null;
@@ -1640,13 +1641,14 @@ Element.UID = 0;
 var Garbage = {
 
 	Elements: {},
+	
+	ignored: {'object': 1, 'embed': 1, 'OBJECT': 1, 'EMBED': 1},
 
 	collect: function(el){
-		if (({'object': 1, 'embed': 1})[el.tagName.toLowerCase()]) return false;
-		if (!el.$attributes){
-			el.$attributes = {'opacity': 1, 'uid': Element.UID++};
-			Garbage.Elements[el.$attributes.uid] = el;
-		}
+		if (el.$attributes) return true;
+		if (Garbage.ignored[el.tagName]) return false;
+		el.$attributes = {'opacity': 1, 'uid': Element.UID++};
+		Garbage.Elements[el.$attributes.uid] = el;
 		return true;
 	},
 

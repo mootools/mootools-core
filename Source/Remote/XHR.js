@@ -232,7 +232,6 @@ var XHR = new Class({
 		}
 		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
 		this.transport.onreadystatechange = this.onStateChange.bind(this);
-		if ((this.options.method == 'post') && this.transport.overrideMimeType) this.setHeader('Connection', 'close');
 		for (var type in this.headers){
 			try{
 				this.transport.setRequestHeader(type, this.headers[type]);
