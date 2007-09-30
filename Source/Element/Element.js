@@ -1,12 +1,10 @@
 /*
 Script: Element.js
-	One of the most important items of MooTools, contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
+	One of the most important items of MooTools, contains the dollar function, the dollars function,
+	and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
 
 License:
 	MIT-style license.
-
-Credits:
-	- Some functions are inspired by those found in prototype.js <http://prototype.conio.net/> (c) 2005 Sam Stephenson sam [at] conio [dot] net, MIT-style license.
 */
 
 /*
@@ -25,7 +23,8 @@ Arguments:
 	props - (object, optional) The properties to be applied to the new Element.
 
 	props (continued):
-		Assumes that all keys are properties that the <Element.setProperties receives, there are special keys, however: the 'styles' key whos value is passed to <Element.setStyles> and the 'events' key whos value is passed to <Element.addEvents>.
+		Assumes that all keys are properties that the <Element.setProperties> receives, there are special keys,
+		however: the 'styles' key whos value is passed to <Element.setStyles> and the 'events' key whos value is passed to <Element.addEvents>.
 
 Example:
 	[javascript]
@@ -58,7 +57,7 @@ var Element = new Native({
 	legacy: true,
 	
 	initialize: function(el){
-		if (Element.Builders.has(el)) return Element.Builders[el].run(Array.slice(arguments, 1));
+		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
 		var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
 		var props = params.properties || {}, doc = params.document || document;
 		if ($type(el) == 'string'){
@@ -104,7 +103,7 @@ var IFrame = new Native({
 		var onload = props.onload || $empty;
 		delete props.onload;
 		iframe.onload = function(){
-			var frame = this.ownerDocument.window.frames[this.name];
+			var frame = window.frames[this.name];
 			new Window(frame);
 			new Document(frame.document);
 			onload.call(frame);
@@ -118,7 +117,8 @@ var IFrame = new Native({
 
 /*
 Native: Elements
-	The Elements class allows <Element> methods to work also on an <Elements> array. In MooTools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
+	The Elements class allows <Element> methods to work also on an <Elements> array.
+	In MooTools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
 
 Syntax:
 	>var myElements = new Elements(elements[, nocheck]);
@@ -347,7 +347,7 @@ Native.implement([Element, Document], {
 
 });
 
-Element.Setters = new Hash({
+Element.Set = new Hash({
 
 	properties: function(properties){
 		this.setProperties(properties);
@@ -355,7 +355,11 @@ Element.Setters = new Hash({
 
 });
 
-Element.Builders = new Hash({
+Element.Has = new Hash;
+
+Element.Get = new Hash;
+
+Element.Construct = new Hash({
 
 	iframe: function(props){
 		return new IFrame(props);
@@ -387,18 +391,20 @@ Element.implement({
 
 	/*
 	Method: set
-		With this method you can set events, styles, and properties to the Element (same as calling new Element with the second paramater).
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the Element.Set Hash.
+		Default properties of this Hash are events, styles, and properties.
 
 	Syntax:
-		>myElement.set(props);
+		>myElement.set(property, value);
 
 	Arguments:
-		props - (object) An object with various properties used to modify the current Element. Keyword properties are: 'styles' and 'events' all other are considered properties. See also: new <Element>
+		mixed - (mixed) This method accepts either a property and a value or a property/value object.
 
 	Returns:
 		(element) This Element.
 
 	Example:
+		with an object
 		[javascript]
 			var body = $(document.body).set({
 				'styles': { // property styles passes the object to <Element.setStyles>
@@ -412,17 +418,93 @@ Element.implement({
 				'id': 'documentBody' //any other property uses setProperty
 			});
 		[/javascript]
+		with property and value
+		[javascript]
+			var body = $(document.body).set('styles', { // property styles passes the object to <Element.setStyles>
+				'font': '12px Arial',
+				'color': 'blue'
+			});
+		[/javascript]
+		
+	Note:
+		All additional arguments are passed to the method of the Element.Get Hash.
+		If no matching property is found in Element.Set, it falls back to setProperty, making this method the perfect shortcut.
 
 	See Also:
-		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>
+		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>, <Element.Set>
 	*/
 
 	set: function(props){
+		if (arguments.length > 1){
+			props = {};
+			props[arguments[0]] = Array.slice(arguments, 1);
+		}
 		for (var prop in props){
-			if (Element.Setters.has(prop)) Element.Setters[prop].call(this, props[prop]);
+			if (Element.Set.has(prop)) Element.Set[prop].call(this, props[prop]);
 			else this.setProperty(prop, props[prop]);
 		}
 		return this;
+	},
+	
+	/*
+	Method: get
+		This is a "dynamic arguments" method. The argument must be one of the properties of the Element.Get Hash.
+
+	Syntax:
+		>myElement.get(property);
+
+	Arguments:
+		property - (string) The name of a method of the Element.Get Hash.
+
+	Returns:
+		(mixed) Whatever the method returns.
+
+	Example:
+		[javascript]
+			var value = $(element).get('id');
+		[/javascript]
+		
+	Note:
+		All additional arguments are passed to the method of the Element.Get Hash.
+		If no matching property is found in Element.Get, it falls back to getProperty, making this method the perfect shortcut.
+
+	See Also:
+		<Element>, <Element.getProperty>
+	*/
+	
+	get: function(prop){
+		return (Element.Get.has(prop)) ? Element.Get[prop].apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
+	},
+	
+	/*
+	Method: has
+		This is a "dynamic arguments" method. The argument must be one of the properties of the Element.Has Hash.
+
+	Syntax:
+		>myElement.has(property);
+
+	Arguments:
+		property - (string) The name of a method of the Element.Has Hash.
+
+	Returns:
+		(mixed) True or False, depending on the return value of the Element.Has method. if Element.Has has no method named like the first argument,
+				the function will return null.
+
+	Example:
+		[javascript]
+			Element.Has.class = function(className){
+				return this.hasClass(className);
+			};
+			
+			var value = $(element).has('class', 'awesome');
+		[/javascript]
+		
+	Note:
+		All additional arguments are passed to the method of the Element.Has Hash.
+	*/
+	
+	has: function(prop){
+		return (Element.Has.has(prop)) ? !!Element.Has[prop].apply(this, Array.slice(arguments, 1)) : null;
 	},
 
 	/*
@@ -769,7 +851,8 @@ Element.implement({
 		>var replacingElement = myElement.replaceWidth(el);
 
 	Arguments:
-		el - (mixed) A string id representing the Element to be injected in, or an Element reference. In addition, if you pass div or another tag, the Element will be created.
+		el - (mixed) A string id representing the Element to be injected in, or an Element reference.
+			In addition, if you pass div or another tag, the Element will be created.
 
 	Returns:
 		(element) The passed in Element.
@@ -1215,7 +1298,8 @@ Element.implement({
 	*/
 
 	hasChild: function(el){
-		return !!$A(this.getElementsByTagName('*')).contains(el);
+		if (!(el = $(el))) return false;
+		return !!$A(this.getElementsByTagName(el.getTag())).contains(el);
 	},
 
 	/*
@@ -1304,7 +1388,8 @@ Element.implement({
 		[/html]
 
 		[javascript]
-			var imgProps = $('myImage').getProperties(); // returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+			var imgProps = $('myImage').getProperties();
+			// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
 		[/javascript]
 
 	See Also:

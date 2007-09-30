@@ -68,12 +68,12 @@ Fx.Morph = new Class({
 			var rules = sheet.rules || sheet.cssRules;
 			Array.each(rules, function(rule, i){
 				if (!rule.selectorText.test('\.' + className + '$') || !rule.style) return;
-				for (var style in Element.Styles.All){
+				Element.Styles.each(function(value, style){
 					if (rule.style[style]){
 						var ruleStyle = rule.style[style];
 						to[style] = (style.test(/color/i) && ruleStyle.test(/^rgb/)) ? ruleStyle.rgbToHex() : ruleStyle;
 					}
-				}
+				});
 			});
 		});
 		return arguments.callee.parent(to);

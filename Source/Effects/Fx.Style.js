@@ -140,7 +140,7 @@ Element.implement({
 
 	/*
 	Method: effect
-		Applies an <Fx.Style> to the Element. This a shortcut for <Fx.Style>.
+		Applies an <Fx.Style> to the Element. This a shortcut for new <Fx.Style>.
 
 	Syntax:
 		>var myFx = myElement.effect(property[, options]);

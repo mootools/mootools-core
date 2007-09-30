@@ -106,7 +106,7 @@ var Swiff = function(path, options){
 	return ($(options.container) || new Element('div')).setHTML(build).firstChild;
 };
 
-Element.Builders.swf = function(path, props){
+Element.Construct.swf = function(path, props){
 	return new Swiff(path, props);
 };
 

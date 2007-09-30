@@ -30,7 +30,7 @@ Properties:
 	client.y      - (number) The y position of the mouse, relative to the viewport
 	key           - (string) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
 	target        - (element) The event target, not extended with <$> for performance reasons.
-	relatedTarget - (element) The event related target, not extended with <$> for performance reasons.
+	relatedTarget - (element) The event related target, NOT 'extended' with <$>.
 
 Example:
 	[javascript]
@@ -51,22 +51,21 @@ var Event = new Native({
 	name: 'Event',
 
 	initialize: function(event, win){
-		event = event || (win || window).event;
+		win = win || window;
+		event = event || win.event;
 		if (event.$extended) return event;
 		this.$extended = true;
 		this.event = event;
 		this.type = event.type;
 		this.target = event.target || event.srcElement;
 		if (this.target.nodeType == 3) this.target = this.target.parentNode;
-
 		this.shift = event.shiftKey;
 		this.control = event.ctrlKey;
 		this.alt = event.altKey;
 		this.meta = event.metaKey;
-
-		if (['DOMMouseScroll', 'mousewheel'].contains(this.type)){
+		if (this.type.test(/DOMMouseScroll|mousewheel/)){
 			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-		} else if (this.type.contains('key')){
+		} else if (this.type.test(/key/)){
 			this.code = event.which || event.keyCode;
 			this.key = Event.Keys.keyOf(this.code);
 			if (this.type == 'keydown'){
@@ -76,12 +75,12 @@ var Event = new Native({
 			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
 		} else if (this.type.test(/(click|mouse|menu)/)){
 			this.page = {
-				'x': event.pageX || event.clientX + win.document.documentElement.scrollLeft,
-				'y': event.pageY || event.clientY + win.document.documentElement.scrollTop
+				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
+				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
 			};
 			this.client = {
-				'x': event.pageX ? event.pageX - win.pageXOffset : event.clientX,
-				'y': event.pageY ? event.pageY - win.pageYOffset : event.clientY
+				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
+				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
 			};
 			this.rightClick = (event.which == 3) || (event.button == 2);
 			switch (this.type){
@@ -90,9 +89,36 @@ var Event = new Native({
 			}
 			if (this.fixRelatedTarget.create({'bind': this, 'attempt': Client.Engine.gecko})() === false) this.relatedTarget = this.target;
 		}
+
 		return this;
 	}
 
+});
+
+/*
+Hash: Event.Keys
+	You can add additional Event keys codes by adding properties to the Event.Keys Hash:
+
+Example:
+	[javascript]
+		Event.Keys.whatever = 80;
+		$('myInput').addEvent('keydown', function(event){
+			if (event.key == 'whatever') alert('whatever key clicked');
+		});
+	[/javascript]
+*/
+
+Event.Keys = new Hash({
+	'enter': 13,
+	'up': 38,
+	'down': 40,
+	'left': 37,
+	'right': 39,
+	'esc': 27,
+	'space': 32,
+	'backspace': 8,
+	'tab': 9,
+	'delete': 46
 });
 
 Event.implement({
@@ -218,38 +244,12 @@ Event.implement({
 });
 
 /*
-Property: Keys
-	You can add additional Event keys codes this way:
-
-Example:
-	[javascript]
-		Event.Keys.whatever = 80;
-		$('myInput').addEvent('keydown', function(event){
-			if (event.key == 'whatever') alert('whatever key clicked');
-		});
-	[/javascript]
-*/
-
-Event.Keys = new Hash({
-	'enter': 13,
-	'up': 38,
-	'down': 40,
-	'left': 37,
-	'right': 39,
-	'esc': 27,
-	'space': 32,
-	'backspace': 8,
-	'tab': 9,
-	'delete': 46
-});
-
-/*
 Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 	These methods are also available on window and document.
 */
 
-Element.Setters.events = function(events){
+Element.Set.events = function(events){
 	this.addEvents(events);
 };
 
@@ -291,9 +291,7 @@ Native.implement([Element, Window, Document], {
 		if (!this.$events[type]) this.$events[type] = {'keys': [], 'values': []};
 		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
-		var realType = type;
-		var custom = Element.Events.get(type);
-		var map = fn;
+		var realType = type, custom = Element.Events.get(type), map = fn;
 		if (custom){
 			if (custom.add) custom.add.call(this, fn);
 			if (custom.map){
@@ -309,9 +307,8 @@ Native.implement([Element, Window, Document], {
 		if (nativeEvent){
 			if (nativeEvent == 2){
 				var self = this;
-				var doc = this.ownerDocument || this;
 				defn = function(event){
-					event = new Event(event, doc.window);
+					event = new Event(event, (self.ownerDocument || self).window);
 					if (map.call(self, event) === false) event.stop();
 				};
 			}
@@ -534,6 +531,24 @@ Element.$events = {
 	'focus': 1, 'blur': 1, 'change': 1, 'reset': 1, 'select': 1, //forms elements
 	'error': 1, 'abort': 1, 'scroll': 1 //misc
 };
+
+/*
+Hash: Element.Events
+	You can add additional custom events by adding properties to the Element.Events Hash:
+
+Example:
+	[javascript]
+		Element.Events.shiftclick = {
+			type: 'click', //we set a base type
+			map: function(event){ //and a function to perform additional checks
+				return (event.shift == true); //this means the event is free to fire
+			}
+		}
+		$('myInput').addEvent('shiftclick', function(event){
+			console.log('the user clicked the left mouse button while holding the shift key');
+		});
+	[/javascript]
+*/
 
 Element.Events = new Hash({
 

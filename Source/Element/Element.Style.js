@@ -11,7 +11,7 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Setters.styles = function(styles){
+Element.Set.styles = function(styles){
 	this.setStyles(styles);
 };
 
@@ -49,12 +49,12 @@ Element.implement({
 		}
 		property = property.camelCase();
 		if ($type(value) != 'string'){
-			var map = (Element.Styles.All[property] || '@').split(' ');
+			var map = (Element.Styles.get(property) || '@').split(' ');
 			value = $splat(value).map(function(val, i){
 				if (!map[i]) return '';
 				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
 			}).join(' ');
-		} else if (value == Number(value) + ''){
+		} else if (value == String(Number(value))){
 			value = Math.round(value);
 		}
 		this.style[property] = value;
@@ -158,9 +158,9 @@ Element.implement({
 		var result = this.style[property];
 		if (!$chk(result)){
 			result = [];
-			for (var style in Element.Styles.Short){
+			for (var style in Element.ShortStyles){
 				if (property != style) continue;
-				for (var s in Element.Styles.Short[style]) result.push(this.getStyle(s));
+				for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
 				return (result.every(function(item){
 					return item == result[0];
 				})) ? result[0] : result.join(' ');
@@ -222,25 +222,21 @@ Element.$fixStyle = function(property, result, element){
 	return result;
 };
 
-Element.Styles = {
+Element.Styles = new Hash({
+	'width': '@px', 'height': '@px', 'left': '@px', 'top': '@px', 'bottom': '@px', 'right': '@px',
+	'backgroundColor': 'rgb(@, @, @)', 'backgroundPosition': '@px @px', 'color': 'rgb(@, @, @)',
+	'fontSize': '@px', 'letterSpacing': '@px', 'lineHeight': '@px', 'clip': 'rect(@px @px @px @px)',
+	'margin': '@px @px @px @px', 'padding': '@px @px @px @px', 'border': '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
+	'borderWidth': '@px @px @px @px', 'borderStyle': '@ @ @ @', 'borderColor': 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+	'zIndex': '@', 'zoom': '@', 'fontWeight': '@',
+	'textIndent': '@px', 'opacity': '@'
+});
 
-	All: {
-		'width': '@px', 'height': '@px', 'left': '@px', 'top': '@px', 'bottom': '@px', 'right': '@px',
-		'backgroundColor': 'rgb(@, @, @)', 'backgroundPosition': '@px @px', 'color': 'rgb(@, @, @)',
-		'fontSize': '@px', 'letterSpacing': '@px', 'lineHeight': '@px',
-		'margin': '@px @px @px @px', 'padding': '@px @px @px @px', 'border': '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-		'borderWidth': '@px @px @px @px', 'borderStyle': '@ @ @ @', 'borderColor': 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-		'zIndex' : '@', 'zoom': '@', 'fontWeight': '@',
-		'textIndent': '@px', 'opacity': '@'
-	},
-
-	Short: {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}}
-
-};
+Element.ShortStyles = {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}};
 
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-	var Short = Element.Styles.Short;
-	var All = Element.Styles.All;
+	var Short = Element.ShortStyles;
+	var All = Element.Styles;
 	['margin', 'padding'].each(function(style){
 		var sd = style + direction;
 		Short[style][sd] = All[sd] = '@px';
@@ -249,7 +245,7 @@ Element.Styles = {
 	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
 	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
 	Short[bd] = {};
-	Short.borderWidth[bdw] = Short[bd][bdw] = '@px';
-	Short.borderStyle[bds] = Short[bd][bds] = '@';
-	Short.borderColor[bdc] = Short[bd][bdc] = 'rgb(@, @, @)';
+	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
+	Short.borderStyle[bds] = Short[bd][bds] = All[bdw] = '@';
+	Short.borderColor[bdc] = Short[bd][bdc] = All[bdw] = 'rgb(@, @, @)';
 });
