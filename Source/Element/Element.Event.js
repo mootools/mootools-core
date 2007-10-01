@@ -1,6 +1,6 @@
 /*
 Script: Element.Event.js
-	Contains the Event Class, Element methods to deal with Element events, and custom Events.
+	Contains Element methods to deal with Element events, and custom Events.
 
 License:
 	MIT-style license.
@@ -14,8 +14,8 @@ Syntax:
 	>var myEvent = new Event([event[, win]]);
 
 Arguments:
-	event - (event, optional) An Event that needs to be extended.
-	win   - (win, optional) The context of the event.
+	event - (event) An HTMLEvent Object.
+	win   - (window, optional: defaults to window) The context of the event.
 
 Properties:
 	shift         - (boolean) True if the user pressed the shift
@@ -281,6 +281,7 @@ Native.implement([Element, Window, Document], {
 
 	Note:
 		You can stop the Event by returning false in the listener or calling <Event.stop>.
+		This method is also attached to Document and Window.
 
 	See Also:
 		<http://www.w3schools.com/html/html_eventattributes.asp>
@@ -288,19 +289,19 @@ Native.implement([Element, Window, Document], {
 
 	addEvent: function(type, fn){
 		this.$events = this.$events || {};
-		if (!this.$events[type]) this.$events[type] = {'keys': [], 'values': []};
+		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
 		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
-		var realType = type, custom = Element.Events.get(type), map = fn;
+		var realType = type, custom = Element.Events.get(type), condition = fn;
 		if (custom){
-			if (custom.add) custom.add.call(this, fn);
-			if (custom.map){
-				map = function(event){
-					if (custom.map.call(this, event)) return fn.call(this, event);
+			if (custom.onAdd) custom.onAdd.call(this, fn);
+			if (custom.condition){
+				condition = function(event){
+					if (custom.condition.call(this, event)) return fn.call(this, event);
 					return false;
 				};
 			}
-			if (custom.type) realType = custom.type;
+			realType = custom.base || realType;
 		}
 		var defn = fn;
 		var nativeEvent = Element.$events[realType] || 0;
@@ -309,7 +310,7 @@ Native.implement([Element, Window, Document], {
 				var self = this;
 				defn = function(event){
 					event = new Event(event, (self.ownerDocument || self).window);
-					if (map.call(self, event) === false) event.stop();
+					if (condition.call(self, event) === false) event.stop();
 				};
 			}
 			this.addListener(realType, defn);
@@ -355,6 +356,7 @@ Native.implement([Element, Window, Document], {
 	Note:
 		When the function was added using <Function.bind> or <Function.pass> a new reference
 		was created and you can not use removeEvent with the original function.
+		This method is also attached to Document and Window.
 	*/
 
 	removeEvent: function(type, fn){
@@ -365,8 +367,8 @@ Native.implement([Element, Window, Document], {
 		var value = this.$events[type].values.splice(pos, 1)[0];
 		var custom = Element.Events.get(type);
 		if (custom){
-			if (custom.remove) custom.remove.call(this, fn);
-			if (custom.type) type = custom.type;
+			if (custom.onRemove) custom.onRemove.call(this, fn);
+			type = custom.base || type;
 		}
 		return (Element.$events[type]) ? this.removeListener(type, value) : this;
 	},
@@ -398,6 +400,9 @@ Native.implement([Element, Window, Document], {
 
 	See Also:
 		<Element.addEvent>
+		
+	Note:
+		This method is also attached to Document and Window.
 	*/
 
 	addEvents: function(events){
@@ -439,6 +444,9 @@ Native.implement([Element, Window, Document], {
 
 	See Also:
 		<Element.removeEvent>
+		
+	Note:
+		This method is also attached to Document and Window.
 	*/
 
 	removeEvents: function(type){
@@ -475,6 +483,7 @@ Native.implement([Element, Window, Document], {
 
 	Note:
 		This will not fire the DOM Event (this concerns all inline events ie. onmousedown="..").
+		This method is also attached to Document and Window.
 	*/
 
 	fireEvent: function(type, args, delay){
@@ -505,6 +514,9 @@ Native.implement([Element, Window, Document], {
 			var myElement = $('myElement');
 			var myClone = myElement.clone().cloneEvents(myElement); //clones the element and its events
 		[/javascript]
+		
+	Note:
+		This method is also attached to Document and Window.
 	*/
 
 	cloneEvents: function(from, type){
@@ -534,27 +546,48 @@ Element.$events = {
 
 /*
 Hash: Element.Events
-	You can add additional custom events by adding properties to the Element.Events Hash:
+	You can add additional custom events by adding properties (objects) to the Element.Events Hash
+	
+The Element.Events.yourproperty (object) can have:
+	base - (string, optional) the base event the custom event will listen to. Its not optional if condition is set.
+	condition - (function, optional)
+		the condition from which we determine if the custom event can be fired. Is bound to the element you add the event to.
+		the Event is passed in.
+	onAdd - (function, optional) the function that will get fired when the custom event is added. Is bound to the element you add the event to.
+	onRemove - (function, optional) the function that will get fired when the custom event is removed. Is bound to the element you add the event to.
 
 Example:
 	[javascript]
 		Element.Events.shiftclick = {
-			type: 'click', //we set a base type
-			map: function(event){ //and a function to perform additional checks
+			
+			base: 'click', //we set a base type
+			
+			condition: function(event){ //and a function to perform additional checks.
 				return (event.shift == true); //this means the event is free to fire
 			}
+
 		}
 		$('myInput').addEvent('shiftclick', function(event){
 			console.log('the user clicked the left mouse button while holding the shift key');
 		});
 	[/javascript]
+
+Note: there are different types of custom Events you can create:
+	- Custom Events with only base: they will just be a redirect to the base event.
+	- Custom Events with base and condition: they will be redirect to the base event, but only fired if the condition is met.
+	- Custom Events with onAdd and/or onRemove and any other of the above:
+		they will also perform additional functions when the event is added/removed.
+Note:
+	if you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event
+	(highly unrecommended: use only when you know exactly what you're doing).
 */
 
 Element.Events = new Hash({
 
 	/*
 	Event: mouseenter
-		In addition to the standard javascript events (load, mouseover, mouseout, click, etc.) <Event.js> contains two custom events this event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover).
+		This event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element
+		(unlike the broken mouseover).
 
 	Example:
 		[javascript]
@@ -566,16 +599,20 @@ Element.Events = new Hash({
 	*/
 
 	'mouseenter': {
-		type: 'mouseover',
-		map: function(event){
+		
+		base: 'mouseover',
+		
+		condition: function(event){
 			var related = event.relatedTarget;
 			return (related && related != this && !this.hasChild(related));
 		}
+
 	},
 
 	/*
 	Event: mouseleave
-		This event fires when the mouse exits the area of the dom Element; will not be fired again if the mouse crosses over children of the Element (unlike mouseout).
+		This event fires when the mouse exits the area of the dom Element; will not be fired again if the mouse crosses over children of the Element
+		(unlike the broken mouseout).
 
 	Example:
 		[javascript]
@@ -587,15 +624,36 @@ Element.Events = new Hash({
 	*/
 
 	'mouseleave': {
-		type: 'mouseout',
-		map: function(event){
+		
+		base: 'mouseout',
+		
+		condition: function(event){
 			var related = event.relatedTarget;
 			return (related && related != this && !this.hasChild(related));
 		}
+	
 	},
+	
+	/*
+	Event: mousewheel
+		This event fires when the mouse wheel is rotated;
+
+	Example:
+		[javascript]
+			$('myElement').addEvent('mousewheel', myFunction);
+		[/javascript]
+		
+	Note:
+		this custom event just redirects DOMMouseScroll (mozilla) to mousewheel (opera, internet explorer), making it crossbrowser.
+
+	See Also:
+		<Element.addEvent>
+	*/
 
 	'mousewheel': {
-		type: (Client.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		
+		base: (Client.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		
 	}
 
 });

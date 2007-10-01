@@ -14,7 +14,8 @@ Native: Element
 
 /*
 Method: constructor 
- 	Creates a new Element of the type passed in. 
+ 	Creates a new Element of the type passed in.
+
 Syntax:
 	>var myEl = new Element(el[, props]);
 
@@ -58,24 +59,36 @@ var Element = new Native({
 	
 	initialize: function(el){
 		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
-		var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
-		var props = params.properties || {}, doc = params.document || document;
-		if ($type(el) == 'string'){
-			if (Client.Engine.trident && props && (props.name || props.type)){
-				var name = (props.name) ? ' name="' + props.name + '"' : '';
-				var type = (props.type) ? ' type="' + props.type + '"' : '';
-				delete props.name;
-				delete props.type;
-				el = '<' + el + name + type + '>';
-			}
-			el = doc.createElement(el);
-		}
-		el = $(el);
-		return (!props || !el) ? el : el.set(props);
+		return Element.create.run(arguments);
 	},
 
 	afterImplement: function(key, value){
 		Elements.prototype[(Array.prototype[key]) ? key + 'Elements' : key] = Elements.$multiply(key);
+	}
+
+});
+
+Element.create = function(el){
+	var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
+	var props = params.properties || {}, doc = params.document || document;
+	if ($type(el) == 'string'){
+		if (Client.Engine.trident && props && (props.name || props.type)){
+			var name = (props.name) ? ' name="' + props.name + '"' : '';
+			var type = (props.type) ? ' type="' + props.type + '"' : '';
+			delete props.name;
+			delete props.type;
+			el = '<' + el + name + type + '>';
+		}
+		el = doc.createElementNS ? doc.createElementNS("http://www.w3.org/1999/xhtml", el) : doc.createElement(el);
+	}
+	el = $(el);
+	return (!props || !el) ? el : el.set(props);
+};
+
+Element.Construct = new Hash({
+
+	iframe: function(props){
+		return new IFrame(props);
 	}
 
 });
@@ -88,32 +101,54 @@ Native: IFrame
 /*
 Method: constructor
 	Creates an iframe and extends its window and document.
-	returns the raw element, if you want to work with the iframe use the "this" in the onload method you pass in.
+	
+Syntax:
+	>var myIframe = new Element('iframe'[, props]);
+	>var myIframe = new IFrame(props[, iframe]);
+	
+Arguments:
+	el - (mixed, optional) The id for the Iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created.
+	props - (object, optional) The properties to be applied to the new IFrame.
+
+	props (continued):
+		onload - (function, optional) the function to be executed when the iframe loads, or, if already loaded, when new IFrame is called.
+		Its bound to the iframe window.
+		Also accepts every property/object accepted by <Element.set>.
+		
+		
+Note:
+	if the iframe already exists, and it has different id/name, the name will be made the same as the id.
 */
 
 var IFrame = new Native({
 
 	name: 'IFrame',
+	
+	generics: false,
 
-	initialize: function(props){
-		props = props || {};
-		var iframe = $(document.createElement('iframe'));
-		iframe.name = props.name || 'IFrame_' + iframe.$attributes.uid;
-		delete props.name;
+	initialize: function(){
+		IFrame.uid++;
+		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
+		var props = params.properties || {};
+		var iframe = $(params.iframe);
 		var onload = props.onload || $empty;
 		delete props.onload;
-		iframe.onload = function(){
-			var frame = window.frames[this.name];
-			new Window(frame);
-			new Document(frame.document);
-			onload.call(frame);
+		props.id = props.name = props.id || props.name || iframe.id || iframe.name || 'IFrame_' + IFrame.uid;
+		((iframe = iframe || Element.create('iframe'))).set(props);
+		var onFrameLoad = function(){
+			iframe.window = iframe.contentWindow;
+			new Window(iframe.window);
+			new Document(iframe.window.document);
+			onload.call(iframe.window);
 		};
-		return $extend(iframe, this).set(props);
-	},
-
-	generics: false
+		if (!window.frames[props.id]) iframe.addListener('load', onFrameLoad);
+		else onFrameLoad();
+		return iframe;
+	}
 
 });
+
+IFrame.uid = 0;
 
 /*
 Native: Elements
@@ -358,14 +393,6 @@ Element.Set = new Hash({
 Element.Has = new Hash;
 
 Element.Get = new Hash;
-
-Element.Construct = new Hash({
-
-	iframe: function(props){
-		return new IFrame(props);
-	}
-
-});
 
 Element.implement({
 

@@ -448,7 +448,7 @@ Native.implement = function(objects, properties){
 
 (function(){
 	for (var i = 0, l = arguments.length; i < l; i++) new Native({name: arguments[i], initialize: window[arguments[i]], browser: true});
-})('String', 'Function', 'Number', 'Array', 'RegExp');
+})('String', 'Function', 'Number', 'Array', 'RegExp', 'Date');
 
 (function(object, methods){
 	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i]);
@@ -504,8 +504,6 @@ var Window = new Native({
 
 	name: 'Window',
 
-	legacy: true,
-
 	initialize: function(win){
 		Window.$instances.push(win);
 		if (!win.Element){
@@ -513,7 +511,7 @@ var Window = new Native({
 			if (Client.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Client.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
 		}
-		return ($type(win) == 'window') ? win : $extend(win, this);
+		return $extend(win, this);
 	},
 	
 	afterImplement: function(property, value){
@@ -530,8 +528,6 @@ var Document = new Native({
 
 	name: 'Document',
 
-	legacy: true,
-
 	initialize: function(doc){
 		Document.$instances.push(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
@@ -539,7 +535,7 @@ var Document = new Native({
 		if (Client.Engine.trident4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
-		return ($type(doc) == 'document') ? doc : $extend(doc, this);
+		return $extend(doc, this);
 	},
 	
 	afterImplement: function(property, value){

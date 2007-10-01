@@ -89,7 +89,6 @@ var Class = new Native({
 		properties = properties || {};
 
 		var klass = function(){
-
 			for (var property in this){
 				if ($type(this[property]) == 'object') this[property] = $merge(this[property]);
 			}
@@ -99,7 +98,9 @@ var Class = new Native({
 				Class[Property](this, this[Property]);
 				delete this[Property];
 			}, this);
-
+			
+			this.constructor = klass;
+			
 			var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
 			return self;
@@ -108,7 +109,6 @@ var Class = new Native({
 		$extend(klass, this);
 		klass.constructor = Class;
 		klass.prototype = properties;
-		klass.prototype.constructor = klass;
 		return klass;
 	}
 

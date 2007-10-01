@@ -26,7 +26,8 @@ Credits:
 
 Element.Events.domready = {
 
-	add: function(fn){
+	onAdd: function(fn){
+		if ($type(this) == 'element') return this;
 		if (Client.loaded){
 			fn.call(this);
 			return this;
