@@ -23,6 +23,8 @@ Arguments:
 	options (continued):
 		transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>.
 		duration   - (number: defaults to 500) The duration of the effect in ms.
+		speed      - (string, optional) The speed of the transition. can be 'slow' (750ms), 'fast' (250ms) or normal (500ms).
+		             This overwrites the duration option, so set one or the other.
 		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
 		wait       - (boolean: defaults to true) Option to wait for a current transition to end before running another of the same instance.
 		fps        - (number: defaults to 50) The frames per second for the transition.
@@ -99,6 +101,7 @@ var Fx = new Class({
 			return -(Math.cos(Math.PI * p) - 1) / 2;
 		},
 		duration: 500,
+		speed: null,
 		unit: false,
 		wait: true,
 		fps: 50
@@ -107,6 +110,7 @@ var Fx = new Class({
 	initialize: function(element, options){
 		this.element = element;
 		this.setOptions(options);
+		this.options.duration = ({slow: 750, fast: 250, normal: 500})[this.options.speed] || this.options.duration;
 	},
 
 	step: function(){

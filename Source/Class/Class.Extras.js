@@ -360,7 +360,7 @@ var Options = new Class({
 		options - (object, optional) The user defined options to merge with the defaults.
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -392,11 +392,13 @@ var Options = new Class({
 		If a Class has <Events> implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
 	*/
 
-	setOptions: function(options){
-		this.options = $merge(this.options, options);
+	setOptions: function(){
+		this.options = $merge.run([this.options].extend(arguments));
 		if (!this.addEvent) return this;
 		for (var option in this.options){
-			if ((/^on[A-Z]/).test(option) && $type(this.options[option]) == 'function') this.addEvent(option, this.options[option]);
+			if ($type(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+			this.addEvent(option, this.options[option]);
+			delete this.options[option];
 		}
 		return this;
 	}

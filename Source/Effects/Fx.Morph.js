@@ -26,7 +26,7 @@ Returns:
 Examples:
 	From and To values, with an object:
 	[javascript]
-		var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+		var myEffect = new Fx.Morph('myElement', {speed: 'slow', transition: Fx.Transitions.Sine.easeOut});
 
 		//height from 10 to 100 and width from 900 to 300
 		myEffect.start({
@@ -37,7 +37,7 @@ Examples:
 
 	only To value, with an object:
 	[javascript]
-		var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+		var myEffect = new Fx.Morph('myElement', {speed: 'fast', transition: Fx.Transitions.Sine.easeOut});
 
 		//or height from current height to 100 and width from current width to 300
 		myEffect.start({
@@ -149,18 +149,16 @@ Fx.Morph = new Class({
 
 });
 
-
 Fx.CSS.search = function(selector){
 	var to = {};
 	Array.each(document.styleSheets, function(sheet, j){
 		var rules = sheet.rules || sheet.cssRules;
 		Array.each(rules, function(rule, i){
-			if (!rule.selectorText.test('^' + selector + '$') || !rule.style) return;
+			if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
 			Element.Styles.each(function(value, style){
-				if (rule.style[style] && !Element.ShortStyles[style]){
-					value = rule.style[style];
-					to[style.hyphenate()] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
-				}
+				if (!rule.style[style] || Element.ShortStyles[style]) return;
+				value = rule.style[style];
+				to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
 			});
 		});
 	});

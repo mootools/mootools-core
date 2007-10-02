@@ -158,7 +158,7 @@ Fx.Slide = new Class({
 	Example:
 		[javascript]
 			var myFx = new Fx.Slide('myElement', {
-				duration: 1000,
+				speed: 'fast',
 				transition: Fx.Transitions.Bounce.easeOut
 			});
 

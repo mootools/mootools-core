@@ -191,9 +191,9 @@ var XHR = new Class({
 	*/
 
 	getHeader: function(name){
-		return $try(function(name){
+		return $try(function(){
 			return this.getResponseHeader(name);
-		}, this.transport, name) || null;
+		}, this.transport) || null;
 	},
 
 	/*

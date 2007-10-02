@@ -132,7 +132,7 @@
 		},
 		
 		"Fx.Morph": {
-			"deps": ["Fx.Styles"],
+			"deps": ["Fx.CSS"],
 			"desc": "Formerly Fx.Styles, effect to change any number of css properties for an element. Now also supports animating css rules."
 		},
 

@@ -233,7 +233,7 @@ Element.implement({
 	send: function(options){
 		var send = this.$attributes.$send;
 		if (send) send.cancel();
-		if (options || !send) send = new Ajax(this.get('action'), $extend({method: this.get('method') || 'post'}, options));
+		if (options || !send) send = new Ajax(this.get('action'), $extend({method: this.get('method') || 'post'}, options || {}));
 		this.$attributes.$send = send;
 		send.request(this);
 		return this;
@@ -265,7 +265,7 @@ Element.implement({
 	update: function(url, options){
 		var update = this.$attributes.$update;
 		if (update) update.cancel();
-		if (options || !update) update = new Ajax(url, $extend({update: this, method: 'get'}, options));
+		if (options || !update) update = new Ajax(url, $extend({update: this, method: 'get'}, options || {}));
 		this.$attributes.$update = update;
 		update.request();
 		return this;
