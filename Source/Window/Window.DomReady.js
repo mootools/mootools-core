@@ -27,10 +27,10 @@ Credits:
 Element.Events.domready = {
 
 	onAdd: function(fn){
-		if ($type(this) == 'element') return this;
+		if ($type(this) == 'element') return;
 		if (Client.loaded){
 			fn.call(this);
-			return this;
+			return;
 		}
 		var self = this;
 		var domReady = function(){
@@ -60,7 +60,6 @@ Element.Events.domready = {
 			this.addEvent('load', domReady);
 			this.document.addEvent('DOMContentLoaded', domReady);
 		}
-		return this;
 	}
 
 };

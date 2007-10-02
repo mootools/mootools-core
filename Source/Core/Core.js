@@ -438,7 +438,6 @@ Native.genericize = function(object, property){
 };
 
 Native.implement = function(objects, properties){
-	objects = $splat(objects);
 	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
 };
 

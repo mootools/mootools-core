@@ -126,14 +126,14 @@
 			"desc": "Contains the CSS animation logic. Used by Styles based Effects."
 		},
 
-		"Fx.Style": {
+		"Fx.Tween": {
 			"deps": ["Fx.CSS"],
-			"desc": "Effect to change any css property for an element."
+			"desc": "Formerly Fx.Style, effect to change any css property for an element."
 		},
-
-		"Fx.Styles": {
-			"deps": ["Fx.CSS"],
-			"desc": "Effect to change any number of css properties for an element."
+		
+		"Fx.Morph": {
+			"deps": ["Fx.Styles"],
+			"desc": "Formerly Fx.Styles, effect to change any number of css properties for an element. Now also supports animating css rules."
 		},
 
 		"Fx.Scroll": {
@@ -215,11 +215,6 @@
 		"Assets": {
 			"deps": ["Element.Event"],
 			"desc": "Contains functions to load external files on the fly: images, css, javascript."
-		},
-
-		"Fx.Morph": {
-			"deps": ["Fx.Styles"],
-			"desc": "Effect to morph an element from one css class to another."
 		},
 
 		"Fx.Elements": {

@@ -211,7 +211,7 @@ Element.implement({
 		options - (object, optional) Options object for the <Ajax> request.
 
 	Returns:
-		(class) An Ajax Class instance.
+		(element) This Element.
 
 	Example:
 		[html]
@@ -231,10 +231,12 @@ Element.implement({
 	*/
 
 	send: function(options){
-		var send = this.$attributes.send;
-		if (!send) send = this.$attributes.send = new Ajax(this.getProperty('action'), {method: this.method || 'post', autoCancel: true});
-		if (options) send.setOptions(options);
-		return send.request(this);
+		var send = this.$attributes.$send;
+		if (send) send.cancel();
+		if (options || !send) send = new Ajax(this.get('action'), $extend({method: this.get('method') || 'post'}, options));
+		this.$attributes.$send = send;
+		send.request(this);
+		return this;
 	},
 
 	/*
@@ -249,7 +251,7 @@ Element.implement({
 		options - (object, optional) Options object for the <Ajax> request.
 
 	Returns:
-		(class) An Ajax Class instance.
+		(element) This Element.
 
 	Example:
 		[html]
@@ -258,17 +260,15 @@ Element.implement({
 		[javascript]
 			$('content').update('page_1.html');
 		[/javascript]
-
-	Note:
-		It saves the Ajax instance to the Element, so it uses the same instance every update call.
 	*/
 
 	update: function(url, options){
-		var update = this.$attributes.update;
-		if (!update) update = this.$attributes.update = new Ajax({update: this, method: 'get', autoCancel: true});
-		if (options) update.setOptions(options);
-		update.url = url;
-		return update.request();
+		var update = this.$attributes.$update;
+		if (update) update.cancel();
+		if (options || !update) update = new Ajax(url, $extend({update: this, method: 'get'}, options));
+		this.$attributes.$update = update;
+		update.request();
+		return this;
 	}
 
 });

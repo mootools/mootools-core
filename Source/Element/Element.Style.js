@@ -246,6 +246,6 @@ Element.ShortStyles = {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth':
 	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
 	Short[bd] = {};
 	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
-	Short.borderStyle[bds] = Short[bd][bds] = All[bdw] = '@';
-	Short.borderColor[bdc] = Short[bd][bdc] = All[bdw] = 'rgb(@, @, @)';
+	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
+	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });

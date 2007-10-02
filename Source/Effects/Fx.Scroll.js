@@ -249,3 +249,59 @@ Fx.Scroll = new Class({
 	}
 
 });
+
+/*
+Native: Element
+	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+*/
+
+Native.implement([Element, Document], {
+	
+	/*
+	Method: scroll
+		scrolls an element in or out.
+
+	Syntax:
+		>myElement.scroll(how[, options]);
+
+	Arguments:
+		how - (mixed, optional) can be left, right, top, bottom, an element, an array of values. defaults to top.
+		options - (object, optional) The <Fx.Scroll> options parameter.
+
+	Returns:
+		(element) this Element.
+
+	Example:
+		[javascript]
+			$('myElement').scroll('top');
+		[/javascript]
+		
+	Note:
+		this method is also available for Document. Its not available on Window as Window already has a scroll method.
+		Calling this on document will produce the same exact result as calling on Window.
+
+	See Also:
+		<Fx.Scroll>, <Element.slide>, <Element.tween>
+	*/
+	
+	scroll: function(){
+		var scroll = this.$attributes.$scroll;
+		if (scroll) scroll.stop();
+		var params = Array.link(arguments, {options: Object.type, how: String.type});
+		params.how = params.how || 'top';
+		if (params.options || !scroll) scroll = new Fx.Scroll(this, params.options);
+		switch(params.how){
+			case 'top': scroll.toTop(); break;
+			case 'bottom': scroll.toBottom(); break;
+			case 'right': scroll.toRight(); break;
+			case 'left': scroll.toLeft(); break;
+			default: switch($type(params.how)){
+				case 'element': case 'string': scroll.toElement(how); break;
+				case 'array': scroll.scrollTo(how[0], how[1]);
+			}
+		}
+		this.$attributes.$scroll = scroll;
+		return this;
+	}
+
+});

@@ -48,7 +48,6 @@ Fx.Slide = new Class({
 
 	options: {
 		mode: 'vertical'
-		/*wrapper: null*/
 	},
 
 	initialize: function(element, options){
@@ -60,7 +59,13 @@ Fx.Slide = new Class({
 			}
 		}, true);
 		arguments.callee.parent($(element), options);
-		this.wrapper = $(this.options.wrapper) || new Element('div', {'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})}).injectAfter(this.element).adopt(this.element);
+		this.wrapper = this.element.$attributes.$wrapper;
+		if (!this.wrapper){
+			this.wrapper = new Element('div', {
+				'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
+			}).injectAfter(this.element).adopt(this.element);
+		}
+		this.element.$attributes.$wrapper = this.wrapper;
 		this.element.setStyle('margin', 0);
 		this.now = [];
 		this.open = true;
@@ -240,148 +245,41 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-/*
-Method: slideIn
-	Slides this Element in view horizontally or vertically.
+Element.implement({
+	
+	/*
+	Method: slide
+		Slides this Element in view.
 
-Syntax:
-	>myElement.slideIn([options]);
+	Syntax:
+		>myElement.slide([how, options]);
 
-Arguments:
-	options - (object, optional) The <Fx.Slide> options parameter.
+	Arguments:
+		how - (string, optional) Can be 'in', 'out', 'toggle', 'show' and 'hide'. Defaults to 'toggle'.
+		options - (object, optional) The <Fx.Slide> options parameter.
 
-Returns:
-	(class) An Fx.Slide instance.
+	Returns:
+		(element) this Element.
 
-Example:
-	[javascript]
-		var myFx = $('myElement').slideHide().slideIn();
-	[/javascript]
+	Example:
+		[javascript]
+			$('myElement').slide('hide').slide('in');
+		[/javascript]
 
-See Also:
-	<Fx.Slide.slideIn>
-*/
+	See Also:
+		<Fx.Slide>
+	*/
 
-//auto generated
+	slide: function(){
+		var params = Array.link(arguments, {options: Object.type, how: String.type});
+		var how = params.how || 'toggle';
+		
+		var slide = this.$attributes.$slide;
+		if (slide) slide.stop();
+		if (params.options || !slide) slide = new Fx.Slide(this, params.options);
+		this.$attributes.$slide = slide;
+		slide[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : how]();
+		return this;
+	}
 
-/*
-Method: slideOut
-	Slides this Element out of view horizontally or vertically.
-
-Syntax:
-	>myElement.slideOut([options]);
-
-Arguments:
-	options - (object, optional) The <Fx.Slide> options parameter.
-
-Returns:
-	(class) An Fx.Slide instance.
-
-Example:
-	[javascript]
-		var myFx = $('myElement').slideOut({
-			duration: 1000,
-			transition: Fx.Transitions.Sine.easeOut
-		});
-	[/javascript]
-
-See Also:
-	<Fx.Slide.slideOut>
-*/
-
-//auto generated
-
-/*
-Method: slideHide
-	Hides this element without a transition.
-
-Syntax:
-	>myElement.slideHide([options]);
-
-Arguments:
-	options - (object, optional) The <Fx.Slide> options parameter.
-
-Returns:
-	(class) An Fx.Slide instance.
-
-Example:
-	[javascript]
-		var myFx = $('myElement').slideHide({
-			duration: 1000,
-			transition: Fx.Transitions.Bounce.easeOut
-		}).slideIn(); //automatically hide and show myElement.
-	[/javascript]
-
-See Also:
-	<Fx.Slide.hide>
-*/
-
-//auto generated
-
-/*
-Method: slideShow
-	Shows this element without a transition.
-
-Syntax:
-	>myElement.slideShow([options]);
-
-Arguments:
-	options - (object, optional) The <Fx.Slide> options parameter.
-
-Returns:
-	(class) An Fx.Slide instance.
-
-Example:
-	[javascript]
-		var myElement = $('myElement');
-		myElement.slideHide().chain(function(){
-			myElement.slideShow.delay(1000, myElement);
-		});
-	[/javascript]
-
-See Also:
-	<Fx.Slide.show>
-*/
-
-//auto generated
-
-/*
-Method: slideToggle
-	Slides in or Out this element depending on its state.
-
-Syntax:
-	>myElement.slideToggle([options]);
-
-Arguments:
-	options - (object, optional) The <Fx.Slide> options parameter.
-
-Returns:
-	(class) An Fx.Slide instance.
-
-Example:
-	[javascript]
-		var myFx = $('myElement').slideToggle({
-			duration: 1000,
-			transition: Fx.Transitions.Pow.easeOut
-		}).chain(myFx.toggle); // toggle the between slideIn and Out twice. Note that myFx becomes an instance of Fx.Slide therefore toggle becomes available.
-	[/javascript]
-
-See Also:
-	<Fx.Slide.toggle>
-*/
-
-(function(){
-	var methods = {'slideIn': 'slideIn', 'slideOut': 'slideOut', 'slideToggle': 'toggle', 'slideHide': 'hide', 'slideShow': 'show'};
-	Hash.each(methods, function(slideMethod, elementMethod){
-		methods[elementMethod] = function(options){
-			var slide = this.$attributes.slide;
-			if (!slide){
-				slide = new Fx.Slide(this, {wait: false});
-				this.$attributes.slide = slide.wrapper.$attributes.slide = slide;
-			}
-			if (options) slide.setOptions(options);
-			return slide[slideMethod]();
-		};
-	});
-	Element.implement(methods);
-})();
+});
