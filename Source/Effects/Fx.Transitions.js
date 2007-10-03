@@ -49,36 +49,6 @@ Fx.Transition = function(transition, params){
 	});
 };
 
-/*
-Hash: Fx.Transitions
-	A collection of tweening transitions for use with the <Fx> classes.
-
-Example:
-	[javascript]
-		//Elastic.easeOut with default values:
-		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
-	[/javascript]
-
-See also:
-	<http://www.robertpenner.com/easing/>, <Element.effect>
-*/
-
-Fx.Transitions = new Hash({
-
-	/*
-	Method: linear
-		Displays a linear transition.
-
-	Graph:
-		(see Linear.png)
-	*/
-
-	linear: function(p){
-		return p;
-	}
-
-});
-
 Fx.Transitions.extend = function(transitions){
 	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
 };

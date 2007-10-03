@@ -461,11 +461,11 @@ Element.implement({
 		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>, <Element.Set>
 	*/
 
-	set: function(props){
-		if (arguments.length > 1){
-			props = {};
-			props[arguments[0]] = Array.slice(arguments, 1);
-		}
+	set: function(props, value){
+		if ($type(props) == 'string') props = (function(obj){
+			obj[props] = value;
+			return obj;
+		})({});
 		for (var prop in props){
 			if (Element.Set.has(prop)) Element.Set[prop].call(this, props[prop]);
 			else this.setProperty(prop, props[prop]);

@@ -185,7 +185,8 @@ Window.implement({
 		return {
 			'size': {'x': this.getWidth(), 'y': this.getHeight()},
 			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()},
-			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()}
+			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()},
+			'clientSize': {'x': this.getWidth(), 'y': this.getHeight()}
 		};
 	},
 

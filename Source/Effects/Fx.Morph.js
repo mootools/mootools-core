@@ -26,7 +26,7 @@ Returns:
 Examples:
 	From and To values, with an object:
 	[javascript]
-		var myEffect = new Fx.Morph('myElement', {speed: 'slow', transition: Fx.Transitions.Sine.easeOut});
+		var myEffect = new Fx.Morph('myElement', {duration: 'long', transition: Fx.Transitions.Sine.easeOut});
 
 		//height from 10 to 100 and width from 900 to 300
 		myEffect.start({
@@ -37,7 +37,7 @@ Examples:
 
 	only To value, with an object:
 	[javascript]
-		var myEffect = new Fx.Morph('myElement', {speed: 'fast', transition: Fx.Transitions.Sine.easeOut});
+		var myEffect = new Fx.Morph('myElement', {duration: 'short', transition: Fx.Transitions.Sine.easeOut});
 
 		//or height from current height to 100 and width from current width to 300
 		myEffect.start({
@@ -170,38 +170,90 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
+/*
+Element Setter: morph
+	sets a default Fx.Morph instance for an element
+	
+Syntax:
+	>el.set('morph'[, options]);
+	
+Arguments: 
+	options - (object) the Fx.Morph options.
+	
+Returns:
+	(element) this element
+	
+Example:
+	[javascript]
+		el.set('morph', {duration: 'long', transition: 'bounce:out'});
+		el.morph({height: 100, width: 100});
+	[/javascript]
+*/
+
+Element.Set.morph = function(options){
+	if (this.$attributes.$morph) this.$attributes.$morph.stop();
+	this.$attributes.$morph = new Fx.Morph(this, options);
+	return this;
+};
+
+/*
+Element Getter: morph
+	gets the previously setted Fx.Morph instance or a new one with default options
+	
+Syntax:
+	>el.get('morph');
+	
+Returns:
+	(object) the Fx.Morph instance
+	
+Example:
+	[javascript]
+		el.set('morph', {duration: 'long', transition: 'bounce:out'});
+		el.morph({height: 100, width: 100});
+		
+		el.get('morph'); //the Fx.Morph instance
+	[/javascript]
+*/
+
+Element.Get.morph = function(){
+	if (!this.$attributes.$morph) this.set('morph');
+	return this.$attributes.$morph;
+};
+
 Element.implement({
 	
 	/*
 	Method: morph
-		animate an element given the properties based object, className or property/value pair.
+		animate an element given the properties you pass in.
 
 	Syntax:
 		>myElement.morph(className|object[, options]);
 
 	Arguments:
-		properties - (mixed) the css properties you want to animate. Can be an Object of css properties or a string representing a className.
+		properties - (mixed) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
 		options - (object, optional) The <Fx.Morph> options parameter.
 
 	Returns:
 		(element) this Element.
 
 	Example:
+		with object:
 		[javascript]
 			$('myElement').morph({height: 100, width: 200});
-			$('myElement').morph('myClassName');
+		[/javascript]
+		
+		with selector:
+		[javascript]
+			$('myElement').morph('.class1');
 		[/javascript]
 
 	See Also:
 		<Fx.Morph>
 	*/
 
-	morph: function(properties, options){
-		var morph = this.$attributes.$morph;
-		if (morph) morph.stop();
-		if (options || !morph) morph = new Fx.Morph(this, options);
-		this.$attributes.$morph = morph;
-		morph.start(properties);
+	morph: function(props, options){
+		if (options) this.set('morph', options);
+		this.get('morph').stop().start(props);
 		return this;
 	}
 

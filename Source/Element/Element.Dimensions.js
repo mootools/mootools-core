@@ -74,7 +74,8 @@ Element.implement({
 		return {
 			'scroll': {'x': this.scrollLeft, 'y': this.scrollTop},
 			'size': {'x': this.offsetWidth, 'y': this.offsetHeight},
-			'scrollSize': {'x': this.scrollWidth, 'y': this.scrollHeight}
+			'scrollSize': {'x': this.scrollWidth, 'y': this.scrollHeight},
+			'clientSize': {'x': this.clientWidth, 'y': this.clientHeight}
 		};
 	},
 

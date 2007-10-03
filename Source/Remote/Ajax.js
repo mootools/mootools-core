@@ -198,6 +198,119 @@ Native: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
+Element.Set.extend({
+	
+	/*
+	Element Setter: send
+		sets a default Ajax instance for an element (possibly a form!)
+
+	Syntax:
+		>el.set('send'[, options]);
+
+	Arguments: 
+		options - (object) the Ajax options.
+
+	Returns:
+		(element) this element
+
+	Example:
+		[javascript]
+			myForm.set('send', {method: 'get'});
+			myForm.send(); //form sent!
+		[/javascript]
+	*/
+
+	send: function(options){
+		if (this.$attributes.$send) this.$attributes.$send.cancel();
+		this.$attributes.$send = new Ajax(this.get('action'), $extend({method: this.get('method') || 'post'}, options || {}));
+		return this;
+	},
+	
+	/*
+	Element Setter: load
+		sets a default Ajax instance for an element
+
+	Syntax:
+		>el.set('load'[, options]);
+
+	Arguments: 
+		options - (object) the Ajax options.
+
+	Returns:
+		(element) this element
+
+	Example:
+		[javascript]
+			el.set('load', {evalScripts: true});
+			el.load('some/request/uri');
+		[/javascript]
+	*/
+	
+	load: function(options){
+		if (this.$attributes.$load) this.$attributes.$load.cancel();
+		this.$attributes.$load = new Ajax($extend({update: this, method: 'get'}, options || {}));
+		return this;
+	}
+
+});
+
+
+Element.Get.extend({
+	
+	/*
+	Element Getter: send
+		gets the previously setted Ajax instance or a new one with default options
+
+	Syntax:
+		>el.get('send');
+
+	Returns:
+		(object) the Ajax instance
+
+	Example:
+		[javascript]
+			el.set('send', {method: 'get'});
+			el.send();
+
+			el.get('send'); //the Ajax instance
+		[/javascript]
+	*/
+	
+	send: function(){
+		if (!this.$attributes.$send) this.set('send');
+		return this.$attributes.$send;
+	},
+	
+	/*
+	Element Getter: load
+		gets the previously setted Ajax instance or a new one with default options
+
+	Syntax:
+		>el.get('load', url);
+		
+	Arguments:
+		url - (string) the url to associate the Ajax instance with.
+
+	Returns:
+		(object) the Ajax instance
+
+	Example:
+		[javascript]
+			el.set('load', {method: 'get'});
+			el.load('test.html');
+
+			el.get('load'); //the Ajax instance
+		[/javascript]
+	*/
+	
+	load: function(url){
+		if (!this.$attributes.$load) this.set('load');
+		this.$attributes.$load.url = url;
+		return this.$attributes.$load;
+	}
+
+});
+
 Element.implement({
 
 	/*
@@ -231,20 +344,17 @@ Element.implement({
 	*/
 
 	send: function(options){
-		var send = this.$attributes.$send;
-		if (send) send.cancel();
-		if (options || !send) send = new Ajax(this.get('action'), $extend({method: this.get('method') || 'post'}, options || {}));
-		this.$attributes.$send = send;
-		send.request(this);
+		if (options) this.set('send', options);
+		this.get('send').cancel().request(this);
 		return this;
 	},
 
 	/*
-	Method: update
+	Method: load
 		Updates the content of the element with an Ajax get request.
 
 	Syntax:
-		>myElement.update(url[, options]);
+		>myElement.load(url[, options]);
 
 	Arguments:
 		url     - (string) The URL pointing to the server-side document.
@@ -258,16 +368,13 @@ Element.implement({
 			<div id="content">Loading content...</div>
 		[/html]
 		[javascript]
-			$('content').update('page_1.html');
+			$('content').load('page_1.html');
 		[/javascript]
 	*/
 
-	update: function(url, options){
-		var update = this.$attributes.$update;
-		if (update) update.cancel();
-		if (options || !update) update = new Ajax(url, $extend({update: this, method: 'get'}, options || {}));
-		this.$attributes.$update = update;
-		update.request();
+	load: function(url, options){
+		if (options) this.set('load', options);
+		this.get('load', url).cancel().request();
 		return this;
 	}
 

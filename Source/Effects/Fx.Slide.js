@@ -158,7 +158,7 @@ Fx.Slide = new Class({
 	Example:
 		[javascript]
 			var myFx = new Fx.Slide('myElement', {
-				speed: 'fast',
+				duration: 'long',
 				transition: Fx.Transitions.Bounce.easeOut
 			});
 
@@ -245,6 +245,56 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
+/*
+Element Setter: slide
+	sets a default Fx.Slide instance for an element
+	
+Syntax:
+	>el.set('slide'[, options]);
+	
+Arguments: 
+	options - (object) the Fx.Morph options.
+	
+Returns:
+	(element) this element
+	
+Example:
+	[javascript]
+		el.set('slide', {duration: 'long', transition: 'bounce:out'});
+		el.slide('in');
+	[/javascript]
+*/
+
+Element.Set.slide = function(options){
+	if (this.$attributes.$slide) this.$attributes.$slide.stop();
+	this.$attributes.$slide = new Fx.Slide(this, options);
+	return this;
+};
+
+/*
+Element Getter: slide
+	gets the previously setted Fx.Slide instance or a new one with default options
+	
+Syntax:
+	>el.get('slide');
+	
+Returns:
+	(object) the Fx.Slide instance
+	
+Example:
+	[javascript]
+		el.set('slide', {duration: 'long', transition: 'bounce:out'});
+		el.slide('in');
+		
+		el.get('slide'); //the Fx.Slide instance
+	[/javascript]
+*/
+
+Element.Get.slide = function(){
+	if (!this.$attributes.$slide) this.set('slide');
+	return this.$attributes.$slide;
+};
+
 Element.implement({
 	
 	/*
@@ -270,15 +320,10 @@ Element.implement({
 		<Fx.Slide>
 	*/
 
-	slide: function(){
-		var params = Array.link(arguments, {options: Object.type, how: String.type});
-		var how = params.how || 'toggle';
-		
-		var slide = this.$attributes.$slide;
-		if (slide) slide.stop();
-		if (params.options || !slide) slide = new Fx.Slide(this, params.options);
-		this.$attributes.$slide = slide;
-		slide[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : how]();
+	slide: function(how, options){
+		how = how || 'toggle';
+		if (options) this.set('slide', options);
+		this.get('slide').stop()[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : how]();
 		return this;
 	}
 

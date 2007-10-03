@@ -46,29 +46,6 @@ Fx.Tween = new Class({
 		this.property = property;
 	},
 
-	/*
-	Method: hide
-		Same as <Fx.set>(0). Hides the element immediately without transition.
-
-	Syntax:
-		>myFx.hide();
-
-	Returns:
-		(class) This Fx.Tween instance.
-
-	Example:
-		[javascript]
-			var myFx = new Fx.Tween('myElement', 'opacity').hide(); // *poof*
-		[/javascript]
-
-	Note:
-		Due to inheritance the Event 'onSet' will be fired.
-	*/
-
-	hide: function(){
-		return this.set(0);
-	},
-
 	setNow: function(){
 		this.now = Fx.CSS.compute(this.from, this.to, this);
 	},
@@ -136,6 +113,119 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
+Element.Set.extend({
+	
+	/*
+	Element Setter: tween
+		sets a default Fx.Tween instance for an element
+
+	Syntax:
+		>el.set('tween'[, options]);
+
+	Arguments: 
+		options - (object) the Fx.Tween options.
+
+	Returns:
+		(element) this element
+
+	Example:
+		[javascript]
+			el.set('tween', {duration: 'long', transition: 'bounce:out'});
+			el.tween('opacity', 0);
+		[/javascript]
+	*/
+
+	tween: function(options){
+		if (this.$attributes.$tween) this.$attributes.$tween.stop();
+		this.$attributes.$tween = new Fx.Tween(this, null, options);
+		return this;
+	},
+	
+	/*
+	Element Setter: fade
+		sets a default Fx.Tween instance for an element (with opacity set as its property)
+
+	Syntax:
+		>el.set('fade'[, options]);
+
+	Arguments: 
+		options - (object) the Fx.Tween options.
+
+	Returns:
+		(element) this element
+
+	Example:
+		[javascript]
+			el.set('fade', {duration: 'long', transition: 'bounce:out'});
+			el.fade('out');
+		[/javascript]
+	*/
+	
+	fade: function(options){
+		if (this.$attributes.$fade) this.$attributes.$fade.stop();
+		this.$attributes.$fade = new Fx.Tween(this, 'opacity', options);
+		return this;
+	}
+
+});
+
+
+Element.Get.extend({
+	
+	/*
+	Element Getter: tween
+		gets the previously setted Fx.Tween instance or a new one with default options.
+
+	Syntax:
+		>el.get('tween');
+		
+	Arguments:
+		property - (string) the Fx.Tween property you want to associate with the instance.
+
+	Returns:
+		(object) the Fx.Tween instance
+
+	Example:
+		[javascript]
+			el.set('tween', {duration: 'long', transition: 'bounce:out'});
+			el.tween('height', 0);
+
+			el.get('tween', 'height'); //the Fx.Tween instance, with height as property
+		[/javascript]
+	*/
+	
+	tween: function(property){
+		if (!this.$attributes.$tween) this.set('tween');
+		this.$attributes.$tween.property = property;
+		return this.$attributes.$tween;
+	},
+	
+	/*
+	Element Getter: fade
+		gets the previously setted Fx.Tween (with 'opacity' set) instance or a new one with default options.
+
+	Syntax:
+		>el.get('fade');
+
+	Returns:
+		(object) the Fx.Tween instance
+
+	Example:
+		[javascript]
+			el.set('fade', {duration: 'long', transition: 'bounce:out'});
+			el.fade('in');
+
+			el.get('fade'); //the Fx.Tween instance (with opacity option)
+		[/javascript]
+	*/
+	
+	fade: function(){
+		if (!this.$attributes.$fade) this.set('fade');
+		return this.$attributes.$fade;
+	}
+
+});
+
 Element.implement({
 	
 	/*
@@ -148,7 +238,7 @@ Element.implement({
 	Arguments:
 		property - (string) the css property you want to animate.
 		value - (mixed) the value you want the property to tween to.
-		options - (object, optional) The <Fx.Morph> options parameter.
+		options - (object, optional) The <Fx.Tween> options parameter.
 
 	Returns:
 		(element) this Element.
@@ -163,11 +253,8 @@ Element.implement({
 	*/
 	
 	tween: function(property, value, options){
-		var tween = this.$attributes.$tween;
-		if (tween) tween.stop();
-		if (options || !tween) tween = new Fx.Tween(this, property, options);
-		this.$attributes.$tween = tween;
-		tween.start(value);
+		if (options) this.set('tween', options);
+		this.get('tween', property).stop().start(value);
 		return this;
 	},
 	
@@ -179,7 +266,7 @@ Element.implement({
 		>myElement.fade(how[, options]);
 
 	Arguments:
-		how - (string, optional) can be in, out, toggle, hide and show. Defaults to toggle.
+		how - (string) can be in, out, toggle, hide and show. defaults to 'toggle'.
 		options - (object, optional) The <Fx.Tween> options parameter.
 
 	Returns:
@@ -194,19 +281,17 @@ Element.implement({
 		<Fx.Tween>, <Element.slide>
 	*/
 	
-	fade: function(){
-		var fade = this.$attributes.$fade;
-		if (fade) fade.stop();
-		var params = Array.link(arguments, {options: Object.type, how: String.type});
-		if (params.options || !fade) fade = new Fx.Tween(this, 'opacity', params.options);
-		switch(params.how){
+	fade: function(how, options){
+		how = how || 'toggle';
+		if (options) this.set('fade', options);
+		var fade = this.get('fade').stop();
+		switch(how){
 			case 'in': fade.start(1); break;
 			case 'out': fade.start(0); break;
 			case 'show': fade.set(1); break;
 			case 'hide': fade.set(0); break;
-			default: fade.start((this.getStyle('visibility') == 'hidden') ? 1 : 0);
+			case 'toggle': fade.start((this.getStyle('visibility') == 'hidden') ? 1 : 0);
 		}
-		this.$attributes.$fade = fade;
 		return this;
 	}
 

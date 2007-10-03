@@ -57,9 +57,15 @@ Fx.Scroll = new Class({
 	},
 
 	initialize: function(element, options){
-		arguments.callee.parent($(element), options);
+		arguments.callee.parent(null, options);
+		this.setElement(element);
 		this.now = [];
 		this.bound = {'stop': this.stop.bind(this, false)};
+	},
+	
+	setElement: function(element){
+		this.element = $(element);
+		if (!this.element) return;
 		switch($type(this.element)){
 			case 'window': this.document = this.element.document; break;
 			case 'document': this.document = this.element; break;
@@ -107,8 +113,8 @@ Fx.Scroll = new Class({
 		if (this.timer && this.options.wait) return this;
 		var el = this.element.getSize();
 		var values = {'x': x, 'y': y};
-		for (var z in el.size){
-			var max = el.scrollSize[z] - el.size[z];
+		for (var z in el.clientSize){
+			var max = el.scrollSize[z] - el.clientSize[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
 			else values[z] = el.scroll[z];
 			values[z] += this.options.offset[z];
@@ -246,62 +252,6 @@ Fx.Scroll = new Class({
 
 	increase: function(){
 		this.element.scrollTo(this.now[0], this.now[1]);
-	}
-
-});
-
-/*
-Native: Element
-	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
-*/
-
-Native.implement([Element, Document], {
-	
-	/*
-	Method: scroll
-		scrolls an element in or out.
-
-	Syntax:
-		>myElement.scroll(how[, options]);
-
-	Arguments:
-		how - (mixed, optional) can be left, right, top, bottom, an element, an array of values. defaults to top.
-		options - (object, optional) The <Fx.Scroll> options parameter.
-
-	Returns:
-		(element) this Element.
-
-	Example:
-		[javascript]
-			$('myElement').scroll('top');
-		[/javascript]
-		
-	Note:
-		this method is also available for Document. Its not available on Window as Window already has a scroll method.
-		Calling this on document will produce the same exact result as calling on Window.
-
-	See Also:
-		<Fx.Scroll>, <Element.slide>, <Element.tween>
-	*/
-	
-	scroll: function(){
-		var scroll = this.$attributes.$scroll;
-		if (scroll) scroll.stop();
-		var params = Array.link(arguments, {options: Object.type, how: String.type});
-		params.how = params.how || 'top';
-		if (params.options || !scroll) scroll = new Fx.Scroll(this, params.options);
-		switch(params.how){
-			case 'top': scroll.toTop(); break;
-			case 'bottom': scroll.toBottom(); break;
-			case 'right': scroll.toRight(); break;
-			case 'left': scroll.toLeft(); break;
-			default: switch($type(params.how)){
-				case 'element': case 'string': scroll.toElement(how); break;
-				case 'array': scroll.scrollTo(how[0], how[1]);
-			}
-		}
-		this.$attributes.$scroll = scroll;
-		return this;
 	}
 
 });
