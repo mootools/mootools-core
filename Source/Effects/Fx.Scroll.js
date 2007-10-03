@@ -57,26 +57,24 @@ Fx.Scroll = new Class({
 	},
 
 	initialize: function(element, options){
-		arguments.callee.parent(null, options);
-		this.setElement(element);
+		arguments.callee.parent($(element), options);
+		
 		this.now = [];
 		this.bound = {'stop': this.stop.bind(this, false)};
-	},
-	
-	setElement: function(element){
-		this.element = $(element);
-		if (!this.element) return;
+		
+		var mouseStopper = this.element;
+		
 		switch($type(this.element)){
-			case 'window': this.document = this.element.document; break;
-			case 'document': this.document = this.element; break;
-			case 'element': this.document = this.element.ownerDocument;
+			case 'window': mouseStopper = this.element.document; break;
+			case 'document': this.element = this.element.window;
 		}
+
 		if (this.options.wheelStops){
 			this.addEvent('onStart', function(){
-				this.document.addEvent('mousewheel', this.bound.stop);
+				mouseStopper.addEvent('mousewheel', this.bound.stop);
 			}.bind(this), true);
 			this.addEvent('onComplete', function(){
-				this.document.removeEvent('mousewheel', this.bound.stop);
+				mouseStopper.removeEvent('mousewheel', this.bound.stop);
 			}.bind(this), true);
 		}
 	},
@@ -86,11 +84,11 @@ Fx.Scroll = new Class({
 	},
 
 	/*
-	Method: scrollTo
+	Method: start
 		Scrolls the specified Element to the x/y coordinates.
 
 	Syntax:
-		>myFx.scrollTo(x, y);
+		>myFx.start(x, y);
 
 	Arguments:
 		x - (integer) The x coordinate to scroll the Element to.
@@ -102,14 +100,14 @@ Fx.Scroll = new Class({
 	Example:
 		[javascript]
 			var myElement = $(document.body);
-			var myFx = new Fx.Scroll(myElement).scrollTo(0, 0.5 * document.body.offsetHeight);
+			var myFx = new Fx.Scroll(myElement).start(0, 0.5 * document.body.offsetHeight);
 		[/javascript]
 
 	Note:
 		Scrolling to (-x, -y) is impossible. :)
 	*/
 
-	scrollTo: function(x, y){
+	start: function(x, y){
 		if (this.timer && this.options.wait) return this;
 		var el = this.element.getSize();
 		var values = {'x': x, 'y': y};
@@ -119,7 +117,7 @@ Fx.Scroll = new Class({
 			else values[z] = el.scroll[z];
 			values[z] += this.options.offset[z];
 		}
-		return this.start([el.scroll.x, el.scroll.y], [values.x, values.y]);
+		return arguments.callee.parent([el.scroll.x, el.scroll.y], [values.x, values.y]);
 	},
 
 	/*
@@ -146,7 +144,7 @@ Fx.Scroll = new Class({
 	*/
 
 	toTop: function(){
-		return this.scrollTo(false, 0);
+		return this.start(false, 0);
 	},
 
 	/*
@@ -169,7 +167,7 @@ Fx.Scroll = new Class({
 	*/
 
 	toBottom: function(){
-		return this.scrollTo(false, 'full');
+		return this.start(false, 'bottom');
 	},
 
 	/*
@@ -193,7 +191,7 @@ Fx.Scroll = new Class({
 
 
 	toLeft: function(){
-		return this.scrollTo(0, false);
+		return this.start(0, false);
 	},
 
 	/*
@@ -219,7 +217,7 @@ Fx.Scroll = new Class({
 	*/
 
 	toRight: function(){
-		return this.scrollTo('full', false);
+		return this.start('right', false);
 	},
 
 	/*
@@ -247,7 +245,7 @@ Fx.Scroll = new Class({
 	toElement: function(el){
 		var parent = this.element.getPosition(this.options.overflown);
 		var target = $(el).getPosition(this.options.overflown);
-		return this.scrollTo(target.x - parent.x, target.y - parent.y);
+		return this.start(target.x - parent.x, target.y - parent.y);
 	},
 
 	increase: function(){

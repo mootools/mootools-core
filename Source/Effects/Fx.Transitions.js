@@ -10,6 +10,31 @@ Credits:
 */
 
 /*
+Class: Fx
+	Fx.Transitions overrides the Fx constructor, and adds the possibility to use the transition option as string.
+	
+Transition Option:
+	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
+	or a string ('ease:in' or, 'bounce:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut
+*/
+
+Fx.implement({
+	
+	initialize: function(element, options){
+		this.element = element;
+		this.setOptions(options);
+		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration;
+		var trans = this.options.transition;
+		if ($type(trans) == 'string' && (trans = trans.split(':'))){
+			var base = Fx.Transitions[trans[0].capitalize()];
+			if (trans[1]) base = base['ease' + trans[1].capitalize()];
+			this.options.transition = base;
+		}
+	}
+
+});
+
+/*
 Class: Fx.Transition
 	Returns a <Fx> transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
 
@@ -48,6 +73,36 @@ Fx.Transition = function(transition, params){
 		}
 	});
 };
+
+/*
+Hash: Fx.Transitions
+	A collection of tweening transitions for use with the <Fx> classes.
+
+Example:
+	[javascript]
+		//Elastic.easeOut with default values:
+		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
+	[/javascript]
+
+See also:
+	<http://www.robertpenner.com/easing/>, <Element.effect>
+*/
+
+Fx.Transitions = new Hash({
+
+	/*
+	Method: linear
+		Displays a linear transition.
+
+	Graph:
+		(see Linear.png)
+	*/
+
+	linear: function(p){
+		return p;
+	}
+
+});
 
 Fx.Transitions.extend = function(transitions){
 	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);

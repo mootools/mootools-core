@@ -6,44 +6,6 @@ License:
 	MIT-style license.
 */
 
-var Fx = new Class({Implements: [Chain, Events, Options]});
-
-Fx.Durations = {'long': 750, 'short': 250, 'normal': 500};
-
-/*
-Hash: Fx.Transitions
-	A collection of tweening transitions for use with the <Fx> classes.
-
-Example:
-	[javascript]
-		//Elastic.easeOut with default values:
-		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
-	[/javascript]
-
-See also:
-	<http://www.robertpenner.com/easing/>, <Element.effect>
-*/
-
-Fx.Transitions = new Hash({
-
-	/*
-	Method: linear
-		Displays a linear transition.
-
-	Graph:
-		(see Linear.png)
-	*/
-
-	linear: function(p){
-		return p;
-	},
-	
-	Sine: {easeInOut: function(p){
-		return -(Math.cos(Math.PI * p) - 1) / 2;
-	}}
-
-});
-
 /*
 Class: Fx
 	Base class for the Effects.
@@ -60,8 +22,7 @@ Arguments:
 
 	options (continued):
 		transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>.
-		             You cannot change the transition to anything other than  Fx.Transitions.Sine.easeInOut and Fx.Transition.linear if you havent included 	
-		             Fx.Transitions.js
+		             You cannot change the transition if you havent included Fx.Transitions.js, or you dont plan tyo write your own curve :P
 		duration   - (number: defaults to 500) The duration of the effect in ms. can also be 'normal', 'long', or 'short'.
 		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
 		wait       - (boolean: defaults to true) Option to wait for a current transition to end before running another of the same instance.
@@ -127,13 +88,17 @@ See Also:
 	<Fx.Style>
 */
 
-Fx.implement({
+var Fx = new Class({
+	
+	Implements: [Chain, Events, Options],
 
 	options: {
 		/*onStart: $empty,
 		onComplete: $empty,
 		onCancel: $empty,*/
-		transition: Fx.Transitions.Sine.easeInOut,
+		transition: function(p){
+			return -(Math.cos(Math.PI * p) - 1) / 2;
+		},
 		duration: 500,
 		unit: false,
 		wait: true,
@@ -144,12 +109,6 @@ Fx.implement({
 		this.element = element;
 		this.setOptions(options);
 		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration;
-		var trans = this.options.transition;
-		if ($type(trans) == 'string' && (trans = trans.split(':'))){
-			var base = Fx.Transitions[trans[0].capitalize()];
-			if (trans[1]) base = base['ease' + trans[1].capitalize()];
-			this.options.transition = base;
-		}
 	},
 
 	step: function(){
@@ -283,3 +242,5 @@ Fx.implement({
 	}
 
 });
+
+Fx.Durations = {'long': 750, 'short': 250, 'normal': 500};

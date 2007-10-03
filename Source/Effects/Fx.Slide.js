@@ -267,7 +267,7 @@ Example:
 
 Element.Set.slide = function(options){
 	if (this.$attributes.$slide) this.$attributes.$slide.stop();
-	this.$attributes.$slide = new Fx.Slide(this, options);
+	this.$attributes.$slide = new Fx.Slide(this, $merge({wait: false}, options));
 	return this;
 };
 
@@ -277,6 +277,9 @@ Element Getter: slide
 	
 Syntax:
 	>el.get('slide');
+
+Arguments:
+	options - (object, optional) the Fx.Slide options. if passed in will generate a new instance.
 	
 Returns:
 	(object) the Fx.Slide instance
@@ -290,8 +293,8 @@ Example:
 	[/javascript]
 */
 
-Element.Get.slide = function(){
-	if (!this.$attributes.$slide) this.set('slide');
+Element.Get.slide = function(options){
+	if (!this.$attributes.$slide || options) this.set('slide', options);
 	return this.$attributes.$slide;
 };
 
@@ -322,8 +325,7 @@ Element.implement({
 
 	slide: function(how, options){
 		how = how || 'toggle';
-		if (options) this.set('slide', options);
-		this.get('slide').stop()[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : how]();
+		this.get('slide', options)[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : how]();
 		return this;
 	}
 

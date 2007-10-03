@@ -137,7 +137,7 @@ Element.Set.extend({
 
 	tween: function(options){
 		if (this.$attributes.$tween) this.$attributes.$tween.stop();
-		this.$attributes.$tween = new Fx.Tween(this, null, options);
+		this.$attributes.$tween = new Fx.Tween(this, null, $merge({wait: false}, options));
 		return this;
 	},
 	
@@ -163,7 +163,7 @@ Element.Set.extend({
 	
 	fade: function(options){
 		if (this.$attributes.$fade) this.$attributes.$fade.stop();
-		this.$attributes.$fade = new Fx.Tween(this, 'opacity', options);
+		this.$attributes.$fade = new Fx.Tween(this, 'opacity', $merge({wait: false}, options));
 		return this;
 	}
 
@@ -181,6 +181,7 @@ Element.Get.extend({
 		
 	Arguments:
 		property - (string) the Fx.Tween property you want to associate with the instance.
+		options - (object, optional) the Fx.Tween options.
 
 	Returns:
 		(object) the Fx.Tween instance
@@ -194,8 +195,8 @@ Element.Get.extend({
 		[/javascript]
 	*/
 	
-	tween: function(property){
-		if (!this.$attributes.$tween) this.set('tween');
+	tween: function(property, options){
+		if (!this.$attributes.$tween || options) this.set('tween', options);
 		this.$attributes.$tween.property = property;
 		return this.$attributes.$tween;
 	},
@@ -206,6 +207,9 @@ Element.Get.extend({
 
 	Syntax:
 		>el.get('fade');
+
+	Arguments:
+		options - (object, optional) the Fx.Tween options. if passed in will generate a new instance.
 
 	Returns:
 		(object) the Fx.Tween instance
@@ -219,8 +223,8 @@ Element.Get.extend({
 		[/javascript]
 	*/
 	
-	fade: function(){
-		if (!this.$attributes.$fade) this.set('fade');
+	fade: function(options){
+		if (!this.$attributes.$fade || options) this.set('fade', options);
 		return this.$attributes.$fade;
 	}
 
@@ -253,8 +257,7 @@ Element.implement({
 	*/
 	
 	tween: function(property, value, options){
-		if (options) this.set('tween', options);
-		this.get('tween', property).stop().start(value);
+		this.get('tween', property, options).start(value);
 		return this;
 	},
 	
@@ -283,8 +286,7 @@ Element.implement({
 	
 	fade: function(how, options){
 		how = how || 'toggle';
-		if (options) this.set('fade', options);
-		var fade = this.get('fade').stop();
+		var fade = this.get('fade', options);
 		switch(how){
 			case 'in': fade.start(1); break;
 			case 'out': fade.start(0); break;

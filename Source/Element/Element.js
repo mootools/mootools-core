@@ -59,7 +59,7 @@ var Element = new Native({
 	
 	initialize: function(el){
 		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
-		return Element.create.run(arguments);
+		return Element.create(el);
 	},
 
 	afterImplement: function(key, value){
@@ -72,6 +72,7 @@ Element.create = function(el){
 	var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
 	var props = params.properties || {}, doc = params.document || document;
 	if ($type(el) == 'string'){
+		el = el.toLowerCase();
 		if (Client.Engine.trident && props && (props.name || props.type)){
 			var name = (props.name) ? ' name="' + props.name + '"' : '';
 			var type = (props.type) ? ' type="' + props.type + '"' : '';
@@ -461,13 +462,14 @@ Element.implement({
 		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>, <Element.Set>
 	*/
 
-	set: function(props, value){
-		if ($type(props) == 'string') props = (function(obj){
-			obj[props] = value;
-			return obj;
-		})({});
+	set: function(props){
+		if ($type(props) == 'string'){
+			var obj = {};
+			obj[props] = Array.slice(arguments, 1);
+			props = obj;
+		};
 		for (var prop in props){
-			if (Element.Set.has(prop)) Element.Set[prop].call(this, props[prop]);
+			if (Element.Set.has(prop)) Element.Set[prop].run(props[prop], this);
 			else this.setProperty(prop, props[prop]);
 		}
 		return this;

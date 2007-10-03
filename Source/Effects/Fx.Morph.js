@@ -192,7 +192,7 @@ Example:
 
 Element.Set.morph = function(options){
 	if (this.$attributes.$morph) this.$attributes.$morph.stop();
-	this.$attributes.$morph = new Fx.Morph(this, options);
+	this.$attributes.$morph = new Fx.Morph(this, $merge({wait: false}, options));
 	return this;
 };
 
@@ -202,6 +202,9 @@ Element Getter: morph
 	
 Syntax:
 	>el.get('morph');
+
+Arguments:
+	options - (object, optional) the Fx.Morph options. if passed in will generate a new instance.
 	
 Returns:
 	(object) the Fx.Morph instance
@@ -215,8 +218,8 @@ Example:
 	[/javascript]
 */
 
-Element.Get.morph = function(){
-	if (!this.$attributes.$morph) this.set('morph');
+Element.Get.morph = function(options){
+	if (!this.$attributes.$morph || options) this.set('morph', options);
 	return this.$attributes.$morph;
 };
 
@@ -252,8 +255,7 @@ Element.implement({
 	*/
 
 	morph: function(props, options){
-		if (options) this.set('morph', options);
-		this.get('morph').stop().start(props);
+		this.get('morph', options).start(props);
 		return this;
 	}
 

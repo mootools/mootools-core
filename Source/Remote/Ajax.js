@@ -222,7 +222,7 @@ Element.Set.extend({
 
 	send: function(options){
 		if (this.$attributes.$send) this.$attributes.$send.cancel();
-		this.$attributes.$send = new Ajax(this.get('action'), $extend({method: this.get('method') || 'post'}, options || {}));
+		this.$attributes.$send = new Ajax(this.get('action'), $merge({autoCancel: true, method: this.get('method') || 'post'}, options));
 		return this;
 	},
 	
@@ -248,7 +248,7 @@ Element.Set.extend({
 	
 	load: function(options){
 		if (this.$attributes.$load) this.$attributes.$load.cancel();
-		this.$attributes.$load = new Ajax($extend({update: this, method: 'get'}, options || {}));
+		this.$attributes.$load = new Ajax($merge({autoCancel: true, update: this, method: 'get'}, options));
 		return this;
 	}
 
@@ -264,6 +264,9 @@ Element.Get.extend({
 	Syntax:
 		>el.get('send');
 
+	Arguments:
+		options - (object, optional) the Ajax options. if passed in will generate a new instance.
+
 	Returns:
 		(object) the Ajax instance
 
@@ -276,8 +279,8 @@ Element.Get.extend({
 		[/javascript]
 	*/
 	
-	send: function(){
-		if (!this.$attributes.$send) this.set('send');
+	send: function(options){
+		if (!this.$attributes.$send || options) this.set('send', options);
 		return this.$attributes.$send;
 	},
 	
@@ -290,6 +293,7 @@ Element.Get.extend({
 		
 	Arguments:
 		url - (string) the url to associate the Ajax instance with.
+		options - (object, optional) the Ajax options. if passed in will generate a new instance.
 
 	Returns:
 		(object) the Ajax instance
@@ -303,8 +307,8 @@ Element.Get.extend({
 		[/javascript]
 	*/
 	
-	load: function(url){
-		if (!this.$attributes.$load) this.set('load');
+	load: function(url, options){
+		if (!this.$attributes.$load || options) this.set('load', options);
 		this.$attributes.$load.url = url;
 		return this.$attributes.$load;
 	}
@@ -344,8 +348,7 @@ Element.implement({
 	*/
 
 	send: function(options){
-		if (options) this.set('send', options);
-		this.get('send').cancel().request(this);
+		this.get('send', options).request(this);
 		return this;
 	},
 
@@ -373,8 +376,7 @@ Element.implement({
 	*/
 
 	load: function(url, options){
-		if (options) this.set('load', options);
-		this.get('load', url).cancel().request();
+		this.get('load', url, options).request();
 		return this;
 	}
 
