@@ -14,45 +14,6 @@ See Also:
 	<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array>
 */
 
-/*
-Function: $A
-	Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
-
-Syntax:
-	>var copiedArray = $A(iterable);
-
-Arguments:
-	iterable - (array) The iterable to copy.
-
-Returns:
-	(array) The new copied array.
-
-Examples:
-	Apply Array to arguments:
-	[javascript]
-		function myFunction(){
-			$A(arguments).each(function(argument, index){
-				alert(argument);
-			});
-		}; //will alert all the arguments passed to the function myFunction.
-	[/javascript]
-
-	Copy an Array:
-	[javascript]
-		var anArray = [0, 1, 2, 3, 4];
-		var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
-	[/javascript]
-*/
-
-function $A(iterable){
-	if (Client.Engine.trident && $type(iterable) == 'collection'){
-		var array = [];
-		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
-		return array;
-	}
-	return Array.prototype.slice.call(iterable);
-};
-
 Array.implement({
 
 	/*
@@ -140,43 +101,6 @@ Array.implement({
 			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
-	},
-
-	/*
-	Method: forEach
-		Calls a function for each element in the array.
-
-		This method is only available for browsers without native <Array.forEach> support.
-
-	Syntax:
-		>myArray.forEach(fn[, bind]);
-
-	Arguments:
-		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
-
-		fn (continued):
-			Signature:
-				>fn(item, index, array)
-
-			Arguments:
-				item   - (mixed) The current item in the array.
-				index  - (number) The current item's index in the array.
-				array  - (array) The actual array.
-
-	Example:
-		[javascript]
-			['apple', 'banana', 'lemon'].forEach(function(item, index){
-				alert(index + " = " + item); //alerts "0 = apple" etc.
-			}, bind); //optional second argument for binding, not used here
-		[/javascript]
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
-	*/
-
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
 	},
 
 	/*
@@ -608,76 +532,3 @@ Array.implement({
 	}
 
 });
-
-/*
-Method: each
-	Same as <Array.forEach>.
-
-Syntax:
-	>myArray.each(fn[, bind]);
-
-Arguments:
-	fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-	bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
-
-	fn (continued):
-		Signature:
-			>fn(item, index, array)
-
-		Arguments:
-			item   - (mixed) The current item in the array.
-			index  - (number) The current item's index in the array.
-			array  - (array) The actual array.
-
-Example:
-	[javascript]
-		['apple','banana','lemon'].each(function(item, index){
-			alert(index + " = " + item); //alerts "0 = apple" etc.
-		}, bind); //optional second argument for binding, not used here
-	[/javascript]
-*/
-
-Array.alias('forEach', 'each');
-
-/*
-Function: $each
-	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
-
-Syntax:
-	>$each(iterable, fn[, bind]);
-
-Arguments:
-	iterable - (object or array) The object or array to iterate through.
-	fn       - (function) The function to test for each element.
-	bind     - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
-
-	fn (continued):
-		Signature:
-			>fn(item, index, object)
-
-		Arguments:
-			item   - (mixed) The current item in the array.
-			index  - (number) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
-			object - (mixed) The actual array/object.
-
-Examples:
-	Array example:
-	[javascript]
-		$each(['Sun','Mon','Tue'], function(day, index){
-			alert('name:' + day + ', index: ' + index);
-		}); //alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
-	[/javascript]
-
-	Object example:
-	[javascript]
-		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
-			alert("the " + key + " day of the week is " + value);
-		}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
-	[/javascript]
-*/
-
-function $each(iterable, fn, bind){
-	var type = $type(iterable);
-	if (!type) return;
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
-};

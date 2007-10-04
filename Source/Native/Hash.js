@@ -1,6 +1,6 @@
 /*
 Script: Hash.js
-	Contains the Hash implementation for custom Object prototypes.
+	Contains the Hash methods.
 
 License:
 	MIT-style license.
@@ -11,60 +11,7 @@ Native: Hash
 	A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
 */
 
-var Hash = new Native({
-
-	name: 'Hash',
-
-	initialize: function(object){
-		if (object){
-			if ($type(object) == 'hash') return object;
-			this.extend(object);
-		}
-		return this;
-	}
-
-});
-
-function $H(object){
-	return new Hash(object);
-};
-
 Hash.implement({
-
-	/*
-	Method: each
-		Calls a function for each key-value pair in the object.
-
-	Syntax:
-		>myArray.forEach(fn[, bind]);
-
-	Arguments:
-		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
-
-		fn (continued):
-			Signature:
-				>fn(value, key, hash)
-
-			Arguments:
-				value - (mixed) The current value in the hash.
-				key   - (string) The current value's key in the hash.
-				hash  - (hash) The actual hash.
-
-	Example:
-		[javascript]
-			var hash = new Hash({first: "Sunday", second: "Monday", third: "Tuesday"});
-			hash.each(function(value, key){
-				alert("the " + key + " day of the week is " + value);
-			}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
-		[/javascript]
-	*/
-
-	each: function(fn, bind){
-		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
-		}
-	},
 
 	/*
 	Method: keyOf

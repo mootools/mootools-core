@@ -105,7 +105,7 @@ var Chain = new Class({
 	*/
 
 	callChain: function(){
-		if (this.$chain && this.$chain.length) this.$chain.shift().delay(10, this);
+		if (this.$chain && this.$chain.length) this.$chain.shift().call(this);
 		return this;
 	},
 

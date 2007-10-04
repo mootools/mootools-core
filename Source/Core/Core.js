@@ -21,6 +21,76 @@ var MooTools = {
 	'build': '%build%'
 };
 
+var Native = function(options){
+	
+	var name = options.name || false;
+	var initialize = options.initialize || false;
+	var generics = options.generics || true;
+	var browser = options.browser || false;
+	var legacy = (name && options.legacy) ? window[name] : false;
+	var afterImplement = options.afterImplement || function(){};
+	var object = initialize || legacy;
+	
+	object.constructor = Native;
+	object.$family = {name: 'native'};
+	if (legacy && initialize) object.prototype = legacy.prototype;
+	object.prototype.constructor = object;
+	if (name){
+		var family = name.toLowerCase();
+		object.prototype.$family = {name: family};
+		Native.typize(object, family);
+	}
+	
+	object.implement = function(properties, force){
+		for (var property in properties){
+			if (!browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
+			if (generics) Native.genericize(this, property);
+			afterImplement.call(this, property, properties[property]);
+		}
+	};
+	
+	object.alias = function(existing, property, force){
+		if (!browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
+		if (generics && !this[property]) this[property] = this[existing];
+		afterImplement.call(this, property, this[property]);
+	};
+	
+	return object;
+
+};
+
+Native.implement = function(objects, properties){
+	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
+};
+
+Native.genericize = function(object, property){
+	if (!object[property] && typeof object.prototype[property] == 'function') object[property] = function(){
+		var args = Array.prototype.slice.call(arguments);
+		return object.prototype[property].apply(args.shift(), args);
+	};
+};
+
+Native.typize = function(object, family){
+	if (!object.type) object.type = function(item){
+		return ($type(item) === family);
+	};
+};
+
+(function(obj){
+	for (var i = 0, l = arguments.length; i < l; i++) Native.typize(window[arguments[i]], arguments[i].toLowerCase());
+})('Boolean', 'Native', 'Object');
+
+(function(){
+	for (var i = 0, l = arguments.length; i < l; i++) new Native({name: arguments[i], initialize: window[arguments[i]], browser: true});
+})('String', 'Function', 'Number', 'Array', 'RegExp', 'Date');
+
+(function(object, methods){
+	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i]);
+	return arguments.callee;
+})
+(Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf'])
+(String, ['charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'valueOf']);
+
 /*
 Function: $chk
 	Checks to see if a value exists or is 0. Useful for allowing 0.
@@ -379,85 +449,205 @@ function $type(obj){
 	return typeof obj;
 };
 
-var Native = function(options){
-	
-	options = $extend({
-		name: false,
-		initialize: false,
-		generics: true,
-		browser: false,
-		legacy: false,
-		afterImplement: $empty
-	}, options || {});
+/*
+Native: Hash
+	A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
+	Useful because in Javascript we cannot use Object.prototype. You can now use Hash.prototype!
+*/
 
-	var legacy = (options.legacy) ? window[options.name] : false;
-	
-	var object = options.initialize || legacy;
-	
-	object.constructor = Native;
-	object.$family = {name: 'native'};
-	
-	if (legacy && options.initialize) object.prototype = legacy.prototype;
-	object.prototype.constructor = object;
-	
-	if (options.name){
-		var family = options.name.toLowerCase();
-		object.prototype.$family = {name: family};
-		Native.typize(object, family);
-	}
-	
-	object.implement = function(properties, force){
-		for (var property in properties){
-			if (!options.browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
-			if (options.generics) Native.genericize(this, property);
-			options.afterImplement.call(this, property, properties[property]);
+var Hash = new Native({
+
+	name: 'Hash',
+
+	initialize: function(object){
+		switch($type(object)){
+			case 'hash': return object;
+			case 'object': for (var p in object){
+				if (!this.hasOwnProperty(p)) this[p] = object[p];
+			}
+				
 		}
-	};
+		return this;
+	}
+
+});
+
+Hash.implement({
 	
-	object.alias = function(existing, property, force){
-		if (!options.browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
-		if (options.generics && !this[property]) this[property] = this[existing];
-		options.afterImplement.call(this, property, this[property]);
-	};
+	/*
+	Method: each
+		Calls a function for each key-value pair in the object.
+
+	Syntax:
+		>myArray.forEach(fn[, bind]);
+
+	Arguments:
+		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+		fn (continued):
+			Signature:
+				>fn(value, key, hash)
+
+			Arguments:
+				value - (mixed) The current value in the hash.
+				key   - (string) The current value's key in the hash.
+				hash  - (hash) The actual hash.
+
+	Example:
+		[javascript]
+			var hash = new Hash({first: "Sunday", second: "Monday", third: "Tuesday"});
+			hash.each(function(value, key){
+				alert("the " + key + " day of the week is " + value);
+			}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
+		[/javascript]
+	*/
 	
-	return object;
+	forEach: function(fn, bind){
+		for (var key in this){
+			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
+		}
+	}
 
-};
+});
 
-Native.typize = function(object, family){
-	if (!object.type) object.type = function(item){
-		return ($type(item) === family);
-	};
-};
-
-Native.genericize = function(object, property){
-	if (!object[property] && $type(object.prototype[property]) == 'function') object[property] = function(){
-		var args = Array.prototype.slice.call(arguments);
-		return object.prototype[property].apply(args.shift(), args);
-	};
-};
-
-Native.implement = function(objects, properties){
-	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
-};
-
-(function(obj){
-	for (var i = 0, l = arguments.length; i < l; i++) Native.typize(window[arguments[i]], arguments[i].toLowerCase());
-})('Boolean', 'Native', 'Object');
-
-(function(){
-	for (var i = 0, l = arguments.length; i < l; i++) new Native({name: arguments[i], initialize: window[arguments[i]], browser: true});
-})('String', 'Function', 'Number', 'Array', 'RegExp', 'Date');
-
-(function(object, methods){
-	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i]);
-	return arguments.callee;
-})
-(Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf'])
-(String, ['charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'valueOf']);
+Hash.alias('forEach', 'each');
 
 /*
-Object: Client
+Function: $H
+	Shortcut for new Hash.
+*/
+
+function $H(object){
+	return new Hash(object);
+};
+
+Array.implement({
+
+	/*
+	Method: each
+		Calls a function for each element in the array.
+
+		This method is only available for browsers without native <Array.forEach> support.
+
+	Syntax:
+		>myArray.each(fn[, bind]);
+
+	Arguments:
+		fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+		bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+		fn (continued):
+			Signature:
+				>fn(item, index, array)
+
+			Arguments:
+				item   - (mixed) The current item in the array.
+				index  - (number) The current item's index in the array.
+				array  - (array) The actual array.
+
+	Example:
+		[javascript]
+			['apple', 'banana', 'lemon'].each(function(item, index){
+				alert(index + " = " + item); //alerts "0 = apple" etc.
+			}, bind); //optional second argument for binding, not used here
+		[/javascript]
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
+	*/
+
+	forEach: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+	}
+
+});
+
+Array.alias('forEach', 'each');
+
+/*
+Function: $A
+	Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
+
+Syntax:
+	>var copiedArray = $A(iterable);
+
+Arguments:
+	iterable - (array) The iterable to copy.
+
+Returns:
+	(array) The new copied array.
+
+Examples:
+	Apply Array to arguments:
+	[javascript]
+		function myFunction(){
+			$A(arguments).each(function(argument, index){
+				alert(argument);
+			});
+		}; //will alert all the arguments passed to the function myFunction.
+	[/javascript]
+
+	Copy an Array:
+	[javascript]
+		var anArray = [0, 1, 2, 3, 4];
+		var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
+	[/javascript]
+*/
+
+function $A(iterable){
+	if (Client.Engine.trident && $type(iterable) == 'collection'){
+		var array = [];
+		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+		return array;
+	}
+	return Array.prototype.slice.call(iterable);
+};
+
+/*
+Function: $each
+	Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
+
+Syntax:
+	>$each(iterable, fn[, bind]);
+
+Arguments:
+	iterable - (object or array) The object or array to iterate through.
+	fn       - (function) The function to test for each element.
+	bind     - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+
+	fn (continued):
+		Signature:
+			>fn(item, index, object)
+
+		Arguments:
+			item   - (mixed) The current item in the array.
+			index  - (number) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
+			object - (mixed) The actual array/object.
+
+Examples:
+	Array example:
+	[javascript]
+		$each(['Sun','Mon','Tue'], function(day, index){
+			alert('name:' + day + ', index: ' + index);
+		}); //alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+	[/javascript]
+
+	Object example:
+	[javascript]
+		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+			alert("the " + key + " day of the week is " + value);
+		}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
+	[/javascript]
+*/
+
+function $each(iterable, fn, bind){
+	var type = $type(iterable);
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+};
+
+/*
+Hash: Client
 	Some browser properties are attached to the Client Object for browser and platform detection.
 
 Features:
@@ -486,11 +676,11 @@ Note:
 	Engine detection is entirely feature-based.
 */
 
-var Client = {
+var Client = new Hash({
 	Engine: {'name': 'unknown', 'version': ''},
 	Platform: {'name': (navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'])[0].toLowerCase()},
 	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate)}
-};
+});
 
 if (window.opera) Client.Engine.name = 'opera';
 else if (window.ActiveXObject) Client.Engine = {'name': 'trident', 'version': (Client.Features.xhr) ? 5 : 4};

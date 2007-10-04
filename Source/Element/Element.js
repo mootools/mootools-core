@@ -59,7 +59,7 @@ var Element = new Native({
 	
 	initialize: function(el){
 		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
-		return Element.create(el);
+		return Element.create.run(arguments);
 	},
 
 	afterImplement: function(key, value){
@@ -73,14 +73,15 @@ Element.create = function(el){
 	var props = params.properties || {}, doc = params.document || document;
 	if ($type(el) == 'string'){
 		el = el.toLowerCase();
-		if (Client.Engine.trident && props && (props.name || props.type)){
-			var name = (props.name) ? ' name="' + props.name + '"' : '';
-			var type = (props.type) ? ' type="' + props.type + '"' : '';
-			delete props.name;
-			delete props.type;
-			el = '<' + el + name + type + '>';
+		if (Client.Engine.trident && props){
+			['name', 'type', 'checked'].each(function(attribute){
+				if (!props[attribute]) return;
+				el += ' ' + attribute + '="' + props[attribute] + '"';
+				if (attribute != 'checked') delete props[attribute];
+			});
+			el = '<' + el + '>';
 		}
-		el = doc.createElementNS ? doc.createElementNS("http://www.w3.org/1999/xhtml", el) : doc.createElement(el);
+		el = doc.createElement(el);
 	}
 	el = $(el);
 	return (!props || !el) ? el : el.set(props);
@@ -1355,13 +1356,10 @@ Element.implement({
 		[/javascript]
 	*/
 
-	getProperty: function(property){
-		var index = Element.$attributes[property];
-		if (index) return this[index];
-		var flag = Element.$attributesIFlag[property] || 0;
-		if (!Client.Engine.trident || flag) return this.getAttribute(property, flag);
-		var node = (this.attributes) ? this.attributes[property] : null;
-		return (node) ? node.nodeValue : null;
+	getProperty: function(attribute){
+		var property = Element.Attributes.Properties[attribute];
+		var value = (property) ? this[property] : this.getAttribute(attribute);
+		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
 	},
 
 	/*
@@ -1393,10 +1391,44 @@ Element.implement({
 		[/html]
 	*/
 
-	removeProperty: function(property){
-		var index = Element.$attributes[property];
-		if (index) this[index] = '';
-		else this.removeAttribute(property);
+	removeProperty: function(attribute){
+		var property = Element.Attributes.Properties[attribute];
+		(property) ? this[property] = '' : this.removeAttribute(attribute);
+		return this;
+	},
+	
+	/*
+	Method: setProperty
+		Sets an attribute for the Element.
+
+	Arguments:
+		property - (string) The property to assign the value passed in.
+		value - (mixed) The value to assign to the property passed in.
+
+	Return:
+		(element) - This Element.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" />
+		[/html]
+
+		[javascript]
+			$('myImage').setProperty('src', 'mootools.png');
+		[/javascript]
+
+		Result:
+		[html]
+			<img id="myImage" src="mootools.png" />
+		[/html]
+	*/
+
+	setProperty: function(attribute, value){
+		if (!$chk(value)) return this.removeProperty(attribute);
+		var property = Element.Attributes.Properties[attribute];
+		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
+		(property) ? this[property] = value : this.setAttribute(attribute, value);
 		return this;
 	},
 
@@ -1431,40 +1463,6 @@ Element.implement({
 			result[key] = this.getProperty(key);
 		}, this);
 		return result;
-	},
-
-	/*
-	Method: setProperty
-		Sets an attribute for the Element.
-
-	Arguments:
-		property - (string) The property to assign the value passed in.
-		value - (mixed) The value to assign to the property passed in.
-
-	Return:
-		(element) - This Element.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			$('myImage').setProperty('src', 'mootools.png');
-		[/javascript]
-
-		Result:
-		[html]
-			<img id="myImage" src="mootools.png" />
-		[/html]
-	*/
-
-	setProperty: function(property, value){
-		var index = Element.$attributes[property];
-		if (index) this[index] = value;
-		else this.setAttribute(property, value);
-		return this;
 	},
 
 	/*
@@ -1723,17 +1721,6 @@ Element.implement({
 
 Element.alias('dispose', 'remove');
 
-Element.$attributes = {
-	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
-	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
-	'readonly': 'readOnly', 'frameborder': 'frameBorder', 'value': 'value',
-	'disabled': 'disabled', 'checked': 'checked', 'multiple': 'multiple', 'selected': 'selected'
-};
-
-Element.$attributesIFlag = {
-	'href': 2, 'src': 2
-};
-
 Native.implement([Element, Window, Document], {
 
 	addListener: function(type, fn){
@@ -1749,6 +1736,19 @@ Native.implement([Element, Window, Document], {
 	}
 
 });
+
+Element.Attributes = {
+	Properties: {},
+	Booleans: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer']
+};
+
+Element.Attributes.Booleans = Element.Attributes.Booleans.associate(Element.Attributes.Booleans);
+
+if (Client.Engine.trident) Element.Attributes.Properties = Hash.merge({
+	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
+	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
+	'frameborder': 'frameBorder', 'value': 'value', 'readonly': 'readOnly'
+}, Element.Attributes.Booleans);
 
 Element.UID = 0;
 
