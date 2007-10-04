@@ -1747,7 +1747,7 @@ Element.Attributes.Booleans = Element.Attributes.Booleans.associate(Element.Attr
 if (Client.Engine.trident) Element.Attributes.Properties = Hash.merge({
 	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
 	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
-	'frameborder': 'frameBorder', 'value': 'value', 'readonly': 'readOnly'
+	'frameborder': 'frameBorder', 'value': 'value', 'readonly': 'readOnly', 'usemap': 'useMap'
 }, Element.Attributes.Booleans);
 
 Element.UID = 0;

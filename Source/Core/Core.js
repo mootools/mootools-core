@@ -596,7 +596,7 @@ Examples:
 */
 
 function $A(iterable){
-	if (Client.Engine.trident && $type(iterable) == 'collection'){
+	if (Client.Features.xpath && $type(iterable) == 'collection'){
 		var array = [];
 		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
 		return array;
