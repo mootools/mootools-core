@@ -50,7 +50,7 @@ Element.implement({
 					if (option.selected) values.push(option.value);
 				});
 				return (this.multiple) ? values : values[0];
-			case 'input': if (['checkbox', 'radio'].contains(this.type)) return this.checked;
+			case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
 			default: return $chk(this.value) ? this.value : false;
 		}
 	},
@@ -118,9 +118,9 @@ Element.implement({
 	toQueryString: function(){
 		var queryString = [];
 		this.getFormElements().each(function(el){
-			var name = el.name;
-			var value = el.getValue();
+			var name = el.name, type = el.type, value = el.getValue();
 			if (value === false || !name || el.disabled) return;
+			if ((type == 'checkbox' || type == 'radio') && !el.checked ) return;
 			var qs = function(val){
 				queryString.push(name + '=' + encodeURIComponent(val));
 			};
