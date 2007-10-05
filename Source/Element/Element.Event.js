@@ -540,7 +540,7 @@ Element.$events = {
 	'keydown': 2, 'keypress': 2, 'keyup': 2, //keys
 	'contextmenu': 2, 'submit': 2, //misc
 	'load': 1, 'unload': 1, 'beforeunload': 1, 'resize': 1, 'move': 1, 'DOMContentLoaded': 1, 'readystatechange': 1, //window
-	'focus': 1, 'blur': 1, 'change': 1, 'reset': 1, 'select': 1, //forms elements
+	'focus': 1, 'blur': 1, 'change': 2, 'reset': 1, 'select': 1, //forms elements
 	'error': 1, 'abort': 1, 'scroll': 1 //misc
 };
 

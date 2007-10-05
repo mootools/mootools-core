@@ -1747,9 +1747,9 @@ Element.Attributes = {
 Element.Attributes.Booleans = Element.Attributes.Booleans.associate(Element.Attributes.Booleans);
 
 if (Client.Engine.trident) Element.Attributes.Properties = Hash.merge({
-	'class': 'className', 'for': 'htmlFor', 'colspan': 'colSpan', 'rowspan': 'rowSpan',
-	'accesskey': 'accessKey', 'tabindex': 'tabIndex', 'maxlength': 'maxLength',
-	'frameborder': 'frameBorder', 'value': 'value', 'readonly': 'readOnly', 'usemap': 'useMap'
+	'accesskey': 'accessKey', 'cellpadding': 'cellPadding', 'cellspacing': 'cellSpacing', 'colspan': 'colSpan',
+	'class': 'className', 'for': 'htmlFor', 'frameborder': 'frameBorder', 'maxlength': 'maxLength', 'readonly': 'readOnly',
+	'rowspan': 'rowSpan', 'tabindex': 'tabIndex', 'usemap': 'useMap', 'value': 'value'
 }, Element.Attributes.Booleans);
 
 Element.UID = 0;

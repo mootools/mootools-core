@@ -33,8 +33,9 @@ Properties:
 
 Example:
 	[javascript]
-	var mySlider = new Fx.Slide('container').hide().toggle().chain(function(){ //hides, toggles (which acts like slideOut), and chains an alert.
-		alert(mySlider.open); //true
+	//hides, toggles (which acts like slideOut), and chains an alert.
+	var mySlide = new Fx.Slide('container').hide().toggle().chain(function(){
+		alert(mySlide.open); //true
 	});
 	[/javascript]
 

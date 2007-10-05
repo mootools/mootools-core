@@ -81,13 +81,13 @@ var Sortables = new Class({
 	Implements: [Events, Options],
 
 	options: {
-		constrain: false,
+		/*onStart: $empty,
+		onComplete: $empty,*/
 		clone: true,
 		opacity: 0.7,
 		handle: false,
 		revert: false,
-		onStart: $empty,
-		onComplete: $empty
+		constrain: false
 	},
 
 	initialize: function(lists, options){
@@ -103,7 +103,7 @@ var Sortables = new Class({
 		};
 		if (this.options.revert){
 			var revertOptions = $merge({duration: 250, wait: false}, this.options.revert);
-			this.effect = new Fx.Styles(null, revertOptions).addEvent('onComplete', this.bound.reset, true);
+			this.effect = new Fx.Morph(null, revertOptions).addEvent('onComplete', this.bound.reset, true);
 		}
 		this.cloneContents = !!(this.options.clone);
 

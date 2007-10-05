@@ -29,7 +29,7 @@ var Builder = {
 			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form"],
 			"Selectors" : ["Selectors", "Selectors.Pseudo"],
 			"Window"    : ["Window.DomReady", "Window.Size"],
-			"Effects"   : ["Fx", "Fx.CSS", "Fx.Style", "Fx.Styles", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
+			"Effects"   : ["Fx", "Fx.CSS", "Fx.Tween", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
 			"Drag"      : ["Drag", "Drag.Move"],
 			"Remote"    : ["XHR", "Ajax", "Cookie", "Json"],
 			"Swiff"     : ["Swiff"],

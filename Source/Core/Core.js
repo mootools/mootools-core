@@ -655,9 +655,9 @@ Features:
 	Client.Features.xhr   - (boolean) True if the browser supports native XMLHTTP object.
 
 Engine:
-	Client.Engine.trident        - (boolean) True if the current browser is Internet Explorer (any).
-	Client.Engine.trident4       - (boolean) True if the current browser is Internet Explorer 6.
-	Client.Engine.trident5       - (boolean) True if the current browser is Internet Explorer 7.
+	Client.Engine.trident   - (boolean) True if the current browser is Internet Explorer (any).
+	Client.Engine.trident4  - (boolean) True if the current browser is Internet Explorer 6.
+	Client.Engine.trident5  - (boolean) True if the current browser is Internet Explorer 7.
 	Client.Engine.gecko     - (boolean) True if the current browser is Mozilla/Gecko.
 	Client.Engine.webkit    - (boolean) True if the current browser is Safari/Konqueror.
 	Client.Engine.webkit419 - (boolean) True if the current browser is Safari2 / webkit till version 419.

@@ -23,7 +23,6 @@ describe('Class.Chain', {
 
 		value_of(chains).should_not_be(undefined);
 		value_of(chains[0]).should_not_be(undefined);
-		//value_of(chains[0]).should_be_a('function');
 		value_of(chains[0]()).should_be_true();
 	}
 
@@ -217,7 +216,9 @@ describe('Class.Options', {
 		var TestSetOptions = new Class({
 			Implements: Options,
 			options: {
-				a: 1
+				a: 1,
+				obj1: { b: 'one', c: 'two' },
+				obj2: { e: { f: 'five', g: 'six' }, h: true, i: [1,2,3] }
 			},
 			initialize: function(options){
 				this.setOptions(options);
@@ -227,13 +228,27 @@ describe('Class.Options', {
 		var NullInput = new TestSetOptions();
 		var MergedInput = new TestSetOptions({
 			a: 2,
-			b: 3
+			b: 3,
+			obj1: { c: 'three', d: 'four' },
+			obj2: { e: { g: 'seven', h: 'eight' }, h: false, i: [2,3] }
 		});
+		
+		value_of(NullInput.options).should_not_be(undefined);
+		value_of(NullInput.options.a).should_be(1);
+		value_of(NullInput.options.obj1).should_be({ b: 'one', c: 'two' });
+		value_of(NullInput.options.obj2).should_be({ e: { f: 'five', g: 'six' }, h: true, i: [1,2,3] });
 
+		value_of(MergedInput.options).should_not_be(undefined);
+		value_of(MergedInput.options.a).should_be(2);
+		value_of(MergedInput.options.b).should_be(3);
+		value_of(MergedInput.options.obj1).should_be({ b: 'one', c: 'three', d: 'four' });
+		value_of(MergedInput.options.obj2).should_be({ e: { f: 'five', g: 'seven', h: 'eight' }, h: false, i: [2,3] });
+	},
+
+	setOptions_with_Events: function(){
 		var TestSetOptionsEvents = new Class({
 			Implements: [Events, Options],
 			options: {
-				a: 1,
 				onStart: $empty,
 				onEnd: function(){
 					return true;
@@ -243,35 +258,28 @@ describe('Class.Options', {
 				this.setOptions(options);
 			}
 		});
-		var NullInputE = new TestSetOptionsEvents();
-		var MergedInputE = new TestSetOptionsEvents({
-			a: 3,
-			b: 4,
+		
+		var NullInput = new TestSetOptionsEvents();
+		var MergedInput = new TestSetOptionsEvents({
 			onStart: function(){
 				return 'started';
 			},
 			onComplete: function(){
 				return false;
+			},
+			onEnd: function(){
+				return 'ended';
 			}
 		});
-
+		
 		value_of(NullInput.options).should_not_be(undefined);
-		//value_of(NullInput.options).should_be_an('object');
-		value_of(NullInput.options.a).should_be(1);
+		value_of(NullInput.$events['onEnd'][0]()).should_be_true();
+		value_of(NullInput.$events['onStart']).should_be(undefined);
 
-		value_of(MergedInput.options.a).should_be(2);
-		value_of(MergedInput.options.b).should_be(3);
-
-		value_of(NullInputE.options).should_not_be(undefined);
-		//value_of(NullInputE.options).should_be_an('object');
-		value_of(NullInputE.options.a).should_be(1);
-		//value_of(NullInputE.options.onStart).should_be_a('function');
-		value_of(NullInputE.options.onEnd()).should_be_true();
-
-		value_of(MergedInputE.options.a).should_be(3);
-		value_of(MergedInputE.options.b).should_be(4);
-		value_of(MergedInputE.options.onStart()).should_be('started');
-		value_of(MergedInputE.options.onComplete()).should_be_false();
+		value_of(MergedInput.options).should_not_be(undefined);
+		value_of(MergedInput.$events['onEnd'][0]()).should_be('ended');
+		value_of(MergedInput.$events['onStart'][0]()).should_be('started');
+		value_of(MergedInput.$events['onComplete'][0]()).should_be_false();
 	}
-
+	
 });
