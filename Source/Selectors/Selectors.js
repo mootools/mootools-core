@@ -63,6 +63,7 @@ Native.implement([Element, Document], {
 	*/
 
 	getElements: function(selectors, nocash){
+		var method = Selectors.Method;
 		var elements = [];
 		selectors = selectors.split(',');
 		for (var i = 0, j = selectors.length; i < j; i++){
@@ -73,13 +74,13 @@ Native.implement([Element, Document], {
 				return '%' + match.charAt(1);
 			}).split('%');
 			for (var k = 0, l = selector.length; k < l; k++){
-				var params = Selectors.$parse(selector[k]);
+				var params = Selectors.parse(selector[k]);
 				if (!params) break;
-				var temp = Selectors.Method.getParam(items, separators[k - 1] || false, this, params.tag, params.id, params.classes, params.attributes, params.pseudos);
+				var temp = method.getParam(items, separators[k - 1] || false, this, params.tag, params.id, params.classes, params.attributes, params.pseudos);
 				if (!temp) break;
 				items = temp;
 			}
-			elements = elements.concat(Selectors.Method.getItems(items, this));
+			elements = elements.concat(method.getItems(items, this));
 		}
 		return (nocash) ? elements : new Elements(elements);
 	},
@@ -133,18 +134,21 @@ var Selectors = {
 
 };
 
-Selectors.$parse = function(selector){
+Selectors.parse = function(selector){
 	var params = {'tag': '*', 'id': null, 'classes': [], 'attributes': [], 'pseudos': []};
 	selector = selector.replace(Selectors.regExp, function(bit){
 		switch (bit.charAt(0)){
 			case '.': params.classes.push(bit.slice(1)); break;
 			case '#': params.id = bit.slice(1); break;
-			case '[': params.attributes.push([arguments[4], arguments[5], arguments[7]]); break; 
-			case ':': 
-				var name = arguments[1]; 
-				var xparser = Selectors.Pseudo.get(name);
-				var pseudo = {'name': name, 'parser': xparser, 'argument': arguments[3]};
-				if (xparser && xparser.parser) pseudo.argument = (xparser.parser.apply) ? xparser.parser(pseudo.argument) : xparser.parser;
+			case '[': params.attributes.push([arguments[4], arguments[5], arguments[7]]); break;
+			case ':':
+				var xparser = Selectors.Pseudo.get(arguments[1]);
+				if (!xparser){
+					params.attributes.push([arguments[1], arguments[3] ? '=' : '', arguments[3]]);
+					break;
+				}
+				var pseudo = {'name': arguments[1], 'parser': xparser, 'argument': arguments[3]};
+				if (xparser.parser) pseudo.argument = (xparser.parser.apply) ? xparser.parser(pseudo.argument) : xparser.parser;
 				params.pseudos.push(pseudo);
 			break;
 			default: params.tag = bit;
@@ -234,15 +238,11 @@ Selectors.Filter = {
 		}
 		for (i = pseudos.length; i--; i){
 			var pseudo = pseudos[i];
-			if (pseudo.parser && pseudo.parser.filter){
-				var temp = {}, xparser = pseudo.parser, argument = pseudo.argument;
-				items = items.filter(function(el, i, array){
-					return xparser.filter(el, argument, i, array, temp);
-				});
-				temp = null;
-			} else {
-				items = Elements.filterByAttribute(items, pseudo.name, ($chk(pseudo.argument)) ? '=' : false, pseudo.argument, true);
-			}
+			var temp = {};
+			items = items.filter(function(el, i, array){
+				return pseudo.parser.filter(el, pseudo.argument, i, array, temp);
+			});
+			temp = null;
 		}
 		return items;
 	},
