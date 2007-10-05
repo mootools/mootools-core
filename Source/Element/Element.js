@@ -132,15 +132,17 @@ var IFrame = new Native({
 		IFrame.uid++;
 		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
 		var props = params.properties || {};
-		var iframe = $(params.iframe);
+		var iframe = $(params.iframe) || false;
 		var onload = props.onload || $empty;
 		delete props.onload;
 		props.id = props.name = props.id || props.name || iframe.id || iframe.name || 'IFrame_' + IFrame.uid;
 		((iframe = iframe || Element.create('iframe'))).set(props);
 		var onFrameLoad = function(){
 			iframe.window = iframe.contentWindow;
-			new Window(iframe.window);
-			new Document(iframe.window.document);
+			if (window.location.host == iframe.src.split('/')[2]) {
+				new Window(iframe.window);
+				new Document(iframe.window.document);
+			}
 			onload.call(iframe.window);
 		};
 		if (!window.frames[props.id]) iframe.addListener('load', onFrameLoad);
