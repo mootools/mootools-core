@@ -6,280 +6,210 @@ License:
 	MIT-style license.
 */
 
-describe('Class.Chain', {
+describe('Chain Class', {
 
-	chain: function(){
-		var ChainTest = new Class({
+	before_all: function(){
+		this.local.Chain = new Class({
+
 			Implements: Chain,
 
 			initialize: function(){
+				var self = this;
+				this.arr = [];
+
 				this.chain(function(){
-					return true;
+					self.arr.push(0);
+				}, function(){
+					self.arr.push(1);
+				}, function(){
+					self.arr.push(2);
 				});
 			}
-		});
 
-		var myChainTest = new ChainTest(), chains = myChainTest.$chain;
+		});
+	},
+
+	should_chain_a_function: function(){
+		var myChain = new this.local.Chain(), chains = myChain.$chain;
 
 		value_of(chains).should_not_be(undefined);
 		value_of(chains[0]).should_not_be(undefined);
-		value_of(chains[0]()).should_be_true();
+		chains[0]();
+		value_of(myChain.arr[0]).should_be(0);
+	},
+
+	should_call_and_remove_the_chained_function: function(){
+		var myChain = new this.local.Chain();
+		var firstFunction = myChain.$chain[0];
+		myChain.callChain();
+
+		(function(){
+			value_of(myChain.arr).should_have(1).items;
+			value_of(myChain.arr[0]).should_be(0);
+			value_of(myChain.$chain).should_have(2).items;
+			value_of(myChain.$chain.contains(firstFunction)).should_be_false();
+		}).delay(100);
+	},
+
+	should_clear_all_chained_functions: function(){
+		var myChain = new this.local.Chain();
+		var firstFunction = myChain.$chain[0];
+		myChain.clearChain();
+		myChain.callChain();
+
+		(function(){
+			value_of(myChain.$chain).should_have(0).items;
+			value_of(myChain.$chain.contains(firstFunction)).should_be_false();
+		}).delay(100);
 	}
 
 });
 
 
-describe('Class.Events', {
+describe('Events Class', {
 
-	addEvent: function(){
-		var AddEventTest = new Class({
+	before_all: function(){
+		this.local.EventsTest = new Class({
 			Implements: Events,
 
-			initialize: function(){
-				var called = 0;
-				var self = this;
-				var fn = function(){ return called++; };
+			called: 0,
 
-				this.addEvent('onFirst', fn);
-				this.addEvent('onFirst', fn);
-
-				this.addEvent('onSecond', fn, true);
-				this.addEvent('onSecond', function(){
-					return called++;
-				});
-			}
-		});
-
-		var myEventsTest = new AddEventTest(), events = myEventsTest.$events;
-
-		value_of(events).should_not_be(undefined);
-		value_of(events['onFirst']).should_not_be(undefined);
-		value_of(events['onFirst'][0]).should_not_be(undefined);
-		value_of(events['onFirst'][1]).should_be(undefined);
-
-		value_of(events['onSecond']).should_not_be(undefined);
-		value_of(events['onSecond'][0]).should_not_be(undefined);
-		value_of(events['onSecond']).should_have(2, "items");
-
-		value_of(events['onSecond'][0].internal).should_be_true();
-		value_of(events['onFirst'][0]()).should_be(0);
-		value_of(events['onSecond'][0]()).should_be(1);
-		value_of(events['onSecond'][1]()).should_be(2);
-	},
-
-	addEvents: function(){
-		var AddEventsTest = new Class({
-			Implements: Events,
-			initialize: function(){
-				var called = 0;
-				var self = this;
-				var fn = function(){ return called++; };
-
-				this.addEvents({
-					onFirst: fn,
-					onSecond: fn
-				});
-
-				this.addEvents({
-					onFirst: fn,
-					onSecond: function(){
-						return called++;
-					}
-				});
-			}
-		});
-
-		var myEventsTest = new AddEventsTest(), events = myEventsTest.$events;
-
-		value_of(events).should_not_be(undefined);
-		value_of(events['onFirst']).should_not_be(undefined);
-		value_of(events['onFirst'][0]).should_not_be(undefined);
-		value_of(events['onFirst'][1]).should_be(undefined);
-
-		value_of(events['onSecond']).should_not_be(undefined);
-		value_of(events['onSecond'][0]).should_not_be(undefined);
-		value_of(events['onSecond']).should_have(2, "items");
-
-		value_of(events['onFirst'][0]()).should_be(0);
-		value_of(events['onSecond'][0]()).should_be(1);
-		value_of(events['onSecond'][1]()).should_be(2);
-	},
-
-	fireEvent: function(){
-		var FireEventTest = new Class({
-			Implements: Events,
 			initialize: function(){
 				this.called = 0;
-				var self = this;
-				var fn = function(){ self.called++; };
-
-				this.addEvents({
-					onFirst: fn,
-					onSecond: fn
-				});
-
-				this.addEvent('onSecond', function(){
-					self.called++;
-				});
 			}
 		});
 
-		var firstEvent = new FireEventTest();
-		firstEvent.fireEvent('onFirst');
-
-		var allEvents = new FireEventTest();
-		allEvents.fireEvent('onFirst');
-		allEvents.fireEvent('onSecond');
-
-		value_of(firstEvent.called).should_be(1);
-		value_of(allEvents.called).should_be(3);
+		this.local.fn = function(){
+			return this.local.EventsTest.called++;
+		}
 	},
 
-	removeEvent: function(){
-		var fn;
-		var RemoveEventTest = new Class({
-			Implements: Events,
-			initialize: function(){
-				this.called = 0;
-				var self = this;
-				fn = function(){ self.called++; };
+	should_add_an_event: function(){
+		var myTest = new this.local.EventsTest();
+		myTest.addEvent('onEvent', this.local.fn);
 
-				this.addEvents({
-					'onFirst': fn,
-					'onSecond': fn
-				});
-
-				this.addEvent('onSecond', function(){
-					self.called++;
-				});
-			}
-		});
-
-		var firstRemove = new RemoveEventTest();
-		firstRemove.removeEvent('onFirst', fn);
-		firstRemove.fireEvent('onFirst');
-
-		var secondRemove = new RemoveEventTest();
-		secondRemove.removeEvent('onSecond', fn);
-		secondRemove.fireEvent('onFirst');
-		secondRemove.fireEvent('onSecond');
-
-		value_of(firstRemove.called).should_be(0);
-		value_of(secondRemove.called).should_be(2);
+		var events = myTest.$events;
+		var myEvent = events['onEvent'];
+		value_of(myEvent).should_not_be(undefined);
+		value_of(myEvent.contains(this.local.fn)).should_be_true();
 	},
 
-	removeEvents: function(){
-		var fn;
-		var RemoveEventsTest = new Class({
-			Implements: Events,
-			initialize: function(){
-				var self = this;
-				this.called = 0;
-				fn = function(){ self.called++; };
-
-				this.addEvents({
-					'onFirst': fn,
-					'onSecond': fn
-				});
-
-				this.addEvent('onSecond', function(){
-					self.called++;
-				});
-			}
+	should_add_multiple_events: function(){
+		var myTest = new this.local.EventsTest();
+		myTest.addEvents({
+			'onEvent1': this.local.fn,
+			'onEvent2': this.local.fn
 		});
 
-		var firstRemove = new RemoveEventsTest();
-		firstRemove.removeEvents('onFirst');
-		firstRemove.fireEvent('onFirst');
+		var events = myTest.$events;
+		var myEvent1 = events['onEvent1'];
+		value_of(myEvent1).should_not_be(undefined);
+		value_of(myEvent1.contains(this.local.fn)).should_be_true();
 
-		var secondRemove = new RemoveEventsTest();
-		secondRemove.removeEvents();
-		secondRemove.fireEvent('onFirst');
-		secondRemove.fireEvent('onSecond');
+		var myEvent2 = events['onEvent2'];
+		value_of(myEvent2).should_not_be(undefined);
+		value_of(myEvent2.contains(this.local.fn)).should_be_true();
+	},
 
+	should_add_an_internal_event: function(){
+		var myTest = new this.local.EventsTest();
+		myTest.addEvent('onInternal', this.local.fn, true);
 
-		value_of(firstRemove.called).should_be(0);
-		value_of(secondRemove.called).should_be(0);
+		var events = myTest.$events;
+		var myEvent = events['onInternal'];
+		value_of(myEvent).should_not_be(undefined);
+		value_of(myEvent.contains(this.local.fn)).should_be_true();
+		value_of(myEvent[0].internal).should_be_true();
+	},
 
-		value_of(firstRemove.$events['onFirst'][0]).should_be(undefined);
-		value_of(firstRemove.$events['onSecond']).should_not_be(undefined);
+	should_remove_a_specific_method_for_an_event: function(){
+		var myTest = new this.local.EventsTest();
+		var fn = function(){ return true; };
+		myTest.addEvent('onEvent', this.local.fn);
+		myTest.addEvent('onEvent', fn);
+		myTest.removeEvent('onEvent', this.local.fn);
 
-		value_of(secondRemove.$events['onFirst'][0]).should_be(undefined);
-		value_of(secondRemove.$events['onSecond'][0]).should_be(undefined);
+		var events = myTest.$events;
+		var myEvent = events['onEvent'];
+		value_of(myEvent).should_not_be(undefined);
+		value_of(myEvent.contains(fn)).should_be_true();
+	},
+
+	should_remove_an_event_and_its_methods: function(){
+		var myTest = new this.local.EventsTest();
+		var fn = function(){ return true; };
+		myTest.addEvent('onEvent', this.local.fn);
+		myTest.addEvent('onEvent', fn);
+		myTest.removeEvents('onEvent');
+
+		var events = myTest.$events;
+		value_of(events['onEvent'].length).should_be(0);
+	},
+
+	should_remove_all_events: function(){
+		var myTest = new this.local.EventsTest();
+		var fn = function(){ return true; };
+		myTest.addEvent('onEvent1', this.local.fn);
+		myTest.addEvent('onEvent2', fn);
+		myTest.removeEvents();
+
+		var events = myTest.$events;
+		value_of(events['onEvent1'].length).should_be(0);
+		value_of(events['onEvent2'].length).should_be(0);
 	}
 
 });
 
-describe('Class.Options', {
+describe('Options Class', {
 
-	setOptions: function(){
-		var TestSetOptions = new Class({
+	before_all: function(){
+		this.local.OptionsTest = new Class({
 			Implements: Options,
+
+			initialize: function(options){
+				this.setOptions(options);
+			}
+		});
+	},
+
+	should_set_options: function(){
+		var myTest = new this.local.OptionsTest({ a: 1, b: 2});
+		value_of(myTest.options).should_not_be(undefined);
+	},
+
+	should_override_default_options: function(){
+		this.local.OptionsTest.implement({
 			options: {
 				a: 1,
-				obj1: { b: 'one', c: 'two' },
-				obj2: { e: { f: 'five', g: 'six' }, h: true, i: [1,2,3] }
-			},
-			initialize: function(options){
-				this.setOptions(options);
+				b: 2
 			}
 		});
-
-		var NullInput = new TestSetOptions();
-		var MergedInput = new TestSetOptions({
-			a: 2,
-			b: 3,
-			obj1: { c: 'three', d: 'four' },
-			obj2: { e: { g: 'seven', h: 'eight' }, h: false, i: [2,3] }
-		});
-		
-		value_of(NullInput.options).should_not_be(undefined);
-		value_of(NullInput.options.a).should_be(1);
-		value_of(NullInput.options.obj1).should_be({ b: 'one', c: 'two' });
-		value_of(NullInput.options.obj2).should_be({ e: { f: 'five', g: 'six' }, h: true, i: [1,2,3] });
-
-		value_of(MergedInput.options).should_not_be(undefined);
-		value_of(MergedInput.options.a).should_be(2);
-		value_of(MergedInput.options.b).should_be(3);
-		value_of(MergedInput.options.obj1).should_be({ b: 'one', c: 'three', d: 'four' });
-		value_of(MergedInput.options.obj2).should_be({ e: { f: 'five', g: 'seven', h: 'eight' }, h: false, i: [2,3] });
+		var myTest = new this.local.OptionsTest({a: 3, b: 4});
+		value_of(myTest.options.a).should_be(3);
+		value_of(myTest.options.b).should_be(4);
 	},
 
-	setOptions_with_Events: function(){
-		var TestSetOptionsEvents = new Class({
-			Implements: [Events, Options],
+	should_add_events_in_the_options_object_if_class_has_implemented_events_class: function(){
+		this.local.OptionsTest.implement(new Events, {
 			options: {
-				onStart: $empty,
-				onEnd: function(){
+				onEvent1: function(){
 					return true;
+				},
+				onEvent2: function(){
+					return false;
 				}
-			},
-			initialize: function(options){
-				this.setOptions(options);
 			}
 		});
-		
-		var NullInput = new TestSetOptionsEvents();
-		var MergedInput = new TestSetOptionsEvents({
-			onStart: function(){
-				return 'started';
-			},
-			onComplete: function(){
-				return false;
-			},
-			onEnd: function(){
-				return 'ended';
+		var myTest = new this.local.OptionsTest({
+			onEvent3: function(){
+				return true;
 			}
 		});
-		
-		value_of(NullInput.options).should_not_be(undefined);
-		value_of(NullInput.$events['onEnd'][0]()).should_be_true();
-		value_of(NullInput.$events['onStart']).should_be(undefined);
-
-		value_of(MergedInput.options).should_not_be(undefined);
-		value_of(MergedInput.$events['onEnd'][0]()).should_be('ended');
-		value_of(MergedInput.$events['onStart'][0]()).should_be('started');
-		value_of(MergedInput.$events['onComplete'][0]()).should_be_false();
+		var events = myTest.$events;
+		value_of(events).should_not_be(undefined);
+		value_of(events['onEvent1'].length).should_be(1);
+		value_of(events['onEvent2'].length).should_be(1);
+		value_of(events['onEvent3'].length).should_be(1);
 	}
-	
+
 });

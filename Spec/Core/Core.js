@@ -6,53 +6,22 @@ License:
 	MIT-style license.
 */
 
-describe('$random', {
+describe('$chk', {
 
-	return_result_between_scope: function(){
-		var rand = $random(1, 3);
-		value_of((rand <= 3 && rand >= 1)).should_be_true();
-	}
-
-});
-
-describe('$try', {
-
-	return_function_result_when_successful: function(){
-		var k = $try(function(){
-			return 'success';
-		});
-
-		value_of(k).should_be('success');
+	return_false_on_false: function(){
+		value_of($chk(false)).should_be_false();
 	},
 
-	return_false_when_failed: function(){
-		var k = $try(function(){
-			return me_invented_this();
-		});
+	return_false_on_null: function(){
+		value_of($chk(null)).should_be_false();
+	},
 
-		value_of(k).should_be_false();
-	}
+	return_false_on_undefined: function(){
+		value_of($chk(undefined)).should_be_false();
+	},
 
-});
-
-describe('$extend', {
-
-	extend_objects: function(){
-		var ob1 = {a: 1, b: 2};
-		var ob2 = {b: 3, c: 4};
-		$extend(ob1, ob2);
-		value_of(ob1).should_be({a: 1, b: 3, c: 4});
-	}
-
-});
-
-describe('$merge', {
-
-	merge_with_3_objects: function(){
-		var ob1 = {a: {a: 1, b: 2, c: 3}, b: 2};
-		var ob2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
-		var ob3 = {a: {a: 3}, b: 3, c: false};
-		value_of($merge(ob1, ob2, ob3)).should_be({a: {a: 3, b: 8, c: 3, d:8}, b: 3, c: false});
+	return_true_on_0: function(){
+		value_of($chk(0)).should_be_true();
 	}
 
 });
@@ -65,6 +34,83 @@ describe('$clear', {
 
 		value_of($clear(timeout)).should_be_null();
 		value_of($clear(periodical)).should_be_null();
+	}
+
+});
+
+describe('$defined', {
+
+	return_true_on_false: function(){
+		value_of($defined(false)).should_be_true();
+	},
+
+	return_false_on_null: function(){
+		value_of($defined(null)).should_be_false();
+	},
+
+	return_false_on_undefined: function(){
+		value_of($defined(undefined)).should_be_false();
+	},
+
+	return_true_on_0: function(){
+		value_of($defined(0)).should_be_true();
+	}
+
+});
+
+describe('$extend', {
+
+	should_extend_two_objects: function(){
+		var ob1 = {a: 1, b: 2};
+		var ob2 = {b: 3, c: 4};
+		$extend(ob1, ob2);
+		value_of(ob1).should_be({a: 1, b: 3, c: 4});
+	},
+
+	should_extend_this_and_the_object: function(){
+		var fn = function(){};
+		fn.extend = $extend;
+		fn.extend({ newProperty: true });
+		value_of(fn.newProperty).should_be(true);
+	}
+
+});
+
+describe('$merge', {
+
+	merge_should_dereference: function(){
+		var obj = {a: 1, a: 2};
+		value_of($merge(obj)).should_not_be(obj);
+	},
+
+	merge_with_3_objects: function(){
+		var ob1 = {a: {a: 1, b: 2, c: 3}, b: 2};
+		var ob2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
+		var ob3 = {a: {a: 3}, b: 3, c: false};
+		value_of($merge(ob1, ob2, ob3)).should_be({a: {a: 3, b: 8, c: 3, d:8}, b: 3, c: false});
+	}
+
+});
+
+describe('$pick', {
+
+	choose_false_out_of_null_and_undefined: function(){
+		var picked1 = $pick(null, undefined, false, [1,2,3], {});
+		value_of(picked1).should_be_false();
+	},
+
+	choose_the_first_defined_value: function(){
+		var picked1 = $pick(null, undefined, null, [1,2,3], {});
+		value_of(picked1).should_be([1,2,3]);
+	}
+
+});
+
+describe('$random', {
+
+	return_result_between_scope: function(){
+		var rand = $random(1, 3);
+		value_of((rand <= 3 && rand >= 1)).should_be_true();
 	}
 
 });
@@ -86,56 +132,30 @@ describe('$splat', {
 
 });
 
-describe('$pick', {
+describe('$time', {
 
-	choose_false_out_of_null_and_undefined: function(){
-		var picked1 = $pick(null, undefined, false, [1,2,3], {});
-		value_of(picked1).should_be_false();
-	},
-
-	choose_the_first_defined_value: function(){
-		var picked1 = $pick(null, undefined, null, [1,2,3], {});
-		value_of(picked1).should_be([1,2,3]);
+	return_a_timestamp: function(){
+		value_of($type($time())).should_be('number');
 	}
 
 });
 
-describe('$chk', {
+describe('$try', {
 
-	return_false_on_false: function(){
-		value_of($chk(false)).should_be_false();
+	return_function_result_when_successful: function(){
+		var k = $try(function(){
+			return 'success';
+		});
+
+		value_of(k).should_be('success');
 	},
 
-	return_false_on_null: function(){
-		value_of($chk(null)).should_be_false();
-	},
+	return_false_when_failed: function(){
+		var k = $try(function(){
+			return me_invented_this();
+		});
 
-	return_false_on_undefined: function(){
-		value_of($chk(undefined)).should_be_false();
-	},
-
-	return_true_on_0: function(){
-		value_of($chk(0)).should_be_true();
-	}
-
-});
-
-describe('$defined', {
-
-	return_true_on_false: function(){
-		value_of($defined(false)).should_be_true();
-	},
-
-	return_false_on_null: function(){
-		value_of($defined(null)).should_be_false();
-	},
-
-	return_false_on_undefined: function(){
-		value_of($defined(undefined)).should_be_false();
-	},
-
-	return_true_on_0: function(){
-		value_of($defined(0)).should_be_true();
+		value_of(k).should_be_false();
 	}
 
 });

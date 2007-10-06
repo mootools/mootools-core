@@ -22,7 +22,7 @@ var MooTools = {
 };
 
 var Native = function(options){
-	
+
 	var name = options.name || false;
 	var initialize = options.initialize || false;
 	var generics = options.generics || true;
@@ -30,7 +30,7 @@ var Native = function(options){
 	var legacy = (name && options.legacy) ? window[name] : false;
 	var afterImplement = options.afterImplement || function(){};
 	var object = initialize || legacy;
-	
+
 	object.constructor = Native;
 	object.$family = {name: 'native'};
 	if (legacy && initialize) object.prototype = legacy.prototype;
@@ -40,7 +40,7 @@ var Native = function(options){
 		object.prototype.$family = {name: family};
 		Native.typize(object, family);
 	}
-	
+
 	object.implement = function(properties, force){
 		for (var property in properties){
 			if (!browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
@@ -48,13 +48,13 @@ var Native = function(options){
 			afterImplement.call(this, property, properties[property]);
 		}
 	};
-	
+
 	object.alias = function(existing, property, force){
 		if (!browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
 		if (generics && !this[property]) this[property] = this[existing];
 		afterImplement.call(this, property, this[property]);
 	};
-	
+
 	return object;
 
 };
@@ -465,7 +465,7 @@ var Hash = new Native({
 			case 'object': for (var p in object){
 				if (!this.hasOwnProperty(p)) this[p] = object[p];
 			}
-				
+
 		}
 		return this;
 	}
@@ -473,7 +473,7 @@ var Hash = new Native({
 });
 
 Hash.implement({
-	
+
 	/*
 	Method: each
 		Calls a function for each key-value pair in the object.
@@ -502,7 +502,7 @@ Hash.implement({
 			}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
 		[/javascript]
 	*/
-	
+
 	forEach: function(fn, bind){
 		for (var key in this){
 			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
@@ -626,14 +626,14 @@ Arguments:
 			object - (mixed) The actual array/object.
 
 Examples:
-	Array example:
+	Array Example:
 	[javascript]
 		$each(['Sun','Mon','Tue'], function(day, index){
 			alert('name:' + day + ', index: ' + index);
 		}); //alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
 	[/javascript]
 
-	Object example:
+	Object Example:
 	[javascript]
 		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 			alert("the " + key + " day of the week is " + value);
@@ -702,7 +702,7 @@ var Window = new Native({
 		}
 		return $extend(win, this);
 	},
-	
+
 	afterImplement: function(property, value){
 		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
 	}
@@ -726,7 +726,7 @@ var Document = new Native({
 		});
 		return $extend(doc, this);
 	},
-	
+
 	afterImplement: function(property, value){
 		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
 	}

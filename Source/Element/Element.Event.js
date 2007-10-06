@@ -47,7 +47,7 @@ Note:
 */
 
 var Event = new Native({
-	
+
 	name: 'Event',
 
 	initialize: function(event, win){
@@ -87,7 +87,7 @@ var Event = new Native({
 				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
 			}
-			if (this.fixRelatedTarget.create({'bind': this, 'attempt': Client.Engine.gecko})() === false) this.relatedTarget = this.target;
+			if (Client.Engine.gecko && this.fixRelatedTarget.attempt([], this) === false) this.relatedTarget = this.target;
 		}
 
 		return this;
@@ -400,7 +400,7 @@ Native.implement([Element, Window, Document], {
 
 	See Also:
 		<Element.addEvent>
-		
+
 	Note:
 		This method is also attached to Document and Window.
 	*/
@@ -444,7 +444,7 @@ Native.implement([Element, Window, Document], {
 
 	See Also:
 		<Element.removeEvent>
-		
+
 	Note:
 		This method is also attached to Document and Window.
 	*/
@@ -514,7 +514,7 @@ Native.implement([Element, Window, Document], {
 			var myElement = $('myElement');
 			var myClone = myElement.clone().cloneEvents(myElement); //clones the element and its events
 		[/javascript]
-		
+
 	Note:
 		This method is also attached to Document and Window.
 	*/
@@ -547,7 +547,7 @@ Element.$events = {
 /*
 Hash: Element.Events
 	You can add additional custom events by adding properties (objects) to the Element.Events Hash
-	
+
 The Element.Events.yourproperty (object) can have:
 	base - (string, optional) the base event the custom event will listen to. Its not optional if condition is set.
 	condition - (function, optional)
@@ -559,9 +559,9 @@ The Element.Events.yourproperty (object) can have:
 Example:
 	[javascript]
 		Element.Events.shiftclick = {
-			
+
 			base: 'click', //we set a base type
-			
+
 			condition: function(event){ //and a function to perform additional checks.
 				return (event.shift == true); //this means the event is free to fire
 			}
@@ -599,9 +599,9 @@ Element.Events = new Hash({
 	*/
 
 	'mouseenter': {
-		
+
 		base: 'mouseover',
-		
+
 		condition: function(event){
 			var related = event.relatedTarget;
 			return (related && related != this && !this.hasChild(related));
@@ -624,16 +624,16 @@ Element.Events = new Hash({
 	*/
 
 	'mouseleave': {
-		
+
 		base: 'mouseout',
-		
+
 		condition: function(event){
 			var related = event.relatedTarget;
 			return (related && related != this && !this.hasChild(related));
 		}
-	
+
 	},
-	
+
 	/*
 	Event: mousewheel
 		This event fires when the mouse wheel is rotated;
@@ -642,7 +642,7 @@ Element.Events = new Hash({
 		[javascript]
 			$('myElement').addEvent('mousewheel', myFunction);
 		[/javascript]
-		
+
 	Note:
 		this custom event just redirects DOMMouseScroll (mozilla) to mousewheel (opera, internet explorer), making it crossbrowser.
 
@@ -651,9 +651,9 @@ Element.Events = new Hash({
 	*/
 
 	'mousewheel': {
-		
+
 		base: (Client.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
-		
+
 	}
 
 });

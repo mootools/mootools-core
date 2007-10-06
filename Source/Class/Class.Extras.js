@@ -281,7 +281,7 @@ var Events = new Class({
 
 	Arguments:
 		type - (string) The type of event (e.g. 'onComplete').
-		fn   - (function) The function to remove. Note: this argument is not optional. You must pass the exact function that was added as an event in order to remove it.
+		fn   - (function) The function to remove.
 
 	Returns:
 		(class) This Class instance.
@@ -291,7 +291,7 @@ var Events = new Class({
 	*/
 
 	removeEvent: function(type, fn){
-		if (!this.$events) return this; 
+		if (!this.$events) return this;
 		if (this.$events && this.$events[type]){
 			if (!fn.internal) this.$events[type].remove(fn);
 		}

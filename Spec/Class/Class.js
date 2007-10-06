@@ -8,26 +8,25 @@ License:
 
 describe('Class', {
 
-	initialize: function(){
-		var Animal = new Class({
+	before_all: function(){
+		this.local.Animal = new Class({
+
 			initialized: false,
 
-			initialize: function(){
+			initialize: function(name){
 				this.initialized = true;
+				this.name = name;
+			},
+
+			sleep: function(){
+				return 'zzzz';
 			}
+
 		});
 
-		var init = new Animal();
-		var noInit = new Animal($empty);
-
-		value_of(init.initialized).should_be_true();
-		value_of(noInit.initialized).should_be_false();
-	},
-
-	Extends: function(){
-		var Animal = new Class({
-			initialize: function(name){
-				this.name = name;
+		this.local.Actions = new Class({
+			eat: function(){
+				return 'yum!';
 			},
 
 			sleep: function(){
@@ -35,8 +34,34 @@ describe('Class', {
 			}
 		});
 
+		this.local.Attributes = new Class({
+			color: function(){
+				return 'green';
+			},
+
+			size: function(){
+				return 'small';
+			}
+		});
+	},
+
+	should_be_a_class: function(){
+		value_of(Class.type(this.local.Animal)).should_be_true();
+	},
+
+	should_initialize: function(){
+		var init = new this.local.Animal();
+		value_of(init.initialized).should_be_true();
+	},
+
+	should_not_initialize_if_passing_the_empty_function: function(){
+		var noInit = new this.local.Animal($empty);
+		value_of(noInit.initialized).should_be_false();
+	},
+
+	should_extend_another_class: function(){
 		var Cat = new Class({
-			Extends: Animal,
+			Extends: this.local.Animal,
 
 			initialize: function(name, color){
 				arguments.callee.parent(name);
@@ -49,145 +74,61 @@ describe('Class', {
 			}
 		});
 
-		var Lion = new Class({
-			Extends: Cat,
-
-			initialize: function(name, type){
-				arguments.callee.parent(name, 'gold');
-				this.type = type;
-				this.ferocious = true;
-			},
-
-			speak: function(){
-				return 'rarr';
-			},
-
-			sleep: function(){
-				return 'grrr';
-			}
-		});
-
-		var myAnimal = new Animal('fuzzy');
 		var myCat = new Cat('furry', 'green');
-		var myLion = new Lion('fluffy', 'mountain');
-
-		value_of(myAnimal.name).should_be('fuzzy');
-		value_of(myAnimal.sleep()).should_be('zzzz');
-
 		value_of(myCat.name).should_be('furry');
 		value_of(myCat.color).should_be('green');
 		value_of(myCat.ferocious).should_be_false();
 		value_of(myCat.sleep()).should_be('zzzz');
 		value_of(myCat.speak()).should_be('miao');
-
-		value_of(myLion.name).should_be('fluffy');
-		value_of(myLion.color).should_be('gold');
-		value_of(myLion.type).should_be('mountain');
-		value_of(myLion.ferocious).should_be_true();
-		value_of(myLion.sleep()).should_be('grrr');
-		value_of(myLion.speak()).should_be('rarr');
 	},
 
-	Implement: function(){
-		var Actions = new Class({
-			eat: function(){
-				return 'yum!';
-			},
-
-			sleep: function(){
-				return 'zzzz';
-			}
-		});
-
-		var Attributes = new Class({
-			color: function(){
-				return 'green';
-			},
-
-			size: function(){
-				return 'small';
-			}			
-		});
-
-		var Animal = new Class({
-			Implements: Actions,
-
-			initialize: function(name){
-				this.name = name;
-			}
-		});
-
+	should_implement_a_class: function(){
 		var Cat = new Class({
-			Implements: [Actions, Attributes],
 
-			initialize: function(name){
-				this.name = name;
-			}
+			Implements: this.local.Animal
+
 		});
 
-		var myAnimal = new Animal('fuzzy');
-		var myCat = new Cat('furry');
+		var myCat = new Cat();
+		value_of(myCat.sleep()).should_be('zzzz');
+	},
+
+	should_implement_an_array_of_classes: function(){
+		var Cat = new Class({
+
+			Extends: this.local.Animal,
+
+			Implements: [this.local.Actions, this.local.Attributes]
+
+		});
+
+		var myCat = new Cat();
+
+		value_of(myCat.initialized).should_be_true();
+		value_of(myCat.eat()).should_be('yum!');
+		value_of(myCat.color()).should_be('green');
+	},
+
+	should_implement_an_object_after_declaration: function(){
+		this.local.Animal.implement(new this.local.Actions);
+
+		var myAnimal = new this.local.Animal('fuzzy');
 
 		value_of(myAnimal.name).should_be('fuzzy');
 		value_of(myAnimal.eat()).should_be('yum!');
 		value_of(myAnimal.sleep()).should_be('zzzz');
-
-		value_of(myCat.name).should_be('furry');
-		value_of(myCat.eat()).should_be('yum!');
-		value_of(myCat.sleep()).should_be('zzzz');
-		value_of(myCat.color()).should_be('green');
-		value_of(myCat.size()).should_be('small');
 	},
 
-	Implement_after_declaration: function(){
-		var Actions = new Class({
-			eat: function(){
-				return 'yum!';
-			},
+	should_implement_many_objects_after_declaration: function(){
+		this.local.Animal.implement(new this.local.Actions, new this.local.Attributes);
 
-			sleep: function(){
-				return 'zzzz';
-			}
-		});
-
-		var Attributes = new Class({
-			color: function(){
-				return 'green';
-			},
-
-			size: function(){
-				return 'small';
-			}			
-		});
-
-		var Animal = new Class({
-			initialize: function(name){
-				this.name = name;
-			}
-		});
-
-		Animal.implement(new Actions);
-
-		var Cat = new Class({
-			initialize: function(name){
-				this.name = name;
-			}
-		});
-
-		Cat.implement(new Actions, new Attributes);
-
-		var myAnimal = new Animal('fuzzy');
-		var myCat = new Cat('furry');
+		var myAnimal = new this.local.Animal('fuzzy');
 
 		value_of(myAnimal.name).should_be('fuzzy');
 		value_of(myAnimal.eat()).should_be('yum!');
 		value_of(myAnimal.sleep()).should_be('zzzz');
-
-		value_of(myCat.name).should_be('furry');
-		value_of(myCat.eat()).should_be('yum!');
-		value_of(myCat.sleep()).should_be('zzzz');
-		value_of(myCat.color()).should_be('green');
-		value_of(myCat.size()).should_be('small');
+		value_of(myAnimal.color()).should_be('green');
+		value_of(myAnimal.size()).should_be('small');
 	}
 
 });
