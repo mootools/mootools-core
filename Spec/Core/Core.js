@@ -80,7 +80,8 @@ describe('$merge', {
 
 	merge_should_dereference: function(){
 		var obj = {a: 1, a: 2};
-		value_of($merge(obj)).should_not_be(obj);
+		var obj2 = $merge(obj);
+		value_of(obj === obj2).should_be_false();
 	},
 
 	merge_with_3_objects: function(){
@@ -307,6 +308,80 @@ describe('Native', {
 
 	type_should_be_native: function(){
 		value_of($type(this.local.Car)).should_be('native');
+	}
+
+});
+
+describe('$A', {
+
+	should_return_array_copy_for_array: function(){
+		value_of($A([1,2,3])).should_be([1,2,3]);
+	},
+
+	should_return_array_for_elements_collection: function(){
+		var div1 = document.createElement('div');
+		var div2 = document.createElement('div');
+		var div3 = document.createElement('div');
+
+		div1.appendChild(div2);
+		div1.appendChild(div3);
+
+		value_of($A(div1.getElementsByTagName('*'))).should_be([div2, div3]);
+	},
+
+	should_return_array_for_arguments: function(){
+		var fnTest = function(){
+			return $A(arguments);
+		};
+		var arr = fnTest(1,2,3);
+		value_of(arr).should_be([1,2,3]);
+	}
+
+});
+
+describe('Array', {
+
+	forEach: function(){
+		var oldArr = [1, 2, 3, false, null, 0];
+		var newArr = [];
+		oldArr.each(function(item, i){
+			newArr[i] = item;
+		});
+
+		value_of(newArr).should_be(oldArr);
+	}
+	
+});
+
+describe('$each', {
+
+	$each_on_arguments: function(){
+		var daysArr = [];
+		(function(){
+			$each(arguments, function(value, key){
+				daysArr[key] = value;
+			});
+		})('Sun','Mon','Tue');
+
+		value_of(daysArr).should_be(['Sun','Mon','Tue']);
+	},
+
+	$each_on_array: function(){
+		var daysArr = [];
+		$each(['Sun','Mon','Tue'], function(value, key){
+			daysArr[key] = value;
+		});
+
+		value_of(daysArr).should_be(['Sun','Mon','Tue']);
+	},
+
+	$each_on_object: function(){
+		var daysObj = {};
+		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+			daysObj[key] = value;
+		});
+
+		value_of(daysObj).should_be({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
 	}
 
 });
