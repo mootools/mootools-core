@@ -60,7 +60,8 @@ Function.implement({
 		var self = this;
 		options = options || {};
 		return function(event){
-			var args = $defined(options.arguments) ? $splat(options.arguments) : arguments;
+			var args = options.arguments;
+			args = $defined(args) ? $splat(options.arguments) : Array.slice(arguments, (options.event) ? 1 : 0);
 			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);

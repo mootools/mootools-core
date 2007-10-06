@@ -7,19 +7,19 @@ License:
 */
 
 describe('Array', {
-	
+
 	before_all: function(){
 		this.local.array = [1,2,3,0,0,0];
-		
+
 		this.local.comparator = function(item){
 			return Number.type(item);
 		};
-		
+
 		this.local.adder = function(a, b){
 			return a + b;
 		}
 	},
-	
+
 	should_return_a_filtered_array: function(){
 		var arr = this.local.array.concat([false, null, 4]).filter(this.local.comparator);
 		value_of(arr).should_be(this.local.array.concat(4));
@@ -37,7 +37,7 @@ describe('Array', {
 		var every = this.local.array.every(this.local.comparator);
 		value_of(every).should_be_true();
 	},
-	
+
 	every_should_return_false_if_at_least_one_item_does_not_match: function(){
 		var every = ['1',2,3,0].every(this.local.comparator);
 		value_of(every).should_be_false();
@@ -47,8 +47,8 @@ describe('Array', {
 		var some = this.local.array.map(String).some(this.local.comparator);
 		value_of(some).should_be_false();
 	},
-	
-	some_should_return_true_if_at_least_one_item_matches: function(){	
+
+	some_should_return_true_if_at_least_one_item_matches: function(){
 		var some = ['1',2,3,0].some(this.local.comparator);
 		value_of(some).should_be_true();
 	},
@@ -56,7 +56,7 @@ describe('Array', {
 	indexOf_should_return_the_index_of_an_item: function(){
 		value_of(this.local.array.indexOf(0)).should_be(3);
 	},
-	
+
 	'indexOf should return -1 if the item index of the item is not found': function(){
 		value_of(this.local.array.indexOf('not found')).should_be(-1);
 	},
@@ -64,7 +64,7 @@ describe('Array', {
 	should_reduce_an_array_to_single_value: function(){
 		value_of(this.local.array.reduce(this.local.adder)).should_be(6);
 	},
-	
+
 	should_reduce_an_array_to_a_single_value_with_an_initial_value: function(){
 		var reduction = ['answer', 'is', 42].reduce(function(a, b) {
 			return a.concat(' ', b);
@@ -84,9 +84,9 @@ describe('Array', {
 	should_return_true_if_the_array_contains_an_item: function(){
 		value_of(this.local.array.contains(0)).should_be_true();
 	},
-	
+
 	should_return_false_if_the_array_does_not_contain_an_item: function(){
-		value_of(this.local.array.contains('not found')).should_be_false();	
+		value_of(this.local.array.contains('not found')).should_be_false();
 	},
 
 	should_associate_an_array_with_an_array: function(){
@@ -103,7 +103,7 @@ describe('Array', {
 			myString: String.type,
 			myBoolean: $defined
 		});
-		
+
 		value_of(assoc2).should_be({
 			myNumber: 100,
 			myElement: el,
