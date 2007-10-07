@@ -114,7 +114,7 @@ describe('Events Class', {
 	'should add an internal event': function(){
 		var myTest = new this.local.EventsTest();
 		myTest.addEvent('onInternal', this.local.fn, true);
-
+		console.log(myTest.$events);
 		var events = myTest.$events;
 		var myEvent = events['onInternal'];
 		value_of(myEvent).should_not_be(undefined);
@@ -138,24 +138,26 @@ describe('Events Class', {
 	'should remove an event and its methods': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent('onEvent', this.local.fn);
-		myTest.addEvent('onEvent', fn);
-		myTest.removeEvents('onEvent');
+		var fn2 = function() { return this.local.EventsTest.called++; };
+		myTest.addEvent('onEventRemove', fn);
+		myTest.addEvent('onEventRemove', fn2);
+		myTest.removeEvents('onEventRemove');
 
 		var events = myTest.$events;
-		value_of(events['onEvent'].length).should_be(0);
+		value_of(events['onEventRemove'].length).should_be(0);
 	},
 
 	'should remove all events': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent('onEvent1', this.local.fn);
-		myTest.addEvent('onEvent2', fn);
+		var fn2 = function() { return this.local.EventsTest.called++; };
+		myTest.addEvent('onEventRemove1', fn);
+		myTest.addEvent('onEventRemove2', fn2);
 		myTest.removeEvents();
 
 		var events = myTest.$events;
-		value_of(events['onEvent1'].length).should_be(0);
-		value_of(events['onEvent2'].length).should_be(0);
+		value_of(events['onEventRemove1'].length).should_be(0);
+		value_of(events['onEventRemove2'].length).should_be(0);
 	}
 
 });
