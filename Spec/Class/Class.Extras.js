@@ -114,7 +114,7 @@ describe('Events Class', {
 	'should add an internal event': function(){
 		var myTest = new this.local.EventsTest();
 		myTest.addEvent('onInternal', this.local.fn, true);
-		console.log(myTest.$events);
+
 		var events = myTest.$events;
 		var myEvent = events['onInternal'];
 		value_of(myEvent).should_not_be(undefined);
