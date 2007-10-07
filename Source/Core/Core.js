@@ -28,7 +28,7 @@ var Native = function(options){
 	var generics = options.generics || true;
 	var browser = options.browser || false;
 	var legacy = (name && options.legacy) ? window[name] : false;
-	var afterImplement = options.afterImplement || $empty;
+	var afterImplement = options.afterImplement || function(){};
 	var object = initialize || legacy;
 
 	object.constructor = Native;
@@ -64,7 +64,7 @@ Native.implement = function(objects, properties){
 };
 
 Native.genericize = function(object, property){
-	if (!object[property] && Function.type(object.prototype[property])) object[property] = function(){
+	if (!object[property] && typeof object.prototype[property] == 'function') object[property] = function(){
 		var args = Array.prototype.slice.call(arguments);
 		return object.prototype[property].apply(args.shift(), args);
 	};
