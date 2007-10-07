@@ -60,10 +60,10 @@ Note:
 See Also:
 	<Drag>, <$$>, <Element.addEvents>
 
-	Demos:
-		Drag.Cart - <http://demos.mootools.net/Drag.Cart>
-		Drag.Absolutely - <http://demos.mootools.net/Drag.Absolutely>
-		DragDrop - <http://demos.mootools.net/DragDrop>
+Demos:
+	Drag.Cart - <http://demos.mootools.net/Drag.Cart>
+	Drag.Absolutely - <http://demos.mootools.net/Drag.Absolutely>
+	DragDrop - <http://demos.mootools.net/DragDrop>
 
 */
 
@@ -135,7 +135,8 @@ Drag.Move = new Class({
 
 	/*
 	Method: stop
-		Checks if the Element is above a droppable and fires the drop event. Else, fires the 'emptydrop' event that is attached to this Element. Lastly, calls <Drag.stop> method.
+		Checks if the Element is above a droppable and fires the drop event. Else, fires the 'emptydrop' event that is attached to this Element.
+		Lastly, calls <Drag.stop> method.
 
 	Syntax:
 		>myMove.stop();

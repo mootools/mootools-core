@@ -32,8 +32,8 @@ Selectors.Pseudo.enabled = {
 		return '[not(@disabled)]';
 	},
 
-	filter: function(el){
-		return !(el.disabled);
+	filter: function(){
+		return !(this.disabled);
 	}
 };
 
@@ -56,8 +56,8 @@ Selectors.Pseudo.empty = {
 		return '[not(node())]';
 	},
 
-	filter: function(el){
-		return !(el.innerText || el.textContent || '').length;
+	filter: function(){
+		return !(this.innerText || this.textContent || '').length;
 	}
 
 };
@@ -84,9 +84,9 @@ Selectors.Pseudo.contains = {
 		return '[contains(text(), "' + argument + '")]';
 	},
 
-	filter: function(el, argument){
-		for (var i = el.childNodes.length; i--; i){
-			var child = el.childNodes[i];
+	filter: function(argument){
+		for (var i = this.childNodes.length; i--; i){
+			var child = this.childNodes[i];
 			if (child.nodeName && child.nodeType == 3 && child.nodeValue.contains(argument)) return true;
 		}
 		return false;
@@ -137,7 +137,7 @@ Usage:
 Selectors.Pseudo.nth = {
 
 	parser: function(argument){
-		argument = (argument) ? argument.match(/^([+-]?\d*)?([nodev]+)?([+-]?\d*)?$/) : [null, 1, 'n', 0];
+		argument = (argument) ? argument.match(/^([+-]?\d*)?([devon]+)?([+-]?\d*)?$/) : [null, 1, 'n', 0];
 		if (!argument) return false;
 		var inta = parseInt(argument[1]);
 		var a = ($chk(inta)) ? inta : 1;
@@ -166,29 +166,45 @@ Selectors.Pseudo.nth = {
 		}
 	},
 
-	filter: function(el, argument, i, all, temp){
-		if (i == 0) temp.parents = [];
-		var parent = el.parentNode;
-		if (!parent.$children){
-			temp.parents.push(parent);
-			parent.$children = parent.$children || Array.filter(parent.childNodes, function(child){
-				return (child.nodeName && child.nodeType == 1);
-			});
-		}
-		var include = false;
+	filter: function(argument, index, all){
+		var count = 0, el = this;
 		switch (argument.special){
-			case 'n': if (parent.$children.indexOf(el) % argument.a == argument.b) include = true; break;
-			case 'last': if (parent.$children.getLast() == el) include = true; break;
-			case 'only': if (parent.$children.length == 1) include = true; break;
-			case 'index': if (parent.$children[argument.a] == el) include = true;
+			case 'n':
+				Selectors.cleanup = Selectors.cleanup || [];
+				if (!this._pos){
+					var children = this.parentNode.childNodes;
+					for (var i = 0, l = children.length; i < l; i++){
+						var child = children[i];
+						if (child._pos) continue;
+						if (child.nodeType == 1){
+							Selectors.cleanup.push(child);
+							child._pos = {i: ++count};
+						}
+					}
+				}
+				return ((this._pos.i + 1) % argument.a == argument.b);
+			case 'last':
+				while ((el = el.nextSibling)){
+					if (el.nodeType == 1) return false;
+				}
+				return true;
+			case 'only':
+				var prev = el;
+				while((prev = prev.previousSibling)){
+					if (prev.nodeType == 1) return false;
+				}
+				var next = el;
+				while ((next = next.nextSibling)){
+					if (next.nodeType == 1) return false;
+				}
+				return true;
+			case 'index':
+				while ((el = el.previousSibling)){
+					if (el.nodeType == 1 && ++count > argument.a) return false;
+				}
+				return true;
 		}
-		if (i == all.length - 1){
-			for (var j = temp.parents.length; j--;){
-				temp.parents[j].$children = null;
-				if (Client.Engine.trident) temp.parents[j].removeAttribute('$children');
-			}
-		}
-		return include;
+		return false;
 	}
 
 };
@@ -210,9 +226,11 @@ Selectors.Pseudo.extend({
 	*/
 
 	'even': {
-		'parser': {'a': 2, 'b': 1, 'special': 'n'},
-		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.filter
+		parser: function(){
+			return {'a': 2, 'b': 1, 'special': 'n'};
+		},
+		xpath: Selectors.Pseudo.nth.xpath,
+		filter: Selectors.Pseudo.nth.filter
 	},
 
 	/*
@@ -230,9 +248,11 @@ Selectors.Pseudo.extend({
 	*/
 
 	'odd': {
-		'parser': {'a': 2, 'b': 0, 'special': 'n'},
-		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.filter
+		parser: function(){
+			return {'a': 2, 'b': 0, 'special': 'n'};
+		},
+		xpath: Selectors.Pseudo.nth.xpath,
+		filter: Selectors.Pseudo.nth.filter
 	},
 
 	/*
@@ -250,9 +270,11 @@ Selectors.Pseudo.extend({
 	*/
 
 	'first': {
-		'parser': {'a': 0, 'special': 'index'},
-		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.filter
+		parser: function(){
+			return {'a': 0, 'special': 'index'};
+		},
+		xpath: Selectors.Pseudo.nth.xpath,
+		filter: Selectors.Pseudo.nth.filter
 	},
 
 	/*
@@ -270,9 +292,11 @@ Selectors.Pseudo.extend({
 	*/
 
 	'last': {
-		'parser': {'special': 'last'},
-		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.filter
+		parser: function(){
+			return {'special': 'last'};
+		},
+		xpath: Selectors.Pseudo.nth.xpath,
+		filter: Selectors.Pseudo.nth.filter
 	},
 
 	/*
@@ -290,9 +314,11 @@ Selectors.Pseudo.extend({
 	*/
 
 	'only': {
-		'parser': {'special': 'only'},
-		'xpath': Selectors.Pseudo.nth.xpath,
-		'filter': Selectors.Pseudo.nth.filter
+		parser: function(){
+			return {'special': 'only'};
+		},
+		xpath: Selectors.Pseudo.nth.xpath,
+		filter: Selectors.Pseudo.nth.filter
 	}
 
 });

@@ -98,6 +98,8 @@ Element.Construct = new Hash({
 /*
 Native: IFrame
 	Custom Native to create and easily work with IFrames.
+	If the IFrame is from the same domain as the "host", its document and window will be extended with MooTools functionalities,
+	allowing you do fully use MooTools within iframes.
 */
 
 /*
@@ -116,10 +118,10 @@ Arguments:
 		onload - (function, optional) the function to be executed when the iframe loads, or, if already loaded, when new IFrame is called.
 		Its bound to the iframe window.
 		Also accepts every property/object accepted by <Element.set>.
-		
-		
+	
 Note:
-	if the iframe already exists, and it has different id/name, the name will be made the same as the id.
+	If the iframe already exists, and it has different id/name, the name will be made the same as the id.
+	If the frame is from a different domain, its window and document will not be extended with MooTools methods.
 */
 
 var IFrame = new Native({
@@ -135,15 +137,19 @@ var IFrame = new Native({
 		var iframe = $(params.iframe) || false;
 		var onload = props.onload || $empty;
 		delete props.onload;
-		props.id = props.name = props.id || props.name || iframe.id || iframe.name || 'IFrame_' + IFrame.uid;
+		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + IFrame.uid);
 		((iframe = iframe || Element.create('iframe'))).set(props);
 		var onFrameLoad = function(){
-			iframe.window = iframe.contentWindow;
-			if (window.location.host == iframe.src.split('/')[2]) {
+			var host = $try(function(){
+				return iframe.contentWindow.location.host;
+			});
+			if (host && host == window.location.host){
+				iframe.window = iframe.contentWindow;
+				iframe.document = iframe.window.document;
 				new Window(iframe.window);
-				new Document(iframe.window.document);
+				new Document(iframe.document);
 			}
-			onload.call(iframe.window);
+			onload.call(iframe.contentWindow);
 		};
 		if (!window.frames[props.id]) iframe.addListener('load', onFrameLoad);
 		else onFrameLoad();
@@ -195,10 +201,11 @@ See Also:
 
 var Elements = new Native({
 
-	initialize: function(elements, nocheck){
+	initialize: function(elements, option){
 		elements = elements || [];
 		var length = elements.length;
-		if (nocheck || !length) return $extend(elements, this);
+		if (option == 'cash') elements = elements.map($);
+		if (option || !length) return $extend(elements, this);
 		var uniques = {};
 		var returned = [];
 		for (var i = 0; i < length; i++){
@@ -300,6 +307,7 @@ Window.implement({
 	*/
 
 	$$: function(){
+		if (arguments.length == 1 && $type(arguments[0]) == 'string') return this.document.getElements(arguments[0]);
 		var elements = [];
 		for (var i = 0, j = arguments.length; i < j; i++){
 			var selector = arguments[i];
@@ -1430,7 +1438,8 @@ Element.implement({
 		if (!$chk(value)) return this.removeProperty(attribute);
 		var property = Element.Attributes.Properties[attribute];
 		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
-		(property) ? this[property] = value : this.setAttribute(attribute, value);
+		if (property) this[property] = value;
+		this.setAttribute(attribute, value);
 		return this;
 	},
 
@@ -1740,17 +1749,16 @@ Native.implement([Element, Window, Document], {
 });
 
 Element.Attributes = {
-	Properties: {},
+	Properties: {
+		'accesskey': 'accessKey', 'cellpadding': 'cellPadding', 'cellspacing': 'cellSpacing', 'colspan': 'colSpan',
+		'class': 'className', 'for': 'htmlFor', 'frameborder': 'frameBorder', 'maxlength': 'maxLength', 'readonly': 'readOnly',
+		'rowspan': 'rowSpan', 'tabindex': 'tabIndex', 'usemap': 'useMap', 'value': 'value'
+	},
 	Booleans: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer']
 };
 
 Element.Attributes.Booleans = Element.Attributes.Booleans.associate(Element.Attributes.Booleans);
-
-if (Client.Engine.trident) Element.Attributes.Properties = Hash.merge({
-	'accesskey': 'accessKey', 'cellpadding': 'cellPadding', 'cellspacing': 'cellSpacing', 'colspan': 'colSpan',
-	'class': 'className', 'for': 'htmlFor', 'frameborder': 'frameBorder', 'maxlength': 'maxLength', 'readonly': 'readOnly',
-	'rowspan': 'rowSpan', 'tabindex': 'tabIndex', 'usemap': 'useMap', 'value': 'value'
-}, Element.Attributes.Booleans);
+Hash.merge(Element.Attributes.Properties, Element.Attributes.Booleans);
 
 Element.UID = 0;
 

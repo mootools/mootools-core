@@ -30,10 +30,14 @@ Function.implement({
 
 		options (continued):
 			bind - (object: defaults to this function) The object that the "this" of the function will refer to.
-			event - (mixed: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-			arguments - (mixed: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-			delay - (number: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-			periodical - (number: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
+			event - (mixed: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument.
+			If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
+			arguments - (mixed: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function.
+			If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+			delay - (number: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds
+			and return a timer handle when called.
+			periodical - (number: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution
+			with this specified interval and return a timer handle when called.
 			attempt - (boolean: false) If set to true, the returned function will try to execute and return either the results or false on error.
 
 	Returns:

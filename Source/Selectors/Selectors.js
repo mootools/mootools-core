@@ -63,26 +63,31 @@ Native.implement([Element, Document], {
 	*/
 
 	getElements: function(selectors, nocash){
-		var method = Selectors.Method;
-		var elements = [];
+		Selectors.cleanup = false;
 		selectors = selectors.split(',');
-		for (var i = 0, j = selectors.length; i < j; i++){
+		var elements = [], j = selectors.length;
+		var dupes = (j > 1);
+		for (var i = 0; i < j; i++){
 			var selector = selectors[i], items = [], separators = [];
 			selector = selector.trim().replace(Selectors.sRegExp, function(match){
 				if (match.charAt(2)) match = match.trim();
 				separators.push(match.charAt(0));
-				return '%' + match.charAt(1);
-			}).split('%');
+				return ':)' + match.charAt(1);
+			}).split(':)');
 			for (var k = 0, l = selector.length; k < l; k++){
-				var params = Selectors.parse(selector[k]);
-				if (!params) break;
-				var temp = method.getParam(items, separators[k - 1] || false, this, params.tag, params.id, params.classes, params.attributes, params.pseudos);
+				var sel = Selectors.parse(selector[k]);
+				if (!sel) return [];
+				var temp = Selectors.Method.getParam(items, separators[k - 1] || false, this, sel);
 				if (!temp) break;
 				items = temp;
 			}
-			elements = elements.concat(method.getItems(items, this));
+			var partial = Selectors.Method.getItems(items, this);
+			elements = (dupes) ? elements.concat(partial) : partial;
 		}
-		return (nocash) ? elements : new Elements(elements);
+		if (Selectors.cleanup){
+			for (i = 0, j = Selectors.cleanup.length; i < j; i++) Selectors.cleanup[i]._pos = null;
+		}
+		return nocash ? elements : new Elements(elements, (!dupes) ? 'cash' : false);
 	},
 
 	/*
@@ -128,9 +133,9 @@ Window.implement({
 
 var Selectors = {
 
-	'regExp': /:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g,
+	'regExp': (/:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g),
 
-	'sRegExp': /\s*([+>~\s])[a-zA-Z#.*\s]/g
+	'sRegExp': (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
 
 };
 
@@ -147,8 +152,7 @@ Selectors.parse = function(selector){
 					params.attributes.push([arguments[1], arguments[3] ? '=' : '', arguments[3]]);
 					break;
 				}
-				var pseudo = {'name': arguments[1], 'parser': xparser, 'argument': arguments[3]};
-				if (xparser.parser) pseudo.argument = (xparser.parser.apply) ? xparser.parser(pseudo.argument) : xparser.parser;
+				var pseudo = {'name': arguments[1], 'parser': xparser, 'argument': (xparser.parser) ? xparser.parser(arguments[3]) : arguments[3]};
 				params.pseudos.push(pseudo);
 			break;
 			default: params.tag = bit;
@@ -162,25 +166,25 @@ Selectors.Pseudo = new Hash;
 
 Selectors.XPath = {
 
-	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
+	getParam: function(items, separator, context, params){
 		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch (separator){
 			case '~': case '+': temp += '/following-sibling::'; break;
 			case '>': temp += '/'; break;
 			case ' ': temp += '//';
 		}
-		temp += tag;
+		temp += params.tag;
 		if (separator == '+') temp += '[1]';
 		var i;
-		for (i = pseudos.length; i--; i){
-			var pseudo = pseudos[i];
+		for (i = params.pseudos.length; i--; i){
+			var pseudo = params.pseudos[i];
 			if (pseudo.parser && pseudo.parser.xpath) temp += pseudo.parser.xpath(pseudo.argument);
 			else temp += ($chk(pseudo.argument)) ? '[@' + pseudo.name + '="' + pseudo.argument + '"]' : '[@' + pseudo.name + ']';
 		}
-		if (id) temp += '[@id="' + id + '"]';
-		for (i = classNames.length; i--; i) temp += '[contains(concat(" ", @class, " "), " ' + classNames[i] + ' ")]';
-		for (i = attributes.length; i--; i){
-			var bits = attributes[i];
+		if (params.id) temp += '[@id="' + params.id + '"]';
+		for (i = params.classes.length; i--; i) temp += '[contains(concat(" ", @class, " "), " ' + params.classes[i] + ' ")]';
+		for (i = params.attributes.length; i--; i){
+			var bits = params.attributes[i];
 			switch (bits[1]){
 				case '=': temp += '[@' + bits[0] + '="' + bits[2] + '"]'; break;
 				case '*=': temp += '[contains(@' + bits[0] + ', "' + bits[2] + '")]'; break;
@@ -198,7 +202,7 @@ Selectors.XPath = {
 
 	getItems: function(items, context){
 		var elements = [];
-		var doc = ($type(context) == 'document') ? context : context.ownerDocument;
+		var doc = context.ownerDocument || context;
 		var xpath = doc.evaluate('.//' + items.join(''), context, Selectors.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements[i] = xpath.snapshotItem(i);
 		return elements;
@@ -212,81 +216,136 @@ Selectors.XPath = {
 
 Selectors.Filter = {
 
-	getParam: function(items, separator, context, tag, id, classNames, attributes, pseudos){
-		if (separator){
-			switch (separator){
-				case ' ': items = Selectors.Filter.getNestedByTag(items, tag); break;
-				case '>': items = Selectors.Filter.getChildrenByTag(items, tag); break;
-				case '+': items = Selectors.Filter.getFollowingByTag(items, tag); break;
-				case '~': items = Selectors.Filter.getFollowingByTag(items, tag, true);
-			}
-			if (id) items = Elements.filterById(items, id, true);
-		} else {
-			if (id){
-				var el = context.getElementById(id, true);
-				if (!el || ((tag != '*') && (el.tagName.toLowerCase() != tag))) return false;
-				items = [el];
+	getParam: function(items, separator, context, params){
+		if (!separator){
+			if (params.id){
+				var el = context.getElementById(params.id, true);
+				params.id = false;
+				return (el && Selectors.Filter.match(el, params)) ? [el] : false;
 			} else {
-				items = $A(context.getElementsByTagName(tag));
+				items = context.getElementsByTagName(params.tag);
+				params.tag = false;
+				var found = [];
+				for (var k = 0, l = items.length; k < l; k++){
+					if (Selectors.Filter.match(items[k], params)) found.push(items[k]);
+				}
+				return found;
 			}
+		} else {
+			items = Selectors.Filter.Separators[separator](items, params);
+			for (var i = 0, j = items.length; i < j; i++) items[i]._marked = null;
+			return items;
 		}
-		var i;
-		for (i = classNames.length; i--; i) items = Elements.filterByClass(items, classNames[i], true);
-		for (i = attributes.length; i--; i){
-			var bits = attributes[i];
-			items = Elements.filterByAttribute(items, bits[0], bits[1], bits[2], true);
-		}
-		for (i = pseudos.length; i--; i){
-			var pseudo = pseudos[i];
-			var temp = {};
-			items = items.filter(function(el, i, array){
-				return pseudo.parser.filter(el, pseudo.argument, i, array, temp);
-			});
-			temp = null;
-		}
-		return items;
 	},
 
 	getItems: function(items, context){
 		return items;
-	},
+	}
 
-	hasTag: function(el, tag){
-		return (el.nodeName && el.nodeType == 1 && (tag == '*' || el.tagName.toLowerCase() == tag));
-	},
+};
 
-	getFollowingByTag: function(context, tag, all){
+Selectors.Filter.Separators = {
+	
+	' ': function(items, params){
 		var found = [];
-		for (var i = 0, j = context.length, next; i < j; i++){
-			next = context[i].nextSibling;
-			while (next){
-				if (Selectors.Filter.hasTag(next, tag)){
-					found.push(next);
-					if (!all) break;
-				}
-				next = next.nextSibling;
-			}
-		}
-		return found;
-	},
-
-	getChildrenByTag: function(context, tag){
-		var found = [];
-		for (var i = 0, j = context.length; i < j; i++){
-			var children = context[i].childNodes;
+		var tag = params.tag;
+		for (var i = 0, j = items.length; i < j; i++){
+			var el = items[i];
+			var children = el.getElementsByTagName(tag);
+			params.tag = false;
 			for (var k = 0, l = children.length; k < l; k++){
-				if (Selectors.Filter.hasTag(children[k], tag)) found.push(children[k]);
+				var child = children[k];
+				if (!child._marked && Selectors.Filter.match(child, params)){
+					child._marked = {};
+					found.push(child);
+				}
 			}
 		}
 		return found;
 	},
-
-	getNestedByTag: function(context, tag){
+	
+	'>': function(items, params){
 		var found = [];
-		for (var i = 0, j = context.length; i < j; i++) found.extend(context[i].getElementsByTagName(tag));
+		for (var i = 0, j = items.length; i < j; i++){
+			var children = items[i].childNodes;
+			for (var k = 0, l = children.length; k < l; k++){
+				var child = children[k];
+				if (!child._marked && child.nodeType == 1 && Selectors.Filter.match(child, params)){
+					child._marked = {};
+					found.push(child);
+				}
+			}
+		}
+		return found;
+	},
+	
+	'+': function(items, params){
+		var found = [];
+		for (var i = 0, j = items.length; i < j; i++){
+			var el = items[i];
+			while ((el = el.nextSibling)){
+				if (el._marked) break;
+				if (el.nodeType == 1 && Selectors.Filter.match(el, params)){
+					el._marked = {};
+					found.push(el);
+					break;
+				}
+			}
+		}
+		return found;
+	},
+	
+	'~': function(items, params){
+		var found = [];
+		for (var i = 0, j = items.length; i < j; i++){
+			var el = items[i];
+			while ((el = el.nextSibling)){
+				if (el._marked) break;
+				if (el.nodeType == 1 && Selectors.Filter.match(el, params)){
+					el._marked = {};
+					found.push(el);
+				}
+			}
+		}
 		return found;
 	}
 
+};
+
+Selectors.Filter.match = function(el, params){
+	if (params.id && params.id != el.id) return false;
+	if (params.tag && params.tag != '*' && params.tag != el.tagName.toLowerCase()) return false;
+	
+	var i;
+	
+	for (i = params.classes.length; i--; i){
+		if (!el.className || !el.className.contains(params.classes[i], ' ')) return false;
+	}
+	
+	for (i = params.attributes.length; i--; i){
+		var bits = params.attributes[i];
+		var result = Element.prototype.getProperty.call(el, bits[0]);
+		if (!result) return false;
+		if (!bits[1]) continue;
+		var condition;
+		switch (bits[1]){
+			case '=': condition = (result == bits[2]); break;
+			case '*=': condition = (result.contains(bits[2])); break;
+			case '^=': condition = (result.substr(0, bits[2].length) == bits[2]); break;
+			case '$=': condition = (result.substr(result.length - bits[2].length) == bits[2]); break;
+			case '!=': condition = (result != bits[2]); break;
+			case '~=': condition = result.contains(bits[2], ' '); break;
+			case '|=': condition = result.contains(bits[2], '-');
+		}
+
+		if (!condition) return false;
+	}
+	
+	for (i = params.pseudos.length; i--; i){
+		if (!params.pseudos[i].parser.filter.call(el, params.pseudos[i].argument)) return false;
+	}
+
+	return true;
 };
 
 Selectors.Method = (Client.Features.xpath) ? Selectors.XPath : Selectors.Filter;

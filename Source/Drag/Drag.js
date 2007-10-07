@@ -234,7 +234,7 @@ var Drag = new Class({
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
 			this.value.now[z] = this.mouse.now[z] - this.mouse.pos[z];
-			if (this.limit[z]){
+			if (this.options.limit && this.limit[z]){
 				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
 					this.value.now[z] = this.limit[z][1];
 					this.out = true;

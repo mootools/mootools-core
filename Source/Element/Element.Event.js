@@ -47,7 +47,7 @@ Note:
 */
 
 var Event = new Native({
-
+	
 	name: 'Event',
 
 	initialize: function(event, win){
@@ -55,25 +55,25 @@ var Event = new Native({
 		event = event || win.event;
 		if (event.$extended) return event;
 		this.$extended = true;
-		this.event = event;
-		this.type = event.type;
-		this.target = event.target || event.srcElement;
-		if (this.target.nodeType == 3) this.target = this.target.parentNode;
-		this.shift = event.shiftKey;
-		this.control = event.ctrlKey;
-		this.alt = event.altKey;
-		this.meta = event.metaKey;
-		if (this.type.test(/DOMMouseScroll|mousewheel/)){
+		var type = event.type;
+		var target = event.target || event.srcElement;
+		while (target && target.nodeType == 3) target = target.parentNode;
+		if (type.test(/DOMMouseScroll|mousewheel/)){
+
 			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-		} else if (this.type.test(/key/)){
+
+		} else if (type.test(/key/)){
+			
 			this.code = event.which || event.keyCode;
-			this.key = Event.Keys.keyOf(this.code);
-			if (this.type == 'keydown'){
+			var key = Event.Keys.keyOf(this.code);
+			if (type == 'keydown'){
 				var fKey = this.code - 111;
-				if (fKey > 0 && fKey < 13) this.key = 'f' + fKey;
+				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
 			}
-			this.key = this.key || String.fromCharCode(this.code).toLowerCase();
-		} else if (this.type.test(/(click|mouse|menu)/)){
+			this.key = key || String.fromCharCode(this.code).toLowerCase();
+			
+		} else if (type.test(/(click|mouse|menu)/)){
+			
 			this.page = {
 				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
 				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
@@ -83,14 +83,29 @@ var Event = new Native({
 				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
 			};
 			this.rightClick = (event.which == 3) || (event.button == 2);
-			switch (this.type){
-				case 'mouseover': this.relatedTarget = event.relatedTarget || event.fromElement; break;
-				case 'mouseout': this.relatedTarget = event.relatedTarget || event.toElement;
+			var related = null;
+			if (type.test(/over|out/)){				
+				switch (type){
+					case 'mouseover': related = event.relatedTarget || event.fromElement; break;
+					case 'mouseout': related = event.relatedTarget || event.toElement;
+				}
+				if ((function(){
+					while (related && related.nodeType == 3) related = related.parentNode;
+				}).create({attempt: Client.Engine.gecko})() === false) related = target;
 			}
-			if (Client.Engine.gecko && this.fixRelatedTarget.attempt([], this) === false) this.relatedTarget = this.target;
-		}
 
-		return this;
+		}
+		
+		return $extend(this, {
+			event: event,
+			type: type,
+			relatedTarget: related,
+			target: target,
+			shift: event.shiftKey,
+			control: event.ctrlKey,
+			alt: event.alkKey,
+			meta: event.metaKey
+		});
 	}
 
 });
@@ -234,11 +249,6 @@ Event.implement({
 		if (this.event.preventDefault) this.event.preventDefault();
 		else this.event.returnValue = false;
 		return this;
-	},
-
-	fixRelatedTarget: function(){
-		var rel = this.relatedTarget;
-		if (rel && rel.nodeType == 3) this.relatedTarget = rel.parentNode;
 	}
 
 });
@@ -400,7 +410,7 @@ Native.implement([Element, Window, Document], {
 
 	See Also:
 		<Element.addEvent>
-
+		
 	Note:
 		This method is also attached to Document and Window.
 	*/
@@ -444,7 +454,7 @@ Native.implement([Element, Window, Document], {
 
 	See Also:
 		<Element.removeEvent>
-
+		
 	Note:
 		This method is also attached to Document and Window.
 	*/
@@ -514,7 +524,7 @@ Native.implement([Element, Window, Document], {
 			var myElement = $('myElement');
 			var myClone = myElement.clone().cloneEvents(myElement); //clones the element and its events
 		[/javascript]
-
+		
 	Note:
 		This method is also attached to Document and Window.
 	*/
@@ -547,7 +557,7 @@ Element.$events = {
 /*
 Hash: Element.Events
 	You can add additional custom events by adding properties (objects) to the Element.Events Hash
-
+	
 The Element.Events.yourproperty (object) can have:
 	base - (string, optional) the base event the custom event will listen to. Its not optional if condition is set.
 	condition - (function, optional)
@@ -559,9 +569,9 @@ The Element.Events.yourproperty (object) can have:
 Example:
 	[javascript]
 		Element.Events.shiftclick = {
-
+			
 			base: 'click', //we set a base type
-
+			
 			condition: function(event){ //and a function to perform additional checks.
 				return (event.shift == true); //this means the event is free to fire
 			}
@@ -599,12 +609,13 @@ Element.Events = new Hash({
 	*/
 
 	'mouseenter': {
-
+		
 		base: 'mouseover',
-
+		
 		condition: function(event){
+			if (!this.hasChild) return (!event.relatedTarget);
 			var related = event.relatedTarget;
-			return (related && related != this && !this.hasChild(related));
+			return (related && related != this && related.prefix != 'xul' && !this.hasChild(related));
 		}
 
 	},
@@ -624,16 +635,17 @@ Element.Events = new Hash({
 	*/
 
 	'mouseleave': {
-
+		
 		base: 'mouseout',
-
+		
 		condition: function(event){
+			if (!this.hasChild) return (!event.relatedTarget);
 			var related = event.relatedTarget;
-			return (related && related != this && !this.hasChild(related));
+			return (related && related != this && related.prefix != 'xul' && !this.hasChild(related));
 		}
-
+	
 	},
-
+	
 	/*
 	Event: mousewheel
 		This event fires when the mouse wheel is rotated;
@@ -642,7 +654,7 @@ Element.Events = new Hash({
 		[javascript]
 			$('myElement').addEvent('mousewheel', myFunction);
 		[/javascript]
-
+		
 	Note:
 		this custom event just redirects DOMMouseScroll (mozilla) to mousewheel (opera, internet explorer), making it crossbrowser.
 
@@ -651,9 +663,9 @@ Element.Events = new Hash({
 	*/
 
 	'mousewheel': {
-
+		
 		base: (Client.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
-
+		
 	}
 
 });

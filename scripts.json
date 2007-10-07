@@ -103,7 +103,7 @@
 	"Selectors": {
 
 		"Selectors": {
-			"deps": ["Element.Filters"],
+			"deps": ["Element"],
 			"desc": "Adds the advanced CSS Selectors capability."
 		},
 
