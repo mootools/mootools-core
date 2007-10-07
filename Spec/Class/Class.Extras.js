@@ -8,7 +8,7 @@ License:
 
 describe('Chain Class', {
 
-	before_all: function(){
+	'before all': function(){
 		this.local.Chain = new Class({
 
 			Implements: Chain,
@@ -29,7 +29,7 @@ describe('Chain Class', {
 		});
 	},
 
-	should_chain_a_function: function(){
+	'should chain any number of functions': function(){
 		var myChain = new this.local.Chain(), chains = myChain.$chain;
 
 		value_of(chains).should_not_be(undefined);
@@ -38,7 +38,7 @@ describe('Chain Class', {
 		value_of(myChain.arr[0]).should_be(0);
 	},
 
-	should_call_and_remove_the_chained_function: function(){
+	'should call and remove the chained function': function(){
 		var myChain = new this.local.Chain();
 		var firstFunction = myChain.$chain[0];
 		myChain.callChain();
@@ -51,7 +51,7 @@ describe('Chain Class', {
 		}).delay(100);
 	},
 
-	should_clear_all_chained_functions: function(){
+	'should clear all chained functions': function(){
 		var myChain = new this.local.Chain();
 		var firstFunction = myChain.$chain[0];
 		myChain.clearChain();
@@ -68,7 +68,7 @@ describe('Chain Class', {
 
 describe('Events Class', {
 
-	before_all: function(){
+	'before all': function(){
 		this.local.EventsTest = new Class({
 			Implements: Events,
 
@@ -84,7 +84,7 @@ describe('Events Class', {
 		}
 	},
 
-	should_add_an_event: function(){
+	'should add an Event to the Class': function(){
 		var myTest = new this.local.EventsTest();
 		myTest.addEvent('onEvent', this.local.fn);
 
@@ -94,7 +94,7 @@ describe('Events Class', {
 		value_of(myEvent.contains(this.local.fn)).should_be_true();
 	},
 
-	should_add_multiple_events: function(){
+	'shoul add multiple Events to the Class': function(){
 		var myTest = new this.local.EventsTest();
 		myTest.addEvents({
 			'onEvent1': this.local.fn,
@@ -111,7 +111,7 @@ describe('Events Class', {
 		value_of(myEvent2.contains(this.local.fn)).should_be_true();
 	},
 
-	should_add_an_internal_event: function(){
+	'should add an internal event': function(){
 		var myTest = new this.local.EventsTest();
 		myTest.addEvent('onInternal', this.local.fn, true);
 
@@ -122,7 +122,7 @@ describe('Events Class', {
 		value_of(myEvent[0].internal).should_be_true();
 	},
 
-	should_remove_a_specific_method_for_an_event: function(){
+	'should remove a specific method for an event': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
 		myTest.addEvent('onEvent', this.local.fn);
@@ -135,7 +135,7 @@ describe('Events Class', {
 		value_of(myEvent.contains(fn)).should_be_true();
 	},
 
-	should_remove_an_event_and_its_methods: function(){
+	'should remove an event and its methods': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
 		myTest.addEvent('onEvent', this.local.fn);
@@ -146,7 +146,7 @@ describe('Events Class', {
 		value_of(events['onEvent'].length).should_be(0);
 	},
 
-	should_remove_all_events: function(){
+	'should remove all events': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
 		myTest.addEvent('onEvent1', this.local.fn);
@@ -162,7 +162,7 @@ describe('Events Class', {
 
 describe('Options Class', {
 
-	before_all: function(){
+	'before all': function(){
 		this.local.OptionsTest = new Class({
 			Implements: Options,
 
@@ -172,12 +172,12 @@ describe('Options Class', {
 		});
 	},
 
-	should_set_options: function(){
+	'should set options': function(){
 		var myTest = new this.local.OptionsTest({ a: 1, b: 2});
 		value_of(myTest.options).should_not_be(undefined);
 	},
 
-	should_override_default_options: function(){
+	'should override default options': function(){
 		this.local.OptionsTest.implement({
 			options: {
 				a: 1,
@@ -189,7 +189,7 @@ describe('Options Class', {
 		value_of(myTest.options.b).should_be(4);
 	},
 
-	should_add_events_in_the_options_object_if_class_has_implemented_events_class: function(){
+	'should add events in the options object if class has implemented the Events class': function(){
 		this.local.OptionsTest.implement(new Events, {
 			options: {
 				onEvent1: function(){

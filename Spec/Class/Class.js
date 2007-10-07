@@ -8,7 +8,7 @@ License:
 
 describe('Class', {
 
-	before_all: function(){
+	'before all': function(){
 		this.local.Animal = new Class({
 
 			initialized: false,
@@ -45,21 +45,21 @@ describe('Class', {
 		});
 	},
 
-	should_be_a_class: function(){
+	"should be type 'class'": function(){
 		value_of(Class.type(this.local.Animal)).should_be_true();
 	},
 
-	should_initialize: function(){
+	'should initialize': function(){
 		var init = new this.local.Animal();
 		value_of(init.initialized).should_be_true();
 	},
 
-	should_not_initialize_if_passing_the_empty_function: function(){
+	'should not initialize if passed $empty': function(){
 		var noInit = new this.local.Animal($empty);
 		value_of(noInit.initialized).should_be_false();
 	},
 
-	should_extend_another_class: function(){
+	'should use property Extends to extend another class': function(){
 		var Cat = new Class({
 			Extends: this.local.Animal,
 
@@ -82,7 +82,7 @@ describe('Class', {
 		value_of(myCat.speak()).should_be('miao');
 	},
 
-	should_implement_a_class: function(){
+	'should use property Implements to implement another class': function(){
 		var Cat = new Class({
 
 			Implements: this.local.Animal
@@ -93,7 +93,7 @@ describe('Class', {
 		value_of(myCat.sleep()).should_be('zzzz');
 	},
 
-	should_implement_an_array_of_classes: function(){
+	'should use property Implements to implement any number of classes': function(){
 		var Cat = new Class({
 
 			Extends: this.local.Animal,
@@ -109,7 +109,7 @@ describe('Class', {
 		value_of(myCat.color()).should_be('green');
 	},
 
-	should_implement_an_object_after_declaration: function(){
+	'should implement an object': function(){
 		this.local.Animal.implement(new this.local.Actions);
 
 		var myAnimal = new this.local.Animal('fuzzy');
@@ -119,7 +119,7 @@ describe('Class', {
 		value_of(myAnimal.sleep()).should_be('zzzz');
 	},
 
-	should_implement_many_objects_after_declaration: function(){
+	'should implement any number of objects': function(){
 		this.local.Animal.implement(new this.local.Actions, new this.local.Attributes);
 
 		var myAnimal = new this.local.Animal('fuzzy');

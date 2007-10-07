@@ -28,7 +28,7 @@ var Native = function(options){
 	var generics = options.generics || true;
 	var browser = options.browser || false;
 	var legacy = (name && options.legacy) ? window[name] : false;
-	var afterImplement = options.afterImplement || function(){};
+	var afterImplement = options.afterImplement || $empty;
 	var object = initialize || legacy;
 
 	object.constructor = Native;
@@ -64,7 +64,7 @@ Native.implement = function(objects, properties){
 };
 
 Native.genericize = function(object, property){
-	if (!object[property] && typeof object.prototype[property] == 'function') object[property] = function(){
+	if (!object[property] && Function.type(object.prototype[property])) object[property] = function(){
 		var args = Array.prototype.slice.call(arguments);
 		return object.prototype[property].apply(args.shift(), args);
 	};
@@ -453,6 +453,26 @@ function $type(obj){
 Native: Hash
 	A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
 	Useful because in Javascript we cannot use Object.prototype. You can now use Hash.prototype!
+
+Syntax:
+	>var myHash = new Hash([object]);
+
+Arguments:
+	object - (mixed) A hash or object to implement.
+
+Returns:
+	(hash) A new Hash instance.
+
+Example:
+	[javascript]
+		var myHash = new Hash({
+			aProperty: true,
+			aMethod: function(){
+				return true;
+			}
+		});
+		alert(myHash.has('aMethod')); //true
+	[/javascript]
 */
 
 var Hash = new Native({
@@ -461,7 +481,7 @@ var Hash = new Native({
 
 	initialize: function(object){
 		switch($type(object)){
-			case 'hash': return object;
+			case 'hash': return $merge(object);
 			case 'object': for (var p in object){
 				if (!this.hasOwnProperty(p)) this[p] = object[p];
 			}
@@ -516,6 +536,9 @@ Hash.alias('forEach', 'each');
 /*
 Function: $H
 	Shortcut for new Hash.
+
+See Also:
+	<Hash>
 */
 
 function $H(object){
@@ -527,8 +550,6 @@ Array.implement({
 	/*
 	Method: each
 		Calls a function for each element in the array.
-
-		This method is only available for browsers without native <Array.forEach> support.
 
 	Syntax:
 		>myArray.each(fn[, bind]);
@@ -555,6 +576,9 @@ Array.implement({
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach>
+
+	Note:
+		This method is only available for browsers without native <Array.forEach> support.
 	*/
 
 	forEach: function(fn, bind){

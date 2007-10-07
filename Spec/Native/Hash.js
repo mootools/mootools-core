@@ -8,7 +8,21 @@ License:
 
 describe('Hash', {
 
-	each: function(){
+	'before all': function(){
+		this.local.hash = new Hash({a: 1, b: 2, c: 3});
+	},
+
+	'should return a new hash': function(){
+		value_of(Hash.type(new Hash())).should_be_true();
+	},
+
+	'constructor should return a copy when a hash is passed': function(){
+		var copy = new Hash(this.local.hash);
+		value_of(copy !== this.local.hash).should_be_true();
+		value_of(copy).should_be(this.local.hash);
+	},
+
+	'should iterate through each property': function(){
 		var oldHash = new Hash({a:1,b:2,c:3});
 		var newHash = new Hash;
 		oldHash.each(function(value, key){
