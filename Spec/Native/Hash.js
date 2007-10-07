@@ -8,276 +8,121 @@ License:
 
 describe('Hash', {
 
-	'before all': function(){
-		this.local.hash = new Hash({a: 1, b: 2, c: 3});
+	'before each': function(){
+		this.local.Hash = new Hash({a: 1, b: 2, c: 3});
+		this.local.Hash2 = new Hash({a:'string',b:233,c:{}});
 	},
 
 	'should return a new hash': function(){
 		value_of(Hash.type(new Hash())).should_be_true();
 	},
 
-	'constructor should return a copy when a hash is passed': function(){
-		var copy = new Hash(this.local.hash);
-		value_of(copy !== this.local.hash).should_be_true();
-		value_of(copy).should_be(this.local.hash);
+	'should return a copy of a hash': function(){
+		var copy = new Hash(this.local.Hash);
+		value_of(copy !== this.local.Hash).should_be_true();
+		value_of(copy).should_be(this.local.Hash);
 	},
 
-	'should iterate through each property': function(){
-		var oldHash = new Hash({a:1,b:2,c:3});
-		var newHash = new Hash;
-		oldHash.each(function(value, key){
-			newHash.set(key, value);
-		});
-		value_of(newHash).should_be(oldHash);
+	'should `remove` a key and its value from the hash': function(){
+		value_of(this.local.Hash.remove('a')).should_be(new Hash({b:2,c:3}));
+		value_of(this.local.Hash.remove('d')).should_be(new Hash({b:2,c:3}));
 	},
 
-	keyOf: function(){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.keyOf(1)).should_be('a');
-		value_of(myHash.keyOf(4)).should_be_null();
-
+	'should `get` the value corresponding to the specified key, otherwise null': function(){
+		value_of(this.local.Hash.get('c')).should_be(3);
+		value_of(this.local.Hash.get('d')).should_be_null();
 	},
 
-	has: function(key){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.has('a')).should_be_true();
-		value_of(myHash.has('d')).should_be_false();
-	},
-
-	hasValue: function(value){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.hasValue(1)).should_be_true();
-		value_of(myHash.hasValue(4)).should_be_false();
-	},
-
-	getClean: function(){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.getClean()).should_be({a:1,b:2,c:3});
-	},
-
-	extend: function(properties){
-		var myHash = new Hash({a:1,b:2,c:3});
-		var xHash = new Hash({a:4,d:7,e:8});
-
-		value_of(myHash.extend(xHash)).should_be(new Hash({a:4,b:2,c:3,d:7,e:8}));
-	},
-
-	merge: function(properties){
-		var myHash = new Hash({a:1,b:2,c:3});
-		var xHash = new Hash({a:4,d:7,e:8});
-
-		value_of(myHash.merge(xHash)).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
-	},
-
-	remove: function(key){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.remove('a')).should_be(new Hash({b:2,c:3}));
-		value_of(myHash.remove('d')).should_be(new Hash({b:2,c:3}));
-	},
-
-	get: function(key){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.get('c')).should_be(3);
-		value_of(myHash.get('d')).should_be_null();
-	},
-
-	set: function(key, value){
-		var myHash = new Hash({a:1,b:2,c:3});
+	'should `set` the key with the corresponding value': function(){
+		var myHash = new Hash(this.local.Hash);
 		myHash.set('c', 7);
 		myHash.set('d', 8);
 
 		value_of(myHash).should_be(new Hash({a:1,b:2,c:7,d:8}));
 	},
 
-	empty: function(){
-		var myHash = new Hash({a:1,b:2,c:3});
-
-		value_of(myHash.empty()).should_be(new Hash());
+	'should `empty` the hash': function(){
+		value_of(this.local.Hash.empty()).should_be(new Hash());
 	},
 
-	include: function(key, value){
-		var myHash = new Hash({a:1,b:2,c:3});
-		myHash.include('a', 7);
-
-		value_of(myHash).should_be(new Hash({a:1,b:2,c:3}));
+	'should `include` a key/value if the hash does not have the key': function(){
+		value_of(this.local.Hash.include('e', 7)).should_be(new Hash({a:1,b:2,c:3,e:7}));
 	},
 
-	map: function(fn, bind){
-		var myHash = new Hash({a:'string',b:233,c:{}});
-
-		value_of(myHash.map(Number.type)).should_be(new Hash({a:false,b:true,c:false}));
+	'should not `include` a key/value if the the hash has the key': function(){
+		value_of(this.local.Hash.include('a', 7)).should_not_be(new Hash({a:1,b:2,c:3,e:7}));
 	},
 
-	filter: function(fn, bind){
-
-		var myHash = new Hash({a:'string',b:233,c:{}});
-
-		value_of(myHash.filter(Number.type)).should_be(new Hash({b:233}));
-
+	'should return the `keyOf` the value': function(){
+		value_of(this.local.Hash.keyOf(1)).should_be('a');
 	},
 
-	every: function(fn, bind){
-		var myHash = new Hash({a:'string',b:233,c:{}});
-
-		value_of(myHash.every(Number.type)).should_be_false();
-		value_of(myHash.every($defined)).should_be_true();
+	'should return null if the `keyOf` the value is not found': function(){
+		value_of(this.local.Hash.keyOf('not found')).should_be_null();
 	},
 
-	some: function(fn, bind){
-		var myHash = new Hash({a:'string',b:233,c:{}});
-
-		value_of(myHash.some(Number.type)).should_be_true();
-		value_of(myHash.some($defined)).should_be_true();
-		value_of(myHash.some(Array.type)).should_be_false();
+	'should return true if the hash `has` the key, otherwise false': function(){
+		value_of(this.local.Hash.has('a')).should_be_true();
+		value_of(this.local.Hash.has('d')).should_be_false();
 	},
 
-	getKeys: function(){
-		var myHash = new Hash({a:'string',b:233,c:{}});
-
-		value_of(myHash.getKeys()).should_be(['a', 'b', 'c']);
+	'should return true if the hash `hasValue`, otherwise false': function(){
+		value_of(this.local.Hash.hasValue(1)).should_be_true();
+		value_of(this.local.Hash.hasValue('not found')).should_be_false();
 	},
 
-	getValues: function(){
-		var myHash = new Hash({a:'string',b:233,c:{}});
+	'should `getClean` JavaScript object': function(){
+		value_of(this.local.Hash.getClean()).should_be({a:1,b:2,c:3});
+	},
 
-		value_of(myHash.getValues()).should_be(['string', 233, {}]);
-	}
+	'should `extend` a Hash with an object': function(){
+		value_of(this.local.Hash.extend({a:4,d:7,e:8})).should_be(new Hash({a:4,b:2,c:3,d:7,e:8}));
+	},
 
-});
+	'should `extend` a Hash with another Hash': function(){
+		value_of(this.local.Hash.extend(new Hash({a:4,d:7,e:8}))).should_be(new Hash({a:4,b:2,c:3,d:7,e:8}));
+	},
 
-describe('Hash Generics', {
+	'should `merge` a Hash with an object': function(){
+		value_of(this.local.Hash.merge({a:4,d:7,e:8})).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
+	},
 
-	each: function(){
-		var oldHash = {a:1,b:2,c:3};
-		var newHash = {};
-		Hash.each(oldHash, function(value, key){
-			Hash.set(newHash, key, value);
+	'should `merge` a Hash with another Hash': function(){
+		value_of(this.local.Hash.merge(new Hash({a:4,d:7,e:8}))).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
+	},
+
+	'should iterate through `each` property': function(){
+		var newHash = new Hash();
+		this.local.Hash.each(function(value, key){
+			newHash.set(key, value);
 		});
-		value_of(newHash).should_be(oldHash);
+		value_of(newHash).should_be(this.local.Hash);
 	},
 
-	keyOf: function(){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.keyOf(myHash, 1)).should_be('a');
-		value_of(Hash.keyOf(myHash, 4)).should_be_null();
-
+	'should `map` a new Hash according to the comparator': function(){
+		value_of(this.local.Hash2.map(Number.type)).should_be(new Hash({a:false,b:true,c:false}));
 	},
 
-	has: function(key){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.has(myHash, 'a')).should_be_true();
-		value_of(Hash.has(myHash, 'd')).should_be_false();
+	'should `filter` the Hash according to the comparator': function(){
+		value_of(this.local.Hash2.filter(Number.type)).should_be(new Hash({b:233}));
 	},
 
-	hasValue: function(value){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.hasValue(myHash, 1)).should_be_true();
-		value_of(Hash.hasValue(myHash, 4)).should_be_false();
+	'should return true if `every` value matches the comparator, otherwise false': function(){
+		value_of(this.local.Hash2.every($defined)).should_be_true();
+		value_of(this.local.Hash2.every(Number.type)).should_be_false();
 	},
 
-	getClean: function(){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.getClean(myHash)).should_be({a:1,b:2,c:3});
+	'should return true if `some` of the values match the comparator, otherwise false': function(){
+		value_of(this.local.Hash2.some(Number.type)).should_be_true();
+		value_of(this.local.Hash2.some(Array.type)).should_be_false();
 	},
 
-	extend: function(properties){
-		var myHash = {a:1,b:2,c:3};
-		var xHash = {a:4,d:7,e:8};
-
-		value_of(Hash.extend(myHash, xHash)).should_be({a:4,b:2,c:3,d:7,e:8});
+	'should `getKeys` of the hash': function(){
+		value_of(this.local.Hash2.getKeys()).should_be(['a', 'b', 'c']);
 	},
 
-	merge: function(properties){
-		var myHash = {a:1,b:2,c:3};
-		var xHash = {a:4,d:7,e:8};
-
-		value_of(Hash.merge(myHash, xHash)).should_be({a:1,b:2,c:3,d:7,e:8});
-	},
-
-	remove: function(key){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.remove(myHash, 'a')).should_be({b:2,c:3});
-		value_of(Hash.remove(myHash, 'd')).should_be({b:2,c:3});
-	},
-
-	get: function(key){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.get(myHash, 'c')).should_be(3);
-		value_of(Hash.get(myHash, 'd')).should_be_null();
-	},
-
-	set: function(key, value){
-		var myHash = {a:1,b:2,c:3};
-		Hash.set(myHash, 'c', 7);
-		Hash.set(myHash, 'd', 8);
-
-		value_of(myHash).should_be({a:1,b:2,c:7,d:8});
-	},
-
-	empty: function(){
-		var myHash = {a:1,b:2,c:3};
-
-		value_of(Hash.empty(myHash)).should_be({});
-	},
-
-	include: function(key, value){
-		var myHash = {a:1,b:2,c:3};
-		Hash.include(myHash, 'a', 7);
-
-		value_of(myHash).should_be({a:1,b:2,c:3});
-	},
-
-	map: function(fn, bind){
-		var myHash = {a:'string',b:233,c:{}};
-
-		value_of(Hash.map(myHash, Number.type)).should_be(new Hash({a:false,b:true,c:false}));
-	},
-
-	filter: function(fn, bind){
-
-		var myHash = {a:'string',b:233,c:{}};
-
-		value_of(Hash.filter(myHash, Number.type)).should_be(new Hash({b:233}));
-
-	},
-
-	every: function(fn, bind){
-		var myHash = {a:'string',b:233,c:{}};
-
-		value_of(Hash.every(myHash, Number.type)).should_be_false();
-		value_of(Hash.every(myHash, $defined)).should_be_true();
-	},
-
-	some: function(fn, bind){
-		var myHash = {a:'string',b:233,c:{}};
-
-		value_of(Hash.some(myHash, Number.type)).should_be_true();
-		value_of(Hash.some(myHash, $defined)).should_be_true();
-		value_of(Hash.some(myHash, Array.type)).should_be_false();
-	},
-
-	getKeys: function(){
-		var myHash = {a:'string',b:233,c:{}};
-
-		value_of(Hash.getKeys(myHash)).should_be(['a', 'b', 'c']);
-	},
-
-	getValues: function(){
-		var myHash = {a:'string',b:233,c:{}};
-
-		value_of(Hash.getValues(myHash)).should_be(['string', 233, {}]);
+	'should `getValues` of the hash': function(){
+		value_of(this.local.Hash2.getValues()).should_be(['string', 233, {}]);
 	}
 
 });

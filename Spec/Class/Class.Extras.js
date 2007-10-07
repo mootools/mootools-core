@@ -79,7 +79,7 @@ describe('Events Class', {
 			}
 		});
 	},
-	
+
 	'before each': function(){
 		this.local.fn = function(){
 			return this.local.EventsTest.called++;

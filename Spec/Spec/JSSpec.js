@@ -1042,7 +1042,7 @@ JSSpec.StringEqualityMatcher.prototype.explain = function(){
 	var sb = [];
 
 	sb.push(JSSpec.EqualityMatcher.basicExplain(this.expected, this.actual));
-	sb.push(JSSpec.EqualityMatcher.diffExplain(this.expected, this.actual));	
+	sb.push(JSSpec.EqualityMatcher.diffExplain(this.expected, this.actual));
 	return sb.join("");
 };
 
@@ -1404,7 +1404,8 @@ JSSpec.util = {
 		if(o._type && o._type == 'Array' || typeof o.length != 'undefined'){
 			sb = [];
 			for(var i = 0; i < o.length; i++){
-				inspected = JSSpec.util.inspect(o[i]);
+				var oi = o[i];
+				inspected = JSSpec.util.inspect(oi);
 				sb.push(i == emphasisKey ? ('<strong>' + inspected + '</strong>') : inspected);
 			}
 			return '<span class="array_value">[' + sb.join(', ') + ']</span>';

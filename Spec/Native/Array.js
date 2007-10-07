@@ -11,17 +11,13 @@ describe('Array', {
 	'before all': function(){
 		this.local.array = [1,2,3,0,0,0];
 
-		this.local.comparator = function(item){
-			return Number.type(item);
-		};
-
 		this.local.adder = function(a, b){
 			return a + b;
 		}
 	},
 
 	'should return a `filter`ed array': function(){
-		var arr = this.local.array.concat([false, null, 4]).filter(this.local.comparator);
+		var arr = this.local.array.concat([false, null, 4]).filter(Number.type);
 		value_of(arr).should_be(this.local.array.concat(4));
 	},
 
@@ -34,22 +30,22 @@ describe('Array', {
 	},
 
 	'should return true if `every` item matches the comparator': function(){
-		var every = this.local.array.every(this.local.comparator);
+		var every = this.local.array.every(Number.type);
 		value_of(every).should_be_true();
 	},
 
 	'should return false if `every` item do not mach the comparator': function(){
-		var every = ['1',2,3,0].every(this.local.comparator);
+		var every = ['1',2,3,0].every(Number.type);
 		value_of(every).should_be_false();
 	},
 
 	'should return false if at least `some` do not match the comparator': function(){
-		var some = this.local.array.map(String).some(this.local.comparator);
+		var some = this.local.array.map(String).some(Number.type);
 		value_of(some).should_be_false();
 	},
 
 	'should return true if `some` of the items match the comparator': function(){
-		var some = ['1',2,3,0].some(this.local.comparator);
+		var some = ['1',2,3,0].some(Number.type);
 		value_of(some).should_be_true();
 	},
 
