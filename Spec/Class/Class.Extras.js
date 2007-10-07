@@ -78,7 +78,9 @@ describe('Events Class', {
 				this.called = 0;
 			}
 		});
-
+	},
+	
+	'before each': function(){
 		this.local.fn = function(){
 			return this.local.EventsTest.called++;
 		}
@@ -94,7 +96,7 @@ describe('Events Class', {
 		value_of(myEvent.contains(this.local.fn)).should_be_true();
 	},
 
-	'shoul add multiple Events to the Class': function(){
+	'should add multiple Events to the Class': function(){
 		var myTest = new this.local.EventsTest();
 		myTest.addEvents({
 			'onEvent1': this.local.fn,
@@ -138,26 +140,24 @@ describe('Events Class', {
 	'should remove an event and its methods': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
-		var fn2 = function() { return this.local.EventsTest.called++; };
-		myTest.addEvent('onEventRemove', fn);
-		myTest.addEvent('onEventRemove', fn2);
-		myTest.removeEvents('onEventRemove');
+		myTest.addEvent('onEvent', this.local.fn);
+		myTest.addEvent('onEvent', fn);
+		myTest.removeEvents('onEvent');
 
 		var events = myTest.$events;
-		value_of(events['onEventRemove'].length).should_be(0);
+		value_of(events['onEvent'].length).should_be(0);
 	},
 
 	'should remove all events': function(){
 		var myTest = new this.local.EventsTest();
 		var fn = function(){ return true; };
-		var fn2 = function() { return this.local.EventsTest.called++; };
-		myTest.addEvent('onEventRemove1', fn);
-		myTest.addEvent('onEventRemove2', fn2);
+		myTest.addEvent('onEvent1', this.local.fn);
+		myTest.addEvent('onEvent2', fn);
 		myTest.removeEvents();
 
 		var events = myTest.$events;
-		value_of(events['onEventRemove1'].length).should_be(0);
-		value_of(events['onEventRemove2'].length).should_be(0);
+		value_of(events['onEvent1'].length).should_be(0);
+		value_of(events['onEvent2'].length).should_be(0);
 	}
 
 });
