@@ -63,7 +63,7 @@ Native.implement([Element, Document], {
 	*/
 
 	getElements: function(selectors, nocash){
-		Selectors.cleanup = false;
+		Selectors.garbage = false;
 		selectors = selectors.split(',');
 		var elements = [], j = selectors.length;
 		var dupes = (j > 1);
@@ -84,8 +84,8 @@ Native.implement([Element, Document], {
 			var partial = Selectors.Method.getItems(items, this);
 			elements = (dupes) ? elements.concat(partial) : partial;
 		}
-		if (Selectors.cleanup){
-			for (i = 0, j = Selectors.cleanup.length; i < j; i++) Selectors.cleanup[i]._pos = null;
+		if (Selectors.garbage){
+			for (i = 0, j = Selectors.garbage.length; i < j; i++) Selectors.garbage[i]._pos = null;
 		}
 		return nocash ? elements : new Elements(elements, (!dupes) ? 'cash' : false);
 	},
@@ -137,6 +137,11 @@ var Selectors = {
 
 	'sRegExp': (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
 
+};
+
+Selectors.clean = function(items){
+	if (!Selectors.garbage) return;
+	for (i = 0, j = Selectors.garbage.length; i < j; i++) Selectors.garbage[i]._pos = null;
 };
 
 Selectors.parse = function(selector){
@@ -349,3 +354,11 @@ Selectors.Filter.match = function(el, params){
 };
 
 Selectors.Method = (Client.Features.xpath) ? Selectors.XPath : Selectors.Filter;
+
+Element.implement({
+
+	match: function(selector){
+		return Selectors.Filter.match(this, Selectors.parse(selector));
+	}
+	
+});

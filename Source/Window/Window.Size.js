@@ -182,12 +182,13 @@ Window.implement({
 	*/
 
 	getSize: function(){
-		return {
+		var sizes = {
 			'size': {'x': this.getWidth(), 'y': this.getHeight()},
 			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()},
-			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()},
-			'clientSize': {'x': this.getWidth(), 'y': this.getHeight()}
+			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()}
 		};
+		sizes.client = sizes.size;
+		return sizes;
 	},
 
 	getPosition: function(){

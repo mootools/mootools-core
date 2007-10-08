@@ -87,7 +87,6 @@ JSSpec.Executor.prototype.mergeExceptions = function(assertionFailure, normalExc
 };
 
 JSSpec.Executor.prototype.run = function(){
-	this.local = window.temp;
 	var self = this;
 	var target = this.target;
 	var onSuccess = this.onSuccess;
@@ -303,7 +302,6 @@ JSSpec.Spec.prototype.getExecutor = function(){
 		exampleAndAfter.addExecutor(this.examples[i].getExecutor());
 	}
 	exampleAndAfter.addExecutor(new JSSpec.Executor(this.afterAll, null, onException));
-	exampleAndAfter.addExecutor(new JSSpec.Executor(function(){window.temp = {};}, null, onException));
 	exampleAndAfter.addFunction(function(){JSSpec.log.onSpecEnd(self);});
 	composite.addExecutor(exampleAndAfter);
 

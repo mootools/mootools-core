@@ -226,11 +226,13 @@ describe('$type', {
 
 });
 
+var Local = Local || {};
+
 describe('Native', {
 
 	'before all': function(){
 
-		this.local.Instrument = new Native({
+		Local.Instrument = new Native({
 
 			name: 'instrument',
 
@@ -240,7 +242,7 @@ describe('Native', {
 
 		});
 
-		this.local.Instrument.implement({
+		Local.Instrument.implement({
 
 			method: function(){
 				return this.property + ' ' + this.name;
@@ -250,7 +252,7 @@ describe('Native', {
 
 		});
 
-		this.local.Car = new Native({
+		Local.Car = new Native({
 
 			name: 'car',
 
@@ -262,7 +264,7 @@ describe('Native', {
 
 		});
 
-		this.local.Car.implement({
+		Local.Car.implement({
 
 			property: 'stuff',
 
@@ -275,23 +277,23 @@ describe('Native', {
 	},
 
 	'should allow implementation over existing methods when browser option is not set': function(){
-		this.local.Instrument.implement({ property: 'staff' });
-		var myInstrument = new this.local.Instrument('xeelophone');
+		Local.Instrument.implement({ property: 'staff' });
+		var myInstrument = new Local.Instrument('xeelophone');
 		value_of(myInstrument.method()).should_be('staff xeelophone');
 	},
 
 	'should not override existing methods when browser option is set': function(){
-		this.local.Car.implement({ property: 'staff' });
-		var myCar = new this.local.Car('smart');
+		Local.Car.implement({ property: 'staff' });
+		var myCar = new Local.Car('smart');
 		value_of(myCar.method()).should_be('smart_stuff');
 	},
 
 	'should allow generic calls': function(){
-		value_of(this.local.Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
+		value_of(Local.Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
 	},
 
 	"should have a 'native' type": function(){
-		value_of(Native.type(this.local.Car)).should_be_true();
+		value_of(Native.type(Local.Car)).should_be_true();
 	}
 
 });
@@ -322,7 +324,7 @@ describe('$A', {
 		};
 		var arr = fnTest(1,2,3);
 		value_of(Array.type(arr)).should_be_true();
-		value_of(arr).should_have(3, 'items')
+		value_of(arr).should_have(3, 'items');
 	}
 
 });

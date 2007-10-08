@@ -131,7 +131,7 @@ Fx.Morph = new Class({
 	*/
 
 	start: function(properties){
-		if (this.timer && this.options.wait) return this;
+		if (!this.check(properties)) return this;
 		if ($type(properties) == 'string') properties = Fx.CSS.search(properties);
 		this.now = {};
 		var from = {}, to = {};
@@ -192,7 +192,7 @@ Example:
 
 Element.Set.morph = function(options){
 	if (this.$attributes.$morph) this.$attributes.$morph.stop();
-	this.$attributes.$morph = new Fx.Morph(this, $merge({wait: false}, options));
+	this.$attributes.$morph = new Fx.Morph(this, $merge({link: 'chain'}, options));
 	return this;
 };
 

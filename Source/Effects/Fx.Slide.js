@@ -61,11 +61,9 @@ Fx.Slide = new Class({
 		}, true);
 		arguments.callee.parent($(element), options);
 		this.wrapper = this.element.$attributes.$wrapper;
-		if (!this.wrapper){
-			this.wrapper = new Element('div', {
-				'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
-			}).injectAfter(this.element).adopt(this.element);
-		}
+		this.wrapper = this.wrapper || new Element('div', {
+			'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
+		}).injectAfter(this.element).adopt(this.element);
 		this.element.$attributes.$wrapper = this.wrapper;
 		this.element.setStyle('margin', 0);
 		this.now = [];
@@ -268,7 +266,7 @@ Example:
 
 Element.Set.slide = function(options){
 	if (this.$attributes.$slide) this.$attributes.$slide.stop();
-	this.$attributes.$slide = new Fx.Slide(this, $merge({wait: false}, options));
+	this.$attributes.$slide = new Fx.Slide(this, $merge({link: 'chain'}, options));
 	return this;
 };
 

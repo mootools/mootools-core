@@ -6,10 +6,12 @@ License:
 	MIT-style license.
 */
 
+var Local = Local || {};
+
 describe('Class', {
 
 	'before all': function(){
-		this.local.Animal = new Class({
+		Local.Animal = new Class({
 
 			initialized: false,
 
@@ -24,7 +26,7 @@ describe('Class', {
 
 		});
 
-		this.local.Actions = new Class({
+		Local.Actions = new Class({
 			eat: function(){
 				return 'yum!';
 			},
@@ -34,7 +36,7 @@ describe('Class', {
 			}
 		});
 
-		this.local.Attributes = new Class({
+		Local.Attributes = new Class({
 			color: function(){
 				return 'green';
 			},
@@ -46,22 +48,22 @@ describe('Class', {
 	},
 
 	"should be type 'class'": function(){
-		value_of(Class.type(this.local.Animal)).should_be_true();
+		value_of(Class.type(Local.Animal)).should_be_true();
 	},
 
 	'should initialize': function(){
-		var init = new this.local.Animal();
+		var init = new Local.Animal();
 		value_of(init.initialized).should_be_true();
 	},
 
 	'should not initialize if passed $empty': function(){
-		var noInit = new this.local.Animal($empty);
+		var noInit = new Local.Animal($empty);
 		value_of(noInit.initialized).should_be_false();
 	},
 
 	'should use property Extends to extend another class': function(){
 		var Cat = new Class({
-			Extends: this.local.Animal,
+			Extends: Local.Animal,
 
 			initialize: function(name, color){
 				arguments.callee.parent(name);
@@ -85,7 +87,7 @@ describe('Class', {
 	'should use property Implements to implement another class': function(){
 		var Cat = new Class({
 
-			Implements: this.local.Animal
+			Implements: Local.Animal
 
 		});
 
@@ -96,9 +98,9 @@ describe('Class', {
 	'should use property Implements to implement any number of classes': function(){
 		var Cat = new Class({
 
-			Extends: this.local.Animal,
+			Extends: Local.Animal,
 
-			Implements: [this.local.Actions, this.local.Attributes]
+			Implements: [Local.Actions, Local.Attributes]
 
 		});
 
@@ -110,9 +112,9 @@ describe('Class', {
 	},
 
 	'should implement an object': function(){
-		this.local.Animal.implement(new this.local.Actions);
+		Local.Animal.implement(new Local.Actions);
 
-		var myAnimal = new this.local.Animal('fuzzy');
+		var myAnimal = new Local.Animal('fuzzy');
 
 		value_of(myAnimal.name).should_be('fuzzy');
 		value_of(myAnimal.eat()).should_be('yum!');
@@ -120,9 +122,9 @@ describe('Class', {
 	},
 
 	'should implement any number of objects': function(){
-		this.local.Animal.implement(new this.local.Actions, new this.local.Attributes);
+		Local.Animal.implement(new Local.Actions, new Local.Attributes);
 
-		var myAnimal = new this.local.Animal('fuzzy');
+		var myAnimal = new Local.Animal('fuzzy');
 
 		value_of(myAnimal.name).should_be('fuzzy');
 		value_of(myAnimal.eat()).should_be('yum!');
