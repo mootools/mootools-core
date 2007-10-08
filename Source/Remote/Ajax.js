@@ -35,7 +35,7 @@ Events:
 			responseXML  - (string) The XML response of the request.
 
 Returns:
-	(class) A new Ajax instance.
+	(object) A new Ajax instance.
 
 Examples:
 	Simple GET Request:
@@ -123,7 +123,7 @@ var Ajax = new Class({
 		data - (mixed, optional: defaults to options.data) A String, Object (used in <Hash.toQueryString>), or an Element with input elements (used in <Element.toQueryString>) which represents the data to request.
 
 	Returns:
-		(class) This Ajax instance.
+		(object) This Ajax instance.
 
 	Examples:
 		Reusable Example:
@@ -146,49 +146,6 @@ var Ajax = new Class({
 		}
 		if (this._method) data = (data) ? this._method + '&' + data : this._method;
 		return arguments.callee.parent(data);
-	}
-
-});
-
-/*
-Native: Hash
-	A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
-*/
-
-/*
-Method: toQueryString
-	Generates a query string from key/pair values in an object and URI encodes the values.
-
-Syntax:
-	>var myHash = new Hash({...}); = myHash.toQueryString();
-
-Arguments:
-	source - (object) The object to generate the query string from.
-
-Returns:
-	(string) The query string.
-
-Examples:
-	Using Hash generic:
-	[javascript]
-		Hash.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
-	[/javascript]
-
-	Using Hash instance:
-	[javascript]
-		var myHash = new Hash({apple: "red", lemon: "yellow"});
-		myHash.toQueryString(); //returns "apple=red&lemon=yellow"
-	[/javascript]
-*/
-
-Hash.implement({
-
-	toQueryString: function(){
-		var queryString = [];
-		Hash.each(this, function(value, key){
-			queryString.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-		});
-		return queryString.join('&');
 	}
 
 });

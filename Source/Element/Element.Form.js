@@ -120,12 +120,9 @@ Element.implement({
 		this.getFormElements().each(function(el){
 			var name = el.name, type = el.type, value = el.getValue();
 			if (value === false || !name || el.disabled) return;
-			if ((type == 'checkbox' || type == 'radio') && !el.checked ) return;
-			var qs = function(val){
+			$splat(value).each(function(val){
 				queryString.push(name + '=' + encodeURIComponent(val));
-			};
-			if ($type(value) == 'array') value.each(qs);
-			else qs(value);
+			});
 		});
 		return queryString.join('&');
 	}

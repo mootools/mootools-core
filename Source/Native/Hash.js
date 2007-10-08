@@ -529,6 +529,42 @@ Hash.implement({
 			values.push(value);
 		});
 		return values;
+	},
+	
+	/*
+	Method: toQueryString
+		Generates a query string from key/pair values in an object and URI encodes the values.
+
+	Syntax:
+		>var myHash = new Hash({...}); = myHash.toQueryString();
+
+	Arguments:
+		source - (object) The object to generate the query string from.
+
+	Returns:
+		(string) The query string.
+
+	Examples:
+		Using Hash generic:
+		[javascript]
+			Hash.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
+		[/javascript]
+
+		Using Hash instance:
+		[javascript]
+			var myHash = new Hash({apple: "red", lemon: "yellow"});
+			myHash.toQueryString(); //returns "apple=red&lemon=yellow"
+		[/javascript]
+	*/
+	
+	toQueryString: function(){
+		var queryString = [];
+		Hash.each(this, function(value, key){
+			$splat(value).each(function(val){
+				queryString.push(name + '=' + encodeURIComponent(val));
+			});
+		});
+		return queryString.join('&');
 	}
 
 });
