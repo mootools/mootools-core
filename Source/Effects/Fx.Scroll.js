@@ -108,7 +108,7 @@ Fx.Scroll = new Class({
 	*/
 
 	start: function(x, y){
-		if (!this.check(x, y)) return this;
+		if (this.timer && this.options.wait) return this;
 		var el = this.element.getSize();
 		var values = {'x': x, 'y': y};
 		for (var z in el.clientSize){

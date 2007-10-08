@@ -101,8 +101,7 @@ var Fx = new Class({
 		},
 		duration: 500,
 		unit: false,
-		// wait: true,
-		link: 'ignore',
+		wait: true,
 		fps: 50
 	},
 
@@ -110,8 +109,6 @@ var Fx = new Class({
 		this.element = element;
 		this.setOptions(options);
 		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration;
-		// if (this.options.wait == true) this.options.link = 'ignore';
-		// if (this.options.wait == false) this.options.link = 'cancel';
 	},
 
 	step: function(){
@@ -195,32 +192,10 @@ var Fx = new Class({
 	See Also:
 		<Element.effect>
 	*/
-	
-	check: function(){
-		this.skip = true;
-		if (!this.timer) return true;
-		switch(this.options.link){
-			case 'cancel': this.stop(); return true;
-			case 'chain':
-				this.chain(this.start.bind(this, arguments));
-				return false;
-			default: return false;
-		}
-		
-	},
 
 	start: function(from, to){
-		if (!this.skip && !this.check(from, to)) return this;
-		this.skip = false;
-		
-		switch(this.options.link){
-			case 'ignore': if (this.timer) return this;
-			case 'cancel': this.stop(); break;
-			case 'chain': if (this.timer) return this.chain(function(){
-				this.start(from, to);
-			}.bind(this));
-		}
-		
+		if (!this.options.wait) this.stop();
+		else if (this.timer) return this;
 		this.from = from;
 		this.to = to;
 		this.change = this.to - this.from;

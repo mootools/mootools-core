@@ -97,7 +97,7 @@ Fx.Tween = new Class({
 	*/
 
 	start: function(from, to){
-		if (!this.check(from, to)) return this;
+		if (this.timer && this.options.wait) return this;
 		var parsed = Fx.CSS.prepare(this.element, this.property, [from, to]);
 		return arguments.callee.parent(parsed.from, parsed.to);
 	},
@@ -137,7 +137,7 @@ Element.Set.extend({
 
 	tween: function(options){
 		if (this.$attributes.$tween) this.$attributes.$tween.stop();
-		this.$attributes.$tween = new Fx.Tween(this, null, $merge({link: 'chain'}, options));
+		this.$attributes.$tween = new Fx.Tween(this, null, $merge({wait: false}, options));
 		return this;
 	},
 	
@@ -163,7 +163,7 @@ Element.Set.extend({
 	
 	fade: function(options){
 		if (this.$attributes.$fade) this.$attributes.$fade.stop();
-		this.$attributes.$fade = new Fx.Tween(this, 'opacity', $merge({link: 'chain'}, options));
+		this.$attributes.$fade = new Fx.Tween(this, 'opacity', $merge({wait: false}, options));
 		return this;
 	}
 
