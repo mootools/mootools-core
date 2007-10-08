@@ -170,19 +170,19 @@ Selectors.Pseudo.nth = {
 		var count = 0, el = this;
 		switch (argument.special){
 			case 'n':
-				Selectors.cleanup = Selectors.cleanup || [];
-				if (!this._pos){
+				Selectors.garbage = Selectors.garbage || [];
+				if (!this._mark){
 					var children = this.parentNode.childNodes;
 					for (var i = 0, l = children.length; i < l; i++){
 						var child = children[i];
-						if (child._pos) continue;
+						if (child._mark) continue;
 						if (child.nodeType == 1){
-							Selectors.cleanup.push(child);
-							child._pos = {i: ++count};
+							Selectors.garbage.push(child);
+							child._mark = {position: ++count};
 						}
 					}
 				}
-				return ((this._pos.i + 1) % argument.a == argument.b);
+				return ((this._mark.position + 1) % argument.a == argument.b);
 			case 'last':
 				while ((el = el.nextSibling)){
 					if (el.nodeType == 1) return false;

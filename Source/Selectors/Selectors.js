@@ -63,7 +63,7 @@ Native.implement([Element, Document], {
 	*/
 
 	getElements: function(selectors, nocash){
-		Selectors.cleanup = false;
+		Selectors.garbage = false;
 		selectors = selectors.split(',');
 		var elements = [], j = selectors.length;
 		var dupes = (j > 1);
@@ -84,9 +84,7 @@ Native.implement([Element, Document], {
 			var partial = Selectors.Method.getItems(items, this);
 			elements = (dupes) ? elements.concat(partial) : partial;
 		}
-		if (Selectors.cleanup){
-			for (i = 0, j = Selectors.cleanup.length; i < j; i++) Selectors.cleanup[i]._pos = null;
-		}
+		if (Selectors.garbage) Selectors.clean(Selectors.garbage);
 		return nocash ? elements : new Elements(elements, (!dupes) ? 'cash' : false);
 	},
 
@@ -137,6 +135,10 @@ var Selectors = {
 
 	'sRegExp': (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
 
+};
+
+Selectors.clean = function(items){
+	for (i = 0, j = items.length; i < j; i++) items[i]._mark = null;
 };
 
 Selectors.parse = function(selector){
@@ -217,24 +219,24 @@ Selectors.XPath = {
 Selectors.Filter = {
 
 	getParam: function(items, separator, context, params){
-		if (!separator){
-			if (params.id){
-				var el = context.getElementById(params.id, true);
-				params.id = false;
-				return (el && Selectors.Filter.match(el, params)) ? [el] : false;
-			} else {
-				items = context.getElementsByTagName(params.tag);
-				params.tag = false;
-				var found = [];
-				for (var k = 0, l = items.length; k < l; k++){
-					if (Selectors.Filter.match(items[k], params)) found.push(items[k]);
-				}
-				return found;
-			}
-		} else {
+		if (separator){
 			items = Selectors.Filter.Separators[separator](items, params);
-			for (var i = 0, j = items.length; i < j; i++) items[i]._marked = null;
+			Selectors.clean(items);
 			return items;
+		}
+
+		if (params.id){
+			var el = context.getElementById(params.id, true);
+			params.id = false;
+			return (el && Selectors.Filter.match(el, params)) ? [el] : false;
+		} else {
+			items = context.getElementsByTagName(params.tag);
+			params.tag = false;
+			var found = [];
+			for (var k = 0, l = items.length; k < l; k++){
+				if (Selectors.Filter.match(items[k], params)) found.push(items[k]);
+			}
+			return found;
 		}
 	},
 
@@ -255,8 +257,8 @@ Selectors.Filter.Separators = {
 			params.tag = false;
 			for (var k = 0, l = children.length; k < l; k++){
 				var child = children[k];
-				if (!child._marked && Selectors.Filter.match(child, params)){
-					child._marked = {};
+				if (!child._mark && Selectors.Filter.match(child, params)){
+					child._mark = {};
 					found.push(child);
 				}
 			}
@@ -270,8 +272,8 @@ Selectors.Filter.Separators = {
 			var children = items[i].childNodes;
 			for (var k = 0, l = children.length; k < l; k++){
 				var child = children[k];
-				if (!child._marked && child.nodeType == 1 && Selectors.Filter.match(child, params)){
-					child._marked = {};
+				if (!child._mark && child.nodeType == 1 && Selectors.Filter.match(child, params)){
+					child._mark = {};
 					found.push(child);
 				}
 			}
@@ -284,9 +286,9 @@ Selectors.Filter.Separators = {
 		for (var i = 0, j = items.length; i < j; i++){
 			var el = items[i];
 			while ((el = el.nextSibling)){
-				if (el._marked) break;
+				if (el._mark) break;
 				if (el.nodeType == 1 && Selectors.Filter.match(el, params)){
-					el._marked = {};
+					el._mark = {};
 					found.push(el);
 					break;
 				}
@@ -300,9 +302,9 @@ Selectors.Filter.Separators = {
 		for (var i = 0, j = items.length; i < j; i++){
 			var el = items[i];
 			while ((el = el.nextSibling)){
-				if (el._marked) break;
+				if (el._mark) break;
 				if (el.nodeType == 1 && Selectors.Filter.match(el, params)){
-					el._marked = {};
+					el._mark = {};
 					found.push(el);
 				}
 			}
