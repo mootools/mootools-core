@@ -302,7 +302,7 @@ Native.implement([Element, Window, Document], {
 		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
 		if (this.$events[type].keys.contains(fn)) return this;
 		this.$events[type].keys.push(fn);
-		var realType = type, custom = Element.Events.get(type), condition = fn;
+		var realType = type, custom = Element.Events.get(type), condition = fn, self = this;
 		if (custom){
 			if (custom.onAdd) custom.onAdd.call(this, fn);
 			if (custom.condition){
@@ -313,11 +313,12 @@ Native.implement([Element, Window, Document], {
 			}
 			realType = custom.base || realType;
 		}
-		var defn = fn;
-		var nativeEvent = Element.$events[realType] || 0;
+		var defn = function(){
+			return fn.call(self);
+		};
+		var nativeEvent = Element.NativeEvents[realType] || 0;
 		if (nativeEvent){
 			if (nativeEvent == 2){
-				var self = this;
 				defn = function(event){
 					event = new Event(event, (self.ownerDocument || self).window);
 					if (condition.call(self, event) === false) event.stop();
@@ -380,7 +381,7 @@ Native.implement([Element, Window, Document], {
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
 		}
-		return (Element.$events[type]) ? this.removeListener(type, value) : this;
+		return (Element.NativeEvents[type]) ? this.removeListener(type, value) : this;
 	},
 
 	/*
@@ -543,14 +544,13 @@ Native.implement([Element, Window, Document], {
 
 });
 
-Element.$events = {
-	'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, //mouse buttons
+Element.NativeEvents = {
+	'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, 'contextmenu': 2,//mouse buttons
 	'mousewheel': 2, 'DOMMouseScroll': 2, //mouse wheel
 	'mouseover': 2, 'mouseout': 2, 'mousemove': 2, //mouse movement
 	'keydown': 2, 'keypress': 2, 'keyup': 2, //keys
-	'contextmenu': 2, 'submit': 2, //misc
 	'load': 1, 'unload': 1, 'beforeunload': 1, 'resize': 1, 'move': 1, 'DOMContentLoaded': 1, 'readystatechange': 1, //window
-	'focus': 1, 'blur': 1, 'change': 2, 'reset': 1, 'select': 1, //forms elements
+	'focus': 1, 'blur': 1, 'change': 1, 'reset': 1, 'select': 1, 'submit': 1, //form elements
 	'error': 1, 'abort': 1, 'scroll': 1 //misc
 };
 
