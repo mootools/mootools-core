@@ -51,7 +51,7 @@ Element.implement({
 				});
 				return (this.multiple) ? values : values[0];
 			case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
-			default: return $chk(this.value) ? this.value : false;
+			default: return $pick(this.value, false);
 		}
 	},
 
