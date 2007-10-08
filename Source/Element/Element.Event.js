@@ -103,7 +103,7 @@ var Event = new Native({
 			target: target,
 			shift: event.shiftKey,
 			control: event.ctrlKey,
-			alt: event.alkKey,
+			alt: event.altKey,
 			meta: event.metaKey
 		});
 	}
@@ -146,7 +146,7 @@ Event.implement({
 		>myEvent.stop();
 
 	Returns:
-		(class) This Event instance.
+		(object) This Event instance.
 
 	Example:
 		HTML:
@@ -184,7 +184,7 @@ Event.implement({
 		>myEvent.stopPropagation();
 
 	Returns:
-		(class) This Event object.
+		(object) This Event object.
 
 	Example:
 		HTML:
@@ -224,7 +224,7 @@ Event.implement({
 		>myEvent.preventDefault();
 
 	Returns:
-		(class) This Event object.
+		(object) This Event object.
 
 	Example:
 		HTML:
