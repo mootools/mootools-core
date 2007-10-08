@@ -561,7 +561,7 @@ Hash.implement({
 		var queryString = [];
 		Hash.each(this, function(value, key){
 			$splat(value).each(function(val){
-				queryString.push(name + '=' + encodeURIComponent(val));
+				queryString.push(key + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
