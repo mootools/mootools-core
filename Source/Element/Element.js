@@ -1367,8 +1367,8 @@ Element.implement({
 	*/
 
 	getProperty: function(attribute){
-		var property = Element.Attributes.Properties[attribute];
-		var value = (property) ? this[property] : this.getAttribute(attribute);
+		var key = Element.Attributes.Properties[attribute];
+		var value = (key) ? this[key] : this.getAttribute(attribute);
 		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
 	},
 
@@ -1402,8 +1402,9 @@ Element.implement({
 	*/
 
 	removeProperty: function(attribute){
-		var property = Element.Attributes.Properties[attribute];
-		(property) ? this[property] = '' : this.removeAttribute(attribute);
+		var key = Element.Attributes.Properties[attribute];
+		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
+		this.removeAttribute(attribute);
 		return this;
 	},
 	
@@ -1436,9 +1437,9 @@ Element.implement({
 
 	setProperty: function(attribute, value){
 		if (!$chk(value)) return this.removeProperty(attribute);
-		var property = Element.Attributes.Properties[attribute];
+		var key = Element.Attributes.Properties[attribute];
 		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
-		if (property) this[property] = value;
+		if (key) this[key] = value;
 		this.setAttribute(attribute, value);
 		return this;
 	},
