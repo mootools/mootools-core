@@ -58,7 +58,7 @@ Fx.CSS.Parsers = new Hash({
 	'color': {
 
 		match: function(value){
-			if (value.match(/^#?[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
+			if (value.match(/^#[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
 			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
 		},
 
