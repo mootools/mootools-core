@@ -145,9 +145,8 @@ var IFrame = new Native({
 			});
 			if (host && host == window.location.host){
 				iframe.window = iframe.contentWindow;
-				iframe.document = iframe.window.document;
 				new Window(iframe.window);
-				new Document(iframe.document);
+				new Document(iframe.window.document);
 			}
 			onload.call(iframe.contentWindow);
 		};
