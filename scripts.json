@@ -166,7 +166,7 @@
 		},
 
 		"Cookie": {
-			"deps": ["Core", "Browser", "Array", "String", "Function", "Number", "Hash"],
+			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
 			"desc": "Lets you Create/Read/Delete Cookies."
 		},
 

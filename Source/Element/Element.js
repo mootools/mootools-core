@@ -395,7 +395,7 @@ Native.implement([Element, Document], {
 		tags.each(function(tag){
 			elements = elements.concat(this.getElementsByTagName(tag.trim()));
 		}, this);
-		return (nocash) ? elements : new Elements(elements, (!dupes) ? 'cash' : false);
+		return (nocash) ? elements : new Elements(elements, (dupes) ? 'cash' : false);
 	}
 
 });

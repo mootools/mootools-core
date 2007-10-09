@@ -85,7 +85,7 @@ Native.implement([Element, Document], {
 			elements = (dupes) ? elements.concat(partial) : partial;
 		}
 		if (Selectors.garbage) Selectors.clean(Selectors.garbage);
-		return nocash ? elements : new Elements(elements, (!dupes) ? 'cash' : false);
+		return nocash ? elements : new Elements(elements, (dupes) ? 'cash' : false);
 	},
 
 	/*
