@@ -45,10 +45,14 @@ Fx.CSS = {
 	},
 
 	serve: function(now, unit){
-		return now.reduce(function(prev, cur){
-			var serve = cur.parser.serve;
-			return prev.concat((serve) ? serve(cur.value, unit) : cur.value);
-		}, []);
+		var returned = []
+
+		now.each(function(bit){
+			var serve = bit.parser.serve;
+			returned.concat((serve) ? serve(bit.value, unit) : bit.value);
+		});
+
+		return returned;
 	}
 
 };
