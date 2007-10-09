@@ -17,6 +17,20 @@ describe('Array', {
 			return a + b;
 		};
 	},
+	
+	'should `flatten` a multidimensional array': function(){
+		var arr = [1,2,3,[4,5,[6,7,[8]]], [[[[[9]]]]]];
+		value_of(arr.flatten()).should_be([1,2,3,4,5,6,7,8,9]);
+	},
+	
+	'should `flatten` arguments': function(){
+		var test = function(){
+			return Array.flatten(arguments);
+		};
+		value_of(test(1,2,3)).should_be([1,2,3]);
+		value_of(test([1,2,3])).should_be([1,2,3]);
+		value_of(test(1,2,[3])).should_be([1,2,3]);
+	},
 
 	'should return a `filter`ed array': function(){
 		var arr = Local.array.concat([false, null, 4]).filter(Number.type);
@@ -57,21 +71,6 @@ describe('Array', {
 
 	'should return -1 if the `indexOf` the item is not found': function(){
 		value_of(Local.array.indexOf('not found')).should_be(-1);
-	},
-
-	'should `reduce` an array to a single value': function(){
-		value_of(Local.array.reduce(Local.adder)).should_be(6);
-	},
-
-	'should `reduce` an array to a single value with an initial value': function(){
-		var reduction = ['answer', 'is', 42].reduce(function(a, b) {
-			return a.concat(' ', b);
-		}, 'The');
-		value_of(reduction).should_be('The answer is 42');
-	},
-
-	'should return undefined if an empty array is `reduce`d': function(){
-		value_of([].reduce(Local.adder)).should_be_undefined();
 	},
 
 	'should `remove` all items in the array that match the specified item': function(){

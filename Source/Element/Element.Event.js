@@ -91,7 +91,7 @@ var Event = new Native({
 				}
 				if ((function(){
 					while (related && related.nodeType == 3) related = related.parentNode;
-				}).create({attempt: Client.Engine.gecko})() === false) related = target;
+				}).create({attempt: Browser.Engine.gecko})() === false) related = target;
 			}
 
 		}
@@ -531,6 +531,7 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	cloneEvents: function(from, type){
+		from = $(from, true);
 		if (!from.$events) return this;
 		if (!type){
 			for (var evType in from.$events) this.cloneEvents(from, evType);
@@ -664,7 +665,7 @@ Element.Events = new Hash({
 
 	'mousewheel': {
 		
-		base: (Client.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
 		
 	}
 

@@ -24,7 +24,7 @@ Arguments:
 		autoSave - (boolean: defaults to true) An option to save the cookie at every operation.
 
 Returns:
-	(class) A new Hash.Cookie instance.
+	(object) A new Hash.Cookie instance.
 
 Example:
 	[javascript]
@@ -108,7 +108,7 @@ Hash.Cookie = new Class({
 		>myHashCookie.load();
 
 	Returns:
-		(class) This Hash.Cookie instance.
+		(object) This Hash.Cookie instance.
 
 	Example:
 		[javascript]

@@ -69,7 +69,7 @@ Properties:
 	response - (object) Object with text and xml as keys. You can access this property in the onSuccess event.
 
 Returns:
-	(class) A new XHR instance.
+	(object) A new XHR instance.
 
 Example:
 	[javascript]
@@ -100,7 +100,7 @@ var XHR = new Class({
 	},
 
 	setTransport: function(){
-		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Client.Engine.trident ? new ActiveXObject('Microsoft.XMLHTTP') : false);
+		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Browser.Engine.trident ? new ActiveXObject('Microsoft.XMLHTTP') : false);
 	},
 
 	initialize: function(){
@@ -158,7 +158,7 @@ var XHR = new Class({
 		value - (string) The value to be assigned.
 
 	Returns:
-		(class) This XHR instance.
+		(object) This XHR instance.
 
 	Example:
 		[javascript]
@@ -256,7 +256,7 @@ var XHR = new Class({
 		data - (string, optional) The request data as query string.
 
 	Returns:
-		(class) This XHR instance.
+		(object) This XHR instance.
 
 	Example:
 		[javascript]
@@ -277,7 +277,7 @@ var XHR = new Class({
 		>myRequest.cancel();
 
 	Returns:
-		(class) This XHR instance.
+		(object) This XHR instance.
 
 	Example:
 		[javascript]

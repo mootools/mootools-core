@@ -39,7 +39,7 @@ Arguments:
 				CSS mastery is required to make this work!
 
 Returns:
-	(class) A new Accordion instance.
+	(object) A new Accordion instance.
 
 Events:
 	onActive - (function) Function to execute when an element starts to show.
@@ -137,7 +137,7 @@ var Accordion = new Class({
 		pos     - (integer, optional) The index at which these objects are to be inserted within the Accordion (defaults to the end).
 
 	Returns:
-		(class) This Accordion instance.
+		(object) This Accordion instance.
 
 	Example:
 		[javascript]
@@ -187,7 +187,7 @@ var Accordion = new Class({
 		index - (mixed) The index of the item to show, or the actual element to be displayed.
 
 	Returns:
-		(class) This Accordion instance.
+		(object) This Accordion instance.
 
 	Example:
 		[javascript]

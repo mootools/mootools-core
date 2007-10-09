@@ -27,7 +27,7 @@ Arguments:
 		links - (mixed) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
 
 Returns:
-	(class) A new SmoothScroll instance.
+	(object) A new SmoothScroll instance.
 
 Example:
 	[javascript]
@@ -54,7 +54,7 @@ var SmoothScroll = new Class({
 			var anchor = link.href.substr(location.length);
 			if (anchor && $(anchor)) this.useLink(link, anchor);
 		}, this);
-		if (!Client.Engine.webkit419) this.addEvent('onComplete', function(){
+		if (!Browser.Engine.webkit419) this.addEvent('onComplete', function(){
 			this.document.window.location.hash = this.anchor;
 		}, true);
 	},

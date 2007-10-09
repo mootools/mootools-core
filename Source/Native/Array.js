@@ -223,58 +223,6 @@ Array.implement({
 	},
 
 	/*
-	Method: reduce
-		Apply a function simultaneously against two values of the array (from left-to-right) as to reduce it to a single value.
-
-		This method is provided only for browsers without native <Array.reduce> support.
-
-	Syntax:
-		>var reduced = myArray.reduce(fn[, value]);
-
-	Arguments:
-		fn    - (function) Function to execute on each value in the array.
-		value - (object, optional) Object to use as the initial argument to the first call of the callback.
-
-		fn (continued):
-			Signature:
-				>fn(previous, current, index, array)
-
-			Arguments:
-				previous - (mixed) The item prior to the current item in the array.
-				current  - (mixed) The current item in the array.
-				index    - (number) The current item's index in the array.
-				array    - (array) The actual array.
-
-	Returns:
-		(mixed) The result of reducing this array according to fn.
-
-	Examples:
-		Sum Up Numbers:
-		[javascript]
-			var sum = [1, 2, 3, 4, 6].reduce(function(previousItem, currentItem){
-				return previousItem + currentItem;
-			}, 10); //sum is 26
-		[/javascript]
-
-		Collect Elements of Many Arrays Into a Single Array:
-		[javascript]
-			var collected = [['a', 'b'], ['c', 'd'], ['e', 'f', 'g']].reduce(function(previousItem, currentItem) {
-				return previousItem.concat(currentItem);
-			}, []); //collected is ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-		[/javascript]
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:Array:reduce>
-	*/
-
-	reduce: function(fn, value){
-		var i = 0;
-		if (arguments.length < 2 && this.length) value = this[i++];
-		for (var l = this.length; i < l; i++) value = fn.call(null, value, this[i], i, this);
-		return value;
-	},
-
-	/*
 	Method: associate
 		Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
 
@@ -529,6 +477,35 @@ Array.implement({
 	empty: function(){
 		this.length = 0;
 		return this;
+	},
+	
+	
+	/*
+	Method: flatten
+		Flattens a multidimensional array into a single array.
+
+	Syntax:
+		>myArray.flatten();
+
+	Returns:
+		(array) A new flat array.
+
+	Example:
+		[javascript]
+			var myArray = [1,2,3,[4,5, [6,7]], [[[8]]]];
+			varnewArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]
+		[/javascript]
+	*/
+
+	
+	flatten: function(){
+		var array = [];
+		for (var i = 0, l = this.length; i < l; i++){
+			var type = $type(this[i]);
+			if (!type) continue;
+			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
+		}
+		return array;
 	}
 
 });

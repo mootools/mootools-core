@@ -55,7 +55,7 @@ var Element = new Native({
 	
 	name: 'Element',
 	
-	legacy: true,
+	legacy: window.Element,
 	
 	initialize: function(el){
 		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
@@ -73,7 +73,7 @@ Element.create = function(el){
 	var props = params.properties || {}, doc = params.document || document;
 	if ($type(el) == 'string'){
 		el = el.toLowerCase();
-		if (Client.Engine.trident && props){
+		if (Browser.Engine.trident && props){
 			['name', 'type', 'checked'].each(function(attribute){
 				if (!props[attribute]) return;
 				el += ' ' + attribute + '="' + props[attribute] + '"';
@@ -165,14 +165,13 @@ Native: Elements
 	In MooTools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
 
 Syntax:
-	>var myElements = new Elements(elements[, nocheck]);
+	>var myElements = new Elements(elements[, option]);
 
 Arguments:
-	elements - (array) A mixed array with items of Elements or an string ID reference.
-	nocheck  - (boolean: defaults to false) Optionally bypasses the extending of Elements.
+	elements - (mixed) An array of elements and/or strings representing element ids, or an HTMLCollection.
 
 Returns:
-	(array) An extended array with the <Element> methods.
+	(array) An extended array with the <Element> and <Elements> methods.
 
 Example:
 	[javascript];
@@ -192,7 +191,7 @@ Example:
 Note:
 	- Because Elements is an Array, it accepts all the <Array> methods.
 	- Array methods have priority, so overlapping Element methods (remove, getLast) are changed to "method + Elements" (removeElements, getLastElements).
-	- Every node of the Elements instance is already extended with <$>.
+	- Every node of the Elements instance is already "extended" with <$>.
 
 See Also:
 	<$$>
@@ -207,8 +206,9 @@ var Elements = new Native({
 		if (option || !length) return $extend(elements, this);
 		var uniques = {};
 		var returned = [];
-		for (var i = 0; i < length; i++){
-			var el = $(elements[i]);
+		for (var i = 0, el; i < length; i++){
+			if (!(el = elements[i])) continue;
+			if (!el.$attributes) el = $(el);
 			if (!el || uniques[el.$attributes.uid]) continue;
 			uniques[el.$attributes.uid] = true;
 			returned.push(el);
@@ -261,12 +261,14 @@ Window.implement({
 		extended Elements can be passed to this function multiple times without ill effects.
 	*/
 
-	$: function(el){
+	$: function(el, notrash){
 		if (el && el.$attributes) return el;
 		var type = $type(el);
 		if (type == 'string') type = (el = this.document.getElementById(el)) ? 'element' : false;
 		if (type != 'element') return (type == 'window' || type == 'document') ? el : null;
-		if (Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
+		if (!notrash){
+			if (Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
+		}
 		return el;
 	},
 
@@ -284,37 +286,37 @@ Window.implement({
 		if you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 
 	Example:
-	>$$('a'); 
-	Returns an array of all anchor tags on the page.
+		>$$('a'); 
+		Returns an array of all anchor tags on the page.
 
-	>$$('a', 'b');
-	Returns an array of all anchor and bold tags on the page.
+		>$$('a', 'b');
+		Returns an array of all anchor and bold tags on the page.
 
-	>$$('#myElement');
-	Returns an array containing only the element with id = myElement (requires Element.Selectors.js).
+		>$$('#myElement');
+		Returns an array containing only the element with id = myElement (requires Element.Selectors.js).
 
-	>$$('#myElement a.myClass');
-	Returns an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (requires Element.Selectors.js).
+		>$$('#myElement a.myClass');
+		Returns an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (requires Element.Selectors.js).
 
-	>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
-	Returns a collection of the element referenced as myelement, the element referenced as myelement2, all of the link tags on the page,
-	the element with the id 'myid', followed by the elements with the ids of 'myid2' and 'myid3', and finally all the div elements on the page.
-	NOTE: If an element is not found, nothing will be included into the array (not even *null*).
+		>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
+		Returns a collection of the element referenced as myelement, the element referenced as myelement2, all of the link tags on the page,
+		the element with the id 'myid', followed by the elements with the ids of 'myid2' and 'myid3', and finally all the div elements on the page.
+		NOTE: If an element is not found, nothing will be included into the array (not even *null*).
 
 	Returns:
 		array - array of all the dom elements matched, extended with <$>.  Returns as <Elements>.
 	*/
 
-	$$: function(){
-		if (arguments.length == 1 && $type(arguments[0]) == 'string') return this.document.getElements(arguments[0]);
+	$$: function(selector){
+		if (arguments.length == 1 && $type(selector) == 'string') return this.document.getElements(selector);
 		var elements = [];
-		for (var i = 0, j = arguments.length; i < j; i++){
-			var selector = arguments[i];
-			switch ($type(selector)){
-				case 'element': elements.push(selector); break;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = arguments[i];
+			switch ($type(item)){
 				case false: case null: break;
-				case 'string': selector = this.document.getElements(selector, true);
-				default: elements.extend(selector);
+				case 'element': elements.push(item); break;
+				case 'string': item = this.document.getElements(item, true);
+				default: elements.extend(item);
 			}
 		}
 		return new Elements(elements);
@@ -355,8 +357,8 @@ Native.implement([Element, Document], {
 		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElement so that it maches with CSS selectors.
 	*/
 
-	getElement: function(tag, nocash){
-		var element = this.getElementsByTagName(tag)[0] || null;
+	getElement: function(tags, nocash){
+		var element = this.getElements(tags, true)[0] || null;
 		return (nocash) ? element : $(element);
 	},
 
@@ -386,9 +388,14 @@ Native.implement([Element, Document], {
 		This method is also available for the Document instances.
 	*/
 
-	getElements: function(tag, nocash){
-		var elements = this.getElementsByTagName(tag);
-		return (nocash) ? elements : $$(elements);
+	getElements: function(tags, nocash){
+		tags = tags.split(',');
+		var elements = [];
+		var dupes = (tags.length > 1);
+		tags.each(function(tag){
+			elements = elements.concat(this.getElementsByTagName(tag.trim()));
+		}, this);
+		return (nocash) ? elements : new Elements(elements, (!dupes) ? 'cash' : false);
 	}
 
 });
@@ -404,6 +411,185 @@ Element.Set = new Hash({
 Element.Has = new Hash;
 
 Element.Get = new Hash;
+
+Element.Inject = new Hash({
+	
+	/*
+	Method: injectBottom
+		Injects the Element inside and at the end of the child nodes of the passed in Element.
+
+	Syntax:
+		>myElement.injectInside(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected inside.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').injectInside('myElement');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement">
+				<div id="mySecondElement"></div>
+			</div>
+		[/html]
+
+	See Also:
+		<Element.inject>
+	*/
+
+	bottom: function(el){
+		el.appendChild(this);
+	},
+	
+	/*
+	Method: injectTop
+		Same as <Element.injectInside>, but inserts the Element inside, at the top.
+
+	Syntax:
+		>myElement.injectTop(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected top.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement">
+				<div id="mySecondElement"></div>
+				<div id="myThirdElement"></div>
+			</div>
+			<div id="myFourthElement"></div>
+		[/html]
+
+		[javascript]
+			$('myFourthElement').injectTop('myElement');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement">
+				<div id="myFourthElement"></div>
+				<div id="mySecondElement"></div>
+				<div id="myThirdElement"></div>
+			</div>
+		[/html]
+
+	See Also:
+		<Element.inject>
+	*/
+
+	top: function(el){
+		var first = el.firstChild;
+		(first) ? el.insertBefore(this, first) : el.appendChild(this);
+	},
+	
+	/*
+	Method: injectBefore
+		Inserts the Element before the passed Element.
+
+	Syntax:
+		>myElement.injectBefore(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected before.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').injectBefore('myElement');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="mySecondElement"></div>
+			<div id="myElement"></div>
+		[/html]
+
+	See Also:
+		<Element.inject>
+	*/
+
+	before: function(el){
+		if (el.parentNode) el.parentNode.insertBefore(this, el);
+	},
+
+	/*
+	Method: injectAfter
+		Inserts the Element after the passed Element.
+
+	Syntax:
+		>myElement.injectAfter(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected after.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="mySecondElement"></div>
+			<div id="myElement"></div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').injectBefore('myElement');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+	See Also:
+		<Element.inject>, <Element.injectBefore>
+	*/
+	
+	after: function(el){
+		if (!el.parentNode) return;
+		var next = el.nextSibling;
+		while (next && next.nodeType != 1) next = next.nextSibling;
+		(next) ? el.parentNode.insertBefore(this, next) : el.parentNode.appendChild(this);
+	}
+	
+});
+
+Element.Inject.inside = Element.Inject.bottom;
+
+(function(){
+	var injecters = {};
+	Element.Inject.each(function(value, key){
+		injecters['inject' + key.capitalize()] = function(el){
+			return Element.inject(this, el, key);
+		};
+	});
+	Element.implement(injecters);
+})();
 
 Element.implement({
 
@@ -554,7 +740,7 @@ Element.implement({
 		>myElement.inject(el[, where]);
 
 	Arguments:
-		el    - (mixed) el can be: the string of the id of the Element or an Element.
+		el    - (mixed) el can be: the string of the id of the element or an element.
 		where - (string, optional) The place to inject this Element to (defaults to the bottom of the el's child nodes).
 
 	Returns:
@@ -575,182 +761,10 @@ Element.implement({
 	*/
 
 	inject: function(el, where){
-		el = $(el);
-		switch (where){
-			case 'before': el.parentNode.insertBefore(this, el); break;
-			case 'after':
-				var next = el.getNext();
-				if (!next) el.parentNode.appendChild(this);
-				else el.parentNode.insertBefore(this, next);
-				break;
-			case 'top':
-				var first = el.firstChild;
-				if (first){
-					el.insertBefore(this, first);
-					break;
-				}
-			default: el.appendChild(this);
-		}
+		if (!(el = $(el, true))) return this;
+		where = where || 'bottom';
+		if (Element.Inject.get(where)) Element.Inject[where].call(this, el);
 		return this;
-	},
-
-	/*
-	Method: injectBefore
-		Inserts the Element before the passed Element.
-
-	Syntax:
-		>myElement.injectBefore(el);
-
-	Arguments:
-		el - (mixed) An Element reference or the id of the Element to be injected before.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').injectBefore('myElement');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="mySecondElement"></div>
-			<div id="myElement"></div>
-		[/html]
-
-	See Also:
-		<Element.inject>
-	*/
-
-	injectBefore: function(el){
-		return this.inject(el, 'before');
-	},
-
-	/*
-	Method: injectAfter
-		Inserts the Element after the passed Element.
-
-	Syntax:
-		>myElement.injectAfter(el);
-
-	Arguments:
-		el - (mixed) An Element reference or the id of the Element to be injected after.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="mySecondElement"></div>
-			<div id="myElement"></div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').injectBefore('myElement');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-	See Also:
-		<Element.inject>, <Element.injectBefore>
-	*/
-
-	injectAfter: function(el){
-		return this.inject(el, 'after');
-	},
-
-	/*
-	Method: injectInside
-		Injects the Element inside and at the end of the child nodes of the passed in Element.
-
-	Syntax:
-		>myElement.injectInside(el);
-
-	Arguments:
-		el - (mixed) An Element reference or the id of the Element to be injected inside.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').injectInside('myElement');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">
-				<div id="mySecondElement"></div>
-			</div>
-		[/html]
-
-	See Also:
-		<Element.inject>
-	*/
-
-	injectInside: function(el){
-		return this.inject(el, 'bottom');
-	},
-
-	/*
-	Method: injectTop
-		Same as <Element.injectInside>, but inserts the Element inside, at the top.
-
-	Syntax:
-		>myElement.injectTop(el);
-
-	Arguments:
-		el - (mixed) An Element reference or the id of the Element to be injected top.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">
-				<div id="mySecondElement"></div>
-				<div id="myThirdElement"></div>
-			</div>
-			<div id="myFourthElement"></div>
-		[/html]
-
-		[javascript]
-			$('myFourthElement').injectTop('myElement');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">
-				<div id="myFourthElement"></div>
-				<div id="mySecondElement"></div>
-				<div id="myThirdElement"></div>
-			</div>
-		[/html]
-
-	See Also:
-		<Element.inject>
-	*/
-
-	injectTop: function(el){
-		return this.inject(el, 'top');
 	},
 
 	/*
@@ -793,11 +807,9 @@ Element.implement({
 	*/
 
 	adopt: function(){
-		var elements = [];
-		Array.each(arguments, function(argument){
-			elements = elements.concat(argument);
-		});
-		$$(elements).inject(this);
+		Array.flatten(arguments).each(function(element){
+			this.appendChild($(element, true));
+		}, this);
 		return this;
 	},
 
@@ -846,7 +858,7 @@ Element.implement({
 		contents - (boolean, optional) When true the Element is cloned with childNodes, default true
 
 	Returns:
-		(element) The cloned Element without Events.
+		(element) The cloned Element.
 
 	Example:
 		HTML:
@@ -872,14 +884,11 @@ Element.implement({
 	*/
 
 	clone: function(contents){
-		var el = $(this.cloneNode(contents !== false));
-		if (!el.$events) return el;
-		el.$events = {};
-		for (var type in this.$events) el.$events[type] = {
-			'keys': $A(this.$events[type].keys),
-			'values': $A(this.$events[type].values)
-		};
-		return el.removeEvents();
+		var temp = new Element('div').adopt(this.cloneNode(contents !== false));
+		Array.each(temp.getElementsByTagName('*'), function(element){
+			if (element.id) element.removeAttribute('id');
+		});
+		return new Element('div').setHTML(temp.innerHTML).getFirst();
 	},
 
 	/*
@@ -1085,7 +1094,7 @@ Element.implement({
 	walk: function(brother, start){
 		brother += 'Sibling';
 		var el = (start) ? this[start] : this[brother];
-		while (el && $type(el) != 'element') el = el[brother];
+		while (el && el.nodeType != 1) el = el[brother];
 		return $(el);
 	},
 
@@ -1337,8 +1346,8 @@ Element.implement({
 	*/
 
 	hasChild: function(el){
-		if (!(el = $(el))) return false;
-		return !!$A(this.getElementsByTagName(el.getTag())).contains(el);
+		if (!(el = $(el, true))) return false;
+		return !!$A(this.getElementsByTagName(Element.getTag(el))).contains(el);
 	},
 
 	/*
@@ -1585,7 +1594,7 @@ Element.implement({
 	setText: function(text){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (Client.Engine.trident){
+			if (Browser.Engine.trident){
 				if (tag == 'style') this.styleSheet.cssText = text;
 				else if (tag ==  'script') this.setProperty('text', text);
 				return this;
@@ -1622,7 +1631,7 @@ Element.implement({
 	getText: function(){
 		var tag = this.getTag();
 		if (['style', 'script'].contains(tag)){
-			if (Client.Engine.trident){
+			if (Browser.Engine.trident){
 				if (tag == 'style') return this.styleSheet.cssText;
 				else if (tag ==  'script') return this.getProperty('text');
 			} else {
@@ -1695,7 +1704,7 @@ Element.implement({
 			Element.dispose.attempt(element);
 		});
 		Garbage.trash(elements);
-		Element.setHTML.attempt([this, '']);
+		this.setHTML.attempt('', this);
 		return this;
 	},
 
@@ -1771,7 +1780,7 @@ var Garbage = {
 	collect: function(el){
 		if (el.$attributes) return true;
 		if (Garbage.ignored[el.tagName]) return false;
-		el.$attributes = {'opacity': 1, 'uid': Element.UID++};
+		el.$attributes = {uid: Element.UID++};
 		Garbage.Elements[el.$attributes.uid] = el;
 		return true;
 	},
@@ -1785,7 +1794,7 @@ var Garbage = {
 		delete Garbage.Elements[String(el.$attributes.uid)];
 		if (el.$events) el.removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
-		if (Client.Engine.trident){
+		if (Browser.Engine.trident){
 			for (var d in Element.prototype) el[d] = null;
 		}
 		el.$attributes = null;
@@ -1799,5 +1808,5 @@ var Garbage = {
 
 window.addListener('beforeunload', function(){
 	window.addListener('unload', Garbage.empty);
-	if (Client.Engine.trident) window.addListener('unload', CollectGarbage);
+	if (Browser.Engine.trident) window.addListener('unload', CollectGarbage);
 });

@@ -91,7 +91,7 @@ var Swiff = function(path, options){
 		vars[event] = 'Swiff.Events.' + instance + '.' + event;
 	}
 	params.flashVars = Hash.toQueryString(vars);
-	if (Client.Engine.trident){
+	if (Browser.Engine.trident){
 		properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 		params.movie = path;
 	} else {
@@ -167,7 +167,7 @@ Swiff.extend({
 			if (navigator.plugins && navigator.mimeTypes.length){
 				version = navigator.plugins["Shockwave Flash"];
 				if (version && version.description) version = version.description;
-			} else if (Client.Engine.trident){
+			} else if (Browser.Engine.trident){
 				version = $try(function(){
 					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
 				});
@@ -182,7 +182,7 @@ Swiff.extend({
 		window.addEvent('beforeunload', function(){
 			__flash_unloadHandler = __flash_savedUnloadHandler = $empty;
 		});
-		if (!Client.Engine.trident) return;
+		if (!Browser.Engine.trident) return;
 		window.addEvent('unload', function(){
 			Array.each(document.getElementsByTagName('object'), function(obj){
 				obj.style.display = 'none';

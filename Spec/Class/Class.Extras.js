@@ -38,32 +38,7 @@ describe('Chain Class', {
 		value_of(chains[0]).should_not_be(undefined);
 		chains[0]();
 		value_of(myChain.arr[0]).should_be(0);
-	}// ,
-	// 
-	// 	'should call and remove the chained function': function(){
-	// 		var myChain = new Local.Chain();
-	// 		var firstFunction = myChain.$chain[0];
-	// 		myChain.callChain();
-	// 
-	// 		(function(){
-	// 			value_of(myChain.arr).should_have(1).items;
-	// 			value_of(myChain.arr[0]).should_be(0);
-	// 			value_of(myChain.$chain).should_have(2).items;
-	// 			value_of(myChain.$chain.contains(firstFunction)).should_be_false();
-	// 		}).delay(100);
-	// 	},
-	// 
-	// 	'should clear all chained functions': function(){
-	// 		var myChain = new Local.Chain();
-	// 		var firstFunction = myChain.$chain[0];
-	// 		myChain.clearChain();
-	// 		myChain.callChain();
-	// 
-	// 		(function(){
-	// 			value_of(myChain.$chain).should_have(0).items;
-	// 			value_of(myChain.$chain.contains(firstFunction)).should_be_false();
-	// 		}).delay(100);
-	// 	}
+	}
 
 });
 

@@ -56,40 +56,6 @@ Element.implement({
 	},
 
 	/*
-	Method: getFormElements
-		Finds, extends, and returns all descendant form Elements: 'input, 'select', and 'textarea'.
-
-	Syntax:
-		>var elements = myElement.getFormElements();
-
-	Returns:
-		(array) A collection of Elements.
-
-	Example:
-		HTML:
-		[html]
-			<form id="myForm">
-				<select>
-					<option value="volvo">Volvo</option>
-					<option value="saab" selected="yes">Saab</option>
-				</select>
-				<textarea></textarea>
-			</form>
-		[/html]
-
-		[javascript]
-			$('myForm').getFormElements(); // returns: [<select>, <textarea>];
-		[/javascript]
-
-	See Also:
-		<$$>
-	*/
-
-	getFormElements: function(){
-		return $$(this.getElementsByTagName('input'), this.getElementsByTagName('select'), this.getElementsByTagName('textarea'));
-	},
-
-	/*
 	Method: toQueryString
 		Reads the children inputs of the Element and generates a query string, based on their values.
 
@@ -117,7 +83,7 @@ Element.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		this.getFormElements().each(function(el){
+		this.getElements('input, select, textarea', true).each(function(el){
 			var name = el.name, type = el.type, value = el.getValue();
 			if (value === false || !name || el.disabled) return;
 			$splat(value).each(function(val){

@@ -23,7 +23,7 @@ var Builder = {
 
 	scripts: {
 		source: {
-			"Core"      : ["Core"],
+			"Core"      : ["Core", "Browser"],
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
 			"Class"     : ["Class", "Class.Extras"],
 			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form"],

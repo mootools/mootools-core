@@ -142,7 +142,7 @@ Drag.Move = new Class({
 		>myMove.stop();
 
 	Returns:
-		(class) This Drag.Move instance.
+		(object) This Drag.Move instance.
 
 	Example:
 		[javascript]
@@ -194,7 +194,7 @@ Element.implement({
 		options - (object) See <Drag.Move> and <Drag> for acceptable options.
 
 	Returns:
-		(class) A new Drag.Move instance.
+		(object) A new Drag.Move instance.
 
 	Example:
 		[javascript]

@@ -77,7 +77,7 @@ Properties:
 	handle  - (element) The Element acting as the handle for the draggable element.
 
 Returns:
-	(class) A new Drag class instance.
+	(object) A new Drag class instance.
 
 Example:
 	[javascript]
@@ -144,7 +144,7 @@ var Drag = new Class({
 		>myDrag.attach();
 
 	Returns:
-		(class) This Drag instance.
+		(object) This Drag instance.
 
 	Example:
 		[javascript]
@@ -173,7 +173,7 @@ var Drag = new Class({
 		>myDrag.detach();
 
 	Returns:
-		(class) This Drag instance.
+		(object) This Drag instance.
 
 	Example:
 		[javascript]
@@ -299,7 +299,7 @@ Element.implement({
 		options - (object, optional) See <Drag> for acceptable options.
 
 	Returns:
-		(class) The created Drag instance.
+		(object) The created Drag instance.
 
 	Example:
 		[javascript]

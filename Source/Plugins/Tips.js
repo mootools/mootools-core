@@ -59,7 +59,7 @@ Events:
 			tip - (element) The Tip Element that is hiding.
 
 Returns:
-	(class) A new Tips class instance.
+	(object) A new Tips class instance.
 
 Example:
 	[html]

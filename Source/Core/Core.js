@@ -22,35 +22,30 @@ var MooTools = {
 };
 
 var Native = function(options){
-
-	var name = options.name || false;
-	var initialize = options.initialize || false;
-	var generics = options.generics || true;
-	var browser = options.browser || false;
-	var legacy = (name && options.legacy) ? window[name] : false;
+	options = options || {};
 	var afterImplement = options.afterImplement || function(){};
-	var object = initialize || legacy;
-
+	var object = options.initialize || options.legacy;
+	var generics = options.generics || true;
 	object.constructor = Native;
 	object.$family = {name: 'native'};
-	if (legacy && initialize) object.prototype = legacy.prototype;
+	if (options.legacy && options.initialize) object.prototype = options.legacy.prototype;
 	object.prototype.constructor = object;
-	if (name){
-		var family = name.toLowerCase();
+	if (options.name){
+		var family = options.name.toLowerCase();
 		object.prototype.$family = {name: family};
 		Native.typize(object, family);
 	}
 
 	object.implement = function(properties, force){
 		for (var property in properties){
-			if (!browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
+			if (!options.browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
 			if (generics) Native.genericize(this, property);
 			afterImplement.call(this, property, properties[property]);
 		}
 	};
 
 	object.alias = function(existing, property, force){
-		if (!browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
+		if (!options.browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
 		if (generics && !this[property]) this[property] = this[existing];
 		afterImplement.call(this, property, this[property]);
 	};
@@ -76,13 +71,13 @@ Native.typize = function(object, family){
 	};
 };
 
-(function(obj){
-	for (var i = 0, l = arguments.length; i < l; i++) Native.typize(window[arguments[i]], arguments[i].toLowerCase());
-})('Boolean', 'Native', 'Object');
+(function(objects){
+	for (var name in objects) Native.typize(objects[name], name.toLowerCase());
+})({'Boolean': Boolean, 'Native': Native, 'Object': Object});
 
-(function(){
-	for (var i = 0, l = arguments.length; i < l; i++) new Native({name: arguments[i], initialize: window[arguments[i]], browser: true});
-})('String', 'Function', 'Number', 'Array', 'RegExp', 'Date');
+(function(objects){
+	for (var name in objects) new Native({name: name, initialize: objects[name], browser: true});
+})({'String': String, 'Function': Function, 'Number': Number, 'Array': Array, 'RegExp': RegExp, 'Date': Date});
 
 (function(object, methods){
 	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i]);
@@ -620,7 +615,7 @@ Examples:
 */
 
 function $A(iterable){
-	if (!Client.Features.xpath && $type(iterable) == 'collection'){
+	if ($type(iterable) == 'collection'){
 		var array = [];
 		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
 		return array;
@@ -669,94 +664,3 @@ function $each(iterable, fn, bind){
 	var type = $type(iterable);
 	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
 };
-
-/*
-Hash: Client
-	Some browser properties are attached to the Client Object for browser and platform detection.
-
-Features:
-	Client.Features.xpath - (boolean) True if the browser supports dom queries using xpath.
-	Client.Features.xhr   - (boolean) True if the browser supports native XMLHTTP object.
-
-Engine:
-	Client.Engine.trident   - (boolean) True if the current browser is Internet Explorer (any).
-	Client.Engine.trident4  - (boolean) True if the current browser is Internet Explorer 6.
-	Client.Engine.trident5  - (boolean) True if the current browser is Internet Explorer 7.
-	Client.Engine.gecko     - (boolean) True if the current browser is Mozilla/Gecko.
-	Client.Engine.webkit    - (boolean) True if the current browser is Safari/Konqueror.
-	Client.Engine.webkit419 - (boolean) True if the current browser is Safari2 / webkit till version 419.
-	Client.Engine.webkit420 - (boolean) True if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
-	Client.Engine.opera     - (boolean) True if the current browser is opera.
-	Client.Engine.name      - (string) The name of the engine.
-
-Platform:
-	Client.Platform.mac     - (boolean) True if the platform is mac.
-	Client.Platform.windows - (boolean) True if the platform is windows.
-	Client.Platform.linux   - (boolean) True if the platform is linux.
-	Client.Platform.other   - (boolean) True if the platform is neither mac, windows or linux.
-	Client.Platform.name    - (string) The name of the platform.
-
-Note:
-	Engine detection is entirely feature-based.
-*/
-
-var Client = new Hash({
-	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'])[0].toLowerCase()},
-	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate)}
-});
-
-if (window.opera) Client.Engine.name = 'opera';
-else if (window.ActiveXObject) Client.Engine = {'name': 'trident', 'version': (Client.Features.xhr) ? 5 : 4};
-else if (!navigator.taintEnabled) Client.Engine = {'name': 'webkit', 'version': (Client.Features.xpath) ? 420 : 419};
-else if (document.getBoxObjectFor != null) Client.Engine.name = 'gecko';
-Client.Engine[Client.Engine.name] = Client.Engine[Client.Engine.name + Client.Engine.version] = true;
-Client.Platform[Client.Platform.name] = true;
-
-var Window = new Native({
-
-	name: 'Window',
-
-	initialize: function(win){
-		Window.$instances.push(win);
-		if (!win.Element){
-			win.Element = $empty;
-			if (Client.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
-			win.Element.prototype = (Client.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
-		}
-		return $extend(win, this);
-	},
-
-	afterImplement: function(property, value){
-		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
-	}
-
-});
-
-Window.$instances = [];
-
-new Window(window);
-
-var Document = new Native({
-
-	name: 'Document',
-
-	initialize: function(doc){
-		Document.$instances.push(doc);
-		doc.head = doc.getElementsByTagName('head')[0];
-		doc.window = doc.defaultView || doc.parentWindow;
-		if (Client.Engine.trident4) $try(function(){
-			doc.execCommand("BackgroundImageCache", false, true);
-		});
-		return $extend(doc, this);
-	},
-
-	afterImplement: function(property, value){
-		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
-	}
-
-});
-
-Document.$instances = [];
-
-new Document(document);

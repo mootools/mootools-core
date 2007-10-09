@@ -24,7 +24,7 @@ Properties:
 	elements - (array) The collection of Elements the effect is being applied to.
 
 Returns:
-	(class) A new Fx.Elements instance.
+	(object) A new Fx.Elements instance.
 
 Example:
 	[javascript]
@@ -76,7 +76,7 @@ Fx.Elements = new Class({
 		to - (object) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
 
 	Returns:
-		(class) This Fx.Elements instance.
+		(object) This Fx.Elements instance.
 
 	Example:
 		[javascript]
@@ -114,7 +114,7 @@ Fx.Elements = new Class({
 		obj - (object) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
 
 	Returns:
-		(class) This Fx.Elements instance.
+		(object) This Fx.Elements instance.
 
 	Example:
 		[javascript]

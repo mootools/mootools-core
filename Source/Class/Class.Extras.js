@@ -54,7 +54,7 @@ var Chain = new Class({
 		Any number of functions.
 
 	Returns:
-		(class) This Class instance. Calls to chain can also be chained.
+		(object) This Class instance. Calls to chain can also be chained.
 
 	Example:
 		[javascript]
@@ -84,7 +84,7 @@ var Chain = new Class({
 		>myClass.callChain();
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -117,7 +117,7 @@ var Chain = new Class({
 		>myClass.clearChain();
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -189,7 +189,7 @@ var Events = new Class({
 		internal - (boolean, optional) Sets the function property: internal to true. Internal property is used to prevent removal.
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -219,7 +219,7 @@ var Events = new Class({
 		events - (object) An object containing a collection of event type / function pairs.
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -249,7 +249,7 @@ var Events = new Class({
 		delay - (number, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -264,11 +264,10 @@ var Events = new Class({
 	*/
 
 	fireEvent: function(type, args, delay){
-		if (this.$events && this.$events[type]){
-			this.$events[type].each(function(fn){
-				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
-			}, this);
-		}
+		if (!this.$events || !this.$events[type]) return this;
+		this.$events[type].each(function(fn){
+			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+		}, this);
 		return this;
 	},
 
@@ -284,7 +283,7 @@ var Events = new Class({
 		fn   - (function) The function to remove.
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Note:
 		If the function has the property internal and is set to true, then the event will not be removed.
@@ -309,7 +308,7 @@ var Events = new Class({
 		type - (string, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
 
 	Returns:
-		(class) This Class instance.
+		(object) This Class instance.
 
 	Example:
 		[javascript]
@@ -323,10 +322,9 @@ var Events = new Class({
 
 	removeEvents: function(type){
 		for (var e in this.$events){
-			if (!type || type == e){
-				var fns = this.$events[e];
-				for (var i = fns.length; i--; i) this.removeEvent(e, fns[i]);
-			}
+			if (type && type != e) continue;
+			var fns = this.$events[e];
+			for (var i = fns.length; i--; i) this.removeEvent(e, fns[i]);
 		}
 		return this;
 	}

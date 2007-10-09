@@ -33,7 +33,7 @@ Events:
 			responseJson - (mixed) The JSON response object from the remote request.
 
 Returns:
-	(class) A new Json.Remote class instance.
+	(object) A new Json.Remote class instance.
 
 Example:
 	[javascript]
@@ -73,7 +73,7 @@ Json.Remote = new Class({
 		obj - (object) The JavaScript object to be encoded and sent.
 
 	Returns:
-		(class) This Json.Remote instance.
+		(object) This Json.Remote instance.
 
 	Example:
 		[javascript]

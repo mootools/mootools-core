@@ -17,7 +17,7 @@ Arguments:
 	Any number of Class instances, or arrays containing class instances.
 
 Returns:
-	(class) A new Group instance.
+	(object) A new Group instance.
 
 Example:
 	[javascript]
@@ -39,10 +39,7 @@ Example:
 var Group = new Class({
 
 	initialize: function(){
-		this.instances = [];
-		Array.each(arguments, function(argument){
-			this.instances = this.instances.concat(argument);
-		}, this);
+		this.instances = Array.flatten(arguments);
 		this.events = {};
 		this.checker = {};
 	},
@@ -59,7 +56,7 @@ var Group = new Class({
 		fn   - (function) The callback function to execute when all instances fired this event.
 
 	Returns:
-		(class) This Group instance.
+		(object) This Group instance.
 
 	Example:
 		[javascript]

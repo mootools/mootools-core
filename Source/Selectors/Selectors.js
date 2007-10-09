@@ -350,4 +350,4 @@ Selectors.Filter.match = function(el, params){
 	return true;
 };
 
-Selectors.Method = (Client.Features.xpath) ? Selectors.XPath : Selectors.Filter;
+Selectors.Method = (Browser.Features.xpath) ? Selectors.XPath : Selectors.Filter;

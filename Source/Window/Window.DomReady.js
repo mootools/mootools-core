@@ -28,7 +28,7 @@ Element.Events.domready = {
 
 	onAdd: function(fn){
 		if ($type(this) == 'element') return;
-		if (Client.loaded){
+		if (Browser.loaded){
 			fn.call(this);
 			return;
 		}
@@ -41,14 +41,14 @@ Element.Events.domready = {
 			return true;
 		};
 		var check = function(context){
-			if ((Client.Engine.webkit ? ['loaded', 'complete'] : 'complete').contains(context.readyState)) return domReady();
+			if ((Browser.Engine.webkit ? ['loaded', 'complete'] : 'complete').contains(context.readyState)) return domReady();
 			return false;
 		};
-		if (this.document.readyState && Client.Engine.webkit){
+		if (this.document.readyState && Browser.Engine.webkit){
 			(function(){
 				if (!check(self.document)) arguments.callee.delay(50);
 			})();
-		} else if (this.document.readyState && Client.Engine.trident){
+		} else if (this.document.readyState && Browser.Engine.trident){
 			var script = $('ie_domready');
 			if (!script){
 				var src = (this.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
@@ -65,5 +65,5 @@ Element.Events.domready = {
 };
 
 window.addEvent('domready', function(){
-	Client.loaded = true;
+	Browser.loaded = true;
 });

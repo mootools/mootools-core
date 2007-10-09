@@ -45,7 +45,7 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.setOpacity(parseFloat(value));
-			case 'float': property = (Client.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
 		if ($type(value) != 'string'){
@@ -126,7 +126,7 @@ Element.implement({
 			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Client.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = this.$attributes.opacity = opacity;
 		return this;
 	},
@@ -154,7 +154,10 @@ Element.implement({
 
 	getStyle: function(property){
 		property = property.camelCase();
-		if (property == 'opacity') return this.$attributes.opacity;
+		if (property == 'opacity'){
+			if (!$chk(this.$attributes.opacity)) this.$attributes.opacity = 1;
+			return this.$attributes.opacity;
+		}
 		var result = this.style[property];
 		if (!$chk(result)){
 			result = [];
@@ -165,14 +168,15 @@ Element.implement({
 					return item == result[0];
 				})) ? result[0] : result.join(' ');
 			}
-			result = (this.currentStyle) ? this.currentStyle[property] : this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
+			if (this.currentStyle) result = this.currentStyle[property];
+			else result = this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
 		}
 		if (result){
 			result = String(result);
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		return (Client.Engine.trident) ? Element.$fixStyle(property, result, this) : result;
+		return (Browser.Engine.trident) ? Element.$fixStyle(property, result, this) : result;
 	},
 
 	/*

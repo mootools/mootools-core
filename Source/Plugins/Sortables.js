@@ -218,7 +218,7 @@ var Sortables = new Class({
 		if (this.list.positioned){
 			this.position.y -= this.offset.list.y - this.list.scrollTop;
 			this.position.x -= this.offset.list.x - this.list.scrollLeft;
-		} else if (Client.Engine.opera){
+		} else if (Browser.Engine.presto){
 			this.position.y += this.list.scrollTop;
 			this.position.x += this.list.scrollLeft;
 		}
@@ -303,9 +303,9 @@ var Sortables = new Class({
 					this.list = list;
 					this.list.hovering = this.newInsert = true;
 					this.list.positioned = this.list.getStyle('position').test(/relative|absolute|fixed/);
-					oldSize = this.clone.getSize().size;
+					oldSize = {x: this.clone.offsetWidth, y: this.clone.offsetHeight};
 					this.list.adopt(this.clone, this.element);
-					newSize = this.clone.getSize().size;
+					newSize = {x: this.clone.offsetWidth, y: this.clone.offsetHeight};
 					this.offset = {
 						'list': this.list.getPosition(),
 						'element': {

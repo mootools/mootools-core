@@ -33,8 +33,8 @@ Window.implement({
 	*/
 
 	getWidth: function(){
-		if (Client.Engine.webkit419) return this.innerWidth;
-		if (Client.Engine.opera) return this.document.body.clientWidth;
+		if (Browser.Engine.webkit419) return this.innerWidth;
+		if (Browser.Engine.presto) return this.document.body.clientWidth;
 		return this.document.documentElement.clientWidth;
 	},
 
@@ -50,8 +50,8 @@ Window.implement({
 	*/
 
 	getHeight: function(){
-		if (Client.Engine.webkit419) return this.innerHeight;
-		if (Client.Engine.opera) return this.document.body.clientHeight;
+		if (Browser.Engine.webkit419) return this.innerHeight;
+		if (Browser.Engine.presto) return this.document.body.clientHeight;
 		return this.document.documentElement.clientHeight;
 	},
 
@@ -80,8 +80,8 @@ Window.implement({
 	*/
 
 	getScrollWidth: function(){
-		if (Client.Engine.trident) return Math.max(this.document.documentElement.offsetWidth, this.document.documentElement.scrollWidth);
-		if (Client.Engine.webkit) return this.document.body.scrollWidth;
+		if (Browser.Engine.trident) return Math.max(this.document.documentElement.offsetWidth, this.document.documentElement.scrollWidth);
+		if (Browser.Engine.webkit) return this.document.body.scrollWidth;
 		return this.document.documentElement.scrollWidth;
 	},
 
@@ -110,8 +110,8 @@ Window.implement({
 	*/
 
 	getScrollHeight: function(){
-		if (Client.Engine.trident) return Math.max(this.document.documentElement.offsetHeight, this.document.documentElement.scrollHeight);
-		if (Client.Engine.webkit) return this.document.body.scrollHeight;
+		if (Browser.Engine.trident) return Math.max(this.document.documentElement.offsetHeight, this.document.documentElement.scrollHeight);
+		if (Browser.Engine.webkit) return this.document.body.scrollHeight;
 		return this.document.documentElement.scrollHeight;
 	},
 
@@ -182,11 +182,13 @@ Window.implement({
 	*/
 
 	getSize: function(){
+		var width = this.getWidth();
+		var height = this.getHeight();
 		return {
-			'size': {'x': this.getWidth(), 'y': this.getHeight()},
+			'size': {'x': width, 'y': height},
 			'scrollSize': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()},
 			'scroll': {'x': this.getScrollLeft(), 'y': this.getScrollTop()},
-			'clientSize': {'x': this.getWidth(), 'y': this.getHeight()}
+			'clientSize': {'x': width, 'y': height}
 		};
 	},
 

@@ -55,11 +55,11 @@ Properties:
 	element - (element) The knob element for the slider.
 	knob    - (element) The handle element for the slider.
 	step    - (integer) The current location of the knob.
-	drag    - (class) An instance of <Drag> used for the knob.
+	drag    - (object) An instance of <Drag> used for the knob.
 
 
 Returns:
-	(class) A new Slider instance.
+	(object) A new Slider instance.
 
 Example:
 	[javascript]
@@ -149,7 +149,7 @@ var Slider = new Class({
 		step - (number) A number to position the Slider to.
 
 	Returns:
-		(class) This Slider instance.
+		(object) This Slider instance.
 
 	Example:
 		[javascript]
