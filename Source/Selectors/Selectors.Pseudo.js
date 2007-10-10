@@ -166,23 +166,21 @@ Selectors.Pseudo.nth = {
 		}
 	},
 
-	filter: function(argument, index, all){
+	filter: function(argument, Local){
 		var count = 0, el = this;
 		switch (argument.special){
 			case 'n':
-				Selectors.garbage = Selectors.garbage || [];
-				if (!this._mark){
+				Local.Positions = Local.Positions || {};
+				if (!Local.Positions[this.uid]){
 					var children = this.parentNode.childNodes;
 					for (var i = 0, l = children.length; i < l; i++){
 						var child = children[i];
-						if (child._mark) continue;
-						if (child.nodeType == 1){
-							Selectors.garbage.push(child);
-							child._mark = {position: ++count};
-						}
+						if (child.nodeType != 1) continue;
+						child.uid = child.uid || [Element.UID++];
+						Local.Positions[child.uid] = count++;
 					}
 				}
-				return ((this._mark.position + 1) % argument.a == argument.b);
+				return (Local.Positions[this.uid] % argument.a == argument.b);
 			case 'last':
 				while ((el = el.nextSibling)){
 					if (el.nodeType == 1) return false;

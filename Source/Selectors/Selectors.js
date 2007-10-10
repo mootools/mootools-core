@@ -63,10 +63,10 @@ Native.implement([Element, Document], {
 	*/
 
 	getElements: function(selectors, nocash){
-		Selectors.garbage = false;
+		var Local = {};
 		selectors = selectors.split(',');
 		var elements = [], j = selectors.length;
-		var dupes = (j > 1);
+		var ddup = (j > 1);
 		for (var i = 0; i < j; i++){
 			var selector = selectors[i], items = [], separators = [];
 			selector = selector.trim().replace(Selectors.sRegExp, function(match){
@@ -77,16 +77,16 @@ Native.implement([Element, Document], {
 			for (var k = 0, l = selector.length; k < l; k++){
 				var sel = Selectors.parse(selector[k]);
 				if (!sel) return [];
-				var temp = Selectors.Method.getParam(items, separators[k - 1] || false, this, sel);
+				var temp = Selectors.Method.getParam(items, separators[k - 1] || false, this, sel, Local);
 				if (!temp) break;
 				items = temp;
 			}
 			var partial = Selectors.Method.getItems(items, this);
-			elements = (dupes) ? elements.concat(partial) : partial;
+			elements = (ddup) ? elements.concat(partial) : partial;
 		}
-		if (Selectors.garbage) Selectors.clean(Selectors.garbage);
-		return nocash ? elements : new Elements(elements, (dupes) ? 'cash' : false);
-	},
+		if (ddup) elements = Elements.ddup(elements);
+		return nocash ? elements : new Elements(elements, {ddup: false});
+	}
 
 	/*
 	Property: getElement
@@ -110,10 +110,6 @@ Native.implement([Element, Document], {
 		Alternate syntax for <$E>, where filter is the Element.
 	*/
 
-	getElement: function(selector){
-		return $(this.getElements(selector, true)[0] || null);
-	}
-
 });
 
 /*
@@ -135,10 +131,6 @@ var Selectors = {
 
 	'sRegExp': (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
 
-};
-
-Selectors.clean = function(items){
-	for (i = 0, j = items.length; i < j; i++) items[i]._mark = null;
 };
 
 Selectors.parse = function(selector){
@@ -171,12 +163,12 @@ Selectors.XPath = {
 	getParam: function(items, separator, context, params){
 		var temp = context.namespaceURI ? 'xhtml:' : '';
 		switch (separator){
-			case '~': case '+': temp += '/following-sibling::'; break;
+			case ' ': temp += '//'; break;
 			case '>': temp += '/'; break;
-			case ' ': temp += '//';
+			case '+': temp += '/following-sibling::*[1]/self::'; break;
+			case '~': temp += '/following-sibling::'; break;
 		}
 		temp += params.tag;
-		if (separator == '+') temp += '[1]';
 		var i;
 		for (i = params.pseudos.length; i--; i){
 			var pseudo = params.pseudos[i];
@@ -218,103 +210,72 @@ Selectors.XPath = {
 
 Selectors.Filter = {
 
-	getParam: function(items, separator, context, params){
-		if (separator){
-			items = Selectors.Filter.Separators[separator](items, params);
-			Selectors.clean(items);
-			return items;
-		}
-
-		if (params.id){
-			var el = context.getElementById(params.id, true);
-			params.id = false;
-			return (el && Selectors.Filter.match(el, params)) ? [el] : false;
-		} else {
-			items = context.getElementsByTagName(params.tag);
-			params.tag = false;
-			var found = [];
-			for (var k = 0, l = items.length; k < l; k++){
-				if (Selectors.Filter.match(items[k], params)) found.push(items[k]);
-			}
-			return found;
-		}
-	},
-
-	getItems: function(items, context){
-		return items;
-	}
-
-};
-
-Selectors.Filter.Separators = {
-	
-	' ': function(items, params){
+	getParam: function(items, separator, context, params, Local){
 		var found = [];
 		var tag = params.tag;
-		for (var i = 0, j = items.length; i < j; i++){
-			var el = items[i];
-			var children = el.getElementsByTagName(tag);
-			params.tag = false;
-			for (var k = 0, l = children.length; k < l; k++){
-				var child = children[k];
-				if (!child._mark && Selectors.Filter.match(child, params)){
-					child._mark = {};
+		if (separator){
+			var uniques = {}, child, children, item, k, l;
+			var add = function(child){
+				child.uid = child.uid || [Element.UID++];
+				if (!uniques[child.uid] && Selectors.Filter.match(child, params, Local)){
+					uniques[child.uid] = true;
 					found.push(child);
+					return true;
 				}
-			}
-		}
-		return found;
-	},
-	
-	'>': function(items, params){
-		var found = [];
-		for (var i = 0, j = items.length; i < j; i++){
-			var children = items[i].childNodes;
-			for (var k = 0, l = children.length; k < l; k++){
-				var child = children[k];
-				if (!child._mark && child.nodeType == 1 && Selectors.Filter.match(child, params)){
-					child._mark = {};
-					found.push(child);
-				}
-			}
-		}
-		return found;
-	},
-	
-	'+': function(items, params){
-		var found = [];
-		for (var i = 0, j = items.length; i < j; i++){
-			var el = items[i];
-			while ((el = el.nextSibling)){
-				if (el._mark) break;
-				if (el.nodeType == 1 && Selectors.Filter.match(el, params)){
-					el._mark = {};
-					found.push(el);
+				return false;
+			};
+			for (var i = 0, j = items.length; i < j; i++){
+				item = items[i];	
+				switch(separator){
+					case ' ':
+						children = item.getElementsByTagName(tag);
+						params.tag = false;
+						for (k = 0, l = children.length; k < l; k++) add(children[k]);
+					break;
+					case '>':
+						children = item.childNodes;
+						for (k = 0, l = children.length; k < l; k++){
+							if (children[k].nodeType == 1) add(children[k]);
+						}
+					break;
+					case '+':
+						while ((item = item.nextSibling)){
+							if (item.nodeType == 1){
+								add(item);
+								break;
+							}
+						}
+					break;
+					case '~':
+						while ((item = item.nextSibling)){
+							if (item.nodeType == 1 && add(item)) break;
+						}
 					break;
 				}
+			}	
+			return found;
+		}
+		if (params.id){
+			el = context.getElementById(params.id, true);
+			params.id = false;
+			return (el && Selectors.Filter.match(el, params, Local)) ? [el] : false;
+		} else {
+			items = context.getElementsByTagName(tag);
+			params.tag = false;
+			for (var m = 0, n = items.length; m < n; m++){
+				if (Selectors.Filter.match(items[m], params, Local)) found.push(items[m]);
 			}
 		}
 		return found;
 	},
-	
-	'~': function(items, params){
-		var found = [];
-		for (var i = 0, j = items.length; i < j; i++){
-			var el = items[i];
-			while ((el = el.nextSibling)){
-				if (el._mark) break;
-				if (el.nodeType == 1 && Selectors.Filter.match(el, params)){
-					el._mark = {};
-					found.push(el);
-				}
-			}
-		}
-		return found;
-	}
+
+	getItems: $empty
 
 };
 
-Selectors.Filter.match = function(el, params){
+Selectors.Filter.match = function(el, params, Local){
+	Local = Local || {};
+	
 	if (params.id && params.id != el.id) return false;
 	if (params.tag && params.tag != '*' && params.tag != el.tagName.toLowerCase()) return false;
 	
@@ -344,7 +305,7 @@ Selectors.Filter.match = function(el, params){
 	}
 	
 	for (i = params.pseudos.length; i--; i){
-		if (!params.pseudos[i].parser.filter.call(el, params.pseudos[i].argument)) return false;
+		if (!params.pseudos[i].parser.filter.call(el, params.pseudos[i].argument, Local)) return false;
 	}
 
 	return true;

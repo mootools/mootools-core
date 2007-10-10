@@ -155,7 +155,8 @@ Element.implement({
 	getStyle: function(property){
 		property = property.camelCase();
 		if (property == 'opacity'){
-			if (!$chk(this.$attributes.opacity)) this.$attributes.opacity = 1;
+			var opacity = this.$attributes.opacity;
+			if (!$chk(opacity)) this.$attributes.opacity = 1;
 			return this.$attributes.opacity;
 		}
 		var result = this.style[property];

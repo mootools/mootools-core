@@ -199,24 +199,28 @@ See Also:
 
 var Elements = new Native({
 
-	initialize: function(elements, option){
+	initialize: function(elements, options){
+		options = Hash.extend({ddup: true, cash: true}, options);
 		elements = elements || [];
-		var length = elements.length;
-		if (option == 'cash') elements = elements.map($);
-		if (option || !length) return $extend(elements, this);
-		var uniques = {};
-		var returned = [];
-		for (var i = 0, el; i < length; i++){
-			if (!(el = elements[i])) continue;
-			if (!el.$attributes) el = $(el);
-			if (!el || uniques[el.$attributes.uid]) continue;
-			uniques[el.$attributes.uid] = true;
-			returned.push(el);
-		}
-		return $extend(returned, this);
+		if (options.ddup) elements = Elements.ddup(elements);
+		if (options.cash) elements = elements.map($.element);
+		return $extend(elements, this);
 	}
 
 });
+
+Elements.ddup = function(elements){
+	var uniques = {};
+	var returned = [];
+	for (var i = 0, l = elements.length; i < l; i++){
+		var el = elements[i];
+		el.uid = el.uid || [Element.UID++];
+		if (uniques[el.uid]) continue;
+		uniques[el.uid] = true;
+		returned.push(el);
+	}
+	return returned;
+};
 
 Elements.$multiply = function(property){
 	return function(){
@@ -263,13 +267,8 @@ Window.implement({
 
 	$: function(el, notrash){
 		if (el && el.$attributes) return el;
-		var type = $type(el);
-		if (type == 'string') type = (el = this.document.getElementById(el)) ? 'element' : false;
-		if (type != 'element') return (type == 'window' || type == 'document') ? el : null;
-		if (!notrash){
-			if (Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
-		}
-		return el;
+		var type = $type(el); 
+		return ($[type]) ? $[type](el, notrash, this.document) : null;
 	},
 
 	/*
@@ -324,6 +323,19 @@ Window.implement({
 
 });
 
+$.string = function(id, notrash, doc){
+	id = (doc || document).getElementById(id);
+	return (id) ? $.element(id, notrash) : null;
+};
+
+$.element = function(el, notrash){
+	el.uid = el.uid || [Element.UID++];
+	if (!notrash && Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
+	return el;
+};
+
+$.window = $.document = $empty;
+
 /*
 Native: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
@@ -357,9 +369,8 @@ Native.implement([Element, Document], {
 		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElement so that it maches with CSS selectors.
 	*/
 
-	getElement: function(tags, nocash){
-		var element = this.getElements(tags, true)[0] || null;
-		return (nocash) ? element : $(element);
+	getElement: function(selector, notrash){
+		return $(this.getElements(selector, true)[0] || null, notrash);
 	},
 
 	/*
@@ -391,11 +402,12 @@ Native.implement([Element, Document], {
 	getElements: function(tags, nocash){
 		tags = tags.split(',');
 		var elements = [];
-		var dupes = (tags.length > 1);
+		var ddup = (tags.length > 1);
 		tags.each(function(tag){
-			elements = elements.concat(this.getElementsByTagName(tag.trim()));
+			elements.extend(this.getElementsByTagName(tag.trim()));
 		}, this);
-		return (nocash) ? elements : new Elements(elements, (dupes) ? 'cash' : false);
+		if (ddup) elements = Elements.ddup(elements);
+		return (nocash) ? elements : new Elements(elements, {ddup: false});
 	}
 
 });
@@ -1780,8 +1792,8 @@ var Garbage = {
 	collect: function(el){
 		if (el.$attributes) return true;
 		if (Garbage.ignored[el.tagName]) return false;
-		el.$attributes = {uid: Element.UID++};
-		Garbage.Elements[el.$attributes.uid] = el;
+		Garbage.Elements[el.uid] = el;
+		el.$attributes = {};
 		return true;
 	},
 

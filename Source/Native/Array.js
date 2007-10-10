@@ -496,7 +496,6 @@ Array.implement({
 			varnewArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]
 		[/javascript]
 	*/
-
 	
 	flatten: function(){
 		var array = [];
