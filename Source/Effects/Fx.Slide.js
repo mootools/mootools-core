@@ -325,8 +325,7 @@ Element.implement({
 	*/
 
 	slide: function(how, options){
-		how = how || 'toggle';
-		this.get('slide', options)[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : how]();
+		this.get('slide', options)[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : (how || 'toggle')]();
 		return this;
 	}
 

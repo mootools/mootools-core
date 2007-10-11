@@ -13,7 +13,7 @@ Native: Element
 */
 
 /*
-Method: constructor 
+Method: constructor
  	Creates a new Element of the type passed in.
 
 Syntax:
@@ -52,11 +52,11 @@ See Also:
 */
 
 var Element = new Native({
-	
+
 	name: 'Element',
-	
+
 	legacy: window.Element,
-	
+
 	initialize: function(el){
 		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
 		return Element.create.run(arguments);
@@ -105,11 +105,11 @@ Native: IFrame
 /*
 Method: constructor
 	Creates an iframe and extends its window and document.
-	
+
 Syntax:
 	>var myIframe = new Element('iframe'[, props]);
 	>var myIframe = new IFrame(props[, iframe]);
-	
+
 Arguments:
 	el - (mixed, optional) The id for the Iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created.
 	props - (object, optional) The properties to be applied to the new IFrame.
@@ -118,7 +118,7 @@ Arguments:
 		onload - (function, optional) the function to be executed when the iframe loads, or, if already loaded, when new IFrame is called.
 		Its bound to the iframe window.
 		Also accepts every property/object accepted by <Element.set>.
-	
+
 Note:
 	If the iframe already exists, and it has different id/name, the name will be made the same as the id.
 	If the frame is from a different domain, its window and document will not be extended with MooTools methods.
@@ -127,7 +127,7 @@ Note:
 var IFrame = new Native({
 
 	name: 'IFrame',
-	
+
 	generics: false,
 
 	initialize: function(){
@@ -267,7 +267,7 @@ Window.implement({
 
 	$: function(el, notrash){
 		if (el && el.$attributes) return el;
-		var type = $type(el); 
+		var type = $type(el);
 		return ($[type]) ? $[type](el, notrash, this.document) : null;
 	},
 
@@ -285,7 +285,7 @@ Window.implement({
 		if you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 
 	Example:
-		>$$('a'); 
+		>$$('a');
 		Returns an array of all anchor tags on the page.
 
 		>$$('a', 'b');
@@ -330,7 +330,7 @@ $.string = function(id, notrash, doc){
 
 $.element = function(el, notrash){
 	el.uid = el.uid || [Element.UID++];
-	if (!notrash && Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
+	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
 	return el;
 };
 
@@ -425,7 +425,7 @@ Element.Has = new Hash;
 Element.Get = new Hash;
 
 Element.Inject = new Hash({
-	
+
 	/*
 	Method: injectBottom
 		Injects the Element inside and at the end of the child nodes of the passed in Element.
@@ -464,7 +464,7 @@ Element.Inject = new Hash({
 	bottom: function(el){
 		el.appendChild(this);
 	},
-	
+
 	/*
 	Method: injectTop
 		Same as <Element.injectInside>, but inserts the Element inside, at the top.
@@ -509,7 +509,7 @@ Element.Inject = new Hash({
 		var first = el.firstChild;
 		(first) ? el.insertBefore(this, first) : el.appendChild(this);
 	},
-	
+
 	/*
 	Method: injectBefore
 		Inserts the Element before the passed Element.
@@ -581,14 +581,14 @@ Element.Inject = new Hash({
 	See Also:
 		<Element.inject>, <Element.injectBefore>
 	*/
-	
+
 	after: function(el){
 		if (!el.parentNode) return;
 		var next = el.nextSibling;
 		while (next && next.nodeType != 1) next = next.nextSibling;
 		(next) ? el.parentNode.insertBefore(this, next) : el.parentNode.appendChild(this);
 	}
-	
+
 });
 
 Element.Inject.inside = Element.Inject.bottom;
@@ -661,7 +661,7 @@ Element.implement({
 				'color': 'blue'
 			});
 		[/javascript]
-		
+
 	Note:
 		All additional arguments are passed to the method of the Element.Get Hash.
 		If no matching property is found in Element.Set, it falls back to setProperty, making this method the perfect shortcut.
@@ -682,7 +682,7 @@ Element.implement({
 		}
 		return this;
 	},
-	
+
 	/*
 	Method: get
 		This is a "dynamic arguments" method. The argument must be one of the properties of the Element.Get Hash.
@@ -700,7 +700,7 @@ Element.implement({
 		[javascript]
 			var value = $(element).get('id');
 		[/javascript]
-		
+
 	Note:
 		All additional arguments are passed to the method of the Element.Get Hash.
 		If no matching property is found in Element.Get, it falls back to getProperty, making this method the perfect shortcut.
@@ -708,11 +708,11 @@ Element.implement({
 	See Also:
 		<Element>, <Element.getProperty>
 	*/
-	
+
 	get: function(prop){
 		return (Element.Get.has(prop)) ? Element.Get[prop].apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
-	
+
 	/*
 	Method: has
 		This is a "dynamic arguments" method. The argument must be one of the properties of the Element.Has Hash.
@@ -732,14 +732,14 @@ Element.implement({
 			Element.Has.class = function(className){
 				return this.hasClass(className);
 			};
-			
+
 			var value = $(element).has('class', 'awesome');
 		[/javascript]
-		
+
 	Note:
 		All additional arguments are passed to the method of the Element.Has Hash.
 	*/
-	
+
 	has: function(prop){
 		return (Element.Has.has(prop)) ? !!Element.Has[prop].apply(this, Array.slice(arguments, 1)) : null;
 	},
@@ -1427,7 +1427,7 @@ Element.implement({
 		this.removeAttribute(attribute);
 		return this;
 	},
-	
+
 	/*
 	Method: setProperty
 		Sets an attribute for the Element.
@@ -1786,7 +1786,7 @@ Element.UID = 0;
 var Garbage = {
 
 	Elements: {},
-	
+
 	ignored: {'object': 1, 'embed': 1, 'OBJECT': 1, 'EMBED': 1},
 
 	collect: function(el){

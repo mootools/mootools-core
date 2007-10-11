@@ -60,7 +60,7 @@ var Group = new Class({
 
 	Example:
 		[javascript]
-			var myElements = $('myForm').getFormElements();
+			var myElements = $('myForm').getElements('input, textarea, select');
 			myElements.addEvent('click', function(){
 				alert('an individual click');
 			});
