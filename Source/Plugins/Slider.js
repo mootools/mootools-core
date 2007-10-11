@@ -65,14 +65,14 @@ Example:
 	[javascript]
 		var mySlider = new Slider('myElement', 'myKnob', {
 			onStart: function(){
-				this.borderFx = this.borderFx || this.element.effect('border').start('#ccc');
+				this.borderFx = this.borderFx || this.element.tween('border').start('#ccc');
 			}
 			onTick: function(pos){
 				this.element.setStyle('border-color', '#f00');
 				this.knob.setStyle(this.p, pos);
 			},
 			onComplete: function(){
-				this.element.effect('border').start('#000');
+				this.element.tween('border').start('#000');
 			}
 		});
 	[/javascript]

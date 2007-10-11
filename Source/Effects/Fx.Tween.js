@@ -114,7 +114,7 @@ Native: Element
 */
 
 Element.Set.extend({
-	
+
 	/*
 	Element Setter: tween
 		sets a default Fx.Tween instance for an element
@@ -122,7 +122,7 @@ Element.Set.extend({
 	Syntax:
 		>el.set('tween'[, options]);
 
-	Arguments: 
+	Arguments:
 		options - (object) the Fx.Tween options.
 
 	Returns:
@@ -140,7 +140,7 @@ Element.Set.extend({
 		this.$attributes.$tween = new Fx.Tween(this, null, $merge({wait: false}, options));
 		return this;
 	},
-	
+
 	/*
 	Element Setter: fade
 		sets a default Fx.Tween instance for an element (with opacity set as its property)
@@ -148,7 +148,7 @@ Element.Set.extend({
 	Syntax:
 		>el.set('fade'[, options]);
 
-	Arguments: 
+	Arguments:
 		options - (object) the Fx.Tween options.
 
 	Returns:
@@ -160,7 +160,7 @@ Element.Set.extend({
 			el.fade('out');
 		[/javascript]
 	*/
-	
+
 	fade: function(options){
 		if (this.$attributes.$fade) this.$attributes.$fade.stop();
 		this.$attributes.$fade = new Fx.Tween(this, 'opacity', $merge({wait: false}, options));
@@ -171,14 +171,14 @@ Element.Set.extend({
 
 
 Element.Get.extend({
-	
+
 	/*
 	Element Getter: tween
 		gets the previously setted Fx.Tween instance or a new one with default options.
 
 	Syntax:
 		>el.get('tween');
-		
+
 	Arguments:
 		property - (string) the Fx.Tween property you want to associate with the instance.
 		options - (object, optional) the Fx.Tween options.
@@ -194,13 +194,13 @@ Element.Get.extend({
 			el.get('tween', 'height'); //the Fx.Tween instance, with height as property
 		[/javascript]
 	*/
-	
+
 	tween: function(property, options){
 		if (!this.$attributes.$tween || options) this.set('tween', options);
 		this.$attributes.$tween.property = property;
 		return this.$attributes.$tween;
 	},
-	
+
 	/*
 	Element Getter: fade
 		gets the previously setted Fx.Tween (with 'opacity' set) instance or a new one with default options.
@@ -222,7 +222,7 @@ Element.Get.extend({
 			el.get('fade'); //the Fx.Tween instance (with opacity option)
 		[/javascript]
 	*/
-	
+
 	fade: function(options){
 		if (!this.$attributes.$fade || options) this.set('fade', options);
 		return this.$attributes.$fade;
@@ -231,7 +231,7 @@ Element.Get.extend({
 });
 
 Element.implement({
-	
+
 	/*
 	Method: tween
 		Tweens an element property between one or more values.
@@ -255,12 +255,12 @@ Element.implement({
 	See Also:
 		<Fx.Tween>
 	*/
-	
+
 	tween: function(property, value, options){
 		this.get('tween', property, options).start(value);
 		return this;
 	},
-	
+
 	/*
 	Method: fade
 		fades an element in or out.
@@ -283,16 +283,15 @@ Element.implement({
 	See Also:
 		<Fx.Tween>, <Element.slide>
 	*/
-	
+
 	fade: function(how, options){
-		how = how || 'toggle';
 		var fade = this.get('fade', options);
 		switch(how){
 			case 'in': fade.start(1); break;
 			case 'out': fade.start(0); break;
 			case 'show': fade.set(1); break;
 			case 'hide': fade.set(0); break;
-			case 'toggle': fade.start((this.getStyle('visibility') == 'hidden') ? 1 : 0);
+			default: fade.start((this.getStyle('visibility') == 'hidden') ? 1 : 0);
 		}
 		return this;
 	}

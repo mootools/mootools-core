@@ -56,7 +56,7 @@ Fx.Slide = new Class({
 			this.open = (this.now[0] === 0);
 			if (this.open){
 				this.wrapper.setStyle(this.layout, '');
-				if (Client.Engine.webkit419) this.element.remove().inject(this.wrapper);
+				if (Browser.Engine.webkit419) this.element.remove().inject(this.wrapper);
 			}
 		}, true);
 		arguments.callee.parent($(element), options);
@@ -249,16 +249,16 @@ Native: Element
 /*
 Element Setter: slide
 	sets a default Fx.Slide instance for an element
-	
+
 Syntax:
 	>el.set('slide'[, options]);
-	
-Arguments: 
+
+Arguments:
 	options - (object) the Fx.Morph options.
-	
+
 Returns:
 	(element) this element
-	
+
 Example:
 	[javascript]
 		el.set('slide', {duration: 'long', transition: 'bounce:out'});
@@ -275,21 +275,21 @@ Element.Set.slide = function(options){
 /*
 Element Getter: slide
 	gets the previously setted Fx.Slide instance or a new one with default options
-	
+
 Syntax:
 	>el.get('slide');
 
 Arguments:
 	options - (object, optional) the Fx.Slide options. if passed in will generate a new instance.
-	
+
 Returns:
 	(object) the Fx.Slide instance
-	
+
 Example:
 	[javascript]
 		el.set('slide', {duration: 'long', transition: 'bounce:out'});
 		el.slide('in');
-		
+
 		el.get('slide'); //the Fx.Slide instance
 	[/javascript]
 */
@@ -300,7 +300,7 @@ Element.Get.slide = function(options){
 };
 
 Element.implement({
-	
+
 	/*
 	Method: slide
 		Slides this Element in view.

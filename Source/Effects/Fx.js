@@ -22,7 +22,7 @@ Arguments:
 
 	options (continued):
 		transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>.
-		             You cannot change the transition if you havent included Fx.Transitions.js, or you dont plan tyo write your own curve :P
+					 You cannot change the transition if you havent included Fx.Transitions.js, or you dont plan to write your own curve :P
 		duration   - (number: defaults to 500) The duration of the effect in ms. can also be 'normal', 'long', or 'short'.
 		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
 		wait       - (boolean: defaults to true) Option to wait for a current transition to end before running another of the same instance.
@@ -89,7 +89,7 @@ See Also:
 */
 
 var Fx = new Class({
-	
+
 	Implements: [Chain, Events, Options],
 
 	options: {
@@ -186,11 +186,11 @@ var Fx = new Class({
 
 	Example:
 		[javascript]
-			var myFx = $('myElement').effect('color').start('#000', '#f00');
+			var myFx = $('myElement').tween('color').start('#000', '#f00');
 		[/javascript]
 
 	See Also:
-		<Element.effect>
+		<Element.tween>
 	*/
 
 	start: function(from, to){
@@ -222,7 +222,7 @@ var Fx = new Class({
 		[javascript]
 			var myElement = $('myElement');
 			var to = myElement.offsetLeft + myElement.offsetWidth;
-			var myFx = myElement.setStyle('position', 'absolute').effect('left', {
+			var myFx = myElement.setStyle('position', 'absolute').tween('left', {
 				duration: 5000,
 				onCancel: function(){
 					alert("Doh! I've stopped.");

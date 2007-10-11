@@ -12,14 +12,14 @@ Credits:
 /*
 Class: Fx
 	Fx.Transitions overrides the Fx constructor, and adds the possibility to use the transition option as string.
-	
+
 Transition Option:
 	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
 	or a string ('ease:in' or, 'bounce:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut
 */
 
 Fx.implement({
-	
+
 	initialize: function(element, options){
 		this.element = element;
 		this.setOptions(options);
@@ -52,7 +52,7 @@ Example:
 	[javascript]
 		//Elastic.easeOut with user-defined value for elasticity.
 		var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
-		var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
+		var myFx = $('myElement').tween('margin', {transition: myTransition.easeOut});
 	[/javascript]
 
 See Also:
@@ -81,11 +81,11 @@ Hash: Fx.Transitions
 Example:
 	[javascript]
 		//Elastic.easeOut with default values:
-		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
+		var myFx = $('myElement').tween('margin', {transition: Fx.Transitions.Elastic.easeOut});
 	[/javascript]
 
 See also:
-	<http://www.robertpenner.com/easing/>, <Element.effect>
+	<http://www.robertpenner.com/easing/>, <Element.tween>
 */
 
 Fx.Transitions = new Hash({
