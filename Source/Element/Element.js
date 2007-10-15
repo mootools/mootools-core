@@ -1,7 +1,6 @@
 /*
 Script: Element.js
-	One of the most important items of MooTools, contains the dollar function, the dollars function,
-	and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
+	One of the most important items of MooTools, contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
 
 License:
 	MIT-style license.
@@ -20,12 +19,14 @@ Syntax:
 	>var myEl = new Element(el[, props]);
 
 Arguments:
-	el    - (mixed) The tag name for the Element to be created. It's also possible to add an Element for reference, in which case it will be extended.
-	props - (object, optional) The properties to be applied to the new Element.
+	el    - (mixed) The tag name for the Element to be created or an Element so that it can be extended.
+	props - (object, optional) The properties to apply to the new Element.
 
 	props (continued):
-		Assumes that all keys are properties that the <Element.setProperties> receives, there are special keys,
-		however: the 'styles' key whos value is passed to <Element.setStyles> and the 'events' key whos value is passed to <Element.addEvents>.
+		All the keys except for 'styles' and 'events' are assumed to be acceptable properties for <Element.setProperties>. The 'styles' and 'events' key's values are used for <Element.setStyles> and <Element.addEvents>.
+
+Returns:
+	(element) A new HTML Element.
 
 Example:
 	[javascript]
@@ -98,30 +99,76 @@ Element.Construct = new Hash({
 /*
 Native: IFrame
 	Custom Native to create and easily work with IFrames.
-	If the IFrame is from the same domain as the "host", its document and window will be extended with MooTools functionalities,
-	allowing you do fully use MooTools within iframes.
 */
 
 /*
 Method: constructor
-	Creates an iframe and extends its window and document.
+	Creates an iframe HTML Element and extends its window and document with MooTools.
 
 Syntax:
-	>var myIframe = new Element('iframe'[, props]);
-	>var myIframe = new IFrame(props[, iframe]);
+	>var myIFrame = new IFrame([el][, props]);
 
 Arguments:
-	el - (mixed, optional) The id for the Iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created.
+	el    - (mixed, optional) The id for the Iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created.
 	props - (object, optional) The properties to be applied to the new IFrame.
 
 	props (continued):
-		onload - (function, optional) the function to be executed when the iframe loads, or, if already loaded, when new IFrame is called.
-		Its bound to the iframe window.
-		Also accepts every property/object accepted by <Element.set>.
+		onload - (function, optional) The function executed when the iframe loads and accepts every property/object accepted by <Element.set>.
 
-Note:
-	If the iframe already exists, and it has different id/name, the name will be made the same as the id.
-	If the frame is from a different domain, its window and document will not be extended with MooTools methods.
+Returns:
+	(element) A new iframe HTML Element.
+
+Examples:
+	Using Constructor:
+	[javascript]
+		var myIFrame = new IFrame({
+
+			src: 'http://mootools.net/',
+
+			onload: function(){
+				alert('my iframe finished loading');
+			}
+
+		});
+	[/javascript]
+
+	Using Element Constructor:
+	[javascript]
+		var myIFrame = new Element('iframe', {
+
+			id: 'mootools',
+
+			src: 'http://mootools.net/',
+
+			onload: function(){
+				alert('my iframe finished loading');
+			},
+
+			styles: {
+				width: 800,
+				height: 600,
+				border: '1px solid #ccc'
+			},
+
+			events: {
+
+				mouseenter: function(){
+					alert('welcome aboard');
+				},
+
+				mouseleave: function(){
+					alert('oo noes');
+				}
+
+			}
+
+		});
+	[/javascript]
+
+Notes:
+	- If the IFrame is from the same domain as the "host", its document and window will be extended with MooTools functionalities, allowing you to fully use MooTools within iframes.
+	- If the iframe already exists, and it has different id/name, the name will be made the same as the id.
+	- If the frame is from a different domain, its window and document will not be extended with MooTools methods.
 */
 
 var IFrame = new Native({
@@ -162,10 +209,9 @@ IFrame.uid = 0;
 /*
 Native: Elements
 	The Elements class allows <Element> methods to work also on an <Elements> array.
-	In MooTools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
 
 Syntax:
-	>var myElements = new Elements(elements[, option]);
+	>var myElements = new Elements(elements[, options]);
 
 Arguments:
 	elements - (mixed) An array of elements and/or strings representing element ids, or an HTMLCollection.
@@ -173,9 +219,9 @@ Arguments:
 Returns:
 	(array) An extended array with the <Element> and <Elements> methods.
 
-Example:
+Examples:
+	Set Every Paragraph's Color to Red:
 	[javascript];
-		//The following code would set the color of every paragraph to 'red'.
 		$$('p').each(function(el){
 		  el.setStyle('color', 'red');
 		});
@@ -183,12 +229,16 @@ Example:
 		//However, because $$('myselector') also accepts <Element> methods, the below example would have the same effect as the one above.
 		$$('p').setStyle('color', 'red');
 
-		//Create myElements from
+	[/javascript]
+
+	Create Elements From an Array:
+	[javascript]
 		var myElements = new Elements(['myElementID', $('myElement'), 'myElementID2', document.getElementById('myElementID3')]);
 		myElements.removeElements('found'); //notice how 'remove' is an <Array> method and therefore the correct usage is: <Element.removeEvents>
 	[/javascript]
 
-Note:
+Notes:
+	- In MooTools, every DOM function, such as <$$> (and every other function that returns a collection of nodes) returns them as an Elements class.
 	- Because Elements is an Array, it accepts all the <Array> methods.
 	- Array methods have priority, so overlapping Element methods (remove, getLast) are changed to "method + Elements" (removeElements, getLastElements).
 	- Every node of the Elements instance is already "extended" with <$>.
@@ -246,23 +296,32 @@ Window.implement({
 	Function: $
 		Returns the element passed in with all the Element prototypes applied.
 
+	Syntax:
+		>var myElement = $(el);
+
 	Arguments:
 		el - (mixed) A string containing the id of the DOM element desired or a reference to an actual DOM element.
 
-	Example:
-		>$('myElement') // gets a DOM element by id with all the Element prototypes applied.
-		>var div = document.getElementById('myElement');
-		>$(div) //returns an Element also with all the mootools extensions applied.
+	Returns:
+		(mixed) A DOM element, or false if no ID was found.
+
+	Examples:
+		Get a DOM Element by ID:
+		[javascript]
+			var myElement = $('myElement');
+		[/javascript]
+
+		Extend an Element:
+		[javascript]
+			var div = document.getElementById('myElement');
+			div = $(div); //returns an Element also with all the mootools extensions applied.
+		[/javascript]
 
 		You'll use this when you aren't sure if a variable is an actual element or an id, as
 		well as just shorthand for document.getElementById().
 
-	Returns:
-		a DOM element or false (if no id was found).
-
 	Note:
-		While the $ function needs to be called only once on an element in order to get all the prototypes,
-		extended Elements can be passed to this function multiple times without ill effects.
+		While the $ function needs to be called only once on an element in order to get all the prototypes, extended Elements can be passed to this function multiple times without ill effects.
 	*/
 
 	$: function(el, notrash){
@@ -277,33 +336,39 @@ Window.implement({
 		The return type of element methods run through $$ is always an array. If the return array is only made by elements,
 		$$ will be applied automatically.
 
+	Syntax:
+		>var myElements = $$(aTag[, anElement[, Elements[, ...]);
+
 	Arguments:
 		HTML Collections, arrays of elements, arrays of strings as element ids, elements, strings as selectors.
 		Any number of the above as arguments are accepted.
 
-	Note:
-		if you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
-
-	Example:
-		>$$('a');
-		Returns an array of all anchor tags on the page.
-
-		>$$('a', 'b');
-		Returns an array of all anchor and bold tags on the page.
-
-		>$$('#myElement');
-		Returns an array containing only the element with id = myElement (requires Element.Selectors.js).
-
-		>$$('#myElement a.myClass');
-		Returns an array of all anchor tags with the class "myClass" within the DOM element with id "myElement" (requires Element.Selectors.js).
-
-		>$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
-		Returns a collection of the element referenced as myelement, the element referenced as myelement2, all of the link tags on the page,
-		the element with the id 'myid', followed by the elements with the ids of 'myid2' and 'myid3', and finally all the div elements on the page.
-		NOTE: If an element is not found, nothing will be included into the array (not even *null*).
-
 	Returns:
-		array - array of all the dom elements matched, extended with <$>.  Returns as <Elements>.
+		(array) - An array of all the DOM Elements matched, extended with <$>.
+
+	Examples:
+		Get Elements by Their Tags:
+		[javascript]
+			$$('a'); //returns all anchor Elements in the page
+
+			$$('a', 'b'); //returns anchor and bold tags on the page
+		[/javascript]
+
+		Using CSS Selectors When <Element.Selectors.js> is Included:
+		[javascript]
+			$$('#myElement'); //returns an array containing only the element with the id 'myElement'
+
+			$$('#myElement a.myClass'); //returns an array of all anchor tags with the class "myClass" within the DOM element with id "myElement"
+		[/javascript]
+
+		Complex $$:
+		[javascript]
+			$$(myelement, myelement2, 'a', ['myid', myid2, 'myid3'], document.getElementsByTagName('div'));
+		[/javascript]
+
+	Notes:
+		- If you load <Element.Selectors.js>, $$ will also accept CSS Selectors, otherwise the only selectors supported are tag names.
+		- If an element is not found, nothing will be included into the array (not even *null*)
 	*/
 
 	$$: function(selector){
@@ -354,19 +419,16 @@ Native.implement([Element, Document], {
 		tag - (string) String of the tag to match.
 
 	Returns:
-		(mixed) If found returns an extended Element, else returns null.
+		(mixed) If found returns an extended Element, otherwise returns null.
 
 	Example:
 		[javascript]
-			var body = $(document.body);
-			var firstDiv = body.getElement('div');
-			// or
 			var firstDiv = $(document.body).getElement('div');
 		[/javascript]
 
-	Note:
-		This method is also available for the Document instances.
-		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElement so that it maches with CSS selectors.
+	Notes:
+		- This method is also available for the Document instances.
+		- This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElement so that it maches with CSS selectors.
 	*/
 
 	getElement: function(selector, notrash){
@@ -388,15 +450,12 @@ Native.implement([Element, Document], {
 
 	Example:
 		[javascript]
-			var body = $(document.body);
-			var allAnchors = body.getElements('a');
-			// or
-			var allAnchors = $(document.body).getElement('a');
+			var allAnchors = $(document.body).getElements('a');
 		[/javascript]
 
-	Note:
-		This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElements so that it maches with CSS selectors.
-		This method is also available for the Document instances.
+	Notes:
+		- This method gets replaced when <Selector.js> is included. <Selector.js> enhances getElements so that it maches with CSS selectors.
+		- This method is also available for the Document instances.
 	*/
 
 	getElements: function(tags, nocash){
@@ -607,13 +666,25 @@ Element.implement({
 
 	/*
 	Method: getElementById
-		Targets an element with the specified id found inside the Element. Does not overwrite document.getElementById.
+		Targets an element with the specified id found inside the Element.
+
+	Syntax:
+		>var myElement = anElement.getElementById(id);
 
 	Arguments:
-		id - (string) the id of the element to find.
+		id - (string) The ID of the Element to find.
 
 	Returns:
-		(mixed) The element you find or null if none found.
+		(mixed) The Element found, otherwise null.
+
+	Example:
+		[javascript]
+			var myParent = $('myParent');
+			var myChild = myParent.getElementById('aChild');
+		[/javascript]
+
+	Note:
+		Does not overwrite document.getElementById.
 	*/
 
 	getElementById: function(id, nocash){
@@ -627,20 +698,20 @@ Element.implement({
 
 	/*
 	Method: set
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the Element.Set Hash.
-		Default properties of this Hash are events, styles, and properties.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Set> Hash.
 
 	Syntax:
-		>myElement.set(property, value);
+		>myElement.set(property[, value]);
 
 	Arguments:
-		mixed - (mixed) This method accepts either a property and a value or a property/value object.
+		property - (mixed) Accepts a string for setting the property and value, or an object with its keys/values representing properties for the Element.
+		value    - (mixed, optional) The value to set for the given property.
 
 	Returns:
 		(element) This Element.
 
-	Example:
-		with an object
+	Examples:
+		With an Object:
 		[javascript]
 			var body = $(document.body).set({
 				'styles': { // property styles passes the object to <Element.setStyles>
@@ -654,7 +725,8 @@ Element.implement({
 				'id': 'documentBody' //any other property uses setProperty
 			});
 		[/javascript]
-		with property and value
+
+		With Property and Value:
 		[javascript]
 			var body = $(document.body).set('styles', { // property styles passes the object to <Element.setStyles>
 				'font': '12px Arial',
@@ -662,9 +734,9 @@ Element.implement({
 			});
 		[/javascript]
 
-	Note:
-		All additional arguments are passed to the method of the Element.Get Hash.
-		If no matching property is found in Element.Set, it falls back to setProperty, making this method the perfect shortcut.
+	Notes:
+		- All additional arguments are passed to the method of the Element.Get Hash.
+		- If no matching property is found in Element.Set, it falls back to setProperty, making this method the perfect shortcut.
 
 	See Also:
 		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>, <Element.Set>
@@ -685,47 +757,46 @@ Element.implement({
 
 	/*
 	Method: get
-		This is a "dynamic arguments" method. The argument must be one of the properties of the Element.Get Hash.
+		This is a "dynamic arguments" method. The argument must be one of the properties of the <Element.Get> Hash.
 
 	Syntax:
-		>myElement.get(property);
+		>var myValue = myElement.get(property);
 
 	Arguments:
-		property - (string) The name of a method of the Element.Get Hash.
+		property - (string) The name of a method of the <Element.Get> Hash.
 
 	Returns:
-		(mixed) Whatever the method returns.
+		(mixed) The method's return.
 
 	Example:
 		[javascript]
 			var value = $(element).get('id');
 		[/javascript]
 
-	Note:
-		All additional arguments are passed to the method of the Element.Get Hash.
-		If no matching property is found in Element.Get, it falls back to getProperty, making this method the perfect shortcut.
+	Notes:
+		- All additional arguments are passed to the method of the Element.Get Hash.
+		- If no matching property is found in Element.Get, it falls back to getProperty, making this method the perfect shortcut.
 
 	See Also:
 		<Element>, <Element.getProperty>
 	*/
 
-	get: function(prop){
-		return (Element.Get.has(prop)) ? Element.Get[prop].apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
+	get: function(property){
+		return (Element.Get.has(property)) ? Element.Get[property].apply(this, Array.slice(arguments, 1)) : this.getProperty(property);
 	},
 
 	/*
 	Method: has
-		This is a "dynamic arguments" method. The argument must be one of the properties of the Element.Has Hash.
+		This is a "dynamic arguments" method. The argument must be one of the properties of the <Element.Has> Hash.
 
 	Syntax:
-		>myElement.has(property);
+		>var myResult = myElement.has(property);
 
 	Arguments:
-		property - (string) The name of a method of the Element.Has Hash.
+		property - (string) The name of a method of the <Element.Has> Hash.
 
 	Returns:
-		(mixed) True or False, depending on the return value of the Element.Has method. if Element.Has has no method named like the first argument,
-				the function will return null.
+		(mixed) If the <Element.Hash> has no method then will return null, otherwise will return true or false depending on the return value.
 
 	Example:
 		[javascript]
@@ -737,11 +808,11 @@ Element.implement({
 		[/javascript]
 
 	Note:
-		All additional arguments are passed to the method of the Element.Has Hash.
+		All additional arguments are passed to the method of the <Element.Has> Hash.
 	*/
 
-	has: function(prop){
-		return (Element.Has.has(prop)) ? !!Element.Has[prop].apply(this, Array.slice(arguments, 1)) : null;
+	has: function(property){
+		return (Element.Has.has(property)) ? !!Element.Has[property].apply(this, Array.slice(arguments, 1)) : null;
 	},
 
 	/*
@@ -752,7 +823,7 @@ Element.implement({
 		>myElement.inject(el[, where]);
 
 	Arguments:
-		el    - (mixed) el can be: the string of the id of the element or an element.
+		el	- (mixed) el can be: the string of the id of the element or an element.
 		where - (string, optional) The place to inject this Element to (defaults to the bottom of the el's child nodes).
 
 	Returns:
