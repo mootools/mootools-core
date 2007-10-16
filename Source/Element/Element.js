@@ -938,7 +938,7 @@ Element.implement({
 		>var copy = myElement.clone([contents]);
 
 	Arguments:
-		contents - (boolean, optional) When true the Element is cloned with childNodes, default true
+		contents - (boolean, optional: defaults to true) When true the Element is cloned with childNodes.
 
 	Returns:
 		(element) The cloned Element.
@@ -1023,7 +1023,7 @@ Element.implement({
 		[/html]
 
 		[javascript]
-			$('myElement').appendText('. howdy'); //myElement innerHTML is now "hey howdy"
+			$('myElement').appendText('. howdy'); //myElement innerHTML is now "hey. howdy"
 		[/javascript]
 
 		Result:
