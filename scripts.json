@@ -156,7 +156,7 @@
 		},
 
 		"Ajax": {
-			"deps": ["XHR", "Element.Form"],
+			"deps": ["XHR", "Element"],
 			"desc": "Extends the basic XHR with additional methods and utility functions."
 		},
 
