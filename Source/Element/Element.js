@@ -456,7 +456,7 @@ Native.implement([Element, Document], {
 Element.Storage = {
 
 	get: function(uid){
-		return this[uid] = this[uid] || {};
+		return (this[uid] = this[uid] || {});
 	}
 
 };

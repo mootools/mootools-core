@@ -216,9 +216,9 @@ var XHR = new Class({
 			myXHR.send('some=data');
 		[/javascript]
 	*/
-	
+
 	setURL: function(url){
-		if (url) this.url = url;
+		this.url = url;
 		return this;
 	},
 
@@ -265,7 +265,27 @@ var XHR = new Class({
 		if (!this.options.async) this.onStateChange();
 		return this;
 	},
-	
+
+	/*
+	Method: send
+		Opens the XHR connection and sends the provided data. Allows to override the URL.
+
+	Syntax:
+		>myAjax.request(data[, url]);
+
+	Arguments:
+		data - (mixed) Same as the data argument for <XHR.send>.
+		url - (string, optional) Overrides default URL given during initialize or <XHR.setURL>.
+
+	Returns:
+		(object) This Ajax instance.
+	*/
+
+	request: function(data, url){
+		if (url) this.url = url;
+		return this.send(data);
+	},
+
 	/*
 	Method: cancel
 		Cancels the currently running request, if any.
