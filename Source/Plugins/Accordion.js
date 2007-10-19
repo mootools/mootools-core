@@ -80,8 +80,8 @@ var Accordion = new Class({
 
 	Extends: Fx.Elements,
 
-	options: {
-		/*onActive: $empty,
+	options: {/*
+		onActive: $empty,
 		onBackground: $empty,*/
 		display: 0,
 		show: false,
@@ -156,8 +156,8 @@ var Accordion = new Class({
 		this.elements.include(element);
 		if (len && (!test || pos)){
 			pos = $pick(pos, len - 1);
-			toggler.injectBefore(this.togglers[pos]);
-			element.injectAfter(toggler);
+			toggler.inject(this.togglers[pos], 'before');
+			element.inject(toggler, 'after');
 		} else if (this.container && !test){
 			toggler.inject(this.container);
 			element.inject(this.container);

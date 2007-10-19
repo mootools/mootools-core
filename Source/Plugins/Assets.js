@@ -22,7 +22,7 @@ var Asset = new Hash({
 
 	Arguments:
 		source     - (string) The location of the JavaScript file to load.
-		properties - (object, optional) Additional attributes to be included into the script Element (see <Element.setProperties>).
+		properties - (object, optional) Additional attributes to be included into the script Element.
 
 	Returns:
 		(element) A new script Element.
@@ -44,7 +44,7 @@ var Asset = new Hash({
 			}
 		});
 		delete properties.onload;
-		return script.setProperties(properties).inject(document.head);
+		return script.set('properties', properties).inject(document.head);
 	},
 
 	/*
@@ -122,7 +122,7 @@ var Asset = new Hash({
 		});
 		image.src = element.src = source;
 		if (image && image.complete) image.onload.delay(1);
-		return element.setProperties(properties);
+		return element.set('properties', properties);
 	},
 
 	/*

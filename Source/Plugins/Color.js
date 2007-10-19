@@ -51,7 +51,7 @@ Note:
 var Color = new Class({
 
 	initialize: function(color, type){
-		type = type || (color.push ? 'rgb' : 'hex');
+		type = type || ($type(color) == 'array') ? 'rgb' : 'hex';
 		var rgb, hsb;
 		switch (type){
 			case 'rgb':

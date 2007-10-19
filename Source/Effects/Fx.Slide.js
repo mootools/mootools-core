@@ -53,27 +53,31 @@ Fx.Slide = new Class({
 
 	initialize: function(element, options){
 		this.addEvent('onComplete', function(){
-			this.open = (this.now[0] === 0);
+			this.open = (this.wrapper['offset' + this.layout.capitalize()] != 0);
 			if (this.open){
-				this.wrapper.setStyle(this.layout, '');
-				if (Browser.Engine.webkit419) this.element.remove().inject(this.wrapper);
+				this.wrapper.setStyle(this.layout, 'auto');
+				if (Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
 			}
 		}, true);
-		arguments.callee.parent($(element), options);
-		this.wrapper = this.element.$attributes.$wrapper;
-		if (!this.wrapper){
-			this.wrapper = new Element('div', {
-				'styles': $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
-			}).injectAfter(this.element).adopt(this.element);
+		this.element = $(element);
+		arguments.callee.parent(options);
+		var wrapper = this.element.retrieve('wrapper');
+		this.wrapper = (wrapper || new Element('div'));
+		if (!wrapper){
+			this.wrapper.inject(this.element, 'after').append(this.element);
+			this.wrapper.setStyles(Hash.extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'}));
 		}
-		this.element.$attributes.$wrapper = this.wrapper;
-		this.element.setStyle('margin', 0);
+		this.element.store('wrapper', this.wrapper).setStyle('margin', 0);
 		this.now = [];
 		this.open = true;
 	},
 
-	setNow: function(){
-		for (var i = 2; i--; i) this.now[i] = this.compute(this.from[i], this.to[i]);
+	compute: function(from, to, delta){
+		var now = [];
+		(2).times(function(i){
+			now[i] = Fx.compute(from[i], to[i], delta);
+		});
+		return now;
 	},
 
 	vertical: function(){
@@ -87,6 +91,22 @@ Fx.Slide = new Class({
 		this.layout = 'width';
 		this.offset = this.element.offsetWidth;
 	},
+	
+	start: function(how, mode){
+		if (!this.check(how, mode)) return this;
+		this[mode || this.options.mode]();
+		var margin = this.element.getStyle(this.margin).toInt();
+		var layout = this.wrapper.getStyle(this.layout).toInt();
+		var caseIn = [[margin, layout], [0, this.offset]];
+		var caseOut = [[margin, layout], [-this.offset, 0]];
+		var start;
+		switch(how){
+			case 'in': start = caseIn; break;
+			case 'out': start = caseOut; break;
+			case 'toggle': start = (this.wrapper['offset' + this.layout.capitalize()] == 0) ? caseIn : caseOut;
+		}
+		return arguments.callee.parent(start[0], start[1]);
+	},
 
 	/*
 	Method: slideIn
@@ -99,7 +119,7 @@ Fx.Slide = new Class({
 		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 	Returns:
-		(class) This Fx.Slide instance.
+		(object) This Fx.Slide instance.
 
 	Example:
 		[javascript]
@@ -110,8 +130,7 @@ Fx.Slide = new Class({
 	*/
 
 	slideIn: function(mode){
-		this[mode || this.options.mode]();
-		return this.start([this.element.getStyle(this.margin).toInt(), this.wrapper.getStyle(this.layout).toInt()], [0, this.offset]);
+		return this.start('in', mode);
 	},
 
 	/*
@@ -125,7 +144,7 @@ Fx.Slide = new Class({
 		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 	Returns:
-		(class) This Fx.Slide instance.
+		(object) This Fx.Slide instance.
 
 	Example:
 		[javascript]
@@ -139,8 +158,36 @@ Fx.Slide = new Class({
 	*/
 
 	slideOut: function(mode){
-		this[mode || this.options.mode]();
-		return this.start([this.element.getStyle(this.margin).toInt(), this.wrapper.getStyle(this.layout).toInt()], [-this.offset, 0]);
+		return this.start('out', mode);
+	},
+	
+	
+	/*
+	Method: toggle
+		Slides in or Out the element depending on its state.
+
+	Syntax:
+		>myFx.toggle([mode]);
+
+	Arguments:
+		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+
+	Returns:
+		(object) This Fx.Slide instance.
+
+	Example:
+		[javascript]
+			var myFx = new Fx.Slide('myElement', {
+				duration: 1000,
+				transition: Fx.Transitions.Pow.easeOut
+			});
+
+			myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
+		[/javascript]
+	*/
+
+	toggle: function(mode){
+		return this.start('toggle', mode);
 	},
 
 	/*
@@ -154,7 +201,7 @@ Fx.Slide = new Class({
 		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 	Returns:
-		(class) This Fx.Slide instance.
+		(object) This Fx.Slide instance.
 
 	Example:
 		[javascript]
@@ -184,7 +231,7 @@ Fx.Slide = new Class({
 		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 	Returns:
-		(class) This Fx.Slide instance.
+		(object) This Fx.Slide instance.
 
 	Example:
 		[javascript]
@@ -205,38 +252,9 @@ Fx.Slide = new Class({
 		return this.set([0, this.offset]);
 	},
 
-	/*
-	Method: toggle
-		Slides in or Out the element depending on its state.
-
-	Syntax:
-		>myFx.toggle([mode]);
-
-	Arguments:
-		mode - (string, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
-
-	Returns:
-		(class) This Fx.Slide instance.
-
-	Example:
-		[javascript]
-			var myFx = new Fx.Slide('myElement', {
-				duration: 1000,
-				transition: Fx.Transitions.Pow.easeOut
-			});
-
-			myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
-		[/javascript]
-	*/
-
-	toggle: function(mode){
-		if (this.wrapper.offsetHeight == 0 || this.wrapper.offsetWidth == 0) return this.slideIn(mode);
-		return this.slideOut(mode);
-	},
-
-	increase: function(){
-		this.element.setStyle(this.margin, this.now[0] + this.options.unit);
-		this.wrapper.setStyle(this.layout, this.now[1] + this.options.unit);
+	set: function(now){
+		this.element.setStyle(this.margin, now[0]);
+		this.wrapper.setStyle(this.layout, now[1]);
 	}
 
 });
@@ -249,16 +267,16 @@ Native: Element
 /*
 Element Setter: slide
 	sets a default Fx.Slide instance for an element
-
+	
 Syntax:
 	>el.set('slide'[, options]);
-
+	
 Arguments:
 	options - (object) the Fx.Morph options.
-
+	
 Returns:
 	(element) this element
-
+	
 Example:
 	[javascript]
 		el.set('slide', {duration: 'long', transition: 'bounce:out'});
@@ -267,40 +285,40 @@ Example:
 */
 
 Element.Set.slide = function(options){
-	if (this.$attributes.$slide) this.$attributes.$slide.stop();
-	this.$attributes.$slide = new Fx.Slide(this, $merge({wait: false}, options));
-	return this;
+	var slide = this.retrieve('slide');
+	if (slide) slide.stop();
+	return this.store('slide', new Fx.Slide(this, Hash.extend({link: 'cancel'}, options)));
 };
 
 /*
 Element Getter: slide
 	gets the previously setted Fx.Slide instance or a new one with default options
-
+	
 Syntax:
 	>el.get('slide');
 
 Arguments:
 	options - (object, optional) the Fx.Slide options. if passed in will generate a new instance.
-
+	
 Returns:
 	(object) the Fx.Slide instance
-
+	
 Example:
 	[javascript]
 		el.set('slide', {duration: 'long', transition: 'bounce:out'});
 		el.slide('in');
-
+		
 		el.get('slide'); //the Fx.Slide instance
 	[/javascript]
 */
 
 Element.Get.slide = function(options){
-	if (!this.$attributes.$slide || options) this.set('slide', options);
-	return this.$attributes.$slide;
+	if (options || !this.retrieve('slide')) this.set('slide', options);
+	return this.retrieve('slide');
 };
 
 Element.implement({
-
+	
 	/*
 	Method: slide
 		Slides this Element in view.
@@ -325,7 +343,8 @@ Element.implement({
 	*/
 
 	slide: function(how, options){
-		this.get('slide', options)[(how == 'in' || how == 'out') ? 'slide' + how.capitalize() : (how || 'toggle')]();
+		how = how || 'toggle';
+		this.get('slide', options).start(how);
 		return this;
 	}
 

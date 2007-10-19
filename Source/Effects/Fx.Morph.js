@@ -17,7 +17,7 @@ Syntax:
 	>var myFx = new Fx.Morph(element[, options]);
 
 Arguments:
-	el      - (mixed) A string ID of the Element or an Element to apply the style transitions to.
+	element - (mixed) A string ID of the Element or an Element to apply the style transitions to.
 	options - (object, optional) The <Fx> options object.
 
 Returns:
@@ -58,31 +58,34 @@ See Also:
 	<Fx>
 */
 
-Fx.Morph = new Class({
+Fx.Morph = Fx.Styles = new Class({
 
-	Extends: Fx,
+	Extends: Fx.CSS,
 
 	initialize: function(element, options){
-		arguments.callee.parent($(element), options);
+		this.element = $(element);
+		arguments.callee.parent(options);
 	},
 
-	setNow: function(){
-		for (var p in this.from) this.now[p] = Fx.CSS.compute(this.from[p], this.to[p], this);
+	compute: function(from, to, delta){
+		var now = {};
+		for (var p in from) now[p] = arguments.callee.parent(from[p], to[p], delta);
+		return now;
 	},
-
+	
 	/*
 	Method: set
 		Sets the Element's css properties to the specified values immediately.
-
+	
 	Syntax:
 		>myFx.set(to);
-
+	
 	Arguments:
 		to - (object) An object containing keys that specify css properties to alter with their respected values.
-
+	
 	Returns:
 		(object) This Fx.Morph instance.
-
+	
 	Example:
 		[javascript]
 			var myFx = new Fx.Morph('myElement').set({
@@ -93,11 +96,10 @@ Fx.Morph = new Class({
 			});
 		[/javascript]
 	*/
-
-	set: function(to){
-		var parsed = {};
-		for (var p in to) parsed[p] = Fx.CSS.set(to[p]);
-		return arguments.callee.parent(parsed);
+	
+	set: function(now){
+		for (var p in now) this.render(this.element, p, now[p]);
+		return this;
 	},
 
 	/*
@@ -111,7 +113,7 @@ Fx.Morph = new Class({
 		properties - (mixed) An object of properties/values pair or a string representing a css selector that can be found on one of the css files.
 
 	Returns:
-		(class) This Fx.Morph instance.
+		(object) This Fx.Morph instance.
 
 	Example:
 		[javascript]
@@ -131,39 +133,18 @@ Fx.Morph = new Class({
 	*/
 
 	start: function(properties){
-		if (this.timer && this.options.wait) return this;
-		if ($type(properties) == 'string') properties = Fx.CSS.search(properties);
-		this.now = {};
+		if (!this.check(properties)) return this;
+		if ($type(properties) == 'string') properties = this.search(properties);
 		var from = {}, to = {};
 		for (var p in properties){
-			var parsed = Fx.CSS.prepare(this.element, p, properties[p]);
+			var parsed = this.prepare(this.element, p, properties[p]);
 			from[p] = parsed.from;
 			to[p] = parsed.to;
 		}
 		return arguments.callee.parent(from, to);
-	},
-
-	increase: function(){
-		for (var p in this.now) this.element.setStyle(p, Fx.CSS.serve(this.now[p], this.options.unit));
 	}
 
 });
-
-Fx.CSS.search = function(selector){
-	var to = {};
-	Array.each(document.styleSheets, function(sheet, j){
-		var rules = sheet.rules || sheet.cssRules;
-		Array.each(rules, function(rule, i){
-			if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
-			Element.Styles.each(function(value, style){
-				if (!rule.style[style] || Element.ShortStyles[style]) return;
-				value = rule.style[style];
-				to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
-			});
-		});
-	});
-	return to;
-};
 
 /*
 Native: Element
@@ -177,7 +158,7 @@ Element Setter: morph
 Syntax:
 	>el.set('morph'[, options]);
 	
-Arguments: 
+Arguments:
 	options - (object) the Fx.Morph options.
 	
 Returns:
@@ -191,9 +172,9 @@ Example:
 */
 
 Element.Set.morph = function(options){
-	if (this.$attributes.$morph) this.$attributes.$morph.stop();
-	this.$attributes.$morph = new Fx.Morph(this, $merge({wait: false}, options));
-	return this;
+	var morph = this.retrieve('morph');
+	if (morph) morph.stop();
+	return this.store('morph', new Fx.Morph(this, Hash.extend({link: 'cancel'}, options)));
 };
 
 /*
@@ -219,8 +200,8 @@ Example:
 */
 
 Element.Get.morph = function(options){
-	if (!this.$attributes.$morph || options) this.set('morph', options);
-	return this.$attributes.$morph;
+	if (options || !this.retrieve('morph')) this.set('morph', options);
+	return this.retrieve('morph');
 };
 
 Element.implement({
@@ -257,6 +238,10 @@ Element.implement({
 	morph: function(props, options){
 		this.get('morph', options).start(props);
 		return this;
+	},
+	
+	effects: function(options){
+		return this.get('morph', options);
 	}
 
 });

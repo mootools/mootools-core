@@ -11,8 +11,49 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Set.styles = function(styles){
-	this.setStyles(styles);
+Element.Set.extend({
+	
+	styles: function(styles){
+		this.setStyles(styles);
+	},
+	
+	/*
+	Element Setter: opacity
+		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
+
+	Syntax:
+		>Element.set('opacity', opacity);
+
+	Arguments:
+		opacity - (float) A values from 0.0 to 1.0, where 1.0 is visible and 0.0 is hidden.
+
+	Returns:
+		(element) This element.
+
+	Example:
+		[javascript]
+			$('myElement').set('opacity', 0.5) //make it 50% transparent
+		[/javascript]
+	*/
+
+	opacity: function(opacity){
+		if (opacity == 0){
+			if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
+		} else {
+			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
+		}
+		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
+		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		this.style.opacity = opacity;
+		this.store('opacity', opacity);
+	}
+	
+});
+
+Element.Get.opacity = function(){
+	var opacity = this.retrieve('opacity');
+	if (!$chk(opacity)) this.store('opacity', 1);
+	return this.retrieve('opacity');
 };
 
 Element.implement({
@@ -44,7 +85,7 @@ Element.implement({
 
 	setStyle: function(property, value){
 		switch (property){
-			case 'opacity': return this.setOpacity(parseFloat(value));
+			case 'opacity': return this.set('opacity', parseFloat(value));
 			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
@@ -93,41 +134,7 @@ Element.implement({
 	*/
 
 	setStyles: function(styles){
-		switch ($type(styles)){
-			case 'object': for (var style in styles) this.setStyle(style, styles[style]); break;
-			case 'string': this.style.cssText = styles;
-		}
-		return this;
-	},
-
-	/*
-	Method: setOpacity
-		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
-
-	Syntax:
-		>Element.setOpacity(opacity);
-
-	Arguments:
-		opacity - (float) A values from 0.0 to 1.0, where 1.0 is visible and 0.0 is hidden.
-
-	Returns:
-		(element) This element.
-
-	Example:
-		[javascript]
-			$('myElement').setOpacity(0.5) //make it 50% transparent
-		[/javascript]
-	*/
-
-	setOpacity: function(opacity){
-		if (opacity == 0){
-			if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
-		} else {
-			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
-		}
-		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
-		this.style.opacity = this.$attributes.opacity = opacity;
+		for (var style in styles) this.setStyle(style, styles[style]);
 		return this;
 	},
 
@@ -154,11 +161,7 @@ Element.implement({
 
 	getStyle: function(property){
 		property = property.camelCase();
-		if (property == 'opacity'){
-			var opacity = this.$attributes.opacity;
-			if (!$chk(opacity)) this.$attributes.opacity = 1;
-			return this.$attributes.opacity;
-		}
+		if (property == 'opacity') return this.get('opacity');
 		var result = this.style[property];
 		if (!$chk(result)){
 			result = [];
@@ -177,7 +180,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		return (Browser.Engine.trident) ? Element.$fixStyle(property, result, this) : result;
+		return (Browser.Engine.trident) ? Element.fixStyle(property, result, this) : result;
 	},
 
 	/*
@@ -212,7 +215,7 @@ Element.implement({
 
 });
 
-Element.$fixStyle = function(property, result, element){
+Element.fixStyle = function(property, result, element){
 	if ($chk(parseInt(result))) return result;
 	if (['height', 'width'].contains(property)){
 		var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];

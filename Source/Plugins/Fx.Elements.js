@@ -51,20 +51,22 @@ Note:
 
 Fx.Elements = new Class({
 
-	Extends: Fx,
+	Extends: Fx.CSS,
 
 	initialize: function(elements, options){
-		arguments.callee.parent(elements, options);
-		this.elements = $$(this.element);
+		this.elements = $$(elements);
+		arguments.callee.parent(options);
 	},
 
-	setNow: function(){
-		for (var i in this.from){
-			var iFrom = this.from[i], iTo = this.to[i], iNow = this.now[i] = {};
-			for (var p in iFrom) iNow[p] = Fx.CSS.compute(iFrom[p], iTo[p], this);
+	compute: function(from, to, delta){
+		var now = {};
+		for (var i in from){
+			var iFrom = from[i], iTo = to[i], iNow = now[i] = {};
+			for (var p in iFrom) iNow[p] = arguments.callee.parent(iFrom[p], iTo[p], delta);
 		}
+		return now;
 	},
-
+	
 	/*
 	Method: set
 		Applies the passed in style transitions to each object named immediately (see example).
@@ -73,7 +75,8 @@ Fx.Elements = new Class({
 		>myFx.set(to);
 
 	Arguments:
-		to - (object) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+		to - (object) An object where each item in the collection is refered to as a numerical string ("1" for instance).
+		The first item is "0", the second "1", etc.
 
 	Returns:
 		(object) This Fx.Elements instance.
@@ -92,15 +95,12 @@ Fx.Elements = new Class({
 			});
 		[/javascript]
 	*/
-
-	set: function(to){
-		var parsed = {};
-		this.css = {};
-		for (var i in to){
-			var iTo = to[i], iParsed = parsed[i] = {};
-			for (var p in iTo) iParsed[p] = Fx.CSS.set(iTo[p]);
+	
+	set: function(now){
+		for (var i in now){
+			var iNow = now[i];
+			for (var p in iNow) this.render(this.elements[i], p, iNow[p]);
 		}
-		return arguments.callee.parent(parsed);
 	},
 
 	/*
@@ -132,26 +132,17 @@ Fx.Elements = new Class({
 	*/
 
 	start: function(obj){
-		if (this.timer && this.options.wait) return this;
-		this.now = {};
-		this.css = {};
+		if (!this.check(obj)) return this;
 		var from = {}, to = {};
 		for (var i in obj){
 			var iProps = obj[i], iFrom = from[i] = {}, iTo = to[i] = {};
 			for (var p in iProps){
-				var parsed = Fx.CSS.prepare(this.elements[i], p, iProps[p]);
+				var parsed = this.prepare(this.elements[i], p, iProps[p]);
 				iFrom[p] = parsed.from;
 				iTo[p] = parsed.to;
 			}
 		}
 		return arguments.callee.parent(from, to);
-	},
-
-	increase: function(){
-		for (var i in this.now){
-			var iNow = this.now[i];
-			for (var p in iNow) this.elements[i].setStyle(p, Fx.CSS.serve(iNow[p], this.options.unit));
-		}
 	}
 
 });

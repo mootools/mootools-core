@@ -11,28 +11,28 @@ Credits:
 
 /*
 Class: Fx
-	Fx.Transitions overrides the Fx constructor, and adds the possibility to use the transition option as string.
-
-Transition Option:
+	Fx.Transitions overrides the base Fx constructor, and adds the possibility to use the transition option as string.
+	
+transition option:
 	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
-	or a string ('ease:in' or, 'bounce:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut
+	or a string ('sine:in' or, 'bounce:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut
 */
 
-Fx.implement({
-
-	initialize: function(element, options){
-		this.element = element;
-		this.setOptions(options);
-		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration;
+(function(){
+	
+	var old = Fx.prototype.initialize;
+	
+	Fx.prototype.initialize = function(options){
+		old.call(this, options);
 		var trans = this.options.transition;
 		if ($type(trans) == 'string' && (trans = trans.split(':'))){
 			var base = Fx.Transitions[trans[0].capitalize()];
 			if (trans[1]) base = base['ease' + trans[1].capitalize()];
 			this.options.transition = base;
 		}
-	}
-
-});
+	};
+	
+})();
 
 /*
 Class: Fx.Transition
@@ -52,7 +52,7 @@ Example:
 	[javascript]
 		//Elastic.easeOut with user-defined value for elasticity.
 		var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
-		var myFx = $('myElement').tween('margin', {transition: myTransition.easeOut});
+		var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
 	[/javascript]
 
 See Also:
@@ -61,7 +61,7 @@ See Also:
 
 Fx.Transition = function(transition, params){
 	params = $splat(params);
-	return $extend(transition, {
+	return Hash.extend(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
 		},
@@ -81,11 +81,11 @@ Hash: Fx.Transitions
 Example:
 	[javascript]
 		//Elastic.easeOut with default values:
-		var myFx = $('myElement').tween('margin', {transition: Fx.Transitions.Elastic.easeOut});
+		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
 	[/javascript]
 
 See also:
-	<http://www.robertpenner.com/easing/>, <Element.tween>
+	<http://www.robertpenner.com/easing/>, <Element.effect>
 */
 
 Fx.Transitions = new Hash({

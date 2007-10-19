@@ -51,12 +51,12 @@ Json.Remote = new Class({
 	Extends: XHR,
 
 	options: {
-		varName: 'json',
+		key: 'json',
 		secure: true
 	},
 
-	initialize: function(url, options){
-		arguments.callee.parent(url, options);
+	initialize: function(){
+		arguments.callee.parent.apply(this, arguments);
 		this.addEvent('onSuccess', this.onComplete, true);
 		this.setHeader('Accept', 'application/json');
 		this.setHeader('X-Request', 'JSON');
@@ -82,7 +82,8 @@ Json.Remote = new Class({
 	*/
 
 	send: function(obj){
-		return arguments.callee.parent(this.url, $defined(obj) ? ((this.options.varName) ? this.options.varName + '=' : '') + encodeURIComponent(Json.encode(obj)) : null);
+		var data = (obj) ? ((this.options.key) ? this.options.key + '=' : '') + encodeURIComponent(Json.encode(obj)) : null;
+		return arguments.callee.parent(data);
 	},
 
 	onComplete: function(text){

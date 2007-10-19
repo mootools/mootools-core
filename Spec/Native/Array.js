@@ -17,12 +17,12 @@ describe('Array', {
 			return a + b;
 		};
 	},
-	
+
 	'should `flatten` a multidimensional array': function(){
 		var arr = [1,2,3,[4,5,[6,7,[8]]], [[[[[9]]]]]];
 		value_of(arr.flatten()).should_be([1,2,3,4,5,6,7,8,9]);
 	},
-	
+
 	'should `flatten` arguments': function(){
 		var test = function(){
 			return Array.flatten(arguments);

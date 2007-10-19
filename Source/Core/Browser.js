@@ -49,27 +49,30 @@ else if (document.getBoxObjectFor != null) Browser.Engine.name = 'gecko';
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
 Browser.Platform[Browser.Platform.name] = true;
 
+Native.UID = 0;
+
 var Window = new Native({
 
 	name: 'Window',
 
 	initialize: function(win){
-		Window.$instances.push(win);
+		Window.instances.push(win);
 		if (!win.Element){
 			win.Element = $empty;
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Browser.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
 		}
+		win.uid = Native.UID++;
 		return $extend(win, this);
 	},
 
 	afterImplement: function(property, value){
-		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
+		for (var i = 0, l = this.instances.length; i < l; i++) this.instances[i][property] = value;
 	}
 
 });
 
-Window.$instances = [];
+Window.instances = [];
 
 new Window(window);
 
@@ -78,21 +81,38 @@ var Document = new Native({
 	name: 'Document',
 
 	initialize: function(doc){
-		Document.$instances.push(doc);
+		Document.instances.push(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.window = doc.defaultView || doc.parentWindow;
 		if (Browser.Engine.trident4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
+		doc.uid = Native.UID++;
 		return $extend(doc, this);
 	},
 
 	afterImplement: function(property, value){
-		for (var i = 0, l = this.$instances.length; i < l; i++) this.$instances[i][property] = value;
+		for (var i = 0, l = this.instances.length; i < l; i++) this.instances[i][property] = value;
 	}
 
 });
 
-Document.$instances = [];
+Document.instances = [];
 
 new Document(document);
+
+[Document, Window].each(function(object){
+		
+	object.Get = new Hash;
+	
+	object.implement({
+		
+		get: function(prop){
+			var getter = object.Get.get(prop);
+			if (getter) return object.Get[prop].call(this, Array.slice(arguments, 1));
+			return null;
+		}
+
+	});
+
+});

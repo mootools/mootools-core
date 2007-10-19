@@ -176,7 +176,7 @@ Selectors.Pseudo.nth = {
 					for (var i = 0, l = children.length; i < l; i++){
 						var child = children[i];
 						if (child.nodeType != 1) continue;
-						child.uid = child.uid || [Element.UID++];
+						child.uid = child.uid || [Native.UID++];
 						Local.Positions[child.uid] = count++;
 					}
 				}

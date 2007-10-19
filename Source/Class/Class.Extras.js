@@ -81,31 +81,28 @@ var Chain = new Class({
 		Removes the first function of the Chain instance stack and executes it. The next function will then become first in the array.
 
 	Syntax:
-		>myClass.callChain();
+		>myClass.callChain([any arguments]);
+		
+	Arguments:
+		any arguments passed in will be passed to the "next" function
 
 	Returns:
 		(object) This Class instance.
 
 	Example:
 		[javascript]
-			var Queue = new Class({
-				Implements: Chain,
-				initialize: function(){
-					this.chain.apply(this, arguments);
-				}
-			});
-			var myQueue = new Queue();
-			myQueue.chain(
+			var myChain = new Chain();
+			myChain.chain(
 				function(){ alert('do dishes'); },
 				function(){ alert('put away clean dishes'); }
 			);
-			myQueue.callChain(); //alerts 'do dishes'
-			myQueue.callChain(); //alerts 'put away clean dishes'
+			myChain.callChain(); //alerts 'do dishes'
+			myChain.callChain(); //alerts 'put away clean dishes'
 		[/javascript]
 	*/
 
 	callChain: function(){
-		if (this.$chain && this.$chain.length) this.$chain.shift().call(this);
+		if (this.$chain && this.$chain.length) this.$chain.shift().apply(this, arguments);
 		return this;
 	},
 

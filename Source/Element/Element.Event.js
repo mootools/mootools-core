@@ -160,7 +160,7 @@ Event.implement({
 				this.setText("Where do you think you're going?"); //'this' is Element that fire's the Event.
 
 				(function(){
-					this.setText("Instead visit the Blog.").setProperty('href', 'http://blog.mootools.net');
+					this.setText("Instead visit the Blog.").set('href', 'http://blog.mootools.net');
 				}).delay(500, this);
 			});
 		[/javascript]
@@ -298,10 +298,11 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	addEvent: function(type, fn){
-		this.$events = this.$events || {};
-		this.$events[type] = this.$events[type] || {'keys': [], 'values': []};
-		if (this.$events[type].keys.contains(fn)) return this;
-		this.$events[type].keys.push(fn);
+		var events = this.retrieve('events') || {};
+		this.store('events', events);
+		events[type] = events[type] || {'keys': [], 'values': []};
+		if (events[type].keys.contains(fn)) return this;
+		events[type].keys.push(fn);
 		var realType = type, custom = Element.Events.get(type), condition = fn, self = this;
 		if (custom){
 			if (custom.onAdd) custom.onAdd.call(this, fn);
@@ -326,7 +327,7 @@ Native.implement([Element, Window, Document], {
 			}
 			this.addListener(realType, defn);
 		}
-		this.$events[type].values.push(defn);
+		events[type].values.push(defn);
 		return this;
 	},
 
@@ -371,11 +372,12 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	removeEvent: function(type, fn){
-		if (!this.$events || !this.$events[type]) return this;
-		var pos = this.$events[type].keys.indexOf(fn);
+		var events = this.retrieve('events');
+		if (!events || !events[type]) return this;
+		var pos = events[type].keys.indexOf(fn);
 		if (pos == -1) return this;
-		var key = this.$events[type].keys.splice(pos, 1)[0];
-		var value = this.$events[type].values.splice(pos, 1)[0];
+		var key = events[type].keys.splice(pos, 1)[0];
+		var value = events[type].values.splice(pos, 1)[0];
 		var custom = Element.Events.get(type);
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
@@ -461,13 +463,14 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	removeEvents: function(type){
-		if (!this.$events) return this;
+		var events = this.retrieve('events');
+		if (!events) return this;
 		if (!type){
-			for (var evType in this.$events) this.removeEvents(evType);
-			this.$events = null;
-		} else if (this.$events[type]){
-			while (this.$events[type].keys[0]) this.removeEvent(type, this.$events[type].keys[0]);
-			this.$events[type] = null;
+			for (var evType in events) this.removeEvents(evType);
+			events = null;
+		} else if (events[type]){
+			while (events[type].keys[0]) this.removeEvent(type, events[type].keys[0]);
+			events[type] = null;
 		}
 		return this;
 	},
@@ -498,11 +501,11 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	fireEvent: function(type, args, delay){
-		if (this.$events && this.$events[type]){
-			this.$events[type].keys.each(function(fn){
-				fn.create({'bind': this, 'delay': delay, 'arguments': args})();
-			}, this);
-		}
+		var events = this.retrieve('events');
+		if (!events || !events[type]) return this;
+		events[type].keys.each(function(fn){
+			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+		}, this);
 		return this;
 	},
 
@@ -531,12 +534,13 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	cloneEvents: function(from, type){
-		from = $(from, true);
-		if (!from.$events) return this;
+		from = $(from);
+		var fevents = from.retrieve('events');
+		if (!fevents) return this;
 		if (!type){
-			for (var evType in from.$events) this.cloneEvents(from, evType);
-		} else if (from.$events[type]){
-			from.$events[type].keys.each(function(fn){
+			for (var evType in fevents) this.cloneEvents(from, evType);
+		} else if (fevents[type]){
+			fevents[type].keys.each(function(fn){
 				this.addEvent(type, fn);
 			}, this);
 		}

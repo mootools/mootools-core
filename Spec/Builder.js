@@ -26,7 +26,7 @@ var Builder = {
 			"Core"      : ["Core", "Browser"],
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
 			"Class"     : ["Class", "Class.Extras"],
-			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions", "Element.Form"],
+			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions"],
 			"Selectors" : ["Selectors", "Selectors.Pseudo"],
 			"Window"    : ["Window.DomReady", "Window.Size"],
 			"Effects"   : ["Fx", "Fx.CSS", "Fx.Tween", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
@@ -37,10 +37,11 @@ var Builder = {
 		},
 
 		spec: {
-			"Core"    : ["Core"],
-			"Native"  : ["Array", "String", "Function", "Number", "Hash"],
-			"Class"   : ["Class", "Class.Extras"],
-			"Element" : ["Element"]
+			"Core"      : ["Core"],
+			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
+			"Class"     : ["Class", "Class.Extras"],
+			"Element"   : ["Element"],
+			"Selectors" : ["Selectors"]
 		}
 	},
 

@@ -105,18 +105,18 @@ var Drag = new Class({
 
 	Implements: [Events, Options],
 
-	options: {
-		/*onStart: $empty,
+	options: {/*
+		onStart: $empty,
 		onBeforeStart: $empty,
 		onComplete: $empty,
 		onSnap: $empty,
 		onDrag: $empty,*/
-		handle: false,
+		snap: 6,
 		unit: 'px',
-		limit: false,
-		modifiers: {x: 'left', y: 'top'},
 		grid: false,
-		snap: 6
+		limit: false,
+		handle: false,
+		modifiers: {x: 'left', y: 'top'}
 	},
 
 	initialize: function(){
@@ -131,7 +131,8 @@ var Drag = new Class({
 			'start': this.start.bind(this),
 			'check': this.check.bind(this),
 			'drag': this.drag.bind(this),
-			'stop': this.stop.bind(this)
+			'stop': this.stop.bind(this),
+			'cancel': this.cancel.bind(this)
 		};
 		this.attach();
 	},
@@ -209,20 +210,18 @@ var Drag = new Class({
 			}
 		}
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
-		this.document.addEvents({
-			'mousemove': this.bound.check,
-			'mouseup': this.bound.stop
-		});
-		this.fireEvent('onStart', this.element);
+		this.document.addEvent('mousemove', this.bound.check);
+		this.document.addEvent('mouseup', this.bound.cancel);
 		event.stop();
 	},
 
 	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			this.document.removeEvent('mousemove', this.bound.check);
+			this.cancel(event);
 			this.document.addEvent('mousemove', this.bound.drag);
-			this.drag(event);
+			this.document.addEvent('mouseup', this.bound.stop);
+			this.fireEvent('onStart', this.element);
 			this.fireEvent('onSnap', this.element);
 		}
 		event.stop();
@@ -249,6 +248,12 @@ var Drag = new Class({
 		this.fireEvent('onDrag', this.element);
 		event.stop();
 	},
+	
+	cancel: function(event){
+		this.document.removeEvent('mousemove', this.bound.check);
+		this.document.removeEvent('mouseup', this.bound.cancel);
+		event.stop();
+	},
 
 	/*
 	Method: stop
@@ -272,11 +277,12 @@ var Drag = new Class({
 		[/javascript]
 	*/
 
-	stop: function(){
-		this.document.removeEvent('mousemove', this.bound.check);
+	stop: function(event){
 		this.document.removeEvent('mousemove', this.bound.drag);
 		this.document.removeEvent('mouseup', this.bound.stop);
 		this.fireEvent('onComplete', this.element);
+		event.stop();
+		return this;
 	}
 
 });

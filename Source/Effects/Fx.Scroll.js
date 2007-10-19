@@ -29,7 +29,7 @@ Arguments:
 		wheelStops - (boolean: defaults to true) If false, the mouse wheel will not stop the transition from happening.
 
 Returns:
-	(class) A new Fx.Scroll instance.
+	(object) A new Fx.Scroll instance.
 
 Example:
 	[javascript]
@@ -57,30 +57,59 @@ Fx.Scroll = new Class({
 	},
 
 	initialize: function(element, options){
-		arguments.callee.parent($(element), options);
+		this.element = $(element);
+		arguments.callee.parent(options);
 		
-		this.now = [];
-		this.bound = {'stop': this.stop.bind(this, false)};
-		
-		var mouseStopper = this.element;
+		var cancel = this.cancel.bind(this, false);
+		var stopper = this.element;
 		
 		switch($type(this.element)){
-			case 'window': mouseStopper = this.element.document; break;
+			case 'window': stopper = this.element.document; break;
 			case 'document': this.element = this.element.window;
 		}
 
 		if (this.options.wheelStops){
 			this.addEvent('onStart', function(){
-				mouseStopper.addEvent('mousewheel', this.bound.stop);
-			}.bind(this), true);
+				stopper.addEvent('mousewheel', cancel);
+			}, true);
 			this.addEvent('onComplete', function(){
-				mouseStopper.removeEvent('mousewheel', this.bound.stop);
-			}.bind(this), true);
+				stopper.removeEvent('mousewheel', cancel);
+			}, true);
 		}
 	},
+	
+	compute: function(from, to, delta){
+		var now = [];
+		(2).times(function(i){
+			now.push(Fx.compute(from[i], to[i], delta));
+		});
+		return now;
+	},
+	
+	/*
+	Method: set
+		Scrolls the specified Element to the x/y coordinates immediately.
 
-	setNow: function(){
-		for (var i = 2; i--; i) this.now[i] = this.compute(this.from[i], this.to[i]);
+	Syntax:
+		>myFx.set(x, y);
+
+	Arguments:
+		x - (integer) The x coordinate to scroll the Element to.
+		y - (integer) The y coordinate to scroll the Element to.
+
+	Returns:
+		(object) This Fx.Scroll instance.
+
+	Example:
+		[javascript]
+			var myElement = $(document.body);
+			var myFx = new Fx.Scroll(myElement).set(0, 0.5 * document.body.offsetHeight);
+		[/javascript]
+	*/
+	
+	set: function(){
+		var now = Array.flatten(arguments);
+		this.element.scrollTo(now[0], now[1]);
 	},
 
 	/*
@@ -95,7 +124,7 @@ Fx.Scroll = new Class({
 		y - (integer) The y coordinate to scroll the Element to.
 
 	Returns:
-		(class) This Fx.Scroll instance.
+		(object) This Fx.Scroll instance.
 
 	Example:
 		[javascript]
@@ -108,16 +137,17 @@ Fx.Scroll = new Class({
 	*/
 
 	start: function(x, y){
-		if (this.timer && this.options.wait) return this;
-		var el = this.element.getSize();
+		if (!this.check(x, y)) return this;
+		var size = this.element.get('size');
+		var scroll = this.element.get('scroll');
 		var values = {'x': x, 'y': y};
-		for (var z in el.clientSize){
-			var max = el.scrollSize[z] - el.clientSize[z];
+		for (var z in size.client){
+			var max = size.scroll[z] - size.client[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
-			else values[z] = el.scroll[z];
+			else values[z] = scroll[z];
 			values[z] += this.options.offset[z];
 		}
-		return arguments.callee.parent([el.scroll.x, el.scroll.y], [values.x, values.y]);
+		return arguments.callee.parent([scroll.x, scroll.y], [values.x, values.y]);
 	},
 
 	/*
@@ -128,7 +158,7 @@ Fx.Scroll = new Class({
 		>myFx.toTop();
 
 	Returns:
-		(class) This Fx.Scroll instance.
+		(object) This Fx.Scroll instance.
 
 	Example:
 		[javascript]
@@ -155,7 +185,7 @@ Fx.Scroll = new Class({
 		>myFx.toBottom();
 
 	Returns:
-		(class) This Fx.Scroll instance.
+		(object) This Fx.Scroll instance.
 
 	Example:
 		[javascript]
@@ -178,7 +208,7 @@ Fx.Scroll = new Class({
 		>myFx.toLeft();
 
 	Returns:
-		(class) This Fx.Scroll instance.
+		(object) This Fx.Scroll instance.
 
 	Example:
 		[javascript]
@@ -202,7 +232,7 @@ Fx.Scroll = new Class({
 		>myFx.toRight();
 
 	Returns:
-		(class) This Fx.Scroll instance.
+		(object) This Fx.Scroll instance.
 
 	Example:
 		[javascript]
@@ -231,7 +261,7 @@ Fx.Scroll = new Class({
 		el - (mixed) A string ID of the Element or an Element reference to scroll to.
 
 	Returns:
-		(class) This Fx.Scroll instance.
+		(object) This Fx.Scroll instance.
 
 	Example:
 		[javascript]
@@ -243,13 +273,9 @@ Fx.Scroll = new Class({
 	*/
 
 	toElement: function(el){
-		var parent = this.element.getPosition(this.options.overflown);
-		var target = $(el).getPosition(this.options.overflown);
+		var parent = this.element.get('position', this.options.overflown);
+		var target = $(el).get('position', this.options.overflown);
 		return this.start(target.x - parent.x, target.y - parent.y);
-	},
-
-	increase: function(){
-		this.element.scrollTo(this.now[0], this.now[1]);
 	}
 
 });

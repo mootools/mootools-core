@@ -80,8 +80,8 @@ var Sortables = new Class({
 
 	Implements: [Events, Options],
 
-	options: {
-		/*onStart: $empty,
+	options: {/*
+		onStart: $empty,
 		onComplete: $empty,*/
 		clone: true,
 		opacity: 0.7,
@@ -195,7 +195,7 @@ var Sortables = new Class({
 	},
 
 	check: function(element, list){
-		element = element.getCoordinates();
+		element = element.get('coordinates');
 		var coords = list ? element : {
 			left: element.left - this.list.scrollLeft,
 			right: element.right - this.list.scrollLeft,
@@ -242,9 +242,9 @@ var Sortables = new Class({
 		this.list.positioned = this.list.getStyle('position').test(/relative|absolute|fixed/);
 
 		var children = this.list.getChildren();
-		var bounds = children.shift().getCoordinates();
+		var bounds = children.shift().get('coordinates');
 		children.each(function(element){
-			var coords = element.getCoordinates();
+			var coords = element.get('coordinates');
 			bounds.left = Math.min(coords.left, bounds.left);
 			bounds.right = Math.max(coords.right, bounds.right);
 			bounds.top = Math.min(coords.top, bounds.top);
@@ -252,10 +252,10 @@ var Sortables = new Class({
 		});
 		this.bounds = bounds;
 
-		this.position = this.element.getPosition([this.list]);
+		this.position = this.element.get('position', [this.list]);
 
 		this.offset = {
-			'list': this.list.getPosition(),
+			'list': this.list.get('position'),
 			'element': {'x': event.page.x - this.position.x, 'y': event.page.y - this.position.y}
 		};
 		this.reposition();
@@ -267,12 +267,12 @@ var Sortables = new Class({
 			case 'object': this.clone = this.element.clone(this.cloneContents).setStyles(clone);
 		}
 
-		this.clone.injectBefore(this.element.setStyles({
+		this.clone.inject(this.element.setStyles({
 			'position': 'absolute',
 			'top': this.position.y - this.margin.top,
 			'left': this.position.x - this.margin.left,
 			'opacity': this.options.opacity
-		}));
+		}), 'before');
 
 		document.addEvent('mousemove', this.bound.move);
 		document.addEvent('mouseup', this.bound.end);
@@ -307,7 +307,7 @@ var Sortables = new Class({
 					this.list.adopt(this.clone, this.element);
 					newSize = {x: this.clone.offsetWidth, y: this.clone.offsetHeight};
 					this.offset = {
-						'list': this.list.getPosition(),
+						'list': this.list.get('position'),
 						'element': {
 							'x': Math.round(newSize.x * (this.offset.element.x / oldSize.x)),
 							'y': Math.round(newSize.y * (this.offset.element.y / oldSize.y))
@@ -337,7 +337,7 @@ var Sortables = new Class({
 		document.removeEvent('mousemove', this.bound.move);
 		document.removeEvent('mouseup', this.bound.end);
 
-		this.position = this.clone.getPosition([this.list]);
+		this.position = this.clone.get('position', [this.list]);
 		this.reposition();
 
 		if (!this.effect){
@@ -356,7 +356,7 @@ var Sortables = new Class({
 		this.element.setStyles({
 			'position': 'static',
 			'opacity': this.styles.opacity
-		}).injectBefore(this.clone);
+		}).inject(this.clone, 'before');
 		this.clone.empty().dispose();
 
 		this.fireEvent('onComplete', this.element);
@@ -388,14 +388,14 @@ var Sortables = new Class({
 
 			//joins the array with a '&' to return a string of the formatted ids of all the elmements in list 3 with their position
 			mySortables.serialize(2, function(element, index){
-				return element.getProperty('id').replace('item_','') + '=' + index;
+				return element.get('id').replace('item_','') + '=' + index;
 			}).join('&'); //'3-0=0&3-1=1&3-2=2'
 		[/javascript]
 	*/
 
 	serialize: function(index, modifier){
 		var map = modifier || function(element, index){
-			return element.getProperty('id');
+			return element.get('id');
 		}.bind(this);
 
 		var serial = this.lists.map(function(list){

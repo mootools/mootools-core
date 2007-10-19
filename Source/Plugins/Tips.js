@@ -115,7 +115,7 @@ var Tips = new Class({
 	},
 
 	build: function(el){
-		el.$attributes.myTitle = (el.href && el.getTag() == 'a') ? el.href.replace('http://', '') : (el.rel || false);
+		el.$attributes.myTitle = (el.href && el.get('tag') == 'a') ? el.href.replace('http://', '') : (el.rel || false);
 		if (el.title){
 			var dual = el.title.split('::');
 			if (dual.length > 1){
@@ -124,7 +124,7 @@ var Tips = new Class({
 			} else {
 				el.$attributes.myText = el.title;
 			}
-			el.removeProperty('title');
+			el.clear('property', 'title');
 		} else {
 			el.$attributes.myText = false;
 		}
@@ -145,12 +145,12 @@ var Tips = new Class({
 		if (el.$attributes.myTitle){
 			this.title = new Element('span').inject(
 				new Element('div', {'class': this.options.className + '-title'}
-			).inject(this.wrapper)).setHTML(el.$attributes.myTitle);
+			).inject(this.wrapper)).set('html', el.$attributes.myTitle);
 		}
 		if (el.$attributes.myText){
 			this.text = new Element('span').inject(
 				new Element('div', {'class': this.options.className + '-text'}
-			).inject(this.wrapper)).setHTML(el.$attributes.myText);
+			).inject(this.wrapper)).set('html', el.$attributes.myText);
 		}
 		$clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);
@@ -162,7 +162,7 @@ var Tips = new Class({
 	},
 
 	position: function(element){
-		var pos = element.getPosition();
+		var pos = element.get('position');
 		this.toolTip.setStyles({
 			'left': pos.x + this.options.offsets.x,
 			'top': pos.y + this.options.offsets.y
@@ -170,8 +170,8 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var win = {'x': this.window.getWidth(), 'y': this.window.getHeight()};
-		var scroll = {'x': this.window.getScrollLeft(), 'y': this.window.getScrollTop()};
+		var win = {'x': this.window.get('width'), 'y': this.window.get('height')};
+		var scroll = {'x': this.window.get('scrollLeft'), 'y': this.window.get('scrollTop')};
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){

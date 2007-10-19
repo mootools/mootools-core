@@ -216,7 +216,7 @@ Selectors.Filter = {
 		if (separator){
 			var uniques = {}, child, children, item, k, l;
 			var add = function(child){
-				child.uid = child.uid || [Element.UID++];
+				child.uid = child.uid || [Native.UID++];
 				if (!uniques[child.uid] && Selectors.Filter.match(child, params, Local)){
 					uniques[child.uid] = true;
 					found.push(child);
@@ -269,7 +269,7 @@ Selectors.Filter = {
 		return found;
 	},
 
-	getItems: $empty
+	getItems: $arguments(0)
 
 };
 
@@ -287,7 +287,7 @@ Selectors.Filter.match = function(el, params, Local){
 	
 	for (i = params.attributes.length; i--; i){
 		var bits = params.attributes[i];
-		var result = Element.prototype.getProperty.call(el, bits[0]);
+		var result = Element.prototype.get.call(el, 'property', bits[0]);
 		if (!result) return false;
 		if (!bits[1]) continue;
 		var condition;
@@ -312,3 +312,37 @@ Selectors.Filter.match = function(el, params, Local){
 };
 
 Selectors.Method = (Browser.Features.xpath) ? Selectors.XPath : Selectors.Filter;
+
+/*
+Native: Element
+	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+*/
+
+Element.implement({
+	
+	/*
+	Method: match
+		Matches the Element with the given selector.
+
+	Syntax:
+		>var matched = myElement.match(selector);
+
+	Arguments:
+		selector - (string) Selectors to match the element to.
+
+	Returns:
+		(boolean) true if matched, false otherwise.
+
+	Example:
+		[javascript]
+			var elem = $('myelement');
+			//later in the code, for whatever reason
+			elem.match('div[name=somename]'); //returns true if the element is a div and has as name "somename".
+		[/javascript]
+	*/
+	
+	match: function(selector){
+		return (!selector || Selectors.Filter.match(this, Selectors.parse(selector)));
+	}
+	
+});

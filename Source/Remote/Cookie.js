@@ -71,7 +71,7 @@ var Cookie = new Hash({
 		}
 		if (options.secure) value += '; secure';
 		document.cookie = key + '=' + value;
-		return $extend(options, {'key': key, 'value': value});
+		return Hash.extend(options, {'key': key, 'value': value});
 	},
 
 	/*

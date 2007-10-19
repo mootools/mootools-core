@@ -48,14 +48,14 @@ var SmoothScroll = new Class({
 	initialize: function(options, win){
 		arguments.callee.parent(win || window, options);
 		this.links = (this.options.links) ? $$(this.options.links) : $$(this.document.links);
-		var location = this.document.window.location.href.match(/^[^#]*/)[0] + '#';
+		var location = this.element.location.href.match(/^[^#]*/)[0] + '#';
 		this.links.each(function(link){
 			if (link.href.indexOf(location) != 0) return;
 			var anchor = link.href.substr(location.length);
 			if (anchor && $(anchor)) this.useLink(link, anchor);
 		}, this);
 		if (!Browser.Engine.webkit419) this.addEvent('onComplete', function(){
-			this.document.window.location.hash = this.anchor;
+			this.element.location.hash = this.anchor;
 		}, true);
 	},
 

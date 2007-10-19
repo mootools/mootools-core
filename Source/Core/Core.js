@@ -181,8 +181,18 @@ Example:
 	[/javascript]
 */
 
-function $empty(argument){
-	return argument;
+function $empty(){};
+
+function $arguments(i){
+	return function(){
+		return arguments[i];
+	};
+};
+
+function $return(value){
+	return function(){
+		return value;
+	};
 };
 
 /*

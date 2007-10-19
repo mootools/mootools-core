@@ -14,7 +14,7 @@ Implements:
 	<Chain>, <Events>, <Options>
 
 Syntax:
-	>var myXHR = new XHR([url][, options]);
+	>var myXHR = new XHR([url[, options]]);
 
 Arguments:
 	url     - (string, optional) The URL pointing to the server-side script.
@@ -22,7 +22,7 @@ Arguments:
 
 	options (continued):
 		method     - (string: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
-		data       - (string) The default data for <XHR.send>, used when no data is given.
+		data       - (string: defaults to '') The default data for <XHR.send>, used when no data is given.
 		async      - (boolean: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
 		encoding   - (string: defaults to "utf-8") The encoding to be set in the request header.
 		autoCancel - (boolean: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
@@ -30,14 +30,14 @@ Arguments:
 		isSuccess  - (function) Overrides the built-in isSuccess function.
 
 Events:
-	onRequest   - (function) Function to execute when the XHR request is fired.
+	onRequest - (function) Function to execute when the XHR request is fired.
 		Signature:
 			>onRequest(instance)
 
 		Arguments:
 			instance - (XHR) The transport instance.
 
-	onSuccess   - (function) Function to execute when the XHR request completes.
+	onSuccess - (function) Function to execute when the XHR request completes.
 		Signature:
 			>onSuccess(reponseText, responseXML)
 
@@ -45,7 +45,7 @@ Events:
 			responseText - (string) The returned text from the request.
 			responseXML  - (mixed) The response XML from the request.
 
-	onFailure   - (function) Function to execute when the request failes (error status code).
+	onFailure - (function) Function to execute when the request failes (error status code).
 		Signature:
 			>onFailure(instance)
 
@@ -60,7 +60,7 @@ Events:
 			headerName - (string) The name of the failing header.
 			value      - (string) The value of the failing header.
 
-	onCancel    - (function) Function to execute when a request has been cancelled.
+	onCancel - (function) Function to execute when a request has been cancelled.
 		Signature:
 			>onCancel()
 
@@ -73,7 +73,7 @@ Returns:
 
 Example:
 	[javascript]
-		var myXHR = new XHR({method: 'get'}).send('http://site.com/requestHandler.php', 'name=john&lastname=dorian');
+		var myXHR = new XHR({method: 'get', url: 'http://site.com/requestHandler.php'}).send('name=john&lastname=dorian');
 	[/javascript]
 
 See Also:
@@ -84,14 +84,14 @@ var XHR = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {
-		/*onRequest: $empty,
+	options: {/*
+		onRequest: $empty,
 		onSuccess: $empty,
 		onFailure: $empty,
 		onException: $empty,*/
-		method: 'post',
+		data: '',
 		async: true,
-		data: null,
+		method: 'post',
 		urlEncoded: true,
 		encoding: 'utf-8',
 		autoCancel: false,
@@ -105,11 +105,10 @@ var XHR = new Class({
 
 	initialize: function(){
 		var params = Array.link(arguments, {'url': String.type, 'options': Object.type});
-		this.url = params.url;
 		this.setTransport();
-		this.setOptions(params.options);
+		this.setURL(params.url).setOptions(params.options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = $merge(this.options.headers);
+		this.headers = new Hash(this.options.headers);
 		if (this.options.urlEncoded && this.options.method != 'get'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
@@ -168,7 +167,7 @@ var XHR = new Class({
 	*/
 
 	setHeader: function(name, value){
-		this.headers[name] = value;
+		this.headers.set(name, value);
 		return this;
 	},
 
@@ -197,60 +196,38 @@ var XHR = new Class({
 	},
 
 	/*
-	Method: send
-		Opens the XHR connection and sends the provided data.
+	Method: setURL
+		Sets, or changes the instance URL.
 
 	Syntax:
-		>myXHR.send(url[, data]);
+		>myRequest.setURL(url);
 
 	Arguments:
-		url  - (string) The URL to make the request to.
-		data - (string, optional) The request data as query string.
+		url - (string) The URL to be used for this XHR.
 
-	Examples:
-		Simple POST request:
-		[javascript]
-			var myXHR = new XHR().send(url, "save=username&name=John");
-		[/javascript]
+	Returns:
+		(object) This XHR instance.
 
-		Synchronous Request:
+	Example:
 		[javascript]
-			var syncXHR = new XHR({async: false});
-			syncXHR.send(url, null);
-			alert(syncXHR.response.text);
+			var myXHR = new XHR({method: 'get', url: 'http://localhost/some_url'});
+			myXHR.send('some=data');
+			myXHR.setURL('http://localhost/my_other_url');
+			myXHR.send('some=data');
 		[/javascript]
 	*/
-
-	send: function(url, data){
-		if (this.options.autoCancel) this.cancel();
-		else if (this.running) return this;
-		this.running = true;
-		data = data || this.options.data;
-		if (data && this.options.method == 'get'){
-			url = url + (url.contains('?') ? '&' : '?') + data;
-			data = null;
-		}
-		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
-		this.transport.onreadystatechange = this.onStateChange.bind(this);
-		for (var type in this.headers){
-			try{
-				this.transport.setRequestHeader(type, this.headers[type]);
-			} catch(e){
-				this.fireEvent('onException', [e, type, this.headers[type]]);
-			}
-		}
-		this.fireEvent('onRequest');
-		this.transport.send($pick(data, null));
-		if (!this.options.async) this.onStateChange();
+	
+	setURL: function(url){
+		if (url) this.url = url;
 		return this;
 	},
 
 	/*
-	Method: request
-		Uses the internal url (passed in <XHR>'s instantiation) to send the passed in data.
+	Method: send
+		Opens the XHR connection and sends the provided data.
 
 	Syntax:
-		>myXHR.request([data]);
+		>myXHR.send([data]);
 
 	Arguments:
 		data - (string, optional) The request data as query string.
@@ -258,17 +235,37 @@ var XHR = new Class({
 	Returns:
 		(object) This XHR instance.
 
-	Example:
+	Examples:
 		[javascript]
-			var myXHR = new XHR(url);
-			myXHR.send("save=username&name=John");
+			var myXHR = new XHR({url: 'http://localhost/some_url'}).send("save=username&name=John");
 		[/javascript]
 	*/
 
-	request: function(data){
-		return this.send(this.url, data);
+	send: function(data){
+		if (this.options.autoCancel) this.cancel();
+		else if (this.running) return this;
+		this.running = true;
+		data = data || this.options.data;
+		var url = this.url;
+		if (data && this.options.method == 'get'){
+			url = url + (url.contains('?') ? '&' : '?') + data;
+			data = null;
+		}
+		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
+		this.transport.onreadystatechange = this.onStateChange.bind(this);
+		this.headers.each(function(value, key){
+			try{
+				this.transport.setRequestHeader(key, value);
+			} catch(e){
+				this.fireEvent('onException', [e, key, value]);
+			}
+		}, this);
+		this.fireEvent('onRequest');
+		this.transport.send(data);
+		if (!this.options.async) this.onStateChange();
+		return this;
 	},
-
+	
 	/*
 	Method: cancel
 		Cancels the currently running request, if any.
@@ -281,7 +278,7 @@ var XHR = new Class({
 
 	Example:
 		[javascript]
-			var myXHR = new XHR({method: 'get'}).send(url);
+			var myXHR = new XHR({method: 'get'}).send('some=data');
 			myXHR.cancel();
 		[/javascript]
 	*/

@@ -88,8 +88,8 @@ Drag.Move = new Class({
 		var top = this.element.getStyle('top').toInt();
 		var left = this.element.getStyle('left').toInt();
 		if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
-			top = $chk(top) ? top : this.element.getTop(this.options.overflown);
-			left = $chk(left) ? left : this.element.getLeft(this.options.overflown);
+			top = $chk(top) ? top : this.element.get('top', this.options.overflown);
+			left = $chk(left) ? left : this.element.get('left', this.options.overflown);
 		} else {
 			top = $chk(top) ? top : 0;
 			left = $chk(left) ? left : 0;
@@ -103,8 +103,8 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var cont = this.container.getCoordinates();
-			var el = this.element.getCoordinates();
+			var cont = this.container.get('coordinates');
+			var el = this.element.get('coordinates');
 			if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
 				this.options.limit = {'x': [cont.left, cont.right - el.width], 'y': [cont.top, cont.bottom - el.height]};
 			} else {
@@ -128,7 +128,7 @@ Drag.Move = new Class({
 	},
 
 	checkAgainst: function(el){
-		el = el.getCoordinates(this.options.overflown);
+		el = el.get('coordinates', this.options.overflown);
 		var now = this.mouse.now;
 		return (now.x > el.left && now.x < el.right && now.y < el.bottom && now.y > el.top);
 	},
@@ -166,12 +166,11 @@ Drag.Move = new Class({
 		<Drag.stop>
 	*/
 
-	stop: function(){
+	stop: function(event){
 		this.checkDroppables();
 		if (this.overed && !this.out) this.overed.fireEvent('drop', [this.element, this]);
 		else this.element.fireEvent('emptydrop', this);
-		arguments.callee.parent();
-		return this;
+		return arguments.callee.parent(event);
 	}
 
 });

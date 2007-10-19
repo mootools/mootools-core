@@ -21,7 +21,7 @@ Arguments:
 	options - (object) an object with options names as keys. See options below.
 
 	options (continued):
-		id - (string: defaults to 'Swiff_' + UID) The id of the flash object.
+		id - (string: defaults to 'Swiff_' + unique id) The id of the flash object.
 		width - (number: defaults to 1) The width of the flash object.
 		height - (number: defaults to 1) The height of the flash object.
 		params - (object) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
@@ -65,7 +65,7 @@ Note:
 
 var Swiff = function(path, options){
 	if (!Swiff.fixed) Swiff.fix();
-	var instance = 'Swiff_' + Swiff.UID++;
+	var instance = 'Swiff_' + Native.UID++;
 	options = $merge({
 		id: instance,
 		height: 1,
@@ -82,7 +82,7 @@ var Swiff = function(path, options){
 		vars: {}
 	}, options);
 	var params = options.params, vars = options.vars, id = options.id;
-	var properties = $extend({height: options.height, width: options.width}, options.properties);
+	var properties = Hash.extend({height: options.height, width: options.width}, options.properties);
 	Swiff.Events[instance] = {};
 	for (var event in options.events){
 		Swiff.Events[instance][event] = function(){
@@ -103,16 +103,10 @@ var Swiff = function(path, options){
 	build += '>';
 	for (var param in params) build += '<param name="' + param + '" value="' + params[param] + '" />';
 	build += '</object>';
-	return ($(options.container) || new Element('div')).setHTML(build).firstChild;
-};
-
-Element.Construct.swf = function(path, props){
-	return new Swiff(path, props);
+	return ($(options.container) || new Element('div')).set('html', build).firstChild;
 };
 
 Swiff.extend({
-
-	UID: 0,
 
 	Events: {},
 

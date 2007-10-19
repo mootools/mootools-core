@@ -17,7 +17,7 @@ Syntax:
 	>var myAjax = new Ajax(url[, options]);
 
 Arguments:
-	url     - (string) The url pointing to the server-side script.
+	url     - (string, optional) The url pointing to the server-side script.
 	options - (object, optional) In addition to <XHR>'s options object, see "Options" below.
 
 	options (continued):
@@ -79,16 +79,16 @@ var Ajax = new Class({
 
 	Extends: XHR,
 
-	options: {
-		/*onComplete: $empty,*/
+	options: {/*
+		onComplete: $empty,*/
 		update: null,
 		evalScripts: false,
 		evalResponse: false
 	},
 
-	initialize: function(url, options){
+	initialize: function(){
 		this.addEvent('onSuccess', this.onComplete, true);
-		arguments.callee.parent(url, options);
+		arguments.callee.parent.apply(this, arguments);
 		if (!['post', 'get'].contains(this.options.method)){
 			this._method = '_method=' + this.options.method;
 			this.options.method = 'post';
@@ -100,24 +100,24 @@ var Ajax = new Class({
 		var scripts;
 		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))){
 			scripts = this.response.text;
-		} else{
+		} else {
 			scripts = (this.options.evalScripts) ? '' : null;
 			this.response.text = this.response.text.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 				if (scripts !== null) scripts += arguments[1] + '\n';
 				return '';
 			});
 		}
-		if (this.options.update) $(this.options.update).empty().setHTML(this.response.text);
+		if (this.options.update) $(this.options.update).empty().set('html', this.response.text);
 		if (scripts) (window.execScript) ? window.execScript(scripts) : window.setTimeout(scripts, 0);
 		this.fireEvent('onComplete', [this.response.text, this.response.xml]);
 	},
 
 	/*
-	Method: request
+	Method: send
 		Executes the AJAX request.
 
 	Syntax:
-		>myAjax.request([data]);
+		>myAjax.send([data]);
 
 	Arguments:
 		data - (mixed, optional: defaults to options.data) A String, Object (used in <Hash.toQueryString>), or an Element with input elements (used in <Element.toQueryString>) which represents the data to request.
@@ -129,16 +129,16 @@ var Ajax = new Class({
 		Reusable Example:
 		[javascript]
 			var myAjax = new Ajax(url, {method: 'get'});
-			myAjax.request();
+			myAjax.send();
 		[/javascript]
 
-		One Shot Example:
+		One Shot Example (not recomended):
 		[javascript]
 			new Ajax(url, {method: 'get'}).request();
 		[/javascript]
 	*/
-
-	request: function(data){
+	
+	send: function(data){
 		data = data || this.options.data;
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
@@ -164,7 +164,7 @@ Element.Set.extend({
 	Syntax:
 		>el.set('send'[, options]);
 
-	Arguments: 
+	Arguments:
 		options - (object) the Ajax options.
 
 	Returns:
@@ -178,9 +178,9 @@ Element.Set.extend({
 	*/
 
 	send: function(options){
-		if (this.$attributes.$send) this.$attributes.$send.cancel();
-		this.$attributes.$send = new Ajax(this.get('action'), $merge({autoCancel: true, method: this.get('method') || 'post'}, options));
-		return this;
+		var send = this.retrieve('send');
+		if (send) send.cancel();
+		return this.store('send', new Ajax(this.get('action'), Hash.extend({autoCancel: true, method: this.get('method') || 'post'}, options)));
 	},
 	
 	/*
@@ -190,7 +190,7 @@ Element.Set.extend({
 	Syntax:
 		>el.set('load'[, options]);
 
-	Arguments: 
+	Arguments:
 		options - (object) the Ajax options.
 
 	Returns:
@@ -204,9 +204,9 @@ Element.Set.extend({
 	*/
 	
 	load: function(options){
-		if (this.$attributes.$load) this.$attributes.$load.cancel();
-		this.$attributes.$load = new Ajax($merge({autoCancel: true, update: this, method: 'get'}, options));
-		return this;
+		var load = this.retrieve('load');
+		if (load) load.cancel();
+		return this.store('load', new Ajax(Hash.extend({autoCancel: true, update: this, method: 'get'}, options)));
 	}
 
 });
@@ -219,7 +219,7 @@ Element.Get.extend({
 		gets the previously setted Ajax instance or a new one with default options
 
 	Syntax:
-		>el.get('send');
+		>el.get('send'[, options]);
 
 	Arguments:
 		options - (object, optional) the Ajax options. if passed in will generate a new instance.
@@ -229,7 +229,7 @@ Element.Get.extend({
 
 	Example:
 		[javascript]
-			el.set('send', {method: 'get'});
+			el.get('send', {method: 'get'});
 			el.send();
 
 			el.get('send'); //the Ajax instance
@@ -237,8 +237,8 @@ Element.Get.extend({
 	*/
 	
 	send: function(options){
-		if (!this.$attributes.$send || options) this.set('send', options);
-		return this.$attributes.$send;
+		if (options || !this.retrieve('send')) this.set('send', options);
+		return this.retrieve('send');
 	},
 	
 	/*
@@ -265,9 +265,10 @@ Element.Get.extend({
 	*/
 	
 	load: function(url, options){
-		if (!this.$attributes.$load || options) this.set('load', options);
-		this.$attributes.$load.url = url;
-		return this.$attributes.$load;
+		if (options || !this.retrieve('load')) this.set('load', options);
+		var load = this.retrieve('load');
+		load.setURL(url);
+		return load;
 	}
 
 });
@@ -305,7 +306,7 @@ Element.implement({
 	*/
 
 	send: function(options){
-		this.get('send', options).request(this);
+		this.get('send', options).send(this);
 		return this;
 	},
 
@@ -333,7 +334,7 @@ Element.implement({
 	*/
 
 	load: function(url, options){
-		this.get('load', url, options).request();
+		this.get('load', url, options).send();
 		return this;
 	}
 

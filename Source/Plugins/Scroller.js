@@ -120,17 +120,18 @@ var Scroller = new Class({
 	},
 
 	scroll: function(){
-		var el = this.element.getSize();
-		var pos = this.element.getPosition();
+		var size = this.element.get('size');
+		var scroll = this.element.get('scroll');
+		var pos = this.element.get('position');
 
 		var change = {'x': 0, 'y': 0};
 		for (var z in this.page){
-			if (this.page[z] < (this.options.area + pos[z]) && el.scroll[z] != 0)
+			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0)
 				change[z] = (this.page[z] - this.options.area - pos[z]) * this.options.velocity;
-			else if (this.page[z] + this.options.area > (el.size[z] + pos[z]) && el.scroll[z] + el.size[z] != el.scrollSize[z])
-				change[z] = (this.page[z] - el.size[z] + this.options.area - pos[z]) * this.options.velocity;
+			else if (this.page[z] + this.options.area > (el.offset[z] + pos[z]) && el.offset[z] + el.offset[z] != el.scroll[z])
+				change[z] = (this.page[z] - el.offset[z] + this.options.area - pos[z]) * this.options.velocity;
 		}
-		if (change.y || change.x) this.fireEvent('onChange', [el.scroll.x + change.x, el.scroll.y + change.y]);
+		if (change.y || change.x) this.fireEvent('onChange', [scroll.x + change.x, scroll.y + change.y]);
 	}
 
 });

@@ -23,7 +23,7 @@ Arguments:
 	props - (object, optional) The properties to apply to the new Element.
 
 	props (continued):
-		All the keys except for 'styles' and 'events' are assumed to be acceptable properties for <Element.setProperties>. The 'styles' and 'events' key's values are used for <Element.setStyles> and <Element.addEvents>.
+		The 'styles' and 'events' keys' values are used for <Element.setStyles> and <Element.addEvents>. All other properties are set as attributes of the element.
 
 Returns:
 	(element) A new HTML Element.
@@ -59,39 +59,36 @@ var Element = new Native({
 	legacy: window.Element,
 
 	initialize: function(el){
-		if (Element.Construct.has(el)) return Element.Construct[el].run(Array.slice(arguments, 1));
-		return Element.create.run(arguments);
+		var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
+		var props = params.properties || {}, doc = params.document || document;
+		if ($type(el) == 'string'){
+			el = el.toLowerCase();
+			if (Browser.Engine.trident && props){
+				['name', 'type', 'checked'].each(function(attribute){
+					if (!props[attribute]) return;
+					el += ' ' + attribute + '="' + props[attribute] + '"';
+					if (attribute != 'checked') delete props[attribute];
+				});
+				el = '<' + el + '>';
+			}
+			el = doc.createElement(el);
+		}
+		el = $(el);
+		return (!props || !el) ? el : el.set(props);
 	},
 
 	afterImplement: function(key, value){
-		Elements.prototype[(Array.prototype[key]) ? key + 'Elements' : key] = Elements.$multiply(key);
+		Elements.prototype[key] = Elements.multi(key);
 	}
 
 });
 
-Element.create = function(el){
-	var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
-	var props = params.properties || {}, doc = params.document || document;
-	if ($type(el) == 'string'){
-		el = el.toLowerCase();
-		if (Browser.Engine.trident && props){
-			['name', 'type', 'checked'].each(function(attribute){
-				if (!props[attribute]) return;
-				el += ' ' + attribute + '="' + props[attribute] + '"';
-				if (attribute != 'checked') delete props[attribute];
-			});
-			el = '<' + el + '>';
-		}
-		el = doc.createElement(el);
-	}
-	el = $(el);
-	return (!props || !el) ? el : el.set(props);
-};
+var TextNode = new Native({
 
-Element.Construct = new Hash({
+	name: 'TextNode',
 
-	iframe: function(props){
-		return new IFrame(props);
+	initialize: function(text, doc){
+		return $extend((doc || document).createTextNode(text), this);
 	}
 
 });
@@ -118,25 +115,9 @@ Arguments:
 Returns:
 	(element) A new iframe HTML Element.
 
-Examples:
-	Using Constructor:
+Example:
 	[javascript]
 		var myIFrame = new IFrame({
-
-			src: 'http://mootools.net/',
-
-			onload: function(){
-				alert('my iframe finished loading');
-			}
-
-		});
-	[/javascript]
-
-	Using Element Constructor:
-	[javascript]
-		var myIFrame = new Element('iframe', {
-
-			id: 'mootools',
 
 			src: 'http://mootools.net/',
 
@@ -178,14 +159,14 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		IFrame.uid++;
+		Native.UID++;
 		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
 		var props = params.properties || {};
 		var iframe = $(params.iframe) || false;
 		var onload = props.onload || $empty;
 		delete props.onload;
-		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + IFrame.uid);
-		((iframe = iframe || Element.create('iframe'))).set(props);
+		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Native.UID);
+		((iframe = iframe || new Element('iframe'))).set(props);
 		var onFrameLoad = function(){
 			var host = $try(function(){
 				return iframe.contentWindow.location.host;
@@ -197,14 +178,11 @@ var IFrame = new Native({
 			}
 			onload.call(iframe.contentWindow);
 		};
-		if (!window.frames[props.id]) iframe.addListener('load', onFrameLoad);
-		else onFrameLoad();
+		(!window.frames[props.id]) ? iframe.addListener('load', onFrameLoad) : onFrameLoad();
 		return iframe;
 	}
 
 });
-
-IFrame.uid = 0;
 
 /*
 Native: Elements
@@ -228,7 +206,6 @@ Examples:
 
 		//However, because $$('myselector') also accepts <Element> methods, the below example would have the same effect as the one above.
 		$$('p').setStyle('color', 'red');
-
 	[/javascript]
 
 	Create Elements From an Array:
@@ -264,7 +241,7 @@ Elements.ddup = function(elements){
 	var returned = [];
 	for (var i = 0, l = elements.length; i < l; i++){
 		var el = elements[i];
-		el.uid = el.uid || [Element.UID++];
+		el.uid = el.uid || [Native.UID++];
 		if (uniques[el.uid]) continue;
 		uniques[el.uid] = true;
 		returned.push(el);
@@ -272,7 +249,7 @@ Elements.ddup = function(elements){
 	return returned;
 };
 
-Elements.$multiply = function(property){
+Elements.multi = function(property){
 	return function(){
 		var items = [];
 		var elements = true;
@@ -374,14 +351,15 @@ Window.implement({
 	$$: function(selector){
 		if (arguments.length == 1 && $type(selector) == 'string') return this.document.getElements(selector);
 		var elements = [];
-		for (var i = 0, l = arguments.length; i < l; i++){
-			var item = arguments[i];
+		var args = Array.flatten(arguments);
+		for (var i = 0, l = args.length; i < l; i++){
+			var item = args[i];
 			switch ($type(item)){
-				case false: case null: break;
-				case 'element': elements.push(item); break;
-				case 'string': item = this.document.getElements(item, true);
-				default: elements.extend(item);
+				case 'element': item = [item]; break;
+				case 'string': item = this.document.getElements(item, true); break;
+				default: item = false;
 			}
+			if (item) elements.extend(item);
 		}
 		return new Elements(elements);
 	}
@@ -394,12 +372,16 @@ $.string = function(id, notrash, doc){
 };
 
 $.element = function(el, notrash){
-	el.uid = el.uid || [Element.UID++];
+	el.uid = el.uid || [Native.UID++];
 	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
 	return el;
 };
 
-$.window = $.document = $empty;
+$.textnode = function(el, notrash){
+	return (notrash || el.$family) ? el : $extend(el, TextNode.prototype);
+};
+
+$.window = $.document = $arguments(0);
 
 /*
 Native: Element
@@ -471,17 +453,33 @@ Native.implement([Element, Document], {
 
 });
 
-Element.Set = new Hash({
+Element.Storage = {
 
-	properties: function(properties){
-		this.setProperties(properties);
+	get: function(uid){
+		return this[uid] = this[uid] || {};
+	}
+
+};
+
+Native.implement([Window, Document, Element], {
+
+	retrieve: function(property){
+		var storage = Element.Storage.get(this.uid);
+		var prop = storage[property];
+		return $pick(prop);
+	},
+
+	store: function(property, value){
+		var storage = Element.Storage.get(this.uid);
+		storage[property] = value;
+	},
+
+	pull: function(property){
+		var storage = Element.Storage.get(this.uid);
+		delete storage[property];
 	}
 
 });
-
-Element.Has = new Hash;
-
-Element.Get = new Hash;
 
 Element.Inject = new Hash({
 
@@ -520,8 +518,8 @@ Element.Inject = new Hash({
 		<Element.inject>
 	*/
 
-	bottom: function(el){
-		el.appendChild(this);
+	bottom: function(context, element){
+		element.appendChild(context);
 	},
 
 	/*
@@ -564,9 +562,9 @@ Element.Inject = new Hash({
 		<Element.inject>
 	*/
 
-	top: function(el){
-		var first = el.firstChild;
-		(first) ? el.insertBefore(this, first) : el.appendChild(this);
+	top: function(context, element){
+		var first = element.firstChild;
+		(first) ? element.insertBefore(context, first) : element.appendChild(this);
 	},
 
 	/*
@@ -603,8 +601,8 @@ Element.Inject = new Hash({
 		<Element.inject>
 	*/
 
-	before: function(el){
-		if (el.parentNode) el.parentNode.insertBefore(this, el);
+	before: function(context, element){
+		if (element.parentNode) element.parentNode.insertBefore(context, element);
 	},
 
 	/*
@@ -641,11 +639,9 @@ Element.Inject = new Hash({
 		<Element.inject>, <Element.injectBefore>
 	*/
 
-	after: function(el){
-		if (!el.parentNode) return;
-		var next = el.nextSibling;
-		while (next && next.nodeType != 1) next = next.nextSibling;
-		(next) ? el.parentNode.insertBefore(this, next) : el.parentNode.appendChild(this);
+	after: function(context, element){
+		if (!element.parentNode) return;
+		(element.nextSibling) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
 	}
 
 });
@@ -735,84 +731,117 @@ Element.implement({
 		[/javascript]
 
 	Notes:
-		- All additional arguments are passed to the method of the Element.Get Hash.
-		- If no matching property is found in Element.Set, it falls back to setProperty, making this method the perfect shortcut.
+		- All additional arguments are passed to the method of the Element.Set Hash.
+		- If no matching property is found in Element.Set, it falls back to settimg attributes of the element, making this method the perfect shortcut.
 
 	See Also:
-		<Element>, <Element.setStyles>, <Element.addEvents>, <Element.setProperty>, <Element.Set>
+		<Element>, <Element.Set>, <Element.setStyles>, <Element.addEvents>
 	*/
 
-	set: function(props){
-		if ($type(props) == 'string'){
-			var obj = {};
-			obj[props] = Array.slice(arguments, 1);
-			props = obj;
-		};
-		for (var prop in props){
-			if (Element.Set.has(prop)) Element.Set[prop].run(props[prop], this);
-			else this.setProperty(prop, props[prop]);
+	set: function(prop){
+		switch ($type(prop)){
+			case 'object': for (var p in prop) this.set(p, prop[p]); break;
+			case 'string':
+				var setter = Element.Set.get(prop);
+				(setter) ? setter.apply(this, Array.slice(arguments, 1)) : Element.Set.property.apply(this, arguments);
 		}
 		return this;
 	},
 
 	/*
 	Method: get
-		This is a "dynamic arguments" method. The argument must be one of the properties of the <Element.Get> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Get> Hash.
 
 	Syntax:
-		>var myValue = myElement.get(property);
+		>myElement.get(property);
 
 	Arguments:
-		property - (string) The name of a method of the <Element.Get> Hash.
+		property - (mixed) Accepts a string for getting the value of a certain property.
 
 	Returns:
-		(mixed) The method's return.
+		(mixed) Whatever the result of the function in the Get Hash is, or the value of the corresponding attribute.
 
-	Example:
+	Examples:
+		Using Custom Getters:
 		[javascript]
-			var value = $(element).get('id');
+			var tag = $('myDiv').get('tag'); //returns 'div'
+			var coords = $('myDiv').get('coordinates'); //returns the elements coordinates
+		[/javascript]
+
+		Fallback to Element Attributes:
+		[javascript]
+			var id = $('myDiv').get('id); //returns 'myDiv'
+			var value = $('myInput').get('value'); //returns this input element's value
 		[/javascript]
 
 	Notes:
-		- All additional arguments are passed to the method of the Element.Get Hash.
-		- If no matching property is found in Element.Get, it falls back to getProperty, making this method the perfect shortcut.
+		- If no matching property is found in Element.Get, it falls back to gettimg attributes of the element.
 
 	See Also:
-		<Element>, <Element.getProperty>
+		<Element>, <Element.Get>
 	*/
 
-	get: function(property){
-		return (Element.Get.has(property)) ? Element.Get[property].apply(this, Array.slice(arguments, 1)) : this.getProperty(property);
+	get: function(prop){
+		var getter = Element.Get.get(prop);
+		return (getter) ? getter.apply(this, Array.slice(arguments, 1)) : Element.Get.property.apply(this, arguments);
 	},
 
 	/*
-	Method: has
-		This is a "dynamic arguments" method. The argument must be one of the properties of the <Element.Has> Hash.
+	Method: clear
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Clear> Hash.
 
 	Syntax:
-		>var myResult = myElement.has(property);
+		>myElement.clear(property);
 
 	Arguments:
-		property - (string) The name of a method of the <Element.Has> Hash.
+		property - (mixed) Accepts a string representing the property to be cleared.
 
 	Returns:
-		(mixed) If the <Element.Hash> has no method then will return null, otherwise will return true or false depending on the return value.
+		(mixed) Whatever the result of the function in the Get Hash is.
 
-	Example:
+	Examples:
 		[javascript]
-			Element.Has.class = function(className){
-				return this.hasClass(className);
-			};
-
-			var value = $(element).has('class', 'awesome');
+			$('myDiv').clear('id'); //removes the id from myDiv
+			$('myDiv').clear('class'); //myDiv element no longer has any classNames set
 		[/javascript]
 
 	Note:
-		All additional arguments are passed to the method of the <Element.Has> Hash.
+		- If no matching property is found in Element.Clear, it falls back to removing the specified attribute of the element.
+
+	See Also:
+		<Element>, <Element.Clear>
 	*/
 
-	has: function(property){
-		return (Element.Has.has(property)) ? !!Element.Has[property].apply(this, Array.slice(arguments, 1)) : null;
+	clear: function(prop){
+		var clearer = Element.Clear.get(prop);
+		(clearer) ? clearer.apply(this, Array.slice(arguments, 1)) : Element.Clear.property.apply(this, arguments);
+		return this;
+	},
+
+	/*
+	Method: match
+		Tests this element to see if it matches the given tagName.
+
+	Syntax:
+		>myElement.match(tag);
+
+	Arguments:
+		tag - (string) The tagName to test against this element.
+
+	Returns:
+		(boolean) If the element has the specified tagName, returns true. Otherwise, returns false.
+
+	Example:
+		[javascript]
+			$('myDiv').match('div'); //true if myDiv is a div
+		[/javascript]
+
+	Note:
+		- This method is overwritten by a more powerful version when Selectors.js is included.
+	*/
+
+	match: function(tag){
+		return (!tag || Element.get(this, 'tag') == tag);
 	},
 
 	/*
@@ -823,7 +852,7 @@ Element.implement({
 		>myElement.inject(el[, where]);
 
 	Arguments:
-		el	- (mixed) el can be: the string of the id of the element or an element.
+		el	- (mixed) el can be the id of an element or an element.
 		where - (string, optional) The place to inject this Element to (defaults to the bottom of the el's child nodes).
 
 	Returns:
@@ -831,23 +860,123 @@ Element.implement({
 
 	Example:
 		[javascript]
-			var myDiv = new Element('div', {id: 'mydiv'});
-			myDiv.inject(document.body);
-			// or inline
-			var myDiv = new Element('div', {id: 'mydiv'}).inject(document.body);
-
-			new Element('a').inject('mydiv'); // is also valid since myDiv is now inside the body
+			var myFirstElement = new Element('div', {id: 'myFirstElement'});
+			var mySecondElement = new Element('div', {id: 'mySecondElement'});
 		[/javascript]
 
+		Inject Inside:
+		[javascript]
+			myFirstElement.inject(mySecondElement);
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="mySecondElement">
+				<div id="myFirstElement"></div>
+			</div>
+		[/html]
+
+		Inject Before:
+		[javascript]
+			myFirstElement.inject(mySecondElement, 'before');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myFirstElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+		Inject After:
+		[javascript]
+			myFirstElement.inject(mySecondElement, 'after');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="mySecondElement"></div>
+			<div id="myFirstElement"></div>
+		[/html]
+
 	See Also:
-		<Element.adopt>
+		<Element.adopt>, <Element.append>
 	*/
 
 	inject: function(el, where){
 		if (!(el = $(el, true))) return this;
-		where = where || 'bottom';
-		if (Element.Inject.get(where)) Element.Inject[where].call(this, el);
+		var injecter = Element.Inject.get(where || 'bottom');
+		if (injecter) injecter(this, el);
 		return this;
+	},
+
+	/*
+	Method: append
+		Works as <Element.inject>, but in reverse.  Appends the Element at a particular place relative to the Element's children (specified by the second the paramter).
+
+	Syntax:
+		>myElement.append(el[, where]);
+
+	Arguments:
+		el	- (mixed) el can be the id of an element or an element.
+		where - (string, optional) The place to append this Element to (defaults to the bottom of the el's child nodes).
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		[javascript]
+			var myFirstElement = new Element('div', {id: 'myFirstElement'});
+			var mySecondElement = new Element('div', {id: 'mySecondElement'});
+			myFirstElement.append(mySecondElement);
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myFirstElement">
+				<div id="mySecondElement"></div>
+			</div>
+		[/html]
+
+	See Also:
+		<Element.inject>, <Element.adopt>
+	*/
+
+	append: function(el, where){
+		Element.inject(el, this, where);
+		return this;
+	},
+
+	/*
+	Method: appendText
+		Appends text node to a DOM Element.
+
+	Syntax:
+		>myElement.appendText(text);
+
+	Arguments:
+		text - (string) The text to append.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement">hey</div>
+		[/html]
+
+		[javascript]
+			$('myElement').appendText('. howdy');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement">hey. howdy</div>
+		[/html]
+	*/
+
+	appendText: function(text, where){
+		return this.append(new TextNode(text, this.ownerDocument), where);
 	},
 
 	/*
@@ -866,14 +995,14 @@ Element.implement({
 	Example:
 		HTML:
 		[html]
-			<div id="myElement"></div>
+			<div id="myFirstElement"></div>
 			<div id="mySecondElement"></div>
 			<div id="myThirdElement"></div>
 			<div id="myFourthElement"></div>
 		[/html]
 
 		[javascript]
-			$('myElement').adopt('mySecondElement', 'myThirdElement', 'myFourthElement');
+			$('myFirstElement').adopt('mySecondElement', 'myThirdElement', 'myFourthElement');
 		[/javascript]
 
 		Result:
@@ -967,11 +1096,11 @@ Element.implement({
 	*/
 
 	clone: function(contents){
-		var temp = new Element('div').adopt(this.cloneNode(contents !== false));
+		var temp = new Element('div').append(this.cloneNode(contents !== false));
 		Array.each(temp.getElementsByTagName('*'), function(element){
 			if (element.id) element.removeAttribute('id');
 		});
-		return new Element('div').setHTML(temp.innerHTML).getFirst();
+		return new Element('div').set('html', temp.innerHTML).getFirst();
 	},
 
 	/*
@@ -1174,13 +1303,6 @@ Element.implement({
 		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
 	},
 
-	walk: function(brother, start){
-		brother += 'Sibling';
-		var el = (start) ? this[start] : this[brother];
-		while (el && el.nodeType != 1) el = el[brother];
-		return $(el);
-	},
-
 	/*
 	Method: getPrevious
 		Returns the previousSibling of the Element (excluding text nodes).
@@ -1211,8 +1333,8 @@ Element.implement({
 			<Element.remove>
 	*/
 
-	getPrevious: function(){
-		return this.walk('previous');
+	getPrevious: function(match){
+		return Element.walk(this, 'previousSibling', null, match);
 	},
 
 	/*
@@ -1246,8 +1368,8 @@ Element.implement({
 		<Element.addClass>
 	*/
 
-	getNext: function(){
-		return this.walk('next');
+	getNext: function(match){
+		return Element.walk(this, 'nextSibling', null, match);
 	},
 
 	/*
@@ -1284,8 +1406,8 @@ Element.implement({
 		<Element.inject>
 	*/
 
-	getFirst: function(){
-		return this.walk('next', 'firstChild');
+	getFirst: function(match){
+		return Element.walk(this, 'nextSibling', 'firstChild', match);
 	},
 
 	/*
@@ -1325,8 +1447,8 @@ Element.implement({
 		<Element.adopt>
 	*/
 
-	getLast: function(){
-		return this.walk('previous', 'lastChild');
+	getLast: function(match){
+		return Element.walk(this, 'previousSibling', 'lastChild', match);
 	},
 
 	/*
@@ -1362,8 +1484,8 @@ Element.implement({
 		<http://developer.mozilla.org/en/docs/DOM:element.parentNode>
 	*/
 
-	getParent: function(){
-		return $(this.parentNode);
+	getParent: function(match){
+		return Element.walk(this, 'parentNode', null, match);
 	},
 
 	/*
@@ -1430,326 +1552,7 @@ Element.implement({
 
 	hasChild: function(el){
 		if (!(el = $(el, true))) return false;
-		return !!$A(this.getElementsByTagName(Element.getTag(el))).contains(el);
-	},
-
-	/*
-	Method: getProperty
-		Gets the an attribute of the Element.
-
-	Syntax:
-		>myElement.getProperty(property);
-
-	Arguments:
-		property - (string) The attribute to retrieve.
-
-	Returns:
-		(mixed) The value of the property, or an empty string.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" src="mootools.png" />
-		[/html]
-
-		[javascript]
-			$('myImage').getProperty('src') // returns mootools.png
-		[/javascript]
-	*/
-
-	getProperty: function(attribute){
-		var key = Element.Attributes.Properties[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute);
-		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
-	},
-
-	/*
-	Method: removeProperty
-		Removes an attribute from the Element.
-
-	Syntax:
-		>myElement.removeProperty(property);
-
-	Arguments:
-		property - (string) The attribute to remove.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
-		[/html]
-
-		[javascript]
-			$('myAnchor').removeProperty('onmousedown'); //eww inline javascript is bad! Let's get rid of it.
-		[/javascript]
-
-		Result:
-		[html]
-			<a id="myAnchor" href="#"></a>
-		[/html]
-	*/
-
-	removeProperty: function(attribute){
-		var key = Element.Attributes.Properties[attribute];
-		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
-		this.removeAttribute(attribute);
-		return this;
-	},
-
-	/*
-	Method: setProperty
-		Sets an attribute for the Element.
-
-	Arguments:
-		property - (string) The property to assign the value passed in.
-		value - (mixed) The value to assign to the property passed in.
-
-	Return:
-		(element) - This Element.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			$('myImage').setProperty('src', 'mootools.png');
-		[/javascript]
-
-		Result:
-		[html]
-			<img id="myImage" src="mootools.png" />
-		[/html]
-	*/
-
-	setProperty: function(attribute, value){
-		if (!$chk(value)) return this.removeProperty(attribute);
-		var key = Element.Attributes.Properties[attribute];
-		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
-		if (key) this[key] = value;
-		this.setAttribute(attribute, value);
-		return this;
-	},
-
-	/*
-	Method: getProperties
-		Same as <Element.getStyles>, but for properties.
-
-	Syntax:
-		>var myProps = myElement.getProperties();
-
-	Returns:
-		(object) An object containing all of the Element's properties.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
-		[/html]
-
-		[javascript]
-			var imgProps = $('myImage').getProperties();
-			// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
-		[/javascript]
-
-	See Also:
-		<Element.getProperty>
-	*/
-
-	getProperties: function(){
-		var result = {};
-		Array.each(arguments, function(key){
-			result[key] = this.getProperty(key);
-		}, this);
-		return result;
-	},
-
-	/*
-	Method: setProperties
-		Sets numerous attributes for the Element.
-
-	Arguments:
-		properties - (object) An object with key/value pairs.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			$('myImage').setProperties({
-				src: 'whatever.gif',
-				alt: 'whatever dude'
-			});
-		[/javascript]
-
-		Result:
-		[html]
-			<img id="myImage" src="whatever.gif" alt="whatever dude" />
-		[/html]
-	*/
-
-	setProperties: function(properties){
-		for (var property in properties) this.setProperty(property, properties[property]);
-		return this;
-	},
-
-	/*
-	Method: setHTML
-		Sets the innerHTML of the Element.
-
-	Syntax:
-		>myElement.setHTML([htmlString[, htmlString2[, htmlString3[, ..]]]);
-
-	Arguments:
-		Any number of string paramters with html.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-		[/html]
-
-		[javascript]
-			$('myElement').setHTML('<div></div>', '<p></p>');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">
-				<div></div>
-				<p></p>
-			</div>
-		[/html]
-
-	Note:
-		Any Elements added with setHTML will not be <Garbage> collected. This may be a source of memory leak.
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
-	*/
-
-	setHTML: function(){
-		this.innerHTML = Array.join(arguments, '');
-		return this;
-	},
-
-	/*
-	Method: setText
-		Sets the inner text of the Element.
-
-	Syntax:
-		>myElement.setText(text);
-
-	Arguments:
-		text - (string) The new text content for the Element.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-		[/html]
-
-		[javascript]
-			$('myElement').setText('some text') //the text of myElement is now = 'some text'
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">some text</div>
-		[/html]
-	*/
-
-	setText: function(text){
-		var tag = this.getTag();
-		if (['style', 'script'].contains(tag)){
-			if (Browser.Engine.trident){
-				if (tag == 'style') this.styleSheet.cssText = text;
-				else if (tag ==  'script') this.setProperty('text', text);
-				return this;
-			} else {
-				if (this.firstChild) this.removeChild(this.firstChild);
-				return this.appendText(text);
-			}
-		}
-		this[$defined(this.innerText) ? 'innerText' : 'textContent'] = text;
-		return this;
-	},
-
-	/*
-	Method: getText
-		Gets the inner text of the Element.
-
-	Syntax:
-		>var myText = myElement.getText();
-
-	Returns:
-		(string) The text of the Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">my text</div>
-		[/html]
-
-		[javascript]
-			var myText = $('myElement').getText(); //myText = 'my text';
-		[/javascript]
-	*/
-
-	getText: function(){
-		var tag = this.getTag();
-		if (['style', 'script'].contains(tag)){
-			if (Browser.Engine.trident){
-				if (tag == 'style') return this.styleSheet.cssText;
-				else if (tag ==  'script') return this.getProperty('text');
-			} else {
-				return this.innerHTML;
-			}
-		}
-		return ($pick(this.innerText, this.textContent));
-	},
-
-	/*
-	Method: getTag
-		Returns the tagName of the Element in lower case.
-
-	Syntax:
-		>var myTag = myElement.getTag();
-
-	Returns:
-		(string) The tag name in lower case
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			var myTag = $('myImage').getTag() // myTag = 'img';
-		[/javascript]
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.tagName>
-	*/
-
-	getTag: function(){
-		return this.tagName.toLowerCase();
+		return !!$A(this.getElementsByTagName(Element.get(el, 'tag'))).contains(el);
 	},
 
 	/*
@@ -1787,7 +1590,7 @@ Element.implement({
 			Element.dispose.attempt(element);
 		});
 		Garbage.trash(elements);
-		this.setHTML.attempt('', this);
+		this.set.attempt(['html', ''], this);
 		return this;
 	},
 
@@ -1818,11 +1621,501 @@ Element.implement({
 	destroy: function(){
 		Garbage.kill(this.empty().dispose());
 		return null;
+	},
+
+	/*
+	Method: toQueryString
+		Reads the children inputs of the Element and generates a query string, based on their values.
+
+	Syntax:
+		>var query = myElement.toQueryString();
+
+	Returns:
+		(string) A string representation of a Form element and its children.
+
+	Example:
+		[html]
+			<form id="myForm" action="submit.php">
+				<input name="email" value="bob@bob.com">
+				<input name="zipCode" value="90210">
+			</form>
+		[/html]
+
+		[/javascript]
+			$('myForm').toQueryString() //email=bob@bob.com&zipCode=90210\
+		[/javascript]
+
+	Note:
+		Used internally in <Ajax>.
+	*/
+
+	toQueryString: function(){
+		var queryString = [];
+		this.getElements('input, select, textarea', true).each(function(el){
+			var name = el.name, type = el.type, value = Element.get(el, 'value');
+			if (value === false || !name || el.disabled) return;
+			$splat(value).each(function(val){
+				queryString.push(name + '=' + encodeURIComponent(val));
+			});
+		});
+		return queryString.join('&');
 	}
 
 });
 
 Element.alias('dispose', 'remove');
+
+Element.Set = new Hash({
+
+	style: function(text){
+		this.style.cssText = text;
+	},
+
+	/*
+	Element Setter: html
+		Sets the innerHTML of the Element.
+
+	Syntax:
+		>myElement.set('html', [htmlString[, htmlString2[, htmlString3[, ..]]]);
+
+	Arguments:
+		Any number of string paramters with html.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+		[/html]
+
+		[javascript]
+			$('myElement').set('html', '<div></div>', '<p></p>');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement">
+				<div></div>
+				<p></p>
+			</div>
+		[/html]
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
+	*/
+
+	html: function(){
+		this.innerHTML = Array.join(arguments, '');
+	},
+
+	/*
+	Element Setter: text
+		Sets the inner text of the Element.
+
+	Syntax:
+		>myElement.set('text', text);
+
+	Arguments:
+		text - (string) The new text content for the Element.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+		[/html]
+
+		[javascript]
+			$('myElement').set('text', 'some text') //the text of myElement is now = 'some text'
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement">some text</div>
+		[/html]
+	*/
+
+	text: function(text){
+		if (this.get('tag') == 'style'){
+			if (Browser.Engine.trident){
+				this.styleSheet.cssText = text;
+			} else {
+				if (this.firstChild) this.removeChild(this.firstChild);
+				this.appendText(text);
+			}
+		} else {
+			var innerText = this.innerText;
+			this[$defined(innerText) ? 'innerText' : 'textContent'] = text;
+		}
+	},
+
+	/*
+	Element Setter: property
+		Sets an attribute for the Element.
+
+	Arguments:
+		name - (string) The property to assign the value passed in.
+		value - (mixed) The value to assign to the property passed in.
+
+	Return:
+		(element) - This Element.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" />
+		[/html]
+
+		[javascript]
+			$('myImage').set('property', 'src', 'mootools.png');
+		[/javascript]
+
+		Result:
+		[html]
+			<img id="myImage" src="mootools.png" />
+		[/html]
+	*/
+
+	property: function(attribute, value){
+		if (!$chk(value)){
+			this.clear('property', attribute);
+			return;
+		}
+		var key = Element.Attributes.Properties[attribute];
+		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
+		if (key) this[key] = value;
+		this.setAttribute(attribute, value);
+	},
+
+	/*
+	Element Setter: properties
+		Sets numerous attributes for the Element.
+
+	Arguments:
+		attributes - (object) An object with key/value pairs.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" />
+		[/html]
+
+		[javascript]
+			$('myImage').set('properties', {
+				src: 'whatever.gif',
+				alt: 'whatever dude'
+			});
+		[/javascript]
+
+		Result:
+		[html]
+			<img id="myImage" src="whatever.gif" alt="whatever dude" />
+		[/html]
+	*/
+
+	properties: function(attributes){
+		for (var attribute in attributes) this.set('property', attribute, attributes[attribute]);
+	}
+
+});
+
+Element.Get = new Hash({
+
+	style: function(){
+		return this.style.cssText;
+	},
+
+	/*
+	Element Getter: value
+		Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
+
+	Syntax:
+		>var value = myElement.get('value');
+
+	Returns:
+		(mixed) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
+
+	Example:
+		HTML:
+		[html]
+			<form id="myForm">
+				<select>
+					<option value="volvo">Volvo</option>
+					<option value="saab" selected="yes">Saab</option>
+					<option value="opel">Opel</option>
+					<option value="audi">Audi</option>
+				</select>
+			</form>
+		[/html]
+
+		Result:
+		[javascript]
+			var result = $('myForm').getElement('select').get('value'); // returns 'Saab'
+		[/javascript]
+	*/
+
+	value: function(){
+		switch (Element.get(this, 'tag')){
+			case 'select':
+				var values = [];
+				Array.each(this.options, function(option){
+					if (option.selected) values.push(option.value);
+				});
+				return (this.multiple) ? values : values[0];
+			case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
+			default: return $pick(this.value, false);
+		}
+	},
+
+	/*
+	Element Getter: tag
+		Returns the tagName of the Element in lower case.
+
+	Syntax:
+		>var myTag = myElement.get('tag');
+
+	Returns:
+		(string) The tag name in lower case
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" />
+		[/html]
+
+		[javascript]
+			var myTag = $('myImage').get('tag') // myTag = 'img';
+		[/javascript]
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.tagName>
+	*/
+
+	tag: function(){
+		return this.tagName.toLowerCase();
+	},
+
+	/*
+	Element Getter: html
+		returns the innerHTML of the Element.
+
+	Syntax:
+		>myElement.get('html');
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement">ciao</div>
+		[/html]
+
+		[javascript]
+			$('myElement').get('html');
+		[/javascript]
+
+		Result: ciao
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
+	*/
+
+	html: function(){
+		return this.innerHTML;
+	},
+
+	/*
+	Element Getter: text
+		Gets the inner text of the Element.
+
+	Syntax:
+		>var myText = myElement.get('text');
+
+	Returns:
+		(string) The text of the Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement">my text</div>
+		[/html]
+
+		[javascript]
+			var myText = $('myElement').get('text'); //myText = 'my text';
+		[/javascript]
+	*/
+
+	text: function(){
+		if (this.get('tag') == 'style') return (Browser.Engine.trident) ? this.styleSheet.cssText : this.innerHTML;
+		var innerText = this.innerText;
+		var textContent = this.textContent;
+		return $pick(innerText, textContent);
+	},
+
+	/*
+	Element Getter: property
+		Gets the an attribute of the Element.
+
+	Syntax:
+		>myElement.get('property', name);
+
+	Arguments:
+		name - (string) The attribute to retrieve.
+
+	Returns:
+		(mixed) The value of the property, or an empty string.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" src="mootools.png" />
+		[/html]
+
+		[javascript]
+			$('myImage').get('property', 'src') // returns mootools.png
+		[/javascript]
+	*/
+
+	property: function(attribute){
+		var key = Element.Attributes.Properties[attribute];
+		var value = (key) ? this[key] : this.getAttribute(attribute);
+		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
+	},
+
+	/*
+	Element Getter: properties
+		Gets many attributes for an element
+
+	Syntax:
+		>var myProps = myElement.get('properties', name[, name, name, ...]);
+
+	Returns:
+		(object) An object containing all the requested Element properties.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
+		[/html]
+
+		[javascript]
+			var imgProps = $('myImage').get('properties', 'id', 'src', 'title', 'alt');
+			// returns: {id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: ''}
+		[/javascript]
+	*/
+
+	properties: function(){
+		var result = {};
+		Array.flatten(arguments).each(function(attribute){
+			result[attribute] = this.get('property', attribute);
+		}, this);
+		return result;
+	}
+
+});
+
+Element.Clear = new Hash({
+
+	style: function(){
+		this.style.cssText = '';
+	},
+
+	/*
+	Element Clearer: property
+		Removes an attribute from the Element.
+
+	Syntax:
+		>myElement.clear('property', name);
+
+	Arguments:
+		name - (string) The attribute to remove.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
+		[/html]
+
+		[javascript]
+			$('myAnchor').clear('property', 'onmousedown'); //eww inline javascript is bad! Let's get rid of it.
+		[/javascript]
+
+		Result:
+		[html]
+			<a id="myAnchor" href="#"></a>
+		[/html]
+	*/
+
+	property: function(attribute){
+		var key = Element.Attributes.Properties[attribute];
+		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
+		this.removeAttribute(attribute);
+	},
+
+	/*
+	Element Clearer: properties
+		Removes an attribute from the Element.
+
+	Syntax:
+		>myElement.clear('properties', name[, name, name, name, ...]);
+
+	Arguments:
+		name - (string) The attributes to remove.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
+		[/html]
+
+		[javascript]
+			$('myAnchor').clear('properties', 'onmousedown', 'href', 'id');
+		[/javascript]
+
+		Result:
+		[html]
+			<a></a>
+		[/html]
+	*/
+
+	properties: function(){
+		Array.flatten(arguments).each(function(argument){
+			this.clear('property', argument);
+		}, this);
+	}
+
+});
+
+TextNode.implement({
+
+	inject: Element.prototype.inject,
+
+	dispose: Element.prototype.dispose
+
+});
+
+Element.walk = function(element, walk, start, match){
+	var el = (start) ? element[start] : element[walk];
+	while(el){
+		if (el.nodeType == 1 && Element.match(el, match)) return $(el);
+		el = el[walk];
+	}
+	return null;
+};
 
 Native.implement([Element, Window, Document], {
 
@@ -1841,18 +2134,19 @@ Native.implement([Element, Window, Document], {
 });
 
 Element.Attributes = {
+
 	Properties: {
 		'accesskey': 'accessKey', 'cellpadding': 'cellPadding', 'cellspacing': 'cellSpacing', 'colspan': 'colSpan',
 		'class': 'className', 'for': 'htmlFor', 'frameborder': 'frameBorder', 'maxlength': 'maxLength', 'readonly': 'readOnly',
 		'rowspan': 'rowSpan', 'tabindex': 'tabIndex', 'usemap': 'useMap', 'value': 'value'
 	},
+
 	Booleans: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer']
+
 };
 
 Element.Attributes.Booleans = Element.Attributes.Booleans.associate(Element.Attributes.Booleans);
 Hash.merge(Element.Attributes.Properties, Element.Attributes.Booleans);
-
-Element.UID = 0;
 
 var Garbage = {
 
@@ -1874,13 +2168,13 @@ var Garbage = {
 
 	kill: function(el){
 		if (!el || !el.$attributes) return;
-		delete Garbage.Elements[String(el.$attributes.uid)];
-		if (el.$events) el.removeEvents();
+		delete Garbage.Elements[el.uid];
+		if (el.retrieve('events')) el.removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
 		if (Browser.Engine.trident){
 			for (var d in Element.prototype) el[d] = null;
 		}
-		el.$attributes = null;
+		el.$attributes = el.uid = null;
 	},
 
 	empty: function(){

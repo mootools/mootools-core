@@ -6,7 +6,7 @@
 			"deps": ["Core"],
 			"desc": "The core of MooTools. Is required by all the other scripts, contains all the base functions."
 		},
-		
+
 		"Browser": {
 			"deps": ["Core"],
 			"desc": "The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash."
@@ -77,11 +77,6 @@
 		"Element.Dimensions": {
 			"deps": ["Element"],
 			"desc": "Contains Element methods to work with element size, scroll, or position in space."
-		},
-
-		"Element.Form": {
-			"deps": ["Element"],
-			"desc": "Contains Element methods to work with forms."
 		}
 
 	},
@@ -130,7 +125,7 @@
 			"deps": ["Fx.CSS"],
 			"desc": "Formerly Fx.Style, effect to change any css property for an element."
 		},
-		
+
 		"Fx.Morph": {
 			"deps": ["Fx.CSS"],
 			"desc": "Formerly Fx.Styles, effect to change any number of css properties for an element. Now also supports animating css rules."
@@ -216,12 +211,12 @@
 			"deps": ["Element.Event"],
 			"desc": "Contains functions to load external files on the fly: images, css, javascript."
 		},
-		
+
 		"Element.Filters": {
 			"deps": ["Element"],
 			"desc": "Adds Filtering Capabilities to Element Collections."
 		},
-		
+
 		"Fx.Elements": {
 			"deps": ["Fx.CSS"],
 			"desc": "Effect to change any number of css properties to any number of elements."

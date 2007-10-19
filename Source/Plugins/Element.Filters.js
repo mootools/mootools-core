@@ -50,7 +50,7 @@ Elements.implement({
 
 	filterByTag: function(tag, nocash){
 		var elements = this.filter(function(el){
-			return (Element.getTag(el) == tag);
+			return (Element.get(el, 'tag') == tag);
 		});
 		return (nocash) ? elements : new Elements(elements, true);
 	},
@@ -182,7 +182,7 @@ Elements.implement({
 
 	filterByAttribute: function(name, operator, value, nocash){
 		var elements = this.filter(function(el){
-			var current = Element.getProperty(el, name);
+			var current = Element.get(el, name);
 			if (!current) return false;
 			if (!operator) return true;
 			switch (operator){

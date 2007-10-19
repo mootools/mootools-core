@@ -6,7 +6,11 @@ License:
 	MIT-style license.
 */
 
-Fx.CSS = {
+Fx.CSS = new Class({
+	
+	Extends: Fx,
+	
+	//prepares the base from/to object
 
 	prepare: function(element, property, values){
 		values = $splat(values);
@@ -15,60 +19,87 @@ Fx.CSS = {
 			values[1] = values[0];
 			values[0] = element.getStyle(property);
 		}
-		var parsed = values.map(Fx.CSS.set);
-		return {'from': parsed[0], 'to': parsed[1]};
+		var parsed = values.map(this.parse);
+		return {from: parsed[0], to: parsed[1]};
 	},
-
-	set: function(value){
+	
+	//parses a value into an array
+	
+	parse: function(value){
 		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
 			Fx.CSS.Parsers.each(function(parser, key){
-				if (!found){
-					var match = parser.match(val);
-					if ($chk(match)) found = {'value': match, 'parser': parser};
-				}
+				if (found) return;
+				var parsed = parser.parse(val);
+				if ($chk(parsed)) found = {'value': parsed, 'parser': parser};
 			});
-			return found || {'value': val, parser: {
-				compute: function(from, to){
-					return to;
-				}
-			}};
+			found = found || {value: val, parser: Fx.CSS.Parsers.String};
+			return found;
 		});
 	},
-
-	compute: function(from, to, fx){
-		return from.map(function(obj, i){
-			return {'value': obj.parser.compute(obj.value, to[i].value, fx), 'parser': obj.parser};
+	
+	//computes by a from and to prepared objects, using their parsers.
+	
+	compute: function(from, to, delta){
+		var computed = [];
+		(Math.min(from.length, to.length)).times(function(i){
+			computed.push({'value': from[i].parser.compute(from[i].value, to[i].value, delta), 'parser': from[i].parser});
 		});
+		computed.$family = {name: 'fx:css:value'};
+		return computed;
 	},
-
-	serve: function(now, unit){
-		var returned = []
-
-		now.each(function(bit){
-			var serve = bit.parser.serve;
-			returned.concat((serve) ? serve(bit.value, unit) : bit.value);
+	
+	//serves the value as settable
+	
+	serve: function(value, unit){
+		if ($type(value) != 'fx:css:value') value = this.parse(value);
+		var returned = [];
+		value.each(function(bit){
+			returned = returned.concat(bit.parser.serve(bit.value, unit));
 		});
-
 		return returned;
+	},
+	
+	//searches inside the page css to find the values for a selector
+	
+	search: function(selector){
+		var to = {};
+		Array.each(document.styleSheets, function(sheet, j){
+			var rules = sheet.rules || sheet.cssRules;
+			Array.each(rules, function(rule, i){
+				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
+				Element.Styles.each(function(value, style){
+					if (!rule.style[style] || Element.ShortStyles[style]) return;
+					value = rule.style[style];
+					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
+				});
+			});
+		});
+		return to;
+	},
+	
+	//renders the change to an element
+	
+	render: function(element, property, value){
+		element.setStyle(property, this.serve(value, this.options.unit));
 	}
-
-};
+	
+});
 
 Fx.CSS.Parsers = new Hash({
 
-	'color': {
+	Color: {
 
-		match: function(value){
+		parse: function(value){
 			if (value.match(/^#[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
 			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
 		},
 
-		compute: function(from, to, fx){
+		compute: function(from, to, delta){
 			return from.map(function(value, i){
-				return Math.round(fx.compute(value, to[i]));
+				return Math.round(Fx.compute(from[i], to[i], delta));
 			});
 		},
 
@@ -78,20 +109,22 @@ Fx.CSS.Parsers = new Hash({
 
 	},
 
-	'number': {
+	Number: {
 
-		match: function(value){
+		parse: function(value){
 			return parseFloat(value);
 		},
 
-		compute: function(from, to, fx){
-			return fx.compute(from, to);
+		compute: function(from, to, delta){
+			return Fx.compute(from, to, delta);
 		},
 
 		serve: function(value, unit){
 			return (unit) ? value + unit : value;
 		}
 
-	}
+	},
+	
+	String: {parse: $return(false), compute: $arguments(1), serve: $arguments(0)}
 
 });
