@@ -196,7 +196,7 @@ String.implement({
 	*/
 
 	escapeRegExp: function(){
-		return this.replace(/([.*+?^${}()|[\]\/\\])/g, '\\$1');
+		return this.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
 	},
 
 	/*
