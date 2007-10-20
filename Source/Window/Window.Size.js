@@ -19,48 +19,48 @@ Native: Window
 	Warning: All these methods require that the browser operates in strict mode, not quirks mode.
 */
 
-Window.Get.extend({
-	
+Window.implement({
+
 	/*
-	Window Getter: width
+	Property: getWidth
 		Returns an integer representing the width of the browser window (without the scrollbar).
 
 	Syntax:
-		>var width = window.get('width');
+		>var width = window.getWidth();
 
 	Returns:
 		(number) The width (without the scrollbar width) of the browser window.
 	*/
-	
-	width: function(){
+
+	getWidth: function(){
 		if (Browser.Engine.webkit419) return this.innerWidth;
 		if (Browser.Engine.presto) return this.document.body.clientWidth;
 		return this.document.documentElement.clientWidth;
 	},
-	
+
 	/*
-	Window Getter: height
+	Property: getHeight
 		Returns an integer representing the height of the browser window (without the scrollbar).
 
 	Syntax:
-		>var height = window.get('height');
+		>var height = window.getHeight();
 
 	Returns:
 		(number) The height (without the scrollbar height) of the browser window.
 	*/
-	
-	height: function(){
+
+	getHeight: function(){
 		if (Browser.Engine.webkit419) return this.innerHeight;
 		if (Browser.Engine.presto) return this.document.body.clientHeight;
 		return this.document.documentElement.clientHeight;
 	},
-	
+
 	/*
-	Window Getter: scrollWidth
+	Property: getScrollWidth
 		Returns an integer representing the scrollWidth of the window.
 
 	Syntax:
-		>var scrollWidth = window.get('scrollWidth');
+		>var scrollWidth = window.getScrollWidth();
 
 	Returns:
 		(number) The scroll width of the browser window.
@@ -68,29 +68,29 @@ Window.Get.extend({
 	Example:
 		[javascript]
 			window.addEvent('resize', function(){
-				alert(window.get('scrollWidth'));
+				alert(window.getScrollWidth());
 			});
 		[/javascript]
 
 	Note:
-		This value is equal to or bigger than window.get('width').
+		This value is equal to or bigger than <window.getWidth>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
 	*/
-	
-	scrollWidth: function(){
+
+	getScrollWidth: function(){
 		if (Browser.Engine.trident) return Math.max(this.document.documentElement.offsetWidth, this.document.documentElement.scrollWidth);
 		if (Browser.Engine.webkit) return this.document.body.scrollWidth;
 		return this.document.documentElement.scrollWidth;
 	},
-	
+
 	/*
-	Window Getter: scrollHeight
+	Property: getScrollHeight
 		Returns an integer representing the scrollHeight of the window.
 
 	Syntax:
-		>var scrollHeight = window.get('scrollHeight');
+		>var scrollHeight = window.getScrollHeight();
 
 	Returns:
 		(number) The scroll height of the browser window.
@@ -98,29 +98,29 @@ Window.Get.extend({
 	Example:
 		[javascript]
 			window.addEvent('resize', function(){
-				alert(window.get('scrollHeight'));
+				alert(window.getScrollHeight());
 			});
 		[/javascript]
 
 	Note:
-		This value is equal to or bigger than window.get('height').
+		This value is equal to or bigger than <window.getHeight>.
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
 	*/
-	
-	scrollHeight: function(){
+
+	getScrollHeight: function(){
 		if (Browser.Engine.trident) return Math.max(this.document.documentElement.offsetHeight, this.document.documentElement.scrollHeight);
 		if (Browser.Engine.webkit) return this.document.body.scrollHeight;
 		return this.document.documentElement.scrollHeight;
 	},
-	
+
 	/*
-	Window Getter: scrollLeft
+	Property: getScrollLeft
 		Returns an integer representing the scrollLeft of the window.
 
 	Syntax:
-		>var scrollLeft = window.get('scrollLeft');
+		>var scrollLeft = window.getScrollLeft();
 
 	Returns:
 		(number) The number of pixels the window has scrolled from the left.
@@ -128,24 +128,24 @@ Window.Get.extend({
 	Example:
 		[javascript]
 			window.addEvent('scroll', function(){
-				alert(window.get('scrollLeft'));
+				alert(window.getScrollLeft());
 			});
 		[/javascript]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>
 	*/
-	
-	scrollLeft: function(){
+
+	getScrollLeft: function(){
 		return this.pageXOffset || this.document.documentElement.scrollLeft;
 	},
-	
+
 	/*
-	Window Getter: scrollTop
+	Property: getScrollTop
 		Returns an integer representing the scrollTop of the window.
 
 	Syntax:
-		>var scrollTop = window.get('scrollTop');
+		>var scrollTop = window.getScrollTop();
 
 	Returns:
 		(number) The number of pixels the window has scrolled from the top.
@@ -153,50 +153,50 @@ Window.Get.extend({
 	Example:
 		[javascript]
 			window.addEvent('scroll', function(){
-				alert(window.get('scrollTop'));
+				alert(window.getScrollTop());
 			});
 		[/javascript]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
 	*/
-	
-	scrollTop: function(){
+
+	getScrollTop: function(){
 		return this.pageYOffset || this.document.documentElement.scrollTop;
 	},
-	
+
 	/*
-	Window Getter: size
-		Same as Element Getter for size, but for window.
+	Property: getSize
+		Same as <Element.getSize>, but for window.
 
 	Syntax:
-		>var size = window.get('size');
+		>var size = window.getSize();
 
 	Returns:
-		(object) An object with size, scrollSize, scroll properties. Each property has a value of an object with x and y properties representing the width/height, scrollWidth/scrollHeight, or scrollLeft/scrollTop.
+		(object) An object with size, scrollSize, scroll properties. Each property has a value of an object with x and y properties representing the width/height, scrollWidth/scrollHeight, or getScrollLeft/getScrollTop.
 
 	Example:
 		[javascript]
-			var size = window.get('size');
+			var size = window.getSize();
 		[/javascript]
 	*/
-	
-	size: function(){
-		var width = this.get('width');
-		var height = this.get('height');
+
+	getSize: function(){
+		var width = this.getWidth;
+		var height = this.getHeight;
 		return {
 			'offset': {'x': width, 'y': height},
-			'scroll': {'x': this.get('scrollWidth'), 'y': this.get('scrollHeight')},
+			'scroll': {'x': this.getScrollWidth, 'y': this.getScrollHeight},
 			'client': {'x': width, 'y': height}
 		};
 	},
 	
-	scroll: function(){
-		return {'x': this.get('scrollLeft'), 'y': this.get('scrollTop')};
+	getScroll: function(){
+		return {'x': this.getScrollLeft, 'y': this.getScrollTop};
 	},
-	
-	position: function(){
+
+	getPosition: function(){
 		return {'x': 0, 'y': 0};
 	}
-	
+
 });

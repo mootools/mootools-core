@@ -138,8 +138,8 @@ Fx.Scroll = new Class({
 
 	start: function(x, y){
 		if (!this.check(x, y)) return this;
-		var size = this.element.get('size');
-		var scroll = this.element.get('scroll');
+		var size = this.element.getSize();
+		var scroll = this.element.getScroll();
 		var values = {'x': x, 'y': y};
 		for (var z in size.client){
 			var max = size.scroll[z] - size.client[z];
@@ -273,8 +273,8 @@ Fx.Scroll = new Class({
 	*/
 
 	toElement: function(el){
-		var parent = this.element.get('position', this.options.overflown);
-		var target = $(el).get('position', this.options.overflown);
+		var parent = this.element.getPosition(this.options.overflown);
+		var target = $(el).getPosition(this.options.overflown);
 		return this.start(target.x - parent.x, target.y - parent.y);
 	}
 

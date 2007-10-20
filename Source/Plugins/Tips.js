@@ -124,7 +124,7 @@ var Tips = new Class({
 			} else {
 				el.$attributes.myText = el.title;
 			}
-			el.clear('property', 'title');
+			el.removeProperty('title');
 		} else {
 			el.$attributes.myText = false;
 		}
@@ -162,7 +162,7 @@ var Tips = new Class({
 	},
 
 	position: function(element){
-		var pos = element.get('position');
+		var pos = element.getPosition();
 		this.toolTip.setStyles({
 			'left': pos.x + this.options.offsets.x,
 			'top': pos.y + this.options.offsets.y
@@ -170,8 +170,8 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var win = {'x': this.window.get('width'), 'y': this.window.get('height')};
-		var scroll = {'x': this.window.get('scrollLeft'), 'y': this.window.get('scrollTop')};
+		var win = {'x': this.window.getWidth, 'y': this.window.getHeight};
+		var scroll = {'x': this.window.getScrollLeft, 'y': this.window.getScrollTop};
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){

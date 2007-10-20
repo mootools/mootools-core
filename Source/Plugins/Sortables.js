@@ -195,7 +195,7 @@ var Sortables = new Class({
 	},
 
 	check: function(element, list){
-		element = element.get('coordinates');
+		element = element.getCoordinates();
 		var coords = list ? element : {
 			left: element.left - this.list.scrollLeft,
 			right: element.right - this.list.scrollLeft,
@@ -242,9 +242,9 @@ var Sortables = new Class({
 		this.list.positioned = this.list.getStyle('position').test(/relative|absolute|fixed/);
 
 		var children = this.list.getChildren();
-		var bounds = children.shift().get('coordinates');
+		var bounds = children.shift().getCoordinates();
 		children.each(function(element){
-			var coords = element.get('coordinates');
+			var coords = element.getCoordinates();
 			bounds.left = Math.min(coords.left, bounds.left);
 			bounds.right = Math.max(coords.right, bounds.right);
 			bounds.top = Math.min(coords.top, bounds.top);
@@ -252,10 +252,10 @@ var Sortables = new Class({
 		});
 		this.bounds = bounds;
 
-		this.position = this.element.get('position', [this.list]);
+		this.position = this.element.getPosition([this.list]);
 
 		this.offset = {
-			'list': this.list.get('position'),
+			'list': this.list.getPosition(),
 			'element': {'x': event.page.x - this.position.x, 'y': event.page.y - this.position.y}
 		};
 		this.reposition();
@@ -307,7 +307,7 @@ var Sortables = new Class({
 					this.list.adopt(this.clone, this.element);
 					newSize = {x: this.clone.offsetWidth, y: this.clone.offsetHeight};
 					this.offset = {
-						'list': this.list.get('position'),
+						'list': this.list.getPosition(),
 						'element': {
 							'x': Math.round(newSize.x * (this.offset.element.x / oldSize.x)),
 							'y': Math.round(newSize.y * (this.offset.element.y / oldSize.y))
@@ -337,7 +337,7 @@ var Sortables = new Class({
 		document.removeEvent('mousemove', this.bound.move);
 		document.removeEvent('mouseup', this.bound.end);
 
-		this.position = this.clone.get('position', [this.list]);
+		this.position = this.clone.getPosition([this.list]);
 		this.reposition();
 
 		if (!this.effect){

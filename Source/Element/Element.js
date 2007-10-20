@@ -641,7 +641,8 @@ Element.Inject = new Hash({
 
 	after: function(context, element){
 		if (!element.parentNode) return;
-		(element.nextSibling) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+		var next = element.nextSibling;
+		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
 	}
 
 });
@@ -652,7 +653,7 @@ Element.Inject.inside = Element.Inject.bottom;
 	var injecters = {};
 	Element.Inject.each(function(value, key){
 		injecters['inject' + key.capitalize()] = function(el){
-			return Element.inject(this, el, key);
+		return Element.inject(this, el, key);
 		};
 	});
 	Element.implement(injecters);
@@ -738,12 +739,12 @@ Element.implement({
 		<Element>, <Element.Set>, <Element.setStyles>, <Element.addEvents>
 	*/
 
-	set: function(prop){
+	set: function(prop, value){
 		switch ($type(prop)){
 			case 'object': for (var p in prop) this.set(p, prop[p]); break;
 			case 'string':
 				var setter = Element.Set.get(prop);
-				(setter) ? setter.apply(this, Array.slice(arguments, 1)) : Element.Set.property.apply(this, arguments);
+				(setter) ? setter.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
 		}
 		return this;
 	},
@@ -765,7 +766,7 @@ Element.implement({
 		Using Custom Getters:
 		[javascript]
 			var tag = $('myDiv').get('tag'); //returns 'div'
-			var coords = $('myDiv').get('coordinates'); //returns the elements coordinates
+			var coords = $('myDiv').getCoordinates; //returns the elements coordinates
 		[/javascript]
 
 		Fallback to Element Attributes:
@@ -783,7 +784,7 @@ Element.implement({
 
 	get: function(prop){
 		var getter = Element.Get.get(prop);
-		return (getter) ? getter.apply(this, Array.slice(arguments, 1)) : Element.Get.property.apply(this, arguments);
+		return (getter) ? getter.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
 
 	/*
@@ -814,7 +815,7 @@ Element.implement({
 
 	clear: function(prop){
 		var clearer = Element.Clear.get(prop);
-		(clearer) ? clearer.apply(this, Array.slice(arguments, 1)) : Element.Clear.property.apply(this, arguments);
+		(clearer) ? clearer.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
 		return this;
 	},
 
@@ -904,8 +905,7 @@ Element.implement({
 
 	inject: function(el, where){
 		if (!(el = $(el, true))) return this;
-		var injecter = Element.Inject.get(where || 'bottom');
-		if (injecter) injecter(this, el);
+		Element.Inject.get(where || 'bottom')(this, el);
 		return this;
 	},
 
@@ -1659,7 +1659,166 @@ Element.implement({
 			});
 		});
 		return queryString.join('&');
+	},
+	
+	getProperty: function(attribute){
+		var key = Element.Attributes.Properties[attribute];
+		var value = (key) ? this[key] : this.getAttribute(attribute);
+		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
+	},
+	
+	/*
+	Method: getProperties
+		Same as <Element.getStyles>, but for properties.
+
+	Syntax:
+		>var myProps = myElement.getProperties();
+
+	Returns:
+		(object) An object containing all of the Element's properties.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
+		[/html]
+
+		[javascript]
+			var imgProps = $('myImage').getProperties();
+			// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+		[/javascript]
+
+	See Also:
+		<Element.getProperty>
+	*/
+	
+	getProperties: function(){
+		var result = {};
+		Array.each(arguments, function(attribute){
+			result[attribute] = this.getProperty(attribute);
+		}, this);
+		return result;
+	},
+	
+	/*
+	Method: setProperty
+		Sets an attribute for the Element.
+
+	Arguments:
+		property - (string) The property to assign the value passed in.
+		value - (mixed) The value to assign to the property passed in.
+
+	Return:
+		(element) - This Element.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" />
+		[/html]
+
+		[javascript]
+			$('myImage').setProperty('src', 'mootools.png');
+		[/javascript]
+
+		Result:
+		[html]
+			<img id="myImage" src="mootools.png" />
+		[/html]
+	*/
+	
+	setProperty: function(attribute, value){
+		if (!$chk(value)){
+			this.clear('property', attribute);
+			return;
+		}
+		var key = Element.Attributes.Properties[attribute];
+		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
+		if (key) this[key] = value;
+		this.setAttribute(attribute, value);
+	},
+	
+	/*
+	Method: setProperties
+		Sets numerous attributes for the Element.
+
+	Arguments:
+		properties - (object) An object with key/value pairs.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<img id="myImage" />
+		[/html]
+
+		[javascript]
+			$('myImage').setProperties({
+				src: 'whatever.gif',
+				alt: 'whatever dude'
+			});
+		[/javascript]
+
+		Result:
+		[html]
+			<img id="myImage" src="whatever.gif" alt="whatever dude" />
+		[/html]
+	*/
+	
+	setProperties: function(attributes){
+		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
+	},
+	
+	/*
+	Method: removeProperty
+		Removes an attribute from the Element.
+
+	Syntax:
+		>myElement.removeProperty(property);
+
+	Arguments:
+		property - (string) The attribute to remove.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
+		[/html]
+
+		[javascript]
+			$('myAnchor').removeProperty('onmousedown'); //eww inline javascript is bad! Let's get rid of it.
+		[/javascript]
+
+		Result:
+		[html]
+			<a id="myAnchor" href="#"></a>
+		[/html]
+	*/
+	
+	removeProperty: function(){
+		var key = Element.Attributes.Properties[attribute];
+		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
+		this.removeAttribute(attribute);
+	},
+	
+	removeProperties: function(){
+		Array.each(arguments, function(argument){
+			this.removeProperty(argument);
+		}, this);
 	}
+
+});
+
+TextNode.implement({
+
+	inject: Element.prototype.inject,
+
+	dispose: Element.prototype.dispose
 
 });
 
@@ -1751,77 +1910,6 @@ Element.Set = new Hash({
 			var innerText = this.innerText;
 			this[$defined(innerText) ? 'innerText' : 'textContent'] = text;
 		}
-	},
-
-	/*
-	Element Setter: property
-		Sets an attribute for the Element.
-
-	Arguments:
-		name - (string) The property to assign the value passed in.
-		value - (mixed) The value to assign to the property passed in.
-
-	Return:
-		(element) - This Element.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			$('myImage').set('property', 'src', 'mootools.png');
-		[/javascript]
-
-		Result:
-		[html]
-			<img id="myImage" src="mootools.png" />
-		[/html]
-	*/
-
-	property: function(attribute, value){
-		if (!$chk(value)){
-			this.clear('property', attribute);
-			return;
-		}
-		var key = Element.Attributes.Properties[attribute];
-		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
-		if (key) this[key] = value;
-		this.setAttribute(attribute, value);
-	},
-
-	/*
-	Element Setter: properties
-		Sets numerous attributes for the Element.
-
-	Arguments:
-		attributes - (object) An object with key/value pairs.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			$('myImage').set('properties', {
-				src: 'whatever.gif',
-				alt: 'whatever dude'
-			});
-		[/javascript]
-
-		Result:
-		[html]
-			<img id="myImage" src="whatever.gif" alt="whatever dude" />
-		[/html]
-	*/
-
-	properties: function(attributes){
-		for (var attribute in attributes) this.set('property', attribute, attributes[attribute]);
 	}
 
 });
@@ -1958,66 +2046,6 @@ Element.Get = new Hash({
 		var innerText = this.innerText;
 		var textContent = this.textContent;
 		return $pick(innerText, textContent);
-	},
-
-	/*
-	Element Getter: property
-		Gets the an attribute of the Element.
-
-	Syntax:
-		>myElement.get('property', name);
-
-	Arguments:
-		name - (string) The attribute to retrieve.
-
-	Returns:
-		(mixed) The value of the property, or an empty string.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" src="mootools.png" />
-		[/html]
-
-		[javascript]
-			$('myImage').get('property', 'src') // returns mootools.png
-		[/javascript]
-	*/
-
-	property: function(attribute){
-		var key = Element.Attributes.Properties[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute);
-		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
-	},
-
-	/*
-	Element Getter: properties
-		Gets many attributes for an element
-
-	Syntax:
-		>var myProps = myElement.get('properties', name[, name, name, ...]);
-
-	Returns:
-		(object) An object containing all the requested Element properties.
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
-		[/html]
-
-		[javascript]
-			var imgProps = $('myImage').get('properties', 'id', 'src', 'title', 'alt');
-			// returns: {id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: ''}
-		[/javascript]
-	*/
-
-	properties: function(){
-		var result = {};
-		Array.flatten(arguments).each(function(attribute){
-			result[attribute] = this.get('property', attribute);
-		}, this);
-		return result;
 	}
 
 });
@@ -2026,85 +2054,7 @@ Element.Clear = new Hash({
 
 	style: function(){
 		this.style.cssText = '';
-	},
-
-	/*
-	Element Clearer: property
-		Removes an attribute from the Element.
-
-	Syntax:
-		>myElement.clear('property', name);
-
-	Arguments:
-		name - (string) The attribute to remove.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
-		[/html]
-
-		[javascript]
-			$('myAnchor').clear('property', 'onmousedown'); //eww inline javascript is bad! Let's get rid of it.
-		[/javascript]
-
-		Result:
-		[html]
-			<a id="myAnchor" href="#"></a>
-		[/html]
-	*/
-
-	property: function(attribute){
-		var key = Element.Attributes.Properties[attribute];
-		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
-		this.removeAttribute(attribute);
-	},
-
-	/*
-	Element Clearer: properties
-		Removes an attribute from the Element.
-
-	Syntax:
-		>myElement.clear('properties', name[, name, name, name, ...]);
-
-	Arguments:
-		name - (string) The attributes to remove.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
-		[/html]
-
-		[javascript]
-			$('myAnchor').clear('properties', 'onmousedown', 'href', 'id');
-		[/javascript]
-
-		Result:
-		[html]
-			<a></a>
-		[/html]
-	*/
-
-	properties: function(){
-		Array.flatten(arguments).each(function(argument){
-			this.clear('property', argument);
-		}, this);
 	}
-
-});
-
-TextNode.implement({
-
-	inject: Element.prototype.inject,
-
-	dispose: Element.prototype.dispose
 
 });
 

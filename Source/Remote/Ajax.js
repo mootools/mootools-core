@@ -79,8 +79,8 @@ var Ajax = new Class({
 
 	Extends: XHR,
 
-	options: {/*
-		onComplete: $empty,*/
+	options: {
+		/*onComplete: $empty,*/
 		update: null,
 		evalScripts: false,
 		evalResponse: false

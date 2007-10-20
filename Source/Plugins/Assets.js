@@ -44,7 +44,7 @@ var Asset = new Hash({
 			}
 		});
 		delete properties.onload;
-		return script.set('properties', properties).inject(document.head);
+		return script.setProperties(properties).inject(document.head);
 	},
 
 	/*
@@ -122,7 +122,7 @@ var Asset = new Hash({
 		});
 		image.src = element.src = source;
 		if (image && image.complete) image.onload.delay(1);
-		return element.set('properties', properties);
+		return element.setProperties(properties);
 	},
 
 	/*

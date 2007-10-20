@@ -120,9 +120,9 @@ var Scroller = new Class({
 	},
 
 	scroll: function(){
-		var size = this.element.get('size');
-		var scroll = this.element.get('scroll');
-		var pos = this.element.get('position');
+		var size = this.element.getSize();
+		var scroll = this.element.getScroll();
+		var pos = this.element.getPosition();
 
 		var change = {'x': 0, 'y': 0};
 		for (var z in this.page){

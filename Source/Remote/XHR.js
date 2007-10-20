@@ -267,7 +267,7 @@ var XHR = new Class({
 	},
 
 	/*
-	Method: send
+	Method: request
 		Opens the XHR connection and sends the provided data. Allows to override the URL.
 
 	Syntax:

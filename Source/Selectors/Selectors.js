@@ -287,7 +287,7 @@ Selectors.Filter.match = function(el, params, Local){
 	
 	for (i = params.attributes.length; i--; i){
 		var bits = params.attributes[i];
-		var result = Element.prototype.get.call(el, 'property', bits[0]);
+		var result = Element.prototype.getProperty.call(el, bits[0]);
 		if (!result) return false;
 		if (!bits[1]) continue;
 		var condition;
