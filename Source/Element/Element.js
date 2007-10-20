@@ -484,6 +484,88 @@ Native.implement([Window, Document, Element], {
 Element.Inject = new Hash({
 
 	/*
+	Method: injectBefore
+		Inserts the Element before the passed Element.
+
+	Syntax:
+		>myElement.injectBefore(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected before.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').injectBefore('myElement');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="mySecondElement"></div>
+			<div id="myElement"></div>
+		[/html]
+
+	See Also:
+		<Element.inject>
+	*/
+
+	before: function(context, element){
+		if (element.parentNode) element.parentNode.insertBefore(context, element);
+	},
+
+	/*
+	Method: injectAfter
+		Inserts the Element after the passed Element.
+
+	Syntax:
+		>myElement.injectAfter(el);
+
+	Arguments:
+		el - (mixed) An Element reference or the id of the Element to be injected after.
+
+	Returns:
+		(element) This Element.
+
+	Example:
+		HTML:
+		[html]
+			<div id="mySecondElement"></div>
+			<div id="myElement"></div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').injectBefore('myElement');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+	See Also:
+		<Element.inject>, <Element.injectBefore>
+	*/
+
+	after: function(context, element){
+		if (!element.parentNode) return;
+		var next = element.nextSibling;
+		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+	}
+
+});
+
+Element.Append = new Hash({
+
+	/*
 	Method: injectBottom
 		Injects the Element inside and at the end of the child nodes of the passed in Element.
 
@@ -565,98 +647,27 @@ Element.Inject = new Hash({
 	top: function(context, element){
 		var first = element.firstChild;
 		(first) ? element.insertBefore(context, first) : element.appendChild(this);
-	},
-
-	/*
-	Method: injectBefore
-		Inserts the Element before the passed Element.
-
-	Syntax:
-		>myElement.injectBefore(el);
-
-	Arguments:
-		el - (mixed) An Element reference or the id of the Element to be injected before.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').injectBefore('myElement');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="mySecondElement"></div>
-			<div id="myElement"></div>
-		[/html]
-
-	See Also:
-		<Element.inject>
-	*/
-
-	before: function(context, element){
-		if (element.parentNode) element.parentNode.insertBefore(context, element);
-	},
-
-	/*
-	Method: injectAfter
-		Inserts the Element after the passed Element.
-
-	Syntax:
-		>myElement.injectAfter(el);
-
-	Arguments:
-		el - (mixed) An Element reference or the id of the Element to be injected after.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="mySecondElement"></div>
-			<div id="myElement"></div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').injectBefore('myElement');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-	See Also:
-		<Element.inject>, <Element.injectBefore>
-	*/
-
-	after: function(context, element){
-		if (!element.parentNode) return;
-		var next = element.nextSibling;
-		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
 	}
 
 });
 
-Element.Inject.inside = Element.Inject.bottom;
+Element.Append.inside = Element.Append.bottom;
+
+Element.Inject.extend(Element.Append);
 
 (function(){
-	var injecters = {};
+	var methods = {};
 	Element.Inject.each(function(value, key){
-		injecters['inject' + key.capitalize()] = function(el){
-		return Element.inject(this, el, key);
+		methods['inject' + key.capitalize()] = function(el){
+			return Element.inject(this, el, key);
 		};
 	});
-	Element.implement(injecters);
+	Element.Append.each(function(value, key){
+		methods['append' + key.capitalize()] = function(el){
+			return Element.append(this, el, key);
+		};
+	});
+	Element.implement(methods);
 })();
 
 Element.implement({
@@ -942,7 +953,8 @@ Element.implement({
 	*/
 
 	append: function(el, where){
-		Element.inject(el, this, where);
+		if (!(el = $(el, true))) return this;
+		Element.Append.get(where || 'bottom')(el, this);
 		return this;
 	},
 
