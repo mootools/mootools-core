@@ -45,7 +45,7 @@ Examples:
 			'width': 300
 		});
 	[/javascript]
-	
+
 	with a className:
 	[javascript]
 		var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
@@ -72,20 +72,20 @@ Fx.Morph = Fx.Styles = new Class({
 		for (var p in from) now[p] = arguments.callee.parent(from[p], to[p], delta);
 		return now;
 	},
-	
+
 	/*
 	Method: set
 		Sets the Element's css properties to the specified values immediately.
-	
+
 	Syntax:
 		>myFx.set(to);
-	
+
 	Arguments:
 		to - (object) An object containing keys that specify css properties to alter with their respected values.
-	
+
 	Returns:
 		(object) This Fx.Morph instance.
-	
+
 	Example:
 		[javascript]
 			var myFx = new Fx.Morph('myElement').set({
@@ -96,7 +96,7 @@ Fx.Morph = Fx.Styles = new Class({
 			});
 		[/javascript]
 	*/
-	
+
 	set: function(now){
 		for (var p in now) this.render(this.element, p, now[p]);
 		return this;
@@ -126,7 +126,7 @@ Fx.Morph = Fx.Styles = new Class({
 				'background-color': '#00f'
 			});
 		[/javascript]
-		
+
 	Note:
 		if you pass a string with the css selector, make sure you write the selector exactly as written in your css.
 		Multiple selectors (with commas) are not supported.
@@ -154,16 +154,16 @@ Native: Element
 /*
 Element Setter: morph
 	sets a default Fx.Morph instance for an element
-	
+
 Syntax:
 	>el.set('morph'[, options]);
-	
+
 Arguments:
 	options - (object) the Fx.Morph options.
-	
+
 Returns:
 	(element) this element
-	
+
 Example:
 	[javascript]
 		el.set('morph', {duration: 'long', transition: 'bounce:out'});
@@ -171,7 +171,7 @@ Example:
 	[/javascript]
 */
 
-Element.Set.morph = function(options){
+Element.Setter.morph = function(options){
 	var morph = this.retrieve('morph');
 	if (morph) morph.stop();
 	return this.store('morph', new Fx.Morph(this, Hash.extend({link: 'cancel'}, options)));
@@ -180,32 +180,32 @@ Element.Set.morph = function(options){
 /*
 Element Getter: morph
 	gets the previously setted Fx.Morph instance or a new one with default options
-	
+
 Syntax:
 	>el.get('morph');
 
 Arguments:
 	options - (object, optional) the Fx.Morph options. if passed in will generate a new instance.
-	
+
 Returns:
 	(object) the Fx.Morph instance
-	
+
 Example:
 	[javascript]
 		el.set('morph', {duration: 'long', transition: 'bounce:out'});
 		el.morph({height: 100, width: 100});
-		
+
 		el.get('morph'); //the Fx.Morph instance
 	[/javascript]
 */
 
-Element.Get.morph = function(options){
+Element.Getter.morph = function(options){
 	if (options || !this.retrieve('morph')) this.set('morph', options);
 	return this.retrieve('morph');
 };
 
 Element.implement({
-	
+
 	/*
 	Method: morph
 		animate an element given the properties you pass in.
@@ -225,7 +225,7 @@ Element.implement({
 		[javascript]
 			$('myElement').morph({height: 100, width: 200});
 		[/javascript]
-		
+
 		with selector:
 		[javascript]
 			$('myElement').morph('.class1');
@@ -239,7 +239,7 @@ Element.implement({
 		this.get('morph', options).start(props);
 		return this;
 	},
-	
+
 	effects: function(options){
 		return this.get('morph', options);
 	}

@@ -137,7 +137,7 @@ var Ajax = new Class({
 			new Ajax(url, {method: 'get'}).request();
 		[/javascript]
 	*/
-	
+
 	send: function(data){
 		data = data || this.options.data;
 		switch ($type(data)){
@@ -155,8 +155,8 @@ Native: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Set.extend({
-	
+Element.Setter.extend({
+
 	/*
 	Element Setter: send
 		sets a default Ajax instance for an element (possibly a form!)
@@ -182,7 +182,7 @@ Element.Set.extend({
 		if (send) send.cancel();
 		return this.store('send', new Ajax(this.get('action'), Hash.extend({autoCancel: true, method: this.get('method') || 'post'}, options)));
 	},
-	
+
 	/*
 	Element Setter: load
 		sets a default Ajax instance for an element
@@ -202,7 +202,7 @@ Element.Set.extend({
 			el.load('some/request/uri');
 		[/javascript]
 	*/
-	
+
 	load: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
@@ -212,8 +212,8 @@ Element.Set.extend({
 });
 
 
-Element.Get.extend({
-	
+Element.Getter.extend({
+
 	/*
 	Element Getter: send
 		gets the previously setted Ajax instance or a new one with default options
@@ -235,19 +235,19 @@ Element.Get.extend({
 			el.get('send'); //the Ajax instance
 		[/javascript]
 	*/
-	
+
 	send: function(options){
 		if (options || !this.retrieve('send')) this.set('send', options);
 		return this.retrieve('send');
 	},
-	
+
 	/*
 	Element Getter: load
 		gets the previously setted Ajax instance or a new one with default options
 
 	Syntax:
 		>el.get('load', url);
-		
+
 	Arguments:
 		url - (string) the url to associate the Ajax instance with.
 		options - (object, optional) the Ajax options. if passed in will generate a new instance.
@@ -263,7 +263,7 @@ Element.Get.extend({
 			el.get('load'); //the Ajax instance
 		[/javascript]
 	*/
-	
+
 	load: function(url, options){
 		if (options || !this.retrieve('load')) this.set('load', options);
 		var load = this.retrieve('load');

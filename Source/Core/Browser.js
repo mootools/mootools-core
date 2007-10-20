@@ -100,19 +100,3 @@ var Document = new Native({
 Document.instances = [];
 
 new Document(document);
-
-[Document, Window].each(function(object){
-		
-	object.Get = new Hash;
-	
-	object.implement({
-		
-		get: function(prop){
-			var getter = object.Get.get(prop);
-			if (getter) return object.Get[prop].call(this, Array.slice(arguments, 1));
-			return null;
-		}
-
-	});
-
-});

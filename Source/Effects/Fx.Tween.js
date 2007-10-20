@@ -40,13 +40,13 @@ See Also:
 Fx.Tween = Fx.Style = new Class({
 
 	Extends: Fx.CSS,
-	
+
 	initialize: function(element, property, options){
 		this.element = $(element);
 		this.property = property;
 		arguments.callee.parent(options);
 	},
-	
+
 	/*
 	Method: set
 		Sets the Element's css property to the specified value immediately.
@@ -65,7 +65,7 @@ Fx.Tween = Fx.Style = new Class({
 			var marginFx = new Fx.Tween('myElement', 'margin-top').set(10); //margin-top is set to 10px immediately
 		[/javascript]
 	*/
-	
+
 	set: function(now){
 		this.render(this.element, this.property, now);
 		return this;
@@ -107,8 +107,8 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Set.extend({
-	
+Element.Setter.extend({
+
 	/*
 	Element Setter: tween
 		sets a default Fx.Tween instance for an element
@@ -134,7 +134,7 @@ Element.Set.extend({
 		if (tween) tween.stop();
 		return this.store('tween', new Fx.Tween(this, null, Hash.extend({link: 'cancel'}, options)));
 	},
-	
+
 	/*
 	Element Setter: fade
 		sets a default Fx.Tween instance for an element (with opacity set as its property)
@@ -154,7 +154,7 @@ Element.Set.extend({
 			el.fade('out');
 		[/javascript]
 	*/
-	
+
 	fade: function(options){
 		var fade = this.retrieve('fade');
 		if (fade) fade.stop();
@@ -164,15 +164,15 @@ Element.Set.extend({
 });
 
 
-Element.Get.extend({
-	
+Element.Getter.extend({
+
 	/*
 	Element Getter: tween
 		gets the previously setted Fx.Tween instance or a new one with default options.
 
 	Syntax:
 		>el.get('tween');
-		
+
 	Arguments:
 		property - (string) the Fx.Tween property you want to associate with the instance.
 		options - (object, optional) the Fx.Tween options.
@@ -188,14 +188,14 @@ Element.Get.extend({
 			el.get('tween', 'height'); //the Fx.Tween instance, with height as property
 		[/javascript]
 	*/
-	
+
 	tween: function(property, options){
 		if (options || !this.retrieve('tween')) this.set('tween', options);
 		var tween = this.retrieve('tween');
 		tween.property = property;
 		return tween;
 	},
-	
+
 	/*
 	Element Getter: fade
 		gets the previously setted Fx.Tween (with 'opacity' set) instance or a new one with default options.
@@ -291,7 +291,7 @@ Element.implement({
 		}
 		return this;
 	},
-	
+
 	effect: function(property, options){
 		return this.get('tween', property, options);
 	}

@@ -706,7 +706,7 @@ Element.implement({
 
 	/*
 	Method: set
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Set> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Setter> Hash.
 
 	Syntax:
 		>myElement.set(property[, value]);
@@ -743,18 +743,20 @@ Element.implement({
 		[/javascript]
 
 	Notes:
-		- All additional arguments are passed to the method of the Element.Set Hash.
-		- If no matching property is found in Element.Set, it falls back to settimg attributes of the element, making this method the perfect shortcut.
+		- All additional arguments are passed to the method of the <Element.Setter> Hash.
+		- If no matching property is found in <Element.Setter>, it falls back to settimg attributes of the element, making this method the perfect shortcut.
 
 	See Also:
-		<Element>, <Element.Set>, <Element.setStyles>, <Element.addEvents>
+		<Element>, <Element.Setter>, <Element.setStyles>, <Element.addEvents>
 	*/
 
 	set: function(prop, value){
 		switch ($type(prop)){
-			case 'object': for (var p in prop) this.set(p, prop[p]); break;
+			case 'object':
+				for (var p in prop) this.set(p, prop[p]);
+				break;
 			case 'string':
-				var setter = Element.Set.get(prop);
+				var setter = Element.Setter.get(prop);
 				(setter) ? setter.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
 		}
 		return this;
@@ -762,7 +764,7 @@ Element.implement({
 
 	/*
 	Method: get
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Get> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Getter> Hash.
 
 	Syntax:
 		>myElement.get(property);
@@ -771,7 +773,7 @@ Element.implement({
 		property - (mixed) Accepts a string for getting the value of a certain property.
 
 	Returns:
-		(mixed) Whatever the result of the function in the Get Hash is, or the value of the corresponding attribute.
+		(mixed) Whatever the result of the function in the <Element.Getter> Hash is, or the value of the corresponding attribute.
 
 	Examples:
 		Using Custom Getters:
@@ -787,20 +789,20 @@ Element.implement({
 		[/javascript]
 
 	Notes:
-		- If no matching property is found in Element.Get, it falls back to gettimg attributes of the element.
+		- If no matching property is found in Element.Getter, it falls back to gettimg attributes of the element.
 
 	See Also:
-		<Element>, <Element.Get>
+		<Element>, <Element.Getter>
 	*/
 
 	get: function(prop){
-		var getter = Element.Get.get(prop);
+		var getter = Element.Getter.get(prop);
 		return (getter) ? getter.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
 
 	/*
 	Method: clear
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Clear> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Clearer> Hash.
 
 	Syntax:
 		>myElement.clear(property);
@@ -809,7 +811,7 @@ Element.implement({
 		property - (mixed) Accepts a string representing the property to be cleared.
 
 	Returns:
-		(mixed) Whatever the result of the function in the Get Hash is.
+		(mixed) Whatever the result of the function in the <Element.Clearer> Hash is.
 
 	Examples:
 		[javascript]
@@ -818,14 +820,14 @@ Element.implement({
 		[/javascript]
 
 	Note:
-		- If no matching property is found in Element.Clear, it falls back to removing the specified attribute of the element.
+		- If no matching property is found in <Element.Clearer>, it falls back to removing the specified attribute of the element.
 
 	See Also:
-		<Element>, <Element.Clear>
+		<Element>, <Element.Clearer>
 	*/
 
 	clear: function(prop){
-		var clearer = Element.Clear.get(prop);
+		var clearer = Element.Clearer.get(prop);
 		(clearer) ? clearer.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
 		return this;
 	},
@@ -947,7 +949,7 @@ Element.implement({
 				<div id="mySecondElement"></div>
 			</div>
 		[/html]
-		
+
 	Note:
 		wrap supports only top and bottom.
 
@@ -1602,10 +1604,10 @@ Element.implement({
 	empty: function(){
 		var elements = $A(this.getElementsByTagName('*'));
 		elements.each(function(element){
-			Element.dispose.attempt(element);
+			$try(Element.prototype.dispose, element);
 		});
 		Garbage.trash(elements);
-		this.set.attempt(['html', ''], this);
+		$try(Element.Setter.html, this, ['']);
 		return this;
 	},
 
@@ -1675,13 +1677,13 @@ Element.implement({
 		});
 		return queryString.join('&');
 	},
-	
+
 	getProperty: function(attribute){
 		var key = Element.Attributes.Properties[attribute];
 		var value = (key) ? this[key] : this.getAttribute(attribute);
 		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
 	},
-	
+
 	/*
 	Method: getProperties
 		Same as <Element.getStyles>, but for properties.
@@ -1706,7 +1708,7 @@ Element.implement({
 	See Also:
 		<Element.getProperty>
 	*/
-	
+
 	getProperties: function(){
 		var result = {};
 		Array.each(arguments, function(attribute){
@@ -1714,7 +1716,7 @@ Element.implement({
 		}, this);
 		return result;
 	},
-	
+
 	/*
 	Method: setProperty
 		Sets an attribute for the Element.
@@ -1741,18 +1743,16 @@ Element.implement({
 			<img id="myImage" src="mootools.png" />
 		[/html]
 	*/
-	
+
 	setProperty: function(attribute, value){
-		if (!$chk(value)){
-			this.clear('property', attribute);
-			return;
-		}
+		if (!$chk(value)) return this.clear('property', attribute);
 		var key = Element.Attributes.Properties[attribute];
 		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
 		if (key) this[key] = value;
 		this.setAttribute(attribute, value);
+		return this;
 	},
-	
+
 	/*
 	Method: setProperties
 		Sets numerous attributes for the Element.
@@ -1781,11 +1781,12 @@ Element.implement({
 			<img id="myImage" src="whatever.gif" alt="whatever dude" />
 		[/html]
 	*/
-	
+
 	setProperties: function(attributes){
 		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
+		return this;
 	},
-	
+
 	/*
 	Method: removeProperty
 		Removes an attribute from the Element.
@@ -1814,17 +1815,17 @@ Element.implement({
 			<a id="myAnchor" href="#"></a>
 		[/html]
 	*/
-	
-	removeProperty: function(){
+
+	removeProperty: function(attribute){
 		var key = Element.Attributes.Properties[attribute];
 		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
 		this.removeAttribute(attribute);
+		return this;
 	},
-	
+
 	removeProperties: function(){
-		Array.each(arguments, function(argument){
-			this.removeProperty(argument);
-		}, this);
+		Array.each(arguments, this.removeProperty, this);
+		return this;
 	}
 
 });
@@ -1839,7 +1840,7 @@ TextNode.implement({
 
 Element.alias('dispose', 'remove');
 
-Element.Set = new Hash({
+Element.Setter = new Hash({
 
 	style: function(text){
 		this.style.cssText = text;
@@ -1929,7 +1930,7 @@ Element.Set = new Hash({
 
 });
 
-Element.Get = new Hash({
+Element.Getter = new Hash({
 
 	style: function(){
 		return this.style.cssText;
@@ -2065,7 +2066,7 @@ Element.Get = new Hash({
 
 });
 
-Element.Clear = new Hash({
+Element.Clearer = new Hash({
 
 	style: function(){
 		this.style.cssText = '';

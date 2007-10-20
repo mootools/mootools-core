@@ -26,14 +26,14 @@ var Builder = {
 			"Core"      : ["Core", "Browser"],
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
 			"Class"     : ["Class", "Class.Extras"],
-			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Filters", "Element.Dimensions"],
+			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Dimensions"],
 			"Selectors" : ["Selectors", "Selectors.Pseudo"],
 			"Window"    : ["Window.DomReady", "Window.Size"],
 			"Effects"   : ["Fx", "Fx.CSS", "Fx.Tween", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
 			"Drag"      : ["Drag", "Drag.Move"],
 			"Remote"    : ["XHR", "Ajax", "Cookie", "Json"],
 			"Swiff"     : ["Swiff"],
-			"Plugins"   : ["Color", "Group", "Assets", "Fx.Morph", "Fx.Elements", "Selectors.Children", "Hash.Cookie", "Json.Remote", "Sortables", "Scroller", "Slider", "SmoothScroll", "Tips", "Accordion"]
+			"Plugins"   : ["Color", "Group", "Assets", "Element.Filters", "Fx.Elements", "Selectors.Children", "Hash.Cookie", "Json.Remote", "Sortables", "Scroller", "Slider", "SmoothScroll", "Tips", "Accordion"]
 		},
 
 		spec: {

@@ -11,12 +11,12 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Set.extend({
-	
+Element.Setter.extend({
+
 	styles: function(styles){
 		this.setStyles(styles);
 	},
-	
+
 	/*
 	Element Setter: opacity
 		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
@@ -47,10 +47,10 @@ Element.Set.extend({
 		this.style.opacity = opacity;
 		this.store('opacity', opacity);
 	}
-	
+
 });
 
-Element.Get.opacity = function(){
+Element.Getter.opacity = function(){
 	var opacity = this.retrieve('opacity');
 	if (!$chk(opacity)) this.store('opacity', 1);
 	return this.retrieve('opacity');

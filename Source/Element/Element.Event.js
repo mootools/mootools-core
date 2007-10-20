@@ -259,7 +259,7 @@ Native: Element
 	These methods are also available on window and document.
 */
 
-Element.Set.events = function(events){
+Element.Setter.events = function(events){
 	this.addEvents(events);
 };
 

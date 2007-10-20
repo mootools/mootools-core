@@ -11,6 +11,7 @@ var iframe, win, doc;
 describe('$$', {
 
 	'should return all divs on the page': function(){
+		alert('huhu');
 		var divs1 = win.$$('div');
 		var divs2 = Array.flatten(doc.getElementsByTagName('div'));
 
@@ -21,15 +22,20 @@ describe('$$', {
 
 window.addEvent('load', function(){
 
-	iframe = new Element('iframe', {
+	alert('load');
+
+	iframe = new IFrame({
 		src: 'Selectors/index.html',
-		styles: { visibility: 'hidden' },
+		styles: {
+			height: '1px',
+			width: '1px'
+		},
 		onload: function(){
 			win = iframe.window;
 			doc = iframe.window.document;
 
 			console.log(this, win, doc);
-			console.log(this.$$('div')); //this dies
+			// console.log(this.$$('div')); //this dies
 		}
 	}).injectInside(document.body);
 
