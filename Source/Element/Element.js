@@ -563,7 +563,7 @@ Element.Inject = new Hash({
 
 });
 
-Element.Append = new Hash({
+Element.Wrap = new Hash({
 
 	/*
 	Method: injectBottom
@@ -651,9 +651,9 @@ Element.Append = new Hash({
 
 });
 
-Element.Append.inside = Element.Append.bottom;
+Element.Wrap.inside = Element.Wrap.bottom;
 
-Element.Inject.extend(Element.Append);
+Element.Inject.extend(Element.Wrap);
 
 (function(){
 	var methods = {};
@@ -662,7 +662,7 @@ Element.Inject.extend(Element.Append);
 			return Element.inject(this, el, key);
 		};
 	});
-	Element.Append.each(function(value, key){
+	Element.Wrap.each(function(value, key){
 		methods['append' + key.capitalize()] = function(el){
 			return Element.append(this, el, key);
 		};
@@ -921,7 +921,7 @@ Element.implement({
 	},
 
 	/*
-	Method: append
+	Method: wrap
 		Works as <Element.inject>, but in reverse.  Appends the Element at a particular place relative to the Element's children (specified by the second the paramter).
 
 	Syntax:
@@ -947,14 +947,17 @@ Element.implement({
 				<div id="mySecondElement"></div>
 			</div>
 		[/html]
+		
+	Note:
+		wrap supports only top and bottom.
 
 	See Also:
 		<Element.inject>, <Element.adopt>
 	*/
 
-	append: function(el, where){
+	wrap: function(el, where){
 		if (!(el = $(el, true))) return this;
-		Element.Append.get(where || 'bottom')(el, this);
+		Element.Wrap.get(where || 'bottom')(el, this);
 		return this;
 	},
 
@@ -1149,10 +1152,11 @@ Element.implement({
 		Appends text node to a DOM Element.
 
 	Syntax:
-		>myElement.appendText(text);
+		>myElement.appendText(text[, where]);
 
 	Arguments:
 		text - (string) The text to append.
+		where - (string, optional) where, top or bottom? defaults to bottom.
 
 	Returns:
 		(element) This Element.
@@ -1173,9 +1177,8 @@ Element.implement({
 		[/html]
 	*/
 
-	appendText: function(text){
-		this.appendChild(this.ownerDocument.createTextNode(text));
-		return this;
+	appendText: function(text, where){
+		return this.wrap(new TextNode(text, this.ownerDocument), where);
 	},
 
 	/*
