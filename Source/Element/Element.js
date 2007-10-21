@@ -418,7 +418,7 @@ Native.implement([Element, Document], {
 	*/
 
 	getElement: function(selector, notrash){
-		return $.element(this.getElements(selector, true)[0] || null, notrash);
+		return $(this.getElements(selector, true)[0] || null, notrash);
 	},
 
 	/*
@@ -2115,7 +2115,7 @@ Element.walk = function(element, walk, start, match, all){
 		}
 		el = el[walk];
 	}
-	return (all) ? new Elements(elements) : $.element(elements[0]);
+	return (all) ? new Elements(elements) : $(elements[0]);
 };
 
 Native.implement([Element, Window, Document], {
