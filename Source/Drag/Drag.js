@@ -206,7 +206,7 @@ var Drag = new Class({
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			if (limit && limit[z]){
 				for (var i = 2; i--; i){
-					if ($chk(limit[z][i])) this.limit[z][i] = ($type(limit[z][i]) == 'function') ? limit[z][i]() : limit[z][i];
+					if ($chk(limit[z][i])) this.limit[z][i] = $lambda(limit[z][i])();
 				}
 			}
 		}

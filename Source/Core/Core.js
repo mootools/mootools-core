@@ -189,8 +189,8 @@ function $arguments(i){
 	};
 };
 
-function $return(value){
-	return function(){
+function $lambda(value){
+	return (typeof value == 'function') ? value : function(){
 		return value;
 	};
 };

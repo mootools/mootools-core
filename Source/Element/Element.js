@@ -487,7 +487,7 @@ Native.implement([Window, Document, Element], {
 
 });
 
-Element.Inject = new Hash({
+Element.Inserters = new Hash({
 
 	/*
 	Method: injectBefore
@@ -565,12 +565,9 @@ Element.Inject = new Hash({
 		if (!element.parentNode) return;
 		var next = element.nextSibling;
 		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
-	}
-
-});
-
-Element.Wrap = new Hash({
-
+	},
+	
+	
 	/*
 	Method: injectBottom
 		Injects the Element inside and at the end of the child nodes of the passed in Element.
@@ -657,13 +654,11 @@ Element.Wrap = new Hash({
 
 });
 
-Element.Wrap.inside = Element.Wrap.bottom;
-
-Element.Inject.extend(Element.Wrap);
+Element.Inserters.inside = Element.Inserters.bottom;
 
 (function(){
 	var methods = {};
-	Element.Inject.each(function(value, key){
+	Element.Inserters.each(function(value, key){
 		methods['inject' + key.capitalize()] = function(el){
 			return Element.inject(this, el, key);
 		};
@@ -918,17 +913,23 @@ Element.implement({
 	*/
 
 	inject: function(el, where){
-		if (!(el = $(el, true))) return this;
-		Element.Inject.get(where || 'bottom')(this, el);
+		Element.Inserters.get(where || 'bottom')(this, $(el, true));
 		return this;
 	},
 
+	wrap: function(el, where){
+		el = $(el, true);
+		Element.Inserters.after(this, el);
+		return this.grab(el, where);
+	},
+	
 	/*
-	Method: wrap
-		Works as <Element.inject>, but in reverse.  Appends the Element at a particular place relative to the Element's children (specified by the second the paramter).
+	Method: grab
+		Works as <Element.inject>, but in reverse.
+		Appends the Element at a particular place relative to the Element's children (specified by the second the paramter).
 
 	Syntax:
-		>myElement.append(el[, where]);
+		>myElement.grab(el[, where]);
 
 	Arguments:
 		el	- (mixed) el can be the id of an element or an element.
@@ -941,7 +942,7 @@ Element.implement({
 		[javascript]
 			var myFirstElement = new Element('div', {id: 'myFirstElement'});
 			var mySecondElement = new Element('div', {id: 'mySecondElement'});
-			myFirstElement.append(mySecondElement);
+			myFirstElement.grab(mySecondElement);
 		[/javascript]
 
 		Result:
@@ -952,16 +953,14 @@ Element.implement({
 		[/html]
 
 	Note:
-		wrap supports only top and bottom.
+		grab supports only top and bottom.
 
 	See Also:
 		<Element.inject>, <Element.adopt>
 	*/
-
-	wrap: function(el, where){
-		if (!(el = $(el, true))) return this;
-		Element.Inject.after(this, el);
-		Element.Wrap.get(where || 'bottom')(el, this);
+	
+	grab: function(el, where){
+		Element.Inserters.get(where || 'bottom')($(el, true), this);
 		return this;
 	},
 
@@ -995,7 +994,7 @@ Element.implement({
 	*/
 
 	appendText: function(text, where){
-		return this.append(new TextNode(text, this.ownerDocument), where);
+		return this.grab(new TextNode(text, this.ownerDocument), where);
 	},
 
 	/*
@@ -1115,7 +1114,7 @@ Element.implement({
 	*/
 
 	clone: function(contents){
-		var temp = new Element('div').append(this.cloneNode(contents !== false));
+		var temp = new Element('div').grab(this.cloneNode(contents !== false));
 		Array.each(temp.getElementsByTagName('*'), function(element){
 			if (element.id) element.removeAttribute('id');
 		});
@@ -1182,7 +1181,7 @@ Element.implement({
 	*/
 
 	appendText: function(text, where){
-		return this.wrap(new TextNode(text, this.ownerDocument), where);
+		return this.grab(new TextNode(text, this.ownerDocument), where);
 	},
 
 	/*

@@ -65,7 +65,6 @@ Fx.Slide = new Class({
 		this.wrapper = wrapper || new Element('div', {
 			styles: Hash.extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
 		}).wrap(this.element);
-		console.log(this.wrapper);
 		this.element.store('wrapper', this.wrapper).setStyle('margin', 0);
 		this.now = [];
 		this.open = true;

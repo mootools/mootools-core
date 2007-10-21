@@ -99,9 +99,7 @@ Fx.Transitions = new Hash({
 		(see Linear.png)
 	*/
 
-	linear: function(p){
-		return p;
-	}
+	linear: $arguments(0)
 
 });
 

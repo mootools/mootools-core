@@ -26,7 +26,7 @@ Fx.CSS = new Class({
 	//parses a value into an array
 	
 	parse: function(value){
-		if ($type(value) == 'function') value = value();
+		value = $lambda(value)();
 		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
 		return value.map(function(val){
 			val = String(val);
@@ -126,6 +126,6 @@ Fx.CSS.Parsers = new Hash({
 
 	},
 	
-	String: {parse: $return(false), compute: $arguments(1), serve: $arguments(0)}
+	String: {parse: $lambda(false), compute: $arguments(1), serve: $arguments(0)}
 
 });
