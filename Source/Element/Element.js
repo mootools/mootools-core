@@ -1151,40 +1151,6 @@ Element.implement({
 	},
 
 	/*
-	Method: appendText
-		Appends text node to a DOM Element.
-
-	Syntax:
-		>myElement.appendText(text[, where]);
-
-	Arguments:
-		text - (string) The text to append.
-		where - (string, optional) where, top or bottom? defaults to bottom.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">hey</div>
-		[/html]
-
-		[javascript]
-			$('myElement').appendText('. howdy'); //myElement innerHTML is now "hey. howdy"
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">hey. howdy</div>
-		[/html]
-	*/
-
-	appendText: function(text, where){
-		return this.grab(new TextNode(text, this.ownerDocument), where);
-	},
-
-	/*
 	Method: hasClass
 		Tests the Element to see if it has the passed in className.
 
