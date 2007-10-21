@@ -47,7 +47,7 @@ var SmoothScroll = new Class({
 
 	initialize: function(options, win){
 		arguments.callee.parent(win || window, options);
-		this.links = (this.options.links) ? $$(this.options.links) : $$(this.document.links);
+		this.links = (this.options.links) ? $$(this.options.links) : $$(this.element.document.links);
 		var location = this.element.location.href.match(/^[^#]*/)[0] + '#';
 		this.links.each(function(link){
 			if (link.href.indexOf(location) != 0) return;

@@ -155,7 +155,7 @@ Native: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Setter.extend({
+Element.Setters.extend({
 
 	/*
 	Element Setter: send
@@ -212,7 +212,7 @@ Element.Setter.extend({
 });
 
 
-Element.Getter.extend({
+Element.Getters.extend({
 
 	/*
 	Element Getter: send

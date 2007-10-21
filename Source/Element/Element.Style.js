@@ -11,7 +11,7 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Setter.extend({
+Element.Setters.extend({
 
 	styles: function(styles){
 		this.setStyles(styles);
@@ -50,7 +50,7 @@ Element.Setter.extend({
 
 });
 
-Element.Getter.opacity = function(){
+Element.Getters.opacity = function(){
 	var opacity = this.retrieve('opacity');
 	if (!$chk(opacity)) this.store('opacity', 1);
 	return this.retrieve('opacity');

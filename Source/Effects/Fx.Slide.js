@@ -284,7 +284,7 @@ Example:
 	[/javascript]
 */
 
-Element.Setter.slide = function(options){
+Element.Setters.slide = function(options){
 	var slide = this.retrieve('slide');
 	if (slide) slide.stop();
 	return this.store('slide', new Fx.Slide(this, Hash.extend({link: 'cancel'}, options)));
@@ -312,7 +312,7 @@ Example:
 	[/javascript]
 */
 
-Element.Getter.slide = function(options){
+Element.Getters.slide = function(options){
 	if (options || !this.retrieve('slide')) this.set('slide', options);
 	return this.retrieve('slide');
 };

@@ -706,7 +706,7 @@ Element.implement({
 
 	/*
 	Method: set
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Setter> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Setters> Hash.
 
 	Syntax:
 		>myElement.set(property[, value]);
@@ -743,11 +743,11 @@ Element.implement({
 		[/javascript]
 
 	Notes:
-		- All additional arguments are passed to the method of the <Element.Setter> Hash.
-		- If no matching property is found in <Element.Setter>, it falls back to settimg attributes of the element, making this method the perfect shortcut.
+		- All additional arguments are passed to the method of the <Element.Setters> Hash.
+		- If no matching property is found in <Element.Setters>, it falls back to settimg attributes of the element, making this method the perfect shortcut.
 
 	See Also:
-		<Element>, <Element.Setter>, <Element.setStyles>, <Element.addEvents>
+		<Element>, <Element.Setters>, <Element.setStyles>, <Element.addEvents>
 	*/
 
 	set: function(prop, value){
@@ -756,7 +756,7 @@ Element.implement({
 				for (var p in prop) this.set(p, prop[p]);
 				break;
 			case 'string':
-				var setter = Element.Setter.get(prop);
+				var setter = Element.Setters.get(prop);
 				(setter) ? setter.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
 		}
 		return this;
@@ -764,7 +764,7 @@ Element.implement({
 
 	/*
 	Method: get
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Getter> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Getters> Hash.
 
 	Syntax:
 		>myElement.get(property);
@@ -773,7 +773,7 @@ Element.implement({
 		property - (mixed) Accepts a string for getting the value of a certain property.
 
 	Returns:
-		(mixed) Whatever the result of the function in the <Element.Getter> Hash is, or the value of the corresponding attribute.
+		(mixed) Whatever the result of the function in the <Element.Getters> Hash is, or the value of the corresponding attribute.
 
 	Examples:
 		Using Custom Getters:
@@ -789,14 +789,14 @@ Element.implement({
 		[/javascript]
 
 	Notes:
-		- If no matching property is found in Element.Getter, it falls back to gettimg attributes of the element.
+		- If no matching property is found in Element.Getters, it falls back to gettimg attributes of the element.
 
 	See Also:
-		<Element>, <Element.Getter>
+		<Element>, <Element.Getters>
 	*/
 
 	get: function(prop){
-		var getter = Element.Getter.get(prop);
+		var getter = Element.Getters.get(prop);
 		return (getter) ? getter.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
 
@@ -827,7 +827,7 @@ Element.implement({
 	*/
 
 	clear: function(prop){
-		var clearer = Element.Clearer.get(prop);
+		var clearer = Element.Clearers.get(prop);
 		(clearer) ? clearer.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
 		return this;
 	},
@@ -1350,8 +1350,17 @@ Element.implement({
 			<Element.remove>
 	*/
 
-	getPrevious: function(match){
-		return Element.walk(this, 'previousSibling', null, match);
+	getPrevious: function(match, all){
+		return Element.walk(this, 'previousSibling', null, match, all);
+	},
+	
+	/*
+	Method: getAllNPrevious
+		like Element.getPrevious, but returns a collection of all the matched previousSiblings.
+	*/
+	
+	getAllPrevious: function(match){
+		return this.getPrevious(match, true);
 	},
 
 	/*
@@ -1385,8 +1394,17 @@ Element.implement({
 		<Element.addClass>
 	*/
 
-	getNext: function(match){
-		return Element.walk(this, 'nextSibling', null, match);
+	getNext: function(match, all){
+		return Element.walk(this, 'nextSibling', null, match, all);
+	},
+	
+	/*
+	Method: getAllNext
+		like Element.getNext, but returns a collection of all the matched nextSiblings.
+	*/
+	
+	getAllNext: function(match){
+		return this.getNext(match, true);
 	},
 
 	/*
@@ -1501,8 +1519,17 @@ Element.implement({
 		<http://developer.mozilla.org/en/docs/DOM:element.parentNode>
 	*/
 
-	getParent: function(match){
-		return Element.walk(this, 'parentNode', null, match);
+	getParent: function(match, all){
+		return Element.walk(this, 'parentNode', null, match, all);
+	},
+	
+	/*
+	Method: getParents
+		like Element.getParent, but returns a collection of all the matched parentNodes.
+	*/
+	
+	getParents: function(match){
+		return this.getParent(match, true);
 	},
 
 	/*
@@ -1537,8 +1564,8 @@ Element.implement({
 		<Elements>, <Elements.remove>
 	*/
 
-	getChildren: function(){
-		return $$(this.childNodes);
+	getChildren: function(match){
+		return Element.walk(this, 'nextSibling', 'firstChild', match, true);
 	},
 
 	/*
@@ -1607,7 +1634,7 @@ Element.implement({
 			$try(Element.prototype.dispose, element);
 		});
 		Garbage.trash(elements);
-		$try(Element.Setter.html, this, ['']);
+		$try(Element.prototype.set, this, ['html', '']);
 		return this;
 	},
 
@@ -1745,7 +1772,7 @@ Element.implement({
 	*/
 
 	setProperty: function(attribute, value){
-		if (!$chk(value)) return this.clear('property', attribute);
+		if (!$chk(value)) return this.removeProperty(attribute);
 		var key = Element.Attributes.Properties[attribute];
 		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
 		if (key) this[key] = value;
@@ -1840,7 +1867,7 @@ TextNode.implement({
 
 Element.alias('dispose', 'remove');
 
-Element.Setter = new Hash({
+Element.Setters = new Hash({
 
 	style: function(text){
 		this.style.cssText = text;
@@ -1930,7 +1957,7 @@ Element.Setter = new Hash({
 
 });
 
-Element.Getter = new Hash({
+Element.Getters = new Hash({
 
 	style: function(){
 		return this.style.cssText;
@@ -2066,7 +2093,7 @@ Element.Getter = new Hash({
 
 });
 
-Element.Clearer = new Hash({
+Element.Clearers = new Hash({
 
 	style: function(){
 		this.style.cssText = '';
@@ -2074,13 +2101,17 @@ Element.Clearer = new Hash({
 
 });
 
-Element.walk = function(element, walk, start, match){
+Element.walk = function(element, walk, start, match, all){
 	var el = (start) ? element[start] : element[walk];
-	while(el){
-		if (el.nodeType == 1 && Element.match(el, match)) return $(el);
+	var elements = [];
+	while (el){
+		if (el.nodeType == 1 && Element.match(el, match)){
+			elements.push(el);
+			if (!all) break;
+		}
 		el = el[walk];
 	}
-	return null;
+	return (all) ? new Elements(elements) : $(elements[0]);
 };
 
 Native.implement([Element, Window, Document], {

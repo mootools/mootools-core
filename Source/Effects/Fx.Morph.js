@@ -171,7 +171,7 @@ Example:
 	[/javascript]
 */
 
-Element.Setter.morph = function(options){
+Element.Setters.morph = function(options){
 	var morph = this.retrieve('morph');
 	if (morph) morph.stop();
 	return this.store('morph', new Fx.Morph(this, Hash.extend({link: 'cancel'}, options)));
@@ -199,7 +199,7 @@ Example:
 	[/javascript]
 */
 
-Element.Getter.morph = function(options){
+Element.Getters.morph = function(options){
 	if (options || !this.retrieve('morph')) this.set('morph', options);
 	return this.retrieve('morph');
 };
