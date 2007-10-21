@@ -53,7 +53,7 @@ See Also:
 */
 
 var Element = new Native({
-
+	
 	name: 'Element',
 
 	legacy: window.Element,
@@ -73,15 +73,18 @@ var Element = new Native({
 			}
 			el = doc.createElement(el);
 		}
-		el = $(el);
+		el = $.element(el);
 		return (!props || !el) ? el : el.set(props);
 	},
 
 	afterImplement: function(key, value){
 		Elements.prototype[key] = Elements.multi(key);
+		Element.Prototype[key] = value;
 	}
 
 });
+
+Element.Prototype = {$family: {name: 'element'}};
 
 var TextNode = new Native({
 
@@ -173,8 +176,9 @@ var IFrame = new Native({
 			});
 			if (host && host == window.location.host){
 				iframe.window = iframe.contentWindow;
-				new Window(iframe.window);
-				new Document(iframe.window.document);
+				var win = new Window(iframe.window);
+				var doc = new Document(iframe.window.document);
+				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow);
 		};
@@ -227,10 +231,14 @@ See Also:
 var Elements = new Native({
 
 	initialize: function(elements, options){
+		
 		options = Hash.extend({ddup: true, cash: true}, options);
 		elements = elements || [];
 		if (options.ddup) elements = Elements.ddup(elements);
 		if (options.cash) elements = elements.map($.element);
+		
+		//return elements;
+		
 		return $extend(elements, this);
 	}
 
@@ -373,7 +381,7 @@ $.string = function(id, notrash, doc){
 
 $.element = function(el, notrash){
 	el.uid = el.uid || [Native.UID++];
-	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.prototype);
+	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.Prototype);
 	return el;
 };
 
@@ -414,7 +422,7 @@ Native.implement([Element, Document], {
 	*/
 
 	getElement: function(selector, notrash){
-		return $(this.getElements(selector, true)[0] || null, notrash);
+		return $.element(this.getElements(selector, true)[0] || null, notrash);
 	},
 
 	/*
@@ -701,7 +709,7 @@ Element.implement({
 		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
 			if (!parent) return null;
 		}
-		return (nocash) ? el : $(el);
+		return $.element(el, notrash);
 	},
 
 	/*
@@ -2111,7 +2119,7 @@ Element.walk = function(element, walk, start, match, all){
 		}
 		el = el[walk];
 	}
-	return (all) ? new Elements(elements) : $(elements[0]);
+	return (all) ? new Elements(elements) : $.element(elements[0]);
 };
 
 Native.implement([Element, Window, Document], {
