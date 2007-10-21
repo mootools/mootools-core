@@ -231,14 +231,10 @@ See Also:
 var Elements = new Native({
 
 	initialize: function(elements, options){
-		
 		options = Hash.extend({ddup: true, cash: true}, options);
 		elements = elements || [];
 		if (options.ddup) elements = Elements.ddup(elements);
 		if (options.cash) elements = elements.map($.element);
-		
-		//return elements;
-		
 		return $extend(elements, this);
 	}
 

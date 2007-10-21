@@ -26,7 +26,8 @@ transition option:
 		old.call(this, options);
 		var trans = this.options.transition;
 		if ($type(trans) == 'string' && (trans = trans.split(':'))){
-			var base = Fx.Transitions[trans[0].capitalize()];
+			var base = Fx.Transitions;
+			base = base[trans[0]] || base[trans[0].capitalize()];
 			if (trans[1]) base = base['ease' + trans[1].capitalize()];
 			this.options.transition = base;
 		}

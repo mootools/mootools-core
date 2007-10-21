@@ -107,123 +107,62 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Setters.extend({
 
-	/*
-	Element Setter: tween
-		sets a default Fx.Tween instance for an element
+/*
+Element Setter: tween
+	sets a default Fx.Tween instance for an element
 
-	Syntax:
-		>el.set('tween'[, options]);
+Syntax:
+	>el.set('tween'[, options]);
 
-	Arguments:
-		options - (object) the Fx.Tween options.
+Arguments:
+	options - (object) the Fx.Tween options.
 
-	Returns:
-		(element) this element
+Returns:
+	(element) this element
 
-	Example:
-		[javascript]
-			el.set('tween', {duration: 'long', transition: 'bounce:out'});
-			el.tween('opacity', 0);
-		[/javascript]
-	*/
+Example:
+	[javascript]
+		el.set('tween', {duration: 'long', transition: 'bounce:out'});
+		el.tween('opacity', 0);
+	[/javascript]
+*/
 
-	tween: function(options){
-		var tween = this.retrieve('tween');
-		if (tween) tween.stop();
-		return this.store('tween', new Fx.Tween(this, null, Hash.extend({link: 'cancel'}, options)));
-	},
+Element.Setters.tween = function(options){
+	var tween = this.retrieve('tween');
+	if (tween) tween.stop();
+	return this.store('tween', new Fx.Tween(this, null, Hash.extend({link: 'cancel'}, options)));
+};
 
-	/*
-	Element Setter: fade
-		sets a default Fx.Tween instance for an element (with opacity set as its property)
+/*
+Element Getter: tween
+	gets the previously setted Fx.Tween instance or a new one with default options.
 
-	Syntax:
-		>el.set('fade'[, options]);
+Syntax:
+	>el.get('tween');
 
-	Arguments:
-		options - (object) the Fx.Tween options.
+Arguments:
+	property - (string) the Fx.Tween property you want to associate with the instance.
+	options - (object, optional) the Fx.Tween options.
 
-	Returns:
-		(element) this element
+Returns:
+	(object) the Fx.Tween instance
 
-	Example:
-		[javascript]
-			el.set('fade', {duration: 'long', transition: 'bounce:out'});
-			el.fade('out');
-		[/javascript]
-	*/
+Example:
+	[javascript]
+		el.set('tween', {duration: 'long', transition: 'bounce:out'});
+		el.tween('height', 0);
 
-	fade: function(options){
-		var fade = this.retrieve('fade');
-		if (fade) fade.stop();
-		return this.store('fade', new Fx.Tween(this, 'opacity', Hash.extend({link: 'cancel'}, options)));
-	}
+		el.get('tween', 'height'); //the Fx.Tween instance, with height as property
+	[/javascript]
+*/
 
-});
-
-
-Element.Getters.extend({
-
-	/*
-	Element Getter: tween
-		gets the previously setted Fx.Tween instance or a new one with default options.
-
-	Syntax:
-		>el.get('tween');
-
-	Arguments:
-		property - (string) the Fx.Tween property you want to associate with the instance.
-		options - (object, optional) the Fx.Tween options.
-
-	Returns:
-		(object) the Fx.Tween instance
-
-	Example:
-		[javascript]
-			el.set('tween', {duration: 'long', transition: 'bounce:out'});
-			el.tween('height', 0);
-
-			el.get('tween', 'height'); //the Fx.Tween instance, with height as property
-		[/javascript]
-	*/
-
-	tween: function(property, options){
-		if (options || !this.retrieve('tween')) this.set('tween', options);
-		var tween = this.retrieve('tween');
-		tween.property = property;
-		return tween;
-	},
-
-	/*
-	Element Getter: fade
-		gets the previously setted Fx.Tween (with 'opacity' set) instance or a new one with default options.
-
-	Syntax:
-		>el.get('fade');
-
-	Arguments:
-		options - (object, optional) the Fx.Tween options. if passed in will generate a new instance.
-
-	Returns:
-		(object) the Fx.Tween instance
-
-	Example:
-		[javascript]
-			el.set('fade', {duration: 'long', transition: 'bounce:out'});
-			el.fade('in');
-
-			el.get('fade'); //the Fx.Tween instance (with opacity option)
-		[/javascript]
-	*/
-
-	fade: function(options){
-		if (options || !this.retrieve('fade')) this.set('fade', options);
-		return this.retrieve('fade');
-	}
-
-});
+Element.Getters.tween = function(property, options){
+	if (options || !this.retrieve('tween')) this.set('tween', options);
+	var tween = this.retrieve('tween');
+	tween.property = property;
+	return tween;
+};
 
 Element.implement({
 
@@ -280,14 +219,17 @@ Element.implement({
 	*/
 
 	fade: function(how, options){
-		how = how || 'toggle';
-		var fade = this.get('fade', options);
-		switch(how){
+		how = $pick(how, 'toggle');
+		var fade = this.get('tween', 'opacity', options);
+		switch (how){
 			case 'in': fade.start(1); break;
 			case 'out': fade.start(0); break;
 			case 'show': fade.set(1); break;
 			case 'hide': fade.set(0); break;
-			case 'toggle': fade.start((this.getStyle('visibility') == 'hidden') ? 1 : 0);
+			case 'toggle': fade.start((function(){
+				return (this.getStyle('visibility') == 'hidden') ? 1 : 0;
+			}).bind(this)); break;
+			default: fade.start(how);
 		}
 		return this;
 	},
