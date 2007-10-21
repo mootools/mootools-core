@@ -467,15 +467,17 @@ Element.Storage = {
 
 Native.implement([Window, Document, Element], {
 
-	retrieve: function(property){
+	retrieve: function(property, dflt){
 		var storage = Element.Storage.get(this.uid);
 		var prop = storage[property];
+		if ($defined(dflt) && !$defined(prop)) prop = storage[property] = dflt;
 		return $pick(prop);
 	},
 
 	store: function(property, value){
 		var storage = Element.Storage.get(this.uid);
 		storage[property] = value;
+		return this;
 	},
 
 	pull: function(property){
@@ -664,11 +666,6 @@ Element.Inject.extend(Element.Wrap);
 	Element.Inject.each(function(value, key){
 		methods['inject' + key.capitalize()] = function(el){
 			return Element.inject(this, el, key);
-		};
-	});
-	Element.Wrap.each(function(value, key){
-		methods['append' + key.capitalize()] = function(el){
-			return Element.append(this, el, key);
 		};
 	});
 	Element.implement(methods);
@@ -963,6 +960,7 @@ Element.implement({
 
 	wrap: function(el, where){
 		if (!(el = $(el, true))) return this;
+		Element.Inject.after(this, el);
 		Element.Wrap.get(where || 'bottom')(el, this);
 		return this;
 	},

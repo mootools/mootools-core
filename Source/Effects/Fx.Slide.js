@@ -62,11 +62,10 @@ Fx.Slide = new Class({
 		this.element = $(element);
 		arguments.callee.parent(options);
 		var wrapper = this.element.retrieve('wrapper');
-		this.wrapper = (wrapper || new Element('div'));
-		if (!wrapper){
-			this.wrapper.inject(this.element, 'after').append(this.element);
-			this.wrapper.setStyles(Hash.extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'}));
-		}
+		this.wrapper = wrapper || new Element('div', {
+			styles: Hash.extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
+		}).wrap(this.element);
+		console.log(this.wrapper);
 		this.element.store('wrapper', this.wrapper).setStyle('margin', 0);
 		this.now = [];
 		this.open = true;

@@ -51,9 +51,7 @@ Element.Setters.extend({
 });
 
 Element.Getters.opacity = function(){
-	var opacity = this.retrieve('opacity');
-	if (!$chk(opacity)) this.store('opacity', 1);
-	return this.retrieve('opacity');
+	return this.retrieve('opacity', 1);
 };
 
 Element.implement({

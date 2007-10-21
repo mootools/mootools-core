@@ -298,8 +298,7 @@ Native.implement([Element, Window, Document], {
 	*/
 
 	addEvent: function(type, fn){
-		var events = this.retrieve('events') || {};
-		this.store('events', events);
+		var events = this.retrieve('events', {});
 		events[type] = events[type] || {'keys': [], 'values': []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
