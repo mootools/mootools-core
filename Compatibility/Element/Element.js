@@ -1,2 +1,30 @@
 Element.extend = Element.implement;
 Elements.extend = Elements.implement;
+
+Element.implement({
+
+	getFormElements: function(){
+		return this.getElements('input, textarea, select');
+	},
+	
+	getValue: function(){
+		return this.get('value');
+	},
+	
+	getText: function(){
+		return this.get('text');
+	},
+	
+	setText: function(){
+		return this.set('text');
+	},
+	
+	setHTML: function(){
+		return this.set('html');
+	},
+	
+	getTag: function(){
+		return this.get('tag');
+	}
+
+});

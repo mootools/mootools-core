@@ -105,12 +105,13 @@ var Drag = new Class({
 
 	Implements: [Events, Options],
 
-	options: {/*
-		onStart: $empty,
+	options: {
+		/*onStart: $empty,
 		onBeforeStart: $empty,
 		onComplete: $empty,
 		onSnap: $empty,
-		onDrag: $empty,*/
+		onDrag: $empty,
+		onCancel: $empty*/
 		snap: 6,
 		unit: 'px',
 		grid: false,
@@ -252,6 +253,7 @@ var Drag = new Class({
 	cancel: function(event){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);
+		this.fireEvent('onCancel', this.element);
 		event.stop();
 	},
 
