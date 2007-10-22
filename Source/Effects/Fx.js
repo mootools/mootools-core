@@ -22,7 +22,7 @@ Arguments:
 
 	options (continued):
 		transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>.
-		             You cannot change the transition if you havent included Fx.Transitions.js, or you dont plan tyo write your own curve :P
+		             You cannot change the transition if you havent included Fx.Transitions.js, unless you plan on developing your own curve. ;)
 		duration   - (number: defaults to 500) The duration of the effect in ms. can also be 'normal', 'long', or 'short'.
 		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
 		link       - (string: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.

@@ -44,26 +44,26 @@ Element.implement({
 
 	/*
 	Method: getSize
-		Returns an Object representing the size/scroll values of the element.
+		Returns an Object representing the different size dimensions of the element.
 
 	Syntax:
 		>var size = myElement.getSize();
 
 	Returns:
-		(object) An object containing, 'scroll', 'size', and 'scrollSize' (x,y) values.
+		(object) An object containing 'client', 'offset', and 'scroll' objects, each with x and y values.
+		
+		[javascript]
+			{
+				'client': {'x': 135, 'y': 125}, //total visible size of the content of the element
+				'offset': {'x': 155, 'y': 145}, //total visible size of the element including borders, paddings, and scrollbars
+				'scroll': {'x': 135, 'y': 400}  //total size of the element including hidden scrollable content
+			}
+		[/javascript]
 
 	Example:
 		[javascript]
-			$('myElement').getSize();
-		[/javascript]
-
-	Returns:
-		[javascript]
-			{
-				'scroll': {'x': 100, 'y': 100},
-				'size': {'x': 200, 'y': 400},
-				'scrollSize': {'x': 300, 'y': 500}
-			}
+			var size = $('myElement').getSize();
+			alert('My element is ' + size.offset.x + 'px wide'); //alerts 'My element is 155px wide'
 		[/javascript]
 
 	See Also:
@@ -72,12 +72,32 @@ Element.implement({
 
 	getSize: function(){
 		return {
+			'client': {'x': this.clientWidth, 'y': this.clientHeight},
 			'offset': {'x': this.offsetWidth, 'y': this.offsetHeight},
-			'scroll': {'x': this.scrollWidth, 'y': this.scrollHeight},
-			'client': {'x': this.clientWidth, 'y': this.clientHeight}
+			'scroll': {'x': this.scrollWidth, 'y': this.scrollHeight}
 		};
 	},
 	
+	/*
+	Method: getScroll
+		Returns an Object representing the size/scroll values of the element.
+
+	Syntax:
+		>var size = myElement.getSize();
+
+	Returns:
+		(object) An object containing the x and y scroll positions of the element.
+
+	Example:
+		[javascript]
+			var scroll = $('myElement').getScroll();
+			alert('My element is scrolled down ' + scroll.y + 'px'); //alerts 'My element is scrolled down 20px'
+		[/javascript]
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>, <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>, <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>, <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>, <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>, <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
+	*/
+
 	getScroll: function(){
 		return {'x': this.scrollLeft, 'y': this.scrollTop};
 	},
@@ -97,7 +117,7 @@ Element.implement({
 
 	Example:
 		[javascript]
-			$('element').getPosition(); //returns {x: 100, y:500};
+			$('element').getPosition(); //returns {x: 100, y: 500};
 		[/javascript]
 
 	Note:
@@ -163,7 +183,7 @@ Element.implement({
 
 	Example:
 		[javascript]
-			$('myElement').getLeft(); // returns 20
+			$('myElement').getLeft(); //returns 20
 		[/javascript]
 
 	See Also:
@@ -185,7 +205,7 @@ Element.implement({
 		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
 
 	Returns:
-		(object) An object containing the Element's current: width, height, left, top, right, and bottom.
+		(object) An object containing the Element's current: top, left, width, height, right, and bottom.
 
 	Example:
 		[javascript]
@@ -195,10 +215,10 @@ Element.implement({
 	Returns:
 		[javascript]
 			{
+				top: 50,
+				left: 100,
 				width: 200,
 				height: 300,
-				left: 100,
-				top: 50,
 				right: 300,
 				bottom: 350
 			}
@@ -211,10 +231,10 @@ Element.implement({
 	getCoordinates: function(overflown){
 		var position = this.getPosition(overflown);
 		var obj = {
-			'width': this.offsetWidth,
-			'height': this.offsetHeight,
+			'top': position.y,
 			'left': position.x,
-			'top': position.y
+			'width': this.offsetWidth,
+			'height': this.offsetHeight
 		};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
