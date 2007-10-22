@@ -15,7 +15,7 @@ Class: Fx
 	
 transition option:
 	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
-	or a string ('sine:in' or, 'bounce:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut
+	or a string ('sine:in', 'bounce:out' or 'quad:in:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut / Fx.Transitions.Quad.easeInOut
 */
 
 (function(){
@@ -28,7 +28,7 @@ transition option:
 		if ($type(trans) == 'string' && (trans = trans.split(':'))){
 			var base = Fx.Transitions;
 			base = base[trans[0]] || base[trans[0].capitalize()];
-			if (trans[1]) base = base['ease' + trans[1].capitalize()];
+			if (trans[1]) base = base['ease' + trans[1].capitalize() + (trans[2] ? trans[2].capitalize() : '')];
 			this.options.transition = base;
 		}
 	};
