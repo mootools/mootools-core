@@ -73,7 +73,7 @@ var Window = new Native({
 
 });
 
-Window.Prototype = {};
+Window.Prototype = {$family: {name: 'window'}};
 
 new Window(window);
 
@@ -99,6 +99,6 @@ var Document = new Native({
 
 });
 
-Document.Prototype = {};
+Document.Prototype = {$family: {name: 'document'}};
 
 new Document(document);
