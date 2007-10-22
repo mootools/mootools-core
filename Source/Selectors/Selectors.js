@@ -84,8 +84,7 @@ Native.implement([Element, Document], {
 			var partial = Selectors.Method.getItems(items, this);
 			elements = (ddup) ? elements.concat(partial) : partial;
 		}
-		if (ddup) elements = Elements.ddup(elements);
-		return nocash ? elements : new Elements(elements, {ddup: false});
+		return new Elements(elements, {ddup: ddup, cash: !nocash, xtend: !nocash});
 	}
 
 	/*

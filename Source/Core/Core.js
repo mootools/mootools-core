@@ -236,10 +236,7 @@ Examples:
 */
 
 function $extend(original, extended){
-	if (!extended){
-		extended = original;
-		original = this;
-	}
+	extended = extended || {};
 	for (var property in extended) original[property] = extended[property];
 	return original;
 };

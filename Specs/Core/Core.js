@@ -67,13 +67,6 @@ describe('$extend', {
 		var ob2 = {b: 3, c: 4};
 		$extend(ob1, ob2);
 		value_of(ob1).should_be({a: 1, b: 3, c: 4});
-	},
-
-	'should extend this and an object': function(){
-		var fn = function(){};
-		fn.extend = $extend;
-		fn.extend({ newProperty: true });
-		value_of(fn.newProperty).should_be(true);
 	}
 
 });
@@ -120,7 +113,7 @@ describe('$random', {
 
 describe('$splat', {
 
-	'should transform a non-array into an array': function(){
+	'should transform a non array into an array': function(){
 		value_of($splat(1)).should_be([1]);
 	},
 

@@ -180,7 +180,7 @@ Element.Setters.extend({
 	send: function(options){
 		var send = this.retrieve('send');
 		if (send) send.cancel();
-		return this.store('send', new Ajax(this.get('action'), Hash.extend({autoCancel: true, method: this.get('method') || 'post'}, options)));
+		return this.store('send', new Ajax(this.get('action'), $extend({autoCancel: true, method: this.get('method') || 'post'}, options)));
 	},
 
 	/*
@@ -206,7 +206,7 @@ Element.Setters.extend({
 	load: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
-		return this.store('load', new Ajax(Hash.extend({autoCancel: true, update: this, method: 'get'}, options)));
+		return this.store('load', new Ajax($extend({autoCancel: true, update: this, method: 'get'}, options)));
 	}
 
 });

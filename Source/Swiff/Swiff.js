@@ -82,7 +82,7 @@ var Swiff = function(path, options){
 		vars: {}
 	}, options);
 	var params = options.params, vars = options.vars, id = options.id;
-	var properties = Hash.extend({height: options.height, width: options.width}, options.properties);
+	var properties = $extend({height: options.height, width: options.width}, options.properties);
 	Swiff.Events[instance] = {};
 	for (var event in options.events){
 		Swiff.Events[instance][event] = function(){

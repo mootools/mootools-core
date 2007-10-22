@@ -147,11 +147,6 @@ Class.implement({
 	implement: function(){
 		Class.Implements(this.prototype, Array.slice(arguments));
 		return this;
-	},
-	
-	extend: function(properties){
-		properties.Extends = this;
-		return new Class(properties);
 	}
 
 });

@@ -231,27 +231,27 @@ See Also:
 var Elements = new Native({
 
 	initialize: function(elements, options){
-		options = Hash.extend({ddup: true, cash: true}, options);
+		options = $extend({ddup: true, cash: true, xtend: true}, options);
 		elements = elements || [];
-		if (options.ddup) elements = Elements.ddup(elements);
-		if (options.cash) elements = elements.map($.element);
-		return $extend(elements, this);
+		if (options.ddup || options.cash){
+			var uniques = {};
+			var returned = [];
+			for (var i = 0, l = elements.length; i < l; i++){
+				var el = elements[i];
+				if (options.ddup){
+					el.uid = el.uid || [Native.UID++];
+					if (uniques[el.uid]) continue;
+					uniques[el.uid] = true;
+				}
+				if (options.cash) el = $.element(el);
+				returned.push(el);
+			}
+			elements = returned;
+		}
+		return (options.xtend) ? $extend(elements, this) : elements;
 	}
 
 });
-
-Elements.ddup = function(elements){
-	var uniques = {};
-	var returned = [];
-	for (var i = 0, l = elements.length; i < l; i++){
-		var el = elements[i];
-		el.uid = el.uid || [Native.UID++];
-		if (uniques[el.uid]) continue;
-		uniques[el.uid] = true;
-		returned.push(el);
-	}
-	return returned;
-};
 
 Elements.multi = function(property){
 	return function(){
@@ -377,7 +377,9 @@ $.string = function(id, notrash, doc){
 
 $.element = function(el, notrash){
 	el.uid = el.uid || [Native.UID++];
-	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.Prototype);
+	if (notrash !== true && Garbage.collect(el) && !el.$family){
+		for (var property in Element.Prototype) el[property] = el[property] || Element.prototype[property];
+	}
 	return el;
 };
 
@@ -449,10 +451,10 @@ Native.implement([Element, Document], {
 		var elements = [];
 		var ddup = (tags.length > 1);
 		tags.each(function(tag){
-			elements.extend(this.getElementsByTagName(tag.trim()));
+			var partial = this.getElementsByTagName(tag.trim());
+			(ddup) ? elements.extend(partial) : elements = partial;
 		}, this);
-		if (ddup) elements = Elements.ddup(elements);
-		return (nocash) ? elements : new Elements(elements, {ddup: false});
+		return new Elements(elements, {ddup: ddup, cash: !nocash, xtend: !nocash});
 	}
 
 });

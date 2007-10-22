@@ -62,7 +62,7 @@ See Also:
 
 Fx.Transition = function(transition, params){
 	params = $splat(params);
-	return Hash.extend(transition, {
+	return $extend(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
 		},

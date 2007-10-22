@@ -1,4 +1,6 @@
-window.extend = document.extend = $extend;
+window.extend = document.extend = function(properties){
+	for (var property in properties) this[property] = properties[property];
+};
 window.extend(Browser.Engine);
 
 window.ie = window.trident;

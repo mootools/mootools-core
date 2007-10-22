@@ -16,7 +16,9 @@ See Also:
 
 Function.implement({
 
-	extend: $extend,
+	extend: function(properties){
+		for (var property in properties) this[property] = properties[property];
+	},
 
 	/*
 	Method: create

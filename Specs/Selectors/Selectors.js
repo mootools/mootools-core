@@ -31,8 +31,6 @@ window.addEvent('load', function(){
 		onload: function(){
 			win = iframe.window;
 			doc = iframe.window.document;
-
-			console.log(this, win, doc);
 			// console.log(this.$$('div')); //this dies
 		}
 	}).injectInside(document.body);

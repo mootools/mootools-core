@@ -63,7 +63,7 @@ Fx.Slide = new Class({
 		arguments.callee.parent(options);
 		var wrapper = this.element.retrieve('wrapper');
 		this.wrapper = wrapper || new Element('div', {
-			styles: Hash.extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
+			styles: $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
 		}).wrap(this.element);
 		this.element.store('wrapper', this.wrapper).setStyle('margin', 0);
 		this.now = [];
@@ -286,7 +286,7 @@ Example:
 Element.Setters.slide = function(options){
 	var slide = this.retrieve('slide');
 	if (slide) slide.cancel();
-	return this.store('slide', new Fx.Slide(this, Hash.extend({link: 'cancel'}, options)));
+	return this.store('slide', new Fx.Slide(this, $extend({link: 'cancel'}, options)));
 };
 
 /*
