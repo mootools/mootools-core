@@ -253,6 +253,7 @@ Fx.Slide = new Class({
 	set: function(now){
 		this.element.setStyle(this.margin, now[0]);
 		this.wrapper.setStyle(this.layout, now[1]);
+		return this;
 	}
 
 });
