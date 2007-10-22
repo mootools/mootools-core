@@ -13,9 +13,7 @@ Native: Element
 
 Element.Setters.extend({
 
-	styles: function(styles){
-		this.setStyles(styles);
-	},
+	styles: Element.Prototype.setStyles,
 
 	/*
 	Element Setter: opacity

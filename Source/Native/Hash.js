@@ -40,7 +40,7 @@ Hash.implement({
 
 	keyOf: function(value){
 		for (var key in this){
-			if (this.hasOwnProperty(key) && this[key] === value) return key;
+			if (this.has(key) && this[key] === value) return key;
 		}
 		return null;
 	},
@@ -69,9 +69,7 @@ Hash.implement({
 		Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
 	*/
 
-	has: function(key){
-		return this.hasOwnProperty(key);
-	},
+	has: Object.prototype.hasOwnProperty,
 
 	/*
 	Method: hasValue
@@ -195,7 +193,7 @@ Hash.implement({
 	*/
 
 	remove: function(key){
-		if (this.hasOwnProperty(key)) delete this[key];
+		if (this.has(key)) delete this[key];
 		return this;
 	},
 
@@ -223,7 +221,7 @@ Hash.implement({
 	*/
 
 	get: function(key){
-		return (this.hasOwnProperty(key)) ? this[key] : null;
+		return (this.has(key)) ? this[key] : null;
 	},
 
 	/*
@@ -251,7 +249,7 @@ Hash.implement({
 	*/
 
 	set: function(key, value){
-		if (!this[key] || this.hasOwnProperty(key)) this[key] = value;
+		if (!this[key] || this.has(key)) this[key] = value;
 		return this;
 	},
 
@@ -421,7 +419,7 @@ Hash.implement({
 
 	every: function(fn, bind){
 		for (var key in this){
-			if (this.hasOwnProperty(key) && !fn.call(bind, this[key], key)) return false;
+			if (this.has(key) && !fn.call(bind, this[key], key)) return false;
 		}
 		return true;
 	},
@@ -459,7 +457,7 @@ Hash.implement({
 
 	some: function(fn, bind){
 		for (var key in this){
-			if (this.hasOwnProperty(key) && fn.call(bind, this[key], key)) return true;
+			if (this.has(key) && fn.call(bind, this[key], key)) return true;
 		}
 		return false;
 	},
@@ -530,7 +528,7 @@ Hash.implement({
 		});
 		return values;
 	},
-	
+
 	/*
 	Method: toQueryString
 		Generates a query string from key/pair values in an object and URI encodes the values.
@@ -556,7 +554,7 @@ Hash.implement({
 			myHash.toQueryString(); //returns "apple=red&lemon=yellow"
 		[/javascript]
 	*/
-	
+
 	toQueryString: function(){
 		var queryString = [];
 		Hash.each(this, function(value, key){
