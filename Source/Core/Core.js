@@ -9,7 +9,7 @@ MooTools Copyright:
 	Copyright (c) 2006-2007 Valerio Proietti, <http://mad4milk.net/>
 
 MooTools Code & Documentation:
-	The MooTools team <http://mootools.net/developers/>.
+	The MooTools production team <http://mootools.net/developers/>.
 
 MooTools Credits:
 	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>

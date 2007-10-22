@@ -173,7 +173,7 @@ Example:
 
 Element.Setters.morph = function(options){
 	var morph = this.retrieve('morph');
-	if (morph) morph.stop();
+	if (morph) morph.cancel();
 	return this.store('morph', new Fx.Morph(this, Hash.extend({link: 'cancel'}, options)));
 };
 

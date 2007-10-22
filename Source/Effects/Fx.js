@@ -77,7 +77,7 @@ var Fx = new Class({
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
 			this.set(this.compute(this.from, this.to, 1));
-			this.stop();
+			this.complete();
 		}
 	},
 
@@ -103,7 +103,7 @@ var Fx = new Class({
 		this.skip = true;
 		if (!this.timer) return true;
 		switch(this.options.link){
-			case 'cancel': this.stop(); return true;
+			case 'cancel': this.cancel(); return true;
 			case 'chain': this.chain(this.start.bind(this, arguments)); return false;
 			default: return false;
 		}
@@ -127,14 +127,12 @@ var Fx = new Class({
 	},
 
 	/*
-	Method: stop
+	Method: complete
 		Stops the timer and launches the onComplete event.
 	*/
 
-	stop: function(){
-		if (!this.stopTimer()) return this;
-		this.onStop();
-		return this;
+	complete: function(){
+		return (!this.stopTimer()) ? this : this.onComplete();
 	},
 	
 	/*
@@ -143,9 +141,7 @@ var Fx = new Class({
 	*/
 	
 	cancel: function(){
-		if (!this.stopTimer()) return this;
-		this.onCancel();
-		return this;
+		return (!this.stopTimer()) ? this : this.onCancel();
 	},
 	
 	/*
@@ -174,17 +170,16 @@ var Fx = new Class({
 	*/
 	
 	onStart: function(){
-		this.fireEvent('onStart', arguments);
+		return this.fireEvent('onStart', arguments);
 	},
 	
 	/*
-	Method: onStop
+	Method: onComplete
 		Fires the onComplete event and the callChain. Intended to be overridden in implementations.
 	*/
 	
-	onStop: function(){
-		this.fireEvent('onComplete', arguments);
-		this.callChain();
+	onComplete: function(){
+		return this.fireEvent('onComplete', arguments).callChain();
 	},
 	
 	/*
@@ -193,7 +188,7 @@ var Fx = new Class({
 	*/
 	
 	onCancel: function(){
-		this.fireEvent('onCancel', arguments);
+		return this.fireEvent('onCancel', arguments).clearChain();
 	},
 	
 	/*

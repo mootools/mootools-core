@@ -284,7 +284,7 @@ Example:
 
 Element.Setters.slide = function(options){
 	var slide = this.retrieve('slide');
-	if (slide) slide.stop();
+	if (slide) slide.cancel();
 	return this.store('slide', new Fx.Slide(this, Hash.extend({link: 'cancel'}, options)));
 };
 

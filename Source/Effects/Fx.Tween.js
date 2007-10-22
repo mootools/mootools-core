@@ -130,7 +130,7 @@ Example:
 
 Element.Setters.tween = function(options){
 	var tween = this.retrieve('tween');
-	if (tween) tween.stop();
+	if (tween) tween.cancel();
 	return this.store('tween', new Fx.Tween(this, null, Hash.extend({link: 'cancel'}, options)));
 };
 
