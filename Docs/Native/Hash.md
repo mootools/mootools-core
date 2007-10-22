@@ -461,7 +461,8 @@ Returns a a clean object from an Hash.
 
 
 
-### Property: getKeys
+Hash Method: getKeys {#Hash:getKeys}
+------------------------------------
 
 Returns an array containing all the keys, in the same order as the values returned by [Hash:getValues](#Hash:getValues).
 
