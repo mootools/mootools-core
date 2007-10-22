@@ -8,7 +8,7 @@ var Docs = {
 		var parents = $$('#menu h3');
 		
 		links.addEvent('click', function(){
-			docRequest.setURL(this.get('href').replace('#', '') + '.md').send();
+			docRequest.setURL(this.get('href').split('#')[1] + '.md').send();
 			
 			parents.removeClass('selected');
 			this.getParent('h3').addClass('selected');
