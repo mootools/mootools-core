@@ -353,7 +353,7 @@ Window.implement({
 	*/
 
 	$$: function(selector){
-		if (arguments.length == 1 && $type(selector) == 'string') return this.document.getElements(selector);
+		if (arguments.length == 1 && typeof selector == 'string') return this.document.getElements(selector);
 		var elements = [];
 		var args = Array.flatten(arguments);
 		for (var i = 0, l = args.length; i < l; i++){
@@ -377,9 +377,7 @@ $.string = function(id, notrash, doc){
 
 $.element = function(el, notrash){
 	el.uid = el.uid || [Native.UID++];
-	if (notrash !== true && Garbage.collect(el) && !el.$family){
-		for (var property in Element.Prototype) el[property] = el[property] || Element.prototype[property];
-	}
+	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.Prototype);
 	return el;
 };
 
@@ -824,9 +822,9 @@ Element.implement({
 		<Element>, <Element.Clearer>
 	*/
 
-	clear: function(prop){
-		var clearer = Element.Clearers.get(prop);
-		(clearer) ? clearer.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
+	erase: function(prop){
+		var eraser = Element.Erasers.get(prop);
+		(eraser) ? eraser.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
 		return this;
 	},
 
@@ -2062,7 +2060,7 @@ Element.Getters = new Hash({
 
 });
 
-Element.Clearers = new Hash({
+Element.Erasers = new Hash({
 
 	style: function(){
 		this.style.cssText = '';

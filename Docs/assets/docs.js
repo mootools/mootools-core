@@ -14,7 +14,7 @@ var Docs = {
 			this.getParent('h3').addClass('selected');
 		});
 		
-		var link = $E('#menu a[href=' + window.location.hash + ']') || $E('#menu a[href=#Core/Core]');
+		var link = $E('#menu a[href=' + window.location.hash + ']') || $E('#menu a');
 		link.fireEvent('click');
 		
 	},
