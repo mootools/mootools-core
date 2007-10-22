@@ -54,49 +54,51 @@ Native.UID = 0;
 var Window = new Native({
 
 	name: 'Window',
+	
+	legacy: window.Window,
 
 	initialize: function(win){
-		Window.instances.push(win);
 		if (!win.Element){
 			win.Element = $empty;
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Browser.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
 		}
 		win.uid = Native.UID++;
-		return $extend(win, this);
+		return $extend(win, Window.Prototype);
 	},
 
 	afterImplement: function(property, value){
-		for (var i = 0, l = this.instances.length; i < l; i++) this.instances[i][property] = value;
+		window[property] = Window.Prototype[property] = value;
 	}
 
 });
 
-Window.instances = [];
+Window.Prototype = {};
 
 new Window(window);
 
 var Document = new Native({
 
 	name: 'Document',
+	
+	legacy: window.Document,
 
 	initialize: function(doc){
-		Document.instances.push(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.window = doc.defaultView || doc.parentWindow;
 		if (Browser.Engine.trident4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
 		doc.uid = Native.UID++;
-		return $extend(doc, this);
+		return $extend(doc, Document.Prototype);
 	},
 
 	afterImplement: function(property, value){
-		for (var i = 0, l = this.instances.length; i < l; i++) this.instances[i][property] = value;
+		document[property] = Document.Prototype[property] = value;
 	}
 
 });
 
-Document.instances = [];
+Document.Prototype = {};
 
 new Document(document);
