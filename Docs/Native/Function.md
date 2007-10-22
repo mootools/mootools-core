@@ -3,7 +3,8 @@ Native: Function {#Function}
 
 Function Methods.
 
-## See Also:
+### See Also:
+
 [MDC Function](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function)
 
 

@@ -3,7 +3,7 @@ Native: String {#String}
 
 A collection of the String Object prototype methods.
 
-## See Also:
+### See Also:
 
 [MDC String](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String)
 
@@ -337,7 +337,7 @@ Converts a hexidecimal color value to RGB. Input array must be in one of the fol
 
 ### See Also:
 
-[String.hexToRgb](#String:hexToTgb)
+[String:hexToRgb](#String:hexToTgb)
 
 
 
