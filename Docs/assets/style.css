@@ -197,7 +197,8 @@ div#footer p {
 	font-size: 12px;
 }
 
-#docs h1, #docs h2, #docs h3 {
+#docs h1, #docs h2, #docs h3, #docs h4, #docs h5, #docs h6 {
+	margin: 5px 0;
 	padding: 3px 5px 1px;
 	background: #ddd;
 }
@@ -242,18 +243,5 @@ div#footer p {
 	color: #333;
 	overflow: auto;
 }
-
-/*#docs h4 {
-	font-size: 11px;
-	background: #C8CBD0;
-	padding: 3px 5px 1px;
-	margin-bottom: 4px;
-}
-
-#docs h3 {
-	background: #D0C8C8;
-	color: #8A7575;
-	margin-bottom: 4px;
-}*/
 
 /* @end */

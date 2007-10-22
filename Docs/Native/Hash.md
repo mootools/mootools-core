@@ -25,7 +25,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf](/Array/#
 
 ### Example:
 	
-	var hash = new ### Hash({'a': 'one', 'b': 'two', 'c': 3});
+	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 3});
 	hash.keyOf('two'); //returns 'b'
 	hash.keyOf(3); //returns 'c'
 	hash.keyOf('four') //returns false	
@@ -54,7 +54,7 @@ Tests for the presence of a specified key in the Hash.
 
 ### Example:
 	
-	var hash = new ### Hash({'a': 'one', 'b': 'two', 'c': 'three'});
+	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
 	hash.has('a'); //returns true
 	hash.has('d'); //returns false
 	
@@ -83,7 +83,7 @@ Tests for the presence of a specified value in the Hash.
 
 ### Example:
 	
-	var hash = new ### Hash({'a': 'one', 'b': 'two', 'c': 'three'});
+	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
 	hash.hasValue('one'); //returns true
 	hash.hasValue('four'); //returns false
 
@@ -109,15 +109,15 @@ Extends this Hash with the key-value pairs from the object passed in.
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	var properties = {
 		'age': '20',
 		'sex': 'male',
-		'last### Name': 'Dorian'
+		'lastName': 'Dorian'
 	};
 	hash.extend(properties);
-	//hash now holds an object containing: { 'name': '### John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
+	//hash now holds an object containing: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
 	
 
 
@@ -142,15 +142,15 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	var properties = {
 		'age': '20',
 		'sex': 'male',
-		'last### Name': 'Dorian'
+		'lastName': 'Dorian'
 	};
 	hash.merge(properties);
-	//hash now holds an object containing: { 'name': '### John', 'lastName': 'Doe', 'age': '20', 'sex': 'male' };
+	//hash now holds an object containing: { 'name': 'John', 'lastName': 'Doe', 'age': '20', 'sex': 'male' };
 	
 
 
@@ -175,7 +175,7 @@ Removes the specified key from the Hash.
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	hash.remove('lastName');
 	//hash now holds an object containing: { 'name': 'John' };
@@ -203,7 +203,7 @@ Retrieves a value from the hash.
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	hash.get('name'); //returns 'John'
 
@@ -231,7 +231,7 @@ Adds a key-value pair to the hash or replaces a previous value associated with t
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	hash.set('name', 'Michelle'); //hash.name is now 'Michelle'
 
@@ -279,7 +279,7 @@ Includes the specified key-value pair in the Hash if the key doesn't already exi
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	hash.include('name', 'Michelle'); //hash is unchanged
 	hash.include('age', 25); //hash.age is now 25
@@ -356,9 +356,9 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 
 ### Example:
 	
-	var bigger### ThanTwenty = new Hash({a: 10, b: 20, c: 30}).filter(function(value, key){
+	var biggerThanTwenty = new Hash({a: 10, b: 20, c: 30}).filter(function(value, key){
 		return value > 20;
-	}); //bigger### ThanTwenty now holds an object containing: {c: 30}
+	}); //biggerThanTwenty now holds an object containing: {c: 30}
 
 
 Hash Method: every {#Hash:every}
@@ -431,7 +431,7 @@ Returns true if at least one value in the object satisfies the provided testing 
 
 ### Example:
 
-	var are### AllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).some(function(value, key){
+	var areAllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).some(function(value, key){
 		return value > 20;
 	}); //isAnyBigEnough = true
 
@@ -454,7 +454,7 @@ Returns a a clean object from an Hash.
 
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	hash = hash.getClean(); // hash doesnt contain Hash prototypes anymore
 	hash.each() //error!
@@ -516,5 +516,5 @@ Generates a query string from key/pair values in an object and URI encodes the v
 
 #### Using Hash instance:
 
-	var my### Hash = new Hash({apple: "red", lemon: "yellow"});
+	var myHash = new Hash({apple: "red", lemon: "yellow"});
 	myHash.toQueryString(); //returns "apple=red&lemon=yellow"
