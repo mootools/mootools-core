@@ -259,7 +259,9 @@ Native: Element
 	These methods are also available on window and document.
 */
 
-Element.Setters.events = Element.Prototype.addEvents;
+Element.Setters.events = function(events){
+	this.addEvents(events);
+};
 
 Native.implement([Element, Window, Document], {
 
