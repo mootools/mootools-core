@@ -61,7 +61,7 @@ var Window = new Native({
 		if (!win.Element){
 			win.Element = $empty;
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
-			win.Element.prototype = (Browser.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
+			win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 		}
 		win.uid = Native.UID++;
 		return $extend(win, Window.Prototype);

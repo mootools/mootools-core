@@ -917,7 +917,7 @@ Element.implement({
 		return this;
 	},
 
-	wrap: function(el, where){
+	wraps: function(el, where){
 		el = $(el, true);
 		Element.Inserters.after(this, el);
 		return this.grab(el, where);
@@ -2136,7 +2136,7 @@ var Garbage = {
 		if (el.retrieve('events')) el.removeEvents();
 		for (var p in el.$attributes) el.$attributes[p] = null;
 		if (Browser.Engine.trident){
-			for (var d in Element.prototype) el[d] = null;
+			for (var d in Element.Prototype) el[d] = null;
 		}
 		el.$attributes = el.uid = null;
 	},
