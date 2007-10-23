@@ -1,0 +1,358 @@
+[Fx]: /Effects/Fx
+[Fx.Tween]: /Effects/Fx.Tween
+[Ajax]: /Remote/Ajax
+[XHR]: /Remote/XHR
+[Class]: /Class/Class
+[Class:implement]: /Class/Class#Class:implement
+
+Class: Chain {#Chain}
+=====================
+
+A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
+Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][], [XHR][] and [Ajax][].
+In [Fx][], for example, it is used to create custom, complex animations.
+	
+Chain Method: constructor {#Chain:constructor}
+----------------------------------------------
+
+### Syntax:
+
+#### For new classes:
+	
+	var MyClass = new Class({ Implements: Chain });
+
+#### For existing classes:
+	
+	MyClass.implement(Chain);
+	
+#### Stand alone
+
+	var myChain = new Chain;
+
+### Example:
+
+		var Todo = new Class({
+			Implements: Chain,
+			initialize: function(){
+				this.chain.apply(this, arguments);
+			}
+		});
+
+		var myTodoList = new Todo(
+			function(){ alert('get groceries');	},
+			function(){ alert('go workout'); },
+			function(){ alert('code mootools documentation until eyes close involuntarily'); },
+			function(){ alert('sleep');	}
+		);
+
+### See Also:
+
+[Class][]
+
+
+
+Chain Method: chain {#Chain:chain}
+----------------------------------
+
+Adds functions to the end of the call stack of the Chain instance.
+
+### Syntax:
+
+	myClass.chain(fn[, fn2[, fn3[, ...]]]);
+
+### Arguments:
+
+1. Any number of functions.
+
+### Returns:
+
+* (object) This Class instance. Calls to chain can also be chained.
+
+### Example:
+	
+	//will fade the element in and out three times
+	var myFx = new Fx.Style('myElement', 'opacity'); //Fx.Style has implemented class Chain because of inheritance.
+	myFx.start(1,0).chain(
+		function(){ this.start(0,1); }, //notice that "this" refers to the calling object. In this case: myFx object.
+		function(){ this.start(1,0); },
+		function(){ this.start(0,1); }
+	);
+	
+
+### See Also:
+
+[Fx][], [Fx.Tween][]
+
+
+
+Chain Method: callChain {#Chain:callChain}
+------------------------------------------
+
+Removes the first function of the Chain instance stack and executes it. The next function will then become first in the array.
+
+### Syntax:
+
+	myClass.callChain([any arguments]);
+	
+### Arguments:
+
+1. any arguments passed in will be passed to the "next" function
+
+### Returns:
+
+* (object) This Class instance.
+
+### Example:
+	
+	var myChain = new Chain();
+	myChain.chain(
+		function(){ alert('do dishes'); },
+		function(){ alert('put away clean dishes'); }
+	);
+	myChain.callChain(); //alerts 'do dishes'
+	myChain.callChain(); //alerts 'put away clean dishes'	
+
+
+
+Chain Method: clearChain {#Chain:clearChain}
+--------------------------------------------
+
+Clears the stack of a Chain instance.
+
+### Syntax:
+
+	myClass.clearChain();
+
+### Returns:
+
+* (object) This Class instance.
+
+### Example:
+	
+	var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
+	myFx.chain(function(){ while(true) alert('doh!'); }); //don't try this at home, kids.
+	myFx.clearChain(); // .. that was a close one ...
+
+### See Also:
+
+[Fx][], [Fx.Tween][]
+
+
+
+Class: Events {#Events}
+=======================
+
+A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].
+In [Fx][], for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
+Events in a Class that implements [Events](#Events) must be either added as an option or with addEvent, not directly through .options.onEventName.
+
+### Syntax:
+
+#### For new classes:
+
+	var MyClass = new Class({ Implements: Events });
+
+#### For existing classes:
+
+	MyClass.implement(Events);
+
+### Implementing:
+
+This class can be implemented into other classes to add its functionality to them.
+It has been designed to work well with the [Options](#Options) class.
+
+### Example:
+	
+	var Widget = new Class({
+		Implements: Events,
+		initialize: function(element){
+			...
+		},
+		complete: function(){
+			this.fireEvent('onComplete');
+		}
+	});
+
+	var myWidget = new Widget();
+	myWidget.addEvent('onComplete', myFunction);
+	
+
+### See Also:
+
+[Class][], [Options](#Options)
+
+
+
+Events Method: addEvent {#Events:addEvent}
+------------------------------------------
+
+Adds an event to the Class instance's event stack.
+
+### Syntax:
+
+	myClass.addEvent(type, fn[, internal]);
+
+### Arguments:
+
+1. type     - (string) The type of event (e.g. 'onComplete').
+2. fn       - (function) The function to execute.
+3. internal - (boolean, optional) Sets the function property: internal to true. Internal property is used to prevent removal.
+
+### Returns:
+
+* (object) This Class instance.
+
+### Example:
+	
+	var myFx = new Fx.Style('element', 'opacity');
+	myFx.addEvent('onStart', myStartFunction);
+	
+
+
+Events Method: fireEvent {#Events:fireEvent}
+--------------------------------------------
+
+Fires all events of the specified type in the Class instance.
+
+### Syntax:
+
+	myClass.fireEvent(type[, args[, delay]]);
+
+### Arguments:
+
+1. type  - (string) The type of event (e.g. 'onComplete').
+2. args  - (mixed, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
+3. delay - (number, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
+
+### Returns:
+
+* (object) This Class instance.
+
+### Example:
+	
+	var Widget = new Class({
+		Implements: Events,
+		initialize: function(arg1, arg2){
+			...
+			this.fireEvent("onInitialize", [arg1, arg2], 50);
+		}
+	});
+
+
+
+Events Method: removeEvent {#Events:removeEvent}
+------------------------------------------------
+
+Removes an event from the stack of events of the Class instance.
+
+### Syntax:
+
+	myClass.removeEvent(type, fn);
+
+### Arguments:
+
+1. type - (string) The type of event (e.g. 'onComplete').
+	fn   - (function) The function to remove.
+
+### Returns:
+
+* (object) This Class instance.
+
+### Note:
+
+If the function has the property internal and is set to true, then the event will not be removed.
+
+
+Events Method: removeEvents {#Events:removeEvents}
+--------------------------------------------------
+
+Removes all events of the given type from the stack of events of a Class instance. If no type is specified, removes all events of all types.
+
+### Syntax:
+
+	myClass.removeEvents([type]);
+
+### Arguments:
+
+1. type - (string, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
+
+### Returns:
+
+* (object) This Class instance.
+
+### Example:
+	
+	var myFx = new Fx.Style('element', 'opacity');
+	myFx.removeEvents('onComplete');
+
+
+### Note:
+
+Will not remove internal events. See [Events:removeEvent](#Events:removeEvent).
+
+
+
+Class: Options {#Options}
+=========================
+
+A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].
+Used to automate the setting of a Class instance's options.
+Will also add Class [Events](#Events) when the option property begins with on, followed by a capital letter (e.g. 'onComplete').
+
+### Syntax:
+
+#### For new classes:
+	
+	var MyClass = new Class({Implements: Options});
+
+#### For existing classes:
+
+	MyClass.implement(Options);
+
+
+
+Options Method: setOptions {#Options:setOptions}
+------------------------------------------------
+
+Merges the default options of the Class with the options passed in.
+
+### Syntax:
+
+	myClass.setOptions([options]);
+
+### Arguments:
+
+1. options - (object, optional) The user defined options to merge with the defaults.
+
+### Returns:
+
+* (object) This Class instance.
+
+### Example:
+	
+	var Widget = new Class({
+		Implements: Options,
+		options: {
+			color: '#fff',
+			size: {
+				width: 100,
+				height: 100
+			}
+		},
+		initialize: function(options){
+			this.setOptions(options);
+		}
+	});
+
+	var myWidget = new Widget({
+		color: '#f00',
+		size: {
+			width: 200
+		}
+	});
+	//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
+
+### Note:
+
+Relies on the default options of a Class defined in its options property.
+If a Class has [Events](#Events) implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
