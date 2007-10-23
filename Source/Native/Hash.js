@@ -12,6 +12,32 @@ Native: Hash
 */
 
 Hash.implement({
+	
+	/*
+	Method: has
+		Tests for the presence of a specified key in the Hash.
+
+	Syntax:
+		>var inHash = myHash.has(item);
+
+	Arguments:
+		key - (string) The key to search for in the Hash.
+
+	Returns:
+		(boolean) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
+
+	Example:
+		[javascript]
+			var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
+			hash.has('a'); //returns true
+			hash.has('d'); //returns false
+		[/javascript]
+
+	Notes:
+		Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
+	*/
+
+	has: Object.prototype.hasOwnProperty,
 
 	/*
 	Method: keyOf
@@ -40,36 +66,10 @@ Hash.implement({
 
 	keyOf: function(value){
 		for (var key in this){
-			if (this.has(key) && this[key] === value) return key;
+			if (this.hasOwnProperty(key) && this[key] === value) return key;
 		}
 		return null;
 	},
-
-	/*
-	Method: has
-		Tests for the presence of a specified key in the Hash.
-
-	Syntax:
-		>var inHash = myHash.has(item);
-
-	Arguments:
-		key - (string) The key to search for in the Hash.
-
-	Returns:
-		(boolean) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
-
-	Example:
-		[javascript]
-			var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
-			hash.has('a'); //returns true
-			hash.has('d'); //returns false
-		[/javascript]
-
-	Notes:
-		Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
-	*/
-
-	has: Object.prototype.hasOwnProperty,
 
 	/*
 	Method: hasValue
@@ -127,7 +127,7 @@ Hash.implement({
 
 	extend: function(properties){
 		Hash.each(properties, function(value, key){
-			this[key] = value;
+			Hash.set(this, key, value);
 		}, this);
 		return this;
 	},
@@ -193,7 +193,7 @@ Hash.implement({
 	*/
 
 	remove: function(key){
-		if (this.has(key)) delete this[key];
+		if (this.hasOwnProperty(key)) delete this[key];
 		return this;
 	},
 
@@ -221,7 +221,7 @@ Hash.implement({
 	*/
 
 	get: function(key){
-		return (this.has(key)) ? this[key] : null;
+		return (this.hasOwnProperty(key)) ? this[key] : null;
 	},
 
 	/*
@@ -249,7 +249,7 @@ Hash.implement({
 	*/
 
 	set: function(key, value){
-		if (!this[key] || this.has(key)) this[key] = value;
+		if (!this[key] || this.hasOwnProperty(key)) this[key] = value;
 		return this;
 	},
 
@@ -419,7 +419,7 @@ Hash.implement({
 
 	every: function(fn, bind){
 		for (var key in this){
-			if (this.has(key) && !fn.call(bind, this[key], key)) return false;
+			if (this.hasOwnProperty(key) && !fn.call(bind, this[key], key)) return false;
 		}
 		return true;
 	},
@@ -457,7 +457,7 @@ Hash.implement({
 
 	some: function(fn, bind){
 		for (var key in this){
-			if (this.has(key) && fn.call(bind, this[key], key)) return true;
+			if (this.hasOwnProperty(key) && fn.call(bind, this[key], key)) return true;
 		}
 		return false;
 	},

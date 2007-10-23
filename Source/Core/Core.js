@@ -475,12 +475,9 @@ var Hash = new Native({
 	name: 'Hash',
 
 	initialize: function(object){
-		switch($type(object)){
-			case 'hash': return $merge(object);
-			case 'object': for (var key in object){
-				if (!this.hasOwnProperty(key)) this[key] = object[key];
-			}
-
+		if ($type(object) == 'hash') return $merge(object);
+		for (var key in object){
+			if (!this[key]) this[key] = object[key];
 		}
 		return this;
 	}
