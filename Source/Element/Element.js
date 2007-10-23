@@ -237,13 +237,11 @@ var Elements = new Native({
 			var uniques = {};
 			var returned = [];
 			for (var i = 0, l = elements.length; i < l; i++){
-				var el = elements[i];
+				var el = $.element(elements[i], !options.cash);
 				if (options.ddup){
-					el.uid = el.uid || [Native.UID++];
 					if (uniques[el.uid]) continue;
 					uniques[el.uid] = true;
 				}
-				if (options.cash) el = $.element(el);
 				returned.push(el);
 			}
 			elements = returned;
@@ -377,7 +375,7 @@ $.string = function(id, notrash, doc){
 
 $.element = function(el, notrash){
 	el.uid = el.uid || [Native.UID++];
-	if (notrash !== true && Garbage.collect(el) && !el.$family) $extend(el, Element.Prototype);
+	if (!notrash && Garbage.collect(el) && !el.$family) $extend(el, Element.Prototype);
 	return el;
 };
 
