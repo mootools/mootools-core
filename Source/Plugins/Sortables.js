@@ -396,7 +396,7 @@ var Sortables = new Class({
 	serialize: function(index, modifier){
 		var map = modifier || function(element, index){
 			return element.get('id');
-		}.bind(this);
+		};
 
 		var serial = this.lists.map(function(list){
 			return list.getChildren().map(map, this);

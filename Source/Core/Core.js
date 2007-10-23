@@ -26,7 +26,7 @@ var Native = function(options){
 	var afterImplement = options.afterImplement || function(){};
 	var object = options.initialize || options.legacy;
 	var generics = options.generics;
-	generics = (generics === false) ? false : true;
+	generics = (generics !== false);
 	object.constructor = Native;
 	object.$family = {name: 'native'};
 	if (options.legacy && options.initialize) object.prototype = options.legacy.prototype;

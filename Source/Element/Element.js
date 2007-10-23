@@ -463,28 +463,6 @@ Element.Storage = {
 
 };
 
-Native.implement([Window, Document, Element], {
-
-	retrieve: function(property, dflt){
-		var storage = Element.Storage.get(this.uid);
-		var prop = storage[property];
-		if ($defined(dflt) && !$defined(prop)) prop = storage[property] = dflt;
-		return $pick(prop);
-	},
-
-	store: function(property, value){
-		var storage = Element.Storage.get(this.uid);
-		storage[property] = value;
-		return this;
-	},
-
-	pull: function(property){
-		var storage = Element.Storage.get(this.uid);
-		delete storage[property];
-	}
-
-});
-
 Element.Inserters = new Hash({
 
 	/*
@@ -2067,7 +2045,7 @@ Element.Erasers = new Hash({
 });
 
 Element.walk = function(element, walk, start, match, all){
-	var el = (start) ? element[start] : element[walk];
+	var el = element[start || walk];
 	var elements = [];
 	while (el){
 		if (el.nodeType == 1 && Element.match(el, match)){
@@ -2090,6 +2068,25 @@ Native.implement([Element, Window, Document], {
 	removeListener: function(type, fn){
 		if (this.removeEventListener) this.removeEventListener(type, fn, false);
 		else this.detachEvent('on' + type, fn);
+		return this;
+	},
+	
+	retrieve: function(property, dflt){
+		var storage = Element.Storage.get(this.uid);
+		var prop = storage[property];
+		if ($defined(dflt) && !$defined(prop)) prop = storage[property] = dflt;
+		return $pick(prop);
+	},
+
+	store: function(property, value){
+		var storage = Element.Storage.get(this.uid);
+		storage[property] = value;
+		return this;
+	},
+
+	eliminate: function(property){
+		var storage = Element.Storage.get(this.uid);
+		delete storage[property];
 		return this;
 	}
 
