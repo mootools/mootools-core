@@ -198,7 +198,6 @@ function $lambda(value){
 /*
 Function: $extend
 	Copies all the properties from the second object passed in to the first object passed in.
-	In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.
 
 Syntax:
 	>$extend(original[, extended]);
@@ -225,19 +224,10 @@ Examples:
 		$extend(firstObj, secondObj);
 		//firstObj is now: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
 	[/javascript]
-
-	Without the Second Parameter:
-	[javascript]
-		var myFunction = function(){ ... };
-		myFunction.extend = $extend;
-		myFunction.extend(secondObj);
-		//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respected values.
-	[/javascript]
 */
 
 function $extend(original, extended){
-	extended = extended || {};
-	for (var property in extended) original[property] = extended[property];
+	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
 };
 
@@ -269,12 +259,12 @@ Example:
 
 function $merge(){
 	var mix = {};
-	for (var i = 0; i < arguments.length; i++){
-		for (var property in arguments[i]){
-			var ap = arguments[i][property];
-			var mp = mix[property];
-			if (mp && $type(ap) == 'object' && $type(mp) == 'object') mix[property] = $merge(mp, ap);
-			else mix[property] = ap;
+	for (var i = 0, l = arguments.length; i < l; i++){
+		for (var key in arguments[i]){
+			var ap = arguments[i][key];
+			var mp = mix[key];
+			if (mp && $type(ap) == 'object' && $type(mp) == 'object') mix[key] = $merge(mp, ap);
+			else mix[key] = ap;
 		}
 	}
 	return mix;
@@ -487,8 +477,8 @@ var Hash = new Native({
 	initialize: function(object){
 		switch($type(object)){
 			case 'hash': return $merge(object);
-			case 'object': for (var p in object){
-				if (!this.hasOwnProperty(p)) this[p] = object[p];
+			case 'object': for (var key in object){
+				if (!this.hasOwnProperty(key)) this[key] = object[key];
 			}
 
 		}

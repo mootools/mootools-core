@@ -67,6 +67,12 @@ describe('$extend', {
 		var ob2 = {b: 3, c: 4};
 		$extend(ob1, ob2);
 		value_of(ob1).should_be({a: 1, b: 3, c: 4});
+	},
+
+	'should not extend with null argument': function(){
+		var ob1 = {a: 1, b: 2};
+		$extend(ob1);
+		value_of(ob1).should_be({a: 1, b: 2});
 	}
 
 });
