@@ -277,7 +277,7 @@ Tries to execute a function. Returns false if it fails.
 ### Arguments:
 
 1. fn   - (function) The function to execute.
-2. bind - (object, optional: defaults to the function passed in) The object to use as 'this' in the function. For more information see <Function.bind>.
+2. bind - (object, optional: defaults to the function passed in) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 3. args - (mixed, optional) Single item or array of items as arguments to be passed to the function.
 
 ### Returns:
@@ -376,7 +376,7 @@ Calls a function for each key-value pair in the object.
 ### Arguments:
 
 1. fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 
@@ -425,7 +425,7 @@ Calls a function for each element in the array.
 ### Arguments:
 
 1. fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 
@@ -503,7 +503,7 @@ Use to iterate through iterables that are not regular arrays, such as builtin ge
 
 1. iterable - (object or array) The object or array to iterate through.
 2. fn - (function) The function to test for each element.
-3. bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+3. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 

@@ -24,7 +24,7 @@ This method is provided only for browsers without native [Array:every][] support
 ### Arguments:
 
 	fn   - (function) The function to test for each element.
-	bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+	bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 
@@ -70,7 +70,7 @@ This method is provided only for browsers without native [Array:filter][] suppor
 ### Arguments:
 
 1. fn   - (function) The function to test each element of the array. This function is passed the item and its index in the array.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 
@@ -149,7 +149,7 @@ This method is provided only for browsers without native [Array:map][] support.
 ### Arguments:
 
 1. fn   - (function) The function to produce an element of the new Array from an element of the current one.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 
@@ -198,7 +198,7 @@ This method is provided only for browsers without native [Array:some][] support.
 ### Arguments:
 
 1. fn   - (function) The function to test for each element. This function is passed the item and its index in the array.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see <Function.bind>.
+2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
 
 #### Argument: fn
 

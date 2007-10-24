@@ -279,7 +279,7 @@ This is a "dynamic arguments" method. The first argument can be one of the prope
 ### Notes:
 
 - All the arguments starting from 1 are passed to the relative method of the [Element.Setters][] Hash.
-- If no matching property is found in <Element.Setters>, it falls back to [Element:setProperty](#Element:setProperty)
+- If no matching property is found in [Element.Setters][], it falls back to [Element:setProperty](#Element:setProperty)
 
 ### See Also:
 
@@ -303,7 +303,7 @@ This is a "dynamic arguments" method. The first argument can be one of the prope
 
 ### Returns:
 
-* (mixed) Whatever the result of the function in the <Element.Getters> Hash is, or the value of [Element:getProperty](#Element:getProperty) on the first Argument.
+* (mixed) Whatever the result of the function in the [Element.Getters][] Hash is, or the value of [Element:getProperty](#Element:getProperty) on the first Argument.
 
 ### Examples:
 
