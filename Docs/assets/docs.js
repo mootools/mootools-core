@@ -2,14 +2,25 @@ var Docs = {
 	
 	start: function(){
 		
-		var docRequest = new Ajax({method: 'get', autoCancel: true, onComplete: Docs.update});
+		var docRequest = new Ajax({
+			method: 'get', 
+			async: false,
+			autoCancel: true, 
+			onComplete: Docs.update,
+			isSuccess: function() {
+				alert(this.status);
+				return (!this.status && location.protocol == "file:" || (this.status >= 200) && (this.status < 300));
+			}
+		});
 		
 		var links = $$('#menu a.script');
 		var parents = $$('#menu h3');
 		
 		links.addEvent('click', function(){
-			docRequest.setURL(this.get('href').split('#')[1] + '.md').send();
-			
+			var path = this.get('href').split('#')[1] + '.md';
+
+			docRequest.setURL(path).send();
+
 			parents.removeClass('selected');
 			this.getParent('h3').addClass('selected');
 		});
