@@ -234,6 +234,10 @@ div#footer p {
 	list-style: square;
 }
 
+#docs ul li p {
+  padding: 0px;
+}
+
 #docs pre {
 	padding: 5px 7px;
 	margin: 5px 0;
