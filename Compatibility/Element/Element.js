@@ -28,3 +28,13 @@ Element.implement({
 	}
 
 });
+
+(function(){
+	var methods = {};
+	Element.Inserters.each(function(value, key){
+		methods['inject' + key.capitalize()] = function(el){
+			return Element.inject(this, el, key);
+		};
+	});
+	Element.implement(methods);
+})();

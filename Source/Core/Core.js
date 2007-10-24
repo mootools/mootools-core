@@ -23,44 +23,51 @@ var MooTools = {
 
 var Native = function(options){
 	options = options || {};
+	
 	var afterImplement = options.afterImplement || function(){};
-	var object = options.initialize || options.legacy;
 	var generics = options.generics;
 	generics = (generics !== false);
+	var legacy = options.legacy;
+	var initialize = options.initialize;
+	var browser = options.browser;
+	var name = options.name;
+	
+	var object = initialize || legacy;
+	
 	object.constructor = Native;
 	object.$family = {name: 'native'};
-	if (options.legacy && options.initialize) object.prototype = options.legacy.prototype;
+	if (legacy && initialize) object.prototype = legacy.prototype;
 	object.prototype.constructor = object;
-	if (options.name){
-		var family = options.name.toLowerCase();
+	
+	if (name){
+		var family = name.toLowerCase();
 		object.prototype.$family = {name: family};
 		Native.typize(object, family);
 	}
 
 	object.implement = function(properties, force){
 		for (var property in properties){
-			if (!options.browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
-			if (generics) Native.genericize(this, property);
+			if (!browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
+			if (generics) Native.genericize(this, property, browser);
 			afterImplement.call(this, property, properties[property]);
 		}
 	};
 
 	object.alias = function(existing, property, force){
-		if (!options.browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
+		if (!browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
 		if (generics && !this[property]) this[property] = this[existing];
 		afterImplement.call(this, property, this[property]);
 	};
 
 	return object;
-
 };
 
 Native.implement = function(objects, properties){
 	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
 };
 
-Native.genericize = function(object, property){
-	if (!object[property] && typeof object.prototype[property] == 'function') object[property] = function(){
+Native.genericize = function(object, property, check){
+	if ((!check || !object[property]) && typeof object.prototype[property] == 'function') object[property] = function(){
 		var args = Array.prototype.slice.call(arguments);
 		return object.prototype[property].apply(args.shift(), args);
 	};
@@ -81,7 +88,7 @@ Native.typize = function(object, family){
 })({'String': String, 'Function': Function, 'Number': Number, 'Array': Array, 'RegExp': RegExp, 'Date': Date});
 
 (function(object, methods){
-	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i]);
+	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i], true);
 	return arguments.callee;
 })
 (Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf'])

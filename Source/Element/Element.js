@@ -632,16 +632,6 @@ Element.Inserters = new Hash({
 
 Element.Inserters.inside = Element.Inserters.bottom;
 
-(function(){
-	var methods = {};
-	Element.Inserters.each(function(value, key){
-		methods['inject' + key.capitalize()] = function(el){
-			return Element.inject(this, el, key);
-		};
-	});
-	Element.implement(methods);
-})();
-
 Element.implement({
 
 	/*
@@ -1649,9 +1639,9 @@ Element.implement({
 	},
 
 	getProperty: function(attribute){
-		var key = Element.Attributes.Properties[attribute];
+		var EA = Element.Attributes, key = EA.Props[attribute];
 		var value = (key) ? this[key] : this.getAttribute(attribute);
-		return (Element.Attributes.Booleans[attribute]) ? !!value : value;
+		return (EA.Bools[attribute]) ? !!value : value;
 	},
 
 	/*
@@ -1680,11 +1670,10 @@ Element.implement({
 	*/
 
 	getProperties: function(){
-		var result = {};
-		Array.each(arguments, function(attribute){
-			result[attribute] = this.getProperty(attribute);
-		}, this);
-		return result;
+		var args = $A(arguments);
+		return args.map(function(attr){
+			return this.getProperty(attr);
+		}, this).associate(args);
 	},
 
 	/*
@@ -1715,11 +1704,10 @@ Element.implement({
 	*/
 
 	setProperty: function(attribute, value){
-		if (!$chk(value)) return this.removeProperty(attribute);
-		var key = Element.Attributes.Properties[attribute];
-		value = (Element.Attributes.Booleans[attribute] && value) ? attribute : value;
-		if (key) this[key] = value;
-		this.setAttribute(attribute, value);
+		var EA = Element.Attributes, key = EA.Props[attribute], hasValue = $defined(value);
+		if (key && EA.Bools[attribute]) value = (value || !hasValue) ? true : false;
+		else if (!hasValue) return this.removeProperty(attribute);
+		(key) ? this[key] = value : this.setAttribute(attribute, value);
 		return this;
 	},
 
@@ -1787,9 +1775,8 @@ Element.implement({
 	*/
 
 	removeProperty: function(attribute){
-		var key = Element.Attributes.Properties[attribute];
-		if (key) this[key] = Element.Attributes.Booleans[attribute] ? false : '';
-		this.removeAttribute(attribute);
+		var EA = Element.Attributes, key = EA.Props[attribute], isBool = (key && EA.Bools[attribute]);
+		(key) ? this[key] = (isBool) ? false : '' : this.removeAttribute(attribute);
 		return this;
 	},
 
@@ -1852,50 +1839,7 @@ Element.Setters = new Hash({
 	*/
 
 	html: function(){
-		this.innerHTML = Array.join(arguments, '');
-	},
-
-	/*
-	Element Setter: text
-		Sets the inner text of the Element.
-
-	Syntax:
-		>myElement.set('text', text);
-
-	Arguments:
-		text - (string) The new text content for the Element.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-		[/html]
-
-		[javascript]
-			$('myElement').set('text', 'some text') //the text of myElement is now = 'some text'
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">some text</div>
-		[/html]
-	*/
-
-	text: function(text){
-		if (this.get('tag') == 'style'){
-			if (Browser.Engine.trident){
-				this.styleSheet.cssText = text;
-			} else {
-				if (this.firstChild) this.removeChild(this.firstChild);
-				this.appendText(text);
-			}
-		} else {
-			var innerText = this.innerText;
-			this[$defined(innerText) ? 'innerText' : 'textContent'] = text;
-		}
+		this.innerHTML = Array.flatten(arguments).join('');
 	}
 
 });
@@ -1974,64 +1918,6 @@ Element.Getters = new Hash({
 
 	tag: function(){
 		return this.tagName.toLowerCase();
-	},
-
-	/*
-	Element Getter: html
-		returns the innerHTML of the Element.
-
-	Syntax:
-		>myElement.get('html');
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">ciao</div>
-		[/html]
-
-		[javascript]
-			$('myElement').get('html');
-		[/javascript]
-
-		Result: ciao
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
-	*/
-
-	html: function(){
-		return this.innerHTML;
-	},
-
-	/*
-	Element Getter: text
-		Gets the inner text of the Element.
-
-	Syntax:
-		>var myText = myElement.get('text');
-
-	Returns:
-		(string) The text of the Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">my text</div>
-		[/html]
-
-		[javascript]
-			var myText = $('myElement').get('text'); //myText = 'my text';
-		[/javascript]
-	*/
-
-	text: function(){
-		if (this.get('tag') == 'style') return (Browser.Engine.trident) ? this.styleSheet.cssText : this.innerHTML;
-		var innerText = this.innerText;
-		var textContent = this.textContent;
-		return $pick(innerText, textContent);
 	}
 
 });
@@ -2092,20 +1978,20 @@ Native.implement([Element, Window, Document], {
 
 });
 
-Element.Attributes = {
+Element.Attributes = new Hash({
+	Props: {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'},
+	Bools: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'],
+	Camels: ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap']
+});
 
-	Properties: {
-		'accesskey': 'accessKey', 'cellpadding': 'cellPadding', 'cellspacing': 'cellSpacing', 'colspan': 'colSpan',
-		'class': 'className', 'for': 'htmlFor', 'frameborder': 'frameBorder', 'maxlength': 'maxLength', 'readonly': 'readOnly',
-		'rowspan': 'rowSpan', 'tabindex': 'tabIndex', 'usemap': 'useMap', 'value': 'value'
-	},
-
-	Booleans: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer']
-
-};
-
-Element.Attributes.Booleans = Element.Attributes.Booleans.associate(Element.Attributes.Booleans);
-Hash.merge(Element.Attributes.Properties, Element.Attributes.Booleans);
+(function(EA){
+	var EAB = EA.Bools, EAC = EA.Camels;
+	EA.Bools = EAB = EAB.associate(EAB);
+	Hash.extend(Hash.merge(EA.Props, EAB), EAC.associate(EAC.map(function(v){
+		return v.toLowerCase();
+	})));
+	EA.remove('Camels');
+})(Element.Attributes);
 
 var Garbage = {
 
