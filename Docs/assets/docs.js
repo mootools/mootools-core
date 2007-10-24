@@ -8,7 +8,6 @@ var Docs = {
 			autoCancel: true, 
 			onComplete: Docs.update,
 			isSuccess: function() {
-				alert(this.status);
 				return (!this.status && location.protocol == "file:" || (this.status >= 200) && (this.status < 300));
 			}
 		});
