@@ -625,7 +625,7 @@ Element.Inserters = new Hash({
 
 	top: function(context, element){
 		var first = element.firstChild;
-		(first) ? element.insertBefore(context, first) : element.appendChild(this);
+		(first) ? element.insertBefore(context, first) : element.appendChild(context);
 	}
 
 });
