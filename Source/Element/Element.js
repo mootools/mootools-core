@@ -78,7 +78,7 @@ var Element = new Native({
 	},
 
 	afterImplement: function(key, value){
-		Elements.implement(key, Elements.multi(key));
+		if (!Array[key]) Elements.implement(key, Elements.multi(key));
 		Element.Prototype[key] = value;
 	}
 
@@ -678,7 +678,7 @@ Element.implement({
 
 	/*
 	Method: set
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Setters> Hash.
+		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Properties> Hash.
 
 	Syntax:
 		>myElement.set(property[, value]);
@@ -715,8 +715,8 @@ Element.implement({
 		[/javascript]
 
 	Notes:
-		- All additional arguments are passed to the method of the <Element.Setters> Hash.
-		- If no matching property is found in <Element.Setters>, it falls back to settimg attributes of the element, making this method the perfect shortcut.
+		- All additional arguments are passed to the method of the <Element.Properties> Hash.
+		- If no matching property is found in <Element.Properties>, it falls back to settimg attributes of the element, making this method the perfect shortcut.
 
 	See Also:
 		<Element>, <Element.Setters>, <Element.setStyles>, <Element.addEvents>
@@ -728,15 +728,15 @@ Element.implement({
 				for (var p in prop) this.set(p, prop[p]);
 				break;
 			case 'string':
-				var setter = Element.Setters.get(prop);
-				(setter) ? setter.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
+				var property = Element.Properties.get(prop);
+				(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
 		}
 		return this;
 	},
 
 	/*
 	Method: get
-		This is a "dynamic arguments" method. The first argument can be one of the properties of the <Element.Getters> Hash.
+		This is a "dynamic arguments" method. The first argument can be the one of the Element.Properties Hash get value.
 
 	Syntax:
 		>myElement.get(property);
@@ -745,7 +745,7 @@ Element.implement({
 		property - (mixed) Accepts a string for getting the value of a certain property.
 
 	Returns:
-		(mixed) Whatever the result of the function in the <Element.Getters> Hash is, or the value of the corresponding attribute.
+		(mixed) Whatever the result of the function in the Element.Properties Hash get value is, or the value of the corresponding attribute.
 
 	Examples:
 		Using Custom Getters:
@@ -756,20 +756,20 @@ Element.implement({
 
 		Fallback to Element Attributes:
 		[javascript]
-			var id = $('myDiv').get('id); //returns 'myDiv'
+			var id = $('myDiv').get('id'); //returns 'myDiv'
 			var value = $('myInput').get('value'); //returns this input element's value
 		[/javascript]
 
 	Notes:
-		- If no matching property is found in Element.Getters, it falls back to gettimg attributes of the element.
+		- If no matching property is found in Element.Properties, or if the Element.Properties property has not a getter, it falls back to gettimg attributes of the element.
 
 	See Also:
-		<Element>, <Element.Getters>
+		<Element>, <Element.Properties>
 	*/
 
 	get: function(prop){
-		var getter = Element.Getters.get(prop);
-		return (getter) ? getter.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
+		var property = Element.Properties.get(prop);
+		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
 
 	/*
@@ -799,8 +799,8 @@ Element.implement({
 	*/
 
 	erase: function(prop){
-		var eraser = Element.Erasers.get(prop);
-		(eraser) ? eraser.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
+		var property = Element.Properties.get(prop);
+		(property && property.erase) ? property.erase.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
 		return this;
 	},
 
@@ -1807,138 +1807,132 @@ TextNode.implement({
 
 Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
 
-Element.Setters = new Hash({
+Element.Properties = new Hash;
 
-	style: function(text){
-		this.style.cssText = text;
+Element.Properties.style = {
+
+	set: function(){
+		this.style.cssText = '';
 	},
 
-	/*
-	Element Setter: html
-		Sets the innerHTML of the Element.
-
-	Syntax:
-		>myElement.set('html', [htmlString[, htmlString2[, htmlString3[, ..]]]);
-
-	Arguments:
-		Any number of string paramters with html.
-
-	Returns:
-		(element) This Element.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-		[/html]
-
-		[javascript]
-			$('myElement').set('html', '<div></div>', '<p></p>');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement">
-				<div></div>
-				<p></p>
-			</div>
-		[/html]
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
-	*/
-
-	html: function(){
-		this.innerHTML = Array.flatten(arguments).join('');
-	}
-
-});
-
-Element.Getters = new Hash({
-
-	style: function(){
+	get: function(){
 		return this.style.cssText;
 	},
 
-	/*
-	Element Getter: value
-		Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
-
-	Syntax:
-		>var value = myElement.get('value');
-
-	Returns:
-		(mixed) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
-
-	Example:
-		HTML:
-		[html]
-			<form id="myForm">
-				<select>
-					<option value="volvo">Volvo</option>
-					<option value="saab" selected="yes">Saab</option>
-					<option value="opel">Opel</option>
-					<option value="audi">Audi</option>
-				</select>
-			</form>
-		[/html]
-
-		Result:
-		[javascript]
-			var result = $('myForm').getElement('select').get('value'); // returns 'Saab'
-		[/javascript]
-	*/
-
-	value: function(){
-		switch (Element.get(this, 'tag')){
-			case 'select':
-				var values = [];
-				Array.each(this.options, function(option){
-					if (option.selected) values.push(option.value);
-				});
-				return (this.multiple) ? values : values[0];
-			case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
-			default: return $pick(this.value, false);
-		}
-	},
-
-	/*
-	Element Getter: tag
-		Returns the tagName of the Element in lower case.
-
-	Syntax:
-		>var myTag = myElement.get('tag');
-
-	Returns:
-		(string) The tag name in lower case
-
-	Example:
-		HTML:
-		[html]
-			<img id="myImage" />
-		[/html]
-
-		[javascript]
-			var myTag = $('myImage').get('tag') // myTag = 'img';
-		[/javascript]
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.tagName>
-	*/
-
-	tag: function(){
-		return this.tagName.toLowerCase();
-	}
-
-});
-
-Element.Erasers = new Hash({
-
-	style: function(){
+	erase: function(){
 		this.style.cssText = '';
 	}
 
-});
+};
+
+/*
+Element Property: value
+	Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
+
+Get Syntax:
+	>var value = myElement.get('value');
+
+Get Returns:
+	(mixed) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
+
+Get Example:
+	HTML:
+	[html]
+		<form id="myForm">
+			<select>
+				<option value="volvo">Volvo</option>
+				<option value="saab" selected="yes">Saab</option>
+				<option value="opel">Opel</option>
+				<option value="audi">Audi</option>
+			</select>
+		</form>
+	[/html]
+
+	Result:
+	[javascript]
+		var result = $('myForm').getElement('select').get('value'); // returns 'Saab'
+	[/javascript]
+*/
+	
+Element.Properties.value = {get: function(){
+	switch (Element.get(this, 'tag')){
+		case 'select':
+			var values = [];
+			Array.each(this.options, function(option){
+				if (option.selected) values.push(option.value);
+			});
+			return (this.multiple) ? values : values[0];
+		case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
+		default: return $pick(this.value, false);
+	}
+}};
+
+/*
+Element Property: tag
+	Returns the tagName of the Element in lower case.
+
+Get Syntax:
+	>var myTag = myElement.get('tag');
+
+Get Returns:
+	(string) The tag name in lower case
+
+Get Example:
+	HTML:
+	[html]
+		<img id="myImage" />
+	[/html]
+
+	[javascript]
+		var myTag = $('myImage').get('tag') // myTag = 'img';
+	[/javascript]
+
+See Also:
+	<http://developer.mozilla.org/en/docs/DOM:element.tagName>
+*/
+	
+Element.Properties.tag = {get: function(){
+	return this.tagName.toLowerCase();
+}};
+
+/*
+Element Property: html
+	Sets the innerHTML of the Element.
+
+Set Syntax:
+	>myElement.set('html', [htmlString[, htmlString2[, htmlString3[, ..]]]);
+
+Set Arguments:
+	Any number of string paramters with html.
+
+Set Returns:
+	(element) This Element.
+
+Set Example:
+	HTML:
+	[html]
+		<div id="myElement"></div>
+	[/html]
+
+	[javascript]
+		$('myElement').set('html', '<div></div>', '<p></p>');
+	[/javascript]
+
+	Result:
+	[html]
+		<div id="myElement">
+			<div></div>
+			<p></p>
+		</div>
+	[/html]
+
+See Also:
+	<http://developer.mozilla.org/en/docs/DOM:element.innerHTML>
+*/
+
+Element.Properties.html = {set: function(){
+	return this.innerHTML = Array.flatten(arguments).join('');
+}};
 
 Element.walk = function(element, walk, start, match, all){
 	var el = element[start || walk];

@@ -264,8 +264,9 @@ Native: Element
 */
 
 /*
-Element Setter: slide
+Element Property: slide
 	sets a default Fx.Slide instance for an element
+	gets the previously setted Fx.Slide instance or a new one with default options
 
 Syntax:
 	>el.set('slide'[, options]);
@@ -281,18 +282,7 @@ Example:
 		el.set('slide', {duration: 'long', transition: 'bounce:out'});
 		el.slide('in');
 	[/javascript]
-*/
-
-Element.Setters.slide = function(options){
-	var slide = this.retrieve('slide');
-	if (slide) slide.cancel();
-	return this.store('slide', new Fx.Slide(this, $extend({link: 'cancel'}, options)));
-};
-
-/*
-Element Getter: slide
-	gets the previously setted Fx.Slide instance or a new one with default options
-
+	
 Syntax:
 	>el.get('slide');
 
@@ -311,9 +301,19 @@ Example:
 	[/javascript]
 */
 
-Element.Getters.slide = function(options){
-	if (options || !this.retrieve('slide')) this.set('slide', options);
-	return this.retrieve('slide');
+Element.Properties.slide = {
+
+	set: function(options){
+		var slide = this.retrieve('slide');
+		if (slide) slide.cancel();
+		return this.store('slide', new Fx.Slide(this, $extend({link: 'cancel'}, options)));
+	},
+	
+	get: function(options){
+		if (options || !this.retrieve('slide')) this.set('slide', options);
+		return this.retrieve('slide');
+	}
+
 };
 
 Element.implement({
@@ -343,7 +343,12 @@ Element.implement({
 
 	slide: function(how, options){
 		how = how || 'toggle';
-		this.get('slide', options).start(how);
+		var slide = this.get('slide', options);
+		switch(how){
+			case 'hide': slide.hide(); break;
+			case 'show': slide.show(); break;
+			default: slide.start(how);
+		}
 		return this;
 	}
 

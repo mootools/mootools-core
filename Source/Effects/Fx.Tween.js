@@ -109,59 +109,55 @@ Native: Element
 
 
 /*
-Element Setter: tween
-	sets a default Fx.Tween instance for an element
+Element Property: tween
+	sets and gets a default Fx.Tween instance for an element
 
-Syntax:
+Set Syntax:
 	>el.set('tween'[, options]);
 
-Arguments:
-	options - (object) the Fx.Tween options.
+Get Syntax:
+	>el.get('tween', property[, options]);
 
-Returns:
+Set Arguments:
+	options - (object) the Fx.Tween options.
+	
+Get Arguments:
+	property - (string) the Fx.Tween property argument.
+	options - (object) the Fx.Tween options.
+	
+Set Returns:
 	(element) this element
 
-Example:
+Get Returns:
+	(object) The Fx.Tween instance
+
+Set Example:
 	[javascript]
-		el.set('tween', {duration: 'long', transition: 'bounce:out'});
+		el.set('tween', {duration: 'long'});
 		el.tween('opacity', 0);
 	[/javascript]
-*/
-
-Element.Setters.tween = function(options){
-	var tween = this.retrieve('tween');
-	if (tween) tween.cancel();
-	return this.store('tween', new Fx.Tween(this, null, $extend({link: 'cancel'}, options)));
-};
-
-/*
-Element Getter: tween
-	gets the previously setted Fx.Tween instance or a new one with default options.
-
-Syntax:
-	>el.get('tween');
-
-Arguments:
-	property - (string) the Fx.Tween property you want to associate with the instance.
-	options - (object, optional) the Fx.Tween options.
-
-Returns:
-	(object) the Fx.Tween instance
-
-Example:
+	
+Get Example:
 	[javascript]
-		el.set('tween', {duration: 'long', transition: 'bounce:out'});
-		el.tween('height', 0);
-
-		el.get('tween', 'height'); //the Fx.Tween instance, with height as property
+		el.get('tween', 'opacity', {duration: 'long'}).start(0);
 	[/javascript]
 */
 
-Element.Getters.tween = function(property, options){
-	if (options || !this.retrieve('tween')) this.set('tween', options);
-	var tween = this.retrieve('tween');
-	tween.property = property;
-	return tween;
+Element.Properties.tween = {
+	
+	set: function(options){
+		var tween = this.retrieve('tween');
+		if (tween) tween.cancel();
+		return this.store('tween', new Fx.Tween(this, null, $extend({link: 'cancel'}, options)));
+	},
+	
+	get: function(property, options){
+		if (options || !this.retrieve('tween')) this.set('tween', options);
+		var tween = this.retrieve('tween');
+		tween.property = property;
+		return tween;
+	}
+	
 };
 
 Element.implement({

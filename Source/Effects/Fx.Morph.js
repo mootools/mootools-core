@@ -152,45 +152,34 @@ Native: Element
 */
 
 /*
-Element Setter: morph
-	sets a default Fx.Morph instance for an element
+Element Property: morph
+	sets / gets a default Fx.Morph instance for an element
 
-Syntax:
+Set Syntax:
 	>el.set('morph'[, options]);
 
-Arguments:
+Set Arguments:
 	options - (object) the Fx.Morph options.
 
-Returns:
+Set Returns:
 	(element) this element
 
-Example:
+Set Example:
 	[javascript]
 		el.set('morph', {duration: 'long', transition: 'bounce:out'});
 		el.morph({height: 100, width: 100});
 	[/javascript]
-*/
-
-Element.Setters.morph = function(options){
-	var morph = this.retrieve('morph');
-	if (morph) morph.cancel();
-	return this.store('morph', new Fx.Morph(this, $extend({link: 'cancel'}, options)));
-};
-
-/*
-Element Getter: morph
-	gets the previously setted Fx.Morph instance or a new one with default options
-
-Syntax:
+	
+Get Syntax:
 	>el.get('morph');
 
-Arguments:
+Get Arguments:
 	options - (object, optional) the Fx.Morph options. if passed in will generate a new instance.
 
-Returns:
+Get Returns:
 	(object) the Fx.Morph instance
 
-Example:
+Get Example:
 	[javascript]
 		el.set('morph', {duration: 'long', transition: 'bounce:out'});
 		el.morph({height: 100, width: 100});
@@ -199,9 +188,19 @@ Example:
 	[/javascript]
 */
 
-Element.Getters.morph = function(options){
-	if (options || !this.retrieve('morph')) this.set('morph', options);
-	return this.retrieve('morph');
+Element.Properties.morph = {
+	
+	set: function(options){
+		var morph = this.retrieve('morph');
+		if (morph) morph.cancel();
+		return this.store('morph', new Fx.Morph(this, $extend({link: 'cancel'}, options)));
+	},
+	
+	get: function(options){
+		if (options || !this.retrieve('morph')) this.set('morph', options);
+		return this.retrieve('morph');
+	}
+	
 };
 
 Element.implement({

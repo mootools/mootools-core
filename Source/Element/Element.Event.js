@@ -259,9 +259,9 @@ Native: Element
 	These methods are also available on window and document.
 */
 
-Element.Setters.events = function(events){
+Element.Properties.events = {set: function(events){
 	this.addEvents(events);
-};
+}};
 
 Native.implement([Element, Window, Document], {
 

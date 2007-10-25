@@ -11,32 +11,32 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Setters.extend({
+Element.Properties.styles = {set: function(styles){
+	this.setStyles(styles);
+}};
 
-	styles: function(styles){
-		this.setStyles(styles);
-	},
-
+Element.Properties.opacity = {
+	
 	/*
-	Element Setter: opacity
-		Sets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
+	Element Property: opacity
+		Sets / Gets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
 
-	Syntax:
+	Set Syntax:
 		>Element.set('opacity', opacity);
 
-	Arguments:
+	Set Arguments:
 		opacity - (float) A values from 0.0 to 1.0, where 1.0 is visible and 0.0 is hidden.
 
-	Returns:
+	Set Returns:
 		(element) This element.
 
-	Example:
+	Set Example:
 		[javascript]
 			$('myElement').set('opacity', 0.5) //make it 50% transparent
 		[/javascript]
 	*/
 
-	opacity: function(opacity){
+	set: function(opacity){
 		if (opacity == 0){
 			if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
 		} else {
@@ -46,12 +46,12 @@ Element.Setters.extend({
 		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = opacity;
 		this.store('opacity', opacity);
+	},
+	
+	get: function(){
+		return this.retrieve('opacity', 1);
 	}
 
-});
-
-Element.Getters.opacity = function(){
-	return this.retrieve('opacity', 1);
 };
 
 Element.implement({

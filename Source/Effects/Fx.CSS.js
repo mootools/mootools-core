@@ -63,6 +63,12 @@ Fx.CSS = new Class({
 		return returned;
 	},
 	
+	//renders the change to an element
+	
+	render: function(element, property, value){
+		element.setStyle(property, this.serve(value, this.options.unit));
+	},
+	
 	//searches inside the page css to find the values for a selector
 	
 	search: function(selector){
@@ -79,12 +85,6 @@ Fx.CSS = new Class({
 			});
 		});
 		return to;
-	},
-	
-	//renders the change to an element
-	
-	render: function(element, property, value){
-		element.setStyle(property, this.serve(value, this.options.unit));
 	}
 	
 });
