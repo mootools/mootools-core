@@ -1,4 +1,2 @@
-Hash.alias('getKeys', 'keys');
-Hash.alias('getValues', 'values');
-Hash.alias('has', 'hasKey');
+Hash.alias('getKeys', 'keys').alias('getValues', 'values').alias('has', 'hasKey');
 var Abstract = Hash;

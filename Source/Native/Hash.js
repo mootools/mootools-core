@@ -567,6 +567,4 @@ Hash.implement({
 
 });
 
-Hash.alias('keyOf', 'indexOf');
-Hash.alias('hasValue', 'contains');
-Hash.alias('remove', 'erase');
+Hash.alias('keyOf', 'indexOf').alias('hasValue', 'contains').alias('remove', 'erase');

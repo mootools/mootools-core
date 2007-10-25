@@ -1326,3 +1326,21 @@ Elements Method: constructor {#Elements:constructor}
 ### See Also:
 
 [$$][], [$][], [Element][], [Elements][], [Array][]
+
+Elements Method: filterBy {#Elements:filterBy}
+----------------------------------------------
+
+filters a collection of element by a given tagname.
+If [Selectors.js][] is included, this method will be able to filter by any selector
+
+### Syntax:
+
+	var filteredElements = elements.filterBy(selector);
+
+### Arguments:
+
+* selector - (mixed) a single css selector.
+
+### Returns:
+
+* (array) A subset of this [Elments][] instance.

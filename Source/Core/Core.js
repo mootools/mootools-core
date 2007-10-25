@@ -44,19 +44,24 @@ var Native = function(options){
 		object.prototype.$family = {name: family};
 		Native.typize(object, family);
 	}
+	
+	var add = function(obj, name, method, force){
+		if (!browser || force || !obj.prototype[name]) obj.prototype[name] = method;
+		if (generics) Native.genericize(obj, name, browser);
+		afterImplement.call(obj, name, method);
+		return obj;
+	};
 
-	object.implement = function(properties, force){
-		for (var property in properties){
-			if (!browser || force || !this.prototype[property]) this.prototype[property] = properties[property];
-			if (generics) Native.genericize(this, property, browser);
-			afterImplement.call(this, property, properties[property]);
-		}
+	object.implement = function(a1, a2, a3){
+		if (typeof a1 == 'string') return add(this, a1, a2, a3);
+		for (var p in a1) add(this, p, a1[p], a2);
+		return this;
 	};
 
 	object.alias = function(existing, property, force){
-		if (!browser || force || !this.prototype[property]) this.prototype[property] = this.prototype[existing];
-		if (generics && !this[property]) this[property] = this[existing];
-		afterImplement.call(this, property, this[property]);
+		existing = this.prototype[existing];
+		if (existing) add(this, property, existing, force);
+		return this;
 	};
 
 	return object;

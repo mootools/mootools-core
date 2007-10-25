@@ -490,7 +490,7 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 	
 	var anArray = [0, 1, 2, 3, 4];
 	var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
-	
+
 
 
 Function: $each {#each}

@@ -78,7 +78,7 @@ var Element = new Native({
 	},
 
 	afterImplement: function(key, value){
-		Elements.prototype[key] = Elements.multi(key);
+		Elements.implement(key, Elements.multi(key));
 		Element.Prototype[key] = value;
 	}
 
@@ -249,6 +249,16 @@ var Elements = new Native({
 		return (options.xtend) ? $extend(elements, this) : elements;
 	}
 
+});
+
+Elements.implement({
+	
+	filterBy: function(selector){
+		return this.filter(function(item){
+			return item.match(selector);
+		});
+	}
+	
 });
 
 Elements.multi = function(property){
@@ -1795,7 +1805,7 @@ TextNode.implement({
 
 });
 
-Element.alias('dispose', 'remove');
+Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
 
 Element.Setters = new Hash({
 
