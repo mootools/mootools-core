@@ -17,6 +17,10 @@ License:
 	list-style: none;
 }
 
+#submenu ul { 
+	list-style-type: square;
+}
+
 /* @end */
 
 /* @group Base */
@@ -169,6 +173,30 @@ h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 4px;
 }
 
+#submenu {
+	background: #CBCEBD;
+	color: #424D1A;
+	padding: 2px 30px;
+	max-height: 200px;
+	overflow: auto;
+	margin-bottom: 4px;
+}
+
+#submenu a {
+	color: #424D1A;
+	display: block;
+}
+
+#submenu a:hover {
+	text-decoration: underline;
+	color: #424D1A;
+	display: block;
+}
+
+#submenu ul.subgroup { 
+	padding-left: 20px;
+}
+
 p {
 	color: #575d67;
 }
@@ -235,7 +263,7 @@ div#footer p {
 }
 
 #docs ul li p {
-  padding: 0px;
+	padding: 0px;
 }
 
 #docs pre {

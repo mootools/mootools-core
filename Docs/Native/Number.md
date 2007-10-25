@@ -76,7 +76,7 @@ Executes the function passed in the specified number of times.
 ### Arguments:
 
 1. fn   - (function) The function which should be executed on each iteration of the loop. This function is passed the current iteration's index.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function.bind](/Native/#Function:bind).
+2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Native/#Function:bind).
 
 ### Example:
 

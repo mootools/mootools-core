@@ -1,3 +1,8 @@
+[$]: /Element/#dollar
+[Element:addEvent]: /Element/#addEvent
+[Element:makeDraggable]: /Element/#makeDraggable
+
+
 Class: Drag {#Drag}
 ===================
 
@@ -59,7 +64,7 @@ Drag.Move requires an XHTML doctype.
 
 ### See Also:
 
-<http://www.w3schools.com/css/css_units.asp>
+[w3schools: CSS Units](http://www.w3schools.com/css/css_units.asp)
 
 
 
@@ -86,7 +91,7 @@ Attaches the mouse listener to the handle.
 
 ### See Also:
 
-<$>, <Element.makeDraggable>, <Drag.detach>, <Element.addEvent>
+[$][], [Element:makeDraggable][], [Drag:detach](#detach), [Element:addEvent][]
 
 
 
@@ -113,7 +118,7 @@ Detaches the mouse listener from the handle.
 
 ### See Also:
 
-<$>, <Element.makeDraggable>, <Element.addEvent>
+[$][], [Element:makeDraggable][], [Element:addEvent][]
 
 
 
@@ -144,7 +149,7 @@ Stops (removes) all attached events from the Drag instance and executes the onCo
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
@@ -159,7 +164,7 @@ Adds drag-to-resize behavior to an Element using supplied options.
 
 ### Arguments:
 
-1. options - (object, optional) See <Drag> for acceptable options.
+1. options - (object, optional) See [Drag][] for acceptable options.
 
 ### Returns:
 
@@ -175,4 +180,4 @@ Adds drag-to-resize behavior to an Element using supplied options.
 
 ### See Also:
 
-<Drag>
+[Drag](#Drag)

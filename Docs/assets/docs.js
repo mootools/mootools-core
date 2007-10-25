@@ -1,10 +1,11 @@
 var Docs = {
 	
+	anchorsPath: '../Docs/',
+	
 	start: function(){
-		
+	
 		var docRequest = new Ajax({
-			method: 'get', 
-			async: false,
+			method: 'get',
 			autoCancel: true, 
 			onComplete: Docs.update,
 			isSuccess: function() {
@@ -17,11 +18,12 @@ var Docs = {
 		
 		links.addEvent('click', function(){
 			var path = this.get('href').split('#')[1] + '.md';
-
-			docRequest.setURL(path).send();
+			$('docs-wrapper').set('html', '<h2>Loading...</h2>');
 
 			parents.removeClass('selected');
 			this.getParent('h3').addClass('selected');
+			
+			docRequest.setURL(path).send();
 		});
 		
 		var link = $E('#menu a[href=' + window.location.hash + ']') || $E('#menu a');
@@ -31,7 +33,15 @@ var Docs = {
 	
 	update: function(markdown){
 		
-		$('docs-wrapper').set('html', Docs.parse(markdown));
+		var wrapper = $('docs-wrapper'), submenu = $('submenu');
+		if (!submenu) submenu = new Element('div').set('id', 'submenu');
+		
+		var parse = Docs.parse(markdown);
+		wrapper.set('html', parse.innerHTML);
+
+		$E('#menu-wrapper h3.selected').getParent().grab(submenu.empty());	
+		var methods = Docs.methods(parse, submenu);
+		Docs.scroll();
 		
 	},
 	
@@ -51,7 +61,51 @@ var Docs = {
 		
 		temp.getElement('h1').set('class', 'first');
 		
-		return temp.innerHTML;
+		return temp;
+		
+	},
+	
+	methods: function(parse, wrapper) {
+		
+		var headers = parse.getElements('h1');
+		var anchors = parse.getElements('h2[id]');
+		
+		headers.each(function(header, i) {
+			var group = new Element('ul').inject(wrapper);
+			var head = header.get('text').split(':');
+			head = (head.length == 1) ? head[0] : head[1];
+			var section = header.id.split(':')[0];
+			
+			var lnk = '<a href="' + Docs.anchorsPath + '#' + header.id+ '">' + head + '</a>';
+			new Element('li').set('html', lnk).inject(group);
+			
+			var subgroup = new Element('ul', {'class': 'subgroup'}).inject(group);
+						
+			anchors.each(function(anchor) {
+				var sep = anchor.id.match(':');
+				var subSection = anchor.id.split(':')[0];
+				
+				if (section == subSection || (!i && !sep)) {
+					var method = anchor.get('text').replace(section, '');
+					lnk = '<a href="' + Docs.anchorsPath + '#' + anchor.id + '">' + method + '</a>';
+					new Element('li').set('html', lnk).inject(subgroup);
+				}
+			});
+			
+		});
+		
+	},
+	
+	scroll: function() {
+		if (!Docs.scrolling) Docs.scrolling = new Fx.Scroll('docs', {'offset': {x: 0, y: -4}});
+			
+		$$('#submenu a').each(function(anchor) {
+			anchor.addEvent('click', function(e) {
+				e.stop();
+				var lnk = $(anchor.href.split('#')[1]);
+				Docs.scrolling.toElement(lnk);
+			});
+		});
 		
 	}
 	

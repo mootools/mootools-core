@@ -1,3 +1,7 @@
+[$]: /Element/#dollar
+[Drag]: /Drag/#Drag
+
+
 Class: Drag.Move {#Drag.Move}
 =============================
 
@@ -5,7 +9,7 @@ Contains Drag.Move, Element.makeDraggable
 
 An extension to the base Drag class with additional functionality for dragging an Element.  Supports snapping and droppables.
 
-Inherits methods, properties, options and events from <Drag>.
+Inherits methods, properties, options and events from [Drag][].
 
 
 
@@ -26,7 +30,7 @@ Drag.Move Method: constructor {#Drag:constructor}
 All the base Drag options, plus:
 	
 * container - (element) If an Element is passed, drag will be limited to the passed Element's size and position.
-* overflown - (array) Array of nested scrolling containers. See <Element.getPosition>.
+* overflown - (array) Array of nested scrolling containers. See [Element:getPosition](/Element/#getPosition).
 * droppables - (array) The Elements that the draggable can drop into.
 	
 	Interaction with droppable work with events fired on the doppable element or, for 'emptydrop', on the dragged element.
@@ -70,7 +74,7 @@ All the base Drag properties, plus:
 
 ### See Also:
 
-<Drag>
+[Drag][]
 
 
 
@@ -90,7 +94,7 @@ Checks if the Element is above a droppable and fires the drop event. Else, fires
 	});
 
 	var myMove = new Drag.Move(myElement, {
-		onSnap: function(){ // due to MooTool's inheritance, all <Drag>'s Events are also available.
+		onSnap: function(){ // due to MooTool's inheritance, all [Drag][]'s Events are also available.
 			this.moved = this.moved || 0;
 			this.moved++;
 			if(this.moved > 1000){
@@ -102,14 +106,14 @@ Checks if the Element is above a droppable and fires the drop event. Else, fires
 
 ### See Also:
 
-<Drag.stop>
+[Drag:stop](/Drag/#stop)
 
 
 
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
@@ -124,7 +128,7 @@ Adds drag-to-move behavior to an Element using supplied options.
 
 ### Arguments:
 
-1. options - (object, optional) See <Drag> and <Drag.Move> for acceptable options.
+1. options - (object, optional) See [Drag][] and [Drag.Move](#Drag.Move) for acceptable options.
 
 ### Returns:
 
@@ -140,4 +144,4 @@ Adds drag-to-move behavior to an Element using supplied options.
 
 ### See Also:
 
-<Drag>, <Drag.Move>
+[Drag][], [Drag.Move](#Drag.Move)

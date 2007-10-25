@@ -250,7 +250,7 @@ Empties the hash.
 	
 	var hash = new Hash({
 		'name': 'John',
-		'last### Name': 'Doe'
+		'lastName': 'Doe'
 	});
 	hash.empty();
 	//hash now holds an empty object: {}
