@@ -248,6 +248,82 @@ String.implement({
 
 	toFloat: function(){
 		return parseFloat(this);
+	},
+	
+	/*
+	Method: hexToRgb
+		Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
+		>'#ffffff', #fff', 'ffffff', or 'fff'
+
+	Syntax:
+		>myString.hexToRgb([array]);
+
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+	Returns:
+		(mixed) A string representing the color in RGB. If the array flag is set, an array will be returned instead.
+
+	Example:
+		[javascript]
+			"#123".hexToRgb(); //returns "rgb(17,34,51)"
+			"112233".hexToRgb(); //returns "rgb(17,34,51)"
+			"#112233".hexToRgb(true); //returns [17,34,51]
+		[/javascript]
+
+	See Also:
+		 <Array.hexToRgb>
+	*/
+
+	hexToRgb: function(array){
+		var hex = this.match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
+		return (hex) ? hex.slice(1).hexToRgb(array) : null;
+	},
+
+	/*
+	Method: rgbToHex
+		Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.
+		>"rgb(255,255,255)", or "rgba(255,255,255,1)"
+
+	Syntax:
+		>myString.rgbToHex([array]);
+
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+	Returns:
+		(mixed) A string representing the color in hexadecimal,
+		or transparent if the fourth value of rgba in the input string is 0. If the array flag is set, an array will be returned instead.
+
+	Example:
+		[javascript]
+			"rgb(17,34,51)".rgbToHex(); //returns "#112233"
+			"rgb(17,34,51)".rgbToHex(true); //returns ['11','22','33']
+			"rgba(17,34,51,0)".rgbToHex(); //returns "transparent"
+		[/javascript]
+
+	See Also:
+		 <Array.rgbToHex>
+	*/
+
+	rgbToHex: function(array){
+		var rgb = this.match(/\d{1,3}/g);
+		return (rgb) ? rgb.rgbToHex(array) : null;
+	},
+	
+	evaluate: function(){
+		(window.execScript) ? window.execScript(this) : window.setTimeout(this, 0);
+		return this;
+	},
+	
+	stripScripts: function(evaluate){
+		var scripts = '';
+		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
+			scripts += arguments[1] + '\n';
+			return '';
+		});
+		if (evaluate && scripts) scripts.evaluate();
+		return text;
 	}
 
 });

@@ -94,7 +94,7 @@ Hash.Cookie = new Class({
 	*/
 
 	save: function(){
-		var str = Json.encode(this.hash);
+		var str = JSON.encode(this.hash);
 		if (str.length > 4096) return false; //cookie would be truncated!
 		Cookie.set(this.name, str, this.options);
 		return true;
@@ -125,7 +125,7 @@ Hash.Cookie = new Class({
 	*/
 
 	load: function(){
-		this.hash = new Hash(Json.decode(Cookie.get(this.name), true));
+		this.hash = new Hash(JSON.decode(Cookie.get(this.name), true));
 	}
 
 });

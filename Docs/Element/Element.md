@@ -237,7 +237,7 @@ Does not overwrite document.getElementById.
 Element Method: set {#Element:set}
 ----------------------------
 
-This is a "dynamic arguments" method. The first argument can be one of the properties of the [Element.Setters][] Hash.
+This is a "dynamic arguments" method. The first argument can be one of the properties of the [Element.Properties][] Hash.
 
 ### Syntax:
 

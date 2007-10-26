@@ -294,36 +294,32 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.implement({
+/*
+Method: makeResizable
+	Adds drag-to-resize behaviour to an Element using supplied options.
 
-	/*
-	Method: makeResizable
-		Adds drag-to-resize behaviour to an Element using supplied options.
+Syntax:
+	>var myResize = myElement.makeResizable([options]);
 
-	Syntax:
-		>var myResize = myElement.makeResizable([options]);
+Arguments:
+	options - (object, optional) See <Drag> for acceptable options.
 
-	Arguments:
-		options - (object, optional) See <Drag> for acceptable options.
+Returns:
+	(object) The created Drag instance.
 
-	Returns:
-		(object) The created Drag instance.
+Example:
+	[javascript]
+		var myResize = $('myElement').makeResizable({
+			onComplete: function(){
+				alert('complete');
+			}
+		});
+	[/javascript]
 
-	Example:
-		[javascript]
-			var myResize = $('myElement').makeResizable({
-				onComplete: function(){
-					alert('complete');
-				}
-			});
-		[/javascript]
+See Also:
+	<Drag>
+*/
 
-	See Also:
-		<Drag>
-	*/
-
-	makeResizable: function(options){
-		return new Drag(this, $merge({modifiers: {'x': 'width', 'y': 'height'}}, options));
-	}
-
+Element.implement('makeResizable', function(options){
+	return new Drag(this, $merge({modifiers: {'x': 'width', 'y': 'height'}}, options));
 });

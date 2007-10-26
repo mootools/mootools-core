@@ -478,8 +478,7 @@ Array.implement({
 		this.length = 0;
 		return this;
 	},
-	
-	
+
 	/*
 	Method: flatten
 		Flattens a multidimensional array into a single array.
@@ -496,7 +495,7 @@ Array.implement({
 			varnewArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]
 		[/javascript]
 	*/
-	
+
 	flatten: function(){
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
@@ -505,6 +504,77 @@ Array.implement({
 			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
 		}
 		return array;
+	},
+	
+	/*
+	Method: hexToRgb
+		Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.
+		>['ff', 'ff', 'ff'], or ['f', 'f', 'f']
+
+	Syntax:
+		myArray.hexToRgb([array]);
+
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+	Returns:
+		(mixed) A string representing the color in RGB. If the array flag is set, an array will be returned instead.
+
+	Example:
+		[javascript]
+			["1", "2", "3"].hexToRgb(); //returns "rgb(17,34,51)"
+			["11", "22", "33"].hexToRgb(); //returns "rgb(17,34,51)"
+			["11", "22", "33"].hexToRgb(true); //returns [17,34,51]
+		[/javascript]
+
+	See Also:
+		 <String.hexToRgb>
+	*/
+
+	hexToRgb: function(array){
+		if (this.length != 3) return null;
+		var rgb = [];
+		for (var i = 0; i < 3; i++){
+			rgb.push(((this[i].length == 1) ? this[i] + this[i] : this[i]).toInt(16));
+		}
+		return array ? rgb : 'rgb(' + String(rgb) + ')';
+	},
+
+	/*
+	Method: rgbToHex
+		Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
+		>[255,255,255], or [255,255,255,1]
+
+	Syntax:
+		>myArray.rgbToHex([array]);
+
+	Arguments:
+		array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+	Returns:
+		(mixed) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input array is 0.
+		If the array flag is set, an array will be returned instead.
+
+	Example:
+		[javascript]
+			[17,34,51].rgbToHex(); //returns "#112233"
+			[17,34,51].rgbToHex(true); //returns ['11','22','33']
+			[17,34,51,0].rgbToHex(); //returns "transparent"
+		[/javascript]
+
+	See Also:
+		 <String.rgbToHex>
+	*/
+
+	rgbToHex: function(array){
+		if (this.length < 3) return null;
+		if (this.length == 4 && this[3] == 0 && !array) return 'transparent';
+		var hex = [];
+		for (var i = 0; i < 3; i++){
+			var bit = (this[i] - 0).toString(16);
+			hex.push((bit.length == 1) ? '0' + bit : bit);
+		}
+		return array ? hex : '#' + hex.join('');
 	}
 
 });

@@ -1,27 +1,27 @@
 /*
-Script: Json.js
-	Simple JSON encoder and decoder.
+Script: JSON.js
+	JSON encoder and decoder.
 
 License:
 	MIT-style license.
 */
 
 /*
-Class: Json
-	Simple Json parser and encoder.
+Class: JSON
+	JSON parser and encoder.
 
 See Also:
 	<http://www.json.org/>
 */
 
-var Json = new Hash({
+var JSON = new Hash({
 
 	/*
 	Method: encode
 		Converts an object or array to a JSON string.
 
 	Syntax:
-		>var myJson = Json.encode(obj);
+		>var myJSON = JSON.encode(obj);
 
 	Arguments:
 		obj - (object) The object to convert to string.
@@ -31,21 +31,21 @@ var Json = new Hash({
 
 	Example:
 		[javascript]
-			var fruitsJSON = Json.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
+			var fruitsJSON = JSON.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
 		[/javascript]
 	*/
 
 	encode: function(obj){
 		switch ($type(obj)){
 			case 'string':
-				return '"' + obj.replace(/[\x00-\x1f\\"]/g, Json.$replaceChars) + '"';
+				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
 			case 'array':
-				return '[' + String(obj.map(Json.encode).filter($defined)) + ']';
+				return '[' + String(obj.map(JSON.encode).filter($defined)) + ']';
 			case 'object': case 'hash':
 				var string = [];
 				Hash.each(obj, function(value, key){
-					var json = Json.encode(value);
-					if (json) string.push(Json.encode(key) + ':' + json);
+					var json = JSON.encode(value);
+					if (json) string.push(JSON.encode(key) + ':' + json);
 				});
 				return '{' + String(string) + '}';
 			case 'number': case 'boolean': return String(obj);
@@ -57,7 +57,7 @@ var Json = new Hash({
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
 	$replaceChars: function(chr){
-		return Json.$specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
+		return JSON.$specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
 	},
 
 	/*
@@ -65,7 +65,7 @@ var Json = new Hash({
 		Converts a JSON string into an JavaScript object.
 
 	Syntax:
-		var object = Json.decode(string[, secure]);
+		var object = JSON.decode(string[, secure]);
 
 	Arguments:
 		string - (string) The string to evaluate.
@@ -76,7 +76,7 @@ var Json = new Hash({
 
 	Example:
 		[javascript]
-			var myObject = Json.decode('{"apple":"red","lemon":"yellow"}'); //returns: {apple: 'red', lemon: 'yellow'}
+			var myObject = JSON.decode('{"apple":"red","lemon":"yellow"}'); //returns: {apple: 'red', lemon: 'yellow'}
 		[/javascript]
 
 	Credits:
@@ -93,8 +93,8 @@ var Json = new Hash({
 
 Native.implement([Hash, Array, String, Number], {
 
-	toJson: function(){
-		return Json.encode(this);
+	toJSON: function(){
+		return JSON.encode(this);
 	}
 
 });
