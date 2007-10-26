@@ -15,12 +15,12 @@ Element.implement({
 		return this.get('text');
 	},
 	
-	setText: function(){
-		return this.set('text');
+	setText: function(text){
+		return this.set('text', text);
 	},
 	
 	setHTML: function(){
-		return this.set('html');
+		return this.set('html', $A(arguments));
 	},
 	
 	getTag: function(){

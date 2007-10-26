@@ -180,43 +180,39 @@ Native: Element
 	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.implement({
+/*
+Method: makeDraggable
+	Makes an element draggable with the supplied options.
 
-	/*
-	Method: makeDraggable
-		Makes an element draggable with the supplied options.
+Syntax:
+	>var myDrag = myElement.makeDraggable([options]);
 
-	Syntax:
-		>var myDrag = myElement.makeDraggable([options]);
+Arguments:
+	options - (object) See <Drag.Move> and <Drag> for acceptable options.
 
-	Arguments:
-		options - (object) See <Drag.Move> and <Drag> for acceptable options.
+Returns:
+	(object) A new Drag.Move instance.
 
-	Returns:
-		(object) A new Drag.Move instance.
+Example:
+	[javascript]
+		var myDrag = $('myElement').makeDraggable({
+			snap: 0,
+			onStart: function(){
+				this.moved = 0;
+			},
+			onSnap: function(){
+				this.moved++;
+			},
+			onComplete: function()[
+				alert("You'ved moved: " + this.moved + " times");
+			}
+		});
+	[/javascript]
 
-	Example:
-		[javascript]
-			var myDrag = $('myElement').makeDraggable({
-				snap: 0,
-				onStart: function(){
-					this.moved = 0;
-				},
-				onSnap: function(){
-					this.moved++;
-				},
-				onComplete: function()[
-					alert("You'ved moved: " + this.moved + " times");
-				}
-			});
-		[/javascript]
+See Also:
+	<Drag.Move>, <Drag>, <Options.setOptions>
+*/
 
-	See Also:
-		<Drag.Move>, <Drag>, <Options.setOptions>
-	*/
-
-	makeDraggable: function(options){
-		return new Drag.Move(this, options);
-	}
-
+Element.implement('makeDraggable', function(options){
+	return new Drag.Move(this, options);
 });

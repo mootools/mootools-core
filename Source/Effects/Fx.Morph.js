@@ -58,7 +58,7 @@ See Also:
 	<Fx>
 */
 
-Fx.Morph = Fx.Styles = new Class({
+Fx.Morph = new Class({
 
 	Extends: Fx.CSS,
 
@@ -203,44 +203,36 @@ Element.Properties.morph = {
 	
 };
 
-Element.implement({
+/*
+Method: morph
+	animate an element given the properties you pass in.
 
-	/*
-	Method: morph
-		animate an element given the properties you pass in.
+Syntax:
+	>myElement.morph(className|object[, options]);
 
-	Syntax:
-		>myElement.morph(className|object[, options]);
+Arguments:
+	properties - (mixed) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
+	options - (object, optional) The <Fx.Morph> options parameter.
 
-	Arguments:
-		properties - (mixed) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
-		options - (object, optional) The <Fx.Morph> options parameter.
+Returns:
+	(element) this Element.
 
-	Returns:
-		(element) this Element.
+Example:
+	with object:
+	[javascript]
+		$('myElement').morph({height: 100, width: 200});
+	[/javascript]
 
-	Example:
-		with object:
-		[javascript]
-			$('myElement').morph({height: 100, width: 200});
-		[/javascript]
+	with selector:
+	[javascript]
+		$('myElement').morph('.class1');
+	[/javascript]
 
-		with selector:
-		[javascript]
-			$('myElement').morph('.class1');
-		[/javascript]
+See Also:
+	<Fx.Morph>
+*/
 
-	See Also:
-		<Fx.Morph>
-	*/
-
-	morph: function(props, options){
-		this.get('morph', options).start(props);
-		return this;
-	},
-
-	effects: function(options){
-		return this.get('morph', options);
-	}
-
+Element.implement('morph', function(props){
+	this.get('morph').start(props);
+	return this;
 });

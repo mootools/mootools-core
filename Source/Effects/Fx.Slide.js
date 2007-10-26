@@ -341,9 +341,9 @@ Element.implement({
 		<Fx.Slide>
 	*/
 
-	slide: function(how, options){
+	slide: function(how){
 		how = how || 'toggle';
-		var slide = this.get('slide', options);
+		var slide = this.get('slide');
 		switch(how){
 			case 'hide': slide.hide(); break;
 			case 'show': slide.show(); break;

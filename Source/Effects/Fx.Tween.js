@@ -37,7 +37,7 @@ See Also:
 	<Fx>
 */
 
-Fx.Tween = Fx.Style = new Class({
+Fx.Tween = new Class({
 
 	Extends: Fx.CSS,
 
@@ -162,6 +162,14 @@ Element.Properties.tween = {
 
 Element.implement({
 
+	highlight: function(color){
+		this.get('tween', 'background-color').start(color || '#face8f', function(){
+			var style = this.getStyle('background-color');
+			return (style == 'transparent') ? '#ffffff' : style;
+		}.bind(this));
+		return this;
+	},
+
 	/*
 	Method: tween
 		Tweens an element property between one or more values.
@@ -186,8 +194,8 @@ Element.implement({
 		<Fx.Tween>
 	*/
 
-	tween: function(property, value, options){
-		this.get('tween', property, options).start(value);
+	tween: function(property, value){
+		this.get('tween', property).start(value);
 		return this;
 	},
 
@@ -214,9 +222,9 @@ Element.implement({
 		<Fx.Tween>, <Element.slide>
 	*/
 
-	fade: function(how, options){
+	fade: function(how){
+		var fade = this.get('tween', 'opacity');
 		how = $pick(how, 'toggle');
-		var fade = this.get('tween', 'opacity', options);
 		switch (how){
 			case 'in': fade.start(1); break;
 			case 'out': fade.start(0); break;
@@ -228,10 +236,6 @@ Element.implement({
 			default: fade.start(how);
 		}
 		return this;
-	},
-
-	effect: function(property, options){
-		return this.get('tween', property, options);
 	}
 
 });
