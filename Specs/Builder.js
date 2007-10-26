@@ -24,16 +24,12 @@ var Builder = {
 	scripts: {
 		source: {
 			"Core"      : ["Core", "Browser"],
-			"Native"    : ["Array", "String", "Function", "Number", "Hash", "Color"],
+			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
 			"Class"     : ["Class", "Class.Extras"],
 			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Dimensions"],
 			"Window"    : ["Window.DomReady", "Window.Dimensions"],
 			"Selectors" : ["Selectors", "Selectors.Pseudo"],
-			"Fx"        : ["Fx", "Fx.CSS", "Fx.Tween", "Fx.Morph", "Fx.Elements", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
-			"Utilities" : ["JSON", "Cookie", "Hash.Cookie", "Assets", "Group", "Swiff"],
-			"Drag"      : ["Drag", "Drag.Move"],
-			"Remote"    : ["XHR", "Ajax", "Json.Remote"],
-			"Plugins"   : ["Accordion", "Scroller", "Slider", "SmoothScroll", "Sortables", "Tips", "Element.Filters", "Selectors.Children"]
+			"Utilities" : ["JSON", "Cookie"]
 		},
 
 		spec: {
