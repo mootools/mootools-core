@@ -330,7 +330,7 @@ Extends an array with all the items of another.
 
 	var animals = ['Cow', 'Pig', 'Dog'];
 	animals.extend(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat', 'Dog'];
-	
+
 
 
 
@@ -349,7 +349,7 @@ Returns the last item from the array.
 * (false) If this array is empty, returns null.
 
 ### Example:
-	
+
 	['Cow', 'Pig', 'Dog', 'Cat'].getLast(); //returns 'Cat'
 
 

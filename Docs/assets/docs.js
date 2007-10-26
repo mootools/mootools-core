@@ -1,17 +1,10 @@
 var Docs = {
 	
 	anchorsPath: '../Docs/',
-	
+
 	start: function(){
-	
-		var docRequest = new Ajax({
-			method: 'get',
-			autoCancel: true, 
-			onComplete: Docs.update,
-			isSuccess: function() {
-				return (!this.status && location.protocol == "file:" || (this.status >= 200) && (this.status < 300));
-			}
-		});
+		if (location.protocol == 'file:') Docs.local();	
+		var docRequest = new Ajax({method: 'get', autoCancel: true, onComplete: Docs.update});
 		
 		var links = $$('#menu a.script');
 		var parents = $$('#menu h3');
@@ -31,6 +24,18 @@ var Docs = {
 		
 	},
 	
+	local: function() {
+		XHR.implement({
+		    setTransport: function(){
+		        this.transport = (window.ActiveXObject) ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest();
+		    },
+
+			isSuccess: function() {
+				return (!this.status || (this.status >= 200) && (this.status < 300));
+			}
+		});
+	},
+
 	update: function(markdown){
 		
 		var wrapper = $('docs-wrapper'), submenu = $('submenu');

@@ -24,16 +24,16 @@ var Builder = {
 	scripts: {
 		source: {
 			"Core"      : ["Core", "Browser"],
-			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
+			"Native"    : ["Array", "String", "Function", "Number", "Hash", "Color"],
 			"Class"     : ["Class", "Class.Extras"],
 			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Dimensions"],
+			"Window"    : ["Window.DomReady", "Window.Dimensions"],
 			"Selectors" : ["Selectors", "Selectors.Pseudo"],
-			"Window"    : ["Window.DomReady", "Window.Size"],
-			"Effects"   : ["Fx", "Fx.CSS", "Fx.Tween", "Fx.Morph", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
+			"Fx"        : ["Fx", "Fx.CSS", "Fx.Tween", "Fx.Morph", "Fx.Elements", "Fx.Scroll", "Fx.Slide", "Fx.Transitions"],
+			"Utilities" : ["JSON", "Cookie", "Hash.Cookie", "Assets", "Group", "Swiff"],
 			"Drag"      : ["Drag", "Drag.Move"],
-			"Remote"    : ["XHR", "Ajax", "Cookie", "Json"],
-			"Swiff"     : ["Swiff"],
-			"Plugins"   : ["Color", "Group", "Assets", "Element.Filters", "Fx.Elements", "Selectors.Children", "Hash.Cookie", "Json.Remote", "Sortables", "Scroller", "Slider", "SmoothScroll", "Tips", "Accordion"]
+			"Remote"    : ["XHR", "Ajax", "Json.Remote"],
+			"Plugins"   : ["Accordion", "Scroller", "Slider", "SmoothScroll", "Sortables", "Tips", "Element.Filters", "Selectors.Children"]
 		},
 
 		spec: {

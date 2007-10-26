@@ -11,4 +11,4 @@ $E = function(selector, filter){
 
 function $ES(selector, filter){
 	return ($(filter) || document).getElements(selector);
-};
+}
