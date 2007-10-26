@@ -1811,8 +1811,8 @@ Element.Properties = new Hash;
 
 Element.Properties.style = {
 
-	set: function(){
-		this.style.cssText = '';
+	set: function(style){
+		this.style.cssText = style;
 	},
 
 	get: function(){
