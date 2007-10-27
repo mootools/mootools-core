@@ -148,7 +148,7 @@
 
 	},
 
-    "Utilities": {,
+    "Utilities": {
 
 		"Color": {
 			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
