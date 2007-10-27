@@ -148,32 +148,22 @@
 
 	},
 
-    "Utilities": {
+	"Utilities": {
 
 		"Color": {
 			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
 			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
 		},
 
-    	"JSON": {
-    		"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
-    		"desc": "JSON encoder/decoder."
-    	},
-
-    	"Cookie": {
-    		"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
-    		"desc": "Lets you Create/Read/Delete Cookies."
-    	},
-
-		"Hash.Cookie": {
-			"deps": ["Class.Extras", "Cookie", "JSON"],
-			"desc": "Lets you Create/Read/Delete Cookies in JSON Format."
+		"JSON": {
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "JSON encoder/decoder."
 		},
 
-    	"Assets": {
-    		"deps": ["Element.Event"],
-    		"desc": "Contains functions to load external files on the fly: Images, CSS, JavaScript."
-    	},
+		"Cookie": {
+			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "Lets you Create/Read/Delete Cookies."
+		},
 
 		"Group": {
 			"deps": ["Class.Extras"],
@@ -185,7 +175,7 @@
 			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
 		}
 
-    },
+	},
 
 	"Remote": {
 
@@ -227,9 +217,9 @@
 			"desc": "Effect to change any number of CSS properties to any number of elements."
 		},
 
-    	"Accordion": {
-    		"deps": ["Fx.Elements", "Element.Event"],
-    		"desc": "Does it need a description?"
+		"Accordion": {
+			"deps": ["Fx.Elements", "Element.Event"],
+			"desc": "Does it need a description?"
 		},
 
 		"Scroller": {
@@ -265,6 +255,16 @@
 		"Selectors.Children": {
 			"deps": ["Selectors"],
 			"desc": "Adds the :children Selector."
+		},
+
+		"Hash.Cookie": {
+			"deps": ["Class.Extras", "Cookie", "JSON"],
+			"desc": "Lets you Create/Read/Delete Cookies in JSON Format."
+		},
+
+		"Assets": {
+			"deps": ["Element.Event"],
+			"desc": "Contains functions to load external files on the fly: Images, CSS, JavaScript."
 		}
 
 	}

@@ -155,7 +155,7 @@ Native: Element
 	Custom class to allow all of its methods to be used with any DOM element via the dollar function <$>.
 */
 
-Element.Setters.extend({
+Element.Properties.extend({
 
 	/*
 	Element Setter: send
@@ -177,10 +177,19 @@ Element.Setters.extend({
 		[/javascript]
 	*/
 
-	send: function(options){
-		var send = this.retrieve('send');
-		if (send) send.cancel();
-		return this.store('send', new Ajax(this.get('action'), $extend({autoCancel: true, method: this.get('method') || 'post'}, options)));
+	send: {
+
+		set: function(options){
+			var send = this.retrieve('send');
+			if (send) send.cancel();
+			return this.store('send', new Ajax(this.get('action'), $extend({autoCancel: true, method: this.get('method') || 'post'}, options)));
+		},
+
+		get: function(options){
+			if (options || !this.retrieve('send')) this.set('send', options);
+			return this.retrieve('send');
+		}
+
 	},
 
 	/*
@@ -203,72 +212,21 @@ Element.Setters.extend({
 		[/javascript]
 	*/
 
-	load: function(options){
-		var load = this.retrieve('load');
-		if (load) load.cancel();
-		return this.store('load', new Ajax($extend({autoCancel: true, update: this, method: 'get'}, options)));
-	}
+	load: {
 
-});
+		set: function(options){
+			var load = this.retrieve('load');
+			if (load) load.cancel();
+			return this.store('load', new Ajax($extend({autoCancel: true, update: this, method: 'get'}, options)));
+		},
 
+		get: function(url, options){
+			if (options || !this.retrieve('load')) this.set('load', options);
+			var load = this.retrieve('load');
+			load.setURL(url);
+			return load;
+		}
 
-Element.Getters.extend({
-
-	/*
-	Element Getter: send
-		gets the previously setted Ajax instance or a new one with default options
-
-	Syntax:
-		>el.get('send'[, options]);
-
-	Arguments:
-		options - (object, optional) the Ajax options. if passed in will generate a new instance.
-
-	Returns:
-		(object) the Ajax instance
-
-	Example:
-		[javascript]
-			el.get('send', {method: 'get'});
-			el.send();
-
-			el.get('send'); //the Ajax instance
-		[/javascript]
-	*/
-
-	send: function(options){
-		if (options || !this.retrieve('send')) this.set('send', options);
-		return this.retrieve('send');
-	},
-
-	/*
-	Element Getter: load
-		gets the previously setted Ajax instance or a new one with default options
-
-	Syntax:
-		>el.get('load', url);
-
-	Arguments:
-		url - (string) the url to associate the Ajax instance with.
-		options - (object, optional) the Ajax options. if passed in will generate a new instance.
-
-	Returns:
-		(object) the Ajax instance
-
-	Example:
-		[javascript]
-			el.set('load', {method: 'get'});
-			el.load('test.html');
-
-			el.get('load'); //the Ajax instance
-		[/javascript]
-	*/
-
-	load: function(url, options){
-		if (options || !this.retrieve('load')) this.set('load', options);
-		var load = this.retrieve('load');
-		load.setURL(url);
-		return load;
 	}
 
 });

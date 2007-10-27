@@ -1,44 +1,44 @@
 /*
-Script: Json.Remote.js
-	Contains <Json.Remote>.
+Script: JSON.Remote.js
+	Contains <JSON.Remote>.
 
 License:
 	MIT-style license.
 */
 
 /*
-Class: Json.Remote
+Class: JSON.Remote
 	Wrapped XHR with automated sending and receiving of Javascript Objects in JSON Format.
 
 Extends:
 	<XHR>
 
 Syntax:
-	>var myJsonRemote = new Json.Remote(url[, options]);
+	>var myJSONRemote = new JSON.Remote(url[, options]);
 
 Arguments:
 	url     - (string) The URL to send the object to.
 	options - (object, optional) See below.
 
 	options (continued):
-		varName - (string: defaults to 'json') The name for the variable that holds the Json data. Set it to null to send raw data.
-		secure  - (boolean: defaults to true) If set to true, a syntax check will be done on the result JSON (see <Json.decode>).
+		varName - (string: defaults to 'json') The name for the variable that holds the JSON data. Set it to null to send raw data.
+		secure  - (boolean: defaults to true) If set to true, a syntax check will be done on the result JSON (see <JSON.decode>).
 
 Events:
-	onComplete - (function) Executes when the Json returns successfully.
+	onComplete - (function) Executes when the JSON returns successfully.
 		Signature:
-			>onComplete(responseJson)
+			>onComplete(responseJSON)
 
 		Arguments:
-			responseJson - (mixed) The JSON response object from the remote request.
+			responseJSON - (mixed) The JSON response object from the remote request.
 
 Returns:
-	(object) A new Json.Remote class instance.
+	(object) A new JSON.Remote class instance.
 
 Example:
 	[javascript]
 		//This code will send user information based on name/last name:
-		var jsonRequest = new Json.Remote("http://site.com/tellMeAge.php", {onComplete: function(person){
+		var jsonRequest = new JSON.Remote("http://site.com/tellMeAge.php", {onComplete: function(person){
 			alert(person.age); //is 25 years
 			alert(person.height); //is 170 cm
 			alert(person.weight); //is 120 kg
@@ -46,7 +46,7 @@ Example:
 	[/javascript]
 */
 
-Json.Remote = new Class({
+JSON.Remote = new Class({
 
 	Extends: XHR,
 
@@ -67,13 +67,13 @@ Json.Remote = new Class({
 		Sends the JSON-encoded object to the request URL.
 
 	Syntax:
-		>myJsonRemote.send(obj);
+		>myJSONRemote.send(obj);
 
 	Arguments:
 		obj - (object) The JavaScript object to be encoded and sent.
 
 	Returns:
-		(object) This Json.Remote instance.
+		(object) This JSON.Remote instance.
 
 	Example:
 		[javascript]
@@ -82,12 +82,12 @@ Json.Remote = new Class({
 	*/
 
 	send: function(obj){
-		var data = (obj) ? ((this.options.key) ? this.options.key + '=' : '') + encodeURIComponent(Json.encode(obj)) : null;
+		var data = (obj) ? ((this.options.key) ? this.options.key + '=' : '') + encodeURIComponent(JSON.encode(obj)) : null;
 		return arguments.callee.parent(data);
 	},
 
 	onComplete: function(text){
-		this.response.json = Json.decode(text, this.options.secure);
+		this.response.json = JSON.decode(text, this.options.secure);
 		this.fireEvent('onComplete', [this.response.json]);
 	}
 
