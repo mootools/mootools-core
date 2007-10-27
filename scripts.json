@@ -39,11 +39,6 @@
 		"Hash": {
 			"deps": ["Core"],
 			"desc": "the Hash, allows to attach prototypes, to overcome the javascript practical impossibility to extend [Object object]s."
-		},
-
-		"Color": {
-			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
-			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
 		}
 
 	},
@@ -134,12 +129,7 @@
 		"Fx.Morph": {
 			"deps": ["Fx.CSS"],
 			"desc": "Formerly Fx.Styles, effect to change any number of CSS properties for an element. Now also supports animating css rules."
-		},
-
-		"Fx.Elements": {
-			"deps": ["Fx.CSS"],
-			"desc": "Effect to change any number of CSS properties to any number of elements."
-		},
+		}
 
 		"Fx.Scroll": {
 			"deps": ["Fx", "Element.Event", "Element.Dimensions", "Window.Size"],
@@ -158,7 +148,12 @@
 
 	},
 
-    "Utilities": {
+    "Utilities": {,
+
+		"Color": {
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
+		},
 
     	"JSON": {
     		"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
@@ -227,10 +222,15 @@
 
 	"Plugins": {
 
+		"Fx.Elements": {
+			"deps": ["Fx.CSS"],
+			"desc": "Effect to change any number of CSS properties to any number of elements."
+		},
+
     	"Accordion": {
     		"deps": ["Fx.Elements", "Element.Event"],
     		"desc": "Does it need a description?"
-    	},
+		},
 
 		"Scroller": {
 			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions"],
