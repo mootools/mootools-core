@@ -117,7 +117,7 @@ var Request = new Class({
 		});
 		['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 			this[method] = function(){
-				var params = Array.link(arguments, {url: String.type, data: Object.type});
+				var params = Array.link(arguments, {url: String.type, data: $defined});
 				return this.send($extend(params, {method: method.toLowerCase()}));
 			};
 		}, this);
@@ -228,7 +228,9 @@ var Request = new Class({
 	*/
 
 	send: function(options){
-		if ($type(options) == 'string') options = {data: options};
+		var type = $type(options);
+		if (type == 'string' || type == 'element') options = {data: options};
+		
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;
