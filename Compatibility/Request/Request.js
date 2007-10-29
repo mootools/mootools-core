@@ -24,8 +24,8 @@ var XHR = new Class({
 	
 	onSuccess: function(text, xml){
 		if (this.options.update) $(this.options.update).empty().set('html', text);
-		this.fireEvent('onComplete', [text, xml]);
 		arguments.callee.parent(text, xml);
+		this.fireEvent('onComplete', [text, xml]);
 	}
 	
 });
