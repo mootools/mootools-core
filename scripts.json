@@ -137,7 +137,7 @@
 		},
 
 		"Fx.Scroll": {
-			"deps": ["Fx", "Element.Event", "Element.Dimensions", "Window.Size"],
+			"deps": ["Fx", "Element.Event", "Element.Dimensions", "Window.Dimensions"],
 			"desc": "Effect to scroll any element, including the window."
 		},
 
@@ -228,7 +228,7 @@
 		},
 
 		"Tips": {
-			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Window.Size"],
+			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Window.Dimensions"],
 			"desc": "The Tooltips."
 		},
 		
