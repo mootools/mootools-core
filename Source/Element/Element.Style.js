@@ -16,7 +16,7 @@ Element.Properties.styles = {set: function(styles){
 }};
 
 Element.Properties.opacity = {
-	
+
 	/*
 	Element Property: opacity
 		Sets / Gets the opacity of the Element, and sets also visibility == "hidden" if opacity == 0, and visibility = "visible" if opacity > 0.
@@ -47,7 +47,7 @@ Element.Properties.opacity = {
 		this.style.opacity = opacity;
 		this.store('opacity', opacity);
 	},
-	
+
 	get: function(){
 		return this.retrieve('opacity', 1);
 	}

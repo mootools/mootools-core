@@ -7,9 +7,9 @@ License:
 */
 
 Fx.CSS = new Class({
-	
+
 	Extends: Fx,
-	
+
 	//prepares the base from/to object
 
 	prepare: function(element, property, values){
@@ -22,9 +22,9 @@ Fx.CSS = new Class({
 		var parsed = values.map(this.parse);
 		return {from: parsed[0], to: parsed[1]};
 	},
-	
+
 	//parses a value into an array
-	
+
 	parse: function(value){
 		value = $lambda(value)();
 		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
@@ -40,9 +40,9 @@ Fx.CSS = new Class({
 			return found;
 		});
 	},
-	
+
 	//computes by a from and to prepared objects, using their parsers.
-	
+
 	compute: function(from, to, delta){
 		var computed = [];
 		(Math.min(from.length, to.length)).times(function(i){
@@ -51,9 +51,9 @@ Fx.CSS = new Class({
 		computed.$family = {name: 'fx:css:value'};
 		return computed;
 	},
-	
+
 	//serves the value as settable
-	
+
 	serve: function(value, unit){
 		if ($type(value) != 'fx:css:value') value = this.parse(value);
 		var returned = [];
@@ -62,15 +62,15 @@ Fx.CSS = new Class({
 		});
 		return returned;
 	},
-	
+
 	//renders the change to an element
-	
+
 	render: function(element, property, value){
 		element.setStyle(property, this.serve(value, this.options.unit));
 	},
-	
+
 	//searches inside the page css to find the values for a selector
-	
+
 	search: function(selector){
 		var to = {};
 		Array.each(document.styleSheets, function(sheet, j){
@@ -86,7 +86,7 @@ Fx.CSS = new Class({
 		});
 		return to;
 	}
-	
+
 });
 
 Fx.CSS.Parsers = new Hash({
@@ -125,7 +125,7 @@ Fx.CSS.Parsers = new Hash({
 		}
 
 	},
-	
+
 	String: {parse: $lambda(false), compute: $arguments(1), serve: $arguments(0)}
 
 });

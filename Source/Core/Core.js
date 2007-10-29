@@ -23,7 +23,7 @@ var MooTools = {
 
 var Native = function(options){
 	options = options || {};
-	
+
 	var afterImplement = options.afterImplement || function(){};
 	var generics = options.generics;
 	generics = (generics !== false);
@@ -31,20 +31,20 @@ var Native = function(options){
 	var initialize = options.initialize;
 	var browser = options.browser;
 	var name = options.name;
-	
+
 	var object = initialize || legacy;
-	
+
 	object.constructor = Native;
 	object.$family = {name: 'native'};
 	if (legacy && initialize) object.prototype = legacy.prototype;
 	object.prototype.constructor = object;
-	
+
 	if (name){
 		var family = name.toLowerCase();
 		object.prototype.$family = {name: family};
 		Native.typize(object, family);
 	}
-	
+
 	var add = function(obj, name, method, force){
 		if (!browser || force || !obj.prototype[name]) obj.prototype[name] = method;
 		if (generics) Native.genericize(obj, name, browser);

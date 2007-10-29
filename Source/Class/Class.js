@@ -98,9 +98,9 @@ var Class = new Native({
 				Class[Property](this, this[Property]);
 				delete this[Property];
 			}, this);
-			
+
 			this.constructor = klass;
-			
+
 			var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
 			return self;

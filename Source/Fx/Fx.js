@@ -27,7 +27,7 @@ Arguments:
 		unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
 		link       - (string: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.
 		fps        - (number: defaults to 50) The frames per second for the transition.
-		
+
 		link option (continued):
 			cancel - Cancels the effect if two or more start are run.
 			ignore - Ignores any call to start other than the first, if the effect has not completed.
@@ -49,7 +49,7 @@ See Also:
 */
 
 var Fx = new Class({
-	
+
 	Implements: [Chain, Events, Options],
 
 	options: {/*
@@ -89,7 +89,7 @@ var Fx = new Class({
 	set: function(now){
 		return now;
 	},
-	
+
 	/*
 	Method: compute
 		Action to compute from and to values with the delta.
@@ -98,7 +98,7 @@ var Fx = new Class({
 	compute: function(from, to, delta){
 		return Fx.compute(from, to, delta);
 	},
-	
+
 	check: function(){
 		this.skip = true;
 		if (!this.timer) return true;
@@ -107,9 +107,9 @@ var Fx = new Class({
 			case 'chain': this.chain(this.start.bind(this, arguments)); return false;
 			default: return false;
 		}
-		
+
 	},
-	
+
 	/*
 	Method: start
 		Executes an effect from one mixed value to the other and fires the 'onStart' Event.
@@ -134,80 +134,80 @@ var Fx = new Class({
 	complete: function(){
 		return (!this.stopTimer()) ? this : this.onComplete();
 	},
-	
+
 	/*
 	Method: cancel
 		Stops the timer and launches the onCancel event.
 	*/
-	
+
 	cancel: function(){
 		return (!this.stopTimer()) ? this : this.onCancel();
 	},
-	
+
 	/*
 	Method: pause
 		Stops the timer.
 	*/
-	
+
 	pause: function(){
 		this.stopTimer();
 		return this;
 	},
-	
+
 	/*
 	Method: resume
 		Resumes the timer if previously stopped.
 	*/
-	
+
 	resume: function(){
 		this.startTimer();
 		return this;
 	},
-	
+
 	/*
 	Method: onStart
 		Fires the onStart event. Intended to be overridden in implementations.
 	*/
-	
+
 	onStart: function(){
 		return this.fireEvent('onStart', arguments);
 	},
-	
+
 	/*
 	Method: onComplete
 		Fires the onComplete event and the callChain. Intended to be overridden in implementations.
 	*/
-	
+
 	onComplete: function(){
 		return this.fireEvent('onComplete', arguments).callChain();
 	},
-	
+
 	/*
 	Method: onCancel
 		Fires the onCancel event. Intended to be overridden in implementations.
 	*/
-	
+
 	onCancel: function(){
 		return this.fireEvent('onCancel', arguments).clearChain();
 	},
-	
+
 	/*
 	Method: stopTimer
 		Stops the timer. Returns true on success, false if there was no timer to stop.
 	*/
-	
+
 	stopTimer: function(){
 		if (!this.timer) return false;
 		this.time = $time() - this.time;
 		this.timer = $clear(this.timer);
 		return true;
 	},
-	
+
 	/*
 	Method: startTimer
 		Starts the timer. Returns true on success, false if there was already a timer.
 	*/
-	
+
 	startTimer: function(){
 		if (this.timer) return false;
 		this.time = $time() - this.time;

@@ -82,7 +82,7 @@ var Chain = new Class({
 
 	Syntax:
 		>myClass.callChain([any arguments]);
-		
+
 	Arguments:
 		any arguments passed in will be passed to the "next" function
 

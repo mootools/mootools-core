@@ -274,16 +274,16 @@ Selectors.Filter = {
 
 Selectors.Filter.match = function(el, params, Local){
 	Local = Local || {};
-	
+
 	if (params.id && params.id != el.id) return false;
 	if (params.tag && params.tag != '*' && params.tag != el.tagName.toLowerCase()) return false;
-	
+
 	var i;
-	
+
 	for (i = params.classes.length; i--; i){
 		if (!el.className || !el.className.contains(params.classes[i], ' ')) return false;
 	}
-	
+
 	for (i = params.attributes.length; i--; i){
 		var bits = params.attributes[i];
 		var result = Element.prototype.getProperty.call(el, bits[0]);
@@ -302,7 +302,7 @@ Selectors.Filter.match = function(el, params, Local){
 
 		if (!condition) return false;
 	}
-	
+
 	for (i = params.pseudos.length; i--; i){
 		if (!params.pseudos[i].parser.filter.call(el, params.pseudos[i].argument, Local)) return false;
 	}
@@ -318,7 +318,7 @@ Native: Element
 */
 
 Element.implement({
-	
+
 	/*
 	Method: match
 		Matches the Element with the given selector.
@@ -339,9 +339,9 @@ Element.implement({
 			elem.match('div[name=somename]'); //returns true if the element is a div and has as name "somename".
 		[/javascript]
 	*/
-	
+
 	match: function(selector){
 		return (!selector || Selectors.Filter.match(this, Selectors.parse(selector)));
 	}
-	
+
 });

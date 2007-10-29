@@ -191,7 +191,7 @@ var _StripLinkDefinitions = function(text) {
 			} else if (m4) {
 				g_titles[m1] = m4.replace(/"/g,"&quot;");
 			}
-			
+
 			// Completely remove the definition from the text
 			return "";
 		}
@@ -331,13 +331,13 @@ var hashElement = function(wholeMatch,m1) {
 	// Undo double lines
 	blockText = blockText.replace(/\n\n/g,"\n");
 	blockText = blockText.replace(/^\n/,"");
-	
+
 	// strip trailing blank lines
 	blockText = blockText.replace(/\n+$/g,"");
-	
+
 	// Replace the element text with a marker ("~KxK" where x is its key)
 	blockText = "\n\n~K" + (g_html_blocks.push(blockText)-1) + "K\n\n";
-	
+
 	return blockText;
 };
 
@@ -508,14 +508,14 @@ var writeAnchorTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 	var link_id	 = m3.toLowerCase();
 	var url		= m4;
 	var title	= m7;
-	
+
 	if (url == "") {
 		if (link_id == "") {
 			// lower-case and turn embedded newlines into spaces
 			link_id = link_text.toLowerCase().replace(/ ?\n/g," ");
 		}
 		url = "#"+link_id;
-		
+
 		if (g_urls[link_id] != undefined) {
 			url = g_urls[link_id];
 			if (g_titles[link_id] != undefined) {
@@ -531,18 +531,18 @@ var writeAnchorTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 			}
 		}
 	}	
-	
+
 	url = escapeCharacters(url,"*_");
 	var result = "<a href=\"" + url + "\"";
-	
+
 	if (title != "") {
 		title = title.replace(/"/g,"&quot;");
 		title = escapeCharacters(title,"*_");
 		result +=  " title=\"" + title + "\"";
 	}
-	
+
 	result += ">" + link_text + "</a>";
-	
+
 	return result;
 }
 
@@ -613,14 +613,14 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 	var title	= m7;
 
 	if (!title) title = "";
-	
+
 	if (url == "") {
 		if (link_id == "") {
 			// lower-case and turn embedded newlines into spaces
 			link_id = alt_text.toLowerCase().replace(/ ?\n/g," ");
 		}
 		url = "#"+link_id;
-		
+
 		if (g_urls[link_id] != undefined) {
 			url = g_urls[link_id];
 			if (g_titles[link_id] != undefined) {
@@ -631,7 +631,7 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 			return whole_match;
 		}
 	}	
-	
+
 	alt_text = alt_text.replace(/"/g,"&quot;");
 	url = escapeCharacters(url,"*_");
 	var result = "<img src=\"" + url + "\" alt=\"" + alt_text + "\"";
@@ -644,9 +644,9 @@ var writeImageTag = function(wholeMatch,m1,m2,m3,m4,m5,m6,m7) {
 		title = escapeCharacters(title,"*_");
 		result +=  " title=\"" + title + "\"";
 	//}
-	
+
 	result += " />";
-	
+
 	return result;
 }
 
@@ -740,7 +740,7 @@ var _DoLists = function(text) {
 			// paragraph for the last item in a list, if necessary:
 			list = list.replace(/\n{2,}/g,"\n\n\n");;
 			var result = _ProcessListItems(list);
-	
+
 			// Trim any trailing whitespace, to put the closing `</$list_type>`
 			// up on the preceding line, to get it past the current stupid
 			// HTML block parser. This is a hack to work around the terrible
@@ -863,12 +863,12 @@ var _DoCodeBlocks = function(text) {
 
 	// attacklab: sentinel workarounds for lack of \A and \Z, safari\khtml bug
 	text += "~0";
-	
+
 	text = text.replace(/(?:\n\n|^)((?:(?:[ ]{4}|\t).*\n+)+)(\n*[ ]{0,3}[^ \t\n]|(?=~0))/g,
 		function(wholeMatch,m1,m2) {
 			var codeblock = m1;
 			var nextChar = m2;
-		
+
 			codeblock = _EncodeCode( _Outdent(codeblock));
 			codeblock = _Detab(codeblock);
 			codeblock = codeblock.replace(/^\n+/g,""); // trim leading newlines
@@ -1017,7 +1017,7 @@ var _DoBlockQuotes = function(text) {
 
 			bq = bq.replace(/^[ \t]+$/gm,"");		// trim whitespace-only lines
 			bq = _RunBlockGamut(bq);				// recurse
-			
+
 			bq = bq.replace(/(^|\n)/g,"$1  ");
 			// These leading spaces screw with <pre> content, so we need to fix that:
 			bq = bq.replace(
@@ -1029,7 +1029,7 @@ var _DoBlockQuotes = function(text) {
 					pre = pre.replace(/~0/g,"");
 					return pre;
 				});
-			
+
 			return hashBlock("<blockquote>\n" + bq + "\n</blockquote>");
 		});
 	return text;
@@ -1088,14 +1088,14 @@ var _FormParagraphs = function(text) {
 
 var _EncodeAmpsAndAngles = function(text) {
 // Smart processing for ampersands and angle brackets that need to be encoded.
-	
+
 	// Ampersand-encoding based entirely on Nat Irons's Amputator MT plugin:
 	//   http://bumppo.net/projects/amputator/
 	text = text.replace(/&(?!#?[xX]?(?:[0-9a-fA-F]+|\w+);)/g,"&amp;");
-	
+
 	// Encode naked <'s
 	text = text.replace(/<(?![a-z\/?\$!])/gi,"&lt;");
-	
+
 	return text;
 }
 

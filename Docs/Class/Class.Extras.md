@@ -11,20 +11,20 @@ Class: Chain {#Chain}
 A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
 Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][], [XHR][] and [Ajax][].
 In [Fx][], for example, it is used to create custom, complex animations.
-	
+
 Chain Method: constructor {#Chain:constructor}
 ----------------------------------------------
 
 ### Syntax:
 
 #### For new classes:
-	
+
 	var MyClass = new Class({ Implements: Chain });
 
 #### For existing classes:
-	
+
 	MyClass.implement(Chain);
-	
+
 #### Stand alone
 
 	var myChain = new Chain;
@@ -69,7 +69,7 @@ Adds functions to the end of the call stack of the Chain instance.
 * (object) This Class instance. Calls to chain can also be chained.
 
 ### Example:
-	
+
 	//will fade the element in and out three times
 	var myFx = new Fx.Style('myElement', 'opacity'); //Fx.Style has implemented class Chain because of inheritance.
 	myFx.start(1,0).chain(
@@ -77,7 +77,7 @@ Adds functions to the end of the call stack of the Chain instance.
 		function(){ this.start(1,0); },
 		function(){ this.start(0,1); }
 	);
-	
+
 
 ### See Also:
 
@@ -93,7 +93,7 @@ Removes the first function of the Chain instance stack and executes it. The next
 ### Syntax:
 
 	myClass.callChain([any arguments]);
-	
+
 ### Arguments:
 
 1. any arguments passed in will be passed to the "next" function
@@ -103,7 +103,7 @@ Removes the first function of the Chain instance stack and executes it. The next
 * (object) This Class instance.
 
 ### Example:
-	
+
 	var myChain = new Chain();
 	myChain.chain(
 		function(){ alert('do dishes'); },
@@ -128,7 +128,7 @@ Clears the stack of a Chain instance.
 * (object) This Class instance.
 
 ### Example:
-	
+
 	var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
 	myFx.chain(function(){ while(true) alert('doh!'); }); //don't try this at home, kids.
 	myFx.clearChain(); // .. that was a close one ...
@@ -162,7 +162,7 @@ This class can be implemented into other classes to add its functionality to the
 It has been designed to work well with the [Options](#Options) class.
 
 ### Example:
-	
+
 	var Widget = new Class({
 		Implements: Events,
 		initialize: function(element){
@@ -175,7 +175,7 @@ It has been designed to work well with the [Options](#Options) class.
 
 	var myWidget = new Widget();
 	myWidget.addEvent('onComplete', myFunction);
-	
+
 
 ### See Also:
 
@@ -203,10 +203,10 @@ Adds an event to the Class instance's event stack.
 * (object) This Class instance.
 
 ### Example:
-	
+
 	var myFx = new Fx.Style('element', 'opacity');
 	myFx.addEvent('onStart', myStartFunction);
-	
+
 
 
 Events Method: fireEvent {#Events:fireEvent}
@@ -229,7 +229,7 @@ Fires all events of the specified type in the Class instance.
 * (object) This Class instance.
 
 ### Example:
-	
+
 	var Widget = new Class({
 		Implements: Events,
 		initialize: function(arg1, arg2){
@@ -281,7 +281,7 @@ Removes all events of the given type from the stack of events of a Class instanc
 * (object) This Class instance.
 
 ### Example:
-	
+
 	var myFx = new Fx.Style('element', 'opacity');
 	myFx.removeEvents('onComplete');
 
@@ -302,7 +302,7 @@ Will also add Class [Events](#Events) when the option property begins with on, f
 ### Syntax:
 
 #### For new classes:
-	
+
 	var MyClass = new Class({Implements: Options});
 
 #### For existing classes:
@@ -329,7 +329,7 @@ Merges the default options of the Class with the options passed in.
 * (object) This Class instance.
 
 ### Example:
-	
+
 	var Widget = new Class({
 		Implements: Options,
 		options: {

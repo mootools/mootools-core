@@ -66,7 +66,7 @@ If the separator parameter is passed, will check to see if the string is contain
 	'a bc'.contains('bc'); //returns true
 	'a b c'.contains('c', ' '); //returns true
 	'a bc'.contains('b', ' '); //returns false
-	
+
 
 
 String Method: trim {#String:trim}
@@ -75,7 +75,7 @@ String Method: trim {#String:trim}
 Trims the leading and trailing spaces off a string.
 
 ### Syntax:
-	
+
 	myString.trim();
 
 ### Returns:
@@ -85,7 +85,7 @@ Trims the leading and trailing spaces off a string.
 ### Example:
 
 	"    i like cookies     ".trim(); //"i like cookies"
-	
+
 	
 
 String Method: clean {#String:clean}
@@ -94,7 +94,7 @@ String Method: clean {#String:clean}
 Removes all extraneous whitespace from a string and trims ([String:trim](#String:trim)) it.
 
 ### Syntax:
-	
+
 	myString.clean();
 
 ### Returns:
@@ -104,7 +104,7 @@ Removes all extraneous whitespace from a string and trims ([String:trim](#String
 ### Example:
 
 	" i      like     cookies      \n\n".clean(); //returns "i like cookies"
-	
+
 	
 
 String Method: camelCase {#String:camelCase}
@@ -113,7 +113,7 @@ String Method: camelCase {#String:camelCase}
 Converts a hyphenated string to a camelcased string.
 
 ### Syntax:
-	
+
 	myString.camelCase();
 
 ### Returns:
@@ -187,7 +187,7 @@ String Method: toInt {#String:toInt}
 Parses this string and returns a number of the specified radix or base.
 
 ### Syntax:
-	
+
 	myString.toInt([base]);
 
 ### Arguments:

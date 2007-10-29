@@ -249,7 +249,7 @@ var Drag = new Class({
 		this.fireEvent('onDrag', this.element);
 		event.stop();
 	},
-	
+
 	cancel: function(event){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);

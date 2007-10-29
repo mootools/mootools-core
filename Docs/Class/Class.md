@@ -7,7 +7,7 @@ Class Method: constructor {#Class:constructor}
 ----------------------------------------------
 
 ### Syntax:
-	
+
 	var MyClass = new Class(properties);
 
 ### Arguments:
@@ -55,7 +55,7 @@ Useful when implementing a default set of properties in multiple Classes.
 		});
 	});
 	var Effie = new Cow($empty); //will not alert 'moooo'
-	
+
 #### Extends Example:
 
 	var Animal = new Class({

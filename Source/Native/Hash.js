@@ -12,7 +12,7 @@ Native: Hash
 */
 
 Hash.implement({
-	
+
 	/*
 	Method: has
 		Tests for the presence of a specified key in the Hash.

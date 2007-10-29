@@ -40,7 +40,7 @@ Base function for creating functional closures which is used by all other Functi
 * (function) The function that was created as a result of the options passed in.
 
 ### Example:
-	
+
 	var myFunction = function(){
 		alert("I'm a function :)");
 	};
@@ -54,7 +54,7 @@ Base function for creating functional closures which is used by all other Functi
 		bind: myElement
 	});
 
-	
+
 
 Function Method: pass {#Function:pass}
 --------------------------------------
@@ -75,7 +75,7 @@ Returns a closure with arguments and bind.
 * (function) The function whose arguments are passed when called.
 
 ### Example:
-	
+
 	var myFunction = function(){
 		var result = 'Passed: ';
 		for (var i = 0, l = arguments.length; i < l; i++){
@@ -112,7 +112,7 @@ Tries to execute the function.
 * (mixed) The function's return value.
 
 ### Example:
-	
+
 	var myObject = {
 		'cow': 'moo!'
 	};
@@ -123,7 +123,7 @@ Tries to execute the function.
 		}
 	};
 	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = false
-	
+
 
 
 Function Method: bind {#Function:bind}
@@ -145,7 +145,7 @@ Returns a function whose `this` is altered.
 * (function) The bound function.
 
 ### Example:
-	
+
 	function myFunction(){
 		this.setStyle('color', 'red');
 		//note that 'this' here refers to window, not an element
@@ -175,7 +175,7 @@ This makes the method indicate for using in conjunction with [Element:addEvent](
 * (function) The bound function.
 
 ### Example:
-	
+
 	function myFunction(e, add){
 		this.setStyle('top', e.client.x + add);
 		//note that 'this' here refers to window, not an element
@@ -183,7 +183,7 @@ This makes the method indicate for using in conjunction with [Element:addEvent](
 	};
 	$(myElement).addEvent('click', myFunction.bindWithEvent(myElement, 100);
 	//when clicked the element will move to the position of the mouse + 100;
-	
+
 
 
 Function Method: delay {#Function:delay}
@@ -206,14 +206,14 @@ Delays the execution of a function by a specified duration.
 * (number) The JavaScript Timeout ID (for clearing delays).
 
 ### Example:
-	
+
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
 	//wait 50 milliseconds, then call myFunction and bind myElement to it
 	myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
 
 	//An anonymous function, example
 	(function(){ alert('one second later...'); }).delay(1000); //wait a second and alert
-	
+
 
 ### See Also:
 
@@ -241,11 +241,11 @@ Executes a function in the specified intervals of time
 * (number) The Interval ID (for clearing a periodical).
 
 ### Example:
-	
+
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
 	addCount.periodical(1000, Site); // will add the number of seconds at the Site
-	
+
 
 ### See Also:
 
@@ -274,16 +274,16 @@ Runs the Function with specified arguments and binding. Kinda like .apply but re
 ### Examples:
 
 #### Simple run:
-	
+
 	var myFn = function(a, b, c){
 		return a + b + c;
 	}
 	var myArgs = [1,2,3];
 	myFn.run(args); //returns 6
-	
+
 
 #### Run with binding:
-	
+
 	var myFn = function(a, b, c){
 		return a + b + c + this;
 	}

@@ -46,11 +46,11 @@ This method is provided only for browsers without native [Array:every][] support
 * (boolean) If every element in the array satisfies the provided testing function, returns true. Otherwise, returns false.
 
 ### Example:
-	
+
 	var areAllBigEnough = [10, 4, 25, 100].every(function(item, index){
 		return item > 20;
 	}); //areAllBigEnough = false
-	
+
 
 ### See Also:
 
@@ -96,7 +96,7 @@ This method is provided only for browsers without native [Array:filter][] suppor
 	var biggerThanTwenty = [10, 3, 25, 100].filter(function(item, index){
 		return item > 20;
 	}); //biggerThanTwenty = [25, 100]
-	
+
 
 ### See Also:
 
@@ -126,10 +126,10 @@ This method is provided only for browsers without native [Array:indexOf][] suppo
 2. from - (number, optional: defaults to 0) The index of the array at which to begin the search.
 
 ### Example:
-	
+
 	['apple', 'lemon', 'banana'].indexOf('lemon'); //returns 1
 	['apple', 'lemon'].indexOf('banana'); //returns -1
-	
+
 
 ### See Also:
 
@@ -171,7 +171,7 @@ This method is provided only for browsers without native [Array:map][] support.
 * (array) The new mapped array.
 
 ### Example:
-	
+
 	var timesTwo = [1, 2, 3].map(function(item, index){
 		return item * 2;
 	}); //timesTwo = [2, 4, 6];
@@ -206,7 +206,7 @@ This method is provided only for browsers without native [Array:some][] support.
 #### Argument: fn
 
 ##### Syntax:
-	
+
 	fn(item, index, array)
 
 ##### Arguments:
@@ -216,11 +216,11 @@ This method is provided only for browsers without native [Array:some][] support.
 3. array  - (array) The actual array.
 
 ### Example:
-	
+
 	var isAnyBigEnough = [10, 4, 25, 100].some(function(item, index){
 		return item > 20;
 	}); //isAnyBigEnough = true
-	
+
 
 ### See Also:
 
@@ -246,7 +246,7 @@ Creates an object with key-value pairs based on the array of keywords passed in 
 * (object) The new associated object.
 
 ### Example:
-	
+
 	var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
 	var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
 	animals.associate(sounds);
@@ -368,9 +368,9 @@ Returns a random item from the array.
 * (mixed) A random item from this array. If this array is empty, returns null.
 
 ### Example:
-	
+
 	['Cow', 'Pig', 'Dog', 'Cat'].getRandom(); //returns one of the items
-	
+
 
 
 
@@ -395,7 +395,7 @@ Pushes the passed element into the array if it's not already present (case and t
 
 	['Cow', 'Pig', 'Dog'].include('Cat'); //returns ['Cow', 'Pig', 'Dog', 'Cat']
 	['Cow', 'Pig', 'Dog'].include('Dog'); //returns ['Cow', 'Pig', 'Dog']
-	
+
 
 
 
@@ -417,10 +417,10 @@ Merges an array with all the items of another. Does not allow duplicates and is 
 * (array) This array merged with the new items.
 
 ### Example:
-	
+
 	var animals = ['Cow', 'Pig', 'Dog'];
 	animals.merge(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat'];
-	
+
 
 
 
@@ -442,10 +442,10 @@ Removes all occurrences of an item from the array.
 * (array) This array with all occurrences of the item removed.
 
 ### Example:
-	
+
 	['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
 	['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
-	
+
 
 
 
@@ -463,10 +463,10 @@ Empties an array.
 * (array) This array, emptied.
 
 ### Example:
-	
+
 	var myArray = ['old', 'data'];
 	myArray.empty(); //myArray is now []
-	
+
 
 
 
@@ -484,6 +484,6 @@ Flattens a multidimensional array into a single array.
 * (array) A new flat array.
 
 ### Example:
-	
+
 	var myArray = [1,2,3,[4,5, [6,7]], [[[8]]]];
 	varnewArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]

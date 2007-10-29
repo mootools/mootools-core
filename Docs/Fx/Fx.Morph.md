@@ -169,7 +169,7 @@ Set Example:
 		el.set('morph', {duration: 'long', transition: 'bounce:out'});
 		el.morph({height: 100, width: 100});
 	[/javascript]
-	
+
 Get Syntax:
 	>el.get('morph');
 
@@ -189,18 +189,18 @@ Get Example:
 */
 
 Element.Properties.morph = {
-	
+
 	set: function(options){
 		var morph = this.retrieve('morph');
 		if (morph) morph.cancel();
 		return this.store('morph', new Fx.Morph(this, $extend({link: 'cancel'}, options)));
 	},
-	
+
 	get: function(options){
 		if (options || !this.retrieve('morph')) this.set('morph', options);
 		return this.retrieve('morph');
 	}
-	
+
 };
 
 /*

@@ -6,23 +6,23 @@ Element.implement({
 	getFormElements: function(){
 		return this.getElements('input, textarea, select');
 	},
-	
+
 	getValue: function(){
 		return this.get('value');
 	},
-	
+
 	getText: function(){
 		return this.get('text');
 	},
-	
+
 	setText: function(text){
 		return this.set('text', text);
 	},
-	
+
 	setHTML: function(){
 		return this.set('html', $A(arguments));
 	},
-	
+
 	getTag: function(){
 		return this.get('tag');
 	}

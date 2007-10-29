@@ -662,7 +662,7 @@ Adds the passed in class to the Element, if the Element doesnt already have it.
 	//	<div id="myElement" class="testClass"></div>
 
 	$('myElement').addClass('newClass');
-	
+
 	//	<div id="myElement" class="testClass newClass"></div>
 
 
@@ -735,7 +735,7 @@ Returns the previousSibling of the Element (excluding text nodes).
 ### Syntax:
 
 	var previousSibling = myElement.getPrevious([tagName/selector]);
-	
+
 ### Arguments:
 
 1. match - (string): A tagName to match the the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
@@ -762,7 +762,7 @@ Works as [Element:getPrevious][], but tries to find the nextSibling (excluding t
 ### Syntax:
 
 	var nextSibling = myElement.getNext();
-	
+
 ### Arguments:
 
 1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
@@ -788,7 +788,7 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 ### Syntax:
 
 	var firstElement = myElement.getFirst();
-	
+
 ### Arguments:
 
 1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
@@ -808,7 +808,7 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 ### Syntax:
 
 	var lastElement = myElement.getLast();
-	
+
 ### Arguments:
 
 1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
@@ -827,7 +827,7 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 ### Syntax:
 
 	var parent = myElement.getParent();
-	
+
 ### Arguments:
 
 1. match - (string): A tagName to match the the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
@@ -853,7 +853,7 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 ### Syntax:
 
 	var children = myElement.getChildren();
-	
+
 ### Arguments:
 
 1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
@@ -968,7 +968,7 @@ Gets multiple element attributes.
 ### Syntax:
 
 	var myProps = myElement.getProperties();
-	
+
 ### Arguments:
 
 * (strings) any number of properties you want to get.
@@ -984,7 +984,7 @@ Gets multiple element attributes.
 
 	var imgProps = $('myImage').getProperties('id', 'src', 'title', 'alt');
 	// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
-	
+
 
 Element Method: setProperty {#Element:setProperty}
 --------------------------------------------------
@@ -1172,7 +1172,7 @@ Element Getter: tag {#Element:Getters:tag}
 ### Example:
 
 	//	<img id="myImage" />
-	
+
 	var myTag = $('myImage').get('tag') // myTag = 'img';
 
 

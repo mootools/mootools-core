@@ -277,7 +277,7 @@ See Also:
 */
 
 Array.implement({
-	
+
 	/*
 	Method: rgbToHsb
 		Converts a RGB array to an HSB array.

@@ -103,8 +103,8 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var cont = this.container.getCoordinates;
-			var el = this.element.getCoordinates;
+			var cont = this.container.getCoordinates();
+			var el = this.element.getCoordinates();
 			if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
 				this.options.limit = {'x': [cont.left, cont.right - el.width], 'y': [cont.top, cont.bottom - el.height]};
 			} else {

@@ -12,16 +12,16 @@ Credits:
 /*
 Class: Fx
 	Fx.Transitions overrides the base Fx constructor, and adds the possibility to use the transition option as string.
-	
+
 transition option:
 	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
 	or a string ('sine:in', 'bounce:out' or 'quad:in:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut / Fx.Transitions.Quad.easeInOut
 */
 
 (function(){
-	
+
 	var old = Fx.prototype.initialize;
-	
+
 	Fx.prototype.initialize = function(options){
 		old.call(this, options);
 		var trans = this.options.transition;
@@ -32,7 +32,7 @@ transition option:
 			this.options.transition = base;
 		}
 	};
-	
+
 })();
 
 /*

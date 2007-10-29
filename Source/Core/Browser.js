@@ -61,7 +61,7 @@ Native.UID = 0;
 var Window = new Native({
 
 	name: 'Window',
-	
+
 	legacy: window.Window,
 
 	initialize: function(win){
@@ -87,7 +87,7 @@ new Window(window);
 var Document = new Native({
 
 	name: 'Document',
-	
+
 	legacy: window.Document,
 
 	initialize: function(doc){

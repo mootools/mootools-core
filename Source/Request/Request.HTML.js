@@ -76,17 +76,17 @@ See Also:
 */
 
 Request.HTML = new Class({
-	
+
 	Extends: Request,
-	
+
 	options: {
 		update: false,
 		evalScripts: true,
 		filter: false
 	},
-	
+
 	bodyRegExp: (/<body[^>]*>([\s\S]*?)<\/body>/gi),
-	
+
 	processHTML: function(text){
 		if (!text.match(this.bodyRegExp)) return text;
 		var contents = '';
@@ -154,12 +154,12 @@ Example:
 */
 
 Element.Properties.load = {
-	
+
 	get: function(options){
 		if (options || !this.retrieve('load')) this.set('load', options);
 		return this.retrieve('load');
 	},
-	
+
 	set: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();

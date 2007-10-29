@@ -115,7 +115,7 @@ Get Syntax:
 Get Arguments:
 	property - (string) the Fx.Tween property argument.
 	options - (object) the Fx.Tween options.
-	
+
 Get Returns:
 	(object) The Fx.Tween instance
 
@@ -126,20 +126,20 @@ Get Example:
 */
 
 Element.Properties.tween = {
-	
+
 	set: function(options){
 		var tween = this.retrieve('tween');
 		if (tween) tween.cancel();
 		return this.store('tween', new Fx.Tween(this, null, $extend({link: 'cancel'}, options)));
 	},
-	
+
 	get: function(property, options){
 		if (options || !this.retrieve('tween')) this.set('tween', options);
 		var tween = this.retrieve('tween');
 		tween.property = property;
 		return tween;
 	}
-	
+
 };
 
 Element.implement({

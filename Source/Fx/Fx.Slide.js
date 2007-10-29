@@ -282,7 +282,7 @@ Example:
 		el.set('slide', {duration: 'long', transition: 'bounce:out'});
 		el.slide('in');
 	[/javascript]
-	
+
 Syntax:
 	>el.get('slide');
 
@@ -308,7 +308,7 @@ Element.Properties.slide = {
 		if (slide) slide.cancel();
 		return this.store('slide', new Fx.Slide(this, $extend({link: 'cancel'}, options)));
 	},
-	
+
 	get: function(options){
 		if (options || !this.retrieve('slide')) this.set('slide', options);
 		return this.retrieve('slide');

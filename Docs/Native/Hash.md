@@ -24,7 +24,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf](/Array/#
 * (boolean) Otherwise, returns false.
 
 ### Example:
-	
+
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 3});
 	hash.keyOf('two'); //returns 'b'
 	hash.keyOf(3); //returns 'c'
@@ -53,11 +53,11 @@ Tests for the presence of a specified key in the Hash.
 * (boolean) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
 
 ### Example:
-	
+
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
 	hash.has('a'); //returns true
 	hash.has('d'); //returns false
-	
+
 
 ### Notes:
 
@@ -82,7 +82,7 @@ Tests for the presence of a specified value in the Hash.
 * (boolean) If the Hash has the passed in value in any of the keys, returns true. Otherwise, returns false.
 
 ### Example:
-	
+
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
 	hash.hasValue('one'); //returns true
 	hash.hasValue('four'); //returns false
@@ -106,7 +106,7 @@ Extends this Hash with the key-value pairs from the object passed in.
 * (hash) This Hash, extended.
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
@@ -118,7 +118,7 @@ Extends this Hash with the key-value pairs from the object passed in.
 	};
 	hash.extend(properties);
 	//hash now holds an object containing: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
-	
+
 
 
 Hash Method: merge {#Hash:merge}
@@ -139,7 +139,7 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 * (hash) This Hash, merged with the new key-value pairs.
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
@@ -151,7 +151,7 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 	};
 	hash.merge(properties);
 	//hash now holds an object containing: { 'name': 'John', 'lastName': 'Doe', 'age': '20', 'sex': 'male' };
-	
+
 
 
 Hash Method: remove {#Hash:remove}
@@ -172,14 +172,14 @@ Removes the specified key from the Hash.
 * (hash) This Hash with the specified key and its value removed.
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
 	});
 	hash.remove('lastName');
 	//hash now holds an object containing: { 'name': 'John' };
-	
+
 
 
 ### Hash Method: get {#Hash:get}
@@ -200,7 +200,7 @@ Retrieves a value from the hash.
 * (false) null if the key doesn't exist
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
@@ -228,7 +228,7 @@ Adds a key-value pair to the hash or replaces a previous value associated with t
 * (hash) This Hash with the specified key set to the specified value.
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
@@ -247,14 +247,14 @@ Empties the hash.
 	myHash.empty();
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
 	});
 	hash.empty();
 	//hash now holds an empty object: {}
-	
+
 
 
 Hash Method: include {#Hash:include}
@@ -276,7 +276,7 @@ Includes the specified key-value pair in the Hash if the key doesn't already exi
 * (hash) This Hash with the specified key included if it did not previously exist.
 
 ### Example:
-	
+
 	var hash = new Hash({
 		'name': 'John',
 		'lastName': 'Doe'
@@ -284,7 +284,7 @@ Includes the specified key-value pair in the Hash if the key doesn't already exi
 	hash.include('name', 'Michelle'); //hash is unchanged
 	hash.include('age', 25); //hash.age is now 25
 
-	
+
 
 Hash Method: map {#Hash:map}
 ----------------------------
@@ -311,13 +311,13 @@ Creates a new map with the results of calling a provided function on every value
 1. value - (mixed) The current value in the hash.
 2. key   - (string) The current value's key in the hash.
 3. hash  - (hash) The actual hash.
-	
+
 ### Returns:
 
 * (array) The new mapped hash.
 
 ### Example:
-	
+
 	var times Two = new Hash({a: 1, b: 2, c: 3}).map(function(item, index){
 		return item * 2;
 	}); //times Two now holds an object containing: {a: 2, b: 4, c: 6};
@@ -341,7 +341,7 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 #### Argument: fn
 
 ##### Syntax:
-		
+
 	fn(value, key, hash)
 
 ##### Arguments:
@@ -355,7 +355,7 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 * (hash) The new filtered hash.
 
 ### Example:
-	
+
 	var biggerThanTwenty = new Hash({a: 10, b: 20, c: 30}).filter(function(value, key){
 		return value > 20;
 	}); //biggerThanTwenty now holds an object containing: {c: 30}
@@ -378,7 +378,7 @@ Returns true if every value in the object satisfies the provided testing functio
 #### Argument: fn
 
 ##### Syntax:
-		
+
 	fn(value, key, hash)
 
 ##### Arguments:
@@ -396,7 +396,7 @@ Returns true if every value in the object satisfies the provided testing functio
 	var areAllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).every(function(value, key){
 		return value > 20;
 	}); //areAllBigEnough = false
-	
+
 
 Hash Method: some {#Hash:some}
 ------------------------------
@@ -415,9 +415,9 @@ Returns true if at least one value in the object satisfies the provided testing 
 #### Argument: fn {#Hash:some:fn}
 
 ##### Syntax:
-		
+
 	fn(value, key, hash)
-	
+
 
 ##### Arguments:
 

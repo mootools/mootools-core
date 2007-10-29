@@ -59,10 +59,10 @@ Fx.Scroll = new Class({
 	initialize: function(element, options){
 		this.element = $(element);
 		arguments.callee.parent(options);
-		
+
 		var cancel = this.cancel.bind(this, false);
 		var stopper = this.element;
-		
+
 		switch($type(this.element)){
 			case 'window': stopper = this.element.document; break;
 			case 'document': this.element = this.element.window;
@@ -77,7 +77,7 @@ Fx.Scroll = new Class({
 			}, true);
 		}
 	},
-	
+
 	compute: function(from, to, delta){
 		var now = [];
 		(2).times(function(i){
@@ -85,7 +85,7 @@ Fx.Scroll = new Class({
 		});
 		return now;
 	},
-	
+
 	/*
 	Method: set
 		Scrolls the specified Element to the x/y coordinates immediately.
@@ -106,7 +106,7 @@ Fx.Scroll = new Class({
 			var myFx = new Fx.Scroll(myElement).set(0, 0.5 * document.body.offsetHeight);
 		[/javascript]
 	*/
-	
+
 	set: function(){
 		var now = Array.flatten(arguments);
 		this.element.scrollTo(now[0], now[1]);

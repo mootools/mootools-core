@@ -51,7 +51,7 @@ Element.implement({
 
 	Returns:
 		(object) An object containing 'client', 'offset', and 'scroll' objects, each with x and y values.
-		
+
 		[javascript]
 			{
 				'client': {'x': 135, 'y': 125}, //total visible size of the content of the element
@@ -77,7 +77,7 @@ Element.implement({
 			'scroll': {'x': this.scrollWidth, 'y': this.scrollHeight}
 		};
 	},
-	
+
 	/*
 	Method: getScroll
 		Returns an Object representing the size/scroll values of the element.

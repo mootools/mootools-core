@@ -143,12 +143,12 @@ var Request = new Class({
 	isSuccess: function(){
 		return ((this.status >= 200) && (this.status < 300));
 	},
-	
+
 	processScripts: function(text){
 		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
 		return text.stripScripts(this.options.evalScripts);
 	},
-	
+
 	onComplete: function(){
 		this.fireEvent('onComplete');
 	},
@@ -235,36 +235,36 @@ var Request = new Class({
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;
-		
+
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;
-		
+
 		switch($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': case 'hash': data = Hash.toQueryString(data);
 		}
-		
+
 		if (this.options.emulation && ['put', 'delete'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
 			method = 'post';
 		}
-		
+
 		if (this.options.urlEncoded && method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
-		
+
 		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
-		
+
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
-		
+
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
-		
+
 		this.headers.each(function(value, key){
 			try{
 				this.xhr.setRequestHeader(key, value);
@@ -272,7 +272,7 @@ var Request = new Class({
 				this.fireEvent('onException', [e, key, value]);
 			}
 		}, this);
-		
+
 		this.fireEvent('onRequest');
 		this.xhr.send(data);
 		if (!this.options.async) this.onStateChange();
@@ -356,7 +356,7 @@ Element.Properties.send = {
 		if (options || !this.retrieve('send')) this.set('send', options);
 		return this.retrieve('send');
 	},
-	
+
 	set: function(options){
 		var send = this.retrieve('send');
 		if (send) send.cancel();

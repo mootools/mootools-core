@@ -66,7 +66,7 @@ Fx.Elements = new Class({
 		}
 		return now;
 	},
-	
+
 	/*
 	Method: set
 		Applies the passed in style transitions to each object named immediately (see example).
@@ -95,7 +95,7 @@ Fx.Elements = new Class({
 			});
 		[/javascript]
 	*/
-	
+
 	set: function(now){
 		for (var i in now){
 			var iNow = now[i];

@@ -505,7 +505,7 @@ Array.implement({
 		}
 		return array;
 	},
-	
+
 	/*
 	Method: hexToRgb
 		Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.

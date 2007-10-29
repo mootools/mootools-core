@@ -81,7 +81,7 @@ Executes the function passed in the specified number of times.
 ### Example:
 
 	(4).times(alert); //alerts 0, 1, 2, 3
-	
+
 
 
 Number Method: toFloat {#Number:toFloat}
@@ -126,4 +126,4 @@ Returns this number as another number with the passed in base. Useful because to
 	(111).toInt(); //returns 111
 	(111.1).toInt(); //returns 111
 	(111).toInt(2); //returns 7
-	
+

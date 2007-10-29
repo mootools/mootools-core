@@ -120,11 +120,11 @@ Get Syntax:
 
 Set Arguments:
 	options - (object) the Fx.Tween options.
-	
+
 Get Arguments:
 	property - (string) the Fx.Tween property argument.
 	options - (object) the Fx.Tween options.
-	
+
 Set Returns:
 	(element) this element
 
@@ -136,7 +136,7 @@ Set Example:
 		el.set('tween', {duration: 'long'});
 		el.tween('opacity', 0);
 	[/javascript]
-	
+
 Get Example:
 	[javascript]
 		el.get('tween', 'opacity', {duration: 'long'}).start(0);
@@ -144,20 +144,20 @@ Get Example:
 */
 
 Element.Properties.tween = {
-	
+
 	set: function(options){
 		var tween = this.retrieve('tween');
 		if (tween) tween.cancel();
 		return this.store('tween', new Fx.Tween(this, null, $extend({link: 'cancel'}, options)));
 	},
-	
+
 	get: function(property, options){
 		if (options || !this.retrieve('tween')) this.set('tween', options);
 		var tween = this.retrieve('tween');
 		tween.property = property;
 		return tween;
 	}
-	
+
 };
 
 Element.implement({

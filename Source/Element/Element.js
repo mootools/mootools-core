@@ -53,7 +53,7 @@ See Also:
 */
 
 var Element = new Native({
-	
+
 	name: 'Element',
 
 	legacy: window.Element,
@@ -252,14 +252,14 @@ var Elements = new Native({
 });
 
 Elements.implement({
-	
+
 	filterBy: function(filter){
 		if (!filter) return this;
 		return new Elements(this.filter(($type(filter) == 'string') ? function(item){
 			return item.match(filter);
 		} : filter));
 	}
-	
+
 });
 
 Elements.multi = function(property){
@@ -553,7 +553,7 @@ Element.Inserters = new Hash({
 		var next = element.nextSibling;
 		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
 	},
-	
+
 	
 	/*
 	Method: injectBottom
@@ -899,7 +899,7 @@ Element.implement({
 		Element.Inserters.after(this, el);
 		return this.grab(el, where);
 	},
-	
+
 	/*
 	Method: grab
 		Works as <Element.inject>, but in reverse.
@@ -935,7 +935,7 @@ Element.implement({
 	See Also:
 		<Element.inject>, <Element.adopt>
 	*/
-	
+
 	grab: function(el, where){
 		Element.Inserters.get(where || 'bottom')($(el, true), this);
 		return this;
@@ -1297,12 +1297,12 @@ Element.implement({
 	getPrevious: function(match, all){
 		return Element.walk(this, 'previousSibling', null, match, all);
 	},
-	
+
 	/*
 	Method: getAllNPrevious
 		like Element.getPrevious, but returns a collection of all the matched previousSiblings.
 	*/
-	
+
 	getAllPrevious: function(match){
 		return this.getPrevious(match, true);
 	},
@@ -1341,12 +1341,12 @@ Element.implement({
 	getNext: function(match, all){
 		return Element.walk(this, 'nextSibling', null, match, all);
 	},
-	
+
 	/*
 	Method: getAllNext
 		like Element.getNext, but returns a collection of all the matched nextSiblings.
 	*/
-	
+
 	getAllNext: function(match){
 		return this.getNext(match, true);
 	},
@@ -1466,12 +1466,12 @@ Element.implement({
 	getParent: function(match, all){
 		return Element.walk(this, 'parentNode', null, match, all);
 	},
-	
+
 	/*
 	Method: getParents
 		like Element.getParent, but returns a collection of all the matched parentNodes.
 	*/
-	
+
 	getParents: function(match){
 		return this.getParent(match, true);
 	},
@@ -1854,7 +1854,7 @@ Get Example:
 		var result = $('myForm').getElement('select').get('value'); // returns 'Saab'
 	[/javascript]
 */
-	
+
 Element.Properties.value = {get: function(){
 	switch (Element.get(this, 'tag')){
 		case 'select':
@@ -1891,7 +1891,7 @@ Get Example:
 See Also:
 	<http://developer.mozilla.org/en/docs/DOM:element.tagName>
 */
-	
+
 Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
 }};
@@ -1961,7 +1961,7 @@ Native.implement([Element, Window, Document], {
 		else this.detachEvent('on' + type, fn);
 		return this;
 	},
-	
+
 	retrieve: function(property, dflt){
 		var storage = Element.Storage.get(this.uid);
 		var prop = storage[property];

@@ -249,7 +249,7 @@ String.implement({
 	toFloat: function(){
 		return parseFloat(this);
 	},
-	
+
 	/*
 	Method: hexToRgb
 		Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
@@ -310,7 +310,7 @@ String.implement({
 		var rgb = this.match(/\d{1,3}/g);
 		return (rgb) ? rgb.rgbToHex(array) : null;
 	},
-	
+
 	stripScripts: function(evaluate){
 		var scripts = '';
 		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){

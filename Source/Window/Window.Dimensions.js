@@ -174,7 +174,7 @@ Window.implement({
 
 	Returns:
 		(object) An object containing 'client', 'offset', and 'scroll' objects, each with x and y values.
-		
+
 		[javascript]
 			{
 				'client': {'x': 135, 'y': 125}, //total visible size of the window
@@ -198,7 +198,7 @@ Window.implement({
 			'scroll': {'x': this.getScrollWidth(), 'y': this.getScrollHeight()}
 		};
 	},
-	
+
 	/*
 	Method: getScroll
 		Same as <Element.getScroll>, but for window.

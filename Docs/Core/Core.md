@@ -17,9 +17,9 @@ Checks to see if a value exists or is 0. Useful for allowing 0.
 ### Syntax:
 
 	$chk(item);
-	
+
 ### Arguments:
-	
+
 1. item - (mixed) The item to inspect.
 
 ### Returns:
@@ -81,12 +81,12 @@ Checks to see if a value is defined.
 * (boolean) If the object passed is not null or undefined, returns true. Otherwise, returns false.
 
 ### Example:
-	
+
 	function myFunction(arg){
 		if($defined(arg)) alert('The object is defined.');
 		else alert('The object is null or undefined.');
 	}
-	
+
 
 
 Function: $empty {#empty}
@@ -99,7 +99,7 @@ An empty function, that's it. Typically used for as a placeholder inside classes
 	var emptyFn = $empty;
 
 ### Example:
-	
+
 	var myFunc = $empty;
 
 
@@ -126,7 +126,7 @@ In myWhatever.extend = $extend, the first parameter will become myWhatever, and 
 ### Examples:
 
 #### Normal Extension:
-	
+
 	var firstObj = {
 		'name': 'John',
 		'lastName': 'Doe'
@@ -138,10 +138,10 @@ In myWhatever.extend = $extend, the first parameter will become myWhatever, and 
 	};
 	$extend(firstObj, secondObj);
 	//firstObj is now: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
-	
+
 
 #### Without the Second Parameter:
-	
+
 	var myFunction = function(){ ... };
 	myFunction.extend = $extend;
 	myFunction.extend(secondObj);
@@ -176,7 +176,7 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var nestedObj1 = {a: {b: 1, c: 1}};
 	var nestedObj2 = {a: {b: 2}};
 	var nested = $merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
-	
+
 
 
 Function: $pick {#pick}
@@ -185,7 +185,7 @@ Function: $pick {#pick}
 Returns the first defined argument passed in, or null.
 
 ### Syntax:
-	
+
 	var picked = $pick(var1[, var2[, var3[, ...]]]);
 
 ### Arguments:
@@ -198,20 +198,20 @@ Returns the first defined argument passed in, or null.
 * (false) If all variables passed in are null or undefined, returns null.
 
 ### Example:
-	
+
 	function say(infoMessage, errorMessage){
 		alert($pick(errorMessage, infoMessage, 'There was no message supplied.'));
 	}
 
 
-	
+
 Function: $random {#random}
 ---------------------------
 
 Returns a random integer number between the two passed in values.
 
 ### Syntax:
-	
+
 	var random = $random(min, max);
 
 ### Arguments:
@@ -224,9 +224,9 @@ Returns a random integer number between the two passed in values.
 * (number) A random number between min and max.
 
 ### Example:
-	
+
 	alert($random(5, 20)); //alerts a random number between 5 and 20
-	
+
 
 
 Function: $splat {#splat}
@@ -235,7 +235,7 @@ Function: $splat {#splat}
 Array-ifies the argument passed in if it is defined and not already an array.
 
 ### Syntax:
-	
+
 	var splatted = $splat(obj);
 
 ### Arguments:
@@ -247,7 +247,7 @@ Array-ifies the argument passed in if it is defined and not already an array.
 * (array) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
 
 ### Example:
-	
+
 	$splat('hello'); //returns ['hello']
 	$splat(['a', 'b', 'c']); //returns ['a', 'b', 'c']
 
@@ -289,7 +289,7 @@ Tries to execute a function. Returns false if it fails.
 * (boolean) `false` on failure.
 
 ### Example:
-	
+
 	var result = $try(eval, window, 'some invalid javascript'); //false
 
 ### Note:
@@ -331,7 +331,7 @@ Returns the type of object that matches the element passed in.
 * false        - (boolean) If object is undefined, null, NaN or none of the above.
 
 ### Example:
-	
+
 	var myString = 'hello';
 	$type(myString); //returns "string"
 
@@ -344,7 +344,7 @@ A Custom "Object" ({}) implementation which does not account for prototypes when
 Useful because in Javascript we cannot use Object.prototype. You can now use Hash.prototype!
 
 ## Syntax:
-	
+
 	var myHash = new Hash([object]);
 
 ## Arguments:
@@ -356,7 +356,7 @@ Useful because in Javascript we cannot use Object.prototype. You can now use Has
 (hash) A new Hash instance.
 
 ## Example:
-	
+
 	var myHash = new Hash({
 		aProperty: true,
 		aMethod: function(){
@@ -364,7 +364,7 @@ Useful because in Javascript we cannot use Object.prototype. You can now use Has
 		}
 	});
 	alert(myHash.has('aMethod')); //true
-	
+
 
 
 Hash Method: each {#Hash:each}
@@ -386,7 +386,7 @@ Calls a function for each key-value pair in the object.
 ##### Syntax:
 
 	fn(value, key, hash)
-	
+
 ##### Arguments:
 
 1. value - (mixed) The current value in the hash.
@@ -394,7 +394,7 @@ Calls a function for each key-value pair in the object.
 3. hash  - (hash) The actual hash.
 
 ### Example:
-	
+
 	var hash = new Hash({first: "Sunday", second: "Monday", third: "Tuesday"});
 	hash.each(function(value, key){
 		alert("the " + key + " day of the week is " + value);
@@ -422,7 +422,7 @@ Array Method: each {#Array:each}
 Calls a function for each element in the array.
 
 ### Syntax:
-	
+
 	myArray.each(fn[, bind]);
 
 ### Arguments:
@@ -433,7 +433,7 @@ Calls a function for each element in the array.
 #### Argument: fn
 
 ##### Syntax
-	
+
 	fn(item, index, array)
 
 ##### Arguments:
@@ -443,11 +443,11 @@ Calls a function for each element in the array.
 3. array  - (array) The actual array.
 
 ### Example:
-	
+
 	['apple', 'banana', 'lemon'].each(function(item, index){
 		alert(index + " = " + item); //alerts "0 = apple" etc.
 	}, bind); //optional second argument for binding, not used here
-	
+
 
 ### See Also:
 
@@ -465,7 +465,7 @@ Function: $A {#A}
 Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
 
 ### Syntax:
-	
+
 	var copiedArray = $A(iterable);
 
 ### Arguments:
@@ -479,7 +479,7 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 ### Examples:
 
 #### Apply Array to arguments:
-	
+
 	function myFunction(){
 		$A(arguments).each(function(argument, index){
 			alert(argument);
@@ -487,7 +487,7 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 	}; //will alert all the arguments passed to the function myFunction.	
 
 #### Copy an Array:
-	
+
 	var anArray = [0, 1, 2, 3, 4];
 	var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
 
@@ -523,14 +523,14 @@ Use to iterate through iterables that are not regular arrays, such as builtin ge
 ### Examples:
 
 #### Array Example:
-	
+
 	$each(['Sun','Mon','Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
 	}); //alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
-	
+
 
 #### Object Example:
-	
+
 	$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 		alert("the " + key + " day of the week is " + value);
 	}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
