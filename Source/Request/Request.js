@@ -80,69 +80,86 @@ See Also:
 	<http://en.wikipedia.org/wiki/XMLHttpRequest>
 */
 
-var XHR = new Class({
+var Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {/*
-		onRequest: $empty,
+	options: {
+		/*onRequest: $empty,
 		onSuccess: $empty,
 		onFailure: $empty,
 		onException: $empty,*/
+		url: '',
 		data: '',
+		headers: {},
 		async: true,
 		method: 'post',
+		isSuccess: null,
+		emulation: true,
 		urlEncoded: true,
 		encoding: 'utf-8',
 		autoCancel: false,
-		headers: {},
-		isSuccess: null
+		evalScripts: false,
+		evalResponse: false
 	},
 
-	setTransport: function(){
-		this.transport = (window.XMLHttpRequest) ? new XMLHttpRequest() : (Browser.Engine.trident ? new ActiveXObject('Microsoft.XMLHTTP') : false);
+	getXHR: function(){
+		return (window.XMLHttpRequest) ? new XMLHttpRequest() : ((window.ActiveXObject) ? new ActiveXObject('Microsoft.XMLHTTP') : false);
 	},
 
-	initialize: function(){
-		var params = Array.link(arguments, {'url': String.type, 'options': Object.type});
-		this.setTransport();
-		this.setURL(params.url).setOptions(params.options);
+	initialize: function(options){
+		if (!(this.xhr = this.getXHR())) return;
+		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = new Hash(this.options.headers);
-		if (this.options.urlEncoded && this.options.method != 'get'){
-			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.setHeader('Content-type', 'application/x-www-form-urlencoded' + encoding);
-		}
-		this.setHeader('X-Requested-With', 'XMLHttpRequest');
+		this.headers = new Hash(this.options.headers).extend({
+			'X-Requested-With': 'XMLHttpRequest',
+			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+		});
+		['GET', 'POST', 'PUT', 'DELETE'].each(function(method){
+			this[method] = function(){
+				return this.send($extend(Array.link(arguments, {'url': String.type, data: $defined}), {method: method.toLowerCase()}));
+			};
+		}, this);
 	},
 
 	onStateChange: function(){
-		if (this.transport.readyState != 4 || !this.running) return;
+		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
 		$try(function(){
-			this.status = this.transport.status;
+			this.status = this.xhr.status;
 		}, this);
-		if (this.options.isSuccess.call(this, this.status)) this.onSuccess();
-		else this.onFailure();
-		this.transport.onreadystatechange = $empty;
+		if (this.options.isSuccess.call(this, this.status)){
+			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
+			this.onSuccess(this.response.text);
+		} else {
+			this.response = {text: null, xml: null};
+			this.onFailure();
+		}
+		this.xhr.onreadystatechange = $empty;
+		this.onComplete();
 	},
 
 	isSuccess: function(){
 		return ((this.status >= 200) && (this.status < 300));
 	},
+	
+	processScripts: function(text){
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
+		return text.stripScripts(this.options.evalScripts);
+	},
+	
+	onComplete: function(){
+		this.fireEvent('onComplete');
+	},
 
-	onSuccess: function(){
-		this.response = {
-			text: this.transport.responseText,
-			xml: this.transport.responseXML
-		};
-		this.fireEvent('onSuccess', [this.response.text, this.response.xml]);
-		this.callChain();
+	onSuccess: function(text, xml){
+		text = this.processScripts(text);
+		this.fireEvent('onSuccess', text, xml).callChain();
 	},
 
 	onFailure: function(){
-		this.fireEvent('onFailure', this.transport);
+		this.fireEvent('onFailure', this.xhr);
 	},
 
 	/*
@@ -192,34 +209,7 @@ var XHR = new Class({
 	getHeader: function(name){
 		return $try(function(){
 			return this.getResponseHeader(name);
-		}, this.transport) || null;
-	},
-
-	/*
-	Method: setURL
-		Sets, or changes the instance URL.
-
-	Syntax:
-		>myRequest.setURL(url);
-
-	Arguments:
-		url - (string) The URL to be used for this XHR.
-
-	Returns:
-		(object) This XHR instance.
-
-	Example:
-		[javascript]
-			var myXHR = new XHR({method: 'get', url: 'http://localhost/some_url'});
-			myXHR.send('some=data');
-			myXHR.setURL('http://localhost/my_other_url');
-			myXHR.send('some=data');
-		[/javascript]
-	*/
-
-	setURL: function(url){
-		this.url = url;
-		return this;
+		}, this.xhr) || null;
 	},
 
 	/*
@@ -241,49 +231,52 @@ var XHR = new Class({
 		[/javascript]
 	*/
 
-	send: function(data){
+	send: function(options){
+		var old = this.options;
+		options = $extend({data: old.data, url: old.url, method: old.method}, options);
+		var data = options.data, url = options.url, method = options.method;
+		
 		if (this.options.autoCancel) this.cancel();
 		else if (this.running) return this;
 		this.running = true;
-		data = data || this.options.data;
-		var url = this.url;
-		if (data && this.options.method == 'get'){
+		
+		switch($type(data)){
+			case 'element': data = $(data).toQueryString(); break;
+			case 'object': case 'hash': data = Hash.toQueryString(data);
+		}
+		
+		if (this.options.emulation && ['put', 'delete'].contains(method)){
+			var _method = '_method=' + method;
+			data = (data) ? _method + '&' + data : _method;
+			method = 'post';
+		}
+		
+		if (this.options.urlEncoded && method == 'post'){
+			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
+			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
+		}
+		
+		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
-		this.transport.open(this.options.method.toUpperCase(), url, this.options.async);
-		this.transport.onreadystatechange = this.onStateChange.bind(this);
+		
+		this.xhr.open(method.toUpperCase(), url, this.options.async);
+		
+		this.xhr.onreadystatechange = this.onStateChange.bind(this);
+		
 		this.headers.each(function(value, key){
 			try{
-				this.transport.setRequestHeader(key, value);
+				this.xhr.setRequestHeader(key, value);
 			} catch(e){
 				this.fireEvent('onException', [e, key, value]);
 			}
 		}, this);
+		
 		this.fireEvent('onRequest');
-		this.transport.send(data);
+		this.xhr.send(data);
 		if (!this.options.async) this.onStateChange();
 		return this;
-	},
-
-	/*
-	Method: request
-		Opens the XHR connection and sends the provided data. Allows to override the URL.
-
-	Syntax:
-		>myAjax.request(data[, url]);
-
-	Arguments:
-		data - (mixed) Same as the data argument for <XHR.send>.
-		url - (string, optional) Overrides default URL given during initialize or <XHR.setURL>.
-
-	Returns:
-		(object) This Ajax instance.
-	*/
-
-	request: function(data, url){
-		if (url) this.url = url;
-		return this.send(data);
 	},
 
 	/*
@@ -306,11 +299,105 @@ var XHR = new Class({
 	cancel: function(){
 		if (!this.running) return this;
 		this.running = false;
-		this.transport.abort();
-		this.transport.onreadystatechange = $empty;
-		this.setTransport();
+		this.xhr.abort();
+		this.xhr.onreadystatechange = $empty;
+		this.xhr = this.getXHR();
 		this.fireEvent('onCancel');
 		return this;
 	}
 
+});
+
+/*
+Element Setter: send
+	sets a default Ajax instance for an element (possibly a form!)
+
+Syntax:
+	>el.set('send'[, options]);
+
+Arguments:
+	options - (object) the Ajax options.
+
+Returns:
+	(element) this element
+
+Example:
+	[javascript]
+		myForm.set('send', {method: 'get'});
+		myForm.send(); //form sent!
+	[/javascript]
+*/
+
+/*
+Element Getter: send
+	gets the previously setted Ajax instance or a new one with default options
+
+Syntax:
+	>el.get('send'[, options]);
+
+Arguments:
+	options - (object, optional) the Ajax options. if passed in will generate a new instance.
+
+Returns:
+	(object) the Ajax instance
+
+Example:
+	[javascript]
+		el.get('send', {method: 'get'});
+		el.send();
+
+		el.get('send'); //the Ajax instance
+	[/javascript]
+*/
+
+Element.Properties.send = {
+
+	get: function(options){
+		if (options || !this.retrieve('send')) this.set('send', options);
+		return this.retrieve('send');
+	},
+	
+	set: function(options){
+		var send = this.retrieve('send');
+		if (send) send.cancel();
+		return this.store('send', new Request($extend({
+			data: this, autoCancel: true, method: this.get('method') || 'post', url: this.get('action')
+		}, options)));
+	}
+
+};
+
+/*
+Method: send
+	Sends a form with an Ajax request.
+
+Syntax:
+	>myElement.send([options]);
+
+Arguments:
+	options - (object, optional) Options object for the <Ajax> request.
+
+Returns:
+	(element) This Element.
+
+Example:
+	[html]
+		<form id="myForm" action="submit.php">
+			<p>
+				<input name="email" value="bob@bob.com">
+				<input name="zipCode" value="90210">
+			</p>
+		</form>
+	[/html]
+	[javascript]
+		$('myForm').send();
+	[/javascript]
+
+Note:
+	The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
+*/
+
+Element.implement('send', function(url){
+	this.get('send').send({data: this, url: url});
+	return this;
 });

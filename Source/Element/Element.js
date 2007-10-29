@@ -253,10 +253,11 @@ var Elements = new Native({
 
 Elements.implement({
 	
-	filterBy: function(selector){
-		return this.filter(function(item){
-			return item.match(selector);
-		});
+	filterBy: function(filter){
+		if (!filter) return this;
+		return new Elements(this.filter(($type(filter) == 'string') ? function(item){
+			return item.match(filter);
+		} : filter));
 	}
 	
 });

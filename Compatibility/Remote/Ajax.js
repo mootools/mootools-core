@@ -1,1 +1,0 @@
-Object.toQueryString = Hash.toQueryString;

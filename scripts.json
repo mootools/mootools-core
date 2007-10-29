@@ -65,7 +65,7 @@
 		},
 
 		"Element.Style": {
-			"deps": ["Element"],
+			"deps": ["Element", "Color"],
 			"desc": "Contains useful Element methods, to set/get styles in a fashionable way."
 		},
 
@@ -118,7 +118,7 @@
 
 		"Fx.CSS": {
 			"deps": ["Fx", "Element.Style"],
-			"desc": "Contains the CSS animation logic. Used by Styles based Effects."
+			"desc": "Contains the CSS animation logic. Used by Twee, Morph, Elements."
 		},
 
 		"Fx.Tween": {
@@ -130,15 +130,15 @@
 			"deps": ["Fx.CSS"],
 			"desc": "Formerly Fx.Styles, effect to change any number of CSS properties for an element. Now also supports animating css rules."
 		},
+		
+		"Fx.Slide": {
+			"deps": ["Fx", "Element.Style"],
+			"desc": "Effect to slide an element."
+		},
 
 		"Fx.Scroll": {
 			"deps": ["Fx", "Element.Event", "Element.Dimensions", "Window.Size"],
 			"desc": "Effect to scroll any element, including the window."
-		},
-
-		"Fx.Slide": {
-			"deps": ["Fx", "Element.Style"],
-			"desc": "Effect to slide an element."
 		},
 
 		"Fx.Transitions": {
@@ -147,22 +147,41 @@
 		}
 
 	},
+	
+	"Request": {
 
-	"Utilities": {
+		"Request": {
+			"deps": ["Class.Extras"],
+			"desc": "Powerful Request Class. uses XMLHTTPRequest."
+		},
+
+		"Request.HTML": {
+			"deps": ["XHR", "Element"],
+			"desc": "Extends the basic XHR with additional methods and utility functions."
+		},
+
+		"Request.JSON": {
+			"deps": ["XHR", "JSON"],
+			"desc": "Shortcut Class to send and receive Javascript Objects."
+		}
+
+	},
+
+    "Utilities": {
+
+    	"JSON": {
+    		"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+    		"desc": "JSON encoder/decoder."
+    	},
+
+    	"Cookie": {
+    		"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
+    		"desc": "Lets you Create/Read/Delete Cookies."
+    	},
 
 		"Color": {
 			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
 			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB->RGB Conversions and vice versa."
-		},
-
-		"JSON": {
-			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
-			"desc": "JSON encoder/decoder."
-		},
-
-		"Cookie": {
-			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
-			"desc": "Lets you Create/Read/Delete Cookies."
 		},
 
 		"Group": {
@@ -175,26 +194,7 @@
 			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
 		}
 
-	},
-
-	"Remote": {
-
-		"XHR": {
-			"deps": ["Class.Extras"],
-			"desc": "Basic XMLHttpRequest Object Class Wrapper."
-		},
-
-		"Ajax": {
-			"deps": ["XHR", "Element"],
-			"desc": "Extends the basic XHR with additional methods and utility functions."
-		},
-
-		"Json.Remote": {
-			"deps": ["XHR", "JSON"],
-			"desc": "Shortcut Class to send and receive Javascript Objects."
-		}
-
-	},
+    },
 
 	"Drag": {
 
@@ -211,16 +211,31 @@
 	},
 
 	"Plugins": {
-
+		
 		"Fx.Elements": {
 			"deps": ["Fx.CSS"],
 			"desc": "Effect to change any number of CSS properties to any number of elements."
 		},
-
+		
 		"Accordion": {
-			"deps": ["Fx.Elements", "Element.Event"],
-			"desc": "Does it need a description?"
+    		"deps": ["Fx.Elements", "Element.Event"],
+    		"desc": "Does it need a description?"
+    	},
+
+		"Sortables": {
+			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions", "Element.Style"],
+			"desc": "Creates an interface for drag and drop sorting of a list or lists."
 		},
+
+		"Tips": {
+			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Window.Size"],
+			"desc": "The Tooltips."
+		},
+		
+		"Assets": {
+    		"deps": ["Element.Event"],
+    		"desc": "Contains functions to load external files on the fly: Images, CSS, JavaScript."
+    	},
 
 		"Scroller": {
 			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions"],
@@ -237,16 +252,6 @@
 			"desc": "Smooth scroll your internal links."
 		},
 
-		"Sortables": {
-			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions", "Element.Style"],
-			"desc": "Creates an interface for drag and drop sorting of a list or lists."
-		},
-
-		"Tips": {
-			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Window.Size"],
-			"desc": "The Tooltips."
-		},
-
 		"Element.Filters": {
 			"deps": ["Element"],
 			"desc": "Adds Filtering Capabilities to Element Collections."
@@ -256,15 +261,10 @@
 			"deps": ["Selectors"],
 			"desc": "Adds the :children Selector."
 		},
-
+		
 		"Hash.Cookie": {
 			"deps": ["Class.Extras", "Cookie", "JSON"],
 			"desc": "Lets you Create/Read/Delete Cookies in JSON Format."
-		},
-
-		"Assets": {
-			"deps": ["Element.Event"],
-			"desc": "Contains functions to load external files on the fly: Images, CSS, JavaScript."
 		}
 
 	}

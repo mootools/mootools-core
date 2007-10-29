@@ -311,18 +311,13 @@ String.implement({
 		return (rgb) ? rgb.rgbToHex(array) : null;
 	},
 	
-	evaluate: function(){
-		(window.execScript) ? window.execScript(this) : window.setTimeout(this, 0);
-		return this;
-	},
-	
 	stripScripts: function(evaluate){
 		var scripts = '';
 		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 			scripts += arguments[1] + '\n';
 			return '';
 		});
-		if (evaluate && scripts) scripts.evaluate();
+		if (evaluate && scripts) $exec(scripts);
 		return text;
 	}
 

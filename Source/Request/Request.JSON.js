@@ -46,49 +46,22 @@ Example:
 	[/javascript]
 */
 
-JSON.Remote = new Class({
+Request.JSON = new Class({
 
-	Extends: XHR,
+	Extends: Request,
 
 	options: {
-		key: 'json',
 		secure: true
 	},
 
-	initialize: function(){
-		arguments.callee.parent.apply(this, arguments);
-		this.addEvent('onSuccess', this.onComplete, true);
-		this.setHeader('Accept', 'application/json');
-		this.setHeader('X-Request', 'JSON');
+	initialize: function(options){
+		arguments.callee.parent(options);
+		this.headers.extend({'Accept': 'application/json', 'X-Request': 'JSON'});
 	},
 
-	/*
-	Method: send
-		Sends the JSON-encoded object to the request URL.
-
-	Syntax:
-		>myJSONRemote.send(obj);
-
-	Arguments:
-		obj - (object) The JavaScript object to be encoded and sent.
-
-	Returns:
-		(object) This JSON.Remote instance.
-
-	Example:
-		[javascript]
-			jsonRequest.send({'name': 'John', 'age': 25});
-		[/javascript]
-	*/
-
-	send: function(obj){
-		var data = (obj) ? ((this.options.key) ? this.options.key + '=' : '') + encodeURIComponent(JSON.encode(obj)) : null;
-		return arguments.callee.parent(data);
-	},
-
-	onComplete: function(text){
+	onSuccess: function(text){
 		this.response.json = JSON.decode(text, this.options.secure);
-		this.fireEvent('onComplete', [this.response.json]);
+		this.fireEvent('onSuccess', this.response.json).callChain();
 	}
 
 });

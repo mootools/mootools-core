@@ -49,6 +49,13 @@ else if (document.getBoxObjectFor != null) Browser.Engine.name = 'gecko';
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
 Browser.Platform[Browser.Platform.name] = true;
 
+//window global evaluation
+
+function $exec(script){
+	(window.execScript) ? window.execScript(script) : window.setTimeout(script, 0);
+	return script;
+};
+
 Native.UID = 0;
 
 var Window = new Native({
