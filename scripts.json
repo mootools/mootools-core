@@ -65,7 +65,7 @@
 		},
 
 		"Element.Style": {
-			"deps": ["Element", "Color"],
+			"deps": ["Element"],
 			"desc": "Contains useful Element methods, to set/get styles in a fashionable way."
 		},
 
@@ -118,7 +118,7 @@
 
 		"Fx.CSS": {
 			"deps": ["Fx", "Element.Style"],
-			"desc": "Contains the CSS animation logic. Used by Twee, Morph, Elements."
+			"desc": "Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements."
 		},
 
 		"Fx.Tween": {
