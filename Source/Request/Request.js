@@ -228,6 +228,7 @@ var Request = new Class({
 	*/
 
 	send: function(options){
+		if ($type(options) == 'string') options = {data: options};
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;

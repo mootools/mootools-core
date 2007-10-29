@@ -85,10 +85,8 @@ Request.HTML = new Class({
 		filter: false
 	},
 
-	bodyRegExp: (/<body[^>]*>([\s\S]*?)<\/body>/i),
-
 	processHTML: function(text){
-		var match = text.match(this.bodyRegExp);
+		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		return (match) ? match[1] : text;
 	},
 
