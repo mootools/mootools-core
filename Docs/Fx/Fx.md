@@ -1,13 +1,16 @@
+[Fx]: #Fx
+
+
 Class: Fx {#Fx}
 ===============
 
-Contains <Fx>, the fundamental base of all MooTools Effects. This Class will rarely be used on its own, but provides the foundation for all custom Fx Classes.
+Contains [Fx][], the fundamental base of all MooTools Effects. This Class will rarely be used on its own, but provides the foundation for all custom Fx Classes.
 
 All of the other Fx Classes inherit from this one.
 
 ### Implements:
 
-<Chain>, <Events>, <Options>
+[Chain](/Class/Class.Extras#Chain), [Events](/Class/Class.Extras#Events), [Chain](/Class/Class.Extras#Options)
 
 
 
@@ -25,7 +28,8 @@ Fx Method: constructor {#Fx:constructor}
 ### Options:
 
 * fps        - (number: defaults to 50) The frames per second for the transition.
-* unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for fonts or '%'. See <Element.setStyle>.
+* unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for 
+fonts or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
 * link       - (string: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.
   * 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
   * 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
@@ -34,7 +38,7 @@ Fx Method: constructor {#Fx:constructor}
   * 'long'   - 750ms
   * 'normal' - 500ms
   * 'short'  - 250ms
-* transition - (function: defaults to <Fx.Transitions.Sine.easeInOut>) The equation to use for the effect see <Fx.Transitions>. Also accepts a string in the following form:
+* transition - (function: defaults to [Fx.Transitions.Sine.easeInOut](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
 
   transition[:in][:out] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
 
@@ -51,7 +55,7 @@ Fx Method: constructor {#Fx:constructor}
 
 ### See Also:
 
-<Fx.Tween>, <Fx.Morph>
+[Fx.Tween](/Fx/Fx.Tween), [Fx.Morph](/Fx/Fx.Morph)
 
 
 
@@ -152,7 +156,7 @@ Temporarily pause a currently running effect.
 
 ### Notes:
 
-* The timer will be stopped to allow the effect to continue where it left off by calling <Fx.resume>.
+* The timer will be stopped to allow the effect to continue where it left off by calling [Fx:resume](#Fx:resume).
 * If you call start on a paused effect, the timer will simply be cleared allowing the new transition to start.
 
 

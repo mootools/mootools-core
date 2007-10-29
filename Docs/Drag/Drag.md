@@ -1,13 +1,18 @@
+[$]: /Element/#dollar
+[Element:addEvent]: /Element/Element#addEvent
+[Element:makeDraggable]: #Element:makeDraggable
+
+
 Class: Drag {#Drag}
 ===================
 
-Contains <Drag>, <Element.makeResizable>
+Contains [Drag](#Drag), [Element:makeResizable](#Element:makeResizable)
 
 Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is down.
 
 ### Implements:
 
-	<Events>, <Options>
+	[Events](/Class/Class.Extras#Events), [Chain](/Class/Class.Extras#Options)
 
 
 Drag Method: constructor {#Drag:constructor}
@@ -179,9 +184,3 @@ Adds drag-to-resize behavior to an Element using supplied options.
 ### See Also:
 
 [Drag](#Drag)
-
-
-
-[$]: /Element/#dollar
-[Element:addEvent]: /Element/#addEvent
-[Element:makeDraggable]: /Element/#makeDraggable

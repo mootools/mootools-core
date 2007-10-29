@@ -283,7 +283,7 @@ This is a "dynamic arguments" method. The first argument can be one of the prope
 
 ### See Also:
 
-[Element][], [Element.Setters][], [Element:setStyles](/Element/Element.Style/#Element:setStyles), [Element:addEvents](/Element/Element.event/#Element:addEvents)
+[Element][], [Element.Setters][], [Element:setStyles](/Element/Element.Style#Element:setStyles), [Element:addEvents](/Element/Element.Event#Element:addEvents)
 
 
 
@@ -322,7 +322,7 @@ If no matching property is found in Element.Getters, it falls back to [Element:g
 
 ### See Also:
 
-[Element][], <Element.Getters>
+[Element][], [Element.Setters][]
 
 
 
@@ -351,7 +351,7 @@ This is a "dynamic arguments" method. The first argument can be one of the prope
 
 ### Note:
 
-If no matching property is found in <Element.Clearer>, this method falls back to [Element:removeProperty](#Element:removeProperty)
+If no matching property is found in [Element.Erasers][], this method falls back to [Element:removeProperty](#Element:removeProperty)
 
 ### See Also:
 
@@ -383,7 +383,7 @@ Tests this element to see if it matches the given tagName.
 ### Note:
 
 This method is overwritten by a more powerful version when [Selectors.js][] is included.
-See [Element:match](/Selectors/Selectors/#Element:match)
+See [Element:match](/Selectors/Selectors#Element:match)
 
 
 
@@ -579,12 +579,12 @@ Clones the Element and returns the cloned one.
 
 ### Note:
 
-- The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Events/#Element:cloneEvents).
+- The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
 - The clone element and its children are stripped of ids.
 
 ### See Also:
 
-[Element:cloneEvents](/Element/Element.Events/#Element:cloneEvents).
+[Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
 
 
 

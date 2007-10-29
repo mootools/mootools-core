@@ -1,9 +1,10 @@
-[Fx]: /Effects/Fx
-[Fx.Tween]: /Effects/Fx.Tween
+[Fx]: /Fx/Fx
+[Fx.Tween]: /Fx/Fx.Tween
 [Ajax]: /Remote/Ajax
 [XHR]: /Remote/XHR
 [Class]: /Class/Class
 [Class:implement]: /Class/Class#Class:implement
+
 
 Class: Chain {#Chain}
 =====================

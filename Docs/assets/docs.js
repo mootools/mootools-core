@@ -1,6 +1,6 @@
 var Docs = {
 
-	anchorsPath: '../Docs/',
+	anchorsPath: '../Docs/index.html',
 
 	start: function(){
 		if (location.protocol == 'file:') Docs.local(); 
