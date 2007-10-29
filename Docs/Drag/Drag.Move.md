@@ -64,7 +64,7 @@ All the base Drag properties, plus:
 ### Notes:
 
 * Drag.Move requires an XHTML doctype.
-*	Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
+* Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
 
 ### Demos:
 

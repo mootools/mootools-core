@@ -1,15 +1,13 @@
-[$]: /Element/#dollar
-[Element:addEvent]: /Element/#addEvent
-[Element:makeDraggable]: /Element/#makeDraggable
-
-
 Class: Drag {#Drag}
 ===================
 
-Contains Drag, Element.makeResizable
+Contains <Drag>, <Element.makeResizable>
 
 Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is down.
 
+### Implements:
+
+	<Events>, <Options>
 
 
 Drag Method: constructor {#Drag:constructor}
@@ -24,7 +22,7 @@ Drag Method: constructor {#Drag:constructor}
 1. el      - (element) The Element to apply the transformations to.
 2. options - (object, optional) The options object.
 
-### Options
+### Options:
 
 * handle    - (element: defaults to the element passed in) The Element to act as the handle for the draggable element.
 * grid      - (integer: defaults to: false) Distance in pixels for snap-to-grid dragging.
@@ -181,3 +179,9 @@ Adds drag-to-resize behavior to an Element using supplied options.
 ### See Also:
 
 [Drag](#Drag)
+
+
+
+[$]: /Element/#dollar
+[Element:addEvent]: /Element/#addEvent
+[Element:makeDraggable]: /Element/#makeDraggable
