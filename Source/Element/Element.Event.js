@@ -582,7 +582,7 @@ Example:
 
 		}
 		$('myInput').addEvent('shiftclick', function(event){
-			console.log('the user clicked the left mouse button while holding the shift key');
+			log('the user clicked the left mouse button while holding the shift key');
 		});
 	[/javascript]
 

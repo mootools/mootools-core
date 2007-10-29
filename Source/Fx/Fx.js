@@ -100,14 +100,12 @@ var Fx = new Class({
 	},
 
 	check: function(){
-		this.skip = true;
 		if (!this.timer) return true;
-		switch(this.options.link){
+		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
 			case 'chain': this.chain(this.start.bind(this, arguments)); return false;
-			default: return false;
 		}
-
+		return false;
 	},
 
 	/*
@@ -116,8 +114,7 @@ var Fx = new Class({
 	*/
 
 	start: function(from, to){
-		if (!this.skip && !this.check(from, to)) return this;
-		this.skip = false;
+		if (!this.check(from, to)) return this;
 		this.from = from;
 		this.to = to;
 		this.time = 0;

@@ -96,8 +96,7 @@ Request.HTML = new Class({
 		var node = new Element('div', {html: res.html});
 		res.elements = node.getElements('*');
 		res.tree = (opts.filter) ? res.elements.filterBy(opts.filter) : $A(node.childNodes).filter(function(el){
-			var type = $type(el);
-			return (type != 'whitespace' && (type == 'textnode' || !el.match('script')));
+			return ($type(el) != 'whitespace');
 		});
 		if (opts.update) $(opts.update).empty().adopt(res.tree);
 		arguments.callee.parent([res.tree, res.elements, res.html], false);
@@ -158,7 +157,7 @@ Element.Properties.load = {
 	set: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
-		return this.store('load', new Request.HTML($extend({autoCancel: true, update: this, method: 'get'}, options)));
+		return this.store('load', new Request.HTML($extend({link: 'cancel', update: this, method: 'get'}, options)));
 	}
 
 };

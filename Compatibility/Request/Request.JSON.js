@@ -13,6 +13,7 @@ JSON.Remote = new Class({
 	},
 
 	send: function(data){
+		if (!this.check(data)) return this;
 		return arguments.callee.parent({url: this.url, data: {json: Json.encode(data)}});
 	},
 

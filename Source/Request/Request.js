@@ -94,11 +94,11 @@ var Request = new Class({
 		headers: {},
 		async: true,
 		method: 'post',
+		link: 'ignore',
 		isSuccess: null,
 		emulation: true,
 		urlEncoded: true,
 		encoding: 'utf-8',
-		autoCancel: false,
 		evalScripts: false,
 		evalResponse: false
 	},
@@ -115,12 +115,6 @@ var Request = new Class({
 			'X-Requested-With': 'XMLHttpRequest',
 			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
 		});
-		['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
-			this[method] = function(){
-				var params = Array.link(arguments, {url: String.type, data: $defined});
-				return this.send($extend(params, {method: method.toLowerCase()}));
-			};
-		}, this);
 	},
 
 	onStateChange: function(){
@@ -207,6 +201,15 @@ var Request = new Class({
 			return this.getResponseHeader(name);
 		}, this.xhr) || null;
 	},
+	
+	check: function(){
+		if (!this.running) return true;
+		switch (this.options.link){
+			case 'cancel': this.cancel(); return true;
+			case 'chain': this.chain(this.send.bind(this, arguments)); return false;
+		}
+		return false;
+	},
 
 	/*
 	Method: send
@@ -228,16 +231,15 @@ var Request = new Class({
 	*/
 
 	send: function(options){
+		if (!this.check(options)) return this;
+		this.running = true;
+		
 		var type = $type(options);
 		if (type == 'string' || type == 'element') options = {data: options};
 		
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;
-
-		if (this.options.autoCancel) this.cancel();
-		else if (this.running) return this;
-		this.running = true;
 
 		switch($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
@@ -307,6 +309,17 @@ var Request = new Class({
 
 });
 
+(function(){
+	var methods = {};
+	['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
+		methods[method] = function(){
+			var params = Array.link(arguments, {url: String.type, data: $defined});
+			return this.send($extend(params, {method: method.toLowerCase()}));
+		};
+	});
+	Request.implement(methods);
+})();
+
 /*
 Element Setter: send
 	sets a default Ajax instance for an element (possibly a form!)
@@ -360,7 +373,7 @@ Element.Properties.send = {
 		var send = this.retrieve('send');
 		if (send) send.cancel();
 		return this.store('send', new Request($extend({
-			data: this, autoCancel: true, method: this.get('method') || 'post', url: this.get('action')
+			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
 		}, options)));
 	}
 

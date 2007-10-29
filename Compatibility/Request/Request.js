@@ -19,6 +19,7 @@ var XHR = new Class({
 	},
 
 	send: function(url, data){
+		if (!this.check(url, data)) return this;
 		return arguments.callee.parent({url: url, data: data});
 	},
 

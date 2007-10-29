@@ -4,7 +4,7 @@ var Docs = {
 
 	start: function(){
 		if (location.protocol == 'file:') Docs.local(); 
-		var docRequest = new Request({autoCancel: true, onSuccess: Docs.update});
+		var docRequest = new Request({link: 'cancel', onSuccess: Docs.update});
 		var parents = $$('#menu h3'), links = $$('#menu a.script');
 
 		links.addEvent('click', function(){
