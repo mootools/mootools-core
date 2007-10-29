@@ -85,16 +85,11 @@ Request.HTML = new Class({
 		filter: false
 	},
 
-	bodyRegExp: (/<body[^>]*>([\s\S]*?)<\/body>/gi),
+	bodyRegExp: (/<body[^>]*>([\s\S]*?)<\/body>/i),
 
 	processHTML: function(text){
-		if (!text.match(this.bodyRegExp)) return text;
-		var contents = '';
-		text = text.replace(this.bodyRegExp, function(){
-			contents += arguments[1];
-			return '';
-		});
-		return contents;
+		var match = text.match(this.bodyRegExp);
+		return (match) ? match[1] : text;
 	},
 
 	onSuccess: function(text){
