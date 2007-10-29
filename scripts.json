@@ -156,12 +156,12 @@
 		},
 
 		"Request.HTML": {
-			"deps": ["XHR", "Element"],
+			"deps": ["Request", "Element"],
 			"desc": "Extends the basic XHR with additional methods and utility functions."
 		},
 
 		"Request.JSON": {
-			"deps": ["XHR", "JSON"],
+			"deps": ["Request", "JSON"],
 			"desc": "Shortcut Class to send and receive Javascript Objects."
 		}
 
