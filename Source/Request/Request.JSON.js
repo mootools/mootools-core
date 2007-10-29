@@ -61,7 +61,7 @@ Request.JSON = new Class({
 
 	onSuccess: function(text){
 		this.response.json = JSON.decode(text, this.options.secure);
-		this.fireEvent('onSuccess', this.response.json).callChain();
+		arguments.callee.parent(this.response.json, false);
 	}
 
 });

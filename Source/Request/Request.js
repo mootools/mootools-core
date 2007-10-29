@@ -132,13 +132,12 @@ var Request = new Class({
 		}, this);
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
-			this.onSuccess(this.response.text);
+			this.onSuccess(this.response.text, true);
 		} else {
 			this.response = {text: null, xml: null};
 			this.onFailure();
 		}
 		this.xhr.onreadystatechange = $empty;
-		this.onComplete();
 	},
 
 	isSuccess: function(){
@@ -150,17 +149,13 @@ var Request = new Class({
 		return text.stripScripts(this.options.evalScripts);
 	},
 
-	onComplete: function(){
-		this.fireEvent('onComplete');
-	},
-
-	onSuccess: function(text, xml){
-		text = this.processScripts(text);
-		this.fireEvent('onSuccess', text, xml).callChain();
+	onSuccess: function(args, process){
+		if (process && $type(args) == 'string') args = this.processScripts(args);
+		this.fireEvent('onComplete', args).fireEvent('onSuccess', args).callChain();
 	},
 
 	onFailure: function(){
-		this.fireEvent('onFailure', this.xhr);
+		this.fireEvent('onComplete', arguments).fireEvent('onFailure', arguments);
 	},
 
 	/*

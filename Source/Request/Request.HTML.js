@@ -98,14 +98,16 @@ Request.HTML = new Class({
 	},
 
 	onSuccess: function(text){
-		var node = new Element('div', {html: this.processScripts(this.processHTML(text))});
-		var all = node.getElements('*');
-		this.response.html = (this.options.filter) ? all.filterBy(this.options.filter) : $A(node.childNodes).filter(function(el){
+		var opts = this.options, res = this.response;
+		res.html = this.processScripts(this.processHTML(text));
+		var node = new Element('div', {html: res.html});
+		res.elements = node.getElements('*');
+		res.tree = (opts.filter) ? res.elements.filterBy(opts.filter) : $A(node.childNodes).filter(function(el){
 			var type = $type(el);
 			return (type != 'whitespace' && (type == 'textnode' || !el.match('script')));
 		});
-		if (this.options.update) $(this.options.update).empty().adopt(this.response.html);
-		this.fireEvent('onSuccess', [this.response.html, all]).callChain();
+		if (opts.update) $(opts.update).empty().adopt(res.tree);
+		arguments.callee.parent([res.tree, res.elements, res.html], false);
 	}
 
 });
