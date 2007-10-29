@@ -124,7 +124,7 @@ var Drag = new Class({
 		var params = Array.link(arguments, {'options': Object.type, 'element': $defined});
 		this.element = $(params.element);
 		this.document = this.element.ownerDocument;
-		this.setOptions(params.options);
+		this.setOptions(params.options || {});
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};

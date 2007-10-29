@@ -115,9 +115,10 @@ var Request = new Class({
 			'X-Requested-With': 'XMLHttpRequest',
 			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
 		});
-		['GET', 'POST', 'PUT', 'DELETE'].each(function(method){
+		['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 			this[method] = function(){
-				return this.send($extend(Array.link(arguments, {'url': String.type, data: $defined}), {method: method.toLowerCase()}));
+				var params = Array.link(arguments, {url: String.type, data: Object.type});
+				return this.send($extend(params, {method: method.toLowerCase()}));
 			};
 		}, this);
 	},

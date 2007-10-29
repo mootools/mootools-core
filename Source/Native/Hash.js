@@ -304,7 +304,8 @@ Hash.implement({
 	*/
 
 	include: function(key, value){
-		if (!this[key]) this[key] = value;
+		var k = this[key];
+		if (!$defined(k)) this[key] = value;
 		return this;
 	},
 

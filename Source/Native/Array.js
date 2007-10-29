@@ -276,7 +276,6 @@ Array.implement({
 		var result = {};
 		for (var i = 0, l = this.length; i < l; i++){
 			for (var key in object){
-				result[key] = null;
 				if (object[key](this[i])){
 					result[key] = this[i];
 					delete object[key];
