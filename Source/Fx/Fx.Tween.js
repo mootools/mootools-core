@@ -94,9 +94,10 @@ Fx.Tween = new Class({
 		If you provide only one argument, the transition will use the current css value for its starting value.
 	*/
 
-	start: function(from, to){
-		if (!this.check(from, to)) return this;
-		var parsed = this.prepare(this.element, this.property, [from, to]);
+	start: function(){
+		var fromto = Array.flatten(arguments);
+		if (!this.check(fromto)) return this;
+		var parsed = this.prepare(this.element, this.property, fromto);
 		return arguments.callee.parent(parsed.from, parsed.to);
 	}
 
