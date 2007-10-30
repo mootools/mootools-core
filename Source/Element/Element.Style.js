@@ -159,7 +159,10 @@ Element.implement({
 
 	getStyle: function(property){
 		property = property.camelCase();
-		if (property == 'opacity') return this.get('opacity');
+		switch (property){
+			case 'opacity': return this.get('opacity');
+			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+		}
 		var result = this.style[property];
 		if (!$chk(result)){
 			result = [];

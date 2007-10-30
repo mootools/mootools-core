@@ -33,7 +33,7 @@ var Builder = {
 		},
 
 		spec: {
-			"Core"      : ["Core"],
+			"Core"      : ["Core", "Browser"],
 			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
 			"Class"     : ["Class", "Class.Extras"],
 			"Element"   : ["Element"],

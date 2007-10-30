@@ -87,11 +87,11 @@ describe('String', {
 
 	'should `stripScripts` strip all script tags from a string and optionally execute them': function(){
 		value_of('<div><script type="text/javascript" src="file.js"></script></div>'.stripScripts()).should_be('<div></div>');
-		value_of('<div><script type="text/javascript"> window.stripScriptsSpec = 42; </script></div>'.stripScripts(true)).should_be('<div></div>');
+		value_of('<div><script type="text/javascript"> var stripScriptsSpec = 42; </script></div>'.stripScripts(true)).should_be('<div></div>');
 		value_of(window.stripScriptsSpec).should_be(42);
-		value_of('<div><script>\n// <!--\nwindow.stripScriptsSpec = 24;\n//-->\n</script></div>'.stripScripts(true)).should_be('<div></div>');
+		value_of('<div><script>\n// <!--\nvar stripScriptsSpec = 24;\n//-->\n</script></div>'.stripScripts(true)).should_be('<div></div>');
 		value_of(window.stripScriptsSpec).should_be(24);
-		value_of('<div><script>\n/*<![CDATA[*/\nwindow.stripScriptsSpec = 4242;\n/*]]>*/</script></div>'.stripScripts(true)).should_be('<div></div>');
+		value_of('<div><script>\n/*<![CDATA[*/\nvar stripScriptsSpec = 4242;\n/*]]>*/</script></div>'.stripScripts(true)).should_be('<div></div>');
 		value_of(window.stripScriptsSpec).should_be(4242);
 	}
 
