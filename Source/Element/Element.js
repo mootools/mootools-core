@@ -553,7 +553,6 @@ Element.Inserters = new Hash({
 		var next = element.nextSibling;
 		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
 	},
-
 	
 	/*
 	Method: injectBottom
@@ -1265,285 +1264,6 @@ Element.implement({
 	},
 
 	/*
-	Method: getPrevious
-		Returns the previousSibling of the Element (excluding text nodes).
-
-	Syntax:
-		>var previousSibling = myElement.getPrevious();
-
-	Returns:
-		(mixed) The previous sibling Element, or returns null if none found.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').getPrevious().dispose(); //get the previous DOM Element from mySecondElement and removes.
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="mySecondElement"></div>
-		[/html]
-
-		See Also:
-			<Element.remove>
-	*/
-
-	getPrevious: function(match, nocash){
-		return Element.walk(this, 'previousSibling', null, match, false, nocash);
-	},
-
-	/*
-	Method: getAllNPrevious
-		like Element.getPrevious, but returns a collection of all the matched previousSiblings.
-	*/
-
-	getAllPrevious: function(match, nocash){
-		return Element.walk(this, 'previousSibling', null, match, true, nocash);
-	},
-
-	/*
-	Method: getNext
-		Works as Element.getPrevious, but tries to find the nextSibling (excluding text nodes).
-
-	Syntax:
-		>var nextSibling = myElement.getNext();
-
-	Returns:
-		(mixed) The next sibling Element, or returns null if none found.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-		[/html]
-
-		[javascript]
-			$('myElement').getNext().addClass('found'); //get the next DOM Element from myElement and adds class 'found'.
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement" class="found"></div>
-		[/html]
-
-	See Also:
-		<Element.addClass>
-	*/
-
-	getNext: function(match, nocash){
-		return Element.walk(this, 'nextSibling', null, match, false, nocash);
-	},
-
-	/*
-	Method: getAllNext
-		like Element.getNext, but returns a collection of all the matched nextSiblings.
-	*/
-
-	getAllNext: function(match, nocash){
-		return Element.walk(this, 'nextSibling', null, match, true, nocash);
-	},
-
-	/*
-	Method: getFirst
-		Works as <Element.getPrevious>, but tries to find the firstChild (excluding text nodes).
-
-	Syntax:
-		>var firstElement = myElement.getFirst();
-
-	Returns:
-		(mixed) The first sibling Element, or returns null if none found.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-			<div id="myThirdElement"></div>
-		[/html]
-
-		[javascript]
-			$('myThirdElement').getFirst().inject('mySecondElement'); //gets the first DOM Element from myThirdElement and injects inside mySecondElement.
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="mySecondElement">
-				<div id="myElement"></div>
-			</div>
-			<div id="myThirdElement"></div>
-		[/html]
-
-	See Also:
-		<Element.inject>
-	*/
-
-	getFirst: function(match, nocash){
-		return Element.walk(this, 'nextSibling', 'firstChild', match, false, nocash);
-	},
-
-	/*
-	Method: getLast
-		Works as <Element.getPrevious>, but tries to find the lastChild.
-
-	Syntax:
-		>var lastElement = myElement.getLast();
-
-	Returns:
-		(mixed) The first sibling Element, or returns null if none found.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement"></div>
-			<div id="mySecondElement"></div>
-			<div id="myThirdElement"></div>
-		[/html]
-
-		[javascript]
-			$('myElement').getLast().adopt('mySecondElement'); //gets the last DOM Element from myElement and adopts mySecondElement.
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement"></div>
-			<div id="myThirdElement">
-				<div id="mySecondElement"></div>
-			</div>
-		[/html]
-
-	Note:
-		For <Elements> this method is named getLastElements, because <Array.getLast> has priority.
-
-	See Also:
-		<Element.adopt>
-	*/
-
-	getLast: function(match, nocash){
-		return Element.walk(this, 'previousSibling', 'lastChild', match, false, nocash);
-	},
-
-	/*
-	Method: getParent
-		Returns the parent node extended.
-
-	Syntax:
-		>var parent = myElement.getParent();
-
-	Returns:
-		(element) This Element's parent.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">
-				<div id="mySecondElement"></div>
-			</div>
-		[/html]
-
-		[javascript]
-			$('mySecondElement').getParent().addClass('papa');
-		[/javascript]
-
-		Result:
-		[html]
-			<div id="myElement" class="papa">
-				<div id="mySecondElement"></div>
-			</div>
-		[/html]
-
-	See Also:
-		<http://developer.mozilla.org/en/docs/DOM:element.parentNode>
-	*/
-
-	getParent: function(match, nocash){
-		return Element.walk(this, 'parentNode', null, match, false, nocash);
-	},
-
-	/*
-	Method: getParents
-		like Element.getParent, but returns a collection of all the matched parentNodes.
-	*/
-
-	getParents: function(match, nocash){
-		return Element.walk(this, 'parentNode', null, match, true, nocash);
-	},
-
-	/*
-	Method: getChildren
-		Returns all the Element's children (excluding text nodes). Returns as <Elements>.
-
-	Syntax:
-		>var children = myElement.getChildren();
-
-	Returns:
-		(array) A <Elements> array with all of the Element's children except the text nodes.
-
-	Example:
-		HTML:
-		[html]
-			<div id="myElement">
-				<div id="mySecondElement"></div>
-				<div id="myThirdElement"></div>
-			</div>
-		[/html]
-
-		[javascript]
-			$('myElement').getChildren().removeElements(); // notice how <Element.remove> is renamed removeElements due to Array precedence.
-		[/javascript]
-
-		Result:
-		[/html]
-			<div id="myElement"></div>
-		[/javascript]
-
-	See Also:
-		<Elements>, <Elements.remove>
-	*/
-
-	getChildren: function(match, nocash){
-		return Element.walk(this, 'nextSibling', 'firstChild', match, true, nocash);
-	},
-
-	/*
-	Method: hasChild
-		Checks all children (including text nodes) for a match.
-
-	Syntax:
-		>var result = myElement.hasChild(el);
-
-	Arguments:
-		el - (mixed) Can be a Element reference or string id.
-
-	Returns:
-		(boolean) Returns true if the passed in Element is a child of the Element, otherwise false.
-
-	Example:
-		HTML:
-		[html]
-			<div id="Darth_Vader">
-				<div id="Luke"></div>
-			</div>
-		[/html]
-
-		[javascript]
-			if($('Darth_Vader').hasChild('Luke')) alert('Luke, I am your father.'); // tan tan tannn.....
-		[/javascript]
-	*/
-
-	hasChild: function(el){
-		if (!(el = $(el, true))) return false;
-		return Element.getParents(el, this.get('tag'), true).contains(this);
-	},
-
-	/*
 	Method: empty
 		Empties an Element of all its children.
 
@@ -1798,6 +1518,306 @@ Element.implement({
 
 });
 
+(function(){
+	
+var walk = function(element, walk, start, match, all, nocash){
+	var el = element[start || walk];
+	var elements = [];
+	while (el){
+		if (el.nodeType == 1 && Element.match(el, match)){
+			elements.push(el);
+			if (!all) break;
+		}
+		el = el[walk];
+	}
+	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : $(elements[0], nocash);
+};
+
+Element.implement({
+	
+	/*
+	Method: getPrevious
+		Returns the previousSibling of the Element (excluding text nodes).
+
+	Syntax:
+		>var previousSibling = myElement.getPrevious();
+
+	Returns:
+		(mixed) The previous sibling Element, or returns null if none found.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').getPrevious().dispose(); //get the previous DOM Element from mySecondElement and removes.
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="mySecondElement"></div>
+		[/html]
+
+		See Also:
+			<Element.remove>
+	*/
+
+	getPrevious: function(match, nocash){
+		return walk(this, 'previousSibling', null, match, false, nocash);
+	},
+
+	/*
+	Method: getAllNPrevious
+		like Element.getPrevious, but returns a collection of all the matched previousSiblings.
+	*/
+
+	getAllPrevious: function(match, nocash){
+		return walk(this, 'previousSibling', null, match, true, nocash);
+	},
+
+	/*
+	Method: getNext
+		Works as Element.getPrevious, but tries to find the nextSibling (excluding text nodes).
+
+	Syntax:
+		>var nextSibling = myElement.getNext();
+
+	Returns:
+		(mixed) The next sibling Element, or returns null if none found.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+		[/html]
+
+		[javascript]
+			$('myElement').getNext().addClass('found'); //get the next DOM Element from myElement and adds class 'found'.
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement" class="found"></div>
+		[/html]
+
+	See Also:
+		<Element.addClass>
+	*/
+
+	getNext: function(match, nocash){
+		return walk(this, 'nextSibling', null, match, false, nocash);
+	},
+
+	/*
+	Method: getAllNext
+		like Element.getNext, but returns a collection of all the matched nextSiblings.
+	*/
+
+	getAllNext: function(match, nocash){
+		return walk(this, 'nextSibling', null, match, true, nocash);
+	},
+
+	/*
+	Method: getFirst
+		Works as <Element.getPrevious>, but tries to find the firstChild (excluding text nodes).
+
+	Syntax:
+		>var firstElement = myElement.getFirst();
+
+	Returns:
+		(mixed) The first sibling Element, or returns null if none found.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+			<div id="myThirdElement"></div>
+		[/html]
+
+		[javascript]
+			$('myThirdElement').getFirst().inject('mySecondElement'); //gets the first DOM Element from myThirdElement and injects inside mySecondElement.
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="mySecondElement">
+				<div id="myElement"></div>
+			</div>
+			<div id="myThirdElement"></div>
+		[/html]
+
+	See Also:
+		<Element.inject>
+	*/
+
+	getFirst: function(match, nocash){
+		return walk(this, 'nextSibling', 'firstChild', match, false, nocash);
+	},
+
+	/*
+	Method: getLast
+		Works as <Element.getPrevious>, but tries to find the lastChild.
+
+	Syntax:
+		>var lastElement = myElement.getLast();
+
+	Returns:
+		(mixed) The first sibling Element, or returns null if none found.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement"></div>
+			<div id="mySecondElement"></div>
+			<div id="myThirdElement"></div>
+		[/html]
+
+		[javascript]
+			$('myElement').getLast().adopt('mySecondElement'); //gets the last DOM Element from myElement and adopts mySecondElement.
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement"></div>
+			<div id="myThirdElement">
+				<div id="mySecondElement"></div>
+			</div>
+		[/html]
+
+	Note:
+		For <Elements> this method is named getLastElements, because <Array.getLast> has priority.
+
+	See Also:
+		<Element.adopt>
+	*/
+
+	getLast: function(match, nocash){
+		return walk(this, 'previousSibling', 'lastChild', match, false, nocash);
+	},
+
+	/*
+	Method: getParent
+		Returns the parent node extended.
+
+	Syntax:
+		>var parent = myElement.getParent();
+
+	Returns:
+		(element) This Element's parent.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement">
+				<div id="mySecondElement"></div>
+			</div>
+		[/html]
+
+		[javascript]
+			$('mySecondElement').getParent().addClass('papa');
+		[/javascript]
+
+		Result:
+		[html]
+			<div id="myElement" class="papa">
+				<div id="mySecondElement"></div>
+			</div>
+		[/html]
+
+	See Also:
+		<http://developer.mozilla.org/en/docs/DOM:element.parentNode>
+	*/
+
+	getParent: function(match, nocash){
+		return walk(this, 'parentNode', null, match, false, nocash);
+	},
+
+	/*
+	Method: getParents
+		like Element.getParent, but returns a collection of all the matched parentNodes.
+	*/
+
+	getParents: function(match, nocash){
+		return walk(this, 'parentNode', null, match, true, nocash);
+	},
+
+	/*
+	Method: getChildren
+		Returns all the Element's children (excluding text nodes). Returns as <Elements>.
+
+	Syntax:
+		>var children = myElement.getChildren();
+
+	Returns:
+		(array) A <Elements> array with all of the Element's children except the text nodes.
+
+	Example:
+		HTML:
+		[html]
+			<div id="myElement">
+				<div id="mySecondElement"></div>
+				<div id="myThirdElement"></div>
+			</div>
+		[/html]
+
+		[javascript]
+			$('myElement').getChildren().removeElements(); // notice how <Element.remove> is renamed removeElements due to Array precedence.
+		[/javascript]
+
+		Result:
+		[/html]
+			<div id="myElement"></div>
+		[/javascript]
+
+	See Also:
+		<Elements>, <Elements.remove>
+	*/
+
+	getChildren: function(match, nocash){
+		return walk(this, 'nextSibling', 'firstChild', match, true, nocash);
+	},
+
+	/*
+	Method: hasChild
+		Checks all children (including text nodes) for a match.
+
+	Syntax:
+		>var result = myElement.hasChild(el);
+
+	Arguments:
+		el - (mixed) Can be a Element reference or string id.
+
+	Returns:
+		(boolean) Returns true if the passed in Element is a child of the Element, otherwise false.
+
+	Example:
+		HTML:
+		[html]
+			<div id="Darth_Vader">
+				<div id="Luke"></div>
+			</div>
+		[/html]
+
+		[javascript]
+			if($('Darth_Vader').hasChild('Luke')) alert('Luke, I am your father.'); // tan tan tannn.....
+		[/javascript]
+	*/
+
+	hasChild: function(el){
+		if (!(el = $(el, true))) return false;
+		return Element.getParents(el, this.get('tag'), true).contains(this);
+	}
+	
+});
+	
+})();
+
 TextNode.implement({
 
 	inject: Element.prototype.inject,
@@ -1935,19 +1955,6 @@ Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
 
-Element.walk = function(element, walk, start, match, all, nocash){
-	var el = element[start || walk];
-	var elements = [];
-	while (el){
-		if (el.nodeType == 1 && Element.match(el, match)){
-			elements.push(el);
-			if (!all) break;
-		}
-		el = el[walk];
-	}
-	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : $(elements[0], nocash);
-};
-
 Native.implement([Element, Window, Document], {
 
 	addListener: function(type, fn){
@@ -1990,12 +1997,14 @@ Element.Attributes = new Hash({
 });
 
 (function(EA){
+	
 	var EAB = EA.Bools, EAC = EA.Camels;
 	EA.Bools = EAB = EAB.associate(EAB);
 	Hash.extend(Hash.merge(EA.Props, EAB), EAC.associate(EAC.map(function(v){
 		return v.toLowerCase();
 	})));
 	EA.remove('Camels');
+
 })(Element.Attributes);
 
 var Garbage = {

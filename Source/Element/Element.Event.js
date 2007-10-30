@@ -596,7 +596,9 @@ Note:
 	(highly unrecommended: use only when you know exactly what you're doing).
 */
 
-Event.checkRelatedTarget = function(event){
+(function(){
+
+var checkRelatedTarget = function(event){
 	var related = event.relatedTarget;
 	if (!related) return true;
 	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
@@ -622,7 +624,7 @@ Element.Events = new Hash({
 
 		base: 'mouseover',
 
-		condition: Event.checkRelatedTarget
+		condition: checkRelatedTarget
 
 	},
 
@@ -644,7 +646,7 @@ Element.Events = new Hash({
 
 		base: 'mouseout',
 
-		condition: Event.checkRelatedTarget
+		condition: checkRelatedTarget
 
 	},
 
@@ -671,3 +673,5 @@ Element.Events = new Hash({
 	}
 
 });
+
+})();
