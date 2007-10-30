@@ -91,7 +91,7 @@ var Event = new Native({
 				}
 				if ((function(){
 					while (related && related.nodeType == 3) related = related.parentNode;
-				}).create({attempt: Browser.Engine.gecko})() === false) related = target;
+				}).create({attempt: Browser.Engine.gecko})() === false) related = false;
 			}
 
 		}
