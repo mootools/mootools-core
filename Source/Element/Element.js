@@ -231,7 +231,7 @@ See Also:
 var Elements = new Native({
 
 	initialize: function(elements, options){
-		options = $extend({ddup: true, cash: true, xtend: true}, options);
+		options = $extend({ddup: true, cash: true}, options);
 		elements = elements || [];
 		if (options.ddup || options.cash){
 			var uniques = {};
@@ -246,7 +246,7 @@ var Elements = new Native({
 			}
 			elements = returned;
 		}
-		return (options.xtend) ? $extend(elements, this) : elements;
+		return (options.cash) ? $extend(elements, this) : elements;
 	}
 
 });
@@ -461,7 +461,7 @@ Native.implement([Element, Document], {
 			var partial = this.getElementsByTagName(tag.trim());
 			(ddup) ? elements.extend(partial) : elements = partial;
 		}, this);
-		return new Elements(elements, {ddup: ddup, cash: !nocash, xtend: !nocash});
+		return new Elements(elements, {ddup: ddup, cash: !nocash});
 	}
 
 });
@@ -674,7 +674,7 @@ Element.implement({
 		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
 			if (!parent) return null;
 		}
-		return $.element(el, notrash);
+		return $.element(el, nocash);
 	},
 
 	/*
@@ -1294,8 +1294,8 @@ Element.implement({
 			<Element.remove>
 	*/
 
-	getPrevious: function(match, all){
-		return Element.walk(this, 'previousSibling', null, match, all);
+	getPrevious: function(match, nocash){
+		return Element.walk(this, 'previousSibling', null, match, false, nocash);
 	},
 
 	/*
@@ -1303,8 +1303,8 @@ Element.implement({
 		like Element.getPrevious, but returns a collection of all the matched previousSiblings.
 	*/
 
-	getAllPrevious: function(match){
-		return this.getPrevious(match, true);
+	getAllPrevious: function(match, nocash){
+		return Element.walk(this, 'previousSibling', null, match, true, nocash);
 	},
 
 	/*
@@ -1338,8 +1338,8 @@ Element.implement({
 		<Element.addClass>
 	*/
 
-	getNext: function(match, all){
-		return Element.walk(this, 'nextSibling', null, match, all);
+	getNext: function(match, nocash){
+		return Element.walk(this, 'nextSibling', null, match, false, nocash);
 	},
 
 	/*
@@ -1347,8 +1347,8 @@ Element.implement({
 		like Element.getNext, but returns a collection of all the matched nextSiblings.
 	*/
 
-	getAllNext: function(match){
-		return this.getNext(match, true);
+	getAllNext: function(match, nocash){
+		return Element.walk(this, 'nextSibling', null, match, true, nocash);
 	},
 
 	/*
@@ -1385,8 +1385,8 @@ Element.implement({
 		<Element.inject>
 	*/
 
-	getFirst: function(match){
-		return Element.walk(this, 'nextSibling', 'firstChild', match);
+	getFirst: function(match, nocash){
+		return Element.walk(this, 'nextSibling', 'firstChild', match, false, nocash);
 	},
 
 	/*
@@ -1426,8 +1426,8 @@ Element.implement({
 		<Element.adopt>
 	*/
 
-	getLast: function(match){
-		return Element.walk(this, 'previousSibling', 'lastChild', match);
+	getLast: function(match, nocash){
+		return Element.walk(this, 'previousSibling', 'lastChild', match, false, nocash);
 	},
 
 	/*
@@ -1463,8 +1463,8 @@ Element.implement({
 		<http://developer.mozilla.org/en/docs/DOM:element.parentNode>
 	*/
 
-	getParent: function(match, all){
-		return Element.walk(this, 'parentNode', null, match, all);
+	getParent: function(match, nocash){
+		return Element.walk(this, 'parentNode', null, match, false, nocash);
 	},
 
 	/*
@@ -1472,8 +1472,8 @@ Element.implement({
 		like Element.getParent, but returns a collection of all the matched parentNodes.
 	*/
 
-	getParents: function(match){
-		return this.getParent(match, true);
+	getParents: function(match, nocash){
+		return Element.walk(this, 'parentNode', null, match, true, nocash);
 	},
 
 	/*
@@ -1508,8 +1508,8 @@ Element.implement({
 		<Elements>, <Elements.remove>
 	*/
 
-	getChildren: function(match){
-		return Element.walk(this, 'nextSibling', 'firstChild', match, true);
+	getChildren: function(match, nocash){
+		return Element.walk(this, 'nextSibling', 'firstChild', match, true, nocash);
 	},
 
 	/*
@@ -1540,7 +1540,7 @@ Element.implement({
 
 	hasChild: function(el){
 		if (!(el = $(el, true))) return false;
-		return !!$A(this.getElementsByTagName(Element.get(el, 'tag'))).contains(el);
+		return Element.getParents(el, this.get('tag'), true).contains(this);
 	},
 
 	/*
@@ -1935,7 +1935,7 @@ Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
 
-Element.walk = function(element, walk, start, match, all){
+Element.walk = function(element, walk, start, match, all, nocash){
 	var el = element[start || walk];
 	var elements = [];
 	while (el){
@@ -1945,7 +1945,7 @@ Element.walk = function(element, walk, start, match, all){
 		}
 		el = el[walk];
 	}
-	return (all) ? new Elements(elements) : $(elements[0]);
+	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : $(elements[0], nocash);
 };
 
 Native.implement([Element, Window, Document], {

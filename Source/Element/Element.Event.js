@@ -549,7 +549,7 @@ Native.implement([Element, Window, Document], {
 });
 
 Element.NativeEvents = {
-	'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, 'contextmenu': 2,//mouse buttons
+	'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, 'contextmenu': 2, //mouse buttons
 	'mousewheel': 2, 'DOMMouseScroll': 2, //mouse wheel
 	'mouseover': 2, 'mouseout': 2, 'mousemove': 2, 'selectstart': 2, 'selectend': 2, //mouse movement
 	'keydown': 2, 'keypress': 2, 'keyup': 2, //keyboard
@@ -596,6 +596,12 @@ Note:
 	(highly unrecommended: use only when you know exactly what you're doing).
 */
 
+Event.checkRelatedTarget = function(event){
+	var related = event.relatedTarget;
+	if (!related) return true;
+	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+};
+
 Element.Events = new Hash({
 
 	/*
@@ -612,15 +618,11 @@ Element.Events = new Hash({
 		<Element.addEvent>
 	*/
 
-	'mouseenter': {
+	mouseenter: {
 
 		base: 'mouseover',
 
-		condition: function(event){
-			if (!this.hasChild) return (!event.relatedTarget);
-			var related = event.relatedTarget;
-			return (related && related != this && related.prefix != 'xul' && !this.hasChild(related));
-		}
+		condition: Event.checkRelatedTarget
 
 	},
 
@@ -638,15 +640,11 @@ Element.Events = new Hash({
 		<Element.addEvent>
 	*/
 
-	'mouseleave': {
+	mouseleave: {
 
 		base: 'mouseout',
 
-		condition: function(event){
-			if (!this.hasChild) return (!event.relatedTarget);
-			var related = event.relatedTarget;
-			return (related && related != this && related.prefix != 'xul' && !this.hasChild(related));
-		}
+		condition: Event.checkRelatedTarget
 
 	},
 
