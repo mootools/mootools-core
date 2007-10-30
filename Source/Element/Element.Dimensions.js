@@ -128,17 +128,16 @@ Element.implement({
 		relative = $(relative, true);
 		if (this == relative) return {x: 0, y: 0};
 		var el = this, left = 0, top = 0;
-		while (el && (el != relative)){
+		while (el && el != relative){
 			left += el.offsetLeft;
 			top += el.offsetTop;
 			el = el.offsetParent;
 		}
-		var parents = Element.getParents(this, false, true);
-		for (var i = 0, l = parents.length; i < l; i++){
-			if (parents[i] == relative) break;
-			top -= parents[i].scrollTop;
-			left -= parents[i].scrollLeft;
-			if (parents[i] == document.body) break;
+		el = this;
+		while ((el = el.parentNode) && el != relative){
+			top -= el.scrollTop;
+			left -= el.scrollLeft;
+			if (el == document.body) break;
 		}
 		return {x: left, y: top};
 	},
