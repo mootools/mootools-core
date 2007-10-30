@@ -107,10 +107,10 @@ Element.implement({
 		Returns the real offsets of the element.
 
 	Syntax:
-		>var position = myElement.getPosition([overflown]);
+		>var position = myElement.getPosition(relative);
 
 	Arguments:
-		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+		relative - (element, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 	Returns:
 		(object) An object with properties: x and y coordinates of the Element's position.
@@ -120,26 +120,27 @@ Element.implement({
 			$('element').getPosition(); //returns {x: 100, y: 500};
 		[/javascript]
 
-	Note:
-		Use the overflown parameter if your element is inside any element containing scrollbars.
-
 	See Also:
 		<http://www.quirksmode.org/js/findpos.html>
 	*/
-
-	getPosition: function(overflown){
-		overflown = $splat(overflown);
+	
+	getPosition: function(relative){
+		relative = $(relative, true);
+		if (this == relative) return {x: 0, y: 0};
 		var el = this, left = 0, top = 0;
-		do {
-			left += el.offsetLeft || 0;
-			top += el.offsetTop || 0;
+		while (el && (el != relative)){
+			left += el.offsetLeft;
+			top += el.offsetTop;
 			el = el.offsetParent;
-		} while (el);
-		overflown.each(function(element){
-			left -= element.scrollLeft || 0;
-			top -= element.scrollTop || 0;
-		});
-		return {'x': left, 'y': top};
+		}
+		var parents = Element.getParents(this, false, true);
+		for (var i = 0, l = parents.length; i < l; i++){
+			if (parents[i] == relative) break;
+			top -= parents[i].scrollTop;
+			left -= parents[i].scrollLeft;
+			if (parents[i] == document.body) break;
+		}
+		return {x: left, y: top};
 	},
 
 	/*
@@ -147,10 +148,10 @@ Element.implement({
 		Returns the distance from the top of the window to the Element.
 
 	Syntax:
-		>var top = myElement.getTop([overflown]);
+		>var top = myElement.getTop(relative);
 
 	Arguments:
-		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+		relative - (element, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 	Returns:
 		(integer) The top position of this Element.
@@ -164,8 +165,8 @@ Element.implement({
 		<Element.getPosition>
 	*/
 
-	getTop: function(overflown){
-		return this.getPosition(overflown).y;
+	getTop: function(relative){
+		return this.getPosition(relative).y;
 	},
 
 	/*
@@ -173,10 +174,10 @@ Element.implement({
 		Returns the distance from the left of the window to the Element.
 
 	Syntax:
-		>var left = myElement.getLeft([overflown]);
+		>var left = myElement.getLeft(relative);
 
 	Arguments:
-		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+		relative - (element, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 	Returns:
 		(integer) The left position of this Element.
@@ -190,8 +191,8 @@ Element.implement({
 		<Element.getPosition>
 	*/
 
-	getLeft: function(overflown){
-		return this.getPosition(overflown).x;
+	getLeft: function(relative){
+		return this.getPosition(relative).x;
 	},
 
 	/*
@@ -199,10 +200,10 @@ Element.implement({
 		Returns an object with width, height, left, right, top, and bottom, representing the values of the Element
 
 	Syntax:
-		>var coords = myElement.getCoordinates([overflown]);
+		>var coords = myElement.getCoordinates(relative);
 
 	Arguments:
-		overflown - (array, optional) An array of nested scrolling containers for scroll offset calculation.
+		relative - (element, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 	Returns:
 		(object) An object containing the Element's current: top, left, width, height, right, and bottom.
@@ -228,14 +229,9 @@ Element.implement({
 		<Element.getPosition>
 	*/
 
-	getCoordinates: function(overflown){
-		var position = this.getPosition(overflown);
-		var obj = {
-			'top': position.y,
-			'left': position.x,
-			'width': this.offsetWidth,
-			'height': this.offsetHeight
-		};
+	getCoordinates: function(relative){
+		var position = this.getPosition(relative);
+		var obj = {'top': position.y, 'left': position.x, 'width': this.offsetWidth, 'height': this.offsetHeight};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
 		return obj;

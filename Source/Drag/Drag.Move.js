@@ -25,7 +25,6 @@ Arguments:
 		All the base <Drag> options, in addition to:
 		container - (element) If an Element is passed, drag will be limited to the passed Element's size and position.
 		droppables - (array) The Elements that the draggable can drop into.
-		overflown - (array) Array of nested scrolling containers. See <Element.getPosition>.
 
 		droppables (continued):
 			Interaction with droppable work with events fired on the doppable element or, for 'emptydrop', on the dragged element.
@@ -73,28 +72,19 @@ Drag.Move = new Class({
 
 	options: {
 		droppables: [],
-		container: false,
-		overflown: []
+		container: false
 	},
 
 	initialize: function(element, options){
 		arguments.callee.parent(element, options);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
-		this.positions = ['relative', 'absolute', 'fixed'];
-		this.position = {'element': this.element.getStyle('position'), 'container': false};
-		if (this.container) this.position.container = this.container.getStyle('position');
-		if (!this.positions.contains(this.position.element)) this.position.element = 'absolute';
-		var top = this.element.getStyle('top').toInt();
-		var left = this.element.getStyle('left').toInt();
-		if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
-			top = $chk(top) ? top : this.element.getTop(this.options.overflown);
-			left = $chk(left) ? left : this.element.getTop(this.options.overflown);
-		} else {
-			top = $chk(top) ? top : 0;
-			left = $chk(left) ? left : 0;
-		}
-		this.element.setStyles({'top': top, 'left': left, 'position': this.position.element});
+		var relatives = ['relative', 'absolute', 'fixed'];
+		var positions = {'element': this.element.getStyle('position'), 'container': (this.container) ? this.container.getStyle('position') : false};
+		if (!relatives.contains(positions.element)) positions.element = 'absolute';
+		this.relative = relatives.contains(positions.container);
+		var epos = this.element.getPosition((this.relative) ? this.container : false);
+		this.element.setStyles({'top': epos.y, 'left': epos.x, 'position': positions.element});
 	},
 
 	start: function(event){
@@ -103,13 +93,8 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var cont = this.container.getCoordinates();
-			var el = this.element.getCoordinates();
-			if (this.position.element == 'absolute' && !this.positions.contains(this.position.container)){
-				this.options.limit = {'x': [cont.left, cont.right - el.width], 'y': [cont.top, cont.bottom - el.height]};
-			} else {
-				this.options.limit = {'y': [0, cont.height - el.height], 'x': [0, cont.width - el.width]};
-			}
+			var ccoo = this.container.getCoordinates((this.relative) ? this.container : false);
+			this.options.limit = {x: [ccoo.left, ccoo.right - this.element.offsetWidth], y: [ccoo.top, ccoo.bottom - this.element.offsetHeight]};
 		}
 		arguments.callee.parent(event);
 	},
@@ -128,7 +113,7 @@ Drag.Move = new Class({
 	},
 
 	checkAgainst: function(el){
-		el = el.getCoordinates(this.options.overflown);
+		el = el.getCoordinates();
 		var now = this.mouse.now;
 		return (now.x > el.left && now.x < el.right && now.y < el.bottom && now.y > el.top);
 	},

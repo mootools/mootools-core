@@ -21,11 +21,9 @@ Syntax:
 
 Arguments:
 	element - (mixed) A string ID of the Element or an Element reference to scroll.
-	options - (object, optional) All <Fx> Options in addition to offset, overflown, and wheelStops.
 
 	options (continued):
 		offset     - (object: defaults to {'x': 0, 'y': 0}) An object with x/y properties for the distance to scrollTo the Element.
-		overflown  - (array: defaults to []) An array of nested scrolling containers, see <Element.getPosition> for an explanation.
 		wheelStops - (boolean: defaults to true) If false, the mouse wheel will not stop the transition from happening.
 
 Returns:
@@ -51,7 +49,6 @@ Fx.Scroll = new Class({
 	Extends: Fx,
 
 	options: {
-		overflown: [],
 		offset: {'x': 0, 'y': 0},
 		wheelStops: true
 	},
@@ -273,9 +270,8 @@ Fx.Scroll = new Class({
 	*/
 
 	toElement: function(el){
-		var parent = this.element.getPosition(this.options.overflown);
-		var target = $(el).getPosition(this.options.overflown);
-		return this.start(target.x - parent.x, target.y - parent.y);
+		var target = Element.getPosition($(el, true), this.element);
+		return this.start(target.x, target.y);
 	}
 
 });
