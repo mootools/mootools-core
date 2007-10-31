@@ -524,7 +524,7 @@ Hash.implement({
 
 	getValues: function(){
 		var values = [];
-		Hash.each(this, function(value, key){
+		Hash.each(this, function(value){
 			values.push(value);
 		});
 		return values;

@@ -83,8 +83,7 @@ Drag.Move = new Class({
 		var positions = {'element': this.element.getStyle('position'), 'container': (this.container) ? this.container.getStyle('position') : false};
 		if (!relatives.contains(positions.element)) positions.element = 'absolute';
 		this.relative = relatives.contains(positions.container);
-		var epos = this.element.getPosition((this.relative) ? this.container : false);
-		this.element.setStyles({'top': epos.y, 'left': epos.x, 'position': positions.element});
+		this.element.setStyle('position', positions.element).setPosition(this.element.getPosition((this.relative) ? this.container : false));
 	},
 
 	start: function(event){
@@ -93,8 +92,19 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var ccoo = this.container.getCoordinates((this.relative) ? this.container : false);
-			this.options.limit = {x: [ccoo.left, ccoo.right - this.element.offsetWidth], y: [ccoo.top, ccoo.bottom - this.element.offsetHeight]};
+			var el = this.element, cont = this.container, cps = {}, ems = {};
+			var ccoo = cont.getCoordinates((this.relative) ? cont : false);
+			
+			['top', 'right', 'bottom', 'left'].each(function(pad){
+				cps[pad] = cont.getStyle('padding-' + pad).toInt();
+				ems[pad] = el.getStyle('margin-' + pad).toInt();
+			}, this);
+			
+			var width = el.offsetWidth + ems.left + ems.right, height = el.offsetHeight + ems.top + ems.bottom;
+			var x = [ccoo.left + cps.left, ccoo.right - cps.right - width];
+			var y = [ccoo.top + cps.top, ccoo.bottom - cps.bottom - height];
+			
+			this.options.limit = {x: x, y: y};
 		}
 		arguments.callee.parent(event);
 	},

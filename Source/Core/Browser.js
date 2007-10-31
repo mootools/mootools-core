@@ -38,7 +38,7 @@ Note:
 
 var Browser = new Hash({
 	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
+	Platform: {'name': (navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'])[0].toLowerCase()},
 	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate)}
 });
 
@@ -51,15 +51,8 @@ Browser.Platform[Browser.Platform.name] = true;
 
 //window global evaluation
 
-function $exec(script, win){
-	win = win || window;
-	if (win.execScript){
-		win.execScript(script);
-	} else {
-		var node = new Element('script', {'type': 'text/javascript'}, win);
-		node.text = script;
-		node.inject(win.document.head).destroy();
-	}
+function $exec(script){
+	(window.execScript) ? window.execScript(script) : window.setTimeout(script, 0);
 	return script;
 };
 

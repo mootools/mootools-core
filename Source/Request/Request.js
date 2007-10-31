@@ -145,7 +145,7 @@ var Request = new Class({
 
 	onSuccess: function(args, process){
 		if (process && $type(args) == 'string') args = this.processScripts(args);
-		this.fireEvent('onComplete', args).fireEvent('onSuccess', args).callChain();
+		this.fireEvent('onComplete', [args]).fireEvent('onSuccess', [args]).callChain();
 	},
 
 	onFailure: function(){
@@ -310,14 +310,17 @@ var Request = new Class({
 });
 
 (function(){
-	var methods = {};
-	['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
-		methods[method] = function(){
-			var params = Array.link(arguments, {url: String.type, data: $defined});
-			return this.send($extend(params, {method: method.toLowerCase()}));
-		};
-	});
-	Request.implement(methods);
+
+var methods = {};
+['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
+	methods[method] = function(){
+		var params = Array.link(arguments, {url: String.type, data: $defined});
+		return this.send($extend(params, {method: method.toLowerCase()}));
+	};
+});
+
+Request.implement(methods);
+
 })();
 
 /*

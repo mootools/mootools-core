@@ -128,11 +128,6 @@ Hash.Cookie = new Class({
 	load: function(){
 		this.hash = new Hash(JSON.decode(Cookie.get(this.name), true));
 		return this;
-	},
-
-	erase: function(){
-		this.empty().save();
-		return this;
 	}
 
 });
