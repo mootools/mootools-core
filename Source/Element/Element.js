@@ -895,8 +895,7 @@ Element.implement({
 
 	wraps: function(el, where){
 		el = $(el, true);
-		Element.Inserters.after(this, el);
-		return this.grab(el, where);
+		return this.replaces(el).grab(el);
 	},
 
 	/*
@@ -1098,32 +1097,31 @@ Element.implement({
 	},
 
 	/*
-	Method: replaceWith
-		Replaces the Element with an Element passed.
+	Method: replaces
+		the Element replaces an Element passed.
 
 	Syntax:
-		>var replacingElement = myElement.replaceWidth(el);
+		>myElement.replaces(el);
 
 	Arguments:
 		el - (mixed) A string id representing the Element to be injected in, or an Element reference.
-			In addition, if you pass div or another tag, the Element will be created.
 
 	Returns:
-		(element) The passed in Element.
+		(element) This Element.
 
 	Example:
 		[javascript]
-			$('myOldElement').replaceWith($('myNewElement')); //$('myOldElement') is gone, and $('myNewElement') is in its place.
+			$('myNewElement').replaces($('myOldElement')); //$('myOldElement') is gone, and $('myNewElement') is in its place.
 		[/javascript]]
 
 	See Also:
 		<http://developer.mozilla.org/en/docs/DOM:element.replaceChild>
 	*/
 
-	replaceWith: function(el){
-		el = $(el);
-		this.parentNode.replaceChild(el, this);
-		return el;
+	replaces: function(el){
+		el = $(el, true);
+		el.parentNode.replaceChild(this, el);
+		return this;
 	},
 
 	/*
