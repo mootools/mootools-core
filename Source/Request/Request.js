@@ -145,7 +145,7 @@ var Request = new Class({
 
 	onSuccess: function(args, process){
 		if (process && $type(args) == 'string') args = this.processScripts(args);
-		this.fireEvent('onComplete', [args]).fireEvent('onSuccess', [args]).callChain();
+		this.fireEvent('onComplete', args).fireEvent('onSuccess', args).callChain();
 	},
 
 	onFailure: function(){

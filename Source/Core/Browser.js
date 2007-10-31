@@ -49,11 +49,19 @@ else if (document.getBoxObjectFor != null) Browser.Engine.name = 'gecko';
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
 Browser.Platform[Browser.Platform.name] = true;
 
-//window global evaluation
+//global evaluation
 
-function $exec(script){
-	(window.execScript) ? window.execScript(script) : window.setTimeout(script, 0);
-	return script;
+function $exec(text){
+	if (window.execScript){
+		window.execScript(text);
+	} else {
+		var script = document.createElement('script');
+		script.setAttribute('type', 'text/javascript');
+		script.text = text;
+		document.head.appendChild(script);
+		document.head.removeChild(script);
+	}
+	return text;
 };
 
 Native.UID = 0;

@@ -229,7 +229,6 @@ var Drag = new Class({
 	},
 
 	drag: function(event){
-		this.out = false;
 		this.mouse.now = event.page;
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
@@ -237,10 +236,8 @@ var Drag = new Class({
 			if (this.options.limit && this.limit[z]){
 				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
 					this.value.now[z] = this.limit[z][1];
-					this.out = true;
 				} else if ($chk(this.limit[z][0]) && (this.value.now[z] < this.limit[z][0])){
 					this.value.now[z] = this.limit[z][0];
-					this.out = true;
 				}
 			}
 			if (this.options.grid[z]) this.value.now[z] -= (this.value.now[z] % this.options.grid[z]);
