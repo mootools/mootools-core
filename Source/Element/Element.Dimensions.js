@@ -126,20 +126,31 @@ Element.implement({
 	
 	getPosition: function(relative){
 		relative = $(relative, true);
+		var doc = this.ownerDocument, win = doc.window;
 		if (this == relative) return {x: 0, y: 0};
 		var el = this, left = 0, top = 0;
-		while (el && el != relative){
+		while (el){
 			left += el.offsetLeft;
 			top += el.offsetTop;
 			el = el.offsetParent;
 		}
 		el = this;
-		while ((el = el.parentNode) && el != relative){
+		while ((el = el.parentNode) && el != doc.body){
 			top -= el.scrollTop;
 			left -= el.scrollLeft;
-			if (el == document.body) break;
 		}
-		return {x: left, y: top};
+		var rel = (relative) ? (relative == win) ? win.getScroll() : Element.getPosition(relative) : {x: 0, y: 0};
+		return {x: left - rel.x, y: top - rel.y};
+	},
+	
+	getRelativePosition: function(){
+		var el = this, parent = false;
+		while ((el = el.parentNode)){
+			if (Element.getStyle(el, 'position') == 'static') continue;
+			parent = el;
+			break;
+		}
+		return this.getPosition(parent);
 	},
 
 	/*

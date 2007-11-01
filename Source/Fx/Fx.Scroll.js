@@ -270,9 +270,9 @@ Fx.Scroll = new Class({
 	*/
 
 	toElement: function(el){
-		var parent = this.element.getPosition();
-		var target = Element.getPosition($(el, true));
-		return this.start(target.x - parent.x, target.y - parent.y);
+		var target = Element.getPosition($(el, true), this.element);
+		var scroll = this.element.getScroll();
+		return this.start(scroll.x + target.x, scroll.y + target.y);
 	}
 
 });
