@@ -67,7 +67,7 @@ var Fx = new Class({
 
 	initialize: function(options){
 		this.setOptions(options);
-		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration;
+		this.options.duration = parseInt(Fx.Durations[this.options.duration] || this.options.duration);
 	},
 
 	step: function(){
