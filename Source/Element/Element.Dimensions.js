@@ -145,7 +145,7 @@ Element.implement({
 	
 	getRelativePosition: function(){
 		var el = this, parent = false;
-		while ((el = el.parentNode)){
+		while ((el = el.parentNode) && el != document.html){
 			if (Element.getStyle(el, 'position') == 'static') continue;
 			parent = el;
 			break;

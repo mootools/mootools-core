@@ -100,6 +100,7 @@ var Document = new Native({
 
 	initialize: function(doc){
 		doc.head = doc.getElementsByTagName('head')[0];
+		doc.html = doc.getElementsByTagName('html')[0];
 		doc.window = doc.defaultView || doc.parentWindow;
 		if (Browser.Engine.trident4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
