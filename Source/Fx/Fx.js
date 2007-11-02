@@ -52,8 +52,8 @@ var Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {/*
-		onStart: $empty,
+	options: {
+		/*onStart: $empty,
 		onComplete: $empty,
 		onCancel: $empty,*/
 		fps: 50,

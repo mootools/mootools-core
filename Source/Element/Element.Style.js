@@ -54,75 +54,6 @@ Element.Properties.opacity = {
 
 };
 
-(function(){
-
-/*
-Method: getStyle
-	Returns the style of the Element given the property passed in.
-
-Syntax:
-	>var style = myElement.getStyle(property);
-
-Arguments:
-	property - (string) The css style property you want to retrieve.
-
-Returns:
-	(string) The style value.
-
-Example:
-	[javascript]
-		$('myElement').getStyle('width'); //returns "400px"
-		//but you can also use
-		$('myElement').getStyle('width').toInt(); //returns 400
-	[/javascript]
-*/
-
-var styleFixer = function(element, property, result){
-	if ($chk(parseInt(result))) return result;
-	if (['height', 'width'].contains(property)){
-		var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'];
-		var size = 0;
-		values.each(function(value){
-			size += element.getStyle('border-' + value + '-width').toInt() + element.getStyle('padding-' + value).toInt();
-		});
-		return element['offset' + property.capitalize()] - size + 'px';
-	} else if (property.test(/border(.+)Width|margin|padding/)){
-		return '0px';
-	}
-	return result;
-};
-
-Element.implement('getStyle', function(property){
-	switch (property){
-		case 'opacity': return this.get('opacity');
-		case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
-	}
-	property = property.camelCase();
-	var result = this.style[property];
-	if (!$chk(result)){
-		result = [];
-		for (var style in Element.ShortStyles){
-			if (property != style) continue;
-			for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
-			return result.join(' ');
-		}
-		if (this.currentStyle){
-			result = this.currentStyle[property];
-		} else {
-			if (property == 'cssFloat') property = 'float';
-			result = this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
-		}
-	}
-	if (result){
-		result = String(result);
-		var color = result.match(/rgba?\([\d\s,]+\)/);
-		if (color) result = result.replace(color[0], color[0].rgbToHex());
-	}
-	return (Browser.Engine.trident) ? styleFixer(this, property, result) : result;
-});
-
-})();
-
 Element.implement({
 
 	/*
@@ -167,6 +98,67 @@ Element.implement({
 		}
 		this.style[property] = value;
 		return this;
+	},
+	
+	/*
+	Method: getStyle
+		Returns the style of the Element given the property passed in.
+
+	Syntax:
+		>var style = myElement.getStyle(property);
+
+	Arguments:
+		property - (string) The css style property you want to retrieve.
+
+	Returns:
+		(string) The style value.
+
+	Example:
+		[javascript]
+			$('myElement').getStyle('width'); //returns "400px"
+			//but you can also use
+			$('myElement').getStyle('width').toInt(); //returns 400
+		[/javascript]
+	*/
+	
+	getStyle: function(property){
+		switch (property){
+			case 'opacity': return this.get('opacity');
+			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+		}
+		property = property.camelCase();
+		var result = this.style[property];
+		if (!$chk(result)){
+			result = [];
+			for (var style in Element.ShortStyles){
+				if (property != style) continue;
+				for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
+				return result.join(' ');
+			}
+			if (this.currentStyle){
+				result = this.currentStyle[property];
+			} else {
+				if (property == 'cssFloat') property = 'float';
+				result = this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
+			}
+		}
+		if (result){
+			result = String(result);
+			var color = result.match(/rgba?\([\d\s,]+\)/);
+			if (color) result = result.replace(color[0], color[0].rgbToHex());
+		}
+		if (Browser.Engine.presto || (Browser.Engine.trident && !$chk(parseInt(result)))){
+			if (property.test(/^(height|width)$/)){
+				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
+				values.each(function(value){
+					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+				}, this);
+				return this['offset' + property.capitalize()] - size + 'px';
+			}
+			if (Browser.Engine.presto && String(result).test('px')) return result;
+			if (property.test(/^(border(.+)Width|margin|padding)$/)) return '0px';
+		}
+		return result;
 	},
 	
 	setPosition: function(obj){
