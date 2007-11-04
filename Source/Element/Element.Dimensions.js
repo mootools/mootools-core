@@ -135,12 +135,29 @@ Element.implement({
 			el = el.offsetParent;
 		}
 		el = this;
+		var pos = this.getStyle('position');
 		while ((el = el.parentNode) && el != doc.html){
+			if (!Browser.Engine.presto && pos != 'static' && el.getStyle('position') == 'static') continue;
 			top -= el.scrollTop;
 			left -= el.scrollLeft;
 		}
 		var rel = (relative) ? (relative == win) ? win.getScroll() : Element.getPosition(relative) : {x: 0, y: 0};
 		return {x: left - rel.x, y: top - rel.y};
+	},
+	
+	setPosition: function(obj, relative){
+		if (relative){
+			var el = this, doc = this.ownerDocument;
+			while ((el = el.parentNode) && el != doc.html){
+				if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
+				obj.x += el.scrollLeft;
+				obj.y += el.scrollTop;
+			}
+		}
+		return this.setStyles({
+			'left': obj.x - this.getStyle('margin-left').toInt(),
+			'top': obj.y - this.getStyle('margin-top').toInt()
+		});
 	},
 	
 	getComputedPosition: function(){

@@ -160,21 +160,6 @@ Element.implement({
 		}
 		return result;
 	},
-	
-	setPosition: function(obj, relative){
-		if (relative){
-			var el = this, doc = this.ownerDocument;
-			while ((el = el.parentNode) && el != doc.html){
-				if (Element.getStyle(el, 'position') == 'static') continue;
-				obj.x += el.scrollLeft;
-				obj.y += el.scrollTop;
-			}
-		}
-		return this.setStyles({
-			'left': obj.x - this.getStyle('margin-left').toInt(),
-			'top': obj.y - this.getStyle('margin-top').toInt()
-		});
-	},
 
 	/*
 	Method: setStyles

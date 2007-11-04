@@ -75,7 +75,7 @@
         },
 
         "Element.Dimensions": {
-            "deps": ["Element"],
+            "deps": ["Element.Style"],
             "desc": "Contains Element methods to work with element size, scroll, or position in space."
         }
 

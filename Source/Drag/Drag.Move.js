@@ -81,7 +81,7 @@ Drag.Move = new Class({
 		this.container = $(this.options.container);
 		var position = this.element.getStyle('position');
 		if (position == 'static') position = 'absolute';
-		this.element.setStyle('position', position).setPosition(this.element.getComputedPosition());
+		this.element.setPosition(this.element.getComputedPosition(), true).setStyle('position', position);
 	},
 
 	start: function(event){
@@ -101,7 +101,7 @@ Drag.Move = new Class({
 			var width = el.offsetWidth + ems.left + ems.right, height = el.offsetHeight + ems.top + ems.bottom;
 			var x = [ccoo.left + cps.left, ccoo.right - cps.right - width];
 			var y = [ccoo.top + cps.top, ccoo.bottom - cps.bottom - height];
-			
+
 			this.options.limit = {x: x, y: y};
 		}
 		arguments.callee.parent(event);
