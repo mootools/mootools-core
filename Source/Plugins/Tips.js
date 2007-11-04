@@ -170,8 +170,8 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var win = {'x': this.window.getWidth, 'y': this.window.getHeight};
-		var scroll = {'x': this.window.getScrollLeft, 'y': this.window.getScrollTop};
+		var win = {'x': this.window.getWidth(), 'y': this.window.getHeight()};
+		var scroll = {'x': this.window.getScrollLeft(), 'y': this.window.getScrollTop()};
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){

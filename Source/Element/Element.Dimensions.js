@@ -135,7 +135,7 @@ Element.implement({
 			el = el.offsetParent;
 		}
 		el = this;
-		while ((el = el.parentNode) && el != doc.body){
+		while ((el = el.parentNode) && el != doc.html){
 			top -= el.scrollTop;
 			left -= el.scrollLeft;
 		}
@@ -143,9 +143,9 @@ Element.implement({
 		return {x: left - rel.x, y: top - rel.y};
 	},
 	
-	getRelativePosition: function(){
-		var el = this, parent = false;
-		while ((el = el.parentNode) && el != document.html){
+	getComputedPosition: function(){
+		var el = this, parent = false, doc = this.ownerDocument;
+		while ((el = el.parentNode) && el != doc.html){
 			if (Element.getStyle(el, 'position') == 'static') continue;
 			parent = el;
 			break;

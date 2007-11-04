@@ -81,7 +81,7 @@ Drag.Move = new Class({
 		this.container = $(this.options.container);
 		var position = this.element.getStyle('position');
 		if (position == 'static') position = 'absolute';
-		this.element.setStyle('position', position).setPosition(this.element.getRelativePosition());
+		this.element.setStyle('position', position).setPosition(this.element.getComputedPosition());
 	},
 
 	start: function(event){

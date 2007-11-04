@@ -19,7 +19,7 @@ JSON.Remote = new Class({
 
 	onSuccess: function(text){
 		arguments.callee.parent(text);
-		this.fireEvent('onComplete', this.response.json);
+		this.fireEvent('onComplete', [this.response.json]);
 	}
 
 });
