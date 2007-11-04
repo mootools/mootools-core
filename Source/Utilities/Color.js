@@ -52,7 +52,7 @@ var Color = new Native({
   
   name: 'Color',
   
-  browser: false,
+  protect: false,
   
   initialize: function(color, type){
 		type = type || ($type(color) == 'array') ? 'rgb' : 'hex';

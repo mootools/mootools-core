@@ -255,7 +255,7 @@ describe('Native', {
 
 			name: 'car',
 
-			browser: true,
+			protect: true,
 
 			initialize: function(name){
 				this.name = name;

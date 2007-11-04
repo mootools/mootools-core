@@ -14,8 +14,8 @@ Properties:
 	options - (object) An object to set the default behaviour of Cookie and its derivatives.
 
 	options (continued):
-		domain   - (string: defaults to false) The domain the Cookie belongs to.
 		path     - (string: defaults to false) The path the Cookie belongs to.
+		domain   - (string: defaults to false) The domain the Cookie belongs to.
 		duration - (number: defaults to false) The duration of the Cookie before it expires, in days. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
 		secure   - (boolean: defaults to false) Stored cookie information can be accessed only from a secure environment.
 
@@ -26,8 +26,8 @@ Note:
 var Cookie = new Hash({
 
 	options: {
-		domain: false,
 		path: false,
+		domain: false,
 		duration: false,
 		secure: false
 	},

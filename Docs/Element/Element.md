@@ -1,10 +1,10 @@
+[Array]: /Native/Array
 [Element]: #Element
 [Elements]: #Elements
-[Array]: /Native/Array
-[Selector.js]: /Selectors/Selectors
 [Element.Setters]: #Element.Setters
 [Element.Getters]: #Element.Getters
 [Element.Erasers]: #Element.Erasers
+[Selector.js]: /Selectors/Selectors
 
 
 Window Methods
@@ -570,7 +570,6 @@ Clones the Element and returns the cloned one.
 ### Example:
 
 	// <div id="myElement"></div>
-
 
 	var clone = $('myElement').clone().injectAfter('myElement'); //clones the Element and append the clone after the Element.
 

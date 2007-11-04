@@ -20,17 +20,19 @@ var myFx = new Fx.Tween(element, property[, options]);
 
 ### Arguments:
 
-* element  - (mixed) An Element or the string id of an Element to apply the transition to.
-* property - (string) The CSS property to transition.
-* options  - (object, optional) The <Fx> options object.
+1. element  - (mixed) An Element or the string id of an Element to apply the transition to.
+2. property - (string) The CSS property to transition, for example 'width', 'color', 'font-size', 'border', etc.
+3. options  - (object, optional) The <Fx> options object.
 
 ### Properties:
 
+* element - (element) The element being transitioned.
 * property - (string) The property being transitioned.
 
 ### Notes:
 
-* Colors must be in hex format.
+* Any CSS property that can be set with Element:setStyle can be transitioned with Fx.Tween.
+* If a property is not mathematically calculable, like border-style or background-image, it will be set immediately upon start of the transition.
 
 ### See Also:
 
@@ -45,11 +47,11 @@ Sets the Element's CSS property to the specified value immediately.
 
 ### Syntax:
 
-	myFx.set(to);
+	myFx.set(value);
 
 ### Arguments:
 
-1. value - (mixed) The value to set this instances CSS property to.
+1. value - (mixed) The value to set the CSS property of this instance to.
 
 ### Returns:
 
@@ -57,167 +59,182 @@ Sets the Element's CSS property to the specified value immediately.
 
 ### Example:
 
-	var marginFx = new Fx.Tween('myElement', 'margin-top').set(10); //margin-top is set to 10px immediately
-
-	/*
-	Method: start
-		Displays the transition to the value/values passed in
-
-	Syntax:
-		>myFx.start([from,] to);
-
-	Arguments:
-		from - (integer, optional: defaults to the current style value) The starting value for the transition.
-		to   - (integer) The ending value for the transition.
-
-	Returns:
-		(object) This Fx.Tween instance.
-
-	Example:
-		[javascript]
-			var marginFx = new Fx.Tween('myElement', 'margin-top').start(10); //tries to read current margin top value and goes from current to 10
-		[/javascript]
-
-	Note:
-		If you provide only one argument, the transition will use the current css value for its starting value.
-	*/
-
-});
-
-/*
-Native: Element
-	Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
-*/
+	var myFx = new Fx.Tween(element, 'color');
+	myFx.set('#f00'); //immediately set the background color of the element to red
 
 
-/*
-Element Property: tween
-	sets and gets a default Fx.Tween instance for an element
 
-Set Syntax:
-	>el.set('tween'[, options]);
+Fx.Tween Method: start {#Fx.Tween:start}
+----------------------------------------
 
-Set Arguments:
-	options - (object) the Fx.Tween options.
+Transitions the Element's CSS property to the specified value.
 
-Set Returns:
-	(element) this element
+### Syntax:
 
-Set Example:
-	[javascript]
-		el.set('tween', {duration: 'long'});
-		el.tween('opacity', 0);
-	[/javascript]
+	myFx.start(from[, to]);
 
-Get Syntax:
-	>el.get('tween', property[, options]);
+### Arguments:
 
-Get Arguments:
-	property - (string) the Fx.Tween property argument.
-	options - (object) the Fx.Tween options.
+1. from - (mixed) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
+2. to   - (mixed, optional) The target CSS property value for the effect.
 
-Get Returns:
-	(object) The Fx.Tween instance
+### Returns:
 
-Get Example:
-	[javascript]
-		el.get('tween', 'opacity', {duration: 'long'}).start(0);
-	[/javascript]
-*/
+(object) This Fx.Tween instance.
 
-Element.Properties.tween = {
+### Example:
 
-	set: function(options){
-		var tween = this.retrieve('tween');
-		if (tween) tween.cancel();
-		return this.store('tween', new Fx.Tween(this, null, $extend({link: 'cancel'}, options)));
-	},
+	var myFx = new Fx.Tween(element, 'background-color');
+	myFx.start('#000', '#f00'); //transition the background color of the element from black to red
+	myFx.start('#00f'); //transition the background color of the element from its current color to blue
 
-	get: function(property, options){
-		if (options || !this.retrieve('tween')) this.set('tween', options);
-		var tween = this.retrieve('tween');
-		tween.property = property;
-		return tween;
-	}
+### Notes:
 
-};
+* If only one parameter is provided, the first argument to start will be used as the target value, and the initial value will be calculated from the current state of the element.
+* When using colors, either RGB or Hex values may be used.
 
-Element.implement({
 
-	highlight: function(color){
-		this.get('tween', 'background-color').start(color || '#face8f', function(){
-			var style = this.getStyle('background-color');
-			return (style == 'transparent') ? '#ffffff' : style;
-		}.bind(this));
-		return this;
-	},
 
-	/*
-	Method: tween
-		Tweens an element property between one or more values.
+Native: Element {#Element}
+==========================
 
-	Syntax:
-		>myElement.morph(property, value[, options]);
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
-	Arguments:
-		property - (string) the css property you want to animate.
-		value - (mixed) the value you want the property to tween to.
-		options - (object, optional) The <Fx.Tween> options parameter.
 
-	Returns:
-		(element) this Element.
 
-	Example:
-		[javascript]
-			$('myElement').tween('opacity', 0);
-		[/javascript]
+Element Property: tween {#Element:property}
+----------------------------------------
 
-	See Also:
-		<Fx.Tween>
-	*/
+Sets and gets a default Fx.Tween instance for an Element.
 
-	tween: function(property, value){
-		this.get('tween', property).start(value);
-		return this;
-	},
+### Setter:
 
-	/*
-	Method: fade
-		fades an element in or out.
+#### Syntax:
 
-	Syntax:
-		>myElement.fade(how[, options]);
+	el.set('tween'[, options]);
 
-	Arguments:
-		how - (string) can be in, out, toggle, hide and show. defaults to 'toggle'.
-		options - (object, optional) The <Fx.Tween> options parameter.
+#### Arguments:
 
-	Returns:
-		(element) this Element.
+* options - (object) the Fx.Tween options.
 
-	Example:
-		[javascript]
-			$('myElement').fade('in');
-		[/javascript]
+#### Returns:
 
-	See Also:
-		<Fx.Tween>, <Element.slide>
-	*/
+(element) This Element.
 
-	fade: function(how){
-		var fade = this.get('tween', 'opacity');
-		how = $pick(how, 'toggle');
-		switch (how){
-			case 'in': fade.start(1); break;
-			case 'out': fade.start(0); break;
-			case 'show': fade.set(1); break;
-			case 'hide': fade.set(0); break;
-			case 'toggle': fade.start((function(){
-				return (this.getStyle('visibility') == 'hidden') ? 1 : 0;
-			}).bind(this)); break;
-			default: fade.start(how);
-		}
-		return this;
-	}
+#### Example:
 
-});
+	el.set('tween', {duration: 'long'});
+	el.tween('color', '#f00');
+
+### Getter:
+
+#### Syntax:
+
+	el.get('tween', property[, options]);
+
+#### Arguments:
+
+1. property - (string) the Fx.Tween property argument.
+2. options - (object) the Fx.Tween options.
+
+#### Returns:
+
+(object) The Element's internal Fx.Tween instance.
+
+#### Example:
+
+	el.get('tween', 'opacity', {duration: 'long'}).start(0);
+
+### Notes:
+
+* When initializing the Element's tween instance with Element:set, the property to tween *should not* be passed.
+* The property must be specified when using Element:get to retrieve the actual Fx.Tween instance, and in calls to Element:tween.
+* When options are passed to either the setter or the getter, the instance will be recreated.
+* As with the other Element shortcuts, the difference between a setter and a getter is that the getter returns the instance, while the setter returns the element (for chaining and initialization).
+
+
+
+Element Method: tween {#Element:tween}
+--------------------------------------
+
+Element shortcut method which immediately transitions any single CSS property of an Element from one value to another.
+
+### Syntax:
+
+	myElement.tween(property, value);
+
+### Arguments:
+
+1. property - (string) the css property you want to animate.
+2. value - (mixed) Either the target value to transition the CSS property to, or an array containing the starting and ending values for the transition.
+
+### Returns:
+
+(element) This Element.
+
+### Example
+
+	$('myElement').tween('width', '100'); //transition the width of myElement to 100px
+	$('myElement').tween('height', [20, 200]); //transition the height of myElement from 20px to 100px
+	$('myElement').tween('border', '6px solid #36f'); //transition the border of myElement to 6px solid blue
+
+### See Also:
+
+	<Fx.Tween>
+
+
+
+Element Method: fade {#Element:fade}
+------------------------------------
+
+Element shortcut method for tween with opacity.  Useful for fading an Element in and out or to a certain opacity level.
+
+### Syntax:
+
+	myElement.fade([how]);
+
+### Arguments:
+
+1. how - (mixed, optional: defaults to 'toggle') The opacity level as a number or string representation.  Possible values include:
+ * 'in' - fade the element to 100% opacity
+ * 'out' - fade the element to 0% opacity
+ * 'show' - immediately set the element's opacity to 100%
+ * 'hide' - immediately set the element's opacity to 0%
+ * 'toggle' - if visible, fade the element out, otherwise, fade it in
+ * float from from 0 to 1 - fade the element to this opacity
+
+### Returns:
+
+This Element.
+
+### Examples:
+
+	$('myElement').fade('out'); //fade my element out
+	$('myElement').fade(0.7); //fade my element to 70% opacity
+
+
+
+Element Method: highlight {#Element:highlight}
+----------------------------------------------
+
+Element shortcut method for tween with background color.  Immediately transitions an Element's background color from a specified highlight color down to its current background color.
+
+### Syntax:
+
+	myElement.highlight([color]);
+
+### Arguments:
+
+1. color - (string, optional: defaults to '#ff8') The color from which to start the transition.
+
+### Returns:
+
+(element) This Element.
+
+### Examples:
+
+	$('myElement').highlight('#ddf'); //a quick light blue highlight
+
+### Notes:
+
+* If the Element doesn't have a background-color set, or the background color is set to 'transparent', it will be highlighted from the highlight color down to white.

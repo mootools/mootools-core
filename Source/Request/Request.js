@@ -84,8 +84,8 @@ var Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {
-		/*onRequest: $empty,
+	options: {/*
+		onRequest: $empty,
 		onSuccess: $empty,
 		onFailure: $empty,
 		onException: $empty,*/

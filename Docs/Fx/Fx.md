@@ -28,16 +28,15 @@ Fx Method: constructor {#Fx:constructor}
 ### Options:
 
 * fps        - (number: defaults to 50) The frames per second for the transition.
-* unit       - (string: defaults to false) The unit, e.g. 'px', 'em' for 
-fonts or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
+* unit       - (string: defaults to false) The unit, e.g. 'px', 'em', or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
 * link       - (string: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.
-  * 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
-  * 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
-  * 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
+	* 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
+	* 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
+	* 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
 * duration   - (number: defaults to 500) The duration of the effect in ms. Can also be one of:
-  * 'long'   - 750ms
-  * 'normal' - 500ms
-  * 'short'  - 250ms
+	* 'short'  - 250ms
+	* 'normal' - 500ms
+	* 'long'   - 1000ms
 * transition - (function: defaults to [Fx.Transitions.Sine.easeInOut](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
 
   transition[:in][:out] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
@@ -79,9 +78,7 @@ The start method is used to begin a transition.  Fires the onStart event.
 
 ### Example:
 
-	var myFx = new Fx.Tween(element, 'background-color');
-	myFx.start('#000', '#f00'); //transition the background color of the element from black to red
-	myFx.start('#00f'); //transition the background color of the element from its current color to blue
+See examples in the documentation for each Fx subclass.
 
 ### Notes:
 
@@ -109,8 +106,7 @@ The set method is fired on every step of a transition.  It can also be called ma
 
 ### Example:
 
-	var myFx = new Fx.Tween(element, 'color');
-	myFx.set('#f00'); //immediately set the background color of the element to red
+See examples in the documentation for each Fx subclass.
 
 
 
@@ -127,12 +123,6 @@ The cancel method is used to cancel a running transition.  Fires the onCancel ev
 
 (object) - This Fx instance.
 
-### Example:
-
-	var myFx = new Fx.Tween(element, 'background-color');
-	myFx.start('#f00'); //transition the background color of the element to red
-	myFx.cancel(); //nevermind
-
 
 
 Fx Method: pause {#Fx:pause}
@@ -147,12 +137,6 @@ Temporarily pause a currently running effect.
 ### Returns:
 
 (object) - This Fx instance.
-
-### Example:
-
-	var myFx = new Fx.Tween(element, 'background-color');
-	myFx.start('#f00'); //transition the background color of the element to red
-	myFx.pause(); //hang on, im gonna finish something else up before we finish here
 
 ### Notes:
 
@@ -173,13 +157,6 @@ Resume a previously paused effect.
 ### Returns:
 
 (object) - This Fx instance.
-
-### Example:
-
-	var myFx = new Fx.Tween(element, 'background-color');
-	myFx.start('#f00'); //transition the background color of the element to red
-	myFx.pause(); //hang on, im gonna finish something else up before we finish here
-	myFx.resume(); //alright, finish up
 
 ### Notes:
 

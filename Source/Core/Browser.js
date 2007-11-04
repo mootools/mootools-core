@@ -38,7 +38,7 @@ Note:
 
 var Browser = new Hash({
 	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/(mac)|(win)|(linux)|(nix)/i) || ['Other'])[0].toLowerCase()},
+	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()}, 
 	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate)}
 });
 

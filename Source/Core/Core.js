@@ -5,15 +5,15 @@ Script: Core.js
 License:
 	MIT-style license.
 
-MooTools Copyright:
+Copyright:
 	Copyright (c) 2006-2007 Valerio Proietti, <http://mad4milk.net/>
 
-MooTools Code & Documentation:
+Code & Documentation:
 	The MooTools production team <http://mootools.net/developers/>.
 
-MooTools Credits:
-	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> (c) 2006 Dean Edwards, GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
-	- Some functionality inspired by that found in Prototype.js <http://prototypejs.org> (c) 2005-2007 Sam Stephenson, MIT License <http://opensource.org/licenses/mit-license.php>
+Inspiration:
+	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> Copyright (c) 2006 Dean Edwards, GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
+	- Some functionality inspired by Prototype.js <http://prototypejs.org> Copyright (c) 2005-2007 Sam Stephenson, MIT License <http://opensource.org/licenses/mit-license.php>
 */
 
 var MooTools = {
@@ -29,7 +29,7 @@ var Native = function(options){
 	generics = (generics !== false);
 	var legacy = options.legacy;
 	var initialize = options.initialize;
-	var browser = options.browser;
+	var protect = options.protect;
 	var name = options.name;
 
 	var object = initialize || legacy;
@@ -46,8 +46,8 @@ var Native = function(options){
 	}
 
 	var add = function(obj, name, method, force){
-		if (!browser || force || !obj.prototype[name]) obj.prototype[name] = method;
-		if (generics) Native.genericize(obj, name, browser);
+		if (!protect || force || !obj.prototype[name]) obj.prototype[name] = method;
+		if (generics) Native.genericize(obj, name, protect);
 		afterImplement.call(obj, name, method);
 		return obj;
 	};
@@ -89,7 +89,7 @@ Native.typize = function(object, family){
 })({'Boolean': Boolean, 'Native': Native, 'Object': Object});
 
 (function(objects){
-	for (var name in objects) new Native({name: name, initialize: objects[name], browser: true});
+	for (var name in objects) new Native({name: name, initialize: objects[name], protect: true});
 })({'String': String, 'Function': Function, 'Number': Number, 'Array': Array, 'RegExp': RegExp, 'Date': Date});
 
 (function(object, methods){
