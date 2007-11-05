@@ -125,9 +125,8 @@ Element.implement({
 	*/
 	
 	getPosition: function(relative){
-		relative = $(relative, true);
+		if (this == relative || $type(this) == 'window') return {x: 0, y: 0};
 		var doc = this.ownerDocument, win = doc.window;
-		if (this == relative) return {x: 0, y: 0};
 		var el = this, left = 0, top = 0;
 		while (el){
 			left += el.offsetLeft;
@@ -135,39 +134,38 @@ Element.implement({
 			el = el.offsetParent;
 		}
 		el = this;
-		var pos = this.getStyle('position');
+		var estatic = (Element.getStyle(this, 'position') == 'static');
 		while ((el = el.parentNode) && el != doc.html){
-			if (!Browser.Engine.presto && pos != 'static' && el.getStyle('position') == 'static') continue;
+			var pstatic = (Element.getStyle(el, 'position') == 'static');
+			if (relative === true && !pstatic) relative = el;
+			if (!Browser.Engine.presto && !estatic && pstatic) continue;
 			top -= el.scrollTop;
 			left -= el.scrollLeft;
 		}
-		var rel = (relative) ? (relative == win) ? win.getScroll() : Element.getPosition(relative) : {x: 0, y: 0};
-		return {x: left - rel.x, y: top - rel.y};
+		var rpos = Element.getPosition((relative === true || !relative) ? win : $(relative, true));
+		return {x: left - rpos.x, y: top - rpos.y};
+	},
+	
+	computePosition: function(obj, client){
+		if (client){
+			var el = this, doc = this.ownerDocument, win = doc.window;
+			while ((el = el.parentNode) && el != doc){
+				if (el == doc.html) el = win;
+				else if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
+				var scroll = (el == win) ? win.getScroll() : Element.getScroll(el);
+				obj.x += scroll.x;
+				obj.y += scroll.y;
+				break;
+			}
+		}
+		return {
+			left: obj.x - this.getStyle('margin-left').toInt(),
+			top: obj.y - this.getStyle('margin-top').toInt()
+		};
 	},
 	
 	setPosition: function(obj, relative){
-		if (relative){
-			var el = this, doc = this.ownerDocument;
-			while ((el = el.parentNode) && el != doc.html){
-				if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
-				obj.x += el.scrollLeft;
-				obj.y += el.scrollTop;
-			}
-		}
-		return this.setStyles({
-			'left': obj.x - this.getStyle('margin-left').toInt(),
-			'top': obj.y - this.getStyle('margin-top').toInt()
-		});
-	},
-	
-	getComputedPosition: function(){
-		var el = this, parent = false, doc = this.ownerDocument;
-		while ((el = el.parentNode) && el != doc.html){
-			if (Element.getStyle(el, 'position') == 'static') continue;
-			parent = el;
-			break;
-		}
-		return this.getPosition(parent);
+		return this.setStyles(this.computePosition(obj, relative));
 	},
 
 	/*
