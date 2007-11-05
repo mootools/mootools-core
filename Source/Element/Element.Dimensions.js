@@ -134,9 +134,9 @@ Element.implement({
 			el = el.offsetParent;
 		}
 		el = this;
-		var estatic = (Element.getStyle(this, 'position') == 'static');
+		var epos = this.style.position, estatic = !epos || epos == 'static';
 		while ((el = el.parentNode) && el != doc.html){
-			var pstatic = (Element.getStyle(el, 'position') == 'static');
+			var ppos = el.style.position, pstatic = !ppos || ppos == "static";
 			if (relative === true && !pstatic) relative = el;
 			if (!Browser.Engine.presto && !estatic && pstatic) continue;
 			top -= el.scrollTop;
@@ -150,8 +150,9 @@ Element.implement({
 		if (client){
 			var el = this, doc = this.ownerDocument, win = doc.window;
 			while ((el = el.parentNode)){
+				var ppos = el.style.position, pstatic = !ppos || ppos == "static";
 				if (el == doc.html) el = win;
-				else if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
+				else if (!Browser.Engine.presto && pstatic) continue;
 				var scroll = (el == win) ? win.getScroll() : Element.getScroll(el);
 				obj.x += scroll.x;
 				obj.y += scroll.y;

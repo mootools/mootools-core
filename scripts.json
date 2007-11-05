@@ -223,7 +223,7 @@
         },
 
         "Sortables": {
-            "deps": ["Class.Extras", "Element.Event", "Element.Dimensions", "Element.Style"],
+            "deps": ["Drag.Move"],
             "desc": "Class for creating a drag and drop interface for lists of items."
         },
 

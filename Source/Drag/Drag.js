@@ -219,7 +219,7 @@ var Drag = new Class({
 	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			this.cancel(event);
+			this.cancel(event, true);
 			this.document.addEvent('mousemove', this.bound.drag);
 			this.document.addEvent('mouseup', this.bound.stop);
 			this.fireEvent('onStart', this.element);
@@ -247,10 +247,10 @@ var Drag = new Class({
 		event.stop();
 	},
 
-	cancel: function(event){
+	cancel: function(event, supress){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);
-		this.fireEvent('onCancel', this.element);
+		if (!supress) this.fireEvent('onCancel', this.element);
 		event.stop();
 	},
 
