@@ -125,7 +125,7 @@ Element.implement({
 	*/
 	
 	getPosition: function(relative){
-		if (this == relative) return {x: 0, y: 0};
+		if (this == (relative = relative || false)) return {x: 0, y: 0};
 		var doc = this.ownerDocument, win = doc.window;
 		var el = this, left = 0, top = 0;
 		while (el){
@@ -134,15 +134,15 @@ Element.implement({
 			el = el.offsetParent;
 		}
 		el = this;
-		var epos = this.style.position, estatic = !epos || epos == 'static';
+		var estatic = (Element.getStyle(this, 'position') == 'static');
 		while ((el = el.parentNode) && el != doc.html){
-			var ppos = el.style.position, pstatic = !ppos || ppos == "static";
+			var pstatic = (Element.getStyle(el, 'position') == 'static');
 			if (relative === true && !pstatic) relative = el;
 			if (!Browser.Engine.presto && !estatic && pstatic) continue;
 			top -= el.scrollTop;
 			left -= el.scrollLeft;
 		}
-		var rpos = (relative === true || relative == win || !relative) ? {x: 0, y: 0} : Element.getPosition($(relative, true));
+		var rpos = ([true, false, doc, win].contains(relative)) ? {x: 0, y: 0} : Element.getPosition($(relative, true));
 		return {x: left - rpos.x, y: top - rpos.y};
 	},
 	
@@ -150,9 +150,8 @@ Element.implement({
 		if (client){
 			var el = this, doc = this.ownerDocument, win = doc.window;
 			while ((el = el.parentNode)){
-				var ppos = el.style.position, pstatic = !ppos || ppos == "static";
 				if (el == doc.html) el = win;
-				else if (!Browser.Engine.presto && pstatic) continue;
+				else if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
 				var scroll = (el == win) ? win.getScroll() : Element.getScroll(el);
 				obj.x += scroll.x;
 				obj.y += scroll.y;
