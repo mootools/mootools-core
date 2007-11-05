@@ -38,7 +38,7 @@ var Sortables = new Class({
 	addItems: function(){
 		Array.flatten(arguments).each(function(element){
 			var uid = element.uid[0];
-			this.elements.push(element);
+			this.elements.push(element.setStyle('position', element.getStyle('position')));
 			
 			this.bound.start[uid] = this.start.bindWithEvent(this, element);
 			this.bound.insert[uid] = this.insert.bind(this, element);
@@ -51,7 +51,7 @@ var Sortables = new Class({
 	addLists: function(){
 		Array.flatten(arguments).each(function(list){
 			var uid = list.uid[0];
-			this.lists.push(list);
+			this.lists.push(list.setStyle('position', list.getStyle('position')));
 			
 			this.addItems(list.getChildren());
 			this.bound.insert[uid] = this.insert.bind(this, [list, 'inside']);
