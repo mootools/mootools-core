@@ -125,7 +125,7 @@ Element.implement({
 	*/
 	
 	getPosition: function(relative){
-		if (this == relative || $type(this) == 'window') return {x: 0, y: 0};
+		if (this == relative) return {x: 0, y: 0};
 		var doc = this.ownerDocument, win = doc.window;
 		var el = this, left = 0, top = 0;
 		while (el){
@@ -142,20 +142,19 @@ Element.implement({
 			top -= el.scrollTop;
 			left -= el.scrollLeft;
 		}
-		var rpos = Element.getPosition((relative === true || !relative) ? win : $(relative, true));
+		var rpos = (relative === true || relative == win || !relative) ? {x: 0, y: 0} : Element.getPosition($(relative, true));
 		return {x: left - rpos.x, y: top - rpos.y};
 	},
 	
 	computePosition: function(obj, client){
 		if (client){
 			var el = this, doc = this.ownerDocument, win = doc.window;
-			while ((el = el.parentNode) && el != doc){
+			while ((el = el.parentNode)){
 				if (el == doc.html) el = win;
 				else if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
 				var scroll = (el == win) ? win.getScroll() : Element.getScroll(el);
 				obj.x += scroll.x;
 				obj.y += scroll.y;
-				break;
 			}
 		}
 		return {
