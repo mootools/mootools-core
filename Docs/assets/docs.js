@@ -3,22 +3,38 @@ var Docs = {
 	anchorsPath: '../Docs/index.html',
 
 	start: function(){
-		if (location.protocol == 'file:') Docs.local(); 
-		var docRequest = new Request({link: 'cancel', onSuccess: Docs.update});
-		var parents = $$('#menu h3'), links = $$('#menu a.script');
-
-		links.addEvent('click', function(){
-			var path = this.get('href').split('#')[1] + '.md';
-			$('docs-wrapper').set('html', '<h2>Loading...</h2>');
-			parents.removeClass('selected');
-			this.getParent('h3').addClass('selected');
-			docRequest.GET(path);
+		if (location.protocol == 'file:') Docs.local();
+		var menu = $('menu-wrapper'), elements = [], files;
+		var request = new Request({ link: 'cancel', onSuccess: Docs.update });
+		
+		Docs.Scripts.each(function(scripts, folder){
+			var head = new Element('h2', { 'text': folder });
+			var list = new Element('ul', { 'class': 'folder' });
+			
+			list.adopt(scripts.map(function(script){
+				var file = new Element('h3').adopt(new Element('a', {
+					'text': script,
+					'href': '#' + folder + '/' + script,
+					'events': {
+						'click': function(){
+							$('docs-wrapper').empty().set('html', '<h2>Loading...</h2>');
+							files.removeClass('selected');
+							file.addClass('selected');
+							request.get(this.get('href').split('#')[1] + '.md');
+						}
+					}
+				}));
+				return new Element('li').adopt(file);
+			}));
+			
+			elements.push(head);
+			elements.push(list);
 		});
-
-		var link = $E('#menu a[href=' + window.location.hash + ']') || $E('#menu a');
-		link.fireEvent('click');
+		
+		files = menu.adopt(elements).getElements('h3');
+		($E('#menu a[href=' + window.location.hash + ']') || $E('#menu a')).fireEvent('click');
 	},
-
+	
 	local: function() {
 		Request.implement({
 			getXHR: function(){
@@ -96,6 +112,20 @@ var Docs = {
 	}
 
 };
+
+Docs.Scripts = new Hash({
+	'Core':      ['Core', 'Browser'],
+	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash'],
+	'Class':     ['Class', 'Class.Extras'],
+	'Element':   ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
+	'Window':    ['Window.DomReady', 'Window.Dimensions'],
+	'Selectors': ['Selectors', 'Selectors.Pseudo'],
+	'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
+	'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
+	'Utilities': ['JSON', 'Cookie', 'Swiff', 'Color', 'Group'],
+	'Drag':      ['Drag', 'Drag.Move'],
+	'Plugins':   ['Selectors.Children', 'Hash.Cookie', 'Sortables', 'Tips', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Fx.Elements', 'Accordion', 'Element.Filters']
+});
 
 var ShowDown = function(text){
 	return new Showdown.converter().makeHtml(text);
