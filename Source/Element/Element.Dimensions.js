@@ -126,8 +126,7 @@ Element.implement({
 	
 	getPosition: function(relative){
 		if (this == (relative = relative || false)) return {x: 0, y: 0};
-		var doc = this.ownerDocument, win = doc.window;
-		var el = this, left = 0, top = 0;
+		var doc = this.ownerDocument, win = doc.window, el = this, left = 0, top = 0;
 		while (el){
 			left += el.offsetLeft;
 			top += el.offsetTop;
@@ -135,14 +134,23 @@ Element.implement({
 		}
 		el = this;
 		var estatic = (Element.getStyle(this, 'position') == 'static');
-		while ((el = el.parentNode) && el != doc.html){
-			var pstatic = (Element.getStyle(el, 'position') == 'static');
-			if (relative === true && !pstatic) relative = el;
+		while ((el = el.parentNode)){
+			var pstatic = false;
+			if (el == doc.body || el == doc.html){
+				el = win;
+				if (relative === true) relative = el;
+				if (relative === false) break;
+			} else {
+				pstatic = (Element.getStyle(el, 'position') == 'static');
+				if (relative === true && !pstatic) relative = el;
+			}
 			if (!Browser.Engine.presto && !estatic && pstatic) continue;
-			top -= el.scrollTop;
-			left -= el.scrollLeft;
+			var scroll = (el == win) ? win.getScroll() : Element.getScroll(el);
+			left -= scroll.x;
+			top -= scroll.y;
+			if (el == relative) break;
 		}
-		var rpos = ([true, false, doc, win].contains(relative)) ? {x: 0, y: 0} : Element.getPosition($(relative, true));
+		var rpos = (relative === false || relative === true || relative === win) ? {x: 0, y: 0} : Element.getPosition($(relative, true));
 		return {x: left - rpos.x, y: top - rpos.y};
 	},
 	
@@ -150,7 +158,7 @@ Element.implement({
 		if (client){
 			var el = this, doc = this.ownerDocument, win = doc.window;
 			while ((el = el.parentNode)){
-				if (el == doc.html) el = win;
+				if (el == doc.body) el = win;
 				else if (!Browser.Engine.presto && Element.getStyle(el, 'position') == 'static') continue;
 				var scroll = (el == win) ? win.getScroll() : Element.getScroll(el);
 				obj.x += scroll.x;
@@ -166,7 +174,7 @@ Element.implement({
 	setPosition: function(obj, relative){
 		return this.setStyles(this.computePosition(obj, relative));
 	},
-
+	
 	/*
 	Method: getTop
 		Returns the distance from the top of the window to the Element.
