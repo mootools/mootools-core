@@ -1,5 +1,3 @@
-var Dimensions = new Hash;
-
 (function(){
 
 var objects = function(self){
@@ -12,37 +10,27 @@ var objects = function(self){
 	return {doc: doc, win: doc.window, self: self, great: (great || self === doc.body || self === doc.html)};
 };
 
-var positioned = function(self){
-	if (objects(self).great) return true;
-	var style = self.style.position || (self.style.position = Element.getComputedStyle(self, 'position'));
-	return (style != 'static');
+var great = function(self){
+	return objects(self).great;
 };
 
-var offsets = function(self){
-	var left = self.offsetLeft, top = self.offsetTop;
-	if (Browser.Engine.trident){
-		var el = self;
-		while ((el = el.offsetParent) && !positioned(el)){
-			left += el.offsetLeft;
-			top += el.offsetTop;
-		}
-	}
-	return {x: left, y: top};
-};
+var Dimensions = {
 
-Dimensions.extend({
-	
-	positioned: positioned,
-	
+	positioned: function(self){
+		if (great(self)) return true;
+		var style = self.style.position || (self.style.position = Element.getComputedStyle(self, 'position'));
+		return (style != 'static');
+	},
+
 	getOffsetParent: function(self){
 		if (!Browser.Engine.trident) return self.offsetParent;
 		var el = self;
 		while ((el = el.parentNode)){
-			if (positioned(el)) return el;
+			if (Dimensions.positioned(el)) return el;
 		}
 		return false;
 	},
-	
+
 	getOffsetSize: function(self){
 		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
 		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
@@ -80,12 +68,23 @@ Dimensions.extend({
 	},
 	
 	getPosition: function(self, client){
-		if (objects(self).great) return {x: 0, y: 0};
-		var position = offsets(self), el = self;
+		if (great(self)) return {x: 0, y: 0};
 		
-		var isPositioned = positioned(self);
+		var el = self, left = self.offsetLeft, top = self.offsetTop;
+
+		if (Browser.Engine.trident){
+			while ((el = el.offsetParent) && !Dimensions.positioned(el)){
+				left += el.offsetLeft;
+				top += el.offsetTop;
+			}
+			el = self;
+		}
+		
+		var position = {x: left, y: top};
+		
+		var isPositioned = Dimensions.positioned(self);
 		while ((el = el.parentNode)){
-			var isOffsetParent = positioned(el);
+			var isOffsetParent = Dimensions.positioned(el);
 			if ((!isOffsetParent || client) && ((!isPositioned || isOffsetParent) || Browser.Engine.presto)){
 				var scroll = Dimensions.getScroll(el);
 				position.x -= scroll.x;
@@ -98,14 +97,13 @@ Dimensions.extend({
 	},
 	
 	getAbsolutePosition: function(self, relative){
-		var objs = objects(self);
-		if (objs.great || relative == self) return {x: 0, y: 0};
+		if (great(self) || relative == self) return {x: 0, y: 0};
 		var el = self, left = 0, top = 0, position;
 		
 		while (el){
 			var offsetParent = Dimensions.getOffsetParent(el);
 			if (!offsetParent) break;
-			position = Dimensions.getPosition(el, !objects(offsetParent).great);
+			position = Dimensions.getPosition(el, !great(offsetParent));
 			left += position.x;
 			top += position.y;
 			el = offsetParent;
@@ -123,19 +121,17 @@ Dimensions.extend({
 		return obj;
 	}
 
-});
+};
 
 var methods = {};
 
-Dimensions.each(function(value, key){
+Hash.each(Dimensions, function(value, key){
 	methods[key] = function(arg){
 		return value(this, arg);
 	};
 });
 
 Native.implement([Element, Document], methods);
-
-})();
 
 Document.implement({
 	
@@ -174,3 +170,5 @@ Element.implement({
 	}
 
 });
+
+})();
