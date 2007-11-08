@@ -135,12 +135,7 @@ Element.implement({
 				for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
 				return result.join(' ');
 			}
-			if (this.currentStyle){
-				result = this.currentStyle[property];
-			} else {
-				if (property == 'cssFloat') property = 'float';
-				result = this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
-			}
+			result = this.getComputedStyle(property);
 		}
 		if (result){
 			result = String(result);

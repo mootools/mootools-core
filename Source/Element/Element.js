@@ -1260,6 +1260,13 @@ Element.implement({
 	toggleClass: function(className){
 		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
 	},
+	
+	getComputedStyle: function(property){
+		var result = false;
+		if (this.currentStyle) result = this.currentStyle[property.camelCase()];
+		else result = this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
+		return result;
+	},
 
 	/*
 	Method: empty

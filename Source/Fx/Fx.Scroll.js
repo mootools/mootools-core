@@ -56,14 +56,14 @@ Fx.Scroll = new Class({
 	initialize: function(element, options){
 		this.element = $(element);
 		arguments.callee.parent(options);
-
 		var cancel = this.cancel.bind(this, false);
-		var stopper = this.element;
-
+		
 		switch($type(this.element)){
-			case 'window': stopper = this.element.document; break;
-			case 'document': this.element = this.element.window;
+			case 'window': this.element = this.element.document; break;
+			case 'element': if (this.element.get('tag') == 'body') this.element = this.element.ownerDocument;
 		}
+		
+		var stopper = this.element;
 
 		if (this.options.wheelStops){
 			this.addEvent('onStart', function(){
@@ -135,11 +135,10 @@ Fx.Scroll = new Class({
 
 	start: function(x, y){
 		if (!this.check(x, y)) return this;
-		var size = this.element.getSize();
-		var scroll = this.element.getScroll();
+		var offsetSize = this.element.getOffsetSize(), scrollSize = this.element.getScrollSize(), scroll = this.element.getScroll();
 		var values = {'x': x, 'y': y};
-		for (var z in size.client){
-			var max = size.scroll[z] - size.client[z];
+		for (var z in values){
+			var max = scrollSize[z] - offsetSize[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
 			else values[z] = scroll[z];
 			values[z] += this.options.offset[z];
@@ -270,9 +269,8 @@ Fx.Scroll = new Class({
 	*/
 
 	toElement: function(el){
-		var target = Element.getPosition($(el, true), this.element);
-		var scroll = this.element.getScroll();
-		return this.start(scroll.x + target.x, scroll.y + target.y);
+		var position = Element.getAbsolutePosition($(el, true), this.element);
+		return this.start(position.x, position.y);
 	}
 
 });

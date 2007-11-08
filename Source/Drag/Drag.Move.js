@@ -79,9 +79,8 @@ Drag.Move = new Class({
 		arguments.callee.parent(element, options);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
-		var position = this.element.getStyle('position');
-		if (position == 'static') position = 'absolute';
-		this.element.setPosition(this.element.getPosition(true), true).setStyle('position', position);
+		var position = (this.element.positioned()) ? this.element.getStyle('position') : 'static';
+		this.element.setPosition(this.element.getPosition()).setStyle('position', position);
 	},
 
 	start: function(event){
@@ -90,8 +89,7 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var el = this.element, cont = this.container, cps = {}, ems = {};
-			var ccoo = cont.getCoordinates((cont.getStyle('position') != 'static') ? cont : false);
+			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(cont.positioned() ? cont : false), cps = {}, ems = {};
 			
 			['top', 'right', 'bottom', 'left'].each(function(pad){
 				cps[pad] = cont.getStyle('padding-' + pad).toInt();
