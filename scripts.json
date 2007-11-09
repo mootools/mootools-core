@@ -169,9 +169,9 @@
 			"desc": "Class for creating, loading, and saving browser Cookies."
 		},
 
-		"Swiff": {
-			"deps": ["Element.Event"],
-			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
+		"Dimensions": {
+			"deps": ["Element"],
+			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the document."
 		},
 
 		"Color": {
@@ -179,9 +179,9 @@
 			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB -> RGB Conversions and vice versa."
 		},
 
-		"Dimensions": {
-			"deps": ["Element"],
-			"desc": "Contains Element methods to work with element size, scroll, or position in space."
+		"Swiff": {
+			"deps": ["Element.Event"],
+			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
 		},
 
 		"Group": {
@@ -200,7 +200,7 @@
 
 		"Drag.Move": {
 			"deps": ["Drag", "Dimensions"],
-			"desc": "Drag.Move extends Drag, adding support for constraining draggable to containers and droppables."
+			"desc": "A Drag extension that provides support for the constraining of draggables to containers and droppables."
 		}
 
 	},
@@ -209,22 +209,22 @@
 
 		"Selectors.Children": {
 			"deps": ["Selectors"],
-			"desc": "Adds the :children Selector."
+			"desc": "Adds the :children selector for selecting ranges of children of an element."
 		},
 
 		"Hash.Cookie": {
 			"deps": ["Class.Extras", "Cookie", "JSON"],
-			"desc": "Lets you Create/Read/Delete Cookies in JSON Format."
+			"desc": "Class for creating, reading, and deleting Cookies in JSON format."
 		},
 
 		"Sortables": {
 			"deps": ["Drag.Move"],
-			"desc": "Class for creating a drag and drop interface for lists of items."
+			"desc": "Class for creating a drag and drop sorting interface for lists of items."
 		},
 
 		"Tips": {
 			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Dimensions"],
-			"desc": "Class for creating nice tooltips that follow the mouse cursor."
+			"desc": "Class for creating nice tooltips that follow the mouse cursor when hovering over an element."
 		},
 
 		"SmoothScroll": {
@@ -244,12 +244,7 @@
 
 		"Assets": {
 			"deps": ["Element.Event"],
-			"desc": "Contains functions to load external Images, CSS, and JavaScript files on the fly."
-		},
-
-		"Fx.Elements": {
-			"deps": ["Fx.CSS"],
-			"desc": "Effect to change any number of CSS properties of any number of Elements."
+			"desc": "Provides methods to dynamically load JavaScript, CSS, and Image files into the document."
 		},
 
 		"Accordion": {

@@ -1,44 +1,12 @@
 /*
 Script: SmoothScroll.js
-	Contains <SmoothScroll>
+	Class for creating a smooth scrolling effect to all internal links on the page.
 
 License:
 	MIT-style license.
 
 Note:
 	SmoothScroll requires an XHTML doctype.
-*/
-
-/*
-Class: SmoothScroll
-	Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
-
-Extends:
-	<Fx.Scroll>
-
-Syntax:
-	>var mySmoothScroll = new SmoothScroll([options[, win]]);
-
-Arguments:
-	options - (object, optional) In addition to all the <Fx.Scroll> options, SmoothScroll has links option incase you had a predefined links collection.
-	win     - (object, optional) The context of the SmoothScroll.
-
-	options (continued):
-		links - (mixed) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
-
-Returns:
-	(object) A new SmoothScroll instance.
-
-Example:
-	[javascript]
-		var mySmoothScroll = new SmoothScroll({
-			links: '.smoothAnchors',
-			wheelStops: false
-		});
-	[/javascript]
-
-See Also:
-	<Fx.Scroll>
 */
 
 var SmoothScroll = new Class({

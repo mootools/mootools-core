@@ -1,18 +1,18 @@
 /*
 Script: Sortables.js
-	Contains <Sortables>
+	Class for creating a drag and drop sorting interface for lists of items.
 
 License:
 	MIT-style license.
 
 Note:
-	This Script requires an XHTML doctype.
+	Sortables requires an XHTML doctype.
 */
 
 var Sortables = new Class({
-	
+
 	Implements: [Events, Options],
-	
+
 	options: {/*
 		onSort: $empty,
 		onStart: $empty,
@@ -24,56 +24,60 @@ var Sortables = new Class({
 		cloneOpacity: 0.7,
 		elementOpacity: 0.3
 	},
-	
+
 	initialize: function(lists, options){
 		this.setOptions(options);
 		this.elements = [];
 		this.lists = [];
 		this.idle = true;
-		
+
 		this.addLists($$($(lists) || lists));
 		if (this.options.revert) this.effect = new Fx.Morph(null, $merge({duration: 250, link: 'cancel'}, this.options.revert));
 	},
-	
+
 	attach: function(){
 		this.addLists(this.lists);
+		return this;
 	},
-	
+
 	detach: function(){
 		this.lists = this.removeLists(this.lists);
+		return this;
 	},
-	
+
 	addItems: function(){
 		Array.flatten(arguments).each(function(element){
 			this.elements.push(element);
 			var start = element.retrieve('sortables:start', this.start.bindWithEvent(this, element));
-            var insert = element.retrieve('sortables:insert', this.insert.bind(this, element));
-            (this.options.handle ? element.getElement(this.options.handle) || element : element).addEvent('mousedown', start);
-            element.addEvent('over', insert);
+			var insert = element.retrieve('sortables:insert', this.insert.bind(this, element));
+			(this.options.handle ? element.getElement(this.options.handle) || element : element).addEvent('mousedown', start);
+			element.addEvent('over', insert);
 		}, this);
+		return this;
 	},
-	
+
 	addLists: function(){
 		Array.flatten(arguments).each(function(list){
 			this.lists.push(list);
 			this.addItems(list.getChildren());
 			list.addEvent('over', list.retrieve('sortables:insert', this.insert.bind(this, [list, 'inside'])));
 		}, this);
+		return this;
 	},
-	
+
 	removeItems: function(){
 		var elements = [];
 		Array.flatten(arguments).each(function(element){
 			elements.push(element);
 			this.elements.remove(element);
 			var start = element.retrieve('sortables:start');
-            var insert = element.retrieve('sortables:insert');
+			var insert = element.retrieve('sortables:insert');
 			(this.options.handle ? element.getElement(this.options.handle) || element : element).removeEvent('mousedown', start);
 			element.removeEvent('over', insert);
 		}, this);
 		return elements;
 	},
-	
+
 	removeLists: function(){
 		var lists = [];
 		Array.flatten(arguments).each(function(list){
@@ -84,7 +88,7 @@ var Sortables = new Class({
 		}, this);
 		return lists;
 	},
-	
+
 	getClone: function(element){
 		return element.clone(true).setStyles({
 			'margin': '0px',
@@ -92,13 +96,13 @@ var Sortables = new Class({
 			'visibility': 'hidden'
 		}).inject(this.list).setPosition(element.getPosition());
 	},
-	
+
 	getDroppables: function(){
 		var droppables = this.list.getChildren();
 		if (!this.options.constrain) droppables = this.lists.concat(droppables).remove(this.list);
 		return droppables.remove(this.clone).remove(this.element);
 	},
-	
+
 	insert: function(element, where){
 		if (where) {
 			this.list = element;
@@ -108,16 +112,16 @@ var Sortables = new Class({
 		this.element.inject(element, where);
 		this.fireEvent('onSort', [this.element, this.clone]);
 	},
-	
+
 	start: function(event, element){
 		if (!this.idle) return;
 		this.idle = false;
-		
+
 		this.element = element;
 		this.opacity = element.get('opacity');
 		this.list = element.getParent();
 		this.clone = this.getClone(element);
-		
+
 		this.drag = this.clone.makeDraggable({
 			snap: this.options.snap,
 			container: this.options.constrain && this.clone.getParent(),
@@ -131,10 +135,10 @@ var Sortables = new Class({
 			onCancel: this.reset.bind(this),
 			onComplete: this.end.bind(this)
 		});
-		
+
 		this.drag.start(event);
 	},
-	
+
 	end: function(){
 		this.element.set('opacity', this.opacity);
 		this.drag.detach();
@@ -153,13 +157,13 @@ var Sortables = new Class({
 			this.reset();
 		}
 	},
-	
+
 	reset: function(){
 		this.idle = true;
 		this.clone.dispose();
 		this.fireEvent('onComplete', this.element);
 	},
-	
+
 	serialize: function(index, modifier){
 		var serial = this.lists.map(function(list){
 			return list.getChildren().map(modifier || function(element, index){
@@ -170,5 +174,5 @@ var Sortables = new Class({
 		if (this.lists.length == 1) index = 0;
 		return $chk(index) && index >= 0 && index < this.lists.length ? serial[index] : serial;
 	}
-	
+
 });

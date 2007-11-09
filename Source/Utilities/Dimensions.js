@@ -1,3 +1,14 @@
+/*
+Script: Dimensions.js
+	Contains methods to work with size, scroll, or positioning of Elements and the document.
+
+License:
+	MIT-style license.
+
+Note:
+	This Script requires an XHTML doctype.
+*/
+
 (function(){
 
 var objects = function(self){

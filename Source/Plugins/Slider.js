@@ -1,81 +1,12 @@
 /*
 Script: Slider.js
-	Contains <Slider>
+	Class for creating horizontal and vertical slider controls.
 
 License:
 	MIT-style license.
 
 Note:
-	The Slider requires an XHTML doctype.
-*/
-
-/*
-Class: Slider
-	Creates a slider with two elements: a knob and a container.
-
-Syntax:
-	>var mySlider = new Slider(element, knob[, options]);
-
-Arguments:
-	element - (element) The knob element for the slider.
-	knob    - (element) The handle element for the slider.
-	options - (object) An optional object for customizing the Slider.
-
-	options (continued):
-		steps  - (number: defaults to 100) The number of steps the Slider should move/tick.
-		mode   - (string: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
-		offset - (number: defaults to: 0) Relative offset for knob position at start.
-
-Events:
-	onChange - (function) Fires when the Slider's value changes.
-		Signature:
-			>onChange(step)
-
-		Arguments:
-			step - (number) The current step that the Slider is on.
-
-	onComplete - (function) Fire when you're done dragging.
-		Signature:
-			>onComplete(step)
-
-		Arguments:
-			step - (string) The current step that the Slider is on as a string.
-
-	onTick - (function) Fires when the user drags the knob. This Event can be overriden to alter the onTick behavior.
-		Signature:
-			>onTick(pos)
-
-		Arguments:
-			pos - (number) The current position that slider moved to.
-
-		Note:
-			Slider originally uses the onTick event to set the style of the knob to a new position.
-
-Properties:
-	element - (element) The knob element for the slider.
-	knob    - (element) The handle element for the slider.
-	step    - (integer) The current location of the knob.
-	drag    - (object) An instance of <Drag> used for the knob.
-
-
-Returns:
-	(object) A new Slider instance.
-
-Example:
-	[javascript]
-		var mySlider = new Slider('myElement', 'myKnob', {
-			onStart: function(){
-				this.borderFx = this.borderFx || this.element.tween('border').start('#ccc');
-			}
-			onTick: function(pos){
-				this.element.setStyle('border-color', '#f00');
-				this.knob.setStyle(this.p, pos);
-			},
-			onComplete: function(){
-				this.element.tween('border').start('#000');
-			}
-		});
-	[/javascript]
+	Slider requires an XHTML doctype.
 */
 
 var Slider = new Class({
@@ -137,35 +68,6 @@ var Slider = new Class({
 			}.bind(this)
 		});
 	},
-
-	/*
-	Property: set
-		The slider will move to the passed position.
-
-	Syntax:
-		>mySlider.set(step);
-
-	Arguments:
-		step - (number) A number to position the Slider to.
-
-	Returns:
-		(object) This Slider instance.
-
-	Example:
-		[javascript]
-			var mySlider = new Slider('myElement', 'myKnob');
-			mySlider.set(0);
-
-			var myPeriodical = (function(){
-				if(this.step == this.options.steps) $clear(myPeriodical);
-
-				this.set(this.step++);
-			}).periodical(1000, mySlider);
-		[/javascript]
-
-	Note:
-		Step will automatically be limited between 0 and the optional steps value.
-	*/
 
 	set: function(step){
 		this.step = step.limit(0, this.options.steps);
