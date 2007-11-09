@@ -1,21 +1,25 @@
-Script: Window.DomReady.js
-	Contains the custom event domready, for window.
+Window.DomReady
+===============
 
-License:
-	MIT-style license.
+Contains the custom event domready, for window.
 
-Event: domready
-	Executes a function when the dom tree is loaded, without waiting for images. Only works when called from window.
+Event
+-----
 
-Arguments:
-	fn - (function) The function to execute when the DOM is ready.
+### domready
 
-Example:
-	[javascript]
-		window.addEvent('domready', function(){
-			alert('the dom is ready');
-		});
-	[/javascript]
+Executes a function when the dom tree is loaded, without waiting for images. Only works when called from window.
 
-Credits:
-	(c) Dean Edwards/Matthias Miller/John Resig, remastered for MooTools.
+### Arguments:
+
+* fn - (function) The function to execute when the DOM is ready.
+
+### Example:
+
+	window.addEvent('domready', function(){
+		alert('the dom is ready');
+	});
+
+### Credits:
+
+- (c) Dean Edwards/Matthias Miller/John Resig, remastered for MooTools.

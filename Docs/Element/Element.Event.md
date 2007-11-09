@@ -22,19 +22,19 @@ Cross browser Class to manage Events.
 
 #### Properties:
 
-	shift         - (boolean) True if the user pressed the shift
-	control       - (boolean) True if the user pressed the control
-	alt           - (boolean) True if the user pressed the alt
-	meta          - (boolean) True if the user pressed the meta key
-	wheel         - (number) The amount of third button scrolling
-	code          - (number) The keycode of the key pressed
-	page.x        - (number) The x position of the mouse, relative to the full window
-	page.y        - (number) The y position of the mouse, relative to the full window
-	client.x      - (number) The x position of the mouse, relative to the viewport
-	client.y      - (number) The y position of the mouse, relative to the viewport
-	key           - (string) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
-	target        - (element) The event target, not extended with <$> for performance reasons.
-	relatedTarget - (element) The event related target, NOT 'extended' with <$>.
+* shift         - (boolean) True if the user pressed the shift
+* control       - (boolean) True if the user pressed the control
+* alt           - (boolean) True if the user pressed the alt
+* meta          - (boolean) True if the user pressed the meta key
+* wheel         - (number) The amount of third button scrolling
+* code          - (number) The keycode of the key pressed
+* page.x        - (number) The x position of the mouse, relative to the full window
+* page.y        - (number) The y position of the mouse, relative to the full window
+* client.x      - (number) The x position of the mouse, relative to the viewport
+* client.y      - (number) The y position of the mouse, relative to the viewport
+* key           - (string) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
+* target        - (element) The event target, not extended with <$> for performance reasons.
+* relatedTarget - (element) The event related target, NOT 'extended' with <$>.
 
 ### Example:
 
@@ -47,7 +47,7 @@ Cross browser Class to manage Events.
 
 ### Note:
 
-Accessing event.page / event.client requires an XHTML doctype.
+- Accessing event.page / event.client requires an XHTML doctype.
 
 #### Hash: Event.Keys
 
@@ -91,11 +91,11 @@ Stop an Event from propagating and also executes preventDefault.
 
 ###	Note:
 
-Returning false within the function can also stop the propagation of the Event.
+- Returning false within the function can also stop the propagation of the Event.
 
 ### See Also:
 
-[Element.addEvent](#Element:addEvent), [Element.stopPropagation](#Event:stopPropagation), [Event.preventDefault](#Event:preventDefault), [Function.delay](#Function:delay)
+- [Element.addEvent](#Element:addEvent), [Element.stopPropagation](#Event:stopPropagation), [Event.preventDefault](#Event:preventDefault), [Function.delay](#Function:delay)
 
 Event Method: stopPropagation {#Element.Event:stopPropagation}
 --------------------------------------------------------------
@@ -131,7 +131,7 @@ Cross browser method to stop the propagation of an event (will not allow the eve
 
 ###	See Also:
 
-[Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.stopPropagation>
+- [Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.stopPropagation>
 
 Event Method: preventDefault {#Element.Event:preventDefault}
 ------------------------------------------------------------
@@ -163,13 +163,13 @@ Cross browser method to prevent the default action of the event.
 
 ### See Also:
 
-[Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.preventDefault>
+- [Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.preventDefault>
 
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
-These methods are also available on window and document.
+- Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+- These methods are also available on window and document.
 
 Element Method: addEvent {#Element:addEvent}
 --------------------------------------------
@@ -199,14 +199,14 @@ Attaches an event listener to a DOM element.
 
 	$('myElement').addEvent('click', function(){ alert('clicked!'); });
 
-### Note:
+### Notes:
 
-You can stop the Event by returning false in the listener or calling [Event.stop](#Event:stop).
-This method is also attached to Document and Window.
+- You can stop the Event by returning false in the listener or calling [Event.stop](#Event:stop).
+- This method is also attached to Document and Window.
 
 ###	See Also:
 
-<http://www.w3schools.com/html/html_eventattributes.asp>
+- <http://www.w3schools.com/html/html_eventattributes.asp>
 
 Element Method: removeEvent {#Element:removeEvent}
 --------------------------------------------------
@@ -247,10 +247,10 @@ Works as Element.addEvent, but instead removes the previously added event listen
 	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // DOES ALSO NOT WORK
 	$('myElement').removeEvent('click', destroy2); // Finally, this works
 
-###	Note:
+###	Notes:
 
-When the function was added using [Function.bind] (#Function:bind) or [Function.pass] (#Function:pass) a new reference was created and you can not use removeEvent with the original function.
-This method is also attached to Document and Window.
+- When the function was added using [Function.bind] (#Function:bind) or [Function.pass] (#Function:pass) a new reference was created and you can not use removeEvent with the original function.
+- This method is also attached to Document and Window.
 
 Element Method: addEvents {#Element:addEvents}
 ----------------------------------------------
@@ -282,11 +282,11 @@ As [Element.addEvent](#Element:addEvent), but accepts an object and add multiple
 
 ###	Note:
 
-This method is also attached to Document and Window.
+- This method is also attached to Document and Window.
 
 ###	See Also:
 
-[Element.addEvent](#Element:addEvent)
+- [Element.addEvent](#Element:addEvent)
 
 Element Method: removeEvents {#Element:removeEvents}
 ----------------------------------------------------
@@ -325,11 +325,11 @@ Removes all events of a certain type from an Element. If no argument is passed i
 
 ###	Note:
 
-This method is also attached to Document and Window.
+- This method is also attached to Document and Window.
 
 ###	See Also:
 
-[Element.removeEvent](#Element:removeEvent)
+- [Element.removeEvent](#Element:removeEvent)
 
 Element Method: fireEvent {#Element:fireEvent}
 ----------------------------------------------
@@ -354,10 +354,10 @@ Executes all events of the specified type present in the Element.
 
 	$('myElement').fireEvent('click', $('anElement'), 1000);  // Fires all the added 'click' events and passes the element 'anElement' after 1 sec.
 
-###	Note:
+###	Notes:
 
-This will not fire the DOM Event (this concerns all inline events ie. onmousedown="..").
-This method is also attached to Document and Window.
+- This will not fire the DOM Event (this concerns all inline events ie. onmousedown="..").
+- This method is also attached to Document and Window.
 
 Element Method: cloneEvents {#Element:cloneEvents}
 --------------------------------------------------
@@ -413,7 +413,7 @@ The Element.Events.yourproperty (object) can have:
 
 #### Note:
 
-There are different types of custom Events you can create:
+- There are different types of custom Events you can create:
 
 - Custom Events with only base: they will just be a redirect to the base event.
 - Custom Events with base and condition: they will be redirect to the base event, but only fired if the condition is met.
@@ -436,7 +436,7 @@ This event fires when the mouse enters the area of the dom Element and will not 
 
 #### See Also:
 
-[Element.addEvent](#Element:addEvent)
+- [Element.addEvent](#Element:addEvent)
 
 #### Event: mousewheel
 
@@ -452,4 +452,4 @@ This custom event just redirects DOMMouseScroll (mozilla) to mousewheel (opera, 
 
 #### See Also:
 
-[Element.addEvent](#Element:addEvent)
+- [Element.addEvent](#Element:addEvent)

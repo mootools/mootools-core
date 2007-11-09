@@ -1,164 +1,189 @@
-Script: Fx.Transitions.js
-	Effects transitions, to be used with all the effects.
+[Fx]: /Fx/Fx
 
-License:
-	MIT-style license.
+[Linear]: ../Docs/assets/images/Linear.png
+[Quad]: ../Docs/assets/images/Quad.png
+[Cubic]: ../Docs/assets/images/Cubic.png
+[Quart]: ../Docs/assets/images/Quart.png
+[Quint]: ../Docs/assets/images/Quint.png
+[Expo]: ../Docs/assets/images/Expo.png
+[Circ]: ../Docs/assets/images/Circ.png
+[Sine]: ../Docs/assets/images/Sine.png
+[Back]: ../Docs/assets/images/Back.png
+[Bounce]: ../Docs/assets/images/Bounce.png
+[Elastic]: ../Docs/assets/images/Elastic.png
 
-Credits:
-	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
+Fx.Transitions {#Fx.Transitions}
+================================
+
+Effects transitions, to be used with all the effects.
+
+### Credits:
+
+Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
 
 
+Class: Fx {#Fx}
+===============
 
-Class: Fx
-	Fx.Transitions overrides the base Fx constructor, and adds the possibility to use the transition option as string.
+Fx.Transitions overrides the base [Fx][] constructor, and adds the possibility to use the transition option as string.
 
 transition option:
-	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
-	or a string ('sine:in', 'bounce:out' or 'quad:in:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut / Fx.Transitions.Quad.easeInOut
 
+The equation to use for the effect. See [Fx.Transitions][]. It accepts both a function (ex: Fx.Transitions.Sine.easeIn) or a string ('sine:in', 'bounce:out' or 'quad:in:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut / Fx.Transitions.Quad.easeInOut
 
 
-Class: Fx.Transition
-	Returns a <Fx> transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
 
-Syntax:
-	>var myTransition = new Fx.Transition(transition[, params]);
+Class: Fx.Transition {#Fx.Transition}
+=====================================
 
-Arguments:
-	transition - (function) Can be a <Fx.Transitions> function or a user-provided function which will be extended with easing functions.
-	params     - (mixed, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
+Returns a [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
 
-Returns:
-	(function) A function with easing functions.
+### Syntax:
 
-Example:
-	[javascript]
-		//Elastic.easeOut with user-defined value for elasticity.
-		var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
-		var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
-	[/javascript]
+	var myTransition = new Fx.Transition(transition[, params]);
 
-See Also:
-	<Fx.Transitions>
+### Arguments:
 
+1. transition - (function) Can be a <Fx.Transitions> function or a user-provided function which will be extended with easing functions.
+2. params     - (mixed, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
 
+### Returns:
 
-Hash: Fx.Transitions
-	A collection of tweening transitions for use with the <Fx> classes.
+* (function) A function with easing functions.
 
-Example:
-	[javascript]
-		//Elastic.easeOut with default values:
-		var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
-	[/javascript]
+### Example:
 
-See also:
-	<http://www.robertpenner.com/easing/>, <Element.effect>
+	//Elastic.easeOut with user-defined value for elasticity.
+	var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
+	var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
 
+### See Also:
 
+[Fx.Transitions](#Fx.Transitions)
 
-Method: linear
-	Displays a linear transition.
+Hash: Fx.Transitions {#Fx.Transitions}
+--------------------------------------
 
-Graph:
-	(see Linear.png)
+A collection of tweening transitions for use with the [Fx][] classes.
 
+### Example:
 
+	//Elastic.easeOut with default values:
+	var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
 
-Method: Quad
-	Displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut.
+### See also:
 
-Graph:
-	(see Quad.png)
+- <http://www.robertpenner.com/easing/>, <Element.effect>
 
 
-//auto generated
+Fx.Transitions Method: linear {#Fx.Transitions#linear}
+------------------------------------------------------
 
+Displays a linear transition.
 
-Method: Cubic
-	Displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut.
+### Graph:
 
-Graph:
-	(see Cubic.png)
+![][Linear]
 
+Fx.Transitions Method: quad {#Fx.Transitions#quad}
+--------------------------------------------------
 
-//auto generated
+Displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut.
 
+### Graph:
 
-Method: Quart
-	Displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut.
+![][Quad]
 
-Graph:
-	(see Quart.png)
+Fx.Transitions Method: cubic {#Fx.Transitions#cubic}
+----------------------------------------------------
 
+Displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut.
 
-//auto generated
+### Graph:
 
+![][Cubic]
 
-Method: Quint
-	Displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut.
+Fx.Transitions Method: quart {#Fx.Transitions#quart}
+----------------------------------------------------
 
-Graph:
-	(see Quint.png)
+Displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut.
 
+### Graph:
 
-//auto generated
+![][Quart]
 
+Fx.Transitions Method: quint {#Fx.Transitions#quint}
+----------------------------------------------------
 
-Method: Pow
-	Used to generate Quad, Cubic, Quart and Quint.
+Displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut.
 
-Note:
-	By default is p^6.
+### Graph:
 
-Graph:
-	(see Pow.png)
+![][Quint]
 
+Fx.Transitions Method: pow {#Fx.Transitions#pow}
+------------------------------------------------
 
+Used to generate Quad, Cubic, Quart and Quint.
 
-Method: Expo
-	Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
+### Note:
 
-Graph:
-	(see Expo.png)
+-By default is p^6.
 
+### Graph:
 
+![][Pow]
 
-Method: Circ
-	Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
+Fx.Transitions Method: expo {#Fx.Transitions#expo}
+--------------------------------------------------
 
-Graph:
-	(see Circ.png)
+Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
+### Graph:
 
+![][Expo]
 
-Method: Sine
-	Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
+Fx.Transitions Method: circ {#Fx.Transitions#circ}
+--------------------------------------------------
 
-Graph:
-	(see Sine.png)
+Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
 
+### Graph:
 
+![][Circ]
 
-Method: Back
-	Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
+Fx.Transitions Method: sine {#Fx.Transitions#sine}
+--------------------------------------------------
 
-Graph:
-	(see Back.png)
+Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
+### Graph:
 
+![][Sine]
 
-Method: Bounce
-	Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
+Fx.Transitions Method: back {#Fx.Transitions#back}
+--------------------------------------------------
 
-Graph:
-	(see Bounce.png)
+Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
 
+### Graph:
 
+![][Back]
 
-Method: Elastic
-	Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
+Fx.Transitions Method: bounce {#Fx.Transitions#bounce}
+------------------------------------------------------
 
-Graph:
-	(see Elastic.png)
+Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
 
+### Graph:
+
+![][Bounce]
+
+Fx.Transitions Method: elastic {#Fx.Transitions#elastic}
+--------------------------------------------------------
+
+Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
+
+### Graph:
+
+![][Elastic]

@@ -1,105 +1,114 @@
-Selector: children
-	A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.
+Selectors.Children
+==================
 
-Usage:
-	Index Accessor:
-		>':children(n)'
+A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.
 
-		Variables:
-			n - (number) An index number to access from the Element's children. The index, n, can be negative to access from the end of the children list.
+### Usage:
 
-		Examples:
-			[html]
-				<ul id="myID">
-					<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
-				</ul>
-			[/html]
-			[javascript]
-				$$('#myID:children(2)')[0].innerHTML //returns 2
-			[/javascript]
+Index Accessor
+--------------
 
-			[javascript]
-				$$('#myID:children(-3)')[0].innerHTML //returns 3
-			[/javascript]
+	':children(n)'
 
-	Range:
-		>':children(from:to)'
+### Variables:
 
-		Variables:
-			from - (number) A starting index value. See the Index Accessor usage.
-			to   - (number) A ending index value.
+* n - (number) An index number to access from the Element's children. The index, n, can be negative to access from the end of the children list.
 
-		Examples:
-			[html]
-				<ul id="myID">
-					<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
-				</ul>
-			[/html]
+###	Examples:
 
-			[javascript]
-				$$('#myID:children(2:4)').map(function(){ return this.innerHTML }); //returns [2,3,4]
-			[/javascript]
+##### HTML
 
-			[javascript]
-				$$('#myID:children(-2:4)').map(function(){ return this.innerHTML }); //returns [4]
-			[/javascript]
+	<ul id="myID">
+		<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+	</ul>
 
-			[javascript]
-				$$('#myID:children(0:-3)').map(function(){ return this.innerHTML }); //returns [0,1,2,3]
-			[/javascript]
+##### Javascript
 
-	n-Right-of Operation:
-		>':children(start+n)'
+	$$('#myID:children(2)')[0].innerHTML //returns 2
 
-		Variables:
-			start - (number) A starting index value. See the Index Accessor usage.
-			n     - (number) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+	$$('#myID:children(-3)')[0].innerHTML //returns 3
 
-		Examples:
-			[html]
-				<ul id="myID">
-					<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
-				</ul>
-			[/html]
 
-			[javascript]
-				$$('#myID:children(2+2)').map(function(){ return this.innerHTML }); //returns [2,3,4]
-			[/javascript]
+Range
+-----
 
-			[javascript]
-				$$('#myID:children(2+4))').map(function(){ return this.innerHTML }); //returns [0,2,3,4,5]
-			[/javascript]
+	':children(from:to)'
 
-			[javascript]
-				$$('#myID:children(-1+3))').map(function(){ return this.innerHTML }); //returns [0,1,2,5]
-			[/javascript]
+### Variables:
 
-	n-Left-of Operation:
-		>':children(start-n)'
+* from - (number) A starting index value. See the Index Accessor usage.
+* to   - (number) A ending index value.
 
-		Variables:
-			start - (number) A starting index value. See the Index Accessor usage.
-			n     - (number) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+###	Examples:
 
-		Examples:
-			[html]
-				<ul id="myID">
-					<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
-				</ul>
-			[/html]
+##### HTML
 
-			[javascript]
-				$$('#myID:children(2-2)').map(function(){ return this.innerHTML }); //returns [0,1,2]
-			[/javascript]
+	<ul id="myID">
+		<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+	</ul>
 
-			[javascript]
-				$$('#myID:children(2-4))').map(function(){ return this.innerHTML }); //returns [0,1,2,4,5]
-			[/javascript]
+##### Javascript
 
-			[javascript]
-				$$('#myID:children(-1-3))').map(function(){ return this.innerHTML }); //returns [2,3,4,5]
-			[/javascript]
+	$$('#myID:children(2:4)').map(function(){ return this.innerHTML }); //returns [2,3,4]
 
-Note:
-	- The n-right-of and the n-left-of usaged will "wrap" until the 'n' number of Elements have been matched.
-	- All "range" results will be ordered from least to greatest (relative to their indexes).`
+	$$('#myID:children(-2:4)').map(function(){ return this.innerHTML }); //returns [4]
+
+	$$('#myID:children(0:-3)').map(function(){ return this.innerHTML }); //returns [0,1,2,3]
+
+n-Right-of Operation
+--------------------
+
+	':children(start+n)'
+
+### Variables:
+
+* start - (number) A starting index value. See the Index Accessor usage.
+* n     - (number) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+
+### Examples:
+
+##### HTML
+
+	<ul id="myID">
+		<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+	</ul>
+
+##### Javascript
+
+	$$('#myID:children(2+2)').map(function(){ return this.innerHTML }); //returns [2,3,4]
+
+	$$('#myID:children(2+4))').map(function(){ return this.innerHTML }); //returns [0,2,3,4,5]
+
+	$$('#myID:children(-1+3))').map(function(){ return this.innerHTML }); //returns [0,1,2,5]
+
+
+n-Left-of Operation
+-------------------
+
+	':children(start-n)'
+
+### Variables:
+
+* start - (number) A starting index value. See the Index Accessor usage.
+* n     - (number) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+
+### Examples:
+
+##### HTML
+
+	<ul id="myID">
+		<li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li>
+	</ul>
+
+##### Javascript
+
+	$$('#myID:children(2-2)').map(function(){ return this.innerHTML }); //returns [0,1,2]
+
+	$$('#myID:children(2-4))').map(function(){ return this.innerHTML }); //returns [0,1,2,4,5]
+
+	$$('#myID:children(-1-3))').map(function(){ return this.innerHTML }); //returns [2,3,4,5]
+
+### Note:
+
+- The n-right-of and the n-left-of usaged will "wrap" until the 'n' number of Elements have been matched.
+- All "range" results will be ordered from least to greatest (relative to their indexes).`
