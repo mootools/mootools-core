@@ -3,8 +3,8 @@
 	"Core": {
 
 		"Core": {
-			"deps": ["Core"],
-			"desc": "The core of MooTools, contains all the base functions and the Native and Hash implementations.	 Required by all the other scripts."
+			"deps": [],
+			"desc": "The core of MooTools, contains all the base functions and the Native and Hash implementations. Required by all the other scripts."
 		},
 
 		"Browser": {
