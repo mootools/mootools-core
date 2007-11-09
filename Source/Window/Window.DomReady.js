@@ -4,6 +4,9 @@ Script: Window.DomReady.js
 
 License:
 	MIT-style license.
+
+Credits:
+	Dean Edwards, Matthias Miller, John Resig. Remastered for MooTools.
 */
 
 Element.Events.domready = {

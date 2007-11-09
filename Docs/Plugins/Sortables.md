@@ -33,7 +33,7 @@ Example:
 	});
 	//creates a new Sortable instance allowing the sorting of the lists with id's 'list-1' and 'list-2' with extra options
 	//since constrain was set to false, the items will not be able to be dragged from one list to the other
-	
+
 	var mySortables = new Sortables(['list-1', 'list-2', 'list-3']);
 	//creates a new Sortable instance allowing sorting between the lists with id's 'list-1', 'list-2, and 'list-3'
 	(end)
@@ -54,7 +54,7 @@ Property: serialize
 Arguments:
 	index - int or false; index of the list to serialize. Omit or pass false to serialize all lists.
 	modifier - function to override the default output of the sortables.  See Examples below
-	
+
 Examples:
 	(start code)
 	mySortables.serialize(1);

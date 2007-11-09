@@ -4,7 +4,7 @@
 
 		"Core": {
 			"deps": ["Core"],
-			"desc": "The core of MooTools, contains all the base functions and the Native and Hash implementations.  Required by all the other scripts."
+			"desc": "The core of MooTools, contains all the base functions and the Native and Hash implementations.	 Required by all the other scripts."
 		},
 
 		"Browser": {
@@ -18,22 +18,22 @@
 
 		"Array": {
 			"deps": ["Core"],
-			"desc": "Contains Array Prototypes, like copy, each, contains, remove."
+			"desc": "Contains Array Prototypes like copy, each, contains, and remove."
 		},
 
 		"Function": {
 			"deps": ["Core"],
-			"desc": "Contains Function Prototypes, like create, bind, pass, delay, periodical."
+			"desc": "Contains Function Prototypes like create, bind, pass, and delay."
 		},
 
 		"Number": {
 			"deps": ["Core"],
-			"desc": "Contains Number Prototypes, like limit, round, times, ceil."
+			"desc": "Contains Number Prototypes like limit, round, times, and ceil."
 		},
 
 		"String": {
 			"deps": ["Core"],
-			"desc": "Contains String Prototypes, like camelCase, capitalize, test, toInt."
+			"desc": "Contains String Prototypes like camelCase, capitalize, test, and toInt."
 		},
 
 		"Hash": {
@@ -52,7 +52,7 @@
 
 		"Class.Extras": {
 			"deps": ["Class"],
-			"desc": "Contains Utility Classes that can be implemented into your own classes to ease the execution of many common tasks."
+			"desc": "Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks."
 		}
 
 	},
@@ -66,12 +66,12 @@
 
 		"Element.Event": {
 			"deps": ["Element"],
-			"desc": "Contains the Event Class, Element methods to deal with events, and custom Events."
+			"desc": "Contains the Event Native, Element methods for dealing with events, and custom Events."
 		},
 
 		"Element.Style": {
 			"deps": ["Element"],
-			"desc": "Contains useful Element methods to get and set styles in a fashionable way."
+			"desc": "Contains methods for interacting with the styles of Elements in a fashionable way."
 		}
 
 	},
@@ -247,10 +247,10 @@
 			"desc": "Provides methods to dynamically load JavaScript, CSS, and Image files into the document."
 		},
 
-        "Fx.Elements": {
-            "deps": ["Fx.CSS"],
-            "desc": "Effect to change any number of CSS properties of any number of Elements."
-        },
+		"Fx.Elements": {
+			"deps": ["Fx.CSS"],
+			"desc": "Effect to change any number of CSS properties of any number of Elements."
+		},
 
 		"Accordion": {
 			"deps": ["Fx.Elements", "Element.Event"],

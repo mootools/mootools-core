@@ -241,7 +241,7 @@ Works as Element.addEvent, but instead removes the previously added event listen
 	var destroy = function(){ alert('Boom: ' + this.id); } // this is the Element
 	var destroy2 = destroy.bind($('anotherElement'));
 	$('myElement').addEvent('click', destroy2); // this is now another Element
-	
+
 	// later in the code
 	$('myElement').removeEvent('click', destroy); // DOES NOT WORK
 	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // DOES ALSO NOT WORK

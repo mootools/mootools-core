@@ -32,7 +32,7 @@ Sets a CSS property to the Element.
 ###	Example:
 
 	$('myElement').setStyle('width', '300px'); //the width is now 300px
-	
+
 	//or
 
 	$('myElement').setStyle('width', 300); //the width is now 300px
@@ -61,7 +61,7 @@ Returns the style of the Element given the property passed in.
 ###	Example:
 
 	$('myElement').getStyle('width'); //returns "400px"
-	
+
 	//but you can also use
 
 	$('myElement').getStyle('width').toInt(); //returns 400

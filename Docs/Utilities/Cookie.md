@@ -93,7 +93,7 @@ Removes a cookie from the browser.
 ###	Examples:
 
 **Remove a Cookie:**
-	
+
 	Cookie.remove('username'); //Bye-bye JackBauer! Seeya in 24 Hours.
 
 **Creating a Cookie and Removing it Right Away:**

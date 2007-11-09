@@ -6,11 +6,11 @@ var Docs = {
 		if (location.protocol == 'file:') Docs.local();
 		var menu = $('menu-wrapper'), elements = [], files;
 		var request = new Request({ link: 'cancel', onSuccess: Docs.update });
-		
+
 		Docs.Scripts.each(function(scripts, folder){
 			var head = new Element('h2', { 'text': folder });
 			var list = new Element('ul', { 'class': 'folder' });
-			
+
 			list.adopt(scripts.map(function(script){
 				var file = new Element('h3').adopt(new Element('a', {
 					'text': script,
@@ -26,15 +26,15 @@ var Docs = {
 				}));
 				return new Element('li').adopt(file);
 			}));
-			
+
 			elements.push(head);
 			elements.push(list);
 		});
-		
+
 		files = menu.adopt(elements).getElements('h3');
 		($E('#menu a[href=' + window.location.hash + ']') || $E('#menu a')).fireEvent('click');
 	},
-	
+
 	local: function() {
 		Request.implement({
 			getXHR: function(){
@@ -49,11 +49,11 @@ var Docs = {
 	update: function(markdown){
 		var wrapper = $('docs-wrapper'), submenu = $('submenu');
 		if (!submenu) submenu = new Element('div').set('id', 'submenu');
-		
+
 		var parse = Docs.parse(markdown);
 		wrapper.set('html', parse.innerHTML);
 		$E('#menu-wrapper h3.selected').getParent().grab(submenu.empty());	
-		
+
 		var methods = Docs.methods(parse, submenu);
 		Docs.scroll();
 	},
@@ -69,7 +69,8 @@ var Docs = {
 			h.innerHTML = h.innerHTML.replace(anchor, '');
 		});
 
-		temp.getElement('h1').set('class', 'first');
+		var heading = temp.getElement('h1');
+		if (heading) heading.set('class', 'first');
 		return temp;
 	},
 
@@ -117,14 +118,14 @@ Docs.Scripts = new Hash({
 	'Core':      ['Core', 'Browser'],
 	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash'],
 	'Class':     ['Class', 'Class.Extras'],
-	'Element':   ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
-	'Window':    ['Window.DomReady', 'Window.Dimensions'],
+	'Element':   ['Element', 'Element.Event', 'Element.Style'],
+	'Window':    ['Window.DomReady'],
 	'Selectors': ['Selectors', 'Selectors.Pseudo'],
 	'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
 	'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
-	'Utilities': ['JSON', 'Cookie', 'Swiff', 'Color', 'Group'],
+	'Utilities': ['JSON', 'Cookie', 'Dimensions', 'Swiff', 'Color', 'Group'],
 	'Drag':      ['Drag', 'Drag.Move'],
-	'Plugins':   ['Selectors.Children', 'Hash.Cookie', 'Sortables', 'Tips', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Fx.Elements', 'Accordion', 'Element.Filters']
+	'Plugins':   ['Selectors.Children', 'Hash.Cookie', 'Sortables', 'Tips', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Fx.Elements', 'Accordion']
 });
 
 var ShowDown = function(text){

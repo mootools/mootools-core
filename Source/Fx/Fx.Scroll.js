@@ -22,12 +22,12 @@ Fx.Scroll = new Class({
 		this.element = $(element);
 		arguments.callee.parent(options);
 		var cancel = this.cancel.bind(this, false);
-		
+
 		switch($type(this.element)){
 			case 'window': this.element = this.element.document; break;
 			case 'element': if (this.element.get('tag') == 'body') this.element = this.element.ownerDocument;
 		}
-		
+
 		var stopper = this.element;
 
 		if (this.options.wheelStops){

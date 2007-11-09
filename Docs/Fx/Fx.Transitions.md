@@ -1,4 +1,3 @@
-/*
 Script: Fx.Transitions.js
 	Effects transitions, to be used with all the effects.
 
@@ -7,35 +6,18 @@ License:
 
 Credits:
 	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
-*/
 
-/*
+
+
 Class: Fx
 	Fx.Transitions overrides the base Fx constructor, and adds the possibility to use the transition option as string.
 
 transition option:
 	The equation to use for the effect. See <Fx.Transitions>. It accepts both a function (ex: Fx.Transitions.Sine.easeIn)
 	or a string ('sine:in', 'bounce:out' or 'quad:in:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut / Fx.Transitions.Quad.easeInOut
-*/
 
-(function(){
 
-	var old = Fx.prototype.initialize;
 
-	Fx.prototype.initialize = function(options){
-		old.call(this, options);
-		var trans = this.options.transition;
-		if ($type(trans) == 'string' && (trans = trans.split(':'))){
-			var base = Fx.Transitions;
-			base = base[trans[0]] || base[trans[0].capitalize()];
-			if (trans[1]) base = base['ease' + trans[1].capitalize() + (trans[2] ? trans[2].capitalize() : '')];
-			this.options.transition = base;
-		}
-	};
-
-})();
-
-/*
 Class: Fx.Transition
 	Returns a <Fx> transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
 
@@ -58,24 +40,9 @@ Example:
 
 See Also:
 	<Fx.Transitions>
-*/
 
-Fx.Transition = function(transition, params){
-	params = $splat(params);
-	return $extend(transition, {
-		easeIn: function(pos){
-			return transition(pos, params);
-		},
-		easeOut: function(pos){
-			return 1 - transition(1 - pos, params);
-		},
-		easeInOut: function(pos){
-			return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
-		}
-	});
-};
 
-/*
+
 Hash: Fx.Transitions
 	A collection of tweening transitions for use with the <Fx> classes.
 
@@ -87,167 +54,111 @@ Example:
 
 See also:
 	<http://www.robertpenner.com/easing/>, <Element.effect>
-*/
 
-Fx.Transitions = new Hash({
 
-	/*
-	Method: linear
-		Displays a linear transition.
 
-	Graph:
-		(see Linear.png)
-	*/
+Method: linear
+	Displays a linear transition.
 
-	linear: $arguments(0)
+Graph:
+	(see Linear.png)
 
-});
 
-Fx.Transitions.extend = function(transitions){
-	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
-};
 
-Fx.Transitions.extend({
+Method: Quad
+	Displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut.
 
-	/*
-	Method: Quad
-		Displays a quadratic transition. Must be used as Quad.easeIn or Quad.easeOut or Quad.easeInOut.
+Graph:
+	(see Quad.png)
 
-	Graph:
-		(see Quad.png)
-	*/
 
-	//auto generated
+//auto generated
 
-	/*
-	Method: Cubic
-		Displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut.
 
-	Graph:
-		(see Cubic.png)
-	*/
+Method: Cubic
+	Displays a cubicular transition. Must be used as Cubic.easeIn or Cubic.easeOut or Cubic.easeInOut.
 
-	//auto generated
+Graph:
+	(see Cubic.png)
 
-	/*
-	Method: Quart
-		Displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut.
 
-	Graph:
-		(see Quart.png)
-	*/
+//auto generated
 
-	//auto generated
 
-	/*
-	Method: Quint
-		Displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut.
+Method: Quart
+	Displays a quartetic transition. Must be used as Quart.easeIn or Quart.easeOut or Quart.easeInOut.
 
-	Graph:
-		(see Quint.png)
-	*/
+Graph:
+	(see Quart.png)
 
-	//auto generated
 
-	/*
-	Method: Pow
-		Used to generate Quad, Cubic, Quart and Quint.
+//auto generated
 
-	Note:
-		By default is p^6.
 
-	Graph:
-		(see Pow.png)
-	*/
+Method: Quint
+	Displays a quintic transition. Must be used as Quint.easeIn or Quint.easeOut or Quint.easeInOut.
 
-	Pow: function(p, x){
-		return Math.pow(p, x[0] || 6);
-	},
+Graph:
+	(see Quint.png)
 
-	/*
-	Method: Expo
-		Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
-	Graph:
-		(see Expo.png)
-	*/
+//auto generated
 
-	Expo: function(p){
-		return Math.pow(2, 8 * (p - 1));
-	},
 
-	/*
-	Method: Circ
-		Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
+Method: Pow
+	Used to generate Quad, Cubic, Quart and Quint.
 
-	Graph:
-		(see Circ.png)
-	*/
+Note:
+	By default is p^6.
 
-	Circ: function(p){
-		return 1 - Math.sin(Math.acos(p));
-	},
+Graph:
+	(see Pow.png)
 
-	/*
-	Method: Sine
-		Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
-	Graph:
-		(see Sine.png)
-	*/
 
-	Sine: function(p){
-		return 1 - Math.sin((1 - p) * Math.PI / 2);
-	},
+Method: Expo
+	Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
-	/*
-	Method: Back
-		Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
+Graph:
+	(see Expo.png)
 
-	Graph:
-		(see Back.png)
-	*/
 
-	Back: function(p, x){
-		x = x[0] || 1.618;
-		return Math.pow(p, 2) * ((x + 1) * p - x);
-	},
 
-	/*
-	Method: Bounce
-		Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
+Method: Circ
+	Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
 
-	Graph:
-		(see Bounce.png)
-	*/
+Graph:
+	(see Circ.png)
 
-	Bounce: function(p){
-		var value;
-		for (var a = 0, b = 1; 1; a += b, b /= 2){
-			if (p >= (7 - 4 * a) / 11){
-				value = - Math.pow((11 - 6 * a - 11 * p) / 4, 2) + b * b;
-				break;
-			}
-		}
-		return value;
-	},
 
-	/*
-	Method: Elastic
-		Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
 
-	Graph:
-		(see Elastic.png)
-	*/
+Method: Sine
+	Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
-	Elastic: function(p, x){
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
-	}
+Graph:
+	(see Sine.png)
 
-});
 
-['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
-	Fx.Transitions[transition] = new Fx.Transition(function(p){
-		return Math.pow(p, [i + 2]);
-	});
-});
+
+Method: Back
+	Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
+
+Graph:
+	(see Back.png)
+
+
+
+Method: Bounce
+	Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
+
+Graph:
+	(see Bounce.png)
+
+
+
+Method: Elastic
+	Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
+
+Graph:
+	(see Elastic.png)
+

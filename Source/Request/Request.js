@@ -88,7 +88,7 @@ var Request = new Class({
 			return this.getResponseHeader(name);
 		}, this.xhr) || null;
 	},
-	
+
 	check: function(){
 		if (!this.running) return true;
 		switch (this.options.link){
@@ -101,10 +101,10 @@ var Request = new Class({
 	send: function(options){
 		if (!this.check(options)) return this;
 		this.running = true;
-		
+
 		var type = $type(options);
 		if (type == 'string' || type == 'element') options = {data: options};
-		
+
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;

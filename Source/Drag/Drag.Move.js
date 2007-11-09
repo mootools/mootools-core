@@ -33,12 +33,12 @@ Drag.Move = new Class({
 		}
 		if (this.container){
 			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(el.getOffsetParent()), cps = {}, ems = {};
-			
+
 			['top', 'right', 'bottom', 'left'].each(function(pad){
 				cps[pad] = cont.getStyle('padding-' + pad).toInt();
 				ems[pad] = el.getStyle('margin-' + pad).toInt();
 			}, this);
-			
+
 			var width = el.offsetWidth + ems.left + ems.right, height = el.offsetHeight + ems.top + ems.bottom;
 			var x = [ccoo.left + cps.left, ccoo.right - cps.right - width];
 			var y = [ccoo.top + cps.top, ccoo.bottom - cps.bottom - height];

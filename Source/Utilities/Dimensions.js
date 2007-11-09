@@ -55,7 +55,7 @@ var Dimensions = {
 		})();
 		return obj;
 	},
-	
+
 	getScrollSize: function(self){
 		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
 		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
@@ -69,7 +69,7 @@ var Dimensions = {
 		})();
 		return obj;
 	},
-	
+
 	getScroll: function(self){
 		var obj = {}, dims = {X: 'Left', Y: 'Top'}, objs = objects(self);
 		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
@@ -77,10 +77,10 @@ var Dimensions = {
 		})();
 		return obj;
 	},
-	
+
 	getPosition: function(self, client){
 		if (great(self)) return {x: 0, y: 0};
-		
+
 		var el = self, left = self.offsetLeft, top = self.offsetTop;
 
 		if (Browser.Engine.trident){
@@ -90,9 +90,9 @@ var Dimensions = {
 			}
 			el = self;
 		}
-		
+
 		var position = {x: left, y: top};
-		
+
 		var isPositioned = Dimensions.positioned(self);
 		while ((el = el.parentNode)){
 			var isOffsetParent = Dimensions.positioned(el);
@@ -106,11 +106,11 @@ var Dimensions = {
 
 		return position;
 	},
-	
+
 	getAbsolutePosition: function(self, relative){
 		if (great(self) || relative == self) return {x: 0, y: 0};
 		var el = self, left = 0, top = 0, position;
-		
+
 		while (el){
 			var offsetParent = Dimensions.getOffsetParent(el);
 			if (!offsetParent) break;
@@ -119,11 +119,11 @@ var Dimensions = {
 			top += position.y;
 			el = offsetParent;
 		}
-		
+
 		var rpos = (relative) ? Dimensions.getAbsolutePosition($(relative, true)) : {x: 0, y: 0};
 		return {x: left - rpos.x, y: top - rpos.y};
 	},
-	
+
 	getCoordinates: function(self, relative){
 		var position = Dimensions.getAbsolutePosition(self, relative), size = Dimensions.getOffsetSize(self);
 		var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
@@ -145,20 +145,20 @@ Hash.each(Dimensions, function(value, key){
 Native.implement([Element, Document], methods);
 
 Document.implement({
-	
+
 	scrollTo: function(x, y){
 		this.window.scrollTo(x, y);
 	}
-	
+
 });
 
 Element.implement({
-	
+
 	scrollTo: function(x, y){
 		this.scrollLeft = x;
 		this.scrollTop = y;
 	},
-	
+
 	computePosition: function(obj, client){
 		var scroll, el = this, position = {left: obj.x - this.getComputedStyle('margin-left').toInt() || 0, top: obj.y - this.getComputedStyle('margin-top').toInt() || 0};
 		if (client){
@@ -175,7 +175,7 @@ Element.implement({
 		}
 		return position;
 	},
-	
+
 	setPosition: function(obj, client){
 		return this.setStyles(this.computePosition(obj, client));
 	}

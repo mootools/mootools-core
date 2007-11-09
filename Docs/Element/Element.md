@@ -259,7 +259,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 		'font': '12px Arial',
 		'color': 'blue'
 	});
-	
+
 #### With an Object:
 
 	var myElement = $('myElement').set({

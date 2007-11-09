@@ -104,7 +104,7 @@ Sets a default Ajax instance for an element
 * (element) this element
 
 ### Example:
-	
+
 	el.set('load', {evalScripts: true});
 	el.load('some/request/uri');
 

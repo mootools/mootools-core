@@ -86,7 +86,7 @@ Trims the leading and trailing spaces off a string.
 
 	"    i like cookies     ".trim(); //"i like cookies"
 
-	
+
 
 String Method: clean {#String:clean}
 ------------------------------------
@@ -105,7 +105,7 @@ Removes all extraneous whitespace from a string and trims ([String:trim](#String
 
 	" i      like     cookies      \n\n".clean(); //returns "i like cookies"
 
-	
+
 
 String Method: camelCase {#String:camelCase}
 --------------------------------------------
