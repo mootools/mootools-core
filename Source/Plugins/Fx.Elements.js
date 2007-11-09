@@ -29,6 +29,7 @@ Fx.Elements = new Class({
 			var iNow = now[i];
 			for (var p in iNow) this.render(this.elements[i], p, iNow[p]);
 		}
+		return this;
 	},
 
 	start: function(obj){
