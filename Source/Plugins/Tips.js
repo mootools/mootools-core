@@ -92,15 +92,13 @@ var Tips = new Class({
 		hideDelay: 100,
 		className: 'tool',
 		offsets: {'x': 16, 'y': 16},
-		fixed: false,
-		window: window
+		fixed: false
 	},
 
 	initialize: function(elements, options){
 		this.setOptions(options);
 		elements = $$(elements);
 		this.document = (elements.length) ? elements[0].ownerDocument : document;
-		this.window = this.document.window;
 		this.toolTip = new Element('div', {
 			'class': this.options.className + '-tip',
 			'styles': {
@@ -162,7 +160,7 @@ var Tips = new Class({
 	},
 
 	position: function(element){
-		var pos = element.getPosition();
+		var pos = element.getAbsolutePosition();
 		this.toolTip.setStyles({
 			'left': pos.x + this.options.offsets.x,
 			'top': pos.y + this.options.offsets.y
@@ -170,13 +168,13 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var win = {'x': this.window.getWidth(), 'y': this.window.getHeight()};
-		var scroll = {'x': this.window.getScrollLeft(), 'y': this.window.getScrollTop()};
+		var doc = this.document.getOffsetSize();
+		var scroll = this.document.getScroll();
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};
 		for (var z in prop){
 			var pos = event.page[z] + this.options.offsets[z];
-			if ((pos + tip[z] - scroll[z]) > win[z]) pos = event.page[z] - this.options.offsets[z] - tip[z];
+			if ((pos + tip[z] - scroll[z]) > doc[z]) pos = event.page[z] - this.options.offsets[z] - tip[z];
 			this.toolTip.setStyle(prop[z], pos);
 		}
 	},
