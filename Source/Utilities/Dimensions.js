@@ -21,10 +21,14 @@ var objects = function(self){
 	return {doc: doc, win: doc.window, self: self, great: (great || self === doc.body || self === doc.html)};
 };
 
+var great = function(self){
+	return objects(self).great;
+};
+
 var Dimensions = {
 
 	positioned: function(self){
-		if (objects(self).great) return true;
+		if (great(self)) return true;
 		var style = self.style.position || (self.style.position = Element.getComputedStyle(self, 'position'));
 		return (style != 'static');
 	},
@@ -75,13 +79,13 @@ var Dimensions = {
 	},
 
 	getPosition: function(self, relative){
-		if (objects(self).great || relative == self) return {x: 0, y: 0};
+		if (great(self) || relative == self) return {x: 0, y: 0};
 		var el = self, left = 0, top = 0, position;
 
 		while (el){
 			var offsetParent = Dimensions.getOffsetParent(el);
 			if (!offsetParent) break;
-			position = Dimensions.getRelativePosition(el, !objects(offsetParent).great);
+			position = Dimensions.getRelativePosition(el, !great(offsetParent));
 			left += position.x;
 			top += position.y;
 			el = offsetParent;
@@ -92,7 +96,7 @@ var Dimensions = {
 	},
 
 	getRelativePosition: function(self, client){
-		if (objects(self).great) return {x: 0, y: 0};
+		if (great(self)) return {x: 0, y: 0};
 
 		var el = self, left = self.offsetLeft, top = self.offsetTop;
 
