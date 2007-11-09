@@ -254,7 +254,7 @@
 
 		"Accordion": {
 			"deps": ["Fx.Elements", "Element.Event"],
-			"desc": "The Accordion Class... Does it need a description?"
+			"desc": "An Fx.Elements extension which allows you to easily create accordion type controls."
 		}
 
 	}

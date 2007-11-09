@@ -93,7 +93,7 @@ var Tips = new Class({
 	},
 
 	position: function(element){
-		var pos = element.getAbsolutePosition();
+		var pos = element.getPosition();
 		this.toolTip.setStyles({
 			'left': pos.x + this.options.offsets.x,
 			'top': pos.y + this.options.offsets.y

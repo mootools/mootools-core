@@ -94,7 +94,7 @@ var Sortables = new Class({
 			'margin': '0px',
 			'position': 'absolute',
 			'visibility': 'hidden'
-		}).inject(this.list).setPosition(element.getPosition());
+		}).inject(this.list).position(element.getRelativePosition());
 	},
 
 	getDroppables: function(){
@@ -144,7 +144,7 @@ var Sortables = new Class({
 		this.drag.detach();
 		if (this.effect){
 			var dim = this.element.getStyles('width', 'height');
-			var pos = this.clone.computePosition(this.element.getAbsolutePosition(this.clone.offsetParent), this.clone.getParent().positioned());
+			var pos = this.clone.computePosition(this.element.getRelativePosition(this.clone.offsetParent), this.clone.getParent().positioned());
 			this.effect.element = this.clone;
 			this.effect.start({
 				'top': pos.top,

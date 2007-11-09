@@ -23,7 +23,7 @@ Drag.Move = new Class({
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
 		var position = (this.element.positioned()) ? this.element.getStyle('position') : 'absolute';
-		this.element.setPosition(this.element.getPosition()).setStyle('position', position);
+		this.element.position(this.element.getRelativePosition()).setStyle('position', position);
 	},
 
 	start: function(event){

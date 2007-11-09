@@ -76,6 +76,10 @@ Element.implement({
 			return (style == 'transparent') ? '#ffffff' : style;
 		}.bind(this));
 		return this;
+	},
+
+	effect: function(property, options){
+		return new Fx.Tween(this, property, options);
 	}
 
 });

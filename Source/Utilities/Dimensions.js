@@ -21,14 +21,10 @@ var objects = function(self){
 	return {doc: doc, win: doc.window, self: self, great: (great || self === doc.body || self === doc.html)};
 };
 
-var great = function(self){
-	return objects(self).great;
-};
-
 var Dimensions = {
 
 	positioned: function(self){
-		if (great(self)) return true;
+		if (objects(self).great) return true;
 		var style = self.style.position || (self.style.position = Element.getComputedStyle(self, 'position'));
 		return (style != 'static');
 	},
@@ -78,8 +74,25 @@ var Dimensions = {
 		return obj;
 	},
 
-	getPosition: function(self, client){
-		if (great(self)) return {x: 0, y: 0};
+	getPosition: function(self, relative){
+		if (objects(self).great || relative == self) return {x: 0, y: 0};
+		var el = self, left = 0, top = 0, position;
+
+		while (el){
+			var offsetParent = Dimensions.getOffsetParent(el);
+			if (!offsetParent) break;
+			position = Dimensions.getRelativePosition(el, !objects(offsetParent).great);
+			left += position.x;
+			top += position.y;
+			el = offsetParent;
+		}
+
+		var rpos = (relative) ? Dimensions.getPosition($(relative, true)) : {x: 0, y: 0};
+		return {x: left - rpos.x, y: top - rpos.y};
+	},
+
+	getRelativePosition: function(self, client){
+		if (objects(self).great) return {x: 0, y: 0};
 
 		var el = self, left = self.offsetLeft, top = self.offsetTop;
 
@@ -91,9 +104,8 @@ var Dimensions = {
 			el = self;
 		}
 
-		var position = {x: left, y: top};
-
-		var isPositioned = Dimensions.positioned(self);
+		var position = {x: left, y: top}, isPositioned = Dimensions.positioned(self);
+		
 		while ((el = el.parentNode)){
 			var isOffsetParent = Dimensions.positioned(el);
 			if ((!isOffsetParent || client) && ((!isPositioned || isOffsetParent) || Browser.Engine.presto)){
@@ -107,25 +119,8 @@ var Dimensions = {
 		return position;
 	},
 
-	getAbsolutePosition: function(self, relative){
-		if (great(self) || relative == self) return {x: 0, y: 0};
-		var el = self, left = 0, top = 0, position;
-
-		while (el){
-			var offsetParent = Dimensions.getOffsetParent(el);
-			if (!offsetParent) break;
-			position = Dimensions.getPosition(el, !great(offsetParent));
-			left += position.x;
-			top += position.y;
-			el = offsetParent;
-		}
-
-		var rpos = (relative) ? Dimensions.getAbsolutePosition($(relative, true)) : {x: 0, y: 0};
-		return {x: left - rpos.x, y: top - rpos.y};
-	},
-
 	getCoordinates: function(self, relative){
-		var position = Dimensions.getAbsolutePosition(self, relative), size = Dimensions.getOffsetSize(self);
+		var position = Dimensions.getPosition(self, relative), size = Dimensions.getOffsetSize(self);
 		var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
@@ -176,7 +171,7 @@ Element.implement({
 		return position;
 	},
 
-	setPosition: function(obj, client){
+	position: function(obj, client){
 		return this.setStyles(this.computePosition(obj, client));
 	}
 
