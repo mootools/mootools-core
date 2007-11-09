@@ -89,7 +89,7 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(cont.positioned() ? cont : false), cps = {}, ems = {};
+			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(el.getOffsetParent()), cps = {}, ems = {};
 			
 			['top', 'right', 'bottom', 'left'].each(function(pad){
 				cps[pad] = cont.getStyle('padding-' + pad).toInt();
