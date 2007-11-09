@@ -151,7 +151,7 @@ Element.implement({
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
 			if (Browser.Engine.presto && String(result).test('px')) return result;
-			if (property.test(/^(border(.+)Width|margin|padding)$/)) return '0px';
+			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
 		}
 		return result;
 	},
