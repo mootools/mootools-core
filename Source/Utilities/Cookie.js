@@ -23,7 +23,7 @@ Note:
 	- In order to share the Cookie with pages located in a different path, the <Cookie.options.domain> value must be set.
 */
 
-var Cookie = new Hash({
+var Cookie = {
 
 	options: {
 		path: false,
@@ -128,4 +128,4 @@ var Cookie = new Hash({
 		else this.set(cookie, '', $merge(options, {duration: -1}));
 	}
 
-});
+};
