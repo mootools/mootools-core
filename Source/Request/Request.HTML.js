@@ -50,7 +50,11 @@ Element.Properties.load = {
 
 };
 
-Element.implement('load', function(){
-	this.get('load').send(Array.link(arguments, {data: Object.type, url: String.type}));
-	return this;
+Element.implement({
+	
+	load: function(){
+		this.get('load').send(Array.link(arguments, {data: Object.type, url: String.type}));
+		return this;
+	}
+
 });

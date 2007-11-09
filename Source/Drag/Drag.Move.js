@@ -76,6 +76,10 @@ Drag.Move = new Class({
 
 });
 
-Element.implement('makeDraggable', function(options){
-	return new Drag.Move(this, options);
+Element.implement({
+
+	makeDraggable: function(options){
+		return new Drag.Move(this, options);
+	}
+
 });

@@ -57,12 +57,12 @@ Element.Properties.morph = {
 
 Element.implement({
 
-	'morph': function(props){
+	morph: function(props){
 		this.get('morph').start(props);
 		return this;
 	},
 	
-	'effects': function(options){
+	effects: function(options){
 		return new Fx.Morph(this, options);
 	}
 

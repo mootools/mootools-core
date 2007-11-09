@@ -191,7 +191,11 @@ Element.Properties.send = {
 
 };
 
-Element.implement('send', function(url){
-	this.get('send').send({data: this, url: url});
-	return this;
+Element.implement({
+
+	send: function(url){
+		this.get('send').send({data: this, url: url});
+		return this;
+	}
+
 });

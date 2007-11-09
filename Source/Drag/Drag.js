@@ -124,6 +124,10 @@ var Drag = new Class({
 
 });
 
-Element.implement('makeResizable', function(options){
-	return new Drag(this, $merge({modifiers: {'x': 'width', 'y': 'height'}}, options));
+Element.implement({
+	
+	makeResizable: function(options){
+		return new Drag(this, $merge({modifiers: {'x': 'width', 'y': 'height'}}, options));
+	}
+
 });
