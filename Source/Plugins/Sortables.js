@@ -1,3 +1,14 @@
+/*
+Script: Sortables.js
+	Contains <Sortables>
+
+License:
+	MIT-style license.
+
+Note:
+	This Script requires an XHTML doctype.
+*/
+
 var Sortables = new Class({
 	
 	Implements: [Events, Options],
@@ -6,8 +17,10 @@ var Sortables = new Class({
 		onSort: $empty,
 		onStart: $empty,
 		onComplete: $empty,*/
+		snap: 4,
 		handle: false,
 		revert: false,
+		constrain: false,
 		cloneOpacity: 0.7,
 		elementOpacity: 0.3
 	},
@@ -17,11 +30,6 @@ var Sortables = new Class({
 		this.elements = [];
 		this.lists = [];
 		this.idle = true;
-		this.bound = {
-			'start': {},
-			'insert': {},
-			'reset': this.reset.bind(this)
-		};
 		
 		this.addLists($$($(lists) || lists));
 		if (this.options.revert) this.effect = new Fx.Morph(null, $merge({duration: 250, link: 'cancel'}, this.options.revert));
@@ -37,25 +45,19 @@ var Sortables = new Class({
 	
 	addItems: function(){
 		Array.flatten(arguments).each(function(element){
-			var uid = element.uid[0];
-			this.elements.push(element.setStyle('position', element.getStyle('position')));
-			
-			this.bound.start[uid] = this.start.bindWithEvent(this, element);
-			this.bound.insert[uid] = this.insert.bind(this, element);
-			
-			(this.options.handle ? element.getElement(this.options.handle) || element : element).addEvent('mousedown', this.bound.start[uid]);
-			element.addEvent('over', this.bound.insert[uid]);
+			this.elements.push(element);
+			var start = element.retrieve('sortables:start', this.start.bindWithEvent(this, element));
+            var insert = element.retrieve('sortables:insert', this.insert.bind(this, element));
+            (this.options.handle ? element.getElement(this.options.handle) || element : element).addEvent('mousedown', start);
+            element.addEvent('over', insert);
 		}, this);
 	},
 	
 	addLists: function(){
 		Array.flatten(arguments).each(function(list){
-			var uid = list.uid[0];
-			this.lists.push(list.setStyle('position', list.getStyle('position')));
-			
+			this.lists.push(list);
 			this.addItems(list.getChildren());
-			this.bound.insert[uid] = this.insert.bind(this, [list, 'inside']);
-			list.addEvent('over', this.bound.insert[uid]);
+			list.addEvent('over', list.retrieve('sortables:insert', this.insert.bind(this, [list, 'inside'])));
 		}, this);
 	},
 	
@@ -63,11 +65,11 @@ var Sortables = new Class({
 		var elements = [];
 		Array.flatten(arguments).each(function(element){
 			elements.push(element);
-			var uid = element.uid[0];
 			this.elements.remove(element);
-			
-			(this.options.handle ? element.getElement(this.options.handle) || element : element).removeEvent('mousedown', this.bound.start[uid]);
-			element.removeEvent('over', this.bound.insert[uid]);
+			var start = element.retrieve('sortables:start');
+            var insert = element.retrieve('sortables:insert');
+			(this.options.handle ? element.getElement(this.options.handle) || element : element).removeEvent('mousedown', start);
+			element.removeEvent('over', insert);
 		}, this);
 		return elements;
 	},
@@ -76,10 +78,9 @@ var Sortables = new Class({
 		var lists = [];
 		Array.flatten(arguments).each(function(list){
 			lists.push(list);
-			var uid = list.uid[0];
 			this.lists.remove(list);
 			this.removeItems(list.getChildren());
-			list.removeEvent('over', this.bound.insert[uid]);
+			list.removeEvent('over', list.retrieve('sortables:insert'));
 		}, this);
 		return lists;
 	},
@@ -89,11 +90,13 @@ var Sortables = new Class({
 			'margin': '0px',
 			'position': 'absolute',
 			'visibility': 'hidden'
-		}).inject(this.list).setPosition(element.getPosition(true), true);
+		}).inject(this.list).setPosition(element.getPosition());
 	},
 	
 	getDroppables: function(){
-		return this.lists.concat(this.list.getChildren()).remove(this.clone).remove(this.element).remove(this.list);
+		var droppables = this.list.getChildren();
+		if (!this.options.constrain) droppables = this.lists.concat(droppables).remove(this.list);
+		return droppables.remove(this.clone).remove(this.element);
 	},
 	
 	insert: function(element, where){
@@ -103,6 +106,7 @@ var Sortables = new Class({
 		}
 		where = where || (this.element.getAllPrevious().contains(element) ? 'before' : 'after');
 		this.element.inject(element, where);
+		this.fireEvent('onSort', [this.element, this.clone]);
 	},
 	
 	start: function(event, element){
@@ -115,12 +119,14 @@ var Sortables = new Class({
 		this.clone = this.getClone(element);
 		
 		this.drag = this.clone.makeDraggable({
-			snap: 0,
+			snap: this.options.snap,
+			container: this.options.constrain && this.clone.getParent(),
 			droppables: this.getDroppables(),
 			onStart: function(){
 				event.stop();
 				this.clone.set('opacity', this.options.cloneOpacity);
 				this.element.set('opacity', this.options.elementOpacity);
+				this.fireEvent('onStart', [this.element, this.clone]);
 			}.bind(this),
 			onCancel: this.reset.bind(this),
 			onComplete: this.end.bind(this)
@@ -133,10 +139,8 @@ var Sortables = new Class({
 		this.element.set('opacity', this.opacity);
 		this.drag.detach();
 		if (this.effect){
-			var parent = this.clone.getParent();
 			var dim = this.element.getStyles('width', 'height');
-			var pos = this.element.getPosition((parent.getStyle('position') != 'static') ? parent : false);
-			pos = this.clone.computePosition(pos, true);
+			var pos = this.clone.computePosition(this.element.getAbsolutePosition(this.clone.offsetParent), this.clone.getParent().positioned());
 			this.effect.element = this.clone;
 			this.effect.start({
 				'top': pos.top,
