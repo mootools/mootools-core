@@ -66,7 +66,10 @@ var Scroller = new Class({
 		this.setOptions(options);
 		this.element = $(element);
 		switch($type(this.element)){
-			case 'window': this.listener = $(this.element.document.body); break;
+			case 'window':
+				this.element = this.element.document;
+				this.listener = $(this.element.body);
+			break;
 			case 'document': this.listener = $(this.element.body); break;
 			case 'element': this.listener = this.element;
 		}
@@ -115,21 +118,19 @@ var Scroller = new Class({
 	},
 
 	getCoords: function(event){
-		this.page = (this.element == window) ? event.client : event.page;
+		this.page = ($type(this.element) == 'document') ? event.client : event.page;
 		if (!this.timer) this.timer = this.scroll.periodical(50, this);
 	},
 
 	scroll: function(){
-		var size = this.element.getSize();
-		var scroll = this.element.getScroll();
-		var pos = this.element.getPosition();
+		var size = this.element.getOffsetSize(), scroll = this.element.getScroll(), pos = this.element.getAbsolutePosition();
 
 		var change = {'x': 0, 'y': 0};
 		for (var z in this.page){
 			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0)
 				change[z] = (this.page[z] - this.options.area - pos[z]) * this.options.velocity;
-			else if (this.page[z] + this.options.area > (el.offset[z] + pos[z]) && el.offset[z] + el.offset[z] != el.scroll[z])
-				change[z] = (this.page[z] - el.offset[z] + this.options.area - pos[z]) * this.options.velocity;
+			else if (this.page[z] + this.options.area > (size[z] + pos[z]) && size[z] + size[z] != scroll[z])
+				change[z] = (this.page[z] - size[z] + this.options.area - pos[z]) * this.options.velocity;
 		}
 		if (change.y || change.x) this.fireEvent('onChange', [scroll.x + change.x, scroll.y + change.y]);
 	}
