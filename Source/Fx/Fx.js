@@ -1,7 +1,6 @@
 /*
 Script: Fx.js
-	Contains <Fx>, the foundamentals of the MooTools Effects. Only use this directly if you plan to develop some sort of custom effect.
-	All the other effects inherit from this one.
+	Contains the basic animation logic to be extended by all other Fx Classes.
 
 License:
 	MIT-style license.
@@ -13,8 +12,8 @@ var Fx = new Class({
 
 	options: {/*
 		onStart: $empty,
-		onComplete: $empty,
-		onCancel: $empty,*/
+		onCancel: $empty,
+		onComplete: $empty,*/
 		fps: 50,
 		unit: false,
 		duration: 500,

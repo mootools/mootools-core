@@ -4,36 +4,12 @@ Script: JSON.js
 
 License:
 	MIT-style license.
-*/
-
-/*
-Class: JSON
-	JSON parser and encoder.
 
 See Also:
 	<http://www.json.org/>
 */
 
 var JSON = new Hash({
-
-	/*
-	Method: encode
-		Converts an object or array to a JSON string.
-
-	Syntax:
-		>var myJSON = JSON.encode(obj);
-
-	Arguments:
-		obj - (object) The object to convert to string.
-
-	Returns:
-		(string) A JSON string.
-
-	Example:
-		[javascript]
-			var fruitsJSON = JSON.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
-		[/javascript]
-	*/
 
 	encode: function(obj){
 		switch ($type(obj)){
@@ -59,29 +35,6 @@ var JSON = new Hash({
 	$replaceChars: function(chr){
 		return JSON.$specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
 	},
-
-	/*
-	Method: decode
-		Converts a JSON string into an JavaScript object.
-
-	Syntax:
-		var object = JSON.decode(string[, secure]);
-
-	Arguments:
-		string - (string) The string to evaluate.
-		secure - (boolean, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
-
-	Returns:
-		(object) The object represented by the JSON string.
-
-	Example:
-		[javascript]
-			var myObject = JSON.decode('{"apple":"red","lemon":"yellow"}'); //returns: {apple: 'red', lemon: 'yellow'}
-		[/javascript]
-
-	Credits:
-		JSON test regexp is by Douglas Crockford <http://crockford.org/>.
-	*/
 
 	decode: function(string, secure){
 		if ($type(string) != 'string' || !string.length) return null;

@@ -89,12 +89,12 @@
 
 		"Selectors": {
 			"deps": ["Element"],
-			"desc": "Adds the advanced CSS Selectors capability."
+			"desc": "Adds advanced CSS Querying capabilities for selecting elements."
 		},
 
 		"Selectors.Pseudo": {
 			"deps": ["Selectors"],
-			"desc": "Adds the advanced CSS3 Pseudo Selectors capability."
+			"desc": "Adds CSS3 and other custom pseudo selectors support for selecting elements."
 		}
 
 	},
@@ -123,17 +123,17 @@
 
 		"Fx.Slide": {
 			"deps": ["Fx", "Element.Style"],
-			"desc": "Effect to slide an element."
+			"desc": "Effect to slide an element in and out of view."
 		},
 
 		"Fx.Scroll": {
 			"deps": ["Fx", "Element.Event", "Dimensions"],
-			"desc": "Effect to scroll any element, including the window."
+			"desc": "Effect to smoothly scroll any element, including the window."
 		},
 
 		"Fx.Transitions": {
 			"deps": ["Fx"],
-			"desc": "Contains a set of advanced transitions to be used with the above effects."
+			"desc": "Contains a set of advanced transitions to be used with any of the Fx Classes."
 		}
 
 	},
@@ -161,12 +161,12 @@
 
 		"JSON": {
 			"deps": ["Array", "String", "Function", "Number", "Hash"],
-			"desc": "JSON encoder/decoder."
+			"desc": "JSON encoder and decoder."
 		},
 
 		"Cookie": {
 			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
-			"desc": "Class for creating, loading, and saving browser Cookies."
+			"desc": "Class for creating, reading, and deleting browser Cookies."
 		},
 
 		"Dimensions": {
@@ -214,7 +214,7 @@
 
 		"Hash.Cookie": {
 			"deps": ["Class.Extras", "Cookie", "JSON"],
-			"desc": "Class for creating, reading, and deleting Cookies in JSON format."
+			"desc": "Class for creating, reading, and deleting browser Cookies in JSON format."
 		},
 
 		"Sortables": {
@@ -239,13 +239,18 @@
 
 		"Scroller": {
 			"deps": ["Class.Extras", "Element.Event", "Dimensions"],
-			"desc": "Class which scrolls the contents of any Element (including the window) when the mouse reaches the Element's boundries."
+			"desc": "Class which scrolls the contents of any Element (including the window) when the mouse reaches the Element's boundaries."
 		},
 
 		"Assets": {
 			"deps": ["Element.Event"],
 			"desc": "Provides methods to dynamically load JavaScript, CSS, and Image files into the document."
 		},
+
+        "Fx.Elements": {
+            "deps": ["Fx.CSS"],
+            "desc": "Effect to change any number of CSS properties of any number of Elements."
+        },
 
 		"Accordion": {
 			"deps": ["Fx.Elements", "Element.Event"],

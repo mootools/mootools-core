@@ -1,83 +1,9 @@
 /*
-Script: XHR.js
-	Contains the basic XMLHttpRequest Class Wrapper.
+Script: Request.js
+	Powerful all purpose Request Class. Uses XMLHTTPRequest.
 
 License:
 	MIT-style license.
-*/
-
-/*
-Class: XHR
-	An XMLHttpRequest Wrapper.
-
-Implements:
-	<Chain>, <Events>, <Options>
-
-Syntax:
-	>var myXHR = new XHR([url[, options]]);
-
-Arguments:
-	url     - (string, optional) The URL pointing to the server-side script.
-	options - (object, optional) See below.
-
-	options (continued):
-		method     - (string: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
-		data       - (string: defaults to '') The default data for <XHR.send>, used when no data is given.
-		async      - (boolean: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
-		encoding   - (string: defaults to "utf-8") The encoding to be set in the request header.
-		autoCancel - (boolean: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
-		headers    - (object) An object to use in order to set the request headers.
-		isSuccess  - (function) Overrides the built-in isSuccess function.
-
-Events:
-	onRequest - (function) Function to execute when the XHR request is fired.
-		Signature:
-			>onRequest(instance)
-
-		Arguments:
-			instance - (XHR) The transport instance.
-
-	onSuccess - (function) Function to execute when the XHR request completes.
-		Signature:
-			>onSuccess(reponseText, responseXML)
-
-		Arguments:
-			responseText - (string) The returned text from the request.
-			responseXML  - (mixed) The response XML from the request.
-
-	onFailure - (function) Function to execute when the request failes (error status code).
-		Signature:
-			>onFailure(instance)
-
-		Arguments:
-			instance - (XHR) The transport instance.
-
-	onException - (function) Function to execute when setting a request header fails.
-		Signature:
-			>onException(headerName, value)
-
-		Arguments:
-			headerName - (string) The name of the failing header.
-			value      - (string) The value of the failing header.
-
-	onCancel - (function) Function to execute when a request has been cancelled.
-		Signature:
-			>onCancel()
-
-Properties:
-	running  - (boolean) True if the request is running.
-	response - (object) Object with text and xml as keys. You can access this property in the onSuccess event.
-
-Returns:
-	(object) A new XHR instance.
-
-Example:
-	[javascript]
-		var myXHR = new XHR({method: 'get', url: 'http://site.com/requestHandler.php'}).send('name=john&lastname=dorian');
-	[/javascript]
-
-See Also:
-	<http://en.wikipedia.org/wiki/XMLHttpRequest>
 */
 
 var Request = new Class({
@@ -152,49 +78,10 @@ var Request = new Class({
 		this.fireEvent('onComplete', arguments).fireEvent('onFailure', arguments);
 	},
 
-	/*
-	Method: setHeader
-		Add or modify a header for the request. It will not override headers from the options.
-
-	Syntax:
-		>myXHR.setHeader(name, value);
-
-	Arguments:
-		name  - (string) The name for the header.
-		value - (string) The value to be assigned.
-
-	Returns:
-		(object) This XHR instance.
-
-	Example:
-		[javascript]
-			var myXHR = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-			myXHR.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
-		[/javascript]
-	*/
-
 	setHeader: function(name, value){
 		this.headers.set(name, value);
 		return this;
 	},
-
-	/*
-	Method: getHeader
-		Returns the given response header or null if not found.
-
-	Syntax:
-		>myXHR.getHeader(name);
-
-	Arguments:
-		name - (string) The name of the header to retrieve the value of.
-
-	Returns:
-		(string) The value of the retrieved header.
-
-	Example:
-		var myXHR = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-		var headers = myXHR.getHeader('X-Request'); // returns 'JSON'
-	*/
 
 	getHeader: function(name){
 		return $try(function(){
@@ -210,25 +97,6 @@ var Request = new Class({
 		}
 		return false;
 	},
-
-	/*
-	Method: send
-		Opens the XHR connection and sends the provided data.
-
-	Syntax:
-		>myXHR.send([data]);
-
-	Arguments:
-		data - (string, optional) The request data as query string.
-
-	Returns:
-		(object) This XHR instance.
-
-	Examples:
-		[javascript]
-			var myXHR = new XHR({url: 'http://localhost/some_url'}).send("save=username&name=John");
-		[/javascript]
-	*/
 
 	send: function(options){
 		if (!this.check(options)) return this;
@@ -280,23 +148,6 @@ var Request = new Class({
 		return this;
 	},
 
-	/*
-	Method: cancel
-		Cancels the currently running request, if any.
-
-	Syntax:
-		>myRequest.cancel();
-
-	Returns:
-		(object) This XHR instance.
-
-	Example:
-		[javascript]
-			var myXHR = new XHR({method: 'get'}).send('some=data');
-			myXHR.cancel();
-		[/javascript]
-	*/
-
 	cancel: function(){
 		if (!this.running) return this;
 		this.running = false;
@@ -323,48 +174,6 @@ Request.implement(methods);
 
 })();
 
-/*
-Element Setter: send
-	sets a default Ajax instance for an element (possibly a form!)
-
-Syntax:
-	>el.set('send'[, options]);
-
-Arguments:
-	options - (object) the Ajax options.
-
-Returns:
-	(element) this element
-
-Example:
-	[javascript]
-		myForm.set('send', {method: 'get'});
-		myForm.send(); //form sent!
-	[/javascript]
-*/
-
-/*
-Element Getter: send
-	gets the previously setted Ajax instance or a new one with default options
-
-Syntax:
-	>el.get('send'[, options]);
-
-Arguments:
-	options - (object, optional) the Ajax options. if passed in will generate a new instance.
-
-Returns:
-	(object) the Ajax instance
-
-Example:
-	[javascript]
-		el.get('send', {method: 'get'});
-		el.send();
-
-		el.get('send'); //the Ajax instance
-	[/javascript]
-*/
-
 Element.Properties.send = {
 
 	get: function(options){
@@ -381,36 +190,6 @@ Element.Properties.send = {
 	}
 
 };
-
-/*
-Method: send
-	Sends a form with an Ajax request.
-
-Syntax:
-	>myElement.send([options]);
-
-Arguments:
-	options - (object, optional) Options object for the <Ajax> request.
-
-Returns:
-	(element) This Element.
-
-Example:
-	[html]
-		<form id="myForm" action="submit.php">
-			<p>
-				<input name="email" value="bob@bob.com">
-				<input name="zipCode" value="90210">
-			</p>
-		</form>
-	[/html]
-	[javascript]
-		$('myForm').send();
-	[/javascript]
-
-Note:
-	The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
-*/
 
 Element.implement('send', function(url){
 	this.get('send').send({data: this, url: url});

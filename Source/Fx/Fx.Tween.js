@@ -1,6 +1,6 @@
 /*
 Script: Fx.Tween.js
-	Contains Fx.Tween, and the Element shortcuts tween, fade, and highlight.
+	Formerly Fx.Style, effect to transition any CSS property for an element.
 
 License:
 	MIT-style license.

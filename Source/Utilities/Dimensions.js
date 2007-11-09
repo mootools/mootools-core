@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 
 Note:
-	This Script requires an XHTML doctype.
+	Dimensions requires an XHTML doctype.
 */
 
 (function(){

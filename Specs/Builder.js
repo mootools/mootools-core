@@ -2,11 +2,11 @@
 Script: Builder.js
 	Automatically includes MooTools files right from the project folder.
 
-Note:
-	If you use this script in your own page, you must be out of your mind.
-
 License:
 	MIT-style license.
+
+Note:
+	If you use this script in your own page, you must be out of your mind.
 */
 
 var Builder = {
@@ -23,13 +23,17 @@ var Builder = {
 
 	scripts: {
 		source: {
-			"Core"      : ["Core", "Browser"],
-			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
-			"Class"     : ["Class", "Class.Extras"],
-			"Element"   : ["Element", "Element.Style", "Element.Event", "Element.Dimensions"],
-			"Window"    : ["Window.DomReady", "Window.Dimensions"],
-			"Selectors" : ["Selectors", "Selectors.Pseudo"],
-			"Utilities" : ["JSON", "Cookie"]
+			'Core':      ['Core', 'Browser'],
+			'Native':    ['Array', 'Function', 'Number', 'String', 'Hash'],
+			'Class':     ['Class', 'Class.Extras'],
+			'Element':   ['Element', 'Element.Event', 'Element.Style'],
+			'Window':    ['Window.DomReady'],
+			'Selectors': ['Selectors', 'Selectors.Pseudo'],
+			'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
+			'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
+			'Utilities': ['JSON', 'Cookie', 'Dimensions', 'Swiff', 'Color', 'Group'],
+			'Drag':      ['Drag', 'Drag.Move'],
+			'Plugins':   ['Selectors.Children', 'Hash.Cookie', 'Sortables', 'Tips', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Fx.Elements', 'Accordion']
 		},
 
 		spec: {

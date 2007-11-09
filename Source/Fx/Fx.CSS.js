@@ -1,6 +1,6 @@
 /*
 Script: Fx.CSS.js
-	CSS parsing class for effects. Required by <Fx.Tween>, <Fx.Morph>, <Fx.Elements>.
+	Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements.
 
 License:
 	MIT-style license.
@@ -126,6 +126,14 @@ Fx.CSS.Parsers = new Hash({
 
 	},
 
-	String: {parse: $lambda(false), compute: $arguments(1), serve: $arguments(0)}
+	String: {
+
+		parse: $lambda(false),
+
+		compute: $arguments(1),
+
+		serve: $arguments(0)
+
+	}
 
 });
