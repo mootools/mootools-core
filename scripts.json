@@ -255,11 +255,6 @@
 		"Accordion": {
 			"deps": ["Fx.Elements", "Element.Event"],
 			"desc": "The Accordion Class... Does it need a description?"
-		},
-
-		"Element.Filters": {
-			"deps": ["Element"],
-			"desc": "Adds Filtering Capabilities to Element Collections. Made obsolete by Elements:filterBy and the new Selectors."
 		}
 
 	}
