@@ -1,4 +1,5 @@
 Element.extend = Element.implement;
+
 Elements.extend = Elements.implement;
 
 Element.implement({
@@ -25,6 +26,12 @@ Element.implement({
 
 	getTag: function(){
 		return this.get('tag');
+	},
+
+	replaceWith: function(el){
+		el = $(el);
+		this.parentNode.replaceChild(el, this);
+		return el;
 	},
 	
 	removeElements: function(){
