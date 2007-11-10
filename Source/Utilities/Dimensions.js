@@ -159,7 +159,8 @@ Element.implement({
 	},
 
 	computePosition: function(obj, client){
-		var scroll, el = this, position = {left: obj.x - this.getComputedStyle('margin-left').toInt() || 0, top: obj.y - this.getComputedStyle('margin-top').toInt() || 0};
+		var scroll, el = this;
+		var position = {left: obj.x - this.getComputedStyle('margin-left').toInt() || 0, top: obj.y - this.getComputedStyle('margin-top').toInt() || 0};
 		if (client){
 			scroll = Dimensions.getScroll(Dimensions.getOffsetParent(this));
 			position.left += scroll.x;
