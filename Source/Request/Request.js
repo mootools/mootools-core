@@ -194,7 +194,8 @@ Element.Properties.send = {
 Element.implement({
 
 	send: function(url){
-		this.get('send').send({data: this, url: url});
+		var sender = this.get('send');
+		sender.send({data: this, url: url || sender.options.url});
 		return this;
 	}
 
