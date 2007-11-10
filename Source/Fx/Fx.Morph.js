@@ -11,7 +11,7 @@ Fx.Morph = new Class({
 	Extends: Fx.CSS,
 
 	initialize: function(element, options){
-		this.element = $(element);
+		this.element = this.pass = $(element);
 		arguments.callee.parent(options);
 	},
 

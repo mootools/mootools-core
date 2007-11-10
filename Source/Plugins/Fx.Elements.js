@@ -11,7 +11,7 @@ Fx.Elements = new Class({
 	Extends: Fx.CSS,
 
 	initialize: function(elements, options){
-		this.elements = $$(elements);
+		this.elements = this.pass = $$(elements);
 		arguments.callee.parent(options);
 	},
 

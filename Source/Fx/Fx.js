@@ -24,6 +24,7 @@ var Fx = new Class({
 	},
 
 	initialize: function(options){
+		this.pass = this.pass || this;
 		this.setOptions(options);
 		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration.toInt();
 	},
@@ -75,15 +76,15 @@ var Fx = new Class({
 	},
 
 	onStart: function(){
-		return this.fireEvent('onStart', arguments);
+		return this.fireEvent('onStart', this.pass);
 	},
 
 	onComplete: function(){
-		return this.fireEvent('onComplete', arguments).callChain();
+		return this.fireEvent('onComplete', this.pass).callChain();
 	},
 
 	onCancel: function(){
-		return this.fireEvent('onCancel', arguments).clearChain();
+		return this.fireEvent('onCancel', this.pass).clearChain();
 	},
 
 	pause: function(){

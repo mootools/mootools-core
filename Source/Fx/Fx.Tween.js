@@ -11,7 +11,7 @@ Fx.Tween = new Class({
 	Extends: Fx.CSS,
 
 	initialize: function(element, property, options){
-		this.element = $(element);
+		this.element = this.pass = $(element);
 		this.property = property;
 		arguments.callee.parent(options);
 	},

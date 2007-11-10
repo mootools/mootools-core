@@ -25,7 +25,7 @@ Fx.Slide = new Class({
 				if (Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
 			}
 		}, true);
-		this.element = $(element);
+		this.element = this.pass = $(element);
 		arguments.callee.parent(options);
 		var wrapper = this.element.retrieve('wrapper');
 		this.wrapper = wrapper || new Element('div', {
