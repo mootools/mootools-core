@@ -98,6 +98,40 @@
 		}
 
 	},
+	
+	"Utilities": {
+
+		"JSON": {
+			"deps": ["Array", "String", "Function", "Number", "Hash"],
+			"desc": "JSON encoder and decoder."
+		},
+
+		"Cookie": {
+			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "Class for creating, reading, and deleting browser Cookies."
+		},
+
+		"Dimensions": {
+			"deps": ["Element"],
+			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the document."
+		},
+
+		"Color": {
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB -> RGB Conversions and vice versa."
+		},
+
+		"Swiff": {
+			"deps": ["Element.Event"],
+			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
+		},
+
+		"Group": {
+			"deps": ["Class.Extras"],
+			"desc": "Class for monitoring collections of events."
+		}
+
+	},
 
 	"Fx": {
 
@@ -153,40 +187,6 @@
 		"Request.JSON": {
 			"deps": ["Request", "JSON"],
 			"desc": "Extends the basic Request Class with additional methods for sending and receiving JSON data."
-		}
-
-	},
-
-	"Utilities": {
-
-		"JSON": {
-			"deps": ["Array", "String", "Function", "Number", "Hash"],
-			"desc": "JSON encoder and decoder."
-		},
-
-		"Cookie": {
-			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
-			"desc": "Class for creating, reading, and deleting browser Cookies."
-		},
-
-		"Dimensions": {
-			"deps": ["Element"],
-			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the document."
-		},
-
-		"Color": {
-			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
-			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB -> RGB Conversions and vice versa."
-		},
-
-		"Swiff": {
-			"deps": ["Element.Event"],
-			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
-		},
-
-		"Group": {
-			"deps": ["Class.Extras"],
-			"desc": "Class for monitoring collections of events."
 		}
 
 	},
