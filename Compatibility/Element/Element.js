@@ -25,6 +25,14 @@ Element.implement({
 
 	getTag: function(){
 		return this.get('tag');
+	},
+	
+	removeElements: function(){
+		return this.dispose();
+	},
+	
+	remove: function(){
+		return this.dispose();
 	}
 
 });
