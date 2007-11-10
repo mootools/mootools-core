@@ -15,7 +15,7 @@ var XHR = new Class({
 	},
 
 	request: function(data){
-		return this.send({data: data, url: this.url});
+		return this.send(this.url, data);
 	},
 
 	send: function(url, data){
