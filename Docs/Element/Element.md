@@ -1,13 +1,25 @@
+Element.js
+----------
+
+One of the most important items of MooTools, contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
+
+### License:
+
+MIT-style license.
+
+
+
 Window Methods
 ==============
 
-The following functions are treated as Window methods
+**The following functions are treated as Window methods.**
+
 
 
 Function: $ {#dollar}
 ---------------------
 
-The dollar function has a dual purpose: Get the element by its id, and make an element in internet explorer "grab" all the [Element][] Methods.
+**The dollar function has a dual purpose: Get the element by its id, and make an element in internet explorer "grab" all the [Element][] Methods.**
 
 ### Syntax:
 
@@ -15,12 +27,12 @@ The dollar function has a dual purpose: Get the element by its id, and make an e
 
 ### Arguments:
 
-1. el - (mixed) A string containing the id of the DOM element desired or a reference to an actual DOM element.
+1. **el** - (_mixed_) A string containing the id of the DOM element desired or a reference to an actual DOM element.
 
 ### Returns:
 
-* (mixed) A DOM element
-* (null) null if string is passed and no matching ID was found.
+* (_mixed_) A DOM element
+* (_null_) null if string is passed and no matching ID was found.
 
 ### Examples:
 
@@ -41,10 +53,11 @@ The dollar function has a dual purpose: Get the element by its id, and make an e
 - MooTools detects if an element needs to be extended or not, so you can call the function on the same element as many times as you want without ill effect.
 
 
+
 Function: $$ {#dollars}
 -----------------------
 
-Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.
+**Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.**
 
 ### Syntax:
 
@@ -89,13 +102,14 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any extended DOM Element.
+**Custom Native to allow all of its methods to be used with any extended DOM Element.**
+
 
 
 Element Method: constructor {#Element:constructor}
 --------------------------------------------------
 
-Creates a new Element of the type passed in.
+**Creates a new Element of the type passed in.**
 
 ### Syntax:
 
@@ -103,12 +117,12 @@ Creates a new Element of the type passed in.
 
 ### Arguments:
 
-1. element - (mixed) The tag name for the Element to be created or an actual DOM element.
-2. properties - (object, optional) Calls the Single Argument version of [Element:set][] with the properties object passed in.
+1. **element** - (_mixed_) The tag name for the Element to be created or an actual DOM element.
+2. **properties** - (_object_, optional) Calls the Single Argument version of [Element:set][] with the properties object passed in.
 
 ### Returns:
 
-* (element) A new MooTools extended HTML Element.
+* (_element_) A new MooTools extended HTML Element.
 
 ### Examples:
 
@@ -136,10 +150,11 @@ Creates a new Element of the type passed in.
 - [Element:set][]
 
 
+
 Element Method: getElement {#Element:getElement}
 ------------------------------------------------
 
-Gets the first descendant element whose tag name matches the tag provided.
+**Gets the first descendant element whose tag name matches the tag provided.**
 
 ### Syntax:
 
@@ -147,11 +162,11 @@ Gets the first descendant element whose tag name matches the tag provided.
 
 ### Arguments:
 
-1. tag - (string) Tag name of the element to find.
+1. **tag** - (_string_) Tag name of the element to find.
 
 ### Returns:
 
-* (mixed) If a match is found, returns that Element. Otherwise, returns null.
+* (_mixed_) If a match is found, returns that Element. Otherwise, returns null.
 
 ### Examples:
 
@@ -168,10 +183,11 @@ Gets the first descendant element whose tag name matches the tag provided.
 - See [Selectors.js][] for documentation on selectors for use anywhere they are accepted throughout the framework.
 
 
+
 Element Method: getElements {#Element:getElements}
 --------------------------------------------------
 
-Collects all decedent elements whose tag name matches the tag provided.
+**Collects all decedent elements whose tag name matches the tag provided.**
 
 ### Syntax:
 
@@ -179,11 +195,11 @@ Collects all decedent elements whose tag name matches the tag provided.
 
 ### Arguments:
 
-1. tag - (string) String of the tag to match.
+1. **tag** - (_string_) String of the tag to match.
 
 ### Returns:
 
-* (array) An [Elements][] array of all matched Elements.
+* (_array_) An [Elements][] array of all matched Elements.
 
 ### Examples:
 
@@ -200,10 +216,11 @@ Collects all decedent elements whose tag name matches the tag provided.
 - See [Selectors.js][] for documentation on selectors for use anywhere they are accepted throughout the framework.
 
 
+
 Element Method: getElementById {#Element:getElementById}
 --------------------------------------------------------
 
-Gets the element with the specified id found inside this Element.
+**Gets the element with the specified id found inside this Element.**
 
 ### Syntax:
 
@@ -211,11 +228,11 @@ Gets the element with the specified id found inside this Element.
 
 ### Arguments:
 
-1. id - (string) The ID of the Element to find.
+1. **id** - (_string_) The ID of the Element to find.
 
 ### Returns:
 
-* (mixed) If a match is found, returns that Element. Otherwise, returns null.
+* (_mixed_) If a match is found, returns that Element. Otherwise, returns null.
 
 ### Examples:
 
@@ -226,10 +243,11 @@ Gets the element with the specified id found inside this Element.
 - This method is not provided for Document instances as document.getElementById is provided natively.
 
 
+
 Element Method: set {#Element:set}
 ----------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Hash.
+**This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Hash.**
 
 ### Syntax:
 
@@ -238,14 +256,14 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 ### Arguments:
 
 - Two Arguments (property, value)
-	1. property - (string) The string key from the [Element.Properties][] Hash representing the property to set.
-	2. value - (mixed) The value to set for the specified property.
+	1. **property** - (_string_) The string key from the [Element.Properties][] Hash representing the property to set.
+	2. **value** - (_mixed_) The value to set for the specified property.
 - One Argument (properties)
-	1. properties - (object) Object with its keys/value pairs representing the properties and values to set for the Element (as described below).
+	1. **properties** - (_object_) Object with its keys/value pairs representing the properties and values to set for the Element (as described below).
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
@@ -289,10 +307,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 - [Element:setStyles][]
 
 
+
 Element Method: get {#Element:get}
 ----------------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Hash.
+**This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Hash.**
 
 ### Syntax:
 
@@ -300,11 +319,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 ### Arguments:
 
-1. property - (string) The string key from the [Element.Properties][] Hash representing the property to get.
+1. **property** - (_string_) The string key from the [Element.Properties][] Hash representing the property to get.
 
 ### Returns:
 
-* (mixed) The result of calling the corresponding 'get' function in the [Element.Properties][] Hash.
+* (_mixed_) The result of calling the corresponding 'get' function in the [Element.Properties][] Hash.
 
 ### Examples:
 
@@ -328,10 +347,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 - [Element:getProperty][]
 
 
+
 Element Method: erase {#Element:erase}
 --------------------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Hash.
+**This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Hash.**
 
 ### Syntax:
 
@@ -339,11 +359,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### Arguments:
 
-1. property - (string) The string key from the [Element.Properties][] Hash representing the property to erase.
+1. **property** - (_string_) The string key from the [Element.Properties][] Hash representing the property to erase.
 
 ### Returns:
 
-* (mixed) The result of calling the corresponding 'erase' function in the [Element.Properties][] Hash.
+* (_mixed_) The result of calling the corresponding 'erase' function in the [Element.Properties][] Hash.
 
 ### Examples:
 
@@ -361,10 +381,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 - [Element:removeProperty][]
 
 
+
 Element Method: match {#Element:match}
 --------------------------------------
 
-Tests this element to see if it's tag name is the same as the tag passed in.
+**Tests this element to see if it's tag name is the same as the tag passed in.**
 
 ### Syntax:
 
@@ -372,11 +393,11 @@ Tests this element to see if it's tag name is the same as the tag passed in.
 
 ### Arguments:
 
-1. tag - (string) The tag name to test against this element.
+1. **tag** - (_string_) The tag name to test against this element.
 
 ### Returns:
 
-* (boolean) If the element has the specified tag name, returns true. Otherwise, returns false.
+* (_boolean_) If the element has the specified tag name, returns true. Otherwise, returns false.
 
 ### Examples:
 
@@ -392,7 +413,7 @@ Tests this element to see if it's tag name is the same as the tag passed in.
 Element Method: inject {#Element:inject}
 ----------------------------------------
 
-Injects, or inserts, the Element at a particular place relative to the Element's children (specified by the second the argument).
+**Injects, or inserts, the Element at a particular place relative to the Element's children (specified by the second the argument).**
 
 ### Syntax:
 
@@ -400,50 +421,73 @@ Injects, or inserts, the Element at a particular place relative to the Element's
 
 ### Arguments:
 
-1. el	- (mixed) el can be the id of an element or an element.
-2. where - (string, optional) The place to inject this Element to (defaults to the bottom of the element passed in).
+1. **el**	- (_mixed_) el can be the id of an element or an element.
+2. **where** - (_string_, optional) The place to inject this Element to (defaults to the bottom of the element passed in).
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
+
+##### Javascript
 
 	var myFirstElement = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('div', {id: 'mySecondElement'});
 	var myThirdElement = new Element('div', {id: 'myThirdElement'});
 
+##### Resulting HTML
+
+	<div id="myFirstElement"></div>
+	<div id="mySecondElement"></div>
+	<div id="myThirdElement"></div>
 
 #### Inject to the bottom:
 
+##### Javascript
+
 	myFirstElement.inject(mySecondElement);
 
-	//	<div id="mySecondElement">
-	//		<div id="myFirstElement"></div>
-	//	</div>
+##### Resulting HTML
+
+	<div id="mySecondElement">
+		<div id="myFirstElement"></div>
+	</div>
 
 #### Inject to the top:
 
+##### Javascript
+
 	myThirdElement.inject(mySecondElement, 'top');
 
-	//	<div id="mySecondElement">
-	//		<div id="myThirdElement"></div>
-	//		<div id="myFirstElement"></div>
-	//	</div>
+##### Resulting HTML
+
+	<div id="mySecondElement">
+		<div id="myThirdElement"></div>
+		<div id="myFirstElement"></div>
+	</div>
 
 #### Inject before:
 
+##### Javascript
+
 	myFirstElement.inject(mySecondElement, 'before');
 
-	//	<div id="myFirstElement"></div>
-	//	<div id="mySecondElement"></div>
+##### Resulting HTML
+
+	<div id="myFirstElement"></div>
+	<div id="mySecondElement"></div>
 
 #### Inject After:
 
+##### Javascript
+
 	myFirstElement.inject(mySecondElement, 'after');
 
-	//	<div id="mySecondElement"></div>
-	//	<div id="myFirstElement"></div>
+##### Resulting HTML
+
+	<div id="mySecondElement"></div>
+	<div id="myFirstElement"></div>
 
 ### See Also:
 
@@ -454,9 +498,9 @@ Injects, or inserts, the Element at a particular place relative to the Element's
 Element Method: grab {#Element:grab}
 ------------------------------------
 
-Works as [Element:inject](#Element:inject), but in reverse.
+**Works as [Element:inject](#Element:inject), but in reverse.**
 
-Appends the Element at a particular place relative to the Element's children (specified by the second the paramter).
+**Appends the Element at a particular place relative to the Element's children (specified by the second the paramter).**
 
 ### Syntax:
 
@@ -464,22 +508,27 @@ Appends the Element at a particular place relative to the Element's children (sp
 
 ### Arguments:
 
-1. el - (mixed) el can be the id of an element or an element.
-2. where - (string, optional) The place to append this Element to (defaults to 'bottom'). can be either top and bottom.
+1. **el** - (_mixed_) el can be the id of an element or an element.
+2. **where** - (_string_, optional) The place to append this Element to (defaults to 'bottom'). can be either top and bottom.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
+##### Javascript
+
 	var myFirstElement = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('div', {id: 'mySecondElement'});
+
 	myFirstElement.grab(mySecondElement);
 
-	//	<div id="myFirstElement">
-	//		<div id="mySecondElement"></div>
-	//	</div>
+##### Resulting HTML
+
+	<div id="myFirstElement">
+		<div id="mySecondElement"></div>
+	</div>
 
 ### See Also:
 
@@ -490,14 +539,15 @@ Appends the Element at a particular place relative to the Element's children (sp
 Element Method: wraps {#Element:wraps}
 --------------------------------------
 
-Works as [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element.
+**Works as [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element.**
+
 
 
 Element Method: appendText {#Element:appendText}
 ------------------------------------------------
 
-Works as [Element:grab](#Element:grab), but instead of accepting an id or an element, it only accepts text.
-A textnode will be created inside this Element, in either top or bottom position.
+**Works as [Element:grab](#Element:grab), but instead of accepting an id or an element, it only accepts text.**
+**A textnode will be created inside this Element, in either top or bottom position.**
 
 ### Syntax:
 
@@ -505,27 +555,33 @@ A textnode will be created inside this Element, in either top or bottom position
 
 ### Arguments:
 
-1. text - (string) The text to append.
-1. where - (string, optional) The position to inject the text to. defaults to 'bottom'.
+1. **text** - (_string_) The text to append.
+1. **where** - (_string_, optional) The position to inject the text to. defaults to 'bottom'.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement">hey</div>
+##### HTML
+
+	<div id="myElement">hey</div>
+
+##### Javascript
 
 	$('myElement').appendText(' howdy');
 
-	//	<div id="myElement">hey. howdy</div>
+##### Resulting HTML
+
+	<div id="myElement">hey. howdy</div>
 
 
 
 Element Method: dispose {#Element:dispose}
 ------------------------------------------
 
-Removes the Element from the DOM.
+**Removes the Element from the DOM.**
 
 
 ### Syntax:
@@ -534,27 +590,33 @@ Removes the Element from the DOM.
 
 ### Returns:
 
-* (element) This Element. Useful to always grab the return from this function, as the element could be [injected](#Element:inject) back.
+* (_element_) This Element. Useful to always grab the return from this function, as the element could be [injected](#Element:inject) back.
 
 ### Examples:
 
-	// <div id="myElement"></div>
-	// <div id="mySecondElement"></div>
+##### HTML
+
+	<div id="myElement"></div>
+	<div id="mySecondElement"></div>
+
+##### Javascript
 
 	$('myElement').dispose();
 
-	// <div id="mySecondElement"></div>
+##### Resulting HTML
+
+	<div id="mySecondElement"></div>
 
 ### See Also:
 
-[MDC Element:removeChild](http://developer.mozilla.org/en/docs/DOM:element.removeChild)
+- [MDC Element:removeChild](http://developer.mozilla.org/en/docs/DOM:element.removeChild)
 
 
 
 Element Method: clone {#Element:clone}
 --------------------------------------
 
-Clones the Element and returns the cloned one.
+**Clones the Element and returns the cloned one.**
 
 
 ### Syntax:
@@ -563,20 +625,27 @@ Clones the Element and returns the cloned one.
 
 ### Arguments:
 
-1. contents - (boolean, optional: defaults to true) When true the Element is cloned with childNodes.
+1. **contents** - (_boolean_, optional: defaults to true) When true the Element is cloned with childNodes.
 
 ### Returns:
 
-* (element) The cloned Element.
+* (_element_) The cloned Element.
 
 ### Examples:
 
-	// <div id="myElement"></div>
+##### HTML
 
-	var clone = $('myElement').clone().injectAfter('myElement'); //clones the Element and append the clone after the Element.
+	<div id="myElement"></div>
 
-	//	<div id="myElement">ciao</div>
-	//	<div>ciao</div>
+##### Javascript
+
+	//clones the Element and append the clone after the Element.
+	var clone = $('myElement').clone().injectAfter('myElement');
+
+##### Resulting HTML
+
+	<div id="myElement">ciao</div>
+	<div>ciao</div>
 
 ### Note:
 
@@ -585,14 +654,14 @@ Clones the Element and returns the cloned one.
 
 ### See Also:
 
-[Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
+- [Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
 
 
 
 Element Method: replaceWith {#Element:replaceWith}
 --------------------------------------------------
 
-Replaces the Element with an Element passed.
+**Replaces the Element with an Element passed.**
 
 ### Syntax:
 
@@ -600,26 +669,27 @@ Replaces the Element with an Element passed.
 
 ### Arguments:
 
-1. el - (mixed) A string id representing the Element to be replaced with, or an Element reference.
+1. **el** - (_mixed_) A string id representing the Element to be replaced with, or an Element reference.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	$('myOldElement').replaceWith($('myNewElement')); //$('myOldElement') is gone, and $('myNewElement') is in its place.
+	$('myOldElement').replaceWith($('myNewElement'));
+	//$('myOldElement') is gone, and $('myNewElement') is in its place.
 
 ### See Also:
 
-[MDC Element:replaceChild](http://developer.mozilla.org/en/docs/DOM:element.replaceChild)
+- [MDC Element:replaceChild](http://developer.mozilla.org/en/docs/DOM:element.replaceChild)
 
 
 
 Element Method: hasClass {#Element:hasClass}
 --------------------------------------------
 
-Tests the Element to see if it has the passed in className.
+**Tests the Element to see if it has the passed in className.**
 
 ### Syntax:
 
@@ -627,15 +697,19 @@ Tests the Element to see if it has the passed in className.
 
 ### Arguments:
 
-1. className - (string) The class name to test.
+1. **className** - (_string_) The class name to test.
 
 ### Returns:
 
-* (boolean) Returns true if the Element has the class, otherwise false.
+* (_boolean_) Returns true if the Element has the class, otherwise false.
 
 ### Examples:
 
-	//	<div id="myElement" class="testClass"></div>
+##### HTML
+
+	<div id="myElement" class="testClass"></div>
+
+##### Javascript
 
 	$('myElement').hasClass('testClass'); //returns true
 
@@ -644,7 +718,7 @@ Tests the Element to see if it has the passed in className.
 Element Method: addClass {#Element:addClass}
 --------------------------------------------
 
-Adds the passed in class to the Element, if the Element doesnt already have it.
+**Adds the passed in class to the Element, if the Element doesnt already have it.**
 
 ### Syntax:
 
@@ -652,26 +726,32 @@ Adds the passed in class to the Element, if the Element doesnt already have it.
 
 ### Arguments:
 
-1. className - (string) The class name to add.
+1. **className** - (_string_) The class name to add.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement" class="testClass"></div>
+##### HTML
+
+	<div id="myElement" class="testClass"></div>
+
+##### Javascript
 
 	$('myElement').addClass('newClass');
 
-	//	<div id="myElement" class="testClass newClass"></div>
+##### Resulting HTML
+
+	<div id="myElement" class="testClass newClass"></div>
 
 
 
 Element Method: removeClass {#Element:removeClass}
 ----------------------------
 
-Works like [Element:addClass](#Element:addClass), but removes the class from the Element.
+**Works like [Element:addClass](#Element:addClass), but removes the class from the Element.**
 
 
 ### Syntax:
@@ -680,25 +760,32 @@ Works like [Element:addClass](#Element:addClass), but removes the class from the
 
 ### Arguments:
 
-1. className - (string) The class name to remove.
+1. **className** - (_string_) The class name to remove.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement" class="testClass newClass"></div>
+##### HTML
+
+	<div id="myElement" class="testClass newClass"></div>
+
+##### Javascript
 
 	$('myElement').removeClass('newClass');
 
-	//	<div id="myElement" class="testClass"></div>
+##### Resulting HTML
+
+	<div id="myElement" class="testClass"></div>
+
 
 
 Element Method: toggleClass {#Element:toggleClass}
 --------------------------------------------------
 
-Adds or removes the passed in class name to the Element, depending on if it's present or not.
+**Adds or removes the passed in class name to the Element, depending on if it's present or not.**
 
 ### Syntax:
 
@@ -706,32 +793,40 @@ Adds or removes the passed in class name to the Element, depending on if it's pr
 
 ### Arguments:
 
-1. className - (string) The class to add or remove.
+1. **className** - (_string_) The class to add or remove.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement" class="myClass"></div>
+##### HTML
+
+	<div id="myElement" class="myClass"></div>
+
+##### Javascript
 
 	$('myElement').toggleClass('myClass');
 
-	//	<div id="myElement" class=""></div>
+##### Resulting HTML
+
+	<div id="myElement" class=""></div>
+
+##### Javascript
 
 	$('myElement').toggleClass('myClass');
 
-	//	<div id="myElement" class="myClass"></div>
+##### Resulting HTML
+
+	<div id="myElement" class="myClass"></div>
 
 
 
 Element Method: getPrevious {#Element:getPrevious}
 --------------------------------------------------
 
-[Element:getPrevious]: (#Element:getPrevious)
-
-Returns the previousSibling of the Element (excluding text nodes).
+**Returns the previousSibling of the Element (excluding text nodes).**
 
 ### Syntax:
 
@@ -739,25 +834,26 @@ Returns the previousSibling of the Element (excluding text nodes).
 
 ### Arguments:
 
-1. match - (string): A tagName to match the the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
+1. **match** - (_string_): A tagName to match the the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
 
 ### Returns:
 
-* (mixed) The previous sibling Element
-* (null) or returns null if none found
+* (_mixed_) The previous sibling Element
+* (_null_) or returns null if none found
+
 
 
 Element Method: getAllPrevious {#Element:getAllPrevious}
 --------------------------------------------------------
 
-like [Element:getPrevious][], but returns a collection of all the matched previousSiblings.
+**Like [Element:getPrevious][], but returns a collection of all the matched previousSiblings.**
 
 
 
 Element Method: getNext {#Element:getNext}
 ------------------------------------------
 
-Works as [Element:getPrevious][], but tries to find the nextSibling (excluding text nodes).
+**As [Element:getPrevious][], but tries to find the nextSibling (excluding text nodes).**
 
 
 ### Syntax:
@@ -766,24 +862,25 @@ Works as [Element:getPrevious][], but tries to find the nextSibling (excluding t
 
 ### Arguments:
 
-1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
+1. **match** - (_string_): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
 
 ### Returns:
 
-* (mixed) The next sibling Element
-* (null) or returns null if none found.
+* (_mixed_) The next sibling Element
+* (_null_) or returns null if none found.
 
 
 Element Method: getAllNext {#Element:getAllNext}
 ------------------------------------------------
 
-like Element.getNext, but returns a collection of all the matched nextSiblings.
+**Like Element.getNext, but returns a collection of all the matched nextSiblings.**
+
 
 
 Element Method: getFirst {#Element:getFirst}
 --------------------------------------------
 
-Works as [Element:getPrevious][], but tries to find the firstChild (excluding text nodes).
+**Works as [Element:getPrevious][], but tries to find the firstChild (excluding text nodes).**
 
 
 ### Syntax:
@@ -792,19 +889,19 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 
 ### Arguments:
 
-1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
+1. **match** - (_string_): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
 
 ### Returns:
 
-* (mixed) The first sibling Element
-* (null) or returns null if none found.
+* (_mixed_) The first sibling Element
+* (_null_) or returns null if none found.
 
 
 
 Element Method: getLast {#Element:getLast}
 ------------------------------------------
 
-Works as [Element:getPrevious][], but tries to find the lastChild.
+**Works as [Element:getPrevious][], but tries to find the lastChild.**
 
 ### Syntax:
 
@@ -812,18 +909,19 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Arguments:
 
-1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
+1. **match** - (_string_): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
 
 ### Returns:
 
-* (mixed) The first sibling Element, or returns null if none found.
+* (_mixed_) The first sibling Element, or returns null if none found.
 
 
 
 Element Method: getParent {#Element:getParent}
 ----------------------------------------------
 
-Works as [Element:getPrevious][], but tries to find the parentNode.
+**Works as [Element:getPrevious][], but tries to find the parentNode.**
+
 
 ### Syntax:
 
@@ -831,24 +929,26 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 
 ### Arguments:
 
-1. match - (string): A tagName to match the the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
+1. **match** - (_string_): A tagName to match the the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
 
 ### Returns:
 
-* (element) This Element's parent
-* (null) or null if no matching parent is found
+* (_element_) This Element's parent
+* (_null_) or null if no matching parent is found
+
+
 
 Element Method: getParents {#Element:getParents}
 ------------------------------------------------
 
-like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
+**Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.**
 
 
 
 Element Method: getChildren {#Element:getChildren}
 --------------------------------------------------
 
-Returns all the Element's children (excluding text nodes). Returns as [Elements][].
+**Returns all the Element's children (excluding text nodes). Returns as [Elements][].**
 
 
 ### Syntax:
@@ -857,18 +957,18 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 ### Arguments:
 
-1. match - (string): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
+1. **match** - (_string_): A tagName to match the found element(s) with. if [Selectors.js][] is included, you can pass a full css selector.
 
 ### Returns:
 
-* (array) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
+* (_array_) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
 
 
 
 Element Method: hasChild {#Element:hasChild}
 --------------------------------------------
 
-Checks all descendants of this Element for a match.
+**Checks all descendants of this Element for a match.**
 
 
 ### Syntax:
@@ -877,17 +977,21 @@ Checks all descendants of this Element for a match.
 
 ### Arguments:
 
-1. el - (mixed) Can be a Element reference or string id.
+1. **el** - (_mixed_) Can be a Element reference or string id.
 
 ### Returns:
 
-* (boolean) Returns true if the passed in Element is a child of the Element, otherwise false.
+* (_boolean_) Returns true if the passed in Element is a child of the Element, otherwise false.
 
 ### Examples:
 
-	//<div id="Darth_Vader">
-	//	<div id="Luke"></div>
-	//</div>
+##### HTML
+
+	<div id="Darth_Vader">
+		<div id="Luke"></div>
+	</div>
+
+##### Javascript
 
 	if ($('Darth_Vader').hasChild('Luke')) alert('Luke, I am your father.'); // tan tan tannn.....
 
@@ -896,7 +1000,8 @@ Checks all descendants of this Element for a match.
 Element Method: empty {#Element:empty}
 --------------------------------------
 
-Empties an Element of all its children.
+**Empties an Element of all its children.**
+
 
 ### Syntax:
 
@@ -904,27 +1009,32 @@ Empties an Element of all its children.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement">
-	//		<p></p>
-	//		<span></span>
-	//	</div>
+##### HTML
 
+	<div id="myElement">
+		<p></p>
+		<span></span>
+	</div>
+
+##### Javascript
 
 	$('myElement').empty()
 
-	//	<div id="myElement"></div>
+##### Resulting HTML
+
+	<div id="myElement"></div>
 
 
 
 Element Method: destroy {#Element:destroy}
 ------------------------------------------
 
-Empties an Element of all its children, removes and garbages the Element.
-Useful to clear memory before the pageUnload.
+**Empties an Element of all its children, removes and garbages the Element.**
+**Useful to clear memory before the pageUnload.**
 
 ### Syntax:
 
@@ -932,14 +1042,14 @@ Useful to clear memory before the pageUnload.
 
 ### Returns:
 
-* (null)
+* (_null_)
 
 
 
 Element Method: toQueryString {#Element:toQueryString}
 ------------------------------------------------------
 
-Reads the children inputs of the Element and generates a query string based on their values.
+**Reads the children inputs of the Element and generates a query string based on their values.**
 
 
 ### Syntax:
@@ -948,14 +1058,18 @@ Reads the children inputs of the Element and generates a query string based on t
 
 ### Returns:
 
-* (string) A string representation of a all the inputs elements names/values.
+* (_string_) A string representation of a all the inputs elements names/values.
 
 ### Examples:
 
-	//	<form id="myForm" action="submit.php">
-	//		<input name="email" value="bob@bob.com">
-	//		<input name="zipCode" value="90210">
-	//	</form>
+##### HTML
+
+	<form id="myForm" action="submit.php">
+		<input name="email" value="bob@bob.com">
+		<input name="zipCode" value="90210">
+	</form>
+
+##### Javascript
 
 	$('myForm').toQueryString() //email=bob@bob.com&zipCode=90210\
 
@@ -964,7 +1078,7 @@ Reads the children inputs of the Element and generates a query string based on t
 Element Method: getProperties {#Element:getProperties}
 ------------------------------------------------------
 
-Gets multiple element attributes.
+**Gets multiple element attributes.**
 
 ### Syntax:
 
@@ -972,78 +1086,94 @@ Gets multiple element attributes.
 
 ### Arguments:
 
-* (strings) any number of properties you want to get.
+* (_strings_) any number of properties you want to get.
 
 ### Returns:
 
-* (object) An object containing all of the Element's properties.
+* (_object_) An object containing all of the Element's properties.
 
 ### Examples:
 
+##### HTML
+
 	<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
 
+##### Javascript
 
 	var imgProps = $('myImage').getProperties('id', 'src', 'title', 'alt');
+
 	// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+
 
 
 Element Method: setProperty {#Element:setProperty}
 --------------------------------------------------
 
-Sets an attribute or special property for this Element.
+**Sets an attribute or special property for this Element.**
+
 
 ### Arguments:
 
-1. property - (string) The property to assign the value passed in.
-2. value - (mixed) The value to assign to the property passed in.
+1. **property** - (_string_) The property to assign the value passed in.
+2. **value** - (_mixed_) The value to assign to the property passed in.
 
 ### Returns:
 
-* (element) - This Element.
+* (_element_) - This Element.
 
 ### Examples:
 
-	//	<img id="myImage" />
+##### HTML
 
+	<img id="myImage" />
+
+##### Javascript
 
 	$('myImage').setProperty('src', 'mootools.png');
 
-	//	<img id="myImage" src="mootools.png" />
+##### Resulting HTML
+
+	<img id="myImage" src="mootools.png" />
 
 
 
 Element Method: setProperties {#Element:setProperties}
 ------------------------------------------------------
 
-Sets numerous attributes for the Element.
+**Sets numerous attributes for the Element.**
 
 
 ### Arguments:
 
-1. properties - (object) An object with key/value pairs.
+1. **properties** - (_object_) An object with key/value pairs.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	// <img id="myImage" />
+##### HTML
 
+	<img id="myImage" />
+
+##### Javascript
 
 	$('myImage').setProperties({
 		src: 'whatever.gif',
 		alt: 'whatever dude'
 	});
 
-	//	<img id="myImage" src="whatever.gif" alt="whatever dude" />
+##### Resulting HTML
+
+	<img id="myImage" src="whatever.gif" alt="whatever dude" />
 
 
 
 Element Method: removeProperty {#Element:removeProperty}
 --------------------------------------------------------
 
-Removes an attribute from the Element.
+**Removes an attribute from the Element.**
 
 
 ### Syntax:
@@ -1052,32 +1182,40 @@ Removes an attribute from the Element.
 
 ### Arguments:
 
-1. property - (string) The attribute to remove.
+1. **property** - (_string_) The attribute to remove.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
+##### HTML
 
+	<a id="myAnchor" href="#" onmousedown="alert('click');"></a>
 
-	$('myAnchor').removeProperty('onmousedown'); //eww inline javascript is bad! Let's get rid of it.
+##### Javascript
 
-	//	<a id="myAnchor" href="#"></a>
+	//eww...inline javascript is bad! Let's get rid of it.
+	$('myAnchor').removeProperty('onmousedown');
+
+##### Resulting HTML
+
+	<a id="myAnchor" href="#"></a>
+
 
 
 Element Setters, Getters and Erasers
 ====================================
 
-These Hashes have function that respond to the first argument passed in [Element:get](#Element:get), [Element:set](#Element:set) and [Element:erase](#Element:erase)
+**These Hashes have function that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][]**
 
 
 Element Setter: html {#Element:Setters:html}
 --------------------------------------------
 
-Sets the innerHTML of the Element.
+**Sets the innerHTML of the Element.**
+
 
 ### Syntax:
 
@@ -1089,24 +1227,32 @@ Sets the innerHTML of the Element.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement"></div>
+##### HTML
+
+	<div id="myElement"></div>
+
+##### Javascript
 
 	$('myElement').set('html', '<div></div>', '<p></p>');
 
-	//	<div id="myElement">
-	//		<div></div>
-	//		<p></p>
-	//	</div>
+##### Resulting HTML
+
+	<div id="myElement">
+		<div></div>
+		<p></p>
+	</div>
+
 
 
 Element Setter: text {#Element:Setters:text}
 --------------------------------------------
 
-Sets the inner text of the Element.
+**Sets the inner text of the Element.**
+
 
 ### Syntax:
 
@@ -1114,27 +1260,33 @@ Sets the inner text of the Element.
 
 ### Arguments:
 
-1. text - (string) The new text content for the Element.
+1. **text** - (_string_) The new text content for the Element.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 ### Examples:
 
-	//	<div id="myElement"></div>
+##### HTML
 
+	<div id="myElement"></div>
+
+##### Javascript
 
 	$('myElement').set('text', 'some text') //the text of myElement is now = 'some text'
 
-	//	<div id="myElement">some text</div>
+##### Resulting HTML
+
+	<div id="myElement">some text</div>
 
 
 
 Element Getter: value {#Element:Getters:value}
 ----------------------------------------------
 
-Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
+**Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.**
+
 
 ### Syntax:
 
@@ -1142,25 +1294,32 @@ Returns the value of the Element, if its tag is textarea, select or input. getVa
 
 ### Returns:
 
-* (mixed) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
+* (_mixed_) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
 
 ### Examples:
 
-	/*<form id="myForm">
+##### HTML
+
+	<form id="myForm">
 		<select>
 			<option value="volvo">Volvo</option>
 			<option value="saab" selected="yes">Saab</option>
 			<option value="opel">Opel</option>
 			<option value="audi">Audi</option>
 		</select>
-	</form>*/
+	</form>
+
+##### Javascript
 
 	var result = $('myForm').getElement('select').get('value'); // returns 'Saab'
+
+
 
 Element Getter: tag {#Element:Getters:tag}
 ------------------------------------------
 
-	Returns the tagName of the Element in lower case.
+**Returns the tagName of the Element in lower case.**
+
 
 ### Syntax:
 
@@ -1168,11 +1327,15 @@ Element Getter: tag {#Element:Getters:tag}
 
 ### Returns:
 
-* (string) The tag name in lower case
+* (_string_) The tag name in lower case
 
 ### Examples:
 
-	//	<img id="myImage" />
+##### HTML
+
+	<img id="myImage" />
+
+##### Javascript
 
 	var myTag = $('myImage').get('tag') // myTag = 'img';
 
@@ -1181,7 +1344,8 @@ Element Getter: tag {#Element:Getters:tag}
 Element Getter: html {#Element:Getters:tag}
 -------------------------------------------
 
-returns the innerHTML of the Element.
+**Returns the innerHTML of the Element.**
+
 
 ### Syntax:
 
@@ -1189,14 +1353,14 @@ returns the innerHTML of the Element.
 
 ### Returns:
 
-* (element) This Element.
+* (_element_) This Element.
 
 
 
 Element Getter: text {#Element:Getters:text}
 --------------------------------------------
 
-Gets the inner text of the Element.
+**Gets the inner text of the Element.**
 
 ### Syntax:
 
@@ -1204,11 +1368,15 @@ Gets the inner text of the Element.
 
 ### Returns:
 
-* (string) The text of the Element.
+* (_string_) The text of the Element.
 
 ### Examples:
 
-	//	<div id="myElement">my text</div>
+##### HTML
+
+	<div id="myElement">my text</div>
+
+##### Javascript
 
 	var myText = $('myElement').get('text'); //myText = 'my text';
 
@@ -1217,14 +1385,15 @@ Gets the inner text of the Element.
 Native: IFrame {#IFrame}
 ========================
 
-Custom Native to create and easily work with IFrames.
+**Custom Native to create and easily work with IFrames.**
 
 
 
 IFrame Method: constructor {#IFrame:constructor}
 ------------------------------------------------
 
-Creates an iframe HTML Element and extends its window and document with MooTools.
+**Creates an iframe HTML Element and extends its window and document with MooTools.**
+
 
 ### Syntax:
 
@@ -1232,12 +1401,12 @@ Creates an iframe HTML Element and extends its window and document with MooTools
 
 ### Arguments:
 
-* el - (mixed, optional) The id of the iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created (default).
-* props - (object, optional) The properties to be applied to the new IFrame. Same as [Element:constructor](#Element:constructor) props argument.
+1. **el** - (_mixed_, optional) The id of the iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created (default).
+2. **props** - (_object_, optional) The properties to be applied to the new IFrame. Same as [Element:constructor](#Element:constructor) props argument.
 
 ### Returns:
 
-* (element) A new iframe HTML Element.
+* (_element_) A new iframe HTML Element.
 
 ### Examples:
 
@@ -1281,12 +1450,13 @@ Creates an iframe HTML Element and extends its window and document with MooTools
 Native: Elements {#Elements}
 ============================
 
-The Elements class allows [Element][] methods to work also on an [Elements][] array, as well as [Array][] Methods.
+**The Elements class allows [Element][] methods to work also on an [Elements][] array, as well as [Array][] Methods.**
 
 
 
 Elements Method: constructor {#Elements:constructor}
 ----------------------------------------------------
+
 
 ### Syntax:
 
@@ -1294,11 +1464,11 @@ Elements Method: constructor {#Elements:constructor}
 
 ### Arguments:
 
-* elements - (mixed) An array of elements or an HTMLCollection Object.
+1. **elements** - (_mixed_) An array of elements or an HTMLCollection Object.
 
 ### Returns:
 
-* (array) An extended array with the [Element][], [Elements][] and [Array][] methods.
+* (_array_) An extended array with the [Element][], [Elements][] and [Array][] methods.
 
 ### Examples:
 
@@ -1326,13 +1496,16 @@ Elements Method: constructor {#Elements:constructor}
 
 ### See Also:
 
-[$$][], [$][], [Element][], [Elements][], [Array][]
+- [$$][], [$][], [Element][], [Elements][], [Array][]
+
+
 
 Elements Method: filterBy {#Elements:filterBy}
 ----------------------------------------------
 
-filters a collection of element by a given tagname.
-If [Selectors.js][] is included, this method will be able to filter by any selector
+**Filters a collection of element by a given tagname.**
+**If [Selectors.js][] is included, this method will be able to filter by any selector**
+
 
 ### Syntax:
 
@@ -1340,11 +1513,11 @@ If [Selectors.js][] is included, this method will be able to filter by any selec
 
 ### Arguments:
 
-* selector - (mixed) a single css selector.
+1. **selector** - (_mixed_) a single css selector.
 
 ### Returns:
 
-* (array) A subset of this [Elments][] instance.
+* (_array_) A subset of this [Elements][] instance.
 
 
 
@@ -1358,12 +1531,14 @@ If [Selectors.js][] is included, this method will be able to filter by any selec
 [Elements]: #Elements
 [Element:set]: #Element:set
 [Element:get]: #Element:get
+[Element:erase]: #Element:erase
 [Element:setProperty]: #Element:setProperty
 [Element:getProperty]: #Element:getProperty
 [Element:removeProperty]: #Element:removeProperty
 [Element:getElement]: #Element:getElement
 [Element:getElements]: #Element:getElements
 [Element.Properties]: #Element.Properties
+[Element:getPrevious]: #Element:getPrevious
 
 [Element:addEvents]: /Element/Element.Event#Element:addEvents
 [Element:setStyles]: /Element/Element.Style#Element:setStyles
