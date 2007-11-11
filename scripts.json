@@ -66,21 +66,12 @@
 
 		"Element.Event": {
 			"deps": ["Element"],
-			"desc": "Contains the Event Native, Element methods for dealing with events, and custom Events."
+			"desc": "Contains the Event Native, Element methods for dealing with events, the domready window event, and custom Events."
 		},
 
 		"Element.Style": {
 			"deps": ["Element"],
 			"desc": "Contains methods for interacting with the styles of Elements in a fashionable way."
-		}
-
-	},
-
-	"Window": {
-
-		"Window.DomReady": {
-			"deps": ["Element.Event"],
-			"desc": "Contains the custom domready window event."
 		}
 
 	},

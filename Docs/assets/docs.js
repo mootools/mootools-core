@@ -119,7 +119,6 @@ Docs.Scripts = new Hash({
 	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash'],
 	'Class':     ['Class', 'Class.Extras'],
 	'Element':   ['Element', 'Element.Event', 'Element.Style'],
-	'Window':    ['Window.DomReady'],
 	'Selectors': ['Selectors', 'Selectors.Pseudo'],
 	'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
 	'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
