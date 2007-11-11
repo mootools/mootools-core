@@ -1,4 +1,4 @@
-Class: XHR {#XHR}
+Class: Request {#Request}
 =================
 
 An XMLHttpRequest Wrapper.
@@ -9,29 +9,29 @@ An XMLHttpRequest Wrapper.
 
 ### Syntax:
 
-	var myXHR = new XHR([url[, options]]);
+	var myRequest = new Request([options]);
 
 ### Arguments:
 
-1. url     - (string, optional) The URL pointing to the server-side script.
 2. options - (object, optional) See below.
 
 ###	Options:
 
+* url        - (string: defaults to null) The URL to request.
 * method     - (string: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
-* data       - (string: defaults to '') The default data for <XHR.send>, used when no data is given.
+* data       - (string: defaults to '') The default data for <Request.send>, used when no data is given.
 * async      - (boolean: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
 * encoding   - (string: defaults to "utf-8") The encoding to be set in the request header.
 * autoCancel - (boolean: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
 * headers    - (object) An object to use in order to set the request headers.
 * isSuccess  - (function) Overrides the built-in isSuccess function.
 
-XHR Events: events {#XHR:events}
+Request Events: events {#Request:events}
 --------------------------------
 
 ### onRequest
 
-(function) Function to execute when the XHR request is fired.
+(function) Function to execute when the Request is sent.
 
 #### Signature:
 
@@ -39,11 +39,11 @@ XHR Events: events {#XHR:events}
 
 #### Arguments:
 
-1. instance - (XHR) The transport instance.
+1. instance - (Request) The transport instance.
 
 ### onSuccess
 
-(function) Function to execute when the XHR request completes.
+(function) Function to execute when the Request completes.
 
 #### Signature:
 
@@ -64,7 +64,7 @@ XHR Events: events {#XHR:events}
 
 #### Arguments:
 
-instance - (XHR) The transport instance.
+instance - (Request) The transport instance.
 
 ### onException
 
@@ -94,24 +94,24 @@ instance - (XHR) The transport instance.
 
 ### Returns:
 
-* (object) A new XHR instance.
+* (object) A new Request instance.
 
 ### Example:
 
-	var myXHR = new XHR({method: 'get', url: 'http://site.com/requestHandler.php'}).send('name=john&lastname=dorian');
+	var myRequest = new Request({method: 'get', url: 'http://site.com/requestHandler.php'}).send('name=john&lastname=dorian');
 
 ### See Also:
 
 <http://en.wikipedia.org/wiki/XMLHttpRequest>
 
-XHR Method: setHeader {#XHR:setHeader}
+Request Method: setHeader {#Request:setHeader}
 --------------------------------------
 
 Add or modify a header for the request. It will not override headers from the options.
 
 ###	Syntax:
 
-	myXHR.setHeader(name, value);
+	myRequest.setHeader(name, value);
 
 ###	Arguments:
 
@@ -120,21 +120,21 @@ Add or modify a header for the request. It will not override headers from the op
 
 ###	Returns:
 
-* (object) This XHR instance.
+* (object) This Request instance.
 
 ###	Example:
 
-	var myXHR = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-	myXHR.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
+	var myRequest = new Request({url: 'getData.php', method: 'get', headers: {'X-Request': 'JSON'}});
+	myRequest.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
 
-XHR Method: getHeader {#XHR:getHeader}
+Request Method: getHeader {#Request:getHeader}
 --------------------------------------
 
 Returns the given response header or null if not found.
 
 ###	Syntax:
 
-	myXHR.getHeader(name);
+	myRequest.getHeader(name);
 
 ###	Arguments:
 
@@ -146,31 +146,31 @@ Returns the given response header or null if not found.
 
 ### Example:
 
-	var myXHR = new XHR(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-	var headers = myXHR.getHeader('X-Request'); // returns 'JSON'
+	var myRequest = new Request(url, {method: 'get', headers: {'X-Request': 'JSON'}});
+	var headers = myRequest.getHeader('X-Request'); // returns 'JSON'
 
-XHR Method: send {#XHR:send}
+Request Method: send {#Request:send}
 ----------------------------
 
-Opens the XHR connection and sends the provided data.
+Opens the Request connection and sends the provided data.
 
 ###	Syntax:
 
-	myXHR.send([data]);
+	myRequest.send([data]);
 
 ###	Arguments:
 
-1. data - (string, optional) The request data as query string.
+1. options - (object, optional) The options for the sent Request.  Will also accept data as a query string for compatibility reasons.
 
 ###	Returns:
 
-* (object) This XHR instance.
+* (object) This Request instance.
 
 ###	Examples:
 
-	var myXHR = new XHR({url: 'http://localhost/some_url'}).send("save=username&name=John");
+	var myRequest = new Request({url: 'http://localhost/some_url'}).send("save=username&name=John");
 
-XHR Method: cancel {#XHR:cancel}
+Request Method: cancel {#Request:cancel}
 --------------------------------
 
 Cancels the currently running request, if any.
@@ -181,20 +181,20 @@ Cancels the currently running request, if any.
 
 ###	Returns:
 
-* (object) This XHR instance.
+* (object) This Request instance.
 
 ###	Example:
 
-	var myXHR = new XHR({method: 'get'}).send('some=data');
-	myXHR.cancel();
+	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
+	myRequest.cancel();
 
-Element Setter,Getter and Method {#Element}
+Element Setter, Getter and Method {#Element}
 ===========================================
 
 Element Setter: send {#Element:Setter:send}
 -------------------------------------------
 
-Sets a default Ajax instance for an element (possibly a form!)
+Sets a default Request instance for an Element.  This is useful when handling forms.
 
 ### Syntax:
 
@@ -202,21 +202,21 @@ Sets a default Ajax instance for an element (possibly a form!)
 
 ### Arguments:
 
-1. options - (object) the Ajax options.
+1. options - (object) The Request options.
 
 ### Returns:
 
-* (element) this element
+* (element) The original element. 
 
 ### Example:
 
-	myForm.set('send', {method: 'get'});
-	myForm.send(); //form sent!
+	myForm.set('send', {url: 'contact.php', method: 'get'});
+	myForm.send(); //will send the form
 
 Element Getter: send {#Element:send}
 ------------------------------------
 
-Gets the previously setted Ajax instance or a new one with default options
+Returns the previously set Request instance (or a new one with default options).
 
 ### Syntax:
 
@@ -224,24 +224,24 @@ Gets the previously setted Ajax instance or a new one with default options
 
 ### Arguments:
 
-1. options - (object, optional) the Ajax options. if passed in will generate a new instance.
+1. options - (object, optional) The Request options.  If passed, this method will generate a new instance of the Request class.
 
 ### Returns:
 
-* (object) the Ajax instance
+* (object) The Request instance.
 
 ### Example:
 
 	el.get('send', {method: 'get'});
 	el.send();
 
-	el.get('send'); //the Ajax instance
+	el.get('send'); //the Request instance
 
 
 Element Method: send {#Element:send}
 ------------------------------------
 
-Sends a form with an Ajax request.
+Sends a form with an HTML request.
 
 ### Syntax:
 
@@ -249,7 +249,7 @@ Sends a form with an Ajax request.
 
 ### Arguments:
 
-1. options - (object, optional) Options object for the [Ajax](/Request/Request.HTML) request.
+1. options - (object, optional) Options object for the [HTML](/Request/Request.HTML) request.
 
 ### Returns:
 
@@ -266,7 +266,7 @@ Sends a form with an Ajax request.
 		</p>
 	</form>
 
-##### Javascript
+##### JavaScript
 
 	$('myForm').send();
 

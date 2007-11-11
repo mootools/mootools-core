@@ -1,15 +1,15 @@
-Class: JSON.Remote {#JSON.Remote}
+Class: Request.JSON {#Request.JSON}
 =================================
 
-Wrapped XHR with automated sending and receiving of Javascript Objects in JSON Format.
+Wrapped Request with automated sending and receiving of JavaScript Objects in JSON Format.
 
 ### Extends:
 
-[XHR](/Request/Request#XHR)
+[Request](/Request/Request)
 
 ### Syntax:
 
-	var myJSONRemote = new JSON.Remote(url[, options]);
+	var myJSONRemote = new Request.JSON(url[, options]);
 
 ### Arguments:
 
@@ -37,13 +37,13 @@ Wrapped XHR with automated sending and receiving of Javascript Objects in JSON F
 
 #### Returns:
 
-* (object) A new JSON.Remote class instance.
+* (object) A new Request.JSON class instance.
 
 ### Example:
 
-	//This code will send user information based on name/last name:
-	var jsonRequest = new JSON.Remote("http://site.com/tellMeAge.php", {onComplete: function(person){
-		alert(person.age); //is 25 years
-		alert(person.height); //is 170 cm
-		alert(person.weight); //is 120 kg
-	}}).send({'name': 'John', 'lastName': 'Doe'});
+	//This code will send a data object via a GET request and alert the retrieved data.
+	var jsonRequest = new Request.JSON("http://site.com/tellMeAge.php", {onComplete: function(person){
+		alert(person.age);    //Alerts "25 years".
+		alert(person.height); //Alerts "170 cm".
+		alert(person.weight); //Alerts "120 kg".
+	}}).get({'firstName': 'John', 'lastName': 'Doe'});

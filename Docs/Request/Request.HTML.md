@@ -1,34 +1,35 @@
-[XHR]: /Request/Request
+[Request]: /Request/Request
 
-Class: AJAX {#AJAX.Remote}
+Class: HTML {#Request.HTML}
 ==========================
 
-An Ajax class, For all your asynchronous needs. Also contains methods to generate querystings from forms and Objects.
+An Ajax class, for all your asynchronous needs. Also contains methods to generate querystings from forms and Objects.
 
 ### Extends:
 
-[XHR][]
+[Request][/Request/Request]
 
 ### Syntax:
 
-	var myAjax = new Ajax(url[, options]);
+	var myHTMLRequest = new Request.HTML([options]);
 
 ### Arguments:
 
-1. url     - (string, optional) The url pointing to the server-side script.
-2. options - (object, optional) In addition to <XHR>'s options object, see "Options" below.
+1. url     - (string, optional) The URL pointing to the server-side script.
+2. options - (object, optional) In addition to <Request>'s options object, see "Options" below.
 
 ### Options:
 
-* update       - (element: defaults to null) The Element to insert the response text of the XHR into upon completion of the request.
-* evalScripts  - (boolean: defaults to false) If set to true, HTMLScript tags inside the response is evaluated.
-* evalResponse - (boolean: defaults to false) If set to true, the entire response is evaluated.
+* url          - (string: defaults to null)  The URL to load.  This can also be passed within the .get() and .post() methods.
+* update       - (element: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
+* evalScripts  - (boolean: defaults to false) If set to true, <script> tags inside the response will be evaluated.
+* evalResponse - (boolean: defaults to false) If set to true, the entire response will be evaluated.
 
 ### Events:
 
 #### onComplete
 
-* (function) Function to execute when the AJAX request completes.
+* (function) Function to execute when the HTML request completes.
 
 ##### Signature:
 
@@ -47,15 +48,15 @@ An Ajax class, For all your asynchronous needs. Also contains methods to generat
 
 **Simple GET Request:**
 
-	var myAjax = new Ajax(url, {method: 'get'}).request();
+	var myHTMLRequest = new Request.HTML().get('myPage.html');
 
-**POST Request with Data as String:**
+**POST Request with data as String:**
 
-	var myAjax = new Ajax('save/').request("user_id=25&save=true");
+	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post("user_id=25&save=true");
 
 **Data from Object Passed via GET:**
 
-	var myAjax = new Ajax('load/').request({'user_id': 25}); //loads url "load/?user_id=25"
+	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25}); //loads url "load/?user_id=25"
 
 **Data from Element via POST:**
 
@@ -70,8 +71,8 @@ An Ajax class, For all your asynchronous needs. Also contains methods to generat
 
 ##### Javascript
 
-	//Needs to be in a submit event or the form handler
-	var myAjax = new Ajax('save/').request($('user-form'));
+	//Needs to be in a submit event or the form handler.
+	var myHTMLRequest = new Request.HTML({url:'save/'}).post($('user-form'));
 
 ### Note:
 
@@ -79,7 +80,7 @@ An Ajax class, For all your asynchronous needs. Also contains methods to generat
 
 ### See Also:
 
-[XHR][]
+[Request][/Request/Request]
 
 
 
@@ -97,11 +98,11 @@ Sets a default Ajax instance for an element
 
 ### Arguments:
 
-1. options - (object) the Ajax options.
+1. options - (object) The Request options.
 
 ### Returns:
 
-* (element) this element
+* (element) The target Element.
 
 ### Example:
 
@@ -126,14 +127,13 @@ Gets the previously setted Ajax instance or a new one with default options
 
 ### Returns:
 
-* (object) the Ajax instance
+* (object) The Request instance.
 
 ### Example:
 
 	el.set('load', {method: 'get'});
 	el.load('test.html');
-
-	el.get('load'); //the Ajax instance
+	el.get('load'); //Returns the Request.HTML instance.
 
 
 
@@ -153,7 +153,7 @@ Updates the content of the element with an Ajax get request.
 
 ### Returns:
 
-* (element) This Element.
+* (element) The target Element.
 
 ### Example:
 
