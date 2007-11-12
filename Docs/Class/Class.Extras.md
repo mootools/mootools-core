@@ -1,20 +1,27 @@
-[Fx]: /Fx/Fx
-[Fx.Tween]: /Fx/Fx.Tween
-[Ajax]: /Remote/Ajax
-[XHR]: /Remote/XHR
-[Class]: /Class/Class
-[Class:implement]: /Class/Class#Class:implement
+Class.Extras.js
+---------------
+
+Contains common implementations for custom classes.
+In MooTools these Utilities are implemented in [Ajax][], [XHR][], [Fx][] and many other Classes to provide rich functionality.
+
+### License:
+
+MIT-style license.
+
 
 
 Class: Chain {#Chain}
 =====================
 
-A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
+**A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
 Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][], [XHR][] and [Ajax][].
-In [Fx][], for example, it is used to create custom, complex animations.
+In [Fx][], for example, it is used to create custom, complex animations.**
+
+
 
 Chain Method: constructor {#Chain:constructor}
 ----------------------------------------------
+
 
 ### Syntax:
 
@@ -48,14 +55,14 @@ Chain Method: constructor {#Chain:constructor}
 
 ### See Also:
 
-[Class][]
+- [Class][]
 
 
 
 Chain Method: chain {#Chain:chain}
 ----------------------------------
 
-Adds functions to the end of the call stack of the Chain instance.
+**Adds functions to the end of the call stack of the Chain instance.**
 
 ### Syntax:
 
@@ -67,7 +74,7 @@ Adds functions to the end of the call stack of the Chain instance.
 
 ### Returns:
 
-* (object) This Class instance. Calls to chain can also be chained.
+* (*object*) This Class instance. Calls to chain can also be chained.
 
 ### Example:
 
@@ -82,14 +89,14 @@ Adds functions to the end of the call stack of the Chain instance.
 
 ### See Also:
 
-[Fx][], [Fx.Tween][]
+- [Fx][], [Fx.Tween][]
 
 
 
 Chain Method: callChain {#Chain:callChain}
 ------------------------------------------
 
-Removes the first function of the Chain instance stack and executes it. The next function will then become first in the array.
+**Removes the first function of the Chain instance stack and executes it. The next function will then become first in the array.**
 
 ### Syntax:
 
@@ -101,7 +108,7 @@ Removes the first function of the Chain instance stack and executes it. The next
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
 ### Example:
 
@@ -118,7 +125,7 @@ Removes the first function of the Chain instance stack and executes it. The next
 Chain Method: clearChain {#Chain:clearChain}
 --------------------------------------------
 
-Clears the stack of a Chain instance.
+**Clears the stack of a Chain instance.**
 
 ### Syntax:
 
@@ -126,7 +133,7 @@ Clears the stack of a Chain instance.
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
 ### Example:
 
@@ -136,16 +143,16 @@ Clears the stack of a Chain instance.
 
 ### See Also:
 
-[Fx][], [Fx.Tween][]
+- [Fx][], [Fx.Tween][]
 
 
 
 Class: Events {#Events}
 =======================
 
-A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].
+**A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 In [Fx][], for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
-Events in a Class that implements [Events](#Events) must be either added as an option or with addEvent, not directly through .options.onEventName.
+Events in a Class that implements [Events](#Events) must be either added as an option or with addEvent, not directly through .options.onEventName.**
 
 ### Syntax:
 
@@ -159,8 +166,8 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 
 ### Implementing:
 
-This class can be implemented into other classes to add its functionality to them.
-It has been designed to work well with the [Options](#Options) class.
+- This class can be implemented into other classes to add its functionality to them.
+- It has been designed to work well with the [Options](#Options) class.
 
 ### Example:
 
@@ -180,14 +187,14 @@ It has been designed to work well with the [Options](#Options) class.
 
 ### See Also:
 
-[Class][], [Options](#Options)
+- [Class][], [Options](#Options)
 
 
 
 Events Method: addEvent {#Events:addEvent}
 ------------------------------------------
 
-Adds an event to the Class instance's event stack.
+**Adds an event to the Class instance's event stack.**
 
 ### Syntax:
 
@@ -195,13 +202,13 @@ Adds an event to the Class instance's event stack.
 
 ### Arguments:
 
-1. type     - (string) The type of event (e.g. 'onComplete').
-2. fn       - (function) The function to execute.
-3. internal - (boolean, optional) Sets the function property: internal to true. Internal property is used to prevent removal.
+1. **type**     - (*string*) The type of event (e.g. 'onComplete').
+2. **fn**       - (*function*) The function to execute.
+3. **internal** - (*boolean*, optional) Sets the function property: internal to true. Internal property is used to prevent removal.
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
 ### Example:
 
@@ -213,7 +220,7 @@ Adds an event to the Class instance's event stack.
 Events Method: fireEvent {#Events:fireEvent}
 --------------------------------------------
 
-Fires all events of the specified type in the Class instance.
+**Fires all events of the specified type in the Class instance.**
 
 ### Syntax:
 
@@ -221,13 +228,13 @@ Fires all events of the specified type in the Class instance.
 
 ### Arguments:
 
-1. type  - (string) The type of event (e.g. 'onComplete').
-2. args  - (mixed, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
-3. delay - (number, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
+1. **type**  - (*string*) The type of event (e.g. 'onComplete').
+2. **args**  - (*mixed*, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
+3. **delay** - (*number*, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
 ### Example:
 
@@ -244,7 +251,7 @@ Fires all events of the specified type in the Class instance.
 Events Method: removeEvent {#Events:removeEvent}
 ------------------------------------------------
 
-Removes an event from the stack of events of the Class instance.
+**Removes an event from the stack of events of the Class instance.**
 
 ### Syntax:
 
@@ -252,22 +259,22 @@ Removes an event from the stack of events of the Class instance.
 
 ### Arguments:
 
-1. type - (string) The type of event (e.g. 'onComplete').
-	fn   - (function) The function to remove.
+1. **type** - (*string*) The type of event (e.g. 'onComplete').
+2. **fn**   - (*function*) The function to remove.
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
-### Note:
+### Notes:
 
-If the function has the property internal and is set to true, then the event will not be removed.
+- If the function has the property internal and is set to true, then the event will not be removed.
 
 
 Events Method: removeEvents {#Events:removeEvents}
 --------------------------------------------------
 
-Removes all events of the given type from the stack of events of a Class instance. If no type is specified, removes all events of all types.
+**Removes all events of the given type from the stack of events of a Class instance. If no type is specified, removes all events of all types.**
 
 ### Syntax:
 
@@ -275,11 +282,11 @@ Removes all events of the given type from the stack of events of a Class instanc
 
 ### Arguments:
 
-1. type - (string, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
+1. **type** - (*string*, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
 ### Example:
 
@@ -287,18 +294,18 @@ Removes all events of the given type from the stack of events of a Class instanc
 	myFx.removeEvents('onComplete');
 
 
-### Note:
+### Notes:
 
-Will not remove internal events. See [Events:removeEvent](#Events:removeEvent).
+- Will not remove internal events. See [Events:removeEvent][].
 
 
 
 Class: Options {#Options}
 =========================
 
-A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].
-Used to automate the setting of a Class instance's options.
-Will also add Class [Events](#Events) when the option property begins with on, followed by a capital letter (e.g. 'onComplete').
+**A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].**
+**Used to automate the setting of a Class instance's options.**
+**Will also add Class [Events](#Events) when the option property begins with on, followed by a capital letter (e.g. 'onComplete').**
 
 ### Syntax:
 
@@ -315,7 +322,7 @@ Will also add Class [Events](#Events) when the option property begins with on, f
 Options Method: setOptions {#Options:setOptions}
 ------------------------------------------------
 
-Merges the default options of the Class with the options passed in.
+**Merges the default options of the Class with the options passed in.**
 
 ### Syntax:
 
@@ -323,11 +330,11 @@ Merges the default options of the Class with the options passed in.
 
 ### Arguments:
 
-1. options - (object, optional) The user defined options to merge with the defaults.
+1. **options** - (*object*, optional) The user defined options to merge with the defaults.
 
 ### Returns:
 
-* (object) This Class instance.
+* (*object*) This Class instance.
 
 ### Example:
 
@@ -351,9 +358,20 @@ Merges the default options of the Class with the options passed in.
 			width: 200
 		}
 	});
+
 	//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
 
-### Note:
+### Notes:
 
-Relies on the default options of a Class defined in its options property.
-If a Class has [Events](#Events) implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+- Relies on the default options of a Class defined in its options property.
+- If a Class has [Events](#Events) implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+
+
+
+[Fx]: /Fx/Fx
+[Fx.Tween]: /Fx/Fx.Tween
+[Ajax]: /Remote/Request.HTML
+[XHR]: /Request/Request
+[Class]: /Class/Class
+[Class:implement]: /Class/#Class:implement
+[Events:removeEvent]: /Element/Element.Event/#Element:removeEvent

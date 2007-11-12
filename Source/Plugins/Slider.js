@@ -19,9 +19,9 @@ var Slider = new Class({
 		onTick: function(position){
 			this.knob.setStyle(this.property, position);
 		},
-		mode: 'horizontal',
+		offset: 0,
 		steps: 100,
-		offset: 0
+		mode: 'horizontal'
 	},
 
 	initialize: function(element, knob, options){
@@ -42,6 +42,7 @@ var Slider = new Class({
 				this.property = 'left';
 				offset = 'offsetWidth';
 		}
+		this.half = this.knob[offset] / 2;
 		this.max = this.element[offset] - this.knob[offset] + (this.options.offset * 2);
 		this.knob.setStyle('position', 'relative').setStyle(this.property, - this.options.offset);
 		modifiers[this.axis] = this.property;
@@ -68,7 +69,7 @@ var Slider = new Class({
 	},
 
 	clickedElement: function(event){
-		var position = event.page[this.axis] - this.element.getRelativePosition()[this.axis] - this.knob[offset] / 2;
+		var position = event.page[this.axis] - this.element.getRelativePosition()[this.axis] - this.half;
 		position = position.limit(-this.options.offset, this.max -this.options.offset);
 		this.step = this.toStep(position);
 		this.checkStep();

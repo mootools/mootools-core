@@ -1,18 +1,26 @@
-[Function:bind]: /Native/#Function:bind
+Core.js
+-------
+
+Core contains an handful of common sense functions used in [MooTools](http://mootools.net/). It also contains some basic [Hash][] and [Array][] methods.
+
+### License:
+
+MIT-style license.
+
 
 
 Core Utilities {#Core}
 ======================
 
-Core contains an handful of common sense functions used in [MooTools](http://mootools.net).
-It also contains some basic [Hash](/Hash) and [Array](/Array) methods.
+**Core contains an handful of common sense functions used in [MooTools](http://mootools.net).**
+**It also contains some basic [Hash][] and [Array][] methods.**
 
 
 
 Function: $chk {#chk}
 ---------------------
 
-Checks to see if a value exists or is 0. Useful for allowing 0.
+**Checks to see if a value exists or is 0. Useful for allowing 0.**
 
 ### Syntax:
 
@@ -20,11 +28,11 @@ Checks to see if a value exists or is 0. Useful for allowing 0.
 
 ### Arguments:
 
-1. item - (mixed) The item to inspect.
+1. **item** - (*mixed*) The item to inspect.
 
 ### Returns:
 
-* (boolean) If the object passed in exists or is 0, returns true. Otherwise, returns false.
+* (*boolean*) If the object passed in exists or is 0, returns true. Otherwise, returns false.
 
 ### Example:
 
@@ -38,7 +46,7 @@ Checks to see if a value exists or is 0. Useful for allowing 0.
 Function: $clear {#clear}
 -------------------------
 
-Clears a Timeout or an Interval.
+**Clears a Timeout or an Interval.**
 
 ### Syntax:
 
@@ -46,11 +54,11 @@ Clears a Timeout or an Interval.
 
 ### Arguments:
 
-1. timer - (number) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
+1. **timer** - (*number*) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
 
 ### Returns:
 
-* (false) returns null.
+* (*false*) returns null.
 
 ### Example:
 
@@ -59,14 +67,14 @@ Clears a Timeout or an Interval.
 
 ### See also:
 
-[Function.delay](/Native/#Function:delay), [Function.periodical](/Native/#Function:periodical)
+- [Function:delay][], [Function:periodical][]
 
 
 
 Function: $defined {#defined}
 -----------------------------
 
-Checks to see if a value is defined.
+**Checks to see if a value is defined.**
 
 ### Syntax:
 
@@ -74,11 +82,11 @@ Checks to see if a value is defined.
 
 ### Arguments:
 
-1. obj - (mixed) The object to inspect.
+1. **obj** - (*mixed*) The object to inspect.
 
 ### Returns:
 
-* (boolean) If the object passed is not null or undefined, returns true. Otherwise, returns false.
+* (*boolean*) If the object passed is not null or undefined, returns true. Otherwise, returns false.
 
 ### Example:
 
@@ -92,7 +100,7 @@ Checks to see if a value is defined.
 Function: $empty {#empty}
 -------------------------
 
-An empty function, that's it. Typically used for as a placeholder inside classes event methods.
+**An empty function, that's it. Typically used for as a placeholder inside classes event methods.**
 
 ### Syntax:
 
@@ -107,8 +115,8 @@ An empty function, that's it. Typically used for as a placeholder inside classes
 Function: $extend {#extend}
 ---------------------------
 
-Copies all the properties from the second object passed in to the first object passed in.
-In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.
+**Copies all the properties from the second object passed in to the first object passed in.**
+**In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.**
 
 ### Syntax:
 
@@ -116,12 +124,12 @@ In myWhatever.extend = $extend, the first parameter will become myWhatever, and 
 
 ### Arguments:
 
-1. original - (object) The object to be extended.
-2. extended - (object, optional) The object whose properties will be copied to src.
+1. **original** - (*object*) The object to be extended.
+2. **extended** - (*object*, optional) The object whose properties will be copied to src.
 
 ### Returns:
 
-* (object) The extended object.
+* (*object*) The extended object.
 
 ### Examples:
 
@@ -152,7 +160,7 @@ In myWhatever.extend = $extend, the first parameter will become myWhatever, and 
 Function: $merge {#merge}
 -------------------------
 
-Merges any number of objects recursively without referencing them or their sub-objects.
+**Merges any number of objects recursively without referencing them or their sub-objects.**
 
 ### Syntax:
 
@@ -160,13 +168,13 @@ Merges any number of objects recursively without referencing them or their sub-o
 
 ### Arguments:
 
-* (objects) Any number of objects.
+1. (**objects**) Any number of objects.
 
 ### Returns:
 
-* (object) The object that is created as a result of merging all the objects passed in.
+* (*object*) The object that is created as a result of merging all the objects passed in.
 
-### Example:
+### Examples:
 
 	var obj1 = {a: 0, b: 1};
 	var obj2 = {c: 2, d: 3};
@@ -182,7 +190,7 @@ Merges any number of objects recursively without referencing them or their sub-o
 Function: $pick {#pick}
 -----------------------
 
-Returns the first defined argument passed in, or null.
+**Returns the first defined argument passed in, or null.**
 
 ### Syntax:
 
@@ -190,12 +198,12 @@ Returns the first defined argument passed in, or null.
 
 ### Arguments:
 
-* (mixed) Any number of variables.
+* (*mixed*) Any number of variables.
 
 ### Returns:
 
-* (mixed) The first variable that is defined.
-* (false) If all variables passed in are null or undefined, returns null.
+* (*mixed*) The first variable that is defined.
+* (*false*) If all variables passed in are null or undefined, returns null.
 
 ### Example:
 
@@ -208,7 +216,7 @@ Returns the first defined argument passed in, or null.
 Function: $random {#random}
 ---------------------------
 
-Returns a random integer number between the two passed in values.
+**Returns a random integer number between the two passed in values.**
 
 ### Syntax:
 
@@ -216,12 +224,12 @@ Returns a random integer number between the two passed in values.
 
 ### Arguments:
 
-1. min - (number) The minimum value (inclusive).
-2. max - (number) The maximum value (inclusive).
+1. **min** - (*number*) The minimum value (inclusive).
+2. **max** - (*number*) The maximum value (inclusive).
 
 ### Returns:
 
-* (number) A random number between min and max.
+* (*number*) A random number between min and max.
 
 ### Example:
 
@@ -232,7 +240,7 @@ Returns a random integer number between the two passed in values.
 Function: $splat {#splat}
 -------------------------
 
-Array-ifies the argument passed in if it is defined and not already an array.
+**Array-ifies the argument passed in if it is defined and not already an array.**
 
 ### Syntax:
 
@@ -240,11 +248,11 @@ Array-ifies the argument passed in if it is defined and not already an array.
 
 ### Arguments:
 
-1. obj - (mixed) Any type of variable.
+1. **obj** - (*mixed*) Any type of variable.
 
 ### Returns:
 
-* (array) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
+* (*array*) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
 
 ### Example:
 
@@ -256,7 +264,7 @@ Array-ifies the argument passed in if it is defined and not already an array.
 Function: $time {#time}
 -----------------------
 
-Returns the current time as a timestamp.
+**Returns the current time as a timestamp.**
 
 ### Syntax:
 
@@ -264,14 +272,14 @@ Returns the current time as a timestamp.
 
 ### Returns:
 
-* (number) - Current timestamp.
+* (*number*) - Current timestamp.
 
 
 
 Function: $try {#try}
 ---------------------
 
-Tries to execute a function. Returns false if it fails.
+**Tries to execute a function. Returns false if it fails.**
 
 ### Syntax:
 
@@ -279,29 +287,29 @@ Tries to execute a function. Returns false if it fails.
 
 ### Arguments:
 
-1. fn   - (function) The function to execute.
-2. bind - (object, optional: defaults to the function passed in) The object to use as 'this' in the function. For more information see [Function:bind][].
-3. args - (mixed, optional) Single item or array of items as arguments to be passed to the function.
+1. **fn**   - (*function*) The function to execute.
+2. **bind** - (*object*, optional: defaults to the function passed in) The object to use as 'this' in the function. For more information see [Function:bind][].
+3. **args** - (*mixed*, optional) Single item or array of items as arguments to be passed to the function.
 
 ### Returns:
 
-* (mixed) Standard return of the called function.
-* (boolean) `false` on failure.
+* (*mixed*) Standard return of the called function.
+* (*boolean*) `false` on failure.
 
-### Example:
+### Examples:
 
 	var result = $try(eval, window, 'some invalid javascript'); //false
 
-### Note:
+### Notes:
 
-Warning: if the function passed can return false, there will be no way to know if it has been successfully executed or not.
+- Warning: if the function passed can return false, there will be no way to know if it has been successfully executed or not.
 
 
 
 Function: $type {#type}
 -----------------------
 
-Returns the type of object that matches the element passed in.
+**Returns the type of object that matches the element passed in.**
 
 ### Syntax:
 
@@ -309,28 +317,28 @@ Returns the type of object that matches the element passed in.
 
 ### Arguments:
 
-1. obj - (object) The object to inspect.
+1. **obj** - (*object*) The object to inspect.
 
 ### Returns:
 
-* 'element'    - (string) If object is a DOM element node.
-* 'textnode'   - (string) If object is a DOM text node.
-* 'whitespace' - (string) If object is a DOM whitespace node.
-* 'arguments'  - (string) If object is an arguments object.
-* 'array'      - (string) If object is an array.
-* 'object'     - (string) If object is an object.
-* 'string'     - (string) If object is a string.
-* 'number'     - (string) If object is a number.
-* 'boolean'    - (string) If object is a boolean.
-* 'function'   - (string) If object is a function.
-* 'regexp'     - (string) If object is a regular expression.
-* 'class'      - (string) If object is a Class (created with new Class, or the extend of another class).
-* 'collection' - (string) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
-* 'window'     - (string) If object is the window object.
-* 'document'   - (string) If object is the document object.
-* false        - (boolean) If object is undefined, null, NaN or none of the above.
+* *'element'*    - (string) If object is a DOM element node.
+* *'textnode'*   - (string) If object is a DOM text node.
+* *'whitespace'* - (string) If object is a DOM whitespace node.
+* *'arguments'*  - (string) If object is an arguments object.
+* *'array'*      - (string) If object is an array.
+* *'object'*     - (string) If object is an object.
+* *'string'*     - (string) If object is a string.
+* *'number'*     - (string) If object is a number.
+* *'boolean'*    - (string) If object is a boolean.
+* *'function'*   - (string) If object is a function.
+* *'regexp'*     - (string) If object is a regular expression.
+* *'class'*      - (string) If object is a Class (created with new Class, or the extend of another class).
+* *'collection'* - (string) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
+* *'window'*     - (string) If object is the window object.
+* *'document'*   - (string) If object is the document object.
+* *false*        - (boolean) If object is undefined, null, NaN or none of the above.
 
-### Example:
+### Examples:
 
 	var myString = 'hello';
 	$type(myString); //returns "string"
@@ -340,22 +348,26 @@ Returns the type of object that matches the element passed in.
 Native: Hash {#Hash}
 ====================
 
-A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
-Useful because in Javascript we cannot use Object.prototype. You can now use Hash.prototype!
+**A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.**
+**Useful because in Javascript we cannot use Object.prototype. You can now use Hash.prototype!**
 
-## Syntax:
+
+Hash Method: constructor {#Hash:constructor}
+--------------------------------------------
+
+### Syntax:
 
 	var myHash = new Hash([object]);
 
-## Arguments:
+### Arguments:
 
-1. object - (`mixed`) A hash or object to implement.
+1. **object** - (*mixed*) A hash or object to implement.
 
-## Returns:
+### Returns:
 
-(hash) A new Hash instance.
+* (*hash*) A new Hash instance.
 
-## Example:
+### Examples:
 
 	var myHash = new Hash({
 		aProperty: true,
@@ -370,7 +382,7 @@ Useful because in Javascript we cannot use Object.prototype. You can now use Has
 Hash Method: each {#Hash:each}
 -------------------------------
 
-Calls a function for each key-value pair in the object.
+**Calls a function for each key-value pair in the object.**
 
 ### Syntax:
 
@@ -378,8 +390,8 @@ Calls a function for each key-value pair in the object.
 
 ### Arguments:
 
-1. fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. **fn**   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -389,11 +401,11 @@ Calls a function for each key-value pair in the object.
 
 ##### Arguments:
 
-1. value - (mixed) The current value in the hash.
-2. key   - (string) The current value's key in the hash.
-3. hash  - (hash) The actual hash.
+1. **value** - (*mixed*) The current value in the hash.
+2. **key**   - (*string*) The current value's key in the hash.
+3. **hash**  - (*hash*) The actual hash.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({first: "Sunday", second: "Monday", third: "Tuesday"});
 	hash.each(function(value, key){
@@ -405,21 +417,22 @@ Calls a function for each key-value pair in the object.
 Function: $H {#H}
 -----------------
 
-Shortcut for new [Hash](/Core/#Hash).
+**Shortcut for new [Hash](/Core/#Hash).**
 
 ### See Also:
 
-[Hash](/Hash)
+- [Hash][]
 
 
 
 Native: Array {#Array}
 ======================
 
+
 Array Method: each {#Array:each}
 ---------------------------------
 
-Calls a function for each element in the array.
+**Calls a function for each element in the array.**
 
 ### Syntax:
 
@@ -427,8 +440,8 @@ Calls a function for each element in the array.
 
 ### Arguments:
 
-1. fn   - (function) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. **fn**   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -438,11 +451,11 @@ Calls a function for each element in the array.
 
 ##### Arguments:
 
-1. item   - (mixed) The current item in the array.
-2. index  - (number) The current item's index in the array.
-3. array  - (array) The actual array.
+1. **item**   - (*mixed*) The current item in the array.
+2. **index**  - (*number*) The current item's index in the array.
+3. **array**  - (*array*) The actual array.
 
-### Example:
+### Examples:
 
 	['apple', 'banana', 'lemon'].each(function(item, index){
 		alert(index + " = " + item); //alerts "0 = apple" etc.
@@ -451,18 +464,18 @@ Calls a function for each element in the array.
 
 ### See Also:
 
-[MDC Array.forEach](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach)
+- [MDC Array.forEach](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach)
 
-### Note:
+### Notes:
 
-This method is only available for browsers without native [Array.forEach](/Core/#Array:forEach) support.
+- This method is only available for browsers without native [Array.forEach](/Core/#Array:forEach) support.
 
 
 
 Function: $A {#A}
 -----------------
 
-Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
+**Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.**
 
 ### Syntax:
 
@@ -470,11 +483,11 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 
 ### Arguments:
 
-1. iterable - (array) The iterable to copy.
+1. **iterable** - (array) The iterable to copy.
 
 ### Returns:
 
-* (array) The new copied array.
+* (*array*) The new copied array.
 
 ### Examples:
 
@@ -496,7 +509,7 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 Function: $each {#each}
 -----------------------
 
-Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.
+**Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.**
 
 ### Syntax:
 
@@ -504,9 +517,9 @@ Use to iterate through iterables that are not regular arrays, such as builtin ge
 
 ### Arguments:
 
-1. iterable - (object or array) The object or array to iterate through.
-2. fn - (function) The function to test for each element.
-3. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. **iterable** - (*object* or *array*) The object or array to iterate through.
+2. **fn**       - (*function*) The function to test for each element.
+3. **bind**     - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -516,9 +529,9 @@ Use to iterate through iterables that are not regular arrays, such as builtin ge
 
 ##### Arguments:
 
-1. item - (mixed) The current item in the array.
-2. index - (number) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
-3. object - (mixed) The actual array/object.
+1. **item**   - (*mixed*) The current item in the array.
+2. **index**  - (*number*) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
+3. **object** - (*mixed*) The actual array/object.
 
 ### Examples:
 
@@ -534,3 +547,11 @@ Use to iterate through iterables that are not regular arrays, such as builtin ge
 	$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 		alert("the " + key + " day of the week is " + value);
 	}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
+
+
+
+[Function:bind]: /Native/#Function:bind
+[Hash]: Native/Hash
+[Array]: /Native/Array
+[Function:delay]: /Native/#Function:delay
+[Function:periodical]: /Native/#Function:periodical

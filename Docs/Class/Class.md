@@ -1,3 +1,14 @@
+Class.js
+--------
+
+Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+
+### License:
+
+MIT-style license.
+
+
+
 Native: Class {#Class}
 ======================
 
@@ -12,30 +23,30 @@ Class Method: constructor {#Class:constructor}
 
 ### Arguments:
 
-1. properties - (object) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
+1. **properties** - (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
 
 #### Property: Extends
 
-* (class) The Class that this class will extend.
+* (*class*) The Class that this class will extend.
 
 The methods of This Class that have the same name as the Extends Class, will have a parent property, that allows you to call the other overridden method.
 
 #### Property: Implements
 
-* (object) An object which properties will be copied into this Class.
-* (class) A Class which properties will be copied into this Class.
-* (array) An array of objects or Classes which properties will be copied into this Class.
+* (*object*) An object which properties will be copied into this Class.
+* (*class*) A Class which properties will be copied into this Class.
+* (*array*) An array of objects or Classes which properties will be copied into this Class.
 
-Similar to Extends, but it simply overrides the properties, without inheritanc.
+Similar to Extends, but it simply overrides the properties, without inheritance.
 Useful when implementing a default set of properties in multiple Classes.
 
 #### Property: initialize
 
-* (function) The initialize function will be the constructor for this class when new instances are created.
+* (*function*) The initialize function will be the constructor for this class when new instances are created.
 
 ### Returns:
 
-* (class) The Class created.
+* (*class*) The Class created.
 
 ### Examples:
 
@@ -96,8 +107,8 @@ Useful when implementing a default set of properties in multiple Classes.
 Class Method: implement {#Class:implement}
 ------------------------------------------
 
-Implements the passed in properties into the base Class prototypes, altering the base Class.
-The same as creating a [new Class](#Class:constructor) with the Implements property, but handy when you need to modify existing classes.
+**Implements the passed in properties into the base Class prototypes, altering the base Class.**
+**The same as creating a [new Class](#Class:constructor) with the Implements property, but handy when you need to modify existing classes.**
 
 ### Syntax:
 
@@ -105,9 +116,9 @@ The same as creating a [new Class](#Class:constructor) with the Implements prope
 
 ### Arguments:
 
-1. properties - (object) The properties to add to the base Class.
+1. **properties** - (*object*) The properties to add to the base Class.
 
-### Example:
+### Examples:
 
 	var Animal = new Class({
 		initialize: function(age){

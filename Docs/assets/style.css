@@ -275,4 +275,19 @@ div#footer p {
 	overflow: auto;
 }
 
+#docs h5, #docs h6 {
+	margin: 5px 0;
+	padding: 3px 5px 1px;
+	color: #ce4521;
+	background: #f0f0ee;
+}
+
+#container #docs #docs-wrapper li strong {
+	color: #5a86a3;
+}
+
+#container #docs #docs-wrapper li em {
+	color: #a56f49;
+}
+
 /* @end */
