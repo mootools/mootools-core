@@ -160,7 +160,7 @@ var Sortables = new Class({
 
 	reset: function(){
 		this.idle = true;
-		this.clone.dispose();
+		this.clone.destroy();
 		this.fireEvent('onComplete', this.element);
 	},
 

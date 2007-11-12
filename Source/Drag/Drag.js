@@ -73,7 +73,6 @@ var Drag = new Class({
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
 		this.document.addEvent('mousemove', this.bound.check);
 		this.document.addEvent('mouseup', this.bound.cancel);
-		event.stop();
 	},
 
 	check: function(event){
@@ -110,19 +109,13 @@ var Drag = new Class({
 	cancel: function(event){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);
-		if (event) {
-			this.fireEvent('onCancel', this.element);
-			event.stop();
-		}
+		if (event) this.fireEvent('onCancel', this.element);
 	},
 
 	stop: function(event){
 		this.document.removeEvent('mousemove', this.bound.drag);
 		this.document.removeEvent('mouseup', this.bound.stop);
-		if (event) {
-			this.fireEvent('onComplete', this.element);
-			event.stop();
-		}
+		if (event) this.fireEvent('onComplete', this.element);
 	}
 
 });

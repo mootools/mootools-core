@@ -62,7 +62,7 @@ var Dimensions = {
 			if (objs.great){
 				if (Browser.Engine.trident) return Math.max(objs.doc.documentElement['offset' + dims[Z]], objs.doc.documentElement['scroll' + dims[Z]]);
 				if (Browser.Engine.webkit) return objs.doc.body['scroll' + dims[Z]];
-				return objs.doc.documentElement.scrollWidth;
+				return objs.doc.documentElement['scroll' + dims[Z]];
 			} else {
 				return self['scroll' + dims[Z]];
 			}
