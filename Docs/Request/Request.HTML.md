@@ -42,7 +42,7 @@ An Ajax class, for all your asynchronous needs. Also contains methods to generat
 
 ### Returns:
 
-* (object) A new Ajax instance.
+* (object) A new Request.HTML instance.
 
 ### Examples:
 
@@ -80,7 +80,7 @@ An Ajax class, for all your asynchronous needs. Also contains methods to generat
 
 ### See Also:
 
-[Request][/Request/Request]
+[Request][Request/Request]
 
 
 
@@ -90,7 +90,7 @@ Element Setter,Getter and Method {#Element}
 Element Setter: html {#Element:Setter:load}
 -------------------------------------------
 
-Sets a default Ajax instance for an element
+Sets a default Request.HTML instance for an Element.
 
 ### Syntax:
 
@@ -98,11 +98,11 @@ Sets a default Ajax instance for an element
 
 ### Arguments:
 
-1. options - (object) The Request options.
+1. **options** - (*object*) The Request options.
 
 ### Returns:
 
-* (element) The target Element.
+* (*Element*) The target Element.
 
 ### Example:
 
@@ -114,7 +114,7 @@ Sets a default Ajax instance for an element
 Element Getter: load {#Element:Getter:load}
 -------------------------------------------
 
-Gets the previously setted Ajax instance or a new one with default options
+Returns either the previously set Request.HTML instance or a new one with default options.
 
 ### Syntax:
 
@@ -122,8 +122,8 @@ Gets the previously setted Ajax instance or a new one with default options
 
 ### Arguments:
 
-1. **url** - (*string*) the url to associate the Ajax instance with.
-2. **options** - (*object*, *optional*) the Ajax options. if passed in will generate a new instance.
+1. **url** - (*string*) The URL to associate the Request.HTML instance with.
+2. **options** - (*objectl, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set. 
 
 ### Returns:
 
@@ -140,7 +140,7 @@ Gets the previously setted Ajax instance or a new one with default options
 Element Method: load {#Element:load}
 ------------------------------------
 
-Updates the content of the element with an Ajax get request.
+Updates the content of the Element with a Request.HTML GET request.
 
 ### Syntax:
 
@@ -149,7 +149,7 @@ Updates the content of the element with an Ajax get request.
 ### Arguments:
 
 1. url     - (string) The URL pointing to the server-side document.
-2. options - (object, optional) Options object for the <Ajax> request.
+2. options - (object, optional) Options object for the <Request.HTML> request.
 
 ### Returns:
 
@@ -161,6 +161,6 @@ Updates the content of the element with an Ajax get request.
 
 	<div id="content">Loading content...</div>
 
-##### Javascript
+##### JavaScript
 
 	$('content').load('page_1.html');

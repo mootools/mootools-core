@@ -72,11 +72,11 @@ Tips requires an XHTML doctype.
 
 ### Example:
 
-##### Html:
+##### HTML:
 
 	<img src="/images/i.png" title="The body of the tooltip is stored in the title" class="toolTipImg"/>
 
-##### Javascript
+##### JavaScript
 
 	var myTips = new Tips($$('.toolTipImg'), {
 		maxTitleChars: 50	//I like my captions a little long
