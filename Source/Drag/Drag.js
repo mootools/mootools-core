@@ -16,7 +16,6 @@ var Drag = new Class({
 	options: {/*
 		onBeforeStart: $empty,
 		onStart: $empty,
-		onSnap: $empty,
 		onDrag: $empty,
 		onCancel: $empty,
 		onComplete: $empty,*/
@@ -80,13 +79,13 @@ var Drag = new Class({
 	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
-			this.cancel(true);
+			this.cancel();
 			this.document.addEvent('mousemove', this.bound.drag);
 			this.document.addEvent('mouseup', this.bound.stop);
 			this.fireEvent('onStart', this.element);
 			this.fireEvent('onSnap', this.element);
 		}
-		return false;
+		event.stop();
 	},
 
 	drag: function(event){
@@ -108,18 +107,22 @@ var Drag = new Class({
 		event.stop();
 	},
 
-	cancel: function(supress){
+	cancel: function(event){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);
-		if (!supress) this.fireEvent('onCancel', this.element);
-		return false;
+		if (event) {
+			this.fireEvent('onCancel', this.element);
+			event.stop();
+		}
 	},
 
-	stop: function(){
+	stop: function(event){
 		this.document.removeEvent('mousemove', this.bound.drag);
 		this.document.removeEvent('mouseup', this.bound.stop);
-		this.fireEvent('onComplete', this.element);
-		return false;
+		if (event) {
+			this.fireEvent('onComplete', this.element);
+			event.stop();
+		}
 	}
 
 });
