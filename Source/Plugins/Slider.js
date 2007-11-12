@@ -16,8 +16,8 @@ var Slider = new Class({
 	options: {/*
 		onChange: $empty,
 		onComplete: $empty,*/
-		onTick: function(pos){
-			this.knob.setStyle(this.p, pos);
+		onTick: function(position){
+			this.knob.setStyle(this.property, position);
 		},
 		mode: 'horizontal',
 		steps: 100,
@@ -25,43 +25,33 @@ var Slider = new Class({
 	},
 
 	initialize: function(element, knob, options){
+		this.setOptions(options);
 		this.element = $(element);
 		this.knob = $(knob);
-		this.setOptions(options);
-		this.previousChange = -1;
-		this.previousEnd = -1;
-		this.step = -1;
+		this.previousChange = this.previousEnd = this.step = -1;
 		this.element.addEvent('mousedown', this.clickedElement.bind(this));
-		var mod, offset;
+		var offset, limit = {}, modifiers = {'x': false, 'y': false};
 		switch (this.options.mode){
-			case 'horizontal':
-				this.z = 'x';
-				this.p = 'left';
-				mod = {'x': 'left', 'y': false};
-				offset = 'offsetWidth';
-				break;
 			case 'vertical':
-				this.z = 'y';
-				this.p = 'top';
-				mod = {'x': false, 'y': 'top'};
+				this.axis = 'y';
+				this.property = 'top';
 				offset = 'offsetHeight';
+				break;
+			case 'horizontal':
+				this.axis = 'x';
+				this.property = 'left';
+				offset = 'offsetWidth';
 		}
 		this.max = this.element[offset] - this.knob[offset] + (this.options.offset * 2);
-		this.half = this.knob[offset] / 2;
-		this.getPos = this.element['get' + this.p.capitalize()].bind(this.element);
-		this.knob.setStyle('position', 'relative').setStyle(this.p, - this.options.offset);
-		var lim = {};
-		lim[this.z] = [- this.options.offset, this.max - this.options.offset];
+		this.knob.setStyle('position', 'relative').setStyle(this.property, - this.options.offset);
+		modifiers[this.axis] = this.property;
+		limit[this.axis] = [- this.options.offset, this.max - this.options.offset];
 		this.drag = new Drag(this.knob, {
-			limit: lim,
-			modifiers: mod,
 			snap: 0,
-			onStart: function(){
-				this.draggedKnob();
-			}.bind(this),
-			onDrag: function(){
-				this.draggedKnob();
-			}.bind(this),
+			limit: limit,
+			modifiers: modifiers,
+			onDrag: this.draggedKnob.bind(this),
+			onStart: this.draggedKnob.bind(this),
 			onComplete: function(){
 				this.draggedKnob();
 				this.end();
@@ -78,7 +68,7 @@ var Slider = new Class({
 	},
 
 	clickedElement: function(event){
-		var position = event.page[this.z] - this.getPos() - this.half;
+		var position = event.page[this.axis] - this.element.getRelativePosition()[this.axis] - this.knob[offset] / 2;
 		position = position.limit(-this.options.offset, this.max -this.options.offset);
 		this.step = this.toStep(position);
 		this.checkStep();
@@ -87,7 +77,7 @@ var Slider = new Class({
 	},
 
 	draggedKnob: function(){
-		this.step = this.toStep(this.drag.value.now[this.z]);
+		this.step = this.toStep(this.drag.value.now[this.axis]);
 		this.checkStep();
 	},
 
