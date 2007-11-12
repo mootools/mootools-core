@@ -5,7 +5,7 @@ Creates a Flash object with supplied parameters.
 
 ### Credits:
 
-Flash detection & Explorer + flash player 9 fix 'borrowed' from SWFObject.
+Flash detection and Internet Explorer + Flash Player 9 fix 'borrowed' from SWFObject.
 
 ### Syntax:
 
@@ -32,7 +32,7 @@ Flash detection & Explorer + flash player 9 fix 'borrowed' from SWFObject.
 
 ### Returns:
 
-* (element) A new HTML object element.
+* (Element) A new HTML object Element.
 
 ### Example:
 
@@ -55,13 +55,13 @@ Flash detection & Explorer + flash player 9 fix 'borrowed' from SWFObject.
 
 ### Note:
 
-1. Swiff returns the Object tag, but its not extensible by the $ function.
+1. Swiff returns the object tag, but its not extensible by the $ function.
 2. The $ function on an object/embed tag will only return its reference without further processing.
 
 Swiff Function: remote {#Swiff:remote}
 --------------------------------------
 
-Calls an ActionScript function from javascript.
+Calls an ActionScript function from JavaScript. 
 
 ###	Syntax:
 
@@ -74,21 +74,22 @@ Calls an ActionScript function from javascript.
 
 ###	Returns:
 
-* (mixed) The ActionScrip function's result.
+* (mixed) The ActionScript function's result.
 
 ###	Example:
 
 	var obj = new Swiff('myMovie.swf');
-	alert(Swiff.remote(obj, 'myFlashFn'));
+	alert(Swiff.remote(obj, 'myFlashFn')); //alerts "This is from the .swf file!"
 
 ###	Note:
 
-	The SWF file must be compiled with ExternalInterface component.
+The SWF file must be compiled with the ExternalInterface component.  See the Adobe documentation on [External Interface](http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00001652.html) for more information.
+
 
 Swiff Function: getVersion {#Swiff:getVersion}
 ----------------------------------------------
 
-Gets the major version of the flash player installed.
+Gets the major version of the Flash player installed.
 
 ###	Syntax:
 
@@ -96,7 +97,7 @@ Gets the major version of the flash player installed.
 
 ###	Returns:
 
-* (number) A number representing the (major) flash version installed, or 0 if no player is installed.
+* (number) A number representing the (major) Flash version installed, or 0 if no player is installed.
 
 ###	Example:
 
