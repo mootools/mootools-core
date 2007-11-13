@@ -73,6 +73,7 @@ var Drag = new Class({
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
 		this.document.addEvent('mousemove', this.bound.check);
 		this.document.addEvent('mouseup', this.bound.cancel);
+		event.stop();
 	},
 
 	check: function(event){
