@@ -76,3 +76,10 @@ Class.Extends = function(self, klass){
 		})(kp, sp);
 	}
 };
+
+//legacy .extend support
+
+Class.prototype.extend = function(properties){
+	properties.Extends = this;
+	return new Class(properties);
+};
