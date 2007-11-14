@@ -1,26 +1,34 @@
-[Fx]: /Fx/Fx
+Fx.Morph.js
+-----------
+
+
+### License:
+
+MIT-style license.
+
+
 
 Class: Fx.Morph {#Fx.Morph}
 ===========================
 
-Allows you to animate multiple css properties at once, even by a css selector. Inherits methods, properties, options and events from <Fx>.
+**Allows you to animate multiple css properties at once, even by a css selector. Inherits methods, properties, options and events from [Fx][].**
 
 ### Extends:
 
-[Fx][]
+- [Fx][]
 
 ### Syntax:
 
-var myFx = new Fx.Morph(element[, options]);
+	var myFx = new Fx.Morph(element[, options]);
 
 ### Arguments:
 
-1. element - (mixed) A string ID of the Element or an Element to apply the style transitions to.
-2. options - (object, optional) The <Fx> options object.
+1. **element** - (*mixed*) A string ID of the Element or an Element to apply the style transitions to.
+2. **options** - (*object*, optional) The [Fx][] options object.
 
 ### Returns:
 
-* (object) A new Fx.Morph instance.
+* (*object*) A new Fx.Morph instance.
 
 ### Examples:
 
@@ -56,12 +64,14 @@ var myFx = new Fx.Morph(element[, options]);
 
 ### See Also:
 
-[Fx][]
+- [Fx][]
+
+
 
 Fx.Morph Method: set {#Fx.Morph:set}
 ------------------------------------
 
-Sets the Element's css properties to the specified values immediately.
+**Sets the Element's css properties to the specified values immediately.**
 
 ### Syntax:
 
@@ -69,13 +79,13 @@ Sets the Element's css properties to the specified values immediately.
 
 ### Arguments:
 
-1. to - (object) An object containing keys that specify css properties to alter with their respected values.
+1. **to** - (*object*) An object containing keys that specify css properties to alter with their respected values.
 
 ### Returns:
 
-* (object) This Fx.Morph instance.
+* (*object*) This Fx.Morph instance.
 
-### Example:
+### Examples:
 
 	var myFx = new Fx.Morph('myElement').set({
 		'height': 200,
@@ -84,43 +94,54 @@ Sets the Element's css properties to the specified values immediately.
 		'opacity': 0
 	});
 
-Method: start
-	Executes a transition for any number of css properties in tandem.
 
-Syntax:
-	>myFx.start(obj);
 
-Arguments:
-	properties - (mixed) An object of properties/values pair or a string representing a css selector that can be found on one of the css files.
+Fx.Morph Method: start {#Fx.Morph:start}
+----------------------------------------
 
-Returns:
-	(object) This Fx.Morph instance.
+**Executes a transition for any number of css properties in tandem.**
 
-Example:
-	[javascript]
-		var myEffects = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+### Syntax:
 
-		myEffects.start({
-			'height': [10, 100],
-			'width': [900, 300],
-			'opacity': 0,
-			'background-color': '#00f'
-		});
+	myFx.start(obj);
 
-### Note:
+### Arguments:
+
+1. **properties** - (*mixed*) An object of properties/values pair or a string representing a css selector that can be found on one of the css files.
+
+### Returns:
+
+* (*object*) This Fx.Morph instance.
+
+### Examples:
+
+	var myEffects = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+
+	myEffects.start({
+		'height': [10, 100],
+		'width': [900, 300],
+		'opacity': 0,
+		'background-color': '#00f'
+	});
+
+### Notes:
 
 - If you pass a string with the css selector, make sure you write the selector exactly as written in your css.
 - Multiple selectors (with commas) are not supported.
 
+
+
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+**Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].**
+
+
 
 Element Property: morph {#Element:morph}
 ----------------------------------------
 
-Sets / gets a default Fx.Morph instance for an element
+**Sets / gets a default Fx.Morph instance for an element**
 
 ### Set
 
@@ -130,16 +151,16 @@ Sets / gets a default Fx.Morph instance for an element
 
 #### Arguments:
 
-1. options - (object) the Fx.Morph options.
+1. **options** - (*object*) the Fx.Morph options.
 
 #### Returns:
 
-* (element) this element
+* (*element*) This element
 
-#### Example:
+#### Examples:
 
-		el.set('morph', {duration: 'long', transition: 'bounce:out'});
-		el.morph({height: 100, width: 100});
+	el.set('morph', {duration: 'long', transition: 'bounce:out'});
+	el.morph({height: 100, width: 100});
 
 ### Get
 
@@ -149,23 +170,25 @@ Sets / gets a default Fx.Morph instance for an element
 
 #### Arguments:
 
-1. options - (object, optional) the Fx.Morph options. if passed in will generate a new instance.
+1. **options** - (*object*, optional) the Fx.Morph options. if passed in will generate a new instance.
 
 #### Returns:
 
-* (object) the Fx.Morph instance
+* (*object*) The Fx.Morph instance
 
-#### Example:
+#### Examples:
 
 	el.set('morph', {duration: 'long', transition: 'bounce:out'});
 	el.morph({height: 100, width: 100});
 
 	el.get('morph'); //the Fx.Morph instance
 
+
+
 Element Method: morph {#Element:morph}
 --------------------------------------
 
-Animate an element given the properties you pass in.
+**Animate an element given the properties you pass in.**
 
 ### Syntax:
 
@@ -173,12 +196,12 @@ Animate an element given the properties you pass in.
 
 ### Arguments:
 
-1. properties - (mixed) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
-2. options - (object, optional) The <Fx.Morph> options parameter.
+1. **properties** - (*mixed*) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
+2. **options**    - (*object*, optional) The [Fx.Morph][] options parameter.
 
 ### Returns:
 
-* (element) this Element.
+* (*element*) This Element.
 
 ### Example:
 
@@ -192,4 +215,10 @@ Animate an element given the properties you pass in.
 
 ### See Also:
 
-- [Fx.Morph](#Fx.Morph)
+- [Fx.Morph][]
+
+
+
+[$]: /Element/#dollar
+[Fx]: /Fx/Fx
+[Fx.Morph]: #Fx.Morph

@@ -1,17 +1,27 @@
-[Fx]: /Fx/Fx
+Fx.Scroll.js
+------------
+
+Contains [Fx.Scroll][]
+
+### License:
+
+MIT-style license.
+
+
 
 Class: Fx.Scroll {#Fx.Scroll}
 =============================
 
-Scroll any element with an overflow, including the window element.
+**Scroll any element with an overflow, including the window element.**
 
 ### Note:
 
-Fx.Scroll requires an XHTML doctype.
+- Fx.Scroll requires an XHTML doctype.
 
 ### Extends:
 
 [Fx][]
+
 
 
 Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
@@ -23,20 +33,20 @@ Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
 
 ### Arguments:
 
-1. element - (mixed) A string ID of the Element or an Element reference to scroll.
-2. options - (object, optional) All <Fx> Options in addition to offset, overflown, and wheelStops.
+1. **element** - (*mixed*) A string ID of the Element or an Element reference to scroll.
+2. **options** - (*object*, optional) All [Fx][] Options in addition to offset, overflown, and wheelStops.
 
 **Options:**
 
-1. offset     - (object: defaults to {'x': 0, 'y': 0}) An object with x/y properties for the distance to scrollTo the Element.
-2. overflown  - (array: defaults to []) An array of nested scrolling containers, see <Element.getPosition> for an explanation.
-3. wheelStops - (boolean: defaults to true) If false, the mouse wheel will not stop the transition from happening.
+1. **offset**     - (*object*: defaults to {'x': 0, 'y': 0}) An object with x/y properties for the distance to scrollTo the Element.
+2. **overflown**  - (*array*: defaults to []) An array of nested scrolling containers, see <Element.getPosition> for an explanation.
+3. **wheelStops** - (*boolean*: defaults to true) If false, the mouse wheel will not stop the transition from happening.
 
 ### Returns:
 
-* (object) A new Fx.Scroll instance.
+* (*object*) A new Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	var myFx = new Fx.Scroll('myElement', {
 		offset: {
@@ -45,7 +55,7 @@ Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
 		}
 	}).toTop();
 
-### Note:
+### Notes:
 
 - Fx.Scroll transition will stop on mousewheel movement if the optional wheelStops is not set to false. This is so that the user has control over their web experience.
 - Fx.Scroll is useless for Elements that do not have scrollbars.
@@ -54,7 +64,7 @@ Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
 Fx.Scroll Method: set {#Fx.Scroll:set}
 --------------------------------------
 	
-Scrolls the specified Element to the x/y coordinates immediately.
+**Scrolls the specified Element to the x/y coordinates immediately.**
 
 ### Syntax:
 
@@ -62,22 +72,24 @@ Scrolls the specified Element to the x/y coordinates immediately.
 
 ### Arguments:
 
-1. x - (integer) The x coordinate to scroll the Element to.
-2. y - (integer) The y coordinate to scroll the Element to.
+1. **x** - (*integer*) The x coordinate to scroll the Element to.
+2. **y** - (*integer*) The y coordinate to scroll the Element to.
 
 ### Returns:
 
 * (object) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	var myElement = $(document.body);
 	var myFx = new Fx.Scroll(myElement).set(0, 0.5 * document.body.offsetHeight);
 
+
+
 Fx.Scroll Method: start {#Fx.Scroll:start}
 ------------------------------------------
 
-Scrolls the specified Element to the x/y coordinates.
+**Scrolls the specified Element to the x/y coordinates.**
 
 ### Syntax:
 
@@ -85,26 +97,28 @@ Scrolls the specified Element to the x/y coordinates.
 
 ### Arguments:
 
-1. x - (integer) The x coordinate to scroll the Element to.
-2. y - (integer) The y coordinate to scroll the Element to.
+1. **x** - (*integer*) The x coordinate to scroll the Element to.
+2. **y** - (*integer*) The y coordinate to scroll the Element to.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	var myElement = $(document.body);
 	var myFx = new Fx.Scroll(myElement).start(0, 0.5 * document.body.offsetHeight);
 
-### Note:
+### Notes:
 
 - Scrolling to (-x, -y) is impossible. :)
+
+
 
 Fx.Scroll Method: toTop {#Fx.Scroll:toTop}
 ------------------------------------------
 
-Scrolls the specified Element to its maximum top.
+**Scrolls the specified Element to its maximum top.**
 
 ### Syntax:
 
@@ -112,9 +126,9 @@ Scrolls the specified Element to its maximum top.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	// scroll myElement 200 pixels down (from the top) and automatically after 1.5 sec scroll to the top
 	var myFx = new Fx.Scroll('myElement', {
@@ -125,10 +139,12 @@ Scrolls the specified Element to its maximum top.
 		this.scrollTo(200, 0);
 	});
 
+
+
 Fx.Scroll Method: toBottom {#Fx.Scroll:toBottom}
 ------------------------------------------------
 
-Scrolls the specified Element to its maximum bottom.
+**Scrolls the specified Element to its maximum bottom.**
 
 ### Syntax:
 
@@ -136,19 +152,21 @@ Scrolls the specified Element to its maximum bottom.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	// scroll myElement to the bottom and after 1 sec scroll to the top
 	var myFx = new Fx.Scroll(window).toBottom().chain(function(){
 		this.toTop.delay(1000, this);
 	});
 
+
+
 Fx.Scroll Method: toLeft {#Fx.Scroll:toLeft}
 --------------------------------------------
 
-Scrolls the specified Element to its maximum left.
+**Scrolls the specified Element to its maximum left.**
 
 ### Syntax:
 
@@ -156,19 +174,21 @@ Scrolls the specified Element to its maximum left.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	// scroll myElement 200 pixels to the right and go back.
 	var myFx = new Fx.Scroll('myElement').scrollTo(200, 0).chain(function(){
 		this.toLeft();
 	});
 
+
+
 Fx.Scroll Method: toRight {#Fx.Scroll:right}
 --------------------------------------------
 
-Scrolls the specified Element to its maximum right.
+**Scrolls the specified Element to its maximum right.**
 
 ### Syntax:
 
@@ -176,9 +196,9 @@ Scrolls the specified Element to its maximum right.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	// scroll myElement to the right scroll to the top
 	var myFx = new Fx.Scroll('myElement', {
@@ -188,10 +208,12 @@ Scrolls the specified Element to its maximum right.
 
 	myFx.toBottom.delay(2000, myFx);
 
+
+
 Fx.Scroll Method: toElement {#Fx.Scroll:toElement}
 --------------------------------------------------
 
-Scrolls the specified Element to the position the passed in Element is found.
+**Scrolls the specified Element to the position the passed in Element is found.**
 
 ### Syntax:
 
@@ -199,16 +221,22 @@ Scrolls the specified Element to the position the passed in Element is found.
 
 ### Arguments:
 
-1. el - (mixed) A string ID of the Element or an Element reference to scroll to.
+1. **el** - (*mixed*) A string ID of the Element or an Element reference to scroll to.
 
 ### Returns:
 
 * (object) This Fx.Scroll instance.
 
-### Example:
+### Examples:
 
 	var myFx = new Fx.Scroll(window).toElement('myElement'); //places the element at the top left corner of the window.
 
-### Note:
+### Notes:
 
-- See [Element.getPosition](/Element/#Element:getPosition) for position difficulties.
+- See [Element.getPosition][] for position difficulties.
+
+
+
+[Fx]: /Fx/Fx
+[Fx.Scroll]: #Fx.Scroll
+[Element.getPosition]: /Element/#Element:getPosition
