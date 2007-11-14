@@ -1,20 +1,25 @@
-[$]: /Element/#dollar
-[Function]: /Native/Function
-
 Element.Style.js
 ----------------
 
 Contains useful Element methods to get/set styles in a fashionable way.
+
+### License:
+
+MIT-style license.
+
+
 
 Native: Element {#Element}
 ==========================
 
 Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
+
+
 Element Method: setStyle {#Element:setStyle}
 --------------------------------------------
 
-Sets a CSS property to the Element.
+**Sets a CSS property to the Element.**
 
 ###	Syntax:
 
@@ -22,12 +27,12 @@ Sets a CSS property to the Element.
 
 ###	Arguments:
 
-1. property - (string) The property to set.
-2. value    - (mixed) The value to which to set it. For numeric values that require "px" you can pass an number.
+1. **property** - (*string*) The property to set.
+2. **value**    - (*mixed*) The value to which to set it. For numeric values that require "px" you can pass an number.
 
 ###	Returns:
 
-* (element) This element.
+* (*element*) This element.
 
 ###	Example:
 
@@ -37,14 +42,16 @@ Sets a CSS property to the Element.
 
 	$('myElement').setStyle('width', 300); //the width is now 300px
 
-###	Note:
+###	Notes:
 
-All number values will automatically be rounded to the nearest whole number.
+- All number values will automatically be rounded to the nearest whole number.
+
+
 
 Element Method: getStyle {#Element:getStyle}
 --------------------------------------------
 
-Returns the style of the Element given the property passed in.
+**Returns the style of the Element given the property passed in.**
 
 ###	Syntax:
 
@@ -52,13 +59,13 @@ Returns the style of the Element given the property passed in.
 
 ###	Arguments:
 
-1. property - (string) The css style property you want to retrieve.
+1. **property** - (*string*) The css style property you want to retrieve.
 
 ###	Returns:
 
-* (string) The style value.
+* (*string*) The style value.
 
-###	Example:
+###	Examples:
 
 	$('myElement').getStyle('width'); //returns "400px"
 
@@ -66,10 +73,12 @@ Returns the style of the Element given the property passed in.
 
 	$('myElement').getStyle('width').toInt(); //returns 400
 
+
+
 Element Method: setStyles {#Element:setStyles}
 ----------------------------------------------
 
-Applies a collection of styles to the Element.
+**Applies a collection of styles to the Element.**
 
 ###	Syntax:
 
@@ -77,11 +86,11 @@ Applies a collection of styles to the Element.
 
 ###	Arguments:
 
-1. styles - (mixed) An object, or string, containing all the styles to apply.
+1. **styles** - (*mixed*) An object, or string, containing all the styles to apply.
 
 ###	Returns:
 
-* (element) This element.
+* (*element*) This element.
 
 ###	Example:
 
@@ -95,17 +104,20 @@ Applies a collection of styles to the Element.
 
 	$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;'); // See the Note
 
-###	Note:
+###	Notes:
 
-When styles is a CSS string, all the CSS styles are overridden.
+- When styles is a CSS string, all the CSS styles are overridden.
 
 ###	See Also:
-[Element.getStyle](#Element:getStyle)
+
+- [Element:getStyle][]
+
+
 
 Element Method: getStyles {#Element:getStyles}
 ----------------------------------------------
 
-Returns an object of styles of the Element for each argument passed in.
+**Returns an object of styles of the Element for each argument passed in.**
 
 ###	Syntax:
 
@@ -113,17 +125,23 @@ Returns an object of styles of the Element for each argument passed in.
 
 ###	Arguments:
 
-1. properties - (strings) Any number of style properties.
+1. **properties** - (*strings*) Any number of style properties.
 
 ###	Returns:
 
-* (object) An key/value object with the CSS styles as computed by the browser.
+* (*object*) An key/value object with the CSS styles as computed by the browser.
 
-###	Example:
+###	Examples:
 
 	$('myElement').getStyles('width', 'height', 'padding'); 
 	//returns {width: "10px", height: "10px", padding: "10px 0px 10px 0px"}
 
 ###	See Also:
 
-[Element.getStyle](#Element:getStyle)
+- [Element:getStyle][]
+
+
+
+[$]: /Element/#dollar
+[Function]: /Native/Function
+[Element:getStyle]: #Element:getStyle
