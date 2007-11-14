@@ -1,18 +1,29 @@
+Number.js
+---------
+
+Contains the Number prototypes.
+
+### License:
+
+MIT-style license.
+
+
+
 Native: Number {#Number}
 ========================
 
-A collection of the Number Object prototype methods.
+**A collection of the Number Object prototype methods.**
 
 ### See Also:
 
-[MDC Number](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Number)
+- [MDC Number]
 
 
 
 Number Method: limit {#Number:limit}
 ------------------------------------
 
-Limits this number between two bounds.
+**Limits this number between two bounds.**
 
 ### Syntax:
 
@@ -20,14 +31,14 @@ Limits this number between two bounds.
 
 ### Arguments:
 
-1. min - (number) The minimum possible value.
-2. max - (number) The maximum possible value.
+1. **min** - (*number*) The minimum possible value.
+2. **max** - (*number*) The maximum possible value.
 
 ### Returns:
 
-* (number) The number bounded between the given limits.
+* (*number*) The number bounded between the given limits.
 
-### Example:
+### Examples:
 
 	(12).limit(2, 6.5); //returns 6.5
 	(-4).limit(2, 6.5); //returns 2
@@ -38,7 +49,7 @@ Limits this number between two bounds.
 Number Method: round {#Number:round}
 ------------------------------------
 
-Returns this number rounded to the specified precision.
+**Returns this number rounded to the specified precision.**
 
 ### Syntax:
 
@@ -46,17 +57,17 @@ Returns this number rounded to the specified precision.
 
 ### Arguments:
 
-1. precision - (number, optional: defaults to 0) The number of digits after the decimal place.
+1. **precision** - (*number*, optional: defaults to 0) The number of digits after the decimal place.
 
 ### Returns:
 
 * (number) The number, rounded.
 
-### Note:
+### Notes:
 
-	Argument may also be negative.
+- Argument may also be negative.
 
-### Example:
+### Examples:
 
 	(12.45).round() //returns 12
 	(12.45).round(1) //returns 12.5
@@ -67,7 +78,7 @@ Returns this number rounded to the specified precision.
 Number Method: times {#Number:times}
 ------------------------------------
 
-Executes the function passed in the specified number of times.
+**Executes the function passed in the specified number of times.**
 
 ### Syntax:
 
@@ -75,10 +86,10 @@ Executes the function passed in the specified number of times.
 
 ### Arguments:
 
-1. fn   - (function) The function which should be executed on each iteration of the loop. This function is passed the current iteration's index.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Native/#Function:bind).
+1. **fn**   - (*function*) The function which should be executed on each iteration of the loop. This function is passed the current iteration's index.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Native/#Function:bind).
 
-### Example:
+### Examples:
 
 	(4).times(alert); //alerts 0, 1, 2, 3
 
@@ -87,7 +98,7 @@ Executes the function passed in the specified number of times.
 Number Method: toFloat {#Number:toFloat}
 ----------------------------------------
 
-Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.
+**Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.**
 
 ### Syntax:
 
@@ -95,9 +106,9 @@ Returns this number as a float. Useful because toFloat must work on both Strings
 
 ### Returns:
 
-* (number) The number as a float.
+* (*number*) The number as a float.
 
-### Example:
+### Examples:
 
 	(111).toFloat(); //returns 111
 	(111.1).toFloat(); //returns 111.1
@@ -107,7 +118,7 @@ Returns this number as a float. Useful because toFloat must work on both Strings
 Number Method: toInt {#Number:toInt}
 ------------------------------------
 
-Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.
+**Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.**
 
 ### Syntax:
 
@@ -115,15 +126,18 @@ Returns this number as another number with the passed in base. Useful because to
 
 ### Arguments:
 
-1. base - (number, optional: defaults to 10) The base to use.
+1. **base** - (*number*, optional: defaults to 10) The base to use.
 
 ### Returns:
 
-* (number) A number with the base provided.
+* (*number*) A number with the base provided.
 
-### Example:
+### Examples:
 
 	(111).toInt(); //returns 111
 	(111.1).toInt(); //returns 111
 	(111).toInt(2); //returns 7
 
+
+
+[MDC Number]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Number

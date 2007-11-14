@@ -1,18 +1,29 @@
+Function.js
+-----------
+
+Contains Function prototypes and utility functions.
+
+### License:
+
+MIT-style license.
+
+
+
 Native: Function {#Function}
 ============================
 
-Function Methods.
+**Function Methods.**
 
 ### See Also:
 
-[MDC Function](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function)
+- [MDC Function][]
 
 
 
 Function Method: create {#Function:create}
 ------------------------------------------
 
-Base function for creating functional closures which is used by all other Function prototypes.
+**Base function for creating functional closures which is used by all other Function prototypes.**
 
 ### Syntax:
 
@@ -20,26 +31,22 @@ Base function for creating functional closures which is used by all other Functi
 
 ### Arguments:
 
-1. [options](#Function:create:options) - (object, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
+1. **[options]** - (*object*, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
 
-#### Argument: options {#Function:create:options}
+#### Options: {#Function:create:options}
 
-* bind - (object: defaults to this function) The object that the "this" of the function will refer to.
-* event - (mixed: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument.
-* If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-* arguments - (mixed: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function.
-* If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-* delay - (number: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds
-* and return a timer handle when called.
-* periodical - (number: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution
-* with this specified interval and return a timer handle when called.
-* attempt - (boolean: false) If set to true, the returned function will try to execute and return either the results or false on error.
+* **bind**       - (*object*: defaults to this function) The object that the "this" of the function will refer to.
+* **event**      - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
+* **arguments**  - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+* **delay**      - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
+* **periodical** - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
+* **attempt**    - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or false on error.
 
 ### Returns:
 
-* (function) The function that was created as a result of the options passed in.
+* (*function*) The function that was created as a result of the options passed in.
 
-### Example:
+### Examples:
 
 	var myFunction = function(){
 		alert("I'm a function :)");
@@ -59,7 +66,7 @@ Base function for creating functional closures which is used by all other Functi
 Function Method: pass {#Function:pass}
 --------------------------------------
 
-Returns a closure with arguments and bind.
+**Returns a closure with arguments and bind.**
 
 ### Syntax:
 
@@ -67,14 +74,14 @@ Returns a closure with arguments and bind.
 
 ### Arguments:
 
-1. args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. bind - (object, optional) The object that the "this" of the function will refer to.
+1. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 
-* (function) The function whose arguments are passed when called.
+* (*function*) The function whose arguments are passed when called.
 
-### Example:
+### Examples:
 
 	var myFunction = function(){
 		var result = 'Passed: ';
@@ -95,7 +102,7 @@ Returns a closure with arguments and bind.
 Function Method: attempt {#Function:attempt}
 --------------------------------------------
 
-Tries to execute the function.
+**Tries to execute the function.**
 
 ### Syntax:
 
@@ -103,15 +110,15 @@ Tries to execute the function.
 
 ### Arguments:
 
-1. args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. bind - (object, optional) The object that the "this" of the function will refer to.
+1. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 
-* (boolean) False if an exception is thrown
-* (mixed) The function's return value.
+* (*boolean*) False if an exception is thrown
+* (*mixed*) The function's return value.
 
-### Example:
+### Examples:
 
 	var myObject = {
 		'cow': 'moo!'
@@ -129,7 +136,7 @@ Tries to execute the function.
 Function Method: bind {#Function:bind}
 --------------------------------------
 
-Returns a function whose `this` is altered.
+**Returns a function whose `this` is altered.**
 
 ### Syntax:
 
@@ -137,14 +144,14 @@ Returns a function whose `this` is altered.
 
 ### Arguments:
 
-1. bind - (object, optional) The object that the "this" of the function will refer to.
-2. args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+1. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
+2. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
 
 ### Returns:
 
-* (function) The bound function.
+* (*function*) The bound function.
 
-### Example:
+### Examples:
 
 	function myFunction(){
 		this.setStyle('color', 'red');
@@ -155,11 +162,12 @@ Returns a function whose `this` is altered.
 	myBoundFunction(); // this will make the element myElement red.
 
 
+
 Function Method: bindWithEvent {#Function:bindWithEvent}
 --------------------------------------------------------
 
-Returns a function whose `this` is altered. It also makes "space" for an event.
-This makes the method indicate for using in conjunction with [Element:addEvent](/Element/Element:addEvent) and arguments.
+**Returns a function whose `this` is altered. It also makes "space" for an event.**
+**This makes the method indicate for using in conjunction with [Element:addEvent][] and arguments.**
 
 ### Syntax:
 
@@ -167,14 +175,14 @@ This makes the method indicate for using in conjunction with [Element:addEvent](
 
 ### Arguments:
 
-1. bind - (object, optional) The object that the "this" of the function will refer to.
-2. args - (mixed, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+1. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
+2. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
 
 ### Returns:
 
-* (function) The bound function.
+* (*function*) The bound function.
 
-### Example:
+### Examples:
 
 	function myFunction(e, add){
 		this.setStyle('top', e.client.x + add);
@@ -189,7 +197,7 @@ This makes the method indicate for using in conjunction with [Element:addEvent](
 Function Method: delay {#Function:delay}
 ----------------------------------------
 
-Delays the execution of a function by a specified duration.
+**Delays the execution of a function by a specified duration.**
 
 ### Syntax:
 
@@ -197,15 +205,15 @@ Delays the execution of a function by a specified duration.
 
 ### Arguments:
 
-1. delay - (number, optional) The duration to wait (in milliseconds).
-2. bind  - (object, optional) The object that the "this" of the function will refer to.
-3. args  - (mixed, optional) The arguments passed (must be an array if the arguments are greater than one).
+1. **delay** - (*number*, optional) The duration to wait (in milliseconds).
+2. **bind**  - (*object*, optional) The object that the "this" of the function will refer to.
+3. **args**  - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 ### Returns:
 
-* (number) The JavaScript Timeout ID (for clearing delays).
+* (*number*) The JavaScript Timeout ID (for clearing delays).
 
-### Example:
+### Examples:
 
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
 	//wait 50 milliseconds, then call myFunction and bind myElement to it
@@ -217,14 +225,14 @@ Delays the execution of a function by a specified duration.
 
 ### See Also:
 
-[$clear](/Core/#clear), [MDC setTimeout](http://developer.mozilla.org/en/docs/DOM:window.setTimeout)
+- [$clear][], [MDC setTimeout][]
 
 
 
 Function Method: periodical {#Function:periodical}
 --------------------------------------------------
 
-Executes a function in the specified intervals of time
+**Executes a function in the specified intervals of time**
 
 ### Syntax:
 
@@ -232,15 +240,15 @@ Executes a function in the specified intervals of time
 
 ### Arguments:
 
-1. period - (number, optional) The duration of the intervals between executions.
-2. bind   - (object, optional) The object that the "this" of the function will refer to.
-3. args   - (mixed, optional) The arguments passed (must be an array if the arguments are greater than one).
+1. **period** - (*number*, optional) The duration of the intervals between executions.
+2. **bind**   - (*object*, optional) The object that the "this" of the function will refer to.
+3. **args**   - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 ### Returns:
 
-* (number) The Interval ID (for clearing a periodical).
+* (*number**) The Interval ID (for clearing a periodical).
 
-### Example:
+### Examples:
 
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
@@ -249,14 +257,14 @@ Executes a function in the specified intervals of time
 
 ### See Also:
 
-[$clear](/Core/#clear), [MDC setInterval](http://developer.mozilla.org/en/docs/DOM:window.setInterval)
+- [$clear][], [MDC setInterval][]
 
 
 
 Function Method: run {#Function:run}
 ------------------------------------
 
-Runs the Function with specified arguments and binding. Kinda like .apply but reversed and with support for single argument.
+**Runs the Function with specified arguments and binding. Kinda like .apply but reversed and with support for single argument.**
 
 ### Syntax:
 
@@ -264,12 +272,12 @@ Runs the Function with specified arguments and binding. Kinda like .apply but re
 
 ### Arguments:
 
-1. args - (mixed) An argument, or array of arguments to run the function with.
-2. bind - (object, optional) The object that the "this" of the function will refer to.
+1. **args** - (*mixed*) An argument, or array of arguments to run the function with.
+2. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 
-* (mixed) This Function's return value.
+* (*mixed*) This Function's return value.
 
 ### Examples:
 
@@ -289,3 +297,12 @@ Runs the Function with specified arguments and binding. Kinda like .apply but re
 	}
 	var myArgs = [1,2,3];
 	myFn.run(args, 6); //returns 12
+
+
+
+[MDC Function]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function
+[options]: #Function:create:options
+[Element:addEvent]: /Element/Element#Element:addEvent
+[$clear]: /Core/Core#clear
+[MDC setInterval]: http://developer.mozilla.org/en/docs/DOM:window.setInterval
+[MDC setTimeout]: http://developer.mozilla.org/en/docs/DOM:window.setTimeout

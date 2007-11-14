@@ -1,14 +1,25 @@
+Hash.js
+-----------
+
+Contains the Hash methods.
+
+### License:
+
+MIT-style license.
+
+
+
 Native: Hash {#Hash}
 ====================
 
-A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
+**A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.**
 
 
 
 Hash Method: keyOf {#Hash:keyOf}
 --------------------------------
 
-Returns the key of the specified value. Synonymous with [Array:indexOf](/Array/#Array:indexOf).
+**Returns the key of the specified value. Synonymous with [Array:indexOf][].**
 
 ### Syntax:
 
@@ -16,14 +27,14 @@ Returns the key of the specified value. Synonymous with [Array:indexOf](/Array/#
 
 ### Arguments:
 
-1. item - (mixed) The item to search for in the Hash.
+1. **item** - (*mixed*) The item to search for in the Hash.
 
 ### Returns:
 
-* (string) If the Hash has a the specified item in it, returns the key of that item.
-* (boolean) Otherwise, returns false.
+* (*string*) If the Hash has a the specified item in it, returns the key of that item.
+* (*boolean*) Otherwise, returns false.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 3});
 	hash.keyOf('two'); //returns 'b'
@@ -32,13 +43,13 @@ Returns the key of the specified value. Synonymous with [Array:indexOf](/Array/#
 
 ### Notes:
 
-Testing for a Hash prototype will never return its key. Only the actual properties of the Hash will return their associated key.
+- Testing for a Hash prototype will never return its key. Only the actual properties of the Hash will return their associated key.
 
 
 Hash Method: has {#Hash:has}
 ----------------------------
 
-Tests for the presence of a specified key in the Hash.
+**Tests for the presence of a specified key in the Hash.**
 
 ### Syntax:
 
@@ -46,13 +57,13 @@ Tests for the presence of a specified key in the Hash.
 
 ### Arguments:
 
-1. key - (string) The key to search for in the Hash.
+1. **key** - (*string*) The key to search for in the Hash.
 
 ### Returns:
 
-* (boolean) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
+* (*boolean*) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
 	hash.has('a'); //returns true
@@ -61,13 +72,14 @@ Tests for the presence of a specified key in the Hash.
 
 ### Notes:
 
-Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
+- Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
+
 
 
 Hash Method: hasValue {#Hash:hasValue}
 --------------------------------------
 
-Tests for the presence of a specified value in the Hash.
+**Tests for the presence of a specified value in the Hash.**
 
 ### Syntax:
 
@@ -75,13 +87,13 @@ Tests for the presence of a specified value in the Hash.
 
 ### Arguments:
 
-1. value - (mixed) The value to search for in the Hash.
+1. **value** - (*mixed*) The value to search for in the Hash.
 
 ### Returns:
 
-* (boolean) If the Hash has the passed in value in any of the keys, returns true. Otherwise, returns false.
+* (*boolean*) If the Hash has the passed in value in any of the keys, returns true. Otherwise, returns false.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
 	hash.hasValue('one'); //returns true
@@ -91,7 +103,7 @@ Tests for the presence of a specified value in the Hash.
 Hash Method: extend {#Hash:extend}
 ----------------------------------
 
-Extends this Hash with the key-value pairs from the object passed in.
+**Extends this Hash with the key-value pairs from the object passed in.**
 
 ### Syntax:
 
@@ -99,13 +111,13 @@ Extends this Hash with the key-value pairs from the object passed in.
 
 ### Arguments:
 
-1. properties - (object) The object whose items should be extended into this Hash.
+1. **properties** - (*object*) The object whose items should be extended into this Hash
 
 ### Returns:
 
-* (hash) This Hash, extended.
+* (*hash*) This Hash, extended.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -124,7 +136,7 @@ Extends this Hash with the key-value pairs from the object passed in.
 Hash Method: merge {#Hash:merge}
 --------------------------------
 
-Merges this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.
+**Merges this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.**
 
 ### Syntax:
 
@@ -132,13 +144,13 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 
 ### Arguments:
 
-1. properties - (object) The object whose items should be merged into this Hash.
+1. **properties** - (*object*) The object whose items should be merged into this Hash.
 
 ### Returns:
 
-* (hash) This Hash, merged with the new key-value pairs.
+* (*hash*) This Hash, merged with the new key-value pairs.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -157,7 +169,7 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 Hash Method: remove {#Hash:remove}
 ----------------------------------
 
-Removes the specified key from the Hash.
+**Removes the specified key from the Hash.**
 
 ### Syntax:
 
@@ -165,13 +177,13 @@ Removes the specified key from the Hash.
 
 ### Arguments:
 
-1. key - (string) The key to search for in the Hash.
+1. **key** - (*string*) The key to search for in the Hash.
 
 ### Returns:
 
-* (hash) This Hash with the specified key and its value removed.
+* (*hash*) This Hash with the specified key and its value removed.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -184,7 +196,7 @@ Removes the specified key from the Hash.
 
 ### Hash Method: get {#Hash:get}
 
-Retrieves a value from the hash.
+**Retrieves a value from the hash.**
 
 ### Syntax:
 
@@ -192,14 +204,14 @@ Retrieves a value from the hash.
 
 ### Arguments:
 
-	key - (string) The key to retrieve in the Hash.
+1. **key** - (*string*) The key to retrieve in the Hash.
 
 ### Returns:
 
-* (mixed) Returns the value that corresponds to the key if found.
-* (false) null if the key doesn't exist
+* (*mixed*) Returns the value that corresponds to the key if found.
+* (*false*) null if the key doesn't exist
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -212,7 +224,7 @@ Retrieves a value from the hash.
 Hash Method: set {#Hash:set}
 ----------------------------
 
-Adds a key-value pair to the hash or replaces a previous value associated with the specified key.
+**Adds a key-value pair to the hash or replaces a previous value associated with the specified key.**
 
 ### Syntax:
 
@@ -220,14 +232,14 @@ Adds a key-value pair to the hash or replaces a previous value associated with t
 
 ### Arguments:
 
-1. key   - (string) The key to insert or modify in the Hash.
-2. value - (mixed) The value to associate with the specified key in the Hash.
+1. **key**   - (*string*) The key to insert or modify in the Hash.
+2. **value** - (*mixed*) The value to associate with the specified key in the Hash.
 
 ### Returns:
 
-* (hash) This Hash with the specified key set to the specified value.
+* (*hash*) This Hash with the specified key set to the specified value.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -240,13 +252,13 @@ Adds a key-value pair to the hash or replaces a previous value associated with t
 Hash Method: empty {#Hash:empty}
 --------------------------------
 
-Empties the hash.
+**Empties the hash.**
 
 ### Syntax:
 
 	myHash.empty();
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -260,7 +272,7 @@ Empties the hash.
 Hash Method: include {#Hash:include}
 ------------------------------------
 
-Includes the specified key-value pair in the Hash if the key doesn't already exist.
+**Includes the specified key-value pair in the Hash if the key doesn't already exist.**
 
 ### Syntax:
 
@@ -268,14 +280,14 @@ Includes the specified key-value pair in the Hash if the key doesn't already exi
 
 ### Arguments:
 
-1. key   - (string) The key to insert into the Hash.
-2. value - (mixed) The value to associate with the specified key in the Hash.
+1. **key**   - (*string*) The key to insert into the Hash.
+2. **value** - (*mixed*) The value to associate with the specified key in the Hash.
 
 ### Returns:
 
-* (hash) This Hash with the specified key included if it did not previously exist.
+* (*hash*) This Hash with the specified key included if it did not previously exist.
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -289,7 +301,7 @@ Includes the specified key-value pair in the Hash if the key doesn't already exi
 Hash Method: map {#Hash:map}
 ----------------------------
 
-Creates a new map with the results of calling a provided function on every value in the map.
+**Creates a new map with the results of calling a provided function on every value in the map.**
 
 ### Syntax:
 
@@ -297,8 +309,8 @@ Creates a new map with the results of calling a provided function on every value
 
 ### Arguments:
 
-1. fn   - (function) The function to produce an element of the new Array from an element of the current one.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Function/#Function:bind).
+1. **fn**   - (*function*) The function to produce an element of the new Array from an element of the current one.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -308,15 +320,15 @@ Creates a new map with the results of calling a provided function on every value
 
 ##### Arguments:
 
-1. value - (mixed) The current value in the hash.
-2. key   - (string) The current value's key in the hash.
-3. hash  - (hash) The actual hash.
+1. **value** - (mixed) The current value in the hash.
+2. **key**   - (string) The current value's key in the hash.
+3. **hash**  - (hash) The actual hash.
 
 ### Returns:
 
-* (array) The new mapped hash.
+* (*array*) The new mapped hash.
 
-### Example:
+### Examples:
 
 	var times Two = new Hash({a: 1, b: 2, c: 3}).map(function(item, index){
 		return item * 2;
@@ -327,7 +339,7 @@ Creates a new map with the results of calling a provided function on every value
 Hash Method: filter {#Hash:filter}
 ----------------------------------
 
-Creates a new Hash with all of the elements of the Hash for which the provided filtering function returns true.
+**Creates a new Hash with all of the elements of the Hash for which the provided filtering function returns true.**
 
 ### Syntax:
 
@@ -335,8 +347,8 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 
 ### Arguments:
 
-1. fn   - (function) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Function/#Function:bind).
+1. **fn**   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -346,15 +358,15 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 
 ##### Arguments:
 
-1. value - (mixed) The current value in the hash.
-2. key   - (string) The current value's key in the hash.
-3. hash  - (hash) The actual hash.
+1. **value** - (*mixed*) The current value in the hash.
+2. **key**   - (*string*) The current value's key in the hash.
+3. **hash**  - (*hash*) The actual hash.
 
 ### Returns:
 
-* (hash) The new filtered hash.
+* (*hash*) The new filtered hash.
 
-### Example:
+### Examples:
 
 	var biggerThanTwenty = new Hash({a: 10, b: 20, c: 30}).filter(function(value, key){
 		return value > 20;
@@ -364,7 +376,7 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 Hash Method: every {#Hash:every}
 --------------------------------
 
-Returns true if every value in the object satisfies the provided testing function.
+**Returns true if every value in the object satisfies the provided testing function.**
 
 ### Syntax:
 
@@ -372,8 +384,8 @@ Returns true if every value in the object satisfies the provided testing functio
 
 ### Arguments:
 
-1. fn   - (function) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Function/#Function:bind).
+1. **fn**   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind].
 
 #### Argument: fn
 
@@ -383,15 +395,15 @@ Returns true if every value in the object satisfies the provided testing functio
 
 ##### Arguments:
 
-1. value - (mixed) The current value in the hash.
-2. key   - (string) The current value's key in the hash.
-3. hash  - (hash) The actual hash.
+1. **value** - (*mixed*) The current value in the hash.
+2. **key**   - (*string*) The current value's key in the hash.
+3. **hash**  - (*hash*) The actual hash.
 
 ### Returns:
 
-* (boolean) If every value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
+* (*boolean*) If every value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
 
-### Example:
+### Examples:
 
 	var areAllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).every(function(value, key){
 		return value > 20;
@@ -401,7 +413,7 @@ Returns true if every value in the object satisfies the provided testing functio
 Hash Method: some {#Hash:some}
 ------------------------------
 
-Returns true if at least one value in the object satisfies the provided testing function.
+**Returns true if at least one value in the object satisfies the provided testing function.**
 
 ### Syntax:
 
@@ -409,8 +421,8 @@ Returns true if at least one value in the object satisfies the provided testing 
 
 ### Arguments:
 
-1. [fn](#Hash:some:fn)   - (function) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
-2. bind - (object, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Function/#Function:bind).
+1. **[fn][]**   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn {#Hash:some:fn}
 
@@ -421,15 +433,15 @@ Returns true if at least one value in the object satisfies the provided testing 
 
 ##### Arguments:
 
-1. value - (mixed) The current value in the hash.
-2. key   - (string) The current value's key in the hash.
-3. hash  - (hash) The actual hash.
+1. **value** - (*mixed*) The current value in the hash.
+2. **key**   - (*string*) The current value's key in the hash.
+3. **hash**  - (*hash*) The actual hash.
 
 ### Returns:
 
-* (boolean) If any value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
+* (*boolean*) If any value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
 
-### Example:
+### Examples:
 
 	var areAllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).some(function(value, key){
 		return value > 20;
@@ -440,7 +452,7 @@ Returns true if at least one value in the object satisfies the provided testing 
 Hash Method: getClean {#Hash:getClean}
 --------------------------------------
 
-Returns a a clean object from an Hash.
+**Returns a a clean object from an Hash.**
 
 ### Syntax:
 
@@ -448,9 +460,9 @@ Returns a a clean object from an Hash.
 
 ### Returns:
 
-* (object) a clean object
+* (*object*) a clean object
 
-### Example:
+### Examples:
 
 	var hash = new Hash({
 		'name': 'John',
@@ -464,7 +476,7 @@ Returns a a clean object from an Hash.
 Hash Method: getKeys {#Hash:getKeys}
 ------------------------------------
 
-Returns an array containing all the keys, in the same order as the values returned by [Hash:getValues](#Hash:getValues).
+**Returns an array containing all the keys, in the same order as the values returned by [Hash:getValues][].**
 
 ### Syntax:
 
@@ -472,14 +484,14 @@ Returns an array containing all the keys, in the same order as the values return
 
 ### Returns:
 
-* (array) An array containing all the keys of the hash.
+* (*array*) An array containing all the keys of the hash.
 
 
 
 Hash Method: getValues {#Hash:getValues}
 ----------------------------------------
 
-Returns an array containing all the values, in the same order as the keys returned by [Hash:getKeys](#Hash:getKeys).
+**Returns an array containing all the values, in the same order as the keys returned by [Hash:getKeys][].**
 
 ### Syntax:
 
@@ -487,14 +499,14 @@ Returns an array containing all the values, in the same order as the keys return
 
 ### Returns:
 
-* (array) An array containing all the values of the hash.
+* (*array*) An array containing all the values of the hash.
 
 
 
 Hash Method: toQueryString {#Hash:toQueryString}
 ------------------------------------------------
 
-Generates a query string from key/pair values in an object and URI encodes the values.
+**Generates a query string from key/pair values in an object and URI encodes the values.**
 
 ### Syntax:
 
@@ -502,11 +514,11 @@ Generates a query string from key/pair values in an object and URI encodes the v
 
 ### Arguments:
 
-1. source - (object) The object to generate the query string from.
+1. **source** - (*object*) The object to generate the query string from.
 
 ### Returns:
 
-* (string) The query string.
+* (*string*) The query string.
 
 ### Examples:
 
@@ -518,3 +530,10 @@ Generates a query string from key/pair values in an object and URI encodes the v
 
 	var myHash = new Hash({apple: "red", lemon: "yellow"});
 	myHash.toQueryString(); //returns "apple=red&lemon=yellow"
+
+
+
+[Array:indexOf]: /Native/Array/#Array:indexOf
+[fn]: #Hash:some:fn
+[Hash:getKeys]: #Hash:getKeys
+[Hash:getValues]: #Hash:getValues

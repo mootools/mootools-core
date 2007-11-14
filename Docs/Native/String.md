@@ -1,19 +1,30 @@
+String.js
+---------
+
+Contains String prototypes
+
+### License:
+
+MIT-style license.
+
+
+
 Native: String {#String}
 ========================
 
-A collection of the String Object prototype methods.
+**A collection of the String Object prototype methods.**
 
 ### See Also:
 
-[MDC String](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String)
+- [MDC String][]
 
 
 
 String Method: test {#String:test}
 ----------------------------------
 
-Searches for a match between the string and a regular expression.
-For more information see [MDC Regexp:test](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test).
+**Searches for a match between the string and a regular expression.**
+**For more information see [MDC Regexp:test][].**
 
 ### Syntax:
 
@@ -21,15 +32,15 @@ For more information see [MDC Regexp:test](http://developer.mozilla.org/en/docs/
 
 ### Arguments:
 
-1. regex  - (mixed) The string or regular expression you want to match the string with.
-2. params - (string, optional) If first parameter is a string, any parameters you want to pass to the regular expression ('g' has no effect).
+1. **regex**  - (*mixed*) The string or regular expression you want to match the string with.
+2. **params** - (*string*, optional) If first parameter is a string, any parameters you want to pass to the regular expression ('g' has no effect).
 
 ### Returns:
 
-* (boolean) `true`, if a match for the regular expression is found in this string.
-* (boolean) `false` if is not found
+* (*boolean*) `true`, if a match for the regular expression is found in this string.
+* (*boolean*) `false` if is not found
 
-### Example:
+### Examples:
 
 	"I like cookies".test("cookie"); //returns true
 	"I like cookies".test("COOKIE", "i"); //returns true (ignore case)
@@ -37,15 +48,15 @@ For more information see [MDC Regexp:test](http://developer.mozilla.org/en/docs/
 
 ### See Also:
 
-[MDC Regular Expressions](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions)
+- [MDC Regular Expressions][]
 
 
 
 String Method: contains {#String:contains}
 ------------------------------------------
 
-Checks to see if the string passed in is contained in this string.
-If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
+**Checks to see if the string passed in is contained in this string.**
+**If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.**
 
 ### Syntax:
 
@@ -53,15 +64,15 @@ If the separator parameter is passed, will check to see if the string is contain
 
 ### Arguments:
 
-1. string    - (string) The string to search for.
-2. separator - (string, optional) The string that separates the values in this string (eg. Element classNames are separated by a ' ').
+1. **string**    - (*string*) The string to search for.
+2. **separator** - (*string*, optional) The string that separates the values in this string (eg. Element classNames are separated by a ' ').
 
 ### Returns:
 
-* (boolean) `true` if the string is contained in this string
-* (boolean) `false` if not.
+* (*boolean*) `true` if the string is contained in this string
+* (*boolean*) `false` if not.
 
-### Example:
+### Examples:
 
 	'a bc'.contains('bc'); //returns true
 	'a b c'.contains('c', ' '); //returns true
@@ -72,7 +83,7 @@ If the separator parameter is passed, will check to see if the string is contain
 String Method: trim {#String:trim}
 ----------------------------------
 
-Trims the leading and trailing spaces off a string.
+**Trims the leading and trailing spaces off a string.**
 
 ### Syntax:
 
@@ -80,9 +91,9 @@ Trims the leading and trailing spaces off a string.
 
 ### Returns:
 
-* (string) The trimmed string.
+* (*string*) The trimmed string.
 
-### Example:
+### Examples:
 
 	"    i like cookies     ".trim(); //"i like cookies"
 
@@ -91,7 +102,7 @@ Trims the leading and trailing spaces off a string.
 String Method: clean {#String:clean}
 ------------------------------------
 
-Removes all extraneous whitespace from a string and trims ([String:trim](#String:trim)) it.
+**Removes all extraneous whitespace from a string and trims it ([String:trim][]).**
 
 ### Syntax:
 
@@ -99,9 +110,9 @@ Removes all extraneous whitespace from a string and trims ([String:trim](#String
 
 ### Returns:
 
-* (string) The cleaned string.
+* (*string*) The cleaned string.
 
-### Example:
+### Examples:
 
 	" i      like     cookies      \n\n".clean(); //returns "i like cookies"
 
@@ -110,7 +121,7 @@ Removes all extraneous whitespace from a string and trims ([String:trim](#String
 String Method: camelCase {#String:camelCase}
 --------------------------------------------
 
-Converts a hyphenated string to a camelcased string.
+**Converts a hyphenated string to a camelcased string.**
 
 ### Syntax:
 
@@ -118,9 +129,9 @@ Converts a hyphenated string to a camelcased string.
 
 ### Returns:
 
-* (string) The camelcased string.
+* (*string*) The camelcased string.
 
-### Example:
+### Examples:
 
 	"I-like-cookies".camelCase(); //returns "ILikeCookies"
 
@@ -129,7 +140,7 @@ Converts a hyphenated string to a camelcased string.
 String Method: hyphenate {#String:hyphenate}
 --------------------------------------------
 
-Converts a camelcased string to a hyphenated string.
+**Converts a camelcased string to a hyphenated string.**
 
 ### Syntax:
 
@@ -137,16 +148,18 @@ Converts a camelcased string to a hyphenated string.
 
 ### Returns:
 
-* (string) The hyphenated string.
+* (*string*) The hyphenated string.
 
-### Example:
+### Examples:
 
 	"ILikeCookies".hyphenate(); //returns "I-like-cookies"
+
+
 
 String Method: capitalize {#String:capitalize}
 ----------------------------------------------
 
-Converts the first letter of each word in a string to uppercase.
+**Converts the first letter of each word in a string to uppercase.**
 
 ### Syntax:
 
@@ -154,9 +167,9 @@ Converts the first letter of each word in a string to uppercase.
 
 ### Returns:
 
-* (string) The capitalized string.
+* (*string*) The capitalized string.
 
-### Example:
+### Examples:
 
 	"i like cookies".capitalize(); //returns "I Like Cookies"
 
@@ -165,7 +178,7 @@ Converts the first letter of each word in a string to uppercase.
 String Method: escapeRegExp {#String:escapeRegExp}
 --------------------------------------------------
 
-Escapes all regular expression characters from the string.
+**Escapes all regular expression characters from the string.**
 
 ### Syntax:
 
@@ -173,9 +186,9 @@ Escapes all regular expression characters from the string.
 
 ### Returns:
 
-* (string) The escaped string.
+* (*string*) The escaped string.
 
-### Example:
+### Examples:
 
 	'animals.sheep[1]'.escapeRegExp(); //returns 'animals\.sheep\[1\]'
 
@@ -184,7 +197,7 @@ Escapes all regular expression characters from the string.
 String Method: toInt {#String:toInt}
 ------------------------------------
 
-Parses this string and returns a number of the specified radix or base.
+**Parses this string and returns a number of the specified radix or base.**
 
 ### Syntax:
 
@@ -192,28 +205,28 @@ Parses this string and returns a number of the specified radix or base.
 
 ### Arguments:
 
-1. base - (number, optional) The base to use (defaults to 10).
+1. **base** - (*number*, optional) The base to use (defaults to 10).
 
 ### Returns:
 
-* (number) The number.
-* (false) If the string is not numeric, returns NaN.
+* (*number*) The number.
+* (*false*) If the string is not numeric, returns NaN.
 
-### Example:
+### Examples:
 
 	"4em".toInt(); //returns 4
 	"10px".toInt(); //returns 10
 
 ### See Also:
 
-[MDC parseInt](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt)
+- [MDC parseInt][]
 
 
 
 String Method: toFloat {#String:toFloat}
 ----------------------------------------
 
-Parses this string and returns a floating point number.
+**Parses this string and returns a floating point number.**
 
 ### Syntax:
 
@@ -221,26 +234,25 @@ Parses this string and returns a floating point number.
 
 ### Returns:
 
-* (number) The float.
-* (false) If the string is not numeric, returns NaN.
+* (*number*) The float.
+* (*false*) If the string is not numeric, returns NaN.
 
-### Example:
+### Examples:
 
 		"95.25%".toFloat(); //returns 95.25
 		"10.848".toFloat(); //returns 10.848
 
 ### See Also:
 
-[MDC parseFloat](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat)
+- [MDC parseFloat][]
 
 
 
 String Method: hexToRgb {#String:hexToRgb}
 ------------------------------------------
 
-Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
-
-	'#ffffff', #fff', 'ffffff', or 'fff'
+**Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).**
+**'#ffffff', #fff', 'ffffff', or 'fff'**
 
 ### Syntax:
 
@@ -248,14 +260,14 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 
 ### Arguments:
 
-1. array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
-* (string) A string representing the color in RGB.
-* (array) If the array flag is set, an array will be returned instead.
+* (*string*) A string representing the color in RGB.
+* (*array*) If the array flag is set, an array will be returned instead.
 
-### Example:
+### Examples:
 
 	"#123".hexToRgb(); //returns "rgb(17,34,51)"
 	"112233".hexToRgb(); //returns "rgb(17,34,51)"
@@ -263,16 +275,15 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 
 ### See Also:
 
-[Array:hexToRgb](#Array:hexToRgb)
+- [Array:hexToRgb][]
 
 
 
 String Method: rgbToHex {#String:rgbToHex}
 ------------------------------------------
 
-Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.
-
-	"rgb(255,255,255)", or "rgba(255,255,255,1)"
+**Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.**
+**"rgb(255,255,255)", or "rgba(255,255,255,1)"**
 
 ### Syntax:
 
@@ -280,14 +291,14 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 ### Arguments:
 
-1. array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
-* (string) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input string is 0.
-* (array) If the array flag is set, an array will be returned instead.
+* (*string*) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input string is 0.
+* (*array*) If the array flag is set, an array will be returned instead.
 
-### Example:
+### Examples:
 
 	"rgb(17,34,51)".rgbToHex(); //returns "#112233"
 	"rgb(17,34,51)".rgbToHex(true); //returns ['11','22','33']
@@ -295,26 +306,26 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 ### See Also:
 
-[Array:rgbToHex](#Array:rgbToHex)
+- [Array:rgbToHex][]
+
 
 
 Native: Array {#Array}
 ======================
 
-Array Methods.
+**Array Methods.**
 
 ## See Also:
 
-[MDC Array](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array)
+- [MDC Array][]
 
 
 
 Array Method: hexToRgb {#Array:hexToRgb}
 ----------------------------------------
 
-Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.
-
-	['ff', 'ff', 'ff'], or ['f', 'f', 'f']
+**Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.**
+**['ff', 'ff', 'ff'], or ['f', 'f', 'f']**
 
 ### Syntax:
 
@@ -322,14 +333,14 @@ Converts a hexidecimal color value to RGB. Input array must be in one of the fol
 
 ### Arguments:
 
-1. array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
-* (string) A string representing the color in RGB.
-* (array) If the array flag is set, an array will be returned instead.
+* (*string*) A string representing the color in RGB.
+* (*array*) If the array flag is set, an array will be returned instead.
 
-### Example:
+### Examples:
 
 	["1", "2", "3"].hexToRgb(); //returns "rgb(17,34,51)"
 	["11", "22", "33"].hexToRgb(); //returns "rgb(17,34,51)"
@@ -337,16 +348,15 @@ Converts a hexidecimal color value to RGB. Input array must be in one of the fol
 
 ### See Also:
 
-[String:hexToRgb](#String:hexToTgb)
+- [String:hexToRgb][]
 
 
 
 Array Method: rgbToHex {#Array:rgbToHex}
 ----------------------------------------
 
-Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
-
-	[255,255,255], or [255,255,255,1]
+**Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.**
+**[255,255,255], or [255,255,255,1]**
 
 ### Syntax:
 
@@ -354,14 +364,14 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 
 ### Arguments:
 
-1. array - (boolean, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
-* (string) A string representing the color in hexadecimal, or 'transparent' string if the fourth value of rgba in the input array is 0 (rgba).
-* (array) If the array flag is set, an array will be returned instead.
+* (*string*) A string representing the color in hexadecimal, or 'transparent' string if the fourth value of rgba in the input array is 0 (rgba).
+* (*array*) If the array flag is set, an array will be returned instead.
 
-### Example:
+### Examples:
 
 	[17,34,51].rgbToHex(); //returns "#112233"
 	[17,34,51].rgbToHex(true); //returns ['11','22','33']
@@ -369,4 +379,16 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 
 ### See Also:
 
-[String:rgbToHex](#String:rgbToHex)
+- [String:rgbToHex][]
+
+
+
+[MDC String]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String
+[MDC Regexp:test]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test
+[MDC Regular Expressions]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions
+[MDC parseInt]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseInt
+[MDC parseFloat]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat
+[MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
+[String:trim]: #String:trim
+[Array:hexToRgb]: /native/Array#Array:hexToRgb
+[Array:rgbToHex]: /Native/Array#Array:rgbToHex
