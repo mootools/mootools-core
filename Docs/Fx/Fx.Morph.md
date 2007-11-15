@@ -180,7 +180,6 @@ Element Property: morph {#Element:morph}
 
 	el.set('morph', {duration: 'long', transition: 'bounce:out'});
 	el.morph({height: 100, width: 100});
-
 	el.get('morph'); //the Fx.Morph instance
 
 
@@ -192,12 +191,11 @@ Element Method: morph {#Element:morph}
 
 ### Syntax:
 
-	myElement.morph(className|object[, options]);
+	myElement.morph(properties);
 
 ### Arguments:
 
 1. **properties** - (*mixed*) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
-2. **options**    - (*object*, optional) The [Fx.Morph][] options parameter.
 
 ### Returns:
 

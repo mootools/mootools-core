@@ -13,7 +13,7 @@ var Color = new Native({
   protect: false,
   
   initialize: function(color, type){
-		type = type || ($type(color) == 'array') ? 'rgb' : 'hex';
+		type = type || ($type(color) == 'array' ? 'rgb' : 'hex');
 		var rgb, hsb;
 		switch (type){
 			case 'rgb':
