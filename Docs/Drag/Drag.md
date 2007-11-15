@@ -34,7 +34,7 @@ Drag Method: constructor {#Drag:constructor}
 ### Options:
 
 * **handle**    - (*element*: defaults to the element passed in) The Element to act as the handle for the draggable element.
-* **grid**      - (*integer*: defaults to: false) Distance in pixels for snap-to-grid dragging.
+* **grid**      - (*integer*: defaults to false) Distance in pixels for snap-to-grid dragging.
 * **unit**      - (*string*: defaults to 'px') A string indicating the CSS unit to append to all integer values.
 * **snap**      - (*integer*: defaults to 6) The distance to drag before the Element starts to respond to the drag.
 * **limit**     - (*object*: defaults to false) An object with x and y properties used to limit the movement of the Element.
@@ -42,11 +42,11 @@ Drag Method: constructor {#Drag:constructor}
 
 ### Events:
 
-* **onBeforeStart** - Executed before the Drag instance attaches the events. Receives the dragged element as an argument
-* **onStart**       - Executed when the user starts to drag (on mousedown). Receives the dragged element as an argument
-* **onSnap**        - Executed when the user has dragged past the snap option. Receives the dragged element as an argument
-* **onDrag**        - Executed on every step of the drag. Receives the dragged element as an argument
-* **onComplete**    - Executed when the user completes the drag. Receives the dragged element as an argument
+* **onBeforeStart** - Executed before the Drag instance attaches the events. Receives the dragged element as an argument.
+* **onStart**       - Executed when the user starts to drag (on mousedown). Receives the dragged element as an argument.
+* **onSnap**        - Executed when the user has dragged past the snap option. Receives the dragged element as an argument.
+* **onDrag**        - Executed on every step of the drag. Receives the dragged element as an argument.
+* **onComplete**    - Executed when the user completes the drag. Receives the dragged element as an argument.
 
 ### Properties:
 
@@ -71,7 +71,7 @@ Drag Method: constructor {#Drag:constructor}
 
 ### See Also:
 
-- [w3schools: CSS Units][]
+- [W3Schools: CSS Units][]
 
 
 
@@ -196,4 +196,4 @@ Element Method: makeResizable {#Element:makeResizable}
 [Element:makeDraggable]: #Element:makeDraggable
 [Events]: /Class/Class.Extras#Events
 [Chain]: /Class/Class.Extras#Options
-[w3schools: CSS Units]: http://www.w3schools.com/css/css_units.asp
+[W3Schools: CSS Units]: http://www.w3schools.com/css/css_units.asp

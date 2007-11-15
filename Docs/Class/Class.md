@@ -33,11 +33,11 @@ The methods of This Class that have the same name as the Extends Class, will hav
 
 #### Property: Implements
 
-* (*object*) An object which properties will be copied into this Class.
-* (*class*) A Class which properties will be copied into this Class.
-* (*array*) An array of objects or Classes which properties will be copied into this Class.
+* (*object*) A passed object's properties will be copied into this Class.
+* (*class*)  The properties of a passed Class will be copied into the target Class.
+* (*array*)  An array of objects or Classes, the properties of which will be copied into this Class.
 
-Similar to Extends, but it simply overrides the properties, without inheritance.
+Implements is similar to Extends, except that it overrides properties without inheritance.
 Useful when implementing a default set of properties in multiple Classes.
 
 #### Property: initialize
@@ -46,7 +46,7 @@ Useful when implementing a default set of properties in multiple Classes.
 
 ### Returns:
 
-* (*class*) The Class created.
+* (*class*) The created Class.
 
 ### Examples:
 
@@ -63,9 +63,9 @@ Useful when implementing a default set of properties in multiple Classes.
 	var Cow = new Class({
 		initialize: function(){
 			alert('moooo');
-		});
+		}
 	});
-	var Effie = new Cow($empty); //will not alert 'moooo'
+	var Effie = new Cow($empty); //Will not alert 'moooo', because the initialize method is overridden by the $empty function.
 
 #### Extends Example:
 
@@ -81,8 +81,8 @@ Useful when implementing a default set of properties in multiple Classes.
 		}
 	});
 	var myCat = new Cat('Micia', 20);
-	alert(myCat.name); //alerts 'Micia'
-	alert(myCat.age); //alerts 20
+	alert(myCat.name); //Alerts 'Micia'.
+	alert(myCat.age); //Alerts 20.
 
 #### Implements Example:
 
@@ -97,9 +97,9 @@ Useful when implementing a default set of properties in multiple Classes.
 			this.name = name
 		}
 	});
-	var myCat = new Cat(20);
+	var myAnimal = new Cat(20);
 	myAnimal.setName('Micia');
-	alert(myAnimal.name); //alerts 'Micia'
+	alert(myAnimal.name); //Alerts 'Micia'.
 
 
 
@@ -127,7 +127,7 @@ Class Method: implement {#Class:implement}
 	});
 	Animal.implement({
 		setName: function(name){
-			this.name = name
+			this.name = name;
 		}
 	});
 	var myAnimal = new Animal(20);

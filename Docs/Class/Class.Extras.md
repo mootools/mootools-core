@@ -2,7 +2,7 @@ Class.Extras.js
 ---------------
 
 Contains common implementations for custom classes.
-In MooTools these Utilities are implemented in [Ajax][], [XHR][], [Fx][] and many other Classes to provide rich functionality.
+In MooTools these Utilities are implemented in [Request][], [Request.HTML][], [Fx][] and many other Classes to provide rich functionality.
 
 ### License:
 
@@ -74,14 +74,14 @@ Chain Method: chain {#Chain:chain}
 
 ### Returns:
 
-* (*object*) This Class instance. Calls to chain can also be chained.
+* (*object*) The current Class instance. Calls to chain can also be chained.
 
 ### Example:
 
 	//will fade the element in and out three times
 	var myFx = new Fx.Style('myElement', 'opacity'); //Fx.Style has implemented class Chain because of inheritance.
 	myFx.start(1,0).chain(
-		function(){ this.start(0,1); }, //notice that "this" refers to the calling object. In this case: myFx object.
+		function(){ this.start(0,1); }, //Notice that "this" refers to the calling object (in this case, the myFx object).
 		function(){ this.start(1,0); },
 		function(){ this.start(0,1); }
 	);
@@ -104,7 +104,7 @@ Chain Method: callChain {#Chain:callChain}
 
 ### Arguments:
 
-1. any arguments passed in will be passed to the "next" function
+1. Any arguments passed in will be passed to the "next" function.
 
 ### Returns:
 
@@ -133,7 +133,7 @@ Chain Method: clearChain {#Chain:clearChain}
 
 ### Returns:
 
-* (*object*) This Class instance.
+* (*object*) The current Class instance.
 
 ### Example:
 
@@ -241,7 +241,7 @@ Events Method: fireEvent {#Events:fireEvent}
 	var Widget = new Class({
 		Implements: Events,
 		initialize: function(arg1, arg2){
-			...
+			//...
 			this.fireEvent("onInitialize", [arg1, arg2], 50);
 		}
 	});
@@ -286,11 +286,11 @@ Events Method: removeEvents {#Events:removeEvents}
 
 ### Returns:
 
-* (*object*) This Class instance.
+* (*object*) The current Class instance.
 
 ### Example:
 
-	var myFx = new Fx.Style('element', 'opacity');
+	var myFx = new Fx.Tween('myElement', 'opacity');
 	myFx.removeEvents('onComplete');
 
 
@@ -303,9 +303,9 @@ Events Method: removeEvents {#Events:removeEvents}
 Class: Options {#Options}
 =========================
 
-**A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].**
+**A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].**
 **Used to automate the setting of a Class instance's options.**
-**Will also add Class [Events](#Events) when the option property begins with on, followed by a capital letter (e.g. 'onComplete').**
+**Will also add Class [Events](#Events) when the option property begins with on followed by a capital letter (e.g. 'onComplete').**
 
 ### Syntax:
 
@@ -334,7 +334,7 @@ Options Method: setOptions {#Options:setOptions}
 
 ### Returns:
 
-* (*object*) This Class instance.
+* (*object*) The current Class instance.
 
 ### Example:
 
@@ -367,11 +367,10 @@ Options Method: setOptions {#Options:setOptions}
 - If a Class has [Events](#Events) implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
 
 
-
-[Fx]: /Fx/Fx
-[Fx.Tween]: /Fx/Fx.Tween
-[Ajax]: /Remote/Request.HTML
-[XHR]: /Request/Request
 [Class]: /Class/Class
 [Class:implement]: /Class/#Class:implement
+[Fx]: /Fx/Fx
+[Fx.Tween]: /Fx/Fx.Tween
+[Request]: /Request/Request
+[Request.HTML]: /Remote/Request.HTML
 [Events:removeEvent]: /Element/Element.Event/#Element:removeEvent

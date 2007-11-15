@@ -210,6 +210,7 @@ Function: $pick {#pick}
 	function say(infoMessage, errorMessage){
 		alert($pick(errorMessage, infoMessage, 'There was no message supplied.'));
 	}
+	say(); //Will alert "There was no message supplied."        say("This is an info message."); //Will alert "This is an info message."        say("This message will be ignored.", "This is the error message."); //Will alert "This is the error message."
 
 
 
@@ -233,14 +234,14 @@ Function: $random {#random}
 
 ### Example:
 
-	alert($random(5, 20)); //alerts a random number between 5 and 20
+	alert($random(5, 20)); //Alerts a random number between 5 and 20.
 
 
 
 Function: $splat {#splat}
 -------------------------
 
-**Array-ifies the argument passed in if it is defined and not already an array.**
+**Converts the argument passed in to an array if it is defined and not already an array.**
 
 ### Syntax:
 
@@ -256,8 +257,8 @@ Function: $splat {#splat}
 
 ### Example:
 
-	$splat('hello'); //returns ['hello']
-	$splat(['a', 'b', 'c']); //returns ['a', 'b', 'c']
+	$splat('hello'); //Returns ['hello'].
+	$splat(['a', 'b', 'c']); //Returns ['a', 'b', 'c'].
 
 
 
@@ -272,7 +273,7 @@ Function: $time {#time}
 
 ### Returns:
 
-* (*number*) - Current timestamp.
+* (*number*) - The current timestamp.
 
 
 
@@ -298,7 +299,7 @@ Function: $try {#try}
 
 ### Examples:
 
-	var result = $try(eval, window, 'some invalid javascript'); //false
+	var result = $try(eval, window, 'some invalid javascript'); //Returns false.
 
 ### Notes:
 
@@ -341,15 +342,15 @@ Function: $type {#type}
 ### Examples:
 
 	var myString = 'hello';
-	$type(myString); //returns "string"
+	$type(myString); //Returns "string".
 
 
 
 Native: Hash {#Hash}
 ====================
 
-**A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.**
-**Useful because in Javascript we cannot use Object.prototype. You can now use Hash.prototype!**
+**A custom Object ({}) implementation which does not account for prototypes when setting, getting, iterating.**
+**Useful because in JavaScript we cannot use Object.prototype.  Instead, we can use Hash.prototype!**
 
 
 Hash Method: constructor {#Hash:constructor}
@@ -375,7 +376,7 @@ Hash Method: constructor {#Hash:constructor}
 			return true;
 		}
 	});
-	alert(myHash.has('aMethod')); //true
+	alert(myHash.has('aMethod')); //Returns true.
 
 
 
@@ -410,14 +411,14 @@ Hash Method: each {#Hash:each}
 	var hash = new Hash({first: "Sunday", second: "Monday", third: "Tuesday"});
 	hash.each(function(value, key){
 		alert("the " + key + " day of the week is " + value);
-	}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
+	}); //Alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
 
 
 
 Function: $H {#H}
 -----------------
 
-**Shortcut for new [Hash](/Core/#Hash).**
+**Shortcut for the new [Hash](/Core/#Hash).**
 
 ### See Also:
 
@@ -441,7 +442,7 @@ Array Method: each {#Array:each}
 ### Arguments:
 
 1. **fn**   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+2. **bind** - (*object*, optional) The object to be used as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -458,8 +459,8 @@ Array Method: each {#Array:each}
 ### Examples:
 
 	['apple', 'banana', 'lemon'].each(function(item, index){
-		alert(index + " = " + item); //alerts "0 = apple" etc.
-	}, bind); //optional second argument for binding, not used here
+		alert(index + " = " + item); /Alerts "0 = apple", "1 = banana", and so on.
+	}, bind); //The optional second argument for binding isn't used here.
 
 
 ### See Also:
@@ -497,19 +498,20 @@ Function: $A {#A}
 		$A(arguments).each(function(argument, index){
 			alert(argument);
 		});
-	}; //will alert all the arguments passed to the function myFunction.	
+	}; 
+	myFunction("One", "Two", "Three"); //Alerts "One", then "Two", then "Three".	
 
 #### Copy an Array:
 
 	var anArray = [0, 1, 2, 3, 4];
-	var copiedArray = $A(anArray); //returns [0, 1, 2, 3, 4]
+	var copiedArray = $A(anArray); //Returns [0, 1, 2, 3, 4].
 
 
 
 Function: $each {#each}
 -----------------------
 
-**Use to iterate through iterables that are not regular arrays, such as builtin getElementsByTagName calls, arguments of a function, or an object.**
+**Used to iterate through iterables that are not regular arrays, such as built in getElementsByTagName calls, arguments of a function, or an object.**
 
 ### Syntax:
 
@@ -519,7 +521,7 @@ Function: $each {#each}
 
 1. **iterable** - (*object* or *array*) The object or array to iterate through.
 2. **fn**       - (*function*) The function to test for each element.
-3. **bind**     - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+3. **bind**     - (*object*, optional) The object to use as 'this' within the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -551,7 +553,7 @@ Function: $each {#each}
 
 
 [Function:bind]: /Native/#Function:bind
-[Hash]: Native/Hash
+[Hash]: /Native/Hash
 [Array]: /Native/Array
 [Function:delay]: /Native/#Function:delay
 [Function:periodical]: /Native/#Function:periodical

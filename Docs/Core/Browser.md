@@ -18,7 +18,7 @@ Hash: Browser {#Browser}
 
 ### Features:
 
-* **Browser.Features.xpath** - (*boolean*) True if the browser supports dom queries using xpath.
+* **Browser.Features.xpath** - (*boolean*) True if the browser supports DOM queries using XPath.
 * **Browser.Features.xhr**   - (*boolean*) True if the browser supports native XMLHTTP object.
 
 ### Engine:
@@ -28,17 +28,17 @@ Hash: Browser {#Browser}
 * **Browser.Engine.trident5**  - (*boolean*) True if the current browser is Internet Explorer 7.
 * **Browser.Engine.gecko**     - (*boolean*) True if the current browser is Mozilla/Gecko.
 * **Browser.Engine.webkit**    - (*boolean*) True if the current browser is Safari/Konqueror.
-* **Browser.Engine.webkit419** - (*boolean*) True if the current browser is Safari2 / webkit till version 419.
-* **Browser.Engine.webkit420** - (*boolean*) True if the current browser is Safari3 (Webkit SVN Build) / webkit over version 419.
-* **Browser.Engine.presto**    - (*boolean*) True if the current browser is opera.
+* **Browser.Engine.webkit419** - (*boolean*) True if the current browser is Safari2/WebKit before version 419.
+* **Browser.Engine.webkit420** - (*boolean*) True if the current browser is Safari3 (WebKit SVN Build)/WebKit after version 419.
+* **Browser.Engine.presto**    - (*boolean*) True if the current browser is Opera.
 * **Browser.Engine.name**      - (*string*) The name of the engine.
 
 ### Platform:
 
-* **Browser.Platform.mac**     - (*boolean*) True if the platform is mac.
-* **Browser.Platform.windows** - (*boolean*) True if the platform is windows.
-* **Browser.Platform.linux**   - (*boolean*) True if the platform is linux.
-* **Browser.Platform.other**   - (*boolean*) True if the platform is neither mac, windows or linux.
+* **Browser.Platform.mac**     - (*boolean*) True if the platform is Mac.
+* **Browser.Platform.windows** - (*boolean*) True if the platform is Windows.
+* **Browser.Platform.linux**   - (*boolean*) True if the platform is Linux.
+* **Browser.Platform.other**   - (*boolean*) True if the platform is neither Mac, Windows or Linux.
 * **Browser.Platform.name**    - (*string*) The name of the platform.
 
 ### Notes:

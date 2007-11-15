@@ -25,27 +25,27 @@ Class: Event {#Element.Event}
 
 #### Properties:
 
-* **shift**         - (*boolean*)True if the user pressed the shift
-* **control**       - (*boolean*)True if the user pressed the control
-* **alt**           - (*boolean*)True if the user pressed the alt
-* **meta**          - (*boolean*)True if the user pressed the meta key
-* **wheel**         - (*number*) The amount of third button scrolling
-* **code**          - (*number*) The keycode of the key pressed
-* **page.x**        - (*number*) The x position of the mouse, relative to the full window
-* **page.y**        - (*number*) The y position of the mouse, relative to the full window
-* **client.x**      - (*number*) The x position of the mouse, relative to the viewport
-* **client.y**      - (*number*) The y position of the mouse, relative to the viewport
-* **key**           - (*string*) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', 'esc'.
+* **shift**         - (*boolean*) True if the user pressed the shift key.
+* **control**       - (*boolean*) True if the user pressed the control key.
+* **alt**           - (*boolean*) True if the user pressed the alt key.
+* **meta**          - (*boolean*) True if the user pressed the meta key.
+* **wheel**         - (*number*) The amount of third button scrolling.
+* **code**          - (*number*) The keycode of the key pressed.
+* **page.x**        - (*number*) The x position of the mouse, relative to the full window.
+* **page.y**        - (*number*) The y position of the mouse, relative to the full window.
+* **client.x**      - (*number*) The x position of the mouse, relative to the viewport.
+* **client.y**      - (*number*) The y position of the mouse, relative to the viewport.
+* **key**           - (*string*) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
 * **target**        - (*element*) The event target, not extended with <$> for performance reasons.
-* **relatedTarget** - (*element*) The event related target, NOT 'extended' with <$>.
+* **relatedTarget** - (*element*) The event related target, **NOT** `extended` with <$>.
 
 ### Examples:
 
 	$('myLink').addEvent('keydown', function(event){
-	 	// event is already the Event class, if you use el.onkeydown you have to write e = new Event(e);
-		alert(event.key); //returns the lowercase letter pressed
-		alert(event.shift); //returns true if the key pressed is shift
-		if (event.key == 's' && event.control) alert('document saved');
+	 	//The passed event parameter is already an instance of the Event class. 
+		alert(event.key);   //Returns the lowercase letter pressed.
+		alert(event.shift); //Returns true if the key pressed is shift.
+		if (event.key == 's' && event.control) alert('Document saved.'); //Executes if the user hits Ctr+S.
 	});
 
 ### Notes:
@@ -84,7 +84,7 @@ Event Method: stop {#Element.Event:stop}
 
 	<a id="myAnchor" href="http://google.com/">Visit Google.com</a>
 
-##### Javascript
+##### JavaScript
 
 	$('myAnchor').addEvent('click', function(event){
 		event.stop(); // prevent the user from leaving the site.
@@ -105,7 +105,7 @@ Event Method: stop {#Element.Event:stop}
 Event Method: stopPropagation {#Element.Event:stopPropagation}
 --------------------------------------------------------------
 
-**Cross browser method to stop the propagation of an event (will not allow the event to bubble up through the DOM).**
+**Cross browser method to stop the propagation of an event (this stops the event from bubbling up through the DOM).**
 
 ###	Syntax:
 
@@ -117,14 +117,14 @@ Event Method: stopPropagation {#Element.Event:stopPropagation}
 
 ###	Examples:
 
+'#myChild' does not cover the same area as myElement. Therefore, the 'click' differs from parent and child depending on the click location:
 ##### HTML:
 
-	<!-- #myChild does not cover the same area as myElement. Therefore, the 'click' differs from parent and child depending on the click location. -->
 	<div id="myElement">
 		<div id="myChild"></div>
 	</div>
 
-##### Javascript
+##### JavaScript
 
 	$('myElement').addEvent('click', function(){
 		alert('click');
@@ -134,7 +134,7 @@ Event Method: stopPropagation {#Element.Event:stopPropagation}
 		event.stopPropagation(); // this will prevent the event to bubble up, and fire the parent's click event.
 	});
 
-###	See Also:
+### See Also:
 
 - [Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.stopPropagation>
 
@@ -144,6 +144,9 @@ Event Method: preventDefault {#Element.Event:preventDefault}
 ------------------------------------------------------------
 
 **Cross browser method to prevent the default action of the event.**
+
+### Credits:
+<http://developer.mozilla.org/en/docs/DOM:event.preventDefault>
 
 ###	Syntax:
 
@@ -157,15 +160,14 @@ Event Method: preventDefault {#Element.Event:preventDefault}
 
 ##### HTML:
 
-	<!-- credits: mozilla.org/en/docs/DOM:event.preventDefault -->
 	<form>
 		<input id="myCheckbox" type="checkbox" />
 	</form>
 
-##### Javascript
+##### JavaScript
 
 	$('myCheckbox').addEvent('click', function(event){
-		event.preventDefault(); // will not allow the checkbox to be "checked"
+		event.preventDefault(); // Will prevent the checkbox from being "checked".
 	});
 
 ### See Also:
@@ -243,26 +245,26 @@ Element Method: removeEvent {#Element:removeEvent}
 
 #### Standard usage:
 
-	var destroy = function(){ alert('Boom: ' + this.id); } // this is the Element
+	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
 	$('myElement').addEvent('click', destroy);
-	// later in the code
+	//...
 	$('myElement').removeEvent('click', destroy);
 
 
 #### Examples with bind:
 
-	var destroy = function(){ alert('Boom: ' + this.id); } // this is the Element
+	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
 	var destroy2 = destroy.bind($('anotherElement'));
-	$('myElement').addEvent('click', destroy2); // this is now another Element
+	$('myElement').addEvent('click', destroy2); // this now refers to another Element.
 
 	// later in the code
-	$('myElement').removeEvent('click', destroy); // DOES NOT WORK
-	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // DOES ALSO NOT WORK
-	$('myElement').removeEvent('click', destroy2); // Finally, this works
+	$('myElement').removeEvent('click', destroy); // DOES NOT WORK.
+	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // ALSO FAILS.
+	$('myElement').removeEvent('click', destroy2); // Finally, this works.
 
 ###	Notes:
 
-- When the function was added using [Function:bind][] or [Function:pass][] a new reference was created and you can not use removeEvent with the original function.
+- When the function is added using [Function:bind][] or [Function:pass][], a new reference is created.  Therefor, removeEvent no longer works with the original function.
 - This method is also attached to Document and Window.
 
 
@@ -270,7 +272,7 @@ Element Method: removeEvent {#Element:removeEvent}
 Element Method: addEvents {#Element:addEvents}
 ----------------------------------------------
 
-**As [Element.addEvent](#Element:addEvent), but accepts an object and add multiple events at once.**
+**The same as [Element.addEvent](#Element:addEvent), but accepts an object and add multiple events at once.**
 
 ###	Syntax:
 
@@ -282,7 +284,7 @@ Element Method: addEvents {#Element:addEvents}
 
 ###	Returns:
 
-*(*element*) This Element.
+* (*element*) This Element.
 
 ###	Examples:
 
@@ -336,9 +338,9 @@ Element Method: removeEvents {#Element:removeEvents}
 
 	myElement.addEvent('click': function(){ alert('clicked again'); });
 	myElement.addEvent('click': function(){ alert('clicked and again :('); });
-	// addEvent will keep appending each function. Unfortunately for the visitors, that'll be three alerts they'll receive.
-
-	myElement.removeEvents('click'); //ahhh saved the visitor's finger.
+	//addEvent will keep appending each function. 
+	//Unfortunately for the visitor, that'll be three alerts they'll have to click on.
+	myElement.removeEvents('click'); // This saves the visitor's finger by removing every click event.
 
 ###	Notes:
 
@@ -369,7 +371,7 @@ Element Method: fireEvent {#Element:fireEvent}
 
 ###	Examples:
 
-	$('myElement').fireEvent('click', $('anElement'), 1000);  // Fires all the added 'click' events and passes the element 'anElement' after 1 sec.
+	$('myElement').fireEvent('click', $('anElement'), 1000);  // Fires all the added 'click' events and passes the Element 'anElement' after one second.
 
 ###	Notes:
 
@@ -466,7 +468,7 @@ The Element.Events.yourproperty (object) can have:
 
 #### Notes:
 
-- This custom event just redirects DOMMouseScroll (mozilla) to mousewheel (opera, internet explorer), making it crossbrowser.
+- This custom event just redirects DOMMouseScroll (Mozilla) to mousewheel (Opera, Internet Explorer), making it work across browsers.
 
 #### See Also:
 
