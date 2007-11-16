@@ -1,18 +1,7 @@
-SmoothScroll.js
----------------
-
-Contains the SmoothScroll class.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: SmoothScroll {#SmoothScroll}
 ===================================
 
-**Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.**
+Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
 
 ### Remark:
 
@@ -28,12 +17,12 @@ Class: SmoothScroll {#SmoothScroll}
 
 ### Arguments:
 
-1. **options** - (*object*, optional) In addition to all the <Fx.Scroll> options, SmoothScroll has links option incase you had a predefined links collection.
-2. **win**     - (*object*, optional) The context of the SmoothScroll.
+1. options - (*object*, optional) In addition to all the <Fx.Scroll> options, SmoothScroll has links option incase you had a predefined links collection.
+2. win     - (*object*, optional) The context of the SmoothScroll.
 
 #### Options:
 
-* **links** - (*mixed*) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
+* links - (*mixed*) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
 
 ### Returns:
 

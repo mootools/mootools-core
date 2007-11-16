@@ -1,14 +1,3 @@
-Scroller.js
------------
-
-Contains the Scroller class.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Scroller {#Scroller}
 ===========================
 

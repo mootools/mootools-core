@@ -1,18 +1,7 @@
-Hash.Cookie.js
---------------
-
-Contains the Hash.Cookie class.
-
-### License:
-
-MIT-style license.
-
-
-
-Class: Hash.Cookie {#Hash.Cookie}
+Class: Hash.Cookie {#Hash-Cookie}
 =================================
 
-**Stores and loads a Hash as a Cookie using JSON format.**
+Stores and loads a Hash as a Cookie using JSON format.
 
 ### Extends:
 
@@ -24,12 +13,12 @@ Class: Hash.Cookie {#Hash.Cookie}
 
 ### Arguments:
 
-1. **name**    - (*string*) The key (name) for the cookie
-2. **options** - (*object*) All of <Cookie> options in addition an autoSave option.
+1. name    - (*string*) The key (name) for the cookie
+2. options - (*object*) All of <Cookie> options in addition an autoSave option.
 
 #### Options:
 
-1. **autoSave** - (*boolean*: defaults to true) An option to save the cookie at every operation.
+1. autoSave - (*boolean*: defaults to true) An option to save the cookie at every operation.
 
 ### Returns:
 
@@ -66,10 +55,10 @@ Class: Hash.Cookie {#Hash.Cookie}
 
 
 
-Hash.Cookie Method: save {#Hash.Cookie:save}
+Hash.Cookie Method: save {#Hash-Cookie:save}
 --------------------------------------------
 
-**Saves the Hash to the cookie. If the hash is empty, removes the cookie.**
+Saves the Hash to the cookie. If the hash is empty, removes the cookie.
 
 ###	Syntax:
 
@@ -93,10 +82,10 @@ Hash.Cookie Method: save {#Hash.Cookie:save}
 
 
 
-Hash.Cookie Method: load {#Hash.Cookie:load}
+Hash.Cookie Method: load {#Hash-Cookie:load}
 --------------------------------------------
 
-**Loads the cookie and assigns it to the Hash.**
+Loads the cookie and assigns it to the Hash.
 
 ###	Syntax:
 

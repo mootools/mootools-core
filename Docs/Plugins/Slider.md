@@ -1,14 +1,3 @@
-Slider.js
----------
-
-Contains the Slider class.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Slider {#Slider}
 =======================
 

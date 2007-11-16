@@ -1,18 +1,7 @@
-Selectors.Children.js
----------------------
-
-Contains the custom :children() pseudo selecor.
-
-### License:
-
-MIT-style license.
-
-
-
 Selectors.Children
 ==================
 
-**A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.**
+A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.
 
 ### Usage:
 
@@ -22,7 +11,7 @@ Selectors.Children
 
 ### Variables:
 
-* **n** - (*number*) An index number to access from the Element's children. The index, n, can be negative to access from the end of the children list.
+* n - (*number*) An index number to access from the Element's children. The index, n, can be negative to access from the end of the children list.
 
 ###	Examples:
 
@@ -45,8 +34,8 @@ Selectors.Children
 
 ### Variables:
 
-* **from** - (*number*) A starting index value. See the Index Accessor usage.
-* **to**   - (*number*) A ending index value.
+* from - (*number*) A starting index value. See the Index Accessor usage.
+* to   - (*number*) A ending index value.
 
 ###	Examples:
 
@@ -70,8 +59,8 @@ Selectors.Children
 
 ### Variables:
 
-* **start** - (*number*) A starting index value. See the Index Accessor usage.
-* **n**     - (*number*) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+* start - (*number*) A starting index value. See the Index Accessor usage.
+* n     - (*number*) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
 
 ### Examples:
 
@@ -96,8 +85,8 @@ Selectors.Children
 
 ### Variables:
 
-* **start** - (*number*) A starting index value. See the Index Accessor usage.
-* **n**     - (*number*) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+* start - (*number*) A starting index value. See the Index Accessor usage.
+* n     - (*number*) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
 
 ### Examples:
 

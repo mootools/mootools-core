@@ -1,17 +1,7 @@
-Fx.Elements.js
---------------
-
-Contains the Fx.Elements class.
-
-### License:
-
-MIT-style license.
-
-
-Class: Fx.Elements {#Fx.Elements}
+Class: Fx.Elements {#Fx-Elements}
 =================================
 
-**Fx.Elements allows you to apply any number of styles transitions to a collection of Elements.**
+Fx.Elements allows you to apply any number of styles transitions to a collection of Elements.
 
 ### Extends:
 
@@ -23,12 +13,12 @@ Class: Fx.Elements {#Fx.Elements}
 
 ### Arguments:
 
-1. **elements** - (*array*) A collection of Elements the effects will be applied to.
-2. **options**  - (*object*, optional) Same as [Fx](#Fx) options.
+1. elements - (*array*) A collection of Elements the effects will be applied to.
+2. options  - (*object*, optional) Same as [Fx](#Fx) options.
 
 ### Properties:
 
-* **elements** - (*array*) The collection of Elements the effect is being applied to.
+* elements - (*array*) The collection of Elements the effect is being applied to.
 
 ### Returns:
 
@@ -57,10 +47,10 @@ Class: Fx.Elements {#Fx.Elements}
 
 
 
-Fx.Elements Method: set {#Fx.Elements:set}
+Fx.Elements Method: set {#Fx-Elements:set}
 ------------------------------------------
 
-**Applies the passed in style transitions to each object named immediately (see example).**
+Applies the passed in style transitions to each object named immediately (see example).
 
 ###	Syntax:
 
@@ -68,7 +58,7 @@ Fx.Elements Method: set {#Fx.Elements:set}
 
 ### Arguments:
 
-1. **to** - (*object*) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+1. to - (*object*) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
 
 ###	Returns:
 
@@ -89,10 +79,10 @@ Fx.Elements Method: set {#Fx.Elements:set}
 
 
 
-Fx.Elements Method: start {#Fx.Elements:start}
+Fx.Elements Method: start {#Fx-Elements:start}
 ----------------------------------------------
 
-**Applies the passed in style transitions to each object named (see example).**
+Applies the passed in style transitions to each object named (see example).
 
 ###	Syntax:
 
@@ -100,7 +90,7 @@ Fx.Elements Method: start {#Fx.Elements:start}
 
 ###	Arguments:
 
-1. **obj** - (*object*) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
+1. obj - (*object*) An object where each item in the collection is refered to as a numerical string ("1" for instance). The first item is "0", the second "1", etc.
 
 ###	Returns:
 

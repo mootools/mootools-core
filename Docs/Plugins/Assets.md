@@ -1,29 +1,18 @@
-Assets.js
----------
-
-Contains the Assets class.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Assets {#Assets}
 =======================
 
-**Provides methods to dynamically load JavaScript, CSS, and image files into the document.**
+Provides methods to dynamically load JavaScript, CSS, and image files into the document.
 
 ### Hash: Asset
 
-**Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.**
+Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.
 
 
 
 Assets Method: javascript {#Assets:javascript}
 ----------------------------------------------
 
-**Injects a script tag into the head section of the document, pointing to the src specified.**
+Injects a script tag into the head section of the document, pointing to the src specified.
 
 ###	Syntax:
 
@@ -31,8 +20,8 @@ Assets Method: javascript {#Assets:javascript}
 
 ###	Arguments:
 
-1. **source**     - (*string*) The location of the JavaScript file to load.
-2. **properties** - (*object*, optional) Additional attributes to be included into the script Element.
+1. source     - (*string*) The location of the JavaScript file to load.
+2. properties - (*object*, optional) Additional attributes to be included into the script Element.
 
 ###	Returns:
 
@@ -47,7 +36,7 @@ Assets Method: javascript {#Assets:javascript}
 Assets Method: css {#Assets:css}
 --------------------------------
 
-**Injects a css file in the page.**
+Injects a css file in the page.
 
 ###	Syntax:
 
@@ -55,8 +44,8 @@ Assets Method: css {#Assets:css}
 
 ###	Arguments:
 
-1. **source**     - (*string*) The path of the CSS file.
-2. **properties** - (*object*) Some additional attributes you might want to add to the link Element.
+1. source     - (*string*) The path of the CSS file.
+2. properties - (*object*) Some additional attributes you might want to add to the link Element.
 
 ###	Returns:
 
@@ -71,7 +60,7 @@ Assets Method: css {#Assets:css}
 Assets Method: image {#Assets:image}
 ------------------------------------
 
-**Preloads an image and returns the img element.**
+Preloads an image and returns the img element.
 
 ###	Syntax:
 
@@ -79,8 +68,8 @@ Assets Method: image {#Assets:image}
 
 ###	Arguments:
 
-1. **source**     - (*string*) The path of the image file.
-2. **properties** - (*object*) Some additional attributes you might want to add to the img Element including the onload/onerror/onabout events.
+1. source     - (*string*) The path of the image file.
+2. properties - (*object*) Some additional attributes you might want to add to the img Element including the onload/onerror/onabout events.
 
 ###	Returns:
 
@@ -100,7 +89,7 @@ Assets Method: image {#Assets:image}
 Assets Method: images {#Assets:images}
 --------------------------------------
 
-**Preloads an array of images (as strings) and returns an array of img elements. does not inject them to the page.**
+Preloads an array of images (as strings) and returns an array of img elements. does not inject them to the page.
 
 ###	Syntax:
 
@@ -108,8 +97,8 @@ Assets Method: images {#Assets:images}
 
 ###	Arguments:
 
-1. **sources** - (*mixed*) An array or a string, of the paths of the image files.
-2. **options** - (*object*, optional) See below.
+1. sources - (*mixed*) An array or a string, of the paths of the image files.
+2. options - (*object*, optional) See below.
 
 ## Options:
 
@@ -131,8 +120,8 @@ Assets Method: images {#Assets:images}
 
 #### Arguments:
 
-1. **counter** - (*number*) The number of loaded images.
-2. **index**   - (*number*) The index of the loaded image.
+1. counter - (*number*) The number of loaded images.
+2. index   - (*number*) The index of the loaded image.
 
 #### Returns:
 

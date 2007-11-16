@@ -1,17 +1,7 @@
-Accordion.js
-------------
-
-Contains the Accordion class.
-
-### License:
-
-MIT-style license.
-
-
 Class: Accordion {#Accordion}
 =============================
 
-**The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.**
+The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.
 
 ### Remark:
 
@@ -27,21 +17,21 @@ Class: Accordion {#Accordion}
 
 ### Arguments:
 
-1. **togglers** - (*array*) The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
-2. **elements** - (*array*) The collection of Elements the transitions will be applied to.
-3. **options**  - (*object*, optional) All the [Fx](#Fx) options in addition to options below.
+1. togglers - (*array*) The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
+2. elements - (*array*) The collection of Elements the transitions will be applied to.
+3. options  - (*object*, optional) All the [Fx](#Fx) options in addition to options below.
 
 #### Options:
 
-* **display**     - (*integer*: defaults to 0) The index of the element to show at start (with a transition).
-* **show**        - (*integer*: defaults to 0) The index of the element to be shown initially.
-* **height**      - (*boolean*: defaults to true) If set to true, a height transition effect will take place when switching between displayed elements.
-* **width**       - (*boolean*: defaults to false) If set to true, a width transition will take place when switching between displayed elements.
-* **opacity**     - (*boolean*: defaults to true) If set to true, an opacity transition effect will take place when switching between displayed elements.
-* **fixedHeight** - (*boolean*: defaults to false) If set to false, displayed elements will have a fixed height.
-* **fixedWidth**  - (*boolean*: defaults to false) If set to true, displayed elements will have a fixed width.
-* **alwaysHide**  - (*boolean*: defaults to false) If set to true, it will be possible to close all displayable elements. Otherwise, one will remain open at all time.
-* **width**       - (*boolean*: defaults to false) If set to true, it will add a width transition to the accordion. Warning: css mastery is required to make this work!
+* display     - (*integer*: defaults to 0) The index of the element to show at start (with a transition).
+* show        - (*integer*: defaults to 0) The index of the element to be shown initially.
+* height      - (*boolean*: defaults to true) If set to true, a height transition effect will take place when switching between displayed elements.
+* width       - (*boolean*: defaults to false) If set to true, a width transition will take place when switching between displayed elements.
+* opacity     - (*boolean*: defaults to true) If set to true, an opacity transition effect will take place when switching between displayed elements.
+* fixedHeight - (*boolean*: defaults to false) If set to false, displayed elements will have a fixed height.
+* fixedWidth  - (*boolean*: defaults to false) If set to true, displayed elements will have a fixed width.
+* alwaysHide  - (*boolean*: defaults to false) If set to true, it will be possible to close all displayable elements. Otherwise, one will remain open at all time.
+* width       - (*boolean*: defaults to false) If set to true, it will add a width transition to the accordion. Warning: css mastery is required to make this work!
 
 ### Returns:
 
@@ -59,8 +49,8 @@ Class: Accordion {#Accordion}
 
 #### Arguments:
 
-1. **toggler** - (*element*) The toggler for the Element being displayed.
-2. **element** - (*element*) The Element being displayed.
+1. toggler - (*element*) The toggler for the Element being displayed.
+2. element - (*element*) The Element being displayed.
 
 ### onBackground
 
@@ -77,10 +67,10 @@ Class: Accordion {#Accordion}
 
 #### Properties:
 
-1. **togglers**  - (*array*) The collection of Elements that are clicked to open sections of the Accordion.
-2. **elements**  - (*array*) The collection of Elements representing the sections that expand and collapse.
-3. **container** - (*element* or *boolean* false) An element that contains all the togglers and elements. The container is optional, so if not specified in the options this property is false.
-4. **previous**  - (*integer*) The current open section.
+1. togglers  - (*array*) The collection of Elements that are clicked to open sections of the Accordion.
+2. elements  - (*array*) The collection of Elements representing the sections that expand and collapse.
+3. container - (*element* or *boolean* false) An element that contains all the togglers and elements. The container is optional, so if not specified in the options this property is false.
+4. previous  - (*integer*) The current open section.
 
 ### Examples:
 
@@ -98,7 +88,7 @@ Class: Accordion {#Accordion}
 Accordion Method: addSection {#Accordion:addSection}
 ----------------------------------------------------
 
-**Dynamically adds a new section into the Accordion at the specified position.**
+Dynamically adds a new section into the Accordion at the specified position.
 
 ###	Syntax:
 
@@ -106,9 +96,9 @@ Accordion Method: addSection {#Accordion:addSection}
 
 ###	Arguments:
 
-1. **toggler** - (*element*) The Element that toggles the Accordion section open.
-2. **element** - (*element*) The Element that should stretch open when the toggler is clicked.
-3. **pos**     - (*integer*, optional) The index at which these objects are to be inserted within the Accordion (defaults to the end).
+1. toggler - (*element*) The Element that toggles the Accordion section open.
+2. element - (*element*) The Element that should stretch open when the toggler is clicked.
+3. pos     - (*integer*, optional) The index at which these objects are to be inserted within the Accordion (defaults to the end).
 
 ###	Returns:
 
@@ -125,7 +115,7 @@ Accordion Method: addSection {#Accordion:addSection}
 Accordion Method: display {#Accordion:display}
 ----------------------------------------------
 
-**Shows a specific section and hides all others. Useful when triggering an accordion from outside.**
+Shows a specific section and hides all others. Useful when triggering an accordion from outside.
 
 ###	Syntax:
 
@@ -133,7 +123,7 @@ Accordion Method: display {#Accordion:display}
 
 ###	Arguments:
 
-1. **index** - (*mixed*) The index of the item to show, or the actual element to be displayed.
+1. index - (*mixed*) The index of the item to show, or the actual element to be displayed.
 
 ### Returns:
 
