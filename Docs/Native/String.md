@@ -295,6 +295,31 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 
 
+String Method: stripScripts {#String:stripScripts}
+------------------------------------------
+
+Strips the String of anything in between <script> tags.
+
+### Syntax:
+
+	myString.stripSlashes([evaluate]);
+
+### Arguments:
+
+1. evaluate - (*boolean*, optional) If true is passed, the scripts within the String will be evaluated.
+
+### Returns:
+
+* (*string*) - The String without the stripped scripts.
+
+### Examples:
+
+	var myString = "<script>alert('Hello')</script>Hello, World.";
+	myString.stripScripts(); //Returns "Hello, World."
+	myString.stripScripts(true); //Alerts "Hello", then returns "Hello, World."
+
+
+
 [MDC String]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String
 [MDC Regexp:test]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test
 [MDC Regular Expressions]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions
