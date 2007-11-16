@@ -1,28 +1,27 @@
+[$]: /Element/#dollar
+
 Element.Dimensions.js
 ---------------------
 
 Contains Element methods to work with element size, scroll, or position in space.
 
-### License:
+### Notes:
 
-MIT-style license.
+The functions in this script require a XHTML doctype.
 
-### Remark:
-
-- The functions in this script require a XHTML doctype.
 
 ### See Also:
 
 <http://en.wikipedia.org/wiki/XHTML>
 
+### License:
 
+MIT-style license.
 
 Native: Element {#Element}
 ==========================
 
 Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
-
-
 
 Element Method: scrollTo {#Element:scrollTo}
 --------------------------------------------
@@ -35,84 +34,117 @@ Scrolls the element to the specified coordinated (if the element has an overflow
 
 ### Arguments:
 
-1. x - (*integer*) The x coordinate.
-2. y - (*integer*) The y coordinate.
+1. x - (integer) The x coordinate.
+2. y - (integer) The y coordinate.
 
-### Examples:
+### Example:
 
 	$('myElement').scrollTo(0, 100);
 
 ### See Also:
 
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>,
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
+<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>,
+<http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
 
-
-
-Element Method: getSize {#Element:getSize}
+Element Method: positioned {#Element:positioned}
 ------------------------------------------
 
-Returns an Object representing the different size dimensions of the element.
+Returns true if the Element has been absolutely or relatively positioned.
 
 ### Syntax:
 
-	myElement.getSize();
+	myElement.positioned();
 
 ### Returns:
 
-* (*object*) An object containing 'client', 'offset', and 'scroll' objects, each with x and y values.
+* (boolean) True if the positioning of the Element is absolute, fixed, or relative, false if it's static.
 
-Return Example:
-	
-	{
-		'client': {'x': 135, 'y': 125}, //total visible size of the content of the element
-		'offset': {'x': 155, 'y': 145}, //total visible size of the element including borders, paddings, and scrollbars
-		'scroll': {'x': 135, 'y': 400}  //total size of the element including hidden scrollable content
+### Example:
+
+	if($('myElement').positioned()) {
+		alert("This element has been positioned.");
 	}
 
-### Examples:
 
-	var size = $('myElement').getSize();
-	alert('My element is ' + size.offset.x + 'px wide'); //alerts 'My element is 155px wide'
+Element Method:  {#Element:getOffsetParent}
+------------------------------------------
+
+Returns the first positioned parent Element of the target.
+
+### Syntax:
+
+	myElement.getOffsetParent();
+
+### Returns:
+
+* (object) The first positioned parent of the target Element.
+ 
+### Example:
+
+	myElement.getOffsetParent();
+
+Element Method:  {#Element:getOffsetSize}
+------------------------------------------
+
+Returns the height and width of the Element, taking into account borders and padding.
+
+### Syntax:
+
+	myElement.getOffsetSize();
+
+### Returns:
+
+* (object) An object containing the width (as x) and the height (as y) of the target Element. 
+
+### Example:
+
+	var size = myElement.getOffsetSize();
+	alert("The element is "+size.x+" pixels wide and "+size.y+"pixels high.");
+
+Element Method: getScrollSize {#Element:getScrollSize}
+----------------------------------------------
+
+Returns an Object representing the size of the target Element, including scrollable area.
+
+### Syntax:
+
+	myElement.getScrollSize();
+
+### Returns:
+
+* (object) An object containing the x and y dimensions of the target Element.
+
+### Example:
+
+	var scroll = $('myElement').getScrollSize();
+	alert('My element can scroll to ' + scroll.y + 'px'); //alerts 'My element can scroll down to 820px'
 
 ### See Also:
 
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>,
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>,
-- <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>,
-- <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>,
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>,
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
-
-
+* <http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>
+* <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
+* <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>
+* <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>
+* <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
+* <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
 
 Element Method: getScroll {#Element:getScroll}
 ----------------------------------------------
 
-Returns an Object representing the size/scroll values of the element.
+Returns an Object representing how far the target Element is scrolled in either direction.
 
 ### Syntax:
 
-	myElement.getSize();
+	myElement.getScroll();
 
 ### Returns:
 
-* (*object*) An object containing the x and y scroll positions of the element.
+* (object) An object containing the x and y dimensions of the target Element's scroll.
 
-### Examples:
+### Example:
 
 	var scroll = $('myElement').getScroll();
-	alert('My element is scrolled down ' + scroll.y + 'px'); //alerts 'My element is scrolled down 20px'
-
-### See Also:
-
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
-- <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>
-- <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
-- <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
-
+	alert('My element is scrolled down ' + scroll.y + 'px'); //alerts 'My element is scrolled down to 620px'
 
 
 Element Method: getPosition {#Element:getPosition}
@@ -126,80 +158,25 @@ Returns the real offsets of the element.
 
 ### Arguments:
 
-1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
+relative - (Element, defaults to the document) If set, the position will be relative to this Element.
 
 ### Returns:
 
-* (*object*) An object with properties: x and y coordinates of the Element's position.
+* (object) An object with the x and y coordinates of the Element's position.
 
-### Examples:
+### Example:
 
 	$('element').getPosition(); //returns {x: 100, y: 500};
 
 ### See Also:
 
-- <http://www.quirksmode.org/js/findpos.html>
-
-
-
-Element Method: getTop {#Element:getTop}
-----------------------------------------
-
-Returns the distance from the top of the window to the Element.
-
-### Syntax:
-
-	myElement.getTop(relative);
-
-### Arguments:
-
-1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
-
-### Returns:
-
-* (*integer*) The top position of this Element.
-
-### Examples:
-
-	$('myElement').getTop(); //returns 20
-
-### See Also:
-
-- [Element.getPosition](#Element:getPosition)
-
-
-
-Element Method: getLeft {#Element:getLeft}
-------------------------------------------
-
-Returns the distance from the left of the window to the Element.
-
-### Syntax:
-
-	myElement.getLeft(relative);
-
-### Arguments:
-
-1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
-
-### Returns:
-
-* (*integer*) The left position of this Element.
-
-### Examples:
-
-	$('myElement').getLeft(); //returns 20
-
-### See Also:
-
-- [Element.getPosition](#Element:getPosition)
-
+* <http://www.quirksmode.org/js/findpos.html>
 
 
 Element Method: getCoordinates {#Element:getCoordinates}
 --------------------------------------------------------
 
-Returns an object with width, height, left, right, top, and bottom, representing the values of the Element.
+Returns an object with width, height, left, right, top, and bottom coordinate values of the Element.
 
 ### Syntax:
 
@@ -207,13 +184,13 @@ Returns an object with width, height, left, right, top, and bottom, representing
 
 ### Arguments:
 
-1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
+relative - (element, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 ### Returns:
 
-* (*object*) An object containing the Element's current: top, left, width, height, right, and bottom.
+* (object) An object containing the Element's current: top, left, width, height, right, and bottom.
 
-### Examples:
+### Example:
 
 	var myValues = $('myElement').getCoordinates();
 
@@ -230,9 +207,4 @@ Returns an object with width, height, left, right, top, and bottom, representing
 
 ### See Also:
 
-- [Element.getPosition][]
-
-
-
-[$]: /Element/#dollar
-[Element.getPosition]: #Element:getPosition
+[Element.getPosition](#Element:getPosition)
