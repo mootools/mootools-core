@@ -5,6 +5,36 @@ A Custom "Object" ({}) implementation which does not account for prototypes when
 
 
 
+Hash Method: has {#Hash:has}
+----------------------------
+
+Tests for the presence of a specified key in the Hash.
+
+### Syntax:
+
+	var inHash = myHash.has(item);
+
+### Arguments:
+
+1. key - (*string*) The key to search for in the Hash.
+
+### Returns:
+
+* (*boolean*) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
+
+### Examples:
+
+	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
+	hash.has('a'); //returns true
+	hash.has('d'); //returns false
+
+
+### Notes:
+
+- Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
+
+
+
 Hash Method: keyOf {#Hash:keyOf}
 --------------------------------
 
@@ -33,35 +63,6 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 ### Notes:
 
 - Testing for a Hash prototype will never return its key. Only the actual properties of the Hash will return their associated key.
-
-
-Hash Method: has {#Hash:has}
-----------------------------
-
-Tests for the presence of a specified key in the Hash.
-
-### Syntax:
-
-	var inHash = myHash.has(item);
-
-### Arguments:
-
-1. key - (*string*) The key to search for in the Hash.
-
-### Returns:
-
-* (*boolean*) If the Hash has a defined value for the specified key, returns true. Otherwise, returns false.
-
-### Examples:
-
-	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 'three'});
-	hash.has('a'); //returns true
-	hash.has('d'); //returns false
-
-
-### Notes:
-
-- Testing for a Hash prototype will never return true. Only testing the actual properties of the Hash will return true.
 
 
 
@@ -183,7 +184,8 @@ Removes the specified key from the Hash.
 
 
 
-### Hash Method: get {#Hash:get}
+Hash Method: get {#Hash:get}
+----------------------------
 
 Retrieves a value from the hash.
 

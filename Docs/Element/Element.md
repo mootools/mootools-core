@@ -65,7 +65,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 	$$('a'); //returns all anchor elements in the page
 	$$('a', 'b'); //returns anchor and bold tags on the page
 
-#### Using CSS Selectors When [Selectors.js][] is Included:
+#### Using CSS Selectors When [Selectors][] is Included:
 
 	$$('#myElement'); //returns an array containing only the element with the id 'myElement'
 	$$('#myElement a.myClass'); //returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'
@@ -76,13 +76,13 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Notes:
 
-- If you load [Selectors.js][], [$$][] will also accept CSS Selectors, otherwise the only selectors supported are tag names.
+- If you load [Selectors][], [$$][] will also accept CSS Selectors, otherwise the only selectors supported are tag names.
 - If an expression doesn't find any elements, an empty array will be returned.
 - The return type of element methods run through [$$][] is always an array.
 
 ### See Also:
 
-- See [Selectors.js][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
 
 
 
@@ -133,8 +133,7 @@ Creates a new Element of the type passed in.
 
 ### See Also:
 
-- [$][]
-- [Element:set][]
+- [$][], [Element:set][]
 
 
 
@@ -162,12 +161,12 @@ Gets the first descendant element whose tag name matches the tag provided.
 ### Notes:
 
 - This method is also available for Document instances.
-- This method gets replaced when [Selectors.js][] is included.
-- [Selectors.js][] enhances [Element:getElement][] so that it matches based on CSS selectors.
+- This method gets replaced when [Selectors][] is included.
+- [Selectors][] enhances [Element:getElement][] so that it matches based on CSS selectors.
 
 ### See Also:
 
-- See [Selectors.js][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
 
 
 
@@ -195,12 +194,12 @@ Collects all decedent elements whose tag name matches the tag provided.
 ### Notes:
 
 - This method is also available for Document instances.
-- This method gets replaced when [Selectors.js][] is included.
-- [Selectors.js][] enhances [Element:getElements][] so that it matches based on CSS selectors.
+- This method gets replaced when [Selectors][] is included.
+- [Selectors][] enhances [Element:getElements][] so that it matches based on CSS selectors.
 
 ### See Also:
 
-- See [Selectors.js][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
 
 
 
@@ -287,11 +286,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 ### See Also:
 
-- [Element][]
-- [Element.Properties][]
-- [Element:setProperty][]
-- [Element:addEvents][]
-- [Element:setStyles][]
+- [Element][], [Element.Properties][], [Element:setProperty][], [Element:addEvents][], [Element:setStyles][]
 
 
 
@@ -329,9 +324,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 ### See Also:
 
-- [Element][]
-- [Element.Properties][]
-- [Element:getProperty][]
+- [Element][], [Element.Properties][], [Element:getProperty][]
 
 
 
@@ -363,9 +356,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### See Also:
 
-- [Element][]
-- [Element.Properties][]
-- [Element:removeProperty][]
+- [Element][], [Element.Properties][], [Element:removeProperty][]
 
 
 
@@ -393,7 +384,7 @@ Tests this element to see if it's tag name is the same as the tag passed in.
 ### Notes:
 
 - See [Element:match](/Selectors/Selectors#Element:match)
-- This method is overwritten by a more powerful version when [Selectors.js][] is included.
+- This method is overwritten by a more powerful version when [Selectors][] is included.
 
 
 
@@ -523,6 +514,60 @@ Appends the Element at a particular place relative to the Element's children (sp
 
 
 
+Element Method: adopt {#Element:adopt}
+--------------------------------------
+
+Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
+
+Inserts the passed element(s) inside the Element (that will become the parent).
+
+
+### Syntax:
+	
+	myParent.adopt(el[, others]);
+	
+### Arguments:
+
+1. el - (*mixed*) el can be the id of an element or an element.
+2. others - (*mixed*, optional) You can pass more then one elements separated by comma or as array.
+
+### Returns:
+
+* (*element*) This Element.
+
+### Examples:
+
+##### Javascript
+
+	var myFirstElement = new Element('div', {id: 'myFirstElement'});
+	var mySecondElement = new Element('a', {id: 'mySecondElement'});
+	var myThirdElement = new Element('ul', {id: 'myThirdElement'});
+	
+	myParent.adopt(myFirstElement);
+	myParent2.adopt(myFirstElement, 'mySecondElement');
+	myParent3.adopt([myFirstElement, mySecondElement, myThirdElement]);
+
+##### Resulting HTML
+
+	<div id="myParent">
+		<div id="myFirstElement" />
+	</div>
+	<div id="myParent2">
+		<div id="myFirstElement" />
+		<a />
+	</div>
+	<div id="myParent3">
+		<div id="myFirstElement" />
+		<a />
+		<ul />
+	</div>
+
+### See Also:
+
+[Element:grab](#Element:grab), [Element:inject](#Element:inject), [Element:wraps](#Element:wraps)
+
+
+
 Element Method: wraps {#Element:wraps}
 --------------------------------------
 
@@ -636,7 +681,7 @@ Clones the Element and returns the cloned one.
 
 ### Note:
 
-- The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
+- The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event/#Element:cloneEvents).
 - The clone element and its children are stripped of ids.
 
 ### See Also:
@@ -645,14 +690,14 @@ Clones the Element and returns the cloned one.
 
 
 
-Element Method: replaceWith {#Element:replaceWith}
+Element Method: replaces {#Element:replaces}
 --------------------------------------------------
 
 Replaces the Element with an Element passed.
 
 ### Syntax:
 
-	var element = myElement.replaceWidth(el);
+	var element = myElement.replaces(el);
 
 ### Arguments:
 
@@ -664,7 +709,7 @@ Replaces the Element with an Element passed.
 
 ### Examples:
 
-	$('myOldElement').replaceWith($('myNewElement'));
+	$('myOldElement').replaces($('myNewElement'));
 	//$('myOldElement') is gone, and $('myNewElement') is in its place.
 
 ### See Also:
@@ -821,7 +866,7 @@ Returns the previousSibling of the Element (excluding text nodes).
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -848,7 +893,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -874,7 +919,7 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -893,7 +938,7 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -913,7 +958,7 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -940,7 +985,7 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -1058,6 +1103,37 @@ Reads the children inputs of the Element and generates a query string based on t
 
 
 
+Element Method: getProperty {#Element:getProperty}
+------------------------------------------------------
+
+Gets a single element attribute.
+
+### Syntax:
+
+	var myProp = myElement.getProperty(property);
+
+### Arguments:
+
+* property - (*string*) The property to be retrieved.
+
+### Returns:
+
+* (*string*) A string containing the Element's requested property.
+
+### Examples:
+
+##### HTML
+
+	<img id="myImage" src="mootools.png" title="MooTools, the compact JavaScript framework" alt="" />
+
+##### JavaScript
+
+	var imgProps = $('myImage').getProperty('src');
+
+	// returns: 'mootools.png'
+
+
+
 Element Method: getProperties {#Element:getProperties}
 ------------------------------------------------------
 
@@ -1065,11 +1141,11 @@ Gets multiple element attributes.
 
 ### Syntax:
 
-	var myProps = myElement.getProperties();
+	var myProps = myElement.getProperties(properties);
 
 ### Arguments:
 
-* (*strings*) Any number of properties to be retrieved.
+* properties - (*strings*) Any number of properties to be retrieved.
 
 ### Returns:
 
@@ -1185,6 +1261,40 @@ Removes an attribute from the Element.
 ##### Resulting HTML
 
 	<a id="myAnchor" href="#"></a>
+
+
+
+Element Method: removeProperties {#Element:removeProperties}
+--------------------------------------------------------
+
+Removes numerous attributes from the Element.
+
+
+### Syntax:
+
+	myElement.removeProperties(properties);
+
+### Arguments:
+
+1. properties - (*strings*) The attributes to remove, separated by comma.
+
+### Returns:
+
+* (*element*) This Element.
+
+### Examples:
+
+##### HTML
+
+	<a id="myAnchor" href="#" title="hello world"></a>
+
+##### JavaScript
+
+	$('myAnchor').removeProperties('id', 'href', 'title');
+
+##### Resulting HTML
+
+	<a></a>
 
 
 
@@ -1487,7 +1597,7 @@ Elements Method: filterBy {#Elements:filterBy}
 ----------------------------------------------
 
 Filters a collection of element by a given tagname.
-If [Selectors.js][] is included, this method will be able to filter by any selector.
+If [Selectors][] is included, this method will be able to filter by any selector.
 
 
 ### Syntax:
@@ -1508,7 +1618,7 @@ If [Selectors.js][] is included, this method will be able to filter by any selec
 [$$]: #dollars
 
 [Array]: /Native/Array
-[Selectors.js]: /Selectors/Selectors
+[Selectors]: /Selectors/Selectors
 
 [Element]: #Element
 [Elements]: #Elements

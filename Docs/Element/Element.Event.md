@@ -89,7 +89,7 @@ Stop an Event from propagating and also executes preventDefault.
 
 ### See Also:
 
-- [Element.addEvent](#Element:addEvent), [Element.stopPropagation](#Event:stopPropagation), [Event.preventDefault](#Event:preventDefault), [Function.delay](#Function:delay)
+- [Element.addEvent](#Element:addEvent), [Element.stopPropagation](#Event:stopPropagation), [Event.preventDefault](#Event:preventDefault), [Function:delay][]
 
 Event Method: stopPropagation {#Event:stopPropagation}
 ------------------------------------------------------
@@ -125,7 +125,7 @@ Cross browser method to stop the propagation of an event (this stops the event f
 
 ### See Also:
 
-- [Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.stopPropagation>
+- [Element:addEvent](#Element:addEvent), [MDC event.stopPropagation](http://developer.mozilla.org/en/docs/DOM:event.stopPropagation)
 
 
 
@@ -158,7 +158,7 @@ Cross browser method to prevent the default action of the event.
 
 ### See Also:
 
-- [Element.addEvent](#Element:addEvent), <http://developer.mozilla.org/en/docs/DOM:event.preventDefault>
+- [Element:addEvent](#Element:addEvent), [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
 
 
 
@@ -200,12 +200,12 @@ Attaches an event listener to a DOM element.
 
 ### Notes:
 
-- You can stop the Event by returning false in the listener or calling [Event.stop](#Event:stop).
+- You can stop the Event by returning false in the listener or calling [Event:stop](#Event:stop).
 - This method is also attached to Document and Window.
 
 ###	See Also:
 
-- <http://www.w3schools.com/html/html_eventattributes.asp>
+- [w3schools Event Attributes](http://www.w3schools.com/html/html_eventattributes.asp)
 
 
 
@@ -258,7 +258,7 @@ Works as Element.addEvent, but instead removes the previously added event listen
 Element Method: addEvents {#Element:addEvents}
 ----------------------------------------------
 
-The same as [Element.addEvent](#Element:addEvent), but accepts an object and add multiple events at once.
+The same as [Element:addEvent](#Element:addEvent), but accepts an object and add multiple events at once.
 
 ###	Syntax:
 
@@ -289,7 +289,7 @@ The same as [Element.addEvent](#Element:addEvent), but accepts an object and add
 
 ###	See Also:
 
-- [Element.addEvent](#Element:addEvent)
+- [Element:addEvent](#Element:addEvent)
 
 
 
@@ -334,7 +334,7 @@ Removes all events of a certain type from an Element. If no argument is passed i
 
 ###	See Also:
 
-- [Element.removeEvent](#Element:removeEvent)
+- [Element:removeEvent](#Element:removeEvent)
 
 Element Method: fireEvent {#Element:fireEvent}
 ----------------------------------------------
@@ -442,7 +442,7 @@ This event fires when the mouse enters the area of the dom Element and will not 
 
 #### See Also:
 
-- [Element.addEvent](#Element:addEvent)
+- [Element:addEvent](#Element:addEvent)
 
 #### Event: mousewheel
 
@@ -458,11 +458,12 @@ This event fires when the mouse wheel is rotated;
 
 #### See Also:
 
-- [Element.addEvent](#Element:addEvent)
+- [Element:addEvent](#Element:addEvent)
 
 
 
 [$]: /Element/#dollar
 [Function]: /Native/Function
-[Function:bind]: /Native/#Function:bind
-[Function:pass]: /Native/#Function:pass
+[Function:bind]: /Native/Function/#Function:bind
+[Function:pass]: /Native/Function/#Function:pass
+[Function:delay]: /Native/Function/#Function:delay

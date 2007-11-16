@@ -2,7 +2,7 @@ Class: Chain {#Chain}
 =====================
 
 A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
-Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][], [XHR][] and [Ajax][].
+Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][], [Request][] and [Request.HTML][].
 In [Fx][], for example, it is used to create custom, complex animations.
 
 
@@ -205,6 +205,35 @@ Adds an event to the Class instance's event stack.
 
 
 
+Events Method: addEvents {#Events:addEvents}
+------------------------------------------
+
+The same as [addEvent](#addEvent), but accepts an object and add multiple events at once.
+
+### Syntax:
+
+	myClass.addEvents(events);
+
+### Arguments:
+
+1. events - (*object*) An object with key/value representing: key the event name (e.g. 'onStart'), and value the function that is called when the Event occurs.
+
+### Returns:
+
+* (*object*) This Class instance.
+
+### Example:
+
+	var myFx = new Fx.Style('element', 'opacity');
+	myFx.addEvents({
+		'onStart': myStartFunction,
+		'onComplete': function() {
+			alert('done.');
+		}
+	});
+
+
+
 Events Method: fireEvent {#Events:fireEvent}
 --------------------------------------------
 
@@ -356,7 +385,7 @@ Merges the default options of the Class with the options passed in.
 
 
 [Class]: /Class/Class
-[Class:implement]: /Class/#Class:implement
+[Class:implement]: /Class/Class/#Class:implement
 [Fx]: /Fx/Fx
 [Fx.Tween]: /Fx/Fx.Tween
 [Request]: /Request/Request
