@@ -1,14 +1,3 @@
-Drag.js
--------
-
-Contains [Drag](#Drag), [Element:makeResizable](#Element:makeResizable)
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Drag {#Drag}
 ===================
 

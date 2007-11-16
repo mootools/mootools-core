@@ -1,23 +1,12 @@
-Drag.Move.js
-------------
-Contains [Drag.Move](#Drag:Move), [Element.makeDraggable](#Element:makeDraggable).
-
-### License:
-
-MIT-style license.
-
-### Remark:
-
-Drag.Move requires an XHTML doctype.
-
-
-
 Class: Drag.Move {#Drag-Move}
 =============================
 
 An extension to the base Drag class with additional functionality for dragging an Element.  Supports snapping and droppables.
 Inherits methods, properties, options and events from [Drag][].
 
+### Remark:
+
+Drag.Move requires an XHTML doctype.
 
 
 Drag.Move Method: constructor {#Drag:constructor}

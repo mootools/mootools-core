@@ -1,15 +1,3 @@
-Class.Extras.js
----------------
-
-Contains common implementations for custom classes.
-In MooTools these Utilities are implemented in [Request][], [Request.HTML][], [Fx][] and many other Classes to provide rich functionality.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Chain {#Chain}
 =====================
 

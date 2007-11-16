@@ -1,14 +1,3 @@
-Class.js
---------
-
-Contains the Class Function for easily creating, extending, and implementing reusable Classes.
-
-### License:
-
-MIT-style license.
-
-
-
 Native: Class {#Class}
 ======================
 

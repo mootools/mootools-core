@@ -1,16 +1,5 @@
-Core.js
--------
-
-Core contains an handful of common sense functions used in [MooTools](http://mootools.net/). It also contains some basic [Hash][] and [Array][] methods.
-
-### License:
-
-MIT-style license.
-
-
-
-Core Utilities {#Core}
-======================
+Core {#Core}
+============
 
 Core contains an handful of common sense functions used in [MooTools](http://mootools.net).
 It also contains some basic [Hash][] and [Array][] methods.

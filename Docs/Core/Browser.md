@@ -1,14 +1,3 @@
-Browser.js
-----------
-
-Browser Contains Browser Initialization, including Window and Document, plus the Browser Hash.
-
-### License:
-
-MIT-style license.
-
-
-
 Hash: Browser {#Browser}
 ========================
 
