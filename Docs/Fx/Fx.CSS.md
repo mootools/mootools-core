@@ -1,11 +1,9 @@
-Script: Fx.CSS.js
------------------
+Class: Fx.CSS {#Fx-CSS}
+=======================
 
 CSS parsing class for effects. Required by [Fx.Tween][], [Fx.Morph][], [Fx.Elements][].
 
-### License:
-
-MIT-style license.
+Has no public methods.
 
 
 
