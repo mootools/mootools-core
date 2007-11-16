@@ -95,12 +95,8 @@ Transitions the Element's CSS property to the specified value.
 
 
 
-Native: Element {#Element}
-==========================
-
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
-
-
+Hash: Element.Properties {#Element-Properties}
+==============================================
 
 Element Property: tween {#Element:property-tween}
 -------------------------------------------------
@@ -151,6 +147,13 @@ Sets and gets a default Fx.Tween instance for an Element.
 - The property must be specified when using Element:get to retrieve the actual Fx.Tween instance, and in calls to Element:tween.
 - When options are passed to either the setter or the getter, the instance will be recreated.
 - As with the other Element shortcuts, the difference between a setter and a getter is that the getter returns the instance, while the setter returns the element (for chaining and initialization).
+
+
+
+Native: Element {#Element}
+==========================
+
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
