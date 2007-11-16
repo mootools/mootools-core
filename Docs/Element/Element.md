@@ -1304,28 +1304,43 @@ These Hash contains the functions that respond to the first argument passed in [
 
 ### Example of a custom Element Property
 
-	Element.Properties.checked = {
+	Element.Properties.disabled = {
 		
 		get: function(){
-			return this.checked;
+			return this.disabled;
 		}
 		
 		set: function(value){
-			this.checked = !!value;
-			this.setAttribute('checked', !!value);
+			this.disabled = !!value;
+			this.setAttribute('disabled', !!value);
 		}
 		
 	};
 	
 	//usage
 	
-	$(element).get('checked'); //gets the checked property.
+	$(element).get('disabled'); //gets the disabled property.
 	
-	$(element).set('checked', true); //sets the checked property to true, along with the attribute.
+	$(element).set('disabled', true); //sets the disabled property to true, along with the attribute.
 
 ### Note
 
 Automatically returns the element for setters.
+
+### As object
+
+Additionally, you can use these custom getters and setters as a parameter for the [set](#Element:set) method as object.
+
+#### Example
+
+//using set
+
+$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
+
+//for new elements (same as set)
+
+new Element('input', {type: 'checkbox', checked: true, disabled: true});
+
 
 
 Element Property: html {#Element-Properties:html}
