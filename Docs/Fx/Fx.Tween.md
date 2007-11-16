@@ -98,8 +98,8 @@ Transitions the Element's CSS property to the specified value.
 Hash: Element.Properties {#Element-Properties}
 ==============================================
 
-Element Property: tween {#Element:property-tween}
--------------------------------------------------
+Element Property: tween {#Element-Properties:tween}
+---------------------------------------------------
 
 Sets and gets a default Fx.Tween instance for an Element.
 
