@@ -1,7 +1,7 @@
-[$]: /Element/#dollar
+[$]: /Element/Element/#dollar
 
-Element.Dimensions.js
----------------------
+Dimensions.js
+-------------
 
 Contains Element methods to work with element size, scroll, or position in space.
 
@@ -34,8 +34,8 @@ Scrolls the element to the specified coordinated (if the element has an overflow
 
 ### Arguments:
 
-1. x - (integer) The x coordinate.
-2. y - (integer) The y coordinate.
+1. x - (*number*) The x coordinate.
+2. y - (*integer*) The y coordinate.
 
 ### Example:
 
@@ -46,8 +46,10 @@ Scrolls the element to the specified coordinated (if the element has an overflow
 <http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>,
 <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
 
+
+
 Element Method: positioned {#Element:positioned}
-------------------------------------------
+------------------------------------------------
 
 Returns true if the Element has been absolutely or relatively positioned.
 
@@ -57,7 +59,7 @@ Returns true if the Element has been absolutely or relatively positioned.
 
 ### Returns:
 
-* (boolean) True if the positioning of the Element is absolute, fixed, or relative, false if it's static.
+* (*boolean*) True if the positioning of the Element is absolute, fixed, or relative, false if it's static.
 
 ### Example:
 
@@ -66,7 +68,9 @@ Returns true if the Element has been absolutely or relatively positioned.
 	}
 
 
-Element Method:  {#Element:getOffsetParent}
+
+
+Element Method: getOffsetParent {#Element:getOffsetParent}
 ------------------------------------------
 
 Returns the first positioned parent Element of the target.
@@ -77,14 +81,16 @@ Returns the first positioned parent Element of the target.
 
 ### Returns:
 
-* (object) The first positioned parent of the target Element.
- 
+* (*object*) The first positioned parent of the target Element.
+
 ### Example:
 
 	myElement.getOffsetParent();
 
-Element Method:  {#Element:getOffsetSize}
-------------------------------------------
+
+
+Element Method: getOffsetSize {#Element:getOffsetSize}
+----------------------------------------
 
 Returns the height and width of the Element, taking into account borders and padding.
 
@@ -94,15 +100,18 @@ Returns the height and width of the Element, taking into account borders and pad
 
 ### Returns:
 
-* (object) An object containing the width (as x) and the height (as y) of the target Element. 
+* (*object*) An object containing the width (as x) and the height (as y) of the target Element. 
 
 ### Example:
 
 	var size = myElement.getOffsetSize();
 	alert("The element is "+size.x+" pixels wide and "+size.y+"pixels high.");
 
+
+
+
 Element Method: getScrollSize {#Element:getScrollSize}
-----------------------------------------------
+------------------------------------------------------
 
 Returns an Object representing the size of the target Element, including scrollable area.
 
@@ -112,7 +121,7 @@ Returns an Object representing the size of the target Element, including scrolla
 
 ### Returns:
 
-* (object) An object containing the x and y dimensions of the target Element.
+* (*object*) An object containing the x and y dimensions of the target Element.
 
 ### Example:
 
@@ -139,7 +148,7 @@ Returns an Object representing how far the target Element is scrolled in either 
 
 ### Returns:
 
-* (object) An object containing the x and y dimensions of the target Element's scroll.
+* (*object*) An object containing the x and y dimensions of the target Element's scroll.
 
 ### Example:
 
@@ -162,7 +171,7 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 ### Returns:
 
-* (object) An object with the x and y coordinates of the Element's position.
+* (*object*) An object with the x and y coordinates of the Element's position.
 
 ### Example:
 
@@ -184,11 +193,11 @@ Returns an object with width, height, left, right, top, and bottom coordinate va
 
 ### Arguments:
 
-relative - (element, optional) if set, the position will be relative to this element, otherwise relative to the document.
+relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 ### Returns:
 
-* (object) An object containing the Element's current: top, left, width, height, right, and bottom.
+* (*object*) An object containing the Element's current: top, left, width, height, right, and bottom.
 
 ### Example:
 
