@@ -1331,9 +1331,9 @@ Automatically returns the element for setters.
 Element Property: html {#Element-Properties:html}
 -------------------------------------------------
 
-Sets the innerHTML of the Element.
-
 ### Setter:
+
+Sets the innerHTML of the Element.
 
 #### Syntax:
 

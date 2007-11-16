@@ -120,20 +120,17 @@ Executes a transition for any number of css properties in tandem.
 - Multiple selectors (with commas) are not supported.
 
 
+Hash: Element.Properties {#Element-Properties}
+==============================================
 
-Native: Element {#Element}
-==========================
+see [Element.Properties](/Element/Element/#Element-Properties)
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
-
-
-
-Element Property: morph {#Element:property-morph}
+Element Property: morph {#Element-Properties:morph}
 ---------------------------------------------------
 
-Sets / gets a default Fx.Morph instance for an element
-
 ### Setter
+
+Sets / gets a default Fx.Morph instance for an element
 
 #### Syntax:
 
@@ -173,6 +170,9 @@ Sets / gets a default Fx.Morph instance for an element
 	el.get('morph'); //the Fx.Morph instance
 
 
+
+Native: Element {#Element}
+==========================
 
 Element Method: morph {#Element:morph}
 --------------------------------------
