@@ -23,14 +23,17 @@ Request.HTML = new Class({
 
 	onSuccess: function(text){
 		var opts = this.options, res = this.response;
-		res.html = this.processScripts(this.processHTML(text));
+		res.html = this.processHTML(text).stripScripts(function(script){
+			res.javascript = script;
+		});
 		var node = new Element('div', {html: res.html});
 		res.elements = node.getElements('*');
 		res.tree = (opts.filter) ? res.elements.filterBy(opts.filter) : $A(node.childNodes).filter(function(el){
 			return ($type(el) != 'whitespace');
 		});
 		if (opts.update) $(opts.update).empty().adopt(res.tree);
-		arguments.callee.parent([res.tree, res.elements, res.html], false);
+		if (opts.evalScripts) $exec(res.javascript);
+		arguments.callee.parent([res.tree, res.elements, res.html, res.javascript], false);
 	}
 
 });

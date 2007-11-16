@@ -208,11 +208,11 @@ Sets a default Request instance for an Element.  This is useful when handling fo
 
 #### Arguments:
 
-1. options - (object) The Request options.
+1. options - (*object*) The Request options.
 
 #### Returns:
 
-* (element) The original element. 
+* (*element*) The original element. 
 
 #### Example:
 
@@ -229,11 +229,11 @@ Returns the previously set Request instance (or a new one with default options).
 
 #### Arguments:
 
-1. options - (object, optional) The Request options.  If passed, this method will generate a new instance of the Request class.
+1. options - (*object*, optional) The Request options.  If passed, this method will generate a new instance of the Request class.
 
 ### Returns:
 
-* (object) The Request instance.
+* (*object*) The Request instance.
 
 #### Example:
 

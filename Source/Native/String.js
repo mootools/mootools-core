@@ -64,13 +64,14 @@ String.implement({
 		return (rgb) ? rgb.rgbToHex(array) : null;
 	},
 
-	stripScripts: function(evaluate){
+	stripScripts: function(option){
 		var scripts = '';
 		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 			scripts += arguments[1] + '\n';
 			return '';
 		});
-		if (evaluate && scripts) $exec(scripts);
+		if (option === true) $exec(scripts);
+		else if ($type(option) == 'function') option(scripts, text);
 		return text;
 	}
 
