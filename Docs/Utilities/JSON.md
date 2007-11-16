@@ -12,7 +12,7 @@ MIT-style license.
 Class: JSON {#JSON}
 ===================
 
-**JSON parser and encoder.**
+JSON parser and encoder.
 
 ### See Also:
 
@@ -23,7 +23,7 @@ Class: JSON {#JSON}
 JSON Method: encode {#JSON:encode}
 ----------------------------------
 
-**Converts an object or array to a JSON string.**
+Converts an object or array to a JSON string.
 
 ###	Syntax:
 
@@ -31,7 +31,7 @@ JSON Method: encode {#JSON:encode}
 
 ###	Arguments:
 
-1. **obj** - (*object*) The object to convert to string.
+1. obj - (*object*) The object to convert to string.
 
 ###	Returns:
 
@@ -46,7 +46,7 @@ JSON Method: encode {#JSON:encode}
 JSON Method: decode {#JSON:decode}
 ----------------------------------
 
-**Converts a JSON string into an JavaScript object.**
+Converts a JSON string into an JavaScript object.
 
 ###	Syntax:
 
@@ -54,8 +54,8 @@ JSON Method: decode {#JSON:decode}
 
 ###	Arguments:
 
-1. **string** - (*string*) The string to evaluate.
-2. **secure** - (*boolean*, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
+1. string - (*string*) The string to evaluate.
+2. secure - (*boolean*, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
 
 ###	Returns:
 

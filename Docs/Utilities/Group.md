@@ -12,7 +12,7 @@ MIT-style license.
 Class: Group {#Group}
 =====================
 
-**For Grouping Classes or Elements Events. The Event added to the Group will fire when all of the events of the items of the group are fired.**
+For Grouping Classes or Elements Events. The Event added to the Group will fire when all of the events of the items of the group are fired.
 
 ### Syntax:
 
@@ -46,7 +46,7 @@ Any number of Class instances, or arrays containing class instances.
 Group Method: addEvent {#Group:addEvent}
 ----------------------------------------
 
-**Adds an event to the stack of events of the Class instances.**
+Adds an event to the stack of events of the Class instances.
 
 ###	Syntax:
 
@@ -54,8 +54,8 @@ Group Method: addEvent {#Group:addEvent}
 
 ###	Arguments:
 
-1. **type** - (*string*) The event name (e.g. 'onComplete') to add.
-2. **fn**   - (*function*) The callback function to execute when all instances fired this event.
+1. type - (*string*) The event name (e.g. 'onComplete') to add.
+2. fn   - (*function*) The callback function to execute when all instances fired this event.
 
 ###	Returns:
 

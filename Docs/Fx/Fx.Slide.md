@@ -13,10 +13,10 @@ MIT-style license.
 
 
 
-Class: Fx.Slide {#Fx.Slide}
+Class: Fx.Slide {#Fx-Slide}
 ===========================
 
-**The slide effect; slides an element in horizontally or vertically, the contents will fold inside.**
+The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
 
 ### Extends:
 
@@ -28,18 +28,18 @@ Class: Fx.Slide {#Fx.Slide}
 
 ### Arguments:
 
-1. **elements** - (*element*) The element to slide.
-2. **options**  - (*object*, optional) All of <Fx> options in addition to mode and wrapper.
+1. elements - (*element*) The element to slide.
+2. options  - (*object*, optional) All of <Fx> options in addition to mode and wrapper.
 
 #### Options
 
-1. **mode**    - (*string*: defaults to 'vertical') String to indicate what type of sliding. Can be set to 'vertical' or 'horizontal'.
-2. **wrapper** - (*element*: defaults to this.element) Allows to set another Element as wrapper.
+1. mode    - (*string*: defaults to 'vertical') String to indicate what type of sliding. Can be set to 'vertical' or 'horizontal'.
+2. wrapper - (*element*: defaults to this.element) Allows to set another Element as wrapper.
 
 #### Properties:
 
-1. **wrapper** - (*element*) The Element wrapping the element being slid.
-2. **open**    - (*boolean*) Indicates whether the slide element is visible.
+1. wrapper - (*element*) The Element wrapping the element being slid.
+2. open    - (*boolean*) Indicates whether the slide element is visible.
 
 ### Examples:
 
@@ -54,10 +54,10 @@ Class: Fx.Slide {#Fx.Slide}
 
 
 
-Fx.Slide Method: slideIn {#Fx.Slide:slideIn}
+Fx.Slide Method: slideIn {#Fx-Slide:slideIn}
 --------------------------------------------
 
-**Slides the Element in view horizontally or vertically.**
+Slides the Element in view horizontally or vertically.
 
 ### Syntax:
 
@@ -65,11 +65,11 @@ Fx.Slide Method: slideIn {#Fx.Slide:slideIn}
 
 ### Arguments:
 
-1. **mode** - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+1. mode - (*string*, optional) Override the passed in Fx-Slide option with 'horizontal' or 'vertical'.
 
 ### Returns:
 
-* (*object*) This Fx.Slide instance.
+* (*object*) This Fx-Slide instance.
 
 ### Examples:
 
@@ -79,10 +79,10 @@ Fx.Slide Method: slideIn {#Fx.Slide:slideIn}
 
 
 
-Fx.Slide Method: slideOut {#Fx.Slide:slideOut}
+Fx.Slide Method: slideOut {#Fx-Slide:slideOut}
 ----------------------------------------------
 
-**Slides the Element out of view horizontally or vertically.**
+Slides the Element out of view horizontally or vertically.
 
 ### Syntax:
 
@@ -107,10 +107,10 @@ Fx.Slide Method: slideOut {#Fx.Slide:slideOut}
 
 
 
-Fx.Slide Method: toggle {#Fx.Slide:toggle}
+Fx.Slide Method: toggle {#Fx-Slide:toggle}
 ------------------------------------------
 
-**Slides in or Out the element depending on its state.**
+Slides in or Out the element depending on its state.
 
 ### Syntax:
 
@@ -118,7 +118,7 @@ Fx.Slide Method: toggle {#Fx.Slide:toggle}
 
 ### Arguments:
 
-1. **mode** - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+1. mode - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 ### Returns:
 
@@ -135,10 +135,10 @@ Fx.Slide Method: toggle {#Fx.Slide:toggle}
 
 
 
-Fx.Slide Method: hide {#Fx.Slide:hide}
+Fx.Slide Method: hide {#Fx-Slide:hide}
 --------------------------------------
 
-**Hides the element without a transition.**
+Hides the element without a transition.
 
 ### Syntax:
 
@@ -146,7 +146,7 @@ Fx.Slide Method: hide {#Fx.Slide:hide}
 
 ### Arguments:
 
-1. **mode** - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+1. mode - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 ### Returns:
 
@@ -163,10 +163,10 @@ Fx.Slide Method: hide {#Fx.Slide:hide}
 
 
 
-Fx.Slide Method: show {#Fx.Slide:show}
+Fx.Slide Method: show {#Fx-Slide:show}
 --------------------------------------
 
-**Shows the element without a transition.**
+Shows the element without a transition.
 
 ### Syntax:
 
@@ -174,7 +174,7 @@ Fx.Slide Method: show {#Fx.Slide:show}
 
 ### Arguments:
 
-1. **mode** - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
+1. mode - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 ### Returns:
 
@@ -196,15 +196,15 @@ Fx.Slide Method: show {#Fx.Slide:show}
 Native: Element {#Element}
 ==========================
 
-**Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].**
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
-Element Property: slide {#Element:slide}
-----------------------------------------
+Element Property: slide {#Element:property-slide}
+-------------------------------------------------
 
-**Sets a default Fx.Slide instance for an element.**
-**Gets the previously setted Fx.Slide instance or a new one with default options.**
+Sets a default Fx.Slide instance for an element.
+Gets the previously setted Fx.Slide instance or a new one with default options.
 
 ### Syntax:
 
@@ -212,7 +212,7 @@ Element Property: slide {#Element:slide}
 
 ### Arguments:
 
-1. **options** - (*object*) the Fx.Morph options.
+1. options - (*object*) the Fx.Morph options.
 
 ### Returns:
 
@@ -229,7 +229,7 @@ Element Property: slide {#Element:slide}
 
 ### Arguments:
 
-1. **options** - (*object*, optional) the Fx.Slide options. if passed in will generate a new instance.
+1. options - (*object*, optional) the Fx.Slide options. if passed in will generate a new instance.
 
 ### Returns:
 
@@ -247,7 +247,7 @@ Element Property: slide {#Element:slide}
 Element Method: slide {#Element:slide}
 --------------------------------------
 
-**Slides this Element in view.**
+Slides this Element in view.
 
 ### Syntax:
 
@@ -255,8 +255,8 @@ Element Method: slide {#Element:slide}
 
 ### Arguments:
 
-1. **how**     - (*string*, optional) Can be 'in', 'out', 'toggle', 'show' and 'hide'. Defaults to 'toggle'.
-2. **options** - (*object*, optional) The [Fx.Slide][] options parameter.
+1. how     - (*string*, optional) Can be 'in', 'out', 'toggle', 'show' and 'hide'. Defaults to 'toggle'.
+2. options - (*object*, optional) The [Fx.Slide][] options parameter.
 
 ### Returns:
 
@@ -272,6 +272,6 @@ Element Method: slide {#Element:slide}
 
 
 
-[Fx.Slide]: #Fx.Slide
+[Fx.Slide]: #Fx-Slide
 [Fx]: /Fx/Fx
 [$]: /Element/#dollar

@@ -12,7 +12,7 @@ MIT-style license.
 Class: Color {#Color}
 =====================
 
-**Creates a new Color Class, which is an array with some color specific methods.**
+Creates a new Color Class, which is an array with some color specific methods.
 
 ### Syntax:
 
@@ -20,8 +20,8 @@ Class: Color {#Color}
 
 ### Arguments:
 
-1. **color** - (*mixed*) A string or an array representation of a color.
-2. **type**  - (*string*, optional) A string representing the type of the color to create.
+1. color - (*mixed*) A string or an array representation of a color.
+2. type  - (*string*, optional) A string representing the type of the color to create.
 
 #### Color:
 
@@ -58,7 +58,7 @@ There are three typical representations of color: String, RGB, and HSB. For Stri
 Color Method: mix {#Color:mix}
 ------------------------------
 
-**Mixes two or more colors with the Color.**
+Mixes two or more colors with the Color.
 
 ###	Syntax:
 
@@ -66,8 +66,8 @@ Color Method: mix {#Color:mix}
 
 ###	Arguments:
 
-1. **color** - (*mixed*) A single or many colors, in hex or rgb representation, to mix with this Color.
-2. **alpha** - (*number*, optional) If the last argument is a number, it will be treated as the amount of the color to mix.
+1. color - (*mixed*) A single or many colors, in hex or rgb representation, to mix with this Color.
+2. alpha - (*number*, optional) If the last argument is a number, it will be treated as the amount of the color to mix.
 
 ###	Returns:
 
@@ -85,7 +85,7 @@ Color Method: mix {#Color:mix}
 Color Method: invert {#Color:Invert}
 ------------------------------------
 
-**Inverts the Color.**
+Inverts the Color.
 
 ###	Syntax:
 
@@ -105,7 +105,7 @@ Color Method: invert {#Color:Invert}
 Color Method: setHue {#Color:setHue}
 ------------------------------------
 
-**Modifies the hue of the Color, and returns a new one.**
+Modifies the hue of the Color, and returns a new one.
 
 ###	Syntax:
 
@@ -113,11 +113,11 @@ Color Method: setHue {#Color:setHue}
 
 ###	Arguments:
 
-1. **value** - (*number*) The hue to set.
+1. value - (*number*) The hue to set.
 
 ###	Returns:
 
-* (**array**s) A new Color instance.
+* (arrays) A new Color instance.
 
 ###	Example:
 
@@ -133,7 +133,7 @@ Color Method: setHue {#Color:setHue}
 Color Method: setSaturation {#Color:setSaturation}
 --------------------------------------------------
 
-**Changes the saturation of the Color, and returns a new one.**
+Changes the saturation of the Color, and returns a new one.
 
 ###	Syntax:
 
@@ -141,7 +141,7 @@ Color Method: setSaturation {#Color:setSaturation}
 
 ###	Arguments:
 
-1. **percent** - (*number*) The percentage of the saturation to set.
+1. percent - (*number*) The percentage of the saturation to set.
 
 ### Returns:
 
@@ -159,7 +159,7 @@ Color Method: setSaturation {#Color:setSaturation}
 Color Method: setBrightness {#Color:setBrightness}
 --------------------------------------------------
 
-**Changes the brightness of the Color, and returns a new one.**
+Changes the brightness of the Color, and returns a new one.
 
 ###	Syntax:
 
@@ -167,7 +167,7 @@ Color Method: setBrightness {#Color:setBrightness}
 
 ### Arguments:
 
-1. **percent** - (*number*) The percentage of the brightness to set.
+1. percent - (*number*) The percentage of the brightness to set.
 
 ###	Returns:
 
@@ -185,7 +185,7 @@ Color Method: setBrightness {#Color:setBrightness}
 Function: $RGB {#RGB}
 ---------------------
 
-**Shortcut to create a new color, based on red, green, blue values.**
+Shortcut to create a new color, based on red, green, blue values.
 
 ### Syntax:
 
@@ -193,9 +193,9 @@ Function: $RGB {#RGB}
 
 ### Arguments:
 
-1. **r** - (*number*) A red value from 0 to 255.
-2. **g** - (*number*) A green value from 0 to 255.
-3. **b** - (*number*) A blue value from 0 to 255.
+1. r - (*number*) A red value from 0 to 255.
+2. g - (*number*) A green value from 0 to 255.
+3. b - (*number*) A blue value from 0 to 255.
 
 ### Returns:
 
@@ -210,7 +210,7 @@ Function: $RGB {#RGB}
 Function: $HSB {#HSB}
 ---------------------
 
-**Shortcut to create a new color, based on: hue, saturation, brightness values.**
+Shortcut to create a new color, based on: hue, saturation, brightness values.
 
 ### Syntax:
 
@@ -218,9 +218,9 @@ Function: $HSB {#HSB}
 
 ### Arguments:
 
-1. **h** - (*number*) A hue value from 0 to 359.
-2. **s** - (*number*) A saturation value from 0 to 100.
-3. **b** - (*number*) A brightness value from 0 to 100.
+1. h - (*number*) A hue value from 0 to 359.
+2. s - (*number*) A saturation value from 0 to 100.
+3. b - (*number*) A brightness value from 0 to 100.
 
 ### Returns:
 
@@ -235,7 +235,7 @@ Function: $HSB {#HSB}
 Native: Array {#Array}
 ======================
 
-**Contains Array prototypes.**
+Contains Array prototypes.
 
 ### See Also:
 
@@ -246,7 +246,7 @@ Native: Array {#Array}
 Array Method: rgbToHsb {#Array:rgbToHsb}
 ----------------------------------------
 
-**Converts a RGB array to an HSB array.**
+Converts a RGB array to an HSB array.
 
 ###	Syntax:
 
@@ -265,7 +265,7 @@ Array Method: rgbToHsb {#Array:rgbToHsb}
 Array Method: rgbToHsb {#Array:rgbToHsb}
 ----------------------------------------
 
-**Converts a RGB array to an HSB array.**
+Converts a RGB array to an HSB array.
 
 ###	Syntax:
 

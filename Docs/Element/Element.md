@@ -9,17 +9,17 @@ MIT-style license.
 
 
 
-Window Methods
-==============
+Window Methods {#Section:Window}
+================================
 
-**The following functions are treated as Window methods.**
+The following functions are treated as Window methods.
 
 
 
 Function: $ {#dollar}
 ---------------------
 
-**The dollar function has a dual purpose: Get the element by its id, and make an element in Internet Explorer "grab" all the [Element][] Methods.**
+The dollar function has a dual purpose: Get the element by its id, and make an element in Internet Explorer "grab" all the [Element][] Methods.
 
 ### Syntax:
 
@@ -27,7 +27,7 @@ Function: $ {#dollar}
 
 ### Arguments:
 
-1. **el** - (*mixed*) A string containing the id of the DOM element desired or a reference to an actual DOM element.
+1. el - (*mixed*) A string containing the id of the DOM element desired or a reference to an actual DOM element.
 
 ### Returns:
 
@@ -56,7 +56,7 @@ Function: $ {#dollar}
 Function: $$ {#dollars}
 -----------------------
 
-**Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.**
+Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.
 
 ### Syntax:
 
@@ -101,14 +101,14 @@ Function: $$ {#dollars}
 Native: Element {#Element}
 ==========================
 
-**Custom Native to allow all of its methods to be used with any extended DOM Element.**
+Custom Native to allow all of its methods to be used with any extended DOM Element.
 
 
 
 Element Method: constructor {#Element:constructor}
 --------------------------------------------------
 
-**Creates a new Element of the type passed in.**
+Creates a new Element of the type passed in.
 
 ### Syntax:
 
@@ -116,8 +116,8 @@ Element Method: constructor {#Element:constructor}
 
 ### Arguments:
 
-1. **element** - (*mixed*) The tag name for the Element to be created or an actual DOM element.
-2. **properties** - (*object*, optional) Calls the Single Argument version of [Element:set][] with the properties object passed in.
+1. element - (*mixed*) The tag name for the Element to be created or an actual DOM element.
+2. properties - (*object*, optional) Calls the Single Argument version of [Element:set][] with the properties object passed in.
 
 ### Returns:
 
@@ -153,7 +153,7 @@ Element Method: constructor {#Element:constructor}
 Element Method: getElement {#Element:getElement}
 ------------------------------------------------
 
-**Gets the first descendant element whose tag name matches the tag provided.**
+Gets the first descendant element whose tag name matches the tag provided.
 
 ### Syntax:
 
@@ -161,7 +161,7 @@ Element Method: getElement {#Element:getElement}
 
 ### Arguments:
 
-1. **tag** - (*string*) Tag name of the element to find.
+1. tag - (*string*) Tag name of the element to find.
 
 ### Returns:
 
@@ -186,7 +186,7 @@ Element Method: getElement {#Element:getElement}
 Element Method: getElements {#Element:getElements}
 --------------------------------------------------
 
-**Collects all decedent elements whose tag name matches the tag provided.**
+Collects all decedent elements whose tag name matches the tag provided.
 
 ### Syntax:
 
@@ -194,7 +194,7 @@ Element Method: getElements {#Element:getElements}
 
 ### Arguments:
 
-1. **tag** - (*string*) String of the tag to match.
+1. tag - (*string*) String of the tag to match.
 
 ### Returns:
 
@@ -219,7 +219,7 @@ Element Method: getElements {#Element:getElements}
 Element Method: getElementById {#Element:getElementById}
 --------------------------------------------------------
 
-**Gets the element with the specified id found inside this Element.**
+Gets the element with the specified id found inside this Element.
 
 ### Syntax:
 
@@ -227,7 +227,7 @@ Element Method: getElementById {#Element:getElementById}
 
 ### Arguments:
 
-1. **id** - (*string*) The ID of the Element to find.
+1. id - (*string*) The ID of the Element to find.
 
 ### Returns:
 
@@ -246,7 +246,7 @@ Element Method: getElementById {#Element:getElementById}
 Element Method: set {#Element:set}
 ----------------------------
 
-**This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Hash.**
+This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Hash.
 
 ### Syntax:
 
@@ -255,10 +255,10 @@ Element Method: set {#Element:set}
 ### Arguments:
 
 - Two Arguments (property, value)
-	1. **property** - (*string*) The string key from the [Element.Properties][] Hash representing the property to set.
-	2. **value** - (*mixed*) The value to set for the specified property.
+	1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to set.
+	2. value - (*mixed*) The value to set for the specified property.
 - One Argument (properties)
-	1. **properties** - (*object*) Object with its keys/value pairs representing the properties and values to set for the Element (as described below).
+	1. properties - (*object*) Object with its keys/value pairs representing the properties and values to set for the Element (as described below).
 
 ### Returns:
 
@@ -310,7 +310,7 @@ Element Method: set {#Element:set}
 Element Method: get {#Element:get}
 ----------------------------------
 
-**This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Hash.**
+This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Hash.
 
 ### Syntax:
 
@@ -318,7 +318,7 @@ Element Method: get {#Element:get}
 
 ### Arguments:
 
-1. **property** - (*string*) The string key from the [Element.Properties][] Hash representing the property to get.
+1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to get.
 
 ### Returns:
 
@@ -350,7 +350,7 @@ Element Method: get {#Element:get}
 Element Method: erase {#Element:erase}
 --------------------------------------
 
-**This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Hash.**
+This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Hash.
 
 ### Syntax:
 
@@ -358,7 +358,7 @@ Element Method: erase {#Element:erase}
 
 ### Arguments:
 
-1. **property** - (*string*) The string key from the [Element.Properties][] Hash representing the property to erase.
+1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to erase.
 
 ### Returns:
 
@@ -384,7 +384,7 @@ Element Method: erase {#Element:erase}
 Element Method: match {#Element:match}
 --------------------------------------
 
-**Tests this element to see if it's tag name is the same as the tag passed in.**
+Tests this element to see if it's tag name is the same as the tag passed in.
 
 ### Syntax:
 
@@ -392,7 +392,7 @@ Element Method: match {#Element:match}
 
 ### Arguments:
 
-1. **tag** - (*string*) The tag name to test against this element.
+1. tag - (*string*) The tag name to test against this element.
 
 ### Returns:
 
@@ -412,7 +412,7 @@ Element Method: match {#Element:match}
 Element Method: inject {#Element:inject}
 ----------------------------------------
 
-**Injects, or inserts, the Element at a particular place relative to the Element's children (specified by the second the argument).**
+Injects, or inserts, the Element at a particular place relative to the Element's children (specified by the second the argument).
 
 ### Syntax:
 
@@ -420,8 +420,8 @@ Element Method: inject {#Element:inject}
 
 ### Arguments:
 
-1. **el**	- (*mixed*) el can be the id of an element or an element.
-2. **where** - (*string*, optional) The place to inject this Element to (defaults to the bottom of the element passed in).
+1. el	- (*mixed*) el can be the id of an element or an element.
+2. where - (*string*, optional) The place to inject this Element to (defaults to the bottom of the element passed in).
 
 ### Returns:
 
@@ -497,9 +497,9 @@ Element Method: inject {#Element:inject}
 Element Method: grab {#Element:grab}
 ------------------------------------
 
-**Works as [Element:inject](#Element:inject), but in reverse.**
+Works as [Element:inject](#Element:inject), but in reverse.
 
-**Appends the Element at a particular place relative to the Element's children (specified by the second the parameter).**
+Appends the Element at a particular place relative to the Element's children (specified by the second the parameter).
 
 ### Syntax:
 
@@ -507,8 +507,8 @@ Element Method: grab {#Element:grab}
 
 ### Arguments:
 
-1. **el** - (*mixed*) el can be the id of an element or an element.
-2. **where** - (*string*, optional) The place to append this Element to (defaults to 'bottom'). can be either top and bottom.
+1. el - (*mixed*) el can be the id of an element or an element.
+2. where - (*string*, optional) The place to append this Element to (defaults to 'bottom'). can be either top and bottom.
 
 ### Returns:
 
@@ -538,15 +538,15 @@ Element Method: grab {#Element:grab}
 Element Method: wraps {#Element:wraps}
 --------------------------------------
 
-**Works like [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element around its target.**
+Works like [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element around its target.
 
 
 
 Element Method: appendText {#Element:appendText}
 ------------------------------------------------
 
-**Works like [Element:grab](#Element:grab), but instead of accepting an id or an element, it only accepts text.**
-**A text node will be created inside this Element, in either the top or bottom position.**
+Works like [Element:grab](#Element:grab), but instead of accepting an id or an element, it only accepts text.
+A text node will be created inside this Element, in either the top or bottom position.
 
 ### Syntax:
 
@@ -554,8 +554,8 @@ Element Method: appendText {#Element:appendText}
 
 ### Arguments:
 
-1. **text** - (*string*) The text to append.
-1. **where** - (*string*, optional) The position to inject the text to. defaults to 'bottom'.
+1. text - (*string*) The text to append.
+1. where - (*string*, optional) The position to inject the text to. defaults to 'bottom'.
 
 ### Returns:
 
@@ -580,7 +580,7 @@ Element Method: appendText {#Element:appendText}
 Element Method: dispose {#Element:dispose}
 ------------------------------------------
 
-**Removes the Element from the DOM.**
+Removes the Element from the DOM.
 
 
 ### Syntax:
@@ -615,7 +615,7 @@ Element Method: dispose {#Element:dispose}
 Element Method: clone {#Element:clone}
 --------------------------------------
 
-**Clones the Element and returns the cloned one.**
+Clones the Element and returns the cloned one.
 
 
 ### Syntax:
@@ -624,7 +624,7 @@ Element Method: clone {#Element:clone}
 
 ### Arguments:
 
-1. **contents** - (*boolean*, optional: defaults to true) When true the Element is cloned with childNodes.
+1. contents - (*boolean*, optional: defaults to true) When true the Element is cloned with childNodes.
 
 ### Returns:
 
@@ -660,7 +660,7 @@ Element Method: clone {#Element:clone}
 Element Method: replaceWith {#Element:replaceWith}
 --------------------------------------------------
 
-**Replaces the Element with an Element passed.**
+Replaces the Element with an Element passed.
 
 ### Syntax:
 
@@ -668,7 +668,7 @@ Element Method: replaceWith {#Element:replaceWith}
 
 ### Arguments:
 
-1. **el** - (*mixed*) A string id representing the Element to be replaced with, or an Element reference.
+1. el - (*mixed*) A string id representing the Element to be replaced with, or an Element reference.
 
 ### Returns:
 
@@ -688,7 +688,7 @@ Element Method: replaceWith {#Element:replaceWith}
 Element Method: hasClass {#Element:hasClass}
 --------------------------------------------
 
-**Tests the Element to see if it has the passed in className.**
+Tests the Element to see if it has the passed in className.
 
 ### Syntax:
 
@@ -696,7 +696,7 @@ Element Method: hasClass {#Element:hasClass}
 
 ### Arguments:
 
-1. **className** - (*string*) The class name to test.
+1. className - (*string*) The class name to test.
 
 ### Returns:
 
@@ -717,7 +717,7 @@ Element Method: hasClass {#Element:hasClass}
 Element Method: addClass {#Element:addClass}
 --------------------------------------------
 
-**Adds the passed in class to the Element, if the Element doesnt already have it.**
+Adds the passed in class to the Element, if the Element doesnt already have it.
 
 ### Syntax:
 
@@ -725,7 +725,7 @@ Element Method: addClass {#Element:addClass}
 
 ### Arguments:
 
-1. **className** - (*string*) The class name to add.
+1. className - (*string*) The class name to add.
 
 ### Returns:
 
@@ -750,7 +750,7 @@ Element Method: addClass {#Element:addClass}
 Element Method: removeClass {#Element:removeClass}
 ----------------------------
 
-**Works like [Element:addClass](#Element:addClass), but removes the class from the Element.**
+Works like [Element:addClass](#Element:addClass), but removes the class from the Element.
 
 
 ### Syntax:
@@ -759,7 +759,7 @@ Element Method: removeClass {#Element:removeClass}
 
 ### Arguments:
 
-1. **className** - (*string*) The class name to remove.
+1. className - (*string*) The class name to remove.
 
 ### Returns:
 
@@ -784,7 +784,7 @@ Element Method: removeClass {#Element:removeClass}
 Element Method: toggleClass {#Element:toggleClass}
 --------------------------------------------------
 
-**Adds or removes the passed in class name to the Element, depending on if it's present or not.**
+Adds or removes the passed in class name to the Element, depending on if it's present or not.
 
 ### Syntax:
 
@@ -792,7 +792,7 @@ Element Method: toggleClass {#Element:toggleClass}
 
 ### Arguments:
 
-1. **className** - (*string*) The class to add or remove.
+1. className - (*string*) The class to add or remove.
 
 ### Returns:
 
@@ -825,7 +825,7 @@ Element Method: toggleClass {#Element:toggleClass}
 Element Method: getPrevious {#Element:getPrevious}
 --------------------------------------------------
 
-**Returns the previousSibling of the Element (excluding text nodes).**
+Returns the previousSibling of the Element (excluding text nodes).
 
 ### Syntax:
 
@@ -833,7 +833,7 @@ Element Method: getPrevious {#Element:getPrevious}
 
 ### Arguments:
 
-1. **match** - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -844,14 +844,14 @@ Element Method: getPrevious {#Element:getPrevious}
 Element Method: getAllPrevious {#Element:getAllPrevious}
 --------------------------------------------------------
 
-**Like [Element:getPrevious][], but returns a collection of all the matched previousSiblings.**
+Like [Element:getPrevious][], but returns a collection of all the matched previousSiblings.
 
 
 
 Element Method: getNext {#Element:getNext}
 ------------------------------------------
 
-**As [Element:getPrevious][], but tries to find the nextSibling (excluding text nodes).**
+As [Element:getPrevious][], but tries to find the nextSibling (excluding text nodes).
 
 
 ### Syntax:
@@ -860,7 +860,7 @@ Element Method: getNext {#Element:getNext}
 
 ### Arguments:
 
-1. **match** - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -870,14 +870,14 @@ Element Method: getNext {#Element:getNext}
 Element Method: getAllNext {#Element:getAllNext}
 ------------------------------------------------
 
-**Like Element.getNext, but returns a collection of all the matched nextSiblings.**
+Like Element.getNext, but returns a collection of all the matched nextSiblings.
 
 
 
 Element Method: getFirst {#Element:getFirst}
 --------------------------------------------
 
-**Works as [Element:getPrevious][], but tries to find the firstChild (excluding text nodes).**
+Works as [Element:getPrevious][], but tries to find the firstChild (excluding text nodes).
 
 
 ### Syntax:
@@ -886,7 +886,7 @@ Element Method: getFirst {#Element:getFirst}
 
 ### Arguments:
 
-1. **match** - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -897,7 +897,7 @@ Element Method: getFirst {#Element:getFirst}
 Element Method: getLast {#Element:getLast}
 ------------------------------------------
 
-**Works as [Element:getPrevious][], but tries to find the lastChild.**
+Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Syntax:
 
@@ -905,7 +905,7 @@ Element Method: getLast {#Element:getLast}
 
 ### Arguments:
 
-1. **match** - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -916,7 +916,7 @@ Element Method: getLast {#Element:getLast}
 Element Method: getParent {#Element:getParent}
 ----------------------------------------------
 
-**Works as [Element:getPrevious][], but tries to find the parentNode.**
+Works as [Element:getPrevious][], but tries to find the parentNode.
 
 
 ### Syntax:
@@ -925,7 +925,7 @@ Element Method: getParent {#Element:getParent}
 
 ### Arguments:
 
-1. **match** - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -936,14 +936,14 @@ Element Method: getParent {#Element:getParent}
 Element Method: getParents {#Element:getParents}
 ------------------------------------------------
 
-**Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.**
+Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
 
 
 
 Element Method: getChildren {#Element:getChildren}
 --------------------------------------------------
 
-**Returns all the Element's children (excluding text nodes). Returns as [Elements][].**
+Returns all the Element's children (excluding text nodes). Returns as [Elements][].
 
 
 ### Syntax:
@@ -952,7 +952,7 @@ Element Method: getChildren {#Element:getChildren}
 
 ### Arguments:
 
-1. **match** - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors.js][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -963,7 +963,7 @@ Element Method: getChildren {#Element:getChildren}
 Element Method: hasChild {#Element:hasChild}
 --------------------------------------------
 
-**Checks all descendants of this Element for a match.**
+Checks all descendants of this Element for a match.
 
 
 ### Syntax:
@@ -972,7 +972,7 @@ Element Method: hasChild {#Element:hasChild}
 
 ### Arguments:
 
-1. **el** - (*mixed*) Can be a Element reference or string id.
+1. el - (*mixed*) Can be a Element reference or string id.
 
 ### Returns:
 
@@ -995,7 +995,7 @@ Element Method: hasChild {#Element:hasChild}
 Element Method: empty {#Element:empty}
 --------------------------------------
 
-**Empties an Element of all its children.**
+Empties an Element of all its children.
 
 
 ### Syntax:
@@ -1028,8 +1028,8 @@ Element Method: empty {#Element:empty}
 Element Method: destroy {#Element:destroy}
 ------------------------------------------
 
-**Empties an Element of all its children, removes and garbages the Element.**
-**Useful to clear memory before the pageUnload.**
+Empties an Element of all its children, removes and garbages the Element.
+Useful to clear memory before the pageUnload.
 
 ### Syntax:
 
@@ -1044,7 +1044,7 @@ Element Method: destroy {#Element:destroy}
 Element Method: toQueryString {#Element:toQueryString}
 ------------------------------------------------------
 
-**Reads the children inputs of the Element and generates a query string based on their values.**
+Reads the children inputs of the Element and generates a query string based on their values.
 
 
 ### Syntax:
@@ -1073,7 +1073,7 @@ Element Method: toQueryString {#Element:toQueryString}
 Element Method: getProperties {#Element:getProperties}
 ------------------------------------------------------
 
-**Gets multiple element attributes.**
+Gets multiple element attributes.
 
 ### Syntax:
 
@@ -1104,13 +1104,13 @@ Element Method: getProperties {#Element:getProperties}
 Element Method: setProperty {#Element:setProperty}
 --------------------------------------------------
 
-**Sets an attribute or special property for this Element.**
+Sets an attribute or special property for this Element.
 
 
 ### Arguments:
 
-1. **property** - (*string*) The property to assign the value passed in.
-2. **value** - (*mixed*) The value to assign to the property passed in.
+1. property - (*string*) The property to assign the value passed in.
+2. value - (*mixed*) The value to assign to the property passed in.
 
 ### Returns:
 
@@ -1135,12 +1135,12 @@ Element Method: setProperty {#Element:setProperty}
 Element Method: setProperties {#Element:setProperties}
 ------------------------------------------------------
 
-**Sets numerous attributes for the Element.**
+Sets numerous attributes for the Element.
 
 
 ### Arguments:
 
-1. **properties** - (*object*) An object with key/value pairs.
+1. properties - (*object*) An object with key/value pairs.
 
 ### Returns:
 
@@ -1168,7 +1168,7 @@ Element Method: setProperties {#Element:setProperties}
 Element Method: removeProperty {#Element:removeProperty}
 --------------------------------------------------------
 
-**Removes an attribute from the Element.**
+Removes an attribute from the Element.
 
 
 ### Syntax:
@@ -1177,7 +1177,7 @@ Element Method: removeProperty {#Element:removeProperty}
 
 ### Arguments:
 
-1. **property** - (*string*) The attribute to remove.
+1. property - (*string*) The attribute to remove.
 
 ### Returns:
 
@@ -1200,16 +1200,16 @@ Element Method: removeProperty {#Element:removeProperty}
 
 
 
-Element Setters, Getters and Erasers
-====================================
+Element Setters, Getters and Erasers {#Setters-Getters}
+=======================================================
 
-**These Hashes have function that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].**
+These Hashes have function that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
 
 
-Element Setter: html {#Element:Setters:html}
+Element Setter: html {#Element:html-setter}
 --------------------------------------------
 
-**Sets the innerHTML of the Element.**
+Sets the innerHTML of the Element.
 
 
 ### Syntax:
@@ -1243,10 +1243,10 @@ Element Setter: html {#Element:Setters:html}
 
 
 
-Element Setter: text {#Element:Setters:text}
+Element Setter: text {#Element:text-setter}
 --------------------------------------------
 
-**Sets the inner text of the Element.**
+Sets the inner text of the Element.
 
 
 ### Syntax:
@@ -1255,7 +1255,7 @@ Element Setter: text {#Element:Setters:text}
 
 ### Arguments:
 
-1. **text** - (*string*) The new text content for the Element.
+1. text - (*string*) The new text content for the Element.
 
 ### Returns:
 
@@ -1277,10 +1277,10 @@ Element Setter: text {#Element:Setters:text}
 
 
 
-Element Getter: value {#Element:Getters:value}
+Element Getter: value {#Element:value-getter}
 ----------------------------------------------
 
-**Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.**
+Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
 
 
 ### Syntax:
@@ -1310,10 +1310,10 @@ Element Getter: value {#Element:Getters:value}
 
 
 
-Element Getter: tag {#Element:Getters:tag}
+Element Getter: tag {#Element:tag-getter}
 ------------------------------------------
 
-**Returns the tagName of the Element in lower case.**
+Returns the tagName of the Element in lower case.
 
 
 ### Syntax:
@@ -1336,10 +1336,10 @@ Element Getter: tag {#Element:Getters:tag}
 
 
 
-Element Getter: html {#Element:Getters:tag}
+Element Getter: html {#Element:html-getter}
 -------------------------------------------
 
-**Returns the innerHTML of the Element.**
+Returns the innerHTML of the Element.
 
 
 ### Syntax:
@@ -1352,10 +1352,10 @@ Element Getter: html {#Element:Getters:tag}
 
 
 
-Element Getter: text {#Element:Getters:text}
+Element Getter: text {#Element:text-getter}
 --------------------------------------------
 
-**Gets the inner text of the Element.**
+Gets the inner text of the Element.
 
 ### Syntax:
 
@@ -1380,14 +1380,14 @@ Element Getter: text {#Element:Getters:text}
 Native: IFrame {#IFrame}
 ========================
 
-**Custom Native to create and easily work with IFrames.**
+Custom Native to create and easily work with IFrames.
 
 
 
 IFrame Method: constructor {#IFrame:constructor}
 ------------------------------------------------
 
-**Creates an iframe HTML Element and extends its window and document with MooTools.**
+Creates an iframe HTML Element and extends its window and document with MooTools.
 
 
 ### Syntax:
@@ -1396,8 +1396,8 @@ IFrame Method: constructor {#IFrame:constructor}
 
 ### Arguments:
 
-1. **el** - (*mixed*, optional) The id of the iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created (default).
-2. **props** - (*object*, optional) The properties to be applied to the new IFrame. Same as [Element:constructor](#Element:constructor) props argument.
+1. el - (*mixed*, optional) The id of the iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created (default).
+2. props - (*object*, optional) The properties to be applied to the new IFrame. Same as [Element:constructor](#Element:constructor) props argument.
 
 ### Returns:
 
@@ -1445,7 +1445,7 @@ IFrame Method: constructor {#IFrame:constructor}
 Native: Elements {#Elements}
 ============================
 
-**The Elements class allows [Element][] methods to work also on an [Elements][] array, as well as [Array][] Methods.**
+The Elements class allows [Element][] methods to work also on an [Elements][] array, as well as [Array][] Methods.
 
 
 
@@ -1459,7 +1459,7 @@ Elements Method: constructor {#Elements:constructor}
 
 ### Arguments:
 
-1. **elements** - (*mixed*) An array of elements or an HTMLCollection Object.
+1. elements - (*mixed*) An array of elements or an HTMLCollection Object.
 
 ### Returns:
 
@@ -1498,8 +1498,8 @@ Elements Method: constructor {#Elements:constructor}
 Elements Method: filterBy {#Elements:filterBy}
 ----------------------------------------------
 
-**Filters a collection of element by a given tagname.**
-**If [Selectors.js][] is included, this method will be able to filter by any selector.**
+Filters a collection of element by a given tagname.
+If [Selectors.js][] is included, this method will be able to filter by any selector.
 
 
 ### Syntax:
@@ -1508,7 +1508,7 @@ Elements Method: filterBy {#Elements:filterBy}
 
 ### Arguments:
 
-1. **selector** - (*mixed*) A single CSS selector.
+1. selector - (*mixed*) A single CSS selector.
 
 ### Returns:
 

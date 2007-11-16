@@ -61,7 +61,7 @@ Matches all the Elements which contains the text.
 
 ### Usage:
 
-**Nth Expression:**
+Nth Expression:
 
 	':nth-child(nExpression)'
 
@@ -80,15 +80,15 @@ Matches all the Elements which contains the text.
 	$$('#myDiv:nth-child(4n+3)') //returns Elements [3, 7, 11, 15, ...]
 
 
-**Every Odd Child:**
+Every Odd Child:
 
 	':nth-child(odd)'
 
-**Every Even Child:**
+Every Even Child:
 
 	':nth-child(even)'
 
-**Without -Child:**
+Without -Child:
 
 	':nth(nExpression)'
 	':nth(odd)'

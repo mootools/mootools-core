@@ -9,10 +9,10 @@ MIT-style license.
 
 
 
-Class: Fx.Tween {#Fx.Tween}
+Class: Fx.Tween {#Fx-Tween}
 ===========================
 
-**Contains [Fx.Tween], and the Element shortcut [Element.tween][]**
+Contains [Fx.Tween], and the Element shortcut [Element.tween][]
 
 ### Extends:
 
@@ -20,10 +20,10 @@ Class: Fx.Tween {#Fx.Tween}
 
 
 
-Fx.Tween Method: constructor {#Fx.Tween:constructor}
+Fx.Tween Method: constructor {#Fx-Tween:constructor}
 ----------------------------------------------------
 
-**The Tween effect, used to transition any CSS property from one value to another.**
+The Tween effect, used to transition any CSS property from one value to another.
 
 ### Syntax:
 
@@ -31,14 +31,14 @@ Fx.Tween Method: constructor {#Fx.Tween:constructor}
 
 ### Arguments:
 
-1. **element**  - (*mixed*) An Element or the string id of an Element to apply the transition to.
-2. **property** - (*string*) The CSS property to transition, for example 'width', 'color', 'font-size', 'border', etc.
-3. **options**  - (*object*, optional) The <Fx> options object.
+1. element  - (*mixed*) An Element or the string id of an Element to apply the transition to.
+2. property - (*string*) The CSS property to transition, for example 'width', 'color', 'font-size', 'border', etc.
+3. options  - (*object*, optional) The <Fx> options object.
 
 ### Properties:
 
-* **element** - (*element*) The element being transitioned.
-* **property** - (*string*) The property being transitioned.
+* element - (*element*) The element being transitioned.
+* property - (*string*) The property being transitioned.
 
 ### Notes:
 
@@ -51,10 +51,10 @@ Fx.Tween Method: constructor {#Fx.Tween:constructor}
 
 
 
-Fx.Tween Method: set {#Fx.Tween:set}
+Fx.Tween Method: set {#Fx-Tween:set}
 ------------------------------------
 
-**Sets the Element's CSS property to the specified value immediately.**
+Sets the Element's CSS property to the specified value immediately.
 
 ### Syntax:
 
@@ -62,7 +62,7 @@ Fx.Tween Method: set {#Fx.Tween:set}
 
 ### Arguments:
 
-1. **value** - (*mixed*) The value to set the CSS property of this instance to.
+1. value - (*mixed*) The value to set the CSS property of this instance to.
 
 ### Returns:
 
@@ -75,10 +75,10 @@ Fx.Tween Method: set {#Fx.Tween:set}
 
 
 
-Fx.Tween Method: start {#Fx.Tween:start}
+Fx.Tween Method: start {#Fx-Tween:start}
 ----------------------------------------
 
-**Transitions the Element's CSS property to the specified value.**
+Transitions the Element's CSS property to the specified value.
 
 ### Syntax:
 
@@ -86,8 +86,8 @@ Fx.Tween Method: start {#Fx.Tween:start}
 
 ### Arguments:
 
-1. **from** - (*mixed*) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
-2. **to**   - (*mixed*, optional) The target CSS property value for the effect.
+1. from - (*mixed*) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
+2. to   - (*mixed*, optional) The target CSS property value for the effect.
 
 ### Returns:
 
@@ -109,14 +109,14 @@ Fx.Tween Method: start {#Fx.Tween:start}
 Native: Element {#Element}
 ==========================
 
-**Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].**
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
-Element Property: tween {#Element:property}
--------------------------------------------
+Element Property: tween {#Element:property-tween}
+-------------------------------------------------
 
-**Sets and gets a default Fx.Tween instance for an Element.**
+Sets and gets a default Fx.Tween instance for an Element.
 
 ### Setter:
 
@@ -126,7 +126,7 @@ Element Property: tween {#Element:property}
 
 #### Arguments:
 
-* **options** - (*object*) the Fx.Tween options.
+* options - (*object*) the Fx.Tween options.
 
 #### Returns:
 
@@ -145,8 +145,8 @@ Element Property: tween {#Element:property}
 
 #### Arguments:
 
-1. **property** - (*string*) the Fx.Tween property argument.
-2. **options**  - (*object*) the Fx.Tween options.
+1. property - (*string*) the Fx.Tween property argument.
+2. options  - (*object*) the Fx.Tween options.
 
 #### Returns:
 
@@ -168,7 +168,7 @@ Element Property: tween {#Element:property}
 Element Method: tween {#Element:tween}
 --------------------------------------
 
-**Element shortcut method which immediately transitions any single CSS property of an Element from one value to another.**
+Element shortcut method which immediately transitions any single CSS property of an Element from one value to another.
 
 ### Syntax:
 
@@ -176,8 +176,8 @@ Element Method: tween {#Element:tween}
 
 ### Arguments:
 
-1. **property** - (*string*) the css property you want to animate.
-2. **value**    - (*mixed*) Either the target value to transition the CSS property to, or an array containing the starting and ending values for the transition.
+1. property - (*string*) the css property you want to animate.
+2. value    - (*mixed*) Either the target value to transition the CSS property to, or an array containing the starting and ending values for the transition.
 
 ### Returns:
 
@@ -198,7 +198,7 @@ Element Method: tween {#Element:tween}
 Element Method: fade {#Element:fade}
 ------------------------------------
 
-**Element shortcut method for tween with opacity.  Useful for fading an Element in and out or to a certain opacity level.**
+Element shortcut method for tween with opacity.  Useful for fading an Element in and out or to a certain opacity level.
 
 ### Syntax:
 
@@ -206,13 +206,13 @@ Element Method: fade {#Element:fade}
 
 ### Arguments:
 
-1. **how** - (*mixed*, optional: defaults to 'toggle') The opacity level as a number or string representation.  Possible values include:
- * **'in'**     - fade the element to 100% opacity
- * **'out'**    - fade the element to 0% opacity
- * **'show'**   - immediately set the element's opacity to 100%
- * **'hide'**   - immediately set the element's opacity to 0%
- * **'toggle'** - if visible, fade the element out, otherwise, fade it in
- * **float from from 0 to 1** - fade the element to this opacity
+1. how - (*mixed*, optional: defaults to 'toggle') The opacity level as a number or string representation.  Possible values include:
+ * 'in'     - fade the element to 100% opacity
+ * 'out'    - fade the element to 0% opacity
+ * 'show'   - immediately set the element's opacity to 100%
+ * 'hide'   - immediately set the element's opacity to 0%
+ * 'toggle' - if visible, fade the element out, otherwise, fade it in
+ * float from from 0 to 1 - fade the element to this opacity
 
 ### Returns:
 
@@ -228,7 +228,7 @@ Element Method: fade {#Element:fade}
 Element Method: highlight {#Element:highlight}
 ----------------------------------------------
 
-**Element shortcut method for tween with background color.  Immediately transitions an Element's background color from a specified highlight color down to its current background color.**
+Element shortcut method for tween with background color.  Immediately transitions an Element's background color from a specified highlight color down to its current background color.
 
 ### Syntax:
 
@@ -236,7 +236,7 @@ Element Method: highlight {#Element:highlight}
 
 ### Arguments:
 
-1. **color** - (*string*, optional: defaults to '#ff8') The color from which to start the transition.
+1. color - (*string*, optional: defaults to '#ff8') The color from which to start the transition.
 
 ### Returns:
 

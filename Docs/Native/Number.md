@@ -12,7 +12,7 @@ MIT-style license.
 Native: Number {#Number}
 ========================
 
-**A collection of the Number Object prototype methods.**
+A collection of the Number Object prototype methods.
 
 ### See Also:
 
@@ -23,7 +23,7 @@ Native: Number {#Number}
 Number Method: limit {#Number:limit}
 ------------------------------------
 
-**Limits this number between two bounds.**
+Limits this number between two bounds.
 
 ### Syntax:
 
@@ -31,8 +31,8 @@ Number Method: limit {#Number:limit}
 
 ### Arguments:
 
-1. **min** - (*number*) The minimum possible value.
-2. **max** - (*number*) The maximum possible value.
+1. min - (*number*) The minimum possible value.
+2. max - (*number*) The maximum possible value.
 
 ### Returns:
 
@@ -49,7 +49,7 @@ Number Method: limit {#Number:limit}
 Number Method: round {#Number:round}
 ------------------------------------
 
-**Returns this number rounded to the specified precision.**
+Returns this number rounded to the specified precision.
 
 ### Syntax:
 
@@ -57,7 +57,7 @@ Number Method: round {#Number:round}
 
 ### Arguments:
 
-1. **precision** - (*number*, optional: defaults to 0) The number of digits after the decimal place.
+1. precision - (*number*, optional: defaults to 0) The number of digits after the decimal place.
 
 ### Returns:
 
@@ -78,7 +78,7 @@ Number Method: round {#Number:round}
 Number Method: times {#Number:times}
 ------------------------------------
 
-**Executes the function passed in the specified number of times.**
+Executes the function passed in the specified number of times.
 
 ### Syntax:
 
@@ -86,8 +86,8 @@ Number Method: times {#Number:times}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function which should be executed on each iteration of the loop. This function is passed the current iteration's index.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Native/#Function:bind).
+1. fn   - (*function*) The function which should be executed on each iteration of the loop. This function is passed the current iteration's index.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind](/Native/#Function:bind).
 
 ### Examples:
 
@@ -98,7 +98,7 @@ Number Method: times {#Number:times}
 Number Method: toFloat {#Number:toFloat}
 ----------------------------------------
 
-**Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.**
+Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.
 
 ### Syntax:
 
@@ -118,7 +118,7 @@ Number Method: toFloat {#Number:toFloat}
 Number Method: toInt {#Number:toInt}
 ------------------------------------
 
-**Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.**
+Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.
 
 ### Syntax:
 
@@ -126,7 +126,7 @@ Number Method: toInt {#Number:toInt}
 
 ### Arguments:
 
-1. **base** - (*number*, optional: defaults to 10) The base to use.
+1. base - (*number*, optional: defaults to 10) The base to use.
 
 ### Returns:
 

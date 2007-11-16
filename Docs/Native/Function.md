@@ -12,7 +12,7 @@ MIT-style license.
 Native: Function {#Function}
 ============================
 
-**Function Methods.**
+Function Methods.
 
 ### See Also:
 
@@ -23,7 +23,7 @@ Native: Function {#Function}
 Function Method: create {#Function:create}
 ------------------------------------------
 
-**Base function for creating functional closures which is used by all other Function prototypes.**
+Base function for creating functional closures which is used by all other Function prototypes.
 
 ### Syntax:
 
@@ -31,16 +31,16 @@ Function Method: create {#Function:create}
 
 ### Arguments:
 
-1. **[options]** - (*object*, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
+1. [options] - (*object*, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
 
 #### Options: {#Function:create:options}
 
-* **bind**       - (*object*: defaults to this function) The object that the "this" of the function will refer to.
-* **event**      - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-* **arguments**  - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-* **delay**      - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-* **periodical** - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
-* **attempt**    - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or false on error.
+* bind       - (*object*: defaults to this function) The object that the "this" of the function will refer to.
+* event      - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
+* arguments  - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+* delay      - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
+* periodical - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
+* attempt    - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or false on error.
 
 ### Returns:
 
@@ -66,7 +66,7 @@ Function Method: create {#Function:create}
 Function Method: pass {#Function:pass}
 --------------------------------------
 
-**Returns a closure with arguments and bind.**
+Returns a closure with arguments and bind.
 
 ### Syntax:
 
@@ -74,8 +74,8 @@ Function Method: pass {#Function:pass}
 
 ### Arguments:
 
-1. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
+1. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 
@@ -102,7 +102,7 @@ Function Method: pass {#Function:pass}
 Function Method: attempt {#Function:attempt}
 --------------------------------------------
 
-**Tries to execute the function.**
+Tries to execute the function.
 
 ### Syntax:
 
@@ -110,8 +110,8 @@ Function Method: attempt {#Function:attempt}
 
 ### Arguments:
 
-1. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
+1. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 
@@ -136,7 +136,7 @@ Function Method: attempt {#Function:attempt}
 Function Method: bind {#Function:bind}
 --------------------------------------
 
-**Returns a function whose `this` is altered.**
+Returns a function whose `this` is altered.
 
 ### Syntax:
 
@@ -144,8 +144,8 @@ Function Method: bind {#Function:bind}
 
 ### Arguments:
 
-1. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
-2. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+1. bind - (*object*, optional) The object that the "this" of the function will refer to.
+2. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
 
 ### Returns:
 
@@ -166,8 +166,8 @@ Function Method: bind {#Function:bind}
 Function Method: bindWithEvent {#Function:bindWithEvent}
 --------------------------------------------------------
 
-**Returns a function whose `this` is altered. It also makes "space" for an event.**
-**This makes the method indicate for using in conjunction with [Element:addEvent][] and arguments.**
+Returns a function whose `this` is altered. It also makes "space" for an event.
+This makes the method indicate for using in conjunction with [Element:addEvent][] and arguments.
 
 ### Syntax:
 
@@ -175,8 +175,8 @@ Function Method: bindWithEvent {#Function:bindWithEvent}
 
 ### Arguments:
 
-1. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
-2. **args** - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+1. bind - (*object*, optional) The object that the "this" of the function will refer to.
+2. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
 
 ### Returns:
 
@@ -197,7 +197,7 @@ Function Method: bindWithEvent {#Function:bindWithEvent}
 Function Method: delay {#Function:delay}
 ----------------------------------------
 
-**Delays the execution of a function by a specified duration.**
+Delays the execution of a function by a specified duration.
 
 ### Syntax:
 
@@ -205,9 +205,9 @@ Function Method: delay {#Function:delay}
 
 ### Arguments:
 
-1. **delay** - (*number*, optional) The duration to wait (in milliseconds).
-2. **bind**  - (*object*, optional) The object that the "this" of the function will refer to.
-3. **args**  - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
+1. delay - (*number*, optional) The duration to wait (in milliseconds).
+2. bind  - (*object*, optional) The object that the "this" of the function will refer to.
+3. args  - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 ### Returns:
 
@@ -232,7 +232,7 @@ Function Method: delay {#Function:delay}
 Function Method: periodical {#Function:periodical}
 --------------------------------------------------
 
-**Executes a function in the specified intervals of time**
+Executes a function in the specified intervals of time
 
 ### Syntax:
 
@@ -240,13 +240,13 @@ Function Method: periodical {#Function:periodical}
 
 ### Arguments:
 
-1. **period** - (*number*, optional) The duration of the intervals between executions.
-2. **bind**   - (*object*, optional) The object that the "this" of the function will refer to.
-3. **args**   - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
+1. period - (*number*, optional) The duration of the intervals between executions.
+2. bind   - (*object*, optional) The object that the "this" of the function will refer to.
+3. args   - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 ### Returns:
 
-* (*number**) The Interval ID (for clearing a periodical).
+* (*number) The Interval ID (for clearing a periodical).
 
 ### Examples:
 
@@ -264,7 +264,7 @@ Function Method: periodical {#Function:periodical}
 Function Method: run {#Function:run}
 ------------------------------------
 
-**Runs the Function with specified arguments and binding. Kinda like .apply but reversed and with support for single argument.**
+Runs the Function with specified arguments and binding. Kinda like .apply but reversed and with support for single argument.
 
 ### Syntax:
 
@@ -272,8 +272,8 @@ Function Method: run {#Function:run}
 
 ### Arguments:
 
-1. **args** - (*mixed*) An argument, or array of arguments to run the function with.
-2. **bind** - (*object*, optional) The object that the "this" of the function will refer to.
+1. args - (*mixed*) An argument, or array of arguments to run the function with.
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 

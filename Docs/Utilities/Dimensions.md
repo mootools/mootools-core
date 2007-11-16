@@ -20,14 +20,14 @@ MIT-style license.
 Native: Element {#Element}
 ==========================
 
-**Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].**
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
 Element Method: scrollTo {#Element:scrollTo}
 --------------------------------------------
 
-**Scrolls the element to the specified coordinated (if the element has an overflow).**
+Scrolls the element to the specified coordinated (if the element has an overflow).
 
 ### Syntax:
 
@@ -35,8 +35,8 @@ Element Method: scrollTo {#Element:scrollTo}
 
 ### Arguments:
 
-1. **x** - (*integer*) The x coordinate.
-2. **y** - (*integer*) The y coordinate.
+1. x - (*integer*) The x coordinate.
+2. y - (*integer*) The y coordinate.
 
 ### Examples:
 
@@ -52,7 +52,7 @@ Element Method: scrollTo {#Element:scrollTo}
 Element Method: getSize {#Element:getSize}
 ------------------------------------------
 
-**Returns an Object representing the different size dimensions of the element.**
+Returns an Object representing the different size dimensions of the element.
 
 ### Syntax:
 
@@ -62,7 +62,7 @@ Element Method: getSize {#Element:getSize}
 
 * (*object*) An object containing 'client', 'offset', and 'scroll' objects, each with x and y values.
 
-**Return Example:**
+Return Example:
 	
 	{
 		'client': {'x': 135, 'y': 125}, //total visible size of the content of the element
@@ -89,7 +89,7 @@ Element Method: getSize {#Element:getSize}
 Element Method: getScroll {#Element:getScroll}
 ----------------------------------------------
 
-**Returns an Object representing the size/scroll values of the element.**
+Returns an Object representing the size/scroll values of the element.
 
 ### Syntax:
 
@@ -118,7 +118,7 @@ Element Method: getScroll {#Element:getScroll}
 Element Method: getPosition {#Element:getPosition}
 --------------------------------------------------
 
-**Returns the real offsets of the element.**
+Returns the real offsets of the element.
 
 ### Syntax:
 
@@ -126,7 +126,7 @@ Element Method: getPosition {#Element:getPosition}
 
 ### Arguments:
 
-1. **relative** - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
+1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 ### Returns:
 
@@ -145,7 +145,7 @@ Element Method: getPosition {#Element:getPosition}
 Element Method: getTop {#Element:getTop}
 ----------------------------------------
 
-**Returns the distance from the top of the window to the Element.**
+Returns the distance from the top of the window to the Element.
 
 ### Syntax:
 
@@ -153,7 +153,7 @@ Element Method: getTop {#Element:getTop}
 
 ### Arguments:
 
-1. **relative** - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
+1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 ### Returns:
 
@@ -172,7 +172,7 @@ Element Method: getTop {#Element:getTop}
 Element Method: getLeft {#Element:getLeft}
 ------------------------------------------
 
-**Returns the distance from the left of the window to the Element.**
+Returns the distance from the left of the window to the Element.
 
 ### Syntax:
 
@@ -180,7 +180,7 @@ Element Method: getLeft {#Element:getLeft}
 
 ### Arguments:
 
-1. **relative** - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
+1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 ### Returns:
 
@@ -199,7 +199,7 @@ Element Method: getLeft {#Element:getLeft}
 Element Method: getCoordinates {#Element:getCoordinates}
 --------------------------------------------------------
 
-**Returns an object with width, height, left, right, top, and bottom, representing the values of the Element.**
+Returns an object with width, height, left, right, top, and bottom, representing the values of the Element.
 
 ### Syntax:
 
@@ -207,7 +207,7 @@ Element Method: getCoordinates {#Element:getCoordinates}
 
 ### Arguments:
 
-1. **relative** - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
+1. relative - (*element*, optional) if set, the position will be relative to this element, otherwise relative to the document.
 
 ### Returns:
 

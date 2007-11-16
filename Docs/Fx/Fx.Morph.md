@@ -8,10 +8,10 @@ MIT-style license.
 
 
 
-Class: Fx.Morph {#Fx.Morph}
+Class: Fx.Morph {#Fx-Morph}
 ===========================
 
-**Allows you to animate multiple css properties at once, even by a css selector. Inherits methods, properties, options and events from [Fx][].**
+Allows you to animate multiple css properties at once, even by a css selector. Inherits methods, properties, options and events from [Fx][].
 
 ### Extends:
 
@@ -23,8 +23,8 @@ Class: Fx.Morph {#Fx.Morph}
 
 ### Arguments:
 
-1. **element** - (*mixed*) A string ID of the Element or an Element to apply the style transitions to.
-2. **options** - (*object*, optional) The [Fx][] options object.
+1. element - (*mixed*) A string ID of the Element or an Element to apply the style transitions to.
+2. options - (*object*, optional) The [Fx][] options object.
 
 ### Returns:
 
@@ -32,7 +32,7 @@ Class: Fx.Morph {#Fx.Morph}
 
 ### Examples:
 
-**From and To values, with an object:**
+From and To values, with an object:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 'long', transition: Fx.Transitions.Sine.easeOut});
 
@@ -43,7 +43,7 @@ Class: Fx.Morph {#Fx.Morph}
 	});
 
 
-**Only To value, with an object:**
+Only To value, with an object:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 'short', transition: Fx.Transitions.Sine.easeOut});
 
@@ -54,7 +54,7 @@ Class: Fx.Morph {#Fx.Morph}
 	});
 
 
-**With a className:**
+With a className:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
 
@@ -68,10 +68,10 @@ Class: Fx.Morph {#Fx.Morph}
 
 
 
-Fx.Morph Method: set {#Fx.Morph:set}
+Fx.Morph Method: set {#Fx-Morph:set}
 ------------------------------------
 
-**Sets the Element's css properties to the specified values immediately.**
+Sets the Element's css properties to the specified values immediately.
 
 ### Syntax:
 
@@ -79,7 +79,7 @@ Fx.Morph Method: set {#Fx.Morph:set}
 
 ### Arguments:
 
-1. **to** - (*object*) An object containing keys that specify css properties to alter with their respected values.
+1. to - (*object*) An object containing keys that specify css properties to alter with their respected values.
 
 ### Returns:
 
@@ -96,10 +96,10 @@ Fx.Morph Method: set {#Fx.Morph:set}
 
 
 
-Fx.Morph Method: start {#Fx.Morph:start}
+Fx.Morph Method: start {#Fx-Morph:start}
 ----------------------------------------
 
-**Executes a transition for any number of css properties in tandem.**
+Executes a transition for any number of css properties in tandem.
 
 ### Syntax:
 
@@ -107,7 +107,7 @@ Fx.Morph Method: start {#Fx.Morph:start}
 
 ### Arguments:
 
-1. **properties** - (*mixed*) An object of properties/values pair or a string representing a css selector that can be found on one of the css files.
+1. properties - (*mixed*) An object of properties/values pair or a string representing a css selector that can be found on one of the css files.
 
 ### Returns:
 
@@ -134,14 +134,14 @@ Fx.Morph Method: start {#Fx.Morph:start}
 Native: Element {#Element}
 ==========================
 
-**Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].**
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
-Element Property: morph {#Element:morph}
-----------------------------------------
+Element Property: morph {#Element:property-morph}
+---------------------------------------------------
 
-**Sets / gets a default Fx.Morph instance for an element**
+Sets / gets a default Fx.Morph instance for an element
 
 ### Set
 
@@ -151,7 +151,7 @@ Element Property: morph {#Element:morph}
 
 #### Arguments:
 
-1. **options** - (*object*) the Fx.Morph options.
+1. options - (*object*) the Fx.Morph options.
 
 #### Returns:
 
@@ -170,7 +170,7 @@ Element Property: morph {#Element:morph}
 
 #### Arguments:
 
-1. **options** - (*object*, optional) the Fx.Morph options. if passed in will generate a new instance.
+1. options - (*object*, optional) the Fx.Morph options. if passed in will generate a new instance.
 
 #### Returns:
 
@@ -187,7 +187,7 @@ Element Property: morph {#Element:morph}
 Element Method: morph {#Element:morph}
 --------------------------------------
 
-**Animate an element given the properties you pass in.**
+Animate an element given the properties you pass in.
 
 ### Syntax:
 
@@ -195,7 +195,7 @@ Element Method: morph {#Element:morph}
 
 ### Arguments:
 
-1. **properties** - (*mixed*) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
+1. properties - (*mixed*) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
 
 ### Returns:
 
@@ -203,11 +203,11 @@ Element Method: morph {#Element:morph}
 
 ### Example:
 
-**With object:**
+With object:
 
 	$('myElement').morph({height: 100, width: 200});
 
-**With selector:**
+With selector:
 
 	$('myElement').morph('.class1');
 

@@ -10,7 +10,7 @@ Creates an interface for drag and drop sorting of a list or lists.
  * To enable sorting between lists, one or more lists or id's must be passed using an array or an object. See Examples below.
 2. options - an Object, see options and events below.
 
-**Options:**
+Options:
 
 1. constrain - whether or not to constrain the element being dragged to its parent element. defaults to false.
 2. clone - whether or not to display a copy of the actual element while dragging. defaults to true.

@@ -9,10 +9,10 @@ MIT-style license.
 
 
 
-Class: Event {#Element.Event}
-=============================
+Class: Event {#Event}
+=====================
 
-**Cross browser Class to manage Events.**
+Cross browser Class to manage Events.
 
 ### Syntax:
 
@@ -20,24 +20,24 @@ Class: Event {#Element.Event}
 
 ### Arguments:
 
-1. **event** - (*event*) An HTMLEvent Object.
-2. **win**   - (*window*, optional: defaults to window) The context of the event.
+1. event - (*event*) An HTMLEvent Object.
+2. win   - (*window*, optional: defaults to window) The context of the event.
 
 #### Properties:
 
-* **shift**         - (*boolean*) True if the user pressed the shift key.
-* **control**       - (*boolean*) True if the user pressed the control key.
-* **alt**           - (*boolean*) True if the user pressed the alt key.
-* **meta**          - (*boolean*) True if the user pressed the meta key.
-* **wheel**         - (*number*) The amount of third button scrolling.
-* **code**          - (*number*) The keycode of the key pressed.
-* **page.x**        - (*number*) The x position of the mouse, relative to the full window.
-* **page.y**        - (*number*) The y position of the mouse, relative to the full window.
-* **client.x**      - (*number*) The x position of the mouse, relative to the viewport.
-* **client.y**      - (*number*) The y position of the mouse, relative to the viewport.
-* **key**           - (*string*) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
-* **target**        - (*element*) The event target, not extended with <$> for performance reasons.
-* **relatedTarget** - (*element*) The event related target, **NOT** `extended` with <$>.
+* shift         - (*boolean*) True if the user pressed the shift key.
+* control       - (*boolean*) True if the user pressed the control key.
+* alt           - (*boolean*) True if the user pressed the alt key.
+* meta          - (*boolean*) True if the user pressed the meta key.
+* wheel         - (*number*) The amount of third button scrolling.
+* code          - (*number*) The keycode of the key pressed.
+* page.x        - (*number*) The x position of the mouse, relative to the full window.
+* page.y        - (*number*) The y position of the mouse, relative to the full window.
+* client.x      - (*number*) The x position of the mouse, relative to the viewport.
+* client.y      - (*number*) The y position of the mouse, relative to the viewport.
+* key           - (*string*) The key pressed as a lowercase string. key also returns 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
+* target        - (*element*) The event target, not extended with <$> for performance reasons.
+* relatedTarget - (*element*) The event related target, NOT `extended` with <$>.
 
 ### Examples:
 
@@ -54,7 +54,7 @@ Class: Event {#Element.Event}
 
 #### Hash: Event.Keys
 
-**You can add additional Event keys codes by adding properties to the Event.Keys Hash:**
+You can add additional Event keys codes by adding properties to the Event.Keys Hash:
 
 #### Examples:
 
@@ -65,10 +65,10 @@ Class: Event {#Element.Event}
 
 
 
-Event Method: stop {#Element.Event:stop}
-----------------------------------------
+Event Method: stop {#Event:stop}
+--------------------------------
 
-**Stop an Event from propagating and also executes preventDefault.**
+Stop an Event from propagating and also executes preventDefault.
 
 ###	Syntax:
 
@@ -102,10 +102,10 @@ Event Method: stop {#Element.Event:stop}
 
 - [Element.addEvent](#Element:addEvent), [Element.stopPropagation](#Event:stopPropagation), [Event.preventDefault](#Event:preventDefault), [Function.delay](#Function:delay)
 
-Event Method: stopPropagation {#Element.Event:stopPropagation}
---------------------------------------------------------------
+Event Method: stopPropagation {#Event:stopPropagation}
+------------------------------------------------------
 
-**Cross browser method to stop the propagation of an event (this stops the event from bubbling up through the DOM).**
+Cross browser method to stop the propagation of an event (this stops the event from bubbling up through the DOM).
 
 ###	Syntax:
 
@@ -140,13 +140,10 @@ Event Method: stopPropagation {#Element.Event:stopPropagation}
 
 
 
-Event Method: preventDefault {#Element.Event:preventDefault}
-------------------------------------------------------------
+Event Method: preventDefault {#Event:preventDefault}
+----------------------------------------------------
 
-**Cross browser method to prevent the default action of the event.**
-
-### Credits:
-<http://developer.mozilla.org/en/docs/DOM:event.preventDefault>
+Cross browser method to prevent the default action of the event.
 
 ###	Syntax:
 
@@ -187,7 +184,7 @@ Native: Element {#Element}
 Element Method: addEvent {#Element:addEvent}
 --------------------------------------------
 
-**Attaches an event listener to a DOM element.**
+Attaches an event listener to a DOM element.
 
 ###	Syntax:
 
@@ -195,8 +192,8 @@ Element Method: addEvent {#Element:addEvent}
 
 ###	Arguments:
 
-1. **type** - (*string*) The event name to monitor ('click', 'load', etc) without the prefix 'on'.
-2. **fn**   - (*funtion*) The function to execute.
+1. type - (*string*) The event name to monitor ('click', 'load', etc) without the prefix 'on'.
+2. fn   - (*funtion*) The function to execute.
 
 ###	Returns:
 
@@ -226,7 +223,7 @@ Element Method: addEvent {#Element:addEvent}
 Element Method: removeEvent {#Element:removeEvent}
 --------------------------------------------------
 
-**Works as Element.addEvent, but instead removes the previously added event listener.**
+Works as Element.addEvent, but instead removes the previously added event listener.
 
 ###	Syntax:
 
@@ -234,8 +231,8 @@ Element Method: removeEvent {#Element:removeEvent}
 
 ###	Arguments:
 
-1. **type** - (*string*) The event name.
-2. **fn**   - (*funtion*) The function to remove.
+1. type - (*string*) The event name.
+2. fn   - (*funtion*) The function to remove.
 
 ###	Returns:
 
@@ -272,7 +269,7 @@ Element Method: removeEvent {#Element:removeEvent}
 Element Method: addEvents {#Element:addEvents}
 ----------------------------------------------
 
-**The same as [Element.addEvent](#Element:addEvent), but accepts an object and add multiple events at once.**
+The same as [Element.addEvent](#Element:addEvent), but accepts an object and add multiple events at once.
 
 ###	Syntax:
 
@@ -280,7 +277,7 @@ Element Method: addEvents {#Element:addEvents}
 
 ###	Arguments:
 
-1. **events** - (*object*) An object with key/value representing: key the event name, and value the function that is called when the Event occurs.
+1. events - (*object*) An object with key/value representing: key the event name, and value the function that is called when the Event occurs.
 
 ###	Returns:
 
@@ -310,7 +307,7 @@ Element Method: addEvents {#Element:addEvents}
 Element Method: removeEvents {#Element:removeEvents}
 ----------------------------------------------------
 
-**Removes all events of a certain type from an Element. If no argument is passed in, removes all events.**
+Removes all events of a certain type from an Element. If no argument is passed in, removes all events.
 
 ###	Syntax:
 
@@ -318,7 +315,7 @@ Element Method: removeEvents {#Element:removeEvents}
 
 ###	Arguments:
 
-1. **type** - (*string*, optional) The event name (e.g. 'click'). If null, removes all events.
+1. type - (*string*, optional) The event name (e.g. 'click'). If null, removes all events.
 
 ###	Returns:
 
@@ -353,7 +350,7 @@ Element Method: removeEvents {#Element:removeEvents}
 Element Method: fireEvent {#Element:fireEvent}
 ----------------------------------------------
 
-**Executes all events of the specified type present in the Element.**
+Executes all events of the specified type present in the Element.
 
 ###	Syntax:
 
@@ -361,9 +358,9 @@ Element Method: fireEvent {#Element:fireEvent}
 
 ###	Arguments:
 
-1. **type**  - (*string*) The event name (e.g. 'click')
-2. **args**  - (*mixed*, optional) Array or single object, arguments to pass to the function. If more than one argument, must be an array.
-3. **delay** - (*number*, optional) Delay (in ms) to wait to execute the event.
+1. type  - (*string*) The event name (e.g. 'click')
+2. args  - (*mixed*, optional) Array or single object, arguments to pass to the function. If more than one argument, must be an array.
+3. delay - (*number*, optional) Delay (in ms) to wait to execute the event.
 
 ###	Returns:
 
@@ -381,7 +378,7 @@ Element Method: fireEvent {#Element:fireEvent}
 Element Method: cloneEvents {#Element:cloneEvents}
 --------------------------------------------------
 
-**Clones all events from an Element to this Element.**
+Clones all events from an Element to this Element.
 
 ###	Syntax:
 
@@ -389,8 +386,8 @@ Element Method: cloneEvents {#Element:cloneEvents}
 
 ###	Arguments:
 
-1. **from** - (*element*) Copy all events from this Element.
-2. **type** - (*string*, optional) Copies only events of this type. If null, copies all events.
+1. from - (*element*) Copy all events from this Element.
+2. type - (*string*, optional) Copies only events of this type. If null, copies all events.
 
 ###	Returns:
 
@@ -407,16 +404,16 @@ Element Method: cloneEvents {#Element:cloneEvents}
 
 ### Hash: Element.Events
 
-**You can add additional custom events by adding properties (objects) to the Element.Events Hash**
+You can add additional custom events by adding properties (objects) to the Element.Events Hash
 
 #### Arguments:
 
 The Element.Events.yourproperty (object) can have:
 
-1. **base** - (*string*, optional) the base event the custom event will listen to. Its not optional if condition is set.
-2. **condition** - (*function*, optional) the condition from which we determine if the custom event can be fired. Is bound to the element you add the event to. The Event is passed in.
-3. **onAdd** - (*function*, optional) the function that will get fired when the custom event is added. Is bound to the element you add the event to.
-4. **onRemove** - (*function*, optional) the function that will get fired when the custom event is removed. Is bound to the element you add the event to.
+1. base - (*string*, optional) the base event the custom event will listen to. Its not optional if condition is set.
+2. condition - (*function*, optional) the condition from which we determine if the custom event can be fired. Is bound to the element you add the event to. The Event is passed in.
+3. onAdd - (*function*, optional) the function that will get fired when the custom event is added. Is bound to the element you add the event to.
+4. onRemove - (*function*, optional) the function that will get fired when the custom event is removed. Is bound to the element you add the event to.
 
 #### Examples:
 
@@ -441,14 +438,14 @@ The Element.Events.yourproperty (object) can have:
 
 #### Warning:
 
-**If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event**
-**(highly unrecommended: use only when you know exactly what you're doing).**
+If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event
+(highly unrecommended: use only when you know exactly what you're doing).
 
 ### Custom Events
 
 #### Event: mouseenter
 
-**This event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike the broken mouseover).**
+This event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike the broken mouseover).
 
 #### Examples:
 
@@ -460,7 +457,7 @@ The Element.Events.yourproperty (object) can have:
 
 #### Event: mousewheel
 
-**This event fires when the mouse wheel is rotated;**
+This event fires when the mouse wheel is rotated;
 
 #### Examples:
 

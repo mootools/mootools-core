@@ -46,19 +46,19 @@ An Ajax class, for all your asynchronous needs. Also contains methods to generat
 
 ### Examples:
 
-**Simple GET Request:**
+Simple GET Request:
 
 	var myHTMLRequest = new Request.HTML().get('myPage.html');
 
-**POST Request with data as String:**
+POST Request with data as String:
 
 	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post("user_id=25&save=true");
 
-**Data from Object Passed via GET:**
+Data from Object Passed via GET:
 
 	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25}); //loads url "load/?user_id=25"
 
-**Data from Element via POST:**
+Data from Element via POST:
 
 ##### HTML
 	<form action="save/" method="post" id="user-form">
@@ -98,7 +98,7 @@ Sets a default Request.HTML instance for an Element.
 
 ### Arguments:
 
-1. **options** - (*object*) The Request options.
+1. options - (*object*) The Request options.
 
 ### Returns:
 
@@ -122,8 +122,8 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 ### Arguments:
 
-1. **url** - (*string*) The URL to associate the Request.HTML instance with.
-2. **options** - (*objectl, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set. 
+1. url - (*string*) The URL to associate the Request.HTML instance with.
+2. options - (*objectl, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set. 
 
 ### Returns:
 

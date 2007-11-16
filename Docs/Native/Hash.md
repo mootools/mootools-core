@@ -12,14 +12,14 @@ MIT-style license.
 Native: Hash {#Hash}
 ====================
 
-**A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.**
+A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
 
 
 
 Hash Method: keyOf {#Hash:keyOf}
 --------------------------------
 
-**Returns the key of the specified value. Synonymous with [Array:indexOf][].**
+Returns the key of the specified value. Synonymous with [Array:indexOf][].
 
 ### Syntax:
 
@@ -27,7 +27,7 @@ Hash Method: keyOf {#Hash:keyOf}
 
 ### Arguments:
 
-1. **item** - (*mixed*) The item to search for in the Hash.
+1. item - (*mixed*) The item to search for in the Hash.
 
 ### Returns:
 
@@ -49,7 +49,7 @@ Hash Method: keyOf {#Hash:keyOf}
 Hash Method: has {#Hash:has}
 ----------------------------
 
-**Tests for the presence of a specified key in the Hash.**
+Tests for the presence of a specified key in the Hash.
 
 ### Syntax:
 
@@ -57,7 +57,7 @@ Hash Method: has {#Hash:has}
 
 ### Arguments:
 
-1. **key** - (*string*) The key to search for in the Hash.
+1. key - (*string*) The key to search for in the Hash.
 
 ### Returns:
 
@@ -79,7 +79,7 @@ Hash Method: has {#Hash:has}
 Hash Method: hasValue {#Hash:hasValue}
 --------------------------------------
 
-**Tests for the presence of a specified value in the Hash.**
+Tests for the presence of a specified value in the Hash.
 
 ### Syntax:
 
@@ -87,7 +87,7 @@ Hash Method: hasValue {#Hash:hasValue}
 
 ### Arguments:
 
-1. **value** - (*mixed*) The value to search for in the Hash.
+1. value - (*mixed*) The value to search for in the Hash.
 
 ### Returns:
 
@@ -103,7 +103,7 @@ Hash Method: hasValue {#Hash:hasValue}
 Hash Method: extend {#Hash:extend}
 ----------------------------------
 
-**Extends this Hash with the key-value pairs from the object passed in.**
+Extends this Hash with the key-value pairs from the object passed in.
 
 ### Syntax:
 
@@ -111,7 +111,7 @@ Hash Method: extend {#Hash:extend}
 
 ### Arguments:
 
-1. **properties** - (*object*) The object whose items should be extended into this Hash
+1. properties - (*object*) The object whose items should be extended into this Hash
 
 ### Returns:
 
@@ -136,7 +136,7 @@ Hash Method: extend {#Hash:extend}
 Hash Method: merge {#Hash:merge}
 --------------------------------
 
-**Merges this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.**
+Merges this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.
 
 ### Syntax:
 
@@ -144,7 +144,7 @@ Hash Method: merge {#Hash:merge}
 
 ### Arguments:
 
-1. **properties** - (*object*) The object whose items should be merged into this Hash.
+1. properties - (*object*) The object whose items should be merged into this Hash.
 
 ### Returns:
 
@@ -169,7 +169,7 @@ Hash Method: merge {#Hash:merge}
 Hash Method: remove {#Hash:remove}
 ----------------------------------
 
-**Removes the specified key from the Hash.**
+Removes the specified key from the Hash.
 
 ### Syntax:
 
@@ -177,7 +177,7 @@ Hash Method: remove {#Hash:remove}
 
 ### Arguments:
 
-1. **key** - (*string*) The key to search for in the Hash.
+1. key - (*string*) The key to search for in the Hash.
 
 ### Returns:
 
@@ -196,7 +196,7 @@ Hash Method: remove {#Hash:remove}
 
 ### Hash Method: get {#Hash:get}
 
-**Retrieves a value from the hash.**
+Retrieves a value from the hash.
 
 ### Syntax:
 
@@ -204,7 +204,7 @@ Hash Method: remove {#Hash:remove}
 
 ### Arguments:
 
-1. **key** - (*string*) The key to retrieve in the Hash.
+1. key - (*string*) The key to retrieve in the Hash.
 
 ### Returns:
 
@@ -224,7 +224,7 @@ Hash Method: remove {#Hash:remove}
 Hash Method: set {#Hash:set}
 ----------------------------
 
-**Adds a key-value pair to the hash or replaces a previous value associated with the specified key.**
+Adds a key-value pair to the hash or replaces a previous value associated with the specified key.
 
 ### Syntax:
 
@@ -232,8 +232,8 @@ Hash Method: set {#Hash:set}
 
 ### Arguments:
 
-1. **key**   - (*string*) The key to insert or modify in the Hash.
-2. **value** - (*mixed*) The value to associate with the specified key in the Hash.
+1. key   - (*string*) The key to insert or modify in the Hash.
+2. value - (*mixed*) The value to associate with the specified key in the Hash.
 
 ### Returns:
 
@@ -252,7 +252,7 @@ Hash Method: set {#Hash:set}
 Hash Method: empty {#Hash:empty}
 --------------------------------
 
-**Empties the hash.**
+Empties the hash.
 
 ### Syntax:
 
@@ -272,7 +272,7 @@ Hash Method: empty {#Hash:empty}
 Hash Method: include {#Hash:include}
 ------------------------------------
 
-**Includes the specified key-value pair in the Hash if the key doesn't already exist.**
+Includes the specified key-value pair in the Hash if the key doesn't already exist.
 
 ### Syntax:
 
@@ -280,8 +280,8 @@ Hash Method: include {#Hash:include}
 
 ### Arguments:
 
-1. **key**   - (*string*) The key to insert into the Hash.
-2. **value** - (*mixed*) The value to associate with the specified key in the Hash.
+1. key   - (*string*) The key to insert into the Hash.
+2. value - (*mixed*) The value to associate with the specified key in the Hash.
 
 ### Returns:
 
@@ -301,7 +301,7 @@ Hash Method: include {#Hash:include}
 Hash Method: map {#Hash:map}
 ----------------------------
 
-**Creates a new map with the results of calling a provided function on every value in the map.**
+Creates a new map with the results of calling a provided function on every value in the map.
 
 ### Syntax:
 
@@ -309,8 +309,8 @@ Hash Method: map {#Hash:map}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to produce an element of the new Array from an element of the current one.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. fn   - (*function*) The function to produce an element of the new Array from an element of the current one.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -320,9 +320,9 @@ Hash Method: map {#Hash:map}
 
 ##### Arguments:
 
-1. **value** - (mixed) The current value in the hash.
-2. **key**   - (string) The current value's key in the hash.
-3. **hash**  - (hash) The actual hash.
+1. value - (mixed) The current value in the hash.
+2. key   - (string) The current value's key in the hash.
+3. hash  - (hash) The actual hash.
 
 ### Returns:
 
@@ -339,7 +339,7 @@ Hash Method: map {#Hash:map}
 Hash Method: filter {#Hash:filter}
 ----------------------------------
 
-**Creates a new Hash with all of the elements of the Hash for which the provided filtering function returns true.**
+Creates a new Hash with all of the elements of the Hash for which the provided filtering function returns true.
 
 ### Syntax:
 
@@ -347,8 +347,8 @@ Hash Method: filter {#Hash:filter}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. fn   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -358,9 +358,9 @@ Hash Method: filter {#Hash:filter}
 
 ##### Arguments:
 
-1. **value** - (*mixed*) The current value in the hash.
-2. **key**   - (*string*) The current value's key in the hash.
-3. **hash**  - (*hash*) The actual hash.
+1. value - (*mixed*) The current value in the hash.
+2. key   - (*string*) The current value's key in the hash.
+3. hash  - (*hash*) The actual hash.
 
 ### Returns:
 
@@ -376,7 +376,7 @@ Hash Method: filter {#Hash:filter}
 Hash Method: every {#Hash:every}
 --------------------------------
 
-**Returns true if every value in the object satisfies the provided testing function.**
+Returns true if every value in the object satisfies the provided testing function.
 
 ### Syntax:
 
@@ -384,8 +384,8 @@ Hash Method: every {#Hash:every}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind].
+1. fn   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind].
 
 #### Argument: fn
 
@@ -395,9 +395,9 @@ Hash Method: every {#Hash:every}
 
 ##### Arguments:
 
-1. **value** - (*mixed*) The current value in the hash.
-2. **key**   - (*string*) The current value's key in the hash.
-3. **hash**  - (*hash*) The actual hash.
+1. value - (*mixed*) The current value in the hash.
+2. key   - (*string*) The current value's key in the hash.
+3. hash  - (*hash*) The actual hash.
 
 ### Returns:
 
@@ -413,7 +413,7 @@ Hash Method: every {#Hash:every}
 Hash Method: some {#Hash:some}
 ------------------------------
 
-**Returns true if at least one value in the object satisfies the provided testing function.**
+Returns true if at least one value in the object satisfies the provided testing function.
 
 ### Syntax:
 
@@ -421,8 +421,8 @@ Hash Method: some {#Hash:some}
 
 ### Arguments:
 
-1. **[fn][]**   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. [fn][]   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn {#Hash:some:fn}
 
@@ -433,9 +433,9 @@ Hash Method: some {#Hash:some}
 
 ##### Arguments:
 
-1. **value** - (*mixed*) The current value in the hash.
-2. **key**   - (*string*) The current value's key in the hash.
-3. **hash**  - (*hash*) The actual hash.
+1. value - (*mixed*) The current value in the hash.
+2. key   - (*string*) The current value's key in the hash.
+3. hash  - (*hash*) The actual hash.
 
 ### Returns:
 
@@ -452,7 +452,7 @@ Hash Method: some {#Hash:some}
 Hash Method: getClean {#Hash:getClean}
 --------------------------------------
 
-**Returns a a clean object from an Hash.**
+Returns a a clean object from an Hash.
 
 ### Syntax:
 
@@ -476,7 +476,7 @@ Hash Method: getClean {#Hash:getClean}
 Hash Method: getKeys {#Hash:getKeys}
 ------------------------------------
 
-**Returns an array containing all the keys, in the same order as the values returned by [Hash:getValues][].**
+Returns an array containing all the keys, in the same order as the values returned by [Hash:getValues][].
 
 ### Syntax:
 
@@ -491,7 +491,7 @@ Hash Method: getKeys {#Hash:getKeys}
 Hash Method: getValues {#Hash:getValues}
 ----------------------------------------
 
-**Returns an array containing all the values, in the same order as the keys returned by [Hash:getKeys][].**
+Returns an array containing all the values, in the same order as the keys returned by [Hash:getKeys][].
 
 ### Syntax:
 
@@ -506,7 +506,7 @@ Hash Method: getValues {#Hash:getValues}
 Hash Method: toQueryString {#Hash:toQueryString}
 ------------------------------------------------
 
-**Generates a query string from key/pair values in an object and URI encodes the values.**
+Generates a query string from key/pair values in an object and URI encodes the values.
 
 ### Syntax:
 
@@ -514,7 +514,7 @@ Hash Method: toQueryString {#Hash:toQueryString}
 
 ### Arguments:
 
-1. **source** - (*object*) The object to generate the query string from.
+1. source - (*object*) The object to generate the query string from.
 
 ### Returns:
 

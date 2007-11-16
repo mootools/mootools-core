@@ -12,7 +12,7 @@ MIT-style license.
 Native: Array {#Array}
 ======================
 
-**A collection of the Array Object methods.**
+A collection of the Array Object methods.
 
 ### See Also:
 
@@ -23,8 +23,8 @@ Native: Array {#Array}
 Array Method: every {#Array:every}
 ----------------------------------
 
-**Returns true if every element in the array satisfies the provided testing function.**
-**This method is provided only for browsers without native [Array:every][] support.**
+Returns true if every element in the array satisfies the provided testing function.
+This method is provided only for browsers without native [Array:every][] support.
 
 ### Syntax:
 
@@ -32,8 +32,8 @@ Array Method: every {#Array:every}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to test for each element.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. fn   - (*function*) The function to test for each element.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -43,9 +43,9 @@ Array Method: every {#Array:every}
 
 ##### Arguments:
 
-1. **item**   - (*mixed*) The current item in the array.
-2. **index**  - (*number*) The current item's index in the array.
-3. **array**  - (*array*) The actual array.
+1. item   - (*mixed*) The current item in the array.
+2. index  - (*number*) The current item's index in the array.
+3. array  - (*array*) The actual array.
 
 ### Returns:
 
@@ -67,8 +67,8 @@ Array Method: every {#Array:every}
 Array Method: filter {#Array:filter}
 ------------------------------------
 
-**Creates a new array with all of the elements of the array for which the provided filtering function returns true.**
-**This method is provided only for browsers without native [Array:filter][] support.**
+Creates a new array with all of the elements of the array for which the provided filtering function returns true.
+This method is provided only for browsers without native [Array:filter][] support.
 
 ### Syntax:
 
@@ -76,8 +76,8 @@ Array Method: filter {#Array:filter}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to test each element of the array. This function is passed the item and its index in the array.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. fn   - (*function*) The function to test each element of the array. This function is passed the item and its index in the array.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -87,9 +87,9 @@ Array Method: filter {#Array:filter}
 
 ##### Arguments:
 
-1. **item**   - (*mixed*) The current item in the array.
-2. **index**  - (*number*) The current item's index in the array.
-3. **array**  - (*array*) The actual array.
+1. item   - (*mixed*) The current item in the array.
+2. index  - (*number*) The current item's index in the array.
+3. array  - (*array*) The actual array.
 
 ### Returns:
 
@@ -110,8 +110,8 @@ Array Method: filter {#Array:filter}
 Array Method: indexOf {#Array:indexOf}
 --------------------------------------
 
-**Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.**
-**This method is provided only for browsers without native [Array:indexOf][] support.**
+Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.
+This method is provided only for browsers without native [Array:indexOf][] support.
 
 ### Syntax:
 
@@ -123,8 +123,8 @@ Array Method: indexOf {#Array:indexOf}
 
 ### Arguments:
 
-1. **item** - (*object*) The item to search for in the array.
-2. **from** - (*number*, optional: defaults to 0) The index of the array at which to begin the search.
+1. item - (*object*) The item to search for in the array.
+2. from - (*number*, optional: defaults to 0) The index of the array at which to begin the search.
 
 ### Examples:
 
@@ -140,8 +140,8 @@ Array Method: indexOf {#Array:indexOf}
 Array Method: map {#Array:map}
 ------------------------------
 
-**Creates a new array with the results of calling a provided function on every element in the array.**
-**This method is provided only for browsers without native [Array:map][] support.**
+Creates a new array with the results of calling a provided function on every element in the array.
+This method is provided only for browsers without native [Array:map][] support.
 
 ### Syntax:
 
@@ -149,8 +149,8 @@ Array Method: map {#Array:map}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to produce an element of the new Array from an element of the current one.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. fn   - (*function*) The function to produce an element of the new Array from an element of the current one.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -160,9 +160,9 @@ Array Method: map {#Array:map}
 
 ##### Arguments:
 
-1. **item**   - (*mixed*) The current item in the array.
-2. **index**  - (*number*) The current item's index in the array.
-3. **array**  - (*array*) The actual array.
+1. item   - (*mixed*) The current item in the array.
+2. index  - (*number*) The current item's index in the array.
+3. array  - (*array*) The actual array.
 
 ### Returns:
 
@@ -183,8 +183,8 @@ Array Method: map {#Array:map}
 Array Method: some {#Array:some}
 --------------------------------
 
-**Returns true if at least one element in the array satisfies the provided testing function.**
-**This method is provided only for browsers without native [Array:some][] support.**
+Returns true if at least one element in the array satisfies the provided testing function.
+This method is provided only for browsers without native [Array:some][] support.
 
 ### Syntax:
 
@@ -196,8 +196,8 @@ Array Method: some {#Array:some}
 
 ### Arguments:
 
-1. **fn**   - (*function*) The function to test for each element. This function is passed the item and its index in the array.
-2. **bind** - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+1. fn   - (*function*) The function to test for each element. This function is passed the item and its index in the array.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
@@ -207,9 +207,9 @@ Array Method: some {#Array:some}
 
 ##### Arguments:
 
-1. **item**   - (*mixed*) The current item in the array.
-2. **index**  - (*number*) The current item's index in the array.
-3. **array**  - (*array*) The actual array.
+1. item   - (*mixed*) The current item in the array.
+2. index  - (*number*) The current item's index in the array.
+3. array  - (*array*) The actual array.
 
 ### Examples:
 
@@ -226,7 +226,7 @@ Array Method: some {#Array:some}
 Array Method: associate {#Array:associate}
 ------------------------------------------
 
-**Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.**
+Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
 
 ### Syntax:
 
@@ -234,7 +234,7 @@ Array Method: associate {#Array:associate}
 
 ### Arguments:
 
-1. **obj** - (*array*) Its items will be used as the keys of the object that will be created.
+1. obj - (*array*) Its items will be used as the keys of the object that will be created.
 
 ### Returns:
 
@@ -252,7 +252,7 @@ Array Method: associate {#Array:associate}
 Array Method: link {#Array:link}
 --------------------------------
 
-**Accepts an object of key / function pairs to assign values.**
+Accepts an object of key / function pairs to assign values.
 
 ### Syntax:
 
@@ -260,7 +260,7 @@ Array Method: link {#Array:link}
 
 ### Arguments:
 
-1. **object** - (*object*)  An object containing key / function pairs must be passed to be used as a template for associating values with the different keys.
+1. object - (*object*)  An object containing key / function pairs must be passed to be used as a template for associating values with the different keys.
 
 ### Returns:
 
@@ -278,7 +278,7 @@ Array Method: link {#Array:link}
 Array Method: contains {#Array:contains}
 ----------------------------------------
 
-**Tests an array for the presence of an item.**
+Tests an array for the presence of an item.
 
 ### Syntax:
 
@@ -286,8 +286,8 @@ Array Method: contains {#Array:contains}
 
 ### Arguments:
 
-1. **item** - (*object*) The item to search for in the array.
-2. **from** - (*number*, optional: defaults to 0) The index of the array at which to begin the search.
+1. item - (*object*) The item to search for in the array.
+2. from - (*number*, optional: defaults to 0) The index of the array at which to begin the search.
 
 ### Returns:
 
@@ -307,7 +307,7 @@ Array Method: contains {#Array:contains}
 Array Method: extend {#Array:extend}
 ------------------------------------
 
-**Extends an array with all the items of another.**
+Extends an array with all the items of another.
 
 ### Syntax:
 
@@ -315,7 +315,7 @@ Array Method: extend {#Array:extend}
 
 ### Arguments:
 
-1. **array** - (*array*) The array whose items should be extended into this array.
+1. array - (*array*) The array whose items should be extended into this array.
 
 ### Returns:
 
@@ -331,7 +331,7 @@ Array Method: extend {#Array:extend}
 Array Method: getLast {#Array:getLast}
 --------------------------------------
 
-**Returns the last item from the array.**
+Returns the last item from the array.
 
 ### Syntax:
 
@@ -351,7 +351,7 @@ Array Method: getLast {#Array:getLast}
 Array Method: getRandom {#Array:getRandom}
 ------------------------------------------
 
-**Returns a random item from the array.**
+Returns a random item from the array.
 
 ### Syntax:
 
@@ -370,7 +370,7 @@ Array Method: getRandom {#Array:getRandom}
 Array Method: include {#Array:include}
 --------------------------------------
 
-**Pushes the passed element into the array if it's not already present (case and type sensitive).**
+Pushes the passed element into the array if it's not already present (case and type sensitive).
 
 ### Syntax:
 
@@ -378,7 +378,7 @@ Array Method: include {#Array:include}
 
 ### Arguments:
 
-1. **item** - (*object*) The item that should be added to this array.
+1. item - (*object*) The item that should be added to this array.
 
 ### Returns:
 
@@ -394,7 +394,7 @@ Array Method: include {#Array:include}
 Array Method: merge {#Array:merge}
 ----------------------------------
 
-**Merges an array with all the items of another. Does not allow duplicates and is case and type sensitive.**
+Merges an array with all the items of another. Does not allow duplicates and is case and type sensitive.
 
 ### Syntax:
 
@@ -402,7 +402,7 @@ Array Method: merge {#Array:merge}
 
 ### Arguments:
 
-1. **array** - (*array*) The array whose items should be merged into this array.
+1. array - (*array*) The array whose items should be merged into this array.
 
 ### Returns:
 
@@ -418,7 +418,7 @@ Array Method: merge {#Array:merge}
 Array Method: remove {#Array:remove}
 ------------------------------------
 
-**Removes all occurrences of an item from the array.**
+Removes all occurrences of an item from the array.
 
 ### Syntax:
 
@@ -426,7 +426,7 @@ Array Method: remove {#Array:remove}
 
 ### Arguments:
 
-1. **item** - (*object*) The item to search for in the array.
+1. item - (*object*) The item to search for in the array.
 
 ### Returns:
 
@@ -442,7 +442,7 @@ Array Method: remove {#Array:remove}
 Array Method: empty {#Array:empty}
 ----------------------------------
 
-**Empties an array.**
+Empties an array.
 
 ### Syntax:
 
@@ -462,7 +462,7 @@ Array Method: empty {#Array:empty}
 Array Method: flatten {#Array:flatten}
 --------------------------------------
 
-**Flattens a multidimensional array into a single array.**
+Flattens a multidimensional array into a single array.
 
 ### Syntax:
 

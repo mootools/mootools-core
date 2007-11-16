@@ -12,7 +12,7 @@ MIT-style license.
 Native: String {#String}
 ========================
 
-**A collection of the String Object prototype methods.**
+A collection of the String Object prototype methods.
 
 ### See Also:
 
@@ -23,8 +23,8 @@ Native: String {#String}
 String Method: test {#String:test}
 ----------------------------------
 
-**Searches for a match between the string and a regular expression.**
-**For more information see [MDC Regexp:test][].**
+Searches for a match between the string and a regular expression.
+For more information see [MDC Regexp:test][].
 
 ### Syntax:
 
@@ -32,8 +32,8 @@ String Method: test {#String:test}
 
 ### Arguments:
 
-1. **regex**  - (*mixed*) The string or regular expression you want to match the string with.
-2. **params** - (*string*, optional) If first parameter is a string, any parameters you want to pass to the regular expression ('g' has no effect).
+1. regex  - (*mixed*) The string or regular expression you want to match the string with.
+2. params - (*string*, optional) If first parameter is a string, any parameters you want to pass to the regular expression ('g' has no effect).
 
 ### Returns:
 
@@ -55,8 +55,8 @@ String Method: test {#String:test}
 String Method: contains {#String:contains}
 ------------------------------------------
 
-**Checks to see if the string passed in is contained in this string.**
-**If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.**
+Checks to see if the string passed in is contained in this string.
+If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
 
 ### Syntax:
 
@@ -64,8 +64,8 @@ String Method: contains {#String:contains}
 
 ### Arguments:
 
-1. **string**    - (*string*) The string to search for.
-2. **separator** - (*string*, optional) The string that separates the values in this string (eg. Element classNames are separated by a ' ').
+1. string    - (*string*) The string to search for.
+2. separator - (*string*, optional) The string that separates the values in this string (eg. Element classNames are separated by a ' ').
 
 ### Returns:
 
@@ -83,7 +83,7 @@ String Method: contains {#String:contains}
 String Method: trim {#String:trim}
 ----------------------------------
 
-**Trims the leading and trailing spaces off a string.**
+Trims the leading and trailing spaces off a string.
 
 ### Syntax:
 
@@ -102,7 +102,7 @@ String Method: trim {#String:trim}
 String Method: clean {#String:clean}
 ------------------------------------
 
-**Removes all extraneous whitespace from a string and trims it ([String:trim][]).**
+Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
 ### Syntax:
 
@@ -121,7 +121,7 @@ String Method: clean {#String:clean}
 String Method: camelCase {#String:camelCase}
 --------------------------------------------
 
-**Converts a hyphenated string to a camelcased string.**
+Converts a hyphenated string to a camelcased string.
 
 ### Syntax:
 
@@ -140,7 +140,7 @@ String Method: camelCase {#String:camelCase}
 String Method: hyphenate {#String:hyphenate}
 --------------------------------------------
 
-**Converts a camelcased string to a hyphenated string.**
+Converts a camelcased string to a hyphenated string.
 
 ### Syntax:
 
@@ -159,7 +159,7 @@ String Method: hyphenate {#String:hyphenate}
 String Method: capitalize {#String:capitalize}
 ----------------------------------------------
 
-**Converts the first letter of each word in a string to uppercase.**
+Converts the first letter of each word in a string to uppercase.
 
 ### Syntax:
 
@@ -178,7 +178,7 @@ String Method: capitalize {#String:capitalize}
 String Method: escapeRegExp {#String:escapeRegExp}
 --------------------------------------------------
 
-**Escapes all regular expression characters from the string.**
+Escapes all regular expression characters from the string.
 
 ### Syntax:
 
@@ -197,7 +197,7 @@ String Method: escapeRegExp {#String:escapeRegExp}
 String Method: toInt {#String:toInt}
 ------------------------------------
 
-**Parses this string and returns a number of the specified radix or base.**
+Parses this string and returns a number of the specified radix or base.
 
 ### Syntax:
 
@@ -205,7 +205,7 @@ String Method: toInt {#String:toInt}
 
 ### Arguments:
 
-1. **base** - (*number*, optional) The base to use (defaults to 10).
+1. base - (*number*, optional) The base to use (defaults to 10).
 
 ### Returns:
 
@@ -226,7 +226,7 @@ String Method: toInt {#String:toInt}
 String Method: toFloat {#String:toFloat}
 ----------------------------------------
 
-**Parses this string and returns a floating point number.**
+Parses this string and returns a floating point number.
 
 ### Syntax:
 
@@ -251,8 +251,8 @@ String Method: toFloat {#String:toFloat}
 String Method: hexToRgb {#String:hexToRgb}
 ------------------------------------------
 
-**Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).**
-**'#ffffff', #fff', 'ffffff', or 'fff'**
+Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
+'#ffffff', #fff', 'ffffff', or 'fff'
 
 ### Syntax:
 
@@ -260,7 +260,7 @@ String Method: hexToRgb {#String:hexToRgb}
 
 ### Arguments:
 
-1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
@@ -282,8 +282,8 @@ String Method: hexToRgb {#String:hexToRgb}
 String Method: rgbToHex {#String:rgbToHex}
 ------------------------------------------
 
-**Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.**
-**"rgb(255,255,255)", or "rgba(255,255,255,1)"**
+Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.
+"rgb(255,255,255)", or "rgba(255,255,255,1)"
 
 ### Syntax:
 
@@ -291,7 +291,7 @@ String Method: rgbToHex {#String:rgbToHex}
 
 ### Arguments:
 
-1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
@@ -313,7 +313,7 @@ String Method: rgbToHex {#String:rgbToHex}
 Native: Array {#Array}
 ======================
 
-**Array Methods.**
+Array Methods.
 
 ## See Also:
 
@@ -324,8 +324,8 @@ Native: Array {#Array}
 Array Method: hexToRgb {#Array:hexToRgb}
 ----------------------------------------
 
-**Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.**
-**['ff', 'ff', 'ff'], or ['f', 'f', 'f']**
+Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.
+['ff', 'ff', 'ff'], or ['f', 'f', 'f']
 
 ### Syntax:
 
@@ -333,7 +333,7 @@ Array Method: hexToRgb {#Array:hexToRgb}
 
 ### Arguments:
 
-1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 
@@ -355,8 +355,8 @@ Array Method: hexToRgb {#Array:hexToRgb}
 Array Method: rgbToHex {#Array:rgbToHex}
 ----------------------------------------
 
-**Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.**
-**[255,255,255], or [255,255,255,1]**
+Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
+[255,255,255], or [255,255,255,1]
 
 ### Syntax:
 
@@ -364,7 +364,7 @@ Array Method: rgbToHex {#Array:rgbToHex}
 
 ### Arguments:
 
-1. **array** - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
 
 ### Returns:
 

@@ -12,7 +12,7 @@ MIT-style license.
 Class: Drag {#Drag}
 ===================
 
-**Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is down.**
+Enables the modification of two CSS properties of an Element based on the position of the mouse while the mouse button is down.
 
 ### Implements:
 
@@ -28,30 +28,30 @@ Drag Method: constructor {#Drag:constructor}
 
 ### Arguments:
 
-1. **el**      - (*element*) The Element to apply the transformations to.
-2. **options** - (*object*, optional) The options object.
+1. el      - (*element*) The Element to apply the transformations to.
+2. options - (*object*, optional) The options object.
 
 ### Options:
 
-* **handle**    - (*element*: defaults to the element passed in) The Element to act as the handle for the draggable element.
-* **grid**      - (*integer*: defaults to false) Distance in pixels for snap-to-grid dragging.
-* **unit**      - (*string*: defaults to 'px') A string indicating the CSS unit to append to all integer values.
-* **snap**      - (*integer*: defaults to 6) The distance to drag before the Element starts to respond to the drag.
-* **limit**     - (*object*: defaults to false) An object with x and y properties used to limit the movement of the Element.
-* **modifiers** - (*object*: defaults to {'x': 'left', 'y': 'top'}) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left').
+* handle    - (*element*: defaults to the element passed in) The Element to act as the handle for the draggable element.
+* grid      - (*integer*: defaults to false) Distance in pixels for snap-to-grid dragging.
+* unit      - (*string*: defaults to 'px') A string indicating the CSS unit to append to all integer values.
+* snap      - (*integer*: defaults to 6) The distance to drag before the Element starts to respond to the drag.
+* limit     - (*object*: defaults to false) An object with x and y properties used to limit the movement of the Element.
+* modifiers - (*object*: defaults to {'x': 'left', 'y': 'top'}) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left').
 
 ### Events:
 
-* **onBeforeStart** - Executed before the Drag instance attaches the events. Receives the dragged element as an argument.
-* **onStart**       - Executed when the user starts to drag (on mousedown). Receives the dragged element as an argument.
-* **onSnap**        - Executed when the user has dragged past the snap option. Receives the dragged element as an argument.
-* **onDrag**        - Executed on every step of the drag. Receives the dragged element as an argument.
-* **onComplete**    - Executed when the user completes the drag. Receives the dragged element as an argument.
+* onBeforeStart - Executed before the Drag instance attaches the events. Receives the dragged element as an argument.
+* onStart       - Executed when the user starts to drag (on mousedown). Receives the dragged element as an argument.
+* onSnap        - Executed when the user has dragged past the snap option. Receives the dragged element as an argument.
+* onDrag        - Executed on every step of the drag. Receives the dragged element as an argument.
+* onComplete    - Executed when the user completes the drag. Receives the dragged element as an argument.
 
 ### Properties:
 
-* **element** - (*element*) The Element being transformed.
-* **handle**  - (*element*) The Element acting as the handle for the draggable element.
+* element - (*element*) The Element being transformed.
+* handle  - (*element*) The Element acting as the handle for the draggable element.
 
 ### Examples:
 
@@ -78,7 +78,7 @@ Drag Method: constructor {#Drag:constructor}
 Drag Method: attach {#Drag:attach}
 ----------------------------------
 
-**Attaches the mouse listener to the handle.**
+Attaches the mouse listener to the handle.
 
 ### Syntax:
 
@@ -105,7 +105,7 @@ Drag Method: attach {#Drag:attach}
 Drag Method: detach {#Drag:detach}
 ----------------------------------
 
-**Detaches the mouse listener from the handle.**
+Detaches the mouse listener from the handle.
 
 ### Syntax:
 
@@ -132,7 +132,7 @@ Drag Method: detach {#Drag:detach}
 Drag Method: stop {#Drag:stop}
 ------------------------------
 
-**Stops (removes) all attached events from the Drag instance and executes the onComplete Event.**
+Stops (removes) all attached events from the Drag instance and executes the onComplete Event.
 
 ### Syntax:
 
@@ -156,14 +156,14 @@ Drag Method: stop {#Drag:stop}
 Native: Element {#Element}
 ==========================
 
-**Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].**
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
 Element Method: makeResizable {#Element:makeResizable}
 ------------------------------------------------------
 
-**Adds drag-to-resize behavior to an Element using supplied options.**
+Adds drag-to-resize behavior to an Element using supplied options.
 
 ### Syntax:
 
@@ -171,7 +171,7 @@ Element Method: makeResizable {#Element:makeResizable}
 
 ### Arguments:
 
-1. **options** - (*object*, optional) See [Drag][] for acceptable options.
+1. options - (*object*, optional) See [Drag][] for acceptable options.
 
 ### Returns:
 

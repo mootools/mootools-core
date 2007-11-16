@@ -11,8 +11,8 @@ MIT-style license.
 Class: Fx {#Fx}
 ===============
 
-**This Class will rarely be used on its own, but provides the foundation for all custom Fx Classes.**
-**All of the other Fx Classes inherit from this one.**
+This Class will rarely be used on its own, but provides the foundation for all custom Fx Classes.
+All of the other Fx Classes inherit from this one.
 
 ### Implements:
 
@@ -29,29 +29,29 @@ Fx Method: constructor {#Fx:constructor}
 
 ### Arguments:
 
-1. **options** - (*object*, optional) An object with options for the effect. See below.
+1. options - (*object*, optional) An object with options for the effect. See below.
 
 ### Options:
 
-* **fps**        - (*number*: defaults to 50) The frames per second for the transition.
-* **unit**       - (*string*: defaults to false) The unit, e.g. 'px', 'em', or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
-* **link**       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.
-	* **'ignore'** - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
-	* **'cancel'** - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
-	* **'chain'**  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
-* **duration**   - (*number*: defaults to 500) The duration of the effect in ms. Can also be one of:
-	* **'short'**  - 250ms
-	* **'normal'** - 500ms
-	* **'long'**   - 1000ms
-* **transition** - (*function*: defaults to [Fx.Transitions.Sine.easeInOut](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
+* fps        - (*number*: defaults to 50) The frames per second for the transition.
+* unit       - (*string*: defaults to false) The unit, e.g. 'px', 'em', or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
+* link       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.
+	* 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
+	* 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
+	* 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
+* duration   - (*number*: defaults to 500) The duration of the effect in ms. Can also be one of:
+	* 'short'  - 250ms
+	* 'normal' - 500ms
+	* 'long'   - 1000ms
+* transition - (*function*: defaults to [Fx.Transitions.Sine.easeInOut](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
 
   transition[:in][:out] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
 
 ### Events:
 
-* **onStart**    - (*function*) The function to execute when the effect begins.
-* **onCancel**   - (*function*) The function to execute when you manually stop the effect.
-* **onComplete** - (*function*) The function to execute after the effect has processed.
+* onStart    - (*function*) The function to execute when the effect begins.
+* onCancel   - (*function*) The function to execute when you manually stop the effect.
+* onComplete - (*function*) The function to execute after the effect has processed.
 
 ### Notes:
 
@@ -67,7 +67,7 @@ Fx Method: constructor {#Fx:constructor}
 Fx Method: start {#Fx:start}
 ----------------------------
 
-**The start method is used to begin a transition.  Fires the onStart event.**
+The start method is used to begin a transition.  Fires the onStart event.
 
 ### Syntax:
 
@@ -75,8 +75,8 @@ Fx Method: start {#Fx:start}
 
 ### Arguments:
 
-1. **from** - (*mixed*) The starting value for the effect. If only one argument is provided, this value will be used as the target value.
-2. **to**   - (*mixed*, optional) The target value for the effect.
+1. from - (*mixed*) The starting value for the effect. If only one argument is provided, this value will be used as the target value.
+2. to   - (*mixed*, optional) The target value for the effect.
 
 ### Returns:
 
@@ -96,7 +96,7 @@ Fx Method: start {#Fx:start}
 Fx Method: set {#Fx:set}
 ------------------------
 
-**The set method is fired on every step of a transition.  It can also be called manually to set a specific value to be immediately applied to the effect.**
+The set method is fired on every step of a transition.  It can also be called manually to set a specific value to be immediately applied to the effect.
 
 ### Syntax:
 
@@ -104,7 +104,7 @@ Fx Method: set {#Fx:set}
 
 ### Arguments:
 
-1. **value** - (*mixed*) The value to immediately apply to the transition.
+1. value - (*mixed*) The value to immediately apply to the transition.
 
 ### Returns:
 
@@ -119,7 +119,7 @@ Fx Method: set {#Fx:set}
 Fx Method: cancel {#Fx:cancel}
 ------------------------------
 
-**The cancel method is used to cancel a running transition.  Fires the onCancel event.**
+The cancel method is used to cancel a running transition.  Fires the onCancel event.
 
 ### Syntax:
 
@@ -134,7 +134,7 @@ Fx Method: cancel {#Fx:cancel}
 Fx Method: pause {#Fx:pause}
 ----------------------------
 
-**Temporarily pause a currently running effect.**
+Temporarily pause a currently running effect.
 
 ### Syntax:
 
@@ -154,7 +154,7 @@ Fx Method: pause {#Fx:pause}
 Fx Method: resume {#Fx:resume}
 ------------------------------
 
-**Resume a previously paused effect.**
+Resume a previously paused effect.
 
 ### Syntax:
 

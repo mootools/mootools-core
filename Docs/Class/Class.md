@@ -23,7 +23,7 @@ Class Method: constructor {#Class:constructor}
 
 ### Arguments:
 
-1. **properties** - (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
+1. properties - (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
 
 #### Property: Extends
 
@@ -107,8 +107,8 @@ Useful when implementing a default set of properties in multiple Classes.
 Class Method: implement {#Class:implement}
 ------------------------------------------
 
-**Implements the passed in properties into the base Class prototypes, altering the base Class.**
-**The same as creating a [new Class](#Class:constructor) with the Implements property, but handy when you need to modify existing classes.**
+Implements the passed in properties into the base Class prototypes, altering the base Class.
+The same as creating a [new Class](#Class:constructor) with the Implements property, but handy when you need to modify existing classes.
 
 ### Syntax:
 
@@ -116,7 +116,7 @@ Class Method: implement {#Class:implement}
 
 ### Arguments:
 
-1. **properties** - (*object*) The properties to add to the base Class.
+1. properties - (*object*) The properties to add to the base Class.
 
 ### Examples:
 

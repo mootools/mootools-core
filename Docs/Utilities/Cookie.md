@@ -20,18 +20,18 @@ A Cookie reader/creator.
 
 ### Hash: Cookie
 
-**Hash for creating, accessing, and removing cookies.**
+Hash for creating, accessing, and removing cookies.
 
 ### Properties:
 
-1. **options** - (*object*) An object to set the default behaviour of Cookie and its derivatives.
+1. options - (*object*) An object to set the default behaviour of Cookie and its derivatives.
 
 ###	Options: {#Cookie.options}
 
-* **domain**   - (*string*: defaults to false) The domain the Cookie belongs to.
-* **path**     - (*string*: defaults to false) The path the Cookie belongs to.
-* **duration** - (*number*: defaults to false) The duration of the Cookie before it expires, in days. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
-* **secure**   - (*boolean*: defaults to false) Stored cookie information can be accessed only from a secure environment.
+* domain   - (*string*: defaults to false) The domain the Cookie belongs to.
+* path     - (*string*: defaults to false) The path the Cookie belongs to.
+* duration - (*number*: defaults to false) The duration of the Cookie before it expires, in days. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
+* secure   - (*boolean*: defaults to false) Stored cookie information can be accessed only from a secure environment.
 
 ### Notes:
 
@@ -42,7 +42,7 @@ A Cookie reader/creator.
 Cookie Method: set {#Cookie:set}
 --------------------------------
 
-**Sets a cookie in the browser.**
+Sets a cookie in the browser.
 
 ###	Syntax:
 
@@ -50,9 +50,9 @@ Cookie Method: set {#Cookie:set}
 
 ###	Arguments:
 
-1. **key**     - (*string*) The key (or name) of the cookie.
-2. **value**   - (*string*) The value to set.  Cannot contain semicolons.
-3. **options** - (*mixed*, optional) See [Cookie][].
+1. key     - (*string*) The key (or name) of the cookie.
+2. value   - (*string*) The value to set.  Cannot contain semicolons.
+3. options - (*mixed*, optional) See [Cookie][].
 
 ###	Returns:
 
@@ -60,11 +60,11 @@ Cookie Method: set {#Cookie:set}
 
 ###	Examples:
 
-**Saves the Cookie for the Duration of the Session:**
+Saves the Cookie for the Duration of the Session:
 
 	var myCookie = Cookie.set('username', 'Harald');
 
-**Saves the Cookie for a Day:**
+Saves the Cookie for a Day:
 
 	var myCookie  = Cookie.set('username', 'JackBauer', {duration: 1});
 
@@ -73,7 +73,7 @@ Cookie Method: set {#Cookie:set}
 Cookie Method: get {#Cookie:get}
 --------------------------------
 
-**Gets the value of a Cookie.**
+Gets the value of a Cookie.
 
 ###	Syntax:
 
@@ -81,7 +81,7 @@ Cookie Method: get {#Cookie:get}
 
 ###	Arguments:
 
-1. **key** - (*string*) The name of the Cookie to retrieve.
+1. key - (*string*) The name of the Cookie to retrieve.
 
 ###	Returns:
 
@@ -96,7 +96,7 @@ Cookie Method: get {#Cookie:get}
 Cookie Method: remove {#Cookie:remove}
 --------------------------------------
 
-**Removes a cookie from the browser.**
+Removes a cookie from the browser.
 
 ###	Syntax:
 
@@ -104,16 +104,16 @@ Cookie Method: remove {#Cookie:remove}
 
 ###	Arguments:
 
-1. **cookie**  - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
-2. **options** - (*object*, optional) See [Cookie][].
+1. cookie  - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
+2. options - (*object*, optional) See [Cookie][].
 
 ###	Examples:
 
-**Remove a Cookie:**
+Remove a Cookie:
 
 	Cookie.remove('username'); //Bye-bye JackBauer! Seeya in 24 Hours.
 
-**Creating a Cookie and Removing it Right Away:**
+Creating a Cookie and Removing it Right Away:
 
 	//Cookie.set returns an object with all values need to remove the cookie.
 

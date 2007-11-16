@@ -9,10 +9,10 @@ MIT-style license.
 
 
 
-Class: Fx.Scroll {#Fx.Scroll}
+Class: Fx.Scroll {#Fx-Scroll}
 =============================
 
-**Scroll any element with an overflow, including the window element.**
+Scroll any element with an overflow, including the window element.
 
 ### Note:
 
@@ -24,7 +24,7 @@ Class: Fx.Scroll {#Fx.Scroll}
 
 
 
-Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
+Fx.Scroll Method: constructor {#Fx-Scroll:constructor}
 ------------------------------------------------------
 
 ### Syntax:
@@ -33,14 +33,14 @@ Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
 
 ### Arguments:
 
-1. **element** - (*mixed*) A string ID of the Element or an Element reference to scroll.
-2. **options** - (*object*, optional) All [Fx][] Options in addition to offset, overflown, and wheelStops.
+1. element - (*mixed*) A string ID of the Element or an Element reference to scroll.
+2. options - (*object*, optional) All [Fx][] Options in addition to offset, overflown, and wheelStops.
 
-**Options:**
+Options:
 
-1. **offset**     - (*object*: defaults to {'x': 0, 'y': 0}) An object with x/y properties for the distance to scrollTo the Element.
-2. **overflown**  - (*array*: defaults to []) An array of nested scrolling containers, see <Element.getPosition> for an explanation.
-3. **wheelStops** - (*boolean*: defaults to true) If false, the mouse wheel will not stop the transition from happening.
+1. offset     - (*object*: defaults to {'x': 0, 'y': 0}) An object with x/y properties for the distance to scrollTo the Element.
+2. overflown  - (*array*: defaults to []) An array of nested scrolling containers, see <Element.getPosition> for an explanation.
+3. wheelStops - (*boolean*: defaults to true) If false, the mouse wheel will not stop the transition from happening.
 
 ### Returns:
 
@@ -61,10 +61,10 @@ Fx.Scroll Method: constructor {#Fx.Scroll:constructor}
 - Fx.Scroll is useless for Elements that do not have scrollbars.
 
 
-Fx.Scroll Method: set {#Fx.Scroll:set}
+Fx.Scroll Method: set {#Fx-Scroll:set}
 --------------------------------------
 	
-**Scrolls the specified Element to the x/y coordinates immediately.**
+Scrolls the specified Element to the x/y coordinates immediately.
 
 ### Syntax:
 
@@ -72,8 +72,8 @@ Fx.Scroll Method: set {#Fx.Scroll:set}
 
 ### Arguments:
 
-1. **x** - (*integer*) The x coordinate to scroll the Element to.
-2. **y** - (*integer*) The y coordinate to scroll the Element to.
+1. x - (*integer*) The x coordinate to scroll the Element to.
+2. y - (*integer*) The y coordinate to scroll the Element to.
 
 ### Returns:
 
@@ -86,10 +86,10 @@ Fx.Scroll Method: set {#Fx.Scroll:set}
 
 
 
-Fx.Scroll Method: start {#Fx.Scroll:start}
+Fx.Scroll Method: start {#Fx-Scroll:start}
 ------------------------------------------
 
-**Scrolls the specified Element to the x/y coordinates.**
+Scrolls the specified Element to the x/y coordinates.
 
 ### Syntax:
 
@@ -97,8 +97,8 @@ Fx.Scroll Method: start {#Fx.Scroll:start}
 
 ### Arguments:
 
-1. **x** - (*integer*) The x coordinate to scroll the Element to.
-2. **y** - (*integer*) The y coordinate to scroll the Element to.
+1. x - (*integer*) The x coordinate to scroll the Element to.
+2. y - (*integer*) The y coordinate to scroll the Element to.
 
 ### Returns:
 
@@ -115,10 +115,10 @@ Fx.Scroll Method: start {#Fx.Scroll:start}
 
 
 
-Fx.Scroll Method: toTop {#Fx.Scroll:toTop}
+Fx.Scroll Method: toTop {#Fx-Scroll:toTop}
 ------------------------------------------
 
-**Scrolls the specified Element to its maximum top.**
+Scrolls the specified Element to its maximum top.
 
 ### Syntax:
 
@@ -141,10 +141,10 @@ Fx.Scroll Method: toTop {#Fx.Scroll:toTop}
 
 
 
-Fx.Scroll Method: toBottom {#Fx.Scroll:toBottom}
+Fx.Scroll Method: toBottom {#Fx-Scroll:toBottom}
 ------------------------------------------------
 
-**Scrolls the specified Element to its maximum bottom.**
+Scrolls the specified Element to its maximum bottom.
 
 ### Syntax:
 
@@ -163,10 +163,10 @@ Fx.Scroll Method: toBottom {#Fx.Scroll:toBottom}
 
 
 
-Fx.Scroll Method: toLeft {#Fx.Scroll:toLeft}
+Fx.Scroll Method: toLeft {#Fx-Scroll:toLeft}
 --------------------------------------------
 
-**Scrolls the specified Element to its maximum left.**
+Scrolls the specified Element to its maximum left.
 
 ### Syntax:
 
@@ -185,10 +185,10 @@ Fx.Scroll Method: toLeft {#Fx.Scroll:toLeft}
 
 
 
-Fx.Scroll Method: toRight {#Fx.Scroll:right}
+Fx.Scroll Method: toRight {#Fx-Scroll:right}
 --------------------------------------------
 
-**Scrolls the specified Element to its maximum right.**
+Scrolls the specified Element to its maximum right.
 
 ### Syntax:
 
@@ -210,10 +210,10 @@ Fx.Scroll Method: toRight {#Fx.Scroll:right}
 
 
 
-Fx.Scroll Method: toElement {#Fx.Scroll:toElement}
+Fx.Scroll Method: toElement {#Fx-Scroll:toElement}
 --------------------------------------------------
 
-**Scrolls the specified Element to the position the passed in Element is found.**
+Scrolls the specified Element to the position the passed in Element is found.
 
 ### Syntax:
 
@@ -221,7 +221,7 @@ Fx.Scroll Method: toElement {#Fx.Scroll:toElement}
 
 ### Arguments:
 
-1. **el** - (*mixed*) A string ID of the Element or an Element reference to scroll to.
+1. el - (*mixed*) A string ID of the Element or an Element reference to scroll to.
 
 ### Returns:
 
@@ -238,5 +238,5 @@ Fx.Scroll Method: toElement {#Fx.Scroll:toElement}
 
 
 [Fx]: /Fx/Fx
-[Fx.Scroll]: #Fx.Scroll
+[Fx.Scroll]: #Fx-Scroll
 [Element.getPosition]: /Element/#Element:getPosition
