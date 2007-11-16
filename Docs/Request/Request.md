@@ -190,15 +190,13 @@ Cancels the currently running request, if any.
 
 
 
-Native: Element {#Element}
-==========================
+Hash: Element.Properties {#Element-Properties}
+==============================================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+see [Element.Properties](/Element/Element/#Element-Properties)
 
-
-
-Element Property: send {#Element:property-send}
-----------------------------------------------
+Element Property: send {#Element-Properties:send}
+-------------------------------------------------
 
 ### Setter
 
@@ -243,6 +241,11 @@ Returns the previously set Request instance (or a new one with default options).
 	el.send();
 
 	el.get('send'); //the Request instance
+	
+Native: Element {#Element}
+==========================
+
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 Element Method: send {#Element:send}

@@ -46,19 +46,19 @@ Request Specifically made for receiving HTML.
 
 ### Examples:
 
-Simple GET Request:
+#### Simple GET Request:
 
 	var myHTMLRequest = new Request.HTML().get('myPage.html');
 
-POST Request with data as String:
+#### POST Request with data as String:
 
 	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post("user_id=25&save=true");
 
-Data from Object Passed via GET:
+#### Data from Object Passed via GET:
 
 	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25}); //loads url "load/?user_id=25"
 
-Data from Element via POST:
+#### Data from Element via POST:
 
 ##### HTML
 
@@ -75,24 +75,18 @@ Data from Element via POST:
 	//Needs to be in a submit event or the form handler.
 	var myHTMLRequest = new Request.HTML({url:'save/'}).post($('user-form'));
 
-### Note:
-
-* If the response's content-type is JavaScript or EcmaScript, everything is evaluated.
-
 ### See Also:
 
 [Request][]
 
 
+Hash: Element.Properties {#Element-Properties}
+==============================================
 
-Native: Element {#Element}
-==========================
+see [Element.Properties](/Element/Element/#Element-Properties)
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
-
-
-Element Property: load {#Element:property-load}
------------------------------------------------
+Element Property: load {#Element-Properties:load}
+-------------------------------------------------
 
 ### Setter
 
@@ -116,19 +110,17 @@ Sets a default Request.HTML instance for an Element.
 	el.load('some/request/uri');
 
 
-
 ### Getter
 
 Returns either the previously set Request.HTML instance or a new one with default options.
 
 #### Syntax:
 
-	el.get('load', url);
+	el.get('load', options);
 
 #### Arguments:
 
-1. url - (*string*) The URL to associate the Request.HTML instance with.
-2. options - (*objectl, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set. 
+1. options - (*object, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
 
 #### Returns:
 
@@ -138,9 +130,14 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 	el.set('load', {method: 'get'});
 	el.load('test.html');
-	el.get('load'); //Returns the Request.HTML instance.
+	el.get('load').post('http://localhost/script'); //The getter returns the Request.HTML instance, you can use the class methods.
 
 
+
+Native: Element {#Element}
+==========================
+
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 Element Method: load {#Element:load}
 ------------------------------------
@@ -149,12 +146,11 @@ Updates the content of the Element with a Request.HTML GET request.
 
 ### Syntax:
 
-	myElement.load(url[, options]);
+	myElement.load(url);
 
 ### Arguments:
 
 1. url     - (string) The URL pointing to the server-side document.
-2. options - (object, optional) Options object for the <Request.HTML> request.
 
 ### Returns:
 
