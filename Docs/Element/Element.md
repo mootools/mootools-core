@@ -1297,32 +1297,57 @@ Removes numerous attributes from the Element.
 	<a></a>
 
 
+Hash: Element.Properties {#Element-Properties}
+==============================================
 
-Element Setters, Getters and Erasers {#Setters-Getters}
-=======================================================
+These Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
 
-These Hashes have function that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
+### Example of a custom Element Property
+
+	Element.Properties.checked = {
+		
+		get: function(){
+			return this.checked;
+		}
+		
+		set: function(value){
+			this.checked = !!value;
+			this.setAttribute('checked', !!value);
+		}
+		
+	};
+	
+	//usage
+	
+	$(element).get('checked'); //gets the checked property.
+	
+	$(element).set('checked', true); //sets the checked property to true, along with the attribute.
+
+### Note
+
+Automatically returns the element for setters.
 
 
-Element Setter: html {#Element:html-setter}
---------------------------------------------
+Element Property: html {#Element-Properties:html}
+-------------------------------------------------
 
 Sets the innerHTML of the Element.
 
+### Setter:
 
-### Syntax:
+#### Syntax:
 
 	myElement.set('html', [htmlString[, htmlString2[, htmlString3[, ..]]]);
 
-### Arguments:
+#### Arguments:
 
 1. Any number of string parameters with HTML.
 
-### Returns:
+#### Returns:
 
 * (*element*) This Element.
 
-### Examples:
+#### Examples:
 
 ##### HTML
 
@@ -1339,27 +1364,40 @@ Sets the innerHTML of the Element.
 		<p></p>
 	</div>
 
+### Getter:	
+	
+Returns the inner HTML of the Element.
+
+#### Syntax:
+
+	myElement.get('html');
+
+#### Returns:
+
+* (*text*) This Element's innerHTML.
 
 
-Element Setter: text {#Element:text-setter}
---------------------------------------------
+
+Element Property: text {#Element-Properties:text}
+-------------------------------------------------
+
+### Setter:
 
 Sets the inner text of the Element.
 
-
-### Syntax:
+#### Syntax:
 
 	myElement.set('text', text);
 
-### Arguments:
+#### Arguments:
 
 1. text - (*string*) The new text content for the Element.
 
-### Returns:
+#### Returns:
 
 * (*element*) This Element.
 
-### Examples:
+#### Examples:
 
 ##### HTML
 
@@ -1372,24 +1410,48 @@ Sets the inner text of the Element.
 ##### Resulting HTML
 
 	<div id="myElement">some text</div>
+	
+### Getter:
+
+Gets the inner text of the Element.
+
+#### Syntax:
+
+	var myText = myElement.get('text');
+
+#### Returns:
+
+* (*string*) The text of the Element.
+
+#### Examples:
+
+##### HTML
+
+	<div id="myElement">my text</div>
+
+##### JavaScript
+
+	var myText = $('myElement').get('text'); //myText = 'my text';
 
 
 
-Element Getter: value {#Element:value-getter}
-----------------------------------------------
+Element Property: value {#Element-Properties:value}
+---------------------------------------------------
+
+### Getter:
 
 Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
 
 
-### Syntax:
+#### Syntax:
 
 	var value = myElement.get('value');
 
-### Returns:
+#### Returns:
 
 * (*mixed*) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
 
-### Examples:
+#### Examples:
 
 ##### HTML
 
@@ -1408,21 +1470,22 @@ Returns the value of the Element, if its tag is textarea, select or input. getVa
 
 
 
-Element Getter: tag {#Element:tag-getter}
-------------------------------------------
+Element Property: tag {#Element-Properties:tag}
+-----------------------------------------------
+
+### Getter:
 
 Returns the tagName of the Element in lower case.
 
-
-### Syntax:
+#### Syntax:
 
 	var myTag = myElement.get('tag');
 
-### Returns:
+#### Returns:
 
 * (*string*) The tag name in lower case.
 
-### Examples:
+#### Examples:
 
 ##### HTML
 
@@ -1431,47 +1494,6 @@ Returns the tagName of the Element in lower case.
 ##### Javascript
 
 	var myTag = $('myImage').get('tag'); // myTag = 'img';
-
-
-
-Element Getter: html {#Element:html-getter}
--------------------------------------------
-
-Returns the innerHTML of the Element.
-
-
-### Syntax:
-
-	myElement.get('html');
-
-### Returns:
-
-* (*element*) This Element.
-
-
-
-Element Getter: text {#Element:text-getter}
---------------------------------------------
-
-Gets the inner text of the Element.
-
-### Syntax:
-
-	var myText = myElement.get('text');
-
-### Returns:
-
-* (*string*) The text of the Element.
-
-### Examples:
-
-##### HTML
-
-	<div id="myElement">my text</div>
-
-##### JavaScript
-
-	var myText = $('myElement').get('text'); //myText = 'my text';
 
 
 
@@ -1630,7 +1652,7 @@ If [Selectors][] is included, this method will be able to filter by any selector
 [Element:removeProperty]: #Element:removeProperty
 [Element:getElement]: #Element:getElement
 [Element:getElements]: #Element:getElements
-[Element.Properties]: #Element.Properties
+[Element.Properties]: #Element-Properties
 [Element:getPrevious]: #Element:getPrevious
 
 [Element:addEvents]: /Element/Element.Event#Element:addEvents
