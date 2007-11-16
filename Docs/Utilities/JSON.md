@@ -1,16 +1,29 @@
+Script: JSON.js
+---------------
+
+Contains the JSON class
+
+### License:
+
+MIT-style license.
+
+
+
 Class: JSON {#JSON}
 ===================
 
-JSON parser and encoder.
+**JSON parser and encoder.**
 
 ### See Also:
 
-<http://www.json.org/>
+- [JSON][]
+
+
 
 JSON Method: encode {#JSON:encode}
 ----------------------------------
 
-Converts an object or array to a JSON string.
+**Converts an object or array to a JSON string.**
 
 ###	Syntax:
 
@@ -18,20 +31,22 @@ Converts an object or array to a JSON string.
 
 ###	Arguments:
 
-1. obj - (object) The object to convert to string.
+1. **obj** - (*object*) The object to convert to string.
 
 ###	Returns:
 
-* (string) A JSON string.
+* (*string*) A JSON string.
 
-###	Example:
+###	Examples:
 
 	var fruitsJSON = JSON.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
+
+
 
 JSON Method: decode {#JSON:decode}
 ----------------------------------
 
-Converts a JSON string into an JavaScript object.
+**Converts a JSON string into an JavaScript object.**
 
 ###	Syntax:
 
@@ -39,17 +54,22 @@ Converts a JSON string into an JavaScript object.
 
 ###	Arguments:
 
-1. string - (string) The string to evaluate.
-2. secure - (boolean, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
+1. **string** - (*string*) The string to evaluate.
+2. **secure** - (*boolean*, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
 
 ###	Returns:
 
-*(object) The object represented by the JSON string.
+* (*object*) The object represented by the JSON string.
 
-###	Example:
+###	Examples:
 
 	var myObject = JSON.decode('{"apple":"red","lemon":"yellow"}'); //returns: {apple: 'red', lemon: 'yellow'}
 
 ###	Credits:
 
-JSON test regexp is by Douglas Crockford <http://crockford.org/>.
+- JSON test regexp is by [Douglas Crockford][].
+
+
+
+[JSON]: http://www.json.org/
+[Douglas Crockford]: http://crockford.org/

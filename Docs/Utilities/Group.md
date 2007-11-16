@@ -1,10 +1,18 @@
-[Element.addEvent]: /Element/Element.Event
+Group.js
+--------
+
+Contains the Group class.
+
+### License:
+
+MIT-style license.
+
 
 
 Class: Group {#Group}
 =====================
 
-For Grouping Classes or Elements Events. The Event added to the Group will fire when all of the events of the items of the group are fired.
+**For Grouping Classes or Elements Events. The Event added to the Group will fire when all of the events of the items of the group are fired.**
 
 ### Syntax:
 
@@ -16,9 +24,9 @@ Any number of Class instances, or arrays containing class instances.
 
 ### Returns:
 
-* (object) A new Group instance.
+* (*object*) A new Group instance.
 
-### Example:
+### Examples:
 
 	var xhr1 = new Ajax('data.js', {evalScript: true});
 	var xhr2 = new Ajax('abstraction.js', {evalScript: true});
@@ -33,10 +41,12 @@ Any number of Class instances, or arrays containing class instances.
 	xhr2.request();
 	xhr3.request();
 
+
+
 Group Method: addEvent {#Group:addEvent}
 ----------------------------------------
 
-Adds an event to the stack of events of the Class instances.
+**Adds an event to the stack of events of the Class instances.**
 
 ###	Syntax:
 
@@ -44,14 +54,14 @@ Adds an event to the stack of events of the Class instances.
 
 ###	Arguments:
 
-1. type - (string) The event name (e.g. 'onComplete') to add.
-2. fn   - (function) The callback function to execute when all instances fired this event.
+1. **type** - (*string*) The event name (e.g. 'onComplete') to add.
+2. **fn**   - (*function*) The callback function to execute when all instances fired this event.
 
 ###	Returns:
 
-* (object) This Group instance.
+* (*object*) This Group instance.
 
-###	Example:
+###	Examples:
 
 	var myElements = $('myForm').getElements('input, textarea, select');
 	myElements.addEvent('click', function(){
@@ -65,4 +75,8 @@ Adds an event to the stack of events of the Class instances.
 
 ###	See Also:
 
-[Element.addEvent](#Element:addEvent)
+- [Element.addEvent][]
+
+
+
+[Element.addEvent]: /Element/Element.Event#addEvent
