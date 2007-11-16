@@ -1,18 +1,28 @@
+Selectors.Children.js
+---------------------
+
+Contains the custom :children() pseudo selecor.
+
+### License:
+
+MIT-style license.
+
+
+
 Selectors.Children
 ==================
 
-A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.
+**A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.**
 
 ### Usage:
 
-Index Accessor
---------------
+## Index Accessor
 
 	':children(n)'
 
 ### Variables:
 
-* n - (number) An index number to access from the Element's children. The index, n, can be negative to access from the end of the children list.
+* **n** - (*number*) An index number to access from the Element's children. The index, n, can be negative to access from the end of the children list.
 
 ###	Examples:
 
@@ -29,15 +39,14 @@ Index Accessor
 	$$('#myID:children(-3)')[0].innerHTML //returns 3
 
 
-Range
------
+## Range
 
 	':children(from:to)'
 
 ### Variables:
 
-* from - (number) A starting index value. See the Index Accessor usage.
-* to   - (number) A ending index value.
+* **from** - (*number*) A starting index value. See the Index Accessor usage.
+* **to**   - (*number*) A ending index value.
 
 ###	Examples:
 
@@ -55,15 +64,14 @@ Range
 
 	$$('#myID:children(0:-3)').map(function(){ return this.innerHTML }); //returns [0,1,2,3]
 
-n-Right-of Operation
---------------------
+## n-Right-of Operation
 
 	':children(start+n)'
 
 ### Variables:
 
-* start - (number) A starting index value. See the Index Accessor usage.
-* n     - (number) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+* **start** - (*number*) A starting index value. See the Index Accessor usage.
+* **n**     - (*number*) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
 
 ### Examples:
 
@@ -82,15 +90,14 @@ n-Right-of Operation
 	$$('#myID:children(-1+3))').map(function(){ return this.innerHTML }); //returns [0,1,2,5]
 
 
-n-Left-of Operation
--------------------
+## n-Left-of Operation
 
 	':children(start-n)'
 
 ### Variables:
 
-* start - (number) A starting index value. See the Index Accessor usage.
-* n     - (number) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
+* **start** - (*number*) A starting index value. See the Index Accessor usage.
+* **n**     - (*number*) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
 
 ### Examples:
 
@@ -108,7 +115,7 @@ n-Left-of Operation
 
 	$$('#myID:children(-1-3))').map(function(){ return this.innerHTML }); //returns [2,3,4,5]
 
-### Note:
+### Notes:
 
 - The n-right-of and the n-left-of usaged will "wrap" until the 'n' number of Elements have been matched.
 - All "range" results will be ordered from least to greatest (relative to their indexes).`

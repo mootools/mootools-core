@@ -1,14 +1,22 @@
-[Hash]: /Native/#Hash
+Hash.Cookie.js
+--------------
+
+Contains the Hash.Cookie class.
+
+### License:
+
+MIT-style license.
+
 
 
 Class: Hash.Cookie {#Hash.Cookie}
 =================================
 
-Stores and loads a Hash as a Cookie using JSON format.
+**Stores and loads a Hash as a Cookie using JSON format.**
 
 ### Extends:
 
-[Hash][]
+- [Hash][]
 
 ### Syntax:
 
@@ -16,18 +24,18 @@ Stores and loads a Hash as a Cookie using JSON format.
 
 ### Arguments:
 
-1. name    - (string) The key (name) for the cookie
-2. options - (object) All of <Cookie> options in addition an autoSave option.
+1. **name**    - (*string*) The key (name) for the cookie
+2. **options** - (*object*) All of <Cookie> options in addition an autoSave option.
 
-###	Options:
+#### Options:
 
-1. autoSave - (boolean: defaults to true) An option to save the cookie at every operation.
+1. **autoSave** - (*boolean*: defaults to true) An option to save the cookie at every operation.
 
 ### Returns:
 
-* (object) A new Hash.Cookie instance.
+* (*object*) A new Hash.Cookie instance.
 
-### Example:
+### Examples:
 
 	var fruits = new Hash.Cookie('myCookieName', {duration: 3600});
 	fruits.extend({
@@ -44,7 +52,7 @@ Stores and loads a Hash as a Cookie using JSON format.
 
 	fruits.erase(); // delete cookie
 
-### Note:
+### Notes:
 
 - All Hash methods are available in your Hash.Cookie instance. if autoSave options is set, every method call will result in your Cookie being saved.
 - Cookies have a limit of 4kb (4096 bytes). Therefore, be careful with your Hash size.
@@ -54,12 +62,14 @@ Stores and loads a Hash as a Cookie using JSON format.
 
 ### See Also:
 
-[Hash][]
+- [Hash][]
+
+
 
 Hash.Cookie Method: save {#Hash.Cookie:save}
 --------------------------------------------
 
-Saves the Hash to the cookie. If the hash is empty, removes the cookie.
+**Saves the Hash to the cookie. If the hash is empty, removes the cookie.**
 
 ###	Syntax:
 
@@ -67,9 +77,9 @@ Saves the Hash to the cookie. If the hash is empty, removes the cookie.
 
 ###	Returns:
 
-* (boolean) Returns false when the JSON string cookie is too long (4kb), otherwise true.
+* (*boolean*) Returns false when the JSON string cookie is too long (4kb), otherwise true.
 
-###	Example:
+###	Examples:
 
 	var login = new Hash.Cookie('userstatus', {autoSave: false});
 
@@ -82,10 +92,11 @@ Saves the Hash to the cookie. If the hash is empty, removes the cookie.
 	login.save(); // finally save the Hash
 
 
+
 Hash.Cookie Method: load {#Hash.Cookie:load}
 --------------------------------------------
 
-Loads the cookie and assigns it to the Hash.
+**Loads the cookie and assigns it to the Hash.**
 
 ###	Syntax:
 
@@ -93,9 +104,9 @@ Loads the cookie and assigns it to the Hash.
 
 ###	Returns:
 
-* (object) This Hash.Cookie instance.
+* (*object*) This Hash.Cookie instance.
 
-###	Example:
+###	Examples:
 
 	var myHashCookie = new Hash.Cookie('myCookie');
 
@@ -104,6 +115,10 @@ Loads the cookie and assigns it to the Hash.
 		if(!myHashCookie.length) alert('Cookie Monster must of eaten it!');
 	}).periodical(5000);
 
-###	Note:
+###	Notes:
 
-Useful when polling.
+- Useful when polling.
+
+
+
+[Hash]: /Native/#Hash

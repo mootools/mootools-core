@@ -1,11 +1,22 @@
+Slider.js
+---------
+
+Contains the Slider class.
+
+### License:
+
+MIT-style license.
+
+
+
 Class: Slider {#Slider}
 =======================
 
-Creates a slider with two elements: a knob and a container.
+**Creates a slider with two elements: a knob and a container.**
 
-### Note:
+### Remark:
 
-The Slider requires an XHTML doctype.
+- The Slider requires an XHTML doctype.
 
 ### Syntax:
 
@@ -13,20 +24,22 @@ The Slider requires an XHTML doctype.
 
 ### Arguments:
 
-1. element - (element) The knob element for the slider.
-2. knob    - (element) The handle element for the slider.
-3. options - (object) An optional object for customizing the Slider.
+1. **element** - (*element*) The knob element for the slider.
+2. **knob**    - (*element*) The handle element for the slider.
+3. **options** - (*object*) An optional object for customizing the Slider.
 
-###	Options:
+#### Options:
 
-1. steps  - (number: defaults to 100) The number of steps the Slider should move/tick.
-2. mode   - (string: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
-3. offset - (number: defaults to: 0) Relative offset for knob position at start.
+1. **steps**  - (*number*: defaults to 100) The number of steps the Slider should move/tick.
+2. **mode**   - (*string*: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
+3. **offset** - (*number*: defaults to: 0) Relative offset for knob position at start.
+
+
 
 Slider Event: onChange {#Slider:onChange}
 -----------------------------------------
 
-* (function) Fires when the Slider's value changes.
+* (*function*) Fires when the Slider's value changes.
 
 ### Signature:
 
@@ -34,12 +47,14 @@ Slider Event: onChange {#Slider:onChange}
 
 ### Arguments:
 
-1. step - (number) The current step that the Slider is on.
+1. **step** - (*number*) The current step that the Slider is on.
+
+
 
 Slider Event: onComplete {#Slider:onComplete}
 ---------------------------------------------
 
-* (function) Fire when you're done dragging.
+* (*function*) Fire when you're done dragging.
 
 ### Signature:
 
@@ -47,12 +62,14 @@ Slider Event: onComplete {#Slider:onComplete}
 
 ### Arguments:
 
-1. step - (string) The current step that the Slider is on as a string.
+1. **step** - (*string*) The current step that the Slider is on as a string.
+
+
 
 Slider Event: onTick {#Slider:onTick}
 -------------------------------------
 
-* (function) Fires when the user drags the knob. This Event can be overriden to alter the onTick behavior.
+* (*function*) Fires when the user drags the knob. This Event can be overriden to alter the onTick behavior.
 
 ### Signature:
 
@@ -60,24 +77,24 @@ Slider Event: onTick {#Slider:onTick}
 
 ### Arguments:
 
-1. pos - (number) The current position that slider moved to.
+1. **pos** - (*number*) The current position that slider moved to.
 
-### Note:
+### Notes:
 
-Slider originally uses the onTick event to set the style of the knob to a new position.
+- Slider originally uses the onTick event to set the style of the knob to a new position.
 
 ### Properties:
 
-1. element - (element) The knob element for the slider.
-2. knob    - (element) The handle element for the slider.
-3. step    - (integer) The current location of the knob.
-4. drag    - (object) An instance of <Drag> used for the knob.
+1. **element** - (*element*) The knob element for the slider.
+2. **knob**    - (*element*) The handle element for the slider.
+3. **step**    - (*integer*) The current location of the knob.
+4. **drag**    - (*object*) An instance of <Drag> used for the knob.
 
 ### Returns:
 
-* (object) A new Slider instance.
+* (*object*) A new Slider instance.
 
-### Example:
+### Examples:
 
 	var mySlider = new Slider('myElement', 'myKnob', {
 		onStart: function(){
@@ -92,10 +109,12 @@ Slider originally uses the onTick event to set the style of the knob to a new po
 		}
 	});
 
+
+
 Slider Method: set {#Slider:set}
 --------------------------------
 
-The slider will move to the passed position.
+**The slider will move to the passed position.**
 
 ###	Syntax:
 
@@ -103,13 +122,13 @@ The slider will move to the passed position.
 
 ###	Arguments:
 
-1. step - (number) A number to position the Slider to.
+1. **step** - (*number*) A number to position the Slider to.
 
 ###	Returns:
 
-*(object) This Slider instance.
+* (*object*) This Slider instance.
 
-### Example:
+### Examples:
 
 	var mySlider = new Slider('myElement', 'myKnob');
 	mySlider.set(0);
@@ -119,6 +138,6 @@ The slider will move to the passed position.
 			this.set(this.step++);
 	}).periodical(1000, mySlider);
 
-###	Note:
+###	Notes:
 
-Step will automatically be limited between 0 and the optional steps value.
+- Step will automatically be limited between 0 and the optional steps value.

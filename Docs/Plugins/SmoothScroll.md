@@ -1,18 +1,26 @@
-[Fx.Scroll]: /Fx/Fx.Scroll
+SmoothScroll.js
+---------------
+
+Contains the SmoothScroll class.
+
+### License:
+
+MIT-style license.
+
 
 
 Class: SmoothScroll {#SmoothScroll}
 ===================================
 
-Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
+**Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.**
 
-### Note:
+### Remark:
 
-SmoothScroll requires an XHTML doctype.
+- SmoothScroll requires an XHTML doctype.
 
 ### Extends:
 
-[Fx.Scroll](/Fx/Fx.Scroll)
+[Fx.Scroll][]
 
 ### Syntax:
 
@@ -20,18 +28,18 @@ SmoothScroll requires an XHTML doctype.
 
 ### Arguments:
 
-1. options - (object, optional) In addition to all the <Fx.Scroll> options, SmoothScroll has links option incase you had a predefined links collection.
-2. win     - (object, optional) The context of the SmoothScroll.
+1. **options** - (*object*, optional) In addition to all the <Fx.Scroll> options, SmoothScroll has links option incase you had a predefined links collection.
+2. **win**     - (*object*, optional) The context of the SmoothScroll.
 
-###	Options:
+#### Options:
 
-* links - (mixed) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
+* **links** - (*mixed*) A collection of Elements or a string <Selector> of Elements that the SmoothScroll can use.
 
 ### Returns:
 
-* (object) A new SmoothScroll instance.
+* (*object*) A new SmoothScroll instance.
 
-### Example:
+### Examples:
 
 	var mySmoothScroll = new SmoothScroll({
 		links: '.smoothAnchors',
@@ -40,4 +48,8 @@ SmoothScroll requires an XHTML doctype.
 
 ### See Also:
 
-[Fx.Scroll](/Fx/Fx.Scroll)
+- [Fx.Scroll][]
+
+
+
+[Fx.Scroll]: /Fx/Fx.Scroll

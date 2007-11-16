@@ -1,19 +1,29 @@
-[Elements]: (/Element/#Element:Elements)
+Assets.js
+---------
+
+Contains the Assets class.
+
+### License:
+
+MIT-style license.
+
 
 
 Class: Assets {#Assets}
 =======================
 
-Contains the <Asset> class, which provides methods to dynamically load JavaScript, CSS, and image files into the document.
+**Provides methods to dynamically load JavaScript, CSS, and image files into the document.**
 
 ### Hash: Asset
 
-Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.
+**Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.**
+
+
 
 Assets Method: javascript {#Assets:javascript}
 ----------------------------------------------
 
-Injects a script tag into the head section of the document, pointing to the src specified.
+**Injects a script tag into the head section of the document, pointing to the src specified.**
 
 ###	Syntax:
 
@@ -21,21 +31,23 @@ Injects a script tag into the head section of the document, pointing to the src 
 
 ###	Arguments:
 
-1. source     - (string) The location of the JavaScript file to load.
-2. properties - (object, optional) Additional attributes to be included into the script Element.
+1. **source**     - (*string*) The location of the JavaScript file to load.
+2. **properties** - (*object*, optional) Additional attributes to be included into the script Element.
 
 ###	Returns:
 
-* (element) A new script Element.
+* (*element*) A new script Element.
 
-###	Example:
+###	Examples:
 
 	var myScript = new Asset.javascript('/scripts/myScript.js', {id: 'myScript'});
+
+
 
 Assets Method: css {#Assets:css}
 --------------------------------
 
-Injects a css file in the page.
+**Injects a css file in the page.**
 
 ###	Syntax:
 
@@ -43,21 +55,23 @@ Injects a css file in the page.
 
 ###	Arguments:
 
-1. source     - (string) The path of the CSS file.
-2. properties - (object) Some additional attributes you might want to add to the link Element.
+1. **source**     - (*string*) The path of the CSS file.
+2. **properties** - (*object*) Some additional attributes you might want to add to the link Element.
 
 ###	Returns:
 
-* (element) A new link Element.
+* (*element*) A new link Element.
 
-###	Example:
+###	Examples:
 
 	var myCSS = new Asset.css('/css/myStyle.css', {id: 'myStyle', title: 'myStyle'});
+
+
 
 Assets Method: image {#Assets:image}
 ------------------------------------
 
-Preloads an image and returns the img element.
+**Preloads an image and returns the img element.**
 
 ###	Syntax:
 
@@ -65,26 +79,28 @@ Preloads an image and returns the img element.
 
 ###	Arguments:
 
-1. source     - (string) The path of the image file.
-2. properties - (object) Some additional attributes you might want to add to the img Element including the onload/onerror/onabout events.
+1. **source**     - (*string*) The path of the image file.
+2. **properties** - (*object*) Some additional attributes you might want to add to the img Element including the onload/onerror/onabout events.
 
 ###	Returns:
 
-* (element) A new HTML img Element.
+* (*element*) A new HTML img Element.
 
-###	Example:
+###	Examples:
 
 	var myImage = new Asset.image('/images/myImage.png', {id: 'myImage', title: 'myImage', onload: myFunction});
 
 ###	Notes:
 
 - Does not inject the image into the page.
-- DO NOT use addEvent for load/error/abort on the returned element, give them as onload/onerror/onabort in the properties argument.
+- WARNING: DO NOT use addEvent for load/error/abort on the returned element, give them as onload/onerror/onabort in the properties argument.
+
+
 
 Assets Method: images {#Assets:images}
 --------------------------------------
 
-Preloads an array of images (as strings) and returns an array of img elements. does not inject them to the page.
+**Preloads an array of images (as strings) and returns an array of img elements. does not inject them to the page.**
 
 ###	Syntax:
 
@@ -92,14 +108,14 @@ Preloads an array of images (as strings) and returns an array of img elements. d
 
 ###	Arguments:
 
-1. sources - (mixed) An array or a string, of the paths of the image files.
-2. options - (object, optional) See below.
+1. **sources** - (*mixed*) An array or a string, of the paths of the image files.
+2. **options** - (*object*, optional) See below.
 
-### Options:
+## Options:
 
 ### onComplete
 
-(function) Executes when all image files are loaded.
+* (*function*) Executes when all image files are loaded.
 
 #### Signature:
 
@@ -107,7 +123,7 @@ Preloads an array of images (as strings) and returns an array of img elements. d
 
 ### onProgress
 
-(function) Executes when one image file is loaded.
+* (*function*) Executes when one image file is loaded.
 
 #### Signature:
 
@@ -115,17 +131,21 @@ Preloads an array of images (as strings) and returns an array of img elements. d
 
 #### Arguments:
 
-1. counter - (number) The number of loaded images.
-2. index   - (number) The index of the loaded image.
+1. **counter** - (*number*) The number of loaded images.
+2. **index**   - (*number*) The index of the loaded image.
 
 #### Returns:
 
-* (array) An [Elements](#Elements) collection.
+* (*array*) An [Elements][] collection.
 
-####	Example:
+#### Examples:
 
 	var myImages = new Asset.images(['/images/myImage.png', '/images/myImage2.gif'], {
 		onComplete: function(){
 			alert('All images loaded!');
 		}
 	});
+
+
+
+[Elements]: /Element/#Element:Elements
