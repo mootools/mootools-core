@@ -1,14 +1,3 @@
-Fx.Tween.js
------------
-
-Contains [Fx.Tween][], and the Element shortcuts tween, fade, and highlight.
-	
-### License:
-
-MIT-style license.
-
-
-
 Class: Fx.Tween {#Fx-Tween}
 ===========================
 

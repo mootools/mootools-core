@@ -1,19 +1,7 @@
-Element.js
-----------
-
-One of the most important items of MooTools, contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
-
-### License:
-
-MIT-style license.
-
-
-
-Window Methods {#Section:Window}
-================================
+Native: Window {#Window}
+========================
 
 The following functions are treated as Window methods.
-
 
 
 Function: $ {#dollar}

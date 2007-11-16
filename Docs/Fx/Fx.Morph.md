@@ -1,13 +1,3 @@
-Fx.Morph.js
------------
-
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Fx.Morph {#Fx-Morph}
 ===========================
 
@@ -143,7 +133,7 @@ Element Property: morph {#Element:property-morph}
 
 Sets / gets a default Fx.Morph instance for an element
 
-### Set
+### Setter
 
 #### Syntax:
 
@@ -162,7 +152,7 @@ Sets / gets a default Fx.Morph instance for an element
 	el.set('morph', {duration: 'long', transition: 'bounce:out'});
 	el.morph({height: 100, width: 100});
 
-### Get
+### Getter
 
 #### Syntax:
 

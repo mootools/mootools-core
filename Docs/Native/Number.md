@@ -1,14 +1,3 @@
-Number.js
----------
-
-Contains the Number prototypes.
-
-### License:
-
-MIT-style license.
-
-
-
 Native: Number {#Number}
 ========================
 

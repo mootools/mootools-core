@@ -1,13 +1,3 @@
-Fx.js
------
-
-Contains [Fx][], the fundamental base of all MooTools Effects.
-
-### License:
-
-MIT-style license.
-
-
 Class: Fx {#Fx}
 ===============
 

@@ -1,14 +1,3 @@
-String.js
----------
-
-Contains String prototypes
-
-### License:
-
-MIT-style license.
-
-
-
 Native: String {#String}
 ========================
 

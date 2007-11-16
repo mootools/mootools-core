@@ -1,14 +1,3 @@
-Function.js
------------
-
-Contains Function prototypes and utility functions.
-
-### License:
-
-MIT-style license.
-
-
-
 Native: Function {#Function}
 ============================
 

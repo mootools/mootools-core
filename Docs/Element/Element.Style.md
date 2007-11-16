@@ -1,14 +1,3 @@
-Element.Style.js
-----------------
-
-Contains useful Element methods to get/set styles in a fashionable way.
-
-### License:
-
-MIT-style license.
-
-
-
 Native: Element {#Element}
 ==========================
 

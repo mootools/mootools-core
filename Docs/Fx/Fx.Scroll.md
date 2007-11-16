@@ -1,14 +1,3 @@
-Fx.Scroll.js
-------------
-
-Contains [Fx.Scroll][]
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Fx.Scroll {#Fx-Scroll}
 =============================
 

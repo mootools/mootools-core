@@ -1,14 +1,3 @@
-Element.Event.js
-----------------
-
-Contains Element methods to deal with Element events, and custom Events.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Event {#Event}
 =====================
 

@@ -1,17 +1,3 @@
-Fx.Transitions.js
------------------
-
-Effects transitions, to be used with all the effects.
-
-### License:
-
-MIT-style license.
-
-### Credits:
-
-- Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
-
-
 Class: Fx {#Fx}
 ===============
 

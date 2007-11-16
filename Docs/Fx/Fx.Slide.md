@@ -1,22 +1,11 @@
-Fx.Slide.js
------------
-
-Contains [Fx.Slide][]
-
-### License:
-
-MIT-style license.
-
-### Note:
-
-- Fx.Slide requires an XHTML doctype.
-
-
-
 Class: Fx.Slide {#Fx-Slide}
 ===========================
 
 The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
+
+### Remark:
+
+Drag.Move requires an XHTML doctype.
 
 ### Extends:
 

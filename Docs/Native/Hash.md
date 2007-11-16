@@ -1,14 +1,3 @@
-Hash.js
------------
-
-Contains the Hash methods.
-
-### License:
-
-MIT-style license.
-
-
-
 Native: Hash {#Hash}
 ====================
 

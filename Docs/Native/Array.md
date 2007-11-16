@@ -1,14 +1,3 @@
-Array.js
---------
-
-Contains Array prototypes.
-
-### License:
-
-MIT-style license.
-
-
-
 Native: Array {#Array}
 ======================
 
