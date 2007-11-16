@@ -289,9 +289,9 @@ Runs the Function with specified arguments and binding. Kinda like .apply but re
 
 
 
-[MDC Function]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function
 [options]: #Function:create:options
-[Element:addEvent]: /Element/Element#Element:addEvent
-[$clear]: /Core/Core#clear
+[Element:addEvent]: /Element/Element.Event/#Element:addEvent
+[$clear]: /Core/Core/#clear
+[MDC Function]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function
 [MDC setInterval]: http://developer.mozilla.org/en/docs/DOM:window.setInterval
 [MDC setTimeout]: http://developer.mozilla.org/en/docs/DOM:window.setTimeout

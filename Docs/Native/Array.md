@@ -464,11 +464,41 @@ Flattens a multidimensional array into a single array.
 ### Examples:
 
 	var myArray = [1,2,3,[4,5, [6,7]], [[[8]]]];
-	varnewArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]
+	var newArray = myArray.flatten(); //newArray is [1,2,3,4,5,6,7,8]
 
 
 
-[Function:bind]: /Native/#Function:bind
+Array Method: rgbToHex {#Array:rgbToHex}
+----------------------------------------
+
+Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
+[255,255,255], or [255,255,255,1]
+
+### Syntax:
+
+	myArray.rgbToHex([array]);
+
+### Arguments:
+
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+
+### Returns:
+
+* (*string*) A string representing the color in hexadecimal, or 'transparent' string if the fourth value of rgba in the input array is 0 (rgba).
+* (*array*) If the array flag is set, an array will be returned instead.
+
+### Examples:
+
+	[17,34,51].rgbToHex(); //returns "#112233"
+	[17,34,51].rgbToHex(true); //returns ['11','22','33']
+	[17,34,51,0].rgbToHex(); //returns "transparent"
+
+### See Also:
+
+- [String:rgbToHex](/Native/String/#rgbToHex)
+
+
+[Function:bind]: /Native/Function/#Function:bind
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
 [MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 [MDC Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter

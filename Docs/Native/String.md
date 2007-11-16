@@ -262,10 +262,6 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 	"112233".hexToRgb(); //returns "rgb(17,34,51)"
 	"#112233".hexToRgb(true); //returns [17,34,51]
 
-### See Also:
-
-- [Array:hexToRgb][]
-
 
 
 String Method: rgbToHex {#String:rgbToHex}
@@ -299,79 +295,6 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 
 
-Native: Array {#Array}
-======================
-
-Array Methods.
-
-## See Also:
-
-- [MDC Array][]
-
-
-
-Array Method: hexToRgb {#Array:hexToRgb}
-----------------------------------------
-
-Converts a hexidecimal color value to RGB. Input array must be in one of the following hexidecimal color formats.
-['ff', 'ff', 'ff'], or ['f', 'f', 'f']
-
-### Syntax:
-
-	myArray.hexToRgb([array]);
-
-### Arguments:
-
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
-
-### Returns:
-
-* (*string*) A string representing the color in RGB.
-* (*array*) If the array flag is set, an array will be returned instead.
-
-### Examples:
-
-	["1", "2", "3"].hexToRgb(); //returns "rgb(17,34,51)"
-	["11", "22", "33"].hexToRgb(); //returns "rgb(17,34,51)"
-	["11", "22", "33"].hexToRgb(true); //returns [17,34,51]
-
-### See Also:
-
-- [String:hexToRgb][]
-
-
-
-Array Method: rgbToHex {#Array:rgbToHex}
-----------------------------------------
-
-Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
-[255,255,255], or [255,255,255,1]
-
-### Syntax:
-
-	myArray.rgbToHex([array]);
-
-### Arguments:
-
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
-
-### Returns:
-
-* (*string*) A string representing the color in hexadecimal, or 'transparent' string if the fourth value of rgba in the input array is 0 (rgba).
-* (*array*) If the array flag is set, an array will be returned instead.
-
-### Examples:
-
-	[17,34,51].rgbToHex(); //returns "#112233"
-	[17,34,51].rgbToHex(true); //returns ['11','22','33']
-	[17,34,51,0].rgbToHex(); //returns "transparent"
-
-### See Also:
-
-- [String:rgbToHex][]
-
-
-
 [MDC String]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:String
 [MDC Regexp:test]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Objects:RegExp:test
 [MDC Regular Expressions]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Guide:Regular_Expressions
@@ -379,5 +302,4 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 [MDC parseFloat]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
 [String:trim]: #String:trim
-[Array:hexToRgb]: /native/Array#Array:hexToRgb
-[Array:rgbToHex]: /Native/Array#Array:rgbToHex
+[Array:rgbToHex]: /Native/Array/#Array:rgbToHex

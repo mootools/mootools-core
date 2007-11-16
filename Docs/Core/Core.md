@@ -497,11 +497,11 @@ Calls a function for each element in the array.
 
 ### See Also:
 
-- [MDC Array.forEach](http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach)
+- [MDC Array:forEach][]
 
 ### Notes:
 
-- This method is only available for browsers without native [Array.forEach](/Core/#Array:forEach) support.
+- This method is only available for browsers without native [MDC Array:forEach][] support.
 
 
 
@@ -540,8 +540,9 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 
 
 
-[Function:bind]: /Native/#Function:bind
+[Function:bind]: /Native/Function/#Function:bind
+[Function:delay]: /Native/Function/#Function:delay
+[Function:periodical]: /Native/Function/#Function:periodical
 [Hash]: /Native/Hash
 [Array]: /Native/Array
-[Function:delay]: /Native/#Function:delay
-[Function:periodical]: /Native/#Function:periodical
+[MDC Array:forEach]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
