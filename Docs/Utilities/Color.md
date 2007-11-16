@@ -1,14 +1,3 @@
-Color.js
---------
-
-Contains the Color class.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Color {#Color}
 =====================
 

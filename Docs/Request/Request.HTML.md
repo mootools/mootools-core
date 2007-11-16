@@ -1,13 +1,13 @@
 [Request]: /Request/Request
 
-Class: HTML {#Request.HTML}
-==========================
+Class: Request.HTML {#Request-HTML}
+===================================
 
-An Ajax class, for all your asynchronous needs. Also contains methods to generate querystings from forms and Objects.
+Request Specifically made for receiving HTML.
 
 ### Extends:
 
-[Request][/Request/Request]
+[Request][]
 
 ### Syntax:
 
@@ -22,7 +22,7 @@ An Ajax class, for all your asynchronous needs. Also contains methods to generat
 
 * url          - (string: defaults to null)  The URL to load.  This can also be passed within the .get() and .post() methods.
 * update       - (element: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
-* evalScripts  - (boolean: defaults to false) If set to true, <script> tags inside the response will be evaluated.
+* evalScripts  - (boolean: defaults to false) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (boolean: defaults to false) If set to true, the entire response will be evaluated.
 
 ### Events:
@@ -61,6 +61,7 @@ Data from Object Passed via GET:
 Data from Element via POST:
 
 ##### HTML
+
 	<form action="save/" method="post" id="user-form">
 		<p>
 			Search: <input type="text" name="search" />
@@ -80,56 +81,60 @@ Data from Element via POST:
 
 ### See Also:
 
-[Request][Request/Request]
+[Request][]
 
 
 
-Element Setter,Getter and Method {#Element}
-===========================================
+Native: Element {#Element}
+==========================
 
-Element Setter: html {#Element:Setter:load}
--------------------------------------------
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+
+
+Element Property: load {#Element:property-load}
+-----------------------------------------------
+
+### Setter
 
 Sets a default Request.HTML instance for an Element.
 
-### Syntax:
+#### Syntax:
 
 	el.set('load'[, options]);
 
-### Arguments:
+#### Arguments:
 
 1. options - (*object*) The Request options.
 
-### Returns:
+#### Returns:
 
-* (*Element*) The target Element.
+* (*element*) The target Element.
 
-### Example:
+#### Example:
 
 	el.set('load', {evalScripts: true});
 	el.load('some/request/uri');
 
 
 
-Element Getter: load {#Element:Getter:load}
--------------------------------------------
+### Getter
 
 Returns either the previously set Request.HTML instance or a new one with default options.
 
-### Syntax:
+#### Syntax:
 
 	el.get('load', url);
 
-### Arguments:
+#### Arguments:
 
 1. url - (*string*) The URL to associate the Request.HTML instance with.
 2. options - (*objectl, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set. 
 
-### Returns:
+#### Returns:
 
 * (object) The Request instance.
 
-### Example:
+#### Example:
 
 	el.set('load', {method: 'get'});
 	el.load('test.html');
@@ -164,3 +169,6 @@ Updates the content of the Element with a Request.HTML GET request.
 ##### JavaScript
 
 	$('content').load('page_1.html');
+
+
+[$]: /Element/#dollar

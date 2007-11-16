@@ -1,24 +1,11 @@
-Script: JSON.js
----------------
-
-Contains the JSON class
-
-### License:
-
-MIT-style license.
-
-
-
-Class: JSON {#JSON}
-===================
+Object: JSON {#JSON}
+====================
 
 JSON parser and encoder.
 
 ### See Also:
 
-- [JSON][]
-
-
+- [json.org](http://www.json.org/)
 
 JSON Method: encode {#JSON:encode}
 ----------------------------------
@@ -67,9 +54,4 @@ Converts a JSON string into an JavaScript object.
 
 ###	Credits:
 
-- JSON test regexp is by [Douglas Crockford][].
-
-
-
-[JSON]: http://www.json.org/
-[Douglas Crockford]: http://crockford.org/
+- JSON test regexp is by [Douglas Crockford](http://crockford.org/) and [Tobie Langel](http://tobielangel.com/).

@@ -1,5 +1,5 @@
 Class: Request {#Request}
-=================
+=========================
 
 An XMLHttpRequest Wrapper.
 
@@ -188,41 +188,48 @@ Cancels the currently running request, if any.
 	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
 	myRequest.cancel();
 
-Element Setter, Getter and Method {#Element}
-===========================================
 
-Element Setter: send {#Element:Setter:send}
--------------------------------------------
+
+Native: Element {#Element}
+==========================
+
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+
+
+
+Element Property: send {#Element:property-send}
+----------------------------------------------
+
+### Setter
 
 Sets a default Request instance for an Element.  This is useful when handling forms.
 
-### Syntax:
+#### Syntax:
 
 	el.set('send'[, options]);
 
-### Arguments:
+#### Arguments:
 
 1. options - (object) The Request options.
 
-### Returns:
+#### Returns:
 
 * (element) The original element. 
 
-### Example:
+#### Example:
 
 	myForm.set('send', {url: 'contact.php', method: 'get'});
 	myForm.send(); //will send the form
 
-Element Getter: send {#Element:send}
-------------------------------------
+### Getter
 
 Returns the previously set Request instance (or a new one with default options).
 
-### Syntax:
+#### Syntax:
 
 	el.get('send'[, options]);
 
-### Arguments:
+#### Arguments:
 
 1. options - (object, optional) The Request options.  If passed, this method will generate a new instance of the Request class.
 
@@ -230,7 +237,7 @@ Returns the previously set Request instance (or a new one with default options).
 
 * (object) The Request instance.
 
-### Example:
+#### Example:
 
 	el.get('send', {method: 'get'});
 	el.send();

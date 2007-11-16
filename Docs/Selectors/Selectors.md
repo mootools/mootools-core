@@ -1,11 +1,6 @@
 [$]: /Element/Element#dollar
 [Element]: /Element/Element
 
-Selectors.js
-------------
-
-Css Query related [Element][] extensions
-
 Native: Element {#Element}
 ==========================
 
@@ -80,9 +75,9 @@ Same as <Element.getElements>, but returns only the first.
 
 ### Note:
 
-- Alternate syntax for [$E](#Element:$E), where filter is the Element.
+- Alternate syntax for [$E](#Element:E), where filter is the Element.
 
-Function: $E {#Element:$E}
+Function: $E {#Element:E}
 --------------------------
 
 Alias for [Element.getElement](#Element:getElement), using document as context.

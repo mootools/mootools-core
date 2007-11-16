@@ -1,7 +1,7 @@
 [Selectors]: /Selectors/Selectors
 
-Selectors.Pseudo
-================
+Selectors.Pseudo {#Selectors}
+=============================
 
 Some default Pseudo Selectors for [Selectors][]
 
@@ -9,10 +9,9 @@ Some default Pseudo Selectors for [Selectors][]
 
 - <http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#pseudo-classes>
 
-Selectors:
-----------
 
-### enabled
+Selector: enabled {#Selector:enabled}
+-------------------------------------
 
 Matches all Elements that are enabled.
 
@@ -26,7 +25,8 @@ Matches all Elements that are enabled.
 
 	$('myElement').getElements(':enabled');
 
-### empty
+Selector: empty {#Selector:empty}
+---------------------------------
 
 Matches all elements which are empty.
 
@@ -38,7 +38,8 @@ Matches all elements which are empty.
 
 	$$('div:empty');
 
-### contains
+Selector: contains {#Selector:contains}
+---------------------------------------
 
 Matches all the Elements which contains the text.
 
@@ -55,9 +56,10 @@ Matches all the Elements which contains the text.
 	$$('p:contains("find me")');
 
 
-### nth
+Selector: nth {#Selector:nth}
+-----------------------------
 
-	Matches every nth child.
+Matches every nth child.
 
 ### Usage:
 
@@ -94,7 +96,8 @@ Without -Child:
 	':nth(odd)'
 	':nth(even)'
 
-### even
+Selector: even {#Selector:even}
+-------------------------------
 
 Matches every even child.
 
@@ -107,7 +110,8 @@ Matches every even child.
 
 	$$('td:even-child');
 
-### odd
+Selector: odd {#Selector:odd}
+-----------------------------
 
 Matches every odd child.
 
@@ -120,7 +124,8 @@ Matches every odd child.
 
 	$$('td:odd-child');
 
-### first
+Selector: first {#Selector:first}
+---------------------------------
 
 Matches the first child.
 
@@ -134,7 +139,8 @@ Matches the first child.
 	$$('td:first-child');
 
 
-### last
+Selector: last {#Selector:last}
+-------------------------------
 
 	Matches the last child.
 
@@ -148,7 +154,8 @@ Matches the first child.
 	$$('td:last-child');
 
 
-### only
+Selector: only {#Selector:only}
+-------------------------------
 
 Matches only child of its parent Element.
 

@@ -1,14 +1,3 @@
-Group.js
---------
-
-Contains the Group class.
-
-### License:
-
-MIT-style license.
-
-
-
 Class: Group {#Group}
 =====================
 

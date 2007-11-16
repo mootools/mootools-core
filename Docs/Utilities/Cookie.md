@@ -1,16 +1,5 @@
-Cookie.js
----------
-
-Contains the Cookie class.
-
-### License:
-
-MIT-style license.
-
-
-
-Class: Cookie {#Cookie}
-=======================
+Object: Cookie {#Cookie}
+========================
 
 A Cookie reader/creator.
 

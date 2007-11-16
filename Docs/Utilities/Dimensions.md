@@ -1,23 +1,3 @@
-[$]: /Element/Element/#dollar
-
-Dimensions.js
--------------
-
-Contains Element methods to work with element size, scroll, or position in space.
-
-### Notes:
-
-The functions in this script require a XHTML doctype.
-
-
-### See Also:
-
-<http://en.wikipedia.org/wiki/XHTML>
-
-### License:
-
-MIT-style license.
-
 Native: Element {#Element}
 ==========================
 
