@@ -5,7 +5,7 @@ JSON parser and encoder.
 
 ### See Also:
 
-- [json.org](http://www.json.org/)
+- [JavaScript Object Notation (JSON.org)](http://www.json.org/)
 
 JSON Method: encode {#JSON:encode}
 ----------------------------------
