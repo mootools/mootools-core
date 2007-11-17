@@ -7,7 +7,7 @@ Some default Pseudo Selectors for [Selectors][]
 
 ### See Also:
 
-- <http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#pseudo-classes>
+- [W3C Pseudo Classes](http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#pseudo-classes)
 
 
 Selector: enabled {#Selector:enabled}
@@ -161,7 +161,7 @@ Matches only child of its parent Element.
 
 ### Usage:
 
-	':only-child
+	':only-child'
 	':only'
 
 ### Example:
