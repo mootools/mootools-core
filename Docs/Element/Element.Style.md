@@ -89,14 +89,6 @@ Applies a collection of styles to the Element.
 		height: 400
 	});
 
-	//or
-
-	$('myElement').setStyles('border: 1px solid #000; width: 300px; height: 400px;'); // See the Note
-
-###	Notes:
-
-- When styles is a CSS string, all the CSS styles are overridden.
-
 ###	See Also:
 
 - [Element:getStyle][]
