@@ -36,11 +36,13 @@ var Builder = {
 		},
 
 		spec: {
-			"Core"      : ["Core", "Browser"],
-			"Native"    : ["Array", "String", "Function", "Number", "Hash"],
-			"Class"     : ["Class", "Class.Extras"],
-			"Element"   : ["Element"],
-			"Selectors" : ["Selectors"]
+			'Core'      : ['Core', 'Browser'],
+			'Native'    : ['Array', 'String', 'Function', 'Number', 'Hash'],
+			'Class'     : ['Class', 'Class.Extras'],
+			'Element'   : ['Element'],
+			'Selectors' : ['Selectors'],
+			'Plugins'   : ['Selectors.Children']
+			
 		}
 	},
 
