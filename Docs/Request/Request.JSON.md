@@ -13,12 +13,10 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 ### Arguments:
 
-1. url     - (string) The URL to send the object to.
-2. options - (object, optional) See below.
+1. options - (object, optional) See below.
 
 ###	Options:
 
-* varName - (string: defaults to 'json') The name for the variable that holds the JSON data. Set it to null to send raw data.
 * secure  - (boolean: defaults to true) If set to true, a syntax check will be done on the result JSON (see <JSON.decode>).
 
 ### Events:
@@ -37,13 +35,13 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 #### Returns:
 
-* (object) A new Request.JSON class instance.
+* (object) A new Request.JSON instance.
 
 ### Example:
 
 	//This code will send a data object via a GET request and alert the retrieved data.
-	var jsonRequest = new Request.JSON("http://site.com/tellMeAge.php", {onComplete: function(person){
+	var jsonRequest = new Request.JSON({url: "http://site.com/tellMeAge.php", onComplete: function(person){
 		alert(person.age);    //Alerts "25 years".
 		alert(person.height); //Alerts "170 cm".
 		alert(person.weight); //Alerts "120 kg".
-	}}).get({'firstName': 'John', 'lastName': 'Doe'});
+	}}).POST({'firstName': 'John', 'lastName': 'Doe'});
