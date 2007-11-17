@@ -315,6 +315,7 @@ JSSpec.Example = function(name, target, before, after){
 	this.id = JSSpec.Example.id++;
 	this.name = name;
 	this.target = target;
+	this.empty = (target + '' == function(){} + '');
 	this.before = before;
 	this.after = after;
 };
@@ -550,7 +551,7 @@ JSSpec.Logger.prototype.onExampleStart = function(example){
 
 JSSpec.Logger.prototype.onExampleEnd = function(example){
 	var li = document.getElementById("example_" + example.id);
-	li.className = example.exception ? "exception" : "success";
+	li.className = example.exception ? "exception" : example.empty ? 'stub' : "success";
 
 	if(example.exception){
 		var div = document.createElement("DIV");

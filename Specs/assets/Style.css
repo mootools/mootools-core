@@ -245,6 +245,12 @@ p#footer {
 	cursor: default;
 }
 
+#log .stub h4 {
+	background-color: #e5e5e1;
+	color: #a1a87e;
+	cursor: default;
+}
+
 #list .exception h3 {
 	color: #B33F3F;
 	background: #eed8d8;

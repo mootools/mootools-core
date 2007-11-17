@@ -148,6 +148,13 @@ describe('$$', {
 
 	'should return an empty array if not is found': function(){
 		value_of($$('not_found')).should_be([]);
+	},
+	
+	'should return all divs on the page': function(){
+		var divs1 = $$('div');
+		var divs2 = Array.flatten(document.getElementsByTagName('div'));
+
+		value_of(divs1).should_be(divs2);
 	}
 
 });
