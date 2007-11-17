@@ -12,11 +12,11 @@ Creates a new Color Class, which is an array with some color specific methods.
 1. color - (*mixed*) A string or an array representation of a color.
 2. type  - (*string*, optional) A string representing the type of the color to create.
 
-#### Color:
+### Color:
 
-There are three typical representations of color: String, RGB, and HSB. For String representation see [Element.setStyle][] for more information.
+There are three typical representations of color: String, RGB, and HSB. For String representation see [Element:setStyle][] for more information.
 
-#### Examples:
+### Examples:
 
 ##### String Representation:
 
@@ -251,14 +251,14 @@ Converts a RGB array to an HSB array.
 
 
 
-Array Method: rgbToHsb {#Array:rgbToHsb}
+Array Method: hsbToRgb {#Array:hsbToRgb}
 ----------------------------------------
 
-Converts a RGB array to an HSB array.
+Converts an HSB array to a RGB array.
 
 ###	Syntax:
 
-	var myRGB = myHSBArray.hsbToRgb();
+	var myHSB = myRGBArray.hsbToRgb();
 
 ###	Returns:
 
@@ -270,5 +270,5 @@ Converts a RGB array to an HSB array.
 
 
 
-[Element.setStyle]: /Element/Element#Element:setStyle
+[Element:setStyle]: /Element/Element.Style#Element:setStyles
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array

@@ -23,8 +23,7 @@ Scrolls the element to the specified coordinated (if the element has an overflow
 
 ### See Also:
 
-<http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>,
-<http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
+- [MDC Element:scrollLeft][], [MDC Element:scrollTop][]
 
 
 
@@ -110,12 +109,9 @@ Returns an Object representing the size of the target Element, including scrolla
 
 ### See Also:
 
-* <http://developer.mozilla.org/en/docs/DOM:element.scrollLeft>
-* <http://developer.mozilla.org/en/docs/DOM:element.scrollTop>
-* <http://developer.mozilla.org/en/docs/DOM:element.offsetWidth>
-* <http://developer.mozilla.org/en/docs/DOM:element.offsetHeight>
-* <http://developer.mozilla.org/en/docs/DOM:element.scrollWidth>
-* <http://developer.mozilla.org/en/docs/DOM:element.scrollHeight>
+- [MDC Element:scrollLeft][], [MDC Element:scrollTop][], [MDC Element:offsetWidth][], [MDC Element:offsetHeight][], [MDC Element:scrollWidth][], [MDC Element:scrollHeight][]
+
+
 
 Element Method: getScroll {#Element:getScroll}
 ----------------------------------------------
@@ -159,7 +155,7 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 ### See Also:
 
-* <http://www.quirksmode.org/js/findpos.html>
+- [QuirksMode: Find position](http://www.quirksmode.org/js/findpos.html)
 
 
 Element Method: getCoordinates {#Element:getCoordinates}
@@ -196,4 +192,14 @@ relative - (*element*, optional) if set, the position will be relative to this e
 
 ### See Also:
 
-[Element.getPosition](#Element:getPosition)
+[Element:getPosition](#Element:getPosition)
+
+
+
+[$]: /Element/Element#dollar
+[MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft
+[MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM:element.scrollTop
+[MDC Element:offsetWidth]: http://developer.mozilla.org/en/docs/DOM:element.offsetWidth
+[MDC Element:offsetHeight]: http://developer.mozilla.org/en/docs/DOM:element.offsetHeight
+[MDC Element:scrollWidth]: http://developer.mozilla.org/en/docs/DOM:element.scrollWidth
+[MDC Element:scrollHeight]: http://developer.mozilla.org/en/docs/DOM:element.scrollHeight

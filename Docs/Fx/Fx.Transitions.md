@@ -20,7 +20,7 @@ A collection of tweening transitions for use with the [Fx][] classes.
 
 ### See also:
 
-- <http://www.robertpenner.com/easing/>
+- [Robert Penner's Easing Equations](http://www.robertpenner.com/easing/)
 
 
 
@@ -57,27 +57,35 @@ Used to generate Quad, Cubic, Quart and Quint.
 
 ### Note:
 
--By default is p^6.
+- By default is `p^6`.
 
 Fx.Transitions Method: expo {#Fx-Transitions:expo}
 --------------------------------------------------
 
 Displays a exponential transition. Must be used as Expo.easeIn or Expo.easeOut or Expo.easeInOut.
 
+
+
 Fx.Transitions Method: circ {#Fx-Transitions:circ}
 --------------------------------------------------
 
 Displays a circular transition. Must be used as Circ.easeIn or Circ.easeOut or Circ.easeInOut.
+
+
 
 Fx.Transitions Method: sine {#Fx-Transitions:sine}
 --------------------------------------------------
 
 Displays a sineousidal transition. Must be used as Sine.easeIn or Sine.easeOut or Sine.easeInOut.
 
+
+
 Fx.Transitions Method: back {#Fx-Transitions:back}
 --------------------------------------------------
 
 Makes the transition go back, then all forth. Must be used as Back.easeIn or Back.easeOut or Back.easeInOut.
+
+
 
 Fx.Transitions Method: bounce {#Fx-Transitions:bounce}
 ------------------------------------------------------
@@ -85,10 +93,13 @@ Fx.Transitions Method: bounce {#Fx-Transitions:bounce}
 Makes the transition bouncy. Must be used as Bounce.easeIn or Bounce.easeOut or Bounce.easeInOut.
 
 
+
 Fx.Transitions Method: elastic {#Fx-Transitions:elastic}
 --------------------------------------------------------
 
 Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.easeInOut
+
+
 
 Class: Fx.Transition {#Fx-Transition}
 =====================================

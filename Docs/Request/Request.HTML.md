@@ -15,21 +15,21 @@ Request Specifically made for receiving HTML.
 
 ### Arguments:
 
-1. url     - (string, optional) The URL pointing to the server-side script.
-2. options - (object, optional) In addition to <Request>'s options object, see "Options" below.
+1. url     - (*string*, optional) The URL pointing to the server-side script.
+2. options - (*object*, optional) In addition to <Request>'s options object, see "Options" below.
 
 ### Options:
 
-* url          - (string: defaults to null)  The URL to load.  This can also be passed within the .get() and .post() methods.
-* update       - (element: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
-* evalScripts  - (boolean: defaults to false) If set to true, `script` tags inside the response will be evaluated.
-* evalResponse - (boolean: defaults to false) If set to true, the entire response will be evaluated.
+* url          - (*string*: defaults to null)  The URL to load.  This can also be passed within the .get() and .post() methods.
+* update       - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
+* evalScripts  - (*boolean*: defaults to false) If set to true, `script` tags inside the response will be evaluated.
+* evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated.
 
 ### Events:
 
 #### onComplete
 
-* (function) Function to execute when the HTML request completes.
+* (*function*) Function to execute when the HTML request completes.
 
 ##### Signature:
 
@@ -37,12 +37,12 @@ Request Specifically made for receiving HTML.
 
 ##### Arguments:
 
-1. responseText - (string) The content of the remote response.
-2. responseXML  - (string) The XML response of the request.
+1. responseText - (*string*) The content of the remote response.
+2. responseXML  - (*string*) The XML response of the request.
 
 ### Returns:
 
-* (object) A new Request.HTML instance.
+* (*object*) A new Request.HTML instance.
 
 ### Examples:
 
@@ -124,7 +124,7 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 #### Returns:
 
-* (object) The Request instance.
+* (*object*) The Request instance.
 
 #### Example:
 
@@ -150,11 +150,11 @@ Updates the content of the Element with a Request.HTML GET request.
 
 ### Arguments:
 
-1. url     - (string) The URL pointing to the server-side document.
+1. url     - (*string*) The URL pointing to the server-side document.
 
 ### Returns:
 
-* (element) The target Element.
+* (*element*) The target Element.
 
 ### Example:
 
@@ -167,4 +167,5 @@ Updates the content of the Element with a Request.HTML GET request.
 	$('content').load('page_1.html');
 
 
-[$]: /Element/#dollar
+	
+[$]: /Element/Element/#dollar

@@ -56,7 +56,7 @@ Drag Method: constructor {#Drag:constructor}
 
 ### Notes:
 
-- Drag.Move requires an XHTML doctype.
+- Drag requires an XHTML doctype.
 
 ### See Also:
 
@@ -87,7 +87,7 @@ Attaches the mouse listener to the handle.
 
 ### See Also:
 
-- [$][], [Element:makeDraggable][], [Drag:detach](#detach), [Element:addEvent][]
+- [$][], [Element:makeDraggable][], [Drag:detach](#Drag:detach), [Element:addEvent][]
 
 
 
@@ -180,9 +180,9 @@ Adds drag-to-resize behavior to an Element using supplied options.
 
 
 
-[$]: /Element/#dollar
-[Element:addEvent]: /Element/Element#addEvent
-[Element:makeDraggable]: #Element:makeDraggable
+[$]: /Element/Element/#dollar
+[Element:addEvent]: /Element/Element.Event/#Element:addEvent
+[Element:makeDraggable]: /Drag/Drag.Move/#Element:makeDraggable
 [Events]: /Class/Class.Extras#Events
 [Chain]: /Class/Class.Extras#Options
 [W3Schools: CSS Units]: http://www.w3schools.com/css/css_units.asp

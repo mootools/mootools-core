@@ -5,7 +5,7 @@ The slide effect; slides an element in horizontally or vertically, the contents 
 
 ### Note:
 
-Drag.Move requires an XHTML doctype.
+- Fx.Slide requires an XHTML doctype.
 
 ### Extends:
 
@@ -265,4 +265,4 @@ Slides this Element in view.
 
 [Fx.Slide]: #Fx-Slide
 [Fx]: /Fx/Fx
-[$]: /Element/#dollar
+[$]: /Element/Element#dollar

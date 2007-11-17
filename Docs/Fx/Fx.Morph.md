@@ -207,6 +207,6 @@ With selector:
 
 
 
-[$]: /Element/#dollar
+[$]: /Element/Element#dollar
 [Fx]: /Fx/Fx
-[Fx.Morph]: #Fx.Morph
+[Fx.Morph]: #Fx-Morph

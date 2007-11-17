@@ -60,7 +60,7 @@ All the base Drag properties, plus:
 ### Notes:
 
 - Drag.Move requires an XHTML doctype.
-- Drag.move supports either position absolute or relative. If no position is found, absolute will be set.
+- Drag.Move supports either position absolute or relative. If no position is found, absolute will be set.
 
 ### Demos:
 
@@ -102,7 +102,7 @@ Checks if the Element is above a droppable and fires the drop event. Else, fires
 
 ### See Also:
 
-- [Drag:stop](/Drag/#stop)
+- [Drag:stop][]
 
 
 
@@ -124,7 +124,7 @@ Adds drag-to-move behavior to an Element using supplied options.
 
 ### Arguments:
 
-1. options - (*object*, optional) See [Drag][] and [Drag.Move](#Drag.Move) for acceptable options.
+1. options - (*object*, optional) See [Drag][] and [Drag.Move](#Drag-Move) for acceptable options.
 
 ### Returns:
 
@@ -140,10 +140,11 @@ Adds drag-to-move behavior to an Element using supplied options.
 
 ### See Also:
 
-- [Drag][], [Drag.Move](#Drag.Move)
+- [Drag][], [Drag.Move](#Drag-Move)
 
 
 
-[$]: /Element/#dollar
-[Drag]: /Drag/#Drag
-[Element:getPosition]: /Element/#getPosition
+[$]: /Element/Element/#dollar
+[Drag]: /Drag/Drag/#Drag
+[Drag:stop]: /Drag/Drag/#Drag:stop
+[Element:getPosition]: /Utilities/Dimensions/#Element:getPosition

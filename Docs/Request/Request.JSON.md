@@ -1,4 +1,4 @@
-Class: Request.JSON {#Request.JSON}
+Class: Request.JSON {#Request-JSON}
 =================================
 
 Wrapped Request with automated sending and receiving of JavaScript Objects in JSON Format.
@@ -13,11 +13,11 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 ### Arguments:
 
-1. options - (object, optional) See below.
+1. options - (*object*, optional) See below.
 
 ###	Options:
 
-* secure  - (boolean: defaults to true) If set to true, a syntax check will be done on the result JSON (see <JSON.decode>).
+* secure  - (*boolean*: defaults to true) If set to true, a syntax check will be done on the result JSON (see <JSON.decode>).
 
 ### Events:
 
@@ -31,11 +31,11 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 #### Arguments:
 
-1. responseJSON - (mixed) The JSON response object from the remote request.
+1. responseJSON - (*mixed*) The JSON response object from the remote request.
 
 #### Returns:
 
-* (object) A new Request.JSON instance.
+* (*object*) A new Request.JSON instance.
 
 ### Example:
 

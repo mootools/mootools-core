@@ -66,7 +66,7 @@ Scrolls the specified Element to the x/y coordinates immediately.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
 ### Examples:
 
@@ -214,7 +214,7 @@ Scrolls the specified Element to the position the passed in Element is found.
 
 ### Returns:
 
-* (object) This Fx.Scroll instance.
+* (*object*) This Fx.Scroll instance.
 
 ### Examples:
 
@@ -222,10 +222,10 @@ Scrolls the specified Element to the position the passed in Element is found.
 
 ### Notes:
 
-- See [Element.getPosition][] for position difficulties.
+- See [Element:getPosition][] for position difficulties.
 
 
 
 [Fx]: /Fx/Fx
 [Fx.Scroll]: #Fx-Scroll
-[Element.getPosition]: /Element/#Element:getPosition
+[Element:getPosition]: /Utilities/Dimensions#Element:getPosition

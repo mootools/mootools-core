@@ -5,7 +5,7 @@ A Cookie reader/creator.
 
 ### Credits:
 
-- Based on the functions by Peter-Paul Koch http://www.quirksmode.org.
+- Based on the functions by Peter-Paul Koch [http://www.quirksmode.org][].
 
 ### Hash: Cookie
 
@@ -15,7 +15,7 @@ Hash for creating, accessing, and removing cookies.
 
 1. options - (*object*) An object to set the default behaviour of Cookie and its derivatives.
 
-###	Options: {#Cookie.options}
+###	Options: {#Cookie-options}
 
 * domain   - (*string*: defaults to false) The domain the Cookie belongs to.
 * path     - (*string*: defaults to false) The path the Cookie belongs to.
@@ -112,5 +112,6 @@ Creating a Cookie and Removing it Right Away:
 
 
 [Cookie]: #Cookie
-[Cookie.options]: #Cookie.options
-[Cookie.options.domain]: #Cookie.options
+[Cookie.options]: #Cookie-options
+[Cookie.options.domain]: #Cookie-options
+[http://www.quirksmode.org]: http://www.quirksmode.org

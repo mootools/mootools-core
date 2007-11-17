@@ -1,7 +1,7 @@
 Class: Fx.Tween {#Fx-Tween}
 ===========================
 
-Contains [Fx.Tween], and the Element shortcut [Element.tween][]
+Contains [Fx.Tween][], and the Element shortcut [Element.tween][]
 
 ### Extends:
 
@@ -246,6 +246,7 @@ Element shortcut method for tween with background color.  Immediately transition
 
 
 
-[$]: /Element/#dollar
+[$]: /Element/Element#dollar
 [Fx]: /Fx/Fx
-[Fx.Tween]: /Fx/#Fx.Tween
+[Fx.Tween]: #Fx-Tween
+[Element.tween]: #Element-Properties:tween

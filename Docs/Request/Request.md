@@ -13,25 +13,25 @@ An XMLHttpRequest Wrapper.
 
 ### Arguments:
 
-2. options - (object, optional) See below.
+2. options - (*object*, optional) See below.
 
 ###	Options:
 
-* url        - (string: defaults to null) The URL to request.
-* method     - (string: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
-* data       - (string: defaults to '') The default data for <Request.send>, used when no data is given.
-* async      - (boolean: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
-* encoding   - (string: defaults to "utf-8") The encoding to be set in the request header.
-* autoCancel - (boolean: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
-* headers    - (object) An object to use in order to set the request headers.
-* isSuccess  - (function) Overrides the built-in isSuccess function.
+* url        - (*string*: defaults to null) The URL to request.
+* method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
+* data       - (*string*: defaults to '') The default data for <Request.send>, used when no data is given.
+* async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
+* encoding   - (*string*: defaults to "utf-8") The encoding to be set in the request header.
+* autoCancel - (*boolean*: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
+* headers    - (*object*) An object to use in order to set the request headers.
+* isSuccess  - (*function*) Overrides the built-in isSuccess function.
 
 Request Events: events {#Request:events}
 --------------------------------
 
 ### onRequest
 
-(function) Function to execute when the Request is sent.
+(*function*) Function to execute when the Request is sent.
 
 #### Signature:
 
@@ -43,7 +43,7 @@ Request Events: events {#Request:events}
 
 ### onSuccess
 
-(function) Function to execute when the Request completes.
+(*function*) Function to execute when the Request completes.
 
 #### Signature:
 
@@ -51,12 +51,12 @@ Request Events: events {#Request:events}
 
 #### Arguments:
 
-1. responseText - (string) The returned text from the request.
-2. responseXML  - (mixed) The response XML from the request.
+1. responseText - (*string*) The returned text from the request.
+2. responseXML  - (*mixed*) The response XML from the request.
 
 ### onFailure
 
-(function) Function to execute when the request failes (error status code).
+(*function*) Function to execute when the request failes (error status code).
 
 #### Signature:
 
@@ -68,7 +68,7 @@ instance - (Request) The transport instance.
 
 ### onException
 
-(function) Function to execute when setting a request header fails.
+(*function*) Function to execute when setting a request header fails.
 
 #### Signature:
 
@@ -76,12 +76,12 @@ instance - (Request) The transport instance.
 
 #### Arguments:
 
-1. headerName - (string) The name of the failing header.
-2. value      - (string) The value of the failing header.
+1. headerName - (*string*) The name of the failing header.
+2. value      - (*string*) The value of the failing header.
 
 ###	onCancel
 
-(function) Function to execute when a request has been cancelled.
+(*function*) Function to execute when a request has been cancelled.
 
 #### Signature:
 
@@ -89,12 +89,12 @@ instance - (Request) The transport instance.
 
 ### Properties:
 
-* running  - (boolean) True if the request is running.
-* response - (object) Object with text and xml as keys. You can access this property in the onSuccess event.
+* running  - (*boolean*) True if the request is running.
+* response - (*object*) Object with text and xml as keys. You can access this property in the onSuccess event.
 
 ### Returns:
 
-* (object) A new Request instance.
+* (*object*) A new Request instance.
 
 ### Example:
 
@@ -102,7 +102,7 @@ instance - (Request) The transport instance.
 
 ### See Also:
 
-<http://en.wikipedia.org/wiki/XMLHttpRequest>
+ - [Wikipedia: XMLHttpRequest](http://en.wikipedia.org/wiki/XMLHttpRequest)
 
 Request Method: setHeader {#Request:setHeader}
 --------------------------------------
@@ -115,12 +115,12 @@ Add or modify a header for the request. It will not override headers from the op
 
 ###	Arguments:
 
-1. name  - (string) The name for the header.
-2. value - (string) The value to be assigned.
+1. name  - (*string*) The name for the header.
+2. value - (*string*) The value to be assigned.
 
 ###	Returns:
 
-* (object) This Request instance.
+* (*object*) This Request instance.
 
 ###	Example:
 
@@ -138,11 +138,11 @@ Returns the given response header or null if not found.
 
 ###	Arguments:
 
-1. name - (string) The name of the header to retrieve the value of.
+1. name - (*string*) The name of the header to retrieve the value of.
 
 ### Returns:
 
-* (string) The value of the retrieved header.
+* (*string*) The value of the retrieved header.
 
 ### Example:
 
@@ -160,11 +160,11 @@ Opens the Request connection and sends the provided data.
 
 ###	Arguments:
 
-1. options - (object, optional) The options for the sent Request.  Will also accept data as a query string for compatibility reasons.
+1. options - (*object*, optional) The options for the sent Request.  Will also accept data as a query string for compatibility reasons.
 
 ###	Returns:
 
-* (object) This Request instance.
+* (*object*) This Request instance.
 
 ###	Examples:
 
@@ -181,7 +181,7 @@ Cancels the currently running request, if any.
 
 ###	Returns:
 
-* (object) This Request instance.
+* (*object*) This Request instance.
 
 ###	Example:
 
@@ -259,7 +259,7 @@ Sends a form with an HTML request.
 
 ### Arguments:
 
-1. options - (object, optional) Options object for the [HTML](/Request/Request.HTML) request.
+1. options - (*object*, optional) Options object for the [HTML](/Request/Request.HTML) request.
 
 ### Returns:
 
@@ -283,3 +283,7 @@ Sends a form with an HTML request.
 ### Note:
 
 * The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
+
+
+
+[$]: /Element/Element/#dollar
