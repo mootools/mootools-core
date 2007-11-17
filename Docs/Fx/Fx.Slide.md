@@ -181,16 +181,13 @@ Shows the element without a transition.
 	});
 
 
+Hash: Element.Properties {#Element-Properties}
+==============================================
 
-Native: Element {#Element}
-==========================
+see [Element.Properties](/Element/Element/#Element-Properties)
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
-
-
-
-Element Property: slide {#Element:property-slide}
--------------------------------------------------
+Element Property: slide {#Element-Properties:slide}
+---------------------------------------------------
 
 Sets a default Fx.Slide instance for an element.
 Gets the previously setted Fx.Slide instance or a new one with default options.
@@ -231,6 +228,11 @@ Gets the previously setted Fx.Slide instance or a new one with default options.
 
 	el.get('slide'); //the Fx.Slide instance
 
+
+Native: Element {#Element}
+==========================
+
+Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 Element Method: slide {#Element:slide}
