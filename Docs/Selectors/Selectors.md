@@ -17,12 +17,12 @@ Gets all the elements within an element that match the given selector.
 
 ### Arguments:
 
-1. selector - (string) The CSS Selector to match.
-2. nocash   - (boolean, optional: defaults to false) If true, the found Elements are not extended.
+1. selector - (*string*) The CSS Selector to match.
+2. nocash   - (*boolean*, optional: defaults to false) If true, the found Elements are not extended.
 
 ### Returns:
 
-* (array) An <Elements> collections.
+* (*array*) An <Elements> collections.
 
 ### Examples:
 
@@ -55,7 +55,7 @@ Gets all the elements within an element that match the given selector.
 Element Property: getElement {#Element:getElement}
 --------------------------------------------------
 
-Same as <Element.getElements>, but returns only the first.
+Same as [Element:getElements](#Element:getElements), but returns only the first.
 
 ###	Syntax:
 
@@ -63,11 +63,11 @@ Same as <Element.getElements>, but returns only the first.
 
 ###	Arguments:
 
-1. selector - (string) The CSS Selector to match.
+1. selector - (*string*) The CSS Selector to match.
 
 ###	Returns:
 
-* (mixed) An extended [Element][], or null if not found.
+* (*mixed*) An extended [Element][], or null if not found.
 
 ### Example:
 
@@ -80,7 +80,7 @@ Same as <Element.getElements>, but returns only the first.
 Function: $E {#Element:E}
 --------------------------
 
-Alias for [Element.getElement](#Element:getElement), using document as context.
+Alias for [Element:getElement](#Element:getElement), using document as context.
 
 
 Element Method: match {#Element:match}
@@ -94,11 +94,11 @@ Matches the Element with the given selector.
 
 ###	Arguments:
 
-1. selector - (string) Selectors to match the element to.
+1. selector - (*string*) Selectors to match the element to.
 
 ### Returns:
 
-* (boolean) true if matched, false otherwise.
+* (*boolean*) true if matched, false otherwise.
 
 ### Example:
 
