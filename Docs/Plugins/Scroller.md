@@ -4,7 +4,7 @@ Class: Scroller {#Scroller}
 **The Scroller is a class to scroll any element with an overflow (including the window) when the mouse cursor reaches certain buondaries of that element.**
 **You must call its start method to start listening to mouse movements.**
 
-### Remark:
+### Note:
 
 The Scroller.js requires an XHTML doctype.
 

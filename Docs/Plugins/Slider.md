@@ -3,7 +3,7 @@ Class: Slider {#Slider}
 
 **Creates a slider with two elements: a knob and a container.**
 
-### Remark:
+### Note:
 
 - The Slider requires an XHTML doctype.
 

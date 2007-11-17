@@ -3,7 +3,7 @@ Class: Fx.Slide {#Fx-Slide}
 
 The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
 
-### Remark:
+### Note:
 
 Drag.Move requires an XHTML doctype.
 

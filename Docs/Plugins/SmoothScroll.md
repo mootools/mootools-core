@@ -3,7 +3,7 @@ Class: SmoothScroll {#SmoothScroll}
 
 Auto targets all the anchors in a page and display a smooth scrolling effect upon clicking them.
 
-### Remark:
+### Note:
 
 - SmoothScroll requires an XHTML doctype.
 

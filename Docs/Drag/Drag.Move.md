@@ -4,7 +4,7 @@ Class: Drag.Move {#Drag-Move}
 An extension to the base Drag class with additional functionality for dragging an Element.  Supports snapping and droppables.
 Inherits methods, properties, options and events from [Drag][].
 
-### Remark:
+### Note:
 
 Drag.Move requires an XHTML doctype.
 

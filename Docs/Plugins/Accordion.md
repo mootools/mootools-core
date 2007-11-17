@@ -3,7 +3,7 @@ Class: Accordion {#Accordion}
 
 The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.
 
-### Remark:
+### Note:
 
 - The Accordion requires an XHTML doctype.
 

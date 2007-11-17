@@ -7,7 +7,7 @@ Display a tip on any element with a title and/or href.
 
 - The idea behind Tips.js is based on Bubble Tooltips (<http://web-graphics.com/mtarchive/001717.php>) by Alessandro Fulcitiniti <http://web-graphics.com/>
 
-### Remark:
+### Note:
 
 - Tips requires an XHTML doctype.
 
