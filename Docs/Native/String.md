@@ -298,7 +298,7 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 String Method: stripScripts {#String:stripScripts}
 ------------------------------------------
 
-Strips the String of its &lt;script&gt; tags and anything in between them.
+Strips the String of its `<script>` tags and anything in between them.
 
 ### Syntax:
 
