@@ -23,7 +23,7 @@ describe('Hash.constructor', {
 
 });
 
-describe('Hash.remove / Hash.erase', {
+describe('Hash.remove | Hash.erase', {
 
 	'should remove a key and its value from the hash': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
@@ -75,7 +75,7 @@ describe('Hash.include', {
 
 });
 
-describe('Hash.keyOf / hash.indexOf', {
+describe('Hash.keyOf | hash.indexOf', {
 
 	'should return the key of the value, otherwise null if not found': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3, d: 1});
@@ -98,7 +98,7 @@ describe('Hash.has', {
 
 });
 
-describe('Hash.hasValue / Hash.contains', {
+describe('Hash.hasValue | Hash.contains', {
 
 	'should return true if the hash hasValue, otherwise false': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
