@@ -1,9 +1,5 @@
-Class: Assets {#Assets}
+Hash: Assets {#Assets}
 =======================
-
-Provides methods to dynamically load JavaScript, CSS, and image files into the document.
-
-### Hash: Asset
 
 Provides methods for the dynamic loading and management of JavaScript, CSS, and image files.
 
@@ -137,4 +133,4 @@ Preloads an array of images (as strings) and returns an array of img elements. d
 
 
 
-[Elements]: /Element/#Element:Elements
+[Elements]: /Element/Element#Elements

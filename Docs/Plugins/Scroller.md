@@ -1,12 +1,13 @@
 Class: Scroller {#Scroller}
 ===========================
 
-**The Scroller is a class to scroll any element with an overflow (including the window) when the mouse cursor reaches certain buondaries of that element.**
+**The Scroller is a Class to scroll any element with an overflow (including the window) when the mouse cursor reaches certain buondaries of that element.**
+
 **You must call its start method to start listening to mouse movements.**
 
 ### Note:
 
-The Scroller.js requires an XHTML doctype.
+- Scroller requires an XHTML doctype.
 
 ### Syntax:
 
@@ -18,17 +19,17 @@ The Scroller.js requires an XHTML doctype.
 
 ### Arguments:
 
-1. **element** - (*element*) The element to scroll.
-2. **options** - (*object*, optional) An object for the Scroller instance's options.
+1. element - (*element*) The element to scroll.
+2. options - (*object*, optional) An object for the Scroller instance's options.
 
 #### Options :
 
-* **area**     - (*number*: defaults to 20) The necessary boundaries to make the element scroll.
-* **velocity** - (*number*: defaults to 1) The modifier for the window scrolling speed.
+* area     - (*number*: defaults to 20) The necessary boundaries to make the element scroll.
+* velocity - (*number*: defaults to 1) The modifier for the window scrolling speed.
 
 ### Events:
 
-* **onChange** - (*function*) When the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
+* onChange - (*function*) When the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
 
 #### Signature:
 
@@ -36,8 +37,8 @@ The Scroller.js requires an XHTML doctype.
 
 #### Arguments:
 
-1. **x** - (*number*) Current x-mouse position.
-2. **y** - (*number*) Current y-mouse position.
+1. x - (*number*) Current x-mouse position.
+2. y - (*number*) Current y-mouse position.
 
 #### Examples:
 

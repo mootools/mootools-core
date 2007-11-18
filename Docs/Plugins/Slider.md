@@ -5,7 +5,7 @@ Class: Slider {#Slider}
 
 ### Note:
 
-- The Slider requires an XHTML doctype.
+- Slider requires an XHTML doctype.
 
 ### Syntax:
 
@@ -13,14 +13,14 @@ Class: Slider {#Slider}
 
 ### Arguments:
 
-1. **element** - (*element*) The knob element for the slider.
-2. **knob**    - (*element*) The handle element for the slider.
-3. **options** - (*object*) An optional object for customizing the Slider.
+1. element - (*element*) The knob element for the slider.
+2. knob    - (*element*) The handle element for the slider.
+3. options - (*object*) An optional object for customizing the Slider.
 
 #### Options:
 
-1. **steps**  - (*number*: defaults to 100) The number of steps the Slider should move/tick.
-2. **mode**   - (*string*: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
+1. steps  - (*number*: defaults to 100) The number of steps the Slider should move/tick.
+2. mode   - (*string*: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
 3. **offset** - (*number*: defaults to: 0) Relative offset for knob position at start.
 
 
@@ -36,7 +36,7 @@ Slider Event: onChange {#Slider:onChange}
 
 ### Arguments:
 
-1. **step** - (*number*) The current step that the Slider is on.
+1. step - (*number*) The current step that the Slider is on.
 
 
 
@@ -51,7 +51,7 @@ Slider Event: onComplete {#Slider:onComplete}
 
 ### Arguments:
 
-1. **step** - (*string*) The current step that the Slider is on as a string.
+1. step - (*string*) The current step that the Slider is on as a string.
 
 
 
@@ -66,7 +66,7 @@ Slider Event: onTick {#Slider:onTick}
 
 ### Arguments:
 
-1. **pos** - (*number*) The current position that slider moved to.
+1. pos - (*number*) The current position that slider moved to.
 
 ### Notes:
 
@@ -74,10 +74,10 @@ Slider Event: onTick {#Slider:onTick}
 
 ### Properties:
 
-1. **element** - (*element*) The knob element for the slider.
-2. **knob**    - (*element*) The handle element for the slider.
-3. **step**    - (*integer*) The current location of the knob.
-4. **drag**    - (*object*) An instance of <Drag> used for the knob.
+1. element - (*element*) The knob element for the slider.
+2. knob    - (*element*) The handle element for the slider.
+3. step    - (*integer*) The current location of the knob.
+4. drag    - (*object*) An instance of <Drag> used for the knob.
 
 ### Returns:
 
@@ -111,7 +111,7 @@ Slider Method: set {#Slider:set}
 
 ###	Arguments:
 
-1. **step** - (*number*) A number to position the Slider to.
+1. step - (*number*) A number to position the Slider to.
 
 ###	Returns:
 

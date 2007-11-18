@@ -1,11 +1,11 @@
-Selectors.Children
-==================
+Selectors.Children {#Selectors-Children}
+========================================
 
 A custom Pseudo Selector for selecting ranges, and to access the children Elements with zero-based indexing.
 
 ### Usage:
 
-## Index Accessor
+## Index Accessor {#index-accessor}
 
 	':children(n)'
 
@@ -28,7 +28,8 @@ A custom Pseudo Selector for selecting ranges, and to access the children Elemen
 	$$('#myID:children(-3)')[0].innerHTML //returns 3
 
 
-## Range
+Range {#Range}
+--------------
 
 	':children(from:to)'
 
@@ -53,7 +54,8 @@ A custom Pseudo Selector for selecting ranges, and to access the children Elemen
 
 	$$('#myID:children(0:-3)').map(function(){ return this.innerHTML }); //returns [0,1,2,3]
 
-## n-Right-of Operation
+n-Right-of Operation {#n-Right-of-Operation}
+--------------------------------------------
 
 	':children(start+n)'
 
@@ -79,7 +81,8 @@ A custom Pseudo Selector for selecting ranges, and to access the children Elemen
 	$$('#myID:children(-1+3))').map(function(){ return this.innerHTML }); //returns [0,1,2,5]
 
 
-## n-Left-of Operation
+n-Left-of Operation {#n-Left-of-Operation}
+------------------------------------------
 
 	':children(start-n)'
 
@@ -107,4 +110,4 @@ A custom Pseudo Selector for selecting ranges, and to access the children Elemen
 ### Notes:
 
 - The n-right-of and the n-left-of usaged will "wrap" until the 'n' number of Elements have been matched.
-- All "range" results will be ordered from least to greatest (relative to their indexes).`
+- All "range" results will be ordered from least to greatest (relative to their indexes).

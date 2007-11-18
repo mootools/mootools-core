@@ -5,7 +5,7 @@ The Accordion class creates a group of Elements that are toggled when their hand
 
 ### Note:
 
-- The Accordion requires an XHTML doctype.
+- Accordion requires an XHTML doctype.
 
 ### Extends:
 
@@ -19,7 +19,7 @@ The Accordion class creates a group of Elements that are toggled when their hand
 
 1. togglers - (*array*) The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
 2. elements - (*array*) The collection of Elements the transitions will be applied to.
-3. options  - (*object*, optional) All the [Fx](#Fx) options in addition to options below.
+3. options  - (*object*, optional) All the [Fx][] options in addition to options below.
 
 #### Options:
 
@@ -81,7 +81,7 @@ The Accordion class creates a group of Elements that are toggled when their hand
 
 ### Demos:
 
-- <http://demos.mootools.net/Accordion>
+- Accordion - <http://demos.mootools.net/Accordion>
 
 
 

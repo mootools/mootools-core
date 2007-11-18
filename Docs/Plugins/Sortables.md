@@ -5,7 +5,7 @@ Creates an interface for drag and drop sorting of a list or lists.
 
 ### Arguments:
 
-1. list - required, the list or lists that will become sortable.
+1. list - (*mixed*) required, the list or lists that will become sortable.
  * This argument can be an [Element][] or array of [Elements][]. When a single list (or id) is passed, that list will be sortable only with itself.
  * To enable sorting between lists, one or more lists or id's must be passed using an array or an object. See Examples below.
 2. options - (*object*) See options and events below.
@@ -68,8 +68,8 @@ If more than one list is being used, all lists will be serialized and returned i
 
 ### Arguments:
 
-1. index    - int or false; index of the list to serialize. Omit or pass false to serialize all lists.
-2. modifier - function to override the default output of the sortables.  See Examples below
+1. index    - (*mixed*, optional) An integer or boolean false. index of the list to serialize. Omit or pass false to serialize all lists.
+2. modifier - (*function*, optional) A function to override the default output of the sortables.  See Examples below
 
 ### Examples:
 

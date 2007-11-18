@@ -14,7 +14,7 @@ Fx.Elements allows you to apply any number of styles transitions to a collection
 ### Arguments:
 
 1. elements - (*array*) A collection of Elements the effects will be applied to.
-2. options  - (*object*, optional) Same as [Fx](#Fx) options.
+2. options  - (*object*, optional) Same as [Fx][] options.
 
 ### Properties:
 

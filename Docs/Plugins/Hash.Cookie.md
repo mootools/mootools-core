@@ -110,4 +110,4 @@ Loads the cookie and assigns it to the Hash.
 
 
 
-[Hash]: /Native/#Hash
+[Hash]: /Native/Hash/#Hash

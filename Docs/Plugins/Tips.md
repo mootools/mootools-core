@@ -5,7 +5,7 @@ Display a tip on any element with a title and/or href.
 
 ### Credits:
 
-- The idea behind Tips.js is based on Bubble Tooltips (<http://web-graphics.com/mtarchive/001717.php>) by Alessandro Fulcitiniti <http://web-graphics.com/>
+- The idea behind Tips.js is based on [Bubble Tooltips](http://web-graphics.com/mtarchive/001717.php) by [Alessandro Fulcitiniti](http://web-graphics.com/)
 
 ### Note:
 
@@ -84,7 +84,7 @@ Display a tip on any element with a title and/or href.
 
 ### Notes:
 
-- The title of the element will always be used as the tooltip body. If you put :: on your title, the text before :: will become the tooltip title.
+- The title of the element will always be used as the tooltip body. If you put :: (two colons, no spaces) on your title, the text before :: will become the tooltip title (i.e.: `title="tooltip title :: tooltip content"`).
 
 
 
