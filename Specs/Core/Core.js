@@ -22,6 +22,12 @@ describe('$chk', {
 
 	'should return true on 0': function(){
 		value_of($chk(0)).should_be_true();
+	},
+
+	'should return true for any truthsie': function(){
+		value_of($chk(1)).should_be_true();
+		value_of($chk({})).should_be_true();
+		value_of($chk(true)).should_be_true();
 	}
 
 });
@@ -56,6 +62,35 @@ describe('$defined', {
 
 	'should return true on 0': function(){
 		value_of($defined(0)).should_be_true();
+	}
+
+});
+
+describe('$arguments', {
+
+	'should return all the arguments if no index is passed': function(){
+
+	},
+
+	'should return the argument passed according to the index': function(){
+		value_of($arguments(2)('a','b','c','d')).should_be('c');
+	},
+
+	'should support negative index accessing': function(){
+
+	}
+
+});
+
+describe('$lambda', {
+
+	'should return a function the passed function': function(){
+		var fn = function(a,b){ return a; };
+		value_of($lambda(fn)).should_be(fn);
+	},
+
+	'should return a function that returns the value passed when called': function(){
+		value_of($lambda('hello world!')()).should_be('hello world!');
 	}
 
 });
@@ -328,7 +363,7 @@ describe('$A', {
 
 });
 
-describe('Array', {
+describe('Array.prototype.each', {
 
 	'should call the function for each item in the array': function(){
 		var oldArr = [1, 2, 3, false, null, 0];

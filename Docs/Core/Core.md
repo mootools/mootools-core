@@ -86,6 +86,30 @@ Checks to see if a value is defined.
 
 
 
+Function: $arguments {#arguments}
+---------------------------------
+
+Creates a function which returns the passed argument according to the index, i, passed.
+
+### Syntax:
+
+	var argument = $argument(i);
+
+### Arguments
+
+1. i - (*number*) The index of the argument to return.
+
+### Returns
+
+* (*function*) The function that returns a certain argument from the function's arguments.
+
+### Example:
+
+	var secondArgument = $argument(1);
+	console.log(secondArgument('a','b','c')); // alerts 1
+
+
+
 Function: $empty {#empty}
 -------------------------
 
@@ -530,8 +554,8 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 		$A(arguments).each(function(argument, index){
 			alert(argument);
 		});
-	}; 
-	myFunction("One", "Two", "Three"); //Alerts "One", then "Two", then "Three".	
+	};
+	myFunction("One", "Two", "Three"); //Alerts "One", then "Two", then "Three".
 
 #### Copy an Array:
 

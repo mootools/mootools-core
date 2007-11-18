@@ -115,11 +115,11 @@ Array.implement({
 
 	hexToRgb: function(array){
 		if (this.length != 3) return null;
-		var rgb = [];
-		for (var i = 0; i < 3; i++){
-			rgb.push(((this[i].length == 1) ? this[i] + this[i] : this[i]).toInt(16));
-		}
-		return array ? rgb : 'rgb(' + String(rgb) + ')';
+		var rgb = this.map(function(value){
+			if (value.length == 1) value += value;
+			return value.toInt(16);
+		});
+		return array ? rgb : 'rgb(' + rgb + ')';
 	},
 
 	rgbToHex: function(array){
