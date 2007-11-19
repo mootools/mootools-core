@@ -5,7 +5,8 @@ A custom Pseudo Selector for selecting ranges, and to access the children Elemen
 
 ### Usage:
 
-## Index Accessor {#index-accessor}
+Index Accessor {#Index-Accessor}
+--------------------------------
 
 	':children(n)'
 
@@ -35,7 +36,7 @@ Range {#Range}
 
 ### Variables:
 
-* from - (*number*) A starting index value. See the Index Accessor usage.
+* from - (*number*) A starting index value. See the [Index Accessor][] usage.
 * to   - (*number*) A ending index value.
 
 ###	Examples:
@@ -54,14 +55,14 @@ Range {#Range}
 
 	$$('#myID:children(0:-3)').map(function(){ return this.innerHTML }); //returns [0,1,2,3]
 
-n-Right-of Operation {#n-Right-of-Operation}
---------------------------------------------
+rightOf Operation {#rightOf}
+----------------------------
 
 	':children(start+n)'
 
 ### Variables:
 
-* start - (*number*) A starting index value. See the Index Accessor usage.
+* start - (*number*) A starting index value. See the [Index Accessor][] usage.
 * n     - (*number*) The number of Elements to the right of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
 
 ### Examples:
@@ -81,14 +82,14 @@ n-Right-of Operation {#n-Right-of-Operation}
 	$$('#myID:children(-1+3))').map(function(){ return this.innerHTML }); //returns [0,1,2,5]
 
 
-n-Left-of Operation {#n-Left-of-Operation}
-------------------------------------------
+leftOf Operation {#leftOf}
+--------------------------
 
 	':children(start-n)'
 
 ### Variables:
 
-* start - (*number*) A starting index value. See the Index Accessor usage.
+* start - (*number*) A starting index value. See the [Index Accessor][] usage.
 * n     - (*number*) The number of Elements to the left of the starting Element. The number of Elements, n, may not be negative, however, in this usage.
 
 ### Examples:
@@ -111,3 +112,7 @@ n-Left-of Operation {#n-Left-of-Operation}
 
 - The n-right-of and the n-left-of usaged will "wrap" until the 'n' number of Elements have been matched.
 - All "range" results will be ordered from least to greatest (relative to their indexes).
+
+
+
+[Index Accessor]: #Index-Accessor

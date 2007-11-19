@@ -1333,13 +1333,13 @@ Additionally, you can use these custom getters and setters as a parameter for th
 
 #### Example
 
-//using set
-
-$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
-
-//for new elements (same as set)
-
-new Element('input', {type: 'checkbox', checked: true, disabled: true});
+	//using set
+	
+	$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
+	
+	//for new elements (same as set)
+	
+	new Element('input', {type: 'checkbox', checked: true, disabled: true});
 
 
 
