@@ -8,8 +8,6 @@ License:
 
 var Color = new Native({
   
-	name: 'Color',
-  
 	initialize: function(color, type){
 		if (arguments.length >= 3){
 			type = "rgb"; color = Array.slice(arguments, 0, 3);
