@@ -27,6 +27,10 @@ var XHR = new Class({
 		text = this.processScripts(text);
 		if (this.options.update) $(this.options.update).empty().set('html', text);
 		arguments.callee.parent([text, this.response.xml], false);
+	},
+	
+	onFailure: function(){
+		arguments.callee.parent(this.xhr);
 	}
 
 });
