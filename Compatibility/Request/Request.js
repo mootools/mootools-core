@@ -23,10 +23,10 @@ var XHR = new Class({
 		return arguments.callee.parent({url: url, data: data});
 	},
 
-	onSuccess: function(text, xml){
+	onSuccess: function(text){
+		text = this.processScripts(text);
 		if (this.options.update) $(this.options.update).empty().set('html', text);
-		arguments.callee.parent(text, xml);
-		this.fireEvent('onComplete', [text, xml]);
+		arguments.callee.parent([text, this.response.xml], false);
 	}
 
 });
