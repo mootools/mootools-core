@@ -126,7 +126,7 @@ Native.implement([Element, Window, Document], {
 		if (nativeEvent){
 			if (nativeEvent == 2){
 				defn = function(event){
-					event = new Event(event, (self.ownerDocument || self).window);
+					event = new Event(event, self.getWindow());
 					if (condition.call(self, event) === false) event.stop();
 				};
 			}

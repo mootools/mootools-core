@@ -146,7 +146,7 @@ Native.implement([Element, Document], methods);
 Document.implement({
 
 	scrollTo: function(x, y){
-		this.window.scrollTo(x, y);
+		this.getWindow().scrollTo(x, y);
 	}
 
 });

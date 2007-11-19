@@ -30,7 +30,7 @@ var Drag = new Class({
 	initialize: function(){
 		var params = Array.link(arguments, {'options': Object.type, 'element': $defined});
 		this.element = $(params.element);
-		this.document = this.element.ownerDocument;
+		this.document = this.element.getDocument();
 		this.setOptions(params.options || {});
 		this.handle = $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};

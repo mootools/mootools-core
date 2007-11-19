@@ -6,29 +6,43 @@ License:
 	MIT-style license.
 */
 
+Document.implement({
+	
+	newElement: function(tag, props){
+		if (Browser.Engine.trident && props){
+			['name', 'type', 'checked'].each(function(attribute){
+				if (!props[attribute]) return;
+				tag += ' ' + attribute + '="' + props[attribute] + '"';
+				if (attribute != 'checked') delete props[attribute];
+			});
+			tag = '<' + tag + '>';
+		}
+		return $.element(this.createElement(tag)).set(props);
+	},
+	
+	newTextNode: function(text){
+		return $.textnode(this.createTextNode(text));
+	},
+	
+	getDocument: function(){
+		return this;
+	},
+	
+	getWindow: function(){
+		return this.defaultView || this.parentWindow;
+	}
+
+});
+
 var Element = new Native({
 
 	name: 'Element',
 
 	legacy: window.Element,
 
-	initialize: function(el){
-		var params = Array.link(arguments, {'document': Document.type, 'properties': Object.type});
-		var props = params.properties || {}, doc = params.document || document;
-		if ($type(el) == 'string'){
-			el = el.toLowerCase();
-			if (Browser.Engine.trident && props){
-				['name', 'type', 'checked'].each(function(attribute){
-					if (!props[attribute]) return;
-					el += ' ' + attribute + '="' + props[attribute] + '"';
-					if (attribute != 'checked') delete props[attribute];
-				});
-				el = '<' + el + '>';
-			}
-			el = doc.createElement(el);
-		}
-		el = $.element(el);
-		return (!props || !el) ? el : el.set(props);
+	initialize: function(tag, props){
+		if (typeof tag == 'string') return document.newElement(tag, props);
+		return $(tag).set(props);
 	},
 
 	afterImplement: function(key, value){
@@ -44,8 +58,8 @@ var TextNode = new Native({
 
 	name: 'TextNode',
 
-	initialize: function(text, doc){
-		return $extend((doc || document).createTextNode(text), this);
+	initialize: function(text){
+		return document.newTextNode(text);
 	}
 
 });
@@ -152,12 +166,20 @@ Window.implement({
 			if (item) elements.extend(item);
 		}
 		return new Elements(elements);
+	},
+	
+	getDocument: function(){
+		return this.document;
+	},
+	
+	getWindow: function(){
+		return this;
 	}
 
 });
 
 $.string = function(id, notrash, doc){
-	id = (doc || document).getElementById(id);
+	id = doc.getElementById(id);
 	return (id) ? $.element(id, notrash) : null;
 };
 
@@ -226,6 +248,14 @@ Element.Inserters = new Hash({
 Element.Inserters.inside = Element.Inserters.bottom;
 
 Element.implement({
+	
+	getDocument: function(){
+		return this.ownerDocument;
+	},
+	
+	getWindow: function(){
+		return this.ownerDocument.getWindow();
+	},
 
 	getElementById: function(id, nocash){
 		var el = this.ownerDocument.getElementById(id);
@@ -279,7 +309,7 @@ Element.implement({
 	},
 
 	appendText: function(text, where){
-		return this.grab(new TextNode(text, this.ownerDocument), where);
+		return this.grab(this.getDocument().newTextNode(text), where);
 	},
 
 	adopt: function(){
@@ -328,7 +358,7 @@ Element.implement({
 	getComputedStyle: function(property){
 		var result = false;
 		if (this.currentStyle) result = this.currentStyle[property.camelCase()];
-		else result = this.ownerDocument.window.getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
+		else result = this.getWindow().getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
 		return result;
 	},
 
