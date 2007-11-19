@@ -63,7 +63,8 @@ Useful when implementing a default set of properties in multiple Classes.
 			this.age = age;
 		}
 	});
-	var Cat = new Class({Extends: Animal
+	var Cat = new Class({
+		Extends: Animal,
 		initialize: function(name, age){
 			this.parent(age); //will call initalize of Animal
 			this.name = name;

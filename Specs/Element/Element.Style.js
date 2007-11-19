@@ -58,8 +58,16 @@ describe('Element.setStyle', {
 describe('Element.getStyles', {
 
 	'should return multiple styles': function() {
-		var el = new Element('div').set('html', '<div style="color:#0f0;font-weight:bold;margin:auto"></div>');
-		value_of(el.getElement('div').getStyles('color', 'font-weight', 'margin')).should_be({color:'#00ff00', 'font-weight':'bold', 'margin':'auto auto auto auto'});
+		var el = new Element('div').set('html', '<div style="color:#0f0;font-weight:bold"></div>');
+		value_of(el.getElement('div').getStyles('color', 'font-weight')).should_be({color:'#00ff00', 'font-weight':'bold'});
+	}
+
+});
+
+describe('Element.setStyles', {
+
+	'should set multiple styles': function() {
+		value_of(new Element('div').setStyles({'font-weight':'bold', 'color':'#0f0'}).getStyles('font-weight', 'color')).should_be({'font-weight':'bold', color:'#00ff00'});
 	}
 
 });
