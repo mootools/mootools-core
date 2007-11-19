@@ -6,64 +6,59 @@ License:
 	MIT-style license.
 */
 
-var Local = Local || {};
+var Animal = new Class({
 
-describe('Class', {
+	initialized: false,
 
-	'before all': function(){
-		Local.Animal = new Class({
-
-			initialized: false,
-
-			initialize: function(name){
-				this.initialized = true;
-				this.name = name;
-			},
-
-			sleep: function(){
-				return 'zzzz';
-			}
-
-		});
-
-		Local.Actions = new Class({
-			eat: function(){
-				return 'yum!';
-			},
-
-			sleep: function(){
-				return 'zzzz';
-			}
-		});
-
-		Local.Attributes = new Class({
-			color: function(){
-				return 'green';
-			},
-
-			size: function(){
-				return 'small';
-			}
-		});
+	initialize: function(name){
+		this.initialized = true;
+		this.name = name;
 	},
 
+	sleep: function(){
+		return 'zzzz';
+	}
+
+});
+
+var Actions = new Class({
+	eat: function(){
+		return 'yum!';
+	},
+
+	sleep: function(){
+		return 'zzzz';
+	}
+});
+
+var Attributes = new Class({
+	color: function(){
+		return 'green';
+	},
+
+	size: function(){
+		return 'small';
+	}
+});
+
+describe('Class.constructor', {
+
 	"should be type 'class'": function(){
-		value_of(Class.type(Local.Animal)).should_be_true();
+		value_of(Class.type(Animal)).should_be_true();
 	},
 
 	'should initialize': function(){
-		var init = new Local.Animal();
+		var init = new Animal();
 		value_of(init.initialized).should_be_true();
 	},
 
 	'should not initialize if passed $empty': function(){
-		var noInit = new Local.Animal($empty);
+		var noInit = new Animal($empty);
 		value_of(noInit.initialized).should_be_false();
 	},
 
-	'should use property Extends to extend another class': function(){
-		var Cat = new Class({
-			Extends: Local.Animal,
+	'should use property `Extends` to Extends another class': function(){
+		var Cat = new Class({ Extends: Animal,
 
 			initialize: function(name, color){
 				arguments.callee.parent(name);
@@ -84,23 +79,18 @@ describe('Class', {
 		value_of(myCat.speak()).should_be('miao');
 	},
 
-	'should use property Implements to implement another class': function(){
-		var Cat = new Class({
-
-			Implements: Local.Animal
-
-		});
-
-		var myCat = new Cat();
-		value_of(myCat.sleep()).should_be('zzzz');
+	'should use property `Implements` another class': function(){
+		var Cat = new Class({ Implements: Animal });
+		var Fluffy = new Cat();
+		value_of(Fluffy.sleep()).should_be('zzzz');
 	},
 
-	'should use property Implements to implement any number of classes': function(){
+	'should use property `Implements` to implement any number of classes': function(){
 		var Cat = new Class({
 
-			Extends: Local.Animal,
+			Extends: Animal,
 
-			Implements: [Local.Actions, Local.Attributes]
+			Implements: [Actions, Attributes]
 
 		});
 
@@ -109,12 +99,16 @@ describe('Class', {
 		value_of(myCat.initialized).should_be_true();
 		value_of(myCat.eat()).should_be('yum!');
 		value_of(myCat.color()).should_be('green');
-	},
+	}
+
+});
+
+describe('Class::implement', {
 
 	'should implement an object': function(){
-		Local.Animal.implement(new Local.Actions);
+		Animal.implement(new Actions);
 
-		var myAnimal = new Local.Animal('fuzzy');
+		var myAnimal = new Animal('fuzzy');
 
 		value_of(myAnimal.name).should_be('fuzzy');
 		value_of(myAnimal.eat()).should_be('yum!');
@@ -122,9 +116,9 @@ describe('Class', {
 	},
 
 	'should implement any number of objects': function(){
-		Local.Animal.implement(new Local.Actions, new Local.Attributes);
+		Animal.implement(Actions, Attributes);
 
-		var myAnimal = new Local.Animal('fuzzy');
+		var myAnimal = new Animal('fuzzy');
 
 		value_of(myAnimal.name).should_be('fuzzy');
 		value_of(myAnimal.eat()).should_be('yum!');
