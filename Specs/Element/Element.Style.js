@@ -15,7 +15,7 @@ describe('Element.set `opacity`', {
 	},
 	
 	'should return the opacity of an Element': function() {
-		value of (new Element('div').set('opacity', 0.4).get('opacity')).should_be(0.4);
+		value_of(new Element('div').set('opacity', 0.4).get('opacity')).should_be(0.4);
 	}
 		 
 });
@@ -46,7 +46,7 @@ describe('Element.setStyle', {
 	},
 
 	'should `setStyle` on an Element': function() {
-		value_of(new Element('div').setStyle('color':'#00ff00').getStyle('color')).should_be('#00ff00');
+		value_of(new Element('div').setStyle('color','#00ff00').getStyle('color')).should_be('#00ff00');
 	},
 
 	'should properly `setStyle` for a property with a dash in it': function() {
@@ -57,9 +57,9 @@ describe('Element.setStyle', {
 
 describe('Element.getStyles', {
 
-	'should get multiple styles from an Element': function() {
+	'should return multiple styles': function() {
 		var el = new Element('div').set('html', '<div style="color:#0f0;font-weight:bold;margin:auto"></div>');
-		value_of(el.getElement('div').getStyle('color')).should_be('#00ff00');
+		value_of(el.getElement('div').getStyles('color', 'font-weight', 'margin')).should_be({color:'#00ff00', 'font-weight':'bold', 'margin':'auto auto auto auto'});
 	}
 
 });
