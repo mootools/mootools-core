@@ -8,29 +8,29 @@ License:
 
 var Color = new Native({
   
-  name: 'Color',
+	name: 'Color',
   
-  protect: false,
-  
-  initialize: function(color, type){
-		type = type || ($type(color) == 'array' ? 'rgb' : 'hex');
-		var rgb, hsb;
-		switch (type){
-			case 'rgb':
-				rgb = color;
-				hsb = rgb.rgbToHsb();
-				break;
-			case 'hsb':
-				rgb = color.hsbToRgb();
-				hsb = color;
-				break;
-			default:
-				rgb = color.hexToRgb(true);
-				hsb = rgb.rgbToHsb();
+	initialize: function(color, type){
+		if (arguments.length >= 3){
+			type = "rgb"; color = Array.slice(arguments, 0, 3);
+		} else if ($type(color) == 'string'){
+			if (color.match(/rgb/)) color = color.rgbToHex().hexToRgb(true);
+			else if (color.match(/hsb/)) color = color.hsbToRgb();
+			else color = color.hexToRgb(true);
 		}
-		rgb.hsb = hsb;
-		rgb.hex = rgb.rgbToHex();
-		return $extend(rgb, this);
+		type = type || 'rgb';
+		switch (type){
+			case 'hsb':
+				var old = color;
+				color = color.hsbToRgb();
+				color.hsb = old;
+			break;
+			case 'hex': color = color.hexToRgb(true); break;
+		}
+		color.rgb = color.slice(0, 3);
+		color.hsb = color.hsb || color.rgbToHsb();
+		color.hex = color.rgbToHex();
+		return $extend(color, this);
 	}
 
 });
@@ -38,7 +38,7 @@ var Color = new Native({
 Color.implement({
 
 	mix: function(){
-		var colors = $A(arguments);
+		var colors = Array.slice(arguments);
 		var alpha = ($type(colors.getLast()) == 'number') ? colors.pop() : 50;
 		var rgb = this.slice();
 		colors.each(function(color){
@@ -74,6 +74,10 @@ function $RGB(r, g, b){
 
 function $HSB(h, s, b){
 	return new Color([h, s, b], 'hsb');
+};
+
+function $HEX(hex){
+	return new Color(hex, 'hex');
 };
 
 Array.implement({
@@ -120,6 +124,20 @@ Array.implement({
 			}
 		}
 		return false;
+	}
+
+});
+
+String.implement({
+
+	rgbToHsb: function(){
+		var rgb = this.match(/\d{1,3}/g);
+		return (rgb) ? hsb.rgbToHsb() : null;
+	},
+	
+	hsbToRgb: function(){
+		var hsb = this.match(/\d{1,3}/g);
+		return (hsb) ? hsb.hsbToRgb() : null;
 	}
 
 });

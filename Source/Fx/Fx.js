@@ -27,7 +27,8 @@ var Fx = new Class({
 		this.pass = this.pass || this;
 		this.setOptions(options);
 		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration.toInt();
-		if (this.options.wait === false) this.options.link = 'cancel';
+		var wait = this.options.wait;
+		if (wait === false) this.options.link = 'cancel';
 	},
 
 	step: function(){
