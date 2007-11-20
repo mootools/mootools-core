@@ -65,7 +65,7 @@ describe('TextNode.constructor', {
 
 });
 
-var test;
+var test, Container;
 
 describe('TextNode.inject', {
 
@@ -237,9 +237,8 @@ describe('Elements.filterBy', {
 
 });
 
-var Container;
-
 describe('$', {
+
 	'before all': function(){
 		Container = document.createElement('div');
 		Container.innerHTML = '<div id="dollar"></div>';
@@ -294,6 +293,44 @@ describe('$$', {
 		value_of($$('not_found')).should_be([]);
 	}
 
+});
+
+describe('Native:getDocument', {
+	
+	'should return the owner document for elements': function(){
+		var doc = document.newElement('div').getDocument();
+		value_of(doc).should_be(document);
+	},
+	
+	'should return the owned document for window': function(){
+		var doc = window.getDocument();
+		value_of(doc).should_be(document);
+	},
+	
+	'should return self for document': function(){
+		var doc = document.getDocument();
+		value_of(doc).should_be(document);
+	}
+	
+});
+
+describe('Native:getWindow', {
+	
+	'should return the owner window for elements': function(){
+		var win = document.newElement('div').getWindow();
+		value_of(win).should_be(window);
+	},
+	
+	'should return the owner window for document': function(){
+		var win = document.getWindow();
+		value_of(win).should_be(window);
+	},
+	
+	'should return self for window': function(){
+		var win = window.getWindow();
+		value_of(win).should_be(window);
+	}
+	
 });
 
 describe('Element.getElement', {
@@ -363,7 +400,7 @@ describe('Document.getElements', {
 	'should return all the elements that match the tags': function(){
 		var headers = document.getElements('h3,h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
-		value_of(headers).should_be(headers2);
+		value_of(headers.length).should_be(headers2.length);
 	}
 
 });
