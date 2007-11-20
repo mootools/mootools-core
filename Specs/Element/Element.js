@@ -549,7 +549,7 @@ describe('Element.get', {
 describe('Element.erase `style`', {
 
 	"should remove all of the Element's styles": function(){
-		var style = 'color: rgb(255, 255, 255); font-size: 12px;';
+		var style = "color:rgb(255, 255, 255); font-size:12px;";
 		var myElement = new Element('div', {style: style});
 
 		myElement.erase('style');

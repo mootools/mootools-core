@@ -41,6 +41,7 @@ var Builder = {
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Style'],
 			'Selectors' : ['Selectors'],
+			'Utilities'   : ['Color'],
 			'Plugins'   : ['Selectors.Children']
 			
 		}
