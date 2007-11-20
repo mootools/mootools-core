@@ -22,7 +22,7 @@ Fx.Tween = new Class({
 	},
 
 	start: function(){
-		var fromto = Array.flatten(arguments);
+		var fromto = Array.slice(arguments);
 		if (!this.check(fromto)) return this;
 		var parsed = this.prepare(this.element, this.property, fromto);
 		return arguments.callee.parent(parsed.from, parsed.to);
@@ -49,8 +49,9 @@ Element.Properties.tween = {
 
 Element.implement({
 
-	tween: function(property, value){
-		this.get('tween', property).start(value);
+	tween: function(property){
+		var tween = this.get('tween', property);
+		tween.start.apply(tween, Array.slice(arguments, 1));
 		return this;
 	},
 
