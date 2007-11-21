@@ -21,7 +21,7 @@ Request.HTML = new Class({
 		return (match) ? match[1] : text;
 	},
 
-	onSuccess: function(text){
+	success: function(text){
 		var opts = this.options, res = this.response;
 		res.html = this.processHTML(text).stripScripts(function(script){
 			res.javascript = script;
@@ -33,7 +33,7 @@ Request.HTML = new Class({
 		});
 		if (opts.update) $(opts.update).empty().adopt(res.tree);
 		if (opts.evalScripts) $exec(res.javascript);
-		arguments.callee.parent([res.tree, res.elements, res.html, res.javascript], false);
+		this.onSuccess(res.tree, res.elements, res.html, res.javascript);
 	}
 
 });

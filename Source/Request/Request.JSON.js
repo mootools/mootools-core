@@ -19,9 +19,9 @@ Request.JSON = new Class({
 		this.headers.extend({'Accept': 'application/json', 'X-Request': 'JSON'});
 	},
 
-	onSuccess: function(text){
+	success: function(text){
 		this.response.json = JSON.decode(text, this.options.secure);
-		arguments.callee.parent([this.response.json], false);
+		this.onSuccess(this.response.json, text);
 	}
 
 });

@@ -10,7 +10,6 @@ var XHR = new Class({
 
 	initialize: function(url, options){
 		arguments.callee.parent(options);
-		this.onComplete = $empty;
 		this.url = url;
 	},
 
@@ -23,14 +22,14 @@ var XHR = new Class({
 		return arguments.callee.parent({url: url, data: data});
 	},
 
-	onSuccess: function(text){
+	success: function(text, xml){
 		text = this.processScripts(text);
 		if (this.options.update) $(this.options.update).empty().set('html', text);
-		arguments.callee.parent([text, this.response.xml], false);
+		this.onSuccess(text, xml);
 	},
 	
-	onFailure: function(){
-		arguments.callee.parent(this.xhr);
+	failure: function(){
+		this.fireEvent('onFailure', this.xhr);
 	}
 
 });

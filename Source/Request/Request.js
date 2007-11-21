@@ -52,10 +52,10 @@ var Request = new Class({
 		}, this);
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
-			this.onSuccess([this.response.text, this.response.xml], true);
+			this.success(this.response.text, this.response.xml);
 		} else {
 			this.response = {text: null, xml: null};
-			this.onFailure();
+			this.failure();
 		}
 		this.xhr.onreadystatechange = $empty;
 	},
@@ -69,13 +69,20 @@ var Request = new Class({
 		return text.stripScripts(this.options.evalScripts);
 	},
 
-	onSuccess: function(args, process){
-		if (process && args[0] && $type(args[0]) == 'string') args[0] = this.processScripts(args[0]);
-		this.fireEvent('onComplete', args).fireEvent('onSuccess', args).callChain();
+	success: function(text, xml){
+		this.onSuccess(this.processScripts(text), xml);
+	},
+	
+	onSuccess: function(){
+		this.fireEvent('onComplete', arguments).fireEvent('onSuccess', arguments).callChain();
+	},
+	
+	failure: function(){
+		this.onFailure();
 	},
 
 	onFailure: function(){
-		this.fireEvent('onComplete', arguments).fireEvent('onFailure', arguments);
+		this.fireEvent('onComplete').fireEvent('onFailure', this.xhr);
 	},
 
 	setHeader: function(name, value){
