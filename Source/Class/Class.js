@@ -70,6 +70,7 @@ Class.Extends = function(self, klass){
 						return current.apply(this, arguments);
 					};
 					case 'object': return $merge(previous, current);
+					default: return current;
 				}
 			}
 			return previous;
