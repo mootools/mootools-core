@@ -52,7 +52,7 @@ var Request = new Class({
 		}, this);
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
-			this.onSuccess(this.response.text, true);
+			this.onSuccess([this.response.text, this.response.xml], true);
 		} else {
 			this.response = {text: null, xml: null};
 			this.onFailure();
@@ -70,7 +70,7 @@ var Request = new Class({
 	},
 
 	onSuccess: function(args, process){
-		if (process && $type(args) == 'string') args = this.processScripts(args);
+		if (process && args[0] && $type(args[0]) == 'string') args[0] = this.processScripts(args[0]);
 		this.fireEvent('onComplete', args).fireEvent('onSuccess', args).callChain();
 	},
 
