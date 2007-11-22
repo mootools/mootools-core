@@ -41,6 +41,8 @@ var Element = new Native({
 	legacy: window.Element,
 
 	initialize: function(tag, props){
+		var konstructor = Element.Constructors.get(tag);
+		if (konstructor) return konstructor(props);
 		if (typeof tag == 'string') return document.newElement(tag, props);
 		return $(tag).set(props);
 	},
@@ -53,6 +55,8 @@ var Element = new Native({
 });
 
 Element.Prototype = {$family: {name: 'element'}};
+
+Element.Constructors = new Hash;
 
 var TextNode = new Native({
 
