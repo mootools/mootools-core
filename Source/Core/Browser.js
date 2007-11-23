@@ -20,6 +20,7 @@ Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Brows
 Browser.Platform[Browser.Platform.name] = true;
 
 function $exec(text){
+	if (!text) return text;
 	if (window.execScript){
 		window.execScript(text);
 	} else {
