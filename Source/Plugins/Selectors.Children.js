@@ -44,20 +44,26 @@ Selectors.Pseudo.children = {
 		return '[' + include + ']';
 	},
 
-	filter: function(el, argument, i, all){
+	filter: function(argument, Local){
+		Local.i = Local.i || 0;
+		Local.all = Local.all || this.parentNode.childNodes;
+		Local.len = Local.len || Local.all.length;
+		var i = Local.i;
+		var len = Local.len;
+		var all = Local.all;
 		var include = false;
-		var len = all.length;
 		var a = argument.a + ((argument.a < 0) ? len : 0);
 		var b = argument.b + ((argument.b < 0) ? len : 0);
 		switch (argument.special){
 			case '-':
 				b = (a - b) % len;
-				include = (b < 0) ? (i <= (a - 1) || i >= (b + len)) : (i <= a && i >= b);
+				include = (b < 0) ? (i <= a || i >= (b + len)) : (i <= a && i >= b);
 			break;
 			case '+': b = (b + a) % len;
 			case ':': include = (b < a) ? (i >= a || i <= b) : (i >= a && i <= b); break;
-			default: include = (all[a] == el);
+			default: include = (all[a] == this);
 		}
+		Local.i++;
 		return include;
 	}
 };
