@@ -15,9 +15,7 @@ var Class = new Native({
 		properties = properties || {};
 
 		var klass = function(){
-			for (var property in this){
-				if ($type(this[property]) == 'object') this[property] = $merge(this[property]);
-			}
+			for (var property in this) this[property] = $unlink(this[property]);
 
 			['Implements', 'Extends'].each(function(Property){
 				if (!this[Property]) return;

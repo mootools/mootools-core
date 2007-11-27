@@ -92,14 +92,6 @@ Hash.implement({
 		return false;
 	},
 
-	getClean: function(){
-		var clean = {};
-		Hash.each(this, function(value, key){
-			clean[key] = value;
-		});
-		return clean;
-	},
-
 	getKeys: function(){
 		var keys = [];
 		Hash.each(this, function(value, key){

@@ -199,7 +199,7 @@ var Hash = new Native({
 	name: 'Hash',
 
 	initialize: function(object){
-		if ($type(object) == 'hash') return $merge(object);
+		if ($type(object) == 'hash') object = $unlink(object.getClean());
 		for (var key in object){
 			if (!this[key]) this[key] = object[key];
 		}
@@ -214,6 +214,14 @@ Hash.implement({
 		for (var key in this){
 			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
 		}
+	},
+	
+	getClean: function(){
+		var clean = {};
+		Hash.each(this, function(value, key){
+			clean[key] = value;
+		});
+		return clean;
 	}
 
 });
