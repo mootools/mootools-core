@@ -132,14 +132,21 @@ function $extend(original, extended){
 	return original;
 };
 
+function $unlink(object){
+	if ($type(object) != 'object') return object;
+	var unlinked = {};
+	for (var p in object) unlinked[p] = $unlink(object[p]);
+	return unlinked;
+};
+
 function $merge(){
 	var mix = {};
 	for (var i = 0, l = arguments.length; i < l; i++){
-		for (var key in arguments[i]){
-			var ap = arguments[i][key];
-			var mp = mix[key];
-			if (mp && $type(ap) == 'object' && $type(mp) == 'object') mix[key] = $merge(mp, ap);
-			else mix[key] = ap;
+		var object = arguments[i];
+		if ($type(object) != 'object') continue;
+		for (var key in object){
+			var op = object[key], mp = mix[key];
+			mix[key] = (mp && $type(op) == 'object' && $type(mp) == 'object') ? $merge(mp, op) : $unlink(op);
 		}
 	}
 	return mix;
