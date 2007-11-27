@@ -60,9 +60,10 @@ var Dimensions = {
 		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
 		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
 			if (objs.great){
-				if (Browser.Engine.trident) return Math.max(objs.doc.documentElement['offset' + dims[Z]], objs.doc.documentElement['scroll' + dims[Z]]);
+				var delement = objs.doc.documentElement;
+				if (Browser.Engine.trident) return Math.max(delement['offset' + dims[Z]], delement['scroll' + dims[Z]]);
 				if (Browser.Engine.webkit) return objs.doc.body['scroll' + dims[Z]];
-				return objs.doc.documentElement['scroll' + dims[Z]];
+				return delement['scroll' + dims[Z]];
 			} else {
 				return self['scroll' + dims[Z]];
 			}
@@ -160,7 +161,10 @@ Element.implement({
 
 	computePosition: function(obj, client){
 		var scroll, el = this;
-		var position = {left: obj.x - this.getComputedStyle('margin-left').toInt() || 0, top: obj.y - this.getComputedStyle('margin-top').toInt() || 0};
+		var position = {
+			left: obj.x - (this.getComputedStyle('margin-left').toInt() || 0),
+			top: obj.y - (this.getComputedStyle('margin-top').toInt() || 0)
+		};
 		if (client){
 			scroll = Dimensions.getScroll(Dimensions.getOffsetParent(this));
 			position.left += scroll.x;
