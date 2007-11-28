@@ -209,6 +209,14 @@ var Hash = new Native({
 });
 
 Hash.implement({
+	
+	getLength: function(){
+		var length = 0;
+		for (var key in this){
+			if (this.hasOwnProperty(key)) length++;
+		}
+		return length;
+	},
 
 	forEach: function(fn, bind){
 		for (var key in this){
@@ -218,9 +226,9 @@ Hash.implement({
 	
 	getClean: function(){
 		var clean = {};
-		Hash.each(this, function(value, key){
-			clean[key] = value;
-		});
+		for (var key in this){
+			if (this.hasOwnProperty(key)) clean[key] = this[key];
+		}
 		return clean;
 	}
 
