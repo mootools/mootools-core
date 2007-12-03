@@ -66,7 +66,7 @@
 
 		"Element.Event": {
 			"deps": ["Element"],
-			"desc": "Contains the Event Native, Element methods for dealing with events, the domready window event, and custom Events."
+			"desc": "Contains the Event Class, Element methods for dealing with events and some custom Events."
 		},
 
 		"Element.Style": {
@@ -91,6 +91,11 @@
 	},
 	
 	"Utilities": {
+		
+		"DomReady": {
+			"deps": ["Element.Event"],
+			"desc": "Contains the custom event domready."
+		},
 
 		"JSON": {
 			"deps": ["Array", "String", "Function", "Number", "Hash"],
