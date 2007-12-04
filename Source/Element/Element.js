@@ -21,7 +21,7 @@ Document.implement({
 	},
 	
 	newTextNode: function(text){
-		return $.textnode(this.createTextNode(text));
+		return this.createTextNode(text);
 	},
 	
 	getDocument: function(){
@@ -57,16 +57,6 @@ var Element = new Native({
 Element.Prototype = {$family: {name: 'element'}};
 
 Element.Constructors = new Hash;
-
-var TextNode = new Native({
-
-	name: 'TextNode',
-
-	initialize: function(text){
-		return document.newTextNode(text);
-	}
-
-});
 
 var IFrame = new Native({
 
@@ -193,11 +183,7 @@ $.element = function(el, notrash){
 	return el;
 };
 
-$.textnode = function(el, notrash){
-	return (notrash || el.$family) ? el : $extend(el, TextNode.prototype);
-};
-
-$.window = $.document = $arguments(0);
+$.textnode = $.window = $.document = $arguments(0);
 
 Native.implement([Element, Document], {
 
@@ -493,14 +479,6 @@ Element.implement({
 });
 
 })();
-
-TextNode.implement({
-
-	inject: Element.prototype.inject,
-
-	dispose: Element.prototype.dispose
-
-});
 
 Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
 
