@@ -66,7 +66,7 @@ Element.implement({
 			case 'toggle': fade.start((function(){
 				return (this.getStyle('visibility') == 'hidden') ? 1 : 0;
 			}).bind(this)); break;
-			default: fade.start(how);
+			default: fade.start.apply(fade, arguments);
 		}
 		return this;
 	},
