@@ -16,6 +16,7 @@ Fx.Morph = new Class({
 	},
 
 	set: function(now){
+		if (typeof now == 'string') now = this.search(now);
 		for (var p in now) this.render(this.element, p, now[p]);
 		return this;
 	},
@@ -28,7 +29,7 @@ Fx.Morph = new Class({
 
 	start: function(properties){
 		if (!this.check(properties)) return this;
-		if ($type(properties) == 'string') properties = this.search(properties);
+		if (typeof properties == 'string') properties = this.search(properties);
 		var from = {}, to = {};
 		for (var p in properties){
 			var parsed = this.prepare(this.element, p, properties[p]);
