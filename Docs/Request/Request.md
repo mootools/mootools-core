@@ -47,11 +47,12 @@ Request Events: events {#Request:events}
 
 #### Signature:
 
-	onSuccess(reponseText)
+	onSuccess(reponseText, responseXML)
 
 #### Arguments:
 
 1. responseText - (*string*) The returned text from the request.
+2. responseXML  - (*mixed*) The response XML from the request.
 
 ### onFailure
 
@@ -89,7 +90,7 @@ instance - (Request) The transport instance.
 ### Properties:
 
 * running  - (*boolean*) True if the request is running.
-* response - (*object*) Object with text and xml as keys. You can access this property in the onSuccess event.
+* response - (*object*) Object with text and XML as keys. You can access this property in the onSuccess event.
 
 ### Returns:
 
@@ -146,7 +147,7 @@ Returns the given response header or null if not found.
 ### Example:
 
 	var myRequest = new Request(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-	var headers = myRequest.getHeader('X-Request'); // returns 'JSON'
+	var headers = myRequest.getHeader('X-Request'); //Returns 'JSON'.
 
 Request Method: send {#Request:send}
 ----------------------------
@@ -167,7 +168,7 @@ Opens the Request connection and sends the provided data.
 
 ###	Examples:
 
-	var myRequest = new Request({url: 'mypage.html'}).send("save=username&name=John");
+	var myRequest = new Request({url: 'http://localhost/some_url'}).send("save=username&name=John");
 
 Request Method: cancel {#Request:cancel}
 --------------------------------
@@ -216,7 +217,7 @@ Sets a default Request instance for an Element.  This is useful when handling fo
 #### Example:
 
 	myForm.set('send', {url: 'contact.php', method: 'get'});
-	myForm.send(); //will send the form
+	myForm.send(); //Sends the form.
 
 ### Getter
 
@@ -238,8 +239,7 @@ Returns the previously set Request instance (or a new one with default options).
 
 	el.get('send', {method: 'get'});
 	el.send();
-
-	el.get('send'); //the Request instance
+	el.get('send'); //Returns the Request instance.
 	
 Native: Element {#Element}
 ==========================
@@ -258,7 +258,7 @@ Sends a form with an HTML request.
 
 ### Arguments:
 
-1. options - (*object*, optional) Options object for the [HTML](/Request/Request.HTML) request.
+1. options - (*object*, optional) Options object for the [Request](/Request/Request) request.
 
 ### Returns:
 
