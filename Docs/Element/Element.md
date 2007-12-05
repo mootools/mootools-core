@@ -7,7 +7,7 @@ The following functions are treated as Window methods.
 Function: $ {#dollar}
 ---------------------
 
-The dollar function has a dual purpose: Get the element by its id, and make an element in Internet Explorer "grab" all the [Element][] Methods.
+The dollar function has a dual purpose: Getting the element by its id, and make an element in Internet Explorer "grab" all the [Element][] methods.
 
 ### Syntax:
 
@@ -30,11 +30,11 @@ The dollar function has a dual purpose: Get the element by its id, and make an e
 #### Get a DOM Element by reference:
 
 	var div = document.getElementById('myElement');
-	div = $(div); // The element with all the Element methods applied.
+	div = $(div); //The element with all the Element methods applied.
 
 ### Notes:
 
-- You'll use this function when you aren't sure if a variable is an actual element or an id, as well as just shorthand for document.getElementById().
+- This method is useful when it's unclear if working with an actual element or an id.  It also serves as a shorthand for document.getElementById().
 - In Internet Explorer, the [Element][] is extended the first time $ is called on it, and all the [Element][] Methods become available.
 - Browsers with native HTMLElement support, such as Safari, Firefox, and Opera, apply all the [Element][] Methods to every DOM element automatically.
 - MooTools detects if an element needs to be extended or not, so you can call the function on the same element as many times as you want without ill effect.
@@ -60,25 +60,26 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Examples:
 
-#### Get Elements by Their Tags:
+#### Get Elements by Their Tag Names:
 
 	$$('a'); //returns all anchor elements in the page
 	$$('a', 'b'); //returns anchor and bold tags on the page
 
 #### Using CSS Selectors When [Selectors][] is Included:
 
-	$$('#myElement'); //returns an array containing only the element with the id 'myElement'
-	$$('#myElement a.myClass'); //returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'
+	$$('#myElement');//Returns an array containing only the element with the id 'myElement'.
+	$$('#myElement a.myClass');//Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
 
 #### More Complex $$ Usage:
 
+	//Creates an array of all elements and selectors passed as arguments.
 	$$(myelement1, myelement2, 'a', '#myid, #myid2, #myid3', document.getElementsByTagName('div'));
 
 ### Notes:
 
-- If you load [Selectors][], [$$][] will also accept CSS Selectors, otherwise the only selectors supported are tag names.
+- When [Selectors][] is loaded, [$$][] will also accept CSS Selectors.  Otherwise, the only selectors supported are tag names.
 - If an expression doesn't find any elements, an empty array will be returned.
-- The return type of element methods run through [$$][] is always an array.
+- The return type of element methods run through [$$][] is always an array, regardless of the amount of results.
 
 ### See Also:
 
@@ -116,7 +117,7 @@ Creates a new Element of the type passed in.
 	var myAnchor = new Element('a', {
 		'href': 'http://mootools.net',
 		'class': 'myClass',
-		'html': 'click me!',
+		'html': 'Click me!',
 		'styles': {
 			'display': 'block',
 			'border': '1px solid black'
@@ -126,7 +127,7 @@ Creates a new Element of the type passed in.
 				alert('clicked');
 			},
 			'mouseover': function(){
-				alert('omg ur gonna click');
+				alert('mouseovered');
 			}
 		}
 	});
@@ -140,8 +141,7 @@ Creates a new Element of the type passed in.
 Element Method: getElement {#Element:getElement}
 ------------------------------------------------
 
-Gets the first descendant element whose tag name matches the tag provided.
-
+Gets the first descendant element whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
 ### Syntax:
 
 	var myElement = myElement.getElement(tag);
@@ -173,7 +173,7 @@ Gets the first descendant element whose tag name matches the tag provided.
 Element Method: getElements {#Element:getElements}
 --------------------------------------------------
 
-Collects all decedent elements whose tag name matches the tag provided.
+Collects all decedent elements whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -206,7 +206,7 @@ Collects all decedent elements whose tag name matches the tag provided.
 Element Method: getElementById {#Element:getElementById}
 --------------------------------------------------------
 
-Gets the element with the specified id found inside this Element.
+Gets the element with the specified id found inside the current Element.
 
 ### Syntax:
 
@@ -347,8 +347,8 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### Examples:
 
-	$('myDiv').erase('id'); //removes the id from myDiv
-	$('myDiv').erase('class'); //myDiv element no longer has any classNames set
+	$('myDiv').erase('id'); //Removes the id from myDiv.
+	$('myDiv').erase('class'); //myDiv element no longer has any classNames set.
 
 ### Note:
 
@@ -363,7 +363,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 Element Method: match {#Element:match}
 --------------------------------------
 
-Tests this element to see if it's tag name is the same as the tag passed in.
+Tests this element to see if it's tag name is the same as the tag passed in.  If [Selectors][] is included, CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -379,11 +379,11 @@ Tests this element to see if it's tag name is the same as the tag passed in.
 
 ### Examples:
 
-	$('myDiv').match('div'); //true if myDiv is a div
+	$('myDiv').match('div'); // Returns true if myDiv is a div.
 
 ### Notes:
 
-- See [Element:match](/Selectors/Selectors#Element:match)
+- See [Element:match](/Selectors/Selectors#Element:match).
 - This method is overwritten by a more powerful version when [Selectors][] is included.
 
 
@@ -410,9 +410,9 @@ Injects, or inserts, the Element at a particular place relative to the Element's
 
 ##### Javascript
 
-	var myFirstElement = new Element('div', {id: 'myFirstElement'});
+	var myFirstElement  = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('div', {id: 'mySecondElement'});
-	var myThirdElement = new Element('div', {id: 'myThirdElement'});
+	var myThirdElement  = new Element('div', {id: 'myThirdElement'});
 
 ##### Resulting HTML
 
@@ -478,7 +478,7 @@ Element Method: grab {#Element:grab}
 
 Works as [Element:inject](#Element:inject), but in reverse.
 
-Appends the Element at a particular place relative to the Element's children (specified by the second the parameter).
+Appends the Element at a particular place relative to the Element's children (specified by the where parameter).
 
 ### Syntax:
 
@@ -598,15 +598,15 @@ A text node will be created inside this Element, in either the top or bottom pos
 
 ##### HTML
 
-	<div id="myElement">hey.</div>
+	<div id="myElement">Hey.</div>
 
 ##### JavaScript
 
-	$('myElement').appendText(' howdy');
+	$('myElement').appendText(' Howdy.');
 
 ##### Resulting HTML
 
-	<div id="myElement">hey. howdy</div>
+	<div id="myElement">Hey. Howdy.</div>
 
 
 
@@ -741,7 +741,7 @@ Tests the Element to see if it has the passed in className.
 
 	<div id="myElement" class="testClass"></div>
 
-##### Javascript
+##### JavaScript
 
 	$('myElement').hasClass('testClass'); //returns true
 
@@ -770,7 +770,7 @@ Adds the passed in class to the Element, if the Element doesnt already have it.
 
 	<div id="myElement" class="testClass"></div>
 
-##### Javascript
+##### JavaScript
 
 	$('myElement').addClass('newClass');
 
@@ -817,7 +817,7 @@ Works like [Element:addClass](#Element:addClass), but removes the class from the
 Element Method: toggleClass {#Element:toggleClass}
 --------------------------------------------------
 
-Adds or removes the passed in class name to the Element, depending on if it's present or not.
+Adds or removes the passed in class name to the Element, depending on whether or not it's already present.
 
 ### Syntax:
 
@@ -1050,7 +1050,7 @@ Empties an Element of all its children.
 
 ##### JavaScript
 
-	$('myElement').empty()
+	$('myElement').empty();
 
 ##### Resulting HTML
 
@@ -1099,7 +1099,7 @@ Reads the children inputs of the Element and generates a query string based on t
 
 ##### JavaScript
 
-	$('myForm').toQueryString() //Returns "email=bob@bob.com&zipCode=90210".
+	$('myForm').toQueryString(); //Returns "email=bob@bob.com&zipCode=90210".
 
 
 
@@ -1128,9 +1128,7 @@ Gets a single element attribute.
 
 ##### JavaScript
 
-	var imgProps = $('myImage').getProperty('src');
-
-	// returns: 'mootools.png'
+	var imgProps = $('myImage').getProperty('src'); //Returns: 'mootools.png'.
 
 
 
@@ -1160,8 +1158,7 @@ Gets multiple element attributes.
 ##### JavaScript
 
 	var imgProps = $('myImage').getProperties('id', 'src', 'title', 'alt');
-
-	// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+	//Returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
 
 
 
@@ -1300,7 +1297,7 @@ Removes numerous attributes from the Element.
 Hash: Element.Properties {#Element-Properties}
 ==============================================
 
-These Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
+This Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
 
 ### Example of a custom Element Property
 
@@ -1316,12 +1313,10 @@ These Hash contains the functions that respond to the first argument passed in [
 		}
 		
 	};
-	
-	//usage
-	
-	$(element).get('disabled'); //gets the disabled property.
-	
-	$(element).set('disabled', true); //sets the disabled property to true, along with the attribute.
+
+	//Using the custom property:
+	$(element).get('disabled'); //Gets the disabled property.
+	$(element).set('disabled', true); //Sets the disabled property to true, along with the attribute.
 
 ### Note
 
@@ -1333,12 +1328,10 @@ Additionally, you can use these custom getters and setters as a parameter for th
 
 #### Example
 
-	//using set
-	
+	//Using set:
 	$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
-	
-	//for new elements (same as set)
-	
+
+	//For new elements (works the same as set):
 	new Element('input', {type: 'checkbox', checked: true, disabled: true});
 
 
@@ -1368,7 +1361,7 @@ Sets the innerHTML of the Element.
 
 	<div id="myElement"></div>
 
-##### Javascript
+##### JavaScript
 
 	$('myElement').set('html', '<div></div>', '<p></p>');
 
@@ -1420,7 +1413,7 @@ Sets the inner text of the Element.
 
 ##### JavaScript
 
-	$('myElement').set('text', 'some text'); //the text of myElement is now = 'some text'
+	$('myElement').set('text', 'some text'); //The text of myElement is now 'some text'.
 
 ##### Resulting HTML
 
@@ -1446,7 +1439,7 @@ Gets the inner text of the Element.
 
 ##### JavaScript
 
-	var myText = $('myElement').get('text'); //myText = 'my text';
+	var myText = $('myElement').get('text'); //myText = 'my text'.
 
 
 
@@ -1455,7 +1448,7 @@ Element Property: value {#Element-Properties:value}
 
 ### Getter:
 
-Returns the value of the Element, if its tag is textarea, select or input. getValue called on a multiple select will return an array.
+Returns the value of the Element if its tag is textarea, select or input. getValue called on a multiple select will return an array.
 
 
 #### Syntax:
@@ -1481,7 +1474,7 @@ Returns the value of the Element, if its tag is textarea, select or input. getVa
 
 ##### JavaScript
 
-	var result = $('myForm').getElement('select').get('value'); // returns 'Saab'
+	var result = $('myForm').getElement('select').get('value'); //Returns 'Saab'.
 
 
 
@@ -1506,9 +1499,9 @@ Returns the tagName of the Element in lower case.
 
 	<img id="myImage" />
 
-##### Javascript
+##### JavaScript
 
-	var myTag = $('myImage').get('tag'); // myTag = 'img';
+	var myTag = $('myImage').get('tag'); // myTag = 'img'.
 
 
 
@@ -1522,7 +1515,7 @@ Custom Native to create and easily work with IFrames.
 IFrame Method: constructor {#IFrame:constructor}
 ------------------------------------------------
 
-Creates an iframe HTML Element and extends its window and document with MooTools.
+Creates an IFrame HTML Element and extends its window and document with MooTools.
 
 
 ### Syntax:
@@ -1544,10 +1537,6 @@ Creates an iframe HTML Element and extends its window and document with MooTools
 
 		src: 'http://mootools.net/',
 
-		onload: function(){
-			alert('my iframe finished loading');
-		},
-
 		styles: {
 			width: 800,
 			height: 600,
@@ -1557,11 +1546,15 @@ Creates an iframe HTML Element and extends its window and document with MooTools
 		events: {
 
 			mouseenter: function(){
-				alert('welcome aboard');
+				alert('Welcome aboard.');
 			},
 
 			mouseleave: function(){
-				alert('oo noes');
+				alert('Goodbye!');
+			},
+
+			load: function(){
+				alert('The iframe has finished loading.');
 			}
 
 		}
@@ -1615,7 +1608,7 @@ Elements Method: constructor {#Elements:constructor}
 #### Create Elements From an Array:
 
 	var myElements = new Elements(['myElementID', $('myElement'), 'myElementID2', document.getElementById('myElementID3')]);
-	myElements.removeElements('found'); //notice how 'remove' is an Array method
+	myElements.removeElements('found'); //Notice how remove is an Array method.
 
 
 ### Notes:

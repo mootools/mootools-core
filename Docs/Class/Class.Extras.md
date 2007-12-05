@@ -1,8 +1,8 @@
 Class: Chain {#Chain}
 =====================
 
-A "Utility" Class which executes functions one after another, with each function firing after completion of the previous.
-Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][], [Request][] and [Request.HTML][].
+A Utility Class which executes functions one after another, with each function firing after completion of the previous.
+Its methods can be implemented with [Class:implement][] into any [Class][], and it is currently implemented in [Fx][] and [Request][].
 In [Fx][], for example, it is used to create custom, complex animations.
 
 
@@ -65,14 +65,14 @@ Adds functions to the end of the call stack of the Chain instance.
 * (*object*) The current Class instance. Calls to chain can also be chained.
 
 ### Example:
-
-	//will fade the element in and out three times
-	var myFx = new Fx.Style('myElement', 'opacity'); //Fx.Style has implemented class Chain because of inheritance.
+	//Fx.Style has already implemented the Chain class because of inheritance of the Fx class.
+	var myFx = new Fx.Style('myElement', 'opacity');
 	myFx.start(1,0).chain(
-		function(){ this.start(0,1); }, //Notice that "this" refers to the calling object (in this case, the myFx object).
+		//Notice that "this" refers to the calling object (in this case, the myFx object).
+		function(){ this.start(0,1); },
 		function(){ this.start(1,0); },
 		function(){ this.start(0,1); }
-	);
+	); //Will fade the Element in and out three times.
 
 
 ### See Also:
@@ -105,8 +105,8 @@ Removes the first function of the Chain instance stack and executes it. The next
 		function(){ alert('do dishes'); },
 		function(){ alert('put away clean dishes'); }
 	);
-	myChain.callChain(); //alerts 'do dishes'
-	myChain.callChain(); //alerts 'put away clean dishes'	
+	myChain.callChain(); //Will alert 'do dishes'.
+	myChain.callChain(); //Will alert 'put away clean dishes'.
 
 
 
@@ -125,9 +125,9 @@ Clears the stack of a Chain instance.
 
 ### Example:
 
-	var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain see <Fx>
-	myFx.chain(function(){ while(true) alert('doh!'); }); //don't try this at home, kids.
-	myFx.clearChain(); // .. that was a close one ...
+	var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain.
+	myFx.chain(function(){ while(true) alert('D'oh!'); }); //Chains an infinite loop of alerts.
+	myFx.clearChain(); //Cancels the infinite loop of alerts before allowing it to begin.
 
 ### See Also:
 
@@ -138,7 +138,7 @@ Clears the stack of a Chain instance.
 Class: Events {#Events}
 =======================
 
-A "Utility" Class. Its methods can be implemented with [Class:implement][] into any [Class][].
+A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 In [Fx][], for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
 Events in a Class that implements [Events](#Events) must be either added as an option or with addEvent, not directly through .options.onEventName.
 
@@ -155,7 +155,7 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 ### Implementing:
 
 - This class can be implemented into other classes to add its functionality to them.
-- It has been designed to work well with the [Options](#Options) class.
+- Events has been designed to work well with the [Options](#Options) class when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete').
 
 ### Example:
 
@@ -208,7 +208,7 @@ Adds an event to the Class instance's event stack.
 Events Method: addEvents {#Events:addEvents}
 ------------------------------------------
 
-The same as [addEvent](#addEvent), but accepts an object and add multiple events at once.
+The same as [addEvent](#addEvent), but accepts an object to add multiple events at once.
 
 ### Syntax:
 
@@ -228,7 +228,7 @@ The same as [addEvent](#addEvent), but accepts an object and add multiple events
 	myFx.addEvents({
 		'onStart': myStartFunction,
 		'onComplete': function() {
-			alert('done.');
+			alert('Done.');
 		}
 	});
 
@@ -313,7 +313,7 @@ Removes all events of the given type from the stack of events of a Class instanc
 
 ### Notes:
 
-- Will not remove internal events. See [Events:removeEvent][].
+- removeEvents will not remove internal events. See [Events:removeEvent][].
 
 
 
@@ -322,7 +322,7 @@ Class: Options {#Options}
 
 A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 Used to automate the setting of a Class instance's options.
-Will also add Class [Events](#Events) when the option property begins with on followed by a capital letter (e.g. 'onComplete').
+Will also add Class [Events](#Events) when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete').
 
 ### Syntax:
 
@@ -376,7 +376,7 @@ Merges the default options of the Class with the options passed in.
 		}
 	});
 
-	//myWidget.options is now {color: #f00, size: {width: 200, height: 100}}
+	//myWidget.options is now: {color: #f00, size: {width: 200, height: 100}}
 
 ### Notes:
 
@@ -389,5 +389,5 @@ Merges the default options of the Class with the options passed in.
 [Fx]: /Fx/Fx
 [Fx.Tween]: /Fx/Fx.Tween
 [Request]: /Request/Request
-[Request.HTML]: /Remote/Request.HTML
+[Request.HTML]: /Request/Request.HTML
 [Events:removeEvent]: /Element/Element.Event/#Element:removeEvent

@@ -47,12 +47,11 @@ Request Events: events {#Request:events}
 
 #### Signature:
 
-	onSuccess(reponseText, responseXML)
+	onSuccess(reponseText)
 
 #### Arguments:
 
 1. responseText - (*string*) The returned text from the request.
-2. responseXML  - (*mixed*) The response XML from the request.
 
 ### onFailure
 
@@ -168,7 +167,7 @@ Opens the Request connection and sends the provided data.
 
 ###	Examples:
 
-	var myRequest = new Request({url: 'http://localhost/some_url'}).send("save=username&name=John");
+	var myRequest = new Request({url: 'mypage.html'}).send("save=username&name=John");
 
 Request Method: cancel {#Request:cancel}
 --------------------------------
@@ -282,7 +281,7 @@ Sends a form with an HTML request.
 
 ### Note:
 
-* The URL is taken from the action attribute, as well as the method, which defaults to post if not found.
+* The URL is taken from the action attribute of the form.  The method option is taken from the form's method attribute, defaulting to post when not found.  The method can also be overridden by setting the option manually.
 
 
 
