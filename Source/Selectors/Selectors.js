@@ -115,7 +115,6 @@ Selectors.XPath = {
 	getItems: function(items, context){
 		var elements = [];
 		var doc = context.getDocument();
-		console.log('.//' + items.join(''));
 		var xpath = doc.evaluate('.//' + items.join(''), context, Selectors.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements[i] = xpath.snapshotItem(i);
 		return elements;
