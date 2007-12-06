@@ -79,14 +79,14 @@ Selectors.Pseudo = new Hash;
 Selectors.XPath = {
 
 	getParam: function(items, separator, context, params){
-		var temp = context.namespaceURI ? 'xhtml:' : '';
+		var temp = '';
 		switch (separator){
 			case ' ': temp += '//'; break;
 			case '>': temp += '/'; break;
 			case '+': temp += '/following-sibling::*[1]/self::'; break;
 			case '~': temp += '/following-sibling::'; break;
 		}
-		temp += params.tag;
+		temp += (context.namespaceURI) ? 'xhtml:' + params.tag : params.tag;
 		var i;
 		for (i = params.pseudos.length; i--; i){
 			var pseudo = params.pseudos[i];
@@ -114,7 +114,8 @@ Selectors.XPath = {
 
 	getItems: function(items, context){
 		var elements = [];
-		var doc = context.ownerDocument || context;
+		var doc = context.getDocument();
+		console.log('.//' + items.join(''));
 		var xpath = doc.evaluate('.//' + items.join(''), context, Selectors.XPath.resolver, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
 		for (var i = 0, j = xpath.snapshotLength; i < j; i++) elements[i] = xpath.snapshotItem(i);
 		return elements;
