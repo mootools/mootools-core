@@ -118,7 +118,7 @@ Elements.implement({
 
 	filterBy: function(filter){
 		if (!filter) return this;
-		return new Elements(this.filter(($type(filter) == 'string') ? function(item){
+		return new Elements(this.filter((typeof filter == 'string') ? function(item){
 			return item.match(filter);
 		} : filter));
 	}
@@ -236,6 +236,22 @@ Element.Inserters = new Hash({
 });
 
 Element.Inserters.inside = Element.Inserters.bottom;
+
+Element.Inserters.each(function(value, key){
+	
+	var Key = key.capitalize();
+	
+	Element.implement('inject' + Key, function(el){
+		Element.Inserters[key](this, $(el, true));
+		return this;
+	});
+	
+	Element.implement('grab' + Key, function(el){
+		Element.Inserters[key]($(el, true), this);
+		return this;
+	});
+	
+});
 
 Element.implement({
 	
@@ -520,6 +536,30 @@ Element.Properties.tag = {get: function(){
 Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
+
+Element.implement({
+
+	getText: function(){
+		return this.get('text');
+	},
+
+	setText: function(text){
+		return this.set('text', text);
+	},
+
+	setHTML: function(){
+		return this.set('html', arguments);
+	},
+	
+	getHTML: function(){
+		return this.get('html');
+	},
+
+	getTag: function(){
+		return this.get('tag');
+	}
+
+});
 
 Native.implement([Element, Window, Document], {
 
