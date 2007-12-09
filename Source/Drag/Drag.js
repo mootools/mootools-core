@@ -24,7 +24,6 @@ var Drag = new Class({
 		grid: false,
 		limit: false,
 		handle: false,
-		handles: false,
 		modifiers: {x: 'left', y: 'top'}
 	},
 
@@ -33,7 +32,8 @@ var Drag = new Class({
 		this.element = $(params.element);
 		this.document = this.element.getDocument();
 		this.setOptions(params.options || {});
-		this.handles = (this.options.handles) ? $$(this.options.handles) : $(this.options.handle) || this.element;
+		var htype = $type(this.options.handle);
+		this.handles = (htype == 'array' || htype == 'collection') ? $$(this.options.handle) : $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
 		this.bound = {

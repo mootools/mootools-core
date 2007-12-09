@@ -40,7 +40,7 @@ Element.Events.domready = {
 			var script = $('ie_domready');
 			if (!script){
 				var src = (win.location.protocol == 'https:') ? '//:' : 'javascript:void(0)';
-				doc.write('<script id="ie_domready" defer src="' + src + '"><\/script>');
+				doc.write('<script id="ie_domready" defer src="' + src + '"></script>');
 				script = $('ie_domready');
 			}
 			if (!check(script)) script.addEvent('readystatechange', check.pass(script));

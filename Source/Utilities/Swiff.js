@@ -72,7 +72,7 @@ Swiff.extend({
 					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
 				});
 			}
-			Swiff.pluginVersion = ($type(version) == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
+			Swiff.pluginVersion = (typeof version == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
 		}
 		return Swiff.pluginVersion;
 	},

@@ -11,7 +11,7 @@ var Color = new Native({
 	initialize: function(color, type){
 		if (arguments.length >= 3){
 			type = "rgb"; color = Array.slice(arguments, 0, 3);
-		} else if ($type(color) == 'string'){
+		} else if (typeof color == 'string'){
 			if (color.match(/rgb/)) color = color.rgbToHex().hexToRgb(true);
 			else if (color.match(/hsb/)) color = color.hsbToRgb();
 			else color = color.hexToRgb(true);

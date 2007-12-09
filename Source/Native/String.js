@@ -9,7 +9,7 @@ License:
 String.implement({
 
 	test: function(regex, params){
-		return (($type(regex) == 'string') ? new RegExp(regex, params) : regex).test(this);
+		return ((typeof regex == 'string') ? new RegExp(regex, params) : regex).test(this);
 	},
 
 	contains: function(string, separator){

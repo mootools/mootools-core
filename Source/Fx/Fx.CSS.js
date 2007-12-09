@@ -27,7 +27,7 @@ Fx.CSS = new Class({
 
 	parse: function(value){
 		value = $lambda(value)();
-		value = ($type(value) == 'string') ? value.split(' ') : $splat(value);
+		value = (typeof value == 'string') ? value.split(' ') : $splat(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
