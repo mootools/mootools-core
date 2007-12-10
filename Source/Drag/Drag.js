@@ -36,12 +36,16 @@ var Drag = new Class({
 		this.handles = (htype == 'array' || htype == 'collection') ? $$(this.options.handle) : $(this.options.handle) || this.element;
 		this.mouse = {'now': {}, 'pos': {}};
 		this.value = {'start': {}, 'now': {}};
+		
+		this.selection = (Browser.Engine.trident) ? 'selectstart' : 'mousedown';
+		
 		this.bound = {
-			'start': this.start.bind(this),
-			'check': this.check.bind(this),
-			'drag': this.drag.bind(this),
-			'stop': this.stop.bind(this),
-			'cancel': this.cancel.bind(this)
+			start: this.start.bind(this),
+			check: this.check.bind(this),
+			drag: this.drag.bind(this),
+			stop: this.stop.bind(this),
+			cancel: this.cancel.bind(this),
+			eventStop: $lambda(false)
 		};
 		this.attach();
 	},
@@ -72,21 +76,20 @@ var Drag = new Class({
 			}
 		}
 		if ($type(this.options.grid) == 'number') this.options.grid = {'x': this.options.grid, 'y': this.options.grid};
-		this.document.addEvent('mousemove', this.bound.check);
-		this.document.addEvent('mouseup', this.bound.cancel);
-		event.stop();
+		this.document.addEvents({mousemove: this.bound.check, mouseup: this.bound.cancel});
+		this.document.addEvent(this.selection, this.bound.eventStop);
 	},
 
 	check: function(event){
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
 			this.cancel();
-			this.document.addEvent('mousemove', this.bound.drag);
-			this.document.addEvent('mouseup', this.bound.stop);
-			this.fireEvent('onStart', this.element);
-			this.fireEvent('onSnap', this.element);
+			this.document.addEvents({
+				mousemove: this.bound.drag,
+				mouseup: this.bound.stop
+			});
+			this.fireEvent('onStart', this.element).fireEvent('onSnap', this.element);
 		}
-		event.stop();
 	},
 
 	drag: function(event){
@@ -105,16 +108,19 @@ var Drag = new Class({
 			this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
 		}
 		this.fireEvent('onDrag', this.element);
-		event.stop();
 	},
 
 	cancel: function(event){
 		this.document.removeEvent('mousemove', this.bound.check);
 		this.document.removeEvent('mouseup', this.bound.cancel);
-		if (event) this.fireEvent('onCancel', this.element);
+		if (event){
+			this.document.removeEvent(this.selection, this.bound.eventStop);
+			this.fireEvent('onCancel', this.element);
+		}
 	},
 
 	stop: function(event){
+		this.document.removeEvent(this.selection, this.bound.eventStop);
 		this.document.removeEvent('mousemove', this.bound.drag);
 		this.document.removeEvent('mouseup', this.bound.stop);
 		if (event) this.fireEvent('onComplete', this.element);
