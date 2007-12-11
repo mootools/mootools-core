@@ -67,7 +67,7 @@ Drag Method: constructor {#Drag:constructor}
 Drag Method: attach {#Drag:attach}
 ----------------------------------
 
-Attaches the mouse listener to the handle.
+Attaches the mouse listener to the handle, causing the Element to be draggable.
 
 ### Syntax:
 
@@ -79,9 +79,9 @@ Attaches the mouse listener to the handle.
 
 ### Examples:
 
-	var myDrag = new Drag('myElement').detach(); //the element is inert
+	var myDrag = new Drag('myElement').detach(); //The Element can't be dragged.
 	$('myActivator').addEvent('click', function(){
-		alert('ok now you can drag.');
+		alert('Ok, now you can drag.');
 		myDrag.attach();
 	});
 
@@ -94,7 +94,7 @@ Attaches the mouse listener to the handle.
 Drag Method: detach {#Drag:detach}
 ----------------------------------
 
-Detaches the mouse listener from the handle.
+Detaches the mouse listener from the handle, preventing the Element from being dragged.
 
 ### Syntax:
 
@@ -108,7 +108,7 @@ Detaches the mouse listener from the handle.
 
 	var myDrag = new Drag('myElement');
 	$('myDeactivator').addEvent('click', function(){
-		alert('no more dragging for you mr.');
+		alert('No more dragging for you, Mister.');
 		myDrag.detach();
 	});
 
@@ -170,7 +170,7 @@ Adds drag-to-resize behavior to an Element using supplied options.
 
 	var myResize = $('myElement').makeResizable({
 		onComplete: function(){
-			alert('done resizing');
+			alert('Done resizing.');
 		}
 	});
 

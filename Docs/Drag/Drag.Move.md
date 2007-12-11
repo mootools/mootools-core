@@ -9,7 +9,7 @@ Inherits methods, properties, options and events from [Drag][].
 Drag.Move requires an XHTML doctype.
 
 
-Drag.Move Method: constructor {#Drag:constructor}
+Drag.Move Method: constructor {#Drag-Move:constructor}
 -------------------------------------------------
 
 ### Syntax:
@@ -74,8 +74,8 @@ All the base Drag properties, plus:
 
 
 
-Drag.Move Method: stop {#Drag.Move:stop}
-----------------------------------------
+Drag.Move Method: stop {#Drag-Move:stop}
+-------------------------------------------------
 
 Checks if the Element is above a droppable and fires the drop event. Else, fires the 'emptydrop' event that is attached to this Element. Lastly, calls the Drag Class stop method.
 

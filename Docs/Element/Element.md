@@ -7,7 +7,7 @@ The following functions are treated as Window methods.
 Function: $ {#dollar}
 ---------------------
 
-The dollar function has a dual purpose: Getting the element by its id, and make an element in Internet Explorer "grab" all the [Element][] methods.
+The dollar function has a dual purpose: Getting the element by its id, and making an element in Internet Explorer "grab" all the [Element][] methods.
 
 ### Syntax:
 
@@ -37,7 +37,7 @@ The dollar function has a dual purpose: Getting the element by its id, and make 
 - This method is useful when it's unclear if working with an actual element or an id.  It also serves as a shorthand for document.getElementById().
 - In Internet Explorer, the [Element][] is extended the first time $ is called on it, and all the [Element][] Methods become available.
 - Browsers with native HTMLElement support, such as Safari, Firefox, and Opera, apply all the [Element][] Methods to every DOM element automatically.
-- MooTools detects if an element needs to be extended or not, so you can call the function on the same element as many times as you want without ill effect.
+- Because MooTools detects if an element needs to be extended or not, this function may be called on the same function many times with no ill effects.
 
 
 
@@ -56,19 +56,19 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Returns:
 
-* (array) - An array of all the DOM Elements matched, extended with [$][].
+* (array) - An array of all the DOM elements matched, extended with [$][].
 
 ### Examples:
 
 #### Get Elements by Their Tag Names:
 
-	$$('a'); //returns all anchor elements in the page
-	$$('a', 'b'); //returns anchor and bold tags on the page
+	$$('a'); //Returns all anchor elements in the page.
+	$$('a', 'b'); //Returns all anchor and bold tags on the page.
 
 #### Using CSS Selectors When [Selectors][] is Included:
 
-	$$('#myElement');//Returns an array containing only the element with the id 'myElement'.
-	$$('#myElement a.myClass');//Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
+	$$('#myElement'); //Returns an array containing only the element with the id 'myElement'.
+	$$('#myElement a.myClass'); //Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
 
 #### More Complex $$ Usage:
 
@@ -256,10 +256,9 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 #### With Property and Value:
 
 	$('myElement').set('text', 'text goes here');
-
 	$('myElement').set('class', 'active');
-
-	var body = $(document.body).set('styles', { //styles property passes the object to Element:setStyles
+	//The 'styles' property passes the object to Element:setStyles.
+	var body = $(document.body).set('styles', { 
 		'font': '12px Arial',
 		'color': 'blue'
 	});
@@ -267,12 +266,14 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 #### With an Object:
 
 	var myElement = $('myElement').set({
-		'styles': { //property styles passes the object to Element.setStyles
+		//The 'styles' property passes the object to Element:setStyles.
+		'styles': {
 			'font': '12px Arial',
 			'color': 'blue',
 			'border': '1px solid #f00'
 		},
-		'events': { //property events passes the object to Element.addEvents
+		//The 'styles' property passes the object to Element:addEvents.
+		'events': {
 			'click': function(){ alert('click'); },
 			'mouseover': function(){ this.addClass('over') }
 		},
@@ -363,7 +364,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 Element Method: match {#Element:match}
 --------------------------------------
 
-Tests this element to see if it's tag name is the same as the tag passed in.  If [Selectors][] is included, CSS selectors may also be passed.
+Tests this Element to see if its tag name is the same as the tag passed in.  If [Selectors][] is included, CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -379,7 +380,7 @@ Tests this element to see if it's tag name is the same as the tag passed in.  If
 
 ### Examples:
 
-	$('myDiv').match('div'); // Returns true if myDiv is a div.
+	$('myDiv').match('div'); //Returns true if myDiv is a div.
 
 ### Notes:
 
@@ -400,7 +401,7 @@ Injects, or inserts, the Element at a particular place relative to the Element's
 ### Arguments:
 
 1. el	- (*mixed*) el can be the id of an element or an element.
-2. where - (*string*, optional) The place to inject this Element to (defaults to the bottom of the element passed in).
+2. where - (*string*, optional) The place to inject this Element to (defaults to the bottom of the element passed in).  Can be 'top', 'bottom', 'after', or 'before'.
 
 ### Returns:
 
@@ -408,7 +409,7 @@ Injects, or inserts, the Element at a particular place relative to the Element's
 
 ### Examples:
 
-##### Javascript
+##### JavaScript
 
 	var myFirstElement  = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('div', {id: 'mySecondElement'});
@@ -519,8 +520,7 @@ Element Method: adopt {#Element:adopt}
 
 Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
 
-Inserts the passed element(s) inside the Element (that will become the parent).
-
+Inserts the passed element(s) inside the Element (which will then become the parent element).
 
 ### Syntax:
 	
@@ -528,8 +528,8 @@ Inserts the passed element(s) inside the Element (that will become the parent).
 	
 ### Arguments:
 
-1. el - (*mixed*) el can be the id of an element or an element.
-2. others - (*mixed*, optional) You can pass more then one elements separated by comma or as array.
+1. el - (*mixed*) The id of an element, an Element, or an array of elements.
+2. others - (*mixed*, optional) One or more additional Elements separated by a comma or as an array.
 
 ### Returns:
 
@@ -537,11 +537,11 @@ Inserts the passed element(s) inside the Element (that will become the parent).
 
 ### Examples:
 
-##### Javascript
+##### JavaScript
 
-	var myFirstElement = new Element('div', {id: 'myFirstElement'});
+	var myFirstElement  = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('a', {id: 'mySecondElement'});
-	var myThirdElement = new Element('ul', {id: 'myThirdElement'});
+	var myThirdElement  = new Element('ul', {id: 'myThirdElement'});
 	
 	myParent.adopt(myFirstElement);
 	myParent2.adopt(myFirstElement, 'mySecondElement');
@@ -573,6 +573,24 @@ Element Method: wraps {#Element:wraps}
 
 Works like [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element around its target.
 
+Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
+
+Inserts the passed element(s) inside the Element (that will become the parent).
+
+
+### Syntax:
+	
+	myParent.wrap(el[, others]);
+	
+### Arguments:
+
+1. el - (*mixed*) The id of an element, an Element, or an array of elements.
+2. others - (*mixed*, optional) One or more additional Elements separated by a comma or as an array.
+
+### Returns:
+
+* (*element*) This Element.
+
 
 
 Element Method: appendText {#Element:appendText}
@@ -587,8 +605,8 @@ A text node will be created inside this Element, in either the top or bottom pos
 
 ### Arguments:
 
-1. text - (*string*) The text to append.
-1. where - (*string*, optional) The position to inject the text to. defaults to 'bottom'.
+1. text  - (*string*) The text to append.
+1. where - (*string*, optional) The position to inject the text to. Defaults to 'bottom'.
 
 ### Returns:
 

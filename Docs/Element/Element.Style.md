@@ -17,19 +17,16 @@ Sets a CSS property to the Element.
 ###	Arguments:
 
 1. property - (*string*) The property to set.
-2. value    - (*mixed*) The value to which to set it. For numeric values that require "px" you can pass an number.
+2. value    - (*mixed*) The value to which to set it. Numeric values of properties requiring a unit will automatically be appended with 'px'.
 
 ###	Returns:
 
 * (*element*) This element.
 
 ###	Example:
-
-	$('myElement').setStyle('width', '300px'); //the width is now 300px
-
-	//or
-
-	$('myElement').setStyle('width', 300); //the width is now 300px
+	//Both lines have the same effect.
+	$('myElement').setStyle('width', '300px'); //The width is now 300px.
+	$('myElement').setStyle('width', 300); //The width is now 300px.
 
 ###	Notes:
 
@@ -56,11 +53,8 @@ Returns the style of the Element given the property passed in.
 
 ###	Examples:
 
-	$('myElement').getStyle('width'); //returns "400px"
-
-	//but you can also use
-
-	$('myElement').getStyle('width').toInt(); //returns 400
+	$('myElement').getStyle('width'); //Returns "300px".
+	$('myElement').getStyle('width').toInt(); //Returns 300.
 
 
 
@@ -75,7 +69,7 @@ Applies a collection of styles to the Element.
 
 ###	Arguments:
 
-1. styles - (*mixed*) An object, or string, containing all the styles to apply.
+1. styles - (*object*) An object of property/value pairs for all the styles to apply.
 
 ###	Returns:
 

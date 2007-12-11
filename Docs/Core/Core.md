@@ -113,7 +113,7 @@ Creates a function which returns the passed argument according to the index, i, 
 Function: $empty {#empty}
 -------------------------
 
-An empty function, that's it. Typically used for as a placeholder inside classes event methods.
+An empty function, that's it. Typically used for as a placeholder inside event methods of classes.
 
 ### Syntax:
 
@@ -123,6 +123,26 @@ An empty function, that's it. Typically used for as a placeholder inside classes
 
 	var myFunc = $empty;
 
+Function: $lambda {#lambda}
+-------------------------
+
+Creates an empty function which does nothing but return the value passed.
+
+### Syntax:
+
+	var returnTrue = $lambda(true);
+	
+### Arguments
+
+1. value - (*mixed*) The value for the created function to return.
+
+### Returns
+
+* (*function*) A function which returns the desired value.
+
+### Example:
+
+	myLink.addEvent('click', $lambda(false)); //Prevents a link Element from being clickable.
 
 
 Function: $extend {#extend}

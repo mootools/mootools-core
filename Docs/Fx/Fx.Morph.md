@@ -1,7 +1,7 @@
 Class: Fx.Morph {#Fx-Morph}
 ===========================
 
-Allows you to animate multiple css properties at once, even by a css selector. Inherits methods, properties, options and events from [Fx][].
+Allows for the animation of multiple CSS properties at once, even by a CSS selector. Inherits methods, properties, options and events from [Fx][].
 
 ### Extends:
 
@@ -22,33 +22,31 @@ Allows you to animate multiple css properties at once, even by a css selector. I
 
 ### Examples:
 
-From and To values, with an object:
+Multiple styles with start and end values using an object:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 'long', transition: Fx.Transitions.Sine.easeOut});
 
-	//height from 10 to 100 and width from 900 to 300
 	myEffect.start({
-		'height': [10, 100],
-		'width': [900, 300]
+		'height': [10, 100], //Morphs the 'height' style from 10px to 100px.
+		'width': [900, 300]  //Morphs the 'width' style from 900px to 300px.
 	});
 
 
-Only To value, with an object:
+Multiple styles with the start value omitted will default to the current Element's value:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 'short', transition: Fx.Transitions.Sine.easeOut});
 
-	//or height from current height to 100 and width from current width to 300
 	myEffect.start({
-		'height': 100,
-		'width': 300
+		'height': 100, //Morphs the height from the current to 100px.
+		'width': 300   //Morphs the width from the current to 300px.
 	});
 
 
-With a className:
+Morphing one Element to match the CSS values within a CSS class:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
 
-	//will get myClassName styles and morph the element to it.
+	//The styles of myClassName will be applied to the target Element.
 	myEffect.start('.myClassName');
 
 
@@ -61,7 +59,7 @@ With a className:
 Fx.Morph Method: set {#Fx-Morph:set}
 ------------------------------------
 
-Sets the Element's css properties to the specified values immediately.
+Sets the Element's CSS properties to the specified values immediately.
 
 ### Syntax:
 
@@ -69,7 +67,7 @@ Sets the Element's css properties to the specified values immediately.
 
 ### Arguments:
 
-1. to - (*object*) An object containing keys that specify css properties to alter with their respected values.
+1. properties - (*mixed*) Either an *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.
 
 ### Returns:
 
@@ -83,6 +81,7 @@ Sets the Element's css properties to the specified values immediately.
 		'background-color': '#f00',
 		'opacity': 0
 	});
+	var myFx = new Fx.Morph('myElement').set('.myClass');
 
 
 
@@ -93,11 +92,11 @@ Executes a transition for any number of css properties in tandem.
 
 ### Syntax:
 
-	myFx.start(obj);
+	myFx.start(to);
 
 ### Arguments:
 
-1. properties - (*mixed*) An object of properties/values pair or a string representing a css selector that can be found on one of the css files.
+1. properties - (*mixed*) An *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.
 
 ### Returns:
 
@@ -116,7 +115,7 @@ Executes a transition for any number of css properties in tandem.
 
 ### Notes:
 
-- If you pass a string with the css selector, make sure you write the selector exactly as written in your css.
+- If a string is passed as the CSS selector, the selector must be identical to the one within the CSS.
 - Multiple selectors (with commas) are not supported.
 
 
@@ -130,7 +129,7 @@ Element Property: morph {#Element-Properties:morph}
 
 ### Setter
 
-Sets / gets a default Fx.Morph instance for an element
+Sets a default Fx.Morph instance for an Element.
 
 #### Syntax:
 
@@ -138,11 +137,11 @@ Sets / gets a default Fx.Morph instance for an element
 
 #### Arguments:
 
-1. options - (*object*) the Fx.Morph options.
+1. options - (*object*, optional) The Fx.Morph options.
 
 #### Returns:
 
-* (*element*) This element
+* (*element*) This Element.
 
 #### Examples:
 
@@ -151,23 +150,25 @@ Sets / gets a default Fx.Morph instance for an element
 
 ### Getter
 
+Gets the default Fx.Morph instance for the Element.
+
 #### Syntax:
 
 	el.get('morph');
 
 #### Arguments:
 
-1. options - (*object*, optional) the Fx.Morph options. if passed in will generate a new instance.
+1. options - (*object*, optional) The Fx.Morph options. If these are passed in, a new instance will be generated.
 
 #### Returns:
 
-* (*object*) The Fx.Morph instance
+* (*object*) The Fx.Morph instance.
 
 #### Examples:
 
 	el.set('morph', {duration: 'long', transition: 'bounce:out'});
 	el.morph({height: 100, width: 100});
-	el.get('morph'); //the Fx.Morph instance
+	el.get('morph'); //The Fx.Morph instance.
 
 
 
@@ -177,7 +178,7 @@ Native: Element {#Element}
 Element Method: morph {#Element:morph}
 --------------------------------------
 
-Animate an element given the properties you pass in.
+Animates an Element given the properties passed in.
 
 ### Syntax:
 
@@ -185,7 +186,7 @@ Animate an element given the properties you pass in.
 
 ### Arguments:
 
-1. properties - (*mixed*) the css properties you want to animate. Can be an Object of css properties or a string representing a css selector.
+1. properties - (*mixed*) The CSS properties to animate. Can be either an object of CSS properties or a string representing a CSS selector.
 
 ### Returns:
 
@@ -193,11 +194,11 @@ Animate an element given the properties you pass in.
 
 ### Example:
 
-With object:
+With an object:
 
 	$('myElement').morph({height: 100, width: 200});
 
-With selector:
+With a selector:
 
 	$('myElement').morph('.class1');
 
