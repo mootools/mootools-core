@@ -37,7 +37,7 @@ The dollar function has a dual purpose: Getting the element by its id, and makin
 - This method is useful when it's unclear if working with an actual element or an id.  It also serves as a shorthand for document.getElementById().
 - In Internet Explorer, the [Element][] is extended the first time $ is called on it, and all the [Element][] Methods become available.
 - Browsers with native HTMLElement support, such as Safari, Firefox, and Opera, apply all the [Element][] Methods to every DOM element automatically.
-- Because MooTools detects if an element needs to be extended or not, this function may be called on the same function many times with no ill effects.
+- Because MooTools detects if an element needs to be extended or not, this function may be called on the same Element many times with no ill effects.
 
 
 
