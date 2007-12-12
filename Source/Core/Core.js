@@ -189,7 +189,8 @@ function $type(obj){
 			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
 		}
 	} else if (typeof obj.length == 'number'){
-		return (obj.callee) ? 'arguments' : 'collection';
+		if (obj.callee) return 'arguments';
+		else if (obj.item) return 'collection';
 	}
 	return typeof obj;
 };
