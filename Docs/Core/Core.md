@@ -406,6 +406,7 @@ Returns the type of object that matches the element passed in.
 * 'object'     - (*string*) If object is an object.
 * 'string'     - (*string*) If object is a string.
 * 'number'     - (*string*) If object is a number.
+* 'date'       - (*string*) If object is a date.
 * 'boolean'    - (*string*) If object is a boolean.
 * 'function'   - (*string*) If object is a function.
 * 'regexp'     - (*string*) If object is a regular expression.
