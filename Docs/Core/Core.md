@@ -105,8 +105,8 @@ Creates a function which returns the passed argument according to the index, i, 
 
 ### Example:
 
-	var secondArgument = $argument(1);
-	console.log(secondArgument('a','b','c')); // alerts 1
+	var secondArgument = $arguments(1);
+	console.log(secondArgument('a','b','c')); // alerts b
 
 
 
