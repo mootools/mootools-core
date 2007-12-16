@@ -17,11 +17,8 @@ var Slider = new Class({
 		onChange: $empty,
 		onComplete: $empty,*/
 		onTick: function(position){
-			if (this.options.snap) {
-				position = this.toPosition(this.step);
-				this.knob.setStyle(this.property, position);
-			}
-			else this.knob.setStyle(this.property, position);
+			if(this.options.snap) position = this.toPosition(this.step);
+			this.knob.setStyle(this.property, position);
 		},
 		snap: false,
 		offset: 0,
