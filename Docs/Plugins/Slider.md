@@ -19,9 +19,16 @@ Class: Slider {#Slider}
 
 #### Options:
 
-1. steps  - (*number*: defaults to 100) The number of steps the Slider should move/tick.
-2. mode   - (*string*: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
-3. **offset** - (*number*: defaults to: 0) Relative offset for knob position at start.
+1. snap   - (*boolean*: defaults to false) True if you want the knob to snap to the nearest value.
+2. offset - (*number*: defaults to 0) Relative offset for knob position at start.
+3. range  - (*mixed*: defaults to false) Array of numbers or false. The minimum and maximum limits values the slider will use.
+4. wheel  - (*boolean*: defaults to false) True if you want the ability to move the knob by mousewheeling.
+5. steps  - (*number*: defaults to 100) The number of steps the Slider should move/tick.
+6. mode   - (*string*: defaults to horizontal) The type of Slider can be either 'horizontal' or 'vertical' in movement.
+
+### Notes:
+
+- Range option allows an array of numbers. Numbers can be negative and positive.
 
 
 
@@ -86,6 +93,9 @@ Slider Event: onTick {#Slider:onTick}
 ### Examples:
 
 	var mySlider = new Slider('myElement', 'myKnob', {
+		range: [-50, 50],
+		wheel: true,
+		snap: true,
 		onStart: function(){
 			this.borderFx = this.borderFx || this.element.tween('border').start('#ccc');
 		},

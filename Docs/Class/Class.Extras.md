@@ -65,8 +65,8 @@ Adds functions to the end of the call stack of the Chain instance.
 * (*object*) The current Class instance. Calls to chain can also be chained.
 
 ### Example:
-	//Fx.Style has already implemented the Chain class because of inheritance of the Fx class.
-	var myFx = new Fx.Style('myElement', 'opacity');
+	//Fx.Tween has already implemented the Chain class because of inheritance of the Fx class.
+	var myFx = new Fx.Tween('myElement', 'opacity');
 	myFx.start(1,0).chain(
 		//Notice that "this" refers to the calling object (in this case, the myFx object).
 		function(){ this.start(0,1); },
@@ -125,8 +125,8 @@ Clears the stack of a Chain instance.
 
 ### Example:
 
-	var myFx = Fx.Style('myElement', 'color'); //Fx.Style inherited Fx's implementation of Chain.
-	myFx.chain(function(){ while(true) alert('D'oh!'); }); //Chains an infinite loop of alerts.
+	var myFx = Fx.Tween('myElement', 'color'); //Fx.Tween inherited Fx's implementation of Chain.
+	myFx.chain(function(){ while(true) alert("D'oh!"); }); //Chains an infinite loop of alerts.
 	myFx.clearChain(); //Cancels the infinite loop of alerts before allowing it to begin.
 
 ### See Also:
@@ -200,7 +200,7 @@ Adds an event to the Class instance's event stack.
 
 ### Example:
 
-	var myFx = new Fx.Style('element', 'opacity');
+	var myFx = new Fx.Tween('element', 'opacity');
 	myFx.addEvent('onStart', myStartFunction);
 
 
@@ -224,7 +224,7 @@ The same as [addEvent](#addEvent), but accepts an object to add multiple events 
 
 ### Example:
 
-	var myFx = new Fx.Style('element', 'opacity');
+	var myFx = new Fx.Tween('element', 'opacity');
 	myFx.addEvents({
 		'onStart': myStartFunction,
 		'onComplete': function() {
