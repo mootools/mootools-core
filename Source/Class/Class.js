@@ -16,7 +16,9 @@ var Class = new Native({
 
 		var klass = function(){
 			for (var property in this) this[property] = $unlink(this[property]);
-
+			
+			this.parent = null;
+			
 			['Implements', 'Extends'].each(function(Property){
 				if (!this[Property]) return;
 				Class[Property](this, this[Property]);
@@ -63,10 +65,15 @@ Class.Extends = function(self, klass){
 				var type = $type(current);
 				if (type != $type(previous)) return current;
 				switch (type){
-					case 'function': return function(){
-						current.parent = this.parent = previous.bind(this);
-						return current.apply(this, arguments);
-					};
+					case 'function':
+						current.parent = previous.bind(self);
+						return function(){
+							var old = self.parent;
+							self.parent = current.parent;
+							var value = current.apply(self, arguments);
+							self.parent = old;
+							return value;
+						};
 					case 'object': return $merge(previous, current);
 					default: return current;
 				}
