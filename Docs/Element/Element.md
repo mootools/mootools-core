@@ -727,7 +727,7 @@ Replaces the Element with an Element passed.
 
 ### Examples:
 
-	$('myOldElement').replaces($('myNewElement'));
+	$('myNewElement').replaces($('myOldElement'));
 	//$('myOldElement') is gone, and $('myNewElement') is in its place.
 
 ### See Also:

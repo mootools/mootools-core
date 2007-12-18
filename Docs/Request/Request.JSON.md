@@ -9,7 +9,7 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 ### Syntax:
 
-	var myJSONRemote = new Request.JSON(url[, options]);
+	var myJSONRemote = new Request.JSON(options]);
 
 ### Arguments:
 
