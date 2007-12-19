@@ -133,9 +133,20 @@ function $extend(original, extended){
 };
 
 function $unlink(object){
-	if ($type(object) != 'object') return object;
-	var unlinked = {};
-	for (var p in object) unlinked[p] = $unlink(object[p]);
+	var unlinked = null;
+	
+	switch ($type(object)){
+		case 'object':
+			unlinked = {};
+			for (var p in object) unlinked[p] = $unlink(object[p]);
+		break;
+		case 'array':
+			unlinked = [];
+			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = $unlink(object[i]);
+		break;
+		default: return object;
+	}
+	
 	return unlinked;
 };
 
