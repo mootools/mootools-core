@@ -9,17 +9,32 @@ License:
 var Asset = new Hash({
 
 	javascript: function(source, properties){
-		properties = $merge({
-			'onload': $empty
+		properties = $extend({
+			onload: $empty,
+			check: $lambda(true)
 		}, properties);
-		var script = new Element('script', {'src': source, 'type': 'text/javascript'}).addEvents({
-			'load': properties.onload,
-			'readystatechange': function(){
-				if (this.readyState == 'complete') this.fireEvent('load');
-			}
-		});
+		
+		var script = new Element('script', {'src': source, 'type': 'text/javascript'});
+		
+		var load = properties.onload.bind(script), check = properties.check;
 		delete properties.onload;
-		return script.setProperties(properties).inject(document.head);
+		delete properties.check;
+		
+		script.addEvents({
+			load: load,
+			readystatechange: function(){
+				if (this.readyState == 'complete') load();
+			}
+		}).setProperties(properties);
+		
+		
+		if (Browser.Engine.webkit419) var checker = (function(){
+			if (!$try(check)) return;
+			$clear(checker);
+			load();
+		}).periodical(50);
+		
+		return script.inject(document.head);
 	},
 
 	css: function(source, properties){
