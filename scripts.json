@@ -39,6 +39,11 @@
 		"Hash": {
 			"deps": ["Core"],
 			"desc": "Contains Hash Prototypes. Provides a means for overcoming the JavaScript practical impossibility of extending native Objects."
+		},
+		
+		"Event": {
+			"deps": ["Browser", "Array", "Function", "Number", "String", "Hash"],
+			"desc": "Contains the Event Class, to make the event object Crossbrowser."
 		}
 
 	},
@@ -65,8 +70,8 @@
 		},
 
 		"Element.Event": {
-			"deps": ["Element"],
-			"desc": "Contains the Event Class, Element methods for dealing with events and some custom Events."
+			"deps": ["Element", "Event"],
+			"desc": "Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events."
 		},
 
 		"Element.Style": {
