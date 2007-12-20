@@ -101,7 +101,7 @@ var Tips = new Class({
 	},
 
 	locate: function(event){
-		var doc = this.document.getOffsetSize();
+		var doc = this.document.getSize();
 		var scroll = this.document.getScroll();
 		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
 		var prop = {'x': 'left', 'y': 'top'};

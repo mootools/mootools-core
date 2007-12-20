@@ -23,10 +23,7 @@ Fx.Scroll = new Class({
 		arguments.callee.parent(options);
 		var cancel = this.cancel.bind(this, false);
 
-		switch($type(this.element)){
-			case 'window': this.element = this.element.document; break;
-			case 'element': if (this.element.get('tag') == 'body') this.element = this.element.ownerDocument;
-		}
+		if ($type(this.element) != 'element') this.element = $(this.element.getDocument().body);
 
 		var stopper = this.element;
 
@@ -55,7 +52,7 @@ Fx.Scroll = new Class({
 
 	start: function(x, y){
 		if (!this.check(x, y)) return this;
-		var offsetSize = this.element.getOffsetSize(), scrollSize = this.element.getScrollSize(), scroll = this.element.getScroll(), values = {'x': x, 'y': y};
+		var offsetSize = this.element.getSize(), scrollSize = this.element.getScrollSize(), scroll = this.element.getScroll(), values = {'x': x, 'y': y};
 		for (var z in values){
 			var max = scrollSize[z] - offsetSize[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;
@@ -82,9 +79,8 @@ Fx.Scroll = new Class({
 	},
 
 	toElement: function(el){
-		var position = Element.getPosition($(el, true), this.element);
-		var scroll = ($type(this.element) == 'element') ? this.element.getScroll() : {x: 0, y: 0};
-		return this.start(position.x + scroll.x, position.y + scroll.y);
+		var position = $(el).getPosition(this.element);
+		return this.start(position.x, position.y);
 	}
 
 });

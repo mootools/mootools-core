@@ -3,10 +3,12 @@ Native: Element {#Element}
 
 Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
+
 Element Method: scrollTo {#Element:scrollTo}
 --------------------------------------------
 
 Scrolls the element to the specified coordinated (if the element has an overflow).
+The following method is also available on the Window object.
 
 ### Syntax:
 
@@ -15,7 +17,7 @@ Scrolls the element to the specified coordinated (if the element has an overflow
 ### Arguments:
 
 1. x - (*number*) The x coordinate.
-2. y - (*integer*) The y coordinate.
+2. y - (*number*) The y coordinate.
 
 ### Example:
 
@@ -50,7 +52,7 @@ Returns true if the Element has been absolutely or relatively positioned.
 
 
 Element Method: getOffsetParent {#Element:getOffsetParent}
-------------------------------------------
+----------------------------------------------------------
 
 Returns the first positioned parent Element of the target.
 
@@ -68,14 +70,15 @@ Returns the first positioned parent Element of the target.
 
 
 
-Element Method: getOffsetSize {#Element:getOffsetSize}
-----------------------------------------
+Element Method: getSize {#Element:getSize}
+------------------------------------------
 
 Returns the height and width of the Element, taking into account borders and padding.
+The following method is also available on the Window object.
 
 ### Syntax:
 
-	myElement.getOffsetSize();
+	myElement.getSize();
 
 ### Returns:
 
@@ -83,7 +86,7 @@ Returns the height and width of the Element, taking into account borders and pad
 
 ### Example:
 
-	var size = myElement.getOffsetSize();
+	var size = myElement.getSize();
 	alert("The element is "+size.x+" pixels wide and "+size.y+"pixels high.");
 
 
@@ -93,6 +96,7 @@ Element Method: getScrollSize {#Element:getScrollSize}
 ------------------------------------------------------
 
 Returns an Object representing the size of the target Element, including scrollable area.
+The following method is also available on the Window object.
 
 ### Syntax:
 
@@ -117,6 +121,7 @@ Element Method: getScroll {#Element:getScroll}
 ----------------------------------------------
 
 Returns an Object representing how far the target Element is scrolled in either direction.
+The following method is also available on the Window object.
 
 ### Syntax:
 
@@ -193,7 +198,6 @@ relative - (*element*, optional) if set, the position will be relative to this e
 ### See Also:
 
 [Element:getPosition](#Element:getPosition)
-
 
 
 [$]: /Element/Element#dollar

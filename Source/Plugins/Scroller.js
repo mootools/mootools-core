@@ -24,14 +24,7 @@ var Scroller = new Class({
 	initialize: function(element, options){
 		this.setOptions(options);
 		this.element = $(element);
-		switch($type(this.element)){
-			case 'window':
-				this.element = this.element.document;
-				this.listener = $(this.element.body);
-			break;
-			case 'document': this.listener = $(this.element.body); break;
-			case 'element': this.listener = this.element;
-		}
+		this.listener = ($type(this.element) != 'element') ? $(this.element.getDocument().body) : this.element;
 		this.timer = null;
 	},
 
@@ -46,12 +39,12 @@ var Scroller = new Class({
 	},
 
 	getCoords: function(event){
-		this.page = ($type(this.element) == 'document') ? event.client : event.page;
+		this.page = (this.listener.get('tag') == 'body') ? event.client : event.page;
 		if (!this.timer) this.timer = this.scroll.periodical(50, this);
 	},
 
 	scroll: function(){
-		var size = this.element.getOffsetSize(), scroll = this.element.getScroll(), pos = this.element.getPosition(), change = {'x': 0, 'y': 0};
+		var size = this.element.getSize(), scroll = this.element.getScroll(), pos = this.element.getPosition(), change = {'x': 0, 'y': 0};
 		for (var z in this.page){
 			if (this.page[z] < (this.options.area + pos[z]) && scroll[z] != 0)
 				change[z] = (this.page[z] - this.options.area - pos[z]) * this.options.velocity;

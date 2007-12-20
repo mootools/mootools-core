@@ -11,179 +11,152 @@ Note:
 
 (function(){
 
-var objects = function(self){
-	var doc, great = true;
-	switch ($type(self)){
-		case 'window': doc = self.document; break;
-		case 'document': doc = self; break;
-		case 'element': doc = self.ownerDocument; great = false;
-	}
-	return {doc: doc, win: doc.window, self: self, great: (great || self === doc.body || self === doc.html)};
+function $body(el){
+	return el.tagName.toLowerCase() == 'body';
 };
 
-var great = function(self){
-	return objects(self).great;
-};
-
-var Dimensions = {
-
-	positioned: function(self){
-		if (great(self)) return true;
-		var style = self.style.position || (self.style.position = Element.getComputedStyle(self, 'position'));
-		return (style != 'static');
+Element.implement({
+	
+	positioned: function(){
+		if ($body(this)) return true;
+		return (Element.getComputedStyle(this, 'position') != 'static');
 	},
-
-	getOffsetParent: function(self){
-		if (!Browser.Engine.trident) return self.offsetParent;
-		var el = self;
+	
+	getOffsetParent: function(){
+		if ($body(this)) return null;
+		if (!Browser.Engine.trident) return $(this.offsetParent);
+		var el = this;
 		while ((el = el.parentNode)){
-			if (Dimensions.positioned(el)) return el;
+			if (Element.positioned(el)) return $(el);
 		}
-		return false;
+		return null;
 	},
-
-	getOffsetSize: function(self){
-		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
-		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
-			if (objs.great){
-				if (Browser.Engine.webkit419) return objs.win['inner' + dims[Z]];
-				if (Browser.Engine.presto) return objs.doc.body['client' + dims[Z]];
-				return objs.doc.documentElement['client' + dims[Z]];
-			} else {
-				return self['offset' + dims[Z]];
-			}
-		})();
-		return obj;
+	
+	getSize: function(){
+		if ($body(this)) return this.getWindow().getSize();
+		return {x: this.offsetWidth, y: this.offsetHeight};
 	},
-
-	getScrollSize: function(self){
-		var obj = {}, dims = {X: 'Width', Y: 'Height'}, objs = objects(self);
-		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
-			if (objs.great){
-				var delement = objs.doc.documentElement;
-				if (Browser.Engine.trident) return Math.max(delement['offset' + dims[Z]], delement['scroll' + dims[Z]]);
-				if (Browser.Engine.webkit) return objs.doc.body['scroll' + dims[Z]];
-				return delement['scroll' + dims[Z]];
-			} else {
-				return self['scroll' + dims[Z]];
-			}
-		})();
-		return obj;
+	
+	getScrollSize: function(){
+		if ($body(this)) return this.getWindow().getScrollSize();
+		return {x: this.scrollWidth, y: this.scrollHeight};
 	},
-
-	getScroll: function(self){
-		var obj = {}, dims = {X: 'Left', Y: 'Top'}, objs = objects(self);
-		for (var Z in dims) obj[Z.toLowerCase()] = (function(){
-			return (objs.great) ? objs.win['page' + Z + 'Offset'] || objs.doc.documentElement['scroll' + dims[Z]] : self['scroll' + dims[Z]];
-		})();
-		return obj;
+	
+	getScroll: function(){
+		if ($body(this)) return this.getWindow().getScroll();
+		return {x: this.scrollLeft, y: this.scrollTop};
 	},
-
-	getPosition: function(self, relative){
-		if (great(self) || relative == self) return {x: 0, y: 0};
-		var el = self, left = 0, top = 0, position;
-
+	
+	scrollTo: function(x, y){
+		if ($body(this)) return this.getWindow().scrollTo(x, y);
+		this.scrollLeft = x;
+		this.scrollTop = y;
+		return this;
+	},
+	
+	getPosition: function(relative){
+		if ($body(this)) return {x: 0, y: 0};
+		var el = this, position = {x: 0, y: 0};
 		while (el){
-			var offsetParent = Dimensions.getOffsetParent(el);
-			if (!offsetParent) break;
-			position = Dimensions.getRelativePosition(el, !great(offsetParent));
-			left += position.x;
-			top += position.y;
-			el = offsetParent;
+			position.x += el.offsetLeft;
+			position.y += el.offsetTop;
+			el = el.offsetParent;
 		}
-
-		var rpos = (relative) ? Dimensions.getPosition($(relative, true)) : {x: 0, y: 0};
-		return {x: left - rpos.x, y: top - rpos.y};
+		var rpos = (relative) ? $(relative).getPosition() : {x: 0, y: 0};
+		return {x: position.x - rpos.x, y: position.y - rpos.y};
 	},
-
-	getRelativePosition: function(self, client){
-		if (great(self)) return {x: 0, y: 0};
-
-		var el = self, left = self.offsetLeft, top = self.offsetTop;
-
-		if (Browser.Engine.trident){
-			while ((el = el.offsetParent) && !Dimensions.positioned(el)){
-				left += el.offsetLeft;
-				top += el.offsetTop;
-			}
-			el = self;
-		}
-
-		var position = {x: left, y: top}, isPositioned = Dimensions.positioned(self);
-		
-		while ((el = el.parentNode)){
-			var isOffsetParent = Dimensions.positioned(el);
-			if ((!isOffsetParent || client) && ((!isPositioned || isOffsetParent) || Browser.Engine.presto)){
-				var scroll = Dimensions.getScroll(el);
-				position.x -= scroll.x;
-				position.y -= scroll.y;
-			}
-			if (isOffsetParent) break;
-		}
-
-		return position;
-	},
-
-	getCoordinates: function(self, relative){
-		var position = Dimensions.getPosition(self, relative), size = Dimensions.getOffsetSize(self);
+	
+	getCoordinates: function(element){
+		if ($body(this)) return this.getWindow().getCoordinates();
+		var position = this.getPosition(element), size = this.getSize();
 		var obj = {'top': position.y, 'left': position.x, 'width': size.x, 'height': size.y};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
 		return obj;
-	}
-
-};
-
-var methods = {};
-
-Hash.each(Dimensions, function(value, key){
-	methods[key] = function(arg){
-		return value(this, arg);
-	};
-});
-
-Native.implement([Element, Document], methods);
-
-Document.implement({
-
-	scrollTo: function(x, y){
-		this.getWindow().scrollTo(x, y);
-	}
-
-});
-
-Element.implement({
-
-	scrollTo: function(x, y){
-		this.scrollLeft = x;
-		this.scrollTop = y;
 	},
-
-	computePosition: function(obj, client){
-		var scroll, el = this;
-		var position = {
+	
+	getRelativePosition: function(){
+		return this.getPosition(this.getOffsetParent());
+	},
+	
+	computePosition: function(obj){
+		return {
 			left: obj.x - (this.getComputedStyle('margin-left').toInt() || 0),
 			top: obj.y - (this.getComputedStyle('margin-top').toInt() || 0)
 		};
-		if (client){
-			scroll = Dimensions.getScroll(Dimensions.getOffsetParent(this));
-			position.left += scroll.x;
-			position.top += scroll.y;
-		}
-		if (Browser.Engine.presto){
-			while ((el = el.parentNode) && el != this.offsetParent){
-				scroll = Dimensions.getScroll(el);
-				position.left += scroll.x;
-				position.top += scroll.y;
-			}
-		}
-		return position;
 	},
 
-	position: function(obj, client){
-		return this.setStyles(this.computePosition(obj, client));
+	position: function(obj){
+		return this.setStyles(this.computePosition(obj));
 	}
-
+	
 });
 
 })();
+
+Native.implement([Window, Document], {
+	
+	getSize: function(){
+		var body = this.getDocument().body, html = this.getDocument().documentElement;
+		if (Browser.Engine.webkit419) return {x: this.innerWidth, y: this.innerHeight};
+		return {x: html.clientWidth, y: html.clientHeight};
+	},
+
+	getScroll: function(){
+		var html = this.getDocument().documentElement;
+		return {x: $pick(this.pageXOffset, html.scrollWidth), y: $pick(this.pageYOffset, html.scrollHeight)};
+	},
+
+	getScrollSize: function(){
+		var html = this.getDocument().documentElement, body = this.getDocument().body;
+		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientWidth, html.scrollWidth)};
+		if (Browser.Engine.webkit) return {x: body.scrollWidth, y: body.scrollHeight};
+		return {x: html.scrollWidth, y: html.scrollHeight};
+	},
+	
+	getPosition: function(){
+		return {x: 0, y: 0};
+	},
+	
+	getCoordinates: function(){
+		var size = this.getSize();
+		return {top: 0, left: 0, height: size.y, width: size.x, bottom: size.y, right: size.x};
+	}
+	
+});
+
+Native.implement([Window, Document, Element], {
+	
+	getHeight: function(){
+		return this.getSize().y;
+	},
+	
+	getWidth: function(){
+		return this.getSize().x;
+	},
+	
+	getScrollTop: function(){
+		return this.getScroll().x;
+	},
+	
+	getScrollLeft: function(){
+		return this.getScroll().x;
+	},
+	
+	getScrollHeight: function(){
+		return this.getScrollSize().y;
+	},
+	
+	getScrollWidth: function(){
+		return this.getScrollSize().y;
+	},
+	
+	getTop: function(){
+		return this.getPosition().y;
+	},
+	
+	getLeft: function(){
+		return this.getPosition().x;
+	}
+	
+});
