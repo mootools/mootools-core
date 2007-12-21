@@ -180,7 +180,7 @@ Element shortcut method which immediately transitions any single CSS property of
 ### Examples:
 
 	$('myElement').tween('width', '100'); //transition the width of myElement to 100px
-	$('myElement').tween('height', [20, 200]); //transition the height of myElement from 20px to 100px
+	$('myElement').tween('height', 20, 200); //transition the height of myElement from 20px to 100px
 	$('myElement').tween('border', '6px solid #36f'); //transition the border of myElement to 6px solid blue
 
 ### See Also:
