@@ -11,14 +11,14 @@ var Asset = new Hash({
 	javascript: function(source, properties){
 		properties = $extend({
 			onload: $empty,
+			document: document,
 			check: $lambda(true)
 		}, properties);
 		
 		var script = new Element('script', {'src': source, 'type': 'text/javascript'});
 		
-		var load = properties.onload.bind(script), check = properties.check;
-		delete properties.onload;
-		delete properties.check;
+		var load = properties.onload.bind(script), check = properties.check, doc = properties.document;
+		delete properties.onload; delete properties.check; delete properties.document;
 		
 		script.addEvents({
 			load: load,
@@ -34,7 +34,7 @@ var Asset = new Hash({
 			load();
 		}).periodical(50);
 		
-		return script.inject(document.head);
+		return script.inject(doc.head);
 	},
 
 	css: function(source, properties){

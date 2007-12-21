@@ -185,6 +185,10 @@ $.element = function(el, notrash){
 
 $.textnode = $.window = $.document = $arguments(0);
 
+$.number = function(uid){
+	return Garbage.Elements[uid] || null;
+};
+
 Native.implement([Element, Document], {
 
 	getElement: function(selector, notrash){

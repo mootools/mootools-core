@@ -66,12 +66,10 @@ Class.Extends = function(self, klass){
 				if (type != $type(previous)) return current;
 				switch (type){
 					case 'function':
-						current.parent = previous.bind(self);
 						return function(){
-							var old = self.parent;
-							self.parent = current.parent;
+							current.parent = self.parent = previous.bind(self);
 							var value = current.apply(self, arguments);
-							self.parent = old;
+							self.parent = current.parent;
 							return value;
 						};
 					case 'object': return $merge(previous, current);
