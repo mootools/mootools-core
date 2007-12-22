@@ -33,6 +33,14 @@ Element.Properties.opacity = {
 };
 
 Element.implement({
+	
+	setOpacity: function(value){
+		return this.set('opacity', value, true);
+	},
+	
+	getOpacity: function(){
+		return this.get('opacity');
+	},
 
 	setStyle: function(property, value){
 		switch (property){
