@@ -109,7 +109,7 @@ Native.implement([Window, Document], {
 
 	getScrollSize: function(){
 		var html = this.getDocument().documentElement, body = this.getDocument().body;
-		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientWidth, html.scrollWidth)};
+		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
 		if (Browser.Engine.webkit) return {x: body.scrollWidth, y: body.scrollHeight};
 		return {x: html.scrollWidth, y: html.scrollHeight};
 	},
