@@ -10,10 +10,12 @@ var Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {/*
+	options: {
+		/*
 		onStart: $empty,
 		onCancel: $empty,
-		onComplete: $empty,*/
+		onComplete: $empty,
+		*/
 		fps: 50,
 		unit: false,
 		duration: 500,

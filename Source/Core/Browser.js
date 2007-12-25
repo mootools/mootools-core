@@ -8,8 +8,8 @@ License:
 
 var Browser = new Hash({
 	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()}, 
-	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate)}
+	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
+	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate), 'air': !!(window.runtime)}
 });
 
 if (window.opera) Browser.Engine.name = 'presto';

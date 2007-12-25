@@ -27,7 +27,7 @@ var Class = new Native({
 
 			this.constructor = klass;
 
-			var self = (arguments[0] !== $empty && this.initialize && $type(this.initialize) == 'function') ? this.initialize.apply(this, arguments) : this;
+			var self = (arguments[0] !== $empty && this.initialize) ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
 			return self;
 		};
@@ -67,8 +67,8 @@ Class.Extends = function(self, klass){
 				switch (type){
 					case 'function':
 						return function(){
-							current.parent = self.parent = previous.bind(self);
-							var value = current.apply(self, arguments);
+							current.parent = self.parent = previous.bind(this);
+							var value = current.apply(this, arguments);
 							self.parent = current.parent;
 							return value;
 						};

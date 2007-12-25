@@ -45,14 +45,14 @@ Window.implement({
 
 var Selectors = {
 
-	'regExp': (/:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g),
+	regExp: (/:([^-:(]+)[^:(]*(?:\((["']?)(.*?)\2\))?|\[(\w+)(?:([!*^$~|]?=)(["']?)(.*?)\6)?\]|\.[\w-]+|#[\w-]+|\w+|\*/g),
 
-	'sRegExp': (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
+	sRegExp: (/\s*([+>~\s])[a-zA-Z#.*\s]/g)
 
 };
 
 Selectors.parse = function(selector){
-	var params = {'tag': '*', 'id': null, 'classes': [], 'attributes': [], 'pseudos': []};
+	var params = {tag: '*', id: null, classes: [], attributes: [], pseudos: []};
 	selector = selector.replace(Selectors.regExp, function(bit){
 		switch (bit.charAt(0)){
 			case '.': params.classes.push(bit.slice(1)); break;
