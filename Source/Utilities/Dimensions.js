@@ -104,7 +104,7 @@ Native.implement([Window, Document], {
 
 	getScroll: function(){
 		var html = this.getDocument().documentElement;
-		return {x: $pick(this.pageXOffset, html.scrollWidth), y: $pick(this.pageYOffset, html.scrollHeight)};
+		return {x: $pick(this.pageXOffset, html.scrollLeft), y: $pick(this.pageYOffset, html.scrollTop)};
 	},
 
 	getScrollSize: function(){
@@ -136,7 +136,7 @@ Native.implement([Window, Document, Element], {
 	},
 	
 	getScrollTop: function(){
-		return this.getScroll().x;
+		return this.getScroll().y;
 	},
 	
 	getScrollLeft: function(){
@@ -148,7 +148,7 @@ Native.implement([Window, Document, Element], {
 	},
 	
 	getScrollWidth: function(){
-		return this.getScrollSize().y;
+		return this.getScrollSize().x;
 	},
 	
 	getTop: function(){
