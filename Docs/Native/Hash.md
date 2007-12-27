@@ -321,9 +321,9 @@ Creates a new map with the results of calling a provided function on every value
 
 ### Examples:
 
-	var times Two = new Hash({a: 1, b: 2, c: 3}).map(function(item, index){
+	var timesTwo = new Hash({a: 1, b: 2, c: 3}).map(function(item, index){
 		return item * 2;
-	}); //times Two now holds an object containing: {a: 2, b: 4, c: 6};
+	}); //timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
 
 
 
@@ -434,7 +434,7 @@ Returns true if at least one value in the object satisfies the provided testing 
 
 ### Examples:
 
-	var areAllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).some(function(value, key){
+	var areAnyBigEnough = ({a: 10, b: 4, c: 25, d: 100}).some(function(value, key){
 		return value > 20;
 	}); //isAnyBigEnough = true
 
