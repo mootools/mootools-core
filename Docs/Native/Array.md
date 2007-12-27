@@ -95,6 +95,22 @@ This method is provided only for browsers without native [Array:filter][] suppor
 - [MDC Array:filter][]
 
 
+Array Method: clean {#Array:clean}
+------------------------------------
+
+Creates a new array with all of the elements of the array which evaluate as true (i.e. not null, undefined, zero, false, or "").
+
+### Syntax:
+
+	var cleanedArray = myArray.clean();
+
+### Returns:
+
+* (*array*) The new filtered array.
+
+### Examples:
+
+	var cleanedArray = [0, 3, null, false, true, "foo", ""].clean(); //cleanedArray = [3, true, "foo"]
 
 Array Method: indexOf {#Array:indexOf}
 --------------------------------------

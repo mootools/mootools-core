@@ -22,6 +22,10 @@ Array.implement({
 		}
 		return results;
 	},
+	
+	clean: function() {
+		return this.filter($arguments(0));
+	},
 
 	indexOf: function(item, from){
 		var len = this.length;
