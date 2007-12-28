@@ -174,7 +174,7 @@ Scrolls the specified Element to its maximum left.
 
 
 
-Fx.Scroll Method: toRight {#Fx-Scroll:right}
+Fx.Scroll Method: toRight {#Fx-Scroll:toRight}
 --------------------------------------------
 
 Scrolls the specified Element to its maximum right.
