@@ -77,6 +77,11 @@
 		"Element.Style": {
 			"deps": ["Element"],
 			"desc": "Contains methods for interacting with the styles of Elements in a fashionable way."
+		},
+		
+		"Element.Dimensions": {
+			"deps": ["Element"],
+			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the window object."
 		}
 
 	},
@@ -110,11 +115,6 @@
 		"Cookie": {
 			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
 			"desc": "Class for creating, reading, and deleting browser Cookies."
-		},
-
-		"Dimensions": {
-			"deps": ["Element"],
-			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the document."
 		},
 
 		"Color": {

@@ -1,6 +1,6 @@
 /*
-Script: Dimensions.js
-	Contains methods to work with size, scroll, or positioning of Elements and the document.
+Script: Element.Dimensions.js
+	Contains methods to work with size, scroll, or positioning of Elements and the window object.
 
 License:
 	MIT-style license.
