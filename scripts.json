@@ -162,7 +162,7 @@
 		},
 
 		"Fx.Scroll": {
-			"deps": ["Fx", "Element.Event", "Dimensions"],
+			"deps": ["Fx", "Element.Event", "Element.Dimensions"],
 			"desc": "Effect to smoothly scroll any element, including the window."
 		},
 
@@ -200,7 +200,7 @@
 		},
 
 		"Drag.Move": {
-			"deps": ["Drag", "Dimensions"],
+			"deps": ["Drag", "Element.Dimensions"],
 			"desc": "A Drag extension that provides support for the constraining of draggables to containers and droppables."
 		}
 
@@ -224,7 +224,7 @@
 		},
 
 		"Tips": {
-			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Dimensions"],
+			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Element.Dimensions"],
 			"desc": "Class for creating nice tooltips that follow the mouse cursor when hovering over an element."
 		},
 
@@ -234,12 +234,12 @@
 		},
 
 		"Slider": {
-			"deps": ["Drag", "Dimensions"],
+			"deps": ["Drag", "Element.Dimensions"],
 			"desc": "Class for creating horizontal and vertical slider controls."
 		},
 
 		"Scroller": {
-			"deps": ["Class.Extras", "Element.Event", "Dimensions"],
+			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions"],
 			"desc": "Class which scrolls the contents of any Element (including the window) when the mouse reaches the Element's boundaries."
 		},
 
