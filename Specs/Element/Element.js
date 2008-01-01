@@ -59,7 +59,7 @@ describe('Element constructor', {
 describe('TextNode.constructor', {
 
 	'should return a new textnode element': function(){
-		var text = new TextNode('yo');
+		var text = document.newTextNode('yo');
 		value_of($type(text)).should_be('textnode');
 	}
 
@@ -156,6 +156,7 @@ describe('TextNode.inject', {
 
 });
 
+
 describe('TextNode.dispose | TextNode.remove', {
 
 	'before all': function(){
@@ -175,6 +176,7 @@ describe('TextNode.dispose | TextNode.remove', {
 	}
 
 });
+
 
 describe('IFrame constructor', {
 
@@ -296,41 +298,41 @@ describe('$$', {
 });
 
 describe('Native:getDocument', {
-	
+
 	'should return the owner document for elements': function(){
 		var doc = document.newElement('div').getDocument();
 		value_of(doc).should_be(document);
 	},
-	
+
 	'should return the owned document for window': function(){
 		var doc = window.getDocument();
 		value_of(doc).should_be(document);
 	},
-	
+
 	'should return self for document': function(){
 		var doc = document.getDocument();
 		value_of(doc).should_be(document);
 	}
-	
+
 });
 
 describe('Native:getWindow', {
-	
+
 	'should return the owner window for elements': function(){
 		var win = document.newElement('div').getWindow();
 		value_of(win).should_be(window);
 	},
-	
+
 	'should return the owner window for document': function(){
 		var win = document.getWindow();
 		value_of(win).should_be(window);
 	},
-	
+
 	'should return self for window': function(){
 		var win = window.getWindow();
 		value_of(win).should_be(window);
 	}
-	
+
 });
 
 describe('Element.getElement', {

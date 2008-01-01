@@ -33,11 +33,11 @@ Element.Properties.opacity = {
 };
 
 Element.implement({
-	
+
 	setOpacity: function(value){
 		return this.set('opacity', value, true);
 	},
-	
+
 	getOpacity: function(){
 		return this.get('opacity');
 	},
@@ -83,15 +83,15 @@ Element.implement({
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
 		if (Browser.Engine.presto || (Browser.Engine.trident && !$chk(parseInt(result)))){
-			if (property.test(/^(height|width)$/)){
+			if ((/^height|width$/).test(property)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
 					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
-			if (Browser.Engine.presto && String(result).test('px')) return result;
-			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
+			if (Browser.Engine.presto && (/px/).test(result)) return result;
+			if ((/border.+Width|margin|padding/).test(property)) return '0px';
 		}
 		return result;
 	},
@@ -124,17 +124,16 @@ Element.Styles = new Hash({
 Element.ShortStyles = {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}};
 
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-	var Short = Element.ShortStyles;
-	var All = Element.Styles;
+	var shortHand = Element.ShortStyles, all = Element.Styles;
 	['margin', 'padding'].each(function(style){
 		var sd = style + direction;
-		Short[style][sd] = All[sd] = '@px';
+		shortHand[style][sd] = all[sd] = '@px';
 	});
 	var bd = 'border' + direction;
-	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
+	shortHand.border[bd] = all[bd] = '@px @ rgb(@, @, @)';
 	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
-	Short[bd] = {};
-	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
-	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
-	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
+	shortHand[bd] = {};
+	shortHand.borderWidth[bdw] = shortHand[bd][bdw] = all[bdw] = '@px';
+	shortHand.borderStyle[bds] = shortHand[bd][bds] = all[bds] = '@';
+	shortHand.borderColor[bdc] = shortHand[bd][bdc] = all[bdc] = 'rgb(@, @, @)';
 });

@@ -22,7 +22,7 @@ Array.implement({
 		}
 		return results;
 	},
-	
+
 	clean: function() {
 		return this.filter($arguments(0));
 	},
@@ -108,11 +108,11 @@ Array.implement({
 	},
 
 	flatten: function(){
-		var array = [];
+		var array = [], type;
 		for (var i = 0, l = this.length; i < l; i++){
-			var type = $type(this[i]);
-			if (!type) continue;
-			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
+			if ((type = $type(this[i]))){
+				array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
+			}
 		}
 		return array;
 	},
@@ -123,7 +123,7 @@ Array.implement({
 			if (value.length == 1) value += value;
 			return value.toInt(16);
 		});
-		return array ? rgb : 'rgb(' + rgb + ')';
+		return (array) ? rgb : 'rgb(' + rgb + ')';
 	},
 
 	rgbToHex: function(array){
@@ -134,7 +134,7 @@ Array.implement({
 			var bit = (this[i] - 0).toString(16);
 			hex.push((bit.length == 1) ? '0' + bit : bit);
 		}
-		return array ? hex : '#' + hex.join('');
+		return (array) ? hex : '#' + hex.join('');
 	}
 
 });

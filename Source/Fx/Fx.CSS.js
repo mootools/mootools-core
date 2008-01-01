@@ -72,15 +72,14 @@ Fx.CSS = new Class({
 	//searches inside the page css to find the values for a selector
 
 	search: function(selector){
-		var to = {};
+		var to = {}, match = new RegExp('^' + selector.escapeRegExp() + '$');
 		Array.each(document.styleSheets, function(sheet, j){
-			var rules = sheet.rules || sheet.cssRules;
-			Array.each(rules, function(rule, i){
-				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
+			Array.each(sheet.rules || sheet.cssRules, function(rule, i){
+				if (!rule.style || !rule.selectorText || !match.test(rule.selectorText)) return;
 				Element.Styles.each(function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = rule.style[style];
-					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
+					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
 				});
 			});
 		});
@@ -94,7 +93,7 @@ Fx.CSS.Parsers = new Hash({
 	Color: {
 
 		parse: function(value){
-			if (value.match(/^#[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
+			if ((/^#[0-9a-f]{3,6}$/i).test(value)) return value.hexToRgb(true);
 			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
 		},
 
