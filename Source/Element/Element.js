@@ -8,7 +8,7 @@ License:
 */
 
 Document.implement({
-
+	
 	newElement: function(tag, props){
 		if (Browser.Engine.trident && props){
 			['name', 'type', 'checked'].each(function(attribute){
@@ -20,15 +20,15 @@ Document.implement({
 		}
 		return $.element(this.createElement(tag)).set(props);
 	},
-
+	
 	newTextNode: function(text){
 		return this.createTextNode(text);
 	},
-
+	
 	getDocument: function(){
 		return this;
 	},
-
+	
 	getWindow: function(){
 		return this.defaultView || this.parentWindow;
 	}
@@ -68,17 +68,20 @@ var IFrame = new Native({
 	initialize: function(){
 		Native.UID++;
 		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
-		var props = params.properties || {}, iframe = $(params.iframe) || false, onload = props.onload || $empty;
+		var props = params.properties || {};
+		var iframe = $(params.iframe) || false;
+		var onload = props.onload || $empty;
 		delete props.onload;
 		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Native.UID);
 		((iframe = iframe || new Element('iframe'))).set(props);
-		function onFrameLoad(){
+		var onFrameLoad = function(){
 			var host = $try(function(){
 				return iframe.contentWindow.location.host;
 			});
 			if (host && host == window.location.host){
 				iframe.window = iframe.contentWindow;
-				var win = new Window(iframe.window), doc = new Document(iframe.window.document);
+				var win = new Window(iframe.window);
+				var doc = new Document(iframe.window.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow);
@@ -95,7 +98,8 @@ var Elements = new Native({
 		options = $extend({ddup: true, cash: true}, options);
 		elements = elements || [];
 		if (options.ddup || options.cash){
-			var uniques = {}, returned = [];
+			var uniques = {};
+			var returned = [];
 			for (var i = 0, l = elements.length; i < l; i++){
 				var el = $.element(elements[i], !options.cash);
 				if (options.ddup){
@@ -124,7 +128,8 @@ Elements.implement({
 
 Elements.multi = function(property){
 	return function(){
-		var items = [], elements = true;
+		var items = [];
+		var elements = true;
 		for (var i = 0, j = this.length; i < j; i++){
 			var returns = this[i][property].apply(this[i], arguments);
 			items.push(returns);
@@ -144,7 +149,8 @@ Window.implement({
 
 	$$: function(selector){
 		if (arguments.length == 1 && typeof selector == 'string') return this.document.getElements(selector);
-		var elements = [], args = Array.flatten(arguments);
+		var elements = [];
+		var args = Array.flatten(arguments);
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
 			switch ($type(item)){
@@ -156,11 +162,11 @@ Window.implement({
 		}
 		return new Elements(elements);
 	},
-
+	
 	getDocument: function(){
 		return this.document;
 	},
-
+	
 	getWindow: function(){
 		return this;
 	}
@@ -192,7 +198,8 @@ Native.implement([Element, Document], {
 
 	getElements: function(tags, nocash){
 		tags = tags.split(',');
-		var elements = [], ddup = (tags.length > 1);
+		var elements = [];
+		var ddup = (tags.length > 1);
 		tags.each(function(tag){
 			var partial = this.getElementsByTagName(tag.trim());
 			(ddup) ? elements.extend(partial) : elements = partial;
@@ -236,25 +243,27 @@ Element.Inserters = new Hash({
 Element.Inserters.inside = Element.Inserters.bottom;
 
 Element.Inserters.each(function(value, key){
-
-	Element.implement('inject' + key.capitalize(), function(el){
+	
+	var Key = key.capitalize();
+	
+	Element.implement('inject' + Key, function(el){
 		Element.Inserters[key](this, $(el, true));
 		return this;
 	});
-
-	Element.implement('grab' + key.capitalize(), function(el){
+	
+	Element.implement('grab' + Key, function(el){
 		Element.Inserters[key]($(el, true), this);
 		return this;
 	});
-
+	
 });
 
 Element.implement({
-
+	
 	getDocument: function(){
 		return this.ownerDocument;
 	},
-
+	
 	getWindow: function(){
 		return this.ownerDocument.getWindow();
 	},
@@ -433,7 +442,8 @@ Element.implement({
 (function(){
 
 var walk = function(element, walk, start, match, all, nocash){
-	var el = element[start || walk], elements = [];
+	var el = element[start || walk];
+	var elements = [];
 	while (el){
 		if (el.nodeType == 1 && Element.match(el, match)){
 			elements.push(el);
@@ -545,7 +555,7 @@ Element.implement({
 	setHTML: function(){
 		return this.set('html', arguments);
 	},
-
+	
 	getHTML: function(){
 		return this.get('html');
 	},

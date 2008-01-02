@@ -50,7 +50,8 @@ Native.implement([Element, Window, Document], {
 		if (!events || !events[type]) return this;
 		var pos = events[type].keys.indexOf(fn);
 		if (pos == -1) return this;
-		var key = events[type].keys.splice(pos, 1)[0], value = events[type].values.splice(pos, 1)[0];
+		var key = events[type].keys.splice(pos, 1)[0];
+		var value = events[type].values.splice(pos, 1)[0];
 		var custom = Element.Events.get(type);
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
@@ -116,7 +117,8 @@ Element.NativeEvents = {
 
 var checkRelatedTarget = function(event){
 	var related = event.relatedTarget;
-	return (!related) || ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	if (!related) return true;
+	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
 };
 
 Element.Events = new Hash({

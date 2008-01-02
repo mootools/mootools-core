@@ -22,7 +22,7 @@ Array.implement({
 		}
 		return results;
 	},
-
+	
 	clean: function() {
 		return this.filter($arguments(0));
 	},
@@ -108,11 +108,11 @@ Array.implement({
 	},
 
 	flatten: function(){
-		var array = [], type;
+		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			if ((type = $type(this[i]))){
-				array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
-			}
+			var type = $type(this[i]);
+			if (!type) continue;
+			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
 		}
 		return array;
 	},

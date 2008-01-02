@@ -65,18 +65,18 @@ var Request = new Class({
 	},
 
 	processScripts: function(text){
-		if (this.options.evalResponse || (/(?:ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
 		return text.stripScripts(this.options.evalScripts);
 	},
 
 	success: function(text, xml){
 		this.onSuccess(this.processScripts(text), xml);
 	},
-
+	
 	onSuccess: function(){
 		this.fireEvent('onComplete', arguments).fireEvent('onSuccess', arguments).callChain();
 	},
-
+	
 	failure: function(){
 		this.onFailure();
 	},

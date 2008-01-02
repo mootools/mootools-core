@@ -9,8 +9,9 @@ License:
 Native.implement([Element, Document], {
 
 	getElements: function(selectors, nocash){
+		var Local = {};
 		selectors = selectors.split(',');
-		var Local = {}, elements = [], j = selectors.length;
+		var elements = [], j = selectors.length;
 		var ddup = (j > 1);
 		for (var i = 0; i < j; i++){
 			var selector = selectors[i], items = [], separators = [];
@@ -128,12 +129,13 @@ Selectors.XPath = {
 Selectors.Filter = {
 
 	getParam: function(items, separator, context, params, Local){
-		var found = [], tag = params.tag, match = Selectors.Filter.match;
+		var found = [];
+		var tag = params.tag;
 		if (separator){
 			var uniques = {}, child, children, item, k, l;
 			var add = function(child){
 				child.uid = child.uid || [Native.UID++];
-				if (!uniques[child.uid] && match(child, params, Local)){
+				if (!uniques[child.uid] && Selectors.Filter.match(child, params, Local)){
 					uniques[child.uid] = true;
 					found.push(child);
 					return true;
@@ -141,7 +143,7 @@ Selectors.Filter = {
 				return false;
 			};
 			for (var i = 0, j = items.length; i < j; i++){
-				item = items[i];
+				item = items[i];	
 				switch(separator){
 					case ' ':
 						children = item.getElementsByTagName(tag);
@@ -168,18 +170,18 @@ Selectors.Filter = {
 						}
 					break;
 				}
-			}
+			}	
 			return found;
 		}
 		if (params.id){
 			el = context.getElementById(params.id, true);
 			params.id = false;
-			return (el && match(el, params, Local)) ? [el] : false;
+			return (el && Selectors.Filter.match(el, params, Local)) ? [el] : false;
 		} else {
 			items = context.getElementsByTagName(tag);
 			params.tag = false;
 			for (var m = 0, n = items.length; m < n; m++){
-				if (match(items[m], params, Local)) found.push(items[m]);
+				if (Selectors.Filter.match(items[m], params, Local)) found.push(items[m]);
 			}
 		}
 		return found;
