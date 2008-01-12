@@ -1,7 +1,69 @@
 Native: Hash {#Hash}
 ====================
 
-A Custom "Object" ({}) implementation which does not account for prototypes when setting, getting, iterating.
+A custom Object ({}) implementation which does not account for prototypes when setting, getting, iterating.
+Useful because in JavaScript we cannot use Object.prototype. Instead, we can use Hash.prototype!
+
+
+Hash Method: constructor {#Hash:constructor}
+--------------------------------------------
+
+### Syntax:
+
+	var myHash = new Hash([object]);
+
+### Arguments:
+
+1. object - (*mixed*) A hash or object to implement.
+
+### Returns:
+
+* (*hash*) A new Hash instance.
+
+### Examples:
+
+	var myHash = new Hash({
+		aProperty: true,
+		aMethod: function(){
+			return true;
+		}
+	});
+	alert(myHash.has('aMethod')); //Returns true.
+
+
+
+Hash Method: each {#Hash:each}
+-------------------------------
+
+Calls a function for each key-value pair in the object.
+
+### Syntax:
+
+	myHash.each(fn[, bind]);
+
+### Arguments:
+
+1. fn   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+
+#### Argument: fn
+
+##### Syntax:
+
+	fn(value, key, hash)
+
+##### Arguments:
+
+1. value - (*mixed*) The current value in the hash.
+2. key   - (*string*) The current value's key in the hash.
+3. hash  - (*hash*) The actual hash.
+
+### Examples:
+
+	var hash = new Hash({first: "Sunday", second: "Monday", third: "Tuesday"});
+	hash.each(function(value, key){
+		alert("the " + key + " day of the week is " + value);
+	}); //Alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
 
 
 
@@ -528,3 +590,20 @@ Generates a query string from key/pair values in an object and URI encodes the v
 [fn]: #Hash:some:fn
 [Hash:getKeys]: #Hash:getKeys
 [Hash:getValues]: #Hash:getValues
+
+
+Utility Functions {#Utility}
+============================
+
+Function: $H {#H}
+-----------------
+
+Shortcut for the new [Hash](/Core/#Hash).
+
+### See Also:
+
+- [Hash][]
+
+
+
+[Hash]: /Native/Hash

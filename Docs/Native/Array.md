@@ -1,11 +1,53 @@
 Native: Array {#Array}
 ======================
 
-A collection of the Array Object methods.
+A collection of Array methods.
 
 ### See Also:
 
 - [MDC Array][]
+
+
+Array Method: each {#Array:each}
+---------------------------------
+
+Calls a function for each element in the array.
+
+### Syntax:
+
+	myArray.each(fn[, bind]);
+
+### Arguments:
+
+1. fn   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+2. bind - (*object*, optional) The object to be used as 'this' in the function. For more information see [Function:bind][].
+
+#### Argument: fn
+
+##### Syntax
+
+	fn(item, index, array)
+
+##### Arguments:
+
+1. item   - (*mixed*) The current item in the array.
+2. index  - (*number*) The current item's index in the array.
+3. array  - (*array*) The actual array.
+
+### Examples:
+
+	['apple', 'banana', 'lemon'].each(function(item, index){
+		alert(index + " = " + item); /Alerts "0 = apple", "1 = banana", and so on.
+	}, bind); //The optional second argument for binding isn't used here.
+
+
+### See Also:
+
+- [MDC Array:forEach][]
+
+### Notes:
+
+- This method is only available for browsers without native [MDC Array:forEach][] support.
 
 
 
@@ -513,7 +555,45 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 
 - [String:rgbToHex](/Native/String/#rgbToHex)
 
+Utility Functions {#Utility}
+============================
 
+
+Function: $A {#A}
+-----------------
+
+Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
+
+### Syntax:
+
+	var copiedArray = $A(iterable);
+
+### Arguments:
+
+1. iterable - (array) The iterable to copy.
+
+### Returns:
+
+* (*array*) The new copied array.
+
+### Examples:
+
+#### Apply Array to arguments:
+
+	function myFunction(){
+		$A(arguments).each(function(argument, index){
+			alert(argument);
+		});
+	};
+	myFunction("One", "Two", "Three"); //Alerts "One", then "Two", then "Three".
+
+#### Copy an Array:
+
+	var anArray = [0, 1, 2, 3, 4];
+	var copiedArray = $A(anArray); //Returns [0, 1, 2, 3, 4].
+
+
+[Array]: /Native/Array
 [Function:bind]: /Native/Function/#Function:bind
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
 [MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
@@ -521,6 +601,7 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 [MDC Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
 [MDC Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
 [MDC Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
+[MDC Array:forEach]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
 [Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 [Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
 [Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf

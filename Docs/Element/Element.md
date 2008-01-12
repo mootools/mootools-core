@@ -142,6 +142,7 @@ Element Method: getElement {#Element:getElement}
 ------------------------------------------------
 
 Gets the first descendant element whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
+
 ### Syntax:
 
 	var myElement = myElement.getElement(tag);

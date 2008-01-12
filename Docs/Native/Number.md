@@ -1,12 +1,15 @@
 Native: Number {#Number}
 ========================
 
-A collection of the Number Object prototype methods.
+A collection of the Number Object methods.
 
 ### See Also:
 
 - [MDC Number][]
 
+### Notes:
+
+Every Math method is mirrored in the Number object, both as prototype and generic.
 
 
 Number Method: limit {#Number:limit}

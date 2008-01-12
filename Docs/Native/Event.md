@@ -1,7 +1,11 @@
 Native: Event {#Event}
 ======================
 
-Cross browser Class to manage Events.
+MooTools Event Methods.
+
+
+Event Method: constructor {#Event:constructor}
+----------------------------------------------
 
 ### Syntax:
 
@@ -40,18 +44,7 @@ Cross browser Class to manage Events.
 ### Notes:
 
 - Accessing event.page / event.client requires an XHTML doctype.
-
-#### Hash: Event.Keys
-
-You can add additional Event keys codes by adding properties to the Event.Keys Hash:
-
-#### Examples:
-
-	Event.Keys.whatever = 80;
-	$('myInput').addEvent('keydown', function(event){
-		if (event.key == 'whatever') alert('whatever key clicked');
-	});
-
+- Every event added with addEvent gets the mootools method automatically, without the need to manually instance it.
 
 
 Event Method: stop {#Event:stop}
@@ -159,6 +152,19 @@ Cross browser method to prevent the default action of the event.
 ### See Also:
 
 - [Element:addEvent](#Element:addEvent), [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
+
+
+Hash: Event.Keys {#Event-Keys}
+==============================
+
+You can add additional Event keys codes by adding properties to the Event.Keys Hash:
+
+#### Examples:
+
+	Event.Keys.whatever = 80;
+	$('myInput').addEvent('keydown', function(event){
+		if (event.key == 'whatever') alert('whatever key clicked');
+	});
 
 
 
