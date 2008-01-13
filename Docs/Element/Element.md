@@ -273,12 +273,13 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 			'color': 'blue',
 			'border': '1px solid #f00'
 		},
-		//The 'styles' property passes the object to Element:addEvents.
+		//The 'events' property passes the object to Element:addEvents.
 		'events': {
 			'click': function(){ alert('click'); },
 			'mouseover': function(){ this.addClass('over') }
 		},
-		'id': 'documentBody' //any other property uses setProperty
+		//Any other property uses Element:setProperty.
+		'id': 'documentBody'
 	});
 
 ### Notes:
@@ -313,12 +314,12 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 #### Using Custom Getters:
 
-	var tag = $('myDiv').get('tag'); // Returns "div".
+	var tag = $('myDiv').get('tag'); //Returns "div".
 
 #### Fallback to Element Attributes:
 
-	var id = $('myDiv').get('id'); // Returns "myDiv".
-	var value = $('myInput').get('value'); // Returns the myInput element's value.
+	var id = $('myDiv').get('id'); //Returns "myDiv".
+	var value = $('myInput').get('value'); //Returns the myInput element's value.
 
 ### Notes:
 
@@ -350,7 +351,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 ### Examples:
 
 	$('myDiv').erase('id'); //Removes the id from myDiv.
-	$('myDiv').erase('class'); //myDiv element no longer has any classNames set.
+	$('myDiv').erase('class'); //myDiv element no longer has any class names set.
 
 ### Note:
 
@@ -402,7 +403,7 @@ Injects, or inserts, the Element at a particular place relative to the Element's
 ### Arguments:
 
 1. el	- (*mixed*) el can be the id of an element or an element.
-2. where - (*string*, optional) The place to inject this Element to (defaults to the bottom of the element passed in).  Can be 'top', 'bottom', 'after', or 'before'.
+2. where - (*string*, optional: defaults to 'bottom') The place to inject this Element.  Can be 'top', 'bottom', 'after', or 'before'.
 
 ### Returns:
 
@@ -489,7 +490,7 @@ Appends the Element at a particular place relative to the Element's children (sp
 ### Arguments:
 
 1. el - (*mixed*) el can be the id of an element or an element.
-2. where - (*string*, optional) The place to append this Element to (defaults to 'bottom'). can be either top and bottom.
+2. where - (*string*, optional: default 'bottom') The place to append this Element. Can be 'top' or 'bottom'.
 
 ### Returns:
 
@@ -607,7 +608,7 @@ A text node will be created inside this Element, in either the top or bottom pos
 ### Arguments:
 
 1. text  - (*string*) The text to append.
-1. where - (*string*, optional) The position to inject the text to. Defaults to 'bottom'.
+1. where - (*string*, optional: default 'bottom') The position to inject the text to.
 
 ### Returns:
 
@@ -881,11 +882,11 @@ Returns the previousSibling of the Element (excluding text nodes).
 
 ### Syntax:
 
-	var previousSibling = myElement.getPrevious([tagName/selector]);
+	var previousSibling = myElement.getPrevious([match]);
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -1024,7 +1025,7 @@ Checks all descendants of this Element for a match.
 
 ### Arguments:
 
-1. el - (*mixed*) Can be a Element reference or string id.
+1. el - (*mixed*) Can be an Element reference or string id.
 
 ### Returns:
 
@@ -1096,7 +1097,7 @@ Useful to clear memory before the pageUnload.
 Element Method: toQueryString {#Element:toQueryString}
 ------------------------------------------------------
 
-Reads the children inputs of the Element and generates a query string based on their values.
+Reads the child inputs of the Element and generates a query string based on their values.
 
 
 ### Syntax:
@@ -1318,7 +1319,7 @@ Hash: Element.Properties {#Element-Properties}
 
 This Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
 
-### Example of a custom Element Property
+### Adding a Custom Element Property
 
 	Element.Properties.disabled = {
 		
@@ -1333,24 +1334,27 @@ This Hash contains the functions that respond to the first argument passed in [E
 		
 	};
 
-	//Using the custom property:
-	$(element).get('disabled'); //Gets the disabled property.
-	$(element).set('disabled', true); //Sets the disabled property to true, along with the attribute.
+### Using a Custom Element Property
 
-### Note
+	//Gets the "disabled" property.
+	$(element).get('disabled');
+	//Sets the "disabled" property to true, along with the attribute.
+	$(element).set('disabled', true);
+
+### Note:
 
 Automatically returns the element for setters.
 
-### As object
+### Using an Object:
 
-Additionally, you can use these custom getters and setters as a parameter for the [set](#Element:set) method as object.
+Additionally, you can access these custom getters and setters using an object as the parameter for the [set](#Element:set) method.
 
-#### Example
+#### Example:
 
 	//Using set:
 	$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
 
-	//For new elements (works the same as set):
+	//For new Elements (works the same as set):
 	new Element('input', {type: 'checkbox', checked: true, disabled: true});
 
 
@@ -1432,7 +1436,8 @@ Sets the inner text of the Element.
 
 ##### JavaScript
 
-	$('myElement').set('text', 'some text'); //The text of myElement is now 'some text'.
+	$('myElement').set('text', 'some text');
+	//The text of myElement is now 'some text'.
 
 ##### Resulting HTML
 
@@ -1467,7 +1472,7 @@ Element Property: value {#Element-Properties:value}
 
 ### Getter:
 
-Returns the value of the Element if its tag is textarea, select or input. getValue called on a multiple select will return an array.
+Returns the value of the Element if its tag name is "textarea", "select" or "input". If getValue is called on a multiple select element, it will return an array.
 
 
 #### Syntax:
@@ -1476,7 +1481,7 @@ Returns the value of the Element if its tag is textarea, select or input. getVal
 
 #### Returns:
 
-* (*mixed*) Returns false if if tag is not a 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
+* (*mixed*) Returns false if if tag name is not 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
 
 #### Examples:
 
@@ -1502,7 +1507,7 @@ Element Property: tag {#Element-Properties:tag}
 
 ### Getter:
 
-Returns the tagName of the Element in lower case.
+Returns the tag name of the Element in lower case.
 
 #### Syntax:
 
@@ -1620,7 +1625,8 @@ Elements Method: constructor {#Elements:constructor}
 		el.setStyle('color', 'red');
 	});
 
-	//However, because $$('myselector') also accepts [Element][] methods, the below example would have the same effect as the one above.
+	//Because $$('myselector') also accepts [Element][] methods, the below
+	//example has the same effect as the one above.
 	$$('p').setStyle('color', 'red');
 
 

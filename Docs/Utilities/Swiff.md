@@ -1,11 +1,11 @@
 Class: Swiff {#Swiff}
 =====================
 
-Creates a Flash object with supplied parameters.
+Creates and returns a Flash object using supplied parameters.
 
 ### Credits:
 
-Flash detection and Internet Explorer + Flash Player 9 fix 'borrowed' from SWFObject.
+Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject][].
 
 ### Syntax:
 
@@ -13,22 +13,22 @@ Flash detection and Internet Explorer + Flash Player 9 fix 'borrowed' from SWFOb
 
 ### Arguments:
 
-1. path    - (*string*) The path to the swf movie.
-2. options - (*object*) an object with options names as keys. See options below.
+1. path    - (*string*) The path to the SWF file.
+2. options - (*object*, optional) See Options below.
 
 ###	Options:
 
-* id - (*string*: defaults to 'Swiff_' + unique id) The id of the flash object.
-* width - (*number*: defaults to 1) The width of the flash object.
-* height - (*number*: defaults to 1) The height of the flash object.
-* params - (*object*) SWF object parameters (ie. wmode, bgcolor, allowScriptAccess, loop, etc.)
+* id - (*string*: defaults to 'Swiff_' + unique id) The id of the Flash object.
+* width - (*number*: defaults to 1) The width of the Flash object.
+* height - (*number*: defaults to 1) The height of the Flash object.
+* params - (*object*) Parameters to be passed to the SWF object (wmode, bgcolor, allowScriptAccess, loop, etc.).
   * allowScriptAccess - (*string*: defaults to always) The domain that the SWF object allows access to.
-  * swLiveConnect - (*boolean*: defaults to true) the swLiveConnect param to allow remote scripting.
-  * quality - (*string*: defaults to high) the render quality of the movie.
+  * swLiveConnect - (*boolean*: defaults to true) the swLiveConnect parameter to allow remote scripting.
+  * quality - (*string*: defaults to 'high') The render quality of the movie.
   
 * properties - (*object*) Additional attributes for the object element.
-* vars - (*object*) Given to the SWF as querystring in flashVars.
-* events - (*object*) Functions you need to call from the flash movie. Those will be available globally in the movie, and bound to the object.
+* vars - (*object*) Vars will be passed to the SWF as querystring in flashVars.
+* events - (*object*) Functions to call from the Flash movie. These will be available globally in the movie, and bound to the object.
 
 ### Returns:
 
@@ -55,7 +55,7 @@ Flash detection and Internet Explorer + Flash Player 9 fix 'borrowed' from SWFOb
 
 ### Note:
 
-1. Swiff returns the object tag, but its not extensible by the $ function.
+1. Although Swiff returns the object tag, this element will NOT have Element methods applied to it.
 2. The $ function on an object/embed tag will only return its reference without further processing.
 
 Swiff Function: remote {#Swiff:remote}
@@ -79,7 +79,8 @@ Calls an ActionScript function from JavaScript.
 ###	Example:
 
 	var obj = new Swiff('myMovie.swf');
-	alert(Swiff.remote(obj, 'myFlashFn')); //alerts "This is from the .swf file!"
+	//Alerts "This is from the .swf file!".
+	alert(Swiff.remote(obj, 'myFlashFn'));
 
 ###	Note:
 
@@ -89,7 +90,7 @@ The SWF file must be compiled with the ExternalInterface component.  See the Ado
 Swiff Function: getVersion {#Swiff:getVersion}
 ----------------------------------------------
 
-Gets the major version of the Flash player installed.
+Returns the major version of the Flash player installed.
 
 ###	Syntax:
 
@@ -102,3 +103,5 @@ Gets the major version of the Flash player installed.
 ###	Example:
 
 	alert(Swiff.getVersion());
+
+[SWFObject]: http://blog.deconcept.com/swfobject/

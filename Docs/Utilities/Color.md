@@ -245,9 +245,9 @@ Converts a RGB array to an HSB array.
 
 * (*array*) An array with HSB values.
 
-###	Examples:
+###	Example:
 
-	var myHSB = [255, 0, 0].rgbToHsb(); //myHSB = [0, 100, 100]
+	var myHSB = [255, 0, 0].rgbToHsb(); //Returns [0, 100, 100].
 
 
 

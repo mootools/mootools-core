@@ -67,7 +67,7 @@ Sets the Element's CSS properties to the specified values immediately.
 
 ### Arguments:
 
-1. properties - (*mixed*) Either an *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.
+1. properties - (*mixed*) Either an *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.  If only one value is given for any CSS property, the transition will be from the current value of that property to the value given.
 
 ### Returns:
 
@@ -88,7 +88,7 @@ Sets the Element's CSS properties to the specified values immediately.
 Fx.Morph Method: start {#Fx-Morph:start}
 ----------------------------------------
 
-Executes a transition for any number of css properties in tandem.
+Executes a transition for any number of CSS properties in tandem.
 
 ### Syntax:
 
@@ -96,7 +96,7 @@ Executes a transition for any number of css properties in tandem.
 
 ### Arguments:
 
-1. properties - (*mixed*) An *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.
+1. properties - (*mixed*) An *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.  If only one value is given for any CSS property, the transition will be from the current value of that property to the value given.
 
 ### Returns:
 
@@ -186,7 +186,7 @@ Animates an Element given the properties passed in.
 
 ### Arguments:
 
-1. properties - (*mixed*) The CSS properties to animate. Can be either an object of CSS properties or a string representing a CSS selector.
+1. properties - (*mixed*) The CSS properties to animate. Can be either an object of CSS properties or a string representing a CSS selector.  If only one value is given for any CSS property, the transition will be from the current value of that property to the value given.
 
 ### Returns:
 

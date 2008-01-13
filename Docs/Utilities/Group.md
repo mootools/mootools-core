@@ -1,7 +1,7 @@
 Class: Group {#Group}
 =====================
 
-For Grouping Classes or Elements Events. The Event added to the Group will fire when all of the events of the items of the group are fired.
+This class is for grouping Classes or Events. The Event added to the Group will fire when all of the events of the items of the group are fired.
 
 ### Syntax:
 
@@ -35,7 +35,7 @@ Any number of Class instances, or arrays containing class instances.
 Group Method: addEvent {#Group:addEvent}
 ----------------------------------------
 
-Adds an event to the stack of events of the Class instances.
+Adds an Event to the stack of Events of the Class instances.
 
 ###	Syntax:
 
@@ -62,10 +62,8 @@ Adds an event to the stack of events of the Class instances.
 		alert('all form elements clicked');
 	});
 
+
+
 ###	See Also:
-
-- [Element:addEvent][]
-
-
 
 [Element.addEvent]: /Element/Element.Event/#Element:addEvent

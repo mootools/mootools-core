@@ -1,6 +1,3 @@
-[$]: /Element/Element#dollar
-[Element]: /Element/Element
-
 Native: Element {#Element}
 ==========================
 
@@ -22,16 +19,23 @@ Gets all the elements within an element that match the given selector.
 
 ### Returns:
 
-* (*array*) An <Elements> collections.
+* (*array*) An [Element][] collection.
 
 ### Examples:
 
-	$('myElement').getElements('a'); // get all anchors within myElement
+    //Returns all anchors within myElement.
+	$('myElement').getElements('a'); 
+	
+    //Returns all input tags with name "dialog".
+	$('myElement').getElements('input[name=dialog]');
 
-	$('myElement').getElements('input[name=dialog]') //get all input tags with name 'dialog'
+    //Returns all input tags with names ending with 'log'.
+	$('myElement').getElements('input[name$=log]');
+	
+	//Returns all email links (starting with "mailto:").
+	$('myElement').getElements('a[href^=mailto:]');
 
-	$('myElement').getElements('input[name$=log]') //get all input tags with names ending with 'log'
-
+    //Adds events to all Elements with the class name 'email'.
 	$(document.body).getElements('a.email').addEvents({
 		'mouseenter': function(){
 			this.href = 'real@email.com';
@@ -50,7 +54,7 @@ Gets all the elements within an element that match the given selector.
 	- $= : ends-with
 	- != : is not equal to
 
-- Xpath is used automatically for compliant browsers.
+- Xpath is used automatically in compliant browsers.
 
 Element Property: getElement {#Element:getElement}
 --------------------------------------------------
@@ -94,14 +98,20 @@ Matches the Element with the given selector.
 
 ###	Arguments:
 
-1. selector - (*string*) Selectors to match the element to.
+1. selector - (*string*) Selector to match the Element to.
 
 ### Returns:
 
-* (*boolean*) true if matched, false otherwise.
+* (*boolean*) true if matched, otherwise false.
 
 ### Example:
 
-	var elem = $('myelement');
-	//later in the code, for whatever reason
-	elem.match('div[name=somename]'); //returns true if the element is a div and has as name "somename".
+    //Returns true if the Element is a div named "somename".
+	$('myElement').match('div[name=somename]');
+
+
+
+### See Also:
+
+[$]: /Element/Element#dollar
+[Element]: /Element/Element

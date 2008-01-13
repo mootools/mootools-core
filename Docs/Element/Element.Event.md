@@ -30,7 +30,7 @@ Attaches an event listener to a DOM element.
 
 	<div id="myElement">Click me.</div>
 
-##### Javascript
+##### JavaScript
 
 	$('myElement').addEvent('click', function(){ alert('clicked!'); });
 

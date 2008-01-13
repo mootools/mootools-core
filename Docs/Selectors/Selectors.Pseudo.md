@@ -1,9 +1,7 @@
-[Selectors]: /Selectors/Selectors
-
 Selectors.Pseudo {#Selectors}
 =============================
 
-Some default Pseudo Selectors for [Selectors][]
+Some default Pseudo Selectors for [Selectors][].
 
 ### See Also:
 
@@ -73,13 +71,13 @@ Nth Expression:
 
 ### Examples:
 
-	$$('#myDiv:nth-child(2n)'); //returns every odd child
+	$$('#myDiv:nth-child(2n)'); //Returns every odd child.
 
-	$$('#myDiv:nth-child(n)'); //returns every child
+	$$('#myDiv:nth-child(n)'); //Returns all children.
 
-	$$('#myDiv:nth-child(2n+1)') //returns every even child
+	$$('#myDiv:nth-child(2n+1)') //Returns every even child.
 
-	$$('#myDiv:nth-child(4n+3)') //returns Elements [3, 7, 11, 15, ...]
+	$$('#myDiv:nth-child(4n+3)') //Returns Elements 3, 7, 11, 15, etc.
 
 
 Every Odd Child:
@@ -157,7 +155,7 @@ Selector: last {#Selector:last}
 Selector: only {#Selector:only}
 -------------------------------
 
-Matches only child of its parent Element.
+Matches an only child of its parent Element.
 
 ### Usage:
 
@@ -167,3 +165,8 @@ Matches only child of its parent Element.
 ### Example:
 
 	$$('td:only-child');
+
+
+
+[Element]: /Element/Element
+[Selectors]: /Selectors/Selectors

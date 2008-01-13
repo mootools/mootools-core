@@ -1,7 +1,7 @@
 Class: Fx.Tween {#Fx-Tween}
 ===========================
 
-Contains [Fx.Tween][], and the Element shortcut [Element.tween][]
+Contains [Fx.Tween][] and the Element shortcut [Element.tween][].
 
 ### Extends:
 
@@ -36,7 +36,7 @@ The Tween effect, used to transition any CSS property from one value to another.
 
 ### See Also:
 
-- <Fx>
+- [Fx][]
 
 
 
@@ -60,7 +60,8 @@ Sets the Element's CSS property to the specified value immediately.
 ### Examples:
 
 	var myFx = new Fx.Tween(element, 'color');
-	myFx.set('#f00'); //immediately set the background color of the element to red
+	//Immediately sets the background color of the element to red:
+	myFx.set('#f00');
 
 
 
@@ -85,9 +86,10 @@ Transitions the Element's CSS property to the specified value.
 ### Examples:
 
 	var myFx = new Fx.Tween(element, 'background-color');
-	myFx.start('#000', '#f00'); //transition the background color of the element from black to red
-	myFx.start('#00f'); //transition the background color of the element from its current color to blue
-
+	//Transitions the background color of the Element from black to red:
+	myFx.start('#000', '#f00');
+	//Transitions the background color of the Element from its current color to blue:
+	myFx.start('#00f');
 ### Notes:
 
 - If only one parameter is provided, the first argument to start will be used as the target value, and the initial value will be calculated from the current state of the element.
@@ -179,10 +181,13 @@ Element shortcut method which immediately transitions any single CSS property of
 
 ### Examples:
 
-	$('myElement').tween('width', '100'); //transition the width of myElement to 100px
-	$('myElement').tween('height', 20, 200); //transition the height of myElement from 20px to 100px
-	$('myElement').tween('border', '6px solid #36f'); //transition the border of myElement to 6px solid blue
-
+    //Transitions the width of "myElement" from its current width to 100px:
+	$('myElement').tween('width', '100');
+	//Transitions the height of "myElement" from 20px to 100px:
+	$('myElement').tween('height', 20, 200);
+	//Transitions the border of "myElement" from its current to "6px solid blue":
+	$('myElement').tween('border', '6px solid #36f');
+	
 ### See Also:
 
 - [Fx.Tween][]
@@ -201,12 +206,12 @@ Element shortcut method for tween with opacity.  Useful for fading an Element in
 ### Arguments:
 
 1. how - (*mixed*, optional: defaults to 'toggle') The opacity level as a number or string representation.  Possible values include:
- * 'in'     - fade the element to 100% opacity
- * 'out'    - fade the element to 0% opacity
- * 'show'   - immediately set the element's opacity to 100%
- * 'hide'   - immediately set the element's opacity to 0%
- * 'toggle' - if visible, fade the element out, otherwise, fade it in
- * float from from 0 to 1 - fade the element to this opacity
+ * 'in'     - Fade the element to 100% opacity.
+ * 'out'    - Fade the element to 0% opacity.
+ * 'show'   - Immediately set the element's opacity to 100%.
+ * 'hide'   - Immediately set the element's opacity to 0%.
+ * 'toggle' - If visible, fade the element out, otherwise, fade it in.
+ * (*int*)  - A float value between 0 and 1. Will fade the element to this opacity.
 
 ### Returns:
 
@@ -214,8 +219,8 @@ Element shortcut method for tween with opacity.  Useful for fading an Element in
 
 ### Examples:
 
-	$('myElement').fade('out'); //fade my element out
-	$('myElement').fade(0.7); //fade my element to 70% opacity
+	$('myElement').fade('out'); //Fades "myElement" out.
+	$('myElement').fade(0.7); //Fades "myElement" to 70% opacity.
 
 
 
@@ -238,11 +243,12 @@ Element shortcut method for tween with background color.  Immediately transition
 
 ### Examples:
 
-	$('myElement').highlight('#ddf'); //a quick light blue highlight
+    //Will cause a quick light blue highlight:
+	$('myElement').highlight('#ddf');
 
 ### Notes:
 
-- If the Element doesn't have a background-color set, or the background color is set to 'transparent', it will be highlighted from the highlight color down to white.
+- If the Element doesn't have a background color set, or the background color is set to 'transparent', it will be highlighted from the highlight color down to white.
 
 
 

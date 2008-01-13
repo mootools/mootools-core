@@ -1,11 +1,11 @@
 Object: Cookie {#Cookie}
 ========================
 
-A Cookie reader/creator.
+Sets and accesses cookies.
 
 ### Credits:
 
-- Based on the functions by Peter-Paul Koch [http://www.quirksmode.org][].
+- Based on the functions by Peter-Paul Koch [QuirksMode][].
 
 ### Hash: Cookie
 
@@ -104,8 +104,7 @@ Remove a Cookie:
 
 Creating a Cookie and Removing it Right Away:
 
-	//Cookie.set returns an object with all values need to remove the cookie.
-
+	//Cookie.set returns an object with all values needed to remove the cookie.
 	var myCookie = Cookie.set('username', 'Aaron', {domain: 'mootools.net'});
 	if (Cookie.get('username') == 'Aaron') { Cookie.remove(myCookie); }
 
@@ -114,4 +113,4 @@ Creating a Cookie and Removing it Right Away:
 [Cookie]: #Cookie
 [Cookie.options]: #Cookie-options
 [Cookie.options.domain]: #Cookie-options
-[http://www.quirksmode.org]: http://www.quirksmode.org
+[QuirksMode]: http://www.quirksmode.org

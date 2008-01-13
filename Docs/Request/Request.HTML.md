@@ -16,13 +16,13 @@ Request Specifically made for receiving HTML.
 ### Arguments:
 
 1. url     - (*string*, optional) The URL pointing to the server-side script.
-2. options - (*object*, optional) In addition to <Request>'s options object, see "Options" below.
+2. options - (*object*, optional) See options below.  Also inherited are all the options from [Request][].
 
 ### Options:
 
 * url          - (*string*: defaults to null)  The URL to load.  This can also be passed within the .get() and .post() methods.
 * update       - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
-* evalScripts  - (*boolean*: defaults to false) If set to true, `script` tags inside the response will be evaluated.
+* evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated.
 
 ### Events:
@@ -56,7 +56,8 @@ Request Specifically made for receiving HTML.
 
 #### Data from Object Passed via GET:
 
-	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25}); //loads url "load/?user_id=25"
+	//Loads "load/?user_id=25".
+	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25}); 
 
 #### Data from Element via POST:
 
@@ -70,7 +71,7 @@ Request Specifically made for receiving HTML.
 		</p>
 	</form>
 
-##### Javascript
+##### JavaScript
 
 	//Needs to be in a submit event or the form handler.
 	var myHTMLRequest = new Request.HTML({url:'save/'}).post($('user-form'));
@@ -130,7 +131,8 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 	el.set('load', {method: 'get'});
 	el.load('test.html');
-	el.get('load').post('http://localhost/script'); //The getter returns the Request.HTML instance, you can use the class methods.
+	//The getter returns the Request.HTML instance, making its class methods available.
+	el.get('load').post('http://localhost/script');
 
 
 
@@ -150,7 +152,7 @@ Updates the content of the Element with a Request.HTML GET request.
 
 ### Arguments:
 
-1. url     - (*string*) The URL pointing to the server-side document.
+1. url - (*string*) The URL pointing to the server-side document.
 
 ### Returns:
 
@@ -167,5 +169,8 @@ Updates the content of the Element with a Request.HTML GET request.
 	$('content').load('page_1.html');
 
 
-	
+
+### See Also:
+
 [$]: /Element/Element/#dollar
+[Request]: /Request/Request

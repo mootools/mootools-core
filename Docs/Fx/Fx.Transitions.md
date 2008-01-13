@@ -57,7 +57,7 @@ Used to generate Quad, Cubic, Quart and Quint.
 
 ### Note:
 
-- By default is `p^6`.
+- The default is `p^6`.
 
 Fx.Transitions Method: expo {#Fx-Transitions:expo}
 --------------------------------------------------
@@ -104,8 +104,8 @@ Elastic curve. Must be used as Elastic.easeIn or Elastic.easeOut or Elastic.ease
 Class: Fx.Transition {#Fx-Transition}
 =====================================
 
-This class is only useful if you're a math genius and you want to write your own easing equations.
-Returns a [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
+This class is only useful for math geniuses who want to write their own easing equations.
+Returns an [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' methods.
 
 ### Syntax:
 

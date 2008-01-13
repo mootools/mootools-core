@@ -1,7 +1,7 @@
 Class: Fx.Slide {#Fx-Slide}
 ===========================
 
-The slide effect; slides an element in horizontally or vertically, the contents will fold inside.
+The slide effect slides an Element in horizontally or vertically.  The contents will fold inside.
 
 ### Note:
 
@@ -18,7 +18,7 @@ The slide effect; slides an element in horizontally or vertically, the contents 
 ### Arguments:
 
 1. elements - (*element*) The element to slide.
-2. options  - (*object*, optional) All of <Fx> options in addition to mode and wrapper.
+2. options  - (*object*, optional) All of [Fx][] options in addition to mode and wrapper.
 
 #### Options
 
@@ -32,14 +32,15 @@ The slide effect; slides an element in horizontally or vertically, the contents 
 
 ### Examples:
 
-	//hides, toggles (which acts like slideOut), and chains an alert.
+	//Hides the Element, then brings it back in with toggle and finally alerts
+	//when complete:
 	var mySlide = new Fx.Slide('container').hide().toggle().chain(function(){
-		alert(mySlide.open); //true
+		alert(mySlide.open); //Alerts true.
 	});
 
 ### Notes:
 
-- To create the slide effect an additional Element ('div' by default) is wrapped around the given Element. This wrapper adapts the margin from the Element.
+- To create the slide effect an additional Element (a "div" by default) is wrapped around the given Element. This wrapper adapts the margin from the Element.
 
 
 
@@ -54,16 +55,16 @@ Slides the Element in view horizontally or vertically.
 
 ### Arguments:
 
-1. mode - (*string*, optional) Override the passed in Fx-Slide option with 'horizontal' or 'vertical'.
+1. mode - (*string*, optional) Override the passed in Fx.Slide option with 'horizontal' or 'vertical'.
 
 ### Returns:
 
-* (*object*) This Fx-Slide instance.
+* (*object*) This Fx.Slide instance.
 
 ### Examples:
 
 	var myFx = new Fx.Slide('myElement').slideOut().chain(function(){
-		this.show().slideOut('horizontal');
+		this.show().slideIn('horizontal');
 	});
 
 
@@ -89,17 +90,19 @@ Slides the Element out of view horizontally or vertically.
 
 	var myFx = new Fx.Slide('myElement', {
 		mode: 'horizontal',
-		onComplete: function(){ // due to inheritance we have all the <Fx> Options.
-			alert('poof!');
+		//Due to inheritance, all the [Fx][] options are available.
+		onComplete: function(){
+			alert('Poof!');
 		}
-	}).slideOut();
+	//The mode argument provided to slideOut overrides the option set.
+	}).slideOut('vertical');
 
 
 
 Fx.Slide Method: toggle {#Fx-Slide:toggle}
 ------------------------------------------
 
-Slides in or Out the element depending on its state.
+Slides the Element in or out, depending on its state.
 
 ### Syntax:
 
@@ -120,14 +123,15 @@ Slides in or Out the element depending on its state.
 		transition: Fx.Transitions.Pow.easeOut
 	});
 
-	myFx.toggle().chain(myFx.toggle); // toggle the between slideIn and Out twice.
+    //Toggles between slideIn and slideOut twice:
+	myFx.toggle().chain(myFx.toggle);
 
 
 
 Fx.Slide Method: hide {#Fx-Slide:hide}
 --------------------------------------
 
-Hides the element without a transition.
+Hides the Element without a transition.
 
 ### Syntax:
 
@@ -148,14 +152,15 @@ Hides the element without a transition.
 		transition: Fx.Transitions.Bounce.easeOut
 	});
 
-	myFx.hide().slideIn(); //automatically hide and show myElement.
+    //Automatically hides and then slies in "myElement":
+	myFx.hide().slideIn();
 
 
 
 Fx.Slide Method: show {#Fx-Slide:show}
 --------------------------------------
 
-Shows the element without a transition.
+Shows the Element without a transition.
 
 ### Syntax:
 
@@ -176,15 +181,17 @@ Shows the element without a transition.
 		transition: Fx.Transitions.Bounce.easeOut
 	});
 
+    //Slides "myElement" out.
 	myFx.slideOut().chain(function(){
-		this.show.delay(1000, this); //after 1sec show the slid Element.
+	    //Waits one second, then the Element appears without transition.
+		this.show.delay(1000, this);
 	});
 
 
 Hash: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+See [Element.Properties][].
 
 Element Property: slide {#Element-Properties:slide}
 ---------------------------------------------------
@@ -257,12 +264,8 @@ Slides this Element in view.
 
 	$('myElement').slide('hide').slide('in');
 
-### See Also:
-
-- [Fx.Slide][]
-
-
 
 [Fx.Slide]: #Fx-Slide
 [Fx]: /Fx/Fx
 [$]: /Element/Element#dollar
+[Element.Properties]: /Element/Element/#Element-Properties
