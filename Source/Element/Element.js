@@ -367,9 +367,13 @@ Element.implement({
 	},
 
 	getComputedStyle: function(property){
-		var result = false;
-		if (this.currentStyle) result = this.currentStyle[property.camelCase()];
-		else result = this.getWindow().getComputedStyle(this, null).getPropertyValue([property.hyphenate()]);
+		var result = null;
+		if (this.currentStyle){
+			result = this.currentStyle[property.camelCase()];
+		} else {
+			var computed = this.getWindow().getComputedStyle(this, null);
+			if (computed) result = computed.getPropertyValue([property.hyphenate()]);
+		}
 		return result;
 	},
 
