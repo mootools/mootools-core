@@ -8,28 +8,27 @@ License:
 
 Hash.Cookie = new Class({
 
-	Implements: Options,
+	Extends: Cookie,
 
 	options: {
 		autoSave: true
 	},
 
 	initialize: function(name, options){
-		this.name = name;
-		this.setOptions(options);
+		this.parent(name, options);
 		this.load();
 	},
 
 	save: function(){
-		var str = JSON.encode(this.hash);
-		if (str.length > 4096) return false; //cookie would be truncated!
-		if (str.length == 2) Cookie.remove(this.name, this.options);
-		else Cookie.set(this.name, str, this.options);
+		var value = JSON.encode(this.hash);
+		if (value.length > 4096) return false; //cookie would be truncated!
+		if (value.length == 2) this.erase();
+		else this.write(value);
 		return true;
 	},
 
 	load: function(){
-		this.hash = new Hash(JSON.decode(Cookie.get(this.name), true));
+		this.hash = new Hash(JSON.decode(this.read(), true));
 		return this;
 	}
 
@@ -37,9 +36,9 @@ Hash.Cookie = new Class({
 
 (function(){
 	var methods = {};
-	Hash.getKeys(Hash.prototype).each(function(method){
-		methods[method] = function(){
-			var value = Hash.prototype[method].apply(this.hash, arguments);
+	Hash.each(Hash.prototype, function(method, name){
+		methods[name] = function(){
+			var value = method.apply(this.hash, arguments);
 			if (this.options.autoSave) this.save();
 			return value;
 		};
