@@ -55,7 +55,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 
 ### Note:
 
-1. Although Swiff returns the object tag, this element will NOT have Element methods applied to it.
+1. Although Swiff returns the object, this element will NOT have any Element methods applied to it.
 2. The $ function on an object/embed tag will only return its reference without further processing.
 
 Swiff Function: remote {#Swiff:remote}
@@ -84,7 +84,7 @@ Calls an ActionScript function from JavaScript.
 
 ###	Note:
 
-The SWF file must be compiled with the ExternalInterface component.  See the Adobe documentation on [External Interface](http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00001652.html) for more information.
+The SWF file must be compiled with the ExternalInterface component.  See the Adobe documentation on [External Interface][] for more information.
 
 
 Swiff Function: getVersion {#Swiff:getVersion}
@@ -105,3 +105,4 @@ Returns the major version of the Flash player installed.
 	alert(Swiff.getVersion());
 
 [SWFObject]: http://blog.deconcept.com/swfobject/
+[External Interface]: http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00001652.html

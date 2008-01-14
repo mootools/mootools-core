@@ -69,9 +69,9 @@ Stop an Event from propagating and also executes preventDefault.
 ##### JavaScript
 
 	$('myAnchor').addEvent('click', function(event){
-		event.stop(); // prevent the user from leaving the site.
-		this.setText("Where do you think you're going?"); //'this' is Element that fire's the Event.
-			(function(){
+		event.stop(); //Prevents the browser from following the link.
+		this.setText("Where do you think you're going?"); //'this' is Element that fires the Event.
+		(function(){
 			this.setText("Instead visit the Blog.").set('href', 'http://blog.mootools.net');
 		}).delay(500, this);
 	});
@@ -83,6 +83,8 @@ Stop an Event from propagating and also executes preventDefault.
 ### See Also:
 
 - [Element.addEvent](#Element:addEvent), [Element.stopPropagation](#Event:stopPropagation), [Event.preventDefault](#Event:preventDefault), [Function:delay][]
+
+
 
 Event Method: stopPropagation {#Event:stopPropagation}
 ------------------------------------------------------
@@ -99,7 +101,8 @@ Cross browser method to stop the propagation of an event (this stops the event f
 
 ###	Examples:
 
-'#myChild' does not cover the same area as myElement. Therefore, the 'click' differs from parent and child depending on the click location:
+"#myChild" does not cover the same area as myElement. Therefore, the 'click' differs from parent and child depending on the click location:
+
 ##### HTML:
 
 	<div id="myElement">
@@ -118,7 +121,8 @@ Cross browser method to stop the propagation of an event (this stops the event f
 
 ### See Also:
 
-- [Element:addEvent](#Element:addEvent), [MDC event.stopPropagation](http://developer.mozilla.org/en/docs/DOM:event.stopPropagation)
+- [Element:addEvent](#Element:addEvent)
+- [MDC event.stopPropagation](http://developer.mozilla.org/en/docs/DOM:event.stopPropagation)
 
 
 
@@ -146,25 +150,26 @@ Cross browser method to prevent the default action of the event.
 ##### JavaScript
 
 	$('myCheckbox').addEvent('click', function(event){
-		event.preventDefault(); // Will prevent the checkbox from being "checked".
+		event.preventDefault(); //Will prevent the checkbox from being "checked".
 	});
 
 ### See Also:
 
-- [Element:addEvent](#Element:addEvent), [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
+- [Element:addEvent](#Element:addEvent)
+- [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
 
 
 Hash: Event.Keys {#Event-Keys}
 ==============================
 
-You can add additional Event keys codes by adding properties to the Event.Keys Hash:
+Additional Event key codes can be added by adding properties to the Event.Keys Hash.
 
-#### Examples:
+#### Example:
 
-	Event.Keys.whatever = 80;
-	$('myInput').addEvent('keydown', function(event){
-		if (event.key == 'whatever') alert('whatever key clicked');
-	});
+    Event.Keys.shift = 16;
+    $('myInput').addEvent('keydown', function(event){
+	    if (event.key == "shift") alert("You pressed shift.");
+    });
 
 
 

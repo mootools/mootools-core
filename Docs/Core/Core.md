@@ -420,7 +420,8 @@ Returns the type of object that matches the element passed in.
 	$type(myString); //Returns "string".
 
 
-
+[Hash]: /Native/Hash
+[Array]: /Native/Array
 [Function:bind]: /Native/Function/#Function:bind
 [Function:delay]: /Native/Function/#Function:delay
 [Function:periodical]: /Native/Function/#Function:periodical
