@@ -7,14 +7,14 @@ License:
 */
 
 var Browser = new Hash({
-	Engine: {'name': 'unknown', 'version': ''},
-	Platform: {'name': (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
-	Features: {'xhr': !!(window.XMLHttpRequest), 'xpath': !!(document.evaluate), 'air': !!(window.runtime)}
+	Engine: {name: 'unknown', version: ''},
+	Platform: {name: (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
+	Features: {xhr: !!(window.XMLHttpRequest), xpath: !!(document.evaluate), air: !!(window.runtime)}
 });
 
 if (window.opera) Browser.Engine.name = 'presto';
-else if (window.ActiveXObject) Browser.Engine = {'name': 'trident', 'version': (Browser.Features.xhr) ? 5 : 4};
-else if (!navigator.taintEnabled) Browser.Engine = {'name': 'webkit', 'version': (Browser.Features.xpath) ? 420 : 419};
+else if (window.ActiveXObject) Browser.Engine = {name: 'trident', version: (Browser.Features.xhr) ? 5 : 4};
+else if (!navigator.taintEnabled) Browser.Engine = {name: 'webkit', version: (Browser.Features.xpath) ? 420 : 419};
 else if (document.getBoxObjectFor != null) Browser.Engine.name = 'gecko';
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
 Browser.Platform[Browser.Platform.name] = true;

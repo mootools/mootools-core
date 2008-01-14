@@ -18,26 +18,27 @@ var Event = new Native({
 		var type = event.type;
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
+		
 		if (type.match(/DOMMouseScroll|mousewheel/)){
-			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		} else if (type.test(/key/)){
-			this.code = event.which || event.keyCode;
-			var key = Event.Keys.keyOf(this.code);
+			var code = event.which || event.keyCode;
+			var key = Event.Keys.keyOf(code);
 			if (type == 'keydown'){
-				var fKey = this.code - 111;
+				var fKey = code - 111;
 				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
 			}
-			this.key = key || String.fromCharCode(this.code).toLowerCase();
-		} else if (type.match(/(click|mouse|menu)/)){
-			this.page = {
+			key = key || String.fromCharCode(code).toLowerCase();
+		} else if (type.match(/(click|mouse|menu)/i)){
+			var page = {
 				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
 				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
 			};
-			this.client = {
+			var client = {
 				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
 				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
 			};
-			this.rightClick = (event.which == 3) || (event.button == 2);
+			var rightClick = (event.which == 3) || (event.button == 2);
 			var related = null;
 			if (type.match(/over|out/)){
 				switch (type){
@@ -53,8 +54,19 @@ var Event = new Native({
 		return $extend(this, {
 			event: event,
 			type: type,
+			
+			page: page,
+			client: client,
+			rightClick: rightClick,
+			
+			wheel: wheel,
+			
 			relatedTarget: related,
 			target: target,
+			
+			code: code,
+			key: key,
+			
 			shift: event.shiftKey,
 			control: event.ctrlKey,
 			alt: event.altKey,

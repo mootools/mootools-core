@@ -35,13 +35,15 @@ Hash.Cookie = new Class({
 });
 
 (function(){
-	var methods = {};
-	Hash.each(Hash.prototype, function(method, name){
-		methods[name] = function(){
-			var value = method.apply(this.hash, arguments);
-			if (this.options.autoSave) this.save();
-			return value;
-		};
-	});
-	Hash.Cookie.implement(methods);
+
+var methods = {};
+Hash.each(Hash.prototype, function(method, name){
+	methods[name] = function(){
+		var value = method.apply(this.hash, arguments);
+		if (this.options.autoSave) this.save();
+		return value;
+	};
+});
+Hash.Cookie.implement(methods);
+
 })();
