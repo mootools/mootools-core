@@ -249,7 +249,7 @@ If no background color is set on the Element, or its background color is set to 
 
 ### Examples:
 
-    //Will immediately change the background to light blue:
+    //Will immediately change the background to light blue, then back to its original color (or white):
 	$('myElement').highlight('#ddf');
 
 	//Will immediately change the background to light blue, then fade to grey:

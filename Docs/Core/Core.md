@@ -285,7 +285,7 @@ Returns the first defined argument passed in, or null.
 	function say(infoMessage, errorMessage){
 		alert($pick(errorMessage, infoMessage, 'There was no message supplied.'));
 	}
-	say(); //Alerts "This is an info message."
+	say(); //Alerts "There was no message supplied."
     say("This is an info message."); //Alerts "This is an info message."
     say("This message will be ignored.", "This is the error message."); //Alerts "This is the error message."
 
@@ -294,7 +294,7 @@ Returns the first defined argument passed in, or null.
 Function: $random {#random}
 ---------------------------
 
-Returns a random integer number between the two passed in values.
+Returns a random integer between the two passed in values.
 
 ### Syntax:
 
