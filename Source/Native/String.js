@@ -21,7 +21,7 @@ String.implement({
 	},
 
 	clean: function(){
-		return this.replace(/\s{2,}/g, ' ').trim();
+		return this.replace(/\s+/g, ' ').trim();
 	},
 
 	camelCase: function(){
