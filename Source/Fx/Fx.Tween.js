@@ -71,11 +71,12 @@ Element.implement({
 		return this;
 	},
 
-	highlight: function(color){
-		this.get('tween', 'background-color').start(color || '#ffff88', function(){
+	highlight: function(start, end){
+		if (!end){
 			var style = this.getStyle('background-color');
-			return (style == 'transparent') ? '#ffffff' : style;
-		}.bind(this));
+			end = (style == 'transparent') ? '#ffffff' : style;
+		}
+		this.get('tween', 'background-color').start(start || '#ffff88', end);
 		return this;
 	},
 
