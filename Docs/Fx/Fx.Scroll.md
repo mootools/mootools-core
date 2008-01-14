@@ -46,7 +46,7 @@ Options:
 
 ### Notes:
 
-- Fx.Scroll transition will stop on mousewheel movement if the wheelStops option is not set to false. This is to allow  users control their web experience.
+- Fx.Scroll transition will stop on mousewheel movement if the wheelStops option is not set to false. This is to allow  users to control their web experience.
 - Fx.Scroll is useless for Elements without scrollbars.
 
 

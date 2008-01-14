@@ -49,12 +49,13 @@ Clears a Timeout or an Interval.
 
 ### Example:
 
-	var myTimer = myFunction.delay(5000); //Wait 5 seconds and execute myFunction.
-	myTimer = $clear(myTimer); //Nevermind.
+	var myTimer = myFunction.delay(5000); //Waits 5 seconds then executes myFunction.
+	myTimer = $clear(myTimer); //Cancels myFunction.
 
 ### See also:
 
-- [Function:delay][], [Function:periodical][]
+- [Function:delay][]
+- [Function:periodical][]
 
 
 
@@ -87,7 +88,7 @@ Checks to see if a value is defined.
 Function: $arguments {#arguments}
 ---------------------------------
 
-Creates a function which returns the passed argument according to the index, i, passed.
+Creates a function which returns the passed argument according to the index (i) passed.
 
 ### Syntax:
 
@@ -104,7 +105,7 @@ Creates a function which returns the passed argument according to the index, i, 
 ### Example:
 
 	var secondArgument = $arguments(1);
-	console.log(secondArgument('a','b','c')); // alerts b
+	alert(secondArgument('a','b','c')); //Alerts "b".
 
 
 
@@ -147,7 +148,8 @@ Function: $extend {#extend}
 ---------------------------
 
 Copies all the properties from the second object passed in to the first object passed in.
-In myWhatever.extend = $extend, the first parameter will become myWhatever, and the extend function will only need one parameter.
+
+In myObject.extend = $extend, the first parameter will become myObject, and the extend function will only need one parameter.
 
 ### Syntax:
 
@@ -184,7 +186,7 @@ In myWhatever.extend = $extend, the first parameter will become myWhatever, and 
 	var myFunction = function(){ ... };
 	myFunction.extend = $extend;
 	myFunction.extend(secondObj);
-	//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respected values.
+	//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respective value.
 
 
 
@@ -249,14 +251,15 @@ Used to iterate through iterables that are not regular arrays, such as built in 
 
 	$each(['Sun','Mon','Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
-	}); //alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+	}); //Alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
 
 
 #### Object Example:
 
+    //Alerts "The first day of the week is Sunday", "The second day of the week is Monday", etc:
 	$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
-		alert("the " + key + " day of the week is " + value);
-	}); //alerts "the first day of the week is Sunday", "the second day of the week is Monday", etc.
+		alert("The " + key + " day of the week is " + value);
+	});
 
 
 Function: $pick {#pick}
@@ -282,9 +285,9 @@ Returns the first defined argument passed in, or null.
 	function say(infoMessage, errorMessage){
 		alert($pick(errorMessage, infoMessage, 'There was no message supplied.'));
 	}
-	say(); //Will alert "There was no message supplied."
-        say("This is an info message."); //Will alert "This is an info message."
-        say("This message will be ignored.", "This is the error message."); //Will alert "This is the error message."
+	say(); //Alerts "This is an info message."
+    say("This is an info message."); //Alerts "This is an info message."
+    say("This message will be ignored.", "This is the error message."); //Alerts "This is the error message."
 
 
 
@@ -414,7 +417,7 @@ Returns the type of object that matches the element passed in.
 * 'document'   - (*string*) If object is the document object.
 * false        - (*boolean*) If object is undefined, null, NaN or none of the above.
 
-### Examples:
+### Example:
 
 	var myString = 'hello';
 	$type(myString); //Returns "string".

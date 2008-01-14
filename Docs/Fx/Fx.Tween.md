@@ -90,6 +90,7 @@ Transitions the Element's CSS property to the specified value.
 	myFx.start('#000', '#f00');
 	//Transitions the background color of the Element from its current color to blue:
 	myFx.start('#00f');
+
 ### Notes:
 
 - If only one parameter is provided, the first argument to start will be used as the target value, and the initial value will be calculated from the current state of the element.
@@ -227,15 +228,20 @@ Element shortcut method for tween with opacity.  Useful for fading an Element in
 Element Method: highlight {#Element:highlight}
 ----------------------------------------------
 
-Element shortcut method for tween with background color.  Immediately transitions an Element's background color from a specified highlight color down to its current background color.
+Element shortcut method for tweening the background color.  Immediately transitions an Element's background color to a specified highlight color then back to its set background color.
 
 ### Syntax:
 
-	myElement.highlight([color]);
+	myElement.highlight([start, end]);
 
 ### Arguments:
 
 1. color - (*string*, optional: defaults to '#ff8') The color from which to start the transition.
+2. end - (*string*, optional: defaults to Element's set background-color) The background color to return to after the highlight effect.
+
+### Note:
+
+If no background color is set on the Element, or its background color is set to 'transparent', the default end value will be white.
 
 ### Returns:
 
@@ -243,13 +249,11 @@ Element shortcut method for tween with background color.  Immediately transition
 
 ### Examples:
 
-    //Will cause a quick light blue highlight:
+    //Will immediately change the background to light blue:
 	$('myElement').highlight('#ddf');
 
-### Notes:
-
-- If the Element doesn't have a background color set, or the background color is set to 'transparent', it will be highlighted from the highlight color down to white.
-
+	//Will immediately change the background to light blue, then fade to grey:
+	$('myElement').highlight('#ddf', '#ccc');
 
 
 [$]: /Element/Element#dollar
