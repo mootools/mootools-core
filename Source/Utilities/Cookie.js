@@ -9,38 +9,57 @@ Credits:
 	Based on the functions by Peter-Paul Koch (http://quirksmode.org).
 */
 
-var Cookie = {
-
+var Cookie = new Class({
+	
+	Implements: Options,
+	
 	options: {
 		path: false,
 		domain: false,
 		duration: false,
-		secure: false
+		secure: false,
+		document: document
 	},
-
-	set: function(key, value, options){
-		options = $merge(this.options, options);
+	
+	initialize: function(key, options){
+		this.key = key;
+		this.setOptions(options);
+	},
+	
+	write: function(value){
 		value = encodeURIComponent(value);
-		if (options.domain) value += '; domain=' + options.domain;
-		if (options.path) value += '; path=' + options.path;
-		if (options.duration){
+		if (this.options.domain) value += '; domain=' + this.options.domain;
+		if (this.options.path) value += '; path=' + this.options.path;
+		if (this.options.duration){
 			var date = new Date();
-			date.setTime(date.getTime() + options.duration * 24 * 60 * 60 * 1000);
+			date.setTime(date.getTime() + this.options.duration * 24 * 60 * 60 * 1000);
 			value += '; expires=' + date.toGMTString();
 		}
-		if (options.secure) value += '; secure';
-		document.cookie = key + '=' + value;
-		return $extend(options, {'key': key, 'value': value});
+		if (this.options.secure) value += '; secure';
+		this.options.document.cookie = this.key + '=' + value;
+		return this;
+	},
+	
+	read: function(){
+		var value = this.options.document.cookie.match('(?:^|;)\\s*' + this.key.escapeRegExp() + '=([^;]*)');
+		return value ? decodeURIComponent(value[1]) : null;
 	},
 
-	get: function(key){
-		var value = document.cookie.match('(?:^|;)\\s*' + key.escapeRegExp() + '=([^;]*)');
-		return value ? decodeURIComponent(value[1]) : false;
-	},
-
-	remove: function(cookie, options){
-		if ($type(cookie) == 'object') this.set(cookie.key, '', $merge(cookie, {duration: -1}));
-		else this.set(cookie, '', $merge(options, {duration: -1}));
+	erase: function(){
+		new Cookie(this.key, $merge(this.options, {duration: -1})).write('');
+		return this;
 	}
+	
+});
 
+Cookie.set = function(key, value, options){
+	return new Cookie(key, options).write(value);
+};
+
+Cookie.get = function(key){
+	return new Cookie(key).read();
+};
+
+Cookie.remove = function(key, options){
+	return new Cookie(key, options).erase();
 };

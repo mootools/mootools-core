@@ -113,7 +113,7 @@
 		},
 
 		"Cookie": {
-			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
+			"deps": ["Browser", "Class", "Class.Extras"],
 			"desc": "Class for creating, reading, and deleting browser Cookies."
 		},
 
