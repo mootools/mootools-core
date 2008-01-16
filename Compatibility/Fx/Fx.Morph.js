@@ -1,0 +1,1 @@
+Fx.Styles = Fx.Morph;
