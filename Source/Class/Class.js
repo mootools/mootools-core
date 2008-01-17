@@ -67,9 +67,9 @@ Class.Extends = function(self, klass){
 				switch (type){
 					case 'function':
 						return function(){
-							current.parent = self.parent = previous.bind(this);
+							current.parent = this.parent = previous.bind(this);
 							var value = current.apply(this, arguments);
-							self.parent = current.parent;
+							this.parent = current.parent;
 							return value;
 						};
 					case 'object': return $merge(previous, current);
