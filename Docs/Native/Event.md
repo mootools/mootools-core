@@ -29,8 +29,8 @@ Event Method: constructor {#Event:constructor}
 * client.x      - (*number*) The x position of the mouse, relative to the viewport.
 * client.y      - (*number*) The y position of the mouse, relative to the viewport.
 * key           - (*string*) The key pressed as a lowercase string. key can be 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
-* target        - (*element*) The event target, not extended with <$> for performance reasons.
-* relatedTarget - (*element*) The event related target, NOT `extended` with <$>.
+* target        - (*element*) The event target, not extended with [$][] for performance reasons.
+* relatedTarget - (*element*) The event related target, NOT `extended` with [$][].
 
 ### Examples:
 

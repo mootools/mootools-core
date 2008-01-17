@@ -92,7 +92,7 @@ Creates a function which returns the passed argument according to the index (i) 
 
 ### Syntax:
 
-	var argument = $argument(i);
+	var argument = $arguments(i);
 
 ### Arguments
 

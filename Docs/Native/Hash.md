@@ -135,7 +135,7 @@ Tests for the presence of a specified value in the Hash.
 
 ### Syntax:
 
-	var inHash = myHash.hasvalue(value);
+	var inHash = myHash.hasValue(value);
 
 ### Arguments:
 
@@ -379,7 +379,7 @@ Creates a new map with the results of calling a provided function on every value
 
 ### Returns:
 
-* (*array*) The new mapped hash.
+* (*hash*) The new mapped hash.
 
 ### Examples:
 
@@ -563,7 +563,7 @@ Generates a query string from key/pair values in an object and URI encodes the v
 
 ### Syntax:
 
-	var myHash = new Hash({...}); = myHash.toQueryString();
+	var queryString = myHash.toQueryString();
 
 ### Arguments:
 

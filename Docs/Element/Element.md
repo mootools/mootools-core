@@ -1625,7 +1625,7 @@ Elements Method: constructor {#Elements:constructor}
 		el.setStyle('color', 'red');
 	});
 
-	//Because $$('myselector') also accepts [Element][] methods, the below
+	//Because $$('myselector') also accepts Element methods, the below
 	//example has the same effect as the one above.
 	$$('p').setStyle('color', 'red');
 
@@ -1633,7 +1633,6 @@ Elements Method: constructor {#Elements:constructor}
 #### Create Elements From an Array:
 
 	var myElements = new Elements(['myElementID', $('myElement'), 'myElementID2', document.getElementById('myElementID3')]);
-	myElements.removeElements('found'); //Notice how remove is an Array method.
 
 
 ### Notes:

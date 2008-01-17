@@ -302,7 +302,7 @@ Strips the String of its `<script>` tags and anything in between them.
 
 ### Syntax:
 
-	myString.stripSlashes([evaluate]);
+	myString.stripScripts([evaluate]);
 
 ### Arguments:
 
