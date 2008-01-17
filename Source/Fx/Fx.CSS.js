@@ -79,7 +79,7 @@ Fx.CSS = new Class({
 				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
 				Element.Styles.each(function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
-					value = rule.style[style];
+					value = String(rule.style[style]);
 					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
 				});
 			});
