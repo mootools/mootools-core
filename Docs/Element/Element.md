@@ -1113,8 +1113,8 @@ Reads the child inputs of the Element and generates a query string based on thei
 ##### HTML
 
 	<form id="myForm" action="submit.php">
-		<input name="email" value="bob@bob.com">
-		<input name="zipCode" value="90210">
+		<input name="email" value="bob@bob.com" />
+		<input name="zipCode" value="90210" />
 	</form>
 
 ##### JavaScript
@@ -1126,7 +1126,7 @@ Reads the child inputs of the Element and generates a query string based on thei
 Element Method: getProperty {#Element:getProperty}
 ------------------------------------------------------
 
-Gets a single element attribute.
+Returns a single element attribute.
 
 ### Syntax:
 
@@ -1490,7 +1490,7 @@ Returns the value of the Element if its tag name is "textarea", "select" or "inp
 	<form id="myForm">
 		<select>
 			<option value="volvo">Volvo</option>
-			<option value="saab" selected="yes">Saab</option>
+			<option value="saab" selected="selected">Saab</option>
 			<option value="opel">Opel</option>
 			<option value="audi">Audi</option>
 		</select>
@@ -1548,12 +1548,12 @@ Creates an IFrame HTML Element and extends its window and document with MooTools
 
 ### Arguments:
 
-1. el - (*mixed*, optional) The id of the iframe to be converted, or the actual iframe element. If its not passed, a new iframe will be created (default).
+1. el - (*mixed*, optional) The id of the IFrame to be converted, or the actual IFrame element. If its not passed, a new IFrame will be created (default).
 2. props - (*object*, optional) The properties to be applied to the new IFrame. Same as [Element:constructor](#Element:constructor) props argument.
 
 ### Returns:
 
-* (*element*) A new iframe HTML Element.
+* (*element*) A new IFrame HTML Element.
 
 ### Examples:
 
@@ -1588,16 +1588,16 @@ Creates an IFrame HTML Element and extends its window and document with MooTools
 
 ### Notes:
 
-- If the IFrame is from the same domain as the "host", its document and window will be extended with MooTools functionalities, allowing you to fully use MooTools within iframes.
-- If the iframe already exists, and it has different id/name, the name will be made the same as the id.
-- If the frame is from a different domain, its window and document will not be extended with MooTools methods.
+- If the IFrame is from the same domain as the "host", its document and window will be extended with MooTools functionalities, allowing you to fully use MooTools within it.
+- If the IFrame already exists and has a different name than id, the name will be made the same as the id.
+- If the IFrame is from a different domain, its window and document will not be extended with MooTools methods.
 
 
 
 Native: Elements {#Elements}
 ============================
 
-The Elements class allows [Element][] methods to work also on an [Elements][] array, as well as [Array][] Methods.
+The Elements class allows [Element][] methods to work on an [Elements][] array, as well as [Array][] Methods.
 
 
 
@@ -1637,9 +1637,9 @@ Elements Method: constructor {#Elements:constructor}
 
 ### Notes:
 
-- In MooTools, every DOM function, such as [$$][] (and every other function that returns a collection of nodes) returns them as an Elements instance.
+- In MooTools, every DOM function which returns a collection of nodes (such as [$$][]) returns the nodes as instances of Elements.
 - Because Elements is an Array, it accepts all the [Array][] methods, while giving precedence to [Element][] and [Elements][] methods.
-- Every node of the Elements instance already has all the with [Element][] methods.
+- Every node of the Elements instance has all the [Element][] methods.
 
 ### See Also:
 
@@ -1650,8 +1650,7 @@ Elements Method: constructor {#Elements:constructor}
 Elements Method: filterBy {#Elements:filterBy}
 ----------------------------------------------
 
-Filters a collection of element by a given tagname.
-If [Selectors][] is included, this method will be able to filter by any selector.
+Filters a collection of elements by a given tag name.  If [Selectors][] is included, this method will be able to filter by any selector.
 
 
 ### Syntax:

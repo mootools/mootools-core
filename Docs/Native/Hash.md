@@ -1,8 +1,8 @@
 Native: Hash {#Hash}
 ====================
 
-A custom Object ({}) implementation which does not account for prototypes when setting, getting, iterating.
-Useful because in JavaScript we cannot use Object.prototype. Instead, we can use Hash.prototype!
+A custom Object ({}) implementation which does not account for prototypes when setting, getting, or iterating.
+Useful because in JavaScript, we cannot use Object.prototype. Instead, we can use Hash.prototype!
 
 
 Hash Method: constructor {#Hash:constructor}
@@ -44,7 +44,7 @@ Calls a function for each key-value pair in the object.
 ### Arguments:
 
 1. fn   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
+2. bind - (*object*, optional) The object to use as 'this' in the function. For more information, see [Function:bind][].
 
 #### Argument: fn
 

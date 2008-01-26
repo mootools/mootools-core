@@ -35,15 +35,15 @@ Base function for creating functional closures which is used by all other Functi
 
 * (*function*) The function that was created as a result of the options passed in.
 
-### Examples:
+### Example:
 
 	var myFunction = function(){
-		alert("I'm a function :)");
+		alert("I'm a function. :)");
 	};
 
-	var mySimpleFunction = myFunction.create(); //just a simple copy
+	var mySimpleFunction = myFunction.create(); //Just a simple copy.
 
-	var myAdvancedFunction = myFunction.create({ //when called, this function will attempt
+	var myAdvancedFunction = myFunction.create({ //When called, this function will attempt.
 		arguments: [0,1,2,3],
 		attempt: true,
 		delay: 1000,
@@ -70,7 +70,7 @@ Returns a closure with arguments and bind.
 
 * (*function*) The function whose arguments are passed when called.
 
-### Examples:
+### Example:
 
 	var myFunction = function(){
 		var result = 'Passed: ';
@@ -82,9 +82,9 @@ Returns a closure with arguments and bind.
 	var myHello = myFunction.pass('hello');
 	var myItems = myFunction.pass(['peach', 'apple', 'orange']);
 
-	//when ready I can execute the functions.
-	alert(myHello());
-	alert(myItems());
+	//Later in the code, the functions can be executed:
+	alert(myHello()); //Passes "hello" to myFunction.
+	alert(myItems()); //Passes the array of items to myFunction.
 
 
 
@@ -104,10 +104,9 @@ Tries to execute the function.
 
 ### Returns:
 
-* (*boolean*) False if an exception is thrown
-* (*mixed*) The function's return value.
+* (*mixed*) The function's return value or false if an exception is thrown.
 
-### Examples:
+### Example:
 
 	var myObject = {
 		'cow': 'moo!'
@@ -125,7 +124,7 @@ Tries to execute the function.
 Function Method: bind {#Function:bind}
 --------------------------------------
 
-Returns a function whose `this` is altered.
+Changes the scope of `this` within the target function to refer to the bind parameter.
 
 ### Syntax:
 
@@ -140,23 +139,23 @@ Returns a function whose `this` is altered.
 
 * (*function*) The bound function.
 
-### Examples:
+### Example:
 
 	function myFunction(){
+		//Note that 'this' here refers to window, not an element.
+		//The function must be bound to the element we want to manipulate.
 		this.setStyle('color', 'red');
-		//note that 'this' here refers to window, not an element
-		//we'll need to bind this function to the element we want to alter
 	};
 	var myBoundFunction = myFunction.bind(myElement);
-	myBoundFunction(); // this will make the element myElement red.
+	myBoundFunction(); //This will make myElement's text red.
 
 
 
 Function Method: bindWithEvent {#Function:bindWithEvent}
 --------------------------------------------------------
 
-Returns a function whose `this` is altered. It also makes "space" for an event.
-This makes the method indicate for using in conjunction with [Element:addEvent][] and arguments.
+Changes the scope of `this` within the target function to refer to the bind parameter.  It also makes "space" for an event.
+This allows the function to be used in conjunction with [Element:addEvent][] and arguments.
 
 ### Syntax:
 
@@ -171,15 +170,15 @@ This makes the method indicate for using in conjunction with [Element:addEvent][
 
 * (*function*) The bound function.
 
-### Examples:
+### Example:
 
 	function myFunction(e, add){
+		//Note that 'this' here refers to window, not an element.
+		//We'll need to bind this function to the element we want to alter.
 		this.setStyle('top', e.client.x + add);
-		//note that 'this' here refers to window, not an element
-		//we'll need to bind this function to the element we want to alter
 	};
 	$(myElement).addEvent('click', myFunction.bindWithEvent(myElement, 100);
-	//when clicked the element will move to the position of the mouse + 100;
+	//When clicked, the element will move to the position of the mouse + 100.
 
 
 
@@ -200,16 +199,16 @@ Delays the execution of a function by a specified duration.
 
 ### Returns:
 
-* (*number*) The JavaScript Timeout ID (for clearing delays).
+* (*number*) The JavaScript timeout id (for clearing delays).
 
-### Examples:
+### Example:
 
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
-	//wait 50 milliseconds, then call myFunction and bind myElement to it
-	myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
+	//Wait 50 milliseconds, then call myFunction and bind myElement to it.
+	myFunction.delay(50, myElement); //Alerts: 'moo! Element id is: ... '
 
-	//An anonymous function, example
-	(function(){ alert('one second later...'); }).delay(1000); //wait a second and alert
+	//An anonymous function which waits a second and then alerts.
+	(function(){ alert('one second later...'); }).delay(1000);
 
 
 ### See Also:
@@ -221,7 +220,7 @@ Delays the execution of a function by a specified duration.
 Function Method: periodical {#Function:periodical}
 --------------------------------------------------
 
-Executes a function in the specified intervals of time
+Executes a function in the specified intervals of time.  Periodic execution can be stopped using the [$clear][] function.
 
 ### Syntax:
 
@@ -235,13 +234,13 @@ Executes a function in the specified intervals of time
 
 ### Returns:
 
-* (*number) The Interval ID (for clearing a periodical).
+* (*number*) The Interval id (for clearing a periodical).
 
-### Examples:
+### Example:
 
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
-	addCount.periodical(1000, Site); // will add the number of seconds at the Site
+	addCount.periodical(1000, Site); //Will add the number of seconds at the Site.
 
 
 ### See Also:
@@ -253,7 +252,7 @@ Executes a function in the specified intervals of time
 Function Method: run {#Function:run}
 ------------------------------------
 
-Runs the Function with specified arguments and binding. Kinda like .apply but reversed and with support for single argument.
+Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
 
 ### Syntax:
 
@@ -270,22 +269,22 @@ Runs the Function with specified arguments and binding. Kinda like .apply but re
 
 ### Examples:
 
-#### Simple run:
+#### Simple Run:
 
 	var myFn = function(a, b, c){
 		return a + b + c;
 	}
 	var myArgs = [1,2,3];
-	myFn.run(args); //returns 6
+	myFn.run(args); //Returns: 6
 
 
-#### Run with binding:
+#### Run With Binding:
 
-	var myFn = function(a, b, c){
+	var myFn = function(a, b, c) {
 		return a + b + c + this;
 	}
 	var myArgs = [1,2,3];
-	myFn.run(args, 6); //returns 12
+	myFn.run(args, 6); //Returns: 12
 
 
 

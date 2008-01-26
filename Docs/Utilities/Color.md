@@ -25,8 +25,8 @@ There are three typical representations of color: String, RGB, and HSB. For Stri
 ##### RGB and HSB Representation:
 
 	[255, 255, 255]
-	//or
-	[255, 255, 255, 1] // for the transparency
+	//Or:
+	[255, 255, 255, 1] //(For transparency.)
 
 
 ### Returns:

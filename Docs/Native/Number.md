@@ -32,9 +32,9 @@ Limits this number between two bounds.
 
 ### Examples:
 
-	(12).limit(2, 6.5); //returns 6.5
-	(-4).limit(2, 6.5); //returns 2
-	(4.3).limit(2, 6.5); //returns 4.3
+	(12).limit(2, 6.5);  //Returns: 6.5
+	(-4).limit(2, 6.5);  //Returns: 2
+	(4.3).limit(2, 6.5); //Returns: 4.3
 
 
 
@@ -61,9 +61,9 @@ Returns this number rounded to the specified precision.
 
 ### Examples:
 
-	(12.45).round() //returns 12
-	(12.45).round(1) //returns 12.5
-	(12.45).round(-1) //returns 10
+	(12.45).round()   //Returns: 12
+	(12.45).round(1)  //Returns: 12.5
+	(12.45).round(-1) //Returns: 10
 
 
 
@@ -83,7 +83,7 @@ Executes the function passed in the specified number of times.
 
 ### Examples:
 
-	(4).times(alert); //alerts 0, 1, 2, 3
+	(4).times(alert); //Alerts "0", then "1", then "2", then "3".
 
 
 

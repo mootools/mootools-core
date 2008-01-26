@@ -36,9 +36,10 @@ Calls a function for each element in the array.
 
 ### Examples:
 
+	//Alerts "0 = apple", "1 = banana", and so on:
 	['apple', 'banana', 'lemon'].each(function(item, index){
-		alert(index + " = " + item); /Alerts "0 = apple", "1 = banana", and so on.
-	}, bind); //The optional second argument for binding isn't used here.
+		alert(index + " = " + item);
+	}); //The optional second argument for binding isn't used here.
 
 
 ### See Also:
