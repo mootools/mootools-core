@@ -73,7 +73,7 @@ var IFrame = new Native({
 		var onload = props.onload || $empty;
 		delete props.onload;
 		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Native.UID);
-		((iframe = iframe || new Element('iframe'))).set(props);
+		iframe = new Element(iframe || 'iframe', props);
 		var onFrameLoad = function(){
 			var host = $try(function(){
 				return iframe.contentWindow.location.host;
