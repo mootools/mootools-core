@@ -22,12 +22,14 @@ Drag Method: constructor {#Drag:constructor}
 
 ### Options:
 
-* handle    - (*element*: defaults to the element passed in) The Element to act as the handle for the draggable element.
 * grid      - (*integer*: defaults to false) Distance in pixels for snap-to-grid dragging.
-* unit      - (*string*: defaults to 'px') A string indicating the CSS unit to append to all integer values.
-* snap      - (*integer*: defaults to 6) The distance to drag before the Element starts to respond to the drag.
+* handle    - (*element*: defaults to the element passed in) The Element to act as the handle for the draggable element.
+* invert    - (*boolean*: defaults to false) Whether or not to invert the values reported on start and drag.
 * limit     - (*object*: defaults to false) An object with x and y properties used to limit the movement of the Element.
 * modifiers - (*object*: defaults to {'x': 'left', 'y': 'top'}) An object with x and y properties used to indicate the CSS modifiers (i.e. 'left').
+* snap      - (*integer*: defaults to 6) The distance to drag before the Element starts to respond to the drag.
+* style     - (*boolean*: defaults to true) Whether or not to set the modifier as a style property of the element.
+* unit      - (*string*: defaults to 'px') A string indicating the CSS unit to append to all integer values.
 
 ### Events:
 
@@ -52,6 +54,13 @@ Drag Method: constructor {#Drag:constructor}
 		onComplete: function(el){
 			el.removeClass('dragging');
 		}
+	});
+
+	//create an Adobe reader style drag to scroll container
+	var myDragScroller = new Drag('myContainer', {
+		style: false,
+		invert: true,
+		modifiers: {x: 'scrollLeft', y: 'scrollTop'}
 	});
 
 ### Notes:

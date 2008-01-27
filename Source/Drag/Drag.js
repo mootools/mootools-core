@@ -22,8 +22,10 @@ var Drag = new Class({
 		snap: 6,
 		unit: 'px',
 		grid: false,
+		style: true,
 		limit: false,
 		handle: false,
+		invert: false,
 		modifiers: {x: 'left', y: 'top'}
 	},
 
@@ -67,7 +69,9 @@ var Drag = new Class({
 		this.limit = {'x': [], 'y': []};
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
-			this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
+			if (this.options.style) this.value.now[z] = this.element.getStyle(this.options.modifiers[z]).toInt();
+			else this.value.now[z] = this.element[this.options.modifiers[z]];
+			if (this.options.invert) this.value.now[z] *= -1;
 			this.mouse.pos[z] = event.page[z] - this.value.now[z];
 			if (limit && limit[z]){
 				for (var i = 2; i--; i){
@@ -97,6 +101,7 @@ var Drag = new Class({
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
 			this.value.now[z] = this.mouse.now[z] - this.mouse.pos[z];
+			if (this.options.invert) this.value.now[z] *= -1;
 			if (this.options.limit && this.limit[z]){
 				if ($chk(this.limit[z][1]) && (this.value.now[z] > this.limit[z][1])){
 					this.value.now[z] = this.limit[z][1];
@@ -105,7 +110,8 @@ var Drag = new Class({
 				}
 			}
 			if (this.options.grid[z]) this.value.now[z] -= (this.value.now[z] % this.options.grid[z]);
-			this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
+			if (this.options.style) this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
+			else this.element[this.options.modifiers[z]] = this.value.now[z];
 		}
 		this.fireEvent('onDrag', this.element);
 	},
