@@ -95,20 +95,20 @@ Element.implement({
 })();
 
 Native.implement([Window, Document], {
-	
+
 	getSize: function(){
-		var body = this.getDocument().body, html = this.getDocument().documentElement;
-		if (Browser.Engine.webkit419) return {x: this.innerWidth, y: this.innerHeight};
+		var doc = this.getDocument(), win = this.getWindow(), html = doc.documentElement;
+		if (Browser.Engine.webkit419) return {x: win.innerWidth, y: win.innerHeight};
 		return {x: html.clientWidth, y: html.clientHeight};
 	},
 
 	getScroll: function(){
-		var html = this.getDocument().documentElement;
-		return {x: $pick(this.pageXOffset, html.scrollLeft), y: $pick(this.pageYOffset, html.scrollTop)};
+		var win = this.getWindow(), html = this.getDocument().documentElement;
+		return {x: $pick(win.pageXOffset, html.scrollLeft), y: $pick(win.pageYOffset, html.scrollTop)};
 	},
 
 	getScrollSize: function(){
-		var html = this.getDocument().documentElement, body = this.getDocument().body;
+		var doc = this.getDocument(), html = doc.documentElement, body = doc.body;
 		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
 		if (Browser.Engine.webkit) return {x: body.scrollWidth, y: body.scrollHeight};
 		return {x: html.scrollWidth, y: html.scrollHeight};
@@ -122,7 +122,7 @@ Native.implement([Window, Document], {
 		var size = this.getSize();
 		return {top: 0, left: 0, height: size.y, width: size.x, bottom: size.y, right: size.x};
 	}
-	
+
 });
 
 Native.implement([Window, Document, Element], {
