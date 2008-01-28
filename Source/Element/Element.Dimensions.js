@@ -99,6 +99,7 @@ Native.implement([Window, Document], {
 	getSize: function(){
 		var doc = this.getDocument(), win = this.getWindow(), html = doc.documentElement;
 		if (Browser.Engine.webkit419) return {x: win.innerWidth, y: win.innerHeight};
+		if (Browser.Engine.presto925) return {x: doc.body.clientWidth, y: doc.body.clientHeight};
 		return {x: html.clientWidth, y: html.clientHeight};
 	},
 

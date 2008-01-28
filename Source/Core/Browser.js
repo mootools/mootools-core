@@ -12,7 +12,7 @@ var Browser = new Hash({
 	Features: {xhr: !!(window.XMLHttpRequest), xpath: !!(document.evaluate), air: !!(window.runtime)}
 });
 
-if (window.opera) Browser.Engine.name = 'presto';
+if (window.opera) Browser.Engine = {name: 'presto', version: (document.getElementsByClassName) ? 950 : 925};
 else if (window.ActiveXObject) Browser.Engine = {name: 'trident', version: (Browser.Features.xhr) ? 5 : 4};
 else if (!navigator.taintEnabled) Browser.Engine = {name: 'webkit', version: (Browser.Features.xpath) ? 420 : 419};
 else if (document.getBoxObjectFor != null) Browser.Engine.name = 'gecko';
