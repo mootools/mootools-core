@@ -334,22 +334,23 @@ Element.implement({
 		return this.parentNode.removeChild(this);
 	},
 
-	clone: function(keepid){
+	clone: function(contents, keepid){
 		switch ($type(this)){
 			case 'element':
 				var attributes = {};
 				for (var j = 0, l = this.attributes.length; j < l; j++){
 					var attribute = this.attributes[j], key = attribute.nodeName, value = attribute.nodeValue;
-					if ((keepid || key != 'id') && value && value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
+					if ((key != 'id' || keepid) && value && value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
 				}
 				var element = new Element(this.nodeName.toLowerCase(), attributes);
-				
-				var children = [];
-				for (var i = 0, k = this.childNodes.length; i < k; i++){
-					var child = Element.clone(this.childNodes[i], keepid);
-					if (child) children.push(child);
+				if (contents !== false){
+					var children = [];
+					for (var i = 0, k = this.childNodes.length; i < k; i++){
+						var child = Element.clone(this.childNodes[i], true, keepid);
+						if (child) children.push(child);
+					}
+					element.adopt(children);
 				}
-				element.adopt(children);
 				
 				return element;
 			case 'textnode': return document.newTextNode(this.nodeValue);

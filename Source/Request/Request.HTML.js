@@ -31,7 +31,7 @@ Request.HTML = new Class({
 		var children = [];
 		
 		for (var i = 0, k = root.childNodes.length; i < k; i++){
-			var child = Element.clone(root.childNodes[i], true);
+			var child = Element.clone(root.childNodes[i], true, true);
 			if (child) children.push(child);
 		}
 		

@@ -673,11 +673,13 @@ Clones the Element and returns the cloned one.
 
 ### Syntax:
 
-	var copy = myElement.clone([contents]);
+	var copy = myElement.clone([contents, keepid]);
 
 ### Arguments:
 
 1. contents - (*boolean*, optional: defaults to true) When true the Element is cloned with childNodes.
+2. keepid - (*boolean*, optional: defaults to false) When true the cloned Element keeps the id attribute, if present. Same goes for any of the cloned childNodes.
+
 
 ### Returns:
 
@@ -702,7 +704,7 @@ Clones the Element and returns the cloned one.
 ### Note:
 
 - The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event/#Element:cloneEvents).
-- The clone element and its children are stripped of ids.
+- The clone element and its children are stripped of ids, unless otherwise specified by the keepid parameter.
 
 ### See Also:
 
