@@ -334,12 +334,27 @@ Element.implement({
 		return this.parentNode.removeChild(this);
 	},
 
-	clone: function(contents){
-		var temp = new Element('div').grab(this.cloneNode(contents !== false));
-		Array.each(temp.getElementsByTagName('*'), function(element){
-			if (element.id) element.removeAttribute('id');
-		});
-		return new Element('div').set('html', temp.innerHTML).getFirst();
+	clone: function(keepid){
+		switch ($type(this)){
+			case 'element':
+				var attributes = {};
+				for (var j = 0, l = this.attributes.length; j < l; j++){
+					var attribute = this.attributes[j], key = attribute.nodeName, value = attribute.nodeValue;
+					if ((keepid || key != 'id') && value && value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
+				}
+				var element = new Element(this.nodeName.toLowerCase(), attributes);
+				
+				var children = [];
+				for (var i = 0, k = this.childNodes.length; i < k; i++){
+					var child = Element.clone(this.childNodes[i], keepid);
+					if (child) children.push(child);
+				}
+				element.adopt(children);
+				
+				return element;
+			case 'textnode': return document.newTextNode(this.nodeValue);
+		}
+		return null;
 	},
 
 	replaces: function(el){
