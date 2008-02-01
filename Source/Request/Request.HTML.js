@@ -17,23 +17,47 @@ Request.HTML = new Class({
 	},
 
 	processHTML: function(text){
-		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-		return (match) ? match[1] : text;
+		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i), root;
+		text = (match) ? match[1] : text;
+
+		if (Browser.Engine.trident){
+			root = new ActiveXObject('Microsoft.XMLDOM');
+			root.async = false;
+			root.loadXML(text);
+		} else {
+			root = new DOMParser().parseFromString(text, 'text/xml');
+		}
+		
+		var children = [];
+		
+		for (var i = 0, k = root.childNodes.length; i < k; i++){
+			var child = Element.clone(root.childNodes[i], true);
+			if (child) children.push(child);
+		}
+		
+		return children;
 	},
 
 	success: function(text){
-		var opts = this.options, res = this.response;
-		res.html = this.processHTML(text).stripScripts(function(script){
-			res.javascript = script;
+		var opts = this.options, response = this.response;
+		
+		response.html = text.stripScripts(function(script){
+			response.javascript = script;
 		});
-		var node = new Element('div', {html: res.html});
-		res.elements = node.getElements('*');
-		res.tree = (opts.filter) ? res.elements.filterBy(opts.filter) : $A(node.childNodes).filter(function(el){
-			return ($type(el) != 'whitespace');
+		
+		response.tree = this.processHTML(response.html);
+		
+		response.elements = $$();
+		response.tree.each(function(element){
+			response.elements.push(element);
+			response.elements.extend(element.getElements('*'));
 		});
-		if (opts.update) $(opts.update).empty().adopt(res.tree);
-		if (opts.evalScripts) $exec(res.javascript);
-		this.onSuccess(res.tree, res.elements, res.html, res.javascript);
+		
+		if (opts.filter) response.tree = response.elements.filterBy(opts.filter);
+		if (opts.update) $(opts.update).empty().adopt(response.tree);
+		if (opts.evalScripts) $exec(response.javascript);
+		
+		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
 	}
 
 });
