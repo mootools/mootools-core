@@ -19,7 +19,8 @@ Request.HTML = new Class({
 	processHTML: function(text){
 		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i), root;
 		text = (match) ? match[1] : text;
-
+		text = '<root>' + text + '</root>';
+		
 		if (Browser.Engine.trident){
 			root = new ActiveXObject('Microsoft.XMLDOM');
 			root.async = false;
@@ -28,6 +29,7 @@ Request.HTML = new Class({
 			root = new DOMParser().parseFromString(text, 'text/xml');
 		}
 		
+		root = root.getElementsByTagName('root')[0];
 		var children = [];
 		
 		for (var i = 0, k = root.childNodes.length; i < k; i++){
