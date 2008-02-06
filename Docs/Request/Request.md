@@ -250,15 +250,15 @@ Custom Native to allow all of its methods to be used with any DOM element via th
 Element Method: send {#Element:send}
 ------------------------------------
 
-Sends a form with an HTML request.
+Sends a form or a container of inputs with an HTML request.
 
 ### Syntax:
 
-	myElement.send([options]);
+	myElement.send(url);
 
 ### Arguments:
 
-1. options - (*object*, optional) Options object for the [Request](/Request/Request) request.
+1. url - (*string*, optional) The url you want to send the form or the "container of inputs" to. If url is omitted, the action of the form will be used. url cannot be omitted for "container of inputs".
 
 ### Returns:
 
@@ -281,7 +281,7 @@ Sends a form with an HTML request.
 
 ### Note:
 
-* The URL is taken from the action attribute of the form.  The method option is taken from the form's method attribute, defaulting to post when not found.  The method can also be overridden by setting the option manually.
+* The URL is taken from the action attribute of the form.
 
 
 
