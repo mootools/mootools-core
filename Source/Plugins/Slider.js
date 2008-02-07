@@ -89,7 +89,7 @@ var Slider = new Class({
 
 	clickedElement: function(event){
 		var dir = this.range < 0 ? -1 : 1;
-		var position = event.page[this.axis] - this.element.getRelativePosition()[this.axis] - this.half;
+		var position = event.page[this.axis] - this.element.getPosition()[this.axis] - this.half;
 		position = position.limit(-this.options.offset, this.full -this.options.offset);
 		
 		this.step = Math.round(this.min + dir * this.toStep(position));
