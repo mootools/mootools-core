@@ -31,9 +31,12 @@ var Swiff = function(path, options){
 	var properties = $extend({height: options.height, width: options.width}, options.properties);
 	Swiff.Events[instance] = {};
 	for (var event in options.events){
-		Swiff.Events[instance][event] = function(){
-			options.events[event].call($(options.id));
-		};
+		var option = options.events[event];
+		Swiff.Events[instance][event] = (function(option){
+			return function(){
+				option.call($(options.id));
+			};
+		})(options.events[event]);
 		vars[event] = 'Swiff.Events.' + instance + '.' + event;
 	}
 	params.flashVars = Hash.toQueryString(vars);
