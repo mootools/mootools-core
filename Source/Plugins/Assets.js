@@ -23,7 +23,7 @@ var Asset = new Hash({
 		script.addEvents({
 			load: load,
 			readystatechange: function(){
-				if (this.readyState == 'complete') load();
+				if (['loaded', 'complete'].contains(this.readyState)) load();
 			}
 		}).setProperties(properties);
 		
