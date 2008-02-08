@@ -19,9 +19,7 @@ var Event = new Native({
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
 		
-		if (type.match(/DOMMouseScroll|mousewheel/)){
-			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-		} else if (type.test(/key/)){
+		if (type.test(/key/)){
 			var code = event.which || event.keyCode;
 			var key = Event.Keys.keyOf(code);
 			if (type == 'keydown'){
@@ -38,6 +36,9 @@ var Event = new Native({
 				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
 				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
 			};
+			if (type.match(/DOMMouseScroll|mousewheel/)){
+				var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+			}
 			var rightClick = (event.which == 3) || (event.button == 2);
 			var related = null;
 			if (type.match(/over|out/)){
