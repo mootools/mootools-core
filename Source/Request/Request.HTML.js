@@ -30,14 +30,15 @@ Request.HTML = new Class({
 		}
 		
 		root = root.getElementsByTagName('root')[0];
-		var children = [];
+		
+		var temp = new Element('div');
 		
 		for (var i = 0, k = root.childNodes.length; i < k; i++){
 			var child = Element.clone(root.childNodes[i], true, true);
-			if (child) children.push(child);
+			if (child) temp.grab(child);
 		}
 		
-		return children;
+		return temp;
 	},
 
 	success: function(text){
@@ -47,13 +48,10 @@ Request.HTML = new Class({
 			response.javascript = script;
 		});
 		
-		response.tree = this.processHTML(response.html);
+		var temp = this.processHTML(response.html);
 		
-		response.elements = $$();
-		response.tree.each(function(element){
-			response.elements.push(element);
-			response.elements.extend(element.getElements('*'));
-		});
+		response.tree = temp.childNodes;
+		response.elements = temp.getElements('*');
 		
 		if (opts.filter) response.tree = response.elements.filterBy(opts.filter);
 		if (opts.update) $(opts.update).empty().adopt(response.tree);
