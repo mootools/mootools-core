@@ -20,12 +20,9 @@ Fx.Slide = new Class({
 	initialize: function(element, options){
 		this.addEvent('onComplete', function(){
 			this.open = (this.wrapper['offset' + this.layout.capitalize()] != 0);
-			if (this.open){
-				this.wrapper.setStyle(this.layout, 'auto');
-				if (Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
-			}
+			if (this.open && Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
 		}, true);
-		this.element = this.pass = $(element);
+		this.element = this.subject = $(element);
 		arguments.callee.parent(options);
 		var wrapper = this.element.retrieve('wrapper');
 		this.wrapper = wrapper || new Element('div', {
