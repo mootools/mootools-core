@@ -33,10 +33,11 @@ Element.Events.domready = {
 			var temp = document.createElement('div');
 			try {
 				temp.doScroll('left');
-				domready();
 			} catch(e){
 				arguments.callee.delay(50);
+				return;
 			}
+			domready();
 		})(); break;
 		
 		default:
