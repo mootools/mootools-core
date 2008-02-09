@@ -465,7 +465,7 @@ var walk = function(element, walk, start, match, all, nocash){
 	var el = element[start || walk];
 	var elements = [];
 	while (el){
-		if (el.nodeType == 1 && Element.match(el, match)){
+		if (el.nodeType == 1 && (!match || Element.match(el, match))){
 			elements.push(el);
 			if (!all) break;
 		}
@@ -513,8 +513,8 @@ Element.implement({
 	},
 
 	hasChild: function(el){
-		if (!(el = $(el, true))) return false;
-		return Element.getParents(el, this.get('tag'), true).contains(this);
+		el = $(el, true);
+		return (el && $A(this.getElementsByTagName(el.tagName)).contains(el));
 	}
 
 });
