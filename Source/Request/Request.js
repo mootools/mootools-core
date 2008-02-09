@@ -10,14 +10,17 @@ var Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {/*
-		onRequest: $empty,
+	options: {
+		/*onRequest: $empty,
 		onSuccess: $empty,
 		onFailure: $empty,
 		onException: $empty,*/
 		url: '',
 		data: '',
-		headers: {},
+		headers: {
+			'X-Requested-With': 'XMLHttpRequest',
+			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+		},
 		async: true,
 		method: 'post',
 		link: 'ignore',
@@ -37,10 +40,7 @@ var Request = new Class({
 		if (!(this.xhr = this.getXHR())) return;
 		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = new Hash(this.options.headers).extend({
-			'X-Requested-With': 'XMLHttpRequest',
-			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
-		});
+		this.headers = new Hash(this.options.headers);
 	},
 
 	onStateChange: function(){
