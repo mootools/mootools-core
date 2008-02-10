@@ -33,7 +33,7 @@ Checks to see if a value exists or is 0. Useful for allowing 0.
 Function: $clear {#clear}
 -------------------------
 
-Clears a Timeout or an Interval.  Useful when working with [Function:delay][] and [Function:periodical][].
+Clears a Timeout or an Interval. Useful when working with [Function:delay][] and [Function:periodical][].
 
 ### Syntax:
 
