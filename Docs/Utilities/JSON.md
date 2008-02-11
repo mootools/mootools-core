@@ -54,4 +54,4 @@ Converts a JSON string into an JavaScript object.
 
 ###	Credits:
 
-- JSON test regexp is by [Douglas Crockford](http://crockford.org/) and [Tobie Langel](http://tobielangel.com/).
+- JSON test regexp is by [Douglas Crockford](http://crockford.com/) and [Tobie Langel](http://tobielangel.com/).
