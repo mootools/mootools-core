@@ -117,7 +117,7 @@ Element.NativeEvents = {
 
 var checkRelatedTarget = function(event){
 	var related = event.relatedTarget;
-	if (!related) return true;
+	if (!$defined(related)) return true;
 	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
 };
 
