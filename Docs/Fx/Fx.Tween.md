@@ -184,8 +184,8 @@ Element shortcut method which immediately transitions any single CSS property of
 
     //Transitions the width of "myElement" from its current width to 100px:
 	$('myElement').tween('width', '100');
-	//Transitions the height of "myElement" from 20px to 100px:
-	$('myElement').tween('height', 20, 200);
+	//Transitions the height of "myElement" from 20px to 200px:
+	$('myElement').tween('height', [20, 200]);
 	//Transitions the border of "myElement" from its current to "6px solid blue":
 	$('myElement').tween('border', '6px solid #36f');
 	
@@ -212,7 +212,7 @@ Element shortcut method for tween with opacity.  Useful for fading an Element in
  * 'show'   - Immediately set the element's opacity to 100%.
  * 'hide'   - Immediately set the element's opacity to 0%.
  * 'toggle' - If visible, fade the element out, otherwise, fade it in.
- * (*int*)  - A float value between 0 and 1. Will fade the element to this opacity.
+ * (*number*)  - A float value between 0 and 1. Will fade the element to this opacity.
 
 ### Returns:
 
@@ -236,7 +236,7 @@ Element shortcut method for tweening the background color.  Immediately transiti
 
 ### Arguments:
 
-1. color - (*string*, optional: defaults to '#ff8') The color from which to start the transition.
+1. start - (*string*, optional: defaults to '#ff8') The color from which to start the transition.
 2. end - (*string*, optional: defaults to Element's set background-color) The background color to return to after the highlight effect.
 
 ### Note:

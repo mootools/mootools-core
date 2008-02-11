@@ -911,7 +911,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Syntax:
 
-	var nextSibling = myElement.getNext();
+	var nextSibling = myElement.getNext([match]);
 
 ### Arguments:
 
@@ -937,7 +937,7 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 
 ### Syntax:
 
-	var firstElement = myElement.getFirst();
+	var firstElement = myElement.getFirst([match]);
 
 ### Arguments:
 
@@ -956,7 +956,7 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Syntax:
 
-	var lastElement = myElement.getLast();
+	var lastElement = myElement.getLast([match]);
 
 ### Arguments:
 
@@ -976,11 +976,11 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 
 ### Syntax:
 
-	var parent = myElement.getParent();
+	var parent = myElement.getParent([match]);
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -1003,7 +1003,7 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 ### Syntax:
 
-	var children = myElement.getChildren();
+	var children = myElement.getChildren([match]);
 
 ### Arguments:
 

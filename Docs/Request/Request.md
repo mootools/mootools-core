@@ -19,7 +19,7 @@ An XMLHttpRequest Wrapper.
 
 * url        - (*string*: defaults to null) The URL to request.
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
-* data       - (*string*: defaults to '') The default data for <Request.send>, used when no data is given.
+* data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
 * async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
 * encoding   - (*string*: defaults to "utf-8") The encoding to be set in the request header.
 * autoCancel - (*boolean*: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
@@ -286,3 +286,4 @@ Sends a form or a container of inputs with an HTML request.
 
 
 [$]: /Element/Element/#dollar
+[Request:send]: #Request:send

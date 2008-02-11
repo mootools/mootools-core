@@ -14,7 +14,7 @@ Stores and loads a Hash as a Cookie using JSON format.
 ### Arguments:
 
 1. name    - (*string*) The key (name) for the cookie
-2. options - (*object*) All of <Cookie> options in addition an autoSave option.
+2. options - (*object*) All of [Cookie][] options in addition an autoSave option.
 
 #### Options:
 
@@ -111,3 +111,4 @@ Loads the cookie and assigns it to the Hash.
 
 
 [Hash]: /Native/Hash/#Hash
+[Cookie]: /Utilities/Cookie

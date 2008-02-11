@@ -52,7 +52,7 @@ Attaches the mousedown event to all the handles, enabling sorting.
 
 
 
-Sortables Property: attach {#Sortables:detach}
+Sortables Property: detach {#Sortables:detach}
 ----------------------------------------------
 
 Detaches the mousedown event from the handles, disabling sorting.
