@@ -123,17 +123,19 @@ Element.implement({
 
 	slide: function(how, mode){
 		how = how || 'toggle';
-		var slide = this.get('slide');
+		var slide = this.get('slide'), toggle;
 		switch(how){
 			case 'hide': slide.hide(mode); break;
 			case 'show': slide.show(mode); break;
 			case 'toggle':
-				var flag = this.retrieve('slide:flag', false);
-				slide[(flag) ? 'slideIn' : 'slideOut'](mode);
+				var flag = this.retrieve('slide:flag', slide.open);
+				slide[(flag) ? 'slideOut' : 'slideIn'](mode);
 				this.store('slide:flag', !flag);
+				toggle = true;
 			break;
 			default: slide.start(how, mode);
 		}
+		if (!toggle) this.eliminate('slide:flag');
 		return this;
 	}
 
