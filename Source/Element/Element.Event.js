@@ -117,8 +117,7 @@ Element.NativeEvents = {
 
 var checkRelatedTarget = function(event){
 	var related = event.relatedTarget;
-	if (!$defined(related)) return true;
-	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	return (related == undefined || related !== false || ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related)));
 };
 
 Element.Events = new Hash({
