@@ -212,9 +212,7 @@ var Hash = new Native({
 
 	initialize: function(object){
 		if ($type(object) == 'hash') object = $unlink(object.getClean());
-		for (var key in object){
-			if (!this[key]) this[key] = object[key];
-		}
+		for (var key in object) this[key] = object[key];
 		return this;
 	}
 
