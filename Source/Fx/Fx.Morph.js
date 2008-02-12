@@ -11,13 +11,13 @@ Fx.Morph = new Class({
 	Extends: Fx.CSS,
 
 	initialize: function(element, options){
-		this.element = this.pass = $(element);
+		this.element = this.subject = $(element);
 		arguments.callee.parent(options);
 	},
 
 	set: function(now){
 		if (typeof now == 'string') now = this.search(now);
-		for (var p in now) this.render(this.element, p, now[p]);
+		for (var p in now) this.render(this.element, p, now[p], this.options.unit);
 		return this;
 	},
 
@@ -46,11 +46,14 @@ Element.Properties.morph = {
 	set: function(options){
 		var morph = this.retrieve('morph');
 		if (morph) morph.cancel();
-		return this.store('morph', new Fx.Morph(this, $extend({link: 'cancel'}, options)));
+		return this.eliminate('morph').store('morph:options', $extend({link: 'cancel'}, options));
 	},
 
 	get: function(options){
-		if (options || !this.retrieve('morph')) this.set('morph', options);
+		if (options || !this.retrieve('morph')){
+			if (options || !this.retrieve('morph:options')) this.set('morph', options);
+			this.store('morph', new Fx.Morph(this, this.retrieve('morph:options')));
+		}
 		return this.retrieve('morph');
 	}
 
