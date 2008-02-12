@@ -34,7 +34,7 @@ Fx.CSS = new Class({
 			Fx.CSS.Parsers.each(function(parser, key){
 				if (found) return;
 				var parsed = parser.parse(val);
-				if ($chk(parsed)) found = {'value': parsed, 'parser': parser};
+				if ($chk(parsed)) found = {value: parsed, parser: parser};
 			});
 			found = found || {value: val, parser: Fx.CSS.Parsers.String};
 			return found;
@@ -46,7 +46,7 @@ Fx.CSS = new Class({
 	compute: function(from, to, delta){
 		var computed = [];
 		(Math.min(from.length, to.length)).times(function(i){
-			computed.push({'value': from[i].parser.compute(from[i].value, to[i].value, delta), 'parser': from[i].parser});
+			computed.push({value: from[i].parser.compute(from[i].value, to[i].value, delta), parser: from[i].parser});
 		});
 		computed.$family = {name: 'fx:css:value'};
 		return computed;
@@ -65,8 +65,8 @@ Fx.CSS = new Class({
 
 	//renders the change to an element
 
-	render: function(element, property, value){
-		element.setStyle(property, this.serve(value, this.options.unit));
+	render: function(element, property, value, unit){
+		element.setStyle(property, this.serve(value, unit));
 	},
 
 	//searches inside the page css to find the values for a selector
@@ -92,48 +92,36 @@ Fx.CSS = new Class({
 Fx.CSS.Parsers = new Hash({
 
 	Color: {
-
 		parse: function(value){
 			if (value.match(/^#[0-9a-f]{3,6}$/i)) return value.hexToRgb(true);
 			return ((value = value.match(/(\d+),\s*(\d+),\s*(\d+)/))) ? [value[1], value[2], value[3]] : false;
 		},
-
 		compute: function(from, to, delta){
 			return from.map(function(value, i){
 				return Math.round(Fx.compute(from[i], to[i], delta));
 			});
 		},
-
 		serve: function(value){
 			return value.map(Number);
 		}
-
 	},
 
 	Number: {
-
 		parse: function(value){
 			return parseFloat(value);
 		},
-
 		compute: function(from, to, delta){
 			return Fx.compute(from, to, delta);
 		},
-
 		serve: function(value, unit){
 			return (unit) ? value + unit : value;
 		}
-
 	},
 
 	String: {
-
 		parse: $lambda(false),
-
 		compute: $arguments(1),
-
 		serve: $arguments(0)
-
 	}
 
 });

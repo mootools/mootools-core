@@ -19,7 +19,7 @@ Fx.Scroll = new Class({
 	},
 
 	initialize: function(element, options){
-		this.element = this.pass = $(element);
+		this.element = this.subject = $(element);
 		arguments.callee.parent(options);
 		var cancel = this.cancel.bind(this, false);
 

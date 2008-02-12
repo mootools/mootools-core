@@ -26,7 +26,7 @@ var Fx = new Class({
 	},
 
 	initialize: function(options){
-		this.pass = this.pass || this;
+		this.subject = this.subject || this;
 		this.setOptions(options);
 		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration.toInt();
 		var wait = this.options.wait;
@@ -53,6 +53,7 @@ var Fx = new Class({
 	},
 
 	check: function(){
+		//console.log(arguments);
 		if (!this.timer) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
@@ -80,15 +81,15 @@ var Fx = new Class({
 	},
 
 	onStart: function(){
-		return this.fireEvent('onStart', this.pass);
+		return this.fireEvent('onStart', this.subject);
 	},
 
 	onComplete: function(){
-		return this.fireEvent('onComplete', this.pass).callChain();
+		return this.fireEvent('onComplete', this.subject).callChain();
 	},
 
 	onCancel: function(){
-		return this.fireEvent('onCancel', this.pass).clearChain();
+		return this.fireEvent('onCancel', this.subject).clearChain();
 	},
 
 	pause: function(){
