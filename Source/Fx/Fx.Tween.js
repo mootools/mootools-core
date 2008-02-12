@@ -67,9 +67,11 @@ Element.implement({
 			case 'out': fade.start(o, 0); break;
 			case 'show': fade.set(o, 1); break;
 			case 'hide': fade.set(o, 0); break;
-			case 'toggle': fade.start(o, (function(){
-				return (this.get('opacity') == 1) ? 0 : 1;
-			}).bind(this)); break;
+			case 'toggle':
+				var flag = this.retrieve('fade:flag', this.get('opacity') == 1);
+				fade.start(o, (flag) ? 0 : 1);
+				this.store('fade:flag', !flag);
+			break;
 			default: fade.start(o, arguments);
 		}
 		return this;
