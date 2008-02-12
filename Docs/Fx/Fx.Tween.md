@@ -21,13 +21,12 @@ The Tween effect, used to transition any CSS property from one value to another.
 ### Arguments:
 
 1. element  - (*mixed*) An Element or the string id of an Element to apply the transition to.
-2. property - (*string*) The CSS property to transition, for example 'width', 'color', 'font-size', 'border', etc.
-3. options  - (*object*, optional) The <Fx> options object.
+2. options  - (*object*, optional) The <Fx> options object, plus the options described below:
+	
+### Options:
 
-### Properties:
+* property - (*string*) The CSS property to transition to, for example 'width', 'color', 'font-size', 'border', etc. If this option is omitted, you are required to use the property as a first argument for the start and set methods. Defaults to null.
 
-* element - (*element*) The element being transitioned.
-* property - (*string*) The property being transitioned.
 
 ### Notes:
 
@@ -47,11 +46,12 @@ Sets the Element's CSS property to the specified value immediately.
 
 ### Syntax:
 
-	myFx.set(value);
+	myFx.set(property, value);
 
 ### Arguments:
 
-1. value - (*mixed*) The value to set the CSS property of this instance to.
+1. property - (*string*) The css property to set the value to. Omit this if you use the property option.
+2. value - (*mixed*) The value to set the CSS property of this instance to.
 
 ### Returns:
 
@@ -59,9 +59,9 @@ Sets the Element's CSS property to the specified value immediately.
 
 ### Examples:
 
-	var myFx = new Fx.Tween(element, 'color');
+	var myFx = new Fx.Tween(element);
 	//Immediately sets the background color of the element to red:
-	myFx.set('#f00');
+	myFx.set('background-color', '#f00');
 
 
 
@@ -72,12 +72,13 @@ Transitions the Element's CSS property to the specified value.
 
 ### Syntax:
 
-	myFx.start(from[, to]);
+	myFx.start(property, from[, to]);
 
 ### Arguments:
 
-1. from - (*mixed*) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
-2. to   - (*mixed*, optional) The target CSS property value for the effect.
+1. property - (*string*) The css property to tween. Omit this if you use the property option.
+2. from - (*mixed*) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
+3. to   - (*mixed*, optional) The target CSS property value for the effect.
 
 ### Returns:
 
@@ -85,15 +86,15 @@ Transitions the Element's CSS property to the specified value.
 
 ### Examples:
 
-	var myFx = new Fx.Tween(element, 'background-color');
+	var myFx = new Fx.Tween(element);
 	//Transitions the background color of the Element from black to red:
-	myFx.start('#000', '#f00');
+	myFx.start('background-color', '#000', '#f00');
 	//Transitions the background color of the Element from its current color to blue:
-	myFx.start('#00f');
+	myFx.start('background-color', '#00f');
 
 ### Notes:
 
-- If only one parameter is provided, the first argument to start will be used as the target value, and the initial value will be calculated from the current state of the element.
+- If only one argument is provided, other than the property argument, the first argument to start will be used as the target value, and the initial value will be calculated from the current state of the element.
 - When using colors, either RGB or Hex values may be used.
 
 
@@ -106,7 +107,7 @@ see [Element.Properties](/Element/Element/#Element-Properties)
 Element Property: tween {#Element-Properties:tween}
 ---------------------------------------------------
 
-Sets and gets a default Fx.Tween instance for an Element.
+Sets and gets default options for the Fx.Tween instance of an Element.
 
 ### Setter:
 
@@ -169,12 +170,13 @@ Element shortcut method which immediately transitions any single CSS property of
 
 ### Syntax:
 
-	myElement.tween(property, value);
+	myElement.tween(property, startvalue[, endvalue]);
 
 ### Arguments:
 
-1. property - (*string*) the css property you want to animate.
-2. value    - (*mixed*) Either the target value to transition the CSS property to, or an array containing the starting and ending values for the transition.
+1. property - (*string*) the css property you want to animate. Omit this if you previously set the property option.
+2. startvalue - (*mixed*) The start value for the transition.
+2. endvalue - (*mixed*) The end value for the transition. If this is omitted, startvalue will be used as endvalue.
 
 ### Returns:
 
