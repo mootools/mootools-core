@@ -11,7 +11,7 @@ Fx.Elements = new Class({
 	Extends: Fx.CSS,
 
 	initialize: function(elements, options){
-		this.elements = this.pass = $$(elements);
+		this.elements = this.subject = $$(elements);
 		arguments.callee.parent(options);
 	},
 
@@ -27,7 +27,7 @@ Fx.Elements = new Class({
 	set: function(now){
 		for (var i in now){
 			var iNow = now[i];
-			for (var p in iNow) this.render(this.elements[i], p, iNow[p]);
+			for (var p in iNow) this.render(this.elements[i], p, iNow[p], this.options.unit);
 		}
 		return this;
 	},
