@@ -104,13 +104,13 @@ Native.implement([Element, Window, Document], {
 });
 
 Element.NativeEvents = {
-	'click': 2, 'dblclick': 2, 'mouseup': 2, 'mousedown': 2, 'contextmenu': 2, //mouse buttons
-	'mousewheel': 2, 'DOMMouseScroll': 2, //mouse wheel
-	'mouseover': 2, 'mouseout': 2, 'mousemove': 2, 'selectstart': 2, 'selectend': 2, //mouse movement
-	'keydown': 2, 'keypress': 2, 'keyup': 2, //keyboard
-	'focus': 2, 'blur': 2, 'change': 2, 'reset': 2, 'select': 2, 'submit': 2, //form elements
-	'load': 1, 'unload': 1, 'beforeunload': 1, 'resize': 1, 'move': 1, 'DOMContentLoaded': 1, 'readystatechange': 1, //window
-	'error': 1, 'abort': 1, 'scroll': 1 //misc
+	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
+	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
+	mouseover: 2, mouseout: 2, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
+	keydown: 2, keypress: 2, keyup: 2, //keyboard
+	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, //form elements
+	load: 1, unload: 1, beforeunload: 1, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
+	error: 1, abort: 1, scroll: 1 //misc
 };
 
 (function(){
@@ -123,25 +123,17 @@ var checkRelatedTarget = function(event){
 Element.Events = new Hash({
 
 	mouseenter: {
-
 		base: 'mouseover',
-
 		condition: checkRelatedTarget
-
 	},
 
 	mouseleave: {
-
 		base: 'mouseout',
-
 		condition: checkRelatedTarget
-
 	},
 
 	mousewheel: {
-
 		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
-
 	}
 
 });

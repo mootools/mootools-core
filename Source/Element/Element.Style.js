@@ -121,7 +121,7 @@ Element.Styles = new Hash({
 	textIndent: '@px', opacity: '@'
 });
 
-Element.ShortStyles = {'margin': {}, 'padding': {}, 'border': {}, 'borderWidth': {}, 'borderStyle': {}, 'borderColor': {}};
+Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
 
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
 	var Short = Element.ShortStyles;
