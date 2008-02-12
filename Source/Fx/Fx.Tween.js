@@ -60,7 +60,7 @@ Element.implement({
 	},
 
 	fade: function(how){
-		var fade = this.get('tween'), o = 'opacity';
+		var fade = this.get('tween'), o = 'opacity', toggle;
 		how = $pick(how, 'toggle');
 		switch (how){
 			case 'in': fade.start(o, 1); break;
@@ -71,9 +71,11 @@ Element.implement({
 				var flag = this.retrieve('fade:flag', this.get('opacity') == 1);
 				fade.start(o, (flag) ? 0 : 1);
 				this.store('fade:flag', !flag);
+				toggle = true;
 			break;
 			default: fade.start(o, arguments);
 		}
+		if (!toggle) this.eliminate('fade:flag');
 		return this;
 	},
 
