@@ -317,6 +317,31 @@ Strips the String of its `<script>` tags and anything in between them.
 	var myString = "<script>alert('Hello')</script>Hello, World.";
 	myString.stripScripts(); //Returns "Hello, World."
 	myString.stripScripts(true); //Alerts "Hello", then returns "Hello, World."
+	
+	
+String Method: substitute {#String:substitute}
+------------------------------------------
+
+Substitutes keywords in a string using an object.
+
+### Syntax:
+
+	myString.substitute(object, [delimiters]);
+
+### Arguments:
+
+1. object - (*object*) The key/value pairs used to substitute a string.
+1. delimiters - (*array*, optional) The delimiters to be used in the string keywords. Defaults to ['{', '}'].
+
+### Returns:
+
+* (*string*) - The substituted string.
+
+### Examples:
+
+	var myString = "{subject} is {property_1} and {property_2}.";
+	var myObject = {subject: 'Jack Bauer', property_1: 'our lord', property_2: 'savior'};
+	myString.substitute(myObject); //Jack Bauer is our lord and savior
 
 
 

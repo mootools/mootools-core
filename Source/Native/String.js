@@ -73,6 +73,14 @@ String.implement({
 		if (option === true) $exec(scripts);
 		else if ($type(option) == 'function') option(scripts, text);
 		return text;
+	},
+	
+	substitute: function(object, limiters){
+		limiters = limiters || ['{', '}'];
+		var regexp = new RegExp(limiters[0].escapeRegExp() + '([\\w-]+)' + limiters[1].escapeRegExp(), 'g');
+		return this.replace(regexp, function(full, found){
+			return (object[found] != undefined) ? object[found] : '';
+		});
 	}
 
 });
