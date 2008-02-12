@@ -106,11 +106,14 @@ Element.Properties.slide = {
 	set: function(options){
 		var slide = this.retrieve('slide');
 		if (slide) slide.cancel();
-		return this.store('slide', new Fx.Slide(this, $extend({link: 'cancel'}, options)));
+		return this.eliminate('slide').store('slide:options', $extend({link: 'cancel'}, options));
 	},
-
+	
 	get: function(options){
-		if (options || !this.retrieve('slide')) this.set('slide', options);
+		if (options || !this.retrieve('slide')){
+			if (options || !this.retrieve('slide:options')) this.set('slide', options);
+			this.store('slide', new Fx.Slide(this, this.retrieve('slide:options')));
+		}
 		return this.retrieve('slide');
 	}
 
@@ -118,13 +121,18 @@ Element.Properties.slide = {
 
 Element.implement({
 
-	slide: function(how){
+	slide: function(how, mode){
 		how = how || 'toggle';
 		var slide = this.get('slide');
 		switch(how){
-			case 'hide': slide.hide(); break;
-			case 'show': slide.show(); break;
-			default: slide.start(how);
+			case 'hide': slide.hide(mode); break;
+			case 'show': slide.show(mode); break;
+			case 'toggle':
+				var flag = this.retrieve('slide:flag', false);
+				slide[(flag) ? 'slideIn' : 'slideOut'](mode);
+				this.store('slide:flag', !flag);
+			break;
+			default: slide.start(how, mode);
 		}
 		return this;
 	}
