@@ -20,7 +20,7 @@ Fx.Tween = new Class({
 			now = property;
 			property = this.property;
 		}
-		this.render(this.element, property, now);
+		this.render(this.element, property, now, this.options.unit);
 		return this;
 	},
 
