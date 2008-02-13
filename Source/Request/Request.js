@@ -182,18 +182,21 @@ Request.implement(methods);
 })();
 
 Element.Properties.send = {
-
-	get: function(options){
-		if (options || !this.retrieve('send')) this.set('send', options);
-		return this.retrieve('send');
-	},
-
+	
 	set: function(options){
 		var send = this.retrieve('send');
 		if (send) send.cancel();
-		return this.store('send', new Request($extend({
+		return this.eliminate('send').store('send:options', $extend({
 			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
-		}, options)));
+		}, options));
+	},
+
+	get: function(options){
+		if (options || ! this.retrieve('send')){
+			if (options || !this.retrieve('send:options')) this.set('send', options);
+			this.store('send', new Request(this.retrieve('send:options')));
+		}
+		return this.retrieve('send');
 	}
 
 };
