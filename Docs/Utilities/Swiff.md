@@ -18,17 +18,18 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 
 ###	Options:
 
-* id - (*string*: defaults to 'Swiff_' + unique id) The id of the Flash object.
-* width - (*number*: defaults to 1) The width of the Flash object.
-* height - (*number*: defaults to 1) The height of the Flash object.
+* id - (*string*: defaults to 'Swiff_' + unique id) The id of the SWF object.
+* width - (*number*: defaults to 1) The width of the SWF object.
+* height - (*number*: defaults to 1) The height of the SWF object.
+* container - (*element*) The container into which the SWF object will be injected.
 * params - (*object*) Parameters to be passed to the SWF object (wmode, bgcolor, allowScriptAccess, loop, etc.).
   * allowScriptAccess - (*string*: defaults to always) The domain that the SWF object allows access to.
-  * swLiveConnect - (*boolean*: defaults to true) the swLiveConnect parameter to allow remote scripting.
   * quality - (*string*: defaults to 'high') The render quality of the movie.
-  
+  * swLiveConnect - (*boolean*: defaults to true) the swLiveConnect parameter to allow remote scripting.
+  * wMode - (*string*: defaults to 'transparent') Allows the SWF to be displayed with a transparent background.
 * properties - (*object*) Additional attributes for the object element.
 * vars - (*object*) Vars will be passed to the SWF as querystring in flashVars.
-* events - (*object*) Functions to call from the Flash movie. These will be available globally in the movie, and bound to the object.
+* events - (*object*) Functions to call from the SWF. These will be available globally in the movie, and bound to the object.
 
 ### Returns:
 

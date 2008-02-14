@@ -23,16 +23,16 @@ var Builder = {
 
 	scripts: {
 		source: {
-			'Core':      ['Core', 'Browser'],
-			'Native':    ['Array', 'Function', 'Number', 'String', 'Hash'],
-			'Class':     ['Class', 'Class.Extras'],
-			'Element':   ['Element', 'Element.Event', 'Element.Style'],
-			'Selectors': ['Selectors', 'Selectors.Pseudo'],
-			'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
-			'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
-			'Utilities': ['JSON', 'Cookie', 'Dimensions', 'Swiff', 'Color', 'Group'],
-			'Drag':      ['Drag', 'Drag.Move'],
-			'Plugins':   ['Selectors.Children', 'Hash.Cookie', 'Sortables', 'Tips', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Fx.Elements', 'Accordion']
+			'Core'      : ['Core', 'Browser'],
+			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
+			'Class'     : ['Class', 'Class.Extras'],
+			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
+			'Selectors' : ['Selectors', 'Selectors.Pseudo'],
+			'Utilities' : ['Color', 'Cookie', 'Dimensions', 'DomReady', 'Group', 'JSON', 'Swiff'],
+			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Scroll', 'Fx.Slide', 'Fx.Transitions'],
+			'Request'   : ['Request', 'Request.HTML', 'Request.JSON'],
+			'Drag'      : ['Drag', 'Drag.Move'],
+			'Plugins'   : ['Assets', 'Fx.Elements', 'Selectors.Children', 'Hash.Cookie', 'Sortables', 'Scroller', 'Slider', 'SmoothScroll', 'Tips', 'Accordion']
 		},
 
 		spec: {
@@ -41,9 +41,8 @@ var Builder = {
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Style'],
 			'Selectors' : ['Selectors'],
-			'Utilities'   : ['Color'],
+			'Utilities' : ['Color'],
 			'Plugins'   : ['Selectors.Children']
-			
 		}
 	},
 
