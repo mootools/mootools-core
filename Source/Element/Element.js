@@ -339,7 +339,7 @@ Element.implement({
 			case 'element':
 				var attributes = {};
 				for (var j = 0, l = this.attributes.length; j < l; j++){
-					var attribute = this.attributes[j], key = attribute.nodeName, value = attribute.nodeValue;
+					var attribute = this.attributes[j], key = attribute.nodeName, value = (key == 'style' ? this.style.cssText : attribute.nodeValue);
 					if ((key != 'id' || keepid) && value && value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
 				}
 				var element = new Element(this.nodeName.toLowerCase(), attributes);
@@ -351,7 +351,6 @@ Element.implement({
 					}
 					element.adopt(children);
 				}
-				
 				return element;
 			case 'textnode': return document.newTextNode(this.nodeValue);
 		}
