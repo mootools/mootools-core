@@ -72,8 +72,10 @@ Fx.CSS = new Class({
 	//searches inside the page css to find the values for a selector
 
 	search: function(selector){
-		var to = {};
+		var to = {}, domain = document.domain;
 		Array.each(document.styleSheets, function(sheet, j){
+			var href = sheet.href;
+			if (href.match('://') && !href.match(domain)) return;
 			var rules = sheet.rules || sheet.cssRules;
 			Array.each(rules, function(rule, i){
 				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
