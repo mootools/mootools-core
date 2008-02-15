@@ -4,6 +4,8 @@ Native: Element {#Element}
 - Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
 - These methods are also available on window and document.
 
+### Notes:
+- Internet Explorer fires element events in random order if they are not fired by [Element:fireEvent](#Element:fireEvent).
 
 
 Element Method: addEvent {#Element:addEvent}
@@ -13,7 +15,7 @@ Attaches an event listener to a DOM element.
 
 ###	Syntax:
 
-	myElement.addEvent(type, fn[, nativeType]);
+	myElement.addEvent(type, fn);
 
 ###	Arguments:
 
@@ -192,8 +194,8 @@ Executes all events of the specified type present in the Element.
 * (*element*) This Element.
 
 ###	Examples:
-
-	$('myElement').fireEvent('click', $('anElement'), 1000);  // Fires all the added 'click' events and passes the Element 'anElement' after one second.
+	// Fires all the added 'click' events and passes the Element 'anElement' after one second.
+	$('myElement').fireEvent('click', $('anElement'), 1000);
 
 ###	Notes:
 
@@ -266,11 +268,12 @@ The Element.Events.yourproperty (object) can have:
 If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event
 (highly unrecommended: use only when you know exactly what you're doing).
 
-### Custom Events
+Custom Events
+-------------
 
-#### Event: mouseenter
+### Event: mouseenter
 
-This event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike the broken mouseover).
+This event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover).
 
 #### Examples:
 
@@ -280,7 +283,19 @@ This event fires when the mouse enters the area of the dom Element and will not 
 
 - [Element:addEvent](#Element:addEvent)
 
-#### Event: mousewheel
+### Event: mouseleave
+
+This event fires when the mouse leaves the area of the dom Element and will not be fired if the mouse crosses over children of the Element (unlike mouseout).
+
+#### Examples:
+
+	$('myElement').addEvent('mouseleave', myFunction);
+
+#### See Also:
+
+- [Element:addEvent](#Element:addEvent)
+
+### Event: mousewheel
 
 This event fires when the mouse wheel is rotated;
 

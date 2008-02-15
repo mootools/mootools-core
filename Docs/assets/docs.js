@@ -116,7 +116,7 @@ var Docs = {
 
 Docs.Scripts = new Hash({
 	'Core':      ['Core', 'Browser'],
-	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash'],
+	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 	'Class':     ['Class', 'Class.Extras'],
 	'Element':   ['Element', 'Element.Event', 'Element.Style'],
 	'Selectors': ['Selectors', 'Selectors.Pseudo'],
