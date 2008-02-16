@@ -339,17 +339,16 @@ Element.implement({
 			case 'element':
 				var attributes = {};
 				for (var j = 0, l = this.attributes.length; j < l; j++){
-					var attribute = this.attributes[j], key = attribute.nodeName, value = (key == 'style' ? this.style.cssText : attribute.nodeValue);
+					var attribute = this.attributes[j], key = attribute.nodeName;
+					var value = (key == 'style' && this.style) ? this.style.cssText : attribute.nodeValue;
 					if ((key != 'id' || keepid) && value && value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
 				}
 				var element = new Element(this.nodeName.toLowerCase(), attributes);
 				if (contents !== false){
-					var children = [];
 					for (var i = 0, k = this.childNodes.length; i < k; i++){
 						var child = Element.clone(this.childNodes[i], true, keepid);
-						if (child) children.push(child);
+						if (child) element.grab(child);
 					}
-					element.adopt(children);
 				}
 				return element;
 			case 'textnode': return document.newTextNode(this.nodeValue);
