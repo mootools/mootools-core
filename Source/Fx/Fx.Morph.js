@@ -64,10 +64,6 @@ Element.implement({
 	morph: function(props){
 		this.get('morph').start(props);
 		return this;
-	},
-	
-	effects: function(options){
-		return new Fx.Morph(this, options);
 	}
 
 });
