@@ -45,7 +45,7 @@ window.addEvent('domready', function() {
 	
 	$('resetEffect').addEvent('click', function(e) {
 		e.stop();
-		otherEl.removeProperty('style');
+		otherEl.erase('style');
 	});
 	
 	
@@ -59,7 +59,6 @@ window.addEvent('domready', function() {
 	$('morphEffect').addEvent('click', function(e) {
 		e.stop();
 		morph.start({
-			opacity: 0.5,
 			width: '200px',
 			color: '#C6D880'
 		});

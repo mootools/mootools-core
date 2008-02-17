@@ -22,7 +22,7 @@ window.addEvent('domready', function() {
 			
 			el.inject(gallery);
 		});
-	}
+	};
 
 	$('loadJson').addEvent('click', function(e) {
 		e.stop();

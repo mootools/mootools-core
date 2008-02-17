@@ -75,6 +75,6 @@ var Demos = {
 			}
 		});
 	}
-}
+};
 
 window.addEvent('load', Demos.start);

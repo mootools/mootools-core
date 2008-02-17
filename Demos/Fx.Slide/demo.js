@@ -2,7 +2,7 @@ window.addEvent('domready', function() {
 	var status = {
 		'true': 'open',
 		'false': 'close'
-	}
+	};
 	
 	//-vertical
 

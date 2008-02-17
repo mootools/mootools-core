@@ -1,5 +1,5 @@
-//First Example
 window.addEvent('domready', function(){
+	// First Example
 	var el = $('myElement'),
 		font = $('fontSize');
 	
@@ -9,33 +9,32 @@ window.addEvent('domready', function(){
 		range: [8],	// Minimum value is 8
 		onChange: function(value){
 			// Everytime the value changes, we change the font of an element
-			font.setStyle('font-size', value+'px');
+			font.setStyle('font-size', value);
 		}
 	}).set(font.getStyle('font-size').toInt());
 	
 
 	// Second Example
-	var el = $('setColor'),	slider = [], color = [];
+	var el = $('setColor'), color = [0, 0, 0];
 	
-	// We define a function to call after every change
-	var fn = function(){
-		// Based on the Slider values we create a RGB color array
-		// or set it based on slider steps
-		color = (slider.length == 3) ? slider.map(function(value){
-			return value.step;
-		}) : [0, 0, 0];
-		
+	var updateColor = function(){
+		// Sets the color of the output text and its text to the current color
 		el.setStyle('color', color).set('text', color.rgbToHex());
-	}
+	};
 	
-	document.getElements('div.slider.advanced').each(function(el, i){
-		slider[i] = new Slider(el, el.getElement('.knob'), {
-			steps: 255,		//Steps from 0 to 255
-			wheel: true,	// Using the mousewheel is possible too 
-			onChange: fn
+	// We call that function to initially set the color output
+	updateColor();
+	
+	$$('div.slider.advanced').each(function(el, i){
+		var slider = new Slider(el, el.getElement('.knob'), {
+			steps: 255,  // Steps from 0 to 255
+			wheel: true, // Using the mousewheel is possible too
+			onChange: function(){
+				// Based on the Slider values set an RGB value in the color array
+				color[i] = this.step;
+				// and update the output to the new value
+				updateColor();
+			}
 		}).set(0);
 	});
-	
-	// We call that function to initially set up the color
-	fn();
 });
