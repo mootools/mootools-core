@@ -5,7 +5,7 @@ window.addEvent('domready', function(){
 	
 	// Create the new slider instance
 	new Slider(el, el.getElement('.knob'), {
-		steps: 40,	// There are 40 steps
+		steps: 35,	// There are 35 steps
 		range: [8],	// Minimum value is 8
 		onChange: function(value){
 			// Everytime the value changes, we change the font of an element
