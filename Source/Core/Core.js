@@ -261,7 +261,7 @@ Array.implement({
 Array.alias('forEach', 'each');
 
 function $A(iterable){
-	if ($type(iterable) == 'collection'){
+	if (iterable.item){
 		var array = [];
 		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
 		return array;

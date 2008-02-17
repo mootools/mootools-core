@@ -33,7 +33,13 @@ function $exec(text){
 	return text;
 };
 
-Native.UID = 0;
+Native.UID = 1;
+
+var $uid = (Browser.Engine.trident) ? function(item){
+	return (item.uid || (item.uid = [Native.UID++]))[0];
+} : function(item){
+	return item.uid || (item.uid = Native.UID++);
+};
 
 var Window = new Native({
 
@@ -42,12 +48,12 @@ var Window = new Native({
 	legacy: window.Window,
 
 	initialize: function(win){
+		$uid(win);
 		if (!win.Element){
 			win.Element = $empty;
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 		}
-		win.uid = Native.UID++;
 		return $extend(win, Window.Prototype);
 	},
 
@@ -68,13 +74,13 @@ var Document = new Native({
 	legacy: window.Document,
 
 	initialize: function(doc){
+		$uid(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.html = doc.getElementsByTagName('html')[0];
 		doc.window = doc.defaultView || doc.parentWindow;
 		if (Browser.Engine.trident4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
-		doc.uid = Native.UID++;
 		return $extend(doc, Document.Prototype);
 	},
 

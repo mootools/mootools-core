@@ -66,13 +66,12 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		Native.UID++;
 		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
 		var props = params.properties || {};
 		var iframe = $(params.iframe) || false;
 		var onload = props.onload || $empty;
 		delete props.onload;
-		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Native.UID);
+		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Native.UID++);
 		iframe = new Element(iframe || 'iframe', props);
 		var onFrameLoad = function(){
 			var host = $try(function(){
@@ -98,8 +97,7 @@ var Elements = new Native({
 		options = $extend({ddup: true, cash: true}, options);
 		elements = elements || [];
 		if (options.ddup || options.cash){
-			var uniques = {};
-			var returned = [];
+			var uniques = {}, returned = [];
 			for (var i = 0, l = elements.length; i < l; i++){
 				var el = $.element(elements[i], !options.cash);
 				if (options.ddup){
@@ -179,16 +177,15 @@ $.string = function(id, notrash, doc){
 };
 
 $.element = function(el, notrash){
-	el.uid = el.uid || [Native.UID++];
-	if (!notrash && Garbage.collect(el) && !el.$family) $extend(el, Element.Prototype);
+	$uid(el);
+	if (!notrash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
+		var proto = Element.Prototype;
+		for (var p in proto) el[p] = proto[p];
+	};
 	return el;
 };
 
 $.textnode = $.window = $.document = $arguments(0);
-
-$.number = function(uid){
-	return Garbage.Elements[uid] || null;
-};
 
 Native.implement([Element, Document], {
 
@@ -212,7 +209,7 @@ Native.implement([Element, Document], {
 Element.Storage = {
 
 	get: function(uid){
-		return (this[uid] = this[uid] || {});
+		return (this[uid] || (this[uid] = {}));
 	}
 
 };
@@ -341,7 +338,8 @@ Element.implement({
 				for (var j = 0, l = this.attributes.length; j < l; j++){
 					var attribute = this.attributes[j], key = attribute.nodeName;
 					var value = (key == 'style' && this.style) ? this.style.cssText : attribute.nodeValue;
-					if ((key != 'id' || keepid) && value && value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
+					if (!$chk(value) || value == 'uid' || (value == 'id' && !keepid)) continue;
+					if (value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
 				}
 				var element = new Element(this.nodeName.toLowerCase(), attributes);
 				if (contents !== false){
@@ -392,17 +390,16 @@ Element.implement({
 	},
 
 	empty: function(){
-		var elements = $A(this.getElementsByTagName('*'));
-		elements.each(function(element){
-			$try(Element.prototype.dispose, element);
-		});
-		Garbage.trash(elements);
-		$try(Element.prototype.set, this, ['html', '']);
+		$A(this.childNodes).each(function(node){
+			Element.empty(node);
+			this.removeChild(node);
+			memfree(node);
+		}, this);
 		return this;
 	},
 
 	destroy: function(){
-		Garbage.kill(this.empty().dispose());
+		memfree(this.empty().dispose());
 		return null;
 	},
 
@@ -636,42 +633,21 @@ Element.Attributes = new Hash({
 
 })(Element.Attributes);
 
-var Garbage = {
-
-	Elements: {},
-
-	ignored: {object: 1, embed: 1, OBJECT: 1, EMBED: 1},
-
-	collect: function(el){
-		if (el.$attributes) return true;
-		if (Garbage.ignored[el.tagName]) return false;
-		Garbage.Elements[el.uid] = el;
-		el.$attributes = {};
-		return true;
-	},
-
-	trash: function(elements){
-		for (var i = elements.length, el; i--; i) Garbage.kill(elements[i]);
-	},
-
-	kill: function(el){
-		if (!el || !el.$attributes) return;
-		delete Garbage.Elements[el.uid];
-		if (el.retrieve('events')) el.removeEvents();
-		for (var p in el.$attributes) el.$attributes[p] = null;
-		if (Browser.Engine.trident){
-			for (var d in Element.Prototype) el[d] = null;
-		}
-		el.$attributes = el.uid = null;
-	},
-
-	empty: function(){
-		for (var uid in Garbage.Elements) Garbage.kill(Garbage.Elements[uid]);
+function memfree(item){
+	var clean = function(element){
+		if (element.removeEvents) element.removeEvents();
+		element.uid = null;
+	};
+	switch ($type(item)){
+		case 'element': clean(item); break;
+		case 'document': case false:
+			var elements = (item || document).getElementsByTagName('*');
+			for (var i = 0, l = elements.length; i < l; i++) clean(elements[i]);
+		break;
 	}
-
 };
 
-window.addListener('beforeunload', function(){
-	window.addListener('unload', Garbage.empty);
-	if (Browser.Engine.trident) window.addListener('unload', CollectGarbage);
+window.addListener('unload', function(){
+	memfree();
+	if (Browser.Engine.trident) CollectGarbage();
 });
