@@ -48,7 +48,7 @@ var Event = new Native({
 				}
 				if ((function(){
 					while (related && related.nodeType == 3) related = related.parentNode;
-				}).create({attempt: Browser.Engine.gecko})() === false) related = false;
+				}).create({attempt: Browser.Engine.gecko18})() === false) related = false;
 			}
 		}
 
