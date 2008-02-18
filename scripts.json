@@ -86,21 +86,13 @@
 
 	},
 
-	"Selectors": {
-
-		"Selectors": {
-			"deps": ["Element"],
-			"desc": "Adds advanced CSS Querying capabilities for selecting elements."
-		},
-
-		"Selectors.Pseudo": {
-			"deps": ["Selectors"],
-			"desc": "Adds CSS3 and other custom pseudo selectors support for selecting elements."
-		}
-
-	},
 	
 	"Utilities": {
+		
+		"Selectors": {
+			"deps": ["Element"],
+			"desc": "Adds advanced CSS-style querying capabilities for targeting html elements. Includes pseudo selectors."
+		},
 		
 		"DomReady": {
 			"deps": ["Element.Event"],
