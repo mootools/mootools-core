@@ -200,11 +200,6 @@
 
 	"Plugins": {
 
-		"Selectors.Children": {
-			"deps": ["Selectors"],
-			"desc": "Adds the :children selector for selecting ranges of children of an element."
-		},
-
 		"Hash.Cookie": {
 			"deps": ["Class.Extras", "Cookie", "JSON"],
 			"desc": "Class for creating, reading, and deleting browser Cookies in JSON format."
