@@ -27,7 +27,7 @@ var Builder = {
 			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
-			'Selectors' : ['Selectors', 'Selectors.Pseudo'],
+			'Selectors' : ['Selectors'],
 			'Utilities' : ['Color', 'Cookie', 'Dimensions', 'DomReady', 'Group', 'JSON', 'Swiff'],
 			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Scroll', 'Fx.Slide', 'Fx.Transitions'],
 			'Request'   : ['Request', 'Request.HTML', 'Request.JSON'],

@@ -32,7 +32,7 @@ var Docs = {
 		});
 
 		files = menu.adopt(elements).getElements('h3');
-		($E('#menu a[href=' + window.location.hash + ']') || $E('#menu a')).fireEvent('click');
+		(document.getElement('#menu a[href=' + window.location.hash + ']') || document.getElement('#menu a')).fireEvent('click');
 	},
 
 	local: function() {
@@ -52,7 +52,7 @@ var Docs = {
 
 		var parse = Docs.parse(markdown);
 		wrapper.set('html', parse.innerHTML);
-		$E('#menu-wrapper h3.selected').getParent().grab(submenu.empty());	
+		document.getElement('#menu-wrapper h3.selected').getParent().grab(submenu.empty());	
 
 		var methods = Docs.methods(parse, submenu);
 		Docs.scroll();
@@ -119,7 +119,7 @@ Docs.Scripts = new Hash({
 	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 	'Class':     ['Class', 'Class.Extras'],
 	'Element':   ['Element', 'Element.Event', 'Element.Style'],
-	'Selectors': ['Selectors', 'Selectors.Pseudo'],
+	'Selectors': ['Selectors'],
 	'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
 	'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
 	'Utilities': ['JSON', 'Cookie', 'Dimensions', 'Swiff', 'Color', 'Group'],
