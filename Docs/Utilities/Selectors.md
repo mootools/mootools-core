@@ -54,8 +54,6 @@ Gets all the elements within an element that match the given selector.
 	- $= : ends-with
 	- != : is not equal to
 
-- Xpath is used automatically in compliant browsers.
-
 Element Property: getElement {#Element:getElement}
 --------------------------------------------------
 
