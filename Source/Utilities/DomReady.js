@@ -32,15 +32,10 @@ Element.Events.domready = {
 		case 'trident':
 			var temp = document.createElement('div');
 			(function(){
-				try {
-					$(temp).doScroll('left');
-					$(temp).inject(document.body).setHTML('temp');
-				} catch(e){
-					arguments.callee.delay(50);
-					return;
-				}
-				temp.dispose();
-				domready();
+				($try(function(){
+					temp.doScroll('left');
+					return $(temp).inject(document.body).setHTML('temp').dispose();
+				})) ? domready() : arguments.callee.delay(50);
 			})();
 		break;
 		

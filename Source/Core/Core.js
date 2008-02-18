@@ -183,12 +183,16 @@ var $time = Date.now || function(){
 	return new Date().getTime();
 };
 
-function $try(fn, bind, args){
-	try {
-		return fn.apply(bind, $splat(args));
-	} catch(e){
-		return false;
+function $try(){
+	for (var i = 0, value, l = arguments.length; i < l; i++){
+		try {
+			value = arguments[i]();
+		} catch(e){
+			value = undefined;
+		}
+		if (value != undefined) return value;
 	}
+	return undefined;
 };
 
 function $type(obj){

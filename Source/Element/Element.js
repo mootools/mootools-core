@@ -31,6 +31,11 @@ Document.implement({
 	
 	getWindow: function(){
 		return this.defaultView || this.parentWindow;
+	},
+	
+	purge: function(){
+		var elements = this.getElementsByTagName('*');
+		for (var i = 0, l = elements.length; i < l; i++) memfree(elements[i]);
 	}
 
 });
@@ -71,7 +76,7 @@ var IFrame = new Native({
 		var iframe = $(params.iframe) || false;
 		var onload = props.onload || $empty;
 		delete props.onload;
-		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Native.UID++);
+		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + $time());
 		iframe = new Element(iframe || 'iframe', props);
 		var onFrameLoad = function(){
 			var host = $try(function(){
@@ -635,20 +640,18 @@ Element.Attributes = new Hash({
 })(Element.Attributes);
 
 function memfree(item){
-	var clean = function(element){
-		if (element.removeEvents) element.removeEvents();
-		element.uid = null;
-	};
-	switch ($type(item)){
-		case 'element': clean(item); break;
-		case 'document': case false:
-			var elements = (item || document).getElementsByTagName('*');
-			for (var i = 0, l = elements.length; i < l; i++) clean(elements[i]);
-		break;
+	if (!item || !item.tagName) return;
+	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
+		for (var p in item){
+			var property = item[p];
+			if (typeof property == 'function') property = $empty;
+		}
+		Element.dispose(item);
 	}
+	if (item.removeEvents) item.removeEvents();
 };
 
 window.addListener('unload', function(){
-	memfree();
+	document.purge();
 	if (Browser.Engine.trident) CollectGarbage();
 });

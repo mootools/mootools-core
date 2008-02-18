@@ -87,23 +87,5 @@ Calls an ActionScript function from JavaScript.
 
 The SWF file must be compiled with the ExternalInterface component.  See the Adobe documentation on [External Interface][] for more information.
 
-
-Swiff Function: getVersion {#Swiff:getVersion}
-----------------------------------------------
-
-Returns the major version of the Flash player installed.
-
-###	Syntax:
-
-	var version = Swiff.getVersion();
-
-###	Returns:
-
-* (*number*) A number representing the (major) Flash version installed, or 0 if no player is installed.
-
-###	Example:
-
-	alert(Swiff.getVersion());
-
 [SWFObject]: http://blog.deconcept.com/swfobject/
 [External Interface]: http://livedocs.adobe.com/flash/9.0/main/wwhelp/wwhimpl/common/html/wwhelp.htm?context=LiveDocs_Parts&file=00001652.html

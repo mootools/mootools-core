@@ -46,9 +46,10 @@ var Event = new Native({
 					case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 					case 'mouseout': related = event.relatedTarget || event.toElement;
 				}
-				if ((function(){
+				if (!(function(){
 					while (related && related.nodeType == 3) related = related.parentNode;
-				}).create({attempt: Browser.Engine.gecko18})() === false) related = false;
+					return true;
+				}).create({attempt: Browser.Engine.gecko})()) related = false;
 			}
 		}
 

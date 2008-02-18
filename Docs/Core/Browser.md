@@ -21,12 +21,15 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Engine.presto925 - (*boolean*) True if the current browser is Opera before or equal version 9.25.
 * Browser.Engine.presto950 - (*boolean*) True if the current browser is Opera major or equal version 9.50.
 * Browser.Engine.name      - (*string*) The name of the engine.
+* Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
+* Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
 ### Platform:
 
 * Browser.Platform.mac     - (*boolean*) True if the platform is Mac.
-* Browser.Platform.windows - (*boolean*) True if the platform is Windows.
+* Browser.Platform.win - (*boolean*) True if the platform is Windows.
 * Browser.Platform.linux   - (*boolean*) True if the platform is Linux.
+* Browser.Platform.ipod   - (*boolean*) True if the platform is an ipod touch / iphone.
 * Browser.Platform.other   - (*boolean*) True if the platform is neither Mac, Windows or Linux.
 * Browser.Platform.name    - (*string*) The name of the platform.
 

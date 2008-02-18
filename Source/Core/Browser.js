@@ -8,8 +8,9 @@ License:
 
 var Browser = new Hash({
 	Engine: {name: 'unknown', version: ''},
-	Platform: {name: (navigator.platform.match(/mac|win|linux|nix/i) || ['other'])[0].toLowerCase()},
-	Features: {xhr: !!(window.XMLHttpRequest), xpath: !!(document.evaluate), air: !!(window.runtime)}
+	Platform: {name: (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
+	Features: {xhr: !!(window.XMLHttpRequest), xpath: !!(document.evaluate), air: !!(window.runtime)},
+	Plugins: {}
 });
 
 if (window.opera) Browser.Engine = {name: 'presto', version: (document.getElementsByClassName) ? 950 : 925};
@@ -17,7 +18,19 @@ else if (window.ActiveXObject) Browser.Engine = {name: 'trident', version: (Brow
 else if (!navigator.taintEnabled) Browser.Engine = {name: 'webkit', version: (Browser.Features.xpath) ? 420 : 419};
 else if (document.getBoxObjectFor != null) Browser.Engine = {name: 'gecko', version: (document.getElementsByClassName) ? 19 : 18};
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
+
+if (window.orientation != undefined) Browser.Platform.name = 'ipod';
+
 Browser.Platform[Browser.Platform.name] = true;
+
+Browser.Plugins.Flash = (function(){
+	var version = ($try(function(){
+		return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
+	}, function(){
+		return navigator.plugins["Shockwave Flash"].description;
+	}) || 0).match(/\d+/g);
+	return {version: parseInt(version[0] || 0 + '.' + version[1] || 0), build: parseInt(version[2] || 0)};
+})();
 
 function $exec(text){
 	if (!text) return text;

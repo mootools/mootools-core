@@ -357,30 +357,47 @@ Returns the current time as a timestamp.
 Function: $try {#try}
 ---------------------
 
-Tries to execute a function. Returns false if it fails.
+Tries to execute a number of functions. Returns the return value of the first non-failed function, or undefined.
 
 ### Syntax:
 
-	$try(fn[, bind[, args]]);
+	$try(fn[, fn, fn, fn, ...]);
 
 ### Arguments:
 
-1. fn   - (*function*) The function to execute.
-2. bind - (*object*, optional: defaults to the function passed in) The object to use as 'this' in the function. For more information see [Function:bind][].
-3. args - (*mixed*, optional) Single item or array of items as arguments to be passed to the function.
+* fn   - (*function*) The function to execute.
 
 ### Returns:
 
 * (*mixed*) Standard return of the called function.
-* (*boolean*) `false` on failure.
+* (*undefined*) `undefined` if all the passed functions fail.
 
 ### Examples:
 
-	var result = $try(eval, window, 'some invalid javascript'); //Returns false.
+	var result = $try(function(){
+		return some.made.up.object;
+	}, function(){
+		return jibberish.that.doesnt.exists;
+	}, function(){
+		return false;
+	});
+	
+	//result is false
+	
+	var failure, success;
+	
+	$try(function(){
+		some.made.up.object = 'something';
+		success = true;
+	}, function(){
+		failure = true;
+	});
+	
+	if (success) alert('yey!');
 
 ### Notes:
 
-- Warning: if the function passed can return false, there will be no way to know if it has been successfully executed or not.
+- Warning: the only way to know for sure what function gets executed is to .
 
 
 

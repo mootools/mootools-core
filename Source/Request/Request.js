@@ -49,7 +49,7 @@ var Request = new Class({
 		this.status = 0;
 		$try(function(){
 			this.status = this.xhr.status;
-		}, this);
+		}.bind(this));
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
@@ -92,8 +92,8 @@ var Request = new Class({
 
 	getHeader: function(name){
 		return $try(function(){
-			return this.getResponseHeader(name);
-		}, this.xhr) || null;
+			return this.xhr.getResponseHeader(name);
+		}.bind(this));
 	},
 
 	check: function(){
@@ -142,11 +142,10 @@ var Request = new Class({
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
 		this.headers.each(function(value, key){
-			try{
+			if (!$try(function(){
 				this.xhr.setRequestHeader(key, value);
-			} catch(e){
-				this.fireEvent('onException', [e, key, value]);
-			}
+				return true;
+			}.bind(this))) this.fireEvent('onException', [e, key, value]);
 		}, this);
 
 		this.fireEvent('onRequest');

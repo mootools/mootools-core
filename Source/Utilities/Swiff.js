@@ -10,8 +10,7 @@ Credits:
 */
 
 var Swiff = function(path, options){
-	if (!Swiff.fixed) Swiff.fix();
-	var instance = 'Swiff_' + Native.UID++;
+	var instance = 'Swiff_' + $time();
 	options = $merge({
 		id: instance,
 		height: 1,
@@ -54,45 +53,9 @@ var Swiff = function(path, options){
 	return ($(options.container) || new Element('div')).set('html', build).firstChild;
 };
 
-Swiff.extend({
+Swiff.Events = {};
 
-	Events: {},
-
-	remote: function(obj, fn){
-		var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 2) + '</invoke>');
-		return eval(rs);
-	},
-
-	getVersion: function(){
-		if (!$defined(Swiff.pluginVersion)){
-			var version;
-			if (navigator.plugins && navigator.mimeTypes.length){
-				version = navigator.plugins["Shockwave Flash"];
-				if (version && version.description) version = version.description;
-			} else if (Browser.Engine.trident){
-				version = $try(function(){
-					return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
-				});
-			}
-			Swiff.pluginVersion = (typeof version == 'string') ? parseInt(version.match(/\d+/)[0]) : 0;
-		}
-		return Swiff.pluginVersion;
-	},
-
-	fix: function(){
-		Swiff.fixed = true;
-		window.addEvent('beforeunload', function(){
-			__flash_unloadHandler = __flash_savedUnloadHandler = $empty;
-		});
-		if (!Browser.Engine.trident) return;
-		window.addEvent('unload', function(){
-			Array.each(document.getElementsByTagName('object'), function(obj){
-				obj.style.display = 'none';
-				for (var p in obj){
-					if (typeof obj[p] == 'function') obj[p] = $empty;
-				}
-			});
-		});
-	}
-
-});
+Swiff.remote = function(obj, fn){
+	var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 2) + '</invoke>');
+	return eval(rs);
+};
