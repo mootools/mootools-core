@@ -30,7 +30,7 @@ Elements.implement({
 
 });
 
-$E = function(selector, filter){
+var $E = function(selector, filter){
 	return ($(filter) || document).getElement(selector);
 };
 
