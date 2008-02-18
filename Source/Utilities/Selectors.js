@@ -54,13 +54,13 @@ Selectors.Utils = {
 	
 	parseNthArgument: function(argument){
 		if (Selectors.Cache.nth[argument]) return Selectors.Cache.nth[argument];
-		var parsed = argument.match(/^([+-]?\d*)?([devon]+)?([+-]?\d*)?$/);
+		var parsed = argument.match(/^([+-]?\d*)?([a-z]+)?([+-]?\d*)?$/);
 		if (!parsed) return false;
 		var inta = parseInt(parsed[1]);
 		var a = ($chk(inta)) ? inta : 1;
 		var special = parsed[2] || false;
 		var b = parseInt(parsed[3]) || 0;
-		b = b - 1;
+		b--;
 		while (b < 1) b += a;
 		while (b >= a) b -= a;
 		switch (special){
