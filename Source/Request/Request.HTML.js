@@ -17,32 +17,31 @@ Request.HTML = new Class({
 	},
 
 	processHTML: function(text){
-		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i), root;
+		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		text = (match) ? match[1] : text;
-		text = '<root>' + text + '</root>';
 		
-		if (Browser.Engine.trident){
-			root = new ActiveXObject('Microsoft.XMLDOM');
-			root.async = false;
-			root.loadXML(text);
-		} else {
-			root = new DOMParser().parseFromString(text, 'text/xml');
-		}
+		var container = new Element('div');
 		
-		root = root.getElementsByTagName('root')[0];
-		
-		var temp = new Element('div');
-		
-		for (var i = 0, k = root.childNodes.length; i < k; i++){
-			var child = Element.clone(root.childNodes[i], true, true);
-			if (child) temp.grab(child);
-		}
-		
-		return temp;
+		return $try(function(){
+			var root = '<root>' + text + '</root>', doc;
+			if (Browser.Engine.trident){
+				doc = new ActiveXObject('Microsoft.XMLDOM');
+				doc.async = false;
+				doc.loadXML(root);
+			} else {
+				doc = new DOMParser().parseFromString(root, 'text/xml');
+			}
+			root = doc.getElementsByTagName('root')[0];
+			for (var i = 0, k = root.childNodes.length; i < k; i++){
+				var child = Element.clone(root.childNodes[i], true, true);
+				if (child) container.grab(child);
+			}
+			return container;
+		}) || container.set('html', text);
 	},
 
 	success: function(text){
-		var opts = this.options, response = this.response;
+		var options = this.options, response = this.response;
 		
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
@@ -53,9 +52,12 @@ Request.HTML = new Class({
 		response.tree = temp.childNodes;
 		response.elements = temp.getElements('*');
 		
-		if (opts.filter) response.tree = response.elements.filterBy(opts.filter);
-		if (opts.update) $(opts.update).empty().adopt(response.tree);
-		if (opts.evalScripts) $exec(response.javascript);
+		console.log(response.tree);
+		console.log(response.elements);
+		
+		if (options.filter) response.tree = response.elements.filterBy(options.filter);
+		if (options.update) $(options.update).empty().adopt(response.tree);
+		if (options.evalScripts) $exec(response.javascript);
 		
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
 	}

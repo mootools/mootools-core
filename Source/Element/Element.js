@@ -322,7 +322,8 @@ Element.implement({
 
 	adopt: function(){
 		Array.flatten(arguments).each(function(element){
-			this.appendChild($(element, true));
+			element = $(element, true);
+			if (element) this.appendChild(element);
 		}, this);
 		return this;
 	},
