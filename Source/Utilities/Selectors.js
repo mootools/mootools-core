@@ -78,18 +78,24 @@ Selectors.Utils = {
 	
 	parseSelector: function(selector){
 		if (Selectors.Cache.parsed[selector]) return Selectors.Cache.parsed[selector];
-		var m, par = {classes: [], pseudos: [], attributes: []};
+		var m, parsed = {classes: [], pseudos: [], attributes: []};
 		while ((m = Selectors.RegExps.combined.exec(selector))){
 			var cn = m[1], an = m[2], ao = m[3], av = m[4], pn = m[5], pa = m[6];
-			if (cn) par.classes.push(cn);
-			else if (pn) par.pseudos.push({parser: Selectors.Pseudo.get(pn), argument: pa});
-			else if (an) par.attributes.push({name: an, operator: ao, value: av});
+			if (cn){
+				parsed.classes.push(cn);
+			} else if (pn){
+				var parser = Selectors.Pseudo.get(pn);
+				if (parser) parsed.pseudos.push({parser: parser, argument: pa});
+				else parsed.attributes.push({name: pn, operator: '=', value: pa});
+			} else if (an){
+				parsed.attributes.push({name: an, operator: ao, value: av});
+			}
 		}
-		if (!par.classes.length) delete par.classes;
-		if (!par.attributes.length) delete par.attributes;
-		if (!par.pseudos.length) delete par.pseudos;
-		if (!par.classes && !par.attributes && !par.pseudos) par = null;
-		return Selectors.Cache.parsed[selector] = par;
+		if (!parsed.classes.length) delete parsed.classes;
+		if (!parsed.attributes.length) delete parsed.attributes;
+		if (!parsed.pseudos.length) delete parsed.pseudos;
+		if (!parsed.classes && !parsed.attributes && !parsed.pseudos) parsed = null;
+		return Selectors.Cache.parsed[selector] = parsed;
 	},
 	
 	parseTagAndID: function(selector){
@@ -242,10 +248,9 @@ Selectors.Filters = {
 	},
 	
 	byAttribute: function(self, name, operator, value){
-
 		var result = Element.prototype.getProperty.call(self, name);
 		if (!result) return false;
-		if (!operator) return true;
+		if (!operator || value == undefined) return true;
 		switch (operator){
 			case '=': return (result == value);
 			case '*=': return (result.contains(value));
@@ -262,21 +267,7 @@ Selectors.Filters = {
 
 Selectors.Pseudo = new Hash({
 	
-	enabled: function(){
-		return !(this.disabled);
-	},
-	
-	disabled: function(){
-		return !!(this.disabled);
-	},
-	
-	checked: function(){
-		return !!(this.checked);
-	},
-	
-	unchecked: function(){
-		return !(this.checked);
-	},
+	// w3c pseudo selectors
 	
 	empty: function(){
 		return !(this.innerText || this.textContent || '').length;
@@ -314,22 +305,6 @@ Selectors.Pseudo = new Hash({
 		return true;
 	},
 	
-	index: function(index){
-		var element = this, count = 0;
-		while ((element = element.previousSibling)){
-			if (element.nodeType == 1 && ++count > index) return false;
-		}
-		return true;
-	},
-	
-	even: function(argument, local){
-		return Selectors.Pseudo['nth-child'].call(this, '2n+1', local);
-	},
-
-	odd: function(argument, local){
-		return Selectors.Pseudo['nth-child'].call(this, '2n', local);
-	},
-	
 	'nth-child': function(argument, local){
 		argument = (argument == undefined) ? 'n' : argument;
 		var parsed = Selectors.Utils.parseNthArgument(argument);
@@ -351,6 +326,24 @@ Selectors.Pseudo = new Hash({
 			local.positions[uid] = count;
 		}
 		return (local.positions[uid] % parsed.a == parsed.b);
+	},
+	
+	// custom pseudo selectors
+	
+	index: function(index){
+		var element = this, count = 0;
+		while ((element = element.previousSibling)){
+			if (element.nodeType == 1 && ++count > index) return false;
+		}
+		return true;
+	},
+	
+	even: function(argument, local){
+		return Selectors.Pseudo['nth-child'].call(this, '2n+1', local);
+	},
+
+	odd: function(argument, local){
+		return Selectors.Pseudo['nth-child'].call(this, '2n', local);
 	}
 	
 });
