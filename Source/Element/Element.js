@@ -329,7 +329,7 @@ Element.implement({
 	},
 
 	dispose: function(){
-		return this.parentNode.removeChild(this);
+		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},
 
 	clone: function(contents, keepid){

@@ -29,16 +29,20 @@ Element.Events.domready = {
 			(['loaded', 'complete'].contains(document.readyState)) ? domready() : arguments.callee.delay(50);
 		})(); break;
 
-		case 'trident': (function(){
+		case 'trident':
 			var temp = document.createElement('div');
-			try {
-				temp.doScroll('left');
-			} catch(e){
-				arguments.callee.delay(50);
-				return;
-			}
-			domready();
-		})(); break;
+			(function(){
+				try {
+					$(temp).doScroll('left');
+					$(temp).inject(document.body).setHTML('temp');
+				} catch(e){
+					arguments.callee.delay(50);
+					return;
+				}
+				temp.dispose();
+				domready();
+			})();
+		break;
 		
 		default:
 			window.addEvent('load', domready);
