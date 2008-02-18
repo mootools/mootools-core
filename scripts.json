@@ -91,7 +91,7 @@
 		
 		"Selectors": {
 			"deps": ["Element"],
-			"desc": "Adds advanced CSS-style querying capabilities for targeting html elements. Includes pseudo selectors."
+			"desc": "Adds advanced CSS-style querying capabilities for targeting HTML Elements. Includes pseudo selectors."
 		},
 		
 		"DomReady": {

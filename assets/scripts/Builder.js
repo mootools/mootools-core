@@ -13,12 +13,14 @@ var Builder = {
 
 	included: {
 		source: {},
-		spec: {}
+		specs: {},
+		docs: {}
 	},
 
 	paths: {
 		source: '../Source',
-		spec: '../Specs'
+		specs: '../Specs',
+		docs: '../Source'
 	},
 
 	scripts: {
@@ -27,22 +29,29 @@ var Builder = {
 			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
-			'Selectors' : ['Selectors'],
-			'Utilities' : ['Color', 'Cookie', 'Dimensions', 'DomReady', 'Group', 'JSON', 'Swiff'],
+			'Utilities' : ['Color', 'Cookie', 'Dimensions', 'DomReady', 'Group', 'JSON', 'Selectors', 'Swiff'],
 			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Scroll', 'Fx.Slide', 'Fx.Transitions'],
 			'Request'   : ['Request', 'Request.HTML', 'Request.JSON'],
 			'Drag'      : ['Drag', 'Drag.Move'],
 			'Plugins'   : ['Assets', 'Fx.Elements', 'Selectors.Children', 'Hash.Cookie', 'Sortables', 'Scroller', 'Slider', 'SmoothScroll', 'Tips', 'Accordion']
 		},
 
-		spec: {
+		specs: {
 			'Core'      : ['Core', 'Browser'],
 			'Native'    : ['Array', 'String', 'Function', 'Number', 'Hash'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Style'],
-			'Selectors' : ['Selectors'],
-			'Utilities' : ['Color'],
-			'Plugins'   : ['Selectors.Children']
+			'Utilities' : ['Color', 'Selectors']
+		},
+		
+		docs: {
+			'Core'      : ['Core', 'Browser'],
+			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
+			'Class'     : ['Class', 'Class.Extras'],
+			'Element'   : ['Element', 'Element.Event', 'Element.Dimensions'],
+			'Utilities' : ['DomReady', 'Selectors'],
+			'Fx'        : ['Fx', 'Fx.Scroll'],
+			'Request'   : ['Request', 'Request.HTML']
 		}
 	},
 
