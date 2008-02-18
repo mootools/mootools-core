@@ -28,7 +28,7 @@ Browser.Plugins.Flash = (function(){
 		return new ActiveXObject("ShockwaveFlash.ShockwaveFlash").GetVariable("$version");
 	}, function(){
 		return navigator.plugins["Shockwave Flash"].description;
-	}) || 0).match(/\d+/g);
+	}) || '0 r0').match(/\d+/g);
 	return {version: parseInt(version[0] || 0 + '.' + version[1] || 0), build: parseInt(version[2] || 0)};
 })();
 
