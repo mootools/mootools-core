@@ -52,9 +52,6 @@ Request.HTML = new Class({
 		response.tree = temp.childNodes;
 		response.elements = temp.getElements('*');
 		
-		console.log(response.tree);
-		console.log(response.elements);
-		
 		if (options.filter) response.tree = response.elements.filterBy(options.filter);
 		if (options.update) $(options.update).empty().adopt(response.tree);
 		if (options.evalScripts) $exec(response.javascript);

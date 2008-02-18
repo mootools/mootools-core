@@ -53,7 +53,6 @@ var Fx = new Class({
 	},
 
 	check: function(){
-		//console.log(arguments);
 		if (!this.timer) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;

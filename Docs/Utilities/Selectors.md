@@ -187,11 +187,11 @@ Nth Expression:
 
 ### Examples:
 
-	$$('#myDiv:nth-child(2n)'); //Returns every odd child.
+	$$('#myDiv:nth-child(2n)'); //Returns every even child.
 
 	$$('#myDiv:nth-child(n)'); //Returns all children.
 
-	$$('#myDiv:nth-child(2n+1)') //Returns every even child.
+	$$('#myDiv:nth-child(2n+1)') //Returns every odd child.
 
 	$$('#myDiv:nth-child(4n+3)') //Returns Elements 3, 7, 11, 15, etc.
 
@@ -203,6 +203,18 @@ Every Odd Child:
 Every Even Child:
 
 	':nth-child(even)'
+
+Only Child:
+
+	':nth-child(only)'
+
+First Child:
+
+	'nth-child(first)'
+
+Last Child:
+
+	'nth-child(last)'
 
 Selector: even {#Selector:even}
 -------------------------------
