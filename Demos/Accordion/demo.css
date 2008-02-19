@@ -13,6 +13,7 @@ h3.toggler {
 	border-right-color:#ddd;
 	border-bottom-color:#ddd;
 	font-family:'Andale Mono', sans-serif;
+	margin: 0;
 }
 
 div.element p, div.element h4 {
