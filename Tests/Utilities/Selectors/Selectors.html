@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Selectors</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="../../../assets/styles/tests.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+	<script type="text/javascript" src="../../../assets/scripts/Builder.js"></script>
+	<script type="text/javascript">Builder.initialize('../../../');</script>
+	<script type="text/javascript">
+		window.addEvent('domready', function(){
+			var input = $('selector'), output = $('time'), selector, matched;
+			var update = function(event){
+				selector = input.value;
+				if(event) event.preventDefault();
+				$$('.matched').removeClass('matched');
+				if (selector) try {
+					var time = $time();
+					matched = $$(selector);
+					output.set('text', $time() - time + 'ms');
+					matched.addClass('matched');
+				} catch (e){
+					output.set('text', 'invalid');
+				}
+			};
+			input.addEvent('keyup', update).fireEvent('keyup');
+		});
+	</script>
+</head>
+<body>
+	<table>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+	</table>
+	<div>
+		<input id="selector" value="tr:nth-child(even)" />
+		<span id="time">0ms</span>
+	</div>
+</body>
+</html>

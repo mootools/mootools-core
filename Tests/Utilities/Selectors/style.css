@@ -1,0 +1,22 @@
+#time {
+  color:#666;
+  margin-left:10px;
+  }
+
+div {
+	margin:0px auto;
+	text-align:center;
+	}
+
+table {
+	width:600px;
+	margin:20px auto;
+	border:solid 1px #666;
+	}
+	table tr { background-color:#222; }
+		table tr td {
+			padding:2px;
+			text-align:center;
+			}
+
+.matched { background-color:#063; }

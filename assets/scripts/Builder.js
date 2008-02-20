@@ -11,16 +11,18 @@ Note:
 
 var Builder = {
 
+	root: '../',
+
+	paths: {
+		source: 'Source',
+		specs: 'Specs',
+		docs: 'Source'
+	},
+
 	included: {
 		source: {},
 		specs: {},
 		docs: {}
-	},
-
-	paths: {
-		source: '../Source',
-		specs: '../Specs',
-		docs: '../Source'
 	},
 
 	scripts: {
@@ -55,6 +57,12 @@ var Builder = {
 		}
 	},
 
+	initialize: function(root){
+		if (root) this.root = root;
+		this.includeType('source');
+		return this;
+	},
+
 	getFolder: function(type, file){
 		var scripts = this.scripts[type];
 		for (var folder in scripts){
@@ -85,7 +93,7 @@ var Builder = {
 			if (files[i] == file) return false;
 		}
 		this.included[type][folder].push(file);
-		return document.write('\n\t<script type="text/javascript" src="' + this.paths[type] + '/' + folder + '/' + file + '.js"></script>');
+		return document.writeln('\t<script type="text/javascript" src="' + this.root + this.paths[type] + '/' + folder + '/' + file + '.js"></script>');
 	},
 
 	includeFolder: function(type, folder){

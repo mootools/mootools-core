@@ -56,7 +56,7 @@ Request Events: events {#Request:events}
 
 ### onFailure
 
-(*function*) Function to execute when the request failes (error status code).
+(*function*) Function to execute when the request fails (error status code).
 
 #### Signature:
 
@@ -152,11 +152,11 @@ Returns the given response header or null if not found.
 Request Method: send {#Request:send}
 ----------------------------
 
-Opens the Request connection and sends the provided data.
+Opens the Request connection and sends the provided data with the specified options.
 
 ###	Syntax:
 
-	myRequest.send([data]);
+	myRequest.send([options]);
 
 ###	Arguments:
 
