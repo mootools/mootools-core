@@ -39,7 +39,7 @@ Selectors.RegExps = {
 	id: (/#([\w-]+)/),
 	tag: (/^(\w+|\*)/),
 	quick: (/^(\w+|\*)$/),
-	splitter: (/\s*([+>~\s])[a-zA-Z#.*\s]/g),
+	splitter: (/\s*([+>~\s])\s*([a-zA-Z#.*:\[])/g),
 	combined: (/\.([\w-]+)|\[(\w+)(?:([!*^$~|]?=)["']?(.*?)["']?)?\]|:([\w-]+)(?:\(["']?(.*?)?["']?\)|$)/g)
 };
 
@@ -138,9 +138,10 @@ Selectors.Utils = {
 	
 	search: function(self, expression, local){
 		var splitters = [];
-		var selectors = expression.trim().replace(Selectors.RegExps.splitter, function(m0, m1){
+		
+		var selectors = expression.trim().replace(Selectors.RegExps.splitter, function(m0, m1, m2){
 			splitters.push(m1);
-			return ':)' + ((m1 == ' ') ? m0.charAt(1) : '');
+			return ':)' + m2;
 		}).split(':)');
 		
 		var items, match, filtered, item;
