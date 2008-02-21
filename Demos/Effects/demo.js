@@ -13,11 +13,11 @@ window.addEvent('domready', function() {
 	
 	// Long version
 	$('tweenOpacity').addEvent('click', function(e) {
+		// You often will need to stop propagation of the event
 		e.stop();
 		el.fade(1);
 	});
 	
-	// But you often will need to stop propagation of the event
 	$('tweenOpacity1').addEvent('click', function(e) {
 		e.stop();
 		el.fade(0.3);

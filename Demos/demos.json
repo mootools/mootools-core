@@ -4,6 +4,10 @@
 			"title": "Events Basis"
 		},
 		
+		"CustomEvents": {
+			"title": "Custom Events"
+		},
+		
 		"Mouseenter": {
 			"title": "Mouseenter"
 		}
@@ -32,6 +36,10 @@
 		
 		"Slider": {
 			"title": "Slider"
+		},
+		
+		"Sortables": {
+			"title": "Sortables"
 		}
 	}
 }

@@ -1,5 +1,5 @@
-//First Example
 window.addEvent('domready', function(){
+	//First Example
 	var el = $('myElement'),
 		color = el.getStyle('backgroundColor');
 	
