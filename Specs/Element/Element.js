@@ -319,7 +319,7 @@ describe('Element.set `style`', {
 	'should set the cssText of an Element': function(){
 		var style = 'color: rgb(255, 255, 255); font-size: 12px;';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.style.cssText).should_be(style);
+		value_of(myElement.style.cssText.trim()).should_be(style); // webkit adds a space at the end, hence the trimming
 	}
 
 });
@@ -329,13 +329,13 @@ describe('Element.set `html`', {
 	'should set the innerHTML of an Element': function(){
 		var html = '<a href="#">Link</a>';
 		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML).should_be(html);
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase()); // ignore uppercase tags in presto
 	},
 
 	'should set the innerHTML of an Element with multiple arguments': function(){
 		var html = ['<p>Paragraph</p>', '<a href="#">Link</a>'];
 		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML).should_be(html.join(''));
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase()); // ignore uppercase tags in presto
 	}
 
 });
@@ -361,7 +361,7 @@ describe('Element.get `style`', {
 	"should return a CSS string representing the Element's styles": function(){
 		var style = 'color: rgb(255, 255, 255); font-size: 12px;';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.get('style')).should_be(style);
+		value_of(myElement.get('style').trim()).should_be(style); // trimming, because safari adds a space at the end
 	}
 
 });
@@ -841,8 +841,7 @@ describe('Element.clone', {
 	'should remove all IDs': function(){
 		var div = new Element('div', {id: 'div-id'});
 		var clone = div.clone();
-		var id = clone.id;
-		value_of(id).should_be('');
+		value_of(clone.id).should_be('');
 	},
 
 	'should remove all custom attributes': function(){

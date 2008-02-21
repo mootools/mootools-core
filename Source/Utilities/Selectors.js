@@ -24,6 +24,7 @@ Native.implement([Document, Element], {
 Element.implement({
 	
 	match: function(selector){
+		if (!selector) return true;
 		var tagid = Selectors.Utils.parseTagAndID(selector);
 		var tag = tagid[0], id = tagid[1];
 		if (!Selectors.Filters.byID(this, id) || !Selectors.Filters.byTag(this, tag)) return false;

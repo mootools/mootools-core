@@ -31,27 +31,27 @@ Function.implement({
 	},
 
 	pass: function(args, bind){
-		return this.create({'arguments': args, 'bind': bind});
+		return this.create({arguments: args, bind: bind});
 	},
 
 	attempt: function(args, bind){
-		return this.create({'arguments': args, 'bind': bind, 'attempt': true})();
+		return this.create({arguments: args, bind: bind, attempt: true})();
 	},
 
 	bind: function(bind, args){
-		return this.create({'bind': bind, 'arguments': args});
+		return this.create({bind: bind, arguments: args});
 	},
 
 	bindWithEvent: function(bind, args){
-		return this.create({'bind': bind, 'event': true, 'arguments': args});
+		return this.create({bind: bind, event: true, arguments: args});
 	},
 
 	delay: function(delay, bind, args){
-		return this.create({'delay': delay, 'bind': bind, 'arguments': args})();
+		return this.create({delay: delay, bind: bind, arguments: args})();
 	},
 
 	periodical: function(interval, bind, args){
-		return this.create({'periodical': interval, 'bind': bind, 'arguments': args})();
+		return this.create({periodical: interval, bind: bind, arguments: args})();
 	},
 
 	run: function(args, bind){

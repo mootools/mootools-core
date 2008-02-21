@@ -31,11 +31,11 @@ var Builder = {
 			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
-			'Utilities' : ['Color', 'Cookie', 'Dimensions', 'DomReady', 'Group', 'JSON', 'Selectors', 'Swiff'],
+			'Utilities' : ['Color', 'Cookie', 'DomReady', 'Group', 'JSON', 'Selectors', 'Swiff'],
 			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Scroll', 'Fx.Slide', 'Fx.Transitions'],
 			'Request'   : ['Request', 'Request.HTML', 'Request.JSON'],
 			'Drag'      : ['Drag', 'Drag.Move'],
-			'Plugins'   : ['Assets', 'Fx.Elements', 'Selectors.Children', 'Hash.Cookie', 'Sortables', 'Scroller', 'Slider', 'SmoothScroll', 'Tips', 'Accordion']
+			'Plugins'   : ['Assets', 'Fx.Elements', 'Hash.Cookie', 'Sortables', 'Scroller', 'Slider', 'SmoothScroll', 'Tips', 'Accordion']
 		},
 
 		specs: {

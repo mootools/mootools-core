@@ -28,7 +28,7 @@ describe('Color constructor, hsb', {
 	},
 	
 	'should have the correct rgb': function(){
-		value_of(myColor).should_be([162, 194, 64]);
+		value_of(myColor).should_be([161, 194, 64]);
 	},
 	
 	'should have the correct hsb': function(){
@@ -36,7 +36,7 @@ describe('Color constructor, hsb', {
 	},
 	
 	'should have the correct hex': function(){
-		value_of(myColor.hex).should_be('#a2c240');
+		value_of(myColor.hex).should_be('#a1c240');
 	}
 	
 });

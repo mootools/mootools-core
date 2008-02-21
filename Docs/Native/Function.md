@@ -29,7 +29,7 @@ Base function for creating functional closures which is used by all other Functi
 * arguments  - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
 * delay      - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
 * periodical - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
-* attempt    - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or false on error.
+* attempt    - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or null on error.
 
 ### Returns:
 
@@ -104,7 +104,7 @@ Tries to execute the function.
 
 ### Returns:
 
-* (*mixed*) The function's return value or false if an exception is thrown.
+* (*mixed*) The function's return value or `null` if an exception is thrown.
 
 ### Example:
 

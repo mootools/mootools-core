@@ -342,9 +342,9 @@ Element.implement({
 			case 'element':
 				var attributes = {};
 				for (var j = 0, l = this.attributes.length; j < l; j++){
-					var attribute = this.attributes[j], key = attribute.nodeName;
+					var attribute = this.attributes[j], key = attribute.nodeName.toLowerCase();
 					var value = (key == 'style' && this.style) ? this.style.cssText : attribute.nodeValue;
-					if (!$chk(value) || value == 'uid' || (value == 'id' && !keepid)) continue;
+					if (!$chk(value) || key == 'uid' || (key == 'id' && !keepid)) continue;
 					if (value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
 				}
 				var element = new Element(this.nodeName.toLowerCase(), attributes);
@@ -515,7 +515,7 @@ Element.implement({
 
 	hasChild: function(el){
 		el = $(el, true);
-		return (el && $A(this.getElementsByTagName(el.tagName)).contains(el));
+		return (!!el && $A(this.getElementsByTagName(el.tagName)).contains(el));
 	}
 
 });

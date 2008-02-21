@@ -35,10 +35,10 @@ var Tips = new Class({
 		this.toolTip = new Element('div', {
 			'class': this.options.className + '-tip',
 			'styles': {
-				'position': 'absolute',
-				'top': '0',
-				'left': '0',
-				'visibility': 'hidden'
+				position: 'absolute',
+				top: '0',
+				left: '0',
+				visibility: 'hidden'
 			}
 		}, this.document).inject(this.document.body);
 		this.wrapper = new Element('div').inject(this.toolTip);
@@ -67,8 +67,7 @@ var Tips = new Class({
 			else this.position(el);
 		}.bind(this));
 		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
-		var end = this.end.bind(this);
-		el.addEvent('mouseleave', end);
+		el.addEvent('mouseleave', this.end.bind(this));
 	},
 
 	start: function(el){

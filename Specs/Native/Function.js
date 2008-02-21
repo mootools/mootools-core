@@ -133,11 +133,11 @@ describe('Function.attempt', {
 		value_of(fnc.attempt()).should_be('hello world!');
 	},
 
-	'should return false if the function raises an exception': function(){
+	'should return null if the function raises an exception': function(){
 		var fnc = function(){
 			this_should_not_work();
 		};
-		value_of(fnc.attempt()).should_be_false();
+		value_of(fnc.attempt()).should_be_null();
 	}
 
 });

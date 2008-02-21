@@ -143,6 +143,7 @@ Returns the given response header or null if not found.
 ### Returns:
 
 * (*string*) The value of the retrieved header.
+* (*null*) `null` if the header is not found.
 
 ### Example:
 

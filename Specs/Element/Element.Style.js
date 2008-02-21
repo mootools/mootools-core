@@ -10,7 +10,7 @@ describe('Element.set `opacity`', {
 		 
 	'should set the opacity of an Element': function() {
 		var el = new Element('div').set('opacity', 0.4);
-		if (Browser.Engine.trident) value_of(this.style.filter).should_be('alpha(opacity=40)');
+		if (Browser.Engine.trident) value_of(el.style.filter).should_be('alpha(opacity=40)');
 		value_of(el.style.opacity).should_be(0.4);
 	},
 	

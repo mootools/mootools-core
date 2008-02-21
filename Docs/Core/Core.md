@@ -357,7 +357,7 @@ Returns the current time as a timestamp.
 Function: $try {#try}
 ---------------------
 
-Tries to execute a number of functions. Returns the return value of the first non-failed function, or undefined.
+Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
 
 ### Syntax:
 
@@ -370,7 +370,7 @@ Tries to execute a number of functions. Returns the return value of the first no
 ### Returns:
 
 * (*mixed*) Standard return of the called function.
-* (*undefined*) `undefined` if all the passed functions fail.
+* (*null*) `null` if all the passed functions fail.
 
 ### Examples:
 
@@ -394,12 +394,6 @@ Tries to execute a number of functions. Returns the return value of the first no
 	});
 	
 	if (success) alert('yey!');
-
-### Notes:
-
-- Warning: the only way to know for sure what function gets executed is to .
-
-
 
 Function: $type {#type}
 -----------------------

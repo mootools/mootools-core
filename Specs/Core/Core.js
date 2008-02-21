@@ -179,20 +179,33 @@ describe('$time', {
 
 describe('$try', {
 
-	'should return the result of the function if successful': function(){
+	'should return the result of the first successful function without executing successive functions': function(){
+		var calls = 0;
 		var attempt = $try(function(){
+			calls++;
+			throw new Exception();
+		}, function(){
+			calls++;
 			return 'success';
+		}, function(){
+			calls++;
+			return 'moo';
 		});
-
+		value_of(calls).should_be(2);
 		value_of(attempt).should_be('success');
 	},
 
-	'should return false when an exception is thrown': function(){
+	'should return null when no function succeeded': function(){
+		var calls = 0;
 		var attempt = $try(function(){
+			calls++;
 			return I_invented_this();
+		}, function(){
+			calls++;
+			return uninstall_ie();
 		});
-
-		value_of(attempt).should_be_false();
+		value_of(calls).should_be(2);
+		value_of(attempt).should_be_null();
 	}
 
 });
