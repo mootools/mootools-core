@@ -188,11 +188,11 @@ function $try(){
 		try {
 			value = arguments[i]();
 		} catch(e){
-			value = undefined;
+			value = null;
 		}
-		if (value != undefined) return value;
+		if (value !== null) return value;
 	}
-	return undefined;
+	return null;
 };
 
 function $type(obj){
