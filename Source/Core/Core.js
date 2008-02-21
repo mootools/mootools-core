@@ -184,10 +184,9 @@ var $time = Date.now || function(){
 };
 
 function $try(){
-	for (var i = 0, l = arguments.length, value; i < l; i++){
+	for (var i = 0, l = arguments.length; i < l; i++){
 		try {
-			value = arguments[i]();
-			return value;
+			return arguments[i]();
 		} catch(e){}
 	}
 	return null;
