@@ -42,24 +42,24 @@ var Cookie = new Class({
 	
 	read: function(){
 		var value = this.options.document.cookie.match('(?:^|;)\\s*' + this.key.escapeRegExp() + '=([^;]*)');
-		return value ? decodeURIComponent(value[1]) : null;
+		return (value) ? decodeURIComponent(value[1]) : null;
 	},
 
-	erase: function(){
+	dispose: function(){
 		new Cookie(this.key, $merge(this.options, {duration: -1})).write('');
 		return this;
 	}
 	
 });
 
-Cookie.set = function(key, value, options){
+Cookie.write = function(key, value, options){
 	return new Cookie(key, options).write(value);
 };
 
-Cookie.get = function(key){
+Cookie.read = function(key){
 	return new Cookie(key).read();
 };
 
-Cookie.remove = function(key, options){
-	return new Cookie(key, options).erase();
+Cookie.dispose = function(key, options){
+	return new Cookie(key, options).dispose();
 };

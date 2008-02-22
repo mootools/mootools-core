@@ -18,12 +18,10 @@ Element.implement({
 		return this.dispose();
 	},
 	
-	remove: function(){
-		return this.dispose();
-	},
-	
 	getValue: function(){
 		return this.get('value');
 	}
 
 });
+
+Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');

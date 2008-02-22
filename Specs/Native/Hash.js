@@ -23,12 +23,12 @@ describe('Hash.constructor', {
 
 });
 
-describe('Hash.remove | Hash.erase', {
+describe('Hash.erase', {
 
 	'should remove a key and its value from the hash': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		value_of(hash.remove('a')).should_be(new Hash({b:2,c:3}));
-		value_of(hash.remove('d')).should_be(new Hash({b:2,c:3}));
+		value_of(hash.erase('a')).should_be(new Hash({b:2,c:3}));
+		value_of(hash.erase('d')).should_be(new Hash({b:2,c:3}));
 
 		hash = new Hash({a: 1, b: 2, c: 3});
 		value_of(hash.erase('a')).should_be(new Hash({b:2,c:3}));

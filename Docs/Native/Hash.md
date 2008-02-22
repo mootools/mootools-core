@@ -218,14 +218,14 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 
 
 
-Hash Method: remove {#Hash:remove}
+Hash Method: erase {#Hash:erase}
 ----------------------------------
 
 Removes the specified key from the Hash.
 
 ### Syntax:
 
-	myHash.remove(key);
+	myHash.erase(key);
 
 ### Arguments:
 
@@ -241,7 +241,7 @@ Removes the specified key from the Hash.
 		'name': 'John',
 		'lastName': 'Doe'
 	});
-	hash.remove('lastName');
+	hash.erase('lastName');
 	//hash now holds an object containing: { 'name': 'John' };
 
 

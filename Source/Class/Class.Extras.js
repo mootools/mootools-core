@@ -52,7 +52,7 @@ var Events = new Class({
 
 	removeEvent: function(type, fn){
 		if (!this.$events || !this.$events[type]) return this;
-		if (!fn.internal) this.$events[type].remove(fn);
+		if (!fn.internal) this.$events[type].erase(fn);
 		return this;
 	},
 

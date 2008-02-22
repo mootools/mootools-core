@@ -5,3 +5,5 @@ Array.implement({
 	}
 
 });
+
+Array.alias('erase', 'remove');

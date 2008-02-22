@@ -463,14 +463,14 @@ Merges an array with all the items of another. Does not allow duplicates and is 
 
 
 
-Array Method: remove {#Array:remove}
+Array Method: erase {#Array:erase}
 ------------------------------------
 
 Removes all occurrences of an item from the array.
 
 ### Syntax:
 
-	myArray.remove(item);
+	myArray.erase(item);
 
 ### Arguments:
 
@@ -482,8 +482,8 @@ Removes all occurrences of an item from the array.
 
 ### Examples:
 
-	['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].remove('Dog') //returns ['Cow', 'Pig', 'Cat']
-	['Cow', 'Pig', 'Dog'].remove('Cat') //returns ['Cow', 'Pig', 'Dog']
+	['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].erase('Dog') //returns ['Cow', 'Pig', 'Cat']
+	['Cow', 'Pig', 'Dog'].erase('Cat') //returns ['Cow', 'Pig', 'Dog']
 
 
 

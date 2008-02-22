@@ -35,7 +35,7 @@ Hash.implement({
 		return this;
 	},
 
-	remove: function(key){
+	erase: function(key){
 		if (this.hasOwnProperty(key)) delete this[key];
 		return this;
 	},
@@ -120,4 +120,4 @@ Hash.implement({
 
 });
 
-Hash.alias('keyOf', 'indexOf').alias('hasValue', 'contains').alias('remove', 'erase');
+Hash.alias('keyOf', 'indexOf').alias('hasValue', 'contains');

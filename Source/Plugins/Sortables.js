@@ -69,7 +69,7 @@ var Sortables = new Class({
 		var elements = [];
 		Array.flatten(arguments).each(function(element){
 			elements.push(element);
-			this.elements.remove(element);
+			this.elements.erase(element);
 			var start = element.retrieve('sortables:start');
 			var insert = element.retrieve('sortables:insert');
 			(this.options.handle ? element.getElement(this.options.handle) || element : element).removeEvent('mousedown', start);
@@ -82,7 +82,7 @@ var Sortables = new Class({
 		var lists = [];
 		Array.flatten(arguments).each(function(list){
 			lists.push(list);
-			this.lists.remove(list);
+			this.lists.erase(list);
 			this.removeItems(list.getChildren());
 			list.removeEvent('over', list.retrieve('sortables:insert'));
 		}, this);
@@ -99,8 +99,8 @@ var Sortables = new Class({
 
 	getDroppables: function(){
 		var droppables = this.list.getChildren();
-		if (!this.options.constrain) droppables = this.lists.concat(droppables).remove(this.list);
-		return droppables.remove(this.clone).remove(this.element);
+		if (!this.options.constrain) droppables = this.lists.concat(droppables).erase(this.list);
+		return droppables.erase(this.clone).erase(this.element);
 	},
 
 	insert: function(element, where){

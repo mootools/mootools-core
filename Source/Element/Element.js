@@ -522,8 +522,6 @@ Element.implement({
 
 })();
 
-Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
-
 Element.Properties = new Hash;
 
 Element.Properties.style = {
@@ -635,7 +633,7 @@ Element.Attributes = new Hash({
 	Hash.extend(Hash.merge(EA.Props, EAB), EAC.associate(EAC.map(function(v){
 		return v.toLowerCase();
 	})));
-	EA.remove('Camels');
+	EA.erase('Camels');
 
 })(Element.Attributes);
 

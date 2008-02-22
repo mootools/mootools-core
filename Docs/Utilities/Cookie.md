@@ -7,10 +7,6 @@ Sets and accesses cookies.
 
 - Based on the functions by Peter-Paul Koch [QuirksMode][].
 
-### Hash: Cookie
-
-Hash for creating, accessing, and removing cookies.
-
 ### Properties:
 
 1. options - (*object*) An object to set the default behaviour of Cookie and its derivatives.
@@ -28,14 +24,14 @@ Hash for creating, accessing, and removing cookies.
 
 
 
-Cookie Method: set {#Cookie:set}
+Cookie Method: write {#Cookie:write}
 --------------------------------
 
-Sets a cookie in the browser.
+Writes a cookie in the browser.
 
 ###	Syntax:
 
-	var myCookie = Cookie.set(key, value[, options]);
+	var myCookie = Cookie.write(key, value[, options]);
 
 ###	Arguments:
 
@@ -51,26 +47,26 @@ Sets a cookie in the browser.
 
 Saves the Cookie for the Duration of the Session:
 
-	var myCookie = Cookie.set('username', 'Harald');
+	var myCookie = Cookie.write('username', 'Harald');
 
 Saves the Cookie for a Day:
 
-	var myCookie  = Cookie.set('username', 'JackBauer', {duration: 1});
+	var myCookie  = Cookie.write('username', 'JackBauer', {duration: 1});
 
 
 
-Cookie Method: get {#Cookie:get}
+Cookie Method: read {#Cookie:read}
 --------------------------------
 
-Gets the value of a Cookie.
+Reads the value of a Cookie.
 
 ###	Syntax:
 
-	var myCookie = Cookie.get(key);
+	var myCookie = Cookie.read(name);
 
 ###	Arguments:
 
-1. key - (*string*) The name of the Cookie to retrieve.
+1. name - (*string*) The name of the Cookie to retrieve.
 
 ###	Returns:
 
@@ -78,35 +74,34 @@ Gets the value of a Cookie.
 
 ###	Examples:
 
-	Cookie.get("username");
+	Cookie.read("username");
 
 
 
-Cookie Method: remove {#Cookie:remove}
+Cookie Method: dispose {#Cookie:dispose}
 --------------------------------------
 
 Removes a cookie from the browser.
 
 ###	Syntax:
 
-	var oldCookie = Cookie.remove(cookie[, options]);
+	var oldCookie = Cookie.dispose(cookie[, options]);
 
 ###	Arguments:
 
-1. cookie  - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
+1. name  - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
 2. options - (*object*, optional) See [Cookie][].
 
 ###	Examples:
 
 Remove a Cookie:
 
-	Cookie.remove('username'); //Bye-bye JackBauer! Seeya in 24 Hours.
+	Cookie.dispose('username'); //Bye-bye JackBauer! Seeya in 24 Hours.
 
 Creating a Cookie and Removing it Right Away:
 
-	//Cookie.set returns an object with all values needed to remove the cookie.
-	var myCookie = Cookie.set('username', 'Aaron', {domain: 'mootools.net'});
-	if (Cookie.get('username') == 'Aaron') { Cookie.remove(myCookie); }
+	var myCookie = Cookie.write('username', 'Aaron', {domain: 'mootools.net'});
+	if (Cookie.read('username') == 'Aaron') { Cookie.dispose(myCookie); }
 
 
 

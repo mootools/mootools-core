@@ -88,10 +88,10 @@ describe('Array.indexOf', {
 
 });
 
-describe('Array.remove', {
+describe('Array.erase', {
 
 	'should remove all items in the array that match the specified item': function(){
-		var arr = [1,2,3,0,0,0].remove(0);
+		var arr = [1,2,3,0,0,0].erase(0);
 		value_of(arr).should_be([1,2,3]);
 	}
 

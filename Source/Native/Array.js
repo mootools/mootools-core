@@ -95,7 +95,7 @@ Array.implement({
 		return this;
 	},
 
-	remove: function(item){
+	erase: function(item){
 		for (var i = this.length; i--; i){
 			if (this[i] === item) this.splice(i, 1);
 		}
