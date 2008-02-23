@@ -19,11 +19,11 @@ var Class = new Native({
 			
 			this.parent = null;
 			
-			['Implements', 'Extends'].each(function(Property){
-				if (!this[Property]) return;
-				Class[Property](this, this[Property]);
+			for (var Property in Class.Mutators){
+				if (!this[Property]) continue;
+				Class.Mutators[Property](this, this[Property]);
 				delete this[Property];
-			}, this);
+			}
 
 			this.constructor = klass;
 
@@ -43,19 +43,21 @@ var Class = new Native({
 Class.implement({
 
 	implement: function(){
-		Class.Implements(this.prototype, Array.slice(arguments));
+		Class.Mutators.Implements(this.prototype, Array.slice(arguments));
 		return this;
 	}
 
 });
 
-Class.Implements = function(self, klasses){
+Class.Mutators = {};
+
+Class.Mutators.Implements = function(self, klasses){
 	$splat(klasses).each(function(klass){
 		$extend(self, ($type(klass) == 'class') ? new klass($empty) : klass);
 	});
 };
 
-Class.Extends = function(self, klass){
+Class.Mutators.Extends = function(self, klass){
 	klass = new klass($empty);
 	for (var property in klass){
 		var kp = klass[property];
@@ -79,11 +81,4 @@ Class.Extends = function(self, klass){
 			return previous;
 		})(kp, sp);
 	}
-};
-
-//legacy .extend support
-
-Class.prototype.extend = function(properties){
-	properties.Extends = this;
-	return new Class(properties);
 };
