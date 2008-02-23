@@ -1474,7 +1474,7 @@ Element Property: value {#Element-Properties:value}
 
 ### Getter:
 
-Returns the value of the Element if its tag name is "textarea", "select" or "input". If getValue is called on a multiple select element, it will return an array.
+Returns the value of the Element if its tag name is "textarea", "select" or "input". If get('value') is called on a multiple select element, it will return an array.
 
 
 #### Syntax:

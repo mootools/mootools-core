@@ -1,4 +1,4 @@
-// We define a custom event called "keyenter" which is based und the keyup-Event
+// We define a custom event called "keyenter" which is based on the keyup event
 Element.Events.keyenter = {
 	base: 'keyup',
 	condition: function(e){
@@ -29,12 +29,11 @@ window.addEvent('domready', function(){
 	
 	el.addEvent('mousewheel', function(e){
 		// Again we just set the text of an element and highlight it
-		$('myOtherDivElement').set('text', 'Wheel '+(e.wheel<0 ? 'down' : 'up')).highlight();
+		$('myOtherDivElement').set('text', 'Wheel ' + (e.wheel < 0 ? 'down' : 'up')).highlight();
 		
-		// But we add some nice logic to it and change do some color stuff
-		
+		// But we add some nice logic to it to change the background-color
 		var hue = color[0];
-		if (e.wheel<0) {
+		if (e.wheel < 0){
 			hue -= 5;
 			if(hue < 0) hue = 360;
 		} else {

@@ -341,11 +341,11 @@ Selectors.Pseudo = new Hash({
 	},
 	
 	even: function(argument, local){
-		return Selectors.Pseudo['nth-child'].call(this, '2n+1', local);
+		return Selectors.Pseudo['nth-child'].call(this, 'even', local);
 	},
 
 	odd: function(argument, local){
-		return Selectors.Pseudo['nth-child'].call(this, '2n', local);
+		return Selectors.Pseudo['nth-child'].call(this, 'odd', local);
 	}
 	
 });
