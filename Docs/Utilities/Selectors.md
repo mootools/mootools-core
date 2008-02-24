@@ -171,7 +171,7 @@ Matches all the Elements which contains the text.
 
 
 Selector: nth-child {#Selector:nth-child}
------------------------------
+-----------------------------------------
 
 Matches every nth child.
 
@@ -215,6 +215,10 @@ First Child:
 Last Child:
 
 	'nth-child(last)'
+	
+### Note:
+
+This selector respects the w3c specifications, so it has 1 as its first child, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
 
 Selector: even {#Selector:even}
 -------------------------------
@@ -228,6 +232,10 @@ Matches every even child.
 ### Example:
 
 	$$('td:even');
+	
+### Note:
+
+This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(even), as this will return the real even children.
 
 Selector: odd {#Selector:odd}
 -----------------------------
@@ -241,6 +249,10 @@ Matches every odd child.
 ### Example:
 
 	$$('td:odd');
+	
+### Note:
+
+This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(odd), as this will return the real odd children.
 
 Selector: first {#Selector:first-child}
 ---------------------------------
@@ -257,7 +269,7 @@ Matches the first child.
 
 
 Selector: last {#Selector:last-child}
--------------------------------
+-------------------------------------
 
 	Matches the last child.
 
@@ -271,7 +283,7 @@ Selector: last {#Selector:last-child}
 
 
 Selector: only {#Selector:only-child}
--------------------------------
+-------------------------------------
 
 Matches an only child of its parent Element.
 
