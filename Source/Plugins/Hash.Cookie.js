@@ -36,16 +36,15 @@ Hash.Cookie = new Class({
 
 Hash.Cookie.implement((function(){
 	
-	var hp = Hash.prototype, methods = {};
+	var methods = {};
 	
-	for (var name in hp){
-		var method = hp[name];
+	Hash.each(Hash.prototype, function(method, name){
 		methods[name] = function(){
 			var value = method.apply(this.hash, arguments);
 			if (this.options.autoSave) this.save();
 			return value;
 		};
-	}
+	});
 	
 	return methods;
 	
