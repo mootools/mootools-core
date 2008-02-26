@@ -39,9 +39,10 @@ Fx Method: constructor {#Fx:constructor}
 
 ### Events:
 
-* onStart    - (*function*) The function to execute when the effect begins.
-* onCancel   - (*function*) The function to execute when you manually stop the effect.
-* onComplete - (*function*) The function to execute after the effect has processed.
+* onStart    		- (*function*) The function to execute when the effect begins.
+* onCancel   		- (*function*) The function to execute when you manually stop the effect.
+* onComplete 		- (*function*) The function to execute after the effect has processed.
+* onChainComplete	- (*function*) The function to execute when using link 'chain' ([see options](#Fx:constructor)). It gets called after all effects in the chain have completed.
 
 ### Notes:
 

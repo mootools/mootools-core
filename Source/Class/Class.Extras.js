@@ -14,8 +14,7 @@ var Chain = new Class({
 	},
 
 	callChain: function(){
-		if (this.$chain && this.$chain.length) this.$chain.shift().apply(this, arguments);
-		return this;
+		return (this.$chain && this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
 	},
 
 	clearChain: function(){
