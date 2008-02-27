@@ -33,12 +33,14 @@ Request Specifically made for receiving HTML.
 
 ##### Signature:
 
-	onComplete(responseText, responseXML)
+	onComplete(responseTree, responseElements, responseHTML, responseJavaScript)
 
 ##### Arguments:
 
-1. responseText - (*string*) The content of the remote response.
-2. responseXML  - (*string*) The XML response of the request.
+1. responseTree 	  - (*element*) The node list of the remote response.
+2. responseElements   - (*array*)   An array containing all elements of the remote response.
+3. responseHTML		  - (*string*)  The content of the remote response.
+4. responseJavaScript - (*string*)  The portion of JavaScript from the remote response.
 
 ### Returns:
 

@@ -27,11 +27,12 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 #### Signature:
 
-	onComplete(responseJSON)
+	onComplete(responseJSON, text)
 
 #### Arguments:
 
-1. responseJSON - (*mixed*) The JSON response object from the remote request.
+1. responseJSON - (*object*) The JSON response object from the remote request.
+2. text         - (*string*) The JSON response as string.
 
 #### Returns:
 
