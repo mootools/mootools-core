@@ -1,6 +1,6 @@
 /*
 Script: Tips.js
-	Class for creating nice tooltips that follow the mouse cursor when hovering over an element.
+	Class for creating nice tips that follow the mouse cursor when hovering an element.
 
 License:
 	MIT-style license.
@@ -23,101 +23,105 @@ var Tips = new Class({
 		maxTitleChars: 30,
 		showDelay: 100,
 		hideDelay: 100,
-		className: 'tool',
-		offsets: {'x': 16, 'y': 16},
+		className: null,
+		offsets: {x: 16, y: 16},
 		fixed: false
 	},
 
-	initialize: function(elements, options){
-		this.setOptions(options);
-		elements = $$(elements);
-		this.document = (elements.length) ? elements[0].ownerDocument : document;
-		this.toolTip = new Element('div', {
-			'class': this.options.className + '-tip',
-			'styles': {
-				position: 'absolute',
-				top: '0',
-				left: '0',
-				visibility: 'hidden'
-			}
-		}, this.document).inject(this.document.body);
-		this.wrapper = new Element('div').inject(this.toolTip);
-		elements.each(this.build, this);
-	},
+	initialize: function(){
+		var params = Array.link(arguments, {options: Object.type, elements: $defined});
+		this.setOptions(params.options);
+		
+		this.tip = new Element('div').inject(document.body);
+		
+		if (this.options.className) this.tip.addClass(this.options.className);
+		
+		var top = new Element('div', {'class': 'tip-top'}).inject(this.tip);
+		this.container = new Element('div', {'class': 'tip'}).inject(this.tip);
+		var bottom = new Element('div', {'class': 'tip-bottom'}).inject(this.tip);
 
-	build: function(el){
-		el.$attributes.myTitle = (el.href && el.get('tag') == 'a') ? el.href.replace('http://', '') : (el.rel || false);
-		if (el.title){
-			var dual = el.title.split('::');
-			if (dual.length > 1){
-				el.$attributes.myTitle = dual[0].trim();
-				el.$attributes.myText = dual[1].trim();
-			} else {
-				el.$attributes.myText = el.title;
-			}
-			el.removeProperty('title');
-		} else {
-			el.$attributes.myText = false;
-		}
-		if (el.$attributes.myTitle && el.$attributes.myTitle.length > this.options.maxTitleChars)
-			el.$attributes.myTitle = el.$attributes.myTitle.substr(0, this.options.maxTitleChars - 1) + "&hellip;";
-		el.addEvent('mouseenter', function(event){
-			this.start(el);
-			if (!this.options.fixed) this.locate(event);
-			else this.position(el);
-		}.bind(this));
-		if (!this.options.fixed) el.addEvent('mousemove', this.locate.bind(this));
-		el.addEvent('mouseleave', this.end.bind(this));
+		this.tip.setStyles({position: 'absolute', top: 0, left: 0, visibility: 'hidden'});
+		
+		if (params.elements) this.attach(params.elements);
 	},
-
-	start: function(el){
-		this.wrapper.empty();
-		if (el.$attributes.myTitle){
-			this.title = new Element('span').inject(
-				new Element('div', {'class': this.options.className + '-title'}
-			).inject(this.wrapper)).set('html', el.$attributes.myTitle);
+	
+	attach: function(elements){
+		$$(elements).each(function(element){
+			var title = element.retrieve('tip:title', element.title);
+			var text = element.retrieve('tip:text', element.rel || element.href);
+			var enter = element.retrieve('tip:enter', this.elementEnter.bindWithEvent(this, element));
+			var leave = element.retrieve('tip:leave', this.elementLeave.bindWithEvent(this, element));
+			element.addEvents({mouseenter: enter, mouseleave: leave});
+			if (!this.options.fixed){
+				var move = element.retrieve('tip:move', this.elementMove.bindWithEvent(this, element));
+				element.addEvent('mousemove', move);
+			}
+			element.store('tip:native', element.title);
+			element.erase('title');
+		}, this);
+		return this;
+	},
+	
+	detach: function(elements){
+		$$(elements).each(function(element){
+			element.removeEvent('mouseenter', element.retrieve('tip:enter') || $empty);
+			element.removeEvent('mouseleave', element.retrieve('tip:leave') || $empty);
+			element.removeEvent('mouseleave', element.retrieve('tip:move') || $empty);
+			element.eliminate('tip:enter').eliminate('tip:leave').eliminate('tip:move');
+			var original = element.retrieve('tip:native');
+			if (original) element.title = original;
+		});
+		return this;
+	},
+	
+	elementEnter: function(event, element){
+		this.container.empty();
+		var title = element.retrieve('tip:title');
+		if (title){
+			this.titleElement = new Element('div', {'class': 'tip-title'}).inject(this.container);
+			this.fill(this.titleElement, title);
 		}
-		if (el.$attributes.myText){
-			this.text = new Element('span').inject(
-				new Element('div', {'class': this.options.className + '-text'}
-			).inject(this.wrapper)).set('html', el.$attributes.myText);
+		var text = element.retrieve('tip:text');
+		if (text){
+			this.textElement = new Element('div', {'class': 'tip-text'}).inject(this.container);
+			this.fill(this.textElement, text);
 		}
-		$clear(this.timer);
+		this.timer = $clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);
-	},
 
-	end: function(event){
+		this.position((!this.options.fixed) ? event : {page: element.getPosition()});
+	},
+	
+	elementLeave: function(event){
 		$clear(this.timer);
 		this.timer = this.hide.delay(this.options.hideDelay, this);
 	},
-
-	position: function(element){
-		var pos = element.getPosition();
-		this.toolTip.setStyles({
-			'left': pos.x + this.options.offsets.x,
-			'top': pos.y + this.options.offsets.y
-		});
+	
+	elementMove: function(event){
+		this.position(event);
 	},
-
-	locate: function(event){
-		var doc = this.document.getSize();
-		var scroll = this.document.getScroll();
-		var tip = {'x': this.toolTip.offsetWidth, 'y': this.toolTip.offsetHeight};
-		var prop = {'x': 'left', 'y': 'top'};
-		for (var z in prop){
+	
+	position: function(event){
+		var size = window.getSize(), scroll = window.getScroll();
+		var tip = {x: this.tip.offsetWidth, y: this.tip.offsetHeight};
+		var props = {x: 'left', y: 'top'};
+		for (var z in props){
 			var pos = event.page[z] + this.options.offsets[z];
-			if ((pos + tip[z] - scroll[z]) > doc[z]) pos = event.page[z] - this.options.offsets[z] - tip[z];
-			this.toolTip.setStyle(prop[z], pos);
+			if ((pos + tip[z] - scroll[z]) > size[z]) pos = event.page[z] - this.options.offsets[z] - tip[z];
+			this.tip.setStyle(props[z], pos);
 		}
+	},
+	
+	fill: function(element, contents){
+		(typeof contents == 'string') ? element.setHTML(contents) : element.adopt(contents);
 	},
 
 	show: function(){
-		if (this.options.timeout) this.timer = this.hide.delay(this.options.timeout, this);
-		this.fireEvent('onShow', [this.toolTip]);
+		this.fireEvent('onShow', this.tip);
 	},
 
 	hide: function(){
-		this.fireEvent('onHide', [this.toolTip]);
+		this.fireEvent('onHide', this.tip);
 	}
 
 });

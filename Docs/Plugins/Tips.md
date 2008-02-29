@@ -15,77 +15,157 @@ Display a tip on any element with a title and/or href.
 
 - [Events][], [Options][]
 
-### Arguments:
-
-1. elements - (*mixed*) A collection of elements, a string Selector, or an Element to apply the tooltips to on mouseover.
-2. options  - (*object*) An object to customize this Tips instance.
-
-#### Options:
-
-* maxTitleChars - (*number*: defaults to 30) The maximum number of characters to display in the title of the tip.
-* showDelay     - (*number*: defaults to 100) The delay the onShow method is called.
-* hideDelay     - (*number*: defaults to 100) The delay the onHide method is called.
-* className     - (*string*: defaults to 'tool') The prefix for your tooltip classNames.
- * The whole tooltip will have as classname: tool-tip
- * The title will have as classname: tool-title
- * The text will have as classname: tool-text
-* offsets       - (*object*: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
-* fixed         - (*boolean*: defaults to false) If set to true, the toolTip will not follow the mouse.
-* window        - (*object*: defaults to window) The context of the Tips elements.
-
-#### Properties:
-
-* toolTip - (*element*) The Element containing the tip content; this element is the one positioned around the document relative to the target.
-* wrapper - (*element*) An Element inside the toolTip Element that contains the body of the tip.
-* title   - (*element*) The Element generated each time a tip is shown for the title of each tooltip.
-* text    - (*element*) The Element generated each time a tip is shown for the body of each tooltip.
-
-## Events:
-
-### onShow
+Tips Event: onShow {#Tips:onShow}
+---------------------------------
 
 * (*function*) Fires when the Tip is starting to show and by default sets the tip visible.
 
-#### Signature:
+### Signature:
 
 	onShow(tip)
 
-#### Arguments:
+### Arguments:
 
-1. tip - (*element*) The Tip Element that is showing.
+1. tip - (*element*) The tip element. Useful if you want to apply effects to it.
 
-### onHide
+### Example:
+
+	myTips.addEvent('onShow', function(tip){
+		tip.fade('in');
+	});
+
+Tips Event: onHide {#Tips:onHide}
+---------------------------------
 
 * (*function*) Fires when the Tip is starting to hide and by default sets the tip hidden.
 
-#### Signature:
+### Signature:
 
 	onHide(tip)
 
-#### Arguments:
+### Arguments:
 
-1. tip - (*element*) The Tip Element that is hiding.
+1. tip - (*element*) The tip element. Useful if you want to apply effects to it.
 
-### Returns:
-
-* (*object*) A new Tips class instance.
-
-### Examples:
-
-##### Html:
-
-	<img src="/images/i.png" title="The body of the tooltip is stored in the title" class="toolTipImg"/>
-
-##### Javascript
-
-	var myTips = new Tips($$('.toolTipImg'), {
-		maxTitleChars: 50	//I like my captions a little long
+### Example:
+	
+	myTips.addEvent('onHide', function(tip){
+		tip.fade('out');
 	});
 
-### Notes:
 
-- The title of the element will always be used as the tooltip body. If you put :: (two colons, no spaces) on your title, the text before :: will become the tooltip title (i.e.: `title="tooltip title :: tooltip content"`).
+Tips Method: constructor {#Tips:constructor}
+--------------------------------------------
 
+### Arguments:
+
+* elements - (*mixed*: optional) A collection of elements, a string Selector, or an Element to apply the tooltips to.
+* options  - (*object*) An object to customize this Tips instance.
+
+### Options:
+
+* showDelay     - (*number*: defaults to 100) The delay the onShow method is called.
+* hideDelay     - (*number*: defaults to 100) The delay the onHide method is called.
+* className     - (*string*: defaults to null) the className your tooltip container will get. Useful for extreme styling.
+ * The tooltip element inside the tooltip container above will have 'tip' as classname.
+ * The title will have as classname: tip-title
+ * The text will have as classname: tip-text
+* offsets       - (*object*: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
+* fixed         - (*boolean*: defaults to false) If set to true, the toolTip will not follow the mouse.
+
+### Example:
+
+#### HTML:
+
+	<a href="http://mootools.net" title="mootools homepage" class="thisisatooltip" />
+
+#### JavaScript
+
+	var myTips = new Tips('.thisisatooltip');
+
+
+Tips Method: attach {#Tips:attach}
+----------------------------------
+
+Attaches tooltips to elements. Useful to add more elements to a tips instance.
+
+###	Syntax:
+
+	myTips.attach(elements);
+
+###	Arguments:
+
+1. elements - (*mixed*) A collection of elements, a string Selector, or an Element to apply the tooltips to.
+
+###	Returns:
+
+* (*object*) This Tips instance.
+
+### Example:
+
+	myTips.attach('a.thisisatip');
+
+
+Tips Method: detach {#Tips:detach}
+----------------------------------
+
+Detaches tooltips from elements. Useful to remove elements from a tips instance.
+
+###	Syntax:
+
+	myTips.detach(elements);
+
+###	Arguments:
+
+1. elements - (*mixed*) A collection of elements, a string Selector, or an Element to apply the tooltips to.
+
+###	Returns:
+
+* (*object*) This Tips instance.
+
+### Example:
+
+	myTips.detach('a.thisisatip');
+
+
+Tips HTML Structure
+-------------------
+
+	<div class="options.className"> //the className you pass in options will be assigned here.
+		<div class="tip-top"></div> //useful for styling
+		
+		<div class="tip">
+			
+			<div class="tip-title"></div>
+			
+			<div class="tip-text"></div>
+			
+		</div>
+		
+		<div class="tip-bottom"></div> //useful for styling
+	</div>
+
+
+Tips with storage
+-----------------
+
+You can also assign tips titles and contents via [Element Storage](/Element/Element/#ElementStorage).
+
+### Example:
+
+#### HTML:
+
+	<a id="tip1" href="http://mootools.net" title="mootools homepage" class="thisisatooltip" />
+
+#### JavaScript
+	
+	$('tip1').store('tip:title', 'custom title for tip 1');
+	
+	$('tip1').store('tip:text', 'custom text for tip 1');
+	
+### Note:
+
+If you use tips storage you can use elements and / or html as tips title and text.
 
 
 [Events]: /Class/Class.Extras#Events
