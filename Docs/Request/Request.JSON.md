@@ -21,14 +21,6 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 ### Events:
 
-### onComplete
-
-(function) Executes when the JSON returns successfully.
-
-#### Signature:
-
-	onComplete(responseJSON, text)
-
 #### Arguments:
 
 1. responseJSON - (*object*) The JSON response object from the remote request.

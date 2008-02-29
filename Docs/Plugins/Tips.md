@@ -34,6 +34,12 @@ Tips Method: constructor {#Tips:constructor}
 * offsets       - (*object*: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
 * fixed         - (*boolean*: defaults to false) If set to true, the toolTip will not follow the mouse.
 
+
+### Events:
+ 
+ * onHide: fires when the tip is shown
+ * onShow: fires when the tip is being hidden
+
 ### Example:
 
 #### HTML:
