@@ -27,7 +27,7 @@ An XMLHttpRequest Wrapper.
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
 
 Request Events: events {#Request:events}
---------------------------------
+----------------------------------------
 
 ### onRequest
 

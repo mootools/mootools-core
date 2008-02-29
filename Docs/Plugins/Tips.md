@@ -15,6 +15,36 @@ Display a tip on any element with a title and/or href.
 
 - [Events][], [Options][]
 
+Tips Method: constructor {#Tips:constructor}
+--------------------------------------------
+
+### Arguments:
+
+* elements - (*mixed*: optional) A collection of elements, a string Selector, or an Element to apply the tooltips to.
+* options  - (*object*) An object to customize this Tips instance.
+
+### Options:
+
+* showDelay     - (*number*: defaults to 100) The delay the onShow method is called.
+* hideDelay     - (*number*: defaults to 100) The delay the onHide method is called.
+* className     - (*string*: defaults to null) the className your tooltip container will get. Useful for extreme styling.
+ * The tooltip element inside the tooltip container above will have 'tip' as classname.
+ * The title will have as classname: tip-title
+ * The text will have as classname: tip-text
+* offsets       - (*object*: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
+* fixed         - (*boolean*: defaults to false) If set to true, the toolTip will not follow the mouse.
+
+### Example:
+
+#### HTML:
+
+	<a href="http://mootools.net" title="mootools homepage" class="thisisatooltip" />
+
+#### JavaScript
+
+	var myTips = new Tips('.thisisatooltip');
+	
+
 Tips Event: onShow {#Tips:onShow}
 ---------------------------------
 
@@ -48,40 +78,11 @@ Tips Event: onHide {#Tips:onHide}
 1. tip - (*element*) The tip element. Useful if you want to apply effects to it.
 
 ### Example:
-	
+
 	myTips.addEvent('onHide', function(tip){
 		tip.fade('out');
 	});
 
-
-Tips Method: constructor {#Tips:constructor}
---------------------------------------------
-
-### Arguments:
-
-* elements - (*mixed*: optional) A collection of elements, a string Selector, or an Element to apply the tooltips to.
-* options  - (*object*) An object to customize this Tips instance.
-
-### Options:
-
-* showDelay     - (*number*: defaults to 100) The delay the onShow method is called.
-* hideDelay     - (*number*: defaults to 100) The delay the onHide method is called.
-* className     - (*string*: defaults to null) the className your tooltip container will get. Useful for extreme styling.
- * The tooltip element inside the tooltip container above will have 'tip' as classname.
- * The title will have as classname: tip-title
- * The text will have as classname: tip-text
-* offsets       - (*object*: defaults to {'x': 16, 'y': 16}) The distance of your tooltip from the mouse.
-* fixed         - (*boolean*: defaults to false) If set to true, the toolTip will not follow the mouse.
-
-### Example:
-
-#### HTML:
-
-	<a href="http://mootools.net" title="mootools homepage" class="thisisatooltip" />
-
-#### JavaScript
-
-	var myTips = new Tips('.thisisatooltip');
 
 
 Tips Method: attach {#Tips:attach}
@@ -128,8 +129,8 @@ Detaches tooltips from elements. Useful to remove elements from a tips instance.
 	myTips.detach('a.thisisatip');
 
 
-Tips HTML Structure
--------------------
+Tips HTML Structure {#Tips:HTML}
+--------------------------------
 
 	<div class="options.className"> //the className you pass in options will be assigned here.
 		<div class="tip-top"></div> //useful for styling
@@ -146,8 +147,8 @@ Tips HTML Structure
 	</div>
 
 
-Tips with storage
------------------
+Tips with storage {#Tips:Storage}
+---------------------------------
 
 You can also assign tips titles and contents via [Element Storage](/Element/Element/#ElementStorage).
 

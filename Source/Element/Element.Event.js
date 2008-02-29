@@ -115,7 +115,7 @@ Element.NativeEvents = {
 
 (function(){
 
-var checkRelatedTarget = function(event){
+var $check = function(event){
 	var related = event.relatedTarget;
 	if (related == undefined) return true;
 	if (related === false) return false;
@@ -126,12 +126,12 @@ Element.Events = new Hash({
 
 	mouseenter: {
 		base: 'mouseover',
-		condition: checkRelatedTarget
+		condition: $check
 	},
 
 	mouseleave: {
 		base: 'mouseout',
-		condition: checkRelatedTarget
+		condition: $check
 	},
 
 	mousewheel: {
