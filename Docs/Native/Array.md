@@ -292,7 +292,7 @@ Creates an object with key-value pairs based on the array of keywords passed in 
 
 	var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
 	var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
-	animals.associate(sounds);
+	sounds.associate(animals);
 	//returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
 
 

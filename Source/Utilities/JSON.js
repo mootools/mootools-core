@@ -23,7 +23,7 @@ var JSON = new Hash({
 					var json = JSON.encode(value);
 					if (json) string.push(JSON.encode(key) + ':' + json);
 				});
-				return '{' + String(string) + '}';
+				return '{' + string + '}';
 			case 'number': case 'boolean': return String(obj);
 			case false: return 'null';
 		}
