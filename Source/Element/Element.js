@@ -423,7 +423,7 @@ Element.implement({
 
 	getProperty: function(attribute){
 		var EA = Element.Attributes, key = EA.Props[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute);
+		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
 		return (EA.Bools[attribute]) ? !!value : value;
 	},
 
@@ -555,6 +555,10 @@ Element.Properties.value = {get: function(){
 
 Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
+}};
+
+Element.Properties.href = {get: function(){
+	return this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
 }};
 
 Element.Properties.html = {set: function(){

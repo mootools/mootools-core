@@ -47,8 +47,8 @@ var Tips = new Class({
 	
 	attach: function(elements){
 		$$(elements).each(function(element){
-			var title = element.retrieve('tip:title', element.title);
-			var text = element.retrieve('tip:text', element.rel || element.href);
+			var title = element.retrieve('tip:title', element.get('title'));
+			var text = element.retrieve('tip:text', element.get('rel') || element.get('href'));
 			var enter = element.retrieve('tip:enter', this.elementEnter.bindWithEvent(this, element));
 			var leave = element.retrieve('tip:leave', this.elementLeave.bindWithEvent(this, element));
 			element.addEvents({mouseenter: enter, mouseleave: leave});
@@ -56,7 +56,7 @@ var Tips = new Class({
 				var move = element.retrieve('tip:move', this.elementMove.bindWithEvent(this, element));
 				element.addEvent('mousemove', move);
 			}
-			element.store('tip:native', element.title);
+			element.store('tip:native', element.get('title'));
 			element.erase('title');
 		}, this);
 		return this;
@@ -69,7 +69,7 @@ var Tips = new Class({
 			element.removeEvent('mouseleave', element.retrieve('tip:move') || $empty);
 			element.eliminate('tip:enter').eliminate('tip:leave').eliminate('tip:move');
 			var original = element.retrieve('tip:native');
-			if (original) element.title = original;
+			if (original) element.set('title', original);
 		});
 		return this;
 	},
@@ -113,7 +113,7 @@ var Tips = new Class({
 	},
 	
 	fill: function(element, contents){
-		(typeof contents == 'string') ? element.setHTML(contents) : element.adopt(contents);
+		(typeof contents == 'string') ? element.set('html', contents) : element.adopt(contents);
 	},
 
 	show: function(){
