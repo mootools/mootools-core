@@ -32,12 +32,8 @@ var Request = new Class({
 		evalResponse: false
 	},
 
-	getXHR: function(){
-		return (window.XMLHttpRequest) ? new XMLHttpRequest() : ((window.ActiveXObject) ? new ActiveXObject('Microsoft.XMLHTTP') : false);
-	},
-
 	initialize: function(options){
-		if (!(this.xhr = this.getXHR())) return;
+		this.xhr = new Browser.Request();
 		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.headers = new Hash(this.options.headers);
@@ -159,7 +155,7 @@ var Request = new Class({
 		this.running = false;
 		this.xhr.abort();
 		this.xhr.onreadystatechange = $empty;
-		this.xhr = this.getXHR();
+		this.xhr = new Browser.Request();
 		this.fireEvent('onCancel');
 		return this;
 	}
