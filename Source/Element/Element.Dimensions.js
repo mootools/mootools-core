@@ -66,7 +66,7 @@ var is = {
 	},
 
 	positioned: function(el){
-		return (get.style(el, 'position') != 'static');
+		return (Element.getComputedStyle(el, 'position') != 'static');
 	}
 	
 };
