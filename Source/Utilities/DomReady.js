@@ -34,7 +34,7 @@ Element.Events.domready = {
 			(function(){
 				($try(function(){
 					temp.doScroll('left');
-					return $(temp).inject(document.body).setHTML('temp').dispose();
+					return $(temp).inject(document.body).set('html', 'temp').dispose();
 				})) ? domready() : arguments.callee.delay(50);
 			})();
 		break;
