@@ -145,7 +145,7 @@ Elements.multi = function(property){
 Window.implement({
 
 	$: function(el, notrash){
-		if (el && el.$attributes) return el;
+		if (el && el.$family && el.uid) return el;
 		var type = $type(el);
 		return ($[type]) ? $[type](el, notrash, this.document) : null;
 	},
