@@ -337,7 +337,7 @@ Selectors.Pseudo = new Hash({
 		while ((element = element.previousSibling)){
 			if (element.nodeType == 1 && ++count > index) return false;
 		}
-		return true;
+		return (count == index);
 	},
 	
 	even: function(argument, local){
