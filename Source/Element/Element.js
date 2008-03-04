@@ -88,7 +88,7 @@ var IFrame = new Native({
 				var doc = new Document(iframe.window.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
-			onload.call(iframe.contentWindow);
+			onload.call(iframe.contentWindow, iframe.contentWindow.document);
 		};
 		(!window.frames[props.id]) ? iframe.addListener('load', onFrameLoad) : onFrameLoad();
 		return iframe;
@@ -558,7 +558,7 @@ Element.Properties.tag = {get: function(){
 }};
 
 Element.Properties.href = {get: function(){
-	return this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
+	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
 }};
 
 Element.Properties.html = {set: function(){
