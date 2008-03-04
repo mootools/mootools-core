@@ -190,7 +190,7 @@ $.element = function(el, notrash){
 	return el;
 };
 
-$.textnode = $.window = $.document = $arguments(0);
+$.textnode = $.whitespace = $.window = $.document = $arguments(0);
 
 Native.implement([Element, Document], {
 
