@@ -25,7 +25,7 @@ var Swiff = new Class({
 			wMode: 'transparent',
 			swLiveConnect: true
 		},
-		events: {},
+		callBacks: {},
 		vars: {}
 	},
 	
@@ -41,24 +41,20 @@ var Swiff = new Class({
 		var id = this.id = options.id || this.instance;
 		var container = $(options.container);
 
-		Swiff.Events[this.instance] = {};
+		Swiff.CallBacks[this.instance] = {};
 		
-		var params = options.params, vars = options.vars, events = options.events;
+		var params = options.params, vars = options.vars, callBacks = options.callBacks;
 		var properties = $extend({height: options.height, width: options.width}, options.properties);
-		
-		for (var option in options){
-			if ((/^on[A-Z]/).test(option)) events[option] = options[option];
-		}
 		
 		var self = this;
 		
-		for (var event in events){
-			Swiff.Events[this.instance][event] = (function(option){
+		for (var callBack in callBacks){
+			Swiff.CallBacks[this.instance][callBack] = (function(option){
 				return function(){
-					option.apply(self.object, arguments);
+					return option.apply(self.object, arguments);
 				};
-			})(events[event]);
-			vars[event] = 'Swiff.Events.' + this.instance + '.' + event;
+			})(callBacks[callBack]);
+			vars[callBack] = 'Swiff.CallBacks.' + this.instance + '.' + callBack;
 		}
 		
 		params.flashVars = Hash.toQueryString(vars);
@@ -94,7 +90,7 @@ var Swiff = new Class({
 	
 });
 
-Swiff.Events = {};
+Swiff.CallBacks = {};
 
 Swiff.remote = function(obj, fn){
 	var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 2) + '</invoke>');
