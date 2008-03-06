@@ -107,6 +107,11 @@
 		"Cookie": {
 			"deps": ["Browser", "Class", "Class.Extras"],
 			"desc": "Class for creating, reading, and deleting browser Cookies."
+		},
+		
+		"Swiff": {
+			"deps": ["Element.Event"],
+			"desc": "Wrapper for embedding SWF movies. Supports External Interface Communication."
 		}
 
 	},
@@ -184,11 +189,6 @@
 		"Drag.Move": {
 			"deps": ["Drag", "Element.Dimensions"],
 			"desc": "A Drag extension that provides support for the constraining of draggables to containers and droppables."
-		},
-
-		"Swiff": {
-			"deps": ["Element.Event"],
-			"desc": "Wrapper for embedding SWF movies. Supports (and fixes) External Interface Communication."
 		},
 		
 		"Color": {
