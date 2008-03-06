@@ -79,17 +79,17 @@ var Swiff = new Class({
 	
 	replaces: function(element){
 		element = $(element, true);
-		element.parentNode.replaceChild(this.getElement(), element);
+		element.parentNode.replaceChild(this.toElement(), element);
 		return this;
 	},
 	
 	inject: function(element){
-		$(element, true).appendChild(this.getElement());
+		$(element, true).appendChild(this.toElement());
 		return this;
 	},
 	
 	remote: function(fn){
-		return Swiff.remote(this.getElement(), fn);
+		return Swiff.remote(this.toElement(), fn);
 	}
 	
 });
