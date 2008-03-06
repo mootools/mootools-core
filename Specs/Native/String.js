@@ -143,3 +143,33 @@ describe('String.stripScripts', {
 	}
 
 });
+
+describe('String.substitute', {
+
+	'should substitute values from objects': function(){
+		value_of('This is {color}.'.substitute({'color': 'blue'})).should_be('This is blue.');
+		value_of('This is {color} and {size}.'.substitute({'color': 'blue', 'size': 'small'})).should_be('This is blue and small.');
+	},
+
+	'should substitute values from arrays': function(){
+		value_of('This is {0}.'.substitute(['blue'])).should_be('This is blue.');
+		value_of('This is {0} and {1}.'.substitute(['blue', 'small'])).should_be('This is blue and small.');
+	},
+
+	'should remove undefined values': function(){
+		value_of('Checking {0}, {1}, {2}, {3} and {4}.'.substitute([1, 0, undefined, null])).should_be('Checking 1, 0, ,  and .');
+		value_of('This is {not-set}.'.substitute({})).should_be('This is .');
+	},
+
+	'should ignore escaped placeholders': function(){
+		value_of('Ignore \\{this} but not {that}.'.substitute({'that': 'the others'})).should_be('Ignore {this} but not the others.');
+	},
+
+	'should substitute with a custom regex.': function(){
+		var php = (/\$([\w-]+)/g);
+		value_of('I feel so $language.'.substitute({'language': 'PHP'}, php)).should_be('I feel so PHP.');
+		var ror = (/#\{([^}]+)\}/g);
+		value_of('I feel so #{language}.'.substitute({'language': 'RoR'}, ror)).should_be('I feel so RoR.');
+	}
+
+});

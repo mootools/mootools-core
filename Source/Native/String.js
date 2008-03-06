@@ -74,12 +74,11 @@ String.implement({
 		else if ($type(option) == 'function') option(scripts, text);
 		return text;
 	},
-	
-	substitute: function(object, limiters){
-		limiters = limiters || ['{', '}'];
-		var regexp = new RegExp(limiters[0].escapeRegExp() + '([\\w-]+)' + limiters[1].escapeRegExp(), 'g');
-		return this.replace(regexp, function(full, found){
-			return (object[found] != undefined) ? object[found] : '';
+
+	substitute: function(object, regexp){
+		return this.replace(regexp || /\\?\{([^}]+)\}/g, function(match, name){
+			if (match.charAt(0) == '\\') return match.slice(1);
+			return (object[name] != undefined) ? object[name] : '';
 		});
 	}
 
