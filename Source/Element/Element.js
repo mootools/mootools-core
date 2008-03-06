@@ -190,6 +190,11 @@ $.element = function(el, notrash){
 	return el;
 };
 
+$.object = function(obj, notrash, doc){
+	if (obj.toElement) return $.element(obj.toElement(doc), notrash);
+	return null;
+};
+
 $.textnode = $.whitespace = $.window = $.document = $arguments(0);
 
 Native.implement([Element, Document], {
