@@ -12,17 +12,24 @@ Note:
 (function(){
 
 var get = {
+	
+	style: function(el, style){
+		return Element.getComputedStyle(el, style).toInt() || 0;
+	},
 
 	borders: function(el){
 		if (is.body(el)) return {x: 0, y: 0};
-		return (Browser.Engine.trident) ? {
-			x: el.clientLeft, y: el.clientTop
-		} : {
+		return (Browser.Engine.trident) ? get.clientPosition(el) : {
 			x: get.style(el, 'border-left-width'), y: get.style(el, 'border-top-width')
 		};
 	},
 	
-	parent: function(el){
+	margins: function(el){
+		if (is.body(el)) return {x: 0, y: 0};
+		return {x: get.style(el, 'margin-left'), y: get.style(el, 'margin-top')};
+	},
+	
+	offsetParent: function(el){
 		if (is.body(el)) return null;
 		if (!Browser.Engine.trident) return $(el.offsetParent);
 		while ((el = el.parentNode)){
@@ -30,29 +37,29 @@ var get = {
 		}
 		return null;
 	},
-	
-	style: function(el, style){
-		return Element.getComputedStyle(el, style).toInt() || 0;
-	},
 
-	margins: function(el){
-		return {x: get.style(el, 'margin-left'), y: get.style(el, 'margin-top')};
-	},
-
-	offsets: function(el){
+	offsetPosition: function(el){
 		return {x: el.offsetLeft, y: el.offsetTop};
 	},
 
-	size: function(el){
+	offsetSize: function(el){
 		return {x: el.offsetWidth, y: el.offsetHeight};
 	},
 
-	full: function(el){
+	scrollSize: function(el){
 		return {x: el.scrollWidth, y: el.scrollHeight};
 	},
 
-	scrolls: function(el){
+	scrollPosition: function(el){
 		return {x: el.scrollLeft, y: el.scrollTop};
+	},
+	
+	clientPosition: function(el){
+		return {x: el.clientLeft, y: el.clientTop};
+	},
+	
+	clientSize: function(el){
+		return {x: el.clientWidth, y: el.clientHeight};
 	}
 	
 };
@@ -66,6 +73,7 @@ var is = {
 	},
 
 	positioned: function(el){
+		if (is.body(el)) return true;
 		return (Element.getComputedStyle(el, 'position') != 'static');
 	}
 	
@@ -74,27 +82,26 @@ var is = {
 Element.implement({
 	
 	positioned: function(){
-		if (is.body(this)) return true;
 		return is.positioned(this);
 	},
 	
 	getOffsetParent: function(){
-		return get.parent(this);
+		return get.offsetParent(this);
 	},
 	
 	getSize: function(){
 		if (is.body(this)) return this.getWindow().getSize();
-		return get.size(this);
+		return get.offsetSize(this);
 	},
 	
 	getScrollSize: function(){
 		if (is.body(this)) return this.getWindow().getScrollSize();
-		return get.full(this);
+		return get.scrollSize(this);
 	},
 	
 	getScroll: function(){
 		if (is.body(this)) return this.getWindow().getScroll();
-		return get.scrolls(this);
+		return get.scrollPosition(this);
 	},
 	
 	scrollTo: function(x, y){
@@ -104,13 +111,14 @@ Element.implement({
 			this.scrollLeft = x;
 			this.scrollTop = y;
 		}
+		return this;
 	},
 	
 	getPosition: function(relative, addborders){
 		if (is.body(this)) return {x: 0, y: 0};
-		var el = this, position = get.offsets(el);
-		while ((el = el.offsetParent)){
-			var borders = get.borders(el), offsets = get.offsets(el);
+		var el = this, position = get.offsetPosition(el);
+		while ((el = el.offsetParent && !is.body(el))){
+			var borders = get.borders(el), offsets = get.offsetPosition(el);
 			position.x += offsets.x + borders.x;
 			position.y += offsets.y  + borders.y;
 		}
@@ -126,7 +134,7 @@ Element.implement({
 	
 	getCoordinates: function(element){
 		if (is.body(this)) return this.getWindow().getCoordinates();
-		var position = this.getPosition(element), size = get.size(this);
+		var position = this.getPosition(element), size = get.offsetSize(this);
 		var obj = {left: position.x, top: position.y, width: size.x, height: size.y};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
@@ -134,7 +142,7 @@ Element.implement({
 	},
 	
 	getRelativePosition: function(){
-		return this.getPosition(get.parent(this));
+		return this.getPosition(get.offsetParent(this));
 	},
 	
 	computePosition: function(obj){
@@ -148,15 +156,13 @@ Element.implement({
 	
 });
 
-})();
-
 Native.implement([Window, Document], {
 
 	getSize: function(){
 		var doc = this.getDocument(), win = this.getWindow(), html = doc.documentElement, body = doc.body;
 		if (Browser.Engine.webkit419) return {x: win.innerWidth, y: win.innerHeight};
-		if (Browser.Engine.presto925) return {x: body.clientWidth, y: body.clientHeight};
-		return {x: html.clientWidth, y: html.clientHeight};
+		if (Browser.Engine.presto925) return get.clientSize(body);
+		return get.clientSize(html);
 	},
 
 	getScroll: function(){
@@ -167,8 +173,8 @@ Native.implement([Window, Document], {
 	getScrollSize: function(){
 		var doc = this.getDocument(), html = doc.documentElement, body = doc.body;
 		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
-		if (Browser.Engine.webkit) return get.full(body);
-		return get.full(html);
+		if (Browser.Engine.webkit) return get.scrollSize(body);
+		return get.scrollSize(html);
 	},
 	
 	getPosition: function(){
@@ -181,6 +187,8 @@ Native.implement([Window, Document], {
 	}
 
 });
+
+})();
 
 Native.implement([Window, Document, Element], {
 	
