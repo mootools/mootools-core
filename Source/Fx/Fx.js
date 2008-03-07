@@ -72,11 +72,13 @@ var Fx = new Class({
 	},
 
 	complete: function(){
-		return (!this.stopTimer()) ? this : this.onComplete();
+		if (this.stopTimer()) this.onComplete();
+		return this;
 	},
 
 	cancel: function(){
-		return (!this.stopTimer()) ? this : this.onCancel();
+		if (this.stopTimer()) this.onCancel();
+		return this;
 	},
 
 	onStart: function(){
