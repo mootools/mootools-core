@@ -650,8 +650,7 @@ function memfree(item){
 	if (!item || !item.tagName) return;
 	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
 		for (var p in item){
-			var property = item[p];
-			if (typeof property == 'function') property = $empty;
+			if (typeof item[p] == 'function') item[p] = $empty;
 		}
 		Element.dispose(item);
 	}
