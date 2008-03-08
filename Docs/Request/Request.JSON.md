@@ -37,4 +37,4 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 		alert(person.age);    //Alerts "25 years".
 		alert(person.height); //Alerts "170 cm".
 		alert(person.weight); //Alerts "120 kg".
-	}}).POST({'firstName': 'John', 'lastName': 'Doe'});
+	}}).get({'firstName': 'John', 'lastName': 'Doe'});
