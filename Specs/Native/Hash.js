@@ -224,6 +224,9 @@ describe('Hash.toQueryString', {
 	'should return a query string': function(){
 		var myHash = new Hash({apple: "red", lemon: "yellow"});
 		value_of(myHash.toQueryString()).should_be('apple=red&lemon=yellow');
+
+		var myHash2 = new Hash({apple: ['red', 'yellow'], lemon: ['green', 'yellow']});
+		value_of(myHash2.toQueryString()).should_be('apple[]=red&apple[]=yellow&lemon[]=green&lemon[]=yellow');
 	}
 
 });

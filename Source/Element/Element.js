@@ -254,12 +254,12 @@ Element.Inserters.each(function(value, key){
 	var Key = key.capitalize();
 
 	Element.implement('inject' + Key, function(el){
-		Element.Inserters[key](this, $(el, true));
+		value(this, $(el, true));
 		return this;
 	});
 
 	Element.implement('grab' + Key, function(el){
-		Element.Inserters[key]($(el, true), this);
+		value($(el, true), this);
 		return this;
 	});
 
@@ -390,14 +390,9 @@ Element.implement({
 	},
 
 	getComputedStyle: function(property){
-		var result = null;
-		if (this.currentStyle){
-			result = this.currentStyle[property.camelCase()];
-		} else {
-			var computed = this.getWindow().getComputedStyle(this, null);
-			if (computed) result = computed.getPropertyValue([property.hyphenate()]);
-		}
-		return result;
+		if (this.currentStyle) return this.currentStyle[property.camelCase()];
+		var computed = this.getWindow().getComputedStyle(this, null);
+		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 	},
 
 	empty: function(){
@@ -419,7 +414,9 @@ Element.implement({
 		this.getElements('input, select, textarea', true).each(function(el){
 			var name = el.name, type = el.type, value = Element.get(el, 'value');
 			if (value === false || !name || el.disabled) return;
-			$splat(value).each(function(val){
+			if ($type(value) == 'array') name += '[]';
+			else value = [value];
+			value.each(function(val){
 				queryString.push(name + '=' + encodeURIComponent(val));
 			});
 		});
@@ -527,44 +524,59 @@ Element.implement({
 
 })();
 
-Element.Properties = new Hash;
+Element.Properties = new Hash({
 
-Element.Properties.style = {
+	style: {
 
-	set: function(style){
-		this.style.cssText = style;
+		set: function(style){
+			this.style.cssText = style;
+		},
+
+		get: function(){
+			return this.style.cssText;
+		},
+
+		erase: function(){
+			this.style.cssText = '';
+		}
+
 	},
 
-	get: function(){
-		return this.style.cssText;
+	value: {
+
+		get: function(){
+			switch (Element.get(this, 'tag')){
+				case 'select':
+					var values = [];
+					Array.each(this.options, function(option){
+						if (option.selected) values.push(option.value);
+					});
+					return (this.multiple) ? values : (values.length ? values[0] : false);
+				case 'input':
+					if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
+			}
+			return $pick(this.value, false);
+		}
+
 	},
 
-	erase: function(){
-		this.style.cssText = '';
+	tag: {
+
+		get: function(){
+			return this.tagName.toLowerCase();
+		}
+
+	},
+
+	html: {
+
+		set: function(){
+			return this.innerHTML = Array.flatten(arguments).join('');
+		}
+
 	}
 
-};
-
-Element.Properties.value = {get: function(){
-	switch (Element.get(this, 'tag')){
-		case 'select':
-			var values = [];
-			Array.each(this.options, function(option){
-				if (option.selected) values.push(option.value);
-			});
-			return (this.multiple) ? values : values[0];
-		case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
-		default: return $pick(this.value, false);
-	}
-}};
-
-Element.Properties.tag = {get: function(){
-	return this.tagName.toLowerCase();
-}};
-
-Element.Properties.html = {set: function(){
-	return this.innerHTML = Array.flatten(arguments).join('');
-}};
+});
 
 Element.implement({
 

@@ -317,9 +317,9 @@ describe('Element.getElementById', {
 describe('Element.set `style`', {
 
 	'should set the cssText of an Element': function(){
-		var style = 'color: rgb(255, 255, 255); font-size: 12px;';
+		var style = 'font-size: 12px; color: rgb(255,255,255);';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.style.cssText.trim()).should_be(style); // webkit adds a space at the end, hence the trimming
+		value_of(myElement.style.cssText.toLowerCase().trim()).should_be(style); // webkit adds a space at the end, hence the trimming, lowercase for trident
 	}
 
 });
@@ -327,13 +327,13 @@ describe('Element.set `style`', {
 describe('Element.set `html`', {
 
 	'should set the innerHTML of an Element': function(){
-		var html = '<a href="#">Link</a>';
+		var html = '<a href="http://mootools.net">Link</a>';
 		var parent = new Element('div').set('html', html);
 		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase()); // ignore uppercase tags in presto
 	},
 
 	'should set the innerHTML of an Element with multiple arguments': function(){
-		var html = ['<p>Paragraph</p>', '<a href="#">Link</a>'];
+		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net">Link</a>'];
 		var parent = new Element('div').set('html', html);
 		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase()); // ignore uppercase tags in presto
 	}
@@ -359,9 +359,9 @@ describe('Element.set', {
 describe('Element.get `style`', {
 
 	"should return a CSS string representing the Element's styles": function(){
-		var style = 'color: rgb(255, 255, 255); font-size: 12px;';
+		var style = 'font-size: 12px; color: rgb(255,255,255);';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.get('style').trim()).should_be(style); // trimming, because safari adds a space at the end
+		value_of(myElement.get('style').toLowerCase().trim()).should_be(style); // trimming, because safari adds a space at the end, trim for trident
 	}
 
 });
@@ -384,6 +384,15 @@ describe('Element.get `value`', {
 			new Element('option', {value: 'bmw', html: 'BMW'})
 		);
 		value_of(select.get('value')).should_be(['saab', 'opel']);
+	},
+
+	'should return false for a select Element without selection': function(){
+		var select = new Element('select').adopt(
+			new Element('option', {value: 'volvo', html: 'Volvo'}),
+			new Element('option', {value: 'saab', html: 'Saab'})
+		);
+		select.selectedIndex = -1;
+		value_of(select.get('value')).should_be_false();
 	},
 
 	'should return false as the value of a checkbox input Element if the Element is not checked': function(){
@@ -845,7 +854,7 @@ describe('Element.clone', {
 	},
 
 	'should remove all custom attributes': function(){
-		var div = new Element('div', {custom: 'attribute'});
+		var div = new Element('div', {custom: ['attribute']});
 		var clone  = div.clone();
 		var custom = clone.custom;
 		value_of(custom).should_be_undefined();
@@ -971,7 +980,7 @@ describe('Element.toQueryString', {
 			),
 			new Element('textarea', {name: 'textarea', value: 'textarea-value'})
 		);
-		value_of(form.toQueryString()).should_be('input=checked&select=saab&select=opel&textarea=textarea-value');
+		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
 	}
 
 });

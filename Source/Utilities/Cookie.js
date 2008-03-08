@@ -10,9 +10,9 @@ Credits:
 */
 
 var Cookie = new Class({
-	
+
 	Implements: Options,
-	
+
 	options: {
 		path: false,
 		domain: false,
@@ -20,12 +20,12 @@ var Cookie = new Class({
 		secure: false,
 		document: document
 	},
-	
+
 	initialize: function(key, options){
 		this.key = key;
 		this.setOptions(options);
 	},
-	
+
 	write: function(value){
 		value = encodeURIComponent(value);
 		if (this.options.domain) value += '; domain=' + this.options.domain;
@@ -39,7 +39,7 @@ var Cookie = new Class({
 		this.options.document.cookie = this.key + '=' + value;
 		return this;
 	},
-	
+
 	read: function(){
 		var value = this.options.document.cookie.match('(?:^|;)\\s*' + this.key.escapeRegExp() + '=([^;]*)');
 		return (value) ? decodeURIComponent(value[1]) : null;
@@ -49,7 +49,7 @@ var Cookie = new Class({
 		new Cookie(this.key, $merge(this.options, {duration: -1})).write('');
 		return this;
 	}
-	
+
 });
 
 Cookie.write = function(key, value, options){
@@ -63,3 +63,14 @@ Cookie.read = function(key){
 Cookie.dispose = function(key, options){
 	return new Cookie(key, options).dispose();
 };
+
+(function(feature) {
+	var check = function(options){
+		var dummy = Cookie.write('$dummy', 1, options);
+		var enabled = !!(dummy.read('$dummy'));
+		dummy.dispose();
+		return enabled;
+	};
+	feature.cookieSession = check();
+	feature.cookie = check({duration: 1});
+})(Browser.Features);

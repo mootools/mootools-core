@@ -110,9 +110,11 @@ Hash.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		Hash.each(this, function(value, key){
-			$splat(value).each(function(val){
-				queryString.push(key + '=' + encodeURIComponent(val));
+		Hash.each(this, function(value, name){
+			if ($type(value) == 'array') name += '[]';
+			else value = [value];
+			value.each(function(val){
+				queryString.push(name + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
