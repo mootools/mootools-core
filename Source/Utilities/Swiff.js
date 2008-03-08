@@ -10,9 +10,9 @@ Credits:
 */
 
 var Swiff = new Class({
-	
+
 	Implements: [Options],
-	
+
 	options: {
 		id: null,
 		height: 1,
@@ -28,26 +28,26 @@ var Swiff = new Class({
 		callBacks: {},
 		vars: {}
 	},
-	
+
 	toElement: function(){
 		return this.object;
 	},
-	
+
 	initialize: function(path, options){
 		this.instance = 'Swiff_' + $time();
-		
+
 		this.setOptions(options);
 		options = this.options;
 		var id = this.id = options.id || this.instance;
 		var container = $(options.container);
 
 		Swiff.CallBacks[this.instance] = {};
-		
+
 		var params = options.params, vars = options.vars, callBacks = options.callBacks;
 		var properties = $extend({height: options.height, width: options.width}, options.properties);
-		
+
 		var self = this;
-		
+
 		for (var callBack in callBacks){
 			Swiff.CallBacks[this.instance][callBack] = (function(option){
 				return function(){
@@ -56,7 +56,7 @@ var Swiff = new Class({
 			})(callBacks[callBack]);
 			vars[callBack] = 'Swiff.CallBacks.' + this.instance + '.' + callBack;
 		}
-		
+
 		params.flashVars = Hash.toQueryString(vars);
 		if (Browser.Engine.trident){
 			properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
@@ -70,24 +70,24 @@ var Swiff = new Class({
 		build += '>';
 		for (var param in params) build += '<param name="' + param + '" value="' + params[param] + '" />';
 		build += '</object>';
-		this.object = (container || new Element('div')).set('html', build).firstChild;
+		this.object =  ((container) ? container.empty() : new Element('div')).set('html', build).firstChild;
 	},
-	
+
 	replaces: function(element){
 		element = $(element, true);
-		element.parentNode.replaceChild(this.toElement(), element);
+		element.parentNode.replaceChild(this.object, element);
 		return this;
 	},
-	
+
 	inject: function(element){
-		$(element, true).appendChild(this.toElement());
+		$(element, true).appendChild(this.object);
 		return this;
 	},
-	
-	remote: function(fn){
-		return Swiff.remote(this.toElement(), fn);
+
+	remote: function(){
+		return Swiff.remote.apply(Swiff, [this.object].extend(arguments));
 	}
-	
+
 });
 
 Swiff.CallBacks = {};

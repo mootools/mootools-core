@@ -8,7 +8,7 @@ License:
 */
 
 Document.implement({
-	
+
 	newElement: function(tag, props){
 		if (Browser.Engine.trident && props){
 			['name', 'type', 'checked'].each(function(attribute){
@@ -20,19 +20,19 @@ Document.implement({
 		}
 		return $.element(this.createElement(tag)).set(props);
 	},
-	
+
 	newTextNode: function(text){
 		return this.createTextNode(text);
 	},
-	
+
 	getDocument: function(){
 		return this;
 	},
-	
+
 	getWindow: function(){
 		return this.defaultView || this.parentWindow;
 	},
-	
+
 	purge: function(){
 		var elements = this.getElementsByTagName('*');
 		for (var i = 0, l = elements.length; i < l; i++) memfree(elements[i]);
@@ -165,11 +165,11 @@ Window.implement({
 		}
 		return new Elements(elements);
 	},
-	
+
 	getDocument: function(){
 		return this.document;
 	},
-	
+
 	getWindow: function(){
 		return this;
 	}
@@ -250,27 +250,27 @@ Element.Inserters = new Hash({
 Element.Inserters.inside = Element.Inserters.bottom;
 
 Element.Inserters.each(function(value, key){
-	
+
 	var Key = key.capitalize();
-	
+
 	Element.implement('inject' + Key, function(el){
 		Element.Inserters[key](this, $(el, true));
 		return this;
 	});
-	
+
 	Element.implement('grab' + Key, function(el){
 		Element.Inserters[key]($(el, true), this);
 		return this;
 	});
-	
+
 });
 
 Element.implement({
-	
+
 	getDocument: function(){
 		return this.ownerDocument;
 	},
-	
+
 	getWindow: function(){
 		return this.ownerDocument.getWindow();
 	},
@@ -562,10 +562,6 @@ Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
 }};
 
-Element.Properties.href = {get: function(){
-	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
-}};
-
 Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
@@ -583,7 +579,7 @@ Element.implement({
 	setHTML: function(){
 		return this.set('html', arguments);
 	},
-	
+
 	getHTML: function(){
 		return this.get('html');
 	},
