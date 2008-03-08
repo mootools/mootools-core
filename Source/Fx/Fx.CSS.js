@@ -72,17 +72,17 @@ Fx.CSS = new Class({
 	//searches inside the page css to find the values for a selector
 
 	search: function(selector){
-		var to = {}, domain = document.domain;
-		Array.each(document.styleSheets, function(sheet, j){
-			var href = sheet.href;
-			if (href.match('://') && !href.match(domain)) return;
-			var rules = sheet.rules || sheet.cssRules;
-			Array.each(rules, function(rule, i){
-				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
+		var to = {};
+		var domain = new RegExp('(?!:\\/\\/)|\\/\\/[a-z.]*' + document.domain.escapeRegExp() + '\\/', 'i');
+		selector = new RegExp('(?:^|,\\s*)' + selector.escapeRegExp() + '(?=\\s*,|$)', (Browser.Engine.trident) ? 'i' : '');
+		Array.each(document.styleSheets, function(sheet){
+			if (!domain.test(sheet.href)) return;
+			Array.each(sheet.rules || sheet.cssRules, function(rule){
+				if (!rule.style || !selector.test(rule.selectorText)) return;
 				Element.Styles.each(function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = String(rule.style[style]);
-					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
+					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
 				});
 			});
 		});
