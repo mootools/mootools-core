@@ -31,9 +31,9 @@ var get = {
 
 	offsetParent: function(el){
 		if (is.body(el)) return null;
-		if (!Browser.Engine.trident) return $(el.offsetParent);
+		if (!Browser.Engine.trident) return el.offsetParent;
 		while ((el = el.parentNode)){
-			if (is.positioned(el)) return $(el);
+			if (is.positioned(el)) return el;
 		}
 		return null;
 	},
@@ -74,7 +74,8 @@ var is = {
 
 	positioned: function(el){
 		if (is.body(el)) return true;
-		return (Element.getComputedStyle(el, 'position') != 'static');
+		var position = Element.getComputedStyle(el, 'position');
+		return (Browser.Engine.trident) ? (position == 'absolute' || position == 'fixed') : (position != 'static');
 	}
 
 };
@@ -86,7 +87,7 @@ Element.implement({
 	},
 
 	getOffsetParent: function(){
-		return get.offsetParent(this);
+		return $(get.offsetParent(this));
 	},
 
 	getSize: function(){
@@ -114,11 +115,12 @@ Element.implement({
 		return this;
 	},
 
-	getPosition: function(relative, addborders){
+	getPosition: function(relative){
 		if (is.body(this)) return {x: 0, y: 0};
 		var el = this, position = get.offsetPosition(el);
-		while ((el = el.offsetParent) && !is.body(el)){
-			var borders = get.borders(el), offsets = get.offsetPosition(el);
+		while ((el = get.offsetParent(el)) && !is.body(el)){
+			var borders = (!Browser.Engine.presto) ? get.borders(el) : {x: 0, y: 0};
+			var offsets = get.offsetPosition(el);
 			position.x += offsets.x + borders.x;
 			position.y += offsets.y  + borders.y;
 		}
