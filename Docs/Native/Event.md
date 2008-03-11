@@ -43,7 +43,7 @@ Event Method: constructor {#Event:constructor}
 
 ### Notes:
 
-- Accessing event.page / event.client requires an XHTML doctype.
+- Accessing event.page / event.client requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 - Every event added with addEvent gets the mootools method automatically, without the need to manually instance it.
 
 

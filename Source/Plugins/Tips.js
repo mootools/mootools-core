@@ -4,9 +4,6 @@ Script: Tips.js
 
 License:
 	MIT-style license.
-
-Note:
-	Tips requires an XHTML doctype.
 */
 
 var Tips = new Class({

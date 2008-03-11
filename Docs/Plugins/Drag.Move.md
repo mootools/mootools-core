@@ -6,7 +6,7 @@ Inherits methods, properties, options and events from [Drag][].
 
 ### Note:
 
-Drag.Move requires an XHTML doctype.
+Drag.Move requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 
 Drag.Move Method: constructor {#Drag-Move:constructor}
@@ -59,7 +59,7 @@ All the base Drag properties, plus:
 
 ### Notes:
 
-- Drag.Move requires an XHTML doctype.
+- Drag.Move requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 - Drag.Move supports either position absolute or relative. If no position is found, absolute will be set.
 
 ### Demos:

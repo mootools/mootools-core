@@ -4,9 +4,6 @@ Script: Drag.js
 
 License:
 	MIT-style license.
-
-Note:
-	This Script requires an XHTML doctype.
 */
 
 var Drag = new Class({

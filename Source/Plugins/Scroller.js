@@ -4,9 +4,6 @@ Script: Scroller.js
 
 License:
 	MIT-style license.
-
-Note:
-	Scroller requires an XHTML doctype.
 */
 
 var Scroller = new Class({

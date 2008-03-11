@@ -4,9 +4,6 @@ Script: Accordion.js
 
 License:
 	MIT-style license.
-
-Note:
-	Accordion requires an XHTML doctype.
 */
 
 var Accordion = new Class({

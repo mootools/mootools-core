@@ -5,7 +5,7 @@ Auto targets all the anchors in a page and display a smooth scrolling effect upo
 
 ### Note:
 
-- SmoothScroll requires an XHTML doctype.
+- SmoothScroll requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Extends:
 

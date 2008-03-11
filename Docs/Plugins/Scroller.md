@@ -7,7 +7,7 @@ Class: Scroller {#Scroller}
 
 ### Note:
 
-- Scroller requires an XHTML doctype.
+- Scroller requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Syntax:
 

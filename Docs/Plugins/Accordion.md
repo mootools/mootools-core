@@ -5,7 +5,7 @@ The Accordion class creates a group of Elements that are toggled when their hand
 
 ### Note:
 
-- Accordion requires an XHTML doctype.
+Accordion requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Extends:
 

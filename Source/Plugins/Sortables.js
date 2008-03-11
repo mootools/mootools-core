@@ -4,9 +4,6 @@ Script: Sortables.js
 
 License:
 	MIT-style license.
-
-Note:
-	Sortables requires an XHTML doctype.
 */
 
 var Sortables = new Class({

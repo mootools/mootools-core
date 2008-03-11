@@ -4,9 +4,6 @@ Script: Fx.Scroll.js
 
 License:
 	MIT-style license.
-
-Note:
-	Fx.Scroll requires an XHTML doctype.
 */
 
 Fx.Scroll = new Class({

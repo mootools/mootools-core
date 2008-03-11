@@ -4,9 +4,6 @@ Script: Slider.js
 
 License:
 	MIT-style license.
-
-Note:
-	Slider requires an XHTML doctype.
 */
 
 var Slider = new Class({

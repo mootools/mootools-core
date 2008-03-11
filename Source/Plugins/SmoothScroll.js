@@ -4,9 +4,6 @@ Script: SmoothScroll.js
 
 License:
 	MIT-style license.
-
-Note:
-	SmoothScroll requires an XHTML doctype.
 */
 
 var SmoothScroll = new Class({

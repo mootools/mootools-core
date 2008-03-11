@@ -65,7 +65,7 @@ Drag Method: constructor {#Drag:constructor}
 
 ### Notes:
 
-- Drag requires an XHTML doctype.
+- Drag requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### See Also:
 

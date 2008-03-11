@@ -4,9 +4,6 @@ Script: Fx.Slide.js
 
 License:
 	MIT-style license.
-
-Note:
-	Fx.Slide requires an XHTML doctype.
 */
 
 Fx.Slide = new Class({

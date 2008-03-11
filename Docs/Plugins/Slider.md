@@ -5,7 +5,7 @@ Class: Slider {#Slider}
 
 ### Note:
 
-- Slider requires an XHTML doctype.
+- Slider requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Syntax:
 

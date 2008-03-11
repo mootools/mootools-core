@@ -4,9 +4,6 @@ Script: Drag.Move.js
 
 License:
 	MIT-style license.
-
-Note:
-	Drag.Move requires an XHTML doctype.
 */
 
 Drag.Move = new Class({
@@ -22,13 +19,12 @@ Drag.Move = new Class({
 		arguments.callee.parent(element, options);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
-		var position = (this.element.positioned()) ? this.element.getStyle('position') : 'absolute';
-
-		if (this.element.getStyle('left') == 'auto' || this.element.getStyle('top') == 'auto') {
-			this.element.position(this.element.getRelativePosition());
-		}
-
-		this.element.setStyle('position', position);
+		element = this.element;
+		
+		var position = (element.positioned()) ? element.getStyle('position') : 'absolute';
+		if (element.getStyle('left') == 'auto' || element.getStyle('top') == 'auto') element.position(element.getRelativePosition());
+		
+		element.setStyle('position', position);
 	},
 
 	start: function(event){

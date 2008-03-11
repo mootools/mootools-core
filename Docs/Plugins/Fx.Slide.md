@@ -5,7 +5,7 @@ The slide effect slides an Element in horizontally or vertically.  The contents 
 
 ### Note:
 
-- Fx.Slide requires an XHTML doctype.
+- Fx.Slide requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Extends:
 

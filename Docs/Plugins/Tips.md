@@ -9,7 +9,7 @@ Display a tip on any element with a title and/or href.
 
 ### Note:
 
-- Tips requires an XHTML doctype.
+- Tips requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Implements:
 

@@ -5,7 +5,7 @@ Scrolls any element with an overflow, including the window element.
 
 ### Note:
 
-- Fx.Scroll requires an XHTML doctype.
+- Fx.Scroll requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 
 ### Extends:
 

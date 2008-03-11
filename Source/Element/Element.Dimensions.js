@@ -4,9 +4,6 @@ Script: Element.Dimensions.js
 
 License:
 	MIT-style license.
-
-Note:
-	Dimensions requires an XHTML doctype.
 */
 
 (function(){
