@@ -16,12 +16,32 @@ Element.implement({
 	
 	removeElements: function(){
 		return this.dispose();
-	},
-	
-	getValue: function(){
-		return this.get('value');
 	}
 
 });
 
 Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
+
+Element.implement({
+
+	getText: function(){
+		return this.get('text');
+	},
+
+	setText: function(text){
+		return this.set('text', text);
+	},
+
+	setHTML: function(){
+		return this.set('html', arguments);
+	},
+	
+	getHTML: function(){
+		return this.get('html');
+	},
+
+	getTag: function(){
+		return this.get('tag');
+	}
+
+});

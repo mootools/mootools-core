@@ -1122,6 +1122,39 @@ Reads the child inputs of the Element and generates a query string based on thei
 ##### JavaScript
 
 	$('myForm').toQueryString(); //Returns "email=bob@bob.com&zipCode=90210".
+	
+
+Element Method: getSelected {#Element:getSelected}
+--------------------------------------------------
+
+Returns the selected options of a select element.
+
+
+### Syntax:
+
+	var selected = mySelect.getSelected();
+
+### Returns:
+
+* (*array*) An array of the selected elements.
+
+### Examples:
+
+##### HTML
+
+	<select id="country-select" name="country">
+		<option value="US">United States</option
+		<option value ="IT">Italy</option>
+	</select>
+
+##### JavaScript
+
+	$('country-select').getSelected(); //Returns whatever the user selected.
+	
+### Note:
+
+This method returns an array, regardless of the multiple attribute of the select element.
+If the select is single, it will return an array with only one item.
 
 
 
@@ -1466,41 +1499,6 @@ Gets the inner text of the Element.
 ##### JavaScript
 
 	var myText = $('myElement').get('text'); //myText = 'my text'.
-
-
-
-Element Property: value {#Element-Properties:value}
----------------------------------------------------
-
-### Getter:
-
-Returns the value of the Element if its tag name is "textarea", "select" or "input". If get('value') is called on a multiple select element, it will return an array.
-
-
-#### Syntax:
-
-	var value = myElement.get('value');
-
-#### Returns:
-
-* (*mixed*) Returns false if if tag name is not 'select', 'input', or 'textarea'. Otherwise returns the value of the Element.
-
-#### Examples:
-
-##### HTML
-
-	<form id="myForm">
-		<select>
-			<option value="volvo">Volvo</option>
-			<option value="saab" selected="selected">Saab</option>
-			<option value="opel">Opel</option>
-			<option value="audi">Audi</option>
-		</select>
-	</form>
-
-##### JavaScript
-
-	var result = $('myForm').getElement('select').get('value'); //Returns 'Saab'.
 
 
 

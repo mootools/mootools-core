@@ -409,15 +409,21 @@ Element.implement({
 		return null;
 	},
 
+	getSelected: function(){
+		return $A(this.options).filter(function(option){
+			return options.selected;
+		});
+	},
+
 	toQueryString: function(){
 		var queryString = [];
-		this.getElements('input, select, textarea', true).each(function(el){
-			var name = el.name, type = el.type, value = Element.get(el, 'value');
-			if (value === false || !name || el.disabled) return;
-			if ($type(value) == 'array') name += '[]';
-			else value = [value];
-			value.each(function(val){
-				queryString.push(name + '=' + encodeURIComponent(val));
+		this.getElements('input, select, textarea').each(function(el){
+			if (!el.name || el.disabled) return;
+			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
+				return opt.value;
+			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
+			$splat(value).each(function(val){
+				if (val) queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
@@ -542,54 +548,17 @@ Element.Properties.style = {
 
 };
 
-Element.Properties.value = {get: function(){
-	switch (Element.get(this, 'tag')){
-		case 'select':
-			var values = [];
-			Array.each(this.options, function(option){
-				if (option.selected) values.push(option.value);
-			});
-			return (this.multiple) ? values : values[0];
-		case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
-		default: return $pick(this.value, false);
-	}
-}};
-
 Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
 }};
 
-Element.Properties.href = {get: function(){ 
-	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), ''); 
+Element.Properties.href = {get: function(){
+	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
 }};
 
 Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
-
-Element.implement({
-
-	getText: function(){
-		return this.get('text');
-	},
-
-	setText: function(text){
-		return this.set('text', text);
-	},
-
-	setHTML: function(){
-		return this.set('html', arguments);
-	},
-
-	getHTML: function(){
-		return this.get('html');
-	},
-
-	getTag: function(){
-		return this.get('tag');
-	}
-
-});
 
 Native.implement([Element, Window, Document], {
 
