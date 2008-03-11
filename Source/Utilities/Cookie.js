@@ -63,14 +63,3 @@ Cookie.read = function(key){
 Cookie.dispose = function(key, options){
 	return new Cookie(key, options).dispose();
 };
-
-(function(feature) {
-	var check = function(options){
-		var dummy = Cookie.write('$dummy', 1, options);
-		var enabled = !!(dummy.read('$dummy'));
-		dummy.dispose();
-		return enabled;
-	};
-	feature.cookieSession = check();
-	feature.cookie = check({duration: 1});
-})(Browser.Features);

@@ -524,59 +524,48 @@ Element.implement({
 
 })();
 
-Element.Properties = new Hash({
+Element.Properties = new Hash;
 
-	style: {
+Element.Properties.style = {
 
-		set: function(style){
-			this.style.cssText = style;
-		},
-
-		get: function(){
-			return this.style.cssText;
-		},
-
-		erase: function(){
-			this.style.cssText = '';
-		}
-
+	set: function(style){
+		this.style.cssText = style;
 	},
 
-	value: {
-
-		get: function(){
-			switch (Element.get(this, 'tag')){
-				case 'select':
-					var values = [];
-					Array.each(this.options, function(option){
-						if (option.selected) values.push(option.value);
-					});
-					return (this.multiple) ? values : (values.length ? values[0] : false);
-				case 'input':
-					if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
-			}
-			return $pick(this.value, false);
-		}
-
+	get: function(){
+		return this.style.cssText;
 	},
 
-	tag: {
-
-		get: function(){
-			return this.tagName.toLowerCase();
-		}
-
-	},
-
-	html: {
-
-		set: function(){
-			return this.innerHTML = Array.flatten(arguments).join('');
-		}
-
+	erase: function(){
+		this.style.cssText = '';
 	}
 
-});
+};
+
+Element.Properties.value = {get: function(){
+	switch (Element.get(this, 'tag')){
+		case 'select':
+			var values = [];
+			Array.each(this.options, function(option){
+				if (option.selected) values.push(option.value);
+			});
+			return (this.multiple) ? values : values[0];
+		case 'input': if (['checkbox', 'radio'].contains(this.type) && !this.checked) return false;
+		default: return $pick(this.value, false);
+	}
+}};
+
+Element.Properties.tag = {get: function(){
+	return this.tagName.toLowerCase();
+}};
+
+Element.Properties.href = {get: function(){ 
+	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), ''); 
+}};
+
+Element.Properties.html = {set: function(){
+	return this.innerHTML = Array.flatten(arguments).join('');
+}};
 
 Element.implement({
 
