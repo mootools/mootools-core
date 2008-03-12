@@ -12,6 +12,7 @@ var Event = new Native({
 
 	initialize: function(event, win){
 		win = win || window;
+		var doc = win.document;
 		event = event || win.event;
 		if (event.$extended) return event;
 		this.$extended = true;
@@ -28,13 +29,14 @@ var Event = new Native({
 			}
 			key = key || String.fromCharCode(code).toLowerCase();
 		} else if (type.match(/(click|mouse|menu)/i)){
+			doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 			var page = {
-				x: event.pageX || event.clientX + win.document.documentElement.scrollLeft,
-				y: event.pageY || event.clientY + win.document.documentElement.scrollTop
+				x: event.pageX || event.clientX + doc.scrollLeft,
+				y: event.pageY || event.clientY + doc.scrollTop
 			};
 			var client = {
-				x: event.pageX ? event.pageX - win.pageXOffset : event.clientX,
-				y: event.pageY ? event.pageY - win.pageYOffset : event.clientY
+				x: (event.pageX) ? event.pageX - win.pageXOffset : event.clientX,
+				y: (event.pageY) ? event.pageY - win.pageYOffset : event.clientY
 			};
 			if (type.match(/DOMMouseScroll|mousewheel/)){
 				var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
