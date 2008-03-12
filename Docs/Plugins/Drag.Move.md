@@ -26,7 +26,6 @@ Drag.Move Method: constructor {#Drag-Move:constructor}
 All the base Drag options, plus:
 	
 * container  - (*element*) If an Element is passed, drag will be limited to the passed Element's size and position.
-* overflown  - (*array*) Array of nested scrolling containers. See [Element:getPosition](/Element/#getPosition).
 * droppables - (*array*) The Elements that the draggable can drop into.
 	
 	Interaction with droppable work with events fired on the doppable element or, for 'emptydrop', on the dragged element.

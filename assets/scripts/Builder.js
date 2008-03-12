@@ -31,11 +31,10 @@ var Builder = {
 			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
-			'Utilities' : ['Color', 'Cookie', 'DomReady', 'Group', 'JSON', 'Selectors', 'Swiff'],
-			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Scroll', 'Fx.Slide', 'Fx.Transitions'],
+			'Utilities' : ['Selectors', 'DomReady', 'JSON', 'Cookie', 'Swiff'],
+			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Transitions'],
 			'Request'   : ['Request', 'Request.HTML', 'Request.JSON'],
-			'Drag'      : ['Drag', 'Drag.Move'],
-			'Plugins'   : ['Assets', 'Fx.Elements', 'Hash.Cookie', 'Sortables', 'Scroller', 'Slider', 'SmoothScroll', 'Tips', 'Accordion']
+			'Plugins'   : ['Fx.Scroll', 'Fx.Slide', 'Fx.Elements', 'Drag', 'Drag.Move', 'Color', 'Group', 'Hash.Cookie', 'Tips', 'Sortables', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Accordion']
 		},
 
 		specs: {
@@ -51,9 +50,10 @@ var Builder = {
 			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Dimensions'],
-			'Utilities' : ['DomReady', 'Selectors'],
-			'Fx'        : ['Fx', 'Fx.Scroll'],
-			'Request'   : ['Request', 'Request.HTML']
+			'Utilities' : ['Selectors', 'DomReady'],
+			'Fx'        : ['Fx'],
+			'Request'   : ['Request', 'Request.HTML'],
+			'Plugins'   : ['Fx.Scroll']
 		}
 	},
 

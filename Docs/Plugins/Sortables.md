@@ -6,61 +6,230 @@ Creates an interface for drag and drop sorting of a list or lists.
 ### Arguments:
 
 1. list - (*mixed*) required, the list or lists that will become sortable.
- * This argument can be an [Element][] or array of [Elements][]. When a single list (or id) is passed, that list will be sortable only with itself.
- * To enable sorting between lists, one or more lists or id's must be passed using an array or an object. See Examples below.
+ * This argument can be an [Element][], an array of [Elements][], or a selector. When a single list (or id) is passed, that list will be sortable only with itself.
+ * To enable sorting between lists, one or more lists or id's must be passed using an array or a selector. See Examples below.
 2. options - (*object*) See options and events below.
 
 #### Options:
 
-1. constrain      - whether or not to constrain the element being dragged to its parent element. defaults to false.
-2. clone          - whether or not to display a copy of the actual element while dragging. defaults to true.
-3. cloneOpacity   - opacity of the place holding element
-4. elementOpacity - opacity of the element being dragged for sorting
-5. handle         - a selector which be used to select the element inside each item to be used as a handle for sorting that item.  if no match is found, the element is used as its own handle.
-6. revert         - whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be treated as true and used as aditional options for the revert effect. defaults to false.
+1. constrain - (*boolean*: defaults to false) Whether or not to constrain the element being dragged to its parent element.
+2. clone     - (*mixed*: defaults to false) Whether or not to display a copy of the actual element under the cursor while dragging. May also be used as a function which will return an element to be used as the clone.  The function will receive the mousedown event, the element, and the list as arguments.
+3. handle    - (*string*: defaults to false) A selector to select an element inside each sortable item to be used as the handle for sorting that item.  If no match is found, the element is used as its own handle.
+4. opacity   - (*integer*: defaults to 1) Opacity of the place holding element
+5. revert    - (*mixed*: defaults to false) Whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be used as additional options for the revert effect.
+6. snap      - (*integer*: defaults to 4) The number of pixels the element must be dragged for sorting to begin.
 
 ### Events:
 
 1. onStart    - function executed when the item starts dragging
+1. onStart    - function executed when the item is inserted into a new place in one of the lists
 2. onComplete - function executed when the item ends dragging
 
 ### Examples:
 
 	var mySortables = new Sortables('list-1', {
-		revert: { duration: 500, transition: Fx.Transitions.Elastic.easeOut }
+		revert: { duration: 500, transition: 'elastic:out' }
 	});
 	//creates a new Sortable instance over the list with id 'list-1' with some extra options for the revert effect
 
-	var mySortables = new Sortables(['list-1', 'list-2'], {
+	var mySortables = new Sortables('#list-1, #list-2', {
 		constrain: true,
 		clone: false,
 		revert: true
 	});
 	//creates a new Sortable instance allowing the sorting of the lists with id's 'list-1' and 'list-2' with extra options
-	//since constrain was set to false, the items will not be able to be dragged from one list to the other
+	//since constrain was set to true, the items will not be able to be dragged from one list to the other
 
-	var mySortables = new Sortables(['list-1', 'list-2', 'list-3']);
+	var mySortables = new Sortables('#list-1, #list-2, #list-3');
 	//creates a new Sortable instance allowing sorting between the lists with id's 'list-1', 'list-2, and 'list-3'
 	(end)
 
 
 
-Sortables Property: attach {#Sortables:attach}
-----------------------------------------------
+Sortables Method: attach {#Sortables:attach}
+--------------------------------------------
 
-Attaches the mousedown event to all the handles, enabling sorting.
+Attaches the mouse listener to all the handles, enabling sorting.
+
+### Syntax:
+
+	mySortables.attach();
+
+### Returns:
+
+* (*object*) This Sortables instance.
 
 
 
-Sortables Property: detach {#Sortables:detach}
-----------------------------------------------
+Sortables Method: detach {#Sortables:detach}
+--------------------------------------------
 
-Detaches the mousedown event from the handles, disabling sorting.
+Detaches the mouse listener from all the handles, disabling sorting.
+
+### Syntax:
+
+	mySortables.detach();
+
+### Returns:
+
+* (*object*) This Sortables instance.
 
 
 
-Sortables Property: serialize {#Sortables:serialize}
-----------------------------------------------------
+Sortables Method: detach {#Sortables:detach}
+--------------------------------------------
+
+Detaches the mouse listener from all the handles, disabling sorting.
+
+### Syntax:
+
+	mySortables.detach();
+
+### Returns:
+
+* (*object*) This Sortables instance.
+
+
+
+Sortables Method: addItems {#Sortables:addItems}
+------------------------------------------------
+
+Allows one or more items to be added to an existing Sortables instance.
+
+### Syntax:
+
+	mySortables.addItems(item1[, item2[, item3[, ...]]]);
+
+### Arguments:
+
+1. items - (*mixed*) Since Array.flatten is used on the arguments, a single element, several elements, an array of elements, or any combination thereof may be passed to this method.
+
+### Returns:
+
+* (*object*) This Sortables instance.
+
+### Examples:
+
+	var mySortables = new Sortables('#list1, #list2');
+
+	var element1 = new Element('div');
+	var element2 = new Element('div');
+	var element3 = new Element('div');
+
+	$('list1').adopt(element1);
+	$('list2').adopt(element2, element3);
+	mySortables.addItems(element1, element2, element3);
+
+### Notes:
+
+- The items will not be injected into the list automatically as the sortable instance could have many lists.
+- First inject the elements into the proper list, then call addItems on them.
+
+### See Also:
+
+- [Sortables:removeItems](#Sortables:removeItems), [Sortables:addLists](#Sortables:addLists)
+
+
+
+Sortables Method: removeItems {#Sortables:removeItems}
+------------------------------------------------------
+
+Allows one or more items to be removed from an existing Sortables instance.
+
+### Syntax:
+
+	mySortables.removeItems(item1[, item2[, item3[, ...]]]);
+
+### Arguments:
+
+1. items - (*mixed*) Since Array.flatten is used on the arguments, a single element, several elements, an array of elements, or any combination thereof may be passed to this method.
+
+### Returns:
+
+* (*Elements*) An Elements collection of all the elements that were removed.
+
+### Examples:
+
+	var mySortables = new Sortables('#list1, #list2');
+
+	var element1 = $('list1').getFirst();
+	var element2 = $('list2').getLast();
+
+	mySortables.removeItems(element1, element2).destroy(); //the elements will be removed and destroyed
+
+### Notes:
+
+- The items will not be removed from the list automatically, they will just no longer be sortable.
+- First call removeItems on the items, and then remove them from their list containers, or destroy them.
+
+### See Also:
+
+- [Sortables:addItems](#Sortables:addItems), [Sortables:removeLists](#Sortables:removeLists)
+
+
+
+Sortables Method: addLists {#Sortables:addLists}
+------------------------------------------------
+
+Allows one or more entire lists to be added to an existing Sortables instance, allowing sorting between the new and old lists.
+
+### Syntax:
+
+	mySortables.addLists(list1[, list2[, list3[, ...]]]);
+
+### Arguments:
+
+1. lists - (*mixed*) Since Array.flatten is used on the arguments, a single element, several elements, an array of elements, or any combination thereof may be passed to this method.
+
+### Returns:
+
+* (*object*) This Sortables instance.
+
+### Examples:
+
+	var mySortables = new Sortables('list1');
+	mySortables.addLists($('list2'));
+
+### Notes:
+
+- More complicated usage of this method will allow you to do things like one-directional sorting.
+
+### See Also:
+
+- [Sortables:removeLists](#Sortables:removeLists), [Sortables:addItems](#Sortables:addItems)
+
+
+
+Sortables Method: removeLists {#Sortables:removeLists}
+------------------------------------------------------
+
+Allows one or more entire lists to be removed from an existing Sortables instance, preventing sorting between the lists.
+
+### Syntax:
+
+	mySortables.removeLists(list1[, list2[, list3[, ...]]]);
+
+### Arguments:
+
+1. lists - (*mixed*) Since Array.flatten is used on the arguments, a single element, several elements, an array of elements, or any combination thereof may be passed to this method.
+
+### Returns:
+
+* (*Elements*) An Elements collection of all the lists that were removed.
+
+### Examples:
+
+	var mySortables = new Sortables('#list1, #list2');
+	mySortables.removeLists($('list2'));
+
+### See Also:
+
+- [Sortables:addLists](#Sortables:addLists), [Sortables:removeItems](#Sortables:removeItems)
+
+
+
+Sortables Method: serialize {#Sortables:serialize}
+--------------------------------------------------
 
 Function to get the order of the elements in the lists of this sortables instance.
 For each list, an array containing the order of the elements will be returned.

@@ -26,99 +26,80 @@ Element.implement({
 	
 	getSize: function(){
 		if (isBody(this)) return this.getWindow().getSize();
-		
 		return {x: this.offsetWidth, y: this.offsetHeight};
 	},
 	
 	getScrollSize: function(){
 		if (isBody(this)) return this.getWindow().getScrollSize();
-		
 		return {x: this.scrollWidth, y: this.scrollHeight};
 	},
 	
 	getScroll: function(){
-		if (isBody(this)) return this.getWindow().getScrollSize();
-		
+		if (isBody(this)) return this.getWindow().getScroll();
 		return {x: this.scrollLeft, y: this.scrollTop};
 	},
 	
 	getScrolls: function(){
 		var element = this, position = {x: 0, y: 0};
-		
 		while (element && !isBody(element)){
 			position.x += element.scrollLeft;
 			position.y += element.scrollTop;
 			element = element.parentNode;
 		}
-		
 		return position;
 	},
 	
 	getOffsets: function(){
-		if (isBody(this)) return {x: 0, y: 0};
-		
 		var element = this, position = {x: 0, y: 0};
+		if (isBody(this)) return position;
 		
 		while (element && !isBody(element)){
 			position.x += element.offsetLeft;
 			position.y += element.offsetTop;
 			
 			if (Browser.Engine.gecko){
-
 				if (!borderBox(element)){
 					position.x += leftBorder(element);
-		            position.y += topBorder(element);
+					position.y += topBorder(element);
 				}
-				
 				var parent = element.parentNode;
-				
 				if (parent && !visibleOverflow(parent)){
 					position.x += leftBorder(parent);
 					position.y += topBorder(parent);
 				}
-				
 			} else if (element != this && (Browser.Engine.trident || Browser.Engine.webkit)){
-
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
-
 			}
 			
 			var offsetParent = element.offsetParent;
 			if (Browser.Engine.trident){
 				while (offsetParent && !offsetParent.currentStyle.hasLayout) offsetParent = offsetParent.offsetParent;
 			}
+			
 			element = offsetParent;
 		}
-		
 		if (Browser.Engine.gecko && !borderBox(this)){
 			position.x -= leftBorder(this);
-            position.y -= topBorder(this);
+			position.y -= topBorder(this);
 		}
-		
 		return position;
 	},
 	
 	getPosition: function(relative){
 		if (isBody(this)) return {x: 0, y: 0};
-		
 		var offset = this.getOffsets(), scroll = this.getScrolls();
 		var position = {x: offset.x - scroll.x, y: offset.y - scroll.y};
-		
 		var relativePosition = (relative && (relative = $(relative, true))) ? Element.getPosition(relative) : {x: 0, y: 0};
-		
 		return {x: position.x - relativePosition.x, y: position.y - relativePosition.y};
 	},
 	
 	getCoordinates: function(element){
 		if (isBody(this)) return this.getWindow().getCoordinates();
-		
 		var position = this.getPosition(element), size = this.getSize();
-		
 		var obj = {left: position.x, top: position.y, width: size.x, height: size.y};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
-		
 		return obj;
 	},
 	
@@ -139,7 +120,6 @@ Native.implement([Document, Window], {
 		if (Browser.Engine.presto || Browser.Engine.webkit) return {x: win.innerWidth, y: win.innerHeight};
 		var doc = getCompatElement(this);
 		return {x: doc.clientWidth, y: doc.clientHeight};
-		
 	},
 	
 	getScroll: function(){
