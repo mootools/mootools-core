@@ -75,17 +75,17 @@ var Swiff = new Class({
 
 	replaces: function(element){
 		element = $(element, true);
-		element.parentNode.replaceChild(this.object, element);
+		element.parentNode.replaceChild(this.toElement(), element);
 		return this;
 	},
 
 	inject: function(element){
-		$(element, true).appendChild(this.object);
+		$(element, true).appendChild(this.toElement());
 		return this;
 	},
 
 	remote: function(){
-		return Swiff.remote.apply(Swiff, [this.object].extend(arguments));
+		return Swiff.remote.apply(Swiff, [this.toElement()].extend(arguments));
 	}
 
 });
