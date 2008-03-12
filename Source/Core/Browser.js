@@ -68,7 +68,7 @@ var Window = new Native({
 
 	name: 'Window',
 
-	legacy: window.Window,
+	legacy: (Browser.Engine.trident) ? null: window.Window,
 
 	initialize: function(win){
 		$uid(win);
@@ -94,7 +94,7 @@ var Document = new Native({
 
 	name: 'Document',
 
-	legacy: window.Document,
+	legacy: (Browser.Engine.trident) ? null: window.Document,
 
 	initialize: function(doc){
 		$uid(doc);

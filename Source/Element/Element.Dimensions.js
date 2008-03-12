@@ -201,6 +201,8 @@ function getCompatElement(element){
 
 })();
 
+//aliases
+
 Native.implement([Window, Document, Element], {
 
 	getHeight: function(){

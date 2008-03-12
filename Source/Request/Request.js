@@ -187,7 +187,7 @@ Element.Properties.send = {
 	},
 
 	get: function(options){
-		if (options || ! this.retrieve('send')){
+		if (options || !this.retrieve('send')){
 			if (options || !this.retrieve('send:options')) this.set('send', options);
 			this.store('send', new Request(this.retrieve('send:options')));
 		}

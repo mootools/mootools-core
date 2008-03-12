@@ -6,14 +6,14 @@ License:
 	MIT-style license.
 
 Copyright:
-	Copyright (c) 2006-2007 Valerio Proietti, <http://mad4milk.net/>
+	Copyright (c) 2006-2007 [Valerio Proietti](http://mad4milk.net/).
 
 Code & Documentation:
-	The MooTools production team <http://mootools.net/developers/>.
+	[The MooTools production team](http://mootools.net/developers/).
 
 Inspiration:
-	- Class implementation inspired by Base.js <http://dean.edwards.name/weblog/2006/03/base/> Copyright (c) 2006 Dean Edwards, GNU Lesser General Public License <http://opensource.org/licenses/lgpl-license.php>
-	- Some functionality inspired by Prototype.js <http://prototypejs.org> Copyright (c) 2005-2007 Sam Stephenson, MIT License <http://opensource.org/licenses/mit-license.php>
+	- Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
+	- Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 */
 
 var MooTools = {

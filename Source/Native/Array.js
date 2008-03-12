@@ -24,7 +24,7 @@ Array.implement({
 	},
 	
 	clean: function() {
-		return this.filter($arguments(0));
+		return this.filter($defined);
 	},
 
 	indexOf: function(item, from){
