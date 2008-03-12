@@ -33,28 +33,31 @@ All the base Drag options, plus:
 	
 	The Events 'over', 'leave' and 'drop' get fired on the droppable element with the dragged element as first argument when the dragged element hovers,leaves or get dropped on the droppable.
 
-### Properties:
+### Events:
 
-All the base Drag properties, plus:
-
-* droppables - (*element*) The Elements that the draggable can drop into.
+* onDrop - Executed when the element drops. Passes as argument the element and the element dropped on. If dropped on nothing, the second argument is null.
+* onLeave - Executed when the element leaves one of the droppables.
+* onEnter - Executed when the element enters one of the droppables.
 
 ### Example:
 
-	var droppables = $$('li.placements').addEvents({
-		'over': function() {
-			this.addClass('overed');
-		},
-		'leave': function() {
-			this.removeClass('overed');
-		},
-		'drop': function(el) {
-			alert(el.id + ' dropped');
+	var myDrag = new Drag.Move('draggable', {
+		
+		droppables: '.droppable',
+		
+		onDrop: function(element, droppable){
+			if (!droppable) console.log(element + ' dropped on nothing');
+			else console.log(element + ' dropped on ' + droppable);
 		}
-	});
-	
-	var myMove = new Drag.Move('product-placement', {
-		'droppables': droppables
+		
+		onEnter: function(element, droppable){
+			console.log(element + ' entered ' + droppable);
+		}
+		
+		onLeave: function(element, droppable){
+			console.log(element + ' left ' + droppable);
+		}
+		
 	});
 
 ### Notes:

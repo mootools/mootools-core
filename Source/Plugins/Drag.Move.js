@@ -27,13 +27,13 @@ Drag.Move = new Class({
 		if (element.getStyle('left') == 'auto' || element.getStyle('top') == 'auto') element.position(element.getPosition(element.offsetParent));
 		
 		element.setStyle('position', position);
+		
+		this.addEvent('onStart', function(){
+			this.checkDroppables();
+		}, true);
 	},
 
 	start: function(event){
-		if (this.overed){
-			this.overed.fireEvent('leave', [this.element, this]);
-			this.overed = null;
-		}
 		if (this.container){
 			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(el.offsetParent), cps = {}, ems = {};
 
@@ -60,8 +60,13 @@ Drag.Move = new Class({
 	checkDroppables: function(){
 		var overed = this.droppables.filter(this.checkAgainst, this).getLast();
 		if (this.overed != overed){
-			if (this.overed) this.overed.fireEvent('leave', [this.element, this]);
-			this.overed = overed ? overed.fireEvent('over', [this.element, this]) : null;
+			if (this.overed) this.fireEvent('onLeave', [this.element, this.overed]);
+			if (overed){
+				this.overed = overed;
+				this.fireEvent('onEnter', [this.element, overed]);
+			} else {
+				this.overed = null;
+			}
 		}
 	},
 
@@ -72,8 +77,8 @@ Drag.Move = new Class({
 
 	stop: function(event){
 		this.checkDroppables();
-		if (this.overed) this.overed.fireEvent('drop', [this.element, this]);
-		else this.element.fireEvent('emptydrop', this);
+		this.fireEvent('onDrop', [this.element, this.overed]);
+		this.overed = null;
 		return arguments.callee.parent(event);
 	}
 
