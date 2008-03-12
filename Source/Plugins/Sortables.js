@@ -141,7 +141,7 @@ var Sortables = new Class({
 		this.drag.detach();
 		if (this.effect){
 			var dim = this.element.getStyles('width', 'height');
-			var pos = this.clone.computePosition(this.element.getPosition(this.clone.offsetParent), this.clone.getParent().positioned());
+			var pos = this.clone.computePosition(this.element.getPosition(this.clone.offsetParent));
 			this.effect.element = this.clone;
 			this.effect.start({
 				'top': pos.top,

@@ -21,7 +21,8 @@ Drag.Move = new Class({
 		this.container = $(this.options.container);
 		element = this.element;
 		
-		var position = (element.positioned()) ? element.getStyle('position') : 'absolute';
+		var current = element.getStyle('position');
+		var position = (current != 'static') ? current : 'absolute';
 		if (element.getStyle('left') == 'auto' || element.getStyle('top') == 'auto') element.position(element.getPosition(element.offsetParent));
 		
 		element.setStyle('position', position);
