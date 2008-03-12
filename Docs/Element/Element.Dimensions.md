@@ -3,6 +3,16 @@ Native: Element {#Element}
 
 Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
+### Note:
+
+These methods don't take into consideration the body element margins and borders.
+If you need margin/borders on the body, consider adding a wrapper div, but always reset the margin and borders of body to 0.
+
+### Credits:
+
+- Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
+- Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+
 
 Element Method: scrollTo {#Element:scrollTo}
 --------------------------------------------
@@ -27,46 +37,6 @@ The following method is also available on the Window object.
 
 - [MDC Element:scrollLeft][], [MDC Element:scrollTop][]
 
-
-
-Element Method: positioned {#Element:positioned}
-------------------------------------------------
-
-Returns true if the Element has been absolutely or relatively positioned.
-
-### Syntax:
-
-	myElement.positioned();
-
-### Returns:
-
-* (*boolean*) True if the positioning of the Element is absolute, fixed, or relative, false if it's static.
-
-### Example:
-
-	if($('myElement').positioned()) {
-		alert("This element has been positioned.");
-	}
-
-
-
-
-Element Method: getOffsetParent {#Element:getOffsetParent}
-----------------------------------------------------------
-
-Returns the first positioned parent Element of the target.
-
-### Syntax:
-
-	myElement.getOffsetParent();
-
-### Returns:
-
-* (*object*) The first positioned parent of the target Element.
-
-### Example:
-
-	myElement.getOffsetParent();
 
 
 

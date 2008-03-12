@@ -4,106 +4,18 @@ Script: Element.Dimensions.js
 
 License:
 	MIT-style license.
+	
+Credits:
+	- Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
+	- Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
 */
 
 (function(){
 
-var get = {
-
-	style: function(el, style){
-		return Element.getComputedStyle(el, style).toInt() || 0;
-	},
-
-	borders: function(el){
-		if (is.body(el)) return {x: 0, y: 0};
-		return (Browser.Engine.trident) ? get.clientPosition(el) : {
-			x: get.style(el, 'border-left-width'), y: get.style(el, 'border-top-width')
-		};
-	},
-
-	margins: function(el){
-		if (is.body(el)) return {x: 0, y: 0};
-		return {x: get.style(el, 'margin-left'), y: get.style(el, 'margin-top')};
-	},
-
-	offsetParent: function(el){
-		if (is.body(el)) return null;
-		if (!Browser.Engine.trident) return el.offsetParent;
-		while ((el = el.parentNode)){
-			if (is.positioned(el)) return el;
-		}
-		return null;
-	},
-
-	offsetPosition: function(el){
-		return {x: el.offsetLeft, y: el.offsetTop};
-	},
-
-	offsetSize: function(el){
-		return {x: el.offsetWidth, y: el.offsetHeight};
-	},
-
-	scrollSize: function(el){
-		return {x: el.scrollWidth, y: el.scrollHeight};
-	},
-
-	scrollPosition: function(el){
-		return {x: el.scrollLeft, y: el.scrollTop};
-	},
-
-	clientPosition: function(el){
-		return {x: el.clientLeft, y: el.clientTop};
-	},
-
-	clientSize: function(el){
-		return {x: el.clientWidth, y: el.clientHeight};
-	}
-
-};
-
-
-var is = {
-
-	body: function(el){
-		var tag = el.tagName.toLowerCase();
-		return (tag == 'body' || tag == 'html');
-	},
-
-	positioned: function(el){
-		if (is.body(el)) return true;
-		var position = Element.getComputedStyle(el, 'position');
-		return (Browser.Engine.trident) ? (position == 'absolute' || position == 'fixed') : (position != 'static');
-	}
-
-};
-
 Element.implement({
-
-	positioned: function(){
-		return is.positioned(this);
-	},
-
-	getOffsetParent: function(){
-		return $(get.offsetParent(this));
-	},
-
-	getSize: function(){
-		if (is.body(this)) return this.getWindow().getSize();
-		return get.offsetSize(this);
-	},
-
-	getScrollSize: function(){
-		if (is.body(this)) return this.getWindow().getScrollSize();
-		return get.scrollSize(this);
-	},
-
-	getScroll: function(){
-		if (is.body(this)) return this.getWindow().getScroll();
-		return get.scrollPosition(this);
-	},
-
+	
 	scrollTo: function(x, y){
-		if (is.body(this)){
+		if (isBody(this)){
 			this.getWindow().scrollTo(x, y);
 		} else {
 			this.scrollLeft = x;
@@ -111,81 +23,185 @@ Element.implement({
 		}
 		return this;
 	},
-
-	getPosition: function(relative){
-		if (is.body(this)) return {x: 0, y: 0};
-		var el = this, position = get.offsetPosition(el);
-		while ((el = get.offsetParent(el)) && !is.body(el)){
-			var borders = (!Browser.Engine.presto) ? get.borders(el) : {x: 0, y: 0};
-			var offsets = get.offsetPosition(el);
-			position.x += offsets.x + borders.x;
-			position.y += offsets.y  + borders.y;
-		}
-		if (relative === true){
-			var add = get.borders(this);
-			position.x += add.x;
-			position.y += add.y;
-		}
-		relative = $(relative);
-		var rpos = (relative) ? relative.getPosition(true) : {x: 0, y: 0};
-		return {x: position.x - rpos.x, y: position.y - rpos.y};
+	
+	getSize: function(){
+		if (isBody(this)) return this.getWindow().getSize();
+		
+		return {x: this.offsetHeight, y: this.offsetWidth};
 	},
+	
+	getScrollSize: function(){
+		if (isBody(this)) return this.getWindow().getScrollSize();
+		
+		return {x: this.scrollHeight, y: this.scrollWidth};
+	},
+	
+	getScroll: function(){
+		if (isBody(this)) return this.getWindow().getScroll();
+		
+		var element = this, position = {x: 0, y: 0};
+		
+		while (element && !isBody(element)){
+			position.x += element.scrollLeft;
+			position.y += element.scrollTop;
+			element = element.parentNode;
+		}
+		
+		return position;
+	},
+	
+	getOffset: function(){
+		if (isBody(this)) return {x: 0, y: 0};
+		
+		var element = this, position = {x: 0, y: 0};
+		
+		while (element && !isBody(element)){
+			position.x += element.offsetLeft;
+			position.y += element.offsetTop;
+			
+			if (Browser.Engine.gecko){
 
+				if (!borderBox(element)){
+					position.x += leftBorder(element);
+		            position.y += topBorder(element);
+				}
+				
+				var parent = element.parentNode;
+				
+				if (parent && !visibleOverflow(parent)){
+					position.x += leftBorder(parent);
+					position.y += topBorder(parent);
+				}
+				
+			} else if (element != this && (Browser.Engine.trident || Browser.Engine.webkit)){
+				
+				position.x += leftBorder(element);
+				position.y += topBorder(element);
+
+			}
+			
+			element = getOffsetParent(element);
+		}
+		
+		if (Browser.Engine.gecko && !borderBox(this)){
+			position.x -= leftBorder(this);
+            position.y -= topBorder(this);
+		}
+		
+		return position;
+	},
+	
+	getPosition: function(relative){
+		if (isBody(this)) return {x: 0, y: 0};
+		
+		var offset = this.getOffset(), scroll = this.getScroll();
+		var position = {x: offset.x - scroll.x, y: offset.y - scroll.y};
+		
+		var relativePosition = (relative && (relative = $(relative, true))) ? Element.getPosition(relative) : {x: 0, y: 0};
+		
+		return {x: position.x - relativePosition.x, y: position.y - relativePosition.y};
+	},
+	
 	getCoordinates: function(element){
-		if (is.body(this)) return this.getWindow().getCoordinates();
-		var position = this.getPosition(element), size = get.offsetSize(this);
+		if (isBody(this)) return this.getWindow().getCoordinates();
+		
+		var position = this.getPosition(element), size = this.getSize();
+		
 		var obj = {left: position.x, top: position.y, width: size.x, height: size.y};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
+		
 		return obj;
 	},
-
-	getRelativePosition: function(){
-		return this.getPosition(get.offsetParent(this));
-	},
-
+	
 	computePosition: function(obj){
-		var margins = get.margins(this);
-		return {left: obj.x - margins.x, top: obj.y - margins.y};
+		return {left: obj.x - styleNumber(this, 'margin-left'), top: obj.y - styleNumber(this, 'margin-top')};
 	},
 
 	position: function(obj){
 		return this.setStyles(this.computePosition(obj));
 	}
-
+	
 });
 
-Native.implement([Window, Document], {
-
+Native.implement([Document, Window], {
+	
 	getSize: function(){
-		var doc = this.getDocument(), win = this.getWindow(), html = doc.documentElement, body = doc.body;
-		if (Browser.Engine.webkit419) return {x: win.innerWidth, y: win.innerHeight};
-		if (Browser.Engine.presto925) return get.clientSize(body);
-		return get.clientSize(html);
+		var win = this.getWindow();
+		if (Browser.Engine.presto || Browser.Engine.webkit) return {x: win.innerWidth, y: win.innerHeight};
+		var doc = getCompatElement(this);
+		return {x: doc.clientWidth, y: doc.clientHeight};
+		
 	},
-
+	
 	getScroll: function(){
-		var win = this.getWindow(), html = this.getDocument().documentElement;
-		return {x: $pick(win.pageXOffset, html.scrollLeft), y: $pick(win.pageYOffset, html.scrollTop)};
+		var win = this.getWindow();
+		var doc = getCompatElement(this);
+		return {x: win.pageXOffset || doc.scrollLeft, y: win.pageYOffset || doc.scrollTop};
 	},
-
+	
 	getScrollSize: function(){
-		var doc = this.getDocument(), html = doc.documentElement, body = doc.body;
-		if (Browser.Engine.trident) return {x: Math.max(html.clientWidth, html.scrollWidth), y: Math.max(html.clientHeight, html.scrollHeight)};
-		if (Browser.Engine.webkit) return get.scrollSize(body);
-		return get.scrollSize(html);
+		var doc = getCompatElement(this);
+		var min = this.getSize();
+		return {x: Math.max(doc.scrollWidth, min.x), y: Math.max(doc.scrollHeight, min.y)};
 	},
-
+	
 	getPosition: function(){
 		return {x: 0, y: 0};
 	},
-
+	
 	getCoordinates: function(){
 		var size = this.getSize();
 		return {top: 0, left: 0, bottom: size.y, right: size.x, height: size.y, width: size.x};
 	}
-
+	
 });
+
+// private methods
+
+function isBody(elemenet){
+	var tag = elemenet.tagName.toLowerCase();
+	return (tag == 'body' || tag == 'html');
+};
+
+function getOffsetParent(element){
+	if (isBody(element)) return null;
+	if (!Browser.Engine.trident) return element.offsetParent;
+	while ((element = element.parentNode) && !isBody(element)){
+		var position = styleString(element, 'position');
+		if (position != 'static' && position != 'relative') return element;
+	}
+	return null;
+};
+
+function styleString(element, style){
+	return Element.getComputedStyle(element, style);
+};
+
+function styleNumber(element, style){
+	return Element.getComputedStyle(element, style).toInt() || 0;
+};
+
+function leftBorder(element){
+	return styleNumber(element, 'border-left-width');
+};
+
+function topBorder(element){
+	return styleNumber(element, 'border-top-width');
+};
+
+function borderBox(element){
+	return styleString(element, '-moz-box-sizing') == 'border-box';
+};
+
+function visibleOverflow(element){
+	return styleString(element, 'overflow') == 'visible';
+};
+
+function getCompatElement(element){
+	var doc = element.getDocument();
+	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+};
 
 })();
 
