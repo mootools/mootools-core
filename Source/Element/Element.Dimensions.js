@@ -54,6 +54,8 @@ Element.implement({
 		if (isBody(this)) return {x: 0, y: 0};
 		
 		var element = this, position = {x: 0, y: 0};
+
+		var standards = isStandards(Element.getDocument(this));
 		
 		while (element && !isBody(element)){
 			position.x += element.offsetLeft;
@@ -73,14 +75,14 @@ Element.implement({
 					position.y += topBorder(parent);
 				}
 				
-			} else if (element != this && (Browser.Engine.trident || Browser.Engine.webkit)){
+			} else if (element != this && ((Browser.Engine.trident && standards) || Browser.Engine.webkit)){
 				
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 
 			}
 			
-			element = getOffsetParent(element);
+			element = element.offsetParent;
 		}
 		
 		if (Browser.Engine.gecko && !borderBox(this)){
@@ -164,16 +166,6 @@ function isBody(elemenet){
 	return (tag == 'body' || tag == 'html');
 };
 
-function getOffsetParent(element){
-	if (isBody(element)) return null;
-	if (!Browser.Engine.trident) return element.offsetParent;
-	while ((element = element.parentNode) && !isBody(element)){
-		var position = styleString(element, 'position');
-		if (position != 'static' && position != 'relative') return element;
-	}
-	return null;
-};
-
 function styleString(element, style){
 	return Element.getComputedStyle(element, style);
 };
@@ -198,9 +190,13 @@ function visibleOverflow(element){
 	return styleString(element, 'overflow') == 'visible';
 };
 
+function isStandards(doc){
+	return (!doc.compatMode || doc.compatMode == 'CSS1Compat');
+};
+
 function getCompatElement(element){
 	var doc = element.getDocument();
-	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+	return (isStandards(doc)) ? doc.html : doc.body;
 };
 
 })();
