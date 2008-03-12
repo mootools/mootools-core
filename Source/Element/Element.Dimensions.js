@@ -33,12 +33,16 @@ Element.implement({
 	getScrollSize: function(){
 		if (isBody(this)) return this.getWindow().getScrollSize();
 		
-		return {x: this.scrollHeight, y: this.scrollWidth};
+		return {x: this.scrollWidth, y: this.scrollHeight};
 	},
 	
 	getScroll: function(){
-		if (isBody(this)) return this.getWindow().getScroll();
+		if (isBody(this)) return this.getWindow().getScrollSize();
 		
+		return {x: this.scrollLeft, y: this.scrollTop};
+	},
+	
+	getScrolls: function(){
 		var element = this, position = {x: 0, y: 0};
 		
 		while (element && !isBody(element)){
@@ -50,7 +54,7 @@ Element.implement({
 		return position;
 	},
 	
-	getOffset: function(){
+	getOffsets: function(){
 		if (isBody(this)) return {x: 0, y: 0};
 		
 		var element = this, position = {x: 0, y: 0};
@@ -96,7 +100,7 @@ Element.implement({
 	getPosition: function(relative){
 		if (isBody(this)) return {x: 0, y: 0};
 		
-		var offset = this.getOffset(), scroll = this.getScroll();
+		var offset = this.getOffsets(), scroll = this.getScrolls();
 		var position = {x: offset.x - scroll.x, y: offset.y - scroll.y};
 		
 		var relativePosition = (relative && (relative = $(relative, true))) ? Element.getPosition(relative) : {x: 0, y: 0};
