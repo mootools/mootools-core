@@ -22,7 +22,7 @@ Drag.Move = new Class({
 		element = this.element;
 		
 		var position = (element.positioned()) ? element.getStyle('position') : 'absolute';
-		if (element.getStyle('left') == 'auto' || element.getStyle('top') == 'auto') element.position(element.getRelativePosition());
+		if (element.getStyle('left') == 'auto' || element.getStyle('top') == 'auto') element.position(element.getPosition(element.offsetParent));
 		
 		element.setStyle('position', position);
 	},
@@ -33,7 +33,7 @@ Drag.Move = new Class({
 			this.overed = null;
 		}
 		if (this.container){
-			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(el.getOffsetParent()), cps = {}, ems = {};
+			var el = this.element, cont = this.container, ccoo = cont.getCoordinates(el.offsetParent), cps = {}, ems = {};
 
 			['top', 'right', 'bottom', 'left'].each(function(pad){
 				cps[pad] = cont.getStyle('padding-' + pad).toInt();
