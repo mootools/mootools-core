@@ -58,8 +58,6 @@ Element.implement({
 		if (isBody(this)) return {x: 0, y: 0};
 		
 		var element = this, position = {x: 0, y: 0};
-
-		var standards = isStandards(Element.getDocument(this));
 		
 		while (element && !isBody(element)){
 			position.x += element.offsetLeft;
@@ -79,14 +77,18 @@ Element.implement({
 					position.y += topBorder(parent);
 				}
 				
-			} else if (element != this && ((Browser.Engine.trident && standards) || Browser.Engine.webkit)){
-				
+			} else if (element != this && (Browser.Engine.trident || Browser.Engine.webkit)){
+
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 
 			}
 			
-			element = element.offsetParent;
+			var offsetParent = element.offsetParent;
+			if (Browser.Engine.trident){
+				while (offsetParent && !offsetParent.currentStyle.hasLayout) offsetParent = offsetParent.offsetParent;
+			}
+			element = offsetParent;
 		}
 		
 		if (Browser.Engine.gecko && !borderBox(this)){
