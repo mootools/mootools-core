@@ -19,7 +19,7 @@ Drag.Move = new Class({
 		arguments.callee.parent(element, options);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
-		if (this.container && $type(this.container) != 'element') this.container = this.container.getDocument().body;
+		if (this.container && $type(this.container) != 'element') this.container = $(this.container.getDocument().body);
 		element = this.element;
 		
 		var current = element.getStyle('position');
