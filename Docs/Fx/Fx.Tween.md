@@ -16,7 +16,7 @@ The Tween effect, used to transition any CSS property from one value to another.
 
 ### Syntax:
 
-	var myFx = new Fx.Tween(element, property[, options]);
+	var myFx = new Fx.Tween(element, [, options]);
 
 ### Arguments:
 
@@ -32,6 +32,7 @@ The Tween effect, used to transition any CSS property from one value to another.
 
 - Any CSS property that can be set with Element:setStyle can be transitioned with Fx.Tween.
 - If a property is not mathematically calculable, like border-style or background-image, it will be set immediately upon start of the transition.
+- If you use the property option, you must not use the property argument in the start and set methods.
 
 ### See Also:
 
@@ -63,6 +64,9 @@ Sets the Element's CSS property to the specified value immediately.
 	//Immediately sets the background color of the element to red:
 	myFx.set('background-color', '#f00');
 
+### Note:
+
+If you use the property option, you must not use the property argument in the start and set methods.
 
 
 Fx.Tween Method: start {#Fx-Tween:start}
@@ -72,11 +76,11 @@ Transitions the Element's CSS property to the specified value.
 
 ### Syntax:
 
-	myFx.start(property, from[, to]);
+	myFx.start([property], from[, to]);
 
 ### Arguments:
 
-1. property - (*string*) The css property to tween. Omit this if you use the property option.
+1. property - (*string*, if not in options) The css property to tween. Omit this if you use the property option.
 2. from - (*mixed*) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
 3. to   - (*mixed*, optional) The target CSS property value for the effect.
 
@@ -96,6 +100,7 @@ Transitions the Element's CSS property to the specified value.
 
 - If only one argument is provided, other than the property argument, the first argument to start will be used as the target value, and the initial value will be calculated from the current state of the element.
 - When using colors, either RGB or Hex values may be used.
+- If you use the property option, you must not use the property argument in the start and set methods.
 
 
 
