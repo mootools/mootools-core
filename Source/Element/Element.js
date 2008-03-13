@@ -432,7 +432,7 @@ Element.implement({
 	getProperty: function(attribute){
 		var EA = Element.Attributes, key = EA.Props[attribute];
 		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
-		return (EA.Bools[attribute]) ? !!value : value;
+		return (EA.Bools[attribute]) ? !!value : (key) ? value : value || null;
 	},
 
 	getProperties: function(){

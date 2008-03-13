@@ -317,9 +317,10 @@ describe('Element.getElementById', {
 describe('Element.set `style`', {
 
 	'should set the cssText of an Element': function(){
-		var style = 'font-size:12px;color:rgb(255,255,255);';
+		var style = 'font-size:12px;color:rgb(255, 255, 255);';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.style.cssText.toLowerCase().replace(/\s/g, '')).should_be(style);
+		value_of(myElement.style.color.replace(/\s/g, '')).should_be('rgb(255,255,255)');
+		value_of(myElement.style.fontSize).should_be('12px');
 	}
 
 });
@@ -327,13 +328,13 @@ describe('Element.set `style`', {
 describe('Element.set `html`', {
 
 	'should set the innerHTML of an Element': function(){
-		var html = '<a href="http://mootools.net">Link</a>';
+		var html = '<a href="http://mootools.net/">Link</a>';
 		var parent = new Element('div').set('html', html);
 		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase()); // ignore uppercase tags in presto
 	},
 
 	'should set the innerHTML of an Element with multiple arguments': function(){
-		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net">Link</a>'];
+		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
 		var parent = new Element('div').set('html', html);
 		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase()); // ignore uppercase tags in presto
 	}
@@ -359,9 +360,10 @@ describe('Element.set', {
 describe('Element.get `style`', {
 
 	"should return a CSS string representing the Element's styles": function(){
-		var style = 'font-size:12px;color:rgb(255,255,255);';
+		var style = 'font-size:12px;color:rgb(255,255,255)';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.get('style').toLowerCase().replace(/\s/g, '')).should_be(style); // trimming, because safari adds a space at the end, trim for trident
+		value_of(myElement.get('style').toLowerCase().replace(/\s/g, '').replace(/;$/, '')).should_be(style);
+		//I'm replacing these characters (space and the last semicolon) as they are not vital to the style, and browsers sometimes include them, sometimes not.
 	}
 
 });
@@ -996,8 +998,8 @@ describe('Element.getProperty', {
 describe('Element.setProperty', {
 
 	'should `setProperty` from an Element': function(){
-		var anchor1 = new Element('a').setProperty('href', 'http://mootools.net');
-		value_of(anchor1.getProperty('href')).should_be('http://mootools.net');
+		var anchor1 = new Element('a').setProperty('href', 'http://mootools.net/');
+		value_of(anchor1.getProperty('href')).should_be('http://mootools.net/');
 
 		var anchor2 = new Element('a').setProperty('href', '#someLink');
 		value_of(anchor2.getProperty('href')).should_be('#someLink');
