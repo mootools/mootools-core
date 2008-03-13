@@ -164,4 +164,4 @@ describe('Number.times | Number.each', {
 		test: [0.3],
 		title: 'tangent'
 	}
-})
+});

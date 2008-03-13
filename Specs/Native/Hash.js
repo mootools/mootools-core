@@ -226,7 +226,10 @@ describe('Hash.toQueryString', {
 		value_of(myHash.toQueryString()).should_be('apple=red&lemon=yellow');
 
 		var myHash2 = new Hash({apple: ['red', 'yellow'], lemon: ['green', 'yellow']});
-		value_of(myHash2.toQueryString()).should_be('apple[]=red&apple[]=yellow&lemon[]=green&lemon[]=yellow');
+		value_of(myHash2.toQueryString()).should_be('apple[0]=red&apple[1]=yellow&lemon[0]=green&lemon[1]=yellow');
+		
+		var myHash3 = new Hash({fruits: {apple: ['red', 'yellow'], lemon: ['green', 'yellow']}});
+		value_of(myHash3.toQueryString()).should_be('fruits[apple][0]=red&fruits[apple][1]=yellow&fruits[lemon][0]=green&fruits[lemon][1]=yellow');
 	}
 
 });

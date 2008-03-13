@@ -36,10 +36,10 @@ describe('Array.filter', {
 
 describe('Array.clean', {
 
-	'should clean an array': function(){
-		var array = [null, 1, 0, true, false, "foo", ""];
+	'should clean an array from undefined and null values': function(){
+		var array = [null, 1, 0, true, false, "foo", undefined];
 		var arr = array.clean();
-		value_of(arr).should_be([1, true, "foo"]);
+		value_of(arr).should_be([1, 0, true, false, "foo"]);
 	}
 
 });

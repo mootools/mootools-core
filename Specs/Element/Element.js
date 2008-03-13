@@ -317,9 +317,9 @@ describe('Element.getElementById', {
 describe('Element.set `style`', {
 
 	'should set the cssText of an Element': function(){
-		var style = 'font-size: 12px; color: rgb(255,255,255);';
+		var style = 'font-size:12px;color:rgb(255,255,255);';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.style.cssText.toLowerCase().trim()).should_be(style); // webkit adds a space at the end, hence the trimming, lowercase for trident
+		value_of(myElement.style.cssText.toLowerCase().replace(/\s/g, '')).should_be(style);
 	}
 
 });
@@ -359,67 +359,9 @@ describe('Element.set', {
 describe('Element.get `style`', {
 
 	"should return a CSS string representing the Element's styles": function(){
-		var style = 'font-size: 12px; color: rgb(255,255,255);';
+		var style = 'font-size:12px;color:rgb(255,255,255);';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.get('style').toLowerCase().trim()).should_be(style); // trimming, because safari adds a space at the end, trim for trident
-	}
-
-});
-
-describe('Element.get `value`', {
-
-	'should return the selected options for a select Element': function(){
-		var select = new Element('select').adopt(
-			new Element('option', {value: 'volvo', html: 'Volvo'}),
-			new Element('option', {value: 'saab', html: 'Saab', selected: true})
-		);
-		value_of(select.get('value')).should_be('saab');
-	},
-
-	'should return all the selected options for a select Element with multiple attribute': function(){
-		var select = new Element('select', {multiple: true}).adopt(
-			new Element('option', {value: 'volvo', html: 'Volvo'}),
-			new Element('option', {value: 'saab', html: 'Saab', selected: true}),
-			new Element('option', {value: 'opel', html: 'Opel', selected: true}),
-			new Element('option', {value: 'bmw', html: 'BMW'})
-		);
-		value_of(select.get('value')).should_be(['saab', 'opel']);
-	},
-
-	'should return false for a select Element without selection': function(){
-		var select = new Element('select').adopt(
-			new Element('option', {value: 'volvo', html: 'Volvo'}),
-			new Element('option', {value: 'saab', html: 'Saab'})
-		);
-		select.selectedIndex = -1;
-		value_of(select.get('value')).should_be_false();
-	},
-
-	'should return false as the value of a checkbox input Element if the Element is not checked': function(){
-		var input = new Element('input', {type: 'checkbox', value: 'checked'});
-		value_of(input.get('value')).should_be_false();
-	},
-
-	'should return the value of a checkbox input Element': function(){
-		var input = new Element('input', {type: 'checkbox', checked: true, value: 'checked'});
-		value_of(input.get('value')).should_be('checked');
-	},
-
-	'should return false as the value of an input Element if the Element is not checked': function(){
-		var input = new Element('input', {type: 'radio', value: 'checked'});
-		value_of(input.get('value')).should_be_false();
-	},
-
-	'should return the value of radio input Element': function(){
-		var input = new Element('input', {type: 'radio', checked: true, value: 'checked'});
-		value_of(input.get('value')).should_be('checked');
-	},
-
-	'should return value of the value property of an Element if the Element is not an input or select Element, otherwise false': function(){
-		var div = new Element('div', {value: 'my value'});
-		var a = new Element('a');
-		value_of(div.get('value')).should_be('my value');
-		value_of(a.get('value')).should_be_false();
+		value_of(myElement.get('style').toLowerCase().replace(/\s/g, '')).should_be(style); // trimming, because safari adds a space at the end, trim for trident
 	}
 
 });
@@ -972,7 +914,7 @@ describe('Element.toQueryString', {
 	"should return a query string from the Element's form Elements": function(){
 		var form = new Element('form').adopt(
 			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: 'checked'}),
-			new Element('select', {name: 'select', multiple: true}).adopt(
+			new Element('select', {name: 'select[]', multiple: true}).adopt(
 				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
 				new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
 				new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: true}),

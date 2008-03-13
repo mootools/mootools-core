@@ -411,7 +411,7 @@ Element.implement({
 
 	getSelected: function(){
 		return $A(this.options).filter(function(option){
-			return options.selected;
+			return option.selected;
 		});
 	},
 
