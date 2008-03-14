@@ -68,7 +68,9 @@ var Swiff = new Class({
 		var build = '<object id="' + id + '"';
 		for (var property in properties) build += ' ' + property + '="' + properties[property] + '"';
 		build += '>';
-		for (var param in params) build += '<param name="' + param + '" value="' + params[param] + '" />';
+		for (var param in params){
+			if (params[param]) build += '<param name="' + param + '" value="' + params[param] + '" />';
+		}
 		build += '</object>';
 		this.object =  ((container) ? container.empty() : new Element('div')).set('html', build).firstChild;
 	},
