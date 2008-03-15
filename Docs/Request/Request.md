@@ -47,7 +47,7 @@ Request Events: events {#Request:events}
 
 #### Signature:
 
-	onSuccess(reponseText, responseXML)
+	onSuccess(responseText, responseXML)
 
 #### Arguments:
 
