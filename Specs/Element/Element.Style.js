@@ -33,8 +33,8 @@ describe('Element.getStyle', {
 	},
 	
 	'should `getStyle` with a dash in it': function() {
-		var el = new Element('div').set('html', '<div style="font-weight:bold"></div>');
-		value_of(el.getElement('div').getStyle('font-weight')).should_be('bold');
+		var el = new Element('div').set('html', '<div style="list-style-type:square"></div>');
+		value_of(el.getElement('div').getStyle('list-style-type')).should_be('square');
 	}
 
 });
@@ -50,7 +50,7 @@ describe('Element.setStyle', {
 	},
 
 	'should properly `setStyle` for a property with a dash in it': function() {
-		value_of(new Element('div').setStyle('font-weight', 'bold').getStyle('font-weight')).should_be('bold');
+		value_of(new Element('div').setStyle('list-style-type', 'square').getStyle('list-style-type')).should_be('square');
 	}
 
 });
@@ -58,8 +58,8 @@ describe('Element.setStyle', {
 describe('Element.getStyles', {
 
 	'should return multiple styles': function() {
-		var el = new Element('div').set('html', '<div style="color:#00ff00;font-weight:bold"></div>');
-		value_of(el.getElement('div').getStyles('color', 'font-weight')).should_be({color:'#00ff00', 'font-weight':'bold'});
+		var el = new Element('div').set('html', '<div style="color:#00ff00;list-style-type:square"></div>');
+		value_of(el.getElement('div').getStyles('color', 'list-style-type')).should_be({color:'#00ff00', 'list-style-type':'square'});
 	}
 
 });
@@ -67,7 +67,7 @@ describe('Element.getStyles', {
 describe('Element.setStyles', {
 
 	'should set multiple styles': function() {
-		value_of(new Element('div').setStyles({'font-weight':'bold', 'color':'#00ff00'}).getStyles('font-weight', 'color')).should_be({'font-weight':'bold', color:'#00ff00'});
+		value_of(new Element('div').setStyles({'list-style-type':'square', 'color':'#00ff00'}).getStyles('list-style-type', 'color')).should_be({'list-style-type':'square', color:'#00ff00'});
 	}
 
 });

@@ -317,9 +317,9 @@ describe('Element.getElementById', {
 describe('Element.set `style`', {
 
 	'should set the cssText of an Element': function(){
-		var style = 'font-size:12px;color:rgb(255, 255, 255);';
+		var style = 'font-size:12px;line-height:23px;';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.style.color.replace(/\s/g, '')).should_be('rgb(255,255,255)');
+		value_of(myElement.style.lineHeight).should_be('23px');
 		value_of(myElement.style.fontSize).should_be('12px');
 	}
 
