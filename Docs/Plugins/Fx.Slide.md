@@ -27,7 +27,6 @@ The slide effect slides an Element in horizontally or vertically.  The contents 
 
 #### Properties:
 
-1. wrapper - (*element*) The Element wrapping the element being slid.
 2. open    - (*boolean*) Indicates whether the slide element is visible.
 
 ### Examples:

@@ -49,7 +49,8 @@ Fx.Scroll = new Class({
 
 	start: function(x, y){
 		if (!this.check(x, y)) return this;
-		var offsetSize = this.element.getSize(), scrollSize = this.element.getScrollSize(), scroll = this.element.getScroll(), values = {'x': x, 'y': y};
+		var offsetSize = this.element.getSize(), scrollSize = this.element.getScrollSize();
+		var scroll = this.element.getScroll(), values = {x: x, y: y};
 		for (var z in values){
 			var max = scrollSize[z] - offsetSize[z];
 			if ($chk(values[z])) values[z] = ($type(values[z]) == 'number') ? values[z].limit(0, max) : max;

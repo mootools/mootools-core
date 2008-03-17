@@ -1647,15 +1647,16 @@ Elements Method: constructor {#Elements:constructor}
 
 
 
-Elements Method: filterBy {#Elements:filterBy}
+Elements Method: filter {#Elements:filter}
 ----------------------------------------------
 
 Filters a collection of elements by a given tag name.  If [Selectors][] is included, this method will be able to filter by any selector.
+It also works like [Array:filter](/Native/Array/#Array:filter), by filtering collection of elements with a function.
 
 
 ### Syntax:
 
-	var filteredElements = elements.filterBy(selector);
+	var filteredElements = elements.filter(selector);
 
 ### Arguments:
 

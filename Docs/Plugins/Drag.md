@@ -39,11 +39,6 @@ Drag Method: constructor {#Drag:constructor}
 * onDrag        - Executed on every step of the drag. Receives the dragged element as an argument.
 * onComplete    - Executed when the user completes the drag. Receives the dragged element as an argument.
 
-### Properties:
-
-* element - (*element*) The Element being transformed.
-* handle  - (*element*) The Element acting as the handle for the draggable element.
-
 ### Examples:
 
 	var myDrag = new Drag('myDraggable', {

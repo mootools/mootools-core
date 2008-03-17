@@ -111,14 +111,14 @@ describe('Elements constructor', {
 
 });
 
-describe('Elements.filterBy', {
+describe('Elements.filter', {
 
 	'should return all Elements that match the string matcher': function(){
-		value_of(myElements.filterBy('div')).should_be([myElements[0], myElements[2]]);
+		value_of(myElements.filter('div')).should_be([myElements[0], myElements[2]]);
 	},
 
 	'should return all Elements that match the comparator': function(){
-		var elements = myElements.filterBy(function(element){
+		var elements = myElements.filter(function(element){
 			return element.match('a');
 		});
 		value_of(elements).should_be([myElements[1]]);

@@ -52,7 +52,7 @@ Request.HTML = new Class({
 		response.tree = temp.childNodes;
 		response.elements = temp.getElements('*');
 		
-		if (options.filter) response.tree = response.elements.filterBy(options.filter);
+		if (options.filter) response.tree = response.elements.filter(options.filter);
 		if (options.update) $(options.update).empty().adopt(response.tree);
 		if (options.evalScripts) $exec(response.javascript);
 		

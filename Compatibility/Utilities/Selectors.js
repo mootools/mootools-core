@@ -13,19 +13,19 @@ Native.implement([Element, Document], {
 Elements.implement({
 
 	filterByTag: function(tag){
-		return this.filterBy(tag);
+		return this.filter(tag);
 	},
 
 	filterByClass: function(className){
-		return this.filterBy('.' + className);
+		return this.filter('.' + className);
 	},
 
 	filterById: function(id){
-		return this.filterBy('#' + id);
+		return this.filter('#' + id);
 	},
 
 	filterByAttribute: function(name, operator, value){
-		return this.filterBy('[' + name + (operator || '') + (value || '') + ']');
+		return this.filter('[' + name + (operator || '') + (value || '') + ']');
 	}
 
 });

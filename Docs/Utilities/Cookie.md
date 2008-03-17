@@ -7,10 +7,6 @@ Sets and accesses cookies.
 
 - Based on the functions by Peter-Paul Koch [QuirksMode][].
 
-### Properties:
-
-1. options - (*object*) An object to set the default behaviour of Cookie and its derivatives.
-
 ###	Options: {#Cookie-options}
 
 * domain   - (*string*: defaults to false) The domain the Cookie belongs to.

@@ -65,13 +65,6 @@ Accordion requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doc
 1. *toggler* - (element) The toggler for the Element being displayed.
 2. *element* - (element) The Element being displayed.
 
-#### Properties:
-
-1. togglers  - (*array*) The collection of Elements that are clicked to open sections of the Accordion.
-2. elements  - (*array*) The collection of Elements representing the sections that expand and collapse.
-3. container - (*element* or *boolean* false) An element that contains all the togglers and elements. The container is optional, so if not specified in the options this property is false.
-4. previous  - (*integer*) The current open section.
-
 ### Examples:
 
 	var myAccordion = new Accordion($$('.togglers'), $$('.elements'), {

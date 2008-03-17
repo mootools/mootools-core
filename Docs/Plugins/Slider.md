@@ -79,13 +79,6 @@ Slider Event: onTick {#Slider:onTick}
 
 - Slider originally uses the onTick event to set the style of the knob to a new position.
 
-### Properties:
-
-1. element - (*element*) The knob element for the slider.
-2. knob    - (*element*) The handle element for the slider.
-3. step    - (*integer*) The current location of the knob.
-4. drag    - (*object*) An instance of <Drag> used for the knob.
-
 ### Returns:
 
 * (*object*) A new Slider instance.

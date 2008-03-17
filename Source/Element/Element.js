@@ -120,9 +120,9 @@ var Elements = new Native({
 
 Elements.implement({
 
-	filterBy: function(filter){
+	filter: function(filter){
 		if (!filter) return this;
-		return new Elements(this.filter((typeof filter == 'string') ? function(item){
+		return new Elements(Array.filter(this, (typeof filter == 'string') ? function(item){
 			return item.match(filter);
 		} : filter));
 	}
