@@ -162,13 +162,15 @@ var Sortables = new Class({
 		this.fireEvent('onComplete', this.element);
 	},
 
-	serialize: function(index, modifier){
+	serialize: function(){
+		var params = Array.link(arguments, {modifier: Function.type, index: $defined});
 		var serial = this.lists.map(function(list){
-			return list.getChildren().map(modifier || function(element, index){
+			return list.getChildren().map(params.modifier || function(element){
 				return element.get('id');
 			}, this);
 		}, this);
-
+		
+		var index = params.index;
 		if (this.lists.length == 1) index = 0;
 		return $chk(index) && index >= 0 && index < this.lists.length ? serial[index] : serial;
 	}
