@@ -72,13 +72,19 @@ Fx.CSS = new Class({
 	//searches inside the page css to find the values for a selector
 
 	search: function(selector){
-		var to = {}, domain = document.domain;
+		var cache = Fx.CSS.Cache[selector];
+		if (cache) return cache;
+		var to = {};
 		Array.each(document.styleSheets, function(sheet, j){
 			var href = sheet.href;
-			if (href.match('://') && !href.match(domain)) return;
+			if (href && href.contains('://') && !href.contains(document.domain)) return;
 			var rules = sheet.rules || sheet.cssRules;
 			Array.each(rules, function(rule, i){
-				if (!rule.style || !rule.selectorText || !rule.selectorText.test('^' + selector + '$')) return;
+				if (!rule.style) return;
+				var selectorText = (rule.selectorText) ? rule.selectorText.replace(/^\w+/, function(m){
+					return m.toLowerCase();
+				}) : null;
+				if (!selectorText || !selectorText.test('^' + selector + '$')) return;
 				Element.Styles.each(function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = String(rule.style[style]);
@@ -86,10 +92,13 @@ Fx.CSS = new Class({
 				});
 			});
 		});
+		Fx.CSS.Cache[selector] = to;
 		return to;
 	}
 
 });
+
+Fx.CSS.Cache = {};
 
 Fx.CSS.Parsers = new Hash({
 
