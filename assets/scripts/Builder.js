@@ -50,7 +50,7 @@ var Builder = {
 			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Dimensions'],
-			'Utilities' : ['Selectors', 'DomReady'],
+			'Utilities' : ['Selectors', 'DomReady', 'JSON'],
 			'Fx'        : ['Fx'],
 			'Request'   : ['Request', 'Request.HTML'],
 			'Plugins'   : ['Fx.Scroll']

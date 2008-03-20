@@ -1,12 +1,28 @@
 var Docs = {
 
 	anchorsPath: '../Docs/index.html',
+	scriptsJson: '../scripts.json',
 
 	start: function(){
 		if (location.protocol == 'file:') Docs.local();
+		Docs.loadScripts();		
+	},
+
+	loadScripts: function(){
+		Docs.Scripts = new Hash();
+		new Request({ link: 'cancel', onSuccess: function(json){
+				var scripts = JSON.decode(json);
+				$each(scripts, function(files, dir) {
+					Docs.Scripts.set(dir, $H(files).getKeys());
+				});
+				Docs.process();
+			}
+		}).get(Docs.scriptsJson);
+	},
+
+	process: function(){
 		var menu = $('menu-wrapper'), elements = [], files;
 		var request = new Request({ link: 'cancel', onSuccess: Docs.update });
-
 		Docs.Scripts.each(function(scripts, folder){
 			var head = new Element('h2', { 'text': folder });
 			var list = new Element('ul', { 'class': 'folder' });
@@ -114,17 +130,11 @@ var Docs = {
 
 };
 
-Docs.Scripts = new Hash({
-	'Core':      ['Core', 'Browser'],
-	'Native':    ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
-	'Class':     ['Class', 'Class.Extras'],
-	'Element':   ['Element', 'Element.Dimensions', 'Element.Event', 'Element.Style'],
-	'Fx':        ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Slide', 'Fx.Scroll', 'Fx.Transitions'],
-	'Request':   ['Request', 'Request.HTML', 'Request.JSON'],
-	'Utilities': ['Selectors', 'JSON', 'Cookie', 'Swiff', 'Color', 'Group'],
-	'Drag':      ['Drag', 'Drag.Move'],
-	'Plugins':   ['Selectors.Children', 'Hash.Cookie', 'Sortables', 'Tips', 'SmoothScroll', 'Slider', 'Scroller', 'Assets', 'Fx.Elements', 'Accordion']
-});
+
+
+
+
+
 
 var ShowDown = function(text){
 	return new Showdown.converter().makeHtml(text);
