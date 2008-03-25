@@ -72,8 +72,7 @@ Fx.CSS = new Class({
 	//searches inside the page css to find the values for a selector
 
 	search: function(selector){
-		var cache = Fx.CSS.Cache[selector];
-		if (cache) return cache;
+		if (Fx.CSS.Cache[selector]) return Fx.CSS.Cache[selector];
 		var to = {};
 		Array.each(document.styleSheets, function(sheet, j){
 			var href = sheet.href;
@@ -92,8 +91,7 @@ Fx.CSS = new Class({
 				});
 			});
 		});
-		Fx.CSS.Cache[selector] = to;
-		return to;
+		return Fx.CSS.Cache[selector] = to;
 	}
 
 });

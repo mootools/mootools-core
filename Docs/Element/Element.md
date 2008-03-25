@@ -1347,6 +1347,55 @@ Removes numerous attributes from the Element.
 ##### Resulting HTML
 
 	<a></a>
+	
+
+Element Method: store {#Element:store}
+--------------------------------------------------------
+
+Stores an item in the Elements Storage, linked to this Element.
+
+
+### Syntax:
+
+	myElement.store(key, value);
+
+### Arguments:
+
+1. key - (*string*) The key you want to assign to the stored value.
+2. value - (*mixed*) Any value you want to store.
+
+### Returns:
+
+* (*element*) This Element.
+
+### Example:
+
+	$('element').store('someProperty', someValue);
+
+
+Element Method: retrieve {#Element:retrieve}
+--------------------------------------------------------
+
+Retrieves a value from the Elements storage
+
+
+### Syntax:
+
+	myElement.retrieve(key);
+
+### Arguments:
+
+1. key - (*string*) The key you want to retrieve from the storage.
+
+### Returns:
+
+* (*mixed*) The value linked to the key.
+
+### Example:
+
+	$('element').retrieve('someProperty'); // returns someValue (see example above)
+
+
 
 
 Hash: Element.Properties {#Element-Properties}

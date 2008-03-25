@@ -64,7 +64,7 @@ Fx.Slide = new Class({
 		var caseIn = [[margin, layout], [0, this.offset]];
 		var caseOut = [[margin, layout], [-this.offset, 0]];
 		var start;
-		switch(how){
+		switch (how){
 			case 'in': start = caseIn; break;
 			case 'out': start = caseOut; break;
 			case 'toggle': start = (this.wrapper['offset' + this.layout.capitalize()] == 0) ? caseIn : caseOut;
@@ -121,7 +121,7 @@ Element.implement({
 	slide: function(how, mode){
 		how = how || 'toggle';
 		var slide = this.get('slide'), toggle;
-		switch(how){
+		switch (how){
 			case 'hide': slide.hide(mode); break;
 			case 'show': slide.show(mode); break;
 			case 'toggle':

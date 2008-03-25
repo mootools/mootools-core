@@ -96,7 +96,8 @@ Executes a transition for any number of CSS properties in tandem.
 
 ### Arguments:
 
-1. properties - (*mixed*) An *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.  If only one value is given for any CSS property, the transition will be from the current value of that property to the value given.
+1. properties - (*mixed*) An *object* of key/value pairs of CSS attributes to change or a *string* representing a CSS selector which can be found within the CSS of the page.
+	If only one value is given for any CSS property, the transition will be from the current value of that property to the value given.
 
 ### Returns:
 

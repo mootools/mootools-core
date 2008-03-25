@@ -112,7 +112,7 @@ var Request = new Class({
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;
 
-		switch($type(data)){
+		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': case 'hash': data = Hash.toQueryString(data);
 		}
@@ -141,7 +141,7 @@ var Request = new Class({
 			if (!$try(function(){
 				this.xhr.setRequestHeader(key, value);
 				return true;
-			}.bind(this))) this.fireEvent('onException', [e, key, value]);
+			}.bind(this))) this.fireEvent('onException', [key, value]);
 		}, this);
 
 		this.fireEvent('onRequest');

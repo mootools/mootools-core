@@ -17,7 +17,6 @@ var Tips = new Class({
 		onHide: function(tip){
 			tip.setStyle('visibility', 'hidden');
 		},
-		maxTitleChars: 30,
 		showDelay: 100,
 		hideDelay: 100,
 		className: null,
