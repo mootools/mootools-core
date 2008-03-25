@@ -20,7 +20,7 @@ Element.implement({
 
 });
 
-Element.alias('dispose', 'remove').alias('getLast', 'getLastChild');
+Element.alias({'dispose': 'remove', 'getLast': 'getLastChild'});
 
 Element.implement({
 

@@ -51,16 +51,20 @@ var Native = function(options){
 		afterImplement.call(obj, name, method);
 		return obj;
 	};
-
+	
 	object.implement = function(a1, a2, a3){
 		if (typeof a1 == 'string') return add(this, a1, a2, a3);
 		for (var p in a1) add(this, p, a1[p], a2);
 		return this;
 	};
-
-	object.alias = function(existing, property, force){
-		existing = this.prototype[existing];
-		if (existing) add(this, property, existing, force);
+	
+	object.alias = function(a1, a2, a3){
+		if (typeof a1 == 'string'){
+			a1 = this.prototype[a1];
+			if (a1) add(this, a2, a1, a3);
+		} else {
+			for (var a in a1) this.alias(a, a1[a], a2);
+		}
 		return this;
 	};
 
@@ -82,6 +86,10 @@ Native.typize = function(object, family){
 	if (!object.type) object.type = function(item){
 		return ($type(item) === family);
 	};
+};
+
+Native.alias = function(objects, a1, a2, a3){
+	for (var i = 0, j = objects.length; i < j; i++) objects[i].alias(a1, a2, a3);
 };
 
 (function(objects){
@@ -139,6 +147,12 @@ function $unlink(object){
 		case 'object':
 			unlinked = {};
 			for (var p in object) unlinked[p] = $unlink(object[p]);
+		break;
+		case 'hash':
+			unlinked = {};
+			object.each(function(p, v){
+				unlinked[p] = $unlink(v);
+			});
 		break;
 		case 'array':
 			unlinked = [];

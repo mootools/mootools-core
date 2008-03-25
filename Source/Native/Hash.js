@@ -132,4 +132,4 @@ Hash.implement({
 
 });
 
-Hash.alias('keyOf', 'indexOf').alias('hasValue', 'contains');
+Hash.alias({keyOf: 'indexOf', hasValue: 'contains'});

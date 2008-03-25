@@ -83,9 +83,8 @@ var IFrame = new Native({
 				return iframe.contentWindow.location.host;
 			});
 			if (host && host == window.location.host){
-				iframe.window = iframe.contentWindow;
-				var win = new Window(iframe.window);
-				var doc = new Document(iframe.window.document);
+				var win = new Window(iframe.contentWindow);
+				var doc = new Document(iframe.contentWindow.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
@@ -595,6 +594,8 @@ Native.implement([Element, Window, Document], {
 
 });
 
+Native.alias([Element, Document], {getElement: 'find', getElements: 'search'});
+
 Element.Attributes = new Hash({
 	Props: {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'},
 	Bools: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'],
@@ -620,7 +621,7 @@ function memfree(item){
 		}
 		Element.dispose(item);
 	}
-	if (item.removeEvents) item.removeEvents();
+	if (item.uid && item.removeEvents) item.removeEvents();
 };
 
 window.addListener('unload', function(){
