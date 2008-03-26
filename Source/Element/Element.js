@@ -594,8 +594,6 @@ Native.implement([Element, Window, Document], {
 
 });
 
-Native.alias([Element, Document], {getElement: 'find', getElements: 'search'});
-
 Element.Attributes = new Hash({
 	Props: {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'},
 	Bools: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'],
