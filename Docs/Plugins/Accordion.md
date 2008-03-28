@@ -3,9 +3,10 @@ Class: Accordion {#Accordion}
 
 The Accordion class creates a group of Elements that are toggled when their handles are clicked. When one Element toggles into view, the others toggle out.
 
-### Note:
+### Notes:
 
-Accordion requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
+- Accordion requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
+- Accordion elements will have their paddings and borders removed in order to make the transition display correctly.  Best practice is to use the accordion elements as containers for elements that are styled exactly as you like.
 
 ### Extends:
 
@@ -17,7 +18,7 @@ Accordion requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doc
 
 ### Arguments:
 
-1. togglers - (*array*) The collection of Elements representing the Elements which will be clickable and trigger the opening of sections of the Accordion.
+1. togglers - (*array*) The collection of Elements which will be clickable and trigger the opening of sections of the Accordion.
 2. elements - (*array*) The collection of Elements the transitions will be applied to.
 3. options  - (*object*, optional) All the [Fx][] options in addition to options below.
 

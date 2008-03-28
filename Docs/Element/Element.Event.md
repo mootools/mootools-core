@@ -34,7 +34,9 @@ Attaches an event listener to a DOM element.
 
 ##### JavaScript
 
-	$('myElement').addEvent('click', function(){ alert('clicked!'); });
+	$('myElement').addEvent('click', function(){
+		alert('clicked!');
+	});
 
 ### Notes:
 
@@ -50,7 +52,7 @@ Attaches an event listener to a DOM element.
 Element Method: removeEvent {#Element:removeEvent}
 --------------------------------------------------
 
-Works as Element.addEvent, but instead removes the previously added event listener.
+Works as Element.addEvent, but instead removes the specified event listener.
 
 ###	Syntax:
 
@@ -71,24 +73,25 @@ Works as Element.addEvent, but instead removes the previously added event listen
 
 	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
 	$('myElement').addEvent('click', destroy);
-	//...
+	
+	// later
 	$('myElement').removeEvent('click', destroy);
 
 
 #### Examples with bind:
 
-	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
-	var destroy2 = destroy.bind($('anotherElement'));
-	$('myElement').addEvent('click', destroy2); // this now refers to another Element.
+	var destroy = function(){ alert('Boom: ' + this.id); }
+	var boundDestroy = destroy.bind($('anotherElement'));
+	$('myElement').addEvent('click', boundDestroy);
 
-	// later in the code
-	$('myElement').removeEvent('click', destroy); // DOES NOT WORK.
-	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // ALSO FAILS.
-	$('myElement').removeEvent('click', destroy2); // Finally, this works.
+	// later
+	$('myElement').removeEvent('click', destroy); // this won't remove the event.
+	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // this won't remove the event either.
+	$('myElement').removeEvent('click', boundDestroy); // this is the correct way to remove the event.
 
 ###	Notes:
 
-- When the function is added using [Function:bind][] or [Function:pass][], a new reference is created.  Therefor, removeEvent no longer works with the original function.
+- When the function is added using [Function:bind][] or [Function:pass][], etc, a new reference is created.  For removeEvent to work, you must pass a reference to the exact function to be removed.
 - This method is also attached to Document and Window.
 
 
@@ -96,7 +99,7 @@ Works as Element.addEvent, but instead removes the previously added event listen
 Element Method: addEvents {#Element:addEvents}
 ----------------------------------------------
 
-The same as [Element:addEvent](#Element:addEvent), but accepts an object and add multiple events at once.
+The same as [Element:addEvent](#Element:addEvent), but accepts an object to add multiple events at once.
 
 ###	Syntax:
 
@@ -114,10 +117,10 @@ The same as [Element:addEvent](#Element:addEvent), but accepts an object and add
 
 	$('myElement').addEvents({
 		'mouseover': function(){
-			alert('mouse over');
+			alert('mouseover');
 		},
 		'click': function(){
-			alert('clicked');
+			alert('click');
 		}
 	});
 
@@ -134,7 +137,7 @@ The same as [Element:addEvent](#Element:addEvent), but accepts an object and add
 Element Method: removeEvents {#Element:removeEvents}
 ----------------------------------------------------
 
-Removes all events of a certain type from an Element. If no argument is passed in, removes all events.
+Removes all events of a certain type from an Element. If no argument is passed, removes all events of all types.
 
 ###	Syntax:
 
@@ -142,7 +145,7 @@ Removes all events of a certain type from an Element. If no argument is passed i
 
 ###	Arguments:
 
-1. type - (*string*, optional) The event name (e.g. 'click'). If null, removes all events.
+1. type - (*string*, optional) The event name (e.g. 'click'). If undefined, removes all events.
 
 ###	Returns:
 
@@ -153,10 +156,10 @@ Removes all events of a certain type from an Element. If no argument is passed i
 	var myElement = $('myElement');
 	myElement.addEvents({
 		'mouseover': function(){
-			alert('mouse over');
+			alert('mouseover');
 		},
 		'click': function(){
-			alert('clicked');
+			alert('click');
 		}
 	});
 
@@ -249,7 +252,7 @@ The Element.Events.yourproperty (object) can have:
 		condition: function(event){ //and a function to perform additional checks.
 			return (event.shift == true); //this means the event is free to fire
 		}
-	}
+	};
 
 	$('myInput').addEvent('shiftclick', function(event){
 		log('the user clicked the left mouse button while holding the shift key');
@@ -265,7 +268,7 @@ The Element.Events.yourproperty (object) can have:
 
 #### Warning:
 
-If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event
+If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event.
 (highly unrecommended: use only when you know exactly what you're doing).
 
 Custom Events
@@ -273,7 +276,7 @@ Custom Events
 
 ### Event: mouseenter
 
-This event fires when the mouse enters the area of the dom Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover).
+This event fires when the mouse enters the area of the DOM Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover).
 
 #### Examples:
 
@@ -285,7 +288,7 @@ This event fires when the mouse enters the area of the dom Element and will not 
 
 ### Event: mouseleave
 
-This event fires when the mouse leaves the area of the dom Element and will not be fired if the mouse crosses over children of the Element (unlike mouseout).
+This event fires when the mouse leaves the area of the DOM Element and will not be fired if the mouse crosses over children of the Element (unlike mouseout).
 
 #### Examples:
 
