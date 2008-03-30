@@ -317,7 +317,7 @@ Element.implement({
 
 	wraps: function(el, where){
 		el = $(el, true);
-		return this.replaces(el).grab(el);
+		return this.replaces(el).grab(el, where);
 	},
 
 	grab: function(el, where){

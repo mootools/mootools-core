@@ -577,17 +577,17 @@ Works like [Element:grab](#Element:grab), but instead of moving the grabbed elem
 
 Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
 
-Inserts the passed element(s) inside the Element (that will become the parent).
+Inserts the passed element inside the Element (that will become the parent). The Element will also move to the passed element position.
 
 
 ### Syntax:
 	
-	myParent.wrap(el[, others]);
+	myParent.wrap(el[, where]);
 	
 ### Arguments:
 
 1. el - (*mixed*) The id of an element, an Element, or an array of elements.
-2. others - (*mixed*, optional) One or more additional Elements separated by a comma or as an array.
+2. where - (*string*, optional: default 'bottom') The place to insert the passed in element. Can be 'top' or 'bottom'.
 
 ### Returns:
 
