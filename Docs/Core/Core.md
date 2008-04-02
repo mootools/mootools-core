@@ -153,16 +153,16 @@ In myObject.extend = $extend, the first parameter will become myObject, and the 
 
 ### Syntax:
 
-	$extend(original[, extended]);
+	$extend(original, extended);
 
 ### Arguments:
 
 1. original - (*object*) The object to be extended.
-2. extended - (*object*, optional) The object whose properties will be copied to src.
+2. extended - (*object*) The object whose properties will be copied to src.
 
 ### Returns:
 
-* (*object*) The extended object.
+* (*object*) The first object passed in, extended.
 
 ### Examples:
 
@@ -179,14 +179,6 @@ In myObject.extend = $extend, the first parameter will become myObject, and the 
 	};
 	$extend(firstObj, secondObj);
 	//firstObj is now: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
-
-
-#### Without the Second Parameter:
-
-	var myFunction = function(){ ... };
-	myFunction.extend = $extend;
-	myFunction.extend(secondObj);
-	//myFunction now has the properties: 'age', 'sex', and 'lastName', each with its respective value.
 
 
 
