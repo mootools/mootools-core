@@ -90,7 +90,7 @@ Array.implement({
 		return this;
 	},
 
-	merge: function(array){
+	combine: function(array){
 		for (var i = 0, l = array.length; i < l; i++) this.include(array[i]);
 		return this;
 	},

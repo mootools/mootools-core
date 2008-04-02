@@ -28,7 +28,7 @@ Hash.implement({
 		return this;
 	},
 
-	merge: function(properties){
+	combine: function(properties){
 		Hash.each(properties, function(value, key){
 			Hash.include(this, key, value);
 		}, this);

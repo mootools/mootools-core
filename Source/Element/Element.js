@@ -604,7 +604,7 @@ Element.Attributes = new Hash({
 
 	var EAB = EA.Bools, EAC = EA.Camels;
 	EA.Bools = EAB = EAB.associate(EAB);
-	Hash.extend(Hash.merge(EA.Props, EAB), EAC.associate(EAC.map(function(v){
+	Hash.extend(Hash.combine(EA.Props, EAB), EAC.associate(EAC.map(function(v){
 		return v.toLowerCase();
 	})));
 	EA.erase('Camels');

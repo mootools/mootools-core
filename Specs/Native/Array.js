@@ -150,10 +150,10 @@ describe('Array.extend', {
 
 });
 
-describe('Array.merge', {
+describe('Array.combine', {
 
-	'should merge an array': function(){
-		var arr = [1,2,3,4].merge([1,2,3,4,5,6,7]);
+	'should combine an array': function(){
+		var arr = [1,2,3,4].combine([1,2,3,4,5,6,7]);
 		value_of(arr).should_be([1,2,3,4,5,6,7]);
 	}
 

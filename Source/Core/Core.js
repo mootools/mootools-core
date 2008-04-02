@@ -149,10 +149,7 @@ function $unlink(object){
 			for (var p in object) unlinked[p] = $unlink(object[p]);
 		break;
 		case 'hash':
-			unlinked = {};
-			object.each(function(p, v){
-				unlinked[p] = $unlink(v);
-			});
+			unlinked = $unlink(object.getClean());
 		break;
 		case 'array':
 			unlinked = [];

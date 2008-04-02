@@ -185,22 +185,22 @@ Extends this Hash with the key-value pairs from the object passed in.
 
 
 
-Hash Method: merge {#Hash:merge}
+Hash Method: combine {#Hash:combine}
 --------------------------------
 
-Merges this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.
+Combines this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.
 
 ### Syntax:
 
-	myHash.merge(properties);
+	myHash.combine(properties);
 
 ### Arguments:
 
-1. properties - (*object*) The object whose items should be merged into this Hash.
+1. properties - (*object*) The object whose items should be combined into this Hash.
 
 ### Returns:
 
-* (*hash*) This Hash, merged with the new key-value pairs.
+* (*hash*) This Hash, combined with the new key-value pairs.
 
 ### Examples:
 
@@ -213,7 +213,7 @@ Merges this Hash with the key-value pairs of the object passed in. Does not allo
 		'sex': 'male',
 		'lastName': 'Dorian'
 	};
-	hash.merge(properties);
+	hash.combine(properties);
 	//hash now holds an object containing: { 'name': 'John', 'lastName': 'Doe', 'age': '20', 'sex': 'male' };
 
 

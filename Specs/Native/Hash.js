@@ -134,16 +134,16 @@ describe('Hash.extend', {
 
 });
 
-describe('Hash.merge', {
+describe('Hash.combine', {
 
 	'should merge a Hash with an object': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		value_of(hash.merge({a:4,d:7,e:8})).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
+		value_of(hash.combine({a:4,d:7,e:8})).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
 	},
 
 	'should merge a Hash with another Hash': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		value_of(hash.merge(new Hash({a:4,d:7,e:8}))).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
+		value_of(hash.combine(new Hash({a:4,d:7,e:8}))).should_be(new Hash({a:1,b:2,c:3,d:7,e:8}));
 	}
 
 });

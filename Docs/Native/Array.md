@@ -439,27 +439,27 @@ Pushes the passed element into the array if it's not already present (case and t
 
 
 
-Array Method: merge {#Array:merge}
+Array Method: combine {#Array:combine}
 ----------------------------------
 
-Merges an array with all the items of another. Does not allow duplicates and is case and type sensitive.
+Combines an array with all the items of another. Does not allow duplicates and is case and type sensitive.
 
 ### Syntax:
 
-	myArray.merge(array);
+	myArray.combine(array);
 
 ### Arguments:
 
-1. array - (*array*) The array whose items should be merged into this array.
+1. array - (*array*) The array whose items should be combined into this array.
 
 ### Returns:
 
-* (*array*) This array merged with the new items.
+* (*array*) This array combined with the new items.
 
 ### Examples:
 
 	var animals = ['Cow', 'Pig', 'Dog'];
-	animals.merge(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat'];
+	animals.combine(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat'];
 
 
 

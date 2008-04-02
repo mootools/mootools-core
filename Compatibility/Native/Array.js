@@ -6,4 +6,4 @@ Array.implement({
 
 });
 
-Array.alias('erase', 'remove');
+Array.alias({erase: 'remove', combine: 'merge'});
