@@ -188,7 +188,7 @@ Extends this Hash with the key-value pairs from the object passed in.
 Hash Method: combine {#Hash:combine}
 --------------------------------
 
-Combines this Hash with the key-value pairs of the object passed in. Does not allow duplicates and is case and type sensitive.
+Combines this Hash with the key-value pairs of the object passed in. Does not allow duplicates (old values are **not** overwritten by new ones) and is case and type sensitive.
 
 ### Syntax:
 
@@ -209,6 +209,7 @@ Combines this Hash with the key-value pairs of the object passed in. Does not al
 		'lastName': 'Doe'
 	});
 	var properties = {
+		'name': 'Jane'
 		'age': '20',
 		'sex': 'male',
 		'lastName': 'Dorian'
