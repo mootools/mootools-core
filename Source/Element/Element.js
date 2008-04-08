@@ -35,7 +35,7 @@ Document.implement({
 
 	purge: function(){
 		var elements = this.getElementsByTagName('*');
-		for (var i = 0, l = elements.length; i < l; i++) memfree(elements[i]);
+		for (var i = 0, l = elements.length; i < l; i++) Element.freeMem(elements[i]);
 	}
 
 });
@@ -143,10 +143,10 @@ Elements.multi = function(property){
 
 Window.implement({
 
-	$: function(el, notrash){
+	$: function(el, nocash){
 		if (el && el.$family && el.uid) return el;
 		var type = $type(el);
-		return ($[type]) ? $[type](el, notrash, this.document) : null;
+		return ($[type]) ? $[type](el, nocash, this.document) : null;
 	},
 
 	$$: function(selector){
@@ -175,22 +175,22 @@ Window.implement({
 
 });
 
-$.string = function(id, notrash, doc){
+$.string = function(id, nocash, doc){
 	id = doc.getElementById(id);
-	return (id) ? $.element(id, notrash) : null;
+	return (id) ? $.element(id, nocash) : null;
 };
 
-$.element = function(el, notrash){
+$.element = function(el, nocash){
 	$uid(el);
-	if (!notrash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
+	if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
 		var proto = Element.Prototype;
 		for (var p in proto) el[p] = proto[p];
 	};
 	return el;
 };
 
-$.object = function(obj, notrash, doc){
-	if (obj.toElement) return $.element(obj.toElement(doc), notrash);
+$.object = function(obj, nocash, doc){
+	if (obj.toElement) return $.element(obj.toElement(doc), nocash);
 	return null;
 };
 
@@ -198,8 +198,8 @@ $.textnode = $.whitespace = $.window = $.document = $arguments(0);
 
 Native.implement([Element, Document], {
 
-	getElement: function(selector, notrash){
-		return $(this.getElements(selector, true)[0] || null, notrash);
+	getElement: function(selector, nocash){
+		return $(this.getElements(selector, true)[0] || null, nocash);
 	},
 
 	getElements: function(tags, nocash){
@@ -397,14 +397,13 @@ Element.implement({
 	empty: function(){
 		$A(this.childNodes).each(function(node){
 			Element.empty(node);
-			this.removeChild(node);
-			memfree(node);
+			Element.freeMem(node);
 		}, this);
 		return this;
 	},
 
 	destroy: function(){
-		memfree(this.empty().dispose());
+		Element.freeMem(this.empty());
 		return null;
 	},
 
@@ -600,6 +599,18 @@ Element.Attributes = new Hash({
 	Camels: ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap']
 });
 
+Element.freeMem = function(item){
+	if (item && !item.tagName) {
+		if (Browser.Engine.trident && (/object/i).test(item.tagName)){
+			for (var p in item){
+				if (typeof item[p] == 'function') item[p] = $empty;
+			}
+		}
+		if (item.uid && item.removeEvents) item.removeEvents();
+	}
+	Element.dispose(item);
+};
+
 (function(EA){
 
 	var EAB = EA.Bools, EAC = EA.Camels;
@@ -610,17 +621,6 @@ Element.Attributes = new Hash({
 	EA.erase('Camels');
 
 })(Element.Attributes);
-
-function memfree(item){
-	if (!item || !item.tagName) return;
-	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
-		for (var p in item){
-			if (typeof item[p] == 'function') item[p] = $empty;
-		}
-		Element.dispose(item);
-	}
-	if (item.uid && item.removeEvents) item.removeEvents();
-};
 
 window.addListener('unload', function(){
 	document.purge();
