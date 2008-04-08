@@ -600,7 +600,7 @@ Element.Attributes = new Hash({
 });
 
 Element.freeMem = function(item){
-	if (item && !item.tagName) {
+	if (item && item.tagName) {
 		if (Browser.Engine.trident && (/object/i).test(item.tagName)){
 			for (var p in item){
 				if (typeof item[p] == 'function') item[p] = $empty;
