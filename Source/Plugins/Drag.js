@@ -23,6 +23,7 @@ var Drag = new Class({
 		limit: false,
 		handle: false,
 		invert: false,
+		preventDefault: false,
 		modifiers: {x: 'left', y: 'top'}
 	},
 
@@ -60,6 +61,7 @@ var Drag = new Class({
 	},
 
 	start: function(event){
+		if (this.options.preventDefault) event.preventDefault();
 		this.fireEvent('onBeforeStart', this.element);
 		this.mouse.start = event.page;
 		var limit = this.options.limit;
@@ -82,6 +84,7 @@ var Drag = new Class({
 	},
 
 	check: function(event){
+		if (this.options.preventDefault) event.preventDefault();
 		var distance = Math.round(Math.sqrt(Math.pow(event.page.x - this.mouse.start.x, 2) + Math.pow(event.page.y - this.mouse.start.y, 2)));
 		if (distance > this.options.snap){
 			this.cancel();
@@ -94,6 +97,7 @@ var Drag = new Class({
 	},
 
 	drag: function(event){
+		if (this.options.preventDefault) event.preventDefault();
 		this.mouse.now = event.page;
 		for (var z in this.options.modifiers){
 			if (!this.options.modifiers[z]) continue;
