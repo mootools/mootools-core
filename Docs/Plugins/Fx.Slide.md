@@ -248,12 +248,11 @@ Slides this Element in view.
 
 ### Syntax:
 
-	myElement.slide([how, options]);
+	myElement.slide(how);
 
 ### Arguments:
 
 1. how     - (*string*, optional) Can be 'in', 'out', 'toggle', 'show' and 'hide'. Defaults to 'toggle'.
-2. options - (*object*, optional) The [Fx.Slide][] options parameter.
 
 ### Returns:
 
