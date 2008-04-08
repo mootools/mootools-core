@@ -45,11 +45,11 @@ var Tips = new Class({
 		$$(elements).each(function(element){
 			var title = element.retrieve('tip:title', element.get('title'));
 			var text = element.retrieve('tip:text', element.get('rel') || element.get('href'));
-			var enter = element.retrieve('tip:enter', this.elementEnter.bindWithEvent(this, element));
-			var leave = element.retrieve('tip:leave', this.elementLeave.bindWithEvent(this, element));
+			var enter = element.set('tip:enter', this.elementEnter.bindWithEvent(this, element));
+			var leave = element.set('tip:leave', this.elementLeave.bindWithEvent(this, element));
 			element.addEvents({mouseenter: enter, mouseleave: leave});
 			if (!this.options.fixed){
-				var move = element.retrieve('tip:move', this.elementMove.bindWithEvent(this, element));
+				var move = element.set('tip:move', this.elementMove.bindWithEvent(this, element));
 				element.addEvent('mousemove', move);
 			}
 			element.store('tip:native', element.get('title'));
@@ -71,17 +71,20 @@ var Tips = new Class({
 	},
 	
 	elementEnter: function(event, element){
-		this.container.empty();
+		$A(this.container.childNodes).each(Element.dispose);
+		
 		var title = element.retrieve('tip:title');
 		if (title){
 			this.titleElement = new Element('div', {'class': 'tip-title'}).inject(this.container);
 			this.fill(this.titleElement, title);
 		}
+		
 		var text = element.retrieve('tip:text');
 		if (text){
 			this.textElement = new Element('div', {'class': 'tip-text'}).inject(this.container);
 			this.fill(this.textElement, text);
 		}
+		
 		this.timer = $clear(this.timer);
 		this.timer = this.show.delay(this.options.showDelay, this);
 
