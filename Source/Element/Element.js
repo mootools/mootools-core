@@ -35,7 +35,7 @@ Document.implement({
 
 	purge: function(){
 		var elements = this.getElementsByTagName('*');
-		for (var i = 0, l = elements.length; i < l; i++) Element.freeMem(elements[i]);
+		for (var i = 0, l = elements.length; i < l; i++) Browser.freeMem(elements[i]);
 	}
 
 });
@@ -396,14 +396,15 @@ Element.implement({
 
 	empty: function(){
 		$A(this.childNodes).each(function(node){
+			Browser.freeMem(node);
 			Element.empty(node);
-			Element.freeMem(node);
+			Element.dispose(node);
 		}, this);
 		return this;
 	},
 
 	destroy: function(){
-		Element.freeMem(this.empty());
+		Browser.freeMem(this.empty().dispose());
 		return null;
 	},
 
@@ -599,16 +600,15 @@ Element.Attributes = new Hash({
 	Camels: ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap']
 });
 
-Element.freeMem = function(item){
-	if (item && item.tagName) {
-		if (Browser.Engine.trident && (/object/i).test(item.tagName)){
-			for (var p in item){
-				if (typeof item[p] == 'function') item[p] = $empty;
-			}
+Browser.freeMem = function(item){
+	if (!item) return;
+	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
+		for (var p in item){
+			if (typeof item[p] == 'function') item[p] = $empty;
 		}
-		if (item.uid && item.removeEvents) item.removeEvents();
+		Element.dispose(item);
 	}
-	Element.dispose(item);
+	if (item.uid && item.removeEvents) item.removeEvents();
 };
 
 (function(EA){
@@ -623,6 +623,7 @@ Element.freeMem = function(item){
 })(Element.Attributes);
 
 window.addListener('unload', function(){
+	window.removeListener(arguments.callee);
 	document.purge();
 	if (Browser.Engine.trident) CollectGarbage();
 });
