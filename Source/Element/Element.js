@@ -623,7 +623,7 @@ Browser.freeMem = function(item){
 })(Element.Attributes);
 
 window.addListener('unload', function(){
-	window.removeListener(arguments.callee);
+	window.removeListener('unload', arguments.callee);
 	document.purge();
 	if (Browser.Engine.trident) CollectGarbage();
 });
