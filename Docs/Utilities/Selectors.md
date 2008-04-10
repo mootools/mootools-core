@@ -10,12 +10,11 @@ Gets all the elements within an element that match the given selector.
 
 ### Syntax:
 
-	var myElements = myElement.getElements(selector[, nocash]);
+	var myElements = myElement.getElements(selector);
 
 ### Arguments:
 
 1. selector - (*string*) The CSS Selector to match.
-2. nocash   - (*boolean*, optional: defaults to false) If true, the found Elements are not extended.
 
 ### Returns:
 

@@ -176,7 +176,7 @@ function $merge(){
 
 function $pick(){
 	for (var i = 0, l = arguments.length; i < l; i++){
-		if ($defined(arguments[i])) return arguments[i];
+		if (arguments[i] != undefined) return arguments[i];
 	}
 	return null;
 };

@@ -58,7 +58,7 @@ Hash.implement({
 
 	include: function(key, value){
 		var k = this[key];
-		if (!$defined(k)) this[key] = value;
+		if (k == undefined) this[key] = value;
 		return this;
 	},
 
