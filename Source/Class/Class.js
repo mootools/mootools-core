@@ -17,8 +17,6 @@ var Class = new Native({
 		var klass = function(){
 			for (var property in this) this[property] = $unlink(this[property]);
 			
-			this.parent = null;
-			
 			for (var Property in Class.Mutators){
 				if (!this[Property]) continue;
 				Class.Mutators[Property](this, this[Property]);
@@ -63,15 +61,17 @@ Class.Mutators.Extends = function(self, klass){
 		var kp = klass[property];
 		var sp = self[property];
 		self[property] = (function(previous, current){
-			if ($defined(current) && previous != current){
+			if (current != undefined && previous != current){
 				var type = $type(current);
 				if (type != $type(previous)) return current;
 				switch (type){
 					case 'function':
 						return function(){
-							current.parent = this.parent = previous.bind(this);
-							var value = current.apply(this, arguments);
+							var previousParent = this.parent;
+							if (!current.parent) current.parent = previous.bind(this);
 							this.parent = current.parent;
+							var value = current.apply(this, arguments);
+							this.parent = previousParent;
 							return value;
 						};
 					case 'object': return $merge(previous, current);
