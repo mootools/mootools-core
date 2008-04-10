@@ -26,7 +26,7 @@ var Tips = new Class({
 
 	initialize: function(){
 		var params = Array.link(arguments, {options: Object.type, elements: $defined});
-		this.setOptions(params.options);
+		this.setOptions(params.options || null);
 		
 		this.tip = new Element('div').inject(document.body);
 		

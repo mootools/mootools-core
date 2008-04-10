@@ -57,20 +57,12 @@ Class.Mutators.Implements = function(self, klasses){
 
 Class.Mutators.Extends = function(self, klass){
 	
-	self.parent = function(){
-		return this.parent.caller.parent.apply(this, arguments);
-	};
+	var instance = new klass($empty), current;
 	
-	klass = new klass($empty);
-	
-	for (var property in klass) self[property] = (function(previous, current){
-			
+	for (var property in instance) self[property] = (function(previous, current){
 		if (current != undefined && previous != current){
-			
 			var type = $type(current), ptype = $type(previous);
-			
 			if (type != ptype) return current;
-			
 			switch (type){
 				case 'function':
 					return function(){
@@ -80,10 +72,12 @@ Class.Mutators.Extends = function(self, klass){
 				case 'object': return $merge(previous, current);
 				default: return current;
 			}
-
 		}
-		
 		return previous;
-		
-	})(klass[property], self[property]);
+	})(instance[property], (current = self[property]));
+	
+	self.parent = function(){
+		return arguments.callee.caller.parent.apply(this, arguments);
+	};
+
 };
