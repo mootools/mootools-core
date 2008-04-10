@@ -20,7 +20,7 @@ Fx.Slide = new Class({
 			if (this.open && Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
 		}, true);
 		this.element = this.subject = $(element);
-		arguments.callee.parent(options);
+		this.parent(options);
 		var wrapper = this.element.retrieve('wrapper');
 		this.wrapper = wrapper || new Element('div', {
 			styles: $extend(this.element.getStyles('margin', 'position'), {'overflow': 'hidden'})
@@ -69,7 +69,7 @@ Fx.Slide = new Class({
 			case 'out': start = caseOut; break;
 			case 'toggle': start = (this.wrapper['offset' + this.layout.capitalize()] == 0) ? caseIn : caseOut;
 		}
-		return arguments.callee.parent(start[0], start[1]);
+		return this.parent(start[0], start[1]);
 	},
 
 	slideIn: function(mode){

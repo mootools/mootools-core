@@ -16,7 +16,7 @@ Drag.Move = new Class({
 	},
 
 	initialize: function(element, options){
-		arguments.callee.parent(element, options);
+		this.parent(element, options);
 		this.droppables = $$(this.options.droppables);
 		this.container = $(this.options.container);
 		if (this.container && $type(this.container) != 'element') this.container = $(this.container.getDocument().body);
@@ -48,7 +48,7 @@ Drag.Move = new Class({
 
 			this.options.limit = {x: x, y: y};
 		}
-		arguments.callee.parent(event);
+		this.parent(event);
 	},
 
 	checkAgainst: function(el){
@@ -71,7 +71,7 @@ Drag.Move = new Class({
 	},
 
 	drag: function(event){
-		arguments.callee.parent(event);
+		this.parent(event);
 		if (this.droppables.length) this.checkDroppables();
 	},
 
@@ -79,7 +79,7 @@ Drag.Move = new Class({
 		this.checkDroppables();
 		this.fireEvent('onDrop', [this.element, this.overed]);
 		this.overed = null;
-		return arguments.callee.parent(event);
+		return this.parent(event);
 	}
 
 });

@@ -17,7 +17,7 @@ Fx.Scroll = new Class({
 
 	initialize: function(element, options){
 		this.element = this.subject = $(element);
-		arguments.callee.parent(options);
+		this.parent(options);
 		var cancel = this.cancel.bind(this, false);
 
 		if ($type(this.element) != 'element') this.element = $(this.element.getDocument().body);
@@ -57,7 +57,7 @@ Fx.Scroll = new Class({
 			else values[z] = scroll[z];
 			values[z] += this.options.offset[z];
 		}
-		return arguments.callee.parent([scroll.x, scroll.y], [values.x, values.y]);
+		return this.parent([scroll.x, scroll.y], [values.x, values.y]);
 	},
 
 	toTop: function(){

@@ -13,7 +13,7 @@ var SmoothScroll = new Class({
 	initialize: function(options, context){
 		context = context || document;
 		var doc = context.getDocument(), win = context.getWindow();
-		arguments.callee.parent(doc, options);
+		this.parent(doc, options);
 		this.links = (this.options.links) ? $$(this.options.links) : $$(doc.links);
 		var location = win.location.href.match(/^[^#]*/)[0] + '#';
 		this.links.each(function(link){

@@ -12,7 +12,7 @@ Fx.Morph = new Class({
 
 	initialize: function(element, options){
 		this.element = this.subject = $(element);
-		arguments.callee.parent(options);
+		this.parent(options);
 	},
 
 	set: function(now){
@@ -23,7 +23,7 @@ Fx.Morph = new Class({
 
 	compute: function(from, to, delta){
 		var now = {};
-		for (var p in from) now[p] = arguments.callee.parent(from[p], to[p], delta);
+		for (var p in from) now[p] = this.parent(from[p], to[p], delta);
 		return now;
 	},
 
@@ -36,7 +36,7 @@ Fx.Morph = new Class({
 			from[p] = parsed.from;
 			to[p] = parsed.to;
 		}
-		return arguments.callee.parent(from, to);
+		return this.parent(from, to);
 	}
 
 });

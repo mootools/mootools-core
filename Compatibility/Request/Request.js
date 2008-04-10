@@ -9,7 +9,7 @@ var XHR = new Class({
 	},
 
 	initialize: function(url, options){
-		arguments.callee.parent(options);
+		this.parent(options);
 		this.url = url;
 	},
 
@@ -19,7 +19,7 @@ var XHR = new Class({
 
 	send: function(url, data){
 		if (!this.check(url, data)) return this;
-		return arguments.callee.parent({url: url, data: data});
+		return this.parent({url: url, data: data});
 	},
 
 	success: function(text, xml){

@@ -7,14 +7,14 @@ JSON.Remote = new Class({
 	Extends: Request.JSON,
 
 	initialize: function(url, options){
-		arguments.callee.parent(options);
+		this.parent(options);
 		this.onComplete = $empty;
 		this.url = url;
 	},
 
 	send: function(data){
 		if (!this.check(data)) return this;
-		return arguments.callee.parent({url: this.url, data: {json: Json.encode(data)}});
+		return this.parent({url: this.url, data: {json: Json.encode(data)}});
 	},
 	
 	failure: function(){

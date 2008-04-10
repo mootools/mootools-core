@@ -61,7 +61,7 @@ describe('Class.constructor', {
 		var Cat = new Class({ Extends: Animal,
 
 			initialize: function(name, color){
-				arguments.callee.parent(name);
+				this.parent(name);
 				this.color = color;
 				this.ferocious = false;
 			},

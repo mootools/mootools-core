@@ -12,7 +12,7 @@ Fx.Tween = new Class({
 
 	initialize: function(element, options){
 		this.element = this.subject = $(element);
-		arguments.callee.parent(options);
+		this.parent(options);
 	},
 
 	set: function(property, now){
@@ -29,7 +29,7 @@ Fx.Tween = new Class({
 		var args = Array.flatten(arguments);
 		this.property = this.options.property || args.shift();
 		var parsed = this.prepare(this.element, this.property, args);
-		return arguments.callee.parent(parsed.from, parsed.to);
+		return this.parent(parsed.from, parsed.to);
 	}
 
 });

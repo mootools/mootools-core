@@ -12,14 +12,14 @@ Fx.Elements = new Class({
 
 	initialize: function(elements, options){
 		this.elements = this.subject = $$(elements);
-		arguments.callee.parent(options);
+		this.parent(options);
 	},
 
 	compute: function(from, to, delta){
 		var now = {};
 		for (var i in from){
 			var iFrom = from[i], iTo = to[i], iNow = now[i] = {};
-			for (var p in iFrom) iNow[p] = arguments.callee.parent(iFrom[p], iTo[p], delta);
+			for (var p in iFrom) iNow[p] = this.parent(iFrom[p], iTo[p], delta);
 		}
 		return now;
 	},
@@ -43,7 +43,7 @@ Fx.Elements = new Class({
 				iTo[p] = parsed.to;
 			}
 		}
-		return arguments.callee.parent(from, to);
+		return this.parent(from, to);
 	}
 
 });

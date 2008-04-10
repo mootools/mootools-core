@@ -56,29 +56,34 @@ Class.Mutators.Implements = function(self, klasses){
 };
 
 Class.Mutators.Extends = function(self, klass){
+	
+	self.parent = function(){
+		return this.parent.caller.parent.apply(this, arguments);
+	};
+	
 	klass = new klass($empty);
-	for (var property in klass){
-		var kp = klass[property];
-		var sp = self[property];
-		self[property] = (function(previous, current){
-			if (current != undefined && previous != current){
-				var type = $type(current);
-				if (type != $type(previous)) return current;
-				switch (type){
-					case 'function':
-						return function(){
-							var previousParent = this.parent;
-							if (!current.parent) current.parent = previous.bind(this);
-							this.parent = current.parent;
-							var value = current.apply(this, arguments);
-							this.parent = previousParent;
-							return value;
-						};
-					case 'object': return $merge(previous, current);
-					default: return current;
-				}
+	
+	for (var property in klass) self[property] = (function(previous, current){
+			
+		if (current != undefined && previous != current){
+			
+			var type = $type(current), ptype = $type(previous);
+			
+			if (type != ptype) return current;
+			
+			switch (type){
+				case 'function':
+					return function(){
+						if (!current.parent) current.parent = previous.bind(this);
+						return current.apply(this, arguments);
+					};
+				case 'object': return $merge(previous, current);
+				default: return current;
 			}
-			return previous;
-		})(kp, sp);
-	}
+
+		}
+		
+		return previous;
+		
+	})(klass[property], self[property]);
 };
