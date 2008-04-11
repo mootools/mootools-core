@@ -15,18 +15,20 @@ var Class = new Native({
 		properties = properties || {};
 
 		var klass = function(){
-			for (var property in this) this[property] = $unlink(this[property]);
 			
-			for (var Property in Class.Mutators){
-				if (!this[Property]) continue;
-				Class.Mutators[Property](this, this[Property]);
-				delete this[Property];
+			for (var key in this) this[key] = $unlink(this[key]);
+			
+			for (var mutator in Class.Mutators){
+				if (!this[mutator]) continue;
+				Class.Mutators[mutator](this, this[mutator]);
+				delete this[mutator];
 			}
 
 			this.constructor = klass;
 
 			var self = (arguments[0] !== $empty && this.initialize) ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
+			
 			return self;
 		};
 
@@ -59,14 +61,14 @@ Class.Mutators.Extends = function(self, klass){
 	
 	var instance = new klass($empty), current;
 	
-	for (var property in instance) self[property] = (function(previous, current){
+	for (var key in instance) self[key] = (function(previous, current){
 		if (current != undefined && previous != current){
 			var type = $type(current), ptype = $type(previous);
 			if (type != ptype) return current;
 			switch (type){
 				case 'function':
 					return function(){
-						if (!current.parent) current.parent = previous.bind(this);
+						current.parent = previous.bind(this);
 						return current.apply(this, arguments);
 					};
 				case 'object': return $merge(previous, current);
@@ -74,7 +76,7 @@ Class.Mutators.Extends = function(self, klass){
 			}
 		}
 		return previous;
-	})(instance[property], (current = self[property]));
+	})(instance[key], (current = self[key]));
 	
 	self.parent = function(){
 		return arguments.callee.caller.parent.apply(this, arguments);
