@@ -137,7 +137,7 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 #### Syntax:
 
-	el.get('tween', property[, options]);
+	el.get('tween', [options]);
 
 #### Arguments:
 
@@ -150,7 +150,7 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 #### Examples:
 
-	el.get('tween', 'opacity', {duration: 'long'}).start(0);
+	el.get('tween', {property: 'opacity', duration: 'long'}).start(0);
 
 ### Notes:
 
