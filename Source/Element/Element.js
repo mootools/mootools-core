@@ -409,9 +409,9 @@ Element.implement({
 	},
 
 	getSelected: function(){
-		return $A(this.options).filter(function(option){
+		return new Elements($A(this.options).filter(function(option){
 			return option.selected;
-		});
+		}));
 	},
 
 	toQueryString: function(){
