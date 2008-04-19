@@ -116,12 +116,8 @@ Fx.CSS.Parsers = new Hash({
 	},
 
 	Number: {
-		parse: function(value){
-			return parseFloat(value);
-		},
-		compute: function(from, to, delta){
-			return Fx.compute(from, to, delta);
-		},
+		parse: parseFloat,
+		compute: Fx.compute,
 		serve: function(value, unit){
 			return (unit) ? value + unit : value;
 		}

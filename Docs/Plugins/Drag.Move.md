@@ -45,16 +45,16 @@ All the base Drag options, plus:
 		droppables: '.droppable',
 		
 		onDrop: function(element, droppable){
-			if (!droppable) console.log(element + ' dropped on nothing');
-			else console.log(element + ' dropped on ' + droppable);
-		}
+			if (!droppable) console.log(element, ' dropped on nothing');
+			else console.log(element, 'dropped on', droppable);
+		},
 		
 		onEnter: function(element, droppable){
-			console.log(element + ' entered ' + droppable);
-		}
+			console.log(element, 'entered', droppable);
+		},
 		
 		onLeave: function(element, droppable){
-			console.log(element + ' left ' + droppable);
+			console.log(element, 'left', droppable);
 		}
 		
 	});
