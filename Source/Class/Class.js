@@ -89,7 +89,7 @@ Class.Mutators.Extends = function(self, klass){
 				
 				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
 					return 'arguments.callee._parent_.call(this' + (close || ', ');
-				}).replace(/(\d+)\.([A-Za-z_])/, '($1).$2') + ')');
+				}).replace(/(\d+)\.([A-Za-z_])/g, '($1).$2') + ')');
 				
 				// end "opera" code
 			
