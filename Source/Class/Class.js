@@ -86,8 +86,8 @@ Class.Mutators.Extends = function(self, klass){
 				// if future opera versions will support function.caller, this code wont be executed anymore.
 				// this code will be only executed if the current browser does not support function.caller (only opera).
 				
-				if (!arguments.callee.caller) self[key] = eval('(' + current.toString().replace(/\bthis\.parent\((.*)\)/g, function(full, args){
-					return 'arguments.callee._parent_.call(' + ((args) ? 'this, ' + args : 'this') + ')';
+				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
+					return 'arguments.callee._parent_.call(this' + (close || ', ');
 				}) + ')');
 				
 				//end "opera" code
