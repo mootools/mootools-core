@@ -21,6 +21,7 @@ var Class = new Native({
 			for (var mutator in Class.Mutators){
 				if (!this[mutator]) continue;
 				Class.Mutators[mutator](this, this[mutator]);
+				delete this[mutator];
 			}
 
 			this.constructor = klass;
@@ -62,6 +63,9 @@ Class.Mutators.Extends = function(self, klass){
 	
 	var instance = new klass($empty);
 	
+	delete instance.parent;
+	delete instance.parentOf;
+	
 	for (var key in instance){
 
 		var current = self[key], previous = instance[key];
@@ -76,7 +80,20 @@ Class.Mutators.Extends = function(self, klass){
 		if (ctype != ptype) continue;
 		
 		switch (ctype){
-			case 'function': self[key]._parent_ = previous; break;
+			case 'function': 
+			
+				// opera does not support function.caller, so we replace the function code with brute force. Not pretty, but its just for opera.
+				// if future opera versions will support function.caller, this code wont be executed anymore.
+				// this code will be only executed if the current browser does not support function.caller (only opera).
+				
+				if (!arguments.callee.caller) self[key] = eval('(' + current.toString().replace(/\bthis\.parent\((.*)\)/g, function(full, args){
+					return 'arguments.callee._parent_.call(' + ((args) ? 'this, ' + args : 'this') + ')';
+				}) + ')');
+				
+				//end "opera" code
+			
+				self[key]._parent_ = previous;
+			break;
 			case 'object': self[key] = $merge(previous, current);
 		}
 		
@@ -84,6 +101,10 @@ Class.Mutators.Extends = function(self, klass){
 	
 	self.parent = function(){
 		return arguments.callee.caller._parent_.apply(this, arguments);
+	};
+	
+	self.parentOf = function(descendant){
+		return descendant._parent_.apply(this, Array.slice(arguments, 1));
 	};
 
 };

@@ -33,7 +33,7 @@ Fx.Elements = new Class({
 	},
 
 	start: function(obj){
-		if (!this.check(obj)) return this;
+		if (!this.check(arguments.callee, obj)) return this;
 		var from = {}, to = {};
 		for (var i in obj){
 			var iProps = obj[i], iFrom = from[i] = {}, iTo = to[i] = {};

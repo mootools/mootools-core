@@ -57,7 +57,7 @@ Fx.Slide = new Class({
 	},
 
 	start: function(how, mode){
-		if (!this.check(how, mode)) return this;
+		if (!this.check(arguments.callee, how, mode)) return this;
 		this[mode || this.options.mode]();
 		var margin = this.element.getStyle(this.margin).toInt();
 		var layout = this.wrapper.getStyle(this.layout).toInt();

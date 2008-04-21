@@ -52,17 +52,17 @@ var Fx = new Class({
 		return Fx.compute(from, to, delta);
 	},
 
-	check: function(){
+	check: function(caller){
 		if (!this.timer) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(arguments.callee.caller.bind(this, arguments)); return false;
+			case 'chain': this.chain(caller.bind(this, Array.slice(arguments, 1))); return false;
 		}
 		return false;
 	},
 
 	start: function(from, to){
-		if (!this.check(from, to)) return this;
+		if (!this.check(arguments.callee, from, to)) return this;
 		this.from = from;
 		this.to = to;
 		this.time = 0;

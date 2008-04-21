@@ -92,17 +92,17 @@ var Request = new Class({
 		}.bind(this));
 	},
 
-	check: function(){
+	check: function(caller){
 		if (!this.running) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(arguments.callee.caller.bind(this, arguments)); return false;
+			case 'chain': this.chain(caller.bind(this, Array.slice(arguments, 1))); return false;
 		}
 		return false;
 	},
 
 	send: function(options){
-		if (!this.check(options)) return this;
+		if (!this.check(arguments.callee, options)) return this;
 		this.running = true;
 
 		var type = $type(options);
