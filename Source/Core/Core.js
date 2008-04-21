@@ -20,7 +20,7 @@ var MooTools = {
 	'version': '1.2dev',
 	'build': '%build%'
 };
-
+      
 var Native = function(options){
 	options = options || {};
 
