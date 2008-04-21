@@ -85,12 +85,13 @@ Class.Mutators.Extends = function(self, klass){
 				// opera does not support function.caller, so we replace the function code with brute force. Not pretty, but its just for opera.
 				// if future opera versions will support function.caller, this code wont be executed anymore.
 				// this code will be only executed if the current browser does not support function.caller (only opera).
+				// there is also a fix for an opera bug where in the function string, parentheses around numbers are ignored, and an error is thrown.
 				
 				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
 					return 'arguments.callee._parent_.call(this' + (close || ', ');
-				}) + ')');
+				}).replace(/(\d+)\.([A-Za-z_])/, '($1).$2') + ')');
 				
-				//end "opera" code
+				// end "opera" code
 			
 				self[key]._parent_ = previous;
 			break;
