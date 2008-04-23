@@ -1,0 +1,11 @@
+h3.section {
+	margin-top: 1em;
+}
+
+#vertical_slide, #horizontal_slide {
+	background: #222;
+	color: #fff;
+	padding: 10px;
+	margin: 20px;
+	border: 10px solid pink;
+}

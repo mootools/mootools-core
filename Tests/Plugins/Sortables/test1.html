@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Sortables Test 1</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="../../../assets/styles/tests.css" />
+	<script type="text/javascript" src="../../../assets/scripts/Builder.js"></script>
+	<script type="text/javascript">Builder.initialize('../../../');</script>
+	<script type="text/javascript">
+		window.addEvent('domready', function(){
+			new Sortables('list-1');
+			
+			new Sortables('list-2', {
+				opacity: 0.3
+			});
+			
+			new Sortables('list-3', {
+				clone: true,
+				opacity: 0.3
+			});
+			
+			new Sortables('list-4', {
+				clone: true,
+				revert: true,
+				opacity: 0.3
+			});
+			
+			new Sortables('list-5', {
+				opacity: 0,
+				constrain: true,
+				clone: function(event, element, list){
+					return new Element('li', {
+						'text': 'sort me',
+						'class': 'clone',
+						'styles': {
+							'width': element.getStyle('width')
+						}
+					}).inject(list).position(element.getPosition(element.offsetParent));
+				}
+			});
+		});
+	</script>
+	<style type="text/css" media="screen">
+		#lists { margin:0px auto; width:800px; }
+		ul { margin:50px; float:left; position:relative; }
+		li.clone { position:absolute; color:#fff; background-color:#111; margin:0px; }
+	</style>
+</head>
+<body>
+	<div id="lists">
+		<ul id="list-1">
+			<li id="item-1-0">item 1-0</li>
+			<li id="item-1-1">item 1-1</li>
+			<li id="item-1-2">item 1-2</li>
+			<li id="item-1-3">item 1-3</li>
+			<li id="item-1-4">item 1-4</li>
+			<li id="item-1-5">item 1-5</li>
+			<li id="item-1-6">item 1-6</li>
+			<li id="item-1-7">item 1-7</li>
+			<li id="item-1-8">item 1-8</li>
+			<li id="item-1-9">item 1-9</li>
+		</ul>
+		<ul id="list-2">
+			<li id="item-2-0">item 2-0</li>
+			<li id="item-2-1">item 2-1</li>
+			<li id="item-2-2">item 2-2</li>
+			<li id="item-2-3">item 2-3</li>
+			<li id="item-2-4">item 2-4</li>
+			<li id="item-2-5">item 2-5</li>
+			<li id="item-2-6">item 2-6</li>
+			<li id="item-2-7">item 2-7</li>
+			<li id="item-2-8">item 2-8</li>
+			<li id="item-2-9">item 2-9</li>
+		</ul>
+		<ul id="list-3">
+			<li id="item-3-0">item 3-0</li>
+			<li id="item-3-1">item 3-1</li>
+			<li id="item-3-2">item 3-2</li>
+			<li id="item-3-3">item 3-3</li>
+			<li id="item-3-4">item 3-4</li>
+			<li id="item-3-5">item 3-5</li>
+			<li id="item-3-6">item 3-6</li>
+			<li id="item-3-7">item 3-7</li>
+			<li id="item-3-8">item 3-8</li>
+			<li id="item-3-9">item 3-9</li>
+		</ul>
+		<ul id="list-4">
+			<li id="item-4-0">item 4-0</li>
+			<li id="item-4-1">item 4-1</li>
+			<li id="item-4-2">item 4-2</li>
+			<li id="item-4-3">item 4-3</li>
+			<li id="item-4-4">item 4-4</li>
+			<li id="item-4-5">item 4-5</li>
+			<li id="item-4-6">item 4-6</li>
+			<li id="item-4-7">item 4-7</li>
+			<li id="item-4-8">item 4-8</li>
+			<li id="item-4-9">item 4-9</li>
+		</ul>
+		<ul id="list-5">
+			<li id="item-5-0">item 5-0</li>
+			<li id="item-5-1">item 5-1</li>
+			<li id="item-5-2">item 5-2</li>
+			<li id="item-5-3">item 5-3</li>
+			<li id="item-5-4">item 5-4</li>
+			<li id="item-5-5">item 5-5</li>
+			<li id="item-5-6">item 5-6</li>
+			<li id="item-5-7">item 5-7</li>
+			<li id="item-5-8">item 5-8</li>
+			<li id="item-5-9">item 5-9</li>
+		</ul>
+	</div>
+</body>
+</html>

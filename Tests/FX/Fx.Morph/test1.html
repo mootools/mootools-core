@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>test1</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="../../../assets/styles/tests.css" />
+	<script type="text/javascript" src="../../../assets/scripts/Builder.js"></script>
+	<script type="text/javascript">Builder.initialize('../../../');</script>
+	<script type="text/javascript" charset="utf-8">
+		window.addEvent('domready', function(){
+			var test = $('test');
+			$('link-1').addEvent('click', function(){ test.morph('.someclass'); });
+			$('link-2').addEvent('click', function(){ test.morph('.someClass'); });
+			$('link-3').addEvent('click', function(){ test.morph('.some-class'); });
+		});
+	</script>
+	<style type="text/css" media="screen">
+		body { padding:50px; }
+		#test { margin-top:50px; }
+		li { cursor:pointer; }
+		.someclass { color:#f00; }
+		.someClass { color:#0f0; }
+		.some-class { color:#00f; }
+	</style>
+</head>
+<body>
+	<ul>
+		<li id="link-1">.someclass</li>
+		<li id="link-2">.someClass</li>
+		<li id="link-3">.some-class</li>
+	</ul>
+	<div id="test">This is the test div</div>
+</body>
+</html>

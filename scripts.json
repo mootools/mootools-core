@@ -1,0 +1,246 @@
+{
+
+	"Core": {
+
+		"Core": {
+			"deps": ["Core"],
+			"desc": "The core of MooTools, contains all the base functions and the Native and Hash implementations. Required by all the other scripts."
+		},
+
+		"Browser": {
+			"deps": ["Core"],
+			"desc": "The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash."
+		}
+
+	},
+
+	"Native": {
+
+		"Array": {
+			"deps": ["Core"],
+			"desc": "Contains Array Prototypes like copy, each, contains, and remove."
+		},
+
+		"Function": {
+			"deps": ["Core"],
+			"desc": "Contains Function Prototypes like create, bind, pass, and delay."
+		},
+
+		"Number": {
+			"deps": ["Core"],
+			"desc": "Contains Number Prototypes like limit, round, times, and ceil."
+		},
+
+		"String": {
+			"deps": ["Core"],
+			"desc": "Contains String Prototypes like camelCase, capitalize, test, and toInt."
+		},
+
+		"Hash": {
+			"deps": ["Core"],
+			"desc": "Contains Hash Prototypes. Provides a means for overcoming the JavaScript practical impossibility of extending native Objects."
+		},
+		
+		"Event": {
+			"deps": ["Browser", "Array", "Function", "Number", "String", "Hash"],
+			"desc": "Contains the Event Class, to make the event object Crossbrowser."
+		}
+
+	},
+
+	"Class": {
+
+		"Class": {
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "Contains the Class Function for easily creating, extending, and implementing reusable Classes."
+		},
+
+		"Class.Extras": {
+			"deps": ["Class"],
+			"desc": "Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks."
+		}
+
+	},
+
+	"Element": {
+
+		"Element": {
+			"deps": ["Browser", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "One of the most important items in MooTools. Contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements."
+		},
+
+		"Element.Event": {
+			"deps": ["Element", "Event"],
+			"desc": "Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events."
+		},
+
+		"Element.Style": {
+			"deps": ["Element"],
+			"desc": "Contains methods for interacting with the styles of Elements in a fashionable way."
+		},
+		
+		"Element.Dimensions": {
+			"deps": ["Element"],
+			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the window object."
+		}
+
+	},
+
+	
+	"Utilities": {
+		
+		"Selectors": {
+			"deps": ["Element"],
+			"desc": "Adds advanced CSS-style querying capabilities for targeting HTML Elements. Includes pseudo selectors."
+		},
+		
+		"DomReady": {
+			"deps": ["Element.Event"],
+			"desc": "Contains the custom event domready."
+		},
+
+		"JSON": {
+			"deps": ["Array", "String", "Function", "Number", "Hash"],
+			"desc": "JSON encoder and decoder."
+		},
+
+		"Cookie": {
+			"deps": ["Browser", "Class", "Class.Extras"],
+			"desc": "Class for creating, reading, and deleting browser Cookies."
+		},
+		
+		"Swiff": {
+			"deps": ["Element.Event"],
+			"desc": "Wrapper for embedding SWF movies. Supports External Interface Communication."
+		}
+
+	},
+
+	"Fx": {
+
+		"Fx": {
+			"deps": ["Class.Extras"],
+			"desc": "Contains the basic animation logic to be extended by all other Fx Classes."
+		},
+
+		"Fx.CSS": {
+			"deps": ["Fx", "Element.Style"],
+			"desc": "Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements."
+		},
+
+		"Fx.Tween": {
+			"deps": ["Fx.CSS"],
+			"desc": "Formerly Fx.Style, effect to transition any CSS property for an element."
+		},
+
+		"Fx.Morph": {
+			"deps": ["Fx.CSS"],
+			"desc": "Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules."
+		},
+
+		"Fx.Transitions": {
+			"deps": ["Fx"],
+			"desc": "Contains a set of advanced transitions to be used with any of the Fx Classes."
+		}
+
+	},
+
+	"Request": {
+
+		"Request": {
+			"deps": ["Class.Extras"],
+			"desc": "Powerful all purpose Request Class. Uses XMLHTTPRequest."
+		},
+
+		"Request.HTML": {
+			"deps": ["Request", "Element"],
+			"desc": "Extends the basic Request Class with additional methods for interacting with HTML responses."
+		},
+
+		"Request.JSON": {
+			"deps": ["Request", "JSON"],
+			"desc": "Extends the basic Request Class with additional methods for sending and receiving JSON data."
+		}
+
+	},
+
+	"Plugins": {
+		
+		"Fx.Slide": {
+			"deps": ["Fx", "Element.Style"],
+			"desc": "Effect to slide an element in and out of view."
+		},
+
+		"Fx.Scroll": {
+			"deps": ["Fx", "Element.Event", "Element.Dimensions"],
+			"desc": "Effect to smoothly scroll any element, including the window."
+		},
+		
+		"Fx.Elements": {
+			"deps": ["Fx.CSS"],
+			"desc": "Effect to change any number of CSS properties of any number of Elements."
+		},
+		
+		"Drag": {
+			"deps": ["Class.Extras", "Element.Event", "Element.Style"],
+			"desc": "The base Drag Class. Can be used to drag and resize Elements using mouse events."
+		},
+
+		"Drag.Move": {
+			"deps": ["Drag", "Element.Dimensions"],
+			"desc": "A Drag extension that provides support for the constraining of draggables to containers and droppables."
+		},
+		
+		"Color": {
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+			"desc": "Class for creating and manipulating colors in JavaScript. Supports HSB -> RGB Conversions and vice versa."
+		},
+
+		"Group": {
+			"deps": ["Class.Extras"],
+			"desc": "Class for monitoring collections of events."
+		},
+
+		"Hash.Cookie": {
+			"deps": ["Class.Extras", "Cookie", "JSON"],
+			"desc": "Class for creating, reading, and deleting browser Cookies in JSON format."
+		},
+
+		"Sortables": {
+			"deps": ["Drag.Move"],
+			"desc": "Class for creating a drag and drop sorting interface for lists of items."
+		},
+		
+		"Tips": {
+			"deps": ["Class.Extras", "Element.Event", "Element.Style", "Element.Dimensions"],
+			"desc": "Class for creating nice tooltips that follow the mouse cursor when hovering over an element."
+		},
+
+		"SmoothScroll": {
+			"deps": ["Fx.Scroll"],
+			"desc": "Class for creating a smooth scrolling effect to all internal links on the page."
+		},
+
+		"Slider": {
+			"deps": ["Drag", "Element.Dimensions"],
+			"desc": "Class for creating horizontal and vertical slider controls."
+		},
+
+		"Scroller": {
+			"deps": ["Class.Extras", "Element.Event", "Element.Dimensions"],
+			"desc": "Class which scrolls the contents of any Element (including the window) when the mouse reaches the Element's boundaries."
+		},
+
+		"Assets": {
+			"deps": ["Element.Event"],
+			"desc": "Provides methods to dynamically load JavaScript, CSS, and Image files into the document."
+		},
+
+		"Accordion": {
+			"deps": ["Fx.Elements", "Element.Event"],
+			"desc": "An Fx.Elements extension which allows you to easily create accordion type controls."
+		}
+
+	}
+
+}

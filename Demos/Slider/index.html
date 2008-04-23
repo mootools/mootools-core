@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="demo.css" type="text/css" />
+	<script type="text/javascript" src="../mootools.js"></script>
+	<script type="text/javascript" src="demo.js"></script>
+	<title>Slider Demo</title>
+</head>
+<body>
+	<h1>Slider</h1>
+	<h2>Introduction</h2>
+	<p>
+		The Slider-Plugin allows you to drag&amp;drop a knob inside an element to set
+		a value within a certain range.
+	</p>
+	<div id="myElement" class="slider">
+		<div class="knob">
+		</div>
+	</div>
+	<div id="fontSize">
+		Change the value, to change the fontsize.
+	</div>
+	<br/>
+	<br/>
+	<div class="help">
+		<strong>Why?</strong> This is a nice User-Interface-Element to not just let the user set a value
+		by typing into an input field but limiting the range without further needs to check
+		the user input (on clientside). With callbacks you can manipulate anything after changing the value.
+	</div>
+	<h2>Advanced Example</h2>
+	<p>
+		With the Slider it is damn easy to create stuff like an RGB-Color Selector which actually looks good.
+	</p>
+	<div id="red" class="slider advanced">
+		<div class="knob">
+		</div>
+	</div>
+	<div id="green" class="slider advanced">
+		<div class="knob">
+		</div>
+	</div>
+	<div id="blue" class="slider advanced">
+		<div class="knob">
+		</div>
+	</div>
+	<span class="b">Selected color: </span>
+	<span id="setColor"></span>
+</body>
+</html>

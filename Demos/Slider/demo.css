@@ -1,0 +1,32 @@
+div.slider {
+	width: 200px;
+	height: 16px;
+	background: #eee;
+}
+div.slider div.knob {
+	background: #000;
+	width: 16px;
+	height: 16px;
+}
+div#fontSize {
+	height: 50px;
+}
+
+div.advanced {
+	width: 400px;
+	margin: 5px 0;
+	background: url(images/slider.png) 0 center repeat-x;
+}
+div.advanced div.knob {
+	background: no-repeat center center;
+	cursor: pointer;
+}
+div#red div.knob {
+	background-image: url(images/red.png);
+}
+div#green div.knob {
+	background-image: url(images/green.png);
+}
+div#blue div.knob {
+	background-image: url(images/blue.png);
+}

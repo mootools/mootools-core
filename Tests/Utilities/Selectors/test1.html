@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Selectors</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="../../../assets/styles/tests.css" />
+	<script type="text/javascript" src="../../../assets/scripts/Builder.js"></script>
+	<script type="text/javascript">Builder.initialize('../../../');</script>
+	<script type="text/javascript">
+		window.addEvent('domready', function(){
+			var input = $('selector'), output = $('time'), selector, matched;
+			var update = function(event){
+				selector = input.value;
+				if(event) event.preventDefault();
+				$$('.matched').removeClass('matched');
+				if (selector) try {
+					var time = $time();
+					matched = $$(selector);
+					output.set('text', $time() - time + 'ms');
+					matched.addClass('matched');
+				} catch (e){
+					output.set('text', 'invalid');
+				}
+			};
+			input.addEvent('keyup', update).fireEvent('keyup');
+		});
+	</script>
+	<style type="text/css" media="screen">
+		div { margin:0px auto; text-align:center; }
+		table { width:600px; margin:20px auto; border:solid 1px #666; }
+		table tr { background-color:#222; }
+		table tr td { padding:2px; text-align:center; }
+		.matched { background-color:#063; }
+		#time { color:#666; margin-left:10px; }
+	</style>
+</head>
+<body>
+	<table>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+		<tr><td>cell</td><td>cell</td><td>cell</td><td>cell</td><td>cell</td></tr>
+	</table>
+	<div>
+		<input id="selector" value="tr:nth-child(even)" />
+		<span id="time">0ms</span>
+	</div>
+</body>
+</html>

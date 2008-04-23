@@ -1,0 +1,45 @@
+{
+	"Events": {
+		"Element.Event": {
+			"title": "Events Basis"
+		},
+		
+		"CustomEvents": {
+			"title": "Custom Events"
+		},
+		
+		"Mouseenter": {
+			"title": "Mouseenter"
+		}
+	},
+	
+	"Effects": {
+		"Effects": {
+			"title": "Effects Basis"
+		},
+		
+		"Fx.Slide": {
+			"title": "Fx.Slide"
+		}
+	},
+	
+	"Requests": {
+		"Request.JSON": {
+			"title": "JSON Request"
+		}
+	},
+	
+	"Plugins": {
+		"Accordion": {
+			"title": "Accordion"
+		},
+		
+		"Slider": {
+			"title": "Slider"
+		},
+		
+		"Sortables": {
+			"title": "Sortables"
+		}
+	}
+}
