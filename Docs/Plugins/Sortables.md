@@ -12,18 +12,18 @@ Creates an interface for drag and drop sorting of a list or lists.
 
 #### Options:
 
-1. constrain - (*boolean*: defaults to false) Whether or not to constrain the element being dragged to its parent element.
-2. clone     - (*mixed*: defaults to false) Whether or not to display a copy of the actual element under the cursor while dragging. May also be used as a function which will return an element to be used as the clone.  The function will receive the mousedown event, the element, and the list as arguments.
-3. handle    - (*string*: defaults to false) A selector to select an element inside each sortable item to be used as the handle for sorting that item.  If no match is found, the element is used as its own handle.
-4. opacity   - (*integer*: defaults to 1) Opacity of the place holding element
-5. revert    - (*mixed*: defaults to false) Whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be used as additional options for the revert effect.
-6. snap      - (*integer*: defaults to 4) The number of pixels the element must be dragged for sorting to begin.
+* constrain - (*boolean*: defaults to false) Whether or not to constrain the element being dragged to its parent element.
+* clone     - (*mixed*: defaults to false) Whether or not to display a copy of the actual element under the cursor while dragging. May also be used as a function which will return an element to be used as the clone.  The function will receive the mousedown event, the element, and the list as arguments.
+* handle    - (*string*: defaults to false) A selector to select an element inside each sortable item to be used as the handle for sorting that item.  If no match is found, the element is used as its own handle.
+* opacity   - (*integer*: defaults to 1) Opacity of the place holding element
+* revert    - (*mixed*: defaults to false) Whether or not to use an effect to slide the element into its final location after sorting. If you pass an object it will be used as additional options for the revert effect.
+* snap      - (*integer*: defaults to 4) The number of pixels the element must be dragged for sorting to begin.
 
 ### Events:
 
-1. onStart    - function executed when the item starts dragging
-1. onStart    - function executed when the item is inserted into a new place in one of the lists
-2. onComplete - function executed when the item ends dragging
+* onStart    - function executed when the item starts dragging
+* onSort     - function executed when the item is inserted into a new place in one of the lists
+* onComplete - function executed when the item ends dragging
 
 ### Examples:
 
