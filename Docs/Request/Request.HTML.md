@@ -15,12 +15,10 @@ Request Specifically made for receiving HTML.
 
 ### Arguments:
 
-1. url     - (*string*, optional) The URL pointing to the server-side script.
-2. options - (*object*, optional) See options below.  Also inherited are all the options from [Request][].
+1. options - (*object*, optional) See options below.  Also inherited are all the options from [Request][].
 
 ### Options:
 
-* url          - (*string*: defaults to null)  The URL to load.  This can also be passed within the .get() and .post() methods.
 * update       - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
 * evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated.
