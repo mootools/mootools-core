@@ -25,10 +25,10 @@ Fx.Scroll = new Class({
 		var stopper = this.element;
 
 		if (this.options.wheelStops){
-			this.addEvent('onStart', function(){
+			this.addEvent('start', function(){
 				stopper.addEvent('mousewheel', cancel);
 			}, true);
-			this.addEvent('onComplete', function(){
+			this.addEvent('complete', function(){
 				stopper.removeEvent('mousewheel', cancel);
 			}, true);
 		}

@@ -65,10 +65,10 @@ describe('Events Class', {
 
 	'should add an Event to the Class': function(){
 		var myTest = new Local.EventsTest();
-		myTest.addEvent('onEvent', Local.fn);
+		myTest.addEvent('event', Local.fn);
 
 		var events = myTest.$events;
-		var myEvent = events['onEvent'];
+		var myEvent = events['event'];
 		value_of(myEvent).should_not_be(undefined);
 		value_of(myEvent.contains(Local.fn)).should_be_true();
 	},
@@ -76,26 +76,26 @@ describe('Events Class', {
 	'should add multiple Events to the Class': function(){
 		var myTest = new Local.EventsTest();
 		myTest.addEvents({
-			'onEvent1': Local.fn,
-			'onEvent2': Local.fn
+			'event1': Local.fn,
+			'event2': Local.fn
 		});
 
 		var events = myTest.$events;
-		var myEvent1 = events['onEvent1'];
+		var myEvent1 = events['event1'];
 		value_of(myEvent1).should_not_be(undefined);
 		value_of(myEvent1.contains(Local.fn)).should_be_true();
 
-		var myEvent2 = events['onEvent2'];
+		var myEvent2 = events['event2'];
 		value_of(myEvent2).should_not_be(undefined);
 		value_of(myEvent2.contains(Local.fn)).should_be_true();
 	},
 
 	'should add an internal event': function(){
 		var myTest = new Local.EventsTest();
-		myTest.addEvent('onInternal', Local.fn, true);
+		myTest.addEvent('internal', Local.fn, true);
 
 		var events = myTest.$events;
-		var myEvent = events['onInternal'];
+		var myEvent = events['internal'];
 		value_of(myEvent).should_not_be(undefined);
 		value_of(myEvent.contains(Local.fn)).should_be_true();
 		value_of(myEvent[0].internal).should_be_true();
@@ -104,12 +104,12 @@ describe('Events Class', {
 	'should remove a specific method for an event': function(){
 		var myTest = new Local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent('onEvent', Local.fn);
-		myTest.addEvent('onEvent', fn);
-		myTest.removeEvent('onEvent', Local.fn);
+		myTest.addEvent('event', Local.fn);
+		myTest.addEvent('event', fn);
+		myTest.removeEvent('event', Local.fn);
 
 		var events = myTest.$events;
-		var myEvent = events['onEvent'];
+		var myEvent = events['event'];
 		value_of(myEvent).should_not_be(undefined);
 		value_of(myEvent.contains(fn)).should_be_true();
 	},
@@ -117,24 +117,24 @@ describe('Events Class', {
 	'should remove an event and its methods': function(){
 		var myTest = new Local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent('onEvent', Local.fn);
-		myTest.addEvent('onEvent', fn);
-		myTest.removeEvents('onEvent');
+		myTest.addEvent('event', Local.fn);
+		myTest.addEvent('event', fn);
+		myTest.removeEvents('event');
 
 		var events = myTest.$events;
-		value_of(events['onEvent'].length).should_be(0);
+		value_of(events['event'].length).should_be(0);
 	},
 
 	'should remove all events': function(){
 		var myTest = new Local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent('onEvent1', Local.fn);
-		myTest.addEvent('onEvent2', fn);
+		myTest.addEvent('event1', Local.fn);
+		myTest.addEvent('event2', fn);
 		myTest.removeEvents();
 
 		var events = myTest.$events;
-		value_of(events['onEvent1'].length).should_be(0);
-		value_of(events['onEvent2'].length).should_be(0);
+		value_of(events['event1'].length).should_be(0);
+		value_of(events['event2'].length).should_be(0);
 	}
 
 });
@@ -186,9 +186,9 @@ describe('Options Class', {
 		});
 		var events = myTest.$events;
 		value_of(events).should_not_be(undefined);
-		value_of(events['onEvent1'].length).should_be(1);
-		value_of(events['onEvent2'].length).should_be(1);
-		value_of(events['onEvent3'].length).should_be(1);
+		value_of(events['event1'].length).should_be(1);
+		value_of(events['event2'].length).should_be(1);
+		value_of(events['event3'].length).should_be(1);
 	}
 
 });

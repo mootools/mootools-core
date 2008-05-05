@@ -46,7 +46,7 @@ var Accordion = new Class({
 		for (var i = 0, l = this.togglers.length; i < l; i++) this.addSection(this.togglers[i], this.elements[i]);
 		this.elements.each(function(el, i){
 			if (this.options.show === i){
-				this.fireEvent('onActive', [this.togglers[i], el]);
+				this.fireEvent('active', [this.togglers[i], el]);
 			} else {
 				for (var fx in this.effects) el.setStyle(fx, 0);
 			}
@@ -91,7 +91,7 @@ var Accordion = new Class({
 		this.elements.each(function(el, i){
 			obj[i] = {};
 			var hide = (i != index) || (this.options.alwaysHide && (el.offsetHeight > 0));
-			this.fireEvent(hide ? 'onBackground' : 'onActive', [this.togglers[i], el]);
+			this.fireEvent(hide ? 'background' : 'active', [this.togglers[i], el]);
 			for (var fx in this.effects) obj[i][fx] = hide ? 0 : el[this.effects[fx]];
 		}, this);
 		return this.start(obj);

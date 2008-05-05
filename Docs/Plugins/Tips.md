@@ -25,8 +25,8 @@ Tips Method: constructor {#Tips:constructor}
 
 ### Options:
 
-* showDelay     - (*number*: defaults to 100) The delay the onShow method is called.
-* hideDelay     - (*number*: defaults to 100) The delay the onHide method is called.
+* showDelay     - (*number*: defaults to 100) The delay the show event is fired.
+* hideDelay     - (*number*: defaults to 100) The delay the hide hide is fired.
 * className     - (*string*: defaults to null) the className your tooltip container will get. Useful for extreme styling.
  * The tooltip element inside the tooltip container above will have 'tip' as classname.
  * The title will have as classname: tip-title
@@ -37,8 +37,8 @@ Tips Method: constructor {#Tips:constructor}
 
 ### Events:
  
- * onHide: fires when the tip is shown
- * onShow: fires when the tip is being hidden
+ * hide: fires when the tip is shown
+ * show: fires when the tip is being hidden
 
 ### Example:
 
@@ -51,7 +51,7 @@ Tips Method: constructor {#Tips:constructor}
 	var myTips = new Tips('.thisisatooltip');
 	
 
-Tips Event: onShow {#Tips:onShow}
+Tips Event: show {#Tips:show}
 ---------------------------------
 
 * (*function*) Fires when the Tip is starting to show and by default sets the tip visible.
@@ -66,11 +66,11 @@ Tips Event: onShow {#Tips:onShow}
 
 ### Example:
 
-	myTips.addEvent('onShow', function(tip){
+	myTips.addEvent('show', function(tip){
 		tip.fade('in');
 	});
 
-Tips Event: onHide {#Tips:onHide}
+Tips Event: hide {#Tips:hide}
 ---------------------------------
 
 * (*function*) Fires when the Tip is starting to hide and by default sets the tip hidden.
@@ -85,7 +85,7 @@ Tips Event: onHide {#Tips:onHide}
 
 ### Example:
 
-	myTips.addEvent('onHide', function(tip){
+	myTips.addEvent('hide', function(tip){
 		tip.fade('out');
 	});
 

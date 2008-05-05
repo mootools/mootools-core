@@ -22,7 +22,7 @@ Any number of Class instances, or arrays containing class instances.
 	var xhr3 = new Ajax('template.js', {evalScript: true});
 
 	var group = new Group(xhr1, xhr2, xhr3);
-	group.addEvent('onComplete', function(){
+	group.addEvent('complete', function(){
 		alert('All Scripts loaded');
 	});
 
@@ -43,7 +43,7 @@ Adds an Event to the stack of Events of the Class instances.
 
 ###	Arguments:
 
-1. type - (*string*) The event name (e.g. 'onComplete') to add.
+1. type - (*string*) The event name (e.g. 'complete') to add.
 2. fn   - (*function*) The callback function to execute when all instances fired this event.
 
 ###	Returns:

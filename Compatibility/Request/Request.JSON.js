@@ -18,7 +18,7 @@ JSON.Remote = new Class({
 	},
 	
 	failure: function(){
-		this.fireEvent('onFailure', this.xhr);
+		this.fireEvent('failure', this.xhr);
 	}
 
 });

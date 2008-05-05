@@ -39,10 +39,10 @@ Fx Method: constructor {#Fx:constructor}
 
 ### Events:
 
-* onStart    		- (*function*) The function to execute when the effect begins.
-* onCancel   		- (*function*) The function to execute when you manually stop the effect.
-* onComplete 		- (*function*) The function to execute after the effect has processed.
-* onChainComplete	- (*function*) The function to execute when using link 'chain' ([see options](#Fx:constructor)). It gets called after all effects in the chain have completed.
+* start    		- (*function*) The function to execute when the effect begins.
+* cancel   		- (*function*) The function to execute when you manually stop the effect.
+* complete 		- (*function*) The function to execute after the effect has processed.
+* chainComplete	- (*function*) The function to execute when using link 'chain' ([see options](#Fx:constructor)). It gets called after all effects in the chain have completed.
 
 ### Notes:
 
@@ -58,7 +58,7 @@ Fx Method: constructor {#Fx:constructor}
 Fx Method: start {#Fx:start}
 ----------------------------
 
-The start method is used to begin a transition.  Fires the onStart event.
+The start method is used to begin a transition.  Fires the 'start' event.
 
 ### Syntax:
 
@@ -110,7 +110,7 @@ The set method is fired on every step of a transition.  It can also be called ma
 Fx Method: cancel {#Fx:cancel}
 ------------------------------
 
-The cancel method is used to cancel a running transition.  Fires the onCancel event.
+The cancel method is used to cancel a running transition.  Fires the 'cancel' event.
 
 ### Syntax:
 

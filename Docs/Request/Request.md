@@ -29,7 +29,7 @@ An XMLHttpRequest Wrapper.
 Request Events: events {#Request:events}
 ----------------------------------------
 
-### onRequest
+### request
 
 (*function*) Function to execute when the Request is sent.
 
@@ -41,7 +41,7 @@ Request Events: events {#Request:events}
 
 1. instance - (Request) The transport instance.
 
-### onSuccess
+### success
 
 (*function*) Function to execute when the Request completes.
 
@@ -54,7 +54,7 @@ Request Events: events {#Request:events}
 1. responseText - (*string*) The returned text from the request.
 2. responseXML  - (*mixed*) The response XML from the request.
 
-### onFailure
+### failure
 
 (*function*) Function to execute when the request fails (error status code).
 
@@ -66,7 +66,7 @@ Request Events: events {#Request:events}
 
 instance - (Request) The transport instance.
 
-### onException
+### exception
 
 (*function*) Function to execute when setting a request header fails.
 
@@ -79,7 +79,7 @@ instance - (Request) The transport instance.
 1. headerName - (*string*) The name of the failing header.
 2. value      - (*string*) The value of the failing header.
 
-###	onCancel
+###	cancel
 
 (*function*) Function to execute when a request has been cancelled.
 
@@ -90,7 +90,7 @@ instance - (Request) The transport instance.
 ### Properties:
 
 * running  - (*boolean*) True if the request is running.
-* response - (*object*) Object with text and XML as keys. You can access this property in the onSuccess event.
+* response - (*object*) Object with text and XML as keys. You can access this property in the 'success' event.
 
 ### Returns:
 

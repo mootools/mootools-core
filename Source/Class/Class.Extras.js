@@ -27,6 +27,7 @@ var Chain = new Class({
 var Events = new Class({
 
 	addEvent: function(type, fn, internal){
+		type = Events.removeOn(type);
 		if (fn != $empty){
 			this.$events = this.$events || {};
 			this.$events[type] = this.$events[type] || [];
@@ -42,6 +43,7 @@ var Events = new Class({
 	},
 
 	fireEvent: function(type, args, delay){
+		type = Events.removeOn(type);
 		if (!this.$events || !this.$events[type]) return this;
 		this.$events[type].each(function(fn){
 			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
@@ -50,6 +52,7 @@ var Events = new Class({
 	},
 
 	removeEvent: function(type, fn){
+		type = Events.removeOn(type);
 		if (!this.$events || !this.$events[type]) return this;
 		if (!fn.internal) this.$events[type].erase(fn);
 		return this;
@@ -65,6 +68,12 @@ var Events = new Class({
 	}
 
 });
+
+Events.removeOn = function(string){
+	return string.replace(/^on([A-Z])/, function(full, first) {
+		return first.toLowerCase();
+	});
+};
 
 var Options = new Class({
 

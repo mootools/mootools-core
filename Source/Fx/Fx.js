@@ -82,16 +82,16 @@ var Fx = new Class({
 	},
 
 	onStart: function(){
-		this.fireEvent('onStart', this.subject);
+		this.fireEvent('start', this.subject);
 	},
 
 	onComplete: function(){
-		this.fireEvent('onComplete', this.subject);
-		if (!this.callChain()) this.fireEvent('onChainComplete', this.subject);
+		this.fireEvent('complete', this.subject);
+		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
 	},
 
 	onCancel: function(){
-		this.fireEvent('onCancel', this.subject).clearChain();
+		this.fireEvent('cancel', this.subject).clearChain();
 	},
 
 	pause: function(){

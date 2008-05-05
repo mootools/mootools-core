@@ -25,7 +25,7 @@ Request Specifically made for receiving HTML.
 
 ### Events:
 
-#### onComplete
+#### complete
 
 * (*function*) Function to execute when the HTML request completes.
 

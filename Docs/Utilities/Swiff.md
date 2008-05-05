@@ -50,7 +50,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 			myVariableString: 'hello'
 		},
 		events: {
-			onLoad: myOnloadFunc
+			load: myOnloadFunc
 		}
 	});
 

@@ -32,7 +32,7 @@ Class: Slider {#Slider}
 
 
 
-Slider Event: onChange {#Slider:onChange}
+Slider Event: change {#Slider:change}
 -----------------------------------------
 
 * (*function*) Fires when the Slider's value changes.
@@ -47,7 +47,7 @@ Slider Event: onChange {#Slider:onChange}
 
 
 
-Slider Event: onComplete {#Slider:onComplete}
+Slider Event: onComplete {#Slider:complete}
 ---------------------------------------------
 
 * (*function*) Fire when you're done dragging.
@@ -62,10 +62,10 @@ Slider Event: onComplete {#Slider:onComplete}
 
 
 
-Slider Event: onTick {#Slider:onTick}
+Slider Event: tick {#Slider:tick}
 -------------------------------------
 
-* (*function*) Fires when the user drags the knob. This Event can be overriden to alter the onTick behavior.
+* (*function*) Fires when the user drags the knob. This Event can be overriden to alter the tick behavior.
 
 ### Signature:
 
@@ -77,7 +77,7 @@ Slider Event: onTick {#Slider:onTick}
 
 ### Notes:
 
-- Slider originally uses the onTick event to set the style of the knob to a new position.
+- Slider originally uses the 'tick' event to set the style of the knob to a new position.
 
 ### Returns:
 

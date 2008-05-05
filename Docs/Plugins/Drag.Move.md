@@ -34,9 +34,9 @@ All the base Drag options, plus:
 
 ### Events:
 
-* onDrop - Executed when the element drops. Passes as argument the element and the element dropped on. If dropped on nothing, the second argument is null.
-* onLeave - Executed when the element leaves one of the droppables.
-* onEnter - Executed when the element enters one of the droppables.
+* drop - Executed when the element drops. Passes as argument the element and the element dropped on. If dropped on nothing, the second argument is null.
+* leave - Executed when the element leaves one of the droppables.
+* enter - Executed when the element enters one of the droppables.
 
 ### Example:
 

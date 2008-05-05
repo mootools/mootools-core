@@ -33,11 +33,11 @@ Drag Method: constructor {#Drag:constructor}
 
 ### Events:
 
-* onBeforeStart - Executed before the Drag instance attaches the events. Receives the dragged element as an argument.
-* onStart       - Executed when the user starts to drag (on mousedown). Receives the dragged element as an argument.
-* onSnap        - Executed when the user has dragged past the snap option. Receives the dragged element as an argument.
-* onDrag        - Executed on every step of the drag. Receives the dragged element as an argument.
-* onComplete    - Executed when the user completes the drag. Receives the dragged element as an argument.
+* beforeStart - Executed before the Drag instance attaches the events. Receives the dragged element as an argument.
+* start       - Executed when the user starts to drag (on mousedown). Receives the dragged element as an argument.
+* snap        - Executed when the user has dragged past the snap option. Receives the dragged element as an argument.
+* drag        - Executed on every step of the drag. Receives the dragged element as an argument.
+* complete    - Executed when the user completes the drag. Receives the dragged element as an argument.
 
 ### Examples:
 
@@ -125,7 +125,7 @@ Detaches the mouse listener from the handle, preventing the Element from being d
 Drag Method: stop {#Drag:stop}
 ------------------------------
 
-Stops (removes) all attached events from the Drag instance and executes the onComplete Event.
+Stops (removes) all attached events from the Drag instance and executes the 'complete' Event.
 
 ### Syntax:
 

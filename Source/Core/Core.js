@@ -93,15 +93,15 @@ Native.alias = function(objects, a1, a2, a3){
 };
 
 (function(objects){
-	for (var name in objects) Native.typize(objects[name], name.toLowerCase());
-})({'Boolean': Boolean, 'Native': Native, 'Object': Object});
+	for (var name in objects) Native.typize(objects[name], name);
+})({'boolean': Boolean, 'native': Native, 'object': Object});
 
 (function(objects){
 	for (var name in objects) new Native({name: name, initialize: objects[name], protect: true});
 })({'String': String, 'Function': Function, 'Number': Number, 'Array': Array, 'RegExp': RegExp, 'Date': Date});
 
 (function(object, methods){
-	for (var i = 0, l = methods.length; i < l; i++) Native.genericize(object, methods[i], true);
+	for (var i = methods.length; i--; i) Native.genericize(object, methods[i], true);
 	return arguments.callee;
 })
 (Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf'])
@@ -141,7 +141,7 @@ function $extend(original, extended){
 };
 
 function $unlink(object){
-	var unlinked = null;
+	var unlinked;
 	
 	switch ($type(object)){
 		case 'object':

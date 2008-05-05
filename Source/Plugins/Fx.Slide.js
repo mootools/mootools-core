@@ -15,7 +15,7 @@ Fx.Slide = new Class({
 	},
 
 	initialize: function(element, options){
-		this.addEvent('onComplete', function(){
+		this.addEvent('complete', function(){
 			this.open = (this.wrapper['offset' + this.layout.capitalize()] != 0);
 			if (this.open && Browser.Engine.webkit419) this.element.dispose().inject(this.wrapper);
 		}, true);

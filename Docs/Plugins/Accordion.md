@@ -40,7 +40,7 @@ The Accordion class creates a group of Elements that are toggled when their hand
 
 ## Events:
 
-### onActive
+### active
 
 * (*function*) Function to execute when an element starts to show.
 
@@ -53,7 +53,7 @@ The Accordion class creates a group of Elements that are toggled when their hand
 1. toggler - (*element*) The toggler for the Element being displayed.
 2. element - (*element*) The Element being displayed.
 
-### onBackground
+### background
 
 * (*function*) Function to execute when an element starts to hide.
 

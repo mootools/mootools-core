@@ -21,9 +21,9 @@ Creates an interface for drag and drop sorting of a list or lists.
 
 ### Events:
 
-* onStart    - function executed when the item starts dragging
-* onSort     - function executed when the item is inserted into a new place in one of the lists
-* onComplete - function executed when the item ends dragging
+* start    - function executed when the item starts dragging
+* sort     - function executed when the item is inserted into a new place in one of the lists
+* complete - function executed when the item ends dragging
 
 ### Examples:
 

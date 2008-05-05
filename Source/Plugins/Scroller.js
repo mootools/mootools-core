@@ -23,10 +23,10 @@ var Scroller = new Class({
 		this.element = $(element);
 		this.listener = ($type(this.element) != 'element') ? $(this.element.getDocument().body) : this.element;
 		this.timer = null;
+		this.coord = this.getCoords.bind(this);
 	},
 
 	start: function(){
-		this.coord = this.getCoords.bind(this);
 		this.listener.addEvent('mousemove', this.coord);
 	},
 
@@ -48,7 +48,7 @@ var Scroller = new Class({
 			else if (this.page[z] + this.options.area > (size[z] + pos[z]) && size[z] + size[z] != scroll[z])
 				change[z] = (this.page[z] - size[z] + this.options.area - pos[z]) * this.options.velocity;
 		}
-		if (change.y || change.x) this.fireEvent('onChange', [scroll.x + change.x, scroll.y + change.y]);
+		if (change.y || change.x) this.fireEvent('change', [scroll.x + change.x, scroll.y + change.y]);
 	}
 
 });

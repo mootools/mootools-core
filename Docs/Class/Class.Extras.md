@@ -139,7 +139,7 @@ Class: Events {#Events}
 =======================
 
 A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
-In [Fx][], for example, this Class is used to allow any number of functions to be added to the Fx events, like onComplete, onStart, and onCancel.
+In [Fx][], for example, this Class is used to allow any number of functions to be added to the Fx events, like 'complete', 'start', and 'cancel'.
 Events in a Class that implements [Events](#Events) must be either added as an option or with addEvent, not directly through .options.onEventName.
 
 ### Syntax:
@@ -155,22 +155,26 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 ### Implementing:
 
 - This class can be implemented into other classes to add its functionality to them.
-- Events has been designed to work well with the [Options](#Options) class when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete').
+- Events has been designed to work well with the [Options](#Options) class when the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
 
 ### Example:
 
 	var Widget = new Class({
 		Implements: Events,
 		initialize: function(element){
-			...
+			// ...
 		},
 		complete: function(){
-			this.fireEvent('onComplete');
+			this.fireEvent('complete');
 		}
 	});
 
 	var myWidget = new Widget();
-	myWidget.addEvent('onComplete', myFunction);
+	myWidget.addEvent('complete', myFunction);
+
+### Notes:
+
+- Events starting with 'on' are still supported in all methods and are converted to their representation without 'on' (e.g. 'onComplete' becomes 'complete').
 
 
 ### See Also:
@@ -190,7 +194,7 @@ Adds an event to the Class instance's event stack.
 
 ### Arguments:
 
-1. type     - (*string*) The type of event (e.g. 'onComplete').
+1. type     - (*string*) The type of event (e.g. 'complete').
 2. fn       - (*function*) The function to execute.
 3. internal - (*boolean*, optional) Sets the function property: internal to true. Internal property is used to prevent removal.
 
@@ -201,8 +205,7 @@ Adds an event to the Class instance's event stack.
 ### Example:
 
 	var myFx = new Fx.Tween('element', 'opacity');
-	myFx.addEvent('onStart', myStartFunction);
-
+	myFx.addEvent('start', myStartFunction);
 
 
 Events Method: addEvents {#Events:addEvents}
@@ -216,7 +219,7 @@ The same as [addEvent](#addEvent), but accepts an object to add multiple events 
 
 ### Arguments:
 
-1. events - (*object*) An object with key/value representing: key the event name (e.g. 'onStart'), and value the function that is called when the Event occurs.
+1. events - (*object*) An object with key/value representing: key the event name (e.g. 'start'), and value the function that is called when the Event occurs.
 
 ### Returns:
 
@@ -226,8 +229,8 @@ The same as [addEvent](#addEvent), but accepts an object to add multiple events 
 
 	var myFx = new Fx.Tween('element', 'opacity');
 	myFx.addEvents({
-		'onStart': myStartFunction,
-		'onComplete': function() {
+		'start': myStartFunction,
+		'complete': function() {
 			alert('Done.');
 		}
 	});
@@ -245,7 +248,7 @@ Fires all events of the specified type in the Class instance.
 
 ### Arguments:
 
-1. type  - (*string*) The type of event (e.g. 'onComplete').
+1. type  - (*string*) The type of event (e.g. 'complete').
 2. args  - (*mixed*, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
 3. delay - (*number*, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
 
@@ -259,7 +262,7 @@ Fires all events of the specified type in the Class instance.
 		Implements: Events,
 		initialize: function(arg1, arg2){
 			//...
-			this.fireEvent("onInitialize", [arg1, arg2], 50);
+			this.fireEvent("initialize", [arg1, arg2], 50);
 		}
 	});
 
@@ -276,7 +279,7 @@ Removes an event from the stack of events of the Class instance.
 
 ### Arguments:
 
-1. type - (*string*) The type of event (e.g. 'onComplete').
+1. type - (*string*) The type of event (e.g. 'complete').
 2. fn   - (*function*) The function to remove.
 
 ### Returns:
@@ -299,7 +302,7 @@ Removes all events of the given type from the stack of events of a Class instanc
 
 ### Arguments:
 
-1. type - (*string*, optional) The type of event to remove (e.g. 'onComplete'). If no type is specified, removes all events of all types.
+1. type - (*string*, optional) The type of event to remove (e.g. 'complete'). If no type is specified, removes all events of all types.
 
 ### Returns:
 
@@ -308,7 +311,7 @@ Removes all events of the given type from the stack of events of a Class instanc
 ### Example:
 
 	var myFx = new Fx.Tween('myElement', 'opacity');
-	myFx.removeEvents('onComplete');
+	myFx.removeEvents('complete');
 
 
 ### Notes:
@@ -322,7 +325,7 @@ Class: Options {#Options}
 
 A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 Used to automate the setting of a Class instance's options.
-Will also add Class [Events](#Events) when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete').
+Will also add Class [Events](#Events) when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete' adds a 'complete' event).
 
 ### Syntax:
 

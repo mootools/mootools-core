@@ -62,7 +62,7 @@ var Drag = new Class({
 
 	start: function(event){
 		if (this.options.preventDefault) event.preventDefault();
-		this.fireEvent('onBeforeStart', this.element);
+		this.fireEvent('beforeStart', this.element);
 		this.mouse.start = event.page;
 		var limit = this.options.limit;
 		this.limit = {'x': [], 'y': []};
@@ -92,7 +92,7 @@ var Drag = new Class({
 				mousemove: this.bound.drag,
 				mouseup: this.bound.stop
 			});
-			this.fireEvent('onStart', this.element).fireEvent('onSnap', this.element);
+			this.fireEvent('start', this.element).fireEvent('snap', this.element);
 		}
 	},
 
@@ -114,7 +114,7 @@ var Drag = new Class({
 			if (this.options.style) this.element.setStyle(this.options.modifiers[z], this.value.now[z] + this.options.unit);
 			else this.element[this.options.modifiers[z]] = this.value.now[z];
 		}
-		this.fireEvent('onDrag', this.element);
+		this.fireEvent('drag', this.element);
 	},
 
 	cancel: function(event){
@@ -122,7 +122,7 @@ var Drag = new Class({
 		this.document.removeEvent('mouseup', this.bound.cancel);
 		if (event){
 			this.document.removeEvent(this.selection, this.bound.eventStop);
-			this.fireEvent('onCancel', this.element);
+			this.fireEvent('cancel', this.element);
 		}
 	},
 
@@ -130,7 +130,7 @@ var Drag = new Class({
 		this.document.removeEvent(this.selection, this.bound.eventStop);
 		this.document.removeEvent('mousemove', this.bound.drag);
 		this.document.removeEvent('mouseup', this.bound.stop);
-		if (event) this.fireEvent('onComplete', this.element);
+		if (event) this.fireEvent('complete', this.element);
 	}
 
 });

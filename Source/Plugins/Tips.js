@@ -118,11 +118,11 @@ var Tips = new Class({
 	},
 
 	show: function(){
-		this.fireEvent('onShow', this.tip);
+		this.fireEvent('show', this.tip);
 	},
 
 	hide: function(){
-		this.fireEvent('onHide', this.tip);
+		this.fireEvent('hide', this.tip);
 	}
 
 });

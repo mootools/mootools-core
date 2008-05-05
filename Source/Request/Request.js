@@ -70,7 +70,7 @@ var Request = new Class({
 	},
 	
 	onSuccess: function(){
-		this.fireEvent('onComplete', arguments).fireEvent('onSuccess', arguments).callChain();
+		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
 	},
 	
 	failure: function(){
@@ -78,7 +78,7 @@ var Request = new Class({
 	},
 
 	onFailure: function(){
-		this.fireEvent('onComplete').fireEvent('onFailure', this.xhr);
+		this.fireEvent('complete').fireEvent('failure', this.xhr);
 	},
 
 	setHeader: function(name, value){
@@ -141,10 +141,10 @@ var Request = new Class({
 			if (!$try(function(){
 				this.xhr.setRequestHeader(key, value);
 				return true;
-			}.bind(this))) this.fireEvent('onException', [key, value]);
+			}.bind(this))) this.fireEvent('exception', [key, value]);
 		}, this);
 
-		this.fireEvent('onRequest');
+		this.fireEvent('request');
 		this.xhr.send(data);
 		if (!this.options.async) this.onStateChange();
 		return this;
@@ -156,7 +156,7 @@ var Request = new Class({
 		this.xhr.abort();
 		this.xhr.onreadystatechange = $empty;
 		this.xhr = new Browser.Request();
-		this.fireEvent('onCancel');
+		this.fireEvent('cancel');
 		return this;
 	}
 

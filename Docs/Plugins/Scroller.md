@@ -29,7 +29,7 @@ Class: Scroller {#Scroller}
 
 ### Events:
 
-* onChange - (*function*) When the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
+* change - (*function*) When the mouse reaches some boundaries, you can choose to alter some other values, instead of the scrolling offsets.
 
 #### Signature:
 

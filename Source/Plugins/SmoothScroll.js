@@ -21,7 +21,7 @@ var SmoothScroll = new Class({
 			var anchor = link.href.substr(location.length);
 			if (anchor && $(anchor)) this.useLink(link, anchor);
 		}, this);
-		if (!Browser.Engine.webkit419) this.addEvent('onComplete', function(){
+		if (!Browser.Engine.webkit419) this.addEvent('complete', function(){
 			win.location.hash = this.anchor;
 		}, true);
 	},
