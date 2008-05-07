@@ -76,21 +76,6 @@ Detaches the mouse listener from all the handles, disabling sorting.
 
 
 
-Sortables Method: detach {#Sortables:detach}
---------------------------------------------
-
-Detaches the mouse listener from all the handles, disabling sorting.
-
-### Syntax:
-
-	mySortables.detach();
-
-### Returns:
-
-* (*object*) This Sortables instance.
-
-
-
 Sortables Method: addItems {#Sortables:addItems}
 ------------------------------------------------
 
