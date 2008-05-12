@@ -22,6 +22,7 @@ var Request = new Class({
 			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
 		},
 		async: true,
+		format: false,
 		method: 'post',
 		link: 'ignore',
 		isSuccess: null,
@@ -117,6 +118,11 @@ var Request = new Class({
 			case 'object': case 'hash': data = Hash.toQueryString(data);
 		}
 
+		if (this.options.format){
+			var format = 'format=' + this.options.format;
+			data = (data) ? format + '&' + data : format;
+		}
+
 		if (this.options.emulation && ['put', 'delete'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
@@ -165,7 +171,7 @@ var Request = new Class({
 (function(){
 
 var methods = {};
-['get', 'post', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
+['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
 		var params = Array.link(arguments, {url: String.type, data: $defined});
 		return this.send($extend(params, {method: method.toLowerCase()}));

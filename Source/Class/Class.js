@@ -11,13 +11,9 @@ var Class = new Native({
 	name: 'Class',
 
 	initialize: function(properties){
-
 		properties = properties || {};
-
 		var klass = function(empty){
-						
 			for (var key in this) this[key] = $unlink(this[key]);
-
 			for (var mutator in Class.Mutators){
 				if (!this[mutator]) continue;
 				Class.Mutators[mutator](this, this[mutator]);
@@ -25,12 +21,10 @@ var Class = new Native({
 			}
 
 			this.constructor = klass;
-			
 			if (empty === $empty) return this;
 			
 			var self = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
-
 			return self;
 		};
 
@@ -51,61 +45,51 @@ Class.implement({
 
 });
 
-Class.Mutators = {};
+Class.Mutators = {
+  
+  Implements: function(self, klasses){
+  	$splat(klasses).each(function(klass){
+  		$extend(self, ($type(klass) == 'class') ? new klass($empty) : klass);
+  	});
+  },
+  
+  Extends: function(self, klass){
+  	var instance = new klass($empty);
+  	delete instance.parent;
+  	delete instance.parentOf;
 
-Class.Mutators.Implements = function(self, klasses){
-	$splat(klasses).each(function(klass){
-		$extend(self, ($type(klass) == 'class') ? new klass($empty) : klass);
-	});
-};
+  	for (var key in instance){
+  		var current = self[key], previous = instance[key];
+  		if (current == undefined){
+  			self[key] = previous;
+  			continue;
+  		}
 
-Class.Mutators.Extends = function(self, klass){
-	
-	var instance = new klass($empty);
-	
-	delete instance.parent;
-	delete instance.parentOf;
-	
-	for (var key in instance){
+  		var ctype = $type(current), ptype = $type(previous);
+  		if (ctype != ptype) continue;
 
-		var current = self[key], previous = instance[key];
-		
-		if (current == undefined){
-			self[key] = previous;
-			continue;
-		}
+  		switch (ctype){
+  			case 'function': 
+  				// this code will be only executed if the current browser does not support function.caller (currently only opera).
+  				// we replace the function code with brute force. Not pretty, but it will only be executed if function.caller is not supported.
+  				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
+  					return 'arguments.callee._parent_.call(this' + (close || ', ');
+  				}).replace(/(\d+)\.([A-Za-z_])/g, '($1).$2') + ')');
+  				// end "opera" code
+  				self[key]._parent_ = previous;
+  			  break;
+  			case 'object': self[key] = $merge(previous, current);
+  		}
 
-		var ctype = $type(current), ptype = $type(previous);
-		
-		if (ctype != ptype) continue;
-		
-		switch (ctype){
-			case 'function': 
-			
-				// opera does not support function.caller, so we replace the function code with brute force. Not pretty, but its just for opera.
-				// if future opera versions will support function.caller, this code wont be executed anymore.
-				// this code will be only executed if the current browser does not support function.caller (only opera).
-				// there is also a fix for an opera bug where in the function string, parentheses around numbers are ignored, and an error is thrown.
-				
-				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
-					return 'arguments.callee._parent_.call(this' + (close || ', ');
-				}).replace(/(\d+)\.([A-Za-z_])/g, '($1).$2') + ')');
-				
-				// end "opera" code
-			
-				self[key]._parent_ = previous;
-			break;
-			case 'object': self[key] = $merge(previous, current);
-		}
-		
-	}
-	
-	self.parent = function(){
-		return arguments.callee.caller._parent_.apply(this, arguments);
-	};
-	
-	self.parentOf = function(descendant){
-		return descendant._parent_.apply(this, Array.slice(arguments, 1));
-	};
+  	}
 
+  	self.parent = function(){
+  		return arguments.callee.caller._parent_.apply(this, arguments);
+  	};
+
+  	self.parentOf = function(descendant){
+  		return descendant._parent_.apply(this, Array.slice(arguments, 1));
+  	};
+  }
+  
 };

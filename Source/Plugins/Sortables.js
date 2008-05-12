@@ -89,7 +89,7 @@ var Sortables = new Class({
 			'position': 'absolute',
 			'visibility': 'hidden',
 			'width': element.getStyle('width')
-		}).inject(this.list).position(element.getPosition(element.offsetParent));
+		}).inject(this.list).position(element.getPosition(element.getOffsetParent()));
 	},
 
 	getDroppables: function(){
