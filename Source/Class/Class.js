@@ -72,9 +72,11 @@ Class.Mutators = {
   			case 'function': 
   				// this code will be only executed if the current browser does not support function.caller (currently only opera).
   				// we replace the function code with brute force. Not pretty, but it will only be executed if function.caller is not supported.
+
   				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
   					return 'arguments.callee._parent_.call(this' + (close || ', ');
-  				}).replace(/(\d+)\.([A-Za-z_])/g, '($1).$2') + ')');
+  				}) + ')');
+
   				// end "opera" code
   				self[key]._parent_ = previous;
   			  break;
