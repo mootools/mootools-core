@@ -135,7 +135,7 @@ Selectors.Utils = {
 	
 	getByTagAndID: function(ctx, tag, id){
 		if (id){
-			var item = ctx.getElementById(id, true);
+			var item = (ctx.getElementById) ? ctx.getElementById(id, true) : Element.getElementById(ctx, id, true);
 			return (item && Selectors.Filters.byTag(item, tag)) ? [item] : [];
 		} else {
 			return ctx.getElementsByTagName(tag);
