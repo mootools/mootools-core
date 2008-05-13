@@ -26,11 +26,7 @@ Drag.Move Method: constructor {#Drag-Move:constructor}
 All the base Drag options, plus:
 	
 * container  - (*element*) If an Element is passed, drag will be limited to the passed Element's size and position.
-* droppables - (*array*) The Elements that the draggable can drop into.
-	
-	Interaction with droppable work with events fired on the doppable element or, for 'emptydrop', on the dragged element.
-	
-	The Events 'over', 'leave' and 'drop' get fired on the droppable element with the dragged element as first argument when the dragged element hovers,leaves or get dropped on the droppable.
+* droppables - (*array*) The Elements that the draggable can drop into. The class's drop, enter, and leave events will be fired in conjunction with interaction with one of these elements.
 
 ### Events:
 
