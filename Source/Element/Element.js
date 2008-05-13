@@ -347,6 +347,7 @@ Element.implement({
 				var attributes = {};
 				for (var j = 0, l = this.attributes.length; j < l; j++){
 					var attribute = this.attributes[j], key = attribute.nodeName.toLowerCase();
+					if (Browser.Engine.trident && (/input/i).test(this.tagName) && (/width|height/).test(key)) continue;
 					var value = (key == 'style' && this.style) ? this.style.cssText : attribute.nodeValue;
 					if (!$chk(value) || key == 'uid' || (key == 'id' && !keepid)) continue;
 					if (value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
