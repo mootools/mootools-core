@@ -20,6 +20,8 @@ window.addEvent('domready', function(){
 	// We just clone the list we created before
 	var uls = $$([ul.clone(), ul.clone()])
 	
+	uls[1].getElements('li').setStyle('font-weight', 'bold');
+	
 	uls.inject('anotherSortablesDemo').addClass('anotherList');
 	
 	new Sortables(uls, {

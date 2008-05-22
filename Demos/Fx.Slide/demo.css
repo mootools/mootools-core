@@ -3,9 +3,14 @@ h3.section {
 }
 
 #vertical_slide, #horizontal_slide {
-	background: #222;
-	color: #fff;
+	background: #D0C8C8;
+	color: #8A7575;
 	padding: 10px;
-	margin: 20px;
-	border: 10px solid pink;
+	border: 5px solid #F3F1F1;
+	font-weight: bold;
+}
+
+div.marginbottom {
+	/* Since the Fx.Slide element resets margins, we set a margin on the above element */
+	margin-bottom: 10px;
 }

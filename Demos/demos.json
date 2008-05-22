@@ -1,4 +1,10 @@
 {
+	"Basics": {
+		"Native": {
+			"title": "Extending Natives"
+		}
+	},
+	
 	"Events": {
 		"Element.Event": {
 			"title": "Events Basis"
