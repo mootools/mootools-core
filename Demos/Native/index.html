@@ -46,7 +46,7 @@
   invoke: function(fn, args){
     var result = [];
     
-    for (var i = 0, l = this.length; i < l; i++){
+    for (var i = 0, l = this.length; i &lt; l; i++){
       if(this[i] && this[i][fn])
         result.push(args ? this[i][fn].pass(args, this[i])() : this[i][fn]());
     }
