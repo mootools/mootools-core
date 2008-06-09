@@ -1,0 +1,297 @@
+/*
+File: Style.css
+	Slick Style for JSSpec.
+
+License:
+	Copyright (c)2007 Valerio Proietti, <http://mad4milk.net>.
+	You can only use this stylesheet to run MooTools JSSpec Runner.
+*/
+
+/* @group Reset */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+ul {
+	list-style: none;
+}
+
+/* @end */
+
+/* @group Base */
+
+html {
+	overflow: hidden;
+}
+
+body {
+	font: 11px/1.5 Lucida Grande, Helvetica, Arial, sans-serif;
+	background: #F3F1F1;
+	color: #41464D;
+}
+
+body, #container {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+a {
+	text-decoration:none;
+}
+
+#title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 5px 0;
+	background: #aaa;
+	background: #41464D;
+	color: #F3F1F1;
+	height: 30px;
+}
+
+#list {
+	position: absolute;
+	width: 30%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	top: 40px;
+	left: 0;
+	bottom: 0;
+	height: expression(document.body.clientHeight-40);
+}
+
+#log {
+	position: absolute;
+	top: 40px;
+	right: 0;
+	bottom: 0;
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 70%;
+	height: expression(document.body.clientHeight-40);
+}
+
+span.spc {
+	display: block;
+	height: 16px;
+}
+
+#log-wrapper, #list-wrapper {
+	overflow: hidden;
+	padding: 4px 4px 0;
+	background: #fff;
+}
+
+#log-wrapper {
+	margin: 16px 16px 0 8px;
+}
+
+#list-wrapper {
+	margin: 16px 8px 0 16px;
+}
+
+.success a:link, .success a:visited {
+	color: #657528;
+}
+
+.exception a:link, .exception a:visited {
+	color: #B33F3F;
+}
+
+a:link, a:visited {
+	color: #528CE0;
+}
+
+a:hover, a:active {
+	color: #41464D !important;
+	cursor: pointer !important;
+}
+
+#title h1 {
+	font: 25px/1.1 Arial, sans-serif;
+	font-weight: bolder;
+	float: left;
+	margin: 1px 0 2px 20px;
+	text-shadow: 0 2px 2px rgba(0,0,0,0.4);
+}
+
+#title h1 span {
+	color: #D2E0E6;
+}
+
+#title ul li {
+	font-weight: bold;
+	font-size: 12px;
+	float: right;
+	margin: 10px 5px 0;
+}
+
+#title ul {
+	margin-right: 20px;
+}
+
+h2 {
+	font-size: 14px;
+	background: #D0C8C8;
+	color: #8A7575;
+	margin-bottom: 4px;
+	padding: 2px 5px;
+}
+
+h2#runner {
+	cursor: pointer;
+	background-color: #CFE773;
+	color: #657528;
+}
+
+h2#runner:hover {
+	color: #41464D;
+}
+
+h2#runner.disabled {
+	color: #fff;
+	background: #C8CBD0;
+	cursor: default;
+}
+
+br {
+	display: none;
+}
+
+h3 {
+	font-size: 12px;
+	padding: 3px 5px 1px;
+}
+
+h4 {
+	font-size: 11px;
+	background: #C8CBD0;
+	padding: 3px 5px 1px;
+	margin-bottom: 4px;
+}
+
+h3, h4 {
+	cursor: default;
+}
+
+#list h3 {
+	background: #D2E0E6;
+	color: #528CE0;
+	margin-bottom: 4px;
+}
+
+#log h3 {
+	background: #D0C8C8;
+	color: #8A7575;
+	margin-bottom: 4px;
+}
+
+#log li div {
+	overflow: hidden;
+	padding: 0 4px 4px;
+}
+
+p {
+	color: #575d67;
+}
+
+p.uri {
+	float: right;
+	margin-top: -15px;
+	font-size: 10px;
+}
+
+p.left, p.uri {
+	font-family: Monaco, Courier New, monospace;
+}
+
+li div {
+	display: none;
+}
+
+p#footer {
+	text-align: right;
+	padding: 10px 16px 0 0;
+}
+
+/* @end */
+
+/* @group Success/Failure Colors */
+
+#log .exception h3 {
+	color: #B33F3F;
+	background: #EE9A9A;
+}
+
+#log .exception h4 {
+	color: #B33F3F;
+	background: #eed8d8;
+	cursor: pointer;
+}
+
+#log .success h3 {
+	background-color: #CFE773;
+	color: #657528;
+}
+
+#log .success h4 {
+	background-color: #e2e5d2;
+	color: #657528;
+	cursor: default;
+}
+
+#log .stub h4 {
+	background-color: #e5e5e1;
+	color: #a1a87e;
+	cursor: default;
+}
+
+#list .exception h3 {
+	color: #B33F3F;
+	background: #eed8d8;
+}
+
+#list .success h3 {
+	background-color: #e2e5d2;
+	color: #657528;
+}
+
+a.rerun {
+	font-size: 11px;
+	color: #fff !important;
+}
+
+/* @end */
+
+/* @group Code */
+
+.number_value {
+	color: red;
+}
+
+.string_value {
+	color: green;
+}
+
+.regexp_value {
+	color: olive;
+}
+
+.boolean_value {
+	color: red;
+}
+
+.dom_value {
+	color: purple;
+}
+
+.undefined_value, .null_value {
+	color: gray;
+}
+
+/* @end */
