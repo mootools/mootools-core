@@ -59,6 +59,7 @@ var Events = new Class({
 	},
 
 	removeEvents: function(type){
+		type = Events.removeOn(type);
 		for (var e in this.$events){
 			if (type && type != e) continue;
 			var fns = this.$events[e];
