@@ -25,8 +25,7 @@ var Native = function(options){
 	options = options || {};
 
 	var afterImplement = options.afterImplement || function(){};
-	var generics = options.generics;
-	generics = (generics !== false);
+	var generics = (options.generics !== false);
 	var legacy = options.legacy;
 	var initialize = options.initialize;
 	var protect = options.protect;
