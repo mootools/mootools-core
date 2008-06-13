@@ -20,11 +20,19 @@ An XMLHttpRequest Wrapper.
 * url        - (*string*: defaults to null) The URL to request.
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
 * data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
+* link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'link'.
+	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.x)
+	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
+	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
 * async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
-* encoding   - (*string*: defaults to "utf-8") The encoding to be set in the request header.
+* encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
 * autoCancel - (*boolean*: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
 * headers    - (*object*) An object to use in order to set the request headers.
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
+* evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
+* evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
+* emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '_method' (used in rails)
+* urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
 
 Request Events: events {#Request:events}
 ----------------------------------------
