@@ -33,7 +33,7 @@ Fx Method: constructor {#Fx:constructor}
 	* 'short'  - 250ms
 	* 'normal' - 500ms
 	* 'long'   - 1000ms
-* transition - (*function*: defaults to [Fx.Transitions.Sine.easeInOut](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
+* transition - (*function*: defaults to ['sine:in:out'](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
 
   transition[:in][:out] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
 
