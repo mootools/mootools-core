@@ -249,7 +249,7 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. [255, 51, 0]) instead of a string (eg. "rgb(255,51,0)").
 
 ### Returns:
 
@@ -260,7 +260,7 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 
 	"#123".hexToRgb(); //returns "rgb(17,34,51)"
 	"112233".hexToRgb(); //returns "rgb(17,34,51)"
-	"#112233".hexToRgb(true); //returns [17,34,51]
+	"#112233".hexToRgb(true); //returns [17, 34, 51]
 
 
 

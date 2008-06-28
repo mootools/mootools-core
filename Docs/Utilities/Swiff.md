@@ -29,7 +29,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
   * wMode - (*string*: defaults to 'transparent') Allows the SWF to be displayed with a transparent background.
 * properties - (*object*) Additional attributes for the object element.
 * vars - (*object*) Vars will be passed to the SWF as querystring in flashVars.
-* events - (*object*) Functions to call from the SWF. These will be available globally in the movie, and bound to the object.
+* callBacks - (*object*) Functions to call from the SWF. These will be available globally in the movie, and bound to the object.
 
 ### Returns:
 
@@ -38,7 +38,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 ### Example:
 
 	var obj = new Swiff('myMovie.swf', {
-		id: 'myBeautifulMovie'
+		id: 'myBeautifulMovie',
 		width: 500,
 		height: 400,
 		params: {
@@ -49,7 +49,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 			myVariable: myJsVar,
 			myVariableString: 'hello'
 		},
-		events: {
+		callBacks: {
 			load: myOnloadFunc
 		}
 	});

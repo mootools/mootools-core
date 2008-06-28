@@ -72,7 +72,7 @@ Adds functions to the end of the call stack of the Chain instance.
 		function(){ this.start(0,1); },
 		function(){ this.start(1,0); },
 		function(){ this.start(0,1); }
-	); //Will fade the Element in and out three times.
+	); //Will fade the Element out and in twice.
 
 
 ### See Also:
