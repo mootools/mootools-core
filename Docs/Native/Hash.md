@@ -43,7 +43,7 @@ Calls a function for each key-value pair in the object.
 
 ### Arguments:
 
-1. fn   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+1. fn   - (*function*) The function which should be executed on each item in the Hash. This function is passed the item and its key in the Hash.
 2. bind - (*object*, optional) The object to use as 'this' in the function. For more information, see [Function:bind][].
 
 #### Argument: fn
@@ -363,7 +363,7 @@ Creates a new map with the results of calling a provided function on every value
 
 ### Arguments:
 
-1. fn   - (*function*) The function to produce an element of the new Array from an element of the current one.
+1. fn   - (*function*) The function to produce an element of the new Hash from an element of the current one.
 2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
@@ -560,7 +560,7 @@ Returns an array containing all the values, in the same order as the keys return
 Hash Method: toQueryString {#Hash:toQueryString}
 ------------------------------------------------
 
-Generates a query string from key/pair values in an object and URI encodes the values.
+Generates a query string from key/value pairs in an object and URI encodes the values.
 
 ### Syntax:
 
