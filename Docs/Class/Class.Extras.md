@@ -155,7 +155,7 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 ### Implementing:
 
 - This class can be implemented into other classes to add its functionality to them.
-- Events has been designed to work well with the [Options](#Options) class when the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
+- Events has been designed to work well with the [Options](#Options) class. When the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
 
 ### Example:
 
