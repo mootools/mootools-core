@@ -52,7 +52,11 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Arguments:
 
-* Any number of the following as arguments are accepted: HTMLCollections, arrays of elements, elements, or strings as selectors.
+* Any number of the following as arguments are accepted: 
+ * HTMLCollections, 
+ * arrays of elements, 
+ * elements, or 
+ * strings as selectors.
 
 ### Returns:
 
