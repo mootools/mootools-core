@@ -6,7 +6,7 @@ All of the other Fx Classes inherit from this one.
 
 ### Implements:
 
-- [Chain][], [Events][], [Chain][]
+- [Chain][], [Events][], [Options][]
 
 
 
