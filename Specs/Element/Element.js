@@ -925,6 +925,36 @@ describe('Element.toQueryString', {
 			new Element('textarea', {name: 'textarea', value: 'textarea-value'})
 		);
 		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
+	},
+
+	"should return a query string containing even empty values, single select must have a selected option": function() {
+		var form = new Element('form').adopt(
+			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
+			new Element('select', {name: 'select[]'}).adopt(
+				new Element('option', {name: 'none', value: '', html: '--', selected: true}),
+				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+				new Element('option', {name: 'saab', value: 'saab', html: 'Saab'}),
+				new Element('option', {name: 'opel', value: 'opel', html: 'Opel'}),
+				new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
+			),
+			new Element('textarea', {name: 'textarea', value: ''})
+		);
+		value_of(form.toQueryString()).should_be('input=&select[]=&textarea=');
+	},
+
+	"should return a query string containing even empty values, multiple select may have no selected options": function() {
+		var form = new Element('form').adopt(
+			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
+			new Element('select', {name: 'select[]', multiple: true}).adopt(
+				new Element('option', {name: 'none', value: '', html: '--'}),
+				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+				new Element('option', {name: 'saab', value: 'saab', html: 'Saab'}),
+				new Element('option', {name: 'opel', value: 'opel', html: 'Opel'}),
+				new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
+			),
+			new Element('textarea', {name: 'textarea', value: ''})
+		);
+		value_of(form.toQueryString()).should_be('input=&textarea=');
 	}
 
 });

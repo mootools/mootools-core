@@ -423,7 +423,7 @@ Element.implement({
 				return opt.value;
 			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
 			$splat(value).each(function(val){
-				if (val) queryString.push(el.name + '=' + encodeURIComponent(val));
+				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
