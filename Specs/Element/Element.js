@@ -914,17 +914,68 @@ describe('Element.toQueryString', {
 	},
 
 	"should return a query string from the Element's form Elements": function(){
+		var form = new Element('form',{'html':'<input type="checkbox" name="input" value="checked" checked="checked" />'+
+			'<select name="select[]" multiple="multiple" size="5">'+
+				'<option name="none" value="">--</option>'+
+				'<option name="volvo" value="volvo">Volvo</option>'+
+				'<option selected="selected" name="saab" value="saab">Saab</option>'+
+				'<option selected="selected" name="opel" value="opel">Opel</option>'+
+				'<option name="bmw" value="bmw">BMW</option>'+
+			'</select>'+
+			'<textarea name="textarea">textarea-value</textarea>'})
+		// var form = new Element('form').adopt(
+		// 	new Element('input', {name: 'input', type: 'checkbox', checked: true, value: 'checked'}),
+		// 	new Element('select', {name: 'select[]', multiple: true}).adopt(
+		// 		new Element('option', {name: 'volvo', value: 'volvo', text: 'Volvo'}),
+		// 		new Element('option', {name: 'saab', value: 'saab', text: 'Saab', selected: true}),
+		// 		new Element('option', {name: 'opel', value: 'opel', text: 'Opel', selected: true}),
+		// 		new Element('option', {name: 'bmw', value: 'bmw', text: 'BMW'})
+		// 	),
+		// 	new Element('textarea', {name: 'textarea', value: 'textarea-value'})
+		// );
+		// value_of(form.getElements('option').filter(function(e){return e.get('selected')}).length).should_be(2);
+		// value_of(form.getElements('option[selected]').length).should_be(2);
+		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
+	},
+
+	"should return a query string containing even empty values, single select must have a selected option": function() {
 		var form = new Element('form').adopt(
-			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: 'checked'}),
-			new Element('select', {name: 'select[]', multiple: true}).adopt(
+			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
+			new Element('select', {name: 'select[]'}).adopt(
+				new Element('option', {name: 'none', value: '', html: '--', selected: true}),
 				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
-				new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
-				new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: true}),
+				new Element('option', {name: 'saab', value: 'saab', html: 'Saab'}),
+				new Element('option', {name: 'opel', value: 'opel', html: 'Opel'}),
 				new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
 			),
-			new Element('textarea', {name: 'textarea', value: 'textarea-value'})
+			new Element('textarea', {name: 'textarea', value: ''})
 		);
-		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
+		value_of(form.toQueryString()).should_be('input=&select[]=&textarea=');
+		value_of(form.getElementsByTagName('select')[0].selectedIndex).should_be(0);
+	},
+
+	"should return a query string containing even empty values, multiple select may have no selected options": function() {
+		var form = new Element('form',{'html':'<input type="checkbox" name="input" value="" checked="checked" />'+
+			'<select name="select[]" multiple="multiple" size="5">'+
+				'<option name="none" value="">--</option>'+
+				'<option name="volvo" value="volvo">Volvo</option>'+
+				'<option name="saab" value="saab">Saab</option>'+
+				'<option name="opel" value="opel">Opel</option>'+
+				'<option name="bmw" value="bmw">BMW</option>'+
+			'</select>'+
+			'<textarea name="textarea"></textarea>'})
+		// var form = new Element('form').adopt(
+		// 	new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
+		// 	new Element('select', {name: 'select[]', multiple: true}).adopt(
+		// 		new Element('option', {name: 'none', value: '', html: '--'}),
+		// 		new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+		// 		new Element('option', {name: 'saab', value: 'saab', html: 'Saab'}),
+		// 		new Element('option', {name: 'opel', value: 'opel', html: 'Opel'}),
+		// 		new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
+		// 	),
+		// 	new Element('textarea', {name: 'textarea', value: 'text'})
+		// );
+		value_of(form.toQueryString()).should_be('input=&textarea=');
 	}
 
 });
