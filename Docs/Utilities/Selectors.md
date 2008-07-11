@@ -76,14 +76,6 @@ Same as [Element:getElements](#Element:getElements), but returns only the first.
 
 ### Note:
 
-- Alternate syntax for [$E](#Element:E), where filter is the Element.
-
-Function: $E {#Element:E}
---------------------------
-
-Alias for [Element:getElement](#Element:getElement), using document as context.
-
-
 Element Method: match {#Element:match}
 --------------------------------------
 
