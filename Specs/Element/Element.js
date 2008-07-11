@@ -52,6 +52,40 @@ describe('Element constructor', {
 	'should return an Element with Element prototypes': function(){
 		var div = new Element('div');
 		value_of($defined(div.addEvent)).should_be_true();
+	},
+	
+	'should return an input checkbox that is checked': function(){
+		var form = new Element('form',{'html':'<input type="checkbox" value="" name="input" checked="checked" />'});
+		var form1 = new Element('form').adopt(
+			new Element('input', {name: 'input', type: 'checkbox', value: ''}).set('checked',true)
+		);
+		value_of(form1.get('html')).should_be(form.get('html'));
+	},
+	
+	'should return a form that works in IE6': function(){
+		var form = new Element('form',{'html':'<input type="checkbox" value="" name="input" checked="checked" />'+
+			'<select multiple="multiple" name="select[]">'+
+				'<option value="" name="none">--</option>'+
+				'<option value="volvo" name="volvo">Volvo</option>'+
+				'<option selected="selected" value="saab" name="saab">Saab</option>'+
+				'<option selected="selected" value="opel" name="opel">Opel</option>'+
+				'<option value="bmw" name="bmw">BMW</option>'+
+			'</select>'+
+			'<textarea name="textarea">text</textarea>'})
+		var form1 = new Element('form').adopt(
+			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
+			new Element('select', {name: 'select[]', multiple: true}).adopt(
+				new Element('option', {name: 'none', value: '', html: '--'}),
+				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+				new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
+				new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: true}),
+				new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
+			),
+			new Element('textarea', {name: 'textarea', text: 'text'})
+		);
+		value_of(form1.get('html')).should_be(form.get('html'));
+		value_of(form1.toQueryString()).should_be(form.toQueryString());
+		
 	}
 
 });
