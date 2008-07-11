@@ -586,7 +586,7 @@ Inserts the passed element inside the Element (that will become the parent). The
 
 ### Syntax:
 	
-	myParent.wrap(el[, where]);
+	myParent.wraps(el[, where]);
 	
 ### Arguments:
 
