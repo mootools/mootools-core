@@ -919,7 +919,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
