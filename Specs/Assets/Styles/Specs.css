@@ -210,10 +210,6 @@ p.left, p.uri {
 	font-family: Monaco, Courier New, monospace;
 }
 
-li div {
-	display: none;
-}
-
 p#footer {
 	text-align: right;
 	padding: 10px 16px 0 0;
