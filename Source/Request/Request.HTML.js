@@ -65,7 +65,7 @@ Element.Properties.load = {
 	
 	set: function(options){
 		var load = this.retrieve('load');
-		if (load) send.cancel();
+		if (load) load.cancel();
 		return this.eliminate('load').store('load:options', $extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
 	},
 
