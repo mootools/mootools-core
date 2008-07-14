@@ -20,7 +20,7 @@ var MooTools = {
 	'version': '1.2dev',
 	'build': '%build%'
 };
-      
+
 var Native = function(options){
 	options = options || {};
 
@@ -51,13 +51,13 @@ var Native = function(options){
 		afterImplement.call(obj, name, method);
 		return obj;
 	};
-	
+
 	object.implement = function(a1, a2, a3){
 		if (typeof a1 == 'string') return add(this, a1, a2, a3);
 		for (var p in a1) add(this, p, a1[p], a2);
 		return this;
 	};
-	
+
 	object.alias = function(a1, a2, a3){
 		if (typeof a1 == 'string'){
 			a1 = this.prototype[a1];
@@ -142,14 +142,14 @@ function $extend(original, extended){
 
 function $unlink(object){
 	var unlinked;
-	
+
 	switch ($type(object)){
 		case 'object':
 			unlinked = {};
 			for (var p in object) unlinked[p] = $unlink(object[p]);
 		break;
 		case 'hash':
-			unlinked = $unlink(object.getClean());
+			unlinked = new Hash(object);
 		break;
 		case 'array':
 			unlinked = [];
@@ -157,7 +157,7 @@ function $unlink(object){
 		break;
 		default: return object;
 	}
-	
+
 	return unlinked;
 };
 
@@ -231,7 +231,7 @@ var Hash = new Native({
 });
 
 Hash.implement({
-	
+
 	getLength: function(){
 		var length = 0;
 		for (var key in this){
@@ -245,7 +245,7 @@ Hash.implement({
 			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
 		}
 	},
-	
+
 	getClean: function(){
 		var clean = {};
 		for (var key in this){
