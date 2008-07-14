@@ -273,6 +273,39 @@ describe('$type', {
 
 });
 
+describe('$unlink', {
+
+	"should unlink an object recursivly": function(){
+		var inner = {b: 2};
+		var obj = {a: 1, inner: inner};
+		var copy = $unlink(obj);
+		obj.a = 10;
+		inner.b = 20;
+
+		value_of(obj.a).should_be(10);
+		value_of(obj.inner.b).should_be(20);
+		value_of($type(obj)).should_be('object');
+
+		value_of(copy.a).should_be(1);
+		value_of(copy.inner.b).should_be(2);
+		value_of($type(copy)).should_be('object');
+	},
+
+	"should unlink an Hash": function(){
+		var hash = new Hash({a: 'one'});
+		var copy = $unlink(hash);
+
+		value_of($type(hash)).should_be('hash');
+		value_of($type(copy)).should_be('hash');
+
+		copy.set('a', 'two');
+
+		value_of(hash.get('a')).should_be('one');
+		value_of(copy.get('a')).should_be('two');
+	}
+
+});
+
 var Local = Local || {};
 
 describe('Native', {
