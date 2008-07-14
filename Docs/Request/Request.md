@@ -20,7 +20,7 @@ An XMLHttpRequest Wrapper.
 * url        - (*string*: defaults to null) The URL to request.
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
 * data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
-* link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'link'.
+* link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.x)
 	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
 	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
