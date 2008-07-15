@@ -72,7 +72,7 @@ var Swiff = new Class({
 			if (params[param]) build += '<param name="' + param + '" value="' + params[param] + '" />';
 		}
 		build += '</object>';
-		this.object =  ((container) ? container.empty() : new Element('div')).set('html', build).firstChild;
+		this.object = ((container) ? container.empty() : new Element('div')).set('html', build).firstChild;
 	},
 
 	replaces: function(element){
