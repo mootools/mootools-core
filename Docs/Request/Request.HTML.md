@@ -19,9 +19,7 @@ Request Specifically made for receiving HTML.
 
 ### Options:
 
-* update       - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
-* evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
-* evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated.
+* update - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
 
 ### Events:
 
