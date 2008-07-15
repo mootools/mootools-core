@@ -11,7 +11,7 @@ var fn = function(){
 };
 
 var Rules = function(){
-	return  this + ' rules';
+	return this + ' rules';
 };
 
 var Args = function(){

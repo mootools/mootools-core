@@ -72,7 +72,7 @@ Selectors.Utils = {
 		switch (special){
 			case 'n': parsed = {a: a, b: b, special: 'n'}; break;
 			case 'odd': parsed = {a: 2, b: 0, special: 'n'}; break;
-			case 'even': parsed =  {a: 2, b: 1, special: 'n'}; break;
+			case 'even': parsed = {a: 2, b: 1, special: 'n'}; break;
 			case 'first': parsed = {a: 0, special: 'index'}; break;
 			case 'last': parsed = {special: 'last-child'}; break;
 			case 'only': parsed = {special: 'only-child'}; break;
