@@ -50,16 +50,20 @@ class MooTools
 
 end
 
-mootools = MooTools.new
-
-catch :script_not_found do
-  if ARGV.length > 0
-    ARGV.each { |script| mootools.load_script(script) }
-  else
-    mootools.full_build
+if __FILE__ == $0
+  
+  mootools = MooTools.new
+  
+  catch :script_not_found do
+    if ARGV.length > 0
+      ARGV.each { |script| mootools.load_script(script) }
+    else
+      mootools.full_build
+    end
   end
-end
 
-puts "Included:"
-puts mootools.included.join(' ')
-mootools.save('mootools.js')
+  puts "Included:"
+  puts mootools.included.join(' ')
+  mootools.save('mootools.js')
+  
+end
