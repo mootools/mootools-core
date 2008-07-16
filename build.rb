@@ -12,9 +12,9 @@ require 'rubygems'
 require 'json'
 
 class MooTools
-
+  
   attr_reader :included
-
+  
   def initialize
     @scripts = []
     @included = []
@@ -27,12 +27,12 @@ class MooTools
       end
     end
   end
-
+  
   def full_build
     @data.each_key { |name| load_script name }
     @string
   end
-
+  
   def load_script(name)
     return if @included.index(name);
     unless @data.key? name
@@ -43,11 +43,11 @@ class MooTools
     @data[name][:deps].each { |dep| load_script dep }
     @string << File.read("./Source/#{@data[name][:folder]}/#{name}.js") << "\n"
   end
-
+  
   def save(filename)
     File.open(filename, 'w') { |fh| fh.write @string }
   end
-
+  
 end
 
 if __FILE__ == $0
@@ -61,7 +61,7 @@ if __FILE__ == $0
       mootools.full_build
     end
   end
-
+  
   puts "Included:"
   puts mootools.included.join(' ')
   mootools.save('mootools.js')
