@@ -71,7 +71,7 @@ describe('Element constructor', {
 				'<option selected="selected" value="opel" name="opel">Opel</option>'+
 				'<option value="bmw" name="bmw">BMW</option>'+
 			'</select>'+
-			'<textarea name="textarea">text</textarea>'})
+			'<textarea name="textarea">text</textarea>'});
 		var form1 = new Element('form').adopt(
 			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
 			new Element('select', {name: 'select[]', multiple: true}).adopt(
@@ -833,7 +833,7 @@ describe('Element.clone', {
 
 	'should remove all custom attributes': function(){
 		var div = new Element('div', {custom: ['attribute']});
-		var clone  = div.clone();
+		var clone = div.clone();
 		var custom = clone.custom;
 		value_of(custom).should_be_undefined();
 	}
@@ -956,7 +956,7 @@ describe('Element.toQueryString', {
 				'<option selected="selected" name="opel" value="opel">Opel</option>'+
 				'<option name="bmw" value="bmw">BMW</option>'+
 			'</select>'+
-			'<textarea name="textarea">textarea-value</textarea>'})
+			'<textarea name="textarea">textarea-value</textarea>'});
 		// var form = new Element('form').adopt(
 		// 	new Element('input', {name: 'input', type: 'checkbox', checked: true, value: 'checked'}),
 		// 	new Element('select', {name: 'select[]', multiple: true}).adopt(
@@ -997,7 +997,7 @@ describe('Element.toQueryString', {
 				'<option name="opel" value="opel">Opel</option>'+
 				'<option name="bmw" value="bmw">BMW</option>'+
 			'</select>'+
-			'<textarea name="textarea"></textarea>'})
+			'<textarea name="textarea"></textarea>'});
 		// var form = new Element('form').adopt(
 		// 	new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
 		// 	new Element('select', {name: 'select[]', multiple: true}).adopt(
