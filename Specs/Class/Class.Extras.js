@@ -9,16 +9,18 @@ License:
 var Local = Local || {};
 
 describe('Chain Class', {
-
-	'before all': function(){
+	
+	'before all': function(){},
+	
+	'should chain any number of functions': function(){
 		Local.Chain = new Class({
-
+			
 			Implements: Chain,
-
+			
 			initialize: function(){
 				var self = this;
 				this.arr = [];
-
+				
 				this.chain(function(){
 					self.arr.push(0);
 				}, function(){
@@ -27,19 +29,43 @@ describe('Chain Class', {
 					self.arr.push(2);
 				});
 			}
-
+			
 		});
-	},
-
-	'should chain any number of functions': function(){
 		var myChain = new Local.Chain(), chains = myChain.$chain;
-
+		
+		value_of(chains).should_not_be(undefined);
+		value_of(chains[0]).should_not_be(undefined);
+		chains[0]();
+		value_of(myChain.arr[0]).should_be(0);
+	},
+	
+	'should allow an array of functions': function(){
+		Local.Chain1 = new Class({
+			
+			Implements: Chain,
+			
+			initialize: function(){
+				var self = this;
+				this.arr = [];
+				
+				this.chain([function(){
+					self.arr.push(0);
+				}, function(){
+					self.arr.push(1);
+				}, function(){
+					self.arr.push(2);
+				}]);
+			}
+			
+		});
+		var myChain = new Local.Chain1(), chains = myChain.$chain;
+		
 		value_of(chains).should_not_be(undefined);
 		value_of(chains[0]).should_not_be(undefined);
 		chains[0]();
 		value_of(myChain.arr[0]).should_be(0);
 	}
-
+	
 });
 
 

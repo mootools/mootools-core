@@ -58,7 +58,7 @@ Adds functions to the end of the call stack of the Chain instance.
 
 ### Arguments:
 
-1. Any number of functions.
+1. fn - (*function* or *array*) The function (or array of functions) to add to the chain call stack. Will accept and number of functions or arrays of functions.
 
 ### Returns:
 
