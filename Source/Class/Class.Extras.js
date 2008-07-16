@@ -9,7 +9,7 @@ License:
 var Chain = new Class({
 
 	chain: function(){
-		this.$chain = (this.$chain || []).extend(arguments);
+		this.$chain = (this.$chain || []).extend(Array.flatten(arguments));
 		return this;
 	},
 
