@@ -148,12 +148,12 @@
 	"Request": {
 
 		"Request": {
-			"deps": ["Class.Extras"],
+			"deps": ["Class.Extras", "Element"],
 			"desc": "Powerful all purpose Request Class. Uses XMLHTTPRequest."
 		},
 
 		"Request.HTML": {
-			"deps": ["Request", "Element"],
+			"deps": ["Request"],
 			"desc": "Extends the basic Request Class with additional methods for interacting with HTML responses."
 		},
 
