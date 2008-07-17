@@ -150,7 +150,7 @@ Selectors.Utils = {
 			return ':)' + m2;
 		}).split(':)');
 		
-		var items, match, filtered, item;
+		var items, filtered, item;
 		
 		for (var i = 0, l = selectors.length; i < l; i++){
 			

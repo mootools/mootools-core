@@ -84,7 +84,7 @@ var IFrame = new Native({
 			});
 			if (host && host == window.location.host){
 				var win = new Window(iframe.contentWindow);
-				var doc = new Document(iframe.contentWindow.document);
+				new Document(iframe.contentWindow.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
