@@ -15,12 +15,13 @@ class MooTools
 
   attr_reader :included
 
-  def initialize
+  def initialize(path = File.dirname(__FILE__))
+    @path = path
     @scripts = []
     @included = []
     @string = ""
     @data = {};
-    json = JSON.load(File.read('./Source/scripts.json'))
+    json = JSON.load(File.read(@path + '/Source/scripts.json'))
     json.each_pair do |folder, group|
       group.each_pair do |script, properties|
         @data[script] = {:folder => folder, :deps => properties["deps"]}
@@ -34,18 +35,22 @@ class MooTools
   end
 
   def load_script(name)
-    return if @included.index(name);
+    return if @included.index(name) || name == 'None';
     unless @data.key? name
       puts "Script '#{name}' not found!"
       throw :script_not_found
     end
     @included.push name
     @data[name][:deps].each { |dep| load_script dep }
-    @string << File.read("./Source/#{@data[name][:folder]}/#{name}.js") << "\n"
+    @string << File.read(@path + "/Source/#{@data[name][:folder]}/#{name}.js") << "\n"
   end
 
   def save(filename)
-    File.open(filename, 'w') { |fh| fh.write @string }
+    File.open(filename, 'w') { |fh| fh.write to_s }
+  end
+
+  def to_s
+    @string
   end
 
 end
