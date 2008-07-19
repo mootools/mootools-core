@@ -144,8 +144,11 @@ describe('Array.link', {
 describe('Array.extend', {
 
 	'should extend an array': function(){
-		var arr = [1,2,3,4].extend([1,2,3,4,5,6,7]);
-		value_of(arr).should_be([1,2,3,4,1,2,3,4,5,6,7]);
+		var a = [1,2,4];
+		var b = [2,3,4,5];
+		a.extend(b);
+		value_of(a).should_be([1,2,4,2,3,4,5]);
+		value_of(b).should_be([2,3,4,5]);
 	}
 
 });
@@ -153,7 +156,7 @@ describe('Array.extend', {
 describe('Array.combine', {
 
 	'should combine an array': function(){
-		var arr = [1,2,3,4].combine([1,2,3,4,5,6,7]);
+		var arr = [1,2,3,4].combine([3,1,4,5,6,7]);
 		value_of(arr).should_be([1,2,3,4,5,6,7]);
 	}
 
