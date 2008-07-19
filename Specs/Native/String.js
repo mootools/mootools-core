@@ -37,7 +37,7 @@ describe('String.clean', {
 
 	'should clean all extraneous whitespace from the string': function(){
 		value_of('  i     like    cookies   '.clean()).should_be("i like cookies");
-		value_of('  i \n like \n cookies \n\t  '.clean()).should_be("i like cookies");
+		value_of('  i\nlike \n cookies \n\t  '.clean()).should_be("i like cookies");
 	}
 
 });
@@ -46,7 +46,7 @@ describe('String.trim', {
 
 	'should trim left and right whitespace from the string': function(){
 		value_of('  i like cookies  '.trim()).should_be('i like cookies');
-		value_of('  i  like  cookies  '.trim()).should_be('i  like  cookies');
+		value_of('  i  \tlike  cookies  '.trim()).should_be('i  \tlike  cookies');
 	}
 
 });
