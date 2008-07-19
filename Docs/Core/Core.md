@@ -149,24 +149,20 @@ Function: $extend {#extend}
 
 Copies all the properties from the second object passed in to the first object passed in.
 
-In myObject.extend = $extend, the first parameter will become myObject, and the extend function will only need one parameter.
-
 ### Syntax:
 
 	$extend(original, extended);
 
 ### Arguments:
 
-1. original - (*object*) The object to be extended.
-2. extended - (*object*) The object whose properties will be copied to src.
+1. original  - (*object*) The object to be extended.
+2. extension - (*object*) The object whose properties will be copied to original.
 
 ### Returns:
 
 * (*object*) The first object passed in, extended.
 
 ### Examples:
-
-#### Normal Extension:
 
 	var firstObj = {
 		'name': 'John',
@@ -178,7 +174,7 @@ In myObject.extend = $extend, the first parameter will become myObject, and the 
 		'lastName': 'Dorian'
 	};
 	$extend(firstObj, secondObj);
-	//firstObj is now: { 'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male' };
+	//firstObj is now: {'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male'};
 
 
 
