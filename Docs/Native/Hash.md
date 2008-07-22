@@ -475,10 +475,10 @@ Returns true if at least one value in the object satisfies the provided testing 
 
 ### Arguments:
 
-1. [fn][]   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+1. fn   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
 2. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
-#### Argument: fn {#Hash:some:fn}
+#### Argument: fn
 
 ##### Syntax:
 
@@ -586,13 +586,6 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 	myHash.toQueryString(); //returns "apple=red&lemon=yellow"
 
 
-
-[Array:indexOf]: /Native/Array/#Array:indexOf
-[fn]: #Hash:some:fn
-[Hash:getKeys]: #Hash:getKeys
-[Hash:getValues]: #Hash:getValues
-
-
 Utility Functions {#Utility}
 ============================
 
@@ -606,5 +599,8 @@ Shortcut for the new [Hash](/Core/#Hash).
 - [Hash][]
 
 
-
-[Hash]: /Native/Hash
+[Hash]: #Hash
+[Array:indexOf]: /Native/Array/#Array:indexOf
+[Hash:getKeys]: #Hash:getKeys
+[Hash:getValues]: #Hash:getValues
+[Function:bind]: Native/Function#Function:bind

@@ -31,7 +31,7 @@ An XMLHttpRequest Wrapper.
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
 * evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
-* emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '_method' (used in rails)
+* emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
 
 Request Events: events {#Request:events}

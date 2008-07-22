@@ -18,7 +18,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 
 ###	Options:
 
-* id - (*string*: defaults to 'Swiff_' + unique id) The id of the SWF object.
+* id - (*string*: defaults to 'Swiff\_' + unique id) The id of the SWF object.
 * width - (*number*: defaults to 1) The width of the SWF object.
 * height - (*number*: defaults to 1) The height of the SWF object.
 * container - (*element*) The container into which the SWF object will be injected.

@@ -48,10 +48,10 @@ Gets all the elements within an element that match the given selector.
 
 - Supports these operators in attribute selectors:
 
-	- = : is equal to
-	- ^= : starts-with
-	- $= : ends-with
-	- != : is not equal to
+	- '=' : is equal to
+	- '^=' : starts-with
+	- '$=' : ends-with
+	- '!=' : is not equal to
 
 Element Property: getElement {#Element:getElement}
 --------------------------------------------------
