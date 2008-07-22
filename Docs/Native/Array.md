@@ -531,7 +531,7 @@ Array Method: rgbToHex {#Array:rgbToHex}
 ----------------------------------------
 
 Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
-[255,255,255], or [255,255,255,1]
+\[255,255,255\], or \[255,255,255,1\]
 
 ### Syntax:
 
@@ -539,7 +539,7 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. \['ff','33','00'\]) instead of a string (eg. "#ff3300").
 
 ### Returns:
 

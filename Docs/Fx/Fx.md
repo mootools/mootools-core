@@ -35,7 +35,7 @@ Fx Method: constructor {#Fx:constructor}
 	* 'long'   - 1000ms
 * transition - (*function*: defaults to ['sine:in:out'](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
 
-  transition[:in][:out] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
+  transition\[:in\]\[:out\] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
 
 ### Events:
 
@@ -164,6 +164,6 @@ Resume a previously paused effect.
 [Fx]: #Fx
 [Chain]: /Class/Class.Extras#Chain
 [Events]: /Class/Class.Extras#Events
-[Chain]: /Class/Class.Extras#Options
+[Options]: /Class/Class.Extras#Options
 [Fx.Tween]: /Fx/Fx.Tween
 [Fx.Morph]: /Fx/Fx.Morph

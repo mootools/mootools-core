@@ -119,7 +119,7 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 #### Arguments:
 
-1. options - (*object, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
+1. options - (*object*, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
 
 #### Returns:
 
@@ -170,5 +170,6 @@ Updates the content of the Element with a Request.HTML GET request.
 
 ### See Also:
 
+- [$][], [Request](/Request/Request)
+
 [$]: /Element/Element/#dollar
-[Request]: /Request/Request

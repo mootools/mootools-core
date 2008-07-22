@@ -17,7 +17,7 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 ###	Options:
 
-* secure  - (*boolean*: defaults to true) If set to true, a syntax check will be done on the result JSON (see <JSON.decode>).
+* secure  - (*boolean*: defaults to true) If set to true, a syntax check will be done on the result JSON (see [JSON.decode](/Utilities/JSON#JSON:decode)).
 
 ### Events:
 

@@ -21,7 +21,7 @@ The Tween effect, used to transition any CSS property from one value to another.
 ### Arguments:
 
 1. element  - (*mixed*) An Element or the string id of an Element to apply the transition to.
-2. options  - (*object*, optional) The <Fx> options object, plus the options described below:
+2. options  - (*object*, optional) The [Fx][] options object, plus the options described below:
 	
 ### Options:
 
