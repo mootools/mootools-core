@@ -417,7 +417,7 @@ Element.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		this.getElements('input, select, textarea').each(function(el){
+		this.getElements('input, select, textarea', true).each(function(el){
 			if (!el.name || el.disabled) return;
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
@@ -437,9 +437,7 @@ Element.implement({
 
 	getProperties: function(){
 		var args = $A(arguments);
-		return args.map(function(attr){
-			return this.getProperty(attr);
-		}, this).associate(args);
+		return args.map(this.getProperty, this).associate(args);
 	},
 
 	setProperty: function(attribute, value){
