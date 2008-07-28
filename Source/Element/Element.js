@@ -550,10 +550,6 @@ Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
 }};
 
-Element.Properties.href = {get: function(){
-	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
-}};
-
 Element.Properties.html = {set: function(){
 	return this.innerHTML = Array.flatten(arguments).join('');
 }};
