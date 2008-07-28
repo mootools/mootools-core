@@ -53,7 +53,7 @@ describe('Element constructor', {
 		var div = new Element('div');
 		value_of($defined(div.addEvent)).should_be_true();
 	},
-	
+
 	'should return an input checkbox that is checked': function(){
 		var form = new Element('form',{'html':'<input type="checkbox" value="" name="input" checked="checked" />'});
 		var form1 = new Element('form').adopt(
@@ -61,7 +61,7 @@ describe('Element constructor', {
 		);
 		value_of(form1.get('html')).should_be(form.get('html'));
 	},
-	
+
 	'should return a form that works in IE6': function(){
 		var form = new Element('form',{'html':'<input type="checkbox" value="" name="input" checked="checked" />'+
 			'<select multiple="multiple" name="select[]">'+
@@ -85,7 +85,7 @@ describe('Element constructor', {
 		);
 		value_of(form1.get('html')).should_be(form.get('html'));
 		value_of(form1.toQueryString()).should_be(form.toQueryString());
-		
+
 	}
 
 });
@@ -414,10 +414,34 @@ describe('Element.get `tag`', {
 describe('Element.get', {
 
 	"should `get` an Element's property, otherwise null": function(){
-		var myElement = new Element('a', {href: 'http://mootools.net/', title: 'mootools!'});
-		value_of(myElement.get('href')).should_be('http://mootools.net/');
+		var myElement = new Element('a', {href: 'help.html', title: 'mootools!'});
 		value_of(myElement.get('title')).should_be('mootools!');
 		value_of(myElement.get('rel')).should_be_null();
+	},
+
+	"should `get` an absolute href": function(){
+		var link = new Element('a', {href: "http://google.com/"});
+		value_of(link.get('href')).should_be("http://google.com/");
+	},
+
+	"should `get` an absolute href to the same domain": function(){
+		var link = new Element('a', {href: window.location.href});
+		value_of(link.get('href')).should_be(window.location.href);
+	},
+
+	"should `get` a relative href": function(){
+		var link = new Element('a', {href: "../index.html"});
+		value_of(link.get('href')).should_be("../index.html");
+	},
+
+	"should `get` a host absolute href": function(){
+		var link = new Element('a', {href: "/developers"});
+		value_of(link.get('href')).should_be("/developers");
+	},
+
+	"should return null when href is not set": function(){
+		var link = new Element('a');
+		value_of(link.get('href')).should_be(null);
 	}
 
 });
