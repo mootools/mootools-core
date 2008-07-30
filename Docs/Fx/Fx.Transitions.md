@@ -113,7 +113,7 @@ Returns an [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' 
 
 ### Arguments:
 
-1. transition - (*function*) Can be a <Fx.Transitions> function or a user-provided function which will be extended with easing functions.
+1. transition - (*function*) Can be a [Fx.Transitions][] function or a user-provided function which will be extended with easing functions.
 2. params     - (*mixed*, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
 
 ### Returns:

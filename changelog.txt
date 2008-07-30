@@ -1,0 +1,1 @@
+[CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in.

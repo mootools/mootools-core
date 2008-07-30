@@ -249,7 +249,7 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. [255, 51, 0]) instead of a string (eg. "rgb(255,51,0)").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. \[255, 51, 0\]) instead of a string (eg. "rgb(255,51,0)").
 
 ### Returns:
 
@@ -276,7 +276,7 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. \['ff','33','00'\]) instead of a string (eg. "#ff3300").
 
 ### Returns:
 

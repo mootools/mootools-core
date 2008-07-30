@@ -84,7 +84,7 @@ var IFrame = new Native({
 			});
 			if (host && host == window.location.host){
 				var win = new Window(iframe.contentWindow);
-				var doc = new Document(iframe.contentWindow.document);
+				new Document(iframe.contentWindow.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
@@ -417,7 +417,7 @@ Element.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		this.getElements('input, select, textarea').each(function(el){
+		this.getElements('input, select, textarea', true).each(function(el){
 			if (!el.name || el.disabled) return;
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
@@ -437,9 +437,7 @@ Element.implement({
 
 	getProperties: function(){
 		var args = $A(arguments);
-		return args.map(function(attr){
-			return this.getProperty(attr);
-		}, this).associate(args);
+		return args.map(this.getProperty, this).associate(args);
 	},
 
 	setProperty: function(attribute, value){
@@ -550,10 +548,6 @@ Element.Properties.style = {
 
 Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
-}};
-
-Element.Properties.href = {get: function(){
-	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
 }};
 
 Element.Properties.html = {set: function(){

@@ -707,12 +707,12 @@ Clones the Element and returns the cloned one.
 
 ### Note:
 
-- The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event/#Element:cloneEvents).
+- The returned Element does not have attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event#Element:cloneEvents).
 - The clone element and its children are stripped of ids, unless otherwise specified by the keepid parameter.
 
 ### See Also:
 
-- [Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
+- [Element:cloneEvents](/Element/Element.Event#Element:cloneEvents).
 
 
 
