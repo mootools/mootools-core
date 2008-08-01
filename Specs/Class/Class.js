@@ -99,6 +99,28 @@ describe('Class.constructor', {
 		value_of(myCat.initialized).should_be_true();
 		value_of(myCat.eat()).should_be('yum!');
 		value_of(myCat.color()).should_be('green');
+	},
+	
+	'should set the parent': function(){
+		
+		var Cat = new Class({
+			Implements: [Options],
+			initialize: function(){}
+		});
+		
+		var Kitten = new Class({
+			
+			Extends: Cat,
+			
+			Implements: [Options],
+			
+			initialize: function(options){
+				this.parent(options);
+			}
+		});
+		
+		var myKitten = new Kitten({ key:'value' });
+		
 	}
 
 });
