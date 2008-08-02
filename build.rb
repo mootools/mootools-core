@@ -18,14 +18,15 @@ module MooTools
     attr_accessor :build_path
     attr_accessor :dependency_path
     
-    def initialize
+    def initialize(path = File.dirname(__FILE__))
+      @path = path
       @scripts = []
       @included = []
       @string = ""
       @data = {}
       
-      @build_path      ||= File.dirname(__FILE__) + '/mootools.js'
-      @dependency_path ||= File.dirname(__FILE__) + '/Source/scripts.json'
+      @build_path      ||= @path + '/mootools.js'
+      @dependency_path ||= @path + '/Source/scripts.json'
       
       json = JSON.load(File.read( dependency_path ))
       json.each_pair do |folder, group|
@@ -41,14 +42,14 @@ module MooTools
     end
     
     def load_script(name)
-      return if @included.index(name);
+      return if @included.index(name) || name == 'None';
       unless @data.key? name
         puts "Script '#{name}' not found!"
         throw :script_not_found
       end
       @included.push name
       @data[name][:deps].each { |dep| load_script dep }
-      @string << File.read( File.dirname(__FILE__) + "/Source/#{@data[name][:folder]}/#{name}.js" ) << "\n"
+      @string << File.read(@path + "/Source/#{@data[name][:folder]}/#{name}.js") << "\n"
     end
     
     def to_s
@@ -70,7 +71,7 @@ module MooTools
     
     def self.build!(argv)
       mootools = MooTools::Build.new
-
+      
       catch :script_not_found do
         if argv.length > 0
           argv.each { |script| mootools.load_script(script) }
@@ -78,7 +79,7 @@ module MooTools
           mootools.full_build
         end
       end
-
+      
       puts "MooTools Built '#{mootools.build_path}'"
       print "  Included Scripts:","\n    "
       puts mootools.included.join(" ")
@@ -88,7 +89,6 @@ module MooTools
     
   end
 end
-
 if __FILE__ == $0
   
   MooTools::Build.build! ARGV
