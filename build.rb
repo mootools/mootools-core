@@ -22,7 +22,6 @@ module MooTools
       @path = path
       @scripts = []
       @included = []
-      @string = ""
       @data = {}
       
       @build_path      ||= @path + '/mootools.js'
@@ -49,12 +48,15 @@ module MooTools
       end
       @included.push name
       @data[name][:deps].each { |dep| load_script dep }
+      @string ||= ""
       @string << File.read(@path + "/Source/#{@data[name][:folder]}/#{name}.js") << "\n"
     end
     
-    def to_s
-      @string.sub('%build%', build_number)
+    def build
+      @string ||= full_build
+      @string.sub!('%build%', build_number)
     end
+    alias :to_s :build
     
     def build_number
       ref =  File.read(File.dirname(__FILE__) + '/.git/HEAD').chomp.match(/ref: (.*)/)[1]
