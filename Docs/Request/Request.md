@@ -26,7 +26,6 @@ An XMLHttpRequest Wrapper.
 	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
 * async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
 * encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
-* autoCancel - (*boolean*: defaults to false) When set to true, automatically cancels the already running request if another one is sent. Otherwise, ignores any new calls while a request is in progress.
 * headers    - (*object*) An object to use in order to set the request headers.
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
 * evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
