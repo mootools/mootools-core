@@ -579,10 +579,7 @@ Element Method: wraps {#Element:wraps}
 
 Works like [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element around its target.
 
-Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
-
-Inserts the passed element inside the Element (that will become the parent). The Element will also move to the passed element position.
-
+The Element is moved to the position of the passed element and becomes the parent.
 
 ### Syntax:
 	
@@ -590,12 +587,29 @@ Inserts the passed element inside the Element (that will become the parent). The
 	
 ### Arguments:
 
-1. el - (*mixed*) The id of an element, an Element, or an array of elements.
+1. el - (*mixed*) The id of an element or an Element.
 2. where - (*string*, optional: default 'bottom') The place to insert the passed in element. Can be 'top' or 'bottom'.
 
 ### Returns:
 
 * (*element*) This Element.
+
+### Examples:
+
+##### HTML
+
+	<div id="myFirstElement"></div>
+
+##### JavaScript
+
+	var mySecondElement = new Element('div', {id: 'mySecondElement'});
+	mySecondElement.wraps($('myFirstElement'));
+
+##### Resulting HTML
+
+	<div id="mySecondElement">
+		<div id="myFirstElement"></div>
+	</div>
 
 
 
