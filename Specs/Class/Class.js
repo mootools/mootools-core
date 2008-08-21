@@ -99,8 +99,54 @@ describe('Class.constructor', {
 		value_of(myCat.initialized).should_be_true();
 		value_of(myCat.eat()).should_be('yum!');
 		value_of(myCat.color()).should_be('green');
+	},
+	
+	'should set the parent regardless of arguments.callee.caller support': function(){
+		// This should specifically test against the fallback eval parent setting thing.
+		
+		var TestOptions = new Class({
+			
+			regexp: /^on[A-Z]/,
+			regexpFunctionString: function(){return "/^on[A-Z]/"},
+			
+			/*
+			Safari2 Chokes on RegExp Literals in a function when toString is called on it.
+			Hence any method in a Class that gets Extended that has a RegExp Literal will throw a Syntax Error in Safari2.
+			Therefore, DON'T USE REGEXP LITERALS in Class methods that may ever be extended if you care about Safari2 support!
+			*/
+			// regexpFunction: function(){return /^on[A-Z]/},
+			regexpFunction: function(){return RegExp('^on[A-Z]')},
+			
+			kick: function(txt){ return 'kicked ' + txt }
+			
+		});
+		
+		var Cat = new Class({
+			Extends: TestOptions,
+			kick: function(txt){ return this.parent('Cat ' + txt) }
+		});
+		
+		var Kitten = new Class({
+			Extends: Cat,
+			kick: function(txt){ return this.parent('Kitten ' + txt) }
+		});
+		
+		var myKitten = new Kitten;
+		
+		value_of( (new TestOptions ).kick('TestOptions') ).should_be("kicked TestOptions");
+		value_of( (new Cat         ).kick('Cat')         ).should_be("kicked Cat Cat");
+		value_of( (new Kitten      ).kick('Kitten')      ).should_be("kicked Cat Kitten Kitten");
+		
+		// Should Have Replaced Properly
+		if (!arguments.callee.caller){
+			value_of(!! (new Cat         ).kick.toString() .match('arguments.callee._parent_.call') ).should_be_true();
+			value_of(!! (new Kitten      ).kick.toString() .match('arguments.callee._parent_.call') ).should_be_true();
+		}else{
+			value_of(!! (new Cat         ).kick.toString() .match('this.parent') ).should_be_true();
+			value_of(!! (new Kitten      ).kick.toString() .match('this.parent') ).should_be_true();
+		}
 	}
-
+	
 });
 
 describe('Class::implement', {
