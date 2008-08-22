@@ -556,9 +556,42 @@ Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
 }};
 
-Element.Properties.html = {set: function(){
-	return this.innerHTML = Array.flatten(arguments).join('');
-}};
+(function(){
+
+	var translations = new Hash({
+		table:  [1, '<table>', '</table>'],
+		select: [1, '<select>', '</select>'],
+		tbody:  [2, '<table><tbody>', '</tbody></table>'],
+		tr:     [3, '<table><tbody><tr>', '</tr></tbody></table>']
+	});
+
+	translations.extend({
+		thead: translations.tbody,
+		tfoot: translations.tbody
+	});
+
+	var translate = function(tag, html){
+		var wrap = translations[tag], first = new Element('div');
+		first.innerHTML = wrap[1] + html + wrap[2];
+		wrap[0].times(function(){ first = first.firstChild; });
+		return first.childNodes;
+	};
+
+	var setHTML = function(){
+		this.innerHTML = Array.flatten(arguments).join('');
+	};
+
+	var html = {
+		set: Browser.Engine.trident ? function(){
+			var html = Array.flatten(arguments).join(''), tag = this.get('tag');
+			if (translations.has(tag)) this.empty().adopt(translate(tag, html));
+			else setHTML.apply(this, arguments);
+		} : setHTML
+	};
+
+	html.erase = html.set;
+	Element.Properties.html = html;
+})();
 
 Native.implement([Element, Window, Document], {
 

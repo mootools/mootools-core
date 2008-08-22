@@ -358,6 +358,43 @@ describe('Element.set html', {
 		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
 		var parent = new Element('div').set('html', html);
 		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase());
+	},
+
+	'should set the html of a select Element': function(){
+		var html = '<option>option 1</option><option selected="selected">option 2</option>';
+		var select = new Element('select').set('html', html);
+		value_of(select.getChildren().length).should_be(2);
+		value_of(select.options.length).should_be(2);
+		value_of(select.selectedIndex).should_be(1);
+	},
+
+	'should set the html of a table Element': function(){
+		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
+		var table = new Element('table').set('html', html);
+		value_of(table.getChildren().length).should_be(1);
+		value_of(table.getFirst().getFirst().getChildren().length).should_be(2);
+		value_of(table.getFirst().getLast().getFirst().className).should_be('cell');
+	},
+
+	'should set the html of a tbody Element': function(){
+		var html = '<tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr>';
+		var tbody = new Element('tbody').inject(new Element('table')).set('html', html);
+		value_of(tbody.getChildren().length).should_be(2);
+		value_of(tbody.getLast().getFirst().className).should_be('cell');
+	},
+
+	'should set the html of a tr Element': function(){
+		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
+		var tr = new Element('tr').inject(new Element('tbody').inject(new Element('table'))).set('html', html);
+		value_of(tr.getChildren().length).should_be(2);
+		value_of(tr.getFirst().className).should_be('cell');
+	},
+
+	'should set the html of a td Element': function(){
+		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
+		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
+		value_of(td.getChildren().length).should_be(2);
+		value_of(td.getFirst().className).should_be('span');
 	}
 
 });
@@ -969,7 +1006,7 @@ describe('Element.clone', {
 		value_of(select2.options[4].selected).should_be_true();
 	},
 
-	'should clone custom attributes but not custom properties': function(){
+	'should clone custom attributes': function(){
 		var div = new Element('div');
 		div.setAttribute('foo', 'FOO');
 		div.setAttribute('bar', ['BAR']);
