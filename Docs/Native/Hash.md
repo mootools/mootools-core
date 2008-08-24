@@ -557,6 +557,29 @@ Returns an array containing all the values, in the same order as the keys return
 
 
 
+Hash Method: getLength {#Hash:getLength}
+----------------------------------------
+
+Returns the number of keys in the Hash.
+
+### Syntax:
+
+	var length = myHash.getLength();
+
+### Returns:
+
+* (*number*) The length of the Hash.
+
+### Examples:
+
+	var hash = new Hash({
+		'name': 'John',
+		'lastName': 'Doe'
+	});
+	hash.getLength(); // returns 2
+
+
+
 Hash Method: toQueryString {#Hash:toQueryString}
 ------------------------------------------------
 
