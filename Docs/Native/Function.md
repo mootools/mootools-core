@@ -38,7 +38,7 @@ Base function for creating functional closures which is used by all other Functi
 ### Example:
 
 	var myFunction = function(){
-		alert("I'm a function. :)");
+		alert("I'm a function. :D");
 	};
 
 	var mySimpleFunction = myFunction.create(); //Just a simple copy.
