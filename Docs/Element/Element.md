@@ -1177,7 +1177,7 @@ If the select is single, it will return an array with only one item.
 
 
 Element Method: getProperty {#Element:getProperty}
-------------------------------------------------------
+--------------------------------------------------
 
 Returns a single element attribute.
 
@@ -1335,7 +1335,7 @@ Removes an attribute from the Element.
 
 
 Element Method: removeProperties {#Element:removeProperties}
---------------------------------------------------------
+------------------------------------------------------------
 
 Removes numerous attributes from the Element.
 
@@ -1368,7 +1368,7 @@ Removes numerous attributes from the Element.
 	
 
 Element Method: store {#Element:store}
---------------------------------------------------------
+--------------------------------------
 
 Stores an item in the Elements Storage, linked to this Element.
 
@@ -1392,18 +1392,19 @@ Stores an item in the Elements Storage, linked to this Element.
 
 
 Element Method: retrieve {#Element:retrieve}
---------------------------------------------------------
+--------------------------------------------
 
-Retrieves a value from the Elements storage
+Retrieves a value from the Elements storage.
 
 
 ### Syntax:
 
-	myElement.retrieve(key);
+	myElement.retrieve(key[, default]);
 
 ### Arguments:
 
 1. key - (*string*) The key you want to retrieve from the storage.
+2. default - (*mixed*, optional) Default value to store and return if no value is stored.
 
 ### Returns:
 
