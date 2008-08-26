@@ -527,6 +527,36 @@ Flattens a multidimensional array into a single array.
 
 
 
+Array Method: hexToRgb {#Array:hexToRgb}
+----------------------------------------
+
+Converts an hexidecimal color value to RGB. Input array must be the following hexidecimal color format.
+\['FF','FF','FF'\]
+
+### Syntax:
+
+	myArray.hexToRgb([array]);
+
+### Arguments:
+
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. \[255, 51, 0\]) instead of a string (eg. "rgb(255,51,0)").
+
+### Returns:
+
+* (*string*) A string representing the color in RGB.
+* (*array*) If the array flag is set, an array will be returned instead.
+
+### Examples:
+
+	['11','22','33'].hexToRgb(); //returns "rgb(17,34,51)"
+	['11','22','33'].hexToRgb(true); //returns [17, 34, 51]
+
+### See Also:
+
+- [String:hexToRgb](/Native/String/#hexToRgb)
+
+
+
 Array Method: rgbToHex {#Array:rgbToHex}
 ----------------------------------------
 
