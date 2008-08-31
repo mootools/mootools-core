@@ -8,17 +8,19 @@ License:
 
 var Chain = new Class({
 
+	$chain: [],
+
 	chain: function(){
-		this.$chain = (this.$chain || []).extend(Array.flatten(arguments));
+		this.$chain.extend(Array.flatten(arguments));
 		return this;
 	},
 
 	callChain: function(){
-		return (this.$chain && this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
+		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
 	},
 
 	clearChain: function(){
-		if (this.$chain) this.$chain.empty();
+		this.$chain.empty();
 		return this;
 	}
 

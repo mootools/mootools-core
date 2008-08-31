@@ -96,7 +96,7 @@ Removes the first function of the Chain instance stack and executes it. The next
 
 ### Returns:
 
-* (*object*) This Class instance.
+* (*mixed*) The return value of the "next" function or false when the chain was empty.
 
 ### Example:
 
