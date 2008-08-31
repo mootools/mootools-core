@@ -342,27 +342,31 @@ Element.implement({
 	},
 
 	clone: function(contents, keepid){
-		switch ($type(this)){
-			case 'element':
-				var attributes = {};
-				for (var j = 0, l = this.attributes.length; j < l; j++){
-					var attribute = this.attributes[j], key = attribute.nodeName.toLowerCase();
-					if (Browser.Engine.trident && (/input/i).test(this.tagName) && (/width|height/).test(key)) continue;
-					var value = (key == 'style' && this.style) ? this.style.cssText : attribute.nodeValue;
-					if (!$chk(value) || key == 'uid' || (key == 'id' && !keepid)) continue;
-					if (value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
+		var ie = Browser.Engine.trident;
+		var clone = this.cloneNode(!!contents);
+		var props = {input: 'checked', option: 'selected', textarea: 'value'};
+		var clean = function(node, element){
+			if (!keepid) node.removeAttribute('id');
+			if (ie){
+				node.clearAttributes();
+				node.mergeAttributes(element);
+				node.removeAttribute('uid');
+				if (node.options){
+					var no = node.options, eo = element.options;
+					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
 				}
-				var element = new Element(this.nodeName.toLowerCase(), attributes);
-				if (contents !== false){
-					for (var i = 0, k = this.childNodes.length; i < k; i++){
-						var child = Element.clone(this.childNodes[i], true, keepid);
-						if (child) element.grab(child);
-					}
-				}
-				return element;
-			case 'textnode': return document.newTextNode(this.nodeValue);
+			}
+			var prop = props[element.tagName.toLowerCase()];
+			if (prop && element[prop]) node[prop] = element[prop];
+		};
+
+		if (contents){
+			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+			for (var i = ce.length; i--;) clean(ce[i], te[i]);
 		}
-		return null;
+
+		clean(clone, this);
+		return $(clone);
 	},
 
 	replaces: function(el){

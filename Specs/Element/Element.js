@@ -8,14 +8,17 @@ License:
 
 describe('Element constructor', {
 
-	"should return an 'element' Element": function(){
-		var type = $type(new Element('div'));
-		value_of(type).should_be('element');
+	"should return an Element with the correct tag": function(){
+		var element = new Element('div');
+		value_of($type(element)).should_be('element');
+		value_of($defined(element.addEvent)).should_be_true();
+		value_of(element.tagName.toLowerCase()).should_be('div');
 	},
 
-	'should return an Element with the correct tag': function(){
-		var myElement = new Element('div');
-		value_of(myElement.tagName.toLowerCase()).should_be('div');
+	'should return an Element with various attributes': function(){
+		var element = new Element('div', { 'id': 'divID', 'title': 'divTitle' });
+		value_of(element.id).should_be('divID');
+		value_of(element.title).should_be('divTitle');
 	},
 
 	'should return an Element with for attribute': function(){
@@ -23,102 +26,63 @@ describe('Element constructor', {
 		value_of(label.htmlFor).should_be('myId');
 	},
 
-	'should return an Element with all class attributes': function(){
-		var div1 = new Element('div', { 'class': 'myClass' });
-		value_of(div1.className).should_be('myClass');
+	'should return an Element with class attribute': function(){
+		var div1 = new Element('div', { 'class': 'class' });
+		var div2 = new Element('div', { 'class': 'class1 class2 class3' });
 
-		var div2 = new Element('div', { 'class': 'myClass myOtherClass' });
-		value_of(div2.className).should_be('myClass myOtherClass');
+		value_of(div1.className).should_be('class');
+		value_of(div2.className).should_be('class1 class2 class3');
 	},
 
-	'should return an Element with various attributes': function(){
-		var element1 = new Element('div', { 'id': 'myDiv', 'title': 'myDiv' });
-		value_of(element1.id).should_be('myDiv');
-		value_of(element1.title).should_be('myDiv');
-	},
-
-	'should return Element inputs with and type attributes': function(){
+	'should return input Elements with name and type attributes': function(){
 		var username = new Element('input', { type: 'text', name: 'username', value: 'username' });
+		var password = new Element('input', { type: 'password', name: 'password', value: 'password' });
+
 		value_of(username.type).should_be('text');
 		value_of(username.name).should_be('username');
 		value_of(username.value).should_be('username');
 
-		var password = new Element('input', { type: 'password', name: 'password', value: 'password' });
 		value_of(password.type).should_be('password');
 		value_of(password.name).should_be('password');
 		value_of(password.value).should_be('password');
 	},
 
-	'should return an Element with Element prototypes': function(){
-		var div = new Element('div');
-		value_of($defined(div.addEvent)).should_be_true();
+	'should return input Elements that are checked': function(){
+		var check1 = new Element('input', { type: 'checkbox' });
+		var check2 = new Element('input', { type: 'checkbox', checked: true });
+		var check3 = new Element('input', { type: 'checkbox', checked: 'checked' });
+
+		value_of(check1.checked).should_be_false();
+		value_of(check2.checked).should_be_true();
+		value_of(check2.checked).should_be_true();
 	},
 
-	'should return an input checkbox that is checked': function(){
-		var form = new Element('form',{'html':'<input type="checkbox" value="" name="input" checked="checked" />'});
-		var form1 = new Element('form').adopt(
-			new Element('input', {name: 'input', type: 'checkbox', value: ''}).set('checked',true)
+	"should return a select Element that retains it's selected options": function(){
+		var div = new Element('div', { 'html':
+			'<select multiple="multiple" name="select[]">' +
+				'<option value="" name="none">--</option>' +
+				'<option value="volvo" name="volvo">Volvo</option>' +
+				'<option value="saab" name="saab" selected="selected">Saab</option>' +
+				'<option value="opel" name="opel" selected="selected">Opel</option>' +
+				'<option value="bmw" name="bmw">BMW</option>' +
+			'</select>'
+		});
+
+		var select1 = div.getFirst();
+		var select2 = new Element('select', { name: 'select[]', multiple: true }).adopt(
+			new Element('option', { name: 'none', value: '', html: '--' }),
+			new Element('option', { name: 'volvo', value: 'volvo', html: 'Volvo' }),
+			new Element('option', { name: 'saab', value: 'saab', html: 'Saab', selected: true }),
+			new Element('option', { name: 'opel', value: 'opel', html: 'Opel', selected: 'selected' }),
+			new Element('option', { name: 'bmw', value: 'bmw', html: 'BMW' })
 		);
-		value_of(form1.get('html')).should_be(form.get('html'));
-	},
 
-	'should return a form that works in IE6': function(){
-		var form = new Element('form',{'html':'<input type="checkbox" value="" name="input" checked="checked" />'+
-			'<select multiple="multiple" name="select[]">'+
-				'<option value="" name="none">--</option>'+
-				'<option value="volvo" name="volvo">Volvo</option>'+
-				'<option selected="selected" value="saab" name="saab">Saab</option>'+
-				'<option selected="selected" value="opel" name="opel">Opel</option>'+
-				'<option value="bmw" name="bmw">BMW</option>'+
-			'</select>'+
-			'<textarea name="textarea">text</textarea>'});
-		var form1 = new Element('form').adopt(
-			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
-			new Element('select', {name: 'select[]', multiple: true}).adopt(
-				new Element('option', {name: 'none', value: '', html: '--'}),
-				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
-				new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
-				new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: true}),
-				new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
-			),
-			new Element('textarea', {name: 'textarea', text: 'text'})
-		);
-		value_of(form1.get('html')).should_be(form.get('html'));
-		value_of(form1.toQueryString()).should_be(form.toQueryString());
+		value_of(select1.multiple).should_be_true();
+		value_of(select2.multiple).should_be_true();
 
-	}
-
-});
-
-describe('TextNode.constructor', {
-
-	'should return a new textnode element': function(){
-		var text = document.newTextNode('yo');
-		value_of($type(text)).should_be('textnode');
-	}
-
-});
-
-describe('IFrame constructor', {
-
-	'should return a new iframe': function(){
-		var diframe = document.createElement('iframe');
-		var miframe = new IFrame();
-		value_of(miframe.tagName).should_be(diframe.tagName);
-	},
-
-	'should return the same iframe if passed': function(){
-		var diframe = document.createElement('iframe');
-		var miframe = new IFrame(diframe);
-		value_of(miframe).should_be(diframe);
-	},
-
-	'should call onload once the iframe loads': function(){
-
-	},
-
-	"should extend the iframe's window and document with the same domain": function(){
-
+		value_of(select1.name).should_be(select2.name);
+		value_of(select1.options.length).should_be(select2.options.length);
+		value_of(select1.toQueryString()).should_be(select2.toQueryString());
 	}
 
 });
@@ -141,6 +105,31 @@ describe('Elements constructor', {
 
 	'should apply Element prototypes to the returned array': function(){
 		value_of($defined(myElements.addEvent)).should_be_true();
+	}
+
+});
+
+describe('TextNode.constructor', {
+
+	'should return a new textnode element': function(){
+		var text = document.newTextNode('yo');
+		value_of($type(text)).should_be('textnode');
+	}
+
+});
+
+describe('IFrame constructor', {
+
+	'should return a new IFrame': function(){
+		var iFrame1 = document.createElement('iframe');
+		var iFrame2 = new IFrame();
+		value_of(iFrame1.tagName).should_be(iFrame2.tagName);
+	},
+
+	'should return the same IFrame if passed': function(){
+		var iFrame1 = document.createElement('iframe');
+		var iFrame2 = new IFrame(iFrame1);
+		value_of(iFrame1).should_be(iFrame2);
 	}
 
 });
@@ -173,21 +162,19 @@ describe('$', {
 		Container = null;
 	},
 
-	'should return the element by the string id': function(){
-		var dt = document.getElementById('dollar');
-		value_of($('dollar')).should_be(dt);
+	'should return an extended Element by string id': function(){
+		var dollar1 = document.getElementById('dollar');
+		var dollar2 = $('dollar');
+
+		value_of(dollar1).should_be(dollar2);
+		value_of($defined(dollar1.addEvent)).should_be_true();
 	},
 
-	'should return an extended element': function(){
-		var defined = $defined($('dollar').clone);
-		value_of(defined).should_be_true();
-	},
-
-	'should return the window element if passed': function(){
+	'should return the window if passed': function(){
 		value_of($(window)).should_be(window);
 	},
 
-	'should return the document element if passed': function(){
+	'should return the document if passed': function(){
 		value_of($(document)).should_be(document);
 	},
 
@@ -207,9 +194,9 @@ describe('$$', {
 	},
 
 	'should return multiple Elements for each specific tag': function(){
-		var headers = $$('h3', 'h4');
+		var headers1 = $$('h3', 'h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
-		value_of(headers).should_be(headers2);
+		value_of(headers1).should_be(headers2);
 	},
 
 	'should return an empty array if not is found': function(){
@@ -218,7 +205,7 @@ describe('$$', {
 
 });
 
-describe('Native:getDocument', {
+describe('getDocument', {
 
 	'should return the owner document for elements': function(){
 		var doc = document.newElement('div').getDocument();
@@ -237,7 +224,7 @@ describe('Native:getDocument', {
 
 });
 
-describe('Native:getWindow', {
+describe('getWindow', {
 
 	'should return the owner window for elements': function(){
 		var win = document.newElement('div').getWindow();
@@ -341,14 +328,14 @@ describe('Element.getElementById', {
 		Container = null;
 	},
 
-	'should `getElementById` that matches the id, otherwise null': function(){
+	'should getElementById that matches the id, otherwise null': function(){
 		value_of(Container.getElementById('first')).should_be(Container.childNodes[0]);
 		value_of(Container.getElementById('not_found')).should_be_null();
 	}
 
 });
 
-describe('Element.set `style`', {
+describe('Element.set style', {
 
 	'should set the cssText of an Element': function(){
 		var style = 'font-size:12px;line-height:23px;';
@@ -359,31 +346,31 @@ describe('Element.set `style`', {
 
 });
 
-describe('Element.set `html`', {
+describe('Element.set html', {
 
-	'should set the innerHTML of an Element': function(){
+	'should set the html of an Element': function(){
 		var html = '<a href="http://mootools.net/">Link</a>';
 		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase()); // ignore uppercase tags in presto
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase());
 	},
 
-	'should set the innerHTML of an Element with multiple arguments': function(){
+	'should set the html of an Element with multiple arguments': function(){
 		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
 		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase()); // ignore uppercase tags in presto
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase());
 	}
 
 });
 
 describe('Element.set', {
 
-	"should `set` an Element's property": function(){
+	"should set an Element's property": function(){
 		var myElement = new Element('a').set('id', 'test').set('title', 'testing');
 		value_of(myElement.id).should_be('test');
 		value_of(myElement.title).should_be('testing');
 	},
 
-	"should `set` an Element's properties": function(){
+	"should set an Element's properties": function(){
 		var myElement = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
 		value_of(myElement.type).should_be('text/javascript');
 		value_of(myElement.defer).should_be_true();
@@ -391,7 +378,7 @@ describe('Element.set', {
 
 });
 
-describe('Element.get `style`', {
+describe('Element.get style', {
 
 	"should return a CSS string representing the Element's styles": function(){
 		var style = 'font-size:12px;color:rgb(255,255,255)';
@@ -402,7 +389,7 @@ describe('Element.get `style`', {
 
 });
 
-describe('Element.get `tag`', {
+describe('Element.get tag', {
 
 	"should return the Element's tag": function(){
 		var myElement = new Element('div');
@@ -413,28 +400,28 @@ describe('Element.get `tag`', {
 
 describe('Element.get', {
 
-	"should `get` an Element's property, otherwise null": function(){
+	"should get an Element's property, otherwise null": function(){
 		var myElement = new Element('a', {href: 'help.html', title: 'mootools!'});
 		value_of(myElement.get('title')).should_be('mootools!');
 		value_of(myElement.get('rel')).should_be_null();
 	},
 
-	"should `get` an absolute href": function(){
+	"should get an absolute href": function(){
 		var link = new Element('a', {href: "http://google.com/"});
 		value_of(link.get('href')).should_be("http://google.com/");
 	},
 
-	"should `get` an absolute href to the same domain": function(){
+	"should get an absolute href to the same domain": function(){
 		var link = new Element('a', {href: window.location.href});
 		value_of(link.get('href')).should_be(window.location.href);
 	},
 
-	"should `get` a relative href": function(){
+	"should get a relative href": function(){
 		var link = new Element('a', {href: "../index.html"});
 		value_of(link.get('href')).should_be("../index.html");
 	},
 
-	"should `get` a host absolute href": function(){
+	"should get a host absolute href": function(){
 		var link = new Element('a', {href: "/developers"});
 		value_of(link.get('href')).should_be("/developers");
 	},
@@ -446,7 +433,7 @@ describe('Element.get', {
 
 });
 
-describe('Element.erase `style`', {
+describe('Element.erase style', {
 
 	"should remove all of the Element's styles": function(){
 		var style = "color:rgb(255, 255, 255); font-size:12px;";
@@ -517,7 +504,7 @@ describe('Element.inject', {
 		test = null;
 	},
 
-	'should `inject` the Element before an Element': function(){
+	'should inject the Element before an Element': function(){
 		test.inject($('first'), 'before');
 		value_of(Container.childNodes[0]).should_be(test);
 
@@ -525,7 +512,7 @@ describe('Element.inject', {
 		value_of(Container.childNodes[1].childNodes[1]).should_be(test);
 	},
 
-	'should `inject` the Element after an Element': function(){
+	'should inject the Element after an Element': function(){
 		test.inject($('first'), 'after');
 		value_of(Container.childNodes[1]).should_be(test);
 
@@ -533,7 +520,7 @@ describe('Element.inject', {
 		value_of(Container.childNodes[1].childNodes[1]).should_be(test);
 	},
 
-	'should `inject` the Element at bottom of an Element': function(){
+	'should inject the Element at bottom of an Element': function(){
 		var first = $('first');
 		test.inject(first, 'bottom');
 		value_of(first.childNodes[0]).should_be(test);
@@ -546,7 +533,7 @@ describe('Element.inject', {
 		value_of(Container.childNodes[2]).should_be(test);
 	},
 
-	'should `inject` the Element inside an Element': function(){
+	'should inject the Element inside an Element': function(){
 		var first = $('first');
 		test.inject(first, 'inside');
 		value_of(first.childNodes[0]).should_be(test);
@@ -559,7 +546,7 @@ describe('Element.inject', {
 		value_of(Container.childNodes[2]).should_be(test);
 	},
 
-	'should `inject` the Element at the top of an Element': function(){
+	'should inject the Element at the top of an Element': function(){
 		test.inject(Container, 'top');
 		value_of(Container.childNodes[0]).should_be(test);
 
@@ -617,7 +604,7 @@ describe('Element.grab', {
 		test = null;
 	},
 
-	'should `grab` the Element before this Element': function(){
+	'should grab the Element before this Element': function(){
 		$('first').grab(test, 'before');
 		value_of(Container.childNodes[0]).should_be(test);
 
@@ -625,7 +612,7 @@ describe('Element.grab', {
 		value_of(Container.childNodes[1].childNodes[1]).should_be(test);
 	},
 
-	'should `grab` the Element after this Element': function(){
+	'should grab the Element after this Element': function(){
 		$('first').grab(test, 'after');
 		value_of(Container.childNodes[1]).should_be(test);
 
@@ -633,7 +620,7 @@ describe('Element.grab', {
 		value_of(Container.childNodes[1].childNodes[1]).should_be(test);
 	},
 
-	'should `grab` the Element at the bottom of this Element': function(){
+	'should grab the Element at the bottom of this Element': function(){
 		var first = $('first');
 		first.grab(test, 'bottom');
 		value_of(first.childNodes[0]).should_be(test);
@@ -646,7 +633,7 @@ describe('Element.grab', {
 		value_of(Container.childNodes[2]).should_be(test);
 	},
 
-	'should `grab` the Element inside this Element': function(){
+	'should grab the Element inside this Element': function(){
 		var first = $('first');
 		first.grab(test, 'inside');
 		value_of(first.childNodes[0]).should_be(test);
@@ -659,7 +646,7 @@ describe('Element.grab', {
 		value_of(Container.childNodes[2]).should_be(test);
 	},
 
-	'should `grab` the Element at the top of this Element': function(){
+	'should grab the Element at the top of this Element': function(){
 		Container.grab(test, 'top');
 		value_of(Container.childNodes[0]).should_be(test);
 
@@ -798,20 +785,20 @@ describe('Element.adopt', {
 		Container.empty();
 	},
 
-	'should `adopt` an Element by its id': function(){
+	'should adopt an Element by its id': function(){
 		var child = new Element('div', {id: 'adopt-me'});
 		document.body.appendChild(child);
 		Container.adopt('adopt-me');
 		value_of(Container.childNodes[0]).should_be(child);
 	},
 
-	'should `adopt` an Element': function(){
+	'should adopt an Element': function(){
 		var child = new Element('p');
 		Container.adopt(child);
 		value_of(Container.childNodes[0]).should_be(child);
 	},
 
-	'should `adopt` any number of Elements or ids': function(){
+	'should adopt any number of Elements or ids': function(){
 		var children = [];
 		(4).times(function(i){ children[i] = new Element('span', {id: 'child-' + i}); });
 		Container.adopt(children);
@@ -833,7 +820,7 @@ describe('Element.dispose | Element.remove', {
 		Container = null;
 	},
 
-	'should `dispose` the Element from the DOM': function(){
+	'should dispose the Element from the DOM': function(){
 		var child = new Element('div').inject(Container);
 		child.dispose();
 		value_of(Container.childNodes.length).should_be(0);
@@ -843,39 +830,157 @@ describe('Element.dispose | Element.remove', {
 
 describe('Element.clone', {
 
+	'before all': function(){
+		Container = new Element('div', {'id': 'outer', 'class': 'moo'});
+		Container.innerHTML = '<span class="foo" id="inner1"><div class="movie" id="sixfeet">under</div></span><span id="inner2"></span>';
+	},
+
+	'after all': function(){
+		Container = null;
+	},
+
 	'should return a clone': function(){
 		var div = new Element('div');
 		var clone = div.clone();
 		value_of(div).should_not_be(clone);
+		value_of($type(div)).should_be('element');
+		value_of($type(clone)).should_be('element');
 	},
 
-	'should remove all IDs': function(){
-		var div = new Element('div', {id: 'div-id'});
-		var clone = div.clone();
+	'should remove id from clone and not clone children by default': function(){
+		var clone = Container.clone();
+		value_of(clone.getElementsByTagName('*').length).should_be(0);
+		value_of(clone.className).should_be('moo');
 		value_of(clone.id).should_be('');
+		value_of(Container.id).should_be('outer');
 	},
 
-	'should remove all custom attributes': function(){
-		var div = new Element('div', {custom: ['attribute']});
+	'should remove all ids': function(){
+		var clone = Container.clone(true);
+		value_of(clone.id).should_be('');
+		value_of(clone.childNodes.length).should_be(2);
+		value_of(clone.childNodes[0].id).should_be('');
+		value_of(clone.childNodes[0].childNodes[0].id).should_be('');
+		value_of(clone.childNodes[0].className).should_be('foo');
+	},
+
+	'should keep id if specified': function(){
+		var clone = Container.clone(true, true);
+		value_of(clone.id).should_be('outer');
+		value_of(clone.childNodes.length).should_be(2);
+		value_of(clone.childNodes[0].id).should_be('inner1');
+		value_of(clone.childNodes[0].childNodes[0].id).should_be('sixfeet');
+		value_of(clone.childNodes[0].className).should_be('foo');
+	},
+
+	'should not clone Element Storage': function(){
+		Container.store('drink', 'milk');
+		var clone = Container.clone();
+		value_of(clone.retrieve('drink')).should_be_null();
+		value_of(Container.retrieve('drink')).should_be('milk');
+	},
+
+	'should clone child nodes and not copy their uid': function(){
+		var cloned = Container.clone(true).getElements('*');
+		var old = Container.getElements('*');
+		value_of(cloned.length).should_be(3);
+		value_of(old.length).should_be(3);
+		value_of($$(old, cloned).length).should_be(6);
+	},
+
+	'should clone a text input and retain value': function(){
+		var inputs = new Element('div', { 'html': '' +
+			'<input id="input1" type="text" value="Some Value" />' +
+			'<input id="input2" type="text" />'
+		}).getChildren();
+
+		var input1 = inputs[0].clone();
+		var input2 = inputs[1].clone(false, true);
+
+		value_of(!input1.id).should_be_true();
+		value_of(input2.id).should_be('input2');
+		value_of(input1.value).should_be('Some Value');
+		value_of(input2.value).should_be('');
+	},
+
+	'should clone a textarea and retain value': function(){
+		var textareas = new Element('div', { 'html': '' +
+			'<textarea id="textarea1"></textarea>' +
+			'<textarea id="textarea2">Some-Text-Here</textarea>'
+		}).getChildren();
+
+		var textarea1 = textareas[0].clone();
+		var textarea2 = textareas[1].clone(false, true);
+
+		value_of(!textarea1.id).should_be_true();
+		value_of(textarea2.id).should_be('textarea2');
+		value_of(textarea1.value).should_be('');
+		value_of(textarea2.value).should_be('Some-Text-Here');
+	},
+
+	'should clone a checkbox and retain checked state': function(){
+		var checks = new Element('div', { 'html': '' +
+			'<input id="check1" type="checkbox" />' +
+			'<input id="check2" type="checkbox" checked="checked" />'
+		}).getChildren();
+
+		var check1 = checks[0].clone();
+		var check2 = checks[1].clone(false, true);
+
+		value_of(!check1.id).should_be_true();
+		value_of(check2.id).should_be('check2');
+		value_of(check1.checked).should_be_false();
+		value_of(check2.checked).should_be_true();
+	},
+
+	'should clone a select and retain selected state': function(){
+		var selects = new Element('div', { 'html': '' +
+			'<select name="select" id="select1">' +
+				'<option>--</option>' +
+				'<option value="volvo">Volvo</option>' +
+				'<option value="saab">Saab</option>' +
+				'<option value="opel" selected="selected">Opel</option>' +
+				'<option value="bmw">BMW</option>' +
+			'</select>' +
+			'<select name="select[]" id="select2" multiple="multiple">' +
+				'<option>--</option>' +
+				'<option value="volvo">Volvo</option>' +
+				'<option value="saab">Saab</option>' +
+				'<option value="opel" selected="selected">Opel</option>' +
+				'<option value="bmw" selected="selected">BMW</option>' +
+			'</select>'
+		}).getChildren();
+
+		var select1 = selects[0].clone(true);
+		var select2 = selects[1].clone(true, true);
+
+		value_of(!select1.id).should_be_true();
+		value_of(select2.id).should_be('select2');
+		value_of(select1.selectedIndex).should_be(3);
+		value_of(select2.options[3].selected).should_be_true();
+		value_of(select2.options[4].selected).should_be_true();
+	},
+
+	'should clone custom attributes but not custom properties': function(){
+		var div = new Element('div');
+		div.setAttribute('foo', 'FOO');
+		div.setAttribute('bar', ['BAR']);
 		var clone = div.clone();
-		var custom = clone.custom;
-		value_of(custom).should_be_undefined();
+
+		value_of(clone.getAttribute('foo')).should_be('FOO');
+		value_of(clone.getAttribute('bar')).should_be(['BAR']);
 	}
 
 });
 
-describe('Element.hasClass', {
+describe('Element className methods', {
 
-	'should return true if the Element has the given class, otherwise false': function(){
+	'should return true if the Element has the given class': function(){
 		var div = new Element('div', {'class': 'header bold'});
 		value_of(div.hasClass('header')).should_be_true();
 		value_of(div.hasClass('bold')).should_be_true();
 		value_of(div.hasClass('random')).should_be_false();
-	}
-
-});
-
-describe('Element.addClass', {
+	},
 
 	'should add the class to the Element': function(){
 		var div = new Element('div');
@@ -887,11 +992,7 @@ describe('Element.addClass', {
 		var div = new Element('div', {'class': 'myclass'});
 		div.addClass('aclass');
 		value_of(div.hasClass('aclass')).should_be_true();
-	}
-
-});
-
-describe('Element.removeClass', {
+	},
 
 	'should remove the class in the Element': function(){
 		var div = new Element('div', {'class': 'myclass'});
@@ -909,11 +1010,7 @@ describe('Element.removeClass', {
 		var div = new Element('div', {'class': 'myclass'});
 		div.removeClass('extra');
 		value_of(div.hasClass('myclass')).should_be_true();
-	}
-
-});
-
-describe('Element.toggleClass', {
+	},
 
 	'should add the class if the Element does not have the class': function(){
 		var div = new Element('div');
@@ -961,38 +1058,28 @@ describe('Element.toQueryString', {
 
 	'should ignore any form Elements that do not have a name, disabled, or whose value is false': function(){
 		var form = new Element('form').adopt(
-			new Element('input', {name: 'input', disabled: true, type: 'checkbox', checked: true, value: 'checked'}),
+			new Element('input', { name: 'input', disabled: true, type: 'checkbox', checked: true, value: 'checked' }),
 			new Element('select').adopt(
-				new Element('option', {name: 'volvo', value: false, html: 'Volvo'}),
-				new Element('option', {value: 'saab', html: 'Saab', selected: true})
+				new Element('option', { name: 'volvo', value: false, html: 'Volvo' }),
+				new Element('option', { value: 'saab', html: 'Saab', selected: true })
 			),
-			new Element('textarea', {name: 'textarea', disabled: true, value: 'textarea-value'})
+			new Element('textarea', { name: 'textarea', disabled: true, value: 'textarea-value' })
 		);
 		value_of(form.toQueryString()).should_be('');
 	},
 
 	"should return a query string from the Element's form Elements": function(){
-		var form = new Element('form',{'html':'<input type="checkbox" name="input" value="checked" checked="checked" />'+
-			'<select name="select[]" multiple="multiple" size="5">'+
-				'<option name="none" value="">--</option>'+
-				'<option name="volvo" value="volvo">Volvo</option>'+
-				'<option selected="selected" name="saab" value="saab">Saab</option>'+
-				'<option selected="selected" name="opel" value="opel">Opel</option>'+
-				'<option name="bmw" value="bmw">BMW</option>'+
-			'</select>'+
-			'<textarea name="textarea">textarea-value</textarea>'});
-		// var form = new Element('form').adopt(
-		// 	new Element('input', {name: 'input', type: 'checkbox', checked: true, value: 'checked'}),
-		// 	new Element('select', {name: 'select[]', multiple: true}).adopt(
-		// 		new Element('option', {name: 'volvo', value: 'volvo', text: 'Volvo'}),
-		// 		new Element('option', {name: 'saab', value: 'saab', text: 'Saab', selected: true}),
-		// 		new Element('option', {name: 'opel', value: 'opel', text: 'Opel', selected: true}),
-		// 		new Element('option', {name: 'bmw', value: 'bmw', text: 'BMW'})
-		// 	),
-		// 	new Element('textarea', {name: 'textarea', value: 'textarea-value'})
-		// );
-		// value_of(form.getElements('option').filter(function(e){return e.get('selected')}).length).should_be(2);
-		// value_of(form.getElements('option[selected]').length).should_be(2);
+		var form = new Element('form', { 'html': '' +
+			'<input type="checkbox" name="input" value="checked" checked="checked" />' +
+			'<select name="select[]" multiple="multiple" size="5">' +
+				'<option name="none" value="">--</option>' +
+				'<option name="volvo" value="volvo">Volvo</option>' +
+				'<option name="saab" value="saab" selected="selected">Saab</option>' +
+				'<option name="opel" value="opel" selected="selected">Opel</option>' +
+				'<option name="bmw" value="bmw">BMW</option>' +
+			'</select>' +
+			'<textarea name="textarea">textarea-value</textarea>'
+		});
 		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
 	},
 
@@ -1013,26 +1100,17 @@ describe('Element.toQueryString', {
 	},
 
 	"should return a query string containing even empty values, multiple select may have no selected options": function() {
-		var form = new Element('form',{'html':'<input type="checkbox" name="input" value="" checked="checked" />'+
-			'<select name="select[]" multiple="multiple" size="5">'+
-				'<option name="none" value="">--</option>'+
-				'<option name="volvo" value="volvo">Volvo</option>'+
-				'<option name="saab" value="saab">Saab</option>'+
-				'<option name="opel" value="opel">Opel</option>'+
-				'<option name="bmw" value="bmw">BMW</option>'+
-			'</select>'+
-			'<textarea name="textarea"></textarea>'});
-		// var form = new Element('form').adopt(
-		// 	new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
-		// 	new Element('select', {name: 'select[]', multiple: true}).adopt(
-		// 		new Element('option', {name: 'none', value: '', html: '--'}),
-		// 		new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
-		// 		new Element('option', {name: 'saab', value: 'saab', html: 'Saab'}),
-		// 		new Element('option', {name: 'opel', value: 'opel', html: 'Opel'}),
-		// 		new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
-		// 	),
-		// 	new Element('textarea', {name: 'textarea', value: 'text'})
-		// );
+		var form = new Element('form',{'html':
+			'<input type="checkbox" name="input" value="" checked="checked" />' +
+			'<select name="select[]" multiple="multiple" size="5">' +
+				'<option name="none" value="">--</option>' +
+				'<option name="volvo" value="volvo">Volvo</option>' +
+				'<option name="saab" value="saab">Saab</option>' +
+				'<option name="opel" value="opel">Opel</option>' +
+				'<option name="bmw" value="bmw">BMW</option>' +
+			'</select>' +
+			'<textarea name="textarea"></textarea>'
+		});
 		value_of(form.toQueryString()).should_be('input=&textarea=');
 	}
 
@@ -1040,7 +1118,7 @@ describe('Element.toQueryString', {
 
 describe('Element.getProperty', {
 
-	'should `getProperty` from an Element': function(){
+	'should getProperty from an Element': function(){
 		var anchor1 = new Element('a');
 		anchor1.href = 'http://mootools.net';
 		value_of(anchor1.getProperty('href')).should_be('http://mootools.net');
@@ -1050,7 +1128,7 @@ describe('Element.getProperty', {
 		value_of(anchor2.getProperty('href')).should_be('#someLink');
 	},
 
-	'should `getProperty` type of an input Element': function(){
+	'should getProperty type of an input Element': function(){
 		var input1 = new Element('input');
 		input1.type = 'text';
 		value_of(input1.getProperty('type')).should_be('text');
@@ -1060,7 +1138,7 @@ describe('Element.getProperty', {
 		value_of(input2.getProperty('type')).should_be('checkbox');
 	},
 
-	'should `getPropety` checked from an input Element': function(){
+	'should getPropety checked from an input Element': function(){
 		var checked1 = new Element('input', { type: 'checkbox' });
 		checked1.checked = 'checked';
 		value_of(checked1.getProperty('checked')).should_be_true();
@@ -1074,7 +1152,7 @@ describe('Element.getProperty', {
 		value_of(checked3.getProperty('checked')).should_be_false();
 	},
 
-	'should `getProperty` disabled from an input Element': function(){
+	'should getProperty disabled from an input Element': function(){
 		var disabled1 = new Element('input', { type: 'text' });
 		disabled1.disabled = 'disabled';
 		value_of(disabled1.getProperty('disabled')).should_be_true();
@@ -1088,7 +1166,7 @@ describe('Element.getProperty', {
 		value_of(disabled3.getProperty('disabled')).should_be_false();
 	},
 
-	'should `getProperty` readonly from an input Element': function(){
+	'should getProperty readonly from an input Element': function(){
 		var readonly1 = new Element('input', { type: 'text' });
 		readonly1.readOnly = 'readonly';
 		value_of(readonly1.getProperty('readonly')).should_be_true();
@@ -1106,7 +1184,7 @@ describe('Element.getProperty', {
 
 describe('Element.setProperty', {
 
-	'should `setProperty` from an Element': function(){
+	'should setProperty from an Element': function(){
 		var anchor1 = new Element('a').setProperty('href', 'http://mootools.net/');
 		value_of(anchor1.getProperty('href')).should_be('http://mootools.net/');
 
@@ -1114,7 +1192,7 @@ describe('Element.setProperty', {
 		value_of(anchor2.getProperty('href')).should_be('#someLink');
 	},
 
-	'should `setProperty` type of an input Element': function(){
+	'should setProperty type of an input Element': function(){
 		var input1 = new Element('input').setProperty('type', 'text');
 		value_of(input1.getProperty('type')).should_be('text');
 
@@ -1122,7 +1200,7 @@ describe('Element.setProperty', {
 		value_of(input2.getProperty('type')).should_be('checkbox');
 	},
 
-	'should `setProperty` checked from an input Element': function(){
+	'should setProperty checked from an input Element': function(){
 		var checked1 = new Element('input', { type: 'checkbox' }).setProperty('checked', 'checked');
 		value_of(checked1.getProperty('checked')).should_be_true();
 
@@ -1133,7 +1211,7 @@ describe('Element.setProperty', {
 		value_of(checked3.getProperty('checked')).should_be_false();
 	},
 
-	'should `setProperty` disabled of an input Element': function(){
+	'should setProperty disabled of an input Element': function(){
 		var disabled1 = new Element('input', { type: 'text' }).setProperty('disabled', 'disabled');
 		value_of(disabled1.getProperty('disabled')).should_be_true();
 
@@ -1144,7 +1222,7 @@ describe('Element.setProperty', {
 		value_of(disabled3.getProperty('disabled')).should_be_false();
 	},
 
-	'should `setProperty` readonly of an input Element': function(){
+	'should setProperty readonly of an input Element': function(){
 		var readonly1 = new Element('input', { type: 'text' }).setProperty('readonly', 'readonly');
 		value_of(readonly1.getProperty('readonly')).should_be_true();
 
@@ -1179,7 +1257,7 @@ describe('Element.setProperties', {
 
 describe('Element.removeProperty', {
 
-	'should `removeProperty` from an Element': function () {
+	'should removeProperty from an Element': function () {
 		var readonly = new Element('input', { type: 'text', readonly: 'readonly' });
 		readonly.removeProperty('readonly');
 		var props = readonly.getProperties('type', 'readonly');
