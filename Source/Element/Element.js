@@ -525,7 +525,8 @@ Element.implement({
 
 	hasChild: function(el){
 		el = $(el, true);
-		return (!!el && $A(this.getElementsByTagName(el.tagName)).contains(el));
+		if (!el) return false;
+		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	}
 
 });

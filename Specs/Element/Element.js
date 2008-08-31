@@ -1458,12 +1458,31 @@ describe('Element.getChildren', {
 
 describe('Element.hasChild', {
 
-	'should return true if the Element has the child, otherwise false': function(){
-		var container = new Element('div');
-		var children = [new Element('div'), new Element('div'), new Element('div')];
-		container.adopt(children);
-		value_of(container.hasChild(children[0])).should_be_true();
-		value_of(container.hasChild('span')).should_be_false();
+	"before all": function(){
+		window.Local = {};
+		Local.container = new Element('div');
+		Local.children = [new Element('div'), new Element('div'), new Element('div')];
+		Local.container.adopt(Local.children);
+		Local.grandchild = new Element('div').inject(Local.children[1]);
+	},
+
+	"after all": function(){
+		Local = null;
+	},
+
+	"should return true if the Element is a child or grandchild": function(){
+		value_of(Local.container.hasChild(Local.children[0])).should_be_true();
+		value_of(Local.container.hasChild(Local.children[2])).should_be_true();
+		value_of(Local.container.hasChild(Local.grandchild)).should_be_true();
+	},
+
+	"should return false if it's the Element itself": function(){
+		value_of(Local.container.hasChild(Local.container)).should_be_false();
+	},
+
+	"should return false if the Element is the parent or a sibling": function(){
+		value_of(Local.children[2].hasChild(Local.container)).should_be_false();
+		value_of(Local.children[2].hasChild(Local.children[1])).should_be_false();
 	}
 
 });
