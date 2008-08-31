@@ -873,6 +873,14 @@ describe('Element.clone', {
 		value_of(clone.childNodes[0].className).should_be('foo');
 	},
 
+	'should clone empty href attribute': function(){
+		var clone = new Element('div', {
+			html: '<a href="">empty anchor</a>'
+		}).getFirst().clone();
+
+		value_of(clone.getAttribute('href', 2)).should_be('');
+	},
+
 	'should not clone Element Storage': function(){
 		Container.store('drink', 'milk');
 		var clone = Container.clone();
