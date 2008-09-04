@@ -695,7 +695,7 @@ Clones the Element and returns the cloned one.
 
 ### Arguments:
 
-1. contents - (*boolean*, optional: defaults to true) When true the Element is cloned with childNodes.
+1. contents - (*boolean*, optional: defaults to false) When true the Element is cloned with childNodes.
 2. keepid - (*boolean*, optional: defaults to false) When true the cloned Element keeps the id attribute, if present. Same goes for any of the cloned childNodes.
 
 
