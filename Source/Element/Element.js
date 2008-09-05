@@ -342,8 +342,9 @@ Element.implement({
 	},
 
 	clone: function(contents, keepid){
+		contents = contents !== false;
 		var ie = Browser.Engine.trident;
-		var clone = this.cloneNode(!!contents);
+		var clone = this.cloneNode(contents);
 		var props = {input: 'checked', option: 'selected', textarea: 'value'};
 		var clean = function(node, element){
 			if (!keepid) node.removeAttribute('id');

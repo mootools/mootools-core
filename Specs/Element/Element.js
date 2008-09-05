@@ -847,9 +847,9 @@ describe('Element.clone', {
 		value_of($type(clone)).should_be('element');
 	},
 
-	'should remove id from clone and not clone children by default': function(){
+	'should remove id from clone and clone children by default': function(){
 		var clone = Container.clone();
-		value_of(clone.getElementsByTagName('*').length).should_be(0);
+		value_of(clone.getElementsByTagName('*').length).should_be(3);
 		value_of(clone.className).should_be('moo');
 		value_of(clone.id).should_be('');
 		value_of(Container.id).should_be('outer');
