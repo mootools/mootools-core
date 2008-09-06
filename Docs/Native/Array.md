@@ -141,7 +141,7 @@ This method is provided only for browsers without native [Array:filter][] suppor
 Array Method: clean {#Array:clean}
 ------------------------------------
 
-Creates a new array with all of the elements of the array which evaluate as true (i.e. not null, undefined, zero, false, or "").
+Creates a new array with all of the elements of the array which are defined (i.e. not null or undefined).
 
 ### Syntax:
 
@@ -153,7 +153,9 @@ Creates a new array with all of the elements of the array which evaluate as true
 
 ### Examples:
 
-	var cleanedArray = [0, 3, null, false, true, "foo", ""].clean(); //cleanedArray = [3, true, "foo"]
+	var myArray = [null, 1, 0, true, false, "foo", undefined, ""];
+	myArray.clean() // returns [1, 0, true, false, "foo", ""]
+
 
 Array Method: indexOf {#Array:indexOf}
 --------------------------------------
