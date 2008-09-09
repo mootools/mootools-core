@@ -32,7 +32,7 @@ Writes a cookie in the browser.
 ###	Arguments:
 
 1. key     - (*string*) The key (or name) of the cookie.
-2. value   - (*string*) The value to set.  Cannot contain semicolons.
+2. value   - (*string*) The value to set. Cannot contain semicolons.
 3. options - (*mixed*, optional) See [Cookie][].
 
 ###	Returns:
@@ -66,7 +66,7 @@ Reads the value of a Cookie.
 
 ###	Returns:
 
-* (*mixed*) The cookie string value, or false if not found.
+* (*mixed*) The cookie string value, or null if not found.
 
 ###	Examples:
 
