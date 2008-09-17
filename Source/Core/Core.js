@@ -50,7 +50,7 @@ var Native = function(options){
 		afterImplement.call(obj, name, method);
 		return obj;
 	};
-	
+
 	object.alias = function(a1, a2, a3){
 		if (typeof a1 == 'string'){
 			if ((a1 = this.prototype[a1])) return add(this, a2, a1, a3);
@@ -64,9 +64,9 @@ var Native = function(options){
 		for (var p in a1) add(this, p, a1[p], a2);
 		return this;
 	};
-	
+
 	if (methods) object.implement(methods);
-	
+
 	return object;
 };
 
@@ -117,14 +117,6 @@ var Hash = new Native({
 
 Hash.implement({
 
-	getLength: function(){
-		var length = 0;
-		for (var key in this){
-			if (this.hasOwnProperty(key)) length++;
-		}
-		return length;
-	},
-
 	forEach: function(fn, bind){
 		for (var key in this){
 			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
@@ -137,8 +129,16 @@ Hash.implement({
 			if (this.hasOwnProperty(key)) clean[key] = this[key];
 		}
 		return clean;
+	},
+
+	getLength: function(){
+		var length = 0;
+		for (var key in this){
+			if (this.hasOwnProperty(key)) length++;
+		}
+		return length;
 	}
-	
+
 });
 
 Hash.alias('forEach', 'each');
