@@ -70,9 +70,9 @@ Stop an Event from propagating and also executes preventDefault.
 
 	$('myAnchor').addEvent('click', function(event){
 		event.stop(); //Prevents the browser from following the link.
-		this.setText("Where do you think you're going?"); //'this' is Element that fires the Event.
+		this.set('text', "Where do you think you're going?"); //'this' is Element that fires the Event.
 		(function(){
-			this.setText("Instead visit the Blog.").set('href', 'http://blog.mootools.net');
+			this.set('text', "Instead visit the Blog.").set('href', 'http://blog.mootools.net');
 		}).delay(500, this);
 	});
 
