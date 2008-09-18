@@ -6,8 +6,10 @@ License:
 	MIT-style license.
 */
 
+(function(){
+
 var Animal = new Class({
-	
+
 	initialized: false,
 
 	initialize: function(name, sound){
@@ -29,7 +31,7 @@ var Animal = new Class({
 var Cat = new Class({
 
 	Extends: Animal,
-	
+
 	ferocious: false,
 
 	initialize: function(name, sound){
@@ -49,21 +51,21 @@ var Cat = new Class({
 var Lion = new Class({
 
 	Extends: Cat,
-	
+
 	ferocious: true,
 
 	initialize: function(name){
 		this.parent(name, 'rarr');
 	},
-	
+
 	eat: function(){
 		return 'lion:eat:' + this.name;
 	}
-	
+
 });
 
 var Actions = new Class({
-	
+
 	jump: function(){
 		return 'actions:jump:' + this.name;
 	},
@@ -71,11 +73,11 @@ var Actions = new Class({
 	sleep: function(){
 		return 'actions:sleep:' + this.name;
 	}
-	
+
 });
 
 var Attributes = new Class({
-	
+
 	color: function(){
 		return 'attributes:color:' + this.name;
 	},
@@ -83,7 +85,7 @@ var Attributes = new Class({
 	size: function(){
 		return 'attributes:size:' + this.name;
 	}
-	
+
 });
 
 
@@ -93,7 +95,7 @@ describe('Class creation', {
 		value_of($type(Animal)).should_be('class');
 		value_of(Class.type(Animal)).should_be_true();
 	},
-	
+
 	"should call initialize upon instantiation": function(){
 		var animal = new Animal('lamina');
 		value_of(animal.name).should_be('lamina');
@@ -125,7 +127,7 @@ describe('Class creation', {
 		var Dog = new Class({
 			Implements: Animal
 		});
-		
+
 		var rover = new Dog('rover');
 		value_of(rover.name).should_be('rover');
 		value_of(rover.initialized).should_be_true();
@@ -147,67 +149,67 @@ describe('Class creation', {
 		value_of(rover.size()).should_be('attributes:size:rover');
 		value_of(rover.color()).should_be('attributes:color:rover');
 	},
-	
+
 	"should alter the Class's prototype when implementing new methods": function(){
 		var Dog = new Class({
 			Extends: Animal
 		});
-		
+
 		var rover = new Dog('rover');
-		
+
 		Dog.implement({
 			jump: function(){
 				return 'dog:jump:' + this.name;
 			}
 		});
-		
+
 		var spot = new Dog('spot');
-		
+
 		value_of(spot.jump()).should_be('dog:jump:spot');
 		value_of(rover.jump()).should_be('dog:jump:rover');
 	},
-	
+
 	"should alter the Class's prototype when implementing new methods into the super class": function(){
 		var Dog = new Class({
 			Extends: Animal
 		});
-		
+
 		var rover = new Dog('rover');
-		
+
 		Animal.implement({
 			jump: function(){
 				return 'animal:jump:' + this.name;
 			}
 		});
-		
+
 		var spot = new Dog('spot');
-		
+
 		value_of(spot.jump()).should_be('animal:jump:spot');
 		value_of(rover.jump()).should_be('animal:jump:rover');
 	},
-	
+
 	"should alter the Class's prototype when overwriting methods in the super class": function(){
 		var Dog = new Class({
 			Extends: Animal
 		});
-		
+
 		var rover = new Dog('rover');
 		value_of(rover.say()).should_be('animal:say:rover');
-		
+
 		Animal.implement({
 			say: function(){
 				return 'NEW:animal:say:' + this.name;
 			}
 		});
-		
+
 		var spot = new Dog('spot');
-		
+
 		value_of(spot.say()).should_be('NEW:animal:say:spot');
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
 	}
 
 	//We might attempt to add support for the following at a later date
-	
+
 	/*
 	"should access the proper parent when it is overwritten after instantiation": function(){
 		var Dog = new Class({
@@ -216,18 +218,18 @@ describe('Class creation', {
 				return this.parent();
 			}
 		});
-		
+
 		var rover = new Dog('rover');
 		value_of(rover.say()).should_be('animal:say:rover');
-		
+
 		Animal.implement({
 			say: function(){
 				return 'NEW:animal:say:' + this.name;
 			}
 		});
-		
+
 		var spot = new Dog('spot');
-		
+
 		value_of(spot.say()).should_be('NEW:animal:say:spot');
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
 	}
@@ -241,7 +243,7 @@ describe('Class::implement', {
 		var Dog = new Class({
 			Extends: Animal
 		});
-		
+
 		Dog.implement(new Actions);
 
 		var rover = new Dog('rover');
@@ -255,7 +257,7 @@ describe('Class::implement', {
 		var Dog = new Class({
 			Extends: Animal
 		});
-		
+
 		Dog.implement(new Actions, new Attributes);
 
 		var rover = new Dog('rover');
@@ -268,3 +270,5 @@ describe('Class::implement', {
 	}
 
 });
+
+})();

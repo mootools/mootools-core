@@ -6,6 +6,116 @@ License:
 	MIT-style license.
 */
 
+(function(){
+
+var Instrument = new Native({
+
+	name: 'instrument',
+
+	initialize: function(name){
+		this.name = name;
+	}
+
+});
+
+Instrument.implement({
+
+	method: function(){
+		return this.property + ' ' + this.name;
+	},
+
+	property: 'stuff'
+
+});
+
+var Car = new Native({
+
+	name: 'car',
+
+	protect: true,
+
+	initialize: function(name){
+		this.name = name;
+	}
+
+});
+
+Car.implement({
+
+	property: 'stuff',
+
+	method: function(){
+		return this.name + '_' + this.property;
+	}
+
+});
+
+describe('Native', {
+
+	'should allow implementation over existing methods when browser option is not set': function(){
+		Instrument.implement({ property: 'staff' });
+		var myInstrument = new Instrument('xeelophone');
+		value_of(myInstrument.method()).should_be('staff xeelophone');
+	},
+
+	'should not override existing methods when browser option is set': function(){
+		Car.implement({ property: 'staff' });
+		var myCar = new Car('smart');
+		value_of(myCar.method()).should_be('smart_stuff');
+	},
+
+	'should allow generic calls': function(){
+		value_of(Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
+	},
+
+	"should have a 'native' type": function(){
+		value_of(Native.type(Car)).should_be_true();
+	}
+
+});
+
+describe('$A', {
+
+	'should return a copy for an array': function(){
+		var arr1 = [1,2,3];
+		var arr2 = $A(arr1);
+		value_of(arr1 !== arr2).should_be_true();
+	},
+
+	'should return an array for an Elements collection': function(){
+		var div1 = document.createElement('div');
+		var div2 = document.createElement('div');
+		var div3 = document.createElement('div');
+
+		div1.appendChild(div2);
+		div1.appendChild(div3);
+
+		var array = $A(div1.getElementsByTagName('*'));
+		value_of(Array.type(array)).should_be_true();
+	},
+
+	'should return an array for arguments': function(){
+		var fnTest = function(){
+			return $A(arguments);
+		};
+		var arr = fnTest(1,2,3);
+		value_of(Array.type(arr)).should_be_true();
+		value_of(arr).should_have(3, 'items');
+	}
+
+});
+
+describe('$arguments', {
+
+	'should return the argument passed according to the index': function(){
+		value_of($arguments(0)('a','b','c','d')).should_be('a');
+		value_of($arguments(1)('a','b','c','d')).should_be('b');
+		value_of($arguments(2)('a','b','c','d')).should_be('c');
+		value_of($arguments(3)('a','b','c','d')).should_be('d');
+	}
+
+});
+
 describe('$chk', {
 
 	'should return false on false': function(){
@@ -39,14 +149,18 @@ describe('$clear', {
 		value_of($clear(timeout)).should_be_null();
 	},
 
-	'should clear periodicals': function(){
-		var periodical = setTimeout(function(){}, 100);
-		value_of($clear(periodical)).should_be_null();
+	'should clear intervals': function(){
+		var interval = setInterval(function(){}, 100);
+		value_of($clear(interval)).should_be_null();
 	}
 
 });
 
 describe('$defined', {
+
+	'should return true on 0': function(){
+		value_of($defined(0)).should_be_true();
+	},
 
 	'should return true on false': function(){
 		value_of($defined(false)).should_be_true();
@@ -58,33 +172,70 @@ describe('$defined', {
 
 	'should return false on undefined': function(){
 		value_of($defined(undefined)).should_be_false();
-	},
-
-	'should return true on 0': function(){
-		value_of($defined(0)).should_be_true();
 	}
 
 });
 
-describe('$arguments', {
+describe('$each', {
 
-	'should return all the arguments if no index is passed': function(){
+	'should call the function for each item in Function arguments': function(){
+		var daysArr = [];
+		(function(){
+			$each(arguments, function(value, key){
+				daysArr[key] = value;
+			});
+		})('Sun','Mon','Tue');
 
+		value_of(daysArr).should_be(['Sun','Mon','Tue']);
 	},
 
-	'should return the argument passed according to the index': function(){
-		value_of($arguments(2)('a','b','c','d')).should_be('c');
+	'should call the function for each item in the array': function(){
+		var daysArr = [];
+		$each(['Sun','Mon','Tue'], function(value, key){
+			daysArr[key] = value;
+		});
+
+		value_of(daysArr).should_be(['Sun','Mon','Tue']);
 	},
 
-	'should support negative index accessing': function(){
+	'should call the function for each item in the object': function(){
+		var daysObj = {};
+		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+			daysObj[key] = value;
+		});
 
+		value_of(daysObj).should_be({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
+	}
+
+});
+
+describe('$extend', {
+
+	'should extend two objects': function(){
+		var obj1 = {a: 1, b: 2};
+		var obj2 = {b: 3, c: 4};
+		$extend(obj1, obj2);
+		value_of(obj1).should_be({a: 1, b: 3, c: 4});
+	},
+
+	'should overwrite properties': function(){
+		var obj1 = {a: 1, b: 2};
+		var obj2 = {b: 3, c: 4, a: 5};
+		$extend(obj1, obj2);
+		value_of(obj1).should_be({a: 5, b: 3, c: 4});
+	},
+
+	'should not extend with null argument': function(){
+		var obj1 = {a: 1, b: 2};
+		$extend(obj1);
+		value_of(obj1).should_be({a: 1, b: 2});
 	}
 
 });
 
 describe('$lambda', {
 
-	'should return a function the passed function': function(){
+	'if a function is passed in that function should be returned': function(){
 		var fn = function(a,b){ return a; };
 		value_of($lambda(fn)).should_be(fn);
 	},
@@ -95,36 +246,19 @@ describe('$lambda', {
 
 });
 
-describe('$extend', {
-
-	'should extend two objects': function(){
-		var ob1 = {a: 1, b: 2};
-		var ob2 = {b: 3, c: 4};
-		$extend(ob1, ob2);
-		value_of(ob1).should_be({a: 1, b: 3, c: 4});
-	},
-
-	'should not extend with null argument': function(){
-		var ob1 = {a: 1, b: 2};
-		$extend(ob1);
-		value_of(ob1).should_be({a: 1, b: 2});
-	}
-
-});
-
 describe('$merge', {
 
 	'should dereference objects': function(){
-		var obj = {a: 1, a: 2};
-		var obj2 = $merge(obj);
-		value_of(obj === obj2).should_be_false();
+		var obj1 = {a: 1, a: 2};
+		var obj2 = $merge(obj1);
+		value_of(obj1 === obj2).should_be_false();
 	},
 
-	'should merge any arbitrary number of objects': function(){
-		var ob1 = {a: {a: 1, b: 2, c: 3}, b: 2};
-		var ob2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
-		var ob3 = {a: {a: 3}, b: 3, c: false};
-		value_of($merge(ob1, ob2, ob3)).should_be({a: {a: 3, b: 8, c: 3, d:8}, b: 3, c: false});
+	'should merge any arbitrary number of nested objects': function(){
+		var obj1 = {a: {a: 1, b: 2, c: 3}, b: 2};
+		var obj2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
+		var obj3 = {a: {a: 3}, b: 3, c: false};
+		value_of($merge(obj1, obj2, obj3)).should_be({a: {a: 3, b: 8, c: 3, d: 8}, b: 3, c: false});
 	}
 
 });
@@ -306,152 +440,4 @@ describe('$unlink', {
 
 });
 
-var Local = Local || {};
-
-describe('Native', {
-
-	'before all': function(){
-
-		Local.Instrument = new Native({
-
-			name: 'instrument',
-
-			initialize: function(name){
-				this.name = name;
-			}
-
-		});
-
-		Local.Instrument.implement({
-
-			method: function(){
-				return this.property + ' ' + this.name;
-			},
-
-			property: 'stuff'
-
-		});
-
-		Local.Car = new Native({
-
-			name: 'car',
-
-			protect: true,
-
-			initialize: function(name){
-				this.name = name;
-			}
-
-		});
-
-		Local.Car.implement({
-
-			property: 'stuff',
-
-			method: function(){
-				return this.name + '_' + this.property;
-			}
-
-		});
-
-	},
-
-	'should allow implementation over existing methods when browser option is not set': function(){
-		Local.Instrument.implement({ property: 'staff' });
-		var myInstrument = new Local.Instrument('xeelophone');
-		value_of(myInstrument.method()).should_be('staff xeelophone');
-	},
-
-	'should not override existing methods when browser option is set': function(){
-		Local.Car.implement({ property: 'staff' });
-		var myCar = new Local.Car('smart');
-		value_of(myCar.method()).should_be('smart_stuff');
-	},
-
-	'should allow generic calls': function(){
-		value_of(Local.Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
-	},
-
-	"should have a 'native' type": function(){
-		value_of(Native.type(Local.Car)).should_be_true();
-	}
-
-});
-
-describe('$A', {
-
-	'should return a copy for an array': function(){
-		var arr1 = [1,2,3];
-		var arr2 = $A(arr1);
-		value_of(arr1 !== arr2).should_be_true();
-	},
-
-	'should return an array for an Elements collection': function(){
-		var div1 = document.createElement('div');
-		var div2 = document.createElement('div');
-		var div3 = document.createElement('div');
-
-		div1.appendChild(div2);
-		div1.appendChild(div3);
-
-		var array = $A(div1.getElementsByTagName('*'));
-		value_of(Array.type(array)).should_be_true();
-	},
-
-	'should return an array for arguments': function(){
-		var fnTest = function(){
-			return $A(arguments);
-		};
-		var arr = fnTest(1,2,3);
-		value_of(Array.type(arr)).should_be_true();
-		value_of(arr).should_have(3, 'items');
-	}
-
-});
-
-describe('Array.prototype.each', {
-
-	'should call the function for each item in the array': function(){
-		var oldArr = [1, 2, 3, false, null, 0];
-		var newArr = [];
-		oldArr.each(function(item, i){
-			newArr[i] = item;
-		});
-
-		value_of(newArr).should_be(oldArr);
-	}
-
-});
-
-describe('$each', {
-
-	'should call the function for each item in Function arguments': function(){
-		var daysArr = [];
-		(function(){
-			$each(arguments, function(value, key){
-				daysArr[key] = value;
-			});
-		})('Sun','Mon','Tue');
-
-		value_of(daysArr).should_be(['Sun','Mon','Tue']);
-	},
-
-	'should call the function for each item in the array': function(){
-		var daysArr = [];
-		$each(['Sun','Mon','Tue'], function(value, key){
-			daysArr[key] = value;
-		});
-
-		value_of(daysArr).should_be(['Sun','Mon','Tue']);
-	},
-
-	'should call the function for each item in the object': function(){
-		var daysObj = {};
-		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
-			daysObj[key] = value;
-		});
-
-		value_of(daysObj).should_be({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
-	}
-
-});
+})();
