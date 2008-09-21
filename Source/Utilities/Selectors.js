@@ -7,7 +7,7 @@ License:
 */
 
 Native.implement([Document, Element], {
-	
+
 	getElements: function(expression, nocash){
 		expression = expression.split(',');
 		var items, local = {};
@@ -18,11 +18,11 @@ Native.implement([Document, Element], {
 		}
 		return new Elements(items, {ddup: (expression.length > 1), cash: !nocash});
 	}
-	
+
 });
 
 Element.implement({
-	
+
 	match: function(selector){
 		if (!selector) return true;
 		var tagid = Selectors.Utils.parseTagAndID(selector);
@@ -31,7 +31,7 @@ Element.implement({
 		var parsed = Selectors.Utils.parseSelector(selector);
 		return (parsed) ? Selectors.Utils.filter(this, parsed, {}) : true;
 	}
-	
+
 });
 
 var Selectors = {Cache: {nth: {}, parsed: {}}};
@@ -45,14 +45,14 @@ Selectors.RegExps = {
 };
 
 Selectors.Utils = {
-	
+
 	chk: function(item, uniques){
 		if (!uniques) return true;
 		var uid = $uid(item);
 		if (!uniques[uid]) return uniques[uid] = true;
 		return false;
 	},
-	
+
 	parseNthArgument: function(argument){
 		if (Selectors.Cache.nth[argument]) return Selectors.Cache.nth[argument];
 		var parsed = argument.match(/^([+-]?\d*)?([a-z]+)?([+-]?\d*)?$/);
@@ -78,10 +78,10 @@ Selectors.Utils = {
 			case 'only': parsed = {special: 'only-child'}; break;
 			default: parsed = {a: (a - 1), special: 'index'};
 		}
-		
+
 		return Selectors.Cache.nth[argument] = parsed;
 	},
-	
+
 	parseSelector: function(selector){
 		if (Selectors.Cache.parsed[selector]) return Selectors.Cache.parsed[selector];
 		var m, parsed = {classes: [], pseudos: [], attributes: []};
@@ -103,13 +103,13 @@ Selectors.Utils = {
 		if (!parsed.classes && !parsed.attributes && !parsed.pseudos) parsed = null;
 		return Selectors.Cache.parsed[selector] = parsed;
 	},
-	
+
 	parseTagAndID: function(selector){
 		var tag = selector.match(Selectors.RegExps.tag);
 		var id = selector.match(Selectors.RegExps.id);
 		return [(tag) ? tag[1] : '*', (id) ? id[1] : false];
 	},
-	
+
 	filter: function(item, parsed, local){
 		var i;
 		if (parsed.classes){
@@ -132,7 +132,7 @@ Selectors.Utils = {
 		}
 		return true;
 	},
-	
+
 	getByTagAndID: function(ctx, tag, id){
 		if (id){
 			var item = (ctx.getElementById) ? ctx.getElementById(id, true) : Element.getElementById(ctx, id, true);
@@ -141,28 +141,28 @@ Selectors.Utils = {
 			return ctx.getElementsByTagName(tag);
 		}
 	},
-	
+
 	search: function(self, expression, local){
 		var splitters = [];
-		
+
 		var selectors = expression.trim().replace(Selectors.RegExps.splitter, function(m0, m1, m2){
 			splitters.push(m1);
 			return ':)' + m2;
 		}).split(':)');
-		
+
 		var items, filtered, item;
-		
+
 		for (var i = 0, l = selectors.length; i < l; i++){
-			
+
 			var selector = selectors[i];
-			
+
 			if (i == 0 && Selectors.RegExps.quick.test(selector)){
 				items = self.getElementsByTagName(selector);
 				continue;
 			}
-			
+
 			var splitter = splitters[i - 1];
-			
+
 			var tagid = Selectors.Utils.parseTagAndID(selector);
 			var tag = tagid[0], id = tagid[1];
 
@@ -173,9 +173,9 @@ Selectors.Utils = {
 				for (var j = 0, k = items.length; j < k; j++) found = Selectors.Getters[splitter](found, items[j], tag, id, uniques);
 				items = found;
 			}
-			
+
 			var parsed = Selectors.Utils.parseSelector(selector);
-			
+
 			if (parsed){
 				filtered = [];
 				for (var m = 0, n = items.length; m < n; m++){
@@ -184,17 +184,17 @@ Selectors.Utils = {
 				}
 				items = filtered;
 			}
-			
+
 		}
-		
+
 		return items;
-		
+
 	}
-	
+
 };
 
 Selectors.Getters = {
-	
+
 	' ': function(found, self, tag, id, uniques){
 		var items = Selectors.Utils.getByTagAndID(self, tag, id);
 		for (var i = 0, l = items.length; i < l; i++){
@@ -203,7 +203,7 @@ Selectors.Getters = {
 		}
 		return found;
 	},
-	
+
 	'>': function(found, self, tag, id, uniques){
 		var children = Selectors.Utils.getByTagAndID(self, tag, id);
 		for (var i = 0, l = children.length; i < l; i++){
@@ -212,7 +212,7 @@ Selectors.Getters = {
 		}
 		return found;
 	},
-	
+
 	'+': function(found, self, tag, id, uniques){
 		while ((self = self.nextSibling)){
 			if (self.nodeType == 1){
@@ -222,38 +222,37 @@ Selectors.Getters = {
 		}
 		return found;
 	},
-	
+
 	'~': function(found, self, tag, id, uniques){
-		
 		while ((self = self.nextSibling)){
 			if (self.nodeType == 1){
 				if (!Selectors.Utils.chk(self, uniques)) break;
 				if (Selectors.Filters.byTag(self, tag) && Selectors.Filters.byID(self, id)) found.push(self);
-			} 
+			}
 		}
 		return found;
 	}
-	
+
 };
 
 Selectors.Filters = {
-	
+
 	byTag: function(self, tag){
 		return (tag == '*' || (self.tagName && self.tagName.toLowerCase() == tag));
 	},
-	
+
 	byID: function(self, id){
 		return (!id || (self.id && self.id == id));
 	},
-	
+
 	byClass: function(self, klass){
 		return (self.className && self.className.contains(klass, ' '));
 	},
-	
+
 	byPseudo: function(self, parser, argument, local){
 		return parser.call(self, argument, local);
 	},
-	
+
 	byAttribute: function(self, name, operator, value){
 		var result = Element.prototype.getProperty.call(self, name);
 		if (!result) return false;
@@ -269,29 +268,33 @@ Selectors.Filters = {
 		}
 		return false;
 	}
-	
+
 };
 
 Selectors.Pseudo = new Hash({
-	
+
 	// w3c pseudo selectors
-	
+
+	checked: function(){
+		return this.checked;
+	},
+
 	empty: function(){
 		return !(this.innerText || this.textContent || '').length;
 	},
-	
+
 	not: function(selector){
 		return !Element.match(this, selector);
 	},
-	
+
 	contains: function(text){
 		return (this.innerText || this.textContent || '').contains(text);
 	},
-	
+
 	'first-child': function(){
 		return Selectors.Pseudo.index.call(this, 0);
 	},
-	
+
 	'last-child': function(){
 		var element = this;
 		while ((element = element.nextSibling)){
@@ -299,7 +302,7 @@ Selectors.Pseudo = new Hash({
 		}
 		return true;
 	},
-	
+
 	'only-child': function(){
 		var prev = this;
 		while ((prev = prev.previousSibling)){
@@ -311,7 +314,7 @@ Selectors.Pseudo = new Hash({
 		}
 		return true;
 	},
-	
+
 	'nth-child': function(argument, local){
 		argument = (argument == undefined) ? 'n' : argument;
 		var parsed = Selectors.Utils.parseNthArgument(argument);
@@ -334,9 +337,9 @@ Selectors.Pseudo = new Hash({
 		}
 		return (local.positions[uid] % parsed.a == parsed.b);
 	},
-	
+
 	// custom pseudo selectors
-	
+
 	index: function(index){
 		var element = this, count = 0;
 		while ((element = element.previousSibling)){
@@ -344,7 +347,7 @@ Selectors.Pseudo = new Hash({
 		}
 		return (count == index);
 	},
-	
+
 	even: function(argument, local){
 		return Selectors.Pseudo['nth-child'].call(this, '2n+1', local);
 	},
@@ -352,5 +355,5 @@ Selectors.Pseudo = new Hash({
 	odd: function(argument, local){
 		return Selectors.Pseudo['nth-child'].call(this, '2n', local);
 	}
-	
+
 });
