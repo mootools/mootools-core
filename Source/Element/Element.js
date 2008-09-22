@@ -156,11 +156,9 @@ Window.implement({
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
 			switch ($type(item)){
-				case 'element': item = [item]; break;
-				case 'string': item = this.document.getElements(item, true); break;
-				default: item = false;
+				case 'element': elements.push(item); break;
+				case 'string': elements.extend(this.document.getElements(item, true));
 			}
-			if (item) elements.extend(item);
 		}
 		return new Elements(elements);
 	},
@@ -478,12 +476,12 @@ var walk = function(element, walk, start, match, all, nocash){
 	var elements = [];
 	while (el){
 		if (el.nodeType == 1 && (!match || Element.match(el, match))){
+			if (!all) return $(el, nocash);
 			elements.push(el);
-			if (!all) break;
 		}
 		el = el[walk];
 	}
-	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : $(elements[0], nocash);
+	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
 };
 
 Element.implement({

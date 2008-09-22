@@ -31,7 +31,7 @@ Native.implement([Element, Window, Document], {
 		var defn = function(){
 			return fn.call(self);
 		};
-		var nativeEvent = Element.NativeEvents[realType] || 0;
+		var nativeEvent = Element.NativeEvents[realType];
 		if (nativeEvent){
 			if (nativeEvent == 2){
 				defn = function(event){
