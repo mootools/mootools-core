@@ -84,7 +84,7 @@ var IFrame = new Native({
 			});
 			if (host && host == window.location.host){
 				var win = new Window(iframe.contentWindow);
-				var doc = new Document(iframe.contentWindow.document);
+				new Document(iframe.contentWindow.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
@@ -156,11 +156,9 @@ Window.implement({
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
 			switch ($type(item)){
-				case 'element': item = [item]; break;
-				case 'string': item = this.document.getElements(item, true); break;
-				default: item = false;
+				case 'element': elements.push(item); break;
+				case 'string': elements.extend(this.document.getElements(item, true));
 			}
-			if (item) elements.extend(item);
 		}
 		return new Elements(elements);
 	},
@@ -342,27 +340,32 @@ Element.implement({
 	},
 
 	clone: function(contents, keepid){
-		switch ($type(this)){
-			case 'element':
-				var attributes = {};
-				for (var j = 0, l = this.attributes.length; j < l; j++){
-					var attribute = this.attributes[j], key = attribute.nodeName.toLowerCase();
-					if (Browser.Engine.trident && (/input/i).test(this.tagName) && (/width|height/).test(key)) continue;
-					var value = (key == 'style' && this.style) ? this.style.cssText : attribute.nodeValue;
-					if (!$chk(value) || key == 'uid' || (key == 'id' && !keepid)) continue;
-					if (value != 'inherit' && ['string', 'number'].contains($type(value))) attributes[key] = value;
+		contents = contents !== false;
+		var ie = Browser.Engine.trident;
+		var clone = this.cloneNode(contents);
+		var props = {input: 'checked', option: 'selected', textarea: 'value'};
+		var clean = function(node, element){
+			if (!keepid) node.removeAttribute('id');
+			if (ie){
+				node.clearAttributes();
+				node.mergeAttributes(element);
+				node.removeAttribute('uid');
+				if (node.options){
+					var no = node.options, eo = element.options;
+					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
 				}
-				var element = new Element(this.nodeName.toLowerCase(), attributes);
-				if (contents !== false){
-					for (var i = 0, k = this.childNodes.length; i < k; i++){
-						var child = Element.clone(this.childNodes[i], true, keepid);
-						if (child) element.grab(child);
-					}
-				}
-				return element;
-			case 'textnode': return document.newTextNode(this.nodeValue);
+			}
+			var prop = props[element.tagName.toLowerCase()];
+			if (prop && element[prop]) node[prop] = element[prop];
+		};
+
+		if (contents){
+			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+			for (var i = ce.length; i--;) clean(ce[i], te[i]);
 		}
-		return null;
+
+		clean(clone, this);
+		return $(clone);
 	},
 
 	replaces: function(el){
@@ -417,13 +420,13 @@ Element.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		this.getElements('input, select, textarea').each(function(el){
+		this.getElements('input, select, textarea', true).each(function(el){
 			if (!el.name || el.disabled) return;
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
 			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
 			$splat(value).each(function(val){
-				if (val) queryString.push(el.name + '=' + encodeURIComponent(val));
+				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
@@ -437,9 +440,7 @@ Element.implement({
 
 	getProperties: function(){
 		var args = $A(arguments);
-		return args.map(function(attr){
-			return this.getProperty(attr);
-		}, this).associate(args);
+		return args.map(this.getProperty, this).associate(args);
 	},
 
 	setProperty: function(attribute, value){
@@ -475,12 +476,12 @@ var walk = function(element, walk, start, match, all, nocash){
 	var elements = [];
 	while (el){
 		if (el.nodeType == 1 && (!match || Element.match(el, match))){
+			if (!all) return $(el, nocash);
 			elements.push(el);
-			if (!all) break;
 		}
 		el = el[walk];
 	}
-	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : $(elements[0], nocash);
+	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
 };
 
 Element.implement({
@@ -523,7 +524,8 @@ Element.implement({
 
 	hasChild: function(el){
 		el = $(el, true);
-		return (!!el && $A(this.getElementsByTagName(el.tagName)).contains(el));
+		if (!el) return false;
+		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	}
 
 });
@@ -552,13 +554,42 @@ Element.Properties.tag = {get: function(){
 	return this.tagName.toLowerCase();
 }};
 
-Element.Properties.href = {get: function(){
-	return (!this.href) ? null : this.href.replace(new RegExp('^' + document.location.protocol + '\/\/' + document.location.host), '');
-}};
+(function(){
 
-Element.Properties.html = {set: function(){
-	return this.innerHTML = Array.flatten(arguments).join('');
-}};
+	var translations = new Hash({
+		table:  [1, '<table>', '</table>'],
+		select: [1, '<select>', '</select>'],
+		tbody:  [2, '<table><tbody>', '</tbody></table>'],
+		tr:     [3, '<table><tbody><tr>', '</tr></tbody></table>']
+	});
+
+	translations.extend({
+		thead: translations.tbody,
+		tfoot: translations.tbody
+	});
+
+	var translate = function(tag, html){
+		var wrap = translations[tag], first = new Element('div');
+		first.innerHTML = wrap[1] + html + wrap[2];
+		wrap[0].times(function(){ first = first.firstChild; });
+		return first.childNodes;
+	};
+
+	var setHTML = function(){
+		this.innerHTML = Array.flatten(arguments).join('');
+	};
+
+	var html = {
+		set: Browser.Engine.trident ? function(){
+			var html = Array.flatten(arguments).join(''), tag = this.get('tag');
+			if (translations.has(tag)) this.empty().adopt(translate(tag, html));
+			else setHTML.apply(this, arguments);
+		} : setHTML
+	};
+
+	html.erase = html.set;
+	Element.Properties.html = html;
+})();
 
 Native.implement([Element, Window, Document], {
 

@@ -17,22 +17,21 @@ Inspiration:
 */
 
 var MooTools = {
-	'version': '1.2dev',
+	'version': '1.2.1dev',
 	'build': '%build%'
 };
-      
+
 var Native = function(options){
 	options = options || {};
-
-	var afterImplement = options.afterImplement || function(){};
-	var generics = options.generics;
-	generics = (generics !== false);
-	var legacy = options.legacy;
-	var initialize = options.initialize;
-	var protect = options.protect;
 	var name = options.name;
-
+	var legacy = options.legacy;
+	var protect = options.protect;
+	var methods = options.implement;
+	var generics = options.generics;
+	var initialize = options.initialize;
+	var afterImplement = options.afterImplement || function(){};
 	var object = initialize || legacy;
+	generics = generics !== false;
 
 	object.constructor = Native;
 	object.$family = {name: 'native'};
@@ -51,28 +50,24 @@ var Native = function(options){
 		afterImplement.call(obj, name, method);
 		return obj;
 	};
-	
+
+	object.alias = function(a1, a2, a3){
+		if (typeof a1 == 'string'){
+			if ((a1 = this.prototype[a1])) return add(this, a2, a1, a3);
+		}
+		for (var a in a1) this.alias(a, a1[a], a2);
+		return this;
+	};
+
 	object.implement = function(a1, a2, a3){
 		if (typeof a1 == 'string') return add(this, a1, a2, a3);
 		for (var p in a1) add(this, p, a1[p], a2);
 		return this;
 	};
-	
-	object.alias = function(a1, a2, a3){
-		if (typeof a1 == 'string'){
-			a1 = this.prototype[a1];
-			if (a1) add(this, a2, a1, a3);
-		} else {
-			for (var a in a1) this.alias(a, a1[a], a2);
-		}
-		return this;
-	};
+
+	if (methods) object.implement(methods);
 
 	return object;
-};
-
-Native.implement = function(objects, properties){
-	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
 };
 
 Native.genericize = function(object, property, check){
@@ -82,30 +77,96 @@ Native.genericize = function(object, property, check){
 	};
 };
 
+Native.implement = function(objects, properties){
+	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
+};
+
 Native.typize = function(object, family){
 	if (!object.type) object.type = function(item){
 		return ($type(item) === family);
 	};
 };
 
-Native.alias = function(objects, a1, a2, a3){
-	for (var i = 0, j = objects.length; i < j; i++) objects[i].alias(a1, a2, a3);
+(function(){
+	var natives = {'Array': Array, 'Date': Date, 'Function': Function, 'Number': Number, 'RegExp': RegExp, 'String': String};
+	for (var n in natives) new Native({name: n, initialize: natives[n], protect: true});
+
+	var types = {'boolean': Boolean, 'native': Native, 'object': Object};
+	for (var t in types) Native.typize(types[t], t);
+
+	var generics = {
+		'Array': ["concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse", "shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"],
+		'String': ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"]
+	};
+	for (var g in generics){
+		for (var i = generics[g].length; i--;) Native.genericize(window[g], generics[g][i], true);
+	};
+})();
+
+var Hash = new Native({
+
+	name: 'Hash',
+
+	initialize: function(object){
+		if ($type(object) == 'hash') object = $unlink(object.getClean());
+		for (var key in object) this[key] = object[key];
+		return this;
+	}
+
+});
+
+Hash.implement({
+
+	forEach: function(fn, bind){
+		for (var key in this){
+			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
+		}
+	},
+
+	getClean: function(){
+		var clean = {};
+		for (var key in this){
+			if (this.hasOwnProperty(key)) clean[key] = this[key];
+		}
+		return clean;
+	},
+
+	getLength: function(){
+		var length = 0;
+		for (var key in this){
+			if (this.hasOwnProperty(key)) length++;
+		}
+		return length;
+	}
+
+});
+
+Hash.alias('forEach', 'each');
+
+Array.implement({
+
+	forEach: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+	}
+
+});
+
+Array.alias('forEach', 'each');
+
+function $A(iterable){
+	if (iterable.item){
+		var array = [];
+		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+		return array;
+	}
+	return Array.prototype.slice.call(iterable);
 };
 
-(function(objects){
-	for (var name in objects) Native.typize(objects[name], name);
-})({'boolean': Boolean, 'native': Native, 'object': Object});
-
-(function(objects){
-	for (var name in objects) new Native({name: name, initialize: objects[name], protect: true});
-})({'String': String, 'Function': Function, 'Number': Number, 'Array': Array, 'RegExp': RegExp, 'Date': Date});
-
-(function(object, methods){
-	for (var i = methods.length; i--; i) Native.genericize(object, methods[i], true);
-	return arguments.callee;
-})
-(Array, ['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'toString', 'valueOf', 'indexOf', 'lastIndexOf'])
-(String, ['charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'replace', 'search', 'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase', 'valueOf']);
+function $arguments(i){
+	return function(){
+		return arguments[i];
+	};
+};
 
 function $chk(obj){
 	return !!(obj || obj === 0);
@@ -121,44 +182,26 @@ function $defined(obj){
 	return (obj != undefined);
 };
 
+function $each(iterable, fn, bind){
+	var type = $type(iterable);
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+};
+
 function $empty(){};
-
-function $arguments(i){
-	return function(){
-		return arguments[i];
-	};
-};
-
-function $lambda(value){
-	return (typeof value == 'function') ? value : function(){
-		return value;
-	};
-};
 
 function $extend(original, extended){
 	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
 };
 
-function $unlink(object){
-	var unlinked;
-	
-	switch ($type(object)){
-		case 'object':
-			unlinked = {};
-			for (var p in object) unlinked[p] = $unlink(object[p]);
-		break;
-		case 'hash':
-			unlinked = $unlink(object.getClean());
-		break;
-		case 'array':
-			unlinked = [];
-			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = $unlink(object[i]);
-		break;
-		default: return object;
-	}
-	
-	return unlinked;
+function $H(object){
+	return new Hash(object);
+};
+
+function $lambda(value){
+	return (typeof value == 'function') ? value : function(){
+		return value;
+	};
 };
 
 function $merge(){
@@ -191,7 +234,7 @@ function $splat(obj){
 };
 
 var $time = Date.now || function(){
-	return new Date().getTime();
+	return +new Date;
 };
 
 function $try(){
@@ -218,70 +261,21 @@ function $type(obj){
 	return typeof obj;
 };
 
-var Hash = new Native({
-
-	name: 'Hash',
-
-	initialize: function(object){
-		if ($type(object) == 'hash') object = $unlink(object.getClean());
-		for (var key in object) this[key] = object[key];
-		return this;
+function $unlink(object){
+	var unlinked;
+	switch ($type(object)){
+		case 'object':
+			unlinked = {};
+			for (var p in object) unlinked[p] = $unlink(object[p]);
+		break;
+		case 'hash':
+			unlinked = new Hash(object);
+		break;
+		case 'array':
+			unlinked = [];
+			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = $unlink(object[i]);
+		break;
+		default: return object;
 	}
-
-});
-
-Hash.implement({
-	
-	getLength: function(){
-		var length = 0;
-		for (var key in this){
-			if (this.hasOwnProperty(key)) length++;
-		}
-		return length;
-	},
-
-	forEach: function(fn, bind){
-		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
-		}
-	},
-	
-	getClean: function(){
-		var clean = {};
-		for (var key in this){
-			if (this.hasOwnProperty(key)) clean[key] = this[key];
-		}
-		return clean;
-	}
-
-});
-
-Hash.alias('forEach', 'each');
-
-function $H(object){
-	return new Hash(object);
-};
-
-Array.implement({
-
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
-	}
-
-});
-
-Array.alias('forEach', 'each');
-
-function $A(iterable){
-	if (iterable.item){
-		var array = [];
-		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
-		return array;
-	}
-	return Array.prototype.slice.call(iterable);
-};
-
-function $each(iterable, fn, bind){
-	var type = $type(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+	return unlinked;
 };

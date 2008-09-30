@@ -30,12 +30,12 @@ Function.implement({
 		};
 	},
 
-	pass: function(args, bind){
-		return this.create({arguments: args, bind: bind});
+	run: function(args, bind){
+		return this.apply(bind, $splat(args));
 	},
 
-	attempt: function(args, bind){
-		return this.create({arguments: args, bind: bind, attempt: true})();
+	pass: function(args, bind){
+		return this.create({bind: bind, arguments: args});
 	},
 
 	bind: function(bind, args){
@@ -43,19 +43,19 @@ Function.implement({
 	},
 
 	bindWithEvent: function(bind, args){
-		return this.create({bind: bind, event: true, arguments: args});
+		return this.create({bind: bind, arguments: args, event: true});
+	},
+
+	attempt: function(args, bind){
+		return this.create({bind: bind, arguments: args, attempt: true})();
 	},
 
 	delay: function(delay, bind, args){
-		return this.create({delay: delay, bind: bind, arguments: args})();
+		return this.create({bind: bind, arguments: args, delay: delay})();
 	},
 
-	periodical: function(interval, bind, args){
-		return this.create({periodical: interval, bind: bind, arguments: args})();
-	},
-
-	run: function(args, bind){
-		return this.apply(bind, $splat(args));
+	periodical: function(periodical, bind, args){
+		return this.create({bind: bind, arguments: args, periodical: periodical})();
 	}
 
 });

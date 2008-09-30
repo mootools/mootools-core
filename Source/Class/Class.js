@@ -12,21 +12,22 @@ var Class = new Native({
 
 	initialize: function(properties){
 		properties = properties || {};
-		var klass = function(empty){
-			for (var key in this) this[key] = $unlink(this[key]);
-			for (var mutator in Class.Mutators){
-				if (!this[mutator]) continue;
-				Class.Mutators[mutator](this, this[mutator]);
-				delete this[mutator];
+		var klass = function(){
+			for (var key in this){
+				if ($type(this[key]) != 'function') this[key] = $unlink(this[key]);
 			}
-
 			this.constructor = klass;
-			if (empty === $empty) return this;
-			
-			var self = (this.initialize) ? this.initialize.apply(this, arguments) : this;
+			if (Class.prototyping) return this;
+			var instance = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 			if (this.options && this.options.initialize) this.options.initialize.call(this);
-			return self;
+			return instance;
 		};
+
+		for (var mutator in Class.Mutators){
+			if (!properties[mutator]) continue;
+			properties = Class.Mutators[mutator](properties, properties[mutator]);
+			delete properties[mutator];
+		}
 
 		$extend(klass, this);
 		klass.constructor = Class;
@@ -36,62 +37,82 @@ var Class = new Native({
 
 });
 
-Class.implement({
+Class.Mutators = {
 
-	implement: function(){
-		Class.Mutators.Implements(this.prototype, Array.slice(arguments));
-		return this;
+	Extends: function(self, klass){
+		Class.prototyping = klass.prototype;
+		var subclass = new klass;
+		delete subclass.parent;
+		subclass = Class.inherit(subclass, self);
+		delete Class.prototyping;
+		return subclass;
+	},
+
+	Implements: function(self, klasses){
+		$splat(klasses).each(function(klass){
+			Class.prototying = klass;
+			$extend(self, ($type(klass) == 'class') ? new klass : klass);
+			delete Class.prototyping;
+		});
+		return self;
+	}
+
+};
+
+Class.extend({
+
+	inherit: function(object, properties){
+		var caller = arguments.callee.caller;
+		for (var key in properties){
+			var override = properties[key];
+			var previous = object[key];
+			var type = $type(override);
+			if (previous && type == 'function'){
+				if (override != previous){
+					if (caller){
+						override.__parent = previous;
+						object[key] = override;
+					} else {
+						Class.override(object, key, override);
+					}
+				}
+			} else if(type == 'object'){
+				object[key] = $merge(previous, override);
+			} else {
+				object[key] = override;
+			}
+		}
+
+		if (caller) object.parent = function(){
+			return arguments.callee.caller.__parent.apply(this, arguments);
+		};
+
+		return object;
+	},
+
+	override: function(object, name, method){
+		var parent = Class.prototyping;
+		if (parent && object[name] != parent[name]) parent = null;
+		var override = function(){
+			var previous = this.parent;
+			this.parent = parent ? parent[name] : object[name];
+			var value = method.apply(this, arguments);
+			this.parent = previous;
+			return value;
+		};
+		object[name] = override;
 	}
 
 });
 
-Class.Mutators = {
-  
-  Implements: function(self, klasses){
-  	$splat(klasses).each(function(klass){
-  		$extend(self, ($type(klass) == 'class') ? new klass($empty) : klass);
-  	});
-  },
-  
-  Extends: function(self, klass){
-  	var instance = new klass($empty);
-  	delete instance.parent;
-  	delete instance.parentOf;
+Class.implement({
 
-  	for (var key in instance){
-  		var current = self[key], previous = instance[key];
-  		if (current == undefined){
-  			self[key] = previous;
-  			continue;
-  		}
+	implement: function(){
+		var proto = this.prototype;
+		$each(arguments, function(properties){
+			Class.inherit(proto, properties);
+		});
+		return this;
+	}
 
-  		var ctype = $type(current), ptype = $type(previous);
-  		if (ctype != ptype) continue;
-
-  		switch (ctype){
-  			case 'function': 
-  				// this code will be only executed if the current browser does not support function.caller (currently only opera).
-  				// we replace the function code with brute force. Not pretty, but it will only be executed if function.caller is not supported.
-
-  				if (!arguments.callee.caller) self[key] = eval('(' + String(current).replace(/\bthis\.parent\(\s*(\))?/g, function(full, close){
-  					return 'arguments.callee._parent_.call(this' + (close || ', ');
-  				}) + ')');
-
-  				// end "opera" code
-  				self[key]._parent_ = previous;
-  			  break;
-  			case 'object': self[key] = $merge(previous, current);
-  		}
-
-  	}
-
-  	self.parent = function(){
-  		return arguments.callee.caller._parent_.apply(this, arguments);
-  	};
-
-  	self.parentOf = function(descendant){
-  		return descendant._parent_.apply(this, Array.slice(arguments, 1));
-  	};
-  }
-  
-};
+});

@@ -6,7 +6,7 @@ All of the other Fx Classes inherit from this one.
 
 ### Implements:
 
-- [Chain][], [Events][], [Chain][]
+- [Chain][], [Events][], [Options][]
 
 
 
@@ -25,7 +25,7 @@ Fx Method: constructor {#Fx:constructor}
 
 * fps        - (*number*: defaults to 50) The frames per second for the transition.
 * unit       - (*string*: defaults to false) The unit, e.g. 'px', 'em', or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
-* link       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'link'.
+* link       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
 	* 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
 	* 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
@@ -33,9 +33,9 @@ Fx Method: constructor {#Fx:constructor}
 	* 'short'  - 250ms
 	* 'normal' - 500ms
 	* 'long'   - 1000ms
-* transition - (*function*: defaults to [Fx.Transitions.Sine.easeInOut](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
+* transition - (*function*: defaults to ['sine:in:out'](/Fx/Fx.Transitions) The equation to use for the effect see [Fx.Transitions](/Fx/Fx.Transitions). Also accepts a string in the following form:
 
-  transition[:in][:out] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
+  transition\[:in\]\[:out\] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
 
 ### Events:
 
@@ -164,6 +164,6 @@ Resume a previously paused effect.
 [Fx]: #Fx
 [Chain]: /Class/Class.Extras#Chain
 [Events]: /Class/Class.Extras#Events
-[Chain]: /Class/Class.Extras#Options
+[Options]: /Class/Class.Extras#Options
 [Fx.Tween]: /Fx/Fx.Tween
 [Fx.Morph]: /Fx/Fx.Morph

@@ -23,7 +23,7 @@ Native.implement([Element, Window, Document], {
 			if (custom.condition){
 				condition = function(event){
 					if (custom.condition.call(this, event)) return fn.call(this, event);
-					return false;
+					return true;
 				};
 			}
 			realType = custom.base || realType;
@@ -31,7 +31,7 @@ Native.implement([Element, Window, Document], {
 		var defn = function(){
 			return fn.call(self);
 		};
-		var nativeEvent = Element.NativeEvents[realType] || 0;
+		var nativeEvent = Element.NativeEvents[realType];
 		if (nativeEvent){
 			if (nativeEvent == 2){
 				defn = function(event){
@@ -50,7 +50,7 @@ Native.implement([Element, Window, Document], {
 		if (!events || !events[type]) return this;
 		var pos = events[type].keys.indexOf(fn);
 		if (pos == -1) return this;
-		var key = events[type].keys.splice(pos, 1)[0];
+		events[type].keys.splice(pos, 1);
 		var value = events[type].values.splice(pos, 1)[0];
 		var custom = Element.Events.get(type);
 		if (custom){

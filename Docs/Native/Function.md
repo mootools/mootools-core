@@ -38,7 +38,7 @@ Base function for creating functional closures which is used by all other Functi
 ### Example:
 
 	var myFunction = function(){
-		alert("I'm a function. :)");
+		alert("I'm a function. :D");
 	};
 
 	var mySimpleFunction = myFunction.create(); //Just a simple copy.
@@ -154,7 +154,7 @@ Changes the scope of `this` within the target function to refer to the bind para
 Function Method: bindWithEvent {#Function:bindWithEvent}
 --------------------------------------------------------
 
-Changes the scope of `this` within the target function to refer to the bind parameter.  It also makes "space" for an event.
+Changes the scope of `this` within the target function to refer to the bind parameter. It also makes "space" for an event.
 This allows the function to be used in conjunction with [Element:addEvent][] and arguments.
 
 ### Syntax:
@@ -220,7 +220,7 @@ Delays the execution of a function by a specified duration.
 Function Method: periodical {#Function:periodical}
 --------------------------------------------------
 
-Executes a function in the specified intervals of time.  Periodic execution can be stopped using the [$clear][] function.
+Executes a function in the specified intervals of time. Periodic execution can be stopped using the [$clear][] function.
 
 ### Syntax:
 
@@ -275,7 +275,7 @@ Runs the Function with specified arguments and binding. The same as apply but re
 		return a + b + c;
 	}
 	var myArgs = [1,2,3];
-	myFn.run(args); //Returns: 6
+	myFn.run(myArgs); //Returns: 6
 
 
 #### Run With Binding:
@@ -284,7 +284,7 @@ Runs the Function with specified arguments and binding. The same as apply but re
 		return a + b + c + this;
 	}
 	var myArgs = [1,2,3];
-	myFn.run(args, 6); //Returns: 12
+	myFn.run(myArgs, 6); //Returns: 12
 
 
 

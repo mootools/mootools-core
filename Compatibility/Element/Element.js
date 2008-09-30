@@ -13,7 +13,7 @@ Element.implement({
 		this.parentNode.replaceChild(el, this);
 		return el;
 	},
-	
+
 	removeElements: function(){
 		return this.dispose();
 	}
@@ -35,7 +35,7 @@ Element.implement({
 	setHTML: function(){
 		return this.set('html', arguments);
 	},
-	
+
 	getHTML: function(){
 		return this.get('html');
 	},

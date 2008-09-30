@@ -6,19 +6,23 @@ License:
 	MIT-style license.
 */
 
+(function(){
+
 var fn = function(){
 	return $A(arguments);
 };
 
 var Rules = function(){
-	return  this + ' rules';
+	return this + ' rules';
 };
 
 var Args = function(){
 	return [this].concat($A(arguments));
 };
 
-describe('Function.create', {
+describe("Function Methods", {
+
+	// Function.create
 
 	'should return a new function': function(){
 		var fnc = $empty.create();
@@ -43,11 +47,9 @@ describe('Function.create', {
 	'should return a new function as an event': function(){
 		var fnc = fn.create({'arguments': [0, 1], 'event': true});
 		value_of(fnc('an Event occurred')).should_be(['an Event occurred', 0, 1]);
-	}
+	},
 
-});
-
-describe('Function.bind', {
+	// Function.bind
 
 	'should return the function bound to an object': function(){
 		var fnc = Rules.bind('MooTools');
@@ -72,11 +74,9 @@ describe('Function.bind', {
 	'should return the function bound to an object and make the function event listener with multiple arguments': function(){
 		var fnc = Args.bindWithEvent('MooTools', ['rocks', 'da house']);
 		value_of(fnc('an Event ocurred')).should_be(['MooTools', 'an Event ocurred', 'rocks', 'da house']);
-	}
+	},
 
-});
-
-describe('Function.pass', {
+	// Function.pass
 
 	'should return a function that when called passes the specified arguments to the original function': function(){
 		var fnc = fn.pass('MooTools is beautiful and elegant');
@@ -86,11 +86,9 @@ describe('Function.pass', {
 	'should pass multiple arguments and bind the function to a specific object when it is called': function(){
 		var fnc = Args.pass(['rocks', 'da house'], 'MooTools');
 		value_of(fnc()).should_be(['MooTools', 'rocks', 'da house']);
-	}
+	},
 
-});
-
-describe('Function.run', {
+	// Function.run
 
 	'should run the function': function(){
 		var result = fn.run();
@@ -105,21 +103,17 @@ describe('Function.run', {
 	'should run the function with multiple arguments and bind the function to an object': function(){
 		var result = Args.run(['beautiful', 'elegant'], 'MooTools');
 		value_of(result).should_be(['MooTools', 'beautiful', 'elegant']);
-	}
+	},
 
-});
-
-describe('Function.extend', {
+	// Function.extend
 
 	"should extend the function's properties": function(){
 		var fnc = (function(){}).extend({a: 1, b: 'c'});
 		value_of(fnc.a).should_be(1);
 		value_of(fnc.b).should_be('c');
-	}
+	},
 
-});
-
-describe('Function.attempt', {
+	// Function.attempt
 
 	'should call the function without raising an exception': function(){
 		var fnc = function(){
@@ -138,21 +132,17 @@ describe('Function.attempt', {
 			this_should_not_work();
 		};
 		value_of(fnc.attempt()).should_be_null();
-	}
+	},
 
-});
-
-describe('Function.delay', {
+	// Function.delay
 
 	'should return a timer pointer': function(){
 		var timer = $empty.delay(10000);
 		value_of(Number.type(timer)).should_be_true();
 		$clear(timer);
-	}
+	},
 
-});
-
-describe('Function.periodical', {
+	// Function.periodical
 
 	'should return a timer pointer': function(){
 		var timer = $empty.periodical(10000);
@@ -161,3 +151,5 @@ describe('Function.periodical', {
 	}
 
 });
+
+})();

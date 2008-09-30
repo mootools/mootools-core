@@ -1,0 +1,2 @@
+[ADD] Element.set('html') now allows to set the innerHTML of all Elements (including tables and selects)
+[CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in.

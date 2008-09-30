@@ -58,7 +58,7 @@ Adds functions to the end of the call stack of the Chain instance.
 
 ### Arguments:
 
-1. Any number of functions.
+1. fn - (*function* or *array*) The function (or array of functions) to add to the chain call stack. Will accept and number of functions or arrays of functions.
 
 ### Returns:
 
@@ -72,7 +72,7 @@ Adds functions to the end of the call stack of the Chain instance.
 		function(){ this.start(0,1); },
 		function(){ this.start(1,0); },
 		function(){ this.start(0,1); }
-	); //Will fade the Element in and out three times.
+	); //Will fade the Element out and in twice.
 
 
 ### See Also:
@@ -96,7 +96,7 @@ Removes the first function of the Chain instance stack and executes it. The next
 
 ### Returns:
 
-* (*object*) This Class instance.
+* (*mixed*) The return value of the "next" function or false when the chain was empty.
 
 ### Example:
 
@@ -155,7 +155,7 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 ### Implementing:
 
 - This class can be implemented into other classes to add its functionality to them.
-- Events has been designed to work well with the [Options](#Options) class when the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
+- Events has been designed to work well with the [Options](#Options) class. When the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
 
 ### Example:
 

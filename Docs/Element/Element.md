@@ -52,7 +52,11 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Arguments:
 
-* Any number of the following as arguments are accepted: HTMLCollections, arrays of elements, elements, or strings as selectors.
+* Any number of the following as arguments are accepted: 
+ * HTMLCollections, 
+ * arrays of elements, 
+ * elements, or 
+ * strings as selectors.
 
 ### Returns:
 
@@ -489,7 +493,7 @@ Appends the Element at a particular place relative to the Element's children (sp
 
 ### Arguments:
 
-1. el - (*mixed*) el can be the id of an element or an element.
+1. el - (*mixed*) el can be the id of an element or an Element.
 2. where - (*string*, optional: default 'bottom') The place to append this Element. Can be 'top' or 'bottom'.
 
 ### Returns:
@@ -575,23 +579,37 @@ Element Method: wraps {#Element:wraps}
 
 Works like [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element around its target.
 
-Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
-
-Inserts the passed element inside the Element (that will become the parent). The Element will also move to the passed element position.
-
+The Element is moved to the position of the passed element and becomes the parent.
 
 ### Syntax:
 	
-	myParent.wrap(el[, where]);
+	myParent.wraps(el[, where]);
 	
 ### Arguments:
 
-1. el - (*mixed*) The id of an element, an Element, or an array of elements.
+1. el - (*mixed*) The id of an element or an Element.
 2. where - (*string*, optional: default 'bottom') The place to insert the passed in element. Can be 'top' or 'bottom'.
 
 ### Returns:
 
 * (*element*) This Element.
+
+### Examples:
+
+##### HTML
+
+	<div id="myFirstElement"></div>
+
+##### JavaScript
+
+	var mySecondElement = new Element('div', {id: 'mySecondElement'});
+	mySecondElement.wraps($('myFirstElement'));
+
+##### Resulting HTML
+
+	<div id="mySecondElement">
+		<div id="myFirstElement"></div>
+	</div>
 
 
 
@@ -677,7 +695,7 @@ Clones the Element and returns the cloned one.
 
 ### Arguments:
 
-1. contents - (*boolean*, optional: defaults to true) When true the Element is cloned with childNodes.
+1. contents - (*boolean*, optional: defaults to true) When set to false the Element's contents are not cloned.
 2. keepid - (*boolean*, optional: defaults to false) When true the cloned Element keeps the id attribute, if present. Same goes for any of the cloned childNodes.
 
 
@@ -703,12 +721,13 @@ Clones the Element and returns the cloned one.
 
 ### Note:
 
-- The returned Element does not have an attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event/#Element:cloneEvents).
+- The returned Element does not have attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event#Element:cloneEvents).
+- Values stored in Element.Storage are not cloned.
 - The clone element and its children are stripped of ids, unless otherwise specified by the keepid parameter.
 
 ### See Also:
 
-- [Element:cloneEvents](/Element/Element.Events#Element:cloneEvents).
+- [Element:cloneEvents](/Element/Element.Event#Element:cloneEvents).
 
 
 
@@ -915,7 +934,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
 
 ### Returns:
 
@@ -1159,7 +1178,7 @@ If the select is single, it will return an array with only one item.
 
 
 Element Method: getProperty {#Element:getProperty}
-------------------------------------------------------
+--------------------------------------------------
 
 Returns a single element attribute.
 
@@ -1317,7 +1336,7 @@ Removes an attribute from the Element.
 
 
 Element Method: removeProperties {#Element:removeProperties}
---------------------------------------------------------
+------------------------------------------------------------
 
 Removes numerous attributes from the Element.
 
@@ -1350,7 +1369,7 @@ Removes numerous attributes from the Element.
 	
 
 Element Method: store {#Element:store}
---------------------------------------------------------
+--------------------------------------
 
 Stores an item in the Elements Storage, linked to this Element.
 
@@ -1374,18 +1393,19 @@ Stores an item in the Elements Storage, linked to this Element.
 
 
 Element Method: retrieve {#Element:retrieve}
---------------------------------------------------------
+--------------------------------------------
 
-Retrieves a value from the Elements storage
+Retrieves a value from the Elements storage.
 
 
 ### Syntax:
 
-	myElement.retrieve(key);
+	myElement.retrieve(key[, default]);
 
 ### Arguments:
 
 1. key - (*string*) The key you want to retrieve from the storage.
+2. default - (*mixed*, optional) Default value to store and return if no value is stored.
 
 ### Returns:
 

@@ -19,9 +19,7 @@ Request Specifically made for receiving HTML.
 
 ### Options:
 
-* update       - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
-* evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
-* evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated.
+* update - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
 
 ### Events:
 
@@ -121,7 +119,7 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 #### Arguments:
 
-1. options - (*object, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
+1. options - (*object*, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
 
 #### Returns:
 
@@ -172,5 +170,6 @@ Updates the content of the Element with a Request.HTML GET request.
 
 ### See Also:
 
+- [$][], [Request](/Request/Request)
+
 [$]: /Element/Element/#dollar
-[Request]: /Request/Request

@@ -20,7 +20,7 @@ Attaches an event listener to a DOM element.
 ###	Arguments:
 
 1. type - (*string*) The event name to monitor ('click', 'load', etc) without the prefix 'on'.
-2. fn   - (*funtion*) The function to execute.
+2. fn   - (*function*) The function to execute.
 
 ###	Returns:
 
@@ -61,7 +61,7 @@ Works as Element.addEvent, but instead removes the specified event listener.
 ###	Arguments:
 
 1. type - (*string*) The event name.
-2. fn   - (*funtion*) The function to remove.
+2. fn   - (*function*) The function to remove.
 
 ###	Returns:
 
@@ -163,8 +163,8 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 		}
 	});
 
-	myElement.addEvent('click': function(){ alert('clicked again'); });
-	myElement.addEvent('click': function(){ alert('clicked and again :('); });
+	myElement.addEvent('click', function(){ alert('clicked again'); });
+	myElement.addEvent('click', function(){ alert('clicked and again :('); });
 	//addEvent will keep appending each function. 
 	//Unfortunately for the visitor, that'll be three alerts they'll have to click on.
 	myElement.removeEvents('click'); // This saves the visitor's finger by removing every click event.

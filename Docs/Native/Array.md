@@ -141,7 +141,7 @@ This method is provided only for browsers without native [Array:filter][] suppor
 Array Method: clean {#Array:clean}
 ------------------------------------
 
-Creates a new array with all of the elements of the array which evaluate as true (i.e. not null, undefined, zero, false, or "").
+Creates a new array with all of the elements of the array which are defined (i.e. not null or undefined).
 
 ### Syntax:
 
@@ -153,7 +153,9 @@ Creates a new array with all of the elements of the array which evaluate as true
 
 ### Examples:
 
-	var cleanedArray = [0, 3, null, false, true, "foo", ""].clean(); //cleanedArray = [3, true, "foo"]
+	var myArray = [null, 1, 0, true, false, "foo", undefined, ""];
+	myArray.clean() // returns [1, 0, true, false, "foo", ""]
+
 
 Array Method: indexOf {#Array:indexOf}
 --------------------------------------
@@ -527,11 +529,41 @@ Flattens a multidimensional array into a single array.
 
 
 
+Array Method: hexToRgb {#Array:hexToRgb}
+----------------------------------------
+
+Converts an hexidecimal color value to RGB. Input array must be the following hexidecimal color format.
+\['FF','FF','FF'\]
+
+### Syntax:
+
+	myArray.hexToRgb([array]);
+
+### Arguments:
+
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. \[255, 51, 0\]) instead of a string (eg. "rgb(255,51,0)").
+
+### Returns:
+
+* (*string*) A string representing the color in RGB.
+* (*array*) If the array flag is set, an array will be returned instead.
+
+### Examples:
+
+	['11','22','33'].hexToRgb(); //returns "rgb(17,34,51)"
+	['11','22','33'].hexToRgb(true); //returns [17, 34, 51]
+
+### See Also:
+
+- [String:hexToRgb](/Native/String/#hexToRgb)
+
+
+
 Array Method: rgbToHex {#Array:rgbToHex}
 ----------------------------------------
 
 Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
-[255,255,255], or [255,255,255,1]
+\[255,255,255\], or \[255,255,255,1\]
 
 ### Syntax:
 
@@ -539,7 +571,7 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. ['ff','33','00']) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (eg. \['ff','33','00'\]) instead of a string (eg. "#ff3300").
 
 ### Returns:
 

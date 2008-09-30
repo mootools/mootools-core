@@ -48,10 +48,10 @@ Gets all the elements within an element that match the given selector.
 
 - Supports these operators in attribute selectors:
 
-	- = : is equal to
-	- ^= : starts-with
-	- $= : ends-with
-	- != : is not equal to
+	- '=' : is equal to
+	- '^=' : starts-with
+	- '$=' : ends-with
+	- '!=' : is not equal to
 
 Element Property: getElement {#Element:getElement}
 --------------------------------------------------
@@ -75,14 +75,6 @@ Same as [Element:getElements](#Element:getElements), but returns only the first.
 	var found = $('myElement').getElement('.findMe').setStyle('color', '#f00');
 
 ### Note:
-
-- Alternate syntax for [$E](#Element:E), where filter is the Element.
-
-Function: $E {#Element:E}
---------------------------
-
-Alias for [Element:getElement](#Element:getElement), using document as context.
-
 
 Element Method: match {#Element:match}
 --------------------------------------
