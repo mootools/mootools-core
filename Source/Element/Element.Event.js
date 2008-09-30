@@ -23,7 +23,7 @@ Native.implement([Element, Window, Document], {
 			if (custom.condition){
 				condition = function(event){
 					if (custom.condition.call(this, event)) return fn.call(this, event);
-					return false;
+					return true;
 				};
 			}
 			realType = custom.base || realType;
