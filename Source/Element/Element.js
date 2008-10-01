@@ -221,6 +221,8 @@ Element.Storage = {
 
 };
 
+Element.Garbage = {};
+
 Element.Inserters = new Hash({
 
 	before: function(context, element){
