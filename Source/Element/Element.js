@@ -227,15 +227,13 @@ var clean = function(item){
 		Element.dispose(item);
 	}
 	var uid = item.uid;
-	if (uid){
-		if (item.clearAttributes) item.clearAttributes();
-		collected[uid] = storage[uid] = null;
-	}
+	if (!uid) return;
+	if (item.clearAttributes) item.clearAttributes();
+	collected[uid] = storage[uid] = null;
 };
 
 //purge all memory to prevent leaks
 var purge = function(){
-	window.removeEvents();
 	Hash.each(collected, clean);
 	if (Browser.Engine.trident) $A(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
@@ -568,7 +566,15 @@ Element.implement({
 Native.implement([Element, Window, Document], {
 
 	addListener: function(type, fn){
-		collected[this.uid] = this;
+		if (type == 'unload'){
+			var old = fn, self = this;
+			fn = function(){
+				self.removeListener('unload', fn);
+				old();
+			};
+		} else {
+			collected[this.uid] = this;
+		}
 		if (this.addEventListener) this.addEventListener(type, fn, false);
 		else this.attachEvent('on' + type, fn);
 		return this;
