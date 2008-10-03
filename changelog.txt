@@ -1,2 +1,11 @@
 [ADD] Element.set('html') now allows to set the innerHTML of all Elements (including tables and selects)
-[CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in.
+[CHG] Element.js has been refactored to make use of private variables wherever possible
+[CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in
+[CHG] Faster Element.hasChild
+[FIX] Class.js works in Safari 2 again, and contains no more eval hack
+[FIX] Element.clone is now much faster and retains state of form elements
+[FIX] Fixed memory leaks related to IFrame unloading
+[FIX] Fixed memory leaks related to Element storage
+[FIX] Custom Events no longer stop the event when the condition returns false
+[FIX] Documentation Fixes
+[FIX] :checked pseudo now works properly in Internet Explorer
