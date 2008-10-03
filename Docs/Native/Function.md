@@ -177,7 +177,7 @@ This allows the function to be used in conjunction with [Element:addEvent][] and
 		//We'll need to bind this function to the element we want to alter.
 		this.setStyle('top', e.client.x + add);
 	};
-	$(myElement).addEvent('click', myFunction.bindWithEvent(myElement, 100);
+	$(myElement).addEvent('click', myFunction.bindWithEvent(myElement, 100));
 	//When clicked, the element will move to the position of the mouse + 100.
 
 
