@@ -2,6 +2,7 @@
 [CHG] Element.js has been refactored to make use of private variables wherever possible
 [CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in
 [CHG] Faster Element.hasChild
+[FIX] Selector [attribute!=val] now matches elements with empty attribute.
 [FIX] Class.js works in Safari 2 again, and contains no more eval hack
 [FIX] Element.clone is now much faster and retains state of form elements
 [FIX] Fixed memory leaks related to IFrame unloading

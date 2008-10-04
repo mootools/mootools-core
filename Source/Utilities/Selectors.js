@@ -255,7 +255,7 @@ Selectors.Filters = {
 
 	byAttribute: function(self, name, operator, value){
 		var result = Element.prototype.getProperty.call(self, name);
-		if (!result) return false;
+		if (!result) return (operator == '!=');
 		if (!operator || value == undefined) return true;
 		switch (operator){
 			case '=': return (result == value);
