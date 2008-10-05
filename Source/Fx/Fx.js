@@ -19,10 +19,7 @@ var Fx = new Class({
 		fps: 50,
 		unit: false,
 		duration: 500,
-		link: 'ignore',
-		transition: function(p){
-			return -(Math.cos(Math.PI * p) - 1) / 2;
-		}
+		link: 'ignore'
 	},
 
 	initialize: function(options){
@@ -33,10 +30,16 @@ var Fx = new Class({
 		if (wait === false) this.options.link = 'cancel';
 	},
 
+	getTransition: function(){
+		return function(p){
+			return -(Math.cos(Math.PI * p) - 1) / 2;
+		};
+	},
+
 	step: function(){
 		var time = $time();
 		if (time < this.time + this.options.duration){
-			var delta = this.options.transition((time - this.time) / this.options.duration);
+			var delta = this.transition((time - this.time) / this.options.duration);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
 			this.set(this.compute(this.from, this.to, 1));
@@ -66,6 +69,7 @@ var Fx = new Class({
 		this.from = from;
 		this.to = to;
 		this.time = 0;
+		this.transition = this.getTransition();
 		this.startTimer();
 		this.onStart();
 		return this;

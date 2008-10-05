@@ -117,7 +117,7 @@ Tries to execute the function.
 			if(!this[arguments[i]]) throw('doh!');
 		}
 	};
-	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = false
+	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = null
 
 
 

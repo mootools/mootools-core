@@ -9,22 +9,17 @@ Credits:
 	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
 */
 
-(function(){
-
-	var old = Fx.prototype.initialize;
-
-	Fx.prototype.initialize = function(options){
-		old.call(this, options);
-		var trans = this.options.transition;
-		if (typeof trans == 'string' && (trans = trans.split(':'))){
-			var base = Fx.Transitions;
-			base = base[trans[0]] || base[trans[0].capitalize()];
-			if (trans[1]) base = base['ease' + trans[1].capitalize() + (trans[2] ? trans[2].capitalize() : '')];
-			this.options.transition = base;
+Fx.implement({
+	getTransition: function(){
+		var trans = this.options.transition || Fx.Transitions.Sine.easeInOut;
+		if (typeof trans == 'string'){
+			var data = trans.split(':');
+			trans = Fx.Transitions[data[0].capitalize()];
+			if (data[1]) trans = trans['ease' + data[1].capitalize() + (data[2] ? data[2].capitalize() : '')];
 		}
-	};
-
-})();
+		return trans;
+	}
+});
 
 Fx.Transition = function(transition, params){
 	params = $splat(params);
@@ -78,7 +73,7 @@ Fx.Transitions.extend({
 		var value;
 		for (var a = 0, b = 1; 1; a += b, b /= 2){
 			if (p >= (7 - 4 * a) / 11){
-				value = - Math.pow((11 - 6 * a - 11 * p) / 4, 2) + b * b;
+				value = b * b - Math.pow((11 - 6 * a - 11 * p) / 4, 2);
 				break;
 			}
 		}
