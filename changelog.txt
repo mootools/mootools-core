@@ -1,7 +1,10 @@
 [ADD] Element.set('html') now allows to set the innerHTML of all Elements (including tables and selects)
+[ADD] Browser.Features.query to check if the Browser supports the new querySelector method on the document object
+[ADD] Browser.Engine detection for WebKit version 525
 [CHG] Element.js has been refactored to make use of private variables wherever possible
 [CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in
 [CHG] Faster Element.hasChild
+[CHG] The domready event for WebKit version 525 (or later) uses the native DomContentLoaded event
 [FIX] Selector [attribute!=val] now matches elements with empty attribute.
 [FIX] Class.js works in Safari 2 again, and contains no more eval hack
 [FIX] Element.clone is now much faster and retains state of form elements
