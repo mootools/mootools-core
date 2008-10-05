@@ -48,14 +48,14 @@ Element.implement({
 		}
 		return position;
 	},
-	
+
 	getOffsetParent: function(){
 		var element = this;
-		if (isBody(element)) return null; 
+		if (isBody(element)) return null;
 		if (!Browser.Engine.trident) return element.offsetParent;
-		while ((element = element.parentNode) && !isBody(element)){ 
+		while ((element = element.parentNode) && !isBody(element)){
 			if (styleString(element, 'position') != 'static') return element;
-		} 
+		}
 		return null;
 	},
 

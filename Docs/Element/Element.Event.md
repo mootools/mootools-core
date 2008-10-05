@@ -73,7 +73,7 @@ Works as Element.addEvent, but instead removes the specified event listener.
 
 	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
 	$('myElement').addEvent('click', destroy);
-	
+
 	// later
 	$('myElement').removeEvent('click', destroy);
 
@@ -165,7 +165,7 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 
 	myElement.addEvent('click', function(){ alert('clicked again'); });
 	myElement.addEvent('click', function(){ alert('clicked and again :('); });
-	//addEvent will keep appending each function. 
+	//addEvent will keep appending each function.
 	//Unfortunately for the visitor, that'll be three alerts they'll have to click on.
 	myElement.removeEvents('click'); // This saves the visitor's finger by removing every click event.
 

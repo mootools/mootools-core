@@ -22,7 +22,7 @@ Array.implement({
 		}
 		return results;
 	},
-	
+
 	clean: function() {
 		return this.filter($defined);
 	},

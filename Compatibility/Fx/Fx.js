@@ -7,7 +7,7 @@ Fx.implement({
 	clearTimer: function(){
 		return this.cancel();
 	},
-	
+
 	stop: function(){
 		return this.cancel();
 	}

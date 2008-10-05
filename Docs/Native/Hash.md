@@ -120,7 +120,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 	var hash = new Hash({'a': 'one', 'b': 'two', 'c': 3});
 	hash.keyOf('two'); //returns 'b'
 	hash.keyOf(3); //returns 'c'
-	hash.keyOf('four') //returns false	
+	hash.keyOf('four') //returns false
 
 ### Notes:
 

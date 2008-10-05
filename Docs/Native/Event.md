@@ -35,7 +35,7 @@ Event Method: constructor {#Event:constructor}
 ### Examples:
 
 	$('myLink').addEvent('keydown', function(event){
-	 	//The passed event parameter is already an instance of the Event class. 
+	 	//The passed event parameter is already an instance of the Event class.
 		alert(event.key);   //Returns the lowercase letter pressed.
 		alert(event.shift); //Returns true if the key pressed is shift.
 		if (event.key == 's' && event.control) alert('Document saved.'); //Executes if the user hits Ctr+S.
@@ -52,7 +52,7 @@ Event Method: stop {#Event:stop}
 
 Stop an Event from propagating and also executes preventDefault.
 
-###	Syntax:
+### Syntax:
 
 	myEvent.stop();
 
@@ -60,7 +60,7 @@ Stop an Event from propagating and also executes preventDefault.
 
 * (*object*) This Event instance.
 
-###	Examples:
+### Examples:
 
 ##### HTML:
 
@@ -76,7 +76,7 @@ Stop an Event from propagating and also executes preventDefault.
 		}).delay(500, this);
 	});
 
-###	Notes:
+### Notes:
 
 - Returning false within the function can also stop the propagation of the Event.
 
@@ -91,15 +91,15 @@ Event Method: stopPropagation {#Event:stopPropagation}
 
 Cross browser method to stop the propagation of an event (this stops the event from bubbling up through the DOM).
 
-###	Syntax:
+### Syntax:
 
 	myEvent.stopPropagation();
 
-###	Returns:
+### Returns:
 
 * (*object*) This Event object.
 
-###	Examples:
+### Examples:
 
 "#myChild" does not cover the same area as myElement. Therefore, the 'click' differs from parent and child depending on the click location:
 
@@ -131,7 +131,7 @@ Event Method: preventDefault {#Event:preventDefault}
 
 Cross browser method to prevent the default action of the event.
 
-###	Syntax:
+### Syntax:
 
 	myEvent.preventDefault();
 
@@ -139,7 +139,7 @@ Cross browser method to prevent the default action of the event.
 
 * (*object*) This Event object.
 
-###	Examples:
+### Examples:
 
 ##### HTML:
 

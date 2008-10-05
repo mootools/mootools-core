@@ -52,10 +52,10 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Arguments:
 
-* Any number of the following as arguments are accepted: 
- * HTMLCollections, 
- * arrays of elements, 
- * elements, or 
+* Any number of the following as arguments are accepted:
+ * HTMLCollections,
+ * arrays of elements,
+ * elements, or
  * strings as selectors.
 
 ### Returns:
@@ -263,7 +263,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 	$('myElement').set('text', 'text goes here');
 	$('myElement').set('class', 'active');
 	//The 'styles' property passes the object to Element:setStyles.
-	var body = $(document.body).set('styles', { 
+	var body = $(document.body).set('styles', {
 		'font': '12px Arial',
 		'color': 'blue'
 	});
@@ -529,9 +529,9 @@ Works like [Element:grab](#Element:grab), but allows multiple elements to be ado
 Inserts the passed element(s) inside the Element (which will then become the parent element).
 
 ### Syntax:
-	
+
 	myParent.adopt(el[, others]);
-	
+
 ### Arguments:
 
 1. el - (*mixed*) The id of an element, an Element, or an array of elements.
@@ -548,7 +548,7 @@ Inserts the passed element(s) inside the Element (which will then become the par
 	var myFirstElement  = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('a', {id: 'mySecondElement'});
 	var myThirdElement  = new Element('ul', {id: 'myThirdElement'});
-	
+
 	myParent.adopt(myFirstElement);
 	myParent2.adopt(myFirstElement, 'mySecondElement');
 	myParent3.adopt([myFirstElement, mySecondElement, myThirdElement]);
@@ -582,9 +582,9 @@ Works like [Element:grab](#Element:grab), but instead of moving the grabbed elem
 The Element is moved to the position of the passed element and becomes the parent.
 
 ### Syntax:
-	
+
 	myParent.wraps(el[, where]);
-	
+
 ### Arguments:
 
 1. el - (*mixed*) The id of an element or an Element.
@@ -1141,7 +1141,7 @@ Reads the child inputs of the Element and generates a query string based on thei
 ##### JavaScript
 
 	$('myForm').toQueryString(); //Returns "email=bob@bob.com&zipCode=90210".
-	
+
 
 Element Method: getSelected {#Element:getSelected}
 --------------------------------------------------
@@ -1169,7 +1169,7 @@ Returns the selected options of a select element.
 ##### JavaScript
 
 	$('country-select').getSelected(); //Returns whatever the user selected.
-	
+
 ### Note:
 
 This method returns an array, regardless of the multiple attribute of the select element.
@@ -1366,7 +1366,7 @@ Removes numerous attributes from the Element.
 ##### Resulting HTML
 
 	<a></a>
-	
+
 
 Element Method: store {#Element:store}
 --------------------------------------
@@ -1426,16 +1426,16 @@ This Hash contains the functions that respond to the first argument passed in [E
 ### Adding a Custom Element Property
 
 	Element.Properties.disabled = {
-		
+
 		get: function(){
 			return this.disabled;
 		}
-		
+
 		set: function(value){
 			this.disabled = !!value;
 			this.setAttribute('disabled', !!value);
 		}
-		
+
 	};
 
 ### Using a Custom Element Property
@@ -1499,8 +1499,8 @@ Sets the innerHTML of the Element.
 		<p></p>
 	</div>
 
-### Getter:	
-	
+### Getter:
+
 Returns the inner HTML of the Element.
 
 #### Syntax:
@@ -1546,7 +1546,7 @@ Sets the inner text of the Element.
 ##### Resulting HTML
 
 	<div id="myElement">some text</div>
-	
+
 ### Getter:
 
 Gets the inner text of the Element.

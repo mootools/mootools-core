@@ -19,7 +19,7 @@ var Event = new Native({
 		var type = event.type;
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
-		
+
 		if (type.test(/key/)){
 			var code = event.which || event.keyCode;
 			var key = Event.Keys.keyOf(code);
@@ -58,19 +58,19 @@ var Event = new Native({
 		return $extend(this, {
 			event: event,
 			type: type,
-			
+
 			page: page,
 			client: client,
 			rightClick: rightClick,
-			
+
 			wheel: wheel,
-			
+
 			relatedTarget: related,
 			target: target,
-			
+
 			code: code,
 			key: key,
-			
+
 			shift: event.shiftKey,
 			control: event.ctrlKey,
 			alt: event.altKey,

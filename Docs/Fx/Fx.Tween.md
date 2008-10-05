@@ -22,7 +22,7 @@ The Tween effect, used to transition any CSS property from one value to another.
 
 1. element  - (*mixed*) An Element or the string id of an Element to apply the transition to.
 2. options  - (*object*, optional) The [Fx][] options object, plus the options described below:
-	
+
 ### Options:
 
 * property - (*string*) The CSS property to transition to, for example 'width', 'color', 'font-size', 'border', etc. If this option is omitted, you are required to use the property as a first argument for the start and set methods. Defaults to null.
@@ -195,7 +195,7 @@ Element shortcut method which immediately transitions any single CSS property of
 	$('myElement').tween('height', [20, 200]);
 	//Transitions the border of "myElement" from its current to "6px solid blue":
 	$('myElement').tween('border', '6px solid #36f');
-	
+
 ### See Also:
 
 - [Fx.Tween][]

@@ -800,7 +800,7 @@ diff_match_patch.prototype.diff_cleanupSemantic = function(diffs) {
  * @param {Array.<Array.<*>>} diffs Array of diff tuples
  */
 diff_match_patch.prototype.diff_cleanupSemanticLossless = function(diffs) {
-  // Define some regex patterns for matching boundaries. 
+  // Define some regex patterns for matching boundaries.
   var punctuation = /[^a-zA-Z0-9]/;
   var whitespace = /\s/;
   var linebreak = /[\r\n]/;

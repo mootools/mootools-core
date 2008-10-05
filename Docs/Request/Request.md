@@ -224,7 +224,7 @@ Sets a default Request instance for an Element.  This is useful when handling fo
 
 #### Returns:
 
-* (*element*) The original element. 
+* (*element*) The original element.
 
 #### Example:
 
@@ -252,7 +252,7 @@ Returns the previously set Request instance (or a new one with default options).
 	el.get('send', {method: 'get'});
 	el.send();
 	el.get('send'); //Returns the Request instance.
-	
+
 Native: Element {#Element}
 ==========================
 

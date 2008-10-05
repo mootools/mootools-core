@@ -27,7 +27,7 @@ var XHR = new Class({
 		if (this.options.update) $(this.options.update).empty().set('html', text);
 		this.onSuccess(text, xml);
 	},
-	
+
 	failure: function(){
 		this.fireEvent('failure', this.xhr);
 	}

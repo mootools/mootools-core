@@ -52,7 +52,7 @@ The following method is also available on the Window object.
 
 ### Returns:
 
-* (*object*) An object containing the width (as x) and the height (as y) of the target Element. 
+* (*object*) An object containing the width (as x) and the height (as y) of the target Element.
 
 ### Example:
 
