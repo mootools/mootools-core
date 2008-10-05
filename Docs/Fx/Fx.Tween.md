@@ -76,13 +76,13 @@ Transitions the Element's CSS property to the specified value.
 
 ### Syntax:
 
-	myFx.start([property], from[, to]);
+	myFx.start([property,] [from,] to);
 
 ### Arguments:
 
 1. property - (*string*, if not in options) The css property to tween. Omit this if you use the property option.
-2. from - (*mixed*) The starting CSS property value for the effect. If only one argument is provided, this value will be used as the target value.
-3. to   - (*mixed*, optional) The target CSS property value for the effect.
+2. from     - (*mixed*, optional) The starting CSS property value for the effect.
+3. to       - (*mixed*) The target CSS property value for the effect.
 
 ### Returns:
 
@@ -179,9 +179,9 @@ Element shortcut method which immediately transitions any single CSS property of
 
 ### Arguments:
 
-1. property - (*string*) the css property you want to animate. Omit this if you previously set the property option.
+1. property   - (*string*) the css property you want to animate. Omit this if you previously set the property option.
 2. startvalue - (*mixed*) The start value for the transition.
-2. endvalue - (*mixed*) The end value for the transition. If this is omitted, startvalue will be used as endvalue.
+2. endvalue   - (*mixed*) The end value for the transition. If this is omitted, startvalue will be used as endvalue.
 
 ### Returns:
 

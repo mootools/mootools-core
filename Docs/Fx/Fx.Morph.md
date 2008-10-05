@@ -92,7 +92,7 @@ Executes a transition for any number of CSS properties in tandem.
 
 ### Syntax:
 
-	myFx.start(to);
+	myFx.start(properties);
 
 ### Arguments:
 
