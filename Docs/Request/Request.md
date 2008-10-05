@@ -21,8 +21,8 @@ An XMLHttpRequest Wrapper.
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
 * data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
-	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.x)
-	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
+	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
+	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.11)
 	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
 * async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
 * encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
@@ -44,13 +44,29 @@ Request Events: events {#Request:events}
 
 	onRequest(instance)
 
+### complete
+
+(*function*) Function to execute when the Request is completed.
+
+#### Signature:
+
+	onComplete()
+
+### cancel
+
+(*function*) Function to execute when a request has been cancelled.
+
+#### Signature:
+
+	onCancel()
+
 #### Arguments:
 
 1. instance - (Request) The transport instance.
 
 ### success
 
-(*function*) Function to execute when the Request completes.
+(*function*) Function to execute when the Request is completed successfully.
 
 #### Signature:
 
@@ -63,7 +79,7 @@ Request Events: events {#Request:events}
 
 ### failure
 
-(*function*) Function to execute when the request fails (error status code).
+(*function*) Function to execute when the request failed (error status code).
 
 #### Signature:
 
@@ -85,14 +101,6 @@ instance - (Request) The transport instance.
 
 1. headerName - (*string*) The name of the failing header.
 2. value      - (*string*) The value of the failing header.
-
-###	cancel
-
-(*function*) Function to execute when a request has been cancelled.
-
-#### Signature:
-
-	onCancel()
 
 ### Properties:
 
