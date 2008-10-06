@@ -8,7 +8,7 @@ License:
 
 var Browser = new Hash({
 	Engine: {name: 'unknown', version: ''},
-	Platform: {name: (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
+	Platform: {name: (navigator.platform.match(/mac|win|linux|iphone/i) || ['other'])[0].toLowerCase().replace('iphone', 'ipod')},
 	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
 	Plugins: {}
 });
@@ -18,8 +18,6 @@ else if (window.ActiveXObject) Browser.Engine = {name: 'trident', version: (wind
 else if (!navigator.taintEnabled) Browser.Engine = {name: 'webkit', version: (Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419};
 else if (document.getBoxObjectFor != null) Browser.Engine = {name: 'gecko', version: (document.getElementsByClassName) ? 19 : 18};
 Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
-
-if (window.orientation != undefined) Browser.Platform.name = 'ipod';
 
 Browser.Platform[Browser.Platform.name] = true;
 

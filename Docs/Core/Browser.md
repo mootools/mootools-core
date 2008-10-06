@@ -16,7 +16,8 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Engine.gecko     - (*boolean*) True if the current browser is Mozilla/Gecko.
 * Browser.Engine.webkit    - (*boolean*) True if the current browser is Safari/Konqueror.
 * Browser.Engine.webkit419 - (*boolean*) True if the current browser is Safari2/WebKit before version 419.
-* Browser.Engine.webkit420 - (*boolean*) True if the current browser is Safari3 (WebKit SVN Build)/WebKit after version 419.
+* Browser.Engine.webkit420 - (*boolean*) True if the current browser is Safari3.0/WebKit version 420.
+* Browser.Engine.webkit525 - (*boolean*) True if the current browser is Safari3.1/WebKit after version 525.
 * Browser.Engine.presto    - (*boolean*) True if the current browser is Opera.
 * Browser.Engine.presto925 - (*boolean*) True if the current browser is Opera before or equal version 9.25.
 * Browser.Engine.presto950 - (*boolean*) True if the current browser is Opera major or equal version 9.50.
@@ -26,12 +27,12 @@ Some browser properties are attached to the Browser Object for browser and platf
 
 ### Platform:
 
-* Browser.Platform.mac     - (*boolean*) True if the platform is Mac.
-* Browser.Platform.win - (*boolean*) True if the platform is Windows.
-* Browser.Platform.linux   - (*boolean*) True if the platform is Linux.
-* Browser.Platform.ipod   - (*boolean*) True if the platform is an ipod touch / iphone.
-* Browser.Platform.other   - (*boolean*) True if the platform is neither Mac, Windows or Linux.
-* Browser.Platform.name    - (*string*) The name of the platform.
+* Browser.Platform.mac   - (*boolean*) True if the platform is Mac.
+* Browser.Platform.win   - (*boolean*) True if the platform is Windows.
+* Browser.Platform.linux - (*boolean*) True if the platform is Linux.
+* Browser.Platform.ipod  - (*boolean*) True if the platform is an iPod touch / iPhone.
+* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, or iPod.
+* Browser.Platform.name  - (*string*) The name of the platform.
 
 ### Notes:
 
