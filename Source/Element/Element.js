@@ -7,39 +7,6 @@ License:
 	MIT-style license.
 */
 
-Document.implement({
-
-	newElement: function(tag, props){
-		if (Browser.Engine.trident && props){
-			['name', 'type', 'checked'].each(function(attribute){
-				if (!props[attribute]) return;
-				tag += ' ' + attribute + '="' + props[attribute] + '"';
-				if (attribute != 'checked') delete props[attribute];
-			});
-			tag = '<' + tag + '>';
-		}
-		return $.element(this.createElement(tag)).set(props);
-	},
-
-	newTextNode: function(text){
-		return this.createTextNode(text);
-	},
-
-	getDocument: function(){
-		return this;
-	},
-
-	getWindow: function(){
-		return this.defaultView || this.parentWindow;
-	},
-
-	purge: function(){
-		var elements = this.getElementsByTagName('*');
-		for (var i = 0, l = elements.length; i < l; i++) Browser.freeMem(elements[i]);
-	}
-
-});
-
 var Element = new Native({
 
 	name: 'Element',
@@ -54,8 +21,17 @@ var Element = new Native({
 	},
 
 	afterImplement: function(key, value){
-		if (!Array[key]) Elements.implement(key, Elements.multi(key));
 		Element.Prototype[key] = value;
+		if (Array[key]) return;
+		Elements.implement(key, function(){
+			var items = [], elements = true;
+			for (var i = 0, j = this.length; i < j; i++){
+				var returns = this[i][key].apply(this[i], arguments);
+				items.push(returns);
+				if (elements) elements = ($type(returns) == 'element');
+			}
+			return (elements) ? new Elements(items) : items;
+		});
 	}
 
 });
@@ -89,7 +65,7 @@ var IFrame = new Native({
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
 		};
-		(!window.frames[props.id]) ? iframe.addListener('load', onFrameLoad) : onFrameLoad();
+		(window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
 		return iframe;
 	}
 
@@ -128,18 +104,33 @@ Elements.implement({
 
 });
 
-Elements.multi = function(property){
-	return function(){
-		var items = [];
-		var elements = true;
-		for (var i = 0, j = this.length; i < j; i++){
-			var returns = this[i][property].apply(this[i], arguments);
-			items.push(returns);
-			if (elements) elements = ($type(returns) == 'element');
+Document.implement({
+
+	newElement: function(tag, props){
+		if (Browser.Engine.trident && props){
+			['name', 'type', 'checked'].each(function(attribute){
+				if (!props[attribute]) return;
+				tag += ' ' + attribute + '="' + props[attribute] + '"';
+				if (attribute != 'checked') delete props[attribute];
+			});
+			tag = '<' + tag + '>';
 		}
-		return (elements) ? new Elements(items) : items;
-	};
-};
+		return $.element(this.createElement(tag)).set(props);
+	},
+
+	newTextNode: function(text){
+		return this.createTextNode(text);
+	},
+
+	getDocument: function(){
+		return this;
+	},
+
+	getWindow: function(){
+		return this.defaultView || this.parentWindow;
+	}
+
+});
 
 Window.implement({
 
@@ -213,17 +204,66 @@ Native.implement([Element, Document], {
 
 });
 
-Element.Storage = {
+(function(){
 
-	get: function(uid){
-		return (this[uid] || (this[uid] = {}));
-	}
+//private collections
+var collected = {}, storage = {};
 
+//properties to check for in clone
+var props = {input: 'checked', option: 'selected', textarea: 'value'};
+
+//get the storage object for an element, assigning if not previously retrieved
+var get = function(uid){
+	return (storage[uid] || (storage[uid] = {}));
 };
 
-Element.Garbage = {};
+//clean an element and free memory
+var clean = function(item){
+	if (!item) return;
+	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
+		for (var p in item){
+			if (typeof item[p] == 'function') item[p] = $empty;
+		}
+		Element.dispose(item);
+	}
+	var uid = item.uid;
+	if (!uid) return;
+	if (item.clearAttributes) item.clearAttributes();
+	collected[uid] = storage[uid] = null;
+};
 
-Element.Inserters = new Hash({
+//purge all memory to prevent leaks
+var purge = function(){
+	Hash.each(collected, clean);
+	if (Browser.Engine.trident) $A(document.getElementsByTagName('object')).each(clean);
+	if (window.CollectGarbage) CollectGarbage();
+	collected = storage = null;
+};
+
+//walk used for traversing the dom
+var walk = function(element, walk, start, match, all, nocash){
+	var el = element[start || walk];
+	var elements = [];
+	while (el){
+		if (el.nodeType == 1 && (!match || Element.match(el, match))){
+			if (!all) return $(el, nocash);
+			elements.push(el);
+		}
+		el = el[walk];
+	}
+	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
+};
+
+//special case attributes for setProperty / getProperty / removeProperty
+var attributes = {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'};
+var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
+var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+
+Hash.extend(attributes, bools.associate(bools));
+Hash.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
+
+//inserters used for inject and grab
+var inserters = {
 
 	before: function(context, element){
 		if (element.parentNode) element.parentNode.insertBefore(context, element);
@@ -244,21 +284,21 @@ Element.Inserters = new Hash({
 		(first) ? element.insertBefore(context, first) : element.appendChild(context);
 	}
 
-});
+};
 
-Element.Inserters.inside = Element.Inserters.bottom;
+inserters.inside = inserters.bottom;
 
-Element.Inserters.each(function(value, key){
+Hash.each(inserters, function(inserter, where){
 
-	var Key = key.capitalize();
+	where = where.capitalize();
 
-	Element.implement('inject' + Key, function(el){
-		value(this, $(el, true));
+	Element.implement('inject' + where, function(el){
+		inserter(this, $(el, true));
 		return this;
 	});
 
-	Element.implement('grab' + Key, function(el){
-		value($(el, true), this);
+	Element.implement('grab' + where, function(el){
+		inserter($(el, true), this);
 		return this;
 	});
 
@@ -266,22 +306,7 @@ Element.Inserters.each(function(value, key){
 
 Element.implement({
 
-	getDocument: function(){
-		return this.ownerDocument;
-	},
-
-	getWindow: function(){
-		return this.ownerDocument.getWindow();
-	},
-
-	getElementById: function(id, nocash){
-		var el = this.ownerDocument.getElementById(id);
-		if (!el) return null;
-		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
-			if (!parent) return null;
-		}
-		return $.element(el, nocash);
-	},
+	//property methods
 
 	set: function(prop, value){
 		switch ($type(prop)){
@@ -302,79 +327,46 @@ Element.implement({
 
 	erase: function(prop){
 		var property = Element.Properties.get(prop);
-		(property && property.erase) ? property.erase.apply(this, Array.slice(arguments, 1)) : this.removeProperty(prop);
+		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
 		return this;
 	},
 
-	match: function(tag){
-		return (!tag || Element.get(this, 'tag') == tag);
-	},
-
-	inject: function(el, where){
-		Element.Inserters.get(where || 'bottom')(this, $(el, true));
+	setProperty: function(attribute, value){
+		var key = attributes[attribute];
+		if (!value) return this.removeProperty(attribute);
+		if (key && bools[attribute]) value = !!value;
+		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
 		return this;
 	},
 
-	wraps: function(el, where){
-		el = $(el, true);
-		return this.replaces(el).grab(el, where);
-	},
-
-	grab: function(el, where){
-		Element.Inserters.get(where || 'bottom')($(el, true), this);
+	setProperties: function(attributes){
+		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
 		return this;
 	},
 
-	appendText: function(text, where){
-		return this.grab(this.getDocument().newTextNode(text), where);
+	getProperty: function(attribute){
+		var key = attributes[attribute];
+		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
+		return (bools[attribute]) ? !!value : (key) ? value : value || null;
 	},
 
-	adopt: function(){
-		Array.flatten(arguments).each(function(element){
-			element = $(element, true);
-			if (element) this.appendChild(element);
-		}, this);
+	getProperties: function(){
+		var args = $A(arguments);
+		return args.map(this.getProperty, this).associate(args);
+	},
+
+	removeProperty: function(attribute){
+		var key = attributes[attribute];
+		(key) ? this[key] = (key && bools[attribute]) ? false : '' : this.removeAttribute(attribute);
 		return this;
 	},
 
-	dispose: function(){
-		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
-	},
-
-	clone: function(contents, keepid){
-		contents = contents !== false;
-		var ie = Browser.Engine.trident;
-		var clone = this.cloneNode(contents);
-		var props = {input: 'checked', option: 'selected', textarea: 'value'};
-		var clean = function(node, element){
-			if (!keepid) node.removeAttribute('id');
-			if (ie){
-				node.clearAttributes();
-				node.mergeAttributes(element);
-				node.removeAttribute('uid');
-				if (node.options){
-					var no = node.options, eo = element.options;
-					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
-				}
-			}
-			var prop = props[element.tagName.toLowerCase()];
-			if (prop && element[prop]) node[prop] = element[prop];
-		};
-
-		if (contents){
-			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-			for (var i = ce.length; i--;) clean(ce[i], te[i]);
-		}
-
-		clean(clone, this);
-		return $(clone);
-	},
-
-	replaces: function(el){
-		el = $(el, true);
-		el.parentNode.replaceChild(this, el);
+	removeProperties: function(){
+		Array.each(arguments, this.removeProperty, this);
 		return this;
 	},
+
+	//className methods
 
 	hasClass: function(className){
 		return this.className.contains(className, ' ');
@@ -386,7 +378,7 @@ Element.implement({
 	},
 
 	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1').clean();
+		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
 		return this;
 	},
 
@@ -394,99 +386,42 @@ Element.implement({
 		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
 	},
 
-	getComputedStyle: function(property){
-		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var computed = this.getWindow().getComputedStyle(this, null);
-		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
-	},
+	//insertion methods
 
-	empty: function(){
-		$A(this.childNodes).each(function(node){
-			Browser.freeMem(node);
-			Element.empty(node);
-			Element.dispose(node);
+	adopt: function(){
+		Array.flatten(arguments).each(function(element){
+			element = $(element, true);
+			if (element) this.appendChild(element);
 		}, this);
 		return this;
 	},
 
-	destroy: function(){
-		Browser.freeMem(this.empty().dispose());
-		return null;
+	appendText: function(text, where){
+		return this.grab(this.getDocument().newTextNode(text), where);
 	},
 
-	getSelected: function(){
-		return new Elements($A(this.options).filter(function(option){
-			return option.selected;
-		}));
-	},
-
-	toQueryString: function(){
-		var queryString = [];
-		this.getElements('input, select, textarea', true).each(function(el){
-			if (!el.name || el.disabled) return;
-			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
-				return opt.value;
-			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
-			$splat(value).each(function(val){
-				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
-			});
-		});
-		return queryString.join('&');
-	},
-
-	getProperty: function(attribute){
-		var EA = Element.Attributes, key = EA.Props[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
-		return (EA.Bools[attribute]) ? !!value : (key) ? value : value || null;
-	},
-
-	getProperties: function(){
-		var args = $A(arguments);
-		return args.map(this.getProperty, this).associate(args);
-	},
-
-	setProperty: function(attribute, value){
-		var EA = Element.Attributes, key = EA.Props[attribute], hasValue = $defined(value);
-		if (key && EA.Bools[attribute]) value = (value || !hasValue) ? true : false;
-		else if (!hasValue) return this.removeProperty(attribute);
-		(key) ? this[key] = value : this.setAttribute(attribute, value);
+	grab: function(el, where){
+		inserters[where || 'bottom']($(el, true), this);
 		return this;
 	},
 
-	setProperties: function(attributes){
-		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
+	inject: function(el, where){
+		inserters[where || 'bottom'](this, $(el, true));
 		return this;
 	},
 
-	removeProperty: function(attribute){
-		var EA = Element.Attributes, key = EA.Props[attribute], isBool = (key && EA.Bools[attribute]);
-		(key) ? this[key] = (isBool) ? false : '' : this.removeAttribute(attribute);
+	replaces: function(el){
+		el = $(el, true);
+		el.parentNode.replaceChild(this, el);
 		return this;
 	},
 
-	removeProperties: function(){
-		Array.each(arguments, this.removeProperty, this);
-		return this;
-	}
+	wraps: function(el, where){
+		el = $(el, true);
+		return this.replaces(el).grab(el, where);
+	},
 
-});
-
-(function(){
-
-var walk = function(element, walk, start, match, all, nocash){
-	var el = element[start || walk];
-	var elements = [];
-	while (el){
-		if (el.nodeType == 1 && (!match || Element.match(el, match))){
-			if (!all) return $(el, nocash);
-			elements.push(el);
-		}
-		el = el[walk];
-	}
-	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
-};
-
-Element.implement({
+	//walk methods
 
 	getPrevious: function(match, nocash){
 		return walk(this, 'previousSibling', null, match, false, nocash);
@@ -524,78 +459,122 @@ Element.implement({
 		return walk(this, 'nextSibling', 'firstChild', match, true, nocash);
 	},
 
+	//accessors
+
+	getWindow: function(){
+		return this.ownerDocument.getWindow();
+	},
+
+	getDocument: function(){
+		return this.ownerDocument;
+	},
+
+	getElementById: function(id, nocash){
+		var el = this.ownerDocument.getElementById(id);
+		if (!el) return null;
+		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
+			if (!parent) return null;
+		}
+		return $.element(el, nocash);
+	},
+
+	getSelected: function(){
+		return new Elements($A(this.options).filter(function(option){
+			return option.selected;
+		}));
+	},
+
+	//other methods
+
+	getComputedStyle: function(property){
+		if (this.currentStyle) return this.currentStyle[property.camelCase()];
+		var computed = this.getWindow().getComputedStyle(this, null);
+		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
+	},
+
+	toQueryString: function(){
+		var queryString = [];
+		this.getElements('input, select, textarea', true).each(function(el){
+			if (!el.name || el.disabled) return;
+			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
+				return opt.value;
+			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
+			$splat(value).each(function(val){
+				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
+			});
+		});
+		return queryString.join('&');
+	},
+
+	clone: function(contents, keepid){
+		contents = contents !== false;
+		var clone = this.cloneNode(contents);
+		var clean = function(node, element){
+			if (!keepid) node.removeAttribute('id');
+			if (Browser.Engine.trident){
+				node.clearAttributes();
+				node.mergeAttributes(element);
+				node.removeAttribute('uid');
+				if (node.options){
+					var no = node.options, eo = element.options;
+					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
+				}
+			}
+			var prop = props[element.tagName.toLowerCase()];
+			if (prop && element[prop]) node[prop] = element[prop];
+		};
+
+		if (contents){
+			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+			for (var i = ce.length; i--;) clean(ce[i], te[i]);
+		}
+
+		clean(clone, this);
+		return $(clone);
+	},
+
+	destroy: function(){
+		clean(this.empty().dispose());
+		return null;
+	},
+
+	dispose: function(){
+		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
+	},
+
+	empty: function(){
+		$A(this.childNodes).each(function(node){
+			clean(node);
+			Element.empty(node);
+			Element.dispose(node);
+		}, this);
+		return this;
+	},
+
 	hasChild: function(el){
 		el = $(el, true);
 		if (!el) return false;
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
+	},
+
+	match: function(tag){
+		return (!tag || Element.get(this, 'tag') == tag);
 	}
 
 });
 
-})();
-
-Element.Properties = new Hash;
-
-Element.Properties.style = {
-
-	set: function(style){
-		this.style.cssText = style;
-	},
-
-	get: function(){
-		return this.style.cssText;
-	},
-
-	erase: function(){
-		this.style.cssText = '';
-	}
-
-};
-
-Element.Properties.tag = {get: function(){
-	return this.tagName.toLowerCase();
-}};
-
-(function(){
-
-	var translations = new Hash({
-		table:  [1, '<table>', '</table>'],
-		select: [1, '<select>', '</select>'],
-		tbody:  [2, '<table><tbody>', '</tbody></table>'],
-		tr:     [3, '<table><tbody><tr>', '</tr></tbody></table>']
-	});
-
-	translations.extend({
-		thead: translations.tbody,
-		tfoot: translations.tbody
-	});
-
-	var translate = function(tag, html){
-		var wrap = translations[tag], first = new Element('div');
-		first.innerHTML = wrap[1] + html + wrap[2];
-		wrap[0].times(function(){ first = first.firstChild; });
-		return first.childNodes;
-	};
-
-	var setHTML = function(){
-		this.innerHTML = Array.flatten(arguments).join('');
-	};
-
-	var html = {
-		set: Browser.Engine.trident ? function(){
-			var html = Array.flatten(arguments).join(''), tag = this.get('tag');
-			if (translations.has(tag)) this.empty().adopt(translate(tag, html));
-			else setHTML.apply(this, arguments);
-		} : setHTML
-	};
-
-	html.erase = html.set;
-	Element.Properties.html = html;
-})();
-
 Native.implement([Element, Window, Document], {
 
 	addListener: function(type, fn){
+		if (type == 'unload'){
+			var old = fn, self = this;
+			fn = function(){
+				self.removeListener('unload', fn);
+				old();
+			};
+		} else {
+			collected[this.uid] = this;
+		}
 		if (this.addEventListener) this.addEventListener(type, fn, false);
 		else this.attachEvent('on' + type, fn);
 		return this;
@@ -608,56 +587,75 @@ Native.implement([Element, Window, Document], {
 	},
 
 	retrieve: function(property, dflt){
-		var storage = Element.Storage.get(this.uid);
-		var prop = storage[property];
+		var storage = get(this.uid), prop = storage[property];
 		if ($defined(dflt) && !$defined(prop)) prop = storage[property] = dflt;
 		return $pick(prop);
 	},
 
 	store: function(property, value){
-		var storage = Element.Storage.get(this.uid);
+		var storage = get(this.uid);
 		storage[property] = value;
 		return this;
 	},
 
 	eliminate: function(property){
-		var storage = Element.Storage.get(this.uid);
+		var storage = get(this.uid);
 		delete storage[property];
 		return this;
 	}
 
 });
 
-Element.Attributes = new Hash({
-	Props: {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'},
-	Bools: ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'],
-	Camels: ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap']
-});
+window.addListener('unload', purge);
 
-Browser.freeMem = function(item){
-	if (!item) return;
-	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
-		for (var p in item){
-			if (typeof item[p] == 'function') item[p] = $empty;
+})();
+
+Element.Properties = (function(){
+
+	var translations = {
+		table:  [1, '<table>', '</table>'],
+		select: [1, '<select>', '</select>'],
+		tbody:  [2, '<table><tbody>', '</tbody></table>'],
+		tr:     [3, '<table><tbody><tr>', '</tr></tbody></table>']
+	};
+
+	translations.thead = translations.tfoot = translations.tbody;
+
+	var html = {
+		set: function(){
+			var html = Array.flatten(arguments).join('');
+			var wrap = Browser.Engine.trident && translations[this.get('tag')];
+			if (wrap){
+				var first = new Element('div');
+				first.innerHTML = wrap[1] + html + wrap[2];
+				wrap[0].times(function(){ first = first.firstChild; });
+				this.empty().adopt(first.childNodes);
+			} else {
+				this.innerHTML = html;
+			}
 		}
-		Element.dispose(item);
-	}
-	if (item.uid && item.removeEvents) item.removeEvents();
-};
+	};
 
-(function(EA){
+	html.erase = html.set;
 
-	var EAB = EA.Bools, EAC = EA.Camels;
-	EA.Bools = EAB = EAB.associate(EAB);
-	Hash.extend(Hash.combine(EA.Props, EAB), EAC.associate(EAC.map(function(v){
-		return v.toLowerCase();
-	})));
-	EA.erase('Camels');
+	var style = {
+		set: function(style){
+			this.style.cssText = style;
+		},
+		get: function(){
+			return this.style.cssText;
+		},
+		erase: function(){
+			this.style.cssText = '';
+		}
+	};
 
-})(Element.Attributes);
+	var tag = {
+		get: function(){
+			return this.tagName.toLowerCase();
+		}
+	};
 
-window.addListener('unload', function(){
-	window.removeListener('unload', arguments.callee);
-	document.purge();
-	if (Browser.Engine.trident) CollectGarbage();
-});
+	return new Hash({html: html, style: style, tag: tag});
+
+})();
