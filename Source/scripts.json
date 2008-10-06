@@ -110,7 +110,7 @@
 		},
 
 		"Swiff": {
-			"deps": ["Element.Event"],
+			"deps": ["Class.Extras"],
 			"desc": "Wrapper for embedding SWF movies. Supports External Interface Communication."
 		}
 
