@@ -10,6 +10,7 @@ Credits:
 */
 
 Fx.implement({
+
 	getTransition: function(){
 		var trans = this.options.transition || Fx.Transitions.Sine.easeInOut;
 		if (typeof trans == 'string'){
@@ -19,6 +20,7 @@ Fx.implement({
 		}
 		return trans;
 	}
+
 });
 
 Fx.Transition = function(transition, params){

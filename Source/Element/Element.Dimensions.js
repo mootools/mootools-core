@@ -60,6 +60,14 @@ Element.implement({
 	},
 
 	getOffsets: function(){
+		if (Browser.Engine.trident){
+			var bound = this.getBoundingClientRect(), html = this.getDocument().documentElement;
+			return {
+				x: bound.left + html.scrollLeft - html.clientLeft,
+				y: bound.top + html.scrollTop - html.clientTop
+			};
+		}
+
 		var element = this, position = {x: 0, y: 0};
 		if (isBody(this)) return position;
 
@@ -77,15 +85,12 @@ Element.implement({
 					position.x += leftBorder(parent);
 					position.y += topBorder(parent);
 				}
-			} else if (element != this && (Browser.Engine.trident || Browser.Engine.webkit)){
+			} else if (element != this && Browser.Engine.webkit){
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 			}
 
 			element = element.offsetParent;
-			if (Browser.Engine.trident){
-				while (element && !element.currentStyle.hasLayout) element = element.offsetParent;
-			}
 		}
 		if (Browser.Engine.gecko && !borderBox(this)){
 			position.x -= leftBorder(this);
