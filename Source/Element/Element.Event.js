@@ -66,6 +66,10 @@ Native.implement([Element, Window, Document], {
 	},
 
 	removeEvents: function(type){
+		if ($type(type) == 'object'){
+			for (var event in type) this.removeEvent(event, type[event]);
+			return this;
+		}
 		var events = this.retrieve('events');
 		if (!events) return this;
 		if (!type){
