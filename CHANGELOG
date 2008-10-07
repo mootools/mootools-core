@@ -12,5 +12,7 @@
 [FIX] Fixed memory leaks related to IFrame unloading
 [FIX] Fixed memory leaks related to Element storage
 [FIX] Custom Events no longer stop the event when the condition returns false
-[FIX] Documentation Fixes
+[FIX] Documentation fixes and improvements
 [FIX] :checked pseudo now works properly in Internet Explorer
+[FIX] $exec works in Safari 2 now
+[FIX] Element text setter/getter fixed for Safari 2
