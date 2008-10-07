@@ -30,7 +30,7 @@ Document.implement({
 	},
 
 	getWindow: function(){
-		return this.defaultView || this.parentWindow;
+		return this.window;
 	},
 
 	purge: function(){
@@ -271,7 +271,7 @@ Element.implement({
 	},
 
 	getWindow: function(){
-		return this.ownerDocument.getWindow();
+		return this.ownerDocument.window;
 	},
 
 	getElementById: function(id, nocash){

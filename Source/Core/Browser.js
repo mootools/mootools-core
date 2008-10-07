@@ -77,8 +77,7 @@ var Window = new Native({
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 		}
-		var doc = win.document;
-		doc.window = win;
+		win.document.window = win;
 		return $extend(win, Window.Prototype);
 	},
 
