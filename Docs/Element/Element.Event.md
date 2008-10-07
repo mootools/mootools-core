@@ -141,11 +141,13 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 
 ### Syntax:
 
-	myElements.removeEvents([type]);
+	myElements.removeEvents([what]);
 
 ### Arguments:
 
-1. type - (*string*, optional) The event name (e.g. 'click'). If undefined, removes all events.
+1. what - (optional) if not passed removes all events from the element.
+	- (*string*) The event name (e.g. 'click'). If undefined, removes all events.
+	- (*object*) An object of type function pairs. Like the one passed to addEvents.
 
 ### Returns:
 
