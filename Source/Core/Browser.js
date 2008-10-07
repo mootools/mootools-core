@@ -75,6 +75,7 @@ var Window = new Native({
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 		}
+		win.document.window = win;
 		return $extend(win, Window.Prototype);
 	},
 
@@ -98,7 +99,6 @@ var Document = new Native({
 		$uid(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.html = doc.getElementsByTagName('html')[0];
-		doc.window = doc.defaultView || doc.parentWindow;
 		if (Browser.Engine.trident4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});

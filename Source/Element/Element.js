@@ -127,7 +127,7 @@ Document.implement({
 	},
 
 	getWindow: function(){
-		return this.defaultView || this.parentWindow;
+		return this.window;
 	}
 
 });
@@ -462,7 +462,7 @@ Element.implement({
 	//accessors
 
 	getWindow: function(){
-		return this.ownerDocument.getWindow();
+		return this.ownerDocument.window;
 	},
 
 	getDocument: function(){
@@ -488,7 +488,7 @@ Element.implement({
 
 	getComputedStyle: function(property){
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var computed = this.getWindow().getComputedStyle(this, null);
+		var computed = this.getDocument().defaultView.getComputedStyle(this, null);
 		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 	},
 
