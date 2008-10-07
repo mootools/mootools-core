@@ -1178,12 +1178,10 @@ describe('Element.getProperty', {
 	},
 
 	'should getProperty type of an input Element': function(){
-		var input1 = new Element('input');
-		input1.type = 'text';
+		var input1 = new Element('input', {type: 'text'});
 		value_of(input1.getProperty('type')).should_be('text');
 
-		var input2 = new Element('input');
-		input2.type = 'checkbox';
+		var input2 = new Element('input', {type: 'checkbox'});
 		value_of(input2.getProperty('type')).should_be('checkbox');
 	},
 
