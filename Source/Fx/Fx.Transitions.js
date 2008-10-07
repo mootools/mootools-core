@@ -15,7 +15,8 @@ Fx.implement({
 		var trans = this.options.transition || Fx.Transitions.Sine.easeInOut;
 		if (typeof trans == 'string'){
 			var data = trans.split(':');
-			trans = Fx.Transitions[data[0].capitalize()];
+			trans = Fx.Transitions;
+			trans = trans[data[0]] || trans[data[0].capitalize()];
 			if (data[1]) trans = trans['ease' + data[1].capitalize() + (data[2] ? data[2].capitalize() : '')];
 		}
 		return trans;
