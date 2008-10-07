@@ -290,6 +290,12 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 - All the property arguments are passed to the corresponding method of the [Element.Properties][] Hash.
 - If no matching property is found in [Element.Properties][], it falls back to [Element:setProperty][].
+- Whenever using [Element:setProperty][] to set an attribute, pass in the lowercase, simplified form of the property. For example:
+	- use 'for', not 'htmlFor',
+	- use 'class', not 'className'
+	- use 'frameborder', not 'frameBorder'
+	- etc.
+
 
 ### See Also:
 
@@ -1265,6 +1271,13 @@ Sets an attribute or special property for this Element.
 
 	<img id="myImage" src="mootools.png" />
 
+### Note
+
+- Whenever using [Element:setProperty][] to set an attribute, pass in the lowercase, simplified form of the property. For example:
+	- use 'for', not 'htmlFor',
+	- use 'class', not 'className'
+	- use 'frameborder', not 'frameBorder'
+	- etc.
 
 
 Element Method: setProperties {#Element:setProperties}

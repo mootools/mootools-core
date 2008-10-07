@@ -333,7 +333,7 @@ Element.implement({
 
 	setProperty: function(attribute, value){
 		var key = attributes[attribute];
-		if (!value) return this.removeProperty(attribute);
+		if (!$defined(value)) return this.removeProperty(attribute);
 		if (key && bools[attribute]) value = !!value;
 		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
 		return this;
