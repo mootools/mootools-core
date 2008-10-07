@@ -255,7 +255,7 @@ var walk = function(element, walk, start, match, all, nocash){
 };
 
 //special case attributes for setProperty / getProperty / removeProperty
-var attributes = {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'};
+var attributes = {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident || Browser.Engine.webkit419) ? 'innerText' : 'textContent'};
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 
@@ -670,3 +670,15 @@ Element.Properties.html = (function(){
 
 	return html;
 })();
+
+if (Browser.Engine.webkit419) Element.Properties.text = {
+	get: function(){
+		var tmp = document.createElement('div');
+		var body = document.body;
+		tmp.innerHTML = this.innerHTML;
+		body.appendChild(tmp);
+		var text = tmp.innerText;
+		body.removeChild(tmp);
+		return text;
+	}
+};
