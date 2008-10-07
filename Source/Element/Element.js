@@ -210,7 +210,7 @@ Native.implement([Element, Document], {
 var collected = {}, storage = {};
 
 //properties to check for in clone
-var props = {input: 'checked', option: 'selected', textarea: 'value'};
+var props = {input: 'checked', option: 'selected', textarea: (Browser.Engine.webkit419) ? 'innerHTML' : 'value'};
 
 //get the storage object for an element, assigning if not previously retrieved
 var get = function(uid){
