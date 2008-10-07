@@ -47,7 +47,7 @@ function $exec(text){
 	} else {
 		var script = document.createElement('script');
 		script.setAttribute('type', 'text/javascript');
-		script.text = text;
+		script[(Browser.Engine.webkit419) ? 'innerText' : 'text'] = text;
 		document.head.appendChild(script);
 		document.head.removeChild(script);
 	}
