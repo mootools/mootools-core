@@ -610,7 +610,33 @@ window.addListener('unload', purge);
 
 })();
 
-Element.Properties = (function(){
+Element.Properties = new Hash;
+
+Element.Properties.style = {
+
+	set: function(style){
+		this.style.cssText = style;
+	},
+
+	get: function(){
+		return this.style.cssText;
+	},
+
+	erase: function(){
+		this.style.cssText = '';
+	}
+
+};
+
+Element.Properties.tag = {
+
+	get: function(){
+		return this.tagName.toLowerCase();
+	}
+
+};
+
+Element.Properties.html = (function(){
 
 	var translations = {
 		table:  [1, '<table>', '</table>'],
@@ -621,15 +647,18 @@ Element.Properties = (function(){
 
 	translations.thead = translations.tfoot = translations.tbody;
 
+	var wrapper = document.createElement('div');
+
 	var html = {
 		set: function(){
 			var html = Array.flatten(arguments).join('');
-			var wrap = Browser.Engine.trident && translations[this.get('tag')];
+			var wrap = Browser.Engine.trident && translations[Element.get(this, 'tag')];
 			if (wrap){
-				var first = new Element('div');
-				first.innerHTML = wrap[1] + html + wrap[2];
-				wrap[0].times(function(){ first = first.firstChild; });
-				this.empty().adopt(first.childNodes);
+				wrapper.innerHTML = wrap[1] + html + wrap[2];
+				var first = wrapper;
+				for (var i = wrap[0]; i--;) first = first.firstChild;
+				Element.empty(this);
+				Element.adopt(this, first.childNodes);
 			} else {
 				this.innerHTML = html;
 			}
@@ -638,24 +667,5 @@ Element.Properties = (function(){
 
 	html.erase = html.set;
 
-	var style = {
-		set: function(style){
-			this.style.cssText = style;
-		},
-		get: function(){
-			return this.style.cssText;
-		},
-		erase: function(){
-			this.style.cssText = '';
-		}
-	};
-
-	var tag = {
-		get: function(){
-			return this.tagName.toLowerCase();
-		}
-	};
-
-	return new Hash({html: html, style: style, tag: tag});
-
+	return html;
 })();
