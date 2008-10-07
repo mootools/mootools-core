@@ -554,6 +554,7 @@ Element.implement({
 	hasChild: function(el){
 		el = $(el, true);
 		if (!el) return false;
+		if (Browser.Engine.webkit419) return $A(this.getElementsByTagName(el.tagName)).contains(el);
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	},
 
