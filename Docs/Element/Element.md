@@ -15,11 +15,15 @@ The dollar function has a dual purpose: Getting the element by its id, and makin
 
 ### Arguments:
 
-1. el - (*mixed*) A string containing the id of the DOM element desired or a reference to an actual DOM element.
+1. el - The Element to be extended. Can be one of the following types:
+	* (*element*) The element will be extended if it is not already.
+	* (*string*) A string containing the id of the DOM element desired.
+	* (*object*) If the object has a toElement method, toElement will be called to get the Element.
 
 ### Returns:
 
-* (*mixed*) A DOM element or null if no matching ID was found.
+* (*element*) A DOM element.
+* (*null*) Null if no matching id was found or if toElement did not return an element.
 
 ### Examples:
 
@@ -60,7 +64,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Returns:
 
-* (array) - An array of all the DOM elements matched, extended with [$][].
+* (*array*) - An array of all the DOM elements matched, extended with [$][].
 
 ### Examples:
 

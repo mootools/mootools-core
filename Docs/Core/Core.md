@@ -266,7 +266,7 @@ Returns the first defined argument passed in, or null.
 ### Returns:
 
 * (*mixed*) The first variable that is defined.
-* (*false*) If all variables passed in are null or undefined, returns null.
+* (*null*) If all variables passed in are `null` or `undefined`, returns `null`.
 
 ### Example:
 
