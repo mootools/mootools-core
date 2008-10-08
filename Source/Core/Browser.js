@@ -116,5 +116,3 @@ var Document = new Native({
 });
 
 Document.Prototype = {$family: {name: 'document'}};
-
-new Document(document);
