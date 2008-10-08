@@ -206,6 +206,42 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var nestedObj2 = {a: {b: 2}};
 	var nested = $merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
 
+
+
+Function: $unlink {#unlink}
+---------------------------
+
+Returns a copy of the Object, Array, or Hash passed in, unlinking it recursively from the original. Original argument is left unchanged.
+
+### Syntax:
+
+	var unlinked = $unlink(obj);
+
+### Arguments:
+
+1. obj - (*mixed*) Argument to unlink, can be of any type.
+
+### Returns:
+
+* (*mixed*) The argument unlinked.
+
+### Examples:
+
+#### Object Example:
+
+	var obj = {a: 0, b: 1};
+	var unlinked = $unlink(obj);
+	obj.a = 10; //unlinked is still {a: 0, b: 1}
+
+#### Array Example:
+
+	var arr = [{a: 'cowboy'}, {a: 'knight'}];
+	var unlinked = $unlink(arr);
+	unlinked[0].a = 'cowgirl';
+	arr[0].a //is still cowboy
+
+
+
 Function: $each {#each}
 -----------------------
 
