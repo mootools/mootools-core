@@ -640,10 +640,10 @@ Element.Properties.tag = {
 Element.Properties.html = (function(){
 
 	var translations = {
-		table:  [1, '<table>', '</table>'],
+		table: [1, '<table>', '</table>'],
 		select: [1, '<select>', '</select>'],
-		tbody:  [2, '<table><tbody>', '</tbody></table>'],
-		tr:     [3, '<table><tbody><tr>', '</tr></tbody></table>']
+		tbody: [2, '<table><tbody>', '</tbody></table>'],
+		tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
 	};
 
 	translations.thead = translations.tfoot = translations.tbody;
@@ -671,14 +671,11 @@ Element.Properties.html = (function(){
 	return html;
 })();
 
-if (Browser.Engine.webkit419) Element.Properties.text = {
+if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.Properties.text = {
 	get: function(){
-		var tmp = document.createElement('div');
-		var body = document.body;
-		tmp.innerHTML = this.innerHTML;
-		body.appendChild(tmp);
-		var text = tmp.innerText;
-		body.removeChild(tmp);
+		if (this.parentNode) return this.innerText;
+		var text = this.inject(document.body).innerText;
+		this.dispose();
 		return text;
 	}
 };
