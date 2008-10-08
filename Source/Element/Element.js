@@ -210,7 +210,7 @@ Native.implement([Element, Document], {
 var collected = {}, storage = {};
 
 //properties to check for in clone
-var props = {input: 'checked', option: 'selected', textarea: (Browser.Engine.webkit419) ? 'innerHTML' : 'value'};
+var props = {input: 'checked', option: 'selected', textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'};
 
 //get the storage object for an element, assigning if not previously retrieved
 var get = function(uid){
@@ -554,7 +554,7 @@ Element.implement({
 	hasChild: function(el){
 		el = $(el, true);
 		if (!el) return false;
-		if (Browser.Engine.webkit419) return $A(this.getElementsByTagName(el.tagName)).contains(el);
+		if (Browser.Engine.webkit && Browser.Engine.version < 420) return $A(this.getElementsByTagName(el.tagName)).contains(el);
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	},
 

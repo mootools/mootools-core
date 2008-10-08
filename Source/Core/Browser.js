@@ -89,7 +89,7 @@ function $exec(text){
 	} else {
 		var script = document.createElement('script');
 		script.setAttribute('type', 'text/javascript');
-		script[(Browser.Engine.webkit419) ? 'innerText' : 'text'] = text;
+		script[(Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerText' : 'text'] = text;
 		document.head.appendChild(script);
 		document.head.removeChild(script);
 	}
