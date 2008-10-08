@@ -16,7 +16,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 1. path    - (*string*) The path to the SWF file.
 2. options - (*object*, optional) See Options below.
 
-###	Options:
+### Options:
 
 * id - (*string*: defaults to 'Swiff\_' + unique id) The id of the SWF object.
 * width - (*number*: defaults to 1) The width of the SWF object.
@@ -62,28 +62,28 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 Swiff Function: remote {#Swiff:remote}
 --------------------------------------
 
-Calls an ActionScript function from JavaScript. 
+Calls an ActionScript function from JavaScript.
 
-###	Syntax:
+### Syntax:
 
 	var result = Swiff.remote(obj, fn);
 
-###	Arguments:
+### Arguments:
 
 1. obj - (*element*) A Swiff instance (an HTML object Element).
 2. fn  - (*string*) The name of the function to execute in the Flash movie.
 
-###	Returns:
+### Returns:
 
 * (*mixed*) The ActionScript function's result.
 
-###	Example:
+### Example:
 
 	var obj = new Swiff('myMovie.swf');
 	//Alerts "This is from the .swf file!".
 	alert(Swiff.remote(obj, 'myFlashFn'));
 
-###	Note:
+### Note:
 
 The SWF file must be compiled with the ExternalInterface component.  See the Adobe documentation on [External Interface][] for more information.
 

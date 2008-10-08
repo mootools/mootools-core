@@ -80,7 +80,7 @@ var Builder = {
 			if (files[i] == file) return false;
 		}
 		this.included[type][folder].push(file);
-		return document.writeln('\t<script type="text/javascript" src="' + this.root + this.paths[type] + '/' + folder + '/' + file + '.js"></script>');
+		return document.writeln('<script type="text/javascript" src="' + this.root + this.paths[type] + '/' + folder + '/' + file + '.js?' + new Date().getTime() + '"></script>');
 	},
 
 	includeFolder: function(type, folder){

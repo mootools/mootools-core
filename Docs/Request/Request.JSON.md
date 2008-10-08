@@ -15,18 +15,26 @@ Wrapped Request with automated sending and receiving of JavaScript Objects in JS
 
 1. options - (*object*, optional) See below.
 
-###	Options:
+### Options:
 
 * secure  - (*boolean*: defaults to true) If set to true, a syntax check will be done on the result JSON (see [JSON.decode](/Utilities/JSON#JSON:decode)).
 
 ### Events:
 
-#### Arguments:
+#### success
+
+Fired when the request completes. This overrides the signature of the Request success event.
+
+##### Signature:
+
+	onSuccess(responseJSON, responseText)
+
+##### Arguments:
 
 1. responseJSON - (*object*) The JSON response object from the remote request.
-2. text         - (*string*) The JSON response as string.
+2. responseText - (*string*) The JSON response as string.
 
-#### Returns:
+### Returns:
 
 * (*object*) A new Request.JSON instance.
 

@@ -3,7 +3,7 @@ Fx.Style = function(element, property, options){
 };
 
 Element.implement({
-	
+
 	effect: function(property, options){
 		return new Fx.Tween(this, $extend({property: property}, options));
 	}

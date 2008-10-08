@@ -23,13 +23,13 @@ Request Specifically made for receiving HTML.
 
 ### Events:
 
-#### complete
+#### success
 
-* (*function*) Function to execute when the HTML request completes.
+* (*function*) Function to execute when the HTML request completes. This overrides the signature of the Request success event.
 
 ##### Signature:
 
-	onComplete(responseTree, responseElements, responseHTML, responseJavaScript)
+	onSuccess(responseTree, responseElements, responseHTML, responseJavaScript)
 
 ##### Arguments:
 
@@ -55,7 +55,7 @@ Request Specifically made for receiving HTML.
 #### Data from Object Passed via GET:
 
 	//Loads "load/?user_id=25".
-	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25}); 
+	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25});
 
 #### Data from Element via POST:
 

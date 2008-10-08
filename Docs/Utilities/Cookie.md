@@ -7,7 +7,7 @@ Sets and accesses cookies.
 
 - Based on the functions by Peter-Paul Koch [QuirksMode][].
 
-###	Options: {#Cookie-options}
+### Options: {#Cookie-options}
 
 * domain   - (*string*: defaults to false) The domain the Cookie belongs to.
 * path     - (*string*: defaults to false) The path the Cookie belongs to.
@@ -25,21 +25,21 @@ Cookie Method: write {#Cookie:write}
 
 Writes a cookie in the browser.
 
-###	Syntax:
+### Syntax:
 
 	var myCookie = Cookie.write(key, value[, options]);
 
-###	Arguments:
+### Arguments:
 
 1. key     - (*string*) The key (or name) of the cookie.
 2. value   - (*string*) The value to set. Cannot contain semicolons.
 3. options - (*mixed*, optional) See [Cookie][].
 
-###	Returns:
+### Returns:
 
 * (*object*) An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
 
-###	Examples:
+### Examples:
 
 Saves the Cookie for the Duration of the Session:
 
@@ -56,19 +56,19 @@ Cookie Method: read {#Cookie:read}
 
 Reads the value of a Cookie.
 
-###	Syntax:
+### Syntax:
 
 	var myCookie = Cookie.read(name);
 
-###	Arguments:
+### Arguments:
 
 1. name - (*string*) The name of the Cookie to retrieve.
 
-###	Returns:
+### Returns:
 
 * (*mixed*) The cookie string value, or null if not found.
 
-###	Examples:
+### Examples:
 
 	Cookie.read("username");
 
@@ -79,16 +79,16 @@ Cookie Method: dispose {#Cookie:dispose}
 
 Removes a cookie from the browser.
 
-###	Syntax:
+### Syntax:
 
 	var oldCookie = Cookie.dispose(cookie[, options]);
 
-###	Arguments:
+### Arguments:
 
 1. name  - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
 2. options - (*object*, optional) See [Cookie][].
 
-###	Examples:
+### Examples:
 
 Remove a Cookie:
 

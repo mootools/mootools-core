@@ -13,16 +13,16 @@ Element Method: addEvent {#Element:addEvent}
 
 Attaches an event listener to a DOM element.
 
-###	Syntax:
+### Syntax:
 
 	myElement.addEvent(type, fn);
 
-###	Arguments:
+### Arguments:
 
 1. type - (*string*) The event name to monitor ('click', 'load', etc) without the prefix 'on'.
 2. fn   - (*function*) The function to execute.
 
-###	Returns:
+### Returns:
 
 * (*element*) This Element.
 
@@ -43,7 +43,7 @@ Attaches an event listener to a DOM element.
 - You can stop the Event by returning false in the listener or calling [Event:stop](#Event:stop).
 - This method is also attached to Document and Window.
 
-###	See Also:
+### See Also:
 
 - [w3schools Event Attributes](http://www.w3schools.com/html/html_eventattributes.asp)
 
@@ -54,26 +54,26 @@ Element Method: removeEvent {#Element:removeEvent}
 
 Works as Element.addEvent, but instead removes the specified event listener.
 
-###	Syntax:
+### Syntax:
 
 	myElement.removeEvent(type, fn);
 
-###	Arguments:
+### Arguments:
 
 1. type - (*string*) The event name.
 2. fn   - (*function*) The function to remove.
 
-###	Returns:
+### Returns:
 
 * (*element*) This Element.
 
-###	Examples:
+### Examples:
 
 #### Standard usage:
 
 	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
 	$('myElement').addEvent('click', destroy);
-	
+
 	// later
 	$('myElement').removeEvent('click', destroy);
 
@@ -89,7 +89,7 @@ Works as Element.addEvent, but instead removes the specified event listener.
 	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // this won't remove the event either.
 	$('myElement').removeEvent('click', boundDestroy); // this is the correct way to remove the event.
 
-###	Notes:
+### Notes:
 
 - When the function is added using [Function:bind][] or [Function:pass][], etc, a new reference is created.  For removeEvent to work, you must pass a reference to the exact function to be removed.
 - This method is also attached to Document and Window.
@@ -101,19 +101,19 @@ Element Method: addEvents {#Element:addEvents}
 
 The same as [Element:addEvent](#Element:addEvent), but accepts an object to add multiple events at once.
 
-###	Syntax:
+### Syntax:
 
 	myElement.addEvents(events);
 
-###	Arguments:
+### Arguments:
 
 1. events - (*object*) An object with key/value representing: key the event name, and value the function that is called when the Event occurs.
 
-###	Returns:
+### Returns:
 
 * (*element*) This Element.
 
-###	Examples:
+### Examples:
 
 	$('myElement').addEvents({
 		'mouseover': function(){
@@ -124,11 +124,11 @@ The same as [Element:addEvent](#Element:addEvent), but accepts an object to add 
 		}
 	});
 
-###	Notes:
+### Notes:
 
 - This method is also attached to Document and Window.
 
-###	See Also:
+### See Also:
 
 - [Element:addEvent](#Element:addEvent)
 
@@ -139,19 +139,21 @@ Element Method: removeEvents {#Element:removeEvents}
 
 Removes all events of a certain type from an Element. If no argument is passed, removes all events of all types.
 
-###	Syntax:
+### Syntax:
 
-	myElements.removeEvents([type]);
+	myElements.removeEvents([what]);
 
-###	Arguments:
+### Arguments:
 
-1. type - (*string*, optional) The event name (e.g. 'click'). If undefined, removes all events.
+1. what - (optional) if not passed removes all events from the element.
+	- (*string*) The event name (e.g. 'click'). If undefined, removes all events.
+	- (*object*) An object of type function pairs. Like the one passed to addEvents.
 
-###	Returns:
+### Returns:
 
 * (*element*) This Element.
 
-###	Examples:
+### Examples:
 
 	var myElement = $('myElement');
 	myElement.addEvents({
@@ -165,15 +167,15 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 
 	myElement.addEvent('click', function(){ alert('clicked again'); });
 	myElement.addEvent('click', function(){ alert('clicked and again :('); });
-	//addEvent will keep appending each function. 
+	//addEvent will keep appending each function.
 	//Unfortunately for the visitor, that'll be three alerts they'll have to click on.
 	myElement.removeEvents('click'); // This saves the visitor's finger by removing every click event.
 
-###	Notes:
+### Notes:
 
 - This method is also attached to Document and Window.
 
-###	See Also:
+### See Also:
 
 - [Element:removeEvent](#Element:removeEvent)
 
@@ -182,25 +184,25 @@ Element Method: fireEvent {#Element:fireEvent}
 
 Executes all events of the specified type present in the Element.
 
-###	Syntax:
+### Syntax:
 
 	myElement.fireEvent(type[, args[, delay]]);
 
-###	Arguments:
+### Arguments:
 
 1. type  - (*string*) The event name (e.g. 'click')
 2. args  - (*mixed*, optional) Array or single object, arguments to pass to the function. If more than one argument, must be an array.
 3. delay - (*number*, optional) Delay (in ms) to wait to execute the event.
 
-###	Returns:
+### Returns:
 
 * (*element*) This Element.
 
-###	Examples:
+### Examples:
 	// Fires all the added 'click' events and passes the Element 'anElement' after one second.
 	$('myElement').fireEvent('click', $('anElement'), 1000);
 
-###	Notes:
+### Notes:
 
 - This will not fire the DOM Event (this concerns all inline events ie. onmousedown="..").
 - This method is also attached to Document and Window.
@@ -210,25 +212,25 @@ Element Method: cloneEvents {#Element:cloneEvents}
 
 Clones all events from an Element to this Element.
 
-###	Syntax:
+### Syntax:
 
 	myElement.cloneEvents(from[, type]);
 
-###	Arguments:
+### Arguments:
 
 1. from - (*element*) Copy all events from this Element.
 2. type - (*string*, optional) Copies only events of this type. If null, copies all events.
 
-###	Returns:
+### Returns:
 
 * (*element*) This Element.
 
-###	Examples:
+### Examples:
 
 	var myElement = $('myElement');
 	var myClone = myElement.clone().cloneEvents(myElement); //clones the element and its events
 
-###	Notes:
+### Notes:
 
 - This method is also attached to Document and Window.
 

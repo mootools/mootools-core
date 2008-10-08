@@ -15,11 +15,15 @@ The dollar function has a dual purpose: Getting the element by its id, and makin
 
 ### Arguments:
 
-1. el - (*mixed*) A string containing the id of the DOM element desired or a reference to an actual DOM element.
+1. el - The Element to be extended. Can be one of the following types:
+	* (*element*) The element will be extended if it is not already.
+	* (*string*) A string containing the id of the DOM element desired.
+	* (*object*) If the object has a toElement method, toElement will be called to get the Element.
 
 ### Returns:
 
-* (*mixed*) A DOM element or null if no matching ID was found.
+* (*element*) A DOM element.
+* (*null*) Null if no matching id was found or if toElement did not return an element.
 
 ### Examples:
 
@@ -52,15 +56,15 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Arguments:
 
-* Any number of the following as arguments are accepted: 
- * HTMLCollections, 
- * arrays of elements, 
- * elements, or 
+* Any number of the following as arguments are accepted:
+ * HTMLCollections,
+ * arrays of elements,
+ * elements, or
  * strings as selectors.
 
 ### Returns:
 
-* (array) - An array of all the DOM elements matched, extended with [$][].
+* (*array*) - An array of all the DOM elements matched, extended with [$][].
 
 ### Examples:
 
@@ -263,7 +267,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 	$('myElement').set('text', 'text goes here');
 	$('myElement').set('class', 'active');
 	//The 'styles' property passes the object to Element:setStyles.
-	var body = $(document.body).set('styles', { 
+	var body = $(document.body).set('styles', {
 		'font': '12px Arial',
 		'color': 'blue'
 	});
@@ -290,6 +294,12 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 - All the property arguments are passed to the corresponding method of the [Element.Properties][] Hash.
 - If no matching property is found in [Element.Properties][], it falls back to [Element:setProperty][].
+- Whenever using [Element:setProperty][] to set an attribute, pass in the lowercase, simplified form of the property. For example:
+	- use 'for', not 'htmlFor',
+	- use 'class', not 'className'
+	- use 'frameborder', not 'frameBorder'
+	- etc.
+
 
 ### See Also:
 
@@ -529,9 +539,9 @@ Works like [Element:grab](#Element:grab), but allows multiple elements to be ado
 Inserts the passed element(s) inside the Element (which will then become the parent element).
 
 ### Syntax:
-	
+
 	myParent.adopt(el[, others]);
-	
+
 ### Arguments:
 
 1. el - (*mixed*) The id of an element, an Element, or an array of elements.
@@ -548,7 +558,7 @@ Inserts the passed element(s) inside the Element (which will then become the par
 	var myFirstElement  = new Element('div', {id: 'myFirstElement'});
 	var mySecondElement = new Element('a', {id: 'mySecondElement'});
 	var myThirdElement  = new Element('ul', {id: 'myThirdElement'});
-	
+
 	myParent.adopt(myFirstElement);
 	myParent2.adopt(myFirstElement, 'mySecondElement');
 	myParent3.adopt([myFirstElement, mySecondElement, myThirdElement]);
@@ -582,9 +592,9 @@ Works like [Element:grab](#Element:grab), but instead of moving the grabbed elem
 The Element is moved to the position of the passed element and becomes the parent.
 
 ### Syntax:
-	
+
 	myParent.wraps(el[, where]);
-	
+
 ### Arguments:
 
 1. el - (*mixed*) The id of an element or an Element.
@@ -1141,7 +1151,7 @@ Reads the child inputs of the Element and generates a query string based on thei
 ##### JavaScript
 
 	$('myForm').toQueryString(); //Returns "email=bob@bob.com&zipCode=90210".
-	
+
 
 Element Method: getSelected {#Element:getSelected}
 --------------------------------------------------
@@ -1169,7 +1179,7 @@ Returns the selected options of a select element.
 ##### JavaScript
 
 	$('country-select').getSelected(); //Returns whatever the user selected.
-	
+
 ### Note:
 
 This method returns an array, regardless of the multiple attribute of the select element.
@@ -1265,6 +1275,13 @@ Sets an attribute or special property for this Element.
 
 	<img id="myImage" src="mootools.png" />
 
+### Note
+
+- Whenever using [Element:setProperty][] to set an attribute, pass in the lowercase, simplified form of the property. For example:
+	- use 'for', not 'htmlFor',
+	- use 'class', not 'className'
+	- use 'frameborder', not 'frameBorder'
+	- etc.
 
 
 Element Method: setProperties {#Element:setProperties}
@@ -1366,7 +1383,7 @@ Removes numerous attributes from the Element.
 ##### Resulting HTML
 
 	<a></a>
-	
+
 
 Element Method: store {#Element:store}
 --------------------------------------
@@ -1426,16 +1443,16 @@ This Hash contains the functions that respond to the first argument passed in [E
 ### Adding a Custom Element Property
 
 	Element.Properties.disabled = {
-		
+
 		get: function(){
 			return this.disabled;
 		}
-		
+
 		set: function(value){
 			this.disabled = !!value;
 			this.setAttribute('disabled', !!value);
 		}
-		
+
 	};
 
 ### Using a Custom Element Property
@@ -1499,8 +1516,8 @@ Sets the innerHTML of the Element.
 		<p></p>
 	</div>
 
-### Getter:	
-	
+### Getter:
+
 Returns the inner HTML of the Element.
 
 #### Syntax:
@@ -1546,7 +1563,7 @@ Sets the inner text of the Element.
 ##### Resulting HTML
 
 	<div id="myElement">some text</div>
-	
+
 ### Getter:
 
 Gets the inner text of the Element.

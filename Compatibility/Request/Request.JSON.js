@@ -16,7 +16,7 @@ JSON.Remote = new Class({
 		if (!this.check(arguments.callee, data)) return this;
 		return this.parent({url: this.url, data: {json: Json.encode(data)}});
 	},
-	
+
 	failure: function(){
 		this.fireEvent('failure', this.xhr);
 	}

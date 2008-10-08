@@ -15,14 +15,14 @@ An XMLHttpRequest Wrapper.
 
 2. options - (*object*, optional) See below.
 
-###	Options:
+### Options:
 
 * url        - (*string*: defaults to null) The URL to request.
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
 * data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
-	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.x)
-	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
+	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
+	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.11)
 	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
 * async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
 * encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
@@ -33,66 +33,69 @@ An XMLHttpRequest Wrapper.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
 
-Request Events: events {#Request:events}
-----------------------------------------
+### Events:
 
-### request
+#### request
 
-(*function*) Function to execute when the Request is sent.
+Fired when the Request is sent.
 
-#### Signature:
+##### Signature:
 
-	onRequest(instance)
+	onRequest()
 
-#### Arguments:
+#### complete
 
-1. instance - (Request) The transport instance.
+Fired when the Request is completed.
 
-### success
+##### Signature:
 
-(*function*) Function to execute when the Request completes.
+	onComplete()
 
-#### Signature:
+#### cancel
+
+Fired when a request has been cancelled.
+
+##### Signature:
+
+	onCancel()
+
+#### success
+
+Fired when the Request is completed successfully.
+
+##### Signature:
 
 	onSuccess(responseText, responseXML)
 
-#### Arguments:
+##### Arguments:
 
 1. responseText - (*string*) The returned text from the request.
 2. responseXML  - (*mixed*) The response XML from the request.
 
-### failure
+#### failure
 
-(*function*) Function to execute when the request fails (error status code).
+Fired when the request failed (error status code).
 
-#### Signature:
+##### Signature:
 
-	onFailure(instance)
+	onFailure(xhr)
 
-#### Arguments:
+##### Arguments:
 
-instance - (Request) The transport instance.
+xhr - (XMLHttpRequest) The transport instance.
 
-### exception
+#### exception
 
-(*function*) Function to execute when setting a request header fails.
+Fired when setting a request header fails.
 
-#### Signature:
+##### Signature:
 
 	onException(headerName, value)
 
-#### Arguments:
+##### Arguments:
 
 1. headerName - (*string*) The name of the failing header.
 2. value      - (*string*) The value of the failing header.
-
-###	cancel
-
-(*function*) Function to execute when a request has been cancelled.
-
-#### Signature:
-
-	onCancel()
 
 ### Properties:
 
@@ -105,7 +108,8 @@ instance - (Request) The transport instance.
 
 ### Example:
 
-	var myRequest = new Request({method: 'get', url: 'http://site.com/requestHandler.php'}).send('name=john&lastname=dorian');
+	var myRequest = new Request({method: 'get', url: 'requestHandler.php'});
+	myRequest.send('name=john&lastname=dorian');
 
 ### See Also:
 
@@ -116,20 +120,20 @@ Request Method: setHeader {#Request:setHeader}
 
 Add or modify a header for the request. It will not override headers from the options.
 
-###	Syntax:
+### Syntax:
 
 	myRequest.setHeader(name, value);
 
-###	Arguments:
+### Arguments:
 
 1. name  - (*string*) The name for the header.
 2. value - (*string*) The value to be assigned.
 
-###	Returns:
+### Returns:
 
 * (*object*) This Request instance.
 
-###	Example:
+### Example:
 
 	var myRequest = new Request({url: 'getData.php', method: 'get', headers: {'X-Request': 'JSON'}});
 	myRequest.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
@@ -139,11 +143,11 @@ Request Method: getHeader {#Request:getHeader}
 
 Returns the given response header or null if not found.
 
-###	Syntax:
+### Syntax:
 
 	myRequest.getHeader(name);
 
-###	Arguments:
+### Arguments:
 
 1. name - (*string*) The name of the header to retrieve the value of.
 
@@ -162,19 +166,19 @@ Request Method: send {#Request:send}
 
 Opens the Request connection and sends the provided data with the specified options.
 
-###	Syntax:
+### Syntax:
 
 	myRequest.send([options]);
 
-###	Arguments:
+### Arguments:
 
 1. options - (*object*, optional) The options for the sent Request.  Will also accept data as a query string for compatibility reasons.
 
-###	Returns:
+### Returns:
 
 * (*object*) This Request instance.
 
-###	Examples:
+### Examples:
 
 	var myRequest = new Request({url: 'http://localhost/some_url'}).send("save=username&name=John");
 
@@ -183,15 +187,15 @@ Request Method: cancel {#Request:cancel}
 
 Cancels the currently running request, if any.
 
-###	Syntax:
+### Syntax:
 
 	myRequest.cancel();
 
-###	Returns:
+### Returns:
 
 * (*object*) This Request instance.
 
-###	Example:
+### Example:
 
 	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
 	myRequest.cancel();
@@ -220,7 +224,7 @@ Sets a default Request instance for an Element.  This is useful when handling fo
 
 #### Returns:
 
-* (*element*) The original element. 
+* (*element*) The original element.
 
 #### Example:
 
@@ -248,7 +252,7 @@ Returns the previously set Request instance (or a new one with default options).
 	el.get('send', {method: 'get'});
 	el.send();
 	el.get('send'); //Returns the Request instance.
-	
+
 Native: Element {#Element}
 ==========================
 

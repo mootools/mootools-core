@@ -30,7 +30,7 @@ Document.implement({
 	},
 
 	getWindow: function(){
-		return this.window;
+		return this.defaultView || this.parentWindow;
 	},
 
 	purge: function(){
@@ -271,7 +271,7 @@ Element.implement({
 	},
 
 	getWindow: function(){
-		return this.ownerDocument.window;
+		return this.ownerDocument.getWindow();
 	},
 
 	getElementById: function(id, nocash){
@@ -396,7 +396,7 @@ Element.implement({
 
 	getComputedStyle: function(property){
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var computed = this.getDocument().defaultView.getComputedStyle(this, null);
+		var computed = this.getWindow().getComputedStyle(this, null);
 		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 	},
 

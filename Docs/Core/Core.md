@@ -130,7 +130,7 @@ Creates an empty function which does nothing but return the value passed.
 ### Syntax:
 
 	var returnTrue = $lambda(true);
-	
+
 ### Arguments
 
 1. value - (*mixed*) The value for the created function to return.
@@ -266,7 +266,7 @@ Returns the first defined argument passed in, or null.
 ### Returns:
 
 * (*mixed*) The first variable that is defined.
-* (*false*) If all variables passed in are null or undefined, returns null.
+* (*null*) If all variables passed in are `null` or `undefined`, returns `null`.
 
 ### Example:
 
@@ -369,18 +369,18 @@ Tries to execute a number of functions. Returns immediately the return value of 
 	}, function(){
 		return false;
 	});
-	
+
 	//result is false
-	
+
 	var failure, success;
-	
+
 	$try(function(){
 		some.made.up.object = 'something';
 		success = true;
 	}, function(){
 		failure = true;
 	});
-	
+
 	if (success) alert('yey!');
 
 Function: $type {#type}

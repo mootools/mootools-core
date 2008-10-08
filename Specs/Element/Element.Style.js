@@ -7,17 +7,17 @@ License:
 */
 
 describe('Element.set `opacity`', {
-		 
+
 	'should set the opacity of an Element': function() {
 		var el = new Element('div').set('opacity', 0.4);
 		if (Browser.Engine.trident) value_of(el.style.filter).should_be('alpha(opacity=40)');
 		value_of(el.style.opacity).should_be(0.4);
 	},
-	
+
 	'should return the opacity of an Element': function() {
 		value_of(new Element('div').set('opacity', 0.4).get('opacity')).should_be(0.4);
 	}
-		 
+
 });
 
 describe('Element.getStyle', {
@@ -26,12 +26,12 @@ describe('Element.getStyle', {
 		var el = new Element('div').set('html', '<div style="color:#00ff00"></div>');
 		value_of(el.getElement('div').getStyle('color')).should_be('#00ff00');
 	},
-	
+
 	'should getStyle a six digit hex code from an RGB value': function() {
 		var el = new Element('div').set('html', '<div style="color:rgb(0, 255, 0)"></div>');
 		value_of(el.getElement('div').getStyle('color')).should_be('#00ff00');
 	},
-	
+
 	'should `getStyle` with a dash in it': function() {
 		var el = new Element('div').set('html', '<div style="list-style-type:square"></div>');
 		value_of(el.getElement('div').getStyle('list-style-type')).should_be('square');

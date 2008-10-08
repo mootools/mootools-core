@@ -23,14 +23,14 @@ Gets all the elements within an element that match the given selector.
 ### Examples:
 
     //Returns all anchors within myElement.
-	$('myElement').getElements('a'); 
-	
+	$('myElement').getElements('a');
+
     //Returns all input tags with name "dialog".
 	$('myElement').getElements('input[name=dialog]');
 
     //Returns all input tags with names ending with 'log'.
 	$('myElement').getElements('input[name$=log]');
-	
+
 	//Returns all email links (starting with "mailto:").
 	$('myElement').getElements('a[href^=mailto:]');
 
@@ -58,15 +58,15 @@ Element Property: getElement {#Element:getElement}
 
 Same as [Element:getElements](#Element:getElements), but returns only the first.
 
-###	Syntax:
+### Syntax:
 
 	var anElement = myElement.getElement(selector);
 
-###	Arguments:
+### Arguments:
 
 1. selector - (*string*) The CSS Selector to match.
 
-###	Returns:
+### Returns:
 
 * (*mixed*) An extended [Element][], or null if not found.
 
@@ -85,7 +85,7 @@ Matches the Element with the given selector.
 
 	var matched = myElement.match(selector);
 
-###	Arguments:
+### Arguments:
 
 1. selector - (*string*) Selector to match the Element to.
 
@@ -206,7 +206,7 @@ First Child:
 Last Child:
 
 	'nth-child(last)'
-	
+
 ### Note:
 
 This selector respects the w3c specifications, so it has 1 as its first child, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
@@ -223,7 +223,7 @@ Matches every even child.
 ### Example:
 
 	$$('td:even');
-	
+
 ### Note:
 
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(even), as this will return the real even children.
@@ -240,7 +240,7 @@ Matches every odd child.
 ### Example:
 
 	$$('td:odd');
-	
+
 ### Note:
 
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(odd), as this will return the real odd children.

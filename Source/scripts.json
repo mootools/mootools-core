@@ -40,7 +40,7 @@
 			"deps": ["Core"],
 			"desc": "Contains Hash Prototypes. Provides a means for overcoming the JavaScript practical impossibility of extending native Objects."
 		},
-		
+
 		"Event": {
 			"deps": ["Browser", "Array", "Function", "Number", "String", "Hash"],
 			"desc": "Contains the Event Class, to make the event object Crossbrowser."
@@ -78,7 +78,7 @@
 			"deps": ["Element"],
 			"desc": "Contains methods for interacting with the styles of Elements in a fashionable way."
 		},
-		
+
 		"Element.Dimensions": {
 			"deps": ["Element"],
 			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the window object."
@@ -86,14 +86,14 @@
 
 	},
 
-	
+
 	"Utilities": {
-		
+
 		"Selectors": {
 			"deps": ["Element"],
 			"desc": "Adds advanced CSS-style querying capabilities for targeting HTML Elements. Includes pseudo selectors."
 		},
-		
+
 		"DomReady": {
 			"deps": ["Element.Event"],
 			"desc": "Contains the custom event domready."
@@ -108,9 +108,9 @@
 			"deps": ["Browser", "Class", "Class.Extras"],
 			"desc": "Class for creating, reading, and deleting browser Cookies."
 		},
-		
+
 		"Swiff": {
-			"deps": ["Element.Event"],
+			"deps": ["Class.Extras"],
 			"desc": "Wrapper for embedding SWF movies. Supports External Interface Communication."
 		}
 

@@ -15,14 +15,14 @@ Element.Events.domready = {
 };
 
 (function(){
-	
+
 	var domready = function(){
 		if (Browser.loaded) return;
 		Browser.loaded = true;
 		window.fireEvent('domready');
 		document.fireEvent('domready');
 	};
-	
+
 	if (Browser.Engine.trident){
 		var temp = document.createElement('div');
 		(function(){
@@ -39,5 +39,5 @@ Element.Events.domready = {
 		window.addEvent('load', domready);
 		document.addEvent('DOMContentLoaded', domready);
 	}
-	
+
 })();

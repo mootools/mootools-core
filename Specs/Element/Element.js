@@ -87,13 +87,125 @@ describe('Element constructor', {
 
 });
 
+describe('Element.set', {
+
+	"should set a single attribute of an Element": function(){
+		var div = new Element('div').set('id', 'some_id');
+		value_of(div.id).should_be('some_id');
+	},
+
+	"should set the checked attribute of an Element": function(){
+		var input1 = new Element('input', {type: 'checkbox'}).set('checked', 'checked');
+		var input2 = new Element('input', {type: 'checkbox'}).set('checked', true);
+		value_of(input1.checked).should_be_true();
+		value_of(input2.checked).should_be_true();
+	},
+
+	"should set the class name of an element": function(){
+		var div = new Element('div').set('class', 'some_class');
+		value_of(div.className).should_be('some_class');
+	},
+
+	"should set the for attribute of an element": function(){
+		var input = new Element('input', {type: 'text'}).set('for', 'some_element');
+		value_of(input.htmlFor).should_be('some_element');
+	},
+
+	"should set the html of an Element": function(){
+		var html = '<a href="http://mootools.net/">Link</a>';
+		var parent = new Element('div').set('html', html);
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase());
+	},
+
+	"should set the html of an Element with multiple arguments": function(){
+		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
+		var parent = new Element('div').set('html', html);
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase());
+	},
+
+	"should set the html of a select Element": function(){
+		var html = '<option>option 1</option><option selected="selected">option 2</option>';
+		var select = new Element('select').set('html', html);
+		value_of(select.getChildren().length).should_be(2);
+		value_of(select.options.length).should_be(2);
+		value_of(select.selectedIndex).should_be(1);
+	},
+
+	"should set the html of a table Element": function(){
+		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
+		var table = new Element('table').set('html', html);
+		value_of(table.getChildren().length).should_be(1);
+		value_of(table.getFirst().getFirst().getChildren().length).should_be(2);
+		value_of(table.getFirst().getLast().getFirst().className).should_be('cell');
+	},
+
+	"should set the html of a tbody Element": function(){
+		var html = '<tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr>';
+		var tbody = new Element('tbody').inject(new Element('table')).set('html', html);
+		value_of(tbody.getChildren().length).should_be(2);
+		value_of(tbody.getLast().getFirst().className).should_be('cell');
+	},
+
+	"should set the html of a tr Element": function(){
+		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
+		var tr = new Element('tr').inject(new Element('tbody').inject(new Element('table'))).set('html', html);
+		value_of(tr.getChildren().length).should_be(2);
+		value_of(tr.getFirst().className).should_be('cell');
+	},
+
+	"should set the html of a td Element": function(){
+		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
+		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
+		value_of(td.getChildren().length).should_be(2);
+		value_of(td.getFirst().className).should_be('span');
+	},
+
+	"should set the style attribute of an Element": function(){
+		var style = 'font-size:12px;line-height:23px;';
+		var div = new Element('div').set('style', style);
+		value_of(div.style.lineHeight).should_be('23px');
+		value_of(div.style.fontSize).should_be('12px');
+	},
+
+	"should set the text of an element": function(){
+		var div = new Element('div').set('text', 'some text content');
+		value_of(div.get('text')).should_be('some text content');
+		value_of(div.innerHTML).should_be('some text content');
+	},
+
+	"should set multiple attributes of an Element": function(){
+		var div = new Element('div').set({ id: 'some_id', 'title': 'some_title', 'html': 'some_content' });
+		value_of(div.id).should_be('some_id');
+		value_of(div.title).should_be('some_title');
+		value_of(div.innerHTML).should_be('some_content');
+	},
+
+	"should set various attributes of a script Element": function(){
+		var script = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
+		value_of(script.type).should_be('text/javascript');
+		value_of(script.defer).should_be_true();
+	},
+
+	"should set various attributes of a table Element": function(){
+		var table1 = new Element('table').set({ border: '2', cellpadding: '3', cellspacing: '4', align: 'center' });
+		var table2 = new Element('table').set({ cellPadding: '3', cellSpacing: '4' });
+		value_of(table1.border).should_be(2);
+		value_of(table1.cellPadding).should_be(3);
+		value_of(table2.cellPadding).should_be(3);
+		value_of(table1.cellSpacing).should_be(4);
+		value_of(table2.cellSpacing).should_be(4);
+		value_of(table1.align).should_be('center');
+	}
+
+});
+
 var myElements = new Elements([
 	new Element('div'),
 	document.createElement('a'),
 	new Element('div', {id: 'el-' + $time()})
 ]);
 
-describe('Elements constructor', {
+describe('Elements', {
 
 	'should return an array type': function(){
 		value_of(Array.type(myElements)).should_be_true();
@@ -105,6 +217,17 @@ describe('Elements constructor', {
 
 	'should apply Element prototypes to the returned array': function(){
 		value_of($defined(myElements.addEvent)).should_be_true();
+	},
+
+	'should return all Elements that match the string matcher': function(){
+		value_of(myElements.filter('div')).should_be([myElements[0], myElements[2]]);
+	},
+
+	'should return all Elements that match the comparator': function(){
+		var elements = myElements.filter(function(element){
+			return element.match('a');
+		});
+		value_of(elements).should_be([myElements[1]]);
 	}
 
 });
@@ -130,21 +253,6 @@ describe('IFrame constructor', {
 		var iFrame1 = document.createElement('iframe');
 		var iFrame2 = new IFrame(iFrame1);
 		value_of(iFrame1).should_be(iFrame2);
-	}
-
-});
-
-describe('Elements.filter', {
-
-	'should return all Elements that match the string matcher': function(){
-		value_of(myElements.filter('div')).should_be([myElements[0], myElements[2]]);
-	},
-
-	'should return all Elements that match the comparator': function(){
-		var elements = myElements.filter(function(element){
-			return element.match('a');
-		});
-		value_of(elements).should_be([myElements[1]]);
 	}
 
 });
@@ -335,86 +443,6 @@ describe('Element.getElementById', {
 
 });
 
-describe('Element.set style', {
-
-	'should set the cssText of an Element': function(){
-		var style = 'font-size:12px;line-height:23px;';
-		var myElement = new Element('div').set('style', style);
-		value_of(myElement.style.lineHeight).should_be('23px');
-		value_of(myElement.style.fontSize).should_be('12px');
-	}
-
-});
-
-describe('Element.set html', {
-
-	'should set the html of an Element': function(){
-		var html = '<a href="http://mootools.net/">Link</a>';
-		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML.toLowerCase()).should_be(html.toLowerCase());
-	},
-
-	'should set the html of an Element with multiple arguments': function(){
-		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
-		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase());
-	},
-
-	'should set the html of a select Element': function(){
-		var html = '<option>option 1</option><option selected="selected">option 2</option>';
-		var select = new Element('select').set('html', html);
-		value_of(select.getChildren().length).should_be(2);
-		value_of(select.options.length).should_be(2);
-		value_of(select.selectedIndex).should_be(1);
-	},
-
-	'should set the html of a table Element': function(){
-		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
-		var table = new Element('table').set('html', html);
-		value_of(table.getChildren().length).should_be(1);
-		value_of(table.getFirst().getFirst().getChildren().length).should_be(2);
-		value_of(table.getFirst().getLast().getFirst().className).should_be('cell');
-	},
-
-	'should set the html of a tbody Element': function(){
-		var html = '<tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr>';
-		var tbody = new Element('tbody').inject(new Element('table')).set('html', html);
-		value_of(tbody.getChildren().length).should_be(2);
-		value_of(tbody.getLast().getFirst().className).should_be('cell');
-	},
-
-	'should set the html of a tr Element': function(){
-		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
-		var tr = new Element('tr').inject(new Element('tbody').inject(new Element('table'))).set('html', html);
-		value_of(tr.getChildren().length).should_be(2);
-		value_of(tr.getFirst().className).should_be('cell');
-	},
-
-	'should set the html of a td Element': function(){
-		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
-		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
-		value_of(td.getChildren().length).should_be(2);
-		value_of(td.getFirst().className).should_be('span');
-	}
-
-});
-
-describe('Element.set', {
-
-	"should set an Element's property": function(){
-		var myElement = new Element('a').set('id', 'test').set('title', 'testing');
-		value_of(myElement.id).should_be('test');
-		value_of(myElement.title).should_be('testing');
-	},
-
-	"should set an Element's properties": function(){
-		var myElement = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
-		value_of(myElement.type).should_be('text/javascript');
-		value_of(myElement.defer).should_be_true();
-	}
-
-});
-
 describe('Element.get style', {
 
 	"should return a CSS string representing the Element's styles": function(){
@@ -437,12 +465,6 @@ describe('Element.get tag', {
 
 describe('Element.get', {
 
-	"should get an Element's property, otherwise null": function(){
-		var myElement = new Element('a', {href: 'help.html', title: 'mootools!'});
-		value_of(myElement.get('title')).should_be('mootools!');
-		value_of(myElement.get('rel')).should_be_null();
-	},
-
 	"should get an absolute href": function(){
 		var link = new Element('a', {href: "http://google.com/"});
 		value_of(link.get('href')).should_be("http://google.com/");
@@ -463,23 +485,9 @@ describe('Element.get', {
 		value_of(link.get('href')).should_be("/developers");
 	},
 
-	"should return null when href is not set": function(){
+	"should return null when attribute is missing": function(){
 		var link = new Element('a');
-		value_of(link.get('href')).should_be(null);
-	}
-
-});
-
-describe('Element.erase style', {
-
-	"should remove all of the Element's styles": function(){
-		var style = "color:rgb(255, 255, 255); font-size:12px;";
-		var myElement = new Element('div', {style: style});
-
-		myElement.erase('style');
-
-		value_of(myElement.get('style')).should_not_be(style);
-		value_of(myElement.get('style')).should_be('');
+		value_of(link.get('href')).should_be_null();
 	}
 
 });
@@ -488,32 +496,28 @@ describe('Element.erase', {
 
 	"should erase an Element's property": function(){
 		var myElement = new Element('a', {href: 'http://mootools.net/', title: 'mootools!'});
-		myElement.erase('title');
-		value_of(myElement.get('title')).should_not_be('mootools!');
-		value_of(myElement.get('title')).should_be_null();
+		value_of(myElement.get('title')).should_be('mootools!');
+		value_of(myElement.erase('title').get('title')).should_be_null();
+	},
+
+	"should erase an Element's style": function(){
+		var myElement = new Element('div', {style: "color:rgb(255, 255, 255); font-size:12px;"});
+		myElement.erase('style');
+		value_of(myElement.get('style')).should_be('');
 	}
 
 });
 
 describe('Element.match', {
 
-	'before all': function(){
-		Container = new Element('div');
-		Container.innerHTML = '<div id="first"></div><div id="second"></div><p></p><a></a>';
-	},
-
-	'after all': function(){
-		Container.set('html', '');
-		Container = null;
-	},
-
 	'should return true if tag is not provided': function(){
-		value_of(Container.match()).should_be_true();
+		var element = new Element('div');
+		value_of(element.match()).should_be_true();
 	},
 
-	"should return true if the Element's tag matches, otherwise false": function(){
-		value_of(Container.match('div')).should_be_true();
-		value_of(Container.match('canvas')).should_be_false();
+	"should return true if the Element's tag matches": function(){
+		var element = new Element('div');
+		value_of(element.match('div')).should_be_true();
 	}
 
 });
@@ -845,7 +849,7 @@ describe('Element.adopt', {
 
 });
 
-describe('Element.dispose | Element.remove', {
+describe('Element.dispose', {
 
 	'before all': function(){
 		Container = new Element('div').inject(document.body);
@@ -1174,12 +1178,10 @@ describe('Element.getProperty', {
 	},
 
 	'should getProperty type of an input Element': function(){
-		var input1 = new Element('input');
-		input1.type = 'text';
+		var input1 = new Element('input', {type: 'text'});
 		value_of(input1.getProperty('type')).should_be('text');
 
-		var input2 = new Element('input');
-		input2.type = 'checkbox';
+		var input2 = new Element('input', {type: 'checkbox'});
 		value_of(input2.getProperty('type')).should_be('checkbox');
 	},
 
