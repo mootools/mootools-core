@@ -220,15 +220,12 @@ var get = function(uid){
 //clean an element and free memory
 var clean = function(item){
 	if (!item) return;
-	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
-		for (var p in item){
-			if (typeof item[p] == 'function') item[p] = $empty;
-		}
-		Element.dispose(item);
+	if (Browser.Engine.trident){
+		if (item.clearAttributes) item.clearAttributes();
+		else if (item.removeEvents) item.removeEvents();
 	}
 	var uid = item.uid;
 	if (!uid) return;
-	if (item.clearAttributes) item.clearAttributes();
 	collected[uid] = storage[uid] = null;
 };
 
