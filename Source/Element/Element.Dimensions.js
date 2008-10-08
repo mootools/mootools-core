@@ -130,7 +130,7 @@ Native.implement([Document, Window], {
 
 	getSize: function(){
 		var win = this.getWindow();
-		if (Browser.Engine.presto || Browser.Engine.webkit) return {x: win.innerWidth, y: win.innerHeight};
+		if (Browser.Engine.presto || Browser.Engine.kestrel || Browser.Engine.webkit) return {x: win.innerWidth, y: win.innerHeight};
 		var doc = getCompatElement(this);
 		return {x: doc.clientWidth, y: doc.clientHeight};
 	},

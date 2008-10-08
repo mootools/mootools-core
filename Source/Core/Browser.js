@@ -7,19 +7,61 @@ License:
 */
 
 var Browser = new Hash({
-	Engine: {name: 'unknown', version: ''},
-	Platform: {name: (navigator.platform.match(/mac|win|linux|iphone/i) || ['other'])[0].toLowerCase().replace('iphone', 'ipod')},
+	name: 'unknown',
+	version: 0,
+	Engine: {name: 'unknown', version: 0},
+	Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
 	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
 	Plugins: {}
 });
 
-if (window.opera) Browser.Engine = {name: 'presto', version: (document.getElementsByClassName) ? 950 : 925};
-else if (window.ActiveXObject) Browser.Engine = {name: 'trident', version: (window.XMLHttpRequest) ? 5 : 4};
-else if (!navigator.taintEnabled) Browser.Engine = {name: 'webkit', version: (Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419};
-else if (document.getBoxObjectFor != null) Browser.Engine = {name: 'gecko', version: (document.getElementsByClassName) ? 19 : 18};
-Browser.Engine[Browser.Engine.name] = Browser.Engine[Browser.Engine.name + Browser.Engine.version] = true;
-
 Browser.Platform[Browser.Platform.name] = true;
+
+Browser.Engines = {
+	
+	presto: function(){
+		return (window.opera && !document.getElementsByClassName) ? {browser: 'opera', version: 9, build: 925} : false;
+	},
+	
+	kestrel: function(){
+		return (window.opera && document.getElementsByClassName) ? {browser: 'opera', version: 9.5, build: 950} : false;
+	},
+	
+	trident: function(){
+		var seven = {version: 7, build: 5}, six = {version: 6, build: 4};
+		var value = (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? seven : six);
+		return $extend(value, {browser: 'explorer'});
+	},
+	
+	webkit: function(){
+		var two = {version: 2, build: 419}, three = {version: 3, build: 420}, threePointOne = {version: 3.1, build: 525};
+		var value = (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? threePointOne : three) : two);
+		return $extend(value, {browser: 'safari'});
+	},
+	
+	gecko: function(){
+		var eighteen = {version: 2, build: 18}, nineteen = {version: 3, build: 19};
+		var value = (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? nineteen : eighteen);
+		return $extend(value, {browser: 'firefox'});
+	}
+	
+};
+
+Browser.detect = function(){
+	for (var engine in Browser.Engines){
+		var value = Browser.Engines[engine]();
+		if (value){
+			Browser.Engine = {name: engine, version: value.build};
+			Browser.Engine[engine] = Browser.Engine[engine + value.build] = true;
+			Browser.name = value.browser;
+			Browser.version = value.version;
+			Browser[value.browser] = Browser[value.browser + value.version] = true;
+			break;
+		}
+	}
+};
+
+Browser.detect();
 
 Browser.Request = function(){
 	return $try(function(){
@@ -99,7 +141,7 @@ var Document = new Native({
 		$uid(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.html = doc.getElementsByTagName('html')[0];
-		if (Browser.Engine.trident4) $try(function(){
+		if (Browser.Engine.trident && Browser.Engine.version <= 4) $try(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
 		if (Browser.Engine.trident) doc.window.attachEvent('onunload', function() {
