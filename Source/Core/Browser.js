@@ -8,7 +8,7 @@ License:
 
 var Browser = new Hash({
 	Engine: {name: 'unknown', version: ''},
-	Platform: {name: (navigator.platform.match(/mac|win|linux|iphone/i) || ['other'])[0].toLowerCase().replace('iphone', 'ipod')},
+	Platform: {name: ($defined(window.orientation)) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
 	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
 	Plugins: {}
 });
