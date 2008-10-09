@@ -652,12 +652,10 @@ Element.Properties.html = (function(){
 
 if (Browser.Engine.webkit419) Element.Properties.text = {
 	get: function(){
-		var tmp = document.createElement('div');
-		var body = document.body;
-		tmp.innerHTML = this.innerHTML;
-		body.appendChild(tmp);
-		var text = tmp.innerText;
-		body.removeChild(tmp);
+		if (this.innerText) return this.innerText;
+		var temp = this.ownerDocument.newElement('div', {html: this.innerHTML}).inject(this.ownerDocument.body);
+		var text = temp.innerText;
+		temp.destroy();
 		return text;
 	}
 };
