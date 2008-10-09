@@ -14,7 +14,6 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Engine.gecko - (*boolean*) True if the current browser uses the gecko engine (e.g. Firefox, or any Mozilla Browser).
 * Browser.Engine.webkit - (*boolean*) True if the current browser uses the webkit engine (e.g. Safari, Google Chrome, Konqueror).
 * Browser.Engine.presto - (*boolean*) True if the current browser uses the presto engine (e.g. Opera 9).
-* Browser.Engine.kestrel - (*boolean*) True if the current browser uses the kestrel engine (e.g. Opera 9.5).
 * Browser.Engine.name - (*string*) The name of the engine.
 * Browser.Engine.version - (*number*) The version of the engine. (e.g. 950)
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.

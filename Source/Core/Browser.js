@@ -6,61 +6,52 @@ License:
 	MIT-style license.
 */
 
-var Browser = new Hash({
-	name: 'unknown',
-	version: 0,
-	Engine: {name: 'unknown', version: 0},
-	Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
-	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
-	Plugins: {}
-});
-
-Browser.Platform[Browser.Platform.name] = true;
-
-Browser.Engines = {
-	
-	presto: function(){
-		return (window.opera && !document.getElementsByClassName) ? {browser: 'opera', version: 9, build: 925} : false;
-	},
-	
-	kestrel: function(){
-		return (window.opera && document.getElementsByClassName) ? {browser: 'opera', version: 9.5, build: 950} : false;
-	},
-	
-	trident: function(){
-		var seven = {version: 7, build: 5}, six = {version: 6, build: 4};
-		var value = (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? seven : six);
-		return $extend(value, {browser: 'explorer'});
-	},
-	
-	webkit: function(){
-		var two = {version: 2, build: 419}, three = {version: 3, build: 420}, threePointOne = {version: 3.1, build: 525};
-		var value = (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? threePointOne : three) : two);
-		return $extend(value, {browser: 'safari'});
-	},
-	
-	gecko: function(){
-		var eighteen = {version: 2, build: 18}, nineteen = {version: 3, build: 19};
-		var value = (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? nineteen : eighteen);
-		return $extend(value, {browser: 'firefox'});
-	}
-	
-};
+var Browser = Browser || {};
 
 Browser.detect = function(){
-	for (var engine in Browser.Engines){
-		var value = Browser.Engines[engine]();
-		if (value){
-			Browser.Engine = {name: engine, version: value.build};
-			Browser.Engine[engine] = Browser.Engine[engine + value.build] = true;
-			Browser.name = value.browser;
-			Browser.version = value.version;
-			Browser[value.browser] = Browser[value.browser + value.version] = true;
+	
+	$augment(this, {
+		Engine: {name: 'unknown', version: 0},
+		Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
+		Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
+		Plugins: {}, Engines: {}
+	});
+	
+	this.Platform[this.Platform.name] = true;
+	
+	$augment(this.Engines, {
+		
+		presto: function(){
+			return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
+		},
+		
+		trident: function(){
+			return (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? 5 : 4);
+		},
+		
+		webkit: function(){
+			return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
+		},
+		
+		gecko: function(){
+			return (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? 19 : 18);
+		}
+		
+	});
+	
+	for (var engine in this.Engines){
+		var version = this.Engines[engine]();
+		if (version){
+			this.Engine = {name: engine, version: version};
+			this.Engine[engine] = this.Engine[engine + version] = true;
 			break;
 		}
 	}
+	
+	return {name: engine, version: version};
+	
 };
-
+ 
 Browser.detect();
 
 Browser.Request = function(){

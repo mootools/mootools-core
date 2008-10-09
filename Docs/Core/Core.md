@@ -206,6 +206,8 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var nestedObj2 = {a: {b: 2}};
 	var nested = $merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
 
+
+
 Function: $each {#each}
 -----------------------
 
@@ -248,6 +250,7 @@ Used to iterate through iterables that are not regular arrays, such as built in 
 	$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
 		alert("The " + key + " day of the week is " + value);
 	});
+
 
 
 Function: $pick {#pick}

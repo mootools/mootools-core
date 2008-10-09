@@ -206,33 +206,24 @@ Native.implement([Element, Document], {
 
 (function(){
 
-//private collections
 var collected = {}, storage = {};
-
-//properties to check for in clone
 var props = {input: 'checked', option: 'selected', textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'};
 
-//get the storage object for an element, assigning if not previously retrieved
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
 };
 
-//clean an element and free memory
 var clean = function(item){
 	if (!item) return;
-	if (Browser.Engine.trident && (/object/i).test(item.tagName)){
-		for (var p in item){
-			if (typeof item[p] == 'function') item[p] = $empty;
-		}
-		Element.dispose(item);
+	if (Browser.Engine.trident){
+		if (item.clearAttributes) item.clearAttributes();
+		else if (item.removeEvents) item.removeEvents();
 	}
 	var uid = item.uid;
 	if (!uid) return;
-	if (item.clearAttributes) item.clearAttributes();
 	collected[uid] = storage[uid] = null;
 };
 
-//purge all memory to prevent leaks
 var purge = function(){
 	Hash.each(collected, clean);
 	if (Browser.Engine.trident) $A(document.getElementsByTagName('object')).each(clean);
@@ -240,7 +231,6 @@ var purge = function(){
 	collected = storage = null;
 };
 
-//walk used for traversing the dom
 var walk = function(element, walk, start, match, all, nocash){
 	var el = element[start || walk];
 	var elements = [];
@@ -254,7 +244,6 @@ var walk = function(element, walk, start, match, all, nocash){
 	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
 };
 
-//special case attributes for setProperty / getProperty / removeProperty
 var attributes = {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident || Browser.Engine.webkit419) ? 'innerText' : 'textContent'};
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
@@ -262,7 +251,6 @@ var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'fr
 Hash.extend(attributes, bools.associate(bools));
 Hash.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
 
-//inserters used for inject and grab
 var inserters = {
 
 	before: function(context, element){
@@ -306,8 +294,6 @@ Hash.each(inserters, function(inserter, where){
 
 Element.implement({
 
-	//property methods
-
 	set: function(prop, value){
 		switch ($type(prop)){
 			case 'object':
@@ -333,7 +319,7 @@ Element.implement({
 
 	setProperty: function(attribute, value){
 		var key = attributes[attribute];
-		if (!$defined(value)) return this.removeProperty(attribute);
+		if (value == undefined) return this.removeProperty(attribute);
 		if (key && bools[attribute]) value = !!value;
 		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
 		return this;
@@ -366,8 +352,6 @@ Element.implement({
 		return this;
 	},
 
-	//className methods
-
 	hasClass: function(className){
 		return this.className.contains(className, ' ');
 	},
@@ -385,8 +369,6 @@ Element.implement({
 	toggleClass: function(className){
 		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
 	},
-
-	//insertion methods
 
 	adopt: function(){
 		Array.flatten(arguments).each(function(element){
@@ -420,8 +402,6 @@ Element.implement({
 		el = $(el, true);
 		return this.replaces(el).grab(el, where);
 	},
-
-	//walk methods
 
 	getPrevious: function(match, nocash){
 		return walk(this, 'previousSibling', null, match, false, nocash);
@@ -459,8 +439,6 @@ Element.implement({
 		return walk(this, 'nextSibling', 'firstChild', match, true, nocash);
 	},
 
-	//accessors
-
 	getWindow: function(){
 		return this.ownerDocument.window;
 	},
@@ -483,8 +461,6 @@ Element.implement({
 			return option.selected;
 		}));
 	},
-
-	//other methods
 
 	getComputedStyle: function(property){
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
@@ -547,7 +523,7 @@ Element.implement({
 			clean(node);
 			Element.empty(node);
 			Element.dispose(node);
-		}, this);
+		});
 		return this;
 	},
 
@@ -589,7 +565,7 @@ Native.implement([Element, Window, Document], {
 
 	retrieve: function(property, dflt){
 		var storage = get(this.uid), prop = storage[property];
-		if ($defined(dflt) && !$defined(prop)) prop = storage[property] = dflt;
+		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
 		return $pick(prop);
 	},
 
@@ -638,6 +614,7 @@ Element.Properties.tag = {
 };
 
 Element.Properties.html = (function(){
+	var wrapper = document.createElement('div');
 
 	var translations = {
 		table: [1, '<table>', '</table>'],
@@ -645,21 +622,17 @@ Element.Properties.html = (function(){
 		tbody: [2, '<table><tbody>', '</tbody></table>'],
 		tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
 	};
-
 	translations.thead = translations.tfoot = translations.tbody;
-
-	var wrapper = document.createElement('div');
 
 	var html = {
 		set: function(){
 			var html = Array.flatten(arguments).join('');
-			var wrap = Browser.Engine.trident && translations[Element.get(this, 'tag')];
+			var wrap = Browser.Engine.trident && translations[this.get('tag')];
 			if (wrap){
-				wrapper.innerHTML = wrap[1] + html + wrap[2];
 				var first = wrapper;
+				first.innerHTML = wrap[1] + html + wrap[2];
 				for (var i = wrap[0]; i--;) first = first.firstChild;
-				Element.empty(this);
-				Element.adopt(this, first.childNodes);
+				this.empty().adopt(first.childNodes);
 			} else {
 				this.innerHTML = html;
 			}
@@ -673,9 +646,10 @@ Element.Properties.html = (function(){
 
 if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.Properties.text = {
 	get: function(){
-		if (this.parentNode) return this.innerText;
-		var text = this.inject(document.body).innerText;
-		this.dispose();
+		if (this.innerText) return this.innerText;
+		var temp = new Element('div', {html: this.innerHTML}).inject(document.body);
+		var text = temp.innerText;
+		temp.destroy();
 		return text;
 	}
 };
