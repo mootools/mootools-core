@@ -252,7 +252,12 @@ var walk = function(element, walk, start, match, all, nocash){
 	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
 };
 
-var attributes = {'html': 'innerHTML', 'class': 'className', 'for': 'htmlFor', 'text': (Browser.Engine.trident || Browser.Engine.webkit419) ? 'innerText' : 'textContent'};
+var attributes = {
+	'html': 'innerHTML',
+	'class': 'className',
+	'for': 'htmlFor',
+	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
+};
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 
