@@ -60,12 +60,16 @@ var Events = new Class({
 		return this;
 	},
 
-	removeEvents: function(type){
-		if (type) type = Events.removeOn(type);
-		for (var e in this.$events){
-			if (type && type != e) continue;
-			var fns = this.$events[e];
-			for (var i = fns.length; i--; i) this.removeEvent(e, fns[i]);
+	removeEvents: function(what){
+		if ($type(what) == 'object'){
+			for (var type in what) this.removeEvent(type, what[type]);
+			return this;
+		}
+		if (what) what = Events.removeOn(what);
+		for (var type in this.$events){
+			if (what && what != type) continue;
+			var fns = this.$events[type];
+			for (var i = fns.length; i--; i) this.removeEvent(type, fns[i]);
 		}
 		return this;
 	}

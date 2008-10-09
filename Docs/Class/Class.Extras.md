@@ -211,7 +211,7 @@ Adds an event to the Class instance's event stack.
 Events Method: addEvents {#Events:addEvents}
 ------------------------------------------
 
-The same as [addEvent](#addEvent), but accepts an object to add multiple events at once.
+The same as [addEvent](#Events:addEvent), but accepts an object to add multiple events at once.
 
 ### Syntax:
 
@@ -303,6 +303,9 @@ Removes all events of the given type from the stack of events of a Class instanc
 ### Arguments:
 
 1. type - (*string*, optional) The type of event to remove (e.g. 'complete'). If no type is specified, removes all events of all types.
+1. what - (optional) If not passed removes all events of all types.
+	- (*string*) The event name (e.g. 'success'). Removes all events of that type.
+	- (*object*) An object of type function pairs. Like the one passed to [addEvents](#Events:addEvents).
 
 ### Returns:
 

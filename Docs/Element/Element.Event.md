@@ -146,7 +146,7 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 ### Arguments:
 
 1. what - (optional) if not passed removes all events from the element.
-	- (*string*) The event name (e.g. 'click'). If undefined, removes all events.
+	- (*string*) The event name (e.g. 'click'). Removes all events of that type.
 	- (*object*) An object of type function pairs. Like the one passed to addEvents.
 
 ### Returns:
