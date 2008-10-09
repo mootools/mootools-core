@@ -655,7 +655,7 @@ Element.Properties.html = (function(){
 if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.Properties.text = {
 	get: function(){
 		if (this.innerText) return this.innerText;
-		var temp = new Element('div', {html: this.innerHTML}).inject(document.body);
+		var temp = this.ownerDocument.newElement('div', {html: this.innerHTML}).inject(this.ownerDocument.body);
 		var text = temp.innerText;
 		temp.destroy();
 		return text;
