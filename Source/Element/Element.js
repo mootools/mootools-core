@@ -216,8 +216,16 @@ var get = function(uid){
 var clean = function(item){
 	if (!item) return;
 	if (Browser.Engine.trident){
+		var isObject;
+		if ((/object/i).test(item.tagName)){
+			for (var p in item){
+				if (typeof item[p] == 'function') item[p] = $empty;
+			}
+			isObject = true;
+		}
 		if (item.clearAttributes) item.clearAttributes();
 		else if (item.removeEvents) item.removeEvents();
+		if (isObject) Element.dispose(item);
 	}
 	var uid = item.uid;
 	if (!uid) return;
