@@ -218,6 +218,12 @@ var clean = function(item){
 	if (Browser.Engine.trident){
 		if (item.clearAttributes) item.clearAttributes();
 		else if (item.removeEvents) item.removeEvents();
+		if ((/object/i).test(item.tagName)){
+			for (var p in item){
+				if (typeof item[p] == 'function') item[p] = $empty;
+			}
+			Element.dispose(item);
+		}
 	}
 	var uid = item.uid;
 	if (!uid) return;
