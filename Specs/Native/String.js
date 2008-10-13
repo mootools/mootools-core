@@ -148,6 +148,11 @@ describe("String Methods", {
 		value_of('I feel so $language.'.substitute({'language': 'PHP'}, php)).should_be('I feel so PHP.');
 		var ror = (/#\{([^}]+)\}/g);
 		value_of('I feel so #{language}.'.substitute({'language': 'RoR'}, ror)).should_be('I feel so RoR.');
+	},
+
+	'should substitute without goofing up nested curly braces': function(){
+		value_of("fred {is {not} very} cool".substitute({ 'is {not':'BROKEN' })).should_not_be("fred BROKEN very} cool");
+		value_of('this {should {break} mo} betta'.substitute({ 'break':'work' })).should_be('this {should work mo} betta');
 	}
 
 });
