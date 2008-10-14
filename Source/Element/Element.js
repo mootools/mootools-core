@@ -521,21 +521,21 @@ Element.implement({
 	},
 
 	destroy: function(){
-		clean(this.empty().dispose());
+		Element.empty(this);
+		Element.dispose(this);
+		clean(this);
 		return null;
-	},
-
-	dispose: function(){
-		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},
 
 	empty: function(){
 		$A(this.childNodes).each(function(node){
-			clean(node);
-			Element.empty(node);
-			Element.dispose(node);
+			Element.destroy(node);
 		});
 		return this;
+	},
+	
+	dispose: function(){
+		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},
 
 	hasChild: function(el){
