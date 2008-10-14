@@ -548,7 +548,7 @@ Element.implement({
 	},
 
 	match: function(tag){
-		return (!tag || Element.get(this, 'tag') == tag);
+		return (!tag || (tag == this) || (Element.get(this, 'tag') == tag));
 	}
 
 });

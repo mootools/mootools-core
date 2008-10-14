@@ -6,20 +6,17 @@ License:
 	MIT-style license.
 */
 
-var Browser = Browser || {};
-
-Browser.detect = function(){
+var Browser = $merge({
 	
-	$augment(this, {
-		Engine: {name: 'unknown', version: 0},
-		Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
-		Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
-		Plugins: {}, Engines: {}
-	});
+	Engine: {name: 'unknown', version: 0},
 	
-	this.Platform[this.Platform.name] = true;
+	Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
 	
-	$augment(this.Engines, {
+	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
+	
+	Plugins: {},
+	
+	Engines: {
 		
 		presto: function(){
 			return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
@@ -37,7 +34,13 @@ Browser.detect = function(){
 			return (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? 19 : 18);
 		}
 		
-	});
+	}
+
+}, Browser || {});
+
+Browser.Platform[Browser.Platform.name] = true;
+
+Browser.detect = function(){
 	
 	for (var engine in this.Engines){
 		var version = this.Engines[engine]();

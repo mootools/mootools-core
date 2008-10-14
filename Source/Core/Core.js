@@ -194,14 +194,6 @@ function $extend(original, extended){
 	return original;
 };
 
-function $augment(original, extended){
-	for (var key in (extended || {})){
-		var value = original[key];
-		if (value == undefined) original[key] = extended[key];
-	}
-	return original;
-};
-
 function $H(object){
 	return new Hash(object);
 };
