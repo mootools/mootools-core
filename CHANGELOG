@@ -3,6 +3,7 @@
 [ADD] Browser.Engine detection for WebKit version 525
 [ADD] Element.removeEvents now also accepts an object
 [ADD] Class.removeEvents now also accepts an object
+[ADD] Element.match now also accepts an Element
 [CHG] Element.js has been refactored to make use of private variables wherever possible
 [CHG] $unlink now returns an unlinked Hash instead of an object when a Hash is passed in
 [CHG] Faster Element.hasChild

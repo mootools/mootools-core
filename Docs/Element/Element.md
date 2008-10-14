@@ -380,28 +380,39 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 Element Method: match {#Element:match}
 --------------------------------------
 
-Tests this Element to see if its tag name is the same as the tag passed in.  If [Selectors][] is included, CSS selectors may also be passed.
+Tests this Element to see if it matches the argument passed in.
 
 ### Syntax:
 
-	myElement.match(tag);
+	myElement.match(match);
 
 ### Arguments:
 
-1. tag - (*string*) The tag name to test against this element.
+1. match - can be a string or element
+	- (*string*) The tag name to test against this element. If [Selectors][] is included, any single CSS selectors may also be passed.
+	- (*element*) An element to match; returns true if this is the actual element passed in.
 
 ### Returns:
 
-* (*boolean*) If the element has the specified tag name, returns true. Otherwise, returns false.
+* (*boolean*) If the element matched, returns true. Otherwise, returns false.
 
 ### Examples:
 
-	$('myDiv').match('div'); //Returns true if myDiv is a div.
+#### Using a Tag Name:
 
-### Notes:
+	//Returns true if #myDiv is a div.
+	$('myDiv').match('div');
 
-- See [Element:match](/Selectors/Selectors#Element:match).
-- This method is overwritten by a more powerful version when [Selectors][] is included.
+#### Using a CSS Selector:
+
+	//Returns true if #myDiv has the class foo and is named "bar"
+	$('myDiv').match('.foo[name=bar]');
+
+#### Using an Element:
+
+	var el = $('myDiv');
+	$('myDiv').match(el); //Returns true
+	$('otherElement').match(el); //Returns false
 
 
 

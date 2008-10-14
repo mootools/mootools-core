@@ -390,7 +390,7 @@ Returns the last item from the array.
 ### Returns:
 
 * (*mixed*) The last item in this array.
-* (*false*) If this array is empty, returns null.
+* (*null*) If this array is empty, returns null.
 
 ### Examples:
 

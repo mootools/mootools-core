@@ -45,7 +45,7 @@ Clears a Timeout or an Interval. Useful when working with [Function:delay][] and
 
 ### Returns:
 
-* (*false*) returns null.
+* (*null*) returns null.
 
 ### Example:
 

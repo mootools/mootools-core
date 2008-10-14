@@ -263,7 +263,7 @@ Retrieves a value from the hash.
 ### Returns:
 
 * (*mixed*) Returns the value that corresponds to the key if found.
-* (*false*) null if the key doesn't exist
+* (*null*) null if the key doesn't exist.
 
 ### Examples:
 

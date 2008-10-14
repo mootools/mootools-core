@@ -533,7 +533,7 @@ Element.implement({
 		});
 		return this;
 	},
-	
+
 	dispose: function(){
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},

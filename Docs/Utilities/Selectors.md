@@ -74,36 +74,7 @@ Same as [Element:getElements](#Element:getElements), but returns only the first.
 
 	var found = $('myElement').getElement('.findMe').setStyle('color', '#f00');
 
-### Note:
 
-Element Method: match {#Element:match}
---------------------------------------
-
-Matches the Element with the given selector.
-
-### Syntax:
-
-	var matched = myElement.match(selector);
-
-### Arguments:
-
-1. selector - (*string*) Selector to match the Element to.
-
-### Returns:
-
-* (*boolean*) true if matched, otherwise false.
-
-### Example:
-
-    //Returns true if the Element is a div named "somename".
-	$('myElement').match('div[name=somename]');
-
-
-
-### See Also:
-
-[$]: /Element/Element#dollar
-[Element]: /Element/Element
 
 Selectors.Pseudo {#Selectors}
 =============================
@@ -286,6 +257,6 @@ Matches an only child of its parent Element.
 
 	$$('td:only-child');
 
-
+[$]: /Element/Element#dollar
 [Element]: /Element/Element
 [Selectors]: /Selectors/Selectors

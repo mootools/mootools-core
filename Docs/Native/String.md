@@ -199,7 +199,7 @@ Parses this string and returns a number of the specified radix or base.
 ### Returns:
 
 * (*number*) The number.
-* (*false*) If the string is not numeric, returns NaN.
+* (*NaN*) If the string is not numeric, returns NaN.
 
 ### Examples:
 
@@ -224,7 +224,7 @@ Parses this string and returns a floating point number.
 ### Returns:
 
 * (*number*) The float.
-* (*false*) If the string is not numeric, returns NaN.
+* (*NaN*) If the string is not numeric, returns NaN.
 
 ### Examples:
 

@@ -7,33 +7,33 @@ License:
 */
 
 var Browser = $merge({
-	
+
 	Engine: {name: 'unknown', version: 0},
-	
+
 	Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
-	
+
 	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
-	
+
 	Plugins: {},
-	
+
 	Engines: {
-		
+
 		presto: function(){
 			return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
 		},
-		
+
 		trident: function(){
 			return (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? 5 : 4);
 		},
-		
+
 		webkit: function(){
 			return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
 		},
-		
+
 		gecko: function(){
 			return (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? 19 : 18);
 		}
-		
+
 	}
 
 }, Browser || {});
@@ -41,7 +41,7 @@ var Browser = $merge({
 Browser.Platform[Browser.Platform.name] = true;
 
 Browser.detect = function(){
-	
+
 	for (var engine in this.Engines){
 		var version = this.Engines[engine]();
 		if (version){
@@ -50,11 +50,11 @@ Browser.detect = function(){
 			break;
 		}
 	}
-	
+
 	return {name: engine, version: version};
-	
+
 };
- 
+
 Browser.detect();
 
 Browser.Request = function(){
