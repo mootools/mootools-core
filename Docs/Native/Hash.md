@@ -384,8 +384,8 @@ Creates a new map with the results of calling a provided function on every value
 
 ### Examples:
 
-	var timesTwo = new Hash({a: 1, b: 2, c: 3}).map(function(item, index){
-		return item * 2;
+	var timesTwo = new Hash({a: 1, b: 2, c: 3}).map(function(value, key){
+		return value * 2;
 	}); //timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
 
 

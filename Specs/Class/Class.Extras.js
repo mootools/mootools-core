@@ -135,8 +135,9 @@ describe("Events Class", {
 	},
 
 	"before each": function(){
+		Local.called = 0;
 		Local.fn = function(){
-			return Local.EventsTest.called++;
+			return Local.called++;
 		};
 	},
 
@@ -212,6 +213,22 @@ describe("Events Class", {
 		var events = myTest.$events;
 		value_of(events["event1"].length).should_be(0);
 		value_of(events["event2"].length).should_be(0);
+	},
+
+	"should remove events with an object": function(){
+		var myTest = new Local.EventsTest();
+		var events = {
+			event1: Local.fn.create(),
+			event2: Local.fn.create()
+		};
+		myTest.addEvent('event1', Local.fn.create()).addEvents(events);
+		myTest.fireEvent('event1');
+		value_of(Local.called).should_be(2);
+		myTest.removeEvents(events);
+		myTest.fireEvent('event1');
+		value_of(Local.called).should_be(3);
+		myTest.fireEvent('event2');
+		value_of(Local.called).should_be(3);
 	}
 
 });
