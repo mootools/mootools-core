@@ -65,19 +65,19 @@ Native.implement([Element, Window, Document], {
 		return this;
 	},
 
-	removeEvents: function(what){
-		if ($type(what) == 'object'){
-			for (var type in what) this.removeEvent(type, what[type]);
+	removeEvents: function(events){
+		if ($type(events) == 'object'){
+			for (var type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
-		var events = this.retrieve('events');
-		if (!events) return this;
-		if (!what){
-			for (var type in events) this.removeEvents(type);
+		var attached = this.retrieve('events');
+		if (!attached) return this;
+		if (!events){
+			for (var type in attached) this.removeEvents(type);
 			this.eliminate('events');
-		} else if (events[what]){
-			while (events[what].keys[0]) this.removeEvent(what, events[what].keys[0]);
-			events[what] = null;
+		} else if (attached[events]){
+			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
+			attached[events] = null;
 		}
 		return this;
 	},

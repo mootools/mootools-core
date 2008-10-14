@@ -28,10 +28,11 @@ var Chain = new Class({
 
 var Events = new Class({
 
+	$events: {},
+
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
 		if (fn != $empty){
-			this.$events = this.$events || {};
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
 			if (internal) fn.internal = true;
@@ -55,19 +56,19 @@ var Events = new Class({
 
 	removeEvent: function(type, fn){
 		type = Events.removeOn(type);
-		if (!this.$events || !this.$events[type]) return this;
+		if (!this.$events[type]) return this;
 		if (!fn.internal) this.$events[type].erase(fn);
 		return this;
 	},
 
-	removeEvents: function(what){
-		if ($type(what) == 'object'){
-			for (var type in what) this.removeEvent(type, what[type]);
+	removeEvents: function(events){
+		if ($type(events) == 'object'){
+			for (var type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
-		if (what) what = Events.removeOn(what);
+		if (events) events = Events.removeOn(events);
 		for (var type in this.$events){
-			if (what && what != type) continue;
+			if (events && events != type) continue;
 			var fns = this.$events[type];
 			for (var i = fns.length; i--; i) this.removeEvent(type, fns[i]);
 		}
