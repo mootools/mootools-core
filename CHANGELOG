@@ -1,3 +1,5 @@
+MooTools 1.2.1 - October 16th, 2008
+
 [ADD] Element.set('html') now allows to set the innerHTML of all Elements (including tables and selects)
 [ADD] Browser.Features.query to check if the Browser supports the new querySelector method on the document object
 [ADD] Browser.Engine detection for WebKit version 525
