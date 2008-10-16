@@ -213,19 +213,24 @@ var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
 };
 
-var clean = function(item){
+var clean = function(item, retain){
 	if (!item) return;
+	var uid = item.uid;
 	if (Browser.Engine.trident){
-		if (item.clearAttributes) item.clearAttributes();
-		else if (item.removeEvents) item.removeEvents();
+		if (item.clearAttributes){
+			var clone = retain && item.cloneNode(false);
+			item.clearAttributes();
+			if (clone) item.mergeAttributes(clone);
+		} else if (item.removeEvents){
+			item.removeEvents();
+		}
 		if ((/object/i).test(item.tagName)){
 			for (var p in item){
 				if (typeof item[p] == 'function') item[p] = $empty;
 			}
 			Element.dispose(item);
 		}
-	}
-	var uid = item.uid;
+	}	
 	if (!uid) return;
 	collected[uid] = storage[uid] = null;
 };
@@ -523,7 +528,7 @@ Element.implement({
 	destroy: function(){
 		Element.empty(this);
 		Element.dispose(this);
-		clean(this);
+		clean(this, true);
 		return null;
 	},
 
