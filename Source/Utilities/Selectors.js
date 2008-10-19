@@ -57,10 +57,10 @@ Selectors.Utils = {
 		if (Selectors.Cache.nth[argument]) return Selectors.Cache.nth[argument];
 		var parsed = argument.match(/^([+-]?\d*)?([a-z]+)?([+-]?\d*)?$/);
 		if (!parsed) return false;
-		var inta = parseInt(parsed[1]);
+		var inta = parseInt(parsed[1], 10);
 		var a = (inta || inta === 0) ? inta : 1;
 		var special = parsed[2] || false;
-		var b = parseInt(parsed[3]) || 0;
+		var b = parseInt(parsed[3], 10) || 0;
 		if (a != 0){
 			b--;
 			while (b < 1) b += a;
