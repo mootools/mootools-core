@@ -49,9 +49,14 @@ Gets all the elements within an element that match the given selector.
 - Supports these operators in attribute selectors:
 
 	- '=' : is equal to
+	- '*=': contains
 	- '^=' : starts-with
 	- '$=' : ends-with
 	- '!=' : is not equal to
+	- '~=' : contained in a space separated list
+	- '|=' : contained in a '-' separated list
+
+
 
 Element Property: getElement {#Element:getElement}
 --------------------------------------------------
