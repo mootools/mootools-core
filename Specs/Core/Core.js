@@ -249,7 +249,7 @@ describe('$lambda', {
 describe('$merge', {
 
 	'should dereference objects': function(){
-		var obj1 = {a: 1, a: 2};
+		var obj1 = {a: 1, b: 2};
 		var obj2 = $merge(obj1);
 		value_of(obj1 === obj2).should_be_false();
 	},

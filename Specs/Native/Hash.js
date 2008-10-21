@@ -167,7 +167,7 @@ describe("Hash Methods", {
 
 	// Hash.getKeys
 
-	'should return an array': function(){
+	'getKeys should return an empty array': function(){
 		value_of(new Hash().getKeys()).should_be([]);
 	},
 
@@ -177,11 +177,11 @@ describe("Hash Methods", {
 
 	// Hash.getValues
 
-	'should return an array': function(){
+	'getValues should return an empty array': function(){
 		value_of(new Hash().getValues()).should_be([]);
 	},
 
-	'should return an array with the values the hash': function(){
+	'should return an array with the values of the hash': function(){
 		value_of(hash2.getValues()).should_be(['string', 233, {}]);
 	},
 
