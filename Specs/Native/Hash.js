@@ -64,7 +64,7 @@ describe("Hash Methods", {
 	'should include a key value if the hash does not have the key otherwise ignore': function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
 		value_of(hash.include('e', 7)).should_be(new Hash({a:1,b:2,c:3,e:7}));
-		value_of(hash.include('a', 7)).should_not_be(new Hash({a:7,b:2,c:3,e:7}));
+		value_of(hash.include('a', 7)).should_be(new Hash({a:1,b:2,c:3,e:7}));
 	},
 
 	// Hash.keyOf | Hash.indexOf
