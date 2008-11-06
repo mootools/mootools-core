@@ -151,7 +151,7 @@ Copies all the properties from the second object passed in to the first object p
 
 ### Syntax:
 
-	$extend(original, extended);
+	$extend(original, extension);
 
 ### Arguments:
 
