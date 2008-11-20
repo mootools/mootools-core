@@ -66,7 +66,7 @@ Adds functions to the end of the call stack of the Chain instance.
 
 ### Example:
 	//Fx.Tween has already implemented the Chain class because of inheritance of the Fx class.
-	var myFx = new Fx.Tween('myElement', 'opacity');
+	var myFx = new Fx.Tween('myElement', {property: 'opacity'});
 	myFx.start(1,0).chain(
 		//Notice that "this" refers to the calling object (in this case, the myFx object).
 		function(){ this.start(0,1); },
