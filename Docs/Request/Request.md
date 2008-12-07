@@ -28,7 +28,7 @@ An XMLHttpRequest Wrapper.
 * encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
 * headers    - (*object*) An object to use in order to set the request headers.
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
-* evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated.
+* evalScripts  - (*boolean*: defaults to false) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
