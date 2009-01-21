@@ -100,7 +100,7 @@ Native.typize = function(object, family){
 	};
 	for (var g in generics){
 		for (var i = generics[g].length; i--;) Native.genericize(window[g], generics[g][i], true);
-	};
+	}
 })();
 
 var Hash = new Native({
