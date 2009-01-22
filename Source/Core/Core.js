@@ -12,8 +12,10 @@ Code & Documentation:
 	[The MooTools production team](http://mootools.net/developers/).
 
 Inspiration:
-	- Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
-	- Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
+	- Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/)
+		Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
+	- Some functionality inspired by [Prototype.js](http://prototypejs.org)
+		Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 */
 
 var MooTools = {
@@ -26,15 +28,16 @@ var Native = function(options){
 	var name = options.name;
 	var legacy = options.legacy;
 	var protect = options.protect;
-	var methods = options.implement;
 	var generics = options.generics;
 	var initialize = options.initialize;
-	var afterImplement = options.afterImplement || function(){};
 	var object = initialize || legacy;
 	generics = generics !== false;
 
 	object.constructor = Native;
 	object.$family = {name: 'native'};
+	
+	for (var k in this) object[k] = this[k];
+	
 	if (legacy && initialize) object.prototype = legacy.prototype;
 	object.prototype.constructor = object;
 
@@ -44,30 +47,53 @@ var Native = function(options){
 		Native.typize(object, family);
 	}
 
-	var add = function(obj, name, method, force){
-		if (!protect || force || !obj.prototype[name]) obj.prototype[name] = method;
-		if (generics) Native.genericize(obj, name, protect);
-		afterImplement.call(obj, name, method);
-		return obj;
+	var add = function(name, method, force){
+		if (!protect || force || !object.prototype[name]) object.prototype[name] = method;
+		if (generics) Native.genericize(object, name, protect);
+		object.fireEvent('afterImplement', [name, method]);
+		return object;
 	};
 
 	object.alias = function(a1, a2, a3){
 		if (typeof a1 == 'string'){
-			if ((a1 = this.prototype[a1])) return add(this, a2, a1, a3);
+			if ((a1 = this.prototype[a1])) return add(a2, a1, a3);
 		}
 		for (var a in a1) this.alias(a, a1[a], a2);
 		return this;
 	};
 
 	object.implement = function(a1, a2, a3){
-		if (typeof a1 == 'string') return add(this, a1, a2, a3);
-		for (var p in a1) add(this, p, a1[p], a2);
+		if (typeof a1 == 'string') return add(a1, a2, a3);
+		for (var p in a1) add(p, a1[p], a2);
 		return this;
 	};
 
-	if (methods) object.implement(methods);
-
 	return object;
+};
+
+Native.prototype = {
+	
+	addEvent: function(name, method){
+		if (!this.events) this.events = {};
+		if (!this.events[name]) this.events[name] = [];
+		this.events[name].include(method);
+		return this;
+	},
+	
+	removeEvent: function(name, method){
+		if (!this.events || !this.events[name]) return this;
+		this.events[name].erase(method);
+		return this;
+	},
+	
+	fireEvent: function(name, args){
+		if (!this.events || !this.events[name]) return this;
+		this.events[name].each(function(fn){
+			fn.apply(this, $splat(args));
+		});
+		return this;
+	}
+	
 };
 
 Native.genericize = function(object, property, check){
@@ -95,8 +121,14 @@ Native.typize = function(object, family){
 	for (var t in types) Native.typize(types[t], t);
 
 	var generics = {
-		'Array': ["concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse", "shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"],
-		'String': ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"]
+		'Array': [
+			"concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse",
+			"shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"
+		],
+		'String': [
+			"charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace",
+			"search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"
+		]
 	};
 	for (var g in generics){
 		for (var i = generics[g].length; i--;) Native.genericize(window[g], generics[g][i], true);

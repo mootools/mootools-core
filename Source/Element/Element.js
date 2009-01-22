@@ -14,31 +14,29 @@ var Element = new Native({
 	legacy: window.Element,
 
 	initialize: function(tag, props){
-		var konstructor = Element.Constructors.get(tag);
-		if (konstructor) return konstructor(props);
 		if (typeof tag == 'string') return document.newElement(tag, props);
 		return $(tag).set(props);
-	},
-
-	afterImplement: function(key, value){
-		Element.Prototype[key] = value;
-		if (Array[key]) return;
-		Elements.implement(key, function(){
-			var items = [], elements = true;
-			for (var i = 0, j = this.length; i < j; i++){
-				var returns = this[i][key].apply(this[i], arguments);
-				items.push(returns);
-				if (elements) elements = ($type(returns) == 'element');
-			}
-			return (elements) ? new Elements(items) : items;
-		});
 	}
 
 });
 
-Element.Prototype = {$family: {name: 'element'}};
+Element.addEvent('afterImplement', function(key, value){
+	
+	Element.Prototype[key] = value;
+	if (Array[key]) return;
+	Elements.implement(key, function(){
+		var items = [], elements = true;
+		for (var i = 0, j = this.length; i < j; i++){
+			var returns = this[i][key].apply(this[i], arguments);
+			items.push(returns);
+			if (elements) elements = ($type(returns) == 'element');
+		}
+		return (elements) ? new Elements(items) : items;
+	});
+	
+});
 
-Element.Constructors = new Hash;
+Element.Prototype = {$family: {name: 'element'}};
 
 var IFrame = new Native({
 

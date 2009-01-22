@@ -113,12 +113,12 @@ var Window = new Native({
 		}
 		win.document.window = win;
 		return $extend(win, Window.Prototype);
-	},
-
-	afterImplement: function(property, value){
-		window[property] = Window.Prototype[property] = value;
 	}
 
+});
+
+Window.addEvent('afterImplement', function(property, value){
+	window[property] = Window.Prototype[property] = value;
 });
 
 Window.Prototype = {$family: {name: 'window'}};
@@ -143,12 +143,12 @@ var Document = new Native({
 			doc.head = doc.html = doc.window = null;
 		});
 		return $extend(doc, Document.Prototype);
-	},
-
-	afterImplement: function(property, value){
-		document[property] = Document.Prototype[property] = value;
 	}
 
+});
+
+Document.addEvent('afterImplement', function(property, value){
+	document[property] = Document.Prototype[property] = value;
 });
 
 Document.Prototype = {$family: {name: 'document'}};
