@@ -12,9 +12,9 @@ var Fx = new Class({
 
 	options: {
 		/*
-		onStart: $empty,
-		onCancel: $empty,
-		onComplete: $empty,
+		onStart: Function.empty,
+		onCancel: Function.empty,
+		onComplete: Function.empty,
 		*/
 		fps: 50,
 		unit: false,
@@ -37,7 +37,7 @@ var Fx = new Class({
 	},
 
 	step: function(){
-		var time = $time();
+		var time = Date.now();
 		if (time < this.time + this.options.duration){
 			var delta = this.transition((time - this.time) / this.options.duration);
 			this.set(this.compute(this.from, this.to, delta));
@@ -110,14 +110,15 @@ var Fx = new Class({
 
 	stopTimer: function(){
 		if (!this.timer) return false;
-		this.time = $time() - this.time;
-		this.timer = $clear(this.timer);
+		this.time = Date.now() - this.time;
+		this.timer = clearInterval(this.timer);
+		this.timer = null;
 		return true;
 	},
 
 	startTimer: function(){
 		if (this.timer) return false;
-		this.time = $time() - this.time;
+		this.time = Date.now() - this.time;
 		this.timer = this.step.periodical(Math.round(1000 / this.options.fps), this);
 		return true;
 	}

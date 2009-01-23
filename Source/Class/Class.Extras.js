@@ -32,7 +32,7 @@ var Events = new Class({
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != $empty){
+		if (fn != Function.empty){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
 			if (internal) fn.internal = true;
@@ -86,7 +86,7 @@ Events.removeOn = function(string){
 var Options = new Class({
 
 	setOptions: function(){
-		this.options = $merge.run([this.options].extend(arguments));
+		this.options = Object.merge.run([this.options].extend(arguments));
 		if (!this.addEvent) return this;
 		for (var option in this.options){
 			if ($type(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;

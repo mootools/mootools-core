@@ -60,7 +60,7 @@ var Event = new Native({
 			}
 		}
 
-		return $extend(this, {
+		return Object.extend(this, {
 			event: event,
 			type: type,
 

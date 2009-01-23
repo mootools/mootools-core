@@ -1,6 +1,6 @@
 /*
 Script: Browser.js
-	The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash.
+	The Browser Core. Contains Browser initialization, Window and Document, and the Browser Object.
 
 License:
 	MIT-style license.
@@ -58,7 +58,7 @@ Browser.detect = function(){
 Browser.detect();
 
 Browser.Request = function(){
-	return $try(function(){
+	return Function.stab(function(){
 		return new XMLHttpRequest();
 	}, function(){
 		return new ActiveXObject('MSXML2.XMLHTTP');
@@ -68,7 +68,7 @@ Browser.Request = function(){
 Browser.Features.xhr = !!(Browser.Request());
 
 Browser.Plugins.Flash = (function(){
-	var version = ($try(function(){
+	var version = (Function.stab(function(){
 		return navigator.plugins['Shockwave Flash'].description;
 	}, function(){
 		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
@@ -107,12 +107,12 @@ var Window = new Native({
 	initialize: function(win){
 		$uid(win);
 		if (!win.Element){
-			win.Element = $empty;
+			win.Element = Function.empty;
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 			win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 		}
 		win.document.window = win;
-		return $extend(win, Window.Prototype);
+		return Object.extend(win, Window.Prototype);
 	}
 
 });
@@ -135,14 +135,14 @@ var Document = new Native({
 		$uid(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.html = doc.getElementsByTagName('html')[0];
-		if (Browser.Engine.trident && Browser.Engine.version <= 4) $try(function(){
+		if (Browser.Engine.trident && Browser.Engine.version <= 4) Function.stab(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
 		if (Browser.Engine.trident) doc.window.attachEvent('onunload', function() {
 			doc.window.detachEvent('onunload', arguments.callee);
 			doc.head = doc.html = doc.window = null;
 		});
-		return $extend(doc, Document.Prototype);
+		return Object.extend(doc, Document.Prototype);
 	}
 
 });

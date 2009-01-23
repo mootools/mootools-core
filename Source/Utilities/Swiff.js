@@ -34,7 +34,7 @@ var Swiff = new Class({
 	},
 
 	initialize: function(path, options){
-		this.instance = 'Swiff_' + $time();
+		this.instance = 'Swiff_' + Date.now();
 
 		this.setOptions(options);
 		options = this.options;
@@ -44,7 +44,7 @@ var Swiff = new Class({
 		Swiff.CallBacks[this.instance] = {};
 
 		var params = options.params, vars = options.vars, callBacks = options.callBacks;
-		var properties = $extend({height: options.height, width: options.width}, options.properties);
+		var properties = Object.extend({height: options.height, width: options.width}, options.properties);
 
 		var self = this;
 
@@ -57,7 +57,7 @@ var Swiff = new Class({
 			vars[callBack] = 'Swiff.CallBacks.' + this.instance + '.' + callBack;
 		}
 
-		params.flashVars = Hash.toQueryString(vars);
+		params.flashVars = Object.toQueryString(vars);
 		if (Browser.Engine.trident){
 			properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 			params.movie = path;

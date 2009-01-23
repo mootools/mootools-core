@@ -22,7 +22,7 @@ Request.HTML = new Class({
 
 		var container = new Element('div');
 
-		return $try(function(){
+		return Function.stab(function(){
 			var root = '<root>' + text + '</root>', doc;
 			if (Browser.Engine.trident){
 				doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -66,7 +66,7 @@ Element.Properties.load = {
 	set: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
-		return this.eliminate('load').store('load:options', $extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
+		return this.eliminate('load').store('load:options', Object.extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
 	},
 
 	get: function(options){

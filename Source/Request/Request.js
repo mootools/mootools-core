@@ -11,12 +11,12 @@ var Request = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: $empty,
-		onComplete: $empty,
-		onCancel: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
+		onRequest: Function.empty,
+		onComplete: Function.empty,
+		onCancel: Function.empty,
+		onSuccess: Function.empty,
+		onFailure: Function.empty,
+		onException: Function.empty,*/
 		url: '',
 		data: '',
 		headers: {
@@ -46,7 +46,7 @@ var Request = new Class({
 		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
-		$try(function(){
+		Function.stab(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
 		if (this.options.isSuccess.call(this, this.status)){
@@ -56,7 +56,7 @@ var Request = new Class({
 			this.response = {text: null, xml: null};
 			this.failure();
 		}
-		this.xhr.onreadystatechange = $empty;
+		this.xhr.onreadystatechange = Function.empty;
 	},
 
 	isSuccess: function(){
@@ -90,7 +90,7 @@ var Request = new Class({
 	},
 
 	getHeader: function(name){
-		return $try(function(){
+		return Function.stab(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},
@@ -112,12 +112,12 @@ var Request = new Class({
 		if (type == 'string' || type == 'element') options = {data: options};
 
 		var old = this.options;
-		options = $extend({data: old.data, url: old.url, method: old.method}, options);
+		options = Object.extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;
 
 		switch ($type(data)){
 			case 'element': data = $(data).toQueryString(); break;
-			case 'object': case 'hash': data = Hash.toQueryString(data);
+			case 'object': data = Object.toQueryString(data);
 		}
 
 		if (this.options.format){
@@ -163,7 +163,7 @@ var Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
-		this.xhr.onreadystatechange = $empty;
+		this.xhr.onreadystatechange = Function.empty;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
@@ -176,8 +176,8 @@ var Request = new Class({
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
-		var params = Array.link(arguments, {url: String.type, data: $defined});
-		return this.send($extend(params, {method: method.toLowerCase()}));
+		var params = Array.link(arguments, {url: String.type, data: Object.defined});
+		return this.send(Object.extend(params, {method: method.toLowerCase()}));
 	};
 });
 
@@ -190,7 +190,7 @@ Element.Properties.send = {
 	set: function(options){
 		var send = this.retrieve('send');
 		if (send) send.cancel();
-		return this.eliminate('send').store('send:options', $extend({
+		return this.eliminate('send').store('send:options', Object.extend({
 			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
 		}, options));
 	},

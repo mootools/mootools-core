@@ -28,7 +28,7 @@ Array.implement({
 	},
 
 	clean: function() {
-		return this.filter($defined);
+		return this.filter(Object.defined);
 	},
 
 	indexOf: function(item, from){
@@ -86,7 +86,7 @@ Array.implement({
 	},
 
 	getRandom: function(){
-		return (this.length) ? this[$random(0, this.length - 1)] : null;
+		return (this.length) ? this[Number.random(0, this.length - 1)] : null;
 	},
 
 	include: function(item){

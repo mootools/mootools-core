@@ -27,20 +27,20 @@ Function.implement({
 		options = options || {};
 		return function(event){
 			var args = options.arguments;
-			args = (args != undefined) ? $splat(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			args = (args != undefined) ? Object.splat(args) : Array.slice(arguments, (options.event) ? 1 : 0);
 			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);
-			if (options.attempt) return $try(returns);
+			if (options.attempt) return Function.stab(returns);
 			return returns();
 		};
 	},
 
 	run: function(args, bind){
-		return this.apply(bind, $splat(args));
+		return this.apply(bind, Object.splat(args));
 	},
 
 	pass: function(args, bind){
@@ -53,10 +53,6 @@ Function.implement({
 
 	bindWithEvent: function(bind, args){
 		return this.create({bind: bind, arguments: args, event: true});
-	},
-
-	attempt: function(args, bind){
-		return this.create({bind: bind, arguments: args, attempt: true})();
 	},
 
 	delay: function(delay, bind, args){

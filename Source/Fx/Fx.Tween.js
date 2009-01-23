@@ -39,7 +39,7 @@ Element.Properties.tween = {
 	set: function(options){
 		var tween = this.retrieve('tween');
 		if (tween) tween.cancel();
-		return this.eliminate('tween').store('tween:options', $extend({link: 'cancel'}, options));
+		return this.eliminate('tween').store('tween:options', Object.extend({link: 'cancel'}, options));
 	},
 
 	get: function(options){
@@ -61,7 +61,7 @@ Element.implement({
 
 	fade: function(how){
 		var fade = this.get('tween'), o = 'opacity', toggle;
-		how = $pick(how, 'toggle');
+		how = Object.pick(how, 'toggle');
 		switch (how){
 			case 'in': fade.start(o, 1); break;
 			case 'out': fade.start(o, 0); break;

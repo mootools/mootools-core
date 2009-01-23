@@ -22,13 +22,13 @@ var JSON = {
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
 			case 'array':
-				return '[' + String(obj.map(JSON.encode).filter($defined)) + ']';
-			case 'object': case 'hash':
+				return '[' + String(obj.map(JSON.encode).filter(Object.defined)) + ']';
+			case 'object':
 				var string = [];
-				Hash.each(obj, function(value, key){
-					var json = JSON.encode(value);
+				for (var key in obj){
+					var json = JSON.encode(obj[key]);
 					if (json) string.push(JSON.encode(key) + ':' + json);
-				});
+				}
 				return '{' + string + '}';
 			case 'number': case 'boolean': return String(obj);
 			case false: return 'null';
@@ -44,7 +44,7 @@ var JSON = {
 
 };
 
-Native.implement([Hash, Array, String, Number], {
+Native.implement([Array, String, Number], {
 
 	toJSON: function(){
 		return JSON.encode(this);

@@ -99,7 +99,7 @@ Native.prototype = {
 		if (!this.events || !this.events[name]) return this;
 		var events = this.events[name];
 		for (var i = 0, l = events.length; i < l; i++){
-			events[i].apply(this, $splat(args));
+			events[i].apply(this, Object.splat(args));
 		}
 		return this;
 	}
@@ -148,7 +148,7 @@ Native.typize = function(object, family){
 	
 })();
 
-function $A(iterable){
+Array.create = function(iterable){
 	if (iterable.item){
 		var array = [];
 		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
@@ -157,27 +157,21 @@ function $A(iterable){
 	return Array.prototype.slice.call(iterable);
 };
 
-function $arguments(i){
+Function.args = function(i){
 	return function(){
 		return arguments[i];
 	};
 };
 
-function $chk(obj){
-	return !!(obj || obj === 0);
+Object.check = function(object){
+	return !!(object || object === 0);
 };
 
-function $clear(timer){
-	clearTimeout(timer);
-	clearInterval(timer);
-	return null;
-};
-
-function $defined(obj){
+Object.defined = function(obj){
 	return (obj != undefined);
 };
 
-function $each(iterable, fn, bind){
+Object.each = function(iterable, fn, bind){
 	var type = $type(iterable);
 	if (type == 'arguments' || type == 'collection' || type == 'array'){
 		for (var i = 0, l = iterable.length; i < l; i++) fn.call(bind, iterable[i], i, iterable);
@@ -188,53 +182,53 @@ function $each(iterable, fn, bind){
 	}
 };
 
-function $empty(){};
+Function.empty = function(){};
 
-function $extend(original, extended){
+Object.extend = function(original, extended){
 	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
 };
 
-function $lambda(value){
+Function.lambda = function(value){
 	return (typeof value == 'function') ? value : function(){
 		return value;
 	};
 };
 
-function $merge(){
+Object.merge = function(){
 	var mix = {};
 	for (var i = 0, l = arguments.length; i < l; i++){
 		var object = arguments[i];
 		if ($type(object) != 'object') continue;
 		for (var key in object){
 			var op = object[key], mp = mix[key];
-			mix[key] = (mp && $type(op) == 'object' && $type(mp) == 'object') ? $merge(mp, op) : $unlink(op);
+			mix[key] = (mp && $type(op) == 'object' && $type(mp) == 'object') ? Object.merge(mp, op) : Object.unlink(op);
 		}
 	}
 	return mix;
 };
 
-function $pick(){
+Object.pick = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		if (arguments[i] != undefined) return arguments[i];
 	}
 	return null;
 };
 
-function $random(min, max){
+Number.random = function(min, max){
 	return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-function $splat(obj){
+Object.splat = function(obj){
 	var type = $type(obj);
 	return (type) ? ((type != 'array' && type != 'arguments') ? [obj] : obj) : [];
 };
 
-var $time = Date.now || function(){
-	return +new Date;
+if (!Date.now) Date.now = function(){
+	return new Date;
 };
 
-function $try(){
+Function.stab = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		try {
 			return arguments[i]();
@@ -258,16 +252,39 @@ function $type(obj){
 	return typeof obj;
 };
 
-function $unlink(object){
+Object.toQueryString = function(object, base){
+	var queryString = [];
+	for (var key in object){
+		var value = object[key];
+		if (base) key = base + '[' + key + ']';
+		var result;
+		switch ($type(value)){
+			case 'object': result = Object.toQueryString(value, key); break;
+			case 'array':
+				var qs = {};
+				value.each(function(val, i){
+					qs[i] = val;
+				});
+				result = Object.toQueryString(qs, key);
+			break;
+			default: result = key + '=' + encodeURIComponent(value);
+		}
+		if (value != undefined) queryString.push(result);
+	}
+
+	return queryString.join('&');
+};
+
+Object.unlink = function(object){
 	var unlinked;
 	switch ($type(object)){
 		case 'object':
 			unlinked = {};
-			for (var p in object) unlinked[p] = $unlink(object[p]);
+			for (var p in object) unlinked[p] = Object.unlink(object[p]);
 		break;
 		case 'array':
 			unlinked = [];
-			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = $unlink(object[i]);
+			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = Object.unlink(object[i]);
 		break;
 		default: return object;
 	}

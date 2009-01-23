@@ -25,8 +25,8 @@ Fx.implement({
 });
 
 Fx.Transition = function(transition, params){
-	params = $splat(params);
-	return $extend(transition, {
+	params = Object.splat(params);
+	return Object.extend(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
 		},
@@ -41,7 +41,7 @@ Fx.Transition = function(transition, params){
 
 Fx.Transitions = {
 
-	linear: $arguments(0)
+	linear: Function.args(0)
 
 };
 

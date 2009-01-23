@@ -45,21 +45,21 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
+		var params = Array.link(arguments, {properties: Object.type, iframe: Object.defined});
 		var props = params.properties || {};
 		var iframe = $(params.iframe) || false;
-		var onload = props.onload || $empty;
+		var onload = props.onload || Function.empty;
 		delete props.onload;
-		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + $time());
+		props.id = props.name = Object.pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Date.now());
 		iframe = new Element(iframe || 'iframe', props);
 		var onFrameLoad = function(){
-			var host = $try(function(){
+			var host = Function.stab(function(){
 				return iframe.contentWindow.location.host;
 			});
 			if (host && host == window.location.host){
 				var win = new Window(iframe.contentWindow);
 				new Document(iframe.contentWindow.document);
-				$extend(win.Element.prototype, Element.Prototype);
+				Object.extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
 		};
@@ -72,7 +72,7 @@ var IFrame = new Native({
 var Elements = new Native({
 
 	initialize: function(elements, options){
-		options = $extend({ddup: true, cash: true}, options);
+		options = Object.extend({ddup: true, cash: true}, options);
 		elements = elements || [];
 		if (options.ddup || options.cash){
 			var uniques = {}, returned = [];
@@ -86,7 +86,7 @@ var Elements = new Native({
 			}
 			elements = returned;
 		}
-		return (options.cash) ? $extend(elements, this) : elements;
+		return (options.cash) ? Object.extend(elements, this) : elements;
 	}
 
 });
@@ -181,7 +181,7 @@ $.object = function(obj, nocash, doc){
 	return null;
 };
 
-$.textnode = $.whitespace = $.window = $.document = $arguments(0);
+$.textnode = $.whitespace = $.window = $.document = Function.args(0);
 
 Native.implement([Element, Document], {
 
@@ -224,7 +224,7 @@ var clean = function(item, retain){
 		}
 		if ((/object/i).test(item.tagName)){
 			for (var p in item){
-				if (typeof item[p] == 'function') item[p] = $empty;
+				if (typeof item[p] == 'function') item[p] = Function.empty;
 			}
 			Element.dispose(item);
 		}
@@ -234,8 +234,8 @@ var clean = function(item, retain){
 };
 
 var purge = function(){
-	Hash.each(collected, clean);
-	if (Browser.Engine.trident) $A(document.getElementsByTagName('object')).each(clean);
+	Object.each(collected, clean);
+	if (Browser.Engine.trident) Array.create(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
 };
@@ -264,8 +264,8 @@ var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'fr
 
 bools = bools.associate(bools);
 
-Hash.extend(attributes, bools);
-Hash.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
+Object.extend(attributes, bools);
+Object.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
 
 var inserters = {
 
@@ -292,8 +292,8 @@ var inserters = {
 
 inserters.inside = inserters.bottom;
 
-Hash.each(inserters, function(inserter, where){
-
+Object.each(inserters, function(inserter, where){
+	
 	where = where.capitalize();
 
 	Element.implement('inject' + where, function(el){
@@ -305,7 +305,7 @@ Hash.each(inserters, function(inserter, where){
 		inserter($(el, true), this);
 		return this;
 	});
-
+	
 });
 
 Element.implement({
@@ -353,7 +353,7 @@ Element.implement({
 	},
 
 	getProperties: function(){
-		var args = $A(arguments);
+		var args = Array.create(arguments);
 		return args.map(this.getProperty, this).associate(args);
 	},
 
@@ -473,7 +473,7 @@ Element.implement({
 	},
 
 	getSelected: function(){
-		return new Elements($A(this.options).filter(function(option){
+		return new Elements(Array.create(this.options).filter(function(option){
 			return option.selected;
 		}));
 	},
@@ -491,7 +491,7 @@ Element.implement({
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
 			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
-			$splat(value).each(function(val){
+			Object.splat(value).each(function(val){
 				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
 		});
@@ -533,7 +533,7 @@ Element.implement({
 	},
 
 	empty: function(){
-		$A(this.childNodes).each(function(node){
+		Array.create(this.childNodes).each(function(node){
 			Element.destroy(node);
 		});
 		return this;
@@ -546,7 +546,7 @@ Element.implement({
 	hasChild: function(el){
 		el = $(el, true);
 		if (!el) return false;
-		if (Browser.Engine.webkit && Browser.Engine.version < 420) return $A(this.getElementsByTagName(el.tagName)).contains(el);
+		if (Browser.Engine.webkit && Browser.Engine.version < 420) return Array.create(this.getElementsByTagName(el.tagName)).contains(el);
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	},
 
@@ -582,7 +582,7 @@ Native.implement([Element, Window, Document], {
 	retrieve: function(property, dflt){
 		var storage = get(this.uid), prop = storage[property];
 		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
-		return $pick(prop);
+		return Object.pick(prop);
 	},
 
 	store: function(property, value){

@@ -14,7 +14,7 @@ var Class = new Native({
 		properties = properties || {};
 		var klass = function(){
 			for (var key in this){
-				if ($type(this[key]) != 'function') this[key] = $unlink(this[key]);
+				if ($type(this[key]) != 'function') this[key] = Object.unlink(this[key]);
 			}
 			this.constructor = klass;
 			if (Class.prototyping) return this;
@@ -29,7 +29,7 @@ var Class = new Native({
 			delete properties[mutator];
 		}
 
-		$extend(klass, this);
+		Object.extend(klass, this);
 		klass.constructor = Class;
 		klass.prototype = properties;
 		return klass;
@@ -49,9 +49,9 @@ Class.Mutators = {
 	},
 
 	Implements: function(self, klasses){
-		$splat(klasses).each(function(klass){
+		Object.splat(klasses).each(function(klass){
 			Class.prototying = klass;
-			$extend(self, ($type(klass) == 'class') ? new klass : klass);
+			Object.extend(self, ($type(klass) == 'class') ? new klass : klass);
 			delete Class.prototyping;
 		});
 		return self;
@@ -77,7 +77,7 @@ Class.extend({
 					}
 				}
 			} else if(type == 'object'){
-				object[key] = $merge(previous, override);
+				object[key] = Object.merge(previous, override);
 			} else {
 				object[key] = override;
 			}
@@ -109,7 +109,7 @@ Class.implement({
 
 	implement: function(){
 		var proto = this.prototype;
-		$each(arguments, function(properties){
+		Object.each(arguments, function(properties){
 			Class.inherit(proto, properties);
 		});
 		return this;

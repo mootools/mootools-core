@@ -46,7 +46,7 @@ var Cookie = new Class({
 	},
 
 	dispose: function(){
-		new Cookie(this.key, $merge(this.options, {duration: -1})).write('');
+		new Cookie(this.key, Object.merge(this.options, {duration: -1})).write('');
 		return this;
 	}
 

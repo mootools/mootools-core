@@ -11,7 +11,7 @@ var Hash = new Native({
 	name: 'Hash',
 
 	initialize: function(object){
-		if ($type(object) == 'hash') object = $unlink(object.getClean());
+		if ($type(object) == 'hash') object = Object.unlink(object.getClean());
 		for (var key in object) this[key] = object[key];
 		return this;
 	}
@@ -143,28 +143,6 @@ Hash.implement({
 			values.push(value);
 		});
 		return values;
-	},
-
-	toQueryString: function(base){
-		var queryString = [];
-		Hash.each(this, function(value, key){
-			if (base) key = base + '[' + key + ']';
-			var result;
-			switch ($type(value)){
-				case 'object': result = Hash.toQueryString(value, key); break;
-				case 'array':
-					var qs = {};
-					value.each(function(val, i){
-						qs[i] = val;
-					});
-					result = Hash.toQueryString(qs, key);
-				break;
-				default: result = key + '=' + encodeURIComponent(value);
-			}
-			if (value != undefined) queryString.push(result);
-		});
-
-		return queryString.join('&');
 	}
 
 });
