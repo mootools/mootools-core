@@ -13,18 +13,15 @@ var Class = new Native({
 	initialize: function(properties){
 		
 		var newClass = Object.extend(function(){
+			for (var key in this){
+				if (['array', 'object'].contains(typeOf(this[key]))) this[key] = Object.unlink(this[key]);
+			}
 			if (newClass.prototyping) return this;
 			newClass.fireEvent('beforeInitialize', this);
 			var result = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 			newClass.fireEvent('afterInitialize', this);
 			return result;
 		}, this);
-		
-		newClass.addEvent('beforeInitialize', function(instance){
-			for (var key in instance){
-				if (['array', 'object'].contains(typeOf(instance[key]))) instance[key] = Object.unlink(instance[key]);
-			}
-		});
 		
 		properties = Function.lambda(properties || {})();
 		
