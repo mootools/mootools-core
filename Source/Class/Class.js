@@ -7,112 +7,123 @@ License:
 */
 
 var Class = new Native({
-
+	
 	name: 'Class',
-
+	
 	initialize: function(properties){
-		properties = properties || {};
-		var klass = function(){
-			for (var key in this){
-				if (typeOf(this[key]) != 'function') this[key] = Object.unlink(this[key]);
+		
+		var newClass = Object.extend(function(){
+			if (newClass.prototyping) return this;
+			newClass.fireEvent('beforeInitialize', this);
+			var result = (this.initialize) ? this.initialize.apply(this, arguments) : this;
+			newClass.fireEvent('afterInitialize', this);
+			return result;
+		}, this);
+		
+		newClass.addEvent('beforeInitialize', function(instance){
+			for (var key in instance){
+				if (['array', 'object'].contains(typeOf(instance[key]))) instance[key] = Object.unlink(instance[key]);
 			}
-			this.constructor = klass;
-			if (Class.prototyping) return this;
-			var instance = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-			if (this.options && this.options.initialize) this.options.initialize.call(this);
-			return instance;
-		};
-
+		});
+		
+		properties = Function.lambda(properties || {})();
+		
 		for (var mutator in Class.Mutators){
 			if (!properties[mutator]) continue;
-			properties = Class.Mutators[mutator](properties, properties[mutator]);
+			Class.Mutators[mutator].call(newClass, properties[mutator], properties);
 			delete properties[mutator];
 		}
-
-		Object.extend(klass, this);
-		klass.constructor = Class;
-		klass.prototype = properties;
-		return klass;
+		
+		newClass.implement(properties);
+		
+		newClass.constructor = Class;
+		newClass.prototype.constructor = newClass;
+		return newClass;
+		
 	}
-
-});
-
-Class.Mutators = {
-
-	Extends: function(self, klass){
-		Class.prototyping = klass.prototype;
-		var subclass = new klass;
-		delete subclass.parent;
-		subclass = Class.inherit(subclass, self);
-		delete Class.prototyping;
-		return subclass;
-	},
-
-	Implements: function(self, klasses){
-		Object.splat(klasses).each(function(klass){
-			Class.prototying = klass;
-			Object.extend(self, (typeOf(klass) == 'class') ? new klass : klass);
-			delete Class.prototyping;
-		});
-		return self;
-	}
-
-};
-
-Class.extend({
-
-	inherit: function(object, properties){
-		var caller = arguments.callee.caller && !Browser.Features.air; // caller support is broken in air 1.5
-		for (var key in properties){
-			var override = properties[key];
-			var previous = object[key];
-			var type = typeOf(override);
-			if (previous && type == 'function'){
-				if (override != previous){
-					if (caller){
-						override.__parent = previous;
-						object[key] = override;
-					} else {
-						Class.override(object, key, override);
-					}
-				}
-			} else if(type == 'object'){
-				object[key] = Object.merge(previous, override);
-			} else {
-				object[key] = override;
-			}
-		}
-
-		if (caller) object.parent = function(){
-			return arguments.callee.caller.__parent.apply(this, arguments);
-		};
-
-		return object;
-	},
-
-	override: function(object, name, method){
-		var parent = Class.prototyping;
-		if (parent && object[name] != parent[name]) parent = null;
-		var override = function(){
-			var previous = this.parent;
-			this.parent = parent ? parent[name] : object[name];
-			var value = method.apply(this, arguments);
-			this.parent = previous;
-			return value;
-		};
-		object[name] = override;
-	}
-
+	
 });
 
 Class.implement({
-
-	implement: function(){
-		var proto = this.prototype;
-		Object.each(arguments, function(properties){
-			Class.inherit(proto, properties);
-		});
+	
+	addEvent: Native.prototype.addObjectEvent,
+	removeEvent: Native.prototype.removeObjectEvent,
+	fireEvent: Native.prototype.fireObjectEvent,
+	
+	implement: function(item){
+		
+		var self = this;
+		
+		var wrap = function(name, method){
+			var wrapper = function(){
+				var caller = this.caller;
+				this.caller = name;
+				var result = method.apply(this, arguments);
+				this.caller = caller;
+				return result;
+			};
+			wrapper.owner = self;
+			wrapper.disguise(method);
+			wrapper.origin = method;
+			return wrapper;
+		};
+			
+		var properties = (typeOf(item) == 'class') ? item.getPrototype() : item;
+		
+		this.fireEvent('beforeImplement', properties);
+	
+		for (var key in properties){
+			
+			var current = properties[key];
+			
+			this.prototype[key] = (typeOf(current) == 'function') ? wrap(key, current.origin || current) : Object.unlink(current);
+			
+			this.fireEvent('afterImplement', [key, this.prototype[key]]);
+		}
+		
 		return this;
-	}
 
+	},
+	
+	getPrototype: function(){
+		this.prototyping = true;
+		var proto = new this;
+		delete this.prototyping;
+		return proto;
+	}
+	
 });
+
+Class.Mutators = {
+	
+	Extends: function(superClass, properties){
+		
+		var parent = function(){
+			var superParent = this.$constructor.superClass.prototype[this.caller].owner;
+			this.$constructor = superParent;
+			var result = superParent.prototype[this.caller].apply(this, arguments);
+			delete this.$constructor;
+			return result;
+		};
+		
+		this.superClass = superClass;
+		this.prototype = superClass.getPrototype();
+		this.prototype.$constructor = this;
+		
+		for (var key in properties){
+			if (!this.prototype[key]) continue;
+			var previous = this.prototype[key], current = properties[key];
+			if ([current, previous].every(typeOf.object)) properties[key] = Object.merge(previous, current);
+		}
+		
+		if (this.prototype.parent == undefined) this.prototype.parent = parent;
+		
+	},
+	
+	Implements: function(items){
+		Object.splat(items).each(function(item){
+			this.implement(item);
+		}, this);
+	}
+	
+};
