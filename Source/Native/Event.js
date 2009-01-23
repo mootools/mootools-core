@@ -22,7 +22,12 @@ var Event = new Native({
 
 		if (type.test(/key/)){
 			var code = event.which || event.keyCode;
-			var key = Event.Keys.keyOf(code);
+			var key;
+			for (var n in Events.Keys){
+				if (Events.Keys[n] != code) continue;
+				key = code;
+				break;
+			}
 			if (type == 'keydown'){
 				var fKey = code - 111;
 				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
@@ -80,7 +85,7 @@ var Event = new Native({
 
 });
 
-Event.Keys = new Hash({
+Event.Keys = {
 	'enter': 13,
 	'up': 38,
 	'down': 40,
@@ -91,7 +96,7 @@ Event.Keys = new Hash({
 	'backspace': 8,
 	'tab': 9,
 	'delete': 46
-});
+};
 
 Event.implement({
 

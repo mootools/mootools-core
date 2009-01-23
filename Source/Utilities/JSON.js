@@ -9,7 +9,7 @@ See Also:
 	<http://www.json.org/>
 */
 
-var JSON = new Hash({
+var JSON = {
 
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
@@ -42,7 +42,7 @@ var JSON = new Hash({
 		return eval('(' + string + ')');
 	}
 
-});
+};
 
 Native.implement([Hash, Array, String, Number], {
 

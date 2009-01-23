@@ -271,7 +271,7 @@ Selectors.Filters = {
 
 };
 
-Selectors.Pseudo = new Hash({
+Selectors.Pseudo {
 
 	// w3c pseudo selectors
 
@@ -356,4 +356,4 @@ Selectors.Pseudo = new Hash({
 		return Selectors.Pseudo['nth-child'].call(this, '2n', local);
 	}
 
-});
+};

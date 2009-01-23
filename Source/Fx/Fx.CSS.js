@@ -31,11 +31,12 @@ Fx.CSS = new Class({
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
-			Fx.CSS.Parsers.each(function(parser, key){
-				if (found) return;
+			for (var key in Fx.CSS.Parsers){
+				if (found) continue;
+				var parser = Fx.CSS.Parsers[key];
 				var parsed = parser.parse(val);
 				if ($chk(parsed)) found = {value: parsed, parser: parser};
-			});
+			}
 			found = found || {value: val, parser: Fx.CSS.Parsers.String};
 			return found;
 		});
@@ -84,11 +85,12 @@ Fx.CSS = new Class({
 					return m.toLowerCase();
 				}) : null;
 				if (!selectorText || !selectorText.test('^' + selector + '$')) return;
-				Element.Styles.each(function(value, style){
-					if (!rule.style[style] || Element.ShortStyles[style]) return;
+				for (var style in Element.Styles){
+					var value = Element.Styles[style];
+					if (!rule.style[style] || Element.ShortStyles[style]) continue;
 					value = String(rule.style[style]);
 					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
-				});
+				}
 			});
 		});
 		return Fx.CSS.Cache[selector] = to;
@@ -98,7 +100,7 @@ Fx.CSS = new Class({
 
 Fx.CSS.Cache = {};
 
-Fx.CSS.Parsers = new Hash({
+Fx.CSS.Parsers = {
 
 	Color: {
 		parse: function(value){
@@ -129,4 +131,4 @@ Fx.CSS.Parsers = new Hash({
 		serve: $arguments(0)
 	}
 
-});
+};

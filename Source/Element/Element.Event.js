@@ -17,7 +17,7 @@ Native.implement([Element, Window, Document], {
 		events[type] = events[type] || {'keys': [], 'values': []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
-		var realType = type, custom = Element.Events.get(type), condition = fn, self = this;
+		var realType = type, custom = Element.Events[type], condition = fn, self = this;
 		if (custom){
 			if (custom.onAdd) custom.onAdd.call(this, fn);
 			if (custom.condition){
@@ -52,7 +52,7 @@ Native.implement([Element, Window, Document], {
 		if (pos == -1) return this;
 		events[type].keys.splice(pos, 1);
 		var value = events[type].values.splice(pos, 1)[0];
-		var custom = Element.Events.get(type);
+		var custom = Element.Events[type];
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
@@ -66,14 +66,15 @@ Native.implement([Element, Window, Document], {
 	},
 
 	removeEvents: function(events){
+		var type;
 		if ($type(events) == 'object'){
-			for (var type in events) this.removeEvent(type, events[type]);
+			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
 		var attached = this.retrieve('events');
 		if (!attached) return this;
 		if (!events){
-			for (var type in attached) this.removeEvents(type);
+			for (type in attached) this.removeEvents(type);
 			this.eliminate('events');
 		} else if (attached[events]){
 			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
@@ -126,7 +127,7 @@ var $check = function(event){
 	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
 };
 
-Element.Events = new Hash({
+Element.Events = {
 
 	mouseenter: {
 		base: 'mouseover',
@@ -142,6 +143,6 @@ Element.Events = new Hash({
 		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
 	}
 
-});
+};
 
 })();

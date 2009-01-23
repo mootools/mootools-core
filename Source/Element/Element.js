@@ -316,19 +316,19 @@ Element.implement({
 				for (var p in prop) this.set(p, prop[p]);
 				break;
 			case 'string':
-				var property = Element.Properties.get(prop);
+				var property = Element.Properties[prop];
 				(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
 		}
 		return this;
 	},
 
 	get: function(prop){
-		var property = Element.Properties.get(prop);
+		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
 
 	erase: function(prop){
-		var property = Element.Properties.get(prop);
+		var property = Element.Properties[prop];
 		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
 		return this;
 	},
@@ -603,7 +603,7 @@ window.addListener('unload', purge);
 
 })();
 
-Element.Properties = new Hash;
+Element.Properties = {};
 
 Element.Properties.style = {
 

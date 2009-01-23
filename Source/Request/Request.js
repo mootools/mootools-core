@@ -39,7 +39,7 @@ var Request = new Class({
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = new Hash(this.options.headers);
+		this.headers = this.options.headers;
 	},
 
 	onStateChange: function(){
@@ -85,7 +85,7 @@ var Request = new Class({
 	},
 
 	setHeader: function(name, value){
-		this.headers.set(name, value);
+		this.headers[name] = value;
 		return this;
 	},
 
@@ -133,7 +133,7 @@ var Request = new Class({
 
 		if (this.options.urlEncoded && method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
+			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
 		if (data && method == 'get'){

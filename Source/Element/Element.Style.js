@@ -49,7 +49,7 @@ Element.implement({
 		}
 		property = property.camelCase();
 		if ($type(value) != 'string'){
-			var map = (Element.Styles.get(property) || '@').split(' ');
+			var map = (Element.Styles[property] || '@').split(' ');
 			value = $splat(value).map(function(val, i){
 				if (!map[i]) return '';
 				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
@@ -111,7 +111,7 @@ Element.implement({
 
 });
 
-Element.Styles = new Hash({
+Element.Styles = {
 	left: '@px', top: '@px', bottom: '@px', right: '@px',
 	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
 	backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
@@ -119,7 +119,7 @@ Element.Styles = new Hash({
 	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
 	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
 	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
-});
+};
 
 Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
 
