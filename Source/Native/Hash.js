@@ -6,9 +6,47 @@ License:
 	MIT-style license.
 */
 
+var Hash = new Native({
+
+	name: 'Hash',
+
+	initialize: function(object){
+		if ($type(object) == 'hash') object = $unlink(object.getClean());
+		for (var key in object) this[key] = object[key];
+		return this;
+	}
+
+});
+
+function $H(object){
+	return new Hash(object);
+};
+
 Hash.implement({
 
 	has: Object.prototype.hasOwnProperty,
+	
+	forEach: function(fn, bind){
+		for (var key in this){
+			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
+		}
+	},
+
+	getClean: function(){
+		var clean = {};
+		for (var key in this){
+			if (this.hasOwnProperty(key)) clean[key] = this[key];
+		}
+		return clean;
+	},
+
+	getLength: function(){
+		var length = 0;
+		for (var key in this){
+			if (this.hasOwnProperty(key)) length++;
+		}
+		return length;
+	},
 
 	keyOf: function(value){
 		for (var key in this){
@@ -131,4 +169,4 @@ Hash.implement({
 
 });
 
-Hash.alias({keyOf: 'indexOf', hasValue: 'contains'});
+Hash.alias({forEach: 'each', keyOf: 'indexOf', hasValue: 'contains'});

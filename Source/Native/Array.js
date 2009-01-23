@@ -7,6 +7,10 @@ License:
 */
 
 Array.implement({
+	
+	forEach: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+	},
 
 	every: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
@@ -138,3 +142,5 @@ Array.implement({
 	}
 
 });
+
+Array.alias('forEach', 'each');

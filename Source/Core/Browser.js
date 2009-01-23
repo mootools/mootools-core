@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Browser = $merge({
+var Browser = {
 
 	Engine: {name: 'unknown', version: 0},
 
@@ -36,7 +36,7 @@ var Browser = $merge({
 
 	}
 
-}, Browser || {});
+};
 
 Browser.Platform[Browser.Platform.name] = true;
 
@@ -117,7 +117,7 @@ var Window = new Native({
 
 });
 
-Window.addEvent('afterImplement', function(property, value){
+Window.addObjectEvent('afterImplement', function(property, value){
 	window[property] = Window.Prototype[property] = value;
 });
 
@@ -147,7 +147,7 @@ var Document = new Native({
 
 });
 
-Document.addEvent('afterImplement', function(property, value){
+Document.addObjectEvent('afterImplement', function(property, value){
 	document[property] = Document.Prototype[property] = value;
 });
 

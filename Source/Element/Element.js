@@ -20,7 +20,7 @@ var Element = new Native({
 
 });
 
-Element.addEvent('afterImplement', function(key, value){
+Element.addObjectEvent('afterImplement', function(key, value){
 	
 	Element.Prototype[key] = value;
 	if (Array[key]) return;

@@ -12,6 +12,15 @@ Function.implement({
 		for (var property in properties) this[property] = properties[property];
 		return this;
 	},
+	
+	wrap: function(wrapper){
+		var self = this;
+		wrapper.toString = function(){
+			return self.toString();
+		};
+		wrapper.origin = this;
+		return wrapper;
+	},
 
 	create: function(options){
 		var self = this;

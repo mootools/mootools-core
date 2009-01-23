@@ -50,7 +50,7 @@ var Native = function(options){
 	var add = function(name, method, force){
 		if (!protect || force || !object.prototype[name]) object.prototype[name] = method;
 		if (generics) Native.genericize(object, name, protect);
-		object.fireEvent('afterImplement', [name, method]);
+		object.fireObjectEvent('afterImplement', [name, method]);
 		return object;
 	};
 
@@ -73,24 +73,34 @@ var Native = function(options){
 
 Native.prototype = {
 	
-	addEvent: function(name, method){
+	addObjectEvent: function(name, method){
 		if (!this.events) this.events = {};
 		if (!this.events[name]) this.events[name] = [];
-		this.events[name].include(method);
+		var events = this.events[name], found = false;
+		for (var i = 0, l = events.length; i < l; i++){
+			if (events[i] !== method) continue;
+			found = true;
+			break;
+		}
+		if (!found) events.push(method);
 		return this;
 	},
 	
-	removeEvent: function(name, method){
+	removeObjectEvent: function(name, method){
 		if (!this.events || !this.events[name]) return this;
-		this.events[name].erase(method);
+		var events = this.events[name];
+		for (var i = 0, l = events.length; i < l; i++){
+			if (events[i] === item) events.splice(i, 1);
+		}
 		return this;
 	},
 	
-	fireEvent: function(name, args){
+	fireObjectEvent: function(name, args){
 		if (!this.events || !this.events[name]) return this;
-		this.events[name].each(function(fn){
-			fn.apply(this, $splat(args));
-		});
+		var events = this.events[name];
+		for (var i = 0, l = events.length; i < l; i++){
+			events[i].apply(this, $splat(args));
+		}
 		return this;
 	}
 	
@@ -114,6 +124,7 @@ Native.typize = function(object, family){
 };
 
 (function(){
+	
 	var natives = {'Array': Array, 'Date': Date, 'Function': Function, 'Number': Number, 'RegExp': RegExp, 'String': String};
 	for (var n in natives) new Native({name: n, initialize: natives[n], protect: true});
 
@@ -130,60 +141,12 @@ Native.typize = function(object, family){
 			"search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"
 		]
 	};
+	
 	for (var g in generics){
 		for (var i = generics[g].length; i--;) Native.genericize(window[g], generics[g][i], true);
 	}
+	
 })();
-
-var Hash = new Native({
-
-	name: 'Hash',
-
-	initialize: function(object){
-		if ($type(object) == 'hash') object = $unlink(object.getClean());
-		for (var key in object) this[key] = object[key];
-		return this;
-	}
-
-});
-
-Hash.implement({
-
-	forEach: function(fn, bind){
-		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
-		}
-	},
-
-	getClean: function(){
-		var clean = {};
-		for (var key in this){
-			if (this.hasOwnProperty(key)) clean[key] = this[key];
-		}
-		return clean;
-	},
-
-	getLength: function(){
-		var length = 0;
-		for (var key in this){
-			if (this.hasOwnProperty(key)) length++;
-		}
-		return length;
-	}
-
-});
-
-Hash.alias('forEach', 'each');
-
-Array.implement({
-
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
-	}
-
-});
-
-Array.alias('forEach', 'each');
 
 function $A(iterable){
 	if (iterable.item){
@@ -216,7 +179,13 @@ function $defined(obj){
 
 function $each(iterable, fn, bind){
 	var type = $type(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+	if (type == 'arguments' || type == 'collection' || type == 'array'){
+		for (var i = 0, l = iterable.length; i < l; i++) fn.call(bind, iterable[i], i, iterable);
+	} else {
+		for (var p in iterable){
+			if (iterable.hasOwnProperty(p)) fn.call(bind, iterable[p], p, iterable);
+		}
+	}
 };
 
 function $empty(){};
@@ -224,10 +193,6 @@ function $empty(){};
 function $extend(original, extended){
 	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
-};
-
-function $H(object){
-	return new Hash(object);
 };
 
 function $lambda(value){
@@ -299,9 +264,6 @@ function $unlink(object){
 		case 'object':
 			unlinked = {};
 			for (var p in object) unlinked[p] = $unlink(object[p]);
-		break;
-		case 'hash':
-			unlinked = new Hash(object);
 		break;
 		case 'array':
 			unlinked = [];
