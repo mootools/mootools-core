@@ -108,14 +108,14 @@ var Request = new Class({
 		if (!this.check(arguments.callee, options)) return this;
 		this.running = true;
 
-		var type = $type(options);
+		var type = typeOf(options);
 		if (type == 'string' || type == 'element') options = {data: options};
 
 		var old = this.options;
 		options = Object.extend({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = options.url, method = options.method;
 
-		switch ($type(data)){
+		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
@@ -176,7 +176,7 @@ var Request = new Class({
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
-		var params = Array.link(arguments, {url: String.type, data: Object.defined});
+		var params = Array.link(arguments, {url: typeOf.string, data: Object.defined});
 		return this.send(Object.extend(params, {method: method.toLowerCase()}));
 	};
 });

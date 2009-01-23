@@ -14,7 +14,7 @@ var Class = new Native({
 		properties = properties || {};
 		var klass = function(){
 			for (var key in this){
-				if ($type(this[key]) != 'function') this[key] = Object.unlink(this[key]);
+				if (typeOf(this[key]) != 'function') this[key] = Object.unlink(this[key]);
 			}
 			this.constructor = klass;
 			if (Class.prototyping) return this;
@@ -51,7 +51,7 @@ Class.Mutators = {
 	Implements: function(self, klasses){
 		Object.splat(klasses).each(function(klass){
 			Class.prototying = klass;
-			Object.extend(self, ($type(klass) == 'class') ? new klass : klass);
+			Object.extend(self, (typeOf(klass) == 'class') ? new klass : klass);
 			delete Class.prototyping;
 		});
 		return self;
@@ -66,7 +66,7 @@ Class.extend({
 		for (var key in properties){
 			var override = properties[key];
 			var previous = object[key];
-			var type = $type(override);
+			var type = typeOf(override);
 			if (previous && type == 'function'){
 				if (override != previous){
 					if (caller){

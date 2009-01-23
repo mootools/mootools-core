@@ -114,7 +114,7 @@ Array.implement({
 	flatten: function(){
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			var type = $type(this[i]);
+			var type = typeOf(this[i]);
 			if (!type) continue;
 			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
 		}

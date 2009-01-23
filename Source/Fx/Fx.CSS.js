@@ -56,7 +56,7 @@ Fx.CSS = new Class({
 	//serves the value as settable
 
 	serve: function(value, unit){
-		if ($type(value) != 'fx:css:value') value = this.parse(value);
+		if (typeOf(value) != 'fx:css:value') value = this.parse(value);
 		var returned = [];
 		value.each(function(bit){
 			returned = returned.concat(bit.parser.serve(bit.value, unit));
@@ -127,8 +127,8 @@ Fx.CSS.Parsers = {
 
 	String: {
 		parse: Function.lambda(false),
-		compute: Function.args(1),
-		serve: Function.args(0)
+		compute: Function.argument(1),
+		serve: Function.argument(0)
 	}
 
 };

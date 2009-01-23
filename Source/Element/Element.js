@@ -29,7 +29,7 @@ Element.addObjectEvent('afterImplement', function(key, value){
 		for (var i = 0, j = this.length; i < j; i++){
 			var returns = this[i][key].apply(this[i], arguments);
 			items.push(returns);
-			if (elements) elements = ($type(returns) == 'element');
+			if (elements) elements = (typeOf(returns) == 'element');
 		}
 		return (elements) ? new Elements(items) : items;
 	});
@@ -45,7 +45,7 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		var params = Array.link(arguments, {properties: Object.type, iframe: Object.defined});
+		var params = Array.link(arguments, {properties: typeOf.object, iframe: Object.defined});
 		var props = params.properties || {};
 		var iframe = $(params.iframe) || false;
 		var onload = props.onload || Function.empty;
@@ -134,7 +134,7 @@ Window.implement({
 
 	$: function(el, nocash){
 		if (el && el.$family && el.uid) return el;
-		var type = $type(el);
+		var type = typeOf(el);
 		return ($[type]) ? $[type](el, nocash, this.document) : null;
 	},
 
@@ -144,7 +144,7 @@ Window.implement({
 		var args = Array.flatten(arguments);
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
-			switch ($type(item)){
+			switch (typeOf(item)){
 				case 'element': elements.push(item); break;
 				case 'string': elements.extend(this.document.getElements(item, true));
 			}
@@ -181,7 +181,7 @@ $.object = function(obj, nocash, doc){
 	return null;
 };
 
-$.textnode = $.whitespace = $.window = $.document = Function.args(0);
+$.textnode = $.whitespace = $.window = $.document = Function.argument(0);
 
 Native.implement([Element, Document], {
 
@@ -311,7 +311,7 @@ Object.each(inserters, function(inserter, where){
 Element.implement({
 
 	set: function(prop, value){
-		switch ($type(prop)){
+		switch (typeOf(prop)){
 			case 'object':
 				for (var p in prop) this.set(p, prop[p]);
 				break;

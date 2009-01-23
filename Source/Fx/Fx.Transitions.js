@@ -41,7 +41,7 @@ Fx.Transition = function(transition, params){
 
 Fx.Transitions = {
 
-	linear: Function.args(0)
+	linear: Function.argument(0)
 
 };
 

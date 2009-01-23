@@ -67,7 +67,7 @@ Native.implement([Element, Window, Document], {
 
 	removeEvents: function(events){
 		var type;
-		if ($type(events) == 'object'){
+		if (typeOf(events) == 'object'){
 			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
@@ -124,7 +124,7 @@ var $check = function(event){
 	var related = event.relatedTarget;
 	if (related == undefined) return true;
 	if (related === false) return false;
-	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
 };
 
 Element.Events = {

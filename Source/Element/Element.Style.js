@@ -48,11 +48,11 @@ Element.implement({
 			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
 		}
 		property = property.camelCase();
-		if ($type(value) != 'string'){
+		if (typeOf(value) != 'string'){
 			var map = (Element.Styles[property] || '@').split(' ');
 			value = Object.splat(value).map(function(val, i){
 				if (!map[i]) return '';
-				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
+				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
 			}).join(' ');
 		} else if (value == String(Number(value))){
 			value = Math.round(value);

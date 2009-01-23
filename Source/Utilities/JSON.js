@@ -18,7 +18,7 @@ var JSON = {
 	},
 
 	encode: function(obj){
-		switch ($type(obj)){
+		switch (typeOf(obj)){
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
 			case 'array':
@@ -37,7 +37,7 @@ var JSON = {
 	},
 
 	decode: function(string, secure){
-		if ($type(string) != 'string' || !string.length) return null;
+		if (typeOf(string) != 'string' || !string.length) return null;
 		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 		return eval('(' + string + ')');
 	}

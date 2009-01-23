@@ -71,7 +71,7 @@ String.implement({
 			return '';
 		});
 		if (option === true) $exec(scripts);
-		else if ($type(option) == 'function') option(scripts, text);
+		else if (typeOf(option) == 'function') option(scripts, text);
 		return text;
 	},
 
