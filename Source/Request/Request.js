@@ -64,7 +64,7 @@ var Request = new Class({
 	},
 
 	processScripts: function(text){
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Window.exec(text);
 		return text.stripScripts(this.options.evalScripts);
 	},
 

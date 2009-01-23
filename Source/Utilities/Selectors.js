@@ -48,7 +48,7 @@ Selectors.Utils = {
 
 	chk: function(item, uniques){
 		if (!uniques) return true;
-		var uid = $uid(item);
+		var uid = Object.uid(item);
 		if (!uniques[uid]) return uniques[uid] = true;
 		return false;
 	},
@@ -321,13 +321,13 @@ Selectors.Pseudo = {
 		if (parsed.special != 'n') return Selectors.Pseudo[parsed.special].call(this, parsed.a, local);
 		var count = 0;
 		local.positions = local.positions || {};
-		var uid = $uid(this);
+		var uid = Object.uid(this);
 		if (!local.positions[uid]){
 			var self = this;
 			while ((self = self.previousSibling)){
 				if (self.nodeType != 1) continue;
 				count ++;
-				var position = local.positions[$uid(self)];
+				var position = local.positions[Object.uid(self)];
 				if (position != undefined){
 					count = position + count;
 					break;

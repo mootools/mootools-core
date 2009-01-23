@@ -168,7 +168,7 @@ $.string = function(id, nocash, doc){
 };
 
 $.element = function(el, nocash){
-	$uid(el);
+	Object.uid(el);
 	if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
 		var proto = Element.Prototype;
 		for (var p in proto) el[p] = proto[p];

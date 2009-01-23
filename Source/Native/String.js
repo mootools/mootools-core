@@ -70,7 +70,7 @@ String.implement({
 			scripts += arguments[1] + '\n';
 			return '';
 		});
-		if (option === true) $exec(scripts);
+		if (option === true) Window.exec(scripts);
 		else if (typeOf(option) == 'function') option(scripts, text);
 		return text;
 	},

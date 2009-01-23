@@ -36,11 +36,6 @@
 			"desc": "Contains String Prototypes like camelCase, capitalize, test, and toInt."
 		},
 
-		"Hash": {
-			"deps": ["Core"],
-			"desc": "Contains Hash Prototypes. Provides a means for overcoming the JavaScript practical impossibility of extending native Objects."
-		},
-
 		"Event": {
 			"deps": ["Browser", "Array", "Function", "Number", "String"],
 			"desc": "Contains the Event Class, to make the event object Crossbrowser."

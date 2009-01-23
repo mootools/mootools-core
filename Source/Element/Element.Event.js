@@ -118,31 +118,31 @@ Element.NativeEvents = {
 	error: 1, abort: 1, scroll: 1 //misc
 };
 
-(function(){
+Element.Events = (function(){
+	
+	var check = function(event){
+		var related = event.relatedTarget;
+		if (related == undefined) return true;
+		if (related === false) return false;
+		return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	};
 
-var $check = function(event){
-	var related = event.relatedTarget;
-	if (related == undefined) return true;
-	if (related === false) return false;
-	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
-};
+	return {
 
-Element.Events = {
+		mouseenter: {
+			base: 'mouseover',
+			condition: check
+		},
 
-	mouseenter: {
-		base: 'mouseover',
-		condition: $check
-	},
+		mouseleave: {
+			base: 'mouseout',
+			condition: check
+		},
 
-	mouseleave: {
-		base: 'mouseout',
-		condition: $check
-	},
+		mousewheel: {
+			base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		}
 
-	mousewheel: {
-		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
-	}
-
-};
-
+	};
+	
 })();

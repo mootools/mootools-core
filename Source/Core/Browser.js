@@ -76,23 +76,9 @@ Browser.Plugins.Flash = (function(){
 	return {version: parseInt(version[0] || 0 + '.' + version[1], 10) || 0, build: parseInt(version[2], 10) || 0};
 })();
 
-function $exec(text){
-	if (!text) return text;
-	if (window.execScript){
-		window.execScript(text);
-	} else {
-		var script = document.createElement('script');
-		script.setAttribute('type', 'text/javascript');
-		script[(Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerText' : 'text'] = text;
-		document.head.appendChild(script);
-		document.head.removeChild(script);
-	}
-	return text;
-};
-
 Native.UID = 1;
 
-var $uid = (Browser.Engine.trident) ? function(item){
+Object.uid = (Browser.Engine.trident) ? function(item){
 	return (item.uid || (item.uid = [Native.UID++]))[0];
 } : function(item){
 	return item.uid || (item.uid = Native.UID++);
@@ -105,7 +91,7 @@ var Window = new Native({
 	legacy: (Browser.Engine.trident) ? null: window.Window,
 
 	initialize: function(win){
-		$uid(win);
+		Object.uid(win);
 		if (!win.Element){
 			win.Element = Function.empty;
 			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
@@ -123,6 +109,20 @@ Window.addObjectEvent('afterImplement', function(property, value){
 
 Window.Prototype = {$family: {name: 'window'}};
 
+Window.exec = function(text){
+	if (!text) return text;
+	if (window.execScript){
+		window.execScript(text);
+	} else {
+		var script = document.createElement('script');
+		script.setAttribute('type', 'text/javascript');
+		script[(Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerText' : 'text'] = text;
+		document.head.appendChild(script);
+		document.head.removeChild(script);
+	}
+	return text;
+};
+
 new Window(window);
 
 var Document = new Native({
@@ -132,16 +132,18 @@ var Document = new Native({
 	legacy: (Browser.Engine.trident) ? null: window.Document,
 
 	initialize: function(doc){
-		$uid(doc);
+		Object.uid(doc);
 		doc.head = doc.getElementsByTagName('head')[0];
 		doc.html = doc.getElementsByTagName('html')[0];
-		if (Browser.Engine.trident && Browser.Engine.version <= 4) Function.stab(function(){
-			doc.execCommand("BackgroundImageCache", false, true);
-		});
-		if (Browser.Engine.trident) doc.window.attachEvent('onunload', function() {
-			doc.window.detachEvent('onunload', arguments.callee);
-			doc.head = doc.html = doc.window = null;
-		});
+		if (Browser.Engine.trident){
+			if (Browser.Engine.version <= 4) Function.stab(function(){
+				doc.execCommand("BackgroundImageCache", false, true);
+			});
+			doc.window.attachEvent('onunload', function() {
+				doc.window.detachEvent('onunload', arguments.callee);
+				doc.head = doc.html = doc.window = null;
+			});
+		}
 		return Object.extend(doc, Document.Prototype);
 	}
 

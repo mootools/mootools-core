@@ -13,13 +13,10 @@ Function.implement({
 		return this;
 	},
 	
-	wrap: function(wrapper){
-		var self = this;
-		wrapper.toString = function(){
-			return self.toString();
+	disguise: function(as){
+		this.toString = function(){
+			return as.toString();
 		};
-		wrapper.origin = this;
-		return wrapper;
 	},
 
 	create: function(options){
@@ -53,6 +50,10 @@ Function.implement({
 
 	bindWithEvent: function(bind, args){
 		return this.create({bind: bind, arguments: args, event: true});
+	},
+	
+	attempt: function(args, bind){
+		return this.create({bind: bind, arguments: args, attempt: true})();
 	},
 
 	delay: function(delay, bind, args){

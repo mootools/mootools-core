@@ -11,16 +11,13 @@ See Also:
 
 var JSON = {
 
-	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
-
-	$replaceChars: function(chr){
-		return JSON.$specialChars[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
-	},
-
 	encode: function(obj){
 		switch (typeOf(obj)){
 			case 'string':
-				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
+				return '"' + obj.replace(/[\x00-\x1f\\"]/g, function(chr){
+					var special = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'};
+					return special[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
+				}) + '"';
 			case 'array':
 				return '[' + String(obj.map(JSON.encode).filter(Object.defined)) + ']';
 			case 'object':

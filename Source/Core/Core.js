@@ -38,6 +38,12 @@ Function.argument = function(i){
 	};
 };
 
+Function.clear = function(timer){
+	clearInterval(timer);
+	clearTimeout(timer);
+	return null;
+};
+
 Function.empty = function(){};
 
 Function.lambda = function(value){
@@ -175,10 +181,10 @@ typeOf.create = function(family, fn){
 
 typeOf.create('boolean').create('native').create('object').create('textnode').create('whitespace').create('collection');
 
-typeOf.create('iterable', function(object){
+typeOf.iterable = function(object){
 	var type = typeOf(object);
 	return (type == 'array' || type == 'arguments' || type == 'collection');
-});
+};
 
 var Native = function(options){
 	options = options || {};

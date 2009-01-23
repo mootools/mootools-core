@@ -111,8 +111,7 @@ var Fx = new Class({
 	stopTimer: function(){
 		if (!this.timer) return false;
 		this.time = Date.now() - this.time;
-		this.timer = clearInterval(this.timer);
-		this.timer = null;
+		this.timer = Function.clear(this.timer);
 		return true;
 	},
 
