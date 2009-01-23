@@ -142,27 +142,27 @@ describe("Hash Methods", {
 	// Hash.map
 
 	'should map a new Hash according to the comparator': function(){
-		value_of(hash2.map(Number.type)).should_be(new Hash({a:false,b:true,c:false}));
+		value_of(hash2.map(typeOf.number)).should_be(new Hash({a:false,b:true,c:false}));
 	},
 
 	// Hash.filter
 
 	'should filter the Hash according to the comparator': function(){
-		value_of(hash2.filter(Number.type)).should_be(new Hash({b:233}));
+		value_of(hash2.filter(typeOf.number)).should_be(new Hash({b:233}));
 	},
 
 	// Hash.every
 
 	'should return true if every value matches the comparator, otherwise false': function(){
-		value_of(hash2.every($defined)).should_be_true();
-		value_of(hash2.every(Number.type)).should_be_false();
+		value_of(hash2.every(Object.defined)).should_be_true();
+		value_of(hash2.every(typeOf.number)).should_be_false();
 	},
 
 	// Hash.some
 
 	'should return true if some of the values match the comparator, otherwise false': function(){
-		value_of(hash2.some(Number.type)).should_be_true();
-		value_of(hash2.some(Array.type)).should_be_false();
+		value_of(hash2.some(typeOf.number)).should_be_true();
+		value_of(hash2.some(typeOf.array)).should_be_false();
 	},
 
 	// Hash.getKeys

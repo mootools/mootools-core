@@ -86,7 +86,7 @@ describe("Number Methods", {
 
 (function(math){
 	var examples = {};
-	new Hash(math).each(function(value, key){
+	Object.each(math, function(value, key){
 		var example = {};
 		var b = value.test[1];
 		examples['should return the ' + value.title + ' value of the number' + ((b) ? ' and the passed number' : '')] = function(){

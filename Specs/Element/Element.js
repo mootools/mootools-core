@@ -10,8 +10,8 @@ describe('Element constructor', {
 
 	"should return an Element with the correct tag": function(){
 		var element = new Element('div');
-		value_of($type(element)).should_be('element');
-		value_of($defined(element.addEvent)).should_be_true();
+		value_of(typeOf(element)).should_be('element');
+		value_of(Object.defined(element.addEvent)).should_be_true();
 		value_of(element.tagName.toLowerCase()).should_be('div');
 	},
 
@@ -202,21 +202,21 @@ describe('Element.set', {
 var myElements = new Elements([
 	new Element('div'),
 	document.createElement('a'),
-	new Element('div', {id: 'el-' + $time()})
+	new Element('div', {id: 'el-' + Date.now()})
 ]);
 
 describe('Elements', {
 
 	'should return an array type': function(){
-		value_of(Array.type(myElements)).should_be_true();
+		value_of(typeOf.array(myElements)).should_be_true();
 	},
 
 	'should return an array of Elements': function(){
-		value_of(myElements.every(Element.type)).should_be_true();
+		value_of(myElements.every(typeOf.element)).should_be_true();
 	},
 
 	'should apply Element prototypes to the returned array': function(){
-		value_of($defined(myElements.addEvent)).should_be_true();
+		value_of(Object.defined(myElements.addEvent)).should_be_true();
 	},
 
 	'should return all Elements that match the string matcher': function(){
@@ -236,7 +236,7 @@ describe('TextNode.constructor', {
 
 	'should return a new textnode element': function(){
 		var text = document.newTextNode('yo');
-		value_of($type(text)).should_be('textnode');
+		value_of(typeOf(text)).should_be('textnode');
 	}
 
 });
@@ -275,7 +275,7 @@ describe('$', {
 		var dollar2 = $('dollar');
 
 		value_of(dollar1).should_be(dollar2);
-		value_of($defined(dollar1.addEvent)).should_be_true();
+		value_of(Object.defined(dollar1.addEvent)).should_be_true();
 	},
 
 	'should return the window if passed': function(){
@@ -411,7 +411,7 @@ describe('Document.getElements', {
 
 	'should return all the elements that match the tag': function(){
 		var divs = document.getElements('div');
-		var ndivs = $A(document.getElementsByTagName('div'));
+		var ndivs = Array.create(document.getElementsByTagName('div'));
 		value_of(divs).should_be(ndivs);
 	},
 
@@ -884,8 +884,8 @@ describe('Element.clone', {
 		var div = new Element('div');
 		var clone = div.clone();
 		value_of(div).should_not_be(clone);
-		value_of($type(div)).should_be('element');
-		value_of($type(clone)).should_be('element');
+		value_of(typeOf(div)).should_be('element');
+		value_of(typeOf(clone)).should_be('element');
 	},
 
 	'should remove id from clone and clone children by default': function(){

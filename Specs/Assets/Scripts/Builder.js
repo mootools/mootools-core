@@ -27,7 +27,7 @@ var Builder = {
 	scripts: {
 		source: {
 			'Core'      : ['Core', 'Browser'],
-			'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
+			'Native'    : ['Array', 'Function', 'Number', 'String', 'Event'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
 			'Utilities' : ['Selectors', 'DomReady', 'JSON', 'Cookie', 'Swiff'],
@@ -37,7 +37,7 @@ var Builder = {
 
 		specs: {
 			'Core'      : ['Core', 'Browser'],
-			'Native'    : ['Array', 'String', 'Function', 'Number', 'Hash'],
+			'Native'    : ['Array', 'String', 'Function', 'Number'],
 			'Class'     : ['Class', 'Class.Extras'],
 			'Element'   : ['Element', 'Element.Style'],
 			'Utilities' : ['Selectors']

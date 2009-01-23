@@ -9,7 +9,7 @@ License:
 (function(){
 
 var fn = function(){
-	return $A(arguments);
+	return Array.create(arguments);
 };
 
 var Rules = function(){
@@ -17,7 +17,7 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat($A(arguments));
+	return [this].concat(Array.create(arguments));
 };
 
 describe("Function Methods", {
@@ -25,8 +25,8 @@ describe("Function Methods", {
 	// Function.create
 
 	'should return a new function': function(){
-		var fnc = $empty.create();
-		value_of($empty === fnc).should_be_false();
+		var fnc = Function.empty.create();
+		value_of(Function.empty === fnc).should_be_false();
 	},
 
 	'should return a new function with specified argument': function(){
@@ -123,7 +123,7 @@ describe("Function Methods", {
 	},
 
 	"should return the function's return value": function(){
-		var fnc = $lambda('hello world!');
+		var fnc = Function.lambda('hello world!');
 		value_of(fnc.attempt()).should_be('hello world!');
 	},
 
@@ -137,17 +137,17 @@ describe("Function Methods", {
 	// Function.delay
 
 	'delay should return a timer pointer': function(){
-		var timer = $empty.delay(10000);
-		value_of(Number.type(timer)).should_be_true();
-		$clear(timer);
+		var timer = Function.empty.delay(10000);
+		value_of(typeOf.number(timer)).should_be_true();
+		Function.clear(timer);
 	},
 
 	// Function.periodical
 
 	'periodical should return a timer pointer': function(){
-		var timer = $empty.periodical(10000);
-		value_of(Number.type(timer)).should_be_true();
-		$clear(timer);
+		var timer = Function.empty.periodical(10000);
+		value_of(typeOf.number(timer)).should_be_true();
+		Function.clear(timer);
 	}
 
 });

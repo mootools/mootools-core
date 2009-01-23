@@ -92,8 +92,7 @@ var Attributes = new Class({
 describe('Class creation', {
 
 	"Classes should be of type 'class'": function(){
-		value_of($type(Animal)).should_be('class');
-		value_of(Class.type(Animal)).should_be_true();
+		value_of(typeOf(Animal)).should_be('class');
 	},
 
 	"should call initialize upon instantiation": function(){
@@ -189,6 +188,11 @@ describe('Class creation', {
 	},
 
 	"should alter the Class's prototype when overwriting methods in the super class": function(){
+		
+		var notwelldef = new Animal('');
+		
+		var say = notwelldef.say();
+		
 		var Dog = new Class({
 			Extends: Animal
 		});
@@ -206,11 +210,9 @@ describe('Class creation', {
 
 		value_of(spot.say()).should_be('NEW:animal:say:spot');
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
-	}
+	},
 
-	//We might attempt to add support for the following at a later date
-
-	/*
+	
 	"should access the proper parent when it is overwritten after instantiation": function(){
 		var Dog = new Class({
 			Extends: Animal,
@@ -220,20 +222,20 @@ describe('Class creation', {
 		});
 
 		var rover = new Dog('rover');
-		value_of(rover.say()).should_be('animal:say:rover');
+		value_of(rover.say()).should_be('NEW:animal:say:rover');
 
 		Animal.implement({
 			say: function(){
-				return 'NEW:animal:say:' + this.name;
+				return 'NEW2:animal:say:' + this.name;
 			}
 		});
 
 		var spot = new Dog('spot');
 
-		value_of(spot.say()).should_be('NEW:animal:say:spot');
-		value_of(rover.say()).should_be('NEW:animal:say:rover');
+		value_of(spot.say()).should_be('NEW2:animal:say:spot');
+		value_of(rover.say()).should_be('NEW2:animal:say:rover');
 	}
-	*/
+	
 
 });
 
@@ -258,7 +260,7 @@ describe('Class::implement', {
 			Extends: Animal
 		});
 
-		Dog.implement(new Actions, new Attributes);
+		Dog.implement(new Actions).implement(new Attributes);
 
 		var rover = new Dog('rover');
 
