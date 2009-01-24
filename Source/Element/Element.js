@@ -235,7 +235,7 @@ var clean = function(item, retain){
 
 var purge = function(){
 	Object.each(collected, clean);
-	if (Browser.Engine.trident) Array.create(document.getElementsByTagName('object')).each(clean);
+	if (Browser.Engine.trident) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
 };
@@ -353,7 +353,7 @@ Element.implement({
 	},
 
 	getProperties: function(){
-		var args = Array.create(arguments);
+		var args = Array.from(arguments);
 		return args.map(this.getProperty, this).associate(args);
 	},
 
@@ -473,7 +473,7 @@ Element.implement({
 	},
 
 	getSelected: function(){
-		return new Elements(Array.create(this.options).filter(function(option){
+		return new Elements(Array.from(this.options).filter(function(option){
 			return option.selected;
 		}));
 	},
@@ -533,7 +533,7 @@ Element.implement({
 	},
 
 	empty: function(){
-		Array.create(this.childNodes).each(function(node){
+		Array.from(this.childNodes).each(function(node){
 			Element.destroy(node);
 		});
 		return this;
@@ -546,7 +546,7 @@ Element.implement({
 	hasChild: function(el){
 		el = $(el, true);
 		if (!el) return false;
-		if (Browser.Engine.webkit && Browser.Engine.version < 420) return Array.create(this.getElementsByTagName(el.tagName)).contains(el);
+		if (Browser.Engine.webkit && Browser.Engine.version < 420) return Array.from(this.getElementsByTagName(el.tagName)).contains(el);
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	},
 

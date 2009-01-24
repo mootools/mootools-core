@@ -23,7 +23,7 @@ var Class = new Native({
 			return result;
 		}, this);
 		
-		properties = Function.lambda(properties || {})();
+		properties = Function.from(properties || {})();
 		
 		for (var mutator in Class.Mutators){
 			if (!properties[mutator]) continue;

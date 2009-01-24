@@ -13,8 +13,8 @@ Native.implement([Document, Element], {
 		var items, local = {};
 		for (var i = 0, l = expression.length; i < l; i++){
 			var selector = expression[i], elements = Selectors.Utils.search(this, selector, local);
-			if (i != 0 && elements.item) elements = Array.create(elements);
-			items = (i == 0) ? elements : (items.item) ? Array.create(items).concat(elements) : items.concat(elements);
+			if (i != 0 && elements.item) elements = Array.from(elements);
+			items = (i == 0) ? elements : (items.item) ? Array.from(items).concat(elements) : items.concat(elements);
 		}
 		return new Elements(items, {ddup: (expression.length > 1), cash: !nocash});
 	}

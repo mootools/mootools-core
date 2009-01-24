@@ -9,7 +9,7 @@ License:
 (function(){
 
 var fn = function(){
-	return Array.create(arguments);
+	return Array.from(arguments);
 };
 
 var Rules = function(){
@@ -17,7 +17,7 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat(Array.create(arguments));
+	return [this].concat(Array.from(arguments));
 };
 
 describe("Function Methods", {
@@ -123,7 +123,7 @@ describe("Function Methods", {
 	},
 
 	"should return the function's return value": function(){
-		var fnc = Function.lambda('hello world!');
+		var fnc = Function.from('hello world!');
 		value_of(fnc.attempt()).should_be('hello world!');
 	},
 

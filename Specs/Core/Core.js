@@ -74,11 +74,11 @@ describe('Native', {
 
 });
 
-describe('Array.create', {
+describe('Array.from', {
 
 	'should return a copy for an array': function(){
 		var arr1 = [1,2,3];
-		var arr2 = Array.create(arr1);
+		var arr2 = Array.from(arr1);
 		value_of(arr1 !== arr2).should_be_true();
 	},
 
@@ -90,13 +90,13 @@ describe('Array.create', {
 		div1.appendChild(div2);
 		div1.appendChild(div3);
 
-		var array = Array.create(div1.getElementsByTagName('*'));
+		var array = Array.from(div1.getElementsByTagName('*'));
 		value_of(typeOf.array(array)).should_be_true();
 	},
 
 	'should return an array for arguments': function(){
 		var fnTest = function(){
-			return Array.create(arguments);
+			return Array.from(arguments);
 		};
 		var arr = fnTest(1,2,3);
 		value_of(typeOf.array(arr)).should_be_true();
@@ -233,15 +233,15 @@ describe('Object.extend', {
 
 });
 
-describe('Function.lambda', {
+describe('Function.from', {
 
 	'if a function is passed in that function should be returned': function(){
 		var fn = function(a,b){ return a; };
-		value_of(Function.lambda(fn)).should_be(fn);
+		value_of(Function.from(fn)).should_be(fn);
 	},
 
 	'should return a function that returns the value passed when called': function(){
-		value_of(Function.lambda('hello world!')()).should_be('hello world!');
+		value_of(Function.from('hello world!')()).should_be('hello world!');
 	}
 
 });

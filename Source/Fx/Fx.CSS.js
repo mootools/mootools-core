@@ -26,7 +26,7 @@ Fx.CSS = new Class({
 	//parses a value into an array
 
 	parse: function(value){
-		value = Function.lambda(value)();
+		value = Function.from(value)();
 		value = (typeof value == 'string') ? value.split(' ') : Object.splat(value);
 		return value.map(function(val){
 			val = String(val);
@@ -126,7 +126,7 @@ Fx.CSS.Parsers = {
 	},
 
 	String: {
-		parse: Function.lambda(false),
+		parse: Function.from(false),
 		compute: Function.argument(1),
 		serve: Function.argument(0)
 	}

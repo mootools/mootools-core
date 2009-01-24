@@ -411,7 +411,7 @@ describe('Document.getElements', {
 
 	'should return all the elements that match the tag': function(){
 		var divs = document.getElements('div');
-		var ndivs = Array.create(document.getElementsByTagName('div'));
+		var ndivs = Array.from(document.getElementsByTagName('div'));
 		value_of(divs).should_be(ndivs);
 	},
 

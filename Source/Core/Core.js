@@ -23,7 +23,7 @@ var MooTools = {
 	'build': '%build%'
 };
 
-Array.create = function(iterable){
+Array.from = function(iterable){
 	if (iterable.item){
 		var array = [];
 		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
@@ -46,7 +46,7 @@ Function.clear = function(timer){
 
 Function.empty = function(){};
 
-Function.lambda = function(value){
+Function.from = function(value){
 	return (typeof value == 'function') ? value : function(){
 		return value;
 	};
