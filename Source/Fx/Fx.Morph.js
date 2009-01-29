@@ -9,10 +9,6 @@ License:
 Fx.Morph = new Class({
 
 	Extends: Fx.CSS,
-	
-	Options: {
-		newOption: true
-	},
 
 	initialize: function(element, options){
 		this.element = this.subject = $(element);
