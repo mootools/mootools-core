@@ -11,9 +11,9 @@ Credits:
 
 var Swiff = new Class({
 
-	Implements: [Options],
+	Implements: Options,
 
-	options: {
+	Options: {
 		id: null,
 		height: 1,
 		width: 1,
@@ -37,14 +37,14 @@ var Swiff = new Class({
 		this.instance = 'Swiff_' + Date.now();
 
 		this.setOptions(options);
-		options = this.options;
+		options = this.getOptions();
 		var id = this.id = options.id || this.instance;
 		var container = $(options.container);
 
 		Swiff.CallBacks[this.instance] = {};
 
 		var params = options.params, vars = options.vars, callBacks = options.callBacks;
-		var properties = Object.extend({height: options.height, width: options.width}, options.properties);
+		var properties = extend({height: options.height, width: options.width}, options.properties);
 
 		var self = this;
 
@@ -87,7 +87,7 @@ var Swiff = new Class({
 	},
 
 	remote: function(){
-		return Swiff.remote.apply(Swiff, [this.toElement()].extend(arguments));
+		return Swiff.remote.apply(Swiff, [this.toElement()].append(arguments));
 	}
 
 });

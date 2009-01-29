@@ -10,7 +10,7 @@ Request.HTML = new Class({
 
 	Extends: Request,
 
-	options: {
+	Options: {
 		update: false,
 		evalScripts: true,
 		filter: false
@@ -41,7 +41,7 @@ Request.HTML = new Class({
 	},
 
 	success: function(text){
-		var options = this.options, response = this.response;
+		var options = this.getOptions(), response = this.response;
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
@@ -54,7 +54,7 @@ Request.HTML = new Class({
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
 		if (options.update) $(options.update).empty().set('html', response.html);
-		if (options.evalScripts) Window.exec(response.javascript);
+		if (options.evalScripts) String.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
 	}
@@ -66,7 +66,7 @@ Element.Properties.load = {
 	set: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
-		return this.eliminate('load').store('load:options', Object.extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
+		return this.dump('load').store('load:options', extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
 	},
 
 	get: function(options){
@@ -82,7 +82,7 @@ Element.Properties.load = {
 Element.implement({
 
 	load: function(){
-		this.get('load').send(Array.link(arguments, {data: typeOf.object, url: typeOf.string}));
+		this.get('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
 		return this;
 	}
 

@@ -18,16 +18,16 @@ Fx.Tween = new Class({
 	set: function(property, now){
 		if (arguments.length == 1){
 			now = property;
-			property = this.property || this.options.property;
+			property = this.property || this.getOption('property');
 		}
-		this.render(this.element, property, now, this.options.unit);
+		this.render(this.element, property, now, this.getOption('unit'));
 		return this;
 	},
 
 	start: function(property, from, to){
 		if (!this.check(arguments.callee, property, from, to)) return this;
 		var args = Array.flatten(arguments);
-		this.property = this.options.property || args.shift();
+		this.property = this.getOption('property') || args.shift();
 		var parsed = this.prepare(this.element, this.property, args);
 		return this.parent(parsed.from, parsed.to);
 	}
@@ -39,7 +39,7 @@ Element.Properties.tween = {
 	set: function(options){
 		var tween = this.retrieve('tween');
 		if (tween) tween.cancel();
-		return this.eliminate('tween').store('tween:options', Object.extend({link: 'cancel'}, options));
+		return this.dump('tween').store('tween:options', extend({link: 'cancel'}, options));
 	},
 
 	get: function(options){
@@ -61,7 +61,7 @@ Element.implement({
 
 	fade: function(how){
 		var fade = this.get('tween'), o = 'opacity', toggle;
-		how = Object.pick(how, 'toggle');
+		how = pick(how, 'toggle');
 		switch (how){
 			case 'in': fade.start(o, 1); break;
 			case 'out': fade.start(o, 0); break;
@@ -75,7 +75,7 @@ Element.implement({
 			break;
 			default: fade.start(o, arguments);
 		}
-		if (!toggle) this.eliminate('fade:flag');
+		if (!toggle) this.dump('fade:flag');
 		return this;
 	},
 

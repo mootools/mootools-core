@@ -12,8 +12,8 @@ Credits:
 Fx.implement({
 
 	getTransition: function(){
-		var trans = this.options.transition || Fx.Transitions.Sine.easeInOut;
-		if (typeof trans == 'string'){
+		var trans = this.getOption('transition') || Fx.Transitions.Sine.easeInOut;
+		if (typeOf(trans) == 'string'){
 			var data = trans.split(':');
 			trans = Fx.Transitions;
 			trans = trans[data[0]] || trans[data[0].capitalize()];
@@ -25,8 +25,8 @@ Fx.implement({
 });
 
 Fx.Transition = function(transition, params){
-	params = Object.splat(params);
-	return Object.extend(transition, {
+	params = Array.from(params);
+	return extend(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
 		},

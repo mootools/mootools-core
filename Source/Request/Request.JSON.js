@@ -10,7 +10,7 @@ Request.JSON = new Class({
 
 	Extends: Request,
 
-	options: {
+	Options: {
 		secure: true
 	},
 
@@ -21,7 +21,7 @@ Request.JSON = new Class({
 	},
 
 	success: function(text){
-		this.response.json = JSON.decode(text, this.options.secure);
+		this.response.json = JSON.decode(text, this.getOption('secure'));
 		this.onSuccess(this.response.json, text);
 	}
 

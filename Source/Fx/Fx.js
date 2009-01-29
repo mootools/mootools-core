@@ -10,7 +10,7 @@ var Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {
+	Options: {
 		/*
 		onStart: Function.empty,
 		onCancel: Function.empty,
@@ -25,9 +25,8 @@ var Fx = new Class({
 	initialize: function(options){
 		this.subject = this.subject || this;
 		this.setOptions(options);
-		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration.toInt();
-		var wait = this.options.wait;
-		if (wait === false) this.options.link = 'cancel';
+		this.setOption('duration', Fx.Durations[this.getOption('duration')] || Number.from(this.getOption('duration')));
+		if (this.getOption('wait') === false) this.setOption('link', 'cancel');
 	},
 
 	getTransition: function(){
@@ -37,9 +36,9 @@ var Fx = new Class({
 	},
 
 	step: function(){
-		var time = Date.now();
-		if (time < this.time + this.options.duration){
-			var delta = this.transition((time - this.time) / this.options.duration);
+		var time = Date.now(), duration = this.getOption('duration');
+		if (time < this.time + duration){
+			var delta = this.transition((time - this.time) / duration);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
 			this.set(this.compute(this.from, this.to, 1));
@@ -57,7 +56,7 @@ var Fx = new Class({
 
 	check: function(caller){
 		if (!this.timer) return true;
-		switch (this.options.link){
+		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
 			case 'chain': this.chain(caller.bind(this, Array.slice(arguments, 1))); return false;
 		}
@@ -118,7 +117,7 @@ var Fx = new Class({
 	startTimer: function(){
 		if (this.timer) return false;
 		this.time = Date.now() - this.time;
-		this.timer = this.step.periodical(Math.round(1000 / this.options.fps), this);
+		this.timer = this.step.periodical(Math.round(1000 / this.getOption('fps')), this);
 		return true;
 	}
 

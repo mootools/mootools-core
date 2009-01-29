@@ -13,9 +13,9 @@ Fx.CSS = new Class({
 	//prepares the base from/to object
 
 	prepare: function(element, property, values){
-		values = Object.splat(values);
+		values = Array.from(values);
 		var values1 = values[1];
-		if (!Object.check(values1)){
+		if (!check(values1)){
 			values[1] = values[0];
 			values[0] = element.getStyle(property);
 		}
@@ -27,7 +27,7 @@ Fx.CSS = new Class({
 
 	parse: function(value){
 		value = Function.from(value)();
-		value = (typeof value == 'string') ? value.split(' ') : Object.splat(value);
+		value = (typeOf(value) == 'string') ? value.split(' ') : Array.from(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
@@ -35,7 +35,7 @@ Fx.CSS = new Class({
 				if (found) continue;
 				var parser = Fx.CSS.Parsers[key];
 				var parsed = parser.parse(val);
-				if (Object.check(parsed)) found = {value: parsed, parser: parser};
+				if (check(parsed)) found = {value: parsed, parser: parser};
 			}
 			found = found || {value: val, parser: Fx.CSS.Parsers.String};
 			return found;

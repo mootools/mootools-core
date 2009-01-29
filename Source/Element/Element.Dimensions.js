@@ -126,7 +126,7 @@ Element.implement({
 
 });
 
-Native.implement([Document, Window], {
+Native.group(Document, Window).implement({
 
 	getSize: function(){
 		if (Browser.Engine.presto || Browser.Engine.webkit) {
@@ -163,7 +163,7 @@ Native.implement([Document, Window], {
 var styleString = Element.getComputedStyle;
 
 function styleNumber(element, style){
-	return styleString(element, style).toInt() || 0;
+	return Number.from(styleString(element, style)) || 0;
 };
 
 function borderBox(element){
@@ -191,7 +191,7 @@ function getCompatElement(element){
 
 //aliases
 
-Native.implement([Window, Document, Element], {
+Native.group(Window, Document, Element).implement({
 
 	getHeight: function(){
 		return this.getSize().y;

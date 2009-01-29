@@ -19,7 +19,7 @@ var JSON = {
 					return special[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
 				}) + '"';
 			case 'array':
-				return '[' + String(obj.map(JSON.encode).filter(Object.defined)) + ']';
+				return '[' + String(obj.map(JSON.encode).filter(Type.isDefined)) + ']';
 			case 'object':
 				var string = [];
 				for (var key in obj){
@@ -41,7 +41,7 @@ var JSON = {
 
 };
 
-Native.implement([Array, String, Number], {
+Native.group(Array, String, Number).implement({
 
 	toJSON: function(){
 		return JSON.encode(this);

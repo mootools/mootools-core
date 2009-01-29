@@ -50,7 +50,7 @@ Element.implement({
 		property = property.camelCase();
 		if (typeOf(value) != 'string'){
 			var map = (Element.Styles[property] || '@').split(' ');
-			value = Object.splat(value).map(function(val, i){
+			value = Array.from(value).map(function(val, i){
 				if (!map[i]) return '';
 				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
 			}).join(' ');
@@ -68,7 +68,7 @@ Element.implement({
 		}
 		property = property.camelCase();
 		var result = this.style[property];
-		if (!Object.check(result)){
+		if (!check(result)){
 			result = [];
 			for (var style in Element.ShortStyles){
 				if (property != style) continue;
@@ -82,11 +82,11 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.Engine.presto || (Browser.Engine.trident && !Object.check(parseInt(result, 10)))){
+		if (Browser.Engine.presto || (Browser.Engine.trident && !check(Number.from(result)))){
 			if (property.test(/^(height|width)$/)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
-					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+					size += Number.from(this.getStyle('border-' + value + '-width')) + Number.from(this.getStyle('padding-' + value));
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}

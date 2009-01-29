@@ -7,20 +7,12 @@ License:
 	MIT-style license.
 */
 
-var Element = new Native({
-
-	name: 'Element',
-
-	legacy: window.Element,
-
-	initialize: function(tag, props){
-		if (typeof tag == 'string') return document.newElement(tag, props);
-		return $(tag).set(props);
-	}
-
+var Element = new Native('Element', function(tag, props){
+	if (typeOf(tag) == 'string') return document.newElement(tag, props);
+	return $(tag).set(props);
 });
 
-Element.addObjectEvent('afterImplement', function(key, value){
+Element.__onImplement__ = function(key, value){
 	
 	Element.Prototype[key] = value;
 	if (Array[key]) return;
@@ -34,60 +26,58 @@ Element.addObjectEvent('afterImplement', function(key, value){
 		return (elements) ? new Elements(items) : items;
 	});
 	
-});
+};
 
 Element.Prototype = {$family: {name: 'element'}};
 
-var IFrame = new Native({
+// var IFrame = new Native({
+// 
+// 	name: 'IFrame',
+// 
+// 	generics: false,
+// 
+// 	initialize: function(){
+// 		var params = Array.link(arguments, {properties: Type.isObject, iframe: Type.isDefined});
+// 		var props = params.properties || {};
+// 		var iframe = $(params.iframe) || false;
+// 		var onload = props.onload || Function.empty;
+// 		delete props.onload;
+// 		props.id = props.name = pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Date.now());
+// 		iframe = new Element(iframe || 'iframe', props);
+// 		var onFrameLoad = function(){
+// 			var host = Function.stab(function(){
+// 				return iframe.contentWindow.location.host;
+// 			});
+// 			if (host && host == window.location.host){
+// 				var win = new Window(iframe.contentWindow);
+// 				new Document(iframe.contentWindow.document);
+// 				extend(win.Element.prototype, Element.Prototype);
+// 			}
+// 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
+// 		};
+// 		(window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
+// 		return iframe;
+// 	}
+// 
+// });
 
-	name: 'IFrame',
-
-	generics: false,
-
-	initialize: function(){
-		var params = Array.link(arguments, {properties: typeOf.object, iframe: Object.defined});
-		var props = params.properties || {};
-		var iframe = $(params.iframe) || false;
-		var onload = props.onload || Function.empty;
-		delete props.onload;
-		props.id = props.name = Object.pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Date.now());
-		iframe = new Element(iframe || 'iframe', props);
-		var onFrameLoad = function(){
-			var host = Function.stab(function(){
-				return iframe.contentWindow.location.host;
-			});
-			if (host && host == window.location.host){
-				var win = new Window(iframe.contentWindow);
-				new Document(iframe.contentWindow.document);
-				Object.extend(win.Element.prototype, Element.Prototype);
+var Elements = new Native(null, function(elements, options){
+	
+	options = extend({ddup: true, cash: true}, options);
+	elements = elements || [];
+	if (options.ddup || options.cash){
+		var uniques = {}, returned = [];
+		for (var i = 0, l = elements.length; i < l; i++){
+			var el = $.element(elements[i], !options.cash);
+			if (options.ddup){
+				if (uniques[el.uid]) continue;
+				uniques[el.uid] = true;
 			}
-			onload.call(iframe.contentWindow, iframe.contentWindow.document);
-		};
-		(window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
-		return iframe;
-	}
-
-});
-
-var Elements = new Native({
-
-	initialize: function(elements, options){
-		options = Object.extend({ddup: true, cash: true}, options);
-		elements = elements || [];
-		if (options.ddup || options.cash){
-			var uniques = {}, returned = [];
-			for (var i = 0, l = elements.length; i < l; i++){
-				var el = $.element(elements[i], !options.cash);
-				if (options.ddup){
-					if (uniques[el.uid]) continue;
-					uniques[el.uid] = true;
-				}
-				returned.push(el);
-			}
-			elements = returned;
+			returned.push(el);
 		}
-		return (options.cash) ? Object.extend(elements, this) : elements;
+		elements = returned;
 	}
+	return (options.cash) ? extend(elements, this) : elements;
 
 });
 
@@ -95,7 +85,7 @@ Elements.implement({
 
 	filter: function(filter, bind){
 		if (!filter) return this;
-		return new Elements(Array.filter(this, (typeof filter == 'string') ? function(item){
+		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 			return item.match(filter);
 		} : filter, bind));
 	}
@@ -139,14 +129,14 @@ Window.implement({
 	},
 
 	$$: function(selector){
-		if (arguments.length == 1 && typeof selector == 'string') return this.document.getElements(selector);
+		if (arguments.length == 1 && typeOf(selector) == 'string') return this.document.getElements(selector);
 		var elements = [];
 		var args = Array.flatten(arguments);
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
 			switch (typeOf(item)){
 				case 'element': elements.push(item); break;
-				case 'string': elements.extend(this.document.getElements(item, true));
+				case 'string': elements.append(this.document.getElements(item, true));
 			}
 		}
 		return new Elements(elements);
@@ -168,8 +158,8 @@ $.string = function(id, nocash, doc){
 };
 
 $.element = function(el, nocash){
-	Object.uid(el);
-	if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
+	Native.uid(el);
+	if (!nocash && !el.__type__ && !(/^object|embed$/i).test(el.tagName)){
 		var proto = Element.Prototype;
 		for (var p in proto) el[p] = proto[p];
 	};
@@ -183,7 +173,7 @@ $.object = function(obj, nocash, doc){
 
 $.textnode = $.whitespace = $.window = $.document = Function.argument(0);
 
-Native.implement([Element, Document], {
+Native.group(Element, Document).implement({
 
 	getElement: function(selector, nocash){
 		return $(this.getElements(selector, true)[0] || null, nocash);
@@ -195,7 +185,7 @@ Native.implement([Element, Document], {
 		var ddup = (tags.length > 1);
 		tags.each(function(tag){
 			var partial = this.getElementsByTagName(tag.trim());
-			(ddup) ? elements.extend(partial) : elements = partial;
+			(ddup) ? elements.append(partial) : elements = partial;
 		}, this);
 		return new Elements(elements, {ddup: ddup, cash: !nocash});
 	}
@@ -224,7 +214,7 @@ var clean = function(item, retain){
 		}
 		if ((/object/i).test(item.tagName)){
 			for (var p in item){
-				if (typeof item[p] == 'function') item[p] = Function.empty;
+				if (typeOf(item[p]) == 'function') item[p] = Function.empty;
 			}
 			Element.dispose(item);
 		}
@@ -262,10 +252,10 @@ var attributes = {
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 
-bools = bools.associate(bools);
+bools = Object.from(bools, bools);
 
-Object.extend(attributes, bools);
-Object.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
+extend(attributes, bools);
+extend(attributes, Object.from(camels.map(String.toLowerCase), camels));
 
 var inserters = {
 
@@ -354,7 +344,7 @@ Element.implement({
 
 	getProperties: function(){
 		var args = Array.from(arguments);
-		return args.map(this.getProperty, this).associate(args);
+		return Object.from(args, args.map(this.getProperty));
 	},
 
 	removeProperty: function(attribute){
@@ -491,8 +481,8 @@ Element.implement({
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
 			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
-			Object.splat(value).each(function(val){
-				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
+			Array.from(value).each(function(val){
+				if (typeOf(val) != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
@@ -556,7 +546,7 @@ Element.implement({
 
 });
 
-Native.implement([Element, Window, Document], {
+Native.group(Element, Window, Document).implement({
 
 	addListener: function(type, fn){
 		if (type == 'unload'){
@@ -582,7 +572,7 @@ Native.implement([Element, Window, Document], {
 	retrieve: function(property, dflt){
 		var storage = get(this.uid), prop = storage[property];
 		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
-		return Object.pick(prop);
+		return pick(prop);
 	},
 
 	store: function(property, value){
@@ -591,7 +581,7 @@ Native.implement([Element, Window, Document], {
 		return this;
 	},
 
-	eliminate: function(property){
+	dump: function(property){
 		var storage = get(this.uid);
 		delete storage[property];
 		return this;

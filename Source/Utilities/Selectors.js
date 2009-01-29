@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-Native.implement([Document, Element], {
+Native.group(Document, Element).implement({
 
 	getElements: function(expression, nocash){
 		expression = expression.split(',');
@@ -48,7 +48,7 @@ Selectors.Utils = {
 
 	chk: function(item, uniques){
 		if (!uniques) return true;
-		var uid = Object.uid(item);
+		var uid = Native.uid(item);
 		if (!uniques[uid]) return uniques[uid] = true;
 		return false;
 	},
@@ -57,10 +57,10 @@ Selectors.Utils = {
 		if (Selectors.Cache.nth[argument]) return Selectors.Cache.nth[argument];
 		var parsed = argument.match(/^([+-]?\d*)?([a-z]+)?([+-]?\d*)?$/);
 		if (!parsed) return false;
-		var inta = parseInt(parsed[1], 10);
+		var inta = Number.from(parsed[1]);
 		var a = (inta || inta === 0) ? inta : 1;
 		var special = parsed[2] || false;
-		var b = parseInt(parsed[3], 10) || 0;
+		var b = Number.from(parsed[3]) || 0;
 		if (a != 0){
 			b--;
 			while (b < 1) b += a;
@@ -321,13 +321,13 @@ Selectors.Pseudo = {
 		if (parsed.special != 'n') return Selectors.Pseudo[parsed.special].call(this, parsed.a, local);
 		var count = 0;
 		local.positions = local.positions || {};
-		var uid = Object.uid(this);
+		var uid = Native.uid(this);
 		if (!local.positions[uid]){
 			var self = this;
 			while ((self = self.previousSibling)){
 				if (self.nodeType != 1) continue;
 				count ++;
-				var position = local.positions[Object.uid(self)];
+				var position = local.positions[Native.uid(self)];
 				if (position != undefined){
 					count = position + count;
 					break;

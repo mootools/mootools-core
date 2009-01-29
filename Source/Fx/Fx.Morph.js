@@ -9,6 +9,10 @@ License:
 Fx.Morph = new Class({
 
 	Extends: Fx.CSS,
+	
+	Options: {
+		newOption: true
+	},
 
 	initialize: function(element, options){
 		this.element = this.subject = $(element);
@@ -16,8 +20,8 @@ Fx.Morph = new Class({
 	},
 
 	set: function(now){
-		if (typeof now == 'string') now = this.search(now);
-		for (var p in now) this.render(this.element, p, now[p], this.options.unit);
+		if (typeOf(now) == 'string') now = this.search(now);
+		for (var p in now) this.render(this.element, p, now[p], this.getOption('unit'));
 		return this;
 	},
 
@@ -29,7 +33,7 @@ Fx.Morph = new Class({
 
 	start: function(properties){
 		if (!this.check(arguments.callee, properties)) return this;
-		if (typeof properties == 'string') properties = this.search(properties);
+		if (typeOf(properties) == 'string') properties = this.search(properties);
 		var from = {}, to = {};
 		for (var p in properties){
 			var parsed = this.prepare(this.element, p, properties[p]);
@@ -46,7 +50,7 @@ Element.Properties.morph = {
 	set: function(options){
 		var morph = this.retrieve('morph');
 		if (morph) morph.cancel();
-		return this.eliminate('morph').store('morph:options', Object.extend({link: 'cancel'}, options));
+		return this.dump('morph').store('morph:options', extend({link: 'cancel'}, options));
 	},
 
 	get: function(options){

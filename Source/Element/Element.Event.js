@@ -10,7 +10,7 @@ Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
 
-Native.implement([Element, Window, Document], {
+Native.group(Element, Window, Document).implement({
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
@@ -75,7 +75,7 @@ Native.implement([Element, Window, Document], {
 		if (!attached) return this;
 		if (!events){
 			for (type in attached) this.removeEvents(type);
-			this.eliminate('events');
+			this.dump('events');
 		} else if (attached[events]){
 			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
 			attached[events] = null;
@@ -87,7 +87,7 @@ Native.implement([Element, Window, Document], {
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
 		events[type].keys.each(function(fn){
-			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
 	},
