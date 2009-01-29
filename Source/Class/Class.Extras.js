@@ -6,37 +6,17 @@ License:
 	MIT-style license.
 */
 
-var Chain = new Class({
+Class.Mutators.Events = function(events, properties){
+	for (var type in events) Events.add(properties, type, events[type]);
+};
 
-	$chain: [],
-
-	chain: function(){
-		this.$chain.extend(Array.flatten(arguments));
-		return this;
-	},
-
-	callChain: function(){
-		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
-	},
-
-	clearChain: function(){
-		this.$chain.empty();
-		return this;
-	}
-
-});
 
 var Events = new Class({
-
+	
 	$events: {},
 
 	addEvent: function(type, fn, internal){
-		type = Events.removeOn(type);
-		if (fn != Function.empty){
-			this.$events[type] = this.$events[type] || [];
-			this.$events[type].include(fn);
-			if (internal) fn.internal = true;
-		}
+		Events.add(this, type, fn, internal);
 		return this;
 	},
 
@@ -46,18 +26,16 @@ var Events = new Class({
 	},
 
 	fireEvent: function(type, args, delay){
-		type = Events.removeOn(type);
-		if (!this.$events || !this.$events[type]) return this;
-		this.$events[type].each(function(fn){
-			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+		type = Events.on(type);
+		if (this.$events[type]) this.$events[type].each(function(fn){
+			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
 	},
 
 	removeEvent: function(type, fn){
-		type = Events.removeOn(type);
-		if (!this.$events[type]) return this;
-		if (!fn.internal) this.$events[type].erase(fn);
+		type = Events.on(type);
+		if (this.$events[type] && !fn.internal) this.$events[type].erase(fn);
 		return this;
 	},
 
@@ -67,7 +45,7 @@ var Events = new Class({
 			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
-		if (events) events = Events.removeOn(events);
+		if (events) events = Events.on(events);
 		for (type in this.$events){
 			if (events && events != type) continue;
 			var fns = this.$events[type];
@@ -78,22 +56,87 @@ var Events = new Class({
 
 });
 
-Events.removeOn = function(string){
-	return string.replace(/^on([A-Z])/, function(full, first) {
-		return first.toLowerCase();
-	});
+Events.extend({
+	
+	on: function(string){
+		return string.replace(/^on([A-Z])/, function(full, first){
+			return first.toLowerCase();
+		});
+	},
+	
+	add: function(object, type, fn, internal){
+		type = Events.on(type);
+		if (fn != Function.empty){
+			if (!object.$events) object.$events = {};
+			if (!object.$events[type]) object.$events[type] = [];
+			object.$events[type].include(fn);
+			if (internal) fn.internal = true;
+		}
+	},
+	
+	fromOptions: function(object, options){
+		for (var option in options){
+			if (typeOf(options[option]) == 'function' && (/^on[A-Z]/).test(option)){
+				Events.add(object, option, options[option]);
+				delete options[option];
+			};
+		}
+	}
+
+});
+
+Class.Mutators.Options = function(options, properties){
+	Events.fromOptions(properties, options);
+	properties.$options = options;
 };
 
 var Options = new Class({
+	
+	$options: {},
 
-	setOptions: function(){
-		this.options = Object.merge.run([this.options].extend(arguments));
-		if (!this.addEvent) return this;
-		for (var option in this.options){
-			if (typeOf(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
-			this.addEvent(option, this.options[option]);
-			delete this.options[option];
-		}
+	setOptions: function(options){
+		Event.fromOptions(this, options);
+		Object.mixin(this.$options, options);
+		return this;
+	},
+	
+	setOption: function(key, value){
+		return this.setOptions(Object.from(key, value));
+	},
+	
+	getOption: function(key){
+		return this.$options[key];
+	},
+	
+	getOptions: function(){
+		return this.$options;
+	},
+			
+	resetOption: function(key){
+		Object.reset(this.$options, key);
+	},
+	
+	resetOptions: function(){
+		Object.reset(this.$options);
+	}
+
+});
+
+var Chain = new Class({
+	
+	$chain: [],
+
+	chain: function(){
+		this.$chain.append(Array.flatten(arguments));
+		return this;
+	},
+
+	callChain: function(){
+		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : null;
+	},
+
+	clearChain: function(){
+		this.$chain.empty();
 		return this;
 	}
 
