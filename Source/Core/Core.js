@@ -23,280 +23,257 @@ var MooTools = {
 	'build': '%build%'
 };
 
-Array.from = function(iterable){
-	if (iterable.item){
-		var array = [];
-		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
-		return array;
-	}
-	return Array.prototype.slice.call(iterable);
-};
-
-Function.argument = function(i){
-	return function(){
-		return arguments[i];
-	};
-};
-
-Function.clear = function(timer){
-	clearInterval(timer);
-	clearTimeout(timer);
-	return null;
-};
-
-Function.empty = function(){};
-
-Function.from = function(value){
-	return (typeof value == 'function') ? value : function(){
-		return value;
-	};
-};
-
-Function.stab = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		try {
-			return arguments[i]();
-		} catch(e){}
-	}
-	return null;
-};
-
-Object.check = function(object){
-	return !!(object || object === 0);
-};
-
-Object.defined = function(obj){
-	return (obj != undefined);
-};
-
-Object.each = function(iterable, fn, bind){
-	if (typeOf.iterable(iterable)){
-		for (var i = 0, l = iterable.length; i < l; i++) fn.call(bind, iterable[i], i, iterable);
-	} else {
-		for (var p in iterable){
-			if (iterable.hasOwnProperty(p)) fn.call(bind, iterable[p], p, iterable);
-		}
-	}
-};
-
-Object.extend = function(original, extended){
+var extend = function(original, extended){
 	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
 };
 
-Object.merge = function(){
-	var mix = {};
-	for (var i = 0, l = arguments.length; i < l; i++){
-		var object = arguments[i];
-		if (typeOf(object) != 'object') continue;
-		for (var key in object){
-			var op = object[key], mp = mix[key];
-			mix[key] = (mp && typeOf(op) == 'object' && typeOf(mp) == 'object') ? Object.merge(mp, op) : Object.unlink(op);
-		}
-	}
-	return mix;
+var clone = function(object){
+	var parent = Type.getConstructor(object);
+	return (parent && parent.clone) ? parent.clone(object): object;
 };
 
-Object.pick = function(){
+var check = function(object){
+	return !!(object || object === 0);
+};
+
+var pick = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		if (arguments[i] != undefined) return arguments[i];
 	}
 	return null;
 };
 
-Object.splat = function(obj){
-	var type = typeOf(obj);
-	return (type) ? ((type != 'array' && type != 'arguments') ? [obj] : obj) : [];
-};
-
-Object.toQueryString = function(object, base){
-	var queryString = [];
-	for (var key in object){
-		var value = object[key];
-		if (base) key = base + '[' + key + ']';
-		var result;
-		switch (typeOf(value)){
-			case 'object': result = Object.toQueryString(value, key); break;
-			case 'array':
-				var qs = {};
-				value.each(function(val, i){
-					qs[i] = val;
-				});
-				result = Object.toQueryString(qs, key);
-			break;
-			default: result = key + '=' + encodeURIComponent(value);
-		}
-		if (value != undefined) queryString.push(result);
+Function.prototype.extend = function(generics){
+	for (var generic in generics){
+		if (!this.__protected__ || !this[generic]) this[generic] = generics[generic];
 	}
-
-	return queryString.join('&');
+	return this;
 };
 
-Object.unlink = function(object){
-	var unlinked;
-	switch (typeOf(object)){
-		case 'object':
-			unlinked = {};
-			for (var p in object) unlinked[p] = Object.unlink(object[p]);
-		break;
-		case 'array':
-			unlinked = [];
-			for (var i = 0, l = object.length; i < l; i++) unlinked[i] = Object.unlink(object[i]);
-		break;
-		default: return object;
-	}
-	return unlinked;
-};
+Object.__protected__ = Function.__protected__ = Array.__protected__ = String.__protected__ = RegExp.__protected__ = Date.__protected__ = true;
 
-Number.random = function(min, max){
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
-
-
-if (!Date.now) Date.now = function(){
-	return new Date;
-};
-
-function typeOf(obj){
-	if (obj == undefined) return false;
-	if (obj.$family) return (obj.$family.name == 'number' && !isFinite(obj)) ? false : obj.$family.name;
-	if (obj.nodeName){
-		switch (obj.nodeType){
-			case 1: return 'element';
-			case 3: return (/\S/).test(obj.nodeValue) ? 'textnode' : 'whitespace';
-		}
-	} else if (typeof obj.length == 'number'){
-		if (obj.callee) return 'arguments';
-		else if (obj.item) return 'collection';
-	}
-	return typeof obj;
-};
-
-typeOf.create = function(family, fn){
-	typeOf[family] = fn || function(object){
-		return (typeOf(object) == family);
-	};
-	return typeOf;
-};
-
-typeOf.create('boolean').create('native').create('object').create('textnode').create('whitespace').create('collection');
-
-typeOf.iterable = function(object){
-	var type = typeOf(object);
-	return (type == 'array' || type == 'arguments' || type == 'collection');
-};
-
-var Native = function(options){
-	options = options || {};
-	var name = options.name;
-	var legacy = options.legacy;
-	var protect = options.protect;
-	var generics = options.generics;
-	var initialize = options.initialize;
-	var object = initialize || legacy;
-	generics = generics !== false;
-
-	object.constructor = Native;
-	object.$family = {name: 'native'};
+Object.extend({
 	
-	for (var k in this) object[k] = this[k];
-	
-	if (legacy && initialize) object.prototype = legacy.prototype;
-	object.prototype.constructor = object;
-
-	if (name){
-		var family = name.toLowerCase();
-		object.prototype.$family = {name: family};
-		typeOf.create(family);
-	}
-
-	var add = function(name, method, force){
-		if (!protect || force || !object.prototype[name]) object.prototype[name] = method;
-		if (generics) Native.genericize(object, name, protect);
-		object.fireObjectEvent('afterImplement', [name, method]);
+	from: function(keys, values){
+		keys = Array.from(keys);
+		values = Array.from(values);
+		var object = {};
+		var length = Math.min(keys.length, values.length);
+		for (var i = 0; i < length; i++) object[keys[i]] = values[i];
 		return object;
-	};
+	},
+	
+	forEach: function(object, fn, bind){
+		for (var p in object) fn.call(bind, object[p], p, object);
+	},
+	
+	clone: function(object){
+		var unlinked = {};
+		for (var p in object) unlinked[p] = clone(object[p]);
+		return unlinked;
+	}
+	
+});
 
-	object.alias = function(a1, a2, a3){
-		if (typeof a1 == 'string'){
-			if ((a1 = this.prototype[a1])) return add(a2, a1, a3);
+Object.each = Object.forEach;
+
+Array.extend({
+	
+	from: function(iterable){
+		switch(typeOf(iterable)){
+			case 'arguments': case 'collection':
+				var array = [];
+				for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+				return array;
+			case 'array': return iterable;
+			default: return [iterable];
 		}
-		for (var a in a1) this.alias(a, a1[a], a2);
-		return this;
-	};
+	},
+	
+	forEach: function(iterable, fn, bind){
+		for (var i = 0, l = iterable.length; i < l; i++) fn.call(bind, iterable[i], i, iterable);
+	},
+	
+	clone: function(object){
+		var unlinked = [];
+		for (var i = 0, l = object.length; i < l; i++) unlinked[i] = clone(object[i]);
+		return unlinked;
+	}
+	
+});
 
-	object.implement = function(a1, a2, a3){
-		if (typeof a1 == 'string') return add(a1, a2, a3);
-		for (var p in a1) add(p, a1[p], a2);
-		return this;
-	};
+Array.each = Array.forEach;
 
+Function.extend({
+	
+	from: function(value){
+		return (typeOf(value) == 'function') ? value : function(){
+			return value;
+		};
+	},
+
+	empty: function(){},
+
+	stab: function(){
+		for (var i = 0, l = arguments.length; i < l; i++){
+			try {
+				return arguments[i]();
+			} catch(e){}
+		}
+		return null;
+	}
+	
+});
+
+Number.extend({
+	
+	from: function(object, base){
+		return parseInt(object, base || 10);
+	},
+	
+	random: function(min, max){
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	},
+	
+	__type__: function(){
+		return (isFinite(this)) ? 'number' : null;
+	}
+
+});
+
+Date.extend({
+
+	now: function(){
+		return +(new Date);
+	}
+
+});
+
+var Type = function(name, object){
+	Type.types[name] = object;
+	if (object && !object.prototype.__type__) object.prototype.__type__ = function(){
+		return name;
+	};
+	Type['is' + name] = function(object){
+		return (typeOf(object) == name);
+	};
+};
+
+Type.extend({
+	
+	types: [],
+	
+	of: function(object){
+		if (object == undefined) return null;
+		if (object.__type__) return object.__type__();
+		
+		if (object.nodeName){
+			switch (object.nodeType){
+				case 1: return 'element';
+				case 3: return (/\S/).test(object.nodeValue) ? 'textnode' : 'whitespace';
+			}
+		} else if (typeof object.length == 'number'){
+			if (object.callee) return 'arguments';
+			else if (object.item) return 'collection';
+		}
+		
+		return typeof object;
+	},
+	
+	getConstructor: function(object){
+		return Type.types[typeOf(object)];
+	},
+	
+	isIterable: function(object){
+		var type = typeOf(object);
+		return (type == 'array' || type == 'arguments' || type == 'collection');
+	},
+	
+	isDefined: function(object){
+		return (object != undefined);
+	}
+	
+});
+
+var typeOf = Type.of;
+
+var Native = function(name, object){
+	object.extend(this);
+	object.prototype.constructor = object;
+	if (name) new Type(name, object);
 	return object;
 };
 
 Native.prototype = {
 	
-	addObjectEvent: function(name, method){
-		if (!this.events) this.events = {};
-		if (!this.events[name]) this.events[name] = [];
-		var events = this.events[name], found = false;
-		for (var i = 0, l = events.length; i < l; i++){
-			if (events[i] !== method) continue;
-			found = true;
-			break;
+	constructor: Native,
+	
+	implement: function(name, method){
+		if (typeOf(name) == 'object'){
+			for (var key in name) this.implement(key, name[key]);
+			return this;
 		}
-		if (!found) events.push(method);
+
+		if (!this.__protected__ || !this.prototype[name]){
+			this.prototype[name] = method;
+			if (this.__onImplement__) this.__onImplement__(name, method);
+		}
+		if (typeOf(method) == 'function' && (!this.__protected__ || !this[name])) this[name] = function(){
+			var args = Array.from(arguments);
+			return method.apply(args.shift(), args);
+		};
+		
 		return this;
 	},
 	
-	removeObjectEvent: function(name, method){
-		if (!this.events || !this.events[name]) return this;
-		var events = this.events[name];
-		for (var i = 0, l = events.length; i < l; i++){
-			if (events[i] === item) events.splice(i, 1);
-		}
-		return this;
-	},
-	
-	fireObjectEvent: function(name, args){
-		if (!this.events || !this.events[name]) return this;
-		var events = this.events[name];
-		for (var i = 0, l = events.length; i < l; i++){
-			events[i].apply(this, Object.splat(args));
-		}
-		return this;
+	alias: function(name, newName){
+		return this.implement(newName, this.prototype[name]);
 	}
 	
 };
 
-Native.genericize = function(object, property, check){
-	if ((!check || !object[property]) && typeof object.prototype[property] == 'function') object[property] = function(){
-		var args = Array.prototype.slice.call(arguments);
-		return object.prototype[property].apply(args.shift(), args);
-	};
+new Native('native', Native);
+
+Native.group = function(){
+	var items = Array.from(arguments);
+	var object = {};
+	for (var name in Native.prototype){
+		object[name] = (function(name){
+			return function(){
+				var args = arguments;
+				Array.each(items, function(item){
+					item[name].apply(item, args);
+				});
+			};
+		})(name);
+	}
+	return object;
 };
 
-Native.implement = function(objects, properties){
-	for (var i = 0, l = objects.length; i < l; i++) objects[i].implement(properties);
-};
+(function(){
 	
-Object.each({
-	'Array': Array, 'Date': Date, 'Function': Function, 'Number': Number, 'RegExp': RegExp, 'String': String
-}, function(object, name){
-	new Native({name: name, initialize: object, protect: true});
-});
+	var natives = {'array': Array, 'date': Date, 'function': Function, 'number': Number, 'regexp': RegExp, 'string': String};
+	var types = {'boolean': Boolean, 'object': null, 'collection': null, 'whitespace': null, 'textnode': null};
 
-Object.each({
-	'Array': [
-		"concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse",
-		"shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"
-	],
-	'String': [
-		"charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace",
-		"search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"
-	]
-}, function(methods, generic){
-	Object.each(methods, function(name){
-		Native.genericize(window[generic], name, true);
-	});
-});
+	for (var n in natives) new Native(n, natives[n]);
+
+	for (var t in types) new Type(t, types[t]);
+
+	Type.types.object = Object;
+
+	var arrayNames = ["concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse", "shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"];
+	var arrayPrototypes = [];
+
+	var stringNames = ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"];
+	var stringPrototypes = [];
+
+	for (var i = 0; i < arrayNames.length; i++) arrayPrototypes.push(Array.prototype[arrayNames[i]]);
+
+	Array.implement(Object.from(arrayNames, arrayPrototypes));
+
+	for (var j = 0; j < stringNames.length; j++) stringPrototypes.push(String.prototype[stringNames[i]]);
+
+	String.implement(Object.from(stringNames, stringPrototypes));
+
+})();
