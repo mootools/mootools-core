@@ -6,62 +6,63 @@ License:
 	MIT-style license.
 */
 
-Function.implement({
+Function.extend({
 
-	extend: function(properties){
-		for (var property in properties) this[property] = properties[property];
-		return this;
+	argument: function(i){
+		return function(){
+			return arguments[i];
+		};
+	},
+
+	clear: function(timer){
+		clearInterval(timer);
+		clearTimeout(timer);
+		return null;
+	}
+	
+});
+
+Function.implement({
+	
+	attempt: function(args, bind){
+		return Function.stab(this.bind(bind, args));
+	},
+	
+	bind: function(bind, args){
+		var self = this;
+		return function(){
+			return self.apply(bind, Array.from(args));
+		};
+	},
+	
+	bindWithEvent: function(bind, args){
+		var self = this;
+		return function(event){
+			return this.apply(bind, [event || window.event].concat(Array.from(args)));
+		};
+	},
+	
+	delay: function(delay, bind, args){
+		return setTimeout(this.bind(bind, args), delay);
 	},
 	
 	disguise: function(as){
 		this.toString = function(){
 			return as.toString();
 		};
+		return this;
 	},
-
-	create: function(options){
-		var self = this;
-		options = options || {};
-		return function(event){
-			var args = options.arguments;
-			args = (args != undefined) ? Object.splat(args) : Array.slice(arguments, (options.event) ? 1 : 0);
-			if (options.event) args = [event || window.event].extend(args);
-			var returns = function(){
-				return self.apply(options.bind || null, args);
-			};
-			if (options.delay) return setTimeout(returns, options.delay);
-			if (options.periodical) return setInterval(returns, options.periodical);
-			if (options.attempt) return Function.stab(returns);
-			return returns();
-		};
+	
+	pass: function(args, bind){
+		return this.bind(bind, args);
+	},
+	
+	periodical: function(periodical, bind, args){
+		return setInterval(this.bind(bind, args), periodical);
 	},
 
 	run: function(args, bind){
-		return this.apply(bind, Object.splat(args));
-	},
-
-	pass: function(args, bind){
-		return this.create({bind: bind, arguments: args});
-	},
-
-	bind: function(bind, args){
-		return this.create({bind: bind, arguments: args});
-	},
-
-	bindWithEvent: function(bind, args){
-		return this.create({bind: bind, arguments: args, event: true});
-	},
-	
-	attempt: function(args, bind){
-		return this.create({bind: bind, arguments: args, attempt: true})();
-	},
-
-	delay: function(delay, bind, args){
-		return this.create({bind: bind, arguments: args, delay: delay})();
-	},
-
-	periodical: function(periodical, bind, args){
-		return this.create({bind: bind, arguments: args, periodical: periodical})();
+		return this.apply(bind, Array.from(args));
 	}
 
 });

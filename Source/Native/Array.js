@@ -28,7 +28,7 @@ Array.implement({
 	},
 
 	clean: function() {
-		return this.filter(Object.defined);
+		return this.filter(Type.isDefined);
 	},
 
 	indexOf: function(item, from){
@@ -52,12 +52,6 @@ Array.implement({
 		return false;
 	},
 
-	associate: function(keys){
-		var obj = {}, length = Math.min(this.length, keys.length);
-		for (var i = 0; i < length; i++) obj[keys[i]] = this[i];
-		return obj;
-	},
-
 	link: function(object){
 		var result = {};
 		for (var i = 0, l = this.length; i < l; i++){
@@ -76,7 +70,7 @@ Array.implement({
 		return this.indexOf(item, from) != -1;
 	},
 
-	extend: function(array){
+	append: function(array){
 		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
@@ -125,7 +119,7 @@ Array.implement({
 		if (this.length != 3) return null;
 		var rgb = this.map(function(value){
 			if (value.length == 1) value += value;
-			return value.toInt(16);
+			return Number.from(value, 16);
 		});
 		return (array) ? rgb : 'rgb(' + rgb + ')';
 	},

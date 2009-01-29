@@ -9,7 +9,7 @@ License:
 String.implement({
 
 	test: function(regex, params){
-		return ((typeof regex == 'string') ? new RegExp(regex, params) : regex).test(this);
+		return ((typeOf(regex) == 'string') ? new RegExp(regex, params) : regex).test(this);
 	},
 
 	contains: function(string, separator){
@@ -46,14 +46,6 @@ String.implement({
 		return this.replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
 	},
 
-	toInt: function(base){
-		return parseInt(this, base || 10);
-	},
-
-	toFloat: function(){
-		return parseFloat(this);
-	},
-
 	hexToRgb: function(array){
 		var hex = this.match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
 		return (hex) ? hex.slice(1).hexToRgb(array) : null;
@@ -62,17 +54,6 @@ String.implement({
 	rgbToHex: function(array){
 		var rgb = this.match(/\d{1,3}/g);
 		return (rgb) ? rgb.rgbToHex(array) : null;
-	},
-
-	stripScripts: function(option){
-		var scripts = '';
-		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
-			scripts += arguments[1] + '\n';
-			return '';
-		});
-		if (option === true) Window.exec(scripts);
-		else if (typeOf(option) == 'function') option(scripts, text);
-		return text;
 	},
 
 	substitute: function(object, regexp){

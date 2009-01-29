@@ -19,14 +19,6 @@ Number.implement({
 
 	times: function(fn, bind){
 		for (var i = 0; i < this; i++) fn.call(bind, i, this);
-	},
-
-	toFloat: function(){
-		return parseFloat(this);
-	},
-
-	toInt: function(base){
-		return parseInt(this, base || 10);
 	}
 
 });

@@ -6,82 +6,81 @@ License:
 	MIT-style license.
 */
 
-var Event = new Native({
+var Event = new Native('Event', function(event, win){
+	
+	win = win || window;
+	var doc = win.document;
+	event = event || win.event;
+	if (event.__extended__) return event;
+	this.__extended__ = true;
+	var type = event.type;
+	var target = event.target || event.srcElement;
+	while (target && target.nodeType == 3) target = target.parentNode;
 
-	name: 'Event',
-
-	initialize: function(event, win){
-		win = win || window;
-		var doc = win.document;
-		event = event || win.event;
-		if (event.$extended) return event;
-		this.$extended = true;
-		var type = event.type;
-		var target = event.target || event.srcElement;
-		while (target && target.nodeType == 3) target = target.parentNode;
-
-		if (type.test(/key/)){
-			var code = event.which || event.keyCode;
-			var key;
-			for (var n in Events.Keys){
-				if (Events.Keys[n] != code) continue;
-				key = code;
-				break;
-			}
-			if (type == 'keydown'){
-				var fKey = code - 111;
-				if (fKey > 0 && fKey < 13) key = 'f' + fKey;
-			}
-			key = key || String.fromCharCode(code).toLowerCase();
-		} else if (type.match(/(click|mouse|menu)/i)){
-			doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-			var page = {
-				x: event.pageX || event.clientX + doc.scrollLeft,
-				y: event.pageY || event.clientY + doc.scrollTop
-			};
-			var client = {
-				x: (event.pageX) ? event.pageX - win.pageXOffset : event.clientX,
-				y: (event.pageY) ? event.pageY - win.pageYOffset : event.clientY
-			};
-			if (type.match(/DOMMouseScroll|mousewheel/)){
-				var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-			}
-			var rightClick = (event.which == 3) || (event.button == 2);
-			var related = null;
-			if (type.match(/over|out/)){
-				switch (type){
-					case 'mouseover': related = event.relatedTarget || event.fromElement; break;
-					case 'mouseout': related = event.relatedTarget || event.toElement;
-				}
-				if (!(function(){
-					while (related && related.nodeType == 3) related = related.parentNode;
-					return true;
-				}).create({attempt: Browser.Engine.gecko})()) related = false;
-			}
+	if (type.test(/key/)){
+		var code = event.which || event.keyCode;
+		var key;
+		for (var n in Events.Keys){
+			if (Events.Keys[n] != code) continue;
+			key = code;
+			break;
 		}
-
-		return Object.extend(this, {
-			event: event,
-			type: type,
-
-			page: page,
-			client: client,
-			rightClick: rightClick,
-
-			wheel: wheel,
-
-			relatedTarget: related,
-			target: target,
-
-			code: code,
-			key: key,
-
-			shift: event.shiftKey,
-			control: event.ctrlKey,
-			alt: event.altKey,
-			meta: event.metaKey
-		});
+		if (type == 'keydown'){
+			var fKey = code - 111;
+			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
+		}
+		key = key || String.fromCharCode(code).toLowerCase();
+	} else if (type.match(/(click|mouse|menu)/i)){
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		var page = {
+			x: event.pageX || event.clientX + doc.scrollLeft,
+			y: event.pageY || event.clientY + doc.scrollTop
+		};
+		var client = {
+			x: (event.pageX) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY) ? event.pageY - win.pageYOffset : event.clientY
+		};
+		if (type.match(/DOMMouseScroll|mousewheel/)){
+			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+		}
+		var rightClick = (event.which == 3) || (event.button == 2);
+		var related = null;
+		if (type.match(/over|out/)){
+			switch (type){
+				case 'mouseover': related = event.relatedTarget || event.fromElement; break;
+				case 'mouseout': related = event.relatedTarget || event.toElement;
+			}
+			
+			var test = function(){
+				while (related && related.nodeType == 3) related = related.parentNode;
+				return true;
+			};
+			
+			related = (Browser.Engine.gecko) ? Function.stab(test) : test();
+		}
 	}
+
+	return extend(this, {
+		event: event,
+		type: type,
+
+		page: page,
+		client: client,
+		rightClick: rightClick,
+
+		wheel: wheel,
+
+		relatedTarget: related,
+		target: target,
+
+		code: code,
+		key: key,
+
+		shift: event.shiftKey,
+		control: event.ctrlKey,
+		alt: event.altKey,
+		meta: event.metaKey
+	});
 
 });
 
