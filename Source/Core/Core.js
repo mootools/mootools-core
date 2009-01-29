@@ -151,12 +151,13 @@ Date.extend({
 });
 
 var Type = function(name, object){
-	Type.types[name] = object;
+	var lower = name.toLowerCase();
+	Type.types[lower] = object;
 	if (object && !object.prototype.__type__) object.prototype.__type__ = function(){
-		return name;
+		return lower;
 	};
 	Type['is' + name] = function(object){
-		return (typeOf(object) == name);
+		return (typeOf(object) == lower);
 	};
 };
 
@@ -233,7 +234,7 @@ Native.prototype = {
 	
 };
 
-new Native('native', Native);
+new Native('Native', Native);
 
 Native.group = function(){
 	var items = Array.from(arguments);
@@ -253,8 +254,8 @@ Native.group = function(){
 
 (function(){
 	
-	var natives = {'array': Array, 'date': Date, 'function': Function, 'number': Number, 'regexp': RegExp, 'string': String};
-	var types = {'boolean': Boolean, 'object': null, 'collection': null, 'whitespace': null, 'textnode': null};
+	var natives = {'Array': Array, 'Date': Date, 'Function': Function, 'Number': Number, 'RegExp': RegExp, 'String': String};
+	var types = {'Boolean': Boolean, 'Object': null, 'Collection': null, 'WhiteSpace': null, 'Textnode': null};
 
 	for (var n in natives) new Native(n, natives[n]);
 
