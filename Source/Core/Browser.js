@@ -73,86 +73,79 @@ Browser.Plugins.Flash = (function(){
 	}, function(){
 		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
 	}) || '0 r0').match(/\d+/g);
-	return {version: parseInt(version[0] || 0 + '.' + version[1], 10) || 0, build: parseInt(version[2], 10) || 0};
+	return {version: Number.from(version[0] || 0 + '.' + version[1]) || 0, build: Number.from(version[2]) || 0};
 })();
 
 Native.UID = 1;
 
-Object.uid = (Browser.Engine.trident) ? function(item){
+Native.uid = (Browser.Engine.trident) ? function(item){
 	return (item.uid || (item.uid = [Native.UID++]))[0];
 } : function(item){
 	return item.uid || (item.uid = Native.UID++);
 };
 
-var Window = new Native({
-
-	name: 'Window',
-
-	legacy: (Browser.Engine.trident) ? null: window.Window,
-
-	initialize: function(win){
-		Object.uid(win);
-		if (!win.Element){
-			win.Element = Function.empty;
-			if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
-			win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
+String.extend({
+	
+	exec: function(text){
+		if (!text) return text;
+		if (window.execScript){
+			window.execScript(text);
+		} else {
+			var script = document.createElement('script');
+			script.setAttribute('type', 'text/javascript');
+			script[(Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerText' : 'text'] = text;
+			document.head.appendChild(script);
+			document.head.removeChild(script);
 		}
-		win.document.window = win;
-		return Object.extend(win, Window.Prototype);
+		return text;
+	},
+	
+	stripScripts: function(option){
+		var scripts = '';
+		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
+			scripts += arguments[1] + '\n';
+			return '';
+		});
+		if (option === true) String.exec(scripts);
+		else if (typeOf(option) == 'function') option(scripts, text);
+		return text;
 	}
-
+	
 });
 
-Window.addObjectEvent('afterImplement', function(property, value){
-	window[property] = Window.Prototype[property] = value;
-});
-
-Window.Prototype = {$family: {name: 'window'}};
-
-Window.exec = function(text){
-	if (!text) return text;
-	if (window.execScript){
-		window.execScript(text);
-	} else {
-		var script = document.createElement('script');
-		script.setAttribute('type', 'text/javascript');
-		script[(Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerText' : 'text'] = text;
-		document.head.appendChild(script);
-		document.head.removeChild(script);
+var Window = new Native('Window', function(win){
+	if (!win.Element){
+		win.Element = function(){};
+		if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
+		win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 	}
-	return text;
-};
+	win.document.window = win;
+}.extend({
+	prototype: (window.Window != undefined) ? Window.prototype : {},
+	__onImplement__: function(name, method){
+		window[name] = method;
+	}
+}));
 
 new Window(window);
 
-var Document = new Native({
-
-	name: 'Document',
-
-	legacy: (Browser.Engine.trident) ? null: window.Document,
-
-	initialize: function(doc){
-		Object.uid(doc);
-		doc.head = doc.getElementsByTagName('head')[0];
-		doc.html = doc.getElementsByTagName('html')[0];
-		if (Browser.Engine.trident){
-			if (Browser.Engine.version <= 4) Function.stab(function(){
-				doc.execCommand("BackgroundImageCache", false, true);
-			});
-			doc.window.attachEvent('onunload', function() {
-				doc.window.detachEvent('onunload', arguments.callee);
-				doc.head = doc.html = doc.window = null;
-			});
-		}
-		return Object.extend(doc, Document.Prototype);
+var Document = new Native('Document', function(doc){
+	doc.head = doc.getElementsByTagName('head')[0];
+	doc.html = doc.getElementsByTagName('html')[0];
+	if (Browser.Engine.trident){
+		if (Browser.Engine.version <= 4) Function.stab(function(){
+			doc.execCommand("BackgroundImageCache", false, true);
+		});
+		doc.window.attachEvent('onunload', function() {
+			doc.window.detachEvent('onunload', arguments.callee);
+			doc.head = doc.html = doc.window = null;
+		});
 	}
-
-});
-
-Document.addObjectEvent('afterImplement', function(property, value){
-	document[property] = Document.Prototype[property] = value;
-});
-
-Document.Prototype = {$family: {name: 'document'}};
+}.extend({
+	prototype: (window.Document != undefined) ? Document.prototype : {},
+	__onImplement__: function(name, method){
+		document[name] = method;
+	}
+}));
 
 new Document(document);
