@@ -49,14 +49,14 @@ Fx.CSS = new Class({
 		(Math.min(from.length, to.length)).times(function(i){
 			computed.push({value: from[i].parser.compute(from[i].value, to[i].value, delta), parser: from[i].parser});
 		});
-		computed.$family = {name: 'fx:css:value'};
+		computed.fxCSSValue = true;
 		return computed;
 	},
 
 	//serves the value as settable
 
 	serve: function(value, unit){
-		if (typeOf(value) != 'fx:css:value') value = this.parse(value);
+		if (!value.fxCSSValue) value = this.parse(value);
 		var returned = [];
 		value.each(function(bit){
 			returned = returned.concat(bit.parser.serve(bit.value, unit));

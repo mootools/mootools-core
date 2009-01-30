@@ -19,6 +19,8 @@ var Class = new Native('Class', function(properties){
 	newClass.implement(Function.from(properties || {})());
 	
 	newClass.prototype.constructor = newClass;
+	
+	newClass.group = Type.group(newClass);
 	return newClass;
 		
 }.extend({__protected__: true}));
@@ -35,7 +37,7 @@ Class.implement({
 		for (var mutator in Class.Mutators){
 			if (!item[mutator]) continue;
 			Class.Mutators[mutator].call(this, item[mutator], item);
-			delete item[mutator];
+			if ((/^[A-Z]/).test(mutator)) delete item[mutator];
 		}
 		
 		var wrap = function(key, method, self){

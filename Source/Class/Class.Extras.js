@@ -13,7 +13,7 @@ Class.Mutators.Events = function(events, properties){
 
 var Events = new Class({
 	
-	$events: {},
+	__events__: {},
 
 	addEvent: function(type, fn, internal){
 		Events.add(this, type, fn, internal);
@@ -27,7 +27,7 @@ var Events = new Class({
 
 	fireEvent: function(type, args, delay){
 		type = Events.on(type);
-		if (this.$events[type]) this.$events[type].each(function(fn){
+		if (this.__events__[type]) this.__events__[type].each(function(fn){
 			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
@@ -35,7 +35,7 @@ var Events = new Class({
 
 	removeEvent: function(type, fn){
 		type = Events.on(type);
-		if (this.$events[type] && !fn.internal) this.$events[type].erase(fn);
+		if (this.__events__[type] && !fn.internal) this.__events__[type].erase(fn);
 		return this;
 	},
 
@@ -46,9 +46,9 @@ var Events = new Class({
 			return this;
 		}
 		if (events) events = Events.on(events);
-		for (type in this.$events){
+		for (type in this.__events__){
 			if (events && events != type) continue;
-			var fns = this.$events[type];
+			var fns = this.__events__[type];
 			for (var i = fns.length; i--; i) this.removeEvent(type, fns[i]);
 		}
 		return this;
@@ -67,9 +67,9 @@ Events.extend({
 	add: function(object, type, fn, internal){
 		type = Events.on(type);
 		if (fn != Function.empty){
-			if (!object.$events) object.$events = {};
-			if (!object.$events[type]) object.$events[type] = [];
-			object.$events[type].include(fn);
+			if (!object.__events__) object.__events__ = {};
+			if (!object.__events__[type]) object.__events__[type] = [];
+			object.__events__[type].include(fn);
 			if (internal) fn.internal = true;
 		}
 	},
@@ -87,16 +87,16 @@ Events.extend({
 
 Class.Mutators.Options = function(options, properties){
 	Events.fromOptions(properties, options);
-	properties.$options = options;
+	properties.__options__ = options;
 };
 
 var Options = new Class({
 	
-	$options: {},
+	__options__: {},
 
 	setOptions: function(options){
 		Event.fromOptions(this, options);
-		Object.mixin(this.$options, options);
+		Object.mixin(this.__options__, options);
 		return this;
 	},
 	
@@ -105,38 +105,38 @@ var Options = new Class({
 	},
 	
 	getOption: function(key){
-		return this.$options[key];
+		return this.__options__[key];
 	},
 	
 	getOptions: function(){
-		return this.$options;
+		return this.__options__;
 	},
 			
 	resetOption: function(key){
-		Object.reset(this.$options, key);
+		Object.reset(this.__options__, key);
 	},
 	
 	resetOptions: function(){
-		Object.reset(this.$options);
+		Object.reset(this.__options__);
 	}
 
 });
 
 var Chain = new Class({
 	
-	$chain: [],
+	__chain__: [],
 
 	chain: function(){
-		this.$chain.append(Array.flatten(arguments));
+		this.__chain__.append(Array.flatten(arguments));
 		return this;
 	},
 
 	callChain: function(){
-		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : null;
+		return (this.__chain__.length) ? this.__chain__.shift().apply(this, arguments) : null;
 	},
 
 	clearChain: function(){
-		this.$chain.empty();
+		this.__chain__.empty();
 		return this;
 	}
 

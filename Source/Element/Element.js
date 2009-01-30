@@ -28,7 +28,7 @@ Element.__onImplement__ = function(key, value){
 	
 };
 
-Element.Prototype = {$family: {name: 'element'}};
+Element.Prototype = {__type__: Element.prototype.__type__};
 
 // var IFrame = new Native({
 // 
@@ -123,10 +123,26 @@ Document.implement({
 Window.implement({
 
 	$: function(el, nocash){
-		if (el && el.$family && el.uid) return el;
+		if (el && el.__type__ && el.uid) return el;
 		var type = typeOf(el);
 		return ($[type]) ? $[type](el, nocash, this.document) : null;
-	},
+	}.extend({
+		
+		string: function(id, nocash, doc){
+			id = doc.getElementById(id);
+			return (id) ? $.element(id, nocash) : null;
+		},
+		
+		element: function(el, nocash){
+			Native.uid(el);
+			return (!nocash && !el.__type__ && !(/^object|embed$/i).test(el.tagName)) ? extend(el, Element.Prototype) : el;
+		},
+		
+		object: function(obj, nocash, doc){
+			return (obj.toElement) ? $.element(obj.toElement(doc), nocash) : null;
+		}
+
+	}),
 
 	$$: function(selector){
 		if (arguments.length == 1 && typeOf(selector) == 'string') return this.document.getElements(selector);
@@ -152,25 +168,6 @@ Window.implement({
 
 });
 
-$.string = function(id, nocash, doc){
-	id = doc.getElementById(id);
-	return (id) ? $.element(id, nocash) : null;
-};
-
-$.element = function(el, nocash){
-	Native.uid(el);
-	if (!nocash && !el.__type__ && !(/^object|embed$/i).test(el.tagName)){
-		var proto = Element.Prototype;
-		for (var p in proto) el[p] = proto[p];
-	};
-	return el;
-};
-
-$.object = function(obj, nocash, doc){
-	if (obj.toElement) return $.element(obj.toElement(doc), nocash);
-	return null;
-};
-
 $.textnode = $.whitespace = $.window = $.document = Function.argument(0);
 
 Native.group(Element, Document).implement({
@@ -181,8 +178,7 @@ Native.group(Element, Document).implement({
 
 	getElements: function(tags, nocash){
 		tags = tags.split(',');
-		var elements = [];
-		var ddup = (tags.length > 1);
+		var elements = [], ddup = (tags.length > 1);
 		tags.each(function(tag){
 			var partial = this.getElementsByTagName(tag.trim());
 			(ddup) ? elements.append(partial) : elements = partial;

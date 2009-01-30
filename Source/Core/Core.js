@@ -153,11 +153,13 @@ Date.extend({
 var Type = function(name, object){
 	var lower = name.toLowerCase();
 	Type.types[lower] = object;
-	if (object && !object.prototype.__type__) object.prototype.__type__ = function(){
-		return lower;
-	};
 	Type['is' + name] = function(object){
 		return (typeOf(object) == lower);
+	};
+	if (!object) return;
+	if (!object.group) object.group = Type.group(object);
+	if (!object.prototype.__type__) object.prototype.__type__ = function(){
+		return lower;
 	};
 };
 
@@ -180,6 +182,20 @@ Type.extend({
 		}
 		
 		return typeof object;
+	},
+	
+	group: function(object){
+		return function(){
+			var single = {}, items = arguments;
+			for (var name in object.prototype) (function(name, method){
+				single[name] = function(){
+					var values = [];
+					for (i = 0, l = items.length; i < l; i ++) values.push(method.apply(items[i], arguments));
+					return values;
+				};
+			})(name, object.prototype[name]);
+			return single;
+		};
 	},
 	
 	getConstructor: function(object){
@@ -235,22 +251,6 @@ Native.prototype = {
 };
 
 new Native('Native', Native);
-
-Native.group = function(){
-	var items = Array.from(arguments);
-	var object = {};
-	for (var name in Native.prototype){
-		object[name] = (function(name){
-			return function(){
-				var args = arguments;
-				Array.each(items, function(item){
-					item[name].apply(item, args);
-				});
-			};
-		})(name);
-	}
-	return object;
-};
 
 (function(){
 	

@@ -51,14 +51,14 @@ Object.extend({
 	
 	map: function(object, fn, bind){
 		var results = {};
-		for (var key in object) results[key] = fn.call(bind, value, key, object);
+		for (var key in object) results[key] = fn.call(bind, object[key], key, object);
 		return results;
 	},
 	
 	filter: function(object, fn, bind){
 		var results = {};
 		for (var key in object){
-			if (fn.call(bind, value, key, object)) results[key] = value;
+			if (fn.call(bind, object[key], key, object)) results[key] = object[key];
 		}
 		return results;
 	},
