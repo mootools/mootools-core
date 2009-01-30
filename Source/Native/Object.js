@@ -38,11 +38,12 @@ Object.extend({
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var object = arguments[i];
 			for (var key in object){
-				if (typeOf(object[key]) == 'object'){
-					if (typeOf(source[key]) == 'object') Object.mixin(source[key], object[key]);
-					else source[key] = Object.clone(object[key]);
+				var ok = object[key], sk = source[key];
+				if (typeOf(ok) == 'object'){
+					if (typeOf(sk) == 'object') Object.mixin(sk, ok);
+					else source[key] = Object.clone(ok);
 				} else {
-					source[key] = clone(object[key]);
+					source[key] = clone(ok);
 				}
 			}
 		}

@@ -59,8 +59,7 @@ Object.extend({
 		keys = Array.from(keys);
 		values = Array.from(values);
 		var object = {};
-		var length = Math.min(keys.length, values.length);
-		for (var i = 0; i < length; i++) object[keys[i]] = values[i];
+		for (var i = 0; i < keys.length; i++) object[keys[i]] = values[i] || null;
 		return object;
 	},
 	
@@ -190,7 +189,7 @@ Type.extend({
 			for (var name in object.prototype) (function(name, method){
 				single[name] = function(){
 					var values = [];
-					for (i = 0, l = items.length; i < l; i ++) values.push(method.apply(items[i], arguments));
+					for (var i = 0, l = items.length; i < l; i ++) values.push(method.apply(items[i], arguments));
 					return values;
 				};
 			})(name, object.prototype[name]);
@@ -199,7 +198,7 @@ Type.extend({
 	},
 	
 	getConstructor: function(object){
-		return Type.types[typeOf(object)];
+		return Type.types[typeOf(object)] || null;
 	},
 	
 	isIterable: function(object){

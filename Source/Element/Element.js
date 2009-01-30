@@ -552,7 +552,7 @@ Native.group(Element, Window, Document).implement({
 				old();
 			};
 		} else {
-			collected[this.uid] = this;
+			collected[Native.uid(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, false);
 		else this.attachEvent('on' + type, fn);
@@ -566,19 +566,19 @@ Native.group(Element, Window, Document).implement({
 	},
 
 	retrieve: function(property, dflt){
-		var storage = get(this.uid), prop = storage[property];
+		var storage = get(Native.uid(this)), prop = storage[property];
 		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
 		return pick(prop);
 	},
 
 	store: function(property, value){
-		var storage = get(this.uid);
+		var storage = get(Native.uid(this));
 		storage[property] = value;
 		return this;
 	},
 
 	dump: function(property){
-		var storage = get(this.uid);
+		var storage = get(Native.uid(this));
 		delete storage[property];
 		return this;
 	}
