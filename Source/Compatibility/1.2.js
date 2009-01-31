@@ -35,4 +35,10 @@ Hash.implement(Object.map(Object, function(method, name){
 
 }));
 
+Hash.implement('forEach', function(fn, bind){
+	for (var p in this){
+		if (!Hash.prototype[p]) fn.call(bind, this[p], p, this);
+	}
+}).alias('forEach', 'each');
+
 Native.group(Element, Window, Document).alias('dump', 'eliminate');
