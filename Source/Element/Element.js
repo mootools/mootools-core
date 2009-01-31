@@ -567,7 +567,7 @@ Native.group(Element, Window, Document).implement({
 
 	retrieve: function(property, dflt){
 		var storage = get(Native.uid(this)), prop = storage[property];
-		if (dflt != undefined && prop == null) prop = storage[property] = dflt;
+		if (dflt != null && prop == null) prop = storage[property] = dflt;
 		return pick(prop);
 	},
 

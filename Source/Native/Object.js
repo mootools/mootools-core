@@ -107,7 +107,7 @@ Object.extend({
 				break;
 				default: result = key + '=' + encodeURIComponent(value);
 			}
-			if (value != undefined) queryString.push(result);
+			if (value != null) queryString.push(result);
 		}
 
 		return queryString.join('&');

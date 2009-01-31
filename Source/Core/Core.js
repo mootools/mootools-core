@@ -37,7 +37,7 @@ var check = function(object){
 
 var pick = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
-		if (arguments[i] != undefined) return arguments[i];
+		if (arguments[i] != null) return arguments[i];
 	}
 	return null;
 };

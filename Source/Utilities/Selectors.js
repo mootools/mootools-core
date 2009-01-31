@@ -328,7 +328,7 @@ Selectors.Pseudo = {
 				if (self.nodeType != 1) continue;
 				count ++;
 				var position = local.positions[Native.uid(self)];
-				if (position != undefined){
+				if (position != null){
 					count = position + count;
 					break;
 				}

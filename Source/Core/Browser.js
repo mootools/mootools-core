@@ -10,7 +10,7 @@ var Browser = {
 
 	Engine: {name: 'unknown', version: 0},
 
-	Platform: {name: (window.orientation != undefined) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
+	Platform: {name: (window.orientation != null) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
 
 	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
 
@@ -121,7 +121,7 @@ var Window = new Native('Window', function(win){
 	}
 	win.document.window = win;
 }.extend({
-	prototype: (window.Window != undefined) ? Window.prototype : {},
+	prototype: (window.Window != null) ? Window.prototype : {},
 	__onImplement__: function(name, method){
 		window[name] = method;
 	}
@@ -136,13 +136,13 @@ var Document = new Native('Document', function(doc){
 		if (Browser.Engine.version <= 4) Function.stab(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
-		doc.window.attachEvent('onunload', function() {
+		doc.window.attachEvent('onunload', function(){
 			doc.window.detachEvent('onunload', arguments.callee);
 			doc.head = doc.html = doc.window = null;
 		});
 	}
 }.extend({
-	prototype: (window.Document != undefined) ? Document.prototype : {},
+	prototype: (window.Document != null) ? Document.prototype : {},
 	__onImplement__: function(name, method){
 		document[name] = method;
 	}

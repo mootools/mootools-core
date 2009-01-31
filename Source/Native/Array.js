@@ -27,7 +27,7 @@ Array.implement({
 		return results;
 	},
 
-	clean: function() {
+	clean: function(){
 		return this.filter(Type.isDefined);
 	},
 

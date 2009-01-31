@@ -129,7 +129,7 @@ Element.implement({
 Native.group(Document, Window).implement({
 
 	getSize: function(){
-		if (Browser.Engine.presto || Browser.Engine.webkit) {
+		if (Browser.Engine.presto || Browser.Engine.webkit){
 			var win = this.getWindow();
 			return {x: win.innerWidth, y: win.innerHeight};
 		}
