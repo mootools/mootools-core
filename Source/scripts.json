@@ -162,6 +162,15 @@
 			"desc": "Extends the basic Request Class with additional methods for sending and receiving JSON data."
 		}
 
+	},
+	
+	"Compatibility": {
+
+		"1.2": {
+			"deps": ["Class"],
+			"desc": "Provides full compatibility with MooTools version 1.2."
+		}
+
 	}
 
 }
