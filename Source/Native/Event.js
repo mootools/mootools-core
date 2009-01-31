@@ -60,7 +60,7 @@ var Event = new Native('Event', function(event, win){
 		}
 	}
 
-	return extend(this, {
+	return Object.append(this, {
 		event: event,
 		type: type,
 

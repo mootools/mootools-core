@@ -17,7 +17,7 @@ Object.extend({
 	},
 	
 	reset: function(object, key){
-		if (key == undefined){
+		if (key == null){
 			for (var p in object) Object.reset(object, p);
 			return;
 		}

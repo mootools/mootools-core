@@ -113,7 +113,7 @@ var Request = new Class({
 		if (['string', 'element'].contains(typeOf(options))) options = {data: options};
 
 		var oldOptions = this.getOptions();
-		options = extend({data: oldOptions.data, url: oldOptions.url, method: oldOptions.method}, options);
+		options = Object.append({data: oldOptions.data, url: oldOptions.url, method: oldOptions.method}, options);
 		var data = options.data, url = options.url, method = options.method;
 
 		switch (typeOf(data)){
@@ -177,7 +177,7 @@ var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
 		var params = Array.link(arguments, {url: Type.isString, data: Type.isDefined});
-		return this.send(extend(params, {method: method.toLowerCase()}));
+		return this.send(Object.append(params, {method: method.toLowerCase()}));
 	};
 });
 
@@ -190,7 +190,7 @@ Element.Properties.send = {
 	set: function(options){
 		var send = this.retrieve('send');
 		if (send) send.cancel();
-		return this.dump('send').store('send:options', extend({
+		return this.dump('send').store('send:options', Object.append({
 			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
 		}, options));
 	},

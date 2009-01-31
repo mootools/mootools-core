@@ -46,7 +46,7 @@ Element.Properties.morph = {
 	set: function(options){
 		var morph = this.retrieve('morph');
 		if (morph) morph.cancel();
-		return this.dump('morph').store('morph:options', extend({link: 'cancel'}, options));
+		return this.dump('morph').store('morph:options', Object.append({link: 'cancel'}, options));
 	},
 
 	get: function(options){

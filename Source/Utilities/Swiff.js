@@ -44,7 +44,7 @@ var Swiff = new Class({
 		Swiff.CallBacks[this.instance] = {};
 
 		var params = options.params, vars = options.vars, callBacks = options.callBacks;
-		var properties = extend({height: options.height, width: options.width}, options.properties);
+		var properties = Object.append({height: options.height, width: options.width}, options.properties);
 
 		var self = this;
 

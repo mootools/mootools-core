@@ -26,7 +26,7 @@ Fx.implement({
 
 Fx.Transition = function(transition, params){
 	params = Array.from(params);
-	return extend(transition, {
+	return Object.append(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
 		},

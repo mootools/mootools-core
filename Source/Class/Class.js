@@ -97,7 +97,7 @@ Class.Mutators = {
 		
 		this.prototype.__constructor__ = this;
 		
-		if (this.prototype.parent == undefined) this.prototype.parent = function(){
+		if (this.prototype.parent == null) this.prototype.parent = function(){
 			var superParent = this.__constructor__.superClass.prototype[this.caller].owner;
 			this.__constructor__ = superParent;
 			var result = superParent.prototype[this.caller].apply(this, arguments);

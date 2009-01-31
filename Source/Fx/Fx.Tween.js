@@ -39,7 +39,7 @@ Element.Properties.tween = {
 	set: function(options){
 		var tween = this.retrieve('tween');
 		if (tween) tween.cancel();
-		return this.dump('tween').store('tween:options', extend({link: 'cancel'}, options));
+		return this.dump('tween').store('tween:options', Object.append({link: 'cancel'}, options));
 	},
 
 	get: function(options){

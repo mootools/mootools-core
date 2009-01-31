@@ -31,7 +31,7 @@ var Browser = {
 		},
 
 		gecko: function(){
-			return (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? 19 : 18);
+			return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? 19 : 18);
 		}
 
 	}

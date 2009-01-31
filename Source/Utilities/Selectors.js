@@ -256,7 +256,7 @@ Selectors.Filters = {
 	byAttribute: function(self, name, operator, value){
 		var result = Element.prototype.getProperty.call(self, name);
 		if (!result) return (operator == '!=');
-		if (!operator || value == undefined) return true;
+		if (!operator || value == null) return true;
 		switch (operator){
 			case '=': return (result == value);
 			case '*=': return (result.contains(value));
@@ -316,7 +316,7 @@ Selectors.Pseudo = {
 	},
 
 	'nth-child': function(argument, local){
-		argument = (argument == undefined) ? 'n' : argument;
+		argument = (argument == null) ? 'n' : argument;
 		var parsed = Selectors.Utils.parseNthArgument(argument);
 		if (parsed.special != 'n') return Selectors.Pseudo[parsed.special].call(this, parsed.a, local);
 		var count = 0;

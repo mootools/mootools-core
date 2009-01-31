@@ -23,14 +23,12 @@ var MooTools = {
 	'build': '%build%'
 };
 
-var extend = function(original, extended){
-	for (var key in (extended || {})) original[key] = extended[key];
-	return original;
-};
-
 var clone = function(object){
-	var parent = Type.getConstructor(object);
-	return (parent && parent.clone) ? parent.clone(object): object;
+	switch (typeOf(object)){
+		case 'object': return Object.clone(object);
+		case 'array': return Array.clone(object);
+		default: return object;
+	}
 };
 
 var check = function(object){
@@ -51,9 +49,15 @@ Function.prototype.extend = function(generics){
 	return this;
 };
 
-Object.__protected__ = Function.__protected__ = Array.__protected__ = String.__protected__ = RegExp.__protected__ = Date.__protected__ = true;
+Object.__protected__ = Function.__protected__ = Array.__protected__ = true;
+String.__protected__ = RegExp.__protected__ = Date.__protected__ = true;
 
 Object.extend({
+	
+	append: function(original, extended){
+		for (var key in (extended || {})) original[key] = extended[key];
+		return original;
+	},
 	
 	from: function(keys, values){
 		keys = Array.from(keys);
@@ -167,7 +171,7 @@ Type.extend({
 	types: [],
 	
 	of: function(object){
-		if (object == undefined) return null;
+		if (object == null) return object;
 		if (object.__type__) return object.__type__();
 		
 		if (object.nodeName){

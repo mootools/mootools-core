@@ -51,7 +51,7 @@ Element.Prototype = {__type__: Element.prototype.__type__};
 // 			if (host && host == window.location.host){
 // 				var win = new Window(iframe.contentWindow);
 // 				new Document(iframe.contentWindow.document);
-// 				extend(win.Element.prototype, Element.Prototype);
+// 				Object.append(win.Element.prototype, Element.Prototype);
 // 			}
 // 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
 // 		};
@@ -63,7 +63,7 @@ Element.Prototype = {__type__: Element.prototype.__type__};
 
 var Elements = new Native(null, function(elements, options){
 	
-	options = extend({ddup: true, cash: true}, options);
+	options = Object.append({ddup: true, cash: true}, options);
 	elements = elements || [];
 	if (options.ddup || options.cash){
 		var uniques = {}, returned = [];
@@ -77,7 +77,7 @@ var Elements = new Native(null, function(elements, options){
 		}
 		elements = returned;
 	}
-	return (options.cash) ? extend(elements, this) : elements;
+	return (options.cash) ? Object.append(elements, this) : elements;
 
 });
 
@@ -135,7 +135,7 @@ Window.implement({
 		
 		element: function(el, nocash){
 			Native.uid(el);
-			return (!nocash && !el.__type__ && !(/^object|embed$/i).test(el.tagName)) ? extend(el, Element.Prototype) : el;
+			return (!nocash && !el.__type__ && !(/^object|embed$/i).test(el.tagName)) ? Object.append(el, Element.Prototype) : el;
 		},
 		
 		object: function(obj, nocash, doc){
@@ -250,8 +250,8 @@ var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'fr
 
 bools = Object.from(bools, bools);
 
-extend(attributes, bools);
-extend(attributes, Object.from(camels.map(String.toLowerCase), camels));
+Object.append(attributes, bools);
+Object.append(attributes, Object.from(camels.map(String.toLowerCase), camels));
 
 var inserters = {
 
@@ -321,7 +321,7 @@ Element.implement({
 
 	setProperty: function(attribute, value){
 		var key = attributes[attribute];
-		if (value == undefined) return this.removeProperty(attribute);
+		if (value == null) return this.removeProperty(attribute);
 		if (key && bools[attribute]) value = !!value;
 		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
 		return this;
@@ -567,7 +567,7 @@ Native.group(Element, Window, Document).implement({
 
 	retrieve: function(property, dflt){
 		var storage = get(Native.uid(this)), prop = storage[property];
-		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
+		if (dflt != undefined && prop == null) prop = storage[property] = dflt;
 		return pick(prop);
 	},
 
