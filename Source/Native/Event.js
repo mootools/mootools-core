@@ -82,7 +82,7 @@ var Event = new Native('Event', function(event, win){
 		meta: event.metaKey
 	});
 
-});
+}, window.Event);
 
 Event.Keys = {
 	'enter': 13,

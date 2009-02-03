@@ -10,12 +10,16 @@ License:
 var Element = new Native('Element', function(tag, props){
 	if (typeOf(tag) == 'string') return document.newElement(tag, props);
 	return $(tag).set(props);
-});
+}, window.Element);
 
-Element.Prototype = {_type: Element.prototype._type};
+Element.Prototype = {
+	constructor: Element,
+	_type: function(){
+		return 'element';
+	}
+};
 
 Element._onImplement = function(key, value){
-	
 	Element.Prototype[key] = value;
 	if (Array[key]) return;
 	Elements.implement(Object.from(key, function(){
@@ -133,7 +137,11 @@ Window.implement({
 		},
 		element: function(el, nocash){
 			Native.uid(el);
-			return (!nocash && !el._type && !(/^object|embed$/i).test(el.tagName)) ? Object.append(el, Element.Prototype) : el;
+			if (!nocash && !el._type && !(/^object|embed$/i).test(el.tagName)){
+				el.constructor = Element;
+				Object.append(el, Element.Prototype);
+			}
+			return el;
 		},
 		object: function(obj, nocash, doc){
 			return (obj.toElement) ? $.element(obj.toElement(doc), nocash) : null;

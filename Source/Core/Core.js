@@ -70,10 +70,14 @@ Utility.extend({
 	
 });
 
-var Native = function(name, object){
+var Native = function(name, object, legacy){
 	object.extend(this);
 	object.constructor = Native;
 	object.prototype.constructor = object;
+	if (legacy){
+		object.prototype = legacy.prototype;
+		object.legacy = legacy;
+	}
 	if (name) new Type(name, object);
 	return object;
 };
