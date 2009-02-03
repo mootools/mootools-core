@@ -13,7 +13,6 @@ var Element = new Native('Element', function(tag, props){
 }, window.Element);
 
 Element.Prototype = {
-	constructor: Element,
 	_type: function(){
 		return 'element';
 	}
