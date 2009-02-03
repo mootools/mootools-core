@@ -25,22 +25,22 @@ Function.type = Type.isFunction;
 Window.type = Type.isWindow;
 Document.type = Type.isDocument;
 
-// var Hash = new Native('Hash', function(object){
-// 	for (var p in object) this[p] = Utility.clone(object[p]);
-// });
-// 
-// Object.implement(Object.map(Object, function(method, name){
-// 
-// 	return function(){
-// 		return method.apply(null, [this].concat(arguments));
-// 	};
-// 
-// }));
-// 
-// Object.implement('forEach', function(fn, bind){
-// 	for (var p in this){
-// 		if (!Object.prototype[p]) fn.call(bind, this[p], p, this);
-// 	}
-// }).alias('forEach', 'each');
+var Hash = new Native('Hash', function(object){
+	for (var p in object) this[p] = Utility.clone(object[p]);
+});
 
-Native.group(Element, Window, Document).alias('dump', 'eliminate');
+Hash.implement(Object.map(Object, function(method, name){
+
+	return function(){
+		return method.apply(null, [this].concat(arguments));
+	};
+
+}));
+
+Hash.implement(Object.from('forEach', function(fn, bind){
+	for (var p in this){
+		if (!Hash.prototype[p]) fn.call(bind, this[p], p, this);
+	}
+})).alias({'each': 'forEach'});
+
+Native.group(Element, Window, Document).alias({'eliminate': 'dump'});
