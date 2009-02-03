@@ -122,11 +122,11 @@ Document.implement({
 
 Window.implement({
 
-	$: function(el, nocash){
+	$: (function(el, nocash){
 		if (el && el._type && el.uid) return el;
 		var type = typeOf(el);
 		return ($[type]) ? $[type](el, nocash, this.document) : null;
-	}.extend({
+	}).extend({
 		string: function(id, nocash, doc){
 			id = doc.getElementById(id);
 			return (id) ? $.element(id, nocash) : null;

@@ -23,16 +23,20 @@ var MooTools = {
 	'build': '%build%'
 };
 
+Object.has = function(object, key){
+	return (object.hasOwnProperty(key) && object[key] != null);
+};
+
 Function.prototype.extend = function(object, override){
 	for (var key in object){
-		if (override || !this.hasOwnProperty(key)) this[key] = object[key];
+		if (override || !Object.has(this, key)) this[key] = object[key];
 	}
 	return this;
 };
 
 Function.prototype.implement = function(object, override){
 	for (var key in object){
-		if (override || !this.prototype.hasOwnProperty(key)) this.prototype[key] = object[key];
+		if (override || !Object.has(this.prototype, key)) this.prototype[key] = object[key];
 	}
 	return this;
 };
@@ -80,11 +84,11 @@ Native.implement({
 	
 	implement: function(methods, override){
 		for (var name in methods) (function(name, method){
-			if (override || !this.prototype.hasOwnProperty(name)){
+			if (override || !Object.has(this.prototype, name)){
 				this.prototype[name] = method;
 				if (this._onImplement) this._onImplement(name, method);
 			}
-			if ((override || !this.hasOwnProperty(name)) && typeOf(method) == 'function') this[name] = function(){
+			if ((override || !Object.has(this, name)) && typeOf(method) == 'function') this[name] = function(){
 				var args = Array.from(arguments);
 				return method.apply(args.shift(), args);
 			};

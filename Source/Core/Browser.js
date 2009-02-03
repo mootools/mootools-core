@@ -113,14 +113,14 @@ String.extend({
 	
 });
 
-var Window = new Native('Window', function(win){
+var Window = new Native('Window', (function(win){
 	if (!win.Element){
 		win.Element = function(){};
 		if (Browser.Engine.webkit) win.document.createElement("iframe"); //fixes safari 2
 		win.Element.prototype = (Browser.Engine.webkit) ? window["[[DOMElement.prototype]]"] : {};
 	}
 	win.document.window = win;
-}.extend({
+}).extend({
 	prototype: (window.Window != null) ? Window.prototype : {},
 	_onImplement: function(name, method){
 		window[name] = method;
@@ -129,10 +129,11 @@ var Window = new Native('Window', function(win){
 
 new Window(window);
 
-var Document = new Native('Document', function(doc){
+var Document = new Native('Document', (function(doc){
 	doc.head = doc.getElementsByTagName('head')[0];
 	doc.html = doc.getElementsByTagName('html')[0];
 	if (Browser.Engine.trident){
+		
 		if (Browser.Engine.version <= 4) Function.stab(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
@@ -141,7 +142,7 @@ var Document = new Native('Document', function(doc){
 			doc.head = doc.html = doc.window = null;
 		});
 	}
-}.extend({
+}).extend({
 	prototype: (window.Document != null) ? Document.prototype : {},
 	_onImplement: function(name, method){
 		document[name] = method;

@@ -7,12 +7,12 @@ License:
 */
 
 var Class = function(properties){
-		
-	var newClass = function(){
+	
+	var newClass = (function(){
 		if (newClass._prototyping) return this;
 		Object.reset(this);
 		return (this.initialize) ? this.initialize.apply(this, arguments) : this;
-	}.extend(this);
+	}).extend(this);
 	
 	newClass._implements = [];
 	
@@ -41,13 +41,13 @@ Class.implement({
 		}
 
 		var wrap = function(key, method, self){
-			return function(){
+			return (function(){
 				var caller = this.caller;
 				this.caller = key;
 				var result = method.apply(this, arguments);
 				this.caller = caller;
 				return result;
-			}.extend({owner: self, origin: method}).disguise(method);
+			}).extend({owner: self, origin: method}).disguise(method);
 		};
 
 		var properties = (typeOf(item) == 'class') ? item.getPrototype() : item;
