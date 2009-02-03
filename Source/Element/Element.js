@@ -12,11 +12,10 @@ var Element = new Native('Element', function(tag, props){
 	return $(tag).set(props);
 }, window.Element);
 
-Element.Prototype = {
-	_type: function(){
-		return 'element';
-	}
-};
+Element.Prototype = document.createElement('div');
+Element.Prototype._type = Function.from('element');
+Element.Prototype.constructor = Element;
+
 
 Element._onImplement = function(key, value){
 	Element.Prototype[key] = value;
@@ -137,8 +136,8 @@ Window.implement({
 		element: function(el, nocash){
 			Native.uid(el);
 			if (!nocash && !el._type && !(/^object|embed$/i).test(el.tagName)){
-				el.constructor = Element;
-				Object.append(el, Element.Prototype);
+				if (el.mergeAttributes) el.mergeAttributes(Element.Prototype);
+				else Object.append(el, Element.Prototype);
 			}
 			return el;
 		},

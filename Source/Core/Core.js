@@ -70,112 +70,6 @@ Utility.extend({
 	
 });
 
-var Native = function(name, object, legacy){
-	object.extend(this);
-	object.constructor = Native;
-	object.prototype.constructor = object;
-	if (legacy){
-		object.prototype = legacy.prototype;
-		object.legacy = legacy;
-	}
-	if (name) new Type(name, object);
-	return object;
-};
-
-Native._extends = Function;
-
-Native.implement({
-	
-	implement: function(methods, override){
-		for (var name in methods) (function(name, method){
-			if (override || !Object.has(this.prototype, name)){
-				this.prototype[name] = method;
-				if (this._onImplement) this._onImplement(name, method);
-			}
-			if ((override || !Object.has(this, name)) && typeOf(method) == 'function') this[name] = function(){
-				var args = Array.from(arguments);
-				return method.apply(args.shift(), args);
-			};
-		}).call(this, name, methods[name]);
-		
-		return this;
-	},
-
-	alias: function(methods, override){
-		for (var p in methods) methods[p] = this.prototype[methods[p]];
-		return this.implement(methods, override);
-	}
-	
-});
-
-var Type = function(name, object){
-	var lower = name.toLowerCase();
-	Type.types[lower] = object;
-	Type['is' + name] = function(object){
-		return (typeOf(object) == lower);
-	};
-	if (!object) return;
-	if (!object.hasOwnProperty('group')) object.group = Type.group(object);
-	if (!object.prototype.hasOwnProperty('_type')) object.prototype._type = function(){
-		return lower;
-	};
-};
-
-Type.extend({
-	
-	types: [],
-	
-	of: function(object){
-		if (object == null) return null;
-		if (object._type) return object._type();
-		
-		if (object.nodeName){
-			switch (object.nodeType){
-				case 1: return 'element';
-				case 3: return (/\S/).test(object.nodeValue) ? 'textnode' : 'whitespace';
-			}
-		} else if (typeof object.length == 'number'){
-			if (object.callee) return 'arguments';
-			else if (object.item) return 'collection';
-		}
-		
-		return typeof object;
-	},
-	
-	group: function(object){
-		return function(){
-			var single = {}, items = arguments;
-			for (var name in object.prototype) (function(name, method){
-				single[name] = function(){
-					var values = [];
-					for (var i = 0, l = items.length; i < l; i ++) values.push(method.apply(items[i], arguments));
-					return values;
-				};
-			})(name, object.prototype[name]);
-			return single;
-		};
-	},
-	
-	isIterable: function(object){
-		var type = typeOf(object);
-		return ((type == 'array' || type == 'arguments' || type == 'collection') || instanceOf(object, Array));
-	},
-	
-	isDefined: function(object){
-		return (object != undefined);
-	}
-	
-});
-
-var typeOf = Type.of;
-
-var instanceOf = function(object, constructor){
-	if (object.constructor == constructor) return true;
-	return object instanceof constructor;
-};
-
-new Native('Native', Native);
-
 Object.extend({
 	
 	from: function(keys, values){
@@ -259,6 +153,110 @@ Date.extend({
 	}
 
 });
+
+var Native = function(name, object, legacy){
+	object.extend(this);
+	object.constructor = Native;
+	object.prototype.constructor = object;
+	if (legacy){
+		object.prototype = legacy.prototype;
+		object.legacy = legacy;
+	}
+	if (name) new Type(name, object);
+	return object;
+};
+
+Native._extends = Function;
+
+Native.implement({
+	
+	implement: function(methods, override){
+		for (var name in methods) (function(name, method){
+			if (override || !Object.has(this.prototype, name)){
+				this.prototype[name] = method;
+				if (this._onImplement) this._onImplement(name, method);
+			}
+			if ((override || !Object.has(this, name)) && typeOf(method) == 'function') this[name] = function(){
+				var args = Array.from(arguments);
+				return method.apply(args.shift(), args);
+			};
+		}).call(this, name, methods[name]);
+		
+		return this;
+	},
+
+	alias: function(methods, override){
+		for (var p in methods) methods[p] = this.prototype[methods[p]];
+		return this.implement(methods, override);
+	}
+	
+});
+
+var Type = function(name, object){
+	var lower = name.toLowerCase();
+	Type.types[lower] = object;
+	Type['is' + name] = function(object){
+		return (typeOf(object) == lower);
+	};
+	if (!object) return;
+	if (!object.hasOwnProperty('group')) object.group = Type.group(object);
+	if (!object.prototype.hasOwnProperty('_type')) object.prototype._type = Function.from(lower);
+};
+
+Type.extend({
+	
+	types: [],
+	
+	of: function(object){
+		if (object == null) return null;
+		if (object._type) return object._type();
+		
+		if (object.nodeName){
+			switch (object.nodeType){
+				case 1: return 'element';
+				case 3: return (/\S/).test(object.nodeValue) ? 'textnode' : 'whitespace';
+			}
+		} else if (typeof object.length == 'number'){
+			if (object.callee) return 'arguments';
+			else if (object.item) return 'collection';
+		}
+		
+		return typeof object;
+	},
+	
+	group: function(object){
+		return function(){
+			var single = {}, items = arguments;
+			for (var name in object.prototype) (function(name, method){
+				single[name] = function(){
+					var values = [];
+					for (var i = 0, l = items.length; i < l; i ++) values.push(method.apply(items[i], arguments));
+					return values;
+				};
+			})(name, object.prototype[name]);
+			return single;
+		};
+	},
+	
+	isIterable: function(object){
+		var type = typeOf(object);
+		return ((type == 'array' || type == 'arguments' || type == 'collection') || instanceOf(object, Array));
+	},
+	
+	isDefined: function(object){
+		return (object != undefined);
+	}
+	
+});
+
+var typeOf = Type.of;
+
+var instanceOf = function(object, constructor){
+	if (object.constructor == constructor) return true;
+	return object instanceof constructor;
+};
+
+new Native('Native', Native);
 
 (function(){
 	
