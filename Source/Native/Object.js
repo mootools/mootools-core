@@ -8,6 +8,15 @@ License:
 
 Object.extend({
 	
+	append: function(original, extended){
+		for (var key in (extended || {})) original[key] = extended[key];
+		return original;
+	},
+	
+	forEach: function(object, fn, bind){
+		for (var p in object) fn.call(bind, object[p], p, object);
+	},
+	
 	beget: function(object){
 		var F = function(){};
 		F.prototype = object;
@@ -43,7 +52,7 @@ Object.extend({
 					if (typeOf(sk) == 'object') Object.mixin(sk, ok);
 					else source[key] = Object.clone(ok);
 				} else {
-					source[key] = clone(ok);
+					source[key] = Utility.clone(ok);
 				}
 			}
 		}
@@ -114,3 +123,5 @@ Object.extend({
 	}
 	
 });
+
+Object.each = Object.forEach;

@@ -18,7 +18,7 @@
 		
 		"Object": {
 			"deps": ["Core"],
-			"desc": "Contains Object generics."
+			"desc": "Contains Object generics / prototypes."
 		},
 
 		"Array": {

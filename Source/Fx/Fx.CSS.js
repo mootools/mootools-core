@@ -15,7 +15,7 @@ Fx.CSS = new Class({
 	prepare: function(element, property, values){
 		values = Array.from(values);
 		var values1 = values[1];
-		if (!check(values1)){
+		if (!Utility.check(values1)){
 			values[1] = values[0];
 			values[0] = element.getStyle(property);
 		}
@@ -35,7 +35,7 @@ Fx.CSS = new Class({
 				if (found) continue;
 				var parser = Fx.CSS.Parsers[key];
 				var parsed = parser.parse(val);
-				if (check(parsed)) found = {value: parsed, parser: parser};
+				if (Utility.check(parsed)) found = {value: parsed, parser: parser};
 			}
 			found = found || {value: val, parser: Fx.CSS.Parsers.String};
 			return found;

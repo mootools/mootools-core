@@ -8,6 +8,11 @@ License:
 
 Array.implement({
 	
+	append: function(array){
+		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
+		return this;
+	},
+	
 	forEach: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
 	},
@@ -70,11 +75,6 @@ Array.implement({
 		return this.indexOf(item, from) != -1;
 	},
 
-	append: function(array){
-		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
-		return this;
-	},
-
 	getLast: function(){
 		return (this.length) ? this[this.length - 1] : null;
 	},
@@ -108,9 +108,8 @@ Array.implement({
 	flatten: function(){
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			var type = typeOf(this[i]);
-			if (!type) continue;
-			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
+			if (this[i] == null) continue;
+			array = array.concat((Type.isIterable(this[i])) ? Array.flatten(this[i]) : this[i]);
 		}
 		return array;
 	},
@@ -137,4 +136,4 @@ Array.implement({
 
 });
 
-Array.alias('forEach', 'each');
+Array.alias({'each': 'forEach'});

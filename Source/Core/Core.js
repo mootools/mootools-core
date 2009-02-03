@@ -23,134 +23,81 @@ var MooTools = {
 	'build': '%build%'
 };
 
-var clone = function(object){
-	switch (typeOf(object)){
-		case 'object': return Object.clone(object);
-		case 'array': return Array.clone(object);
-		default: return object;
-	}
-};
-
-var check = function(object){
-	return !!(object || object === 0);
-};
-
-var pick = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		if (arguments[i] != null) return arguments[i];
-	}
-	return null;
-};
-
-Function.prototype.extend = function(generics){
-	for (var generic in generics){
-		if (!this.__protected__ || !this[generic]) this[generic] = generics[generic];
+Function.prototype.extend = function(object, override){
+	for (var key in object){
+		if (override || !this.hasOwnProperty(key)) this[key] = object[key];
 	}
 	return this;
 };
 
-Object.__protected__ = Function.__protected__ = Array.__protected__ = true;
-String.__protected__ = RegExp.__protected__ = Date.__protected__ = true;
+Function.prototype.implement = function(object, override){
+	for (var key in object){
+		if (override || !this.prototype.hasOwnProperty(key)) this.prototype[key] = object[key];
+	}
+	return this;
+};
 
-Object.extend({
-	
-	append: function(original, extended){
-		for (var key in (extended || {})) original[key] = extended[key];
-		return original;
-	},
-	
-	from: function(keys, values){
-		keys = Array.from(keys);
-		values = Array.from(values);
-		var object = {};
-		for (var i = 0; i < keys.length; i++) object[keys[i]] = values[i] || null;
-		return object;
-	},
-	
-	forEach: function(object, fn, bind){
-		for (var p in object) fn.call(bind, object[p], p, object);
-	},
+Array.prototype._extends = Object;
+Number.prototype._extends = Object;
+Function.prototype._extends = Object;
+
+var Utility = function(){};
+
+Utility.extend({
 	
 	clone: function(object){
-		var unlinked = {};
-		for (var p in object) unlinked[p] = clone(object[p]);
-		return unlinked;
-	}
-	
-});
-
-Object.each = Object.forEach;
-
-Array.extend({
-	
-	from: function(iterable){
-		switch(typeOf(iterable)){
-			case 'arguments': case 'collection':
-				var array = [];
-				for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
-				return array;
-			case 'array': return iterable;
-			default: return [iterable];
+		switch (typeOf(object)){
+			case 'object': return Object.clone(object);
+			case 'array': return Array.clone(object);
+			default: return object;
 		}
 	},
-	
-	forEach: function(iterable, fn, bind){
-		for (var i = 0, l = iterable.length; i < l; i++) fn.call(bind, iterable[i], i, iterable);
-	},
-	
-	clone: function(object){
-		var unlinked = [];
-		for (var i = 0, l = object.length; i < l; i++) unlinked[i] = clone(object[i]);
-		return unlinked;
-	}
-	
-});
 
-Array.each = Array.forEach;
-
-Function.extend({
-	
-	from: function(value){
-		return (typeOf(value) == 'function') ? value : function(){
-			return value;
-		};
+	check: function(object){
+		return !!(object || object === 0);
 	},
 
-	empty: function(){},
-
-	stab: function(){
+	pick: function(){
 		for (var i = 0, l = arguments.length; i < l; i++){
-			try {
-				return arguments[i]();
-			} catch(e){}
+			if (arguments[i] != null) return arguments[i];
 		}
 		return null;
 	}
 	
 });
 
-Number.extend({
+var Native = function(name, object){
+	object.extend(this);
+	object.constructor = Native;
+	object.prototype.constructor = object;
+	if (name) new Type(name, object);
+	return object;
+};
+
+Native._extends = Function;
+
+Native.implement({
 	
-	from: function(object, base){
-		return parseInt(object, base || 10);
+	implement: function(methods, override){
+		for (var name in methods) (function(name, method){
+			if (override || !this.prototype.hasOwnProperty(name)){
+				this.prototype[name] = method;
+				if (this._onImplement) this._onImplement(name, method);
+			}
+			if ((override || !this.hasOwnProperty(name)) && typeOf(method) == 'function') this[name] = function(){
+				var args = Array.from(arguments);
+				return method.apply(args.shift(), args);
+			};
+		}).call(this, name, methods[name]);
+		
+		return this;
 	},
-	
-	random: function(min, max){
-		return Math.floor(Math.random() * (max - min + 1) + min);
-	},
-	
-	__type__: function(){
-		return (isFinite(this)) ? 'number' : null;
+
+	alias: function(methods, override){
+		for (var p in methods) methods[p] = this.prototype[methods[p]];
+		return this.implement(methods, override);
 	}
-
-});
-
-Date.extend({
-
-	now: function(){
-		return +(new Date);
-	}
-
+	
 });
 
 var Type = function(name, object){
@@ -160,8 +107,8 @@ var Type = function(name, object){
 		return (typeOf(object) == lower);
 	};
 	if (!object) return;
-	if (!object.group) object.group = Type.group(object);
-	if (!object.prototype.__type__) object.prototype.__type__ = function(){
+	if (!object.hasOwnProperty('group')) object.group = Type.group(object);
+	if (!object.prototype.hasOwnProperty('_type')) object.prototype._type = function(){
 		return lower;
 	};
 };
@@ -171,8 +118,8 @@ Type.extend({
 	types: [],
 	
 	of: function(object){
-		if (object == null) return object;
-		if (object.__type__) return object.__type__();
+		if (object == null) return null;
+		if (object._type) return object._type();
 		
 		if (object.nodeName){
 			switch (object.nodeType){
@@ -201,13 +148,9 @@ Type.extend({
 		};
 	},
 	
-	getConstructor: function(object){
-		return Type.types[typeOf(object)] || null;
-	},
-	
 	isIterable: function(object){
 		var type = typeOf(object);
-		return (type == 'array' || type == 'arguments' || type == 'collection');
+		return ((type == 'array' || type == 'arguments' || type == 'collection') || instanceOf(object, Array));
 	},
 	
 	isDefined: function(object){
@@ -218,42 +161,96 @@ Type.extend({
 
 var typeOf = Type.of;
 
-var Native = function(name, object){
-	object.extend(this);
-	object.prototype.constructor = object;
-	if (name) new Type(name, object);
-	return object;
-};
-
-Native.prototype = {
-	
-	constructor: Native,
-	
-	implement: function(name, method){
-		if (typeOf(name) == 'object'){
-			for (var key in name) this.implement(key, name[key]);
-			return this;
-		}
-
-		if (!this.__protected__ || !this.prototype[name]){
-			this.prototype[name] = method;
-			if (this.__onImplement__) this.__onImplement__(name, method);
-		}
-		if (typeOf(method) == 'function' && (!this.__protected__ || !this[name])) this[name] = function(){
-			var args = Array.from(arguments);
-			return method.apply(args.shift(), args);
-		};
-		
-		return this;
-	},
-	
-	alias: function(name, newName){
-		return this.implement(newName, this.prototype[name]);
-	}
-	
+var instanceOf = function(object, constructor){
+	if (object.constructor == constructor) return true;
+	return object instanceof constructor;
 };
 
 new Native('Native', Native);
+
+Object.extend({
+	
+	from: function(keys, values){
+		keys = Array.from(keys);
+		values = Array.from(values);
+		var object = {};
+		for (var i = 0; i < keys.length; i++) object[keys[i]] = values[i] || null;
+		return object;
+	},
+	
+	clone: function(object){
+		var unlinked = {};
+		for (var p in object) unlinked[p] = Utility.clone(object[p]);
+		return unlinked;
+	}
+	
+});
+
+Array.extend({
+
+	from: function(iterable){
+		switch(typeOf(iterable)){
+			case 'arguments': case 'collection':
+				var array = [];
+				for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+				return array;
+			case 'array': return iterable;
+			default: return [iterable];
+		}
+	},
+	
+	clone: function(object){
+		var unlinked = [];
+		for (var i = 0, l = object.length; i < l; i++) unlinked[i] = Utility.clone(object[i]);
+		return unlinked;
+	}
+	
+});
+
+Function.extend({
+	
+	from: function(value){
+		return (typeOf(value) == 'function') ? value : function(){
+			return value;
+		};
+	},
+
+	empty: function(){},
+
+	stab: function(){
+		for (var i = 0, l = arguments.length; i < l; i++){
+			try {
+				return arguments[i]();
+			} catch(e){}
+		}
+		return null;
+	}
+	
+});
+
+Number.prototype._type = function(){
+	return (isFinite(this)) ? 'number' : null;
+};
+
+Number.extend({
+
+	from: function(object, base){
+		return parseInt(object, base || 10);
+	},
+
+	random: function(min, max){
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	}
+
+});
+
+Date.extend({
+	
+	now: function(){
+		return +(new Date);
+	}
+
+});
 
 (function(){
 	

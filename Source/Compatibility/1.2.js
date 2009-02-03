@@ -1,13 +1,13 @@
 var $clear = Function.clear;
-var $chk = check;
+var $chk = Utility.check;
 var $defined = Type.isDefined;
 var $arguments = Function.argument;
 var $empty = Function.empty;
 var $extend = Object.extend;
 var $lambda = Function.from;
 var $merge = Object.merge;
-var $each = each;
-var $pick = pick;
+var $each = Utility.each;
+var $pick = Utility.pick;
 var $random = Number.random;
 var $splat = $A = Array.from;
 var $time = Date.now;
@@ -22,23 +22,25 @@ Number.type = Type.isNumber;
 RegExp.type = Type.isRegExp;
 String.type = Type.isString;
 Function.type = Type.isFunction;
+Window.type = Type.isWindow;
+Document.type = Type.isDocument;
 
-var Hash = new Native('Hash', function(object){
-	for (var p in object) this[p] = clone(object[p]);
-});
-
-Hash.implement(Object.map(Object, function(method, name){
-
-	return function(){
-		return method.apply(null, [this].concat(arguments));
-	};
-
-}));
-
-Hash.implement('forEach', function(fn, bind){
-	for (var p in this){
-		if (!Hash.prototype[p]) fn.call(bind, this[p], p, this);
-	}
-}).alias('forEach', 'each');
+// var Hash = new Native('Hash', function(object){
+// 	for (var p in object) this[p] = Utility.clone(object[p]);
+// });
+// 
+// Object.implement(Object.map(Object, function(method, name){
+// 
+// 	return function(){
+// 		return method.apply(null, [this].concat(arguments));
+// 	};
+// 
+// }));
+// 
+// Object.implement('forEach', function(fn, bind){
+// 	for (var p in this){
+// 		if (!Object.prototype[p]) fn.call(bind, this[p], p, this);
+// 	}
+// }).alias('forEach', 'each');
 
 Native.group(Element, Window, Document).alias('dump', 'eliminate');

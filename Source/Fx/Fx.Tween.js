@@ -61,7 +61,7 @@ Element.implement({
 
 	fade: function(how){
 		var fade = this.get('tween'), o = 'opacity', toggle;
-		how = pick(how, 'toggle');
+		how = Utility.pick(how, 'toggle');
 		switch (how){
 			case 'in': fade.start(o, 1); break;
 			case 'out': fade.start(o, 0); break;

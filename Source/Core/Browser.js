@@ -122,7 +122,7 @@ var Window = new Native('Window', function(win){
 	win.document.window = win;
 }.extend({
 	prototype: (window.Window != null) ? Window.prototype : {},
-	__onImplement__: function(name, method){
+	_onImplement: function(name, method){
 		window[name] = method;
 	}
 }));
@@ -143,7 +143,7 @@ var Document = new Native('Document', function(doc){
 	}
 }.extend({
 	prototype: (window.Document != null) ? Document.prototype : {},
-	__onImplement__: function(name, method){
+	_onImplement: function(name, method){
 		document[name] = method;
 	}
 }));

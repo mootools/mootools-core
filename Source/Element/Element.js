@@ -12,11 +12,13 @@ var Element = new Native('Element', function(tag, props){
 	return $(tag).set(props);
 });
 
-Element.__onImplement__ = function(key, value){
+Element.Prototype = {_type: Element.prototype._type};
+
+Element._onImplement = function(key, value){
 	
 	Element.Prototype[key] = value;
 	if (Array[key]) return;
-	Elements.implement(key, function(){
+	Elements.implement(Object.from(key, function(){
 		var items = [], elements = true;
 		for (var i = 0, j = this.length; i < j; i++){
 			var returns = this[i][key].apply(this[i], arguments);
@@ -24,11 +26,9 @@ Element.__onImplement__ = function(key, value){
 			if (elements) elements = (typeOf(returns) == 'element');
 		}
 		return (elements) ? new Elements(items) : items;
-	});
+	}));
 	
 };
-
-Element.Prototype = {__type__: Element.prototype.__type__};
 
 // var IFrame = new Native({
 // 
@@ -42,7 +42,7 @@ Element.Prototype = {__type__: Element.prototype.__type__};
 // 		var iframe = $(params.iframe) || false;
 // 		var onload = props.onload || Function.empty;
 // 		delete props.onload;
-// 		props.id = props.name = pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Date.now());
+// 		props.id = props.name = Utility.pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Date.now());
 // 		iframe = new Element(iframe || 'iframe', props);
 // 		var onFrameLoad = function(){
 // 			var host = Function.stab(function(){
@@ -61,7 +61,7 @@ Element.Prototype = {__type__: Element.prototype.__type__};
 // 
 // });
 
-var Elements = new Native(null, function(elements, options){
+var Elements = new Native('Elements', function(elements, options){
 	
 	options = Object.append({ddup: true, cash: true}, options);
 	elements = elements || [];
@@ -123,25 +123,21 @@ Document.implement({
 Window.implement({
 
 	$: function(el, nocash){
-		if (el && el.__type__ && el.uid) return el;
+		if (el && el._type && el.uid) return el;
 		var type = typeOf(el);
 		return ($[type]) ? $[type](el, nocash, this.document) : null;
 	}.extend({
-		
 		string: function(id, nocash, doc){
 			id = doc.getElementById(id);
 			return (id) ? $.element(id, nocash) : null;
 		},
-		
 		element: function(el, nocash){
 			Native.uid(el);
-			return (!nocash && !el.__type__ && !(/^object|embed$/i).test(el.tagName)) ? Object.append(el, Element.Prototype) : el;
+			return (!nocash && !el._type && !(/^object|embed$/i).test(el.tagName)) ? Object.append(el, Element.Prototype) : el;
 		},
-		
 		object: function(obj, nocash, doc){
 			return (obj.toElement) ? $.element(obj.toElement(doc), nocash) : null;
 		}
-
 	}),
 
 	$$: function(selector){
@@ -281,16 +277,20 @@ inserters.inside = inserters.bottom;
 Object.each(inserters, function(inserter, where){
 	
 	where = where.capitalize();
-
-	Element.implement('inject' + where, function(el){
+	
+	var obj = {};
+	
+	obj['inject' + where] = function(el){
 		inserter(this, $(el, true));
 		return this;
-	});
-
-	Element.implement('grab' + where, function(el){
+	};
+	
+	obj['grab' + where] = function(el){
 		inserter($(el, true), this);
 		return this;
-	});
+	};
+
+	Element.implement(obj);
 	
 });
 
@@ -568,7 +568,7 @@ Native.group(Element, Window, Document).implement({
 	retrieve: function(property, dflt){
 		var storage = get(Native.uid(this)), prop = storage[property];
 		if (dflt != null && prop == null) prop = storage[property] = dflt;
-		return pick(prop);
+		return Utility.pick(prop);
 	},
 
 	store: function(property, value){

@@ -23,7 +23,7 @@ Number.implement({
 
 });
 
-Number.alias('times', 'each');
+Number.alias({'each': 'times'});
 
 (function(math){
 	var methods = {};
