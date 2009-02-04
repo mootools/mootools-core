@@ -1,6 +1,7 @@
 /*
 Script: Fx.Morph.js
-	Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules.
+	Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules,
+		or CSS based selector rules.
 
 License:
 	MIT-style license.

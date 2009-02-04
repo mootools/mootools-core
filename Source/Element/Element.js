@@ -83,6 +83,8 @@ var Elements = new Native('Elements', function(elements, options){
 
 });
 
+Elements.superClass = Array;
+
 Elements.implement({
 
 	filter: function(filter, bind){
@@ -193,7 +195,11 @@ Native.group(Element, Document).implement({
 (function(){
 
 var collected = {}, storage = {};
-var props = {input: 'checked', option: 'selected', textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'};
+var props = {
+	input: 'checked',
+	option: 'selected',
+	textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'
+};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
@@ -247,8 +253,10 @@ var attributes = {
 	'for': 'htmlFor',
 	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
 };
-var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
-var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
+	'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
+var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 
 bools = Object.from(bools, bools);
 

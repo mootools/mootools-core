@@ -41,9 +41,7 @@ Function.prototype.implement = function(object, override){
 	return this;
 };
 
-Array.prototype._extends = Object;
-Number.prototype._extends = Object;
-Function.prototype._extends = Object;
+Array.superClass = Number.superClass = Function.superClass = String.superClass = Date.superClass = Boolean.superClass = Object;
 
 var Utility = function(){};
 
@@ -166,7 +164,7 @@ var Native = function(name, object, legacy){
 	return object;
 };
 
-Native._extends = Function;
+Native.superClass = Function;
 
 Native.implement({
 	
@@ -269,10 +267,12 @@ new Native('Native', Native);
 
 	Type.types.object = Object;
 
-	var arrayNames = ["concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse", "shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"];
+	var arrayNames = ["concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse",
+		"shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"];
 	var arrayPrototypes = [];
 
-	var stringNames = ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"];
+	var stringNames = ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match",
+		"replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"];
 	var stringPrototypes = [];
 
 	for (var i = 0; i < arrayNames.length; i++) arrayPrototypes.push(Array.prototype[arrayNames[i]]);

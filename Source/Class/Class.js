@@ -25,7 +25,7 @@ var Class = function(properties){
 	return newClass;
 };
 
-Class._extends = Function;
+Class.superClass = Function;
 
 Class.implement({
 	
@@ -86,7 +86,6 @@ Class.Mutators = {
 	Extends: function(superClass){
 		this.superClass = superClass;
 		this.prototype = superClass.getPrototype();
-		this._extends = superClass;
 		this._implements.append(superClass._implements);
 		
 		Object.reset(this.prototype);

@@ -6,8 +6,10 @@ License:
 	MIT-style license.
 
 Credits:
-	- Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
-	- Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+	- Element positioning based on the [qooxdoo](http://qooxdoo.org/)
+		code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
+	- Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/)
+		code, [BSD License](http://developer.yahoo.com/yui/license.html).
 */
 
 (function(){
