@@ -98,7 +98,11 @@ String.extend({
 			document.head.removeChild(script);
 		}
 		return text;
-	},
+	}
+	
+});
+
+String.implement({
 	
 	stripScripts: function(option){
 		var scripts = '';
@@ -110,7 +114,7 @@ String.extend({
 		else if (typeOf(option) == 'function') option(scripts, text);
 		return text;
 	}
-	
+
 });
 
 var Window = new Native('Window', function(win){
