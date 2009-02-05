@@ -30,15 +30,17 @@ Function.implement({
 	
 	bind: function(bind, args){
 		var self = this;
+		args = (args == null) ? null : Array.from(args);
 		return function(){
-			return self.apply(bind, Array.from(args));
+			return self.apply(bind, args || arguments);
 		};
 	},
 	
 	bindWithEvent: function(bind, args){
 		var self = this;
+		args = (args == null) ? null : Array.from(args);
 		return function(event){
-			return this.apply(bind, [event || window.event].concat(Array.from(args)));
+			return this.apply(bind, [event || window.event].concat(args || arguments));
 		};
 	},
 	
