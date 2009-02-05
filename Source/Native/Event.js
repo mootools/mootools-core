@@ -21,9 +21,10 @@ var Event = new Native('Event', function(event, win){
 		var code = event.which || event.keyCode;
 		var key;
 		for (var n in Events.Keys){
-			if (Events.Keys[n] != code) continue;
-			key = code;
-			break;
+			if (Events.Keys[n] == code){
+				key = n;
+				break;
+			}
 		}
 		if (type == 'keydown'){
 			var fKey = code - 111;
