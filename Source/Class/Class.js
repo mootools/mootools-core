@@ -53,17 +53,16 @@ Class.implement({
 		var properties = (typeOf(item) == 'class') ? item.getPrototype() : item;
 			
 		for (var key in properties){
-
-			var current = properties[key], proto = this.prototype[key];
-			var cType = typeOf(current), temp;
-			
-			if (cType == 'function') temp = wrap(key, current.origin || current, this);
-			else if (cType == 'object' && typeOf(proto) == 'object') temp = Object.mixin(proto, current);
-			else if (cType == 'object') temp = Object.clone(current);
-			else if (cType == 'array') temp = Array.clone(current);
-			else temp = current;
-			
-			this.prototype[key] = temp;
+			var prop = properties[key], proto = this.prototype[key];
+			switch (typeOf(prop)){
+				case 'function': prop = wrap(key, prop.origin || prop, this); break;
+				case 'object':
+					if (typeOf(proto) == 'object') prop = Object.mixin(proto, prop);
+					else prop = Object.clone(prop);
+					break;
+				case 'array': prop = Array.clone(prop);
+			}
+			this.prototype[key] = prop;
 		}
 		
 		return this;

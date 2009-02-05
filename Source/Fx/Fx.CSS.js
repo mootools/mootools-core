@@ -30,15 +30,12 @@ Fx.CSS = new Class({
 		value = (typeOf(value) == 'string') ? value.split(' ') : Array.from(value);
 		return value.map(function(val){
 			val = String(val);
-			var found = false;
 			for (var key in Fx.CSS.Parsers){
-				if (found) continue;
 				var parser = Fx.CSS.Parsers[key];
 				var parsed = parser.parse(val);
-				if (Utility.check(parsed)) found = {value: parsed, parser: parser};
+				if (Utility.check(parsed)) return {value: parsed, parser: parser};
 			}
-			found = found || {value: val, parser: Fx.CSS.Parsers.String};
-			return found;
+			return {value: val, parser: Fx.CSS.Parsers.String};
 		});
 	},
 
