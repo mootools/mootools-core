@@ -20,7 +20,6 @@ var Class = function(properties){
 	
 	newClass.constructor = Class;
 	newClass.prototype.constructor = newClass;
-	newClass.group = Type.group(newClass);
 	
 	return newClass;
 };

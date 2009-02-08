@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-Native.group(Document, Element).implement({
+[Document, Element].call('implement', {
 
 	getElements: function(expression, nocash){
 		expression = expression.split(',');
@@ -254,7 +254,7 @@ Selectors.Filters = {
 	},
 
 	byAttribute: function(self, name, operator, value){
-		var result = Element.prototype.getProperty.call(self, name);
+		var result = Element.get(self, name);
 		if (!result) return (operator == '!=');
 		if (!operator || value == null) return true;
 		switch (operator){

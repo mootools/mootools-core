@@ -197,7 +197,6 @@ var Type = function(name, object){
 		return (typeOf(object) == lower);
 	};
 	if (!object) return;
-	if (!object.hasOwnProperty('group')) object.group = Type.group(object);
 	if (!object.prototype.hasOwnProperty('_type')) object.prototype._type = Function.from(lower);
 };
 
@@ -220,20 +219,6 @@ Type.extend({
 		}
 		
 		return typeof object;
-	},
-	
-	group: function(object){
-		return function(){
-			var single = {}, items = arguments;
-			for (var name in object.prototype) (function(name, method){
-				single[name] = function(){
-					var values = [];
-					for (var i = 0, l = items.length; i < l; i ++) values.push(method.apply(items[i], arguments));
-					return values;
-				};
-			})(name, object.prototype[name]);
-			return single;
-		};
 	},
 	
 	isIterable: function(object){

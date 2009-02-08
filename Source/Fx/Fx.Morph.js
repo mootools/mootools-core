@@ -42,23 +42,19 @@ Fx.Morph = new Class({
 
 });
 
-Element.Properties.morph = {
+Element.addSetter('morph', function(options){
+	var morph = this.retrieve('morph');
+	if (morph) morph.cancel();
+	return this.dump('morph').store('morph:options', Object.append({link: 'cancel'}, options));
+});
 
-	set: function(options){
-		var morph = this.retrieve('morph');
-		if (morph) morph.cancel();
-		return this.dump('morph').store('morph:options', Object.append({link: 'cancel'}, options));
-	},
-
-	get: function(options){
-		if (options || !this.retrieve('morph')){
-			if (options || !this.retrieve('morph:options')) this.set('morph', options);
-			this.store('morph', new Fx.Morph(this, this.retrieve('morph:options')));
-		}
-		return this.retrieve('morph');
+Element.addGetter('morph', function(options){
+	if (options || !this.retrieve('morph')){
+		if (options || !this.retrieve('morph:options')) this.set('morph', options);
+		this.store('morph', new Fx.Morph(this, this.retrieve('morph:options')));
 	}
-
-};
+	return this.retrieve('morph');
+});
 
 Element.implement({
 

@@ -6,41 +6,25 @@ License:
 	MIT-style license.
 */
 
-Element.Properties.styles = {set: function(styles){
-	this.setStyles(styles);
-}};
-
-Element.Properties.opacity = {
-
-	set: function(opacity, novisibility){
-		if (!novisibility){
-			if (opacity == 0){
-				if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
-			} else {
-				if (this.style.visibility != 'visible') this.style.visibility = 'visible';
-			}
+Element.addSetter('opacity', function(opacity, novisibility){
+	if (!novisibility){
+		if (opacity == 0){
+			if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
+		} else {
+			if (this.style.visibility != 'visible') this.style.visibility = 'visible';
 		}
-		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
-		this.style.opacity = opacity;
-		this.store('opacity', opacity);
-	},
-
-	get: function(){
-		return this.retrieve('opacity', 1);
 	}
+	if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
+	if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+	this.style.opacity = opacity;
+	this.store('opacity', opacity);
+});
 
-};
+Element.addGetter('opacity', function(){
+	return this.retrieve('opacity', 1);
+});
 
 Element.implement({
-
-	setOpacity: function(value){
-		return this.set('opacity', value, true);
-	},
-
-	getOpacity: function(){
-		return this.get('opacity');
-	},
 
 	setStyle: function(property, value){
 		switch (property){

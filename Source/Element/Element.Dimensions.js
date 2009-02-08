@@ -18,7 +18,7 @@ Element.implement({
 
 	scrollTo: function(x, y){
 		if (isBody(this)){
-			this.getWindow().scrollTo(x, y);
+			window.scrollTo(x, y);
 		} else {
 			this.scrollLeft = x;
 			this.scrollTop = y;
@@ -27,17 +27,17 @@ Element.implement({
 	},
 
 	getSize: function(){
-		if (isBody(this)) return this.getWindow().getSize();
+		if (isBody(this)) return window.getSize();
 		return {x: this.offsetWidth, y: this.offsetHeight};
 	},
 
 	getScrollSize: function(){
-		if (isBody(this)) return this.getWindow().getScrollSize();
+		if (isBody(this)) return window.getScrollSize();
 		return {x: this.scrollWidth, y: this.scrollHeight};
 	},
 
 	getScroll: function(){
-		if (isBody(this)) return this.getWindow().getScroll();
+		if (isBody(this)) return window.getScroll();
 		return {x: this.scrollLeft, y: this.scrollTop};
 	},
 
@@ -63,7 +63,7 @@ Element.implement({
 
 	getOffsets: function(){
 		if (Browser.Engine.trident){
-			var bound = this.getBoundingClientRect(), html = this.getDocument().documentElement;
+			var bound = this.getBoundingClientRect(), html = document.documentElement;
 			return {
 				x: bound.left + html.scrollLeft - html.clientLeft,
 				y: bound.top + html.scrollTop - html.clientTop
@@ -110,7 +110,7 @@ Element.implement({
 	},
 
 	getCoordinates: function(element){
-		if (isBody(this)) return this.getWindow().getCoordinates();
+		if (isBody(this)) return window.getCoordinates();
 		var position = this.getPosition(element), size = this.getSize();
 		var obj = {left: position.x, top: position.y, width: size.x, height: size.y};
 		obj.right = obj.left + obj.width;
@@ -128,24 +128,23 @@ Element.implement({
 
 });
 
-Native.group(Document, Window).implement({
+[Document, Window].call('implement', {
 
 	getSize: function(){
 		if (Browser.Engine.presto || Browser.Engine.webkit){
-			var win = this.getWindow();
-			return {x: win.innerWidth, y: win.innerHeight};
+			return {x: window.innerWidth, y: window.innerHeight};
 		}
-		var doc = getCompatElement(this);
+		var doc = getCompatElement();
 		return {x: doc.clientWidth, y: doc.clientHeight};
 	},
 
 	getScroll: function(){
-		var win = this.getWindow(), doc = getCompatElement(this);
+		var win = window, doc = getCompatElement();
 		return {x: win.pageXOffset || doc.scrollLeft, y: win.pageYOffset || doc.scrollTop};
 	},
 
 	getScrollSize: function(){
-		var doc = getCompatElement(this), min = this.getSize();
+		var doc = getCompatElement(), min = this.getSize();
 		return {x: Math.max(doc.scrollWidth, min.x), y: Math.max(doc.scrollHeight, min.y)};
 	},
 
@@ -184,8 +183,8 @@ function isBody(element){
 	return (/^(?:body|html)$/i).test(element.tagName);
 };
 
-function getCompatElement(element){
-	var doc = element.getDocument();
+function getCompatElement(){
+	var doc = document;
 	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 };
 
@@ -193,7 +192,7 @@ function getCompatElement(element){
 
 //aliases
 
-Native.group(Window, Document, Element).implement({
+[Window, Document, Element].call('implement', {
 
 	getHeight: function(){
 		return this.getSize().y;

@@ -41,7 +41,7 @@ var JSON = {
 
 };
 
-Native.group(Array, String, Number).implement({
+[Array, String, Number].call('implement', {
 
 	toJSON: function(){
 		return JSON.encode(this);

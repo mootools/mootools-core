@@ -6,11 +6,7 @@ License:
 	MIT-style license.
 */
 
-Element.Properties.events = {set: function(events){
-	this.addEvents(events);
-}};
-
-Native.group(Element, Window, Document).implement({
+[Element, Window, Document].call('implement', {
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
@@ -35,7 +31,7 @@ Native.group(Element, Window, Document).implement({
 		if (nativeEvent){
 			if (nativeEvent == 2){
 				defn = function(event){
-					event = new Event(event, self.getWindow());
+					event = new Event(event, window);
 					if (condition.call(self, event) === false) event.stop();
 				};
 			}

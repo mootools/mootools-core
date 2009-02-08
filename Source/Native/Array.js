@@ -8,6 +8,10 @@ License:
 
 Array.implement({
 	
+	call: function(name, args){
+		for (var i = 0, j = this.length; i < j; i++) this[i][name].apply(this[i], Array.from(args));
+	},
+	
 	append: function(array){
 		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;

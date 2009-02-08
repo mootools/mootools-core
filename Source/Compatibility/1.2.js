@@ -43,4 +43,52 @@ Hash.implement(Object.from('forEach', function(fn, bind){
 	}
 })).alias({'each': 'forEach'});
 
-Native.group(Element, Window, Document).alias({'eliminate': 'dump'});
+[Element, Window, Document].call('alias', {'eliminate': 'dump'});
+
+Element.implement({
+	
+	setProperty: function(attribute, value){
+		return this.set(attribute, value);
+	},
+
+	setProperties: function(attributes){
+		for (var attribute in attributes) this.set(attribute, attributes[attribute]);
+		return this;
+	},
+
+	getProperty: function(attribute){
+		return this.get(attribute);
+	},
+
+	getProperties: function(){
+		var args = Array.from(arguments);
+		return Object.from(args, args.map(this.get));
+	},
+
+	removeProperty: function(attribute){
+		return this.erase(attribute);
+	},
+
+	removeProperties: function(){
+		Array.each(arguments, this.erase, this);
+		return this;
+	},
+	
+	setOpacity: function(value){
+		return this.set('opacity', value, true);
+	},
+
+	getOpacity: function(){
+		return this.get('opacity');
+	}
+	
+});
+
+Element.Properties.styles = {set: function(styles){
+	this.setStyles(styles);
+}};
+
+
+Element.Properties.events = {set: function(events){
+	this.addEvents(events);
+}};

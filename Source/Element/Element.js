@@ -9,7 +9,9 @@ License:
 
 var Element = new Native('Element', function(tag, props){
 	if (typeOf(tag) == 'string') return document.newElement(tag, props);
-	return $(tag).set(props);
+	var element = $(tag);
+	for (var p in props) element.set(p, props[p]);
+	return element;
 }, window.Element);
 
 Element.Prototype = document.createElement('div');
@@ -29,7 +31,6 @@ Element._onImplement = function(key, value){
 		}
 		return (elements) ? new Elements(items) : items;
 	}));
-	
 };
 
 // var IFrame = new Native({
@@ -112,14 +113,6 @@ Document.implement({
 
 	newTextNode: function(text){
 		return this.createTextNode(text);
-	},
-
-	getDocument: function(){
-		return this;
-	},
-
-	getWindow: function(){
-		return this.window;
 	}
 
 });
@@ -129,12 +122,14 @@ Window.implement({
 	$: (function(el, nocash){
 		if (el && el._type && el.uid) return el;
 		var type = typeOf(el);
-		return ($[type]) ? $[type](el, nocash, this.document) : null;
+		return ($[type]) ? $[type](el, nocash) : null;
 	}).extend({
-		string: function(id, nocash, doc){
-			id = doc.getElementById(id);
+		
+		string: function(id, nocash){
+			id = document.getElementById(id);
 			return (id) ? $.element(id, nocash) : null;
 		},
+		
 		element: function(el, nocash){
 			Native.uid(el);
 			if (!nocash && !el._type && !(/^object|embed$/i).test(el.tagName)){
@@ -143,38 +138,32 @@ Window.implement({
 			}
 			return el;
 		},
-		object: function(obj, nocash, doc){
-			return (obj.toElement) ? $.element(obj.toElement(doc), nocash) : null;
+		
+		object: function(obj, nocash){
+			return (obj.toElement) ? $.element(obj.toElement(), nocash) : null;
 		}
+
 	}),
 
 	$$: function(selector){
-		if (arguments.length == 1 && typeOf(selector) == 'string') return this.document.getElements(selector);
+		if (arguments.length == 1 && typeOf(selector) == 'string') return document.getElements(selector);
 		var elements = [];
 		var args = Array.flatten(arguments);
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
 			switch (typeOf(item)){
 				case 'element': elements.push(item); break;
-				case 'string': elements.append(this.document.getElements(item, true));
+				case 'string': elements.append(document.getElements(item, true));
 			}
 		}
 		return new Elements(elements);
-	},
-
-	getDocument: function(){
-		return this.document;
-	},
-
-	getWindow: function(){
-		return this;
 	}
 
 });
 
 $.textnode = $.whitespace = $.window = $.document = Function.argument(0);
 
-Native.group(Element, Document).implement({
+[Element, Document].call('implement', {
 
 	getElement: function(selector, nocash){
 		return $(this.getElements(selector, true)[0] || null, nocash);
@@ -192,284 +181,128 @@ Native.group(Element, Document).implement({
 
 });
 
+/* Cloning, Purging, Destroying */
+
 (function(){
 
-var collected = {}, storage = {};
-var props = {
-	input: 'checked',
-	option: 'selected',
-	textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'
-};
+	var collected = {};
+	var props = {
+		input: 'checked',
+		option: 'selected',
+		textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'
+	};
 
-var get = function(uid){
-	return (storage[uid] || (storage[uid] = {}));
-};
-
-var clean = function(item, retain){
-	if (!item) return;
-	var uid = item.uid;
-	if (Browser.Engine.trident){
-		if (item.clearAttributes){
-			var clone = retain && item.cloneNode(false);
-			item.clearAttributes();
-			if (clone) item.mergeAttributes(clone);
-		} else if (item.removeEvents){
-			item.removeEvents();
-		}
-		if ((/object/i).test(item.tagName)){
-			for (var p in item){
-				if (typeOf(item[p]) == 'function') item[p] = Function.empty;
+	var clean = function(item, retain){
+		if (!item) return;
+		var uid = item.uid;
+		if (Browser.Engine.trident){
+			if (item.clearAttributes){
+				var clone = retain && item.cloneNode(false);
+				item.clearAttributes();
+				if (clone) item.mergeAttributes(clone);
+			} else if (item.removeEvents){
+				item.removeEvents();
 			}
-			Element.dispose(item);
-		}
-	}	
-	if (!uid) return;
-	collected[uid] = storage[uid] = null;
-};
-
-var purge = function(){
-	Object.each(collected, clean);
-	if (Browser.Engine.trident) Array.from(document.getElementsByTagName('object')).each(clean);
-	if (window.CollectGarbage) CollectGarbage();
-	collected = storage = null;
-};
-
-var walk = function(element, walk, start, match, all, nocash){
-	var el = element[start || walk];
-	var elements = [];
-	while (el){
-		if (el.nodeType == 1 && (!match || Element.match(el, match))){
-			if (!all) return $(el, nocash);
-			elements.push(el);
-		}
-		el = el[walk];
-	}
-	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
-};
-
-var attributes = {
-	'html': 'innerHTML',
-	'class': 'className',
-	'for': 'htmlFor',
-	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-};
-var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
-	'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
-var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
-
-bools = Object.from(bools, bools);
-
-Object.append(attributes, bools);
-Object.append(attributes, Object.from(camels.map(String.toLowerCase), camels));
-
-var inserters = {
-
-	before: function(context, element){
-		if (element.parentNode) element.parentNode.insertBefore(context, element);
-	},
-
-	after: function(context, element){
-		if (!element.parentNode) return;
-		var next = element.nextSibling;
-		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
-	},
-
-	bottom: function(context, element){
-		element.appendChild(context);
-	},
-
-	top: function(context, element){
-		var first = element.firstChild;
-		(first) ? element.insertBefore(context, first) : element.appendChild(context);
-	}
-
-};
-
-inserters.inside = inserters.bottom;
-
-Object.each(inserters, function(inserter, where){
-	
-	where = where.capitalize();
-	
-	var obj = {};
-	
-	obj['inject' + where] = function(el){
-		inserter(this, $(el, true));
-		return this;
-	};
-	
-	obj['grab' + where] = function(el){
-		inserter($(el, true), this);
-		return this;
+			if ((/object/i).test(item.tagName)){
+				for (var p in item){
+					if (typeOf(item[p]) == 'function') item[p] = Function.empty;
+				}
+				Element.dispose(item);
+			}
+		}	
+		if (!uid) return;
+		collected[uid] = null;
 	};
 
-	Element.implement(obj);
-	
-});
+	var purge = function(){
+		Object.each(collected, clean);
+		if (Browser.Engine.trident) Array.from(document.getElementsByTagName('object')).each(clean);
+		if (window.CollectGarbage) CollectGarbage();
+		collected = null;
+	};
+
+	Element.implement({
+		
+		clone: function(contents, keepid){
+			contents = contents !== false;
+			var clone = this.cloneNode(contents);
+			var clean = function(node, element){
+				if (!keepid) node.removeAttribute('id');
+				if (Browser.Engine.trident){
+					node.clearAttributes();
+					node.mergeAttributes(element);
+					node.removeAttribute('uid');
+					if (node.options){
+						var no = node.options, eo = element.options;
+						for (var j = no.length; j--;) no[j].selected = eo[j].selected;
+					}
+				}
+				var prop = props[element.tagName.toLowerCase()];
+				if (prop && element[prop]) node[prop] = element[prop];
+			};
+
+			if (contents){
+				var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+				for (var i = ce.length; i--;) clean(ce[i], te[i]);
+			}
+
+			clean(clone, this);
+			return $(clone);
+		},
+		
+		destroy: function(){
+			Element.empty(this);
+			Element.dispose(this);
+			clean(this, true);
+			return null;
+		},
+
+		empty: function(){
+			Array.from(this.childNodes).each(Element.destroy);
+			return this;
+		}
+
+	});
+
+	[Element, Window, Document].call('implement', {
+
+		addListener: function(type, fn){
+			if (type == 'unload'){
+				var old = fn, self = this;
+				fn = function(){
+					self.removeListener('unload', fn);
+					old();
+				};
+			} else {
+				collected[Native.uid(this)] = this;
+			}
+			if (this.addEventListener) this.addEventListener(type, fn, false);
+			else this.attachEvent('on' + type, fn);
+			return this;
+		},
+
+		removeListener: function(type, fn){
+			if (this.removeEventListener) this.removeEventListener(type, fn, false);
+			else this.detachEvent('on' + type, fn);
+			return this;
+		}
+
+	});
+
+	window.addListener('unload', purge);
+
+})();
+
+/* Misc DOM */
 
 Element.implement({
 
-	set: function(prop, value){
-		switch (typeOf(prop)){
-			case 'object':
-				for (var p in prop) this.set(p, prop[p]);
-				break;
-			case 'string':
-				var property = Element.Properties[prop];
-				(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
-		}
-		return this;
-	},
-
-	get: function(prop){
-		var property = Element.Properties[prop];
-		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
-	},
-
-	erase: function(prop){
-		var property = Element.Properties[prop];
-		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
-		return this;
-	},
-
-	setProperty: function(attribute, value){
-		var key = attributes[attribute];
-		if (value == null) return this.removeProperty(attribute);
-		if (key && bools[attribute]) value = !!value;
-		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
-		return this;
-	},
-
-	setProperties: function(attributes){
-		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
-		return this;
-	},
-
-	getProperty: function(attribute){
-		var key = attributes[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
-		return (bools[attribute]) ? !!value : (key) ? value : value || null;
-	},
-
-	getProperties: function(){
-		var args = Array.from(arguments);
-		return Object.from(args, args.map(this.getProperty));
-	},
-
-	removeProperty: function(attribute){
-		var key = attributes[attribute];
-		(key) ? this[key] = (key && bools[attribute]) ? false : '' : this.removeAttribute(attribute);
-		return this;
-	},
-
-	removeProperties: function(){
-		Array.each(arguments, this.removeProperty, this);
-		return this;
-	},
-
-	hasClass: function(className){
-		return this.className.contains(className, ' ');
-	},
-
-	addClass: function(className){
-		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
-		return this;
-	},
-
-	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
-		return this;
-	},
-
-	toggleClass: function(className){
-		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
-	},
-
-	adopt: function(){
-		Array.flatten(arguments).each(function(element){
-			element = $(element, true);
-			if (element) this.appendChild(element);
-		}, this);
-		return this;
-	},
-
-	appendText: function(text, where){
-		return this.grab(this.getDocument().newTextNode(text), where);
-	},
-
-	grab: function(el, where){
-		inserters[where || 'bottom']($(el, true), this);
-		return this;
-	},
-
-	inject: function(el, where){
-		inserters[where || 'bottom'](this, $(el, true));
-		return this;
-	},
-
-	replaces: function(el){
-		el = $(el, true);
-		el.parentNode.replaceChild(this, el);
-		return this;
-	},
-
-	wraps: function(el, where){
-		el = $(el, true);
-		return this.replaces(el).grab(el, where);
-	},
-
-	getPrevious: function(match, nocash){
-		return walk(this, 'previousSibling', null, match, false, nocash);
-	},
-
-	getAllPrevious: function(match, nocash){
-		return walk(this, 'previousSibling', null, match, true, nocash);
-	},
-
-	getNext: function(match, nocash){
-		return walk(this, 'nextSibling', null, match, false, nocash);
-	},
-
-	getAllNext: function(match, nocash){
-		return walk(this, 'nextSibling', null, match, true, nocash);
-	},
-
-	getFirst: function(match, nocash){
-		return walk(this, 'nextSibling', 'firstChild', match, false, nocash);
-	},
-
-	getLast: function(match, nocash){
-		return walk(this, 'previousSibling', 'lastChild', match, false, nocash);
-	},
-
-	getParent: function(match, nocash){
-		return walk(this, 'parentNode', null, match, false, nocash);
-	},
-
-	getParents: function(match, nocash){
-		return walk(this, 'parentNode', null, match, true, nocash);
-	},
-
-	getChildren: function(match, nocash){
-		return walk(this, 'nextSibling', 'firstChild', match, true, nocash);
-	},
-
-	getWindow: function(){
-		return this.ownerDocument.window;
-	},
-
-	getDocument: function(){
-		return this.ownerDocument;
-	},
-
 	getElementById: function(id, nocash){
-		var el = this.ownerDocument.getElementById(id);
-		if (!el) return null;
-		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
-			if (!parent) return null;
+		var children = element.getElementsByTagName('*');
+		for (var i = 0, l = children.length; i < l; i++){
+			if (children[i].id == id) return $.element(children[i], nocash);
 		}
-		return $.element(el, nocash);
+		return null;
 	},
 
 	getSelected: function(){
@@ -480,7 +313,7 @@ Element.implement({
 
 	getComputedStyle: function(property){
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var computed = this.getDocument().defaultView.getComputedStyle(this, null);
+		var computed = document.defaultView.getComputedStyle(this, null);
 		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 	},
 
@@ -498,51 +331,6 @@ Element.implement({
 		return queryString.join('&');
 	},
 
-	clone: function(contents, keepid){
-		contents = contents !== false;
-		var clone = this.cloneNode(contents);
-		var clean = function(node, element){
-			if (!keepid) node.removeAttribute('id');
-			if (Browser.Engine.trident){
-				node.clearAttributes();
-				node.mergeAttributes(element);
-				node.removeAttribute('uid');
-				if (node.options){
-					var no = node.options, eo = element.options;
-					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
-				}
-			}
-			var prop = props[element.tagName.toLowerCase()];
-			if (prop && element[prop]) node[prop] = element[prop];
-		};
-
-		if (contents){
-			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-			for (var i = ce.length; i--;) clean(ce[i], te[i]);
-		}
-
-		clean(clone, this);
-		return $(clone);
-	},
-
-	destroy: function(){
-		Element.empty(this);
-		Element.dispose(this);
-		clean(this, true);
-		return null;
-	},
-
-	empty: function(){
-		Array.from(this.childNodes).each(function(node){
-			Element.destroy(node);
-		});
-		return this;
-	},
-
-	dispose: function(){
-		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
-	},
-
 	hasChild: function(el){
 		el = $(el, true);
 		if (!el) return false;
@@ -556,80 +344,324 @@ Element.implement({
 
 });
 
-Native.group(Element, Window, Document).implement({
+/* Injections / Dejections */
 
-	addListener: function(type, fn){
-		if (type == 'unload'){
-			var old = fn, self = this;
-			fn = function(){
-				self.removeListener('unload', fn);
-				old();
-			};
-		} else {
-			collected[Native.uid(this)] = this;
+(function(){
+	
+	var inserters = {
+
+		Before: function(context, element){
+			if (element.parentNode) element.parentNode.insertBefore(context, element);
+		},
+
+		After: function(context, element){
+			if (!element.parentNode) return;
+			var next = element.nextSibling;
+			(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+		},
+
+		Bottom: function(context, element){
+			element.appendChild(context);
+		},
+
+		Top: function(context, element){
+			var first = element.firstChild;
+			(first) ? element.insertBefore(context, first) : element.appendChild(context);
 		}
-		if (this.addEventListener) this.addEventListener(type, fn, false);
-		else this.attachEvent('on' + type, fn);
+
+	};
+
+	inserters.Inside = inserters.Bottom;
+	
+	var methods = {};
+
+	Object.each(inserters, function(inserter, where){
+	
+		methods['inject' + where] = function(el){
+			inserter(this, $(el, true));
+			return this;
+		};
+	
+		methods['grab' + where] = function(el){
+			inserter($(el, true), this);
+			return this;
+		};
+	
+	});
+	
+	Element.implement(Object.append(methods, {
+		
+		dispose: function(){
+			return (this.parentNode) ? this.parentNode.removeChild(this) : this;
+		},
+		
+		adopt: function(){
+			Array.flatten(arguments).each(function(element){
+				element = $(element, true);
+				if (element) this.appendChild(element);
+			}, this);
+			return this;
+		},
+
+		appendText: function(text, where){
+			return this.grab(document.newTextNode(text), where);
+		},
+
+		grab: function(el, where){
+			return this['grab' + where || 'Bottom'](el);
+		},
+
+		inject: function(el, where){
+			return this['inject' + where || 'Bottom'](el);
+		},
+
+		replaces: function(el){
+			el = $(el, true);
+			el.parentNode.replaceChild(this, el);
+			return this;
+		},
+
+		wraps: function(el, where){
+			el = $(el, true);
+			return this.replaces(el).grab(el, where);
+		}
+		
+	}));
+	
+	
+})();
+
+/* Class Accessors */
+
+Element.implement({
+
+	hasClass: function(className){
+		return this.className.contains(className, ' ');
+	},
+
+	addClass: function(className){
+		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
 		return this;
 	},
 
-	removeListener: function(type, fn){
-		if (this.removeEventListener) this.removeEventListener(type, fn, false);
-		else this.detachEvent('on' + type, fn);
+	removeClass: function(className){
+		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
 		return this;
 	},
 
-	retrieve: function(property, dflt){
-		var storage = get(Native.uid(this)), prop = storage[property];
-		if (dflt != null && prop == null) prop = storage[property] = dflt;
-		return Utility.pick(prop);
-	},
-
-	store: function(property, value){
-		var storage = get(Native.uid(this));
-		storage[property] = value;
-		return this;
-	},
-
-	dump: function(property){
-		var storage = get(Native.uid(this));
-		delete storage[property];
-		return this;
+	toggleClass: function(className){
+		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
 	}
 
 });
 
-window.addListener('unload', purge);
+/* Walkers */
+
+(function(){
+
+	var walk = function(element, walk, start, match, all, nocash){
+		var el = element[start || walk];
+		var elements = [];
+		while (el){
+			if (el.nodeType == 1 && (!match || Element.match(el, match))){
+				if (!all) return $(el, nocash);
+				elements.push(el);
+			}
+			el = el[walk];
+		}
+		return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
+	};
+	
+	Element.implement({
+
+		getPrevious: function(match, nocash){
+			return walk(this, 'previousSibling', null, match, false, nocash);
+		},
+
+		getAllPrevious: function(match, nocash){
+			return walk(this, 'previousSibling', null, match, true, nocash);
+		},
+
+		getNext: function(match, nocash){
+			return walk(this, 'nextSibling', null, match, false, nocash);
+		},
+
+		getAllNext: function(match, nocash){
+			return walk(this, 'nextSibling', null, match, true, nocash);
+		},
+
+		getFirst: function(match, nocash){
+			return walk(this, 'nextSibling', 'firstChild', match, false, nocash);
+		},
+
+		getLast: function(match, nocash){
+			return walk(this, 'previousSibling', 'lastChild', match, false, nocash);
+		},
+
+		getParent: function(match, nocash){
+			return walk(this, 'parentNode', null, match, false, nocash);
+		},
+
+		getParents: function(match, nocash){
+			return walk(this, 'parentNode', null, match, true, nocash);
+		},
+
+		getChildren: function(match, nocash){
+			return walk(this, 'nextSibling', 'firstChild', match, true, nocash);
+		}
+
+	});
+	
+})();
+
+/* Storage */
+
+(function(){
+	
+	var storage = {};
+	
+	var getStorage = function(element){
+		var uid = Native.uid(element);
+		return (storage[uid] || (storage[uid] = {}));
+	};
+	
+	[Window, Document, Element].call('implement', {
+		
+		retrieve: function(property, dflt){
+			var storage = getStorage(this), prop = storage[property];
+			if (dflt != null && prop == null) prop = storage[property] = dflt;
+			return Utility.pick(prop);
+		},
+
+		store: function(property, value){
+			var storage = getStorage(this);
+			storage[property] = value;
+			return this;
+		},
+
+		dump: function(property){
+			var storage = getStorage(this);
+			delete storage[property];
+			return this;
+		}
+
+	});
+	
+	
+})();
+
+/* Getters, Setters, Erasers */
+
+(function(){
+
+	var properties = {};
+	
+	var getKey = function(key){
+		return (properties[key] || (properties[key] = {}));
+	};
+	
+	Element.extend({
+
+		addGetter: function(key, fn){
+			getKey(key).get = fn;
+		},
+
+		addSetter: function(key, fn){
+			getKey(key).set = fn;
+		},
+
+		addEraser: function(key, fn){
+			getKey(key).erase = fn;
+		}
+
+	});
+	
+	var attributes = {
+		'html': 'innerHTML',
+		'class': 'className',
+		'for': 'htmlFor',
+		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
+	};
+	
+	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+		
+	Object.append(attributes, Object.from(camels.map(String.toLowerCase), camels));
+	
+	Object.each(attributes, function(realKey, key){
+		Element.addSetter(key, function(value){
+			this[realKey] = value;
+		});
+		Element.addGetter(key, function(){
+			return this[realKey];
+		});
+		Element.addEraser(key, function(){
+			this[realKey] = null;
+		});
+	});
+
+	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
+		'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
+		
+	bools.each(function(bool){
+		Element.addSetter(bool, function(value){
+			this[bool] = !!value;
+		});
+		Element.addGetter(bool, function(){
+			return !!this[bool];
+		});
+		Element.addEraser(bool, function(){
+			this[bool] = false;
+		});
+	});
+	
+	Element.implement({
+
+		set: function(attribute, value){
+			var property = properties[attribute];
+			if (property && property.set) property.set.apply(this, Array.slice(arguments, 1));
+			else this.setAttribute(attribute, '' + value);
+			return this;
+		},
+
+		get: function(attribute){
+			var property = properties[attribute];
+			if (property && property.get) return property.get.apply(this, Array.slice(arguments, 1));
+			else return this.getAttribute(attribute, 2);
+		},
+
+		erase: function(attribute){
+			var property = properties[attribute];
+			if (property && property.erase) property.erase.apply(this);
+			else this.removeAttribute(attribute);
+			return this;
+		}
+	
+	});
+
+	//shhh
+	Element.Properties = properties;
 
 })();
 
-Element.Properties = {};
+Element.addSetter('css', function(style){
+	this.style.cssText = style;
+});
 
-Element.Properties.style = {
+Element.addGetter('css', function(){
+	return this.style.cssText;
+});
 
-	set: function(style){
-		this.style.cssText = style;
-	},
+Element.addEraser('style', function(){
+	this.style.cssText = '';
+});
 
-	get: function(){
-		return this.style.cssText;
-	},
+Element.addGetter('tag', function(){
+	return this.tagName.toLowerCase();
+});
 
-	erase: function(){
-		this.style.cssText = '';
-	}
-
-};
-
-Element.Properties.tag = {
-
-	get: function(){
-		return this.tagName.toLowerCase();
-	}
-
-};
-
-Element.Properties.html = (function(){
+Element.addSetter('html', (function(){
+	
 	var wrapper = document.createElement('div');
 
 	var translations = {
@@ -639,33 +671,26 @@ Element.Properties.html = (function(){
 		tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
 	};
 	translations.thead = translations.tfoot = translations.tbody;
-
-	var html = {
-		set: function(){
-			var html = Array.flatten(arguments).join('');
-			var wrap = Browser.Engine.trident && translations[this.get('tag')];
-			if (wrap){
-				var first = wrapper;
-				first.innerHTML = wrap[1] + html + wrap[2];
-				for (var i = wrap[0]; i--;) first = first.firstChild;
-				this.empty().adopt(first.childNodes);
-			} else {
-				this.innerHTML = html;
-			}
+	
+	return function(){
+		var html = Array.flatten(arguments).join('');
+		var wrap = Browser.Engine.trident && translations[this.get('tag')];
+		if (wrap){
+			var first = wrapper;
+			first.innerHTML = wrap[1] + html + wrap[2];
+			for (var i = wrap[0]; i--;) first = first.firstChild;
+			this.empty().adopt(first.childNodes);
+		} else {
+			this.innerHTML = html;
 		}
 	};
 
-	html.erase = html.set;
+})());
 
-	return html;
-})();
-
-if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.Properties.text = {
-	get: function(){
-		if (this.innerText) return this.innerText;
-		var temp = this.ownerDocument.newElement('div', {html: this.innerHTML}).inject(this.ownerDocument.body);
-		var text = temp.innerText;
-		temp.destroy();
-		return text;
-	}
-};
+if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.addGetter('text', function(){
+	if (this.innerText) return this.innerText;
+	var temp = document.newElement('div', {html: this.innerHTML}).inject(document.body);
+	var text = temp.innerText;
+	temp.destroy();
+	return text;
+});
