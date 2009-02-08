@@ -595,9 +595,6 @@ Element.implement({
 		Element.addGetter(key, function(){
 			return this[realKey];
 		});
-		Element.addEraser(key, function(){
-			this[realKey] = null;
-		});
 	});
 
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
@@ -632,8 +629,12 @@ Element.implement({
 
 		erase: function(attribute){
 			var property = properties[attribute];
-			if (property && property.erase) property.erase.apply(this);
-			else this.removeAttribute(attribute);
+			if (property){
+				if (property.erase) property.erase.apply(this);
+				else if (property.set) property.set.apply(this, '');
+			} else {
+				this.removeAttribute(attribute);
+			}
 			return this;
 		}
 	
@@ -650,10 +651,6 @@ Element.addSetter('css', function(style){
 
 Element.addGetter('css', function(){
 	return this.style.cssText;
-});
-
-Element.addEraser('style', function(){
-	this.style.cssText = '';
 });
 
 Element.addGetter('tag', function(){
