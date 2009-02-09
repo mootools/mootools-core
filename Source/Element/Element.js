@@ -14,75 +14,28 @@ var Element = new Native('Element', function(tag, props){
 	return element;
 }, window.Element);
 
-Element.Prototype = document.createElement('div');
-Element.Prototype._type = Function.from('element');
-Element.Prototype.constructor = Element;
-
-
-Element._onImplement = function(key, value){
-	Element.Prototype[key] = value;
-	if (Array[key]) return;
-	Elements.implement(Object.from(key, function(){
-		var items = [], elements = true;
-		for (var i = 0, j = this.length; i < j; i++){
-			var returns = this[i][key].apply(this[i], arguments);
-			items.push(returns);
-			if (elements) elements = (typeOf(returns) == 'element');
-		}
-		return (elements) ? new Elements(items) : items;
-	}));
-};
-
-// var IFrame = new Native({
-// 
-// 	name: 'IFrame',
-// 
-// 	generics: false,
-// 
-// 	initialize: function(){
-// 		var params = Array.link(arguments, {properties: Type.isObject, iframe: Type.isDefined});
-// 		var props = params.properties || {};
-// 		var iframe = $(params.iframe) || false;
-// 		var onload = props.onload || Function.empty;
-// 		delete props.onload;
-// 		props.id = props.name = Utility.pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + Date.now());
-// 		iframe = new Element(iframe || 'iframe', props);
-// 		var onFrameLoad = function(){
-// 			var host = Function.stab(function(){
-// 				return iframe.contentWindow.location.host;
-// 			});
-// 			if (host && host == window.location.host){
-// 				var win = new Window(iframe.contentWindow);
-// 				new Document(iframe.contentWindow.document);
-// 				Object.append(win.Element.prototype, Element.Prototype);
-// 			}
-// 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
-// 		};
-// 		(window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
-// 		return iframe;
-// 	}
-// 
-// });
-
-var Elements = new Native('Elements', function(elements, options){
-	
-	options = Object.append({ddup: true, cash: true}, options);
-	elements = elements || [];
-	if (options.ddup || options.cash){
-		var uniques = {}, returned = [];
+var Elements = new Native('Elements', function(elements, ddup, cash){
+	if (!elements) return this;
+	if (ddup == null) ddup = true;
+	if (cash == null) cash = true;
+	if (ddup || cash){
+		var uniques = {};
 		for (var i = 0, l = elements.length; i < l; i++){
-			var el = $.element(elements[i], !options.cash);
-			if (options.ddup){
-				if (uniques[el.uid]) continue;
-				uniques[el.uid] = true;
+			var el = $(elements[i], !cash);
+			if (!el) continue;
+			if (ddup){
+				var uid = Native.uid(el);
+				if (uniques[uid]) continue;
+				uniques[uid] = true;
 			}
-			returned.push(el);
+			this.push(el);
 		}
-		elements = returned;
+		elements = this;
 	}
-	return (options.cash) ? Object.append(elements, this) : elements;
+	return elements;
+}, {prototype: {length: 0}});
 
-});
+Elements.implement(Array._prototype);
 
 Elements.superClass = Array;
 
@@ -95,7 +48,7 @@ Elements.implement({
 		} : filter, bind));
 	}
 
-});
+}, true);
 
 Document.implement({
 
@@ -108,7 +61,7 @@ Document.implement({
 			});
 			tag = '<' + tag + '>';
 		}
-		return $.element(this.createElement(tag)).set(props);
+		return $(this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
@@ -117,51 +70,65 @@ Document.implement({
 
 });
 
-Window.implement({
+var $ = (function(){
+	
+	var types = {
 
-	$: (function(el, nocash){
-		if (el && el._type && el.uid) return el;
-		var type = typeOf(el);
-		return ($[type]) ? $[type](el, nocash) : null;
-	}).extend({
-		
-		string: function(id, nocash){
-			id = document.getElementById(id);
-			return (id) ? $.element(id, nocash) : null;
+		object: function(item){
+			return (item.toElement) ? item.toElement() : null;
 		},
-		
-		element: function(el, nocash){
-			Native.uid(el);
-			if (!nocash && !el._type && !(/^object|embed$/i).test(el.tagName)){
-				if (el.mergeAttributes) el.mergeAttributes(Element.Prototype);
-				else Object.append(el, Element.Prototype);
-			}
-			return el;
-		},
-		
-		object: function(obj, nocash){
-			return (obj.toElement) ? $.element(obj.toElement(), nocash) : null;
+
+		string: function(item, nocash){
+			return types.element(document.getElementById(item), nocash);
 		}
 
-	}),
-
-	$$: function(selector){
-		if (arguments.length == 1 && typeOf(selector) == 'string') return document.getElements(selector);
-		var elements = [];
-		var args = Array.flatten(arguments);
-		for (var i = 0, l = args.length; i < l; i++){
-			var item = args[i];
-			switch (typeOf(item)){
-				case 'element': elements.push(item); break;
-				case 'string': elements.append(document.getElements(item, true));
-			}
-		}
-		return new Elements(elements);
+	};
+	
+	types.window = types.document = types.textnode = types.whitespace = types.element = Function.argument(0);
+	
+	if (Browser.Engine.trident){
+		Element._prototype = document.createElement('div');
+		Element._prototype._type = Function.from('element');
+		Element._prototype.constructor = Element;
+		
+		types.element = function(item, nocash){
+			if (!nocash) item.mergeAttributes(proto);
+			return item;
+		};
 	}
+	
+	Element._beforeImplement = function(name, method){
+		Elements.implement(Object.from(name, function(){
+			var elements = [];
+			for (var i = 0; i < this.length; i++) elements.push(this[i][name].apply(this[i], arguments));
+			return new Elements(elements);
+		}));
+		return method;
+	};
+	
+	return function(item, nocash){
+		if (item == null) return null;
+		if (item.constructor == Element) return item;
 
-});
+		var process = types[typeOf(item)];
+		return (process) ? process(item, nocash) : null;
+	};
+	
+})();
 
-$.textnode = $.whitespace = $.window = $.document = Function.argument(0);
+var $$ = function(selector){
+	if (arguments.length == 1 && typeOf(selector) == 'string') return document.getElements(selector);
+	var elements = [];
+	var args = Array.flatten(arguments);
+	for (var i = 0, l = args.length; i < l; i++){
+		var item = args[i];
+		switch (typeOf(item)){
+			case 'element': elements.push(item); break;
+			case 'string': elements.append(document.getElements(item, true));
+		}
+	}
+	return new Elements(elements);
+};
 
 [Element, Document].call('implement', {
 
@@ -176,7 +143,7 @@ $.textnode = $.whitespace = $.window = $.document = Function.argument(0);
 			var partial = this.getElementsByTagName(tag.trim());
 			(ddup) ? elements.append(partial) : elements = partial;
 		}, this);
-		return new Elements(elements, {ddup: ddup, cash: !nocash});
+		return new Elements(elements, ddup, !nocash);
 	}
 
 });
@@ -300,7 +267,7 @@ Element.implement({
 	getElementById: function(id, nocash){
 		var children = element.getElementsByTagName('*');
 		for (var i = 0, l = children.length; i < l; i++){
-			if (children[i].id == id) return $.element(children[i], nocash);
+			if (children[i].id == id) return $(children[i], nocash);
 		}
 		return null;
 	},
@@ -469,7 +436,7 @@ Element.implement({
 			}
 			el = el[walk];
 		}
-		return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
+		return (all) ? new Elements(elements, false, !nocash) : null;
 	};
 	
 	Element.implement({
