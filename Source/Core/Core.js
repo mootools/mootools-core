@@ -154,12 +154,10 @@ Date.extend({
 
 var Native = function(name, object, legacy){
 	object.extend(this);
+	object._prototype = {};
 	object.constructor = Native;
+	if (legacy) object.prototype = legacy.prototype;
 	object.prototype.constructor = object;
-	if (legacy){
-		object.prototype = legacy.prototype;
-		object.legacy = legacy;
-	}
 	if (name) new Type(name, object);
 	return object;
 };
@@ -171,8 +169,9 @@ Native.implement({
 	implement: function(methods, override){
 		for (var name in methods) (function(name, method){
 			if (override || !Object.has(this.prototype, name)){
-				this.prototype[name] = method;
-				if (this._onImplement) this._onImplement(name, method);
+				if (this._beforeImplement) method = this._beforeImplement(name, method);
+				this._prototype[name] = method;
+				if (method) this.prototype[name] = method;
 			}
 			if ((override || !Object.has(this, name)) && typeOf(method) == 'function') this[name] = function(){
 				var args = Array.from(arguments);
@@ -253,19 +252,29 @@ new Native('Native', Native);
 	Type.types.object = Object;
 
 	var arrayNames = ["concat", "indexOf", "join", "lastIndexOf", "pop", "push", "reverse",
-		"shift", "slice", "sort", "splice", "toString", "unshift", "valueOf"];
-	var arrayPrototypes = [];
+		"shift", "slice", "sort", "splice", "toString", "unshift", "valueOf",
+		"forEach", "every", "filter", "indexOf", "map", "some", "every"]; //1.7
 
 	var stringNames = ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match",
 		"replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"];
 	var stringPrototypes = [];
 
-	for (var i = 0; i < arrayNames.length; i++) arrayPrototypes.push(Array.prototype[arrayNames[i]]);
+	for (var i = 0; i < arrayNames.length; i++){
+		var n1 = arrayNames[i], m1 = Array.prototype[n1];
+		if (m1) Array._prototype[n1] = m1;
+	}
 
-	Array.implement(Object.from(arrayNames, arrayPrototypes));
+	Array.implement(Array._prototype);
+	
+	Array._prototype.toString = function(){
+		return Array.prototype.slice.call(this, 0).toString();
+	};
 
-	for (var j = 0; j < stringNames.length; j++) stringPrototypes.push(String.prototype[stringNames[i]]);
+	for (var j = 0; j < stringNames.length; j++){
+		var n2 = stringNames[j], m2 = String.prototype[n2];
+		if (m2) String._prototype[n2] = m2;
+	}
 
-	String.implement(Object.from(stringNames, stringPrototypes));
+	String.implement(String._prototype);
 
 })();
