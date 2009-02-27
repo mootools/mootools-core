@@ -158,8 +158,9 @@ Returns the given response header or null if not found.
 
 ### Example:
 
-	var myRequest = new Request(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-	var headers = myRequest.getHeader('X-Request'); //Returns 'JSON'.
+	var myRequest = new Request(url, {method: 'get', onSuccess: function(responseText, responseXML) {
+		alert(this.getHeader('Date')); // Alerts the server date (for example, "Thu, 26 Feb 2009 20:26:06 GMT")
+	}});
 
 Request Method: send {#Request:send}
 ----------------------------
