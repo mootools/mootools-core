@@ -278,6 +278,10 @@ Selectors.Pseudo = new Hash({
 	checked: function(){
 		return this.checked;
 	},
+	
+	selected: function() {
+		return this.selected;
+	},
 
 	empty: function(){
 		return !(this.innerText || this.textContent || '').length;
