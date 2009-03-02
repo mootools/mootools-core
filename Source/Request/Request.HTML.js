@@ -55,7 +55,7 @@ Request.HTML = new Class({
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
 		if (options.update) $(options.update).empty().set('html', response.html);
-		else if (options.append) $(options.append).addopt(temp.getChildren());
+		else if (options.append) $(options.append).adopt(temp.getChildren());
 		if (options.evalScripts) $exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
