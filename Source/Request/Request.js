@@ -139,7 +139,7 @@ var Request = new Class({
 
 		if(this.options.noCache) {
 			var noCache = "noCache=" + new Date().getTime();
-			data = (data) ? noCache + '&' data : noCache;
+			data = (data) ? noCache + '&' + data : noCache;
 		}
 
 
