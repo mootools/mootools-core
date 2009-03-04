@@ -32,7 +32,8 @@ var Request = new Class({
 		urlEncoded: true,
 		encoding: 'utf-8',
 		evalScripts: false,
-		evalResponse: false
+		evalResponse: false,
+		noCache: false
 	},
 
 	initialize: function(options){
@@ -136,10 +137,17 @@ var Request = new Class({
 			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
 
+		if(this.options.noCache) {
+			var noCache = "noCache=" + new Date().getTime();
+			data = (data) ? noCache + '&' + data : noCache;
+		}
+
+
 		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
+
 
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
 
