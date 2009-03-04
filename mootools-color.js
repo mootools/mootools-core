@@ -127,6 +127,10 @@ Color.implement({
 		return this;
 	},
 	
+	copy: function(){
+		return new Color(this.color, this.type);
+	},
+	
 	get: function(name){
 		var hsb = ['hue', 'saturation', 'brightness'], rgb = ['red', 'green', 'blue'], index;
 		
