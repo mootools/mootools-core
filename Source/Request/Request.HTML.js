@@ -39,7 +39,6 @@ Request.HTML = new Class({
 				var child = Element.clone(root.childNodes[i], true, true);
 				if (child) container.grab(child);
 			}
-			console.log('after root...')
 			return container;
 		}catch(e){}
 		}) || container.set('html', text);
