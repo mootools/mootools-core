@@ -98,7 +98,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any extended DOM Element.
+Custom Native to allow all of its methods to be used with any extended DOM Element.  All elements returned by the following functions are extended.
 
 
 
