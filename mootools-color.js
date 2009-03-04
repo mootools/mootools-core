@@ -101,11 +101,7 @@ Color.extend({
 
 	HSBToHEX: function(hsb){
 		return Color.RGBToHEX(Color.HSBToRGB(hsb));
-	},
-	
-	HEXToHEX: $arguments(0),
-	RGBToRGB: $arguments(0),
-	HSBToHSB: $arguments(0)
+	}
 	
 });
 
@@ -133,6 +129,7 @@ Color.implement({
 	
 	get: function(name){
 		var hsb = ['hue', 'saturation', 'brightness'], rgb = ['red', 'green', 'blue'], index;
+		
 		if (name == 'alpha') return this.color[3];
 		if ((index = hsb.indexOf(name)) > -1) return this.toArray('hsb')[index];
 		if ((index = rgb.indexOf(name)) > -1) return this.toArray('rgb')[index];
@@ -152,8 +149,9 @@ Color.implement({
 	},
 	
 	toArray: function(to){
+		if (to == this.type) return $unlink(this.color);
 		var color = Color[this.type.toUpperCase() + 'To' + (to || 'rgb').toUpperCase()](this.color);
-		color.push(this.color[3]);
+		color[3] = this.color[3];
 		return color;
 	},
 	
