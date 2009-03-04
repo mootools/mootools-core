@@ -24,7 +24,6 @@ Request.HTML = new Class({
 		var container = new Element('div');
 
 		return $try(function(){
-			try {
 			var root = '<root>' + text + '</root>', doc;
 			if (Browser.Engine.trident){
 				doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -40,7 +39,6 @@ Request.HTML = new Class({
 				if (child) container.grab(child);
 			}
 			return container;
-		}catch(e){}
 		}) || container.set('html', text);
 	},
 
