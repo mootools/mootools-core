@@ -264,7 +264,9 @@ var attributes = {
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 
-Hash.extend(attributes, bools.associate(bools));
+bools = bools.associate(bools);
+
+Hash.extend(attributes, bools);
 Hash.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
 
 var inserters = {

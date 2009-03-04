@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Run with: adl application.xml .. -->
+<application xmlns="http://ns.adobe.com/air/application/1.5">
+	<id>net.mootools.specs</id>
+	<filename>Specs</filename>
+	<version>v1</version>
+	<initialWindow>
+		<content>Specs/index.html</content>
+		<visible>true</visible>
+		<width>900</width>
+		<height>500</height>
+		<x>50</x>
+		<y>50</y>
+		<minSize>200 100</minSize>
+	</initialWindow>
+</application>

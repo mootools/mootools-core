@@ -1,7 +1,7 @@
 Native: Element {#Element}
 ==========================
 
-- Custom Native to allow all of its methods to be used with any DOM element via the dollar function <$>.
+- Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
 - These methods are also available on window and document.
 
 ### Notes:

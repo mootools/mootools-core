@@ -189,11 +189,11 @@ Delays the execution of a function by a specified duration.
 
 ### Syntax:
 
-	var timeoutID = myFunction.delay([delay[, bind[, args]]]);
+	var timeoutID = myFunction.delay(delay[, bind[, args]]);
 
 ### Arguments:
 
-1. delay - (*number*, optional) The duration to wait (in milliseconds).
+1. delay - (*number*) The duration to wait (in milliseconds).
 2. bind  - (*object*, optional) The object that the "this" of the function will refer to.
 3. args  - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
@@ -224,11 +224,11 @@ Executes a function in the specified intervals of time. Periodic execution can b
 
 ### Syntax:
 
-	var intervalID = myFunction.periodical([period[, bind[, args]]]);
+	var intervalID = myFunction.periodical(period[, bind[, args]]);
 
 ### Arguments:
 
-1. period - (*number*, optional) The duration of the intervals between executions.
+1. period - (*number*) The duration of the intervals between executions.
 2. bind   - (*object*, optional) The object that the "this" of the function will refer to.
 3. args   - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
