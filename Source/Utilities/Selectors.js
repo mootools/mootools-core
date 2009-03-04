@@ -279,10 +279,6 @@ Selectors.Pseudo = new Hash({
 		return this.checked;
 	},
 	
-	selected: function() {
-		return this.selected;
-	},
-
 	empty: function(){
 		return !(this.innerText || this.textContent || '').length;
 	},
@@ -358,6 +354,10 @@ Selectors.Pseudo = new Hash({
 
 	odd: function(argument, local){
 		return Selectors.Pseudo['nth-child'].call(this, '2n', local);
+	},
+	
+	selected: function() {
+		return this.selected;
 	}
 
 });
