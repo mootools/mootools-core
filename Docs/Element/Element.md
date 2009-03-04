@@ -1035,6 +1035,13 @@ Like [Element:getParent](#Element:getParent), but returns a collection of all th
 
 
 
+Element Method: getSiblings {#Element:getSiblings}
+------------------------------------------------
+
+Returns all siblings elements.
+
+
+
 Element Method: getChildren {#Element:getChildren}
 --------------------------------------------------
 
