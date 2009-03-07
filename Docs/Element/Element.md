@@ -1041,6 +1041,19 @@ Element Method: getSiblings {#Element:getSiblings}
 Returns all siblings elements.
 
 
+### Syntax:
+
+	var siblings = myElement.getParent([match]);
+
+### Arguments:
+
+1. match - (*string*, optional): A tag name to match the found sibling element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+
+### Returns:
+
+* (*mixed*) The target Element's sibiling elements or null if no matching parent is found.
+
+
 
 Element Method: getChildren {#Element:getChildren}
 --------------------------------------------------
