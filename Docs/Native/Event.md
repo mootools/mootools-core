@@ -155,7 +155,7 @@ Cross browser method to prevent the default action of the event.
 
 ### See Also:
 
-- [Element:addEvent](#Element:addEvent)
+- [Element:addEvent](#Element:Element.addEvent)
 - [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
 
 
