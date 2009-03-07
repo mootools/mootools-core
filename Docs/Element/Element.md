@@ -1043,7 +1043,7 @@ Returns all siblings elements.
 
 ### Syntax:
 
-	var siblings = myElement.getParent([match]);
+	var siblings = myElement.getSiblings([match]);
 
 ### Arguments:
 
