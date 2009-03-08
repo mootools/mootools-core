@@ -170,6 +170,19 @@ relative - (*element*, optional) if set, the position will be relative to this e
 [Element:getPosition](#Element:getPosition)
 
 
+Element Method: getOffsetParent {#Element:getOffsetParent}
+----------------------------------------------------------
+
+Returns the parent of the element that is positioned, if there is one.
+
+### Syntax
+
+	myElement.getOffsetParent();
+
+### Returns
+
+* (*mixed*) If the element has a parent that is positioned, it returns that element, otherwise it returns *null*.
+
 [$]: /Element/Element#dollar
 [MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft
 [MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM:element.scrollTop
