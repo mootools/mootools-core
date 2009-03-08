@@ -98,7 +98,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 Native: Element {#Element}
 ==========================
 
-Custom Native to allow all of its methods to be used with any extended DOM Element.  All elements returned by the following functions are extended.
+Custom Native to allow all of its methods to be used with any extended DOM Element.
 
 
 
@@ -1035,26 +1035,6 @@ Like [Element:getParent](#Element:getParent), but returns a collection of all th
 
 
 
-Element Method: getSiblings {#Element:getSiblings}
-------------------------------------------------
-
-Returns all siblings elements.
-
-
-### Syntax:
-
-	var siblings = myElement.getSiblings([match]);
-
-### Arguments:
-
-1. match - (*string*, optional): A tag name to match the found sibling element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
-
-### Returns:
-
-* (*mixed*) The target Element's sibiling elements or null if no matching parent is found.
-
-
-
 Element Method: getChildren {#Element:getChildren}
 --------------------------------------------------
 
@@ -1788,8 +1768,8 @@ It also works like [Array:filter](/Native/Array/#Array:filter), by filtering col
 [$]: #dollar
 [$$]: #dollars
 
-[Array]: /Native/Array
-[Selectors]: /Selectors/Selectors
+[Array]: /core/Native/Array
+[Selectors]: /core/Selectors/Selectors
 
 [Element]: #Element
 [Elements]: #Elements
@@ -1804,5 +1784,5 @@ It also works like [Array:filter](/Native/Array/#Array:filter), by filtering col
 [Element.Properties]: #Element-Properties
 [Element:getPrevious]: #Element:getPrevious
 
-[Element:addEvents]: /Element/Element.Event#Element:addEvents
-[Element:setStyles]: /Element/Element.Style#Element:setStyles
+[Element:addEvents]: /core/Element/Element.Event#Element:addEvents
+[Element:setStyles]: /core/Element/Element.Style#Element:setStyles

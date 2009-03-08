@@ -318,8 +318,8 @@ This event fires when the mouse wheel is rotated;
 
 
 
-[$]: /Element/#dollar
-[Function]: /Native/Function
-[Function:bind]: /Native/Function/#Function:bind
-[Function:pass]: /Native/Function/#Function:pass
-[Function:delay]: /Native/Function/#Function:delay
+[$]: /core/Element/#dollar
+[Function]: /core/Native/Function
+[Function:bind]: /core/Native/Function/#Function:bind
+[Function:pass]: /core/Native/Function/#Function:pass
+[Function:delay]: /core/Native/Function/#Function:delay

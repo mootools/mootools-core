@@ -183,7 +183,7 @@ Returns the parent of the element that is positioned, if there is one.
 
 * (*mixed*) If the element has a parent that is positioned, it returns that element, otherwise it returns *null*.
 
-[$]: /Element/Element#dollar
+[$]: /core/Element/Element#dollar
 [MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft
 [MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM:element.scrollTop
 [MDC Element:offsetWidth]: http://developer.mozilla.org/en/docs/DOM:element.offsetWidth

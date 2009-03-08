@@ -155,7 +155,7 @@ Cross browser method to prevent the default action of the event.
 
 ### See Also:
 
-- [Element:addEvent](#Element:Element.addEvent)
+- [Element:addEvent](#Element:addEvent)
 - [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
 
 
@@ -173,8 +173,8 @@ Additional Event key codes can be added by adding properties to the Event.Keys H
 
 
 
-[$]: /Element/#dollar
-[Function]: /Native/Function
-[Function:bind]: /Native/Function/#Function:bind
-[Function:pass]: /Native/Function/#Function:pass
-[Function:delay]: /Native/Function/#Function:delay
+[$]: /core/Element/#dollar
+[Function]: /core/Native/Function
+[Function:bind]: /core/Native/Function/#Function:bind
+[Function:pass]: /core/Native/Function/#Function:pass
+[Function:delay]: /core/Native/Function/#Function:delay

@@ -7,6 +7,6 @@ Has no public methods.
 
 
 
-[Fx.Tween]: /Fx/Fx.Tween
-[Fx.Morph]: /Fx/Fx.Morph
-[Fx.Elements]: /Plugins/Fx.Elements
+[Fx.Tween]: /core/Fx/Fx.Tween
+[Fx.Morph]: /core/Fx/Fx.Morph
+[Fx.Elements]: /more/Fx/Fx.Elements

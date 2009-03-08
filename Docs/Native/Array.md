@@ -626,8 +626,8 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 	var copiedArray = $A(anArray); //Returns [0, 1, 2, 3, 4].
 
 
-[Array]: /Native/Array
-[Function:bind]: /Native/Function/#Function:bind
+[Array]: /core/Native/Array
+[Function:bind]: /core/Native/Function/#Function:bind
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
 [MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 [MDC Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
