@@ -51,7 +51,7 @@
 	"Class": {
 
 		"Class": {
-			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash", "Browser"],
 			"desc": "Contains the Class Function for easily creating, extending, and implementing reusable Classes."
 		},
 
@@ -153,7 +153,7 @@
 		},
 
 		"Request.HTML": {
-			"deps": ["Request"],
+			"deps": ["Request", "Element"],
 			"desc": "Extends the basic Request Class with additional methods for interacting with HTML responses."
 		},
 

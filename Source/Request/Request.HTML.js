@@ -108,7 +108,7 @@ Element.implement({
 		var sender = this.get('send');
 		sender.send({data: this, url: url || sender.options.url});
 		return this;
-	}
+	},
 
 	load: function(){
 		this.get('load').send(Array.link(arguments, {data: Object.type, url: String.type}));
