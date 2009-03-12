@@ -16,7 +16,6 @@ var Fx = new Class({
 		onCancel: Function.empty,
 		onComplete: Function.empty,
 		*/
-		fps: 50,
 		unit: false,
 		duration: 500,
 		link: 'ignore'
@@ -25,8 +24,10 @@ var Fx = new Class({
 	initialize: function(options){
 		this.subject = this.subject || this;
 		this.setOptions(options);
-		this.setOption('duration', Fx.Durations[this.getOption('duration')] || Number.from(this.getOption('duration')));
-		if (this.getOption('wait') === false) this.setOption('link', 'cancel');
+	},
+	
+	getDuration: function(){
+		return Fx.Durations[this.getOption('duration')] || Number.asInteger(this.getOption('duration'));
 	},
 
 	getTransition: function(){
@@ -36,9 +37,9 @@ var Fx = new Class({
 	},
 
 	step: function(){
-		var time = Date.now(), duration = this.getOption('duration');
-		if (time < this.time + duration){
-			var delta = this.transition((time - this.time) / duration);
+		var time = Date.now();
+		if (time < this.time + this.duration){
+			var delta = this.transition((time - this.time) / this.duration);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
 			this.set(this.compute(this.from, this.to, 1));
@@ -54,21 +55,22 @@ var Fx = new Class({
 		return Fx.compute(from, to, delta);
 	},
 
-	check: function(caller){
+	check: function(){
 		if (!this.timer) return true;
 		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(caller.bind(this, Array.slice(arguments, 1))); return false;
+			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
 		}
 		return false;
 	},
 
 	start: function(from, to){
-		if (!this.check(arguments.callee, from, to)) return this;
+		if (!this.check(from, to)) return this;
 		this.from = from;
 		this.to = to;
 		this.time = 0;
 		this.transition = this.getTransition();
+		this.duration = this.getDuration();
 		this.startTimer();
 		this.onStart();
 		return this;
@@ -110,14 +112,14 @@ var Fx = new Class({
 	stopTimer: function(){
 		if (!this.timer) return false;
 		this.time = Date.now() - this.time;
-		this.timer = Function.clear(this.timer);
+		this.timer = Fx.Timer.remove(this);
 		return true;
 	},
 
 	startTimer: function(){
 		if (this.timer) return false;
 		this.time = Date.now() - this.time;
-		this.timer = this.step.periodical(Math.round(1000 / this.getOption('fps')), this);
+		this.timer = Fx.Timer.add(this);
 		return true;
 	}
 
@@ -128,3 +130,33 @@ Fx.compute = function(from, to, delta){
 };
 
 Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
+
+Fx.Timer = (function(){
+	
+	var fps = 50, instances = [], timer;
+	
+	var loop = function(){
+		for (var i = 0; i < instances.length; i++) instances[i].step();
+	};
+	
+	return {
+
+		add: function(instance){
+			instances.push(instance);
+			if (!timer) timer = loop.periodical(Math.round(1000 / fps));
+			return true;
+		},
+		
+		remove: function(instance){
+			instances.erase(instance);
+			if (!instances.length && timer) timer = Function.clear(timer);
+			return false;
+		},
+		
+		setFPS: function(f){
+			fps = f;
+		}
+
+	};
+	
+})();
