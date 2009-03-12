@@ -45,6 +45,7 @@ new Native(Event);
 	};
 	
 	Event.defineGetter = function(key, fn){
+		if (Event.prototype.__defineGetter__) Event.prototype.__defineGetter__(key, fn);
 		properties[key] = fn;
 	}.asSetter();
 	
@@ -65,7 +66,9 @@ new Native(Event);
 		keys[name] = code;
 	};
 	
-	Event.defineGetter('key', function(event){
+	Event.defineGetter('key', function(){
+		var event = this.event;
+		
 		var code = event.which || event.keyCode;
 
 		for (var name in keys){
@@ -81,7 +84,7 @@ new Native(Event);
 	Event.implement('get', function(key){
 		var event = this.event;
 		var property = properties[key.camelCase()];
-		return (property) ? property.call(this, event) : event[key];
+		return (property) ? property.call(this) : event[key];
 	}.asGetter());
 	
 	//shhh
@@ -89,13 +92,15 @@ new Native(Event);
 	
 })();
 
-Event.defineGetter('target', function(event){
+Event.defineGetter('target', function(){
+	var event = this.event;
 	var target = event.target || event.srcElement;
 	while (target && target.nodeType == 3) target = target.parentNode;
 	return $(target);
 });
 
-Event.defineGetter('relatedTarget', function(event){
+Event.defineGetter('relatedTarget', function(){
+	var event = this.event;
 	switch (event.type){
 		case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 		case 'mouseout': related = event.relatedTarget || event.toElement;
@@ -108,15 +113,16 @@ Event.defineGetter('relatedTarget', function(event){
 	return (hasRelated) ? $(related) : null;
 });
 
-Event.defineGetter('client', function(event){
+Event.defineGetter('client', function(){
+	var event = this.event;
 	return {
 		x: (event.pageX) ? event.pageX - window.pageXOffset : event.clientX,
 		y: (event.pageY) ? event.pageY - window.pageYOffset : event.clientY
 	};
 });
 
-Event.defineGetter('page', function(event){
-	var doc = document;
+Event.defineGetter('page', function(){
+	var event = this.event, doc = document;
 	doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 	return {
 		x: event.pageX || event.clientX + doc.scrollLeft,
