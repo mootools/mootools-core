@@ -7,10 +7,6 @@ License:
 */
 
 Array.implement({
-	
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
-	},
 
 	filter: function(fn, bind){
 		var results = [];
@@ -104,4 +100,4 @@ Array.implement({
 		return array;
 	}
 
-}).alias('each', 'forEach');
+});

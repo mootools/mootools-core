@@ -16,6 +16,11 @@ Object.extend({
 		return object;
 	},
 	
+	append: function(original, extended){
+		for (var key in (extended || {})) original[key] = extended[key];
+		return original;
+	},
+	
 	beget: function(object){
 		var F = function(){};
 		F.prototype = object;
@@ -27,21 +32,18 @@ Object.extend({
 	},
 	
 	mixin: function(source){
-		for (var i = 1, l = arguments.length; i < l; i++) forEach(arguments[i], function(value, key){
-			var previous = source[key];
-			if (instanceOf(value, Object)){
-				if (instanceOf(previous, Object)) Object.mixin(previous, value);
-				else source[key] = Object.clone(value);
-			} else {
-				source[key] = value;
-			}
-		});
+		for (var i = 1, l = arguments.length; i < l; i++){
+			((Type.isEnumerable(object)) ? Array : Object).forEach(arguments[i], function(value, key){
+				var previous = source[key];
+				if (instanceOf(value, Object)){
+					if (instanceOf(previous, Object)) Object.mixin(previous, value);
+					else source[key] = Object.clone(value);
+				} else {
+					source[key] = value;
+				}
+			});
+		}
 		return source;
-	},
-	
-	append: function(original, extended){
-		for (var key in (extended || {})) original[key] = extended[key];
-		return original;
 	},
 	
 	map: function(object, fn, bind){

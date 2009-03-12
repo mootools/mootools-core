@@ -74,48 +74,12 @@ Function.prototype.extend = function(key, value){
 	return this;
 }.asSetter();
 
+Function.extend = Function.prototype.extend;
+
 Function.prototype.implement = function(key, value){
 	if (!Object.has(this.prototype, key) && (value == null || !value[':hidden'])) this.prototype[key] = value;
 	return this;
 }.asSetter();
-
-// forEach
-
-Object.extend('forEach', function(object, fn, bind){
-	for (var key in object) fn.call(bind, object[key], key, object);
-}).extend('each', Object.forEach);
-
-Array.extend('forEach', function(array, fn, bind){
-	for (var i = 0, l = array.length; i < l; i++) fn.call(bind, array[i], i, array);
-}).extend('each', Array.forEach);
-
-function forEach(object, fn, bind){
-	
-	var iterator, type;
-
-	if (object == null) return null;
-	
-	if (object.forEach){
-		object.forEach(fn, bind);
-		return object;
-	}
-	
-	if (Type.isEnumerable(object)) iterator = Array.forEach;
-	else if ((type = typeOf(object)) && (type = Type['object:' + type])) iterator = type.forEach;
-	else if (instanceOf(object, Object)) iterator = Object.forEach;
-	
-	if (iterator) iterator(object, fn, bind);
-	else fn.call(bind, object, null, object);
-
-	return object;
-
-};
-
-// Utility
-
-Date.extend('now', function(){
-	return +(new Date);
-});
 
 // valueOf, typeOf, instanceOf
 
@@ -264,10 +228,12 @@ new Type(Native);
 
 		implement: function(name, method){
 
-			Array.forEach(hooksOf(this), function(hook){
+			var hooks = hooksOf(this);
+			for (var i = 0; i < hooks.length; i++){
+				var hook = hooks[i];
 				if (typeOf(hook) == 'native') Native.prototype.implement[':origin'].call(hook, name, method);
 				else hook.call(this, name, method);
-			}, this);
+			}
 
 			Function.prototype.implement[':origin'].call(this, name, method);
 
@@ -323,9 +289,7 @@ new Native(Table).implement({
 		for (var uid in this.table) fn.call(bind, this.table[uid], UID.itemOf(uid), this);
 	}
 
-});
-
-Table.alias('each', 'forEach');
+}).alias('each', 'forEach');
 
 // Default Natives
 
@@ -347,28 +311,35 @@ Table.alias('each', 'forEach');
 	
 	enforce(RegExp, ["exec", "test"]);
 
-	enforce(Date, [
-		"getDate", "getDay", "getFullYear", "getHours", "getMilliseconds", "getMinutes", "getMonth",
-		"getSeconds", "getTime", "getTimezoneOffset", "getUTCDate", "getUTCDay", "getUTCFullYear", "getUTCHours", "getUTCMilliseconds",
-		"getUTCMinutes", "getUTCMonth", "getUTCSeconds", "getYear", "setDate", "setFullYear", "setHours", "setMilliseconds", "setMinutes",
-		"setMonth", "setSeconds", "setTime", "setUTCDate", "setUTCFullYear", "setUTCHours", "setUTCMilliseconds", "setUTCMinutes",
-		"setUTCMonth", "setUTCSeconds", "setYear", "toDateString", "toGMTString", "toLocaleDateString", "toLocaleFormat", "toLocaleString",
-		"toLocaleTimeString", "toTimeString", "toUTCString"
-	]);
-
 })(function(object, methods){
 		
 	for (var i = 0; i < methods.length; i++){
 		var name = methods[i], method = object.prototype[name], natives = {};
 		if (method){
 			delete object.prototype[name];
-			natives[name] = object.prototype[name] = method;
+			object.prototype[name] = method;
 		}
 	}
-
-	new Native(object).implement(natives);
+	
+	new Native(object).implement(object.prototype);
 });
+
+new Native(Date).extend('now', function(){
+	return +(new Date);
+});
+
+// fixes NaN
 
 Number.prototype[':type'] = function(number){
 	return (isFinite(number)) ? 'number' : null;
 }.hide();
+
+// forEach
+
+Object.extend('forEach', function(object, fn, bind){
+	for (var key in object) fn.call(bind, object[key], key, object);
+}).extend('each', Object.forEach);
+
+Array.implement('forEach', function(fn, bind){
+	for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+}).alias('each', 'forEach');

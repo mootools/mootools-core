@@ -55,7 +55,7 @@
 	"Browser": {
 
 		"Browser": {
-			"deps": ["Array", "Function", "Number", "String", "Object"],
+			"deps": ["Mixins"],
 			"desc": "Contains Window, Document, and the Browser Object. This file requires MooTools to run in a Browser."
 		},
 		

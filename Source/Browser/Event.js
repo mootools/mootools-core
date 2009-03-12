@@ -44,7 +44,7 @@ new Native(Event);
 
 	};
 	
-	Event.addGetter = function(key, fn){
+	Event.defineGetter = function(key, fn){
 		properties[key] = fn;
 	}.asSetter();
 	
@@ -61,11 +61,11 @@ new Native(Event);
 		'delete': 46
 	};
 	
-	Event.addKeyCode = function(name, code){
+	Event.defineKeyCode = function(name, code){
 		keys[name] = code;
 	};
 	
-	Event.addGetter('key', function(event){
+	Event.defineGetter('key', function(event){
 		var code = event.which || event.keyCode;
 
 		for (var name in keys){
@@ -89,13 +89,13 @@ new Native(Event);
 	
 })();
 
-Event.addGetter('target', function(event){
+Event.defineGetter('target', function(event){
 	var target = event.target || event.srcElement;
 	while (target && target.nodeType == 3) target = target.parentNode;
 	return $(target);
 });
 
-Event.addGetter('relatedTarget', function(event){
+Event.defineGetter('relatedTarget', function(event){
 	switch (event.type){
 		case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 		case 'mouseout': related = event.relatedTarget || event.toElement;
@@ -108,14 +108,14 @@ Event.addGetter('relatedTarget', function(event){
 	return (hasRelated) ? $(related) : null;
 });
 
-Event.addGetter('client', function(event){
+Event.defineGetter('client', function(event){
 	return {
 		x: (event.pageX) ? event.pageX - window.pageXOffset : event.clientX,
 		y: (event.pageY) ? event.pageY - window.pageYOffset : event.clientY
 	};
 });
 
-Event.addGetter('page', function(event){
+Event.defineGetter('page', function(event){
 	var doc = document;
 	doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 	return {
