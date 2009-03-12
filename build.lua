@@ -22,20 +22,20 @@ require "json"
 -- table.include ()
 -- includes a value in a table if not already present
 
-function table.include(tab, included)
+function table:include(included)
 
-	present = false
+	local present = false
 
-	for key, value in ipairs(tab) do
+	for key, value in ipairs(self) do
 		if value == included then
 			present = true
 			break
 		end
 	end
 
-	if not present then table.insert(tab, included) end
+	if not present then table.insert(self, included) end
 
-	return tab
+	return self
 
 end
 
@@ -124,20 +124,19 @@ local function Build(selected)
 
 		for i, file in ipairs(list) do
 			io.write(file .. ".js")
-			local string = io.open(scripts_path .. folder_of(file) .. "/" .. file .. ".js"):read("*all")
+			local str = io.open(scripts_path .. folder_of(file) .. "/" .. file .. ".js"):read("*all")
 			
 			-- %build% replace
 			
 			if file == "Core" then
-			
-				local ref = io.open('.git/HEAD'):read("*all")
-				ref = string.match(ref, "ref: ([%w/]+)")
-				ref = string.match(io.open('.git/' .. ref):read("*all"), "(%w+)")
-				string = string.gsub(string, "%%build%%", ref)
+
+				local ref = io.open('.git/HEAD'):read("*all"):match("ref: ([%w/]+)")
+				ref = io.open('.git/' .. ref):read("*all"):match("(%w+)")
+				str = str:gsub("%%build%%", ref)
 
 			end
 
-			mootools:write(string)
+			mootools:write(str)
 			if i ~= table.maxn(list) then
 				mootools:write("\n")
 				io.write(", ")
