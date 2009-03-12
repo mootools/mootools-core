@@ -6,6 +6,22 @@ License:
 	MIT-style license.
 */
 
+Number.extend({
+	
+	random: function(min, max){
+		return Math.floor(Math.random() * (max - min + 1) + min);
+	},
+	
+	toInteger: function(number, base){
+		return parseInt(number, base || 10);
+	},
+	
+	toFloat: function(number){
+		return parseFloat(number);
+	}
+
+});
+
 Number.implement({
 
 	limit: function(min, max){
@@ -18,19 +34,13 @@ Number.implement({
 	},
 
 	times: function(fn, bind){
-		for (var i = 0; i < this; i++) fn.call(bind, i, this);
+		for (var i = 0; i < this; i++) fn.call(bind, i, null, this);
 	}
 
 });
 
-Number.alias({'each': 'times'});
-
-(function(math){
-	var methods = {};
-	math.each(function(name){
-		if (!Number[name]) methods[name] = function(){
-			return Math[name].apply(null, [this].concat(Array.from(arguments)));
-		};
+['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan'].each(function(name){
+	Number.extend(name, Math[name]).implement(name, function(){
+		return Math[name].apply(null, [this].concat(Array.from(arguments)));
 	});
-	Number.implement(methods);
-})(['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan']);
+});

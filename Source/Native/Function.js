@@ -18,6 +18,17 @@ Function.extend({
 		clearInterval(timer);
 		clearTimeout(timer);
 		return null;
+	},
+	
+	empty: function(){},
+
+	stab: function(){
+		for (var i = 0, l = arguments.length; i < l; i++){
+			try {
+				return arguments[i]();
+			} catch (e){}
+		}
+		return null;
 	}
 	
 });
@@ -25,7 +36,11 @@ Function.extend({
 Function.implement({
 	
 	attempt: function(args, bind){
-		return Function.stab(this.bind(bind, args));
+		try {
+			return this.apply(bind, Array.from(args));
+		} catch (e){
+			return null;
+		}
 	},
 	
 	bind: function(bind, args){
@@ -46,13 +61,6 @@ Function.implement({
 	
 	delay: function(delay, bind, args){
 		return setTimeout(this.bind(bind, args), delay);
-	},
-	
-	disguise: function(as){
-		this.toString = function(){
-			return as.toString();
-		};
-		return this;
 	},
 	
 	pass: function(args, bind){

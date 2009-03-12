@@ -8,55 +8,40 @@ License:
 
 Object.extend({
 	
-	append: function(original, extended){
-		for (var key in (extended || {})) original[key] = extended[key];
-		return original;
-	},
-	
-	forEach: function(object, fn, bind){
-		for (var p in object) fn.call(bind, object[p], p, object);
+	from: function(keys, values){
+		keys = Array.from(keys);
+		values = Array.from(values);
+		var object = {};
+		for (var i = 0; i < keys.length; i++) object[keys[i]] = Object.pick(values[i]);
+		return object;
 	},
 	
 	beget: function(object){
 		var F = function(){};
 		F.prototype = object;
-		var instance = new F;
-		Object.reset(instance);
-		return instance;
+		return new F;
 	},
 	
-	reset: function(object, key){
-		if (key == null){
-			for (var p in object) Object.reset(object, p);
-			return;
-		}
-		delete object[key];
-		switch (typeOf(object[key])){
-			case 'object': object[key] = Object.beget(object[key]); break;
-			case 'array': object[key] = Array.clone(object[key]); break;
-		}
-	},
-	
-	merge: function(){
-		var args = Array.from(arguments);
-		args.unshift({});
-		return Object.mixin.apply(null, args);
+	clone: function(object){
+		return Object.mixin(Type.isEnumerable(object) ? [] : {}, object);
 	},
 	
 	mixin: function(source){
-		for (var i = 1, l = arguments.length; i < l; i++){
-			var object = arguments[i];
-			for (var key in object){
-				var ok = object[key], sk = source[key];
-				if (typeOf(ok) == 'object'){
-					if (typeOf(sk) == 'object') Object.mixin(sk, ok);
-					else source[key] = Object.clone(ok);
-				} else {
-					source[key] = Utility.clone(ok);
-				}
+		for (var i = 1, l = arguments.length; i < l; i++) forEach(arguments[i], function(value, key){
+			var previous = source[key];
+			if (instanceOf(value, Object)){
+				if (instanceOf(previous, Object)) Object.mixin(previous, value);
+				else source[key] = Object.clone(value);
+			} else {
+				source[key] = value;
 			}
-		}
+		});
 		return source;
+	},
+	
+	append: function(original, extended){
+		for (var key in (extended || {})) original[key] = extended[key];
+		return original;
 	},
 	
 	map: function(object, fn, bind){
@@ -87,41 +72,16 @@ Object.extend({
 		return false;
 	},
 	
-	getKeys: function(object){
+	keys: function(object){
 		var keys = [];
 		for (var key in object) keys.push(key);
 		return keys;
 	},
-
-	getValues: function(object){
+	
+	values: function(object){
 		var values = [];
 		for (var key in object) values.push(object[key]);
 		return values;
-	},
-	
-	toQueryString: function(object, base){
-		var queryString = [];
-		for (var key in object){
-			var value = object[key];
-			if (base) key = base + '[' + key + ']';
-			var result;
-			switch (typeOf(value)){
-				case 'object': result = Object.toQueryString(value, key); break;
-				case 'array':
-					var qs = {};
-					Array.each(value, function(val, i){
-						qs[i] = val;
-					});
-					result = Object.toQueryString(qs, key);
-				break;
-				default: result = key + '=' + encodeURIComponent(value);
-			}
-			if (value != null) queryString.push(result);
-		}
-
-		return queryString.join('&');
 	}
 	
 });
-
-Object.each = Object.forEach;
