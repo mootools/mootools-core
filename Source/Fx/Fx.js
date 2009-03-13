@@ -10,7 +10,7 @@ var Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	Options: {
+	options: {
 		/*
 		onStart: Function.empty,
 		onCancel: Function.empty,

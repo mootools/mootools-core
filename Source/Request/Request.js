@@ -10,7 +10,7 @@ var Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	Options: {
+	options: {
 		/*
 		onRequest: Function.empty,
 		onComplete: Function.empty,

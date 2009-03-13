@@ -10,7 +10,7 @@ Request.HTML = new Class({
 
 	Extends: Request,
 
-	Options: {
+	options: {
 		update: false,
 		evalScripts: true,
 		filter: false

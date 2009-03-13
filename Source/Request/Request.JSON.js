@@ -10,7 +10,7 @@ Request.JSON = new Class({
 
 	Extends: Request,
 
-	Options: {
+	options: {
 		secure: true
 	},
 
