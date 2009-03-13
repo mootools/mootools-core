@@ -1,6 +1,6 @@
 /*
-Script: Class.Extras.js
-	Specs for Class.Extras.js
+Script: Mixins.js
+	Specs for Mixins.js
 
 License:
 	MIT-style license.
@@ -247,24 +247,24 @@ describe("Options Class", {
 
 	"should set options": function(){
 		var myTest = new Local.OptionsTest({ a: 1, b: 2});
-		value_of(myTest.options).should_not_be(undefined);
+		value_of(Storage.retrieve(myTest, 'options')).should_not_be(undefined);
 	},
 
 	"should override default options": function(){
 		Local.OptionsTest.implement({
-			options: {
+			Options: {
 				a: 1,
 				b: 2
 			}
 		});
 		var myTest = new Local.OptionsTest({a: 3, b: 4});
-		value_of(myTest.options.a).should_be(3);
-		value_of(myTest.options.b).should_be(4);
+		value_of(myTest.getOption('a')).should_be(3);
+		value_of(myTest.getOption('b')).should_be(4);
 	},
 
 	"should add events in the options object if class has implemented the Events class": function(){
 		Local.OptionsTest.implement(new Events).implement({
-			options: {
+			Options: {
 				onEvent1: function(){
 					return true;
 				},
@@ -278,7 +278,7 @@ describe("Options Class", {
 				return true;
 			}
 		});
-		var events = myTest.$events;
+		var events = Storage.retrieve(myTest, 'events');
 		value_of(events).should_not_be(undefined);
 		value_of(events["event1"].length).should_be(1);
 		value_of(events["event2"].length).should_be(1);

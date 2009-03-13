@@ -26,21 +26,23 @@ var Builder = {
 
 	scripts: {
 		source: {
-			'Core'      : ['Core', 'Browser'],
-			'Native'    : ['Array', 'Function', 'Number', 'String', 'Event'],
-			'Class'     : ['Class', 'Class.Extras'],
+			'Core'      : ['Core'],
+			'Native'    : ['Array', 'Function', 'Number', 'Object', 'String'],
+			'Class'     : ['Class', 'Mixins'],
+			'Browser'	: ['Browser', 'Event'],
 			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
-			'Utilities' : ['Selectors', 'DomReady', 'JSON', 'Cookie', 'Swiff'],
+			'Utilities' : ['Slick', 'DomReady', 'JSON'],
 			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Transitions'],
 			'Request'   : ['Request', 'Request.HTML', 'Request.JSON']
 		},
 
 		specs: {
-			'Core'      : ['Core', 'Browser'],
-			'Native'    : ['Array', 'String', 'Function', 'Number'],
-			'Class'     : ['Class', 'Class.Extras'],
-			'Element'   : ['Element', 'Element.Style'],
-			'Utilities' : ['Selectors']
+			'Core'      : ['Core'],
+			'Native'    : ['Array', 'Function', 'Number', 'Object', 'String'],
+			'Class'     : ['Class', 'Mixins'],
+			'Browser'	: ['Browser'],
+			/*'Element'   : ['Element', 'Element.Style'],
+			'Utilities' : ['Slick']*/
 		}
 	},
 

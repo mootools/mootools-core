@@ -22,34 +22,17 @@ var Args = function(){
 
 describe("Function Methods", {
 
-	// Function.create
-
-	'should return a new function': function(){
-		var fnc = Function.empty.create();
-		value_of(Function.empty === fnc).should_be_false();
-	},
-
-	'should return a new function with specified argument': function(){
-		var fnc = fn.create({'arguments': 'rocks'});
-		value_of(fnc()).should_be(['rocks']);
-	},
-
-	'should return a new function with multiple arguments': function(){
-		var fnc = fn.create({'arguments': ['MooTools', 'rocks']});
-		value_of(fnc()).should_be(['MooTools', 'rocks']);
-	},
-
-	'should return a new function bound to an object': function(){
-		var fnc = Rules.create({'bind': 'MooTools'});
-		value_of(fnc()).should_be('MooTools rules');
-	},
-
 	'should return a new function as an event': function(){
-		var fnc = fn.create({'arguments': [0, 1], 'event': true});
+		var fnc = fn.bindWithEvent(fnc, [0, 1]);
 		value_of(fnc('an Event occurred')).should_be(['an Event occurred', 0, 1]);
 	},
 
 	// Function.bind
+
+	'should return a new function bound to an object': function(){
+		var fnc = Rules.bind('MooTools');
+		value_of(fnc()).should_be('MooTools rules');
+	},
 
 	'should return the function bound to an object': function(){
 		var fnc = Rules.bind('MooTools');
@@ -77,6 +60,16 @@ describe("Function Methods", {
 	},
 
 	// Function.pass
+
+	'should return a new function with specified argument': function(){
+		var fnc = fn.pass('rocks');
+		value_of(fnc()).should_be(['rocks']);
+	},
+
+	'should return a new function with multiple arguments': function(){
+		var fnc = fn.pass(['MooTools', 'rocks']);
+		value_of(fnc()).should_be(['MooTools', 'rocks']);
+	},
 
 	'should return a function that when called passes the specified arguments to the original function': function(){
 		var fnc = fn.pass('MooTools is beautiful and elegant');
@@ -138,7 +131,7 @@ describe("Function Methods", {
 
 	'delay should return a timer pointer': function(){
 		var timer = Function.empty.delay(10000);
-		value_of(typeOf.number(timer)).should_be_true();
+		value_of(Type.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	},
 
@@ -146,7 +139,7 @@ describe("Function Methods", {
 
 	'periodical should return a timer pointer': function(){
 		var timer = Function.empty.periodical(10000);
-		value_of(typeOf.number(timer)).should_be_true();
+		value_of(Type.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	}
 

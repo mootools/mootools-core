@@ -6,15 +6,15 @@ License:
 	MIT-style license.
 */
 
-describe('Window.exec', {
+describe('String.exec', {
 
 	'should evaluate on global scope': function(){
-		Window.exec.call(Window.exec, 'var execSpec = 42');
+		String.exec('var execSpec = 42');
 		value_of(window.execSpec).should_be(42);
 	},
 
 	'should return the evaluated script': function(){
-		value_of(Window.exec('Function.empty();')).should_be('Function.empty();');
+		value_of(String.exec('Function.empty();')).should_be('Function.empty();');
 	}
 
 });
@@ -34,7 +34,7 @@ describe('Document', {
 describe('Window', {
 
 	'should set the Element prototype': function(){
-		value_of(Object.defined(window.Element.prototype)).should_be_true();
+		value_of(!!window.Element.prototype).should_be_true();
 	}
 
 });
