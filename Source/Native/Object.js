@@ -33,7 +33,8 @@ Object.extend({
 	
 	mixin: function(source){
 		for (var i = 1, l = arguments.length; i < l; i++){
-			((Type.isEnumerable(object)) ? Array : Object).forEach(arguments[i], function(value, key){
+			var object = arguments[i];
+			((Type.isEnumerable(object)) ? Array : Object).forEach(object, function(value, key){
 				var previous = source[key];
 				if (instanceOf(value, Object)){
 					if (instanceOf(previous, Object)) Object.mixin(previous, value);
