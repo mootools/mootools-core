@@ -42,13 +42,10 @@ Function.prototype.asSetter = function(){
 Function.prototype.asGetter = function(){
 	var self = this;
 	var multiple = function(argument){
-		if (typeof argument == 'string'){
-			return self.apply(this, arguments);
-		} else {
-			var obj = {};
-			for (var i = 0; i < argument.length; i++) obj[argument[i]] = self.call(this, argument[i]);
-			return obj;
-		}
+		if (typeof argument == 'string') return self.apply(this, arguments);
+		var obj = {};
+		for (var i = 0; i < argument.length; i++) obj[argument[i]] = self.call(this, argument[i]);
+		return obj;
 	};
 	multiple[':origin'] = self;
 	return multiple;
@@ -227,7 +224,7 @@ new Type(Native);
 			var hooks = hooksOf(this);
 			for (var i = 0; i < hooks.length; i++){
 				var hook = hooks[i];
-				if (typeOf(hook) == 'native') Native.prototype.implement[':origin'].call(hook, name, method);
+				if (typeOf(hook) == 'native') arguments.callee.call(hook, name, method);
 				else hook.call(this, name, method);
 			}
 
@@ -310,7 +307,7 @@ new Native(Table).implement({
 })(function(object, methods){
 		
 	for (var i = 0; i < methods.length; i++){
-		var name = methods[i], method = object.prototype[name], natives = {};
+		var name = methods[i], method = object.prototype[name];
 		if (method){
 			delete object.prototype[name];
 			object.prototype[name] = method;
@@ -326,8 +323,8 @@ new Native(Date).extend('now', function(){
 
 // fixes NaN
 
-Number.prototype[':type'] = function(number){
-	return (isFinite(number)) ? 'number' : null;
+Number.prototype[':type'] = function(){
+	return (isFinite(this)) ? 'number' : null;
 }.hide();
 
 // forEach
