@@ -33,10 +33,54 @@ function Storage(){};
 		}.asGetter(),
 
 		dump: function(key){
-			var prop = storageOf(this)[key];
-			delete storageOf(this)[key];
+			var store = storageOf(this), prop = store[key];
+			delete store[key];
 			return prop;
 		}.asGetter()
+
+	});
+	
+})();
+
+// Accessors
+
+function Accessors(){};
+
+(function(){
+	
+	var accessors = {};
+	
+	function accessorOf(object, key){
+		var uid = UID.uidOf(object), accessor = accessors[uid] || (accessors[uid] = {});
+		return accessor[key] || (accessor[key] = {});
+	};
+
+	new Native(Accessors).implement({
+
+		defineGetter: function(key, fn){
+			// if (this.prototype.__defineGetter__) this.prototype.__defineGetter__(key, fn);
+			accessorOf(this, key).get = fn;
+			return this;
+		},
+
+		defineSetter: function(key, fn){
+			// if (this.prototype.__defineSetter__) this.prototype.__defineSetter__(key, fn);
+			accessorOf(this, key).set = fn;
+			return this;
+		},
+
+		lookupGetter: function(key){
+			return accessorOf(this, key).get;
+		},
+
+		lookupSetter: function(key){
+			return accessorOf(this, key).set;
+		}
+
+	}).implement({
+		
+		defineGetters: Accessors.prototype.defineGetter.asSetter(),
+		defineSetters: Accessors.prototype.defineSetter.asSetter()
 
 	});
 	
@@ -80,7 +124,7 @@ function Events(){};
 		removeEvents: function(type){
 			var events = eventsOf(this, type);
 			for (var e in events) this.removeEvent(e, events[e]);
-		}.asSetter()
+		}
 
 	});
 	
