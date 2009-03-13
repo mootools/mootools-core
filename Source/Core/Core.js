@@ -69,12 +69,10 @@ Object.pick = function(){
 
 // Function extend, implement
 
-Function.prototype.extend = function(key, value){
+Function.extend = Function.prototype.extend = function(key, value){
 	if (!Object.has(this, key) && (value == null || !value[':hidden'])) this[key] = value;
 	return this;
 }.asSetter();
-
-Function.extend = Function.prototype.extend;
 
 Function.prototype.implement = function(key, value){
 	if (!Object.has(this.prototype, key) && (value == null || !value[':hidden'])) this.prototype[key] = value;
@@ -122,14 +120,12 @@ var UID = (function(){
 	
 	return {
 
-		uidOf: function(item){
-			item = valueOf(item);
+		uidOf: function(item){			
+			if ((item = valueOf(item)) && item.uid) return item.uid;
+			
 			if (!instanceOf(item, Object)) item = primitives[item] || (primitives[item] = {valueOf: Function.from(item)});
-			var uid = item.uid;
-			if (!uid){
-				uid = (item.uid = (index++).toString(16));
-				table[uid] = item;
-			}
+			var uid = item.uid || (item.uid = (index++).toString(16));
+			if (!table[uid]) table[uid] = item;
 			return uid;
 		},
 	
