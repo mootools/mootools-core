@@ -45,7 +45,9 @@ Array.implement({
 	},
 	
 	clean: function(){
-		return this.filter(Type.isDefined);
+		return this.filter(function(item){
+			return item != undefined;
+		});
 	},
 	
 	call: function(name, args){
@@ -95,7 +97,7 @@ Array.implement({
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
 			if (this[i] == null) continue;
-			array = array.concat((Type.isIterable(this[i])) ? Array.flatten(this[i]) : this[i]);
+			array = array.concat((Type.isEnumerable(this[i])) ? Array.flatten(this[i]) : this[i]);
 		}
 		return array;
 	}

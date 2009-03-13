@@ -55,7 +55,7 @@ Function.implement({
 		var self = this;
 		args = (args == null) ? null : Array.from(args);
 		return function(event){
-			return this.apply(bind, [event || window.event].concat(args || arguments));
+			return self.apply(bind, [event || window.event].concat(args || arguments));
 		};
 	},
 	
