@@ -188,6 +188,22 @@ var slick = (function(buffer){
 		}
 	},
 	
+	'combinator(^)': function(node, tag, id, selector){
+		node = node.firstChild;
+		if (node){
+			if (node.nodeType === 1) this.push(node, tag, id, selector);
+			else this['combinator(+)'](node, tag, id, selector);
+		}
+	},
+	
+	'combinator($)': function(node, tag, id, selector){
+		node = node.lastChild;
+		if (node){
+			if (node.nodeType === 1) this.push(node, tag, id, selector);
+			else this['combinator(-)'](node, tag, id, selector);
+		}
+	},
+	
 	'util(node-check)': function(node, tag, id, selector){
 		if (node.nodeType === 1){
 			var uid = this.slick.uidOf(node);
@@ -207,6 +223,11 @@ var slick = (function(buffer){
 		while ((node = node.previousSibling)){
 			if (this['util(node-check)'](node, tag, id, selector) === false) break;
 		}
+	},
+	
+	'combinator(±)': function(node, tag, id, selector){
+		this['combinator(--)'](node, tag, id, selector);
+		this['combinator(++)'](node, tag, id, selector);
 	},
 	
 	// elements
@@ -438,10 +459,10 @@ slick.parse = (function(){
 	
 	var parseregexp = new RegExp("(?x)\
 		^(?:\n\
-		         \\s+ (?=[<>+~-] | $)     # Meaningless Whitespace \n\
+		         \\s+ (?=[<>+~$^±-] | $)     # Meaningless Whitespace \n\
 		|      ( ,                 ) \\s* # Separator              \n\
-		|      ( \\s     (?=[^<>+~-]))    # CombinatorChildren     \n\
-		|      ( [<>+~-]{1,2}      ) \\s* # Combinator             \n\
+		|      ( \\s     (?=[^<>+~$^±-]))    # CombinatorChildren     \n\
+		|      ( [<>+~$^±-]{1,2}      ) \\s* # Combinator             \n\
 		|      ( [a-z0-9_-]+ | \\* )      # Tag                    \n\
 		| \\#  ( [a-z0-9_-]+       )      # ID                     \n\
 		| \\.  ( [a-z0-9_-]+       )      # ClassName              \n\
