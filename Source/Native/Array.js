@@ -45,13 +45,17 @@ Array.implement({
 	},
 	
 	clean: function(){
-		return this.filter(function(item){
-			return item != undefined;
-		});
+		return this.filter(nil);
 	},
 	
 	call: function(name, args){
-		for (var i = 0, j = this.length; i < j; i++) this[i][name].apply(this[i], Array.from(args));
+		args = Array.from(args);
+		var results = [];
+		for (var i = 0, j = this.length; i < j; i++){
+			var item = this[i];
+			results.push(item[name].apply(item, args));
+		}
+		return results;
 	},
 	
 	append: function(array){
@@ -63,11 +67,11 @@ Array.implement({
 		return this.indexOf(item, from) != -1;
 	},
 
-	getLast: function(){
+	last: function(){
 		return (this.length) ? this[this.length - 1] : null;
 	},
 
-	getRandom: function(){
+	random: function(){
 		return (this.length) ? this[Number.random(0, this.length - 1)] : null;
 	},
 
@@ -96,8 +100,8 @@ Array.implement({
 	flatten: function(){
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			if (this[i] == null) continue;
-			array = array.concat((Type.isEnumerable(this[i])) ? Array.flatten(this[i]) : this[i]);
+			var item = this[i];
+			if (item != null) array = array.concat((Type.isEnumerable(item)) ? Array.flatten(item) : item);
 		}
 		return array;
 	}
