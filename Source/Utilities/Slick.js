@@ -25,7 +25,7 @@ var slick = (function(buffer){
 		
 		for (var i = 0; i < parsed.length; i++){
 			
-			var currentSelector = parsed[i];
+			var currentSelector = parsed[i], items;
 			
 			for (var j = 0; j < currentSelector.length; j++){
 				var currentBit = currentSelector[j], combinator = 'combinator(' + (currentBit.combinator || ' ') + ')';
