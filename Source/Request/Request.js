@@ -10,14 +10,14 @@ var Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	Options: {
+	options: {
 		/*
-		onRequest: Function.empty,
-		onComplete: Function.empty,
-		onCancel: Function.empty,
-		onSuccess: Function.empty,
-		onFailure: Function.empty,
-		onException: Function.empty,
+		onRequest: nil,
+		onComplete: nil,
+		onCancel: nil,
+		onSuccess: nil,
+		onFailure: nil,
+		onException: nil,
 		*/
 		url: '',
 		data: '',
@@ -40,8 +40,6 @@ var Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-		this.setOption('isSuccess', this.getOption('isSuccess') || this.isSuccess);
-		this.headers = this.getOption('headers');
 	},
 
 	onStateChange: function(){
@@ -58,7 +56,7 @@ var Request = new Class({
 			this.response = {text: null, xml: null};
 			this.failure();
 		}
-		this.xhr.onreadystatechange = Function.empty;
+		this.xhr.onreadystatechange = nil;
 	},
 
 	isSuccess: function(){
@@ -87,7 +85,7 @@ var Request = new Class({
 	},
 
 	setHeader: function(name, value){
-		this.headers[name] = value;
+		this.getOption('headers')[name] = value;
 		return this;
 	},
 
@@ -97,29 +95,30 @@ var Request = new Class({
 		}.bind(this));
 	},
 
-	check: function(caller){
+	check: function(){
 		if (!this.running) return true;
 		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(caller.bind(this, Array.slice(arguments, 1))); return false;
+			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
 		}
 		return false;
 	},
 
-	send: function(options){
-		if (!this.check(arguments.callee, options)) return this;
+	send: function(params){
+		if (!this.check(params)) return this;
 		this.running = true;
 
-		if (['string', 'element'].contains(typeOf(options))) options = {data: options};
-
-		var oldOptions = this.getOptions();
-		options = Object.append({data: oldOptions.data, url: oldOptions.url, method: oldOptions.method}, options);
-		var data = options.data, url = options.url, method = options.method;
+		var old = this.getOptions('data', 'url', 'method');
+		params = Object.append(old, params);
+		var data = params.data, url = params.url, method = params.method;
 
 		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
 			case 'object': data = Object.toQueryString(data);
 		}
+		
+		var headers = this.getOption('headers');
+		this.setOption('isSuccess', this.getOption('isSuccess') || this.isSuccess);
 
 		if (this.getOption('format')){
 			var format = 'format=' + this.getOption('format');
@@ -134,7 +133,7 @@ var Request = new Class({
 
 		if (this.getOption('urlEncoded') && method == 'post'){
 			var encoding = (this.getOption('encoding')) ? '; charset=' + this.getOption('encoding') : '';
-			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
+			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
 		if (data && method == 'get'){
@@ -146,12 +145,12 @@ var Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		for (var key in this.headers){
-			var value = this.headers[key];
+		Object.each(headers, function(value, key){
+			var xhr = this.xhr;
 			if (!Function.stab(function(){
-				this.xhr.setRequestHeader(key, value);
-			}.bind(this))) this.fireEvent('exception', [key, value]);
-		}
+				xhr.setRequestHeader(key, value);
+			})) this.fireEvent('exception', [key, value]);
+		}, this);
 
 		this.fireEvent('request');
 		this.xhr.send(data);
@@ -163,7 +162,7 @@ var Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
-		this.xhr.onreadystatechange = Function.empty;
+		this.xhr.onreadystatechange = nil;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
@@ -173,40 +172,35 @@ var Request = new Class({
 
 (function(){
 
-var methods = {};
+	var methods = {};
 
-['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
-	methods[method] = function(){
-		var params = Array.link(arguments, {url: Type.isString, data: Type.isDefined});
-		return this.send(Object.append(params, {method: method.toLowerCase()}));
-	};
-});
+	['get', 'post', 'put', 'delete'].each(function(method){
+		methods[method] = methods[method.toUpperCase()] = function(obj){
+			this.setOption('method', method);
+			return this.send(obj);
+		};
+	});
 
-Request.implement(methods);
+	Request.implement(methods);
 
 })();
 
-Element.addSetter('send', function(options){
-	var send = this.retrieve('send');
-	if (send) send.cancel();
-	return this.dump('send').store('send:options', Object.append({
-		data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
-	}, options));
+Element.defineSetter('send', function(options){
+	this.get('send').cancel().setOptions(options);
 });
 
-Element.addGetter('send', function(options){
-	if (options || !this.retrieve('send')){
-		if (options || !this.retrieve('send:options')) this.set('send', options);
-		this.store('send', new Request(this.retrieve('send:options')));
-	}
+Element.defineGetter('send', function(){
+	if (!this.retrieve('send')) this.store('send', new Request({
+		data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
+	}));
 	return this.retrieve('send');
 });
 
 Element.implement({
 
-	send: function(url){
+	send: function(obj){
 		var sender = this.get('send');
-		sender.send({data: this, url: url || sender.getOption('url')});
+		sender.send.call(sender, obj);
 		return this;
 	}
 
