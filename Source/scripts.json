@@ -113,7 +113,7 @@
 	"Fx": {
 
 		"Fx": {
-			"deps": ["Mixins"],
+			"deps": ["Mixins", "Class"],
 			"desc": "Contains the basic animation logic. To be extended by all other Fx Classes."
 		},
 
@@ -142,7 +142,7 @@
 	"Request": {
 
 		"Request": {
-			"deps": ["Mixins", "Element"],
+			"deps": ["Mixins", "Class", "Element"],
 			"desc": "Powerful all-purpose Request class. Powered by XMLHTTPRequest."
 		},
 
@@ -154,15 +154,6 @@
 		"Request.JSON": {
 			"deps": ["Request", "JSON"],
 			"desc": "Extends the Request class with additional methods to interact with JSON responses."
-		}
-
-	},
-	
-	"Compatibility": {
-
-		"1.2": {
-			"deps": ["Class"],
-			"desc": "Provides full compatibility with MooTools version 1.2."
 		}
 
 	}

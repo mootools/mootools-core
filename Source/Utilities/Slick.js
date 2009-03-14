@@ -92,12 +92,12 @@ var slick = (function(buffer){
 	
 	var pseudos = {};
 	
-	slick.addPseudoSelector = function(name, fn){
+	slick.definePseudoSelector = function(name, fn){
 		pseudos[name] = fn;
-		return slick;
+		return this;
 	};
 	
-	slick.getPseudoSelector = function(name){
+	slick.lookupPseudoSelector = function(name){
 		return pseudos[name];
 	};
 	
