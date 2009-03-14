@@ -29,7 +29,7 @@ Fx.Morph = new Class({
 	},
 
 	start: function(properties){
-		if (!this.check(arguments.callee, properties)) return this;
+		if (!this.check(properties)) return this;
 		if (typeOf(properties) == 'string') properties = this.search(properties);
 		var from = {}, to = {};
 		for (var p in properties){
@@ -42,17 +42,12 @@ Fx.Morph = new Class({
 
 });
 
-Element.addSetter('morph', function(options){
-	var morph = this.retrieve('morph');
-	if (morph) morph.cancel();
-	return this.dump('morph').store('morph:options', Object.append({link: 'cancel'}, options));
+Element.defineSetter('morph', function(options){
+	this.get('morph').cancel().setOptions(options);
 });
 
-Element.addGetter('morph', function(options){
-	if (options || !this.retrieve('morph')){
-		if (options || !this.retrieve('morph:options')) this.set('morph', options);
-		this.store('morph', new Fx.Morph(this, this.retrieve('morph:options')));
-	}
+Element.defineGetter('morph', function(){
+	if (!this.retrieve('morph')) this.store('morph', new Fx.Morph(this, {link: 'cancel'}));
 	return this.retrieve('morph');
 });
 
