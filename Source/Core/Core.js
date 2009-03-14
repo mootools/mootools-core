@@ -289,20 +289,20 @@ new Native(Table).implement({
 (function(enforce){
 	
 	enforce(Array, [
-		"pop", "push", "reverse", "shift", "sort", "splice", "unshift", "concat", "join", "slice",
-		"indexOf", "lastIndexOf", "filter", "forEach", "every", "map", "some", "reduce", "reduceRight"
+		'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
+		'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
 	]);
 	
 	enforce(String, [
-		"charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "quote", "replace", "search",
-		"slice", "split", "substr", "substring", "toLowerCase", "toUpperCase"
+		'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
+		'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
 	]);
 	
-	enforce(Number, ["toExponential", "toFixed", "toLocaleString", "toPrecision"]);
+	enforce(Number, ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
 	
-	enforce(Function, ["apply", "call"]);
+	enforce(Function, ['apply', 'call']);
 	
-	enforce(RegExp, ["exec", "test"]);
+	enforce(RegExp, ['exec', 'test']);
 
 })(function(object, methods){
 		
