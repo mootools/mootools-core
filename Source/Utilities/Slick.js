@@ -66,6 +66,8 @@ var slick = (function(buffer){
 		return all;
 	};
 	
+	buffer['combinator(~)'] = buffer['combinator(++)'];
+	
 	buffer.slick = slick;
 	
 	// slick contains
@@ -92,12 +94,12 @@ var slick = (function(buffer){
 	
 	var pseudos = {};
 	
-	slick.addPseudoSelector = function(name, fn){
+	slick.definePseudoSelector = function(name, fn){
 		pseudos[name] = fn;
-		return slick;
+		return this;
 	};
 	
-	slick.getPseudoSelector = function(name){
+	slick.lookupPseudoSelector = function(name){
 		return pseudos[name];
 	};
 	
@@ -162,6 +164,12 @@ var slick = (function(buffer){
 		}
 	},
 	
+	'combinator(<)': function(node, tag, id, selector){
+		while ((node = node.parentNode)){
+			if (node != document) this.push(node, tag, id, selector);
+		}
+	},
+	
 	'combinator(+)': function(node, tag, id, selector){
 		while ((node = node.nextSibling)){
 			if (node.nodeType === 1){
@@ -171,17 +179,55 @@ var slick = (function(buffer){
 		}
 	},
 	
-	'combinator(~)': function(node, tag, id, selector){
-		while ((node = node.nextSibling)){
+	'combinator(-)': function(node, tag, id, selector){
+		while ((node = node.previousSibling)){
 			if (node.nodeType === 1){
-				var uid = this.slick.uidOf(node);
-				if (this.state.uniques[uid]) break;
-				if (this['match(selector)'](node, tag, id, selector)){
-					this.state.uniques[uid] = true;
-					this.state.found.push(node);
-				}
+				this.push(node, tag, id, selector);
+				break;
 			}
 		}
+	},
+	
+	'combinator(^)': function(node, tag, id, selector){
+		node = node.firstChild;
+		if (node){
+			if (node.nodeType === 1) this.push(node, tag, id, selector);
+			else this['combinator(+)'](node, tag, id, selector);
+		}
+	},
+	
+	'combinator($)': function(node, tag, id, selector){
+		node = node.lastChild;
+		if (node){
+			if (node.nodeType === 1) this.push(node, tag, id, selector);
+			else this['combinator(-)'](node, tag, id, selector);
+		}
+	},
+	
+	'util(node-check)': function(node, tag, id, selector){
+		if (node.nodeType === 1){
+			var uid = this.slick.uidOf(node);
+			if (this.state.uniques[uid]) return false;
+			this.push(node, tag, id, selector);
+		}
+		return true;
+	},
+	
+	'combinator(++)': function(node, tag, id, selector){
+		while ((node = node.nextSibling)){
+			if (this['util(node-check)'](node, tag, id, selector) === false) break;
+		}
+	},
+	
+	'combinator(--)': function(node, tag, id, selector){
+		while ((node = node.previousSibling)){
+			if (this['util(node-check)'](node, tag, id, selector) === false) break;
+		}
+	},
+	
+	'combinator(±)': function(node, tag, id, selector){
+		this['combinator(--)'](node, tag, id, selector);
+		this['combinator(++)'](node, tag, id, selector);
 	},
 	
 	// elements
@@ -400,29 +446,29 @@ var slick = (function(buffer){
 
 slick.parse = (function(){
 	
-	function SubtleSlickParse(CSS3_Selectors){
-		var selector = '' + CSS3_Selectors;
+	function SubtleSlickParse(CSS3Selectors){
+		var selector = '' + CSS3Selectors;
 		if (cache[selector]) return cache[selector];
 		parsedSelectors = [];
 		parsedSelectors.type = [];
 		
 		while (selector != (selector = selector.replace(parseregexp, parser)));
 
-		return cache['' + CSS3_Selectors] = parsedSelectors;
+		return cache['' + CSS3Selectors] = parsedSelectors;
 	};
 	
 	var parseregexp = new RegExp("(?x)\
 		^(?:\n\
-		         \\s+ (?=[>+~] | $)       # Meaningless Whitespace \n\
+		         \\s+ (?=[<>+~$^±-] | $)     # Meaningless Whitespace \n\
 		|      ( ,                 ) \\s* # Separator              \n\
-		|      ( \\s     (?=[^>+~]))      # CombinatorChildren     \n\
-		|      ( [>+~]             ) \\s* # Combinator             \n\
+		|      ( \\s     (?=[^<>+~$^±-]))    # CombinatorChildren     \n\
+		|      ( [<>+~$^±-]{1,2}      ) \\s* # Combinator             \n\
 		|      ( [a-z0-9_-]+ | \\* )      # Tag                    \n\
 		| \\#  ( [a-z0-9_-]+       )      # ID                     \n\
 		| \\.  ( [a-z0-9_-]+       )      # ClassName              \n\
 		| \\[  ( [a-z0-9_-]+       )(?: ([*^$!~|]?=) (?: \"([^\"]*)\" | '([^']*)' | ([^\\]]*) )     )?  \\](?!\\]) # Attribute \n\
 		|   :+ ( [a-z0-9_-]+       )(            \\( (?: \"([^\"]*)\" | '([^']*)' | ([^\\)]*) ) \\) )?             # Pseudo    \n\
-	)".replace(/\(\?x\)|\s+#.*$|\s+/gim,''),'i');
+	)".replace(/\(\?x\)|\s+#.*$|\s+/gim, ''), 'i');
 	
 	var map = {
 		rawMatch : 0,
@@ -488,13 +534,13 @@ slick.parse = (function(){
 		if (!operator) return null;
 		var val = XRegExp_escape(value);
 		switch(operator){
-			case  '=': return new RegExp('^'      +val+ '$'     );
-			case '!=': return new RegExp('^(?!'   +val+ '$)'    );
-			case '*=': return new RegExp(          val          );
-			case '^=': return new RegExp('^'      +val          );
-			case '$=': return new RegExp(          val+ '$'     );
-			case '~=': return new RegExp('(^|\\s)'+val+'(\\s|$)');
-			case '|=': return new RegExp('(^|\\|)'+val+'(\\||$)');
+			case  '=': return new RegExp('^'       + val +  '$'     );
+			case '!=': return new RegExp('^(?!'    + val +  '$)'    );
+			case '*=': return new RegExp(            val            );
+			case '^=': return new RegExp('^'       + val            );
+			case '$=': return new RegExp(            val +  '$'     );
+			case '~=': return new RegExp('(^|\\s)' + val + '(\\s|$)');
+			case '|=': return new RegExp('(^|\\|)' + val + '(\\||$)');
 			default  : return null;
 		}
 	};
@@ -519,7 +565,7 @@ slick.parse = (function(){
 		}
 		
 		if (!these_simpleSelectors.length || a[map.combinatorChildren] || a[map.combinator]){
-			this_simpleSelector && (this_simpleSelector.reverseCombinator = a[map.combinatorChildren] || a[map.combinator]);
+			// this_simpleSelector && (this_simpleSelector.reverseCombinator = a[map.combinatorChildren] || a[map.combinator]);
 			these_simpleSelectors.push({
 				combinator: a[map.combinatorChildren] || a[map.combinator]
 			});

@@ -69,7 +69,7 @@ document.id = (function(){
 })();
 
 function Elements(elements, ddup){
-	if (!elements) return;
+	if (!elements || !elements.length) return;
 	if (ddup == null) ddup = true;
 	var uniques = {};
 	for (var i = 0, l = elements.length; i < l; i++){
@@ -101,7 +101,13 @@ Array.mirror(Elements);
 Document.implement({
 	
 	newElement: function(tag, props){
-		if (Browser.Engine.trident && props){
+		var element;
+		
+		if ((/^<\w/).test(tag)){
+			var temp = this.createElement('div');
+			temp.innerHTML = tag;
+			element = temp.firstChild;
+		} else if (Browser.Engine.trident && props){
 			['name', 'type', 'checked'].each(function(attribute){
 				if (!props[attribute]) return;
 				tag += ' ' + attribute + '="' + props[attribute] + '"';
@@ -109,7 +115,9 @@ Document.implement({
 			});
 			tag = '<' + tag + '>';
 		}
-		return document.id(this.createElement(tag)).set(props);
+
+		if (!element) element = this.createElement(tag);
+		return this.id(element).set(props);
 	},
 
 	newTextNode: function(text){
@@ -384,10 +392,13 @@ Element.defineSetter('html', (function(){
 
 })());
 
-if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.defineGetter('text', function(){
-	if (this.innerText) return this.innerText;
-	var temp = document.newElement('div', {html: this.innerHTML, css: 'position: absolute; visibility: hidden;'}).inject(document.body);
-	var text = temp.innerText;
-	temp.dispose();
-	return text;
-});
+if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.defineGetter('text', (function(){
+	var temp = document.newElement('div', {'css': 'position: absolute; visibility: hidden;'});
+	
+	return function(){
+		if (this.innerText) return this.innerText;
+		var text = temp.inject(document.body).set('html', this.innerHTML).innerText;
+		temp.dispose();
+		return text;
+	};
+})());
