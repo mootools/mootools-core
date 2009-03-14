@@ -19,8 +19,6 @@ Function.extend({
 		clearTimeout(timer);
 		return null;
 	},
-	
-	empty: function(){},
 
 	stab: function(){
 		for (var i = 0, l = arguments.length; i < l; i++){
