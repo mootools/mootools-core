@@ -100,25 +100,27 @@ Array.mirror(Elements);
 
 Document.implement({
 	
-	newElement: function(tag, props){
-		var element;
-		
-		if ((/^<\w/).test(tag)){
-			var temp = this.createElement('div');
-			temp.innerHTML = tag;
-			element = temp.firstChild;
-		} else if (Browser.Engine.trident && props){
-			['name', 'type', 'checked'].each(function(attribute){
-				if (!props[attribute]) return;
-				tag += ' ' + attribute + '="' + props[attribute] + '"';
-				if (attribute != 'checked') delete props[attribute];
-			});
-			tag = '<' + tag + '>';
-		}
+	newElement: (function(){
+		var temp = this.createElement('div');
+		return function(tag, props){
+			var element;
+			
+			if ((/^<\w/).test(tag)){
+				temp.innerHTML = tag;
+				element = temp.firstChild;
+			} else if (Browser.Engine.trident && props){
+				['name', 'type', 'checked'].each(function(attribute){
+					if (!props[attribute]) return;
+					tag += ' ' + attribute + '="' + props[attribute] + '"';
+					if (attribute != 'checked') delete props[attribute];
+				});
+				tag = '<' + tag + '>';
+			}
 
-		if (!element) element = this.createElement(tag);
-		return this.id(element).set(props);
-	},
+			if (!element) element = this.createElement(tag);
+			return this.id(element).set(props);
+		};
+	})(),
 
 	newTextNode: function(text){
 		return this.createTextNode(text);
