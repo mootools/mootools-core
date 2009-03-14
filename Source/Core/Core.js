@@ -147,7 +147,7 @@ var UID = (function(){
 // From
 
 Function.from = function(item){
-	return (typeOf(item) == 'function') ? value : function(){
+	return (typeOf(item) == 'function') ? item : function(){
 		return item;
 	};
 };
