@@ -4,7 +4,7 @@
 
 		"Core": {
 			"deps": ["Core"],
-			"desc": "The core of MooTools, contains all the base functions and the Native implementations. Required by all the other scripts."
+			"desc": "The vey core of MooTools, contains all the base functions and implementations. Required by all the other components."
 		}
 
 	},
@@ -13,41 +13,41 @@
 		
 		"Object": {
 			"deps": ["Core"],
-			"desc": "Contains Object generics / prototypes."
+			"desc": "Contains Object generics."
 		},
 
 		"Array": {
 			"deps": ["Core"],
-			"desc": "Contains Array Prototypes like each, contains, and erase."
+			"desc": "Contains Array prototypes and generics."
 		},
 
 		"Function": {
 			"deps": ["Core"],
-			"desc": "Contains Function Prototypes like create, bind, pass, and delay."
+			"desc": "Contains Function prototypes and generics."
 		},
 
 		"Number": {
 			"deps": ["Core"],
-			"desc": "Contains Number Prototypes like limit, round, times, and ceil."
+			"desc": "Contains Number prototypes and generics."
 		},
 
 		"String": {
 			"deps": ["Core"],
-			"desc": "Contains String Prototypes like camelCase, capitalize, test, and toInt."
+			"desc": "Contains String prototypes and generics."
 		}
 
 	},
 
 	"Class": {
+		
+		"Mixins": {
+			"deps": ["Array", "Function", "Number", "String", "Object"],
+			"desc": "Contains utility classes that can be implemented into your own classes or objects to ease the execution of common tasks."
+		},
 
 		"Class": {
 			"deps": ["Mixins"],
-			"desc": "Contains the Class Function for easily creating, extending, and implementing reusable Classes."
-		},
-
-		"Mixins": {
-			"deps": ["Array", "Function", "Number", "String", "Object"],
-			"desc": "Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks."
+			"desc": "Contains the Class function for easily creating, extending, and implementing reusable Classes."
 		}
 
 	}, 
@@ -56,12 +56,12 @@
 
 		"Browser": {
 			"deps": ["Mixins"],
-			"desc": "Contains Window, Document, and the Browser Object. This file requires MooTools to run in a Browser."
+			"desc": "Contains the Browser object. Do not include this file if you plan to run MooTools on a non-browser environment."
 		},
 		
 		"Event": {
 			"deps": ["Element"],
-			"desc": "Contains the Event Class, transforms the event object, makes it CrossBrowser."
+			"desc": "Contains the Event class to transform and make the event object magically x-browser."
 		}
 
 	},
@@ -69,23 +69,23 @@
 	"Element": {
 
 		"Element": {
-			"deps": ["Browser", "Mixins"],
-			"desc": "Contains methods to work with HTML Elements."
+			"deps": ["Browser", "Mixins", "Slick"],
+			"desc": "Contains Element methods and utilities."
 		},
 
 		"Element.Event": {
 			"deps": ["Event"],
-			"desc": "Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events."
+			"desc": "Contains Element methods to deal with events, delegation, and customly crafted events."
 		},
 
 		"Element.Style": {
 			"deps": ["Element"],
-			"desc": "Contains methods for interacting with the styles of Elements in a fashionable way."
+			"desc": "Contains Element methods to interact with the styles of elements in a fashionable and x-browser way."
 		},
 
 		"Element.Dimensions": {
 			"deps": ["Element"],
-			"desc": "Contains methods to work with size, scroll, or positioning of Elements and the window object."
+			"desc": "Contains Element methods to work with size, scroll, or positioning of Elements."
 		}
 
 	},
@@ -95,7 +95,7 @@
 
 		"Slick": {
 			"deps": [],
-			"desc": "The new superfast css selector engine. Adds advanced CSS Querying capabilities for targeting elements."
+			"desc": "Adds advanced CSS querying capabilities for targeting html elements in a webpage using css syntax."
 		},
 
 		"DomReady": {
@@ -114,22 +114,22 @@
 
 		"Fx": {
 			"deps": ["Mixins"],
-			"desc": "Contains the basic animation logic to be extended by all other Fx Classes."
+			"desc": "Contains the basic animation logic. To be extended by all other Fx Classes."
 		},
 
 		"Fx.CSS": {
 			"deps": ["Fx", "Element.Style"],
-			"desc": "Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements."
+			"desc": "Contains the CSS animation logic. Used by Fx.Tween and Fx.Morph."
 		},
 
 		"Fx.Tween": {
 			"deps": ["Fx.CSS"],
-			"desc": "Formerly Fx.Style, effect to transition any CSS property for an element."
+			"desc": "Effect to transition any CSS property for an element. Also includes Element shortcuts like fade and highlight."
 		},
 
 		"Fx.Morph": {
 			"deps": ["Fx.CSS"],
-			"desc": "Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules."
+			"desc": "Effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules."
 		},
 
 		"Fx.Transitions": {
@@ -143,17 +143,17 @@
 
 		"Request": {
 			"deps": ["Mixins", "Element"],
-			"desc": "Powerful all purpose Request Class. Uses XMLHTTPRequest."
+			"desc": "Powerful all-purpose Request class. Powered by XMLHTTPRequest."
 		},
 
 		"Request.HTML": {
 			"deps": ["Request"],
-			"desc": "Extends the basic Request Class with additional methods for interacting with HTML responses."
+			"desc": "Extends the Request class with additional methods to interact with HTML responses."
 		},
 
 		"Request.JSON": {
 			"deps": ["Request", "JSON"],
-			"desc": "Extends the basic Request Class with additional methods for sending and receiving JSON data."
+			"desc": "Extends the Request class with additional methods to interact with JSON responses."
 		}
 
 	},

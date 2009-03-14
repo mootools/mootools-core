@@ -138,6 +138,7 @@ Element.implement('match', function(expression){
 });
 
 function $(expression){
+	if ((/^\w+$/).test(expression)) return document.id(expression); //compat
 	return document.find(expression);
 };
 
