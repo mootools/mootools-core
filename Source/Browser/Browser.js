@@ -130,7 +130,7 @@ String.extend('exec', function(text){
 	win[':type'] = Function.from('window').hide();
 
 	Window.mirror(function(name, method){
-		win[name] = method;
+		Function.prototype.extend.call(win, name, method);
 	}).implement(new Storage);
 
 	if (!win.Document) win.Document = (function Document(){});
@@ -154,7 +154,7 @@ String.extend('exec', function(text){
 	doc[':type'] = Function.from('document').hide();
 
 	Document.mirror(function(name, method){
-		doc[name] = method;
+		Function.prototype.extend.call(doc, name, method);
 	}).implement(new Storage);
 	
 })(window, document);
