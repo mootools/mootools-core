@@ -16,38 +16,37 @@ new Native(Event);
 
 (function(){
 	
-	var properties = {
-		
-		shift: function(event){
-			return event.shiftKey;
+	Event.extend(new Accessors);
+	
+	Event.defineGetters({
+
+		shift: function(){
+			return this.event.shiftKey;
 		},
-		
-		control: function(event){
-			return event.ctrlKey;
+
+		control: function(){
+			return this.event.ctrlKey;
 		},
-		
-		alt: function(event){
-			return event.altKey;
+
+		alt: function(){
+			return this.event.altKey;
 		},
-		
-		meta: function(event){
-			return event.metaKey;
+
+		meta: function(){
+			return this.event.metaKey;
 		},
-		
-		rightClick: function(event){
+
+		rightClick: function(){
+			var event = this.event;
 			return (event.which == 3) || (event.button == 2);
 		},
-		
-		wheel: function(event){
+
+		wheel: function(){
+			var event = this.event;
 			return (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		}
 
-	};
-	
-	Event.defineGetter = function(key, fn){
-		if (Event.prototype.__defineGetter__) Event.prototype.__defineGetter__(key, fn);
-		properties[key] = fn;
-	}.asSetter();
+	});
 	
 	var keys = {
 		'enter': 13,
@@ -82,52 +81,53 @@ new Native(Event);
 	});
 	
 	Event.implement('get', function(key){
-		var event = this.event;
-		var property = properties[key.camelCase()];
-		return (property) ? property.call(this) : event[key];
+		key = key.camelCase();
+		var getter = Event.lookupGetter(key);
+		return (getter) ? getter.call(this) : this.event[key];
 	}.asGetter());
-	
-	//shhh
-	Event.Keys = keys;
 	
 })();
 
-Event.defineGetter('target', function(){
-	var event = this.event;
-	var target = event.target || event.srcElement;
-	while (target && target.nodeType == 3) target = target.parentNode;
-	return $(target);
-});
-
-Event.defineGetter('relatedTarget', function(){
-	var event = this.event;
-	switch (event.type){
-		case 'mouseover': related = event.relatedTarget || event.fromElement; break;
-		case 'mouseout': related = event.relatedTarget || event.toElement;
+Event.defineGetters({
+	
+	target: function(){
+		var event = this.event;
+		var target = event.target || event.srcElement;
+		while (target && target.nodeType == 3) target = target.parentNode;
+		return document.id(target);
+	},
+	
+	relatedTarget: function(){
+		var event = this.event, related = null;
+		switch (event.type){
+			case 'mouseover': related = event.relatedTarget || event.fromElement; break;
+			case 'mouseout': related = event.relatedTarget || event.toElement;
+		}
+		var test = function(){
+			while (related && related.nodeType == 3) related = related.parentNode;
+			return true;
+		};
+		var hasRelated = (Browser.Engine.gecko) ? Function.stab(test) : test();
+		return (hasRelated) ? document.id(related) : null;
+	},
+	
+	client: function(){
+		var event = this.event;
+		return {
+			x: (event.pageX) ? event.pageX - window.pageXOffset : event.clientX,
+			y: (event.pageY) ? event.pageY - window.pageYOffset : event.clientY
+		};
+	},
+	
+	page: function(){
+		var event = this.event, doc = document;
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		return {
+			x: event.pageX || event.clientX + doc.scrollLeft,
+			y: event.pageY || event.clientY + doc.scrollTop
+		};
 	}
-	var test = function(){
-		while (related && related.nodeType == 3) related = related.parentNode;
-		return true;
-	};
-	var hasRelated = (Browser.Engine.gecko) ? Function.stab(test) : test();
-	return (hasRelated) ? $(related) : null;
-});
-
-Event.defineGetter('client', function(){
-	var event = this.event;
-	return {
-		x: (event.pageX) ? event.pageX - window.pageXOffset : event.clientX,
-		y: (event.pageY) ? event.pageY - window.pageYOffset : event.clientY
-	};
-});
-
-Event.defineGetter('page', function(){
-	var event = this.event, doc = document;
-	doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-	return {
-		x: event.pageX || event.clientX + doc.scrollLeft,
-		y: event.pageY || event.clientY + doc.scrollTop
-	};
+	
 });
 
 Event.implement({

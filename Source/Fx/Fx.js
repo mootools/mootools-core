@@ -12,9 +12,9 @@ var Fx = new Class({
 
 	options: {
 		/*
-		onStart: Function.empty,
-		onCancel: Function.empty,
-		onComplete: Function.empty,
+		onStart: nil,
+		onCancel: nil,
+		onComplete: nil,
 		*/
 		unit: false,
 		duration: 500,

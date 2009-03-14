@@ -16,8 +16,8 @@ Request.JSON = new Class({
 
 	initialize: function(options){
 		this.parent(options);
-		this.headers['Accept'] = 'application/json';
-		this.headers['X-Request'] = 'JSON';
+		this.getOption('headers')['Accept'] = 'application/json';
+		this.getOption('headers')['X-Request'] = 'JSON';
 	},
 
 	success: function(text){

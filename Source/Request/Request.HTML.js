@@ -20,7 +20,7 @@ Request.HTML = new Class({
 		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		text = (match) ? match[1] : text;
 
-		var container = new Element('div');
+		var container = document.newElement('div');
 
 		return Function.stab(function(){
 			var root = '<root>' + text + '</root>', doc;
@@ -61,24 +61,20 @@ Request.HTML = new Class({
 
 });
 
-Element.addSetter('load', function(options){
-	var load = this.retrieve('load');
-	if (load) load.cancel();
-	return this.dump('load').store('load:options', Object.append({data: this, link: 'cancel', update: this, method: 'get'}, options));
+Element.defineSetter('load', function(options){
+	this.get('load').cancel().setOptions(options);
 });
 
-Element.addGetter('load', function(options){
-	if (options || ! this.retrieve('load')){
-		if (options || !this.retrieve('load:options')) this.set('load', options);
-		this.store('load', new Request.HTML(this.retrieve('load:options')));
-	}
+Element.defineGetter('load', function(){
+	if (!this.retrieve('load')) this.store('load', new Request.HTML({link: 'cancel', update: this, method: 'get'}));
 	return this.retrieve('load');
 });
 
 Element.implement({
 
 	load: function(){
-		this.get('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
+		var loader = this.get('load');
+		loader.send.apply(loader, arguments);
 		return this;
 	}
 

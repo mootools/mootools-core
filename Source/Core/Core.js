@@ -23,6 +23,12 @@ var MooTools = {
 	'build': '%build%'
 };
 
+// nil
+
+function nil(item){
+	return (item != null && item != nil);
+};
+
 // Accessors multipliers
 
 Function.prototype.asSetter = function(){
@@ -109,6 +115,10 @@ function instanceOf(item, object){
 	return item instanceof object;
 };
 
+function constructorOf(item){
+	return Type['object:' + typeOf(item)] || null;
+};
+
 // UID
 
 var UID = (function(){
@@ -143,7 +153,7 @@ Function.from = function(item){
 };
 
 Array.from = function(item, slice){
-	return (Type.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
+	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
 };
 
 Number.from = Number;
@@ -272,8 +282,7 @@ new Native(Table).implement({
 	},
 	
 	erase: function(key){
-		uid = UID.uidOf(key);
-		var value = this.table[uid];
+		var uid = UID.uidOf(key), value = this.table[uid];
 		delete this.table[uid];
 		return value;
 	},

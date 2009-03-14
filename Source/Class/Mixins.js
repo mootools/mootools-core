@@ -70,11 +70,11 @@ function Accessors(){};
 		},
 
 		lookupGetter: function(key){
-			return accessorOf(this, key).get;
+			return accessorOf(this, key).get || null;
 		},
 
 		lookupSetter: function(key){
-			return accessorOf(this, key).set;
+			return accessorOf(this, key).set || null;
 		}
 
 	}).implement({
@@ -92,18 +92,18 @@ function Events(){};
 
 (function(){
 	
+	function replacer(full, first){
+		return first.toLowerCase();
+	};
+	
 	function eventsOf(object, type){
-		type = type.replace(/^on([A-Z])/, function(full, first){
-			return first.toLowerCase();
-		});
-		var events = Storage.retrieve(object, 'events', {});
-		return (events[type]) ? events[type] : events[type] = [];
+		return Storage.retrieve(object, 'events.type.' + type.replace(/^on([A-Z])/, replacer), []);
 	};
 	
 	new Native(Events).implement({
 		
 		setEvents: function(){
-			if (!Storage.retrieve(this, 'events')) Storage.store(this, 'events', this.events || {});
+			if (!Storage.retrieve(this, 'events.set')) Storage.store(this, 'events.set', true).addEvent(this.events);
 			Array.forEach(arguments, this.addEvent, this);
 		},
 
@@ -112,8 +112,9 @@ function Events(){};
 		}.asSetter(),
 
 		fireEvent: function(type, args){
+			args = Array.from(args);
 			eventsOf(this, type).each(function(fn){
-				fn.run(args, this);
+				fn.apply(this, args);
 			});
 		}.asSetter(),
 
@@ -122,8 +123,9 @@ function Events(){};
 		}.asSetter(),
 
 		removeEvents: function(type){
-			var events = eventsOf(this, type);
-			for (var e in events) this.removeEvent(e, events[e]);
+			eventsOf(this, type).each(function(event){
+				this.removeEvent(type, event);
+			}, this);
 		}
 
 	});
