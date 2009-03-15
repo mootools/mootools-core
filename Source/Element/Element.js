@@ -135,8 +135,7 @@ Document.implement({
 	},
 	
 	find: function(expression){
-		var element = slick(this, expression)[0];
-		return (element) ? document.id(element) : null;
+		return document.id(slick(this, expression)[0]);
 	}
 	
 });
@@ -146,7 +145,7 @@ Element.implement('match', function(expression){
 });
 
 function $(expression){
-	if ((/^\w+$/).test(expression)) return document.id(expression); //compat
+	if ((/^#?[\w-]+$/).test(expression)) return document.id(expression); //compat
 	return document.find(expression);
 };
 
