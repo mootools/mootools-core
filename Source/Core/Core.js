@@ -289,9 +289,14 @@ new Native(Table).implement({
 	
 	forEach: function(fn, bind){
 		for (var uid in this.table) fn.call(bind, this.table[uid], UID.itemOf(uid), this);
+	},
+	
+	each: function(fn, bind){
+		this.forEach(fn, bind);
+		return this;
 	}
 
-}).alias('each', 'forEach');
+});
 
 // Default Natives
 
@@ -338,10 +343,25 @@ Number.prototype[':type'] = function(){
 
 // forEach
 
-Object.extend('forEach', function(object, fn, bind){
-	for (var key in object) fn.call(bind, object[key], key, object);
-}).extend('each', Object.forEach);
+Object.extend({
+	
+	forEach: function(object, fn, bind){
+		for (var key in object) fn.call(bind, object[key], key, object);
+	},
+	
+	each: function(object, fn, bind){
+		Object.forEach(object, fn, bind);
+		return object;
+	}
+	
+});
 
-Array.implement('forEach', function(fn, bind){
-	for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
-}).alias('each', 'forEach');
+Array.implement({
+	
+	forEach: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+	},
+	
+	each: Table.prototype.each
+	
+});
