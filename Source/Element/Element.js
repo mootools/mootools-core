@@ -145,7 +145,8 @@ Element.implement('match', function(expression){
 });
 
 function $(expression){
-	if ((/^#?[\w-]+$/).test(expression)) return document.id(expression); //compat
+	var match = expression.match(/^#?([\w-]+)$/);
+	if (match) return document.id(match[1]); //compat
 	return document.find(expression);
 };
 
@@ -400,4 +401,5 @@ if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.defineGetter(
 		temp.dispose();
 		return text;
 	};
+
 })());
