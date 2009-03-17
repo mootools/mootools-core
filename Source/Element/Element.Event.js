@@ -9,10 +9,10 @@ License:
 (function(){
 	
 	var natives = {
-		click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
-		mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
-		mouseover: 2, mouseout: 2, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
-		keydown: 2, keypress: 2, keyup: 2, //keyboard
+		click: 3, dblclick: 3, mouseup: 3, mousedown: 3, contextmenu: 2, //mouse buttons
+		mousewheel: 3, DOMMouseScroll: 2, //mouse wheel
+		mouseover: 3, mouseout: 3, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
+		keydown: 3, keypress: 3, keyup: 3, //keyboard
 		focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, //form elements
 		load: 1, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 		error: 1, abort: 1, scroll: 1 //misc
@@ -20,203 +20,142 @@ License:
 	
 	[Element, Window, Document].call('extend', {
 		
-		defineAddEvent: function(type, fn){
-			return Storage.store(this, 'events.add.' + type, fn);
+		definePseudoEvent: function(name, fn){
+			return Storage.store(this, 'events.pseudo.' + name, fn);
 		},
 		
-		lookupAddEvent: function(type){
-			return Storage.retrieve(this, 'events.add.' + type);
+		lookupPseudoEvent: function(name){
+			return Storage.retrieve(this, 'events.pseudo.' + name);
 		},
 		
-		defineRemoveEvent: function(type, fn){
-			return Storage.store(this, 'events.remove.' + type, fn);
+		defineEventAlias: function(name, alias){
+			return Storage.store(this, 'events.alias.' + name, alias);
 		},
 		
-		lookupRemoveEvent: function(type){
-			return Storage.retrieve(this, 'events.remove.' + type);
-		},
-		
-		defineEvent: function(type, obj){
-			if (obj.add) this.defineAddEvent(type, obj.add);
-			if (obj.remove) this.defineRemoveEvent(type, obj.remove);
-			return this;
+		lookupEventAlias: function(name){
+			return Storage.retrieve(this, 'events.alias.' + name);
 		}
 		
 	});
 
 	[Element, Window, Document].call('implement', {
 
-		addEvent: function(type, fn){
+		addEvent: function(name, fn){
 
-			var table = this.retrieve('events.table.' + type, new Table);
+			var table = this.retrieve('events.table.' + name, new Table);
 			if (table.get(fn)) return this;
-			Events.addEvent(this, type, fn);
+			Events.addEvent(this, name, fn);
 			
-			var cfn = fn, custom = constructorOf(this).lookupAddEvent(type);
-
-			if (custom){
-				var modifiers = custom.call(this, fn);
-				if (modifiers){
-					type = modifiers[0];
-					cfn = modifiers[1];
-				}
+			var parsed = slick.parse(name)[0][0], type = parsed.tag, alias;
+			var pseudos = parsed.pseudos || [];
+			
+			if ((alias = constructorOf(this).lookupEventAlias(type))){
+				var parsed2 = slick.parse(alias)[0][0];
+				type = parsed2.tag;
+				pseudos.append(parsed2.pseudos || []);
 			}
+
+			var self = this;
 			
-			var e = natives[type], self = this, bound = function(event){
-				event = (e == 2) ? new Event(event) : event;
-				if (cfn.call(self, event) == false && e == 2) event.stop();
+			pseudos = pseudos.map(function(pseudo){
+				
+				var parser = constructorOf(this).lookupPseudoEvent(pseudo.name);
+				
+				return (parser) ? function(event){
+					return parser.call(this, event, pseudo.argument, self, name, fn);
+				} : null;
+
+			}, this);
+			
+			var ntype = natives[type], context = this, bound = function(event){
+				event = (ntype > 1) ? new Event(event) : (event || window.event);
+				
+				var value = true;
+				
+				if (ntype > 1){
+					
+					for (var i = 0; i < pseudos.length; i++){
+						if (!(value = pseudos[i].call(context, event))) break;
+						if (instanceOf(value, Object)) context = value;
+					}
+				}
+				
+				if (value && fn.call(context, event, self) == false && ntype > 1) event.stop();
+				context = self;
 			};
 
 			table.set(fn, bound);
 			
-			if (!e) return this;
+			if (ntype){
+				if (this.addEventListener) this.addEventListener(type, bound, false);
+				else this.attachEvent('on' + type, bound);
+			}
 			
-			// add real event
-			
-			if (this.addEventListener) this.addEventListener(type, bound, false);
-			else this.attachEvent('on' + type, bound);
 			return this;
 			
 		}.asSetter(),
 
-		removeEvent: function(type, fn){
+		removeEvent: function(name, fn){
 			
-			var table = this.retrieve('events.table.' + type, new Table), bound = table.erase(fn);
+			var table = this.retrieve('events.table.' + name, new Table), bound = table.erase(fn);
 			if (!bound) return this;
-			Events.removeEvent(this, type, fn);
+			Events.removeEvent(this, name, fn);
 			
-			var custom = constructorOf(this).lookupRemoveEvent(type);
-
-			if (custom){
-				var ntype = custom.call(this, fn);
-				if (ntype) type = ntype;
-			}
-			
-			if (!natives[type]) return this;
+			var type = slick.parse(name)[0][0].tag, alias;
+			if ((alias = constructorOf(this).lookupEventAlias(type))) type = slick.parse(alias)[0][0].tag;
 			
 			// remove real event
+			
+			if (natives[type]){
+				if (this.removeEventListener) this.removeEventListener(type, bound, false);
+				else this.detachEvent('on' + type, bound);
+			}
 
-			if (this.removeEventListener) this.removeEventListener(type, bound, false);
-			else this.detachEvent('on' + type, bound);
 			return this;
 			
 		}.asSetter()
 
 	});
 	
-	var rts = /^(\w+)\((.+)\)$/;
-	
-	var checkOverOut = function(self, event){
-		var related = event.get('relatedTarget');
-		return (related == null || (typeOf(self) != 'document' && related != self && related.prefix != 'xul' && !self.find(related)));
-	};
-	
-	[Element, Document].call('implement', {
-		
-		observe: function(ts, fn){
-			
-			var match = ts.match(rts);
-			if (!match) return this;
-			var type = match[1], selector = match[2];
-			
-			var table = this.retrieve('events.observed.' + ts, new Table);
-			if (table.get(fn)) return this;
-			
-			if (type == 'mouseenter') type = 'mouseover';
-			else if (type == 'mouseleave') type = 'mouseout';
-			
-			var isOverOut = (/^mouse(over|out)$/).test(type);
-	
-			var self = this, newfn = function(event){
-				var nodes = self.search(selector), target = event.get('target');
-				for (var i = nodes.length; i --; i){
-					var node = document.id(nodes[i]);
-					if (target === node || node.find(target)){
-						if (!isOverOut || checkOverOut(node, event)) fn.call(node, event);
-						break;
-					}
-				}
-			};
-			
-			table.set(fn, newfn);
-			return this.addEvent(type, newfn);
-			
-		}.asSetter(),
-		
-		overlook: function(ts, fn){
-			
-			var match = ts.match(rts);
-			if (!match) return this;
-			var type = match[1], selector = match[2];
-			
-			var table = this.retrieve('events.observed.' + ts, new Table);
-			if (!table.get(fn)) return this;
-			
-			var oldfn = table.erase(fn);
-			return this.removeEvent(type, oldfn);
-			
-		}.asSetter(),
-		
-		overlooks: function(ts){
-			
-			this.retrieve('events.observed.' + ts, new Table).each(function(v, k){
-				this.overlook(ts, k);
-			}, this);
-			return this;
-			
-		}
-		
-	});
-	
 	[Element, Window, Document].call('implement', new Events);
 	
-	[Window, Document].call('defineAddEvent', ['unload', function(fn){
-		return ['unload', function(){
-			this.removeEvent('unload', fn);
-			fn.call(this);
-		}];
-	}]);
+	[Element, Document].call('definePseudoEvent', 'key', function(event, argument){
+		return (event.get('key') == argument);
+	});
 	
-	var mouseCheck = function(fn){
-		return function(event){
-			if (checkOverOut(this, event)) fn.call(this, event);
-		};
-	};
-	
-	[Document, Element].call('defineEvent', ['mouseenter', {
-		
-		add: function(fn){
-			return ['mouseover', mouseCheck(fn)];
-		},
-		
-		remove: function(fn){
-			return 'mouseover';
+	[Element, Document].call('definePseudoEvent', 'modifier', function(event, argument){
+		switch (argument){
+			case 'shift': case '⇧': return event.get('shift');
+			case 'control': case '⌃': return event.get('control');
+			case 'meta': case '⌘': case 'command': return event.get('meta');
+			case 'alt': case '⌥': case 'option': return event.get('alt');
+			default: return false;
 		}
+	});
 
-	}]);
+	[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument, context, name, fn){
+		context.removeEvent(name, fn);
+		return true;
+	});
 	
-	[Document, Element].call('defineEvent', ['mouseleave', {
-		
-		add: function(fn){
-			return ['mouseout', mouseCheck(fn)];
-		},
-		
-		remove: function(fn){
-			return 'mouseout';
+	[Document, Element].call('definePseudoEvent', 'relay', function(event, selector){
+		var nodes = this.search(selector), target = event.get('target');
+		for (var i = nodes.length; i--; i){
+			var node = document.id(nodes[i]);
+			if (target === node || node.find(target)) return node;
 		}
-
-	}]);
+		return false;
+	});
 	
-	if (Browser.Engine.gecko) [Element, Document, Window].call('defineEvent', ['mousewheel', {
-			
-		add: function(fn){
-			return ['DOMMouseScroll', fn];
-		},
-		
-		remove: function(fn){
-			return 'DOMMouseScroll';
-		}
+	[Document, Element].call('definePseudoEvent', 'related', function(event){
+		var related = event.get('related-target');
+		if (related == null) return true;
+		return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.find(related));
+	});
+	
+	[Document, Element].call('defineEventAlias', 'mouseenter', 'mouseover:related');
+	[Document, Element].call('defineEventAlias', 'mouseleave', 'mouseout:related');
 
-	}]);
+	if (Browser.Engine.gecko) [Element, Document, Window].call('defineEventAlias', 'mousewheel', 'DOMMouseScroll');
 
 })();
