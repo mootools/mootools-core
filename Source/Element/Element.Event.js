@@ -52,23 +52,23 @@ License:
 			Events.addEvent(this, name, fn);
 			
 			var parsed = slick.parse(name)[0][0], type = parsed.tag, alias;
-			var pseudos = parsed.pseudos || [];
+			if (!parsed.pseudos) parsed.pseudos = [];
 			
 			if ((alias = constructorOf(this).lookupEventAlias(type))){
 				var parsed2 = slick.parse(alias)[0][0];
 				type = parsed2.tag;
-				pseudos.append(parsed2.pseudos || []);
+				parsed.pseudos.append(parsed2.pseudos || []);
 			}
 
-			var self = this;
+			var self = this, pseudos = [];
 			
-			pseudos = pseudos.map(function(pseudo){
+			parsed.pseudos.each(function(pseudo){
 				
 				var parser = constructorOf(this).lookupPseudoEvent(pseudo.name);
 				
-				return (parser) ? function(event){
+				if (parser) pseudos.push(function(event){
 					return parser.call(this, event, pseudo.argument);
-				} : null;
+				});
 
 			}, this);
 			
