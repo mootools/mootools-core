@@ -58,13 +58,11 @@ function Accessors(){};
 	new Native(Accessors).implement({
 
 		defineGetter: function(key, fn){
-			// if (this.prototype.__defineGetter__) this.prototype.__defineGetter__(key, fn);
 			accessorOf(this, key).get = fn;
 			return this;
 		},
 
 		defineSetter: function(key, fn){
-			// if (this.prototype.__defineSetter__) this.prototype.__defineSetter__(key, fn);
 			accessorOf(this, key).set = fn;
 			return this;
 		},
