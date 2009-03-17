@@ -37,6 +37,11 @@ License:
 		}
 		
 	});
+	
+	Event.implement('remove', function(){
+		this.context.removeEvent(this.definition, this.action);
+		return this;
+	});
 
 	[Element, Window, Document].call('implement', {
 
@@ -62,13 +67,17 @@ License:
 				var parser = constructorOf(this).lookupPseudoEvent(pseudo.name);
 				
 				return (parser) ? function(event){
-					return parser.call(this, event, pseudo.argument, self, name, fn);
+					return parser.call(this, event, pseudo.argument);
 				} : null;
 
 			}, this);
 			
 			var ntype = natives[type], context = this, bound = function(event){
-				event = (ntype > 1) ? new Event(event) : (event || window.event);
+				event = new Event((ntype > 1) ? event : {});
+				
+				event.context = self;
+				event.action = fn;
+				event.definition = name;
 				
 				var value = true;
 				
@@ -78,9 +87,11 @@ License:
 						if (!(value = pseudos[i].call(context, event))) break;
 						if (instanceOf(value, Object)) context = value;
 					}
+
+					event.relayed = context;
 				}
 				
-				if (value && fn.call(context, event, self) == false && ntype > 1) event.stop();
+				if (value && fn.call(context, event) == false && ntype > 1) event.stop();
 				context = self;
 			};
 
@@ -133,8 +144,8 @@ License:
 		}
 	});
 
-	[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument, context, name, fn){
-		context.removeEvent(name, fn);
+	[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument){
+		event.get('context').removeEvent(event.get('definition'), event.get('action'));
 		return true;
 	});
 	
