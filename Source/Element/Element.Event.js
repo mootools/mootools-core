@@ -145,7 +145,7 @@ License:
 	});
 
 	[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument){
-		event.get('context').removeEvent(event.get('definition'), event.get('action'));
+		event.remove();
 		return true;
 	});
 	
