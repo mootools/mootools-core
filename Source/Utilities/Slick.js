@@ -73,11 +73,11 @@ var slick = (function(buffer){
 	// slick contains
 	
 	slick.contains = function(context, element){
-		if (context.contains) return (context != element && context.contains(element));
+		if (context.contains) return (context !== element && context.contains(element));
 		if (context.compareDocumentPosition) return !!(context.compareDocumentPosition(element) & 16);
 		var elements = context.getElementsByTagName(element.tagName);
 		for (var i = 0, l = elements.length; i < l; i++){
-			if (elements[i] == element) return true;
+			if (elements[i] === element) return true;
 		}
 		return false;
 	};
