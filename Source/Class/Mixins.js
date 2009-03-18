@@ -107,6 +107,7 @@ function Events(){};
 
 		addEvent: function(type, fn){
 			eventsOf(this, type).include(fn);
+			return this;
 		}.asSetter(),
 
 		fireEvent: function(type, args){
@@ -114,18 +115,25 @@ function Events(){};
 			eventsOf(this, type).each(function(fn){
 				fn.apply(this, args);
 			});
+			return this;
 		}.asSetter(),
 
 		removeEvent: function(type, fn){
 			if (!fn[':protected']) eventsOf(this, type).erase(fn);
+			return this;
 		}.asSetter(),
 
 		removeEvents: function(type){
 			eventsOf(this, type).each(function(event){
 				this.removeEvent(type, event);
 			}, this);
+			return this;
 		}
 
+	}).implement({
+		
+		addEvents: Events.prototype.addEvent.asSetter()
+		
 	});
 	
 })();
