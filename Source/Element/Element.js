@@ -145,8 +145,8 @@ Element.implement('match', function(expression){
 });
 
 function $(expression){
-	var match = expression.match(/^#?([\w-]+)$/);
-	if (match) return document.id(match[1]); //compat
+	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
+	if (match) return document.id(match); //compat
 	return document.find(expression);
 };
 
@@ -326,22 +326,22 @@ Element.lookupEraser = function(key, fn){
 			if (setter) setter.call(this, value);
 			else this.setAttribute(attribute, '' + value);
 			return this;
-		}.asSetter(),
+		}.setMany(),
 
 		get: function(attribute){
 			var getter = Element.lookupGetter(attribute);
 			if (getter) return getter.call(this);
 			else return this.getAttribute(attribute, 2);
-		}.asGetter(),
+		}.getMany(),
 
 		erase: function(attribute){
-			var value = this.get(attribute);
+			var value = this.get[':one'].call(this, attribute);
 			var eraser = Element.lookupEraser(attribute);
 			if (eraser) eraser.call(this);
-			else if (Element.lookupSetter(attribute)) this.set(attribute, '');
+			else if (Element.lookupSetter(attribute)) this.set[':one'].call(this, attribute, '');
 			else this.removeAttribute(attribute);
 			return value;
-		}.asGetter()
+		}.getMany()
 	
 	});
 

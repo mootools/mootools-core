@@ -13,9 +13,9 @@ function Class(params){
 	var newClass = function(){
 		Class.reset(this);
 		if (newClass[':prototyping']) return this;
-		this.name = 'constructor'; this.arguments = Array.from(arguments);
+		this[':name'] = 'constructor'; this.arguments = Array.from(arguments);
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		this.name = this.caller = this.arguments = null;
+		this[':name'] = this.caller = this.arguments = null;
 		return value;
 	}.extend(this);
 	
@@ -28,57 +28,23 @@ function Class(params){
 
 };
 
-new Native(Class).extend(new Storage).store('mutators', {
-	
-	Extends: function(parent){
-
-		this.parent = parent;
-		this.prototype = parent.getPrototype();
-
-		this.prototype[':constructor'] = this;
-
-		if (this.prototype.parent == null) this.prototype.parent = function(){
-			if (!this.name) Class.retrieve('error:protected')();
-			var parent = this[':constructor'].parent;
-			if (!parent) Class.retrieve('error:parent')();
-			this[':constructor'] = parent.prototype[this.name][':owner'];
-			var result = this[':constructor'].prototype[this.name].apply(this, arguments);
-			delete this[':constructor'];
-			return result;
-		};
-
-	},
-
-	Implements: function(items){
-
-		Array.from(items).each(function(item){
-			if (instanceOf(item, Function)) item = Class.getPrototype(item);
-			this.implement(item);
-		}, this);
-
-	}
-	
-}).extend('addMutator', function(key, mutator){
-	
-	this.retrieve('mutators')[key] = mutator;
-
-}.asSetter());
+new Native(Class).extend('defineMutator', function(key, mutator){
+	Storage.retrieve(this, 'mutators', {})[key] = mutator;
+	return this;
+}).extend('defineMutators', Class.defineMutator.setMany(true));
 
 Class.extend({
 	
 	wrap: function(key, method, self){
 
 		return function(){
-			if (method[':protected'] && this.name == null) Class.retrieve('error:protected')();
-			var caller = this.caller, name = this.name, args = this.arguments;
-			this.caller = name; this.name = key; this.arguments = Array.from(arguments);
+			if (method[':protected'] && this[':name'] == null) throw new Error('the method "' + key + '" cannot be called directly.');
+			var caller = this.caller, name = this[':name'], args = this.arguments;
+			this.caller = name; this[':name'] = key; this.arguments = Array.from(arguments);
 			var result = method.apply(this, arguments);
-			this.arguments = args; this.name = name; this.caller = caller;
+			this.arguments = args; this[':name'] = name; this.caller = caller;
 			return result;
-		}.extend({
-			':owner': self,
-			':origin': method
-		});
+		}.extend({':owner': self, ':origin': method});
 
 	},
 	
@@ -106,11 +72,11 @@ Class.implement({
 	
 	implement: function(key, value){
 		
-		var mutator = Class.retrieve('mutators')[key];
+		var mutator = Storage.retrieve(Class, 'mutators')[key];
 		
 		if (mutator){
 			value = mutator.call(this, value);
-			if (value == null) return;
+			if (value == null) return this;
 		}
 		
 		var proto = this.prototype;
@@ -118,7 +84,7 @@ Class.implement({
 		switch (typeOf(value)){
 			
 			case 'function':
-				if (value[':hidden']) return;
+				if (value[':hidden']) return this;
 				proto[key] = Class.wrap(key, value[':origin'] || value, this);
 			break;
 			
@@ -136,7 +102,9 @@ Class.implement({
 
 		}
 		
-	}.asSetter(),
+		return this;
+		
+	}.setMany(),
 	
 	getPrototype: function(){
 		this[':prototyping'] = true;
@@ -147,14 +115,34 @@ Class.implement({
 	
 });
 
-Class.store({
+Class.defineMutators({
+	
+	Extends: function(parent){
 
-	'error:protected': function(){
-		throw new Error('trying to call a protected method');
+		this.parent = parent;
+		this.prototype = parent.getPrototype();
+
+		this.prototype[':constructor'] = this;
+
+		if (this.prototype.parent == null) this.prototype.parent = function(){
+			if (!this[':name']) throw new Error('the method "parent" cannot be called directly.');
+			var parent = this[':constructor'].parent;
+			if (!parent) throw new Error('trying to call a non-existing parent.');
+			this[':constructor'] = parent.prototype[this[':name']][':owner'];
+			var result = this[':constructor'].prototype[this[':name']].apply(this, arguments);
+			delete this[':constructor'];
+			return result;
+		};
+
 	},
 
-	'error:parent': function(){
-		throw new Error('the parent for this method does not exist');
-	}
+	Implements: function(items){
 
+		Array.from(items).each(function(item){
+			if (instanceOf(item, Function)) item = Class.getPrototype(item);
+			this.implement(item);
+		}, this);
+
+	}
+	
 });

@@ -112,7 +112,7 @@ Event.implement('remove', function(){
 			
 			return this;
 			
-		}.asSetter(),
+		},
 
 		removeEvent: function(name, fn){
 			
@@ -133,7 +133,7 @@ Event.implement('remove', function(){
 
 			return this;
 			
-		}.asSetter()
+		}
 
 	});
 

@@ -24,19 +24,20 @@ function Storage(){};
 
 		store: function(key, value){
 			storageOf(this)[key] = value;
-		}.asSetter(),
+			return this;
+		}.setMany(),
 
 		retrieve: function(key, dflt){
 			var value = storageOf(this)[key];
 			if (dflt != null && value == null) value = (storageOf(this)[key] = dflt);
 			return Object.pick(value);
-		}.asGetter(),
+		}.getMany(),
 
 		dump: function(key){
 			var store = storageOf(this), prop = store[key];
 			delete store[key];
 			return prop;
-		}.asGetter()
+		}.getMany()
 
 	});
 	
@@ -77,8 +78,8 @@ function Accessors(){};
 
 	}).implement({
 		
-		defineGetters: Accessors.prototype.defineGetter.asSetter(),
-		defineSetters: Accessors.prototype.defineSetter.asSetter()
+		defineGetters: Accessors.prototype.defineGetter.setMany(true),
+		defineSetters: Accessors.prototype.defineSetter.setMany(true)
 
 	});
 	
@@ -103,28 +104,37 @@ function Events(){};
 		setEvents: function(){
 			if (!Storage.retrieve(this, 'events.set')) Storage.store(this, 'events.set', true).addEvent(this.events);
 			Array.forEach(arguments, this.addEvent, this);
+			return this;
 		},
 
 		addEvent: function(type, fn){
 			eventsOf(this, type).include(fn);
-		}.asSetter(),
+			return this;
+		},
 
 		fireEvent: function(type, args){
 			args = Array.from(args);
 			eventsOf(this, type).each(function(fn){
 				fn.apply(this, args);
 			});
-		}.asSetter(),
+			return this;
+		},
 
 		removeEvent: function(type, fn){
 			if (!fn[':protected']) eventsOf(this, type).erase(fn);
-		}.asSetter(),
+			return this;
+		},
 
 		removeEvents: function(type){
 			eventsOf(this, type).each(function(event){
 				this.removeEvent(type, event);
 			}, this);
+			return this;
 		}
+
+	}).implement({
+		
+		addEvents: Events.prototype.addEvent.setMany(true)
 
 	});
 	
@@ -142,21 +152,26 @@ function Options(){};
 	
 	new Native(Options).implement({
 		
-		setOptions: function(){
+		setOptions: function(options){
 			if (!Storage.retrieve(this, 'options')) Storage.store(this, 'options', this.options || {});
-			Array.forEach(arguments, this.setOption, this);
+			for (var option in options) this.setOption(option, options[option]);
 			return this;
 		},
 		
 		setOption: function(key, value){
 			if (this.addEvent && typeOf(value) == 'function' && (/^on[A-Z]/).test(key)) this.addEvent(key, value);
 			else optionsOf(this)[key] = value;
-		}.asSetter(),
+			return this;
+		},
 
 		getOption: function(key){
 			return optionsOf(this)[key];
-		}.asGetter()
+		}
 
+	}).implement({
+		
+		getOptions: Options.prototype.getOption.getMany(true)
+		
 	});
 	
 })();
