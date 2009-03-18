@@ -114,14 +114,10 @@ JSSpec.Executor.prototype.run = function() {
 		function() {
 			var result;
 			if(JSSpec.Browser.Trident) {
-				try{
-					window._curExecutor = self;
-					
-					result = self.target();
-					self.onSuccess(self, result);
-				}catch(ex){
-					self.onException(self, ex);
-				};
+				window._curExecutor = self;
+				
+				result = self.target();
+				self.onSuccess(self, result);
 			} else {
 				try {
 					result = self.target();

@@ -27,22 +27,22 @@ var Builder = {
 	scripts: {
 		source: {
 			'Core'      : ['Core'],
-			'Native'    : ['Array', 'Function', 'Number', 'Object', 'String'],
-			'Class'     : ['Class', 'Mixins'],
+			'Native'    : ['Object', 'Array', 'Function', 'Number', 'String'],
+			'Class'     : ['Mixins', 'Class'],
 			'Browser'	: ['Browser', 'Event'],
-			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
 			'Utilities' : ['Slick', 'DomReady', 'JSON'],
+			'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
 			'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Transitions'],
 			'Request'   : ['Request', 'Request.HTML', 'Request.JSON']
 		},
 
 		specs: {
 			'Core'      : ['Core'],
-			'Native'    : ['Array', 'Function', 'Number', 'Object', 'String'],
+			'Native'    : ['Object', 'Array', 'Function', 'Number', 'String'],
 			'Class'     : ['Class', 'Mixins'],
 			'Browser'	: ['Browser'],
-			/*'Element'   : ['Element', 'Element.Style'],
-			'Utilities' : ['Slick']*/
+			'Utilities' : ['Slick'],
+			'Element'   : ['Element', 'Element.Style']
 		}
 	},
 

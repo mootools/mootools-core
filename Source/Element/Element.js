@@ -7,8 +7,7 @@ License:
 */
 
 function Element(item, props){
-	if (typeOf(item) == 'string') return document.newElement(item, props);
-	return document.id(item).set(props);
+	return (typeOf(item) == 'string') ? document.newElement(item, props) : document.id(item).set(props);
 };
 
 Element.prototype = Browser.Element.prototype;
@@ -68,14 +67,14 @@ document.id = (function(){
 
 })();
 
-function Elements(elements, ddup){
+function Elements(elements, unique){
 	if (!elements || !elements.length) return;
-	if (ddup == null) ddup = true;
+	if (unique == null) unique = true;
 	var uniques = {};
 	for (var i = 0, l = elements.length; i < l; i++){
 		var element = document.id(elements[i]);
 		if (!element) continue;
-		if (ddup){
+		if (unique){
 			var uid = slick.uidOf(element);
 			if (uniques[uid]) continue;
 			uniques[uid] = true;
@@ -191,7 +190,8 @@ Element.implement({
 		After: function(context, element){
 			if (!element.parentNode) return;
 			var next = element.nextSibling;
-			(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+			if (next) element.parentNode.insertBefore(context, next);
+			else element.parentNode.appendChild(context);
 		},
 
 		Bottom: function(context, element){
@@ -200,7 +200,8 @@ Element.implement({
 
 		Top: function(context, element){
 			var first = element.firstChild;
-			(first) ? element.insertBefore(context, first) : element.appendChild(context);
+			if (first) element.insertBefore(context, first);
+			else element.appendChild(context);
 		}
 
 	};
@@ -231,8 +232,7 @@ Element.implement({
 		
 		adopt: function(){
 			Array.flatten(arguments).each(function(element){
-				element = document.id(element);
-				if (element) this.appendChild(element);
+				if (element = document.id(element)) this.appendChild(element);
 			}, this);
 			return this;
 		},
@@ -242,11 +242,11 @@ Element.implement({
 		},
 
 		grab: function(el, where){
-			return this['grab' + where || 'Bottom'](el);
+			return this['grab' + (where ? where.capitalize() : 'Bottom')](el);
 		},
 
 		inject: function(el, where){
-			return this['inject' + where || 'Bottom'](el);
+			return this['inject' + (where ? where.capitalize() : 'Bottom')](el);
 		},
 
 		replaces: function(el){
@@ -277,22 +277,20 @@ Element.extend(new Accessors);
 slick.getAttribute = function(element, attribute){
 	var getter = Element.lookupGetter(attribute);
 	if (getter) return getter.call(element);
-	else return element.getAttribute(attribute, 2);
+	return element.getAttribute(attribute, 2);
 };
 
 (function(){
 	
-	var attributes = {
+	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+		
+	var attributes = Object.append({
 		'html': 'innerHTML',
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	};
-	
-	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
-		
-	Object.append(attributes, Object.from(camels.map(String.toLowerCase), camels));
+	}, Object.from(camels.map(String.toLowerCase), camels));
 	
 	Object.each(attributes, function(realKey, key){
 		Element.defineSetter(key, function(value){
@@ -304,7 +302,7 @@ slick.getAttribute = function(element, attribute){
 	});
 	
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
-		'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
+		'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 		
 	bools.each(function(bool){
 		Element.defineSetter(bool, function(value){

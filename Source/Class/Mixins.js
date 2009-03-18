@@ -131,7 +131,7 @@ function Events(){};
 		}
 
 	}).implement({
-		
+
 		addEvents: Events.prototype.addEvent.setMany(true)
 
 	});

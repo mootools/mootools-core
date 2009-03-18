@@ -91,8 +91,12 @@ var Attributes = new Class({
 
 describe('Class creation', {
 
-	"Classes should be of type 'class'": function(){
+	"Classes should be of type 'function'": function(){
 		value_of(typeOf(Animal)).should_be('function');
+	},
+
+	"Instances should be of type 'object'": function(){
+		value_of(typeOf(new Animal('Cow', 'Moo'))).should_be('object');
 	},
 
 	"should call initialize upon instantiation": function(){

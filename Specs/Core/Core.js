@@ -8,17 +8,11 @@ License:
 
 (function(){
 
-var Instrument = new Native({
+function Instrument(name){
+	this.name = name;
+};
 
-	name: 'instrument',
-
-	initialize: function(name){
-		this.name = name;
-	}
-
-});
-
-Instrument.implement({
+new Native(Instrument).implement({
 
 	method: function(){
 		return this.property + ' ' + this.name;
@@ -28,19 +22,11 @@ Instrument.implement({
 
 });
 
-var Car = new Native({
+function Car(name){
+	this.name = name;
+};
 
-	name: 'car',
-
-	protect: true,
-
-	initialize: function(name){
-		this.name = name;
-	}
-
-});
-
-Car.implement({
+new Native(Car).protect().implement({
 
 	property: 'stuff',
 
@@ -69,7 +55,7 @@ describe('Native', {
 	},
 
 	"should have a 'native' type": function(){
-		value_of(typeOf.native(Car)).should_be_true();
+		value_of(Type.isNative(Car)).should_be_true();
 	}
 
 });
@@ -91,7 +77,7 @@ describe('Array.from', {
 		div1.appendChild(div3);
 
 		var array = Array.from(div1.getElementsByTagName('*'));
-		value_of(typeOf.array(array)).should_be_true();
+		value_of(Type.isArray(array)).should_be_true();
 	},
 
 	'should return an array for arguments': function(){
@@ -99,8 +85,21 @@ describe('Array.from', {
 			return Array.from(arguments);
 		};
 		var arr = fnTest(1,2,3);
-		value_of(typeOf.array(arr)).should_be_true();
+		value_of(Type.isArray(arr)).should_be_true();
 		value_of(arr).should_have(3, 'items');
+	},
+
+	'should transform a non array into an array': function(){
+		value_of(Array.from(1)).should_be([1]);
+	},
+
+	'should transforum an undefined or null into an empty array': function(){
+		value_of(Array.from(null)).should_be([]);
+		value_of(Array.from(undefined)).should_be([]);
+	},
+
+	'should ignore and return an array': function(){
+		value_of(Array.from([1,2,3])).should_be([1,2,3]);
 	}
 
 });
@@ -116,7 +115,7 @@ describe('Function.argument', {
 
 });
 
-describe('Object.check', {
+/*describe('Object.check', {
 
 	'should return false on false': function(){
 		value_of(Object.check(false)).should_be_false();
@@ -140,7 +139,7 @@ describe('Object.check', {
 		value_of(Object.check(true)).should_be_true();
 	}
 
-});
+});*/
 
 describe('Function.clear', {
 
@@ -156,22 +155,22 @@ describe('Function.clear', {
 
 });
 
-describe('Object.defined', {
+describe('nil', {
 
 	'should return true on 0': function(){
-		value_of(Object.defined(0)).should_be_true();
+		value_of(nil(0)).should_be_true();
 	},
 
 	'should return true on false': function(){
-		value_of(Object.defined(false)).should_be_true();
+		value_of(nil(false)).should_be_true();
 	},
 
 	'should return false on null': function(){
-		value_of(Object.defined(null)).should_be_false();
+		value_of(nil(null)).should_be_false();
 	},
 
 	'should return false on undefined': function(){
-		value_of(Object.defined(undefined)).should_be_false();
+		value_of(nil(undefined)).should_be_false();
 	}
 
 });
@@ -181,7 +180,7 @@ describe('Object.each', {
 	'should call the function for each item in Function arguments': function(){
 		var daysArr = [];
 		(function(){
-			Object.each(arguments, function(value, key){
+			Object.each(Array.from(arguments), function(value, key){
 				daysArr[key] = value;
 			});
 		})('Sun','Mon','Tue');
@@ -209,30 +208,6 @@ describe('Object.each', {
 
 });
 
-describe('Object.extend', {
-
-	'should extend two objects': function(){
-		var obj1 = {a: 1, b: 2};
-		var obj2 = {b: 3, c: 4};
-		Object.extend(obj1, obj2);
-		value_of(obj1).should_be({a: 1, b: 3, c: 4});
-	},
-
-	'should overwrite properties': function(){
-		var obj1 = {a: 1, b: 2};
-		var obj2 = {b: 3, c: 4, a: 5};
-		Object.extend(obj1, obj2);
-		value_of(obj1).should_be({a: 5, b: 3, c: 4});
-	},
-
-	'should not extend with null argument': function(){
-		var obj1 = {a: 1, b: 2};
-		Object.extend(obj1);
-		value_of(obj1).should_be({a: 1, b: 2});
-	}
-
-});
-
 describe('Function.from', {
 
 	'if a function is passed in that function should be returned': function(){
@@ -242,23 +217,6 @@ describe('Function.from', {
 
 	'should return a function that returns the value passed when called': function(){
 		value_of(Function.from('hello world!')()).should_be('hello world!');
-	}
-
-});
-
-describe('Object.merge', {
-
-	'should dereference objects': function(){
-		var obj1 = {a: 1, b: 2};
-		var obj2 = Object.merge(obj1);
-		value_of(obj1 === obj2).should_be_false();
-	},
-
-	'should merge any arbitrary number of nested objects': function(){
-		var obj1 = {a: {a: 1, b: 2, c: 3}, b: 2};
-		var obj2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
-		var obj3 = {a: {a: 3}, b: 3, c: false};
-		value_of(Object.merge(obj1, obj2, obj3)).should_be({a: {a: 3, b: 8, c: 3, d: 8}, b: 3, c: false});
 	}
 
 });
@@ -286,27 +244,10 @@ describe('Number.random', {
 
 });
 
-describe('Object.splat', {
-
-	'should transform a non array into an array': function(){
-		value_of(Object.splat(1)).should_be([1]);
-	},
-
-	'should transforum an undefined or null into an empty array': function(){
-		value_of(Object.splat(null)).should_be([]);
-		value_of(Object.splat(undefined)).should_be([]);
-	},
-
-	'should ignore and return an array': function(){
-		value_of(Object.splat([1,2,3])).should_be([1,2,3]);
-	}
-
-});
-
 describe('Date.now', {
 
 	'should return a timestamp': function(){
-		value_of(typeOf.number(Date.now())).should_be_true();
+		value_of(Type.isNumber(Date.now())).should_be_true();
 	}
 
 });
@@ -380,12 +321,12 @@ describe('typeOf', {
 		value_of(typeOf(arguments)).should_be((window.opera) ? 'array' : 'arguments'); //opera's arguments behave like arrays--which is actually better.
 	},
 
-	"should return false for null objects": function(){
-		value_of(typeOf(null)).should_be_false();
+	"should return 'null' for null objects": function(){
+		value_of(typeOf(null)).should_be('null');
 	},
 
-	"should return false for undefined objects": function(){
-		value_of(typeOf(undefined)).should_be_false();
+	"should return 'null' for undefined objects": function(){
+		value_of(typeOf(undefined)).should_be('null');
 	},
 
 	"should return 'collection' for HTMLElements collections": function(){
@@ -404,39 +345,6 @@ describe('typeOf', {
 	"should return 'document' for the document object": function(){
 		value_of(typeOf(document)).should_be('document');
 	}
-
-});
-
-describe('Object.unlink', {
-
-	"should unlink an object recursivly": function(){
-		var inner = {b: 2};
-		var obj = {a: 1, inner: inner};
-		var copy = Object.unlink(obj);
-		obj.a = 10;
-		inner.b = 20;
-
-		value_of(obj.a).should_be(10);
-		value_of(obj.inner.b).should_be(20);
-		value_of(typeOf(obj)).should_be('object');
-
-		value_of(copy.a).should_be(1);
-		value_of(copy.inner.b).should_be(2);
-		value_of(typeOf(copy)).should_be('object');
-	}// ,
-	// 
-	// 	"should unlink an Hash": function(){
-	// 		var hash = new Hash({a: 'one'});
-	// 		var copy = Object.unlink(hash);
-	// 
-	// 		value_of(typeOf(hash)).should_be('hash');
-	// 		value_of(typeOf(copy)).should_be('hash');
-	// 
-	// 		copy.set('a', 'two');
-	// 
-	// 		value_of(hash.get('a')).should_be('one');
-	// 		value_of(copy.get('a')).should_be('two');
-	// 	}
 
 });
 
