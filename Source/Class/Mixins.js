@@ -49,10 +49,8 @@ function Accessors(){};
 
 (function(){
 	
-	var accessors = {};
-	
 	function accessorOf(object, key){
-		var uid = UID.uidOf(object), accessor = accessors[uid] || (accessors[uid] = {});
+		var accessor = Storage.retrieve(object, 'accessors', {});
 		return accessor[key] || (accessor[key] = {});
 	};
 
