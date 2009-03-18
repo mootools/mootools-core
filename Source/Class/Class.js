@@ -13,9 +13,9 @@ function Class(params){
 	var newClass = function(){
 		Class.reset(this);
 		if (newClass[':prototyping']) return this;
-		this[':caller'] = 'constructor';
+		this.name = 'constructor'; this.arguments = Array.from(arguments);
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		this[':caller'] = this.caller = null;
+		this.name = this.caller = this.arguments = null;
 		return value;
 	}.extend(this);
 	
@@ -23,6 +23,7 @@ function Class(params){
 	
 	newClass.constructor = Class;
 	newClass.prototype.constructor = newClass;
+
 	return newClass;
 
 };
@@ -37,13 +38,11 @@ new Native(Class).extend(new Storage).store('mutators', {
 		this.prototype[':constructor'] = this;
 
 		if (this.prototype.parent == null) this.prototype.parent = function(){
-			var from = this[':caller'];
-			if (!from) Class.retrieve('error:protected')();
+			if (!this.name) Class.retrieve('error:protected')();
 			var parent = this[':constructor'].parent;
 			if (!parent) Class.retrieve('error:parent')();
-			parent = parent.prototype[from][':owner'];
-			this[':constructor'] = parent;
-			var result = parent.prototype[from].apply(this, arguments);
+			this[':constructor'] = parent.prototype[this.name][':owner'];
+			var result = this[':constructor'].prototype[this.name].apply(this, arguments);
 			delete this[':constructor'];
 			return result;
 		};
@@ -70,13 +69,11 @@ Class.extend({
 	wrap: function(key, method, self){
 
 		return function(){
-			if (method[':protected'] && this[':caller'] == null) Class.retrieve('error:protected')();
-			var previous = this.caller;
-			this.caller = this[':caller'];
-			this[':caller'] = key;
+			if (method[':protected'] && this.name == null) Class.retrieve('error:protected')();
+			var caller = this.caller, name = this.name, args = this.arguments;
+			this.caller = name; this.name = key; this.arguments = Array.from(arguments);
 			var result = method.apply(this, arguments);
-			this[':caller'] = this.caller;
-			this.caller = previous;
+			this.arguments = args; this.name = name; this.caller = caller;
 			return result;
 		}.extend({
 			':owner': self,

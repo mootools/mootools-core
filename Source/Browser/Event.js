@@ -81,9 +81,8 @@ new Native(Event);
 	});
 	
 	Event.implement('get', function(key){
-		key = key.camelCase();
-		var getter = Event.lookupGetter(key);
-		return (getter) ? getter.call(this) : this.event[key];
+		var getter = Event.lookupGetter(key = key.camelCase());
+		return (getter) ? getter.call(this) : Object.pick(this[key], this.event[key]);
 	}.asGetter());
 	
 })();

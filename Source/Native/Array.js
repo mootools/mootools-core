@@ -48,9 +48,9 @@ Array.implement({
 		return this.filter(nil);
 	},
 	
-	call: function(name, args){
-		args = Array.from(args);
-		var results = [];
+	call: function(name){
+		var args = Array.from(arguments), results = [];
+		args.shift();
 		for (var i = 0, j = this.length; i < j; i++){
 			var item = this[i];
 			results.push(item[name].apply(item, args));
