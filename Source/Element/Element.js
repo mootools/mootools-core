@@ -144,6 +144,8 @@ Element.implement('match', function(expression){
 });
 
 function $(expression){
+	if (typeof expression!='string') return document.id(expression);
+	
 	var match = expression.match(/^#?([\w-]+)$/);
 	if (match) return document.id(match[1]); //compat
 	return document.find(expression);

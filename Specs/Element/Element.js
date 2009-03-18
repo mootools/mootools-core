@@ -190,7 +190,7 @@ describe('$$', {
 	},
 
 	'should return multiple Elements for each specific tag': function(){
-		var headers1 = $$('h3', 'h4');
+		var headers1 = $$('h3, h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
 		value_of(headers1).should_be(headers2);
 	},
