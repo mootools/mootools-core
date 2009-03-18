@@ -172,14 +172,20 @@ This allows the function to be used in conjunction with [Element:addEvent][] and
 
 ### Example:
 
-	function myFunction(e, add){
-		//Note that 'this' here refers to window, not an element.
-		//We'll need to bind this function to the element we want to alter.
-		this.setStyle('top', e.client.x + add);
-	};
-	$(myElement).addEvent('click', myFunction.bindWithEvent(myElement, 100));
-	//When clicked, the element will move to the position of the mouse + 100.
-
+    var Logger = new Class({
+        log: function(){
+            console.log.apply(null, arguments);
+        }
+    });
+    
+    var Log = new Logger();
+    
+	$('myElement').addEvent('click', function(event, offset){
+	    offset += event.client.x;
+	    this.log('clicked; moving to:', offset); // this refers to myClass	    
+	    event.target.setStyle('top', offset);
+	    return false;
+	}).bindWithEvent(Log, 100));
 
 
 Function Method: delay {#Function:delay}
