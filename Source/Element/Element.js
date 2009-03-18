@@ -272,13 +272,12 @@ Element.implement(new Storage);
 
 Element.extend(new Accessors);
 
-Element.defineEraser = function(key, fn){
-	Storage.retrieve(this, 'accessors:erase', {})[key] = fn;
-	return this;
-};
-
-Element.lookupEraser = function(key, fn){
-	return Storage.retrieve(this, 'accessors:erase', {})[key];
+/* slick attribute integration */
+	
+slick.getAttribute = function(element, attribute){
+	var getter = Element.lookupGetter(attribute);
+	if (getter) return getter.call(element);
+	return element.getAttribute(attribute, 2);
 };
 
 (function(){
@@ -312,9 +311,6 @@ Element.lookupEraser = function(key, fn){
 		Element.defineGetter(bool, function(){
 			return !!this[bool];
 		});
-		Element.defineEraser(bool, function(){
-			this[bool] = false;
-		});
 	});
 	
 	Element.implement({
@@ -324,30 +320,15 @@ Element.lookupEraser = function(key, fn){
 			if (setter) setter.call(this, value);
 			else this.setAttribute(attribute, '' + value);
 			return this;
-		}.asSetter(),
+		}.setMany(),
 
 		get: function(attribute){
-			var getter = Element.lookupGetter(attribute);
-			if (getter) return getter.call(this);
-			else return this.getAttribute(attribute, 2);
-		}.asGetter(),
-
-		erase: function(attribute){
-			var value = this.get(attribute);
-			var eraser = Element.lookupEraser(attribute);
-			if (eraser) eraser.call(this);
-			else if (Element.lookupSetter(attribute)) this.set(attribute, '');
-			else this.removeAttribute(attribute);
-			return value;
-		}.asGetter()
+			return slick.getAttribute(this, attribute);
+		}.getMany()
 	
 	});
 
 })();
-
-//slick attribute integration
-
-slick.getAttribute = Element.get;
 
 Element.defineSetter('css', function(style){
 	return this.style.cssText = style;

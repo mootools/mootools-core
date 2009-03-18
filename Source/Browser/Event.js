@@ -83,7 +83,7 @@ new Native(Event);
 	Event.implement('get', function(key){
 		var getter = Event.lookupGetter(key = key.camelCase());
 		return (getter) ? getter.call(this) : Object.pick(this[key], this.event[key]);
-	}.asGetter());
+	}.getMany());
 	
 })();
 
