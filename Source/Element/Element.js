@@ -284,7 +284,7 @@ Element.lookupEraser = function(key, fn){
 (function(){
 	
 	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-		'frameBorder', 'maxLength', 'rowSpan', 'tabIndex', 'useMap'];
+		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 		
 	var attributes = Object.append({
 		'html': 'innerHTML',
