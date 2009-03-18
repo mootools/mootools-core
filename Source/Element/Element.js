@@ -305,7 +305,7 @@ Element.lookupEraser = function(key, fn){
 	});
 	
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
-		'disabled', 'readonly', 'readOnly', 'multiple', 'selected', 'noresize', 'defer'];
+		'disabled', 'multiple', 'selected', 'noresize', 'defer'];
 		
 	bools.each(function(bool){
 		Element.defineSetter(bool, function(value){
@@ -320,8 +320,14 @@ Element.lookupEraser = function(key, fn){
 	});
 	
 	['readonly', 'readOnly'].each(function(bool){
+		Element.defineSetter(bool, function(value){
+			return this.readonly = this.readOnly = !!value;
+		});
 		Element.defineGetter(bool, function(){
 			return !!(this.readonly || this.readOnly);
+		});
+		Element.defineEraser(bool, function(){
+			this.readonly = this.readOnly = false;
 		});
 	});
 	
