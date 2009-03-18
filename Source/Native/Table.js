@@ -32,9 +32,6 @@ new Native(Table).implement({
 		for (var uid in this.table) fn.call(bind, this.table[uid], UID.itemOf(uid), this);
 	},
 	
-	each: function(fn, bind){
-		this.forEach(fn, bind);
-		return this;
-	}
+	each: Array.prototype.each
 
 });
