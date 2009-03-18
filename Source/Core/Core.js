@@ -89,7 +89,7 @@ function valueOf(item){
 };
 
 function typeOf(item){
-	if (item == null) return null;
+	if (item == null) return 'null';
 	if (item[':type']) return item[':type']();
 	
 	if (item.nodeName){
