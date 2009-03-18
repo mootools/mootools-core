@@ -283,17 +283,15 @@ Element.lookupEraser = function(key, fn){
 
 (function(){
 	
-	var attributes = {
+	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+		'frameBorder', 'maxLength', 'rowSpan', 'tabIndex', 'useMap'];
+		
+	var attributes = Object.append({
 		'html': 'innerHTML',
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	};
-	
-	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
-		
-	Object.append(attributes, Object.from(camels.map(String.toLowerCase), camels));
+	}, Object.from(camels.map(String.toLowerCase), camels));
 	
 	Object.each(attributes, function(realKey, key){
 		Element.defineSetter(key, function(value){
@@ -305,7 +303,7 @@ Element.lookupEraser = function(key, fn){
 	});
 	
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
-		'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
+		'disabled', 'readonly', 'readOnly', 'multiple', 'selected', 'noresize', 'defer'];
 		
 	bools.each(function(bool){
 		Element.defineSetter(bool, function(value){
@@ -316,6 +314,12 @@ Element.lookupEraser = function(key, fn){
 		});
 		Element.defineEraser(bool, function(){
 			this[bool] = false;
+		});
+	});
+	
+	['readonly', 'readOnly'].each(function(bool){
+		Element.defineGetter(bool, function(){
+			return !!(this.readonly || this.readOnly);
 		});
 	});
 	
