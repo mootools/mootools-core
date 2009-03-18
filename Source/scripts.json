@@ -34,7 +34,12 @@
 		"String": {
 			"deps": ["Core"],
 			"desc": "Contains String prototypes and generics."
-		}
+		},
+		
+		"Table": {
+			"deps": ["Core"],
+			"desc": "Table is an ultra-fast, uid based dictionary implementation."
+		},
 
 	},
 
@@ -74,7 +79,7 @@
 		},
 
 		"Element.Event": {
-			"deps": ["Event"],
+			"deps": ["Event", "Table"],
 			"desc": "Contains Element methods to deal with events, delegation, and customly crafted events."
 		},
 
