@@ -6,12 +6,12 @@ License:
 	MIT-style license.
 */
 
-describe('Element constructor', {
+describe('Element', {
 
 	"should return an Element with the correct tag": function(){
 		var element = new Element('div');
 		value_of(typeOf(element)).should_be('element');
-		value_of(Object.defined(element.addEvent)).should_be_true();
+		value_of(nil(element.addEvent)).should_be_true();
 		value_of(element.tagName.toLowerCase()).should_be('div');
 	},
 
@@ -68,7 +68,7 @@ describe('Element constructor', {
 			'</select>'
 		});
 
-		var select1 = div.getFirst();
+		var select1 = div.find('^');
 		var select2 = new Element('select', { name: 'select[]', multiple: true }).adopt(
 			new Element('option', { name: 'none', value: '', html: '--' }),
 			new Element('option', { name: 'volvo', value: 'volvo', html: 'Volvo' }),
@@ -120,13 +120,13 @@ describe('Element.set', {
 	"should set the html of an Element with multiple arguments": function(){
 		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
 		var parent = new Element('div').set('html', html);
-		value_of(parent.innerHTML.toLowerCase()).should_be(html.join('').toLowerCase());
+		value_of(parent.innerHTML.toLowerCase()).should_be(html.join(' ').toLowerCase());
 	},
 
 	"should set the html of a select Element": function(){
 		var html = '<option>option 1</option><option selected="selected">option 2</option>';
 		var select = new Element('select').set('html', html);
-		value_of(select.getChildren().length).should_be(2);
+		value_of(select.search('>').length).should_be(2);
 		value_of(select.options.length).should_be(2);
 		value_of(select.selectedIndex).should_be(1);
 	},
@@ -134,30 +134,30 @@ describe('Element.set', {
 	"should set the html of a table Element": function(){
 		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
 		var table = new Element('table').set('html', html);
-		value_of(table.getChildren().length).should_be(1);
-		value_of(table.getFirst().getFirst().getChildren().length).should_be(2);
-		value_of(table.getFirst().getLast().getFirst().className).should_be('cell');
+		value_of(table.search('>').length).should_be(1);
+		value_of(table.search('^ ^ >').length).should_be(2);
+		value_of(table.find('^ $ ^').className).should_be('cell');
 	},
 
 	"should set the html of a tbody Element": function(){
 		var html = '<tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr>';
 		var tbody = new Element('tbody').inject(new Element('table')).set('html', html);
-		value_of(tbody.getChildren().length).should_be(2);
-		value_of(tbody.getLast().getFirst().className).should_be('cell');
+		value_of(tbody.search('>').length).should_be(2);
+		value_of(tbody.find('$ ^').className).should_be('cell');
 	},
 
 	"should set the html of a tr Element": function(){
 		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
 		var tr = new Element('tr').inject(new Element('tbody').inject(new Element('table'))).set('html', html);
-		value_of(tr.getChildren().length).should_be(2);
-		value_of(tr.getFirst().className).should_be('cell');
+		value_of(tr.search('>').length).should_be(2);
+		value_of(tr.find('^').className).should_be('cell');
 	},
 
 	"should set the html of a td Element": function(){
 		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
 		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
-		value_of(td.getChildren().length).should_be(2);
-		value_of(td.getFirst().className).should_be('span');
+		value_of(td.search('>').length).should_be(2);
+		value_of(td.find('^').className).should_be('span');
 	},
 
 	"should set the style attribute of an Element": function(){
@@ -207,23 +207,23 @@ var myElements = new Elements([
 
 describe('Elements', {
 
-	'should return an array type': function(){
-		value_of(typeOf.array(myElements)).should_be_true();
+	"should return an 'elements' type": function(){
+		value_of(Type.isElements(myElements)).should_be_true();
 	},
 
-	'should return an array of Elements': function(){
-		value_of(myElements.every(typeOf.element)).should_be_true();
+	"should return an array of Elements": function(){
+		value_of(myElements.every(Type.isElement)).should_be_true();
 	},
 
-	'should apply Element prototypes to the returned array': function(){
-		value_of(Object.defined(myElements.addEvent)).should_be_true();
+	"should apply Element prototypes to the returned array": function(){
+		value_of(nil(myElements.addEvent)).should_be_true();
 	},
 
-	'should return all Elements that match the string matcher': function(){
+	"should return all Elements that match the string matcher": function(){
 		value_of(myElements.filter('div')).should_be([myElements[0], myElements[2]]);
 	},
 
-	'should return all Elements that match the comparator': function(){
+	"should return all Elements that match the comparator": function(){
 		var elements = myElements.filter(function(element){
 			return element.match('a');
 		});
@@ -275,7 +275,7 @@ describe('$', {
 		var dollar2 = $('dollar');
 
 		value_of(dollar1).should_be(dollar2);
-		value_of(Object.defined(dollar1.addEvent)).should_be_true();
+		value_of(nil(dollar1.addEvent)).should_be_true();
 	},
 
 	'should return the window if passed': function(){
@@ -351,7 +351,7 @@ describe('getWindow', {
 
 });
 
-describe('Element.getElement', {
+describe('Element.find', {
 
 	'before all': function(){
 		Container = new Element('div');
@@ -363,14 +363,14 @@ describe('Element.getElement', {
 	},
 
 	'should return the first Element to match the tag, otherwise null': function(){
-		var child = Container.getElement('div');
+		var child = Container.find('div');
 		value_of(child.id).should_be('first');
-		value_of(Container.getElement('iframe')).should_be_null();
+		value_of(Container.find('iframe')).should_be_null();
 	}
 
 });
 
-describe('Element.getElements', {
+describe('Element.search', {
 
 	'before all': function(){
 		Container = new Element('div');
@@ -382,48 +382,50 @@ describe('Element.getElements', {
 	},
 
 	'should return all the elements that match the tag': function(){
-		var children = Container.getElements('div');
+		var children = Container.search('div');
 		value_of(children).should_have(2, 'items');
 	},
 
 	'should return all the elements that match the tags': function(){
-		var children = Container.getElements('div,a');
+		var children = Container.search('div, a');
 		value_of(children).should_have(3, 'items');
 		value_of(children[2].tagName.toLowerCase()).should_be('a');
 	}
 
 });
 
-describe('Document.getElement', {
+describe('Document.find', {
 
 	'should return the first Element to match the tag, otherwise null': function(){
-		var div = document.getElement('div');
+		var div = document.find('div');
 		var ndiv = document.getElementsByTagName('div')[0];
 		value_of(div).should_be(ndiv);
+	},
 
-		var notfound = document.getElement('canvas');
+	'shoult return null if no element is found': function(){
+		var notfound = document.find('canvas');
 		value_of(notfound).should_be_null();
 	}
 
 });
 
-describe('Document.getElements', {
+describe('Document.search', {
 
 	'should return all the elements that match the tag': function(){
-		var divs = document.getElements('div');
+		var divs = document.search('div');
 		var ndivs = Array.from(document.getElementsByTagName('div'));
 		value_of(divs).should_be(ndivs);
 	},
 
 	'should return all the elements that match the tags': function(){
-		var headers = document.getElements('h3,h4');
+		var headers = document.search('h3,h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
 		value_of(headers.length).should_be(headers2.length);
 	}
 
 });
 
-describe('Element.getElementById', {
+describe('Document.id', {
 
 	'before all': function(){
 		Container = new Element('div');
@@ -437,8 +439,8 @@ describe('Element.getElementById', {
 	},
 
 	'should getElementById that matches the id, otherwise null': function(){
-		value_of(Container.getElementById('first')).should_be(Container.childNodes[0]);
-		value_of(Container.getElementById('not_found')).should_be_null();
+		value_of(document.id('first')).should_be(Container.childNodes[0]);
+		value_of(document.id('not_found')).should_be_null();
 	}
 
 });
