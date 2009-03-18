@@ -6,6 +6,31 @@ License:
 	MIT-style license.
 */
 
+[Element, Window, Document].call('extend', {
+	
+	definePseudoEvent: function(name, fn){
+		return Storage.store(this, 'events.pseudo.' + name, fn);
+	},
+	
+	lookupPseudoEvent: function(name){
+		return Storage.retrieve(this, 'events.pseudo.' + name);
+	},
+	
+	defineEventModifier: function(name, fn){
+		return Storage.store(this, 'events.modifier.' + name, fn);
+	},
+	
+	lookupEventModifier: function(name){
+		return Storage.retrieve(this, 'events.modifier.' + name);
+	}
+	
+});
+
+Event.implement('remove', function(){
+	this.context.removeEvent(this.definition, this.action);
+	return this;
+});
+
 (function(){
 	
 	var natives = {
@@ -17,33 +42,13 @@ License:
 		load: 1, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 		error: 1, abort: 1, scroll: 1 //misc
 	};
-	
-	[Element, Window, Document].call('extend', {
-		
-		definePseudoEvent: function(name, fn){
-			return Storage.store(this, 'events.pseudo.' + name, fn);
-		},
-		
-		lookupPseudoEvent: function(name){
-			return Storage.retrieve(this, 'events.pseudo.' + name);
-		},
-		
-		defineEventAlias: function(name, alias){
-			return Storage.store(this, 'events.alias.' + name, alias);
-		},
-		
-		lookupEventAlias: function(name){
-			return Storage.retrieve(this, 'events.alias.' + name);
-		}
-		
-	});
-	
-	Event.implement('remove', function(){
-		this.context.removeEvent(this.definition, this.action);
-		return this;
-	});
 
 	[Element, Window, Document].call('implement', {
+		
+		hasEvent: function(name, fn){
+			var table = this.retrieve('events.table.' + name);
+			return !!(table && table.get(fn));
+		},
 
 		addEvent: function(name, fn){
 
@@ -51,15 +56,18 @@ License:
 			if (table.get(fn)) return this;
 			Events.addEvent(this, name, fn);
 			
-			var parsed = slick.parse(name)[0][0], type = parsed.tag, alias;
+			var parsed = slick.parse(name)[0][0], type = parsed.tag;
 			if (!parsed.pseudos) parsed.pseudos = [];
 			
-			if ((alias = constructorOf(this).lookupEventAlias(type))){
-				var parsed2 = slick.parse(alias)[0][0];
+			var modifier = constructorOf(this).lookupEventModifier(type), mfn = fn;
+			
+			if ((modifier = Function.from(modifier).call(this, fn))){
+				var parsed2 = slick.parse(modifier[0])[0][0];
 				type = parsed2.tag;
 				parsed.pseudos.append(parsed2.pseudos || []);
+				if (modifier[1]) mfn = modifier[1];
 			}
-
+			
 			var self = this, pseudos = [];
 			
 			parsed.pseudos.each(function(pseudo){
@@ -91,7 +99,7 @@ License:
 					event.relayed = context;
 				}
 				
-				if (value && fn.call(context, event) == false && ntype > 1) event.stop();
+				if (value && mfn.call(context, event) == false && ntype > 1) event.stop();
 				context = self;
 			};
 
@@ -112,8 +120,9 @@ License:
 			if (!bound) return this;
 			Events.removeEvent(this, name, fn);
 			
-			var type = slick.parse(name)[0][0].tag, alias;
-			if ((alias = constructorOf(this).lookupEventAlias(type))) type = slick.parse(alias)[0][0].tag;
+			var type = slick.parse(name)[0][0].tag;
+			var modifier = constructorOf(this).lookupEventModifier(type);
+			if ((modifier = Function.from(modifier).call(this, fn, true))) type = slick.parse(modifier[0])[0][0].tag;
 			
 			// remove real event
 			
@@ -127,46 +136,46 @@ License:
 		}.asSetter()
 
 	});
-	
-	[Element, Window, Document].call('implement', new Events);
-	
-	[Element, Document].call('definePseudoEvent', 'key', function(event, argument){
-		return (event.get('key') == argument);
-	});
-	
-	[Element, Document].call('definePseudoEvent', 'modifier', function(event, argument){
-		switch (argument){
-			case 'shift': case '⇧': return event.get('shift');
-			case 'control': case '⌃': return event.get('control');
-			case 'meta': case '⌘': case 'command': return event.get('meta');
-			case 'alt': case '⌥': case 'option': return event.get('alt');
-			default: return false;
-		}
-	});
-
-	[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument){
-		event.remove();
-		return true;
-	});
-	
-	[Document, Element].call('definePseudoEvent', 'relay', function(event, selector){
-		var nodes = this.search(selector), target = event.get('target');
-		for (var i = nodes.length; i--; i){
-			var node = document.id(nodes[i]);
-			if (target === node || node.find(target)) return node;
-		}
-		return false;
-	});
-	
-	[Document, Element].call('definePseudoEvent', 'related', function(event){
-		var related = event.get('related-target');
-		if (related == null) return true;
-		return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.find(related));
-	});
-	
-	[Document, Element].call('defineEventAlias', 'mouseenter', 'mouseover:related');
-	[Document, Element].call('defineEventAlias', 'mouseleave', 'mouseout:related');
-
-	if (Browser.Engine.gecko) [Element, Document, Window].call('defineEventAlias', 'mousewheel', 'DOMMouseScroll');
 
 })();
+
+[Element, Window, Document].call('implement', new Events);
+
+[Element, Document].call('definePseudoEvent', 'key', function(event, argument){
+	return (event.get('key') == argument);
+});
+
+[Element, Document].call('definePseudoEvent', 'modifier', function(event, argument){
+	switch (argument){
+		case 'shift': case '⇧': return event.get('shift');
+		case 'control': case '⌃': return event.get('control');
+		case 'meta': case '⌘': case 'command': return event.get('meta');
+		case 'alt': case '⌥': case 'option': return event.get('alt');
+		default: return false;
+	}
+});
+
+[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument){
+	event.remove();
+	return true;
+});
+
+[Document, Element].call('definePseudoEvent', 'relay', function(event, selector){
+	var nodes = this.search(selector), target = event.get('target');
+	for (var i = nodes.length; i--; i){
+		var node = document.id(nodes[i]);
+		if (target === node || node.find(target)) return node;
+	}
+	return false;
+});
+
+[Document, Element].call('definePseudoEvent', 'related', function(event){
+	var related = event.get('related-target');
+	if (related == null) return true;
+	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.find(related));
+});
+
+[Document, Element].call('defineEventModifier', 'mouseenter', ['mouseover:related']);
+[Document, Element].call('defineEventModifier', 'mouseleave', ['mouseout:related']);
+
+if (Browser.Engine.gecko) [Element, Document, Window].call('defineEventModifier', 'mousewheel', ['DOMMouseScroll']);
