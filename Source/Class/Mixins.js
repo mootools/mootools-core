@@ -132,7 +132,7 @@ function Events(){};
 
 	}).implement({
 		
-		addEvents: Events.prototype.addEvent.asSetter()
+		addEvents: Events.prototype.addEvent
 		
 	});
 	

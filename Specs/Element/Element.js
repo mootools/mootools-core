@@ -432,20 +432,6 @@ describe('Element.get', {
 		value_of(readonly3.get('readonly')).should_be_false();
 	},
 
-	'should get readonly-property from an input Element even if the attribute was set with readOnly': function(){
-		var readonly1 = new Element('input', {type: 'text'});
-		readonly1.readOnly = 'readOnly';
-		value_of(readonly1.get('readonly')).should_be_true();
-
-		var readonly2 = new Element('input', {type: 'text'});
-		readonly2.readOnly = true;
-		value_of(readonly2.get('readonly')).should_be_true();
-
-		var readonly3 = new Element('input', {type: 'text'});
-		readonly3.readOnly = false;
-		value_of(readonly3.get('readonly')).should_be_false();
-	},
-
 	"should return an object associate with the properties passed": function(){
 		var readonly = new Element('input', {type: 'text', readonly: 'readonly'});
 		value_of(readonly.get(['type', 'readonly'])).should_be({type: 'text', readonly: true});

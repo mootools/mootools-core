@@ -17,9 +17,9 @@ Element.prototype = Browser.Element.prototype;
 new Native(Element).mirror(function(name, method){
 	Elements.implement(name, function(){
 		var results = [], args = arguments, elements = true;
-		this.each(function(element){
+		this.each(function(element, i){
 			var result = element[name].apply(element, args);
-			results.push(result);
+			results[i] = result;
 			if (elements && typeOf(result) != 'element') elements = false;
 		});
 		return (elements) ? new Elements(results) : results;
@@ -59,7 +59,7 @@ document.id = (function(){
 
 	}
 	
-	return function(item){
+	return function id(item){
 		if (instanceOf(item, Browser.Element)) return item;
 		var processor = types[typeOf(item)];
 		return (processor) ? processor(item, this) : null;
@@ -144,10 +144,8 @@ Element.implement('match', function(expression){
 });
 
 function $(expression){
-	if (typeof expression!='string') return document.id(expression);
-	
-	var match = expression.match(/^#?([\w-]+)$/);
-	if (match) return document.id(match[1]); //compat
+	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
+	if (match) return document.id(match); //compat
 	return document.find(expression);
 };
 
@@ -305,7 +303,7 @@ Element.lookupEraser = function(key, fn){
 	});
 	
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
-		'disabled', 'multiple', 'selected', 'noresize', 'defer'];
+		'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 		
 	bools.each(function(bool){
 		Element.defineSetter(bool, function(value){
@@ -316,18 +314,6 @@ Element.lookupEraser = function(key, fn){
 		});
 		Element.defineEraser(bool, function(){
 			this[bool] = false;
-		});
-	});
-	
-	['readonly', 'readOnly'].each(function(bool){
-		Element.defineSetter(bool, function(value){
-			return this.readonly = this.readOnly = !!value;
-		});
-		Element.defineGetter(bool, function(){
-			return !!(this.readonly || this.readOnly);
-		});
-		Element.defineEraser(bool, function(){
-			this.readonly = this.readOnly = false;
 		});
 	});
 	
