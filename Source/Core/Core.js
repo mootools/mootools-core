@@ -31,30 +31,36 @@ function nil(item){
 
 // Accessors multipliers
 
-Function.prototype.asSetter = function(){
-	var self = this;
-	var multiple = function(argument){
-		if (typeof argument == 'string'){
-			self.apply(this, arguments);
-		} else {
-			for (var p in argument) self.call(this, p, argument[p]);
-		}
-		return this;
+Function.prototype.setMany = function(multiply){
+	var one = this, many = function(item){
+		var value;
+		for (var key in item) value = one.call(this, key, item[key]);
+		return value;
 	};
-	multiple[':origin'] = self;
-	return multiple;
+	
+	var check = function(item){
+		return ((typeof item == 'string') ? one : many).apply(this, arguments);
+	};
+
+	check[':one'] = one;
+	check[':many'] = many;
+	return (multiply) ? many : check;
 };
 
-Function.prototype.asGetter = function(){
-	var self = this;
-	var multiple = function(argument){
-		if (typeof argument == 'string') return self.apply(this, arguments);
+Function.prototype.getMany = function(multiply){
+	var one = this, many = function(item){
 		var obj = {};
-		for (var i = 0; i < argument.length; i++) obj[argument[i]] = self.call(this, argument[i]);
+		for (var i = 0; i < item.length; i++) obj[item[i]] = one.call(this, item[i]);
 		return obj;
 	};
-	multiple[':origin'] = self;
-	return multiple;
+	
+	var check = function(item){
+		return ((typeof item == 'string') ? one : many).apply(this, arguments);
+	};
+	
+	check[':one'] = one;
+	check[':many'] = many;
+	return (multiply) ? many : check;
 };
 
 // Object.has
@@ -75,18 +81,14 @@ Object.pick = function(){
 Function.extend = Function.prototype.extend = function(key, value){
 	if (!Object.has(this, key) && (value == null || !value[':hidden'])) this[key] = value;
 	return this;
-}.asSetter();
+}.setMany();
 
 Function.prototype.implement = function(key, value){
 	if (!Object.has(this.prototype, key) && (value == null || !value[':hidden'])) this.prototype[key] = value;
 	return this;
-}.asSetter();
+}.setMany();
 
-// valueOf, typeOf, instanceOf
-
-function valueOf(item){
-	return (item != null && item.valueOf) ? item.valueOf() : null;
-};
+// typeOf, instanceOf
 
 function typeOf(item){
 	if (item == null) return 'null';
@@ -127,9 +129,9 @@ var UID = (function(){
 	
 	return {
 
-		uidOf: function(item){			
-			if ((item = valueOf(item)) && item.uid) return item.uid;
-			
+		uidOf: function(item){
+			if (item == null) return 'nil';
+			if ((item = (item.valueOf) ? item.valueOf() : item).uid) return item.uid;
 			if (!instanceOf(item, Object)) item = primitives[item] || (primitives[item] = {valueOf: Function.from(item)});
 			var uid = item.uid || (item.uid = (index++).toString(16));
 			if (!table[uid]) table[uid] = item;
@@ -137,7 +139,10 @@ var UID = (function(){
 		},
 	
 		itemOf: function(uid){
-			return valueOf(table[uid] || null);
+			if (uid == 'nil') return null;
+			var tuid = table[uid];
+			if (tuid == null) return null;
+			return (tuid.valueOf) ? tuid.valueOf() : tuid;
 		}
 	
 	};
@@ -230,31 +235,33 @@ new Type(Native);
 	Native.implement({
 
 		implement: function(name, method){
-
 			var hooks = hooksOf(this);
+			
 			for (var i = 0; i < hooks.length; i++){
 				var hook = hooks[i];
-				if (typeOf(hook) == 'native') arguments.callee.call(hook, name, method);
+				if (typeOf(hook) == 'native') hook.implement[':one'].call(hook, name, method);
 				else hook.call(this, name, method);
 			}
 
-			Function.prototype.implement[':origin'].call(this, name, method);
+			Native.implement[':one'].call(this, name, method);
 
-			if (typeof method == 'function') this.extend(name, function(item){
+			if (typeof method == 'function') this.extend[':one'].call(this, name, function(item){
 				return method.apply(item, Array.from(arguments, 1));
 			});
-
-		}.asSetter(),
+			
+			return this;
+			
+		}.setMany(),
 
 		alias: function(name, proto){
-			Native.prototype.implement[':origin'].call(this, name, this.prototype[proto]);
-		}.asSetter(),
+			return this.implement[':one'].call(this, name, this.prototype[proto]);
+		}.setMany(),
 
-		override: function(key, value){
-			delete this[key];
-			delete this.prototype[key];
-			Native.prototype.implement[':origin'].call(this, key, value);
-		}.asSetter(),
+		override: function(name, method){
+			delete this[name];
+			delete this.prototype[name];
+			return this.implement[':one'].call(this, name, method);
+		}.setMany(),
 				
 		mirror: function(hook){
 			hooksOf(this).push(hook);
