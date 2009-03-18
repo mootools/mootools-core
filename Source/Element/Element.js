@@ -7,8 +7,7 @@ License:
 */
 
 function Element(item, props){
-	if (typeOf(item) == 'string') return document.newElement(item, props);
-	return document.id(item).set(props);
+	return (typeOf(item) == 'string') ? document.newElement(item, props) : document.id(item).set(props);
 };
 
 Element.prototype = Browser.Element.prototype;
@@ -18,9 +17,9 @@ Element.prototype = Browser.Element.prototype;
 new Native(Element).mirror(function(name, method){
 	Elements.implement(name, function(){
 		var results = [], args = arguments, elements = true;
-		this.each(function(element, i){
+		this.each(function(element){
 			var result = element[name].apply(element, args);
-			results[i] = result;
+			results.push(result);
 			if (elements && typeOf(result) != 'element') elements = false;
 		});
 		return (elements) ? new Elements(results) : results;
@@ -60,7 +59,7 @@ document.id = (function(){
 
 	}
 	
-	return function id(item){
+	return function(item){
 		if (instanceOf(item, Browser.Element)) return item;
 		var processor = types[typeOf(item)];
 		return (processor) ? processor(item, this) : null;
@@ -68,14 +67,14 @@ document.id = (function(){
 
 })();
 
-function Elements(elements, ddup){
+function Elements(elements, unique){
 	if (!elements || !elements.length) return;
-	if (ddup == null) ddup = true;
+	if (unique == null) unique = true;
 	var uniques = {};
 	for (var i = 0, l = elements.length; i < l; i++){
 		var element = document.id(elements[i]);
 		if (!element) continue;
-		if (ddup){
+		if (unique){
 			var uid = slick.uidOf(element);
 			if (uniques[uid]) continue;
 			uniques[uid] = true;
@@ -191,7 +190,8 @@ Element.implement({
 		After: function(context, element){
 			if (!element.parentNode) return;
 			var next = element.nextSibling;
-			(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+			if (next) element.parentNode.insertBefore(context, next);
+			else element.parentNode.appendChild(context);
 		},
 
 		Bottom: function(context, element){
@@ -200,7 +200,8 @@ Element.implement({
 
 		Top: function(context, element){
 			var first = element.firstChild;
-			(first) ? element.insertBefore(context, first) : element.appendChild(context);
+			if (first) element.insertBefore(context, first);
+			else element.appendChild(context);
 		}
 
 	};
@@ -231,8 +232,7 @@ Element.implement({
 		
 		adopt: function(){
 			Array.flatten(arguments).each(function(element){
-				element = document.id(element);
-				if (element) this.appendChild(element);
+				if (element = document.id(element)) this.appendChild(element);
 			}, this);
 			return this;
 		},
