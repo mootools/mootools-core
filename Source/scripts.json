@@ -39,7 +39,7 @@
 		"Table": {
 			"deps": ["Core"],
 			"desc": "Table is an ultra-fast, uid based dictionary implementation."
-		},
+		}
 
 	},
 
