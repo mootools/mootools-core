@@ -242,11 +242,11 @@ Element.implement({
 		},
 
 		grab: function(el, where){
-			return this['grab' + where || 'Bottom'](el);
+			return this['grab' + (where ? where.capitalize() : 'Bottom')](el);
 		},
 
 		inject: function(el, where){
-			return this['inject' + where || 'Bottom'](el);
+			return this['inject' + (where ? where.capitalize() : 'Bottom')](el);
 		},
 
 		replaces: function(el){
