@@ -4,7 +4,7 @@
 
 		"Core": {
 			"deps": ["Core"],
-			"desc": "The vey core of MooTools, contains all the base functions and implementations. Required by all the other components."
+			"desc": "The core of MooTools, contains all the base functions and implementations. Required by all the other components."
 		}
 
 	},
