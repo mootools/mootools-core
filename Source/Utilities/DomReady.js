@@ -6,9 +6,9 @@ License:
 	MIT-style license.
 */
 
-[Document, Window].call('defineAddEvent', ['domready', function(fn){
-	if (Browser.loaded) fn.call(this);
-}]);
+[Document, Window].call('defineEventModifier', 'domready', function(fn, remove){
+	if (!remove && Browser.loaded) fn.call(this);
+});
 
 (function(){
 
@@ -31,8 +31,8 @@ License:
 			(['loaded', 'complete'].contains(document.readyState)) ? domready() : arguments.callee.delay(50);
 		})();
 	} else {
-		window.addEvent('load', domready);
-		document.addEvent('DOMContentLoaded', domready);
+		window.addEvent('load:flash', domready);
+		document.addEvent('DOMContentLoaded:flash', domready);
 	}
 
 })();
