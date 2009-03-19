@@ -267,7 +267,7 @@ Element.implement({
 
 Element.implement(new Storage);
 
-/* Attribute Getters, Setters, Erasers */
+/* Attribute Getters, Setters */
 
 Element.extend(new Accessors);
 
@@ -289,7 +289,7 @@ slick.getAttribute = function(element, attribute){
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	}, Object.from(camels.map(String.toLowerCase), camels));
+	}, Object.from(camels, camels.map(String.toLowerCase)));
 	
 	Object.each(attributes, function(realKey, key){
 		Element.defineSetter(key, function(value){
