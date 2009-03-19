@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-function Class(params){
+var Class = new Native('Class', function(params){
 	
 	if (instanceOf(params, Function)) params = {initialize: params};
 	
@@ -26,9 +26,9 @@ function Class(params){
 
 	return newClass;
 
-};
+});
 
-new Native(Class).extend('defineMutator', function(key, mutator){
+Class.extend('defineMutator', function(key, mutator){
 	Storage.retrieve(this, 'mutators', {})[key] = mutator;
 	return this;
 }).extend('defineMutators', Class.defineMutator.setMany(true));

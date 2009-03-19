@@ -90,12 +90,6 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 		shorts.borderColor[bdc] = shorts[bd][bdc] = all[bdc] = 'rgb(@, @, @)';
 	});
 	
-	Element.getComputedStyle = function(element, name){
-		if (element.currentStyle) return element.currentStyle[name];
-		var computed = document.defaultView.getComputedStyle(element, null);
-		return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
-	};
-	
 	Object.each(all, function(map, name){
 		
 		var isShort = !!(shorts[name]);
@@ -128,6 +122,12 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 	});
 
 })();
+
+Element.getComputedStyle = function(element, name){
+	if (element.currentStyle) return element.currentStyle[name];
+	var computed = document.defaultView.getComputedStyle(element, null);
+	return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
+};
 
 Element.implement({
 

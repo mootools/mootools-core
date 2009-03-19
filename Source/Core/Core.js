@@ -25,7 +25,7 @@ var MooTools = {
 
 // nil
 
-function nil(item){
+var nil = function(item){
 	return (item != null && item != nil);
 };
 
@@ -90,7 +90,7 @@ Function.prototype.implement = function(key, value){
 
 // typeOf, instanceOf
 
-function typeOf(item){
+var typeOf = function(item){
 	if (item == null) return 'null';
 	if (item[':type']) return item[':type']();
 	
@@ -107,7 +107,7 @@ function typeOf(item){
 	return typeof item;
 };
 
-function instanceOf(item, object){
+var instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.constructor;
 	while (constructor){
@@ -117,7 +117,7 @@ function instanceOf(item, object){
 	return item instanceof object;
 };
 
-function constructorOf(item){
+var constructorOf = function(item){
 	return Type['object:' + typeOf(item)] || null;
 };
 
@@ -166,12 +166,7 @@ String.from = String;
 
 // Type
 
-function Type(object){
-	var name = object.name;
-	if (!name){
-		var match = object.toString().match(/^\s*function\s*([\w]+)/);
-		if (!match || !(name = match[1])) return object;
-	}
+var Type = function(name, object){
 	var lower = name.toLowerCase();
 	Type['is' + name] = function(item){
 		return (typeOf(item) == lower);
@@ -213,21 +208,21 @@ Function.implement({
 
 // Native
 
-function Native(object){
+var Native = function(name, object){
 	object.extend(this);
 	object[':type'] = this[':type'];
 	object.constructor = Native;
 	object.prototype.constructor = object;
-	return new Type(object);
+	return new Type(name, object);
 };
 
-new Type(Native);
+new Type('Native', Native);
 
 (function(){
 	
 	var hooks = {};
 	
-	function hooksOf(object){
+	var hooksOf = function(object){
 		var uid = UID.uidOf(object);
 		return hooks[uid] || (hooks[uid] = []);
 	};
@@ -274,26 +269,26 @@ new Type(Native);
 
 // Default Natives
 
-(function(enforce){
+(function(force){
 	
-	enforce(Array, [
+	force('Array', [
 		'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
 		'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
 	]);
 	
-	enforce(String, [
+	force('String', [
 		'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 		'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
 	]);
 	
-	enforce(Number, ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
+	force('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
 	
-	enforce(Function, ['apply', 'call']);
+	force('Function', ['apply', 'call']);
 	
-	enforce(RegExp, ['exec', 'test']);
+	force('RegExp', ['exec', 'test']);
 
-})(function(object, methods){
-		
+})(function(type, methods){
+	var object = this[type];
 	for (var i = 0; i < methods.length; i++){
 		var name = methods[i], method = object.prototype[name];
 		if (method){
@@ -302,10 +297,10 @@ new Type(Native);
 		}
 	}
 	
-	new Native(object).implement(object.prototype);
+	new Native(type, object).implement(object.prototype);
 });
 
-new Native(Date).extend('now', function(){
+new Native('Date', Date).extend('now', function(){
 	return +(new Date);
 });
 

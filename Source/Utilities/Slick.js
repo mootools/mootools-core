@@ -10,7 +10,7 @@ var slick = (function(buffer){
 	
 	// slick function
 	
-	function slick(context, expression){
+	var slick = function(context, expression){
 		
 		if (typeof expression != 'string'){
 			var array = [];
@@ -446,7 +446,7 @@ var slick = (function(buffer){
 
 slick.parse = (function(){
 	
-	function SubtleSlickParse(CSS3Selectors){
+	var SubtleSlickParse = function(CSS3Selectors){
 		var selector = '' + CSS3Selectors;
 		if (cache[selector]) return cache[selector];
 		parsedSelectors = [];
@@ -530,7 +530,7 @@ slick.parse = (function(){
 	    return String(str).replace(/[-[\]{}()*+?.\\^$|,#\s]/g, "\\$&");
 	};
 	
-	function attribValueToRegex(operator, value){
+	var attribValueToRegex = function(operator, value){
 		if (!operator) return null;
 		var val = XRegExp_escape(value);
 		switch(operator){
@@ -545,7 +545,7 @@ slick.parse = (function(){
 		}
 	};
 	
-	function parser(){
+	var parser = function(){
 		var a = arguments;
 		var selectorBitMap;
 		var selectorBitName;

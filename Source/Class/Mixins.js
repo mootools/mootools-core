@@ -9,18 +9,18 @@ License:
 
 // Storage
 
-function Storage(){};
+var Storage = new Native('Storage', function(){});
 
 (function(){
 	
 	var storage = {};
 	
-	function storageOf(item){
+	var storageOf = function(item){
 		var uid = UID.uidOf(item);
 		return (storage[uid] || (storage[uid] = {}));
 	};
 	
-	new Native(Storage).implement({
+	Storage.implement({
 
 		store: function(key, value){
 			storageOf(this)[key] = value;
@@ -45,16 +45,16 @@ function Storage(){};
 
 // Accessors
 
-function Accessors(){};
+var Accessors = new Native('Accessors', function(){});
 
 (function(){
 	
-	function accessorOf(object, key){
+	var accessorOf = function(object, key){
 		var accessor = Storage.retrieve(object, 'accessors', {});
 		return accessor[key] || (accessor[key] = {});
 	};
 
-	new Native(Accessors).implement({
+	Accessors.implement({
 
 		defineGetter: function(key, fn){
 			accessorOf(this, key).get = fn;
@@ -85,19 +85,19 @@ function Accessors(){};
 
 // Events
 
-function Events(){};
+var Events = new Native('Events', function(){});
 
 (function(){
 	
-	function replacer(full, first){
+	var replacer = function(full, first){
 		return first.toLowerCase();
 	};
 	
-	function eventsOf(object, type){
+	var eventsOf = function(object, type){
 		return Storage.retrieve(object, 'events.type.' + type.replace(/^on([A-Z])/, replacer), []);
 	};
 	
-	new Native(Events).implement({
+	Events.implement({
 		
 		setEvents: function(){
 			if (!Storage.retrieve(this, 'events.set')) Storage.store(this, 'events.set', true).addEvent(this.events);
@@ -140,15 +140,15 @@ function Events(){};
 
 // Options
 
-function Options(){};
+var Options = new Native('Options', function(){});
 
 (function(){
 	
-	function optionsOf(object){
+	var optionsOf = function(object){
 		return Storage.retrieve(object, 'options', {});
 	};
 	
-	new Native(Options).implement({
+	Options.implement({
 		
 		setOptions: function(options){
 			if (!Storage.retrieve(this, 'options')) Storage.store(this, 'options', this.options || {});
@@ -176,9 +176,7 @@ function Options(){};
 
 // Chain
 
-function Chain(){};
-
-new Native(Chain).implement({
+var Chain = new Native('Chain', function(){}).implement({
 	
 	chain: function(){
 		var chain = Storage.retrieve(this, 'chain', []);

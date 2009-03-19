@@ -6,11 +6,11 @@ License:
 	MIT-style license.
 */
 
-function Table(){
-	this.table = {};
-};
 
-new Native(Table).implement({
+
+var Table = new Native('Table', function(){
+	this.table = {};
+}).implement({
 	
 	set: function(key, value){
 		this.table[UID.uidOf(key)] = value;

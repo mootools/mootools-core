@@ -107,45 +107,32 @@ String.implement('stripScripts', function(option){
 
 // Window, Document
 
-(function(win, doc){
+(function(){
 	
-	var emptyWindow = function Window(){};
-	
-	if (!win.Window) win.Window = emptyWindow;
-	Browser.Window = win.Window;
-	
-	win.Window = new Native(emptyWindow);
-	
-	var emptyElement = function Element(){};
+	Browser.extend({
+		Document: this.Document,
+		Window: this.Window,
+		Element: this.Element,
+		Event: this.Event
+	});
 
-	if (!win.Element){
-		win.Element = emptyElement;
+	if (!Browser.Element){
+		Browser.Element = function(){};
 		if (Browser.Engine.webkit) doc.createElement("iframe"); //fixes safari 2
-		win.Element.prototype = (Browser.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
+		Browser.Element.prototype = (Browser.Engine.webkit) ? this["[[DOMElement.prototype]]"] : {};
 	}
-
-	Browser.Element = win.Element;
 	
-	var emptyEvent = function Event(){};
-
-	if (!win.Event) win.Event = emptyEvent;
-	Browser.Event = win.Event;
+	this.Window = new Native('Window', function(){});
 	
-	doc.window = win;
+	this.constructor = this.Window;
+	this[':type'] = Function.from('window').hide();
 	
-	win.constructor = win.Window;
-	win[':type'] = Function.from('window').hide();
-	
-	win.Window.mirror(function(name, method){
-		if (win[name] == null && (method == null || !method[':hidden'])) win[name] = method;
+	this.Window.mirror(function(name, method){
+		if (window[name] == null && (method == null || !method[':hidden'])) window[name] = method;
 	}).implement(new Storage);
 	
-	var emptyDocument = function Document(){};
-
-	if (!win.Document) win.Document = emptyDocument;
-	Browser.Document = win.Document;
-
-	win.Document = new Native(emptyDocument);
+	var doc = this.document;
+	doc.window = this;
 
 	doc.head = doc.getElementsByTagName('head')[0];
 	doc.html = doc.getElementsByTagName('html')[0];
@@ -153,17 +140,19 @@ String.implement('stripScripts', function(option){
 		if (Browser.Engine.version <= 4) Function.stab(function(){
 			doc.execCommand("BackgroundImageCache", false, true);
 		});
-		win.attachEvent('onunload', function(){
-			win.detachEvent('onunload', arguments.callee);
+		this.attachEvent('onunload', function(){
+			this.detachEvent('onunload', arguments.callee);
 			doc.head = doc.html = doc.window = null;
 		});
 	}
+	
+	this.Document = new Native('Document', function(){});
 
-	doc.constructor = win.Document;
+	doc.constructor = this.Document;
 	doc[':type'] = Function.from('document').hide();
 	
-	win.Document.mirror(function(name, method){
+	this.Document.mirror(function(name, method){
 		if (doc[name] == null && (method == null || !method[':hidden'])) doc[name] = method;
 	}).implement(new Storage);
 	
-})(window, document);
+})();

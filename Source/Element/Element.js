@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-function Element(item, props){
+var Element = function(item, props){
 	return (typeOf(item) == 'string') ? document.newElement(item, props) : document.id(item).set(props);
 };
 
@@ -14,7 +14,7 @@ Element.prototype = Browser.Element.prototype;
 
 // mirror element methods to Elements
 
-new Native(Element).mirror(function(name, method){
+new Native('Element', Element).mirror(function(name, method){
 	Elements.implement(name, function(){
 		var results = [], args = arguments, elements = true;
 		for (var i = 0, l = this.length; i < l; i++){
@@ -36,20 +36,25 @@ document.id = (function(){
 
 		string: function(item, doc){
 			return types.element(doc.getElementById(item));
+		},
+		
+		element: function(item){
+			if (window.console) console.log('Extending element manually.');
+			Object.append(item, proto);
+			item.constructor = Browser.Element;
+			return item;
 		}
 
 	};
 	
 	types.window = types.document = types.textnode = types.whitespace = types.element = Function.argument(0);
+	
+	var proto = {};
 
 	if (Browser.Engine.trident){
 		
-		var proto = document.createElement('div');
+		proto = document.createElement('div');
 		proto[':type'] = Function.from('element');
-		
-		Element.mirror(function(name, method){
-			proto[name] = method;
-		});
 
 		types.element = function(item){
 			item.mergeAttributes(proto);
@@ -59,7 +64,11 @@ document.id = (function(){
 
 	}
 	
-	return function id(item){
+	Element.mirror(function(name, method){
+		proto[name] = method;
+	});
+	
+	return function(item){
 		if (instanceOf(item, Browser.Element)) return item;
 		var processor = types[typeOf(item)];
 		return (processor) ? processor(item, this) : null;
@@ -67,7 +76,7 @@ document.id = (function(){
 
 })();
 
-function Elements(elements, unique){
+var Elements = function(elements, unique){
 	if (!elements || !elements.length) return;
 	if (unique == null) unique = true;
 	var uniques = {};
@@ -86,7 +95,7 @@ function Elements(elements, unique){
 Elements.prototype = {length: 0};
 Elements.parent = Array;
 
-new Native(Elements).implement('filter', function(filter, bind){
+new Native('Elements', Elements).implement('filter', function(filter, bind){
 	if (!filter) return this;
 	return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 		return item.match(filter);
@@ -142,13 +151,13 @@ Element.implement('match', function(expression){
 	return slick.match(this, expression);
 });
 
-function $(expression){
+var $ = function(expression){
 	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
 	if (match) return document.id(match); //compat
 	return document.find(expression);
 };
 
-function $$(expression){
+var $$ = function(expression){
 	return document.search(expression);
 };
 

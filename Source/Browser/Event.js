@@ -6,19 +6,15 @@ License:
 	MIT-style license.
 */
 
-function Event(event){
+var Event = new Native('Event', function(event){
 	if ((event = event || window.event).event) event = event.event;
 	this.event = event;
 	return this;
-};
-
-new Native(Event);
+});
 
 (function(){
 	
-	Event.extend(new Accessors);
-	
-	Event.defineGetters({
+	Event.extend(new Accessors).defineGetters({
 
 		shift: function(){
 			return this.event.shiftKey;
