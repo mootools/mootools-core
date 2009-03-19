@@ -33,7 +33,7 @@ function nil(item){
 
 Function.prototype.setMany = function(multiply){
 	var one = this, many = function(item){
-		var value;
+		var value = this;
 		for (var key in item) value = one.call(this, key, item[key]);
 		return value;
 	};
