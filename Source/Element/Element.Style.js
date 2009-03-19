@@ -127,37 +127,38 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisbility){
 
 	});
 
-	Element.implement({
-	
-		setStyle: function(name, value){
-			name = name.camelCase();
-			var setter = Element.lookupStyleSetter(name);
-			if (setter) return setter.call(this, value);
-		
-			// no setter, set style property directly
-
-			this.style[name] = value;
-			return this;
-		},
-	
-		getStyle: function(name){
-			name = name.camelCase();
-			var getter = Element.lookupStyleGetter(name);
-			if (getter) return getter.call(this);
-		
-		
-			// no getter, return current style
-
-			var style = this.style[name];
-			if (style || style === 0) return style;
-			return Element.getComputedStyle(this, name);
-		}
-	
-	}).implement({
-		
-		setStyles: Element.prototype.setStyle.setMany(true),
-		setStyles: Element.prototype.getStyle.getMany(true)
-		
-	});
-
 })();
+
+Element.implement({
+
+	setStyle: function(name, value){
+		name = name.camelCase();
+		var setter = Element.lookupStyleSetter(name);
+		if (setter) return setter.call(this, value);
+	
+		// no setter, set style property directly
+
+		this.style[name] = value;
+		return this;
+	},
+
+	getStyle: function(name){
+		name = name.camelCase();
+		var getter = Element.lookupStyleGetter(name);
+		if (getter) return getter.call(this);
+	
+	
+		// no getter, return current style
+
+		var style = this.style[name];
+		if (style || style === 0) return style;
+		return Element.getComputedStyle(this, name);
+	}
+
+}).implement({
+	
+	setStyles: Element.prototype.setStyle.setMany(true),
+	setStyles: Element.prototype.getStyle.getMany(true)
+	
+});
+
