@@ -90,7 +90,7 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisbility){
 		shorts.borderColor[bdc] = shorts[bd][bdc] = all[bdc] = 'rgb(@, @, @)';
 	});
 	
-	slick.getComputedStyle = function(element, name){
+	Element.getComputedStyle = function(element, name){
 		if (element.currentStyle) return element.currentStyle[name];
 		var computed = document.defaultView.getComputedStyle(element, null);
 		return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
@@ -150,7 +150,7 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisbility){
 
 			var style = this.style[name];
 			if (style || style === 0) return style;
-			return slick.getComputedStyle(this, name);
+			return Element.getComputedStyle(this, name);
 		}
 	
 	}).implement({
