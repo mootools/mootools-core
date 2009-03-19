@@ -114,7 +114,7 @@ function Events(){};
 			args = Array.from(args);
 			eventsOf(this, type).each(function(fn){
 				fn.apply(this, args);
-			});
+			}, this);
 			return this;
 		},
 
