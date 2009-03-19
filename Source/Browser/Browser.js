@@ -109,14 +109,14 @@ String.implement('stripScripts', function(option){
 
 (function(win, doc){
 	
-	var emptyWindow = (function Window(){});
+	var emptyWindow = function Window(){};
 	
 	if (!win.Window) win.Window = emptyWindow;
 	Browser.Window = win.Window;
 	
 	win.Window = new Native(emptyWindow);
 	
-	var emptyElement = (function Element(){});
+	var emptyElement = function Element(){};
 
 	if (!win.Element){
 		win.Element = emptyElement;
@@ -126,7 +126,7 @@ String.implement('stripScripts', function(option){
 
 	Browser.Element = win.Element;
 	
-	var emptyEvent = (function Event(){});
+	var emptyEvent = function Event(){};
 
 	if (!win.Event) win.Event = emptyEvent;
 	Browser.Event = win.Event;
@@ -140,7 +140,7 @@ String.implement('stripScripts', function(option){
 		if (win[name] == null && (method == null || !method[':hidden'])) win[name] = method;
 	}).implement(new Storage);
 	
-	var emptyDocument = (function Document(){});
+	var emptyDocument = function Document(){};
 
 	if (!win.Document) win.Document = emptyDocument;
 	Browser.Document = win.Document;
