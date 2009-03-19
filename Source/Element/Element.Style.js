@@ -26,7 +26,7 @@ Element.extend({
 	
 });
 
-Element.defineStyleSetter('opacity', function(value, ignoreVisbility){
+Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 	
 	value = parseFloat(value);
 	
@@ -161,4 +161,3 @@ Element.implement({
 	setStyles: Element.prototype.getStyle.getMany(true)
 	
 });
-
