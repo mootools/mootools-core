@@ -114,7 +114,6 @@ Document.implement({
 			});
 			tag = '<' + tag + '>';
 		}
-
 		if (!element) element = this.createElement(tag);
 		return this.id(element).set(props);
 	},

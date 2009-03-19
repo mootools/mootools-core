@@ -58,7 +58,7 @@ Event.implement('remove', function(){
 			
 			var parsed = slick.parse(name)[0][0], type = parsed.tag;
 			if (!parsed.pseudos) parsed.pseudos = [];
-			
+
 			var modifier = constructorOf(this).lookupEventModifier(type), mfn = fn;
 			
 			if ((modifier = Function.from(modifier).call(this, fn))){
@@ -136,6 +136,8 @@ Event.implement('remove', function(){
 		}
 
 	});
+	
+	window.fireEvent = document.fireEvent = null;
 
 })();
 
