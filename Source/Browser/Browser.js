@@ -78,8 +78,7 @@ Browser.Plugins.Flash = (function(){
 
 // String scripts
 
-String.extend('exec', function(text){
-	
+Browser.exec = function(text){
 	if (!text) return text;
 	if (window.execScript){
 		window.execScript(text);
@@ -90,16 +89,17 @@ String.extend('exec', function(text){
 		document.head.appendChild(script);
 		document.head.removeChild(script);
 	}
-	return text;
-	
-}).implement('stripScripts', function(option){
+	return text;	
+};
+
+String.implement('stripScripts', function(option){
 	
 	var scripts = '';
 	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 		scripts += arguments[1] + '\n';
 		return '';
 	});
-	if (option === true) String.exec(scripts);
+	if (option === true) Browser.exec(scripts);
 	else if (typeOf(option) == 'function') option(scripts, text);
 	return text;
 
@@ -109,34 +109,43 @@ String.extend('exec', function(text){
 
 (function(win, doc){
 	
-	if (!win.Window) win.Window = (function Window(){});
+	var emptyWindow = (function Window(){});
+	
+	if (!win.Window) win.Window = emptyWindow;
 	Browser.Window = win.Window;
 	
-	win.Window = new Native(function Window(){});
+	win.Window = new Native(emptyWindow);
+	
+	var emptyElement = (function Element(){});
 
 	if (!win.Element){
-		var Element = (function Element(){});
+		win.Element = emptyElement;
 		if (Browser.Engine.webkit) doc.createElement("iframe"); //fixes safari 2
-		Element.prototype = (Browser.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
+		win.Element.prototype = (Browser.Engine.webkit) ? win["[[DOMElement.prototype]]"] : {};
 	}
+
 	Browser.Element = win.Element;
-
-	if (!win.Event) win.Event = (function Event(){});
-	Browser.Event = win.Event;
-
-	doc.window = win;
-
-	win.constructor = Window;
-	win[':type'] = Function.from('window').hide();
-
-	Window.mirror(function(name, method){
-		Function.prototype.extend.call(win, name, method);
-	}).implement(new Storage);
-
-	if (!win.Document) win.Document = (function Document(){});
-	Browser.Document = win.Document;
 	
-	win.Document = new Native(function Document(){});
+	var emptyEvent = (function Event(){});
+
+	if (!win.Event) win.Event = emptyEvent;
+	Browser.Event = win.Event;
+	
+	doc.window = win;
+	
+	win.constructor = win.Window;
+	win[':type'] = Function.from('window').hide();
+	
+	win.Window.mirror(function(name, method){
+		if (win[name] == null && (method == null || !method[':hidden'])) win[name] = method;
+	}).implement(new Storage);
+	
+	var emptyDocument = (function Document(){});
+
+	if (!win.Document) win.Document = emptyDocument;
+	Browser.Document = win.Document;
+
+	win.Document = new Native(emptyDocument);
 
 	doc.head = doc.getElementsByTagName('head')[0];
 	doc.html = doc.getElementsByTagName('html')[0];
@@ -150,11 +159,11 @@ String.extend('exec', function(text){
 		});
 	}
 
-	doc.constructor = Document;
+	doc.constructor = win.Document;
 	doc[':type'] = Function.from('document').hide();
-
-	Document.mirror(function(name, method){
-		Function.prototype.extend.call(doc, name, method);
+	
+	win.Document.mirror(function(name, method){
+		if (doc[name] == null && (method == null || !method[':hidden'])) doc[name] = method;
 	}).implement(new Storage);
 	
 })(window, document);
