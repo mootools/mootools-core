@@ -39,7 +39,7 @@ document.id = (function(){
 		},
 		
 		element: function(item){
-			if (window.console) console.log('Extending element manually.');
+			if (window.console) console.warn('Extending element manually.');
 			Object.append(item, proto);
 			item.constructor = Browser.Element;
 			return item;
@@ -109,13 +109,21 @@ Array.mirror(Elements);
 Document.implement({
 	
 	newElement: function(tag, props){
-		var element;
+		if (!props) props = {};
 		
-		if ((/^<\w/).test(tag)){
-			var temp = this.createElement('div');
-			temp.innerHTML = tag;
-			element = temp.firstChild;
-		} else if (Browser.Engine.trident && props){
+		if ((/^<\w/).test(tag)) return this.newElement('div', {html: tag}).find('^').set(props);
+		
+		var parsed = slick.parse(tag)[0][0], id;
+		if (parsed.tag) tag = parsed.tag;
+		if (parsed.id) props.id = parsed.id;
+
+		if (parsed.attributes) parsed.attributes.each(function(att){
+			if (att.value && att.operator == '=') props[att.name] = att.value;
+		});
+		
+		if (parsed.classes) props['class'] = parsed.classes.join(' ');
+		
+		if (Browser.Engine.trident){
 			['name', 'type', 'checked'].each(function(attribute){
 				if (!props[attribute]) return;
 				tag += ' ' + attribute + '="' + props[attribute] + '"';
@@ -123,8 +131,8 @@ Document.implement({
 			});
 			tag = '<' + tag + '>';
 		}
-		if (!element) element = this.createElement(tag);
-		return this.id(element).set(props);
+
+		return (this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
