@@ -18,22 +18,13 @@ var Fx = new Class({
 		*/
 		unit: false,
 		duration: 500,
+		transition: 'cosine',
 		link: 'ignore'
 	},
 
 	initialize: function(options){
 		this.subject = this.subject || this;
 		this.setOptions(options);
-	},
-	
-	getDuration: function(){
-		return Fx.Durations[this.getOption('duration')] || Number.asInteger(this.getOption('duration'));
-	},
-
-	getTransition: function(){
-		return function(p){
-			return -(Math.cos(Math.PI * p) - 1) / 2;
-		};
 	},
 
 	step: function(){
@@ -69,8 +60,8 @@ var Fx = new Class({
 		this.from = from;
 		this.to = to;
 		this.time = 0;
-		this.transition = this.getTransition();
-		this.duration = this.getDuration();
+		this.transition = Fx.lookupTransition(this.getOption('transition'));
+		this.duration = Fx.lookupDuration(this.getOption('duration'));
 		this.startTimer();
 		this.onStart();
 		return this;
@@ -112,14 +103,14 @@ var Fx = new Class({
 	stopTimer: function(){
 		if (!this.timer) return false;
 		this.time = Date.now() - this.time;
-		this.timer = Fx.Timer.remove(this);
+		this.timer = Fx.remove(this);
 		return true;
 	},
 
 	startTimer: function(){
 		if (this.timer) return false;
 		this.time = Date.now() - this.time;
-		this.timer = Fx.Timer.add(this);
+		this.timer = Fx.add(this);
 		return true;
 	}
 
@@ -129,9 +120,11 @@ Fx.compute = function(from, to, delta){
 	return (to - from) * delta + from;
 };
 
-Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
-
-Fx.Timer = (function(){
+(function(){
+	
+	var transitions = {'linear': Function.argument(0)};
+	
+	var durations = {'short': 250, 'normal': 500, 'long': 1000};
 	
 	var fps = 50, instances = [], timer;
 	
@@ -139,8 +132,45 @@ Fx.Timer = (function(){
 		for (var i = 0; i < instances.length; i++) instances[i].step();
 	};
 	
-	return {
+	Fx.extend({
+		
+		// duration accessors
+		
+		defineDuration: function(name, value){
+			durations[name] = value;
+			return this;
+		},
+		
+		lookupDuration: function(name){
+			return durations[name] || Number(name) || 0;
+		},
+		
+		defineTransition: function(name, transition, params){
+			params = Array.from(params);
+			
+			transitions[name] = transition;
 
+			transitions[name + '.in'] = function(pos){
+				return transition(pos, params);
+			};
+			
+			transitions[name + '.out'] = function(pos){
+				return 1 - transition(1 - pos, params);
+			};
+			
+			transitions[name + '.inOut'] = function(pos){
+				return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+			};
+
+			return this;
+		},
+		
+		lookupTransition: function(name){
+			return transitions[name] || transitions.linear;
+		},
+		
+		// timer
+		
 		add: function(instance){
 			instances.push(instance);
 			if (!timer) timer = loop.periodical(Math.round(1000 / fps));
@@ -156,7 +186,13 @@ Fx.Timer = (function(){
 		setFPS: function(f){
 			fps = f;
 		}
-
-	};
+		
+	});
+	
+	Fx.defineTransitions = Fx.defineTransition.setMany(true);
 	
 })();
+
+Fx.defineTransition('cosine', function(p){
+	return -(Math.cos(Math.PI * p) - 1) / 2;
+});

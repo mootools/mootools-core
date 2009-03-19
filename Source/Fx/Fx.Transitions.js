@@ -9,70 +9,30 @@ Credits:
 	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
 */
 
-Fx.implement({
+Fx.defineTransitions({
 
-	getTransition: function(){
-		var trans = this.getOption('transition') || Fx.Transitions.Sine.easeInOut;
-		if (typeOf(trans) == 'string'){
-			var data = trans.split(':');
-			trans = Fx.Transitions;
-			trans = trans[data[0]] || trans[data[0].capitalize()];
-			if (data[1]) trans = trans['ease' + data[1].capitalize() + (data[2] ? data[2].capitalize() : '')];
-		}
-		return trans;
-	}
-
-});
-
-Fx.Transition = function(transition, params){
-	params = Array.from(params);
-	return Object.append(transition, {
-		easeIn: function(pos){
-			return transition(pos, params);
-		},
-		easeOut: function(pos){
-			return 1 - transition(1 - pos, params);
-		},
-		easeInOut: function(pos){
-			return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
-		}
-	});
-};
-
-Fx.Transitions = {
-
-	linear: Function.argument(0)
-
-};
-
-Fx.Transitions.extend = function(transitions){
-	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
-};
-
-Fx.Transitions.extend({
-
-	Pow: function(p, x){
+	pow: function(p, x){
 		return Math.pow(p, x[0] || 6);
 	},
 
-	Expo: function(p){
+	expo: function(p){
 		return Math.pow(2, 8 * (p - 1));
 	},
 
-	Circ: function(p){
+	circ: function(p){
 		return 1 - Math.sin(Math.acos(p));
 	},
 
-	Sine: function(p){
+	sine: function(p){
 		return 1 - Math.sin((1 - p) * Math.PI / 2);
 	},
 
-	Back: function(p, x){
+	back: function(p, x){
 		x = x[0] || 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
-	Bounce: function(p){
+	bounce: function(p){
 		var value;
 		for (var a = 0, b = 1; 1; a += b, b /= 2){
 			if (p >= (7 - 4 * a) / 11){
@@ -83,14 +43,14 @@ Fx.Transitions.extend({
 		return value;
 	},
 
-	Elastic: function(p, x){
+	elastic: function(p, x){
 		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
 	}
 
 });
 
-['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
-	Fx.Transitions[transition] = new Fx.Transition(function(p){
+['quad', 'cubic', 'quart', 'quint'].each(function(transition, i){
+	Fx.defineTransition(transition, function(p){
 		return Math.pow(p, [i + 2]);
 	});
 });
