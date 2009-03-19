@@ -18,7 +18,7 @@ var Fx = new Class({
 		*/
 		unit: false,
 		duration: 500,
-		transition: 'cosine',
+		transition: 'default',
 		link: 'ignore'
 	},
 
@@ -122,7 +122,12 @@ Fx.compute = function(from, to, delta){
 
 (function(){
 	
-	var transitions = {'linear': Function.argument(0)};
+	var transitions = {
+		'linear': Function.argument(0),
+		'default': function(p){
+			return -(Math.cos(Math.PI * p) - 1) / 2;
+		}
+	};
 	
 	var durations = {'short': 250, 'normal': 500, 'long': 1000};
 	
@@ -192,7 +197,3 @@ Fx.compute = function(from, to, delta){
 	Fx.defineTransitions = Fx.defineTransition.setMany(true);
 	
 })();
-
-Fx.defineTransition('cosine', function(p){
-	return -(Math.cos(Math.PI * p) - 1) / 2;
-});
