@@ -17,11 +17,11 @@ Element.prototype = Browser.Element.prototype;
 new Native(Element).mirror(function(name, method){
 	Elements.implement(name, function(){
 		var results = [], args = arguments, elements = true;
-		this.each(function(element, i){
-			var result = element[name].apply(element, args);
+		for (var i = 0, l = this.length; i < l; i++){
+			var element = this[i], result = element[name].apply(element, args);
 			results[i] = result;
-			if (elements && typeOf(result) != 'element') elements = false;
-		});
+			elements = (elements && typeOf(result) == 'element');
+		}
 		return (elements) ? new Elements(results) : results;
 	});
 });
@@ -232,7 +232,7 @@ Element.implement({
 		
 		adopt: function(){
 			Array.flatten(arguments).each(function(element){
-				if (element = document.id(element)) this.appendChild(element);
+				if ((element = document.id(element))) this.appendChild(element);
 			}, this);
 			return this;
 		},
