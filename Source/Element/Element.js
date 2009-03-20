@@ -114,7 +114,7 @@ Document.implement({
 		if ((/^<\w/).test(tag)) return this.newElement('div', {html: tag}).find('^').set(props);
 		
 		var parsed = slick.parse(tag)[0][0], id;
-		if (parsed.tag) tag = parsed.tag;
+		tag = parsed.tag;
 		if (parsed.id) props.id = parsed.id;
 
 		if (parsed.attributes) parsed.attributes.each(function(att){
