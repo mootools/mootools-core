@@ -6,22 +6,22 @@ License:
 	MIT-style license.
 */
 
-[Element, Window, Document].call('extend', {
+Event.extend({
 	
-	definePseudoEvent: function(name, fn){
-		return Storage.store(this, 'events.pseudo.' + name, fn);
+	definePseudo: function(name, fn){
+		return Storage.store(this, 'pseudo.' + name, fn);
 	},
 	
-	lookupPseudoEvent: function(name){
-		return Storage.retrieve(this, 'events.pseudo.' + name);
+	lookupPseudo: function(name){
+		return Storage.retrieve(this, 'pseudo.' + name);
 	},
 	
-	defineEventModifier: function(name, fn){
-		return Storage.store(this, 'events.modifier.' + name, fn);
+	defineModifier: function(name, fn){
+		return Storage.store(this, 'modifier.' + name, fn);
 	},
 	
-	lookupEventModifier: function(name){
-		return Storage.retrieve(this, 'events.modifier.' + name);
+	lookupModifier: function(name){
+		return Storage.retrieve(this, 'modifier.' + name);
 	}
 	
 });
@@ -57,49 +57,60 @@ Event.implement('remove', function(){
 			Events.addEvent(this, name, fn);
 			
 			var parsed = slick.parse(name)[0][0], type = parsed.tag;
-			if (!parsed.pseudos) parsed.pseudos = [];
 
-			var modifier = constructorOf(this).lookupEventModifier(type), mfn = fn;
+			var modifier = Event.lookupModifier(type), mfn = fn;
 			
-			if ((modifier = Function.from(modifier).call(this, fn))){
-				var parsed2 = slick.parse(modifier[0])[0][0];
-				type = parsed2.tag;
-				parsed.pseudos.append(parsed2.pseudos || []);
-				if (modifier[1]) mfn = modifier[1];
+			if (modifier){
+				if (modifier.type) type = modifier.type;
+				if (modifier.action) mfn = modifier.action(fn);
+				if (modifier.add) modifier.add.call(this, fn);
 			}
 			
-			var self = this, pseudos = [];
+			var self = this, pseudos = [], attributes = [];
 			
-			parsed.pseudos.each(function(pseudo){
+			if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
 				
-				var parser = constructorOf(this).lookupPseudoEvent(pseudo.name);
+				var parser = Event.lookupPseudo(pseudo.name);
 				
 				if (parser) pseudos.push(function(event){
 					return parser.call(this, event, pseudo.argument);
 				});
 
-			}, this);
+			});
+			
+			if (parsed.attributes) parsed.attributes.each(function(attribute){
+				attributes.push(function(event){
+					var operator = attribute.operator, value = attribute.value;
+					var actual = event.get(attribute.name);
+					if (!operator) return !!(actual);
+					if (operator === '=') return (actual === value);
+					if (actual == null && (!value || operator === '!=')) return false;
+					return attribute.regexp.test(actual);
+				});
+			});
 			
 			var ntype = natives[type], context = this, bound = function(event){
 				event = new Event((ntype > 1) ? event : {});
+				Object.append(event, {context: self, action: fn, definition: name});
 				
-				event.context = self;
-				event.action = fn;
-				event.definition = name;
-				
-				var value = true;
+				var value = true, i;
 				
 				if (ntype > 1){
 					
-					for (var i = 0; i < pseudos.length; i++){
+					for (i = 0; i < pseudos.length; i++){
 						if (!(value = pseudos[i].call(context, event))) break;
 						if (instanceOf(value, Object)) context = value;
+						event.relayed = context;
+					}
+					
+					for (i = 0; i < attributes.length; i++){
+						if (!(value = attributes[i](event))) break;
 					}
 
-					event.relayed = context;
 				}
 				
 				if (value && mfn.call(context, event) == false && ntype > 1) event.stop();
+
 				context = self;
 			};
 
@@ -121,8 +132,11 @@ Event.implement('remove', function(){
 			Events.removeEvent(this, name, fn);
 			
 			var type = slick.parse(name)[0][0].tag;
-			var modifier = constructorOf(this).lookupEventModifier(type);
-			if ((modifier = Function.from(modifier).call(this, fn, true))) type = slick.parse(modifier[0])[0][0].tag;
+			var modifier = Event.lookupModifier(type);
+			if (modifier){
+				if (modifier.type) type = modifier.type;
+				if (modifier.remove) modifier.remove.call(this, fn);
+			}
 			
 			// remove real event
 			
@@ -138,31 +152,27 @@ Event.implement('remove', function(){
 	});
 	
 	window.fireEvent = document.fireEvent = null;
+	
+	var related = function(fn){
+		return function(event){
+			var rt = event.get('related-target');
+			if ((rt == null) || (typeOf(this) != 'document' && rt != this && rt.prefix != 'xul' && !this.find(rt))) fn.call(this, event);
+		};
+	};
+	
+	Event.defineModifier('mouseenter', {type: 'mouseover', action: related});
+	Event.defineModifier('mouseleave', {type: 'mouseout', action: related});
 
 })();
 
 [Element, Window, Document].call('implement', new Events);
 
-[Element, Document].call('definePseudoEvent', 'key', function(event, argument){
-	return (event.get('key') == argument);
-});
-
-[Element, Document].call('definePseudoEvent', 'modifier', function(event, argument){
-	switch (argument){
-		case 'shift': case '⇧': return event.get('shift');
-		case 'control': case '⌃': return event.get('control');
-		case 'meta': case '⌘': case 'command': return event.get('meta');
-		case 'alt': case '⌥': case 'option': return event.get('alt');
-		default: return false;
-	}
-});
-
-[Element, Window, Document].call('definePseudoEvent', 'flash', function(event, argument){
+Event.definePseudo('flash', function(event, argument){
 	event.remove();
 	return true;
 });
 
-[Document, Element].call('definePseudoEvent', 'relay', function(event, selector){
+Event.definePseudo('relay', function(event, selector){
 	var nodes = this.search(selector), target = event.get('target');
 	for (var i = nodes.length; i--; i){
 		var node = document.id(nodes[i]);
@@ -171,13 +181,4 @@ Event.implement('remove', function(){
 	return false;
 });
 
-[Document, Element].call('definePseudoEvent', 'related', function(event){
-	var related = event.get('related-target');
-	if (related == null) return true;
-	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.find(related));
-});
-
-[Document, Element].call('defineEventModifier', 'mouseenter', ['mouseover:related']);
-[Document, Element].call('defineEventModifier', 'mouseleave', ['mouseout:related']);
-
-if (Browser.Engine.gecko) [Element, Document, Window].call('defineEventModifier', 'mousewheel', ['DOMMouseScroll']);
+if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
