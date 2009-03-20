@@ -153,11 +153,9 @@ Element.implement({
 		var style = this.style[name];
 		if (style || style === 0) return style;
 		return Element.getComputedStyle(this, name);
-	}
+	},
+	
+	setStyles: Function.setMany('setStyle'),
+	getStyles: Function.getMany('getStyle')
 
-}).implement({
-	
-	setStyles: Element.prototype.setStyle.setMany(true),
-	setStyles: Element.prototype.getStyle.getMany(true)
-	
 });
