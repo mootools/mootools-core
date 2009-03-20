@@ -258,7 +258,7 @@ describe('Class::implement', {
 			Extends: Animal
 		});
 
-		Dog.implement(new Actions, new Attributes);
+		Dog.implement(new Actions).implement(new Attributes);
 
 		var rover = new Dog('rover');
 

@@ -62,7 +62,7 @@ Class.Mutators = {
 Class.extend({
 
 	inherit: function(object, properties){
-		var caller = arguments.callee.caller && !Browser.Features.air; // caller support is broken in air 1.5
+		var caller = arguments.callee.caller && !Browser.Features.air && !Browser.Engine.webkit; // caller support is broken in air 1.5
 		for (var key in properties){
 			var override = properties[key];
 			var previous = object[key];
