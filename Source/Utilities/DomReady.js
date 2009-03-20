@@ -6,9 +6,9 @@ License:
 	MIT-style license.
 */
 
-[Document, Window].call('defineEventModifier', 'domready', function(fn, remove){
-	if (!remove && Browser.loaded) fn.call(this);
-});
+Event.defineModifier('domready', {add: function(fn){
+	if (Browser.loaded) fn.call(this, event);
+}});
 
 (function(){
 
