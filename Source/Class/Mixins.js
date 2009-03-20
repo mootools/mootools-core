@@ -72,12 +72,10 @@ var Accessors = new Native('Accessors', function(){});
 
 		lookupSetter: function(key){
 			return accessorOf(this, key).set || null;
-		}
-
-	}).implement({
+		},
 		
-		defineGetters: Accessors.prototype.defineGetter.setMany(true),
-		defineSetters: Accessors.prototype.defineSetter.setMany(true)
+		defineGetters: Function.setMany('defineGetter'),
+		defineSetters: Function.setMany('defineSetter')
 
 	});
 	
@@ -128,11 +126,9 @@ var Events = new Native('Events', function(){});
 				this.removeEvent(type, event);
 			}, this);
 			return this;
-		}
-
-	}).implement({
-
-		addEvents: Events.prototype.addEvent.setMany(true)
+		},
+		
+		addEvents: Function.setMany('addEvent')
 
 	});
 	
@@ -164,12 +160,10 @@ var Options = new Native('Options', function(){});
 
 		getOption: function(key){
 			return optionsOf(this)[key];
-		}
+		},
+		
+		getOptions: Function.getMany('getOption')
 
-	}).implement({
-		
-		getOptions: Options.prototype.getOption.getMany(true)
-		
 	});
 	
 })();

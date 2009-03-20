@@ -31,7 +31,7 @@ var Class = new Native('Class', function(params){
 Class.extend('defineMutator', function(key, mutator){
 	Storage.retrieve(this, 'mutators', {})[key] = mutator;
 	return this;
-}).extend('defineMutators', Class.defineMutator.setMany(true));
+}).extend('defineMutators', Function.setMany('defineMutator'));
 
 Class.extend({
 	
