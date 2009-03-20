@@ -19,7 +19,7 @@ Inspiration:
 */
 
 var MooTools = {
-	'version': '1.3dev',
+	'version': '1.99dev',
 	'build': '%build%'
 };
 
@@ -31,36 +31,28 @@ var nil = function(item){
 
 // Accessors multipliers
 
-Function.prototype.setMany = function(multiply){
+Function.setMany = Function.prototype.setMany = function(single){
 	var one = this, many = function(item){
-		var value = this;
-		for (var key in item) value = one.call(this, key, item[key]);
+		var value = this, fn = (single) ? this[single] : one;
+		for (var key in item) value = fn.call(this, key, item[key]);
 		return value;
 	};
 	
-	var check = function(item){
+	return (single) ? many : function(item){
 		return ((typeof item == 'string') ? one : many).apply(this, arguments);
 	};
-
-	check[':one'] = one;
-	check[':many'] = many;
-	return (multiply) ? many : check;
 };
 
-Function.prototype.getMany = function(multiply){
+Function.getMany = Function.prototype.getMany = function(single){
 	var one = this, many = function(item){
-		var obj = {};
-		for (var i = 0; i < item.length; i++) obj[item[i]] = one.call(this, item[i]);
+		var obj = {}, fn = (single) ? this[single] : one;
+		for (var i = 0; i < item.length; i++) obj[item[i]] = fn.call(this, item[i]);
 		return obj;
 	};
 	
-	var check = function(item){
+	return single ? (many) : function(item){
 		return ((typeof item == 'string') ? one : many).apply(this, arguments);
 	};
-	
-	check[':one'] = one;
-	check[':many'] = many;
-	return (multiply) ? many : check;
 };
 
 // Object.has
@@ -234,13 +226,13 @@ new Type('Native', Native);
 			
 			for (var i = 0; i < hooks.length; i++){
 				var hook = hooks[i];
-				if (typeOf(hook) == 'native') hook.implement[':one'].call(hook, name, method);
+				if (typeOf(hook) == 'native') hook.implement(name, method);
 				else hook.call(this, name, method);
 			}
 
-			Native.implement[':one'].call(this, name, method);
+			Function.prototype.implement.call(this, name, method);
 
-			if (typeof method == 'function') this.extend[':one'].call(this, name, function(item){
+			if (typeof method == 'function') this.extend(name, function(item){
 				return method.apply(item, Array.from(arguments, 1));
 			});
 			
@@ -249,13 +241,13 @@ new Type('Native', Native);
 		}.setMany(),
 
 		alias: function(name, proto){
-			return this.implement[':one'].call(this, name, this.prototype[proto]);
+			return this.implement(name, this.prototype[proto]);
 		}.setMany(),
 
 		override: function(name, method){
 			delete this[name];
 			delete this.prototype[name];
-			return this.implement[':one'].call(this, name, method);
+			return this.implement(name, method);
 		}.setMany(),
 				
 		mirror: function(hook){
