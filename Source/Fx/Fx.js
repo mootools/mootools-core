@@ -170,6 +170,8 @@ Fx.compute = function(from, to, delta){
 			return this;
 		},
 		
+		defineTransitions: Function.setMany('defineTransition'),
+		
 		lookupTransition: function(name){
 			return transitions[name] || transitions.linear;
 		},
@@ -193,7 +195,5 @@ Fx.compute = function(from, to, delta){
 		}
 		
 	});
-	
-	Fx.defineTransitions = Fx.defineTransition.setMany(true);
 	
 })();
