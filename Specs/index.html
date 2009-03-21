@@ -1,26 +1,61 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
 <head>
-
 	<title>MooTools Specs</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<link rel="stylesheet" type="text/css" media="screen" href="Assets/Styles/Specs.css" />
 	<script type="text/javascript" src="Assets/Scripts/JSSpec.js"></script>
 	<script type="text/javascript" src="Assets/Scripts/DiffMatchPatch.js"></script>
-	<script type="text/javascript" src="Assets/Scripts/Builder.js"></script>
+	
+	<script type="text/javascript">
+	(function(){
+		var scripts = [
+			/* Source */
+			'../Source/Core/Core',
+			'../Source/Native/Object',
+			'../Source/Native/Function',
+			'../Source/Native/Array',
+			'../Source/Native/String',
+			'../Source/Native/Number',
+			'../Source/Native/Table',
+			'../Source/Class/Mixins',
+			'../Source/Class/Class',
+			'../Source/Browser/Browser',
+			'../Source/Browser/Event',
+			'../Source/Utilities/Slick',
+			'../Source/Element/Element',
+			'../Source/Element/Element.Event',
+			'../Source/Element/Element.Style',
+			'../Source/Utilities/DomReady',
 
-	<script type="text/javascript" charset="utf-8">
-		Builder.includeType('source');
-		if (!Builder.includeRequest('specs')) Builder.includeType('specs');
+			/* Specs */
+			'Core/Core',
+			'Native/Object',
+			'Native/Function',
+			'Native/Array',
+			'Native/String',
+			'Native/Number',
+			'Native/Table',
+			'Class/Mixins',
+			'Class/Class',
+			'Browser/Browser',
+			'Browser/Event',
+			'Utilities/Slick',
+			'Element/Element',
+			'Element/Element.Event',
+			'Element/Element.Style'
+		];
+		
+		var head = document.getElementsByTagName('head')[0];
+		for(var i = 0; i < scripts.length; i++){
+			var element = document.createElement('script');
+			element.setAttribute('type', 'text/javascript');
+			element.setAttribute('src', scripts[i] + '.js?' + new Date().getTime());
+			head.appendChild(element);
+		}
+	})();
 	</script>
-
-
 </head>
-
 <body>
-
 </body>
-
 </html>

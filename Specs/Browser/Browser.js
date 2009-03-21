@@ -6,15 +6,15 @@ License:
 	MIT-style license.
 */
 
-describe('String.exec', {
+describe('Browser.exec', {
 
 	'should evaluate on global scope': function(){
-		String.exec('var execSpec = 42');
+		Browser.exec('var execSpec = 42');
 		value_of(window.execSpec).should_be(42);
 	},
 
 	'should return the evaluated script': function(){
-		value_of(String.exec('Function.empty();')).should_be('Function.empty();');
+		value_of(Browser.exec('nil')).should_be('nil');
 	}
 
 });
