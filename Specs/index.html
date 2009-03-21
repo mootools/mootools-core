@@ -46,11 +46,11 @@
 			'Element/Element.Style'
 		];
 		
-		var head = document.getElementsByTagName('head')[0];
+		var head = document.getElementsByTagName('head')[0], date = new Date().getTime();
 		for(var i = 0; i < scripts.length; i++){
 			var element = document.createElement('script');
 			element.setAttribute('type', 'text/javascript');
-			element.setAttribute('src', scripts[i] + '.js?' + new Date().getTime());
+			element.setAttribute('src', scripts[i] + '.js?' + date);
 			head.appendChild(element);
 		}
 	})();

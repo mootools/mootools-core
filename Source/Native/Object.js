@@ -36,7 +36,10 @@ Object.extend({
 			var object = arguments[i];
 			((Type.isEnumerable(object)) ? Array : Object).forEach(object, function(value, key){
 				var previous = source[key];
-				if (instanceOf(value, Object)){
+				
+				if (instanceOf(value, Function))
+					source[key] = (function(){ value.call(this, arguments); });
+				else if (instanceOf(value, Object)){
 					if (instanceOf(previous, Object)) Object.mixin(previous, value);
 					else source[key] = Object.clone(value);
 				} else {
