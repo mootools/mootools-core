@@ -401,7 +401,7 @@ var slick = (function(buffer){
 	
 	'match(selector)': function(node, tag, id, selector){
 		if (tag && !this['match(tag)'](node, tag)) return false;
-		if (id && !this['match(id)'](node, tag)) return false;
+		if (id && !this['match(id)'](node, id)) return false;
 
 		var i;
 
