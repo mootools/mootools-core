@@ -97,15 +97,15 @@ Browser.exec = function(text){
 	return text;	
 };
 
-String.implement('stripScripts', function(option){
+String.implement('stripScripts', function(exec){
 	
 	var scripts = '';
 	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 		scripts += arguments[1] + '\n';
 		return '';
 	});
-	if (option === true) Browser.exec(scripts);
-	else if (typeOf(option) == 'function') option(scripts, text);
+	if (exec === true) Browser.exec(scripts);
+	else if (typeOf(exec) == 'function') exec(scripts, text);
 	return text;
 
 });

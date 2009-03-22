@@ -7,7 +7,7 @@ License:
 */
 
 var Event = new Native('Event', function(event){
-	if ((event = event || window.event).event) event = event.event;
+	if ((event = (event || window.event)).event) event = event.event;
 	this.event = event;
 	return this;
 });
