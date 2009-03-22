@@ -306,7 +306,7 @@ slick.getAttribute = function(element, attribute){
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	}, Object.from(camels.map(String.toLowerCase), camels));
+	}, Object.from(camels, camels));
 	
 	Object.each(attributes, function(realKey, key){
 		Element.defineSetter(key, function(value){
