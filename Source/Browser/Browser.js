@@ -12,29 +12,14 @@ var Browser = (function(){}).extend({
 
 	Platform: {name: (window.orientation != null) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
 
-	Features: {xpath: !!(document.evaluate), air: !!(window.runtime), query: !!(document.querySelector)},
+	Features: {
+		xpath: !!(document.evaluate),
+		air: !!(window.runtime),
+		query: !!(document.querySelector),
+		json: (typeof JSON != 'undefined')
+	},
 
-	Plugins: {},
-
-	Engines: {
-
-		presto: function(){
-			return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
-		},
-
-		trident: function(){
-			return (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? 5 : 4);
-		},
-
-		webkit: function(){
-			return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
-		},
-
-		gecko: function(){
-			return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? 19 : 18);
-		}
-
-	}
+	Plugins: {}
 
 });
 
@@ -42,8 +27,28 @@ Browser.Platform[Browser.Platform.name] = true;
 
 (function(){
 
-	for (var engine in Browser.Engines){
-		var version = Browser.Engines[engine]();
+	var engines = {
+
+		presto: function(){
+			return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
+		},
+
+		trident: function(){
+			return (!window.ActiveXObject) ? false : ((Browser.Features.json) ? 6 : ((window.XMLHttpRequest) ? 5 : 4));
+		},
+
+		webkit: function(){
+			return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
+		},
+
+		gecko: function(){
+			return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? ((Browser.Features.json) ? 19.1 : 19) : 18);
+		}
+
+	};
+
+	for (var engine in engines){
+		var version = engines[engine]();
 		if (version){
 			Browser.Engine = {name: engine, version: version};
 			Browser.Engine[engine] = Browser.Engine[engine + version] = true;
