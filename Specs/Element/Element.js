@@ -605,7 +605,7 @@ describe('Element.set', {
 	},
 
 	"should erase an Element's style": function(){
-		var myElement = new Element('div', {style: "color:rgb(255, 255, 255); font-size:12px;"});
+		var myElement = new Element('div', {style: "color: rgb(255, 255, 255); font-size: 12px;"});
 		myElement.set('style', null);
 		value_of(myElement.get('style')).should_be('');
 	},

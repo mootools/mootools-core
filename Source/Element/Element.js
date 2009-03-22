@@ -298,7 +298,7 @@ slick.getAttribute = function(element, attribute){
 
 (function(){
 	
-	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+	var camels = ['accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
 		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 		
 	var attributes = Object.append({
@@ -306,7 +306,7 @@ slick.getAttribute = function(element, attribute){
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	}, Object.from(camels, camels.map(String.toLowerCase)));
+	}, Object.from(camels.map(String.toLowerCase)), camels);
 	
 	Object.each(attributes, function(realKey, key){
 		Element.defineSetter(key, function(value){
