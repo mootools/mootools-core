@@ -16,27 +16,27 @@ describe('Element', {
 	},
 
 	'should return an Element with various attributes': function(){
-		var element = new Element('div', { 'id': 'divID', 'title': 'divTitle' });
+		var element = new Element('div', {'id': 'divID', 'title': 'divTitle'});
 		value_of(element.id).should_be('divID');
 		value_of(element.title).should_be('divTitle');
 	},
 
 	'should return an Element with for attribute': function(){
-		var label = new Element('label', { 'for': 'myId' });
+		var label = new Element('label', {'for': 'myId'});
 		value_of(label.htmlFor).should_be('myId');
 	},
 
 	'should return an Element with class attribute': function(){
-		var div1 = new Element('div', { 'class': 'class' });
-		var div2 = new Element('div', { 'class': 'class1 class2 class3' });
+		var div1 = new Element('div', {'class': 'class'});
+		var div2 = new Element('div', {'class': 'class1 class2 class3'});
 
 		value_of(div1.className).should_be('class');
 		value_of(div2.className).should_be('class1 class2 class3');
 	},
 
 	'should return input Elements with name and type attributes': function(){
-		var username = new Element('input', { type: 'text', name: 'username', value: 'username' });
-		var password = new Element('input', { type: 'password', name: 'password', value: 'password' });
+		var username = new Element('input', {type: 'text', name: 'username', value: 'username'});
+		var password = new Element('input', {type: 'password', name: 'password', value: 'password'});
 
 		value_of(username.type).should_be('text');
 		value_of(username.name).should_be('username');
@@ -48,9 +48,9 @@ describe('Element', {
 	},
 
 	'should return input Elements that are checked': function(){
-		var check1 = new Element('input', { type: 'checkbox' });
-		var check2 = new Element('input', { type: 'checkbox', checked: true });
-		var check3 = new Element('input', { type: 'checkbox', checked: 'checked' });
+		var check1 = new Element('input', {type: 'checkbox'});
+		var check2 = new Element('input', {type: 'checkbox', checked: true});
+		var check3 = new Element('input', {type: 'checkbox', checked: 'checked'});
 
 		value_of(check1.checked).should_be_false();
 		value_of(check2.checked).should_be_true();
@@ -58,23 +58,20 @@ describe('Element', {
 	},
 
 	"should return a select Element that retains it's selected options": function(){
-		var div = new Element('div', { 'html':
-			'<select multiple="multiple" name="select[]">' +
-				'<option value="" name="none">--</option>' +
-				'<option value="volvo" name="volvo">Volvo</option>' +
-				'<option value="saab" name="saab" selected="selected">Saab</option>' +
-				'<option value="opel" name="opel" selected="selected">Opel</option>' +
-				'<option value="bmw" name="bmw">BMW</option>' +
-			'</select>'
-		});
+		var select1 = new Element('<select multiple="multiple" name="select[]">' +
+			'<option value="" name="none">--</option>' +
+			'<option value="volvo" name="volvo">Volvo</option>' +
+			'<option value="saab" name="saab" selected="selected">Saab</option>' +
+			'<option value="opel" name="opel" selected="selected">Opel</option>' +
+			'<option value="bmw" name="bmw">BMW</option>' +
+		'</select>');
 
-		var select1 = div.find('^');
-		var select2 = new Element('select', { name: 'select[]', multiple: true }).adopt(
-			new Element('option', { name: 'none', value: '', html: '--' }),
-			new Element('option', { name: 'volvo', value: 'volvo', html: 'Volvo' }),
-			new Element('option', { name: 'saab', value: 'saab', html: 'Saab', selected: true }),
-			new Element('option', { name: 'opel', value: 'opel', html: 'Opel', selected: 'selected' }),
-			new Element('option', { name: 'bmw', value: 'bmw', html: 'BMW' })
+		var select2 = new Element('select', {name: 'select[]', multiple: true}).adopt(
+			new Element('option', {name: 'none', value: '', html: '--'}),
+			new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+			new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
+			new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: 'selected'}),
+			new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
 		);
 
 		value_of(select1.multiple).should_be_true();
@@ -82,7 +79,7 @@ describe('Element', {
 
 		value_of(select1.name).should_be(select2.name);
 		value_of(select1.options.length).should_be(select2.options.length);
-		value_of(select1.toQueryString()).should_be(select2.toQueryString());
+		value_of(select1.find('>').get(['name', 'value', 'html'])).should_be(select2.find('>').get(['name', 'value', 'html']));
 	}
 
 });
@@ -306,7 +303,7 @@ describe('Document.search', {
 	},
 
 	'should return all the elements that match the tags': function(){
-		var headers = document.search('h3,h4');
+		var headers = document.search('h3, h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
 		value_of(headers.length).should_be(headers2.length);
 	}
@@ -526,29 +523,26 @@ describe('Element.set', {
 	},
 
 	"should set multiple attributes of an Element": function(){
-		var div = new Element('div').set({ id: 'some_id', 'title': 'some_title', 'html': 'some_content' });
+		var div = new Element('div').set({id: 'some_id', 'title': 'some_title', 'html': 'some_content'});
 		value_of(div.id).should_be('some_id');
 		value_of(div.title).should_be('some_title');
 		value_of(div.innerHTML).should_be('some_content');
 	},
 
 	"should set various attributes of a script Element": function(){
-		var script = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
+		var script = new Element('script').set({type: 'text/javascript', defer: 'defer'});
 		value_of(script.type).should_be('text/javascript');
 		value_of(script.defer).should_be_true();
 	},
 
 	"should set various attributes of a table Element": function(){
-		var table1 = new Element('table').set({ border: '2', cellpadding: '3', cellspacing: '4', align: 'center' });
-		var table2 = new Element('table').set({ cellPadding: '3', cellSpacing: '4' });
-		value_of(table1.border).should_be(2);
-		value_of(table1.cellPadding).should_be(3);
-		value_of(table2.cellPadding).should_be(3);
-		value_of(table1.cellSpacing).should_be(4);
-		value_of(table2.cellSpacing).should_be(4);
+		var table1 = new Element('table').set({border: '2', cellPadding: '3', cellSpacing: '4', align: 'center'});
+		value_of(table1.border).should_be('2');
+		value_of(table1.cellPadding).should_be('3');
+		value_of(table1.cellSpacing).should_be('4');
 		value_of(table1.align).should_be('center');
 	},
-	
+
 	"should set a property of an Element": function(){
 		var anchor1 = new Element('a').set('href', 'http://mootools.net/');
 		value_of(anchor1.get('href')).should_be('http://mootools.net/');
@@ -601,35 +595,31 @@ describe('Element.set', {
 	"should set each property to the Element": function(){
 		var readonly = new Element('input').set({type: 'text', readonly: 'readonly'});
 		value_of(readonly.get(['type', 'readonly'])).should_be({type: 'text', readonly: true});
-	}
-
-});
-
-describe('Element.erase', {
+	},
 
 	"should erase an Element's property": function(){
 		var myElement = new Element('a', {href: 'http://mootools.net/', title: 'mootools!'});
 		value_of(myElement.get('title')).should_be('mootools!');
-		myElement.erase('title');
-		value_of(myElement.get('title')).should_be_null();
+		myElement.set('title', null);
+		value_of(myElement.get('title')).should_be('');
 	},
 
 	"should erase an Element's style": function(){
 		var myElement = new Element('div', {style: "color:rgb(255, 255, 255); font-size:12px;"});
-		myElement.erase('style');
-		value_of(myElement.get('style')).should_be_null();
+		myElement.set('style', null);
+		value_of(myElement.get('style')).should_be('');
 	},
 
 	"should remove a property from an Element": function () {
 		var readonly = new Element('input', {type: 'text', readonly: 'readonly'});
-		readonly.erase('readonly');
+		readonly.set('readonly', null);
 		value_of(readonly.get(['type', 'readonly'])).should_be({type: 'text', readonly: false});
 	},
 
 	"should remove each property from the Element": function(){
 		var anchor = new Element('a', {href: '#', title: 'title', rel: 'left'});
-		anchor.erase(['title', 'rel']);
-		value_of(anchor.get(['href', 'title', 'rel'])).should_be({href: '#', title: null, rel: null});
+		anchor.set({title: null, rel: null});
+		value_of(anchor.get(['href', 'title', 'rel'])).should_be({href: '#', title: '', rel: ''});
 	}
 
 });
@@ -938,18 +928,14 @@ describe('Element.appendText', {
 
 describe('Element.adopt', {
 
-	'before all': function(){
+	'before each': function(){
 		Container = new Element('div').inject(document.body);
 	},
 
-	'after all': function(){
+	'after each': function(){
 		document.body.removeChild(Container);
 		Container.set('html', '');
 		Container = null;
-	},
-
-	'before each': function(){
-		Container.empty();
 	},
 
 	'should adopt an Element by its id': function(){
@@ -1056,15 +1042,15 @@ describe('Element.clone', {
 	},
 
 	'should clone child nodes and not copy their uid': function(){
-		var cloned = Container.clone(true).getElements('*');
-		var old = Container.getElements('*');
+		var cloned = Container.clone(true).find('*');
+		var old = Container.find('*');
 		value_of(cloned.length).should_be(3);
 		value_of(old.length).should_be(3);
 		value_of($$(old, cloned).length).should_be(6);
 	},
 
 	'should clone a text input and retain value': function(){
-		var inputs = new Element('div', { 'html': '' +
+		var inputs = new Element('div', {'html': '' +
 			'<input id="input1" type="text" value="Some Value" />' +
 			'<input id="input2" type="text" />'
 		}).getChildren();
@@ -1079,7 +1065,7 @@ describe('Element.clone', {
 	},
 
 	'should clone a textarea and retain value': function(){
-		var textareas = new Element('div', { 'html': '' +
+		var textareas = new Element('div', {'html': '' +
 			'<textarea id="textarea1"></textarea>' +
 			'<textarea id="textarea2">Some-Text-Here</textarea>'
 		}).getChildren();
@@ -1094,7 +1080,7 @@ describe('Element.clone', {
 	},
 
 	'should clone a checkbox and retain checked state': function(){
-		var checks = new Element('div', { 'html': '' +
+		var checks = new Element('div', {'html': '' +
 			'<input id="check1" type="checkbox" />' +
 			'<input id="check2" type="checkbox" checked="checked" />'
 		}).getChildren();
@@ -1109,7 +1095,7 @@ describe('Element.clone', {
 	},
 
 	'should clone a select and retain selected state': function(){
-		var selects = new Element('div', { 'html': '' +
+		var selects = new Element('div', {'html': '' +
 			'<select name="select" id="select1">' +
 				'<option>--</option>' +
 				'<option value="volvo">Volvo</option>' +
@@ -1204,9 +1190,8 @@ describe('Element className methods', {
 describe('Element.empty', {
 
 	'should remove all children': function(){
-		var children = [];
-		(5).times(function(i){ children[i] = new Element('p'); });
-		var div = new Element('div').adopt(children);
+		var div = new Element('div');
+		(5).times(function(i){ new Element('p').inject(div); });
 		div.empty();
 		value_of(div.get('html')).should_be('');
 	}
@@ -1233,18 +1218,18 @@ describe('Element.toQueryString', {
 
 	'should ignore any form Elements that do not have a name, disabled, or whose value is false': function(){
 		var form = new Element('form').adopt(
-			new Element('input', { name: 'input', disabled: true, type: 'checkbox', checked: true, value: 'checked' }),
+			new Element('input', {name: 'input', disabled: true, type: 'checkbox', checked: true, value: 'checked'}),
 			new Element('select').adopt(
-				new Element('option', { name: 'volvo', value: false, html: 'Volvo' }),
-				new Element('option', { value: 'saab', html: 'Saab', selected: true })
+				new Element('option', {name: 'volvo', value: false, html: 'Volvo'}),
+				new Element('option', {value: 'saab', html: 'Saab', selected: true})
 			),
-			new Element('textarea', { name: 'textarea', disabled: true, value: 'textarea-value' })
+			new Element('textarea', {name: 'textarea', disabled: true, value: 'textarea-value'})
 		);
 		value_of(form.toQueryString()).should_be('');
 	},
 
 	"should return a query string from the Element's form Elements": function(){
-		var form = new Element('form', { 'html': '' +
+		var form = new Element('form', {'html': '' +
 			'<input type="checkbox" name="input" value="checked" checked="checked" />' +
 			'<select name="select[]" multiple="multiple" size="5">' +
 				'<option name="none" value="">--</option>' +
