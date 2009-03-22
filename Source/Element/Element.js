@@ -334,7 +334,7 @@ slick.getAttribute = function(element, attribute){
 		set: function(attribute, value){
 			var setter = Element.lookupSetter(attribute);
 			if (setter) setter.call(this, value);
-			else this.setAttribute(attribute, '' + value);
+			else this.setAttribute(attribute, value ? '' + value : null);
 			return this;
 		}.setMany(),
 
