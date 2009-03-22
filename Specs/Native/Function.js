@@ -17,7 +17,7 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat(Array.from(arguments));
+	return [this].append(Array.from(arguments));
 };
 
 describe("Function Methods", {

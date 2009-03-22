@@ -43,7 +43,7 @@ Function.implement({
 	
 	bind: function(bind, args){
 		var self = this;
-		args = (args == null) ? null : Array.from(args);
+		args = nil(args) && Array.from(args);
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
@@ -51,9 +51,9 @@ Function.implement({
 	
 	bindWithEvent: function(bind, args){
 		var self = this;
-		args = (args == null) ? null : Array.from(args);
+		args = nil(args) && Array.from(args);
 		return function(event){
-			return self.apply(bind, [event || window.event].concat(args || arguments));
+			return self.apply(bind, [event || window.event].append(args || Array.from(arguments, 1)));
 		};
 	},
 	
