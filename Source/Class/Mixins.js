@@ -116,7 +116,7 @@ var Events = new Native('Events', function(){});
 			return this;
 		},
 
-		removeEvent: function(type, fn){console.log(type, fn);
+		removeEvent: function(type, fn){
 			if (!fn[':protected']) eventsOf(this, type).erase(fn);
 			return this;
 		}.setMany(),

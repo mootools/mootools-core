@@ -215,7 +215,7 @@ describe("Events Class", {
 		var events = {
 			event1: Local.fn,
 			event2: Local.fn
-		};console.log('heere');
+		};
 		myTest.addEvent('event1', function(){ Local.fn.call(this); }).addEvents(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(2);
