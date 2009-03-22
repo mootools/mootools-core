@@ -168,7 +168,7 @@ describe("Events Class", {
 
 	"should add a protected event": function(){
 		var myTest = new Local.EventsTest();
-		var protected = (function(){ Local.fn() }).protect();
+		var protected = (function(){ Local.fn(); }).protect();
 		myTest.addEvent('protected', protected);
 
 		var event = Storage.retrieve(myTest, 'events.type.protected');
@@ -204,7 +204,7 @@ describe("Events Class", {
 		var fn = function(){ return true; };
 		myTest.addEvent('event1', Local.fn);
 		myTest.addEvent('event2', fn);
-		myTest.removeEvents();
+		myTest.removeEvents('event1').removeEvents('event2');
 
 		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(0);
 		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(0);
@@ -215,11 +215,11 @@ describe("Events Class", {
 		var events = {
 			event1: Local.fn,
 			event2: Local.fn
-		};
-		myTest.addEvent('event1', function(){ return true; }).addEvents(events);
+		};console.log('heere');
+		myTest.addEvent('event1', function(){ Local.fn.call(this); }).addEvents(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(2);
-		myTest.removeEvents(events);
+		myTest.removeEvent(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(3);
 		myTest.fireEvent('event2');

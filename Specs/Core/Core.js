@@ -8,11 +8,9 @@ License:
 
 (function(){
 
-var Instrument = function(name){
+var Instrument = new Native('Instrument', function(name){
 	this.name = name;
-};
-
-new Native('Instrument', Instrument).implement({
+}).implement({
 
 	property: 'stuff',
 	
@@ -22,11 +20,9 @@ new Native('Instrument', Instrument).implement({
 
 });
 
-var Car = function(name){
+var Car = new Native('Car', function(name){
 	this.name = name;
-};
-
-new Native('Car', Car).protect().implement({
+}).protect().implement({
 
 	property: 'stuff',
 
