@@ -1,3 +1,11 @@
+/*
+Script: Color.js
+	Specs for Color.js
+
+License:
+	MIT-style license.
+*/
+
 var myColor;
 //colors compared with photoshop values.
 
