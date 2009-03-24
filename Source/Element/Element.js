@@ -101,7 +101,7 @@ new Native('Elements', Elements).implement('filter', function(filter, bind){
 	return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 		return item.match(filter);
 	} : filter, bind));
-});
+}.protect());
 
 Elements.implement(Array.prototype);
 
