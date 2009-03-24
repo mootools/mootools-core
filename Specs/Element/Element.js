@@ -601,13 +601,13 @@ describe('Element.set', {
 		var myElement = new Element('a', {href: 'http://mootools.net/', title: 'mootools!'});
 		value_of(myElement.get('title')).should_be('mootools!');
 		myElement.set('title', null);
-		value_of(myElement.get('title')).should_be('');
+		value_of(myElement.get('title')).should_be(null);
 	},
 
 	"should erase an Element's style": function(){
 		var myElement = new Element('div', {style: "color: rgb(255, 255, 255); font-size: 12px;"});
 		myElement.set('style', null);
-		value_of(myElement.get('style')).should_be('');
+		value_of(myElement.get('style')).should_be(null);
 	},
 
 	"should remove a property from an Element": function () {
@@ -619,7 +619,7 @@ describe('Element.set', {
 	"should remove each property from the Element": function(){
 		var anchor = new Element('a', {href: '#', title: 'title', rel: 'left'});
 		anchor.set({title: null, rel: null});
-		value_of(anchor.get(['href', 'title', 'rel'])).should_be({href: '#', title: '', rel: ''});
+		value_of(anchor.get(['href', 'title', 'rel'])).should_be({href: '#', title: null, rel: null});
 	}
 
 });
