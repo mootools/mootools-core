@@ -15,6 +15,7 @@ Element.prototype = Browser.Element.prototype;
 // mirror element methods to Elements
 
 new Native('Element', Element).mirror(function(name, method){
+	if (Array[name]) return;
 	Elements.implement(name, function(){
 		var results = [], args = arguments, elements = true;
 		for (var i = 0, l = this.length; i < l; i++){
@@ -106,6 +107,28 @@ Elements.implement(Array.prototype);
 
 Array.mirror(Elements);
 
+Element.extend(new Accessors);
+
+Element.extend({
+	
+	definePseudoConstructor: function(name, fn){
+		return Storage.store(this, 'constructor.' + name, fn);
+	},
+	
+	lookupPseudoConstructor: function(name){
+		return Storage.retrieve(this, 'constructor.' + name);
+	},
+	
+	defineConstructorModifier: function(name, fn){
+		return Storage.store(this, 'modifier.' + name, fn);
+	},
+	
+	lookupConstructorModifier: function(name){
+		return Storage.retrieve(this, 'modifier.' + name);
+	}
+	
+});
+
 Document.implement({
 	
 	newElement: function(tag, props){
@@ -131,8 +154,16 @@ Document.implement({
 			});
 			tag = '<' + tag + '>';
 		}
+		
+		var modifier = Element.lookupConstructorModifier(tag);
+		var element = document.id((modifier) ? modifier() : this.createElement(tag)).set(props);
+		
+		if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
+			var parser = Element.lookupPseudoConstructor(pseudo.name);
+			if (parser) parser.call(element, pseudo.argument);
+		});
 
-		return (this.createElement(tag)).set(props);
+		return element;
 	},
 
 	newTextNode: function(text){
@@ -284,21 +315,19 @@ Element.implement({
 
 Element.implement(new Storage);
 
-/* Attribute Getters, Setters */
-
-Element.extend(new Accessors);
-
 /* slick attribute integration */
 	
 slick.getAttribute = function(element, attribute){
-	var getter = Element.lookupGetter(attribute);
+	var getter = Element.lookupGetter(attribute = attribute.camelCase());
 	if (getter) return getter.call(element);
 	return element.getAttribute(attribute, 2);
 };
 
+/* Attribute Getters, Setters */
+
 (function(){
 	
-	var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+	var equals = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
 		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 		
 	var attributes = Object.append({
@@ -306,14 +335,14 @@ slick.getAttribute = function(element, attribute){
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	}, Object.from(camels, camels.map(String.toLowerCase)));
+	}, Object.from(equals, equals));
 	
-	Object.each(attributes, function(realKey, key){
+	Object.each(attributes, function(real, key){
 		Element.defineSetter(key, function(value){
-			return this[realKey] = value;
+			return this[real] = value;
 		});
 		Element.defineGetter(key, function(){
-			return this[realKey];
+			return this[real];
 		});
 	});
 	
@@ -332,7 +361,7 @@ slick.getAttribute = function(element, attribute){
 	Element.implement({
 
 		set: function(attribute, value){
-			var setter = Element.lookupSetter(attribute);
+			var setter = Element.lookupSetter(attribute = attribute.camelCase());
 			if (setter) setter.call(this, value);
 			else this.setAttribute(attribute, '' + value);
 			return this;
