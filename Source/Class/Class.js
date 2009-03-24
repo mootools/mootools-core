@@ -11,14 +11,14 @@ var Class = new Native('Class', function(params){
 	if (instanceOf(params, Function)) params = {initialize: params};
 	
 	var newClass = function(){
-		Class.reset(this);
+		Object.reset(this);
 		if (newClass[':prototyping']) return this;
 		this[':name'] = 'constructor'; this.arguments = Array.from(arguments);
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 		this[':name'] = this.caller = this.arguments = null;
 		return value;
 	}.extend(this);
-	
+
 	newClass.implement(params);
 	
 	newClass.constructor = Class;
@@ -28,12 +28,13 @@ var Class = new Native('Class', function(params){
 
 });
 
-Class.extend('defineMutator', function(key, mutator){
-	Storage.retrieve(this, 'mutators', {})[key] = mutator;
-	return this;
-}).extend('defineMutators', Function.setMany('defineMutator'));
 
 Class.extend({
+
+	defineMutator: function(key, mutator){
+		Storage.retrieve(this, 'mutators', {})[key] = mutator;
+		return this;
+	},
 	
 	wrap: function(key, method, self){
 
@@ -48,101 +49,93 @@ Class.extend({
 
 	},
 	
-	reset: function(instance){
-		for (var key in instance){
-			delete instance[key];
-			var value = instance[key];
-			switch (typeOf(value)){
-				case 'object':
-					value = Object.beget(value);
-					for (var p in value){
-						var current = value[p], ct = typeOf(current);
-						if (ct == 'object' || ct == 'array') value[p] = Object.clone(current);
-					}
-					instance[key] = value;
-				break;
-				case 'array': instance[key] = Object.clone(value);
-			}
-		}
-	}
-	
-});
-
-Class.implement({
-	
-	implement: function(key, value){
-		
-		var mutator = Storage.retrieve(Class, 'mutators')[key];
-		
-		if (mutator){
-			value = mutator.call(this, value);
-			if (value == null) return this;
-		}
-		
-		var proto = this.prototype;
-
-		switch (typeOf(value)){
-			
-			case 'function':
-				if (value[':hidden']) return this;
-				proto[key] = Class.wrap(key, value[':origin'] || value, this);
-			break;
-			
-			case 'object':
-				var previous = proto[key];
-				if (typeOf(previous) == 'object') Object.mixin(previous, value);
-				else proto[key] = Object.clone(value);
-			break;
-			
-			case 'array':
-				proto[key] = Object.clone(value);
-			break;
-			
-			default: proto[key] = value;
-
-		}
-		
-		return this;
-		
-	}.setMany(),
-	
-	getPrototype: function(){
-		this[':prototyping'] = true;
-		var proto = new this;
-		delete this[':prototyping'];
+	getPrototype: function(klass){
+		klass[':prototyping'] = true;
+		var proto = new klass;
+		delete klass[':prototyping'];
 		return proto;
 	}
 	
 });
 
-Class.defineMutators({
+Object.extend('reset', function(object, key){
+		
+	if (key == null){
+		for (var p in object) Object.reset(object, p);
+		return object;
+	}
 	
-	Extends: function(parent){
+	delete object[key];
+	
+	switch (typeOf(object[key])){
+		case 'object': object[key] = Object.reset(new ((function(){}).extend('prototype', object[key]))); break;
+		case 'array': object[key] = Object.clone(object[key]); break;
+	}
+	
+	return object;
+	
+});
 
-		this.parent = parent;
-		this.prototype = parent.getPrototype();
+Class.implement('implement', function(key, value){
+	
+	var mutator = Storage.retrieve(Class, 'mutators')[key];
+	
+	if (mutator){
+		value = mutator.call(this, value);
+		if (value == null) return this;
+	}
+	
+	var proto = this.prototype;
 
-		this.prototype[':constructor'] = this;
-
-		if (this.prototype.parent == null) this.prototype.parent = function(){
-			if (!this[':name']) throw new Error('the method "parent" cannot be called directly.');
-			var parent = this[':constructor'].parent;
-			if (!parent) throw new Error('trying to call a non-existing parent.');
-			this[':constructor'] = parent.prototype[this[':name']][':owner'];
-			var result = this[':constructor'].prototype[this[':name']].apply(this, arguments);
-			delete this[':constructor'];
-			return result;
-		};
-
-	},
-
-	Implements: function(items){
-
-		Array.from(items).each(function(item){
-			if (instanceOf(item, Function)) item = Class.getPrototype(item);
-			this.implement(item);
-		}, this);
+	switch (typeOf(value)){
+		
+		case 'function':
+			if (value[':hidden']) return this;
+			proto[key] = Class.wrap(key, value[':origin'] || value, this);
+		break;
+		
+		case 'object':
+			var previous = proto[key];
+			if (typeOf(previous) == 'object') Object.merge(previous, value);
+			else proto[key] = Object.clone(value);
+		break;
+		
+		case 'array':
+			proto[key] = Object.clone(value);
+		break;
+		
+		default: proto[key] = value;
 
 	}
 	
+	return this;
+	
+}.setMany());
+
+Class.defineMutator('Extends', function(parent){
+
+	this.parent = parent;
+	this.prototype = Class.getPrototype(parent);
+
+	this.prototype[':constructor'] = this;
+
+	if (this.prototype.parent == null) this.prototype.parent = function(){
+		if (!this[':name']) throw new Error('the method "parent" cannot be called directly.');
+		var parent = this[':constructor'].parent;
+		if (!parent) throw new Error('trying to call a non-existing parent.');
+		this[':constructor'] = parent.prototype[this[':name']][':owner'];
+		var result = this[':constructor'].prototype[this[':name']].apply(this, arguments);
+		delete this[':constructor'];
+		return result;
+	};
+
+});
+
+Class.defineMutator('Implements', function(items){
+
+	Array.from(items).each(function(item){
+		if (instanceOf(item, Function)) item = Class.getPrototype(item);
+		this.implement(item);
+	}, this);
+
 });
