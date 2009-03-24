@@ -49,14 +49,6 @@ Function.implement({
 		};
 	},
 	
-	bindWithEvent: function(bind, args){
-		var self = this;
-		args = (args == null) ? null : Array.from(args);
-		return function(event){
-			return self.apply(bind, [event || window.event].concat(args || arguments));
-		};
-	},
-	
 	delay: function(delay, bind, args){
 		return setTimeout(this.bind(bind, args), delay);
 	},
