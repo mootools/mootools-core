@@ -11,7 +11,7 @@ See Also:
 
 if(!this.JSON) this.JSON = {};
 
-JSON.encode = JSON.stringify ? JSON.stringify : function(obj){
+JSON.encode = JSON.stringify || function(obj){
 	switch (typeOf(obj)){
 		case 'string':
 			return '"' + obj.replace(/[\x00-\x1f\\"]/g, function(chr){
