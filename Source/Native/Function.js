@@ -28,11 +28,11 @@ Function.extend({
 		}
 		return null;
 	}
-	
+
 });
 
 Function.implement({
-	
+
 	attempt: function(args, bind){
 		try {
 			return this.apply(bind, Array.from(args));
@@ -40,7 +40,7 @@ Function.implement({
 			return null;
 		}
 	},
-	
+
 	bind: function(bind, args){
 		var self = this;
 		args = nil(args) && Array.from(args);
@@ -52,11 +52,11 @@ Function.implement({
 	delay: function(delay, bind, args){
 		return setTimeout(this.bind(bind, args), delay);
 	},
-	
+
 	pass: function(args, bind){
 		return this.bind(bind, args);
 	},
-	
+
 	periodical: function(periodical, bind, args){
 		return setInterval(this.bind(bind, args), periodical);
 	},

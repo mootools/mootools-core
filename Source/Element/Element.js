@@ -306,9 +306,9 @@ Element.implement({
 			el = document.id(el);
 			return this.replaces(el).grab(el, where);
 		}
-		
+
 	}));
-	
+
 })();
 
 /* Element Storage */
@@ -326,17 +326,17 @@ slick.getAttribute = function(element, attribute){
 /* Attribute Getters, Setters */
 
 (function(){
-	
+
 	var equals = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
 		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
-		
+
 	var attributes = Object.append({
 		'html': 'innerHTML',
 		'class': 'className',
 		'for': 'htmlFor',
 		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
 	}, Object.from(equals, equals));
-	
+
 	Object.each(attributes, function(real, key){
 		Element.defineSetter(key, function(value){
 			return this[real] = value;
@@ -345,10 +345,10 @@ slick.getAttribute = function(element, attribute){
 			return this[real];
 		});
 	});
-	
+
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 		'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
-		
+
 	bools.each(function(bool){
 		Element.defineSetter(bool, function(value){
 			return this[bool] = !!value;
@@ -357,7 +357,7 @@ slick.getAttribute = function(element, attribute){
 			return !!this[bool];
 		});
 	});
-	
+
 	Element.implement({
 
 		set: function(attribute, value){
@@ -371,7 +371,7 @@ slick.getAttribute = function(element, attribute){
 		get: function(attribute){
 			return slick.getAttribute(this, attribute);
 		}.getMany()
-	
+
 	});
 
 })();
