@@ -8,25 +8,21 @@ License:
 
 (function(){
 
-function Instrument(name){
+var Instrument = new Native('Instrument', function(name){
 	this.name = name;
-};
+}).implement({
 
-new Native(Instrument).implement({
-
+	property: 'stuff',
+	
 	method: function(){
 		return this.property + ' ' + this.name;
-	},
-
-	property: 'stuff'
+	}
 
 });
 
-function Car(name){
+var Car = new Native('Car', function(name){
 	this.name = name;
-};
-
-new Native(Car).protect().implement({
+}).protect().implement({
 
 	property: 'stuff',
 
@@ -36,16 +32,17 @@ new Native(Car).protect().implement({
 
 });
 
+// Doesn't work yet
 describe('Native', {
 
 	'should allow implementation over existing methods when browser option is not set': function(){
-		Instrument.implement({ property: 'staff' });
+		Instrument.implement({property: 'staff'});
 		var myInstrument = new Instrument('xeelophone');
 		value_of(myInstrument.method()).should_be('staff xeelophone');
 	},
 
 	'should not override existing methods when browser option is set': function(){
-		Car.implement({ property: 'staff' });
+		Car.implement({property: 'staff'});
 		var myCar = new Car('smart');
 		value_of(myCar.method()).should_be('smart_stuff');
 	},

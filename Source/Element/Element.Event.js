@@ -217,3 +217,7 @@ Event.definePseudo('relay', function(event, selector){
 });
 
 if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
+
+Element.defineSetter('events', function(value){
+	this.addEvents(value);
+});

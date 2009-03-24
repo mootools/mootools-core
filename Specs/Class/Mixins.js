@@ -168,7 +168,7 @@ describe("Events Class", {
 
 	"should add a protected event": function(){
 		var myTest = new Local.EventsTest();
-		var protected = (function(){ Local.fn() }).protect();
+		var protected = (function(){ Local.fn(); }).protect();
 		myTest.addEvent('protected', protected);
 
 		var event = Storage.retrieve(myTest, 'events.type.protected');
@@ -204,7 +204,7 @@ describe("Events Class", {
 		var fn = function(){ return true; };
 		myTest.addEvent('event1', Local.fn);
 		myTest.addEvent('event2', fn);
-		myTest.removeEvents();
+		myTest.removeEvents('event1').removeEvents('event2');
 
 		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(0);
 		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(0);
@@ -216,10 +216,10 @@ describe("Events Class", {
 			event1: Local.fn,
 			event2: Local.fn
 		};
-		myTest.addEvent('event1', function(){ return true; }).addEvents(events);
+		myTest.addEvent('event1', function(){ Local.fn.call(this); }).addEvents(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(2);
-		myTest.removeEvents(events);
+		myTest.removeEvent(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(3);
 		myTest.fireEvent('event2');
@@ -254,10 +254,16 @@ describe("Options Class", {
 		var myTest = new Local.OptionsTest({a: 3, b: 4});
 		value_of(myTest.getOption('a')).should_be(3);
 		value_of(myTest.getOption('b')).should_be(4);
-	},
+	}
 
-	"should add events in the options object if class has implemented the Events class": function(){
-		Local.OptionsTest.implement({
+});
+
+describe("Options Class w/ Events", {
+
+	"before all": function(){
+		Local.OptionsTest = new Class({
+			Implements: [Options, Events],
+			
 			options: {
 				onEvent1: function(){
 					return true;
@@ -265,18 +271,28 @@ describe("Options Class", {
 				onEvent2: function(){
 					return false;
 				}
+			},
+	
+			initialize: function(options){
+				this.setOptions(options);
 			}
 		});
+	},
+	
+	"should add events in the options object if class has implemented the Events class": function(){
 		var myTest = new Local.OptionsTest({
+			onEvent2: function(){
+				return true;
+			},
+			
 			onEvent3: function(){
 				return true;
 			}
 		});
-		var events = Storage.retrieve(myTest, 'events');
-		value_of(events).should_not_be(undefined);
-		value_of(events["event1"].length).should_be(1);
-		value_of(events["event2"].length).should_be(1);
-		value_of(events["event3"].length).should_be(1);
+
+		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(1);
+		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(1);
+		value_of(Storage.retrieve(myTest, 'events.type.event3').length).should_be(1);
 	}
 
 });

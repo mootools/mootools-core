@@ -159,3 +159,7 @@ Element.implement({
 	getStyles: Function.getMany('getStyle')
 
 });
+
+Element.defineSetter('styles', function(value){
+	this.setStyles(value);
+});

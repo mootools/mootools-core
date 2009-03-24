@@ -17,7 +17,7 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat(Array.from(arguments));
+	return [this].append(Array.from(arguments));
 };
 
 describe("Function Methods", {
@@ -130,7 +130,7 @@ describe("Function Methods", {
 	// Function.delay
 
 	'delay should return a timer pointer': function(){
-		var timer = Function.empty.delay(10000);
+		var timer = nil.delay(10000);
 		value_of(Type.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	},
@@ -138,7 +138,7 @@ describe("Function Methods", {
 	// Function.periodical
 
 	'periodical should return a timer pointer': function(){
-		var timer = Function.empty.periodical(10000);
+		var timer = nil.periodical(10000);
 		value_of(Type.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	}

@@ -43,12 +43,12 @@ Function.implement({
 	
 	bind: function(bind, args){
 		var self = this;
-		args = (args == null) ? null : Array.from(args);
+		args = nil(args) && Array.from(args);
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
 	},
-	
+
 	delay: function(delay, bind, args){
 		return setTimeout(this.bind(bind, args), delay);
 	},
