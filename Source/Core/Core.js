@@ -31,7 +31,7 @@ var nil = function(item){
 
 // Accessors multipliers
 
-Function.setMany = Function.prototype.setMany = function(single){
+Function.prototype.setMany = function(single){
 	var one = this, many = function(item){
 		var value = this, fn = (single) ? this[single] : one;
 		for (var key in item) value = fn.call(this, key, item[key]);
@@ -43,7 +43,7 @@ Function.setMany = Function.prototype.setMany = function(single){
 	};
 };
 
-Function.getMany = Function.prototype.getMany = function(single){
+Function.prototype.getMany = function(single){
 	var one = this, many = function(item){
 		var obj = {}, fn = (single) ? this[single] : one;
 		for (var i = 0; i < item.length; i++) obj[item[i]] = fn.call(this, item[i]);
@@ -55,11 +55,7 @@ Function.getMany = Function.prototype.getMany = function(single){
 	};
 };
 
-// Object.has
-
-Object.has = function(object, key){
-	return (object.hasOwnProperty(key) && object[key] != null);
-};
+// Object.pick
 
 Object.pick = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
@@ -70,13 +66,13 @@ Object.pick = function(){
 
 // Function extend, implement
 
-Function.extend = Function.prototype.extend = function(key, value){
-	if (!Object.has(this, key) && (value == null || !value[':hidden'])) this[key] = value;
+Function.prototype.extend = function(key, value){
+	this[key] = value;
 	return this;
 }.setMany();
 
 Function.prototype.implement = function(key, value){
-	if (!Object.has(this.prototype, key) && (value == null || !value[':hidden'])) this.prototype[key] = value;
+	this.prototype[key] = value;
 	return this;
 }.setMany();
 
@@ -186,29 +182,31 @@ Type['object:object'] = Object;
 
 Function.implement({
 	
-	hide: function(){
-		this[':hidden'] = true;
+	hide: function(bool){
+		if (bool == null) bool = true;
+		this[':hidden'] = bool;
 		return this;
 	},
 
-	protect: function(){
-		this[':protected'] = true;
+	protect: function(bool){
+		if (bool == null) bool = true;
+		this[':protected'] = bool;
 		return this;
 	}
 	
 });
 
+
 // Native
 
 var Native = function(name, object){
 	object.extend(this);
+	
 	object[':type'] = this[':type'];
 	object.constructor = Native;
 	object.prototype.constructor = object;
 	return new Type(name, object);
 };
-
-new Type('Native', Native);
 
 (function(){
 	
@@ -220,8 +218,11 @@ new Type('Native', Native);
 	};
 	
 	Native.implement({
-
+		
 		implement: function(name, method){
+			
+			if (method[':hidden']) return this;
+			
 			var hooks = hooksOf(this);
 			
 			for (var i = 0; i < hooks.length; i++){
@@ -229,35 +230,40 @@ new Type('Native', Native);
 				if (typeOf(hook) == 'native') hook.implement(name, method);
 				else hook.call(this, name, method);
 			}
+	
+			var previous = this.prototype[name];
+			if (previous == null || !previous[':protected']) this.prototype[name] = method;
 
-			Function.prototype.implement.call(this, name, method);
-
-			if (typeof method == 'function') this.extend(name, function(item){
+			if (typeof method == 'function' && this[name] == null) this.extend(name, function(item){
 				return method.apply(item, Array.from(arguments, 1));
 			});
 			
 			return this;
 			
 		}.setMany(),
-
+		
+		extend: function(name, method){
+			if (!method[':hidden']){
+				var previous = this[name];
+				if (previous == null || !previous[':protected']) this[name] = method;
+			}
+			return this;
+		}.setMany(),
+	
 		alias: function(name, proto){
 			return this.implement(name, this.prototype[proto]);
-		}.setMany(),
-
-		override: function(name, method){
-			delete this[name];
-			delete this.prototype[name];
-			return this.implement(name, method);
 		}.setMany(),
 				
 		mirror: function(hook){
 			hooksOf(this).push(hook);
 			return this;
 		}
-
+		
 	});
 	
 })();
+
+new Type('Native', Native);
 
 // Default Natives
 
@@ -278,18 +284,30 @@ new Type('Native', Native);
 	force('Function', ['apply', 'call']);
 	
 	force('RegExp', ['exec', 'test']);
+	
+	force('Date', ['now']);
 
 })(function(type, methods){
+	
 	var object = this[type];
+	
 	for (var i = 0; i < methods.length; i++){
-		var name = methods[i], method = object.prototype[name];
-		if (method){
+		
+		var name = methods[i];
+		var proto = object.prototype[name];
+		var generic = object[name];
+		if (generic) generic.protect();
+		
+		if (proto){
+			proto.protect();
 			delete object.prototype[name];
-			object.prototype[name] = method;
+			object.prototype[name] = proto;
 		}
+
 	}
 	
 	new Native(type, object).implement(object.prototype);
+
 });
 
 new Native('Date', Date).extend('now', function(){
