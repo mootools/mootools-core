@@ -15,8 +15,7 @@ var Browser = (function(){}).extend({
 	Features: {
 		xpath: !!(document.evaluate),
 		air: !!(window.runtime),
-		query: !!(document.querySelector),
-		json: (typeof JSON != 'undefined')
+		query: !!(document.querySelector)
 	},
 
 	Plugins: {}
@@ -42,7 +41,7 @@ Browser.Platform[Browser.Platform.name] = true;
 		},
 
 		gecko: function(){
-			return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? ((Browser.Features.json) ? 19.1 : 19) : 18);
+			return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? ((Browser.Features.query) ? 19.1 : 19) : 18);
 		}
 
 	};
