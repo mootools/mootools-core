@@ -118,6 +118,7 @@ String.implement('stripScripts', function(option){
 
 	if (!Browser.Element){
 		Browser.Element = function(){};
+		Browser.Element.parent = Object;
 		if (Browser.Engine.webkit) doc.createElement("iframe"); //fixes safari 2
 		Browser.Element.prototype = (Browser.Engine.webkit) ? this["[[DOMElement.prototype]]"] : {};
 	}
@@ -128,7 +129,7 @@ String.implement('stripScripts', function(option){
 	this[':type'] = Function.from('window').hide();
 	
 	this.Window.mirror(function(name, method){
-		if (window[name] == null && (method == null || !method[':hidden'])) window[name] = method;
+		window[name] = method;
 	}).implement(new Storage);
 	
 	var doc = this.document;
@@ -152,7 +153,7 @@ String.implement('stripScripts', function(option){
 	doc[':type'] = Function.from('document').hide();
 	
 	this.Document.mirror(function(name, method){
-		if (doc[name] == null && (method == null || !method[':hidden'])) doc[name] = method;
+		doc[name] = method;
 	}).implement(new Storage);
 	
 })();
