@@ -45,43 +45,42 @@ Event.implement('remove', function(){
 
 	[Element, Window, Document].call('implement', {
 		
-		hasEvent: function(name, fn){
-			var table = this.retrieve('events.table.' + name);
-			return !!(table && table.get(fn));
+		hasEvent: function(type){
+			var eventTypes = this.retrieve('event.types'), eventType, eventName;
+			if (!eventTypes || !(eventType = eventTypes[type])) return false;
+			
+			var len = 0;
+			for (var name in eventType) len += eventType[name].length();
+			return (len > 0);
 		},
 
 		addEvent: function(name, fn){
 
-			var table = this.retrieve('events.table.' + name, new Table);
-			if (table.get(fn)) return this;
-			Events.addEvent(this, name, fn);
-			
 			var parsed = slick.parse(name)[0][0], type = parsed.tag;
-
-			var modifier = Event.lookupModifier(type), mfn = fn;
 			
-			if (modifier){
-				if (modifier.type) type = modifier.type;
-				if (modifier.action) mfn = modifier.action(fn);
-				if (modifier.add) modifier.add.call(this, fn);
-			}
+			var eventTypes = this.retrieve('event.types', {});
+			var eventType = eventTypes[type] || (eventTypes[type] = {});
+			var eventName = eventType[name] || (eventType[name] = new Table);
+			if (eventName.get(fn)) return this;
 			
-			var self = this, pseudos = [], attributes = [];
+			var modifier = Event.lookupModifier(type) || {};
+			if (modifier.type) type = modifier.type;
+			var condition = modifier.condition || Function.from(true);
+			
+			var pseudos = [], attributes = [];
 			
 			if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
-				
-				var parser = Event.lookupPseudo(pseudo.name);
-				
+				var name = pseudo.name || '', argument = pseudo.argument || '';
+				var parser = Event.lookupPseudo(name);
 				if (parser) pseudos.push(function(event){
-					return parser.call(this, event, pseudo.argument);
+					return parser.call(this, event, argument);
 				});
-
 			});
 			
 			if (parsed.attributes) parsed.attributes.each(function(attribute){
+				var name = attribute.name || '', operator = attribute.operator || '', value = attribute.value || '';
 				attributes.push(function(event){
-					var operator = attribute.operator, value = attribute.value;
-					var actual = event.get(attribute.name);
+					var actual = event.get(name);
 					if (!operator) return !!(actual);
 					if (operator === '=') return (actual === value);
 					if (actual == null && (!value || operator === '!=')) return false;
@@ -89,37 +88,39 @@ Event.implement('remove', function(){
 				});
 			});
 			
-			var ntype = natives[type], context = this, bound = function(event){
-				event = new Event((ntype > 1) ? event : {});
-				Object.append(event, {context: self, action: fn, definition: name});
+			var self = this, context = this, filter = function(event){
+				event.set({'context': self, 'action': fn, 'definition': name, 'relayed': context});
 				
 				var value = true, i;
-				
-				if (ntype > 1){
-					
-					for (i = 0; i < pseudos.length; i++){
-						if (!(value = pseudos[i].call(context, event))) break;
-						if (instanceOf(value, Object)) context = value;
-						event.relayed = context;
-					}
-					
-					for (i = 0; i < attributes.length; i++){
-						if (!(value = attributes[i](event))) break;
-					}
-
+									
+				for (i = 0; i < pseudos.length; i++){
+					if (!(value = pseudos[i].call(context, event))) break;
+					if (instanceOf(value, Object)) event.set('relayed', (context = value));
 				}
 				
-				if (value && mfn.call(context, event) == false && ntype > 1) event.stop();
-
+				for (i = 0; i < attributes.length; i++){
+					if (!(value = attributes[i](event))) break;
+				}
+				
+				if (value && condition.call(context, event) && (fn.call(context, event) == false)) event.stop();
+				
 				context = self;
 			};
-
-			table.set(fn, bound);
 			
-			if (ntype){
+			eventName.set(fn, filter);
+			
+			if (natives[type]){
+				
+				var bound = Storage.retrieve(filter, 'bound', function(event){
+					filter(new Event(event));
+				});
+				
 				if (this.addEventListener) this.addEventListener(type, bound, false);
 				else this.attachEvent('on' + type, bound);
+				
 			}
+			
+			if (modifier.add) modifier.add.call(this, fn);
 			
 			return this;
 			
@@ -127,45 +128,79 @@ Event.implement('remove', function(){
 
 		removeEvent: function(name, fn){
 			
-			var table = this.retrieve('events.table.' + name, new Table), bound = table.erase(fn);
-			if (!bound) return this;
-			Events.removeEvent(this, name, fn);
-			
 			var type = slick.parse(name)[0][0].tag;
-			var modifier = Event.lookupModifier(type);
-			if (modifier){
-				if (modifier.type) type = modifier.type;
-				if (modifier.remove) modifier.remove.call(this, fn);
-			}
+			
+			var eventTypes = this.retrieve('event.types'), eventType, eventName, filter;
+			if (!eventTypes || !(eventType = eventTypes[type]) || !(eventName = eventType[name]) || !(filter = eventName.erase(fn))) return this;
+
+			var modifier = Event.lookupModifier(type) || {};
+			if (modifier.type) type = modifier.type;
 			
 			// remove real event
 			
 			if (natives[type]){
+				var bound = Storage.retrieve(filter, 'bound');
 				if (this.removeEventListener) this.removeEventListener(type, bound, false);
 				else this.detachEvent('on' + type, bound);
 			}
+			
+			if (modifier.remove) modifier.remove.call(this, fn);
 
+			return this;
+
+		},
+		
+		addEvents: Function.setMany('addEvent'),
+		
+		removeEvents: function(){
+			// TODO
+		},
+		
+		fireEvent: function(name, args){
+			
+			var type = slick.parse(name)[0][0].tag;
+			
+			var eventTypes = this.retrieve('event.types'), eventType, eventName;
+			if (!eventTypes || !(eventType = eventTypes[type]) || !(eventName = eventType[name])) return this;
+			
+			eventName.each(function(filter, fn){
+				fn.apply(this, Array.from(args));
+			}, this);
+			
+			return this;
+
+		},
+		
+		callEvent: function(name, event){
+			
+			var type = slick.parse(name)[0][0].tag;
+			
+			var eventTypes = this.retrieve('event.types'), eventType;
+			if (!eventTypes || !(eventType = eventTypes[type])) return this;
+			
+			Object.each(eventType, function(eventName, name){
+				
+				eventName.each(function(filter, fn){
+					filter.call(this, event);
+				}, this);
+
+			}, this);
+			
 			return this;
 			
 		}
 
 	});
 	
-	window.fireEvent = document.fireEvent = null;
-	
-	var related = function(fn){
-		return function(event){
-			var rt = event.get('related-target');
-			if ((rt == null) || (typeOf(this) != 'document' && rt != this && rt.prefix != 'xul' && !this.find(rt))) fn.call(this, event);
-		};
+	var related = function(event){
+		var rt = event.get('related-target');
+		return ((rt == null) || (typeOf(this) != 'document' && rt != this && rt.prefix != 'xul' && !this.find(rt)));
 	};
 	
-	Event.defineModifier('mouseenter', {type: 'mouseover', action: related});
-	Event.defineModifier('mouseleave', {type: 'mouseout', action: related});
+	Event.defineModifier('mouseenter', {type: 'mouseover', condition: related});
+	Event.defineModifier('mouseleave', {type: 'mouseout', condition: related});
 
 })();
-
-[Element, Window, Document].call('implement', new Events);
 
 Event.definePseudo('flash', function(event, argument){
 	event.remove();

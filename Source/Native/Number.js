@@ -12,11 +12,11 @@ Number.extend({
 		return Math.floor(Math.random() * (max - min + 1) + min);
 	},
 	
-	toInteger: function(number, base){
+	toInt: function(number, base){
 		return parseInt(number, base || 10);
 	},
 	
-	toFloat: function(number){
+	toFlt: function(number){
 		return parseFloat(number);
 	}
 

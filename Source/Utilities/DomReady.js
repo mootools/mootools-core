@@ -7,7 +7,7 @@ License:
 */
 
 Event.defineModifier('domready', {add: function(fn){
-	if (Browser.loaded) fn.call(this, event);
+	if (Browser.loaded) fn.call(this);
 }});
 
 (function(){

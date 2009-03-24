@@ -10,7 +10,9 @@ License:
 
 var Table = new Native('Table', function(){
 	this.table = {};
-}).implement({
+});
+
+Table.implement({
 	
 	set: function(key, value){
 		this.table[UID.uidOf(key)] = value;
@@ -30,6 +32,12 @@ var Table = new Native('Table', function(){
 	
 	forEach: function(fn, bind){
 		for (var uid in this.table) fn.call(bind, this.table[uid], UID.itemOf(uid), this);
+	},
+	
+	length: function(){
+		var length = 0;
+		for (var uid in this.table) length++;
+		return length;
 	},
 	
 	each: Array.prototype.each

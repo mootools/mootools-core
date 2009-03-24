@@ -21,24 +21,17 @@ Object.extend({
 		return original;
 	},
 	
-	beget: function(object){
-		var F = function(){};
-		F.prototype = object;
-		return new F;
-	},
-	
 	clone: function(object){
-		return Object.mixin(Type.isEnumerable(object) ? [] : {}, object);
+		return Object.merge(Type.isEnumerable(object) ? [] : {}, object);
 	},
 	
-	mixin: function(source){
+	merge: function(source){
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var object = arguments[i];
 			((Type.isEnumerable(object)) ? Array : Object).forEach(object, function(value, key){
 				var previous = source[key], type = typeOf(value);
-				
-				if (type=='array' || type=='object'){
-					if (instanceOf(previous, Object)) Object.mixin(previous, value);
+				if (type == 'object' || type == 'array'){
+					if (instanceOf(previous, Object)) Object.merge(previous, value);
 					else source[key] = Object.clone(value);
 				} else {
 					source[key] = value;

@@ -7,81 +7,92 @@ License:
 */
 
 var Event = new Native('Event', function(event){
-	if ((event = (event || window.event)).event) event = event.event;
+	event = event || window.event || null;
+	if (event == null) event = {};
+	if (event.event) event = event.event;
 	this.event = event;
-	return this;
+	Browser.event = this;
 });
 
-(function(){
-	
-	Event.extend(new Accessors).defineGetters({
+Event.extend(new Accessors).defineGetters({
 
-		shift: function(){
-			return this.event.shiftKey;
-		},
+	shift: function(){
+		return this.shift = this.event.shiftKey;
+	},
 
-		control: function(){
-			return this.event.ctrlKey;
-		},
+	control: function(){
+		return this.control = this.event.ctrlKey;
+	},
 
-		alt: function(){
-			return this.event.altKey;
-		},
+	alt: function(){
+		return this.alt = this.event.altKey;
+	},
 
-		meta: function(){
-			return this.event.metaKey;
-		},
+	meta: function(){
+		return this.meta = this.event.metaKey;
+	},
 
-		rightClick: function(){
-			var event = this.event;
-			return (event.which == 3) || (event.button == 2);
-		},
-
-		wheel: function(){
-			var event = this.event;
-			return (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-		}
-
-	});
-	
-	var keys = {
-		'enter': 13,
-		'up': 38,
-		'down': 40,
-		'left': 37,
-		'right': 39,
-		'esc': 27,
-		'space': 32,
-		'backspace': 8,
-		'tab': 9,
-		'delete': 46
-	};
-	
-	Event.defineKeyCode = function(name, code){
-		keys[name] = code;
-	};
-	
-	Event.defineGetter('key', function(){
+	rightClick: function(){
 		var event = this.event;
-		
-		var code = event.which || event.keyCode;
+		return this.rightClick = (event.which == 3) || (event.button == 2);
+	},
 
-		for (var name in keys){
-			if (keys[name] == code) return name;
-		}
-		if (event.type == 'keydown'){
-			var fKey = code - 111;
-			if (fKey > 0 && fKey < 13) return 'f' + fKey;
-		}
-		return String.fromCharCode(code).toLowerCase();
-	});
+	wheel: function(){
+		var event = this.event;
+		return this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+	}
+
+});
+
+Storage.store(Event, 'keys', {
+	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
+});
+
+Event.extend({
 	
-	Event.implement('get', function(key){
-		var getter = Event.lookupGetter(key = key.camelCase());
-		return (getter) ? getter.call(this) : Object.pick(this[key], this.event[key]);
-	}.getMany());
+	defineKeyCode: function(code, name){
+		Storage.retrieve(this, 'keys')[code] = name;
+		return this;
+	},
+
+	lookupKeyCode: function(code){
+		return Storage.retrieve(this, 'keys')[code];
+	}
 	
-})();
+});
+
+Event.defineGetter('key', function(){
+	var event = this.event;
+	
+	var code = event.which || event.keyCode;
+	
+	var named = Event.lookupKeyCode(code);
+	if (named) return this.key = named;
+
+	if (event.type == 'keydown'){
+		var fKey = code - 111;
+		if (fKey > 0 && fKey < 13) return this.key = 'f' + fKey;
+	}
+
+	return this.key = String.fromCharCode(code).toLowerCase();
+});
+
+Event.implement({
+	
+	get: function(key){
+		key = key.camelCase();
+		if (this[key]) return this[key];
+		var getter = Event.lookupGetter(key);
+		return (getter) ? getter.call(this) : this.event[key];
+	}.getMany(),
+	
+	set: function(key, value){
+		var setter = Event.lookupSetter(key = key.camelCase());
+		(setter) ? setter.call(this, value) : this[key] = value;
+		return this;
+	}.setMany()
+	
+});
 
 Event.defineGetters({
 	
@@ -89,7 +100,7 @@ Event.defineGetters({
 		var event = this.event;
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
-		return document.id(target);
+		return this.target = document.id(target);
 	},
 	
 	relatedTarget: function(){
@@ -103,12 +114,12 @@ Event.defineGetters({
 			return true;
 		};
 		var hasRelated = (Browser.Engine.gecko) ? Function.stab(test) : test();
-		return (hasRelated) ? document.id(related) : null;
+		return this.relatedTarget = (hasRelated) ? document.id(related) : null;
 	},
 	
 	client: function(){
 		var event = this.event;
-		return {
+		return this.client = {
 			x: (event.pageX) ? event.pageX - window.pageXOffset : event.clientX,
 			y: (event.pageY) ? event.pageY - window.pageYOffset : event.clientY
 		};
@@ -117,7 +128,7 @@ Event.defineGetters({
 	page: function(){
 		var event = this.event, doc = document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-		return {
+		return this.page = {
 			x: event.pageX || event.clientX + doc.scrollLeft,
 			y: event.pageY || event.clientY + doc.scrollTop
 		};
