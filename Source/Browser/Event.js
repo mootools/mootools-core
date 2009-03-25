@@ -81,11 +81,9 @@ Event.implement({
 	
 	get: function(key){
 		key = key.camelCase();
-		if (!this.hasOwnProperty(key)) {
-			var getter = Event.lookupGetter(key);
-			this[key] = (getter) ? getter.call(this) : this.event[key];
-		}
-		return this[key];
+		if (this.hasOwnProperty(key)) return this[key];
+		var getter = Event.lookupGetter(key);
+		return this[key] = (getter) ? getter.call(this) : this.event[key];
 	}.getMany(),
 	
 	set: function(key, value){
