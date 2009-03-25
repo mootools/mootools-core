@@ -126,7 +126,7 @@ var Request = new Class({
 			data = (data) ? format + '&' + data : format;
 		}
 
-		if (this.getOption('emulation') && ['put', 'delete'].contains(method)){
+		if (this.getOption('emulation') && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
 			method = 'post';
