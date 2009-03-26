@@ -33,7 +33,7 @@ var Fx = new Class({
 			var delta = this.transition((time - this.time) / this.duration);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
-			this.set(this.compute(this.from, this.to, 1));
+			this.set(this.compute(this.from, this.to, this.transition(1)));
 			this.complete();
 		}
 	},
@@ -150,21 +150,20 @@ Fx.compute = function(from, to, delta){
 			return durations[name] || Number(name) || 0;
 		},
 		
-		defineTransition: function(name, transition, params){
-			params = Array.from(params);
+		defineTransition: function(name, transition, param){
 			
 			transitions[name] = transition;
 
 			transitions[name + '.in'] = function(pos){
-				return transition(pos, params);
+				return transition(pos, param);
 			};
 			
 			transitions[name + '.out'] = function(pos){
-				return 1 - transition(1 - pos, params);
+				return 1 - transition(1 - pos, param);
 			};
 			
-			transitions[name + '.inOut'] = function(pos){
-				return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+			transitions[name + '.in.out'] = function(pos){
+				return (pos <= 0.5) ? transition(2 * pos, param) / 2 : (2 - transition(2 * (1 - pos), param)) / 2;
 			};
 
 			return this;
@@ -173,7 +172,7 @@ Fx.compute = function(from, to, delta){
 		defineTransitions: Function.setMany('defineTransition'),
 		
 		lookupTransition: function(name){
-			return transitions[name] || transitions.linear;
+			return transitions[name];
 		},
 		
 		// timer
