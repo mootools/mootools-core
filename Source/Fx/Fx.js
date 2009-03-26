@@ -151,6 +151,7 @@ Fx.compute = function(from, to, delta){
 		},
 		
 		defineTransition: function(name, transition, param){
+			var end = transition(1);
 			
 			transitions[name] = transition;
 
@@ -159,11 +160,11 @@ Fx.compute = function(from, to, delta){
 			};
 			
 			transitions[name + '.out'] = function(pos){
-				return 1 - transition(1 - pos, param);
+				return end - transition(1 - pos, param);
 			};
 			
 			transitions[name + '.in.out'] = function(pos){
-				return (pos <= 0.5) ? transition(2 * pos, param) / 2 : (2 - transition(2 * (1 - pos), param)) / 2;
+				return (pos <= 0.5) ? transition(2 * pos, param) / 2 : (2 * end - transition(2 * (1 - pos), param)) / 2;
 			};
 
 			return this;
