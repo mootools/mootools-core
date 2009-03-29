@@ -511,7 +511,7 @@ Empties an array.
 Array Method: item {#Array:item}
 ----------------------------------
 
-Returns an item in an array. Function supports negative indxing.
+Returns an item in an array. Function supports negative indexing.
 
 ### Syntax:
 

@@ -170,7 +170,7 @@ describe("Array Methods", {
 	    value_of(arr.item(-1)).should_be(4);
 	},
 	
-	'should retun null if no item or no items in the array': function(){
+	'should return null if no item or no items in the array': function(){
 	    var arr = [1,2,3,4];
 	    value_of(arr.item(10)).should_be(null);
 	    
