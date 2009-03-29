@@ -160,6 +160,22 @@ describe("Array Methods", {
 	'should empty the array': function(){
 		var arr = [1,2,3,4].empty();
 		value_of(arr).should_be([]);
+	},
+	
+	// Array.item
+	
+	'should return the item': function(){
+	    var arr = [1,2,3,4];
+	    value_of(arr.item(0)).should_be(1);
+	    value_of(array.item(-1)).should_be(4);
+	},
+	
+	'should retun null if no item or no items in the array': function(){
+	    var arr = [1,2,3,4];
+	    value_of(arr.item(10)).should_be(null);
+	    
+	    arr = [];
+	    value_of(arr.item(-1)).should_be(null);
 	}
 
 });

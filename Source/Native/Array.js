@@ -76,9 +76,14 @@ Array.implement({
 		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
+	
+	item: function(at){
+		if (at < 0) at += this.length;
+		return this[at];
+	},
 
 	getLast: function(){
-		return (this.length) ? this[this.length - 1] : null;
+		return this.item(-1);
 	},
 
 	getRandom: function(){
