@@ -78,12 +78,13 @@ Array.implement({
 	},
 	
 	item: function(at){
+		if (!this.length) return null;
 		if (at < 0) at += this.length;
-		return this[at];
+		return (at < this.length) ? this[at] : null;
 	},
 
 	getLast: function(){
-		return this.item(-1);
+		return (this.length) ? this.item(-1) : null;
 	},
 
 	getRandom: function(){
