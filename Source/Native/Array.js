@@ -82,7 +82,7 @@ Array.implement({
 	},
 	
 	getLast: function(){
-		return (this.length) ? this.item(-1) : null;
+		return this.item(-1);
 	},
 
 	getRandom: function(){
