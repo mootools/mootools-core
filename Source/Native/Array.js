@@ -77,12 +77,10 @@ Array.implement({
 		return this;
 	},
 	
-	item: function(at){
-		if (!this.length) return null;
-		if (at < 0) at += this.length;
-		return (at < this.length) ? this[at] : null;
+	item: function(at, l){
+		return (!(l = this.length) || ((at < 0) ? at += l : at) > l) ? null : this[at];
 	},
-
+	
 	getLast: function(){
 		return (this.length) ? this.item(-1) : null;
 	},
