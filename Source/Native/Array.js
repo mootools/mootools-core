@@ -77,8 +77,8 @@ Array.implement({
 		return this;
 	},
 	
-	item: function(at, l){
-		return (!(l = this.length) || ((at < 0) ? at += l : at) > l) ? null : this[at];
+	item: function(at){
+		return (!this.length || ((at < 0) ? at += this.length : at) > this.length) ? null : this[at];
 	},
 	
 	getLast: function(){
