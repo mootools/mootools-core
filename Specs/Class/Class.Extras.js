@@ -263,7 +263,7 @@ describe("Options Class", {
 	},
 
 	"should add events in the options object if class has implemented the Events class": function(){
-		Local.OptionsTest.implement(new Events, {
+		Local.OptionsTest.implement(new Events).implement({
 			options: {
 				onEvent1: function(){
 					return true;
