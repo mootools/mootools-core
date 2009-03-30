@@ -78,7 +78,8 @@ Array.implement({
 	},
 	
 	item: function(at){
-		return (!this.length || ((at < 0) ? at += this.length : at) > this.length) ? null : this[at];
+		if (at < 0) at += this.length;
+		return (at < 0 || at >= this.length) ? null : this[at];
 	},
 	
 	getLast: function(){

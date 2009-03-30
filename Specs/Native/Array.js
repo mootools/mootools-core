@@ -149,6 +149,7 @@ describe("Array Methods", {
 
 	'should return the last item in the array': function(){
 		value_of([1,2,3,0,0,0].getLast()).should_be(0);
+		value_of([3].getLast()).should_be(3);
 	},
 
 	'should return null if there are no items': function(){
@@ -165,17 +166,23 @@ describe("Array Methods", {
 	// Array.item
 	
 	'should return the item': function(){
-	    var arr = [1,2,3,4];
-	    value_of(arr.item(0)).should_be(1);
-	    value_of(arr.item(-1)).should_be(4);
+		var arr = [1,2,3,4];
+		value_of(arr.item(3)).should_be(4);
+		value_of(arr.item(0)).should_be(1);
+		value_of(arr.item(-1)).should_be(4);
 	},
 	
 	'should return null if no item or no items in the array': function(){
-	    var arr = [1,2,3,4];
-	    value_of(arr.item(10)).should_be(null);
-	    
-	    arr = [];
-	    value_of(arr.item(-1)).should_be(null);
+		var arr = [1,2,3,4];
+		value_of(arr.item(4)).should_be(null);
+		value_of(arr.item(10)).should_be(null);
+		value_of(arr.item(-5)).should_be(null);
+		value_of(arr.item(-100)).should_be(null);
+
+		arr = [];
+		value_of(arr.item(-1)).should_be(null);
+		value_of(arr.item(0)).should_be(null);
+		value_of(arr.item(1)).should_be(null);
 	}
 
 });
