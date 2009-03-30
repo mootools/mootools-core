@@ -205,13 +205,18 @@ function $lambda(value){
 };
 
 function $merge(){
-	var mix = {};
-	for (var i = 0, l = arguments.length; i < l; i++){
+	var args = Array.slice(arguments);
+	args.unshift({});
+	return $mixin.apply(null, args);
+};
+
+function $mixin(mix){
+	for (var i = 1, l = arguments.length; i < l; i++){
 		var object = arguments[i];
 		if ($type(object) != 'object') continue;
 		for (var key in object){
 			var op = object[key], mp = mix[key];
-			mix[key] = (mp && $type(op) == 'object' && $type(mp) == 'object') ? $merge(mp, op) : $unlink(op);
+			mix[key] = (mp && $type(op) == 'object' && $type(mp) == 'object') ? $mixin(mp, op) : $unlink(op);
 		}
 	}
 	return mix;
