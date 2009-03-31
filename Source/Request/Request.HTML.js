@@ -16,44 +16,23 @@ Request.HTML = new Class({
 		filter: false
 	},
 
-	processHTML: function(text){
+	success: function(text){
 		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		text = (match) ? match[1] : text;
-
-		var container = document.newElement('div');
-
-		return Function.stab(function(){
-			var root = '<root>' + text + '</root>', doc;
-			if (Browser.Engine.trident){
-				doc = new ActiveXObject('Microsoft.XMLDOM');
-				doc.async = false;
-				doc.loadXML(root);
-			} else {
-				doc = new DOMParser().parseFromString(root, 'text/xml');
-			}
-			root = doc.getElementsByTagName('root')[0];
-			for (var i = 0, k = root.childNodes.length; i < k; i++){
-				var child = Element.clone(root.childNodes[i], true, true);
-				if (child) container.grab(child);
-			}
-			return container;
-		}) || container.set('html', text);
-	},
-
-	success: function(text){
-		var options = this.getOptions(), response = this.response;
+		
+		var options = this.getOptions(['filter', 'update', 'evalScripts']), response = this.response;
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
 		});
 
-		var temp = this.processHTML(response.html);
+		var temp = document.newElement('div', {html: response.html});
 
 		response.tree = temp.childNodes;
-		response.elements = temp.getElements('*');
+		response.elements = temp.search('*');
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
-		if (options.update) $(options.update).empty().set('html', response.html);
+		if (options.update) $(options.update).set('html', response.html);
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);

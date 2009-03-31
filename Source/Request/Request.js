@@ -47,9 +47,11 @@ var Request = new Class({
 		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
+		
 		Function.stab(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
+		
 		if (this.getOption('isSuccess').call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
@@ -57,7 +59,6 @@ var Request = new Class({
 			this.response = {text: null, xml: null};
 			this.failure();
 		}
-		this.xhr.onreadystatechange = nil;
 	},
 
 	isSuccess: function(){
@@ -105,13 +106,12 @@ var Request = new Class({
 		return false;
 	},
 
-	send: function(params){
-		if (!this.check(params)) return this;
+	send: function(data){
+		
+		if (!this.check(data)) return this;
 		this.running = true;
 
-		var old = this.getOptions('data', 'url', 'method');
-		params = Object.append(old, params);
-		var data = params.data, url = params.url, method = params.method;
+		var url = this.getOption('url'), method = this.getOption('method');
 
 		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
@@ -156,6 +156,7 @@ var Request = new Class({
 		this.fireEvent('request');
 		this.xhr.send(data);
 		if (!this.getOption('async')) this.onStateChange();
+
 		return this;
 	},
 
@@ -163,7 +164,6 @@ var Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
-		this.xhr.onreadystatechange = nil;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
@@ -176,9 +176,9 @@ var Request = new Class({
 	var methods = {};
 
 	['get', 'post', 'put', 'delete'].each(function(method){
-		methods[method] = methods[method.toUpperCase()] = function(obj){
+		methods[method] = methods[method.toUpperCase()] = function(data){
 			this.setOption('method', method);
-			return this.send(obj);
+			return this.send(data);
 		};
 	});
 
@@ -199,9 +199,8 @@ Element.defineGetter('send', function(){
 
 Element.implement({
 
-	send: function(obj){
-		var sender = this.get('send');
-		sender.send.call(sender, obj);
+	send: function(data){
+		this.get('send').send(data);
 		return this;
 	}
 
