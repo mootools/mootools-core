@@ -48,7 +48,7 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 	return this;
 
 }).defineStyleGetter('opacity', function(){
-	return Object.pick(this.style.opacity, 1);
+	return [this.style.opacity, 1].pick();
 });
 
 (function(name){
