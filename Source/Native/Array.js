@@ -47,6 +47,13 @@ Array.implement({
 		return this.filter(nil);
 	},
 	
+	pick: function(){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (this[i] != null) return this[i];
+		}
+		return null;
+	},
+	
 	call: function(name){
 		var args = Array.from(arguments), results = [];
 		args.shift();
@@ -100,7 +107,7 @@ Array.implement({
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
 			var item = this[i];
-			if (item != null) array = array.concat((Type.isEnumerable(item)) ? Array.flatten(item) : item);
+			if (item != null) array = array.concat((Native.isEnumerable(item)) ? Array.flatten(item) : item);
 		}
 		return array;
 	}

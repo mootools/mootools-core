@@ -43,7 +43,7 @@ Function.implement({
 
 	bind: function(bind, args){
 		var self = this;
-		args = nil(args) && Array.from(args);
+		args = (args != null && Array.from(args));
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
