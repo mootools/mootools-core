@@ -68,7 +68,12 @@ Object.extend('reset', function(object, key){
 	delete object[key];
 	
 	switch (typeOf(object[key])){
-		case 'object': object[key] = Object.reset(new ((function(){}).extend('prototype', object[key]))); break;
+		case 'object':
+			var F = function(){};
+			F.prototype = object[key];
+			var i = new F;
+			object[key] = Object.reset(i);
+		break;
 		case 'array': object[key] = Object.clone(object[key]); break;
 	}
 	
