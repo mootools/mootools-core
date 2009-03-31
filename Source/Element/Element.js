@@ -52,7 +52,7 @@ document.id = (function(){
 	
 	var proto = {};
 
-	if (Browser.Engine.trident){
+	if (document.html.mergeAttributes){
 		
 		proto = document.createElement('div');
 		proto[':type'] = Function.from('element');
@@ -134,8 +134,6 @@ Document.implement({
 	newElement: function(tag, props){
 		if (!props) props = {};
 		
-		if ((/^<\w/).test(tag)) return this.newElement('div', {html: tag}).find('^').set(props);
-		
 		var parsed = slick.parse(tag)[0][0], id;
 		tag = parsed.tag;
 		if (parsed.id) props.id = parsed.id;
@@ -145,15 +143,7 @@ Document.implement({
 		});
 		
 		if (parsed.classes) props['class'] = parsed.classes.join(' ');
-		
-		if (Browser.Engine.trident){
-			['name', 'type', 'checked'].each(function(attribute){
-				if (!props[attribute]) return;
-				tag += ' ' + attribute + '="' + props[attribute] + '"';
-				if (attribute != 'checked') delete props[attribute];
-			});
-			tag = '<' + tag + '>';
-		}
+		if (props.checked != null) props.defaultChecked = props.checked;
 		
 		var modifier = Element.lookupConstructorModifier(tag);
 		var element = document.id((modifier) ? modifier() : this.createElement(tag)).set(props);
@@ -328,17 +318,22 @@ slick.getAttribute = function(element, attribute){
 
 (function(){
 
-	var equals = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+	var properties = [
+		'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
+	];
 
-	var attributes = Object.append({
+	properties = Object.append(Object.from(properties, properties), {
 		'html': 'innerHTML',
 		'class': 'className',
 		'for': 'htmlFor',
-		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	}, Object.from(equals, equals));
+		'text': (function(){
+			var temp = document.createElement('div');
+			return (temp.innerText == null) ? 'textContent' : 'innerText';
+		})()
+	});
 
-	Object.each(attributes, function(real, key){
+	Object.each(properties, function(real, key){
 		Element.defineSetter(key, function(value){
 			return this[real] = value;
 		});
@@ -391,6 +386,11 @@ Element.defineGetter('tag', function(){
 
 Element.defineSetter('html', (function(){
 	
+	var tableAble = Function.stab(function(){
+		var table = document.createElement('table');
+		table.innerHTML = '<tr><td></td></tr>';
+	});
+	
 	var wrapper = document.createElement('div');
 
 	var translations = {
@@ -404,7 +404,7 @@ Element.defineSetter('html', (function(){
 	
 	return function(html){
 		if (typeOf(html) == 'array') html = html.join(' ');
-		var wrap = (Browser.Engine.trident && translations[this.get('tag')]);
+		var wrap = (!tableAble && translations[this.get('tag')]);
 		if (wrap){
 			var first = wrapper;
 			first.innerHTML = wrap[1] + html + wrap[2];
