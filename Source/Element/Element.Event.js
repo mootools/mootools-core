@@ -210,7 +210,7 @@ Event.definePseudo('flash', function(event, argument){
 Event.definePseudo('relay', function(event, selector){
 	var nodes = this.search(selector), target = event.get('target');
 	for (var i = nodes.length; i--; i){
-		var node = document.id(nodes[i]);
+		var node = nodes[i];
 		if (target === node || node.find(target)) return node;
 	}
 	return false;
