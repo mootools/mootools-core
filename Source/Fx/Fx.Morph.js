@@ -51,11 +51,7 @@ Element.defineGetter('morph', function(){
 	return this.retrieve('morph');
 });
 
-Element.implement({
-
-	morph: function(props){
-		this.get('morph').start(props);
-		return this;
-	}
-
+Element.implement('morph', function(props){
+	this.get('morph').start(props);
+	return this;
 });

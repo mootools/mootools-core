@@ -21,40 +21,11 @@ var Fx = new Class({
 		transition: 'default',
 		link: 'ignore'
 	},
-
-	initialize: function(options){
-		this.subject = this.subject || this;
-		this.setOptions(options);
-	},
-
-	step: function(){
-		var time = Date.now();
-		if (time < this.time + this.duration){
-			var delta = this.transition((time - this.time) / this.duration);
-			this.set(this.compute(this.from, this.to, delta));
-		} else {
-			this.set(this.compute(this.from, this.to, this.transition(1)));
-			this.complete();
-		}
-	},
-
+	
 	set: function(now){
 		return now;
 	},
-
-	compute: function(from, to, delta){
-		return Fx.compute(from, to, delta);
-	},
-
-	check: function(){
-		if (!this.timer) return true;
-		switch (this.getOption('link')){
-			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
-		}
-		return false;
-	},
-
+	
 	start: function(from, to){
 		if (!this.check(from, to)) return this;
 		this.from = from;
@@ -66,30 +37,12 @@ var Fx = new Class({
 		this.onStart();
 		return this;
 	},
-
-	complete: function(){
-		if (this.stopTimer()) this.onComplete();
-		return this;
-	},
-
+	
 	cancel: function(){
 		if (this.stopTimer()) this.onCancel();
 		return this;
 	},
-
-	onStart: function(){
-		this.fireEvent('start', this.subject);
-	},
-
-	onComplete: function(){
-		this.fireEvent('complete', this.subject);
-		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
-	},
-
-	onCancel: function(){
-		this.fireEvent('cancel', this.subject).clearChain();
-	},
-
+	
 	pause: function(){
 		this.stopTimer();
 		return this;
@@ -99,20 +52,67 @@ var Fx = new Class({
 		this.startTimer();
 		return this;
 	},
+	
+	step: function(){
+		var time = Date.now();
+		if (time < this.time + this.duration){
+			var delta = this.transition((time - this.time) / this.duration);
+			this.set(this.compute(this.from, this.to, delta));
+		} else {
+			this.set(this.compute(this.from, this.to, this.transition(1)));
+			this.complete();
+		}
+	},
+
+	initialize: function(options){
+		this.subject = this.subject || this;
+		this.setOptions(options);
+	}.protect(),
+
+	compute: function(from, to, delta){
+		return Fx.compute(from, to, delta);
+	}.protect(),
+
+	check: function(){
+		if (!this.timer) return true;
+		switch (this.getOption('link')){
+			case 'cancel': this.cancel(); return true;
+			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
+		}
+		return false;
+	}.protect(),
+
+	complete: function(){
+		if (this.stopTimer()) this.onComplete();
+		return this;
+	}.protect(),
+
+	onStart: function(){
+		this.fireEvent('start', this.subject);
+	}.protect(),
+
+	onComplete: function(){
+		this.fireEvent('complete', this.subject);
+		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
+	}.protect(),
+
+	onCancel: function(){
+		this.fireEvent('cancel', this.subject).clearChain();
+	}.protect(),
 
 	stopTimer: function(){
 		if (!this.timer) return false;
 		this.time = Date.now() - this.time;
 		this.timer = Fx.remove(this);
 		return true;
-	},
+	}.protect(),
 
 	startTimer: function(){
 		if (this.timer) return false;
 		this.time = Date.now() - this.time;
 		this.timer = Fx.add(this);
 		return true;
-	}
+	}.protect()
 
 });
 
@@ -139,6 +139,24 @@ Fx.compute = function(from, to, delta){
 	
 	Fx.extend({
 		
+		// timer
+		
+		add: function(instance){
+			instances.push(instance);
+			if (!timer) timer = loop.periodical(Math.round(1000 / fps));
+			return true;
+		},
+		
+		remove: function(instance){
+			instances.erase(instance);
+			if (!instances.length && timer) timer = Function.clear(timer);
+			return false;
+		},
+		
+		setFPS: function(f){
+			fps = f;
+		},
+		
 		// duration accessors
 		
 		defineDuration: function(name, value){
@@ -149,6 +167,8 @@ Fx.compute = function(from, to, delta){
 		lookupDuration: function(name){
 			return durations[name] || Number(name) || 0;
 		},
+		
+		// transitions accessors
 		
 		defineTransition: function(name, transition, param){
 			var end = transition(1);
@@ -174,24 +194,6 @@ Fx.compute = function(from, to, delta){
 		
 		lookupTransition: function(name){
 			return transitions[name];
-		},
-		
-		// timer
-		
-		add: function(instance){
-			instances.push(instance);
-			if (!timer) timer = loop.periodical(Math.round(1000 / fps));
-			return true;
-		},
-		
-		remove: function(instance){
-			instances.erase(instance);
-			if (!instances.length && timer) timer = Function.clear(timer);
-			return false;
-		},
-		
-		setFPS: function(f){
-			fps = f;
 		}
 		
 	});
