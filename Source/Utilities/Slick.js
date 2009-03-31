@@ -4,6 +4,9 @@ Script: Slick.js
 
 License:
 	MIT-style license.
+	
+Credits:
+	XRegExp_escape taken from XRegExp 0.6.1 (c) 2007-2008 Steven Levithan <http://stevenlevithan.com/regex/xregexp/> MIT License
 */
 
 var slick = (function(buffer){
@@ -11,6 +14,7 @@ var slick = (function(buffer){
 	// slick function
 	
 	var slick = function(context, expression){
+		if (expression == null) return [];
 		
 		if (typeof expression != 'string'){
 			var array = [];
@@ -511,20 +515,6 @@ slick.parse = (function(){
 	var parsedSelectors;
 	var these_simpleSelectors;
 	var this_simpleSelector;
-	
-	/*
-	    XRegExp_escape taken from
-	    XRegExp 0.6.1
-	    (c) 2007-2008 Steven Levithan
-	    <http://stevenlevithan.com/regex/xregexp/>
-	    MIT License
-	*/
-	/*** XRegExp.escape
-	    accepts a string; returns the string with regex metacharacters escaped.
-	    the returned string can safely be used within a regex to match a literal
-	    string. escaped characters are [, ], {, }, (, ), -, *, +, ?, ., \, ^, $,
-	    |, #, [comma], and whitespace.
-	*/
 
 	var XRegExp_escape = function(str){
 	    return String(str).replace(/[-[\]{}()*+?.\\^$|,#\s]/g, "\\$&");
