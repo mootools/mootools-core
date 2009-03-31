@@ -42,7 +42,7 @@ document.id = (function(){
 		element: function(item){
 			if (window.console) console.warn('Extending element manually.');
 			Object.append(item, proto);
-			item.constructor = Browser.Element;
+			item.constructor = Element;
 			return item;
 		}
 
@@ -59,7 +59,7 @@ document.id = (function(){
 
 		types.element = function(item){
 			item.mergeAttributes(proto);
-			item.constructor = Browser.Element;
+			item.constructor = Element;
 			return item;
 		};
 
@@ -70,7 +70,7 @@ document.id = (function(){
 	});
 	
 	return function(item){
-		if (instanceOf(item, Browser.Element)) return item;
+		if (instanceOf(item, Element)) return item;
 		var processor = types[typeOf(item)];
 		return (processor) ? processor(item, this) : null;
 	};
@@ -181,7 +181,8 @@ Document.implement({
 	},
 	
 	find: function(expression){
-		return document.id(slick(this, expression)[0]);
+		var element = slick(this, expression)[0];
+		return (element) ? document.id(element) : null;
 	}
 	
 });
@@ -192,7 +193,7 @@ Element.implement('match', function(expression){
 
 var $ = function(expression){
 	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
-	if (match) return document.id(match); //compat
+	if (match) return document.id(match);
 	return document.find(expression);
 };
 
