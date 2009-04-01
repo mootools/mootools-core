@@ -9,10 +9,8 @@ License:
 Array.implement({
 
 	filter: function(fn, bind){
-		var results = [];
-		for (var i = 0, l = this.length; i < l; i++){
-			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
-		}
+		var l = this.length, results = Array.from(this);
+		while (l--) if (fn.call(bind, this[l], l, this) === false) results.splice(l, 1);
 		return results;
 	},
 
@@ -24,27 +22,25 @@ Array.implement({
 	},
 
 	map: function(fn, bind){
-		var results = [];
-		for (var i = 0, l = this.length; i < l; i++) results.push(fn.call(bind, this[i], i, this));
+		var l = this.length, results = new Array(l);
+		while (l--) results[l] = fn.call(bind, this[l], l, this);
 		return results;
 	},
 	
 	every: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++){
-			if (!fn.call(bind, this[i], i, this)) return false;
-		}
+	    var l = this.length;
+	    while (l--) if (!fn.call(bind, this[l], l, this)) return false;
 		return true;
 	},
 
 	some: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++){
-			if (fn.call(bind, this[i], i, this)) return true;
-		}
+	    var l = this.length;
+	    while (l--) if (fn.call(bind, this[l], l, this)) return true;
 		return false;
 	},
 	
 	clean: function(){
-		return this.filter(nil);
+		return this.filter(function(item){ return item != null; });
 	},
 	
 	pick: function(){
@@ -55,17 +51,16 @@ Array.implement({
 	},
 	
 	call: function(name){
-		var args = Array.from(arguments), results = [];
+		var args = Array.from(arguments), l = this.length, results = new Array(l), item;
 		args.shift();
-		for (var i = 0, j = this.length; i < j; i++){
-			var item = this[i];
-			results.push(item[name].apply(item, args));
-		}
+		while (l--) item = this[l], results[l] = item[name].apply(item, args);
 		return results;
 	},
 	
 	append: function(array){
-		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
+	    var s = this.length, l = array.length;
+	    this.length += l;
+	    while (l--) this[s + l] = array[l];
 		return this;
 	},
 
@@ -74,7 +69,7 @@ Array.implement({
 	},
 
 	last: function(){
-		return (this.length) ? this[this.length - 1] : null;
+		return this.item(-1);
 	},
 
 	random: function(){
@@ -92,9 +87,8 @@ Array.implement({
 	},
 
 	erase: function(item){
-		for (var i = this.length; i--; i){
-			if (this[i] === item) this.splice(i, 1);
-		}
+	    var l = this.length;
+	    while (l--) if (this[l] === item) this.splice(l, 1);
 		return this;
 	},
 
