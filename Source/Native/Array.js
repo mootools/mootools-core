@@ -78,7 +78,7 @@ Array.implement({
 	},
 	
 	getLast: function(){
-		return (this.length) ? this.item(-1) : null;
+		return (this.length) ? this[this.length - 1] : null;
 	},
 
 	getRandom: function(){
