@@ -155,8 +155,8 @@ Array.alias('forEach', 'each');
 
 function $A(iterable){
 	if (iterable.item){
-		var array = [];
-		for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
+		var l = iterable.length, array = new Array(l);
+		while (l--) array[l] = iterable[l];
 		return array;
 	}
 	return Array.prototype.slice.call(iterable);
