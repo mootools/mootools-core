@@ -1,6 +1,7 @@
 /*
 Script: Fx.Morph.js
-	Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules.
+	Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules,
+		or CSS based selector rules.
 
 License:
 	MIT-style license.
@@ -16,8 +17,8 @@ Fx.Morph = new Class({
 	},
 
 	set: function(now){
-		if (typeof now == 'string') now = this.search(now);
-		for (var p in now) this.render(this.element, p, now[p], this.options.unit);
+		if (typeOf(now) == 'string') now = this.search(now);
+		for (var p in now) this.render(this.element, p, now[p], this.getOption('unit'));
 		return this;
 	},
 
@@ -29,7 +30,7 @@ Fx.Morph = new Class({
 
 	start: function(properties){
 		if (!this.check(properties)) return this;
-		if (typeof properties == 'string') properties = this.search(properties);
+		if (typeOf(properties) == 'string') properties = this.search(properties);
 		var from = {}, to = {};
 		for (var p in properties){
 			var parsed = this.prepare(this.element, p, properties[p]);
@@ -41,29 +42,16 @@ Fx.Morph = new Class({
 
 });
 
-Element.Properties.morph = {
+Element.defineSetter('morph', function(options){
+	this.get('morph').cancel().setOptions(options);
+});
 
-	set: function(options){
-		var morph = this.retrieve('morph');
-		if (morph) morph.cancel();
-		return this.eliminate('morph').store('morph:options', $extend({link: 'cancel'}, options));
-	},
+Element.defineGetter('morph', function(){
+	if (!this.retrieve('morph')) this.store('morph', new Fx.Morph(this, {link: 'cancel'}));
+	return this.retrieve('morph');
+});
 
-	get: function(options){
-		if (options || !this.retrieve('morph')){
-			if (options || !this.retrieve('morph:options')) this.set('morph', options);
-			this.store('morph', new Fx.Morph(this, this.retrieve('morph:options')));
-		}
-		return this.retrieve('morph');
-	}
-
-};
-
-Element.implement({
-
-	morph: function(props){
-		this.get('morph').start(props);
-		return this;
-	}
-
+Element.implement('morph', function(props){
+	this.get('morph').start(props);
+	return this;
 });

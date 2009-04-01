@@ -10,13 +10,15 @@ var Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
-	options: {/*
-		onRequest: $empty,
-		onComplete: $empty,
-		onCancel: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
+	options: {
+		/*
+		onRequest: nil,
+		onComplete: nil,
+		onCancel: nil,
+		onSuccess: nil,
+		onFailure: nil,
+		onException: nil,
+		*/
 		url: '',
 		data: '',
 		headers: {
@@ -31,6 +33,7 @@ var Request = new Class({
 		emulation: true,
 		urlEncoded: true,
 		encoding: 'utf-8',
+		stripScripts: true,
 		evalScripts: false,
 		evalResponse: false,
 		noCache: false
@@ -39,25 +42,24 @@ var Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = new Hash(this.options.headers);
 	},
 
 	onStateChange: function(){
 		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
-		$try(function(){
+		
+		Function.stab(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
-		if (this.options.isSuccess.call(this, this.status)){
+		
+		if (this.getOption('isSuccess').call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
 		} else {
 			this.response = {text: null, xml: null};
 			this.failure();
 		}
-		this.xhr.onreadystatechange = $empty;
 	},
 
 	isSuccess: function(){
@@ -65,8 +67,8 @@ var Request = new Class({
 	},
 
 	processScripts: function(text){
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
-		return text.stripScripts(this.options.evalScripts);
+		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
+		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
 	},
 
 	success: function(text, xml){
@@ -86,55 +88,54 @@ var Request = new Class({
 	},
 
 	setHeader: function(name, value){
-		this.headers.set(name, value);
+		this.getOption('headers')[name] = value;
 		return this;
 	},
 
 	getHeader: function(name){
-		return $try(function(){
+		return Function.stab(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},
 
 	check: function(){
 		if (!this.running) return true;
-		switch (this.options.link){
+		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
 			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
 		}
 		return false;
 	},
 
-	send: function(options){
-		if (!this.check(options)) return this;
+	send: function(data){
+		
+		if (!this.check(data)) return this;
 		this.running = true;
 
-		var type = $type(options);
-		if (type == 'string' || type == 'element') options = {data: options};
+		var url = this.getOption('url'), method = this.getOption('method');
 
-		var old = this.options;
-		options = $extend({data: old.data, url: old.url, method: old.method}, options);
-		var data = options.data, url = options.url, method = options.method;
-
-		switch ($type(data)){
+		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
-			case 'object': case 'hash': data = Hash.toQueryString(data);
+			case 'object': data = Object.toQueryString(data);
 		}
+		
+		var headers = this.getOption('headers');
+		this.setOption('isSuccess', this.getOption('isSuccess') || this.isSuccess);
 
-		if (this.options.format){
-			var format = 'format=' + this.options.format;
+		if (this.getOption('format')){
+			var format = 'format=' + this.getOption('format');
 			data = (data) ? format + '&' + data : format;
 		}
 
-		if (this.options.emulation && ['put', 'delete'].contains(method)){
+		if (this.getOption('emulation') && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
 			method = 'post';
 		}
 
-		if (this.options.urlEncoded && method == 'post'){
-			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
+		if (this.getOption('urlEncoded') && method == 'post'){
+			var encoding = (this.getOption('encoding')) ? '; charset=' + this.getOption('encoding') : '';
+			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
 		if(this.options.noCache) {
@@ -148,22 +149,21 @@ var Request = new Class({
 			data = null;
 		}
 
-
-		this.xhr.open(method.toUpperCase(), url, this.options.async);
+		this.xhr.open(method.toUpperCase(), url, this.getOption('async'));
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		this.headers.each(function(value, key){
-			try {
-				this.xhr.setRequestHeader(key, value);
-			} catch (e){
-				this.fireEvent('exception', [key, value]);
-			}
+		Object.each(headers, function(value, key){
+			var xhr = this.xhr;
+			if (!Function.stab(function(){
+				xhr.setRequestHeader(key, value);
+			})) this.fireEvent('exception', [key, value]);
 		}, this);
 
 		this.fireEvent('request');
 		this.xhr.send(data);
-		if (!this.options.async) this.onStateChange();
+		if (!this.getOption('async')) this.onStateChange();
+
 		return this;
 	},
 
@@ -171,7 +171,6 @@ var Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
-		this.xhr.onreadystatechange = $empty;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
@@ -181,14 +180,35 @@ var Request = new Class({
 
 (function(){
 
-var methods = {};
-['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
-	methods[method] = function(){
-		var params = Array.link(arguments, {url: String.type, data: $defined});
-		return this.send($extend(params, {method: method.toLowerCase()}));
-	};
-});
+	var methods = {};
 
-Request.implement(methods);
+	['get', 'post', 'put', 'delete'].each(function(method){
+		methods[method] = methods[method.toUpperCase()] = function(data){
+			this.setOption('method', method);
+			return this.send(data);
+		};
+	});
+
+	Request.implement(methods);
 
 })();
+
+Element.defineSetter('send', function(options){
+	this.get('send').cancel().setOptions(options);
+});
+
+Element.defineGetter('send', function(){
+	if (!this.retrieve('send')) this.store('send', new Request({
+		data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
+	}));
+	return this.retrieve('send');
+});
+
+Element.implement({
+
+	send: function(data){
+		this.get('send').send(data);
+		return this;
+	}
+
+});

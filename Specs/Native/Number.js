@@ -8,25 +8,40 @@ License:
 
 describe("Number Methods", {
 
-	// Number.toInt
+	// Number.toInteger
 
 	'should convert a number to an integer': function(){
-		value_of((111).toInt()).should_be(111);
+		value_of(Number.toInteger(111)).should_be(111);
 	},
 
 	'should convert a number depending on the radix provided': function(){
-		value_of((111).toInt(2)).should_be(7);
-		value_of((0x16).toInt(10)).should_be(22); //ECMA standard, radix is optional so if starts with 0x then parsed as hexadecimal
-		value_of((016).toInt(10)).should_be(14); //ECMA standard, radix is optional so if starts with 0 then parsed as octal
+		value_of(Number.toInteger(111, 2)).should_be(7);
+		value_of(Number.toInteger(0x16, 10)).should_be(22); //ECMA standard, radix is optional so if starts with 0x then parsed as hexadecimal
+		value_of(Number.toInteger(016, 10)).should_be(14); //ECMA standard, radix is optional so if starts with 0 then parsed as octal
+	},
+
+	'should convert a string into an integer': function(){
+		value_of(Number.toInteger('10')).should_be(10);
+		value_of(Number.toInteger('10px')).should_be(10);
+		value_of(Number.toInteger('10.10em')).should_be(10);
+	},
+
+	'should convert a string into an integer with a specific base': function(){
+		value_of(Number.toInteger('10', 5)).should_be(5);
 	},
 
 	// Number.toFloat
 
 	'should convert a number to a float': function(){
-		value_of((1.00).toFloat()).should_be(1);
-		value_of((1.12 - 0.12).toFloat()).should_be(1);
-		value_of((0.0010).toFloat()).should_be(0.001);
-		value_of((Number.MIN_VALUE).toFloat()).should_be(Number.MIN_VALUE);
+		value_of(Number.toFloat(1.00)).should_be(1);
+		value_of(Number.toFloat(1.12 - 0.12)).should_be(1);
+		value_of(Number.toFloat(0.0010)).should_be(0.001);
+		value_of(Number.toFloat(Number.MIN_VALUE)).should_be(Number.MIN_VALUE);
+	},
+
+	'should convert a string into a float': function(){
+		value_of(Number.toFloat('10.11')).should_be(10.11);
+		value_of(Number.toFloat('10.55px')).should_be(10.55);
 	},
 
 	// Number.limit
@@ -86,7 +101,7 @@ describe("Number Methods", {
 
 (function(math){
 	var examples = {};
-	new Hash(math).each(function(value, key){
+	Object.each(math, function(value, key){
 		var example = {};
 		var b = value.test[1];
 		examples['should return the ' + value.title + ' value of the number' + ((b) ? ' and the passed number' : '')] = function(){

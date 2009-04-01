@@ -6,135 +6,162 @@ License:
 	MIT-style license.
 */
 
-Element.Properties.styles = {set: function(styles){
-	this.setStyles(styles);
-}};
-
-Element.Properties.opacity = {
-
-	set: function(opacity, novisibility){
-		if (!novisibility){
-			if (opacity == 0){
-				if (this.style.visibility != 'hidden') this.style.visibility = 'hidden';
-			} else {
-				if (this.style.visibility != 'visible') this.style.visibility = 'visible';
-			}
-		}
-		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
-		this.style.opacity = opacity;
-		this.store('opacity', opacity);
+Element.extend({
+	
+	defineStyleGetter: function(name, fn){
+		return this.defineGetter('style.' + name, fn);
 	},
 
-	get: function(){
-		return this.retrieve('opacity', 1);
+	defineStyleSetter: function(name, fn){
+		return this.defineSetter('style.' + name, fn);
+	},
+
+	lookupStyleGetter: function(name, fn){
+		return this.lookupGetter('style.' + name, fn);
+	},
+
+	lookupStyleSetter: function(name, fn){
+		return this.lookupSetter('style.' + name, fn);
+	}
+	
+});
+
+Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
+	
+	value = parseFloat(value);
+	
+	if (!ignoreVisibility){
+		
+		var visibility = this.getStyle('visibility');
+
+		if (value == 0){
+			if (visibility != 'hidden') this.setStyle('visibility', 'hidden');
+		} else {
+			if (visibility != 'visible') this.setStyle('visibility', 'visible');
+		}
+		
+	}
+	
+	if (this.style.opacity == null && this.style.filter != null && this.currentStyle){
+		if (!this.currentStyle.hasLayout) this.style.zoom = 1;
+		this.style.filter = (value == 1) ? '' : 'alpha(opacity=' + value * 100 + ')';
+	} else {
+		this.style.opacity = value;
 	}
 
+	return this;
+
+});
+
+Element.defineStyleGetter('opacity', function(){
+	return [this.style.opacity, 1].pick();
+});
+
+(function(name){
+	
+	Element.defineStyleSetter('float', function(value){
+		this.style[name] = value;
+		return this;
+	}).defineStyleGetter('float', function(){
+		return this.getStyle(name);
+	});
+	
+})((document.html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat');
+
+(function(){
+	
+	var all = {
+		left: '@px', top: '@px', bottom: '@px', right: '@px',
+		width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
+		backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
+		fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
+		margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
+		borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+		zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
+	};
+	
+	var shorts = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
+	
+	['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
+		['margin', 'padding'].each(function(style){
+			var sd = style + direction;
+			shorts[style][sd] = all[sd] = '@px';
+		});
+		var bd = 'border' + direction;
+		shorts.border[bd] = all[bd] = '@px @ rgb(@, @, @)';
+		var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
+		shorts[bd] = {};
+		shorts.borderWidth[bdw] = shorts[bd][bdw] = all[bdw] = '@px';
+		shorts.borderStyle[bds] = shorts[bd][bds] = all[bds] = '@';
+		shorts.borderColor[bdc] = shorts[bd][bdc] = all[bdc] = 'rgb(@, @, @)';
+	});
+	
+	Object.each(all, function(map, name){
+		
+		var isShort = !!(shorts[name]);
+		
+		Element.defineStyleSetter(name, function(value){
+			if (typeOf(value) != 'string'){
+				var values = Array.from(value), maps = map.split(' '), array = [];
+				((isShort) ? values.length : maps.length).times(function(i){
+					var v = values[i], m = maps[i];
+					if (v == null) v = 0;
+					array[i] = m.replace((typeOf(v) == 'string') ? (/@[\w]{0,2}/) : '@', v);
+				});
+				value = array.join(' ');
+			}
+
+			this.style[name] = value;
+			return this;
+		});
+
+	});
+	
+	Object.each(shorts, function(map, name){
+		
+		Element.defineStyleGetter(name, function(){
+			var styles = [];
+			for (var p in map) styles.push(this.getStyle(p));
+			return styles.join(' ');
+		});
+
+	});
+
+})();
+
+Element.getComputedStyle = (window.getComputedStyle) ? function(element, name){
+	var computed = getComputedStyle(element, null);
+	return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
+} : function(element, name){
+	return (element.currentStyle) ? element.currentStyle[name] : null;
 };
 
 Element.implement({
 
-	setOpacity: function(value){
-		return this.set('opacity', value, true);
-	},
+	setStyle: function(name, value){
+		name = name.camelCase();
+		var setter = Element.lookupStyleSetter(name);
+		if (setter) return setter.call(this, value);
+	
+		// no setter, set style property directly
 
-	getOpacity: function(){
-		return this.get('opacity');
-	},
-
-	setStyle: function(property, value){
-		switch (property){
-			case 'opacity': return this.set('opacity', parseFloat(value));
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
-		}
-		property = property.camelCase();
-		if ($type(value) != 'string'){
-			var map = (Element.Styles.get(property) || '@').split(' ');
-			value = $splat(value).map(function(val, i){
-				if (!map[i]) return '';
-				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
-			}).join(' ');
-		} else if (value == String(Number(value))){
-			value = Math.round(value);
-		}
-		this.style[property] = value;
+		this.style[name] = value;
 		return this;
 	},
 
-	getStyle: function(property){
-		switch (property){
-			case 'opacity': return this.get('opacity');
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
-		}
-		property = property.camelCase();
-		var result = this.style[property];
-		if (!$chk(result)){
-			result = [];
-			for (var style in Element.ShortStyles){
-				if (property != style) continue;
-				for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
-				return result.join(' ');
-			}
-			result = this.getComputedStyle(property);
-		}
-		if (result){
-			result = String(result);
-			var color = result.match(/rgba?\([\d\s,]+\)/);
-			if (color) result = result.replace(color[0], color[0].rgbToHex());
-		}
-		if (Browser.Engine.presto || (Browser.Engine.trident && !$chk(parseInt(result, 10)))){
-			if (property.test(/^(height|width)$/)){
-				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
-				values.each(function(value){
-					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
-				}, this);
-				return this['offset' + property.capitalize()] - size + 'px';
-			}
-			if ((Browser.Engine.presto) && String(result).test('px')) return result;
-			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
-		}
-		return result;
+	getStyle: function(name){
+		name = name.camelCase();
+		var getter = Element.lookupStyleGetter(name);
+		if (getter) return getter.call(this);
+
+		// no getter, return current style
+
+		var style = this.style[name];
+		if (style || style === 0) return style;
+		return Element.getComputedStyle(this, name);
 	},
+	
+	setStyles: Function.setMany('setStyle'),
+	getStyles: Function.getMany('getStyle')
 
-	setStyles: function(styles){
-		for (var style in styles) this.setStyle(style, styles[style]);
-		return this;
-	},
-
-	getStyles: function(){
-		var result = {};
-		Array.each(arguments, function(key){
-			result[key] = this.getStyle(key);
-		}, this);
-		return result;
-	}
-
-});
-
-Element.Styles = new Hash({
-	left: '@px', top: '@px', bottom: '@px', right: '@px',
-	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
-	backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
-	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
-	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
-});
-
-Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
-
-['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-	var Short = Element.ShortStyles;
-	var All = Element.Styles;
-	['margin', 'padding'].each(function(style){
-		var sd = style + direction;
-		Short[style][sd] = All[sd] = '@px';
-	});
-	var bd = 'border' + direction;
-	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
-	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
-	Short[bd] = {};
-	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
-	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
-	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });

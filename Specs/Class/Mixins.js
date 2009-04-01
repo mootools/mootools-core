@@ -1,6 +1,6 @@
 /*
-Script: Class.Extras.js
-	Specs for Class.Extras.js
+Script: Mixins.js
+	Specs for Mixins.js
 
 License:
 	MIT-style license.
@@ -47,7 +47,7 @@ describe("Chain Class", {
 		value_of(arr).should_be(["0Aa", "1Bb"]);
 
 		ret = chain.callChain();
-		value_of(ret).should_be(false);
+		value_of(ret).should_be_null();
 		value_of(arr).should_be(["0Aa", "1Bb"]);
 	},
 
@@ -143,88 +143,83 @@ describe("Events Class", {
 
 	"should add an Event to the Class": function(){
 		var myTest = new Local.EventsTest();
-		myTest.addEvent("event", Local.fn);
+		myTest.addEvent('event', Local.fn);
 
-		var events = myTest.$events;
-		var myEvent = events["event"];
-		value_of(myEvent).should_not_be(undefined);
-		value_of(myEvent.contains(Local.fn)).should_be_true();
+		var event = Storage.retrieve(myTest, 'events.type.event');
+		value_of(event).should_not_be(undefined);
+		value_of(event.contains(Local.fn)).should_be_true();
 	},
 
 	"should add multiple Events to the Class": function(){
 		var myTest = new Local.EventsTest();
 		myTest.addEvents({
-			"event1": Local.fn,
-			"event2": Local.fn
+			'event1': Local.fn,
+			'event2': Local.fn
 		});
 
-		var events = myTest.$events;
-		var myEvent1 = events["event1"];
-		value_of(myEvent1).should_not_be(undefined);
-		value_of(myEvent1.contains(Local.fn)).should_be_true();
+		var event1 = Storage.retrieve(myTest, 'events.type.event1');
+		value_of(event1).should_not_be(undefined);
+		value_of(event1.contains(Local.fn)).should_be_true();
 
-		var myEvent2 = events["event2"];
-		value_of(myEvent2).should_not_be(undefined);
-		value_of(myEvent2.contains(Local.fn)).should_be_true();
+		var event2 = Storage.retrieve(myTest, 'events.type.event2');
+		value_of(event2).should_not_be(undefined);
+		value_of(event2.contains(Local.fn)).should_be_true();
 	},
 
-	"should add an internal event": function(){
+	"should add a protected event": function(){
 		var myTest = new Local.EventsTest();
-		myTest.addEvent("internal", Local.fn, true);
+		var protected = (function(){ Local.fn(); }).protect();
+		myTest.addEvent('protected', protected);
 
-		var events = myTest.$events;
-		var myEvent = events["internal"];
-		value_of(myEvent).should_not_be(undefined);
-		value_of(myEvent.contains(Local.fn)).should_be_true();
-		value_of(myEvent[0].internal).should_be_true();
+		var event = Storage.retrieve(myTest, 'events.type.protected');
+		value_of(event).should_not_be(undefined);
+		value_of(event.contains(protected)).should_be_true();
+		value_of(event[0][':protected']).should_be_true();
 	},
 
 	"should remove a specific method for an event": function(){
 		var myTest = new Local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent("event", Local.fn);
-		myTest.addEvent("event", fn);
-		myTest.removeEvent("event", Local.fn);
+		myTest.addEvent('event', Local.fn);
+		myTest.addEvent('event', fn);
+		myTest.removeEvent('event', Local.fn);
 
-		var events = myTest.$events;
-		var myEvent = events["event"];
-		value_of(myEvent).should_not_be(undefined);
-		value_of(myEvent.contains(fn)).should_be_true();
+		var event = Storage.retrieve(myTest, 'events.type.event');
+		value_of(event).should_not_be(undefined);
+		value_of(event.contains(fn)).should_be_true();
 	},
 
 	"should remove an event and its methods": function(){
 		var myTest = new Local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent("event", Local.fn);
-		myTest.addEvent("event", fn);
-		myTest.removeEvents("event");
-
-		var events = myTest.$events;
-		value_of(events["event"].length).should_be(0);
+		myTest.addEvent('event', Local.fn);
+		myTest.addEvent('event', fn);
+		myTest.removeEvents('event');
+		
+		value_of(Storage.retrieve(myTest, 'events.type.event').length).should_be(0);
 	},
 
 	"should remove all events": function(){
 		var myTest = new Local.EventsTest();
 		var fn = function(){ return true; };
-		myTest.addEvent("event1", Local.fn);
-		myTest.addEvent("event2", fn);
-		myTest.removeEvents();
+		myTest.addEvent('event1', Local.fn);
+		myTest.addEvent('event2', fn);
+		myTest.removeEvents('event1').removeEvents('event2');
 
-		var events = myTest.$events;
-		value_of(events["event1"].length).should_be(0);
-		value_of(events["event2"].length).should_be(0);
+		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(0);
+		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(0);
 	},
 
 	"should remove events with an object": function(){
 		var myTest = new Local.EventsTest();
 		var events = {
-			event1: Local.fn.create(),
-			event2: Local.fn.create()
+			event1: Local.fn,
+			event2: Local.fn
 		};
-		myTest.addEvent('event1', Local.fn.create()).addEvents(events);
+		myTest.addEvent('event1', function(){ Local.fn.call(this); }).addEvents(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(2);
-		myTest.removeEvents(events);
+		myTest.removeEvent(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(3);
 		myTest.fireEvent('event2');
@@ -237,7 +232,12 @@ describe("Options Class", {
 
 	"before all": function(){
 		Local.OptionsTest = new Class({
-			Implements: Options,
+			Implements: [Options, Events],
+			
+			options: {
+				a: 1,
+				b: 2
+			},
 
 			initialize: function(options){
 				this.setOptions(options);
@@ -246,24 +246,24 @@ describe("Options Class", {
 	},
 
 	"should set options": function(){
-		var myTest = new Local.OptionsTest({ a: 1, b: 2});
-		value_of(myTest.options).should_not_be(undefined);
+		var myTest = new Local.OptionsTest({a: 1, b: 3});
+		value_of(Storage.retrieve(myTest, 'options')).should_not_be(undefined);
 	},
 
 	"should override default options": function(){
-		Local.OptionsTest.implement({
-			options: {
-				a: 1,
-				b: 2
-			}
-		});
 		var myTest = new Local.OptionsTest({a: 3, b: 4});
-		value_of(myTest.options.a).should_be(3);
-		value_of(myTest.options.b).should_be(4);
-	},
+		value_of(myTest.getOption('a')).should_be(3);
+		value_of(myTest.getOption('b')).should_be(4);
+	}
 
-	"should add events in the options object if class has implemented the Events class": function(){
-		Local.OptionsTest.implement(new Events).implement({
+});
+
+describe("Options Class w/ Events", {
+
+	"before all": function(){
+		Local.OptionsTest = new Class({
+			Implements: [Options, Events],
+			
 			options: {
 				onEvent1: function(){
 					return true;
@@ -271,18 +271,28 @@ describe("Options Class", {
 				onEvent2: function(){
 					return false;
 				}
+			},
+	
+			initialize: function(options){
+				this.setOptions(options);
 			}
 		});
+	},
+	
+	"should add events in the options object if class has implemented the Events class": function(){
 		var myTest = new Local.OptionsTest({
+			onEvent2: function(){
+				return true;
+			},
+			
 			onEvent3: function(){
 				return true;
 			}
 		});
-		var events = myTest.$events;
-		value_of(events).should_not_be(undefined);
-		value_of(events["event1"].length).should_be(1);
-		value_of(events["event2"].length).should_be(1);
-		value_of(events["event3"].length).should_be(1);
+
+		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(1);
+		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(1);
+		value_of(Storage.retrieve(myTest, 'events.type.event3').length).should_be(1);
 	}
 
 });

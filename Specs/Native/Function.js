@@ -9,7 +9,7 @@ License:
 (function(){
 
 var fn = function(){
-	return $A(arguments);
+	return Array.from(arguments);
 };
 
 var Rules = function(){
@@ -17,39 +17,22 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat($A(arguments));
+	return [this].append(Array.from(arguments));
 };
 
 describe("Function Methods", {
 
-	// Function.create
-
-	'should return a new function': function(){
-		var fnc = $empty.create();
-		value_of($empty === fnc).should_be_false();
-	},
-
-	'should return a new function with specified argument': function(){
-		var fnc = fn.create({'arguments': 'rocks'});
-		value_of(fnc()).should_be(['rocks']);
-	},
-
-	'should return a new function with multiple arguments': function(){
-		var fnc = fn.create({'arguments': ['MooTools', 'rocks']});
-		value_of(fnc()).should_be(['MooTools', 'rocks']);
-	},
-
-	'should return a new function bound to an object': function(){
-		var fnc = Rules.create({'bind': 'MooTools'});
-		value_of(fnc()).should_be('MooTools rules');
-	},
-
 	'should return a new function as an event': function(){
-		var fnc = fn.create({'arguments': [0, 1], 'event': true});
+		var fnc = fn.bindWithEvent(fnc, [0, 1]);
 		value_of(fnc('an Event occurred')).should_be(['an Event occurred', 0, 1]);
 	},
 
 	// Function.bind
+
+	'should return a new function bound to an object': function(){
+		var fnc = Rules.bind('MooTools');
+		value_of(fnc()).should_be('MooTools rules');
+	},
 
 	'should return the function bound to an object': function(){
 		var fnc = Rules.bind('MooTools');
@@ -77,6 +60,16 @@ describe("Function Methods", {
 	},
 
 	// Function.pass
+
+	'should return a new function with specified argument': function(){
+		var fnc = fn.pass('rocks');
+		value_of(fnc()).should_be(['rocks']);
+	},
+
+	'should return a new function with multiple arguments': function(){
+		var fnc = fn.pass(['MooTools', 'rocks']);
+		value_of(fnc()).should_be(['MooTools', 'rocks']);
+	},
 
 	'should return a function that when called passes the specified arguments to the original function': function(){
 		var fnc = fn.pass('MooTools is beautiful and elegant');
@@ -123,7 +116,7 @@ describe("Function Methods", {
 	},
 
 	"should return the function's return value": function(){
-		var fnc = $lambda('hello world!');
+		var fnc = Function.from('hello world!');
 		value_of(fnc.attempt()).should_be('hello world!');
 	},
 
@@ -137,17 +130,17 @@ describe("Function Methods", {
 	// Function.delay
 
 	'delay should return a timer pointer': function(){
-		var timer = $empty.delay(10000);
-		value_of(Number.type(timer)).should_be_true();
-		$clear(timer);
+		var timer = nil.delay(10000);
+		value_of(Type.isNumber(timer)).should_be_true();
+		Function.clear(timer);
 	},
 
 	// Function.periodical
 
 	'periodical should return a timer pointer': function(){
-		var timer = $empty.periodical(10000);
-		value_of(Number.type(timer)).should_be_true();
-		$clear(timer);
+		var timer = nil.periodical(10000);
+		value_of(Type.isNumber(timer)).should_be_true();
+		Function.clear(timer);
 	}
 
 });

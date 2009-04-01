@@ -16,11 +16,12 @@ Request.JSON = new Class({
 
 	initialize: function(options){
 		this.parent(options);
-		this.headers.extend({'Accept': 'application/json', 'X-Request': 'JSON'});
+		this.getOption('headers')['Accept'] = 'application/json';
+		this.getOption('headers')['X-Request'] = 'JSON';
 	},
 
 	success: function(text){
-		this.response.json = JSON.decode(text, this.options.secure);
+		this.response.json = JSON.decode(text, this.getOption('secure'));
 		this.onSuccess(this.response.json, text);
 	}
 

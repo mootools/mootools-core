@@ -18,39 +18,30 @@ Fx.Tween = new Class({
 	set: function(property, now){
 		if (arguments.length == 1){
 			now = property;
-			property = this.property || this.options.property;
+			property = this.property || this.getOption('property');
 		}
-		this.render(this.element, property, now, this.options.unit);
+		this.render(this.element, property, now, this.getOption('unit'));
 		return this;
 	},
 
 	start: function(property, from, to){
 		if (!this.check(property, from, to)) return this;
 		var args = Array.flatten(arguments);
-		this.property = this.options.property || args.shift();
+		this.property = this.getOption('property') || args.shift();
 		var parsed = this.prepare(this.element, this.property, args);
 		return this.parent(parsed.from, parsed.to);
 	}
 
 });
 
-Element.Properties.tween = {
+Element.defineSetter('tween', function(options){
+	this.get('tween').cancel().setOptions(options);
+});
 
-	set: function(options){
-		var tween = this.retrieve('tween');
-		if (tween) tween.cancel();
-		return this.eliminate('tween').store('tween:options', $extend({link: 'cancel'}, options));
-	},
-
-	get: function(options){
-		if (options || !this.retrieve('tween')){
-			if (options || !this.retrieve('tween:options')) this.set('tween', options);
-			this.store('tween', new Fx.Tween(this, this.retrieve('tween:options')));
-		}
-		return this.retrieve('tween');
-	}
-
-};
+Element.defineGetter('tween', function(){
+	if (!this.retrieve('tween')) this.store('tween', new Fx.Tween(this, {link: 'cancel'}));
+	return this.retrieve('tween');
+});
 
 Element.implement({
 
@@ -61,7 +52,7 @@ Element.implement({
 
 	fade: function(how){
 		var fade = this.get('tween'), o = 'opacity', toggle;
-		how = $pick(how, 'toggle');
+		how = Utility.pick(how, 'toggle');
 		switch (how){
 			case 'in': fade.start(o, 1); break;
 			case 'out': fade.start(o, 0); break;
@@ -75,7 +66,7 @@ Element.implement({
 			break;
 			default: fade.start(o, arguments);
 		}
-		if (!toggle) this.eliminate('fade:flag');
+		if (!toggle) this.dump('fade:flag');
 		return this;
 	},
 
@@ -85,7 +76,7 @@ Element.implement({
 			end = (end == 'transparent') ? '#fff' : end;
 		}
 		var tween = this.get('tween');
-		tween.start('background-color', start || '#ffff88', end).chain(function(){
+		tween.start('background-color', (start || '#ffff88'), end).chain(function(){
 			this.setStyle('background-color', this.retrieve('highlight:original'));
 			tween.callChain();
 		}.bind(this));
