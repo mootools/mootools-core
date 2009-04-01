@@ -110,6 +110,11 @@ Array.implement({
 			if (item != null) array = array.concat((Native.isEnumerable(item)) ? Array.flatten(item) : item);
 		}
 		return array;
+	},
+	
+	item: function(at){
+		if (at < 0) at += this.length;
+		return (at < 0 || at >= this.length) ? null : this[at];
 	}
 
 });

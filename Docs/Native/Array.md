@@ -508,6 +508,26 @@ Empties an array.
 	myArray.empty(); //myArray is now []
 
 
+Array Method: item {#Array:item}
+----------------------------------
+
+Returns an item in an array. Function supports negative indexing.
+
+### Syntax:
+
+	myArray.item(at);
+
+### Returns:
+
+* (*mixed*) An item from this array. If this array is empty, returns null.
+
+### Examples:
+
+	var myArray = ['old', 'data'];
+	myArray.item(0); //'old'
+	myArray.item(-1); //'data'
+
+
 Array Method: flatten {#Array:flatten}
 --------------------------------------
 
@@ -625,8 +645,8 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 	var copiedArray = $A(anArray); //Returns [0, 1, 2, 3, 4].
 
 
-[Array]: /core/Native/Array
-[Function:bind]: /core/Native/Function/#Function:bind
+[Array]: /Native/Array
+[Function:bind]: /Native/Function/#Function:bind
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
 [MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
 [MDC Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
