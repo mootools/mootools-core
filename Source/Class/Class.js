@@ -130,11 +130,11 @@ Class.Mutators = {
 		this.prototype._constructor = this;
 
 		if (this.prototype.parent == null) this.prototype.parent = function(){
-			if (!this._name) return null;
-			var parent = this._constructor.parent;
-			if (!parent) return null;
-			this._constructor = parent.prototype[this._name]._owner;
-			var result = this._constructor.prototype[this._name].apply(this, arguments);
+			if (!this._name) throw new Error('the method "parent" cannot be called directly.');
+			var relative = this._constructor.prototype[this._name]._owner, method = relative.parent.prototype[this._name];
+			if (!method) throw new Error(this._name + ' does not have a parent method.');
+			this._constructor = method._owner;
+			var result = method.apply(this, arguments);
 			delete this._constructor;
 			return result;
 		};
