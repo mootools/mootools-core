@@ -13,9 +13,9 @@ function Class(params){
 	var newClass = function(){
 		Object.reset(this);
 		if (newClass._prototyping) return this;
-		this._name = 'constructor';
+		this._current = $empty;
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		this._name = this.caller = null;
+		delete this._current; delete this.caller;
 		return value;
 	}.extend(this);
 	
@@ -26,6 +26,11 @@ function Class(params){
 
 	return newClass;
 
+};
+
+Function.prototype.protect = function(){
+	this._protected = true;
+	return this;
 };
 
 Object.reset = function(object, key){
@@ -60,16 +65,17 @@ new Native({name: 'Class', initialize: Class}).extend({
 		return proto;
 	},
 	
-	wrap: function(key, method, self){
-
+	wrap: function(self, key, method){
+		method = method._origin || method;
+		
 		return function(){
-			if (method._protected && this._name == null) return this;
-			var caller = this.caller, name = this._name;
-			this.caller = name; this._name = key;
+			if (method._protected && this._current == null) throw new Error('The method "' + key + '" cannot be called.');
+			var caller = this.caller, current = this._current;
+			this.caller = current; this._current = arguments.callee;
 			var result = method.apply(this, arguments);
-			this._name = name; this.caller = caller;
+			this._current = current; this.caller = caller;
 			return result;
-		}.extend({_owner: self, _origin: method});
+		}.extend({_owner: self, _origin: method, _name: key});
 
 	}
 	
@@ -97,7 +103,7 @@ Class.implement({
 			
 			case 'function':
 				if (value._hidden) return this;
-				proto[key] = Class.wrap(key, value._origin || value, this);
+				proto[key] = Class.wrap(this, key, value);
 			break;
 			
 			case 'object':
@@ -127,17 +133,11 @@ Class.Mutators = {
 		this.parent = parent;
 		this.prototype = Class.instantiate(parent);
 
-		this.prototype._constructor = this;
-
-		if (this.prototype.parent == null) this.prototype.parent = function(){
-			if (!this._name) throw new Error('the method "parent" cannot be called directly.');
-			var relative = this._constructor.prototype[this._name]._owner, method = relative.parent.prototype[this._name];
-			if (!method) throw new Error(this._name + ' does not have a parent method.');
-			this._constructor = method._owner;
-			var result = method.apply(this, arguments);
-			delete this._constructor;
-			return result;
-		};
+		this.implement('parent', function(){
+			var name = this.caller._name, previous = this.caller._owner.parent.prototype[name];
+			if (!previous) throw new Error('The method "' + name + '" has no parent.');
+			return previous.apply(this, arguments);
+		}.protect());
 
 	},
 
