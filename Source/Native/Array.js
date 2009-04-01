@@ -9,8 +9,8 @@ License:
 Array.implement({
 
 	filter: function(fn, bind){
-		var l = this.length, results = Array.from(this);
-		while (l--) if (fn.call(bind, this[l], l, this) === false) results.splice(l, 1);
+		var l = this.length, results = Array.prototype.slice.call(this);
+		while (l--) if (!fn.call(bind, this[l], l, this)) results.splice(l, 1);
 		return results;
 	},
 
@@ -26,7 +26,7 @@ Array.implement({
 		while (l--) results[l] = fn.call(bind, this[l], l, this);
 		return results;
 	},
-	
+
 	every: function(fn, bind){
 	    var l = this.length;
 	    while (l--) if (!fn.call(bind, this[l], l, this)) return false;
@@ -38,25 +38,26 @@ Array.implement({
 	    while (l--) if (fn.call(bind, this[l], l, this)) return true;
 		return false;
 	},
-	
+
 	clean: function(){
-		return this.filter(function(item){ return item != null; });
+		return this.filter(function(item){
+		    return item != null;
+	    });
 	},
-	
+
 	pick: function(){
 		for (var i = 0, l = this.length; i < l; i++){
 			if (this[i] != null) return this[i];
 		}
 		return null;
 	},
-	
+
 	call: function(name){
-		var args = Array.from(arguments), l = this.length, results = new Array(l), item;
-		args.shift();
+		var args = Array.prototype.slice.call(arguments, 1), l = this.length, results = new Array(l), item;
 		while (l--) item = this[l], results[l] = item[name].apply(item, args);
 		return results;
 	},
-	
+
 	append: function(array){
 	    var s = this.length, l = array.length;
 	    this.length += l;
@@ -66,10 +67,6 @@ Array.implement({
 
 	contains: function(item, from){
 		return this.indexOf(item, from) != -1;
-	},
-
-	last: function(){
-		return this.item(-1);
 	},
 
 	random: function(){
@@ -105,9 +102,9 @@ Array.implement({
 		}
 		return array;
 	},
-	
+
 	item: function(at){
-		if (at < 0) at += this.length;
+		if (at < 0) at = (at % this.length) + this.length;
 		return (at < 0 || at >= this.length) ? null : this[at];
 	}
 
