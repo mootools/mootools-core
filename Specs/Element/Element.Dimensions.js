@@ -28,14 +28,6 @@ License:
 
 	describe('Element.Dimensions', {
 
-		'should return the proper offset for fixed position elements after scrolling': function(){
-			// this can give a false positive if viewing just this test since there isn't enough content to scroll the window
-			value_of(div.getOffsets()).should_be({ x:12,y:12 }); 
-			window.scrollBy(0,1);
-			value_of(div.getOffsets()).should_be({ x:12,y:12 });
-			window.scrollBy(0,-1);
-		}
-
 	});
 
 })();
