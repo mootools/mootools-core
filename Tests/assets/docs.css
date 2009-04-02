@@ -1,0 +1,290 @@
+/*
+File: Style.css
+	Slick Style for MooTools Docs.
+
+License:
+	Copyright (c)2007 Valerio Proietti, <http://mad4milk.net>.
+*/
+
+/* @group Reset */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+#menu ul {
+	list-style: none;
+}
+
+#submenu ul { 
+	list-style-type: square;
+}
+
+/* @end */
+
+/* @group Base */
+
+
+body {
+	font: 11px/1.5 Lucida Grande, Helvetica, Arial, sans-serif;
+	background: #F3F1F1;
+	color: #41464D;
+}
+
+body, #container {
+	width: 100%;
+}
+
+a {
+	text-decoration:none;
+}
+
+#title {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	padding: 5px 0;
+	background: #aaa;
+	background: #41464D;
+	color: #F3F1F1;
+	height: 30px;
+}
+
+#menu {
+	position: absolute;
+	width: 30%;
+	overflow-y: auto;
+	overflow-x: hidden;
+	top: 40px;
+	left: 0;
+	bottom: 0;
+	height: expression(document.body.clientHeight-40);
+}
+
+#docs {
+	top: 40px;
+	position: relative;
+	overflow: auto;
+}
+
+span.spc {
+	display: block;
+	height: 16px;
+}
+
+#docs-wrapper, #menu-wrapper {
+	overflow: hidden;
+	padding: 4px 4px 0;
+	background: #fff;
+}
+
+#docs-wrapper {
+	margin: 16px 16px 0 8px;
+}
+
+#menu-wrapper {
+	margin: 16px 8px 0 16px;
+}
+
+.success a:link, .success a:visited {
+	color: #657528;
+}
+
+.exception a:link, .exception a:visited {
+	color: #B33F3F;
+}
+
+a:link, a:visited {
+	color: #528CE0;
+}
+
+a:hover, a:active {
+	cursor: pointer !important;
+}
+
+#title h1 {
+	font: 25px/1.1 Arial, sans-serif;
+	font-weight: bolder;
+	margin: 1px 0 2px 20px;
+	text-shadow: 0 2px 2px rgba(0,0,0,0.4);
+}
+
+#title h1 span {
+	color: #D2E0E6;
+}
+
+#title a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 14px;
+	position: relative;
+	top: -2px;
+}
+
+#title ul li {
+	font-weight: bold;
+	font-size: 12px;
+	float: right;
+	margin: 10px 5px 0;
+}
+
+#title ul {
+	margin-right: 20px;
+}
+
+#menu h2 {
+	font-size: 14px;
+	background: #D0C8C8;
+	color: #8A7575;
+	margin-bottom: 4px;
+	padding: 2px 5px;
+}
+
+br {
+	display: none;
+}
+
+#menu h3 a {
+	display: block;
+}
+
+#menu h3.selected {
+	background-color: #e2e5d2;
+}
+
+#menu h3.selected a {
+	color: #657528;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	cursor: default;
+}
+
+#menu h3 {
+	font-size: 12px;
+	padding: 3px 5px 1px;
+	background: #D2E0E6;
+	color: #528CE0;
+	margin-bottom: 4px;
+}
+
+#submenu {
+	background: #CBCEBD;
+	color: #424D1A;
+	padding: 2px 30px;
+	max-height: 200px;
+	overflow: auto;
+	margin-bottom: 4px;
+}
+
+#submenu a {
+	color: #424D1A;
+	display: block;
+}
+
+#submenu a:hover {
+	text-decoration: underline;
+	color: #424D1A;
+	display: block;
+}
+
+#submenu ul.subgroup { 
+	padding-left: 20px;
+}
+
+p {
+	color: #575d67;
+}
+
+div#footer {
+	text-align: right;
+	padding: 10px 16px 0 0;
+}
+
+div#footer p {
+	padding: 0;
+}
+
+/* @end */
+
+
+/* @group Docs */
+
+#docs p {
+	padding: 5px;
+	font-size: 12px;
+}
+
+#docs p, #docs code, #docs li {
+	font-size: 12px;
+}
+
+#docs h1, #docs h2, #docs h3, #docs h4, #docs h5, #docs h6 {
+	margin: 5px 0;
+	padding: 3px 5px 1px;
+	background: #ddd;
+}
+
+#docs h1 {
+	margin: 25px 0 10px;
+	background: #D2E0E6;
+	color: #528CE0;
+}
+
+#docs h1.first {
+	margin: 0 0 10px;
+}
+
+#docs h2, #docs h3 {
+	margin: 10px 0;
+}
+
+#docs h3 {
+	background: #D0C8C8;
+	color: #5d4f4f;
+}
+
+#docs h2 {
+	color: #B33F3F;
+	background: #eed8d8;
+}
+
+#docs ul, #docs ol {
+	margin-left: 20px;
+}
+
+#docs ul {
+	list-style: square;
+}
+
+#docs ul li p {
+	padding: 0px;
+}
+
+#docs pre {
+	padding: 5px 7px;
+	margin: 5px 0;
+	background: #f5f5f5;
+	border: 1px solid #ddd;
+	color: #333;
+	overflow: auto;
+}
+
+#docs h5, #docs h6 {
+	margin: 5px 0;
+	padding: 3px 5px 1px;
+	color: #ce4521;
+	background: #f0f0ee;
+}
+
+#container #docs #docs-wrapper li strong {
+	color: #5a86a3;
+}
+
+#container #docs #docs-wrapper li em {
+	color: #a56f49;
+}
+
+/* @end */

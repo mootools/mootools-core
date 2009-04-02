@@ -1,0 +1,79 @@
+body {
+	font-family: verdana;
+	font-size: 11px;
+	background-color: #bed1e7;
+}
+div.DefaultStickyWin {
+	width: 400px;
+}
+div.DefaultStickyWin div.top_ul {
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.png) top left no-repeat !important;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.gif) top left no-repeat;
+	height: 30px;
+	width: 15px;
+	float: left;
+}
+div.DefaultStickyWin div.top_ur {
+	position: relative;
+	left: 0px !important;
+	left: -4px;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.png) top right !important;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.gif) top right;
+	height: 30px;
+	margin: 0px 0px 0px 15px !important;
+	margin-right: -4px;
+	padding: 0px;
+}
+
+div.DefaultStickyWin h1.caption{
+	margin: 0;
+	padding: 0;
+	font-weight: bold;
+	color: #555;
+	font-size: 14px;
+	position: relative;
+	top: 7px;
+	left: 5px;
+	width: 90%;
+}
+div.DefaultStickyWin div.middle {
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/body.png) top left repeat-y!important;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/body.gif) top left repeat-y;
+	margin-right: 20px;
+}
+div.DefaultStickyWin div.body {
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/body.png) top right repeat-y !important;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/body.gif) top right repeat-y;
+	padding: 8px 20px 8px 0px;
+	margin-left: 5px;
+	position: relative;
+	right: -20px;
+}
+div.DefaultStickyWin div.bottom_ll {
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.png) bottom left no-repeat!important;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.gif) bottom left no-repeat;
+	width: 15px;
+	height: 15px;
+	float: left;
+}
+div.DefaultStickyWin div.bottom_lr {
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.png) bottom right !important;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/full.gif) bottom right;
+	position: relative;
+	left: 0px !important;
+	left: -4px;
+	margin: 0px 0px 0px 15px !important;
+	margin-right: -4px;
+	height: 15px;
+}
+div.DefaultStickyWin div.closeButton {
+	width: 13px;
+	height: 13px;
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/closebtn.gif);
+	float: right;
+	margin: 10px 15px 0px 0px;
+	cursor: pointer;
+}
+div.DefaultStickyWin div.closeButton:hover {
+	background: url(http://www.cnet.com/html/rb/assets/global/stickyWinHTML/closebtn_over.gif);
+}

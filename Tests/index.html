@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Unit Tester</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script src="assets/mootools-1.2.js" type="text/javascript"></script>
+	<script src="assets/mootools-more-1.2.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/clientside.js" type="text/javascript" charset="utf-8"></script>
+	<script src="assets/UnitTester.js" type="text/javascript"></script>
+	<script src="assets/posteditor.js" type="text/javascript"></script>
+	<script src="assets/Debugger.cnet.js" type="text/javascript"></script>
+	<script src="config.js" type="text/javascript"></script>
+	<script>
+		window.addEvent('domready', function(){
+			$('script').set('value', '');
+			new PostEditor('script');
+		});
+	</script>
+
+	<link rel="STYLESHEET" type="text/css" href="assets/tests.css">
+</head>
+<body>
+	<div id="title">
+		<h1>
+			<div style="float:right; margin-right: 20px">
+				<a href="readme.html">readme &raquo;</a>
+			</div>
+			<script>document.write(UnitTester.site);</script> <span><script>document.write(UnitTester.title);</script></span>
+		</h1>
+	</div>
+	<center class="clearfix">
+		<div id="testBox">
+			<div id="testLoader">
+				<h2>Load tests:</h2>
+				<dl id="testLoaderSel">
+				</dl>
+			</div>
+			<div id="testFrameContainer">
+				<iframe src="test_frame.html" id="testFrame"></iframe>
+				<div>
+					<b>manual code entry:</b>
+					<center>
+						<textarea></textarea>
+						<div class="handle"></div>
+					</center>
+					<button>execute code</button>
+				</div>
+			</div>
+			<div id="script">
+				<dl id="tests"></dl>
+			</div>
+		</div>
+	</center>
+	<code id="testTemplate">
+		<dt><b>{title}</b> <button>run test</button></dt>
+		<dd>
+			<p>{description}</p>
+			<textarea>{body}</textarea>
+			<div class="handle"></div>
+			<div class="verify">
+				<p>{verify}</p>
+				<div class="actions">
+					<a class="pass">yes</a>
+					<a class="fail">no</a>
+				</div>
+			</div>
+		</dd>
+	</code>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>MooTools Unit Test Framework Documentation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script src="assets/mootools-1.2.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="assets/showdown.js"></script>
+	<script>
+	var Docs = {
+
+		start: function(){
+			if (location.protocol == 'file:') Docs.local();
+			new Request({
+				url: "readme.md",
+				onComplete: Docs.update
+			}).send();
+		},
+
+		local: function(){
+			Request.implement({
+				getXHR: function(){
+					return (window.ActiveXObject) ? new ActiveXObject('Microsoft.XMLHTTP') : new XMLHttpRequest();
+				},
+				isSuccess: function(){
+					return (!this.status || (this.status >= 200) && (this.status < 300));
+				}
+			});
+		},
+
+		update: function(markdown){
+			var wrapper = $('docs-wrapper'), submenu = $('submenu');
+			if (!submenu) submenu = new Element('div').set('id', 'submenu');
+
+			var parse = Docs.parse(markdown);
+			wrapper.set('html', parse.innerHTML);
+		},
+
+		parse: function(markdown){
+			var html = ShowDown(markdown);
+			var temp = new Element('div').set('html', html);
+			var anchor = (/\{#(.*)\}/);
+
+			temp.getElements('h1, h2, h3, h4, h5, h6').each(function(h){
+				var matches = h.innerHTML.match(anchor);
+				if (matches) h.set('id', matches[1]);
+				h.innerHTML = h.innerHTML.replace(anchor, '');
+			});
+
+			var heading = temp.getElement('h1');
+			if (heading) heading.set('class', 'first');
+			return temp;
+		}
+
+
+
+	};
+
+
+
+
+
+
+
+	var ShowDown = function(text){
+		return new Showdown.converter().makeHtml(text);
+	};
+
+	window.addEvent('domready', Docs.start);
+
+	</script>
+
+
+	<link rel="stylesheet" href="assets/docs.css" type="text/css" media="screen" />
+</head>
+<body>
+	<div id="container">
+		<div id="title">
+			<h1>
+				<div style="float:right; margin-right: 20px">
+					<a href="index.html">run tests &raquo;</a>
+				</div>
+				MooTools Unit Test Framework <span>Documentation</span>
+			</h1>
+		</div>
+		<div id="docs">
+			<div id="docs-wrapper"></div>
+			<div id="footer">
+				<p>Released under the <a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons Attribution-NonCommercial-ShareAlike 3.0</a> License</p>
+				<p>powered by <a href="http://daringfireball.net/projects/markdown/">markdown</a>, rendered with <a href="http://www.attacklab.net/showdown-gui.html">showdown</a>.</p>
+			</div>
+			<span class="spc"></span>
+		</div>
+	</div>
+</body>
+</html>

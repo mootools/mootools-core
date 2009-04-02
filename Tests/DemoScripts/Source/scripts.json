@@ -1,0 +1,21 @@
+{
+	"Methods":{
+		"StringMethods":{
+			"deps":[],
+			"desc":"Helper methods for String manipulation."
+		},
+		"getElement": {
+			"deps":["StringMethods"],
+			"desc":"Retrieves a DOM element by its ID."
+		},
+		"setHTML":{
+			"deps":["StringMethods"],
+			"desc":"Sets the inner HTML of a DOM element."
+		}
+	},
+	"PromptUser": {
+		"SimplePrompt":{
+			"deps":["setHTML"] //this will include both DOM and String methods because of the dependency chain
+		}
+	}
+}

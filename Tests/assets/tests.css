@@ -1,0 +1,219 @@
+/* -- Clear Fix -- */
+.clearfix:after {content: "."; display: block; height: 0; clear: both; visibility: hidden;}
+.clearfix {display: inline-table;}
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+body {
+	font-family: verdana;
+	font-size: 10px;
+	font: 11px/1.5 Lucida Grande, Helvetica, Arial, sans-serif;
+	background: #F3F1F1;
+	color: #41464D;
+}
+dl {
+	position: relative;
+}
+
+#title {
+	width: 100%;
+	padding: 5px 0;
+	background: #aaa;
+	background: #41464D;
+	color: #F3F1F1;
+	height: 30px;
+}
+#title h1 {
+	font: 25px/1.1 Arial, sans-serif;
+	font-weight: bolder;
+	margin: 1px 0 2px 20px;
+	text-shadow: 0 2px 2px rgba(0,0,0,0.4);
+}
+
+#title h1 span {
+	color: #D2E0E6;
+}
+
+#title a {
+	color: #fff;
+	text-decoration: none;
+	font-size: 14px;
+	position: relative;
+	top: -2px;
+}
+
+#testBox {
+	width: 1100px;
+	text-align: left;
+	position: relative;
+}
+#testFrameContainer {
+	float: left;
+	width: 403px;
+	margin-left: 10px;
+}
+#testFrame {
+	border: 1px solid black;
+	width: 400px;
+	height: 450px;
+	margin-top: 5px;
+}
+#script {
+	width: 400px;
+	float: left;
+	height: 600px;
+	overflow: auto;
+	border-bottom: 1px solid #ddd;
+	color: #000;
+	margin-top: 5px;
+	border-left: none;
+}
+#testLoader {
+	width: 200px;
+	float: left;
+}
+#testLoader dl {
+	margin: 4px 12px 0px 0px;
+	height: 577px;
+	overflow: auto;
+	width: 200px;
+}
+#testLoader dl * {
+	width: 170px;
+}
+#testLoader h4 {
+	margin: 4px 0px;
+}
+#testLoader dt {
+	margin: 4px 0px 3px;
+	padding: 2px 2px 2px 4px;
+	cursor: pointer;
+	background: #D2E0E6;
+	color: #528CE0;
+	font-size: 12px;
+	font-weight: bold;
+}
+#testLoader dt:hover {
+	color: #41464D;
+}
+#testLoader dd {
+	margin: 2px 0px 2px 2px;
+	padding: 2px 2px 2px 7px;
+	background: #D0C8C8;
+	color: #8A7575;
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+}
+#testLoader dd.selected, #testLoader dt.selected {
+	background-color: #fdfbd0;
+	color: #9b9828;
+}
+#tests .selected {
+	background-color: #fdfbd0 !important;
+}
+#testLoader .exception {
+	color: #B33F3F !important;
+	background: #EE9A9A !important;
+}	
+#testLoader .success {
+	background-color: #CFE773 !important;
+	color: #657528 !important;
+}	
+#runTest {
+	position: absolute;
+	right: 0px;
+}
+#testTemplate {
+	display: none;
+}
+#tests {
+	width: 370px;
+	padding-left: 10px;
+}
+#tests dt {
+	padding: 2px 8px 4px;
+	border-bottom: 1px solid #d0d0d0;
+	position: relative;
+}
+#tests dt b {
+	cursor: pointer;
+}
+dt button {
+	position: absolute;
+	right: 8px;
+	top: -2px;
+}
+#tests dd {
+	margin: 0px 7px 0px;
+	overflow: hidden;
+}
+textarea {
+	width: 342px;
+	padding: 4px;
+	height: 25px;
+}
+#testFrameContainer textarea {
+	width: 391px;
+	height: 100px;
+}
+div.handle {
+	width: 353px;
+	height: 4px;
+	position: relative;
+	top: -1px;
+	left: -1px;
+	border-top: #fff 1px solid;
+	border-left: #fff 1px solid;
+	border-right: #999 1px solid;
+	border-bottom: #999 1px solid;
+	background: #ccc;
+	cursor: n-resize;
+}
+#testFrameContainer div.handle {
+	width: 402px;
+}
+
+div.handle:hover {
+	background: #fcfcfc;
+}
+#tests div.verify {
+	display: none;
+}
+#tests div.verify a.pass, #tests div.verify a.fail {
+	float: left;
+	display: block;
+	cursor: pointer;
+	padding: 2px 15px;
+	background: url(radio.unchecked.gif) 2px 1px no-repeat;
+}
+#tests div.passed div.verify a.pass, #tests div.failed div.verify a.fail {
+	background: url(radio.checked.gif) 2px 1px no-repeat;
+}
+#tests div.verify p {
+	margin-bottom: 0px;
+}
+#tests div.verify div.actions {
+	padding-left: 10px;
+}
+#tests div.testBlock {
+	border: 1px solid #d0d0d0;
+	background: #f5f5f5;
+	padding: 6px 0px 6px;
+	margin-bottom: 12px;
+}
+#tests div.passed {
+	background: #eafed8
+}
+#tests div.failed {
+	background: #feede7;
+}
+
+body.test_iframe {
+	background: #fff;
+}
+
+body.test_iframe h1 {
+	font-size: 14px;
+}
