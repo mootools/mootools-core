@@ -92,7 +92,7 @@ License:
 	describe('Element.getCoordinates', {
 		
 		'should return the coordinates relative to parent': function(){
-			value_of(absDiv.getCoordinates(relDiv)).should_be({left:11, top:16, width:22, height:22, right:33, bottom:38});
+			value_of(absDiv.getCoordinates(relDiv)).should_be({left:16, top:16, width:22, height:22, right:38, bottom:38});
 		}
 		
 	});
