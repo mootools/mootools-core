@@ -7,7 +7,7 @@ License:
 */
 
 (function(){
-	var div;
+	var div, relDiv, absDiv, scrollDiv, tallDiv;
 	window.addEvent('domready', function(){
 		div = new Element('div', {
 			id: 'ElementDimensionsTest',
@@ -23,7 +23,54 @@ License:
 				top: 100,
 				left: 100
 			}
-		}).inject(document.body);
+		}).inject($(document.body));
+		
+		relDiv = new Element('div', {
+			styles: {
+				width: 50,
+				height: 50,
+				margin: 5,
+				padding: 5,
+				border: '1px solid green',
+				visibility: 'hidden',
+				position: 'relative'				
+			}
+		}).inject(div)
+		
+		absDiv = new Element('div', {
+			styles: {
+				width: 10,
+				height: 10,
+				margin: 5,
+				padding: 5,
+				border: '1px solid red',
+				visibility: 'hidden',
+				position: 'absolute',
+				top: 10,
+				left: 10				
+			}
+		}).inject(relDiv)
+	
+		scrollDiv = new Element('div', {
+			styles: {
+				width: 100,
+				height: 100,
+				overflow: 'scroll',
+				visibility: 'hidden', 
+				position: 'absolute',
+				top: 0,
+				left: 0			
+			}
+		}).inject($(document.body));
+	
+		tallDiv = new Element('div', {
+			styles: {
+				width: 200,
+				height: 200,
+				visibility: 'hidden'			
+			}
+		}).inject(scrollDiv);
+	
 	});
 
 	describe('Element.getSize', {
@@ -38,6 +85,30 @@ License:
 		
 		'should measure the x and y position of the element': function(){
 			value_of(div.getPosition()).should_be({x: 102, y: 102});
+		}
+		
+	});
+
+	describe('Element.getCoordinates', {
+		
+		'should return the coordinates relative to parent': function(){
+			value_of(absDiv.getCoordinates(relDiv)).should_be({left:11, top:16, width:22, height:22, right:33, bottom:38});
+		}
+		
+	});
+	
+	describe('Element.getScrollSize', {
+		
+		'should return the scrollSize': function(){
+			value_of(scrollDiv.getScrollSize()).should_be({x:200, y:200});
+		}
+		
+	});
+	
+	describe('Element.scrollTo', {
+		
+		'should scroll the element': function(){
+			value_of(scrollDiv.scrollTo(20,20).getScroll()).should_be({x:20, y:20});
 		}
 		
 	});
