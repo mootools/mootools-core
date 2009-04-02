@@ -19,15 +19,27 @@ License:
 				border: '1px solid black',
 				visibility: 'hidden',
 				display: 'block',
-				position: 'fixed',
-				top: 10,
-				left: 10
+				position: 'absolute',
+				top: 100,
+				left: 100
 			}
 		}).inject(document.body);
 	});
 
-	describe('Element.Dimensions', {
-
+	describe('Element.getSize', {
+		
+		'should measure the width and height of the element': function(){
+			value_of(div.getSize()).should_be({x: 108, y: 108});
+		}
+		
+	});
+	
+	describe('Element.getPosition', {
+		
+		'should measure the x and y position of the element': function(){
+			value_of(div.getPosition()).should_be({x: 102, y: 102});
+		}
+		
 	});
 
 })();
