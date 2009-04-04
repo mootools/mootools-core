@@ -157,3 +157,19 @@ describe("Array Methods", {
 	}
 
 });
+
+
+
+describe('Array.pick', {
+
+	'should return the first false argument': function(){
+		var picked1 = [null, undefined, false, [1,2,3], {}].pick();
+		value_of(picked1).should_be_false();
+	},
+
+	'should return the first defined argument': function(){
+		var picked1 = [null, undefined, null, [1,2,3], {}].pick();
+		value_of(picked1).should_be([1,2,3]);
+	}
+
+});

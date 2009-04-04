@@ -8,40 +8,40 @@ License:
 
 describe("Number Methods", {
 
-	// Number.toInteger
+	// Number.toInt
 
 	'should convert a number to an integer': function(){
-		value_of(Number.toInteger(111)).should_be(111);
+		value_of(Number.toInt(111)).should_be(111);
 	},
 
 	'should convert a number depending on the radix provided': function(){
-		value_of(Number.toInteger(111, 2)).should_be(7);
-		value_of(Number.toInteger(0x16, 10)).should_be(22); //ECMA standard, radix is optional so if starts with 0x then parsed as hexadecimal
-		value_of(Number.toInteger(016, 10)).should_be(14); //ECMA standard, radix is optional so if starts with 0 then parsed as octal
+		value_of(Number.toInt(111, 2)).should_be(7);
+		value_of(Number.toInt(0x16, 10)).should_be(22); //ECMA standard, radix is optional so if starts with 0x then parsed as hexadecimal
+		value_of(Number.toInt(016, 10)).should_be(14); //ECMA standard, radix is optional so if starts with 0 then parsed as octal
 	},
 
 	'should convert a string into an integer': function(){
-		value_of(Number.toInteger('10')).should_be(10);
-		value_of(Number.toInteger('10px')).should_be(10);
-		value_of(Number.toInteger('10.10em')).should_be(10);
+		value_of(Number.toInt('10')).should_be(10);
+		value_of(Number.toInt('10px')).should_be(10);
+		value_of(Number.toInt('10.10em')).should_be(10);
 	},
 
 	'should convert a string into an integer with a specific base': function(){
-		value_of(Number.toInteger('10', 5)).should_be(5);
+		value_of(Number.toInt('10', 5)).should_be(5);
 	},
 
-	// Number.toFloat
+	// Number.toFlt
 
 	'should convert a number to a float': function(){
-		value_of(Number.toFloat(1.00)).should_be(1);
-		value_of(Number.toFloat(1.12 - 0.12)).should_be(1);
-		value_of(Number.toFloat(0.0010)).should_be(0.001);
-		value_of(Number.toFloat(Number.MIN_VALUE)).should_be(Number.MIN_VALUE);
+		value_of(Number.toFlt(1.00)).should_be(1);
+		value_of(Number.toFlt(1.12 - 0.12)).should_be(1);
+		value_of(Number.toFlt(0.0010)).should_be(0.001);
+		value_of(Number.toFlt(Number.MIN_VALUE)).should_be(Number.MIN_VALUE);
 	},
 
 	'should convert a string into a float': function(){
-		value_of(Number.toFloat('10.11')).should_be(10.11);
-		value_of(Number.toFloat('10.55px')).should_be(10.55);
+		value_of(Number.toFlt('10.11')).should_be(10.11);
+		value_of(Number.toFlt('10.55px')).should_be(10.55);
 	},
 
 	// Number.limit

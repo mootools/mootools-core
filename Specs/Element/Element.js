@@ -93,15 +93,15 @@ var myElements = new Elements([
 describe('Elements', {
 
 	"should return an 'elements' type": function(){
-		value_of(Type.isElements(myElements)).should_be_true();
+		value_of(Native.isElements(myElements)).should_be_true();
 	},
 
 	"should return an array of Elements": function(){
-		value_of(myElements.every(Type.isElement)).should_be_true();
+		value_of(myElements.every(Native.isElement)).should_be_true();
 	},
 
 	"should apply Element prototypes to the returned array": function(){
-		value_of(nil(myElements.addEvent)).should_be_true();
+		value_of(myElements.addEvent).should_not_be_null();
 	},
 
 	"should return all Elements that match the string matcher": function(){
@@ -160,7 +160,7 @@ describe('$', {
 		var dollar2 = $('dollar');
 
 		value_of(dollar1).should_be(dollar2);
-		value_of(nil(dollar1.addEvent)).should_be_true();
+		value_of(dollar1.addEvent).should_not_be_null();
 	},
 
 	'should return the window if passed': function(){
@@ -475,6 +475,7 @@ describe('Element.set', {
 	"should set the html of a select Element": function(){
 		var html = '<option>option 1</option><option selected="selected">option 2</option>';
 		var select = new Element('select').set('html', html);
+		console.log(select.search('>'));
 		value_of(select.search('>').length).should_be(2);
 		value_of(select.options.length).should_be(2);
 		value_of(select.selectedIndex).should_be(1);

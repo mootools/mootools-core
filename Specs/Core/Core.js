@@ -51,8 +51,8 @@ describe('Native', {
 		value_of(Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
 	},
 
-	"should have a 'native' type": function(){
-		value_of(Type.isNative(Car)).should_be_true();
+	"should have a 'native' Native": function(){
+		value_of(Native.isNative(Car)).should_be_true();
 	}
 
 });
@@ -74,7 +74,7 @@ describe('Array.from', {
 		div1.appendChild(div3);
 
 		var array = Array.from(div1.getElementsByTagName('*'));
-		value_of(Type.isArray(array)).should_be_true();
+		value_of(Native.isArray(array)).should_be_true();
 	},
 
 	'should return an array for arguments': function(){
@@ -82,7 +82,7 @@ describe('Array.from', {
 			return Array.from(arguments);
 		};
 		var arr = fnTest(1,2,3);
-		value_of(Type.isArray(arr)).should_be_true();
+		value_of(Native.isArray(arr)).should_be_true();
 		value_of(arr).should_have(3, 'items');
 	},
 
@@ -155,19 +155,19 @@ describe('Function.clear', {
 describe('nil', {
 
 	'should return true on 0': function(){
-		value_of(nil(0)).should_be_true();
+		value_of(nil(0)).should_be(0);
 	},
 
 	'should return true on false': function(){
-		value_of(nil(false)).should_be_true();
+		value_of(nil(false)).should_be_false();
 	},
 
 	'should return false on null': function(){
-		value_of(nil(null)).should_be_false();
+		value_of(nil(null)).should_be_null();
 	},
 
 	'should return false on undefined': function(){
-		value_of(nil(undefined)).should_be_false();
+		value_of(nil(undefined)).should_be_null();
 	}
 
 });
@@ -218,20 +218,6 @@ describe('Function.from', {
 
 });
 
-describe('Object.pick', {
-
-	'should return the first false argument': function(){
-		var picked1 = Object.pick(null, undefined, false, [1,2,3], {});
-		value_of(picked1).should_be_false();
-	},
-
-	'should return the first defined argument': function(){
-		var picked1 = Object.pick(null, undefined, null, [1,2,3], {});
-		value_of(picked1).should_be([1,2,3]);
-	}
-
-});
-
 describe('Number.random', {
 
 	'should return a number between two numbers specified': function(){
@@ -244,7 +230,7 @@ describe('Number.random', {
 describe('Date.now', {
 
 	'should return a timestamp': function(){
-		value_of(Type.isNumber(Date.now())).should_be_true();
+		value_of(Native.isNumber(Date.now())).should_be_true();
 	}
 
 });
@@ -319,11 +305,11 @@ describe('typeOf', {
 	},
 
 	"should return 'null' for null objects": function(){
-		value_of(typeOf(null)).should_be('null');
+		value_of(typeOf(null)).should_be('nil');
 	},
 
 	"should return 'null' for undefined objects": function(){
-		value_of(typeOf(undefined)).should_be('null');
+		value_of(typeOf(undefined)).should_be('nil');
 	},
 
 	"should return 'collection' for HTMLElements collections": function(){
