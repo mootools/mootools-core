@@ -9,8 +9,10 @@ License:
 Array.implement({
 
 	filter: function(fn, bind){
-		var l = this.length, results = Array.prototype.slice.call(this);
-		while (l--) if (!fn.call(bind, this[l], l, this)) results.splice(l, 1);
+		var results = [];
+		for (var i = 0, l = this.length; i < l; i++){
+			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+		}
 		return results;
 	},
 
@@ -22,51 +24,59 @@ Array.implement({
 	},
 
 	map: function(fn, bind){
-		var l = this.length, results = new Array(l);
-		while (l--) results[l] = fn.call(bind, this[l], l, this);
+		var results = [];
+		for (var i = 0, l = this.length; i < l; i++) results.push(fn.call(bind, this[i], i, this));
 		return results;
 	},
-
+	
 	every: function(fn, bind){
-	    var l = this.length;
-	    while (l--) if (!fn.call(bind, this[l], l, this)) return false;
+		for (var i = 0, l = this.length; i < l; i++){
+			if (!fn.call(bind, this[i], i, this)) return false;
+		}
 		return true;
 	},
 
 	some: function(fn, bind){
-	    var l = this.length;
-	    while (l--) if (fn.call(bind, this[l], l, this)) return true;
+		for (var i = 0, l = this.length; i < l; i++){
+			if (fn.call(bind, this[i], i, this)) return true;
+		}
 		return false;
 	},
-
+	
 	clean: function(){
 		return this.filter(function(item){
 		    return item != null;
-	    });
+		});
 	},
-
+	
 	pick: function(){
 		for (var i = 0, l = this.length; i < l; i++){
 			if (this[i] != null) return this[i];
 		}
 		return null;
 	},
-
+	
 	call: function(name){
-		var args = Array.prototype.slice.call(arguments, 1), l = this.length, results = new Array(l), item;
-		while (l--) item = this[l], results[l] = item[name].apply(item, args);
+		var args = Array.from(arguments), results = [];
+		args.shift();
+		for (var i = 0, j = this.length; i < j; i++){
+			var item = this[i];
+			results.push(item[name].apply(item, args));
+		}
 		return results;
 	},
-
+	
 	append: function(array){
-	    var s = this.length, l = array.length;
-	    this.length += l;
-	    while (l--) this[s + l] = array[l];
+		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
 
 	contains: function(item, from){
 		return this.indexOf(item, from) != -1;
+	},
+
+	last: function(){
+		return (this.length) ? this[this.length - 1] : null;
 	},
 
 	random: function(){
@@ -84,8 +94,9 @@ Array.implement({
 	},
 
 	erase: function(item){
-	    var l = this.length;
-	    while (l--) if (this[l] === item) this.splice(l, 1);
+		for (var i = this.length; i--; i){
+			if (this[i] === item) this.splice(i, 1);
+		}
 		return this;
 	},
 
