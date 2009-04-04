@@ -147,7 +147,7 @@
 	"Request": {
 
 		"Request": {
-			"deps": ["Class.Extras"],
+			"deps": ["Mixins"],
 			"desc": "Powerful all purpose Request Class. Uses XMLHTTPRequest."
 		},
 
