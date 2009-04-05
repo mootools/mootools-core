@@ -7,7 +7,21 @@ License:
 */
 
 var Element = function(item, props){
-	return (typeOf(item) == 'string') ? document.newElement(item, props) : document.id(item).set(props);
+	if (typeof item != 'string') return document.id(item).set(props);
+	
+	if (!props) props = {};
+	
+	var parsed = slick.parse(item)[0][0], id;
+	var tag = parsed.tag;
+	if (parsed.id) props.id = parsed.id;
+	
+	if (parsed.attributes) parsed.attributes.each(function(att){
+		if (att.value && att.operator == '=') props[att.name] = att.value;
+	});
+	
+	if (parsed.classes) props['class'] = parsed.classes.join(' ');
+	
+	return document.newElement(tag, props);
 };
 
 Element.prototype = Browser.Element.prototype;
@@ -55,7 +69,7 @@ document.id = (function(){
 	if (document.html.mergeAttributes){
 		
 		proto = document.createElement('div');
-		proto[':type'] = Function.from('element');
+		proto._type = Function.from('element');
 
 		types.element = function(item){
 			item.mergeAttributes(proto);
@@ -96,64 +110,31 @@ var Elements = function(elements, unique){
 Elements.prototype = {length: 0};
 Elements.parent = Array;
 
-new Native('Elements', Elements).implement('filter', function(filter, bind){
-	if (!filter) return this;
-	return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
-		return item.match(filter);
-	} : filter, bind));
-}.protect());
+new Native('Elements', Elements).implement({
+
+	filter: function(filter, bind){
+		if (!filter) return this;
+		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
+			return item.match(filter);
+		} : filter, bind));
+	}.protect(),
+	
+	push: function(item){
+		if (document.id(item)) this[this.length++] = item;
+		return this.length;
+	}.protect()
+
+});
 
 Elements.implement(Array.prototype);
 
 Array.mirror(Elements);
 
-Element.extend(new Accessors);
-
-Element.extend({
-	
-	definePseudoConstructor: function(name, fn){
-		return Storage.store(this, 'constructor.' + name, fn);
-	},
-	
-	lookupPseudoConstructor: function(name){
-		return Storage.retrieve(this, 'constructor.' + name);
-	},
-	
-	defineConstructorModifier: function(name, fn){
-		return Storage.store(this, 'modifier.' + name, fn);
-	},
-	
-	lookupConstructorModifier: function(name){
-		return Storage.retrieve(this, 'modifier.' + name);
-	}
-	
-});
-
 Document.implement({
 	
 	newElement: function(tag, props){
-		if (!props) props = {};
-		
-		var parsed = slick.parse(tag)[0][0], id;
-		tag = parsed.tag;
-		if (parsed.id) props.id = parsed.id;
-
-		if (parsed.attributes) parsed.attributes.each(function(att){
-			if (att.value && att.operator == '=') props[att.name] = att.value;
-		});
-		
-		if (parsed.classes) props['class'] = parsed.classes.join(' ');
-		if (props.checked != null) props.defaultChecked = props.checked;
-		
-		var modifier = Element.lookupConstructorModifier(tag);
-		var element = document.id((modifier) ? modifier() : this.createElement(tag)).set(props);
-		
-		if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
-			var parser = Element.lookupPseudoConstructor(pseudo.name);
-			if (parser) parser.call(element, pseudo.argument);
-		});
-
-		return element;
+		if (props && props.checked != null) props.defaultChecked = props.checked;
+		return document.id(this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
@@ -167,7 +148,7 @@ Document.implement({
 [Document, Element].call('implement', {
 	
 	search: function(expression){
-		return new Elements(slick(this, expression), false);
+		return slick(this, expression, new Elements);
 	},
 	
 	find: function(expression){
@@ -306,15 +287,9 @@ Element.implement({
 
 Element.implement(new Storage);
 
-/* slick attribute integration */
-	
-slick.getAttribute = function(element, attribute){
-	var getter = Element.lookupGetter(attribute = attribute.camelCase());
-	if (getter) return getter.call(element);
-	return element.getAttribute(attribute, 2);
-};
-
 /* Attribute Getters, Setters */
+
+Element.extend(new Accessors);
 
 (function(){
 
@@ -353,19 +328,31 @@ slick.getAttribute = function(element, attribute){
 			return !!this[bool];
 		});
 	});
+	
+	var accessors = Storage.retrieve(Element, 'accessors');
+	
+	/* slick attribute integration */
+	
+	slick.getAttribute = function(element, attribute){
+		var accessor = accessors[attribute], getter;
+		if (accessor && (getter = accessor.get)) return getter.call(element);
+		return element.getAttribute(attribute, 2);
+	};
+	
+	/* get, set */
 
 	Element.implement({
 
 		set: function(attribute, value){
-			var setter = Element.lookupSetter(attribute = attribute.camelCase());
-			if (setter) setter.call(this, value);
+			var accessor = accessors[attribute = attribute.camelCase()], setter;
+			if (accessor && (setter = accessor.set)) setter.call(this, value);
 			else if (value == null) this.removeAttribute(attribute);
 			else this.setAttribute(attribute, '' + value);
 			return this;
 		}.setMany(),
 
 		get: function(attribute){
-			return slick.getAttribute(this, attribute);
+			return slick.getAttribute(this, attribute = attribute.camelCase());
 		}.getMany()
 
 	});
