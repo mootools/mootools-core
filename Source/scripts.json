@@ -46,7 +46,7 @@
 	"Class": {
 		
 		"Mixins": {
-			"deps": ["Array", "Function", "Number", "String", "Object"],
+			"deps": ["Array", "Function", "Number", "String", "Object", "Table"],
 			"desc": "Contains utility classes that can be implemented into your own classes or objects to ease the execution of common tasks."
 		},
 
