@@ -42,71 +42,8 @@ var Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-	},
-
-	onStateChange: function(){
-		if (this.xhr.readyState != 4 || !this.running) return;
-		this.running = false;
-		this.status = 0;
-		
-		Function.stab(function(){
-			this.status = this.xhr.status;
-		}.bind(this));
-		
-		if (this.getOption('isSuccess').call(this, this.status)){
-			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
-			this.success(this.response.text, this.response.xml);
-		} else {
-			this.response = {text: null, xml: null};
-			this.failure();
-		}
-	},
-
-	isSuccess: function(){
-		return ((this.status >= 200) && (this.status < 300));
-	},
-
-	processScripts: function(text){
-		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
-		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
-	},
-
-	success: function(text, xml){
-		this.onSuccess(this.processScripts(text), xml);
-	},
-
-	onSuccess: function(){
-		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
-	},
-
-	failure: function(){
-		this.onFailure();
-	},
-
-	onFailure: function(){
-		this.fireEvent('complete').fireEvent('failure', this.xhr);
-	},
-
-	setHeader: function(name, value){
-		this.getOption('headers')[name] = value;
-		return this;
-	},
-
-	getHeader: function(name){
-		return Function.stab(function(){
-			return this.xhr.getResponseHeader(name);
-		}.bind(this));
-	},
-
-	check: function(){
-		if (!this.running) return true;
-		switch (this.getOption('link')){
-			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
-		}
-		return false;
-	},
-
+	}.protect(),
+	
 	send: function(data){
 		
 		if (!this.check(data)) return this;
@@ -138,7 +75,7 @@ var Request = new Class({
 			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
-		if(this.options.noCache) {
+		if (this.options.noCache){
 			var noCache = "noCache=" + new Date().getTime();
 			data = (data) ? noCache + '&' + data : noCache;
 		}
@@ -174,8 +111,70 @@ var Request = new Class({
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
-	}
+	},
+	
+	setHeader: function(name, value){
+		this.getOption('headers')[name] = value;
+		return this;
+	},
 
+	getHeader: function(name){
+		return Function.stab(function(){
+			return this.xhr.getResponseHeader(name);
+		}.bind(this));
+	},
+
+	onStateChange: function(){
+		if (this.xhr.readyState != 4 || !this.running) return;
+		this.running = false;
+		this.status = 0;
+		
+		Function.stab(function(){
+			this.status = this.xhr.status;
+		}.bind(this));
+		
+		if (this.getOption('isSuccess').call(this, this.status)){
+			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
+			this.success(this.response.text, this.response.xml);
+		} else {
+			this.response = {text: null, xml: null};
+			this.failure();
+		}
+	},
+
+	isSuccess: function(){
+		return ((this.status >= 200) && (this.status < 300));
+	}.protect(),
+
+	processScripts: function(text){
+		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
+		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
+	}.protect(),
+
+	success: function(text, xml){
+		this.onSuccess(this.processScripts(text), xml);
+	}.protect(),
+
+	onSuccess: function(){
+		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
+	}.protect(),
+
+	failure: function(){
+		this.onFailure();
+	}.protect(),
+
+	onFailure: function(){
+		this.fireEvent('complete').fireEvent('failure', this.xhr);
+	}.protect(),
+
+	check: function(){
+		if (!this.running) return true;
+		switch (this.getOption('link')){
+			case 'cancel': this.cancel(); return true;
+			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
+		}
+		return false;
+	}.protect()
 });
 
 (function(){

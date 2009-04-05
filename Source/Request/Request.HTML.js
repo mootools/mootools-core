@@ -37,7 +37,7 @@ Request.HTML = new Class({
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
-	}
+	}.protect()
 
 });
 
