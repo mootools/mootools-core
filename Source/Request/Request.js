@@ -101,7 +101,7 @@ var Request = new Class({
 		if (!this.running) return true;
 		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
+			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
 		}
 		return false;
 	},
