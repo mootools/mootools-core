@@ -33,7 +33,7 @@ Request.HTML = new Class({
 		response.elements = temp.search('*');
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
-		if (options.update) $(options.update).set('html', response.html);
+		if (options.update) document.id(options.update).set('html', response.html);
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
