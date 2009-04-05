@@ -12,10 +12,10 @@ var Class = new Native('Class', function(params){
 	
 	var newClass = function(){
 		Object.reset(this);
-		if (newClass[':prototyping']) return this;
-		this[':name'] = 'constructor'; this.arguments = Array.from(arguments);
+		if (newClass._prototyping) return this;
+		this._current = nil;
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		this[':name'] = this.caller = this.arguments = null;
+		delete this._current; delete this.caller;
 		return value;
 	}.extend(this);
 
@@ -36,23 +36,23 @@ Class.extend({
 		return this;
 	},
 	
-	wrap: function(key, method, self){
-
+	wrap: function(self, key, method){
+		if (method._origin) method = method._origin;
+		
 		return function(){
-			if (method[':protected'] && this[':name'] == null) throw new Error('the method "' + key + '" cannot be called directly.');
-			var caller = this.caller, name = this[':name'], args = this.arguments;
-			this.caller = name; this[':name'] = key; this.arguments = Array.from(arguments);
+			if (method._protected && this._current == null) throw new Error('The method "' + key + '" cannot be called.');
+			var caller = this.caller, current = this._current;
+			this.caller = current; this._current = arguments.callee;
 			var result = method.apply(this, arguments);
-			this.arguments = args; this[':name'] = name; this.caller = caller;
+			this._current = current; this.caller = caller;
 			return result;
-		}.extend({':owner': self, ':origin': method});
-
+		}.extend({_owner: self, _origin: method, _name: key});
 	},
 	
 	getPrototype: function(klass){
-		klass[':prototyping'] = true;
+		klass._prototyping = true;
 		var proto = new klass;
-		delete klass[':prototyping'];
+		delete klass._prototyping;
 		return proto;
 	}
 	
@@ -95,8 +95,8 @@ Class.implement('implement', function(key, value){
 	switch (typeOf(value)){
 		
 		case 'function':
-			if (value[':hidden']) return this;
-			proto[key] = Class.wrap(key, value[':origin'] || value, this);
+			if (value._hidden) return this;
+			proto[key] = Class.wrap(this, key, value);
 		break;
 		
 		case 'object':
@@ -122,17 +122,11 @@ Class.defineMutator('Extends', function(parent){
 	this.parent = parent;
 	this.prototype = Class.getPrototype(parent);
 
-	this.prototype[':constructor'] = this;
-
-	if (this.prototype.parent == null) this.prototype.parent = function(){
-		if (!this[':name']) throw new Error('the method "parent" cannot be called directly.');
-		var parent = this[':constructor'].parent;
-		if (!parent) throw new Error('trying to call a non-existing parent.');
-		this[':constructor'] = parent.prototype[this[':name']][':owner'];
-		var result = this[':constructor'].prototype[this[':name']].apply(this, arguments);
-		delete this[':constructor'];
-		return result;
-	};
+	this.implement('parent', function(){
+		var name = this.caller._name, previous = this.caller._owner.parent.prototype[name];
+		if (!previous) throw new Error('The method "' + name + '" has no parent.');
+		return previous.apply(this, arguments);
+	}.protect());
 
 });
 
