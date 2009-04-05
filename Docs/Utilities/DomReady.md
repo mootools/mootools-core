@@ -14,4 +14,4 @@ This event is only available to the window Element.
 ### See Also:
 [Element.Event][]
 
-[Element.Event]: /Element/Element.Event
+[Element.Event]: /core/Element/Element.Event

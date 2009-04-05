@@ -35,7 +35,8 @@ var Request = new Class({
 		encoding: 'utf-8',
 		stripScripts: true,
 		evalScripts: false,
-		evalResponse: false
+		evalResponse: false,
+		noCache: false
 	},
 
 	initialize: function(options){
@@ -136,6 +137,12 @@ var Request = new Class({
 			var encoding = (this.getOption('encoding')) ? '; charset=' + this.getOption('encoding') : '';
 			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
+
+		if(this.options.noCache) {
+			var noCache = "noCache=" + new Date().getTime();
+			data = (data) ? noCache + '&' + data : noCache;
+		}
+
 
 		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;

@@ -151,7 +151,7 @@ Copies all the properties from the second object passed in to the first object p
 
 ### Syntax:
 
-	$extend(original, extended);
+	$extend(original, extension);
 
 ### Arguments:
 
@@ -425,8 +425,8 @@ Returns the type of object that matches the element passed in.
 	$type(myString); //Returns "string".
 
 
-[Hash]: /Native/Hash
-[Array]: /Native/Array
-[Function:bind]: /Native/Function/#Function:bind
-[Function:delay]: /Native/Function/#Function:delay
-[Function:periodical]: /Native/Function/#Function:periodical
+[Hash]: /core/Native/Hash
+[Array]: /core/Native/Array
+[Function:bind]: /core/Native/Function/#Function:bind
+[Function:delay]: /core/Native/Function/#Function:delay
+[Function:periodical]: /core/Native/Function/#Function:periodical

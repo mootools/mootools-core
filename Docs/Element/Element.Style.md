@@ -117,6 +117,6 @@ Returns an object of styles of the Element for each argument passed in.
 
 
 
-[$]: /Element/Element/#dollar
-[Function]: /Native/Function
+[$]: /core/Element/Element/#dollar
+[Function]: /core/Native/Function
 [Element:getStyle]: #Element:getStyle

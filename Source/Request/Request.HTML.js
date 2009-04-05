@@ -12,6 +12,7 @@ Request.HTML = new Class({
 
 	options: {
 		update: false,
+		append: false,
 		evalScripts: true,
 		filter: false
 	},
@@ -50,6 +51,12 @@ Element.defineGetter('load', function(){
 });
 
 Element.implement({
+
+	send: function(url){
+		var sender = this.get('send');
+		sender.send({data: this, url: url || sender.options.url});
+		return this;
+	},
 
 	load: function(){
 		var loader = this.get('load');

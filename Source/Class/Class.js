@@ -137,4 +137,12 @@ Class.defineMutator('Implements', function(items){
 		this.implement(item);
 	}, this);
 
-});
+	Implements: function(items){
+		$splat(items).each(function(item){
+			if (item instanceof Function) item = Class.instantiate(item);
+			this.implement(item);
+		}, this);
+
+	}
+	
+};

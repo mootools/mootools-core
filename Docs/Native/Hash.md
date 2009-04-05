@@ -623,7 +623,7 @@ Shortcut for the new [Hash](/Core/#Hash).
 
 
 [Hash]: #Hash
-[Array:indexOf]: /Native/Array/#Array:indexOf
+[Array:indexOf]: /core/Native/Array/#Array:indexOf
 [Hash:getKeys]: #Hash:getKeys
 [Hash:getValues]: #Hash:getValues
-[Function:bind]: Native/Function#Function:bind
+[Function:bind]: /core/Native/Function#Function:bind

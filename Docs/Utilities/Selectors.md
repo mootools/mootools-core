@@ -262,6 +262,6 @@ Matches an only child of its parent Element.
 
 	$$('td:only-child');
 
-[$]: /Element/Element#dollar
-[Element]: /Element/Element
-[Selectors]: /Selectors/Selectors
+[$]: /core/Element/Element#dollar
+[Element]: /core/Element/Element
+[Selectors]: /core/Selectors/Selectors
