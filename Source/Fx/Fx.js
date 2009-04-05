@@ -22,6 +22,11 @@ var Fx = new Class({
 		link: 'ignore'
 	},
 	
+	initialize: function(options){
+		this.subject = this.subject || this;
+		this.setOptions(options);
+	}.protect(),
+	
 	set: function(now){
 		return now;
 	},
@@ -64,11 +69,6 @@ var Fx = new Class({
 		}
 	},
 
-	initialize: function(options){
-		this.subject = this.subject || this;
-		this.setOptions(options);
-	}.protect(),
-
 	compute: function(from, to, delta){
 		return Fx.compute(from, to, delta);
 	}.protect(),
@@ -77,7 +77,7 @@ var Fx = new Class({
 		if (!this.timer) return true;
 		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
+			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
 		}
 		return false;
 	}.protect(),
