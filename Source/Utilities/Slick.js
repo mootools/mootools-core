@@ -13,58 +13,53 @@ var slick = (function(buffer){
 	
 	// slick function
 	
-	var slick = function(context, expression){
-		if (expression == null) return [];
+	var slick = function(context, expression, all){
+		if (!all) all = [];
 		
-		if (typeof expression != 'string'){
-			var array = [];
-			if (slick.contains(context, expression)) array.push(expression);
-			return array;
+		if (expression == null) return all;
+		
+		if (typeof expression != 'string' && slick.contains(context, expression)){
+			all.push(expression);
+			return all;
 		}
 		
-		buffer.reset();
-		var parsed = slick.parse(expression), all = [];
-		
-		buffer.context = context;
-		
+		buffer.positions = {};
+
+		var parsed = slick.parse(expression), uniques = {};
+		buffer.push = (parsed.length == 1 && parsed[0].length == 1) ? buffer['push()'] : buffer['push(uid)'];
+
 		for (var i = 0; i < parsed.length; i++){
 			
-			var currentSelector = parsed[i], items;
+			var currentSelector = parsed[i];
 			
 			for (var j = 0; j < currentSelector.length; j++){
 				var currentBit = currentSelector[j], combinator = 'combinator(' + (currentBit.combinator || ' ') + ')';
-				var selector = buffer['util(parse-bit)'](currentBit);
+				var selector = buffer.parseBit(currentBit);
+				
 				var tag = selector[0], id = selector[1], params = selector[2];
 				
-				buffer.state.found = [];
-				buffer.state.uniques = {};
-				buffer.state.idx = 0;
+				buffer.local = {};
+				
+				if (j === (currentSelector.length - 1)){
+					buffer.uniques = uniques;
+					buffer.found = all;
+				} else {
+					buffer.uniques = {};
+					buffer.found = [];
+				}
 				
 				if (j == 0){
-					buffer.push = buffer['push(array)'];
 					buffer[combinator](context, tag, id, params);
 				} else {
-					buffer.push = buffer['push(object)'];
+					var items = buffer.current;
 					for (var m = 0, n = items.length; m < n; m++) buffer[combinator](items[m], tag, id, params);
 				}
 				
-				items = buffer.state.found;
+				// console.log(buffer.current);
+				
+				buffer.current = buffer.found;
+
 			}
-			
-			all = (i === 0) ? items : all.concat(items);
-		}
-		
-		if (parsed.length > 1){
-			var nodes = [], uniques = {}, idx = 0;
-			for (var k = 0; k < all.length; k++){
-				var node = all[k];
-				var uid = buffer.slick.uidOf(node);
-				if (!uniques[uid]){
-					nodes[idx++] = node;
-					uniques[uid] = true;
-				}
-			}
-			return nodes;
 		}
 		
 		return all;
@@ -76,9 +71,11 @@ var slick = (function(buffer){
 	
 	// slick contains
 	
-	slick.contains = function(context, element){
-		if (context.contains) return (context !== element && context.contains(element));
-		if (context.compareDocumentPosition) return !!(context.compareDocumentPosition(element) & 16);
+	slick.contains = (document.documentElement.contains) ? function(context, element){
+		return (context !== element && context.contains(element));
+	} : (document.documentElement.compareDocumentPosition) ? function(context, element){
+		return !!(context.compareDocumentPosition(element) & 16);
+	} : function(context, element){
 		var elements = context.getElementsByTagName(element.tagName);
 		for (var i = 0, l = elements.length; i < l; i++){
 			if (elements[i] === element) return true;
@@ -86,46 +83,28 @@ var slick = (function(buffer){
 		return false;
 	};
 	
-	// uid
+	// add pseudo
 	
-	slick.uidOf = (window.ActiveXObject) ? function(node){
-		return (node.slickUID || (node.slickUID = [buffer.uidx++]))[0];
-	} : function(node){
-		return node.slickUID || (node.slickUID = buffer.uidx++);
-	};
-	
-	// public pseudos
-	
-	var pseudos = {};
-	
-	slick.definePseudoSelector = function(name, fn){
-		pseudos[name] = fn;
+	slick.definePseudo = function(name, fn){
+		buffer['pseudo(' + name + ')'] = function(node, argument){
+			return fn.call(node, argument);
+		};
 		return this;
 	};
 	
-	slick.lookupPseudoSelector = function(name){
-		return pseudos[name];
-	};
-	
-	// default getAttribute
+	// default getAttribute (override this please)
 	
 	slick.getAttribute = function(node, name){
 		if (name == 'class') return node.className;
 		return node.getAttribute(name);
 	};
 	
-	// default parser
-	
-	slick.parse = function(object){
-		return object;
-	};
-	
 	// matcher
 	
 	slick.match = function(node, selector, buff){
 		if (!selector || selector === node) return true;
-		if (!buff) buff = buffer.reset();
-		var parsed = buff['util(parse-bit)'](slick.parse(selector)[0][0]);
+		if (!buff) (buff = buffer).positions = {};
+		var parsed = buff.parseBit(slick.parse(selector)[0][0]);
 		return buff['match(selector)'](node, parsed[0], parsed[1], parsed[2]);
 	};
 	
@@ -135,27 +114,26 @@ var slick = (function(buffer){
 
 	// cache
 	
-	cache: {nth: {}},
-	
-	// uid index
-	
-	uidx: 1,
-	
-	// resets state
-	
-	reset: function(){
-		this.state = {positions: {}};
-		return this;
-	},
+	'cache': {nth: {}},
 	
 	// combinators
 	
 	'combinator( )': function(node, tag, id, selector){
-		if (id && node.getElementById){
-			var item = node.getElementById(id);
-			if (item) this.push(item, tag, null, selector);
-			return;
+		
+		if (id){
+			var item;
+			if (node.getElementById){
+				item = node.getElementById(id);
+				if (item) this.push(item, tag, null, selector);
+				return;
+			} else if ((node === document.documentElement) || this.slick.contains(document.documentElement, node)){
+				item = document.getElementById(id);
+				if (item && this.slick.contains(node, item)) this.push(item, tag, null, selector);
+				return;
+			}
 		}
+		
+		
 		var children = node.getElementsByTagName(tag);
 		for (var i = 0, l = children.length; i < l; i++) this.push(children[i], null, id, selector);
 	},
@@ -208,36 +186,29 @@ var slick = (function(buffer){
 		}
 	},
 	
-	'util(node-check)': function(node, tag, id, selector){
-		if (node.nodeType === 1){
-			var uid = this.slick.uidOf(node);
-			if (this.state.uniques[uid]) return false;
-			this.push(node, tag, id, selector);
-		}
-		return true;
-	},
-	
 	'combinator(++)': function(node, tag, id, selector){
 		while ((node = node.nextSibling)){
-			if (this['util(node-check)'](node, tag, id, selector) === false) break;
+			if (node.nodeType !== 1) continue;
+			var uid = this.uidOf(node);
+			if (this.local[uid]) break;
+			this.local[uid] = true;
+			this.push(node, tag, id, selector);
 		}
 	},
 	
 	'combinator(--)': function(node, tag, id, selector){
 		while ((node = node.previousSibling)){
-			if (this['util(node-check)'](node, tag, id, selector) === false) break;
+			if (node.nodeType !== 1) continue;
+			var uid = this.uidOf(node);
+			if (this.local[uid]) break;
+			this.local[uid] = true;
+			this.push(node, tag, id, selector);
 		}
 	},
 	
 	'combinator(±)': function(node, tag, id, selector){
 		this['combinator(--)'](node, tag, id, selector);
 		this['combinator(++)'](node, tag, id, selector);
-	},
-	
-	// elements
-	
-	'element(self)': function(){
-		return this.context;
 	},
 	
 	// pseudos
@@ -255,7 +226,8 @@ var slick = (function(buffer){
 	},
 
 	'pseudo(contains)': function(node, text){
-		return ((node.innerText || node.textContent || '').indexOf(text) > -1);
+		var inner = node.innerText || node.textContent || '';
+		return (inner) ? inner.indexOf(text) > -1 : false;
 	},
 
 	'pseudo(first-child)': function(node){
@@ -283,24 +255,24 @@ var slick = (function(buffer){
 
 	'pseudo(nth-child)': function(node, argument){
 		argument = (!argument) ? 'n' : argument;
-		var parsed = this.cache.nth[argument] || this['util(parse-nth-argument)'](argument);
+		var parsed = this.cache.nth[argument] || this.parseNthArgument(argument);
 		if (parsed.special != 'n') return this['pseudo(' + parsed.special + ')'](node, argument);
 		if (parsed.a === 1 && parsed.b === 0) return true;
-		var count = 0, uid = this.slick.uidOf(node);
-		if (!this.state.positions[uid]){
+		var count = 0, uid = this.uidOf(node);
+		if (!this.positions[uid]){
 			while ((node = node.previousSibling)){
 				if (node.nodeType !== 1) continue;
 				count ++;
-				var uis = this.slick.uidOf(node);
-				var position = this.state.positions[uis];
+				var uis = this.uidOf(node);
+				var position = this.positions[uis];
 				if (position != null){
 					count = position + count;
 					break;
 				}
 			}
-			this.state.positions[uid] = count;
+			this.positions[uid] = count;
 		}
-		return (this.state.positions[uid] % parsed.a === parsed.b);
+		return (this.positions[uid] % parsed.a === parsed.b);
 	},
 
 	// custom pseudo selectors
@@ -323,7 +295,15 @@ var slick = (function(buffer){
 	
 	// util
 	
-	'util(parse-nth-argument)': function(argument){
+	uidIndex: 1,
+	
+	uidOf: (window.ActiveXObject) ? function(node){
+		return (node.slickUID || (node.slickUID = [this.uidIndex++]))[0];
+	} : function(node){
+		return node.slickUID || (node.slickUID = this.uidIndex++);
+	},
+	
+	parseNthArgument: function(argument){
 		var parsed = argument.match(/^([+-]?\d*)?([a-z]+)?([+-]?\d*)?$/);
 		if (!parsed) return false;
 		var inta = parseInt(parsed[1], 10);
@@ -351,7 +331,7 @@ var slick = (function(buffer){
 		return this.cache.nth[argument] = parsed;
 	},
 	
-	'util(parse-bit)': function(bit){
+	parseBit: function(bit){
 		var selector = {
 			classes: bit.classes || [],
 			attributes: bit.attributes || [],
@@ -360,13 +340,16 @@ var slick = (function(buffer){
 		
 		for (var i = 0; i < selector.pseudos.length; i++){
 			var pseudo = selector.pseudos[i];
-			if (!pseudo.newName) pseudo.newName = 'pseudo(' + pseudo.name + ')';
+			if (!pseudo.newName){
+				pseudo.name = 'pseudo(' + pseudo.name + ')';
+				pseudo.newName = true;
+			}
 		};
 		
 		return [bit.tag || '*', bit.id, selector];
 	},
 	
-	'util(string-contains)': function(source, string, separator){
+	stringContains: function(source, string, separator){
 		separator = separator || '';
 		return (separator + source + separator).indexOf(separator + string + separator) > -1;
 	},
@@ -382,22 +365,20 @@ var slick = (function(buffer){
 	},
 	
 	'match(class)': function(node, className){
-		return (this['util(string-contains)'](node.className, className, ' '));
+		return (this.stringContains(node.className, className, ' '));
 	},
 	
 	'match(attribute)': function(node, name, operator, value, regexp){
 		var actual = slick.getAttribute(node, name);
-		if (!operator) return (actual != null);
+		if (!operator) return !!(actual);
 		if (operator === '=') return (actual === value);
-		if (actual == null && (!value || operator === '!=')) return false;
+		if (!actual && (!value || operator === '!=')) return false;
 		return regexp.test(actual);
 	},
 	
-	'match(pseudo)': function(node, name, argument, newName){
-		if (this[newName]){
-			return this[newName](node, argument);
-		} else if (pseudos[name]){
-			return pseudos[name].call(node, argument);
+	'match(pseudo)': function(node, name, argument){
+		if (this[name]){
+			return this[name](node, argument);
 		} else {
 			return this['match(attribute)'](node, name, (argument == null) ? null : '=', argument);
 		}
@@ -424,7 +405,7 @@ var slick = (function(buffer){
 		var pseudos = selector.pseudos;
 		for (i = pseudos.length; i--; i){
 			var pseudo = pseudos[i];
-			if (!this['match(pseudo)'](node, pseudo.name, pseudo.argument, pseudo.newName)) return false;
+			if (!this['match(pseudo)'](node, pseudo.name, pseudo.argument)) return false;
 		}
 
 		return true;
@@ -432,16 +413,18 @@ var slick = (function(buffer){
 	
 	// push
 	
-	'push(object)': function(node, tag, id, selector){
-		var uid = this.slick.uidOf(node);
-		if (!this.state.uniques[uid] && this['match(selector)'](node, tag, id, selector)){
-			this.state.uniques[uid] = true;
-			this.state.found[this.state.idx++] = node;
-		}
+	'push()': function(node, tag, id, selector){
+		if (this['match(selector)'](node, tag, id, selector)) this.found.push(node);
 	},
 	
-	'push(array)': function(node, tag, id, selector){
-		if (this['match(selector)'](node, tag, id, selector)) this.state.found[this.state.idx++] = node;
+	// push(uid)
+	
+	'push(uid)': function(node, tag, id, selector){
+		var uid = this.uidOf(node);
+		if (!this.uniques[uid] && this['match(selector)'](node, tag, id, selector)){
+			this.uniques[uid] = true;
+			this.found.push(node);
+		}
 	}
 
 });
@@ -555,7 +538,6 @@ slick.parse = (function(){
 		}
 		
 		if (!these_simpleSelectors.length || a[map.combinatorChildren] || a[map.combinator]){
-			// this_simpleSelector && (this_simpleSelector.reverseCombinator = a[map.combinatorChildren] || a[map.combinator]);
 			these_simpleSelectors.push({
 				combinator: a[map.combinatorChildren] || a[map.combinator]
 			});
