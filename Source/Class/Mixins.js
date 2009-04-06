@@ -13,11 +13,12 @@ var Storage = new Native('Storage', function(){});
 
 (function(){
 	
-	var storage = {};
+	var storage = new Table;
 	
 	var storageOf = function(item){
-		var uid = UID.uidOf(item);
-		return (storage[uid] || (storage[uid] = {}));
+		var object = storage.get(item);
+		if (!object) storage.set(item, (object = {}));
+		return object;
 	};
 	
 	Storage.implement({
@@ -30,7 +31,7 @@ var Storage = new Native('Storage', function(){});
 		retrieve: function(key, dflt){
 			var value = storageOf(this)[key];
 			if (dflt != null && value == null) value = (storageOf(this)[key] = dflt);
-			return Object.pick(value);
+			return nil(value);
 		}.getMany(),
 
 		dump: function(key){
@@ -117,14 +118,12 @@ var Events = new Native('Events', function(){});
 		},
 
 		removeEvent: function(type, fn){
-			if (!fn[':protected']) eventsOf(this, type).erase(fn);
+			if (!fn._protected) eventsOf(this, type).erase(fn);
 			return this;
-		}.setMany(),
+		},
 
 		removeEvents: function(type){
-			var events = eventsOf(this, type), l = events.length;
-			if(l) do { this.removeEvent(type, events[--l]); } while(l);
-			return this;
+			//TODO
 		},
 		
 		addEvents: Function.setMany('addEvent')

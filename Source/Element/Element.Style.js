@@ -41,14 +41,20 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 		}
 		
 	}
+	
+	if (this.style.opacity == null && this.style.filter != null && this.currentStyle){
+		if (!this.currentStyle.hasLayout) this.style.zoom = 1;
+		this.style.filter = (value == 1) ? '' : 'alpha(opacity=' + value * 100 + ')';
+	} else {
+		this.style.opacity = value;
+	}
 
-	if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-	if (Browser.Engine.trident) this.style.filter = (value == 1) ? '' : 'alpha(opacity=' + value * 100 + ')';
-	this.style.opacity = value;
 	return this;
 
-}).defineStyleGetter('opacity', function(){
-	return Object.pick(this.style.opacity, 1);
+});
+
+Element.defineStyleGetter('opacity', function(){
+	return [this.style.opacity, 1].pick();
 });
 
 (function(name){
@@ -60,7 +66,7 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 		return this.getStyle(name);
 	});
 	
-})((Browser.Engine.trident) ? 'styleFloat' : 'cssFloat');
+})((document.html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat');
 
 (function(){
 	
@@ -123,10 +129,11 @@ Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
 
 })();
 
-Element.getComputedStyle = function(element, name){
-	if (element.currentStyle) return element.currentStyle[name];
-	var computed = document.defaultView.getComputedStyle(element, null);
+Element.getComputedStyle = (window.getComputedStyle) ? function(element, name){
+	var computed = getComputedStyle(element, null);
 	return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
+} : function(element, name){
+	return (element.currentStyle) ? element.currentStyle[name] : null;
 };
 
 Element.implement({
@@ -146,8 +153,7 @@ Element.implement({
 		name = name.camelCase();
 		var getter = Element.lookupStyleGetter(name);
 		if (getter) return getter.call(this);
-	
-	
+
 		// no getter, return current style
 
 		var style = this.style[name];
@@ -160,6 +166,7 @@ Element.implement({
 
 });
 
-Element.defineSetter('styles', function(value){
-	this.setStyles(value);
+
+Element.defineSetter('styles', function(styles){
+	this.setStyles(styles);
 });

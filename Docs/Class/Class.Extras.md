@@ -389,10 +389,10 @@ Merges the default options of the Class with the options passed in.
 - If a Class has [Events](#Events) implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
 
 
-[Class]: /Class/Class
-[Class:implement]: /Class/Class/#Class:implement
-[Fx]: /Fx/Fx
-[Fx.Tween]: /Fx/Fx.Tween
-[Request]: /Request/Request
-[Request.HTML]: /Request/Request.HTML
-[Events:removeEvent]: /Element/Element.Event/#Element:removeEvent
+[Class]: /core/Class/Class
+[Class:implement]: /core/Class/Class/#Class:implement
+[Fx]: /core/Fx/Fx
+[Fx.Tween]: /core/Fx/Fx.Tween
+[Request]: /core/Request/Request
+[Request.HTML]: /core/Request/Request.HTML
+[Events:removeEvent]: /core/Element/Element.Event/#Element:removeEvent

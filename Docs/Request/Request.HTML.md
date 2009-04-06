@@ -1,4 +1,4 @@
-[Request]: /Request/Request
+[Request]: /core/Request/Request
 
 Class: Request.HTML {#Request-HTML}
 ===================================
@@ -173,4 +173,4 @@ Updates the content of the Element with a Request.HTML GET request.
 
 - [$][], [Request](/Request/Request)
 
-[$]: /Element/Element/#dollar
+[$]: /core/Element/Element/#dollar

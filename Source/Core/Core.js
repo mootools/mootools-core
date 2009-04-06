@@ -26,7 +26,7 @@ var MooTools = {
 // nil
 
 var nil = function(item){
-	return (item != null && item != nil);
+	return (item != null && item != nil) ? item : null;
 };
 
 // Accessors multipliers
@@ -55,15 +55,6 @@ Function.prototype.getMany = function(single){
 	};
 };
 
-// Object.pick
-
-Object.pick = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		if (arguments[i] != null) return arguments[i];
-	}
-	return null;
-};
-
 // Function extend, implement
 
 Function.prototype.extend = function(key, value){
@@ -80,7 +71,7 @@ Function.prototype.implement = function(key, value){
 
 var typeOf = function(item){
 	if (item == null) return 'null';
-	if (item[':type']) return item[':type']();
+	if (item._type) return item._type();
 	
 	if (item.nodeName){
 		switch (item.nodeType){
@@ -105,38 +96,6 @@ var instanceOf = function(item, object){
 	return item instanceof object;
 };
 
-var constructorOf = function(item){
-	return Type['object:' + typeOf(item)] || null;
-};
-
-// UID
-
-var UID = (function(){
-	
-	var index = 0, table = {}, primitives = {};
-	
-	return {
-
-		uidOf: function(item){
-			if (item == null) return 'nil';
-			if ((item = (item.valueOf) ? item.valueOf() : item).uid) return item.uid;
-			if (!instanceOf(item, Object)) item = primitives[item] || (primitives[item] = {valueOf: Function.from(item)});
-			var uid = item.uid || (item.uid = (index++).toString(16));
-			if (!table[uid]) table[uid] = item;
-			return uid;
-		},
-	
-		itemOf: function(uid){
-			if (uid == 'nil') return null;
-			var tuid = table[uid];
-			if (tuid == null) return null;
-			return (tuid.valueOf) ? tuid.valueOf() : tuid;
-		}
-	
-	};
-	
-})();
-
 // From
 
 Function.from = function(item){
@@ -146,37 +105,11 @@ Function.from = function(item){
 };
 
 Array.from = function(item, slice){
-	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
+	return (item == null) ? [] : (Native.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
 };
 
 Number.from = Number;
 String.from = String;
-
-// Type
-
-var Type = function(name, object){
-	var lower = name.toLowerCase();
-	Type['is' + name] = function(item){
-		return (typeOf(item) == lower);
-	};
-	Type['object:' + lower] = object;
-	object.prototype[':type'] = Function.from(lower).hide();
-	return object;
-};
-
-Type.isEnumerable = function(item){
-	return (typeof item == 'object' && typeof item.length == 'number');
-};
-
-Type['object:object'] = Object;
-
-// Object-less types
-
-(function(types){
-	
-	for (var i = 0; i < types.length; i++) Type['is' + types[i]] = Function.from(types[i].toLowerCase());
-
-})(['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments']);
 
 // hide, protect
 
@@ -184,28 +117,40 @@ Function.implement({
 	
 	hide: function(bool){
 		if (bool == null) bool = true;
-		this[':hidden'] = bool;
+		this._hidden = bool;
 		return this;
 	},
 
 	protect: function(bool){
 		if (bool == null) bool = true;
-		this[':protected'] = bool;
+		this._protected = bool;
 		return this;
 	}
 	
 });
 
-
 // Native
 
 var Native = function(name, object){
-	object.extend(this);
 	
-	object[':type'] = this[':type'];
+	var lower = name.toLowerCase();
+	
+	Native['is' + name] = function(item){
+		return (typeOf(item) == lower);
+	};
+	
+	if (object == null) return null;
+	
+	object.prototype._type = Function.from(lower).hide();
+	object.extend(this);
 	object.constructor = Native;
 	object.prototype.constructor = object;
-	return new Type(name, object);
+	
+	return object;
+};
+
+Native.isEnumerable = function(item){
+	return (typeof item == 'object' && typeof item.length == 'number');
 };
 
 (function(){
@@ -213,15 +158,15 @@ var Native = function(name, object){
 	var hooks = {};
 	
 	var hooksOf = function(object){
-		var uid = UID.uidOf(object);
-		return hooks[uid] || (hooks[uid] = []);
+		var type = typeOf(object.prototype);
+		return hooks[type] || (hooks[type] = []);
 	};
 	
 	Native.implement({
 		
 		implement: function(name, method){
 			
-			if (method[':hidden']) return this;
+			if (method && method._hidden) return this;
 			
 			var hooks = hooksOf(this);
 			
@@ -232,7 +177,7 @@ var Native = function(name, object){
 			}
 	
 			var previous = this.prototype[name];
-			if (previous == null || !previous[':protected']) this.prototype[name] = method;
+			if (previous == null || !previous._protected) this.prototype[name] = method;
 
 			if (typeof method == 'function' && this[name] == null) this.extend(name, function(item){
 				return method.apply(item, Array.from(arguments, 1));
@@ -243,10 +188,9 @@ var Native = function(name, object){
 		}.setMany(),
 		
 		extend: function(name, method){
-			if (!method[':hidden']){
-				var previous = this[name];
-				if (previous == null || !previous[':protected']) this[name] = method;
-			}
+			if (method && method._hidden) return this;
+			var previous = this[name];
+			if (previous == null || !previous._protected) this[name] = method;
 			return this;
 		}.setMany(),
 	
@@ -263,7 +207,7 @@ var Native = function(name, object){
 	
 })();
 
-new Type('Native', Native);
+new Native('Native', Native);
 
 // Default Natives
 
@@ -316,8 +260,8 @@ new Native('Date', Date).extend('now', function(){
 
 // fixes NaN
 
-Number.prototype[':type'] = function(){
-	return (isFinite(this)) ? 'number' : null;
+Number.prototype._type = function(){
+	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 
 // forEach
@@ -346,4 +290,10 @@ Array.implement({
 		return this;
 	}
 	
+});
+
+// Object-less types
+
+['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(type){
+	Native(type);
 });

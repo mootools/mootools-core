@@ -210,7 +210,7 @@ Event.definePseudo('flash', function(event, argument){
 Event.definePseudo('relay', function(event, selector){
 	var nodes = this.search(selector), target = event.get('target');
 	for (var i = nodes.length; i--; i){
-		var node = document.id(nodes[i]);
+		var node = nodes[i];
 		if (target === node || node.find(target)) return node;
 	}
 	return false;
@@ -218,6 +218,6 @@ Event.definePseudo('relay', function(event, selector){
 
 if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
 
-Element.defineSetter('events', function(value){
-	this.addEvents(value);
+Element.defineSetter('events', function(events){
+	this.addEvents(events);
 });

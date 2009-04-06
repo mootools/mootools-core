@@ -353,4 +353,4 @@ Removes undefined keywords and ignores escaped keywords.
 [MDC parseFloat]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Functions:parseFloat
 [MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
 [String:trim]: #String:trim
-[Array:rgbToHex]: /Native/Array/#Array:rgbToHex
+[Array:rgbToHex]: /core/Native/Array/#Array:rgbToHex

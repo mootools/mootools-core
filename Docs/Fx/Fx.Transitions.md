@@ -131,9 +131,9 @@ Returns an [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' 
 - [Fx.Transitions][]
 
 
-[Fx]: /Fx/Fx
+[Fx]: /core/Fx/Fx
 [Fx.Transitions]: #Fx-Transitions
-[Element.effect]: /Element/#Element:effect
+[Element.effect]: /core/Element/#Element:effect
 [Linear]: ../Docs/assets/images/Linear.png
 [Quad]: ../Docs/assets/images/Quad.png
 [Cubic]: ../Docs/assets/images/Cubic.png
