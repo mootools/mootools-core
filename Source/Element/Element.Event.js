@@ -69,7 +69,7 @@ Event.implement('remove', function(){
 			
 			var pseudos = [], attributes = [];
 			
-			if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
+			if (parsed.pseudos) parsed.pseudos.forEach(function(pseudo){
 				var name = pseudo.name || '', argument = pseudo.argument || '';
 				var parser = Event.lookupPseudo(name);
 				if (parser) pseudos.push(function(event){
@@ -77,7 +77,7 @@ Event.implement('remove', function(){
 				});
 			});
 			
-			if (parsed.attributes) parsed.attributes.each(function(attribute){
+			if (parsed.attributes) parsed.attributes.forEach(function(attribute){
 				var name = attribute.name || '', operator = attribute.operator || '', value = attribute.value || '';
 				attributes.push(function(event){
 					var actual = event.get(name);
@@ -163,7 +163,7 @@ Event.implement('remove', function(){
 			var eventTypes = this.retrieve('event.types'), eventType, eventName;
 			if (!eventTypes || !(eventType = eventTypes[type]) || !(eventName = eventType[name])) return this;
 			
-			eventName.each(function(filter, fn){
+			eventName.forEach(function(filter, fn){
 				fn.apply(this, Array.from(args));
 			}, this);
 			
@@ -178,9 +178,9 @@ Event.implement('remove', function(){
 			var eventTypes = this.retrieve('event.types'), eventType;
 			if (!eventTypes || !(eventType = eventTypes[type])) return this;
 			
-			Object.each(eventType, function(eventName, name){
+			Object.forEach(eventType, function(eventName, name){
 				
-				eventName.each(function(filter, fn){
+				eventName.forEach(function(filter, fn){
 					filter.call(this, event);
 				}, this);
 

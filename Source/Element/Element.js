@@ -15,7 +15,7 @@ var Element = function(item, props){
 	var tag = parsed.tag;
 	if (parsed.id) props.id = parsed.id;
 	
-	if (parsed.attributes) parsed.attributes.each(function(att){
+	if (parsed.attributes) parsed.attributes.forEach(function(att){
 		if (att.value && att.operator == '=') props[att.name] = att.value;
 	});
 	
@@ -69,7 +69,7 @@ document.id = (function(){
 	if (document.html.mergeAttributes){
 		
 		proto = document.createElement('div');
-		proto._type = Function.from('element');
+		proto._type_ = Function.from('element');
 
 		types.element = function(item){
 			item.mergeAttributes(proto);
@@ -229,7 +229,7 @@ Element.implement({
 	
 	var methods = {};
 
-	Object.each(inserters, function(inserter, where){
+	Object.forEach(inserters, function(inserter, where){
 	
 		methods['inject' + where] = function(el){
 			inserter(this, document.id(el));
@@ -250,7 +250,7 @@ Element.implement({
 		},
 		
 		adopt: function(){
-			Array.flatten(arguments).each(function(element){
+			Array.flatten(arguments).forEach(function(element){
 				if ((element = document.id(element))) this.appendChild(element);
 			}, this);
 			return this;
@@ -308,7 +308,7 @@ Element.extend(new Accessors);
 		})()
 	});
 
-	Object.each(properties, function(real, key){
+	Object.forEach(properties, function(real, key){
 		Element.defineSetter(key, function(value){
 			return this[real] = value;
 		});
@@ -320,7 +320,7 @@ Element.extend(new Accessors);
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 		'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 
-	bools.each(function(bool){
+	bools.forEach(function(bool){
 		Element.defineSetter(bool, function(value){
 			return this[bool] = !!value;
 		});

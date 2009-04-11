@@ -45,7 +45,6 @@ var Request = new Class({
 	}.protect(),
 	
 	send: function(data){
-		
 		if (!this.check(data)) return this;
 		this.running = true;
 
@@ -90,7 +89,7 @@ var Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		Object.each(headers, function(value, key){
+		Object.forEach(headers, function(value, key){
 			var xhr = this.xhr;
 			if (!Function.stab(function(){
 				xhr.setRequestHeader(key, value);
@@ -181,7 +180,7 @@ var Request = new Class({
 
 	var methods = {};
 
-	['get', 'post', 'put', 'delete'].each(function(method){
+	['get', 'post', 'put', 'delete'].forEach(function(method){
 		methods[method] = methods[method.toUpperCase()] = function(data){
 			this.setOption('method', method);
 			return this.send(data);

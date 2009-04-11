@@ -16,14 +16,12 @@ var Fx = new Class({
 		onCancel: nil,
 		onComplete: nil,
 		*/
-		unit: false,
 		duration: 500,
 		transition: 'default',
 		link: 'ignore'
 	},
 	
 	initialize: function(options){
-		this.subject = this.subject || this;
 		this.setOptions(options);
 	}.protect(),
 	

@@ -46,41 +46,41 @@ var Storage = new Native('Storage', function(){});
 
 // Accessors
 
-var Accessors = new Native('Accessors', function(){});
-
-(function(){
+var Accessors = new Native('Accessors', function(name){
+	
+	name = (name || '').capitalize();
+	
+	var storage = (name) ? name.toLowerCase() + ':accessors' : 'accessors';
 	
 	var accessorOf = function(object, key){
-		var accessor = Storage.retrieve(object, 'accessors', {});
+		var accessor = Storage.retrieve(object, storage, {});
 		return accessor[key] || (accessor[key] = {});
 	};
-
-	Accessors.implement({
-
-		defineGetter: function(key, fn){
-			accessorOf(this, key).get = fn;
-			return this;
-		},
-
-		defineSetter: function(key, fn){
-			accessorOf(this, key).set = fn;
-			return this;
-		},
-
-		lookupGetter: function(key){
-			return accessorOf(this, key).get || null;
-		},
-
-		lookupSetter: function(key){
-			return accessorOf(this, key).set || null;
-		},
-		
-		defineGetters: Function.setMany('defineGetter'),
-		defineSetters: Function.setMany('defineSetter')
-
-	});
 	
-})();
+	var defineName = 'define' + name, lookupName = 'lookup' + name, Getter = 'Getter', Setter = 'Setter';
+	
+	this[defineName + Getter] = function(key, fn){
+		accessorOf(this, key).get = fn;
+		return this;
+	};
+	
+	this[defineName + Setter] = function(key, fn){
+		accessorOf(this, key).set = fn;
+		return this;
+	};
+
+	this[lookupName + Getter] = function(key){
+		return accessorOf(this, key).set || null;
+	};
+	
+	this[lookupName + Setter] = function(key){
+		return accessorOf(this, key).get || null;
+	};
+	
+	this[defineName + Getter + 's'] = Function.setMany(defineName + Getter);
+	this[defineName + Setter + 's'] = Function.setMany(defineName + Getter);
+	
+});
 
 // Events
 
@@ -111,14 +111,14 @@ var Events = new Native('Events', function(){});
 
 		fireEvent: function(type, args){
 			args = Array.from(args);
-			eventsOf(this, type).each(function(fn){
+			eventsOf(this, type).forEach(function(fn){
 				fn.apply(this, args);
 			}, this);
 			return this;
 		},
 
 		removeEvent: function(type, fn){
-			if (!fn._protected) eventsOf(this, type).erase(fn);
+			if (!fn._protected_) eventsOf(this, type).erase(fn);
 			return this;
 		},
 

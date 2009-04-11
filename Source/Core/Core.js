@@ -71,7 +71,7 @@ Function.prototype.implement = function(key, value){
 
 var typeOf = function(item){
 	if (item == null) return 'null';
-	if (item._type) return item._type();
+	if (item._type_) return item._type_();
 	
 	if (item.nodeName){
 		switch (item.nodeType){
@@ -117,13 +117,13 @@ Function.implement({
 	
 	hide: function(bool){
 		if (bool == null) bool = true;
-		this._hidden = bool;
+		this._hidden_ = bool;
 		return this;
 	},
 
 	protect: function(bool){
 		if (bool == null) bool = true;
-		this._protected = bool;
+		this._protected_ = bool;
 		return this;
 	}
 	
@@ -141,7 +141,7 @@ var Native = function(name, object){
 	
 	if (object == null) return null;
 	
-	object.prototype._type = Function.from(lower).hide();
+	object.prototype._type_ = Function.from(lower).hide();
 	object.extend(this);
 	object.constructor = Native;
 	object.prototype.constructor = object;
@@ -166,7 +166,7 @@ Native.isEnumerable = function(item){
 		
 		implement: function(name, method){
 			
-			if (method && method._hidden) return this;
+			if (method && method._hidden_) return this;
 			
 			var hooks = hooksOf(this);
 			
@@ -177,7 +177,7 @@ Native.isEnumerable = function(item){
 			}
 	
 			var previous = this.prototype[name];
-			if (previous == null || !previous._protected) this.prototype[name] = method;
+			if (previous == null || !previous._protected_) this.prototype[name] = method;
 
 			if (typeof method == 'function' && this[name] == null) this.extend(name, function(item){
 				return method.apply(item, Array.from(arguments, 1));
@@ -188,9 +188,9 @@ Native.isEnumerable = function(item){
 		}.setMany(),
 		
 		extend: function(name, method){
-			if (method && method._hidden) return this;
+			if (method && method._hidden_) return this;
 			var previous = this[name];
-			if (previous == null || !previous._protected) this[name] = method;
+			if (previous == null || !previous._protected_) this[name] = method;
 			return this;
 		}.setMany(),
 	
@@ -260,7 +260,7 @@ new Native('Date', Date).extend('now', function(){
 
 // fixes NaN
 
-Number.prototype._type = function(){
+Number.prototype._type_ = function(){
 	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 
@@ -292,8 +292,13 @@ Array.implement({
 	
 });
 
+Array.each = function(self, fn, bind){
+	Array.forEach(self, fn, bind);
+	return self;
+};
+
 // Object-less types
 
-['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(type){
+['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].forEach(function(type){
 	Native(type);
 });
