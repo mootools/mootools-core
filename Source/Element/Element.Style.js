@@ -89,6 +89,8 @@ Element.extend(new Accessors('Style'));
 	['color', 'backgroundColor', 'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'].forEach(function(name){
 	
 		Element.defineStyleSetter(name, function(color){
+			if (removesCSS(this, name, color)) return;
+			
 			this.style[name] = ((/^[a-z]+$/).test(color)) ? color : new Color(color).toString();
 		});
 		
@@ -119,12 +121,21 @@ Element.extend(new Accessors('Style'));
 		element.style[filterName] += ' ' + filterString + name + '(' + props + ')';
 	};
 	
+	var removesCSS = function(element, name, value){
+		if ((!value && value !== 0)){
+			element.style[name] = '';
+			return true;
+		}
+		return false;
+	};
+	
 	/* background color accessor for IE, to support alpha in background-colors */
 
 	if (filterName) Element.defineStyleSetter('backgroundColor', function(color){
 
 		removeFilter(this, 'gradient');
-
+		
+		if (removesCSS(this, 'backgroundColor', color)) return null;
 		if ((/^[a-z]+$/).test(color)) return this.style.backgroundColor = color;
 	
 		color = new Color(color);
@@ -185,6 +196,8 @@ Element.extend(new Accessors('Style'));
 	'fontSize', 'letterSpacing', 'lineHeight', 'textIndent'].forEach(function(name){
 	
 		Element.defineStyleSetter(name, function(value){
+			if (removesCSS(this, name, value)) return;
+
 			this.style[name] = pixelCSS(value);
 		});
 
@@ -198,6 +211,9 @@ Element.extend(new Accessors('Style'));
 		if (match) match = match[1];
 
 		Element.defineStyleSetter(name, function(value){
+
+			if (removesCSS(this, name, value)) return;
+			
 			value = mirrorCSS(splitCSS(value));
 		
 			['Top', 'Right', 'Bottom', 'Left'].forEach(function(dir){
@@ -216,7 +232,8 @@ Element.extend(new Accessors('Style'));
 	/* background position accessor */
 
 	Element.defineStyleSetter('backgroundPosition', function(value){
-	
+		if (removesCSS(this, 'backgroundPosition', value)) return;
+		
 		value = splitCSS(value);
 		if (!value[1]) value[1] = 0;
 		this.setStyle('backgroundPositionX', value[0]).setStyle('backgroundPositionY', value[1]);
@@ -230,6 +247,8 @@ Element.extend(new Accessors('Style'));
 	/* clip setter */
 
 	Element.defineStyleSetter('clip', function(value){
+		if (removesCSS(this, 'clip', value)) return;
+
 		value = mirrorCSS((typeof value == 'string') ? value.match(/(\d+\w*)/g) : Array.from(value));
 		this.style.clip = 'rect(' + value.join(' ').map(pixelCSS) + ')';
 	});
@@ -239,21 +258,28 @@ Element.extend(new Accessors('Style'));
 	['borderTop', 'borderRight', 'borderBottom', 'borderLeft'].forEach(function(name){
 
 		Element.defineStyleSetter(name, function(value){
+
+			if (removesCSS(this, name, value)) return;
+			
 			value = splitCSS(value);
 			['Width', 'Style', 'Color'].forEach(function(dir){
 				this.setStyle(name + dir, value.shift());
 			}, this);
-		});
-		
-		Element.defineStyleGetter(name, function(unit){
+
+		}).defineStyleGetter(name, function(unit){
+			
 			return ['Width', 'Style', 'Color'].map(function(dir){
 				return this.getStyle(name + dir, unit);
 			}, this).join(' ');
+
 		});
 
 	});
 	
 	Element.defineStyleSetter('border', function(value){
+
+		if (removesCSS(this, name, value)) return;
+		
 		value = splitCSS(value);
 		var array = [];
 		while (value.length) array.push(value.splice(0, 3));
@@ -261,12 +287,13 @@ Element.extend(new Accessors('Style'));
 		['Top', 'Right', 'Bottom', 'Left'].forEach(function(dir){
 			this.setStyle('border' + dir, value.shift());
 		}, this);
-	});
-	
-	Element.defineStyleGetter('border', function(unit){
+
+	}).defineStyleGetter('border', function(unit){
+		
 		return ['Top', 'Right', 'Bottom', 'Left'].map(function(dir){
 			return this.getStyle('border' + dir, unit);
 		}, this).join(' ');
+
 	});
 	
 	/* skip lookupStyleGetter and lookupStyleSetter to speedup getStyle / setStyle. they have to be fast */
