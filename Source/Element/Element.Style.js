@@ -6,166 +6,295 @@ License:
 	MIT-style license.
 */
 
-Element.extend({
-	
-	defineStyleGetter: function(name, fn){
-		return this.defineGetter('style.' + name, fn);
-	},
-
-	defineStyleSetter: function(name, fn){
-		return this.defineSetter('style.' + name, fn);
-	},
-
-	lookupStyleGetter: function(name, fn){
-		return this.lookupGetter('style.' + name, fn);
-	},
-
-	lookupStyleSetter: function(name, fn){
-		return this.lookupSetter('style.' + name, fn);
-	}
-	
-});
-
-Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
-	
-	value = parseFloat(value);
-	
-	if (!ignoreVisibility){
-		
-		var visibility = this.getStyle('visibility');
-
-		if (value == 0){
-			if (visibility != 'hidden') this.setStyle('visibility', 'hidden');
-		} else {
-			if (visibility != 'visible') this.setStyle('visibility', 'visible');
-		}
-		
-	}
-	
-	if (this.style.opacity == null && this.style.filter != null && this.currentStyle){
-		if (!this.currentStyle.hasLayout) this.style.zoom = 1;
-		this.style.filter = (value == 1) ? '' : 'alpha(opacity=' + value * 100 + ')';
-	} else {
-		this.style.opacity = value;
-	}
-
-	return this;
-
-});
-
-Element.defineStyleGetter('opacity', function(){
-	return [this.style.opacity, 1].pick();
-});
-
-(function(name){
-	
-	Element.defineStyleSetter('float', function(value){
-		this.style[name] = value;
-		return this;
-	}).defineStyleGetter('float', function(){
-		return this.getStyle(name);
-	});
-	
-})((document.html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat');
+Element.extend(new Accessors('Style'));
 
 (function(){
+
+	/* how many pixels are there in one em? find out with emCSS! */
 	
-	var all = {
-		left: '@px', top: '@px', bottom: '@px', right: '@px',
-		width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
-		backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
-		fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
-		margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-		borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-		zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
+	var test = document.newElement('span', {css: 'position: absolute; display: block; visibility: hidden; height: 100em; width: 100em;'});
+	
+	var emCSS = function(element){
+		var height = test.inject(element).offsetHeight;
+		test.dispose();
+		return height / 100;
+	};
+
+	/* computed style */
+
+	var styleCSS = (window.getComputedStyle) ? function(element, name, unit){
+
+		var computed = getComputedStyle(element, null);
+		var style = computed.getPropertyValue([name.hyphenate()]), match;
+		if (!unit || !(match = style.match(/^(\d+)px$/))) return style;
+		var one = emCSS(element);
+		return (match[1] / one) + 'em';
+		
+	} : function(element, name, unit){
+		
+		var style = element.currentStyle[name];
+		var match = style.match(/^(\d+)(em|px)$/);
+		if (!match || (unit && match[2] == 'em') || (!unit && match[2] == 'px')) return style;
+		var one = emCSS(element);
+		if (!unit && match[2] == 'em') return (one * match[1]) + 'px';
+		else return (match[1] / one) + 'em';
+
 	};
 	
-	var shorts = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
+	/* css values utilities */
+
+	var splitCSS = function(value){
+		return (typeOf(value) == 'string') ? value.trim().replace(/,\s+/g, ',').split(/\s+/) : Array.from(value);
+	};
+
+	var mirrorCSS = function(value){
+		var length = value.length;
 	
-	['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-		['margin', 'padding'].each(function(style){
-			var sd = style + direction;
-			shorts[style][sd] = all[sd] = '@px';
-		});
-		var bd = 'border' + direction;
-		shorts.border[bd] = all[bd] = '@px @ rgb(@, @, @)';
-		var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
-		shorts[bd] = {};
-		shorts.borderWidth[bdw] = shorts[bd][bdw] = all[bdw] = '@px';
-		shorts.borderStyle[bds] = shorts[bd][bds] = all[bds] = '@';
-		shorts.borderColor[bdc] = shorts[bd][bdc] = all[bdc] = 'rgb(@, @, @)';
+		if (length == 1) value.push(value[0], value[0], value[0]);
+		else if (length == 2) value.push(value[0], value[1]);
+		else if (length == 3) value.push(value[1]);
+
+		return value;
+	};
+
+	var pixelCSS = function(value){
+		var number = Number.toFloat(value);
+		return (value == number) ? value + 'px' : value;
+	};
+	
+	/* float test */
+
+	var html = document.html;
+
+	var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+	
+	/* float accessor */
+	
+	Element.defineStyleSetter('float', function(value){
+	
+		this.style[floatName] = value;
+	
+	}).defineStyleGetter('float', function(){
+	
+		return styleCSS(this, floatName);
+	
 	});
 	
-	Object.each(all, function(map, name){
+	test.inject(document.html).style.color = '#000';
+	var testRGB = styleCSS(test, 'color') == 'rgb(0, 0, 0)';
+	test.dispose();
+	
+	/* color accessors */
+
+	['color', 'backgroundColor', 'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'].forEach(function(name){
+	
+		Element.defineStyleSetter(name, function(color){
+			this.style[name] = ((/^[a-z]+$/).test(color)) ? color : new Color(color).toString();
+		});
 		
-		var isShort = !!(shorts[name]);
+		if (!testRGB) Element.defineStyleGetter(name, function(){
+			return new Color(styleCSS(this, name)).toString();
+		});
+
+	});
+	
+	/* filter utilities */
+
+	var filterName = (html.style.MsFilter != null) ? 'MsFilter' : (html.style.filter != null) ? 'filter' : null;
+
+	var filterString = "progid:DXImageTransform.Microsoft.";
+
+	var regexpFilter = function(name, match){
+		match = '\\(' + (match || "[\\w#=,'\"\\s]*") + '\\)';
+		return new RegExp(filterString.escapeRegExp() + name + match, 'i');
+	};
+
+	var removeFilter = function(element, name){
+		var style = element.style;
+		style[filterName] = styleCSS(element, filterName).replace(regexpFilter(name), '').trim();
+	};
+
+	var addFilter = function(element, name, props){
+		if (!element.currentStyle.hasLayout) element.style.zoom = 1;
+		element.style[filterName] += ' ' + filterString + name + '(' + props + ')';
+	};
+	
+	/* background color accessor for IE, to support alpha in background-colors */
+
+	if (filterName) Element.defineStyleSetter('backgroundColor', function(color){
+
+		removeFilter(this, 'gradient');
+
+		if ((/^[a-z]+$/).test(color)) return this.style.backgroundColor = color;
+	
+		color = new Color(color);
+		var alpha = color.get('alpha');
+
+		if (alpha != 1 && alpha != 0){
+			// explorer uses AARRGGBB, Color uses RRGGBBAA
+			var aa = color.toHEX().substr(7, 2);
+			color.set('alpha', 1);
+			var iexa = '#' + aa + color.toHEX().substr(1);
+			addFilter(this, 'gradient', 'startColorstr=' + iexa + ',' + 'endColorstr=' + iexa);
+		}
+	
+		if (alpha != 1 || alpha == 0) return this.style.backgroundColor = 'transparent';
+	
+		return this.style.backgroundColor = color.toString();
+	
+	}).defineStyleGetter('backgroundColor', function(){
+
+		var match = styleCSS(this, filterName).match(regexpFilter('gradient', 'startColorstr=([#\\w]+),\\s*endColorstr=[#\\w]+'));
+
+		if (match && (match = match[1])){
+			// explorer uses AARRGGBB, Color uses RRGGBBAA
+			var aa = match.substr(1, 2), hex = match.substr(3);
+			return new Color(hex + aa).toString();
+		}
 		
+		var css = styleCSS(this, 'backgroundColor');
+		return (testRGB) ? css : new Color(css).toString();
+	
+	});
+	
+	/* opacity accessor IE / Others */
+
+	if (html.style.opacity == null && filterName) Element.defineStyleSetter('opacity', function(value){
+
+		removeFilter(this, 'alpha');
+		if (value != 1) addFilter(this, 'alpha', 'opacity=' + value * 100);
+	
+	}).defineStyleGetter('opacity', function(){
+
+		var opacity = styleCSS(this, filterName).match(regexpFilter('alpha', 'opacity=(\\d+)'));
+		return (opacity == null) ? 1 : opacity[1] / 100;
+	
+	}); else Element.defineStyleGetter('opacity', function(){
+	
+		var opacity = styleCSS(this, 'opacity');
+		return (opacity == '') ? 1 : Number.toFloat(opacity);
+
+	});
+	
+	/* unit values */
+
+	['marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft',
+	'top', 'right', 'bottom', 'left', 'width', 'height', 'maxWIdth', 'maxHeight', 'minWidth', 'minHeight',
+	'backgroundPositionY', 'backgroundPositionX',
+	'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth',
+	'fontSize', 'letterSpacing', 'lineHeight', 'textIndent'].forEach(function(name){
+	
 		Element.defineStyleSetter(name, function(value){
-			if (typeOf(value) != 'string'){
-				var values = Array.from(value), maps = map.split(' '), array = [];
-				((isShort) ? values.length : maps.length).times(function(i){
-					var v = values[i], m = maps[i];
-					if (v == null) v = 0;
-					array[i] = m.replace((typeOf(v) == 'string') ? (/@[\w]{0,2}/) : '@', v);
-				});
-				value = array.join(' ');
-			}
-
-			this.style[name] = value;
-			return this;
+			this.style[name] = pixelCSS(value);
 		});
 
 	});
 	
-	Object.each(shorts, function(map, name){
+	/* 4 values shorthands */
+
+	['margin', 'padding', 'borderWidth', 'borderColor', 'borderStyle'].forEach(function(name){
+	
+		var match = name.match(/border(\w+)/);
+		if (match) match = match[1];
+
+		Element.defineStyleSetter(name, function(value){
+			value = mirrorCSS(splitCSS(value));
 		
-		Element.defineStyleGetter(name, function(){
-			var styles = [];
-			for (var p in map) styles.push(this.getStyle(p));
-			return styles.join(' ');
+			['Top', 'Right', 'Bottom', 'Left'].forEach(function(dir){
+				this.setStyle((match) ? ('border' + dir + match) : (name + dir), value.shift());
+			}, this);
 		});
+		
+		Element.defineStyleGetter(name, function(unit){
+			return ['Top', 'Right', 'Bottom', 'Left'].map(function(dir){
+				return this.getStyle((match) ? ('border' + dir + match) : (name + dir), unit);
+			}, this).join(' ');
+		});
+
+	});
+	
+	/* background position accessor */
+
+	Element.defineStyleSetter('backgroundPosition', function(value){
+	
+		value = splitCSS(value);
+		if (!value[1]) value[1] = 0;
+		this.setStyle('backgroundPositionX', value[0]).setStyle('backgroundPositionY', value[1]);
+	
+	}).defineStyleGetter('backgroundPosition', function(){
+	
+		return styleCSS(this, 'backgroundPositionX') + ' ' + styleCSS(this, 'backgroundPositionY');
+	
+	});
+	
+	/* clip setter */
+
+	Element.defineStyleSetter('clip', function(value){
+		value = mirrorCSS((typeof value == 'string') ? value.match(/(\d+\w*)/g) : Array.from(value));
+		this.style.clip = 'rect(' + value.join(' ').map(pixelCSS) + ')';
+	});
+	
+	/* TODO accessors missing: borderTop, borderRight, borderBottom, borderLeft, border */
+	
+	['borderTop', 'borderRight', 'borderBottom', 'borderLeft'].forEach(function(name){
+
+		Element.defineStyleSetter(name, function(value){
+			value = splitCSS(value);
+			['Width', 'Style', 'Color'].forEach(function(dir){
+				this.setStyle(name + dir, value.shift());
+			}, this);
+		});
+		
+		Element.defineStyleGetter(name, function(unit){
+			return ['Width', 'Style', 'Color'].map(function(dir){
+				return this.getStyle(name + dir, unit);
+			}, this).join(' ');
+		});
+
+	});
+	
+	Element.defineStyleSetter('border', function(value){
+		value = splitCSS(value);
+		var array = [];
+		while (value.length) array.push(value.splice(0, 3));
+		value = mirrorCSS(array);
+		['Top', 'Right', 'Bottom', 'Left'].forEach(function(dir){
+			this.setStyle('border' + dir, value.shift());
+		}, this);
+	});
+	
+	Element.defineStyleGetter('border', function(unit){
+		return ['Top', 'Right', 'Bottom', 'Left'].map(function(dir){
+			return this.getStyle('border' + dir, unit);
+		}, this).join(' ');
+	});
+	
+	/* skip lookupStyleGetter and lookupStyleSetter to speedup getStyle / setStyle. they have to be fast */
+	
+	var styleAccessors = Storage.retrieve(Element, 'style:accessors');
+	
+	/* getStyle, setStyle */
+
+	Element.implement({
+		
+		setStyle: function(name, value){
+			var accessor = styleAccessors[name = name.camelCase()], setter;
+			if (accessor && (setter = accessor.set)) setter.call(this, value);
+			else this.style[name] = value;
+			return this;
+		},
+
+		getStyle: function(name, unit){
+			var accessor = styleAccessors[name = name.camelCase()], getter;
+			return ((accessor && (getter = accessor.get))) ? getter.call(this, unit) : styleCSS(this, name, unit);
+		},
+	
+		setStyles: Function.setMany('setStyle'),
+		getStyles: Function.getMany('getStyle')
 
 	});
 
 })();
-
-Element.getComputedStyle = (window.getComputedStyle) ? function(element, name){
-	var computed = getComputedStyle(element, null);
-	return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
-} : function(element, name){
-	return (element.currentStyle) ? element.currentStyle[name] : null;
-};
-
-Element.implement({
-
-	setStyle: function(name, value){
-		name = name.camelCase();
-		var setter = Element.lookupStyleSetter(name);
-		if (setter) return setter.call(this, value);
-	
-		// no setter, set style property directly
-
-		this.style[name] = value;
-		return this;
-	},
-
-	getStyle: function(name){
-		name = name.camelCase();
-		var getter = Element.lookupStyleGetter(name);
-		if (getter) return getter.call(this);
-
-		// no getter, return current style
-
-		var style = this.style[name];
-		if (style || style === 0) return style;
-		return Element.getComputedStyle(this, name);
-	},
-	
-	setStyles: Function.setMany('setStyle'),
-	getStyles: Function.getMany('getStyle')
-
-});
-
 
 Element.defineSetter('styles', function(styles){
 	this.setStyles(styles);
