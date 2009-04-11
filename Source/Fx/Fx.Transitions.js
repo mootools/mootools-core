@@ -49,7 +49,7 @@ Fx.defineTransitions({
 
 });
 
-['quad', 'cubic', 'quart', 'quint'].each(function(transition, i){
+['quad', 'cubic', 'quart', 'quint'].forEach(function(transition, i){
 	Fx.defineTransition(transition, function(p){
 		return Math.pow(p, i + 2);
 	});
