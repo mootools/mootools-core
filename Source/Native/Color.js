@@ -18,13 +18,13 @@ var Color = new Native('Color', function(color, type){
 	if (color[3] == null) color[3] = 1;
 	this.color = color;
 	
-	return this;
+	return null;
 });
 
 Color.extend({
 	
 	check: function(value){
-		var match = value.match(/^(rgb|hsb|#)a?|^(#)/);
+		var match = value.match(/^(rgb|hsb|#)a?/);
 		if (match) return (match[1] == '#') ? 'hex' : match[1];
 		return false;
 	},
@@ -41,13 +41,15 @@ Color.extend({
 	
 	parseRGB: function(color){
 		return ((typeOf(color) == 'string') ? color.match(/([-\d.]+)/g) : color).map(function(bit, i){
-			return (i < 3) ? ((bit %= 256) < 0) ? bit + 256 : bit : Number(bit).limit(0, 1);
+			return (i < 3) ? Math.round(((bit %= 256) < 0) ? bit + 256 : bit) : Number(bit).limit(0, 1);
 		});
 	},
 	
 	parseHSB: function(color){
 		return ((typeOf(color) == 'string') ? color.match(/([-\d.]+)/g) : color).map(function(bit, i){
-			return (i == 0) ? ((bit %= 360) < 0) ? bit + 360 : bit : Number(bit).limit(0, (i < 3) ? 100 : 1);
+			if (i === 0) return Math.round(((bit %= 360) < 0) ? (bit + 360) : bit);
+			else if (i < 3) return Math.round(bit).limit(0, 100);
+			else return Number(bit).limit(0, 1);
 		});
 	},
 	
