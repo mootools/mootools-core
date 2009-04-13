@@ -39,6 +39,11 @@
 		"Table": {
 			"deps": ["Core"],
 			"desc": "Table is an ultra-fast, uid based dictionary implementation."
+		},
+		
+		"Color": {
+			"deps": ["Array", "Function", "Number", "String", "Object", "Table"],
+			"desc": "Class for creating and manipulating colors in JavaScript. Includes HSB «-» RGB «-» HEX conversions."
 		}
 
 	},
@@ -46,7 +51,7 @@
 	"Class": {
 		
 		"Mixins": {
-			"deps": ["Array", "Function", "Number", "String", "Object"],
+			"deps": ["Array", "Function", "Number", "String", "Object", "Table"],
 			"desc": "Contains utility classes that can be implemented into your own classes or objects to ease the execution of common tasks."
 		},
 
@@ -84,7 +89,7 @@
 		},
 
 		"Element.Style": {
-			"deps": ["Element"],
+			"deps": ["Element", "Color"],
 			"desc": "Contains Element methods to interact with the styles of elements in a fashionable and x-browser way."
 		},
 
@@ -147,8 +152,8 @@
 	"Request": {
 
 		"Request": {
-			"deps": ["Mixins", "Class", "Element"],
-			"desc": "Powerful all-purpose Request class. Powered by XMLHTTPRequest."
+			"deps": ["Class", "Mixins"],
+			"desc": "Powerful all purpose Request Class. Uses XMLHTTPRequest."
 		},
 
 		"Request.HTML": {

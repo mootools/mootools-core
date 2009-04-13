@@ -162,8 +162,8 @@ Resume a previously paused effect.
 
 
 [Fx]: #Fx
-[Chain]: /Class/Class.Extras#Chain
-[Events]: /Class/Class.Extras#Events
-[Options]: /Class/Class.Extras#Options
-[Fx.Tween]: /Fx/Fx.Tween
-[Fx.Morph]: /Fx/Fx.Morph
+[Chain]: /core/Class/Class.Extras#Chain
+[Events]: /core/Class/Class.Extras#Events
+[Options]: /core/Class/Class.Extras#Options
+[Fx.Tween]: /core/Fx/Fx.Tween
+[Fx.Morph]: /core/Fx/Fx.Morph

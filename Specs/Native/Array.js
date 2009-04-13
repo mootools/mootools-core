@@ -28,7 +28,7 @@ describe("Array Methods", {
 
 	'should filter an array': function(){
 		var array = [1,2,3,0,0,0];
-		var arr = array.concat([false, null, 4]).filter(Type.isNumber);
+		var arr = array.concat([false, null, 4]).filter(Native.isNumber);
 		value_of(arr).should_be(array.concat(4));
 	},
 
@@ -53,17 +53,17 @@ describe("Array Methods", {
 	// Array.every
 
 	'should return true if every item matches the comparator, otherwise false': function(){
-		value_of([1,2,3,0,0,0].every(Type.isNumber)).should_be_true();
+		value_of([1,2,3,0,0,0].every(Native.isNumber)).should_be_true();
 
-		value_of(['1',2,3,0].every(Type.isNumber)).should_be_false();
+		value_of(['1',2,3,0].every(Native.isNumber)).should_be_false();
 	},
 
 	// Array.some
 
 	'should return true if some of the items in the array match the comparator, otherwise false': function(){
-		value_of(['1',2,3,0].some(Type.isNumber)).should_be_true();
+		value_of(['1',2,3,0].some(Native.isNumber)).should_be_true();
 
-		value_of([1,2,3,0,0,0].map(String).some(Type.isNumber)).should_be_false();
+		value_of([1,2,3,0,0,0].map(String).some(Native.isNumber)).should_be_false();
 	},
 
 	// Array.indexOf
@@ -132,6 +132,44 @@ describe("Array Methods", {
 	'should empty the array': function(){
 		var arr = [1,2,3,4].empty();
 		value_of(arr).should_be([]);
+	},
+	
+	// Array.item
+	
+	'should return the item': function(){
+		var arr = [1,2,3,4];
+		value_of(arr.item(3)).should_be(4);
+		value_of(arr.item(0)).should_be(1);
+		value_of(arr.item(-1)).should_be(4);
+	},
+	
+	'should return null if no item or no items in the array': function(){
+		var arr = [1,2,3,4];
+		value_of(arr.item(4)).should_be(null);
+		value_of(arr.item(10)).should_be(null);
+		value_of(arr.item(-5)).should_be(null);
+		value_of(arr.item(-100)).should_be(null);
+
+		arr = [];
+		value_of(arr.item(-1)).should_be(null);
+		value_of(arr.item(0)).should_be(null);
+		value_of(arr.item(1)).should_be(null);
+	}
+
+});
+
+
+
+describe('Array.pick', {
+
+	'should return the first false argument': function(){
+		var picked1 = [null, undefined, false, [1,2,3], {}].pick();
+		value_of(picked1).should_be_false();
+	},
+
+	'should return the first defined argument': function(){
+		var picked1 = [null, undefined, null, [1,2,3], {}].pick();
+		value_of(picked1).should_be([1,2,3]);
 	}
 
 });

@@ -35,83 +35,20 @@ var Request = new Class({
 		encoding: 'utf-8',
 		stripScripts: true,
 		evalScripts: false,
-		evalResponse: false
+		evalResponse: false,
+		noCache: false
 	},
 
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-	},
-
-	onStateChange: function(){
-		if (this.xhr.readyState != 4 || !this.running) return;
-		this.running = false;
-		this.status = 0;
-		Function.stab(function(){
-			this.status = this.xhr.status;
-		}.bind(this));
-		if (this.getOption('isSuccess').call(this, this.status)){
-			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
-			this.success(this.response.text, this.response.xml);
-		} else {
-			this.response = {text: null, xml: null};
-			this.failure();
-		}
-		this.xhr.onreadystatechange = nil;
-	},
-
-	isSuccess: function(){
-		return ((this.status >= 200) && (this.status < 300));
-	},
-
-	processScripts: function(text){
-		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
-		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
-	},
-
-	success: function(text, xml){
-		this.onSuccess(this.processScripts(text), xml);
-	},
-
-	onSuccess: function(){
-		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
-	},
-
-	failure: function(){
-		this.onFailure();
-	},
-
-	onFailure: function(){
-		this.fireEvent('complete').fireEvent('failure', this.xhr);
-	},
-
-	setHeader: function(name, value){
-		this.getOption('headers')[name] = value;
-		return this;
-	},
-
-	getHeader: function(name){
-		return Function.stab(function(){
-			return this.xhr.getResponseHeader(name);
-		}.bind(this));
-	},
-
-	check: function(){
-		if (!this.running) return true;
-		switch (this.getOption('link')){
-			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this[this.caller].bind(this, arguments)); return false;
-		}
-		return false;
-	},
-
-	send: function(params){
-		if (!this.check(params)) return this;
+	}.protect(),
+	
+	send: function(data){
+		if (!this.check(data)) return this;
 		this.running = true;
 
-		var old = this.getOptions('data', 'url', 'method');
-		params = Object.append(old, params);
-		var data = params.data, url = params.url, method = params.method;
+		var url = this.getOption('url'), method = this.getOption('method');
 
 		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
@@ -126,7 +63,7 @@ var Request = new Class({
 			data = (data) ? format + '&' + data : format;
 		}
 
-		if (this.getOption('emulation') && ['put', 'delete'].contains(method)){
+		if (this.getOption('emulation') && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
 			method = 'post';
@@ -137,6 +74,12 @@ var Request = new Class({
 			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
+		if (this.options.noCache){
+			var noCache = "noCache=" + new Date().getTime();
+			data = (data) ? noCache + '&' + data : noCache;
+		}
+
+
 		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
@@ -146,7 +89,7 @@ var Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		Object.each(headers, function(value, key){
+		Object.forEach(headers, function(value, key){
 			var xhr = this.xhr;
 			if (!Function.stab(function(){
 				xhr.setRequestHeader(key, value);
@@ -156,6 +99,7 @@ var Request = new Class({
 		this.fireEvent('request');
 		this.xhr.send(data);
 		if (!this.getOption('async')) this.onStateChange();
+
 		return this;
 	},
 
@@ -163,22 +107,83 @@ var Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
-		this.xhr.onreadystatechange = nil;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
-	}
+	},
+	
+	setHeader: function(name, value){
+		this.getOption('headers')[name] = value;
+		return this;
+	},
 
+	getHeader: function(name){
+		return Function.stab(function(){
+			return this.xhr.getResponseHeader(name);
+		}.bind(this));
+	},
+
+	onStateChange: function(){
+		if (this.xhr.readyState != 4 || !this.running) return;
+		this.running = false;
+		this.status = 0;
+		
+		Function.stab(function(){
+			this.status = this.xhr.status;
+		}.bind(this));
+		
+		if (this.getOption('isSuccess').call(this, this.status)){
+			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
+			this.success(this.response.text, this.response.xml);
+		} else {
+			this.response = {text: null, xml: null};
+			this.failure();
+		}
+	},
+
+	isSuccess: function(){
+		return ((this.status >= 200) && (this.status < 300));
+	}.protect(),
+
+	processScripts: function(text){
+		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
+		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
+	}.protect(),
+
+	success: function(text, xml){
+		this.onSuccess(this.processScripts(text), xml);
+	}.protect(),
+
+	onSuccess: function(){
+		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
+	}.protect(),
+
+	failure: function(){
+		this.onFailure();
+	}.protect(),
+
+	onFailure: function(){
+		this.fireEvent('complete').fireEvent('failure', this.xhr);
+	}.protect(),
+
+	check: function(){
+		if (!this.running) return true;
+		switch (this.getOption('link')){
+			case 'cancel': this.cancel(); return true;
+			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
+		}
+		return false;
+	}.protect()
 });
 
 (function(){
 
 	var methods = {};
 
-	['get', 'post', 'put', 'delete'].each(function(method){
-		methods[method] = methods[method.toUpperCase()] = function(obj){
+	['get', 'post', 'put', 'delete'].forEach(function(method){
+		methods[method] = methods[method.toUpperCase()] = function(data){
 			this.setOption('method', method);
-			return this.send(obj);
+			return this.send(data);
 		};
 	});
 
@@ -199,9 +204,8 @@ Element.defineGetter('send', function(){
 
 Element.implement({
 
-	send: function(obj){
-		var sender = this.get('send');
-		sender.send.call(sender, obj);
+	send: function(data){
+		this.get('send').send(data);
 		return this;
 	}
 

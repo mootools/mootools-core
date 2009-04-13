@@ -33,6 +33,7 @@ An XMLHttpRequest Wrapper.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
+* noCache - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
 
 ### Events:
 
@@ -159,8 +160,9 @@ Returns the given response header or null if not found.
 
 ### Example:
 
-	var myRequest = new Request(url, {method: 'get', headers: {'X-Request': 'JSON'}});
-	var headers = myRequest.getHeader('X-Request'); //Returns 'JSON'.
+	var myRequest = new Request(url, {method: 'get', onSuccess: function(responseText, responseXML) {
+		alert(this.getHeader('Date')); // Alerts the server date (for example, "Thu, 26 Feb 2009 20:26:06 GMT")
+	}});
 
 Request Method: send {#Request:send}
 ----------------------------
@@ -298,5 +300,5 @@ Sends a form or a container of inputs with an HTML request.
 
 
 
-[$]: /Element/Element/#dollar
+[$]: /core/Element/Element/#dollar
 [Request:send]: #Request:send

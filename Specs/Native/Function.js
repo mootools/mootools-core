@@ -22,11 +22,6 @@ var Args = function(){
 
 describe("Function Methods", {
 
-	'should return a new function as an event': function(){
-		var fnc = fn.bindWithEvent(fnc, [0, 1]);
-		value_of(fnc('an Event occurred')).should_be(['an Event occurred', 0, 1]);
-	},
-
 	// Function.bind
 
 	'should return a new function bound to an object': function(){
@@ -47,16 +42,6 @@ describe("Function Methods", {
 	'should return the function bound to an object with multiple arguments': function(){
 		var fnc = Args.bind('MooTools', ['rocks', 'da house']);
 		value_of(fnc()).should_be(['MooTools', 'rocks', 'da house']);
-	},
-
-	'should return the function bound to an object and make the function an event listener': function(){
-		var fnc = Args.bindWithEvent('MooTools');
-		value_of(fnc('an Event ocurred')).should_be(['MooTools', 'an Event ocurred']);
-	},
-
-	'should return the function bound to an object and make the function event listener with multiple arguments': function(){
-		var fnc = Args.bindWithEvent('MooTools', ['rocks', 'da house']);
-		value_of(fnc('an Event ocurred')).should_be(['MooTools', 'an Event ocurred', 'rocks', 'da house']);
 	},
 
 	// Function.pass
@@ -131,7 +116,7 @@ describe("Function Methods", {
 
 	'delay should return a timer pointer': function(){
 		var timer = nil.delay(10000);
-		value_of(Type.isNumber(timer)).should_be_true();
+		value_of(Native.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	},
 
@@ -139,7 +124,7 @@ describe("Function Methods", {
 
 	'periodical should return a timer pointer': function(){
 		var timer = nil.periodical(10000);
-		value_of(Type.isNumber(timer)).should_be_true();
+		value_of(Native.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	}
 

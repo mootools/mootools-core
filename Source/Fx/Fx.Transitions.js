@@ -12,7 +12,7 @@ Credits:
 Fx.defineTransitions({
 
 	pow: function(p, x){
-		return Math.pow(p, x[0] || 6);
+		return Math.pow(p, x || 6);
 	},
 
 	expo: function(p){
@@ -28,7 +28,7 @@ Fx.defineTransitions({
 	},
 
 	back: function(p, x){
-		x = x[0] || 1.618;
+		x = x || 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -44,13 +44,13 @@ Fx.defineTransitions({
 	},
 
 	elastic: function(p, x){
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x || 1) / 3);
 	}
 
 });
 
-['quad', 'cubic', 'quart', 'quint'].each(function(transition, i){
+['quad', 'cubic', 'quart', 'quint'].forEach(function(transition, i){
 	Fx.defineTransition(transition, function(p){
-		return Math.pow(p, [i + 2]);
+		return Math.pow(p, i + 2);
 	});
 });

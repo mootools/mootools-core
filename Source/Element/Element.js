@@ -7,7 +7,21 @@ License:
 */
 
 var Element = function(item, props){
-	return (typeOf(item) == 'string') ? document.newElement(item, props) : document.id(item).set(props);
+	if (typeof item != 'string') return document.id(item).set(props);
+	
+	if (!props) props = {};
+	
+	var parsed = slick.parse(item)[0][0], id;
+	var tag = parsed.tag;
+	if (parsed.id) props.id = parsed.id;
+	
+	if (parsed.attributes) parsed.attributes.forEach(function(att){
+		if (att.value && att.operator == '=') props[att.name] = att.value;
+	});
+	
+	if (parsed.classes) props['class'] = parsed.classes.join(' ');
+	
+	return document.newElement(tag, props);
 };
 
 Element.prototype = Browser.Element.prototype;
@@ -42,7 +56,7 @@ document.id = (function(){
 		element: function(item){
 			if (window.console) console.warn('Extending element manually.');
 			Object.append(item, proto);
-			item.constructor = Browser.Element;
+			item.constructor = Element;
 			return item;
 		}
 
@@ -52,14 +66,14 @@ document.id = (function(){
 	
 	var proto = {};
 
-	if (Browser.Engine.trident){
+	if (document.html.mergeAttributes){
 		
 		proto = document.createElement('div');
-		proto[':type'] = Function.from('element');
+		proto._type_ = Function.from('element');
 
 		types.element = function(item){
 			item.mergeAttributes(proto);
-			item.constructor = Browser.Element;
+			item.constructor = Element;
 			return item;
 		};
 
@@ -70,7 +84,7 @@ document.id = (function(){
 	});
 	
 	return function(item){
-		if (instanceOf(item, Browser.Element)) return item;
+		if (instanceOf(item, Element)) return item;
 		var processor = types[typeOf(item)];
 		return (processor) ? processor(item, this) : null;
 	};
@@ -96,74 +110,31 @@ var Elements = function(elements, unique){
 Elements.prototype = {length: 0};
 Elements.parent = Array;
 
-new Native('Elements', Elements).implement('filter', function(filter, bind){
-	if (!filter) return this;
-	return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
-		return item.match(filter);
-	} : filter, bind));
+new Native('Elements', Elements).implement({
+
+	filter: function(filter, bind){
+		if (!filter) return this;
+		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
+			return item.match(filter);
+		} : filter, bind));
+	}.protect(),
+	
+	push: function(item){
+		if (document.id(item)) this[this.length++] = item;
+		return this.length;
+	}.protect()
+
 });
 
 Elements.implement(Array.prototype);
 
 Array.mirror(Elements);
 
-Element.extend(new Accessors);
-
-Element.extend({
-	
-	definePseudoConstructor: function(name, fn){
-		return Storage.store(this, 'constructor.' + name, fn);
-	},
-	
-	lookupPseudoConstructor: function(name){
-		return Storage.retrieve(this, 'constructor.' + name);
-	},
-	
-	defineConstructorModifier: function(name, fn){
-		return Storage.store(this, 'modifier.' + name, fn);
-	},
-	
-	lookupConstructorModifier: function(name){
-		return Storage.retrieve(this, 'modifier.' + name);
-	}
-	
-});
-
 Document.implement({
 	
 	newElement: function(tag, props){
-		if (!props) props = {};
-		
-		if ((/^<\w/).test(tag)) return this.newElement('div', {html: tag}).find('^').set(props);
-		
-		var parsed = slick.parse(tag)[0][0], id;
-		tag = parsed.tag;
-		if (parsed.id) props.id = parsed.id;
-
-		if (parsed.attributes) parsed.attributes.each(function(att){
-			if (att.value && att.operator == '=') props[att.name] = att.value;
-		});
-		
-		if (parsed.classes) props['class'] = parsed.classes.join(' ');
-		
-		if (Browser.Engine.trident){
-			['name', 'type', 'checked'].each(function(attribute){
-				if (!props[attribute]) return;
-				tag += ' ' + attribute + '="' + props[attribute] + '"';
-				if (attribute != 'checked') delete props[attribute];
-			});
-			tag = '<' + tag + '>';
-		}
-		
-		var modifier = Element.lookupConstructorModifier(tag);
-		var element = document.id((modifier) ? modifier() : this.createElement(tag)).set(props);
-		
-		if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
-			var parser = Element.lookupPseudoConstructor(pseudo.name);
-			if (parser) parser.call(element, pseudo.argument);
-		});
-
-		return element;
+		if (props && props.checked != null) props.defaultChecked = props.checked;
+		return document.id(this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
@@ -177,11 +148,12 @@ Document.implement({
 [Document, Element].call('implement', {
 	
 	search: function(expression){
-		return new Elements(slick(this, expression), false);
+		return slick(this, expression, new Elements);
 	},
 	
 	find: function(expression){
-		return document.id(slick(this, expression)[0]);
+		var element = slick(this, expression)[0];
+		return (element) ? document.id(element) : null;
 	}
 	
 });
@@ -192,7 +164,7 @@ Element.implement('match', function(expression){
 
 var $ = function(expression){
 	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
-	if (match) return document.id(match); //compat
+	if (match) return document.id(match);
 	return document.find(expression);
 };
 
@@ -257,7 +229,7 @@ Element.implement({
 	
 	var methods = {};
 
-	Object.each(inserters, function(inserter, where){
+	Object.forEach(inserters, function(inserter, where){
 	
 		methods['inject' + where] = function(el){
 			inserter(this, document.id(el));
@@ -278,7 +250,7 @@ Element.implement({
 		},
 		
 		adopt: function(){
-			Array.flatten(arguments).each(function(element){
+			Array.flatten(arguments).forEach(function(element){
 				if ((element = document.id(element))) this.appendChild(element);
 			}, this);
 			return this;
@@ -315,29 +287,28 @@ Element.implement({
 
 Element.implement(new Storage);
 
-/* slick attribute integration */
-	
-slick.getAttribute = function(element, attribute){
-	var getter = Element.lookupGetter(attribute = attribute.camelCase());
-	if (getter) return getter.call(element);
-	return element.getAttribute(attribute, 2);
-};
-
 /* Attribute Getters, Setters */
+
+Element.extend(new Accessors);
 
 (function(){
 
-	var equals = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+	var properties = [
+		'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
+	];
 
-	var attributes = Object.append({
+	properties = Object.append(Object.from(properties, properties), {
 		'html': 'innerHTML',
 		'class': 'className',
 		'for': 'htmlFor',
-		'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
-	}, Object.from(equals, equals));
+		'text': (function(){
+			var temp = document.createElement('div');
+			return (temp.innerText == null) ? 'textContent' : 'innerText';
+		})()
+	});
 
-	Object.each(attributes, function(real, key){
+	Object.forEach(properties, function(real, key){
 		Element.defineSetter(key, function(value){
 			return this[real] = value;
 		});
@@ -349,7 +320,7 @@ slick.getAttribute = function(element, attribute){
 	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 		'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 
-	bools.each(function(bool){
+	bools.forEach(function(bool){
 		Element.defineSetter(bool, function(value){
 			return this[bool] = !!value;
 		});
@@ -357,19 +328,31 @@ slick.getAttribute = function(element, attribute){
 			return !!this[bool];
 		});
 	});
+	
+	var accessors = Storage.retrieve(Element, 'accessors');
+	
+	/* slick attribute integration */
+	
+	slick.getAttribute = function(element, attribute){
+		var accessor = accessors[attribute], getter;
+		if (accessor && (getter = accessor.get)) return getter.call(element);
+		return element.getAttribute(attribute, 2);
+	};
+	
+	/* get, set */
 
 	Element.implement({
 
 		set: function(attribute, value){
-			var setter = Element.lookupSetter(attribute = attribute.camelCase());
-			if (setter) setter.call(this, value);
+			var accessor = accessors[attribute = attribute.camelCase()], setter;
+			if (accessor && (setter = accessor.set)) setter.call(this, value);
 			else if (value == null) this.removeAttribute(attribute);
 			else this.setAttribute(attribute, '' + value);
 			return this;
 		}.setMany(),
 
 		get: function(attribute){
-			return slick.getAttribute(this, attribute);
+			return slick.getAttribute(this, attribute = attribute.camelCase());
 		}.getMany()
 
 	});
@@ -390,6 +373,11 @@ Element.defineGetter('tag', function(){
 
 Element.defineSetter('html', (function(){
 	
+	var tableAble = Function.stab(function(){
+		var table = document.createElement('table');
+		table.innerHTML = '<tr><td></td></tr>';
+	});
+	
 	var wrapper = document.createElement('div');
 
 	var translations = {
@@ -403,7 +391,7 @@ Element.defineSetter('html', (function(){
 	
 	return function(html){
 		if (typeOf(html) == 'array') html = html.join(' ');
-		var wrap = (Browser.Engine.trident && translations[this.get('tag')]);
+		var wrap = (!tableAble && translations[this.get('tag')]);
 		if (wrap){
 			var first = wrapper;
 			first.innerHTML = wrap[1] + html + wrap[2];

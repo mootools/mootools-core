@@ -67,13 +67,13 @@ describe("Object Methods", {
 		var obj1 = {a: {a: 1, b: 2, c: 3}, b: 2};
 		var obj2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
 		var obj3 = {a: {a: 3}, b: 3, c: false};
-		value_of(Object.mixin(obj1, obj2, obj3)).should_be({a: {a: 3, b: 8, c: 3, d: 8}, b: 3, c: false});
+		value_of(Object.merge(obj1, obj2, obj3)).should_be({a: {a: 3, b: 8, c: 3, d: 8}, b: 3, c: false});
 	},
 	
 	'should not break with recursion when cloning objects containing functions': function(){
 		var obj = {a: nil};
 		
-		value_of(Object.mixin({}, obj)).should_be({a: nil});
+		value_of(Object.merge({}, obj)).should_be({a: nil});
 	}
 
 });

@@ -44,7 +44,16 @@ Array.implement({
 	},
 	
 	clean: function(){
-		return this.filter(nil);
+		return this.filter(function(item){
+			return item != null;
+		});
+	},
+	
+	pick: function(){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (this[i] != null) return this[i];
+		}
+		return null;
 	},
 	
 	call: function(name){
@@ -100,9 +109,14 @@ Array.implement({
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
 			var item = this[i];
-			if (item != null) array = array.concat((Type.isEnumerable(item)) ? Array.flatten(item) : item);
+			if (item != null) array = array.concat((Native.isEnumerable(item)) ? Array.flatten(item) : item);
 		}
 		return array;
+	},
+
+	item: function(at){
+		if (at < 0) at = (at % this.length) + this.length;
+		return (at < 0 || at >= this.length) ? null : this[at];
 	}
 
 });

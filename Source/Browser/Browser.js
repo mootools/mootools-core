@@ -59,15 +59,27 @@ Browser.Platform[Browser.Platform.name] = true;
 
 // Request
 
-Browser.Request = function(){
-	return Function.stab(function(){
+Browser.Request = (function(){
+	
+	var XMLHTTP = function(){
 		return new XMLHttpRequest();
-	}, function(){
-		return new ActiveXObject('MSXML2.XMLHTTP');
-	});
-};
+	};
 
-Browser.Features.xhr = !!(Browser.Request());
+	var ActiveX = function(){
+		return new ActiveXObject('MSXML2.XMLHTTP');
+	};
+	
+	return Function.stab(function(){
+		XMLHTTP();
+		return XMLHTTP;
+	}, function(){
+		ActiveX();
+		return ActiveX;
+	});
+
+})();
+
+Browser.Features.xhr = !!(Browser.Request);
 
 // Flash detection
 
@@ -130,7 +142,7 @@ String.implement('stripScripts', function(exec){
 	this.Window = new Native('Window', function(){});
 	
 	this.constructor = this.Window;
-	this[':type'] = Function.from('window').hide();
+	this._type_ = Function.from('window').hide();
 	
 	this.Window.mirror(function(name, method){
 		window[name] = method;
@@ -154,7 +166,7 @@ String.implement('stripScripts', function(exec){
 	this.Document = new Native('Document', function(){});
 
 	doc.constructor = this.Document;
-	doc[':type'] = Function.from('document').hide();
+	doc._type_ = Function.from('document').hide();
 	
 	this.Document.mirror(function(name, method){
 		doc[name] = method;

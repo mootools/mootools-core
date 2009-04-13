@@ -263,7 +263,7 @@ If no background color is set on the Element, or its background color is set to 
 	$('myElement').highlight('#ddf', '#ccc');
 
 
-[$]: /Element/Element#dollar
-[Fx]: /Fx/Fx
+[$]: /core/Element/Element#dollar
+[Fx]: /core/Fx/Fx
 [Fx.Tween]: #Fx-Tween
 [Element.tween]: #Element-Properties:tween

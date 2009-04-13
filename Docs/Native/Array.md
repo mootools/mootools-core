@@ -508,6 +508,25 @@ Empties an array.
 	myArray.empty(); //myArray is now []
 
 
+Array Method: item {#Array:item}
+----------------------------------
+
+Returns an item in an array. Function supports negative indexing.
+
+### Syntax:
+
+	myArray.item(at);
+
+### Returns:
+
+* (*mixed*) An item from this array. If this array is empty, returns null.
+
+### Examples:
+
+	var myArray = ['old', 'data'];
+	myArray.item(0); //'old'
+	myArray.item(-1); //'data'
+
 
 Array Method: flatten {#Array:flatten}
 --------------------------------------

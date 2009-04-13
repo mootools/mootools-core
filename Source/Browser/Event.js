@@ -17,29 +17,29 @@ var Event = new Native('Event', function(event){
 Event.extend(new Accessors).defineGetters({
 
 	shift: function(){
-		return this.shift = this.event.shiftKey;
+		return this.event.shiftKey;
 	},
 
 	control: function(){
-		return this.control = this.event.ctrlKey;
+		return this.event.ctrlKey;
 	},
 
 	alt: function(){
-		return this.alt = this.event.altKey;
+		return this.event.altKey;
 	},
 
 	meta: function(){
-		return this.meta = this.event.metaKey;
+		return this.event.metaKey;
 	},
 
 	rightClick: function(){
 		var event = this.event;
-		return this.rightClick = (event.which == 3) || (event.button == 2);
+		return (event.which == 3) || (event.button == 2);
 	},
 
 	wheel: function(){
 		var event = this.event;
-		return this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+		return (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 	}
 
 });
@@ -67,23 +67,23 @@ Event.defineGetter('key', function(){
 	var code = event.which || event.keyCode;
 	
 	var named = Event.lookupKeyCode(code);
-	if (named) return this.key = named;
+	if (named) return named;
 
 	if (event.type == 'keydown'){
 		var fKey = code - 111;
-		if (fKey > 0 && fKey < 13) return this.key = 'f' + fKey;
+		if (fKey > 0 && fKey < 13) return 'f' + fKey;
 	}
 
-	return this.key = String.fromCharCode(code).toLowerCase();
+	return String.fromCharCode(code).toLowerCase();
 });
 
 Event.implement({
 	
 	get: function(key){
 		key = key.camelCase();
-		if (this[key]) return this[key];
+		if (this.hasOwnProperty(key)) return this[key];
 		var getter = Event.lookupGetter(key);
-		return (getter) ? getter.call(this) : this.event[key];
+		return this[key] = (getter) ? getter.call(this) : this.event[key];
 	}.getMany(),
 	
 	set: function(key, value){
@@ -100,7 +100,7 @@ Event.defineGetters({
 		var event = this.event;
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
-		return this.target = document.id(target);
+		return document.id(target);
 	},
 	
 	relatedTarget: function(){
@@ -114,12 +114,12 @@ Event.defineGetters({
 			return true;
 		};
 		var hasRelated = (Browser.Engine.gecko) ? Function.stab(test) : test();
-		return this.relatedTarget = (hasRelated) ? document.id(related) : null;
+		return (hasRelated) ? document.id(related) : null;
 	},
 	
 	client: function(){
 		var event = this.event;
-		return this.client = {
+		return {
 			x: (event.pageX) ? event.pageX - window.pageXOffset : event.clientX,
 			y: (event.pageY) ? event.pageY - window.pageYOffset : event.clientY
 		};
@@ -128,7 +128,7 @@ Event.defineGetters({
 	page: function(){
 		var event = this.event, doc = document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-		return this.page = {
+		return {
 			x: event.pageX || event.clientX + doc.scrollLeft,
 			y: event.pageY || event.clientY + doc.scrollTop
 		};

@@ -69,7 +69,7 @@ Event.implement('remove', function(){
 			
 			var pseudos = [], attributes = [];
 			
-			if (parsed.pseudos) parsed.pseudos.each(function(pseudo){
+			if (parsed.pseudos) parsed.pseudos.forEach(function(pseudo){
 				var name = pseudo.name || '', argument = pseudo.argument || '';
 				var parser = Event.lookupPseudo(name);
 				if (parser) pseudos.push(function(event){
@@ -77,7 +77,7 @@ Event.implement('remove', function(){
 				});
 			});
 			
-			if (parsed.attributes) parsed.attributes.each(function(attribute){
+			if (parsed.attributes) parsed.attributes.forEach(function(attribute){
 				var name = attribute.name || '', operator = attribute.operator || '', value = attribute.value || '';
 				attributes.push(function(event){
 					var actual = event.get(name);
@@ -163,7 +163,7 @@ Event.implement('remove', function(){
 			var eventTypes = this.retrieve('event.types'), eventType, eventName;
 			if (!eventTypes || !(eventType = eventTypes[type]) || !(eventName = eventType[name])) return this;
 			
-			eventName.each(function(filter, fn){
+			eventName.forEach(function(filter, fn){
 				fn.apply(this, Array.from(args));
 			}, this);
 			
@@ -178,9 +178,9 @@ Event.implement('remove', function(){
 			var eventTypes = this.retrieve('event.types'), eventType;
 			if (!eventTypes || !(eventType = eventTypes[type])) return this;
 			
-			Object.each(eventType, function(eventName, name){
+			Object.forEach(eventType, function(eventName, name){
 				
-				eventName.each(function(filter, fn){
+				eventName.forEach(function(filter, fn){
 					filter.call(this, event);
 				}, this);
 
@@ -210,7 +210,7 @@ Event.definePseudo('flash', function(event, argument){
 Event.definePseudo('relay', function(event, selector){
 	var nodes = this.search(selector), target = event.get('target');
 	for (var i = nodes.length; i--; i){
-		var node = document.id(nodes[i]);
+		var node = nodes[i];
 		if (target === node || node.find(target)) return node;
 	}
 	return false;
@@ -218,6 +218,6 @@ Event.definePseudo('relay', function(event, selector){
 
 if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
 
-Element.defineSetter('events', function(value){
-	this.addEvents(value);
+Element.defineSetter('events', function(events){
+	this.addEvents(events);
 });

@@ -9,7 +9,7 @@ See Also:
 	<http://www.json.org/>
 */
 
-if(!this.JSON) this.JSON = {};
+if (!this.JSON) this.JSON = {};
 
 JSON.encode = JSON.stringify || function(obj){
 	switch (typeOf(obj)){
@@ -38,5 +38,5 @@ JSON.decode = function(string, secure){
 	if (typeOf(string) != 'string' || !string.length) return null;
 	if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 	
-	return JSON.parse ? JSON.parse(string) : eval('(' + string + ')');
+	return (JSON.parse) ? JSON.parse(string) : eval('(' + string + ')');
 };
