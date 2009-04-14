@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Event = new Native('Event', function(event){
+this.Event = new Native('Event', function(event){
 	event = event || window.event || null;
 	if (event == null) event = {};
 	if (event.event) event = event.event;

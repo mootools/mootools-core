@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Class = new Native('Class', function(params){
+this.Class = new Native('Class', function(params){
 	
 	if (instanceOf(params, Function)) params = {initialize: params};
 	
@@ -128,9 +128,7 @@ Class.defineMutator('Extends', function(parent){
 		return previous.apply(this, arguments);
 	}.protect());
 
-});
-
-Class.defineMutator('Implements', function(items){
+}).defineMutator('Implements', function(items){
 
 	Array.from(items).forEach(function(item){
 		if (instanceOf(item, Function)) item = Class.getPrototype(item);
