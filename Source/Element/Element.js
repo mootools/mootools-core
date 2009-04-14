@@ -6,7 +6,9 @@ License:
 	MIT-style license.
 */
 
-var Element = function(item, props){
+(function(document){
+
+var Element = this.Element = function(item, props){
 	if (typeof item != 'string') return document.id(item).set(props);
 	
 	if (!props) props = {};
@@ -41,57 +43,53 @@ new Native('Element', Element).mirror(function(name, method){
 	});
 });
 
-document.id = (function(){
+var types = {
+
+	object: function(item){
+		return (item.toElement) ? item.toElement() : null;
+	},
+
+	string: function(item){
+		return types.element(document.getElementById(item));
+	},
 	
-	var types = {
-
-		object: function(item, doc){
-			return (item.toElement) ? item.toElement() : null;
-		},
-
-		string: function(item, doc){
-			return types.element(doc.getElementById(item));
-		},
-		
-		element: function(item){
-			if (window.console) console.warn('Extending element manually.');
-			Object.append(item, proto);
-			item.constructor = Element;
-			return item;
-		}
-
-	};
-	
-	types.window = types.document = types.textnode = types.whitespace = types.element = Function.argument(0);
-	
-	var proto = {};
-
-	if (document.html.mergeAttributes){
-		
-		proto = document.createElement('div');
-		proto._type_ = Function.from('element');
-
-		types.element = function(item){
-			item.mergeAttributes(proto);
-			item.constructor = Element;
-			return item;
-		};
-
+	element: function(item){
+		if (window.console) console.warn('Extending element manually.');
+		Object.append(item, proto);
+		item.constructor = Element;
+		return item;
 	}
+
+};
+
+types.window = types.document = types.textnode = types.whitespace = types.element = Function.argument(0);
+
+var protoElement = {};
+
+if (document.html.mergeAttributes){
 	
-	Element.mirror(function(name, method){
-		proto[name] = method;
-	});
-	
-	return function(item){
-		if (instanceOf(item, Element)) return item;
-		var processor = types[typeOf(item)];
-		return (processor) ? processor(item, this) : null;
+	protoElement = document.createElement('div');
+	protoElement._type_ = Function.from('element');
+
+	types.element = function(item){
+		item.mergeAttributes(protoElement);
+		item.constructor = Element;
+		return item;
 	};
 
-})();
+}
 
-var Elements = function(elements, unique){
+Element.mirror(function(name, method){
+	protoElement[name] = method;
+});
+
+document.id = function(item){
+	if (instanceOf(item, Element)) return item;
+	var processor = types[typeOf(item)];
+	return (processor) ? processor(item, this) : null;
+};
+
+var Elements = this.Elements = function(elements, unique){
 	if (!elements || !elements.length) return;
 	if (unique == null) unique = true;
 	var uniques = {};
@@ -162,13 +160,13 @@ Element.implement('match', function(expression){
 	return slick.match(this, expression);
 });
 
-var $ = function(expression){
+this.$ = function(expression){
 	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
 	if (match) return document.id(match);
 	return document.find(expression);
 };
 
-var $$ = function(expression){
+this.$$ = function(expression){
 	return document.search(expression);
 };
 
@@ -197,91 +195,87 @@ Element.implement({
 });
 
 /* Injections / Dejections */
-
-(function(){
 	
-	var inserters = {
+var inserters = {
 
-		Before: function(context, element){
-			if (element.parentNode) element.parentNode.insertBefore(context, element);
-		},
+	Before: function(context, element){
+		if (element.parentNode) element.parentNode.insertBefore(context, element);
+	},
 
-		After: function(context, element){
-			if (!element.parentNode) return;
-			var next = element.nextSibling;
-			if (next) element.parentNode.insertBefore(context, next);
-			else element.parentNode.appendChild(context);
-		},
+	After: function(context, element){
+		if (!element.parentNode) return;
+		var next = element.nextSibling;
+		if (next) element.parentNode.insertBefore(context, next);
+		else element.parentNode.appendChild(context);
+	},
 
-		Bottom: function(context, element){
-			element.appendChild(context);
-		},
+	Bottom: function(context, element){
+		element.appendChild(context);
+	},
 
-		Top: function(context, element){
-			var first = element.firstChild;
-			if (first) element.insertBefore(context, first);
-			else element.appendChild(context);
-		}
+	Top: function(context, element){
+		var first = element.firstChild;
+		if (first) element.insertBefore(context, first);
+		else element.appendChild(context);
+	}
 
+};
+
+inserters.Inside = inserters.Bottom;
+
+var methods = {};
+
+Object.forEach(inserters, function(inserter, where){
+
+	methods['inject' + where] = function(el){
+		inserter(this, document.id(el));
+		return this;
 	};
 
-	inserters.Inside = inserters.Bottom;
+	methods['grab' + where] = function(el){
+		inserter(document.id(el), this);
+		return this;
+	};
+
+});
+
+Element.implement(Object.append(methods, {
 	
-	var methods = {};
-
-	Object.forEach(inserters, function(inserter, where){
+	dispose: function(){
+		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
+	},
 	
-		methods['inject' + where] = function(el){
-			inserter(this, document.id(el));
-			return this;
-		};
-	
-		methods['grab' + where] = function(el){
-			inserter(document.id(el), this);
-			return this;
-		};
-	
-	});
-	
-	Element.implement(Object.append(methods, {
-		
-		dispose: function(){
-			return (this.parentNode) ? this.parentNode.removeChild(this) : this;
-		},
-		
-		adopt: function(){
-			Array.flatten(arguments).forEach(function(element){
-				if ((element = document.id(element))) this.appendChild(element);
-			}, this);
-			return this;
-		},
+	adopt: function(){
+		Array.flatten(arguments).forEach(function(element){
+			if ((element = document.id(element))) this.appendChild(element);
+		}, this);
+		return this;
+	},
 
-		appendText: function(text, where){
-			return this.grab(document.newTextNode(text), where);
-		},
+	appendText: function(text, where){
+		return this.grab(document.newTextNode(text), where);
+	},
 
-		grab: function(el, where){
-			return this['grab' + (where ? where.capitalize() : 'Bottom')](el);
-		},
+	grab: function(el, where){
+		return this['grab' + (where ? where.capitalize() : 'Bottom')](el);
+	},
 
-		inject: function(el, where){
-			return this['inject' + (where ? where.capitalize() : 'Bottom')](el);
-		},
+	inject: function(el, where){
+		return this['inject' + (where ? where.capitalize() : 'Bottom')](el);
+	},
 
-		replaces: function(el){
-			el = document.id(el);
-			el.parentNode.replaceChild(this, el);
-			return this;
-		},
+	replaces: function(el){
+		el = document.id(el);
+		el.parentNode.replaceChild(this, el);
+		return this;
+	},
 
-		wraps: function(el, where){
-			el = document.id(el);
-			return this.replaces(el).grab(el, where);
-		}
+	wraps: function(el, where){
+		el = document.id(el);
+		return this.replaces(el).grab(el, where);
+	}
 
-	}));
-
-})();
+}));
 
 /* Element Storage */
 
@@ -291,73 +285,69 @@ Element.implement(new Storage);
 
 Element.extend(new Accessors);
 
-(function(){
+var properties = [
+	'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
+];
 
-	var properties = [
-		'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-		'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
-	];
+properties = Object.append(Object.from(properties, properties), {
+	'html': 'innerHTML',
+	'class': 'className',
+	'for': 'htmlFor',
+	'text': (function(){
+		var temp = document.createElement('div');
+		return (temp.innerText == null) ? 'textContent' : 'innerText';
+	})()
+});
 
-	properties = Object.append(Object.from(properties, properties), {
-		'html': 'innerHTML',
-		'class': 'className',
-		'for': 'htmlFor',
-		'text': (function(){
-			var temp = document.createElement('div');
-			return (temp.innerText == null) ? 'textContent' : 'innerText';
-		})()
+Object.forEach(properties, function(real, key){
+	Element.defineSetter(key, function(value){
+		return this[real] = value;
 	});
-
-	Object.forEach(properties, function(real, key){
-		Element.defineSetter(key, function(value){
-			return this[real] = value;
-		});
-		Element.defineGetter(key, function(){
-			return this[real];
-		});
+	Element.defineGetter(key, function(){
+		return this[real];
 	});
+});
 
-	var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
-		'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
+var booleans = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
+	'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 
-	bools.forEach(function(bool){
-		Element.defineSetter(bool, function(value){
-			return this[bool] = !!value;
-		});
-		Element.defineGetter(bool, function(){
-			return !!this[bool];
-		});
+booleans.forEach(function(bool){
+	Element.defineSetter(bool, function(value){
+		return this[bool] = !!value;
 	});
-	
-	var accessors = Storage.retrieve(Element, 'accessors');
-	
-	/* slick attribute integration */
-	
-	slick.getAttribute = function(element, attribute){
-		var accessor = accessors[attribute], getter;
-		if (accessor && (getter = accessor.get)) return getter.call(element);
-		return element.getAttribute(attribute, 2);
-	};
-	
-	/* get, set */
-
-	Element.implement({
-
-		set: function(attribute, value){
-			var accessor = accessors[attribute = attribute.camelCase()], setter;
-			if (accessor && (setter = accessor.set)) setter.call(this, value);
-			else if (value == null) this.removeAttribute(attribute);
-			else this.setAttribute(attribute, '' + value);
-			return this;
-		}.setMany(),
-
-		get: function(attribute){
-			return slick.getAttribute(this, attribute = attribute.camelCase());
-		}.getMany()
-
+	Element.defineGetter(bool, function(){
+		return !!this[bool];
 	});
+});
 
-})();
+var accessors = Storage.retrieve(Element, 'accessors');
+
+/* slick attribute integration */
+
+slick.getAttribute = function(element, attribute){
+	var accessor = accessors[attribute], getter;
+	if (accessor && (getter = accessor.get)) return getter.call(element);
+	return element.getAttribute(attribute, 2);
+};
+
+/* get, set */
+
+Element.implement({
+
+	set: function(attribute, value){
+		var accessor = accessors[attribute = attribute.camelCase()], setter;
+		if (accessor && (setter = accessor.set)) setter.call(this, value);
+		else if (value == null) this.removeAttribute(attribute);
+		else this.setAttribute(attribute, '' + value);
+		return this;
+	}.setMany(),
+
+	get: function(attribute){
+		return slick.getAttribute(this, attribute = attribute.camelCase());
+	}.getMany()
+
+});
 
 Element.defineSetter('css', function(style){
 	return this.style.cssText = style;
@@ -371,48 +361,45 @@ Element.defineGetter('tag', function(){
 	return this.tagName.toLowerCase();
 });
 
-Element.defineSetter('html', (function(){
-	
-	var tableAble = Function.stab(function(){
-		var table = document.createElement('table');
-		table.innerHTML = '<tr><td></td></tr>';
-	});
-	
-	var wrapper = document.createElement('div');
+var tableTest = Function.stab(function(){
+	var table = document.createElement('table');
+	table.innerHTML = '<tr><td></td></tr>';
+});
 
-	var translations = {
-		'table': [1, '<table>', '</table>'],
-		'select': [1, '<select>', '</select>'],
-		'tbody': [2, '<table><tbody>', '</tbody></table>'],
-		'tr': [3, '<table><tbody><tr>', '</tr></tbody></table>']
-	};
+var tableWrapper = document.createElement('div');
 
-	translations.thead = translations.tfoot = translations.tbody;
-	
-	return function(html){
-		if (typeOf(html) == 'array') html = html.join(' ');
-		var wrap = (!tableAble && translations[this.get('tag')]);
-		if (wrap){
-			var first = wrapper;
-			first.innerHTML = wrap[1] + html + wrap[2];
-			for (var i = wrap[0]; i--; i) first = first.firstChild;
-			this.set('html', '').adopt(first.childNodes);
-		} else {
-			this.innerHTML = html;
-		}
-		return html;
-	};
+var tableTranslations = {
+	'table': [1, '<table>', '</table>'],
+	'select': [1, '<select>', '</select>'],
+	'tbody': [2, '<table><tbody>', '</tbody></table>'],
+	'tr': [3, '<table><tbody><tr>', '</tr></tbody></table>']
+};
 
-})());
+Element.defineSetter('html', function(html){
+	if (typeOf(html) == 'array') html = html.join(' ');
+	var wrap = (!tableTest && tableTranslations[this.get('tag')]);
+	if (wrap){
+		var first = tableWrapper;
+		first.innerHTML = wrap[1] + html + wrap[2];
+		for (var i = wrap[0]; i--; i) first = first.firstChild;
+		this.set('html', '').adopt(first.childNodes);
+	} else {
+		this.innerHTML = html;
+	}
+	return html;
+});
 
-if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.defineGetter('text', (function(){
+if (Browser.Engine.webkit && Browser.Engine.version < 420){
+
 	var temp = document.newElement('div', {'css': 'position: absolute; visibility: hidden;'});
 	
-	return function(){
+	Element.defineGetter('text', function(){
 		if (this.innerText) return this.innerText;
 		var text = temp.inject(document.body).set('html', this.innerHTML).innerText;
 		temp.dispose();
 		return text;
-	};
+	});
+	
+}
 
-})());
+})(document);
