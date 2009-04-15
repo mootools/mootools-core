@@ -16,8 +16,6 @@ Element.Style = {transitionable: {}, shorts: {}};
 
 var ES = Element.Style, EST = ES.transitionable, ESS = ES.shorts;
 
-var defineStyleSetter = 'defineStyleSetter', defineStyleGetter = 'defineStyleGetter';
-
 var testEM = document.newElement('span', {css: 'position: absolute; display: block; visibility: hidden; height: 100em; width: 100em;'});
 
 var emCSS = function(element){
@@ -54,6 +52,10 @@ var getStyle = (window.getComputedStyle) ? function(element, name, unit){
 
 };
 
+slick.definePseudo('positioned', function(){
+	return getStyle(this, 'position') != 'static';
+});
+
 /* css values utilities */
 
 var splitCSS = function(value){
@@ -77,7 +79,7 @@ var unitCSS = function(value){
 // string compression optimization
 
 var Left = 'Left', Right = 'Right', Top = 'Top', Bottom = 'Bottom', margin = 'margin', padding = 'padding', Width = 'Width', Height = 'Height',
-height = 'height', width = 'width', top = 'top', bottom = 'bottom', left = 'left', right = 'right', background = 'background',
+height = 'height', width = 'width', top = 'top', bottom = 'bottom', left = 'left', right = 'right', background = 'background', clip = 'clip',
 backgroundPosition = background + 'Position', border = 'border', opacity = 'opacity', color = 'color', Color = 'Color', Style = 'Style';
 
 var html = document.html;
@@ -88,11 +90,11 @@ var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
 
 /* float accessor */
 
-Element[defineStyleSetter]('float', function(value){
+Element.defineStyleSetter('float', function(value){
 
 	this.style[floatName] = value;
 
-})[defineStyleGetter]('float', function(){
+}).defineStyleGetter('float', function(){
 
 	return getStyle(this, floatName);
 
@@ -104,11 +106,11 @@ Element[defineStyleSetter]('float', function(value){
 	
 	EST[name] = 'color';
 
-	Element[defineStyleSetter](name, function(color){
+	Element.defineStyleSetter(name, function(color){
 		
 		this.style[name] = ((/^[a-z]*$|^rgb/).test(color)) ? color : new CColor(color).toString();
 
-	})[defineStyleGetter](name, function(){
+	}).defineStyleGetter(name, function(){
 		
 		var css = getStyle(this, name);
 		return (/^[a-z]*$|^rgb/).test(css) ? css : new CColor(css).toString();
@@ -125,17 +127,17 @@ var filterName = (html.style.MsFilter != null) ? 'MsFilter' : (html.style.filter
 
 EST[opacity] = 'float';
 
-if (html.style[opacity] == null && filterName) Element[defineStyleSetter](opacity, function(value){
+if (html.style[opacity] == null && filterName) Element.defineStyleSetter(opacity, function(value){
 	
 	if (value == null || value === '') value = 1;
 	this.style[filterName] = (value == 1) ? '' : 'alpha(' + opacity + '=' + (value * 100) + ')';
 
-})[defineStyleGetter](opacity, function(){
+}).defineStyleGetter(opacity, function(){
 	
 	var match = getStyle(this, filterName).match(/alpha\(opacity=([\d.]+)\)/i);
 	return String((match == null) ? 1 : match[1] / 100);
 
-}); else Element[defineStyleGetter](opacity, function(){
+}); else Element.defineStyleGetter(opacity, function(){
 
 	var o = getStyle(this, opacity);
 	return String((o === '') ? 1 : o);
@@ -152,10 +154,38 @@ border + Top + Width, border + Right + Width, border + Bottom + Width, border + 
 
 	EST[name] = 'unit';
 
-	Element[defineStyleSetter](name, function(value){
+	Element.defineStyleSetter(name, function(value){
 		this.style[name] = unitCSS(value);
 	});
 
+});
+
+/* height width top left */
+
+Element.defineStyleGetters({
+	
+	top: function(unit){
+		var mt = parseFloat(getStyle(this, margin + Top)), value = this.offsetTop - mt;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	},
+	
+	left: function(unit){
+		var ml = parseFloat(getStyle(this, margin + Left)), value = this.offsetLeft - ml;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	},
+	
+	height: function(unit){
+		var pt = parseFloat(getStyle(this, padding + Top)), pb = parseFloat(getStyle(this, padding + Bottom));
+		var value = this.clientHeight - pt - pb;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	},
+	
+	width: function(unit){
+		var pt = parseFloat(getStyle(this, padding + Left)), pb = parseFloat(getStyle(this, padding + Right));
+		var value = this.clientWidth - pt - pb;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	}
+	
 });
 
 /* 4 values shorthands */
@@ -165,10 +195,9 @@ var TRBL = [Top, Right, Bottom, Left];
 [margin, padding, border + Width, border + Color, border + Style].forEach(function(name){
 
 	var match = name.match(/border(\w+)/);
-	if (match) match = match[1];
 	
 	var shorts = TRBL.map(function(dir){
-		return (match) ? (border + dir + match) : (name + dir);
+		return (match) ? (border + dir + match[1]) : (name + dir);
 	});
 	
 	var parse = ESS[name] = function(value){
@@ -180,12 +209,12 @@ var TRBL = [Top, Right, Bottom, Left];
 		return parsed;
 	};
 
-	Element[defineStyleSetter](name, function(value){
+	Element.defineStyleSetter(name, function(value){
 		
 		if (!value && value !== 0) this.style[name] = '';
 		else this.setStyles(parse(value));
 		
-	})[defineStyleGetter](name, function(unit){
+	}).defineStyleGetter(name, function(unit){
 		
 		return shorts.map(function(s){
 			return this.getStyle(s, unit);
@@ -203,12 +232,12 @@ var bpparse = ESS[backgroundPosition] = function(value){
 	return Object.from([backgroundPosition + 'X', backgroundPosition + 'Y'], value);
 };
 
-Element[defineStyleSetter](backgroundPosition, function(value){
+Element.defineStyleSetter(backgroundPosition, function(value){
 
 	if (!value && value !== 0) this.style[backgroundPosition] = '';
 	else this.setStyles(bpparse(value));
 
-})[defineStyleGetter](backgroundPosition, function(){
+}).defineStyleGetter(backgroundPosition, function(){
 
 	return getStyle(this, backgroundPosition + 'X') + ' ' + getStyle(this, backgroundPosition + 'Y');
 
@@ -216,12 +245,12 @@ Element[defineStyleSetter](backgroundPosition, function(value){
 
 /* clip setter */
 
-Element[defineStyleSetter]('clip', function(value){
+Element.defineStyleSetter(clip, function(value){
 	if (!value && value !== 0){
-		this.style.clip = '';
+		this.style[clip] = '';
 	} else {
 		value = mirrorCSS((typeof value == 'string') ? value.match(/([\d.]+\w*)/g) : Array.from(value));
-		this.style.clip = 'rect(' + value.join(' ').map(unitCSS) + ')';
+		this.style[clip] = 'rect(' + value.join(' ').map(unitCSS) + ')';
 	}
 });
 
@@ -240,12 +269,12 @@ Element[defineStyleSetter]('clip', function(value){
 		return styles;
 	};
 
-	Element[defineStyleSetter](name, function(value){
+	Element.defineStyleSetter(name, function(value){
 
 		if (!value) this.style[name] = '';
 		else this.setStyles(parse(value));
 
-	})[defineStyleGetter](name, function(unit){
+	}).defineStyleGetter(name, function(unit){
 		
 		return shorts.map(function(s){
 			return this.getStyle(s, unit);
@@ -276,12 +305,12 @@ var bparse = ESS[border] = function(value){
 	return styles;
 };
 
-Element[defineStyleSetter](border, function(value){
+Element.defineStyleSetter(border, function(value){
 
 	if (!value) this.style[border] = '';
 	else this.setStyles(bparse(value));
 	
-})[defineStyleGetter](border, function(unit){
+}).defineStyleGetter(border, function(unit){
 	
 	return borderShorts.map(function(bs){
 		return this.getStyle(bs, unit);
@@ -289,24 +318,20 @@ Element[defineStyleSetter](border, function(value){
 
 });
 
-/* skip lookupStyleGetter and lookupStyleSetter to speedup getStyle / setStyle. they have to be fast */
-
-var styleAccessors = Storage.retrieve(Element, 'style:accessors');
-
 /* getStyle, setStyle */
 
 Element.implement({
 	
 	setStyle: function(name, value){
-		var accessor = styleAccessors[name = name.camelCase()], setter;
-		if (accessor && (setter = accessor.set)) setter.call(this, value);
+		var setter = Element.lookupStyleSetter(name);
+		if (setter) setter.call(this, value);
 		else this.style[name] = value;
 		return this;
 	},
 
 	getStyle: function(name, unit){
-		var accessor = styleAccessors[name = name.camelCase()], getter;
-		return ((accessor && (getter = accessor.get))) ? getter.call(this, unit) : getStyle(this, name, unit);
+		var getter = Element.lookupStyleGetter(name);
+		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
 	},
 
 	setStyles: Function.setMany('setStyle'),
