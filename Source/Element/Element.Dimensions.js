@@ -62,10 +62,10 @@ Element.implement({
 	getOffsets: function(){		
 		if (Browser.Engine.trident){
 			var bound = this.getBoundingClientRect(), html = this.getDocument().documentElement;
-			var is_fixed = styleString(this, 'position') == 'fixed';
+			var isFixed = styleString(this, 'position') == 'fixed';
 			return {
-				x: bound.left + (is_fixed ? 0 : html.scrollLeft) - html.clientLeft,
-				y: bound.top +  (is_fixed ? 0 : html.scrollTop)  - html.clientTop
+				x: bound.left + ((isFixed) ? 0 : html.scrollLeft) - html.clientLeft,
+				y: bound.top +  ((isFixed) ? 0 : html.scrollTop)  - html.clientTop
 			};
 		}
 

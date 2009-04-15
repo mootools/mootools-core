@@ -66,7 +66,7 @@ new Native({name: 'Class', initialize: Class}).extend({
 	},
 	
 	wrap: function(self, key, method){
-		method = method._origin || method;
+		if (method._origin) method = method._origin;
 		
 		return function(){
 			if (method._protected && this._current == null) throw new Error('The method "' + key + '" cannot be called.');
