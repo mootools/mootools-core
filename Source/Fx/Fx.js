@@ -87,16 +87,16 @@ this.Fx = new Class({
 	}.protect(),
 
 	onStart: function(){
-		this.fireEvent('start', this.item);
+		this.fireEvent('start', this.item || null);
 	}.protect(),
 
 	onComplete: function(){
-		this.fireEvent('complete', this.item);
-		if (!this.callChain()) this.fireEvent('chainComplete', this.item);
+		this.fireEvent('complete', this.item || null);
+		if (!this.callChain()) this.fireEvent('chainComplete', this.item || null);
 	}.protect(),
 
 	onCancel: function(){
-		this.fireEvent('cancel', this.item).clearChain();
+		this.fireEvent('cancel', this.item || null).clearChain();
 	}.protect(),
 
 	stopTimer: function(){
