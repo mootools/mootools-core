@@ -448,7 +448,7 @@ describe('Element.get style', {
 	"should return a CSS string representing the Element's styles": function(){
 		var style = 'font-size:12px;color:rgb(255,255,255)';
 		var myElement = new Element('div').set('style', style);
-		value_of(myElement.get('style').toLowerCase().replace(/\s/g, '').replace(/;$/, '')).should_be(style);
+		value_of(myElement.get('style').toLowerCase().replace(/\s/g, '').replace(/;$/, '')).should_match(/(font-size:12px;color:rgb\(255,255,255\))|(color:rgb\(255,255,255\);font-size:12px)/);
 		//I'm replacing these characters (space and the last semicolon) as they are not vital to the style, and browsers sometimes include them, sometimes not.
 	}
 

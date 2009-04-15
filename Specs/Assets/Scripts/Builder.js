@@ -39,7 +39,7 @@ var Builder = {
 			'Core'      : ['Core', 'Browser'],
 			'Native'    : ['Array', 'String', 'Function', 'Number', 'Hash'],
 			'Class'     : ['Class', 'Class.Extras'],
-			'Element'   : ['Element', 'Element.Style'],
+			'Element'   : ['Element', 'Element.Style', 'Element.Dimensions'],
 			'Utilities' : ['Selectors']
 		}
 	},
