@@ -14,7 +14,7 @@ var Element = this.Element = function(item, props){
 	if (!props) props = {};
 	
 	var parsed = slick.parse(item)[0][0], id;
-	var tag = parsed.tag;
+	var tag = parsed.tag || 'div';
 	if (parsed.id) props.id = parsed.id;
 	
 	if (parsed.attributes) parsed.attributes.forEach(function(att){
@@ -321,14 +321,11 @@ booleans.forEach(function(bool){
 	});
 });
 
-var accessors = Storage.retrieve(Element, 'accessors');
-
 /* slick attribute integration */
 
 slick.getAttribute = function(element, attribute){
-	var accessor = accessors[attribute], getter;
-	if (accessor && (getter = accessor.get)) return getter.call(element);
-	return element.getAttribute(attribute, 2);
+	var getter = Element.lookupGetter(attribute);
+	return (getter) ? getter.call(element) : element.getAttribute(attribute, 2);
 };
 
 /* get, set */
@@ -336,8 +333,8 @@ slick.getAttribute = function(element, attribute){
 Element.implement({
 
 	set: function(attribute, value){
-		var accessor = accessors[attribute = attribute.camelCase()], setter;
-		if (accessor && (setter = accessor.set)) setter.call(this, value);
+		var setter = Element.lookupSetter(attribute);
+		if (setter) setter.call(this, value);
 		else if (value == null) this.removeAttribute(attribute);
 		else this.setAttribute(attribute, '' + value);
 		return this;
