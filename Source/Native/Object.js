@@ -9,8 +9,6 @@ License:
 Object.extend({
 	
 	from: function(keys, values){
-		keys = Array.from(keys);
-		values = Array.from(values);
 		var object = {};
 		for (var i = 0; i < keys.length; i++) object[keys[i]] = nil(values[i]);
 		return object;
