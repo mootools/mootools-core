@@ -11,6 +11,5 @@
 				}));
 			}
 		}
-	],
-	otherScripts: ['DomReady']
+	]
 }
