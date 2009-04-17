@@ -8,7 +8,7 @@ License:
 
 (function(Element, CColor){
 	
-Element.extend(new Accessors('Style'));
+Element.extend(new Accessors('StyleGetter')).extend(new Accessors('StyleSetter'));
 
 Element.Style = {transitionable: {}, shorts: {}};
 
