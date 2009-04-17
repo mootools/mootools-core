@@ -6,25 +6,7 @@ License:
 	MIT-style license.
 */
 
-Event.extend({
-	
-	definePseudo: function(name, fn){
-		return Storage.store(this, 'pseudo.' + name, fn);
-	},
-	
-	lookupPseudo: function(name){
-		return Storage.retrieve(this, 'pseudo.' + name);
-	},
-	
-	defineModifier: function(name, fn){
-		return Storage.store(this, 'modifier.' + name, fn);
-	},
-	
-	lookupModifier: function(name){
-		return Storage.retrieve(this, 'modifier.' + name);
-	}
-	
-});
+Event.extend(new Accessors('Pseudo')).extend(new Accessors('Modifier'));
 
 Event.implement('remove', function(){
 	this.context.removeEvent(this.definition, this.action);
