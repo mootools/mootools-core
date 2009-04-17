@@ -274,9 +274,7 @@ describe("Options Class w/ Events", {
 			},
 	
 			initialize: function(options){
-				console.log(this.options);
 				this.setOptions(options);
-				console.log(this.options);
 			}
 		});
 	},
