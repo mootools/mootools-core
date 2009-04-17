@@ -142,7 +142,7 @@ String.implement('stripScripts', function(exec){
 	this.Window = new Native('Window', function(){});
 	
 	this.constructor = this.Window;
-	this._type = Function.from('window').hide();
+	this._type_ = Function.from('window').hide();
 	
 	this.Window.mirror(function(name, method){
 		window[name] = method;
@@ -166,7 +166,7 @@ String.implement('stripScripts', function(exec){
 	this.Document = new Native('Document', function(){});
 
 	doc.constructor = this.Document;
-	doc._type = Function.from('document').hide();
+	doc._type_ = Function.from('document').hide();
 	
 	this.Document.mirror(function(name, method){
 		doc[name] = method;

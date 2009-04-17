@@ -9,166 +9,151 @@ License:
 
 // Storage
 
-var Storage = new Native('Storage', function(){});
-
 (function(){
-	
-	var storage = new Table;
-	
-	var storageOf = function(item){
-		var object = storage.get(item);
-		if (!object) storage.set(item, (object = {}));
-		return object;
-	};
-	
-	Storage.implement({
 
-		store: function(key, value){
-			storageOf(this)[key] = value;
-			return this;
-		}.setMany(),
-
-		retrieve: function(key, dflt){
-			var value = storageOf(this)[key];
-			if (dflt != null && value == null) value = (storageOf(this)[key] = dflt);
-			return nil(value);
-		}.getMany(),
-
-		dump: function(key){
-			var store = storageOf(this), prop = store[key];
-			delete store[key];
-			return prop;
-		}.getMany()
-
-	});
+var Storage = this.Storage = new Native('Storage', function(){});
 	
-})();
+var storage = new Table;
+
+var storageOf = function(item){
+	var object = storage.get(item);
+	if (!object) storage.set(item, (object = {}));
+	return object;
+};
+
+Storage.implement({
+
+	store: function(key, value){
+		storageOf(this)[key] = value;
+		return this;
+	}.setMany(),
+
+	retrieve: function(key, dflt){
+		var value = storageOf(this)[key];
+		if (dflt != null && value == null) value = (storageOf(this)[key] = dflt);
+		return nil(value);
+	}.getMany(),
+
+	dump: function(key){
+		var store = storageOf(this), prop = store[key];
+		delete store[key];
+		return prop;
+	}.getMany()
+
+});
 
 // Accessors
 
-var Accessors = new Native('Accessors', function(){});
-
-(function(){
+this.Accessors = new Native('Accessors', function(name){
 	
-	var accessorOf = function(object, key){
-		var accessor = Storage.retrieve(object, 'accessors', {});
-		return accessor[key] || (accessor[key] = {});
+	name = (name || '').capitalize();
+	
+	var accessor = {};
+	
+	var defineName = 'define' + name, lookupName = 'lookup' + name, Getter = 'Getter', Setter = 'Setter';
+	
+	this[defineName + Getter] = function(key, fn){
+		accessor[key + ':get'] = fn;
+		return this;
+	};
+	
+	this[defineName + Setter] = function(key, fn){
+		accessor[key + ':set'] = fn;
+		return this;
 	};
 
-	Accessors.implement({
-
-		defineGetter: function(key, fn){
-			accessorOf(this, key).get = fn;
-			return this;
-		},
-
-		defineSetter: function(key, fn){
-			accessorOf(this, key).set = fn;
-			return this;
-		},
-
-		lookupGetter: function(key){
-			return accessorOf(this, key).get || null;
-		},
-
-		lookupSetter: function(key){
-			return accessorOf(this, key).set || null;
-		},
-		
-		defineGetters: Function.setMany('defineGetter'),
-		defineSetters: Function.setMany('defineSetter')
-
-	});
+	this[lookupName + Getter] = function(key){
+		return accessor[key + ':get'] || null;
+	};
 	
-})();
+	this[lookupName + Setter] = function(key){
+		return accessor[key + ':set'] || null;
+	};
+	
+	this[defineName + Getter + 's'] = Function.setMany(defineName + Getter);
+	this[defineName + Setter + 's'] = Function.setMany(defineName + Getter);
+	
+});
 
 // Events
 
-var Events = new Native('Events', function(){});
-
-(function(){
+this.Events = new Native('Events', function(){});
 	
-	var replacer = function(full, first){
-		return first.toLowerCase();
-	};
+var replacer = function(full, first){
+	return first.toLowerCase();
+};
+
+var eventsOf = function(object, type){
+	return Storage.retrieve(object, 'events.type.' + type.replace(/^on([A-Z])/, replacer), []);
+};
+
+Events.implement({
 	
-	var eventsOf = function(object, type){
-		return Storage.retrieve(object, 'events.type.' + type.replace(/^on([A-Z])/, replacer), []);
-	};
+	setEvents: function(){
+		if (!Storage.retrieve(this, 'events.set')) Storage.store(this, 'events.set', true).addEvent(this.events);
+		Array.forEach(arguments, this.addEvent, this);
+		return this;
+	},
+
+	addEvent: function(type, fn){
+		eventsOf(this, type).include(fn);
+		return this;
+	},
+
+	fireEvent: function(type, args){
+		args = Array.from(args);
+		eventsOf(this, type).forEach(function(fn){
+			fn.apply(this, args);
+		}, this);
+		return this;
+	},
+
+	removeEvent: function(type, fn){
+		if (!fn._protected_) eventsOf(this, type).erase(fn);
+		return this;
+	},
+
+	removeEvents: function(type){
+		//TODO
+	},
 	
-	Events.implement({
-		
-		setEvents: function(){
-			if (!Storage.retrieve(this, 'events.set')) Storage.store(this, 'events.set', true).addEvent(this.events);
-			Array.forEach(arguments, this.addEvent, this);
-			return this;
-		},
+	addEvents: Function.setMany('addEvent')
 
-		addEvent: function(type, fn){
-			eventsOf(this, type).include(fn);
-			return this;
-		},
-
-		fireEvent: function(type, args){
-			args = Array.from(args);
-			eventsOf(this, type).each(function(fn){
-				fn.apply(this, args);
-			}, this);
-			return this;
-		},
-
-		removeEvent: function(type, fn){
-			if (!fn._protected) eventsOf(this, type).erase(fn);
-			return this;
-		},
-
-		removeEvents: function(type){
-			//TODO
-		},
-		
-		addEvents: Function.setMany('addEvent')
-
-	});
-	
-})();
+});
 
 // Options
 
-var Options = new Native('Options', function(){});
-
-(function(){
+this.Options = new Native('Options', function(){});
 	
-	var optionsOf = function(object){
-		return Storage.retrieve(object, 'options', {});
-	};
-	
-	Options.implement({
-		
-		setOptions: function(options){
-			if (!Storage.retrieve(this, 'options')) Storage.store(this, 'options', this.options || {});
-			for (var option in options) this.setOption(option, options[option]);
-			return this;
-		},
-		
-		setOption: function(key, value){
-			if (this.addEvent && typeOf(value) == 'function' && (/^on[A-Z]/).test(key)) this.addEvent(key, value);
-			else optionsOf(this)[key] = value;
-			return this;
-		},
+var optionsOf = function(object){
+	return Storage.retrieve(object, 'options', {});
+};
 
-		getOption: function(key){
-			return optionsOf(this)[key];
-		},
-		
-		getOptions: Function.getMany('getOption')
-
-	});
+Options.implement({
 	
-})();
+	setOptions: function(options){
+		if (!Storage.retrieve(this, 'options')) Storage.store(this, 'options', this.options || {});
+		for (var option in options) this.setOption(option, options[option]);
+		return this;
+	},
+	
+	setOption: function(key, value){
+		if (this.addEvent && typeOf(value) == 'function' && (/^on[A-Z]/).test(key)) this.addEvent(key, value);
+		else optionsOf(this)[key] = value;
+		return this;
+	},
+
+	getOption: function(key){
+		return optionsOf(this)[key];
+	},
+	
+	getOptions: Function.getMany('getOption')
+
+});
 
 // Chain
 
-var Chain = new Native('Chain', function(){}).implement({
+this.Chain = new Native('Chain', function(){}).implement({
 	
 	chain: function(){
 		var chain = Storage.retrieve(this, 'chain', []);
@@ -187,3 +172,5 @@ var Chain = new Native('Chain', function(){}).implement({
 	}
 
 });
+
+})();

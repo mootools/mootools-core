@@ -6,16 +6,16 @@ License:
 	MIT-style license.
 */
 
-var Class = new Native('Class', function(params){
+this.Class = new Native('Class', function(params){
 	
 	if (instanceOf(params, Function)) params = {initialize: params};
 	
 	var newClass = function(){
 		Object.reset(this);
-		if (newClass._prototyping) return this;
-		this._current = nil;
+		if (newClass._prototyping_) return this;
+		this._current_ = nil;
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		delete this._current; delete this.caller;
+		this._current_ = this.caller = null;
 		return value;
 	}.extend(this);
 
@@ -37,22 +37,22 @@ Class.extend({
 	},
 	
 	wrap: function(self, key, method){
-		if (method._origin) method = method._origin;
+		if (method._origin_) method = method._origin_;
 		
 		return function(){
-			if (method._protected && this._current == null) throw new Error('The method "' + key + '" cannot be called.');
-			var caller = this.caller, current = this._current;
-			this.caller = current; this._current = arguments.callee;
+			if (method._protected_ && this._current_ == null) throw new Error('The method "' + key + '" cannot be called.');
+			var caller = this.caller, current = this._current_;
+			this.caller = current; this._current_ = arguments.callee;
 			var result = method.apply(this, arguments);
-			this._current = current; this.caller = caller;
+			this._current_ = current; this.caller = caller;
 			return result;
-		}.extend({_owner: self, _origin: method, _name: key});
+		}.extend({_owner_: self, _origin_: method, _name_: key});
 	},
 	
 	getPrototype: function(klass){
-		klass._prototyping = true;
+		klass._prototyping_ = true;
 		var proto = new klass;
-		delete klass._prototyping;
+		delete klass._prototyping_;
 		return proto;
 	}
 	
@@ -95,7 +95,7 @@ Class.implement('implement', function(key, value){
 	switch (typeOf(value)){
 		
 		case 'function':
-			if (value._hidden) return this;
+			if (value._hidden_) return this;
 			proto[key] = Class.wrap(this, key, value);
 		break;
 		
@@ -123,16 +123,14 @@ Class.defineMutator('Extends', function(parent){
 	this.prototype = Class.getPrototype(parent);
 
 	this.implement('parent', function(){
-		var name = this.caller._name, previous = this.caller._owner.parent.prototype[name];
+		var name = this.caller._name_, previous = this.caller._owner_.parent.prototype[name];
 		if (!previous) throw new Error('The method "' + name + '" has no parent.');
 		return previous.apply(this, arguments);
 	}.protect());
 
-});
+}).defineMutator('Implements', function(items){
 
-Class.defineMutator('Implements', function(items){
-
-	Array.from(items).each(function(item){
+	Array.from(items).forEach(function(item){
 		if (instanceOf(item, Function)) item = Class.getPrototype(item);
 		this.implement(item);
 	}, this);

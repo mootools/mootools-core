@@ -6,167 +6,341 @@ License:
 	MIT-style license.
 */
 
-Element.extend({
+(function(Element, CColor){
 	
-	defineStyleGetter: function(name, fn){
-		return this.defineGetter('style.' + name, fn);
-	},
+Element.extend(new Accessors('Style'));
 
-	defineStyleSetter: function(name, fn){
-		return this.defineSetter('style.' + name, fn);
-	},
+Element.Style = {transitionable: {}, shorts: {}};
 
-	lookupStyleGetter: function(name, fn){
-		return this.lookupGetter('style.' + name, fn);
-	},
+/* how many pixels are there in one em? find out with emCSS! */
 
-	lookupStyleSetter: function(name, fn){
-		return this.lookupSetter('style.' + name, fn);
-	}
-	
-});
+var ES = Element.Style, EST = ES.transitionable, ESS = ES.shorts;
 
-Element.defineStyleSetter('opacity', function(value, ignoreVisibility){
-	
-	value = parseFloat(value);
-	
-	if (!ignoreVisibility){
-		
-		var visibility = this.getStyle('visibility');
+var testEM = document.newElement('span', {css: 'position: absolute; display: block; visibility: hidden; height: 100em; width: 100em;'});
 
-		if (value == 0){
-			if (visibility != 'hidden') this.setStyle('visibility', 'hidden');
-		} else {
-			if (visibility != 'visible') this.setStyle('visibility', 'visible');
-		}
-		
-	}
-	
-	if (this.style.opacity == null && this.style.filter != null && this.currentStyle){
-		if (!this.currentStyle.hasLayout) this.style.zoom = 1;
-		this.style.filter = (value == 1) ? '' : 'alpha(opacity=' + value * 100 + ')';
-	} else {
-		this.style.opacity = value;
-	}
-
-	return this;
-
-});
-
-Element.defineStyleGetter('opacity', function(){
-	return [this.style.opacity, 1].pick();
-});
-
-(function(name){
-	
-	Element.defineStyleSetter('float', function(value){
-		this.style[name] = value;
-		return this;
-	}).defineStyleGetter('float', function(){
-		return this.getStyle(name);
-	});
-	
-})((document.html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat');
-
-(function(){
-	
-	var all = {
-		left: '@px', top: '@px', bottom: '@px', right: '@px',
-		width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
-		backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
-		fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
-		margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-		borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-		zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
-	};
-	
-	var shorts = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
-	
-	['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-		['margin', 'padding'].each(function(style){
-			var sd = style + direction;
-			shorts[style][sd] = all[sd] = '@px';
-		});
-		var bd = 'border' + direction;
-		shorts.border[bd] = all[bd] = '@px @ rgb(@, @, @)';
-		var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
-		shorts[bd] = {};
-		shorts.borderWidth[bdw] = shorts[bd][bdw] = all[bdw] = '@px';
-		shorts.borderStyle[bds] = shorts[bd][bds] = all[bds] = '@';
-		shorts.borderColor[bdc] = shorts[bd][bdc] = all[bdc] = 'rgb(@, @, @)';
-	});
-	
-	Object.each(all, function(map, name){
-		
-		var isShort = !!(shorts[name]);
-		
-		Element.defineStyleSetter(name, function(value){
-			if (typeOf(value) != 'string'){
-				var values = Array.from(value), maps = map.split(' '), array = [];
-				((isShort) ? values.length : maps.length).times(function(i){
-					var v = values[i], m = maps[i];
-					if (v == null) v = 0;
-					array[i] = m.replace((typeOf(v) == 'string') ? (/@[\w]{0,2}/) : '@', v);
-				});
-				value = array.join(' ');
-			}
-
-			this.style[name] = value;
-			return this;
-		});
-
-	});
-	
-	Object.each(shorts, function(map, name){
-		
-		Element.defineStyleGetter(name, function(){
-			var styles = [];
-			for (var p in map) styles.push(this.getStyle(p));
-			return styles.join(' ');
-		});
-
-	});
-
-})();
-
-Element.getComputedStyle = (window.getComputedStyle) ? function(element, name){
-	var computed = getComputedStyle(element, null);
-	return (computed) ? computed.getPropertyValue([name.hyphenate()]) : null;
-} : function(element, name){
-	return (element.currentStyle) ? element.currentStyle[name] : null;
+var emCSS = function(element){
+	var height = testEM.inject(element).offsetHeight;
+	testEM.dispose();
+	return height / 100;
 };
 
-Element.implement({
+var PXToEM = ES.PXToEM = function(element, value){
+	var one = emCSS(element);
+	return (one === 0) ? 0 : value / one;
+};
 
-	setStyle: function(name, value){
-		name = name.camelCase();
-		var setter = Element.lookupStyleSetter(name);
-		if (setter) return setter.call(this, value);
+var EMToPX = ES.EMToPX = function(element, value){
+	return value * emCSS(element);
+};
+
+/* computed style */
+
+var getStyle = (window.getComputedStyle) ? function(element, name, unit){
+
+	var computed = window.getComputedStyle(element, null);
+	var style = computed.getPropertyValue([name.hyphenate()]), match;
+	if (!unit || !(match = style.match(/^([\d.]+)px$/))) return style;
+	return PXToEM(element, match[1]) + 'em';
 	
-		// no setter, set style property directly
+} : function(element, name, unit){
+	
+	var style = element.currentStyle[name];
+	var match = style.match(/^([\d.]+)(em|px)$/);
+	if (!match || (unit && match[2] == 'em') || (!unit && match[2] == 'px')) return style;
+	var one = emCSS(element);
+	return (!unit && match[2] == 'em') ? EMToPX(element, match[1]) + 'px' : PXToEM(element, match[1]) + 'em';
 
-		this.style[name] = value;
+};
+
+slick.definePseudo('positioned', function(){
+	return getStyle(this, 'position') != 'static';
+});
+
+/* css values utilities */
+
+var splitCSS = function(value){
+	return (typeof value == 'string') ? value.trim().replace(/,\s+/g, ',').split(/\s+/) : Array.from(value);
+};
+
+var mirrorCSS = function(value){
+	var length = value.length;
+
+	if (length == 1) value.push(value[0], value[0], value[0]);
+	else if (length == 2) value.push(value[0], value[1]);
+	else if (length == 3) value.push(value[1]);
+
+	return value;
+};
+
+var unitCSS = function(value){
+	return (value == parseFloat(value)) ? value + 'px' : value;
+};
+
+// string compression optimization
+
+var Left = 'Left', Right = 'Right', Top = 'Top', Bottom = 'Bottom', margin = 'margin', padding = 'padding', Width = 'Width', Height = 'Height',
+height = 'height', width = 'width', top = 'top', bottom = 'bottom', left = 'left', right = 'right', background = 'background', clip = 'clip',
+backgroundPosition = background + 'Position', border = 'border', opacity = 'opacity', color = 'color', Color = 'Color', Style = 'Style';
+
+var html = document.html;
+
+/* float test */
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+
+/* float accessor */
+
+Element.defineStyleSetter('float', function(value){
+
+	this.style[floatName] = value;
+
+}).defineStyleGetter('float', function(){
+
+	return getStyle(this, floatName);
+
+});
+
+/* color accessors */
+
+[color, background + Color, border + Top + Color, border + Right + Color, border + Bottom + Color, border + Left + Color].forEach(function(name){
+	
+	EST[name] = 'color';
+
+	Element.defineStyleSetter(name, function(color){
+		
+		this.style[name] = ((/^[a-z]*$|^rgb/).test(color)) ? color : new CColor(color).toString();
+
+	}).defineStyleGetter(name, function(){
+		
+		var css = getStyle(this, name);
+		return (/^[a-z]*$|^rgb/).test(css) ? css : new CColor(css).toString();
+
+	});
+
+});
+
+/* filter utilities */
+
+var filterName = (html.style.MsFilter != null) ? 'MsFilter' : (html.style.filter != null) ? 'filter' : null;
+
+/* opacity accessor IE / Others */
+
+EST[opacity] = 'float';
+
+if (html.style[opacity] == null && filterName) Element.defineStyleSetter(opacity, function(value){
+	
+	if (value == null || value === '') value = 1;
+	this.style[filterName] = (value == 1) ? '' : 'alpha(' + opacity + '=' + (value * 100) + ')';
+
+}).defineStyleGetter(opacity, function(){
+	
+	var match = getStyle(this, filterName).match(/alpha\(opacity=([\d.]+)\)/i);
+	return String((match == null) ? 1 : match[1] / 100);
+
+}); else Element.defineStyleGetter(opacity, function(){
+
+	var o = getStyle(this, opacity);
+	return String((o === '') ? 1 : o);
+
+});
+
+/* unit values */
+
+[margin + Top, margin + Right, margin + Bottom, margin + Left, padding + Top, padding + Right, padding + Bottom, padding + Left,
+top, right, bottom, left, width, height, 'max' + Width, 'max' + Height, 'min' + Width, 'min' + Height,
+backgroundPosition + 'Y', backgroundPosition + 'X',
+border + Top + Width, border + Right + Width, border + Bottom + Width, border + Left + Width,
+'fontSize', 'letterSpacing', 'line' + Height, 'textIndent'].forEach(function(name){
+
+	EST[name] = 'unit';
+
+	Element.defineStyleSetter(name, function(value){
+		this.style[name] = unitCSS(value);
+	});
+
+});
+
+/* height width top left */
+
+Element.defineStyleGetters({
+	
+	top: function(unit){
+		var mt = parseFloat(getStyle(this, margin + Top)), value = this.offsetTop - mt;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	},
+	
+	left: function(unit){
+		var ml = parseFloat(getStyle(this, margin + Left)), value = this.offsetLeft - ml;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	},
+	
+	height: function(unit){
+		var pt = parseFloat(getStyle(this, padding + Top)), pb = parseFloat(getStyle(this, padding + Bottom));
+		var value = this.clientHeight - pt - pb;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	},
+	
+	width: function(unit){
+		var pt = parseFloat(getStyle(this, padding + Left)), pb = parseFloat(getStyle(this, padding + Right));
+		var value = this.clientWidth - pt - pb;
+		return (unit) ? PXToEM(this, value) + 'em' : value + 'px';
+	}
+	
+});
+
+/* 4 values shorthands */
+
+var TRBL = [Top, Right, Bottom, Left];
+
+[margin, padding, border + Width, border + Color, border + Style].forEach(function(name){
+
+	var match = name.match(/border(\w+)/);
+	
+	var shorts = TRBL.map(function(dir){
+		return (match) ? (border + dir + match[1]) : (name + dir);
+	});
+	
+	var parse = ESS[name] = function(value){
+		value = mirrorCSS(splitCSS(value));
+		var parsed = {};
+		shorts.forEach(function(s){
+			parsed[s] = value.shift();
+		});
+		return parsed;
+	};
+
+	Element.defineStyleSetter(name, function(value){
+		
+		if (!value && value !== 0) this.style[name] = '';
+		else this.setStyles(parse(value));
+		
+	}).defineStyleGetter(name, function(unit){
+		
+		return shorts.map(function(s){
+			return this.getStyle(s, unit);
+		}, this).join(' ');
+		
+	});
+
+});
+
+/* background position accessor */
+
+var bpparse = ESS[backgroundPosition] = function(value){
+	value = splitCSS(value);
+	if (!value[1]) value[1] = 0;
+	return Object.from([backgroundPosition + 'X', backgroundPosition + 'Y'], value);
+};
+
+Element.defineStyleSetter(backgroundPosition, function(value){
+
+	if (!value && value !== 0) this.style[backgroundPosition] = '';
+	else this.setStyles(bpparse(value));
+
+}).defineStyleGetter(backgroundPosition, function(){
+
+	return getStyle(this, backgroundPosition + 'X') + ' ' + getStyle(this, backgroundPosition + 'Y');
+
+});
+
+/* clip setter */
+
+Element.defineStyleSetter(clip, function(value){
+	if (!value && value !== 0){
+		this.style[clip] = '';
+	} else {
+		value = mirrorCSS((typeof value == 'string') ? value.match(/([\d.]+\w*)/g) : Array.from(value));
+		this.style[clip] = 'rect(' + value.join(' ').map(unitCSS) + ')';
+	}
+});
+
+[border + Top, border + Right, border + Bottom, border + Left].forEach(function(name){
+	
+	var shorts = [Width, Style, Color].map(function(type){
+		return name + type;
+	});
+	
+	var parse = ESS[name] = function(value){
+		value = splitCSS(value);
+		var styles = {};
+		shorts.each(function(s){
+			styles[s] = value.shift();
+		});
+		return styles;
+	};
+
+	Element.defineStyleSetter(name, function(value){
+
+		if (!value) this.style[name] = '';
+		else this.setStyles(parse(value));
+
+	}).defineStyleGetter(name, function(unit){
+		
+		return shorts.map(function(s){
+			return this.getStyle(s, unit);
+		}, this).join(' ');
+
+	});
+
+});
+
+var borderShorts = [];
+
+TRBL.forEach(function(dir){
+	[Width, Style, Color].forEach(function(type){
+		borderShorts.push(border + dir + type);
+	});
+});
+
+var bparse = ESS[border] = function(value){
+	value = splitCSS(value);
+	var array = [];
+	while (value.length) array.push(value.splice(0, 3));
+	array = mirrorCSS(array);
+	value = [].concat(array[0], array[1], array[2], array[3]);
+	var styles = {};
+	borderShorts.forEach(function(bs){
+		styles[bs] = value.shift();
+	});
+	return styles;
+};
+
+Element.defineStyleSetter(border, function(value){
+
+	if (!value) this.style[border] = '';
+	else this.setStyles(bparse(value));
+	
+}).defineStyleGetter(border, function(unit){
+	
+	return borderShorts.map(function(bs){
+		return this.getStyle(bs, unit);
+	}, this).join(' ');
+
+});
+
+/* getStyle, setStyle */
+
+Element.implement({
+	
+	setStyle: function(name, value){
+		var setter = Element.lookupStyleSetter(name);
+		if (setter) setter.call(this, value);
+		else this.style[name] = value;
 		return this;
 	},
 
-	getStyle: function(name){
-		name = name.camelCase();
+	getStyle: function(name, unit){
 		var getter = Element.lookupStyleGetter(name);
-		if (getter) return getter.call(this);
-
-		// no getter, return current style
-
-		var style = this.style[name];
-		if (style || style === 0) return style;
-		return Element.getComputedStyle(this, name);
+		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
 	},
-	
+
 	setStyles: Function.setMany('setStyle'),
 	getStyles: Function.getMany('getStyle')
 
 });
 
-
 Element.defineSetter('styles', function(styles){
 	this.setStyles(styles);
 });
+
+})(Element, Color);

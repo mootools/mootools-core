@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-var Request = new Class({
+this.Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
@@ -45,7 +45,6 @@ var Request = new Class({
 	}.protect(),
 	
 	send: function(data){
-		
 		if (!this.check(data)) return this;
 		this.running = true;
 
@@ -90,7 +89,7 @@ var Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		Object.each(headers, function(value, key){
+		Object.forEach(headers, function(value, key){
 			var xhr = this.xhr;
 			if (!Function.stab(function(){
 				xhr.setRequestHeader(key, value);
@@ -177,20 +176,12 @@ var Request = new Class({
 	}.protect()
 });
 
-(function(){
-
-	var methods = {};
-
-	['get', 'post', 'put', 'delete'].each(function(method){
-		methods[method] = methods[method.toUpperCase()] = function(data){
-			this.setOption('method', method);
-			return this.send(data);
-		};
-	});
-
-	Request.implement(methods);
-
-})();
+['get', 'post', 'put', 'delete'].forEach(function(name){
+	var method = function(data){
+		return this.setOption('method', name).send(data);
+	};
+	Request.implement(name, method).implement(name.toUpperCase(), method);
+});
 
 Element.defineSetter('send', function(options){
 	this.get('send').cancel().setOptions(options);
@@ -203,11 +194,7 @@ Element.defineGetter('send', function(){
 	return this.retrieve('send');
 });
 
-Element.implement({
-
-	send: function(data){
-		this.get('send').send(data);
-		return this;
-	}
-
+Element.implement('send', function(data){
+	this.get('send').send(data);
+	return this;
 });

@@ -1,6 +1,6 @@
 /*
 Script: Fx.Tween.js
-	Formerly Fx.Style, effect to transition any CSS property for an element.
+	Effect to transition one CSS property for an element.
 
 License:
 	MIT-style license.
@@ -8,30 +8,31 @@ License:
 
 Fx.Tween = new Class({
 
-	Extends: Fx.CSS,
-
+	Extends: Fx,
+	
 	initialize: function(element, options){
-		this.element = this.subject = $(element);
+		this.item = document.id(element);
 		this.parent(options);
+	}.protect(),
+	
+	start: function(style, from, to){
+		if (!this.check(style, from, to)) return this;
+		var prepared = Fx.CSS.prepare(this.item, style, from, to);
+		this.style = prepared[0];
+		var parsed = Fx.CSS.parse(this.item, this.style, prepared[1], prepared[2]);
+		if (!parsed) return this.complete();
+		this.unit = parsed[2] || '';
+		return this.parent(parsed[0], parsed[1]);
 	},
-
-	set: function(property, now){
-		if (arguments.length == 1){
-			now = property;
-			property = this.property || this.getOption('property');
-		}
-		this.render(this.element, property, now, this.getOption('unit'));
-		return this;
-	},
-
-	start: function(property, from, to){
-		if (!this.check(property, from, to)) return this;
-		var args = Array.flatten(arguments);
-		this.property = this.getOption('property') || args.shift();
-		var parsed = this.prepare(this.element, this.property, args);
-		return this.parent(parsed.from, parsed.to);
-	}
-
+	
+	render: function(now){
+		Fx.CSS.render(this.item, this.style, now, this.unit);
+	}.protect(),
+	
+	compute: function(delta){
+		return Fx.CSS.compute(this.from, this.to, delta);
+	}.protect()
+	
 });
 
 Element.defineSetter('tween', function(options){
@@ -43,44 +44,7 @@ Element.defineGetter('tween', function(){
 	return this.retrieve('tween');
 });
 
-Element.implement({
-
-	tween: function(property, from, to){
-		this.get('tween').start(arguments);
-		return this;
-	},
-
-	fade: function(how){
-		var fade = this.get('tween'), o = 'opacity', toggle;
-		how = Utility.pick(how, 'toggle');
-		switch (how){
-			case 'in': fade.start(o, 1); break;
-			case 'out': fade.start(o, 0); break;
-			case 'show': fade.set(o, 1); break;
-			case 'hide': fade.set(o, 0); break;
-			case 'toggle':
-				var flag = this.retrieve('fade:flag', this.get('opacity') == 1);
-				fade.start(o, (flag) ? 0 : 1);
-				this.store('fade:flag', !flag);
-				toggle = true;
-			break;
-			default: fade.start(o, arguments);
-		}
-		if (!toggle) this.dump('fade:flag');
-		return this;
-	},
-
-	highlight: function(start, end){
-		if (!end){
-			end = this.retrieve('highlight:original', this.getStyle('background-color'));
-			end = (end == 'transparent') ? '#fff' : end;
-		}
-		var tween = this.get('tween');
-		tween.start('background-color', (start || '#ffff88'), end).chain(function(){
-			this.setStyle('background-color', this.retrieve('highlight:original'));
-			tween.callChain();
-		}.bind(this));
-		return this;
-	}
-
+Element.implement('tween', function(style, from, to){
+	this.get('tween').start(style, from, to);
+	return this;
 });

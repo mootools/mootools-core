@@ -1,7 +1,6 @@
 /*
 Script: Fx.Morph.js
-	Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules,
-		or CSS based selector rules.
+	Effect to transition any CSS properties for an element.
 
 License:
 	MIT-style license.
@@ -9,37 +8,51 @@ License:
 
 Fx.Morph = new Class({
 
-	Extends: Fx.CSS,
-
+	Extends: Fx,
+	
 	initialize: function(element, options){
-		this.element = this.subject = $(element);
+		this.item = document.id(element);
 		this.parent(options);
-	},
-
-	set: function(now){
-		if (typeOf(now) == 'string') now = this.search(now);
-		for (var p in now) this.render(this.element, p, now[p], this.getOption('unit'));
-		return this;
-	},
-
-	compute: function(from, to, delta){
-		var now = {};
-		for (var p in from) now[p] = this.parent(from[p], to[p], delta);
-		return now;
-	},
-
-	start: function(properties){
-		if (!this.check(properties)) return this;
-		if (typeOf(properties) == 'string') properties = this.search(properties);
-		var from = {}, to = {};
-		for (var p in properties){
-			var parsed = this.prepare(this.element, p, properties[p]);
-			from[p] = parsed.from;
-			to[p] = parsed.to;
+	}.protect(),
+	
+	start: function(styles){
+		if (!this.check(styles)) return this;
+		var all = {}, froms = {}, tos = {}, length = 0;
+		for (var style in styles){
+			var ss = Array.from(styles[style]);
+			var prepared = Fx.CSS.prepare(this.item, style, ss[0], ss[1] || null);
+			var camel = prepared[0], shortParser = Element.Style.shorts[camel];
+			if (shortParser){
+				var fv = shortParser(prepared[1]), tv = shortParser(prepared[2]);
+				for (var p in fv) all[p] = [fv[p], tv[p]];
+			} else {
+				all[camel] = [prepared[1], prepared[2]];
+			}
 		}
-		return this.parent(from, to);
-	}
-
+		this.units = {};
+		for (var s in all){
+			var parsed = Fx.CSS.parse(this.item, s, all[s][0], all[s][1]);
+			if (!parsed) continue;
+			length++;
+			froms[s] = parsed[0];
+			tos[s] = parsed[1];
+			this.units[s] = parsed[2] || '';
+		}
+		return (length) ? this.parent(froms, tos) : this.complete();
+	},
+	
+	render: function(now){
+		for (var style in now) Fx.CSS.render(this.item, style, now[style], this.units[style]);
+	}.protect(),
+	
+	compute: function(delta){
+		var all = {};
+		for (var style in this.from){
+			all[style] = Fx.CSS.compute(this.from[style], this.to[style], delta);
+		}
+		return all;
+	}.protect()
+	
 });
 
 Element.defineSetter('morph', function(options){
@@ -51,7 +64,7 @@ Element.defineGetter('morph', function(){
 	return this.retrieve('morph');
 });
 
-Element.implement('morph', function(props){
-	this.get('morph').start(props);
+Element.implement('morph', function(styles){
+	this.get('morph').start(styles);
 	return this;
 });

@@ -1,15 +1,16 @@
 /*
-Script: Fx.Transitions.js
-	Contains a set of advanced transitions to be used with any of the Fx Classes.
+Script: Fx.Equations.js
+	Contains a set of advanced easing equations to be used with any of the Fx Classes.
 
 License:
 	MIT-style license.
 
 Credits:
-	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
+	Original Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>.
+	Modified and optimized for MooTools by Olmo Maldonado <http://ibolmo.com>.
 */
 
-Fx.defineTransitions({
+Fx.defineEquations({
 
 	pow: function(p, x){
 		return Math.pow(p, x || 6);
@@ -49,8 +50,8 @@ Fx.defineTransitions({
 
 });
 
-['quad', 'cubic', 'quart', 'quint'].each(function(transition, i){
-	Fx.defineTransition(transition, function(p){
+['quad', 'cubic', 'quart', 'quint'].forEach(function(transition, i){
+	Fx.defineEquation(transition, function(p){
 		return Math.pow(p, i + 2);
 	});
 });
