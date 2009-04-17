@@ -106,9 +106,11 @@ Events.implement({
 	removeEvents: function(type){
 		if (typeOf(type) == 'string'){
 			var events = eventsOf(this, type), l = events.length;
-			if(l) do { this.removeEvent(type, events[--l]); } while(l);
+			if (l) do {
+				this.removeEvent(type, events[--l]);
+			} while(l);
 		} else {
-			for (i in type) this.removeEvent(i, type[i]);
+			for (var i in type) this.removeEvent(i, type[i]);
 		}
 		return this;
 	},
