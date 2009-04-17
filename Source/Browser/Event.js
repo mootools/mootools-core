@@ -16,7 +16,11 @@ this.Event = new Native('Event', function(event){
 	Browser.event = this;
 });
 
-Event.extend(new Accessors).defineGetters({
+Event.extend(new Accessors('KeyCode')).defineKeyCodes({
+	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
+});
+
+Event.extend(new Accessors('Getter')).extend(new Accessors('Setter')).defineGetters({
 
 	shift: function(){
 		return this.event.shiftKey;
@@ -44,23 +48,6 @@ Event.extend(new Accessors).defineGetters({
 		return (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 	}
 
-});
-
-var keys = {
-	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
-};
-
-Event.extend({
-	
-	defineKeyCode: function(code, name){
-		keys[code] = name;
-		return this;
-	},
-
-	lookupKeyCode: function(code){
-		return keys[code] || null;
-	}
-	
 });
 
 Event.defineGetter('key', function(){
