@@ -147,7 +147,7 @@ describe("Array Methods", {
 		var arr = [1,2,3,4];
 		value_of(arr.item(4)).should_be(null);
 		value_of(arr.item(10)).should_be(null);
-		value_of(arr.item(-5)).should_be(null);
+		value_of(arr.item(-5)).should_be(4);
 		value_of(arr.item(-100)).should_be(null);
 
 		arr = [];
