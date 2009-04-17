@@ -28,7 +28,6 @@ var Car = new Native('Car', function(name){
 
 });
 
-// Doesn't work yet
 describe('Native', {
 
 	'should allow implementation over existing methods when a method is not protected': function(){
@@ -172,6 +171,10 @@ describe('nil', {
 
 	'should return false on undefined': function(){
 		value_of(nil(undefined)).should_be_null();
+	},
+
+	'should return passed in value': function(){
+		value_of(nil('String')).should_be('String');
 	}
 
 });
