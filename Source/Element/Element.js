@@ -283,7 +283,7 @@ Element.implement(new Storage);
 
 /* Attribute Getters, Setters */
 
-Element.extend(new Accessors);
+Element.extend(new Accessors('Getter')).extend(new Accessors('Setter'));
 
 var properties = [
 	'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',

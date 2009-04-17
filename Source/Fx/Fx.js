@@ -118,15 +118,17 @@ this.Fx = new Class({
 Fx.compute = function(from, to, delta){
 	return (to - from) * delta + from;
 };
-	
-var equations = {
+
+Fx.extend(new Accessors('Duration')).extend(new Accessors('Equation'));
+
+Fx.defineEquations({
 	'linear': Function.argument(0),
 	'default': function(p){
 		return -(Math.cos(Math.PI * p) - 1) / 2;
 	}
-};
+});
 
-var durations = {'short': 250, 'normal': 500, 'long': 1000};
+Fx.defineDurations({'short': 250, 'normal': 500, 'long': 1000});
 
 var fps = 60, instances = [], timer;
 
@@ -152,45 +154,6 @@ Fx.extend({
 	
 	setFPS: function(f){
 		fps = f;
-	},
-	
-	// duration accessors
-	
-	defineDuration: function(name, value){
-		durations[name] = value;
-		return this;
-	},
-	
-	lookupDuration: function(name){
-		return durations[name] || Number(name) || 0;
-	},
-	
-	// equations accessors
-	
-	defineEquation: function(name, equation, param){
-		var end = equation(1);
-		
-		equations[name] = equation;
-
-		equations[name + '.in'] = function(pos){
-			return equation(pos, param);
-		};
-		
-		equations[name + '.out'] = function(pos){
-			return end - equation(1 - pos, param);
-		};
-		
-		equations[name + '.in.out'] = function(pos){
-			return (pos <= 0.5) ? equation(2 * pos, param) / 2 : (2 * end - equation(2 * (1 - pos), param)) / 2;
-		};
-
-		return this;
-	},
-	
-	defineEquations: Function.setMany('defineEquation'),
-	
-	lookupEquation: function(name){
-		return equations[name];
 	}
 	
 });

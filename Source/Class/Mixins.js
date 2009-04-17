@@ -46,32 +46,22 @@ Storage.implement({
 
 this.Accessors = new Native('Accessors', function(name){
 	
-	name = (name || '').capitalize();
+	var Name = (name || '').capitalize();
 	
 	var accessor = {};
 	
-	var defineName = 'define' + name, lookupName = 'lookup' + name, Getter = 'Getter', Setter = 'Setter';
-	
-	this[defineName + Getter] = function(key, fn){
-		accessor[key + ':get'] = fn;
+	this['define' + Name] = function(key, value){
+		accessor[key] = value;
 		return this;
 	};
 	
-	this[defineName + Setter] = function(key, fn){
-		accessor[key + ':set'] = fn;
-		return this;
-	};
-
-	this[lookupName + Getter] = function(key){
-		return accessor[key + ':get'] || null;
+	this['lookup' + Name] = function(key, value){
+		return accessor[key] || null;
 	};
 	
-	this[lookupName + Setter] = function(key){
-		return accessor[key + ':set'] || null;
+	this['define' + Name + 's'] = function(object){
+		for (var p in object) this['define' + Name](p, object[p]);
 	};
-	
-	this[defineName + Getter + 's'] = Function.setMany(defineName + Getter);
-	this[defineName + Setter + 's'] = Function.setMany(defineName + Getter);
 	
 });
 

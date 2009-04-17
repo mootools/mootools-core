@@ -10,6 +10,27 @@ Credits:
 	Modified and optimized for MooTools by Olmo Maldonado <http://ibolmo.com>.
 */
 
+(function(){
+
+var defineEquation = Fx.defineEquation;
+
+Fx.defineEquation = function(name, equation, param){
+	var end = equation(1);
+
+	defineEquation(name, equation);
+	defineEquation(name + ':in', function(pos){
+		return equation(pos, param);
+	});
+	defineEquation(name + ':out', function(pos){
+		return end - equation(1 - pos, param);
+	});
+	defineEquation(name + ':in:out', function(pos){
+		return (pos <= 0.5) ? equation(2 * pos, param) / 2 : (2 * end - equation(2 * (1 - pos), param)) / 2;
+	});
+	
+	return this;
+};
+
 Fx.defineEquations({
 
 	pow: function(p, x){
@@ -55,3 +76,5 @@ Fx.defineEquations({
 		return Math.pow(p, i + 2);
 	});
 });
+
+})();
