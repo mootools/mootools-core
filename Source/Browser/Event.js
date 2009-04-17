@@ -6,7 +6,9 @@ License:
 	MIT-style license.
 */
 
-var Event = new Native('Event', function(event){
+(function(){
+
+this.Event = new Native('Event', function(event){
 	event = event || window.event || null;
 	if (event == null) event = {};
 	if (event.event) event = event.event;
@@ -44,19 +46,19 @@ Event.extend(new Accessors).defineGetters({
 
 });
 
-Storage.store(Event, 'keys', {
+var keys = {
 	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
-});
+};
 
 Event.extend({
 	
 	defineKeyCode: function(code, name){
-		Storage.retrieve(this, 'keys')[code] = name;
+		keys[code] = name;
 		return this;
 	},
 
 	lookupKeyCode: function(code){
-		return Storage.retrieve(this, 'keys')[code];
+		return keys[code] || null;
 	}
 	
 });
@@ -157,3 +159,6 @@ Event.implement({
 	}
 
 });
+
+})();
+

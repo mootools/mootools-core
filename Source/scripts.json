@@ -126,25 +126,25 @@
 			"deps": ["Mixins", "Class"],
 			"desc": "Contains the basic animation logic. To be extended by all other Fx Classes."
 		},
-
+		
 		"Fx.CSS": {
-			"deps": ["Fx", "Element.Style"],
-			"desc": "Contains the CSS animation logic. Used by Fx.Tween and Fx.Morph."
+			"deps": ["Fx"],
+			"desc": "Contains the basic logic to transition elements styles."
 		},
 
 		"Fx.Tween": {
 			"deps": ["Fx.CSS"],
-			"desc": "Effect to transition any CSS property for an element. Also includes Element shortcuts like fade and highlight."
+			"desc": "Effect to transition one element style"
 		},
-
+		
 		"Fx.Morph": {
 			"deps": ["Fx.CSS"],
-			"desc": "Effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules."
+			"desc": "Effect to transition element styles."
 		},
 
-		"Fx.Transitions": {
+		"Fx.Equations": {
 			"deps": ["Fx"],
-			"desc": "Contains a set of advanced transitions to be used with any of the Fx Classes."
+			"desc": "Contains a set of advanced easing equations to be used with the Fx classes."
 		}
 
 	},

@@ -12,47 +12,50 @@ var Instrument = new Native('Instrument', function(name){
 	this.name = name;
 }).implement({
 
-	property: 'stuff',
-	
 	method: function(){
-		return this.property + ' ' + this.name;
+		return 'playing ' + this.name;
 	}
 
 });
 
 var Car = new Native('Car', function(name){
 	this.name = name;
-}).protect().implement({
+}).implement({
 
-	property: 'stuff',
-
-	method: function(){
-		return this.name + '_' + this.property;
-	}
+	method: (function(){
+		return 'driving a ' + this.name;
+	}).protect()
 
 });
 
-// Doesn't work yet
 describe('Native', {
 
-	'should allow implementation over existing methods when browser option is not set': function(){
-		Instrument.implement({property: 'staff'});
-		var myInstrument = new Instrument('xeelophone');
-		value_of(myInstrument.method()).should_be('staff xeelophone');
+	'should allow implementation over existing methods when a method is not protected': function(){
+		Instrument.implement({
+			method: function(){
+				return 'playing a guitar';
+			}
+		});
+		var myInstrument = new Instrument('Guitar');
+		value_of(myInstrument.method()).should_be('playing a guitar');
 	},
 
-	'should not override existing methods when browser option is set': function(){
-		Car.implement({property: 'staff'});
-		var myCar = new Car('smart');
-		value_of(myCar.method()).should_be('smart_stuff');
+	'should not override a method when it is protected': function(){
+		Car.implement({
+			method: function(){
+				return 'hell no!';
+			}
+		});
+		var myCar = new Car('nice car');
+		value_of(myCar.method()).should_be('driving a nice car');
 	},
 
 	'should allow generic calls': function(){
-		value_of(Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
+		value_of(Car.method({name: 'not so nice car'})).should_be('driving a not so nice car');
 	},
 
 	"should have a 'native' Native": function(){
-		value_of(Native.isNative(Car)).should_be_true();
+		value_of(Native.isNative(Instrument)).should_be_true();
 	}
 
 });
@@ -168,6 +171,10 @@ describe('nil', {
 
 	'should return false on undefined': function(){
 		value_of(nil(undefined)).should_be_null();
+	},
+
+	'should return passed in value': function(){
+		value_of(nil('String')).should_be('String');
 	}
 
 });
@@ -305,11 +312,11 @@ describe('typeOf', {
 	},
 
 	"should return 'null' for null objects": function(){
-		value_of(typeOf(null)).should_be('nil');
+		value_of(typeOf(null)).should_be('null');
 	},
 
 	"should return 'null' for undefined objects": function(){
-		value_of(typeOf(undefined)).should_be('nil');
+		value_of(typeOf(undefined)).should_be('null');
 	},
 
 	"should return 'collection' for HTMLElements collections": function(){

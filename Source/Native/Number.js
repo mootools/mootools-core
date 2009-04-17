@@ -41,6 +41,6 @@ Number.implement({
 
 ['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan'].forEach(function(name){
 	Number.extend(name, Math[name]).implement(name, function(){
-		return Math[name].apply(null, [this].concat(Array.from(arguments)));
+		return Math[name].apply(null, [this].concat(Array.slice(arguments)));
 	});
 });

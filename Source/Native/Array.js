@@ -57,8 +57,7 @@ Array.implement({
 	},
 	
 	call: function(name){
-		var args = Array.from(arguments), results = [];
-		args.shift();
+		var args = Array.slice(arguments, 1), results = [];
 		for (var i = 0, j = this.length; i < j; i++){
 			var item = this[i];
 			results.push(item[name].apply(item, args));
@@ -67,7 +66,7 @@ Array.implement({
 	},
 	
 	append: function(array){
-		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
+		this.push.apply(this, array);
 		return this;
 	},
 
@@ -116,7 +115,7 @@ Array.implement({
 
 	item: function(at){
 		if (at < 0) at = (at % this.length) + this.length;
-		return (at < 0 || at >= this.length) ? null : this[at];
+		return (at < 0 || at >= this.length || this[at] == null) ? null : this[at];
 	}
 
 });
