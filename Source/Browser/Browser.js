@@ -6,7 +6,9 @@ License:
 	MIT-style license.
 */
 
-var Browser = (function(){}).extend({
+(function(){
+
+var Browser = this.Browser = (function(){}).extend({
 
 	Engine: {name: 'unknown', version: 0},
 
@@ -24,38 +26,34 @@ var Browser = (function(){}).extend({
 
 Browser.Platform[Browser.Platform.name] = true;
 
-(function(){
+var engines = {
 
-	var engines = {
+	presto: function(){
+		return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
+	},
 
-		presto: function(){
-			return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
-		},
+	trident: function(){
+		return (!window.ActiveXObject) ? false : ((Browser.Features.json) ? 6 : ((window.XMLHttpRequest) ? 5 : 4));
+	},
 
-		trident: function(){
-			return (!window.ActiveXObject) ? false : ((Browser.Features.json) ? 6 : ((window.XMLHttpRequest) ? 5 : 4));
-		},
+	webkit: function(){
+		return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
+	},
 
-		webkit: function(){
-			return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
-		},
-
-		gecko: function(){
-			return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? ((Browser.Features.query) ? 19.1 : 19) : 18);
-		}
-
-	};
-
-	for (var engine in engines){
-		var version = engines[engine]();
-		if (version){
-			Browser.Engine = {name: engine, version: version};
-			Browser.Engine[engine] = Browser.Engine[engine + version] = true;
-			break;
-		}
+	gecko: function(){
+		return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? ((Browser.Features.query) ? 19.1 : 19) : 18);
 	}
 
-})();
+};
+
+for (var engine in engines){
+	var version = engines[engine]();
+	if (version){
+		Browser.Engine = {name: engine, version: version};
+		Browser.Engine[engine] = Browser.Engine[engine + version] = true;
+		break;
+	}
+}
 
 // Request
 
@@ -122,54 +120,52 @@ String.implement('stripScripts', function(exec){
 });
 
 // Window, Document
-
-(function(){
 	
-	Browser.extend({
-		Document: this.Document,
-		Window: this.Window,
-		Element: this.Element,
-		Event: this.Event
+Browser.extend({
+	Document: this.Document,
+	Window: this.Window,
+	Element: this.Element,
+	Event: this.Event
+});
+
+if (!Browser.Element){
+	Browser.Element = function(){};
+	Browser.Element.parent = Object;
+	if (Browser.Engine.webkit) doc.createElement("iframe"); //fixes safari 2
+	Browser.Element.prototype = (Browser.Engine.webkit) ? this["[[DOMElement.prototype]]"] : {};
+}
+
+this.Window = new Native('Window', function(){});
+
+this.constructor = this.Window;
+this._type_ = Function.from('window').hide();
+
+this.Window.mirror(function(name, method){
+	window[name] = method;
+}).implement(new Storage);
+
+var doc = this.document;
+doc.window = this;
+
+doc.head = doc.getElementsByTagName('head')[0];
+doc.html = doc.getElementsByTagName('html')[0];
+if (Browser.Engine.trident){
+	if (Browser.Engine.version <= 4) Function.stab(function(){
+		doc.execCommand("BackgroundImageCache", false, true);
 	});
+	this.attachEvent('onunload', function(){
+		this.detachEvent('onunload', arguments.callee);
+		doc.head = doc.html = doc.window = null;
+	});
+}
 
-	if (!Browser.Element){
-		Browser.Element = function(){};
-		Browser.Element.parent = Object;
-		if (Browser.Engine.webkit) doc.createElement("iframe"); //fixes safari 2
-		Browser.Element.prototype = (Browser.Engine.webkit) ? this["[[DOMElement.prototype]]"] : {};
-	}
-	
-	this.Window = new Native('Window', function(){});
-	
-	this.constructor = this.Window;
-	this._type_ = Function.from('window').hide();
-	
-	this.Window.mirror(function(name, method){
-		window[name] = method;
-	}).implement(new Storage);
-	
-	var doc = this.document;
-	doc.window = this;
+this.Document = new Native('Document', function(){});
 
-	doc.head = doc.getElementsByTagName('head')[0];
-	doc.html = doc.getElementsByTagName('html')[0];
-	if (Browser.Engine.trident){
-		if (Browser.Engine.version <= 4) Function.stab(function(){
-			doc.execCommand("BackgroundImageCache", false, true);
-		});
-		this.attachEvent('onunload', function(){
-			this.detachEvent('onunload', arguments.callee);
-			doc.head = doc.html = doc.window = null;
-		});
-	}
-	
-	this.Document = new Native('Document', function(){});
+doc.constructor = this.Document;
+doc._type_ = Function.from('document').hide();
 
-	doc.constructor = this.Document;
-	doc._type_ = Function.from('document').hide();
-	
-	this.Document.mirror(function(name, method){
-		doc[name] = method;
-	}).implement(new Storage);
+this.Document.mirror(function(name, method){
+	doc[name] = method;
+}).implement(new Storage);
 	
 })();
