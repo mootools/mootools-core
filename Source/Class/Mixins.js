@@ -93,7 +93,7 @@ Events.implement({
 	removeEvent: function(type, fn){
 		if (!fn._protected_) eventsOf(this, type).erase(fn);
 		return this;
-	},
+	}.setMany(),
 
 	removeEvents: function(type){
 		//TODO
