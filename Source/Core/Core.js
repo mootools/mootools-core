@@ -31,28 +31,28 @@ this.nil = function(item){
 	return (item != null && item != nil) ? item : null;
 };
 
-// Accessors multipliers
+// Accessor multipliers
 
-Function.prototype.setMany = function(single){
+Function.prototype.setMany = function(){
 	var one = this, many = function(item){
-		var value = this, fn = (single) ? this[single] : one;
-		for (var key in item) value = fn.call(this, key, item[key]);
+		var value = this;
+		for (var key in item) value = one.call(this, key, item[key]);
 		return value;
 	};
 	
-	return (single) ? many : function(item){
+	return function(item){
 		return ((typeof item == 'string') ? one : many).apply(this, arguments);
 	};
 };
 
-Function.prototype.getMany = function(single){
+Function.prototype.getMany = function(){
 	var one = this, many = function(item){
-		var obj = {}, fn = (single) ? this[single] : one;
-		for (var i = 0; i < item.length; i++) obj[item[i]] = fn.call(this, item[i]);
-		return obj;
+		var object = {};
+		for (var i = 0; i < item.length; i++) object[item[i]] = one.call(this, item[i]);
+		return object;
 	};
 	
-	return single ? (many) : function(item){
+	return function(item){
 		return ((typeof item == 'string') ? one : many).apply(this, arguments);
 	};
 };
@@ -85,7 +85,7 @@ this.typeOf = function(item){
 		else if (item.item) return 'collection';
 	}
 
-	return typeof item;
+	return 'object';
 };
 
 this.instanceOf = function(item, object){
@@ -117,15 +117,13 @@ String.from = String;
 
 Function.implement({
 	
-	hide: function(bool){
-		if (bool == null) bool = true;
-		this._hidden_ = bool;
+	hide: function(){
+		this._hidden_ = true;
 		return this;
 	},
 
-	protect: function(bool){
-		if (bool == null) bool = true;
-		this._protected_ = bool;
+	protect: function(){
+		this._protected_ = true;
 		return this;
 	}
 	
@@ -179,7 +177,7 @@ Native.implement({
 		var previous = this.prototype[name];
 		if (previous == null || !previous._protected_) this.prototype[name] = method;
 
-		if (typeof method == 'function' && this[name] == null) this.extend(name, function(item){
+		if (typeOf(method) == 'function' && this[name] == null) this.extend(name, function(item){
 			return method.apply(item, Array.prototype.slice.call(arguments, 1));
 		});
 		

@@ -12,7 +12,7 @@ this.Table = new Native('Table', function(){
 	this.table = {};
 });
 	
-var index = 0, items = {'nil': null}, primitives = {'string': {}, 'number': {}};
+var index = 0, items = {'null': null}, primitives = {'string': {}, 'number': {}};
 
 var valueOf = function(item){
 	return (item == null) ? null : (item.valueOf) ? item.valueOf() : item;

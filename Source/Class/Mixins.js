@@ -12,13 +12,9 @@ License:
 (function(){
 
 var Storage = this.Storage = new Native('Storage', function(){});
-	
-var storage = new Table;
 
 var storageOf = function(item){
-	var object = storage.get(item);
-	if (!object) storage.set(item, (object = {}));
-	return object;
+	return item._storage_ || (item._storage_ = {});
 };
 
 Storage.implement({
@@ -42,9 +38,9 @@ Storage.implement({
 
 });
 
-// Accessors
+// Accessor
 
-this.Accessors = new Native('Accessors', function(name){
+this.Accessor = new Native('Accessor', function(name){
 	
 	var Name = (name || '').capitalize();
 	
@@ -53,15 +49,11 @@ this.Accessors = new Native('Accessors', function(name){
 	this['define' + Name] = function(key, value){
 		accessor[key] = value;
 		return this;
-	};
+	}.setMany();
 	
 	this['lookup' + Name] = function(key, value){
 		return accessor[key] || null;
-	};
-	
-	this['define' + Name + 's'] = function(object){
-		for (var p in object) this['define' + Name](p, object[p]);
-	};
+	}.getMany();
 	
 });
 
@@ -88,7 +80,7 @@ Events.implement({
 	addEvent: function(type, fn){
 		eventsOf(this, type).include(fn);
 		return this;
-	},
+	}.setMany(),
 
 	fireEvent: function(type, args){
 		args = Array.from(args);
@@ -105,9 +97,7 @@ Events.implement({
 
 	removeEvents: function(type){
 		//TODO
-	},
-	
-	addEvents: Function.setMany('addEvent')
+	}
 
 });
 

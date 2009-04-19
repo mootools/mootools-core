@@ -71,7 +71,7 @@ var wrap = function(self, key, method){
 	}.extend({_owner_: self, _origin_: method, _name_: key});
 };
 
-Class.extend(new Accessors('Mutator'));
+Class.extend(new Accessor('Mutator'));
 
 Class.implement('implement', function(key, value){
 	
@@ -109,24 +109,29 @@ Class.implement('implement', function(key, value){
 	
 }.setMany());
 
-Class.defineMutator('Extends', function(parent){
+Class.defineMutator({
 
-	this.parent = parent;
-	this.prototype = getPrototype(parent);
+	Extends: function(parent){
 
-	if (this.prototype.parent == null) this.implement('parent', function(){
-		var name = this.caller._name_, previous = this.caller._owner_.parent.prototype[name];
-		if (!previous) throw new Error('The method "' + name + '" has no parent.');
-		return previous.apply(this, arguments);
-	}.protect());
+		this.parent = parent;
+		this.prototype = getPrototype(parent);
 
-}).defineMutator('Implements', function(items){
+		if (this.prototype.parent == null) this.implement('parent', function(){
+			var name = this.caller._name_, previous = this.caller._owner_.parent.prototype[name];
+			if (!previous) throw new Error('The method "' + name + '" has no parent.');
+			return previous.apply(this, arguments);
+		}.protect());
 
-	Array.from(items).forEach(function(item){
-		if (instanceOf(item, Function)) item = getPrototype(item);
-		this.implement(item);
-	}, this);
+	},
 
+	Implements: function(items){
+
+		Array.from(items).forEach(function(item){
+			if (instanceOf(item, Function)) item = getPrototype(item);
+			this.implement(item);
+		}, this);
+
+	}
 });
 
 })();

@@ -9,7 +9,7 @@ License:
 Fx.CSS = {
 
 	compute: function(from, to, delta){
-		switch (typeof from){
+		switch (typeOf(from)){
 			case 'number': return Fx.compute(from, to, delta);
 			case 'string': return to;
 			default: return from.map(function(c, i){

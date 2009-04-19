@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-Event.extend(new Accessors('Pseudo')).extend(new Accessors('Modifier'));
+Event.extend(new Accessor('Pseudo')).extend(new Accessor('Modifier'));
 
 Event.implement('remove', function(){
 	this.context.removeEvent(this.definition, this.action);
@@ -106,7 +106,7 @@ Event.implement('remove', function(){
 			
 			return this;
 			
-		},
+		}.setMany(),
 
 		removeEvent: function(name, fn){
 			
@@ -131,8 +131,6 @@ Event.implement('remove', function(){
 			return this;
 
 		},
-		
-		addEvents: Function.setMany('addEvent'),
 		
 		removeEvents: function(){
 			// TODO
@@ -201,5 +199,5 @@ Event.definePseudo('relay', function(event, selector){
 if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
 
 Element.defineSetter('events', function(events){
-	this.addEvents(events);
+	this.addEvent(events);
 });

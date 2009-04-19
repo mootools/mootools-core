@@ -8,7 +8,7 @@ License:
 
 (function(){
 
-this.Event = new Native('Event', function(event){
+var Event = this.Event = new Native('Event', function(event){
 	event = event || window.event || null;
 	if (event == null) event = {};
 	if (event.event) event = event.event;
@@ -16,11 +16,13 @@ this.Event = new Native('Event', function(event){
 	Browser.event = this;
 });
 
-Event.extend(new Accessors('KeyCode')).defineKeyCodes({
+Event.extend(new Accessor('KeyCode')).defineKeyCode({
 	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
 });
 
-Event.extend(new Accessors('Getter')).extend(new Accessors('Setter')).defineGetters({
+Event.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
+
+Event.defineGetter({
 
 	shift: function(){
 		return this.event.shiftKey;
@@ -83,7 +85,7 @@ Event.implement({
 	
 });
 
-Event.defineGetters({
+Event.defineGetter({
 	
 	target: function(){
 		var event = this.event;

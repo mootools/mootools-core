@@ -8,7 +8,7 @@ License:
 
 (function(Element, CColor){
 	
-Element.extend(new Accessors('StyleGetter')).extend(new Accessors('StyleSetter'));
+Element.extend(new Accessor('StyleGetter')).extend(new Accessor('StyleSetter'));
 
 Element.Style = {transitionable: {}, shorts: {}};
 
@@ -59,7 +59,7 @@ slick.definePseudo('positioned', function(){
 /* css values utilities */
 
 var splitCSS = function(value){
-	return (typeof value == 'string') ? value.trim().replace(/,\s+/g, ',').split(/\s+/) : Array.from(value);
+	return (typeOf(value) == 'string') ? value.trim().replace(/,\s+/g, ',').split(/\s+/) : Array.from(value);
 };
 
 var mirrorCSS = function(value){
@@ -162,7 +162,7 @@ border + Top + Width, border + Right + Width, border + Bottom + Width, border + 
 
 /* height width top left */
 
-Element.defineStyleGetters({
+Element.defineStyleGetter({
 	
 	top: function(unit){
 		var mt = parseFloat(getStyle(this, margin + Top)), value = this.offsetTop - mt;
@@ -212,7 +212,7 @@ var TRBL = [Top, Right, Bottom, Left];
 	Element.defineStyleSetter(name, function(value){
 		
 		if (!value && value !== 0) this.style[name] = '';
-		else this.setStyles(parse(value));
+		else this.setStyle(parse(value));
 		
 	}).defineStyleGetter(name, function(unit){
 		
@@ -235,7 +235,7 @@ var bpparse = ESS[backgroundPosition] = function(value){
 Element.defineStyleSetter(backgroundPosition, function(value){
 
 	if (!value && value !== 0) this.style[backgroundPosition] = '';
-	else this.setStyles(bpparse(value));
+	else this.setStyle(bpparse(value));
 
 }).defineStyleGetter(backgroundPosition, function(){
 
@@ -249,7 +249,7 @@ Element.defineStyleSetter(clip, function(value){
 	if (!value && value !== 0){
 		this.style[clip] = '';
 	} else {
-		value = mirrorCSS((typeof value == 'string') ? value.match(/([\d.]+\w*)/g) : Array.from(value));
+		value = mirrorCSS((typeOf(value) == 'string') ? value.match(/([\d.]+\w*)/g) : Array.from(value));
 		this.style[clip] = 'rect(' + value.join(' ').map(unitCSS) + ')';
 	}
 });
@@ -272,7 +272,7 @@ Element.defineStyleSetter(clip, function(value){
 	Element.defineStyleSetter(name, function(value){
 
 		if (!value) this.style[name] = '';
-		else this.setStyles(parse(value));
+		else this.setStyle(parse(value));
 
 	}).defineStyleGetter(name, function(unit){
 		
@@ -308,7 +308,7 @@ var bparse = ESS[border] = function(value){
 Element.defineStyleSetter(border, function(value){
 
 	if (!value) this.style[border] = '';
-	else this.setStyles(bparse(value));
+	else this.setStyle(bparse(value));
 	
 }).defineStyleGetter(border, function(unit){
 	
@@ -327,20 +327,17 @@ Element.implement({
 		if (setter) setter.call(this, value);
 		else this.style[name] = value;
 		return this;
-	},
+	}.setMany(),
 
 	getStyle: function(name, unit){
 		var getter = Element.lookupStyleGetter(name);
 		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
-	},
-
-	setStyles: Function.setMany('setStyle'),
-	getStyles: Function.getMany('getStyle')
+	}.getMany()
 
 });
 
 Element.defineSetter('styles', function(styles){
-	this.setStyles(styles);
+	this.setStyle(styles);
 });
 
 })(Element, Color);
