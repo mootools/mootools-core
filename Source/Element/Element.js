@@ -333,10 +333,13 @@ Element.implement({
 
 Element.defineSetter('css', function(style){
 	return this.style.cssText = style;
-}).defineGetter('css', function(){
-	return this.style.cssText;
-}).defineGetter('tag', function(){
-	return this.tagName.toLowerCase();
+}).defineGetter({
+	css: function(){
+		return this.style.cssText;
+	},
+	tag: function(){
+		return this.tagName.toLowerCase();
+	}
 });
 
 var tableTest = Function.stab(function(){

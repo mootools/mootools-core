@@ -253,6 +253,12 @@ Number.prototype._type_ = function(){
 	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 
+// Boolean
+
+Boolean.prototype._type_ = function(){
+	return 'boolean';
+};
+
 // forEach
 
 Object.extend({
