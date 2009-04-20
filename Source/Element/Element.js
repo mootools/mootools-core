@@ -290,8 +290,7 @@ properties = Object.append(Object.from(properties, properties), {
 Object.forEach(properties, function(real, key){
 	Element.defineSetter(key, function(value){
 		return this[real] = value;
-	});
-	Element.defineGetter(key, function(){
+	}).defineGetter(key, function(){
 		return this[real];
 	});
 });
@@ -302,8 +301,7 @@ var booleans = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 booleans.forEach(function(bool){
 	Element.defineSetter(bool, function(value){
 		return this[bool] = !!value;
-	});
-	Element.defineGetter(bool, function(){
+	}).defineGetter(bool, function(){
 		return !!this[bool];
 	});
 });
@@ -335,14 +333,16 @@ Element.implement({
 
 Element.defineSetter('css', function(style){
 	return this.style.cssText = style;
-});
+}).defineGetter({
 
-Element.defineGetter('css', function(){
-	return this.style.cssText;
-});
+	css: function(){
+		return this.style.cssText;
+	},
 
-Element.defineGetter('tag', function(){
-	return this.tagName.toLowerCase();
+	tag: function(){
+		return this.tagName.toLowerCase();
+	}
+
 });
 
 var tableTest = Function.stab(function(){

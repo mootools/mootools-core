@@ -33,7 +33,7 @@ var engines = {
 	},
 
 	trident: function(){
-		return (!window.ActiveXObject) ? false : ((Browser.Features.json) ? 6 : ((window.XMLHttpRequest) ? 5 : 4));
+		return (!window.ActiveXObject) ? false : ((Browser.Features.query) ? 6 : ((window.XMLHttpRequest) ? 5 : 4));
 	},
 
 	webkit: function(){

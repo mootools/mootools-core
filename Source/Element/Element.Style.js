@@ -323,14 +323,14 @@ Element.defineStyleSetter(border, function(value){
 Element.implement({
 	
 	setStyle: function(name, value){
-		var setter = Element.lookupStyleSetter(name);
+		var setter = Element.lookupStyleSetter(name = name.camelCase());
 		if (setter) setter.call(this, value);
 		else this.style[name] = value;
 		return this;
 	}.setMany(),
 
 	getStyle: function(name, unit){
-		var getter = Element.lookupStyleGetter(name);
+		var getter = Element.lookupStyleGetter(name = name.camelCase());
 		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
 	}.getMany()
 

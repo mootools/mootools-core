@@ -96,7 +96,15 @@ Events.implement({
 	}.setMany(),
 
 	removeEvents: function(type){
-		//TODO
+		if (typeOf(type) == 'string'){
+			var events = eventsOf(this, type), l = events.length;
+			if (l) do {
+				this.removeEvent(type, events[--l]);
+			} while(l);
+		} else {
+			for (i in type) this.removeEvent(i, type[i]);
+		}
+		return this;
 	}
 
 });
@@ -112,7 +120,8 @@ var optionsOf = function(object){
 Options.implement({
 	
 	setOptions: function(options){
-		if (!Storage.retrieve(this, 'options')) Storage.store(this, 'options', this.options || {});
+		Storage.retrieve(this, 'options', {});
+		options = Object.append(this.options, options);
 		for (var option in options) this.setOption(option, options[option]);
 		return this;
 	},
