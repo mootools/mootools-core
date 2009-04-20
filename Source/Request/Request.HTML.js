@@ -21,7 +21,7 @@ Request.HTML = new Class({
 		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		text = (match) ? match[1] : text;
 		
-		var options = this.getOptions(['filter', 'update', 'evalScripts']), response = this.response;
+		var options = this.getOptions(['filter', 'update', 'append', 'evalScripts']), response = this.response;
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
@@ -33,7 +33,11 @@ Request.HTML = new Class({
 		response.elements = temp.search('*');
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
-		if (options.update) document.id(options.update).set('html', response.html);
+		if (options.update){
+			var update = document.id(options.update);
+			if (options.append) update.append(response.tree);
+			else update.set('html', response.html);
+		}
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
@@ -50,18 +54,7 @@ Element.defineGetter('load', function(){
 	return this.retrieve('load');
 });
 
-Element.implement({
-
-	send: function(url){
-		var sender = this.get('send');
-		sender.send({data: this, url: url || sender.options.url});
-		return this;
-	},
-
-	load: function(){
-		var loader = this.get('load');
-		loader.send.apply(loader, arguments);
-		return this;
-	}
-
+Element.implement('load', function(url, data){
+	this.get('load').setOption('url', url).send(data);
+	return this;
 });

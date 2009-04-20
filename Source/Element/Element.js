@@ -9,7 +9,7 @@ License:
 (function(document){
 
 var Element = this.Element = function(item, props){
-	if (typeof item != 'string') return document.id(item).set(props);
+	if (typeOf(item) != 'string') return document.id(item).set(props);
 	
 	if (!props) props = {};
 	
@@ -89,20 +89,9 @@ document.id = function(item){
 	return (processor) ? processor(item, this) : null;
 };
 
-var Elements = this.Elements = function(elements, unique){
+var Elements = this.Elements = function(elements){
 	if (!elements || !elements.length) return;
-	if (unique == null) unique = true;
-	var uniques = {};
-	for (var i = 0, l = elements.length; i < l; i++){
-		var element = document.id(elements[i]);
-		if (!element) continue;
-		if (unique){
-			var uid = slick.uidOf(element);
-			if (uniques[uid]) continue;
-			uniques[uid] = true;
-		}
-		this.push(element);
-	}
+	slick.uniques(elements, this);
 };
 
 Elements.prototype = {length: 0};
@@ -161,16 +150,14 @@ Element.implement('match', function(expression){
 });
 
 this.$ = function(expression){
-	var match = (typeOf(expression) != 'string') ? expression : (match = expression.match(/^#?([\w-]+)$/)) ? match[1] : null;
-	if (match) return document.id(match);
-	return document.find(expression);
+	return document.id(expression);
 };
 
 this.$$ = function(expression){
 	return document.search(expression);
 };
 
-/* ClassNames Accessors */
+/* ClassNames Accessor */
 
 Element.implement({
 
@@ -283,7 +270,7 @@ Element.implement(new Storage);
 
 /* Attribute Getters, Setters */
 
-Element.extend(new Accessors('Getter')).extend(new Accessors('Setter'));
+Element.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
 
 var properties = [
 	'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',

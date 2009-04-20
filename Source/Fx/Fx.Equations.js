@@ -31,7 +31,7 @@ Fx.defineEquation = function(name, equation, param){
 	return this;
 };
 
-Fx.defineEquations({
+Fx.defineEquation({
 
 	pow: function(p, x){
 		return Math.pow(p, x || 6);

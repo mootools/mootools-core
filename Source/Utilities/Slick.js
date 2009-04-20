@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 	
 Credits:
-	XRegExp_escape taken from XRegExp 0.6.1 (c) 2007-2008 Steven Levithan <http://stevenlevithan.com/regex/xregexp/> MIT License
+	XRegExp_escape is from XRegExp 0.6.1 (c) 2007-2008 Steven Levithan <http://stevenlevithan.com/regex/xregexp/> MIT License
 */
 
 var slick = (function(buffer){
@@ -54,8 +54,6 @@ var slick = (function(buffer){
 					var items = buffer.current;
 					for (var m = 0, n = items.length; m < n; m++) buffer[combinator](items[m], tag, id, params);
 				}
-				
-				// console.log(buffer.current);
 				
 				buffer.current = buffer.found;
 
@@ -106,6 +104,19 @@ var slick = (function(buffer){
 		if (!buff) (buff = buffer).positions = {};
 		var parsed = buff.parseBit(slick.parse(selector)[0][0]);
 		return buff['match(selector)'](node, parsed[0], parsed[1], parsed[2]);
+	};
+	
+	slick.uniques = function(nodes, append){
+		var uniques = {};
+		if (!append) append = [];
+		for (var i = 0, l = nodes.length; i < l; i++){
+			var node = nodes[i], uid = buffer.uidOf(node);
+			if (!uniques[uid]){
+				uniques[uid] = true;
+				append.push(node);
+			}
+		}
+		return append;
 	};
 	
 	return slick;
@@ -446,10 +457,10 @@ slick.parse = (function(){
 	
 	var parseregexp = new RegExp("(?x)\
 		^(?:\n\
-		         \\s+ (?=[<>+~$^±-] | $)     # Meaningless Whitespace \n\
+		         \\s+ (?=[<>»«≤≥+~$^±-] | $)     # Meaningless Whitespace \n\
 		|      ( ,                 ) \\s* # Separator              \n\
-		|      ( \\s     (?=[^<>+~$^±-]))    # CombinatorChildren     \n\
-		|      ( [<>+~$^±-]{1,2}      ) \\s* # Combinator             \n\
+		|      ( \\s     (?=[^<>»«≤≥+~$^±-]))    # CombinatorChildren     \n\
+		|      ( [<>»«≤≥+~$^±-]{1,2}      ) \\s* # Combinator             \n\
 		|      ( [a-z0-9_-]+ | \\* )      # Tag                    \n\
 		| \\#  ( [a-z0-9_-]+       )      # ID                     \n\
 		| \\.  ( [a-z0-9_-]+       )      # ClassName              \n\

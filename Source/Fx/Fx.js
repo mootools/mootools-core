@@ -119,16 +119,16 @@ Fx.compute = function(from, to, delta){
 	return (to - from) * delta + from;
 };
 
-Fx.extend(new Accessors('Duration')).extend(new Accessors('Equation'));
+Fx.extend(new Accessor('Duration')).extend(new Accessor('Equation'));
 
-Fx.defineEquations({
+Fx.defineEquation({
 	'linear': Function.argument(0),
 	'default': function(p){
 		return -(Math.cos(Math.PI * p) - 1) / 2;
 	}
 });
 
-Fx.defineDurations({'short': 250, 'normal': 500, 'long': 1000});
+Fx.defineDuration({'short': 250, 'normal': 500, 'long': 1000});
 
 var fps = 60, instances = [], timer;
 
