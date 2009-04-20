@@ -11,7 +11,7 @@ describe('Element', {
 	"should return an Element with the correct tag": function(){
 		var element = new Element('div');
 		value_of(typeOf(element)).should_be('element');
-		value_of(nil(element.addEvent)).should_be_true();
+		value_of(!!element.addEvent).should_be_true();
 		value_of(element.tagName.toLowerCase()).should_be('div');
 	},
 

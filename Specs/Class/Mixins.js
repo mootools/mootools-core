@@ -174,7 +174,7 @@ describe("Events Class", {
 		var event = Storage.retrieve(myTest, 'events.type.protected');
 		value_of(event).should_not_be(undefined);
 		value_of(event.contains(protected)).should_be_true();
-		value_of(event[0][':protected']).should_be_true();
+		value_of(event[0]._protected_).should_be_true();
 	},
 
 	"should remove a specific method for an event": function(){
@@ -219,7 +219,7 @@ describe("Events Class", {
 		myTest.addEvent('event1', function(){ Local.fn.call(this); }).addEvents(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(2);
-		myTest.removeEvent(events);
+		myTest.removeEvents(events);
 		myTest.fireEvent('event1');
 		value_of(Local.called).should_be(3);
 		myTest.fireEvent('event2');
