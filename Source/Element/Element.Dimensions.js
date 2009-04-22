@@ -121,11 +121,12 @@ Element.implement({
 		return {left: obj.x - styleNumber(this, 'margin-left'), top: obj.y - styleNumber(this, 'margin-top')};
 	},
 
-	position: function(obj){
+	setPosition: function(obj){
 		return this.setStyles(this.computePosition(obj));
 	}
 
 });
+
 
 Native.implement([Document, Window], {
 
@@ -191,6 +192,8 @@ function getCompatElement(element){
 })();
 
 //aliases
+
+Element.alias('position', 'setPosition'); //compatability
 
 Native.implement([Window, Document, Element], {
 

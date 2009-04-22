@@ -132,6 +132,26 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 - [QuirksMode: Find position](http://www.quirksmode.org/js/findpos.html)
 
+Element Method: setPosition {#Element:setPosition}
+--------------------------------------------------
+
+Sets the position of the element's *left* and *top* values to the x/y positions you specify.
+
+### Syntax
+
+	myElement.setPosition(positions);
+
+### Arguments
+
+1. positions - (*object*) an object with x/y values (integers or strings, i.e. 10 or "10px")
+
+### Returns
+
+* (*element*) the element that is positioned.
+
+### Example
+
+	myElement.setPosition({x: 10, y: 100});
 
 Element Method: getCoordinates {#Element:getCoordinates}
 --------------------------------------------------------
