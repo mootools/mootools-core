@@ -1769,7 +1769,7 @@ It also works like [Array:filter](/Native/Array/#Array:filter), by filtering col
 [$$]: #dollars
 
 [Array]: /core/Native/Array
-[Selectors]: /core/Selectors/Selectors
+[Selectors]: /core/Utilities/Selectors
 
 [Element]: #Element
 [Elements]: #Elements
