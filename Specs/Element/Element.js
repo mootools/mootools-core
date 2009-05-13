@@ -1183,6 +1183,15 @@ describe('Element.getProperty', {
 
 		var input2 = new Element('input', {type: 'checkbox'});
 		value_of(input2.getProperty('type')).should_be('checkbox');
+		
+		var div = new Element('div', {'html':
+			'<select name="test" id="test" multiple="multiple">' + 
+				'<option value="1">option-value</option>' +
+			'</select>'
+		});
+		var input3 = div.getElement('select');
+		value_of(input3.getProperty('type')).should_be('select-multiple');
+		value_of(input3.getProperty('name')).should_be('test');
 	},
 
 	'should getPropety checked from an input Element': function(){
@@ -1278,6 +1287,15 @@ describe('Element.setProperty', {
 
 		var readonly3 = new Element('input', { type: 'text' }).setProperty('readonly', false);
 		value_of(readonly3.getProperty('readonly')).should_be_false();
+	},
+	
+	'should setProperty defaultValue of an input Element': function(){
+		var form = new Element('form');
+		var defaultValue = new Element('input', {'type': 'text', 'value': '321'}).setProperty('defaultValue', '123');
+		form.grab(defaultValue);
+		value_of(defaultValue.getProperty('value')).should_be('321');
+		form.reset();
+		value_of(defaultValue.getProperty('value')).should_be('123');
 	}
 
 });
@@ -1305,10 +1323,11 @@ describe('Element.setProperties', {
 describe('Element.removeProperty', {
 
 	'should removeProperty from an Element': function () {
-		var readonly = new Element('input', { type: 'text', readonly: 'readonly' });
+		var readonly = new Element('input', { type: 'text', readonly: 'readonly', maxlenght: 10 });
 		readonly.removeProperty('readonly');
-		var props = readonly.getProperties('type', 'readonly');
-		value_of(props).should_be({ type: 'text', readonly: false });
+		readonly.removeProperty('maxlength');
+		var props = readonly.getProperties('type', 'readonly', 'maxlength');
+		value_of(props).should_be({ type: 'text', readonly: false, maxlength: 0});
 	}
 
 });

@@ -12,11 +12,25 @@
 	<script type="text/javascript" src="Assets/Scripts/Builder.js"></script>
 
 	<script type="text/javascript" charset="utf-8">
-		Builder.includeType('source');
-		if (!Builder.includeRequest('specs')) Builder.includeType('specs');
+		Builder.build('../', {
+			Source: {
+				'Core'      : ['Core', 'Browser'],
+				'Native'    : ['Array', 'Function', 'Number', 'String', 'Hash', 'Event'],
+				'Class'     : ['Class', 'Class.Extras'],
+				'Element'   : ['Element', 'Element.Event', 'Element.Style', 'Element.Dimensions'],
+				'Utilities' : ['Selectors', 'DomReady', 'JSON', 'Cookie', 'Swiff'],
+				'Fx'        : ['Fx', 'Fx.CSS', 'Fx.Tween', 'Fx.Morph', 'Fx.Transitions'],
+				'Request'   : ['Request', 'Request.HTML', 'Request.JSON']
+			},
+			Specs: {
+				'Core'      : ['Core', 'Browser'],
+				'Native'    : ['Array', 'String', 'Function', 'Number', 'Hash'],
+				'Class'     : ['Class', 'Class.Extras'],
+				'Element'   : ['Element', 'Element.Style', 'Element.Dimensions'],
+				'Utilities' : ['Selectors']
+			}
+		});
 	</script>
-
-
 </head>
 
 <body>
