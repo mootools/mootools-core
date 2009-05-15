@@ -62,12 +62,21 @@ Element.implement({
 	getOffsets: function(){		
 		if (this.getBoundingClientRect){			
 			var bound   = this.getBoundingClientRect(), 
-					html    = this.getDocument().documentElement
-					scroll  = html.getScroll();
-					isFixed = styleString(this, 'position') == 'fixed';
+					html    = this.getDocument().documentElement,
+					scroll  = $(html).getScroll(),
+					isFixed = (styleString(this, 'position') == 'fixed');
 			return {
 				x: parseInt(bound.left, 10) + ((isFixed) ? 0 : scroll.x) - html.clientLeft,
 				y: parseInt(bound.top, 10) +  ((isFixed) ? 0 : scroll.y) - html.clientTop
+			};
+		}
+		
+		if (Browser.Engine.trident){
+			var bound = this.getBoundingClientRect(), html = this.getDocument().documentElement;
+			var isFixed = styleString(this, 'position') == 'fixed';
+			return {
+				x: bound.left + ((isFixed) ? 0 : html.scrollLeft) - html.clientLeft,
+				y: bound.top +  ((isFixed) ? 0 : html.scrollTop)  - html.clientTop
 			};
 		}
 
