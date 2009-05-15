@@ -70,15 +70,6 @@ Element.implement({
 				y: parseInt(bound.top, 10) +  ((isFixed) ? 0 : scroll.y) - html.clientTop
 			};
 		}
-		
-		if (Browser.Engine.trident){
-			var bound = this.getBoundingClientRect(), html = this.getDocument().documentElement;
-			var isFixed = styleString(this, 'position') == 'fixed';
-			return {
-				x: bound.left + ((isFixed) ? 0 : html.scrollLeft) - html.clientLeft,
-				y: bound.top +  ((isFixed) ? 0 : html.scrollTop)  - html.clientTop
-			};
-		}
 
 		var element = this, position = {x: 0, y: 0};
 		if (isBody(this)) return position;
