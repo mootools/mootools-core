@@ -1,19 +1,27 @@
 <script>
 window.addEvent('domready', function(){
-	$('val').set('html', $('fixed').getOffsets().y)
-	window.addEvent('scroll', function(){
-		$('val').set('html', $('fixed').getOffsets().y)
-	});
+  var fun = function(pos_style){ $(pos_style).getFirst().set('html', $(pos_style).getOffsets().y); };
+  ["fixed", "static", "absolute"].each(function(pos_style){
+    fun(pos_style);
+  	window.addEvent('scroll', function(){
+  		fun(pos_style);
+  	});
+  });
 });
 </script>
 
 <style>
   #wrapper { width:100%; margin:0 auto; background:#ddd; } 
-  #fixed { position:fixed; background:gray; color:black; padding:10px; width:30%; }
+  #fixed    { position: fixed; }
+  #static   { position: static; }
+  #absolute { position: absolute; }
+  .position-type { background:gray; color:black; padding:10px; width:30%; }
 </style>
 
 <div id="wrapper">
-  <div id="fixed">FIXED <span id="val"></span></div>
+  <div class="position-type" id="fixed">FIXED <span class="val"></span></div>
+  <div class="position-type" id="static">STATIC <span class="val"></span></div>
+  <div class="position-type" id="absolute">ABSOLUTE <span class="val"></span></div>
   SCROLL<br/> 
   SCROLL<br/> 
   SCROLL<br/> 
