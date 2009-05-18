@@ -51,7 +51,7 @@
 	"Class": {
 
 		"Class": {
-			"deps": ["Core", "Array", "String", "Function", "Number", "Hash", "Browser"],
+			"deps": ["Core", "Array", "String", "Function", "Number", "Hash"],
 			"desc": "Contains the Class Function for easily creating, extending, and implementing reusable Classes."
 		},
 
