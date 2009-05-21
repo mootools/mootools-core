@@ -1444,6 +1444,30 @@ Retrieves a value from the Elements storage.
 	$('element').retrieve('someProperty'); // returns someValue (see example above)
 
 
+Element Method: eliminate {#Element:eliminate}
+--------------------------------------------
+
+Eliminates a key from the Elements storage.
+
+
+### Syntax:
+
+	myElement.retrieve(key);
+
+### Arguments:
+
+1. key - (*string*) The key you want to eliminate from the storage.
+
+### Returns:
+
+* (*mixed*) The element/window/document.
+
+### Example:
+
+	$('element').eliminate('someProperty');
+
+
+
 
 
 Hash: Element.Properties {#Element-Properties}
