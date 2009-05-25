@@ -336,7 +336,7 @@ Element.implement({
 	},
 
 	setProperty: function(attribute, value){
-		var key = attributes[attribute.toLowerCase()];
+		var key = attributes[attribute];
 		if (value == undefined) return this.removeProperty(attribute);
 		if (key && bools[attribute]) value = !!value;
 		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
@@ -349,7 +349,7 @@ Element.implement({
 	},
 
 	getProperty: function(attribute){
-		var key = attributes[attribute.toLowerCase()];
+		var key = attributes[attribute];
 		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
 		return (bools[attribute]) ? !!value : (key) ? value : value || null;
 	},
@@ -360,7 +360,7 @@ Element.implement({
 	},
 
 	removeProperty: function(attribute){
-		var key = attributes[attribute.toLowerCase()];
+		var key = attributes[attribute];
 		(key) ? this[key] = (key && bools[attribute]) ? false : '' : this.removeAttribute(attribute);
 		return this;
 	},
