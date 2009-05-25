@@ -262,7 +262,7 @@ var attributes = {
 	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
 };
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
-var camels = ['value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+var camels = ['value', 'type', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
 
 bools = bools.associate(bools);
 
@@ -336,7 +336,7 @@ Element.implement({
 	},
 
 	setProperty: function(attribute, value){
-		var key = attributes[attribute];
+		var key = attributes[attribute.toLowerCase()];
 		if (value == undefined) return this.removeProperty(attribute);
 		if (key && bools[attribute]) value = !!value;
 		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
@@ -349,7 +349,7 @@ Element.implement({
 	},
 
 	getProperty: function(attribute){
-		var key = attributes[attribute];
+		var key = attributes[attribute.toLowerCase()];
 		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
 		return (bools[attribute]) ? !!value : (key) ? value : value || null;
 	},
@@ -360,7 +360,7 @@ Element.implement({
 	},
 
 	removeProperty: function(attribute){
-		var key = attributes[attribute];
+		var key = attributes[attribute.toLowerCase()];
 		(key) ? this[key] = (key && bools[attribute]) ? false : '' : this.removeAttribute(attribute);
 		return this;
 	},
