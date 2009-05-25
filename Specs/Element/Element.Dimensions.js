@@ -18,8 +18,7 @@ License:
 				padding: 3,
 				border: '1px solid black',
 				visibility: 'hidden',
-				//display: 'block',
-				display: 'none',
+				display: 'block',
 				position: 'absolute',
 				top: 100,
 				left: 100
