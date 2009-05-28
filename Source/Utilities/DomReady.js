@@ -22,7 +22,6 @@ if (Browser.Engine.trident){
 	var temp = document.newElement('div');
 	(function(){
 		(Function.stab(function(){
-			temp.doScroll('left');
 			return temp.inject(document.body).set('html', 'temp').dispose();
 		})) ? domready() : arguments.callee.delay(50);
 	})();
