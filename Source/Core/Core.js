@@ -99,7 +99,7 @@ Native.typize = function(object, family){
 		'String': ["charAt", "charCodeAt", "concat", "indexOf", "lastIndexOf", "match", "replace", "search", "slice", "split", "substr", "substring", "toLowerCase", "toUpperCase", "valueOf"]
 	};
 	for (var g in generics){
-		for (var i = generics[g].length; i--;) Native.genericize(this[g], generics[g][i], true);
+		for (var i = generics[g].length; i--;) Native.genericize(natives[g], generics[g][i], true);
 	}
 })();
 
