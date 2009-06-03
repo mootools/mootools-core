@@ -221,7 +221,7 @@ Matches every odd child.
 
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(odd), as this will return the real odd children.
 
-Selector: first {#Selector:first-child}
+Selector: first-child {#Selector:first-child}
 ---------------------------------
 
 Matches the first child.
@@ -235,7 +235,7 @@ Matches the first child.
 	$$('td:first-child');
 
 
-Selector: last {#Selector:last-child}
+Selector: last-child {#Selector:last-child}
 -------------------------------------
 
 	Matches the last child.
@@ -249,7 +249,7 @@ Selector: last {#Selector:last-child}
 	$$('td:last-child');
 
 
-Selector: only {#Selector:only-child}
+Selector: only-child {#Selector:only-child}
 -------------------------------------
 
 Matches an only child of its parent Element.
