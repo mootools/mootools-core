@@ -22,14 +22,14 @@ Hash.implement({
 	},
 
 	extend: function(properties){
-		Hash.each(properties, function(value, key){
+		Hash.each(properties || {}, function(value, key){
 			Hash.set(this, key, value);
 		}, this);
 		return this;
 	},
 
 	combine: function(properties){
-		Hash.each(properties, function(value, key){
+		Hash.each(properties || {}, function(value, key){
 			Hash.include(this, key, value);
 		}, this);
 		return this;
