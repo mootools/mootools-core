@@ -22,7 +22,7 @@ var JSON = new Hash({
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
 			case 'array':
-				return '[' + String(obj.map(JSON.encode).filter($defined)) + ']';
+				return '[' + String(obj.map(JSON.encode).clean()) + ']';
 			case 'object': case 'hash':
 				var string = [];
 				Hash.each(obj, function(value, key){
