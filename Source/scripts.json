@@ -148,7 +148,7 @@
 	"Request": {
 
 		"Request": {
-			"deps": ["Class.Extras"],
+			"deps": ["Class.Extras", "Element"],
 			"desc": "Powerful all purpose Request Class. Uses XMLHTTPRequest."
 		},
 
