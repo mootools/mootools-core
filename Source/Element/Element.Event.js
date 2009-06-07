@@ -188,7 +188,7 @@ Event.definePseudo('flash', function(event, argument){
 });
 
 Event.definePseudo('relay', function(event, selector){
-	for (var t = event.get('target'); t && t != this; t = t.parentNode)
+	for (var t = event.target; t && t != this; t = t.parentNode)
 		if (Element.match(t, selector)) return $(t);
 });
 
