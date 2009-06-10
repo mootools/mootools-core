@@ -17,7 +17,7 @@ Inspiration:
 */
 
 var MooTools = {
-	'version': '1.2.3dev',
+	'version': '1.2.3',
 	'build': '%build%'
 };
 
