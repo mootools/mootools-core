@@ -103,7 +103,7 @@ Element.implement({
 
 	getStyles: function(){
 		var result = {};
-		Array.each(arguments, function(key){
+		Array.flatten(arguments).each(function(key){
 			result[key] = this.getStyle(key);
 		}, this);
 		return result;
