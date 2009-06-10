@@ -50,6 +50,7 @@ var Request = new Class({
 		$try(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
+		this.xhr.onreadystatechange = $empty;
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
@@ -57,7 +58,6 @@ var Request = new Class({
 			this.response = {text: null, xml: null};
 			this.failure();
 		}
-		this.xhr.onreadystatechange = $empty;
 	},
 
 	isSuccess: function(){
