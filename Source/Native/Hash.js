@@ -107,26 +107,25 @@ Hash.implement({
 		return values;
 	},
 
-	toQueryString: function(base){
-		var queryString = [];
-		Hash.each(this, function(value, key){
-			if (base) key = base + '[' + key + ']';
-			var result;
-			switch ($type(value)){
-				case 'object': result = Hash.toQueryString(value, key); break;
-				case 'array':
-					var qs = {};
-					value.each(function(val, i){
-						qs[i] = val;
-					});
-					result = Hash.toQueryString(qs, key);
-				break;
-				default: result = key + '=' + encodeURIComponent(value);
-			}
-			if (value != undefined) queryString.push(result);
-		});
-
-		return queryString.join('&');
+	toQueryString: function(format){
+		if($type(format) == 'string') format = { base: format };
+		format = $extend({ property: '[#]', array: '[#]', separator: '&' }, format);
+		
+		var queryString = [], base = format.base;
+		var pushItem = function(value, key){
+			format.base = base.replace(/\#/, key);
+			queryString.push(Hash.toQueryString(value, format));
+		};
+		if ($type(this).test(/object|hash/)){
+			base = base ? base + format.property : '#'; 
+			Hash.each(this, pushItem);
+		} else if($type(this) == 'array'){
+			base = base + format.array;
+			this.each(pushItem);
+		} else {
+			return base + '=' + encodeURIComponent(this);
+		}
+		return queryString.join(format.separator);
 	}
 
 });
