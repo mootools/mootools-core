@@ -55,8 +55,8 @@ Request.HTML = new Class({
 		response.elements = temp.getElements('*');
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
-		if (options.update) $(options.update).empty().set('html', response.html);
-		else if (options.append) $(options.append).adopt(temp.getChildren());
+		if (options.update) document.id(options.update).empty().set('html', response.html);
+		else if (options.append) document.id(options.append).adopt(temp.getChildren());
 		if (options.evalScripts) $exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);

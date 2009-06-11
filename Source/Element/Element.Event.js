@@ -93,7 +93,7 @@ Native.implement([Element, Window, Document], {
 	},
 
 	cloneEvents: function(from, type){
-		from = $(from);
+		from = document.id(from);
 		var fevents = from.retrieve('events');
 		if (!fevents) return this;
 		if (!type){

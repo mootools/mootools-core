@@ -117,7 +117,7 @@ var Request = new Class({
 		var data = options.data, url = options.url, method = options.method;
 
 		switch ($type(data)){
-			case 'element': data = $(data).toQueryString(); break;
+			case 'element': data = document.id(data).toQueryString(); break;
 			case 'object': case 'hash': data = Hash.toQueryString(data);
 		}
 
