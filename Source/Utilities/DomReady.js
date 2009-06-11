@@ -27,7 +27,7 @@ Element.Events.domready = {
 		var temp = document.createElement('div');
 		(function(){
 			($try(function(){
-				return $(temp).inject(document.body).set('html', 'temp').dispose();
+				return document.id(temp).inject(document.body).set('html', 'temp').dispose();
 			})) ? domready() : arguments.callee.delay(50);
 		})();
 	} else if (Browser.Engine.webkit && Browser.Engine.version < 525){

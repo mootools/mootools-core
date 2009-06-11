@@ -17,7 +17,7 @@ var Element = new Native({
 		var konstructor = Element.Constructors.get(tag);
 		if (konstructor) return konstructor(props);
 		if (typeof tag == 'string') return document.newElement(tag, props);
-		return $(tag).set(props);
+		return document.id(tag).set(props);
 	},
 
 	afterImplement: function(key, value){
@@ -49,7 +49,7 @@ var IFrame = new Native({
 	initialize: function(){
 		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
 		var props = params.properties || {};
-		var iframe = $(params.iframe) || false;
+		var iframe = document.id(params.iframe) || false;
 		var onload = props.onload || $empty;
 		delete props.onload;
 		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + $time());
@@ -79,7 +79,7 @@ var Elements = new Native({
 		if (options.ddup || options.cash){
 			var uniques = {}, returned = [];
 			for (var i = 0, l = elements.length; i < l; i++){
-				var el = $.element(elements[i], !options.cash);
+				var el = document.id(elements[i], !options.cash);
 				if (options.ddup){
 					if (uniques[el.uid]) continue;
 					uniques[el.uid] = true;
@@ -115,7 +115,7 @@ Document.implement({
 			});
 			tag = '<' + tag + '>';
 		}
-		return $.element(this.createElement(tag)).set(props);
+		return document.id(this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
@@ -128,17 +128,52 @@ Document.implement({
 
 	getWindow: function(){
 		return this.window;
-	}
+	},
+	
+	id: (function(){
+		
+		var types = {
+
+			string: function(id, nocash, doc){
+				id = doc.getElementById(id);
+				return (id) ? types.element(id, nocash) : null;
+			},
+			
+			element: function(el, nocash){
+				$uid(el);
+				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
+					var proto = Element.Prototype;
+					for (var p in proto) el[p] = proto[p];
+				};
+				return el;
+			},
+			
+			object: function(obj, nocash, doc){
+				if (obj.toElement) return types.element(obj.toElement(doc), nocash);
+				return null;
+			}
+			
+		};
+
+		types.textnode = types.whitespace = types.window = types.document = $arguments(0);
+		
+		return function(el, nocash, doc){
+			if (el && el.$family && el.uid) return el;
+			var type = $type(el);
+			return (types[type]) ? types[type](el, nocash, doc || document) : null;
+		};
+
+	})()
 
 });
 
-Window.implement({
+if (window.$ == null) Window.implement({
+	$: function(el, nc){
+		return document.id(el, nc, this.document);
+	}
+});
 
-	$: function(el, nocash){
-		if (el && el.$family && el.uid) return el;
-		var type = $type(el);
-		return ($[type]) ? $[type](el, nocash, this.document) : null;
-	},
+Window.implement({
 
 	$$: function(selector){
 		if (arguments.length == 1 && typeof selector == 'string') return this.document.getElements(selector);
@@ -164,31 +199,10 @@ Window.implement({
 
 });
 
-$.string = function(id, nocash, doc){
-	id = doc.getElementById(id);
-	return (id) ? $.element(id, nocash) : null;
-};
-
-$.element = function(el, nocash){
-	$uid(el);
-	if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-		var proto = Element.Prototype;
-		for (var p in proto) el[p] = proto[p];
-	};
-	return el;
-};
-
-$.object = function(obj, nocash, doc){
-	if (obj.toElement) return $.element(obj.toElement(doc), nocash);
-	return null;
-};
-
-$.textnode = $.whitespace = $.window = $.document = $arguments(0);
-
 Native.implement([Element, Document], {
 
 	getElement: function(selector, nocash){
-		return $(this.getElements(selector, true)[0] || null, nocash);
+		return document.id(this.getElements(selector, true)[0] || null, nocash);
 	},
 
 	getElements: function(tags, nocash){
@@ -247,7 +261,7 @@ var walk = function(element, walk, start, match, all, nocash){
 	var elements = [];
 	while (el){
 		if (el.nodeType == 1 && (!match || Element.match(el, match))){
-			if (!all) return $(el, nocash);
+			if (!all) return document.id(el, nocash);
 			elements.push(el);
 		}
 		el = el[walk];
@@ -300,12 +314,12 @@ Hash.each(inserters, function(inserter, where){
 	where = where.capitalize();
 
 	Element.implement('inject' + where, function(el){
-		inserter(this, $(el, true));
+		inserter(this, document.id(el, true));
 		return this;
 	});
 
 	Element.implement('grab' + where, function(el){
-		inserter($(el, true), this);
+		inserter(document.id(el, true), this);
 		return this;
 	});
 
@@ -391,7 +405,7 @@ Element.implement({
 
 	adopt: function(){
 		Array.flatten(arguments).each(function(element){
-			element = $(element, true);
+			element = document.id(element, true);
 			if (element) this.appendChild(element);
 		}, this);
 		return this;
@@ -402,23 +416,23 @@ Element.implement({
 	},
 
 	grab: function(el, where){
-		inserters[where || 'bottom']($(el, true), this);
+		inserters[where || 'bottom'](document.id(el, true), this);
 		return this;
 	},
 
 	inject: function(el, where){
-		inserters[where || 'bottom'](this, $(el, true));
+		inserters[where || 'bottom'](this, document.id(el, true));
 		return this;
 	},
 
 	replaces: function(el){
-		el = $(el, true);
+		el = document.id(el, true);
 		el.parentNode.replaceChild(this, el);
 		return this;
 	},
 
 	wraps: function(el, where){
-		el = $(el, true);
+		el = document.id(el, true);
 		return this.replaces(el).grab(el, where);
 	},
 
@@ -476,7 +490,7 @@ Element.implement({
 		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
 			if (!parent) return null;
 		}
-		return $.element(el, nocash);
+		return document.id(el, nocash);
 	},
 
 	getSelected: function(){
@@ -529,7 +543,7 @@ Element.implement({
 		}
 
 		clean(clone, this);
-		return $(clone);
+		return document.id(clone);
 	},
 
 	destroy: function(){
@@ -551,7 +565,7 @@ Element.implement({
 	},
 
 	hasChild: function(el){
-		el = $(el, true);
+		el = document.id(el, true);
 		if (!el) return false;
 		if (Browser.Engine.webkit && Browser.Engine.version < 420) return $A(this.getElementsByTagName(el.tagName)).contains(el);
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);

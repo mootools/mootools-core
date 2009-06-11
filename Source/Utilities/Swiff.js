@@ -39,7 +39,7 @@ var Swiff = new Class({
 		this.setOptions(options);
 		options = this.options;
 		var id = this.id = options.id || this.instance;
-		var container = $(options.container);
+		var container = document.id(options.container);
 
 		Swiff.CallBacks[this.instance] = {};
 
@@ -76,13 +76,13 @@ var Swiff = new Class({
 	},
 
 	replaces: function(element){
-		element = $(element, true);
+		element = document.id(element, true);
 		element.parentNode.replaceChild(this.toElement(), element);
 		return this;
 	},
 
 	inject: function(element){
-		$(element, true).appendChild(this.toElement());
+		document.id(element, true).appendChild(this.toElement());
 		return this;
 	},
 
