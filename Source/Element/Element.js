@@ -509,7 +509,7 @@ Element.implement({
 	toQueryString: function(){
 		var queryString = [];
 		this.getElements('input, select, textarea', true).each(function(el){
-			if (!el.name || el.disabled) return;
+			if (!el.name || el.disabled || el.type == 'submit' || el.type == 'reset' || el.type == 'file') return;
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
 			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;

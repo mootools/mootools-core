@@ -1161,6 +1161,17 @@ describe('Element.toQueryString', {
 			'<textarea name="textarea"></textarea>'
 		});
 		value_of(form.toQueryString()).should_be('input=&textarea=');
+	},
+
+	"should return a query string ignoring submit, reset and file form Elements": function(){
+		var form = new Element('form', { 'html': '' +
+			'<input type="checkbox" name="input" value="checked" checked="checked" />' +
+			'<input type="file" name="file" />' +
+			'<textarea name="textarea">textarea-value</textarea>' +
+			'<input type="submit" name="go" value="Go" />' +
+			'<input type="reset" name="cancel" value="Reset" />'
+		});
+		value_of(form.toQueryString()).should_be('input=checked&textarea=textarea-value');
 	}
 
 });
