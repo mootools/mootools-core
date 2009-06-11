@@ -196,20 +196,6 @@ describe("Hash Methods", {
 
 		var myHash3 = new Hash({fruits: {apple: ['red', 'yellow'], lemon: ['green', 'yellow']}});
 		value_of(myHash3.toQueryString()).should_be('fruits[apple][0]=red&fruits[apple][1]=yellow&fruits[lemon][0]=green&fruits[lemon][1]=yellow');
-		
-		value_of(myHash3.toQueryString({ property: '.#', array: '' })).should_be('fruits.apple=red&fruits.apple=yellow&fruits.lemon=green&fruits.lemon=yellow');
-		
-		
-var obj = {
-  first: ['A', 'B'],
-  second: { a: 1, b: 2 },
-  third: [{a: 1, b: 2}, {c:3}]
-};
-
-value_of(Hash.toQueryString(obj)).should_be('first[0]=A&first[1]=B&second[a]=1&second[b]=2&third[0][a]=1&third[0][b]=2&third[1][c]=3');
-value_of(Hash.toQueryString(obj, { property: '.#', array: '[]' })).should_be('first[]=A&first[]=B&second.a=1&second.b=2&third[].a=1&third[].b=2&third[].c=3');
-value_of(Hash.toQueryString(obj, { property: '.#', array: '' })).should_be('first=A&first=B&second.a=1&second.b=2&third.a=1&third.b=2&third.c=3');
-
 	}
 
 });
