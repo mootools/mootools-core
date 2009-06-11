@@ -137,17 +137,18 @@ var Request = new Class({
 			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
 
-		if(this.options.noCache) {
+		if(this.options.noCache){
 			var noCache = "noCache=" + new Date().getTime();
 			data = (data) ? noCache + '&' + data : noCache;
 		}
 
+		var trimPosition = url.lastIndexOf('/');
+		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
 		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
-
 
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
 
