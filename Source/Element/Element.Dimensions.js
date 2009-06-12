@@ -194,8 +194,7 @@ function getCompatElement(element){
 })();
 
 //aliases
-
-Element.alias('position', 'setPosition'); //compatability
+Element.alias('setPosition', 'position'); //compatability
 
 Native.implement([Window, Document, Element], {
 
