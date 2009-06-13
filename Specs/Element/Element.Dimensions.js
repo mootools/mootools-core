@@ -21,7 +21,8 @@ License:
 				display: 'block',
 				position: 'absolute',
 				top: 100,
-				left: 100
+				left: 100,
+				overflow: 'hidden'
 			}
 		}).inject($(document.body));
 		
@@ -33,7 +34,8 @@ License:
 				padding: 5,
 				border: '1px solid green',
 				visibility: 'hidden',
-				position: 'relative'				
+				position: 'relative',
+				overflow: 'hidden'
 			}
 		}).inject(div)
 		
@@ -47,7 +49,8 @@ License:
 				visibility: 'hidden',
 				position: 'absolute',
 				top: 10,
-				left: 10				
+				left: 10,
+				overflow: 'hidden'
 			}
 		}).inject(relDiv)
 	
