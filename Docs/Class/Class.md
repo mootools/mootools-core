@@ -54,7 +54,6 @@ Useful when implementing a default set of properties in multiple Classes.
 			alert('moooo');
 		}
 	});
-	var Effie = new Cow($empty); //Will not alert 'moooo', because the initialize method is overridden by the $empty function.
 
 #### Extends Example:
 
