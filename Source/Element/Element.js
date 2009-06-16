@@ -274,6 +274,7 @@ var attributes = {
 	'class': 'className',
 	'for': 'htmlFor',
 	'defaultValue': 'defaultValue',
+	'readOnly': 'readOnly',
 	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
 };
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
