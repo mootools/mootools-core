@@ -439,7 +439,10 @@ Returns a value that is not shared with the original value.
 
 ### Returns:
 
-* '*mixed*'    - The unlinked value that has been created.
+* (*object*) If object is an object, returns cloned object.
+* (*hash*) If object is a hash, returns a new Hash.
+* (*array*) If object is an array, returns a cloned array.
+* (*mixed*) Otherwise, object doesn't require unlinking.
 
 
 ### Example:
