@@ -423,6 +423,34 @@ Returns the type of object that matches the element passed in.
 
 	var myString = 'hello';
 	$type(myString); //Returns "string".
+	
+Function: $unlink {#unlink}
+-----------------------
+
+Returns a value that is not shared with the original value.
+
+### Syntax:
+
+	$unlink(obj);
+
+### Arguments:
+
+1. obj - (*mixed*) The object to unlink.
+
+### Returns:
+
+* '*mixed*'    - The unlinked value that has been created.
+
+
+### Example:
+
+	var obj1 = { a: 'one', b:2, c: { cute:true, spoiled:true } };
+	var obj2 = $unlink($obj1);
+	obj2.b = 'TWO';
+	obj2.c.cute = 'NO WAY';
+	//obj1 == { a: 'one', b:2, c: { cute:true, spoiled:true } };
+	//obj2 == { a: 'one', b:'TWO', c: { cute:'NO WAY', spoiled:true } };
+	
 
 
 [Hash]: /core/Native/Hash
