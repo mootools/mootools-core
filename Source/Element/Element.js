@@ -47,7 +47,7 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		var params = Array.link(arguments, { properties: Object.type, iframe: $defined });
+		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
 		var props = params.properties || {};
 		var iframe = document.id(params.iframe);
 		var onload = props.onload || $empty;
@@ -65,7 +65,9 @@ var IFrame = new Native({
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
 		};
-		var contentWindow = $try(function(){ return iframe.contentWindow; });
+		var contentWindow = $try(function(){
+			return iframe.contentWindow;
+		});
 		((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
 		return iframe;
 	}
