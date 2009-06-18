@@ -47,25 +47,26 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
+		var params = Array.link(arguments, { properties: Object.type, iframe: $defined });
 		var props = params.properties || {};
-		var iframe = document.id(params.iframe) || false;
+		var iframe = document.id(params.iframe);
 		var onload = props.onload || $empty;
 		delete props.onload;
-		props.id = props.name = $pick(props.id, props.name, iframe.id, iframe.name, 'IFrame_' + $time());
+		props.id = props.name = $pick(props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + $time());
 		iframe = new Element(iframe || 'iframe', props);
 		var onFrameLoad = function(){
 			var host = $try(function(){
 				return iframe.contentWindow.location.host;
 			});
-			if (host && host == window.location.host){
+			if (!host || host == window.location.host){
 				var win = new Window(iframe.contentWindow);
 				new Document(iframe.contentWindow.document);
 				$extend(win.Element.prototype, Element.Prototype);
 			}
 			onload.call(iframe.contentWindow, iframe.contentWindow.document);
 		};
-		(window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
+		var contentWindow = $try(function(){ return iframe.contentWindow; });
+		((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
 		return iframe;
 	}
 
