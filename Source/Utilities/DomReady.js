@@ -27,6 +27,7 @@ Element.Events.domready = {
 		var temp = document.createElement('div');
 		(function(){
 			($try(function(){
+				temp.doScroll('left');
 				return $(temp).inject(document.body).set('html', 'temp').dispose();
 			})) ? domready() : arguments.callee.delay(50);
 		})();
