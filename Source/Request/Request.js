@@ -137,7 +137,7 @@ var Request = new Class({
 			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
 
-		if(this.options.noCache){
+		if (this.options.noCache){
 			var noCache = "noCache=" + new Date().getTime();
 			data = (data) ? noCache + '&' + data : noCache;
 		}
