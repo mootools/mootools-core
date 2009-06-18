@@ -114,7 +114,7 @@ var Request = new Class({
 
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
-		var data = options.data, url = options.url, method = options.method;
+		var data = options.data, url = options.url, method = options.method.toLowerCase();
 
 		switch ($type(data)){
 			case 'element': data = document.id(data).toQueryString(); break;
