@@ -17,8 +17,8 @@ Inspiration:
 */
 
 var MooTools = {
-	'version': '1.2.3dev',
-	'build': '%build%'
+	'version': '1.2.3',
+	'build': '4980aa0fb74d2f6eb80bcd9f5b8e1fd6fbb8f607'
 };
 
 var Native = function(options){
