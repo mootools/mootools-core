@@ -1,12 +1,13 @@
-/*
-Script: Element.js
-	Contains an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
+/*=
+name: Element
+description: Element class, Elements class, and basic dom methods.,
+requires:
+  - Accessor
+  - Storage
+  - Slick
+=*/
 
-License:
-	MIT-style license.
-*/
-
-(function(document){
+(function(){
 
 var Element = this.Element = function(item, props){
 	if (typeOf(item) != 'string') return document.id(item).set(props);
@@ -14,14 +15,24 @@ var Element = this.Element = function(item, props){
 	if (!props) props = {};
 	
 	var parsed = slick.parse(item)[0][0], id;
+	
 	var tag = parsed.tag || 'div';
 	if (parsed.id) props.id = parsed.id;
 	
-	if (parsed.attributes) parsed.attributes.forEach(function(att){
-		if (att.value && att.operator == '=') props[att.name] = att.value;
+	var classes = [];
+	
+	parsed.parts.each(function(part){
+		
+		switch (part.type){
+			case 'class': classes.push(part.value); break;
+			case 'attribute':
+				if (part.value && part.operator == '=') props[part.key] = part.value;
+			break;
+		}
+		
 	});
 	
-	if (parsed.classes) props['class'] = parsed.classes.join(' ');
+	if (classes.length) props['class'] = classes.join(' ');
 	
 	return document.newElement(tag, props);
 };
@@ -30,7 +41,7 @@ Element.prototype = Browser.Element.prototype;
 
 // mirror element methods to Elements
 
-new Native('Element', Element).mirror(function(name, method){
+new Type('Element', Element).mirror(function(name, method){
 	if (Array[name]) return;
 	Elements.implement(name, function(){
 		var results = [], args = arguments, elements = true;
@@ -62,14 +73,16 @@ var types = {
 
 };
 
-types.window = types.document = types.textnode = types.whitespace = types.element = Function.argument(0);
+types.window = types.document = types.textnode = types.whitespace = types.element = function(item){
+	return item;
+};
 
 var protoElement = {};
 
 if (document.html.mergeAttributes){
 	
 	protoElement = document.createElement('div');
-	protoElement._type_ = Function.from('element');
+	protoElement.$typeOf = Function.from('element');
 
 	types.element = function(item){
 		item.mergeAttributes(protoElement);
@@ -86,7 +99,7 @@ Element.mirror(function(name, method){
 document.id = function(item){
 	if (instanceOf(item, Element)) return item;
 	var processor = types[typeOf(item)];
-	return (processor) ? processor(item, this) : null;
+	return (processor) ? processor(item) : null;
 };
 
 var Elements = this.Elements = function(elements){
@@ -97,7 +110,7 @@ var Elements = this.Elements = function(elements){
 Elements.prototype = {length: 0};
 Elements.parent = Array;
 
-new Native('Elements', Elements).implement({
+new Type('Elements', Elements).implement({
 
 	filter: function(filter, bind){
 		if (!filter) return this;
@@ -149,11 +162,9 @@ Element.implement('match', function(expression){
 	return slick.match(this, expression);
 });
 
-this.$ = function(expression){
-	return document.id(expression);
-};
+if (this.$ == null) this.$ = document.id;
 
-this.$$ = function(expression){
+if (this.$$ == null) this.$$ = function(expression){
 	return document.search(expression);
 };
 
@@ -212,7 +223,7 @@ inserters.Inside = inserters.Bottom;
 
 var methods = {};
 
-Object.forEach(inserters, function(inserter, where){
+Object.each(inserters, function(inserter, where){
 
 	methods['inject' + where] = function(el){
 		inserter(this, document.id(el));
@@ -233,7 +244,7 @@ Element.implement(Object.append(methods, {
 	},
 	
 	adopt: function(){
-		Array.flatten(arguments).forEach(function(element){
+		Array.flatten(arguments).each(function(element){
 			if ((element = document.id(element))) this.appendChild(element);
 		}, this);
 		return this;
@@ -266,7 +277,14 @@ Element.implement(Object.append(methods, {
 
 /* Element Storage */
 
-Element.implement(new Storage);
+['store', 'retrieve', 'dump'].each(function(name){
+	
+	Element.implement(name, function(){
+		Object.append(this, new Storage);
+		return this[name].apply(this, arguments);
+	});
+	
+});
 
 /* Attribute Getters, Setters */
 
@@ -287,7 +305,7 @@ properties = Object.append(Object.from(properties, properties), {
 	})()
 });
 
-Object.forEach(properties, function(real, key){
+Object.each(properties, function(real, key){
 	Element.defineSetter(key, function(value){
 		return this[real] = value;
 	});
@@ -299,7 +317,7 @@ Object.forEach(properties, function(real, key){
 var booleans = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 	'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 
-booleans.forEach(function(bool){
+booleans.each(function(bool){
 	Element.defineSetter(bool, function(value){
 		return this[bool] = !!value;
 	});
@@ -319,17 +337,26 @@ slick.getAttribute = function(element, attribute){
 
 Element.implement({
 
-	set: function(attribute, value){
-		var setter = Element.lookupSetter(attribute);
-		if (setter) setter.call(this, value);
-		else if (value == null) this.removeAttribute(attribute);
-		else this.setAttribute(attribute, '' + value);
+	set: (function(object){
+		for (var attribute in object){
+			var value = object[attribute];
+			attribute = attribute.camelCase();
+			var setter = Element.lookupSetter(attribute);
+			if (setter) setter.call(this, value);
+			else if (value == null) this.removeAttribute(attribute);
+			else this.setAttribute(attribute, '' + value);
+		}
 		return this;
-	}.setMany(),
+	}).overload(Function.overloadPair),
 
-	get: function(attribute){
-		return slick.getAttribute(this, attribute = attribute.camelCase());
-	}.getMany()
+	get: (function(){
+		var results = {};
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var key = arguments[i].camelCase();
+			results[key] = slick.getAttribute(this, key);
+		}
+		return results;
+	}).overload(Function.overloadList)
 
 });
 
@@ -373,17 +400,4 @@ Element.defineSetter('html', function(html){
 	return html;
 });
 
-if (Browser.Engine.webkit && Browser.Engine.version < 420){
-
-	var temp = document.newElement('div', {'css': 'position: absolute; visibility: hidden;'});
-	
-	Element.defineGetter('text', function(){
-		if (this.innerText) return this.innerText;
-		var text = temp.inject(document.body).set('html', this.innerHTML).innerText;
-		temp.dispose();
-		return text;
-	});
-	
-}
-
-})(document);
+})();
