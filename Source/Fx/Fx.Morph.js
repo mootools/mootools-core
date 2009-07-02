@@ -13,8 +13,11 @@ Fx.Morph = new Class({
 		this.parent(options);
 	},
 	
-	start: function(styles){
-		if (!this.check(styles)) return this;
+	start: function(a, b){
+		if (!this.check(a, b)) return this;
+		var styles = {};
+		if (typeOf(a) == 'string') styles[a] = b;
+		else styles = a;
 		var all = {}, froms = {}, tos = {}, length = 0;
 		for (var style in styles){
 			var ss = Array.from(styles[style]);
