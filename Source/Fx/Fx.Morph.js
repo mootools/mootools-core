@@ -1,19 +1,17 @@
-/*
-Script: Fx.Morph.js
-	Effect to transition any CSS properties for an element.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Fx.Morph
+description: Morph Styles.
+requires: Fx.CSS
+=*/
 
 Fx.Morph = new Class({
 
 	Extends: Fx,
 	
-	initialize: function(element, options){
+	'protected initialize': function(element, options){
 		this.item = document.id(element);
 		this.parent(options);
-	}.protect(),
+	},
 	
 	start: function(styles){
 		if (!this.check(styles)) return this;
@@ -41,30 +39,43 @@ Fx.Morph = new Class({
 		return (length) ? this.parent(froms, tos) : this.complete();
 	},
 	
-	render: function(now){
+	'protected render': function(now){
 		for (var style in now) Fx.CSS.render(this.item, style, now[style], this.units[style]);
-	}.protect(),
+	},
 	
-	compute: function(delta){
+	'protected compute': function(delta){
 		var all = {};
 		for (var style in this.from){
 			all[style] = Fx.CSS.compute(this.from[style], this.to[style], delta);
 		}
 		return all;
-	}.protect()
+	},
+	
+	toElement: function(){
+		return this.item;
+	}
 	
 });
 
-Element.defineSetter('morph', function(options){
-	this.get('morph').cancel().setOptions(options);
+Element.defineSetter('fx', function(options){
+	this.get('fx').cancel().setOptions(options);
 });
 
-Element.defineGetter('morph', function(){
-	if (!this.retrieve('morph')) this.store('morph', new Fx.Morph(this, {link: 'cancel'}));
-	return this.retrieve('morph');
+Element.defineGetter('fx', function(){
+	var fx = this.retrieve('fx');
+	if (!fx){
+		fx = new Fx.Morph(this, {link: 'cancel'});
+		this.store('fx', fx);
+	}
+	return fx;
 });
 
 Element.implement('morph', function(styles){
-	this.get('morph').start(styles);
+	this.get('fx').start(styles);
+	return this;
+});
+
+Element.implement('tween', function(style, from, to){
+	this.get('fx').start(style, from, to);
 	return this;
 });
