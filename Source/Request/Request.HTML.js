@@ -1,10 +1,8 @@
-/*
-Script: Request.HTML.js
-	Extends the basic Request Class with additional methods for interacting with HTML responses.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Request.HTML
+description: Extends the Request class with additional methods to interact with HTML responses.
+requires: Request
+=*/
 
 Request.HTML = new Class({
 

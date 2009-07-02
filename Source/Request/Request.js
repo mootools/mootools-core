@@ -1,10 +1,9 @@
-/*
-Script: Request.js
-	Powerful all purpose Request Class. Uses XMLHTTPRequest.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Request
+description: Powerful all purpose Request Class. Uses XMLHTTPRequest
+requires:
+  - Class
+=*/
 
 this.Request = new Class({
 
@@ -89,7 +88,7 @@ this.Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		Object.forEach(headers, function(value, key){
+		Object.each(headers, function(value, key){
 			var xhr = this.xhr;
 			if (!Function.stab(function(){
 				xhr.setRequestHeader(key, value);
@@ -176,7 +175,7 @@ this.Request = new Class({
 	}.protect()
 });
 
-['get', 'post', 'put', 'delete'].forEach(function(name){
+['get', 'post', 'put', 'delete'].each(function(name){
 	var method = function(data){
 		return this.setOption('method', name).send(data);
 	};
