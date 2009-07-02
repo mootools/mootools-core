@@ -1,14 +1,18 @@
-/*
-Script: Color.js
-	Class for creating and manipulating colors in JavaScript. Includes HSB «-» RGB «-» HEX conversions.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Color
+description: Class to create and manipulate colors. Includes HSB «-» RGB «-» HEX conversions.
+requires:
+  - Array
+  - Function
+  - Number
+  - String
+  - Object
+  - Table
+=*/
 
 (function(){
 
-this.Color = new Native('Color', function(color, type){
+this.Color = new Type('Color', function(color, type){
 	switch (typeOf(color)){
 		case 'color': return color;
 		case 'string': if (!type) type = (type = color.match(/^rgb|^hsb/)) ? type[0] : 'hex'; break;

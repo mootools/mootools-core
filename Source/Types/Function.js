@@ -1,18 +1,10 @@
-/*
-Script: Function.js
-	Contains Function Prototypes like create, bind, pass, and delay.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Function
+description: Function prototypes and generics.
+requires: Core
+=*/
 
 Function.extend({
-
-	argument: function(i){
-		return function(){
-			return arguments[i];
-		};
-	},
 
 	clear: function(timer){
 		clearInterval(timer);

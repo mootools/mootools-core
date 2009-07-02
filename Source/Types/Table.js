@@ -1,14 +1,12 @@
-/*
-Script: Table.js
-	Lua-style tables for everyone
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Table
+description: LUA-Style table implementation.
+requires: Core
+=*/
 
 (function(){
 
-this.Table = new Native('Table', function(){
+this.Table = new Type('Table', function(){
 	this.table = {};
 });
 	
@@ -52,8 +50,6 @@ Table.implement({
 	forEach: function(fn, bind){
 		for (var uid in this.table) fn.call(bind, this.table[uid], itemOf(uid), this);
 	},
-
-	each: Array.prototype.each,
 	
 	length: function(){
 		var length = 0;
@@ -62,5 +58,7 @@ Table.implement({
 	}
 
 });
+
+Table.alias('each', 'forEach');
 	
 })();

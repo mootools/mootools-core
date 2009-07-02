@@ -1,10 +1,8 @@
-/*
-Script: Number.js
-	Contains Number Prototypes like limit, round, times, and ceil.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Number
+description: Number prototypes and generics.
+requires: Core
+=*/
 
 Number.extend({
 	
@@ -39,7 +37,7 @@ Number.implement({
 
 });
 
-['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan'].forEach(function(name){
+['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan'].each(function(name){
 	Number.extend(name, Math[name]).implement(name, function(){
 		return Math[name].apply(null, [this].concat(Array.slice(arguments)));
 	});
