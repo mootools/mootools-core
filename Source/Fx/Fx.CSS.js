@@ -1,10 +1,10 @@
-/*
-Script: Fx.CSS.js
-	Nothing to see here.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Fx.CSS
+description: Logic to animate elements css styles.
+requires:
+  - Fx
+  - Element.Style
+=*/
 
 Fx.CSS = {
 
