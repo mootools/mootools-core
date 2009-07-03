@@ -124,16 +124,22 @@ Color.implement({
 
 Color.alias('toString', 'toRGB');
 
-this.hex = Color.hex = function(hex){
+Color.hex = function(hex){
 	return new Color(hex, 'hex');
 };
 
-this.hsb = Color.hsb = function(h, s, b, a){
+if (this.hex == null) this.hex = Color.hex;
+
+Color.hsb = function(h, s, b, a){
 	return new Color([h || 0, s || 0, b || 0, (a == null) ? 1 : a], 'hsb');
 };
 
-this.rgb = Color.rgb = function(r, g, b, a){
+if (this.hsb == null) this.hsb = Color.hsb;
+
+Color.rgb = function(r, g, b, a){
 	return new Color([r || 0, g || 0, b || 0, (a == null) ? 1 : a], 'rgb');
 };
+
+if (this.rgb == null) this.rgb = Color.rgb;
 
 })();
