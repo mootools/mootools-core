@@ -47,7 +47,7 @@ this.Request = new Class({
 		if (!this.check(data)) return this;
 		this.running = true;
 
-		var url = this.getOption('url'), method = this.getOption('method');
+		var url = this.getOption('url'), method = this.getOption('method').toLowerCase();
 
 		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
@@ -61,7 +61,7 @@ this.Request = new Class({
 			var format = 'format=' + this.getOption('format');
 			data = (data) ? format + '&' + data : format;
 		}
-
+		
 		if (this.getOption('emulation') && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
