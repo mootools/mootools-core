@@ -1,10 +1,8 @@
-/*
-Script: Domready.js
-	Contains the domready custom event.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: DomReady
+description: The custom domready event. Fires as soon as the page loads (does not wait for images).
+requires: Element.Event
+=*/
 
 (function(){
 

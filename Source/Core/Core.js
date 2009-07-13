@@ -2,10 +2,8 @@
 name: Core
 description: The heart of MooTools.
 credits:
-  - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/)
-		Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
-  - Some functionality inspired by [Prototype.js](http://prototypejs.org)
-		Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
+  - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
+  - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 =*/
 
 (function(){
