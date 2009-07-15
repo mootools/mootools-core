@@ -74,7 +74,7 @@ this.Request = new Class({
 		}
 
 		if (this.getOption('noCache')){
-			var noCache = "noCache=" + new Date().getTime();
+			var noCache = "noCache=" + Date.now();
 			data = (data) ? noCache + '&' + data : noCache;
 		}
 
