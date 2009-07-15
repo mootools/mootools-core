@@ -115,11 +115,11 @@ Class.defineMutators({
 
 });
 
-Class.defineMutator(/^protected\s(\w+)/, function(fn, name){
+Class.defineMutator(/^protected\s(\w+)$/, function(fn, name){
 	implement.call(this, name, fn.protect());
 });
 
-Class.defineMutator(/^linked\s(\w+)/, function(value, name){
+Class.defineMutator(/^linked\s(\w+)$/, function(value, name){
 	this.prototype[name] = value;
 });
 
