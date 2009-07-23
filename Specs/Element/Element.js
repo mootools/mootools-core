@@ -1290,7 +1290,6 @@ describe('Element.setProperty', {
 	},
 
 	'should setProperty readonly of an input Element': function(){
-		// readonly
 		var readonly1 = new Element('input', { type: 'text' }).setProperty('readonly', 'readonly');
 		value_of(readonly1.getProperty('readonly')).should_be_true();
 
@@ -1299,108 +1298,15 @@ describe('Element.setProperty', {
 
 		var readonly3 = new Element('input', { type: 'text' }).setProperty('readonly', false);
 		value_of(readonly3.getProperty('readonly')).should_be_false();
-		
-		// readOnly
-		var readonly4 = new Element('input', { type: 'text' }).setProperty('readOnly', 'readOnly');
-		value_of(readonly4.getProperty('readOnly')).should_be_true();
-
-		var readonly5 = new Element('input', { type: 'text' }).setProperty('readOnly', true);
-		value_of(readonly5.getProperty('readOnly')).should_be_true();
-
-		var readonly6 = new Element('input', { type: 'text' }).setProperty('readOnly', false);
-		value_of(readonly6.getProperty('readOnly')).should_be_false();
 	},
 	
 	'should setProperty defaultValue of an input Element': function(){
 		var form = new Element('form');
-		var defaultValue = new Element('input', {'type': 'text', 'value': 'abc'});
-		defaultValue.setProperty('defaultValue', 'def');
+		var defaultValue = new Element('input', {'type': 'text', 'value': '321'}).setProperty('defaultValue', '123');
 		form.grab(defaultValue);
+		value_of(defaultValue.getProperty('value')).should_be('321');
 		form.reset();
-		value_of(defaultValue.getProperty('value')).should_be('def');
-	},
-	
-	'should setProperty maxLength of an input Element': function(){
-		//maxLength
-		var maxlength1 = new Element('input', { type: 'text' }).setProperty('maxLength', 2);
-		value_of(maxlength1.getProperty('maxLength')).should_be(2);
-		
-		//maxlength
-		var maxlength2 = new Element('input', { type: 'text' }).setProperty('maxlength', 10);
-		value_of(maxlength2.getProperty('maxlength')).should_be(10);
-	},
-	
-	'should setProperty tabIndex of an input Element': function(){
-		//tabIndex
-		var tabindex1 = new Element('input', { type: 'text' }).setProperty('tabIndex', 2);
-		value_of(tabindex1.getProperty('tabIndex')).should_be(2);
-		
-		//tabindex
-		var tabindex2 = new Element('input', { type: 'text' }).setProperty('tabindex', 10);
-		value_of(tabindex2.getProperty('tabindex')).should_be(10);
-	},
-	
-	'should setProperty accessKey of an input Element': function(){
-		//accessKey
-		var accesskey1 = new Element('input', { type: 'text' }).setProperty('accessKey', 4);
-		value_of(accesskey1.getProperty('accessKey')).should_be(4);
-		
-		//accesskey
-		var accesskey2 = new Element('input', { type: 'text' }).setProperty('accesskey', 4);
-		value_of(accesskey2.getProperty('accesskey')).should_be(4);
-	},
-	
-	'should setProperty frameBorder of an iframe Element': function(){
-		//frameBorder
-		var frameborder1 = new Element('iframe').setProperty('frameBorder', 20);
-		value_of(frameborder1.getProperty('frameBorder')).should_be(20);
-		
-		//frameborder
-		var frameborder2 = new Element('iframe').setProperty('frameborder', 20);
-		value_of(frameborder2.getProperty('frameborder')).should_be(20);
-	},
-	
-	//doesnt work ok in opera
-	//'should setProperty useMap of an img Element': function(){
-		//useMap
-	//	var usemap1 = new Element('img').setProperty('useMap', 'imgMap');
-	//	value_of(usemap1.getProperty('useMap')).should_be('imgMap');
-		
-		//usemap
-	//	var usemap2 = new Element('img').setProperty('usemap', 'imgmap');
-	//	value_of(usemap2.getProperty('usemap')).should_be('imgmap');
-	//},
-	
-	'should setProperty cellPadding, cellSpacing of a table Element': function(){
-		//cellPadding, cellSpacing
-		var table1 = new Element('table').setProperty('cellPadding', 20).setProperty('cellSpacing', 30);
-		value_of(table1.getProperty('cellPadding')).should_be(20);
-		value_of(table1.getProperty('cellSpacing')).should_be(30);
-		
-		//cellpadding, cellspacing
-		var table2 = new Element('table').setProperty('cellpadding', 20).setProperty('cellspacing', 30);
-		value_of(table2.getProperty('cellpadding')).should_be(20);
-		value_of(table2.getProperty('cellspacing')).should_be(30);
-	},
-	
-	'should setProperty collSpan, rowSpan of a td Element': function(){
-		//collSpan, rowSpan
-		// in ie it just sets rowspan and colspan with element.collSpan element.rowSpan
-		// to the maximum value it can get on the table
-		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
-		var table = new Element('table', {'html': html});
-		var td1 = table.getElement('td').setProperty('collSpan', 2).setProperty('rowSpan', 2);
-		value_of(td1.getProperty('collSpan')).should_be(2);
-		value_of(td1.getProperty('rowSpan')).should_be(2);		
-		
-		//collspan, rowspan
-		// in ie it just sets rowspan and colspan with element.collSpan element.rowSpan
-		// to the maximum value it can get on the table
-		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
-		var table = new Element('table', {'html': html});
-		var td2 = table.getElement('td').setProperty('collspan', 2).setProperty('rowspan', 2);
-		value_of(td2.getProperty('collspan')).should_be(2);
-		value_of(td2.getProperty('rowspan')).should_be(2);
+		value_of(defaultValue.getProperty('value')).should_be('123');
 	}
 
 });
