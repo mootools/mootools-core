@@ -17,7 +17,7 @@ An XMLHttpRequest Wrapper.
 
 ### Options:
 
-* url        - (*string*: defaults to null) The URL to request.
+* url        - (*string*: defaults to null) The URL to request. (Note, this can also be an instance of [URI][])
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
 * data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
@@ -301,3 +301,4 @@ Sends a form or a container of inputs with an HTML request.
 
 [$]: /core/Element/Element/#dollar
 [Request:send]: #Request:send
+[URI]: /more/Native/URI
