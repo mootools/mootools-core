@@ -50,6 +50,7 @@ var Request = new Class({
 		$try(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
+		this.xhr.onreadystatechange = $empty;
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
@@ -57,7 +58,6 @@ var Request = new Class({
 			this.response = {text: null, xml: null};
 			this.failure();
 		}
-		this.xhr.onreadystatechange = $empty;
 	},
 
 	isSuccess: function(){
@@ -114,10 +114,10 @@ var Request = new Class({
 
 		var old = this.options;
 		options = $extend({data: old.data, url: old.url, method: old.method}, options);
-		var data = options.data, url = options.url, method = options.method;
+		var data = options.data, url = String(options.url), method = options.method.toLowerCase();
 
 		switch ($type(data)){
-			case 'element': data = $(data).toQueryString(); break;
+			case 'element': data = document.id(data).toQueryString(); break;
 			case 'object': case 'hash': data = Hash.toQueryString(data);
 		}
 
@@ -126,7 +126,7 @@ var Request = new Class({
 			data = (data) ? format + '&' + data : format;
 		}
 
-		if (this.options.emulation && ['put', 'delete'].contains(method)){
+		if (this.options.emulation && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
 			method = 'post';
@@ -137,17 +137,18 @@ var Request = new Class({
 			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
 		}
 
-		if(this.options.noCache) {
-			var noCache = "noCache=" + new Date().getTime();
+		if (this.options.noCache){
+			var noCache = 'noCache=' + new Date().getTime();
 			data = (data) ? noCache + '&' + data : noCache;
 		}
 
+		var trimPosition = url.lastIndexOf('/');
+		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
 		if (data && method == 'get'){
 			url = url + (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
-
 
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
 
@@ -185,7 +186,7 @@ var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
 		var params = Array.link(arguments, {url: String.type, data: $defined});
-		return this.send($extend(params, {method: method.toLowerCase()}));
+		return this.send($extend(params, {method: method}));
 	};
 });
 

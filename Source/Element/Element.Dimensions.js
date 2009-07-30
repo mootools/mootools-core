@@ -59,17 +59,7 @@ Element.implement({
 		return null;
 	},
 
-	getOffsets: function(){		
-		if (this.getBoundingClientRect){
-			var bound = this.getBoundingClientRect(),
-			html = $(this.getDocument().documentElement),
-			scroll = html.getScroll(),
-			isFixed = (styleString(this, 'position') == 'fixed');
-			return {
-				x: parseInt(bound.left, 10) + ((isFixed) ? 0 : scroll.x) - html.clientLeft,
-				y: parseInt(bound.top, 10) +  ((isFixed) ? 0 : scroll.y) - html.clientTop
-			};
-		}
+	getOffsets: function(){
 
 		var element = this, position = {x: 0, y: 0};
 		if (isBody(this)) return position;
@@ -106,7 +96,7 @@ Element.implement({
 		if (isBody(this)) return {x: 0, y: 0};
 		var offset = this.getOffsets(), scroll = this.getScrolls();
 		var position = {x: offset.x - scroll.x, y: offset.y - scroll.y};
-		var relativePosition = (relative && (relative = $(relative))) ? relative.getPosition() : {x: 0, y: 0};
+		var relativePosition = (relative && (relative = document.id(relative))) ? relative.getPosition() : {x: 0, y: 0};
 		return {x: position.x - relativePosition.x, y: position.y - relativePosition.y};
 	},
 
@@ -194,8 +184,7 @@ function getCompatElement(element){
 })();
 
 //aliases
-
-Element.alias('position', 'setPosition'); //compatability
+Element.alias('setPosition', 'position'); //compatability
 
 Native.implement([Window, Document, Element], {
 

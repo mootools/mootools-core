@@ -21,7 +21,9 @@ License:
 				display: 'block',
 				position: 'absolute',
 				top: 100,
-				left: 100
+				left: 100,
+				overflow: 'hidden',
+				zIndex: 1
 			}
 		}).inject($(document.body));
 		
@@ -33,9 +35,10 @@ License:
 				padding: 5,
 				border: '1px solid green',
 				visibility: 'hidden',
-				position: 'relative'				
+				position: 'relative',
+				overflow: 'hidden'
 			}
-		}).inject(div)
+		}).inject(div);
 		
 		absDiv = new Element('div', {
 			styles: {
@@ -47,9 +50,10 @@ License:
 				visibility: 'hidden',
 				position: 'absolute',
 				top: 10,
-				left: 10				
+				left: 10,
+				overflow: 'hidden'
 			}
-		}).inject(relDiv)
+		}).inject(relDiv);
 	
 		scrollDiv = new Element('div', {
 			styles: {

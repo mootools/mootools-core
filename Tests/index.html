@@ -3,13 +3,22 @@
 <head>
 	<title>Unit Tester</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<script src="assets/mootools-1.2.js" type="text/javascript"></script>
-	<script src="assets/mootools-more-1.2.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/clientside.js" type="text/javascript" charset="utf-8"></script>
-	<script src="assets/UnitTester.js" type="text/javascript"></script>
-	<script src="assets/posteditor.js" type="text/javascript"></script>
-	<script src="assets/Debugger.cnet.js" type="text/javascript"></script>
-	<script src="config.js" type="text/javascript"></script>
+</head>
+<body>
+	<script src="config.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		function scripter(scr) {
+			document.write("<scri"+"pt src='"+scr+"'> </scr"+"ipt>");
+		};
+		scripter(UnitTester.path+'assets/mootools-1.2.js');
+		scripter(UnitTester.path+'assets/mootools-more-1.2.js');
+		scripter(UnitTester.path+'assets/clientside.js');
+		scripter(UnitTester.path+'assets/UnitTester.js');
+		scripter(UnitTester.path+'assets/posteditor.js');
+		scripter(UnitTester.path+'assets/Debugger.cnet.js');
+		
+		document.write('<link rel="STYLESHEET" type="text/css" href="'+UnitTester.path+'assets/tests.css"/>');
+	</script>
 	<script>
 		window.addEvent('domready', function(){
 			$('script').set('value', '');
@@ -17,9 +26,6 @@
 		});
 	</script>
 
-	<link rel="STYLESHEET" type="text/css" href="assets/tests.css">
-</head>
-<body>
 	<div id="title">
 		<h1>
 			<div style="float:right; margin-right: 20px">
@@ -60,8 +66,8 @@
 			<div class="verify">
 				<p>{verify}</p>
 				<div class="actions">
-					<a class="pass">yes</a>
-					<a class="fail">no</a>
+					 <a class="pass">yes</a>
+					 <a class="fail">no</a>
 				</div>
 			</div>
 		</dd>
