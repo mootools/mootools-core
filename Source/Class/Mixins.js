@@ -1,156 +1,128 @@
-/*
-Script: Mixins.js
-	Contains Utility Classes that can be implemented / extended into your own Classes / Functions / Objects
-	to ease the execution of many common tasks.
-
-License:
-	MIT-style license.
-*/
-
-// Storage
+/*=
+name: Mixins
+description: Utility classes Storage, Accessor, Events, Options and Chain.
+requires:
+  - Array
+  - Function
+  - Number
+  - String
+  - Object
+  - Table
+=*/
 
 (function(){
 
-var Storage = this.Storage = new Native('Storage', function(){});
-
-var storageOf = function(item){
-	return item._storage_ || (item._storage_ = {});
-};
-
-Storage.implement({
-
-	store: function(key, value){
-		storageOf(this)[key] = value;
-		return this;
-	}.setMany(),
-
-	retrieve: function(key, dflt){
-		var value = storageOf(this)[key];
-		if (dflt != null && value == null) value = (storageOf(this)[key] = dflt);
-		return nil(value);
-	}.getMany(),
-
-	dump: function(key){
-		var store = storageOf(this), prop = store[key];
-		delete store[key];
-		return prop;
-	}.getMany()
-
-});
-
-// Accessor
-
-this.Accessor = new Native('Accessor', function(name){
-	
-	var Name = (name || '').capitalize();
-	
-	var accessor = {};
-	
-	this['define' + Name] = function(key, value){
-		accessor[key] = value;
-		return this;
-	}.setMany();
-	
-	this['lookup' + Name] = function(key, value){
-		return accessor[key] || null;
-	}.getMany();
-	
-});
-
-// Events
-
-this.Events = new Native('Events', function(){});
-	
-var replacer = function(full, first){
-	return first.toLowerCase();
-};
+/* Events */
 
 var eventsOf = function(object, type){
-	return Storage.retrieve(object, 'events.type.' + type.replace(/^on([A-Z])/, replacer), []);
+	type = type.replace(/^on([A-Z])/, function(full, first){
+		return first.toLowerCase();
+	});
+	var events = object.events;
+	return events[type] || (events[type] = []);
 };
 
-Events.implement({
+var removeEventsOfType = function(object, type){
+	eventsOf(object, type).each(function(fn){
+		object.removeEvent(type, fn);
+	});
+};
+
+this.Events = new Class({
 	
-	setEvents: function(){
-		if (!Storage.retrieve(this, 'events.set')) Storage.store(this, 'events.set', true).addEvent(this.events);
-		Array.forEach(arguments, this.addEvent, this);
-		return this;
-	},
+	events: {},
 
 	addEvent: function(type, fn){
 		eventsOf(this, type).include(fn);
 		return this;
-	}.setMany(),
+	},
+	
+	addEvents: function(events){
+		for (var name in events) this.addEvent(name, events[name]);
+		return this;
+	},
 
 	fireEvent: function(type, args){
 		args = Array.from(args);
-		eventsOf(this, type).forEach(function(fn){
+		eventsOf(this, type).each(function(fn){
 			fn.apply(this, args);
 		}, this);
 		return this;
 	},
+	
+	fireEvents: function(events){
+		for (var i = 0; i < events.length; i++) this.fireEvent(events[i]);
+		return this;
+	},
 
 	removeEvent: function(type, fn){
-		if (!fn._protected_) eventsOf(this, type).erase(fn);
+		if (!fn.$protected) eventsOf(this, type).erase(fn);
 		return this;
-	}.setMany(),
+	},
 
-	removeEvents: function(type){
-		//TODO
+	removeEvents: function(option){
+		switch (typeOf(option)){
+			case 'string': removeEventsOfType(this, option); break;
+			case 'object': for (var name in option) this.removeEvent(name, option[name]); break;
+			case 'null':
+				var events = this.events;
+				for (var type in events) removeEventsOfType(this, type);
+		}
+		return this;
 	}
 
 });
 
-// Options
+/* Options */
 
-this.Options = new Native('Options', function(){});
+this.Options = new Class({
 	
-var optionsOf = function(object){
-	return Storage.retrieve(object, 'options', {});
-};
-
-Options.implement({
+	options: {},
 	
-	setOptions: function(options){
-		if (!Storage.retrieve(this, 'options')) Storage.store(this, 'options', this.options || {});
-		for (var option in options) this.setOption(option, options[option]);
+	setOption: function(key, value){
+		if ((/^on[A-Z]/).test(key) && this.addEvent && typeOf(value) == 'function'){
+			this.addEvent(key, value);
+		} else {
+			Object.merge(this.options, key, value);
+		}
 		return this;
 	},
 	
-	setOption: function(key, value){
-		if (this.addEvent && typeOf(value) == 'function' && (/^on[A-Z]/).test(key)) this.addEvent(key, value);
-		else optionsOf(this)[key] = value;
+	setOptions: function(options){
+		for (var key in options) this.setOption(key, options[key]);
 		return this;
 	},
 
 	getOption: function(key){
-		return optionsOf(this)[key];
+		return nil(this.options[key]);
 	},
 	
-	getOptions: Function.getMany('getOption')
-
+	getOptions: function(keys){
+		return Object.subset(this.options, keys);
+	}
+	
 });
 
-// Chain
+/* Chain */
 
-this.Chain = new Native('Chain', function(){}).implement({
+this.Chain = new Class({
+	
+	$chain: [],
 	
 	chain: function(){
-		var chain = Storage.retrieve(this, 'chain', []);
-		chain.append(Array.flatten(arguments));
+		this.$chain.append(Array.flatten(arguments));
 		return this;
 	},
-
+	
 	callChain: function(){
-		var chain = Storage.retrieve(this, 'chain', []);
-		return (chain.length) ? chain.shift().apply(this, arguments) : null;
+		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : null;
 	},
-
+	
 	clearChain: function(){
-		Storage.store(this, 'chain', []);
+		this.$chain = [];
 		return this;
 	}
-
+	
 });
 
 })();

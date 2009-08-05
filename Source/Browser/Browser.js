@@ -1,10 +1,9 @@
-/*
-Script: Browser.js
-	The Browser Core. Contains Browser initialization, Window and Document, and the Browser Object.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Browser
+description: Required if you plan to run MooTools in a browser environment.
+requires:
+  - Accessor
+=*/
 
 (function(){
 
@@ -99,7 +98,7 @@ Browser.exec = function(text){
 	} else {
 		var script = document.createElement('script');
 		script.setAttribute('type', 'text/javascript');
-		script[(Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerText' : 'text'] = text;
+		script.text = text;
 		document.head.appendChild(script);
 		document.head.removeChild(script);
 	}
@@ -131,41 +130,44 @@ Browser.extend({
 if (!Browser.Element){
 	Browser.Element = function(){};
 	Browser.Element.parent = Object;
-	if (Browser.Engine.webkit) doc.createElement("iframe"); //fixes safari 2
-	Browser.Element.prototype = (Browser.Engine.webkit) ? this["[[DOMElement.prototype]]"] : {};
 }
 
-this.Window = new Native('Window', function(){});
+this.Window = new Type('Window', function(){});
 
 this.constructor = this.Window;
-this._type_ = Function.from('window').hide();
+this.$typeOf = Function.from('window').hide();
 
-this.Window.mirror(function(name, method){
+Window.mirror(function(name, method){
 	window[name] = method;
-}).implement(new Storage);
+});
+
+Object.append(window, new Storage);
 
 var doc = this.document;
 doc.window = this;
 
 doc.head = doc.getElementsByTagName('head')[0];
 doc.html = doc.getElementsByTagName('html')[0];
-if (Browser.Engine.trident){
-	if (Browser.Engine.version <= 4) Function.stab(function(){
-		doc.execCommand("BackgroundImageCache", false, true);
-	});
-	this.attachEvent('onunload', function(){
-		this.detachEvent('onunload', arguments.callee);
-		doc.head = doc.html = doc.window = null;
-	});
-}
 
-this.Document = new Native('Document', function(){});
+
+if (doc.execCommand) Function.stab(function(){
+	doc.execCommand("BackgroundImageCache", false, true);
+});
+
+if (this.attachEvent) this.attachEvent('onunload', function(){
+	this.detachEvent('onunload', arguments.callee);
+	doc.head = doc.html = doc.window = null;
+});
+
+this.Document = new Type('Document', function(){});
 
 doc.constructor = this.Document;
-doc._type_ = Function.from('document').hide();
+doc.$typeOf = Function.from('document').hide();
 
-this.Document.mirror(function(name, method){
+Document.mirror(function(name, method){
 	doc[name] = method;
-}).implement(new Storage);
+});
+
+Object.append(document, new Storage);
 	
 })();

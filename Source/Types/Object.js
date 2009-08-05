@@ -1,12 +1,16 @@
-/*
-Script: Object.js
-	Contains Object generics.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Object
+description: Object generics.
+requires: Core
+=*/
 
 Object.extend({
+	
+	length: function(object){
+		var length = 0;
+		for (var key in object) length++;
+		return length;
+	},
 	
 	from: function(keys, values){
 		var object = {};
@@ -19,24 +23,14 @@ Object.extend({
 		return original;
 	},
 	
-	clone: function(object){
-		return Object.merge(Native.isEnumerable(object) ? [] : {}, object);
-	},
-	
-	merge: function(source){
-		for (var i = 1, l = arguments.length; i < l; i++){
-			var object = arguments[i];
-			((Native.isEnumerable(object)) ? Array : Object).forEach(object, function(value, key){
-				var previous = source[key], type = typeOf(value);
-				if (type == 'object' || type == 'array'){
-					if (instanceOf(previous, Object)) Object.merge(previous, value);
-					else source[key] = Object.clone(value);
-				} else {
-					source[key] = value;
-				}
-			});
+	subset: function(object, keys, nuke){
+		var results = {};
+		for (var i = 0, l = keys.length; i < l; i++){
+			var k = keys[i], value = object[k];
+			results[k] = nil(value);
+			if (nuke) delete object[k];
 		}
-		return source;
+		return results;
 	},
 	
 	map: function(object, fn, bind){

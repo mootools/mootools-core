@@ -1,13 +1,14 @@
-/*
-Script: JSON.js
-	JSON encoder and decoder.
-
-License:
-	MIT-style license.
-
-See Also:
-	<http://www.json.org/>
-*/
+/*=
+name: JSON
+description: JSON encoder and decoder.
+requires:
+  - Array
+  - Function
+  - Number
+  - String
+  - Object
+  - Table
+=*/
 
 if (!this.JSON) this.JSON = {};
 
@@ -38,5 +39,5 @@ JSON.decode = function(string, secure){
 	if (typeOf(string) != 'string' || !string.length) return null;
 	if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 	
-	return (JSON.parse) ? JSON.parse(string) : eval('(' + string + ')');
+	return eval('(' + string + ')');
 };

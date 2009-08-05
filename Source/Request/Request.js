@@ -1,10 +1,9 @@
-/*
-Script: Request.js
-	Powerful all purpose Request Class. Uses XMLHTTPRequest.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Request
+description: Powerful all purpose Request Class. Uses XMLHTTPRequest
+requires:
+  - Class
+=*/
 
 this.Request = new Class({
 
@@ -39,16 +38,16 @@ this.Request = new Class({
 		noCache: false
 	},
 
-	initialize: function(options){
+	'protected initialize': function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-	}.protect(),
+	},
 	
 	send: function(data){
 		if (!this.check(data)) return this;
 		this.running = true;
 
-		var url = this.getOption('url'), method = this.getOption('method');
+		var url = this.getOption('url'), method = this.getOption('method').toLowerCase();
 
 		switch (typeOf(data)){
 			case 'element': data = $(data).toQueryString(); break;
@@ -62,7 +61,7 @@ this.Request = new Class({
 			var format = 'format=' + this.getOption('format');
 			data = (data) ? format + '&' + data : format;
 		}
-
+		
 		if (this.getOption('emulation') && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
@@ -74,7 +73,7 @@ this.Request = new Class({
 			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
-		if (this.options.noCache){
+		if (this.getOption('noCache')){
 			var noCache = "noCache=" + new Date().getTime();
 			data = (data) ? noCache + '&' + data : noCache;
 		}
@@ -89,7 +88,7 @@ this.Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		Object.forEach(headers, function(value, key){
+		Object.each(headers, function(value, key){
 			var xhr = this.xhr;
 			if (!Function.stab(function(){
 				xhr.setRequestHeader(key, value);
@@ -141,42 +140,42 @@ this.Request = new Class({
 		}
 	},
 
-	isSuccess: function(){
+	'protected isSuccess': function(){
 		return ((this.status >= 200) && (this.status < 300));
-	}.protect(),
+	},
 
-	processScripts: function(text){
+	'protected processScripts': function(text){
 		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
 		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
-	}.protect(),
+	},
 
-	success: function(text, xml){
+	'protected success': function(text, xml){
 		this.onSuccess(this.processScripts(text), xml);
-	}.protect(),
+	},
 
-	onSuccess: function(){
+	'protected onSuccess': function(){
 		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
-	}.protect(),
+	},
 
-	failure: function(){
+	'protected failure': function(){
 		this.onFailure();
-	}.protect(),
+	},
 
-	onFailure: function(){
+	'protected onFailure': function(){
 		this.fireEvent('complete').fireEvent('failure', this.xhr);
-	}.protect(),
+	},
 
-	check: function(){
+	'protected check': function(){
 		if (!this.running) return true;
 		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
 			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
 		}
 		return false;
-	}.protect()
+	}
 });
 
-['get', 'post', 'put', 'delete'].forEach(function(name){
+['get', 'post', 'put', 'delete'].each(function(name){
 	var method = function(data){
 		return this.setOption('method', name).send(data);
 	};

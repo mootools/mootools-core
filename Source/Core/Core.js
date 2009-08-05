@@ -1,28 +1,16 @@
-/*
-Script: Core.js
-	MooTools - My Object Oriented JavaScript Tools.
+/*=
+name: Core
+description: The heart of MooTools.
+credits:
+  - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
+  - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
+=*/
 
-License:
-	MIT-style license.
-
-Copyright:
-	Copyright (c) 2006-2009 [Valerio Proietti](http://mad4milk.net/).
-
-Code & Documentation:
-	[The MooTools production team](http://mootools.net/developers/).
-
-Inspiration:
-	- Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/)
-		Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
-	- Some functionality inspired by [Prototype.js](http://prototypejs.org)
-		Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
-*/
-
-(function(Number, String, Function, Array, Object, RegExp, Date){
+(function(){
 
 this.MooTools = {
-	'version': '1.99dev',
-	'build': '%build%'
+	version: '1.99dev',
+	build: '%build%'
 };
 
 // nil
@@ -31,49 +19,42 @@ this.nil = function(item){
 	return (item != null && item != nil) ? item : null;
 };
 
-// Accessor multipliers
+var Function = this.Function;
 
-Function.prototype.setMany = function(){
-	var one = this, many = function(item){
-		var value = this;
-		for (var key in item) value = one.call(this, key, item[key]);
-		return value;
-	};
-	
-	return function(item){
-		return ((typeof item == 'string') ? one : many).apply(this, arguments);
+Function.prototype.overload = function(type){
+	var self = this;
+	return function(){
+		return self.apply(this, type.apply(this, arguments));
 	};
 };
 
-Function.prototype.getMany = function(){
-	var one = this, many = function(item){
-		var object = {};
-		for (var i = 0; i < item.length; i++) object[item[i]] = one.call(this, item[i]);
-		return object;
-	};
-	
-	return function(item){
-		return ((typeof item == 'string') ? one : many).apply(this, arguments);
-	};
+Function.overloadPair = function(k, v){
+	if (typeof k == 'string'){
+		var copy = {}; copy[k] = v;
+		return [copy];
+	}
+	return arguments;
 };
 
-// Function extend, implement
+Function.overloadList = function(x){
+	return (typeof x == 'string') ? arguments : x;
+};
 
-Function.prototype.extend = function(key, value){
-	this[key] = value;
+Function.prototype.extend = (function(object){
+	for (var key in object) this[key] = object[key];
 	return this;
-}.setMany();
+}).overload(Function.overloadPair);
 
-Function.prototype.implement = function(key, value){
-	this.prototype[key] = value;
+Function.prototype.implement = (function(object){
+	for (var key in object) this.prototype[key] = object[key];
 	return this;
-}.setMany();
+}).overload(Function.overloadPair);
 
 // typeOf, instanceOf
 
 this.typeOf = function(item){
 	if (item == null) return 'null';
-	if (item._type_) return item._type_();
+	if (item.$typeOf) return item.$typeOf();
 	
 	if (item.nodeName){
 		switch (item.nodeType){
@@ -85,7 +66,7 @@ this.typeOf = function(item){
 		else if (item.item) return 'collection';
 	}
 
-	return 'object';
+	return typeof item;
 };
 
 this.instanceOf = function(item, object){
@@ -107,49 +88,55 @@ Function.from = function(item){
 };
 
 Array.from = function(item, slice){
-	return (item == null) ? [] : (Native.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
+	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
 };
 
-Number.from = Number;
-String.from = String;
+Number.from = function(item){
+	var number = parseFloat(item);
+	return isFinite(number) ? number : null;
+};
+
+String.from = function(item){
+	return item + '';
+};
 
 // hide, protect
 
 Function.implement({
 	
 	hide: function(){
-		this._hidden_ = true;
+		this.$hidden = true;
 		return this;
 	},
 
 	protect: function(){
-		this._protected_ = true;
+		this.$protected = true;
 		return this;
 	}
 	
 });
 
-// Native
+// Type
 
-this.Native = function(name, object){
+var Type = this.Type = function(name, object){
 	
-	var lower = name.toLowerCase();
+	var lower = (name || '').toLowerCase();
 	
-	Native['is' + name] = function(item){
+	if (name) Type['is' + name] = function(item){
 		return (typeOf(item) == lower);
 	};
 	
 	if (object == null) return null;
 	
-	object.prototype._type_ = Function.from(lower).hide();
+	if (name) object.prototype.$typeOf = Function.from(lower).hide();
 	object.extend(this);
-	object.constructor = Native;
+	object.constructor = Type;
 	object.prototype.constructor = object;
 	
 	return object;
 };
 
-Native.isEnumerable = function(item){
+Type.isEnumerable = function(item){
 	return (typeof item == 'object' && typeof item.length == 'number');
 };
 
@@ -160,42 +147,51 @@ var hooksOf = function(object){
 	return hooks[type] || (hooks[type] = []);
 };
 
-Native.implement({
+var implement = function(name, method){
+	if (method && method.$hidden) return this;
 	
-	implement: function(name, method){
-		
-		if (method && method._hidden_) return this;
-		
-		var hooks = hooksOf(this);
-		
-		for (var i = 0; i < hooks.length; i++){
-			var hook = hooks[i];
-			if (typeOf(hook) == 'native') hook.implement(name, method);
-			else hook.call(this, name, method);
-		}
-
-		var previous = this.prototype[name];
-		if (previous == null || !previous._protected_) this.prototype[name] = method;
-
-		if (typeOf(method) == 'function' && this[name] == null) this.extend(name, function(item){
-			return method.apply(item, Array.prototype.slice.call(arguments, 1));
-		});
-		
-		return this;
-		
-	}.setMany(),
+	var hooks = hooksOf(this);
 	
-	extend: function(name, method){
-		if (method && method._hidden_) return this;
-		var previous = this[name];
-		if (previous == null || !previous._protected_) this[name] = method;
-		return this;
-	}.setMany(),
+	for (var i = 0; i < hooks.length; i++){
+		var hook = hooks[i];
+		if (typeOf(hook) == 'type') implement.call(hook, name, method);
+		else hook.call(this, name, method);
+	}
 
-	alias: function(name, proto){
-		return this.implement(name, this.prototype[proto]);
-	}.setMany(),
-			
+	var previous = this.prototype[name];
+	if (previous == null || !previous.$protected) this.prototype[name] = method;
+
+	if (typeOf(method) == 'function' && this[name] == null) extend.call(this, name, function(item){
+		return method.apply(item, Array.prototype.slice.call(arguments, 1));
+	});
+	
+	return this;
+};
+
+var extend = function(name, method){
+	if (method && method.$hidden) return this;
+	var previous = this[name];
+	if (previous == null || !previous.$protected) this[name] = method;
+	return this;
+};
+
+Type.implement({
+	
+	implement: (function(object){
+		for (var key in object) implement.call(this, key, object[key]);
+		return this;
+	}).overload(Function.overloadPair),
+	
+	extend: (function(object){
+		for (var key in object) extend.call(this, key, object[key]);
+		return this;
+	}).overload(Function.overloadPair),
+
+	alias: (function(object){
+		for (var key in object) implement.call(this, key, this.prototype[object[key]]);
+		return this;
+	}).overload(Function.overloadPair),
+
 	mirror: function(hook){
 		hooksOf(this).push(hook);
 		return this;
@@ -203,9 +199,9 @@ Native.implement({
 	
 });
 
-new Native('Native', Native);
+new Type('Type', Type);
 
-// Default Natives
+// Default Types
 
 var force = function(type, methods){
 	var object = this[type];
@@ -222,7 +218,7 @@ var force = function(type, methods){
 		}
 
 	}
-	new Native(type, object).implement(object.prototype);
+	(new Type(type, object)).implement(object.prototype);
 };
 
 force('Array', [
@@ -243,53 +239,81 @@ force('RegExp', ['exec', 'test']);
 
 force('Date', ['now']);
 
-new Native('Date', Date).extend('now', function(){
+new Type('Date', Date).extend('now', function(){
 	return +(new Date);
 });
 
-// fixes NaN
+new Type('Boolean', Boolean);
 
-Number.prototype._type_ = function(){
+// fixes NaN returning as Number
+
+Number.prototype.$typeOf = function(){
 	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 
-// forEach
+// forEach, each
 
-Object.extend({
-	
-	forEach: function(object, fn, bind){
-		for (var key in object) fn.call(bind, object[key], key, object);
-	},
-	
-	each: function(object, fn, bind){
-		Object.forEach(object, fn, bind);
-		return object;
-	}
-	
+Object.extend('forEach', function(object, fn, bind){
+	for (var key in object) fn.call(bind, object[key], key, object);
 });
 
-Array.implement({
-	
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
-	},
-	
-	each: function(fn, bind){
-		this.forEach(fn, bind);
-		return this;
-	}
-	
+Object.each = Object.forEach;
+
+Array.implement('forEach', function(fn, bind){
+	for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
 });
 
-Array.each = function(self, fn, bind){
-	Array.forEach(self, fn, bind);
-	return self;
+Array.alias('each', 'forEach');
+
+// Array & Object cloning
+
+var cloneOf = function(item){
+	switch (typeOf(item)){
+		case 'array': return item.clone();
+		case 'object': return Object.clone(item);
+		default: return item;
+	}
 };
+
+Array.implement('clone', function(){
+	var clone = [];
+	for (var i = 0; i < this.length; i++) clone[i] = cloneOf(this[i]);
+	return clone;
+});
+
+Object.extend('clone', function(object){
+	var clone = {};
+	for (var key in object) clone[key] = cloneOf(object[key]);
+	return clone;
+});
+
+// Object merging
+
+var mergeOne = function(source, key, current){
+	switch (typeOf(current)){
+		case 'object':
+			if (typeOf(source[key]) == 'object') Object.merge(source[key], current);
+			else source[key] = Object.clone(current);
+		break;
+		case 'array': source[key] = current.clone(); break;
+		default: source[key] = current;
+	}
+	return source;
+};
+
+Object.extend('merge', function(source, k, v){
+	if (typeof k == 'string') return mergeOne(source, k, v);
+	for (var i = 1, l = arguments.length; i < l; i++){
+		var object = arguments[i];
+		for (var key in object) mergeOne(source, key, object[key]);
+	}
+	return source;
+});
 
 // Object-less types
 
-['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].forEach(function(type){
-	Native(type);
+['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(name){
+	Type(name);
 });
 
-})(Number, String, Function, Array, Object, RegExp, Date);
+})();

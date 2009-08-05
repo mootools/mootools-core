@@ -1,10 +1,8 @@
-/*
-Script: String.js
-	Contains String Prototypes like camelCase, capitalize, test, and toInt.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: String
+description: String prototypes and generics.
+requires: Core
+=*/
 
 String.implement({
 

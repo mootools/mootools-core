@@ -1,14 +1,13 @@
-/*
-Script: Event.js
-	Contains the Browser native event enhancement, to make the event object completely crossbrowser.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Event
+description: Event class. Transforms browser events in a cross-browser object.
+requires:
+  - Accessor
+=*/
 
 (function(){
 
-var Event = this.Event = new Native('Event', function(event){
+var Event = this.Event = new Type('Event', function(event){
 	event = event || window.event || null;
 	if (event == null) event = {};
 	if (event.event) event = event.event;
@@ -16,13 +15,13 @@ var Event = this.Event = new Native('Event', function(event){
 	Browser.event = this;
 });
 
-Event.extend(new Accessor('KeyCode')).defineKeyCode({
+Event.extend(new Accessor('KeyCode')).defineKeyCodes({
 	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
 });
 
 Event.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
 
-Event.defineGetter({
+Event.defineGetters({
 
 	shift: function(){
 		return this.event.shiftKey;
@@ -70,22 +69,32 @@ Event.defineGetter('key', function(){
 
 Event.implement({
 	
-	get: function(key){
-		key = key.camelCase();
-		if (this.hasOwnProperty(key)) return this[key];
-		var getter = Event.lookupGetter(key);
-		return this[key] = (getter) ? getter.call(this) : this.event[key];
-	}.getMany(),
-	
-	set: function(key, value){
-		var setter = Event.lookupSetter(key = key.camelCase());
-		(setter) ? setter.call(this, value) : this[key] = value;
+	set: (function(object){
+		for (var key in object){
+			var value = object[key];
+			var setter = Event.lookupSetter(key = key.camelCase());
+			(setter) ? setter.call(this, value) : this[key] = value;
+		}
 		return this;
-	}.setMany()
+	}).overload(Function.overloadPair),
+	
+	get: (function(){
+		var results = {};
+		for (var i = 0; i < arguments.length; i++){
+			var key = arguments[i].camelCase();
+			if (this.hasOwnProperty(key)){
+				results[key] = this[key];
+			} else {
+				var getter = Event.lookupGetter(key);
+				results[key] = this[key] = (getter) ? getter.call(this) : this.event[key];
+			}
+		}
+		return results;
+	}).overload(Function.overloadList)
 	
 });
 
-Event.defineGetter({
+Event.defineGetters({
 	
 	target: function(){
 		var event = this.event;
@@ -150,4 +159,3 @@ Event.implement({
 });
 
 })();
-

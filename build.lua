@@ -2,157 +2,128 @@
 
 --[[
 
-# USAGE:
+INSTRUCTIONS
+============
  
 Full Build
 ----------
 
-./build.lua
+	./build.lua
 
 Partial Build (includes dependancies)
 -------------------------------------
 
-./build.lua Fx.Tween DomReady
+	./build.lua Fx.Tween DomReady
+	
+	
+Requires
+--------
+
+This script requires yaml for lua. http://luayaml.luaforge.net/
+To successfully compile luaYAML in OSX you'll have to open Makefile and replace
+"-shared" with "-bundle -undefined dynamic_lookup -all_load"
+luaYaml requires Syck 0.55, which compiles just fine in Mac OSX Leopard: http://whytheluckystiff.net/syck/
+
 
 --]]
 
-require "luarocks.require"
-require "json"
+require "yaml"
 
--- table.include ()
--- includes a value in a table if not already present
+-- table.contains ()
+-- tests if an item is included in a table
 
-function table:include(included)
-
-	local present = false
+function table:contains(item)
 
 	for key, value in ipairs(self) do
-		if value == included then
-			present = true
-			break
+		if value == item then
+			return true
 		end
 	end
+	
+	return false;
 
-	if not present then table.insert(self, included) end
+end
+
+-- table.include ()
+-- includes an item in a table if not already present
+
+function table:include(item)
+
+	if not table.contains(self, item) then table.insert(self, item) end
 
 	return self
 
 end
 
--- Build ()
--- builds MooTools
+-- build ()
 
-local function Build(selected)
+local function build(selected_scripts)
 
-	json_path = "Source/scripts.json"
-	scripts_path = "Source/"
-	output_path = "mootools.js"
+	local package = yaml.load_file("package.yml") -- reads the configuration from package.yml
 
-	-- scripts {}
-	-- the json structure as a table
+	local output_path = package.filename
 	
-	scripts = {}
+	local data = {}
+	local all_scripts = {}
 	
-	-- all {}
-	-- a list of every script
+	for i, path in ipairs(package.files) do
 	
-	all = {}
-
-	for folder, files in pairs(json.decode(io.open(json_path):read("*all"))) do
+		local script = io.open(path):read("*all")
 	
-		scripts[folder] = {}
+		if i == 1 then -- fills %build% in the first file if it's called from a git clone
 		
-		local folder = scripts[folder]
-	
-		for script, props in pairs(files) do
-			folder[script] = props.deps
-			table.insert(all, script)
-		end
-	end
-
-	-- folder_of ()
-	-- returns the folder name from a script
-
-	function folder_of(name)
-
-		for folder, files in pairs(scripts) do
-			for file in pairs(files) do
-				if file == name then return folder end
-			end
-		end
-
-	end
-
-	-- deps_of ()
-	-- returns a table containing the full dependancies of a file
-
-	function deps_of(name)
-
-		local list = {}
-		
-		if name == "Core" then return list end
-		
-		local deps = scripts[folder_of(name)][name];
-	
-		for i, script in ipairs(deps) do
-			for j, scr in ipairs(deps_of(script)) do table.include(list, scr) end
-			table.include(list, script)
-		end
-	
-		return list
-
-	end
-
-	-- build ()
-	-- builds from a list of scripts
-
-	function build(scripts)
-
-		local list = {}
-	
-		for i, name in ipairs(scripts) do
-			for i, dep in ipairs(deps_of(name)) do table.include(list, dep) end
-			table.include(list, name)
-		end
-		
-		-- write mootools
-		
-		io.write("\nMooTools Built as " .. output_path .. "\n\n")
-		io.write("Included Scripts: ")
-	
-		local mootools = io.open(output_path, "w+")
-
-		for i, file in ipairs(list) do
-			io.write(file .. ".js")
-			local str = io.open(scripts_path .. folder_of(file) .. "/" .. file .. ".js"):read("*all")
-			
-			-- %build% replace
-			
-			if file == "Core" then
-
-				local ref = io.open('.git/HEAD'):read("*all"):match("ref: ([%w/]+)")
+			local ref = io.open('.git/HEAD')
+			if ref then
+				ref = ref:read("*all"):match("ref: ([%w/]+)")
 				ref = io.open('.git/' .. ref):read("*all"):match("(%w+)")
-				str = str:gsub("%%build%%", ref)
-
+				script = script:gsub("%%build%%", ref)
 			end
-
-			mootools:write(str)
-			if i ~= table.maxn(list) then
-				mootools:write("\n")
-				io.write(", ")
-			end
-		end
 		
-		io.write("\n\n")
+		end
+
+		local descriptor = yaml.load(script:match("/[*]=(.*)=[*]/"))
+
+		table.insert(all_scripts, descriptor.name)
+		
+		data[descriptor.name] = {
+			source = script,
+			path = path,
+			requires = (type(descriptor.requires) == 'table') and descriptor.requires or {descriptor.requires}
+		}
 
 	end
 	
-	-- checks arg
+	local included_scripts = {}
 	
-	if table.maxn(selected) == 0 then build(all) else build(selected) end
+	local scripts = table.maxn(selected_scripts) ~= 0 and selected_scripts or all_scripts
+	
+	function rock_requires(name)
+		for i, n in ipairs(data[name].requires) do
+			rock_requires(n);
+		end
+		
+		table.include(included_scripts, name)
+	end
+	
+	for i, name in ipairs(scripts) do
+		rock_requires(name)
+	end
+	
+	local sources = {}
+	
+	local mootools = io.open(output_path, "w+")
+	
+	io.write("\nBuilding " .. output_path .. "\n\nIncluded Scripts:\n\n")
+
+	for i, name in ipairs(included_scripts) do
+		table.insert(sources, data[name].source)
+		io.write('\t ' .. name .. '\n');
+	end
+	
+	io.write('\n')
+	
+	mootools:write(table.concat(sources, '\n\n'))
 
 end
 
--- builds mootools
-
-Build(arg)
+build(arg)

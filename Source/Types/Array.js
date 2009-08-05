@@ -1,10 +1,8 @@
-/*
-Script: Array.js
-	Contains Array Prototypes like each, contains, and erase.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Array
+description: Array prototypes and generics.
+requires: Core
+=*/
 
 Array.implement({
 
@@ -108,7 +106,7 @@ Array.implement({
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
 			var item = this[i];
-			if (item != null) array = array.concat((Native.isEnumerable(item)) ? Array.flatten(item) : item);
+			if (item != null) array = array.concat((Type.isEnumerable(item)) ? Array.flatten(item) : item);
 		}
 		return array;
 	},
