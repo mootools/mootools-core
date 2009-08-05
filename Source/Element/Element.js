@@ -196,22 +196,22 @@ Element.implement({
 	
 var inserters = {
 
-	Before: function(context, element){
+	before: function(context, element){
 		if (element.parentNode) element.parentNode.insertBefore(context, element);
 	},
 
-	After: function(context, element){
+	after: function(context, element){
 		if (!element.parentNode) return;
 		var next = element.nextSibling;
 		if (next) element.parentNode.insertBefore(context, next);
 		else element.parentNode.appendChild(context);
 	},
 
-	Bottom: function(context, element){
+	bottom: function(context, element){
 		element.appendChild(context);
 	},
 
-	Top: function(context, element){
+	top: function(context, element){
 		var first = element.firstChild;
 		if (first) element.insertBefore(context, first);
 		else element.appendChild(context);
@@ -219,25 +219,9 @@ var inserters = {
 
 };
 
-inserters.Inside = inserters.Bottom;
+inserters.inside = inserters.bottom;
 
-var methods = {};
-
-Object.each(inserters, function(inserter, where){
-
-	methods['inject' + where] = function(el){
-		inserter(this, document.id(el));
-		return this;
-	};
-
-	methods['grab' + where] = function(el){
-		inserter(document.id(el), this);
-		return this;
-	};
-
-});
-
-Element.implement(Object.append(methods, {
+Element.implement({
 	
 	dispose: function(){
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
@@ -255,11 +239,13 @@ Element.implement(Object.append(methods, {
 	},
 
 	grab: function(el, where){
-		return this['grab' + (where ? where.capitalize() : 'Bottom')](el);
+		interters[where || 'bottom'](document.id(el), this);
+		return this;
 	},
 
 	inject: function(el, where){
-		return this['inject' + (where ? where.capitalize() : 'Bottom')](el);
+		interters[where || 'bottom'](this, document.id(el));
+		return this;
 	},
 
 	replaces: function(el){
@@ -273,7 +259,26 @@ Element.implement(Object.append(methods, {
 		return this.replaces(el).grab(el, where);
 	}
 
-}));
+});
+
+
+var methods = {};
+
+Object.each(inserters, function(inserter, where){
+	
+	var Where = where.capitalize();
+	
+	methods['inject' + Where] = function(el){
+		return this.inject(el, where);
+	};
+
+	methods['grab' + Where] = function(el){
+		return this.grab(el, where);
+	};
+
+});
+
+Element.implement(methods);
 
 /* Element Storage */
 
