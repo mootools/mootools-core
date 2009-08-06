@@ -21,8 +21,12 @@ Request.JSON = new Class({
 	},
 
 	'protected success': function(text){
-		this.response.json = JSON.decode(text, this.getOption('secure'));
-		this.onSuccess(this.response.json, text);
+		try {
+			this.response.json = JSON.decode(text, this.options.secure);
+			this.onSuccess(this.response.json, text);
+		} catch(error) {
+			this.failure();
+		}
 	}
 
 });
