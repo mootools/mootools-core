@@ -1,10 +1,8 @@
-/*
-Script: Request.HTML.js
-	Extends the basic Request Class with additional methods for interacting with HTML responses.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Request.HTML
+description: Extends the Request class with additional methods to interact with HTML responses.
+requires: Request
+=*/
 
 Request.HTML = new Class({
 
@@ -17,7 +15,7 @@ Request.HTML = new Class({
 		filter: false
 	},
 
-	success: function(text){
+	'protected success': function(text){
 		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		text = (match) ? match[1] : text;
 		
@@ -41,7 +39,7 @@ Request.HTML = new Class({
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
-	}.protect()
+	}
 
 });
 

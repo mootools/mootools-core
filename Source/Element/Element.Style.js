@@ -1,10 +1,10 @@
-/*
-Script: Element.Style.js
-	Contains methods for interacting with the styles of Elements in a fashionable way.
-
-License:
-	MIT-style license.
-*/
+/*=
+name: Element.Style
+description: Methods to iteract with the css-style of html elements.
+requires:
+  - Element
+  - Color
+=*/
 
 (function(Element, CColor){
 	
@@ -56,6 +56,10 @@ slick.definePseudo('positioned', function(){
 	return getStyle(this, 'position') != 'static';
 });
 
+slick.definePseudo('static', function(){
+	return getStyle(this, 'position') == 'static';
+});
+
 /* css values utilities */
 
 var splitCSS = function(value){
@@ -102,7 +106,7 @@ Element.defineStyleSetter('float', function(value){
 
 /* color accessors */
 
-[color, background + Color, border + Top + Color, border + Right + Color, border + Bottom + Color, border + Left + Color].forEach(function(name){
+[color, background + Color, border + Top + Color, border + Right + Color, border + Bottom + Color, border + Left + Color].each(function(name){
 	
 	EST[name] = 'color';
 
@@ -150,7 +154,7 @@ if (html.style[opacity] == null && filterName) Element.defineStyleSetter(opacity
 top, right, bottom, left, width, height, 'max' + Width, 'max' + Height, 'min' + Width, 'min' + Height,
 backgroundPosition + 'Y', backgroundPosition + 'X',
 border + Top + Width, border + Right + Width, border + Bottom + Width, border + Left + Width,
-'fontSize', 'letterSpacing', 'line' + Height, 'textIndent'].forEach(function(name){
+'fontSize', 'letterSpacing', 'line' + Height, 'textIndent'].each(function(name){
 
 	EST[name] = 'unit';
 
@@ -162,7 +166,7 @@ border + Top + Width, border + Right + Width, border + Bottom + Width, border + 
 
 /* height width top left */
 
-Element.defineStyleGetter({
+Element.defineStyleGetters({
 	
 	top: function(unit){
 		var mt = parseFloat(getStyle(this, margin + Top)), value = this.offsetTop - mt;
@@ -192,7 +196,7 @@ Element.defineStyleGetter({
 
 var TRBL = [Top, Right, Bottom, Left];
 
-[margin, padding, border + Width, border + Color, border + Style].forEach(function(name){
+[margin, padding, border + Width, border + Color, border + Style].each(function(name){
 
 	var match = name.match(/border(\w+)/);
 	
@@ -203,7 +207,7 @@ var TRBL = [Top, Right, Bottom, Left];
 	var parse = ESS[name] = function(value){
 		value = mirrorCSS(splitCSS(value));
 		var parsed = {};
-		shorts.forEach(function(s){
+		shorts.each(function(s){
 			parsed[s] = value.shift();
 		});
 		return parsed;
@@ -212,12 +216,12 @@ var TRBL = [Top, Right, Bottom, Left];
 	Element.defineStyleSetter(name, function(value){
 		
 		if (!value && value !== 0) this.style[name] = '';
-		else this.setStyle(parse(value));
+		else this.setStyles(parse(value));
 		
 	}).defineStyleGetter(name, function(unit){
 		
 		return shorts.map(function(s){
-			return this.getStyle(s, unit);
+			return getStyle(this, s, unit);
 		}, this).join(' ');
 		
 	});
@@ -235,7 +239,7 @@ var bpparse = ESS[backgroundPosition] = function(value){
 Element.defineStyleSetter(backgroundPosition, function(value){
 
 	if (!value && value !== 0) this.style[backgroundPosition] = '';
-	else this.setStyle(bpparse(value));
+	else this.setStyles(bpparse(value));
 
 }).defineStyleGetter(backgroundPosition, function(){
 
@@ -254,7 +258,7 @@ Element.defineStyleSetter(clip, function(value){
 	}
 });
 
-[border + Top, border + Right, border + Bottom, border + Left].forEach(function(name){
+[border + Top, border + Right, border + Bottom, border + Left].each(function(name){
 	
 	var shorts = [Width, Style, Color].map(function(type){
 		return name + type;
@@ -272,7 +276,7 @@ Element.defineStyleSetter(clip, function(value){
 	Element.defineStyleSetter(name, function(value){
 
 		if (!value) this.style[name] = '';
-		else this.setStyle(parse(value));
+		else this.setStyles(parse(value));
 
 	}).defineStyleGetter(name, function(unit){
 		
@@ -286,8 +290,8 @@ Element.defineStyleSetter(clip, function(value){
 
 var borderShorts = [];
 
-TRBL.forEach(function(dir){
-	[Width, Style, Color].forEach(function(type){
+TRBL.each(function(dir){
+	[Width, Style, Color].each(function(type){
 		borderShorts.push(border + dir + type);
 	});
 });
@@ -299,7 +303,7 @@ var bparse = ESS[border] = function(value){
 	array = mirrorCSS(array);
 	value = [].concat(array[0], array[1], array[2], array[3]);
 	var styles = {};
-	borderShorts.forEach(function(bs){
+	borderShorts.each(function(bs){
 		styles[bs] = value.shift();
 	});
 	return styles;
@@ -308,7 +312,7 @@ var bparse = ESS[border] = function(value){
 Element.defineStyleSetter(border, function(value){
 
 	if (!value) this.style[border] = '';
-	else this.setStyle(bparse(value));
+	else this.setStyles(bparse(value));
 	
 }).defineStyleGetter(border, function(unit){
 	
@@ -327,17 +331,31 @@ Element.implement({
 		if (setter) setter.call(this, value);
 		else this.style[name] = value;
 		return this;
-	}.setMany(),
+	},
+	
+	setStyles: function(styles){
+		for (var name in styles) this.setStyle(name, styles[style]);
+		return this;
+	},
 
 	getStyle: function(name, unit){
 		var getter = Element.lookupStyleGetter(name = name.camelCase());
 		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
-	}.getMany()
+	},
+	
+	getStyles: function(styles){
+		var results = {};
+		for (var i = 0; i < styles.length; i++){
+			var s = styles[i].camelCase();
+			results[s] = this.getStyle(s);
+		}
+		return results;
+	}
 
 });
 
 Element.defineSetter('styles', function(styles){
-	this.setStyle(styles);
+	this.setStyles(styles);
 });
 
 })(Element, Color);

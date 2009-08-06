@@ -1,0 +1,34 @@
+name: Core
+filename: mootools-core.js
+web: http://mootools.net
+description: MooTools, The JavaScript framework
+license: MIT-Style License, http://mootools.net/license
+copyright: 2006-2009 Valerio Proietti http://mad4milk.net
+authors: The MooTools development team, http://mootools.net/developers
+files:
+  - "Source/Core/Core.js"
+  - "Source/Types/Array.js"
+  - "Source/Types/Function.js"
+  - "Source/Types/Object.js"
+  - "Source/Types/String.js"
+  - "Source/Types/Number.js"
+  - "Source/Types/Table.js"
+  - "Source/Class/Class.js"
+  - "Source/Class/Mixins.js"
+  - "Source/Browser/Browser.js"
+  - "Source/Browser/Event.js"
+  - "Source/Element/Element.js"
+  - "Source/Element/Element.Style.js"
+  - "Source/Element/Element.Event.js"
+  - "Source/Fx/Fx.js"
+  - "Source/Fx/Fx.CSS.js"
+  - "Source/Fx/Fx.Morph.js"
+  - "Source/Request/Request.js"
+  - "Source/Request/Request.HTML.js"
+  - "Source/Request/Request.JSON.js"
+  - "Source/Utilities/Accessor.js"
+  - "Source/Utilities/Storage.js"
+  - "Source/Utilities/DomReady.js"
+  - "Source/Utilities/Slick.js"
+  - "Source/Utilities/JSON.js"
+  - "Source/Utilities/Color.js"
