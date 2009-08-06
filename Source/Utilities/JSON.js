@@ -37,7 +37,7 @@ JSON.encode = JSON.stringify || function(obj){
 
 JSON.decode = function(string, secure){
 	if (typeOf(string) != 'string' || !string.length) return null;
-	if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
-	
+	if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) 
+		throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
 	return eval('(' + string + ')');
 };
