@@ -11,6 +11,9 @@ Request.JSON = new Class({
 	Extends: Request,
 
 	options: {
+		/*
+		onError: nil,
+		*/
 		secure: true
 	},
 
@@ -25,7 +28,7 @@ Request.JSON = new Class({
 			this.response.json = JSON.decode(text, this.options.secure);
 			this.onSuccess(this.response.json, text);
 		} catch(error) {
-			this.failure();
+			this.fireEvent('error', [text, error]);
 		}
 	}
 
