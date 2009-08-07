@@ -346,12 +346,12 @@ Element.implement({
 	}).overload(Function.overloadPair),
 
 	get: (function(){
-		var results = {};
+		var key, results = {};
 		for (var i = 0, l = arguments.length; i < l; i++){
-			var key = arguments[i].camelCase();
+			key = arguments[i].camelCase();
 			results[key] = slick.getAttribute(this, key);
 		}
-		return results;
+		return (l == 1) ? results[key] : results;
 	}).overload(Function.overloadList)
 
 });

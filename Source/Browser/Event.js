@@ -79,9 +79,9 @@ Event.implement({
 	}).overload(Function.overloadPair),
 	
 	get: (function(){
-		var results = {};
-		for (var i = 0; i < arguments.length; i++){
-			var key = arguments[i].camelCase();
+		var key, results = {};
+		for (var i = 0, l = arguments.length; i < l; i++){
+			key = arguments[i].camelCase();
 			if (this.hasOwnProperty(key)){
 				results[key] = this[key];
 			} else {
@@ -89,7 +89,7 @@ Event.implement({
 				results[key] = this[key] = (getter) ? getter.call(this) : this.event[key];
 			}
 		}
-		return results;
+		return (l == 1) ? results[key] : results;
 	}).overload(Function.overloadList)
 	
 });
