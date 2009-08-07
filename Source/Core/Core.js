@@ -40,15 +40,15 @@ Function.overloadList = function(x){
 	return (typeof x == 'string') ? arguments : x;
 };
 
-Function.prototype.extend = (function(object){
+Function.prototype.extend = function(object){
 	for (var key in object) this[key] = object[key];
 	return this;
-}).overload(Function.overloadPair);
+}.overload(Function.overloadPair);
 
-Function.prototype.implement = (function(object){
+Function.prototype.implement = function(object){
 	for (var key in object) this.prototype[key] = object[key];
 	return this;
-}).overload(Function.overloadPair);
+}.overload(Function.overloadPair);
 
 // typeOf, instanceOf
 
@@ -177,20 +177,20 @@ var extend = function(name, method){
 
 Type.implement({
 	
-	implement: (function(object){
+	implement: function(object){
 		for (var key in object) implement.call(this, key, object[key]);
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 	
-	extend: (function(object){
+	extend: function(object){
 		for (var key in object) extend.call(this, key, object[key]);
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 
-	alias: (function(object){
+	alias: function(object){
 		for (var key in object) implement.call(this, key, this.prototype[object[key]]);
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 
 	mirror: function(hook){
 		hooksOf(this).push(hook);

@@ -14,12 +14,12 @@ this.Storage = function(){
 	
 	var storage = {};
 	
-	this.store = (function(object){
+	this.store = function(object){
 		for (var key in object) storage[key] = object[key];
 		return this;
-	}).overload(Function.overloadPair);
+	}.overload(Function.overloadPair);
 	
-	this.retrieve = (function(object){
+	this.retrieve = function(object){
 		var keys = [];
 		for (var key in object){
 			keys.push(key);
@@ -27,11 +27,11 @@ this.Storage = function(){
 			if (dflt != null && value == null) storage[key] = Function.from(dflt)();
 		}
 		return Object.subset(storage, keys);
-	}).overload(Function.overloadPair);
+	}.overload(Function.overloadPair);
 
-	this.dump = (function(){
+	this.dump = function(){
 		return Object.subset(storage, arguments, true);
-	}).overload(Function.overloadList);
+	}.overload(Function.overloadList);
 	
 	return this;
 	

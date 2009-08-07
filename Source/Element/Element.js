@@ -333,7 +333,7 @@ slick.getAttribute = function(element, attribute){
 
 Element.implement({
 
-	set: (function(object){
+	set: function(object){
 		for (var attribute in object){
 			var value = object[attribute];
 			attribute = attribute.camelCase();
@@ -343,16 +343,16 @@ Element.implement({
 			else this.setAttribute(attribute, '' + value);
 		}
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 
-	get: (function(){
+	get: function(){
 		var key, results = {};
 		for (var i = 0, l = arguments.length; i < l; i++){
 			key = arguments[i].camelCase();
 			results[key] = slick.getAttribute(this, key);
 		}
 		return (l == 1) ? results[key] : results;
-	}).overload(Function.overloadList)
+	}.overload(Function.overloadList)
 
 });
 
