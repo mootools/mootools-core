@@ -252,7 +252,6 @@ Element.implement({
 
 });
 
-
 var methods = {};
 
 Object.each(inserters, function(inserter, where){
