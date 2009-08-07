@@ -62,26 +62,17 @@ var types = {
 
 	string: function(item){
 		return types.element(document.getElementById(item));
-	},
-	
-	element: function(item){
-		if (window.console) console.warn('Extending element manually.');
-		Object.append(item, proto);
-		item.constructor = Element;
-		return item;
 	}
 
 };
 
-types.window = types.document = types.textnode = types.whitespace = types.element = function(item){
+types.window = types.document = types.textnode = types.whitespace = function(item){
 	return item;
 };
 
-var protoElement = {};
-
 if (document.html.mergeAttributes){
 	
-	protoElement = document.createElement('div');
+	var protoElement = document.createElement('div');
 	protoElement.$typeOf = Function.from('element');
 
 	types.element = function(item){
@@ -89,18 +80,12 @@ if (document.html.mergeAttributes){
 		item.constructor = Element;
 		return item;
 	};
+	
+	Element.mirror(function(name, method){
+		protoElement[name] = method;
+	});
 
 }
-
-Element.mirror(function(name, method){
-	protoElement[name] = method;
-});
-
-document.id = function(item){
-	if (instanceOf(item, Element)) return item;
-	var processor = types[typeOf(item)];
-	return (processor) ? processor(item) : null;
-};
 
 var Elements = this.Elements = function(elements){
 	if (!elements || !elements.length) return;
@@ -131,6 +116,12 @@ Elements.implement(Array.prototype);
 Array.mirror(Elements);
 
 Document.implement({
+	
+	id: function(item){
+		if (instanceOf(item, Element)) return item;
+		var processor = types[typeOf(item)];
+		return (processor) ? processor(item) : null;
+	},
 	
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
