@@ -14,7 +14,7 @@ var Element = this.Element = function(item, props){
 	
 	if (!props) props = {};
 	
-	var parsed = slick.parse(item)[0][0], id;
+	var parsed = Slick.parse(item)[0][0], id;
 	
 	var tag = parsed.tag || 'div';
 	if (parsed.id) props.id = parsed.id;
@@ -89,7 +89,7 @@ if (document.html.mergeAttributes){
 
 var Elements = this.Elements = function(elements){
 	if (!elements || !elements.length) return;
-	slick.uniques(elements, this);
+	Slick.uniques(elements, this);
 };
 
 Elements.prototype = {length: 0};
@@ -134,23 +134,23 @@ Document.implement({
 	
 });
 
-// search and find, slick integration
+// search and find, Slick integration
 
 [Document, Element].call('implement', {
 	
 	search: function(expression){
-		return slick(this, expression, new Elements);
+		return Slick(this, expression, new Elements);
 	},
 	
 	find: function(expression){
-		var element = slick(this, expression)[0];
+		var element = Slick(this, expression)[0];
 		return (element) ? document.id(element) : null;
 	}
 	
 });
 
 Element.implement('match', function(expression){
-	return slick.match(this, expression);
+	return Slick.match(this, expression);
 });
 
 if (this.$ == null) this.$ = document.id;
@@ -321,9 +321,9 @@ booleans.each(function(bool){
 	});
 });
 
-/* slick attribute integration */
+/* Slick attribute integration */
 
-slick.getAttribute = function(element, attribute){
+Slick.getAttribute = function(element, attribute){
 	var getter = Element.lookupGetter(attribute);
 	return (getter) ? getter.call(element) : element.getAttribute(attribute, 2);
 };
@@ -348,7 +348,7 @@ Element.implement({
 		var key, results = {};
 		for (var i = 0, l = arguments.length; i < l; i++){
 			key = arguments[i].camelCase();
-			results[key] = slick.getAttribute(this, key);
+			results[key] = Slick.getAttribute(this, key);
 		}
 		return (l == 1) ? results[key] : results;
 	}.overload(Function.overloadList)

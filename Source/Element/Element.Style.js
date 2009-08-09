@@ -52,11 +52,11 @@ var getStyle = (window.getComputedStyle) ? function(element, name, unit){
 
 };
 
-slick.definePseudo('positioned', function(){
+Slick.definePseudo('positioned', function(){
 	return getStyle(this, 'position') != 'static';
 });
 
-slick.definePseudo('static', function(){
+Slick.definePseudo('static', function(){
 	return getStyle(this, 'position') == 'static';
 });
 
