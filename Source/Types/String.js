@@ -22,15 +22,15 @@ String.implement({
 		return this.replace(/\s+/g, ' ').trim();
 	},
 
-	camelCase: function(separator){
-		return this.replace(new RegExp((separator || '-') + '\\D', 'g'), function(match){
+	camelCase: function(){
+		return this.replace(/-\D/g, function(match){
 			return match.charAt(1).toUpperCase();
 		});
 	},
 
-	hyphenate: function(separator){
+	hyphenate: function(){
 		return this.replace(/[A-Z]/g, function(match){
-			return ((separator || '-') + match.toLowerCase());
+			return ('-' + match.charAt(0).toLowerCase());
 		});
 	},
 
