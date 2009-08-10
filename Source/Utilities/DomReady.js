@@ -16,6 +16,8 @@ var domready = function(){
 	[document, window].call('fireEvent', 'domready');
 };
 
+window.addEvent('load:flash', domready);
+
 if (Browser.Engine.trident){
 	var temp = document.newElement('div');
 	(function(){
@@ -28,7 +30,6 @@ if (Browser.Engine.trident){
 		(['loaded', 'complete'].contains(document.readyState)) ? domready() : arguments.callee.delay(50);
 	})();
 } else {
-	window.addEvent('load:flash', domready);
 	document.addEvent('DOMContentLoaded:flash', domready);
 }
 
