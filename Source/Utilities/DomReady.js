@@ -18,7 +18,7 @@ var domready = function(){
 
 window.addEvent('load:flash', domready);
 
-if (Browser.msie){
+if (Browser.ie){
 	var temp = document.newElement('div');
 	(function(){
 		(Function.stab(function(){

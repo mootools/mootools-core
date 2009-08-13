@@ -10,7 +10,7 @@ requires:
 var document = this.document;
 var window = document.window = this;
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|msie|firefox|chrome|safari)[\s\/:](\d+(?:\.\d+)?)?/) || [null, 'unknown', 0];
+var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|safari)[\s\/:](\d+(?:\.\d+)?)?/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = (function(){}).extend({
 	
