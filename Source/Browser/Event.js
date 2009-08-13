@@ -113,7 +113,7 @@ Event.defineGetters({
 			while (related && related.nodeType == 3) related = related.parentNode;
 			return true;
 		};
-		var hasRelated = (Browser.Engine.gecko) ? Function.stab(test) : test();
+		var hasRelated = (Browser.firefox2) ? Function.stab(test) : test();
 		return (hasRelated) ? document.id(related) : null;
 	},
 	

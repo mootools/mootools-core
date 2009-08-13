@@ -18,14 +18,14 @@ var domready = function(){
 
 window.addEvent('load:flash', domready);
 
-if (Browser.Engine.trident){
+if (Browser.msie){
 	var temp = document.newElement('div');
 	(function(){
 		(Function.stab(function(){
 			return temp.inject(document.body).set('html', 'temp').dispose();
 		})) ? domready() : arguments.callee.delay(50);
 	})();
-} else if (Browser.Engine.webkit && Browser.Engine.version < 525){
+} else if (Browser.safari && Browser.version < 3.1){
 	(function(){
 		(['loaded', 'complete'].contains(document.readyState)) ? domready() : arguments.callee.delay(50);
 	})();

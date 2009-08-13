@@ -192,7 +192,7 @@ Event.definePseudo('relay', function(event, selector){
 		if (Slick.match(t, selector)) return document.id(t);
 });
 
-if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
+if (Browser.firefox) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
 
 Element.defineSetter('events', function(events){
 	this.addEvent(events);
