@@ -10,11 +10,12 @@ requires:
 var document = this.document;
 var window = document.window = this;
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|safari)[\s\/:](\d+(?:\.\d+)?)?/) || [null, 'unknown', 0];
+
+var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\d+\.\d+).+(safari)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = (function(){}).extend({
 	
-	name: UA[1],
+	name: UA[3] || UA[1],
 	version: parseFloat(UA[2]),
 
 	Platform: {
