@@ -172,20 +172,20 @@ This allows the function to be used in conjunction with [Element:addEvent][] and
 
 ### Example:
 
-    var Logger = new Class({
-        log: function(){
-            console.log.apply(null, arguments);
-        }
-    });
-    
-    var Log = new Logger();
-    
+	var Logger = new Class({
+		log: function(){
+			console.log.apply(null, arguments);
+		}
+	});
+	
+	var Log = new Logger();
+	
 	$('myElement').addEvent('click', function(event, offset){
 	    offset += event.client.x;
 	    this.log('clicked; moving to:', offset); // this refers to myClass	    
 	    event.target.setStyle('top', offset);
 	    return false;
-	}).bindWithEvent(Log, 100));
+	}.bindWithEvent(Log, 100));
 
 
 Function Method: delay {#Function:delay}
