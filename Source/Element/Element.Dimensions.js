@@ -62,11 +62,11 @@ Element.implement({
 	getOffsets: function(){		
 		if (this.getBoundingClientRect){
 			var bound = this.getBoundingClientRect(),
-			html = document.id(this.getDocument().documentElement),
-			htmlScroll = html.getScroll(),
-			elemScrolls = this.getScrolls(),
-			elemScroll = this.getScroll(),
-			isFixed = (styleString(this, 'position') == 'fixed');
+				html = document.id(this.getDocument().documentElement),
+				htmlScroll = html.getScroll(),
+				elemScrolls = this.getScrolls(),
+				elemScroll = this.getScroll(),
+				isFixed = (styleString(this, 'position') == 'fixed');
 
 			return {
 				x: parseInt(bound.left, 10) + elemScrolls.x - elemScroll.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
