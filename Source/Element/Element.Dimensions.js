@@ -59,7 +59,20 @@ Element.implement({
 		return null;
 	},
 
-	getOffsets: function(){
+	getOffsets: function(){		
+		if (this.getBoundingClientRect){
+			var bound = this.getBoundingClientRect(),
+			html = document.id(this.getDocument().documentElement),
+			htmlScroll = html.getScroll(),
+			elemScrolls = this.getScrolls(),
+			elemScroll = this.getScroll(),
+			isFixed = (styleString(this, 'position') == 'fixed');
+
+			return {
+				x: parseInt(bound.left, 10) + elemScrolls.x - elemScroll.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
+				y: parseInt(bound.top, 10)  + elemScrolls.y - elemScroll.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
+			};
+		}
 
 		var element = this, position = {x: 0, y: 0};
 		if (isBody(this)) return position;
