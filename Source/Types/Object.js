@@ -18,8 +18,11 @@ Object.extend({
 		return object;
 	},
 	
-	append: function(original, extended){
-		for (var key in (extended || {})) original[key] = extended[key];
+	append: function(original){
+		for (var i = 1; i < arguments.length; i++){
+			var extended = arguments[i] || {};
+			for (var key in extended) original[key] = extended[key];
+		}
 		return original;
 	},
 	

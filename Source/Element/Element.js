@@ -14,7 +14,7 @@ var Element = this.Element = function(item, props){
 	
 	if (!props) props = {};
 	
-	var parsed = slick.parse(item)[0][0], id;
+	var parsed = Slick.parse(item)[0][0], id;
 	
 	var tag = parsed.tag || 'div';
 	if (parsed.id) props.id = parsed.id;
@@ -62,26 +62,17 @@ var types = {
 
 	string: function(item){
 		return types.element(document.getElementById(item));
-	},
-	
-	element: function(item){
-		if (window.console) console.warn('Extending element manually.');
-		Object.append(item, proto);
-		item.constructor = Element;
-		return item;
 	}
 
 };
 
-types.window = types.document = types.textnode = types.whitespace = types.element = function(item){
+types.window = types.document = types.textnode = types.whitespace = function(item){
 	return item;
 };
 
-var protoElement = {};
-
 if (document.html.mergeAttributes){
 	
-	protoElement = document.createElement('div');
+	var protoElement = document.createElement('div');
 	protoElement.$typeOf = Function.from('element');
 
 	types.element = function(item){
@@ -89,22 +80,16 @@ if (document.html.mergeAttributes){
 		item.constructor = Element;
 		return item;
 	};
+	
+	Element.mirror(function(name, method){
+		protoElement[name] = method;
+	});
 
 }
 
-Element.mirror(function(name, method){
-	protoElement[name] = method;
-});
-
-document.id = function(item){
-	if (instanceOf(item, Element)) return item;
-	var processor = types[typeOf(item)];
-	return (processor) ? processor(item) : null;
-};
-
 var Elements = this.Elements = function(elements){
 	if (!elements || !elements.length) return;
-	slick.uniques(elements, this);
+	Slick.uniques(elements, this);
 };
 
 Elements.prototype = {length: 0};
@@ -132,6 +117,12 @@ Array.mirror(Elements);
 
 Document.implement({
 	
+	id: function(item){
+		if (instanceOf(item, Element)) return item;
+		var processor = types[typeOf(item)];
+		return (processor) ? processor(item) : null;
+	},
+	
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
 		return document.id(this.createElement(tag)).set(props);
@@ -143,23 +134,23 @@ Document.implement({
 	
 });
 
-// search and find, slick integration
+// search and find, Slick integration
 
 [Document, Element].call('implement', {
 	
 	search: function(expression){
-		return slick(this, expression, new Elements);
+		return Slick(this, expression, new Elements);
 	},
 	
 	find: function(expression){
-		var element = slick(this, expression)[0];
+		var element = Slick(this, expression)[0];
 		return (element) ? document.id(element) : null;
 	}
 	
 });
 
 Element.implement('match', function(expression){
-	return slick.match(this, expression);
+	return Slick.match(this, expression);
 });
 
 if (this.$ == null) this.$ = document.id;
@@ -196,22 +187,22 @@ Element.implement({
 	
 var inserters = {
 
-	Before: function(context, element){
+	before: function(context, element){
 		if (element.parentNode) element.parentNode.insertBefore(context, element);
 	},
 
-	After: function(context, element){
+	after: function(context, element){
 		if (!element.parentNode) return;
 		var next = element.nextSibling;
 		if (next) element.parentNode.insertBefore(context, next);
 		else element.parentNode.appendChild(context);
 	},
 
-	Bottom: function(context, element){
+	bottom: function(context, element){
 		element.appendChild(context);
 	},
 
-	Top: function(context, element){
+	top: function(context, element){
 		var first = element.firstChild;
 		if (first) element.insertBefore(context, first);
 		else element.appendChild(context);
@@ -219,25 +210,9 @@ var inserters = {
 
 };
 
-inserters.Inside = inserters.Bottom;
+inserters.inside = inserters.bottom;
 
-var methods = {};
-
-Object.each(inserters, function(inserter, where){
-
-	methods['inject' + where] = function(el){
-		inserter(this, document.id(el));
-		return this;
-	};
-
-	methods['grab' + where] = function(el){
-		inserter(document.id(el), this);
-		return this;
-	};
-
-});
-
-Element.implement(Object.append(methods, {
+Element.implement({
 	
 	dispose: function(){
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
@@ -255,11 +230,13 @@ Element.implement(Object.append(methods, {
 	},
 
 	grab: function(el, where){
-		return this['grab' + (where ? where.capitalize() : 'Bottom')](el);
+		interters[where || 'bottom'](document.id(el), this);
+		return this;
 	},
 
 	inject: function(el, where){
-		return this['inject' + (where ? where.capitalize() : 'Bottom')](el);
+		interters[where || 'bottom'](this, document.id(el));
+		return this;
 	},
 
 	replaces: function(el){
@@ -273,7 +250,25 @@ Element.implement(Object.append(methods, {
 		return this.replaces(el).grab(el, where);
 	}
 
-}));
+});
+
+var methods = {};
+
+Object.each(inserters, function(inserter, where){
+	
+	var Where = where.capitalize();
+	
+	methods['inject' + Where] = function(el){
+		return this.inject(el, where);
+	};
+
+	methods['grab' + Where] = function(el){
+		return this.grab(el, where);
+	};
+
+});
+
+Element.implement(methods);
 
 /* Element Storage */
 
@@ -324,9 +319,9 @@ booleans.each(function(bool){
 	});
 });
 
-/* slick attribute integration */
+/* Slick attribute integration */
 
-slick.getAttribute = function(element, attribute){
+Slick.getAttribute = function(element, attribute){
 	var getter = Element.lookupGetter(attribute);
 	return (getter) ? getter.call(element) : element.getAttribute(attribute, 2);
 };
@@ -335,7 +330,7 @@ slick.getAttribute = function(element, attribute){
 
 Element.implement({
 
-	set: (function(object){
+	set: function(object){
 		for (var attribute in object){
 			var value = object[attribute];
 			attribute = attribute.camelCase();
@@ -345,16 +340,16 @@ Element.implement({
 			else this.setAttribute(attribute, '' + value);
 		}
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 
-	get: (function(){
-		var results = {};
+	get: function(){
+		var key, results = {};
 		for (var i = 0, l = arguments.length; i < l; i++){
-			var key = arguments[i].camelCase();
-			results[key] = slick.getAttribute(this, key);
+			key = arguments[i].camelCase();
+			results[key] = Slick.getAttribute(this, key);
 		}
-		return results;
-	}).overload(Function.overloadList)
+		return (l == 1) ? results[key] : results;
+	}.overload(Function.overloadList)
 
 });
 

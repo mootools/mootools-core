@@ -69,19 +69,19 @@ Event.defineGetter('key', function(){
 
 Event.implement({
 	
-	set: (function(object){
+	set: function(object){
 		for (var key in object){
 			var value = object[key];
 			var setter = Event.lookupSetter(key = key.camelCase());
 			(setter) ? setter.call(this, value) : this[key] = value;
 		}
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 	
-	get: (function(){
-		var results = {};
-		for (var i = 0; i < arguments.length; i++){
-			var key = arguments[i].camelCase();
+	get: function(){
+		var key, results = {};
+		for (var i = 0, l = arguments.length; i < l; i++){
+			key = arguments[i].camelCase();
 			if (this.hasOwnProperty(key)){
 				results[key] = this[key];
 			} else {
@@ -89,8 +89,8 @@ Event.implement({
 				results[key] = this[key] = (getter) ? getter.call(this) : this.event[key];
 			}
 		}
-		return results;
-	}).overload(Function.overloadList)
+		return (l == 1) ? results[key] : results;
+	}.overload(Function.overloadList)
 	
 });
 
@@ -113,7 +113,7 @@ Event.defineGetters({
 			while (related && related.nodeType == 3) related = related.parentNode;
 			return true;
 		};
-		var hasRelated = (Browser.Engine.gecko) ? Function.stab(test) : test();
+		var hasRelated = (Browser.firefox2) ? Function.stab(test) : test();
 		return (hasRelated) ? document.id(related) : null;
 	},
 	

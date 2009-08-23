@@ -72,14 +72,14 @@ description: Target html nodes using css syntax.
 	var matchers = {
 		
 		node: function(node, selector){
-			var parsed = this.slick.parse(selector)[0][0];
+			var parsed = this.Slick.parse(selector)[0][0];
 			return this['match:selector'](node, parsed.tag, parsed.id, parsed.parts);
 		},
 
 		pseudo: function(node, name, argument){
 			var pseudoName = 'pseudo:' + name;
 			if (this[pseudoName]) return this[pseudoName](node, argument);
-			var attribute = this.slick.getAttribute(node, name);
+			var attribute = this.Slick.getAttribute(node, name);
 			return (argument) ? argument == attribute : !!attribute;
 		},
 
@@ -92,7 +92,7 @@ description: Target html nodes using css syntax.
 				switch (part.type){
 					case 'class': if (!node.className || !part.regexp.test(node.className)) return false; break;
 					case 'pseudo': if (!this['match:pseudo'](node, part.key, part.value)) return false; break;
-					case 'attribute': if (!part.test(this.slick.getAttribute(node, part.key))) return false; break;
+					case 'attribute': if (!part.test(this.Slick.getAttribute(node, part.key))) return false; break;
 				}
 			}
 
@@ -297,9 +297,9 @@ description: Target html nodes using css syntax.
 	
 	var combinatorMap = {' ': '>>', '+': '+>', '~': '~>'};
 	
-	// slick
+	// Slick
 	
-	this.slick = function(context, expression, append){
+	this.Slick = function(context, expression, append){
 		
 		local.inSlick = true;
 		
@@ -307,7 +307,7 @@ description: Target html nodes using css syntax.
 		
 		if (expression == null) return append;
 		
-		if (typeof expression != 'string' && slick.contains(context, expression)){
+		if (typeof expression != 'string' && Slick.contains(context, expression)){
 			append.push(expression);
 			return append;
 		}
@@ -315,7 +315,7 @@ description: Target html nodes using css syntax.
 		local.positions = {};
 
 		var current;
-		var parsed = slick.parse(expression);
+		var parsed = Slick.parse(expression);
 		var tempUniques = {};
 
 		local.push = (parsed.length == 1 && parsed[0].length == 1) ? local.pushArray : local.pushUID;
@@ -363,15 +363,15 @@ description: Target html nodes using css syntax.
 
 	};
 	
-	local.slick = slick;
+	local.Slick = Slick;
 	
-	// slick contains
+	// Slick contains
 	
-	slick.contains = local.contains;
+	Slick.contains = local.contains;
 	
 	// add pseudo
 	
-	slick.definePseudo = function(name, fn){
+	Slick.definePseudo = function(name, fn){
 		local['pseudo:' + name] = function(node, argument){
 			return fn.call(node, argument);
 		};
@@ -380,7 +380,7 @@ description: Target html nodes using css syntax.
 	
 	// add combinator function
 	
-	slick.defineCombinator = function(name, fn){
+	Slick.defineCombinator = function(name, fn){
 		local['combinator:' + name] = function(node, tag, id, parts){
 			var nodes = fn.call(node);
 			if (!nodes || !nodes.length) return;
@@ -391,19 +391,19 @@ description: Target html nodes using css syntax.
 	
 	// default getAttribute (override this please)
 	
-	slick.getAttribute = function(node, name){
+	Slick.getAttribute = function(node, name){
 		return (name == 'class') ? node.className : node.getAttribute(name);
 	};
 	
 	// matcher
 	
-	slick.match = function(node, selector){
+	Slick.match = function(node, selector){
 		if (!selector || selector === node) return true;
 		local.positions = {};
 		return local['match:node'](node, selector);
 	};
 	
-	slick.uniques = function(nodes, append){
+	Slick.uniques = function(nodes, append){
 		var uniques = {};
 		if (!append) append = [];
 		for (var i = 0, l = nodes.length; i < l; i++){
@@ -446,7 +446,7 @@ description: Target html nodes using css syntax.
 
 	var parsed, separatorIndex, combinatorIndex, partIndex, cache = {};
 
-	slick.parse = function(expression){
+	Slick.parse = function(expression){
 		if (cache[expression]) return cache[expression];
 		var exp = expression;
 		parsed = [];
@@ -613,5 +613,5 @@ description: Target html nodes using css syntax.
 })();
 
 document.search = function(expression){
-	return slick(document, expression);
+	return Slick(document, expression);
 };

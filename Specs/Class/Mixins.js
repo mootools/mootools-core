@@ -168,13 +168,13 @@ describe("Events Class", {
 
 	"should add a protected event": function(){
 		var myTest = new Local.EventsTest();
-		var protected = (function(){ Local.fn(); }).protect();
-		myTest.addEvent('protected', protected);
+		var protectedFn = (function(){ Local.fn(); }).protect();
+		myTest.addEvent('protected', protectedFn);
 
 		var event = Storage.retrieve(myTest, 'events.type.protected');
 		value_of(event).should_not_be(undefined);
-		value_of(event.contains(protected)).should_be_true();
-		value_of(event[0]._protected_).should_be_true();
+		value_of(event.contains(protectedFn)).should_be_true();
+		value_of(event[0][':protected']).should_be_true();
 	},
 
 	"should remove a specific method for an event": function(){

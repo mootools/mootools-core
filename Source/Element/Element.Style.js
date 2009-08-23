@@ -52,11 +52,11 @@ var getStyle = (window.getComputedStyle) ? function(element, name, unit){
 
 };
 
-slick.definePseudo('positioned', function(){
+Slick.definePseudo('positioned', function(){
 	return getStyle(this, 'position') != 'static';
 });
 
-slick.definePseudo('static', function(){
+Slick.definePseudo('static', function(){
 	return getStyle(this, 'position') == 'static';
 });
 
@@ -343,14 +343,14 @@ Element.implement({
 		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
 	},
 	
-	getStyles: function(styles){
+	getStyles: function(){
 		var results = {};
-		for (var i = 0; i < styles.length; i++){
-			var s = styles[i].camelCase();
+		for (var i = 0; i < arguments.length; i++){
+			var s = arguments[i];
 			results[s] = this.getStyle(s);
 		}
 		return results;
-	}
+	}.overload(Function.overloadList)
 
 });
 
