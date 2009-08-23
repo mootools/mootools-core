@@ -23,9 +23,9 @@ var eventsOf = function(object, type){
 };
 
 var removeEventsOfType = function(object, type){
-	eventsOf(object, type).each(function(fn){
-		object.removeEvent(type, fn);
-	});
+	var events = eventsOf(object, type);
+	for (var i = events.length - 1; i >= 0; i--)
+		object.removeEvent(type, events[i]);
 };
 
 this.Events = new Class({
@@ -80,11 +80,9 @@ this.Options = new Class({
 	options: {},
 	
 	setOption: function(key, value){
-		if ((/^on[A-Z]/).test(key) && this.addEvent && typeOf(value) == 'function'){
-			this.addEvent(key, value);
-		} else {
-			Object.merge(this.options, key, value);
-		}
+		if ((/^on[A-Z]/).test(key) && this.addEvent && typeOf(value) == 'function') this.addEvent(key, value);
+		else Object.merge(this.options, key, value);
+		
 		return this;
 	},
 	
