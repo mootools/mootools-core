@@ -79,14 +79,17 @@ this.Options = new Class({
 	options: {},
 	
 	setOption: function(key, value){
-		if ((/^on[A-Z]/).test(key) && this.addEvent && typeOf(value) == 'function') this.addEvent(key, value);
-		else Object.merge(this.options, key, value);
-		
+		Object.merge(this.options, key, value);
 		return this;
 	},
 	
 	setOptions: function(options){
 		for (var key in options) this.setOption(key, options[key]);
+		if (this.addEvent) Object.each(this.options, function(value, key){
+			if (!(/^on[A-Z]/).test(key) || typeOf(value) != 'function') return;
+			this.addEvent(key, value);
+			this.options[key] = null;
+		}, this);
 		return this;
 	},
 
