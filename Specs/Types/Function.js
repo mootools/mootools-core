@@ -116,7 +116,7 @@ describe("Function Methods", {
 
 	'delay should return a timer pointer': function(){
 		var timer = nil.delay(10000);
-		value_of(Native.isNumber(timer)).should_be_true();
+		value_of(Type.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	},
 
@@ -124,7 +124,7 @@ describe("Function Methods", {
 
 	'periodical should return a timer pointer': function(){
 		var timer = nil.periodical(10000);
-		value_of(Native.isNumber(timer)).should_be_true();
+		value_of(Type.isNumber(timer)).should_be_true();
 		Function.clear(timer);
 	}
 

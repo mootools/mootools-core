@@ -58,13 +58,13 @@ describe('Element', {
 	},
 
 	"should return a select Element that retains it's selected options": function(){
-		var select1 = new Element('<select multiple="multiple" name="select[]">' +
-			'<option value="" name="none">--</option>' +
-			'<option value="volvo" name="volvo">Volvo</option>' +
-			'<option value="saab" name="saab" selected="selected">Saab</option>' +
-			'<option value="opel" name="opel" selected="selected">Opel</option>' +
-			'<option value="bmw" name="bmw">BMW</option>' +
-		'</select>');
+		var select1 = new Element('select[multiple="multiple"][name="select[]"]').adopt(
+			new Element('option', {name: 'none', value: '', html: '--'}),
+			new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
+			new Element('option', {name: 'saab', value: 'saab', html: 'Saab', selected: true}),
+			new Element('option', {name: 'opel', value: 'opel', html: 'Opel', selected: 'selected'}),
+			new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
+		);
 
 		var select2 = new Element('select', {name: 'select[]', multiple: true}).adopt(
 			new Element('option', {name: 'none', value: '', html: '--'}),
@@ -93,11 +93,11 @@ var myElements = new Elements([
 describe('Elements', {
 
 	"should return an 'elements' type": function(){
-		value_of(Native.isElements(myElements)).should_be_true();
+		value_of(Type.isElements(myElements)).should_be_true();
 	},
 
 	"should return an array of Elements": function(){
-		value_of(myElements.every(Native.isElement)).should_be_true();
+		value_of(myElements.every(Type.isElement)).should_be_true();
 	},
 
 	"should apply Element prototypes to the returned array": function(){

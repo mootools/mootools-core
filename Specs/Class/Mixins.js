@@ -145,7 +145,7 @@ describe("Events Class", {
 		var myTest = new Local.EventsTest();
 		myTest.addEvent('event', Local.fn);
 
-		var event = Storage.retrieve(myTest, 'events.type.event');
+		var event = myTest.events.event;
 		value_of(event).should_not_be(undefined);
 		value_of(event.contains(Local.fn)).should_be_true();
 	},
@@ -157,11 +157,12 @@ describe("Events Class", {
 			'event2': Local.fn
 		});
 
-		var event1 = Storage.retrieve(myTest, 'events.type.event1');
+		var event1 =  myTest.events.event1;
 		value_of(event1).should_not_be(undefined);
 		value_of(event1.contains(Local.fn)).should_be_true();
+		value_of(event1.length).should_be(1);
 
-		var event2 = Storage.retrieve(myTest, 'events.type.event2');
+		var event2 = myTest.events.event2;
 		value_of(event2).should_not_be(undefined);
 		value_of(event2.contains(Local.fn)).should_be_true();
 	},
@@ -171,10 +172,10 @@ describe("Events Class", {
 		var protectedFn = (function(){ Local.fn(); }).protect();
 		myTest.addEvent('protected', protectedFn);
 
-		var event = Storage.retrieve(myTest, 'events.type.protected');
+		var event = myTest.events['protected'];
 		value_of(event).should_not_be(undefined);
 		value_of(event.contains(protectedFn)).should_be_true();
-		value_of(event[0][':protected']).should_be_true();
+		value_of(event[0].$protected).should_be_true();
 	},
 
 	"should remove a specific method for an event": function(){
@@ -184,7 +185,7 @@ describe("Events Class", {
 		myTest.addEvent('event', fn);
 		myTest.removeEvent('event', Local.fn);
 
-		var event = Storage.retrieve(myTest, 'events.type.event');
+		var event = myTest.events.event;
 		value_of(event).should_not_be(undefined);
 		value_of(event.contains(fn)).should_be_true();
 	},
@@ -196,7 +197,7 @@ describe("Events Class", {
 		myTest.addEvent('event', fn);
 		myTest.removeEvents('event');
 		
-		value_of(Storage.retrieve(myTest, 'events.type.event').length).should_be(0);
+		value_of(myTest.events.event.length).should_be(0);
 	},
 
 	"should remove all events": function(){
@@ -206,8 +207,8 @@ describe("Events Class", {
 		myTest.addEvent('event2', fn);
 		myTest.removeEvents('event1').removeEvents('event2');
 
-		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(0);
-		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(0);
+		value_of(myTest.events.event1.length).should_be(0);
+		value_of(myTest.events.event2.length).should_be(0);
 	},
 
 	"should remove events with an object": function(){
@@ -247,7 +248,7 @@ describe("Options Class", {
 
 	"should set options": function(){
 		var myTest = new Local.OptionsTest({a: 1, b: 3});
-		value_of(Storage.retrieve(myTest, 'options')).should_not_be(undefined);
+		value_of(myTest.options).should_not_be(undefined);
 	},
 
 	"should override default options": function(){
@@ -290,9 +291,9 @@ describe("Options Class w/ Events", {
 			}
 		});
 
-		value_of(Storage.retrieve(myTest, 'events.type.event1').length).should_be(1);
-		value_of(Storage.retrieve(myTest, 'events.type.event2').length).should_be(1);
-		value_of(Storage.retrieve(myTest, 'events.type.event3').length).should_be(1);
+		value_of(myTest.events.event1.length).should_be(1);
+		value_of(myTest.events.event2.length).should_be(1);
+		value_of(myTest.events.event3.length).should_be(1);
 	}
 
 });

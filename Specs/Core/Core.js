@@ -8,7 +8,7 @@ License:
 
 (function(){
 
-var Instrument = new Native('Instrument', function(name){
+var Instrument = new Type('Instrument', function(name){
 	this.name = name;
 }).implement({
 
@@ -18,7 +18,7 @@ var Instrument = new Native('Instrument', function(name){
 
 });
 
-var Car = new Native('Car', function(name){
+var Car = new Type('Car', function(name){
 	this.name = name;
 }).implement({
 
@@ -28,7 +28,7 @@ var Car = new Native('Car', function(name){
 
 });
 
-describe('Native', {
+describe('Type', {
 
 	'should allow implementation over existing methods when a method is not protected': function(){
 		Instrument.implement({
@@ -54,8 +54,8 @@ describe('Native', {
 		value_of(Car.method({name: 'not so nice car'})).should_be('driving a not so nice car');
 	},
 
-	"should have a 'native' Native": function(){
-		value_of(Native.isNative(Instrument)).should_be_true();
+	"should be a Type": function(){
+		value_of(Type.isType(Instrument)).should_be_true();
 	}
 
 });
@@ -77,7 +77,7 @@ describe('Array.from', {
 		div1.appendChild(div3);
 
 		var array = Array.from(div1.getElementsByTagName('*'));
-		value_of(Native.isArray(array)).should_be_true();
+		value_of(Type.isArray(array)).should_be_true();
 	},
 
 	'should return an array for arguments': function(){
@@ -85,7 +85,7 @@ describe('Array.from', {
 			return Array.from(arguments);
 		};
 		var arr = fnTest(1,2,3);
-		value_of(Native.isArray(arr)).should_be_true();
+		value_of(Type.isArray(arr)).should_be_true();
 		value_of(arr).should_have(3, 'items');
 	},
 
@@ -100,17 +100,6 @@ describe('Array.from', {
 
 	'should ignore and return an array': function(){
 		value_of(Array.from([1,2,3])).should_be([1,2,3]);
-	}
-
-});
-
-describe('Function.argument', {
-
-	'should return the argument passed according to the index': function(){
-		value_of(Function.argument(0)('a','b','c','d')).should_be('a');
-		value_of(Function.argument(1)('a','b','c','d')).should_be('b');
-		value_of(Function.argument(2)('a','b','c','d')).should_be('c');
-		value_of(Function.argument(3)('a','b','c','d')).should_be('d');
 	}
 
 });
@@ -237,7 +226,7 @@ describe('Number.random', {
 describe('Date.now', {
 
 	'should return a timestamp': function(){
-		value_of(Native.isNumber(Date.now())).should_be_true();
+		value_of(Type.isNumber(Date.now())).should_be_true();
 	}
 
 });
