@@ -106,7 +106,7 @@ Event.implement('remove', function(){
 			
 			return this;
 			
-		}.setMany(),
+		}.overload(Function.overloadPair),
 
 		removeEvent: function(name, fn){
 			

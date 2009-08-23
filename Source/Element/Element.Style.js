@@ -334,7 +334,7 @@ Element.implement({
 	},
 	
 	setStyles: function(styles){
-		for (var name in styles) this.setStyle(name, styles[style]);
+		for (var name in styles) this.setStyle(name, styles[name]);
 		return this;
 	},
 

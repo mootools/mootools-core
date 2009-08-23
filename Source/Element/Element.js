@@ -14,7 +14,7 @@ var Element = this.Element = function(item, props){
 	
 	if (!props) props = {};
 	
-	var parsed = Slick.parse(item)[0][0], id;
+	var parsed = Slick.parse(item).expressions[0][0], id;
 	
 	var tag = parsed.tag || 'div';
 	if (parsed.id) props.id = parsed.id;
