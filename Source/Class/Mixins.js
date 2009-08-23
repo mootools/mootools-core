@@ -24,8 +24,7 @@ var eventsOf = function(object, type){
 
 var removeEventsOfType = function(object, type){
 	var events = eventsOf(object, type);
-	for (var i = events.length - 1; i >= 0; i--)
-		object.removeEvent(type, events[i]);
+	for (var i = events.length; i--; ) object.removeEvent(type, events[i]);
 };
 
 this.Events = new Class({
