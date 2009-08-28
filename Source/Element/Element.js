@@ -270,6 +270,35 @@ Object.each(inserters, function(inserter, where){
 
 Element.implement(methods);
 
+/* Tree Walking */
+
+methods = {
+	find: {
+		getNext: '+',
+		getPrevious: '!+',
+		getFirst: '^',
+		getLast: '!^',
+		getParent: '!>'
+	},
+	search: {
+		getAllNext: '~',
+		getAllPrevious: '!~',
+		getSiblings: '~~',
+		getChildren: '>',
+		getParents: '!'
+	}
+};
+
+Object.each(methods, function(getters, method){
+	
+	Element.implement(Object.map(getters, function(combinator, getter){
+		return function(expression){
+			return this[method](combinator + (expression || '*'));
+		};
+	}));
+	
+});
+
 /* Element Storage */
 
 ['store', 'retrieve', 'dump'].each(function(name){
