@@ -291,7 +291,7 @@ methods = {
 
 Object.each(methods, function(getters, method){
 	
-	Element.implement(Object.map(getters, function(combinator, getter){
+	Element.implement(Object.map(getters, function(combinator){
 		return function(expression){
 			return this[method](combinator + (expression || '*'));
 		};
