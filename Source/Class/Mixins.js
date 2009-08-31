@@ -18,7 +18,7 @@ var eventsOf = function(object, type){
 	type = type.replace(/^on([A-Z])/, function(full, first){
 		return first.toLowerCase();
 	});
-	var events = object.events;
+	var events = object.$events;
 	return events[type] || (events[type] = []);
 };
 
@@ -29,7 +29,7 @@ var removeEventsOfType = function(object, type){
 
 this.Events = new Class({
 	
-	events: {},
+	$events: {},
 
 	addEvent: function(type, fn){
 		eventsOf(this, type).include(fn);
@@ -64,7 +64,7 @@ this.Events = new Class({
 			case 'string': removeEventsOfType(this, option); break;
 			case 'object': for (var name in option) this.removeEvent(name, option[name]); break;
 			case 'null':
-				var events = this.events;
+				var events = this.$events;
 				for (var type in events) removeEventsOfType(this, type);
 		}
 		return this;
