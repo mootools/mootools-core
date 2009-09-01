@@ -22,7 +22,8 @@ License:
 				position: 'absolute',
 				top: 100,
 				left: 100,
-				overflow: 'hidden'
+				overflow: 'hidden',
+				zIndex: 1
 			}
 		}).inject($(document.body));
 		
@@ -37,7 +38,7 @@ License:
 				position: 'relative',
 				overflow: 'hidden'
 			}
-		}).inject(div)
+		}).inject(div);
 		
 		absDiv = new Element('div', {
 			styles: {
@@ -52,7 +53,7 @@ License:
 				left: 10,
 				overflow: 'hidden'
 			}
-		}).inject(relDiv)
+		}).inject(relDiv);
 	
 		scrollDiv = new Element('div', {
 			styles: {
