@@ -40,23 +40,30 @@ Browser.Platform[Browser.Platform.name] = true;
 // Request
 
 Browser.Request = (function(){
-	
+
 	var XMLHTTP = function(){
 		return new XMLHttpRequest();
 	};
-
-	var ActiveX = function(){
+ 
+	var MSXML2 = function(){
 		return new ActiveXObject('MSXML2.XMLHTTP');
 	};
-	
+ 
+	var MSXML = function(){
+		return new ActiveXObject('Microsoft.XMLHTTP');
+	};
+ 
 	return Function.stab(function(){
 		XMLHTTP();
 		return XMLHTTP;
 	}, function(){
-		ActiveX();
-		return ActiveX;
+		MSXML2();
+		return MSXML2;
+	}, function(){
+		MSXML();
+		return MSXML;
 	});
-
+ 
 })();
 
 Browser.Features.xhr = !!(Browser.Request);
