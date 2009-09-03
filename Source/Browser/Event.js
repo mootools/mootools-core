@@ -8,8 +8,7 @@ requires:
 (function(){
 
 var Event = this.Event = new Type('Event', function(event){
-	event = event || window.event || null;
-	if (event == null) event = {};
+	event = event || window.event || {};
 	if (event.event) event = event.event;
 	this.event = event;
 	Browser.event = this;
@@ -47,54 +46,23 @@ Event.defineGetters({
 	wheel: function(){
 		var event = this.event;
 		return (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-	}
-
-});
-
-Event.defineGetter('key', function(){
-	var event = this.event;
+	},
 	
-	var code = event.which || event.keyCode;
-	
-	var named = Event.lookupKeyCode(code);
-	if (named) return named;
+	key: function(){
+		var event = this.event;
 
-	if (event.type == 'keydown'){
-		var fKey = code - 111;
-		if (fKey > 0 && fKey < 13) return 'f' + fKey;
-	}
+		var code = event.which || event.keyCode;
 
-	return String.fromCharCode(code).toLowerCase();
-});
+		var named = Event.lookupKeyCode(code);
+		if (named) return named;
 
-Event.implement({
-	
-	set: function(object){
-		for (var key in object){
-			var value = object[key];
-			var setter = Event.lookupSetter(key = key.camelCase());
-			(setter) ? setter.call(this, value) : this[key] = value;
+		if (event.type == 'keydown'){
+			var fKey = code - 111;
+			if (fKey > 0 && fKey < 13) return 'f' + fKey;
 		}
-		return this;
-	}.overload(Function.overloadPair),
-	
-	get: function(){
-		var key, results = {};
-		for (var i = 0, l = arguments.length; i < l; i++){
-			key = arguments[i].camelCase();
-			if (this.hasOwnProperty(key)){
-				results[key] = this[key];
-			} else {
-				var getter = Event.lookupGetter(key);
-				results[key] = this[key] = (getter) ? getter.call(this) : this.event[key];
-			}
-		}
-		return (l == 1) ? results[key] : results;
-	}.overload(Function.overloadList)
-	
-});
 
-Event.defineGetters({
+		return String.fromCharCode(code).toLowerCase();
+	},
 	
 	target: function(){
 		var event = this.event;
@@ -133,10 +101,33 @@ Event.defineGetters({
 			y: event.pageY || event.clientY + doc.scrollTop
 		};
 	}
-	
+
 });
 
 Event.implement({
+	
+	set: function(object){
+		for (var key in object){
+			var value = object[key];
+			var setter = Event.lookupSetter(key = key.camelCase());
+			(setter) ? setter.call(this, value) : this[key] = value;
+		}
+		return this;
+	}.overload(Function.overloadPair),
+	
+	get: function(){
+		var key, results = {};
+		for (var i = 0, l = arguments.length; i < l; i++){
+			key = arguments[i].camelCase();
+			if (this.hasOwnProperty(key)){
+				results[key] = this[key];
+			} else {
+				var getter = Event.lookupGetter(key);
+				results[key] = this[key] = (getter) ? getter.call(this) : this.event[key];
+			}
+		}
+		return (l == 1) ? results[key] : results;
+	}.overload(Function.overloadList),
 
 	stopPropagation: function(){
 		var event = this.event;

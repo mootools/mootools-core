@@ -11,7 +11,7 @@ String.implement({
 	},
 
 	contains: function(string, separator){
-		return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : this.indexOf(string) > -1;
+		return ((separator) ? (separator + this + separator).indexOf(separator + string + separator) : this.indexOf(string)) > -1;
 	},
 
 	trim: function(){
@@ -30,7 +30,7 @@ String.implement({
 
 	hyphenate: function(){
 		return this.replace(/[A-Z]/g, function(match){
-			return ('-' + match.charAt(0).toLowerCase());
+			return '-' + match.toLowerCase();
 		});
 	},
 
@@ -49,6 +49,14 @@ String.implement({
 			if (match.charAt(0) == '\\') return match.slice(1);
 			return (object[name] != null) ? object[name] : '';
 		});
+	},
+	
+	toInt: function(base){
+		return parseInt(this, base || 10);
+	},
+	
+	toFloat: function(){
+		return parseFloat(this);
 	}
 
 });
