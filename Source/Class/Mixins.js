@@ -57,8 +57,7 @@ this.Events = new Class({
 
 	removeEvent: function(type, fn){
 		if (!fn.$protected){
-			var events = eventsOf(this, type);
-			var index = events.indexOf(fn);
+			var events = eventsOf(this, type), index = events.indexOf(fn);
 			if (index != -1) delete events[index];
 		}
 		
