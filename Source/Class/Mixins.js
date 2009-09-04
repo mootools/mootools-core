@@ -23,8 +23,9 @@ var eventsOf = function(object, type){
 };
 
 var removeEventsOfType = function(object, type){
-	var events = eventsOf(object, type);
-	for (var i = events.length; i--; ) object.removeEvent(type, events[i]);
+	eventsOf(object, type).each(function(fn){
+		object.removeEvent(type, fn);
+	});
 };
 
 this.Events = new Class({
@@ -32,7 +33,7 @@ this.Events = new Class({
 	$events: {},
 
 	addEvent: function(type, fn){
-		eventsOf(this, type).include(fn, true);
+		eventsOf(this, type).include(fn);
 		return this;
 	},
 	
@@ -43,8 +44,9 @@ this.Events = new Class({
 
 	fireEvent: function(type, args){
 		args = Array.from(args);
-		var events = eventsOf(this, type);
-		for (var i = events.length; i--; ) events[i].apply(this, args);
+		eventsOf(this, type).each(function(fn){
+			fn.apply(this, args);
+		}, this);
 		return this;
 	},
 	
@@ -54,7 +56,12 @@ this.Events = new Class({
 	}.overload(Function.overloadList),
 
 	removeEvent: function(type, fn){
-		if (!fn.$protected) eventsOf(this, type).erase(fn);
+		if (!fn.$protected){
+			var events = eventsOf(this, type);
+			var index = events.indexOf(fn);
+			if (index != -1) delete events[index];
+		}
+		
 		return this;
 	},
 

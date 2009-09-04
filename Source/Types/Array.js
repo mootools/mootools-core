@@ -80,8 +80,8 @@ Array.implement({
 		return (this.length) ? this[Number.random(0, this.length - 1)] : null;
 	},
 
-	include: function(item, unshift){
-		if (!this.contains(item)) this[unshift ? 'unshift' : 'push'](item);
+	include: function(item){
+		if (!this.contains(item)) this.push(item);
 		return this;
 	},
 
