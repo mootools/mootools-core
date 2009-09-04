@@ -7,7 +7,7 @@ requires: Element.Event
 (function(){
 
 Event.defineModifier('domready', {add: function(fn){
-	if (Browser.loaded) fn.call(this);
+	if (Browser.loaded) fn.delay(1, this);
 }});
 
 var domready = function(){
