@@ -32,7 +32,7 @@ this.Events = new Class({
 	$events: {},
 
 	addEvent: function(type, fn){
-		eventsOf(this, type).include(fn);
+		eventsOf(this, type).include(fn, true);
 		return this;
 	},
 	
@@ -43,16 +43,15 @@ this.Events = new Class({
 
 	fireEvent: function(type, args){
 		args = Array.from(args);
-		eventsOf(this, type).each(function(fn){
-			fn.apply(this, args);
-		}, this);
+		var events = eventsOf(this, type);
+		for (var i = events.length; i--; ) events[i].apply(this, args);
 		return this;
 	},
 	
-	fireEvents: function(events){
-		for (var i = 0; i < events.length; i++) this.fireEvent(events[i]);
+	fireEvents: function(){
+		for (var i = 0; i < arguments.length; i++) this.fireEvent(arguments[i]);
 		return this;
-	},
+	}.overload(Function.overloadList),
 
 	removeEvent: function(type, fn){
 		if (!fn.$protected) eventsOf(this, type).erase(fn);
