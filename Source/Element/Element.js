@@ -188,14 +188,13 @@ Element.implement({
 var inserters = {
 
 	before: function(context, element){
-		if (element.parentNode) element.parentNode.insertBefore(context, element);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element);
 	},
 
 	after: function(context, element){
-		if (!element.parentNode) return;
-		var next = element.nextSibling;
-		if (next) element.parentNode.insertBefore(context, next);
-		else element.parentNode.appendChild(context);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element.nextSibling);
 	},
 
 	bottom: function(context, element){
@@ -203,9 +202,7 @@ var inserters = {
 	},
 
 	top: function(context, element){
-		var first = element.firstChild;
-		if (first) element.insertBefore(context, first);
-		else element.appendChild(context);
+		element.insertBefore(context, element.firstChild);
 	}
 
 };
@@ -215,7 +212,8 @@ inserters.inside = inserters.bottom;
 Element.implement({
 	
 	dispose: function(){
-		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
+		var parent = this.parentNode;
+		return (parent) ? parent.removeChild(this) : this;
 	},
 	
 	adopt: function(){

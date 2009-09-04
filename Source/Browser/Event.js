@@ -8,7 +8,7 @@ requires:
 (function(){
 
 var Event = this.Event = new Type('Event', function(event){
-	event = event || window.event || {};
+	if (!event) event = window.event || {};
 	if (event.event) event = event.event;
 	this.event = event;
 	Browser.event = this;
