@@ -125,9 +125,7 @@ describe("Events Class", {
 	"before all": function(){
 		Local.EventsTest = new Class({
 			Implements: Events,
-
-			called: 0,
-
+			
 			initialize: function(){
 				this.called = 0;
 			}
@@ -144,10 +142,8 @@ describe("Events Class", {
 	"should add an Event to the Class": function(){
 		var myTest = new Local.EventsTest();
 		myTest.addEvent('event', Local.fn);
-
-		var event = myTest.$events.event;
-		value_of(event).should_not_be(undefined);
-		value_of(event.contains(Local.fn)).should_be_true();
+		myTest.fireEvent('event');
+		value_of(Local.called).should_be(1);
 	},
 
 	"should add multiple Events to the Class": function(){
@@ -156,59 +152,50 @@ describe("Events Class", {
 			'event1': Local.fn,
 			'event2': Local.fn
 		});
-
-		var event1 =  myTest.$events.event1;
-		value_of(event1).should_not_be(undefined);
-		value_of(event1.contains(Local.fn)).should_be_true();
-		value_of(event1.length).should_be(1);
-
-		var event2 = myTest.$events.event2;
-		value_of(event2).should_not_be(undefined);
-		value_of(event2.contains(Local.fn)).should_be_true();
+		myTest.fireEvents('event1', 'event2');
+		value_of(Local.called).should_be(2);
 	},
 
 	"should add a protected event": function(){
 		var myTest = new Local.EventsTest();
 		var protectedFn = (function(){ Local.fn(); }).protect();
 		myTest.addEvent('protected', protectedFn);
-
-		var event = myTest.$events['protected'];
-		value_of(event).should_not_be(undefined);
-		value_of(event.contains(protectedFn)).should_be_true();
-		value_of(event[0].$protected).should_be_true();
+		myTest.removeEvent('protected', protectedFn);
+		myTest.fireEvent('protected');
+		value_of(Local.called).should_be(1);
 	},
 
 	"should remove a specific method for an event": function(){
 		var myTest = new Local.EventsTest();
-		var fn = function(){ return true; };
+		var x = 0, fn = function(){ x++; };
 		myTest.addEvent('event', Local.fn);
 		myTest.addEvent('event', fn);
 		myTest.removeEvent('event', Local.fn);
-
-		var event = myTest.$events.event;
-		value_of(event).should_not_be(undefined);
-		value_of(event.contains(fn)).should_be_true();
+		myTest.fireEvent('event');
+		value_of(x).should_be(1);
+		value_of(Local.called).should_be(0);
 	},
 
 	"should remove an event and its methods": function(){
 		var myTest = new Local.EventsTest();
-		var fn = function(){ return true; };
+		var x = 0, fn = function(){ x++; };
 		myTest.addEvent('event', Local.fn);
 		myTest.addEvent('event', fn);
 		myTest.removeEvents('event');
-		
-		value_of(myTest.$events.event.length).should_be(0);
+		myTest.fireEvent('event');
+		value_of(x).should_be(0);
+		value_of(Local.called).should_be(0);
 	},
 
 	"should remove all events": function(){
 		var myTest = new Local.EventsTest();
-		var fn = function(){ return true; };
+		var x = 0, fn = function(){ x++; };
 		myTest.addEvent('event1', Local.fn);
 		myTest.addEvent('event2', fn);
-		myTest.removeEvents('event1').removeEvents('event2');
-
-		value_of(myTest.$events.event1.length).should_be(0);
-		value_of(myTest.$events.event2.length).should_be(0);
+		myTest.removeEvents();
+		myTest.fireEvents(['event1', 'event2']);
+		value_of(x).should_be(0);
+		value_of(Local.called).should_be(0);
 	},
 
 	"should remove events with an object": function(){
@@ -225,6 +212,18 @@ describe("Events Class", {
 		value_of(Local.called).should_be(3);
 		myTest.fireEvent('event2');
 		value_of(Local.called).should_be(3);
+	},
+	
+	"should be able to remove event during firing": function(){
+		var myTest = new Local.EventsTest();
+		myTest.addEvent('event', Local.fn);
+		myTest.addEvent('event', function(){
+			Local.fn();
+			myTest.removeEvent('event', arguments.callee);
+		});
+		myTest.addEvent('event', function(){ Local.fn(); });
+		myTest.fireEvent('event').fireEvent('event');
+		value_of(Local.called).should_be(5);
 	}
 
 });
