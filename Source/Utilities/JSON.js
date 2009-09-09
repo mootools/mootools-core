@@ -12,15 +12,30 @@ requires:
 
 if (!this.JSON) this.JSON = {};
 
+(function(){
+
+var special = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'};
+
+var escape = function(chr){
+	return special[chr] || '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+};
+
+var isSecure = function(string){
+	string = string.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').
+					replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+					replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+	
+	return (/^[\],:{}\s]*$/).test(string);
+};
+
 JSON.encode = JSON.stringify || function(obj){
+	if (obj && obj.toJSON) obj = obj.toJSON();
+	
 	switch (typeOf(obj)){
 		case 'string':
-			return '"' + obj.replace(/[\x00-\x1f\\"]/g, function(chr){
-				var special = {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'};
-				return special[chr] || '\\u00' + Math.floor(chr.charCodeAt() / 16).toString(16) + (chr.charCodeAt() % 16).toString(16);
-			}) + '"';
+			return '"' + obj.replace(/[\x00-\x1f\\"]/g, escape) + '"';
 		case 'array':
-			return '[' + String(obj.map(JSON.encode).filter(nil)) + ']';
+			return '[' + obj.map(JSON.encode).clean() + ']';
 		case 'object':
 			var string = [];
 			for (var key in obj){
@@ -29,15 +44,21 @@ JSON.encode = JSON.stringify || function(obj){
 			}
 			return '{' + string + '}';
 		case 'number': case 'boolean': return '' + obj;
-		case false: return 'null';
+		case 'null': return 'null';
 	}
 	
 	return null;
 };
 
 JSON.decode = function(string, secure){
-	if (typeOf(string) != 'string' || !string.length) return null;
-	if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) 
-		throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
+	if (!string || typeOf(string) != 'string') return null;
+	
+	if (secure || JSON.secure){
+		if (JSON.parse) return JSON.parse(string);
+		if (!isSecure(string)) throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
+	}
+	
 	return eval('(' + string + ')');
 };
+
+})();
