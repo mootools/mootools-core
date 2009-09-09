@@ -42,9 +42,7 @@ Array.implement({
 	},
 	
 	clean: function(){
-		return this.filter(function(item){
-			return item != null;
-		});
+		return this.filter(nil);
 	},
 	
 	pick: function(){
