@@ -9,8 +9,11 @@ See Also:
 	<http://www.json.org/>
 */
 
-var JSON = new Hash({
-
+var JSON = new Hash(this.JSON && {
+	stringify: JSON.stringify,
+	parse: JSON.parse
+}).extend({
+	
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
 	$replaceChars: function(chr){
