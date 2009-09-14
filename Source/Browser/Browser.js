@@ -10,7 +10,6 @@ requires:
 var document = this.document;
 var window = document.window = this;
 
-
 var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\d+\.\d+).*?(safari|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = (function(){}).extend({
@@ -117,14 +116,8 @@ Browser.extend({
 	Event: this.Event
 });
 
-if (!Browser.Element){
-	Browser.Element = function(){};
-	Browser.Element.parent = Object;
-}
+this.Window = this.constructor = new Type('Window', function(){});
 
-this.Window = new Type('Window', function(){});
-
-this.constructor = this.Window;
 this.$typeOf = Function.from('window').hide();
 
 Window.mirror(function(name, method){
@@ -133,8 +126,8 @@ Window.mirror(function(name, method){
 
 Object.append(window, new Storage);
 
+document.html = document.documentElement;
 document.head = document.getElementsByTagName('head')[0];
-document.html = document.getElementsByTagName('html')[0];
 
 if (document.execCommand) Function.stab(function(){
 	document.execCommand("BackgroundImageCache", false, true);
@@ -145,9 +138,8 @@ if (this.attachEvent) this.attachEvent('onunload', function(){
 	document.head = document.html = document.window = null;
 });
 
-this.Document = new Type('Document', function(){});
+this.Document = document.constructor = new Type('Document', function(){});
 
-document.constructor = this.Document;
 document.$typeOf = Function.from('document').hide();
 
 Document.mirror(function(name, method){

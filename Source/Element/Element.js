@@ -14,7 +14,7 @@ var Element = this.Element = function(item, props){
 	
 	if (!props) props = {};
 	
-	var parsed = Slick.parse(item).expressions[0][0], id;
+	var parsed = Slick.parse(item).expressions[0][0];
 	
 	var tag = parsed.tag || 'div';
 	if (parsed.id) props.id = parsed.id;
@@ -25,9 +25,7 @@ var Element = this.Element = function(item, props){
 		
 		switch (part.type){
 			case 'class': classes.push(part.value); break;
-			case 'attribute':
-				if (part.value && part.operator == '=') props[part.key] = part.value;
-			break;
+			case 'attribute': if (part.value && part.operator == '=') props[part.key] = part.value;
 		}
 		
 	});
@@ -36,23 +34,6 @@ var Element = this.Element = function(item, props){
 	
 	return document.newElement(tag, props);
 };
-
-Element.prototype = Browser.Element.prototype;
-
-// mirror element methods to Elements
-
-new Type('Element', Element).mirror(function(name, method){
-	if (Array[name]) return;
-	Elements.implement(name, function(){
-		var results = [], args = arguments, elements = true;
-		for (var i = 0, l = this.length; i < l; i++){
-			var element = this[i], result = element[name].apply(element, args);
-			results[i] = result;
-			elements = (elements && typeOf(result) == 'element');
-		}
-		return (elements) ? new Elements(results) : results;
-	});
-});
 
 var types = {
 
@@ -66,14 +47,24 @@ var types = {
 
 };
 
-types.window = types.document = types.textnode = types.whitespace = function(item){
+types.element = types.window = types.document = types.textnode = types.whitespace = function(item){
 	return item;
 };
 
-if (document.html.mergeAttributes){
+if (Browser.Element){
+	
+	Element.prototype = Browser.Element.prototype;
+	
+} else {
+	
+	Element.parent = Object;
 	
 	var protoElement = document.createElement('div');
-	protoElement.$typeOf = Function.from('element');
+	protoElement.$typeOf = Function.from('element').hide();
+	
+	Element.mirror(function(name, method){
+		protoElement[name] = method;
+	});
 
 	types.element = function(item){
 		item.mergeAttributes(protoElement);
@@ -81,15 +72,24 @@ if (document.html.mergeAttributes){
 		return item;
 	};
 	
-	Element.mirror(function(name, method){
-		protoElement[name] = method;
-	});
-
 }
 
+// mirror element methods to Elements
+
+new Type('Element', Element).mirror(function(name, method){
+	if (Array[name]) return;
+	Elements.implement(name, function(){
+		var results = [], args = arguments, elements = true;
+		for (var i = 0, l = this.length; i < l; i++){
+			var element = this[i], result = results[i] = element[name].apply(element, args);
+			elements = (elements && typeOf(result) == 'element');
+		}
+		return (elements) ? new Elements(results) : results;
+	});
+});
+
 var Elements = this.Elements = function(elements){
-	if (!elements || !elements.length) return;
-	Slick.uniques(elements, this);
+	if (elements && elements.length) Slick.uniques(elements, this);
 };
 
 Elements.prototype = {length: 0};
@@ -127,7 +127,7 @@ Document.implement({
 	
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
-		return document.id(this.createElement(tag)).set(props);
+		return this.id(this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
