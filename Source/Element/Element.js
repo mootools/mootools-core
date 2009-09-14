@@ -104,14 +104,16 @@ new Type('Elements', Elements).implement({
 		} : filter, bind));
 	}.protect(),
 	
-	push: function(item){
-		if (document.id(item)) this[this.length++] = item;
-		return this.length;
+	push: function(){
+		var length = this.length;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = arguments[i];
+			if (document.id(item)) this[length++] = item;
+		}
+		return (this.length = length);
 	}.protect()
 
-});
-
-Elements.implement(Array.prototype);
+}).implement(Array.prototype);
 
 Array.mirror(Elements);
 
