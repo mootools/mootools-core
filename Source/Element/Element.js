@@ -230,12 +230,12 @@ Element.implement({
 	},
 
 	grab: function(el, where){
-		interters[where || 'bottom'](document.id(el), this);
+		inserters[where || 'bottom'](document.id(el), this);
 		return this;
 	},
 
 	inject: function(el, where){
-		interters[where || 'bottom'](this, document.id(el));
+		inserters[where || 'bottom'](this, document.id(el));
 		return this;
 	},
 
@@ -384,7 +384,7 @@ Element.implement({
 
 Element.defineSetter('css', function(style){
 	return this.style.cssText = style;
-}).defineGetter({
+}).defineGetters({
 
 	css: function(){
 		return this.style.cssText;
