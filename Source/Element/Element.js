@@ -190,7 +190,7 @@ Element.implement({
 	},
 
 	addClass: function(className){
-		if (!this.hasClass(className)) this.className += ' ' + className;
+		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
 		return this;
 	},
 
