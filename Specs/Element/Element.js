@@ -1100,6 +1100,12 @@ describe('Element className methods', {
 		div.removeClass('extra');
 		value_of(div.hasClass('myclass')).should_be_true();
 	},
+	
+	'should remove a Class with special characters': function(){
+		var div = new Element('div', {'class': 'myclass[special]'});
+		div.removeClass('myclass[special]');
+		value_of(div.className).should_be('');
+	},
 
 	'should add the class if the Element does not have the class': function(){
 		var div = new Element('div');
