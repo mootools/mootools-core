@@ -178,19 +178,24 @@ if (this.$$ == null) this.$$ = function(expression){
 
 /* ClassNames Accessor */
 
+var regexes = {};
+var regexOf = function(string){
+	return regexes[string] || (regexes[string] = new RegExp('(^|\\s)' + string.escapeRegExp() + '(?:\\s|$)'));
+};
+
 Element.implement({
 
 	hasClass: function(className){
-		return this.className.contains(className, ' ');
+		return regexOf(className).test(this.className);
 	},
 
 	addClass: function(className){
-		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
+		if (!this.hasClass(className)) this.className += ' ' + className;
 		return this;
 	},
 
 	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className.escapeRegExp() + '(?:\\s|$)'), '$1');
+		this.className = this.className.replace(regexOf(className), '$1');
 		return this;
 	},
 

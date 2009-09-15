@@ -1065,9 +1065,10 @@ describe('Element.clone', {
 describe('Element className methods', {
 
 	'should return true if the Element has the given class': function(){
-		var div = new Element('div', {'class': 'header bold'});
+		var div = new Element('div', {'class': 'header bold		italic'});	// tab there on purpose
 		value_of(div.hasClass('header')).should_be_true();
 		value_of(div.hasClass('bold')).should_be_true();
+		value_of(div.hasClass('italic')).should_be_true();
 		value_of(div.hasClass('random')).should_be_false();
 	},
 
