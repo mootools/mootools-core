@@ -9,6 +9,8 @@ requires:
 
 (function(){
 
+var document = this.document;
+
 var Element = this.Element = function(item, props){
 	if (typeOf(item) != 'string') return document.id(item).set(props);
 	
@@ -107,8 +109,8 @@ new Type('Elements', Elements).implement({
 	push: function(){
 		var length = this.length;
 		for (var i = 0, l = arguments.length; i < l; i++){
-			var item = arguments[i];
-			if (document.id(item)) this[length++] = item;
+			var item = document.id(arguments[i]);
+			if (item) this[length++] = item;
 		}
 		return (this.length = length);
 	}.protect()
