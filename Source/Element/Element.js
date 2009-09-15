@@ -153,8 +153,21 @@ Document.implement({
 	
 });
 
-Element.implement('match', function(expression){
-	return Slick.match(this, expression);
+Element.protect('contains').implement({
+	
+	contains: function(element){
+		return Slick.contains(this, element);
+	},
+	
+	match: function(expression){
+		return Slick.match(this, expression);
+	}
+	
+});
+
+Document.implement('contains', function(element){
+	var html = this.html;
+	return (element == html) || Slick.contains(html, element);
 });
 
 if (this.$ == null) this.$ = document.id;

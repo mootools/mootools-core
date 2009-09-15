@@ -126,6 +126,16 @@ Window.mirror(function(name, method){
 
 Object.append(window, new Storage);
 
+this.Document = document.constructor = new Type('Document', function(){});
+
+document.$typeOf = Function.from('document').hide();
+
+Document.mirror(function(name, method){
+	document[name] = method;
+});
+
+Object.append(document, new Storage);
+
 document.html = document.documentElement;
 document.head = document.getElementsByTagName('head')[0];
 
@@ -137,15 +147,5 @@ if (this.attachEvent) this.attachEvent('onunload', function(){
 	this.detachEvent('onunload', arguments.callee);
 	document.head = document.html = document.window = null;
 });
-
-this.Document = document.constructor = new Type('Document', function(){});
-
-document.$typeOf = Function.from('document').hide();
-
-Document.mirror(function(name, method){
-	document[name] = method;
-});
-
-Object.append(document, new Storage);
 	
 })();

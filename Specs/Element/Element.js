@@ -142,100 +142,6 @@ describe('IFrame constructor', {
 
 });
 
-describe('$', {
-
-	'before all': function(){
-		Container = document.createElement('div');
-		Container.innerHTML = '<div id="dollar"></div>';
-		document.body.appendChild(Container);
-	},
-
-	'after all': function(){
-		document.body.removeChild(Container);
-		Container = null;
-	},
-
-	'should return an extended Element by string id': function(){
-		var dollar1 = document.getElementById('dollar');
-		var dollar2 = $('dollar');
-
-		value_of(dollar1).should_be(dollar2);
-		value_of(dollar1.addEvent).should_not_be_null();
-	},
-
-	'should return the window if passed': function(){
-		value_of($(window)).should_be(window);
-	},
-
-	'should return the document if passed': function(){
-		value_of($(document)).should_be(document);
-	},
-
-	'should return null if string not found or type mismatch': function(){
-		value_of($(1)).should_be_null();
-		value_of($('nonexistant')).should_be_null();
-	}
-
-});
-
-describe('$$', {
-
-	'should return all Elements of a specific tag': function(){
-		var divs1 = $$('div');
-		var divs2 = Array.flatten(document.getElementsByTagName('div'));
-		value_of(divs1).should_be(divs2);
-	},
-
-	'should return multiple Elements for each specific tag': function(){
-		var headers1 = $$('h3, h4');
-		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
-		value_of(headers1).should_be(headers2);
-	},
-
-	'should return an empty array if not is found': function(){
-		value_of($$('not_found')).should_be([]);
-	}
-
-});
-
-describe('getDocument', {
-
-	'should return the owner document for elements': function(){
-		var doc = document.newElement('div').getDocument();
-		value_of(doc).should_be(document);
-	},
-
-	'should return the owned document for window': function(){
-		var doc = window.getDocument();
-		value_of(doc).should_be(document);
-	},
-
-	'should return self for document': function(){
-		var doc = document.getDocument();
-		value_of(doc).should_be(document);
-	}
-
-});
-
-describe('getWindow', {
-
-	'should return the owner window for elements': function(){
-		var win = document.newElement('div').getWindow();
-		value_of(win).should_be(window);
-	},
-
-	'should return the owner window for document': function(){
-		var win = document.getWindow();
-		value_of(win).should_be(window);
-	},
-
-	'should return self for window': function(){
-		var win = window.getWindow();
-		value_of(win).should_be(window);
-	}
-
-});
-
 describe('Element.find', {
 
 	'before all': function(){
@@ -306,6 +212,10 @@ describe('Document.search', {
 		var headers = document.search('h3, h4');
 		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
 		value_of(headers.length).should_be(headers2.length);
+	},
+
+	'should return an empty array if not is found': function(){
+		value_of(document.search('not_found')).should_be([]);
 	}
 
 });
@@ -326,6 +236,23 @@ describe('Document.id', {
 	'should getElementById that matches the id, otherwise null': function(){
 		value_of(document.id('first')).should_be(Container.childNodes[0]);
 		value_of(document.id('not_found')).should_be_null();
+	},
+	
+	'should return an extended Element by string id': function(){
+		value_of(document.id('second').inject).should_not_be_null();
+	},
+
+	'should return the window if passed': function(){
+		value_of(document.id(window)).should_be(window);
+	},
+
+	'should return the document if passed': function(){
+		value_of(document.id(document)).should_be(document);
+	},
+
+	'should return null if string not found or type mismatch': function(){
+		value_of(document.id(1)).should_be_null();
+		value_of(document.id(null)).should_be_null();
 	}
 
 });
@@ -1277,7 +1204,7 @@ describe('Element.toQueryString', {
 
 });
 
-describe('Element.hasChild', {
+describe('Element.contains', {
 
 	"before all": function(){
 		window.Local = {};
@@ -1292,18 +1219,47 @@ describe('Element.hasChild', {
 	},
 
 	"should return true if the Element is a child or grandchild": function(){
-		value_of(Local.container.hasChild(Local.children[0])).should_be_true();
-		value_of(Local.container.hasChild(Local.children[2])).should_be_true();
-		value_of(Local.container.hasChild(Local.grandchild)).should_be_true();
+		value_of(Local.container.contains(Local.children[0])).should_be_true();
+		value_of(Local.container.contains(Local.children[2])).should_be_true();
+		value_of(Local.container.contains(Local.grandchild)).should_be_true();
 	},
 
 	"should return false if it's the Element itself": function(){
-		value_of(Local.container.hasChild(Local.container)).should_be_false();
+		value_of(Local.container.contains(Local.container)).should_be_false();
 	},
 
 	"should return false if the Element is the parent or a sibling": function(){
-		value_of(Local.children[2].hasChild(Local.container)).should_be_false();
-		value_of(Local.children[2].hasChild(Local.children[1])).should_be_false();
+		value_of(Local.children[2].contains(Local.container)).should_be_false();
+		value_of(Local.children[2].contains(Local.children[1])).should_be_false();
+	}
+
+});
+
+describe('Document.contains', {
+
+	'before all': function(){
+		Container = new Element('div');
+		document.body.appendChild(Container);
+	},
+
+	'after all': function(){
+		Container = null;
+	},
+
+	"should return true if the Element in the DOM": function(){
+		value_of(document.contains(Container)).should_be_true();
+		value_of(document.contains(document.body)).should_be_true();
+		value_of(document.contains(document.head)).should_be_true();
+		value_of(document.contains(document.html)).should_be_true();
+	},
+
+	"should return false if it's the document itself": function(){
+		value_of(document.contains(document)).should_be_false();
+	},
+
+	"should return false if the Element in not in the DOM": function(){
+		document.body.removeChild(Container);
+		value_of(document.contains(Container)).should_be_false();
 	}
 
 });

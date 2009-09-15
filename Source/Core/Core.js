@@ -160,8 +160,8 @@ var implement = function(name, method){
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
-
-	if (typeOf(method) == 'function' && this[name] == null) extend.call(this, name, function(item){
+	
+	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
 		return method.apply(item, Array.prototype.slice.call(arguments, 1));
 	});
 	
@@ -195,7 +195,24 @@ Type.implement({
 	mirror: function(hook){
 		hooksOf(this).push(hook);
 		return this;
-	}
+	},
+	
+	protect: function(){
+		var prototype = this.prototype;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var name = arguments[i];
+			
+			var generic = this[name];
+			if (generic) generic.protect();
+			
+			var proto = prototype[name];
+			if (proto){
+				delete prototype[name];
+				prototype[name] = proto.protect();
+			}
+		}
+		return this;
+	}.overload(Function.overloadList)
 	
 });
 
@@ -205,20 +222,7 @@ new Type('Type', Type);
 
 var force = function(type, methods){
 	var object = this[type];
-	for (var i = 0; i < methods.length; i++){
-		var name = methods[i];
-		var proto = object.prototype[name];
-		var generic = object[name];
-		if (generic) generic.protect();
-		
-		if (proto){
-			proto.protect();
-			delete object.prototype[name];
-			object.prototype[name] = proto;
-		}
-
-	}
-	(new Type(type, object)).implement(object.prototype);
+	new Type(type, object).protect(methods).implement(object.prototype);
 };
 
 force('Array', [
@@ -239,7 +243,7 @@ force('RegExp', ['exec', 'test']);
 
 force('Date', ['now']);
 
-new Type('Date', Date).extend('now', function(){
+Date.extend('now', function(){
 	return +(new Date);
 });
 
