@@ -1452,7 +1452,7 @@ Eliminates a key from the Elements storage.
 
 ### Syntax:
 
-	myElement.retrieve(key);
+	myElement.eliminate(key);
 
 ### Arguments:
 
