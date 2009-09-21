@@ -147,5 +147,20 @@ if (this.attachEvent) this.attachEvent('onunload', function(){
 	this.detachEvent('onunload', arguments.callee);
 	document.head = document.html = document.window = null;
 });
+
+// Fix Array.from for HTMLCollection (IE)
+var old = Array.from;
+try {
+	old(document.html.childNodes);
+} catch (e){
+	Array.from = function(item, slice){
+		if (typeOf(item) == 'collection'){
+			var l = item.length, array = new Array(l - slice), i = slice;
+			for ( ; i < l; i++) array[i - slice] = item[i];
+			return array;
+		}
+		return old(item, slice);
+	};
+}
 	
 })();
