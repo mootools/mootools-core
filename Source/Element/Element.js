@@ -195,7 +195,7 @@ Element.implement({
 	},
 
 	removeClass: function(className){
-		this.className = this.className.replace(regexOf(className), '$1');
+		this.className = this.className.replace(regexOf(className), '$1').clean();
 		return this;
 	},
 
