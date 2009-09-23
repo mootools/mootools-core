@@ -139,27 +139,26 @@ Object.append(document, new Storage);
 document.html = document.documentElement;
 document.head = document.getElementsByTagName('head')[0];
 
-if (document.execCommand) Function.stab(function(){
+if (document.execCommand) try {
 	document.execCommand("BackgroundImageCache", false, true);
-});
+} catch (e){}
 
 if (this.attachEvent) this.attachEvent('onunload', function(){
 	this.detachEvent('onunload', arguments.callee);
 	document.head = document.html = document.window = null;
 });
 
-// Fix Array.from for HTMLCollection (IE)
-var old = Array.from;
+var arrayFrom = Array.from;
 try {
-	old(document.html.childNodes);
+	arrayFrom(document.html.childNodes);
 } catch (e){
-	Array.from = function(item, slice){
+	Array.from = function(item){
 		if (typeOf(item) == 'collection'){
-			var l = item.length, array = new Array(l - slice), i = slice;
-			for ( ; i < l; i++) array[i - slice] = item[i];
+			var i = item.length, array = new Array(i);
+			while (i--) array[i] = item[i];
 			return array;
 		}
-		return old(item, slice);
+		return arrayFrom(item);
 	};
 }
 	

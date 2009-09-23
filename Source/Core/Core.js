@@ -87,8 +87,8 @@ Function.from = function(item){
 	};
 };
 
-Array.from = function(item, slice){
-	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
+Array.from = function(item){
+	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item) : [item];
 };
 
 Number.from = function(item){
