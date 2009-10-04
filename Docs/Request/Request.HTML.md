@@ -51,7 +51,7 @@ Request Specifically made for receiving HTML.
 
 #### POST Request with data as String:
 
-	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post("user_id=25&save=true");
+	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post('user_id=25&save=true');
 
 #### Data from Object Passed via GET:
 
