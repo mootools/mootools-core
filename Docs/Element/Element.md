@@ -733,7 +733,7 @@ Clones the Element and returns the cloned one.
 ##### JavaScript
 
 	//Clones the Element and appends the clone after the Element.
-	var clone = $('myElement').clone().injectAfter('myElement');
+	var clone = $('myElement').clone().inject('myElement','after');
 
 ##### Resulting HTML
 
