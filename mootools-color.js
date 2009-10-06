@@ -127,10 +127,6 @@ Color.implement({
 		return this;
 	},
 	
-	copy: function(){
-		return new Color(this.color, this.type);
-	},
-	
 	get: function(name){
 		var hsb = ['hue', 'saturation', 'brightness'], rgb = ['red', 'green', 'blue'], index;
 		
@@ -138,6 +134,10 @@ Color.implement({
 		if ((index = hsb.indexOf(name)) > -1) return this.toArray('hsb')[index];
 		if ((index = rgb.indexOf(name)) > -1) return this.toArray('rgb')[index];
 		return null;
+	},
+	
+	copy: function(){
+		return new Color(this.color, this.type);
 	},
 
 	toRGB: function(){
@@ -182,14 +182,14 @@ Color.implement({
 
 Color.alias('toRGB', 'valueOf');
 
-function hex(hex){
+var hex = Color.hex = function(hex){
 	return new Color(hex, 'hex');
 };
 
-function hsb(h, s, b, a){
+var hsb = Color.hsb = function(h, s, b, a){
 	return new Color([h || 0, s || 0, b || 0, $chk(a) ? a : 1], 'hsb');
 };
 
-function rgb(r, g, b, a){
+var rgb = Color.rgb = function rgb(r, g, b, a){
 	return new Color([r || 0, g || 0, b || 0, $chk(a) ? a : 1], 'rgb');
 };
