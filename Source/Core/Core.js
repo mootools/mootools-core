@@ -40,15 +40,15 @@ Function.overloadList = function(x){
 	return (typeof x == 'string') ? arguments : x;
 };
 
-Function.prototype.extend = (function(object){
+Function.prototype.extend = function(object){
 	for (var key in object) this[key] = object[key];
 	return this;
-}).overload(Function.overloadPair);
+}.overload(Function.overloadPair);
 
-Function.prototype.implement = (function(object){
+Function.prototype.implement = function(object){
 	for (var key in object) this.prototype[key] = object[key];
 	return this;
-}).overload(Function.overloadPair);
+}.overload(Function.overloadPair);
 
 // typeOf, instanceOf
 
@@ -87,8 +87,8 @@ Function.from = function(item){
 	};
 };
 
-Array.from = function(item, slice){
-	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item, slice || 0) : [item];
+Array.from = function(item){
+	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -160,8 +160,8 @@ var implement = function(name, method){
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
-
-	if (typeOf(method) == 'function' && this[name] == null) extend.call(this, name, function(item){
+	
+	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
 		return method.apply(item, Array.prototype.slice.call(arguments, 1));
 	});
 	
@@ -177,25 +177,42 @@ var extend = function(name, method){
 
 Type.implement({
 	
-	implement: (function(object){
+	implement: function(object){
 		for (var key in object) implement.call(this, key, object[key]);
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 	
-	extend: (function(object){
+	extend: function(object){
 		for (var key in object) extend.call(this, key, object[key]);
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 
-	alias: (function(object){
+	alias: function(object){
 		for (var key in object) implement.call(this, key, this.prototype[object[key]]);
 		return this;
-	}).overload(Function.overloadPair),
+	}.overload(Function.overloadPair),
 
 	mirror: function(hook){
 		hooksOf(this).push(hook);
 		return this;
-	}
+	},
+	
+	protect: function(){
+		var prototype = this.prototype;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var name = arguments[i];
+			
+			var generic = this[name];
+			if (generic) generic.protect();
+			
+			var proto = prototype[name];
+			if (proto){
+				delete prototype[name];
+				prototype[name] = proto.protect();
+			}
+		}
+		return this;
+	}.overload(Function.overloadList)
 	
 });
 
@@ -205,20 +222,7 @@ new Type('Type', Type);
 
 var force = function(type, methods){
 	var object = this[type];
-	for (var i = 0; i < methods.length; i++){
-		var name = methods[i];
-		var proto = object.prototype[name];
-		var generic = object[name];
-		if (generic) generic.protect();
-		
-		if (proto){
-			proto.protect();
-			delete object.prototype[name];
-			object.prototype[name] = proto;
-		}
-
-	}
-	(new Type(type, object)).implement(object.prototype);
+	new Type(type, object).protect(methods).implement(object.prototype);
 };
 
 force('Array', [
@@ -239,7 +243,7 @@ force('RegExp', ['exec', 'test']);
 
 force('Date', ['now']);
 
-new Type('Date', Date).extend('now', function(){
+Date.extend('now', function(){
 	return +(new Date);
 });
 
@@ -259,11 +263,20 @@ Object.extend('forEach', function(object, fn, bind){
 
 Object.each = Object.forEach;
 
-Array.implement('forEach', function(fn, bind){
-	for (var i = 0, l = this.length; i < l; i++) fn.call(bind, this[i], i, this);
+Array.implement({
+	
+	forEach: function(fn, bind){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) fn.call(bind, this[i], i, this);
+		}
+	},
+	
+	each: function(fn, bind){
+		this.forEach(fn, bind);
+		return this;
+	}
+	
 });
-
-Array.alias('each', 'forEach');
 
 // Array & Object cloning
 

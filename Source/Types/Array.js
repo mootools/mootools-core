@@ -113,7 +113,7 @@ Array.implement({
 
 	item: function(at){
 		if (at < 0) at = (at % this.length) + this.length;
-		return (at < 0 || at >= this.length) ? null : this[at];
+		return (at < 0 || at >= this.length || this[at] == null) ? null : this[at];
 	}
 
 });

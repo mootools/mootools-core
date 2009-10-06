@@ -70,7 +70,7 @@ this.Request = new Class({
 
 		if (this.getOption('urlEncoded') && method == 'post'){
 			var encoding = (this.getOption('encoding')) ? '; charset=' + this.getOption('encoding') : '';
-			headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
+			headers['Content-Type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
 		if (this.getOption('noCache')){
@@ -145,7 +145,7 @@ this.Request = new Class({
 	},
 
 	'protected processScripts': function(text){
-		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
+		if (this.getOption('evalResponse') || (/(ecma|java)script/).test(this.getHeader('Content-Type'))) return Browser.exec(text);
 		return (this.getOption('stripScripts')) ? text.stripScripts(this.getOption('evalScripts')) : text;
 	},
 

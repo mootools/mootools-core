@@ -38,7 +38,7 @@ Event.implement('remove', function(){
 
 		addEvent: function(name, fn){
 
-			var parsed = slick.parse(name)[0][0], type = parsed.tag;
+			var parsed = Slick.parse(name)[0][0], type = parsed.tag;
 			
 			var eventTypes = this.retrieve('event.types', {});
 			var eventType = eventTypes[type] || (eventTypes[type] = {});
@@ -106,11 +106,11 @@ Event.implement('remove', function(){
 			
 			return this;
 			
-		}.setMany(),
+		}.overload(Function.overloadPair),
 
 		removeEvent: function(name, fn){
 			
-			var type = slick.parse(name)[0][0].tag;
+			var type = Slick.parse(name)[0][0].tag;
 			
 			var eventTypes = this.retrieve('event.types'), eventType, eventName, filter;
 			if (!eventTypes || !(eventType = eventTypes[type]) || !(eventName = eventType[name]) || !(filter = eventName.erase(fn))) return this;
@@ -138,7 +138,7 @@ Event.implement('remove', function(){
 		
 		fireEvent: function(name, args){
 			
-			var type = slick.parse(name)[0][0].tag;
+			var type = Slick.parse(name)[0][0].tag;
 			
 			var eventTypes = this.retrieve('event.types'), eventType, eventName;
 			if (!eventTypes || !(eventType = eventTypes[type]) || !(eventName = eventType[name])) return this;
@@ -153,7 +153,7 @@ Event.implement('remove', function(){
 		
 		callEvent: function(name, event){
 			
-			var type = slick.parse(name)[0][0].tag;
+			var type = Slick.parse(name)[0][0].tag;
 			
 			var eventTypes = this.retrieve('event.types'), eventType;
 			if (!eventTypes || !(eventType = eventTypes[type])) return this;
@@ -188,15 +188,11 @@ Event.definePseudo('flash', function(event, argument){
 });
 
 Event.definePseudo('relay', function(event, selector){
-	var nodes = this.search(selector), target = event.get('target');
-	for (var i = nodes.length; i--; i){
-		var node = nodes[i];
-		if (target === node || node.find(target)) return node;
-	}
-	return false;
+	for (var t = event.get('target'); t && t != this; t = t.parentNode)
+		if (Slick.match(t, selector)) return document.id(t);
 });
 
-if (Browser.Engine.gecko) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
+if (Browser.firefox) Event.defineModifier('mousewheel', {type: 'DOMMouseScroll'});
 
 Element.defineSetter('events', function(events){
 	this.addEvent(events);

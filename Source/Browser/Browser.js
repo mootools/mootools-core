@@ -7,73 +7,62 @@ requires:
 
 (function(){
 
+var document = this.document;
+var window = document.window = this;
+
+var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\d+\.\d+).*?(safari|$)/) || [null, 'unknown', 0];
+
 var Browser = this.Browser = (function(){}).extend({
+	
+	name: UA[3] || UA[1],
+	version: parseFloat(UA[2]),
 
-	Engine: {name: 'unknown', version: 0},
-
-	Platform: {name: (window.orientation != null) ? 'ipod' : (navigator.platform.match(/mac|win|linux/i) || ['other'])[0].toLowerCase()},
+	Platform: {
+		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
+	},
 
 	Features: {
 		xpath: !!(document.evaluate),
 		air: !!(window.runtime),
-		query: !!(document.querySelector)
+		query: !!(document.querySelector),
+		json: !!(window.JSON)
 	},
 
 	Plugins: {}
 
 });
 
+Browser[Browser.name] = true;
+Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 Browser.Platform[Browser.Platform.name] = true;
-
-var engines = {
-
-	presto: function(){
-		return (!window.opera) ? false : ((arguments.callee.caller) ? 960 : ((document.getElementsByClassName) ? 950 : 925));
-	},
-
-	trident: function(){
-		return (!window.ActiveXObject) ? false : ((Browser.Features.json) ? 6 : ((window.XMLHttpRequest) ? 5 : 4));
-	},
-
-	webkit: function(){
-		return (navigator.taintEnabled) ? false : ((Browser.Features.xpath) ? ((Browser.Features.query) ? 525 : 420) : 419);
-	},
-
-	gecko: function(){
-		return (document.getBoxObjectFor == null) ? false : ((document.getElementsByClassName) ? ((Browser.Features.query) ? 19.1 : 19) : 18);
-	}
-
-};
-
-for (var engine in engines){
-	var version = engines[engine]();
-	if (version){
-		Browser.Engine = {name: engine, version: version};
-		Browser.Engine[engine] = Browser.Engine[engine + version] = true;
-		break;
-	}
-}
 
 // Request
 
 Browser.Request = (function(){
-	
+
 	var XMLHTTP = function(){
 		return new XMLHttpRequest();
 	};
-
-	var ActiveX = function(){
+ 
+	var MSXML2 = function(){
 		return new ActiveXObject('MSXML2.XMLHTTP');
 	};
-	
+ 
+	var MSXML = function(){
+		return new ActiveXObject('Microsoft.XMLHTTP');
+	};
+ 
 	return Function.stab(function(){
 		XMLHTTP();
 		return XMLHTTP;
 	}, function(){
-		ActiveX();
-		return ActiveX;
+		MSXML2();
+		return MSXML2;
+	}, function(){
+		MSXML();
+		return MSXML;
 	});
-
+ 
 })();
 
 Browser.Features.xhr = !!(Browser.Request);
@@ -127,14 +116,8 @@ Browser.extend({
 	Event: this.Event
 });
 
-if (!Browser.Element){
-	Browser.Element = function(){};
-	Browser.Element.parent = Object;
-}
+this.Window = this.constructor = new Type('Window', function(){});
 
-this.Window = new Type('Window', function(){});
-
-this.constructor = this.Window;
 this.$typeOf = Function.from('window').hide();
 
 Window.mirror(function(name, method){
@@ -143,31 +126,40 @@ Window.mirror(function(name, method){
 
 Object.append(window, new Storage);
 
-var doc = this.document;
-doc.window = this;
+this.Document = document.constructor = new Type('Document', function(){});
 
-doc.head = doc.getElementsByTagName('head')[0];
-doc.html = doc.getElementsByTagName('html')[0];
-
-
-if (doc.execCommand) Function.stab(function(){
-	doc.execCommand("BackgroundImageCache", false, true);
-});
-
-if (this.attachEvent) this.attachEvent('onunload', function(){
-	this.detachEvent('onunload', arguments.callee);
-	doc.head = doc.html = doc.window = null;
-});
-
-this.Document = new Type('Document', function(){});
-
-doc.constructor = this.Document;
-doc.$typeOf = Function.from('document').hide();
+document.$typeOf = Function.from('document').hide();
 
 Document.mirror(function(name, method){
-	doc[name] = method;
+	document[name] = method;
 });
 
 Object.append(document, new Storage);
+
+document.html = document.documentElement;
+document.head = document.getElementsByTagName('head')[0];
+
+if (document.execCommand) try {
+	document.execCommand("BackgroundImageCache", false, true);
+} catch (e){}
+
+if (this.attachEvent) this.attachEvent('onunload', function(){
+	this.detachEvent('onunload', arguments.callee);
+	document.head = document.html = document.window = null;
+});
+
+var arrayFrom = Array.from;
+try {
+	arrayFrom(document.html.childNodes);
+} catch (e){
+	Array.from = function(item){
+		if (typeOf(item) == 'collection'){
+			var i = item.length, array = new Array(i);
+			while (i--) array[i] = item[i];
+			return array;
+		}
+		return arrayFrom(item);
+	};
+}
 	
 })();

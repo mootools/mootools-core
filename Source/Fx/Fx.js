@@ -63,16 +63,13 @@ this.Fx = new Class({
 	
 	step: function(){
 		var time = Date.now();
-		if (time < this.time + this.duration){
-			var delta = this.equation((time - this.time) / this.duration);
-			this.render(this.compute(delta));
-		} else {
-			this.render(this.compute(this.equation(1)));
-			this.complete();
-		}
+		var factor = (time - this.time) / this.duration;
+		var delta = this.equation((factor < 1) ? factor : 1);
+		this.render(this.compute(delta));
+		if (factor == 1) this.complete();
 	},
 	
-	'protected getEquation': function(type){
+	'protected getEquation': function(equation){
 		switch (typeOf(equation)){
 			case 'function': return equation;
 			case 'string':
@@ -90,9 +87,7 @@ this.Fx = new Class({
 		if (d != null) return d;
 		d = duration.match(/^[\d.]+([ms]{1,2})?$/);
 		if (!d) return 0;
-		var unit = d[1];
-		if (unit == 's') return n * 1000;
-		else if (unit == 'ms') return n;
+		else if (d[1] == 's') return n * 1000;
 		else return n;
 	},
 	

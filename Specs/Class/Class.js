@@ -92,7 +92,7 @@ var Attributes = new Class({
 describe('Class creation', {
 
 	"Classes should be of type 'function'": function(){
-		value_of(typeOf(Animal)).should_be('function');
+		value_of(typeOf(Animal)).should_be('class');
 	},
 
 	"Instances should be of type 'object'": function(){

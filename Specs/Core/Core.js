@@ -8,51 +8,54 @@ License:
 
 (function(){
 
-var Instrument = new Native('Instrument', function(name){
+var Instrument = new Type('Instrument', function(name){
 	this.name = name;
 }).implement({
 
-	property: 'stuff',
-	
 	method: function(){
-		return this.property + ' ' + this.name;
+		return 'playing ' + this.name;
 	}
 
 });
 
-var Car = new Native('Car', function(name){
+var Car = new Type('Car', function(name){
 	this.name = name;
-}).protect().implement({
+}).implement({
 
-	property: 'stuff',
-
-	method: function(){
-		return this.name + '_' + this.property;
-	}
+	method: (function(){
+		return 'driving a ' + this.name;
+	}).protect()
 
 });
 
-// Doesn't work yet
-describe('Native', {
+describe('Type', {
 
-	'should allow implementation over existing methods when browser option is not set': function(){
-		Instrument.implement({property: 'staff'});
-		var myInstrument = new Instrument('xeelophone');
-		value_of(myInstrument.method()).should_be('staff xeelophone');
+	'should allow implementation over existing methods when a method is not protected': function(){
+		Instrument.implement({
+			method: function(){
+				return 'playing a guitar';
+			}
+		});
+		var myInstrument = new Instrument('Guitar');
+		value_of(myInstrument.method()).should_be('playing a guitar');
 	},
 
-	'should not override existing methods when browser option is set': function(){
-		Car.implement({property: 'staff'});
-		var myCar = new Car('smart');
-		value_of(myCar.method()).should_be('smart_stuff');
+	'should not override a method when it is protected': function(){
+		Car.implement({
+			method: function(){
+				return 'hell no!';
+			}
+		});
+		var myCar = new Car('nice car');
+		value_of(myCar.method()).should_be('driving a nice car');
 	},
 
 	'should allow generic calls': function(){
-		value_of(Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
+		value_of(Car.method({name: 'not so nice car'})).should_be('driving a not so nice car');
 	},
 
-	"should have a 'native' Native": function(){
-		value_of(Native.isNative(Car)).should_be_true();
+	"should be a Type": function(){
+		value_of(Type.isType(Instrument)).should_be_true();
 	}
 
 });
@@ -74,7 +77,7 @@ describe('Array.from', {
 		div1.appendChild(div3);
 
 		var array = Array.from(div1.getElementsByTagName('*'));
-		value_of(Native.isArray(array)).should_be_true();
+		value_of(Type.isArray(array)).should_be_true();
 	},
 
 	'should return an array for arguments': function(){
@@ -82,7 +85,7 @@ describe('Array.from', {
 			return Array.from(arguments);
 		};
 		var arr = fnTest(1,2,3);
-		value_of(Native.isArray(arr)).should_be_true();
+		value_of(Type.isArray(arr)).should_be_true();
 		value_of(arr).should_have(3, 'items');
 	},
 
@@ -97,17 +100,6 @@ describe('Array.from', {
 
 	'should ignore and return an array': function(){
 		value_of(Array.from([1,2,3])).should_be([1,2,3]);
-	}
-
-});
-
-describe('Function.argument', {
-
-	'should return the argument passed according to the index': function(){
-		value_of(Function.argument(0)('a','b','c','d')).should_be('a');
-		value_of(Function.argument(1)('a','b','c','d')).should_be('b');
-		value_of(Function.argument(2)('a','b','c','d')).should_be('c');
-		value_of(Function.argument(3)('a','b','c','d')).should_be('d');
 	}
 
 });
@@ -168,6 +160,10 @@ describe('nil', {
 
 	'should return false on undefined': function(){
 		value_of(nil(undefined)).should_be_null();
+	},
+
+	'should return passed in value': function(){
+		value_of(nil('String')).should_be('String');
 	}
 
 });
@@ -230,7 +226,7 @@ describe('Number.random', {
 describe('Date.now', {
 
 	'should return a timestamp': function(){
-		value_of(Native.isNumber(Date.now())).should_be_true();
+		value_of(Type.isNumber(Date.now())).should_be_true();
 	}
 
 });
@@ -305,11 +301,11 @@ describe('typeOf', {
 	},
 
 	"should return 'null' for null objects": function(){
-		value_of(typeOf(null)).should_be('nil');
+		value_of(typeOf(null)).should_be('null');
 	},
 
 	"should return 'null' for undefined objects": function(){
-		value_of(typeOf(undefined)).should_be('nil');
+		value_of(typeOf(undefined)).should_be('null');
 	},
 
 	"should return 'collection' for HTMLElements collections": function(){

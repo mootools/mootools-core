@@ -30,18 +30,18 @@ describe("Number Methods", {
 		value_of(Number.toInt('10', 5)).should_be(5);
 	},
 
-	// Number.toFlt
+	// Number.toFloat
 
 	'should convert a number to a float': function(){
-		value_of(Number.toFlt(1.00)).should_be(1);
-		value_of(Number.toFlt(1.12 - 0.12)).should_be(1);
-		value_of(Number.toFlt(0.0010)).should_be(0.001);
-		value_of(Number.toFlt(Number.MIN_VALUE)).should_be(Number.MIN_VALUE);
+		value_of(Number.toFloat(1.00)).should_be(1);
+		value_of(Number.toFloat(1.12 - 0.12)).should_be(1);
+		value_of(Number.toFloat(0.0010)).should_be(0.001);
+		value_of(Number.toFloat(Number.MIN_VALUE)).should_be(Number.MIN_VALUE);
 	},
 
 	'should convert a string into a float': function(){
-		value_of(Number.toFlt('10.11')).should_be(10.11);
-		value_of(Number.toFlt('10.55px')).should_be(10.55);
+		value_of(Number.toFloat('10.11')).should_be(10.11);
+		value_of(Number.toFloat('10.55px')).should_be(10.55);
 	},
 
 	// Number.limit
