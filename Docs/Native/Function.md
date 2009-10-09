@@ -24,12 +24,12 @@ Base function for creating functional closures which is used by all other Functi
 
 #### Options: {#Function:create:options}
 
-* bind       - (*object*: defaults to this function) The object that the "this" of the function will refer to.
-* event      - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-* arguments  - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-* delay      - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
+* bind		 - (*object*: defaults to this function) The object that the "this" of the function will refer to.
+* event		 - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
+* arguments	 - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
+* delay		 - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
 * periodical - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
-* attempt    - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or null on error.
+* attempt	 - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or null on error.
 
 ### Returns:
 
@@ -172,20 +172,20 @@ This allows the function to be used in conjunction with [Element:addEvent][] and
 
 ### Example:
 
-    var Logger = new Class({
-        log: function(){
-            console.log.apply(null, arguments);
-        }
-    });
-    
-    var Log = new Logger();
-    
+	var Logger = new Class({
+		log: function(){
+			console.log.apply(null, arguments);
+		}
+	});
+	
+	var Log = new Logger();
+	
 	$('myElement').addEvent('click', function(event, offset){
-	    offset += event.client.x;
-	    this.log('clicked; moving to:', offset); // this refers to myClass	    
-	    event.target.setStyle('top', offset);
-	    return false;
-	}).bindWithEvent(Log, 100));
+		offset += event.client.x;
+		this.log('clicked; moving to:', offset); // this refers to myClass
+		event.target.setStyle('top', offset);
+		return false;
+	}.bindWithEvent(Log, 100));
 
 
 Function Method: delay {#Function:delay}
@@ -200,8 +200,8 @@ Delays the execution of a function by a specified duration.
 ### Arguments:
 
 1. delay - (*number*) The duration to wait (in milliseconds).
-2. bind  - (*object*, optional) The object that the "this" of the function will refer to.
-3. args  - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
+2. bind	 - (*object*, optional) The object that the "this" of the function will refer to.
+3. args	 - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 ### Returns:
 
@@ -235,8 +235,8 @@ Executes a function in the specified intervals of time. Periodic execution can b
 ### Arguments:
 
 1. period - (*number*) The duration of the intervals between executions.
-2. bind   - (*object*, optional) The object that the "this" of the function will refer to.
-3. args   - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
+2. bind	  - (*object*, optional) The object that the "this" of the function will refer to.
+3. args	  - (*mixed*, optional) The arguments passed (must be an array if the arguments are greater than one).
 
 ### Returns:
 

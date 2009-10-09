@@ -46,9 +46,3 @@ Fired when the request completes. This overrides the signature of the Request su
 		alert(person.height); //Alerts "170 cm".
 		alert(person.weight); //Alerts "120 kg".
 	}}).get({'firstName': 'John', 'lastName': 'Doe'});
-
-### failure
-
-Request.JSON fires the *failure* event when the JSON value is not parsed due to security tests. If the option for *secure* is set to true and the JSON value is *not* secure, [JSON.decode][] will throw an exception. Request.JSON catches this and fires its *failure* event.
-
-[JSON.decode]: /core/docs/Utilities/JSON#JSON:decode

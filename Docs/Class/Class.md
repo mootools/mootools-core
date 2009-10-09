@@ -12,13 +12,15 @@ Class Method: constructor {#Class:constructor}
 
 ### Arguments:
 
-1. properties - (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
+1. properties - Can be one of the following types:
+	* (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
+	* (*function*) The initialize function (see below).
 
 #### Property: Extends
 
 * (*class*) The Class that this class will extend.
 
-The methods of This Class that have the same name as the Extends Class, will have a parent property, that allows you to call the other overridden method.
+The methods of this Class that have the same name as the Extends Class, will have a parent property, that allows you to call the other overridden method. The Extends property should be the first.
 
 #### Property: Implements
 
@@ -26,8 +28,8 @@ The methods of This Class that have the same name as the Extends Class, will hav
 * (*class*)  The properties of a passed Class will be copied into the target Class.
 * (*array*)  An array of objects or Classes, the properties of which will be copied into this Class.
 
-Implements is similar to Extends, except that it overrides properties without inheritance.
-Useful when implementing a default set of properties in multiple Classes.
+Implements is similar to Extends, except that it adopts properties from one or more other classes without inheritance.
+Useful when implementing a default set of properties in multiple Classes.  The Implements property should come after Extends but before all other properties.
 
 #### Property: initialize
 
@@ -54,7 +56,6 @@ Useful when implementing a default set of properties in multiple Classes.
 			alert('moooo');
 		}
 	});
-	var Effie = new Cow($empty); //Will not alert 'moooo', because the initialize method is overridden by the $empty function.
 
 #### Extends Example:
 

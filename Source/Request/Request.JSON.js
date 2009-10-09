@@ -20,12 +20,8 @@ Request.JSON = new Class({
 	},
 
 	success: function(text){
-		try {
-			this.response.json = JSON.decode(text, this.options.secure);
-			this.onSuccess(this.response.json, text);
-		} catch(error) {
-			this.failure();
-		}
+		this.response.json = JSON.decode(text, this.options.secure);
+		this.onSuccess(this.response.json, text);
 	}
 
 });
