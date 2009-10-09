@@ -87,7 +87,7 @@ var Elements = new Native({
 					if (uniques[el.uid]) continue;
 					uniques[el.uid] = true;
 				}
-				returned.push(el);
+				if (el) returned.push(el);
 			}
 			elements = returned;
 		}

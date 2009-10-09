@@ -23,7 +23,7 @@ var Browser = $merge({
 		},
 
 		trident: function(){
-			return (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? 5 : 4);
+			return (!window.ActiveXObject) ? false : ((window.XMLHttpRequest) ? ((document.querySelectorAll) ? 6 : 5) : 4);
 		},
 
 		webkit: function(){
@@ -31,7 +31,7 @@ var Browser = $merge({
 		},
 
 		gecko: function(){
-			return (document.getBoxObjectFor == undefined) ? false : ((document.getElementsByClassName) ? 19 : 18);
+			return (!document.getBoxObjectFor && window.mozInnerScreenX == null) ? false : ((document.getElementsByClassName) ? 19 : 18);
 		}
 
 	}
@@ -62,6 +62,8 @@ Browser.Request = function(){
 		return new XMLHttpRequest();
 	}, function(){
 		return new ActiveXObject('MSXML2.XMLHTTP');
+	}, function(){
+		return new ActiveXObject('Microsoft.XMLHTTP');
 	});
 };
 
