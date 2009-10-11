@@ -471,7 +471,7 @@ Element.implement({
 		return walk(this, 'parentNode', null, match, true, nocash);
 	},
 	
-	getSiblings: function(match, nocash) {
+	getSiblings: function(match, nocash){
 		return this.getParent().getChildren(match, nocash).erase(this);
 	},
 
