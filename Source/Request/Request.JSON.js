@@ -4,6 +4,11 @@ Script: Request.JSON.js
 
 License:
 	MIT-style license.
+
+@requires Request JSON
+
+@provides Request.HTML
+
 */
 
 Request.JSON = new Class({

@@ -7,6 +7,11 @@ License:
 
 Credits:
 	Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
+
+@requires Fx
+
+@provides Fx.Transitions
+
 */
 
 Fx.implement({

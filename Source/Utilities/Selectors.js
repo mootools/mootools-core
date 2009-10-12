@@ -4,6 +4,11 @@ Script: Selectors.js
 
 License:
 	MIT-style license.
+
+@requires Element
+
+@provides Selectors
+
 */
 
 Native.implement([Document, Element], {

@@ -4,6 +4,11 @@ Script: Event.js
 
 License:
 	MIT-style license.
+
+@requires Window Document Hash Array Function String
+
+@provides Event
+
 */
 
 var Event = new Native({

@@ -4,6 +4,11 @@ Script: Number.js
 
 License:
 	MIT-style license.
+
+@requires Native $util
+
+@provides Number
+
 */
 
 Number.implement({

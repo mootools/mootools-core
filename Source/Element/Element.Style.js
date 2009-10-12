@@ -4,6 +4,11 @@ Script: Element.Style.js
 
 License:
 	MIT-style license.
+
+@requires Element
+
+@provides Element.Style
+
 */
 
 Element.Properties.styles = {set: function(styles){

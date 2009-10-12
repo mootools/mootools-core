@@ -7,6 +7,11 @@ License:
 
 Credits:
 	Based on the functions by Peter-Paul Koch (http://quirksmode.org).
+
+@requires Options
+
+@provides Cookie
+
 */
 
 var Cookie = new Class({

@@ -4,6 +4,11 @@ Script: Class.Extras.js
 
 License:
 	MIT-style license.
+
+@requires Class
+
+@providees Chain Events Options
+
 */
 
 var Chain = new Class({

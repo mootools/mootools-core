@@ -4,6 +4,11 @@ Script: Element.Event.js
 
 License:
 	MIT-style license.
+
+@requires Element Event
+
+@provides Element.Event
+
 */
 
 Element.Properties.events = {set: function(events){

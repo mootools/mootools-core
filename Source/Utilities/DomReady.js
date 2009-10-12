@@ -4,6 +4,11 @@ Script: Domready.js
 
 License:
 	MIT-style license.
+
+@requires Element.Event
+
+@provides DomReady
+
 */
 
 Element.Events.domready = {

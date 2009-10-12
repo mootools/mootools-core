@@ -4,6 +4,11 @@ Script: Request.js
 
 License:
 	MIT-style license.
+
+@requires Element Chain Events Options Browser
+
+@provides Request
+
 */
 
 var Request = new Class({

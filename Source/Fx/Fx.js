@@ -4,6 +4,11 @@ Script: Fx.js
 
 License:
 	MIT-style license.
+
+@requires Chain Events Options
+
+@provides Fx
+
 */
 
 var Fx = new Class({

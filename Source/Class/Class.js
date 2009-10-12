@@ -4,6 +4,11 @@ Script: Class.js
 
 License:
 	MIT-style license.
+
+@requires $util Native Array String Function Number Hash
+
+@provides Class
+
 */
 
 function Class(params){

@@ -5,6 +5,11 @@ Script: Element.js
 
 License:
 	MIT-style license.
+
+@requires Window Document Array String Function Number Hash
+
+@provides Element Elements $ $$ Iframe
+
 */
 
 var Element = new Native({

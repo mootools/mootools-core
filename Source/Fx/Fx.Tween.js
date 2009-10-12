@@ -4,6 +4,11 @@ Script: Fx.Tween.js
 
 License:
 	MIT-style license.
+
+@requires Fx.CSS
+
+@provides Fx.Tween Element.fade Element.highlight
+
 */
 
 Fx.Tween = new Class({

@@ -4,6 +4,11 @@ Script: Fx.Morph.js
 
 License:
 	MIT-style license.
+
+@requires Fx.CSS
+
+@provides Fx.Morph
+
 */
 
 Fx.Morph = new Class({

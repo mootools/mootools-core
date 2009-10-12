@@ -7,6 +7,11 @@ License:
 
 See Also:
 	<http://www.json.org/>
+
+@requires Array String Number Function Hash
+
+@provides JSON
+
 */
 
 var JSON = new Hash(this.JSON && {

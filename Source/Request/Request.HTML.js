@@ -4,6 +4,11 @@ Script: Request.HTML.js
 
 License:
 	MIT-style license.
+
+@requires Request Element
+
+@provides Request.HTML
+
 */
 
 Request.HTML = new Class({

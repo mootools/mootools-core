@@ -4,6 +4,11 @@ Script: Hash.js
 
 License:
 	MIT-style license.
+
+@requires Hash.base
+
+@provides Hash
+
 */
 
 Hash.implement({

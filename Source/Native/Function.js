@@ -4,6 +4,10 @@ Script: Function.js
 
 License:
 	MIT-style license.
+
+@requires Native $util
+
+@provides Function
 */
 
 Function.implement({

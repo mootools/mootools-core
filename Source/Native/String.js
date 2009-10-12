@@ -4,6 +4,11 @@ Script: String.js
 
 License:
 	MIT-style license.
+
+@requires Native
+
+@provides String
+
 */
 
 String.implement({

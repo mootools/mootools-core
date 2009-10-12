@@ -4,6 +4,11 @@ Script: Browser.js
 
 License:
 	MIT-style license.
+
+@requires Native $util
+
+@provides Browser Window Document $exec
+
 */
 
 var Browser = $merge({

@@ -4,6 +4,11 @@ Script: Array.js
 
 License:
 	MIT-style license.
+
+@requires $util Array.each
+
+@provides Array
+
 */
 
 Array.implement({
