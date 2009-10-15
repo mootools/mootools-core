@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Request.HTML.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Request.HTML]
 
----
-
+...
 */
 
 Request.HTML = new Class({

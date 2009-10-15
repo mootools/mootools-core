@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Request.JSON.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Request.HTML]
 
----
-
+...
 */
 
 Request.JSON = new Class({

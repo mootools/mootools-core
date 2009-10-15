@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Element.js
@@ -19,8 +18,7 @@ requires:
 
 provides: [Element, Elements, $, $$, Iframe]
 
----
-
+...
 */
 
 var Element = new Native({

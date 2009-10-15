@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Cookie.js
@@ -16,8 +15,7 @@ requires:
 
 provides: [Cookie]
 
----
-
+...
 */
 
 var Cookie = new Class({

@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Fx.Transitions.js
@@ -16,8 +15,7 @@ requires:
 
 provides: [Fx.Transitions]
 
----
-
+...
 */
 
 Fx.implement({

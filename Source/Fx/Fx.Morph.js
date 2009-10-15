@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Fx.Morph.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Fx.Morph]
 
----
-
+...
 */
 
 Fx.Morph = new Class({

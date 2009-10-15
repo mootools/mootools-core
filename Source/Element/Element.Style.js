@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Element.Style.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Element.Style]
 
----
-
+...
 */
 
 Element.Properties.styles = {set: function(styles){

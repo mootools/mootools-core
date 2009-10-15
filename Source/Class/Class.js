@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Class.js
@@ -19,8 +18,7 @@ requires:
 
 provides: [Class]
 
----
-
+...
 */
 
 function Class(params){

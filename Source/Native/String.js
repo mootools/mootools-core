@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: String.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [String]
 
----
-
+...
 */
 
 String.implement({

@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Number.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Number]
 
----
-
+...
 */
 
 Number.implement({

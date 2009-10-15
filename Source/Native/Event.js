@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Event.js
@@ -18,8 +17,7 @@ requires:
 
 provides: [Event]
 
----
-
+...
 */
 
 var Event = new Native({

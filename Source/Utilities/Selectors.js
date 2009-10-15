@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Selectors.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Selectors]
 
----
-
+...
 */
 
 Native.implement([Document, Element], {

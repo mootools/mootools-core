@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Core.js
@@ -19,8 +18,7 @@ inspiration:
 
 provides: [Mootools, Native, Hash.base, Array.each, $util]
 
----
-
+...
 */
 
 var MooTools = {

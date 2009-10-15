@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Swiff.js
@@ -17,8 +16,7 @@ requires:
 
 provides: [Swiff]
 
----
-
+...
 */
 
 var Swiff = new Class({

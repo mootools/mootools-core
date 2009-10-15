@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Hash.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Hash]
 
----
-
+...
 */
 
 Hash.implement({

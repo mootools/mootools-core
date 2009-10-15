@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Element.Event.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Element.Event]
 
----
-
+...
 */
 
 Element.Properties.events = {set: function(events){

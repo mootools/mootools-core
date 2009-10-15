@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Fx.CSS.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Fx.CSS]
 
----
-
+...
 */
 
 Fx.CSS = new Class({

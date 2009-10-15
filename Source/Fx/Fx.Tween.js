@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Fx.Tween.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Fx.Tween, Element.fade, Element.highlight]
 
----
-
+...
 */
 
 Fx.Tween = new Class({

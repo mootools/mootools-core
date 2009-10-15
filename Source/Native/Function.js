@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Function.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Function]
 
----
-
+...
 */
 
 Function.implement({

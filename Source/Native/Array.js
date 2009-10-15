@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Array.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Array]
 
----
-
+...
 */
 
 Array.implement({

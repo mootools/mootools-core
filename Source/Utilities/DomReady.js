@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: DomReady.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [DomReady]
 
----
-
+...
 */
 
 Element.Events.domready = {

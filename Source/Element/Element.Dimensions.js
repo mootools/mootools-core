@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Element.Dimensions.js
@@ -17,8 +16,7 @@ requires:
 
 provides: [Element.Dimensions]
 
----
-
+...
 */
 
 (function(){

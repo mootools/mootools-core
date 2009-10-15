@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: JSON.js
@@ -20,8 +19,7 @@ requires:
 
 provides: [JSON]
 
----
-
+...
 */
 
 var JSON = new Hash(this.JSON && {

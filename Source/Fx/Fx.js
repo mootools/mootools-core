@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Fx.js
@@ -15,8 +14,7 @@ requires:
 
 provides: [Fx]
 
----
-
+...
 */
 
 var Fx = new Class({

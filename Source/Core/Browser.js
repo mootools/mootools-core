@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Browser.js
@@ -14,8 +13,7 @@ requires:
 
 provides: [Browser, Window, Document, $exec]
 
----
-
+...
 */
 
 var Browser = $merge({

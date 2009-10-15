@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Request.js
@@ -17,8 +16,7 @@ requires:
 
 provides: [Request]
 
----
-
+...
 */
 
 var Request = new Class({

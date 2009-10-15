@@ -1,5 +1,4 @@
 /*
-
 ---
 
 script: Class.Extras.js
@@ -13,8 +12,7 @@ requires:
 
 provides: [Chain, Events, Options]
 
----
-
+...
 */
 
 var Chain = new Class({
