@@ -1,13 +1,25 @@
 /*
-Script: Class.js
-	Contains the Class Function for easily creating, extending, and implementing reusable Classes.
 
-License:
-	MIT-style license.
+---
 
-@requires $util Native Array String Function Number Hash
+script: Class.js
 
-@provides Class
+description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+
+license: MIT-style license.
+
+requires:
+- /$util
+- /Native
+- /Array
+- /String
+- /Function
+- /Number
+- /Hash
+
+provides: [Class]
+
+---
 
 */
 

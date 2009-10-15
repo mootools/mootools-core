@@ -43,7 +43,7 @@
 
 		"Event": {
 			"deps": ["Browser", "Array", "Function", "Number", "String", "Hash"],
-			"desc": "Contains the Event Class, to make the event object Crossbrowser."
+			"desc": "Contains the Event Class, to make the event object cross-browser."
 		}
 
 	},

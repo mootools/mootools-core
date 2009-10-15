@@ -1,13 +1,19 @@
 /*
-Script: Domready.js
-	Contains the domready custom event.
 
-License:
-	MIT-style license.
+---
 
-@requires Element.Event
+script: DomReady.js
 
-@provides DomReady
+description: Contains the custom event domready.
+
+license: MIT-style license.
+
+requires:
+- /Element.Event
+
+provides: [DomReady]
+
+---
 
 */
 

@@ -1,13 +1,20 @@
 /*
-Script: Request.HTML.js
-	Extends the basic Request Class with additional methods for interacting with HTML responses.
 
-License:
-	MIT-style license.
+---
 
-@requires Request Element
+script: Request.HTML.js
 
-@provides Request.HTML
+description: Extends the basic Request Class with additional methods for interacting with HTML responses.
+
+license: MIT-style license.
+
+requires:
+- /Request
+- /Element
+
+provides: [Request.HTML]
+
+---
 
 */
 

@@ -1,16 +1,26 @@
 /*
-Script: JSON.js
-	JSON encoder and decoder.
 
-License:
-	MIT-style license.
+---
+
+script: JSON.js
+
+description: JSON encoder and decoder.
+
+license: MIT-style license.
 
 See Also:
 	<http://www.json.org/>
 
-@requires Array String Number Function Hash
+requires:
+- /Array
+- /String
+- /Number
+- /Function
+- /Hash
 
-@provides JSON
+provides: [JSON]
+
+---
 
 */
 

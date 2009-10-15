@@ -1,13 +1,20 @@
 /*
-Script: Element.Event.js
-	Contains Element methods for dealing with events, and custom Events.
 
-License:
-	MIT-style license.
+---
 
-@requires Element Event
+script: Element.Event.js
 
-@provides Element.Event
+description: Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events.
+
+license: MIT-style license.
+
+requires: 
+- /Element
+- /Event
+
+provides: [Element.Event]
+
+---
 
 */
 

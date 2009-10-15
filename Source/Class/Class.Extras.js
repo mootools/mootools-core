@@ -1,13 +1,19 @@
 /*
-Script: Class.Extras.js
-	Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
 
-License:
-	MIT-style license.
+---
 
-@requires Class
+script: Class.Extras.js
 
-@providees Chain Events Options
+description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
+
+license: MIT-style license.
+
+requires:
+- /Class
+
+provides: [Chain, Events, Options]
+
+---
 
 */
 

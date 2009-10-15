@@ -1,13 +1,23 @@
 /*
-Script: Request.js
-	Powerful all purpose Request Class. Uses XMLHTTPRequest.
 
-License:
-	MIT-style license.
+---
 
-@requires Element Chain Events Options Browser
+script: Request.js
 
-@provides Request
+description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
+
+license: MIT-style license.
+
+requires:
+- /Element
+- /Chain
+- /Events
+- /Options
+- /Browser
+
+provides: [Request]
+
+---
 
 */
 

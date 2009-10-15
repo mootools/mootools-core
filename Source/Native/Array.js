@@ -1,13 +1,20 @@
 /*
-Script: Array.js
-	Contains Array Prototypes like each, contains, and erase.
 
-License:
-	MIT-style license.
+---
 
-@requires $util Array.each
+script: Array.js
 
-@provides Array
+description: Contains Array Prototypes like each, contains, and erase.
+
+license: MIT-style license.
+
+requires:
+- /$util
+- /Array.each
+
+provides: [Array]
+
+---
 
 */
 

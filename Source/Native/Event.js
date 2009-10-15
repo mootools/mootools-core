@@ -1,13 +1,24 @@
 /*
-Script: Event.js
-	Contains the Event Native, to make the event object completely crossbrowser.
 
-License:
-	MIT-style license.
+---
 
-@requires Window Document Hash Array Function String
+script: Event.js
 
-@provides Event
+description: Contains the Event Class, to make the event object cross-browser.
+
+license: MIT-style license.
+
+requires:
+- /Window
+- /Document
+- /Hash
+- /Array
+- /Function
+- /String
+
+provides: [Event]
+
+---
 
 */
 

@@ -1,13 +1,20 @@
 /*
-Script: Number.js
-	Contains Number Prototypes like limit, round, times, and ceil.
 
-License:
-	MIT-style license.
+---
 
-@requires Native $util
+script: Number.js
 
-@provides Number
+description: Contains Number Prototypes like limit, round, times, and ceil.
+
+license: MIT-style license.
+
+requires:
+- /Native
+- /$util
+
+provides: [Number]
+
+---
 
 */
 

@@ -1,13 +1,19 @@
 /*
-Script: Selectors.js
-	Adds advanced CSS Querying capabilities for targeting elements. Also includes pseudoselectors support.
 
-License:
-	MIT-style license.
+---
 
-@requires Element
+script: Selectors.js
 
-@provides Selectors
+description: Adds advanced CSS-style querying capabilities for targeting HTML Elements. Includes pseudo selectors.
+
+license: MIT-style license.
+
+requires:
+- /Element
+
+provides: [Selectors]
+
+---
 
 */
 

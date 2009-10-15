@@ -1,13 +1,19 @@
 /*
-Script: String.js
-	Contains String Prototypes like camelCase, capitalize, test, and toInt.
 
-License:
-	MIT-style license.
+---
 
-@requires Native
+script: String.js
 
-@provides String
+description: Contains String Prototypes like camelCase, capitalize, test, and toInt.
+
+license: MIT-style license.
+
+requires:
+- /Native
+
+provides: [String]
+
+---
 
 */
 
