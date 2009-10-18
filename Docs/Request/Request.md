@@ -186,7 +186,7 @@ Opens the Request connection and sends the provided data with the specified opti
 
 ### Notes:
 
-MooTools provides several aliases for send() to make it easier to use different methods. These aliases are post() and POST(), get() and GET(), put() and PUT() and delete() and DELETE().
+MooTools provides several aliases for [Request:send][] to make it easier to use different methods. These aliases are post() and POST(), get() and GET(), put() and PUT() and delete() and DELETE().
 
 	var myRequest = new Request({url: 'http://localhost/some_url'});
 
