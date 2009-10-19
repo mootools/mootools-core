@@ -184,6 +184,26 @@ Opens the Request connection and sends the provided data with the specified opti
 
 	var myRequest = new Request({url: 'http://localhost/some_url'}).send('save=username&name=John');
 
+### Notes:
+
+MooTools provides several aliases for [Request:send][] to make it easier to use different methods. These aliases are post() and POST(), get() and GET(), put() and PUT() and delete() and DELETE().
+
+	var myRequest = new Request({url: 'http://localhost/some_url'});
+
+	myRequest.post('save=username&name=John');
+	// Above is equivalent to
+	myRequest.send({
+		method: 'post',
+		data: 'save=username&name=John'
+	});
+
+	myRequest.get('save=username&name=John');
+	// Above is equivalent to
+	myRequest.send({
+		method: 'get',
+		data: 'save=username&name=John'
+	});
+
 Request Method: cancel {#Request:cancel}
 --------------------------------
 
