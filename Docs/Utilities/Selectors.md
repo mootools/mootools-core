@@ -91,7 +91,7 @@ Some default Pseudo Selectors for [Selectors][].
 - [W3C Pseudo Classes](http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#pseudo-classes)
 
 
-Selector: enabled {#Selector:checked}
+Selector: checked {#Selector:checked}
 -------------------------------------
 
 Matches all Elements that are checked.
