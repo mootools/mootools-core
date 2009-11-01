@@ -128,7 +128,7 @@ Changes the scope of `this` within the target function to refer to the bind para
 
 ### Syntax:
 
-	myFunction.bind([bind[, args[, evt]]]);
+	myFunction.bind([bind[, args]]);
 
 ### Arguments:
 
@@ -159,7 +159,7 @@ This allows the function to be used in conjunction with [Element:addEvent][] and
 
 ### Syntax:
 
-	myFunction.bindWithEvent([bind[, args[, evt]]]);
+	myFunction.bindWithEvent([bind[, args]]);
 
 ### Arguments:
 
