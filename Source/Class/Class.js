@@ -8,13 +8,12 @@ description: Contains the Class Function for easily creating, extending, and imp
 license: MIT-style license.
 
 requires:
-- /$util
+- /Utils
 - /Native
 - /Array
 - /String
 - /Function
 - /Number
-- /Hash
 
 provides: [Class]
 
@@ -41,11 +40,6 @@ function Class(params){
 
 	return newClass;
 
-};
-
-Function.prototype.protect = function(){
-	this._protected = true;
-	return this;
 };
 
 Object.reset = function(object, key){

@@ -138,7 +138,7 @@ describe("Function Methods", {
 
 	'delay should return a timer pointer': function(){
 		var timer = $empty.delay(10000);
-		value_of(Number.type(timer)).should_be_true();
+		value_of(Type.isNumber(timer)).should_be_true();
 		$clear(timer);
 	},
 
@@ -146,7 +146,7 @@ describe("Function Methods", {
 
 	'periodical should return a timer pointer': function(){
 		var timer = $empty.periodical(10000);
-		value_of(Number.type(timer)).should_be_true();
+		value_of(Type.isNumber(timer)).should_be_true();
 		$clear(timer);
 	}
 

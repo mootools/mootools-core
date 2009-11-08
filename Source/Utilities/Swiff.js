@@ -12,7 +12,7 @@ credits:
 
 requires:
 - /Options
-- /$util
+- /Utils
 
 provides: [Swiff]
 

@@ -61,7 +61,7 @@ var IFrame = new Native({
 	generics: false,
 
 	initialize: function(){
-		var params = Array.link(arguments, {properties: Object.type, iframe: $defined});
+		var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
 		var props = params.properties || {};
 		var iframe = document.id(params.iframe);
 		var onload = props.onload || $empty;

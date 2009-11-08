@@ -95,7 +95,7 @@ Element.Properties.load = {
 Element.implement({
 
 	load: function(){
-		this.get('load').send(Array.link(arguments, {data: Object.type, url: String.type}));
+		this.get('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
 		return this;
 	}
 

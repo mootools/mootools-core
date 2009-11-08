@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires:
 - /Native
-- /$util
+- /Utils
 
 provides: [Number]
 

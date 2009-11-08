@@ -15,7 +15,7 @@ describe("Hash Methods", {
 	// Hash.constructor
 
 	'should return a new hash': function(){
-		value_of(Hash.type(new Hash())).should_be_true();
+		value_of(Type.isHash(new Hash())).should_be_true();
 	},
 
 	'should return a copy of a hash': function(){
@@ -142,27 +142,27 @@ describe("Hash Methods", {
 	// Hash.map
 
 	'should map a new Hash according to the comparator': function(){
-		value_of(hash2.map(Number.type)).should_be(new Hash({a:false,b:true,c:false}));
+		value_of(hash2.map(Type.isNumber)).should_be(new Hash({a:false,b:true,c:false}));
 	},
 
 	// Hash.filter
 
 	'should filter the Hash according to the comparator': function(){
-		value_of(hash2.filter(Number.type)).should_be(new Hash({b:233}));
+		value_of(hash2.filter(Type.isNumber)).should_be(new Hash({b:233}));
 	},
 
 	// Hash.every
 
 	'should return true if every value matches the comparator, otherwise false': function(){
 		value_of(hash2.every($defined)).should_be_true();
-		value_of(hash2.every(Number.type)).should_be_false();
+		value_of(hash2.every(Type.isNumber)).should_be_false();
 	},
 
 	// Hash.some
 
 	'should return true if some of the values match the comparator, otherwise false': function(){
-		value_of(hash2.some(Number.type)).should_be_true();
-		value_of(hash2.some(Array.type)).should_be_false();
+		value_of(hash2.some(Type.isNumber)).should_be_true();
+		value_of(hash2.some(Type.isArray)).should_be_false();
 	},
 
 	// Hash.getKeys

@@ -28,7 +28,7 @@ describe("Array Methods", {
 
 	'should filter an array': function(){
 		var array = [1,2,3,0,0,0];
-		var arr = array.concat([false, null, 4]).filter(Number.type);
+		var arr = array.concat([false, null, 4]).filter(Type.isNumber);
 		value_of(arr).should_be(array.concat(4));
 	},
 
@@ -53,17 +53,17 @@ describe("Array Methods", {
 	// Array.every
 
 	'should return true if every item matches the comparator, otherwise false': function(){
-		value_of([1,2,3,0,0,0].every(Number.type)).should_be_true();
+		value_of([1,2,3,0,0,0].every(Type.isNumber)).should_be_true();
 
-		value_of(['1',2,3,0].every(Number.type)).should_be_false();
+		value_of(['1',2,3,0].every(Type.isNumber)).should_be_false();
 	},
 
 	// Array.some
 
 	'should return true if some of the items in the array match the comparator, otherwise false': function(){
-		value_of(['1',2,3,0].some(Number.type)).should_be_true();
+		value_of(['1',2,3,0].some(Type.isNumber)).should_be_true();
 
-		value_of([1,2,3,0,0,0].map(String).some(Number.type)).should_be_false();
+		value_of([1,2,3,0,0,0].map(String).some(Type.isNumber)).should_be_false();
 	},
 
 	// Array.indexOf
@@ -105,10 +105,10 @@ describe("Array Methods", {
 	'should link an array items to a new object according to the specified matchers': function(){
 		var el = document.createElement('div');
 		var assoc2 = [100, 'Hello', {foo: 'bar'}, el, false].link({
-			myNumber: Number.type,
-			myElement: Element.type,
-			myObject: Object.type,
-			myString: String.type,
+			myNumber: Type.isNumber,
+			myElement: Type.isElement,
+			myObject: Type.isObject,
+			myString: Type.isString,
 			myBoolean: $defined
 		});
 

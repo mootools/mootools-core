@@ -208,11 +208,11 @@ var myElements = new Elements([
 describe('Elements', {
 
 	'should return an array type': function(){
-		value_of(Array.type(myElements)).should_be_true();
+		value_of(Type.isArray(myElements)).should_be_true();
 	},
 
 	'should return an array of Elements': function(){
-		value_of(myElements.every(Element.type)).should_be_true();
+		value_of(myElements.every(Type.isElement)).should_be_true();
 	},
 
 	'should apply Element prototypes to the returned array': function(){
