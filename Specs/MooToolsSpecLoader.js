@@ -14,7 +14,7 @@ var Sets = {
 
 };
 
-var runSpecs = (function(){
+var loadSpecs = (function(){
 
 // Uses String.parseQueryString from MooTools-More
 // TODO Needs compat for other browsers
