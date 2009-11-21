@@ -9,6 +9,7 @@ var Sets = {
 	],
 	
 	'1.2private': [
+		'Core/Core.js', 'Core/Browser.js',
 		
 	]
 
