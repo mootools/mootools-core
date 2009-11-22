@@ -51,34 +51,6 @@ describe("Chain Class", {
 		value_of(arr).should_be(["0Aa", "1Bb"]);
 	},
 
-	"should clearChain and remove all functions from it": function(){
-		var called;
-		var fn = function(){
-			called = true;
-		};
-
-		var chain = new Local.Chain();
-		chain.chain(fn, fn, fn, fn);
-
-		chain.callChain();
-		value_of(called).should_be_true();
-		called = false;
-
-		chain.callChain();
-		value_of(called).should_be_true();
-		called = false;
-
-		chain.clearChain();
-
-		chain.callChain();
-		value_of(called).should_be_false();
-		called = false;
-
-		chain.callChain();
-		value_of(called).should_be_false();
-		called = false;
-	},
-
 	"should chain any number of functions": function(){
 		var chain = new Local.Chain();
 		var arr = [];
@@ -143,6 +115,40 @@ describe("Chain Class", {
 		bar.callChain();
 		value_of(foo.val).should_be('FOO');
 		value_of(bar.val).should_be('BAR');
+	},
+	
+	"should be able to clear the chain": function(){
+		var called;
+		var fn = function(){
+			called = true;
+		};
+
+		var chain = new Local.Chain();
+		chain.chain(fn, fn, fn, fn);
+
+		chain.callChain();
+		value_of(called).should_be_true();
+		called = false;
+
+		chain.clearChain();
+
+		chain.callChain();
+		value_of(called).should_be_false();
+		called = false;
+	},
+
+	"should be able to clear the chain from within": function(){
+		var foo = new Local.Chain();
+
+		var test = 0;
+		foo.chain(function(){
+			test++;
+			foo.clearChain();
+		}).chain(function(){
+			test++;
+		}).callChain();
+
+		value_of(test).should_be(1);
 	}
 
 });
