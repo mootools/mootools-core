@@ -51,6 +51,34 @@ describe("Chain Class", {
 		value_of(arr).should_be(["0Aa", "1Bb"]);
 	},
 
+	"should clearChain and remove all functions from it": function(){
+		var called;
+		var fn = function(){
+			called = true;
+		};
+
+		var chain = new Local.Chain();
+		chain.chain(fn, fn, fn, fn);
+
+		chain.callChain();
+		value_of(called).should_be_true();
+		called = false;
+
+		chain.callChain();
+		value_of(called).should_be_true();
+		called = false;
+
+		chain.clearChain();
+
+		chain.callChain();
+		value_of(called).should_be_false();
+		called = false;
+
+		chain.callChain();
+		value_of(called).should_be_false();
+		called = false;
+	},
+
 	"should chain any number of functions": function(){
 		var chain = new Local.Chain();
 		var arr = [];
