@@ -314,7 +314,7 @@ describe("Options Class", {
 
 });
 
-describe("Options Class w/ Events", {
+describe("Options Class with Events", {
 
 	"before all": function(){
 		Local.OptionsTest = new Class({
@@ -400,9 +400,9 @@ describe("Options Class", {
 		});
 		var events = myTest.$events;
 		value_of(events).should_not_be(undefined);
-		value_of(events["event1"].length).should_be(1);
-		value_of(events["event2"].length).should_be(1);
-		value_of(events["event3"].length).should_be(1);
+		value_of(events.event1.length).should_be(1);
+		value_of(events.event1.length).should_be(1);
+		value_of(events.event1.length).should_be(1);
 	}
 
 });
