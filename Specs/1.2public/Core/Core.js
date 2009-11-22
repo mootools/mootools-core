@@ -372,6 +372,28 @@ describe('$unlink', {
 
 });
 
+describe('Hash.getLength', {
+
+	"should return the number of items in it": function(){
+		var hash = new Hash({});
+		value_of(hash.getLength()).should_be(0);
+		hash.set('mootools', 'awesome');
+		hash.milk = 'yummy';
+		value_of(hash.getLength()).should_be(2);
+	},
+
+	"should not fail when length is set": function(){
+		var hash = new Hash({'length': 10});
+		value_of(hash.getLength()).should_be(1);
+	},
+
+	"should work as a generic on objects": function(){
+		value_of(Hash.getLength({})).should_be(0);
+		value_of(Hash.getLength({'': '', '0': '0', 'length': 99})).should_be(3);
+	}
+
+});
+
 describe('$H', {
 
 	"should create a new hash": function(){
