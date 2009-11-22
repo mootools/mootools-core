@@ -371,3 +371,12 @@ describe('$unlink', {
 	}
 
 });
+
+describe('$H', {
+
+	"should create a new hash": function(){
+		var hash = $H({});
+		value_of($type(hash)).should_be('hash');
+	}
+
+});
