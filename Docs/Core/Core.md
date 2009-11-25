@@ -417,6 +417,7 @@ Returns the type of object that matches the element passed in.
 * 'collection' - (*string*) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
 * 'window'     - (*string*) If object is the window object.
 * 'document'   - (*string*) If object is the document object.
+* 'event'      - (*string*) If object is an event.
 * false        - (*boolean*) If object is undefined, null, NaN or none of the above.
 
 ### Example:
