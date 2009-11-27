@@ -10,6 +10,7 @@
 <script type="text/javascript" charset="utf-8" src="SlickSpec/JSSpec.js"></script>
 <script type="text/javascript" charset="utf-8" src="SlickSpec/JSSpecHelpers.js"></script>
 <script type="text/javascript" charset="utf-8" src="SlickSpec/simple_request.js"></script>
+<script type="text/javascript" charset="utf-8" src="SlickSpec/Loader.js"></script>
 
 <!-- MooTools -->
 <script src="../Source/Core/Core.js" type="text/javascript"></script>
@@ -48,14 +49,13 @@
 
 <!-- Specs -->
 
-<script type="text/javascript" charset="utf-8" src="MooToolsSpecLoader.js"></script>
-
+<script type="text/javascript" charset="utf-8" src="Sets.js"></script>
 <script type="text/javascript" charset="utf-8">
 
 var SpecNames = [],
 	Name = 'MooTools-Core-1.2';
 
-loadSpecs();
+loadSpecs(Sets);
 runSpecs();
 
 </script>

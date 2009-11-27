@@ -1,21 +1,4 @@
-var Sets = {
-	
-	'1.2public': [
-		'Core/Core.js', 'Core/Browser.js',
-		'Native/Array.js', 'Native/String.js', 'Native/Function.js', 'Native/Number.js', 'Native/Hash.js',
-		'Class/Class.js', 'Class/Class.Extras.js', 
-		'Element/Element.js', 'Element/Element.Style.js', 'Element/Element.Dimensions.js',
-		'Utilities/Selectors.Children.js'
-	],
-	
-	'1.2private': [
-		'Core/Core.js', 'Core/Browser.js',
-		
-	]
-
-};
-
-var loadSpecs = (function(){
+var loadSpecs = (function(Sets){
 
 // Uses String.parseQueryString from MooTools-More
 // TODO Needs compat for other browsers
