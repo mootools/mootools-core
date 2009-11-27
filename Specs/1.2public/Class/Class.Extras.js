@@ -1,6 +1,6 @@
 /*
 Script: Class.Extras.js
-	Specs for Class.Extras.js
+	Public specs for Class.Extras.js
 
 License:
 	MIT-style license.

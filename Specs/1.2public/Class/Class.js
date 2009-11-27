@@ -207,9 +207,10 @@ describe('Class creation', {
 		value_of(spot.say()).should_be('NEW:animal:say:spot');
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
 	}
-
-	//We might attempt to add support for the following at a later date
-	/*"should access the proper parent when it is overwritten after instantiation": function(){
+	
+	/*
+	* TODO: 2.0
+	"should access the proper parent when it is overwritten after instantiation": function(){
 		var Dog = new Class({
 			Extends: Animal,
 			say: function(){

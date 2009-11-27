@@ -239,6 +239,10 @@ describe('$time', {
 
 	'should return a timestamp': function(){
 		value_of(Number.type($time())).should_be_true();
+	},
+	
+	'should be within a reasonable range': function(){
+		value_of($time() < 1e13 && $time() > 1e12).should_be_true();
 	}
 
 });
@@ -328,7 +332,7 @@ describe('$type', {
 		var div = document.createElement('div');
 		value_of($type(div)).should_be('element');
 	},
-
+	
 	"should return 'window' for the window object": function(){
 		value_of($type(window)).should_be('window');
 	},
