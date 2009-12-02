@@ -1,6 +1,6 @@
 /*
 Script: Browser.js
-	Specs for Browser.js
+	Public Specs for Browser.js 1.2
 
 License:
 	MIT-style license.

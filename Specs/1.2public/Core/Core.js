@@ -1,78 +1,10 @@
 /*
 Script: Core.js
-	Examples for Core.js
+	Public Specs for Core.js 1.2
 
 License:
 	MIT-style license.
 */
-
-(function(){
-
-var Instrument = new Native({
-
-	name: 'instrument',
-
-	initialize: function(name){
-		this.name = name;
-	}
-
-});
-
-Instrument.implement({
-
-	method: function(){
-		return this.property + ' ' + this.name;
-	},
-
-	property: 'stuff'
-
-});
-
-var Car = new Native({
-
-	name: 'car',
-
-	protect: true,
-
-	initialize: function(name){
-		this.name = name;
-	}
-
-});
-
-Car.implement({
-
-	property: 'stuff',
-
-	method: function(){
-		return this.name + '_' + this.property;
-	}
-
-});
-
-describe('Native', {
-
-	'should allow implementation over existing methods when browser option is not set': function(){
-		Instrument.implement({ property: 'staff' });
-		var myInstrument = new Instrument('xeelophone');
-		value_of(myInstrument.method()).should_be('staff xeelophone');
-	},
-
-	'should not override existing methods when browser option is set': function(){
-		Car.implement({ property: 'staff' });
-		var myCar = new Car('smart');
-		value_of(myCar.method()).should_be('smart_stuff');
-	},
-
-	'should allow generic calls': function(){
-		value_of(Car.method({name: 'ciccio', property: 'bello'})).should_be('ciccio_bello');
-	},
-
-	"should have a 'native' type": function(){
-		value_of(Native.type(Car)).should_be_true();
-	}
-
-});
 
 describe('$A', {
 
@@ -307,6 +239,10 @@ describe('$time', {
 
 	'should return a timestamp': function(){
 		value_of(Number.type($time())).should_be_true();
+	},
+	
+	'should be within a reasonable range': function(){
+		value_of($time() < 1e13 && $time() > 1e12).should_be_true();
 	}
 
 });
@@ -396,7 +332,7 @@ describe('$type', {
 		var div = document.createElement('div');
 		value_of($type(div)).should_be('element');
 	},
-
+	
 	"should return 'window' for the window object": function(){
 		value_of($type(window)).should_be('window');
 	},
@@ -440,4 +376,33 @@ describe('$unlink', {
 
 });
 
-})();
+describe('Hash.getLength', {
+
+	"should return the number of items in it": function(){
+		var hash = new Hash({});
+		value_of(hash.getLength()).should_be(0);
+		hash.set('mootools', 'awesome');
+		hash.milk = 'yummy';
+		value_of(hash.getLength()).should_be(2);
+	},
+
+	"should not fail when length is set": function(){
+		var hash = new Hash({'length': 10});
+		value_of(hash.getLength()).should_be(1);
+	},
+
+	"should work as a generic on objects": function(){
+		value_of(Hash.getLength({})).should_be(0);
+		value_of(Hash.getLength({'': '', '0': '0', 'length': 99})).should_be(3);
+	}
+
+});
+
+describe('$H', {
+
+	"should create a new hash": function(){
+		var hash = $H({});
+		value_of($type(hash)).should_be('hash');
+	}
+
+});
