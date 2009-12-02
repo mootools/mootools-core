@@ -7,11 +7,9 @@ description: Contains Number Prototypes like limit, round, times, and ceil.
 
 license: MIT-style license.
 
-requires:
-- /Native
-- /Utils
+requires: Type
 
-provides: [Number]
+provides: Number
 
 ...
 */
@@ -41,7 +39,7 @@ Number.implement({
 
 });
 
-Number.alias('times', 'each');
+Number.alias({each: 'times'});
 
 (function(math){
 	var methods = {};

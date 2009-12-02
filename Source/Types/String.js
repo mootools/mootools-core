@@ -8,7 +8,7 @@ description: Contains String Prototypes like camelCase, capitalize, test, and to
 license: MIT-style license.
 
 requires:
-- /Native
+- /Type
 
 provides: [String]
 
@@ -71,17 +71,6 @@ String.implement({
 	rgbToHex: function(array){
 		var rgb = this.match(/\d{1,3}/g);
 		return (rgb) ? rgb.rgbToHex(array) : null;
-	},
-
-	stripScripts: function(option){
-		var scripts = '';
-		var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
-			scripts += arguments[1] + '\n';
-			return '';
-		});
-		if (option === true) $exec(scripts);
-		else if ($type(option) == 'function') option(scripts, text);
-		return text;
 	},
 
 	substitute: function(object, regexp){

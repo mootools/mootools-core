@@ -7,14 +7,21 @@ description: Contains Function Prototypes like create, bind, pass, and delay.
 
 license: MIT-style license.
 
-requires:
-- /Native
-- /Utils
+requires: Type
 
-provides: [Function]
+provides: Function
 
 ...
 */
+
+Function.extend({stab: function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		try {
+			return arguments[i]();
+		} catch (e){}
+	}
+	return null;
+}});
 
 Function.implement({
 

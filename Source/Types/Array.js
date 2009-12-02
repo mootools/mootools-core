@@ -7,16 +7,23 @@ description: Contains Array Prototypes like each, contains, and erase.
 
 license: MIT-style license.
 
-requires:
-- /Utils
-- /Array.each
+requires: Type
 
-provides: [Array]
+provides: Array
 
 ...
 */
 
 Array.implement({
+	
+	call: function(name){
+		var args = Array.slice(arguments, 1), results = [];
+		for (var i = 0, j = this.length; i < j; i++){
+			var item = this[i];
+			results.push(item[name].apply(item, args));
+		}
+		return results;
+	},
 
 	every: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
@@ -82,7 +89,7 @@ Array.implement({
 		return this.indexOf(item, from) != -1;
 	},
 
-	extend: function(array){
+	append: function(array){
 		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
@@ -148,3 +155,9 @@ Array.implement({
 	}
 
 });
+
+/*<block name="compatibility" version="1.2">*/
+
+Array.alias({extend: 'append'});
+
+/*</block>*/
