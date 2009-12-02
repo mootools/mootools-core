@@ -7,11 +7,9 @@ description: Extends the basic Request Class with additional methods for interac
 
 license: MIT-style license.
 
-requires:
-- /Request
-- /Element
+requires: [Element, Request]
 
-provides: [Request.HTML]
+provides: Request.HTML
 
 ...
 */

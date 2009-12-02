@@ -10,18 +10,16 @@ license: MIT-style license.
 credits: 
 - Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
 
-requires:
-- /Options
-- /Utils
+requires: Options
 
-provides: [Swiff]
+provides: Swiff
 
 ...
 */
 
 var Swiff = new Class({
 
-	Implements: [Options],
+	Implements: Options,
 
 	options: {
 		id: null,
