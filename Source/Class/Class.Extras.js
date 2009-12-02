@@ -7,8 +7,7 @@ description: Contains Utility Classes that can be implemented into your own Clas
 
 license: MIT-style license.
 
-requires:
-- /Class
+requires: Class
 
 provides: [Chain, Events, Options]
 
