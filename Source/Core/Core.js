@@ -12,10 +12,12 @@ copyright: Copyright (c) 2006-2008 [Valerio Proietti](http://mad4milk.net/).
 authors: The MooTools production team (http://mootools.net/developers/)
 
 inspiration:
-- Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
-- Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
+- Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/)
+	Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
+- Some functionality inspired by [Prototype.js](http://prototypejs.org)
+	Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 
-provides: [MooTools, Type, Utilities]
+provides: [MooTools, Type, typeOf, instanceOf]
 
 ...
 */
@@ -23,7 +25,7 @@ provides: [MooTools, Type, Utilities]
 (function(){
 
 this.MooTools = {
-	version: '1.99dev',
+	version: '1.3dev',
 	build: '%build%'
 };
 
@@ -35,40 +37,21 @@ this.nil = function(item){
 
 var Function = this.Function;
 
-Function.prototype.overload = function(type){
-	var self = this;
-	return function(){
-		return self.apply(this, type.apply(this, arguments));
-	};
-};
-
-Function.overloadPair = function(k, v){
-	if (typeof k == 'string'){
-		var copy = {}; copy[k] = v;
-		return [copy];
-	}
-	return arguments;
-};
-
-Function.overloadList = function(x){
-	return (typeof x == 'string') ? arguments : x;
-};
-
 Function.prototype.extend = function(object){
 	for (var key in object) this[key] = object[key];
 	return this;
-}.overload(Function.overloadPair);
+};
 
 Function.prototype.implement = function(object){
 	for (var key in object) this.prototype[key] = object[key];
 	return this;
-}.overload(Function.overloadPair);
+};
 
 // typeOf, instanceOf
 
 this.typeOf = function(item){
 	if (item == null) return 'null';
-	if (item.$typeOf) return item.$typeOf();
+	if (item.$family) return item.$family();
 	
 	if (item.nodeName){
 		switch (item.nodeType){
@@ -142,7 +125,7 @@ var Type = this.Type = function(name, object){
 	
 	if (object == null) return null;
 	
-	if (name) object.prototype.$typeOf = Function.from(lower).hide();
+	if (name) object.prototype.$family = Function.from(lower).hide();
 	object.extend(this);
 	object.constructor = Type;
 	object.prototype.constructor = object;
@@ -154,7 +137,7 @@ Type.isEnumerable = function(item){
 	return (typeof item == 'object' && typeof item.length == 'number');
 };
 
-var hooks = {};
+var hooks = this.hooks = {};
 
 var hooksOf = function(object){
 	var type = typeOf(object.prototype);
@@ -191,42 +174,25 @@ var extend = function(name, method){
 
 Type.implement({
 	
-	implement: function(object){
-		for (var key in object) implement.call(this, key, object[key]);
+	implement: function(a){
+		for (var key in a) implement.call(this, key, a[key]);
 		return this;
-	}.overload(Function.overloadPair),
+	},
 	
 	extend: function(object){
 		for (var key in object) extend.call(this, key, object[key]);
 		return this;
-	}.overload(Function.overloadPair),
+	},
 
 	alias: function(object){
 		for (var key in object) implement.call(this, key, this.prototype[object[key]]);
 		return this;
-	}.overload(Function.overloadPair),
+	},
 
 	mirror: function(hook){
 		hooksOf(this).push(hook);
 		return this;
-	},
-	
-	protect: function(){
-		var prototype = this.prototype;
-		for (var i = 0, l = arguments.length; i < l; i++){
-			var name = arguments[i];
-			
-			var generic = this[name];
-			if (generic) generic.protect();
-			
-			var proto = prototype[name];
-			if (proto){
-				delete prototype[name];
-				prototype[name] = proto.protect();
-			}
-		}
-		return this;
-	}.overload(Function.overloadList)
+	}
 	
 });
 
@@ -235,8 +201,24 @@ new Type('Type', Type);
 // Default Types
 
 var force = function(type, methods){
-	var object = this[type];
-	new Type(type, object).protect(methods).implement(object.prototype);
+	var object = new Type(type, this[type]);
+	
+	var prototype = object.prototype;
+	
+	for (var i = 0, l = methods.length; i < l; i++){
+		var name = methods[i];
+		
+		var generic = object[name];
+		if (generic) generic.protect();
+		
+		var proto = prototype[name];
+		if (proto){
+			delete prototype[name];
+			prototype[name] = proto.protect();
+		}
+	}
+	
+	return object.implement(object.prototype);
 };
 
 force('Array', [
@@ -257,35 +239,31 @@ force('RegExp', ['exec', 'test']);
 
 force('Date', ['now']);
 
-Date.extend('now', function(){
+Date.extend({now: function(){
 	return +(new Date);
-});
+}});
 
 new Type('Boolean', Boolean);
 
 // fixes NaN returning as Number
 
-Number.prototype.$typeOf = function(){
+Number.prototype.$family = function(){
 	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 
 // forEach, each
 
-Object.extend('forEach', function(object, fn, bind){
+Object.extend({forEach: function(object, fn, bind){
 	for (var key in object) fn.call(bind, object[key], key, object);
-});
+}});
 
 Object.each = Object.forEach;
 
-Array.implement({
-	
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++){
-			if (i in this) fn.call(bind, this[i], i, this);
-		}
+Array.implement({forEach: function(fn, bind){
+	for (var i = 0, l = this.length; i < l; i++){
+		if (i in this) fn.call(bind, this[i], i, this);
 	}
-	
-});
+}});
 
 Array.each = Array.forEach;
 Array.prototype.each = Array.prototype.forEach;
@@ -300,17 +278,17 @@ var cloneOf = function(item){
 	}
 };
 
-Array.implement('clone', function(){
+Array.implement({clone: function(){
 	var clone = [];
 	for (var i = 0; i < this.length; i++) clone[i] = cloneOf(this[i]);
 	return clone;
-});
+}});
 
-Object.extend('clone', function(object){
+Object.extend({clone: function(object){
 	var clone = {};
 	for (var key in object) clone[key] = cloneOf(object[key]);
 	return clone;
-});
+}});
 
 // Object merging
 
@@ -326,14 +304,14 @@ var mergeOne = function(source, key, current){
 	return source;
 };
 
-Object.extend('merge', function(source, k, v){
+Object.extend({merge: function(source, k, v){
 	if (typeof k == 'string') return mergeOne(source, k, v);
 	for (var i = 1, l = arguments.length; i < l; i++){
 		var object = arguments[i];
 		for (var key in object) mergeOne(source, key, object[key]);
 	}
 	return source;
-});
+}});
 
 // Object-less types
 
@@ -342,3 +320,136 @@ Object.extend('merge', function(source, k, v){
 });
 
 })();
+
+/*<block name="compatibility" version="1.2">*/
+
+var Native = function(properties){
+	return new Type(properties.name, properties.initialize);
+};
+
+Native.implement = function(objects, methods){
+	for (var i = 0; i < objects.length; i++) objects[i].implement(methods);
+	return Native;
+};
+
+var Hash = new Type('Hash', function(object){
+	if ($type(object) == 'hash') object = $unlink(object.getClean());
+	for (var key in object) this[key] = object[key];
+	return this;
+});
+
+Hash.implement({
+
+	forEach: function(fn, bind){
+		for (var key in this){
+			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
+		}
+	},
+
+	getClean: function(){
+		var clean = {};
+		for (var key in this){
+			if (this.hasOwnProperty(key)) clean[key] = this[key];
+		}
+		return clean;
+	},
+
+	getLength: function(){
+		var length = 0;
+		for (var key in this){
+			if (this.hasOwnProperty(key)) length++;
+		}
+		return length;
+	}
+
+});
+
+Hash.alias({each: 'forEach'});
+
+var $A = Array.from;
+
+var $arguments = function(i){
+	return function(){
+		return arguments[i];
+	};
+};
+
+var $chk = function(obj){
+	return !!(obj || obj === 0);
+};
+
+var $clear = function(timer){
+	clearTimeout(timer);
+	clearInterval(timer);
+	return null;
+};
+
+var $defined = function(obj){
+	return (obj != undefined);
+};
+
+var $each = function(iterable, fn, bind){
+	var type = $type(iterable);
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+};
+
+var $empty = function(){};
+
+var $extend = function(original, extended){
+	for (var key in (extended || {})) original[key] = extended[key];
+	return original;
+};
+
+var $H = function(object){
+	return new Hash(object);
+};
+
+var $lambda = Function.from;
+
+var $merge = function(){
+	var args = Array.slice(arguments);
+	args.unshift({});
+	return Object.merge.apply(null, args);
+};
+
+var $mixin = Object.merge;
+
+var $pick = function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		if (arguments[i] != undefined) return arguments[i];
+	}
+	return null;
+};
+
+var $random = function(min, max){
+	return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+var $splat = Array.from;
+
+var $time = Date.now;
+
+var $try = function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		try {
+			return arguments[i]();
+		} catch(e){}
+	}
+	return null;
+};
+
+var $type = function(object){
+	var type = typeOf(object);
+	return (type == 'null') ? false : type;
+};
+
+var $unlink = function(object){
+	switch ($type(object)){
+		case 'object': return Object.clone(object);
+		case 'array': return Array.clone(object);
+		case 'hash': return new Hash(object);
+		default: return obejct;
+	}
+};
+
+/*</block>*/
