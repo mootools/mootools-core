@@ -3,7 +3,8 @@
 
 script: Element.js
 
-description: One of the most important items in MooTools. Contains the dollar function, the dollars function, and an handful of cross-browser, time-saver methods to let you easily work with HTML Elements.
+description: One of the most important items in MooTools. Contains the dollar function, the dollars function, and an handful of cross-browser,
+	time-saver methods to let you easily work with HTML Elements.
 
 license: MIT-style license.
 
@@ -21,105 +22,98 @@ provides: [Element, Elements, $, $$, Iframe]
 ...
 */
 
-var Element = new Native({
+var Element = function(tag, props){
+	var konstructor = Element.Constructors.get(tag);
+	if (konstructor) return konstructor(props);
+	if (typeof tag == 'string') return document.newElement(tag, props);
+	return document.id(tag).set(props);
+};
+	
+if (Browser.Element){
+	Element.prototype = Browser.Element.prototype;
+}
 
-	name: 'Element',
-
-	legacy: window.Element,
-
-	initialize: function(tag, props){
-		var konstructor = Element.Constructors.get(tag);
-		if (konstructor) return konstructor(props);
-		if (typeof tag == 'string') return document.newElement(tag, props);
-		return document.id(tag).set(props);
-	},
-
-	afterImplement: function(key, value){
-		Element.Prototype[key] = value;
-		if (Array[key]) return;
-		Elements.implement(key, function(){
-			var items = [], elements = true;
-			for (var i = 0, j = this.length; i < j; i++){
-				var returns = this[i][key].apply(this[i], arguments);
-				items.push(returns);
-				if (elements) elements = ($type(returns) == 'element');
-			}
-			return (elements) ? new Elements(items) : items;
-		});
-	}
-
+new Type('Element', Element).mirror(function(name, method){
+	if (Array[name]) return;
+	var obj = {};
+	obj[name] = function(){
+		var results = [], args = arguments, elements = true;
+		for (var i = 0, l = this.length; i < l; i++){
+			var element = this[i], result = results[i] = element[name].apply(element, args);
+			elements = (elements && typeOf(result) == 'element');
+		}
+		return (elements) ? new Elements(results) : results;
+	};
+	
+	Elements.implement(obj);
 });
 
-Element.Prototype = {$family: {name: 'element'}};
+if (!Browser.Element){
+	Element.parent = Object;
+	
+	Element.ProtoType = {};
+	Element.ProtoElement = document.createElement('div');
+	Element.ProtoElement.$family = Element.ProtoType.$family = Function.from('element').hide();
+	
+	Element.mirror(function(name, method){
+		Element.ProtoElement[name] = Element.ProtoType[name] = method;
+	});
+}
 
 Element.Constructors = new Hash;
 
-var IFrame = new Native({
-
-	name: 'IFrame',
-
-	generics: false,
-
-	initialize: function(){
-		var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
-		var props = params.properties || {};
-		var iframe = document.id(params.iframe);
-		var onload = props.onload || $empty;
-		delete props.onload;
-		props.id = props.name = $pick(props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + $time());
-		iframe = new Element(iframe || 'iframe', props);
-		var onFrameLoad = function(){
-			var host = $try(function(){
-				return iframe.contentWindow.location.host;
-			});
-			if (!host || host == window.location.host){
-				var win = new Window(iframe.contentWindow);
-				new Document(iframe.contentWindow.document);
-				$extend(win.Element.prototype, Element.Prototype);
-			}
-			onload.call(iframe.contentWindow, iframe.contentWindow.document);
-		};
-		var contentWindow = $try(function(){
-			return iframe.contentWindow;
+var IFrame = new Type('IFrame', function(){
+	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
+	var props = params.properties || {};
+	var iframe = document.id(params.iframe);
+	var onload = props.onload || $empty;
+	delete props.onload;
+	props.id = props.name = $pick(props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + $time());
+	iframe = new Element(iframe || 'iframe', props);
+	var onFrameLoad = function(){
+		var host = $try(function(){
+			return iframe.contentWindow.location.host;
 		});
-		((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
-		return iframe;
-	}
-
-});
-
-var Elements = new Native({
-
-	initialize: function(elements, options){
-		options = $extend({ddup: true, cash: true}, options);
-		elements = elements || [];
-		if (options.ddup || options.cash){
-			var uniques = {}, returned = [];
-			for (var i = 0, l = elements.length; i < l; i++){
-				var el = document.id(elements[i], !options.cash);
-				if (options.ddup){
-					if (uniques[el.uid]) continue;
-					uniques[el.uid] = true;
-				}
-				if (el) returned.push(el);
-			}
-			elements = returned;
+		if (!host || host == window.location.host){
+			var win = new Window(iframe.contentWindow);
+			new Document(iframe.contentWindow.document);
+			$extend(win.Element.prototype, Element.ProtoType);
 		}
-		return (options.cash) ? $extend(elements, this) : elements;
-	}
-
+		onload.call(iframe.contentWindow, iframe.contentWindow.document);
+	};
+	var contentWindow = $try(function(){
+		return iframe.contentWindow;
+	});
+	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
+	return iframe;
 });
 
-Elements.implement({
-
-	filter: function(filter, bind){
-		if (!filter) return this;
-		return new Elements(Array.filter(this, (typeof filter == 'string') ? function(item){
-			return item.match(filter);
-		} : filter, bind));
+var Elements = new Type('', function(elements, options){
+	options = $extend({ddup: true, cash: true}, options);
+	elements = elements || [];
+	if (options.ddup || options.cash){
+		var uniques = {}, returned = [];
+		for (var i = 0, l = elements.length; i < l; i++){
+			var el = document.id(elements[i], !options.cash);
+			if (options.ddup){
+				if (uniques[el.uid]) continue;
+				uniques[el.uid] = true;
+			}
+			if (el) returned.push(el);
+		}
+		elements = returned;
 	}
 
+	
+	return (options.cash) ? $extend(elements, this) : elements;
 });
+
+Elements.implement({filter: function(filter, bind){
+	if (!filter) return this;
+	return new Elements(Array.filter(this, (typeof filter == 'string') ? function(item){
+		return item.match(filter);
+	} : filter, bind));
+}});
 
 Document.implement({
 
@@ -159,8 +153,8 @@ Document.implement({
 			element: function(el, nocash){
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-					var proto = Element.Prototype;
-					for (var p in proto) el[p] = proto[p];
+					if (el.mergeAttributes) el.mergeAttributes(Element.ProtoElement);
+					else $extend(el, Element.ProtoType);
 				};
 				return el;
 			},
@@ -184,11 +178,9 @@ Document.implement({
 
 });
 
-if (window.$ == null) Window.implement({
-	$: function(el, nc){
-		return document.id(el, nc, this.document);
-	}
-});
+if (window.$ == null) Window.implement({$: function(el, nc){
+	return document.id(el, nc, this.document);
+}});
 
 Window.implement({
 
@@ -216,7 +208,7 @@ Window.implement({
 
 });
 
-Native.implement([Element, Document], {
+[Element, Document].call('implement', {
 
 	getElement: function(selector, nocash){
 		return document.id(this.getElements(selector, true)[0] || null, nocash);
@@ -234,6 +226,7 @@ Native.implement([Element, Document], {
 	}
 
 });
+
 
 (function(){
 
@@ -294,7 +287,9 @@ var attributes = {
 	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
 };
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
-var camels = ['value', 'type', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'];
+var camels = [
+	'value', 'type', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
+	'rowSpan', 'tabIndex', 'useMap'];
 
 bools = bools.associate(bools);
 
@@ -329,16 +324,20 @@ inserters.inside = inserters.bottom;
 Hash.each(inserters, function(inserter, where){
 
 	where = where.capitalize();
-
-	Element.implement('inject' + where, function(el){
+	
+	var methods = {};
+	
+	methods['inject' + where] = function(el){
 		inserter(this, document.id(el, true));
 		return this;
-	});
-
-	Element.implement('grab' + where, function(el){
+	};
+	
+	methods['grab' + where] = function(el){
 		inserter(document.id(el, true), this);
 		return this;
-	});
+	};
+
+	Element.implement(methods);
 
 });
 
@@ -594,7 +593,7 @@ Element.implement({
 
 });
 
-Native.implement([Element, Window, Document], {
+[Element, Window, Document].call('implement', {
 
 	addListener: function(type, fn){
 		if (type == 'unload'){
