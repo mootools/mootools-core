@@ -53,7 +53,7 @@ this.Events = new Class({
 	fireEvents: function(){
 		for (var i = 0; i < arguments.length; i++) this.fireEvent(arguments[i]);
 		return this;
-	}.overloadGetter(),
+	},
 
 	removeEvent: function(type, fn){
 		if (!fn.$protected){

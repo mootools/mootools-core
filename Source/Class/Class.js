@@ -95,8 +95,8 @@ var getInstance = function(klass){
 	return proto;
 };
 
-Class.implement('implement', (function(object){
-	for (var key in object) implement.call(this, key, object[key]);
+Class.implement('implement', (function(name, fn){
+	implement.call(this, name, fn);
 	return this;
 }).overloadSetter());
 
