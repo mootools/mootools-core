@@ -47,6 +47,15 @@ Function.prototype.implement = function(object){
 	return this;
 };
 
+Function.extend({stab: function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		try {
+			return arguments[i]();
+		} catch (e){}
+	}
+	return null;
+}});
+
 // typeOf, instanceOf
 
 this.typeOf = function(item){
