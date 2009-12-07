@@ -133,7 +133,11 @@ var Type = this.Type = function(name, object){
 	
 	if (object == null) return null;
 	
-	if (name) object.prototype.$typeOf = Function.from(lower).hide();
+	if (name){
+		object.prototype.$typeOf = Function.from(lower).hide();
+		object.$name = lower;
+	}
+
 	object.extend(this);
 	object.constructor = Type;
 	object.prototype.constructor = object;

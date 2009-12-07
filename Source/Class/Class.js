@@ -98,7 +98,7 @@ var getInstance = function(klass){
 Class.implement('implement', (function(object){
 	for (var key in object) implement.call(this, key, object[key]);
 	return this;
-}).overload(Function.overloadPair));
+}).overloadSetter());
 
 Class.defineMutators({
 
