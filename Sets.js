@@ -1,6 +1,9 @@
 var Sets = {
+	'1.1public': ['Core/Core.js'],
 	
-	'1.1public': [
+	'1.1private': [],
+
+	'1.1compat': [
 		'Core/Browser.js', 'Class/Class.js',
 		'Native/Array.js', 'Native/Function.js', 'Native/Hash.js',
 		'Element/Element.js'
