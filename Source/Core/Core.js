@@ -339,6 +339,8 @@ Object.extend({merge: function(source, k, v){
 
 /*<block name="compatibility" version="1.2">*/
 
+Object.type = Type.isObject;
+
 var Native = function(properties){
 	return new Type(properties.name, properties.initialize);
 };
