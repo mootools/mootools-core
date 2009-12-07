@@ -66,39 +66,6 @@ describe('$defined', {
 
 });
 
-describe('$each', {
-
-	'should call the function for each item in Function arguments': function(){
-		var daysArr = [];
-		(function(){
-			$each(arguments, function(value, key){
-				daysArr[key] = value;
-			});
-		})('Sun','Mon','Tue');
-
-		value_of(daysArr).should_be(['Sun','Mon','Tue']);
-	},
-
-	'should call the function for each item in the array': function(){
-		var daysArr = [];
-		$each(['Sun','Mon','Tue'], function(value, key){
-			daysArr[key] = value;
-		});
-
-		value_of(daysArr).should_be(['Sun','Mon','Tue']);
-	},
-
-	'should call the function for each item in the object': function(){
-		var daysObj = {};
-		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
-			daysObj[key] = value;
-		});
-
-		value_of(daysObj).should_be({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
-	}
-
-});
-
 describe('$extend', {
 
 	'should extend two objects': function(){
@@ -332,4 +299,4 @@ describe('$type', {
 		value_of($type(document)).should_be('object');
 	}
 
-});`
+});

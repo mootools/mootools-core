@@ -1,5 +1,5 @@
 var Sets = {
-	'1.1public': ['Core/Core.js'],
+	'1.1public': ['Core/Core.js', 'Native/Array.js', 'Native/Function.js', 'Native/Number.js', 'Native/String.js', 'Native/Element.js'],
 	
 	'1.1private': [],
 
