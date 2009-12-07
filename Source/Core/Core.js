@@ -117,12 +117,19 @@ Function.implement({
 
 var Type = this.Type = function(name, object){
 	
-	var lower = (name || '').toLowerCase(), isType;
+	var lower = (name || '').toLowerCase();
 	
-	if (name) Type['is' + name] = function(item){
-		return (typeOf(item) == lower);
-	};
-	
+	if (name){
+		var typeCheck = function(item){
+			return (typeOf(item) == lower);
+		};
+		
+		Type['is' + name] = typeCheck;
+		/*<block name="compatibility" version="1.2">*/
+		if (object) object.type = typeCheck;
+		/*</block>*/
+	}
+
 	if (object == null) return null;
 	
 	if (name) object.prototype.$family = Function.from(lower).hide();
