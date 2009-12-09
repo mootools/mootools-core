@@ -34,54 +34,6 @@ describe('nil', {
 
 });
 
-describe('Function:overload', {
-
-	'should mutate arguments with a custom function': function(){
-		
-		var arrayAdder = function(a){
-			if (typeOf(a) == 'array') return a;
-		};
-		
-		var x = function(){
-			var res = 0;
-			for (var i = 0; i < arguments.length; i++){
-				res += arguments[i];
-			}
-			return res;
-		}.overload(arrayAdder);
-		
-		value_of(x([1,2,3,4])).should_be(10);
-	},
-	
-	'should allow Function.overloadList to mutate an array in an arguments list': function(){
-		
-		var x = function(){
-			var res = 0;
-			for (var i = 0; i < arguments.length; i++){
-				res += arguments[i];
-			}
-			return res;
-		}.overload(Function.overloadList);
-		
-		value_of(x([1,2,3,4])).should_be(10);
-	},
-	
-	'should allow Function.overloadPair to mutate a passed in key / value in an object': function(){
-		
-		var x = function(obj){
-			var res = 0;
-			for (var p in obj){
-				res += obj[p];
-			}
-			return res;
-		}.overload(Function.overloadPair);
-		
-		value_of(x({a:1, b:2, c:3, d:4})).should_be(10);
-		value_of(x("a", 10)).should_be(10);
-	}
-
-});
-
 describe('typeOf', {
 
 	"should return 'array' for Array objects": function(){
@@ -320,32 +272,6 @@ describe('Type', {
 
 });
 
-/*describe('Object.check', {
-
-	'should return false on false': function(){
-		value_of(Object.check(false)).should_be_false();
-	},
-
-	'should return false on null': function(){
-		value_of(Object.check(null)).should_be_false();
-	},
-
-	'should return false on undefined': function(){
-		value_of(Object.check(undefined)).should_be_false();
-	},
-
-	'should return true on 0': function(){
-		value_of(Object.check(0)).should_be_true();
-	},
-
-	'should return true for any truthsie': function(){
-		value_of(Object.check(1)).should_be_true();
-		value_of(Object.check({})).should_be_true();
-		value_of(Object.check(true)).should_be_true();
-	}
-
-});*/
-
 // describe('Function.clear', {
 // 
 // 	'should clear timeouts': function(){
@@ -437,6 +363,19 @@ describe('Array.each', {
 		});
 	
 		value_of(daysArr).should_be(['Sun','Mon','Tue']);
+	},
+
+	'should not iterate over deleted elements': function(){
+		var array = [0, 1, 2, 3],
+			testArray = [];
+		delete array[1];
+		delete array[2];
+
+		array.each(function(value){
+			testArray.push(value);
+		});
+
+		value_of(testArray).should_be([0, 3]);
 	}
 	
 });
