@@ -14,6 +14,15 @@ provides: Function
 ...
 */
 
+Function.extend({stab: function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		try {
+			return arguments[i]();
+		} catch (e){}
+	}
+	return null;
+}});
+
 Function.implement({
 
 	extend: function(properties){

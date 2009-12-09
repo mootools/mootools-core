@@ -5,16 +5,11 @@
 		"Core": {
 			"deps": ["Core"],
 			"desc": "The core of MooTools, contains all the base functions and the Native and Hash implementations. Required by all the other scripts."
-		},
-
-		"Browser": {
-			"deps": ["Core"],
-			"desc": "The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash."
 		}
 
 	},
 
-	"Native": {
+	"Types": {
 
 		"Array": {
 			"deps": ["Core"],
@@ -60,6 +55,13 @@
 			"desc": "Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks."
 		}
 
+	},
+
+	"Browser": {
+		"Browser": {
+			"deps": ["Core", "Function"],
+			"desc": "The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash."
+		}
 	},
 
 	"Element": {
