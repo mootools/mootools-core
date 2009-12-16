@@ -1,6 +1,10 @@
 var Sets = {
+
+	'1.1public': ['Core/Core.js', 'Native/Array.js', 'Native/Function.js', 'Native/Number.js', 'Native/String.js', 'Native/Element.js', 'Element/Element.Dimensions.js', 'Element/Element.Form.js', 'Element/Element.Filters.js', 'Element/Element.Selectors.js', 'Element/Element.Event.js', 'Class/Class.js', 'Class/Class.Extras.js', 'Remote/Ajax.js', 'Remote/Cookie.js', 'Remote/Json.js', 'Remote/XHR.js'],
 	
-	'1.1public': [
+	'1.1private': [],
+
+	'1.1compat': [
 		'Core/Browser.js', 'Class/Class.js',
 		'Native/Array.js', 'Native/Function.js', 'Native/Hash.js',
 		'Element/Element.js'
