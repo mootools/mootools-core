@@ -1,0 +1,8 @@
+{
+	"Class": {
+		"Class.Extras":["all"]
+	},
+	"Remote": {
+		"Ajax":["all"]
+	}
+}

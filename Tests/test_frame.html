@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>Unit Test Runner</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script>
+		//map dbug in this frame to the parent logger
+		var dbug = window.parent.dbug;
+		if (!window.console) window.console = dbug;
+		document.write('<link rel="stylesheet" type="text/css" media="screen" href="'+window.parent.UnitTester.path+'assets/tests.css" />');
+		//these two methods are referenced in UnitTester.js via the parent window
+		//define $exec, which needs to work w/o any dependencies for the test framework
+		function $exec(text){
+			if (!text) return text;
+			if (window.execScript){
+				window.execScript(text);
+			} else {
+				var script = document.createElement('script');
+				script.setAttribute('type', 'text/javascript');
+				script.text = text;
+				document.getElementsByTagName('head')[0].appendChild(script);
+				document.getElementsByTagName('head')[0].removeChild(script);
+			}
+			return text;
+		};
+		//loads a script into the document; no dependencies
+		var $LoadScript = function(scr, onload){
+			var script = document.createElement('script');
+			script.onload = onload || function(){};
+			script.src = scr;
+			var head = document.getElementsByTagName('head')[0];
+			head.appendChild(script);
+		};
+	</script>
+	<style>
+	body {
+		margin: 0px;
+		padding: 15px;
+	}
+	</style>
+</head>
+<body class="test_iframe">
+</body>
+</html>
