@@ -7,9 +7,9 @@ License:
 */
 
 (function(){
-	var div, relDiv, absDiv, scrollDiv, tallDiv;
+	var div, relDiv, absDiv, scrollDiv, tallDiv, ready;
 	var setup = function(){
-		if ($('ElementDimensionsTest')) return;
+		if (ready) return;
 		div = new Element('div', {
 			id: 'ElementDimensionsTest',
 			styles: {
@@ -79,14 +79,14 @@ License:
 			},
 			id: 'tallDiv'
 		}).inject(scrollDiv);
-	
+		ready = true;
 	};
 	window.addEvent('domready', setup);
 
 	describe('Element.getSize', {
 		
 		'should measure the width and height of the element': function(){
-			if (!$('ElementDimensionsTest')) setup();
+			setup();
 			value_of(div.getSize()).should_be({"scroll":{"x":0, "y":0}, "size":{"x":108, "y":108}, "scrollSize":{"x":106, "y":106}});
 		}
 		
@@ -95,6 +95,7 @@ License:
 	describe('Element.getPosition', {
 		
 		'should measure the x and y position of the element': function(){
+			setup();
 			value_of(div.getPosition()).should_be({x: 102, y: 102});
 		}
 		
@@ -103,6 +104,7 @@ License:
 	describe('Element.getTop', {
 		
 		'should get the top the element': function(){
+			setup();
 			value_of(div.getTop()).should_be(102);
 		}
 		
@@ -111,6 +113,7 @@ License:
 	describe('Element.getLeft', {
 		
 		'should get the top the element': function(){
+			setup();
 			value_of(div.getLeft()).should_be(102);
 		}
 		
@@ -119,6 +122,7 @@ License:
 	describe('Element.getCoordinates', {
 		
 		'should return the coordinates relative to the document body': function(){
+			setup();
 			value_of(absDiv.getCoordinates()).should_be({"width":22, "height":22, "left":124, "top":124, "right":146, "bottom":146});
 		}
 		
@@ -127,6 +131,7 @@ License:
 	describe('Element.scrollTo', {
 		
 		'should scroll the element': function(){
+			setup();
 			scrollDiv.scrollTo(20,20);
 			value_of(scrollDiv.getSize().scroll).should_be({x:20, y:20});
 		}
