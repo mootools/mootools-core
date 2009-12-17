@@ -2,6 +2,10 @@
 	"Class": {
 		"Class.Extras":["all"]
 	},
+	"Fx": {
+		"Fx.Elements":["all"],
+		"Fx.Scroll":["element", "window"]
+	},
 	"Remote": {
 		"Ajax":["all"]
 	}
