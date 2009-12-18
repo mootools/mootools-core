@@ -15,7 +15,6 @@ License:
 	describe('Element.Event', {
 		
 		'Event target should be the document': function(){
-			console.dir(e);
 			value_of(e.target).should_be(document);
 		},
 		
