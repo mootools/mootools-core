@@ -4,7 +4,10 @@
 	},
 	"Fx": {
 		"Fx.Elements":["all"],
-		"Fx.Scroll":["element", "window"]
+		"Fx.Scroll":["element", "window"],
+		"Fx.Slide":["all"],
+		"Fx.Style":["all"],
+		"Fx.Styles":["all"]
 	},
 	"Remote": {
 		"Ajax":["all"]
