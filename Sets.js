@@ -8,7 +8,7 @@ context.Sets = {
 		'Class/Class.js', 'Class/Class.Extras.js',
 		'Element/Element.Dimensions.js', 'Element/Element.Form.js', 'Element/Element.Filters.js',
 		'Element/Element.Selectors.js', 'Element/Element.Event.js',
-		'Remote/Ajax.js', 'Remote/Cookie.js', 'Remote/Json.js', 'Remote/XHR.js'
+		'Remote/Ajax.js', 'Remote/Cookie.js', 'Remote/Json.js', 'Remote/XHR.js',
 		'Remote/Assets.js', 'Fx/Fx.Transitions.js'
 	],
 	
