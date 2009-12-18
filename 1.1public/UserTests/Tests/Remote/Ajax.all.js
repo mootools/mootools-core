@@ -5,7 +5,7 @@
 			description: "Sends an AJAX request to the server.",
 			verify: "Did the ajax log to the screen a success?",
 			before: function(){
-				new Ajax('Tests_1.12/Remote/simple.php', {
+				new Ajax('Tests/Remote/simple.php', {
 					method: 'get',
 					onRequest: function(){
 						new Element('hr').inject($('log'));
@@ -22,7 +22,7 @@
 			description: "Sends an AJAX request to the server. Requests a 404 url.",
 			verify: "Did the ajax log to the screen a success?",
 			before: function(){
-				new Ajax('Tests_1.12/Remote/simplxe.php', {
+				new Ajax('Tests/Remote/simplxe.php', {
 					method: 'get',
 					onRequest: function(){
 						new Element('hr').inject($('log'));
@@ -42,7 +42,7 @@
 			description: "Sends an AJAX request to the server and cancels it.",
 			verify: "Did the ajax log to the screen a success?",
 			before: function(){
-				new Ajax('Tests_1.12/Remote/simple.php', {
+				new Ajax('Tests/Remote/simple.php', {
 					method: 'get',
 					onRequest: function(){
 						new Element('hr').inject($('log'));
@@ -62,7 +62,7 @@
 			description: "Sends an AJAX request to the server and chains a function to fire after success.",
 			verify: "Did the ajax log to the screen a success?",
 			before: function(){
-				new Ajax('Tests_1.12/Remote/simple.php', {
+				new Ajax('Tests/Remote/simple.php', {
 					method: 'get',
 					onRequest: function(){
 						new Element('hr').inject($('log'));
@@ -82,7 +82,7 @@
 			verify: "Did the ajax log to the screen a success?",
 			before: function(){
 				new Element('hr').inject($('log'));
-				new Ajax('Tests_1.12/Remote/ajax.evalscripts.js', {
+				new Ajax('Tests/Remote/ajax.evalscripts.js', {
 					method: 'get',
 					onRequest: function(){
 						new Element('li').setHTML('attempting request for js file...').inject($('log'));
@@ -98,7 +98,7 @@
 			before: function(){
 				new Element('hr').inject($('log'));
 				var form = new Element('form', {
-					action: 'Tests_1.12/Remote/simple.php'
+					action: 'Tests/Remote/simple.php'
 				});
 				var input = new Element('input', {type: 'text', name: 'num'}).set({value: '1'}).inject(form);
 				form.send({

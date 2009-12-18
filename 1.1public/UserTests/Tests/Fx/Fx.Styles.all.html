@@ -1,0 +1,20 @@
+<style>
+#example {
+	background-color:#BAEEB5;
+	border:1px solid #000000;
+	height:50px;
+	width: 50px;
+	margin:2px 0;
+	position: relative;
+	top: 100px;
+	left: 100px;
+}
+</style>
+<div id="example"></div>
+<script>
+	window.reset = function(){
+		(function(){
+		$('example').style.cssText = '';
+		}).delay(1500);
+	};
+</script>
