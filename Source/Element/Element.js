@@ -421,7 +421,7 @@ Element.implement({
 
 	adopt: function(){
 		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
-		if (length > 5) parent = fragment = document.createDocumentFragment();
+		if (length > 1) parent = fragment = document.createDocumentFragment();
 		
 		for (var i = 0; i < length; i++){
 			var element = document.id(elements[i]);
