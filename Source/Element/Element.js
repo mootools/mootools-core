@@ -420,10 +420,16 @@ Element.implement({
 	},
 
 	adopt: function(){
-		Array.flatten(arguments).each(function(element){
-			element = document.id(element, true);
-			if (element) this.appendChild(element);
-		}, this);
+		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
+		if (length > 5) parent = fragment = document.createDocumentFragment();
+		
+		for (var i = 0; i < length; i++){
+			var element = document.id(elements[i]);
+			if (element) parent.appendChild(element);
+		}
+		
+		if (fragment) this.appendChild(fragment);
+		
 		return this;
 	},
 
