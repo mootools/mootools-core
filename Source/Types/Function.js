@@ -25,11 +25,6 @@ Function.extend({stab: function(){
 
 Function.implement({
 
-	extend: function(properties){
-		for (var property in properties) this[property] = properties[property];
-		return this;
-	},
-
 	create: function(options){
 		var self = this;
 		options = options || {};
