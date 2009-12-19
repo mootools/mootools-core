@@ -47,7 +47,7 @@ var loadSpecs = function(obj){
 		
 		var specs = Sets[obj[i]];
 		for (var j = 0; j < specs.length; j++){
-			document.write('<scr'+'ipt src="' + obj[i] + '/' + specs[j] + '" type="text/javascript"><\/script>');
+			document.write('<scr'+'ipt src="' + obj[i] + '/' + specs[j] + '.js" type="text/javascript"><\/script>');
 		}
 	}
 };

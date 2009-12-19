@@ -3,37 +3,37 @@
 context.Sets = {
 
 	'1.1public': [
-		'Core/Core.js',
-		'Native/Array.js', 'Native/Function.js', 'Native/Number.js', 'Native/String.js', 'Native/Element.js',
-		'Class/Class.js', 'Class/Class.Extras.js',
-		'Element/Element.Dimensions.js', 'Element/Element.Form.js', 'Element/Element.Filters.js',
-		'Element/Element.Selectors.js', 'Element/Element.Event.js',
-		'Remote/Ajax.js', 'Remote/Cookie.js', 'Remote/Json.js', 'Remote/XHR.js',
-		'Remote/Assets.js', 'Fx/Fx.Transitions.js'
+		'Core/Core',
+		'Native/Array', 'Native/Function', 'Native/Number', 'Native/String', 'Native/Element',
+		'Class/Class', 'Class/Class.Extras',
+		'Element/Element.Dimensions', 'Element/Element.Form', 'Element/Element.Filters',
+		'Element/Element.Selectors', 'Element/Element.Event',
+		'Remote/Ajax', 'Remote/Cookie', 'Remote/Json', 'Remote/XHR',
+		'Remote/Assets', 'Fx/Fx.Transitions'
 	],
 	
 	'1.1compat': [
-		'Core/Browser.js', 'Class/Class.js',
-		'Native/Array.js', 'Native/Function.js', 'Native/Hash.js',
-		'Element/Element.js'
+		'Core/Browser', 'Class/Class',
+		'Native/Array', 'Native/Function', 'Native/Hash',
+		'Element/Element'
 	],
-
 	
 	'1.2public': [
-		'Core/Core.js', 'Core/Browser.js',
-		'Native/Array.js', 'Native/String.js', 'Native/Function.js', 'Native/Number.js', 'Native/Hash.js',
-		'Class/Class.js', 'Class/Class.Extras.js',
-		'Element/Element.js', 'Element/Element.Style.js', 'Element/Element.Dimensions.js'
+		'Core/Core', 'Core/Browser',
+		'Native/Array', 'Native/String', 'Native/Function', 'Native/Number', 'Native/Hash',
+		'Class/Class', 'Class/Class.Extras',
+		'Element/Element', 'Element/Element.Style', 'Element/Element.Dimensions'
 	],
 
 	'1.2private': [
-		'Core/Core.js', 'Core/Browser.js'
+		'Core/Core', 'Core/Browser'
 	],
 
 	'1.3public': [
-		'Core/Core.js', 'Core/Utils.js',
-		'Types/Array.js', 'Types/Function.js', 'Types/Hash.js',
-		'Class/Class.js', 'Element/Element.js'
+		'Core/Core', 'Core/Utils',
+		'Types/Array', 'Types/Function', 'Types/Hash',
+		'Class/Class', 'Element/Element',
+		'Browser/Browser'
 	]
 
 };
