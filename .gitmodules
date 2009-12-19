@@ -6,4 +6,4 @@
 	url = git://github.com/anutron/mootools-unittester.git
 [submodule "Specs"]
 	path = Specs
-	url = git://github.com:mootools/mootools-core-specs.git
+	url = git://github.com/mootools/mootools-core-specs.git
