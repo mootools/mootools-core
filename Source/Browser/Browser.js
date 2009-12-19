@@ -23,7 +23,7 @@ var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|versi
 
 var Browser = this.Browser = (function(){}).extend({
 	
-	name: UA[3] || UA[1],
+	name: (UA[1] == 'version') ? UA[3] : UA[1],
 	version: parseFloat(UA[2]),
 
 	Platform: {
@@ -204,7 +204,7 @@ if (Browser.firefox){
 	}
 }
 
-if (Browser.safari){
+if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
 	
 	switch(Browser.version){
