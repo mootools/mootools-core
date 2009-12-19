@@ -275,7 +275,7 @@ Array.implement({forEach: function(fn, bind){
 Array.each = Array.forEach;
 Array.prototype.each = Array.prototype.forEach;
 
-// Array & Object cloning
+// Array & Object cloning, Object merging and appending
 
 var cloneOf = function(item){
 	switch (typeOf(item)){
@@ -291,14 +291,6 @@ Array.implement({clone: function(){
 	return clone;
 }});
 
-Object.extend({clone: function(object){
-	var clone = {};
-	for (var key in object) clone[key] = cloneOf(object[key]);
-	return clone;
-}});
-
-// Object merging
-
 var mergeOne = function(source, key, current){
 	switch (typeOf(current)){
 		case 'object':
@@ -311,14 +303,32 @@ var mergeOne = function(source, key, current){
 	return source;
 };
 
-Object.extend({merge: function(source, k, v){
-	if (typeof k == 'string') return mergeOne(source, k, v);
-	for (var i = 1, l = arguments.length; i < l; i++){
-		var object = arguments[i];
-		for (var key in object) mergeOne(source, key, object[key]);
+Object.extend({
+	
+	merge: function(source, k, v){
+		if (typeof k == 'string') return mergeOne(source, k, v);
+		for (var i = 1, l = arguments.length; i < l; i++){
+			var object = arguments[i];
+			for (var key in object) mergeOne(source, key, object[key]);
+		}
+		return source;
+	},
+	
+	clone: function(object){
+		var clone = {};
+		for (var key in object) clone[key] = cloneOf(object[key]);
+		return clone;
+	},
+	
+	append: function(original){
+		for (var i = 1, l = arguments.length; i < l; i++){
+			var extended = arguments[i] || {};
+			for (var key in extended) original[key] = extended[key];
+		}
+		return original;
 	}
-	return source;
-}});
+	
+});
 
 // Object-less types
 

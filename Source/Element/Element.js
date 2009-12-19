@@ -293,8 +293,8 @@ var camels = [
 
 bools = bools.associate(bools);
 
-Hash.extend(attributes, bools);
-Hash.extend(attributes, camels.associate(camels.map(String.toLowerCase)));
+Object.append(attributes, bools);
+Object.append(attributes, camels.associate(camels.map(String.toLowerCase)));
 
 var inserters = {
 
