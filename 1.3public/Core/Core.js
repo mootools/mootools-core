@@ -34,6 +34,26 @@ describe('nil', {
 
 });
 
+describe('Function.prototype.extend', {
+	
+	"should extend the function": function(){
+		var fn = (function(){}).extend({a: 1});
+		value_of(fn.a).should_be(1);
+		value_of((new fn).a).should_be(undefined);
+	}
+	
+});
+
+describe('Function.prototype.implement', {
+	
+	"should implement the function prototype": function(){
+		var fn = (function(){}).implement({a: 1});
+		value_of(fn.a).should_be(undefined);
+		value_of((new fn).a).should_be(1);
+	}
+	
+});
+
 describe('typeOf', {
 
 	"should return 'array' for Array objects": function(){
@@ -435,6 +455,20 @@ describe('Object.merge', {
 		value_of(a.f === b.f).should_be_false();
 	}
 	
+});
+
+describe('Object.append', {
+	'should combine two objects': function(){
+		var a = {a: 1, b: 2}, b = {b: 3, c: 4};
+		value_of(Object.append(a, b)).should_be({a: 1, b: 3, c: 4});
+		
+		a = {a: 1, b: 2}; b = {b: 3, c: 4};
+		value_of(Object.append(a, b)).should_be(a);
+		
+		a = {a: 1, b: 2}; b = {b: 3, c: 4};
+		var c = {a: 2, d: 5};
+		value_of(Object.append(a, b, c)).should_be({a: 2, b: 3, c: 4, d: 5});
+	}
 });
 
 describe('Date.now', {
