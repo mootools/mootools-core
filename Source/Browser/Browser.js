@@ -21,7 +21,7 @@ var window = document.window = this;
 
 var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\d+\.\d+).*?(safari|$)/) || [null, 'unknown', 0];
 
-var Browser = this.Browser = (function(){}).extend({
+var Browser = this.Browser = {
 	
 	name: (UA[1] == 'version') ? UA[3] : UA[1],
 	version: parseFloat(UA[2]),
@@ -37,9 +37,11 @@ var Browser = this.Browser = (function(){}).extend({
 		json: !!(window.JSON)
 	},
 
-	Plugins: {}
+	Plugins: {},
+	
+	extend: Hash.extend
 
-});
+};
 
 Browser[Browser.name] = true;
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
