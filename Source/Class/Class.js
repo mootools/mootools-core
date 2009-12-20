@@ -76,25 +76,9 @@ var wrap = function(self, key, method){
 	}.extend({$owner: self, $origin: method, $name: key});
 };
 
-var mutators = {};
-
-Class.lookupMutator = function(key){
-	return mutators[key];
-};
-
-Class.defineMutator = function(key, value){
-	mutators[key] = value;
-	return this;	
-};
-
-Class.defineMutators = function(newMutators){
-	for (var mutator in newMutators) mutators[mutator] = newMutators[mutator];
-	return this;
-};
-
 var implement = function(key, value, retain){
 	
-	var mutator = Class.lookupMutator(key);
+	var mutator = Class.Mutators[key];
 	
 	if (mutator){
 		value = mutator.call(this, value);
@@ -124,16 +108,19 @@ Class.implement({implement: function(object){
 	return this;
 }});
 
-Class.defineMutator('Extends', function(parent){
-	this.parent = parent;
-	this.prototype = getInstance(parent);
-});
-
-Class.defineMutator('Implements', function(items){
-	Array.from(items).each(function(item){
-		var instance = new item;
-		for (var key in instance) implement.call(this, key, instance[key], true);
-	}, this);
-});
+Class.Mutators = {
+	
+	Extends: function(parent){
+		this.parent = parent;
+		this.prototype = getInstance(parent);
+	},
+	
+	Implements: function(items){
+		Array.from(items).each(function(item){
+			var instance = new item;
+			for (var key in instance) implement.call(this, key, instance[key], true);
+		}, this);
+	}
+};
 
 })();
