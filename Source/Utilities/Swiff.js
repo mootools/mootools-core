@@ -8,7 +8,7 @@ description: Wrapper for embedding SWF movies. Supports External Interface Commu
 license: MIT-style license.
 
 credits: 
-- Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
+  - Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
 
 requires: Options
 

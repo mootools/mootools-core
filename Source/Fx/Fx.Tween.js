@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Fx.Tween.js
+name: Fx.Tween
 
 description: Formerly Fx.Style, effect to transition any CSS property for an element.
 

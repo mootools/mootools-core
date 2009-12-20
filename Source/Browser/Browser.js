@@ -3,7 +3,7 @@
 
 name: Browser
 
-description: The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash.
+description: The Browser Object. Contains Browser initialization, Window and Document, and the Browser Hash.
 
 license: MIT-style license.
 

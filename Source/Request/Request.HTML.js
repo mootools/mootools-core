@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Request.HTML.js
+name: Request.HTML
 
 description: Extends the basic Request Class with additional methods for interacting with HTML responses.
 

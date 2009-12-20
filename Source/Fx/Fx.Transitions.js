@@ -1,14 +1,14 @@
 /*
 ---
 
-script: Fx.Transitions.js
+name: Fx.Transitions
 
 description: Contains a set of advanced transitions to be used with any of the Fx Classes.
 
 license: MIT-style license.
 
 credits:
-- Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
+  - Easing Equations by Robert Penner, <http://www.robertpenner.com/easing/>, modified and optimized to be used with MooTools.
 
 requires: Fx
 

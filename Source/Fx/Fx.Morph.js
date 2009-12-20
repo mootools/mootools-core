@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Fx.Morph.js
+name: Fx.Morph
 
 description: Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules.
 

@@ -8,7 +8,7 @@ description: Class for creating, reading, and deleting browser Cookies.
 license: MIT-style license.
 
 credits:
-- Based on the functions by Peter-Paul Koch (http://quirksmode.org).
+  - Based on the functions by Peter-Paul Koch (http://quirksmode.org).
 
 requires: Options
 

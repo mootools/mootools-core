@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Request.JSON.js
+name: Request.JSON
 
 description: Extends the basic Request Class with additional methods for sending and receiving JSON data.
 
