@@ -4,12 +4,10 @@
 
 $stderr = fopen('php://stderr', 'w');
 
-require __DIR__ . '/packager/packager.php';
+require __DIR__ . '/Packager/packager.php';
 
 $executable = array_shift($argv);
 $manifest = __DIR__ . "/package.yml";
-
-echo $manifest;
 
 $pkg = new Packager($manifest);
 
