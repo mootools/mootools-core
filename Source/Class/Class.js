@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Class.js
+name: Class
 
 description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
 

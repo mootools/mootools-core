@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Swiff.js
+name: Swiff
 
 description: Wrapper for embedding SWF movies. Supports External Interface Communication.
 

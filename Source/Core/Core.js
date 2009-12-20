@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Core.js
+name: Core
 
 description: The heart of MooTools.
 
@@ -17,7 +17,7 @@ inspiration:
 - Some functionality inspired by [Prototype.js](http://prototypejs.org)
 	Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 
-provides: [MooTools, Type, typeOf, instanceOf]
+provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 ...
 */

@@ -1,16 +1,15 @@
 /*
 ---
 
-script: Element.Style.js
+name: Element.Style
 
 description: Contains methods for interacting with the styles of Elements in a fashionable way.
 
 license: MIT-style license.
 
-requires:
-- /Element
+requires: Element
 
-provides: [Element.Style]
+provides: Element.Style
 
 ...
 */

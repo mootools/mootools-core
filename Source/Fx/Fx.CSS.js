@@ -1,17 +1,15 @@
 /*
 ---
 
-script: Fx.CSS.js
+name: Fx.CSS
 
 description: Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements.
 
 license: MIT-style license.
 
-requires:
-- /Fx
-- /Element.Style
+requires: [Fx, Element.Style]
 
-provides: [Fx.CSS]
+provides: Fx.CSS
 
 ...
 */

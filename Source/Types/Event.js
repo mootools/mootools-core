@@ -1,21 +1,15 @@
 /*
 ---
 
-script: Event.js
+name: Event
 
 description: Contains the Event Class, to make the event object cross-browser.
 
 license: MIT-style license.
 
-requires:
-- /Window
-- /Document
-- /Hash
-- /Array
-- /Function
-- /String
+requires: [Window, Document, Hash, Array, Function, String]
 
-provides: [Event]
+provides: Event
 
 ...
 */

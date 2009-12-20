@@ -1,7 +1,7 @@
 /*
 ---
 
-script: Browser.js
+name: Browser
 
 description: The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash.
 

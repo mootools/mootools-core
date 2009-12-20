@@ -1,16 +1,15 @@
 /*
 ---
 
-script: DomReady.js
+name: DomReady
 
 description: Contains the custom event domready.
 
 license: MIT-style license.
 
-requires:
-- /Element.Event
+requires: Element.Event
 
-provides: [DomReady]
+provides: DomReady
 
 ...
 */

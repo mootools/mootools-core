@@ -7,10 +7,9 @@ description: Formerly Fx.Styles, effect to transition any number of CSS properti
 
 license: MIT-style license.
 
-requires:
-- /Fx.CSS
+requires: Fx.CSS
 
-provides: [Fx.Morph]
+provides: Fx.Morph
 
 ...
 */
