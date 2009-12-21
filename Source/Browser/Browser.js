@@ -23,7 +23,10 @@ var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|versi
 
 var Browser = this.Browser = {
 	
+	extend: Function.prototype.extend,
+	
 	name: (UA[1] == 'version') ? UA[3] : UA[1],
+
 	version: parseFloat(UA[2]),
 
 	Platform: {
@@ -37,9 +40,7 @@ var Browser = this.Browser = {
 		json: !!(window.JSON)
 	},
 
-	Plugins: {},
-	
-	extend: Hash.extend
+	Plugins: {}
 
 };
 
@@ -168,6 +169,14 @@ try {
 	};
 }
 
+var UID = 1;
+ 
+var $uid = (window.ActiveXObject) ? function(item){
+	return (item.uid || (item.uid = [UID++]))[0];
+} : function(item){
+	return item.uid || (item.uid = UID++);
+};
+
 })();
 
 /*<block name="compatibility" version="1.2">*/
@@ -228,16 +237,6 @@ if (Browser.safari || Browser.chrome){
 // presto950 = opera
 // presto960 = opera
 
-var $exec = function(text){
-	return Browser.exec(text);
-};
-
-Native.UID = 1;
- 
-var $uid = (window.ActiveXObject) ? function(item){
-	return (item.uid || (item.uid = [Native.UID++]))[0];
-} : function(item){
-	return item.uid || (item.uid = Native.UID++);
-};
+var $exec = Browser.exec;
 
 /*</block>*/
