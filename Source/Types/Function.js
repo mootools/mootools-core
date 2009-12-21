@@ -30,20 +30,20 @@ Function.implement({
 		options = options || {};
 		return function(event){
 			var args = options.arguments;
-			args = (args != undefined) ? $splat(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			args = (args != undefined) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
 			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);
-			if (options.attempt) return $try(returns);
+			if (options.attempt) return Function.stab(returns);
 			return returns();
 		};
 	},
 
 	run: function(args, bind){
-		return this.apply(bind, $splat(args));
+		return this.apply(bind, Array.from(args));
 	},
 
 	pass: function(args, bind){
@@ -71,3 +71,9 @@ Function.implement({
 	}
 
 });
+
+/*<block name="compatibility" version="1.2">*/
+
+var $try = Function.stab;
+
+/*</block>*/

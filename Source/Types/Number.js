@@ -45,7 +45,7 @@ Number.alias({each: 'times'});
 	var methods = {};
 	math.each(function(name){
 		if (!Number[name]) methods[name] = function(){
-			return Math[name].apply(null, [this].concat($A(arguments)));
+			return Math[name].apply(null, [this].concat(Array.from(arguments)));
 		};
 	});
 	Number.implement(methods);

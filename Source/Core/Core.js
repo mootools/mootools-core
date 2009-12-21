@@ -256,6 +256,12 @@ Number.prototype.$family = function(){
 	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 
+// Number.random
+
+Number.extend({random: function(min, max){
+	return Math.floor(Math.random() * (max - min + 1) + min);
+}});
+
 // forEach, each
 
 Object.extend({forEach: function(object, fn, bind){
@@ -350,7 +356,7 @@ Native.implement = function(objects, methods){
 };
 
 var Hash = new Type('Hash', function(object){
-	if ($type(object) == 'hash') object = $unlink(object.getClean());
+	if (typeOf(object) == 'hash') object = $unlink(object.getClean());
 	for (var key in object) this[key] = object[key];
 	return this;
 });
@@ -402,11 +408,11 @@ var $clear = function(timer){
 };
 
 var $defined = function(obj){
-	return (obj != undefined);
+	return (obj != null);
 };
 
 var $each = function(iterable, fn, bind){
-	var type = $type(iterable);
+	var type = typeOf(iterable);
 	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
 };
 
@@ -431,29 +437,11 @@ var $merge = function(){
 
 var $mixin = Object.merge;
 
-var $pick = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		if (arguments[i] != undefined) return arguments[i];
-	}
-	return null;
-};
-
-var $random = function(min, max){
-	return Math.floor(Math.random() * (max - min + 1) + min);
-};
+var $random = Number.random;
 
 var $splat = Array.from;
 
 var $time = Date.now;
-
-var $try = function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		try {
-			return arguments[i]();
-		} catch(e){}
-	}
-	return null;
-};
 
 var $type = function(object){
 	var type = typeOf(object);
@@ -461,7 +449,7 @@ var $type = function(object){
 };
 
 var $unlink = function(object){
-	switch ($type(object)){
+	switch (typeOf(object)){
 		case 'object': return Object.clone(object);
 		case 'array': return Array.clone(object);
 		case 'hash': return new Hash(object);

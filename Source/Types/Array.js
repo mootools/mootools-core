@@ -99,7 +99,7 @@ Array.implement({
 	},
 
 	getRandom: function(){
-		return (this.length) ? this[$random(0, this.length - 1)] : null;
+		return (this.length) ? this[Number.random(0, this.length - 1)] : null;
 	},
 
 	include: function(item){
@@ -127,11 +127,18 @@ Array.implement({
 	flatten: function(){
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			var type = $type(this[i]);
-			if (!type) continue;
+			var type = typeOf(this[i]);
+			if (type == 'null') continue;
 			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
 		}
 		return array;
+	},
+	
+	pick: function(){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (this[i] != null) return this[i];
+		}
+		return null;
 	},
 
 	hexToRgb: function(array){
@@ -159,5 +166,9 @@ Array.implement({
 /*<block name="compatibility" version="1.2">*/
 
 Array.alias({extend: 'append'});
+
+var $pick = function(){
+	return Array.from(arguments).pick();
+};
 
 /*</block>*/
