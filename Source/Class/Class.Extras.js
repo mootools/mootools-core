@@ -95,7 +95,7 @@ Events.removeOn = function(string){
 var Options = new Class({
 
 	setOptions: function(){
-		this.options = Object.append.run([{}, this.options].extend(arguments));
+		this.options = Object.merge.run([{}, this.options].extend(arguments));
 		if (!this.addEvent) return this;
 		for (var option in this.options){
 			if (typeOf(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
