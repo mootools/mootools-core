@@ -418,7 +418,7 @@ Element.implement({
 		if (length > 1) parent = fragment = document.createDocumentFragment();
 		
 		for (var i = 0; i < length; i++){
-			var element = document.id(elements[i]);
+			var element = document.id(elements[i], true);
 			if (element) parent.appendChild(element);
 		}
 		
