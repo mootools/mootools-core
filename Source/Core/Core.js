@@ -453,7 +453,7 @@ var $unlink = function(object){
 		case 'object': return Object.clone(object);
 		case 'array': return Array.clone(object);
 		case 'hash': return new Hash(object);
-		default: return obejct;
+		default: return object;
 	}
 };
 
