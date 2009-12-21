@@ -33,8 +33,8 @@ Fx.implement({
 });
 
 Fx.Transition = function(transition, params){
-	params = $splat(params);
-	return $extend(transition, {
+	params = Array.from(params);
+	return Object.append(transition, {
 		easeIn: function(pos){
 			return transition(pos, params);
 		},
@@ -49,7 +49,9 @@ Fx.Transition = function(transition, params){
 
 Fx.Transitions = new Hash({
 
-	linear: $arguments(0)
+	linear: function(zero){
+		return zero;
+	}
 
 });
 

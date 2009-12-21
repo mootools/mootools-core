@@ -31,7 +31,7 @@ Request.HTML = new Class({
 
 		var container = new Element('div');
 
-		return $try(function(){
+		return Function.stab(function(){
 			var root = '<root>' + text + '</root>', doc;
 			if (Browser.Engine.trident){
 				doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -65,7 +65,7 @@ Request.HTML = new Class({
 		if (options.filter) response.tree = response.elements.filter(options.filter);
 		if (options.update) document.id(options.update).empty().set('html', response.html);
 		else if (options.append) document.id(options.append).adopt(temp.getChildren());
-		if (options.evalScripts) $exec(response.javascript);
+		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
 	}
@@ -77,7 +77,7 @@ Element.Properties.load = {
 	set: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
-		return this.eliminate('load').store('load:options', $extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
+		return this.eliminate('load').store('load:options', Object.append({data: this, link: 'cancel', update: this, method: 'get'}, options));
 	},
 
 	get: function(options){

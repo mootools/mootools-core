@@ -58,22 +58,22 @@ var IFrame = new Type('IFrame', function(){
 	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
 	var props = params.properties || {};
 	var iframe = document.id(params.iframe);
-	var onload = props.onload || $empty;
+	var onload = props.onload || function(){};
 	delete props.onload;
-	props.id = props.name = $pick(props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + $time());
+	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + Date.now()].pick();
 	iframe = new Element(iframe || 'iframe', props);
 	var onFrameLoad = function(){
-		var host = $try(function(){
+		var host = Function.stab(function(){
 			return iframe.contentWindow.location.host;
 		});
 		if (!host || host == window.location.host){
 			var win = new Window(iframe.contentWindow);
 			new Document(iframe.contentWindow.document);
-			$extend(win.Element.prototype, Element.ProtoType);
+			Object.append(win.Element.prototype, Element.ProtoType);
 		}
 		onload.call(iframe.contentWindow, iframe.contentWindow.document);
 	};
-	var contentWindow = $try(function(){
+	var contentWindow = Function.stab(function(){
 		return iframe.contentWindow;
 	});
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
@@ -81,7 +81,7 @@ var IFrame = new Type('IFrame', function(){
 });
 
 var Elements = new Type('', function(elements, options){
-	options = $extend({ddup: true, cash: true}, options);
+	options = Object.append({ddup: true, cash: true}, options);
 	elements = elements || [];
 	if (options.ddup || options.cash){
 		var uniques = {}, returned = [];
@@ -97,7 +97,7 @@ var Elements = new Type('', function(elements, options){
 	}
 
 	
-	return (options.cash) ? $extend(elements, this) : elements;
+	return (options.cash) ? Object.append(elements, this) : elements;
 });
 
 Elements.implement({filter: function(filter, bind){
@@ -146,7 +146,7 @@ Document.implement({
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
 					if (el.mergeAttributes) el.mergeAttributes(Element.ProtoElement);
-					else $extend(el, Element.ProtoType);
+					else Object.append(el, Element.ProtoType);
 				};
 				return el;
 			},
@@ -158,11 +158,13 @@ Document.implement({
 			
 		};
 
-		types.textnode = types.whitespace = types.window = types.document = $arguments(0);
+		types.textnode = types.whitespace = types.window = types.document = function(zero){
+			return zero;
+		};
 		
 		return function(el, nocash, doc){
 			if (el && el.$family && el.uid) return el;
-			var type = $type(el);
+			var type = typeOf(el);
 			return (types[type]) ? types[type](el, nocash, doc || document) : null;
 		};
 
@@ -182,7 +184,7 @@ Window.implement({
 		var args = Array.flatten(arguments);
 		for (var i = 0, l = args.length; i < l; i++){
 			var item = args[i];
-			switch ($type(item)){
+			switch (typeOf(item)){
 				case 'element': elements.push(item); break;
 				case 'string': elements.extend(this.document.getElements(item, true));
 			}
@@ -242,7 +244,7 @@ var clean = function(item, retain){
 		}
 		if ((/object/i).test(item.tagName)){
 			for (var p in item){
-				if (typeof item[p] == 'function') item[p] = $empty;
+				if (typeof item[p] == 'function') item[p] = function(){};
 			}
 			Element.dispose(item);
 		}
@@ -253,7 +255,7 @@ var clean = function(item, retain){
 
 var purge = function(){
 	Hash.each(collected, clean);
-	if (Browser.Engine.trident) $A(document.getElementsByTagName('object')).each(clean);
+	if (Browser.Engine.trident) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
 };
@@ -336,7 +338,7 @@ Hash.each(inserters, function(inserter, where){
 Element.implement({
 
 	set: function(prop, value){
-		switch ($type(prop)){
+		switch (typeOf(prop)){
 			case 'object':
 				for (var p in prop) this.set(p, prop[p]);
 				break;
@@ -378,7 +380,7 @@ Element.implement({
 	},
 
 	getProperties: function(){
-		var args = $A(arguments);
+		var args = Array.from(arguments);
 		return args.map(this.getProperty, this).associate(args);
 	},
 
@@ -508,7 +510,7 @@ Element.implement({
 	},
 
 	getSelected: function(){
-		return new Elements($A(this.options).filter(function(option){
+		return new Elements(Array.from(this.options).filter(function(option){
 			return option.selected;
 		}));
 	},
@@ -526,7 +528,7 @@ Element.implement({
 			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
 				return opt.value;
 			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
-			$splat(value).each(function(val){
+			Array.from(value).each(function(val){
 				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
 		});
@@ -568,7 +570,7 @@ Element.implement({
 	},
 
 	empty: function(){
-		$A(this.childNodes).each(function(node){
+		Array.from(this.childNodes).each(function(node){
 			Element.destroy(node);
 		});
 		return this;
@@ -581,7 +583,7 @@ Element.implement({
 	hasChild: function(el){
 		el = document.id(el, true);
 		if (!el) return false;
-		if (Browser.Engine.webkit && Browser.Engine.version < 420) return $A(this.getElementsByTagName(el.tagName)).contains(el);
+		if (Browser.Engine.webkit && Browser.Engine.version < 420) return Array.from(this.getElementsByTagName(el.tagName)).contains(el);
 		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
 	},
 
@@ -617,7 +619,7 @@ Element.implement({
 	retrieve: function(property, dflt){
 		var storage = get(this.uid), prop = storage[property];
 		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
-		return $pick(prop);
+		return prop != null ? prop : null;
 	},
 
 	store: function(property, value){

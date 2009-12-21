@@ -154,7 +154,7 @@ Element.implement({
 });
 
 
-Native.implement([Document, Window], {
+[Document, Window].call('implement', {
 
 	getSize: function(){
 		if (Browser.Engine.presto || Browser.Engine.webkit){
@@ -220,7 +220,7 @@ function getCompatElement(element){
 //aliases
 Element.alias({setPosition: 'position'}); //compatability
 
-Native.implement([Window, Document, Element], {
+[Window, Document, Element].call('implement', {
 
 	getHeight: function(){
 		return this.getSize().y;

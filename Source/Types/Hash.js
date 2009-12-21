@@ -120,7 +120,7 @@ Hash.implement({
 		Hash.each(this, function(value, key){
 			if (base) key = base + '[' + key + ']';
 			var result;
-			switch ($type(value)){
+			switch (typeOf(value)){
 				case 'object': result = Hash.toQueryString(value, key); break;
 				case 'array':
 					var qs = {};

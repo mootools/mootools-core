@@ -14,15 +14,15 @@ provides: Selectors
 ...
 */
 
-Native.implement([Document, Element], {
+[Document, Element].call('implement', {
 
 	getElements: function(expression, nocash){
 		expression = expression.split(',');
 		var items, local = {};
 		for (var i = 0, l = expression.length; i < l; i++){
 			var selector = expression[i], elements = Selectors.Utils.search(this, selector, local);
-			if (i != 0 && elements.item) elements = $A(elements);
-			items = (i == 0) ? elements : (items.item) ? $A(items).concat(elements) : items.concat(elements);
+			if (i != 0 && elements.item) elements = Array.from(elements);
+			items = (i == 0) ? elements : (items.item) ? Array.from(items).concat(elements) : items.concat(elements);
 		}
 		return new Elements(items, {ddup: (expression.length > 1), cash: !nocash});
 	}

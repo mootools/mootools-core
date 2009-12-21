@@ -42,7 +42,7 @@ var Swiff = new Class({
 	},
 
 	initialize: function(path, options){
-		this.instance = 'Swiff_' + $time();
+		this.instance = 'Swiff_' + Date.now();
 
 		this.setOptions(options);
 		options = this.options;
@@ -52,7 +52,7 @@ var Swiff = new Class({
 		Swiff.CallBacks[this.instance] = {};
 
 		var params = options.params, vars = options.vars, callBacks = options.callBacks;
-		var properties = $extend({height: options.height, width: options.width}, options.properties);
+		var properties = Object.append({height: options.height, width: options.width}, options.properties);
 
 		var self = this;
 

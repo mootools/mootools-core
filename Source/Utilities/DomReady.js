@@ -36,7 +36,7 @@ Element.Events.domready = {
 	if (Browser.Engine.trident){
 		var temp = document.createElement('div');
 		(function(){
-			($try(function(){
+			(Function.stab(function(){
 				temp.doScroll(); // Technique by Diego Perini
 				return document.id(temp).inject(document.body).set('html', 'temp').dispose();
 			})) ? domready() : arguments.callee.delay(50);

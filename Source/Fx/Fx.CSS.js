@@ -21,7 +21,7 @@ Fx.CSS = new Class({
 	//prepares the base from/to object
 
 	prepare: function(element, property, values){
-		values = $splat(values);
+		values = Array.from(values);
 		var values1 = values[1];
 		if (!$chk(values1)){
 			values[1] = values[0];
@@ -34,8 +34,8 @@ Fx.CSS = new Class({
 	//parses a value into an array
 
 	parse: function(value){
-		value = $lambda(value)();
-		value = (typeof value == 'string') ? value.split(' ') : $splat(value);
+		value = Function.from(value)();
+		value = (typeof value == 'string') ? value.split(' ') : Array.from(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
@@ -63,7 +63,7 @@ Fx.CSS = new Class({
 	//serves the value as settable
 
 	serve: function(value, unit){
-		if ($type(value) != 'fx:css:value') value = this.parse(value);
+		if (typeOf(value) != 'fx:css:value') value = this.parse(value);
 		var returned = [];
 		value.each(function(bit){
 			returned = returned.concat(bit.parser.serve(bit.value, unit));
@@ -132,9 +132,13 @@ Fx.CSS.Parsers = new Hash({
 	},
 
 	String: {
-		parse: $lambda(false),
-		compute: $arguments(1),
-		serve: $arguments(0)
+		parse: Function.from(false),
+		compute: function(zero, one){
+			return one;
+		},
+		serve: function(zero){
+			return zero;
+		}
 	}
 
 });
