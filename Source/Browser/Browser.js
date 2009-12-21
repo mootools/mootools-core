@@ -171,7 +171,7 @@ try {
 
 var UID = 1;
  
-var $uid = (window.ActiveXObject) ? function(item){
+this.$uid = (window.ActiveXObject) ? function(item){
 	return (item.uid || (item.uid = [UID++]))[0];
 } : function(item){
 	return item.uid || (item.uid = UID++);
