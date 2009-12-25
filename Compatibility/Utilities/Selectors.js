@@ -25,7 +25,7 @@ Elements.implement({
 	},
 
 	filterByAttribute: function(name, operator, value){
-		return this.filter('[' + name + (operator || '') + (value || '') + ']');
+		return this.filter('[' + name + '][' + name + (operator || '') + (value || '') + ']');
 	}
 
 });
