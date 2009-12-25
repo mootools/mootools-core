@@ -1,4 +1,11 @@
-Object.toQueryString = Hash.toQueryString;
+Object.toQueryString = function(obj){
+	$H(obj).each(function(item, key){
+		if ($type(item) == 'object' || $type(item) == 'array'){
+			obj[key] = item.toString();
+		}
+	});
+	return Hash.toQueryString(obj);
+};
 
 var XHR = new Class({
 
