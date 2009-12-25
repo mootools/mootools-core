@@ -1,4 +1,3 @@
-
 Browser.__defineGetter__('hasGetter',function(){
 	return true;
 });
