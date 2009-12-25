@@ -42,6 +42,40 @@ Element.implement({
 
 	getTag: function(){
 		return this.get('tag');
+	},
+	
+	getValue: function(){
+		return this.get('value');
 	}
 
 });
+
+
+Element.Properties.properties = {
+	
+	set: function(props){
+		$H(props).each(function(value, property){
+			if (property == 'class'){
+				this.className = value;
+			} else if (property == 'for'){
+				this.htmlFor = value;
+			} else {
+				this[property] = value;
+			}
+		}, this);
+	}
+	
+};
+
+/*
+Element.Properties.styles = {
+	
+	set: function(styles){
+		if ($type(styles != 'object' && !styles.contains('{'))){
+			this.style.cssText = styles;
+		} else {
+			this.setStyles(styles);
+		}
+	}
+	
+};*/
