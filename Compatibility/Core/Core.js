@@ -16,3 +16,20 @@ $A = function(iterable, start, length){
 	var natives = [Array, Function, String, RegExp, Number];
 	for (var i = 0, l = natives.length; i < l; i++) natives[i].extend = natives[i].implement;
 })();
+
+var $native = function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		arguments[i].extend = function(props){
+			for (var prop in props){
+				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+				if (!this[prop]) this[prop] = $native.generic(prop);
+			}
+		};
+	}
+};
+
+$native.generic = function(prop){
+	return function(bind){
+		return this.prototype[prop].apply(bind, Array.prototype.slice.call(arguments, 1));
+	};
+};
