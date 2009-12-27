@@ -3,12 +3,7 @@ window.extend = document.extend = function(properties){
 	for (var property in properties) this[property] = properties[property];
 };
 
-Browser.__defineGetter__('hasGetter',function(){
-	return true;
-});
-
-if(Browser.hasGetter){ // webkit, gecko, opera support
-	
+if (window.__defineGetter__){
 	window.__defineGetter__('ie',function(){
 		console.warn('1.1 > 1.2: window.ie is deprecated. Use Browser.Engine.trident');
 		return (Browser.Engine.name == 'trident') ? true : false;
@@ -41,9 +36,8 @@ if(Browser.hasGetter){ // webkit, gecko, opera support
 		console.warn('1.1 > 1.2: window.opera is deprecated. Use Browser.Engine.presto');
 		return (Browser.Engine.name == 'presto') ? true : false;
 	});
-} else { // no warnings for IE
+} else {
 	window[Browser.Engine.name] = window[Browser.Engine.name + Browser.Engine.version] = true;
-
 	window.ie = window.trident;
 	window.ie6 = window.trident4;
 	window.ie7 = window.trident5;	
