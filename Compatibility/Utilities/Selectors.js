@@ -1,12 +1,12 @@
 Native.implement([Element, Document], {
 
 	getElementsByClassName: function(className){
-		console.warn('1.1 > 1.2: Element.filterByTag is deprecated.');
-		
+		console.warn('1.1 > 1.2: Element.getElementsByClassName is deprecated. Use getElements()');
 		return this.getElements('.' + className);
 	},
 
 	getElementsBySelector: function(selector){
+		console.warn('1.1 > 1.2: Element.getElementsBySelector is deprecated. Use getElements()');
 		return this.getElements(selector);
 	}
 
