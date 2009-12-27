@@ -14,3 +14,11 @@ Element.implement({
 	}
 
 })
+
+Fx.Tween.implement({
+
+	hide: function(){
+		return this.set(0);
+	}
+	
+});
