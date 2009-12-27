@@ -1,5 +1,5 @@
 if(!window.console) var console = {};
-if(!console.log) console.warn = function(){};
+if(!console.warn) console.warn = function(){};
 
 (function(){
 	oldA = $A;
