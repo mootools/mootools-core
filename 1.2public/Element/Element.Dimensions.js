@@ -80,7 +80,8 @@ License:
 	describe('Element.getSize', {
 		
 		'should measure the width and height of the element': function(){
-			value_of(div.getSize()).should_be({x: 108, y: 108});
+			value_of(div.getSize().x).should_be(108);
+			value_of(div.getSize().y).should_be(108);
 		}
 		
 	});

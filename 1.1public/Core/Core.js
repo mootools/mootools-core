@@ -256,7 +256,10 @@ describe('$type', {
 	"should return 'number' for Number objects": function(){
 		value_of($type(10)).should_be('number');
 		//1.2 breaking
-		value_of($type(NaN)).should_be('number');
+		//commenting this out, as $type(NaN) was never documented
+		//as returning either "number" or "false" so in theory, not 
+		//a breaking change - Aaron Newton
+		//value_of($type(NaN)).should_be('number');
 	},
 
 	"should return 'boolean' for Boolean objects": function(){

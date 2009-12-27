@@ -9,13 +9,9 @@ context.Sets = {
 		'Element/Element.Dimensions', 'Element/Element.Form', 'Element/Element.Filters',
 		'Element/Element.Selectors', 'Element/Element.Event',
 		'Remote/Ajax', 'Remote/Cookie', 'Remote/Json', 'Remote/XHR',
-		'Remote/Assets', 'Fx/Fx.Transitions'
-	],
-	
-	'1.1compat': [
-		'Core/Browser', 'Class/Class',
-		'Native/Array', 'Native/Function', 'Native/Hash',
-		'Element/Element'
+		'Remote/Assets', 'Fx/Fx.Transitions',
+		'Window/Window.DomReady', 'Window/Window.Size',
+		'Plugins/Color', 'Plugins/Group', 'Plugins/Hash', 'Plugins/Hash.Cookie'
 	],
 	
 	'1.2public': [

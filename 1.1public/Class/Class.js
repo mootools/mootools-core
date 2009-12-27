@@ -33,6 +33,7 @@ var Cat = Animal.extend({
 	ferocious: false,
 
 	initialize: function(name, sound){
+		console.log(name, sound, this.parent);
 		this.parent(name, sound || 'miao');
 	},
 
@@ -99,7 +100,9 @@ describe('Class creation', {
 	},
 
 	"should use 'Extend' property to extend another class": function(){
+		console.log('instantiate Cat');
 		var cat = new Cat('fluffy');
+		console.log(cat);
 		value_of(cat.name).should_be('fluffy');
 		value_of(cat.sound).should_be('miao');
 		value_of(cat.ferocious).should_be_false();
@@ -129,7 +132,7 @@ describe('Class creation', {
 	},
 
 	"should use 'Implements' property to implement any number of classes": function(){
-		var Dog = Animal.extend({})
+		var Dog = Animal.extend({});
 		Dog.implement(new Actions, new Attributes);
 
 		var rover = new Dog('rover');

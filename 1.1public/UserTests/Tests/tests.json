@@ -9,7 +9,20 @@
 		"Fx.Style":["all"],
 		"Fx.Styles":["all"]
 	},
+	"Drag": {
+		"Drag.Base":['all'],
+		"Drag.Move":['basic', 'container', 'droppable'],
+		"Slider":['all'],
+		"Sortables":['single']
+	},
+	"Plugins": {
+		"Accordion": ["all"],
+		"Scroller": ["all"],
+		"SmoothScroll": ["all"],
+		"Tips": ["all"]
+	},
 	"Remote": {
-		"Ajax":["all"]
+		"Ajax":["all"],
+		"Json.Remote":["all"]
 	}
 }

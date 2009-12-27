@@ -8,7 +8,17 @@ License:
 
 (function(){
 	var e;
-	window.addEvent('load', function(event) {
+	function listen(evnt, elem, func) {
+		if (elem.addEventListener) {	// W3C DOM
+				elem.addEventListener(evnt,func,false);
+		} else if (elem.attachEvent) { // IE DOM
+				var r = elem.attachEvent("on"+evnt, func);
+				return r;
+		}
+	};
+	
+	
+	listen('load', window, function(event) {
 		e = new Event(event);
 	});
 	

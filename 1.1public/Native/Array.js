@@ -188,7 +188,9 @@ describe("Array Color Methods", {
 	// Array.hexToRgb
 
 	'should return null if the length of the array is not 3': function(){
-		value_of([].hexToRgb()).should_be_false();
+		//adding !! here because 1.1 returns null, while 1.2 returns false
+		//but we don't consider this to be a breaking change
+		value_of(!![].hexToRgb()).should_be_false();
 	},
 
 	'should return a CSS rgb string': function(){
@@ -206,7 +208,9 @@ describe("Array Color Methods", {
 	// Array.rgbToHex
 
 	'should return null if the array does not have at least 3 times': function(){
-		value_of([0,1].rgbToHex()).should_be_false();
+		//adding !! here because 1.1 returns null, while 1.2 returns false
+		//but we don't consider this to be a breaking change
+		value_of(!![0,1].rgbToHex()).should_be_false();
 	},
 
 	'should return a css hexadecimal string': function(){

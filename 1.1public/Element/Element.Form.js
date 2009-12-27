@@ -51,7 +51,7 @@ License:
 		'should get the value of an input element': function(){
 			if (!zip) setup();
 			value_of(zip.getValue()).should_be('90210');
-			value_of(select.getValue()).should_be(['apple', 'pear']);
+			value_of(select.getValue()).should_be('apple');
 		}
 		
 	});

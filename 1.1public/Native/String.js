@@ -26,6 +26,7 @@ describe("String Methods", {
 
 	'should convert a camel cased string into a hyphenated string': function(){
 		value_of('iLikeCookies'.hyphenate()).should_be('i-like-cookies');
+		// Conflicts with 1.2 - which lowercases all
 		value_of('ILikeCookies'.hyphenate()).should_be('I-like-cookies');
 	},
 

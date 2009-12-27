@@ -106,7 +106,9 @@ describe("Function Methods", {
 		var fnc = function(){
 			this_should_not_work();
 		};
-		value_of(fnc.attempt()).should_be_false();
+		//adding !! here because 1.1 returns null, while 1.2 returns false
+		//but we don't consider this to be a breaking change
+		value_of(!!fnc.attempt()).should_be_false();
 	},
 
 	// Function.delay

@@ -87,7 +87,9 @@ License:
 		
 		'should measure the width and height of the element': function(){
 			setup();
-			value_of(div.getSize()).should_be({"scroll":{"x":0, "y":0}, "size":{"x":108, "y":108}, "scrollSize":{"x":106, "y":106}});
+			value_of(div.getSize().scroll).should_be({"x":0, "y":0});
+			value_of(div.getSize().size).should_be({"x":108, "y":108});
+			value_of(div.getSize().scrollSize).should_be({"x":106, "y":106});
 		}
 		
 	});
@@ -123,7 +125,12 @@ License:
 		
 		'should return the coordinates relative to the document body': function(){
 			setup();
-			value_of(absDiv.getCoordinates()).should_be({"width":22, "height":22, "left":124, "top":124, "right":146, "bottom":146});
+			value_of(absDiv.getCoordinates().width).should_be(22);
+			value_of(absDiv.getCoordinates().height).should_be(22);
+			value_of(absDiv.getCoordinates().left).should_be(124);
+			value_of(absDiv.getCoordinates().top).should_be(124);
+			value_of(absDiv.getCoordinates().right).should_be(146);
+			value_of(absDiv.getCoordinates().bottom).should_be(146);
 		}
 		
 	});

@@ -841,10 +841,10 @@ describe('Element.adopt', {
 
 	'should adopt any number of Elements or ids': function(){
 		var children = [];
-		(4).times(function(i){ children[i] = new Element('span', {id: 'child-' + i}); });
+		(100).times(function(i){ children[i] = new Element('span', {id: 'child-' + i}); });
 		Container.adopt(children);
-		value_of(Container.childNodes).should_have(4, 'items');
-		value_of(Container.childNodes[3]).should_be(children[3]);
+		value_of(Container.childNodes).should_have(100, 'items');
+		value_of(Container.childNodes[10]).should_be(children[10]);
 	}
 
 });
