@@ -1,7 +1,7 @@
 Array.implement({
 
     copy: function(start, length){
-		console.warn('Array.copy is deprecated. Use Array.splice');
+		console.warn('Array.copy is deprecated. Use Array.slice');
         return $A(this, start, length);
     },
 

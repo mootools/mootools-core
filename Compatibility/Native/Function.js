@@ -7,8 +7,6 @@ Function.extend({
 
 });
 
-Function.empty = function(){ 
-	console.warn('replace Function.empty with $empty');
-	return $empty();
+Function.empty = function(){
+	console.warn('1.1 > 1.2: Function.empty is now just $empty.');
 };
-

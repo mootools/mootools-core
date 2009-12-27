@@ -1,47 +1,44 @@
-/*
-MooTools 1.2 Custom Backwards-Compatibility Library
-By David Isaacson
-Portions from Mootools 1.2 by the MooTools production team (http://mootools.net/developers/)
-Copyright (c) 2006-2007 Valerio Proietti (http://mad4milk.net/)
-Copyright (c) 2008 Siafoo.net
-
-Cleaned up, shortened and logging added by Nathan White (http://www.nwhite.net)
-*/
-
 if(!window.console) var console = {};
-if(!console.log) console.log = function(){};
-
-
-// This is the definition from Mootools 1.2, with error handling
-// to prevent an issue in IE where calling .item on an XML (non-HTML)
-// element raises an error.
-//
-// We're using the 1.2 version in the first place because the compat version throws *other* weird errors sometimes
-// Note that this will prevent you from using the $A(iterable, start, length) syntax allowed but undocumented (?) in Mootools 1.1 
-function $A(iterable){
-    var item
-    try{
-        item = iterable.item
-    }
-    catch(e){
-        item = true
-    }
-    
-    if (item){
-        var array = [];
-        for (var i = 0, l = iterable.length; i < l; i++) array[i] = iterable[i];
-        return array;
-    }
-    return Array.prototype.slice.call(iterable);
-}
-
-function $extend(original, extended){
-    if (!extended) {extended=original; original=this; console.warn('$extend requires two parameters'); } 
-    for (var key in (extended || {})) original[key] = extended[key];
-    return original;
-}
+if(!console.log) console.warn = function(){};
 
 (function(){
-    var natives = [Array, Function, String, RegExp, Number];
-    for (var i = 0, l = natives.length; i < l; i++) natives[i].extend =  natives[i].implement; // TODO
+	oldA = $A;
+	window.$A = function(iterable, start, length){
+		if (start != undefined && length != undefined) {
+			console.warn('1.1 > 1.2: $A no longer takes start and length arguments.');
+			if (Browser.Engine.trident && $type(iterable) == 'collection'){
+				start = start || 0;
+				if (start < 0) start = iterable.length + start;
+				length = length || (iterable.length - start);
+				var array = [];
+				for (var i = 0; i < length; i++) array[i] = iterable[start++];
+				return array;
+			}
+			start = (start || 0) + ((start < 0) ? iterable.length : 0);
+			var end = ((!$chk(length)) ? iterable.length : length) + start;
+			return Array.prototype.slice.call(iterable, start, end);
+		}
+		return oldA(iterable);
+	};
+
+	var natives = [Array, Function, String, RegExp, Number];
+	for (var i = 0, l = natives.length; i < l; i++) natives[i].extend = natives[i].implement;
 })();
+
+var $native = function(){
+	for (var i = 0, l = arguments.length; i < l; i++){
+		arguments[i].extend = function(props){
+			console.warn('1.1 > 1.2: native elements no longer have an .extend method; use .implement instead.');
+			for (var prop in props){
+				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+				if (!this[prop]) this[prop] = $native.generic(prop);
+			}
+		};
+	}
+};
+
+$native.generic = function(prop){
+	return function(bind){
+		return this.prototype[prop].apply(bind, Array.prototype.slice.call(arguments, 1));
+	};
+};
