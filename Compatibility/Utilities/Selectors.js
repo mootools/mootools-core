@@ -31,7 +31,7 @@ Elements.implement({
 
 	filterByAttribute: function(name, operator, value){
 		console.warn('1.1 > 1.2: Elements.filterByAttribute is deprecated. Use Elements.filter.');
-		return this.filter('[' + name + (operator || '') + (value || '') + ']');
+		return this.filter('[' + name + '][' + name + (operator || '') + (value || '') + ']');
 	}
 
 });
