@@ -1,11 +1,15 @@
+
 Cookie.set = function(key, value, options){
-	return new Cookie(key, options).write(value);
+	console.warn('Cookie.set is deprecated. Use Cookie.write');
+    return new Cookie(key, options).write(value);
 };
 
 Cookie.get = function(key){
-	return new Cookie(key).read();
+	console.warn('Cookie.get is deprecated. Use Cookie.read');
+    return new Cookie(key).read();
 };
 
 Cookie.remove = function(key, options){
-	return new Cookie(key, options).dispose();
+	console.warn('Cookie.remove is deprecated. Use Cookie.dispose');
+    return new Cookie(key, options).dispose();
 };

@@ -1,6 +1,7 @@
 Element.implement({
 
 	setOpacity: function(op){
+		console.warn('1.1 > 1.2: Element.setOpacity is deprecated; use Element.setStyle("opacity", value).');
 		return this.set('opacity', op);
 	}
 
