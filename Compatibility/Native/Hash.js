@@ -29,9 +29,7 @@ Hash.implement({
 
 Object.toQueryString = Hash.toQueryString; // TODO
 
-var Abstract = new Class({
-	initialize : function(obj){
-		console.warn('1.1 > 1.2: Abstract is deprecated. Use Hash');
-		return new Hash(obj);
-	}
-});
+var Abstract = function(obj){
+	console.warn('1.1 > 1.2: Abstract is deprecated. Use Hash');
+	return new Hash(obj);
+};
