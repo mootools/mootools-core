@@ -11,6 +11,7 @@ Elements.extend = function(obj){
 (function(){
 
 	var toQueryString = Element.prototype.toQueryString;
+
 	Element.implement({
 
 		getFormElements: function(){
