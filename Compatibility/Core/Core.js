@@ -3,7 +3,7 @@ if(!console.log) console.warn = function(){};
 
 $A = function(iterable, start, length){
 	if (start != undefined && length != undefined) 
-		console.warn('1.1 > 1.2: $A no longer takes start and length arguments.')
+		console.warn('1.1 > 1.2: $A no longer takes start and length arguments.');
 	if (Browser.Engine.trident && $type(iterable) == 'collection'){
 		start = start || 0;
 		if (start < 0) start = iterable.length + start;
@@ -25,7 +25,7 @@ $A = function(iterable, start, length){
 var $native = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		arguments[i].extend = function(props){
-			console.warn('1.1 > 1.2: native elements no longer have an .extend method; use .implement instead.')
+			console.warn('1.1 > 1.2: native elements no longer have an .extend method; use .implement instead.');
 			for (var prop in props){
 				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
 				if (!this[prop]) this[prop] = $native.generic(prop);

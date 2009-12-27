@@ -1,3 +1,8 @@
+window.extend = document.extend = function(properties){
+	console.warn('1.1 > 1.2: window no longer has an .extend method; use .implement instead.');
+	for (var property in properties) this[property] = properties[property];
+};
+
 Browser.__defineGetter__('hasGetter',function(){
 	return true;
 });
@@ -5,31 +10,31 @@ Browser.__defineGetter__('hasGetter',function(){
 if(Browser.hasGetter){ // webkit, gecko, opera support
 	
 	window.__defineGetter__('ie',function(){
-		console.warn('window.ie is deprecated. Use Browser.Engine.trident');
+		console.warn('1.1 > 1.2: window.ie is deprecated. Use Browser.Engine.trident');
 		return (Browser.Engine.name == 'trident') ? true : false;
 	});
 	window.__defineGetter__('ie6',function(){
-		console.warn('window.ie6 is deprecated. Use Browser.Engine.trident and Browser.Engine.version');
+		console.warn('1.1 > 1.2: window.ie6 is deprecated. Use Browser.Engine.trident and Browser.Engine.version');
 		return (Browser.Engine.name == 'trident' && Browser.Engine.version == 4) ? true : false;
 	});
 	window.__defineGetter__('ie7',function(){
-		console.warn('window.ie7 is deprecated. Use Browser.Engine.trident and Browser.Engine.version');
+		console.warn('1.1 > 1.2: window.ie7 is deprecated. Use Browser.Engine.trident and Browser.Engine.version');
 		return (Browser.Engine.name == 'trident' && Browser.Engine.version == 5) ? true : false;
 	});
 	window.__defineGetter__('gecko',function(){
-		console.warn('window.gecko is deprecated. Use Browser.Engine.gecko');
+		console.warn('1.1 > 1.2: window.gecko is deprecated. Use Browser.Engine.gecko');
 		return (Browser.Engine.name == 'gecko') ? true : false;
 	});
 	window.__defineGetter__('webkit',function(){
-		console.warn('window.webkit is deprecated. Use Browser.Engine.webkit');
+		console.warn('1.1 > 1.2: window.webkit is deprecated. Use Browser.Engine.webkit');
 		return (Browser.Engine.name == 'webkit') ? true : false;
 	});
 	window.__defineGetter__('webkit419',function(){
-		console.warn('window.webkit is deprecated. Use Browser.Engine.webkit and Browser.Engine.version');
+		console.warn('1.1 > 1.2: window.webkit is deprecated. Use Browser.Engine.webkit and Browser.Engine.version');
 		return (Browser.Engine.name == 'webkit' && Browser.Engine.version == 419) ? true : false;
 	});
 	window.__defineGetter__('webkit420',function(){
-		console.warn('window.webkit is deprecated. Use Browser.Engine.webkit and Browser.Engine.version');
+		console.warn('1.1 > 1.2: window.webkit is deprecated. Use Browser.Engine.webkit and Browser.Engine.version');
 		return (Browser.Engine.name == 'webkit' && Browser.Engine.version == 420) ? true : false;
 	});
 } else { // no warnings for IE

@@ -1,13 +1,16 @@
-Fx.Style = function(element, property, options){
-	console.warn('Fx.Style is deprecated. Use Fx.Tween');
-    return new Fx.Tween(element, $extend({property: property}, options));
-};
+Fx.Style = new Class({
+	Extends: Fx.Tween,
+	initialize: function(){
+		console.warn('1.1 > 1.2: Fx.Style is deprecated. use Fx.Tween.');
+		this.parent.apply(this, arguments);
+	}
+});
 
 Element.implement({
 
-	effect: function(property, options){
-		console.warn('1.1 > 1.2: Element.effect is deprecated. use Element.tween');
-		return new Fx.Tween(this, $extend({property: property}, options));
+	effect: function(options){
+		console.warn('1.1 > 1.2: Element.effect is deprecated; use Fx.Tween or Element.tween.');
+		return new Fx.Tween(this, options);
 	}
 
 })
