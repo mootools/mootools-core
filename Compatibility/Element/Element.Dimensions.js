@@ -37,4 +37,26 @@
 	
 	});
 
+	Native.implement([Document, Window], {
+
+		getSize: function(){
+			console.warn('1.1 > 1.2: NOTE: getSize is different in 1.2; it no longer returns values for size, scroll, and scrollSize, but instead just returns x/y values for the dimensions of the element.');
+			var size;
+			var win = this.getWindow();
+			var doc = this.getDocument();
+			doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+			if (Browser.Engine.presto || Browser.Engine.webkit){
+				size =  {x: win.innerWidth, y: win.innerHeight};
+			} else {
+				size = {x: doc.clientWidth, y: doc.clientHeight};
+			}
+			return $extend(size, {
+				size: size,
+				scroll: {x: win.pageXOffset || doc.scrollLeft, y: win.pageYOffset || doc.scrollTop},
+				scrollSize: {x: Math.max(doc.scrollWidth, size.x), y: Math.max(doc.scrollHeight, size.y)}
+			});
+		}
+
+	});
+
 })();

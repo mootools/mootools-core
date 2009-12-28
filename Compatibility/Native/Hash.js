@@ -17,7 +17,7 @@ Hash.implement({
 
 	merge : function(properties){
 		console.warn('1.1 > 1.2: Hash.merge is deprecated. Use Hash.combine');
-		return this.combine(properties);
+		return this.extend(properties);
 	},
 
 	remove: function(key){

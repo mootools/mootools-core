@@ -13,7 +13,7 @@ Element.implement({
 		return new Fx.Tween(this, options);
 	}
 
-})
+});
 
 Fx.Tween.implement({
 
