@@ -22,13 +22,22 @@ if(!console.log) console.warn = function(){};
 	};
 
 	var natives = [Array, Function, String, RegExp, Number];
-	for (var i = 0, l = natives.length; i < l; i++) natives[i].extend = natives[i].implement;
+	for (var i = 0, l = natives.length; i < l; i++) {
+		var extend = natives[i].extend;
+		natives[i].extend = function(props){
+			console.warn('1.1 > 1.2: native types no longer use .extend to add methods to prototypes but instead use .implement.');
+			for (var prop in props){
+				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
+			}
+			return extend.apply(this, arguments);
+		};
+	}
 })();
 
 var $native = function(){
 	for (var i = 0, l = arguments.length; i < l; i++){
 		arguments[i].extend = function(props){
-			console.warn('1.1 > 1.2: native elements no longer have an .extend method; use .implement instead.');
+			console.warn('1.1 > 1.2: native types no longer have an .extend method; use .implement instead.');
 			for (var prop in props){
 				if (!this.prototype[prop]) this.prototype[prop] = props[prop];
 				if (!this[prop]) this[prop] = $native.generic(prop);
