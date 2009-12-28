@@ -1,5 +1,5 @@
 Class.empty = function(){ 
-	console.warn('replace Class.empty with $empty');
+	console.warn('1.1 > 1.2: replace Class.empty with $empty');
 	return $empty;
 };
 

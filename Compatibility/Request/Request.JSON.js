@@ -7,7 +7,7 @@ JSON.Remote = new Class({
     Extends: Request.JSON,
 
     initialize: function(url, options){
-		console.warn('JSON.Remote is deprecated. Use Request.JSON');
+		console.warn('1.1 > 1.2: JSON.Remote is deprecated. Use Request.JSON');
         this.parent(options);
         this.onComplete = $empty;
         this.url = url;

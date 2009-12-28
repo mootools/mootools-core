@@ -16,7 +16,7 @@ var XHR = new Class({
 	},
 
 	initialize: function(options){
-		console.warn('XHR is deprecated. Use Request.');
+		console.warn('1.1 > 1.2: XHR is deprecated. Use Request.');
 		this.parent(options);
 		this.transport = this.xhr;
 	},
@@ -48,7 +48,7 @@ var Ajax = new Class({
 	Extends: XHR,
 
 	initialize: function(url, options){
-		console.warn('Ajax is deprecated. Use Request.');
+		console.warn('1.1 > 1.2: Ajax is deprecated. Use Request.');
 		this.url = url;
 		this.parent(options);
 	},
