@@ -18,8 +18,8 @@ Element.implement({
 Fx.Tween.implement({
 
 	hide: function(){
-		console.warn('1.1 > 1.2: Fx.Style .hide() is deprecated; use Fx.Tween .set("opacity", 0) instead');
-		return this.set('opacity', 0);
+		console.warn('1.1 > 1.2: Fx.Style .hide() is deprecated; use Fx.Tween .set(0) instead');
+		return this.set(0);
 	}
 	
 });
