@@ -22,6 +22,7 @@ var XHR = new Class({
 	},
 
 	request: function(data){
+		console.warn('1.1 > 1.2: XHR.request() is deprecated. Use Request.send() instead.');
 		return this.send(this.url, data || this.options.data);
 	},
 
