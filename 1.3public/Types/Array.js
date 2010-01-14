@@ -6,6 +6,16 @@ License:
 	MIT-style license.
 */
 
+(function(){
+	
+var getTestArray = function(){
+	var a = [0, 1, 2, 3];
+	delete a[1];
+	delete a[2];
+	return a;
+};
+
+
 describe("Array Methods", {
 
 	// Array.flatten
@@ -31,6 +41,16 @@ describe("Array Methods", {
 		var arr = array.concat([false, null, 4]).filter(Type.isNumber);
 		value_of(arr).should_be(array.concat(4));
 	},
+	
+	'filter should skip deleted elements': function(){
+		var i = 0;
+		getTestArray().filter(function(){
+			i++;
+			return true;
+		});
+		
+		value_of(i).should_be(2);
+	},
 
 	// Array.clean
 
@@ -50,12 +70,31 @@ describe("Array Methods", {
 		value_of(arr).should_be([2,3,4,1,1,1]);
 	},
 
+	'map should skip deleted elements': function(){
+		var i = 0;
+		getTestArray().map(function(){
+			return i++;
+		});
+		
+		value_of(i).should_be(2);
+	},
+	
 	// Array.every
 
 	'should return true if every item matches the comparator, otherwise false': function(){
 		value_of([1,2,3,0,0,0].every(Type.isNumber)).should_be_true();
 
 		value_of(['1',2,3,0].every(Type.isNumber)).should_be_false();
+	},
+	
+	'every should skip deleted elements': function(){
+		var i = 0;
+		getTestArray().every(function(){
+			i++;
+			return true;
+		});
+		
+		value_of(i).should_be(2);
 	},
 
 	// Array.some
@@ -64,6 +103,20 @@ describe("Array Methods", {
 		value_of(['1',2,3,0].some(Type.isNumber)).should_be_true();
 
 		value_of([1,2,3,0,0,0].map(String).some(Type.isNumber)).should_be_false();
+	},
+	
+	'some should skip deleted elements': function(){
+		var i = 0;
+		var a = getTestArray();
+		delete a[0];
+		
+		// skips the first three elements
+		a.some(function(value, index){
+			i = index;
+			return true;
+		});
+		
+		value_of(i).should_be(3);
 	},
 
 	// Array.indexOf
@@ -205,3 +258,5 @@ describe("Array Color Methods", {
 	}
 
 });
+
+})();
