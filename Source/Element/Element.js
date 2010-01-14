@@ -523,11 +523,15 @@ Element.implement({
 
 	toQueryString: function(){
 		var queryString = [];
-		this.getElements('input, select, textarea', true).each(function(el){
-			if (!el.name || el.disabled || el.type == 'submit' || el.type == 'reset' || el.type == 'file') return;
-			var value = (el.tagName.toLowerCase() == 'select') ? Element.getSelected(el).map(function(opt){
-				return opt.value;
-			}) : ((el.type == 'radio' || el.type == 'checkbox') && !el.checked) ? null : el.value;
+		this.getElements('input, select, textarea').each(function(el){
+			var type = el.type;
+			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file') return;
+			
+			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
+				// IE
+				return document.id(opt).get('value');
+			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
+			
 			Array.from(value).each(function(val){
 				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
 			});
