@@ -19,7 +19,7 @@ provides: [Browser, Window, Document]
 var document = this.document;
 var window = document.window = this;
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\d+\.\d+).*?(safari|$)/) || [null, 'unknown', 0];
+var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\S+).*?(safari|version[\s\/:](\S+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
 	
@@ -27,7 +27,7 @@ var Browser = this.Browser = {
 	
 	name: (UA[1] == 'version') ? UA[3] : UA[1],
 
-	version: parseFloat(UA[2]),
+	version: (UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2],
 
 	Platform: {
 		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
@@ -177,69 +177,56 @@ this.$uid = (window.ActiveXObject) ? function(item){
 	return item.uid || (item.uid = UID++);
 };
 
-})();
-
 /*<block name="compatibility" version="1.2">*/
 
-// IE (overwrites $A again)
-$A = Array.from;
+// IE (overwrite $A again)
+this.$A = Array.from;
 
 Browser.Engine = {};
 
+var setEngine = function(name, version){
+	Browser.Engine[name + version] = true;
+	Browser.Engine.version = version;
+};
+
+var version = parseFloat(Browser.version);
 if (Browser.ie){
 	Browser.Engine.trident = true;
 	
-	switch(Browser.version){
-		case 6:
-			Browser.Engine.trident4 = true;
-			Browser.Engine.version = 4;
-		break;
-		case 7:
-			Browser.Engine.trident5 = true;
-			Browser.Engine.version = 5;
-		break;
-		case 8:
-			Browser.Engine.trident6 = true;
-			Browser.Engine.version = 6;
+	switch(version){
+		case 6: setEngine('trident', 4); break;
+		case 7: setEngine('trident', 5); break;
+		case 8: setEngine('trident', 6);
 	}
 }
 
 if (Browser.firefox){
 	Browser.Engine.gecko = true;
 	
-	switch(Browser.version){
-		case 2:
-			Browser.Engine.gecko18 = true;
-			Browser.Engine.version = 18;
-		break;
-		case 3:
-			Browser.Engine.gecko19 = true;
-			Browser.Engine.version = 19;
-	}
+	if (version >= 3) setEngine('gecko', 19);
+	else setEngine('gecko', 18);
 }
 
 if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
 	
-	switch(Browser.version){
-		case 2:
-			Browser.Engine.webkit419 = true;
-			Browser.Engine.version = 419;		
-		break;
-		case 3:
-			Browser.Engine.webkit420 = true;
-			Browser.Engine.version = 420;
-		break;
-		case 4:
-			Browser.Engine.webkit525 = true;
-			Browser.Engine.version = 525;
+	switch(version){
+		case 2: setEngine('webkit', 419); break;
+		case 3: setEngine('webkit', 420); break;
+		case 4: setEngine('webkit', 525);
 	}
 }
 
-// presto925 = opera
-// presto950 = opera
-// presto960 = opera
+if (Browser.opera){
+	Browser.Engine.presto = true;
+	
+	if (version >= 9.6) setEngine('presto', 960);
+	else if (version >= 9.5) setEngine('presto', 950);
+	else setEngine('presto', 925);
+}
 
-var $exec = Browser.exec;
+this.$exec = Browser.exec;
 
 /*</block>*/
+
+})();
