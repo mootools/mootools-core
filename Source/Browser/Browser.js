@@ -154,8 +154,8 @@ if (this.attachEvent) this.attachEvent('onunload', function(){
 	document.head = document.html = document.window = null;
 });
 
+// IE
 var arrayFrom = Array.from;
-
 try {
 	arrayFrom(document.html.childNodes);
 } catch(e){
@@ -180,6 +180,9 @@ this.$uid = (window.ActiveXObject) ? function(item){
 })();
 
 /*<block name="compatibility" version="1.2">*/
+
+// IE (overwrites $A again)
+$A = Array.from;
 
 Browser.Engine = {};
 
