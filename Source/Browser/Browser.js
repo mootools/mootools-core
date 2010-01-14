@@ -19,7 +19,7 @@ provides: [Browser, Window, Document]
 var document = this.document;
 var window = document.window = this;
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\S+).*?(safari|version[\s\/:](\S+)|$)/) || [null, 'unknown', 0];
+var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|konqueror|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
 	
@@ -27,7 +27,7 @@ var Browser = this.Browser = {
 	
 	name: (UA[1] == 'version') ? UA[3] : UA[1],
 
-	version: (UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2],
+	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
 		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
@@ -189,11 +189,10 @@ var setEngine = function(name, version){
 	Browser.Engine.version = version;
 };
 
-var version = parseFloat(Browser.version);
 if (Browser.ie){
 	Browser.Engine.trident = true;
 	
-	switch(version){
+	switch(Browser.version){
 		case 6: setEngine('trident', 4); break;
 		case 7: setEngine('trident', 5); break;
 		case 8: setEngine('trident', 6);
@@ -203,14 +202,14 @@ if (Browser.ie){
 if (Browser.firefox){
 	Browser.Engine.gecko = true;
 	
-	if (version >= 3) setEngine('gecko', 19);
+	if (Browser.version >= 3) setEngine('gecko', 19);
 	else setEngine('gecko', 18);
 }
 
 if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
 	
-	switch(version){
+	switch(Browser.version){
 		case 2: setEngine('webkit', 419); break;
 		case 3: setEngine('webkit', 420); break;
 		case 4: setEngine('webkit', 525);
@@ -220,8 +219,8 @@ if (Browser.safari || Browser.chrome){
 if (Browser.opera){
 	Browser.Engine.presto = true;
 	
-	if (version >= 9.6) setEngine('presto', 960);
-	else if (version >= 9.5) setEngine('presto', 950);
+	if (Browser.version >= 9.6) setEngine('presto', 960);
+	else if (Browser.version >= 9.5) setEngine('presto', 950);
 	else setEngine('presto', 925);
 }
 
