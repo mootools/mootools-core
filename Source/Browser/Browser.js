@@ -179,6 +179,9 @@ this.$uid = (window.ActiveXObject) ? function(item){
 
 /*<block name="compatibility" version="1.2">*/
 
+// IE
+$A = Array.from;
+
 Browser.Engine = {};
 
 var setEngine = function(name, version){

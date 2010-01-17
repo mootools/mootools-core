@@ -292,8 +292,8 @@ var cloneOf = function(item){
 };
 
 Array.implement({clone: function(){
-	var clone = [];
-	for (var i = 0; i < this.length; i++) clone[i] = cloneOf(this[i]);
+	var i = this.length, clone = new Array(i);
+	while (i--) clone[i] = cloneOf(this[i]);
 	return clone;
 }});
 
@@ -391,9 +391,7 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
-var $A = function(item){
-	return Array.from(item);
-};
+var $A = Array.from;
 
 var $arguments = function(i){
 	return function(){
