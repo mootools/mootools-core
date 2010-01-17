@@ -154,13 +154,13 @@ if (this.attachEvent) this.attachEvent('onunload', function(){
 	document.head = document.html = document.window = null;
 });
 
-// IE
+// IE fails on collections and <select>.options (refers to <select>)
 var arrayFrom = Array.from;
 try {
 	arrayFrom(document.html.childNodes);
 } catch(e){
 	Array.from = function(item){
-		if (typeOf(item) == 'collection'){
+		if (item != null && item.item && typeof item.length == 'number' && typeOf(item) != 'array'){
 			var i = item.length, array = new Array(i);
 			while (i--) array[i] = item[i];
 			return array;
@@ -179,9 +179,6 @@ this.$uid = (window.ActiveXObject) ? function(item){
 
 /*<block name="compatibility" version="1.2">*/
 
-// IE (overwrite $A again)
-this.$A = Array.from;
-
 Browser.Engine = {};
 
 var setEngine = function(name, version){
@@ -192,7 +189,7 @@ var setEngine = function(name, version){
 if (Browser.ie){
 	Browser.Engine.trident = true;
 	
-	switch(Browser.version){
+	switch (Browser.version){
 		case 6: setEngine('trident', 4); break;
 		case 7: setEngine('trident', 5); break;
 		case 8: setEngine('trident', 6);
@@ -206,10 +203,10 @@ if (Browser.firefox){
 	else setEngine('gecko', 18);
 }
 
-if (Browser.safari || Browser.chrome){
+if (Browser.safari || Browser.chrome || Browser.konqueror){
 	Browser.Engine.webkit = true;
 	
-	switch(Browser.version){
+	switch (Browser.version){
 		case 2: setEngine('webkit', 419); break;
 		case 3: setEngine('webkit', 420); break;
 		case 4: setEngine('webkit', 525);
@@ -222,6 +219,17 @@ if (Browser.opera){
 	if (Browser.version >= 9.6) setEngine('presto', 960);
 	else if (Browser.version >= 9.5) setEngine('presto', 950);
 	else setEngine('presto', 925);
+}
+
+if (Browser.name == 'unknown'){
+	switch ((userAgent.toLowerCase().match(/(webkit|khtml|gecko)/) || [])[0]){
+		case 'webkit':
+		case 'khtml':
+			Browser.Engine.webkit = true;
+		break;
+		case 'gecko':
+			Browser.Engine.gecko = true;
+	}
 }
 
 this.$exec = Browser.exec;
