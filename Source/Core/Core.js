@@ -144,7 +144,7 @@ Type.isEnumerable = function(item){
 	return (typeof item == 'object' && typeof item.length == 'number');
 };
 
-var hooks = this.hooks = {};
+var hooks = {};
 
 var hooksOf = function(object){
 	var type = typeOf(object.prototype);
@@ -392,7 +392,7 @@ Hash.implement({
 Hash.alias({each: 'forEach'});
 
 var $A = function(item){
-	return Array.from(item).clone();
+	return Array.from(item);
 };
 
 var $arguments = function(i){
