@@ -83,7 +83,9 @@ Function.from = function(item){
 };
 
 Array.from = function(item){
-	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item) : [item];
+	if (item == null) return [];
+	
+	return (Type.isEnumerable(item)) ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -389,7 +391,9 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
-var $A = Array.from;
+var $A = function(item){
+	return Array.from(item).clone();
+};
 
 var $arguments = function(i){
 	return function(){
