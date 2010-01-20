@@ -391,7 +391,9 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
-var $A = Array.from;
+var $A = function(item){
+	return Array.from(item).slice();
+};
 
 var $arguments = function(i){
 	return function(){
