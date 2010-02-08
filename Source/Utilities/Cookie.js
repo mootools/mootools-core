@@ -23,7 +23,7 @@ var Cookie = new Class({
 	Implements: Options,
 
 	options: {
-		path: false,
+		path: '/',
 		domain: false,
 		duration: false,
 		secure: false,
