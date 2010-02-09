@@ -191,19 +191,17 @@ Window.implement({
 
 [Document, Element].call('implement', {
  
-	search: function(expression){
+	getElements: function(expression){
 		return Slick.search(this, expression, new Elements);
 	},
  
-	find: function(expression){
+	getElement: function(expression){
 		return document.id(Slick.find(this, expression));
 	}
  
 });
 
 /*<block name="compatibility" version="1.2">*/
-
-[Document, Element].call('alias', {getElements: 'search', getElement: 'find'});
 
 if (window.$$ == null) Window.implement({$$: function(selector){
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, new Elements);
@@ -221,7 +219,7 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 /*</block>*/
 
 if (window.$$ == null) Window.implement({$$: function(selector){
-	return document.search(selector);
+	return Slick.search(this.document, selector);
 }});
 
 (function(){
