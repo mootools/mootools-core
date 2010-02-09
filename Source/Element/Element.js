@@ -78,33 +78,6 @@ var IFrame = new Type('IFrame', function(){
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
 	return iframe;
 });
-
-// var Elements = new Type('', function(elements, options){
-// 	options = Object.append({ddup: true, cash: true}, options);
-// 	elements = elements || [];
-// 	if (options.ddup || options.cash){
-// 		var uniques = {}, returned = [];
-// 		for (var i = 0, l = elements.length; i < l; i++){
-// 			var el = document.id(elements[i], !options.cash);
-// 			if (options.ddup){
-// 				if (uniques[el.uid]) continue;
-// 				uniques[el.uid] = true;
-// 			}
-// 			if (el) returned.push(el);
-// 		}
-// 		elements = returned;
-// 	}
-// 
-// 	
-// 	return (options.cash) ? Object.append(elements, this) : elements;
-// });
-// 
-// Elements.implement({filter: function(filter, bind){
-// 	if (!filter) return this;
-// 	return new Elements(Array.filter(this, (typeof filter == 'string') ? function(item){
-// 		return item.match(filter);
-// 	} : filter, bind));
-// }});
  
 var Elements = this.Elements = function(elements){
 	if (elements && elements.length) Slick.uniques(elements, this);
@@ -288,19 +261,6 @@ var purge = function(){
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
 };
-
-// var walk = function(element, walk, start, match, all, nocash){
-// 	var el = element[start || walk];
-// 	var elements = [];
-// 	while (el){
-// 		if (el.nodeType == 1 && (!match || Element.match(el, match))){
-// 			if (!all) return document.id(el, nocash);
-// 			elements.push(el);
-// 		}
-// 		el = el[walk];
-// 	}
-// 	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
-// };
 
 var attributes = {
 	'html': 'innerHTML',
