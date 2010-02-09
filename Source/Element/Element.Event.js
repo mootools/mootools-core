@@ -132,7 +132,7 @@ var $check = function(event){
 	var related = event.relatedTarget;
 	if (related == undefined) return true;
 	if (related === false) return false;
-	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.contains(related));
 };
 
 Element.Events = new Hash({
