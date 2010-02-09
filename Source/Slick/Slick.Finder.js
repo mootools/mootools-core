@@ -1,8 +1,10 @@
 /*
 ---
-provides: Slick
+name: Slick.Finder
+provides: Slick.Finder
+requires: Slick.Parser
+
 description: The new, superfast css selector engine.
-requires: SlickParser
 
 license: MIT-style
 

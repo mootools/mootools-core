@@ -1,6 +1,7 @@
 /*
 ---
-provides: SlickParser
+name: Slick.Parser
+provides: Slick.Parser
 description: Standalone CSS3 Selector parser
 
 license: MIT-style
