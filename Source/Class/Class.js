@@ -31,8 +31,8 @@ var Class = this.Class = new Type('Class', function(params){
 
 	newClass.implement(params);
 	
-	newClass.constructor = Class;
-	newClass.prototype.constructor = newClass;
+	newClass.$constructor = Class;
+	newClass.prototype.$constructor = newClass;
 	newClass.prototype.parent = parent;
 
 	return newClass;

@@ -66,7 +66,7 @@ this.typeOf = function(item){
 
 this.instanceOf = function(item, object){
 	if (item == null) return false;
-	var constructor = item.constructor;
+	var constructor = item.$constructor || item.constructor;
 	while (constructor){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
@@ -134,8 +134,8 @@ var Type = this.Type = function(name, object){
 	
 	if (name) object.prototype.$family = Function.from(lower).hide();
 	object.extend(this);
-	object.constructor = Type;
-	object.prototype.constructor = object;
+	object.$constructor = Type;
+	object.prototype.$constructor = object;
 	
 	return object;
 };

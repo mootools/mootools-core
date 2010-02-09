@@ -126,7 +126,7 @@ Browser.extend({
 	Event: this.Event
 });
 
-this.Window = this.constructor = new Type('Window', function(){});
+this.Window = this.$constructor = new Type('Window', function(){});
 
 this.$family = Function.from('window').hide();
 
@@ -134,7 +134,7 @@ Window.mirror(function(name, method){
 	window[name] = method;
 });
 
-this.Document = document.constructor = new Type('Document', function(){});
+this.Document = document.$constructor = new Type('Document', function(){});
 
 document.$family = Function.from('document').hide();
 
