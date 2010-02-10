@@ -19,6 +19,17 @@ provides: [Browser, Window, Document]
 var document = this.document;
 var window = document.window = this;
 
+var UID = 1;
+
+this.$uid = (window.ActiveXObject) ? function(item){
+	return (item.uid || (item.uid = [UID++]))[0];
+} : function(item){
+	return item.uid || (item.uid = UID++);
+};
+
+$uid(window);
+$uid(document);
+
 var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|konqueror|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
@@ -168,14 +179,6 @@ try {
 		return arrayFrom(item);
 	};
 }
-
-var UID = 1;
- 
-this.$uid = (window.ActiveXObject) ? function(item){
-	return (item.uid || (item.uid = [UID++]))[0];
-} : function(item){
-	return item.uid || (item.uid = UID++);
-};
 
 /*<block name="compatibility" version="1.2">*/
 
