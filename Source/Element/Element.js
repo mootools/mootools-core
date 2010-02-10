@@ -26,7 +26,6 @@ if (Browser.Element){
 }
 
 new Type('Element', Element).mirror(function(name, method){
-	if (Array[name]) return;
 	var obj = {};
 	obj[name] = function(){
 		var results = [], args = arguments, elements = true;
@@ -79,33 +78,35 @@ var IFrame = new Type('IFrame', function(){
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
 	return iframe;
 });
+ 
+var Elements = this.Elements = function(elements){
+	if (elements && elements.length) Slick.uniques(elements, this);
+};
+ 
+Elements.prototype = {length: 0};
+Elements.parent = Array;
 
-var Elements = new Type('', function(elements, options){
-	options = Object.append({ddup: true, cash: true}, options);
-	elements = elements || [];
-	if (options.ddup || options.cash){
-		var uniques = {}, returned = [];
-		for (var i = 0, l = elements.length; i < l; i++){
-			var el = document.id(elements[i], !options.cash);
-			if (options.ddup){
-				if (uniques[el.uid]) continue;
-				uniques[el.uid] = true;
-			}
-			if (el) returned.push(el);
+new Type('Elements', Elements).implement({
+ 
+	filter: function(filter, bind){
+		if (!filter) return this;
+		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
+			return item.match(filter);
+		} : filter, bind));
+	}.protect(),
+ 
+	push: function(){
+		var length = this.length;
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = document.id(arguments[i]);
+			if (item) this[length++] = item;
 		}
-		elements = returned;
-	}
-
-	
-	return (options.cash) ? Object.append(elements, this) : elements;
-});
-
-Elements.implement({filter: function(filter, bind){
-	if (!filter) return this;
-	return new Elements(Array.filter(this, (typeof filter == 'string') ? function(item){
-		return item.match(filter);
-	} : filter, bind));
-}});
+		return (this.length = length);
+	}.protect()
+ 
+}).implement(Array.prototype);
+ 
+Array.mirror(Elements);
 
 Document.implement({
 
@@ -178,20 +179,6 @@ if (window.$ == null) Window.implement({$: function(el, nc){
 
 Window.implement({
 
-	$$: function(selector){
-		if (arguments.length == 1 && typeof selector == 'string') return this.document.getElements(selector);
-		var elements = [];
-		var args = Array.flatten(arguments);
-		for (var i = 0, l = args.length; i < l; i++){
-			var item = args[i];
-			switch (typeOf(item)){
-				case 'element': elements.push(item); break;
-				case 'string': elements.extend(this.document.getElements(item, true));
-			}
-		}
-		return new Elements(elements);
-	},
-
 	getDocument: function(){
 		return this.document;
 	},
@@ -202,25 +189,38 @@ Window.implement({
 
 });
 
-[Element, Document].call('implement', {
-
-	getElement: function(selector, nocash){
-		return document.id(this.getElements(selector, true)[0] || null, nocash);
+[Document, Element].call('implement', {
+ 
+	getElements: function(expression){
+		return Slick.search(this, expression, new Elements);
 	},
-
-	getElements: function(tags, nocash){
-		tags = tags.split(',');
-		var elements = [];
-		var ddup = (tags.length > 1);
-		tags.each(function(tag){
-			var partial = this.getElementsByTagName(tag.trim());
-			(ddup) ? elements.extend(partial) : elements = partial;
-		}, this);
-		return new Elements(elements, {ddup: ddup, cash: !nocash});
+ 
+	getElement: function(expression){
+		return document.id(Slick.find(this, expression));
 	}
-
+ 
 });
 
+/*<block name="compatibility" version="1.2">*/
+
+if (window.$$ == null) Window.implement({$$: function(selector){
+	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, new Elements);
+	var elements = new Elements, args = Array.flatten(arguments);
+	for (var i = 0, l = args.length; i < l; i++){
+		var item = args[i];
+		switch (typeOf(item)){
+			case 'element': elements.push(item); break;
+			case 'string': Slick.search(this.document, item, elements);
+		}
+	}
+	return new Elements(elements);
+}});
+
+/*</block>*/
+
+if (window.$$ == null) Window.implement({$$: function(selector){
+	return Slick.search(this.document, selector);
+}});
 
 (function(){
 
@@ -258,19 +258,6 @@ var purge = function(){
 	if (Browser.Engine.trident) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
-};
-
-var walk = function(element, walk, start, match, all, nocash){
-	var el = element[start || walk];
-	var elements = [];
-	while (el){
-		if (el.nodeType == 1 && (!match || Element.match(el, match))){
-			if (!all) return document.id(el, nocash);
-			elements.push(el);
-		}
-		el = el[walk];
-	}
-	return (all) ? new Elements(elements, {ddup: false, cash: !nocash}) : null;
 };
 
 var attributes = {
@@ -453,43 +440,43 @@ Element.implement({
 	},
 
 	getPrevious: function(match, nocash){
-		return walk(this, 'previousSibling', null, match, false, nocash);
+		return document.id(Slick.find(this, '!+ ' + match));
 	},
 
 	getAllPrevious: function(match, nocash){
-		return walk(this, 'previousSibling', null, match, true, nocash);
+		return Slick.search(this, '!~ ' + match, new Elements);
 	},
 
 	getNext: function(match, nocash){
-		return walk(this, 'nextSibling', null, match, false, nocash);
+		return document.id(Slick.find(this, '+ ' + match));
 	},
 
 	getAllNext: function(match, nocash){
-		return walk(this, 'nextSibling', null, match, true, nocash);
+		return Slick.search(this, '~ ' + match, new Elements);
 	},
 
 	getFirst: function(match, nocash){
-		return walk(this, 'nextSibling', 'firstChild', match, false, nocash);
+		return document.id(Slick.find(this, '^ ' + match));
 	},
 
 	getLast: function(match, nocash){
-		return walk(this, 'previousSibling', 'lastChild', match, false, nocash);
+		return document.id(Slick.find(this, '!^ ' + match));
 	},
 
 	getParent: function(match, nocash){
-		return walk(this, 'parentNode', null, match, false, nocash);
+		return document.id(Slick.find(this, '! ' + match));
 	},
 
 	getParents: function(match, nocash){
-		return walk(this, 'parentNode', null, match, true, nocash);
+		return Slick.search(this, '! ' + match, new Elements);
 	},
 	
 	getSiblings: function(match, nocash){
-		return this.getParent().getChildren(match, nocash).erase(this);
+		return Slick.search(this, '~~ ' + match, new Elements);
 	},
 
 	getChildren: function(match, nocash){
-		return walk(this, 'nextSibling', 'firstChild', match, true, nocash);
+		return Slick.search(this, '> ' + match, new Elements);
 	},
 
 	getWindow: function(){
@@ -501,12 +488,7 @@ Element.implement({
 	},
 
 	getElementById: function(id, nocash){
-		var el = this.ownerDocument.getElementById(id);
-		if (!el) return null;
-		for (var parent = el.parentNode; parent != this; parent = parent.parentNode){
-			if (!parent) return null;
-		}
-		return document.id(el, nocash);
+		return document.id(Slick.find(this, '#' + id));
 	},
 
 	getSelected: function(){
@@ -584,18 +566,25 @@ Element.implement({
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},
 
-	hasChild: function(el){
-		el = document.id(el, true);
-		if (!el) return false;
-		if (Browser.Engine.webkit && Browser.Engine.version < 420) return Array.from(this.getElementsByTagName(el.tagName)).contains(el);
-		return (this.contains) ? (this != el && this.contains(el)) : !!(this.compareDocumentPosition(el) & 16);
-	},
-
-	match: function(tag){
-		return (!tag || (tag == this) || (Element.get(this, 'tag') == tag));
+	match: function(expression){
+		return Slick.match(this, expression);
 	}
 
 });
+
+[Document, Element].call('implement', {
+
+	contains: function(element){
+		return Slick.contains(this, element);
+	}
+
+});
+
+/*<block name="compatibility" version="1.2">*/
+
+Element.alias({hasChild: 'contains'});
+
+/*</block>*/
 
 [Element, Window, Document].call('implement', {
 
