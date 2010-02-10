@@ -627,15 +627,15 @@ Creates a copy of an Array. Useful for applying the Array prototypes to iterable
 
 [Array]: /core/Native/Array
 [Function:bind]: /core/Native/Function/#Function:bind
-[MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array
-[MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
-[MDC Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
-[MDC Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
-[MDC Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
-[MDC Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
-[MDC Array:forEach]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:forEach
-[Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:every
-[Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:filter
-[Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:indexOf
-[Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:map
-[Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Array:some
+[MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array
+[MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
+[MDC Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
+[MDC Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
+[MDC Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
+[MDC Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
+[MDC Array:forEach]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/forEach
+[Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
+[Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
+[Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
+[Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
+[Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
