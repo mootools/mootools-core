@@ -567,13 +567,16 @@ Element.implement({
 
 });
 
-[Document, Element].call('implement', {
+(function(){
 
-	contains: function(element){
-		return Slick.contains(this, element);
-	}
+var contains = {contains: function(element){
+	return Slick.contains(this, element);
+}};
 
-});
+if (!document.contains) Document.implement(contains);
+if (!document.createElement('div').contains) Element.implement(contains);
+
+})();
 
 /*<block name="compatibility" version="1.2">*/
 
