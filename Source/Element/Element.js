@@ -435,43 +435,43 @@ Element.implement({
 	},
 
 	getPrevious: function(match, nocash){
-		return document.id(Slick.find(this, '!+ ' + match));
+		return document.id(Slick.find(this, '!+ ' + (match || '')));
 	},
 
 	getAllPrevious: function(match, nocash){
-		return Slick.search(this, '!~ ' + match, new Elements);
+		return Slick.search(this, '!~ ' + (match || ''), new Elements);
 	},
 
 	getNext: function(match, nocash){
-		return document.id(Slick.find(this, '+ ' + match));
+		return document.id(Slick.find(this, '+ ' + (match || '')));
 	},
 
 	getAllNext: function(match, nocash){
-		return Slick.search(this, '~ ' + match, new Elements);
+		return Slick.search(this, '~ ' + (match || ''), new Elements);
 	},
 
 	getFirst: function(match, nocash){
-		return document.id(Slick.find(this, '^ ' + match));
+		return document.id(Slick.find(this, '^ ' + (match || '')));
 	},
 
 	getLast: function(match, nocash){
-		return document.id(Slick.find(this, '!^ ' + match));
+		return document.id(Slick.find(this, '!^ ' + (match || '')));
 	},
 
 	getParent: function(match, nocash){
-		return document.id(Slick.find(this, '! ' + match));
+		return document.id(Slick.find(this, '! ' + (match || '')));
 	},
 
 	getParents: function(match, nocash){
-		return Slick.search(this, '! ' + match, new Elements);
+		return Slick.search(this, '! ' + (match || ''), new Elements);
 	},
 	
 	getSiblings: function(match, nocash){
-		return Slick.search(this, '~~ ' + match, new Elements);
+		return Slick.search(this, '~~ ' + (match || ''), new Elements);
 	},
 
 	getChildren: function(match, nocash){
-		return Slick.search(this, '> ' + match, new Elements);
+		return Slick.search(this, '> ' + (match || ''), new Elements);
 	},
 
 	getWindow: function(){
