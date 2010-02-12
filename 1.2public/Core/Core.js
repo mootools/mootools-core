@@ -333,6 +333,10 @@ describe('$type', {
 		value_of($type(div)).should_be('element');
 	},
 	
+	"should return 'array' for Elements": function(){
+		value_of($type(new Elements)).should_be('array');
+	},
+	
 	"should return 'window' for the window object": function(){
 		value_of($type(window)).should_be('window');
 	},

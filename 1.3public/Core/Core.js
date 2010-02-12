@@ -105,15 +105,19 @@ describe('typeOf', {
 	"should return 'element' for an Element": function(){
 		var div = document.createElement('div');
 		value_of(typeOf(div)).should_be('element');
-	}// ,
-	// 
-	// 	"should return 'window' for the window object": function(){
-	// 		value_of(typeOf(window)).should_be('window');
-	// 	},
-	// 
-	// 	"should return 'document' for the document object": function(){
-	// 		value_of(typeOf(document)).should_be('document');
-	// 	}
+	},
+	
+	"should return 'elements' for Elements": function(){
+		value_of(typeOf(new Elements)).should_be('elements');
+	},
+	
+	"should return 'window' for the window object": function(){
+		value_of(typeOf(window)).should_be('window');
+	},
+
+	"should return 'document' for the document object": function(){
+		value_of(typeOf(document)).should_be('document');
+	}
 
 });
 
