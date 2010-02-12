@@ -17,8 +17,9 @@ provides: [Element, Elements, $, $$, Iframe]
 var Element = function(tag, props){
 	var konstructor = Element.Constructors.get(tag);
 	if (konstructor) return konstructor(props);
-	if (typeof tag == 'string') return document.newElement(tag, props);
-	return document.id(tag).set(props);
+	if (typeof tag != 'string') return document.id(tag).set(props);
+	
+	return document.newElement(tag, props);
 };
 	
 if (Browser.Element){
@@ -111,15 +112,8 @@ Array.mirror(Elements);
 Document.implement({
 
 	newElement: function(tag, props){
-		if (Browser.Engine.trident && props){
-			['name', 'type', 'checked'].each(function(attribute){
-				if (!props[attribute]) return;
-				tag += ' ' + attribute + '="' + props[attribute] + '"';
-				if (attribute != 'checked') delete props[attribute];
-			});
-			tag = '<' + tag + '>';
-		}
-		return document.id(this.createElement(tag)).set(props);
+		if (props && props.checked != null) props.defaultChecked = props.checked;
+		return this.id(this.createElement(tag)).set(props);
 	},
 
 	newTextNode: function(text){
@@ -270,7 +264,8 @@ var attributes = {
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = [
 	'value', 'type', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
-	'rowSpan', 'tabIndex', 'useMap'];
+	'rowSpan', 'tabIndex', 'useMap'
+];
 
 bools = bools.associate(bools);
 
@@ -440,43 +435,43 @@ Element.implement({
 	},
 
 	getPrevious: function(match, nocash){
-		return document.id(Slick.find(this, '!+ ' + match));
+		return document.id(Slick.find(this, '!+ ' + (match || '')));
 	},
 
 	getAllPrevious: function(match, nocash){
-		return Slick.search(this, '!~ ' + match, new Elements);
+		return Slick.search(this, '!~ ' + (match || ''), new Elements);
 	},
 
 	getNext: function(match, nocash){
-		return document.id(Slick.find(this, '+ ' + match));
+		return document.id(Slick.find(this, '+ ' + (match || '')));
 	},
 
 	getAllNext: function(match, nocash){
-		return Slick.search(this, '~ ' + match, new Elements);
+		return Slick.search(this, '~ ' + (match || ''), new Elements);
 	},
 
 	getFirst: function(match, nocash){
-		return document.id(Slick.find(this, '^ ' + match));
+		return document.id(Slick.find(this, '^ ' + (match || '')));
 	},
 
 	getLast: function(match, nocash){
-		return document.id(Slick.find(this, '!^ ' + match));
+		return document.id(Slick.find(this, '!^ ' + (match || '')));
 	},
 
 	getParent: function(match, nocash){
-		return document.id(Slick.find(this, '! ' + match));
+		return document.id(Slick.find(this, '! ' + (match || '')));
 	},
 
 	getParents: function(match, nocash){
-		return Slick.search(this, '! ' + match, new Elements);
+		return Slick.search(this, '! ' + (match || ''), new Elements);
 	},
 	
 	getSiblings: function(match, nocash){
-		return Slick.search(this, '~~ ' + match, new Elements);
+		return Slick.search(this, '~~ ' + (match || ''), new Elements);
 	},
 
 	getChildren: function(match, nocash){
-		return Slick.search(this, '> ' + match, new Elements);
+		return Slick.search(this, '> ' + (match || ''), new Elements);
 	},
 
 	getWindow: function(){
@@ -572,13 +567,16 @@ Element.implement({
 
 });
 
-[Document, Element].call('implement', {
+(function(){
 
-	contains: function(element){
-		return Slick.contains(this, element);
-	}
+var contains = {contains: function(element){
+	return Slick.contains(this, element);
+}};
 
-});
+if (!document.contains) Document.implement(contains);
+if (!document.createElement('div').contains) Element.implement(contains);
+
+})();
 
 /*<block name="compatibility" version="1.2">*/
 

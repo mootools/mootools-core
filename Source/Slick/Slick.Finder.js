@@ -523,7 +523,7 @@ authors:
 			node = node.firstChild;
 			if (node){
 				if (node.nodeType === 1) this.push(node, tag, id, parts);
-				else this['combinator:+>'](node, tag, id, parts);
+				else this['combinator:+'](node, tag, id, parts);
 			}
 		},
 
@@ -531,7 +531,7 @@ authors:
 			node = node.lastChild;
 			if (node){
 				if (node.nodeType === 1) this.push(node, tag, id, parts);
-				else this['combinator:<+'](node, tag, id, parts);
+				else this['combinator:!+'](node, tag, id, parts);
 			}
 		},
 
