@@ -455,6 +455,7 @@ var $time = Date.now;
 
 var $type = function(object){
 	var type = typeOf(object);
+	if (type == 'elements') return 'array';
 	return (type == 'null') ? false : type;
 };
 
