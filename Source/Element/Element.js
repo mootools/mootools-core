@@ -198,8 +198,9 @@ Window.implement({
 /*<block name="compatibility" version="1.2">*/
 
 if (window.$$ == null) Window.implement({$$: function(selector){
-	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, new Elements);
-	var elements = new Elements, args = Array.flatten(arguments);
+	var elements = new Elements;
+	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
+	var args = Array.flatten(arguments);
 	for (var i = 0, l = args.length; i < l; i++){
 		var item = args[i];
 		switch (typeOf(item)){
@@ -207,7 +208,7 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 			case 'string': Slick.search(this.document, item, elements);
 		}
 	}
-	return new Elements(elements);
+	return elements;
 }});
 
 /*</block>*/
@@ -562,7 +563,7 @@ Element.implement({
 	},
 
 	match: function(expression){
-		return Slick.match(this, expression);
+		return !expression || Slick.match(this, expression);
 	}
 
 });
