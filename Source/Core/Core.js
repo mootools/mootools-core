@@ -281,6 +281,12 @@ Array.implement({forEach: function(fn, bind){
 Array.each = Array.forEach;
 Array.prototype.each = Array.prototype.forEach;
 
+(function(check){
+	Array.type = function(item){
+		return instanceOf(item, Array) || check(item);
+	};
+})(Array.type);
+
 // Array & Object cloning, Object merging and appending
 
 var cloneOf = function(item){
