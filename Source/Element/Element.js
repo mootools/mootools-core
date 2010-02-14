@@ -582,7 +582,9 @@ if (!document.createElement('div').contains) Element.implement(contains);
 
 /*<block name="compatibility" version="1.2">*/
 
-Element.alias({hasChild: 'contains'});
+Element.implement({hasChild: function(element){
+	return this !== element && this.contains(element);
+}});
 
 /*</block>*/
 
