@@ -161,10 +161,10 @@ describe('instanceOf', {
 
 describe('Array.from', {
 
-	'should return a copy for an array': function(){
+	'should return the same array': function(){
 		var arr1 = [1,2,3];
 		var arr2 = Array.from(arr1);
-		value_of(arr1 !== arr2).should_be_true();
+		value_of(arr1 === arr2).should_be_true();
 	},
 
 	'should return an array for an Elements collection': function(){
@@ -199,6 +199,20 @@ describe('Array.from', {
 
 	'should ignore and return an array': function(){
 		value_of(Array.from([1,2,3])).should_be([1,2,3]);
+	},
+	
+	'should return a copy of arguments or the arguments if it is of type array': function(){
+		// In Opera arguments is an array so it does not return a copy
+		// This is intended. Array.from is expected to return an Array from an array-like-object
+		// It does not make a copy when the passed in value is an array already
+		var args, type, copy = (function(){
+			type = typeOf(arguments);
+			args = arguments;
+			
+			return Array.from(arguments);
+		})(1, 2);
+		
+		value_of((type == 'array') ? (copy === args) : (copy !== args)).should_be_true();
 	}
 
 });
