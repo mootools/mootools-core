@@ -445,7 +445,7 @@ Element.implement({
 	},
 
 	getNext: function(match, nocash){
-		return document.id(Slick.find(this, '+ ' + (match || '')));
+		return document.id(Slick.find(this, '~ ' + (match || '')));
 	},
 
 	getAllNext: function(match, nocash){
@@ -453,7 +453,7 @@ Element.implement({
 	},
 
 	getFirst: function(match, nocash){
-		return document.id(Slick.find(this, '^ ' + (match || '')));
+		return document.id(Slick.find(this, '> ' + (match || '')));
 	},
 
 	getLast: function(match, nocash){
