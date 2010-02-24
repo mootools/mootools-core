@@ -39,7 +39,7 @@ Table.prototype = {
 		if (index != -1){
 			this.length--;
 			this.keys.splice(index, 1);
-			return this.values.splice(index, 1);
+			return this.values.splice(index, 1)[0];
 		}
 		return null;
 	},
