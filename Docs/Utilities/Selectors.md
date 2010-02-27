@@ -158,7 +158,7 @@ Matches all the Elements which contains the text.
 Selector: not {#Selector:not}
 -------------------------------------
 
-Returns all elements that do not match the selector.
+Matches all elements that do not match the single selector.
 
 ### Usage:
 
@@ -166,9 +166,13 @@ Returns all elements that do not match the selector.
 
 ### Examples:
 
-	$$('*:not(.foo)')
+	$$(':not(div.foo)'); // all elements except divs with class 'foo'
 
-	$('myElement').getElements(':not(a)');
+	$$('input:not([type="submit"])'); // all inputs except submit buttons
+
+	myElement.getElements(':not(a)');
+
+	$$(':not(ul li)'); // NOT allowed! Only single selectors might be passed.
 
 
 Selector: nth-child {#Selector:nth-child}
