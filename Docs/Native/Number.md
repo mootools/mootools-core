@@ -132,4 +132,4 @@ Returns this number as another number with the passed in base. Useful because to
 
 
 
-[MDC Number]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Number
+[MDC Number]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Number

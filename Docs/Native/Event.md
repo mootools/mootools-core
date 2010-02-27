@@ -13,7 +13,7 @@ Event Method: constructor {#Event:constructor}
 
 ### Arguments:
 
-1. event - (*event*) An HTMLEvent Object.
+1. event - (*event*, required) An HTMLEvent Object.
 2. win   - (*window*, optional: defaults to window) The context of the event.
 
 #### Properties:
