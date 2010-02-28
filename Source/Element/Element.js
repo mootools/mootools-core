@@ -19,6 +19,22 @@ var Element = function(tag, props){
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
 	
+	if (!props) props = {};
+	
+	var parsed = Slick.parse(tag).expressions[0][0];
+	tag = parsed.tag || 'div';
+	if (parsed.id) props.id = parsed.id;
+	
+	var classes = [];
+	parsed.parts.each(function(part){
+		switch (part.type){
+			case 'class': classes.push(part.value); break;
+			case 'attribute': if (part.value && part.operator == '=') props[part.key] = part.value;
+		}
+	});
+	
+	if (classes.length) props['class'] = classes.join(' ');
+	
 	return document.newElement(tag, props);
 };
 	
@@ -229,6 +245,7 @@ var get = function(uid){
 var clean = function(item, retain){
 	if (!item) return;
 	var uid = item.uid;
+	if (retain !== true) retain = false;
 	if (Browser.Engine.trident){
 		if (item.clearAttributes){
 			var clone = retain && item.cloneNode(false);
@@ -444,7 +461,7 @@ Element.implement({
 	},
 
 	getNext: function(match, nocash){
-		return document.id(Slick.find(this, '+ ' + (match || '')));
+		return document.id(Slick.find(this, '~ ' + (match || '')));
 	},
 
 	getAllNext: function(match, nocash){
@@ -452,7 +469,7 @@ Element.implement({
 	},
 
 	getFirst: function(match, nocash){
-		return document.id(Slick.find(this, '^ ' + (match || '')));
+		return document.id(Slick.find(this, '> ' + (match || '')));
 	},
 
 	getLast: function(match, nocash){
@@ -581,7 +598,9 @@ if (!document.createElement('div').contains) Element.implement(contains);
 
 /*<block name="compatibility" version="1.2">*/
 
-Element.alias({hasChild: 'contains'});
+Element.implement({hasChild: function(element){
+	return this !== element && this.contains(element);
+}});
 
 /*</block>*/
 

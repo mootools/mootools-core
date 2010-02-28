@@ -30,7 +30,7 @@ this.$uid = (window.ActiveXObject) ? function(item){
 $uid(window);
 $uid(document);
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|konqueror|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
 	
