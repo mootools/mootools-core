@@ -43,15 +43,15 @@ describe('new Element(expression)', {
 		value_of(input.value).should_be('Some Text');
 	},
 	
-	'should overwrite ids and add classes': function(){
+	'should overwrite ids and classes': function(){
 		var div = new Element('div#myDiv.myClass', {
 			id: 'myOverwrittenId',
-			'class': 'additionalClass'
+			'class': 'overwrittenClass'
 		});
 		
 		value_of(div.tagName.toLowerCase()).should_be('div');
 		value_of(div.id).should_be('myOverwrittenId');
-		value_of(div.className).should_be('additionalClass myClass');
+		value_of(div.className).should_be('overwrittenClass');
 	},
 	
 	'should overwrite attributes': function(){
