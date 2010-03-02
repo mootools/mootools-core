@@ -21,19 +21,20 @@ var Element = function(tag, props){
 	
 	if (!props) props = {};
 	
-	var parsed = Slick.parse(tag).expressions[0][0];
-	tag = parsed.tag || 'div';
-	if (parsed.id) props.id = parsed.id;
-	
-	var classes = [];
-	parsed.parts.each(function(part){
-		switch (part.type){
-			case 'class': classes.push(part.value); break;
-			case 'attribute': if (part.value && part.operator == '=') props[part.key] = part.value;
+	if (!tag.test(/^\w+$/)){
+		var parsed = Slick.parse(tag).expressions[0][0];
+		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
+		if (parsed.id && props.id == null) props.id = parsed.id;
+
+		for (var i = 0, l = parsed.parts.length; i < l; i++){
+			var part = parsed.parts[i];
+			if (part.type == 'attribute' && part.value && part.operator == '=' && props[part.key] == null)
+				props[part.key] = part.value;
 		}
-	});
-	
-	if (classes.length) props['class'] = classes.join(' ');
+		
+		var classList = props['class'];
+		if (parsed.classes) props['class'] = (classList ? classList + ' ' : '') + parsed.classes.join(' ');
+	}
 	
 	return document.newElement(tag, props);
 };
