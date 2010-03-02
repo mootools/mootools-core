@@ -647,7 +647,7 @@ A text node will be created inside this Element, in either the top or bottom pos
 ### Arguments:
 
 1. text  - (*string*) The text to append.
-1. where - (*string*, optional: default 'bottom') The position to inject the text to.
+1. where - (*string*, optional: default 'bottom') The position to inject the text to. Values accepted are 'top', 'bottom', 'before' and 'after'.
 
 ### Returns:
 
