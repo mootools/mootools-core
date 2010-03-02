@@ -16,6 +16,8 @@ authors:
 
 (function(){
 	
+var exports = this;
+	
 var parsed,
 	separatorIndex,
 	combinatorIndex,
@@ -251,12 +253,12 @@ function parser(
 
 // Slick NS
 
-var Slick = this.Slick || {};
+var Slick = exports.Slick || {};
 
 Slick.parse = function(expression){
 	return parse(expression);
 };
 
-if (!this.Slick) this.Slick = Slick;
+if (!exports.Slick) exports.Slick = Slick;
 	
-}).apply(this);
+}).apply((typeof exports != 'undefined') ? exports : this);
