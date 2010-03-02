@@ -29,7 +29,8 @@ context.Sets = {
 		'Core/Core',
 		'Types/Array', 'Types/Function', 'Types/Hash',
 		'Class/Class',
-		'Browser/Browser'
+		'Browser/Browser',
+		'Element/NewElement'
 	]
 
 };
