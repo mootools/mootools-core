@@ -32,8 +32,7 @@ var Element = function(tag, props){
 				props[part.key] = part.value;
 		}
 		
-		var classList = props['class'];
-		if (parsed.classes) props['class'] = (classList ? classList + ' ' : '') + parsed.classes.join(' ');
+		if (parsed.classes && props['class'] == null) props['class'] = parsed.classes.join(' ');
 	}
 	
 	return document.newElement(tag, props);
