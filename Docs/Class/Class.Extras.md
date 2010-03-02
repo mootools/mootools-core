@@ -327,7 +327,7 @@ Class: Options {#Options}
 
 A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 Used to automate the setting of a Class instance's options.
-Will also add Class [Events](#Events) when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete' adds a 'complete' event).
+Will also add Class [Events](#Events) when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete' adds a 'complete' event). You will need to call this.setOptions() for this to have an effect, however.
 
 ### Syntax:
 

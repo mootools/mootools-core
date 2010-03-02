@@ -97,7 +97,7 @@ Remove a Cookie:
 Creating a Cookie and Removing it Right Away:
 
 	var myCookie = Cookie.write('username', 'Aaron', {domain: 'mootools.net'});
-	if (Cookie.read('username') == 'Aaron') { Cookie.dispose(myCookie); }
+	if (Cookie.read('username') == 'Aaron') { myCookie.dispose(); }
 
 
 

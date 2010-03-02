@@ -297,6 +297,6 @@ Runs the Function with specified arguments and binding. The same as apply but re
 [options]: #Function:create:options
 [Element:addEvent]: /core/Element/Element.Event/#Element:addEvent
 [$clear]: /core/Core/Core/#clear
-[MDC Function]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference:Global_Objects:Function
-[MDC setInterval]: http://developer.mozilla.org/en/docs/DOM:window.setInterval
-[MDC setTimeout]: http://developer.mozilla.org/en/docs/DOM:window.setTimeout
+[MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
+[MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
+[MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout

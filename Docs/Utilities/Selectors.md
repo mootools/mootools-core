@@ -121,6 +121,7 @@ Matches all Elements that are enabled.
 	$$('*:enabled')
 
 	$('myElement').getElements(':enabled');
+	
 
 Selector: empty {#Selector:empty}
 ---------------------------------
@@ -134,6 +135,7 @@ Matches all elements which are empty.
 ### Example:
 
 	$$('div:empty');
+
 
 Selector: contains {#Selector:contains}
 ---------------------------------------
@@ -151,6 +153,26 @@ Matches all the Elements which contains the text.
 ### Example:
 
 	$$('p:contains("find me")');
+
+
+Selector: not {#Selector:not}
+-------------------------------------
+
+Matches all elements that do not match the single selector.
+
+### Usage:
+
+	':not(selector)'
+
+### Examples:
+
+	$$(':not(div.foo)'); // all elements except divs with class 'foo'
+
+	$$('input:not([type="submit"])'); // all inputs except submit buttons
+
+	myElement.getElements(':not(a)');
+
+	$$(':not(ul li)'); // NOT allowed! Only single selectors might be passed.
 
 
 Selector: nth-child {#Selector:nth-child}
@@ -203,6 +225,7 @@ Last Child:
 
 This selector respects the w3c specifications, so it has 1 as its first child, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
 
+
 Selector: even {#Selector:even}
 -------------------------------
 
@@ -220,6 +243,7 @@ Matches every even child.
 
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(even), as this will return the real even children.
 
+
 Selector: odd {#Selector:odd}
 -----------------------------
 
@@ -236,6 +260,7 @@ Matches every odd child.
 ### Note:
 
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(odd), as this will return the real odd children.
+
 
 Selector: first-child {#Selector:first-child}
 ---------------------------------
