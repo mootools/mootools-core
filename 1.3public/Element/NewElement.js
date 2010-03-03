@@ -74,15 +74,15 @@ describe('new Element(expression)', {
 		value_of(div.className).should_be('');
 	},
 	
-	'should reset attributes and classes with null': function(){
+	'should not reset attributes and classes with null': function(){
 		var div = new Element('div#myDiv.myClass', {
 			id: null,
 			'class': null
 		});
 		
 		value_of(div.tagName.toLowerCase()).should_be('div');
-		value_of(div.id).should_be('');
-		value_of(div.className).should_be('');
+		value_of(div.id).should_be('myDiv');
+		value_of(div.className).should_be('myClass');
 	},
 	
 	'should not reset attributes and classes with undefined': function(){
