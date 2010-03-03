@@ -63,11 +63,51 @@ describe('new Element(expression)', {
 		value_of(a.href).should_be('http://mootools.net/');
 	},
 	
+	'should reset attributes and classes with empty string': function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: '',
+			'class': ''
+		});
+		
+		value_of(div.tagName.toLowerCase()).should_be('div');
+		value_of(div.id).should_be('');
+		value_of(div.className).should_be('');
+	},
+	
+	'should reset attributes and classes with null': function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: null,
+			'class': null
+		});
+		
+		value_of(div.tagName.toLowerCase()).should_be('div');
+		value_of(div.id).should_be('');
+		value_of(div.className).should_be('');
+	},
+	
+	'should not reset attributes and classes with undefined': function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: undefined,
+			'class': undefined
+		});
+		
+		value_of(div.tagName.toLowerCase()).should_be('div');
+		value_of(div.id).should_be('myDiv');
+		value_of(div.className).should_be('myClass');
+	},
+	
 	'should fall back to a div tag': function(){
 		var someElement = new Element('#myId');
 		
 		value_of(someElement.tagName.toLowerCase()).should_be('div');
 		value_of(someElement.id).should_be('myId');
+	},
+	
+	'should allow zero (0) values': function(){
+		var table = new Element('table[cellpadding=0]');
+		
+		value_of(table.tagName.toLowerCase()).should_be('table');
+		value_of(table.cellPadding).should_be(0);
 	}
 	
 });
