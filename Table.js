@@ -8,7 +8,9 @@ provides: Table
 ...
 */
 
-var Table = function(){
+(function(){
+
+this.Table = function(){
 	this.keys = [];
 	this.values = [];
 	this.length = 0;
@@ -51,3 +53,6 @@ Table.prototype = {
 };
 
 Table.prototype.each = Table.prototype.forEach;
+
+}).call(typeof exports != 'undefined' ? exports : this);
+
