@@ -10,7 +10,7 @@ provides: Table
 
 (function(){
 
-this.Table = function(){
+var Table = this.Table = function(){
 	this.keys = [];
 	this.values = [];
 	this.length = 0;
