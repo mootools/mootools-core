@@ -10,7 +10,7 @@ provides: Color
 
 (function(){
 
-this.Color = function(color, type){
+var Color = this.Color = function(color, type){
 	
 	if (color.isColor){
 		
