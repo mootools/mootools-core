@@ -1,8 +1,12 @@
-/*=
+/*
+---
+
 name: Color
 description: Class to create and manipulate colors. Includes HSB «-» RGB «-» HEX conversions.
 provides: Color
-=*/
+
+...
+*/
 
 (function(){
 
@@ -146,4 +150,4 @@ Color.rgb = function(r, g, b, a){
 
 if (this.rgb == null) this.rgb = Color.rgb;
 
-})();
+}).call(typeof exports != 'undefined' ? exports : this);
