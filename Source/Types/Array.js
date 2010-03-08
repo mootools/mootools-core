@@ -14,6 +14,10 @@ provides: Array
 ...
 */
 
+(function(){
+
+var typeOf = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this).typeOf;
+
 Array.implement({
 	
 	call: function(name){
@@ -164,6 +168,8 @@ Array.implement({
 	}
 
 });
+
+}).call(typeof exports != 'undefined' ? exports : this);
 
 /*<block name="compatibility" version="1.2">*/
 

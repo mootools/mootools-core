@@ -14,7 +14,12 @@ provides: [Class.Extras, Chain, Events, Options]
 ...
 */
 
-var Chain = new Class({
+(function(){
+
+var typeOf = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this).typeOf,
+	Class = (/*<block remove>*/(typeof require != 'undefined') ? require('./Class') : /*</block>*/this).Class;
+
+this.Chain = new Class({
 
 	$chain: [],
 
@@ -34,7 +39,7 @@ var Chain = new Class({
 
 });
 
-var Events = new Class({
+var Events = this.Events = new Class({
 
 	$events: {},
 
@@ -92,7 +97,7 @@ Events.removeOn = function(string){
 	});
 };
 
-var Options = new Class({
+this.Options = new Class({
 
 	setOptions: function(){
 		this.options = Object.merge.run([{}, this.options].extend(arguments));
@@ -106,3 +111,5 @@ var Options = new Class({
 	}
 
 });
+
+}).call(typeof exports != 'undefined' ? exports : this);

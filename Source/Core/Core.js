@@ -7,7 +7,7 @@ description: The heart of MooTools.
 
 license: MIT-style license.
 
-copyright: Copyright (c) 2006-2008 [Valerio Proietti](http://mad4milk.net/).
+copyright: Copyright (c) 2006-2010 [Valerio Proietti](http://mad4milk.net/).
 
 authors: The MooTools production team (http://mootools.net/developers/)
 
@@ -15,12 +15,19 @@ inspiration:
   - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
   - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 
-provides: [Core, MooTools, Type, typeOf, instanceOf]
+provides: [Core, MooTools, Type, typeOf, instanceOf, Hash.Base]
 
 ...
 */
 
 (function(){
+
+/*<block remove>*/
+if (typeof require == 'undefined')
+	this.require = function(){
+		return this;
+	};
+/*</block>*/
 
 this.MooTools = {
 	version: '1.3dev',
@@ -29,11 +36,9 @@ this.MooTools = {
 
 // nil
 
-this.nil = function(item){
+var nil = this.nil = function(item){
 	return (item != null && item != nil) ? item : null;
 };
-
-var Function = this.Function;
 
 Function.prototype.extend = function(object){
 	for (var key in object) this[key] = object[key];
@@ -47,7 +52,7 @@ Function.prototype.implement = function(object){
 
 // typeOf, instanceOf
 
-this.typeOf = function(item){
+var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
 	if (item.$family) return item.$family();
 	
@@ -64,7 +69,7 @@ this.typeOf = function(item){
 	return typeof item;
 };
 
-this.instanceOf = function(item, object){
+var instanceOf = this.instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
 	while (constructor){
@@ -348,22 +353,7 @@ Object.extend({
 	Type(name);
 });
 
-})();
-
-/*<block name="compatibility" version="1.2">*/
-
-Object.type = Type.isObject;
-
-var Native = function(properties){
-	return new Type(properties.name, properties.initialize);
-};
-
-Native.implement = function(objects, methods){
-	for (var i = 0; i < objects.length; i++) objects[i].implement(methods);
-	return Native;
-};
-
-var Hash = new Type('Hash', function(object){
+var Hash = this.Hash = new Type('Hash', function(object){
 	if (typeOf(object) == 'hash') object = $unlink(object.getClean());
 	for (var key in object) this[key] = object[key];
 	return this;
@@ -397,69 +387,78 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
-var $A = function(item){
+/*<block name="compatibility" version="1.2">*/
+
+Object.type = Type.isObject;
+
+var Native = function(properties){
+	return new Type(properties.name, properties.initialize);
+};
+
+Native.implement = function(objects, methods){
+	for (var i = 0; i < objects.length; i++) objects[i].implement(methods);
+	return Native;
+};
+
+this.$A = function(item){
 	return Array.from(item).slice();
 };
 
-var $arguments = function(i){
+this.$arguments = function(i){
 	return function(){
 		return arguments[i];
 	};
 };
 
-var $chk = function(obj){
+this.$chk = function(obj){
 	return !!(obj || obj === 0);
 };
 
-var $clear = function(timer){
+this.$clear = function(timer){
 	clearTimeout(timer);
 	clearInterval(timer);
 	return null;
 };
 
-var $defined = function(obj){
+this.$defined = function(obj){
 	return (obj != null);
 };
 
-var $each = function(iterable, fn, bind){
+this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
 	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
 };
 
-var $empty = function(){};
+this.$empty = function(){};
 
-var $extend = function(original, extended){
+this.$extend = function(original, extended){
 	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
 };
 
-var $H = function(object){
+this.$H = function(object){
 	return new Hash(object);
 };
 
-var $lambda = Function.from;
-
-var $merge = function(){
+this.$merge = function(){
 	var args = Array.slice(arguments);
 	args.unshift({});
 	return Object.merge.apply(null, args);
 };
 
-var $mixin = Object.merge;
+this.$lambda = Function.from;
+this.$mixin = Object.merge;
+this.$random = Number.random;
+this.$splat = Array.from;
+this.$time = Date.now;
 
-var $random = Number.random;
-
-var $splat = Array.from;
-
-var $time = Date.now;
-
-var $type = function(object){
+this.$type = function(object){
 	var type = typeOf(object);
 	if (type == 'elements') return 'array';
 	return (type == 'null') ? false : type;
 };
 
-var $unlink = function(object){
+this.$unlink = function(object){
 	switch (typeOf(object)){
 		case 'object': return Object.clone(object);
 		case 'array': return Array.clone(object);
@@ -469,3 +468,5 @@ var $unlink = function(object){
 };
 
 /*</block>*/
+
+}).call(typeof exports != 'undefined' ? exports : this);

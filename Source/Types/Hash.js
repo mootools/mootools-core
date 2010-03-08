@@ -7,12 +7,18 @@ description: Contains Hash Prototypes. Provides a means for overcoming the JavaS
 
 license: MIT-style license.
 
-requires: Hash.base
+requires: Hash.Base
 
 provides: Hash
 
 ...
 */
+
+(function(){
+
+var Core = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this),
+	Hash = Core.Hash,
+	typeOf = Core.typeOf;
 
 Hash.implement({
 
@@ -140,3 +146,5 @@ Hash.implement({
 });
 
 Hash.alias({indexOf: 'keyOf', contains: 'hasValue'});
+
+}).call(typeof exports != 'undefined' ? exports : this);
