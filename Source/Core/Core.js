@@ -387,6 +387,11 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
+// TODO fix this
+/*<block remove>*/
+if (typeof exports != 'undefined') return;
+/*</block>*/
+
 /*<block name="compatibility" version="1.2">*/
 
 Object.type = Type.isObject;
