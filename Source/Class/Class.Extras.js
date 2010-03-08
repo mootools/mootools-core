@@ -16,7 +16,9 @@ provides: [Class.Extras, Chain, Events, Options]
 
 (function(){
 
-var typeOf = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this).typeOf,
+var Core = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this),
+	typeOf = Core.typeOf,
+	nil = Core.nil,
 	Class = (/*<block remove>*/(typeof require != 'undefined') ? require('./Class') : /*</block>*/this).Class;
 
 this.Chain = new Class({
@@ -45,7 +47,7 @@ var Events = this.Events = new Class({
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != $empty){
+		if (fn != nil/*<block name="compatibility" version="1.2">*/ && fn != $empty/*</block>*/){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
 			if (internal) fn.internal = true;
