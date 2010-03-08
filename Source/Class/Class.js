@@ -128,4 +128,4 @@ Class.Mutators = {
 	}
 };
 
-}).call(typeof exports != 'undefined' ? exports : this);
+}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);

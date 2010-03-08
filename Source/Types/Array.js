@@ -169,7 +169,7 @@ Array.implement({
 
 });
 
-}).call(typeof exports != 'undefined' ? exports : this);
+}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);
 
 /*<block name="compatibility" version="1.2">*/
 

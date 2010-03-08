@@ -147,4 +147,4 @@ Hash.implement({
 
 Hash.alias({indexOf: 'keyOf', contains: 'hasValue'});
 
-}).call(typeof exports != 'undefined' ? exports : this);
+}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);
