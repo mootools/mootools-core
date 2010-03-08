@@ -19,6 +19,7 @@ provides: [Class.Extras, Chain, Events, Options]
 var Core = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this),
 	typeOf = Core.typeOf,
 	nil = Core.nil,
+	/*<block name="compatibility" version="1.2">*/$empty = Core.$empty,/*</block>*/
 	Class = (/*<block remove>*/(typeof require != 'undefined') ? require('./Class') : /*</block>*/this).Class;
 
 this.Chain = new Class({
