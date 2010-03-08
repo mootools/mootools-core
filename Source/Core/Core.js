@@ -391,7 +391,7 @@ Hash.alias({each: 'forEach'});
 
 Object.type = Type.isObject;
 
-var Native = function(properties){
+this.Native = function(properties){
 	return new Type(properties.name, properties.initialize);
 };
 
