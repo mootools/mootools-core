@@ -14,14 +14,24 @@ provides: Function
 ...
 */
 
-Function.extend({stab: function(){
-	for (var i = 0, l = arguments.length; i < l; i++){
-		try {
-			return arguments[i]();
-		} catch (e){}
+Function.extend({
+	
+	clear: function(timer){
+		clearInterval(timer);
+		clearTimeout(timer);
+		return null;
+	},
+	
+	stab: function(){
+		for (var i = 0, l = arguments.length; i < l; i++){
+			try {
+				return arguments[i]();
+			} catch (e){}
+		}
+		return null;
 	}
-	return null;
-}});
+	
+});
 
 Function.implement({
 
