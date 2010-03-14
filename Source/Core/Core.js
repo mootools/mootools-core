@@ -344,11 +344,11 @@ Object.extend({
 // Object-less types
 
 ['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(name){
-	Type(name);
+	new Type(name);
 });
 
 var Hash = this.Hash = new Type('Hash', function(object){
-	if (typeOf(object) == 'hash') object = $unlink(object.getClean());
+	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
 	for (var key in object) this[key] = object[key];
 	return this;
 });
