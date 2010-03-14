@@ -57,13 +57,11 @@ var typeOf = this.typeOf = function(item){
 	if (item.$family) return item.$family();
 	
 	if (item.nodeName){
-		switch (item.nodeType){
-			case 1: return 'element';
-			case 3: return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
-		}
+		if (item.nodeType == 1) return 'element';
+		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
 	} else if (typeof item.length == 'number'){
 		if (item.callee) return 'arguments';
-		else if (item.item) return 'collection';
+		if ('item' in item) return 'collection';
 	}
 
 	return typeof item;
@@ -121,7 +119,6 @@ Function.implement({
 // Type
 
 var Type = this.Type = function(name, object){
-	
 	var lower = (name || '').toLowerCase();
 	
 	if (name){
@@ -130,14 +127,18 @@ var Type = this.Type = function(name, object){
 		};
 		
 		Type['is' + name] = typeCheck;
-		/*<block name="compatibility" version="1.2">*/
-		if (object) object.type = typeCheck;
-		/*</block>*/
+		if (object != null){
+			object.prototype.$family = (function(){
+				return lower;
+			}).hide();
+			/*<block name="compatibility" version="1.2">*/
+			object.type = typeCheck;
+			/*</block>*/
+		}
 	}
 
 	if (object == null) return null;
 	
-	if (name) object.prototype.$family = Function.from(lower).hide();
 	object.extend(this);
 	object.$constructor = Type;
 	object.prototype.$constructor = object;
@@ -212,44 +213,39 @@ new Type('Type', Type);
 
 // Default Types
 
-var force = function(type, methods){
-	var object = new Type(type, this[type]);
-	
-	var prototype = object.prototype;
+var force = function(name, type, methods){
+	var object = new Type(name, type),
+		prototype = object.prototype;
 	
 	for (var i = 0, l = methods.length; i < l; i++){
-		var name = methods[i];
+		var key = methods[i],
+			generic = object[key],
+			proto = prototype[key];
 		
-		var generic = object[name];
 		if (generic) generic.protect();
 		
-		var proto = prototype[name];
 		if (proto){
-			delete prototype[name];
-			prototype[name] = proto.protect();
+			delete prototype[key];
+			prototype[key] = proto.protect();
 		}
 	}
 	
 	object.implement(object.prototype);
+	
+	return force;
 };
 
-force('Array', [
-	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
-	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
-]);
-
-force('String', [
+force('String', String, [
 	'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 	'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
-]);
-
-force('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
-
-force('Function', ['apply', 'call']);
-
-force('RegExp', ['exec', 'test']);
-
-force('Date', ['now']);
+])('Array', Array, [
+	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
+	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
+])('Number', Number, [
+	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
+])('Function', Function, [
+	'apply', 'call'
+])('RegExp', RegExp, ['exec', 'test'])('Date', Date, ['now']);
 
 Date.extend({now: function(){
 	return +(new Date);
@@ -260,7 +256,7 @@ new Type('Boolean', Boolean);
 // fixes NaN returning as Number
 
 Number.prototype.$family = function(){
-	return (isFinite(this)) ? 'number' : 'null';
+	return isFinite(this) ? 'number' : 'null';
 }.hide();
 
 // Number.random
