@@ -230,7 +230,7 @@ var force = function(type, methods){
 		}
 	}
 	
-	return object.implement(object.prototype);
+	object.implement(object.prototype);
 };
 
 force('Array', [
