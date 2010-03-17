@@ -1,16 +1,15 @@
 /*
 ---
 
-script: Selectors.js
+name: Selectors
 
 description: Adds advanced CSS-style querying capabilities for targeting HTML Elements. Includes pseudo selectors.
 
 license: MIT-style license.
 
-requires:
-- /Element
+requires: Element
 
-provides: [Selectors]
+provides: Selectors
 
 ...
 */

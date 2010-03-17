@@ -1,14 +1,13 @@
 /*
 ---
 
-script: Fx.Tween.js
+name: Fx.Tween
 
 description: Formerly Fx.Style, effect to transition any CSS property for an element.
 
 license: MIT-style license.
 
-requires: 
-- /Fx.CSS
+requires: Fx.CSS
 
 provides: [Fx.Tween, Element.fade, Element.highlight]
 

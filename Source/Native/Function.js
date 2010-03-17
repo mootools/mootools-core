@@ -1,17 +1,15 @@
 /*
 ---
 
-script: Function.js
+name: Function
 
 description: Contains Function Prototypes like create, bind, pass, and delay.
 
 license: MIT-style license.
 
-requires:
-- /Native
-- /$util
+requires: [Native, $util]
 
-provides: [Function]
+provides: Function
 
 ...
 */
