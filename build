@@ -7,11 +7,11 @@ $stderr = fopen('php://stderr', 'w');
 require __DIR__ . '/Packager/packager.php';
 
 $executable = array_shift($argv);
-$manifest = __DIR__ . "/package.yml";
+$package = __DIR__;
 
-$pkg = new Packager($manifest);
+$pkg = new Packager($package);
 
-fwrite($stderr, "\nPackager is building with $manifest\n\n");
+fwrite($stderr, "\nPackager is building $package\n\n");
 fwrite($stderr, "Included Components:\n");
 
 $files = (empty($argv)) ? $pkg->get_all_files() : $pkg->components_to_files($argv);
