@@ -60,7 +60,7 @@ var Request = new Class({
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
 		if (this.options.isSuccess.call(this, this.status)){
-			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
+			this.response = {text: (this.xhr.responseText || ''), xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
 		} else {
 			this.response = {text: null, xml: null};
