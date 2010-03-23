@@ -16,12 +16,6 @@ provides: [Class.Extras, Chain, Events, Options]
 
 (function(){
 
-var Core = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this),
-	typeOf = Core.typeOf,
-	nil = Core.nil,
-	/*<block name="compatibility" version="1.2">*/$empty = Core.$empty,/*</block>*/
-	Class = (/*<block remove>*/(typeof require != 'undefined') ? require('./Class') : /*</block>*/this).Class;
-
 this.Chain = new Class({
 
 	$chain: [],
@@ -115,4 +109,4 @@ this.Options = new Class({
 
 });
 
-}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);
+})();

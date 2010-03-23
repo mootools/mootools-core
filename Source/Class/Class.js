@@ -16,11 +16,6 @@ provides: Class
 
 (function(){
 
-var Core = /*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this,
-	Type = Core.Type,
-	typeOf = Core.typeOf,
-	instanceOf = Core.instanceOf;
-
 var Class = this.Class = new Type('Class', function(params){
 	
 	if (instanceOf(params, Function)) params = {'initialize': params};
@@ -128,4 +123,4 @@ Class.Mutators = {
 	}
 };
 
-}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);
+})();

@@ -22,13 +22,6 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Hash.Base]
 
 (function(){
 
-/*<block remove>*/
-if (typeof require == 'undefined')
-	this.require = function(){
-		return this;
-	};
-/*</block>*/
-
 this.MooTools = {
 	version: '1.3dev',
 	build: '%build%'
@@ -465,4 +458,4 @@ this.$unlink = function(object){
 
 /*</block>*/
 
-}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);
+})();

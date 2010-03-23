@@ -14,12 +14,6 @@ provides: Hash
 ...
 */
 
-(function(){
-
-var Core = (/*<block remove>*/(typeof require != 'undefined') ? require('../Core/Core') : /*</block>*/this),
-	Hash = Core.Hash,
-	typeOf = Core.typeOf;
-
 Hash.implement({
 
 	has: Object.prototype.hasOwnProperty,
@@ -146,5 +140,3 @@ Hash.implement({
 });
 
 Hash.alias({indexOf: 'keyOf', contains: 'hasValue'});
-
-}).call(/*<block remove>*/typeof exports != 'undefined' ? exports : /*</block>*/this);
