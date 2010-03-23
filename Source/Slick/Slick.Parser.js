@@ -16,8 +16,6 @@ authors:
 
 (function(){
 	
-var exports = this;
-	
 var parsed,
 	separatorIndex,
 	combinatorIndex,
@@ -27,11 +25,10 @@ var parsed,
 	reverseCache = {};
 
 var parse = function(expression, isReversed){
-	expression = '' + expression;
+	expression = ('' + expression).replace(/^\s+|\s+$/g, '');
 	reversed = !!isReversed;
 	var currentCache = (reversed) ? reverseCache : cache;
 	if (currentCache[expression]) return currentCache[expression];
-	expression = expression.replace(/^\s+|\s+$/g, '');
 	parsed = {Slick: true, expressions: [], raw: expression, reverse: function(){
 		return parse(this.raw, true);
 	}};
@@ -160,6 +157,8 @@ function parser(
 			value: className,
 			regexp: new RegExp('(^|\\s)' + escapeRegExp(className) + '(\\s|$)')
 		};
+		partIndex++;
+		
 	} else if (pseudoClass){
 		if (!currentParsed.pseudos) currentParsed.pseudos = [];
 		
@@ -171,6 +170,8 @@ function parser(
 			key: pseudoClass.replace(/\\/g,''),
 			value: value
 		});
+		partIndex++;
+		
 	} else if (attributeKey){
 		if (!currentParsed.attributes) currentParsed.attributes = [];
 		
@@ -210,15 +211,16 @@ function parser(
 			value: attribute,
 			test: test
 		});
+		partIndex++;
+		
 	}
-
-	partIndex++;
+	
 	return '';
 };
 
 // Slick NS
 
-var Slick = exports.Slick || {};
+var Slick = this.Slick || {};
 
 Slick.parse = function(expression){
 	return parse(expression);
@@ -226,6 +228,6 @@ Slick.parse = function(expression){
 
 Slick.escapeRegExp = escapeRegExp;
 
-if (!exports.Slick) exports.Slick = Slick;
+if (!this.Slick) this.Slick = Slick;
 	
-}).apply((typeof exports != 'undefined') ? exports : this);
+})();

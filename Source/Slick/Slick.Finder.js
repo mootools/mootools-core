@@ -17,8 +17,6 @@ authors:
 */
 
 (function(){
-	
-var exports = this;
 
 var local = {};
 
@@ -37,7 +35,7 @@ local.setDocument = function(document){
 	
 	if (document.nodeType === 9); // document
 	else if (document.ownerDocument) document = document.ownerDocument; // node
-	else if ('document' in document) document = document.document; // window
+	else if (document.navigator) document = document.document; // window
 	else return;
 	
 	// check if it's the old document
@@ -48,14 +46,15 @@ local.setDocument = function(document){
 	
 	// document sort
 	
-	this.starSelectsClosed
-	= this.starSelectsComments
+	this.brokenStarGEBTN
 	= this.starSelectsClosedQSA
 	= this.idGetsName
 	= this.brokenMixedCaseQSA
-	= this.cachedGetElementsByClassName
-	= this.brokenSecondClassNameGEBCN
+	= this.brokenGEBCN
 	= false;
+	
+	var starSelectsClosed, starSelectsComments,
+		brokenSecondClassNameGEBCN, cachedGetElementsByClassName;
 	
 	if (!(this.isXMLDocument = this.isXML(document))){
 		
@@ -65,14 +64,16 @@ local.setDocument = function(document){
 		
 		// IE returns comment nodes for getElementsByTagName('*') for some documents
 		testNode.appendChild(document.createComment(''));
-		this.starSelectsComments = (testNode.getElementsByTagName('*').length > 0);
+		starSelectsComments = (testNode.getElementsByTagName('*').length > 0);
 		
 		// IE returns closed nodes (EG:"</foo>") for getElementsByTagName('*') for some documents
 		try {
 			testNode.innerHTML = 'foo</foo>';
 			selected = testNode.getElementsByTagName('*');
-			this.starSelectsClosed = (selected && selected.length && selected[0].nodeName.charAt(0) == '/');
+			starSelectsClosed = (selected && selected.length && selected[0].nodeName.charAt(0) == '/');
 		} catch(e){};
+		
+		this.brokenStarGEBTN = starSelectsComments || starSelectsClosed;
 		
 		// IE 8 returns closed nodes (EG:"</foo>") for querySelectorAll('*') for some documents
 		if (testNode.querySelectorAll) try {
@@ -98,14 +99,16 @@ local.setDocument = function(document){
 			testNode.innerHTML = '<a class="f"></a><a class="b"></a>';
 			testNode.getElementsByClassName('b').length;
 			testNode.firstChild.className = 'b';
-			this.cachedGetElementsByClassName = (testNode.getElementsByClassName('b').length != 2);
+			cachedGetElementsByClassName = (testNode.getElementsByClassName('b').length != 2);
 		} catch(e){};
 		
 		// Opera 9.6 GEBCN doesnt detects the class if its not the first one
 		try {
 			testNode.innerHTML = '<a class="a"></a><a class="f b a"></a>';
-			this.brokenSecondClassNameGEBCN = (testNode.getElementsByClassName('a').length != 2);
+			brokenSecondClassNameGEBCN = (testNode.getElementsByClassName('a').length != 2);
 		} catch(e){};
+		
+		this.brokenGEBCN = cachedGetElementsByClassName || brokenSecondClassNameGEBCN;
 		
 		this.root.removeChild(testNode);
 		testNode = null;
@@ -128,15 +131,13 @@ local.setDocument = function(document){
 	// document order sorting
 	// credits to Sizzle (http://sizzlejs.com/)
 	
-	this.documentSorter = null;
-	
-	if (root.compareDocumentPosition) this.documentSorter = function(a, b){
+	this.documentSorter = (root.compareDocumentPosition) ? function(a, b){
 		if (!a.compareDocumentPosition || !b.compareDocumentPosition) return 0;
 		return a.compareDocumentPosition(b) & 4 ? -1 : a === b ? 0 : 1;
-	}; else if ('sourceIndex' in root) this.documentSorter = function(a, b){
+	} : ('sourceIndex' in root) ? function(a, b){
 		if (!a.sourceIndex || !b.sourceIndex) return 0;
 		return a.sourceIndex - b.sourceIndex;
-	}; else if (document.createRange) this.documentSorter = function(a, b){
+	} : (document.createRange) ? function(a, b){
 		if (!a.ownerDocument || !b.ownerDocument) return 0;
 		var aRange = a.ownerDocument.createRange(), bRange = b.ownerDocument.createRange();
 		aRange.setStart(a, 0);
@@ -144,7 +145,7 @@ local.setDocument = function(document){
 		bRange.setStart(b, 0);
 		bRange.setEnd(b, 0);
 		return aRange.compareBoundaryPoints(Range.START_TO_END, bRange);
-	};
+	} : null ;
 	
 	this.getUID = (this.isXMLDocument) ? this.getUIDXML : this.getUIDHTML;
 	
@@ -164,7 +165,7 @@ local.search = function(context, expression, append, first){
 
 	// setup
 	
-	var parsed, i;
+	var parsed, i, l;
 
 	this.positions = {};
 	var uniques = this.uniques = {};
@@ -177,7 +178,7 @@ local.search = function(context, expression, append, first){
 		
 		// Overrides
 
-		for (i = this.overrides.length - 1; i >= 0; i--){
+		for (i = this.overrides.length; i--;){
 			var override = this.overrides[i];
 			if (override.regexp.test(expression)){
 				var result = override.method.call(context, expression, found, first);
@@ -221,7 +222,6 @@ local.search = function(context, expression, append, first){
 	var currentItems;
 	var expressions = parsed.expressions;
 	var lastBit;
-	var tempUniques = {};
 	
 	search: for (i = 0; (currentExpression = expressions[i]); i++) for (j = 0; (currentBit = currentExpression[j]); j++){
 
@@ -242,7 +242,7 @@ local.search = function(context, expression, append, first){
 			this.uniques = uniques;
 			this.found = found;
 		} else {
-			this.uniques = tempUniques;
+			this.uniques = {};
 			this.found = [];
 		}
 
@@ -259,7 +259,7 @@ local.search = function(context, expression, append, first){
 		currentItems = this.found;
 	}
 	
-	if ((parsed.expressions.length > 1) || shouldUniques) this.sort(found);
+	if (shouldUniques || (parsed.expressions.length > 1)) this.sort(found);
 	
 	return (first) ? (found[0] || null) : found;
 };
@@ -340,9 +340,20 @@ local.pushUID = function(node, tag, id, selector, classes, attributes, pseudos){
 };
 
 local.matchNode = function(node, selector){
-	var parsed = ((selector.Slick) ? selector : this.Slick.parse(selector)).expressions[0][0];
+	var parsed = ((selector.Slick) ? selector : this.Slick.parse(selector));
 	if (!parsed) return true;
-	return this.matchSelector(node, (this.isXMLDocument) ? parsed.tag : parsed.tag.toUpperCase(), parsed.id, parsed.parts);
+	
+	// simple (single) selectors
+	if(parsed.length == 1 && parsed.expressions[0].length == 1){
+		var exp = parsed.expressions[0][0];
+		return this.matchSelector(node, (this.isXMLDocument) ? exp.tag : exp.tag.toUpperCase(), exp.id, exp.parts);
+	}
+
+	var nodes = this.search(this.document, parsed);
+	for (var i=0, item; item = nodes[i++];){
+		if (item === node) return true;
+	}
+	return false;
 };
 
 local.matchPseudo = function(node, name, argument){
@@ -376,22 +387,31 @@ var combinators = {
 		var i, l, item, children;
 
 		if (!this.isXMLDocument){
-			getById: if (id && node.getElementById){
-				// if node == document then we don't need to use contains
-				item = node.getElementById(id);
-				if (!item || item.getAttributeNode('id').nodeValue != id) break getById;
-				this.push(item, tag, null, parts);
-				return;
-			}
 			getById: if (id){
-				if (!this.document.getElementById) break getById;
-				item = this.document.getElementById(id);
-				if (!item || item.getAttributeNode('id').nodeValue != id) break getById;
-				if (!this.contains(node, item)) break getById;
+				var context = node;
+				if (!context.getElementById) context = this.document;
+				item = context.getElementById(id);
+				if (this.idGetsName && item && item.getAttributeNode('id').nodeValue != id){
+					// all[id] returns all the elements with that name or id inside node
+					// if theres just one it will return the element, else it will be a collection
+					if(!node.all) break getById;
+					children = node.all[id];
+					if (!children) return;
+					if (!children[0]) children = [children];
+					for (i = 0; item = children[i++];) if (item.getAttributeNode('id').nodeValue == id){
+						this.push(item, tag, null, parts);
+						break;
+					} 
+					return;
+				}
+				// if the context is not in the dom
+				if (!item && !context.ownerDocument) break getById;
+				// if node === document then we don't need to use contains
+				if (!item || (node.nodeType !== 9 && !this.contains(node, item))) return;
 				this.push(item, tag, null, parts);
 				return;
 			}
-			getByClass: if (node.getElementsByClassName && classes && !this.cachedGetElementsByClassName && !this.brokenSecondClassNameGEBCN){
+			getByClass: if (node.getElementsByClassName && classes && !this.brokenGEBCN){
 				children = node.getElementsByClassName(classes.join(' '));
 				if (!(children && children.length)) break getByClass;
 				for (i = 0, l = children.length; i < l; i++) this.push(children[i], tag, id, parts, false);
@@ -401,7 +421,7 @@ var combinators = {
 		getByTag: {
 			children = node.getElementsByTagName(tag);
 			if (!(children && children.length)) break getByTag;
-			if (!(this.starSelectsComments || this.starSelectsClosed)) tag = null;
+			if (!this.brokenStartGEBTN) tag = null;
 			var child;
 			for (i = 0; child = children[i++];) this.push(child, tag, id, parts);
 		}
@@ -592,11 +612,11 @@ local.attributeGetters = {
 	},
 	
 	'href': function(){
-		return this.getAttribute('href', 2);
+		return ('href' in this) ? this.getAttribute('href', 2) : this.getAttribute('href');
 	},
 	
 	'style': function(){
-		return this.style.cssText;
+		return (this.style) ? this.style.cssText : this.getAttribute('style');
 	}
 
 };
@@ -646,7 +666,7 @@ local.override(/./, function(expression, found, first){ //querySelectorAll overr
 
 local.override(/^[\w-]+$|^\*$/, function(expression, found, first){ // tag override
 	var tag = expression;
-	if (tag == '*' && local.starSelectsComments || local.starSelectsClosed) return false;
+	if (tag == '*' && local.brokenStarGEBTN) return false;
 	
 	var nodes = this.getElementsByTagName(tag);
 	
@@ -666,7 +686,7 @@ local.override(/^\.[\w-]+$/, function(expression, found, first){ // class overri
 	if (local.isXMLDocument) return false;
 	
 	var nodes, node, i, hasOthers = !!(found && found.length), className = expression.substring(1);
-	if (this.getElementsByClassName && !local.cachedGetElementsByClassName && !local.brokenSecondClassNameGEBCN){
+	if (this.getElementsByClassName && !local.brokenGEBCN){
 		nodes = this.getElementsByClassName(className);
 		if (first) return nodes[0] || null;
 		for (i = 0; node = nodes[i++];){
@@ -678,7 +698,7 @@ local.override(/^\.[\w-]+$/, function(expression, found, first){ // class overri
 		var matchClass = new RegExp('(^|\\s)'+ Slick.escapeRegExp(className) +'(\\s|$)');
 		nodes = this.getElementsByTagName('*');
 		for (i = 0; node = nodes[i++];){
-			if (!matchClass.test(node.className)) continue;
+			if (!node.className || !matchClass.test(node.className)) continue;
 			if (first) return node;
 			if (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)]) found.push(node);
 		}
@@ -692,7 +712,7 @@ local.override(/^#[\w-]+$/, function(expression, found, first){ // ID override
 	
 	var id = expression.substring(1), el = this.getElementById(id);
 	if (!el) return found;
-	if (el.getAttributeNode('id').nodeValue != id) return false;
+	if (local.idGetsName && el.getAttributeNode('id').nodeValue != id) return false;
 	if (first) return el || null;
 	var hasOthers = !!(found.length) ;
 	if (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)]) found.push(el);
@@ -704,7 +724,7 @@ if (typeof document != 'undefined') local.setDocument(document);
 
 // Slick
 
-var Slick = local.Slick = exports.Slick || {};
+var Slick = local.Slick = this.Slick || {};
 
 Slick.version = '0.9dev';
 
@@ -780,6 +800,6 @@ Slick.isXML = local.isXML;
 
 // export Slick
 
-if (!exports.Slick) exports.Slick = Slick;
+if (!this.Slick) this.Slick = Slick;
 	
-}).apply((typeof exports != 'undefined') ? exports : this);
+})();
