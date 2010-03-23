@@ -78,16 +78,15 @@ var wrap = function(self, key, method){
 
 var implement = function(key, value, retain){
 	
-	var mutator = Class.Mutators[key];
-	
-	if (mutator){
+	if (Class.Mutators.hasOwnProperty(key)){
+		var mutator = Class.Mutators[key];
 		value = mutator.call(this, value);
 		if (value == null) return this;
 	}
 	
 	if (typeOf(value) == 'function'){
 		if (value.$hidden) return this;
-		this.prototype[key] = (retain) ? value : wrap(this, key, value);	
+		this.prototype[key] = (retain) ? value : wrap(this, key, value);
 	} else {
 		Object.merge(this.prototype, key, value);
 	}
@@ -103,8 +102,17 @@ var getInstance = function(klass){
 	return proto;
 };
 
+var extraProperties = true;
+for (var i in {toString: 1}) extraProperties = false;
+if (extraProperties) extraProperties = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
+	'toLocaleString', 'toString', 'constructor'];
+
 Class.implement({implement: function(object){
 	for (var key in object) implement.call(this, key, object[key]);
+	if (extraProperties) for (var i = extraProperties.length, name; i--;){
+		name = extraProperties[i];
+		if (object.hasOwnProperty(name)) implement.call(this, name, object[name]);
+	}
 	return this;
 }});
 
