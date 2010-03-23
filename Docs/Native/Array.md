@@ -320,7 +320,7 @@ Accepts an object of key / function pairs to assign values.
 
 	var el = document.createElement('div');
 	var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
-	arr2.link({myNumber: Type.isNumber, myElement: Type.isElement, myObject: Type.isObject, myString: Type.isString, myBoolean: $defined});
+	arr2.link({myNumber: Number.type, myElement: Element.type, myObject: Object.type, myString: String.type, myBoolean: $defined});
 	//returns {myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false}
 
 

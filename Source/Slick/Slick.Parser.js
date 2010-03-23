@@ -16,6 +16,8 @@ authors:
 
 (function(){
 	
+var exports = this;
+	
 var parsed,
 	separatorIndex,
 	combinatorIndex,
@@ -29,14 +31,13 @@ var parse = function(expression, isReversed){
 	reversed = !!isReversed;
 	var currentCache = (reversed) ? reverseCache : cache;
 	if (currentCache[expression]) return currentCache[expression];
-	var exp = expression.replace(/^\s+|\s+$/g, '');
-	parsed = {Slick: true, simple: true, type: [], expressions: [], raw: expression, reverse: function(){
+	expression = expression.replace(/^\s+|\s+$/g, '');
+	parsed = {Slick: true, expressions: [], raw: expression, reverse: function(){
 		return parse(this.raw, true);
 	}};
 	separatorIndex = -1;
-	while (exp != (exp = exp.replace(regexp, parser)));
+	while (expression != (expression = expression.replace(regexp, parser)));
 	parsed.length = parsed.expressions.length;
-	parsed.type = parsed.type.join(':');
 	return currentCache[expression] = (reversed) ? reverse(parsed) : parsed;
 };
 
@@ -86,32 +87,24 @@ __END__
 		\\s* (<unicode1>+)  (?:  \
 			\\s* ([*^$!~|]?=)  (?:  \
 				\\s* (?:\
-				      \"((?:[^\"]|\\\\\")*)\"\
-				    |  '((?:[^'] |\\\\')* )' \
-				    |   (   [^\\]]*?    )  \
+					([\"']?)(.*?)\\9 \
 				)\
 			)  \
 		)?  \\s*  \
 	\\](?!\\]) \n\
 	|   :+ ( <unicode>+ )(?:\
 	\\( (?:\
-		 \"((?:[^\"]|\\\")*)\"\
-		| '((?:[^']|\\'  )*)'\
-		|  (   [^\\)]*     )\
+		 ([\"']?)((?:\\([^\\)]+\\)|[^\\(\\)]*)+)\\12\
 	) \\)\
 	)?\
 	)"
-//*/
-	"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:\"((?:[^\"]|\\\\\")*)\"|'((?:[^']|\\\\')*)'|([^\\]]*?))))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:\"((?:[^\"]|\\\")*)\"|'((?:[^']|\\')*)'|([^\\)]*))\\))?)"//*/
-	// .replace(/\(\?x\)|\s+#.*$|\s+/gim, '')
+*/
+	"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:([\"']?)(.*?)\\9)))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:([\"']?)((?:\\([^\\)]+\\)|[^\\(\\)]*)+)\\12)\\))?)"
+	//"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:\"((?:[^\"]|\\\\\")*)\"|'((?:[^']|\\\\')*)'|([^\\]]*?))))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:\"((?:[^\"]|\\\")*)\"|'((?:[^']|\\')*)'|([^\\)]*))\\))?)"//*/
 	.replace(/<combinator>/, '[' + escapeRegExp(">+~`!@$%^&={}\\;</") + ']')
 	.replace(/<unicode>/g, '(?:[\\w\\u00a1-\\uFFFF-]|\\\\[^\\s0-9a-f])')
 	.replace(/<unicode1>/g, '(?:[:\\w\\u00a1-\\uFFFF-]|\\\\[^\\s0-9a-f])')
 );
-
-var qsaCombinators = (/^[\s~+>]$/);
-
-var simpleAttributeOperators = (/^[*^$~|]?=$/);
 
 function parser(
 	rawMatch,
@@ -126,27 +119,21 @@ function parser(
 	
 	attributeKey,
 	attributeOperator,
-	attributeValueDouble,
-	attributeValueSingle,
+	attributeQuote,
 	attributeValue,
 	
 	pseudoClass,
-	pseudoClassValueDouble,
-	pseudoClassValueSingle,
+	pseudoQuote,
 	pseudoClassValue
 ){
 	if (separator || separatorIndex === -1){
 		parsed.expressions[++separatorIndex] = [];
 		combinatorIndex = -1;
-		if (separator){
-			parsed.type.push('separator');
-			return '';
-		}
+		if (separator) return '';
 	}
 	
 	if (combinator || combinatorChildren || combinatorIndex === -1){
 		combinator = combinator || ' ';
-		if (parsed.simple && !qsaCombinators.test(combinator)) parsed.simple = false;
 		var currentSeparator = parsed.expressions[separatorIndex];
 		if (reversed && currentSeparator[combinatorIndex])
 			currentSeparator[combinatorIndex].reverseCombinator = reverseCombinator(combinator);
@@ -157,21 +144,12 @@ function parser(
 	var currentParsed = parsed.expressions[separatorIndex][combinatorIndex];
 
 	if (tagName){
-		// if (tagName == '*') parsed.type.push('tagName*');
-		// else parsed.type.push('tagName');
-		parsed.type.push('tag');
-		
 		currentParsed.tag = tagName.replace(/\\/g,'');
 		return '';
 	} else if (id){
-		parsed.type.push('id');
 		currentParsed.id = id.replace(/\\/g,'');
 		return '';
 	} else if (className){
-		if ((/classNames?/).test(parsed.type[parsed.type.length - 1]))
-			parsed.type[parsed.type.length - 1] = 'classNames';
-		else parsed.type.push('class');
-		
 		className = className.replace(/\\/g,'');
 	
 		if (!currentParsed.classes) currentParsed.classes = [className];
@@ -183,14 +161,9 @@ function parser(
 			regexp: new RegExp('(^|\\s)' + escapeRegExp(className) + '(\\s|$)')
 		};
 	} else if (pseudoClass){
-		parsed.type.push('pseudo');
-		// TODO: pseudoClass is only not simple when it's custom or buggy
-		// if (pseudoBuggyOrCustom[pseudoClass])
-		// parsed.simple = false;
-	
 		if (!currentParsed.pseudos) currentParsed.pseudos = [];
 		
-		var value = pseudoClassValueDouble || pseudoClassValueSingle || pseudoClassValue || null;
+		var value = pseudoClassValue || null;
 		if (value) value = value.replace(/\\/g,'');
 		
 		currentParsed.pseudos.push(currentParsed.parts[partIndex] = {
@@ -199,15 +172,11 @@ function parser(
 			value: value
 		});
 	} else if (attributeKey){
-		parsed.type.push('attribute');
 		if (!currentParsed.attributes) currentParsed.attributes = [];
 		
 		var key = attributeKey.replace(/\\/g,'');
 		var operator = attributeOperator;
-		var attribute = (attributeValueDouble || attributeValueSingle || attributeValue || '').replace(/\\/g,'');
-		
-		// Turn off simple mode for custom attribute operators. This should disable QSA mode
-		if (parsed.simple !== false && operator) parsed.simple = !!simpleAttributeOperators.test(operator);
+		var attribute = (attributeValue || '').replace(/\\/g,'');
 		
 		var test, regexp;
 		
@@ -241,8 +210,6 @@ function parser(
 			value: attribute,
 			test: test
 		});
-	} else if (combinator){
-		parsed.type.push(combinator);
 	}
 
 	partIndex++;
@@ -251,12 +218,14 @@ function parser(
 
 // Slick NS
 
-var Slick = this.Slick || {};
+var Slick = exports.Slick || {};
 
 Slick.parse = function(expression){
 	return parse(expression);
 };
 
-if (!this.Slick) this.Slick = Slick;
+Slick.escapeRegExp = escapeRegExp;
+
+if (!exports.Slick) exports.Slick = Slick;
 	
-}).apply(this);
+}).apply((typeof exports != 'undefined') ? exports : this);

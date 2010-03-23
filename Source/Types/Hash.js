@@ -7,7 +7,7 @@ description: Contains Hash Prototypes. Provides a means for overcoming the JavaS
 
 license: MIT-style license.
 
-requires: Hash.base
+requires: Hash.Base
 
 provides: Hash
 

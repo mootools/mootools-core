@@ -14,7 +14,9 @@ provides: [Class.Extras, Chain, Events, Options]
 ...
 */
 
-var Chain = new Class({
+(function(){
+
+this.Chain = new Class({
 
 	$chain: [],
 
@@ -34,13 +36,13 @@ var Chain = new Class({
 
 });
 
-var Events = new Class({
+var Events = this.Events = new Class({
 
 	$events: {},
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != $empty){
+		if (fn != nil/*<block name="compatibility" version="1.2">*/ && fn != $empty/*</block>*/){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
 			if (internal) fn.internal = true;
@@ -92,7 +94,7 @@ Events.removeOn = function(string){
 	});
 };
 
-var Options = new Class({
+this.Options = new Class({
 
 	setOptions: function(){
 		this.options = Object.merge.run([{}, this.options].extend(arguments));
@@ -106,3 +108,5 @@ var Options = new Class({
 	}
 
 });
+
+})();

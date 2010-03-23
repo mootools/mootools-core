@@ -7,7 +7,7 @@ description: The heart of MooTools.
 
 license: MIT-style license.
 
-copyright: Copyright (c) 2006-2008 [Valerio Proietti](http://mad4milk.net/).
+copyright: Copyright (c) 2006-2010 [Valerio Proietti](http://mad4milk.net/).
 
 authors: The MooTools production team (http://mootools.net/developers/)
 
@@ -15,7 +15,7 @@ inspiration:
   - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
   - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 
-provides: [Core, MooTools, Type, typeOf, instanceOf]
+provides: [Core, MooTools, Type, typeOf, instanceOf, Hash.Base]
 
 ...
 */
@@ -29,11 +29,9 @@ this.MooTools = {
 
 // nil
 
-this.nil = function(item){
+var nil = this.nil = function(item){
 	return (item != null && item != nil) ? item : null;
 };
-
-var Function = this.Function;
 
 Function.prototype.extend = function(object){
 	for (var key in object) this[key] = object[key];
@@ -47,24 +45,22 @@ Function.prototype.implement = function(object){
 
 // typeOf, instanceOf
 
-this.typeOf = function(item){
+var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
 	if (item.$family) return item.$family();
 	
 	if (item.nodeName){
-		switch (item.nodeType){
-			case 1: return 'element';
-			case 3: return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
-		}
+		if (item.nodeType == 1) return 'element';
+		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
 	} else if (typeof item.length == 'number'){
 		if (item.callee) return 'arguments';
-		else if (item.item) return 'collection';
+		if ('item' in item) return 'collection';
 	}
 
 	return typeof item;
 };
 
-this.instanceOf = function(item, object){
+var instanceOf = this.instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
 	while (constructor){
@@ -116,7 +112,6 @@ Function.implement({
 // Type
 
 var Type = this.Type = function(name, object){
-	
 	var lower = (name || '').toLowerCase();
 	
 	if (name){
@@ -125,14 +120,18 @@ var Type = this.Type = function(name, object){
 		};
 		
 		Type['is' + name] = typeCheck;
-		/*<block name="compatibility" version="1.2">*/
-		if (object) object.type = typeCheck;
-		/*</block>*/
+		if (object != null){
+			object.prototype.$family = (function(){
+				return lower;
+			}).hide();
+			/*<block name="compatibility" version="1.2">*/
+			object.type = typeCheck;
+			/*</block>*/
+		}
 	}
 
 	if (object == null) return null;
 	
-	if (name) object.prototype.$family = Function.from(lower).hide();
 	object.extend(this);
 	object.$constructor = Type;
 	object.prototype.$constructor = object;
@@ -207,44 +206,39 @@ new Type('Type', Type);
 
 // Default Types
 
-var force = function(type, methods){
-	var object = new Type(type, this[type]);
-	
-	var prototype = object.prototype;
+var force = function(name, type, methods){
+	var object = new Type(name, type),
+		prototype = object.prototype;
 	
 	for (var i = 0, l = methods.length; i < l; i++){
-		var name = methods[i];
+		var key = methods[i],
+			generic = object[key],
+			proto = prototype[key];
 		
-		var generic = object[name];
 		if (generic) generic.protect();
 		
-		var proto = prototype[name];
 		if (proto){
-			delete prototype[name];
-			prototype[name] = proto.protect();
+			delete prototype[key];
+			prototype[key] = proto.protect();
 		}
 	}
 	
-	return object.implement(object.prototype);
+	object.implement(object.prototype);
+	
+	return force;
 };
 
-force('Array', [
-	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
-	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
-]);
-
-force('String', [
+force('String', String, [
 	'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 	'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
-]);
-
-force('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
-
-force('Function', ['apply', 'call']);
-
-force('RegExp', ['exec', 'test']);
-
-force('Date', ['now']);
+])('Array', Array, [
+	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
+	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
+])('Number', Number, [
+	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
+])('Function', Function, [
+	'apply', 'call'
+])('RegExp', RegExp, ['exec', 'test'])('Date', Date, ['now']);
 
 Date.extend({now: function(){
 	return +(new Date);
@@ -255,7 +249,7 @@ new Type('Boolean', Boolean);
 // fixes NaN returning as Number
 
 Number.prototype.$family = function(){
-	return (isFinite(this)) ? 'number' : 'null';
+	return isFinite(this) ? 'number' : 'null';
 }.hide();
 
 // Number.random
@@ -280,12 +274,6 @@ Array.implement({forEach: function(fn, bind){
 
 Array.each = Array.forEach;
 Array.prototype.each = Array.prototype.forEach;
-
-(function(check){
-	Array.type = function(item){
-		return instanceOf(item, Array) || check(item);
-	};
-})(Array.type);
 
 // Array & Object cloning, Object merging and appending
 
@@ -345,26 +333,11 @@ Object.extend({
 // Object-less types
 
 ['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(name){
-	Type(name);
+	new Type(name);
 });
 
-})();
-
-/*<block name="compatibility" version="1.2">*/
-
-Object.type = Type.isObject;
-
-var Native = function(properties){
-	return new Type(properties.name, properties.initialize);
-};
-
-Native.implement = function(objects, methods){
-	for (var i = 0; i < objects.length; i++) objects[i].implement(methods);
-	return Native;
-};
-
-var Hash = new Type('Hash', function(object){
-	if (typeOf(object) == 'hash') object = $unlink(object.getClean());
+var Hash = this.Hash = new Type('Hash', function(object){
+	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
 	for (var key in object) this[key] = object[key];
 	return this;
 });
@@ -397,69 +370,84 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
-var $A = function(item){
+/*<block name="compatibility" version="1.2">*/
+
+Object.type = Type.isObject;
+
+var Native = this.Native = function(properties){
+	return new Type(properties.name, properties.initialize);
+};
+
+Native.implement = function(objects, methods){
+	for (var i = 0; i < objects.length; i++) objects[i].implement(methods);
+	return Native;
+};
+
+(function(check){
+	Array.type = function(item){
+		return instanceOf(item, Array) || check(item);
+	};
+})(Array.type);
+
+this.$A = function(item){
 	return Array.from(item).slice();
 };
 
-var $arguments = function(i){
+this.$arguments = function(i){
 	return function(){
 		return arguments[i];
 	};
 };
 
-var $chk = function(obj){
+this.$chk = function(obj){
 	return !!(obj || obj === 0);
 };
 
-var $clear = function(timer){
+this.$clear = function(timer){
 	clearTimeout(timer);
 	clearInterval(timer);
 	return null;
 };
 
-var $defined = function(obj){
+this.$defined = function(obj){
 	return (obj != null);
 };
 
-var $each = function(iterable, fn, bind){
+this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
 	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
 };
 
-var $empty = function(){};
+this.$empty = function(){};
 
-var $extend = function(original, extended){
+this.$extend = function(original, extended){
 	for (var key in (extended || {})) original[key] = extended[key];
 	return original;
 };
 
-var $H = function(object){
+this.$H = function(object){
 	return new Hash(object);
 };
 
-var $lambda = Function.from;
-
-var $merge = function(){
+this.$merge = function(){
 	var args = Array.slice(arguments);
 	args.unshift({});
 	return Object.merge.apply(null, args);
 };
 
-var $mixin = Object.merge;
+this.$lambda = Function.from;
+this.$mixin = Object.merge;
+this.$random = Number.random;
+this.$splat = Array.from;
+this.$time = Date.now;
 
-var $random = Number.random;
-
-var $splat = Array.from;
-
-var $time = Date.now;
-
-var $type = function(object){
+this.$type = function(object){
 	var type = typeOf(object);
 	if (type == 'elements') return 'array';
 	return (type == 'null') ? false : type;
 };
 
-var $unlink = function(object){
+this.$unlink = function(object){
 	switch (typeOf(object)){
 		case 'object': return Object.clone(object);
 		case 'array': return Array.clone(object);
@@ -469,3 +457,5 @@ var $unlink = function(object){
 };
 
 /*</block>*/
+
+})();

@@ -15,8 +15,8 @@ A collection of tweening transitions for use with the [Fx][] classes.
 
 ### Examples:
 
-	//Elastic.easeOut with default values:
-	var myFx = $('myElement').effect('margin', {transition: Fx.Transitions.Elastic.easeOut});
+	$('myElement').set('tween', {transition: Fx.Transitions.Elastic.easeOut});
+	$('myElement').tween('margin-top', 100);
 
 ### See also:
 
