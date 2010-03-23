@@ -104,7 +104,7 @@ var getInstance = function(klass){
 
 var extraProperties = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
 	'toLocaleString', 'toString', 'constructor'];
-for (var i in {toString: 1}){ extraProperties = []; };
+for (var i in {toString: 1}) extraProperties = [];
 
 Class.implement({implement: function(object){
 	for (var key in object) implement.call(this, key, object[key]);
