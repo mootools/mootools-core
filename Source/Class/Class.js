@@ -102,13 +102,14 @@ var getInstance = function(klass){
 	return proto;
 };
 
-var extraProperties = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
+var extraProperties = true;
+for (var i in {toString: 1}) extraProperties = false;
+if (extraProperties) extraProperties = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable',
 	'toLocaleString', 'toString', 'constructor'];
-for (var i in {toString: 1}) extraProperties = [];
 
 Class.implement({implement: function(object){
 	for (var key in object) implement.call(this, key, object[key]);
-	for (var i = extraProperties.length, name; i--;){
+	if (extraProperties) for (var i = extraProperties.length, name; i--;){
 		name = extraProperties[i];
 		if (object.hasOwnProperty(name)) implement.call(this, name, object[name]);
 	}
