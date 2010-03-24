@@ -171,7 +171,7 @@ try {
 	arrayFrom(document.html.childNodes);
 } catch(e){
 	Array.from = function(item){
-		if (item != null && item.item && typeof item.length == 'number' && typeOf(item) != 'array'){
+		if (item != null && typeOf(item) != 'array'){
 			var i = item.length, array = new Array(i);
 			while (i--) array[i] = item[i];
 			return array;
