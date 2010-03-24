@@ -698,7 +698,7 @@ local.override(/^#[\w-]+$/, function(expression, found, first){ // ID override
 	if (local.idGetsName && el.getAttributeNode('id').nodeValue != id) return false;
 	if (first) return el || null;
 	var hasOthers = !!(found.length) ;
-	if (!hasOthers || !local.uniques[local.getUIDHTML(node)]) found.push(el);
+	if (!hasOthers || !local.uniques[local.getUIDHTML(el)]) found.push(el);
 	if (hasOthers) local.sort(found);
 	return true;
 });
