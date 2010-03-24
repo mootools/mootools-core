@@ -290,23 +290,6 @@ local.sort = function(results){
 	return results;
 };
 
-// de-duplication of an array.
-
-local.uniques = function(nodes, append){
-	var uniques = {}, i, node, uid;
-	if (!append) append = [];
-	for (i = 0; node = append[i++];) uniques[this.getUID(node)] = true;
-	
-	for (i = 0; node = nodes[i++];){
-		uid = this.getUID(node);
-		if (!uniques[uid]){
-			uniques[uid] = true;
-			append.push(node);
-		}
-	}
-	return append;
-};
-
 local.cacheNTH = {};
 
 local.matchNTH = /^([+-]?\d*)?([a-z]+)?([+-]\d+)?$/;
@@ -635,7 +618,7 @@ local.getAttribute = function(node, name){
 local.overrides = [];
 
 local.override = function(regexp, method){
-	local.overrides.push({regexp: regexp, method: method});
+	this.overrides.push({regexp: regexp, method: method});
 };
 
 local.override(/./, function(expression, found, first){ //querySelectorAll override
@@ -653,9 +636,9 @@ local.override(/./, function(expression, found, first){ //querySelectorAll overr
 	var i, hasOthers = !!(found.length);
 
 	if (local.starSelectsClosedQSA) for (i = 0; node = nodes[i++];){
-		if (node.nodeName.charCodeAt(0) != 47 && (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)])) found.push(node);
+		if (node.nodeName.charCodeAt(0) != 47 && (!hasOthers || !local.uniques[local.getUIDHTML(node)])) found.push(node);
 	} else for (i = 0; node = nodes[i++];){
-		if (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)]) found.push(node);
+		if (!hasOthers || !local.uniques[local.getUIDHTML(node)]) found.push(node);
 	}
 
 	if (hasOthers) local.sort(found);
@@ -690,7 +673,7 @@ local.override(/^\.[\w-]+$/, function(expression, found, first){ // class overri
 		nodes = this.getElementsByClassName(className);
 		if (first) return nodes[0] || null;
 		for (i = 0; node = nodes[i++];){
-			if (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)]){
+			if (!hasOthers || !local.uniques[local.getUIDHTML(node)]){
 				found.push(node);
 			}
 		}
@@ -700,7 +683,7 @@ local.override(/^\.[\w-]+$/, function(expression, found, first){ // class overri
 		for (i = 0; node = nodes[i++];){
 			if (!node.className || !matchClass.test(node.className)) continue;
 			if (first) return node;
-			if (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)]) found.push(node);
+			if (!hasOthers || !local.uniques[local.getUIDHTML(node)]) found.push(node);
 		}
 	}
 	if (hasOthers) local.sort(found);
@@ -715,7 +698,7 @@ local.override(/^#[\w-]+$/, function(expression, found, first){ // ID override
 	if (local.idGetsName && el.getAttributeNode('id').nodeValue != id) return false;
 	if (first) return el || null;
 	var hasOthers = !!(found.length) ;
-	if (!hasOthers || !local.uniques[node.uniqueNumber || (node.uniqueNumber = local.uidx++)]) found.push(el);
+	if (!hasOthers || !local.uniques[local.getUIDHTML(node)]) found.push(el);
 	if (hasOthers) local.sort(found);
 	return true;
 });
@@ -794,6 +777,23 @@ Slick.lookupPseudo = function(name){
 Slick.override = function(regexp, fn){
 	local.override(regexp, fn);
 	return this;
+};
+
+// De-duplication of an array of HTML elements.
+
+Slick.uniques = function(nodes, append){
+	var uniques = {}, i, node, uid;
+	if (!append) append = [];
+	for (i = 0; node = append[i++];) uniques[local.getUIDHTML(node)] = true;
+	
+	for (i = 0; node = nodes[i++];){
+		uid = local.getUIDHTML(node);
+		if (!uniques[uid]){
+			uniques[uid] = true;
+			append.push(node);
+		}
+	}
+	return append;
 };
 
 Slick.isXML = local.isXML;
