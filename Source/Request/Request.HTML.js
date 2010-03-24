@@ -33,7 +33,7 @@ Request.HTML = new Class({
 
 		return Function.stab(function(){
 			var root = '<root>' + text + '</root>', doc;
-			if (Browser.Engine.trident){
+			if (Browser.ie){
 				doc = new ActiveXObject('Microsoft.XMLDOM');
 				doc.async = false;
 				doc.loadXML(root);

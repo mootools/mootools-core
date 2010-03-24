@@ -148,7 +148,7 @@ Element.Events = new Hash({
 	},
 
 	mousewheel: {
-		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
 	}
 
 });

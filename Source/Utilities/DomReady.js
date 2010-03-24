@@ -33,7 +33,7 @@ Element.Events.domready = {
 	
 	window.addEvent('load', domready);
 
-	if (Browser.Engine.trident){
+	if (Browser.ie){
 		var temp = document.createElement('div');
 		(function(){
 			(Function.stab(function(){
@@ -41,7 +41,7 @@ Element.Events.domready = {
 				return document.id(temp).inject(document.body).set('html', 'temp').dispose();
 			})) ? domready() : arguments.callee.delay(50);
 		})();
-	} else if (Browser.Engine.webkit && Browser.Engine.version < 525){
+	} else if (Browser.safari && Browser.version < 4){
 		(function(){
 			(['loaded', 'complete'].contains(document.readyState)) ? domready() : arguments.callee.delay(50);
 		})();

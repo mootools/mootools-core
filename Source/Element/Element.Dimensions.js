@@ -60,7 +60,7 @@ Element.implement({
 	getOffsetParent: function(){
 		var element = this;
 		if (isBody(element)) return null;
-		if (!Browser.Engine.trident) return element.offsetParent;
+		if (!Browser.ie) return element.offsetParent;
 		while ((element = element.parentNode) && !isBody(element)){
 			if (styleString(element, 'position') != 'static') return element;
 		}
@@ -89,7 +89,7 @@ Element.implement({
 			position.x += element.offsetLeft;
 			position.y += element.offsetTop;
 
-			if (Browser.Engine.gecko){
+			if (Browser.firefox){
 				if (!borderBox(element)){
 					position.x += leftBorder(element);
 					position.y += topBorder(element);
@@ -99,14 +99,14 @@ Element.implement({
 					position.x += leftBorder(parent);
 					position.y += topBorder(parent);
 				}
-			} else if (element != this && Browser.Engine.webkit){
+			} else if (element != this && Browser.safari){
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 			}
 
 			element = element.offsetParent;
 		}
-		if (Browser.Engine.gecko && !borderBox(this)){
+		if (Browser.firefox && !borderBox(this)){
 			position.x -= leftBorder(this);
 			position.y -= topBorder(this);
 		}
@@ -157,7 +157,7 @@ Element.implement({
 [Document, Window].call('implement', {
 
 	getSize: function(){
-		if (Browser.Engine.presto || Browser.Engine.webkit){
+		if (Browser.opera || Browser.safari){
 			var win = this.getWindow();
 			return {x: win.innerWidth, y: win.innerHeight};
 		}

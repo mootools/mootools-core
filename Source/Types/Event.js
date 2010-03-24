@@ -55,7 +55,7 @@ var Event = new Type('Event', function(event, win){
 			if (!(function(){
 				while (related && related.nodeType == 3) related = related.parentNode;
 				return true;
-			}).create({attempt: Browser.Engine.gecko})()) related = false;
+			}).create({attempt: Browser.firefox})()) related = false;
 		}
 	}
 

@@ -236,7 +236,7 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 (function(){
 
 var collected = {}, storage = {};
-var props = {input: 'checked', option: 'selected', textarea: (Browser.Engine.webkit && Browser.Engine.version < 420) ? 'innerHTML' : 'value'};
+var props = {input: 'checked', option: 'selected', textarea: (Browser.safari && Browser.version == 2) ? 'innerHTML' : 'value'};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
@@ -246,7 +246,7 @@ var clean = function(item, retain){
 	if (!item) return;
 	var uid = item.uid;
 	if (retain !== true) retain = false;
-	if (Browser.Engine.trident){
+	if (Browser.ie){
 		if (item.clearAttributes){
 			var clone = retain && item.cloneNode(false);
 			item.clearAttributes();
@@ -267,7 +267,7 @@ var clean = function(item, retain){
 
 var purge = function(){
 	Hash.each(collected, clean);
-	if (Browser.Engine.trident) Array.from(document.getElementsByTagName('object')).each(clean);
+	if (Browser.ie) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
 };
@@ -277,7 +277,7 @@ var attributes = {
 	'class': 'className',
 	'for': 'htmlFor',
 	'defaultValue': 'defaultValue',
-	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
+	'text': (Browser.ie || (Browser.safari && Browser.version <= 2)) ? 'innerText' : 'textContent'
 };
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
 var camels = [
@@ -540,7 +540,7 @@ Element.implement({
 		var clone = this.cloneNode(contents);
 		var clean = function(node, element){
 			if (!keepid) node.removeAttribute('id');
-			if (Browser.Engine.trident){
+			if (Browser.ie){
 				node.clearAttributes();
 				node.mergeAttributes(element);
 				node.removeAttribute('uid');
@@ -692,7 +692,7 @@ Element.Properties.html = (function(){
 	var html = {
 		set: function(){
 			var html = Array.flatten(arguments).join('');
-			var wrap = Browser.Engine.trident && translations[this.get('tag')];
+			var wrap = Browser.ie && translations[this.get('tag')];
 			if (wrap){
 				var first = wrapper;
 				first.innerHTML = wrap[1] + html + wrap[2];
@@ -709,7 +709,7 @@ Element.Properties.html = (function(){
 	return html;
 })();
 
-if (Browser.Engine.webkit && Browser.Engine.version < 420) Element.Properties.text = {
+if (Browser.safari && Browser.version <= 2) Element.Properties.text = {
 	get: function(){
 		if (this.innerText) return this.innerText;
 		var temp = this.ownerDocument.newElement('div', {html: this.innerHTML}).inject(this.ownerDocument.body);

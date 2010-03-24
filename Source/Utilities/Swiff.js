@@ -66,7 +66,7 @@ var Swiff = new Class({
 		}
 
 		params.flashVars = Hash.toQueryString(vars);
-		if (Browser.Engine.trident){
+		if (Browser.ie){
 			properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 			params.movie = path;
 		} else {
