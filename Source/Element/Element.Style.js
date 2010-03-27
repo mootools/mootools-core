@@ -17,11 +17,12 @@ provides: Element.Style
 (function(){
 
 var html = document.html;
-var hasFilter = (html.style.filter != null);
-	
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
+
+var hasFilter = (html.style.filter != null);
 
 Element.Properties.opacity = {
 
@@ -45,6 +46,8 @@ Element.Properties.opacity = {
 
 };
 
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+
 Element.implement({
 
 	setOpacity: function(value){
@@ -58,7 +61,7 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.set('opacity', parseFloat(value));
-			case 'float': property = (Browser.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		if (typeOf(value) != 'string'){
@@ -77,7 +80,7 @@ Element.implement({
 	getStyle: function(property){
 		switch (property){
 			case 'opacity': return this.get('opacity');
-			case 'float': property = (Browser.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		var result = this.style[property];
