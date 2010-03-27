@@ -1,9 +1,11 @@
-/*=
+/*
+---
 name: Event
-description: Event class. Transforms browser events in a cross-browser object.
-requires:
-  - Accessor
-=*/
+description: Contains the Event Class, to make the event object cross-browser.
+requires: [Window, Document, Hash, Array, Function, String]
+provides: Event
+...
+*/
 
 (function(){
 

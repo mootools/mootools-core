@@ -1,14 +1,11 @@
-/*=
+/*
+---
 name: Mixins
-description: Utility classes Storage, Accessor, Events, Options and Chain.
-requires:
-  - Array
-  - Function
-  - Number
-  - String
-  - Object
-  - Table
-=*/
+description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
+requires: Class
+provides: [Chain, Events, Options]
+...
+*/
 
 (function(){
 
