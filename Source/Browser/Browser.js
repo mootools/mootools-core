@@ -1,21 +1,28 @@
-/*=
+/*
+---
 name: Browser
-description: Required if you plan to run MooTools in a browser environment.
-requires:
-  - Accessor
-=*/
+description: The Browser Object. Only usable in Browser environments.
+requires: [Array, Function, Number, String]
+provides: [Browser, Window, Document]
+...
+*/
 
 (function(){
 
 var document = this.document;
 var window = document.window = this;
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:](\d+\.\d+).*?(safari|$)/) || [null, 'unknown', 0];
+var UARegExp = /(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/;
 
-var Browser = this.Browser = (function(){}).extend({
+var UA = navigator.userAgent.toLowerCase().match(UARegExp) || [null, 'unknown', 0];
+
+var Browser = this.Browser = {
 	
-	name: UA[3] || UA[1],
-	version: parseFloat(UA[2]),
+	extend: Function.prototype.extend,
+	
+	name: (UA[1] == 'version') ? UA[3] : UA[1],
+
+	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
 		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
@@ -30,7 +37,7 @@ var Browser = this.Browser = (function(){}).extend({
 
 	Plugins: {}
 
-});
+};
 
 Browser[Browser.name] = true;
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
@@ -66,17 +73,6 @@ Browser.Request = (function(){
 })();
 
 Browser.Features.xhr = !!(Browser.Request);
-
-// Flash detection
-
-Browser.Plugins.Flash = (function(){
-	var version = (Function.stab(function(){
-		return navigator.plugins['Shockwave Flash'].description;
-	}, function(){
-		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
-	}) || '0 r0').match(/\d+/g);
-	return {version: Number(version[0] || 0 + '.' + version[1]) || 0, build: Number(version[2]) || 0};
-})();
 
 // String scripts
 
@@ -116,7 +112,7 @@ Browser.extend({
 	Event: this.Event
 });
 
-this.Window = this.constructor = new Type('Window', function(){});
+this.Window = this.$constructor = new Type('Window', function(){});
 
 this.$typeOf = Function.from('window').hide();
 
@@ -126,7 +122,7 @@ Window.mirror(function(name, method){
 
 Object.append(window, new Storage);
 
-this.Document = document.constructor = new Type('Document', function(){});
+this.Document = document.$constructor = new Type('Document', function(){});
 
 document.$typeOf = Function.from('document').hide();
 
@@ -151,9 +147,9 @@ if (this.attachEvent) this.attachEvent('onunload', function(){
 var arrayFrom = Array.from;
 try {
 	arrayFrom(document.html.childNodes);
-} catch (e){
+} catch(e){
 	Array.from = function(item){
-		if (typeOf(item) == 'collection'){
+		if (item != null && typeOf(item) != 'array'){
 			var i = item.length, array = new Array(i);
 			while (i--) array[i] = item[i];
 			return array;

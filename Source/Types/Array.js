@@ -9,7 +9,7 @@ Array.implement({
 	filter: function(fn, bind){
 		var results = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+			if ((i in this) && fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
 	},
@@ -23,20 +23,22 @@ Array.implement({
 
 	map: function(fn, bind){
 		var results = [];
-		for (var i = 0, l = this.length; i < l; i++) results.push(fn.call(bind, this[i], i, this));
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) results[i] = fn.call(bind, this[i], i, this);
+		}
 		return results;
 	},
 	
 	every: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
-			if (!fn.call(bind, this[i], i, this)) return false;
+			if ((i in this) && !fn.call(bind, this[i], i, this)) return false;
 		}
 		return true;
 	},
 
 	some: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
-			if (fn.call(bind, this[i], i, this)) return true;
+			if ((i in this) && fn.call(bind, this[i], i, this)) return true;
 		}
 		return false;
 	},
@@ -107,6 +109,16 @@ Array.implement({
 		for (var i = 0, l = this.length; i < l; i++){
 			var item = this[i];
 			if (item != null) array = array.concat((Type.isEnumerable(item)) ? Array.flatten(item) : item);
+		}
+		return array;
+	},
+	
+	flatten: function(){
+		var array = [];
+		for (var i = 0, l = this.length; i < l; i++){
+			var ti = this[i], t = typeOf(this[i]);
+			if (t == 'null') continue;
+			array = array.concat((t == 'array' || t == 'collection' || t == 'arguments' || instanceOf(ti, Array)) ? Array.flatten(ti) : ti);
 		}
 		return array;
 	},

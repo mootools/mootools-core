@@ -1,10 +1,16 @@
-/*=
+/*
+---
 name: Core
 description: The heart of MooTools.
-credits:
+license: MIT-style license.
+copyright: "Copyright (c) 2006-2010 [Valerio Proietti](http://mad4milk.net/)"
+authors: "[The MooTools developers](http://mootools.net/developers/)"
+inspiration:
   - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
   - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
-=*/
+provides: [Core, MooTools, Type, typeOf, instanceOf]
+...
+*/
 
 (function(){
 
@@ -57,26 +63,24 @@ Function.prototype.implement = function(key, value){
 
 // typeOf, instanceOf
 
-this.typeOf = function(item){
+var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
 	if (item.$typeOf) return item.$typeOf();
 	
 	if (item.nodeName){
-		switch (item.nodeType){
-			case 1: return 'element';
-			case 3: return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
-		}
+		if (item.nodeType == 1) return 'element';
+		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
 	} else if (typeof item.length == 'number'){
 		if (item.callee) return 'arguments';
-		else if (item.item) return 'collection';
+		if ('item' in item) return 'collection';
 	}
 
 	return typeof item;
 };
 
-this.instanceOf = function(item, object){
+var instanceOf = this.instanceOf = function(item, object){
 	if (item == null) return false;
-	var constructor = item.constructor;
+	var constructor = item.$constructor || item.constructor;
 	while (constructor){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
@@ -93,7 +97,8 @@ Function.from = function(item){
 };
 
 Array.from = function(item){
-	return (item == null) ? [] : (Type.isEnumerable(item)) ? Array.prototype.slice.call(item) : [item];
+	if (item == null) return [];
+	return (Type.isEnumerable(item)) ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -139,8 +144,8 @@ var Type = this.Type = function(name, object){
 	}
 
 	object.extend(this);
-	object.constructor = Type;
-	object.prototype.constructor = object;
+	object.$constructor = Type;
+	object.prototype.$constructor = object;
 	
 	return object;
 };
@@ -290,8 +295,8 @@ var cloneOf = function(item){
 };
 
 Array.implement('clone', function(){
-	var clone = [];
-	for (var i = 0; i < this.length; i++) clone[i] = cloneOf(this[i]);
+	var i = this.length, clone = new Array(i);
+	while (i--) clone[i] = cloneOf(this[i]);
 	return clone;
 });
 

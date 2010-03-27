@@ -26,12 +26,11 @@ Object.extend({
 		return original;
 	},
 	
-	subset: function(object, keys, nuke){
+	subset: function(object, keys){
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){
 			var k = keys[i], value = object[k];
 			results[k] = nil(value);
-			if (nuke) delete object[k];
 		}
 		return results;
 	},

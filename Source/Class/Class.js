@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Class
-description: Code with Class
-requires: Accessor
-=*/
+description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+requires: [Array, String, Function, Number]
+provides: Class
+...
+*/
 
 (function(){
 
@@ -21,8 +24,8 @@ var Class = this.Class = new Type('Class', function(params){
 
 	newClass.implement(params);
 	
-	newClass.constructor = Class;
-	newClass.prototype.constructor = newClass;
+	newClass.$constructor = Class;
+	newClass.prototype.$constructor = newClass;
 	newClass.prototype.parent = parent;
 
 	return newClass;
