@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Array
-description: Array prototypes and generics.
-requires: Core
-=*/
+description: Contains Array Prototypes like each, contains, and erase.
+requires: Type
+provides: Array
+...
+*/
 
 Array.implement({
 
@@ -102,15 +105,6 @@ Array.implement({
 	empty: function(){
 		this.length = 0;
 		return this;
-	},
-
-	flatten: function(){
-		var array = [];
-		for (var i = 0, l = this.length; i < l; i++){
-			var item = this[i];
-			if (item != null) array = array.concat((Type.isEnumerable(item)) ? Array.flatten(item) : item);
-		}
-		return array;
 	},
 	
 	flatten: function(){
