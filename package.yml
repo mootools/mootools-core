@@ -1,11 +1,16 @@
-name: Core
-filename: mootools-core.js
-web: http://mootools.net
-description: MooTools, The JavaScript framework
-license: MIT-Style License, http://mootools.net/license
-copyright: 2006-2009 Valerio Proietti http://mad4milk.net
-authors: The MooTools development team, http://mootools.net/developers
-files:
+name: "Core"
+
+web: "[mootools.net](http://mootools.net)"
+
+description: "MooTools, The JavaScript framework"
+
+license: "[MIT License](http://mootools.net/license.txt)"
+
+copyright: "&copy; [MooTools](http://mootools.net)"
+
+authors: "[The MooTools development team](http://mootools.net/developers)"
+
+sources:
   - "Source/Core/Core.js"
   - "Source/Types/Array.js"
   - "Source/Types/Function.js"
