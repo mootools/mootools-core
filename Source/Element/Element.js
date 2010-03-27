@@ -21,7 +21,7 @@ var Element = function(tag, props){
 	
 	if (!props) props = {};
 	
-	if (!tag.test(/^\w+$/)){
+	if (!tag.test(/^[\w-]+$/)){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
