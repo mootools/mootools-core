@@ -21,7 +21,7 @@ Number.implement({
 	},
 
 	round: function(precision){
-		precision = Math.pow(10, precision || 0);
+		precision = Math.pow(10, precision || 0).toFixed(precision < 0 ? Math.abs(precision) : 0);
 		return Math.round(this * precision) / precision;
 	},
 
