@@ -139,7 +139,9 @@ var Type = this.Type = function(name, object){
 	if (object == null) return null;
 	
 	if (name){
-		object.prototype.$typeOf = Function.from(lower).hide();
+		object.prototype.$typeOf = function(){
+			return lower;
+		}.hide();
 		object.$name = lower;
 	}
 
@@ -231,14 +233,14 @@ var force = function(type, methods){
 	return object.implement(object.prototype);
 };
 
-force('Array', [
-	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
-	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
-]);
-
 force('String', [
 	'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 	'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
+]);
+
+force('Array', [
+	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
+	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
 ]);
 
 force('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
