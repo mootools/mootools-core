@@ -2,7 +2,7 @@
 ---
 name: Class
 description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
-requires: [Array, String, Function, Number]
+requires: [typeOf, instanceOf, Array, String, Function, Number, Accessor]
 provides: Class
 ...
 */
