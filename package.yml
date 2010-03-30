@@ -35,3 +35,5 @@ sources:
   - "Source/Utilities/Accessor.js"
   - "Source/Utilities/Storage.js"
   - "Source/Utilities/JSON.js"
+  - "Source/Color/Color.js"
+  - "Source/Table/Table.js"
