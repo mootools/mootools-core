@@ -2,7 +2,7 @@
 ---
 name: Mixins
 description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
-requires: Class
+requires: [typeOf, Class, Array, String, Function, Number, Object]
 provides: [Chain, Events, Options]
 ...
 */
