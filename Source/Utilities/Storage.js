@@ -1,37 +1,29 @@
-/*=
+/*
+---
 name: Storage
-description: yo!
-requires:
-  - Array
-  - Function
-  - Number
-  - String
-  - Object
-  - Table
-=*/
+description: Storage
+requires: Type
+provides: Storage
+...
+*/
 
 this.Storage = function(){
 	
 	var storage = {};
 	
-	this.store = function(object){
-		for (var key in object) storage[key] = object[key];
-		return this;
-	}.overload(Function.overloadPair);
+	this.store = function(key, value){
+		storage[key] = value;
+	}.overloadSetter();
 	
-	this.retrieve = function(object){
-		var keys = [];
-		for (var key in object){
-			keys.push(key);
-			var dflt = object[key], value = storage[key];
-			if (dflt != null && value == null) storage[key] = Function.from(dflt)();
-		}
-		return Object.subset(storage, keys);
-	}.overload(Function.overloadPair);
+	this.retrieve = function(key, defaultValue){
+		var value = storage[key];
+		if (defaultValue != null && value == null) storage[key] = Function.from(defaultValue)();
+		return storage[key];
+	};
 
 	this.dump = function(){
-		return Object.subset(storage, arguments, true);
-	}.overload(Function.overloadList);
+		delete storage[key];
+	}.overloadSetter();
 	
 	return this;
 	
