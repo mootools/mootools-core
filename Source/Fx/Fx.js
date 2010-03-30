@@ -1,11 +1,11 @@
-/*=
+/*
+---
 name: Fx
-description: The greatest animation class that ever existed.
-requires: Class
-credits:
- - Original easing equations by Robert Penner, <http://www.robertpenner.com/easing/>.
- - Easing equations modified and optimized for MooTools by Olmo Maldonado <http://ibolmo.com>.
-=*/
+description: Contains the basic animation logic to be extended by all other Fx Classes.
+requires: [typeOf, Array, String, Number, Function, Class, Chain, Events, Options]
+provides: Fx
+...
+*/
 
 (function(){
 
@@ -33,8 +33,8 @@ this.Fx = new Class({
 		this.from = from;
 		this.to = to;
 		this.time = 0;
-		this.equation = this.getEquation(this.getOption('equation'));
-		this.duration = this.getDuration(this.getOption('duration'));
+		this.equation = Fx.parseEquation(this.getOption('equation'));
+		this.duration = Fx.parseDuration(this.getOption('duration'));
 		this.startTimer();
 		this.onStart();
 		return this;
@@ -67,28 +67,6 @@ this.Fx = new Class({
 		var delta = this.equation((factor < 1) ? factor : 1);
 		this.render(this.compute(delta));
 		if (factor == 1) this.complete();
-	},
-	
-	'protected getEquation': function(equation){
-		switch (typeOf(equation)){
-			case 'function': return equation;
-			case 'string':
-				var eq = Fx.lookupEquation(equation);
-				if (eq != null) return eq;
-		}
-		return Fx.lookupEquation('linear');
-	},
-	
-	'protected getDuration': function(duration){
-		if (typeOf(duration) == 'number') return duration;
-		var n = parseFloat(duration);
-		if (n == duration) return n;
-		var d = Fx.lookupDuration(duration);
-		if (d != null) return d;
-		d = duration.match(/^[\d.]+([ms]{1,2})?$/);
-		if (!d) return 0;
-		else if (d[1] == 's') return n * 1000;
-		else return n;
 	},
 	
 	'protected render': function(now){},
@@ -144,6 +122,18 @@ Fx.extend(new Accessor('Duration')).extend(new Accessor('Equation'));
 // duration
 
 Fx.defineDurations({'short': 250, 'normal': 500, 'long': 1000});
+
+Fx.extend('parseDuration', function(duration){
+	if (typeOf(duration) == 'number') return duration;
+	var n = parseFloat(duration);
+	if (n == duration) return n;
+	var d = Fx.lookupDuration(duration);
+	if (d != null) return d;
+	d = duration.match(/^[\d.]+([ms]{1,2})?$/);
+	if (!d) return 0;
+	else if (d[1] == 's') return n * 1000;
+	else return n;
+});
 
 // global timer
 
@@ -229,13 +219,14 @@ Fx.defineEquations({
 	});
 });
 
-// Fx.lookupEquation override, preliminary parameter support
+// Fx.parseEquation, preliminary parameter support (1 parameter)
 
-var lookupEquation = Fx.lookupEquation;
-
-Fx.extend('lookupEquation', function(name){
+Fx.extend('parseEquation', function(name){
+	var t = typeOf(name);
+	if (t == 'function') return name;
+	if (t != 'string') name = 'linear';
 	var match = name.match(/^([\w]+)([:inout]+)?(\(([\d.]+)\))?$/);
-	var n = match[1], equation = lookupEquation(n);
+	var n = match[1], equation = Fx.lookupEquation(n);
 	if (!equation) return null;
 	var end = equation(1), param = parseFloat(match[4]), type = match[2];
 	switch (type){
