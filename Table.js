@@ -1,10 +1,9 @@
 /*
 ---
-
 name: Table
 description: LUA-Style table implementation.
+requires: [Core/Type, Core/Array]
 provides: Table
-
 ...
 */
 
@@ -54,5 +53,7 @@ Table.prototype = {
 
 Table.prototype.each = Table.prototype.forEach;
 
-}).call(typeof exports != 'undefined' ? exports : this);
+if (this.Type) new Type('Table', Table);
+
+})();
 
