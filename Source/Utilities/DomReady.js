@@ -4,6 +4,7 @@ description: The custom domready event. Fires as soon as the page loads (does no
 requires: Element.Event
 =*/
 
+
 (function(){
 
 Event.defineModifier('domready', {add: function(fn){
@@ -22,7 +23,7 @@ if (Browser.ie){
 	var temp = document.newElement('div');
 	(function(){
 		(Function.stab(function(){
-			return temp.inject(document.body).set('html', 'temp').dispose();
+			return temp.inject(document.body).set('html', 'temp').eject();
 		})) ? domready() : arguments.callee.delay(50);
 	})();
 } else if (Browser.safari && Browser.version < 3.1){
