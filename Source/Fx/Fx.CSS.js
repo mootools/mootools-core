@@ -1,10 +1,11 @@
-/*=
+/*
+---
 name: Fx.CSS
 description: Logic to animate elements css styles.
-requires:
-  - Fx
-  - Element.Style
-=*/
+requires: [typeOf, Array, String, Number, Fx, Color, Element.Style]
+provides: Fx.CSS
+...
+*/
 
 Fx.CSS = {
 
@@ -29,7 +30,7 @@ Fx.CSS = {
 	},
 	
 	parse: function(element, style, from, to){
-		var type = Element.Style.transitionable[style], array;
+		var type = Element.lookupAnimatableStyleType(style), array;
 		return (!type || from == to || !(array = this['parse' + type.capitalize()](element, style, from, to))) ? null : array;
 	},
 	
@@ -47,8 +48,8 @@ Fx.CSS = {
 		to = match.slice(1);
 		if (!from[1]) from[1] = 'px';
 		if (!to[1]) to[1] = 'px';
-		if (from[1] == 'px' && to[1] == 'em') from[0] = Element.Style.PXToEM(element, from[0]);
-		else if (from[1] == 'em' && to[1] == 'px') from[0] = Element.Style.EMToPX(element, from[0]);
+		if (from[1] == 'px' && to[1] == 'em') from[0] = Element.PXToEM(element, from[0]);
+		else if (from[1] == 'em' && to[1] == 'px') from[0] = Element.EMToPX(element, from[0]);
 		else if (from[1] != to[1]) return null;
 		if (from[0] == to[0]) return null;
 		return [parseFloat(from[0]), parseFloat(to[0]), to[1]];
