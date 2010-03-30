@@ -410,16 +410,14 @@ Element.defineGetters({
 Element.implement({
 	
 	set: function(name, value){
-		name = name.camelCase();
-		var setter = Element.lookupSetter(name);
+		var setter = Element.lookupSetter(name = name.camelCase());
 		if (setter) setter.call(this, name, value);
 		else if (value == null) this.removeAttribute(name);
 		else this.setAttribute(name, value);
 	}.overloadSetter(),
 
 	get: function(name){
-		name = name.camelCase();
-		var getter = Element.lookupGetter(name);
+		var getter = Element.lookupGetter(name.camelCase());
 		if (getter) return getter.call(this, name);
 		return this.getAttribute(name);
 	}.overloadGetter()
