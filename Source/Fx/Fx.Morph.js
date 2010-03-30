@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Fx.Morph
-description: Morph Styles.
-requires: Fx.CSS
-=*/
+description: Morph styles of Elements.
+requires: [Fx, Fx.CSS, Element.Style]
+provides: Fx.Morph
+...
+*/
 
 Fx.Morph = new Class({
 
@@ -22,7 +25,7 @@ Fx.Morph = new Class({
 		for (var style in styles){
 			var ss = Array.from(styles[style]);
 			var prepared = Fx.CSS.prepare(this.item, style, ss[0], ss[1] || null);
-			var camel = prepared[0], shortParser = Element.Style.shorts[camel];
+			var camel = prepared[0], shortParser = Element.lookupShortStyleParser(camel);
 			if (shortParser){
 				var fv = shortParser(prepared[1]), tv = shortParser(prepared[2]);
 				for (var p in fv) all[p] = [fv[p], tv[p]];
@@ -40,6 +43,16 @@ Fx.Morph = new Class({
 			this.units[s] = parsed[2] || '';
 		}
 		return (length) ? this.parent(froms, tos) : this.complete();
+	},
+	
+	morph: function(selector){
+		if (!this.check(selector)) return this;
+		var element = document.build(selector).setStyles({visibility: 'hidden', position: 'absolute'}).injectAfter(this.item), styles = {};
+		Element.eachAnimatableStyleType(function(type, name){
+			styles[name] = element.getStyle(name);
+		});
+		element.eject();
+		return this.start(styles);
 	},
 	
 	'protected render': function(now){
