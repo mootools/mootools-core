@@ -336,6 +336,11 @@ Element.defineStyleSetter(border, function(value){
 
 /* getStyle, setStyle */
 
+var elementGetStyle = function(name, unit){
+	var getter = Element.lookupStyleGetter(name = name.camelCase());
+	return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
+};
+
 Element.implement({
 	
 	setStyle: function(name, value){
@@ -350,12 +355,9 @@ Element.implement({
 		return this;
 	},
 
-	getStyle: function(name, unit){
-		var getter = Element.lookupStyleGetter(name = name.camelCase());
-		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
-	},
+	getStyle: elementGetStyle,
 	
-	getStyles: this.getStyle.overloadGetter(true)
+	getStyles: elementGetStyle.overloadGetter(true)
 
 });
 

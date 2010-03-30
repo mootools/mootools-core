@@ -2,7 +2,7 @@
 ---
 name: Browser
 description: The Browser Object. Only usable in Browser environments.
-requires: [Array, Function, Number, String]
+requires: [Array, Function, Number, String, Storage]
 provides: [Browser, Window, Document]
 ...
 */
