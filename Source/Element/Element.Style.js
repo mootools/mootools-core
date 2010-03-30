@@ -1,35 +1,39 @@
-/*=
+/*
+---
 name: Element.Style
-description: Methods to iteract with the css-style of html elements.
-requires:
-  - Element
-  - Color
-=*/
+description: Contains methods for interacting with the styles of Elements in a fashionable way.
+requires: [Element, Accessor, Color]
+provides: Element.Style
+...
+*/
 
 (function(Element, CColor){
 	
 Element.extend(new Accessor('StyleGetter')).extend(new Accessor('StyleSetter'));
 
-Element.Style = {transitionable: {}, shorts: {}};
+// Element.Style = {shorts: {}};
+// var ES = Element.Style, EST = ES.transitionable, ESS = ES.shorts;
 
-/* how many pixels are there in one em? find out with emCSS! */
+var AnimatableStyleType = 'AnimatableStyleType', ShortStyleParser = 'ShortStyleParser';
 
-var ES = Element.Style, EST = ES.transitionable, ESS = ES.shorts;
+Element.extend(new Accessor(AnimatableStyleType)).extend(new Accessor(ShortStyleParser));
 
 var testEM = document.newElement('span', {css: 'position: absolute; display: block; visibility: hidden; height: 100em; width: 100em;'});
 
+/* how many pixels are there in one em? find out with emCSS! */
+
 var emCSS = function(element){
 	var height = testEM.inject(element).offsetHeight;
-	testEM.dispose();
+	testEM.eject();
 	return height / 100;
 };
 
-var PXToEM = ES.PXToEM = function(element, value){
+var PXToEM = Element.PXToEM = function(element, value){
 	var one = emCSS(element);
 	return (one === 0) ? 0 : value / one;
 };
 
-var EMToPX = ES.EMToPX = function(element, value){
+var EMToPX = Element.EMToPX = function(element, value){
 	return value * emCSS(element);
 };
 
@@ -108,7 +112,7 @@ Element.defineStyleSetter('float', function(value){
 
 [color, background + Color, border + Top + Color, border + Right + Color, border + Bottom + Color, border + Left + Color].each(function(name){
 	
-	EST[name] = 'color';
+	Element.defineAnimatableStyleType(name, 'color');
 
 	Element.defineStyleSetter(name, function(color){
 		
@@ -129,7 +133,7 @@ var filterName = (html.style.MsFilter != null) ? 'MsFilter' : (html.style.filter
 
 /* opacity accessor IE / Others */
 
-EST[opacity] = 'float';
+Element.defineAnimatableStyleType(opacity, 'float');
 
 if (html.style[opacity] == null && filterName) Element.defineStyleSetter(opacity, function(value){
 	
@@ -156,7 +160,7 @@ backgroundPosition + 'Y', backgroundPosition + 'X',
 border + Top + Width, border + Right + Width, border + Bottom + Width, border + Left + Width,
 'fontSize', 'letterSpacing', 'line' + Height, 'textIndent'].each(function(name){
 
-	EST[name] = 'unit';
+	Element.defineAnimatableStyleType(name, 'unit');
 
 	Element.defineStyleSetter(name, function(value){
 		this.style[name] = unitCSS(value);
@@ -204,7 +208,7 @@ var TRBL = [Top, Right, Bottom, Left];
 		return (match) ? (border + dir + match[1]) : (name + dir);
 	});
 	
-	var parse = ESS[name] = function(value){
+	var parse = function(value){
 		value = mirrorCSS(splitCSS(value));
 		var parsed = {};
 		shorts.each(function(s){
@@ -212,6 +216,8 @@ var TRBL = [Top, Right, Bottom, Left];
 		});
 		return parsed;
 	};
+	
+	Element.defineShortStyleParser(name, parse);
 
 	Element.defineStyleSetter(name, function(value){
 		
@@ -230,11 +236,13 @@ var TRBL = [Top, Right, Bottom, Left];
 
 /* background position accessor */
 
-var bpparse = ESS[backgroundPosition] = function(value){
+var bpparse = function(value){
 	value = splitCSS(value);
 	if (!value[1]) value[1] = 0;
 	return Object.from([backgroundPosition + 'X', backgroundPosition + 'Y'], value);
 };
+
+Element.defineShortStyleParser(backgroundPosition, bpparse);
 
 Element.defineStyleSetter(backgroundPosition, function(value){
 
@@ -264,7 +272,7 @@ Element.defineStyleSetter(clip, function(value){
 		return name + type;
 	});
 	
-	var parse = ESS[name] = function(value){
+	var parse = function(value){
 		value = splitCSS(value);
 		var styles = {};
 		shorts.each(function(s){
@@ -272,6 +280,8 @@ Element.defineStyleSetter(clip, function(value){
 		});
 		return styles;
 	};
+	
+	Element.defineShortStyleParser(name, parse);
 
 	Element.defineStyleSetter(name, function(value){
 
@@ -296,7 +306,7 @@ TRBL.each(function(dir){
 	});
 });
 
-var bparse = ESS[border] = function(value){
+var bparse = function(value){
 	value = splitCSS(value);
 	var array = [];
 	while (value.length) array.push(value.splice(0, 3));
@@ -308,6 +318,8 @@ var bparse = ESS[border] = function(value){
 	});
 	return styles;
 };
+
+Element.defineShortStyleParser(border, bparse);
 
 Element.defineStyleSetter(border, function(value){
 
@@ -343,19 +355,8 @@ Element.implement({
 		return (getter) ? getter.call(this, unit) : getStyle(this, name, unit);
 	},
 	
-	getStyles: function(){
-		var results = {};
-		for (var i = 0; i < arguments.length; i++){
-			var s = arguments[i];
-			results[s] = this.getStyle(s);
-		}
-		return results;
-	}.overload(Function.overloadList)
+	getStyles: this.getStyle.overloadGetter(true)
 
-});
-
-Element.defineSetter('styles', function(styles){
-	this.setStyles(styles);
 });
 
 })(Element, Color);
