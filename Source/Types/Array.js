@@ -1,7 +1,7 @@
 /*
 ---
 name: Array
-description: Contains Array Prototypes like each, contains, and erase.
+description: Array prototypes and generics.
 requires: Type
 provides: Array
 ...

@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: String
 description: String prototypes and generics.
-requires: Core
-=*/
+requires: Type
+provides: String
+...
+*/
 
 String.implement({
 

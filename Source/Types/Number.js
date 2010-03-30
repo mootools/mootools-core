@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Number
 description: Number prototypes and generics.
-requires: Core
-=*/
+requires: Type
+provides: Number
+...
+*/
 
 Number.extend({
 	

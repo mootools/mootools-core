@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Function
 description: Function prototypes and generics.
-requires: Core
-=*/
+requires: Type
+provides: Function
+...
+*/
 
 Function.extend({
 

@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Object
-description: Object generics.
-requires: Core
-=*/
+description: Object generics
+requires: Type
+provides: Object
+...
+*/
 
 Object.extend({
 	
