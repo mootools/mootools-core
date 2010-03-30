@@ -1,40 +1,19 @@
-/*=
+/*
+---
 name: Element
-description: Element class, Elements class, and basic dom methods.,
-requires:
-  - Accessor
-  - Storage
-  - Slick
-=*/
+description: The MooTools DOM library.
+requires: [Type, typeOf, instanceOf, Browser, Window, Document, Array, String, Function, Number, Object, Accessor, Slick.Parser, Slick.Finder]
+provides: [Element, Elements, $, $$]
+...
+*/
 
 (function(){
 
 var document = this.document;
 
 var Element = this.Element = function(item, props){
-	if (typeOf(item) != 'string') return document.id(item).set(props);
-	
-	if (!props) props = {};
-	
-	var parsed = Slick.parse(item).expressions[0][0];
-	
-	var tag = parsed.tag || 'div';
-	if (parsed.id) props.id = parsed.id;
-	
-	var classes = [];
-	
-	parsed.parts.each(function(part){
-		
-		switch (part.type){
-			case 'class': classes.push(part.value); break;
-			case 'attribute': if (part.value && part.operator == '=') props[part.key] = part.value;
-		}
-		
-	});
-	
-	if (classes.length) props['class'] = classes.join(' ');
-	
-	return document.newElement(tag, props);
+	var element = (typeOf(item) == 'string') ? document.build(item) : document.id(item);
+	return (element) ? element.set(props) : null;
 };
 
 var types = {
@@ -134,6 +113,30 @@ Document.implement({
 
 	newTextNode: function(text){
 		return this.createTextNode(text);
+	},
+	
+	build: function(selector){
+
+		if ((/^[\w-]+$/).test(selector)) return this.newElement(selector);
+			
+		var props = {},
+			parsed = Slick.parse(selector).expressions[0][0],
+			tag = (parsed.tag == '*') ? 'div' : parsed.tag;
+
+		props.id = parsed.id;
+
+		var classes = [];
+
+		for (var part in parsed.parts){
+			var current = parsed.parts[part];
+			if (current.type == 'class') classes.push(current.value);
+			else if (current.type == 'attribute' && current.operator == '=') props[current.key] = current.value;
+		}
+
+		if (classes.length) props['class'] = classes.join(' ');
+		
+		return this.newElement(tag, props);
+		
 	}
 	
 });
@@ -233,7 +236,7 @@ inserters.inside = inserters.bottom;
 
 Element.implement({
 	
-	dispose: function(){
+	eject: function(){
 		var parent = this.parentNode;
 		return (parent) ? parent.removeChild(this) : this;
 	},
@@ -330,7 +333,7 @@ Object.each(methods, function(getters, method){
 	
 });
 
-/* Attribute Getters, Setters */
+/* Attribute Getters, Setters, using Slick */
 
 Element.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
 
@@ -368,52 +371,63 @@ booleans.each(function(bool){
 	});
 });
 
-/* Slick attribute integration */
+Element.defineGetters({
 
-Slick.getAttribute = function(element, attribute){
-	var getter = Element.lookupGetter(attribute);
-	return (getter) ? getter.call(element) : element.getAttribute(attribute, 2);
-};
+	'class': function(){
+		return ('className' in this) ? this.className : this.getAttribute('class');
+	},
+
+	'for': function(){
+		return ('htmlFor' in this) ? this.htmlFor : this.getAttribute('for');
+	},
+
+	'href': function(){
+		return ('href' in this) ? this.getAttribute('href', 2) : this.getAttribute('href');
+	},
+
+	'style': function(){
+		return (this.style) ? this.style.cssText : this.getAttribute('style');
+	}
+
+}).defineSetters({
+
+	'class': function(value){
+		return ('className' in this) ? this.className = value : this.setAttribute('class', value);
+	},
+
+	'for': function(value){
+		return ('htmlFor' in this) ? this.htmlFor = value : this.setAttribute('for', value);
+	},
+
+	'style': function(value){
+		return (this.style) ? this.style.cssText = value : this.setAttribute('style', value);
+	}
+
+});
 
 /* get, set */
 
 Element.implement({
+	
+	set: function(name, value){
+		name = name.camelCase();
+		var setter = Element.lookupSetter(name);
+		if (setter) setter.call(this, name, value);
+		else if (value == null) this.removeAttribute(name);
+		else this.setAttribute(name, value);
+	}.overloadSetter(),
 
-	set: function(object){
-		for (var attribute in object){
-			var value = object[attribute];
-			attribute = attribute.camelCase();
-			var setter = Element.lookupSetter(attribute);
-			if (setter) setter.call(this, value);
-			else if (value == null) this.removeAttribute(attribute);
-			else this.setAttribute(attribute, '' + value);
-		}
-		return this;
-	}.overload(Function.overloadPair),
-
-	get: function(){
-		var key, results = {};
-		for (var i = 0, l = arguments.length; i < l; i++){
-			key = arguments[i].camelCase();
-			results[key] = Slick.getAttribute(this, key);
-		}
-		return (l == 1) ? results[key] : results;
-	}.overload(Function.overloadList)
+	get: function(name){
+		name = name.camelCase();
+		var getter = Element.lookupGetter(name);
+		if (getter) return getter.call(this, name);
+		return this.getAttribute(name);
+	}.overloadGetter()
 
 });
 
-Element.defineSetter('css', function(style){
-	return this.style.cssText = style;
-}).defineGetters({
-
-	css: function(){
-		return this.style.cssText;
-	},
-
-	tag: function(){
-		return this.tagName.toLowerCase();
-	}
-
+Element.defineGetter('tag', function(){
+	return this.tagName.toLowerCase();
 });
 
 var tableTest = Function.stab(function(){
