@@ -1,14 +1,11 @@
-/*=
+/*
+---
 name: JSON
-description: JSON encoder and decoder.
-requires:
-  - Array
-  - Function
-  - Number
-  - String
-  - Object
-  - Table
-=*/
+description: JSON encoder and decoder
+requires: [typeOf, Array, String]
+provides: JSON
+...
+*/
 
 if (!this.JSON) this.JSON = {};
 
@@ -20,7 +17,7 @@ var escape = function(chr){
 	return special[chr] || '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
 };
 
-var isSecure = function(string){
+JSON.validate = function(string){
 	string = string.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').
 					replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
 					replace(/(?:^|:|,)(?:\s*\[)+/g, '');
@@ -55,7 +52,7 @@ JSON.decode = function(string, secure){
 	
 	if (secure || JSON.secure){
 		if (JSON.parse) return JSON.parse(string);
-		if (!isSecure(string)) throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
+		if (!JSON.validate(string)) throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
 	}
 	
 	return eval('(' + string + ')');
