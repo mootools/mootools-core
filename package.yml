@@ -2,13 +2,17 @@ name: "Core"
 
 web: "[mootools.net](http://mootools.net)"
 
-description: "MooTools, The JavaScript framework"
+description: "MooTools, The JavaScript Framework"
 
 license: "[MIT License](http://mootools.net/license.txt)"
 
 copyright: "&copy; [MooTools](http://mootools.net)"
 
 authors: "[The MooTools development team](http://mootools.net/developers)"
+
+inspiration:
+  - "Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)"
+  - "Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)"
 
 sources:
   - "Source/Core/Core.js"
@@ -17,7 +21,6 @@ sources:
   - "Source/Types/Object.js"
   - "Source/Types/String.js"
   - "Source/Types/Number.js"
-  - "Source/Types/Table.js"
   - "Source/Class/Class.js"
   - "Source/Class/Mixins.js"
   - "Source/Browser/Browser.js"
@@ -26,15 +29,9 @@ sources:
   - "Source/Slick/Slick.Finder.js"
   - "Source/Element/Element.js"
   - "Source/Element/Element.Style.js"
-  - "Source/Element/Element.Event.js"
   - "Source/Fx/Fx.js"
   - "Source/Fx/Fx.CSS.js"
   - "Source/Fx/Fx.Morph.js"
-  - "Source/Request/Request.js"
-  - "Source/Request/Request.HTML.js"
-  - "Source/Request/Request.JSON.js"
   - "Source/Utilities/Accessor.js"
   - "Source/Utilities/Storage.js"
-  - "Source/Utilities/DomReady.js"
   - "Source/Utilities/JSON.js"
-  - "Source/Utilities/Color.js"
