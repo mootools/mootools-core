@@ -1,14 +1,11 @@
-/*=
+/*
+---
 name: Accessor
-description: yo!
-requires:
-  - Array
-  - Function
-  - Number
-  - String
-  - Object
-  - Table
-=*/
+description: Accessor
+requires: typeOf, Array, Function, String, Object
+provides: Accessor
+...
+*/
 
 (function(global){
 
@@ -46,12 +43,16 @@ this.Accessor = function(singular, plural){
 		return null;
 	};
 	
-	this['lookup' + singular] = function(key){   
+	this['lookup' + singular] = function(key){
 		return accessor[key] || null;
 	};
 	
 	this['lookup' + plural] = function(keys){
 		return Object.subset(accessor, keys);
+	};
+	
+	this['each' + singular] = function(fn, bind){
+		for (var p in accessor) fn.call(bind, accessor[p], p);
 	};
 	
 	return this;
