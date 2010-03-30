@@ -2,7 +2,7 @@
 ---
 name: Event
 description: Contains the Event Class, to make the event object cross-browser.
-requires: [Window, Document, Hash, Array, Function, String]
+requires: [Type, Browser, Array, Function, String, Accessor]
 provides: Event
 ...
 */
@@ -108,28 +108,16 @@ Event.defineGetters({
 
 Event.implement({
 	
-	set: function(object){
-		for (var key in object){
-			var value = object[key];
-			var setter = Event.lookupSetter(key = key.camelCase());
-			(setter) ? setter.call(this, value) : this[key] = value;
-		}
-		return this;
-	}.overload(Function.overloadPair),
+	set: function(key, value/*object*/){
+		var setter = Event.lookupSetter(key = key.camelCase());
+		(setter) ? setter.call(this, value) : this[key] = value;
+	}.overloadSetter(),
 	
-	get: function(){
-		var key, results = {};
-		for (var i = 0, l = arguments.length; i < l; i++){
-			key = arguments[i].camelCase();
-			if (this.hasOwnProperty(key)){
-				results[key] = this[key];
-			} else {
-				var getter = Event.lookupGetter(key);
-				results[key] = this[key] = (getter) ? getter.call(this) : this.event[key];
-			}
-		}
-		return (l == 1) ? results[key] : results;
-	}.overload(Function.overloadList),
+	get: function(key){
+		if (this.hasOwnProperty(key = key.camelCase())) return this[key];
+		var getter = Event.lookupGetter(key);
+		return this[key] = (getter) ? getter.call(this) : this.event[key];
+	}.overloadGetter(),
 
 	stopPropagation: function(){
 		var event = this.event;
