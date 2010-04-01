@@ -417,7 +417,7 @@ Element.implement({
 	}.overloadSetter(),
 
 	get: function(name){
-		var getter = Element.lookupGetter(name.camelCase());
+		var getter = Element.lookupGetter(name = name.camelCase());
 		if (getter) return getter.call(this, name);
 		return this.getAttribute(name);
 	}.overloadGetter()

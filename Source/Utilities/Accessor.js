@@ -2,7 +2,7 @@
 ---
 name: Accessor
 description: Accessor
-requires: typeOf, Array, Function, String, Object
+requires: [typeOf, Array, Function, String, Object]
 provides: Accessor
 ...
 */
