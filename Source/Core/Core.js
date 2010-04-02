@@ -265,20 +265,11 @@ Object.extend('forEach', function(object, fn, bind){
 
 Object.each = Object.forEach;
 
-Array.implement({
-	
-	forEach: function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++){
-			if (i in this) fn.call(bind, this[i], i, this);
-		}
-	},
-	
-	each: function(fn, bind){
-		this.forEach(fn, bind);
-		return this;
+Array.implement('forEach', function(fn, bind){
+	for (var i = 0, l = this.length; i < l; i++){
+		if (i in this) fn.call(bind, this[i], i, this);
 	}
-	
-});
+}).alias('each', 'forEach');
 
 // Array & Object cloning
 
