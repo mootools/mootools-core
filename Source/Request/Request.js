@@ -1,9 +1,11 @@
-/*=
+/*
+---
 name: Request
-description: Powerful all purpose Request Class. Uses XMLHTTPRequest
-requires:
-  - Class
-=*/
+description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
+requires: [Chain, Events, Options, Browser, Element]
+provides: Request
+...
+*/
 
 this.Request = new Class({
 

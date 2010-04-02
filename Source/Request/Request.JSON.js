@@ -1,10 +1,11 @@
-/*=
+/*
+---
 name: Request.JSON
-description: Extends the Request class with additional methods to interact with JSON responses.
-requires: 
-  - Request
-  - JSON
-=*/
+description: Extends the basic Request Class with additional methods for sending and receiving JSON data.
+requires: [Request, JSON]
+provides: Request.JSON
+...
+*/
 
 Request.JSON = new Class({
 

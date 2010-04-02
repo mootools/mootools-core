@@ -1,8 +1,11 @@
-/*=
+/*
+---
 name: Request.HTML
-description: Extends the Request class with additional methods to interact with HTML responses.
+description: Extends the basic Request Class with additional methods for interacting with HTML responses.
 requires: Request
-=*/
+provides: Request.HTML
+...
+*/
 
 Request.HTML = new Class({
 
