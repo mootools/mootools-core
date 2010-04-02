@@ -1,28 +1,25 @@
 /*
 ---
 name: Slick.Finder
+description: The new, superfast css selector engine.
 provides: Slick.Finder
 requires: Slick.Parser
-
-description: The new, superfast css selector engine.
-
-license: MIT-style
-
-authors:
-- Thomas Aylott
-- Valerio Proietti
-- Fabio M Costa
-- Jan Kassens
 ...
 */
 
 (function(){
+	
+var exports = this;
 
 var local = {};
 
 var timeStamp = +new Date();
 
 // Feature / Bug detection
+
+local.isNativeCode = function(fn){
+	return (/\{\s*\[native code\]\s*\}/).test('' + fn);
+};
 
 local.isXML = function(document){
 	return (!!document.xmlVersion) || (!!document.xml) || (Object.prototype.toString.call(document) === '[object XMLDocument]') ||
@@ -31,7 +28,7 @@ local.isXML = function(document){
 
 local.setDocument = function(document){
 	
-	// filter out junk
+	// convert elements / window arguments to document. if document cannot be extrapolated, the function returns.
 	
 	if (document.nodeType === 9); // document
 	else if (document.ownerDocument) document = document.ownerDocument; // node
@@ -117,7 +114,7 @@ local.setDocument = function(document){
 	
 	// contains
 	
-	this.contains = (root && root.contains) ? function(context, node){ // FIXME: Add specs: local.contains should be different for xml and html documents?
+	this.contains = (root && this.isNativeCode(root.contains)) ? function(context, node){ // FIXME: Add specs: local.contains should be different for xml and html documents?
 		return context.contains(node);
 	} : (root && root.compareDocumentPosition) ? function(context, node){
 		return context === node || !!(context.compareDocumentPosition(node) & 16);
@@ -371,13 +368,10 @@ var combinators = {
 
 		if (!this.isXMLDocument){
 			getById: if (id){
-				var context = node;
-				if (!context.getElementById) context = this.document;
-				item = context.getElementById(id);
-				if (this.idGetsName && item && item.getAttributeNode('id').nodeValue != id){
+				item = this.document.getElementById(id);
+				if ((!item && node.all) || (this.idGetsName && item && item.getAttributeNode('id').nodeValue != id)){
 					// all[id] returns all the elements with that name or id inside node
 					// if theres just one it will return the element, else it will be a collection
-					if(!node.all) break getById;
 					children = node.all[id];
 					if (!children) return;
 					if (!children[0]) children = [children];
@@ -387,10 +381,11 @@ var combinators = {
 					} 
 					return;
 				}
-				// if the context is not in the dom
-				if (!item && !context.ownerDocument) break getById;
-				// if node === document then we don't need to use contains
-				if (!item || (node.nodeType !== 9 && !this.contains(node, item))) return;
+				if (!item){
+					// if the context is in the dom we return, else we will try GEBTN, breaking the getById label
+					if (this.contains(this.document.documentElement, node)) return;
+					else break getById;
+				} else if (this.document !== node && !this.contains(node, item)) return;
 				this.push(item, tag, null, parts);
 				return;
 			}
@@ -404,7 +399,7 @@ var combinators = {
 		getByTag: {
 			children = node.getElementsByTagName(tag);
 			if (!(children && children.length)) break getByTag;
-			if (!this.brokenStartGEBTN) tag = null;
+			if (!this.brokenStarGEBTN) tag = null;
 			var child;
 			for (i = 0; child = children[i++];) this.push(child, tag, id, parts);
 		}
@@ -673,9 +668,7 @@ local.override(/^\.[\w-]+$/, function(expression, found, first){ // class overri
 		nodes = this.getElementsByClassName(className);
 		if (first) return nodes[0] || null;
 		for (i = 0; node = nodes[i++];){
-			if (!hasOthers || !local.uniques[local.getUIDHTML(node)]){
-				found.push(node);
-			}
+			if (!hasOthers || !local.uniques[local.getUIDHTML(node)]) found.push(node);
 		}
 	} else {
 		var matchClass = new RegExp('(^|\\s)'+ Slick.escapeRegExp(className) +'(\\s|$)');
@@ -691,7 +684,7 @@ local.override(/^\.[\w-]+$/, function(expression, found, first){ // class overri
 });
 
 local.override(/^#[\w-]+$/, function(expression, found, first){ // ID override
-	if (local.isXMLDocument || !this.getElementById) return false;
+	if (local.isXMLDocument || this.nodeType != 9) return false;
 	
 	var id = expression.substring(1), el = this.getElementById(id);
 	if (!el) return found;
@@ -707,7 +700,7 @@ if (typeof document != 'undefined') local.setDocument(document);
 
 // Slick
 
-var Slick = local.Slick = this.Slick || {};
+var Slick = local.Slick = exports.Slick || {};
 
 Slick.version = '0.9dev';
 
@@ -800,6 +793,6 @@ Slick.isXML = local.isXML;
 
 // export Slick
 
-if (!this.Slick) this.Slick = Slick;
+if (!exports.Slick) exports.Slick = Slick;
 	
-})();
+}).apply((typeof exports != 'undefined') ? exports : this);
