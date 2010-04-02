@@ -138,10 +138,10 @@ var Type = this.Type = function(name, object){
 	return object;
 };
 
-var objectToString = Object.prototype.toString;
+var toString = Object.prototype.toString;
 
 Type.isEnumerable = function(item){
-	return (objectToString.call(item) != '[object Function]' && typeof item != 'string' && typeof item.length == 'number');
+	return (toString.call(item) != '[object Function]' && typeof item != 'string' && typeof item.length == 'number');
 };
 
 var hooks = {};
