@@ -16,6 +16,14 @@ Array.implement({
 		}
 		return results;
 	},
+	
+	pair: function(fn, bind){
+		var object = {};
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) object[this[i]] = fn.call(bind, this[i], i, this);
+		}
+		return obejct;
+	},
 
 	indexOf: function(item, from){
 		for (var l = this.length, i = (from < 0) ? Math.max(0, l + from) : from || 0; i < l; i++){
