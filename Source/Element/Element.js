@@ -324,14 +324,7 @@ Object.each(methods, function(getters, method){
 
 /* Element Storage */
 
-['store', 'retrieve', 'dump'].each(function(name){
-	
-	Element.implement(name, function(){
-		Object.append(this, new Storage);
-		return this[name].apply(this, arguments);
-	});
-	
-});
+Element.implement(Storage());
 
 /* Attribute Getters, Setters, using Slick */
 
@@ -411,14 +404,14 @@ Element.implement({
 	
 	set: function(name, value){
 		var setter = Element.lookupSetter(name = name.camelCase());
-		if (setter) setter.call(this, name, value);
+		if (setter) setter.call(this, value);
 		else if (value == null) this.removeAttribute(name);
 		else this.setAttribute(name, value);
 	}.overloadSetter(),
 
 	get: function(name){
 		var getter = Element.lookupGetter(name = name.camelCase());
-		if (getter) return getter.call(this, name);
+		if (getter) return getter.call(this);
 		return this.getAttribute(name);
 	}.overloadGetter()
 
