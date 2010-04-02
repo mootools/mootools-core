@@ -80,7 +80,6 @@ Function.from = function(item){
 
 Array.from = function(item){
 	if (item == null) return [];
-	
 	return (Type.isEnumerable(item)) ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
 };
 
@@ -139,8 +138,10 @@ var Type = this.Type = function(name, object){
 	return object;
 };
 
+var objectToString = Object.prototype.toString;
+
 Type.isEnumerable = function(item){
-	return (typeof item == 'object' && typeof item.length == 'number');
+	return (objectToString.call(item) != '[object Function]' && typeof item != 'string' && typeof item.length == 'number');
 };
 
 var hooks = {};
