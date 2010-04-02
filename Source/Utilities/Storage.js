@@ -7,7 +7,16 @@ provides: Storage
 ...
 */
 
+(function(global){
+
 this.Storage = function(){
+	
+	if (this === global) return ['store', 'retrieve', 'dump'].pair(function(name){
+		return function(){
+			Object.append(this, new Storage);
+			return this[name].apply(this, arguments);
+		};
+	});
 	
 	var storage = {};
 	
@@ -23,8 +32,10 @@ this.Storage = function(){
 
 	this.dump = function(){
 		delete storage[key];
-	}.overloadSetter();
+	}.overloadGetter();
 	
 	return this;
 	
 };
+
+})(this);
