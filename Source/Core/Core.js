@@ -80,7 +80,7 @@ Function.from = function(item){
 
 Array.from = function(item){
 	if (item == null) return [];
-	return (Type.isEnumerable(item)) ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
+	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -141,7 +141,7 @@ var Type = this.Type = function(name, object){
 var toString = Object.prototype.toString;
 
 Type.isEnumerable = function(item){
-	return (toString.call(item) != '[object Function]' && typeof item != 'string' && typeof item.length == 'number');
+	return (item != null && typeof item.length == 'number' && toString.call(item) != '[object Function]' );
 };
 
 var hooks = {};
