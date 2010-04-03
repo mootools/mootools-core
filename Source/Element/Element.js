@@ -21,7 +21,7 @@ var Element = function(tag, props){
 	
 	if (!props) props = {};
 	
-	if (!tag.test(/^\w+$/)){
+	if (!tag.test(/^[\w-]+$/)){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
@@ -679,6 +679,12 @@ Element.Properties.tag = {
 };
 
 Element.Properties.html = (function(){
+	
+	var tableTest = Function.stab(function(){
+		var table = document.createElement('table');
+		table.innerHTML = '<tr><td></td></tr>';
+	});
+	
 	var wrapper = document.createElement('div');
 
 	var translations = {
@@ -692,7 +698,7 @@ Element.Properties.html = (function(){
 	var html = {
 		set: function(){
 			var html = Array.flatten(arguments).join('');
-			var wrap = Browser.ie && translations[this.get('tag')];
+			var wrap = (!tableTest && translations[this.get('tag')]);
 			if (wrap){
 				var first = wrapper;
 				first.innerHTML = wrap[1] + html + wrap[2];
