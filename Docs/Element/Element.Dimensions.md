@@ -14,6 +14,7 @@ Custom Native to allow all of its methods to be used with any DOM element via th
 - Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
 
 
+
 Element Method: scrollTo {#Element:scrollTo}
 --------------------------------------------
 
@@ -39,7 +40,6 @@ The following method is also available on the Window object.
 
 
 
-
 Element Method: getSize {#Element:getSize}
 ------------------------------------------
 
@@ -62,6 +62,7 @@ The following method is also available on the Window object.
 ### Note:
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
+
 
 
 Element Method: getScrollSize {#Element:getScrollSize}
@@ -92,6 +93,7 @@ The following method is also available on the Window object.
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
 
+
 Element Method: getScroll {#Element:getScroll}
 ----------------------------------------------
 
@@ -114,6 +116,8 @@ The following method is also available on the Window object.
 ### Note:
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
+
+
 
 Element Method: getPosition {#Element:getPosition}
 --------------------------------------------------
@@ -144,6 +148,8 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
+
+
 Element Method: setPosition {#Element:setPosition}
 --------------------------------------------------
 
@@ -164,6 +170,8 @@ Sets the position of the element's *left* and *top* values to the x/y positions 
 ### Example
 
 	myElement.setPosition({x: 10, y: 100});
+
+
 
 Element Method: getCoordinates {#Element:getCoordinates}
 --------------------------------------------------------
@@ -205,6 +213,8 @@ relative - (*element*, optional) if set, the position will be relative to this e
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
+
+
 Element Method: getOffsetParent {#Element:getOffsetParent}
 ----------------------------------------------------------
 
@@ -218,10 +228,13 @@ Returns the parent of the element that is positioned, if there is one.
 
 * (*mixed*) If the element has a parent that is positioned, it returns that element, otherwise it returns *null*.
 
+
+
 [$]: /core/Element/Element#dollar
-[MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM/element.scrollLeft
-[MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM/element.scrollTop
-[MDC Element:offsetWidth]: http://developer.mozilla.org/en/docs/DOM/element.offsetWidth
-[MDC Element:offsetHeight]: http://developer.mozilla.org/en/docs/DOM/element.offsetHeight
-[MDC Element:scrollWidth]: http://developer.mozilla.org/en/docs/DOM/element.scrollWidth
-[MDC Element:scrollHeight]: http://developer.mozilla.org/en/docs/DOM/element.scrollHeight
+[MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft
+[MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM:element.scrollTop
+[MDC Element:offsetWidth]: http://developer.mozilla.org/en/docs/DOM:element.offsetWidth
+[MDC Element:offsetHeight]: http://developer.mozilla.org/en/docs/DOM:element.offsetHeight
+[MDC Element:scrollWidth]: http://developer.mozilla.org/en/docs/DOM:element.scrollWidth
+[MDC Element:scrollHeight]: http://developer.mozilla.org/en/docs/DOM:element.scrollHeight
+[Element.measure]: /more/Element/Element.Measure

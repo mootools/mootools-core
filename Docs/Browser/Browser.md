@@ -1,12 +1,19 @@
-Hash: Browser {#Browser}
-========================
+Object: Browser {#Browser}
+==========================
 
 Some browser properties are attached to the Browser Object for browser and platform detection.
 
 ### Features:
 
 * Browser.Features.xpath - (*boolean*) True if the browser supports DOM queries using XPath.
+* Browser.Features.air - (*boolean*)  True if the browser supports AIR.
+* Browser.Features.query - (*boolean*) True if the browser supports querySelectorAll.
+* Browser.Features.json - (*boolean*) True if the browser has a native JSON object.
 * Browser.Features.xhr - (*boolean*) True if the browser supports native XMLHTTP object.
+
+### Request:
+
+* Browser.Request - (*object*) The XMLHTTP object or equivalent.
 
 ### Engine:
 
@@ -19,6 +26,20 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
 * Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
+### Name:
+
+* Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
+* Browser.ie6 - (*boolean*) True if the current browser is Internet Explorer 6.
+* Browser.ie7 - (*boolean*) True if the current browser is Internet Explorer 7.
+* Browser.ie8 - (*boolean*) True if the current browser is Internet Explorer 8.
+* Browser.firefox - (*boolean*) True if the current browser is Firefox
+* Browser.firefox2 - (*boolean*) True if the current browser is Firefox 2
+* Browser.firefox3 - (*boolean*) True if the current browser is Firefox 3
+* Browser.safari - (*boolean*) True if the current browser is Safari
+* Browser.safari3 - (*boolean*) True if the current browser is Safari 3
+* Browser.safari4 - (*boolean*) True if the current browser is Safari 4
+* Browser.chrome - (*boolean*) True if the current browser is Chrome
+
 ### Platform:
 
 * Browser.Platform.mac - (*boolean*) True if the platform is Mac.
@@ -28,6 +49,6 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux nor iPod.
 * Browser.Platform.name - (*string*) The name of the platform.
 
-### Notes:
+### Plugins:
 
-- Engine detection is entirely feature-based.
+* Browser.Plugins.Flash - (*boolean*) - True if Flash is present.
