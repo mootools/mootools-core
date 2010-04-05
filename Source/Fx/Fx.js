@@ -1,18 +1,15 @@
 /*
 ---
 
-script: Fx.js
+name: Fx
 
 description: Contains the basic animation logic to be extended by all other Fx Classes.
 
 license: MIT-style license.
 
-requires:
-- /Chain
-- /Events
-- /Options
+requires: [Chain, Events, Options]
 
-provides: [Fx]
+provides: Fx
 
 ...
 */

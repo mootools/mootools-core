@@ -1,15 +1,13 @@
 /*
 ---
 
-script: Browser.js
+name: Browser
 
 description: The Browser Core. Contains Browser initialization, Window and Document, and the Browser Hash.
 
 license: MIT-style license.
 
-requires: 
-- /Native
-- /$util
+requires: [Native, $util]
 
 provides: [Browser, Window, Document, $exec]
 

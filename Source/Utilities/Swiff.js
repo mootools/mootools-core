@@ -1,20 +1,17 @@
 /*
 ---
 
-script: Swiff.js
+name: Swiff
 
 description: Wrapper for embedding SWF movies. Supports External Interface Communication.
 
 license: MIT-style license.
 
-credits: 
-- Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
+credits: Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
 
-requires:
-- /Options
-- /$util
+requires: [Options, $util]
 
-provides: [Swiff]
+provides: Swiff
 
 ...
 */

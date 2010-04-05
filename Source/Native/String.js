@@ -1,16 +1,15 @@
 /*
 ---
 
-script: String.js
+name: String
 
 description: Contains String Prototypes like camelCase, capitalize, test, and toInt.
 
 license: MIT-style license.
 
-requires:
-- /Native
+requires: Native
 
-provides: [String]
+provides: String
 
 ...
 */
