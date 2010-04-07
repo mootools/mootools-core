@@ -103,7 +103,7 @@ var getInstance = function(klass){
 };
 
 var enumerables = true;
-for (var i in {toString: 1}) enumerables = false;
+for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 
 Class.implement({implement: function(object){
