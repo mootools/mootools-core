@@ -41,7 +41,7 @@ if (Browser.Element){
 	Element.parent = Object;
 	
 	var protoElement = document.createElement('div');
-	protoElement.$typeOf = Function.from('element').hide();
+	protoElement.$family = Function.from('element').hide();
 	
 	Element.mirror(function(name, method){
 		protoElement[name] = method;
