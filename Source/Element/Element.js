@@ -272,23 +272,27 @@ var purge = function(){
 	collected = storage = null;
 };
 
-var attributes = {
+var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
+	'rowSpan', 'tabIndex', 'useMap'
+];
+var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readOnly', 'multiple', 'selected',
+	'noresize', 'defer'
+];
+ var attributes = {
 	'html': 'innerHTML',
 	'class': 'className',
 	'for': 'htmlFor',
-	'defaultValue': 'defaultValue',
-	'text': (Browser.ie || (Browser.safari && Browser.version <= 2)) ? 'innerText' : 'textContent'
+	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
 };
-var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
-var camels = [
-	'value', 'type', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
-	'rowSpan', 'tabIndex', 'useMap'
-];
+var readOnly = ['type'];
+var expandos = ['value', 'defaultValue'];
+var uriAttrs = /^href|src|usemap$/i;
 
 bools = bools.associate(bools);
+camels = camels.associate(camels.map(String.toLowerCase));
+readOnly = readOnly.associate(readOnly);
 
-Object.append(attributes, bools);
-Object.append(attributes, camels.associate(camels.map(String.toLowerCase)));
+Object.append(attributes, expandos.associate(expandos));
 
 var inserters = {
 
@@ -361,10 +365,12 @@ Element.implement({
 	},
 
 	setProperty: function(attribute, value){
-		var key = attributes[attribute];
+		attribute = camels[attribute] || attribute;
 		if (value == undefined) return this.removeProperty(attribute);
-		if (key && bools[attribute]) value = !!value;
-		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
+		var key = attributes[attribute];
+		key ? this[key] = value :
+			bools[attribute] ? this[attribute] = !!value :
+			this.setAttribute(attribute, '' + value);
 		return this;
 	},
 
@@ -374,9 +380,12 @@ Element.implement({
 	},
 
 	getProperty: function(attribute){
-		var key = attributes[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
-		return (bools[attribute]) ? !!value : (key) ? value : value || null;
+		attribute = camels[attribute] || attribute;
+		var key = attributes[attribute] || readOnly[attribute];
+		return key ? this[key] :
+			bools[attribute] ? !!this[attribute] :
+			(uriAttrs.test(attribute) ? this.getAttribute(attribute, 2) :
+			(key = this.getAttributeNode(attribute)) ? key.nodeValue : null) || null;
 	},
 
 	getProperties: function(){
@@ -385,8 +394,11 @@ Element.implement({
 	},
 
 	removeProperty: function(attribute){
+		attribute = camels[attribute] || attribute;
 		var key = attributes[attribute];
-		(key) ? this[key] = (key && bools[attribute]) ? false : '' : this.removeAttribute(attribute);
+		key ? this[key] = '' :
+			bools[attribute] ? this[attribute] = false :
+			this.removeAttribute(attribute);
 		return this;
 	},
 
