@@ -787,6 +787,8 @@ Slick.uniques = function(nodes, append){
 	return append;
 };
 
+Slick.uidOf = local.getUIDHTML;
+
 Slick.isXML = local.isXML;
 
 // export Slick
