@@ -230,7 +230,7 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 /*</block>*/
 
 if (window.$$ == null) Window.implement({$$: function(selector){
-	return Slick.search(this.document, selector);
+	return Slick.search(this.document, selector, new Elements);
 }});
 
 (function(){
