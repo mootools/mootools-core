@@ -125,7 +125,7 @@ Returns an array with the named method applied to the array's contents.
 ### Example:
 
 	var foo = [4, 8, 15, 16, 23, 42];
-	var bar = foo.call('limit', 10, 30);	// bar is now [10, 10, 15, 16, 23, 30]
+	var bar = foo.invoke('limit', 10, 30);	// bar is now [10, 10, 15, 16, 23, 30]
 
 
 

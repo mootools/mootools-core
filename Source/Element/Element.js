@@ -199,7 +199,7 @@ Window.implement({
 
 });
 
-[Document, Element].call('implement', {
+[Document, Element].invoke('implement', {
  
 	getElements: function(expression){
 		return Slick.search(this, expression, new Elements);
@@ -605,7 +605,7 @@ Element.implement({hasChild: function(element){
 
 /*</block>*/
 
-[Element, Window, Document].call('implement', {
+[Element, Window, Document].invoke('implement', {
 
 	addListener: function(type, fn){
 		if (type == 'unload'){

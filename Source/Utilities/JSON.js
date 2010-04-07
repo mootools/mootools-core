@@ -54,7 +54,7 @@ var JSON = new Hash(this.JSON && {
 
 });
 
-[Hash, Array, String, Number].call('implement', {
+[Hash, Array, String, Number].invoke('implement', {
 
 	toJSON: function(){
 		return JSON.encode(this);
