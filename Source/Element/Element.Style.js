@@ -106,7 +106,7 @@ Element.implement({
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
-			if ((Browser.opera) && String(result).test('px')) return result;
+			if (Browser.opera && String(result).test('px')) return result;
 			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
 		}
 		return result;

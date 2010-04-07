@@ -236,7 +236,7 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 (function(){
 
 var collected = {}, storage = {};
-var props = {input: 'checked', option: 'selected', textarea: (Browser.safari && Browser.version == 2) ? 'innerHTML' : 'value'};
+var props = {input: 'checked', option: 'selected', textarea: 'value'};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
@@ -282,7 +282,7 @@ var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'dis
 	'html': 'innerHTML',
 	'class': 'className',
 	'for': 'htmlFor',
-	'text': (Browser.Engine.trident || (Browser.safari && Browser.version <= 2)) ? 'innerText' : 'textContent'
+	'text': (Browser.Engine.trident) ? 'innerText' : 'textContent'
 };
 var readOnly = ['type'];
 var expandos = ['value', 'defaultValue'];
@@ -727,13 +727,3 @@ Element.Properties.html = (function(){
 
 	return html;
 })();
-
-if (Browser.safari && Browser.version <= 2) Element.Properties.text = {
-	get: function(){
-		if (this.innerText) return this.innerText;
-		var temp = this.ownerDocument.newElement('div', {html: this.innerHTML}).inject(this.ownerDocument.body);
-		var text = temp.innerText;
-		temp.destroy();
-		return text;
-	}
-};
