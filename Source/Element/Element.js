@@ -517,6 +517,7 @@ Element.implement({
 	},
 
 	getSelected: function(){
+		this.selectedIndex;
 		return new Elements(Array.from(this.options).filter(function(option){
 			return option.selected;
 		}));
