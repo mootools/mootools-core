@@ -521,7 +521,7 @@ Element.implement({
 		var queryString = [];
 		this.getElements('input, select, textarea').each(function(el){
 			var type = el.type;
-			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file') return;
+			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 			
 			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
 				// IE
