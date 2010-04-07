@@ -160,8 +160,8 @@ if (document.execCommand) try {
 	document.execCommand("BackgroundImageCache", false, true);
 } catch (e){}
 
-if (this.attachEvent) this.attachEvent('onunload', function(){
-	this.detachEvent('onunload', arguments.callee);
+if (this.attachEvent) this.attachEvent('onunload', function event(){
+	this.detachEvent('onunload', event);
 	document.head = document.html = document.window = null;
 });
 
