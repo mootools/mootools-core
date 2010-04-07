@@ -512,8 +512,8 @@ Element.implement({
 
 	getComputedStyle: function(property){
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var defaultView = this.getDocument().defaultView;
-		var computed = defaultView && defaultView.getComputedStyle(this, null);
+		var defaultView = Element.getDocument(this).defaultView,
+			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
 		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 	},
 
