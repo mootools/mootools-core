@@ -514,7 +514,7 @@ Element.implement({
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
 		var defaultView = this.getDocument().defaultView;
 		var computed = defaultView && defaultView.getComputedStyle(this, null);
-		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
+		return (computed) ? computed.getPropertyValue(property.contains('Float') ? 'float' : property.hyphenate()) : null;
 	},
 
 	toQueryString: function(){
