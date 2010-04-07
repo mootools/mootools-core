@@ -282,7 +282,7 @@ var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'dis
 	'html': 'innerHTML',
 	'class': 'className',
 	'for': 'htmlFor',
-	'text': (Browser.Engine.trident || (Browser.Engine.webkit && Browser.Engine.version < 420)) ? 'innerText' : 'textContent'
+	'text': (Browser.Engine.trident || (Browser.safari && Browser.version <= 2)) ? 'innerText' : 'textContent'
 };
 var readOnly = ['type'];
 var expandos = ['value', 'defaultValue'];
