@@ -16,11 +16,11 @@ provides: Array
 
 Array.implement({
 	
-	call: function(name){
+	invoke: function(methodName){
 		var args = Array.slice(arguments, 1), results = [];
 		for (var i = 0, j = this.length; i < j; i++){
 			var item = this[i];
-			results.push(item[name].apply(item, args));
+			results.push(item[methodName].apply(item, args));
 		}
 		return results;
 	},

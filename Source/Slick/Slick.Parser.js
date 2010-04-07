@@ -1,20 +1,14 @@
 /*
 ---
 name: Slick.Parser
-provides: Slick.Parser
 description: Standalone CSS3 Selector parser
-
-license: MIT-style
-
-authors:
-- Thomas Aylott
-- Valerio Proietti
-- Fabio M Costa
-- Jan Kassens
+provides: Slick.Parser
 ...
 */
 
 (function(){
+	
+var exports = this;
 	
 var parsed,
 	separatorIndex,
@@ -220,7 +214,7 @@ function parser(
 
 // Slick NS
 
-var Slick = this.Slick || {};
+var Slick = exports.Slick || {};
 
 Slick.parse = function(expression){
 	return parse(expression);
@@ -228,6 +222,6 @@ Slick.parse = function(expression){
 
 Slick.escapeRegExp = escapeRegExp;
 
-if (!this.Slick) this.Slick = Slick;
+if (!exports.Slick) exports.Slick = Slick;
 	
-})();
+}).apply((typeof exports != 'undefined') ? exports : this);
