@@ -154,7 +154,7 @@ Element.implement({
 });
 
 
-[Document, Window].call('implement', {
+[Document, Window].invoke('implement', {
 
 	getSize: function(){
 		if (Browser.opera || Browser.safari){
@@ -220,7 +220,7 @@ function getCompatElement(element){
 //aliases
 Element.alias({setPosition: 'position'}); //compatability
 
-[Window, Document, Element].call('implement', {
+[Window, Document, Element].invoke('implement', {
 
 	getHeight: function(){
 		return this.getSize().y;
