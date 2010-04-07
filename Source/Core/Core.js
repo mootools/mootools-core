@@ -166,7 +166,6 @@ var implement = function(name, method){
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
 	
 	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
-		if (item == null) return;
 		return method.apply(item, Array.prototype.slice.call(arguments, 1));
 	});
 	
