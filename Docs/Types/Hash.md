@@ -4,6 +4,11 @@ Native: Hash {#Hash}
 A custom Object ({}) implementation which does not account for prototypes when setting, getting, or iterating.
 Useful because in JavaScript, we cannot use Object.prototype. Instead, we can use Hash.prototype!
 
+### Notes
+
+MooTools 2.0 -core will not include Hash as a Native - it will however be supported as part of -More. Where possible, you should use native Objects.
+
+
 
 Hash Method: constructor {#Hash:constructor}
 --------------------------------------------
@@ -33,7 +38,7 @@ Hash Method: constructor {#Hash:constructor}
 
 
 Hash Method: each {#Hash:each}
--------------------------------
+------------------------------
 
 Calls a function for each key-value pair in the object.
 
@@ -152,6 +157,7 @@ Tests for the presence of a specified value in the Hash.
 	hash.hasValue('four'); //returns false
 
 
+
 Hash Method: extend {#Hash:extend}
 ----------------------------------
 
@@ -186,7 +192,7 @@ Extends this Hash with the key-value pairs from the object passed in.
 
 
 Hash Method: combine {#Hash:combine}
---------------------------------
+------------------------------------
 
 Combines this Hash with the key-value pairs of the object passed in. Does not allow duplicates (old values are **not** overwritten by new ones) and is case and type sensitive.
 
@@ -220,7 +226,7 @@ Combines this Hash with the key-value pairs of the object passed in. Does not al
 
 
 Hash Method: erase {#Hash:erase}
-----------------------------------
+--------------------------------
 
 Removes the specified key from the Hash.
 
@@ -427,6 +433,7 @@ Creates a new Hash with all of the elements of the Hash for which the provided f
 	}); //biggerThanTwenty now holds an object containing: {c: 30}
 
 
+
 Hash Method: every {#Hash:every}
 --------------------------------
 
@@ -462,6 +469,7 @@ Returns true if every value in the object satisfies the provided testing functio
 	var areAllBigEnough = ({a: 10, b: 4, c: 25, d: 100}).every(function(value, key){
 		return value > 20;
 	}); //areAllBigEnough = false
+
 
 
 Hash Method: some {#Hash:some}
@@ -506,7 +514,7 @@ Returns true if at least one value in the object satisfies the provided testing 
 Hash Method: getClean {#Hash:getClean}
 --------------------------------------
 
-Returns a a clean object from an Hash.
+Returns a clean object from an Hash.
 
 ### Syntax:
 
@@ -607,6 +615,7 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 
 	var myHash = new Hash({apple: "red", lemon: "yellow"});
 	myHash.toQueryString(); //returns "apple=red&lemon=yellow"
+
 
 
 Utility Functions {#Utility}

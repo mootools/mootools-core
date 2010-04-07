@@ -18,7 +18,7 @@ Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
 
-[Element, Window, Document].call('implement', {
+[Element, Window, Document].invoke('implement', {
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});

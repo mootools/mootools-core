@@ -1,5 +1,5 @@
-Native: Array {#Array}
-======================
+Array {#Array}
+==============
 
 A collection of Array methods.
 
@@ -8,52 +8,129 @@ A collection of Array methods.
 - [MDC Array][]
 
 
-Array Method: each {#Array:each}
----------------------------------
+Function: Array.each {#Array-each}
+----------------------------------
 
-Calls a function for each element in the array.
+Used to iterate through arrays, or iterables that are not regular arrays, such as built in getElementsByTagName calls or arguments of a function.
 
 ### Syntax:
 
-	myArray.each(fn[, bind]);
+	Array.each(iterable, fn[, bind]);
 
 ### Arguments:
 
-1. fn   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
-2. bind - (*object*, optional) The object to be used as 'this' in the function. For more information see [Function:bind][].
+1. iterable - (*array*) The array to iterate through.
+2. fn       - (*function*) The function to test for each element.
+3. bind     - (*object*, optional) The object to use as 'this' within the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
-##### Syntax
+##### Syntax:
 
-	fn(item, index, array)
+	fn(item, index, object)
 
 ##### Arguments:
 
 1. item   - (*mixed*) The current item in the array.
-2. index  - (*number*) The current item's index in the array.
-3. array  - (*array*) The actual array.
+2. index  - (*number*) The current item's index in the array. In the case of an object, it is passed the key of that item rather than the index.
+3. object - (*mixed*) The actual array/object.
 
-### Examples:
+### Example:
 
-	//Alerts "0 = apple", "1 = banana", and so on:
-	['apple', 'banana', 'lemon'].each(function(item, index){
-		alert(index + " = " + item);
-	}); //The optional second argument for binding isn't used here.
-
-
-### See Also:
-
-- [MDC Array:forEach][]
+	Array.each(['Sun','Mon','Tue'], function(day, index){
+		alert('name:' + day + ', index: ' + index);
+	}); //Alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
 
 ### Notes:
 
-- This method is only available for browsers without native [MDC Array:forEach][] support.
+This is an array-specific equivalent of *$each* from MooTools 1.2.
 
 
 
-Array Method: every {#Array:every}
+Function: Array.clone {#Array-clone}
+------------------------------------
+
+Returns a copy of the passed array.
+
+### Syntax:
+
+	var clone = Array.clone(myArray);
+	
+### Arguments:
+
+1. myArray	- (*array*) The array you wish to copy.
+
+### Returns:
+
+* (*array*) a copy of the passed array.
+
+### Example:
+
+	var myArray = ['red', 'blue', 'green'];
+	var otherArray = Array.clone(myArray);
+	
+	var myArray[0] = 'yellow';
+	
+	alert(myArray[0]);		// alerts 'yellow'
+	alert(otherArray[0])	// alerts 'red'
+
+### Notes:
+
+This is an array-specific equivalent of *$unlink* from MooTools 1.2.
+
+
+
+Function: Array.from {#Array-from}
 ----------------------------------
+
+Converts the argument passed in to an array if it is defined and not already an array.
+
+### Syntax:
+
+	var splatted = Array.from(obj);
+
+### Arguments:
+
+1. obj - (*mixed*) Any type of variable.
+
+### Returns:
+
+* (*array*) If the variable passed in is an array, returns the array. Otherwise, returns an array with the only element being the variable passed in.
+
+### Example:
+
+	Array.from('hello'); //Returns ['hello'].
+	Array.from(['a', 'b', 'c']); //Returns ['a', 'b', 'c'].
+
+
+
+Array method: call {#call}
+--------------------------
+
+Returns an array with the named method applied to the array's contents.
+
+### Syntax:
+
+	var arr = myArray.call(method, arg1[, arg2, arg3])
+	
+### Arguments:
+
+1. method - (*string*) The method to apply to each item in the array.
+2. arg1, arg2 - (*mixed*) Any number of arguments to pass to the named method.
+
+### Returns:
+
+* (*array*) A new array containing the results of the applied method.
+
+### Example:
+
+	var foo = [4, 8, 15, 16, 23, 42];
+	var bar = foo.invoke('limit', 10, 30);	// bar is now [10, 10, 15, 16, 23, 30]
+
+
+
+Array method: every {#every}
+----------------------------
 
 Returns true if every element in the array satisfies the provided testing function.
 This method is provided only for browsers without native [Array:every][] support.
@@ -96,8 +173,8 @@ This method is provided only for browsers without native [Array:every][] support
 
 
 
-Array Method: filter {#Array:filter}
-------------------------------------
+Array method: filter {#filter}
+------------------------------
 
 Creates a new array with all of the elements of the array for which the provided filtering function returns true.
 This method is provided only for browsers without native [Array:filter][] support.
@@ -138,8 +215,9 @@ This method is provided only for browsers without native [Array:filter][] suppor
 - [MDC Array:filter][]
 
 
-Array Method: clean {#Array:clean}
-------------------------------------
+
+Array method: clean {#clean}
+----------------------------
 
 Creates a new array with all of the elements of the array which are defined (i.e. not null or undefined).
 
@@ -157,8 +235,9 @@ Creates a new array with all of the elements of the array which are defined (i.e
 	myArray.clean() // returns [1, 0, true, false, "foo", ""]
 
 
-Array Method: indexOf {#Array:indexOf}
---------------------------------------
+
+Array method: indexOf {#indexOf}
+--------------------------------
 
 Returns the index of the first element within the array equal to the specified value, or -1 if the value is not found.
 This method is provided only for browsers without native [Array:indexOf][] support.
@@ -187,8 +266,8 @@ This method is provided only for browsers without native [Array:indexOf][] suppo
 
 
 
-Array Method: map {#Array:map}
-------------------------------
+Array method: map {#map}
+------------------------
 
 Creates a new array with the results of calling a provided function on every element in the array.
 This method is provided only for browsers without native [Array:map][] support.
@@ -230,8 +309,8 @@ This method is provided only for browsers without native [Array:map][] support.
 
 
 
-Array Method: some {#Array:some}
---------------------------------
+Array method: some {#some}
+--------------------------
 
 Returns true if at least one element in the array satisfies the provided testing function.
 This method is provided only for browsers without native [Array:some][] support.
@@ -273,8 +352,8 @@ This method is provided only for browsers without native [Array:some][] support.
 
 
 
-Array Method: associate {#Array:associate}
-------------------------------------------
+Array method: associate {#associate}
+------------------------------------
 
 Creates an object with key-value pairs based on the array of keywords passed in and the current content of the array.
 
@@ -299,8 +378,8 @@ Creates an object with key-value pairs based on the array of keywords passed in 
 
 
 
-Array Method: link {#Array:link}
---------------------------------
+Array method: link {#link}
+--------------------------
 
 Accepts an object of key / function pairs to assign values.
 
@@ -325,8 +404,8 @@ Accepts an object of key / function pairs to assign values.
 
 
 
-Array Method: contains {#Array:contains}
-----------------------------------------
+Array method: contains {#contains}
+----------------------------------
 
 Tests an array for the presence of an item.
 
@@ -354,32 +433,32 @@ Tests an array for the presence of an item.
 
 
 
-Array Method: extend {#Array:extend}
-------------------------------------
+Array method: append {#append}
+------------------------------
 
-Extends an array with all the items of another.
+Appends the passed array to the end of the current array.
 
 ### Syntax:
 
-	myArray.extend(array);
+	var myArray = myArray.append(otherArray);
 
 ### Arguments:
 
-1. array - (*array*) The array whose items should be extended into this array.
+1. otherArray - (*array*) The array containing values you wish to append.
 
 ### Returns:
 
-* (*array*) This array, extended.
+* (*array*) The original array including the new values.
 
 ### Examples:
 
-	var animals = ['Cow', 'Pig', 'Dog'];
-	animals.extend(['Cat', 'Dog']); //animals = ['Cow', 'Pig', 'Dog', 'Cat', 'Dog'];
+	var myOtherArray = ['green', 'yellow'];
+	['red', 'blue'].appemd(myOtherArray); //returns ['red', 'blue', 'green', 'yellow'];
 
 
 
-Array Method: getLast {#Array:getLast}
---------------------------------------
+Array method: getLast {#getLast}
+--------------------------------
 
 Returns the last item from the array.
 
@@ -398,8 +477,8 @@ Returns the last item from the array.
 
 
 
-Array Method: getRandom {#Array:getRandom}
-------------------------------------------
+Array method: getRandom {#getRandom}
+------------------------------------
 
 Returns a random item from the array.
 
@@ -417,8 +496,8 @@ Returns a random item from the array.
 
 
 
-Array Method: include {#Array:include}
---------------------------------------
+Array method: include {#include}
+--------------------------------
 
 Pushes the passed element into the array if it's not already present (case and type sensitive).
 
@@ -441,8 +520,8 @@ Pushes the passed element into the array if it's not already present (case and t
 
 
 
-Array Method: combine {#Array:combine}
-----------------------------------
+Array method: combine {#combine}
+--------------------------------
 
 Combines an array with all the items of another. Does not allow duplicates and is case and type sensitive.
 
@@ -465,8 +544,8 @@ Combines an array with all the items of another. Does not allow duplicates and i
 
 
 
-Array Method: erase {#Array:erase}
-------------------------------------
+Array method: erase {#erase}
+----------------------------
 
 Removes all occurrences of an item from the array.
 
@@ -489,8 +568,8 @@ Removes all occurrences of an item from the array.
 
 
 
-Array Method: empty {#Array:empty}
-----------------------------------
+Array method: empty {#empty}
+----------------------------
 
 Empties an array.
 
@@ -508,8 +587,8 @@ Empties an array.
 	myArray.empty(); //myArray is now []
 
 
-Array Method: flatten {#Array:flatten}
---------------------------------------
+Array method: flatten {#flatten}
+--------------------------------
 
 Flattens a multidimensional array into a single array.
 
@@ -528,8 +607,36 @@ Flattens a multidimensional array into a single array.
 
 
 
-Array Method: hexToRgb {#Array:hexToRgb}
-----------------------------------------
+Array method: pick {#pick}
+--------------------------
+Returns the first defined argument passed in, or null.
+
+### Syntax:
+
+	var picked = Array.pick(var1[, var2[, var3[, ...]]]);
+
+### Arguments:
+
+* (*mixed*) Any number of variables.
+
+### Returns:
+
+* (*mixed*) The first variable that is defined.
+* (*null*) If all variables passed in are `null` or `undefined`, returns `null`.
+
+### Example:
+
+	function say(infoMessage, errorMessage){
+		alert(Array.pick(errorMessage, infoMessage, 'There was no message supplied.'));
+	}
+	say(); //Alerts "There was no message supplied."
+    say("This is an info message."); //Alerts "This is an info message."
+    say("This message will be ignored.", "This is the error message."); //Alerts "This is the error message."
+
+
+
+Array method: hexToRgb {#hexToRgb}
+----------------------------------
 
 Converts an hexidecimal color value to RGB. Input array must be the following hexidecimal color format.
 \['FF','FF','FF'\]
@@ -554,12 +661,12 @@ Converts an hexidecimal color value to RGB. Input array must be the following he
 
 ### See Also:
 
-- [String:hexToRgb](/Native/String/#hexToRgb)
+- [String:hexToRgb](/Types/String/#hexToRgb)
 
 
 
-Array Method: rgbToHex {#Array:rgbToHex}
-----------------------------------------
+Array method: rgbToHex {#rgbToHex}
+----------------------------------
 
 Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
 \[255,255,255\], or \[255,255,255,1\]
@@ -585,57 +692,21 @@ Converts an RGB color value to hexidecimal. Input array must be in one of the fo
 
 ### See Also:
 
-- [String:rgbToHex](/Native/String/#rgbToHex)
+- [String:rgbToHex](/Types/String/#rgbToHex)
 
-Utility Functions {#Utility}
-============================
-
-
-Function: $A {#A}
------------------
-
-Creates a copy of an Array. Useful for applying the Array prototypes to iterable objects such as a DOM Node collection or the arguments object.
-
-### Syntax:
-
-	var copiedArray = $A(iterable);
-
-### Arguments:
-
-1. iterable - (array) The iterable to copy.
-
-### Returns:
-
-* (*array*) The new copied array.
-
-### Examples:
-
-#### Apply Array to arguments:
-
-	function myFunction(){
-		$A(arguments).each(function(argument, index){
-			alert(argument);
-		});
-	};
-	myFunction("One", "Two", "Three"); //Alerts "One", then "Two", then "Three".
-
-#### Copy an Array:
-
-	var anArray = [0, 1, 2, 3, 4];
-	var copiedArray = $A(anArray); //Returns [0, 1, 2, 3, 4].
 
 
 [Array]: /core/Native/Array
 [Function:bind]: /core/Native/Function/#Function:bind
-[MDC Array]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array
-[MDC Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
-[MDC Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
-[MDC Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
-[MDC Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
-[MDC Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
-[MDC Array:forEach]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/forEach
-[Array:every]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
-[Array:filter]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
-[Array:indexOf]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
-[Array:map]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
-[Array:some]: http://developer.mozilla.org/en/docs/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
+[MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
+[MDC Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
+[MDC Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
+[MDC Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
+[MDC Array:map]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
+[MDC Array:some]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
+[MDC Array:forEach]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/forEach
+[Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
+[Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
+[Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
+[Array:map]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
+[Array:some]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
