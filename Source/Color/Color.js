@@ -9,6 +9,13 @@ provides: Color
 
 (function(){
 
+var colors = {
+	maroon: '#800000', red: '#ff0000', orange: '#ffA500', yellow: '#ffff00', olive: '#808000',
+	purple: '#800080', fuchsia: "#ff00ff", white: '#ffffff', lime: '#00ff00', green: '#008000',
+	navy: '#000080', blue: '#0000ff', aqua: '#00ffff', teal: '#008080',
+	black: '#000000', silver: '#c0c0c0', gray: '#808080'
+};
+
 var Color = this.Color = function(color, type){
 	
 	if (color.isColor){
@@ -19,6 +26,12 @@ var Color = this.Color = function(color, type){
 		this.alpha = color.alpha;
 
 	} else {
+		
+		var namedColor = colors[color];
+		if (namedColor){
+			color = namedColor;
+			type = 'hex';
+		}
 
 		switch (typeof color){
 			case 'string': if (!type) type = (type = color.match(/^rgb|^hsb/)) ? type[0] : 'hex'; break;

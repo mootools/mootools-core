@@ -59,7 +59,7 @@ Function.prototype.implement = function(key, value){
 
 var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
-	if (item.$typeOf) return item.$typeOf();
+	if (item.$family) return item.$family();
 	
 	if (item.nodeName){
 		if (item.nodeType == 1) return 'element';
@@ -133,7 +133,7 @@ var Type = this.Type = function(name, object){
 	if (object == null) return null;
 	
 	if (name){
-		object.prototype.$typeOf = function(){
+		object.prototype.$family = function(){
 			return lower;
 		}.hide();
 		object.$name = lower;
@@ -253,7 +253,7 @@ new Type('Boolean', Boolean);
 
 // fixes NaN returning as Number
 
-Number.prototype.$typeOf = function(){
+Number.prototype.$family = function(){
 	return (isFinite(this)) ? 'number' : 'null';
 }.hide();
 

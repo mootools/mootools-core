@@ -114,7 +114,7 @@ Browser.extend({
 
 this.Window = this.$constructor = new Type('Window', function(){});
 
-this.$typeOf = Function.from('window').hide();
+this.$family = Function.from('window').hide();
 
 Window.mirror(function(name, method){
 	window[name] = method;
@@ -124,7 +124,7 @@ Object.append(window, new Storage);
 
 this.Document = document.$constructor = new Type('Document', function(){});
 
-document.$typeOf = Function.from('document').hide();
+document.$family = Function.from('document').hide();
 
 Document.mirror(function(name, method){
 	document[name] = method;
