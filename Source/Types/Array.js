@@ -22,7 +22,7 @@ Array.implement({
 		for (var i = 0, l = this.length; i < l; i++){
 			if (i in this) object[this[i]] = fn.call(bind, this[i], i, this);
 		}
-		return obejct;
+		return object;
 	},
 
 	indexOf: function(item, from){
