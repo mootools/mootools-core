@@ -517,7 +517,7 @@ Element.implement({
 	},
 
 	getSelected: function(){
-		this.selectedIndex; // safari 3.2.1
+		this.selectedIndex; // Safari 3.2.1
 		return new Elements(Array.from(this.options).filter(function(option){
 			return option.selected;
 		}));
