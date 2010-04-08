@@ -14,9 +14,15 @@ provides: Element.Style
 ...
 */
 
+(function(){
+
+var html = document.html;
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
+
+var hasFilter = (html.style.filter != null);
 
 Element.Properties.opacity = {
 
@@ -29,7 +35,7 @@ Element.Properties.opacity = {
 			}
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.ie) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		if (hasFilter) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = opacity;
 		this.store('opacity', opacity);
 	},
@@ -39,6 +45,8 @@ Element.Properties.opacity = {
 	}
 
 };
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
 
 Element.implement({
 
@@ -53,7 +61,7 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.set('opacity', parseFloat(value));
-			case 'float': property = (Browser.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		if (typeOf(value) != 'string'){
@@ -72,11 +80,11 @@ Element.implement({
 	getStyle: function(property){
 		switch (property){
 			case 'opacity': return this.get('opacity');
-			case 'float': property = (Browser.ie) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		var result = this.style[property];
-		if (!$chk(result)){
+		if (!$chk(result) || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
 				if (property != style) continue;
@@ -98,7 +106,7 @@ Element.implement({
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
-			if ((Browser.opera) && String(result).test('px')) return result;
+			if (Browser.opera && String(result).test('px')) return result;
 			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
 		}
 		return result;
@@ -146,3 +154,5 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
+
+})();
