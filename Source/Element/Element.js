@@ -523,13 +523,6 @@ Element.implement({
 		}));
 	},
 
-	getComputedStyle: function(property){
-		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var defaultView = Element.getDocument(this).defaultView,
-			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
-		return (computed) ? computed.getPropertyValue(property.contains('Float') ? 'float' : property.hyphenate()) : null;
-	},
-
 	toQueryString: function(){
 		var queryString = [];
 		this.getElements('input, select, textarea').each(function(el){
