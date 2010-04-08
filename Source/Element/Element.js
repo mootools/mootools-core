@@ -464,43 +464,43 @@ Element.implement({
 		return this.replaces(el).grab(el, where);
 	},
 
-	getPrevious: function(match, nocash){
+	getPrevious: function(match){
 		return document.id(Slick.find(this, '!+ ' + (match || '')));
 	},
 
-	getAllPrevious: function(match, nocash){
+	getAllPrevious: function(match){
 		return Slick.search(this, '!~ ' + (match || ''), new Elements);
 	},
 
-	getNext: function(match, nocash){
+	getNext: function(match){
 		return document.id(Slick.find(this, '~ ' + (match || '')));
 	},
 
-	getAllNext: function(match, nocash){
+	getAllNext: function(match){
 		return Slick.search(this, '~ ' + (match || ''), new Elements);
 	},
 
-	getFirst: function(match, nocash){
+	getFirst: function(match){
 		return document.id(Slick.find(this, '> ' + (match || '')));
 	},
 
-	getLast: function(match, nocash){
+	getLast: function(match){
 		return document.id(Slick.find(this, '!^ ' + (match || '')));
 	},
 
-	getParent: function(match, nocash){
+	getParent: function(match){
 		return document.id(Slick.find(this, '! ' + (match || '')));
 	},
 
-	getParents: function(match, nocash){
+	getParents: function(match){
 		return Slick.search(this, '! ' + (match || ''), new Elements);
 	},
 	
-	getSiblings: function(match, nocash){
+	getSiblings: function(match){
 		return Slick.search(this, '~~ ' + (match || ''), new Elements);
 	},
 
-	getChildren: function(match, nocash){
+	getChildren: function(match){
 		return Slick.search(this, '> ' + (match || ''), new Elements);
 	},
 
@@ -512,7 +512,7 @@ Element.implement({
 		return this.ownerDocument;
 	},
 
-	getElementById: function(id, nocash){
+	getElementById: function(id){
 		return document.id(Slick.find(this, '#' + id));
 	},
 
