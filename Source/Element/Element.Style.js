@@ -50,6 +50,13 @@ var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
 
 Element.implement({
 
+	getComputedStyle: function(property){
+		if (this.currentStyle) return this.currentStyle[property.camelCase()];
+		var defaultView = Element.getDocument(this).defaultView,
+			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
+		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : null;
+	},
+
 	setOpacity: function(value){
 		return this.set('opacity', value, true);
 	},

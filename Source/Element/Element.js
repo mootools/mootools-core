@@ -515,17 +515,10 @@ Element.implement({
 	},
 
 	getSelected: function(){
-		this.selectedIndex; // safari 3.2.1
+		this.selectedIndex; // Safari 3.2.1
 		return new Elements(Array.from(this.options).filter(function(option){
 			return option.selected;
 		}));
-	},
-
-	getComputedStyle: function(property){
-		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var defaultView = this.getDocument().defaultView;
-		var computed = defaultView && defaultView.getComputedStyle(this, null);
-		return (computed) ? computed.getPropertyValue(property.contains('Float') ? 'float' : property.hyphenate()) : null;
 	},
 
 	toQueryString: function(){
