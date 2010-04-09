@@ -16,7 +16,7 @@ this.MooTools = {
 // nil
 
 this.nil = function(item){
-	return (item != null && item != nil) ? item : null;
+	return (item != null) ? item : null;
 };
 
 Function.prototype.overloadSetter = function(usePlural){
@@ -75,6 +75,7 @@ var typeOf = this.typeOf = function(item){
 var instanceOf = this.instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
+	if (object == null) return constructor;
 	while (constructor){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
@@ -295,7 +296,7 @@ Object.extend('clone', function(object){
 
 // Object merging
 
-var mergeOne = function(source, key, current){
+var merge = function(source, key, current){
 	switch (typeOf(current)){
 		case 'object':
 			if (typeOf(source[key]) == 'object') Object.merge(source[key], current);
@@ -308,10 +309,10 @@ var mergeOne = function(source, key, current){
 };
 
 Object.extend('merge', function(source, k, v){
-	if (typeof k == 'string') return mergeOne(source, k, v);
+	if (typeof k == 'string') return merge(source, k, v);
 	for (var i = 1, l = arguments.length; i < l; i++){
 		var object = arguments[i];
-		for (var key in object) mergeOne(source, key, object[key]);
+		for (var key in object) merge(source, key, object[key]);
 	}
 	return source;
 });
@@ -321,5 +322,13 @@ Object.extend('merge', function(source, k, v){
 ['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(name){
 	Type(name);
 });
+
+// UID generator
+
+var UID = 0;
+
+this.uniqueID = function(){
+	return (Date.now() + (UID++)).toString(36);
+};
 
 })();
