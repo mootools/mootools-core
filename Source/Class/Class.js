@@ -71,49 +71,54 @@ var wrap = function(self, key, method){
 
 Class.extend(new Accessor('Mutator'));
 
-var implement = function(key, value, retain){
+var implement = function(key, value, retainOwner){
 	
 	var mutator = Class.matchMutator(key) || Class.lookupMutator(key);
 	
 	if (mutator){
 		value = mutator.call(this, value);
-		if (value == null) return this;
+		if (value == null) return;
 	}
 	
 	if (typeOf(value) == 'function'){
-		if (value.$hidden) return this;
-		this.prototype[key] = (retain) ? value : wrap(this, key, value);	
+		if (value.$hidden) return;
+		this.prototype[key] = (retainOwner) ? value : wrap(this, key, value);
 	} else {
 		Object.merge(this.prototype, key, value);
 	}
 	
+};
+
+var implementClass = function(item){
+	var instance = new item;
+	for (var key in instance) implement.call(this, key, instance[key], true);
+};
+
+Class.implement('implement', function(a, b){
+	
+	switch (typeOf(a)){
+		case 'string': implement.call(this, a, b); break;
+		case 'class': implementClass.call(this, a); break;
+		default: for (var p in a) implement.call(this, p, a[p]); break;
+	}
+	
 	return this;
 	
-};
-
-var getInstance = function(klass){
-	klass.$prototyping = true;
-	var proto = new klass;
-	delete klass.$prototyping;
-	return proto;
-};
-
-Class.implement('implement', (function(name, fn){
-	implement.call(this, name, fn);
-	return this;
-}).overloadSetter());
+});
 
 Class.defineMutators({
 
 	Extends: function(parent){
 		this.parent = parent;
-		this.prototype = getInstance(parent);
+		parent.$prototyping = true;
+		var proto = new parent;
+		delete parent.$prototyping;
+		this.prototype = proto;
 	},
 
 	Implements: function(items){
 		Array.from(items).each(function(item){
-			var instance = new item;
-			for (var key in instance) implement.call(this, key, instance[key], true);
+			this.implement(item);
 		}, this);
 	}
 
