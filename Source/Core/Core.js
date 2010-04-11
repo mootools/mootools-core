@@ -404,6 +404,12 @@ this.$chk = function(obj){
 	return !!(obj || obj === 0);
 };
 
+this.$clear = function(timer){
+	clearTimeout(timer);
+	clearInterval(timer);
+	return null;
+};
+
 this.$defined = function(obj){
 	return (obj != null);
 };
