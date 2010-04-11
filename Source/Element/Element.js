@@ -282,7 +282,10 @@ var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'dis
 	'html': 'innerHTML',
 	'class': 'className',
 	'for': 'htmlFor',
-	'text': (Browser.ie) ? 'innerText' : 'textContent'
+	'text': (function(){
+		var temp = document.createElement('div');
+		return (temp.innerText == null) ? 'textContent' : 'innerText';
+	})()
 };
 var readOnly = ['type'];
 var expandos = ['value', 'defaultValue'];
