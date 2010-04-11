@@ -84,6 +84,7 @@ Function.implement({
 
 /*<block name="compatibility" version="1.2">*/
 
+var $clear = Function.clear;
 var $try = Function.stab;
 
 /*</block>*/
