@@ -41,7 +41,7 @@ Array.implement({
 	},
 
 	clean: function(){
-		return this.filter($defined);
+		return this.filter(function(item){ return item != null; });
 	},
 
 	indexOf: function(item, from){
