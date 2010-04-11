@@ -20,9 +20,9 @@ var Fx = new Class({
 
 	options: {
 		/*
-		onStart: $empty,
-		onCancel: $empty,
-		onComplete: $empty,
+		onStart: function(){},
+		onCancel: function(){},
+		onComplete: function(){},
 		*/
 		fps: 50,
 		unit: false,

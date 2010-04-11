@@ -19,12 +19,12 @@ var Request = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: $empty,
-		onComplete: $empty,
-		onCancel: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
+		onRequest: function(){},
+		onComplete: function(){},
+		onCancel: function(){},
+		onSuccess: function(){},
+		onFailure: function(){},
+		onException: function(){},*/
 		url: '',
 		data: '',
 		headers: {
