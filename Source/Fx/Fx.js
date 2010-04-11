@@ -20,9 +20,9 @@ var Fx = new Class({
 
 	options: {
 		/*
-		onStart: function(){},
-		onCancel: function(){},
-		onComplete: function(){},
+		onStart: nil,
+		onCancel: nil,
+		onComplete: nil,
 		*/
 		fps: 50,
 		unit: false,
