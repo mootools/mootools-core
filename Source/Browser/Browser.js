@@ -160,10 +160,11 @@ if (document.execCommand) try {
 	document.execCommand("BackgroundImageCache", false, true);
 } catch (e){}
 
-if (this.attachEvent) this.attachEvent('onunload', function event(){
-	this.detachEvent('onunload', event);
+var unloadEvent = function(){
+	this.detachEvent('onunload', unloadEvent);
 	document.head = document.html = document.window = null;
-});
+};
+if (this.attachEvent) this.attachEvent('onunload', unloadEvent);
 
 // IE fails on collections and <select>.options (refers to <select>)
 var arrayFrom = Array.from;
