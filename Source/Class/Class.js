@@ -65,8 +65,7 @@ var reset = function(object){
 
 var wrap = function(self, key, method){
 	if (method.$origin) method = method.$origin;
-	
-	return function wrapper(){
+	var wrapper = function(){
 		if (method.$protected && this.$caller == null) throw new Error('The method "' + key + '" cannot be called.');
 		var caller = this.caller, current = this.$caller;
 		this.caller = current; this.$caller = wrapper;
@@ -74,13 +73,13 @@ var wrap = function(self, key, method){
 		this.$caller = current; this.caller = caller;
 		return result;
 	}.extend({$owner: self, $origin: method, $name: key});
+	return wrapper;
 };
 
 var implement = function(key, value, retain){
 	
 	if (Class.Mutators.hasOwnProperty(key)){
-		var mutator = Class.Mutators[key];
-		value = mutator.call(this, value);
+		value = Class.Mutators[key].call(this, value);
 		if (value == null) return this;
 	}
 	
