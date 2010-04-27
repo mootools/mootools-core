@@ -19,12 +19,12 @@ var Request = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: $empty,
-		onComplete: $empty,
-		onCancel: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
+		onRequest: nil,
+		onComplete: nil,
+		onCancel: nil,
+		onSuccess: nil,
+		onFailure: nil,
+		onException: nil,*/
 		url: '',
 		data: '',
 		headers: {

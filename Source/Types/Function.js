@@ -41,7 +41,7 @@ Function.implement({
 		return function(event){
 			var args = options.arguments;
 			args = (args != undefined) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
-			if (options.event) args = [event || window.event].extend(args);
+			if (options.event) args = [event || window.event].append(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
 			};

@@ -66,10 +66,10 @@ var reset = function(object){
 var wrap = function(self, key, method){
 	if (method.$origin) method = method.$origin;
 	
-	return function(){
+	return function wrapper(){
 		if (method.$protected && this.$caller == null) throw new Error('The method "' + key + '" cannot be called.');
 		var caller = this.caller, current = this.$caller;
-		this.caller = current; this.$caller = arguments.callee;
+		this.caller = current; this.$caller = wrapper;
 		var result = method.apply(this, arguments);
 		this.$caller = current; this.caller = caller;
 		return result;
@@ -103,7 +103,7 @@ var getInstance = function(klass){
 };
 
 var enumerables = true;
-for (var i in {toString: 1}) enumerables = false;
+for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 
 Class.implement({implement: function(object){

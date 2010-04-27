@@ -20,9 +20,9 @@ var Fx = new Class({
 
 	options: {
 		/*
-		onStart: $empty,
-		onCancel: $empty,
-		onComplete: $empty,
+		onStart: nil,
+		onCancel: nil,
+		onComplete: nil,
 		*/
 		fps: 50,
 		unit: false,

@@ -21,7 +21,7 @@ var Element = function(tag, props){
 	
 	if (!props) props = {};
 	
-	if (!tag.test(/^\w+$/)){
+	if (!tag.test(/^[\w-]+$/)){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
@@ -230,13 +230,13 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 /*</block>*/
 
 if (window.$$ == null) Window.implement({$$: function(selector){
-	return Slick.search(this.document, selector);
+	return Slick.search(this.document, selector, new Elements);
 }});
 
 (function(){
 
 var collected = {}, storage = {};
-var props = {input: 'checked', option: 'selected', textarea: (Browser.safari && Browser.version == 2) ? 'innerHTML' : 'value'};
+var props = {input: 'checked', option: 'selected', textarea: 'value'};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
@@ -272,23 +272,30 @@ var purge = function(){
 	collected = storage = null;
 };
 
-var attributes = {
+var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
+	'rowSpan', 'tabIndex', 'useMap'
+];
+var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readOnly', 'multiple', 'selected',
+	'noresize', 'defer'
+];
+ var attributes = {
 	'html': 'innerHTML',
 	'class': 'className',
 	'for': 'htmlFor',
-	'defaultValue': 'defaultValue',
-	'text': (Browser.ie || (Browser.safari && Browser.version <= 2)) ? 'innerText' : 'textContent'
+	'text': (function(){
+		var temp = document.createElement('div');
+		return (temp.innerText == null) ? 'textContent' : 'innerText';
+	})()
 };
-var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readonly', 'multiple', 'selected', 'noresize', 'defer'];
-var camels = [
-	'value', 'type', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
-	'rowSpan', 'tabIndex', 'useMap'
-];
+var readOnly = ['type'];
+var expandos = ['value', 'defaultValue'];
+var uriAttrs = /^href|src|usemap$/i;
 
 bools = bools.associate(bools);
+camels = camels.associate(camels.map(String.toLowerCase));
+readOnly = readOnly.associate(readOnly);
 
-Object.append(attributes, bools);
-Object.append(attributes, camels.associate(camels.map(String.toLowerCase)));
+Object.append(attributes, expandos.associate(expandos));
 
 var inserters = {
 
@@ -361,10 +368,11 @@ Element.implement({
 	},
 
 	setProperty: function(attribute, value){
-		var key = attributes[attribute];
+		attribute = camels[attribute] || attribute;
 		if (value == undefined) return this.removeProperty(attribute);
-		if (key && bools[attribute]) value = !!value;
-		(key) ? this[key] = value : this.setAttribute(attribute, '' + value);
+		var key = attributes[attribute];
+		(key) ? this[key] = value :
+			(bools[attribute]) ? this[attribute] = !!value : this.setAttribute(attribute, '' + value);
 		return this;
 	},
 
@@ -374,9 +382,12 @@ Element.implement({
 	},
 
 	getProperty: function(attribute){
-		var key = attributes[attribute];
-		var value = (key) ? this[key] : this.getAttribute(attribute, 2);
-		return (bools[attribute]) ? !!value : (key) ? value : value || null;
+		attribute = camels[attribute] || attribute;
+		var key = attributes[attribute] || readOnly[attribute];
+		return (key) ? this[key] :
+			(bools[attribute]) ? !!this[attribute] :
+			(uriAttrs.test(attribute) ? this.getAttribute(attribute, 2) :
+			(key = this.getAttributeNode(attribute)) ? key.nodeValue : null) || null;
 	},
 
 	getProperties: function(){
@@ -385,8 +396,10 @@ Element.implement({
 	},
 
 	removeProperty: function(attribute){
+		attribute = camels[attribute] || attribute;
 		var key = attributes[attribute];
-		(key) ? this[key] = (key && bools[attribute]) ? false : '' : this.removeAttribute(attribute);
+		(key) ? this[key] = '' :
+			(bools[attribute]) ? this[attribute] = false : this.removeAttribute(attribute);
 		return this;
 	},
 
@@ -452,43 +465,43 @@ Element.implement({
 		return this.replaces(el).grab(el, where);
 	},
 
-	getPrevious: function(match, nocash){
+	getPrevious: function(match){
 		return document.id(Slick.find(this, '!+ ' + (match || '')));
 	},
 
-	getAllPrevious: function(match, nocash){
+	getAllPrevious: function(match){
 		return Slick.search(this, '!~ ' + (match || ''), new Elements);
 	},
 
-	getNext: function(match, nocash){
+	getNext: function(match){
 		return document.id(Slick.find(this, '~ ' + (match || '')));
 	},
 
-	getAllNext: function(match, nocash){
+	getAllNext: function(match){
 		return Slick.search(this, '~ ' + (match || ''), new Elements);
 	},
 
-	getFirst: function(match, nocash){
+	getFirst: function(match){
 		return document.id(Slick.find(this, '> ' + (match || '')));
 	},
 
-	getLast: function(match, nocash){
+	getLast: function(match){
 		return document.id(Slick.find(this, '!^ ' + (match || '')));
 	},
 
-	getParent: function(match, nocash){
+	getParent: function(match){
 		return document.id(Slick.find(this, '! ' + (match || '')));
 	},
 
-	getParents: function(match, nocash){
+	getParents: function(match){
 		return Slick.search(this, '! ' + (match || ''), new Elements);
 	},
 	
-	getSiblings: function(match, nocash){
+	getSiblings: function(match){
 		return Slick.search(this, '~~ ' + (match || ''), new Elements);
 	},
 
-	getChildren: function(match, nocash){
+	getChildren: function(match){
 		return Slick.search(this, '> ' + (match || ''), new Elements);
 	},
 
@@ -500,28 +513,22 @@ Element.implement({
 		return this.ownerDocument;
 	},
 
-	getElementById: function(id, nocash){
+	getElementById: function(id){
 		return document.id(Slick.find(this, '#' + id));
 	},
 
 	getSelected: function(){
+		this.selectedIndex; // Safari 3.2.1
 		return new Elements(Array.from(this.options).filter(function(option){
 			return option.selected;
 		}));
-	},
-
-	getComputedStyle: function(property){
-		if (this.currentStyle) return this.currentStyle[property.camelCase()];
-		var defaultView = this.getDocument().defaultView;
-		var computed = defaultView && defaultView.getComputedStyle(this, null);
-		return (computed) ? computed.getPropertyValue([property.hyphenate()]) : null;
 	},
 
 	toQueryString: function(){
 		var queryString = [];
 		this.getElements('input, select, textarea').each(function(el){
 			var type = el.type;
-			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file') return;
+			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 			
 			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
 				// IE
@@ -679,6 +686,12 @@ Element.Properties.tag = {
 };
 
 Element.Properties.html = (function(){
+	
+	var tableTest = Function.stab(function(){
+		var table = document.createElement('table');
+		table.innerHTML = '<tr><td></td></tr>';
+	});
+	
 	var wrapper = document.createElement('div');
 
 	var translations = {
@@ -692,7 +705,7 @@ Element.Properties.html = (function(){
 	var html = {
 		set: function(){
 			var html = Array.flatten(arguments).join('');
-			var wrap = Browser.ie && translations[this.get('tag')];
+			var wrap = (!tableTest && translations[this.get('tag')]);
 			if (wrap){
 				var first = wrapper;
 				first.innerHTML = wrap[1] + html + wrap[2];
@@ -708,13 +721,3 @@ Element.Properties.html = (function(){
 
 	return html;
 })();
-
-if (Browser.safari && Browser.version <= 2) Element.Properties.text = {
-	get: function(){
-		if (this.innerText) return this.innerText;
-		var temp = this.ownerDocument.newElement('div', {html: this.innerHTML}).inject(this.ownerDocument.body);
-		var text = temp.innerText;
-		temp.destroy();
-		return text;
-	}
-};

@@ -35,15 +35,15 @@ Element.Events.domready = {
 
 	if (Browser.ie){
 		var temp = document.createElement('div');
-		(function(){
+		(function repeat(){
 			(Function.stab(function(){
 				temp.doScroll(); // Technique by Diego Perini
 				return document.id(temp).inject(document.body).set('html', 'temp').dispose();
-			})) ? domready() : arguments.callee.delay(50);
+			})) ? domready() : repeat.delay(50);
 		})();
 	} else if (Browser.safari && Browser.version < 4){
-		(function(){
-			(['loaded', 'complete'].contains(document.readyState)) ? domready() : arguments.callee.delay(50);
+		(function repeat(){
+			(['loaded', 'complete'].contains(document.readyState)) ? domready() : repeat.delay(50);
 		})();
 	} else {
 		document.addEvent('DOMContentLoaded', domready);
