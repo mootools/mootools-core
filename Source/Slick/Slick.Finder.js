@@ -8,8 +8,6 @@ requires: Slick.Parser
 */
 
 (function(){
-	
-var exports = this;
 
 var local = {};
 
@@ -112,6 +110,15 @@ local.setDocument = function(document){
 		
 	}
 	
+	// hasAttribute
+	
+	this.hasAttribute = (root && this.isNativeCode(root.hasAttribute)) ? function(node, attribute) {
+		return node.hasAttribute(attribute);
+	} : function(node, attribute) {
+		node = node.getAttributeNode(attribute);
+		return !!(node && (node.specified || node.nodeValue));
+	};
+	
 	// contains
 	
 	this.contains = (root && this.isNativeCode(root.contains)) ? function(context, node){ // FIXME: Add specs: local.contains should be different for xml and html documents?
@@ -154,6 +161,13 @@ local.search = function(context, expression, append, first){
 	
 	var found = this.found = (first) ? null : (append || []);
 	
+	// no need to pass a context if its the current document
+	
+	if (expression == null){
+		expression = context;
+		context = document; // the current document, not local.document, cause it would be confusing
+	}
+	
 	// context checks
 
 	if (!context) return found; // No context
@@ -165,6 +179,7 @@ local.search = function(context, expression, append, first){
 	var parsed, i, l;
 
 	this.positions = {};
+	this.positionsReverse = {};
 	var uniques = this.uniques = {};
 	
 	if (this.document !== (context.ownerDocument || context)) this.setDocument(context);
@@ -297,14 +312,44 @@ local.parseNTHArgument = function(argument){
 	var special = parsed[2] || false;
 	var a = parsed[1] || 1;
 	if (a == '-') a = -1;
-	var b = parseInt(parsed[3], 10) || 0;
-	switch (special){
-		case 'n':    parsed = {a: a, b: b}; break;
-		case 'odd':  parsed = {a: 2, b: 1}; break;
-		case 'even': parsed = {a: 2, b: 0}; break;
-		default:     parsed = {a: 0, b: a};
-	}
+	var b = +parsed[3] || 0;
+	parsed =
+		(special == 'n')	? {a: a, b: b} :
+		(special == 'odd')	? {a: 2, b: 1} :
+		(special == 'even')	? {a: 2, b: 0} : {a: 0, b: a};
+		
 	return (this.cacheNTH[argument] = parsed);
+};
+
+local.nthPseudo = function(child, sibling, positions, node, argument, nodeName){
+	var uid = this.getUID(node);
+	if (!this[positions][uid]){
+		var parent = node.parentNode;
+		if (!parent) return false;
+		var el = parent[child], count = 1;
+		if (nodeName){
+			do {
+				if (el.nodeName !== nodeName) continue;
+				this[positions][this.getUID(el)] = count++;
+			} while (el !== node && (el = el[sibling]));
+		} else {
+			do {
+				if (el.nodeType !== 1) continue;
+				this[positions][this.getUID(el)] = count++;
+			} while (el !== node && (el = el[sibling]));
+		}
+	}
+	argument = argument || 'n';
+	var parsed = this.cacheNTH[argument] || this.parseNTHArgument(argument);
+	if (!parsed) return false;
+	var a = parsed.a, b = parsed.b, pos = this[positions][uid];
+	if (a == 0) return b == pos;
+	if (a > 0){
+		if (pos < b) return false;
+	} else {
+		if (b < pos) return false;
+	}
+	return ((pos - b) % a) == 0;
 };
 
 local.pushArray = function(node, tag, id, selector, classes, attributes, pseudos){
@@ -351,11 +396,11 @@ local.matchSelector = function(node, tag, id, parts, classes, attributes, pseudo
 		part = parts[i];
 		if (!part) continue;
 		if (part.type == 'class' && classes !== false){
-			cls = ('className' in node) ? node.className : node.getAttribute('class');	
+			cls = ('className' in node) ? node.className : node.getAttribute('class');
 			if (!(cls && part.regexp.test(cls))) return false;
 		}
 		if (part.type == 'pseudo' && pseudos !== false && (!this.matchPseudo(node, part.key, part.value))) return false;
-		if (part.type == 'attribute' && attributes !== false && (!part.test(this.getAttribute(node, part.key)))) return false;
+		if (part.type == 'attribute' && attributes !== false && (part.operator ? !part.test(this.getAttribute(node, part.key)) : !this.hasAttribute(node, part.key))) return false;
 	}
 	return true;
 };
@@ -487,7 +532,8 @@ for (var c in combinators) local['combinator:' + c] = combinators[c];
 var pseudos = {
 
 	'empty': function(node){
-		return !node.firstChild && !(node.innerText || node.textContent || '').length;
+		var child = node.firstChild;
+		return !(child && child.nodeType == 1) && !(node.innerText || node.textContent || '').length;
 	},
 
 	'not': function(node, expression){
@@ -500,7 +546,8 @@ var pseudos = {
 	},
 
 	'first-child': function(node){
-		return this['pseudo:nth-child'](node, '1');
+		while ((node = node.previousSibling)) if (node.nodeType === 1) return false;
+		return true;
 	},
 
 	'last-child': function(node){
@@ -517,31 +564,27 @@ var pseudos = {
 	},
 
 	'nth-child': function(node, argument){
-		argument = (!argument) ? 'n' : argument;
-		var parsed = this.cacheNTH[argument] || this.parseNTHArgument(argument);
-		var uid = this.getUID(node);
-		if (!this.positions[uid]){
-			var count = 1;
-			while ((node = node.previousSibling)){
-				if (node.nodeType !== 1) continue;
-				var puid = this.getUID(node);
-				var position = this.positions[puid];
-				if (position != null){
-					count = position + count;
-					break;
-				}
-				count++;
-			}
-			this.positions[uid] = count;
-		}
-		var a = parsed.a, b = parsed.b, pos = this.positions[uid];
-		if (a == 0) return b == pos;
-		if (a > 0){
-			if (pos < b) return false;
-		} else {
-			if (b < pos) return false;
-		}
-		return ((pos - b) % a) == 0;
+		return this.nthPseudo('firstChild', 'nextSibling', 'positions', node, argument);
+	},
+	
+	'nth-last-child': function(node, argument){
+		return this.nthPseudo('lastChild', 'previousSibling', 'positionsReverse', node, argument);
+	},
+	
+	'nth-of-type': function(node, argument){
+		return this.nthPseudo('firstChild', 'nextSibling', 'positions', node, argument, node.nodeName);
+	},
+	
+	'nth-last-of-type': function(node, argument){
+		return this.nthPseudo('lastChild', 'previousSibling', 'positionsReverse', node, argument, node.nodeName);
+	},
+	
+	'first-of-type': function(node, argument){
+		return this['pseudo:nth-of-type'](node, '1');
+	},
+	
+	'last-of-type': function(node, argument){
+		return this['pseudo:nth-last-of-type'](node, '1');
 	},
 
 	// custom pseudos
@@ -700,7 +743,7 @@ if (typeof document != 'undefined') local.setDocument(document);
 
 // Slick
 
-var Slick = local.Slick = exports.Slick || {};
+var Slick = local.Slick = this.Slick || {};
 
 Slick.version = '0.9dev';
 
@@ -793,6 +836,6 @@ Slick.isXML = local.isXML;
 
 // export Slick
 
-if (!exports.Slick) exports.Slick = Slick;
+if (!this.Slick) this.Slick = Slick;
 	
-}).apply((typeof exports != 'undefined') ? exports : this);
+})();
