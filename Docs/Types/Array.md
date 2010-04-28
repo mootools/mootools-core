@@ -102,6 +102,10 @@ Converts the argument passed in to an array if it is defined and not already an 
 	Array.from('hello'); //Returns ['hello'].
 	Array.from(['a', 'b', 'c']); //Returns ['a', 'b', 'c'].
 
+### Notes:
+
+This is equivalent to *$splat* from MooTools 1.2.
+
 
 
 Array method: call {#call}
@@ -455,6 +459,10 @@ Appends the passed array to the end of the current array.
 	var myOtherArray = ['green', 'yellow'];
 	['red', 'blue'].appemd(myOtherArray); //returns ['red', 'blue', 'green', 'yellow'];
 
+### Notes:
+
+This is an array-specific equivalent of *$extend* from MooTools 1.2.
+
 
 
 Array method: getLast {#getLast}
@@ -633,12 +641,16 @@ Returns the first defined argument passed in, or null.
     say("This is an info message."); //Alerts "This is an info message."
     say("This message will be ignored.", "This is the error message."); //Alerts "This is the error message."
 
+### Notes:
+
+This is equivalent to *$pick* from MooTools 1.2.
+
 
 
 Array method: hexToRgb {#hexToRgb}
 ----------------------------------
 
-Converts an hexidecimal color value to RGB. Input array must be the following hexidecimal color format.
+Converts an hexadecimal color value to RGB. Input array must be the following hexadecimal color format.
 \['FF','FF','FF'\]
 
 ### Syntax:
@@ -668,7 +680,7 @@ Converts an hexidecimal color value to RGB. Input array must be the following he
 Array method: rgbToHex {#rgbToHex}
 ----------------------------------
 
-Converts an RGB color value to hexidecimal. Input array must be in one of the following RGB color formats.
+Converts an RGB color value to hexadecimal. Input array must be in one of the following RGB color formats.
 \[255,255,255\], or \[255,255,255,1\]
 
 ### Syntax:

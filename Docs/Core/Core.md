@@ -1,7 +1,7 @@
 Core {#Core}
 ============
 
-Core contains an handful of common sense functions used in [MooTools](http://mootools.net).
+Core contains a handful of common sense functions used in [MooTools](http://mootools.net).
 
 
 
@@ -178,6 +178,10 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var nestedObj2 = {a: {b: 2}};
 	var nested = Object.merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
 
+### Notes:
+
+This method is an object-specific equivalent of *$merge* from MooTools 1.2.
+
 
 
 Function: Object.clone {#Object-clone}
@@ -209,6 +213,7 @@ Returns a copy of an object.
 ### Notes:
 
 This is an object-specific equivalent of *$unlink* from MooTools 1.2.
+
 
 
 Function: Object.append {#Object-append}
@@ -243,8 +248,12 @@ Copies all the properties from the second object passed in to the first object p
 	Object.append(firstObj, secondObj);
 	//firstObj is now: {'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male'};
 
+### Notes:
 
- 
+This method is an object-specific equivalent of *$extend* from MooTools 1.2.
+
+
+
 ----------------------
 
  

@@ -78,9 +78,13 @@ Clears a Timeout or an Interval. Useful when working with [Function:delay](#dela
 - [Function:delay][]
 - [Function:periodical][]
 
+### Notes:
+
+This method is equivalent to *$clear* from MooTools 1.2.
 
 
-Function method: stab {#stab}
+
+Function method: Function.stab {#stab}
 -----------------------------
 
 Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
@@ -120,6 +124,10 @@ Tries to execute a number of functions. Returns immediately the return value of 
 	});
 
 	if (success) alert('yey!');
+
+### Notes:
+
+This method is an equivalent of *$try* from MooTools 1.2.
 
 
 

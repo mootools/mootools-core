@@ -264,7 +264,7 @@ Parses this string and returns a floating point number.
 String method: hexToRgb {#hexToRgb}
 -----------------------------------
 
-Converts a hexidecimal colour value to RGB. Input string must be in one of the following hexidecimal colour formats (with or without the hash).
+Converts a hexadecimal colour value to RGB. Input string must be in one of the following hexadecimal colour formats (with or without the hash).
 '#ffffff', #fff', 'ffffff', or 'fff'
 
 ### Syntax:
@@ -291,7 +291,7 @@ Converts a hexidecimal colour value to RGB. Input string must be in one of the f
 String method: rgbToHex {#rgbToHex}
 -----------------------------------
 
-Converts an RGB colour value to hexidecimal. Input string must be in one of the following RGB color formats.
+Converts an RGB colour value to hexadecimal. Input string must be in one of the following RGB color formats.
 "rgb(255,255,255)", or "rgba(255,255,255,1)"
 
 ### Syntax:
