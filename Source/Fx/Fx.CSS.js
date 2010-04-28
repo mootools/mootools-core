@@ -56,7 +56,7 @@ Fx.CSS = new Class({
 		(Math.min(from.length, to.length)).times(function(i){
 			computed.push({value: from[i].parser.compute(from[i].value, to[i].value, delta), parser: from[i].parser});
 		});
-		computed.$family = {name: 'fx:css:value'};
+		computed.$family = Function.from('fx:css:value');
 		return computed;
 	},
 
