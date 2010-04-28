@@ -1,5 +1,5 @@
-Native: String {#String}
-========================
+String {#String}
+================
 
 A collection of the String Object prototype methods.
 
@@ -9,8 +9,32 @@ A collection of the String Object prototype methods.
 
 
 
-String Method: test {#String:test}
-----------------------------------
+Function: String.from {#String-from}
+------------------------------------
+
+Returns the passed parameter as a String.
+
+### Syntax:
+
+	String.from(arg);
+
+### Arguments:
+
+1. arg - (*mixed*) The argument to return as a string.
+
+### Returns:
+
+* (*string*) The argument as a string.
+
+### Example:
+
+	String.from(2)	// returns '2'
+	String.from(true)	// returns 'true'
+
+
+
+String method: test {#test}
+---------------------------
 
 Searches for a match between the string and a regular expression.
 For more information see [MDC Regexp:test][].
@@ -41,8 +65,8 @@ For more information see [MDC Regexp:test][].
 
 
 
-String Method: contains {#String:contains}
-------------------------------------------
+String method: contains {#contains}
+-----------------------------------
 
 Checks to see if the string passed in is contained in this string.
 If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
@@ -69,8 +93,8 @@ If the separator parameter is passed, will check to see if the string is contain
 
 
 
-String Method: trim {#String:trim}
-----------------------------------
+String method: trim {#trim}
+---------------------------
 
 Trims the leading and trailing spaces off a string.
 
@@ -88,8 +112,8 @@ Trims the leading and trailing spaces off a string.
 
 
 
-String Method: clean {#String:clean}
-------------------------------------
+String method: clean {#clean}
+-----------------------------
 
 Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
@@ -107,8 +131,8 @@ Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
 
 
-String Method: camelCase {#String:camelCase}
---------------------------------------------
+String method: camelCase {#camelCase}
+-------------------------------------
 
 Converts a hyphenated string to a camelcased string.
 
@@ -126,8 +150,8 @@ Converts a hyphenated string to a camelcased string.
 
 
 
-String Method: hyphenate {#String:hyphenate}
---------------------------------------------
+String method: hyphenate {#hyphenate}
+-------------------------------------
 
 Converts a camelcased string to a hyphenated string.
 
@@ -145,8 +169,8 @@ Converts a camelcased string to a hyphenated string.
 
 
 
-String Method: capitalize {#String:capitalize}
-----------------------------------------------
+String method: capitalize {#capitalize}
+---------------------------------------
 
 Converts the first letter of each word in a string to uppercase.
 
@@ -164,8 +188,8 @@ Converts the first letter of each word in a string to uppercase.
 
 
 
-String Method: escapeRegExp {#String:escapeRegExp}
---------------------------------------------------
+String method: escapeRegExp {#escapeRegExp}
+-------------------------------------------
 
 Escapes all regular expression characters from the string.
 
@@ -183,8 +207,8 @@ Escapes all regular expression characters from the string.
 
 
 
-String Method: toInt {#String:toInt}
-------------------------------------
+String method: toInt {#toInt}
+-----------------------------
 
 Parses this string and returns a number of the specified radix or base.
 
@@ -212,8 +236,8 @@ Parses this string and returns a number of the specified radix or base.
 
 
 
-String Method: toFloat {#String:toFloat}
-----------------------------------------
+String method: toFloat {#toFloat}
+---------------------------------
 
 Parses this string and returns a floating point number.
 
@@ -237,10 +261,10 @@ Parses this string and returns a floating point number.
 
 
 
-String Method: hexToRgb {#String:hexToRgb}
-------------------------------------------
+String method: hexToRgb {#hexToRgb}
+-----------------------------------
 
-Converts a hexidecimal color value to RGB. Input string must be in one of the following hexidecimal color formats (with or without the hash).
+Converts a hexidecimal colour value to RGB. Input string must be in one of the following hexidecimal colour formats (with or without the hash).
 '#ffffff', #fff', 'ffffff', or 'fff'
 
 ### Syntax:
@@ -264,10 +288,10 @@ Converts a hexidecimal color value to RGB. Input string must be in one of the fo
 
 
 
-String Method: rgbToHex {#String:rgbToHex}
-------------------------------------------
+String method: rgbToHex {#rgbToHex}
+-----------------------------------
 
-Converts an RGB color value to hexidecimal. Input string must be in one of the following RGB color formats.
+Converts an RGB colour value to hexidecimal. Input string must be in one of the following RGB color formats.
 "rgb(255,255,255)", or "rgba(255,255,255,1)"
 
 ### Syntax:
@@ -280,7 +304,7 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 ### Returns:
 
-* (*string*) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input string is 0.
+* (*string*) A string representing the colour in hexadecimal, or transparent if the fourth value of rgba in the input string is 0.
 * (*array*) If the array flag is set, an array will be returned instead.
 
 ### Examples:
@@ -295,32 +319,8 @@ Converts an RGB color value to hexidecimal. Input string must be in one of the f
 
 
 
-String Method: stripScripts {#String:stripScripts}
-------------------------------------------
-
-Strips the String of its `<script>` tags and anything in between them.
-
-### Syntax:
-
-	myString.stripScripts([evaluate]);
-
-### Arguments:
-
-1. evaluate - (*boolean*, optional) If true is passed, the scripts within the String will be evaluated.
-
-### Returns:
-
-* (*string*) - The String without the stripped scripts.
-
-### Examples:
-
-	var myString = "<script>alert('Hello')</script>Hello, World.";
-	myString.stripScripts(); //Returns "Hello, World."
-	myString.stripScripts(true); //Alerts "Hello", then returns "Hello, World."
-
-
-String Method: substitute {#String:substitute}
-------------------------------------------
+String method: substitute {#substitute}
+---------------------------------------
 
 Substitutes keywords in a string using an object/array.
 Removes undefined keywords and ignores escaped keywords.
@@ -341,8 +341,33 @@ Removes undefined keywords and ignores escaped keywords.
 ### Examples:
 
 	var myString = "{subject} is {property_1} and {property_2}.";
-	var myObject = {subject: 'Jack Bauer', property_1: 'our lord', property_2: 'savior'};
-	myString.substitute(myObject); //Jack Bauer is our lord and savior
+	var myObject = {subject: 'Jack Bauer', property_1: 'our lord', property_2: 'saviour'};
+	myString.substitute(myObject); //Jack Bauer is our lord and saviour
+
+
+
+String method: stripScripts {#stripScripts}
+----------------------------------------------------
+
+Strips the String of its *<script>* tags and anything in between them.
+
+### Syntax:
+
+	myString.stripScripts([evaluate]);
+
+### Arguments:
+
+1. evaluate - (*boolean*, optional) If true is passed, the scripts within the String will be evaluated.
+
+### Returns:
+
+* (*string*) - The String without the stripped scripts.
+
+### Examples:
+
+	var myString = "<script>alert('Hello')</script>Hello, World.";
+	myString.stripScripts(); //Returns "Hello, World."
+	myString.stripScripts(true); //Alerts "Hello", then returns "Hello, World."
 
 
 
@@ -353,4 +378,5 @@ Removes undefined keywords and ignores escaped keywords.
 [MDC parseFloat]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Functions/parseFloat
 [MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
 [String:trim]: #String:trim
-[Array:rgbToHex]: /core/Native/Array/#Array:rgbToHex
+[Array:rgbToHex]: /core/Types/Array/#Array:rgbToHex
+[String:trim]: #String:trim

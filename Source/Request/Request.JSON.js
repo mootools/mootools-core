@@ -1,16 +1,15 @@
 /*
 ---
 
-script: Request.JSON.js
+name: Request.JSON
 
 description: Extends the basic Request Class with additional methods for sending and receiving JSON data.
 
 license: MIT-style license.
 
-requires:
-- /Request JSON
+requires: [Request, JSON]
 
-provides: [Request.HTML]
+provides: Request.JSON
 
 ...
 */

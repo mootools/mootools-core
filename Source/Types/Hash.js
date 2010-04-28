@@ -1,16 +1,15 @@
 /*
 ---
 
-script: Hash.js
+name: Hash
 
 description: Contains Hash Prototypes. Provides a means for overcoming the JavaScript practical impossibility of extending native Objects.
 
 license: MIT-style license.
 
-requires:
-- /Hash.base
+requires: Type
 
-provides: [Hash]
+provides: Hash
 
 ...
 */
@@ -121,7 +120,7 @@ Hash.implement({
 		Hash.each(this, function(value, key){
 			if (base) key = base + '[' + key + ']';
 			var result;
-			switch ($type(value)){
+			switch (typeOf(value)){
 				case 'object': result = Hash.toQueryString(value, key); break;
 				case 'array':
 					var qs = {};
@@ -140,4 +139,4 @@ Hash.implement({
 
 });
 
-Hash.alias({keyOf: 'indexOf', hasValue: 'contains'});
+Hash.alias({indexOf: 'keyOf', contains: 'hasValue'});

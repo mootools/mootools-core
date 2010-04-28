@@ -1,16 +1,15 @@
 /*
 ---
 
-script: Fx.Morph.js
+name: Fx.Morph
 
 description: Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules.
 
 license: MIT-style license.
 
-requires:
-- /Fx.CSS
+requires: Fx.CSS
 
-provides: [Fx.Morph]
+provides: Fx.Morph
 
 ...
 */
@@ -55,7 +54,7 @@ Element.Properties.morph = {
 	set: function(options){
 		var morph = this.retrieve('morph');
 		if (morph) morph.cancel();
-		return this.eliminate('morph').store('morph:options', $extend({link: 'cancel'}, options));
+		return this.eliminate('morph').store('morph:options', Object.append({link: 'cancel'}, options));
 	},
 
 	get: function(options){

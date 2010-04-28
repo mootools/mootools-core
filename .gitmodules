@@ -4,6 +4,9 @@
 [submodule "Tests/UnitTester"]
 	path = Tests/UnitTester
 	url = git://github.com/anutron/mootools-unittester.git
+[submodule "Packager"]
+	path = Packager
+	url = git://github.com/kamicane/packager.git
 [submodule "Specs"]
 	path = Specs
 	url = git://github.com/mootools/mootools-core-specs.git

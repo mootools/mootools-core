@@ -1,47 +1,59 @@
 /*
 ---
 
-script: Function.js
+name: Function
 
 description: Contains Function Prototypes like create, bind, pass, and delay.
 
 license: MIT-style license.
 
-requires:
-- /Native
-- /$util
+requires: Type
 
-provides: [Function]
+provides: Function
 
 ...
 */
 
-Function.implement({
-
-	extend: function(properties){
-		for (var property in properties) this[property] = properties[property];
-		return this;
+Function.extend({
+	
+	clear: function(timer){
+		clearInterval(timer);
+		clearTimeout(timer);
+		return null;
 	},
+	
+	stab: function(){
+		for (var i = 0, l = arguments.length; i < l; i++){
+			try {
+				return arguments[i]();
+			} catch (e){}
+		}
+		return null;
+	}
+	
+});
+
+Function.implement({
 
 	create: function(options){
 		var self = this;
 		options = options || {};
 		return function(event){
 			var args = options.arguments;
-			args = (args != undefined) ? $splat(args) : Array.slice(arguments, (options.event) ? 1 : 0);
-			if (options.event) args = [event || window.event].extend(args);
+			args = (args != undefined) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			if (options.event) args = [event || window.event].append(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
 			};
 			if (options.delay) return setTimeout(returns, options.delay);
 			if (options.periodical) return setInterval(returns, options.periodical);
-			if (options.attempt) return $try(returns);
+			if (options.attempt) return Function.stab(returns);
 			return returns();
 		};
 	},
 
 	run: function(args, bind){
-		return this.apply(bind, $splat(args));
+		return this.apply(bind, Array.from(args));
 	},
 
 	pass: function(args, bind){
@@ -69,3 +81,9 @@ Function.implement({
 	}
 
 });
+
+/*<block name="compatibility" version="1.2">*/
+
+var $try = Function.stab;
+
+/*</block>*/

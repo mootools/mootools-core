@@ -1,17 +1,15 @@
 /*
 ---
 
-script: Request.HTML.js
+name: Request.HTML
 
 description: Extends the basic Request Class with additional methods for interacting with HTML responses.
 
 license: MIT-style license.
 
-requires:
-- /Request
-- /Element
+requires: [Element, Request]
 
-provides: [Request.HTML]
+provides: Request.HTML
 
 ...
 */
@@ -33,9 +31,9 @@ Request.HTML = new Class({
 
 		var container = new Element('div');
 
-		return $try(function(){
+		return Function.stab(function(){
 			var root = '<root>' + text + '</root>', doc;
-			if (Browser.Engine.trident){
+			if (Browser.ie){
 				doc = new ActiveXObject('Microsoft.XMLDOM');
 				doc.async = false;
 				doc.loadXML(root);
@@ -67,7 +65,7 @@ Request.HTML = new Class({
 		if (options.filter) response.tree = response.elements.filter(options.filter);
 		if (options.update) document.id(options.update).empty().set('html', response.html);
 		else if (options.append) document.id(options.append).adopt(temp.getChildren());
-		if (options.evalScripts) $exec(response.javascript);
+		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
 	}
@@ -79,7 +77,7 @@ Element.Properties.load = {
 	set: function(options){
 		var load = this.retrieve('load');
 		if (load) load.cancel();
-		return this.eliminate('load').store('load:options', $extend({data: this, link: 'cancel', update: this, method: 'get'}, options));
+		return this.eliminate('load').store('load:options', Object.append({data: this, link: 'cancel', update: this, method: 'get'}, options));
 	},
 
 	get: function(options){
@@ -95,7 +93,7 @@ Element.Properties.load = {
 Element.implement({
 
 	load: function(){
-		this.get('load').send(Array.link(arguments, {data: Object.type, url: String.type}));
+		this.get('load').send(Array.link(arguments, {data: Type.isObject, url: Type.isString}));
 		return this;
 	}
 

@@ -1,7 +1,7 @@
 /*
 ---
 
-script: JSON.js
+name: JSON
 
 description: JSON encoder and decoder.
 
@@ -9,14 +9,9 @@ license: MIT-style license.
 
 See Also: <http://www.json.org/>
 
-requires:
-- /Array
-- /String
-- /Number
-- /Function
-- /Hash
+requires: [Array, String, Number, Function, Hash]
 
-provides: [JSON]
+provides: JSON
 
 ...
 */
@@ -33,7 +28,7 @@ var JSON = new Hash(this.JSON && {
 	},
 
 	encode: function(obj){
-		switch ($type(obj)){
+		switch (typeOf(obj)){
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
 			case 'array':
@@ -46,23 +41,15 @@ var JSON = new Hash(this.JSON && {
 				});
 				return '{' + string + '}';
 			case 'number': case 'boolean': return String(obj);
-			case false: return 'null';
+			case 'null': return 'null';
 		}
 		return null;
 	},
 
 	decode: function(string, secure){
-		if ($type(string) != 'string' || !string.length) return null;
+		if (typeOf(string) != 'string' || !string.length) return null;
 		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 		return eval('(' + string + ')');
-	}
-
-});
-
-Native.implement([Hash, Array, String, Number], {
-
-	toJSON: function(){
-		return JSON.encode(this);
 	}
 
 });

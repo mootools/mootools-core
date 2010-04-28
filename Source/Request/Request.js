@@ -1,20 +1,15 @@
 /*
 ---
 
-script: Request.js
+name: Request
 
 description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
 
 license: MIT-style license.
 
-requires:
-- /Element
-- /Chain
-- /Events
-- /Options
-- /Browser
+requires: [Element, Chain, Events, Options, Browser]
 
-provides: [Request]
+provides: Request
 
 ...
 */
@@ -24,12 +19,12 @@ var Request = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: $empty,
-		onComplete: $empty,
-		onCancel: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
+		onRequest: nil,
+		onComplete: nil,
+		onCancel: nil,
+		onSuccess: nil,
+		onFailure: nil,
+		onException: nil,*/
 		url: '',
 		data: '',
 		headers: {
@@ -60,12 +55,12 @@ var Request = new Class({
 		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
-		$try(function(){
+		Function.stab(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
-		this.xhr.onreadystatechange = $empty;
+		this.xhr.onreadystatechange = function(){};
 		if (this.options.isSuccess.call(this, this.status)){
-			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
+			this.response = {text: (this.xhr.responseText || ''), xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
 		} else {
 			this.response = {text: null, xml: null};
@@ -78,7 +73,7 @@ var Request = new Class({
 	},
 
 	processScripts: function(text){
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
 		return text.stripScripts(this.options.evalScripts);
 	},
 
@@ -104,7 +99,7 @@ var Request = new Class({
 	},
 
 	getHeader: function(name){
-		return $try(function(){
+		return Function.stab(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},
@@ -122,14 +117,14 @@ var Request = new Class({
 		if (!this.check(options)) return this;
 		this.running = true;
 
-		var type = $type(options);
+		var type = typeOf(options);
 		if (type == 'string' || type == 'element') options = {data: options};
 
 		var old = this.options;
-		options = $extend({data: old.data, url: old.url, method: old.method}, options);
+		options = Object.append({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = String(options.url), method = options.method.toLowerCase();
 
-		switch ($type(data)){
+		switch (typeOf(data)){
 			case 'element': data = document.id(data).toQueryString(); break;
 			case 'object': case 'hash': data = Hash.toQueryString(data);
 		}
@@ -185,7 +180,7 @@ var Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
-		this.xhr.onreadystatechange = $empty;
+		this.xhr.onreadystatechange = function(){};
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
@@ -198,8 +193,8 @@ var Request = new Class({
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
-		var params = Array.link(arguments, {url: String.type, data: $defined});
-		return this.send($extend(params, {method: method}));
+		var params = Array.link(arguments, {url: Type.isString, data: $defined});
+		return this.send(Object.append(params, {method: method}));
 	};
 });
 
@@ -212,7 +207,7 @@ Element.Properties.send = {
 	set: function(options){
 		var send = this.retrieve('send');
 		if (send) send.cancel();
-		return this.eliminate('send').store('send:options', $extend({
+		return this.eliminate('send').store('send:options', Object.append({
 			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
 		}, options));
 	},

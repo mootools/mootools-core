@@ -1,5 +1,5 @@
-Native: Number {#Number}
-========================
+Number {#Number}
+================
 
 A collection of the Number Object methods.
 
@@ -12,8 +12,58 @@ A collection of the Number Object methods.
 Every Math method is mirrored in the Number object, both as prototype and generic.
 
 
-Number Method: limit {#Number:limit}
+
+Function: Number.from {#Number-from}
 ------------------------------------
+
+Returns the passed parameter as a Number, or null if not a number.
+
+### Syntax:
+
+	Number.from(arg);
+	
+### Arguments:
+
+1. arg - (*mixed*) The argument to return as a number.
+
+### Returns:
+
+* (*number*) The argument as a number.
+* (*null*) Returns null if the number cannot be converted.
+
+### Example:
+
+	Number.from('12')		// returns 12
+	Number.from('hello')	// returns null
+
+
+
+Function: Number.random {#Number-random}
+----------------------------------------
+
+Returns a random integer between the two passed in values.
+
+### Syntax:
+
+	var random = Number.random(min, max);
+
+### Arguments:
+
+1. min - (*number*) The minimum value (inclusive).
+2. max - (*number*) The maximum value (inclusive).
+
+### Returns:
+
+* (*number*) A random number between min and max.
+
+### Example:
+
+	alert(Number.random(5, 20)); //Alerts a random number between 5 and 20.
+
+
+
+Number method: limit {#limit}
+-----------------------------
 
 Limits this number between two bounds.
 
@@ -38,8 +88,8 @@ Limits this number between two bounds.
 
 
 
-Number Method: round {#Number:round}
-------------------------------------
+Number method: round {#round}
+-----------------------------
 
 Returns this number rounded to the specified precision.
 
@@ -67,8 +117,8 @@ Returns this number rounded to the specified precision.
 
 
 
-Number Method: times {#Number:times}
-------------------------------------
+Number method: times {#times}
+-----------------------------
 
 Executes the function passed in the specified number of times.
 
@@ -87,8 +137,8 @@ Executes the function passed in the specified number of times.
 
 
 
-Number Method: toFloat {#Number:toFloat}
-----------------------------------------
+Number method: toFloat {#toFloat}
+---------------------------------
 
 Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.
 
@@ -107,8 +157,8 @@ Returns this number as a float. Useful because toFloat must work on both Strings
 
 
 
-Number Method: toInt {#Number:toInt}
-------------------------------------
+Number method: toInt {#toInt}
+-----------------------------
 
 Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.
 

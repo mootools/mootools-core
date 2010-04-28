@@ -1,26 +1,33 @@
 /*
 ---
 
-script: Array.js
+name: Array
 
 description: Contains Array Prototypes like each, contains, and erase.
 
 license: MIT-style license.
 
-requires:
-- /$util
-- /Array.each
+requires: Type
 
-provides: [Array]
+provides: Array
 
 ...
 */
 
 Array.implement({
+	
+	invoke: function(methodName){
+		var args = Array.slice(arguments, 1), results = [];
+		for (var i = 0, j = this.length; i < j; i++){
+			var item = this[i];
+			results.push(item[methodName].apply(item, args));
+		}
+		return results;
+	},
 
 	every: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
-			if (!fn.call(bind, this[i], i, this)) return false;
+			if ((i in this) && !fn.call(bind, this[i], i, this)) return false;
 		}
 		return true;
 	},
@@ -28,13 +35,15 @@ Array.implement({
 	filter: function(fn, bind){
 		var results = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			if (fn.call(bind, this[i], i, this)) results.push(this[i]);
+			if ((i in this) && fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
 	},
 
 	clean: function(){
-		return this.filter($defined);
+		return this.filter(function(item){
+			return item != null;
+		});
 	},
 
 	indexOf: function(item, from){
@@ -47,13 +56,15 @@ Array.implement({
 
 	map: function(fn, bind){
 		var results = [];
-		for (var i = 0, l = this.length; i < l; i++) results[i] = fn.call(bind, this[i], i, this);
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) results[i] = fn.call(bind, this[i], i, this);
+		}
 		return results;
 	},
 
 	some: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
-			if (fn.call(bind, this[i], i, this)) return true;
+			if ((i in this) && fn.call(bind, this[i], i, this)) return true;
 		}
 		return false;
 	},
@@ -82,7 +93,7 @@ Array.implement({
 		return this.indexOf(item, from) != -1;
 	},
 
-	extend: function(array){
+	append: function(array){
 		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
 		return this;
 	},
@@ -92,7 +103,7 @@ Array.implement({
 	},
 
 	getRandom: function(){
-		return (this.length) ? this[$random(0, this.length - 1)] : null;
+		return (this.length) ? this[Number.random(0, this.length - 1)] : null;
 	},
 
 	include: function(item){
@@ -120,11 +131,18 @@ Array.implement({
 	flatten: function(){
 		var array = [];
 		for (var i = 0, l = this.length; i < l; i++){
-			var type = $type(this[i]);
-			if (!type) continue;
-			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments') ? Array.flatten(this[i]) : this[i]);
+			var type = typeOf(this[i]);
+			if (type == 'null') continue;
+			array = array.concat((type == 'array' || type == 'collection' || type == 'arguments' || instanceOf(this[i], Array)) ? Array.flatten(this[i]) : this[i]);
 		}
 		return array;
+	},
+	
+	pick: function(){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (this[i] != null) return this[i];
+		}
+		return null;
 	},
 
 	hexToRgb: function(array){
@@ -148,3 +166,13 @@ Array.implement({
 	}
 
 });
+
+/*<block name="compatibility" version="1.2">*/
+
+Array.alias({extend: 'append'});
+
+var $pick = function(){
+	return Array.from(arguments).pick();
+};
+
+/*</block>*/

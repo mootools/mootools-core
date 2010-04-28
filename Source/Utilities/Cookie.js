@@ -1,19 +1,18 @@
 /*
 ---
 
-script: Cookie.js
+name: Cookie
 
 description: Class for creating, reading, and deleting browser Cookies.
 
 license: MIT-style license.
 
 credits:
-- Based on the functions by Peter-Paul Koch (http://quirksmode.org).
+  - Based on the functions by Peter-Paul Koch (http://quirksmode.org).
 
-requires:
-- /Options
+requires: Options
 
-provides: [Cookie]
+provides: Cookie
 
 ...
 */
@@ -55,7 +54,7 @@ var Cookie = new Class({
 	},
 
 	dispose: function(){
-		new Cookie(this.key, $merge(this.options, {duration: -1})).write('');
+		new Cookie(this.key, Object.merge({}, this.options, {duration: -1})).write('');
 		return this;
 	}
 

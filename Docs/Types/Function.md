@@ -1,4 +1,4 @@
-Native: Function {#Function}
+Function {#Function}
 ============================
 
 Function Methods.
@@ -9,8 +9,122 @@ Function Methods.
 
 
 
-Function Method: create {#Function:create}
-------------------------------------------
+Function: Function.from {#Function-from}
+----------------------------------------
+
+If the passed argument is a function, it will return itself. Otherwise, it will return a function that returns the passed argument.
+
+### Syntax:
+
+	var foo = Function.from(obj);
+	
+### Arguments:
+
+1. obj - (*mixed*) If this argument is a function, it will simply return itself. Otherwise, an object you wish to convert into a function that returns the argument.
+
+### Returns:
+
+* (*function*) Either the passed function or an anonymous function that returns the passed argument.
+
+### Examples:
+
+	var fn = Function.from(42);
+	alert(fn());	// alerts '42'
+	
+	var fn2 = Function.from(fn);
+	alert(fn2());	// alerts '42'
+	
+### Notes:
+
+This function is equivalent to the following deprecated MooTools 1.2 methods:
+
+	var fn1 = Function.from();		// Equivalent to var fn1 = $empty();
+	var fn2 = Function.from(foo);	// Equivalent to var fn2 = $lambda(foo);
+
+
+
+Function method: extend {#extend}
+---------------------------------
+
+
+Function method: implement {#implement}
+---------------------------------------
+
+
+Function method: clear {#clear}
+-------------------------------
+
+Clears a Timeout or an Interval. Useful when working with [Function:delay](#delay) and [Function:periodical](#periodical).
+
+### Syntax:
+
+	myTimer.clear(timer);
+
+### Arguments:
+
+1. timer - (*number*) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
+
+### Returns:
+
+* (*null*) returns null.
+
+### Example:
+
+	var myTimer = myFunction.delay(5000); //Waits 5 seconds then executes myFunction.
+	myTimer = myTimer.clear(); //Cancels myFunction.
+
+### See also:
+
+- [Function:delay][]
+- [Function:periodical][]
+
+
+
+Function method: stab {#stab}
+-----------------------------
+
+Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
+
+### Syntax:
+
+	Function.stab(fn[, fn, fn, fn, ...]);
+
+### Arguments:
+
+* fn   - (*function*) The function to execute.
+
+### Returns:
+
+* (*mixed*) Standard return of the called function.
+* (*null*) `null` if all the passed functions fail.
+
+### Examples:
+
+	var result = Function.stab(function(){
+		return some.made.up.object;
+	}, function(){
+		return jibberish.that.doesnt.exists;
+	}, function(){
+		return false;
+	});
+
+	//result is false
+
+	var failure, success;
+
+	Function.stab(function(){
+		some.made.up.object = 'something';
+		success = true;
+	}, function(){
+		failure = true;
+	});
+
+	if (success) alert('yey!');
+
+
+
+Function method: create {#create}
+---------------------------------
 
 Base function for creating functional closures which is used by all other Function prototypes.
 
@@ -52,8 +166,47 @@ Base function for creating functional closures which is used by all other Functi
 
 
 
-Function Method: pass {#Function:pass}
---------------------------------------
+Function method: run {#run}
+---------------------------
+
+Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
+
+### Syntax:
+
+	var myFunctionResult = myFunction.run(args[, bind]);
+
+### Arguments:
+
+1. args - (*mixed*) An argument, or array of arguments to run the function with.
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
+
+### Returns:
+
+* (*mixed*) This Function's return value.
+
+### Examples:
+
+#### Simple Run:
+
+	var myFn = function(a, b, c){
+		return a + b + c;
+	}
+	var myArgs = [1,2,3];
+	myFn.run(myArgs); //Returns: 6
+
+
+#### Run With Binding:
+
+	var myFn = function(a, b, c) {
+		return a + b + c + this;
+	}
+	var myArgs = [1,2,3];
+	myFn.run(myArgs, 6); //Returns: 12
+
+
+
+Function method: pass {#pass}
+-----------------------------
 
 Returns a closure with arguments and bind.
 
@@ -88,41 +241,8 @@ Returns a closure with arguments and bind.
 
 
 
-Function Method: attempt {#Function:attempt}
---------------------------------------------
-
-Tries to execute the function.
-
-### Syntax:
-
-	var result = myFunction.attempt([args[, bind]]);
-
-### Arguments:
-
-1. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. bind - (*object*, optional) The object that the "this" of the function will refer to.
-
-### Returns:
-
-* (*mixed*) The function's return value or `null` if an exception is thrown.
-
-### Example:
-
-	var myObject = {
-		'cow': 'moo!'
-	};
-
-	var myFunction = function(){
-		for (var i = 0; i < arguments.length; i++){
-			if(!this[arguments[i]]) throw('doh!');
-		}
-	};
-	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = null
-
-
-
-Function Method: bind {#Function:bind}
---------------------------------------
+Function method: bind {#bind}
+-----------------------------
 
 Changes the scope of `this` within the target function to refer to the bind parameter.
 
@@ -151,8 +271,8 @@ Changes the scope of `this` within the target function to refer to the bind para
 
 
 
-Function Method: bindWithEvent {#Function:bindWithEvent}
---------------------------------------------------------
+Function method: bindWithEvent {#bindWithEvent}
+-----------------------------------------------
 
 Changes the scope of `this` within the target function to refer to the bind parameter. It also makes "space" for an event.
 This allows the function to be used in conjunction with [Element:addEvent][] and arguments.
@@ -188,8 +308,42 @@ This allows the function to be used in conjunction with [Element:addEvent][] and
 	}.bindWithEvent(Log, 100));
 
 
-Function Method: delay {#Function:delay}
-----------------------------------------
+
+Function method: attempt {#attempt}
+-----------------------------------
+
+Tries to execute the function.
+
+### Syntax:
+
+	var result = myFunction.attempt([args[, bind]]);
+
+### Arguments:
+
+1. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
+
+### Returns:
+
+* (*mixed*) The function's return value or `null` if an exception is thrown.
+
+### Example:
+
+	var myObject = {
+		'cow': 'moo!'
+	};
+
+	var myFunction = function(){
+		for (var i = 0; i < arguments.length; i++){
+			if(!this[arguments[i]]) throw('doh!');
+		}
+	};
+	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = null
+
+
+
+Function method: delay {#delay}
+-------------------------------
 
 Delays the execution of a function by a specified duration.
 
@@ -223,8 +377,8 @@ Delays the execution of a function by a specified duration.
 
 
 
-Function Method: periodical {#Function:periodical}
---------------------------------------------------
+Function method: periodical {#periodical}
+-----------------------------------------
 
 Executes a function in the specified intervals of time. Periodic execution can be stopped using the [$clear][] function.
 
@@ -252,45 +406,6 @@ Executes a function in the specified intervals of time. Periodic execution can b
 ### See Also:
 
 - [$clear][], [MDC setInterval][]
-
-
-
-Function Method: run {#Function:run}
-------------------------------------
-
-Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
-
-### Syntax:
-
-	var myFunctionResult = myFunction.run(args[, bind]);
-
-### Arguments:
-
-1. args - (*mixed*) An argument, or array of arguments to run the function with.
-2. bind - (*object*, optional) The object that the "this" of the function will refer to.
-
-### Returns:
-
-* (*mixed*) This Function's return value.
-
-### Examples:
-
-#### Simple Run:
-
-	var myFn = function(a, b, c){
-		return a + b + c;
-	}
-	var myArgs = [1,2,3];
-	myFn.run(myArgs); //Returns: 6
-
-
-#### Run With Binding:
-
-	var myFn = function(a, b, c) {
-		return a + b + c + this;
-	}
-	var myArgs = [1,2,3];
-	myFn.run(myArgs, 6); //Returns: 12
 
 
 

@@ -1,21 +1,22 @@
 /*
 ---
 
-script: Class.Extras.js
+name: Class.Extras
 
 description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
 
 license: MIT-style license.
 
-requires:
-- /Class
+requires: Class
 
-provides: [Chain, Events, Options]
+provides: [Class.Extras, Chain, Events, Options]
 
 ...
 */
 
-var Chain = new Class({
+(function(){
+
+this.Chain = new Class({
 
 	$chain: [],
 
@@ -35,13 +36,13 @@ var Chain = new Class({
 
 });
 
-var Events = new Class({
+var Events = this.Events = new Class({
 
 	$events: {},
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != $empty){
+		if (fn != nil/*<block name="compatibility" version="1.2">*/ && fn != $empty/*</block>*/){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
 			if (internal) fn.internal = true;
@@ -72,7 +73,7 @@ var Events = new Class({
 
 	removeEvents: function(events){
 		var type;
-		if ($type(events) == 'object'){
+		if (typeOf(events) == 'object'){
 			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
@@ -93,13 +94,13 @@ Events.removeOn = function(string){
 	});
 };
 
-var Options = new Class({
+this.Options = new Class({
 
 	setOptions: function(){
-		this.options = $merge.run([this.options].extend(arguments));
+		this.options = Object.merge.run([{}, this.options].extend(arguments));
 		if (!this.addEvent) return this;
 		for (var option in this.options){
-			if ($type(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+			if (typeOf(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
 			this.addEvent(option, this.options[option]);
 			delete this.options[option];
 		}
@@ -107,3 +108,5 @@ var Options = new Class({
 	}
 
 });
+
+})();

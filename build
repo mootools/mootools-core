@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+
+<?php
+
+$stderr = fopen('php://stderr', 'w');
+
+require __DIR__ . '/Packager/packager.php';
+
+$executable = array_shift($argv);
+$package = __DIR__;
+
+$pkg = new Packager($package);
+
+fwrite($stderr, "\nPackager is building $package\n\n");
+fwrite($stderr, "Included Components:\n");
+
+$files = (empty($argv)) ? $pkg->get_all_files() : $pkg->components_to_files($argv);
+
+foreach ($files as $file){
+	fwrite($stderr, "- $file: [" . implode(", ", $pkg->get_file_provides($file)) . "]\n");
+}
+
+fwrite($stderr, "\n");
+
+echo $pkg->build_from_components($argv);
+
+fclose($stderr);
+
+?>

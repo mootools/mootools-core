@@ -1,23 +1,28 @@
 /*
 ---
 
-script: Element.Style.js
+name: Element.Style
 
 description: Contains methods for interacting with the styles of Elements in a fashionable way.
 
 license: MIT-style license.
 
-requires:
-- /Element
+requires: Element
 
-provides: [Element.Style]
+provides: Element.Style
 
 ...
 */
 
+(function(){
+
+var html = document.html;
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
+
+var hasFilter = (html.style.filter != null);
 
 Element.Properties.opacity = {
 
@@ -30,7 +35,7 @@ Element.Properties.opacity = {
 			}
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		if (hasFilter) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = opacity;
 		this.store('opacity', opacity);
 	},
@@ -41,7 +46,16 @@ Element.Properties.opacity = {
 
 };
 
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+
 Element.implement({
+
+	getComputedStyle: function(property){
+		if (this.currentStyle) return this.currentStyle[property.camelCase()];
+		var defaultView = Element.getDocument(this).defaultView,
+			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
+		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : null;
+	},
 
 	setOpacity: function(value){
 		return this.set('opacity', value, true);
@@ -54,14 +68,14 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.set('opacity', parseFloat(value));
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
-		if ($type(value) != 'string'){
+		if (typeOf(value) != 'string'){
 			var map = (Element.Styles.get(property) || '@').split(' ');
-			value = $splat(value).map(function(val, i){
+			value = Array.from(value).map(function(val, i){
 				if (!map[i]) return '';
-				return ($type(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
+				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
 			}).join(' ');
 		} else if (value == String(Number(value))){
 			value = Math.round(value);
@@ -73,11 +87,11 @@ Element.implement({
 	getStyle: function(property){
 		switch (property){
 			case 'opacity': return this.get('opacity');
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		var result = this.style[property];
-		if (!$chk(result)){
+		if (!$chk(result) || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
 				if (property != style) continue;
@@ -91,7 +105,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.Engine.presto || (Browser.Engine.trident && !$chk(parseInt(result, 10)))){
+		if (Browser.opera || (Browser.ie && !$chk(parseInt(result, 10)))){
 			if (property.test(/^(height|width)$/)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
@@ -99,7 +113,7 @@ Element.implement({
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
-			if ((Browser.Engine.presto) && String(result).test('px')) return result;
+			if (Browser.opera && String(result).test('px')) return result;
 			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
 		}
 		return result;
@@ -147,3 +161,5 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
+
+})();

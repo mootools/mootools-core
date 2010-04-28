@@ -1,17 +1,15 @@
 /*
 ---
 
-script: Element.Event.js
+name: Element.Event
 
 description: Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events.
 
 license: MIT-style license.
 
-requires: 
-- /Element
-- /Event
+requires: [Element, Event]
 
-provides: [Element.Event]
+provides: Element.Event
 
 ...
 */
@@ -20,7 +18,7 @@ Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
 
-Native.implement([Element, Window, Document], {
+[Element, Window, Document].invoke('implement', {
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
@@ -77,7 +75,7 @@ Native.implement([Element, Window, Document], {
 
 	removeEvents: function(events){
 		var type;
-		if ($type(events) == 'object'){
+		if (typeOf(events) == 'object'){
 			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
@@ -134,7 +132,7 @@ var $check = function(event){
 	var related = event.relatedTarget;
 	if (related == undefined) return true;
 	if (related === false) return false;
-	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.contains(related));
 };
 
 Element.Events = new Hash({
@@ -150,7 +148,7 @@ Element.Events = new Hash({
 	},
 
 	mousewheel: {
-		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
 	}
 
 });

@@ -1,18 +1,17 @@
 /*
 ---
 
-script: Element.Dimensions.js
+name: Element.Dimensions
 
 description: Contains methods to work with size, scroll, or positioning of Elements and the window object.
 
 license: MIT-style license.
 
 credits:
-- Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
-- Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+  - Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
+  - Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
 
-requires:
-- /Element
+requires: [Element, Element.Style]
 
 provides: [Element.Dimensions]
 
@@ -61,7 +60,7 @@ Element.implement({
 	getOffsetParent: function(){
 		var element = this;
 		if (isBody(element)) return null;
-		if (!Browser.Engine.trident) return element.offsetParent;
+		if (!Browser.ie) return element.offsetParent;
 		while ((element = element.parentNode) && !isBody(element)){
 			if (styleString(element, 'position') != 'static') return element;
 		}
@@ -90,7 +89,7 @@ Element.implement({
 			position.x += element.offsetLeft;
 			position.y += element.offsetTop;
 
-			if (Browser.Engine.gecko){
+			if (Browser.firefox){
 				if (!borderBox(element)){
 					position.x += leftBorder(element);
 					position.y += topBorder(element);
@@ -100,14 +99,14 @@ Element.implement({
 					position.x += leftBorder(parent);
 					position.y += topBorder(parent);
 				}
-			} else if (element != this && Browser.Engine.webkit){
+			} else if (element != this && Browser.safari){
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 			}
 
 			element = element.offsetParent;
 		}
-		if (Browser.Engine.gecko && !borderBox(this)){
+		if (Browser.firefox && !borderBox(this)){
 			position.x -= leftBorder(this);
 			position.y -= topBorder(this);
 		}
@@ -155,10 +154,10 @@ Element.implement({
 });
 
 
-Native.implement([Document, Window], {
+[Document, Window].invoke('implement', {
 
 	getSize: function(){
-		if (Browser.Engine.presto || Browser.Engine.webkit){
+		if (Browser.opera || Browser.safari){
 			var win = this.getWindow();
 			return {x: win.innerWidth, y: win.innerHeight};
 		}
@@ -219,9 +218,9 @@ function getCompatElement(element){
 })();
 
 //aliases
-Element.alias('setPosition', 'position'); //compatability
+Element.alias({setPosition: 'position'}); //compatability
 
-Native.implement([Window, Document, Element], {
+[Window, Document, Element].invoke('implement', {
 
 	getHeight: function(){
 		return this.getSize().y;

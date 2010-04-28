@@ -14,6 +14,7 @@ Custom Native to allow all of its methods to be used with any DOM element via th
 - Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
 
 
+
 Element Method: scrollTo {#Element:scrollTo}
 --------------------------------------------
 
@@ -36,7 +37,6 @@ The following method is also available on the Window object.
 ### See Also:
 
 - [MDC Element:scrollLeft][], [MDC Element:scrollTop][]
-
 
 
 
@@ -115,6 +115,7 @@ The following method is also available on the Window object.
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
+
 Element Method: getPosition {#Element:getPosition}
 --------------------------------------------------
 
@@ -144,6 +145,7 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
+
 Element Method: setPosition {#Element:setPosition}
 --------------------------------------------------
 
@@ -164,6 +166,8 @@ Sets the position of the element's *left* and *top* values to the x/y positions 
 ### Example
 
 	myElement.setPosition({x: 10, y: 100});
+
+
 
 Element Method: getCoordinates {#Element:getCoordinates}
 --------------------------------------------------------
@@ -205,6 +209,7 @@ relative - (*element*, optional) if set, the position will be relative to this e
 
 If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
+
 Element Method: getOffsetParent {#Element:getOffsetParent}
 ----------------------------------------------------------
 
@@ -217,6 +222,8 @@ Returns the parent of the element that is positioned, if there is one.
 ### Returns
 
 * (*mixed*) If the element has a parent that is positioned, it returns that element, otherwise it returns *null*.
+
+
 
 [$]: /core/Element/Element#dollar
 [MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft

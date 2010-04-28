@@ -1,17 +1,15 @@
 /*
 ---
 
-script: Number.js
+name: Number
 
 description: Contains Number Prototypes like limit, round, times, and ceil.
 
 license: MIT-style license.
 
-requires:
-- /Native
-- /$util
+requires: Type
 
-provides: [Number]
+provides: Number
 
 ...
 */
@@ -23,7 +21,7 @@ Number.implement({
 	},
 
 	round: function(precision){
-		precision = Math.pow(10, precision || 0);
+		precision = Math.pow(10, precision || 0).toFixed(precision < 0 ? -precision : 0);
 		return Math.round(this * precision) / precision;
 	},
 
@@ -41,13 +39,13 @@ Number.implement({
 
 });
 
-Number.alias('times', 'each');
+Number.alias({each: 'times'});
 
 (function(math){
 	var methods = {};
 	math.each(function(name){
 		if (!Number[name]) methods[name] = function(){
-			return Math[name].apply(null, [this].concat($A(arguments)));
+			return Math[name].apply(null, [this].concat(Array.from(arguments)));
 		};
 	});
 	Number.implement(methods);
