@@ -14,6 +14,16 @@ $pkg = new Packager($package);
 fwrite($stderr, "\nPackager is building $package\n\n");
 fwrite($stderr, "Included Components:\n");
 
+$no_compat = false;
+
+foreach ($argv as $arg){
+	if ($arg == '-1.2compat'){
+		array_erase($argv, $arg);
+		$no_compat = true;
+		break;
+	}
+}
+
 $files = (empty($argv)) ? $pkg->get_all_files() : $pkg->components_to_files($argv);
 
 foreach ($files as $file){
@@ -22,7 +32,11 @@ foreach ($files as $file){
 
 fwrite($stderr, "\n");
 
-echo $pkg->build_from_components($argv);
+$output = $pkg->build_from_components($argv);
+
+if ($no_compat) $output = preg_replace("%//=1\.2compat+.*///=%sU", '', $output);
+
+echo $output;
 
 fclose($stderr);
 
