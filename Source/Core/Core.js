@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 this.MooTools = {
 	version: '1.3b1.1',
-	build: '%build%'
+	build: '46ffd8e5f27aae417463d1909686cffdfefcaf18'
 };
 
 // nil
