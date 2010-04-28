@@ -457,7 +457,7 @@ Appends the passed array to the end of the current array.
 ### Examples:
 
 	var myOtherArray = ['green', 'yellow'];
-	['red', 'blue'].appemd(myOtherArray); //returns ['red', 'blue', 'green', 'yellow'];
+	['red', 'blue'].append(myOtherArray); //returns ['red', 'blue', 'green', 'yellow'];
 
 ### Notes:
 
