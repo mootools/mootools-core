@@ -211,7 +211,7 @@ Window.implement({
  
 });
 
-/*<block name="compatibility" version="1.2">*/
+//=1.2compat
 
 if (window.$$ == null) Window.implement({$$: function(selector){
 	var elements = new Elements;
@@ -227,7 +227,7 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 	return elements;
 }});
 
-/*</block>*/
+///=
 
 if (window.$$ == null) Window.implement({$$: function(selector){
 	return Slick.search(this.document, selector, new Elements);
@@ -604,13 +604,13 @@ if (!document.createElement('div').contains) Element.implement(contains);
 
 })();
 
-/*<block name="compatibility" version="1.2">*/
+//=1.2compat
 
 Element.implement({hasChild: function(element){
 	return this !== element && this.contains(element);
 }});
 
-/*</block>*/
+///=
 
 [Element, Window, Document].invoke('implement', {
 

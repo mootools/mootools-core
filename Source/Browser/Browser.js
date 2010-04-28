@@ -181,7 +181,7 @@ try {
 	};
 }
 
-/*<block name="compatibility" version="1.2">*/
+//=1.2compat
 
 Browser.Engine = {};
 
@@ -238,6 +238,6 @@ if (Browser.name == 'unknown'){
 
 this.$exec = Browser.exec;
 
-/*</block>*/
+///=
 
 })();

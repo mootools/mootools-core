@@ -42,7 +42,11 @@ var Events = this.Events = new Class({
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != nil/*<block name="compatibility" version="1.2">*/ && fn != $empty/*</block>*/){
+		if (fn != nil
+			//=1.2compat
+			&& fn != $empty
+			///=
+		){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
 			if (internal) fn.internal = true;

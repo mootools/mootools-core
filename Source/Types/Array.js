@@ -167,7 +167,7 @@ Array.implement({
 
 });
 
-/*<block name="compatibility" version="1.2">*/
+//=1.2compat
 
 Array.alias({extend: 'append'});
 
@@ -175,4 +175,4 @@ var $pick = function(){
 	return Array.from(arguments).pick();
 };
 
-/*</block>*/
+///=
