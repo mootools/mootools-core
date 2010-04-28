@@ -82,8 +82,8 @@ Function.implement({
 
 });
 
-/*<block name="compatibility" version="1.2">*/
+//=1.2compat
 
 var $try = Function.stab;
 
-/*</block>*/
+///=
