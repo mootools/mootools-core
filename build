@@ -34,7 +34,7 @@ fwrite($stderr, "\n");
 
 $output = $pkg->build_from_components($argv);
 
-if ($no_compat) $output = preg_replace("%//=1\.2compat+.*///=%sU", '', $output);
+if ($no_compat) $output = preg_replace("%//=1\.2compat.*?///=%s", '', $output);
 
 echo $output;
 
