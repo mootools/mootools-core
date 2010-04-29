@@ -71,6 +71,18 @@ Function.implement({
 
 //=1.2compat
 
+Function.implement({
+	
+	bindWithEvent: function(bind, args){
+		var self = this;
+		if (args != null) args = Array.from(args);
+		return function(event){
+			return self.apply(bind, (args == null) ? arguments : [event].concat(args));
+		};
+	}
+	
+});
+
 var $try = Function.attempt;
 
 ///=
