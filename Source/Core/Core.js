@@ -262,7 +262,9 @@ Number.extend({random: function(min, max){
 // forEach, each
 
 Object.extend({forEach: function(object, fn, bind){
-	for (var key in object) fn.call(bind, object[key], key, object);
+	for (var key in object){
+		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+	}
 }});
 
 Object.each = Object.forEach;
@@ -346,9 +348,7 @@ var Hash = this.Hash = new Type('Hash', function(object){
 Hash.implement({
 
 	forEach: function(fn, bind){
-		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
-		}
+		Object.forEach(this, fn, bind);
 	},
 
 	getClean: function(){
