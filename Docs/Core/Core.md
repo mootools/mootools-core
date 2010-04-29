@@ -394,7 +394,7 @@ This method has been deprecated. Please use *Date.now()* instead.
 Function: $try {#try}
 ---------------------
 
-This method has been deprecated. Please use [Function.stab](/core/Types/Function/#Function-stab) instead.
+This method has been deprecated. Please use [Function.attempt](/core/Types/Function/#Function-attempt) instead.
 
 
 
