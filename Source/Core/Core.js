@@ -309,7 +309,7 @@ var mergeOne = function(source, key, current){
 Object.extend({
 	
 	merge: function(source, k, v){
-		if (typeof k == 'string') return mergeOne(source, k, v);
+		if (typeOf(k) == 'string') return mergeOne(source, k, v);
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var object = arguments[i];
 			for (var key in object) mergeOne(source, key, object[key]);
