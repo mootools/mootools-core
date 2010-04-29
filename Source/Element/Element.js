@@ -300,13 +300,13 @@ Object.append(attributes, expandos.associate(expandos));
 var inserters = {
 
 	before: function(context, element){
-		if (element.parentNode) element.parentNode.insertBefore(context, element);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element);
 	},
 
 	after: function(context, element){
-		if (!element.parentNode) return;
-		var next = element.nextSibling;
-		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element.nextSibling);
 	},
 
 	bottom: function(context, element){
@@ -314,8 +314,7 @@ var inserters = {
 	},
 
 	top: function(context, element){
-		var first = element.firstChild;
-		(first) ? element.insertBefore(context, first) : element.appendChild(context);
+		element.insertBefore(context, element.firstChild);
 	}
 
 };
