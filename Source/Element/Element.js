@@ -219,7 +219,7 @@ Window.implement({
 
 //=1.2compat
 
-if (window.$$ == null) Window.implement({$$: function(selector){
+if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
 	var args = Array.flatten(arguments);
@@ -231,13 +231,13 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 		}
 	}
 	return elements;
-}});
+});
 
 ///=
 
-if (window.$$ == null) Window.implement({$$: function(selector){
+if (window.$$ == null) Window.implement('$$', function(selector){
 	return Slick.search(this.document, selector, new Elements);
-}});
+});
 
 (function(){
 
@@ -354,21 +354,14 @@ Object.each(inserters, function(inserter, where){
 Element.implement({
 
 	set: function(prop, value){
-		switch (typeOf(prop)){
-			case 'object':
-				for (var p in prop) this.set(p, prop[p]);
-				break;
-			case 'string':
-				var property = Element.Properties[prop];
-				(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
-		}
-		return this;
-	},
+		var property = Element.Properties[prop];
+		(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
+	}.overloadSetter(),
 
 	get: function(prop){
 		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
-	},
+	}.overloadGetter(),
 
 	erase: function(prop){
 		var property = Element.Properties[prop];
@@ -615,9 +608,9 @@ if (!document.createElement('div').contains) Element.implement(contains);
 
 //=1.2compat
 
-Element.implement({hasChild: function(element){
+Element.implement('hasChild', function(element){
 	return this !== element && this.contains(element);
-}});
+});
 
 ///=
 

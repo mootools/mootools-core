@@ -101,18 +101,7 @@ var getInstance = function(klass){
 	return proto;
 };
 
-var enumerables = true;
-for (var i in {toString: 1}) enumerables = null;
-if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
-
-Class.implement({implement: function(object){
-	for (var key in object) implement.call(this, key, object[key]);
-	if (enumerables) for (var i = enumerables.length, name; i--;){
-		name = enumerables[i];
-		if (object.hasOwnProperty(name)) implement.call(this, name, object[name]);
-	}
-	return this;
-}});
+Class.implement('implement', implement.overloadSetter());
 
 Class.Mutators = {
 	
