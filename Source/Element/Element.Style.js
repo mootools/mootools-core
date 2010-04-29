@@ -144,6 +144,12 @@ Element.Styles = {
 	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
 };
 
+//=1.2compat
+
+Element.Styles = new Hash(Element.Styles);
+
+///=
+
 Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
 
 ['Top', 'Right', 'Bottom', 'Left'].each(function(direction){

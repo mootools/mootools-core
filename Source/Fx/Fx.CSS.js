@@ -142,3 +142,9 @@ Fx.CSS.Parsers = {
 	}
 
 };
+
+//=1.2compat
+
+Fx.CSS.Parsers = new Hash(Fx.CSS.Parsers);
+
+///=

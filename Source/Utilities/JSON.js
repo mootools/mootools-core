@@ -21,6 +21,12 @@ var JSON = !this.JSON ? {} : {
 	parse: JSON.parse
 };
 
+//=1.2compat
+
+JSON = new Hash(JSON);
+
+///=
+
 Object.append(JSON, {
 	
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},

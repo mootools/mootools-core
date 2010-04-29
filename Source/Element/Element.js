@@ -70,6 +70,12 @@ if (!Browser.Element){
 
 Element.Constructors = {};
 
+//=1.2compat
+
+Element.Constructors = new Hash;
+
+///=
+
 var IFrame = new Type('IFrame', function(){
 	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
 	var props = params.properties || {};
@@ -663,6 +669,12 @@ window.addListener('unload', purge);
 })();
 
 Element.Properties = {};
+
+//=1.2compat
+
+Element.Properties = new Hash;
+
+///=
 
 Element.Properties.style = {
 

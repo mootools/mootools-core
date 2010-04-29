@@ -95,6 +95,12 @@ Event.Keys = {
 	'delete': 46
 };
 
+//=1.2compat
+
+Event.Keys = new Hash(Event.Keys);
+
+///=
+
 Event.implement({
 
 	stop: function(){
