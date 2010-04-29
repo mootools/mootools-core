@@ -402,7 +402,7 @@ Hash.implement({
 
 });
 
-Hash.alias({each: 'forEach'});
+Hash.alias('each', 'forEach');
 
 Object.type = Type.isObject;
 
