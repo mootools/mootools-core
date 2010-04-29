@@ -339,6 +339,8 @@ Object.extend({
 	new Type(name);
 });
 
+//=1.2compat
+
 var Hash = this.Hash = new Type('Hash', function(object){
 	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
 	for (var key in object) this[key] = object[key];
@@ -370,8 +372,6 @@ Hash.implement({
 });
 
 Hash.alias({each: 'forEach'});
-
-//=1.2compat
 
 Object.type = Type.isObject;
 
@@ -416,7 +416,7 @@ this.$defined = function(obj){
 
 this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Object).each(iterable, fn, bind);
 };
 
 this.$empty = function(){};

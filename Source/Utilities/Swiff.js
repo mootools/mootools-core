@@ -10,7 +10,7 @@ license: MIT-style license.
 credits: 
   - Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
 
-requires: Options
+requires: [Options, Object]
 
 provides: Swiff
 
@@ -65,7 +65,7 @@ var Swiff = new Class({
 			vars[callBack] = 'Swiff.CallBacks.' + this.instance + '.' + callBack;
 		}
 
-		params.flashVars = Hash.toQueryString(vars);
+		params.flashVars = Object.toQueryString(vars);
 		if (Browser.ie){
 			properties.classid = 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000';
 			params.movie = path;

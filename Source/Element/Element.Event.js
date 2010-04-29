@@ -25,7 +25,7 @@ Element.Properties.events = {set: function(events){
 		events[type] = events[type] || {'keys': [], 'values': []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
-		var realType = type, custom = Element.Events.get(type), condition = fn, self = this;
+		var realType = type, custom = Element.Events[type], condition = fn, self = this;
 		if (custom){
 			if (custom.onAdd) custom.onAdd.call(this, fn);
 			if (custom.condition){
@@ -60,7 +60,7 @@ Element.Properties.events = {set: function(events){
 		if (pos == -1) return this;
 		events[type].keys.splice(pos, 1);
 		var value = events[type].values.splice(pos, 1)[0];
-		var custom = Element.Events.get(type);
+		var custom = Element.Events[type];
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
@@ -135,7 +135,7 @@ var $check = function(event){
 	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.contains(related));
 };
 
-Element.Events = new Hash({
+Element.Events = {
 
 	mouseenter: {
 		base: 'mouseover',
@@ -151,6 +151,6 @@ Element.Events = new Hash({
 		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
 	}
 
-});
+};
 
 })();

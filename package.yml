@@ -18,7 +18,7 @@ sources:
   - "Source/Types/String.js"
   - "Source/Types/Number.js"
   - "Source/Types/Function.js"
-  - "Source/Types/Hash.js"
+  - "Source/Types/Object.js"
   - "Source/Types/Event.js"
   - "Source/Browser/Browser.js"
   - "Source/Class/Class.js"

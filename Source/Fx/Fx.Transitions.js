@@ -47,13 +47,13 @@ Fx.Transition = function(transition, params){
 	});
 };
 
-Fx.Transitions = new Hash({
+Fx.Transitions = {
 
 	linear: function(zero){
 		return zero;
 	}
 
-});
+};
 
 Fx.Transitions.extend = function(transitions){
 	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);
