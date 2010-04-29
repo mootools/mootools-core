@@ -322,6 +322,8 @@ var inserters = {
 
 inserters.inside = inserters.bottom;
 
+//=1.2compat
+
 Hash.each(inserters, function(inserter, where){
 
 	where = where.capitalize();
@@ -341,6 +343,8 @@ Hash.each(inserters, function(inserter, where){
 	Element.implement(methods);
 
 });
+
+///=
 
 Element.implement({
 
