@@ -7,7 +7,7 @@ description: One of the most important items in MooTools. Contains the dollar fu
 
 license: MIT-style license.
 
-requires: [Window, Document, Array, String, Function, Number, Hash, Slick.Parser, Slick.Finder]
+requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder]
 
 provides: [Element, Elements, $, $$, Iframe]
 
@@ -15,7 +15,7 @@ provides: [Element, Elements, $, $$, Iframe]
 */
 
 var Element = function(tag, props){
-	var konstructor = Element.Constructors.get(tag);
+	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
 	
@@ -68,7 +68,13 @@ if (!Browser.Element){
 	});
 }
 
+Element.Constructors = {};
+
+//=1.2compat
+
 Element.Constructors = new Hash;
+
+///=
 
 var IFrame = new Type('IFrame', function(){
 	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
@@ -266,7 +272,7 @@ var clean = function(item, retain){
 };
 
 var purge = function(){
-	Hash.each(collected, clean);
+	Object.each(collected, clean);
 	if (Browser.ie) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
@@ -300,13 +306,13 @@ Object.append(attributes, expandos.associate(expandos));
 var inserters = {
 
 	before: function(context, element){
-		if (element.parentNode) element.parentNode.insertBefore(context, element);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element);
 	},
 
 	after: function(context, element){
-		if (!element.parentNode) return;
-		var next = element.nextSibling;
-		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element.nextSibling);
 	},
 
 	bottom: function(context, element){
@@ -314,15 +320,16 @@ var inserters = {
 	},
 
 	top: function(context, element){
-		var first = element.firstChild;
-		(first) ? element.insertBefore(context, first) : element.appendChild(context);
+		element.insertBefore(context, element.firstChild);
 	}
 
 };
 
 inserters.inside = inserters.bottom;
 
-Hash.each(inserters, function(inserter, where){
+//=1.2compat
+
+Object.each(inserters, function(inserter, where){
 
 	where = where.capitalize();
 	
@@ -342,6 +349,8 @@ Hash.each(inserters, function(inserter, where){
 
 });
 
+///=
+
 Element.implement({
 
 	set: function(prop, value){
@@ -350,19 +359,19 @@ Element.implement({
 				for (var p in prop) this.set(p, prop[p]);
 				break;
 			case 'string':
-				var property = Element.Properties.get(prop);
+				var property = Element.Properties[prop];
 				(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
 		}
 		return this;
 	},
 
 	get: function(prop){
-		var property = Element.Properties.get(prop);
+		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
 	},
 
 	erase: function(prop){
-		var property = Element.Properties.get(prop);
+		var property = Element.Properties[prop];
 		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
 		return this;
 	},
@@ -659,7 +668,13 @@ window.addListener('unload', purge);
 
 })();
 
+Element.Properties = {};
+
+//=1.2compat
+
 Element.Properties = new Hash;
+
+///=
 
 Element.Properties.style = {
 

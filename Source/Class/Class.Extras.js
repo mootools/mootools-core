@@ -101,12 +101,12 @@ Events.removeOn = function(string){
 this.Options = new Class({
 
 	setOptions: function(){
-		this.options = Object.merge.run([{}, this.options].extend(arguments));
+		var options = this.options = Object.merge.run([{}, this.options].append(arguments));
 		if (!this.addEvent) return this;
-		for (var option in this.options){
-			if (typeOf(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
-			this.addEvent(option, this.options[option]);
-			delete this.options[option];
+		for (var option in options){
+			if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+			this.addEvent(option, options[option]);
+			delete options[option];
 		}
 		return this;
 	}

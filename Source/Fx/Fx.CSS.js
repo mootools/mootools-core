@@ -39,7 +39,7 @@ Fx.CSS = new Class({
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
-			Fx.CSS.Parsers.each(function(parser, key){
+			Object.each(Fx.CSS.Parsers, function(parser, key){
 				if (found) return;
 				var parsed = parser.parse(val);
 				if ($chk(parsed)) found = {value: parsed, parser: parser};
@@ -106,7 +106,7 @@ Fx.CSS = new Class({
 
 Fx.CSS.Cache = {};
 
-Fx.CSS.Parsers = new Hash({
+Fx.CSS.Parsers = {
 
 	Color: {
 		parse: function(value){
@@ -141,4 +141,10 @@ Fx.CSS.Parsers = new Hash({
 		}
 	}
 
-});
+};
+
+//=1.2compat
+
+Fx.CSS.Parsers = new Hash(Fx.CSS.Parsers);
+
+///=

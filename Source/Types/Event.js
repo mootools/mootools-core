@@ -7,7 +7,7 @@ description: Contains the Event Class, to make the event object cross-browser.
 
 license: MIT-style license.
 
-requires: [Window, Document, Hash, Array, Function, String]
+requires: [Window, Document, Array, Function, String]
 
 provides: Event
 
@@ -84,7 +84,7 @@ var Event = new Type('Event', function(event, win){
 	});
 });
 
-Event.Keys = new Hash({
+Event.Keys = {
 	'enter': 13,
 	'up': 38,
 	'down': 40,
@@ -95,7 +95,13 @@ Event.Keys = new Hash({
 	'backspace': 8,
 	'tab': 9,
 	'delete': 46
-});
+};
+
+//=1.2compat
+
+Event.Keys = new Hash(Event.Keys);
+
+///=
 
 Event.implement({
 

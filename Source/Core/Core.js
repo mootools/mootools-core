@@ -262,7 +262,9 @@ Number.extend({random: function(min, max){
 // forEach, each
 
 Object.extend({forEach: function(object, fn, bind){
-	for (var key in object) fn.call(bind, object[key], key, object);
+	for (var key in object){
+		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+	}
 }});
 
 Object.each = Object.forEach;
@@ -307,7 +309,7 @@ var mergeOne = function(source, key, current){
 Object.extend({
 	
 	merge: function(source, k, v){
-		if (typeof k == 'string') return mergeOne(source, k, v);
+		if (typeOf(k) == 'string') return mergeOne(source, k, v);
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var object = arguments[i];
 			for (var key in object) mergeOne(source, key, object[key]);
@@ -337,6 +339,8 @@ Object.extend({
 	new Type(name);
 });
 
+//=1.2compat
+
 var Hash = this.Hash = new Type('Hash', function(object){
 	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
 	for (var key in object) this[key] = object[key];
@@ -346,9 +350,7 @@ var Hash = this.Hash = new Type('Hash', function(object){
 Hash.implement({
 
 	forEach: function(fn, bind){
-		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
-		}
+		Object.forEach(this, fn, bind);
 	},
 
 	getClean: function(){
@@ -370,8 +372,6 @@ Hash.implement({
 });
 
 Hash.alias({each: 'forEach'});
-
-//=1.2compat
 
 Object.type = Type.isObject;
 
@@ -416,7 +416,7 @@ this.$defined = function(obj){
 
 this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Object).each(iterable, fn, bind);
 };
 
 this.$empty = function(){};
