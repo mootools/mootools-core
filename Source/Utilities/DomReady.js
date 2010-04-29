@@ -37,7 +37,7 @@ Element.Events.domready = {
 	if (Browser.ie){
 		var temp = document.createElement('div');
 		repeat = function(){
-			(Function.stab(function(){
+			(Function.attempt(function(){
 				temp.doScroll(); // Technique by Diego Perini
 				return document.id(temp).inject(document.body).set('html', 'temp').dispose();
 			})) ? domready() : repeat.delay(50);

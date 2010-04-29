@@ -52,10 +52,12 @@ var Event = new Type('Event', function(event, win){
 				case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': related = event.relatedTarget || event.toElement;
 			}
-			if (!(function(){
+			var testRelated = function(){
 				while (related && related.nodeType == 3) related = related.parentNode;
 				return true;
-			}).create({attempt: Browser.firefox})()) related = false;
+			};
+			var hasRelated = (Browser.firefox2) ? testRelated.attempt() : testRelated();
+			related = (hasRelated) ? related : null;
 		}
 	}
 
@@ -69,8 +71,8 @@ var Event = new Type('Event', function(event, win){
 
 		wheel: wheel,
 
-		relatedTarget: related,
-		target: target,
+		relatedTarget: document.id(related),
+		target: document.id(target),
 
 		code: code,
 		key: key,

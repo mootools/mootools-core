@@ -79,7 +79,7 @@ var IFrame = new Type('IFrame', function(){
 	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + Date.now()].pick();
 	iframe = new Element(iframe || 'iframe', props);
 	var onFrameLoad = function(){
-		var host = Function.stab(function(){
+		var host = Function.attempt(function(){
 			return iframe.contentWindow.location.host;
 		});
 		if (!host || host == window.location.host){
@@ -89,7 +89,7 @@ var IFrame = new Type('IFrame', function(){
 		}
 		onload.call(iframe.contentWindow, iframe.contentWindow.document);
 	};
-	var contentWindow = Function.stab(function(){
+	var contentWindow = Function.attempt(function(){
 		return iframe.contentWindow;
 	});
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
@@ -687,7 +687,7 @@ Element.Properties.tag = {
 
 Element.Properties.html = (function(){
 	
-	var tableTest = Function.stab(function(){
+	var tableTest = Function.attempt(function(){
 		var table = document.createElement('table');
 		table.innerHTML = '<tr><td></td></tr>';
 	});
