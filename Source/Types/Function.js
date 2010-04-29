@@ -16,12 +16,6 @@ provides: Function
 
 Function.extend({
 
-	clear: function(timer){
-		clearInterval(timer);
-		clearTimeout(timer);
-		return null;
-	},
-
 	attempt: function(){
 		for (var i = 0, l = arguments.length; i < l; i++){
 			try {
@@ -72,6 +66,12 @@ Function.implement({
 //=1.2compat
 
 Function.implement({
+	
+	clear: function(timer){
+		clearInterval(timer);
+		clearTimeout(timer);
+		return null;
+	},
 	
 	bindWithEvent: function(bind, args){
 		var self = this;
