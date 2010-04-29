@@ -424,8 +424,9 @@ Element.implement({
 		return this;
 	},
 
-	toggleClass: function(className){
-		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
+	toggleClass: function(className, force){
+		if (force == null) force = !this.hasClass(className);
+		return (force) ? this.removeClass(className) : this.addClass(className);
 	},
 
 	adopt: function(){

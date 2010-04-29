@@ -883,11 +883,12 @@ Adds or removes the passed in class name to the Element, depending on whether or
 
 ### Syntax:
 
-	myElement.toggleClass(className);
+	myElement.toggleClass(className, force);
 
 ### Arguments:
 
 1. className - (*string*) The class to add or remove.
+2. force - (*boolean*, optional) Force the class to be either added or removed
 
 ### Returns:
 
