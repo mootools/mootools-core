@@ -60,11 +60,9 @@ if (!Browser.Element){
 	Element.parent = Object;
 	
 	Element.ProtoType = {};
-	Element.ProtoElement = document.createElement('div');
-	Element.ProtoElement.$family = Element.ProtoType.$family = Function.from('element').hide();
 	
 	Element.mirror(function(name, method){
-		Element.ProtoElement[name] = Element.ProtoType[name] = method;
+		Element.ProtoType[name] = method;
 	});
 }
 
@@ -162,8 +160,7 @@ Document.implement({
 			element: function(el, nocash){
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-					if (el.mergeAttributes) el.mergeAttributes(Element.ProtoElement);
-					else Object.append(el, Element.ProtoType);
+					Object.append(el, Element.ProtoType);
 				};
 				return el;
 			},
