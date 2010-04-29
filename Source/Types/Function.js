@@ -65,13 +65,17 @@ Function.implement({
 
 //=1.2compat
 
-Function.implement({
+Function.extend({
 	
 	clear: function(timer){
 		clearInterval(timer);
 		clearTimeout(timer);
 		return null;
-	},
+	}
+	
+});
+
+Function.implement({
 	
 	bindWithEvent: function(bind, args){
 		var self = this;
