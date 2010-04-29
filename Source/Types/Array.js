@@ -92,7 +92,7 @@ Array.implement({
 	},
 
 	append: function(array){
-		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
+		this.push.apply(this, array);
 		return this;
 	},
 	
