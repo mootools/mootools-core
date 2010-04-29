@@ -117,7 +117,7 @@ Browser.exec = function(text){
 	return text;
 };
 
-String.implement({stripScripts: function(exec){
+String.implement('stripScripts', function(exec){
 	var scripts = '';
 	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 		scripts += arguments[1] + '\n';
@@ -126,7 +126,7 @@ String.implement({stripScripts: function(exec){
 	if (exec === true) Browser.exec(scripts);
 	else if (typeOf(exec) == 'function') exec(scripts, text);
 	return text;
-}});
+});
 
 // Window, Document
 	

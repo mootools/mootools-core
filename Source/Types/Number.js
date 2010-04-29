@@ -39,7 +39,7 @@ Number.implement({
 
 });
 
-Number.alias({each: 'times'});
+Number.alias('each', 'times');
 
 (function(math){
 	var methods = {};
