@@ -27,7 +27,7 @@ context.Sets = {
 
 	'1.3public': [
 		'Core/Core',
-		'Types/Array', 'Types/Function', 'Types/Hash',
+		'Types/Array', 'Types/Function', 'Types/Object',
 		'Class/Class',
 		'Browser/Browser',
 		'Element/NewElement'
