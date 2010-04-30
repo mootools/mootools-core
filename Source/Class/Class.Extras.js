@@ -21,7 +21,7 @@ this.Chain = new Class({
 	$chain: [],
 
 	chain: function(){
-		this.$chain.extend(Array.flatten(arguments));
+		this.$chain.append(Array.flatten(arguments));
 		return this;
 	},
 
