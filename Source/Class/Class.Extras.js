@@ -63,7 +63,7 @@ var Events = this.Events = new Class({
 		type = Events.removeOn(type);
 		if (!this.$events || !this.$events[type]) return this;
 		this.$events[type].each(function(fn){
-			(delay) ? fn.delay(delay, this, args) : fn.bind(this, args);
+			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
 	},
