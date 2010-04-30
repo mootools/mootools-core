@@ -85,7 +85,7 @@ var Events = this.Events = new Class({
 		for (type in this.$events){
 			if (events && events != type) continue;
 			var fns = this.$events[type];
-			for (var i = fns.length; i--; i) this.removeEvent(type, fns[i]);
+			for (var i = fns.length; i--;) this.removeEvent(type, fns[i]);
 		}
 		return this;
 	}
