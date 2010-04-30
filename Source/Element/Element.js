@@ -60,11 +60,9 @@ if (!Browser.Element){
 	Element.parent = Object;
 	
 	Element.ProtoType = {};
-	Element.ProtoElement = document.createElement('div');
-	Element.ProtoElement.$family = Element.ProtoType.$family = Function.from('element').hide();
 	
 	Element.mirror(function(name, method){
-		Element.ProtoElement[name] = Element.ProtoType[name] = method;
+		Element.ProtoType[name] = method;
 	});
 }
 
@@ -85,7 +83,7 @@ var IFrame = new Type('IFrame', function(){
 	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + Date.now()].pick();
 	iframe = new Element(iframe || 'iframe', props);
 	var onFrameLoad = function(){
-		var host = Function.stab(function(){
+		var host = Function.attempt(function(){
 			return iframe.contentWindow.location.host;
 		});
 		if (!host || host == window.location.host){
@@ -95,7 +93,7 @@ var IFrame = new Type('IFrame', function(){
 		}
 		onload.call(iframe.contentWindow, iframe.contentWindow.document);
 	};
-	var contentWindow = Function.stab(function(){
+	var contentWindow = Function.attempt(function(){
 		return iframe.contentWindow;
 	});
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
@@ -162,8 +160,7 @@ Document.implement({
 			element: function(el, nocash){
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-					if (el.mergeAttributes) el.mergeAttributes(Element.ProtoElement);
-					else Object.append(el, Element.ProtoType);
+					Object.append(el, Element.ProtoType);
 				};
 				return el;
 			},
@@ -696,7 +693,7 @@ Element.Properties.tag = {
 
 Element.Properties.html = (function(){
 	
-	var tableTest = Function.stab(function(){
+	var tableTest = Function.attempt(function(){
 		var table = document.createElement('table');
 		table.innerHTML = '<tr><td></td></tr>';
 	});

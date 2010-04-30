@@ -55,7 +55,7 @@ var Request = new Class({
 		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
-		Function.stab(function(){
+		Function.attempt(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
@@ -99,7 +99,7 @@ var Request = new Class({
 	},
 
 	getHeader: function(name){
-		return Function.stab(function(){
+		return Function.attempt(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},

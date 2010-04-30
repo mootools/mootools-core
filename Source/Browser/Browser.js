@@ -75,7 +75,7 @@ Browser.Request = (function(){
 		return new ActiveXObject('Microsoft.XMLHTTP');
 	};
  
-	return Function.stab(function(){
+	return Function.attempt(function(){
 		XMLHTTP();
 		return XMLHTTP;
 	}, function(){
@@ -93,7 +93,7 @@ Browser.Features.xhr = !!(Browser.Request);
 // Flash detection
 
 Browser.Plugins.Flash = (function(){
-	var version = (Function.stab(function(){
+	var version = (Function.attempt(function(){
 		return navigator.plugins['Shockwave Flash'].description;
 	}, function(){
 		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
