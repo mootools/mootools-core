@@ -63,7 +63,7 @@ Function.implement({
 
 });
 
-//=1.2compat
+//<1.2compat>
 
 $clear = function(timer){
 	clearInterval(timer);
@@ -85,4 +85,4 @@ Function.implement({
 
 var $try = Function.attempt;
 
-///=
+//</1.2compat>

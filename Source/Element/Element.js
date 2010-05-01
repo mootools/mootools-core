@@ -68,11 +68,11 @@ if (!Browser.Element){
 
 Element.Constructors = {};
 
-//=1.2compat
+//<1.2compat>
 
 Element.Constructors = new Hash;
 
-///=
+//</1.2compat>
 
 var IFrame = new Type('IFrame', function(){
 	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
@@ -214,7 +214,7 @@ Window.implement({
  
 });
 
-//=1.2compat
+//<1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
@@ -230,7 +230,7 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	return elements;
 });
 
-///=
+//</1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	return Slick.search(this.document, selector, new Elements);
@@ -324,7 +324,7 @@ var inserters = {
 
 inserters.inside = inserters.bottom;
 
-//=1.2compat
+//<1.2compat>
 
 Object.each(inserters, function(inserter, where){
 
@@ -346,7 +346,7 @@ Object.each(inserters, function(inserter, where){
 
 });
 
-///=
+//</1.2compat>
 
 Element.implement({
 
@@ -604,13 +604,13 @@ if (!document.createElement('div').contains) Element.implement(contains);
 
 })();
 
-//=1.2compat
+//<1.2compat>
 
 Element.implement('hasChild', function(element){
 	return this !== element && this.contains(element);
 });
 
-///=
+//</1.2compat>
 
 [Element, Window, Document].invoke('implement', {
 
@@ -661,11 +661,11 @@ window.addListener('unload', purge);
 
 Element.Properties = {};
 
-//=1.2compat
+//<1.2compat>
 
 Element.Properties = new Hash;
 
-///=
+//</1.2compat>
 
 Element.Properties.style = {
 

@@ -165,7 +165,7 @@ Array.implement({
 
 });
 
-//=1.2compat
+//<1.2compat>
 
 Array.alias('extend', 'append');
 
@@ -173,4 +173,4 @@ var $pick = function(){
 	return Array.from(arguments).pick();
 };
 
-///=
+//</1.2compat>

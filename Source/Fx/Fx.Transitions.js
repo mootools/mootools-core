@@ -55,11 +55,11 @@ Fx.Transitions = {
 
 };
 
-//=1.2compat
+//<1.2compat>
 
 Fx.Transitions = new Hash(Fx.Transitions);
 
-///=
+//</1.2compat>
 
 Fx.Transitions.extend = function(transitions){
 	for (var transition in transitions) Fx.Transitions[transition] = new Fx.Transition(transitions[transition]);

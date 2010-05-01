@@ -43,9 +43,9 @@ var Events = this.Events = new Class({
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
 		if (fn != nil
-			//=1.2compat
+			//<1.2compat>
 			&& fn != $empty
-			///=
+			//</1.2compat>
 		){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);

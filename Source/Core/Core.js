@@ -161,9 +161,9 @@ var Type = this.Type = function(name, object){
 			object.prototype.$family = (function(){
 				return lower;
 			}).hide();
-			//=1.2compat
+			//<1.2compat>
 			object.type = typeCheck;
-			///=
+			//</1.2compat>
 		}
 	}
 
@@ -370,7 +370,7 @@ Object.extend({
 	new Type(name);
 });
 
-//=1.2compat
+//<1.2compat>
 
 var Hash = this.Hash = new Type('Hash', function(object){
 	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
@@ -488,6 +488,6 @@ this.$unlink = function(object){
 	}
 };
 
-///=
+//</1.2compat>
 
 })();

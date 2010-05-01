@@ -97,11 +97,11 @@ Event.Keys = {
 	'delete': 46
 };
 
-//=1.2compat
+//<1.2compat>
 
 Event.Keys = new Hash(Event.Keys);
 
-///=
+//</1.2compat>
 
 Event.implement({
 

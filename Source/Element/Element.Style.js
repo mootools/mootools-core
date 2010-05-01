@@ -144,11 +144,11 @@ Element.Styles = {
 	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
 };
 
-//=1.2compat
+//<1.2compat>
 
 Element.Styles = new Hash(Element.Styles);
 
-///=
+//</1.2compat>
 
 Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
 

@@ -4,10 +4,10 @@
 
 $stderr = fopen('php://stderr', 'w');
 
-require __DIR__ . '/Packager/packager.php';
+require dirname(__FILE__) . '/Packager/packager.php';
 
 $executable = array_shift($argv);
-$package = __DIR__;
+$package = dirname(__FILE__);
 
 $pkg = new Packager($package);
 
@@ -32,9 +32,9 @@ foreach ($files as $file){
 
 fwrite($stderr, "\n");
 
-$output = $pkg->build_from_components($argv);
+$output = $pkg->build_from_files($files);
 
-if ($no_compat) $output = preg_replace("%//=1\.2compat.*?///=%s", '', $output);
+if ($no_compat) $output = preg_replace("%//<1\.2compat>.*?//</1.2compat>%s", '', $output);
 
 echo $output;
 

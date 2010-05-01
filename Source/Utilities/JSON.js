@@ -21,11 +21,11 @@ var JSON = !this.JSON ? {} : {
 	parse: JSON.parse
 };
 
-//=1.2compat
+//<1.2compat>
 
 JSON = new Hash(JSON);
 
-///=
+//</1.2compat>
 
 Object.append(JSON, {
 	
