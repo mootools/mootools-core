@@ -3,7 +3,7 @@
 
 name: Hash
 
-description: Contains Hash Prototypes. Provides a means for overcoming the JavaScript practical impossibility of extending native Objects.
+description: Object generic methods
 
 license: MIT-style license.
 

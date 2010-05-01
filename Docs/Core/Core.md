@@ -5,36 +5,6 @@ Core contains a handful of common sense functions used in [MooTools](http://moot
 
 
 
-Function: nil {#nil}
---------------------
-
-Returns true if a value is undefined.
-
-### Syntax:
-
-	nil(obj);
-
-### Arguments:
-
-1. obj - (*mixed*) The object to inspect.
-
-### Returns:
-
-* (*boolean*) If the object passed is null or undefined, returns true. Otherwise, returns false.
-
-### Example:
-
-	function myFunction(arg){
-		if(nil(arg)) alert('The object is null or undefined.');
-		else alert('The object is defined.');
-	}
-	
-### Notes:
-
-This method is equivalent to *$defined* from MooTools 1.2, but opposite.
-
-
-
 Function: typeOf {#typeOf}
 --------------------------
 

@@ -95,7 +95,7 @@ Element.Properties.events = {set: function(events){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
 		events[type].keys.each(function(fn){
-			(delay) ? fn.delay(delay, this, args) : fn.bind(this, args);
+			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
 	},

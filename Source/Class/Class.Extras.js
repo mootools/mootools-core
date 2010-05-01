@@ -21,7 +21,7 @@ this.Chain = new Class({
 	$chain: [],
 
 	chain: function(){
-		this.$chain.extend(Array.flatten(arguments));
+		this.$chain.append(Array.flatten(arguments));
 		return this;
 	},
 
@@ -42,7 +42,7 @@ var Events = this.Events = new Class({
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != nil
+		if (fn != null
 			//<1.2compat>
 			&& fn != $empty
 			//</1.2compat>
@@ -63,7 +63,7 @@ var Events = this.Events = new Class({
 		type = Events.removeOn(type);
 		if (!this.$events || !this.$events[type]) return this;
 		this.$events[type].each(function(fn){
-			(delay) ? fn.delay(delay, this, args) : fn.bind(this, args);
+			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
 	},
@@ -85,7 +85,7 @@ var Events = this.Events = new Class({
 		for (type in this.$events){
 			if (events && events != type) continue;
 			var fns = this.$events[type];
-			for (var i = fns.length; i--; i) this.removeEvent(type, fns[i]);
+			for (var i = fns.length; i--;) this.removeEvent(type, fns[i]);
 		}
 		return this;
 	}
