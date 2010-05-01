@@ -423,7 +423,7 @@ Element.implement({
 
 	toggleClass: function(className, force){
 		if (force == null) force = !this.hasClass(className);
-		return (force) ? this.removeClass(className) : this.addClass(className);
+		return (force) ? this.addClass(className) : this.removeClass(className);
 	},
 
 	adopt: function(){
