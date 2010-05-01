@@ -6,34 +6,6 @@ License:
 	MIT-style license.
 */
 
-describe('nil', {
-
-	'should return 0 on 0': function(){
-		value_of(nil(0)).should_be(0);
-	},
-
-	'should return false on false': function(){
-		value_of(nil(false)).should_be_false();
-	},
-
-	'should return null on null': function(){
-		value_of(nil(null)).should_be_null();
-	},
-
-	'should return null on undefined': function(){
-		value_of(nil(undefined)).should_be_null();
-	},
-
-	'should return passed in value when not undefined': function(){
-		value_of(nil('String')).should_be('String');
-	},
-	
-	'should return null when passed in self': function(){
-		value_of(nil(nil)).should_be_null();
-	}
-
-});
-
 describe('Function.prototype.extend', {
 	
 	"should extend the function": function(){

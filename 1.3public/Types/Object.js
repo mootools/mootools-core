@@ -47,7 +47,7 @@ describe("Object Methods", {
 	// Object.every
 
 	'should return true if every value matches the comparator, otherwise false': function(){
-		value_of(Object.every(object, nil)).should_be_true();
+		value_of(Object.every(object, typeOf)).should_be_true();
 		value_of(Object.every(object, Type.isNumber)).should_be_false();
 	},
 
