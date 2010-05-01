@@ -91,7 +91,7 @@ Element.implement({
 		}
 		property = property.camelCase();
 		var result = this.style[property];
-		if (!$chk(result) || property == 'zIndex'){
+		if (result == null || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
 				if (property != style) continue;
@@ -105,7 +105,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.opera || (Browser.ie && !$chk(parseInt(result, 10)))){
+		if (Browser.opera || (Browser.ie && isNaN(result))){
 			if (property.test(/^(height|width)$/)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
