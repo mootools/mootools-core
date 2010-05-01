@@ -42,7 +42,7 @@ var Events = this.Events = new Class({
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != nil
+		if (fn != null
 			//=1.2compat
 			&& fn != $empty
 			///=

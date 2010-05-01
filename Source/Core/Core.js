@@ -27,12 +27,6 @@ this.MooTools = {
 	build: '%build%'
 };
 
-// nil
-
-var nil = this.nil = function(item){
-	return (item != null && item != nil) ? item : null;
-};
-
 // typeOf, instanceOf
 
 var typeOf = this.typeOf = function(item){
