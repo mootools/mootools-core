@@ -91,7 +91,7 @@ Element.implement({
 		}
 		property = property.camelCase();
 		var result = this.style[property];
-		if (result == null || property == 'zIndex'){
+		if (!result || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
 				if (property != style) continue;
