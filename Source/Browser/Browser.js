@@ -186,6 +186,7 @@ try {
 Browser.Engine = {};
 
 var setEngine = function(name, version){
+	Browser.Engine.name = name;
 	Browser.Engine[name + version] = true;
 	Browser.Engine.version = version;
 };
