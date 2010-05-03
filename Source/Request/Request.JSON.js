@@ -28,9 +28,11 @@ Request.JSON = new Class({
 	},
 
 	success: function(text){
-		var json = this.response.json = JSON.decode(text, this.options.secure);
+		var json = this.response.json = Function.attempt(function(){
+			return JSON.decode(text, this.options.secure);
+		});
 		if (json == null) this.onFailure();
-		this.onSuccess(json, text);
+		else this.onSuccess(json, text);
 	}
 
 });
