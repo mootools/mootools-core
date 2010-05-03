@@ -1,8 +1,7 @@
-Native: Event {#Event}
+Event {#Event}
 ======================
 
 MooTools Event Methods.
-
 
 Event Method: constructor {#Event:constructor}
 ----------------------------------------------
@@ -121,7 +120,7 @@ Cross browser method to stop the propagation of an event (this stops the event f
 
 ### See Also:
 
-- [Element:addEvent](#Element:addEvent)
+- [Element:addEvent][]
 - [MDC event.stopPropagation](http://developer.mozilla.org/en/docs/DOM:event.stopPropagation)
 
 
@@ -155,7 +154,7 @@ Cross browser method to prevent the default action of the event.
 
 ### See Also:
 
-- [Element:addEvent](#Element:addEvent)
+- [Element:addEvent][]
 - [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
 
 
@@ -174,7 +173,8 @@ Additional Event key codes can be added by adding properties to the Event.Keys H
 
 
 [$]: /core/Element/#dollar
-[Function]: /core/Native/Function
-[Function:bind]: /core/Native/Function/#Function:bind
-[Function:pass]: /core/Native/Function/#Function:pass
-[Function:delay]: /core/Native/Function/#Function:delay
+[Element:addEvent]: /core/Element/Element.Event#Element:addEvent
+[Function]: /core/Types/Function
+[Function:bind]: /core/Types/Function/#Function:bind
+[Function:pass]: /core/Types/Function/#Function:pass
+[Function:delay]: /core/Types/Function/#Function:delay
