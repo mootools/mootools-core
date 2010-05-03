@@ -123,9 +123,9 @@ var Type = this.Type = function(name, object){
 			object.prototype.$family = (function(){
 				return lower;
 			}).hide();
-			/*<block name="compatibility" version="1.2">*/
+			//=1.2compat
 			object.type = typeCheck;
-			/*</block>*/
+			///=
 		}
 	}
 
@@ -371,7 +371,7 @@ Hash.implement({
 
 Hash.alias({each: 'forEach'});
 
-/*<block name="compatibility" version="1.2">*/
+//=1.2compat
 
 Object.type = Type.isObject;
 
@@ -457,6 +457,6 @@ this.$unlink = function(object){
 	}
 };
 
-/*</block>*/
+///=
 
 })();

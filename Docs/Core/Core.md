@@ -436,8 +436,8 @@ This method has been deprecated. Please use [typeOf](#typeOf) instead.
 
 
 
-[Hash]: /core/Native/Hash
-[Array]: /core/Native/Array
-[Function:bind]: /core/Native/Function/#Function:bind
-[Function:delay]: /core/Native/Function/#Function:delay
-[Function:periodical]: /core/Native/Function/#Function:periodical
+[Hash]: /core/Types/Hash
+[Array]: /core/Types/Array
+[Function:bind]: /core/Types/Function/#bind
+[Function:delay]: /core/Types/Function/#delay
+[Function:periodical]: /core/Types/Function/#periodical
