@@ -259,8 +259,20 @@ This method has been deprecated. Please use [Function:clear](/core/Types/Functio
 Function: $defined {#defined}
 -----------------------------
 
-This method has been deprecated. Please use [nil](#nil) instead.
+This method has been deprecated.
 
+If you really need this function you can implement it like so:
+
+### Example:
+
+	var $defined = function(obj){
+		return (obj != undefined);
+	};
+
+	// Or just use it like this
+	if(obj != undefined){
+		// Do something
+	}
 
 
 Function: $arguments {#arguments}
