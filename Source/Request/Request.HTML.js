@@ -31,7 +31,7 @@ Request.HTML = new Class({
 
 		var container = new Element('div');
 
-		return Function.stab(function(){
+		return Function.attempt(function(){
 			var root = '<root>' + text + '</root>', doc;
 			if (Browser.ie){
 				doc = new ActiveXObject('Microsoft.XMLDOM');

@@ -7,7 +7,7 @@ description: Contains the Event Class, to make the event object cross-browser.
 
 license: MIT-style license.
 
-requires: [Window, Document, Hash, Array, Function, String]
+requires: [Window, Document, Array, Function, String]
 
 provides: Event
 
@@ -52,10 +52,12 @@ var Event = new Type('Event', function(event, win){
 				case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': related = event.relatedTarget || event.toElement;
 			}
-			if (!(function(){
+			var testRelated = function(){
 				while (related && related.nodeType == 3) related = related.parentNode;
 				return true;
-			}).create({attempt: Browser.firefox})()) related = false;
+			};
+			var hasRelated = (Browser.firefox2) ? testRelated.attempt() : testRelated();
+			related = (hasRelated) ? related : null;
 		}
 	}
 
@@ -69,8 +71,8 @@ var Event = new Type('Event', function(event, win){
 
 		wheel: wheel,
 
-		relatedTarget: related,
-		target: target,
+		relatedTarget: document.id(related),
+		target: document.id(target),
 
 		code: code,
 		key: key,
@@ -82,7 +84,7 @@ var Event = new Type('Event', function(event, win){
 	});
 });
 
-Event.Keys = new Hash({
+Event.Keys = {
 	'enter': 13,
 	'up': 38,
 	'down': 40,
@@ -93,7 +95,13 @@ Event.Keys = new Hash({
 	'backspace': 8,
 	'tab': 9,
 	'delete': 46
-});
+};
+
+//<1.2compat>
+
+Event.Keys = new Hash(Event.Keys);
+
+//</1.2compat>
 
 Event.implement({
 

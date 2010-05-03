@@ -21,7 +21,7 @@ this.Chain = new Class({
 	$chain: [],
 
 	chain: function(){
-		this.$chain.extend(Array.flatten(arguments));
+		this.$chain.append(Array.flatten(arguments));
 		return this;
 	},
 
@@ -42,10 +42,10 @@ var Events = this.Events = new Class({
 
 	addEvent: function(type, fn, internal){
 		type = Events.removeOn(type);
-		if (fn != nil
-			//=1.2compat
+		if (fn != null
+			//<1.2compat>
 			&& fn != $empty
-			///=
+			//</1.2compat>
 		){
 			this.$events[type] = this.$events[type] || [];
 			this.$events[type].include(fn);
@@ -63,7 +63,7 @@ var Events = this.Events = new Class({
 		type = Events.removeOn(type);
 		if (!this.$events || !this.$events[type]) return this;
 		this.$events[type].each(function(fn){
-			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
 		}, this);
 		return this;
 	},
@@ -85,7 +85,7 @@ var Events = this.Events = new Class({
 		for (type in this.$events){
 			if (events && events != type) continue;
 			var fns = this.$events[type];
-			for (var i = fns.length; i--; i) this.removeEvent(type, fns[i]);
+			for (var i = fns.length; i--;) this.removeEvent(type, fns[i]);
 		}
 		return this;
 	}
@@ -101,12 +101,12 @@ Events.removeOn = function(string){
 this.Options = new Class({
 
 	setOptions: function(){
-		this.options = Object.merge.run([{}, this.options].extend(arguments));
+		var options = this.options = Object.merge.run([{}, this.options].append(arguments));
 		if (!this.addEvent) return this;
-		for (var option in this.options){
-			if (typeOf(this.options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
-			this.addEvent(option, this.options[option]);
-			delete this.options[option];
+		for (var option in options){
+			if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+			this.addEvent(option, options[option]);
+			delete options[option];
 		}
 		return this;
 	}

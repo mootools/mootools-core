@@ -9,17 +9,25 @@ license: MIT-style license.
 
 See Also: <http://www.json.org/>
 
-requires: [Array, String, Number, Function, Hash]
+requires: [Array, String, Number, Function]
 
 provides: JSON
 
 ...
 */
 
-var JSON = new Hash(this.JSON && {
+var JSON = !this.JSON ? {} : {
 	stringify: JSON.stringify,
 	parse: JSON.parse
-}).extend({
+};
+
+//<1.2compat>
+
+JSON = new Hash(JSON);
+
+//</1.2compat>
+
+Object.append(JSON, {
 	
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
@@ -35,7 +43,7 @@ var JSON = new Hash(this.JSON && {
 				return '[' + String(obj.map(JSON.encode).clean()) + ']';
 			case 'object': case 'hash':
 				var string = [];
-				Hash.each(obj, function(value, key){
+				Object.each(obj, function(value, key){
 					var json = JSON.encode(value);
 					if (json) string.push(JSON.encode(key) + ':' + json);
 				});

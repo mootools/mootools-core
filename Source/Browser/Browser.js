@@ -75,7 +75,7 @@ Browser.Request = (function(){
 		return new ActiveXObject('Microsoft.XMLHTTP');
 	};
  
-	return Function.stab(function(){
+	return Function.attempt(function(){
 		XMLHTTP();
 		return XMLHTTP;
 	}, function(){
@@ -93,7 +93,7 @@ Browser.Features.xhr = !!(Browser.Request);
 // Flash detection
 
 Browser.Plugins.Flash = (function(){
-	var version = (Function.stab(function(){
+	var version = (Function.attempt(function(){
 		return navigator.plugins['Shockwave Flash'].description;
 	}, function(){
 		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
@@ -117,7 +117,7 @@ Browser.exec = function(text){
 	return text;
 };
 
-String.implement({stripScripts: function(exec){
+String.implement('stripScripts', function(exec){
 	var scripts = '';
 	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 		scripts += arguments[1] + '\n';
@@ -126,7 +126,7 @@ String.implement({stripScripts: function(exec){
 	if (exec === true) Browser.exec(scripts);
 	else if (typeOf(exec) == 'function') exec(scripts, text);
 	return text;
-}});
+});
 
 // Window, Document
 	
@@ -181,7 +181,7 @@ try {
 	};
 }
 
-//=1.2compat
+//<1.2compat>
 
 Browser.Engine = {};
 
@@ -239,6 +239,6 @@ if (Browser.name == 'unknown'){
 
 this.$exec = Browser.exec;
 
-///=
+//</1.2compat>
 
 })();

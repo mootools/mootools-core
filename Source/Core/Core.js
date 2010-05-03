@@ -27,22 +27,6 @@ this.MooTools = {
 	build: '%build%'
 };
 
-// nil
-
-var nil = this.nil = function(item){
-	return (item != null && item != nil) ? item : null;
-};
-
-Function.prototype.extend = function(object){
-	for (var key in object) this[key] = object[key];
-	return this;
-};
-
-Function.prototype.implement = function(object){
-	for (var key in object) this.prototype[key] = object[key];
-	return this;
-};
-
 // typeOf, instanceOf
 
 var typeOf = this.typeOf = function(item){
@@ -69,6 +53,54 @@ var instanceOf = this.instanceOf = function(item, object){
 	}
 	return item instanceof object;
 };
+
+// Function overloading
+
+var Function = this.Function;
+
+var enumerables = true;
+for (var i in {toString: 1}) enumerables = null;
+if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
+
+Function.prototype.overloadSetter = function(usePlural){
+	var self = this;
+	return function(a, b){
+		if (usePlural || typeof a != 'string'){
+			for (var k in a) self.call(this, k, a[k]);
+			if (enumerables) for (var i = enumerables.length; i--;){
+				k = enumerables[i];
+				if (a.hasOwnProperty(k)) self.call(this, k, a[k]);
+			}
+		} else {
+			self.call(this, a, b);
+		}
+		return this;
+	};
+};
+
+Function.prototype.overloadGetter = function(usePlural){
+	var self = this;
+	return function(a){
+		var args, result;
+		if (usePlural || typeof a != 'string') args = a;
+		else if (arguments.length > 1) args = arguments;
+		if (args){
+			result = {};
+			for (var i = 0; i < args.length; i++) result[args[i]] = self.call(this, args[i]);
+		} else {
+			result = self.call(this, a);
+		}
+		return result;
+	};
+};
+
+Function.prototype.extend = function(key, value){
+	this[key] = value;
+}.overloadSetter();
+
+Function.prototype.implement = function(key, value){
+	this.prototype[key] = value;
+}.overloadSetter();
 
 // From
 
@@ -123,9 +155,9 @@ var Type = this.Type = function(name, object){
 			object.prototype.$family = (function(){
 				return lower;
 			}).hide();
-			//=1.2compat
+			//<1.2compat>
 			object.type = typeCheck;
-			///=
+			//</1.2compat>
 		}
 	}
 
@@ -181,20 +213,13 @@ var extend = function(name, method){
 
 Type.implement({
 	
-	implement: function(a){
-		for (var key in a) implement.call(this, key, a[key]);
-		return this;
-	},
+	implement: implement.overloadSetter(),
 	
-	extend: function(object){
-		for (var key in object) extend.call(this, key, object[key]);
-		return this;
-	},
+	extend: extend.overloadSetter(),
 
-	alias: function(object){
-		for (var key in object) implement.call(this, key, this.prototype[object[key]]);
-		return this;
-	},
+	alias: function(name, existing){
+		implement.call(this, name, this.prototype[existing]);
+	}.overloadSetter(),
 
 	mirror: function(hook){
 		hooksOf(this).push(hook);
@@ -241,9 +266,9 @@ force('String', String, [
 	'apply', 'call'
 ])('RegExp', RegExp, ['exec', 'test'])('Date', Date, ['now']);
 
-Date.extend({now: function(){
+Date.extend('now', function(){
 	return +(new Date);
-}});
+});
 
 new Type('Boolean', Boolean);
 
@@ -255,23 +280,25 @@ Number.prototype.$family = function(){
 
 // Number.random
 
-Number.extend({random: function(min, max){
+Number.extend('random', function(min, max){
 	return Math.floor(Math.random() * (max - min + 1) + min);
-}});
+});
 
 // forEach, each
 
-Object.extend({forEach: function(object, fn, bind){
-	for (var key in object) fn.call(bind, object[key], key, object);
-}});
+Object.extend('forEach', function(object, fn, bind){
+	for (var key in object){
+		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+	}
+});
 
 Object.each = Object.forEach;
 
-Array.implement({forEach: function(fn, bind){
+Array.implement('forEach', function(fn, bind){
 	for (var i = 0, l = this.length; i < l; i++){
 		if (i in this) fn.call(bind, this[i], i, this);
 	}
-}});
+});
 
 Array.each = Array.forEach;
 Array.prototype.each = Array.prototype.forEach;
@@ -286,11 +313,11 @@ var cloneOf = function(item){
 	}
 };
 
-Array.implement({clone: function(){
+Array.implement('clone', function(){
 	var i = this.length, clone = new Array(i);
 	while (i--) clone[i] = cloneOf(this[i]);
 	return clone;
-}});
+});
 
 var mergeOne = function(source, key, current){
 	switch (typeOf(current)){
@@ -307,7 +334,7 @@ var mergeOne = function(source, key, current){
 Object.extend({
 	
 	merge: function(source, k, v){
-		if (typeof k == 'string') return mergeOne(source, k, v);
+		if (typeOf(k) == 'string') return mergeOne(source, k, v);
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var object = arguments[i];
 			for (var key in object) mergeOne(source, key, object[key]);
@@ -337,6 +364,8 @@ Object.extend({
 	new Type(name);
 });
 
+//<1.2compat>
+
 var Hash = this.Hash = new Type('Hash', function(object){
 	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
 	for (var key in object) this[key] = object[key];
@@ -346,9 +375,7 @@ var Hash = this.Hash = new Type('Hash', function(object){
 Hash.implement({
 
 	forEach: function(fn, bind){
-		for (var key in this){
-			if (this.hasOwnProperty(key)) fn.call(bind, this[key], key, this);
-		}
+		Object.forEach(this, fn, bind);
 	},
 
 	getClean: function(){
@@ -369,9 +396,7 @@ Hash.implement({
 
 });
 
-Hash.alias({each: 'forEach'});
-
-//=1.2compat
+Hash.alias('each', 'forEach');
 
 Object.type = Type.isObject;
 
@@ -416,7 +441,7 @@ this.$defined = function(obj){
 
 this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Hash).each(iterable, fn, bind);
+	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Object).each(iterable, fn, bind);
 };
 
 this.$empty = function(){};
@@ -457,6 +482,6 @@ this.$unlink = function(object){
 	}
 };
 
-///=
+//</1.2compat>
 
 })();

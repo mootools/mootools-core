@@ -84,14 +84,14 @@ This method is equivalent to *$clear* from MooTools 1.2.
 
 
 
-Function method: Function.stab {#stab}
+Function method: Function.attempt {#attempt}
 -----------------------------
 
 Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
 
 ### Syntax:
 
-	Function.stab(fn[, fn, fn, fn, ...]);
+	Function.attempt(fn[, fn, fn, fn, ...]);
 
 ### Arguments:
 
@@ -104,7 +104,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 
 ### Examples:
 
-	var result = Function.stab(function(){
+	var result = Function.attempt(function(){
 		return some.made.up.object;
 	}, function(){
 		return jibberish.that.doesnt.exists;
@@ -116,7 +116,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 
 	var failure, success;
 
-	Function.stab(function(){
+	Function.attempt(function(){
 		some.made.up.object = 'something';
 		success = true;
 	}, function(){
@@ -128,50 +128,6 @@ Tries to execute a number of functions. Returns immediately the return value of 
 ### Notes:
 
 This method is an equivalent of *$try* from MooTools 1.2.
-
-
-
-Function method: create {#create}
----------------------------------
-
-Base function for creating functional closures which is used by all other Function prototypes.
-
-### Syntax:
-
-	var createdFunction = myFunction.create([options]);
-
-### Arguments:
-
-1. [options] - (*object*, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
-
-#### Options: {#Function:create:options}
-
-* bind		 - (*object*: defaults to this function) The object that the "this" of the function will refer to.
-* event		 - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-* arguments	 - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-* delay		 - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-* periodical - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
-* attempt	 - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or null on error.
-
-### Returns:
-
-* (*function*) The function that was created as a result of the options passed in.
-
-### Example:
-
-	var myFunction = function(){
-		alert("I'm a function. :D");
-	};
-
-	var mySimpleFunction = myFunction.create(); //Just a simple copy.
-
-	var myAdvancedFunction = myFunction.create({ //When called, this function will attempt.
-		arguments: [0,1,2,3],
-		attempt: true,
-		delay: 1000,
-		bind: myElement
-	});
-
 
 
 Function method: run {#run}

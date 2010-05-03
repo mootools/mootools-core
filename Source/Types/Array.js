@@ -17,12 +17,10 @@ provides: Array
 Array.implement({
 	
 	invoke: function(methodName){
-		var args = Array.slice(arguments, 1), results = [];
-		for (var i = 0, j = this.length; i < j; i++){
-			var item = this[i];
-			results.push(item[methodName].apply(item, args));
-		}
-		return results;
+		var args = Array.slice(arguments, 1);
+		return this.map(function(item){
+			return item[methodName].apply(item, args);
+		});
 	},
 
 	every: function(fn, bind){
@@ -94,7 +92,7 @@ Array.implement({
 	},
 
 	append: function(array){
-		for (var i = 0, j = array.length; i < j; i++) this.push(array[i]);
+		this.push.apply(this, array);
 		return this;
 	},
 	
@@ -117,7 +115,7 @@ Array.implement({
 	},
 
 	erase: function(item){
-		for (var i = this.length; i--; i){
+		for (var i = this.length; i--;){
 			if (this[i] === item) this.splice(i, 1);
 		}
 		return this;
@@ -167,12 +165,12 @@ Array.implement({
 
 });
 
-//=1.2compat
+//<1.2compat>
 
-Array.alias({extend: 'append'});
+Array.alias('extend', 'append');
 
 var $pick = function(){
 	return Array.from(arguments).pick();
 };
 
-///=
+//</1.2compat>

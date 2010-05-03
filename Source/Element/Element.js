@@ -7,7 +7,7 @@ description: One of the most important items in MooTools. Contains the dollar fu
 
 license: MIT-style license.
 
-requires: [Window, Document, Array, String, Function, Number, Hash, Slick.Parser, Slick.Finder]
+requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder]
 
 provides: [Element, Elements, $, $$, Iframe]
 
@@ -15,7 +15,7 @@ provides: [Element, Elements, $, $$, Iframe]
 */
 
 var Element = function(tag, props){
-	var konstructor = Element.Constructors.get(tag);
+	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
 	
@@ -60,15 +60,19 @@ if (!Browser.Element){
 	Element.parent = Object;
 	
 	Element.ProtoType = {};
-	Element.ProtoElement = document.createElement('div');
-	Element.ProtoElement.$family = Element.ProtoType.$family = Function.from('element').hide();
 	
 	Element.mirror(function(name, method){
-		Element.ProtoElement[name] = Element.ProtoType[name] = method;
+		Element.ProtoType[name] = method;
 	});
 }
 
+Element.Constructors = {};
+
+//<1.2compat>
+
 Element.Constructors = new Hash;
+
+//</1.2compat>
 
 var IFrame = new Type('IFrame', function(){
 	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
@@ -79,7 +83,7 @@ var IFrame = new Type('IFrame', function(){
 	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + Date.now()].pick();
 	iframe = new Element(iframe || 'iframe', props);
 	var onFrameLoad = function(){
-		var host = Function.stab(function(){
+		var host = Function.attempt(function(){
 			return iframe.contentWindow.location.host;
 		});
 		if (!host || host == window.location.host){
@@ -89,7 +93,7 @@ var IFrame = new Type('IFrame', function(){
 		}
 		onload.call(iframe.contentWindow, iframe.contentWindow.document);
 	};
-	var contentWindow = Function.stab(function(){
+	var contentWindow = Function.attempt(function(){
 		return iframe.contentWindow;
 	});
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
@@ -156,8 +160,7 @@ Document.implement({
 			element: function(el, nocash){
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-					if (el.mergeAttributes) el.mergeAttributes(Element.ProtoElement);
-					else Object.append(el, Element.ProtoType);
+					Object.append(el, Element.ProtoType);
 				};
 				return el;
 			},
@@ -211,9 +214,9 @@ Window.implement({
  
 });
 
-//=1.2compat
+//<1.2compat>
 
-if (window.$$ == null) Window.implement({$$: function(selector){
+if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
 	var args = Array.flatten(arguments);
@@ -225,13 +228,13 @@ if (window.$$ == null) Window.implement({$$: function(selector){
 		}
 	}
 	return elements;
-}});
+});
 
-///=
+//</1.2compat>
 
-if (window.$$ == null) Window.implement({$$: function(selector){
+if (window.$$ == null) Window.implement('$$', function(selector){
 	return Slick.search(this.document, selector, new Elements);
-}});
+});
 
 (function(){
 
@@ -266,7 +269,7 @@ var clean = function(item, retain){
 };
 
 var purge = function(){
-	Hash.each(collected, clean);
+	Object.each(collected, clean);
 	if (Browser.ie) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
 	collected = storage = null;
@@ -300,13 +303,13 @@ Object.append(attributes, expandos.associate(expandos));
 var inserters = {
 
 	before: function(context, element){
-		if (element.parentNode) element.parentNode.insertBefore(context, element);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element);
 	},
 
 	after: function(context, element){
-		if (!element.parentNode) return;
-		var next = element.nextSibling;
-		(next) ? element.parentNode.insertBefore(context, next) : element.parentNode.appendChild(context);
+		var parent = element.parentNode;
+		if (parent) parent.insertBefore(context, element.nextSibling);
 	},
 
 	bottom: function(context, element){
@@ -314,15 +317,16 @@ var inserters = {
 	},
 
 	top: function(context, element){
-		var first = element.firstChild;
-		(first) ? element.insertBefore(context, first) : element.appendChild(context);
+		element.insertBefore(context, element.firstChild);
 	}
 
 };
 
 inserters.inside = inserters.bottom;
 
-Hash.each(inserters, function(inserter, where){
+//<1.2compat>
+
+Object.each(inserters, function(inserter, where){
 
 	where = where.capitalize();
 	
@@ -342,27 +346,22 @@ Hash.each(inserters, function(inserter, where){
 
 });
 
+//</1.2compat>
+
 Element.implement({
 
 	set: function(prop, value){
-		switch (typeOf(prop)){
-			case 'object':
-				for (var p in prop) this.set(p, prop[p]);
-				break;
-			case 'string':
-				var property = Element.Properties.get(prop);
-				(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
-		}
-		return this;
-	},
+		var property = Element.Properties[prop];
+		(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
+	}.overloadSetter(),
 
 	get: function(prop){
-		var property = Element.Properties.get(prop);
+		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
-	},
+	}.overloadGetter(),
 
 	erase: function(prop){
-		var property = Element.Properties.get(prop);
+		var property = Element.Properties[prop];
 		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
 		return this;
 	},
@@ -422,8 +421,9 @@ Element.implement({
 		return this;
 	},
 
-	toggleClass: function(className){
-		return this.hasClass(className) ? this.removeClass(className) : this.addClass(className);
+	toggleClass: function(className, force){
+		if (force == null) force = !this.hasClass(className);
+		return (force) ? this.removeClass(className) : this.addClass(className);
 	},
 
 	adopt: function(){
@@ -604,13 +604,13 @@ if (!document.createElement('div').contains) Element.implement(contains);
 
 })();
 
-//=1.2compat
+//<1.2compat>
 
-Element.implement({hasChild: function(element){
+Element.implement('hasChild', function(element){
 	return this !== element && this.contains(element);
-}});
+});
 
-///=
+//</1.2compat>
 
 [Element, Window, Document].invoke('implement', {
 
@@ -659,7 +659,13 @@ window.addListener('unload', purge);
 
 })();
 
+Element.Properties = {};
+
+//<1.2compat>
+
 Element.Properties = new Hash;
+
+//</1.2compat>
 
 Element.Properties.style = {
 
@@ -687,7 +693,7 @@ Element.Properties.tag = {
 
 Element.Properties.html = (function(){
 	
-	var tableTest = Function.stab(function(){
+	var tableTest = Function.attempt(function(){
 		var table = document.createElement('table');
 		table.innerHTML = '<tr><td></td></tr>';
 	});
