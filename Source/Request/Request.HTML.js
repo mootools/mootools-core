@@ -25,39 +25,16 @@ Request.HTML = new Class({
 		filter: false
 	},
 
-	processHTML: function(text){
-		var match = text.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-		text = (match) ? match[1] : text;
-
-		var container = new Element('div');
-
-		return Function.attempt(function(){
-			var root = '<root>' + text + '</root>', doc;
-			if (Browser.ie){
-				doc = new ActiveXObject('Microsoft.XMLDOM');
-				doc.async = false;
-				doc.loadXML(root);
-			} else {
-				doc = new DOMParser().parseFromString(root, 'text/xml');
-			}
-			root = doc.getElementsByTagName('root')[0];
-			if (!root) return null;
-			for (var i = 0, k = root.childNodes.length; i < k; i++){
-				var child = Element.clone(root.childNodes[i], true, true);
-				if (child) container.grab(child);
-			}
-			return container;
-		}) || container.set('html', text);
-	},
-
 	success: function(text){
 		var options = this.options, response = this.response;
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
-		});
-
-		var temp = this.processHTML(response.html);
+		}); 
+		
+		var match = response.html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+		if (match) response.html = match[1];
+		var temp = new Element('div').set('html', response.html);
 
 		response.tree = temp.childNodes;
 		response.elements = temp.getElements('*');
