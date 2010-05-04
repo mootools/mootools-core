@@ -186,9 +186,9 @@ Document.implement({
 
 });
 
-if (window.$ == null) Window.implement({$: function(el, nc){
+if (window.$ == null) Window.implement('$', function(el, nc){
 	return document.id(el, nc, this.document);
-}});
+});
 
 Window.implement({
 
