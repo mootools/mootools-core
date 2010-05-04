@@ -577,9 +577,7 @@ Element.implement({
 	},
 
 	empty: function(){
-		Array.from(this.childNodes).each(function(node){
-			Element.destroy(node);
-		});
+		Array.from(this.childNodes).each(Element.destroy);
 		return this;
 	},
 
