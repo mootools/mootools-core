@@ -245,34 +245,20 @@ var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
 };
 
-var clean = function(item, retain){
-	if (!item) return;
+var clean = function(item){
+	if (item.removeEvents) item.removeEvents();
+	if (item.clearAttributes) item.clearAttributes();
 	var uid = item.uid;
-	if (retain !== true) retain = false;
-	if (Browser.ie){
-		if (item.clearAttributes){
-			var clone = retain && item.cloneNode(false);
-			item.clearAttributes();
-			if (clone) item.mergeAttributes(clone);
-		} else if (item.removeEvents){
-			item.removeEvents();
-		}
-		if ((/object/i).test(item.tagName)){
-			for (var p in item){
-				if (typeof item[p] == 'function') item[p] = function(){};
-			}
-			Element.dispose(item);
-		}
-	}	
-	if (!uid) return;
-	collected[uid] = storage[uid] = null;
+	if (uid != null){
+		delete collected[uid];
+		delete storage[uid];
+	}
+	return item;
 };
 
 var purge = function(){
 	Object.each(collected, clean);
-	if (Browser.ie) Array.from(document.getElementsByTagName('object')).each(clean);
 	if (window.CollectGarbage) CollectGarbage();
-	collected = storage = null;
 };
 
 var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
@@ -568,17 +554,16 @@ Element.implement({
 		clean(clone, this);
 		return document.id(clone);
 	},
-
+	
 	destroy: function(){
-		Element.empty(this);
+		var children = clean(this).getElementsByTagName('*');
+		for (var i = 0, l = children.length; i < l; i++) clean(children[i]);
 		Element.dispose(this);
-		clean(this, true);
-		return null;
 	},
-
+	
 	empty: function(){
 		Array.from(this.childNodes).each(function(node){
-			Element.destroy(node);
+			Element.dispose(node);
 		});
 		return this;
 	},
