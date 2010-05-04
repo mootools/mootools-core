@@ -379,3 +379,6 @@ Executes a function in the specified intervals of time. Periodic execution can b
 [MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
 [MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
 [MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
+[Function:delay]: /core/Types/Function/#delay
+[Function:periodical]: /core/Types/Function/#periodical
+

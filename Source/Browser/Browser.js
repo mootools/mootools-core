@@ -186,6 +186,7 @@ try {
 Browser.Engine = {};
 
 var setEngine = function(name, version){
+	Browser.Engine.name = name;
 	Browser.Engine[name + version] = true;
 	Browser.Engine.version = version;
 };
@@ -226,7 +227,7 @@ if (Browser.opera){
 }
 
 if (Browser.name == 'unknown'){
-	switch ((userAgent.toLowerCase().match(/(webkit|khtml|gecko)/) || [])[0]){
+	switch ((navigator.userAgent.toLowerCase().match(/(webkit|khtml|gecko)/) || [])[0]){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;
