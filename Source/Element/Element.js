@@ -557,7 +557,7 @@ Element.implement({
 	
 	destroy: function(){
 		var children = clean(this).getElementsByTagName('*');
-		for (var i = 0, l = children.length; i < l; i++) clean(children[i]);
+		Array.each(children, clean);
 		Element.dispose(this);
 	},
 	
