@@ -35,12 +35,12 @@ var Event = new Type('Event', function(event, win){
 	} else if (type.test(/click|mouse|menu/i)){
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		var page = {
-			x: event.pageX || event.clientX + doc.scrollLeft,
-			y: event.pageY || event.clientY + doc.scrollTop
+			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
+			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
 		};
 		var client = {
-			x: (event.pageX) ? event.pageX - win.pageXOffset : event.clientX,
-			y: (event.pageY) ? event.pageY - win.pageYOffset : event.clientY
+			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
 		if (type.test(/DOMMouseScroll|mousewheel/)){
 			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
