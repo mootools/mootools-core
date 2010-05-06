@@ -32,7 +32,7 @@ var Event = new Type('Event', function(event, win){
 			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
 		}
 		key = key || String.fromCharCode(code).toLowerCase();
-	} else if (type.match(/(click|mouse|menu)/i)){
+	} else if (type.test(/click|mouse|menu|touch/i)){
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		var page = {
 			x: event.pageX || event.clientX + doc.scrollLeft,
@@ -42,12 +42,12 @@ var Event = new Type('Event', function(event, win){
 			x: (event.pageX) ? event.pageX - win.pageXOffset : event.clientX,
 			y: (event.pageY) ? event.pageY - win.pageYOffset : event.clientY
 		};
-		if (type.match(/DOMMouseScroll|mousewheel/)){
+		if (type.test(/DOMMouseScroll|mousewheel/)){
 			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		}
 		var rightClick = (event.which == 3) || (event.button == 2);
 		var related = null;
-		if (type.match(/over|out/)){
+		if (type.test(/over|out/)){
 			switch (type){
 				case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': related = event.relatedTarget || event.toElement;
