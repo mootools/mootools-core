@@ -16,7 +16,8 @@ var parsed,
 	partIndex,
 	reversed,
 	cache = {},
-	reverseCache = {};
+	reverseCache = {},
+	reUnescape = /\\/g;
 
 var parse = function(expression, isReversed){
 	expression = ('' + expression).replace(/^\s+|\s+$/g, '');
@@ -129,65 +130,61 @@ function parser(
 		if (reversed && currentSeparator[combinatorIndex])
 			currentSeparator[combinatorIndex].reverseCombinator = reverseCombinator(combinator);
 		currentSeparator[++combinatorIndex] = {combinator: combinator, tag: '*', parts: []};
-		partIndex = 0;
+		partIndex = -1;
 	}
 	
 	var currentParsed = parsed.expressions[separatorIndex][combinatorIndex];
 
 	if (tagName){
-		currentParsed.tag = tagName.replace(/\\/g,'');
-		return '';
+		currentParsed.tag = tagName.replace(reUnescape, '');
+
 	} else if (id){
-		currentParsed.id = id.replace(/\\/g,'');
-		return '';
+		currentParsed.id = id.replace(reUnescape, '');
+
 	} else if (className){
-		className = className.replace(/\\/g,'');
+		className = className.replace(reUnescape, '');
 	
 		if (!currentParsed.classes) currentParsed.classes = [className];
 		else currentParsed.classes.push(className);
 	
-		currentParsed.parts[partIndex] = {
+		currentParsed.parts[++partIndex] = {
 			type: 'class',
 			value: className,
 			regexp: new RegExp('(^|\\s)' + escapeRegExp(className) + '(\\s|$)')
 		};
-		partIndex++;
 		
 	} else if (pseudoClass){
 		if (!currentParsed.pseudos) currentParsed.pseudos = [];
 		
-		var value = pseudoClassValue || null;
-		if (value) value = value.replace(/\\/g,'');
-		
-		currentParsed.pseudos.push(currentParsed.parts[partIndex] = {
+		pseudoClassValue = pseudoClassValue ? pseudoClassValue.replace(reUnescape, '') : null;
+
+		currentParsed.pseudos.push(currentParsed.parts[++partIndex] = {
 			type: 'pseudo',
-			key: pseudoClass.replace(/\\/g,''),
-			value: value
+			key: pseudoClass.replace(reUnescape, ''),
+			value: pseudoClassValue
 		});
-		partIndex++;
 		
 	} else if (attributeKey){
 		if (!currentParsed.attributes) currentParsed.attributes = [];
 		
-		var key = attributeKey.replace(/\\/g,'');
-		var operator = attributeOperator;
-		var attribute = (attributeValue || '').replace(/\\/g,'');
+		attributeKey = attributeKey.replace(reUnescape, '');
+		attributeValue = (attributeValue || '').replace(reUnescape, '');
 		
 		var test, regexp;
 		
-		switch (operator){
-			case '^=' : regexp = new RegExp(       '^'+ escapeRegExp(attribute)            ); break;
-			case '$=' : regexp = new RegExp(            escapeRegExp(attribute) +'$'       ); break;
-			case '~=' : regexp = new RegExp( '(^|\\s)'+ escapeRegExp(attribute) +'(\\s|$)' ); break;
-			case '|=' : regexp = new RegExp(       '^'+ escapeRegExp(attribute) +'(-|$)'   ); break;
+		switch (attributeOperator){
+			case '^=' : regexp = new RegExp(       '^'+ escapeRegExp(attributeValue)            ); break;
+			case '$=' : regexp = new RegExp(            escapeRegExp(attributeValue) +'$'       ); break;
+			case '~=' : regexp = new RegExp( '(^|\\s)'+ escapeRegExp(attributeValue) +'(\\s|$)' ); break;
+			case '|=' : regexp = new RegExp(       '^'+ escapeRegExp(attributeValue) +'(-|$)'   ); break;
 			case  '=' : test = function(value){
-				return attribute == value;
+				return attributeValue == value;
 			}; break;
 			case '*=' : test = function(value){
-				return value && value.indexOf(attribute) > -1;
+				return value && value.indexOf(attributeValue) > -1;
 			}; break;
 			case '!=' : test = function(value){
-				return attribute != value;
+				return attributeValue != value;
 			}; break;
 			default   : test = function(value){
 				return !!value;
@@ -198,14 +195,13 @@ function parser(
 			return value && regexp.test(value);
 		};
 		
-		currentParsed.attributes.push(currentParsed.parts[partIndex] = {
+		currentParsed.attributes.push(currentParsed.parts[++partIndex] = {
 			type: 'attribute',
-			key: key,
-			operator: operator,
-			value: attribute,
+			key: attributeKey,
+			operator: attributeOperator,
+			value: attributeValue,
 			test: test
 		});
-		partIndex++;
 		
 	}
 	
@@ -214,7 +210,7 @@ function parser(
 
 // Slick NS
 
-var Slick = this.Slick || {};
+var Slick = exports.Slick || {};
 
 Slick.parse = function(expression){
 	return parse(expression);
@@ -222,8 +218,6 @@ Slick.parse = function(expression){
 
 Slick.escapeRegExp = escapeRegExp;
 
-// export Slick
-
-if (!this.Slick) this.Slick = Slick;
+if (!exports.Slick) exports.Slick = Slick;
 	
-})();
+}).apply((typeof exports != 'undefined') ? exports : this);
