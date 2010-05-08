@@ -531,7 +531,7 @@ Element.implement({
 			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
 			
 			Array.from(value).each(function(val){
-				if (typeof val != 'undefined') queryString.push(el.name + '=' + encodeURIComponent(val));
+				if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
 			});
 		});
 		return queryString.join('&');
