@@ -51,39 +51,6 @@ Function method: implement {#implement}
 ---------------------------------------
 
 
-Function method: clear {#clear}
--------------------------------
-
-Clears a Timeout or an Interval. Useful when working with [Function:delay](#delay) and [Function:periodical](#periodical).
-
-### Syntax:
-
-	myTimer.clear(timer);
-
-### Arguments:
-
-1. timer - (*number*) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
-
-### Returns:
-
-* (*null*) returns null.
-
-### Example:
-
-	var myTimer = myFunction.delay(5000); //Waits 5 seconds then executes myFunction.
-	myTimer = myTimer.clear(); //Cancels myFunction.
-
-### See also:
-
-- [Function:delay][]
-- [Function:periodical][]
-
-### Notes:
-
-This method is equivalent to *$clear* from MooTools 1.2.
-
-
-
 Function method: Function.attempt {#attempt}
 -----------------------------
 
