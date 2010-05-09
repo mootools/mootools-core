@@ -226,8 +226,24 @@ This method is an object-specific equivalent of *$extend* from MooTools 1.2.
 Function method: extend {#extend}
 ---------------------------------
 
+Add methods to a function
 
+### Syntax:
 
+	myFunction.extend(key,value);
+
+### Arguments:
+
+1. key - (*string*) The key of the prototype
+2. value - (*mixed*) The function or another value of the protoype
+
+### Example: 
+
+	var myFunction = function(){};
+	myFunction.extend('alert',function(text){
+		alert(text);
+	});
+	myFunction.alert('Hello!'); // Alerts Hello!
 
 
 Function method: implement {#implement}
@@ -253,6 +269,11 @@ Add methods to the prototype
 	var myInstance = new myFunction();
 	myInstance.alert('Hello!'); // Alerts Hello!
 
+### Notes:
+
+The difference between *implement* and *extend*, is that implement adds the value to the prototype.
+So with *implement* each instance of the function will have this method or property while with *extend*
+the method or property is added to a single instance.
 
 Deprecated Functions {#Deprecated-Functions}
 ============================================
