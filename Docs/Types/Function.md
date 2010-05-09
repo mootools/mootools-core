@@ -336,11 +336,14 @@ Executes a function in the specified intervals of time. Periodic execution can b
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
 	addCount.periodical(1000, Site); //Will add the number of seconds at the Site.
-
+	
+	// The interval can be stopped using the clearInterval function
+	var timer = myFunction.periodical(1000);
+	clearInterval(timer);
 
 ### See Also:
 
-- [$clear][], [MDC setInterval][]
+- [MDC setInterval][], [MDC clearInterval][]
 
 
 
@@ -349,6 +352,7 @@ Executes a function in the specified intervals of time. Periodic execution can b
 [MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
 [MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
 [MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
+[MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
 [MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
 [Function:delay]: /core/Types/Function/#delay
 [Function:periodical]: /core/Types/Function/#periodical
