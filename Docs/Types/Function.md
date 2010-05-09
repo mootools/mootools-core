@@ -295,16 +295,20 @@ Delays the execution of a function by a specified duration.
 ### Example:
 
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
-	//Wait 50 milliseconds, then call myFunction and bind myElement to it.
+	// Wait 50 milliseconds, then call myFunction and bind myElement to it.
 	myFunction.delay(50, myElement); //Alerts: 'moo! Element id is: ... '
 
-	//An anonymous function which waits a second and then alerts.
+	// An anonymous function which waits a second and then alerts.
 	(function(){ alert('one second later...'); }).delay(1000);
+	
+	// To stop the delay, clearTimeout can be used like so
+	var timer = myFunction.delay(50);
+	clearTimeout(timer);
 
 
 ### See Also:
 
-- [$clear][], [MDC setTimeout][]
+- [MDC setTimeout][], [MDC clearTimeout][]
 
 
 
@@ -342,10 +346,10 @@ Executes a function in the specified intervals of time. Periodic execution can b
 
 [options]: #Function:create:options
 [Element:addEvent]: /core/Element/Element.Event/#Element:addEvent
-[$clear]: /core/Core/Core/#clear
 [MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
 [MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
 [MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
+[MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
 [Function:delay]: /core/Types/Function/#delay
 [Function:periodical]: /core/Types/Function/#periodical
 
