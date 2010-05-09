@@ -201,39 +201,6 @@ Changes the scope of `this` within the target function to refer to the bind para
 	myBoundFunction(); //This will make myElement's text red.
 
 
-Function method: attempt {#attempt}
------------------------------------
-
-Tries to execute the function.
-
-### Syntax:
-
-	var result = myFunction.attempt([args[, bind]]);
-
-### Arguments:
-
-1. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. bind - (*object*, optional) The object that the "this" of the function will refer to.
-
-### Returns:
-
-* (*mixed*) The function's return value or `null` if an exception is thrown.
-
-### Example:
-
-	var myObject = {
-		'cow': 'moo!'
-	};
-
-	var myFunction = function(){
-		for (var i = 0; i < arguments.length; i++){
-			if(!this[arguments[i]]) throw('doh!');
-		}
-	};
-	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = null
-
-
-
 Function method: delay {#delay}
 -------------------------------
 
