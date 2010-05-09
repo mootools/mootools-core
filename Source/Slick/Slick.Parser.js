@@ -8,8 +8,6 @@ provides: Slick.Parser
 
 (function(){
 	
-var exports = this;
-	
 var parsed,
 	separatorIndex,
 	combinatorIndex,
@@ -210,7 +208,7 @@ function parser(
 
 // Slick NS
 
-var Slick = exports.Slick || {};
+var Slick = (this.Slick || {});
 
 Slick.parse = function(expression){
 	return parse(expression);
@@ -218,6 +216,6 @@ Slick.parse = function(expression){
 
 Slick.escapeRegExp = escapeRegExp;
 
-if (!exports.Slick) exports.Slick = Slick;
+if (!this.Slick) this.Slick = Slick;
 	
-}).apply((typeof exports != 'undefined') ? exports : this);
+}).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : this/*</CommonJS>*/);

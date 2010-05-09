@@ -100,8 +100,17 @@ var IFrame = new Type('IFrame', function(){
 	return iframe;
 });
  
-var Elements = this.Elements = function(elements){
-	if (elements && elements.length) Slick.uniques(elements, this);
+var Elements = this.Elements = function(nodes){
+	if (nodes && nodes.length){
+		var uniques = {}, node;
+		for (var i = 0; node = nodes[i++];){
+			var uid = Slick.uidOf(node);
+			if (!uniques[uid]){
+				uniques[uid] = true;
+				this.push(node);
+			}
+		}
+	}
 };
  
 Elements.prototype = {length: 0};
