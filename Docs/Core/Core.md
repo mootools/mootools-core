@@ -223,11 +223,35 @@ Copies all the properties from the second object passed in to the first object p
 This method is an object-specific equivalent of *$extend* from MooTools 1.2.
 
 
+Function method: extend {#extend}
+---------------------------------
 
-----------------------
 
- 
-----------------------
+
+
+
+Function method: implement {#implement}
+---------------------------------------
+
+Add methods to the prototype
+
+### Syntax:
+
+	myFunction.implement(key,value);
+
+### Arguments:
+
+1. key - (*string*) The key of the prototype
+2. value - (*mixed*) The function or another value of the protoype
+
+### Example: 
+
+	var myFunction = function(){};
+	myFunction.implement('alert',function(text){
+		alert(text);
+	});
+	var myInstance = new myFunction();
+	myInstance.alert('Hello!'); // Alerts Hello!
 
 
 Deprecated Functions {#Deprecated-Functions}

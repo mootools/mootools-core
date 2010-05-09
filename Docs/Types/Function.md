@@ -42,15 +42,6 @@ This function is equivalent to the following deprecated MooTools 1.2 methods:
 	var fn2 = Function.from(foo);	// Equivalent to var fn2 = $lambda(foo);
 
 
-
-Function method: extend {#extend}
----------------------------------
-
-
-Function method: implement {#implement}
----------------------------------------
-
-
 Function method: Function.attempt {#attempt}
 -----------------------------
 
