@@ -223,12 +223,57 @@ Copies all the properties from the second object passed in to the first object p
 This method is an object-specific equivalent of *$extend* from MooTools 1.2.
 
 
+Function method: extend {#extend}
+---------------------------------
 
-----------------------
+Add methods to a function
 
- 
-----------------------
+### Syntax:
 
+	myFunction.extend(key,value);
+
+### Arguments:
+
+1. key - (*string*) The key of the prototype
+2. value - (*mixed*) The function or another value of the protoype
+
+### Example: 
+
+	var myFunction = function(){};
+	myFunction.extend('alert',function(text){
+		alert(text);
+	});
+	myFunction.alert('Hello!'); // Alerts Hello!
+
+
+Function method: implement {#implement}
+---------------------------------------
+
+Add methods to the prototype
+
+### Syntax:
+
+	myFunction.implement(key,value);
+
+### Arguments:
+
+1. key - (*string*) The key of the prototype
+2. value - (*mixed*) The function or another value of the protoype
+
+### Example: 
+
+	var myFunction = function(){};
+	myFunction.implement('alert',function(text){
+		alert(text);
+	});
+	var myInstance = new myFunction();
+	myInstance.alert('Hello!'); // Alerts Hello!
+
+### Notes:
+
+The difference between *implement* and *extend*, is that implement adds the value to the prototype.
+So with *implement* each instance of the function will have this method or property while with *extend*
+the method or property is added to a single instance.
 
 Deprecated Functions {#Deprecated-Functions}
 ============================================
@@ -252,15 +297,30 @@ If you really need this function you can implement it like so:
 Function: $clear {#clear}
 -------------------------
 
-This method has been deprecated. Please use [Function:clear](/core/Types/Function/#clear) instead.
+This method has been deprecated. Please use *clearInterval* or *clearTimeout* instead.
 
+### See Also:
+
+- [MDC clearTimeout][], [MDC clearInterval][]
 
 
 Function: $defined {#defined}
 -----------------------------
 
-This method has been deprecated. Please use [nil](#nil) instead.
+This method has been deprecated.
 
+If you really need this function you can implement it like so:
+
+### Example:
+
+	var $defined = function(obj){
+		return (obj != undefined);
+	};
+
+	// Or just use it like this
+	if(obj != undefined){
+		// Do something
+	}
 
 
 Function: $arguments {#arguments}
@@ -411,3 +471,5 @@ This method has been deprecated. Please use [typeOf](#typeOf) instead.
 [Function:bind]: /core/Types/Function/#bind
 [Function:delay]: /core/Types/Function/#delay
 [Function:periodical]: /core/Types/Function/#periodical
+[MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
+[MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
