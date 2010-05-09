@@ -629,7 +629,7 @@ var pseudos = {
 		return true;
 	},
 	
-	/*<of-type-pseudo-selectors>*/
+	/*</of-type-pseudo-selectors>*/
 
 	// custom pseudos
 
