@@ -252,8 +252,11 @@ If you really need this function you can implement it like so:
 Function: $clear {#clear}
 -------------------------
 
-This method has been deprecated. Please use [Function:clear](/core/Types/Function/#clear) instead.
+This method has been deprecated. Please use *clearInterval* or *clearTimeout* instead.
 
+### See Also:
+
+- [MDC clearTimeout][], [MDC clearInterval][]
 
 
 Function: $defined {#defined}
@@ -423,3 +426,5 @@ This method has been deprecated. Please use [typeOf](#typeOf) instead.
 [Function:bind]: /core/Types/Function/#bind
 [Function:delay]: /core/Types/Function/#delay
 [Function:periodical]: /core/Types/Function/#periodical
+[MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
+[MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
