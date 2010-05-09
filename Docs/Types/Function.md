@@ -201,45 +201,6 @@ Changes the scope of `this` within the target function to refer to the bind para
 	myBoundFunction(); //This will make myElement's text red.
 
 
-
-Function method: bindWithEvent {#bindWithEvent}
------------------------------------------------
-
-Changes the scope of `this` within the target function to refer to the bind parameter. It also makes "space" for an event.
-This allows the function to be used in conjunction with [Element:addEvent][] and arguments.
-
-### Syntax:
-
-	myFunction.bindWithEvent([bind[, args]]);
-
-### Arguments:
-
-1. bind - (*object*, optional) The object that the "this" of the function will refer to.
-2. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-
-### Returns:
-
-* (*function*) The bound function.
-
-### Example:
-
-	var Logger = new Class({
-		log: function(){
-			console.log.apply(null, arguments);
-		}
-	});
-	
-	var Log = new Logger();
-	
-	$('myElement').addEvent('click', function(event, offset){
-		offset += event.client.x;
-		this.log('clicked; moving to:', offset); // this refers to myClass
-		event.target.setStyle('top', offset);
-		return false;
-	}.bindWithEvent(Log, 100));
-
-
-
 Function method: attempt {#attempt}
 -----------------------------------
 
