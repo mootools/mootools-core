@@ -1,4 +1,4 @@
-Native: Window {#Window}
+Window {#Window}
 ========================
 
 The following functions are treated as Window methods.
@@ -95,7 +95,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 
 
-Native: Element {#Element}
+Element {#Element}
 ==========================
 
 Custom Native to allow all of its methods to be used with any extended DOM Element.

@@ -1,4 +1,4 @@
-Native: Element {#Element}
+Element {#Element}
 ==========================
 
 - Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
