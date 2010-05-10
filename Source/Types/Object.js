@@ -1,7 +1,7 @@
 /*
 ---
 
-name: Hash
+name: Object
 
 description: Object generic methods
 
