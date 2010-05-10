@@ -25,14 +25,15 @@ var Element = function(tag, props){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
-
-		for (var i = 0, l = parsed.parts.length; i < l; i++){
-			var part = parsed.parts[i];
-			if (part.type == 'attribute' && part.value != null && part.operator == '=' && props[part.key] == null)
-				props[part.key] = part.value;
+		
+		var attributes = parsed.attributes;
+		if (attributes) for (var i = 0, l = attributes.length; i < l; i++){
+			var attr = attributes[i];
+			if (attr.value != null && attr.operator == '=' && props[attr.key] == null)
+				props[attr.key] = attr.value;
 		}
 		
-		if (parsed.classes && props['class'] == null) props['class'] = parsed.classes.join(' ');
+		if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
 	}
 	
 	return document.newElement(tag, props);
