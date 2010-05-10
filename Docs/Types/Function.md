@@ -42,7 +42,7 @@ This function is equivalent to the following deprecated MooTools 1.2 methods:
 	var fn2 = Function.from(foo);	// Equivalent to var fn2 = $lambda(foo);
 
 
-Function method: Function.attempt {#attempt}
+Function method: Function.attempt {#Function:attempt}
 -----------------------------
 
 Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
@@ -88,7 +88,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 This method is an equivalent of *$try* from MooTools 1.2.
 
 
-Function method: run {#run}
+Function method: run {#Function:run}
 ---------------------------
 
 Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
@@ -127,7 +127,7 @@ Runs the Function with specified arguments and binding. The same as apply but re
 
 
 
-Function method: pass {#pass}
+Function method: pass {#Function:pass}
 -----------------------------
 
 Returns a closure with arguments and bind.
@@ -163,7 +163,7 @@ Returns a closure with arguments and bind.
 
 
 
-Function method: bind {#bind}
+Function method: bind {#Function:bind}
 -----------------------------
 
 Changes the scope of `this` within the target function to refer to the bind parameter.
@@ -192,7 +192,7 @@ Changes the scope of `this` within the target function to refer to the bind para
 	myBoundFunction(); //This will make myElement's text red.
 
 
-Function method: delay {#delay}
+Function method: delay {#Function:delay}
 -------------------------------
 
 Delays the execution of a function by a specified duration.
@@ -231,7 +231,7 @@ Delays the execution of a function by a specified duration.
 
 
 
-Function method: periodical {#periodical}
+Function method: periodical {#Function:periodical}
 -----------------------------------------
 
 Executes a function in the specified intervals of time. Periodic execution can be stopped using the [$clear][] function.

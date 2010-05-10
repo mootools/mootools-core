@@ -13,7 +13,7 @@ Every Math method is mirrored in the Number object, both as prototype and generi
 
 
 
-Function: Number.from {#Number-from}
+Function: Number.from {#Number:Number-from}
 ------------------------------------
 
 Returns the passed parameter as a Number, or null if not a number.
@@ -38,7 +38,7 @@ Returns the passed parameter as a Number, or null if not a number.
 
 
 
-Function: Number.random {#Number-random}
+Function: Number.random {#Number:Number-random}
 ----------------------------------------
 
 Returns a random integer between the two passed in values.
@@ -62,7 +62,7 @@ Returns a random integer between the two passed in values.
 
 
 
-Number method: limit {#limit}
+Number method: limit {#Number:limit}
 -----------------------------
 
 Limits this number between two bounds.
@@ -88,7 +88,7 @@ Limits this number between two bounds.
 
 
 
-Number method: round {#round}
+Number method: round {#Number:round}
 -----------------------------
 
 Returns this number rounded to the specified precision.
@@ -117,7 +117,7 @@ Returns this number rounded to the specified precision.
 
 
 
-Number method: times {#times}
+Number method: times {#Number:times}
 -----------------------------
 
 Executes the function passed in the specified number of times.
@@ -137,7 +137,7 @@ Executes the function passed in the specified number of times.
 
 
 
-Number method: toFloat {#toFloat}
+Number method: toFloat {#Number:toFloat}
 ---------------------------------
 
 Returns this number as a float. Useful because toFloat must work on both Strings and Numbers.
@@ -157,7 +157,7 @@ Returns this number as a float. Useful because toFloat must work on both Strings
 
 
 
-Number method: toInt {#toInt}
+Number method: toInt {#Number:toInt}
 -----------------------------
 
 Returns this number as another number with the passed in base. Useful because toInt must work on both Strings and Numbers.
