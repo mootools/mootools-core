@@ -181,5 +181,31 @@ Returns this number as another number with the passed in base. Useful because to
 	(111).toInt(2); //returns 7
 
 
+Math Methods {#Math}
+--------------------
+
+There are serveral methods available from the Math object.
+
+- abs
+- acos
+- asin
+- atan2
+- ceil
+- cos
+- exp
+- floor
+- log
+- max
+- min
+- pow
+- sin
+- sqrt
+- tan
+
+### Example
+
+	(-1).abs(); // returns: 1
+	(3).pow(4); // returns 81
+
 
 [MDC Number]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Number
