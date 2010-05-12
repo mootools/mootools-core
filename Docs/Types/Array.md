@@ -389,7 +389,7 @@ Accepts an object of key / function pairs to assign values.
 
 ### Syntax:
 
-	var result = Array.link(array, object);
+	var result = myArray.link(object);
 
 ### Arguments:
 
