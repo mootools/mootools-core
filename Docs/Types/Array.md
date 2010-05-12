@@ -526,7 +526,12 @@ Pushes the passed element into the array if it's not already present (case and t
 	['Cow', 'Pig', 'Dog'].include('Cat'); //returns ['Cow', 'Pig', 'Dog', 'Cat']
 	['Cow', 'Pig', 'Dog'].include('Dog'); //returns ['Cow', 'Pig', 'Dog']
 
+### Notes:
 
+If you want to push the passed element even if it's already present, use
+the vanilla javascript:
+
+	myArray.push(item); 
 
 Array method: combine {#Array:combine}
 --------------------------------
