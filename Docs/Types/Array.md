@@ -108,14 +108,14 @@ This is equivalent to *$splat* from MooTools 1.2.
 
 
 
-Array method: call {#Array:call}
+Array method: invoke {#Array:invoke}
 --------------------------
 
 Returns an array with the named method applied to the array's contents.
 
 ### Syntax:
 
-	var arr = myArray.call(method, arg1[, arg2, arg3])
+	var arr = myArray.invoke(method, arg1[, arg2, arg3])
 	
 ### Arguments:
 
