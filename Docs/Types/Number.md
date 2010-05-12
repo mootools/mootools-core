@@ -181,10 +181,10 @@ Returns this number as another number with the passed in base. Useful because to
 	(111).toInt(2); //returns 7
 
 
-Math Methods {#Math}
+Math Methods {#Number-Math}
 --------------------
 
-There are serveral methods available from the Math object.
+There are serveral methods available from the Math object that can be used as Number Methods.
 
 - abs
 - acos
@@ -202,7 +202,7 @@ There are serveral methods available from the Math object.
 - sqrt
 - tan
 
-### Example
+### Examples:
 
 	(-1).abs(); // returns: 1
 	(3).pow(4); // returns 81
