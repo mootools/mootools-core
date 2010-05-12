@@ -273,10 +273,50 @@ The Element.Events.yourproperty (object) can have:
 If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event.
 (highly unrecommended: use only when you know exactly what you're doing).
 
-Custom Events
--------------
 
-### Event: mouseenter
+
+Element.Events {#Element-Events}
+=================================
+
+This object contains custom events. There are several build-in events like
+mouseenter or mousewheel, but you can define your own events as well.
+
+### Adding a Custom Element Event
+
+	Element.Events.outerClick = {
+	    
+	    base : 'click',
+	    
+	    condition : function(event){
+	        event.stopPropagation();
+	        return false;
+	    },
+	    
+	    onAdd : function(fn){
+	        this.getDocument().addEvent('click', fn);
+	    },
+	    
+	    onRemove : function(fn){
+	        this.getDocument().removeEvent('click', fn);
+	    }
+		
+	};
+
+### Using a Custom Element Event
+
+	myElement.addEvent('outerClick',function(){
+		alert('You clicked outside this element');
+	});
+	
+	myElement.removeEvent('outerClick',fn);
+
+
+
+Build in Custom Events
+-----------------------
+
+
+### Event: mouseenter {#Element-Events:mouseenter}
 
 This event fires when the mouse enters the area of the DOM Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover).
 
@@ -288,7 +328,7 @@ This event fires when the mouse enters the area of the DOM Element and will not 
 
 - [Element:addEvent](#Element:addEvent)
 
-### Event: mouseleave
+### Event: mouseleave {#Element-Events:mouseleave}
 
 This event fires when the mouse leaves the area of the DOM Element and will not be fired if the mouse crosses over children of the Element (unlike mouseout).
 
@@ -300,7 +340,7 @@ This event fires when the mouse leaves the area of the DOM Element and will not 
 
 - [Element:addEvent](#Element:addEvent)
 
-### Event: mousewheel
+### Event: mousewheel {#Element-Events:mousewheel}
 
 This event fires when the mouse wheel is rotated;
 
