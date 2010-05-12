@@ -1471,7 +1471,7 @@ Eliminates a key from the Elements storage.
 
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
 This Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
