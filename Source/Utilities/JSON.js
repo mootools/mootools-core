@@ -16,14 +16,14 @@ provides: JSON
 ...
 */
 
-var JSON = !this.JSON ? {} : {
-	stringify: JSON.stringify,
-	parse: JSON.parse
-};
+if (!this.JSON) var JSON = {};
 
 //<1.2compat>
 
-JSON = new Hash(JSON);
+JSON = new Hash({
+	stringify: JSON.stringify,
+	parse: JSON.parse
+});
 
 //</1.2compat>
 
