@@ -31,9 +31,11 @@ Request.JSON = new Class({
 	},
 
 	success: function(text){
+		var secure = this.options.secure;
 		var json = this.response.json = Function.attempt(function(){
-			return JSON.decode(text, this.options.secure);
+			return JSON.decode(text, secure);
 		});
+
 		if (json == null) this.onFailure();
 		else this.onSuccess(json, text);
 	}

@@ -16,7 +16,7 @@ provides: JSON
 ...
 */
 
-if (!this.JSON) var JSON = {};
+if (!this.JSON) this.JSON = {};
 
 //<1.2compat>
 
