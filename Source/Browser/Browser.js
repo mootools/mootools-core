@@ -179,6 +179,13 @@ try {
 		}
 		return arrayFrom(item);
 	};
+	
+	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
+		var method = Array.prototype[name];
+		Array[name] = function(item){
+			return method.apply(Array.from(item), Array.prototype.slice.call(arguments, 1));
+		};
+	});
 }
 
 //<1.2compat>
