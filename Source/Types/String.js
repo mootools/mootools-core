@@ -17,7 +17,7 @@ provides: String
 String.implement({
 
 	test: function(regex, params){
-		return ((typeOf(regex) == 'string') ? new RegExp(regex, params) : regex).test(this);
+		return ((typeOf(regex) == 'regexp') ? regex : new RegExp('' + regex, params)).test(this);
 	},
 
 	contains: function(string, separator){
