@@ -1,4 +1,4 @@
-Native: Class {#Class}
+Class {#Class}
 ======================
 
 The base Class of the [MooTools](http://mootools.net/) framework.

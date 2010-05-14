@@ -9,7 +9,7 @@ A collection of the String Object prototype methods.
 
 
 
-Function: String.from {#String-from}
+Function: String.from {#String:String-from}
 ------------------------------------
 
 Returns the passed parameter as a String.
@@ -33,7 +33,7 @@ Returns the passed parameter as a String.
 
 
 
-String method: test {#test}
+String method: test {#String:test}
 ---------------------------
 
 Searches for a match between the string and a regular expression.
@@ -65,7 +65,7 @@ For more information see [MDC Regexp:test][].
 
 
 
-String method: contains {#contains}
+String method: contains {#String:contains}
 -----------------------------------
 
 Checks to see if the string passed in is contained in this string.
@@ -93,7 +93,7 @@ If the separator parameter is passed, will check to see if the string is contain
 
 
 
-String method: trim {#trim}
+String method: trim {#String:trim}
 ---------------------------
 
 Trims the leading and trailing spaces off a string.
@@ -112,7 +112,7 @@ Trims the leading and trailing spaces off a string.
 
 
 
-String method: clean {#clean}
+String method: clean {#String:clean}
 -----------------------------
 
 Removes all extraneous whitespace from a string and trims it ([String:trim][]).
@@ -131,7 +131,7 @@ Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
 
 
-String method: camelCase {#camelCase}
+String method: camelCase {#String:camelCase}
 -------------------------------------
 
 Converts a hyphenated string to a camelcased string.
@@ -150,7 +150,7 @@ Converts a hyphenated string to a camelcased string.
 
 
 
-String method: hyphenate {#hyphenate}
+String method: hyphenate {#String:hyphenate}
 -------------------------------------
 
 Converts a camelcased string to a hyphenated string.
@@ -169,7 +169,7 @@ Converts a camelcased string to a hyphenated string.
 
 
 
-String method: capitalize {#capitalize}
+String method: capitalize {#String:capitalize}
 ---------------------------------------
 
 Converts the first letter of each word in a string to uppercase.
@@ -188,7 +188,7 @@ Converts the first letter of each word in a string to uppercase.
 
 
 
-String method: escapeRegExp {#escapeRegExp}
+String method: escapeRegExp {#String:escapeRegExp}
 -------------------------------------------
 
 Escapes all regular expression characters from the string.
@@ -207,7 +207,7 @@ Escapes all regular expression characters from the string.
 
 
 
-String method: toInt {#toInt}
+String method: toInt {#String:toInt}
 -----------------------------
 
 Parses this string and returns a number of the specified radix or base.
@@ -236,7 +236,7 @@ Parses this string and returns a number of the specified radix or base.
 
 
 
-String method: toFloat {#toFloat}
+String method: toFloat {#String:toFloat}
 ---------------------------------
 
 Parses this string and returns a floating point number.
@@ -261,7 +261,7 @@ Parses this string and returns a floating point number.
 
 
 
-String method: hexToRgb {#hexToRgb}
+String method: hexToRgb {#String:hexToRgb}
 -----------------------------------
 
 Converts a hexadecimal colour value to RGB. Input string must be in one of the following hexadecimal colour formats (with or without the hash).
@@ -288,7 +288,7 @@ Converts a hexadecimal colour value to RGB. Input string must be in one of the f
 
 
 
-String method: rgbToHex {#rgbToHex}
+String method: rgbToHex {#String:rgbToHex}
 -----------------------------------
 
 Converts an RGB colour value to hexadecimal. Input string must be in one of the following RGB color formats.
@@ -319,7 +319,7 @@ Converts an RGB colour value to hexadecimal. Input string must be in one of the 
 
 
 
-String method: substitute {#substitute}
+String method: substitute {#String:substitute}
 ---------------------------------------
 
 Substitutes keywords in a string using an object/array.
@@ -346,7 +346,7 @@ Removes undefined keywords and ignores escaped keywords.
 
 
 
-String method: stripScripts {#stripScripts}
+String method: stripScripts {#String:stripScripts}
 ----------------------------------------------------
 
 Strips the String of its *<script>* tags and anything in between them.

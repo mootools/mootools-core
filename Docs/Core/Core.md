@@ -5,7 +5,7 @@ Core contains a handful of common sense functions used in [MooTools](http://moot
 
 
 
-Function: typeOf {#typeOf}
+Function: typeOf {#Core:typeOf}
 --------------------------
 
 Returns the type of object that matches the item passed in.
@@ -50,7 +50,7 @@ This method is equivalent to *$type* from MooTools 1.2.
 
 
 
-Function: instanceOf {#instanceOf}
+Function: instanceOf {#Core:instanceOf}
 ----------------------------------
 
 Checks to see if an object is an instance of a particular Type.
@@ -80,7 +80,7 @@ Checks to see if an object is an instance of a particular Type.
 
 
 
-Function: Object.each {#Object-each}
+Function: Object.each {#Object:Object-each}
 ------------------------------------
 
 Used to iterate through an object.
@@ -120,7 +120,7 @@ This method is an object-specific equivalent of *$each* from MooTools 1.2.
 
 
 
-Function: Object.merge {#Object-merge}
+Function: Object.merge {#Object:Object-merge}
 --------------------------------------
 
 Merges any number of objects recursively without referencing them or their sub-objects.
@@ -154,7 +154,7 @@ This method is an object-specific equivalent of *$merge* from MooTools 1.2.
 
 
 
-Function: Object.clone {#Object-clone}
+Function: Object.clone {#Object:Object-clone}
 --------------------------------------
 
 Returns a copy of an object.
@@ -186,7 +186,7 @@ This is an object-specific equivalent of *$unlink* from MooTools 1.2.
 
 
 
-Function: Object.append {#Object-append}
+Function: Object.append {#Object:Object-append}
 ----------------------------------------
 
 Copies all the properties from the second object passed in to the first object passed in.
@@ -223,7 +223,7 @@ Copies all the properties from the second object passed in to the first object p
 This method is an object-specific equivalent of *$extend* from MooTools 1.2.
 
 
-Function method: extend {#extend}
+Function method: extend {#Function:extend}
 ---------------------------------
 
 Add methods to a function
@@ -246,7 +246,7 @@ Add methods to a function
 	myFunction.alert('Hello!'); // Alerts Hello!
 
 
-Function method: implement {#implement}
+Function method: implement {#Function:implement}
 ---------------------------------------
 
 Add methods to the prototype
@@ -279,7 +279,7 @@ Deprecated Functions {#Deprecated-Functions}
 ============================================
 
 
-Function: $chk {#chk}
+Function: $chk {#Deprecated-Functions:chk}
 ---------------------
 
 This method has been deprecated and will have no equivalent in MooTools 2.0.
@@ -294,7 +294,7 @@ If you really need this function you can implement it like so:
 
 	
 
-Function: $clear {#clear}
+Function: $clear {#Deprecated-Functions:clear}
 -------------------------
 
 This method has been deprecated. Please use *clearInterval* or *clearTimeout* instead.
@@ -304,7 +304,7 @@ This method has been deprecated. Please use *clearInterval* or *clearTimeout* in
 - [MDC clearTimeout][], [MDC clearInterval][]
 
 
-Function: $defined {#defined}
+Function: $defined {#Deprecated-Functions:defined}
 -----------------------------
 
 This method has been deprecated.
@@ -323,7 +323,7 @@ If you really need this function you can implement it like so:
 	}
 
 
-Function: $arguments {#arguments}
+Function: $arguments {#Deprecated-Functions:arguments}
 ---------------------------------
 
 This method has been deprecated and will have no equivalent in MooTools 2.0.
@@ -340,7 +340,7 @@ If you really need this function you can implement it like so:
 
 
 
-Function: $empty {#empty}
+Function: $empty {#Deprecated-Functions:empty}
 -------------------------
 
 This method has been deprecated. Use [Function.from](/core/Types/Function/#Function-from) instead.
@@ -353,7 +353,7 @@ This method has been deprecated. Use [Function.from](/core/Types/Function/#Funct
 	
 
 
-Function: $lambda {#lambda}
+Function: $lambda {#Deprecated-Functions:lambda}
 ---------------------------
 
 This method has been deprecated. Use [Function.from](/core/Types/Function/#Function-from) instead.
@@ -364,49 +364,49 @@ This method has been deprecated. Use [Function.from](/core/Types/Function/#Funct
 
 
 
-Function: $extend {#extend}
+Function: $extend {#Deprecated-Functions:extend}
 ---------------------------
 
 This method has been deprecated. Please use [Object.append](#Object-append) instead.
 
 
 
-Function: $merge {#merge}
+Function: $merge {#Deprecated-Functions:merge}
 -------------------------
 
 This method has been deprecated. Please use [Object.merge](#Object-merge) instead.
 
 
 
-Function: $each {#each}
+Function: $each {#Deprecated-Functions:each}
 -----------------------
 
 This method has been deprecated. Please use [Array.each](/core/Types/Array/#Array-each) or [Object.each](#Object-each) instead.
 
 
 
-Function: $pick {#pick}
+Function: $pick {#Deprecated-Functions:pick}
 -----------------------
 
 This method has been deprecated. Please use [Array.pick](/core/Types/Array/#pick) instead.
 
 
 
-Function: $random {#random}
+Function: $random {#Deprecated-Functions:random}
 ---------------------------
 
 This method has been deprecated. Please use [Number.random](/core/Types/Number/#Number-random) instead.
 
 
 
-Function: $splat {#splat}
+Function: $splat {#Deprecated-Functions:splat}
 -------------------------
 
 This method has been deprecated. Please use [Array.from](/core/Types/Array/#Array-from) instead.
 
 
 
-Function: $time {#time}
+Function: $time {#Deprecated-Functions:time}
 -----------------------
 
 This method has been deprecated. Please use *Date.now()* instead.
@@ -421,14 +421,14 @@ This method has been deprecated. Please use *Date.now()* instead.
 
 
 
-Function: $try {#try}
+Function: $try {#Deprecated-Functions:try}
 ---------------------
 
 This method has been deprecated. Please use [Function.attempt](/core/Types/Function/#Function-attempt) instead.
 
 
 
-Function: $type {#type}
+Function: $type {#Deprecated-Functions:type}
 -----------------------
 
 This method has been deprecated. Please use [typeOf](#typeOf) instead.
