@@ -30,7 +30,9 @@ this.$uid = (window.ActiveXObject) ? function(item){
 $uid(window);
 $uid(document);
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+var ua = navigator.userAgent.toLowerCase(),
+	platform = navigator.platform.toLowerCase(),
+	UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
 	
@@ -41,7 +43,7 @@ var Browser = this.Browser = {
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
-		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
+		name: ua.match(/ip(ad|od|hone)/) ? 'ipod' : (ua.match(/(webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
 	},
 
 	Features: {
