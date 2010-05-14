@@ -145,7 +145,9 @@ Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
 var instances = {}, timers = {};
 
 var loop = function(){
-	for (var i = 0, l = this.length; i < l; i++) this[i].step();
+	for (var i = this.length; i--;){
+		if (this[i]) this[i].step();
+	}
 };
 
 var addInstance = function(instance){
