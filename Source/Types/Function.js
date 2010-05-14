@@ -65,12 +65,6 @@ Function.implement({
 
 //<1.2compat>
 
-var $clear = function(timer){
-	clearInterval(timer);
-	clearTimeout(timer);
-	return null;
-};
-
 Function.implement({
 
 	create: function(options){
