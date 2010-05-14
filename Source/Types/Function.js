@@ -65,14 +65,31 @@ Function.implement({
 
 //<1.2compat>
 
-$clear = function(timer){
+var $clear = function(timer){
 	clearInterval(timer);
 	clearTimeout(timer);
 	return null;
 };
 
 Function.implement({
-	
+
+	create: function(options){
+		var self = this;
+		options = options || {};
+		return function(event){
+			var args = options.arguments;
+			args = (args != undefined) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			if (options.event) args = [event || window.event].extend(args);
+			var returns = function(){
+				return self.apply(options.bind || null, args);
+			};
+			if (options.delay) return setTimeout(returns, options.delay);
+			if (options.periodical) return setInterval(returns, options.periodical);
+			if (options.attempt) return Function.attempt(returns);
+			return returns();
+		};
+	},
+
 	bindWithEvent: function(bind, args){
 		var self = this;
 		if (args != null) args = Array.from(args);
@@ -80,7 +97,7 @@ Function.implement({
 			return self.apply(bind, (args == null) ? arguments : [event].concat(args));
 		};
 	}
-	
+
 });
 
 var $try = Function.attempt;
