@@ -364,7 +364,7 @@ Element.implement({
 
 	setProperty: function(attribute, value){
 		attribute = camels[attribute] || attribute;
-		if (value == undefined) return this.removeProperty(attribute);
+		if (value == null) return this.removeProperty(attribute);
 		var key = attributes[attribute];
 		(key) ? this[key] = value :
 			(bools[attribute]) ? this[attribute] = !!value : this.setAttribute(attribute, '' + value);
@@ -569,6 +569,7 @@ Element.implement({
 		var children = clean(this).getElementsByTagName('*');
 		Array.each(children, clean);
 		Element.dispose(this);
+		return null;
 	},
 	
 	empty: function(){
@@ -626,7 +627,7 @@ Element.implement('hasChild', function(element){
 
 	retrieve: function(property, dflt){
 		var storage = get(this.uid), prop = storage[property];
-		if (dflt != undefined && prop == undefined) prop = storage[property] = dflt;
+		if (dflt != null && prop == null) prop = storage[property] = dflt;
 		return prop != null ? prop : null;
 	},
 
