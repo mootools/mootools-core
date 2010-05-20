@@ -242,7 +242,7 @@ Gets the element with the specified id found inside the current Element.
 Element Method: set {#Element:set}
 ----------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Hash.
+This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Object.
 
 ### Syntax:
 
@@ -251,7 +251,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 ### Arguments:
 
 - Two Arguments (property, value)
-	1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to set.
+	1. property - (*string*) The string key from the [Element.Properties][] Object representing the property to set.
 	2. value - (*mixed*) The value to set for the specified property.
 - One Argument (properties)
 	1. properties - (*object*) Object with its keys/value pairs representing the properties and values to set for the Element (as described below).
@@ -292,7 +292,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 ### Notes:
 
-- All the property arguments are passed to the corresponding method of the [Element.Properties][] Hash.
+- All the property arguments are passed to the corresponding method of the [Element.Properties][] Object.
 - If no matching property is found in [Element.Properties][], it falls back to [Element:setProperty][].
 - Whenever using [Element:setProperty][] to set an attribute, pass in the lowercase, simplified form of the property. For example:
 	- use 'for', not 'htmlFor',
@@ -310,7 +310,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 Element Method: get {#Element:get}
 ----------------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Hash.
+This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Object.
 
 ### Syntax:
 
@@ -318,11 +318,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 ### Arguments:
 
-1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to get.
+1. property - (*string*) The string key from the [Element.Properties][] Object representing the property to get.
 
 ### Returns:
 
-* (*mixed*) The result of calling the corresponding 'get' function in the [Element.Properties][] Hash.
+* (*mixed*) The result of calling the corresponding 'get' function in the [Element.Properties][] Object.
 
 ### Examples:
 
@@ -337,7 +337,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 ### Notes:
 
--  If the corresponding accessor doesn't exist in the [Element.Properties][] Hash, the result of [Element:getProperty][] on the property passed in is returned.
+-  If the corresponding accessor doesn't exist in the [Element.Properties][] Object, the result of [Element:getProperty][] on the property passed in is returned.
 
 ### See Also:
 
@@ -348,7 +348,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 Element Method: erase {#Element:erase}
 --------------------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Hash.
+This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Object.
 
 ### Syntax:
 
@@ -356,11 +356,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### Arguments:
 
-1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to erase.
+1. property - (*string*) The string key from the [Element.Properties][] Object representing the property to erase.
 
 ### Returns:
 
-* (*mixed*) The result of calling the corresponding 'erase' function in the [Element.Properties][] Hash.
+* (*mixed*) The result of calling the corresponding 'erase' function in the [Element.Properties][] Object.
 
 ### Examples:
 
@@ -369,7 +369,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### Note:
 
--  If the corresponding eraser doesn't exist in the  [Element.Properties][] Hash, [Element:removeProperty][] is called with the property passed in.
+-  If the corresponding eraser doesn't exist in the  [Element.Properties][] Object, [Element:removeProperty][] is called with the property passed in.
 
 ### See Also:
 
@@ -1474,7 +1474,7 @@ Eliminates a key from the Elements storage.
 Object: Element.Properties {#Element-Properties}
 ==============================================
 
-This Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
+This Object contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
 
 ### Adding a Custom Element Property
 

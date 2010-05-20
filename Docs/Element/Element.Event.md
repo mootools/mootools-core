@@ -237,7 +237,7 @@ Clones all events from an Element to this Element.
 Object: Element.Events {#Element-Events}
 ========================================
 
-You can add additional custom events by adding properties (objects) to the Element.Events Hash
+You can add additional custom events by adding properties (objects) to the Element.Events Object
 
 ### Arguments:
 

@@ -81,7 +81,7 @@ Request Specifically made for receiving HTML.
 [Request][]
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
 see [Element.Properties](/Element/Element/#Element-Properties)

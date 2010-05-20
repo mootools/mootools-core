@@ -224,7 +224,7 @@ Cancels the currently running request, if any.
 
 
 
-Hash: Element.Properties {#Element-Properties}
+Ojbect: Element.Properties {#Element-Properties}
 ==============================================
 
 see [Element.Properties](/Element/Element/#Element-Properties)

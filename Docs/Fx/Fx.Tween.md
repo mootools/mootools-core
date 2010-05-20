@@ -104,7 +104,7 @@ Transitions the Element's CSS property to the specified value.
 
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
 see [Element.Properties](/Element/Element/#Element-Properties)

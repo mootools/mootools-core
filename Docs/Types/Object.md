@@ -37,7 +37,7 @@ Creates a new map with the results of calling a provided function on every value
 
 ### Syntax:
 
-	var mappedHash = Object.map(object, fn[, bind]);
+	var mappedObject = Object.map(object, fn[, bind]);
 
 ### Arguments:
 
@@ -77,19 +77,19 @@ Creates a new object with all of the elements of the object for which the provid
 
 ### Syntax:
 
-	var filteredHash = Object.filter(object, fn[, bind]);
+	var filteredObject = Object.filter(object, fn[, bind]);
 
 ### Arguments:
 
 1. object - (*object*) The object.
-2. fn   - (*function*) The function to test each element of the Hash. This function is passed the value and its key in the Hash.
+2. fn   - (*function*) The function to test each element of the Object. This function is passed the value and its key in the Object.
 3. bind - (*object*, optional) The object to use as 'this' in the function. For more information see [Function:bind][].
 
 #### Argument: fn
 
 ##### Syntax:
 
-	fn(value, key, hash)
+	fn(value, key, object)
 
 ##### Arguments:
 
@@ -133,13 +133,13 @@ Returns true if every value in the object satisfies the provided testing functio
 
 ##### Arguments:
 
-1. value - (*mixed*) The current value in the hash.
-2. key   - (*string*) The current value's key in the hash.
-3. object  - (*object*) The actual hash.
+1. value - (*mixed*) The current value in the object.
+2. key   - (*string*) The current value's key in the object.
+3. object  - (*object*) The actual object.
 
 ### Returns:
 
-* (*boolean*) If every value in the Hash satisfies the provided testing function, returns true. Otherwise, returns false.
+* (*boolean*) If every value in the Object satisfies the provided testing function, returns true. Otherwise, returns false.
 
 ### Examples:
 
@@ -174,9 +174,9 @@ Returns true if at least one value in the object satisfies the provided testing 
 
 ##### Arguments:
 
-1. value - (*mixed*) The current value in the hash.
-2. key   - (*string*) The current value's key in the hash.
-3. hash  - (*object*) The actual object.
+1. value - (*mixed*) The current value in the object.
+2. key   - (*string*) The current value's key in the object.
+3. object  - (*object*) The actual object.
 
 ### Returns:
 

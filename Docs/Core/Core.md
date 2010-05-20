@@ -466,7 +466,6 @@ This method has been deprecated. Please use [typeOf](#typeOf) instead.
 
 
 
-[Hash]: /core/Types/Hash
 [Array]: /core/Types/Array
 [Function:bind]: /core/Types/Function/#bind
 [Function:delay]: /core/Types/Function/#delay
