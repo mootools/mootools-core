@@ -170,7 +170,7 @@ Additional Event key codes can be added by adding properties to the Event.Keys O
 	    if (event.key == "shift") alert("You pressed shift.");
     });
 
-#### Posible Keys:
+#### Possible Keys:
 
 - enter
 - up
