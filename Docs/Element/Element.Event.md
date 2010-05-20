@@ -234,11 +234,12 @@ Clones all events from an Element to this Element.
 
 - This method is also attached to Document and Window.
 
-### Hash: Element.Events
+Object: Element.Events {#Element-Events}
+========================================
 
 You can add additional custom events by adding properties (objects) to the Element.Events Hash
 
-#### Arguments:
+### Arguments:
 
 The Element.Events.yourproperty (object) can have:
 
@@ -247,7 +248,7 @@ The Element.Events.yourproperty (object) can have:
 3. onAdd - (*function*, optional) the function that will get fired when the custom event is added. Is bound to the element you add the event to.
 4. onRemove - (*function*, optional) the function that will get fired when the custom event is removed. Is bound to the element you add the event to.
 
-#### Examples:
+### Examples:
 
 	Element.Events.shiftclick = {
 		base: 'click', //we set a base type
@@ -260,7 +261,7 @@ The Element.Events.yourproperty (object) can have:
 		log('the user clicked the left mouse button while holding the shift key');
 	});
 
-#### Notes:
+### Notes:
 
 - There are different types of custom Events you can create:
 
@@ -268,47 +269,10 @@ The Element.Events.yourproperty (object) can have:
  2. Custom Events with base and condition: they will be redirect to the base event, but only fired if the condition is met.
  3. Custom Events with onAdd and/or onRemove and any other of the above: they will also perform additional functions when the event is added/removed.
 
-#### Warning:
+### Warning:
 
 If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event.
 (highly unrecommended: use only when you know exactly what you're doing).
-
-
-
-Element.Events {#Element-Events}
-=================================
-
-This object contains custom events. There are several build-in events like
-mouseenter or mousewheel, but you can define your own events as well.
-
-### Adding a Custom Element Event
-
-	Element.Events.outerClick = {
-	    
-	    base : 'click',
-	    
-	    condition : function(event){
-	        event.stopPropagation();
-	        return false;
-	    },
-	    
-	    onAdd : function(fn){
-	        this.getDocument().addEvent('click', fn);
-	    },
-	    
-	    onRemove : function(fn){
-	        this.getDocument().removeEvent('click', fn);
-	    }
-		
-	};
-
-### Using a Custom Element Event
-
-	myElement.addEvent('outerClick',function(){
-		alert('You clicked outside this element');
-	});
-	
-	myElement.removeEvent('outerClick',fn);
 
 
 
