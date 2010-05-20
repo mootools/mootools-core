@@ -37,7 +37,7 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Platform.ipod - (*boolean*) True if the platform is an iPod touch / iPhone / iPad.
 * Browser.Platform.android - (*boolean*) True if the platform is Android
 * Browser.Platform.webos - (*boolean*) True if the platform is WebOS
-* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux nor iPod.
+* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iPod.
 * Browser.Platform.name - (*string*) The name of the platform.
 
 ### Plugins:
