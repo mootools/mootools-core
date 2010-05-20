@@ -224,7 +224,7 @@ Cancels the currently running request, if any.
 
 
 
-Ojbect: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
 see [Element.Properties][]
