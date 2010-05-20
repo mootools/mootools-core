@@ -123,7 +123,7 @@ Executes a transition for any number of CSS properties in tandem.
 Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: morph {#Element-Properties:morph}
 ---------------------------------------------------
@@ -212,3 +212,4 @@ With a selector:
 [$]: /core/Element/Element#dollar
 [Fx]: /core/Fx/Fx
 [Fx.Morph]: #Fx-Morph
+[Element.Properties]: /core/Element/Element/#Element-Properties

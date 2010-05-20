@@ -107,7 +107,7 @@ Transitions the Element's CSS property to the specified value.
 Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: tween {#Element-Properties:tween}
 ---------------------------------------------------
@@ -267,3 +267,4 @@ If no background color is set on the Element, or its background color is set to 
 [Fx]: /core/Fx/Fx
 [Fx.Tween]: #Fx-Tween
 [Element.tween]: #Element-Properties:tween
+[Element.Properties]: /core/Element/Element/#Element-Properties

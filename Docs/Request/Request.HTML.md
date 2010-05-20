@@ -1,5 +1,3 @@
-[Request]: /core/Request/Request
-
 Class: Request.HTML {#Request-HTML}
 ===================================
 
@@ -84,7 +82,7 @@ Request Specifically made for receiving HTML.
 Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: load {#Element-Properties:load}
 -------------------------------------------------
@@ -174,4 +172,6 @@ Updates the content of the Element with a Request.HTML GET request.
 
 - [$][], [Request](/Request/Request)
 
+[Request]: /core/Request/Request
 [$]: /core/Element/Element/#dollar
+[Element.Properties]: /core/Element/Element/#Element-Properties

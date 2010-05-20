@@ -5,7 +5,7 @@ An XMLHttpRequest Wrapper.
 
 ### Implements:
 
-[Chain](/Class/Class.Extras#Chain), [Events](/Class/Class.Extras#Events), [Options](/Class/Class.Extras#Options)
+[Chain][], [Events][], [Options][]
 
 ### Syntax:
 
@@ -227,7 +227,7 @@ Cancels the currently running request, if any.
 Ojbect: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: send {#Element-Properties:send}
 -------------------------------------------------
@@ -321,4 +321,8 @@ Sends a form or a container of inputs with an HTML request.
 
 [$]: /core/Element/Element/#dollar
 [Request:send]: #Request:send
+[Element.Properties]: /core/Element/Element/#Element-Properties
 [URI]: /more/Native/URI
+[Chain]: /core/Class/Class.Extras#Chain
+[Events]: /core/Class/Class.Extras#Events
+[Options]: /core/Class/Class.Extras#Options
