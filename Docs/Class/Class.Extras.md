@@ -140,7 +140,7 @@ Class: Events {#Events}
 
 A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 In [Fx][], for example, this Class is used to allow any number of functions to be added to the Fx events, like 'complete', 'start', and 'cancel'.
-Events in a Class that implements [Events](#Events) must be either added as an option or with addEvent, not directly through .options.onEventName.
+Events in a Class that implements [Events][] must be either added as an option or with addEvent, not directly through .options.onEventName.
 
 ### Syntax:
 
@@ -155,7 +155,7 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 ### Implementing:
 
 - This class can be implemented into other classes to add its functionality to them.
-- Events has been designed to work well with the [Options](#Options) class. When the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
+- Events has been designed to work well with the [Options][] class. When the option property begins with 'on' and is followed by a capital letter it will be added as an event (e.g. 'onComplete' will add as 'complete' event).
 
 ### Example:
 
@@ -179,7 +179,7 @@ Events in a Class that implements [Events](#Events) must be either added as an o
 
 ### See Also:
 
-- [Class][], [Options](#Options)
+- [Class][], [Options][]
 
 
 
@@ -211,7 +211,7 @@ Adds an event to the Class instance's event stack.
 Events Method: addEvents {#Events:addEvents}
 ------------------------------------------
 
-The same as [addEvent](#Events:addEvent), but accepts an object to add multiple events at once.
+The same as [addEvent][], but accepts an object to add multiple events at once.
 
 ### Syntax:
 
@@ -304,7 +304,7 @@ Removes all events of the given type from the stack of events of a Class instanc
 
 1. events - (optional) If not passed removes all events of all types.
 	- (*string*) The event name (e.g. 'success'). Removes all events of that type.
-	- (*object*) An object of type function pairs. Like the one passed to [addEvents](#Events:addEvents).
+	- (*object*) An object of type function pairs. Like the one passed to [addEvents][].
 
 ### Returns:
 
@@ -327,7 +327,7 @@ Class: Options {#Options}
 
 A Utility Class. Its methods can be implemented with [Class:implement][] into any [Class][].
 Used to automate the setting of a Class instance's options.
-Will also add Class [Events](#Events) when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete' adds a 'complete' event). You will need to call this.setOptions() for this to have an effect, however.
+Will also add Class [Events][] when the option property begins with 'on' and is followed by a capital letter (e.g. 'onComplete' adds a 'complete' event). You will need to call this.setOptions() for this to have an effect, however.
 
 ### Syntax:
 
@@ -386,7 +386,46 @@ Merges the default options of the Class with the options passed in.
 ### Notes:
 
 - Relies on the default options of a Class defined in its options property.
-- If a Class has [Events](#Events) implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+
+
+Options in combination with Events
+-----------------------------------
+
+If a Class has [Events][] as well as [Options][] implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
+
+### Example: 
+
+	var Widget = new Class({
+		Implements: [Options, Events],
+		options: {
+			color: '#fff',
+			size: {
+				width: 100,
+				height: 100
+			}
+		},
+		initialize: function(options){
+			this.setOptions(options);
+		},
+		show: function(){
+			// Do some cool stuff
+			
+			this.fireEvent('show');
+		}
+		
+	});
+
+	var myWidget = new Widget({
+		color: '#f00',
+		size: {
+			width: 200
+		},
+		onShow: function(){
+			alert('Lets show it!');
+		}
+	});
+
+	myWidget.show(); // Will fire the event and alerts 'Lets show it!'
 
 
 [Class]: /core/Class/Class
@@ -396,3 +435,7 @@ Merges the default options of the Class with the options passed in.
 [Request]: /core/Request/Request
 [Request.HTML]: /core/Request/Request.HTML
 [Events:removeEvent]: /core/Element/Element.Event/#Element:removeEvent
+[Events]: #Events
+[Options]: #Options
+[addEvent]: #Events:addEvent
+[addEvents]: #Events:addEvents
