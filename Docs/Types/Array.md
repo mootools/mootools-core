@@ -622,15 +622,11 @@ Flattens a multidimensional array into a single array.
 
 Array method: pick {#Array:pick}
 --------------------------
-Returns the first defined argument passed in, or null.
+Returns the first defined value of the array passed in, or null.
 
 ### Syntax:
 
-	var picked = Array.pick(var1[, var2[, var3[, ...]]]);
-
-### Arguments:
-
-* (*mixed*) Any number of variables.
+	var picked = [var1, var2, var3].pick();
 
 ### Returns:
 
@@ -640,11 +636,16 @@ Returns the first defined argument passed in, or null.
 ### Example:
 
 	function say(infoMessage, errorMessage){
-		alert(Array.pick(errorMessage, infoMessage, 'There was no message supplied.'));
+		alert([errorMessage, infoMessage, 'There was no message supplied.'].pick());
+
+		// Or more MooTools 1.2 style using Generics
+		Array.pick([errorMessage, infoMessage, 'There was no message supplied.']);
+
 	}
 	say(); //Alerts "There was no message supplied."
     say("This is an info message."); //Alerts "This is an info message."
     say("This message will be ignored.", "This is the error message."); //Alerts "This is the error message."
+	
 
 ### Notes:
 

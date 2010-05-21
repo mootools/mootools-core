@@ -343,7 +343,7 @@ If you really need this function you can implement it like so:
 Function: $empty {#Deprecated-Functions:empty}
 -------------------------
 
-This method has been deprecated. Use [Function.from](/core/Types/Function/#Function-from) instead.
+This method has been deprecated. Use [Function.from](/core/Types/Function#Function:Function-from) instead.
 
 ### Example:
 
@@ -356,7 +356,7 @@ This method has been deprecated. Use [Function.from](/core/Types/Function/#Funct
 Function: $lambda {#Deprecated-Functions:lambda}
 ---------------------------
 
-This method has been deprecated. Use [Function.from](/core/Types/Function/#Function-from) instead.
+This method has been deprecated. Use [Function.from](/core/Types/Function#Function:Function-from) instead.
 
 ### Example:
 
@@ -367,42 +367,42 @@ This method has been deprecated. Use [Function.from](/core/Types/Function/#Funct
 Function: $extend {#Deprecated-Functions:extend}
 ---------------------------
 
-This method has been deprecated. Please use [Object.append](#Object-append) instead.
+This method has been deprecated. Please use [Object.append](#Object:Object-append) instead.
 
 
 
 Function: $merge {#Deprecated-Functions:merge}
 -------------------------
 
-This method has been deprecated. Please use [Object.merge](#Object-merge) instead.
+This method has been deprecated. Please use [Object.merge](#Object:Object-merge) instead.
 
 
 
 Function: $each {#Deprecated-Functions:each}
 -----------------------
 
-This method has been deprecated. Please use [Array.each](/core/Types/Array/#Array-each) or [Object.each](#Object-each) instead.
+This method has been deprecated. Please use [Array.each](/core/Types/Array#Array:Array-each) or [Object.each](#Object:Object-each) instead.
 
 
 
 Function: $pick {#Deprecated-Functions:pick}
 -----------------------
 
-This method has been deprecated. Please use [Array.pick](/core/Types/Array/#pick) instead.
+This method has been deprecated. Please use [Array.pick](/core/Types/Array#Array:pick) instead.
 
 
 
 Function: $random {#Deprecated-Functions:random}
 ---------------------------
 
-This method has been deprecated. Please use [Number.random](/core/Types/Number/#Number-random) instead.
+This method has been deprecated. Please use [Number.random](/core/Types/Number#Number:Number-random) instead.
 
 
 
 Function: $splat {#Deprecated-Functions:splat}
 -------------------------
 
-This method has been deprecated. Please use [Array.from](/core/Types/Array/#Array-from) instead.
+This method has been deprecated. Please use [Array.from](/core/Types/Array#Array:Array-from) instead.
 
 
 
@@ -424,45 +424,15 @@ This method has been deprecated. Please use *Date.now()* instead.
 Function: $try {#Deprecated-Functions:try}
 ---------------------
 
-This method has been deprecated. Please use [Function.attempt](/core/Types/Function/#Function-attempt) instead.
+This method has been deprecated. Please use [Function.attempt](/core/Types/Function#Function:Function-attempt) instead.
 
 
 
 Function: $type {#Deprecated-Functions:type}
 -----------------------
 
-This method has been deprecated. Please use [typeOf](#typeOf) instead.
+This method has been deprecated. Please use [typeOf](#Core:typeOf) instead.
 
-
-### Arguments:
-
-1. obj - (*object*) The object to inspect.
-
-### Returns:
-
-* 'element'    - (*string*) If object is a DOM element node.
-* 'textnode'   - (*string*) If object is a DOM text node.
-* 'whitespace' - (*string*) If object is a DOM whitespace node.
-* 'arguments'  - (*string*) If object is an arguments object.
-* 'array'      - (*string*) If object is an array.
-* 'object'     - (*string*) If object is an object.
-* 'string'     - (*string*) If object is a string.
-* 'number'     - (*string*) If object is a number.
-* 'date'       - (*string*) If object is a date.
-* 'boolean'    - (*string*) If object is a boolean.
-* 'function'   - (*string*) If object is a function.
-* 'regexp'     - (*string*) If object is a regular expression.
-* 'class'      - (*string*) If object is a Class (created with new Class, or the extend of another class).
-* 'collection' - (*string*) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
-* 'window'     - (*string*) If object is the window object.
-* 'document'   - (*string*) If object is the document object.
-* 'event'      - (*string*) If object is an event.
-* false        - (*boolean*) If object is undefined, null, NaN or none of the above.
-
-### Example:
-
-	var myString = 'hello';
-	$type(myString); //Returns "string".
 
 
 

@@ -9,7 +9,7 @@ Function Methods.
 
 
 
-Function: Function.from {#Function-from}
+Function: Function.from {#Function:Function-from}
 ----------------------------------------
 
 If the passed argument is a function, it will return itself. Otherwise, it will return a function that returns the passed argument.
@@ -42,7 +42,7 @@ This function is equivalent to the following deprecated MooTools 1.2 methods:
 	var fn2 = Function.from(foo);	// Equivalent to var fn2 = $lambda(foo);
 
 
-Function method: Function.attempt {#Function:attempt}
+Function: Function.attempt {#Function:Function-attempt}
 -----------------------------
 
 Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
@@ -86,6 +86,44 @@ Tries to execute a number of functions. Returns immediately the return value of 
 ### Notes:
 
 This method is an equivalent of *$try* from MooTools 1.2.
+
+
+Function method: attempt {#Function:attempt}
+---------------------------
+
+Tries to execute a single function. Returns immediately the return value of the function if it does not fail, or null.
+
+### Syntax:
+
+	var myFunctionResult = myFunction.attempt(args[, bind]);
+
+### Arguments:
+
+1. args - (*mixed*) An argument, or array of arguments to run the function with.
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
+
+### Returns:
+
+* (*mixed*) This Function's return value.
+* (*null*) `null` if the function fails.
+
+### Examples:
+
+	var myFunction = function(){
+		return some.made.up.object;
+	};
+	myFunction.attempt(); // Returns: 'null'
+
+
+	var myFunction = function(val){
+		return val;
+	};
+	myFunction.attempt(false); // Returns: 'false'
+
+### See Also:
+
+- See [Function.attempt](#Function:Function-attempt) for using more than one functions.
+
 
 
 Function method: run {#Function:run}
