@@ -3,15 +3,14 @@ Type: Window {#Window}
 
 The following functions are treated as Window methods.
 
+Function: document.id {#Window:document-id}
+-------------------------------------------
 
-Function: $ {#Window:dollar}
----------------------
-
-The dollar function has a dual purpose: Getting the element by its id, and making an element in Internet Explorer "grab" all the [Element][] methods.
+The document.id function has a dual purpose: Getting the element by its id, and making an element in Internet Explorer "grab" all the [Element][] methods.
 
 ### Syntax:
 
-	var myElement = $(el);
+	var myElement = document.id(el);
 
 ### Arguments:
 
@@ -29,24 +28,48 @@ The dollar function has a dual purpose: Getting the element by its id, and makin
 
 #### Get a DOM Element by ID:
 
-	var myElement = $('myElement');
+	var myElement = document.id('myElement');
 
 #### Get a DOM Element by reference:
 
 	var div = document.getElementById('myElement');
-	div = $(div); //The element with all the Element methods applied.
+	div = document.id(div); //The element with all the Element methods applied.
 
 ### Notes:
 
 - This method is useful when it's unclear if working with an actual element or an id.  It also serves as a shorthand for document.getElementById().
-- In Internet Explorer, the [Element][] is extended the first time $ is called on it, and all the [Element][] Methods become available.
+- In Internet Explorer, the [Element][] is extended the first time document.id is called on it, and all the [Element][] Methods become available.
 - Browsers with native HTMLElement support, such as Safari, Firefox, and Opera, apply all the [Element][] Methods to every DOM element automatically.
 - Because MooTools detects if an element needs to be extended or not, this function may be called on the same Element many times with no ill effects.
 
 
+Function: $ {#Window:dollar}
+----------------------------
+
+The dollar function is a alias for [document:id][] if the $ variable is not set already.
+However it is not recommended to use more frameworks, the $ variable can be set by another framework or script. MooTools will detect this and determine if it will set the $ function so it will not be overwritten.
+
+### Examples: 
+
+	var myElement = $('myElement');
+	var myElement2 = document.id('myElement');
+	
+	myElement == myElement2; // true
+	
+	
+	(function($){
+		
+		// Now you can use $ safely in this closure
+	
+	})(document.id)
+
+
+### See Also:
+ - MooTools Blogpost: [The Dollar Save Mode][]
+
 
 Function: $$ {#Window:dollars}
------------------------
+------------------------------
 
 Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.
 
@@ -92,6 +115,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 ### See Also:
 
 - See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+
 
 
 
@@ -1789,7 +1813,7 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 * (*array*) A subset of this [Elements][] instance.
 
 
-
+[document:id]: #Window:document-id
 [$]: #Window:dollar
 [$$]: #Window:dollars
 
@@ -1812,3 +1836,5 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 
 [Element:addEvents]: /core/Element/Element.Event#Element:addEvents
 [Element:setStyles]: /core/Element/Element.Style#Element:setStyles
+
+[The Dollar Save Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/
