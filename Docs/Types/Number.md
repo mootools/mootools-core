@@ -1,7 +1,7 @@
-Number {#Number}
-================
+Type: Number {#Number}
+======================
 
-A collection of the Number Object methods.
+A collection of the Number Object methods and functions.
 
 ### See Also:
 

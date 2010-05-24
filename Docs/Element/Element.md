@@ -1,10 +1,10 @@
-Window {#Window}
-========================
+Type: Window {#Window}
+======================
 
 The following functions are treated as Window methods.
 
 
-Function: $ {#dollar}
+Function: $ {#Window:dollar}
 ---------------------
 
 The dollar function has a dual purpose: Getting the element by its id, and making an element in Internet Explorer "grab" all the [Element][] methods.
@@ -45,7 +45,7 @@ The dollar function has a dual purpose: Getting the element by its id, and makin
 
 
 
-Function: $$ {#dollars}
+Function: $$ {#Window:dollars}
 -----------------------
 
 Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.
@@ -95,10 +95,10 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 
 
-Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any extended DOM Element.
+Custom Type to allow all of its methods to be used with any extended DOM Element.
 
 
 
@@ -1651,10 +1651,10 @@ Returns the tag name of the Element in lower case.
 
 
 
-Native: IFrame {#IFrame}
+Type: IFrame {#IFrame}
 ========================
 
-Custom Native to create and easily work with IFrames.
+Custom Type to create and easily work with IFrames.
 
 
 
@@ -1716,7 +1716,7 @@ Creates an IFrame HTML Element and extends its window and document with MooTools
 
 
 
-Native: Elements {#Elements}
+Type: Elements {#Elements}
 ============================
 
 The Elements class allows [Element][] methods to work on an [Elements][] array, as well as [Array][] Methods.
@@ -1773,7 +1773,7 @@ Elements Method: filter {#Elements:filter}
 ----------------------------------------------
 
 Filters a collection of elements by a given tag name.  If [Selectors][] is included, this method will be able to filter by any selector.
-It also works like [Array:filter](/Native/Array/#Array:filter), by filtering collection of elements with a function.
+It also works like [Array:filter][], by filtering collection of elements with a function.
 
 
 ### Syntax:
@@ -1790,10 +1790,11 @@ It also works like [Array:filter](/Native/Array/#Array:filter), by filtering col
 
 
 
-[$]: #dollar
-[$$]: #dollars
+[$]: #Window:dollar
+[$$]: #Window:dollars
 
-[Array]: /core/Native/Array
+[Array]: /core/Types/Array
+[Array:filter]: /core/Types/Array#Array:filter
 [Selectors]: /core/Utilities/Selectors
 
 [Element]: #Element

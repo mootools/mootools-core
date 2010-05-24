@@ -1,5 +1,7 @@
-Object {#Object}
-====================
+Type: Object {#Object}
+======================
+
+A collection of Object functions.
 
 Function: Object.each {#Object:Object-each}
 ------------------------------------

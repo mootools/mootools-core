@@ -1,5 +1,5 @@
-Event {#Event}
-======================
+Type: Event {#Event}
+====================
 
 MooTools Event Methods.
 
@@ -188,7 +188,6 @@ Additional Event key codes can be added by adding properties to the Event.Keys O
 - [MooTools More Keyboard][]
 
 
-[$]: /core/Element/#dollar
 [Element:addEvent]: /core/Element/Element.Event#Element:addEvent
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#Function:bind

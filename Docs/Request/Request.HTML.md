@@ -135,10 +135,10 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 
 
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 Element Method: load {#Element:load}
 ------------------------------------
@@ -174,6 +174,6 @@ Updates the content of the Element with a Request.HTML GET request.
 - [$][], [Request](/Request/Request)
 
 [Request]: /core/Request/Request
-[$]: /core/Element/Element/#dollar
+[$]: /core/Element/Element/#Window:dollar
 [Element.Properties]: /core/Element/Element/#Element-Properties
 [Elements:filter]: /core/Element/Element#Elements:filter

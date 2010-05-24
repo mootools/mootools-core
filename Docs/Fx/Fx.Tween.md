@@ -161,10 +161,10 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 
 
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
@@ -263,7 +263,7 @@ If no background color is set on the Element, or its background color is set to 
 	$('myElement').highlight('#ddf', '#ccc');
 
 
-[$]: /core/Element/Element#dollar
+[$]: /core/Element/Element#Window:dollar
 [Fx]: /core/Fx/Fx
 [Fx.Tween]: #Fx-Tween
 [Element.tween]: #Element-Properties:tween

@@ -1,5 +1,5 @@
-Function {#Function}
-============================
+Type: Function {#Function}
+==========================
 
 Function Methods.
 

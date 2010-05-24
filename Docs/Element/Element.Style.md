@@ -1,7 +1,7 @@
-Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
@@ -117,6 +117,6 @@ Returns an object of styles of the Element for each argument passed in.
 
 
 
-[$]: /core/Element/Element/#dollar
+[$]: /core/Element/Element/#Window:dollar
 [Function]: /core/Native/Function
 [Element:getStyle]: #Element:getStyle

@@ -173,7 +173,7 @@ Gets the default Fx.Morph instance for the Element.
 
 
 
-Native: Element {#Element}
+Type: Element {#Element}
 ==========================
 
 Element Method: morph {#Element:morph}
@@ -209,7 +209,7 @@ With a selector:
 
 
 
-[$]: /core/Element/Element#dollar
+[$]: /core/Element/Element#Window:dollar
 [Fx]: /core/Fx/Fx
 [Fx.Morph]: #Fx-Morph
 [Element.Properties]: /core/Element/Element/#Element-Properties

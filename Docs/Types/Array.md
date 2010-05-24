@@ -1,7 +1,7 @@
-Array {#Array}
-==============
+Type: Array {#Array}
+====================
 
-A collection of Array methods.
+A collection of Array methods and functions.
 
 ### See Also:
 

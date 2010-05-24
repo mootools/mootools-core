@@ -1,7 +1,7 @@
-String {#String}
-================
+Type: String {#String}
+====================
 
-A collection of the String Object prototype methods.
+A collection of the String Object methods and functions.
 
 ### See Also:
 

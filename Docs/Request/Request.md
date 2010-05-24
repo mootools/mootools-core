@@ -275,10 +275,10 @@ Returns the previously set Request instance (or a new one with default options).
 	el.send();
 	el.get('send'); //Returns the Request instance.
 
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 Element Method: send {#Element:send}
@@ -319,7 +319,7 @@ Sends a form or a container of inputs with an HTML request.
 
 
 
-[$]: /core/Element/Element/#dollar
+[$]: /core/Element/Element/#Window:dollar
 [Request:send]: #Request:send
 [Element.Properties]: /core/Element/Element/#Element-Properties
 [URI]: /more/Native/URI

@@ -1,5 +1,5 @@
-Core {#Core}
-============
+Type: Core {#Core}
+==================
 
 Core contains a handful of common sense functions used in [MooTools](http://mootools.net).
 

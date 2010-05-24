@@ -1,7 +1,7 @@
-Element {#Element}
+Type: Element {#Element}
 ==========================
 
-- Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+- Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 - These methods are also available on window and document.
 
 ### Notes:
@@ -322,7 +322,7 @@ This event fires when the mouse wheel is rotated;
 
 
 
-[$]: /core/Element/Element#dollar
+[$]: /core/Element/Element#Window:dollar
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#bind
 [Function:pass]: /core/Types/Function/#pass
