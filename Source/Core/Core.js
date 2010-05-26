@@ -143,7 +143,6 @@ Function.implement({
 // Type
 
 var Type = this.Type = function(name, object){
-	
 	if (name){
 		var lower = name.toLowerCase();
 		var typeCheck = function(item){
