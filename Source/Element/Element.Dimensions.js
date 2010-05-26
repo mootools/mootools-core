@@ -68,7 +68,7 @@ Element.implement({
 	},
 
 	getOffsets: function(){
-		if (this.getBoundingClientRect){
+		if (this.getBoundingClientRect && !Browser.Platform.ipod){
 			var bound = this.getBoundingClientRect(),
 				html = document.id(this.getDocument().documentElement),
 				htmlScroll = html.getScroll(),
