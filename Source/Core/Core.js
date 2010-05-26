@@ -143,9 +143,9 @@ Function.implement({
 // Type
 
 var Type = this.Type = function(name, object){
-	var lower = (name || '').toLowerCase();
 	
 	if (name){
+		var lower = name.toLowerCase();
 		var typeCheck = function(item){
 			return (typeOf(item) == lower);
 		};
