@@ -1133,7 +1133,7 @@ describe('Element.toQueryString', {
 			'</select>' +
 			'<textarea name="textarea">textarea-value</textarea>'
 		});
-		value_of(form.toQueryString()).should_be('input=checked&select[]=saab&select[]=opel&textarea=textarea-value');
+		value_of(form.toQueryString()).should_be('input=checked&select%5B%5D=saab&select%5B%5D=opel&textarea=textarea-value');
 	},
 
 	"should return a query string containing even empty values, single select must have a selected option": function() {
@@ -1148,7 +1148,7 @@ describe('Element.toQueryString', {
 			),
 			new Element('textarea', {name: 'textarea', value: ''})
 		);
-		value_of(form.toQueryString()).should_be('input=&select[]=&textarea=');
+		value_of(form.toQueryString()).should_be('input=&select%5B%5D=&textarea=');
 		value_of(form.getElementsByTagName('select')[0].selectedIndex).should_be(0);
 	},
 
