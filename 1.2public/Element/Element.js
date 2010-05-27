@@ -1341,8 +1341,11 @@ describe('Element.removeProperty', {
 		var readonly = new Element('input', { type: 'text', readonly: 'readonly', maxlenght: 10 });
 		readonly.removeProperty('readonly');
 		readonly.removeProperty('maxlength');
-		var props = readonly.getProperties('type', 'readonly', 'maxlength');
-		value_of(props).should_be({ type: 'text', readonly: false, maxlength: Browser.Engine.webkit ? 524288 : 0});
+		var props = readonly.getProperties('type', 'readonly');
+		value_of(props).should_be({ type: 'text', readonly: false});
+		
+		var maxlength = readonly.getProperty('maxlength');
+		value_of(!maxlength || maxlength == 524288).should_be_true(); // Old Webkit Bug
 	}
 
 });
