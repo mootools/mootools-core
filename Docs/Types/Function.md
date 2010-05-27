@@ -357,6 +357,25 @@ Executes a function in the specified intervals of time. Periodic execution can b
 - [MDC setInterval][], [MDC clearInterval][]
 
 
+Deprecated Functions {#Deprecated-Functions}
+============================================
+
+Function method: create {#Deprecated-Functions:create}
+------------------------------------------------------
+
+This function has been deprecated.
+
+Function method: bindWithEvent {#Deprecated-Function:bindWithEvent}
+------------------------------------------------------------------
+
+This function has been deprecated.
+
+### Example how you could replace this method:
+
+	myElement.addEvent('click',function(e){
+		myFunction.bind(bind, [e]);
+	});
+
 
 [options]: #Function:create:options
 [Element:addEvent]: /core/Element/Element.Event/#Element:addEvent

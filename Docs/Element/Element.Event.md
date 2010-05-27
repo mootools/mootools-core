@@ -264,10 +264,10 @@ The Element.Events.yourproperty (object) can have:
 ### Notes:
 
 - There are different types of custom Events you can create:
-
  1. Custom Events with only base: they will just be a redirect to the base event.
  2. Custom Events with base and condition: they will be redirect to the base event, but only fired if the condition is met.
  3. Custom Events with onAdd and/or onRemove and any other of the above: they will also perform additional functions when the event is added/removed.
+- Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
 
 ### Warning:
 

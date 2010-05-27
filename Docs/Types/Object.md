@@ -547,43 +547,46 @@ Use `if(myObject.myKey == undefined) myObject.myKey = value`
 Hash Method: map {#Deprecated-Functions:Hash:map}
 -------------------------------------------------
 
-Use [Object.map](#Object:Object-map)
+Use [Object.map](Object:Object-map)
 
 
 Hash Method: filter {#Deprecated-Functions:Hash:filter}
 -------------------------------------------------------
 
-Use [Object.filter](#Object:Object-filter)
+Use [Object.filter](Object:Object-filter)
 
 
 Hash Method: every {#Deprecated-Functions:Hash:every}
 -----------------------------------------------------
 
-Use [Object.every](#Object:Object-every)
+Use [Object.every](Object:Object-every)
 
 
 Hash Method: some {#Deprecated-Functions:Hash:some}
 -------------------------------------------------------
 
-Use [Object.some](#Object:Object-some)
+Use [Object.some](Object:Object-some)
 
 
 Hash Method: getKeys {#Deprecated-Functions:Hash:getKeys}
 -------------------------------------------------------
 
-Use [Object.keys](#Object:Object-keys)
+Use [Object.keys](Object:Object-keys)
 
 
 Hash Method: getValues {#Deprecated-Functions:Hash:getValues}
 ------------------------------------------------------------
 
-Use [Object.values](#Object:Object-values)
+Use [Object.values](Object:Object-values)
 
 
 Hash Method: toQueryString {#Deprecated-Functions:Hash:toQueryString}
 -------------------------------------------------------
 
-Use [Object.toQueryString](#Object:Object-toQueryString)
+Use [Object.toQueryString](Object:Object-toQueryString)
+
+
+
 
 
 [Object]: #Object

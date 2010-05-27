@@ -22,6 +22,10 @@ A collection of tweening transitions for use with the [Fx][] classes.
 
 - [Robert Penner's Easing Equations](http://www.robertpenner.com/easing/)
 
+### Note:
+
+Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
+
 
 
 Fx.Transitions Method: linear {#Fx-Transitions:linear}

@@ -187,6 +187,10 @@ Additional Event key codes can be added by adding properties to the Event.Keys O
 
 - [MooTools More Keyboard][]
 
+### Note:
+
+Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
+
 
 [Element:addEvent]: /core/Element/Element.Event#Element:addEvent
 [Function]: /core/Types/Function

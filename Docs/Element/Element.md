@@ -423,6 +423,38 @@ Tests this Element to see if it matches the argument passed in.
 
 
 
+Element Method: contains {#Element:contains}
+--------------------------------------------
+
+Checks all descendants of this Element for a match.
+
+
+### Syntax:
+
+	var result = myElement.contains(el);
+
+### Arguments:
+
+1. el - (*mixed*) Can be an Element reference or string id.
+
+### Returns:
+
+* (*boolean*) Returns true if the element contains passed in Element is a child, otherwise false.
+
+### Examples:
+
+##### HTML
+
+	<div id="Darth_Vader">
+		<div id="Luke"></div>
+	</div>
+
+##### JavaScript
+
+	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); // tan tan tannn...
+
+
+
 Element Method: inject {#Element:inject}
 ----------------------------------------
 
@@ -1082,39 +1114,6 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 * (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
 
 
-
-Element Method: hasChild {#Element:hasChild}
---------------------------------------------
-
-Checks all descendants of this Element for a match.
-
-
-### Syntax:
-
-	var result = myElement.hasChild(el);
-
-### Arguments:
-
-1. el - (*mixed*) Can be an Element reference or string id.
-
-### Returns:
-
-* (*boolean*) Returns true if the passed in Element is a child of the Element, otherwise false.
-
-### Examples:
-
-##### HTML
-
-	<div id="Darth_Vader">
-		<div id="Luke"></div>
-	</div>
-
-##### JavaScript
-
-	if ($('Darth_Vader').hasChild('Luke')) alert('Luke, I am your father.'); // tan tan tannn...
-
-
-
 Element Method: empty {#Element:empty}
 --------------------------------------
 
@@ -1525,9 +1524,6 @@ This Object contains the functions that respond to the first argument passed in 
 	//Sets the "disabled" property to true, along with the attribute.
 	$(element).set('disabled', true);
 
-### Note:
-
-Automatically returns the element for setters.
 
 ### Using an Object:
 
@@ -1540,6 +1536,12 @@ Additionally, you can access these custom getters and setters using an object as
 
 	//For new Elements (works the same as set):
 	new Element('input', {type: 'checkbox', checked: true, disabled: true});
+
+
+### Notes:
+
+- Automatically returns the element for setters.
+- Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
 
 
 
@@ -1816,6 +1818,27 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 * (*array*) A subset of this [Elements][] instance.
 
 
+Deprecated Functions {#Deprecated-Functions}
+============================================
+
+Element Method: hasChild {#Deprecated-Functions:hasChild}
+---------------------------------------------------------
+
+This method has been deprecated. Use [Element:contains][] instead.
+
+### Example:
+	
+	var myElement = document.id('element1');
+	var myElement2 = document.id('element2');
+	myElement !== myElement2 && myElement.contains(element2);
+	
+	// This is how it could be implemented
+	Element.implement('hasChild', function(element){
+		return this !== element && this.contains(element);
+	});
+
+
+
 [document:id]: #Window:document-id
 [$]: #Window:dollar
 [$$]: #Window:dollars
@@ -1835,7 +1858,6 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 [Element:getElements]: #Element:getElements
 [Element.Properties]: #Element-Properties
 [Element:getPrevious]: #Element:getPrevious
-[Element:getAllPrevious]: #Element:getAllPrevious
 [Element:contains]: #Element:contains
 
 [Element:addEvents]: /core/Element/Element.Event#Element:addEvents
