@@ -96,7 +96,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 	$$('a'); //Returns all anchor elements in the page.
 	$$('a', 'b'); //Returns all anchor and bold tags on the page.
 
-#### Using CSS Selectors When [Selectors][] is Included:
+#### Using CSS Selectors:
 
 	$$('#myElement'); //Returns an array containing only the element with the id 'myElement'.
 	$$('#myElement a.myClass'); //Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
@@ -108,14 +108,9 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Notes:
 
-- When [Selectors][] is loaded, [$$][] will also accept CSS Selectors.  Otherwise, the only selectors supported are tag names.
+- [$$][] will also accept CSS Selectors.
 - If an expression doesn't find any elements, an empty array will be returned.
 - The return type of element methods run through [$$][] is always an array, regardless of the amount of results.
-
-### See Also:
-
-- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
-
 
 
 
@@ -173,7 +168,7 @@ Creates a new Element of the type passed in.
 Element Method: getElement {#Element:getElement}
 ------------------------------------------------
 
-Gets the first descendant element whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
+Gets the first descendant element whose tag name matches the tag provided. CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -181,7 +176,7 @@ Gets the first descendant element whose tag name matches the tag provided.  If [
 
 ### Arguments:
 
-1. tag - (*string*) Tag name of the element to find.
+1. tag - (*string*) Tag name of the element to find or a CSS Selector.
 
 ### Returns:
 
@@ -191,22 +186,16 @@ Gets the first descendant element whose tag name matches the tag provided.  If [
 
 	var firstDiv = $(document.body).getElement('div');
 
-### Notes:
+### Note:
 
-- This method is also available for Document instances.
-- This method gets replaced when [Selectors][] is included.
-- [Selectors][] enhances [Element:getElement][] so that it matches based on CSS selectors.
-
-### See Also:
-
-- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+This method is also available for Document instances.
 
 
 
 Element Method: getElements {#Element:getElements}
 --------------------------------------------------
 
-Collects all decedent elements whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
+Collects all decedent elements whose tag name matches the tag provided. CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -214,7 +203,7 @@ Collects all decedent elements whose tag name matches the tag provided.  If [Sel
 
 ### Arguments:
 
-1. tag - (*string*) String of the tag to match.
+1. tag - (*string*) String of the tag to match  or a CSS Selector.
 
 ### Returns:
 
@@ -224,15 +213,9 @@ Collects all decedent elements whose tag name matches the tag provided.  If [Sel
 
 	var allAnchors = $(document.body).getElements('a');
 
-### Notes:
+### Note:
 
-- This method is also available for Document instances.
-- This method gets replaced when [Selectors][] is included.
-- [Selectors][] enhances [Element:getElements][] so that it matches based on CSS selectors.
-
-### See Also:
-
-- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+This method is also available for Document instances.
 
 
 
@@ -413,7 +396,7 @@ Tests this Element to see if it matches the argument passed in.
 ### Arguments:
 
 1. match - can be a string or element
-	- (*string*) The tag name to test against this element. If [Selectors][] is included, any single CSS selectors may also be passed.
+	- (*string*) The tag name to test against this element. Any single CSS selectors may also be passed.
 	- (*element*) An element to match; returns true if this is the actual element passed in.
 
 ### Returns:
@@ -953,7 +936,7 @@ Returns the previousSibling of the Element (excluding text nodes).
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -980,7 +963,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Arguments:
 
-1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1006,7 +989,7 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1025,7 +1008,7 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1045,7 +1028,7 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1057,6 +1040,26 @@ Element Method: getParents {#Element:getParents}
 ------------------------------------------------
 
 Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
+
+
+
+Element Method: getSiblings {#Element:getSiblings}
+--------------------------------------------------
+
+Like [Element:getAllPrevious][] but returns all Element's previous and next siblings (excluding text nodes). Returns as [Elements][].
+
+
+### Syntax:
+
+	var children = myElement.getsiblings([match]);
+
+### Arguments:
+
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
+
+### Returns:
+
+* (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
 
 
 
@@ -1072,7 +1075,7 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1796,7 +1799,7 @@ Elements Method: constructor {#Elements:constructor}
 Elements Method: filter {#Elements:filter}
 ----------------------------------------------
 
-Filters a collection of elements by a given tag name.  If [Selectors][] is included, this method will be able to filter by any selector.
+Filters a collection of elements by a given tag name.  This method will be able to filter by any selector.
 It also works like [Array:filter][], by filtering collection of elements with a function.
 
 
@@ -1819,7 +1822,6 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 
 [Array]: /core/Types/Array
 [Array:filter]: /core/Types/Array#Array:filter
-[Selectors]: /core/Utilities/Selectors
 
 [Element]: #Element
 [Elements]: #Elements
@@ -1833,6 +1835,8 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 [Element:getElements]: #Element:getElements
 [Element.Properties]: #Element-Properties
 [Element:getPrevious]: #Element:getPrevious
+[Element:getAllPrevious]: #Element:getAllPrevious
+[Element:contains]: #Element:contains
 
 [Element:addEvents]: /core/Element/Element.Event#Element:addEvents
 [Element:setStyles]: /core/Element/Element.Style#Element:setStyles
