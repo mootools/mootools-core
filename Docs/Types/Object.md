@@ -478,6 +478,112 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 	Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
 
 
+Deprecated Functions {#Deprecated-Functions}
+============================================
+
+Type: Hash {#Deprecated-Functions:Hash}
+--------------------------------------
+
+Hash has been deprecated. Each Hash methods has a similar Object method.
+
+Hash Method: has {#Deprecated-Functions:Hash:has}
+-------------------------------------------------
+
+You could simply use `myObject.myKey != undefined`
+
+Hash Method: keyOf {#Deprecated-Functions:Hash:keyOf}
+-----------------------------------------------------
+
+Use [Object.keyOf](#Object:Object-keyOf)
+
+
+Hash Method: hasValue {#Deprecated-Functions:Hash:hasValue}
+------------------------------------------------------------
+
+Use [Object.contains](#Object:Object-contains)
+
+
+Hash Method: extend {#Deprecated-Functions:Hash:extend}
+--------------------------------------------------------
+
+Use [Object.append](#Object:Object-append)
+
+
+Hash Method: combine {#Deprecated-Functions:Hash:combine}
+---------------------------------------------------------
+
+Use [Object.merge](#Object:Object-merge)
+
+
+Hash Method: erase {#Deprecated-Functions:Hash:erase}
+-----------------------------------------------------
+
+Use `delete myObject.a`
+
+Hash Method: get {#Deprecated-Functions:Hash:get}
+-------------------------------------------------
+	
+Use `myObject.myKey`
+
+
+Hash Method: set {#Deprecated-Functions:Hash:set}
+-------------------------------------------------
+
+Use `myObject.myKey = value`
+
+
+Hash Method: empty {#Deprecated-Functions:Hash:empty}
+-----------------------------------------------------
+
+Use `myObject = {}`
+
+
+Hash Method: include {#Deprecated-Functions:Hash:include}
+---------------------------------------------------------
+
+Use `if(myObject.myKey == undefined) myObject.myKey = value`
+
+
+Hash Method: map {#Deprecated-Functions:Hash:map}
+-------------------------------------------------
+
+Use [Object.map](#Object:Object-map)
+
+
+Hash Method: filter {#Deprecated-Functions:Hash:filter}
+-------------------------------------------------------
+
+Use [Object.filter](#Object:Object-filter)
+
+
+Hash Method: every {#Deprecated-Functions:Hash:every}
+-----------------------------------------------------
+
+Use [Object.every](#Object:Object-every)
+
+
+Hash Method: some {#Deprecated-Functions:Hash:some}
+-------------------------------------------------------
+
+Use [Object.some](#Object:Object-some)
+
+
+Hash Method: getKeys {#Deprecated-Functions:Hash:getKeys}
+-------------------------------------------------------
+
+Use [Object.keys](#Object:Object-keys)
+
+
+Hash Method: getValues {#Deprecated-Functions:Hash:getValues}
+------------------------------------------------------------
+
+Use [Object.values](#Object:Object-values)
+
+
+Hash Method: toQueryString {#Deprecated-Functions:Hash:toQueryString}
+-------------------------------------------------------
+
+Use [Object.toQueryString](#Object:Object-toQueryString)
 
 
 [Object]: #Object
