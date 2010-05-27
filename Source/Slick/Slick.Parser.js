@@ -11,13 +11,14 @@ provides: Slick.Parser
 var parsed,
 	separatorIndex,
 	combinatorIndex,
-	partIndex,
 	reversed,
 	cache = {},
 	reverseCache = {},
 	reUnescape = /\\/g;
 
 var parse = function(expression, isReversed){
+	if (!expression) return null;
+	if (expression.Slick === true) return expression;
 	expression = ('' + expression).replace(/^\s+|\s+$/g, '');
 	reversed = !!isReversed;
 	var currentCache = (reversed) ? reverseCache : cache;
@@ -34,7 +35,7 @@ var parse = function(expression, isReversed){
 var reverseCombinator = function(combinator){
 	if (combinator === '!') return ' ';
 	else if (combinator === ' ') return '!';
-	else if ((/^!/).test(combinator)) return combinator.replace(/^(!)/, '');
+	else if ((/^!/).test(combinator)) return combinator.replace(/^!/, '');
 	else return '!' + combinator;
 };
 
@@ -90,7 +91,6 @@ __END__
 	)"
 */
 	"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:([\"']?)(.*?)\\9)))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:([\"']?)((?:\\([^\\)]+\\)|[^\\(\\)]*)+)\\12)\\))?)"
-	//"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:\"((?:[^\"]|\\\\\")*)\"|'((?:[^']|\\\\')*)'|([^\\]]*?))))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:\"((?:[^\"]|\\\")*)\"|'((?:[^']|\\')*)'|([^\\)]*))\\))?)"//*/
 	.replace(/<combinator>/, '[' + escapeRegExp(">+~`!@$%^&={}\\;</") + ']')
 	.replace(/<unicode>/g, '(?:[\\w\\u00a1-\\uFFFF-]|\\\\[^\\s0-9a-f])')
 	.replace(/<unicode1>/g, '(?:[:\\w\\u00a1-\\uFFFF-]|\\\\[^\\s0-9a-f])')
@@ -127,8 +127,7 @@ function parser(
 		var currentSeparator = parsed.expressions[separatorIndex];
 		if (reversed && currentSeparator[combinatorIndex])
 			currentSeparator[combinatorIndex].reverseCombinator = reverseCombinator(combinator);
-		currentSeparator[++combinatorIndex] = {combinator: combinator, tag: '*', parts: []};
-		partIndex = -1;
+		currentSeparator[++combinatorIndex] = {combinator: combinator, tag: '*'};
 	}
 	
 	var currentParsed = parsed.expressions[separatorIndex][combinatorIndex];
@@ -141,30 +140,25 @@ function parser(
 
 	} else if (className){
 		className = className.replace(reUnescape, '');
-	
-		if (!currentParsed.classes) currentParsed.classes = [className];
-		else currentParsed.classes.push(className);
-	
-		currentParsed.parts[++partIndex] = {
-			type: 'class',
+
+		if (!currentParsed.classList) currentParsed.classList = [];
+		if (!currentParsed.classes) currentParsed.classes = [];
+		currentParsed.classList.push(className);
+		currentParsed.classes.push({
 			value: className,
 			regexp: new RegExp('(^|\\s)' + escapeRegExp(className) + '(\\s|$)')
-		};
+		});
 		
 	} else if (pseudoClass){
-		if (!currentParsed.pseudos) currentParsed.pseudos = [];
-		
 		pseudoClassValue = pseudoClassValue ? pseudoClassValue.replace(reUnescape, '') : null;
-
-		currentParsed.pseudos.push(currentParsed.parts[++partIndex] = {
-			type: 'pseudo',
+		
+		if (!currentParsed.pseudos) currentParsed.pseudos = [];
+		currentParsed.pseudos.push({
 			key: pseudoClass.replace(reUnescape, ''),
 			value: pseudoClassValue
 		});
 		
 	} else if (attributeKey){
-		if (!currentParsed.attributes) currentParsed.attributes = [];
-		
 		attributeKey = attributeKey.replace(reUnescape, '');
 		attributeValue = (attributeValue || '').replace(reUnescape, '');
 		
@@ -193,8 +187,8 @@ function parser(
 			return value && regexp.test(value);
 		};
 		
-		currentParsed.attributes.push(currentParsed.parts[++partIndex] = {
-			type: 'attribute',
+		if (!currentParsed.attributes) currentParsed.attributes = [];
+		currentParsed.attributes.push({
 			key: attributeKey,
 			operator: attributeOperator,
 			value: attributeValue,
@@ -218,4 +212,4 @@ Slick.escapeRegExp = escapeRegExp;
 
 if (!this.Slick) this.Slick = Slick;
 	
-}).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : this/*</CommonJS>*/);
+}).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this);

@@ -234,12 +234,9 @@ local.search = function(context, expression, append, first){
 	
 	// default engine
 	
-	var currentExpression, currentBit;
 	var j, m, n;
-	var combinator, tag, id, parts, classes, attributes, pseudos;
-	var currentItems;
-	var expressions = parsed.expressions;
-	var lastBit;
+	var combinator, tag, id, classList, classes, attributes, pseudos;
+	var currentItems, currentExpression, currentBit, lastBit, expressions = parsed.expressions;
 	
 	search: for (i = 0; (currentExpression = expressions[i]); i++) for (j = 0; (currentBit = currentExpression[j]); j++){
 
@@ -248,7 +245,7 @@ local.search = function(context, expression, append, first){
 		
 		tag        = (this.isXMLDocument) ? currentBit.tag : currentBit.tag.toUpperCase();
 		id         = currentBit.id;
-		parts      = currentBit.parts;
+		classList  = currentBit.classList;
 		classes    = currentBit.classes;
 		attributes = currentBit.attributes;
 		pseudos    = currentBit.pseudos;
@@ -265,13 +262,13 @@ local.search = function(context, expression, append, first){
 		}
 
 		if (j === 0){
-			this[combinator](context, tag, id, parts, classes, attributes, pseudos);
+			this[combinator](context, tag, id, classes, attributes, pseudos, classList);
 			if (first && lastBit && found.length) break search;
 		} else {
 			if (first && lastBit) for (m = 0, n = currentItems.length; m < n; m++){
-				this[combinator](currentItems[m], tag, id, parts, classes, attributes, pseudos);
+				this[combinator](currentItems[m], tag, id, classes, attributes, pseudos, classList);
 				if (found.length) break search;
-			} else for (m = 0, n = currentItems.length; m < n; m++) this[combinator](currentItems[m], tag, id, parts, classes, attributes, pseudos);
+			} else for (m = 0, n = currentItems.length; m < n; m++) this[combinator](currentItems[m], tag, id, classes, attributes, pseudos, classList);
 		}
 		
 		currentItems = this.found;
@@ -365,30 +362,30 @@ local.createNTHPseudo = function(child, sibling, positions, ofType){
 
 /*</nth-pseudo-selectors>*//*</pseudo-selectors>*/
 
-local.pushArray = function(node, tag, id, selector, classes, attributes, pseudos){
-	if (this.matchSelector(node, tag, id, selector, classes, attributes, pseudos)) this.found.push(node);
+local.pushArray = function(node, tag, id, classes, attributes, pseudos){
+	if (this.matchSelector(node, tag, id, classes, attributes, pseudos)) this.found.push(node);
 };
 
-local.pushUID = function(node, tag, id, selector, classes, attributes, pseudos){
+local.pushUID = function(node, tag, id, classes, attributes, pseudos){
 	var uid = this.getUID(node);
-	if (!this.uniques[uid] && this.matchSelector(node, tag, id, selector, classes, attributes, pseudos)){
+	if (!this.uniques[uid] && this.matchSelector(node, tag, id, classes, attributes, pseudos)){
 		this.uniques[uid] = true;
 		this.found.push(node);
 	}
 };
 
 local.matchNode = function(node, selector){
-	var parsed = ((selector.Slick) ? selector : this.Slick.parse(selector));
+	var parsed = this.Slick.parse(selector);
 	if (!parsed) return true;
 	
 	// simple (single) selectors
 	if(parsed.length == 1 && parsed.expressions[0].length == 1){
 		var exp = parsed.expressions[0][0];
-		return this.matchSelector(node, (this.isXMLDocument) ? exp.tag : exp.tag.toUpperCase(), exp.id, exp.parts);
+		return this.matchSelector(node, (this.isXMLDocument) ? exp.tag : exp.tag.toUpperCase(), exp.id, exp.classes, exp.attributes, exp.pseudos);
 	}
 
 	var nodes = this.search(this.document, parsed);
-	for (var i=0, item; item = nodes[i++];){
+	for (var i = 0, item; item = nodes[i++];){
 		if (item === node) return true;
 	}
 	return false;
@@ -401,7 +398,7 @@ local.matchPseudo = function(node, name, argument){
 	return (argument) ? argument == attribute : !!attribute;
 };
 
-local.matchSelector = function(node, tag, id, parts, classes, attributes, pseudos){
+local.matchSelector = function(node, tag, id, classes, attributes, pseudos){
 	if (tag){
 		if (tag == '*'){
 			if (node.nodeName < '@') return false; // Fix for comment nodes and closed nodes
@@ -409,26 +406,30 @@ local.matchSelector = function(node, tag, id, parts, classes, attributes, pseudo
 			if (node.nodeName != tag) return false;
 		}
 	}
+	
 	if (id && node.getAttribute('id') != id) return false;
-	if (parts) for (var i = 0, l = parts.length, part, cls; i < l; i++){
-		part = parts[i];
-		if (part.type == 'class' && classes !== false){
-			cls = ('className' in node) ? node.className : node.getAttribute('class');
-			if (!(cls && part.regexp.test(cls))) return false;
-		}
-		if (part.type == 'pseudo' && pseudos !== false && (!this.matchPseudo(node, part.key, part.value))) return false;
-		if (part.type == 'attribute' && attributes !== false &&
-			(part.operator) ? !part.test(this.getAttribute(node, part.key)) : !this.hasAttribute(node, part.key)
-		) return false;
+
+	var i, part, cls;
+	if (classes) for (i = classes.length; i--;){
+		cls = ('className' in node) ? node.className : node.getAttribute('class');
+		if (!(cls && classes[i].regexp.test(cls))) return false;
+	}
+	if (attributes) for (i = attributes.length; i--;){
+		part = attributes[i];
+		if (part.operator ? !part.test(this.getAttribute(node, part.key)) : !this.hasAttribute(node, part.key)) return false;
+	}
+	if (pseudos) for (i = pseudos.length; i--;){
+		part = pseudos[i];
+		if (!this.matchPseudo(node, part.key, part.value)) return false;
 	}
 	return true;
 };
 
 var combinators = {
 
-	' ': function(node, tag, id, parts, classes, attributes, pseudos){ // all child nodes, any level
+	' ': function(node, tag, id, classes, attributes, pseudos, classList){ // all child nodes, any level
 		
-		var i, l, item, children;
+		var i, item, children;
 
 		if (!this.isXMLDocument){
 			getById: if (id){
@@ -440,7 +441,7 @@ var combinators = {
 					if (!children) return;
 					if (!children[0]) children = [children];
 					for (i = 0; item = children[i++];) if (item.getAttributeNode('id').nodeValue == id){
-						this.push(item, tag, null, parts);
+						this.push(item, tag, null, classes, attributes, pseudos);
 						break;
 					} 
 					return;
@@ -450,13 +451,13 @@ var combinators = {
 					if (this.contains(this.document.documentElement, node)) return;
 					else break getById;
 				} else if (this.document !== node && !this.contains(node, item)) return;
-				this.push(item, tag, null, parts);
+				this.push(item, tag, null, classes, attributes, pseudos);
 				return;
 			}
-			getByClass: if (node.getElementsByClassName && classes && !this.brokenGEBCN){
-				children = node.getElementsByClassName(classes.join(' '));
+			getByClass: if (classes && node.getElementsByClassName && !this.brokenGEBCN){
+				children = node.getElementsByClassName(classList.join(' '));
 				if (!(children && children.length)) break getByClass;
-				for (i = 0, l = children.length; i < l; i++) this.push(children[i], tag, id, parts, false);
+				for (i = 0; item = children[i++];) this.push(item, tag, id, null, attributes, pseudos);
 				return;
 			}
 		}
@@ -464,83 +465,82 @@ var combinators = {
 			children = node.getElementsByTagName(tag);
 			if (!(children && children.length)) break getByTag;
 			if (!this.brokenStarGEBTN) tag = null;
-			var child;
-			for (i = 0; child = children[i++];) this.push(child, tag, id, parts);
+			for (i = 0; item = children[i++];) this.push(item, tag, id, classes, attributes, pseudos);
 		}
 	},
-
-	'>': function(node, tag, id, parts){ // direct children
+	
+	'>': function(node, tag, id, classes, attributes, pseudos){ // direct children
 		if ((node = node.firstChild)) do {
-			if (node.nodeType === 1) this.push(node, tag, id, parts);
+			if (node.nodeType === 1) this.push(node, tag, id, classes, attributes, pseudos);
 		} while ((node = node.nextSibling));
 	},
-
-	'+': function(node, tag, id, parts){ // next sibling
+	
+	'+': function(node, tag, id, classes, attributes, pseudos){ // next sibling
 		while ((node = node.nextSibling)) if (node.nodeType === 1){
-			this.push(node, tag, id, parts);
+			this.push(node, tag, id, classes, attributes, pseudos);
 			break;
 		}
 	},
 
-	'^': function(node, tag, id, parts){ // first child
+	'^': function(node, tag, id, classes, attributes, pseudos){ // first child
 		node = node.firstChild;
 		if (node){
-			if (node.nodeType === 1) this.push(node, tag, id, parts);
-			else this['combinator:+'](node, tag, id, parts);
+			if (node.nodeType === 1) this.push(node, tag, id, classes, attributes, pseudos);
+			else this['combinator:+'](node, tag, id, classes, attributes, pseudos);
 		}
 	},
 
-	'~': function(node, tag, id, parts){ // next siblings
+	'~': function(node, tag, id, classes, attributes, pseudos){ // next siblings
 		while ((node = node.nextSibling)){
 			if (node.nodeType !== 1) continue;
 			var uid = this.getUID(node);
 			if (this.bitUniques[uid]) break;
 			this.bitUniques[uid] = true;
-			this.push(node, tag, id, parts);
+			this.push(node, tag, id, classes, attributes, pseudos);
 		}
 	},
-	
-	'++': function(node, tag, id, parts){ // next sibling and previous sibling
-		this['combinator:+'](node, tag, id, parts);
-		this['combinator:!+'](node, tag, id, parts);
+
+	'++': function(node, tag, id, classes, attributes, pseudos){ // next sibling and previous sibling
+		this['combinator:+'](node, tag, id, classes, attributes, pseudos);
+		this['combinator:!+'](node, tag, id, classes, attributes, pseudos);
 	},
 
-	'~~': function(node, tag, id, parts){ // next siblings and previous siblings
-		this['combinator:~'](node, tag, id, parts);
-		this['combinator:!~'](node, tag, id, parts);
+	'~~': function(node, tag, id, classes, attributes, pseudos){ // next siblings and previous siblings
+		this['combinator:~'](node, tag, id, classes, attributes, pseudos);
+		this['combinator:!~'](node, tag, id, classes, attributes, pseudos);
 	},
 	
-	'!': function(node, tag, id, parts){  // all parent nodes up to document
-		while ((node = node.parentNode)) if (node !== document) this.push(node, tag, id, parts);
+	'!': function(node, tag, id, classes, attributes, pseudos){  // all parent nodes up to document
+		while ((node = node.parentNode)) if (node !== document) this.push(node, tag, id, classes, attributes, pseudos);
 	},
 	
-	'!>': function(node, tag, id, parts){ // direct parent (one level)
+	'!>': function(node, tag, id, classes, attributes, pseudos){ // direct parent (one level)
 		node = node.parentNode;
-		if (node !== document) this.push(node, tag, id, parts);
+		if (node !== document) this.push(node, tag, id, classes, attributes, pseudos);
 	},
 	
-	'!+': function(node, tag, id, parts){ // previous sibling
+	'!+': function(node, tag, id, classes, attributes, pseudos){ // previous sibling
 		while ((node = node.previousSibling)) if (node.nodeType === 1){
-			this.push(node, tag, id, parts);
+			this.push(node, tag, id, classes, attributes, pseudos);
 			break;
 		}
 	},
 	
-	'!^': function(node, tag, id, parts){ // last child
+	'!^': function(node, tag, id, classes, attributes, pseudos){ // last child
 		node = node.lastChild;
 		if (node){
-			if (node.nodeType === 1) this.push(node, tag, id, parts);
-			else this['combinator:!+'](node, tag, id, parts);
+			if (node.nodeType === 1) this.push(node, tag, id, classes, attributes, pseudos);
+			else this['combinator:!+'](node, tag, id, classes, attributes, pseudos);
 		}
 	},
 
-	'!~': function(node, tag, id, parts){ // previous siblings
+	'!~': function(node, tag, id, classes, attributes, pseudos){ // previous siblings
 		while ((node = node.previousSibling)){
 			if (node.nodeType !== 1) continue;
 			var uid = this.getUID(node);
 			if (this.bitUniques[uid]) break;
 			this.bitUniques[uid] = true;
-			this.push(node, tag, id, parts);
+			this.push(node, tag, id, classes, attributes, pseudos);
 		}
 	}
 
@@ -647,6 +647,10 @@ var pseudos = {
 
 	'selected': function(node){
 		return node.selected;
+	},
+	
+	'focus': function(node){
+		return !this.isXMLDocument && this.document.activeElement === node && (node.href || node.type || this.hasAttribute(node, 'tabindex'));
 	}
 	
 	/*</pseudo-selectors>*/
