@@ -50,19 +50,20 @@ Request.HTML = new Class({
 });
 
 Element.Properties.load = {
-
+	
 	set: function(options){
-		var load = this.retrieve('load');
-		if (load) load.cancel();
-		return this.eliminate('load').store('load:options', Object.append({data: this, link: 'cancel', update: this, method: 'get'}, options));
+		var load = this.get('load').cancel();
+		load.setOptions(options);
+		return this;
 	},
 
-	get: function(options){
-		if (options || ! this.retrieve('load')){
-			if (options || !this.retrieve('load:options')) this.set('load', options);
-			this.store('load', new Request.HTML(this.retrieve('load:options')));
+	get: function(){
+		var load = this.retrieve('load');
+		if (!load){
+			load = new Request({data: this, link: 'cancel', update: this, method: 'get'});
+			this.store('load', load);
 		}
-		return this.retrieve('load');
+		return load;
 	}
 
 };
