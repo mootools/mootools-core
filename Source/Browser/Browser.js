@@ -30,7 +30,9 @@ this.$uid = (window.ActiveXObject) ? function(item){
 $uid(window);
 $uid(document);
 
-var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+var ua = navigator.userAgent.toLowerCase(),
+	platform = navigator.platform.toLowerCase(),
+	UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
 	
@@ -41,7 +43,7 @@ var Browser = this.Browser = {
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
-		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
+		name: ua.match(/ip(ad|od|hone)/) ? 'ipod' : (ua.match(/(webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
 	},
 
 	Features: {
@@ -75,7 +77,7 @@ Browser.Request = (function(){
 		return new ActiveXObject('Microsoft.XMLHTTP');
 	};
  
-	return Function.stab(function(){
+	return Function.attempt(function(){
 		XMLHTTP();
 		return XMLHTTP;
 	}, function(){
@@ -93,7 +95,7 @@ Browser.Features.xhr = !!(Browser.Request);
 // Flash detection
 
 Browser.Plugins.Flash = (function(){
-	var version = (Function.stab(function(){
+	var version = (Function.attempt(function(){
 		return navigator.plugins['Shockwave Flash'].description;
 	}, function(){
 		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
@@ -117,7 +119,7 @@ Browser.exec = function(text){
 	return text;
 };
 
-String.implement({stripScripts: function(exec){
+String.implement('stripScripts', function(exec){
 	var scripts = '';
 	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
 		scripts += arguments[1] + '\n';
@@ -126,7 +128,7 @@ String.implement({stripScripts: function(exec){
 	if (exec === true) Browser.exec(scripts);
 	else if (typeOf(exec) == 'function') exec(scripts, text);
 	return text;
-}});
+});
 
 // Window, Document
 	
@@ -179,9 +181,16 @@ try {
 		}
 		return arrayFrom(item);
 	};
+	
+	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
+		var method = Array.prototype[name];
+		Array[name] = function(item){
+			return method.apply(Array.from(item), Array.prototype.slice.call(arguments, 1));
+		};
+	});
 }
 
-//=1.2compat
+//<1.2compat>
 
 Browser.Engine = {};
 
@@ -239,6 +248,6 @@ if (Browser.name == 'unknown'){
 
 this.$exec = Browser.exec;
 
-///=
+//</1.2compat>
 
 })();

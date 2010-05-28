@@ -8,17 +8,17 @@ provides: Slick.Parser
 
 (function(){
 	
-var exports = this;
-	
 var parsed,
 	separatorIndex,
 	combinatorIndex,
-	partIndex,
 	reversed,
 	cache = {},
-	reverseCache = {};
+	reverseCache = {},
+	reUnescape = /\\/g;
 
 var parse = function(expression, isReversed){
+	if (!expression) return null;
+	if (expression.Slick === true) return expression;
 	expression = ('' + expression).replace(/^\s+|\s+$/g, '');
 	reversed = !!isReversed;
 	var currentCache = (reversed) ? reverseCache : cache;
@@ -35,7 +35,7 @@ var parse = function(expression, isReversed){
 var reverseCombinator = function(combinator){
 	if (combinator === '!') return ' ';
 	else if (combinator === ' ') return '!';
-	else if ((/^!/).test(combinator)) return combinator.replace(/^(!)/, '');
+	else if ((/^!/).test(combinator)) return combinator.replace(/^!/, '');
 	else return '!' + combinator;
 };
 
@@ -91,7 +91,6 @@ __END__
 	)"
 */
 	"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:([\"']?)(.*?)\\9)))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:([\"']?)((?:\\([^\\)]+\\)|[^\\(\\)]*)+)\\12)\\))?)"
-	//"^(?:\\s*(,)\\s*|\\s*(<combinator>+)\\s*|(\\s+)|(<unicode>+|\\*)|\\#(<unicode>+)|\\.(<unicode>+)|\\[\\s*(<unicode1>+)(?:\\s*([*^$!~|]?=)(?:\\s*(?:\"((?:[^\"]|\\\\\")*)\"|'((?:[^']|\\\\')*)'|([^\\]]*?))))?\\s*\\](?!\\])|:+(<unicode>+)(?:\\((?:\"((?:[^\"]|\\\")*)\"|'((?:[^']|\\')*)'|([^\\)]*))\\))?)"//*/
 	.replace(/<combinator>/, '[' + escapeRegExp(">+~`!@$%^&={}\\;</") + ']')
 	.replace(/<unicode>/g, '(?:[\\w\\u00a1-\\uFFFF-]|\\\\[^\\s0-9a-f])')
 	.replace(/<unicode1>/g, '(?:[:\\w\\u00a1-\\uFFFF-]|\\\\[^\\s0-9a-f])')
@@ -128,66 +127,56 @@ function parser(
 		var currentSeparator = parsed.expressions[separatorIndex];
 		if (reversed && currentSeparator[combinatorIndex])
 			currentSeparator[combinatorIndex].reverseCombinator = reverseCombinator(combinator);
-		currentSeparator[++combinatorIndex] = {combinator: combinator, tag: '*', parts: []};
-		partIndex = 0;
+		currentSeparator[++combinatorIndex] = {combinator: combinator, tag: '*'};
 	}
 	
 	var currentParsed = parsed.expressions[separatorIndex][combinatorIndex];
 
 	if (tagName){
-		currentParsed.tag = tagName.replace(/\\/g,'');
-		return '';
+		currentParsed.tag = tagName.replace(reUnescape, '');
+
 	} else if (id){
-		currentParsed.id = id.replace(/\\/g,'');
-		return '';
+		currentParsed.id = id.replace(reUnescape, '');
+
 	} else if (className){
-		className = className.replace(/\\/g,'');
-	
-		if (!currentParsed.classes) currentParsed.classes = [className];
-		else currentParsed.classes.push(className);
-	
-		currentParsed.parts[partIndex] = {
-			type: 'class',
+		className = className.replace(reUnescape, '');
+
+		if (!currentParsed.classList) currentParsed.classList = [];
+		if (!currentParsed.classes) currentParsed.classes = [];
+		currentParsed.classList.push(className);
+		currentParsed.classes.push({
 			value: className,
 			regexp: new RegExp('(^|\\s)' + escapeRegExp(className) + '(\\s|$)')
-		};
-		partIndex++;
+		});
 		
 	} else if (pseudoClass){
+		pseudoClassValue = pseudoClassValue ? pseudoClassValue.replace(reUnescape, '') : null;
+		
 		if (!currentParsed.pseudos) currentParsed.pseudos = [];
-		
-		var value = pseudoClassValue || null;
-		if (value) value = value.replace(/\\/g,'');
-		
-		currentParsed.pseudos.push(currentParsed.parts[partIndex] = {
-			type: 'pseudo',
-			key: pseudoClass.replace(/\\/g,''),
-			value: value
+		currentParsed.pseudos.push({
+			key: pseudoClass.replace(reUnescape, ''),
+			value: pseudoClassValue
 		});
-		partIndex++;
 		
 	} else if (attributeKey){
-		if (!currentParsed.attributes) currentParsed.attributes = [];
-		
-		var key = attributeKey.replace(/\\/g,'');
-		var operator = attributeOperator;
-		var attribute = (attributeValue || '').replace(/\\/g,'');
+		attributeKey = attributeKey.replace(reUnescape, '');
+		attributeValue = (attributeValue || '').replace(reUnescape, '');
 		
 		var test, regexp;
 		
-		switch (operator){
-			case '^=' : regexp = new RegExp(       '^'+ escapeRegExp(attribute)            ); break;
-			case '$=' : regexp = new RegExp(            escapeRegExp(attribute) +'$'       ); break;
-			case '~=' : regexp = new RegExp( '(^|\\s)'+ escapeRegExp(attribute) +'(\\s|$)' ); break;
-			case '|=' : regexp = new RegExp(       '^'+ escapeRegExp(attribute) +'(-|$)'   ); break;
+		switch (attributeOperator){
+			case '^=' : regexp = new RegExp(       '^'+ escapeRegExp(attributeValue)            ); break;
+			case '$=' : regexp = new RegExp(            escapeRegExp(attributeValue) +'$'       ); break;
+			case '~=' : regexp = new RegExp( '(^|\\s)'+ escapeRegExp(attributeValue) +'(\\s|$)' ); break;
+			case '|=' : regexp = new RegExp(       '^'+ escapeRegExp(attributeValue) +'(-|$)'   ); break;
 			case  '=' : test = function(value){
-				return attribute == value;
+				return attributeValue == value;
 			}; break;
 			case '*=' : test = function(value){
-				return value && value.indexOf(attribute) > -1;
+				return value && value.indexOf(attributeValue) > -1;
 			}; break;
 			case '!=' : test = function(value){
-				return attribute != value;
+				return attributeValue != value;
 			}; break;
 			default   : test = function(value){
 				return !!value;
@@ -198,14 +187,13 @@ function parser(
 			return value && regexp.test(value);
 		};
 		
-		currentParsed.attributes.push(currentParsed.parts[partIndex] = {
-			type: 'attribute',
-			key: key,
-			operator: operator,
-			value: attribute,
+		if (!currentParsed.attributes) currentParsed.attributes = [];
+		currentParsed.attributes.push({
+			key: attributeKey,
+			operator: attributeOperator,
+			value: attributeValue,
 			test: test
 		});
-		partIndex++;
 		
 	}
 	
@@ -214,7 +202,7 @@ function parser(
 
 // Slick NS
 
-var Slick = this.Slick || {};
+var Slick = (this.Slick || {});
 
 Slick.parse = function(expression){
 	return parse(expression);
@@ -222,8 +210,6 @@ Slick.parse = function(expression){
 
 Slick.escapeRegExp = escapeRegExp;
 
-// export Slick
-
 if (!this.Slick) this.Slick = Slick;
 	
-})();
+}).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this);

@@ -8,7 +8,7 @@ Fx.Transitions overrides the base [Fx][] constructor, and adds the possibility t
 The equation to use for the effect. See [Fx.Transitions][]. It accepts both a function (ex: Fx.Transitions.Sine.easeIn) or a string ('sine:in', 'bounce:out' or 'quad:in:out') that will map to Fx.Transitions.Sine.easeIn / Fx.Transitions.Bounce.easeOut / Fx.Transitions.Quad.easeInOut
 
 
-Hash: Fx.Transitions {#Fx-Transitions}
+Object: Fx.Transitions {#Fx-Transitions}
 ======================================
 
 A collection of tweening transitions for use with the [Fx][] classes.
@@ -21,6 +21,10 @@ A collection of tweening transitions for use with the [Fx][] classes.
 ### See also:
 
 - [Robert Penner's Easing Equations](http://www.robertpenner.com/easing/)
+
+### Note:
+
+Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
 
 
 

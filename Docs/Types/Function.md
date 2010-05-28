@@ -1,5 +1,5 @@
-Function {#Function}
-============================
+Type: Function {#Function}
+==========================
 
 Function Methods.
 
@@ -9,7 +9,7 @@ Function Methods.
 
 
 
-Function: Function.from {#Function-from}
+Function: Function.from {#Function:Function-from}
 ----------------------------------------
 
 If the passed argument is a function, it will return itself. Otherwise, it will return a function that returns the passed argument.
@@ -42,56 +42,14 @@ This function is equivalent to the following deprecated MooTools 1.2 methods:
 	var fn2 = Function.from(foo);	// Equivalent to var fn2 = $lambda(foo);
 
 
-
-Function method: extend {#extend}
----------------------------------
-
-
-Function method: implement {#implement}
----------------------------------------
-
-
-Function method: clear {#clear}
--------------------------------
-
-Clears a Timeout or an Interval. Useful when working with [Function:delay](#delay) and [Function:periodical](#periodical).
-
-### Syntax:
-
-	myTimer.clear(timer);
-
-### Arguments:
-
-1. timer - (*number*) The identifier of the setInterval (periodical) or setTimeout (delay) to clear.
-
-### Returns:
-
-* (*null*) returns null.
-
-### Example:
-
-	var myTimer = myFunction.delay(5000); //Waits 5 seconds then executes myFunction.
-	myTimer = myTimer.clear(); //Cancels myFunction.
-
-### See also:
-
-- [Function:delay][]
-- [Function:periodical][]
-
-### Notes:
-
-This method is equivalent to *$clear* from MooTools 1.2.
-
-
-
-Function method: Function.stab {#stab}
+Function: Function.attempt {#Function:Function-attempt}
 -----------------------------
 
 Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
 
 ### Syntax:
 
-	Function.stab(fn[, fn, fn, fn, ...]);
+	Function.attempt(fn[, fn, fn, fn, ...]);
 
 ### Arguments:
 
@@ -104,7 +62,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 
 ### Examples:
 
-	var result = Function.stab(function(){
+	var result = Function.attempt(function(){
 		return some.made.up.object;
 	}, function(){
 		return jibberish.that.doesnt.exists;
@@ -116,7 +74,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 
 	var failure, success;
 
-	Function.stab(function(){
+	Function.attempt(function(){
 		some.made.up.object = 'something';
 		success = true;
 	}, function(){
@@ -131,50 +89,98 @@ This method is an equivalent of *$try* from MooTools 1.2.
 
 
 
-Function method: create {#create}
+Function method: extend {#Function:extend}
 ---------------------------------
 
-Base function for creating functional closures which is used by all other Function prototypes.
+Add methods to a function
 
 ### Syntax:
 
-	var createdFunction = myFunction.create([options]);
+	myFunction.extend(key,value);
 
 ### Arguments:
 
-1. [options] - (*object*, optional) The options from which the function will be created. If options is not provided, then creates a copy of the function.
+1. key - (*string*) The key of the prototype
+2. value - (*mixed*) The function or another value of the protoype
 
-#### Options: {#Function:create:options}
+### Example: 
 
-* bind		 - (*object*: defaults to this function) The object that the "this" of the function will refer to.
-* event		 - (*mixed*: defaults to false) If set to true, the function will act as an event listener and receive an event as its first argument. If set to a class name, the function will receive a new instance of this class (with the event passed as argument's constructor) as first argument.
-* arguments	 - (*mixed*: defaults to standard arguments) A single argument or an array of arguments that will be passed as arguments to the function. If both the event and arguments options are set, the event is passed as first argument and the arguments array will follow.
-* delay		 - (*number*: defaults to no delay) If set, the returned function will delay the actual execution by this amount of milliseconds and return a timer handle when called.
-* periodical - (*number*: defaults to no periodical execution) If set, the returned function will periodically perform the actual execution with this specified interval and return a timer handle when called.
-* attempt	 - (*boolean*: false) If set to true, the returned function will try to execute and return either the results or null on error.
+	var myFunction = function(){};
+	myFunction.extend('alert',function(text){
+		alert(text);
+	});
+	myFunction.alert('Hello!'); // Alerts Hello!
+
+
+Function method: implement {#Function:implement}
+---------------------------------------
+
+Add methods to the prototype
+
+### Syntax:
+
+	myFunction.implement(key,value);
+
+### Arguments:
+
+1. key - (*string*) The key of the prototype
+2. value - (*mixed*) The function or another value of the protoype
+
+### Example: 
+
+	var myFunction = function(){};
+	myFunction.implement('alert',function(text){
+		alert(text);
+	});
+	var myInstance = new myFunction();
+	myInstance.alert('Hello!'); // Alerts Hello!
+
+### Notes:
+
+The difference between *implement* and *extend*, is that implement adds the value to the prototype.
+So with *implement* each instance of the function will have this method or property while with *extend*
+the method or property is added to a single instance.
+
+
+Function method: attempt {#Function:attempt}
+---------------------------
+
+Tries to execute a single function. Returns immediately the return value of the function if it does not fail, or null.
+
+### Syntax:
+
+	var myFunctionResult = myFunction.attempt(args[, bind]);
+
+### Arguments:
+
+1. args - (*mixed*) An argument, or array of arguments to run the function with.
+2. bind - (*object*, optional) The object that the "this" of the function will refer to.
 
 ### Returns:
 
-* (*function*) The function that was created as a result of the options passed in.
+* (*mixed*) This Function's return value.
+* (*null*) `null` if the function fails.
 
-### Example:
+### Examples:
 
 	var myFunction = function(){
-		alert("I'm a function. :D");
+		return some.made.up.object;
 	};
-
-	var mySimpleFunction = myFunction.create(); //Just a simple copy.
-
-	var myAdvancedFunction = myFunction.create({ //When called, this function will attempt.
-		arguments: [0,1,2,3],
-		attempt: true,
-		delay: 1000,
-		bind: myElement
-	});
+	myFunction.attempt(); // Returns: 'null'
 
 
+	var myFunction = function(val){
+		return val;
+	};
+	myFunction.attempt(false); // Returns: 'false'
 
-Function method: run {#run}
+### See Also:
+
+- See [Function.attempt](#Function:Function-attempt) for using more than one functions.
+
+
+
+Function method: run {#Function:run}
 ---------------------------
 
 Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
@@ -213,7 +219,7 @@ Runs the Function with specified arguments and binding. The same as apply but re
 
 
 
-Function method: pass {#pass}
+Function method: pass {#Function:pass}
 -----------------------------
 
 Returns a closure with arguments and bind.
@@ -249,7 +255,7 @@ Returns a closure with arguments and bind.
 
 
 
-Function method: bind {#bind}
+Function method: bind {#Function:bind}
 -----------------------------
 
 Changes the scope of `this` within the target function to refer to the bind parameter.
@@ -278,79 +284,7 @@ Changes the scope of `this` within the target function to refer to the bind para
 	myBoundFunction(); //This will make myElement's text red.
 
 
-
-Function method: bindWithEvent {#bindWithEvent}
------------------------------------------------
-
-Changes the scope of `this` within the target function to refer to the bind parameter. It also makes "space" for an event.
-This allows the function to be used in conjunction with [Element:addEvent][] and arguments.
-
-### Syntax:
-
-	myFunction.bindWithEvent([bind[, args]]);
-
-### Arguments:
-
-1. bind - (*object*, optional) The object that the "this" of the function will refer to.
-2. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-
-### Returns:
-
-* (*function*) The bound function.
-
-### Example:
-
-	var Logger = new Class({
-		log: function(){
-			console.log.apply(null, arguments);
-		}
-	});
-	
-	var Log = new Logger();
-	
-	$('myElement').addEvent('click', function(event, offset){
-		offset += event.client.x;
-		this.log('clicked; moving to:', offset); // this refers to myClass
-		event.target.setStyle('top', offset);
-		return false;
-	}.bindWithEvent(Log, 100));
-
-
-
-Function method: attempt {#attempt}
------------------------------------
-
-Tries to execute the function.
-
-### Syntax:
-
-	var result = myFunction.attempt([args[, bind]]);
-
-### Arguments:
-
-1. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
-2. bind - (*object*, optional) The object that the "this" of the function will refer to.
-
-### Returns:
-
-* (*mixed*) The function's return value or `null` if an exception is thrown.
-
-### Example:
-
-	var myObject = {
-		'cow': 'moo!'
-	};
-
-	var myFunction = function(){
-		for (var i = 0; i < arguments.length; i++){
-			if(!this[arguments[i]]) throw('doh!');
-		}
-	};
-	var result = myFunction.attempt(['pig', 'cow'], myObject); //result = null
-
-
-
-Function method: delay {#delay}
+Function method: delay {#Function:delay}
 -------------------------------
 
 Delays the execution of a function by a specified duration.
@@ -372,20 +306,24 @@ Delays the execution of a function by a specified duration.
 ### Example:
 
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
-	//Wait 50 milliseconds, then call myFunction and bind myElement to it.
+	// Wait 50 milliseconds, then call myFunction and bind myElement to it.
 	myFunction.delay(50, myElement); //Alerts: 'moo! Element id is: ... '
 
-	//An anonymous function which waits a second and then alerts.
+	// An anonymous function which waits a second and then alerts.
 	(function(){ alert('one second later...'); }).delay(1000);
+	
+	// To stop the delay, clearTimeout can be used like so
+	var timer = myFunction.delay(50);
+	clearTimeout(timer);
 
 
 ### See Also:
 
-- [$clear][], [MDC setTimeout][]
+- [MDC setTimeout][], [MDC clearTimeout][]
 
 
 
-Function method: periodical {#periodical}
+Function method: periodical {#Function:periodical}
 -----------------------------------------
 
 Executes a function in the specified intervals of time. Periodic execution can be stopped using the [$clear][] function.
@@ -409,20 +347,43 @@ Executes a function in the specified intervals of time. Periodic execution can b
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
 	addCount.periodical(1000, Site); //Will add the number of seconds at the Site.
-
+	
+	// The interval can be stopped using the clearInterval function
+	var timer = myFunction.periodical(1000);
+	clearInterval(timer);
 
 ### See Also:
 
-- [$clear][], [MDC setInterval][]
+- [MDC setInterval][], [MDC clearInterval][]
 
+
+Deprecated Functions {#Deprecated-Functions}
+============================================
+
+Function method: create {#Deprecated-Functions:create}
+------------------------------------------------------
+
+This function has been deprecated.
+
+Function method: bindWithEvent {#Deprecated-Function:bindWithEvent}
+------------------------------------------------------------------
+
+This function has been deprecated.
+
+### Example how you could replace this method:
+
+	myElement.addEvent('click',function(e){
+		myFunction.bind(bind, [e]);
+	});
 
 
 [options]: #Function:create:options
 [Element:addEvent]: /core/Element/Element.Event/#Element:addEvent
-[$clear]: /core/Core/Core/#clear
 [MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
 [MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
 [MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
+[MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
+[MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
 [Function:delay]: /core/Types/Function/#delay
 [Function:periodical]: /core/Types/Function/#periodical
 

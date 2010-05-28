@@ -1,7 +1,7 @@
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+=========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 ### Notes:
 
@@ -225,7 +225,7 @@ Returns the parent of the element that is positioned, if there is one.
 
 
 
-[$]: /core/Element/Element#dollar
+[$]: /core/Element/Element#Window:dollar
 [MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft
 [MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM:element.scrollTop
 [MDC Element:offsetWidth]: http://developer.mozilla.org/en/docs/DOM:element.offsetWidth

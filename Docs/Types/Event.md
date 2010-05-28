@@ -1,5 +1,5 @@
-Event {#Event}
-======================
+Type: Event {#Event}
+====================
 
 MooTools Event Methods.
 
@@ -158,10 +158,10 @@ Cross browser method to prevent the default action of the event.
 - [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
 
 
-Hash: Event.Keys {#Event-Keys}
+Object: Event.Keys {#Event-Keys}
 ==============================
 
-Additional Event key codes can be added by adding properties to the Event.Keys Hash.
+Additional Event key codes can be added by adding properties to the Event.Keys Object.
 
 #### Example:
 
@@ -170,11 +170,31 @@ Additional Event key codes can be added by adding properties to the Event.Keys H
 	    if (event.key == "shift") alert("You pressed shift.");
     });
 
+#### Possible Keys:
+
+- enter
+- up
+- down
+- left
+- right
+- esc
+- space
+- backspace
+- tab
+- delete
+
+### See Also:
+
+- [MooTools More Keyboard][]
+
+### Note:
+
+Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
 
 
-[$]: /core/Element/#dollar
 [Element:addEvent]: /core/Element/Element.Event#Element:addEvent
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#Function:bind
 [Function:pass]: /core/Types/Function/#Function:pass
 [Function:delay]: /core/Types/Function/#Function:delay
+[MooTools More Keyboard]: /more/Interface/Keyboard

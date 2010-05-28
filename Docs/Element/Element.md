@@ -1,17 +1,16 @@
-Native: Window {#Window}
-========================
+Type: Window {#Window}
+======================
 
 The following functions are treated as Window methods.
 
+Function: document.id {#Window:document-id}
+-------------------------------------------
 
-Function: $ {#dollar}
----------------------
-
-The dollar function has a dual purpose: Getting the element by its id, and making an element in Internet Explorer "grab" all the [Element][] methods.
+The document.id function has a dual purpose: Getting the element by its id, and making an element in Internet Explorer "grab" all the [Element][] methods.
 
 ### Syntax:
 
-	var myElement = $(el);
+	var myElement = document.id(el);
 
 ### Arguments:
 
@@ -29,24 +28,48 @@ The dollar function has a dual purpose: Getting the element by its id, and makin
 
 #### Get a DOM Element by ID:
 
-	var myElement = $('myElement');
+	var myElement = document.id('myElement');
 
 #### Get a DOM Element by reference:
 
 	var div = document.getElementById('myElement');
-	div = $(div); //The element with all the Element methods applied.
+	div = document.id(div); //The element with all the Element methods applied.
 
 ### Notes:
 
 - This method is useful when it's unclear if working with an actual element or an id.  It also serves as a shorthand for document.getElementById().
-- In Internet Explorer, the [Element][] is extended the first time $ is called on it, and all the [Element][] Methods become available.
+- In Internet Explorer, the [Element][] is extended the first time document.id is called on it, and all the [Element][] Methods become available.
 - Browsers with native HTMLElement support, such as Safari, Firefox, and Opera, apply all the [Element][] Methods to every DOM element automatically.
 - Because MooTools detects if an element needs to be extended or not, this function may be called on the same Element many times with no ill effects.
 
 
+Function: $ {#Window:dollar}
+----------------------------
 
-Function: $$ {#dollars}
------------------------
+The dollar function is a alias for [document:id][] if the $ variable is not set already.
+However it is not recommended to use more frameworks, the $ variable can be set by another framework or script. MooTools will detect this and determine if it will set the $ function so it will not be overwritten.
+
+### Examples: 
+
+	var myElement = $('myElement');
+	var myElement2 = document.id('myElement');
+	
+	myElement == myElement2; // true
+	
+	
+	(function($){
+		
+		// Now you can use $ safely in this closure
+	
+	})(document.id)
+
+
+### See Also:
+ - MooTools Blogpost: [The Dollar Save Mode][]
+
+
+Function: $$ {#Window:dollars}
+------------------------------
 
 Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.
 
@@ -73,7 +96,7 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 	$$('a'); //Returns all anchor elements in the page.
 	$$('a', 'b'); //Returns all anchor and bold tags on the page.
 
-#### Using CSS Selectors When [Selectors][] is Included:
+#### Using CSS Selectors:
 
 	$$('#myElement'); //Returns an array containing only the element with the id 'myElement'.
 	$$('#myElement a.myClass'); //Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
@@ -85,20 +108,16 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Notes:
 
-- When [Selectors][] is loaded, [$$][] will also accept CSS Selectors.  Otherwise, the only selectors supported are tag names.
+- [$$][] will also accept CSS Selectors.
 - If an expression doesn't find any elements, an empty array will be returned.
 - The return type of element methods run through [$$][] is always an array, regardless of the amount of results.
 
-### See Also:
-
-- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
 
 
+Type: Element {#Element}
+========================
 
-Native: Element {#Element}
-==========================
-
-Custom Native to allow all of its methods to be used with any extended DOM Element.
+Custom Type to allow all of its methods to be used with any extended DOM Element.
 
 
 
@@ -149,7 +168,7 @@ Creates a new Element of the type passed in.
 Element Method: getElement {#Element:getElement}
 ------------------------------------------------
 
-Gets the first descendant element whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
+Gets the first descendant element whose tag name matches the tag provided. CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -157,7 +176,7 @@ Gets the first descendant element whose tag name matches the tag provided.  If [
 
 ### Arguments:
 
-1. tag - (*string*) Tag name of the element to find.
+1. tag - (*string*) Tag name of the element to find or a CSS Selector.
 
 ### Returns:
 
@@ -167,22 +186,16 @@ Gets the first descendant element whose tag name matches the tag provided.  If [
 
 	var firstDiv = $(document.body).getElement('div');
 
-### Notes:
+### Note:
 
-- This method is also available for Document instances.
-- This method gets replaced when [Selectors][] is included.
-- [Selectors][] enhances [Element:getElement][] so that it matches based on CSS selectors.
-
-### See Also:
-
-- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+This method is also available for Document instances.
 
 
 
 Element Method: getElements {#Element:getElements}
 --------------------------------------------------
 
-Collects all decedent elements whose tag name matches the tag provided.  If [Selectors][] is included, CSS selectors may also be passed.
+Collects all decedent elements whose tag name matches the tag provided. CSS selectors may also be passed.
 
 ### Syntax:
 
@@ -190,7 +203,7 @@ Collects all decedent elements whose tag name matches the tag provided.  If [Sel
 
 ### Arguments:
 
-1. tag - (*string*) String of the tag to match.
+1. tag - (*string*) String of the tag to match  or a CSS Selector.
 
 ### Returns:
 
@@ -200,15 +213,9 @@ Collects all decedent elements whose tag name matches the tag provided.  If [Sel
 
 	var allAnchors = $(document.body).getElements('a');
 
-### Notes:
+### Note:
 
-- This method is also available for Document instances.
-- This method gets replaced when [Selectors][] is included.
-- [Selectors][] enhances [Element:getElements][] so that it matches based on CSS selectors.
-
-### See Also:
-
-- See [Selectors][] for documentation on selectors for use anywhere they are accepted throughout the framework.
+This method is also available for Document instances.
 
 
 
@@ -242,7 +249,7 @@ Gets the element with the specified id found inside the current Element.
 Element Method: set {#Element:set}
 ----------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Hash.
+This is a "dynamic arguments" method. Properties passed in can be any of the 'set' properties in the [Element.Properties][] Object.
 
 ### Syntax:
 
@@ -251,7 +258,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 ### Arguments:
 
 - Two Arguments (property, value)
-	1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to set.
+	1. property - (*string*) The string key from the [Element.Properties][] Object representing the property to set.
 	2. value - (*mixed*) The value to set for the specified property.
 - One Argument (properties)
 	1. properties - (*object*) Object with its keys/value pairs representing the properties and values to set for the Element (as described below).
@@ -292,7 +299,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 ### Notes:
 
-- All the property arguments are passed to the corresponding method of the [Element.Properties][] Hash.
+- All the property arguments are passed to the corresponding method of the [Element.Properties][] Object.
 - If no matching property is found in [Element.Properties][], it falls back to [Element:setProperty][].
 - Whenever using [Element:setProperty][] to set an attribute, pass in the lowercase, simplified form of the property. For example:
 	- use 'for', not 'htmlFor',
@@ -310,7 +317,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 Element Method: get {#Element:get}
 ----------------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Hash.
+This is a "dynamic arguments" method. Properties passed in can be any of the 'get' properties in the [Element.Properties][] Object.
 
 ### Syntax:
 
@@ -318,11 +325,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 ### Arguments:
 
-1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to get.
+1. property - (*string*) The string key from the [Element.Properties][] Object representing the property to get.
 
 ### Returns:
 
-* (*mixed*) The result of calling the corresponding 'get' function in the [Element.Properties][] Hash.
+* (*mixed*) The result of calling the corresponding 'get' function in the [Element.Properties][] Object.
 
 ### Examples:
 
@@ -337,7 +344,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 ### Notes:
 
--  If the corresponding accessor doesn't exist in the [Element.Properties][] Hash, the result of [Element:getProperty][] on the property passed in is returned.
+-  If the corresponding accessor doesn't exist in the [Element.Properties][] Object, the result of [Element:getProperty][] on the property passed in is returned.
 
 ### See Also:
 
@@ -348,7 +355,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 Element Method: erase {#Element:erase}
 --------------------------------------
 
-This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Hash.
+This is a "dynamic arguments" method. Properties passed in can be any of the 'erase' properties in the [Element.Properties][] Object.
 
 ### Syntax:
 
@@ -356,11 +363,11 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### Arguments:
 
-1. property - (*string*) The string key from the [Element.Properties][] Hash representing the property to erase.
+1. property - (*string*) The string key from the [Element.Properties][] Object representing the property to erase.
 
 ### Returns:
 
-* (*mixed*) The result of calling the corresponding 'erase' function in the [Element.Properties][] Hash.
+* (*mixed*) The result of calling the corresponding 'erase' function in the [Element.Properties][] Object.
 
 ### Examples:
 
@@ -369,7 +376,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'er
 
 ### Note:
 
--  If the corresponding eraser doesn't exist in the  [Element.Properties][] Hash, [Element:removeProperty][] is called with the property passed in.
+-  If the corresponding eraser doesn't exist in the  [Element.Properties][] Object, [Element:removeProperty][] is called with the property passed in.
 
 ### See Also:
 
@@ -389,7 +396,7 @@ Tests this Element to see if it matches the argument passed in.
 ### Arguments:
 
 1. match - can be a string or element
-	- (*string*) The tag name to test against this element. If [Selectors][] is included, any single CSS selectors may also be passed.
+	- (*string*) The tag name to test against this element. Any single CSS selectors may also be passed.
 	- (*element*) An element to match; returns true if this is the actual element passed in.
 
 ### Returns:
@@ -413,6 +420,38 @@ Tests this Element to see if it matches the argument passed in.
 	var el = $('myDiv');
 	$('myDiv').match(el); //Returns true
 	$('otherElement').match(el); //Returns false
+
+
+
+Element Method: contains {#Element:contains}
+--------------------------------------------
+
+Checks all descendants of this Element for a match.
+
+
+### Syntax:
+
+	var result = myElement.contains(el);
+
+### Arguments:
+
+1. el - (*mixed*) Can be an Element reference or string id.
+
+### Returns:
+
+* (*boolean*) Returns true if the element contains passed in Element is a child, otherwise false.
+
+### Examples:
+
+##### HTML
+
+	<div id="Darth_Vader">
+		<div id="Luke"></div>
+	</div>
+
+##### JavaScript
+
+	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); // tan tan tannn...
 
 
 
@@ -883,11 +922,12 @@ Adds or removes the passed in class name to the Element, depending on whether or
 
 ### Syntax:
 
-	myElement.toggleClass(className);
+	myElement.toggleClass(className, force);
 
 ### Arguments:
 
 1. className - (*string*) The class to add or remove.
+2. force - (*boolean*, optional) Force the class to be either added or removed
 
 ### Returns:
 
@@ -928,7 +968,7 @@ Returns the previousSibling of the Element (excluding text nodes).
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -955,7 +995,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Arguments:
 
-1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. If [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -981,7 +1021,7 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1000,7 +1040,7 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1020,7 +1060,7 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
@@ -1032,6 +1072,26 @@ Element Method: getParents {#Element:getParents}
 ------------------------------------------------
 
 Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
+
+
+
+Element Method: getSiblings {#Element:getSiblings}
+--------------------------------------------------
+
+Like [Element:getAllPrevious][] but returns all Element's previous and next siblings (excluding text nodes). Returns as [Elements][].
+
+
+### Syntax:
+
+	var children = myElement.getsiblings([match]);
+
+### Arguments:
+
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
+
+### Returns:
+
+* (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
 
 
 
@@ -1047,44 +1107,11 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. if [Selectors][] is included, a full CSS selector can be passed.
+1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
 * (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
-
-
-
-Element Method: hasChild {#Element:hasChild}
---------------------------------------------
-
-Checks all descendants of this Element for a match.
-
-
-### Syntax:
-
-	var result = myElement.hasChild(el);
-
-### Arguments:
-
-1. el - (*mixed*) Can be an Element reference or string id.
-
-### Returns:
-
-* (*boolean*) Returns true if the passed in Element is a child of the Element, otherwise false.
-
-### Examples:
-
-##### HTML
-
-	<div id="Darth_Vader">
-		<div id="Luke"></div>
-	</div>
-
-##### JavaScript
-
-	if ($('Darth_Vader').hasChild('Luke')) alert('Luke, I am your father.'); // tan tan tannn...
-
 
 
 Element Method: empty {#Element:empty}
@@ -1470,10 +1497,10 @@ Eliminates a key from the Elements storage.
 
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
-This Hash contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
+This Object contains the functions that respond to the first argument passed in [Element:get][], [Element:set][] and [Element:erase][].
 
 ### Adding a Custom Element Property
 
@@ -1497,9 +1524,6 @@ This Hash contains the functions that respond to the first argument passed in [E
 	//Sets the "disabled" property to true, along with the attribute.
 	$(element).set('disabled', true);
 
-### Note:
-
-Automatically returns the element for setters.
 
 ### Using an Object:
 
@@ -1512,6 +1536,12 @@ Additionally, you can access these custom getters and setters using an object as
 
 	//For new Elements (works the same as set):
 	new Element('input', {type: 'checkbox', checked: true, disabled: true});
+
+
+### Notes:
+
+- Automatically returns the element for setters.
+- Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
 
 
 
@@ -1650,10 +1680,10 @@ Returns the tag name of the Element in lower case.
 
 
 
-Native: IFrame {#IFrame}
+Type: IFrame {#IFrame}
 ========================
 
-Custom Native to create and easily work with IFrames.
+Custom Type to create and easily work with IFrames.
 
 
 
@@ -1715,7 +1745,7 @@ Creates an IFrame HTML Element and extends its window and document with MooTools
 
 
 
-Native: Elements {#Elements}
+Type: Elements {#Elements}
 ============================
 
 The Elements class allows [Element][] methods to work on an [Elements][] array, as well as [Array][] Methods.
@@ -1771,8 +1801,8 @@ Elements Method: constructor {#Elements:constructor}
 Elements Method: filter {#Elements:filter}
 ----------------------------------------------
 
-Filters a collection of elements by a given tag name.  If [Selectors][] is included, this method will be able to filter by any selector.
-It also works like [Array:filter](/Native/Array/#Array:filter), by filtering collection of elements with a function.
+Filters a collection of elements by a given tag name.  This method will be able to filter by any selector.
+It also works like [Array:filter][], by filtering collection of elements with a function.
 
 
 ### Syntax:
@@ -1788,12 +1818,33 @@ It also works like [Array:filter](/Native/Array/#Array:filter), by filtering col
 * (*array*) A subset of this [Elements][] instance.
 
 
+Deprecated Functions {#Deprecated-Functions}
+============================================
 
-[$]: #dollar
-[$$]: #dollars
+Element Method: hasChild {#Deprecated-Functions:hasChild}
+---------------------------------------------------------
 
-[Array]: /core/Native/Array
-[Selectors]: /core/Utilities/Selectors
+This method has been deprecated. Use [Element:contains][] instead.
+
+### Example:
+	
+	var myElement = document.id('element1');
+	var myElement2 = document.id('element2');
+	myElement !== myElement2 && myElement.contains(element2);
+	
+	// This is how it could be implemented
+	Element.implement('hasChild', function(element){
+		return this !== element && this.contains(element);
+	});
+
+
+
+[document:id]: #Window:document-id
+[$]: #Window:dollar
+[$$]: #Window:dollars
+
+[Array]: /core/Types/Array
+[Array:filter]: /core/Types/Array#Array:filter
 
 [Element]: #Element
 [Elements]: #Elements
@@ -1807,6 +1858,10 @@ It also works like [Array:filter](/Native/Array/#Array:filter), by filtering col
 [Element:getElements]: #Element:getElements
 [Element.Properties]: #Element-Properties
 [Element:getPrevious]: #Element:getPrevious
+[Element:getAllPrevious]: #Element:getAllPrevious
+[Element:contains]: #Element:contains
 
 [Element:addEvents]: /core/Element/Element.Event#Element:addEvents
 [Element:setStyles]: /core/Element/Element.Style#Element:setStyles
+
+[The Dollar Save Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/

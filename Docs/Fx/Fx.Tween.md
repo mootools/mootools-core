@@ -104,10 +104,10 @@ Transitions the Element's CSS property to the specified value.
 
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: tween {#Element-Properties:tween}
 ---------------------------------------------------
@@ -137,12 +137,11 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 #### Syntax:
 
-	el.get('tween', [options]);
+	el.get('tween');
 
 #### Arguments:
 
 1. property - (*string*) the Fx.Tween property argument.
-2. options  - (*object*) the Fx.Tween options.
 
 #### Returns:
 
@@ -150,21 +149,21 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 #### Examples:
 
-	el.get('tween', {property: 'opacity', duration: 'long'}).start(0);
+	el.get('tween').start(0);
 
 ### Notes:
 
 - When initializing the Element's tween instance with Element:set, the property to tween SHOULD NOT be passed.
 - The property must be specified when using Element:get to retrieve the actual Fx.Tween instance, and in calls to Element:tween.
-- When options are passed to either the setter or the getter, the instance will be recreated.
+- When options are passed to the setter, the instance will be reset.
 - As with the other Element shortcuts, the difference between a setter and a getter is that the getter returns the instance, while the setter returns the element (for chaining and initialization).
 
 
 
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 
@@ -263,7 +262,8 @@ If no background color is set on the Element, or its background color is set to 
 	$('myElement').highlight('#ddf', '#ccc');
 
 
-[$]: /core/Element/Element#dollar
+[$]: /core/Element/Element#Window:dollar
 [Fx]: /core/Fx/Fx
 [Fx.Tween]: #Fx-Tween
 [Element.tween]: #Element-Properties:tween
+[Element.Properties]: /core/Element/Element/#Element-Properties

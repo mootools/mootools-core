@@ -7,7 +7,7 @@ description: Contains the Event Class, to make the event object cross-browser.
 
 license: MIT-style license.
 
-requires: [Window, Document, Hash, Array, Function, String]
+requires: [Window, Document, Array, Function, String]
 
 provides: Event
 
@@ -32,30 +32,32 @@ var Event = new Type('Event', function(event, win){
 			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
 		}
 		key = key || String.fromCharCode(code).toLowerCase();
-	} else if (type.match(/(click|mouse|menu)/i)){
+	} else if (type.test(/click|mouse|menu/i)){
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		var page = {
-			x: event.pageX || event.clientX + doc.scrollLeft,
-			y: event.pageY || event.clientY + doc.scrollTop
+			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
+			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
 		};
 		var client = {
-			x: (event.pageX) ? event.pageX - win.pageXOffset : event.clientX,
-			y: (event.pageY) ? event.pageY - win.pageYOffset : event.clientY
+			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
-		if (type.match(/DOMMouseScroll|mousewheel/)){
+		if (type.test(/DOMMouseScroll|mousewheel/)){
 			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		}
 		var rightClick = (event.which == 3) || (event.button == 2);
 		var related = null;
-		if (type.match(/over|out/)){
+		if (type.test(/over|out/)){
 			switch (type){
 				case 'mouseover': related = event.relatedTarget || event.fromElement; break;
 				case 'mouseout': related = event.relatedTarget || event.toElement;
 			}
-			if (!(function(){
+			var testRelated = function(){
 				while (related && related.nodeType == 3) related = related.parentNode;
 				return true;
-			}).create({attempt: Browser.firefox})()) related = false;
+			};
+			var hasRelated = (Browser.firefox2) ? testRelated.attempt() : testRelated();
+			related = (hasRelated) ? related : null;
 		}
 	}
 
@@ -69,8 +71,8 @@ var Event = new Type('Event', function(event, win){
 
 		wheel: wheel,
 
-		relatedTarget: related,
-		target: target,
+		relatedTarget: document.id(related),
+		target: document.id(target),
 
 		code: code,
 		key: key,
@@ -82,7 +84,7 @@ var Event = new Type('Event', function(event, win){
 	});
 });
 
-Event.Keys = new Hash({
+Event.Keys = {
 	'enter': 13,
 	'up': 38,
 	'down': 40,
@@ -93,7 +95,13 @@ Event.Keys = new Hash({
 	'backspace': 8,
 	'tab': 9,
 	'delete': 46
-});
+};
+
+//<1.2compat>
+
+Event.Keys = new Hash(Event.Keys);
+
+//</1.2compat>
 
 Event.implement({
 

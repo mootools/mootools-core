@@ -72,7 +72,7 @@ Element.implement({
 		}
 		property = property.camelCase();
 		if (typeOf(value) != 'string'){
-			var map = (Element.Styles.get(property) || '@').split(' ');
+			var map = (Element.Styles[property] || '@').split(' ');
 			value = Array.from(value).map(function(val, i){
 				if (!map[i]) return '';
 				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
@@ -91,7 +91,7 @@ Element.implement({
 		}
 		property = property.camelCase();
 		var result = this.style[property];
-		if (!$chk(result) || property == 'zIndex'){
+		if (!result || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
 				if (property != style) continue;
@@ -105,7 +105,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.opera || (Browser.ie && !$chk(parseInt(result, 10)))){
+		if (Browser.opera || (Browser.ie && isNaN(result))){
 			if (property.test(/^(height|width)$/)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
@@ -134,7 +134,7 @@ Element.implement({
 
 });
 
-Element.Styles = new Hash({
+Element.Styles = {
 	left: '@px', top: '@px', bottom: '@px', right: '@px',
 	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
 	backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
@@ -142,7 +142,13 @@ Element.Styles = new Hash({
 	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
 	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
 	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
-});
+};
+
+//<1.2compat>
+
+Element.Styles = new Hash(Element.Styles);
+
+//</1.2compat>
 
 Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
 

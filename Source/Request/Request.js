@@ -7,7 +7,7 @@ description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
 
 license: MIT-style license.
 
-requires: [Element, Chain, Events, Options, Browser]
+requires: [Object, Element, Chain, Events, Options, Browser]
 
 provides: Request
 
@@ -48,14 +48,14 @@ var Request = new Class({
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = new Hash(this.options.headers);
+		this.headers = this.options.headers;
 	},
 
 	onStateChange: function(){
 		if (this.xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
-		Function.stab(function(){
+		Function.attempt(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
@@ -94,12 +94,12 @@ var Request = new Class({
 	},
 
 	setHeader: function(name, value){
-		this.headers.set(name, value);
+		this.headers[name] = value;
 		return this;
 	},
 
 	getHeader: function(name){
-		return Function.stab(function(){
+		return Function.attempt(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},
@@ -126,7 +126,7 @@ var Request = new Class({
 
 		switch (typeOf(data)){
 			case 'element': data = document.id(data).toQueryString(); break;
-			case 'object': case 'hash': data = Hash.toQueryString(data);
+			case 'object': case 'hash': data = Object.toQueryString(data);
 		}
 
 		if (this.options.format){
@@ -142,7 +142,7 @@ var Request = new Class({
 
 		if (this.options.urlEncoded && method == 'post'){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
+			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
 		if (this.options.noCache){
@@ -162,7 +162,7 @@ var Request = new Class({
 
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		this.headers.each(function(value, key){
+		Object.each(this.headers, function(value, key){
 			try {
 				this.xhr.setRequestHeader(key, value);
 			} catch (e){

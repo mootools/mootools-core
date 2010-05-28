@@ -1,7 +1,7 @@
-Native: Element {#Element}
+Type: Element {#Element}
 ==========================
 
-- Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+- Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 - These methods are also available on window and document.
 
 ### Notes:
@@ -234,11 +234,12 @@ Clones all events from an Element to this Element.
 
 - This method is also attached to Document and Window.
 
-### Hash: Element.Events
+Object: Element.Events {#Element-Events}
+========================================
 
-You can add additional custom events by adding properties (objects) to the Element.Events Hash
+You can add additional custom events by adding properties (objects) to the Element.Events Object
 
-#### Arguments:
+### Arguments:
 
 The Element.Events.yourproperty (object) can have:
 
@@ -247,7 +248,7 @@ The Element.Events.yourproperty (object) can have:
 3. onAdd - (*function*, optional) the function that will get fired when the custom event is added. Is bound to the element you add the event to.
 4. onRemove - (*function*, optional) the function that will get fired when the custom event is removed. Is bound to the element you add the event to.
 
-#### Examples:
+### Examples:
 
 	Element.Events.shiftclick = {
 		base: 'click', //we set a base type
@@ -260,23 +261,26 @@ The Element.Events.yourproperty (object) can have:
 		log('the user clicked the left mouse button while holding the shift key');
 	});
 
-#### Notes:
+### Notes:
 
 - There are different types of custom Events you can create:
-
  1. Custom Events with only base: they will just be a redirect to the base event.
  2. Custom Events with base and condition: they will be redirect to the base event, but only fired if the condition is met.
  3. Custom Events with onAdd and/or onRemove and any other of the above: they will also perform additional functions when the event is added/removed.
+- Since MooTools 1.3 this is a native JavaScript Object and not an instance of the deprecated Hash
 
-#### Warning:
+### Warning:
 
 If you use the condition option you NEED to specify a base type, unless you plan to overwrite a native event.
 (highly unrecommended: use only when you know exactly what you're doing).
 
-Custom Events
--------------
 
-### Event: mouseenter
+
+Build in Custom Events
+-----------------------
+
+
+### Event: mouseenter {#Element-Events:mouseenter}
 
 This event fires when the mouse enters the area of the DOM Element and will not be fired again if the mouse crosses over children of the Element (unlike mouseover).
 
@@ -288,7 +292,7 @@ This event fires when the mouse enters the area of the DOM Element and will not 
 
 - [Element:addEvent](#Element:addEvent)
 
-### Event: mouseleave
+### Event: mouseleave {#Element-Events:mouseleave}
 
 This event fires when the mouse leaves the area of the DOM Element and will not be fired if the mouse crosses over children of the Element (unlike mouseout).
 
@@ -300,7 +304,7 @@ This event fires when the mouse leaves the area of the DOM Element and will not 
 
 - [Element:addEvent](#Element:addEvent)
 
-### Event: mousewheel
+### Event: mousewheel {#Element-Events:mousewheel}
 
 This event fires when the mouse wheel is rotated;
 
@@ -318,8 +322,8 @@ This event fires when the mouse wheel is rotated;
 
 
 
-[$]: /core/Element/#dollar
-[Function]: /core/Native/Function
-[Function:bind]: /core/Native/Function/#Function:bind
-[Function:pass]: /core/Native/Function/#Function:pass
-[Function:delay]: /core/Native/Function/#Function:delay
+[$]: /core/Element/Element#Window:dollar
+[Function]: /core/Types/Function
+[Function:bind]: /core/Types/Function/#bind
+[Function:pass]: /core/Types/Function/#pass
+[Function:delay]: /core/Types/Function/#delay
