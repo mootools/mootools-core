@@ -35,7 +35,6 @@ var Fx = this.Fx = new Class({
 	initialize: function(options){
 		this.subject = this.subject || this;
 		this.setOptions(options);
-		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration.toInt();
 		var wait = this.options.wait;
 		if (wait === false) this.options.link = 'cancel';
 	},
@@ -76,6 +75,8 @@ var Fx = this.Fx = new Class({
 
 	start: function(from, to){
 		if (!this.check(from, to)) return this;
+		var duration = this.options.duration;
+		this.options.duration = Fx.Durations[duration] || duration.toInt();
 		this.from = from;
 		this.to = to;
 		this.time = 0;

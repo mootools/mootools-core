@@ -52,17 +52,18 @@ Fx.Morph = new Class({
 Element.Properties.morph = {
 
 	set: function(options){
-		var morph = this.retrieve('morph');
-		if (morph) morph.cancel();
-		return this.eliminate('morph').store('morph:options', Object.append({link: 'cancel'}, options));
+		var morph = this.get('morph').cancel();
+		morph.setOptions(options);
+		return this;
 	},
 
-	get: function(options){
-		if (options || !this.retrieve('morph')){
-			if (options || !this.retrieve('morph:options')) this.set('morph', options);
-			this.store('morph', new Fx.Morph(this, this.retrieve('morph:options')));
+	get: function(){
+		var morph = this.retrieve('morph');
+		if (!morph){
+			morph = new Fx.Morph(this, {link: 'cancel'});
+			this.store('morph', morph);
 		}
-		return this.retrieve('morph');
+		return morph;
 	}
 
 };
