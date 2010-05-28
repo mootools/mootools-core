@@ -1858,6 +1858,7 @@ This method has been deprecated. Use [Element:contains][] instead.
 [Element:getElements]: #Element:getElements
 [Element.Properties]: #Element-Properties
 [Element:getPrevious]: #Element:getPrevious
+[Element:getAllPrevious]: #Element:getAllPrevious
 [Element:contains]: #Element:contains
 
 [Element:addEvents]: /core/Element/Element.Event#Element:addEvents
