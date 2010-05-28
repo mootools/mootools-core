@@ -259,11 +259,11 @@ Returns the previously set Request instance (or a new one with default options).
 
 #### Syntax:
 
-	el.get('send'[, options]);
+	el.get('send');
 
 #### Arguments:
 
-1. options - (*object*, optional) The Request options.  If passed, this method will generate a new instance of the Request class.
+1. property - (*string*) the Request property argument.
 
 ### Returns:
 

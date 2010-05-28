@@ -116,11 +116,11 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 #### Syntax:
 
-	el.get('load', options);
+	el.get('load');
 
 #### Arguments:
 
-1. options - (*object*, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
+1. property - (*string*) the Request.HTML property argument.
 
 #### Returns:
 
