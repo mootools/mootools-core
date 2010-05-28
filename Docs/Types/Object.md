@@ -484,7 +484,7 @@ Deprecated Functions {#Deprecated-Functions}
 Type: Hash {#Deprecated-Functions:Hash}
 --------------------------------------
 
-Hash has been deprecated. Each Hash methods has a similar Object method.
+Hash has been deprecated. Each Hash method has a similar Object method or a Vanilla JS equivalent.
 
 Hash Method: has {#Deprecated-Functions:Hash:has}
 -------------------------------------------------
