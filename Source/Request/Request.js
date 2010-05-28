@@ -47,8 +47,6 @@ var Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = this.options.headers;
 	},
 
 	onStateChange: function(){
@@ -115,6 +113,10 @@ var Request = new Class({
 
 	send: function(options){
 		if (!this.check(options)) return this;
+		
+		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
+		this.headers = this.options.headers;
+		
 		this.running = true;
 
 		var type = typeOf(options);
@@ -203,21 +205,22 @@ Request.implement(methods);
 })();
 
 Element.Properties.send = {
-
+	
 	set: function(options){
-		var send = this.retrieve('send');
-		if (send) send.cancel();
-		return this.eliminate('send').store('send:options', Object.append({
-			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
-		}, options));
+		var send = this.get('send').cancel();
+		send.setOptions(options);
+		return this;
 	},
 
-	get: function(options){
-		if (options || !this.retrieve('send')){
-			if (options || !this.retrieve('send:options')) this.set('send', options);
-			this.store('send', new Request(this.retrieve('send:options')));
+	get: function(){
+		var send = this.retrieve('send');
+		if (!send){
+			send = new Request({
+				data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
+			});
+			this.store('send', send);
 		}
-		return this.retrieve('send');
+		return send;
 	}
 
 };

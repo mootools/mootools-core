@@ -43,19 +43,20 @@ Fx.Tween = new Class({
 });
 
 Element.Properties.tween = {
-
+	
 	set: function(options){
-		var tween = this.retrieve('tween');
-		if (tween) tween.cancel();
-		return this.eliminate('tween').store('tween:options', Object.append({link: 'cancel'}, options));
+		var tween = this.get('tween').cancel();
+		tween.setOptions(options);
+		return this;
 	},
 
-	get: function(options){
-		if (options || !this.retrieve('tween')){
-			if (options || !this.retrieve('tween:options')) this.set('tween', options);
-			this.store('tween', new Fx.Tween(this, this.retrieve('tween:options')));
+	get: function(){
+		var tween = this.retrieve('tween');
+		if (!tween){
+			tween = new Fx.Tween(this, {link: 'cancel'});
+			this.store('tween', tween);
 		}
-		return this.retrieve('tween');
+		return tween;
 	}
 
 };
