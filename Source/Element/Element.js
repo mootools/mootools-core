@@ -266,11 +266,6 @@ var clean = function(item){
 	return item;
 };
 
-var purge = function(){
-	Object.each(collected, clean);
-	if (window.CollectGarbage) CollectGarbage();
-};
-
 var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
 	'rowSpan', 'tabIndex', 'useMap'
 ];
@@ -645,7 +640,12 @@ Element.implement('hasChild', function(element){
 
 });
 
-window.addListener('unload', purge);
+// purge
+
+window.addListener('unload', function(){
+	Object.each(collected, clean);
+	if (window.CollectGarbage) CollectGarbage();
+});
 
 })();
 
