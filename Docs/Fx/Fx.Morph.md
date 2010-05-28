@@ -159,7 +159,7 @@ Gets the default Fx.Morph instance for the Element.
 
 #### Arguments:
 
-1. options - (*object*, optional) The Fx.Morph options. If these are passed in, a new instance will be generated.
+1. property - (*string*) the Fx.Morph property argument.
 
 #### Returns:
 

@@ -137,12 +137,11 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 #### Syntax:
 
-	el.get('tween', [options]);
+	el.get('tween');
 
 #### Arguments:
 
 1. property - (*string*) the Fx.Tween property argument.
-2. options  - (*object*) the Fx.Tween options.
 
 #### Returns:
 
@@ -150,13 +149,13 @@ Sets and gets default options for the Fx.Tween instance of an Element.
 
 #### Examples:
 
-	el.get('tween', {property: 'opacity', duration: 'long'}).start(0);
+	el.get('tween').start(0);
 
 ### Notes:
 
 - When initializing the Element's tween instance with Element:set, the property to tween SHOULD NOT be passed.
 - The property must be specified when using Element:get to retrieve the actual Fx.Tween instance, and in calls to Element:tween.
-- When options are passed to either the setter or the getter, the instance will be recreated.
+- When options are passed to the setter, the instance will be reset.
 - As with the other Element shortcuts, the difference between a setter and a getter is that the getter returns the instance, while the setter returns the element (for chaining and initialization).
 
 
