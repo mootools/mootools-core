@@ -193,9 +193,11 @@ var Request = new Class({
 
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
-	methods[method] = function(params){
-		if(typeOf(params) == 'string') params = {data: params};
-		return this.send(Object.append(params, {method: method}));
+	methods[method] = function(data){
+		return this.send({
+			data: data,
+			method: method
+		});
 	};
 });
 
