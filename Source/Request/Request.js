@@ -195,7 +195,7 @@ var Request = new Class({
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(){
-		var params = Array.link(arguments, {url: Type.isString, data: $defined});
+		var params = Array.link(arguments, {url: Type.isString, data: function(obj){ return (obj != null);}});
 		return this.send(Object.append(params, {method: method}));
 	};
 });
