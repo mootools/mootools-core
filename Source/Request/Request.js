@@ -47,6 +47,7 @@ var Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
+		this.headers = this.options.headers;
 	},
 
 	onStateChange: function(){
@@ -115,8 +116,6 @@ var Request = new Class({
 		if (!this.check(options)) return this;
 		
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = this.options.headers;
-		
 		this.running = true;
 
 		var type = typeOf(options);
