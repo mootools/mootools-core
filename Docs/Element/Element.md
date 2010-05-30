@@ -1083,7 +1083,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Syntax:
 
-	var children = myElement.getSiblings([match]);
+	var siblings = myElement.getSiblings([match]);
 
 ### Arguments:
 
@@ -1091,7 +1091,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Returns:
 
-* (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
+* (*array*) A [Elements](#Elements) array with all of the Element's sibings, except the text nodes.
 
 
 
