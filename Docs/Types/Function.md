@@ -365,7 +365,7 @@ Function method: create {#Deprecated-Functions:create}
 
 This function has been deprecated.
 
-Function method: bindWithEvent {#Deprecated-Function:bindWithEvent}
+Function method: bindWithEvent {#Deprecated-Functions:bindWithEvent}
 ------------------------------------------------------------------
 
 This function has been deprecated.

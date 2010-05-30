@@ -794,7 +794,7 @@ Clones the Element and returns the cloned one.
 Element Method: replaces {#Element:replaces}
 --------------------------------------------------
 
-Replaces the Element with an Element passed.
+Replaces the passed Element with Element.
 
 ### Syntax:
 
@@ -802,7 +802,7 @@ Replaces the Element with an Element passed.
 
 ### Arguments:
 
-1. el - (*mixed*) A string id representing the Element to be replaced with, or an Element reference.
+1. el - (*mixed*) A string id representing the Element to be replaced, or an Element reference.
 
 ### Returns:
 
@@ -1083,7 +1083,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Syntax:
 
-	var children = myElement.getsiblings([match]);
+	var siblings = myElement.getSiblings([match]);
 
 ### Arguments:
 
@@ -1091,7 +1091,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Returns:
 
-* (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
+* (*array*) A [Elements](#Elements) array with all of the Element's sibings, except the text nodes.
 
 
 
@@ -1113,6 +1113,9 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 * (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
 
+### Note:
+
+The difference between the methods *getChildren* and *getElements* is that getChildren will only return its direct children while getElements searches for all the Elements in any depth.
 
 Element Method: empty {#Element:empty}
 --------------------------------------
