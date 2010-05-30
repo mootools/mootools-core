@@ -1083,7 +1083,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Syntax:
 
-	var children = myElement.getsiblings([match]);
+	var children = myElement.getSiblings([match]);
 
 ### Arguments:
 
