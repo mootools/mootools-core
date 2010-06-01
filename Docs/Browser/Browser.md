@@ -28,6 +28,7 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.safari3 - (*boolean*) True if the current browser is Safari 3
 * Browser.safari4 - (*boolean*) True if the current browser is Safari 4
 * Browser.chrome - (*boolean*) True if the current browser is Chrome
+* Browser.opera - (*boolean*) True if the current browser is Opera
 
 ### Platform:
 
