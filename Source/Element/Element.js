@@ -349,7 +349,7 @@ Element.implement({
 	get: function(prop){
 		var property = Element.Properties[prop];
 		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
-	}/*<1.3only>*/.overloadGetter()/*</1.3only>*/,
+	}.overloadGetter(),
 
 	erase: function(prop){
 		var property = Element.Properties[prop];

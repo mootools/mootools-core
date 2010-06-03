@@ -34,25 +34,9 @@ fwrite($stderr, "\n");
 
 $output = $pkg->build_from_files($files);
 
-function remove_tag($tag, $output){
-	$tag = preg_quote($tag);
-	$output = preg_replace("%/\*<${tag}>.*?</${tag}>\*/%s", '', $output);
-	$output = preg_replace("%//<${tag}>.*?//</${tag}>%s", '', $output);
-	return $output;
-}
-
-function remove_comment_tag($tag, $output){
-	$tag = preg_quote($tag);
-	$output = preg_replace("%/\*<${tag}>\*/(.*?)/\*</${tag}>\*/%s", '$1', $output);
-	$output = preg_replace("%//<${tag}>(.*?)//</${tag}>%s", '$1', $output);
-	return $output;
-}
-
 if ($no_compat){
-	$output = remove_tag('1.2compat', $output);
-	$output = remove_comment_tag('1.3only', $output);
-} else {
-	$output = remove_tag('1.3only', $output);
+	$output = preg_replace("%//<1\.2compat>.*?//</1\.2compat>%s", '', $output);
+	$output = preg_replace("%/\*<1\.2compat>.*?</1.2compat>\*/%s", '', $output);
 }
 
 echo $output;
