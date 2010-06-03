@@ -76,7 +76,12 @@ Element.Constructors = new Hash;
 //</1.2compat>
 
 var IFrame = new Type('IFrame', function(){
-	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
+	var params = Array.link(arguments, {
+		properties: Type.isObject,
+		iframe: function(obj){
+			return (obj != null);
+		}
+	});
 	var props = params.properties || {};
 	var iframe = document.id(params.iframe);
 	var onload = props.onload || function(){};

@@ -43,7 +43,7 @@ var Browser = this.Browser = {
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
-		name: ua.match(/ip(ad|od|hone)/) ? 'ipod' : (ua.match(/(webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
+		name: ua.match(/ip(?:ad|od|hone)/) ? 'ipod' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
 	},
 
 	Features: {
@@ -236,7 +236,7 @@ if (Browser.opera){
 }
 
 if (Browser.name == 'unknown'){
-	switch ((navigator.userAgent.toLowerCase().match(/(webkit|khtml|gecko)/) || [])[0]){
+	switch ((navigator.userAgent.toLowerCase().match(/(?:webkit|khtml|gecko)/) || [])[0]){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;

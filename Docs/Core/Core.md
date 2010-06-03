@@ -171,21 +171,21 @@ This method has been deprecated. Use [Function.from](/core/Types/Function#Functi
 Function: $extend {#Deprecated-Functions:extend}
 ---------------------------
 
-This method has been deprecated. Please use [Object.append](#Object:Object-append) instead.
+This method has been deprecated. Please use [Object.append](/core/Types/Object#Object:Object-append) instead.
 
 
 
 Function: $merge {#Deprecated-Functions:merge}
 -------------------------
 
-This method has been deprecated. Please use [Object.merge](#Object:Object-merge) instead.
+This method has been deprecated. Please use [Object.merge](/core/Types/Object#Object:Object-merge) instead.
 
 
 
 Function: $each {#Deprecated-Functions:each}
 -----------------------
 
-This method has been deprecated. Please use [Array.each](/core/Types/Array#Array:Array-each) or [Object.each](#Object:Object-each) instead.
+This method has been deprecated. Please use [Array.each](/core/Types/Array#Array:Array-each) or [Object.each](/core/Types/Object#Object:Object-each) instead.
 
 
 
