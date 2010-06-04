@@ -160,7 +160,7 @@ Returns the given response header or null if not found.
 ### Example:
 
 	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML) {
-		alert(this.getHeader('Date')); //alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
+		alert(this.getHeader('Date')); // alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
 	}});
 
 Request Method: send {#Request:send}
@@ -273,7 +273,7 @@ Returns the previously set Request instance (or a new one with default options).
 
 	el.get('send', {method: 'get'});
 	el.send();
-	el.get('send'); //Returns the Request instance.
+	el.get('send'); // returns the Request instance.
 
 Type: Element {#Element}
 ========================

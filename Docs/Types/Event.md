@@ -34,9 +34,9 @@ Event Method: constructor {#Event:constructor}
 ### Examples:
 
 	$('myLink').addEvent('keydown', function(event){
-	 	//The passed event parameter is already an instance of the Event class.
-		alert(event.key);   //returns the lowercase letter pressed.
-		alert(event.shift); //returns true if the key pressed is shift.
+	 	// the passed event parameter is already an instance of the Event class.
+		alert(event.key);   // returns the lowercase letter pressed.
+		alert(event.shift); // returns true if the key pressed is shift.
 		if (event.key == 's' && event.control) alert('Document saved.'); //executes if the user presses Ctr+S.
 	});
 

@@ -29,17 +29,17 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 ### Examples:
 
 	var fn = Function.from(42);
-	alert(fn());	//alerts '42'
+	alert(fn());	// alerts '42'
 	
 	var fn2 = Function.from(fn);
-	alert(fn2());	//alerts '42'
+	alert(fn2());	// alerts '42'
 	
 ### Notes:
 
 This function is equivalent to the following deprecated MooTools 1.2 methods:
 
-	var fn1 = Function.from();		//equivalent to var fn1 = $empty();
-	var fn2 = Function.from(foo);	//equivalent to var fn2 = $lambda(foo);
+	var fn1 = Function.from();		// equivalent to var fn1 = $empty();
+	var fn2 = Function.from(foo);	// equivalent to var fn2 = $lambda(foo);
 
 
 Function: Function.attempt {#Function:Function-attempt}
@@ -109,7 +109,7 @@ Add methods to a function
 	myFunction.extend('alert',function(text){
 		alert(text);
 	});
-	myFunction.alert('Hello!'); //alerts Hello!
+	myFunction.alert('Hello!'); // alerts Hello!
 
 
 Function method: implement {#Function:implement}
@@ -133,7 +133,7 @@ Add methods to the prototype
 		alert(text);
 	});
 	var myInstance = new myFunction();
-	myInstance.alert('Hello!'); //alerts Hello!
+	myInstance.alert('Hello!'); // alerts Hello!
 
 ### Notes:
 
@@ -166,13 +166,13 @@ Tries to execute a single function. Returns immediately the return value of the 
 	var myFunction = function(){
 		return some.made.up.object;
 	};
-	myFunction.attempt(); //returns 'null'
+	myFunction.attempt(); // returns 'null'
 
 
 	var myFunction = function(val){
 		return val;
 	};
-	myFunction.attempt(false); //returns 'false'
+	myFunction.attempt(false); // returns 'false'
 
 ### See Also:
 
@@ -206,7 +206,7 @@ Runs the Function with specified arguments and binding. The same as apply but re
 		return a + b + c;
 	}
 	var myArgs = [1,2,3];
-	myFn.run(myArgs); //returns 6
+	myFn.run(myArgs); // returns 6
 
 
 #### Run With Binding:
@@ -215,7 +215,7 @@ Runs the Function with specified arguments and binding. The same as apply but re
 		return a + b + c + this;
 	}
 	var myArgs = [1,2,3];
-	myFn.run(myArgs, 6); //returns 12
+	myFn.run(myArgs, 6); // returns 12
 
 
 
@@ -250,8 +250,8 @@ Returns a closure with arguments and bind.
 	var myItems = myFunction.pass(['peach', 'apple', 'orange']);
 
 	//Later in the code, the functions can be executed:
-	alert(myHello()); //passes "hello" to myFunction.
-	alert(myItems()); //passes the array of items to myFunction.
+	alert(myHello()); // passes 'hello' to myFunction.
+	alert(myItems()); // passes the array of items to myFunction.
 
 
 
@@ -277,11 +277,11 @@ Changes the scope of `this` within the target function to refer to the bind para
 
 	function myFunction(){
 		//Note that 'this' here refers to window, not an element.
-		//The function must be bound to the element we want to manipulate.
+		// the function must be bound to the element we want to manipulate.
 		this.setStyle('color', 'red');
 	};
 	var myBoundFunction = myFunction.bind(myElement);
-	myBoundFunction(); //This will make myElement's text red.
+	myBoundFunction(); // makes myElement's text red
 
 
 Function method: delay {#Function:delay}
@@ -308,7 +308,7 @@ Delays the execution of a function by a specified duration.
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
 	
 	//wait 50 milliseconds, then call myFunction and bind myElement to it
-	myFunction.delay(50, myElement); //alerts: 'moo! Element id is: ... '
+	myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
 
 	//an anonymous function which waits a second and then alerts
 	(function(){ alert('one second later...'); }).delay(1000);
@@ -349,7 +349,7 @@ Executes a function in the specified intervals of time. Periodic execution can b
 	var addCount = function(){ this.counter++; };
 	addCount.periodical(1000, Site); //adds the number of seconds at the Site.
 	
-	//the interval can be stopped using the clearInterval function
+	// the interval can be stopped using the clearInterval function
 	var timer = myFunction.periodical(1000);
 	clearInterval(timer);
 

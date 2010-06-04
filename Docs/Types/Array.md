@@ -39,7 +39,7 @@ Used to iterate through arrays, or iterables that are not regular arrays, such a
 
 	Array.each(['Sun','Mon','Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
-	}); //alerts 'name: Sun, index: 0', 'name: Mon, index: 1', etc.
+	}); // alerts 'name: Sun, index: 0', 'name: Mon, index: 1', etc.
 
 ### Notes:
 
@@ -71,8 +71,8 @@ Returns a copy of the passed array.
 	
 	var myArray[0] = 'yellow';
 	
-	alert(myArray[0]);		//alerts 'yellow'
-	alert(otherArray[0])	//alerts 'red'
+	alert(myArray[0]);		// alerts 'yellow'
+	alert(otherArray[0])	// alerts 'red'
 
 ### Notes:
 
@@ -99,8 +99,8 @@ Converts the argument passed in to an array if it is defined and not already an 
 
 ### Example:
 
-	Array.from('hello'); //returns ['hello'].
-	Array.from(['a', 'b', 'c']); //returns ['a', 'b', 'c'].
+	Array.from('hello'); // returns ['hello'].
+	Array.from(['a', 'b', 'c']); // returns ['a', 'b', 'c'].
 
 ### Notes:
 
@@ -236,7 +236,7 @@ Creates a new array with all of the elements of the array which are defined (i.e
 ### Examples:
 
 	var myArray = [null, 1, 0, true, false, 'foo', undefined, ''];
-	myArray.clean() //returns [1, 0, true, false, 'foo', '']
+	myArray.clean() // returns [1, 0, true, false, 'foo', '']
 
 
 
@@ -261,8 +261,8 @@ This method is provided only for browsers without native [Array:indexOf][] suppo
 
 ### Examples:
 
-	['apple', 'lemon', 'banana'].indexOf('lemon'); //returns 1
-	['apple', 'lemon'].indexOf('banana'); //returns -1
+	['apple', 'lemon', 'banana'].indexOf('lemon'); // returns 1
+	['apple', 'lemon'].indexOf('banana'); // returns -1
 
 ### See Also:
 
@@ -378,7 +378,7 @@ Creates an object with key-value pairs based on the array of keywords passed in 
 	var animals = ['Cow', 'Pig', 'Dog', 'Cat'];
 	var sounds = ['Moo', 'Oink', 'Woof', 'Miao'];
 	sounds.associate(animals);
-	//returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
+	// returns {'Cow': 'Moo', 'Pig': 'Oink', 'Dog': 'Woof', 'Cat': 'Miao'}
 
 
 
@@ -404,7 +404,7 @@ Accepts an object of key / function pairs to assign values.
 	var el = document.createElement('div');
 	var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
 	arr2.link({myNumber: Number.type, myElement: Element.type, myObject: Object.type, myString: String.type, myBoolean: $defined});
-	//returns {myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false}
+	// returns {myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false}
 
 
 
@@ -428,8 +428,8 @@ Tests an array for the presence of an item.
 
 ### Examples:
 
-	['a','b','c'].contains('a'); //returns true
-	['a','b','c'].contains('d'); //returns false
+	['a','b','c'].contains('a'); // returns true
+	['a','b','c'].contains('d'); // returns false
 
 ### See Also:
 
@@ -457,7 +457,7 @@ Appends the passed array to the end of the current array.
 ### Examples:
 
 	var myOtherArray = ['green', 'yellow'];
-	['red', 'blue'].append(myOtherArray); //returns ['red', 'blue', 'green', 'yellow'];
+	['red', 'blue'].append(myOtherArray); // returns ['red', 'blue', 'green', 'yellow'];
 
 ### Notes:
 
@@ -481,7 +481,7 @@ Returns the last item from the array.
 
 ### Examples:
 
-	['Cow', 'Pig', 'Dog', 'Cat'].getLast(); //returns 'Cat'
+	['Cow', 'Pig', 'Dog', 'Cat'].getLast(); // returns 'Cat'
 
 
 
@@ -500,7 +500,7 @@ Returns a random item from the array.
 
 ### Examples:
 
-	['Cow', 'Pig', 'Dog', 'Cat'].getRandom(); //returns one of the items
+	['Cow', 'Pig', 'Dog', 'Cat'].getRandom(); // returns one of the items
 
 
 
@@ -523,8 +523,8 @@ Pushes the passed element into the array if it's not already present (case and t
 
 ### Examples:
 
-	['Cow', 'Pig', 'Dog'].include('Cat'); //returns ['Cow', 'Pig', 'Dog', 'Cat']
-	['Cow', 'Pig', 'Dog'].include('Dog'); //returns ['Cow', 'Pig', 'Dog']
+	['Cow', 'Pig', 'Dog'].include('Cat'); // returns ['Cow', 'Pig', 'Dog', 'Cat']
+	['Cow', 'Pig', 'Dog'].include('Dog'); // returns ['Cow', 'Pig', 'Dog']
 
 ### Notes:
 
@@ -576,8 +576,8 @@ Removes all occurrences of an item from the array.
 
 ### Examples:
 
-	['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].erase('Dog') //returns ['Cow', 'Pig', 'Cat']
-	['Cow', 'Pig', 'Dog'].erase('Cat') //returns ['Cow', 'Pig', 'Dog']
+	['Cow', 'Pig', 'Dog', 'Cat', 'Dog'].erase('Dog') // returns ['Cow', 'Pig', 'Cat']
+	['Cow', 'Pig', 'Dog'].erase('Cat') // returns ['Cow', 'Pig', 'Dog']
 
 
 
@@ -642,9 +642,9 @@ Returns the first defined value of the array passed in, or null.
 		Array.pick([errorMessage, infoMessage, 'There was no message supplied.']);
 
 	}
-	say(); //alerts 'There was no message supplied.'
-    say('This is an info message.'); //alerts 'This is an info message.'
-    say('This message will be ignored.', 'This is the error message.'); //alerts 'This is the error message.'
+	say(); // alerts 'There was no message supplied.'
+    say('This is an info message.'); // alerts 'This is an info message.'
+    say('This message will be ignored.', 'This is the error message.'); // alerts 'This is the error message.'
 	
 
 ### Notes:
@@ -674,8 +674,8 @@ Converts an hexadecimal color value to RGB. Input array must be the following he
 
 ### Examples:
 
-	['11','22','33'].hexToRgb(); //returns 'rgb(17,34,51)'
-	['11','22','33'].hexToRgb(true); //returns [17, 34, 51]
+	['11','22','33'].hexToRgb(); // returns 'rgb(17,34,51)'
+	['11','22','33'].hexToRgb(true); // returns [17, 34, 51]
 
 ### See Also:
 
@@ -704,9 +704,9 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 ### Examples:
 
-	[17,34,51].rgbToHex(); //returns '#112233'
-	[17,34,51].rgbToHex(true); //returns ['11','22','33']
-	[17,34,51,0].rgbToHex(); //returns 'transparent'
+	[17,34,51].rgbToHex(); // returns '#112233'
+	[17,34,51].rgbToHex(true); // returns ['11','22','33']
+	[17,34,51,0].rgbToHex(); // returns 'transparent'
 
 ### See Also:
 

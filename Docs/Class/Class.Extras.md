@@ -105,8 +105,8 @@ Removes the first function of the Chain instance stack and executes it. The next
 		function(){ alert('do dishes'); },
 		function(){ alert('put away clean dishes'); }
 	);
-	myChain.callChain(); //alerts 'do dishes'.
-	myChain.callChain(); //alerts 'put away clean dishes'.
+	myChain.callChain(); // alerts 'do dishes'.
+	myChain.callChain(); // alerts 'put away clean dishes'.
 
 
 
@@ -125,9 +125,9 @@ Clears the stack of a Chain instance.
 
 ### Example:
 
-	var myFx = Fx.Tween('myElement', 'color'); //Fx.Tween inherited Fx's implementation of Chain.
-	myFx.chain(function(){ while(true) alert("D'oh!"); }); //Chains an infinite loop of alerts.
-	myFx.clearChain(); //Cancels the infinite loop of alerts before allowing it to begin.
+	var myFx = Fx.Tween('myElement', 'color'); // Fx.Tween inherited Fx's implementation of Chain.
+	myFx.chain(function(){ while(true) alert("D'oh!"); }); // chains an infinite loop of alerts.
+	myFx.clearChain(); // cancels the infinite loop of alerts before allowing it to begin.
 
 ### See Also:
 
@@ -425,7 +425,7 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 		}
 	});
 
-	myWidget.show(); //fires the event and alerts 'Lets show it!'
+	myWidget.show(); // fires the event and alerts 'Lets show it!'
 
 
 [Class]: /core/Class/Class

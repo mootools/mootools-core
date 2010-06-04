@@ -42,7 +42,7 @@ Returns the type of object that matches the item passed in.
 ### Example:
 
 	var myString = 'hello';
-	typeOf(myString); //Returns "string".
+	typeOf(myString); // returns "string".
 	
 ### Notes:
 
@@ -71,12 +71,12 @@ Checks to see if an object is an instance of a particular Type.
 ### Examples:
 
 	var foo = [];
-	instanceOf(foo, Array)	//returns true
-	instanceOf(foo, String)	//returns false
+	instanceOf(foo, Array)	// returns true
+	instanceOf(foo, String)	// returns false
 	
 	var myClass = new Class();
 	var bar = new myClass();
-	instanceOf(bar, myClass)	//returns true
+	instanceOf(bar, myClass)	// returns true
 
 
 Deprecated Functions {#Deprecated-Functions}
@@ -121,9 +121,9 @@ If you really need this function you can implement it like so:
 		return (obj != undefined);
 	};
 
-	//or just use it like this:
+	// or just use it like this:
 	if(obj != undefined){
-		//do something
+		// do something
 	}
 
 
@@ -152,7 +152,7 @@ This method has been deprecated. Use [Function.from](/core/Types/Function#Functi
 ### Example:
 
 	var myFunc = Function.from();
-	//or better....
+	// or better:
 	var myFunc = function(){};
 	
 
@@ -164,7 +164,7 @@ This method has been deprecated. Use [Function.from](/core/Types/Function#Functi
 
 ### Example:
 
-	myLink.addEvent('click', Function.from(false)); //Prevents a link Element from being clickable.
+	myLink.addEvent('click', Function.from(false)); // prevents a link Element from being clickable
 
 
 

@@ -25,8 +25,8 @@ Sets a CSS property to the Element.
 
 ### Example:
 	//Both lines have the same effect.
-	$('myElement').setStyle('width', '300px'); //The width is now 300px.
-	$('myElement').setStyle('width', 300); //The width is now 300px.
+	$('myElement').setStyle('width', '300px'); // the width is now 300px.
+	$('myElement').setStyle('width', 300); // the width is now 300px.
 
 ### Notes:
 
@@ -53,8 +53,8 @@ Returns the style of the Element given the property passed in.
 
 ### Examples:
 
-	$('myElement').getStyle('width'); //returns "300px".
-	$('myElement').getStyle('width').toInt(); //returns 300.
+	$('myElement').getStyle('width'); // returns "300px".
+	$('myElement').getStyle('width').toInt(); // returns 300.
 
 
 
@@ -109,7 +109,7 @@ Returns an object of styles of the Element for each argument passed in.
 ### Examples:
 
 	$('myElement').getStyles('width', 'height', 'padding');
-	//returns {width: '10px', height: '10px', padding: /10px 0px 10px 0px'}
+	// returns {width: '10px', height: '10px', padding: /10px 0px 10px 0px'}
 
 ### See Also:
 

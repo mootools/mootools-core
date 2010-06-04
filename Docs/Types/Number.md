@@ -33,8 +33,8 @@ Returns the passed parameter as a Number, or null if not a number.
 
 ### Example:
 
-	Number.from('12')		//returns 12
-	Number.from('hello')	//returns null
+	Number.from('12')		// returns 12
+	Number.from('hello')	// returns null
 
 
 
@@ -58,7 +58,7 @@ Returns a random integer between the two passed in values.
 
 ### Example:
 
-	Number.random(5, 20); //returns a random number between 5 and 20.
+	Number.random(5, 20); // returns a random number between 5 and 20.
 
 
 
@@ -82,9 +82,9 @@ Limits this number between two bounds.
 
 ### Examples:
 
-	(12).limit(2, 6.5);  //returns 6.5
-	(-4).limit(2, 6.5);  //returns 2
-	(4.3).limit(2, 6.5); //returns 4.3
+	(12).limit(2, 6.5);  // returns 6.5
+	(-4).limit(2, 6.5);  // returns 2
+	(4.3).limit(2, 6.5); // returns 4.3
 
 
 
@@ -111,9 +111,9 @@ Returns this number rounded to the specified precision.
 
 ### Examples:
 
-	(12.45).round()   //returns 12
-	(12.45).round(1)  //returns 12.5
-	(12.45).round(-1) //returns 10
+	(12.45).round()   // returns 12
+	(12.45).round(1)  // returns 12.5
+	(12.45).round(-1) // returns 10
 
 
 
@@ -133,7 +133,7 @@ Executes the function passed in the specified number of times.
 
 ### Examples:
 
-	(4).times(alert); //Alerts "0", then "1", then "2", then "3".
+	(4).times(alert); // alerts "0", then "1", then "2", then "3".
 
 
 
@@ -152,8 +152,8 @@ Returns this number as a float. Useful because toFloat must work on both Strings
 
 ### Examples:
 
-	(111).toFloat(); //returns 111
-	(111.1).toFloat(); //returns 111.1
+	(111).toFloat(); // returns 111
+	(111.1).toFloat(); // returns 111.1
 
 
 
@@ -176,9 +176,9 @@ Returns this number as another number with the passed in base. Useful because to
 
 ### Examples:
 
-	(111).toInt(); //returns 111
-	(111.1).toInt(); //returns 111
-	(111).toInt(2); //returns 7
+	(111).toInt(); // returns 111
+	(111.1).toInt(); // returns 111
+	(111).toInt(2); // returns 7
 
 
 Math Methods {#Number-Math}
@@ -204,8 +204,8 @@ There are several methods available from the Math object that can be used as Num
 
 ### Examples:
 
-	(-1).abs(); //returns 1
-	(3).pow(4); //returns 81
+	(-1).abs(); // returns 1
+	(3).pow(4); // returns 81
 
 
 [MDC Number]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Number

@@ -81,7 +81,7 @@ The following method is also available on the Window object.
 ### Example:
 
 	var scroll = $('myElement').getScrollSize();
-	alert('My element can scroll to ' + scroll.y + 'px'); //alerts 'My element can scroll down to 820px'
+	alert('My element can scroll to ' + scroll.y + 'px'); // alerts 'My element can scroll down to 820px'
 
 ### See Also:
 
@@ -109,7 +109,7 @@ The following method is also available on the Window object.
 ### Example:
 
 	var scroll = $('myElement').getScroll();
-	alert('My element is scrolled down ' + scroll.y + 'px'); //alerts 'My element is scrolled down to 620px'
+	alert('My element is scrolled down ' + scroll.y + 'px'); // alerts 'My element is scrolled down to 620px'
 
 ### Note:
 
@@ -135,7 +135,7 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 ### Example:
 
-	$('element').getPosition(); //returns {x: 100, y: 500};
+	$('element').getPosition(); // returns {x: 100, y: 500};
 
 ### See Also:
 

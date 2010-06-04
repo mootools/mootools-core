@@ -71,7 +71,7 @@ Works as Element.addEvent, but instead removes the specified event listener.
 
 #### Standard usage:
 
-	var destroy = function(){ alert('Boom: ' + this.id); } //this refers to the Element.
+	var destroy = function(){ alert('Boom: ' + this.id); } // this refers to the Element.
 	$('myElement').addEvent('click', destroy);
 
 	//later...
@@ -85,9 +85,9 @@ Works as Element.addEvent, but instead removes the specified event listener.
 	$('myElement').addEvent('click', boundDestroy);
 
 	//later...
-	$('myElement').removeEvent('click', destroy); //this won't remove the event.
-	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); //this won't remove the event either.
-	$('myElement').removeEvent('click', boundDestroy); //the correct way to remove the event.
+	$('myElement').removeEvent('click', destroy); // this won't remove the event.
+	$('myElement').removeEvent('click', destroy.bind($('anotherElement')); // this won't remove the event either.
+	$('myElement').removeEvent('click', boundDestroy); // the correct way to remove the event.
 
 ### Notes:
 
@@ -169,7 +169,7 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 	myElement.addEvent('click', function(){ alert('clicked and again :('); });
 	//addEvent will keep appending each function.
 	//Unfortunately for the visitor, there will be three alerts they'll have to click on.
-	myElement.removeEvents('click'); //saves the visitor's finger by removing every click event.
+	myElement.removeEvents('click'); // saves the visitor's finger by removing every click event.
 
 ### Notes:
 
@@ -199,7 +199,7 @@ Executes all events of the specified type present in the Element.
 * (*element*) This Element.
 
 ### Examples:
-	//fires all the added 'click' events and passes the Element 'anElement' after one second
+	// fires all the added 'click' events and passes the Element 'anElement' after one second
 	$('myElement').fireEvent('click', $('anElement'), 1000);
 
 ### Notes:
@@ -228,7 +228,7 @@ Clones all events from an Element to this Element.
 ### Examples:
 
 	var myElement = $('myElement');
-	var myClone = myElement.clone().cloneEvents(myElement); //clones the element and its events
+	var myClone = myElement.clone().cloneEvents(myElement); // clones the element and its events
 
 ### Notes:
 
@@ -251,9 +251,9 @@ The Element.Events.yourProperty (object) can have:
 ### Examples:
 
 	Element.Events.shiftclick = {
-		base: 'click', //the base event type
+		base: 'click', // the base event type
 		condition: function(event){ //a function to perform additional checks
-			return (event.shift == true); //this means the event is free to fire
+			return (event.shift == true); // this means the event is free to fire
 		}
 	};
 

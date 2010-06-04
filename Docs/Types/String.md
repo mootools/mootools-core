@@ -1,4 +1,4 @@
-//returnsType: String {#String}
+// returnsType: String {#String}
 ====================
 
 A collection of the String Object methods and functions.
@@ -28,8 +28,8 @@ Returns the passed parameter as a String.
 
 ### Example:
 
-	String.from(2)	//returns '2'
-	String.from(true)	//returns 'true'
+	String.from(2)	// returns '2'
+	String.from(true)	// returns 'true'
 
 
 
@@ -55,9 +55,9 @@ For more information see [MDC Regexp:test][].
 
 ### Examples:
 
-	'I like cookies'.test('cookie'); //returns true
-	'I like cookies'.test('COOKIE', "i"); //returns true (ignore case)
-	'I like cookies'.test('cake'); //returns false
+	'I like cookies'.test('cookie'); // returns true
+	'I like cookies'.test('COOKIE', "i"); // returns true (ignore case)
+	'I like cookies'.test('cake'); // returns false
 
 ### See Also:
 
@@ -87,9 +87,9 @@ If the separator parameter is passed, will check to see if the string is contain
 
 ### Examples:
 
-	'a bc'.contains('bc'); //returns true
-	'a b c'.contains('c', ' '); //returns true
-	'a bc'.contains('b', ' '); //returns false
+	'a bc'.contains('bc'); // returns true
+	'a b c'.contains('c', ' '); // returns true
+	'a bc'.contains('b', ' '); // returns false
 
 
 
@@ -108,7 +108,7 @@ Trims the leading and trailing spaces off a string.
 
 ### Examples:
 
-	'    i like cookies     '.trim(); //returns 'i like cookies'
+	'    i like cookies     '.trim(); // returns 'i like cookies'
 
 
 
@@ -127,7 +127,7 @@ Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
 ### Examples:
 
-	' i      like     cookies      \n\n.clean(); //returns 'i like cookies'
+	' i      like     cookies      \n\n.clean(); // returns 'i like cookies'
 
 
 
@@ -146,7 +146,7 @@ Converts a hyphenated string to a camelcased string.
 
 ### Examples:
 
-	'I-like-cookies'.camelCase(); //returns 'ILikeCookies'
+	'I-like-cookies'.camelCase(); // returns 'ILikeCookies'
 
 
 
@@ -165,7 +165,7 @@ Converts a camelcased string to a hyphenated string.
 
 ### Examples:
 
-	'ILikeCookies'.hyphenate(); //returns 'I-like-cookies'
+	'ILikeCookies'.hyphenate(); // returns 'I-like-cookies'
 
 
 
@@ -184,7 +184,7 @@ Converts the first letter of each word in a string to uppercase.
 
 ### Examples:
 
-	'i like cookies'.capitalize(); //returns 'I Like Cookies'
+	'i like cookies'.capitalize(); // returns 'I Like Cookies'
 
 
 
@@ -203,7 +203,7 @@ Escapes all regular expression characters from the string.
 
 ### Examples:
 
-	'animals.sheep[1]'.escapeRegExp(); //returns 'animals\.sheep\[1\]'
+	'animals.sheep[1]'.escapeRegExp(); // returns 'animals\.sheep\[1\]'
 
 
 
@@ -227,8 +227,8 @@ Parses this string and returns a number of the specified radix or base.
 
 ### Examples:
 
-	'4em'.toInt(); //returns 4
-	'10px'.toInt(); //returns 10
+	'4em'.toInt(); // returns 4
+	'10px'.toInt(); // returns 10
 
 ### See Also:
 
@@ -252,8 +252,8 @@ Parses this string and returns a floating point number.
 
 ### Examples:
 
-		'95.25%'.toFloat(); //returns 95.25
-		'10.848'.toFloat(); //returns 10.848
+		'95.25%'.toFloat(); // returns 95.25
+		'10.848'.toFloat(); // returns 10.848
 
 ### See Also:
 
@@ -282,9 +282,9 @@ Converts a hexadecimal color value to RGB. Input string must be in one of the fo
 
 ### Examples:
 
-	'#123'.hexToRgb(); //returns 'rgb(17,34,51)'
-	'112233'.hexToRgb(); //returns 'rgb(17,34,51)'
-	'#112233'.hexToRgb(true); //returns [17, 34, 51]
+	'#123'.hexToRgb(); // returns 'rgb(17,34,51)'
+	'112233'.hexToRgb(); // returns 'rgb(17,34,51)'
+	'#112233'.hexToRgb(true); // returns [17, 34, 51]
 
 
 
@@ -309,9 +309,9 @@ Converts an RGB color value to hexadecimal. Input string must be in one of the f
 
 ### Examples:
 
-	'rgb(17,34,51)'.rgbToHex(); //returns '#112233'
-	'rgb(17,34,51)'.rgbToHex(true); //returns ['11','22','33']
-	'rgba(17,34,51,0)'.rgbToHex(); //returns 'transparent'
+	'rgb(17,34,51)'.rgbToHex(); // returns '#112233'
+	'rgb(17,34,51)'.rgbToHex(true); // returns ['11','22','33']
+	'rgba(17,34,51,0)'.rgbToHex(); // returns 'transparent'
 
 ### See Also:
 
@@ -342,7 +342,7 @@ Removes undefined keywords and ignores escaped keywords.
 
 	var myString = '{subject} is {property_1} and {property_2}.';
 	var myObject = {subject: 'Jack Bauer', property_1: 'our lord', property_2: 'saviour'};
-	myString.substitute(myObject); //returns Jack Bauer is our lord and saviour
+	myString.substitute(myObject); // returns Jack Bauer is our lord and saviour
 
 
 
@@ -366,8 +366,8 @@ Strips the String of its *<script>* tags and anything in between them.
 ### Examples:
 
 	var myString = "<script>alert('Hello')</script>Hello, World.";
-	myString.stripScripts(); //returns 'Hello, World.'
-	myString.stripScripts(true); //alerts 'Hello', then returns 'Hello, World.'
+	myString.stripScripts(); // returns 'Hello, World.'
+	myString.stripScripts(true); // alerts 'Hello', then returns 'Hello, World.'
 
 
 

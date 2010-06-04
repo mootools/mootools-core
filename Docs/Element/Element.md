@@ -33,7 +33,7 @@ The document.id function has a dual purpose: Getting the element by its id, and 
 #### Get a DOM Element by reference:
 
 	var div = document.getElementById('myElement');
-	div = document.id(div); //The element with all the Element methods applied.
+	div = document.id(div); // the element with all the Element methods applied.
 
 ### Notes:
 
@@ -54,7 +54,7 @@ However it is not recommended to use more frameworks, the $ variable can be set 
 	var myElement = $('myElement');
 	var myElement2 = document.id('myElement');
 	
-	myElement == myElement2; //returns true
+	myElement == myElement2; // returns true
 	
 	
 	(function($){
@@ -93,13 +93,13 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 #### Get Elements by Their Tag Names:
 
-	$$('a'); //Returns all anchor elements in the page.
-	$$('a', 'b'); //Returns all anchor and bold tags on the page.
+	$$('a'); // returns all anchor elements in the page.
+	$$('a', 'b'); // returns all anchor and bold tags on the page.
 
 #### Using CSS Selectors:
 
-	$$('#myElement'); //Returns an array containing only the element with the id 'myElement'.
-	$$('#myElement a.myClass'); //Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
+	$$('#myElement'); // returns an array containing only the element with the id 'myElement'.
+	$$('#myElement a.myClass'); // returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
 
 #### More Complex $$ Usage:
 
@@ -273,7 +273,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 	$('myElement').set('text', 'text goes here');
 	$('myElement').set('class', 'active');
-	//The 'styles' property passes the object to Element:setStyles.
+	// the 'styles' property passes the object to Element:setStyles.
 	var body = $(document.body).set('styles', {
 		font: '12px Arial',
 		color: 'blue'
@@ -282,13 +282,13 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 #### With an Object:
 
 	var myElement = $('myElement').set({
-		//The 'styles' property passes the object to Element:setStyles.
+		// the 'styles' property passes the object to Element:setStyles.
 		styles: {
 			font: '12px Arial',
 			color: 'blue',
 			border: '1px solid #f00'
 		},
-		//The 'events' property passes the object to Element:addEvents.
+		// the 'events' property passes the object to Element:addEvents.
 		events: {
 			click: function(){ alert('click'); },
 			mouseover: function(){ this.addClass('over') }
@@ -335,12 +335,12 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 #### Using Custom Getters:
 
-	var tag = $('myDiv').get('tag'); //Returns "div".
+	var tag = $('myDiv').get('tag'); // returns "div".
 
 #### Fallback to Element Attributes:
 
-	var id = $('myDiv').get('id'); //Returns "myDiv".
-	var value = $('myInput').get('value'); //Returns the myInput element's value.
+	var id = $('myDiv').get('id'); // returns "myDiv".
+	var value = $('myInput').get('value'); // returns the myInput element's value.
 
 ### Notes:
 
@@ -407,19 +407,19 @@ Tests this Element to see if it matches the argument passed in.
 
 #### Using a Tag Name:
 
-	//Returns true if #myDiv is a div.
+	// returns true if #myDiv is a div.
 	$('myDiv').match('div');
 
 #### Using a CSS Selector:
 
-	//Returns true if #myDiv has the class foo and is named "bar"
+	// returns true if #myDiv has the class foo and is named "bar"
 	$('myDiv').match('.foo[name=bar]');
 
 #### Using an Element:
 
 	var el = $('myDiv');
-	$('myDiv').match(el); //Returns true
-	$('otherElement').match(el); //Returns false
+	$('myDiv').match(el); // returns true
+	$('otherElement').match(el); // returns false
 
 
 
@@ -771,7 +771,7 @@ Clones the Element and returns the cloned one.
 
 ##### JavaScript
 
-	//Clones the Element and appends the clone after the Element.
+	// clones the Element and appends the clone after the Element.
 	var clone = $('myElement').clone().inject('myElement','after');
 
 ##### Resulting HTML
@@ -844,7 +844,7 @@ Tests the Element to see if it has the passed in className.
 
 ##### JavaScript
 
-	$('myElement').hasClass('testClass'); //returns true
+	$('myElement').hasClass('testClass'); // returns true
 
 
 
@@ -1191,7 +1191,7 @@ Reads the child inputs of the Element and generates a query string based on thei
 
 ##### JavaScript
 
-	$('myForm').toQueryString(); //Returns "email=bob@bob.com&zipCode=90210".
+	$('myForm').toQueryString(); // returns "email=bob@bob.com&zipCode=90210".
 
 
 Element Method: getSelected {#Element:getSelected}
@@ -1219,7 +1219,7 @@ Returns the selected options of a select element.
 
 ##### JavaScript
 
-	$('country-select').getSelected(); //Returns whatever the user selected.
+	$('country-select').getSelected(); // returns whatever the user selected.
 
 ### Note:
 
@@ -1253,7 +1253,7 @@ Returns a single element attribute.
 
 ##### JavaScript
 
-	var imgProps = $('myImage').getProperty('src'); //Returns: 'mootools.png'.
+	var imgProps = $('myImage').getProperty('src'); // returns: 'mootools.png'.
 
 
 
@@ -1283,7 +1283,7 @@ Gets multiple element attributes.
 ##### JavaScript
 
 	var imgProps = $('myImage').getProperties('id', 'src', 'title', 'alt');
-	//Returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+	// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
 
 
 
@@ -1471,7 +1471,7 @@ Retrieves a value from the Elements storage.
 
 ### Example:
 
-	$('element').retrieve('someProperty'); //returns someValue (see example above)
+	$('element').retrieve('someProperty'); // returns someValue (see example above)
 
 
 Element Method: eliminate {#Element:eliminate}
@@ -1522,9 +1522,9 @@ This Object contains the functions that respond to the first argument passed in 
 
 ### Using a Custom Element Property
 
-	//Gets the "disabled" property.
+	// gets the "disabled" property
 	$(element).get('disabled');
-	//Sets the "disabled" property to true, along with the attribute.
+	// sets the "disabled" property to true, along with the attribute
 	$(element).set('disabled', true);
 
 
@@ -1534,10 +1534,10 @@ Additionally, you can access these custom getters and setters using an object as
 
 #### Example:
 
-	//Using set:
+	// using set:
 	$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
 
-	//For new Elements (works the same as set):
+	// for new Elements (works the same as set):
 	new Element('input', {type: 'checkbox', checked: true, disabled: true});
 
 
@@ -1626,7 +1626,7 @@ Sets the inner text of the Element.
 ##### JavaScript
 
 	$('myElement').set('text', 'some text');
-	//The text of myElement is now 'some text'.
+	// the text of myElement is now 'some text'.
 
 ##### Resulting HTML
 
@@ -1652,7 +1652,7 @@ Gets the inner text of the Element.
 
 ##### JavaScript
 
-	var myText = $('myElement').get('text'); //myText = 'my text'.
+	var myText = $('myElement').get('text'); // myText = 'my text'.
 
 
 
@@ -1679,7 +1679,7 @@ Returns the tag name of the Element in lower case.
 
 ##### JavaScript
 
-	var myTag = $('myImage').get('tag'); //myTag = 'img'
+	var myTag = $('myImage').get('tag'); // myTag = 'img'
 
 
 
@@ -1779,8 +1779,8 @@ Elements Method: constructor {#Elements:constructor}
 		el.setStyle('color', 'red');
 	});
 
-	//Because $$('myselector') also accepts Element methods, the below
-	//example has the same effect as the one above.
+	// Because $$('myselector') also accepts Element methods, the below
+	// example has the same effect as the one above.
 	$$('p').setStyle('color', 'red');
 
 
@@ -1835,7 +1835,7 @@ This method has been deprecated. Use [Element:contains][] instead.
 	var myElement2 = document.id('element2');
 	myElement !== myElement2 && myElement.contains(element2);
 	
-	//could be implemented as:
+	// could be implemented as:
 	Element.implement('hasChild', function(element){
 		return this !== element && this.contains(element);
 	});

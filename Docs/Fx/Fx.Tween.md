@@ -61,7 +61,7 @@ Sets the Element's CSS property to the specified value immediately.
 ### Examples:
 
 	var myFx = new Fx.Tween(element);
-	//sets the background color of the element to red:
+	// sets the background color of the element to red:
 	myFx.set('background-color', '#f00');
 
 ### Note:
@@ -91,9 +91,9 @@ Transitions the Element's CSS property to the specified value.
 ### Examples:
 
 	var myFx = new Fx.Tween(element);
-	//transitions the background color of the Element from black to red:
+	// transitions the background color of the Element from black to red:
 	myFx.start('background-color', '#000', '#f00');
-	//transitions the background color of the Element from its current color to blue:
+	// transitions the background color of the Element from its current color to blue:
 	myFx.start('background-color', '#00f');
 
 ### Notes:
@@ -188,11 +188,11 @@ Element shortcut method which immediately transitions any single CSS property of
 
 ### Examples:
 
-	//transitions the width of 'myElement' from its current width to 100px:
+	// transitions the width of 'myElement' from its current width to 100px:
 	$('myElement').tween('width', '100');
-	//transitions the height of 'myElement' from 20px to 200px:
+	// transitions the height of 'myElement' from 20px to 200px:
 	$('myElement').tween('height', [20, 200]);
-	//transitions the border of 'myElement' from its current to '6px solid blue':
+	// transitions the border of 'myElement' from its current to '6px solid blue':
 	$('myElement').tween('border', '6px solid #36f');
 
 ### See Also:
@@ -226,8 +226,8 @@ Element shortcut method for tween with opacity.  Useful for fading an Element in
 
 ### Examples:
 
-	$('myElement').fade('out'); //fades 'myElement' out.
-	$('myElement').fade(0.7); //fades 'myElement' to 70% opacity.
+	$('myElement').fade('out'); // fades 'myElement' out.
+	$('myElement').fade(0.7); // fades 'myElement' to 70% opacity.
 
 
 
