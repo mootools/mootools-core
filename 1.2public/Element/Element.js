@@ -1306,9 +1306,10 @@ describe('Element.setProperty', {
 	
 	'should setProperty defaultValue of an input Element': function(){
 		var form = new Element('form');
-		var defaultValue = new Element('input', {'type': 'text', 'value': '321'}).setProperty('defaultValue', '123');
-		form.grab(defaultValue);
+		var defaultValue = new Element('input', {'type': 'text', 'value': '321'});
 		value_of(defaultValue.getProperty('value')).should_be('321');
+		defaultValue.setProperty('defaultValue', '123');
+		form.grab(defaultValue);
 		form.reset();
 		value_of(defaultValue.getProperty('value')).should_be('123');
 	}
