@@ -1306,9 +1306,10 @@ describe('Element.setProperty', {
 	
 	'should setProperty defaultValue of an input Element': function(){
 		var form = new Element('form');
-		var defaultValue = new Element('input', {'type': 'text', 'value': '321'}).setProperty('defaultValue', '123');
-		form.grab(defaultValue);
+		var defaultValue = new Element('input', {'type': 'text', 'value': '321'});
 		value_of(defaultValue.getProperty('value')).should_be('321');
+		defaultValue.setProperty('defaultValue', '123');
+		form.grab(defaultValue);
 		form.reset();
 		value_of(defaultValue.getProperty('value')).should_be('123');
 	}
@@ -1345,7 +1346,7 @@ describe('Element.removeProperty', {
 		value_of(props).should_be({ type: 'text', readonly: false});
 		
 		var maxlength = readonly.getProperty('maxlength');
-		value_of(!maxlength || maxlength == 524288).should_be_true(); // Old Webkit Bug
+		value_of(!maxlength || maxlength == 2147483647).should_be_true(); // ie6/7 Bug
 	}
 
 });
