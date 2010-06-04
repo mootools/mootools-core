@@ -54,12 +54,12 @@ However it is not recommended to use more frameworks, the $ variable can be set 
 	var myElement = $('myElement');
 	var myElement2 = document.id('myElement');
 	
-	myElement == myElement2; // true
+	myElement == myElement2; //returns true
 	
 	
 	(function($){
 		
-		// Now you can use $ safely in this closure
+		//Now you can use $ safely in this closure
 	
 	})(document.id)
 
@@ -142,18 +142,18 @@ Creates a new Element of the type passed in.
 ### Examples:
 
 	var myAnchor = new Element('a', {
-		'href': 'http://mootools.net',
+		href: 'http://mootools.net',
 		'class': 'myClass',
-		'html': 'Click me!',
-		'styles': {
-			'display': 'block',
-			'border': '1px solid black'
+		html: 'Click me!',
+		styles: {
+			display: 'block',
+			border: '1px solid black'
 		},
-		'events': {
-			'click': function(){
+		events: {
+			click: function(){
 				alert('clicked');
 			},
-			'mouseover': function(){
+			mouseover: function(){
 				alert('mouseovered');
 			}
 		}
@@ -275,26 +275,26 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 	$('myElement').set('class', 'active');
 	//The 'styles' property passes the object to Element:setStyles.
 	var body = $(document.body).set('styles', {
-		'font': '12px Arial',
-		'color': 'blue'
+		font: '12px Arial',
+		color: 'blue'
 	});
 
 #### With an Object:
 
 	var myElement = $('myElement').set({
 		//The 'styles' property passes the object to Element:setStyles.
-		'styles': {
-			'font': '12px Arial',
-			'color': 'blue',
-			'border': '1px solid #f00'
+		styles: {
+			font: '12px Arial',
+			color: 'blue',
+			border: '1px solid #f00'
 		},
 		//The 'events' property passes the object to Element:addEvents.
-		'events': {
-			'click': function(){ alert('click'); },
-			'mouseover': function(){ this.addClass('over') }
+		events: {
+			click: function(){ alert('click'); },
+			mouseover: function(){ this.addClass('over') }
 		},
 		//Any other property uses Element:setProperty.
-		'id': 'documentBody'
+		id: 'documentBody'
 	});
 
 ### Notes:
@@ -451,7 +451,7 @@ Checks all descendants of this Element for a match.
 
 ##### JavaScript
 
-	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); // tan tan tannn...
+	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); //tan tan tannn...
 
 
 
@@ -1091,7 +1091,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Returns:
 
-* (*array*) A [Elements](#Elements) array with all of the Element's sibings, except the text nodes.
+* (*array*) A [Elements](#Elements) array with all of the Element's siblings, except the text nodes.
 
 
 
@@ -1471,7 +1471,7 @@ Retrieves a value from the Elements storage.
 
 ### Example:
 
-	$('element').retrieve('someProperty'); // returns someValue (see example above)
+	$('element').retrieve('someProperty'); //returns someValue (see example above)
 
 
 Element Method: eliminate {#Element:eliminate}
@@ -1679,7 +1679,7 @@ Returns the tag name of the Element in lower case.
 
 ##### JavaScript
 
-	var myTag = $('myImage').get('tag'); // myTag = 'img'.
+	var myTag = $('myImage').get('tag'); //myTag = 'img'
 
 
 
@@ -1835,7 +1835,7 @@ This method has been deprecated. Use [Element:contains][] instead.
 	var myElement2 = document.id('element2');
 	myElement !== myElement2 && myElement.contains(element2);
 	
-	// This is how it could be implemented
+	//could be implemented as:
 	Element.implement('hasChild', function(element){
 		return this !== element && this.contains(element);
 	});

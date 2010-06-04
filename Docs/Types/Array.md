@@ -39,7 +39,7 @@ Used to iterate through arrays, or iterables that are not regular arrays, such a
 
 	Array.each(['Sun','Mon','Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
-	}); //Alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
+	}); //alerts 'name: Sun, index: 0', 'name: Mon, index: 1', etc.
 
 ### Notes:
 
@@ -71,8 +71,8 @@ Returns a copy of the passed array.
 	
 	var myArray[0] = 'yellow';
 	
-	alert(myArray[0]);		// alerts 'yellow'
-	alert(otherArray[0])	// alerts 'red'
+	alert(myArray[0]);		//alerts 'yellow'
+	alert(otherArray[0])	//alerts 'red'
 
 ### Notes:
 
@@ -99,8 +99,8 @@ Converts the argument passed in to an array if it is defined and not already an 
 
 ### Example:
 
-	Array.from('hello'); //Returns ['hello'].
-	Array.from(['a', 'b', 'c']); //Returns ['a', 'b', 'c'].
+	Array.from('hello'); //returns ['hello'].
+	Array.from(['a', 'b', 'c']); //returns ['a', 'b', 'c'].
 
 ### Notes:
 
@@ -129,7 +129,7 @@ Returns an array with the named method applied to the array's contents.
 ### Example:
 
 	var foo = [4, 8, 15, 16, 23, 42];
-	var bar = foo.invoke('limit', 10, 30);	// bar is now [10, 10, 15, 16, 23, 30]
+	var bar = foo.invoke('limit', 10, 30);	//bar is now [10, 10, 15, 16, 23, 30]
 
 
 
@@ -235,8 +235,8 @@ Creates a new array with all of the elements of the array which are defined (i.e
 
 ### Examples:
 
-	var myArray = [null, 1, 0, true, false, "foo", undefined, ""];
-	myArray.clean() // returns [1, 0, true, false, "foo", ""]
+	var myArray = [null, 1, 0, true, false, 'foo', undefined, ''];
+	myArray.clean() //returns [1, 0, true, false, 'foo', '']
 
 
 
@@ -428,8 +428,8 @@ Tests an array for the presence of an item.
 
 ### Examples:
 
-	["a","b","c"].contains("a"); //returns true
-	["a","b","c"].contains("d"); //returns false
+	['a','b','c'].contains('a'); //returns true
+	['a','b','c'].contains('d'); //returns false
 
 ### See Also:
 
@@ -638,13 +638,13 @@ Returns the first defined value of the array passed in, or null.
 	function say(infoMessage, errorMessage){
 		alert([errorMessage, infoMessage, 'There was no message supplied.'].pick());
 
-		// Or more MooTools 1.2 style using Generics
+		//or more MooTools 1.2 style using Generics
 		Array.pick([errorMessage, infoMessage, 'There was no message supplied.']);
 
 	}
-	say(); //Alerts "There was no message supplied."
-    say("This is an info message."); //Alerts "This is an info message."
-    say("This message will be ignored.", "This is the error message."); //Alerts "This is the error message."
+	say(); //alerts 'There was no message supplied.'
+    say('This is an info message.'); //alerts 'This is an info message.'
+    say('This message will be ignored.', 'This is the error message.'); //alerts 'This is the error message.'
 	
 
 ### Notes:
@@ -665,7 +665,7 @@ Converts an hexadecimal color value to RGB. Input array must be the following he
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. \[255, 51, 0\]) instead of a string (eg. "rgb(255,51,0)").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \[255, 51, 0\]) instead of a string (e.g. "rgb(255,51,0)").
 
 ### Returns:
 
@@ -674,7 +674,7 @@ Converts an hexadecimal color value to RGB. Input array must be the following he
 
 ### Examples:
 
-	['11','22','33'].hexToRgb(); //returns "rgb(17,34,51)"
+	['11','22','33'].hexToRgb(); //returns 'rgb(17,34,51)'
 	['11','22','33'].hexToRgb(true); //returns [17, 34, 51]
 
 ### See Also:
@@ -695,7 +695,7 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. \['ff','33','00'\]) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff','33','00'\]) instead of a string (e.g. '#ff3300').
 
 ### Returns:
 
@@ -704,9 +704,9 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 ### Examples:
 
-	[17,34,51].rgbToHex(); //returns "#112233"
+	[17,34,51].rgbToHex(); //returns '#112233'
 	[17,34,51].rgbToHex(true); //returns ['11','22','33']
-	[17,34,51,0].rgbToHex(); //returns "transparent"
+	[17,34,51,0].rgbToHex(); //returns 'transparent'
 
 ### See Also:
 

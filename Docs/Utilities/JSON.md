@@ -26,7 +26,7 @@ Converts an object or array to a JSON string.
 
 ### Examples:
 
-	var fruitsJSON = JSON.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
+	var fruitsJSON = JSON.encode({apple: 'red', lemon: 'yellow'}); //returns: '{"apple":"red","lemon":"yellow"}'
 
 
 

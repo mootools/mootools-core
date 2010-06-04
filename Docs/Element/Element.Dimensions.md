@@ -57,7 +57,7 @@ The following method is also available on the Window object.
 ### Example:
 
 	var size = myElement.getSize();
-	alert("The element is "+size.x+" pixels wide and "+size.y+"pixels high.");
+	alert('The element is ' + size.x + ' pixels wide and ' + size.y + 'pixels high.');
 
 ### Note:
 

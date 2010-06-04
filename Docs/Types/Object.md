@@ -36,9 +36,9 @@ Used to iterate through an object.
 
 ### Example:
 
-    //Alerts "The first day of the week is Sunday", "The second day of the week is Monday", etc:
-	Object.each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
-		alert("The " + key + " day of the week is " + value);
+    //alerts 'The first day of the week is Sunday', 'The second day of the week is Monday', etc.:
+	Object.each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
+		alert('The ' + key + ' day of the week is ' + value);
 	});
 	
 ### Notes:
@@ -104,8 +104,8 @@ Returns a copy of an object.
 	var obj2 = Object.clone(obj1);
 	
 	obj1.a = 42;
-	alert(obj1.a);	// alerts '42'
-	alert(obj2.a);	// alerts '0'
+	alert(obj1.a);	//alerts '42'
+	alert(obj2.a);	//alerts '0'
 
 ### Notes:
 
@@ -134,16 +134,16 @@ Copies all the properties from the second object passed in to the first object p
 ### Examples:
 
 	var firstObj = {
-		'name': 'John',
-		'lastName': 'Doe'
+		name: 'John',
+		lastName: 'Doe'
 	};
 	var secondObj = {
-		'age': '20',
-		'sex': 'male',
-		'lastName': 'Dorian'
+		age: '20',
+		sex: 'male',
+		lastName: 'Dorian'
 	};
 	Object.append(firstObj, secondObj);
-	//firstObj is now: {'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male'};
+	//firstObj is now: {name: 'John', lastName: 'Dorian', age: '20', sex: 'male'};
 
 ### Notes:
 
@@ -171,11 +171,11 @@ Get a subset of an object.
 ### Examples:
 
 	var obj = {
-		'a': 'one', 
-		'b': 'two', 
-		'c': 'three'
+		a: 'one', 
+		b: 'two', 
+		c: 'three'
 	};
-	Object.subset(['a','c']); // returns {'a': 'one', 'c': 'three'}
+	Object.subset(['a','c']); //returns {a: 'one', c: 'three'}
 
 
 
@@ -398,10 +398,10 @@ Returns the number of keys in the object.
 ### Examples:
 
 	var myObject = {
-		'name': 'John',
-		'lastName': 'Doe'
+		name: 'John',
+		lastName: 'Doe'
 	});
-	Object.length(myObject); // returns 2
+	Object.length(myObject); //returns 2
 
 
 
@@ -426,10 +426,10 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 
 ### Examples:
 
-	var myObject = {'a': 'one', 'b': 'two', 'c': 3};
-	Object.keyOf(myObject,'two'); // returns 'b'
-	Object.keyOf(myObject,3); // returns 'c'
-	Object.keyOf(myObject,'four'); // returns false
+	var myObject = {a: 'one', b: 'two', c: 3};
+	Object.keyOf(myObject,'two'); //returns 'b'
+	Object.keyOf(myObject,3); //returns 'c'
+	Object.keyOf(myObject,'four'); //returns false
 
 
 
@@ -453,7 +453,7 @@ Tests for the presence of a specified value in the object.
 
 ### Examples:
 
-	var myObject = {'a': 'one', 'b': 'two', 'c': 'three'};
+	var myObject = {a: 'one', b: 'two', c: 'three'};
 	Object.contains(myObject, 'one'); //returns true
 	Object.contains(myObject, 'four'); //returns false
 
@@ -479,7 +479,7 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 
 ### Examples:
 
-	Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
+	Object.toQueryString({apple: 'red', lemon: 'yellow'}); //returns 'apple=red&lemon=yellow'
 
 
 Deprecated Functions {#Deprecated-Functions}

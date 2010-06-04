@@ -1,4 +1,4 @@
-Type: String {#String}
+//returnsType: String {#String}
 ====================
 
 A collection of the String Object methods and functions.
@@ -28,8 +28,8 @@ Returns the passed parameter as a String.
 
 ### Example:
 
-	String.from(2)	// returns '2'
-	String.from(true)	// returns 'true'
+	String.from(2)	//returns '2'
+	String.from(true)	//returns 'true'
 
 
 
@@ -55,9 +55,9 @@ For more information see [MDC Regexp:test][].
 
 ### Examples:
 
-	"I like cookies".test("cookie"); //returns true
-	"I like cookies".test("COOKIE", "i"); //returns true (ignore case)
-	"I like cookies".test("cake"); //returns false
+	'I like cookies'.test('cookie'); //returns true
+	'I like cookies'.test('COOKIE', "i"); //returns true (ignore case)
+	'I like cookies'.test('cake'); //returns false
 
 ### See Also:
 
@@ -78,7 +78,7 @@ If the separator parameter is passed, will check to see if the string is contain
 ### Arguments:
 
 1. string    - (*string*) The string to search for.
-2. separator - (*string*, optional) The string that separates the values in this string (eg. Element classNames are separated by a ' ').
+2. separator - (*string*, optional) The string that separates the values in this string (e.g. Element classNames are separated by a ' ').
 
 ### Returns:
 
@@ -108,7 +108,7 @@ Trims the leading and trailing spaces off a string.
 
 ### Examples:
 
-	"    i like cookies     ".trim(); //"i like cookies"
+	'    i like cookies     '.trim(); //returns 'i like cookies'
 
 
 
@@ -127,7 +127,7 @@ Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
 ### Examples:
 
-	" i      like     cookies      \n\n".clean(); //returns "i like cookies"
+	' i      like     cookies      \n\n.clean(); //returns 'i like cookies'
 
 
 
@@ -146,7 +146,7 @@ Converts a hyphenated string to a camelcased string.
 
 ### Examples:
 
-	"I-like-cookies".camelCase(); //returns "ILikeCookies"
+	'I-like-cookies'.camelCase(); //returns 'ILikeCookies'
 
 
 
@@ -165,7 +165,7 @@ Converts a camelcased string to a hyphenated string.
 
 ### Examples:
 
-	"ILikeCookies".hyphenate(); //returns "I-like-cookies"
+	'ILikeCookies'.hyphenate(); //returns 'I-like-cookies'
 
 
 
@@ -184,7 +184,7 @@ Converts the first letter of each word in a string to uppercase.
 
 ### Examples:
 
-	"i like cookies".capitalize(); //returns "I Like Cookies"
+	'i like cookies'.capitalize(); //returns 'I Like Cookies'
 
 
 
@@ -227,8 +227,8 @@ Parses this string and returns a number of the specified radix or base.
 
 ### Examples:
 
-	"4em".toInt(); //returns 4
-	"10px".toInt(); //returns 10
+	'4em'.toInt(); //returns 4
+	'10px'.toInt(); //returns 10
 
 ### See Also:
 
@@ -252,8 +252,8 @@ Parses this string and returns a floating point number.
 
 ### Examples:
 
-		"95.25%".toFloat(); //returns 95.25
-		"10.848".toFloat(); //returns 10.848
+		'95.25%'.toFloat(); //returns 95.25
+		'10.848'.toFloat(); //returns 10.848
 
 ### See Also:
 
@@ -264,7 +264,7 @@ Parses this string and returns a floating point number.
 String method: hexToRgb {#String:hexToRgb}
 -----------------------------------
 
-Converts a hexadecimal colour value to RGB. Input string must be in one of the following hexadecimal colour formats (with or without the hash).
+Converts a hexadecimal color value to RGB. Input string must be in one of the following hexadecimal color formats (with or without the hash).
 '#ffffff', #fff', 'ffffff', or 'fff'
 
 ### Syntax:
@@ -273,7 +273,7 @@ Converts a hexadecimal colour value to RGB. Input string must be in one of the f
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. \[255, 51, 0\]) instead of a string (eg. "rgb(255,51,0)").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \[255, 51, 0\]) instead of a string (e.g. "rgb(255,51,0)").
 
 ### Returns:
 
@@ -282,16 +282,16 @@ Converts a hexadecimal colour value to RGB. Input string must be in one of the f
 
 ### Examples:
 
-	"#123".hexToRgb(); //returns "rgb(17,34,51)"
-	"112233".hexToRgb(); //returns "rgb(17,34,51)"
-	"#112233".hexToRgb(true); //returns [17, 34, 51]
+	'#123'.hexToRgb(); //returns 'rgb(17,34,51)'
+	'112233'.hexToRgb(); //returns 'rgb(17,34,51)'
+	'#112233'.hexToRgb(true); //returns [17, 34, 51]
 
 
 
 String method: rgbToHex {#String:rgbToHex}
 -----------------------------------
 
-Converts an RGB colour value to hexadecimal. Input string must be in one of the following RGB color formats.
+Converts an RGB color value to hexadecimal. Input string must be in one of the following RGB color formats.
 "rgb(255,255,255)", or "rgba(255,255,255,1)"
 
 ### Syntax:
@@ -300,18 +300,18 @@ Converts an RGB colour value to hexadecimal. Input string must be in one of the 
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (eg. \['ff','33','00'\]) instead of a string (eg. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff','33','00'\]) instead of a string (e.g. "#ff3300").
 
 ### Returns:
 
-* (*string*) A string representing the colour in hexadecimal, or transparent if the fourth value of rgba in the input string is 0.
+* (*string*) A string representing the color in hexadecimal, or transparent if the fourth value of rgba in the input string is 0.
 * (*array*) If the array flag is set, an array will be returned instead.
 
 ### Examples:
 
-	"rgb(17,34,51)".rgbToHex(); //returns "#112233"
-	"rgb(17,34,51)".rgbToHex(true); //returns ['11','22','33']
-	"rgba(17,34,51,0)".rgbToHex(); //returns "transparent"
+	'rgb(17,34,51)'.rgbToHex(); //returns '#112233'
+	'rgb(17,34,51)'.rgbToHex(true); //returns ['11','22','33']
+	'rgba(17,34,51,0)'.rgbToHex(); //returns 'transparent'
 
 ### See Also:
 
@@ -340,9 +340,9 @@ Removes undefined keywords and ignores escaped keywords.
 
 ### Examples:
 
-	var myString = "{subject} is {property_1} and {property_2}.";
+	var myString = '{subject} is {property_1} and {property_2}.';
 	var myObject = {subject: 'Jack Bauer', property_1: 'our lord', property_2: 'saviour'};
-	myString.substitute(myObject); //Jack Bauer is our lord and saviour
+	myString.substitute(myObject); //returns Jack Bauer is our lord and saviour
 
 
 
@@ -366,8 +366,8 @@ Strips the String of its *<script>* tags and anything in between them.
 ### Examples:
 
 	var myString = "<script>alert('Hello')</script>Hello, World.";
-	myString.stripScripts(); //Returns "Hello, World."
-	myString.stripScripts(true); //Alerts "Hello", then returns "Hello, World."
+	myString.stripScripts(); //returns 'Hello, World.'
+	myString.stripScripts(true); //alerts 'Hello', then returns 'Hello, World.'
 
 
 

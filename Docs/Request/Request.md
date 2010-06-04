@@ -160,7 +160,7 @@ Returns the given response header or null if not found.
 ### Example:
 
 	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML) {
-		alert(this.getHeader('Date')); // Alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
+		alert(this.getHeader('Date')); //alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
 	}});
 
 Request Method: send {#Request:send}
@@ -191,14 +191,14 @@ MooTools provides several aliases for [Request:send][] to make it easier to use 
 	var myRequest = new Request({url: 'http://localhost/some_url'});
 
 	myRequest.post('save=username&name=John');
-	// Above is equivalent to
+	//...is equivalent to:
 	myRequest.send({
 		method: 'post',
 		data: 'save=username&name=John'
 	});
 
 	myRequest.get('save=username&name=John');
-	// Above is equivalent to
+	//...is equivalent to:
 	myRequest.send({
 		method: 'get',
 		data: 'save=username&name=John'
