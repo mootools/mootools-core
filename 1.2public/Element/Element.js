@@ -1345,7 +1345,7 @@ describe('Element.removeProperty', {
 		value_of(props).should_be({ type: 'text', readonly: false});
 		
 		var maxlength = readonly.getProperty('maxlength');
-		value_of(!maxlength || maxlength == 524288).should_be_true(); // Old Webkit Bug
+		value_of(!maxlength || maxlength == 2147483647).should_be_true(); // ie6/7 Bug
 	}
 
 });
