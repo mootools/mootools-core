@@ -59,7 +59,13 @@ describe('typeOf', {
 	},
 
 	"should return 'arguments' for Function arguments": function(){
-		value_of(typeOf(arguments)).should_be((window.opera) ? 'array' : 'arguments'); //opera's arguments behave like arrays--which is actually better.
+		if (window.opera){ // Seems like the Opera guys can't decide on this
+			var type = $type(arguments);
+			value_of(type == 'array' || type == 'arguments').should_be_true();
+			return;
+		}
+		
+		value_of(typeOf(arguments)).should_be('arguments');
 	},
 
 	"should return 'null' for null objects": function(){
