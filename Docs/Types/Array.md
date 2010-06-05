@@ -41,6 +41,10 @@ Used to iterate through arrays, or iterables that are not regular arrays, such a
 		alert('name:' + day + ', index: ' + index);
 	}); //Alerts "name: Sun, index: 0", "name: Mon, index: 1", etc.
 
+### See Also:
+
+- [Array:each](#Array:each)
+
 ### Notes:
 
 This is an array-specific equivalent of *$each* from MooTools 1.2.
@@ -105,6 +109,54 @@ Converts the argument passed in to an array if it is defined and not already an 
 ### Notes:
 
 This is equivalent to *$splat* from MooTools 1.2.
+
+
+
+Array method: each {#Array:each}
+---------------------------------
+
+Calls a function for each element in the array.
+
+### Syntax:
+
+	myArray.each(fn[, bind]);
+
+### Arguments:
+
+1. fn   - (*function*) The function which should be executed on each item in the array. This function is passed the item and its index in the array.
+2. bind - (*object*, optional) The object to be used as 'this' in the function. For more information see [Function:bind][].
+
+#### Argument: fn
+
+##### Syntax
+
+	fn(item, index, array)
+
+##### Arguments:
+
+1. item   - (*mixed*) The current item in the array.
+2. index  - (*number*) The current item's index in the array.
+3. array  - (*array*) The actual array.
+
+### Examples:
+
+	//Alerts "0 = apple", "1 = banana", and so on:
+	['apple', 'banana', 'lemon'].each(function(item, index){
+		alert(index + " = " + item);
+	}); //The optional second argument for binding isn't used here.
+
+
+### See Also:
+
+- [Array.each](#Array:Array-each)
+- [MDC Array:forEach][]
+
+### Notes:
+
+- This method is only available for browsers without native [MDC Array:forEach][] support.
+
+
+
 
 
 
