@@ -89,13 +89,13 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 #### Get Elements by Their Tag Names:
 
-	$$('a'); //Returns all anchor elements in the page.
+	$$('a'); // returns all anchor elements in the page.
 
 #### Using CSS Selectors:
 
-	$$('#myElement'); //returns an array containing only the element with the id 'myElement'.
-	$$('#myElement a.myClass'); //returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
-	$$('a, b'); //returns an array of all anchor and bold elements in the page.
+	$$('#myElement'); // returns an array containing only the element with the id 'myElement'.
+	$$('#myElement a.myClass'); // returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
+	$$('a, b'); // returns an array of all anchor and bold elements in the page.
 
 ### Notes:
 
