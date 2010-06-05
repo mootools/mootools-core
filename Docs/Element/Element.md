@@ -75,40 +75,31 @@ Selects and extends DOM elements. Elements arrays returned with $$ will also acc
 
 ### Syntax:
 
-	var myElements = $$(aTag[, anElement[, Elements[, ...]);
+	var myElements = $$(selector);
 
 ### Arguments:
 
-* Any number of the following as arguments are accepted:
- * HTMLCollections,
- * arrays of elements,
- * elements, or
- * strings as selectors.
+1. selector - (*string*) A CSS selector
 
 ### Returns:
 
-* (*array*) - An array of all the DOM elements matched, extended with [$][].
+* (*array*) - An array of all the DOM elements matched, extended with [document:id][].
 
 ### Examples:
 
 #### Get Elements by Their Tag Names:
 
 	$$('a'); //Returns all anchor elements in the page.
-	$$('a', 'b'); //Returns all anchor and bold tags on the page.
 
 #### Using CSS Selectors:
 
-	$$('#myElement'); //Returns an array containing only the element with the id 'myElement'.
-	$$('#myElement a.myClass'); //Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
-
-#### More Complex $$ Usage:
-
-	//Creates an array of all elements and selectors passed as arguments.
-	$$(myelement1, myelement2, 'a', '#myid, #myid2, #myid3', document.getElementsByTagName('div'));
+	$$('#myElement'); //returns an array containing only the element with the id 'myElement'.
+	$$('#myElement a.myClass'); //returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
+	$$('a, b'); //returns an array of all anchor and bold elements in the page.
 
 ### Notes:
 
-- [$$][] will also accept CSS Selectors.
+- Since MooTools 1.3 this function accepts only one parameter: a CSS Selector that is a string.
 - If an expression doesn't find any elements, an empty array will be returned.
 - The return type of element methods run through [$$][] is always an array, regardless of the amount of results.
 
