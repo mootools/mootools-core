@@ -219,7 +219,7 @@ if (Browser.firefox){
 	else setEngine('gecko', 18);
 }
 
-if (Browser.safari || Browser.chrome || Browser.konqueror){
+if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
 	
 	switch (Browser.version){
