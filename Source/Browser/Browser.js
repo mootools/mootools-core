@@ -43,7 +43,7 @@ var Browser = this.Browser = {
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
-		name: ua.match(/ip(?:ad|od|hone)/) ? 'ipod' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
+		name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
 	},
 
 	Features: {
@@ -191,6 +191,9 @@ try {
 }
 
 //<1.2compat>
+
+if (Browser.Platform.ios)
+	Browser.Platform.ipod = true;
 
 Browser.Engine = {};
 
