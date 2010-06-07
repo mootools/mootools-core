@@ -38,7 +38,7 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Platform.ios - (*boolean*) True if the platform is iOS.
 * Browser.Platform.android - (*boolean*) True if the platform is Android
 * Browser.Platform.webos - (*boolean*) True if the platform is WebOS
-* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iPod.
+* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iOS.
 * Browser.Platform.name - (*string*) The name of the platform.
 
 ### Plugins:
