@@ -192,8 +192,7 @@ try {
 
 //<1.2compat>
 
-if (Browser.Platform.ios)
-	Browser.Platform.ipod = true;
+if (Browser.Platform.ios) Browser.Platform.ipod = true;
 
 Browser.Engine = {};
 

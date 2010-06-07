@@ -378,14 +378,14 @@ Returns an array containing all the values, in the same order as the keys return
 
 
 
-Function: Object.length {#Object:Object-length}
+Function: Object.getLength {#Object:Object-getLength}
 ----------------------------------------
 
 Returns the number of keys in the object.
 
 ### Syntax:
 
-	var length = Object.length(object);
+	var length = Object.getLength(object);
 
 ### Arguments:
 
@@ -401,7 +401,7 @@ Returns the number of keys in the object.
 		name: 'John',
 		lastName: 'Doe'
 	});
-	Object.length(myObject); // returns 2
+	Object.getLength(myObject); // returns 2
 
 
 
