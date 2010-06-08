@@ -248,7 +248,11 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 //</1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
-	return Slick.search(this.document, selector, new Elements);
+	if (arguments.length == 1){
+		if (typeof selector == 'string') return Slick.search(this.document, selector, new Elements);
+		else if (Type.isEnumerable(selector)) return new Elements(selector);
+	}
+	return new Elements(arguments);
 });
 
 (function(){
