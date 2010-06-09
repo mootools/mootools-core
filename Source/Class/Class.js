@@ -28,6 +28,13 @@ var Class = this.Class = new Type('Class', function(params){
 		this.$caller = this.caller = null;
 		return value;
 	}.extend(this);
+	
+	for (var mutator in Class.Mutators){
+		if (!params[mutator]) continue;
+		var value = Class.Mutators[mutator].call(newClass, params[mutator]);
+		if (value == null) delete params[mutator];
+		else params[mutator] = value;
+	}
 
 	newClass.implement(params);
 	
@@ -77,11 +84,6 @@ var wrap = function(self, key, method){
 };
 
 var implement = function(key, value, retain){
-	
-	if (Class.Mutators.hasOwnProperty(key)){
-		value = Class.Mutators[key].call(this, value);
-		if (value == null) return this;
-	}
 	
 	if (typeOf(value) == 'function'){
 		if (value.$hidden) return this;
