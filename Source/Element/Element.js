@@ -370,7 +370,7 @@ Element.implement({
 		attribute = camels[attribute] || attribute;
 		if (value == null) return this.removeProperty(attribute);
 		var key = attributes[attribute];
-		(key) ? this[key] = value :
+		(key && key in this) ? this[key] = value :
 			(bools[attribute]) ? this[attribute] = !!value : this.setAttribute(attribute, '' + value);
 		return this;
 	},
@@ -383,7 +383,7 @@ Element.implement({
 	getProperty: function(attribute){
 		attribute = camels[attribute] || attribute;
 		var key = attributes[attribute] || readOnly[attribute];
-		return (key) ? this[key] :
+		return (key && key in this) ? this[key] :
 			(bools[attribute]) ? !!this[attribute] :
 			(uriAttrs.test(attribute) ? this.getAttribute(attribute, 2) :
 			(key = this.getAttributeNode(attribute)) ? key.nodeValue : null) || null;
@@ -397,7 +397,7 @@ Element.implement({
 	removeProperty: function(attribute){
 		attribute = camels[attribute] || attribute;
 		var key = attributes[attribute];
-		(key) ? this[key] = '' :
+		(key && key in this) ? this[key] = '' :
 			(bools[attribute]) ? this[attribute] = false : this.removeAttribute(attribute);
 		return this;
 	},
