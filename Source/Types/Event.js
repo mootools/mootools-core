@@ -26,7 +26,7 @@ var Event = new Type('Event', function(event, win){
 
 	if (type.test(/key/)){
 		var code = event.which || event.keyCode;
-		var key = Event.Keys.keyOf(code);
+		var key = Object.keyOf(Event.Keys, code);
 		if (type == 'keydown'){
 			var fKey = code - 111;
 			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
