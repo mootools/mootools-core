@@ -107,7 +107,7 @@ describe('Element.set', {
 	},
 
 	"should set the for attribute of an element": function(){
-		var input = new Element('input', {type: 'text'}).set('for', 'some_element');
+		var input = new Element('label', {type: 'text'}).set('for', 'some_element');
 		value_of(input.htmlFor).should_be('some_element');
 	},
 
