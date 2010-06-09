@@ -8,7 +8,7 @@ This event is only available to the window Element.
 ### Example:
 
 	window.addEvent('domready', function() {
-		alert("The DOM is ready.");
+		alert('The DOM is ready!');
 	});
 
 ### See Also:

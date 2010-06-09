@@ -80,7 +80,7 @@ Calls an ActionScript function from JavaScript.
 ### Example:
 
 	var obj = new Swiff('myMovie.swf');
-	//Alerts "This is from the .swf file!".
+	// alerts "This is from the .swf file!".
 	alert(Swiff.remote(obj, 'myFlashFn'));
 
 ### Note:
