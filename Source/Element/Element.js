@@ -466,7 +466,7 @@ Element.implement({
 	},
 
 	getPrevious: function(match){
-		return document.id(Slick.find(this, '!+ ' + (match || '')));
+		return document.id(Slick.find(this, '!~ ' + (match || '')));
 	},
 
 	getAllPrevious: function(match){
