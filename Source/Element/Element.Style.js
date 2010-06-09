@@ -22,7 +22,7 @@ Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
 
-var hasFilter = (html.style.filter != null);
+var hasOpacity = (html.style.opacity != null);
 
 Element.Properties.opacity = {
 
@@ -35,13 +35,19 @@ Element.Properties.opacity = {
 			}
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (hasFilter) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		if (!hasOpacity) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		this.style.opacity = opacity;
-		this.store('opacity', opacity);
 	},
 
 	get: function(){
-		return this.retrieve('opacity', 1);
+		var opacity;
+		if (hasOpacity){
+			opacity = this.getComputedStyle('opacity');
+			return (opacity == '') ? 1 : opacity;
+		}
+		var filter = this.getComputedStyle('filter');
+		if (filter) opacity = filter.match(/alpha\(opacity=([\d.]+)\)/i);
+		return (opacity == null || filter == null) ? 1 : opacity[1] / 100;
 	}
 
 };
