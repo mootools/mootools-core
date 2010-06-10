@@ -66,12 +66,13 @@ Calls an ActionScript function from JavaScript.
 
 ### Syntax:
 
-	var result = Swiff.remote(obj, fn);
+	var result = Swiff.remote(obj, fn[, arg, arg, arg ...]);
 
 ### Arguments:
 
 1. obj - (*element*) A Swiff instance (an HTML object Element).
 2. fn  - (*string*) The name of the function to execute in the Flash movie.
+3. arg - (*mixed*) Any number of arguments to pass to the named function.
 
 ### Returns:
 

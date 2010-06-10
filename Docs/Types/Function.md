@@ -53,7 +53,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 
 ### Arguments:
 
-* fn   - (*function*) The function to execute.
+* fn   - (*function*) Any number of functions to execute.
 
 ### Returns:
 

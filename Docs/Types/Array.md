@@ -167,12 +167,12 @@ Returns an array with the named method applied to the array's contents.
 
 ### Syntax:
 
-	var arr = myArray.invoke(method, arg1[, arg2, arg3])
+	var arr = myArray.invoke(method[, arg, arg, arg ...])
 	
 ### Arguments:
 
 1. method - (*string*) The method to apply to each item in the array.
-2. arg1, arg2 - (*mixed*) Any number of arguments to pass to the named method.
+2. arg - (*mixed*) Any number of arguments to pass to the named method.
 
 ### Returns:
 
