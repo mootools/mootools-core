@@ -71,8 +71,9 @@ var Swiff = new Class({
 			params.movie = path;
 		} else {
 			properties.type = 'application/x-shockwave-flash';
-			properties.data = path;
 		}
+		properties.data = path;
+		
 		var build = '<object id="' + id + '"';
 		for (var property in properties) build += ' ' + property + '="' + properties[property] + '"';
 		build += '>';
