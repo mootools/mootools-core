@@ -30,7 +30,7 @@ var Swiff = new Class({
 		params: {
 			quality: 'high',
 			allowScriptAccess: 'always',
-			wMode: 'transparent',
+			wMode: 'window',
 			swLiveConnect: true
 		},
 		callBacks: {},
