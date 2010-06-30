@@ -238,7 +238,7 @@ if (Browser.opera){
 }
 
 if (Browser.name == 'unknown'){
-	switch ((navigator.userAgent.toLowerCase().match(/(?:webkit|khtml|gecko)/) || [])[0]){
+	switch ((ua.match(/(?:webkit|khtml|gecko)/) || [])[0]){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;
