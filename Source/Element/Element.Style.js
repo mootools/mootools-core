@@ -23,6 +23,7 @@ Element.Properties.styles = {set: function(styles){
 }};
 
 var hasOpacity = (html.style.opacity != null);
+var reAlpha = /alpha\(opacity=([\d.]+)\)/i;
 
 Element.Properties.opacity = {
 
@@ -35,21 +36,24 @@ Element.Properties.opacity = {
 			}
 		}
 		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (!hasOpacity) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
-		this.style.opacity = opacity;
-	},
-
-	get: function(){
-		var opacity;
 		if (hasOpacity){
-			opacity = this.getComputedStyle('opacity');
-			return (opacity == '') ? 1 : opacity;
+			this.style.opacity = opacity;
+		} else {
+			opacity = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+			var filter = this.style.filter || this.getComputedStyle('filter') || '';
+			this.style.filter = filter.test(reAlpha) ? filter.replace(reAlpha, opacity) : filter + opacity;
 		}
-		var filter = this.getComputedStyle('filter');
-		if (filter) opacity = filter.match(/alpha\(opacity=([\d.]+)\)/i);
-		return (opacity == null || filter == null) ? 1 : opacity[1] / 100;
 	}
 
+};
+
+Element.Properties.opacity.get = (hasOpacity) ? function(){
+	opacity = this.style.opacity || this.getComputedStyle('opacity');
+	return (opacity == '') ? 1 : opacity;
+} : function(){
+	var opacity, filter = this.style.filter || this.getComputedStyle('filter');
+	if (filter) opacity = filter.match(reAlpha);
+	return (opacity == null || filter == null) ? 1 : opacity[1] / 100;
 };
 
 var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
