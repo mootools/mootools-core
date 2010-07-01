@@ -690,6 +690,20 @@ Element.Properties.tag = {
 
 };
 
+(function(){
+	var maxLength = document.createElement('input').getAttribute('maxLength');
+	if (maxLength != null){
+		Element.Properties.maxlength = Element.Properties.maxLength = {
+			
+			get: function(){
+				var maxlength = this.getAttribute('maxLength');
+				return maxlength == maxLength ? null : maxlength;
+			}
+			
+		};
+	}
+})();
+
 Element.Properties.html = (function(){
 	
 	var tableTest = Function.attempt(function(){
