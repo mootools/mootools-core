@@ -168,7 +168,7 @@ Document.implement({
 		var types = {
 
 			string: function(id, nocash, doc){
-				id = doc.getElementById(id);
+				id = Slick.find(doc, '#' + id);
 				return (id) ? types.element(id, nocash) : null;
 			},
 			
