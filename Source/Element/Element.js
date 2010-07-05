@@ -59,9 +59,9 @@ new Type('Element', Element).mirror(function(name, method){
 
 if (!Browser.Element){
 	Element.parent = Object;
-	
-	Element.ProtoType = {};
-	
+
+	Element.ProtoType = {'$family': function(){ return 'element'; }.hide()};
+
 	Element.mirror(function(name, method){
 		Element.ProtoType[name] = method;
 	});
@@ -176,7 +176,7 @@ Document.implement({
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
 					Object.append(el, Element.ProtoType);
-				};
+				}
 				return el;
 			},
 			
