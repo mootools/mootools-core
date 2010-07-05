@@ -60,7 +60,7 @@ new Type('Element', Element).mirror(function(name, method){
 if (!Browser.Element){
 	Element.parent = Object;
 
-	Element.ProtoType = {'$family': function(){ return 'element'; }.hide()};
+	Element.ProtoType = {'$family': Function.from('element').hide()};
 
 	Element.mirror(function(name, method){
 		Element.ProtoType[name] = method;
@@ -690,19 +690,14 @@ Element.Properties.tag = {
 
 };
 
-(function(){
-	var maxLength = document.createElement('input').getAttribute('maxLength');
-	if (maxLength != null){
-		Element.Properties.maxlength = Element.Properties.maxLength = {
-			
-			get: function(){
-				var maxlength = this.getAttribute('maxLength');
-				return maxlength == maxLength ? null : maxlength;
-			}
-			
-		};
-	}
-})();
+(function(maxLength){
+	if (maxLength != null) Element.Properties.maxlength = Element.Properties.maxLength = {
+		get: function(){
+			var maxlength = this.getAttribute('maxLength');
+			return maxlength == maxLength ? null : maxlength;
+		}
+	};
+})(document.createElement('input').getAttribute('maxLength'));
 
 Element.Properties.html = (function(){
 	
