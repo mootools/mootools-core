@@ -22,7 +22,7 @@ Element.Properties.events = {set: function(events){
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
-		events[type] = events[type] || {'keys': [], 'values': []};
+		events[type] = events[type] || {keys: [], values: []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
 		var realType = type, custom = Element.Events[type], condition = fn, self = this;
@@ -102,12 +102,12 @@ Element.Properties.events = {set: function(events){
 
 	cloneEvents: function(from, type){
 		from = document.id(from);
-		var fevents = from.retrieve('events');
-		if (!fevents) return this;
+		var events = from.retrieve('events');
+		if (!events) return this;
 		if (!type){
-			for (var evType in fevents) this.cloneEvents(from, evType);
-		} else if (fevents[type]){
-			fevents[type].keys.each(function(fn){
+			for (var eventType in events) this.cloneEvents(from, eventType);
+		} else if (events[type]){
+			events[type].keys.each(function(fn){
 				this.addEvent(type, fn);
 			}, this);
 		}
