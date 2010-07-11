@@ -15,13 +15,15 @@ provides: Event
 */
 
 var Event = new Type('Event', function(event, win){
-	win = win || window;
+	if (!win) win = window;
 	var doc = win.document;
 	event = event || win.event;
 	if (event.$extended) return event;
 	this.$extended = true;
-	var type = event.type;
-	var target = event.target || event.srcElement;
+	var type = event.type,
+		target = event.target || event.srcElement,
+		page = {},
+		client = {};
 	while (target && target.nodeType == 3) target = target.parentNode;
 
 	if (type.test(/key/)){
@@ -31,27 +33,24 @@ var Event = new Type('Event', function(event, win){
 			var fKey = code - 111;
 			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
 		}
-		key = key || String.fromCharCode(code).toLowerCase();
+		if (!key) key = String.fromCharCode(code).toLowerCase();
 	} else if (type.test(/click|mouse|menu/i)){
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-		var page = {
+		page = {
 			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
 			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
 		};
-		var client = {
+		client = {
 			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
 			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
 		if (type.test(/DOMMouseScroll|mousewheel/)){
 			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		}
-		var rightClick = (event.which == 3) || (event.button == 2);
-		var related = null;
+		var rightClick = (event.which == 3) || (event.button == 2),
+			related = null;
 		if (type.test(/over|out/)){
-			switch (type){
-				case 'mouseover': related = event.relatedTarget || event.fromElement; break;
-				case 'mouseout': related = event.relatedTarget || event.toElement;
-			}
+			related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
 			var testRelated = function(){
 				while (related && related.nodeType == 3) related = related.parentNode;
 				return true;
@@ -59,6 +58,12 @@ var Event = new Type('Event', function(event, win){
 			var hasRelated = (Browser.firefox2) ? testRelated.attempt() : testRelated();
 			related = (hasRelated) ? related : null;
 		}
+	} else if (type.test(/gesture|touch/i)){
+		this.rotation = event.rotation;
+		this.scale = event.scale;
+		this.touches = event.touches;
+		this.targetTouches = event.targetTouches;
+		this.changedTouches = event.changedTouches;
 	}
 
 	return Object.append(this, {
