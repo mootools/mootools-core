@@ -52,8 +52,7 @@ Fx.Morph = new Class({
 Element.Properties.morph = {
 
 	set: function(options){
-		var morph = this.get('morph').cancel();
-		morph.setOptions(options);
+		this.get('morph').cancel().setOptions(options);
 		return this;
 	},
 
