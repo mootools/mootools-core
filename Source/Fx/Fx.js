@@ -35,8 +35,6 @@ var Fx = this.Fx = new Class({
 	initialize: function(options){
 		this.subject = this.subject || this;
 		this.setOptions(options);
-		var wait = this.options.wait;
-		if (wait === false) this.options.link = 'cancel';
 	},
 
 	getTransition: function(){
