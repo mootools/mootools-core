@@ -31,10 +31,18 @@ Element.Events.domready = {
 		document.fireEvent('domready');
 	};
 	
-	window.addEvent('load', domready);
-	
 	var repeat;
 	if (Browser.ie){
+		Element.Events.load = {
+			base: 'load',
+			onAdd: function(fn){
+				if (Browser.loaded) fn.call(this);
+			},
+			condition: function(){
+				domready();
+				return true;
+			}
+		};
 		var temp = document.createElement('div');
 		repeat = function(){
 			(Function.attempt(function(){

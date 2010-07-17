@@ -130,7 +130,7 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 	el.set('load', {method: 'get'});
 	el.load('test.html');
-	//The getter returns the Request.HTML instance, making its class methods available.
+	// the getter returns the Request.HTML instance, making its class methods available.
 	el.get('load').post('http://localhost/script');
 
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env php
-
 <?php
 
 $stderr = fopen('php://stderr', 'w');
@@ -11,7 +10,7 @@ $package = dirname(__FILE__);
 
 $pkg = new Packager($package);
 
-fwrite($stderr, "\nPackager is building $package\n\n");
+fwrite($stderr, "Packager is building MooTools Core\n\n");
 fwrite($stderr, "Included Components:\n");
 
 $no_compat = false;
@@ -26,18 +25,13 @@ foreach ($argv as $arg){
 
 $files = (empty($argv)) ? $pkg->get_all_files() : $pkg->components_to_files($argv);
 
+$files = $pkg->complete_files($files);
+
 foreach ($files as $file){
 	fwrite($stderr, "- $file: [" . implode(", ", $pkg->get_file_provides($file)) . "]\n");
 }
 
-fwrite($stderr, "\n");
-
-$output = $pkg->build_from_files($files);
-
-if ($no_compat){
-	$output = preg_replace("%//<1\.2compat>.*?//</1\.2compat>%s", '', $output);
-	$output = preg_replace("%/\*<1\.2compat>.*?</1.2compat>\*/%s", '', $output);
-}
+$output = $pkg->build($files, array(), array(), ($no_compat) ? array("1.2compat") : array());
 
 echo $output;
 

@@ -14,7 +14,8 @@ provides: [Element, Elements, $, $$, Iframe]
 ...
 */
 
-var Element = function(tag, props){
+// it needs to be this.Element cause IE8 erases the Element Object while pre-processing this script
+this.Element = function(tag, props){
 	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
@@ -59,9 +60,9 @@ new Type('Element', Element).mirror(function(name, method){
 
 if (!Browser.Element){
 	Element.parent = Object;
-	
-	Element.ProtoType = {};
-	
+
+	Element.ProtoType = {'$family': Function.from('element').hide()};
+
 	Element.mirror(function(name, method){
 		Element.ProtoType[name] = method;
 	});
@@ -76,7 +77,12 @@ Element.Constructors = new Hash;
 //</1.2compat>
 
 var IFrame = new Type('IFrame', function(){
-	var params = Array.link(arguments, {properties: Type.isObject, iframe: $defined});
+	var params = Array.link(arguments, {
+		properties: Type.isObject,
+		iframe: function(obj){
+			return (obj != null);
+		}
+	});
 	var props = params.properties || {};
 	var iframe = document.id(params.iframe);
 	var onload = props.onload || function(){};
@@ -163,7 +169,7 @@ Document.implement({
 		var types = {
 
 			string: function(id, nocash, doc){
-				id = doc.getElementById(id);
+				id = Slick.find(doc, '#' + id);
 				return (id) ? types.element(id, nocash) : null;
 			},
 			
@@ -171,7 +177,7 @@ Document.implement({
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
 					Object.append(el, Element.ProtoType);
-				};
+				}
 				return el;
 			},
 			
@@ -243,7 +249,11 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 //</1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
-	return Slick.search(this.document, selector, new Elements);
+	if (arguments.length == 1){
+		if (typeof selector == 'string') return Slick.search(this.document, selector, new Elements);
+		else if (Type.isEnumerable(selector)) return new Elements(selector);
+	}
+	return new Elements(arguments);
 });
 
 (function(){
@@ -264,11 +274,6 @@ var clean = function(item){
 		delete storage[uid];
 	}
 	return item;
-};
-
-var purge = function(){
-	Object.each(collected, clean);
-	if (window.CollectGarbage) CollectGarbage();
 };
 
 var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
@@ -462,7 +467,7 @@ Element.implement({
 	},
 
 	getPrevious: function(match){
-		return document.id(Slick.find(this, '!+ ' + (match || '')));
+		return document.id(Slick.find(this, '!~ ' + (match || '')));
 	},
 
 	getAllPrevious: function(match){
@@ -645,7 +650,12 @@ Element.implement('hasChild', function(element){
 
 });
 
-window.addListener('unload', purge);
+// purge
+
+window.addListener('unload', function(){
+	Object.each(collected, clean);
+	if (window.CollectGarbage) CollectGarbage();
+});
 
 })();
 
@@ -680,6 +690,15 @@ Element.Properties.tag = {
 	}
 
 };
+
+(function(maxLength){
+	if (maxLength != null) Element.Properties.maxlength = Element.Properties.maxLength = {
+		get: function(){
+			var maxlength = this.getAttribute('maxLength');
+			return maxlength == maxLength ? null : maxlength;
+		}
+	};
+})(document.createElement('input').getAttribute('maxLength'));
 
 Element.Properties.html = (function(){
 	

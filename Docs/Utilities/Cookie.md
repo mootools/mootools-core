@@ -70,7 +70,7 @@ Reads the value of a Cookie.
 
 ### Examples:
 
-	Cookie.read("username");
+	Cookie.read('username');
 
 
 

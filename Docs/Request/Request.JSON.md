@@ -40,9 +40,9 @@ Fired when the request completes. This overrides the signature of the Request su
 
 ### Example:
 
-	//This code will send a data object via a GET request and alert the retrieved data.
+	// this code will send a data object via a GET request and alert the retrieved data.
 	var jsonRequest = new Request.JSON({url: "http://site.com/tellMeAge.php", onSuccess: function(person){
-		alert(person.age);    //Alerts "25 years".
-		alert(person.height); //Alerts "170 cm".
-		alert(person.weight); //Alerts "120 kg".
+		alert(person.age);    // alerts "25 years".
+		alert(person.height); // alerts "170 cm".
+		alert(person.weight); // alerts "120 kg".
 	}}).get({'firstName': 'John', 'lastName': 'Doe'});

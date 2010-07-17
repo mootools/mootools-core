@@ -17,33 +17,34 @@ Event Method: constructor {#Event:constructor}
 
 #### Properties:
 
-* shift         - (*boolean*) True if the user pressed the shift key.
-* control       - (*boolean*) True if the user pressed the control key.
-* alt           - (*boolean*) True if the user pressed the alt key.
-* meta          - (*boolean*) True if the user pressed the meta key.
-* wheel         - (*number*) The amount of third button scrolling.
-* code          - (*number*) The keycode of the key pressed.
 * page.x        - (*number*) The x position of the mouse, relative to the full window.
 * page.y        - (*number*) The y position of the mouse, relative to the full window.
 * client.x      - (*number*) The x position of the mouse, relative to the viewport.
 * client.y      - (*number*) The y position of the mouse, relative to the viewport.
-* key           - (*string*) The key pressed as a lowercase string. key can be 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
-* target        - (*element*) The event target, not extended with [$][] for performance reasons.
+* rightClick	- (*boolean*) True if the user clicked the right mousebutton
+* wheel         - (*number*) The amount of third button scrolling.
 * relatedTarget - (*element*) The event related target, NOT `extended` with [$][].
+* target        - (*element*) The event target, not extended with [$][] for performance reasons.
+* code          - (*number*) The keycode of the key pressed.
+* key           - (*string*) The key pressed as a lowercase string. key can be 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
+* shift         - (*boolean*) True if the user pressed the shift key.
+* control       - (*boolean*) True if the user pressed the control key.
+* alt           - (*boolean*) True if the user pressed the alt key.
+* meta          - (*boolean*) True if the user pressed the meta key.
 
 ### Examples:
 
 	$('myLink').addEvent('keydown', function(event){
-	 	//The passed event parameter is already an instance of the Event class.
-		alert(event.key);   //Returns the lowercase letter pressed.
-		alert(event.shift); //Returns true if the key pressed is shift.
-		if (event.key == 's' && event.control) alert('Document saved.'); //Executes if the user hits Ctr+S.
+	 	// the passed event parameter is already an instance of the Event class.
+		alert(event.key);   // returns the lowercase letter pressed.
+		alert(event.shift); // returns true if the key pressed is shift.
+		if (event.key == 's' && event.control) alert('Document saved.'); //executes if the user presses Ctr+S.
 	});
 
 ### Notes:
 
 - Accessing event.page / event.client requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
-- Every event added with addEvent gets the mootools method automatically, without the need to manually instance it.
+- Every event added with addEvent gets the MooTools method automatically, without the need to manually instance it.
 
 
 Event Method: stop {#Event:stop}
@@ -69,9 +70,9 @@ Stop an Event from propagating and also executes preventDefault.
 
 	$('myAnchor').addEvent('click', function(event){
 		event.stop(); //Prevents the browser from following the link.
-		this.set('text', "Where do you think you're going?"); //'this' is Element that fires the Event.
+		this.set('text', 'Where do you think you\'re going?'); //'this' is Element that fires the Event.
 		(function(){
-			this.set('text', "Instead visit the Blog.").set('href', 'http://blog.mootools.net');
+			this.set('text','Instead visit the Blog.').set('href', 'http://blog.mootools.net');
 		}).delay(500, this);
 	});
 
@@ -112,10 +113,10 @@ Cross browser method to stop the propagation of an event (this stops the event f
 
 	$('myElement').addEvent('click', function(){
 		alert('click');
-		return false; // equivalent to stopPropagation.
+		return false; //equivalent to stopPropagation.
 	});
-		$('myChild').addEvent('click', function(event){
-		event.stopPropagation(); // this will prevent the event to bubble up, and fire the parent's click event.
+	$('myChild').addEvent('click', function(event){
+		event.stopPropagation(); //prevents the event from bubbling up, and fires the parent's click event.
 	});
 
 ### See Also:
@@ -149,7 +150,7 @@ Cross browser method to prevent the default action of the event.
 ##### JavaScript
 
 	$('myCheckbox').addEvent('click', function(event){
-		event.preventDefault(); //Will prevent the checkbox from being "checked".
+		event.preventDefault(); //prevents the checkbox from being "checked".
 	});
 
 ### See Also:
@@ -167,7 +168,7 @@ Additional Event key codes can be added by adding properties to the Event.Keys O
 
     Event.Keys.shift = 16;
     $('myInput').addEvent('keydown', function(event){
-	    if (event.key == "shift") alert("You pressed shift.");
+	    if (event.key == 'shift') alert('You pressed shift.');
     });
 
 #### Possible Keys:

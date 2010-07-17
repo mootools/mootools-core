@@ -33,7 +33,7 @@ The document.id function has a dual purpose: Getting the element by its id, and 
 #### Get a DOM Element by reference:
 
 	var div = document.getElementById('myElement');
-	div = document.id(div); //The element with all the Element methods applied.
+	div = document.id(div); // the element with all the Element methods applied.
 
 ### Notes:
 
@@ -54,12 +54,12 @@ However it is not recommended to use more frameworks, the $ variable can be set 
 	var myElement = $('myElement');
 	var myElement2 = document.id('myElement');
 	
-	myElement == myElement2; // true
+	myElement == myElement2; // returns true
 	
 	
 	(function($){
 		
-		// Now you can use $ safely in this closure
+		//Now you can use $ safely in this closure
 	
 	})(document.id)
 
@@ -71,46 +71,49 @@ However it is not recommended to use more frameworks, the $ variable can be set 
 Function: $$ {#Window:dollars}
 ------------------------------
 
-Selects and extends DOM elements. Elements arrays returned with $$ will also accept all the [Element][] methods.
+Selects and extends DOM elements. Return an Elements instance.
+The Element instance returned is an array-like object, supporting every [Array][] method and every [Element][] method.
 
 ### Syntax:
 
-	var myElements = $$(aTag[, anElement[, Elements[, ...]);
+	var myElements = $$(argument);
 
 ### Arguments:
 
-* Any number of the following as arguments are accepted:
- * HTMLCollections,
- * arrays of elements,
- * elements, or
- * strings as selectors.
+* selector - (*string*) A CSS selector
+* elements - (*elements*), (*collection*) or (*array*) An enumerable list of elements
+* element, element - (*element*) any number of elements as arguments
 
 ### Returns:
 
-* (*array*) - An array of all the DOM elements matched, extended with [$][].
+* (*elements*) - An array-like Elements collection of all the DOM elements matched, extended with [document:id][].
 
 ### Examples:
 
 #### Get Elements by Their Tag Names:
 
-	$$('a'); //Returns all anchor elements in the page.
-	$$('a', 'b'); //Returns all anchor and bold tags on the page.
+	$$('a'); // returns all anchor elements in the page.
+	
+#### Get an Elements instance by passing multiple elements:
+
+	$$(element1, element2, element3); // returns an Elements instance containing these 3 elements.
+	
+#### Convert any array or collection of elements to an Elements instance:
+
+	$$([element1, element2, element3]); // returns an Elements instance containing these 3 elements.
+	$$(document.getElementsByTagName('a')); // returns an Elements instance containing the result of the getElementsByTagName call.
 
 #### Using CSS Selectors:
 
-	$$('#myElement'); //Returns an array containing only the element with the id 'myElement'.
-	$$('#myElement a.myClass'); //Returns an array of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
-
-#### More Complex $$ Usage:
-
-	//Creates an array of all elements and selectors passed as arguments.
-	$$(myelement1, myelement2, 'a', '#myid, #myid2, #myid3', document.getElementsByTagName('div'));
+	$$('#myElement'); // returns an Elements instance containing only the element with the id 'myElement'.
+	$$('#myElement a.myClass'); // returns an Elements instance of all anchor tags with the class 'myClass' within the DOM element with id 'myElement'.
+	$$('a, b'); // returns an array of all anchor and bold elements in the page.
 
 ### Notes:
 
-- [$$][] will also accept CSS Selectors.
-- If an expression doesn't find any elements, an empty array will be returned.
-- The return type of element methods run through [$$][] is always an array, regardless of the amount of results.
+- Since MooTools 1.3 this function does not accept multiple collections or multiple strings as arguments.
+- If an expression doesn't find any elements, an empty Elements instance will be returned.
+- The return type of element methods run through [$$][] is always an Elements instance, regardless of the amount of results.
 
 
 
@@ -142,18 +145,18 @@ Creates a new Element of the type passed in.
 ### Examples:
 
 	var myAnchor = new Element('a', {
-		'href': 'http://mootools.net',
+		href: 'http://mootools.net',
 		'class': 'myClass',
-		'html': 'Click me!',
-		'styles': {
-			'display': 'block',
-			'border': '1px solid black'
+		html: 'Click me!',
+		styles: {
+			display: 'block',
+			border: '1px solid black'
 		},
-		'events': {
-			'click': function(){
+		events: {
+			click: function(){
 				alert('clicked');
 			},
-			'mouseover': function(){
+			mouseover: function(){
 				alert('mouseovered');
 			}
 		}
@@ -273,28 +276,28 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 
 	$('myElement').set('text', 'text goes here');
 	$('myElement').set('class', 'active');
-	//The 'styles' property passes the object to Element:setStyles.
+	// the 'styles' property passes the object to Element:setStyles.
 	var body = $(document.body).set('styles', {
-		'font': '12px Arial',
-		'color': 'blue'
+		font: '12px Arial',
+		color: 'blue'
 	});
 
 #### With an Object:
 
 	var myElement = $('myElement').set({
-		//The 'styles' property passes the object to Element:setStyles.
-		'styles': {
-			'font': '12px Arial',
-			'color': 'blue',
-			'border': '1px solid #f00'
+		// the 'styles' property passes the object to Element:setStyles.
+		styles: {
+			font: '12px Arial',
+			color: 'blue',
+			border: '1px solid #f00'
 		},
-		//The 'events' property passes the object to Element:addEvents.
-		'events': {
-			'click': function(){ alert('click'); },
-			'mouseover': function(){ this.addClass('over') }
+		// the 'events' property passes the object to Element:addEvents.
+		events: {
+			click: function(){ alert('click'); },
+			mouseover: function(){ this.addClass('over') }
 		},
 		//Any other property uses Element:setProperty.
-		'id': 'documentBody'
+		id: 'documentBody'
 	});
 
 ### Notes:
@@ -335,12 +338,12 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'ge
 
 #### Using Custom Getters:
 
-	var tag = $('myDiv').get('tag'); //Returns "div".
+	var tag = $('myDiv').get('tag'); // returns "div".
 
 #### Fallback to Element Attributes:
 
-	var id = $('myDiv').get('id'); //Returns "myDiv".
-	var value = $('myInput').get('value'); //Returns the myInput element's value.
+	var id = $('myDiv').get('id'); // returns "myDiv".
+	var value = $('myInput').get('value'); // returns the myInput element's value.
 
 ### Notes:
 
@@ -407,19 +410,19 @@ Tests this Element to see if it matches the argument passed in.
 
 #### Using a Tag Name:
 
-	//Returns true if #myDiv is a div.
+	// returns true if #myDiv is a div.
 	$('myDiv').match('div');
 
 #### Using a CSS Selector:
 
-	//Returns true if #myDiv has the class foo and is named "bar"
+	// returns true if #myDiv has the class foo and is named "bar"
 	$('myDiv').match('.foo[name=bar]');
 
 #### Using an Element:
 
 	var el = $('myDiv');
-	$('myDiv').match(el); //Returns true
-	$('otherElement').match(el); //Returns false
+	$('myDiv').match(el); // returns true
+	$('otherElement').match(el); // returns false
 
 
 
@@ -451,7 +454,7 @@ Checks all descendants of this Element for a match.
 
 ##### JavaScript
 
-	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); // tan tan tannn...
+	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); //tan tan tannn...
 
 
 
@@ -771,7 +774,7 @@ Clones the Element and returns the cloned one.
 
 ##### JavaScript
 
-	//Clones the Element and appends the clone after the Element.
+	// clones the Element and appends the clone after the Element.
 	var clone = $('myElement').clone().inject('myElement','after');
 
 ##### Resulting HTML
@@ -794,7 +797,7 @@ Clones the Element and returns the cloned one.
 Element Method: replaces {#Element:replaces}
 --------------------------------------------------
 
-Replaces the Element with an Element passed.
+Replaces the passed Element with Element.
 
 ### Syntax:
 
@@ -802,7 +805,7 @@ Replaces the Element with an Element passed.
 
 ### Arguments:
 
-1. el - (*mixed*) A string id representing the Element to be replaced with, or an Element reference.
+1. el - (*mixed*) A string id representing the Element to be replaced, or an Element reference.
 
 ### Returns:
 
@@ -844,7 +847,7 @@ Tests the Element to see if it has the passed in className.
 
 ##### JavaScript
 
-	$('myElement').hasClass('testClass'); //returns true
+	$('myElement').hasClass('testClass'); // returns true
 
 
 
@@ -1083,7 +1086,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Syntax:
 
-	var children = myElement.getsiblings([match]);
+	var siblings = myElement.getSiblings([match]);
 
 ### Arguments:
 
@@ -1091,7 +1094,7 @@ Like [Element:getAllPrevious][] but returns all Element's previous and next sibl
 
 ### Returns:
 
-* (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
+* (*array*) A [Elements](#Elements) array with all of the Element's siblings, except the text nodes.
 
 
 
@@ -1113,6 +1116,9 @@ Returns all the Element's children (excluding text nodes). Returns as [Elements]
 
 * (*array*) A [Elements](#Elements) array with all of the Element's children, except the text nodes.
 
+### Note:
+
+The difference between the methods *getChildren* and *getElements* is that getChildren will only return its direct children while getElements searches for all the Elements in any depth.
 
 Element Method: empty {#Element:empty}
 --------------------------------------
@@ -1188,7 +1194,7 @@ Reads the child inputs of the Element and generates a query string based on thei
 
 ##### JavaScript
 
-	$('myForm').toQueryString(); //Returns "email=bob@bob.com&zipCode=90210".
+	$('myForm').toQueryString(); // returns "email=bob@bob.com&zipCode=90210".
 
 
 Element Method: getSelected {#Element:getSelected}
@@ -1216,7 +1222,7 @@ Returns the selected options of a select element.
 
 ##### JavaScript
 
-	$('country-select').getSelected(); //Returns whatever the user selected.
+	$('country-select').getSelected(); // returns whatever the user selected.
 
 ### Note:
 
@@ -1250,7 +1256,7 @@ Returns a single element attribute.
 
 ##### JavaScript
 
-	var imgProps = $('myImage').getProperty('src'); //Returns: 'mootools.png'.
+	var imgProps = $('myImage').getProperty('src'); // returns: 'mootools.png'.
 
 
 
@@ -1280,7 +1286,7 @@ Gets multiple element attributes.
 ##### JavaScript
 
 	var imgProps = $('myImage').getProperties('id', 'src', 'title', 'alt');
-	//Returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
+	// returns: { id: 'myImage', src: 'mootools.png', title: 'MooTools, the compact JavaScript framework', alt: '' }
 
 
 
@@ -1519,9 +1525,9 @@ This Object contains the functions that respond to the first argument passed in 
 
 ### Using a Custom Element Property
 
-	//Gets the "disabled" property.
+	// gets the "disabled" property
 	$(element).get('disabled');
-	//Sets the "disabled" property to true, along with the attribute.
+	// sets the "disabled" property to true, along with the attribute
 	$(element).set('disabled', true);
 
 
@@ -1531,10 +1537,10 @@ Additionally, you can access these custom getters and setters using an object as
 
 #### Example:
 
-	//Using set:
+	// using set:
 	$(divElement).set({html: '<p>Hello <em>People</em>!</p>', style: 'background:red'});
 
-	//For new Elements (works the same as set):
+	// for new Elements (works the same as set):
 	new Element('input', {type: 'checkbox', checked: true, disabled: true});
 
 
@@ -1623,7 +1629,7 @@ Sets the inner text of the Element.
 ##### JavaScript
 
 	$('myElement').set('text', 'some text');
-	//The text of myElement is now 'some text'.
+	// the text of myElement is now 'some text'.
 
 ##### Resulting HTML
 
@@ -1649,7 +1655,7 @@ Gets the inner text of the Element.
 
 ##### JavaScript
 
-	var myText = $('myElement').get('text'); //myText = 'my text'.
+	var myText = $('myElement').get('text'); // myText = 'my text'.
 
 
 
@@ -1676,7 +1682,7 @@ Returns the tag name of the Element in lower case.
 
 ##### JavaScript
 
-	var myTag = $('myImage').get('tag'); // myTag = 'img'.
+	var myTag = $('myImage').get('tag'); // myTag = 'img'
 
 
 
@@ -1776,8 +1782,8 @@ Elements Method: constructor {#Elements:constructor}
 		el.setStyle('color', 'red');
 	});
 
-	//Because $$('myselector') also accepts Element methods, the below
-	//example has the same effect as the one above.
+	// Because $$('myselector') also accepts Element methods, the below
+	// example has the same effect as the one above.
 	$$('p').setStyle('color', 'red');
 
 
@@ -1832,7 +1838,7 @@ This method has been deprecated. Use [Element:contains][] instead.
 	var myElement2 = document.id('element2');
 	myElement !== myElement2 && myElement.contains(element2);
 	
-	// This is how it could be implemented
+	// could be implemented as:
 	Element.implement('hasChild', function(element){
 		return this !== element && this.contains(element);
 	});

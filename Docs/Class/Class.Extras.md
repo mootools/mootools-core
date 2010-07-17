@@ -105,8 +105,8 @@ Removes the first function of the Chain instance stack and executes it. The next
 		function(){ alert('do dishes'); },
 		function(){ alert('put away clean dishes'); }
 	);
-	myChain.callChain(); //Will alert 'do dishes'.
-	myChain.callChain(); //Will alert 'put away clean dishes'.
+	myChain.callChain(); // alerts 'do dishes'.
+	myChain.callChain(); // alerts 'put away clean dishes'.
 
 
 
@@ -125,9 +125,9 @@ Clears the stack of a Chain instance.
 
 ### Example:
 
-	var myFx = Fx.Tween('myElement', 'color'); //Fx.Tween inherited Fx's implementation of Chain.
-	myFx.chain(function(){ while(true) alert("D'oh!"); }); //Chains an infinite loop of alerts.
-	myFx.clearChain(); //Cancels the infinite loop of alerts before allowing it to begin.
+	var myFx = Fx.Tween('myElement', 'color'); // Fx.Tween inherited Fx's implementation of Chain.
+	myFx.chain(function(){ while(true) alert("D'oh!"); }); // chains an infinite loop of alerts.
+	myFx.clearChain(); // cancels the infinite loop of alerts before allowing it to begin.
 
 ### See Also:
 
@@ -229,8 +229,8 @@ The same as [addEvent][], but accepts an object to add multiple events at once.
 
 	var myFx = new Fx.Tween('element', 'opacity');
 	myFx.addEvents({
-		'start': myStartFunction,
-		'complete': function() {
+		start: myStartFunction,
+		complete: function() {
 			alert('Done.');
 		}
 	});
@@ -250,7 +250,7 @@ Fires all events of the specified type in the Class instance.
 
 1. type  - (*string*) The type of event (e.g. 'complete').
 2. args  - (*mixed*, optional) The argument(s) to pass to the function. To pass more than one argument, the arguments must be in an array.
-3. delay - (*number*, optional) Delay in miliseconds to wait before executing the event (defaults to 0).
+3. delay - (*number*, optional) Delay in milliseconds to wait before executing the event (defaults to 0).
 
 ### Returns:
 
@@ -262,7 +262,7 @@ Fires all events of the specified type in the Class instance.
 		Implements: Events,
 		initialize: function(arg1, arg2){
 			//...
-			this.fireEvent("initialize", [arg1, arg2], 50);
+			this.fireEvent('initialize', [arg1, arg2], 50);
 		}
 	});
 
@@ -425,7 +425,7 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 		}
 	});
 
-	myWidget.show(); // Will fire the event and alerts 'Lets show it!'
+	myWidget.show(); // fires the event and alerts 'Lets show it!'
 
 
 [Class]: /core/Class/Class

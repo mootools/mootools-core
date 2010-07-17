@@ -3,6 +3,10 @@ Type: Object {#Object}
 
 A collection of Object functions.
 
+### See Also:
+
+- [MDC Object][]
+
 Function: Object.each {#Object:Object-each}
 ------------------------------------
 
@@ -32,9 +36,9 @@ Used to iterate through an object.
 
 ### Example:
 
-    //Alerts "The first day of the week is Sunday", "The second day of the week is Monday", etc:
-	Object.each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
-		alert("The " + key + " day of the week is " + value);
+    // alerts 'The first day of the week is Sunday', 'The second day of the week is Monday', etc.:
+	Object.each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
+		alert('The ' + key + ' day of the week is ' + value);
 	});
 	
 ### Notes:
@@ -65,11 +69,11 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var obj1 = {a: 0, b: 1};
 	var obj2 = {c: 2, d: 3};
 	var obj3 = {a: 4, d: 5};
-	var merged = Object.merge(obj1, obj2, obj3); //returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
+	var merged = Object.merge(obj1, obj2, obj3); // returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
 
 	var nestedObj1 = {a: {b: 1, c: 1}};
 	var nestedObj2 = {a: {b: 2}};
-	var nested = Object.merge(nestedObj1, nestedObj2); //returns: {a: {b: 2, c: 1}}
+	var nested = Object.merge(nestedObj1, nestedObj2); // returns: {a: {b: 2, c: 1}}
 
 ### Notes:
 
@@ -130,16 +134,16 @@ Copies all the properties from the second object passed in to the first object p
 ### Examples:
 
 	var firstObj = {
-		'name': 'John',
-		'lastName': 'Doe'
+		name: 'John',
+		lastName: 'Doe'
 	};
 	var secondObj = {
-		'age': '20',
-		'sex': 'male',
-		'lastName': 'Dorian'
+		age: '20',
+		sex: 'male',
+		lastName: 'Dorian'
 	};
 	Object.append(firstObj, secondObj);
-	//firstObj is now: {'name': 'John', 'lastName': 'Dorian', 'age': '20', 'sex': 'male'};
+	//firstObj is now: {name: 'John', lastName: 'Dorian', age: '20', sex: 'male'};
 
 ### Notes:
 
@@ -167,11 +171,11 @@ Get a subset of an object.
 ### Examples:
 
 	var obj = {
-		'a': 'one', 
-		'b': 'two', 
-		'c': 'three'
+		a: 'one', 
+		b: 'two', 
+		c: 'three'
 	};
-	Object.subset(['a','c']); // returns {'a': 'one', 'c': 'three'}
+	Object.subset(['a','c']); // returns {a: 'one', c: 'three'}
 
 
 
@@ -374,14 +378,14 @@ Returns an array containing all the values, in the same order as the keys return
 
 
 
-Function: Object.length {#Object:Object-length}
+Function: Object.getLength {#Object:Object-getLength}
 ----------------------------------------
 
 Returns the number of keys in the object.
 
 ### Syntax:
 
-	var length = Object.length(object);
+	var length = Object.getLength(object);
 
 ### Arguments:
 
@@ -394,10 +398,10 @@ Returns the number of keys in the object.
 ### Examples:
 
 	var myObject = {
-		'name': 'John',
-		'lastName': 'Doe'
+		name: 'John',
+		lastName: 'Doe'
 	});
-	Object.length(myObject); // returns 2
+	Object.getLength(myObject); // returns 2
 
 
 
@@ -422,7 +426,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 
 ### Examples:
 
-	var myObject = {'a': 'one', 'b': 'two', 'c': 3};
+	var myObject = {a: 'one', b: 'two', c: 3};
 	Object.keyOf(myObject,'two'); // returns 'b'
 	Object.keyOf(myObject,3); // returns 'c'
 	Object.keyOf(myObject,'four'); // returns false
@@ -449,9 +453,9 @@ Tests for the presence of a specified value in the object.
 
 ### Examples:
 
-	var myObject = {'a': 'one', 'b': 'two', 'c': 'three'};
-	Object.contains(myObject, 'one'); //returns true
-	Object.contains(myObject, 'four'); //returns false
+	var myObject = {a: 'one', b: 'two', c: 'three'};
+	Object.contains(myObject, 'one'); // returns true
+	Object.contains(myObject, 'four'); // returns false
 
 
 
@@ -475,7 +479,7 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 
 ### Examples:
 
-	Object.toQueryString({apple: "red", lemon: "yellow"}); //returns "apple=red&lemon=yellow"
+	Object.toQueryString({apple: 'red', lemon: 'yellow'}); // returns 'apple=red&lemon=yellow'
 
 
 Deprecated Functions {#Deprecated-Functions}
@@ -484,7 +488,7 @@ Deprecated Functions {#Deprecated-Functions}
 Type: Hash {#Deprecated-Functions:Hash}
 --------------------------------------
 
-Hash has been deprecated. Each Hash methods has a similar Object method.
+Hash has been deprecated. Each Hash method has a similar Object method or a Vanilla JS equivalent.
 
 Hash Method: has {#Deprecated-Functions:Hash:has}
 -------------------------------------------------
@@ -588,7 +592,7 @@ Use [Object.toQueryString](#Object:Object-toQueryString)
 
 
 
-
+[MDC Object]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Object
 [Object]: #Object
 [Array:indexOf]: /core/Types/Array/#Array:indexOf
 [Object:values]: #Object:values

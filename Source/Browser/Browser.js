@@ -43,7 +43,7 @@ var Browser = this.Browser = {
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
-		name: ua.match(/ip(ad|od|hone)/) ? 'ipod' : (ua.match(/(webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
+		name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
 	},
 
 	Features: {
@@ -121,8 +121,8 @@ Browser.exec = function(text){
 
 String.implement('stripScripts', function(exec){
 	var scripts = '';
-	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(){
-		scripts += arguments[1] + '\n';
+	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
+		scripts += code + '\n';
 		return '';
 	});
 	if (exec === true) Browser.exec(scripts);
@@ -162,11 +162,13 @@ if (document.execCommand) try {
 	document.execCommand("BackgroundImageCache", false, true);
 } catch (e){}
 
-var unloadEvent = function(){
-	this.detachEvent('onunload', unloadEvent);
-	document.head = document.html = document.window = null;
-};
-if (this.attachEvent) this.attachEvent('onunload', unloadEvent);
+if (this.attachEvent){
+	var unloadEvent = function(){
+		this.detachEvent('onunload', unloadEvent);
+		document.head = document.html = document.window = null;
+	};
+	this.attachEvent('onunload', unloadEvent);
+}
 
 // IE fails on collections and <select>.options (refers to <select>)
 var arrayFrom = Array.from;
@@ -191,6 +193,8 @@ try {
 }
 
 //<1.2compat>
+
+if (Browser.Platform.ios) Browser.Platform.ipod = true;
 
 Browser.Engine = {};
 
@@ -217,7 +221,7 @@ if (Browser.firefox){
 	else setEngine('gecko', 18);
 }
 
-if (Browser.safari || Browser.chrome || Browser.konqueror){
+if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
 	
 	switch (Browser.version){
@@ -236,7 +240,7 @@ if (Browser.opera){
 }
 
 if (Browser.name == 'unknown'){
-	switch ((navigator.userAgent.toLowerCase().match(/(webkit|khtml|gecko)/) || [])[0]){
+	switch ((ua.match(/(?:webkit|khtml|gecko)/) || [])[0]){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;

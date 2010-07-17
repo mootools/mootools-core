@@ -72,7 +72,7 @@ Object.extend({
 		return values;
 	},
 	
-	length: function(object){
+	getLength: function(object){
 		return Object.keys(object).length;
 	},
 	
