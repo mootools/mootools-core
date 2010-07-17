@@ -46,7 +46,7 @@ Function.implement({
 	},
 
 	delay: function(delay, bind, args){
-		return setTimeout(this.bind(bind, args), delay);
+		return setTimeout(this.bind(bind, args || []), delay);
 	},
 
 	pass: function(args, bind){
@@ -54,7 +54,7 @@ Function.implement({
 	},
 
 	periodical: function(periodical, bind, args){
-		return setInterval(this.bind(bind, args), periodical);
+		return setInterval(this.bind(bind, args || []), periodical);
 	},
 
 	run: function(args, bind){

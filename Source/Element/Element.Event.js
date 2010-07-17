@@ -22,7 +22,7 @@ Element.Properties.events = {set: function(events){
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
-		events[type] = events[type] || {'keys': [], 'values': []};
+		events[type] = events[type] || {keys: [], values: []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
 		var realType = type, custom = Element.Events[type], condition = fn, self = this;
@@ -102,12 +102,12 @@ Element.Properties.events = {set: function(events){
 
 	cloneEvents: function(from, type){
 		from = document.id(from);
-		var fevents = from.retrieve('events');
-		if (!fevents) return this;
+		var events = from.retrieve('events');
+		if (!events) return this;
 		if (!type){
-			for (var evType in fevents) this.cloneEvents(from, evType);
-		} else if (fevents[type]){
-			fevents[type].keys.each(function(fn){
+			for (var eventType in events) this.cloneEvents(from, eventType);
+		} else if (events[type]){
+			events[type].keys.each(function(fn){
 				this.addEvent(type, fn);
 			}, this);
 		}
@@ -121,8 +121,11 @@ Element.NativeEvents = {
 	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
 	mouseover: 2, mouseout: 2, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
 	keydown: 2, keypress: 2, keyup: 2, //keyboard
+	orientationchange: 2, // mobile
+	touchstart: 2, touchmove: 2, touchend: 2, touchcancel: 2, // touch
+	gesturestart: 2, gesturechange: 2, gestureend: 2, // gesture
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, //form elements
-	load: 1, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
+	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 	error: 1, abort: 1, scroll: 1 //misc
 };
 

@@ -46,7 +46,7 @@ Morphing one Element to match the CSS values within a CSS class:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
 
-	//The styles of myClassName will be applied to the target Element.
+	// the styles of myClassName will be applied to the target Element.
 	myEffect.start('.myClassName');
 
 
@@ -169,7 +169,7 @@ Gets the default Fx.Morph instance for the Element.
 
 	el.set('morph', {duration: 'long', transition: 'bounce:out'});
 	el.morph({height: 100, width: 100});
-	el.get('morph'); //The Fx.Morph instance.
+	el.get('morph'); // the Fx.Morph instance.
 
 
 

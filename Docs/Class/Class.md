@@ -49,7 +49,7 @@ Useful when implementing a default set of properties in multiple Classes.  The I
 		}
 	});
 	var myCat = new Cat('Micia');
-	alert(myCat.name); //alerts 'Micia'
+	alert(myCat.name); // alerts 'Micia'
 
 	var Cow = new Class({
 		initialize: function(){
@@ -67,13 +67,13 @@ Useful when implementing a default set of properties in multiple Classes.  The I
 	var Cat = new Class({
 		Extends: Animal,
 		initialize: function(name, age){
-			this.parent(age); //will call initalize of Animal
+			this.parent(age); // calls initalize method of Animal class
 			this.name = name;
 		}
 	});
 	var myCat = new Cat('Micia', 20);
-	alert(myCat.name); //Alerts 'Micia'.
-	alert(myCat.age); //Alerts 20.
+	alert(myCat.name); // alerts 'Micia'.
+	alert(myCat.age); // alerts 20.
 
 #### Implements Example:
 
@@ -90,7 +90,7 @@ Useful when implementing a default set of properties in multiple Classes.  The I
 	});
 	var myAnimal = new Cat(20);
 	myAnimal.setName('Micia');
-	alert(myAnimal.name); //Alerts 'Micia'.
+	alert(myAnimal.name); // alerts 'Micia'.
 
 
 
@@ -123,4 +123,4 @@ The same as creating a [new Class](#Class:constructor) with the Implements prope
 	});
 	var myAnimal = new Animal(20);
 	myAnimal.setName('Micia');
-	alert(myAnimal.name); //alerts 'Micia'
+	alert(myAnimal.name); // alerts 'Micia'

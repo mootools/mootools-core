@@ -27,7 +27,7 @@ Fx Method: constructor {#Fx:constructor}
 * unit       - (*string*: defaults to false) The unit, e.g. 'px', 'em', or '%'. See [Element:setStyle](/Element/Element/#Element:setStyle).
 * link       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
-	* 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
+	* 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, cancelling the one that is currently running. (Synonymous with 'wait': false from 1.x)
 	* 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
 * duration   - (*number*: defaults to 500) The duration of the effect in ms. Can also be one of:
 	* 'short'  - 250ms

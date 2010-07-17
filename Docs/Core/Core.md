@@ -42,7 +42,7 @@ Returns the type of object that matches the item passed in.
 ### Example:
 
 	var myString = 'hello';
-	typeOf(myString); //Returns "string".
+	typeOf(myString); // returns "string".
 	
 ### Notes:
 
@@ -71,12 +71,12 @@ Checks to see if an object is an instance of a particular Type.
 ### Examples:
 
 	var foo = [];
-	instanceOf(foo, Array)	// true
-	instanceOf(foo, String)	// false
+	instanceOf(foo, Array)	// returns true
+	instanceOf(foo, String)	// returns false
 	
 	var myClass = new Class();
 	var bar = new myClass();
-	instanceOf(bar, myClass)	// true
+	instanceOf(bar, myClass)	// returns true
 
 
 Deprecated Functions {#Deprecated-Functions}
@@ -121,9 +121,9 @@ If you really need this function you can implement it like so:
 		return (obj != undefined);
 	};
 
-	// Or just use it like this
+	// or just use it like this:
 	if(obj != undefined){
-		// Do something
+		// do something
 	}
 
 
@@ -152,7 +152,7 @@ This method has been deprecated. Use [Function.from](/core/Types/Function#Functi
 ### Example:
 
 	var myFunc = Function.from();
-	// Or probably better....
+	// or better:
 	var myFunc = function(){};
 	
 
@@ -164,28 +164,28 @@ This method has been deprecated. Use [Function.from](/core/Types/Function#Functi
 
 ### Example:
 
-	myLink.addEvent('click', Function.from(false)); //Prevents a link Element from being clickable.
+	myLink.addEvent('click', Function.from(false)); // prevents a link Element from being clickable
 
 
 
 Function: $extend {#Deprecated-Functions:extend}
 ---------------------------
 
-This method has been deprecated. Please use [Object.append](#Object:Object-append) instead.
+This method has been deprecated. Please use [Object.append](/core/Types/Object#Object:Object-append) instead.
 
 
 
 Function: $merge {#Deprecated-Functions:merge}
 -------------------------
 
-This method has been deprecated. Please use [Object.merge](#Object:Object-merge) instead.
+This method has been deprecated. Please use [Object.merge](/core/Types/Object#Object:Object-merge) instead.
 
 
 
 Function: $each {#Deprecated-Functions:each}
 -----------------------
 
-This method has been deprecated. Please use [Array.each](/core/Types/Array#Array:Array-each) or [Object.each](#Object:Object-each) instead.
+This method has been deprecated. Please use [Array.each](/core/Types/Array#Array:Array-each) or [Object.each](/core/Types/Object#Object:Object-each) instead.
 
 
 

@@ -61,8 +61,8 @@ Element.implement({
 		var element = this;
 		if (isBody(element)) return null;
 		if (!Browser.ie) return element.offsetParent;
-		while ((element = element.parentNode) && !isBody(element)){
-			if (styleString(element, 'position') != 'static') return element;
+		while ((element = element.parentNode)){
+			if (styleString(element, 'position') != 'static' || isBody(element)) return element;
 		}
 		return null;
 	},

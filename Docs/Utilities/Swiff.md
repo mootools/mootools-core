@@ -26,7 +26,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
   * allowScriptAccess - (*string*: defaults to always) The domain that the SWF object allows access to.
   * quality - (*string*: defaults to 'high') The render quality of the movie.
   * swLiveConnect - (*boolean*: defaults to true) the swLiveConnect parameter to allow remote scripting.
-  * wMode - (*string*: defaults to 'transparent') Allows the SWF to be displayed with a transparent background.
+  * wMode - (*string*: defaults to 'window') Changes the way the SWF is displayed in the browser.
 * properties - (*object*) Additional attributes for the object element.
 * vars - (*object*) Vars will be passed to the SWF as querystring in flashVars.
 * callBacks - (*object*) Functions to call from the SWF. These will be available globally in the movie, and bound to the object.
@@ -42,7 +42,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 		width: 500,
 		height: 400,
 		params: {
-			wmode: 'opaque',
+			wMode: 'opaque',
 			bgcolor: '#ff3300'
 		},
 		vars: {
@@ -58,6 +58,7 @@ Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject
 
 1. Although Swiff returns the object, this element will NOT have any Element methods applied to it.
 2. The $ function on an object/embed tag will only return its reference without further processing.
+3. Avoid changing the wMode param to 'transparent'. It will make your page more processor intensive, especially when running in a background tab.
 
 Swiff Function: remote {#Swiff:remote}
 --------------------------------------
@@ -66,12 +67,13 @@ Calls an ActionScript function from JavaScript.
 
 ### Syntax:
 
-	var result = Swiff.remote(obj, fn);
+	var result = Swiff.remote(obj, fn[, arg, arg, arg ...]);
 
 ### Arguments:
 
 1. obj - (*element*) A Swiff instance (an HTML object Element).
 2. fn  - (*string*) The name of the function to execute in the Flash movie.
+3. arg - (*mixed*) Any number of arguments to pass to the named function.
 
 ### Returns:
 
@@ -80,7 +82,7 @@ Calls an ActionScript function from JavaScript.
 ### Example:
 
 	var obj = new Swiff('myMovie.swf');
-	//Alerts "This is from the .swf file!".
+	// alerts "This is from the .swf file!".
 	alert(Swiff.remote(obj, 'myFlashFn'));
 
 ### Note:
