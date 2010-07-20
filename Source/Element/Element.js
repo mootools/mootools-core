@@ -236,9 +236,7 @@ Window.implement({
 	Slick.search = function(context, expression, append){
 		if(Selectors.Pseudo){
 			for(var pseudo in Selectors.Pseudo){
-				if(!Selectors.Pseudo.hasOwnProperty(pseudo)) continue;
-				var fn = Selectors.Pseudo[pseudo];
-				Slick.definePseudo(pseudo, Selectors.Pseudo[pseudo]);
+				if(Selectors.Pseudo.hasOwnProperty(pseudo)) Slick.definePseudo(pseudo, Selectors.Pseudo[pseudo]);
 			}
 			Selectors.Pseudo = new Hash;
 		}
