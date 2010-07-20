@@ -36,17 +36,25 @@ this.Chain = new Class({
 
 });
 
-var Events = this.Events = new Class({
+var removeOn = function(string){
+	return string.replace(/^on([A-Z])/, function(full, first){
+		return first.toLowerCase();
+	});
+};
+
+this.Events = new Class({
 
 	$events: {},
 
 	addEvent: function(type, fn, internal){
-		type = Events.removeOn(type);
-		if (fn/*<1.2compat>*/ && fn != $empty /*</1.2compat>*/){
-			this.$events[type] = this.$events[type] || [];
-			this.$events[type].include(fn);
-			if (internal) fn.internal = true;
-		}
+		type = removeOn(type);
+
+		/*<1.2compat>*/
+		if (fn == $empty) return this;
+		/*</1.2compat>*/
+
+		this.$events[type] = (this.$events[type] || []).include(fn);
+		if (internal) fn.internal = true;
 		return this;
 	},
 
@@ -56,18 +64,21 @@ var Events = this.Events = new Class({
 	},
 
 	fireEvent: function(type, args, delay){
-		type = Events.removeOn(type);
-		if (!this.$events || !this.$events[type]) return this;
-		this.$events[type].each(function(fn){
-			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
+		type = removeOn(type);
+		var events = this.$events[type];
+		if (!events) return this;
+		args = Array.from(args);
+		events.each(function(fn){
+			if (delay) fn.delay(delay, this, args);
+			else fn.apply(this, args);
 		}, this);
 		return this;
 	},
 
 	removeEvent: function(type, fn){
-		type = Events.removeOn(type);
-		if (!this.$events[type]) return this;
-		if (!fn.internal) this.$events[type].erase(fn);
+		type = removeOn(type);
+		var events = this.$events[type];
+		if (events && !fn.internal) events.erase(fn);
 		return this;
 	},
 
@@ -77,7 +88,7 @@ var Events = this.Events = new Class({
 			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
-		if (events) events = Events.removeOn(events);
+		if (events) events = removeOn(events);
 		for (type in this.$events){
 			if (events && events != type) continue;
 			var fns = this.$events[type];
@@ -87,12 +98,6 @@ var Events = this.Events = new Class({
 	}
 
 });
-
-Events.removeOn = function(string){
-	return string.replace(/^on([A-Z])/, function(full, first){
-		return first.toLowerCase();
-	});
-};
 
 this.Options = new Class({
 
