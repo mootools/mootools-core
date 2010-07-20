@@ -232,6 +232,20 @@ Window.implement({
 
 //<1.2compat>
 
+(function(search){
+	Slick.search = function(context, expression, append){
+		if(Selectors.Pseudo){
+			for(var pseudo in Selectors.Pseudo){
+				if(!Selectors.Pseudo.hasOwnProperty(pseudo)) continue;
+				var fn = Selectors.Pseudo[pseudo];
+				Slick.definePseudo(pseudo, Selectors.Pseudo[pseudo]);
+			}
+			Selectors.Pseudo = new Hash;
+		}
+		return search(context, expression, append);
+	}
+})(Slick.search);
+
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
