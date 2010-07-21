@@ -17,6 +17,8 @@ describe('Element.set `opacity`', {
 	'should return the opacity of an Element': function() {
 		var div = new Element('div').set('opacity', 0.4);
 		value_of(div.get('opacity') == 0.4).should_be_true();
+		div.set('opacity', 0);
+		value_of(div.get('opacity') == 0).should_be_true();
 	},
 	
 	'should return the opacity of an Element without seting it before': function() {
