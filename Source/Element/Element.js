@@ -232,17 +232,32 @@ Window.implement({
 
 //<1.2compat>
 
-(function(search){
-	Slick.search = function(context, expression, append){
-		if(Selectors.Pseudo){
-			for(var pseudo in Selectors.Pseudo){
-				if(Selectors.Pseudo.hasOwnProperty(pseudo)) Slick.definePseudo(pseudo, Selectors.Pseudo[pseudo]);
+(function(search, find, match){
+	if (!this.Selectors) this.Selectors = {};
+	var pseudos = this.Selectors.Pseudo = new Hash();
+
+	var addSlickPseudos = function(){
+		for (var name in pseudos){
+			if (pseudos.hasOwnProperty(name)){
+				Slick.definePseudo(name, pseudos[name])
+				delete pseudos[name];
 			}
-			Selectors.Pseudo = new Hash;
 		}
-		return search(context, expression, append);
 	}
-})(Slick.search);
+
+	Slick.search = function(){
+		addSlickPseudos();
+		return search.apply(this, arguments);
+	}
+	Slick.find = function(){
+		addSlickPseudos();
+		return find.apply(this, arguments);
+	}
+	Slick.match = function(){
+		addSlickPseudos();
+		return match.apply(this, arguments);
+	}
+})(Slick.search, Slick.find, Slick.match);
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
