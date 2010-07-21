@@ -86,7 +86,7 @@ describe('typeOf', {
 	},
 	
 	"should return 'elements' for Elements": function(){
-		value_of(typeOf(new Elements)).should_be('elements');
+		if ('Elements' in window) value_of(typeOf(new Elements)).should_be('elements');
 	},
 	
 	"should return 'window' for the window object": function(){

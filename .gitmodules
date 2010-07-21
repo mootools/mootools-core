@@ -1,0 +1,3 @@
+[submodule "JSTD-Adapter"]
+	path = JSTD-Adapter
+	url = git://github.com/cpojer/jasmine-jstd-adapter.git
