@@ -11,14 +11,33 @@ describe('Element.set `opacity`', {
 	'should set the opacity of an Element': function() {
 		var el = new Element('div').set('opacity', 0.4);
 		if (Browser.Engine.trident) value_of(el.style.filter).should_be('alpha(opacity=40)');
-		value_of(el.style.opacity == 0.4).should_be_true();
+		else value_of(el.style.opacity == 0.4).should_be_true();
 	},
 
 	'should return the opacity of an Element': function() {
-		value_of(new Element('div').set('opacity', 0.4).get('opacity') == 0.4).should_be_true();
+		var div = new Element('div').set('opacity', 0.4);
+		value_of(div.get('opacity') == 0.4).should_be_true();
+	},
+	
+	'should return the opacity of an Element without seting it before': function() {
+		var div = new Element('div');
+		if (Browser.Engine.trident) div.style.filter = 'alpha(opacity=40)';
+		else div.style.opacity = 0.4;
+		value_of(div.get('opacity') == 0.4).should_be_true();
+	},
+	
+	'should not remove existent filters on browsers with filters': function(){
+		var div = new Element('div');
+		if (Browser.Engine.trident){
+			div.style.filter = 'blur(strength=50)';
+			div.set('opacity', 0.4);
+			value_of(div.style.filter).should_match(/blur\(strength=50\)/i);
+		}
 	}
 
 });
+
+
 
 describe('Element.getStyle', {
 
