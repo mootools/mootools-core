@@ -264,9 +264,6 @@ force('String', String, [
 	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
 ])('Function', Function, [
 	'apply', 'call'
-])('Object', Object, [
-	'create', 'defineProperty', 'defineProperties', 'getPrototypeOf','keys', 'seal', 'freeze', 
-	'getOwnPropertyDescriptor',	'getOwnPropertyNames'
 ])('RegExp', RegExp, ['exec', 'test'])('Date', Date, ['now']);
 
 Date.extend('now', function(){
