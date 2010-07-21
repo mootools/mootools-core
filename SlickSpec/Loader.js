@@ -1,4 +1,9 @@
-var loadSpecs = (function(Sets){
+var loadSpecs = function(Sets){
+
+var toString = Object.prototype.toString;
+var isArray = Array.isArray || function(array){
+	return toString.call(array) == '[object Array]';
+};
 
 var forEach = function(array, fn, bind){
 	for (var i = 0, l = array.length; i < l; i++){
@@ -19,10 +24,10 @@ var parseQueryString = function(string){
 			var current = obj[key];
 			if(i < keys.length - 1)
 				obj = obj[key] = current || {};
-			else if(current && current._type == 'Array') // JSSpec prototyping
+			else if(current && isArray(current))
 				current.push(value);
 			else
-				obj[key] = current != undefined ? [current, value] : value;
+				obj[key] = current != null ? [current, value] : value;
 		});
 	});
 	return res;
@@ -34,14 +39,14 @@ var getSpecs = function(queryString){
 	var requestedSpecs = [],
 		specs = queryString.specs;
 	
-	forEach(specs && specs._type == 'Array' ? specs : [specs], function(spec){
+	forEach(specs && isArray(specs) ? specs : [specs], function(spec){
 		if (Sets[spec] && requestedSpecs.indexOf(spec) == -1) requestedSpecs.push(spec);
 	});
 	
 	return requestedSpecs;
 };
 
-var loadSpecs = function(obj){
+var load = function(obj){
 	for (var i = 0; i < obj.length; i++){
 		SpecNames.push(obj[i]);
 		
@@ -53,6 +58,6 @@ var loadSpecs = function(obj){
 };
 
 var requestedSpecs = getSpecs(document.location.search.substr(1));
-loadSpecs(requestedSpecs);
+load(requestedSpecs);
 
-});
+};

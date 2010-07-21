@@ -5,11 +5,10 @@
 
 <!-- JSSpec -->
 
-<link rel="stylesheet" type="text/css" href="SlickSpec/slickspec.css" />
-<script type="text/javascript" charset="utf-8" src="SlickSpec/diff_match_patch.js"></script>
-<script type="text/javascript" charset="utf-8" src="SlickSpec/JSSpec.js"></script>
-<script type="text/javascript" charset="utf-8" src="SlickSpec/JSSpecHelpers.js"></script>
-<script type="text/javascript" charset="utf-8" src="SlickSpec/simple_request.js"></script>
+<link rel="stylesheet" type="text/css" href="Jasmine/jasmine.css">
+<script type="text/javascript" src="Jasmine/jasmine.js"></script>
+<script type="text/javascript" src="Jasmine/jasmine-html.js"></script>
+
 <script type="text/javascript" charset="utf-8" src="SlickSpec/Loader.js"></script>
 
 <!-- MooTools -->
@@ -58,14 +57,64 @@
 var SpecNames = [],
 	Name = 'MooTools-Core-1.3';
 
+var value_of = expect;
+
+jasmine.Matchers.prototype.should_be = jasmine.Matchers.prototype.toEqual;
+jasmine.Matchers.prototype.should_not_be = jasmine.Matchers.prototype.toNotEqual;
+
+jasmine.Matchers.prototype.should_be_true = jasmine.Matchers.prototype.toBeTruthy;
+jasmine.Matchers.prototype.should_be_false = jasmine.Matchers.prototype.toBeFalsy;
+jasmine.Matchers.prototype.should_be_null = jasmine.Matchers.prototype.toBeNull;
+jasmine.Matchers.prototype.should_match = jasmine.Matchers.prototype.toMatch;
+jasmine.Matchers.prototype.should_be_empty = function(){
+	return !this.actual || (this.actual.length == 0);
+};
+
+describe = (function(original){
+	var each = 'before each',
+		all = 'before all',
+		after = 'after all';
+	
+	return function(name, object){
+		original(name, function(){
+			var beforeAll = object[all],
+				bfEach = object[each],
+				aAll = object[after];
+
+			beforeEach(function(){
+				if (beforeAll){
+					beforeAll();
+					beforeAll = null;
+				}
+
+				if (bfEach) bfEach();
+			});
+
+			delete object[all];
+			delete object[each];
+			delete object[after];
+
+			for (var key in object)
+				it(key, object[key]);
+
+			if (aAll) it('cleans up', aAll);
+		});
+	};
+})(describe);
+
 loadSpecs(Sets);
-runSpecs();
+
+window.onload = function(){
+	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
+	jasmine.getEnv().execute();
+};
 
 </script>
-<title>SlickSpec for MooTools-Core</title></head>
-<body><h1 id="slickspec_logo"><a href="../">Slick<strong>Spec</strong></a></h1>
-<p id="copyright">SlickSpec&mdash;Copyright &copy; MooTools 2009&mdash;MIT License</p>
-<h1 id="framework_name"><script>document.write(Name + ' [' + SpecNames.join(', ') + ']')</script></h1>
 
+<title>Specs for MooTools-Core</title>
+</head>
+<body>
+	<h1 id="slickspec_logo">Specs for MooTools-Core</h1>
+	<h1 id="framework_name"><script>document.write(Name + ' [' + SpecNames.join(', ') + ']')</script></h1>
 </body>
 </html>
