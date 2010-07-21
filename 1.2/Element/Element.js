@@ -281,7 +281,8 @@ describe('$', {
 	},
 
 	'should return the window if passed': function(){
-		value_of($(window)).should_be(window);
+		var win = $(window);
+		value_of(win == window).should_be_true();
 	},
 
 	'should return the document if passed': function(){
@@ -342,17 +343,17 @@ describe('getWindow', {
 
 	'should return the owner window for elements': function(){
 		var win = document.newElement('div').getWindow();
-		value_of(win).should_be(window);
+		value_of(win == window).should_be_true();
 	},
 
 	'should return the owner window for document': function(){
 		var win = document.getWindow();
-		value_of(win).should_be(window);
+		value_of(win == window).should_be_true();
 	},
 
 	'should return self for window': function(){
 		var win = window.getWindow();
-		value_of(win).should_be(window);
+		value_of(win == window).should_be_true();
 	}
 
 });
