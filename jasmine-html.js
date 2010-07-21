@@ -141,15 +141,18 @@ jasmine.TrivialReporter.prototype.reportSpecResults = function(spec) {
   var messagesDiv = this.createDom('div', { className: 'messages' });
   for (var i = 0; i < resultItems.length; i++) {
     var result = resultItems[i];
-
     if (result.type == 'log') {
       messagesDiv.appendChild(this.createDom('div', {className: 'resultMessage log'}, result.toString()));
     } else if (result.type == 'expect' && result.passed && !result.passed()) {
       messagesDiv.appendChild(this.createDom('div', {className: 'resultMessage fail'}, result.message));
 
-      if (result.trace.stack) {
-        messagesDiv.appendChild(this.createDom('div', {className: 'stackTrace'}, result.trace.stack));
-      }
+	  var fn = spec.queue && spec.queue.blocks && spec.queue.blocks[1] ? spec.queue.blocks[1].func : null;
+	  if (fn){
+		var pre = this.createDom('pre', {className: 'examples-code'});
+		
+		pre.appendChild(this.createDom('code', null, fn.toString().replace(/</img, '&lt;').replace(/>/img, '&gt;')));
+		messagesDiv.appendChild(pre);
+	  }
     }
   }
 
