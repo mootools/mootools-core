@@ -163,7 +163,7 @@ describe('Array.from', {
 		};
 		var arr = fnTest(1,2,3);
 		value_of(Type.isArray(arr)).should_be_true();
-		value_of(arr).should_have(3, 'items');
+		value_of(arr.length).should_be(3);
 	},
 
 	'should transform a non array into an array': function(){

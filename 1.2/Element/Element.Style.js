@@ -11,11 +11,11 @@ describe('Element.set `opacity`', {
 	'should set the opacity of an Element': function() {
 		var el = new Element('div').set('opacity', 0.4);
 		if (Browser.Engine.trident) value_of(el.style.filter).should_be('alpha(opacity=40)');
-		value_of(el.style.opacity).should_be(0.4);
+		value_of(el.style.opacity == 0.4).should_be_true();
 	},
 
 	'should return the opacity of an Element': function() {
-		value_of(new Element('div').set('opacity', 0.4).get('opacity')).should_be(0.4);
+		value_of(new Element('div').set('opacity', 0.4).get('opacity') == 0.4).should_be_true();
 	}
 
 });

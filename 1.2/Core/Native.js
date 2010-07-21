@@ -32,8 +32,6 @@ var Car = new Native({
 
 	name: 'car',
 
-	protect: true,
-
 	initialize: function(name){
 		this.name = name;
 	}
@@ -56,12 +54,6 @@ describe('Native (private)', {
 		Instrument.implement({ property: 'staff' });
 		var myInstrument = new Instrument('xeelophone');
 		value_of(myInstrument.method()).should_be('staff xeelophone');
-	},
-
-	'should not override existing methods when browser option is set': function(){
-		Car.implement({ property: 'staff' });
-		var myCar = new Car('smart');
-		value_of(myCar.method()).should_be('smart_stuff');
 	},
 
 	'should allow generic calls': function(){

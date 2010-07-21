@@ -32,7 +32,7 @@ describe('$A', {
 		};
 		var arr = fnTest(1,2,3);
 		value_of(Array.type(arr)).should_be_true();
-		value_of(arr).should_have(3, 'items');
+		value_of(arr.length).should_be(3);
 	}
 
 });

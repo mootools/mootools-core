@@ -189,11 +189,11 @@ describe('Element.set', {
 	"should set various attributes of a table Element": function(){
 		var table1 = new Element('table').set({ border: '2', cellpadding: '3', cellspacing: '4', align: 'center' });
 		var table2 = new Element('table').set({ cellPadding: '3', cellSpacing: '4' });
-		value_of(table1.border).should_be(2);
-		value_of(table1.cellPadding).should_be(3);
-		value_of(table2.cellPadding).should_be(3);
-		value_of(table1.cellSpacing).should_be(4);
-		value_of(table2.cellSpacing).should_be(4);
+		value_of(table1.border == 2).should_be_true();
+		value_of(table1.cellPadding == 3).should_be_true();
+		value_of(table2.cellPadding == 3).should_be_true();
+		value_of(table1.cellSpacing == 4).should_be_true();
+		value_of(table2.cellSpacing == 4).should_be_true();
 		value_of(table1.align).should_be('center');
 	}
 
@@ -220,14 +220,16 @@ describe('Elements', {
 	},
 
 	'should return all Elements that match the string matcher': function(){
-		value_of(myElements.filter('div')).should_be([myElements[0], myElements[2]]);
+		var filter = myElements.filter('div');
+
+		value_of(filter[0] == myElements[0] && filter[1] == myElements[2] && filter.length == 2).should_be_true();
 	},
 
 	'should return all Elements that match the comparator': function(){
 		var elements = myElements.filter(function(element){
 			return element.match('a');
 		});
-		value_of(elements).should_be([myElements[1]]);
+		value_of(elements[0] == myElements[1] && elements.length == 1).should_be_true();
 	}
 
 });
@@ -297,7 +299,7 @@ describe('$$', {
 
 	'should return all Elements of a specific tag': function(){
 		var divs1 = $$('div');
-		var divs2 = Array.flatten(document.getElementsByTagName('div'));
+		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
 		value_of(divs1).should_be(divs2);
 	},
 
@@ -307,12 +309,12 @@ describe('$$', {
 			return a > b ? 1 : -1;
 		};
 		var headers1 = $$('h3', 'h4').sort(sortBy);
-		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]).sort(sortBy);
+		var headers2 = new Elements(Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')])).sort(sortBy);
 		value_of(headers1).should_be(headers2);
 	},
 
 	'should return an empty array if not is found': function(){
-		value_of($$('not_found')).should_be([]);
+		value_of($$('not_found')).should_be(new Elements([]));
 	}
 
 });
@@ -387,12 +389,12 @@ describe('Element.getElements', {
 
 	'should return all the elements that match the tag': function(){
 		var children = Container.getElements('div');
-		value_of(children).should_have(2, 'items');
+		value_of(children.length).should_be(2);
 	},
 
 	'should return all the elements that match the tags': function(){
 		var children = Container.getElements('div,a');
-		value_of(children).should_have(3, 'items');
+		value_of(children.length).should_be(3);
 		value_of(children[2].tagName.toLowerCase()).should_be('a');
 	}
 
@@ -415,13 +417,13 @@ describe('Document.getElements', {
 
 	'should return all the elements that match the tag': function(){
 		var divs = document.getElements('div');
-		var ndivs = $A(document.getElementsByTagName('div'));
+		var ndivs = new Elements(document.getElementsByTagName('div'));
 		value_of(divs).should_be(ndivs);
 	},
 
 	'should return all the elements that match the tags': function(){
 		var headers = document.getElements('h3,h4');
-		var headers2 = Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]);
+		var headers2 = new Elements(Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]));
 		value_of(headers.length).should_be(headers2.length);
 	}
 
@@ -847,7 +849,7 @@ describe('Element.adopt', {
 		var children = [];
 		(100).times(function(i){ children[i] = new Element('span', {id: 'child-' + i}); });
 		Container.adopt(children);
-		value_of(Container.childNodes).should_have(100, 'items');
+		value_of(Container.childNodes.length).should_be(100);
 		value_of(Container.childNodes[10]).should_be(children[10]);
 	}
 
@@ -1017,11 +1019,8 @@ describe('Element.clone', {
 	'should clone custom attributes': function(){
 		var div = new Element('div');
 		div.setAttribute('foo', 'FOO');
-		div.setAttribute('bar', ['BAR']);
-		var clone = div.clone();
-
-		value_of(clone.getAttribute('foo')).should_be('FOO');
-		value_of(clone.getAttribute('bar')).should_be(['BAR']);
+		
+		value_of(div.clone().getAttribute('foo')).should_be('FOO');
 	}
 
 });
@@ -1356,7 +1355,7 @@ describe('Element.removeProperties', {
 	'should remove each property from the Element': function(){
 		var anchor = new Element('a', {href: '#', title: 'title', rel: 'left'});
 		anchor.removeProperties('title', 'rel');
-		value_of(anchor.getProperties('href', 'title', 'rel')).should_be({ href: '#' });
+		value_of(anchor.getProperties('href', 'title', 'rel')).should_be({ href: '#', title: null, rel: null });
 	}
 
 });
@@ -1387,16 +1386,16 @@ describe('Element.getAllPrevious', {
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
-		value_of(children[2].getAllPrevious()).should_be([children[1], children[0]]);
-		value_of(children[0].getAllPrevious()).should_be([]);
+		value_of(children[2].getAllPrevious()).should_be(new Elements([children[1], children[0]]));
+		value_of(children[0].getAllPrevious()).should_be(new Elements([]));
 	},
 
 	'should return all the previous Elements that match, otherwise an empty array': function(){
 		var container = new Element('div');
 		var children = [new Element('a'), new Element('div'), new Element('a'), new Element('div')];
 		container.adopt(children);
-		value_of(children[3].getAllPrevious('a')).should_be([children[2], children[0]]);
-		value_of(children[1].getAllPrevious('span')).should_be([]);
+		value_of(children[3].getAllPrevious('a')).should_be(new Elements([children[2], children[0]]));
+		value_of(children[1].getAllPrevious('span')).should_be(new Elements([]));
 	}
 
 });
@@ -1427,16 +1426,16 @@ describe('Element.getAllNext', {
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
-		value_of(children[0].getAllNext()).should_be(children.slice(1));
-		value_of(children[2].getAllNext()).should_be([]);
+		value_of(children[0].getAllNext()).should_be(new Elements(children.slice(1)));
+		value_of(children[2].getAllNext()).should_be(new Elements([]));
 	},
 
 	'should return all the next Elements that match, otherwise an empty array': function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('div'), new Element('a')];
 		container.adopt(children);
-		value_of(children[0].getAllNext('a')).should_be([children[1], children[3]]);
-		value_of(children[0].getAllNext('span')).should_be([]);
+		value_of(children[0].getAllNext('a')).should_be(new Elements([children[1], children[3]]));
+		value_of(children[0].getAllNext('span')).should_be(new Elements([]));
 	}
 
 });
@@ -1507,16 +1506,16 @@ describe('Element.getParents', {
 		var container = new Element('p');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(new Element('div').adopt(new Element('div').adopt(children)));
-		value_of(children[1].getParents()).should_be([container.getFirst().getFirst(), container.getFirst(), container]);
-		value_of(container.getParents()).should_be([]);
+		value_of(children[1].getParents()).should_be(new Elements([container.getFirst().getFirst(), container.getFirst(), container]));
+		value_of(container.getParents()).should_be(new Elements([]));
 	},
 
 	'should return the parents of the Element that match, otherwise returns an empty array': function(){
 		var container = new Element('p');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(new Element('div').adopt(new Element('div').adopt(children)));
-		value_of(children[1].getParents('div')).should_be([container.getFirst().getFirst(), container.getFirst()]);
-		value_of(children[1].getParents('table')).should_be([]);
+		value_of(children[1].getParents('div')).should_be(new Elements([container.getFirst().getFirst(), container.getFirst()]));
+		value_of(children[1].getParents('table')).should_be(new Elements([]));
 	}
 
 });
@@ -1527,16 +1526,16 @@ describe('Element.getChildren', {
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
-		value_of(container.getChildren()).should_be(children);
-		value_of(children[0].getChildren()).should_be([]);
+		value_of(container.getChildren()).should_be(new Elements(children));
+		value_of(children[0].getChildren()).should_be(new Elements([]));
 	},
 
 	"should return the Element's children that match, otherwise returns an empty array": function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('a')];
 		container.adopt(children);
-		value_of(container.getChildren('a')).should_be([children[1], children[2]]);
-		value_of(container.getChildren('span')).should_be([]);
+		value_of(container.getChildren('a')).should_be(new Elements([children[1], children[2]]));
+		value_of(container.getChildren('span')).should_be(new Elements([]));
 	}
 
 });

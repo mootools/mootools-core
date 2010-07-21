@@ -107,7 +107,7 @@ describe('new Element(expression)', {
 		var table = new Element('table[cellpadding=0]');
 		
 		value_of(table.tagName.toLowerCase()).should_be('table');
-		value_of(table.cellPadding).should_be(0);
+		value_of(table.cellPadding == 0).should_be_true();
 	}
 	
 });
