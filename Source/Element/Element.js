@@ -234,7 +234,7 @@ Window.implement({
 
 (function(search, find, match){
 	if (!this.Selectors) this.Selectors = {};
-	var pseudos = this.Selectors.Pseudo = new Hash();
+	var pseudos = this.Selectors.Pseudo = new Hash(this.Selectors.Pseudo);
 
 	var addSlickPseudos = function(){
 		for (var name in pseudos){
