@@ -106,7 +106,7 @@ Add methods to a function
 ### Example: 
 
 	var myFunction = function(){};
-	myFunction.extend('alert',function(text){
+	myFunction.extend('alert', function(text){
 		alert(text);
 	});
 	myFunction.alert('Hello!'); // alerts Hello!
@@ -129,7 +129,7 @@ Add methods to the prototype
 ### Example: 
 
 	var myFunction = function(){};
-	myFunction.implement('alert',function(text){
+	myFunction.implement('alert', function(text){
 		alert(text);
 	});
 	var myInstance = new myFunction();
@@ -373,7 +373,7 @@ This function has been deprecated.
 
 ### Example how you could replace this method:
 
-	myElement.addEvent('click',function(e){
+	myElement.addEvent('click', function(e){
 		myFunction.bind(bind, [e]);
 	});
 

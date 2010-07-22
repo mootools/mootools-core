@@ -157,7 +157,7 @@ Get a subset of an object.
 
 ### Syntax:
 
-	Object.subset(object,keys);
+	Object.subset(object, keys);
 
 ### Arguments:
 
@@ -175,7 +175,7 @@ Get a subset of an object.
 		b: 'two', 
 		c: 'three'
 	};
-	Object.subset(['a','c']); // returns {a: 'one', c: 'three'}
+	Object.subset(['a', 'c']); // returns {a: 'one', c: 'three'}
 
 
 
@@ -215,7 +215,7 @@ Creates a new map with the results of calling a provided function on every value
 	var myObject = {a: 1, b: 2, c: 3};
 	var timesTwo = Object.map(timesTwo, function(value, key){
 		return value * 2;
-	}); //timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
+	}); // timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
 
 
 
@@ -255,7 +255,7 @@ Creates a new object with all of the elements of the object for which the provid
 	var myObject = {a: 10, b: 20, c: 30};
 	var biggerThanTwenty = Object.filter(myObject, function(value, key){
 		return value > 20;
-	}); //biggerThanTwenty now holds an object containing: {c: 30}
+	}); // biggerThanTwenty now holds an object containing: {c: 30}
 
 
 
@@ -295,7 +295,7 @@ Returns true if every value in the object satisfies the provided testing functio
 	var myObject = {a: 10, b: 4, c: 25, d: 100};
 	var areAllBigEnough = Object.every(myObject, function(value, key){
 		return value > 20;
-	}); //areAllBigEnough = false
+	}); // areAllBigEnough = false
 
 
 
@@ -440,7 +440,7 @@ Tests for the presence of a specified value in the object.
 
 ### Syntax:
 
-	var inObject = Object.contains(object,value);
+	var inObject = Object.contains(object, value);
 
 ### Arguments:
 
