@@ -1,4 +1,4 @@
-(typeof GLOBAL != 'undefined' ? GLOBAL : this).value_of = expect;
+value_of = expect;
 
 (function(prototype){
 
