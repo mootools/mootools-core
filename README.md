@@ -27,9 +27,9 @@ Set up the Specs:
 
 * Open index.html in your favorite browser and press the right link
 * Run the JSTD Server
-** Start via ./server {options}
-** Point one or more browsers to http://localhost:9876
-** Run all tests via ./test
+ * Start via ./server {options}
+ * Point one or more browsers to http://localhost:9876
+ * Run all tests via ./test
 * Run in NodeJS via ./runner {options}
 
 ### Available Options
