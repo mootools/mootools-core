@@ -42,6 +42,7 @@ Example for JSTD
 Example for NodeJS
 	./runner '{"specs": ["1.3base"], "path": "../core/"}'
 
+Options
 	"path" - Only needs to be specified if the core-specs repository is being used outside of the MooTools Core repository
 	"specs" - The specs to run, see Sets.js
 	"version" - The version of MooTools to be used for running the specs
