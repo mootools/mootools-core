@@ -9,7 +9,7 @@ License:
 (function(){
 
 var fn = function(){
-	return $A(arguments);
+	return Array.from(arguments);
 };
 
 var Rules = function(){
@@ -17,37 +17,10 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat($A(arguments));
+	return [this].concat(Array.from(arguments));
 };
 
 describe("Function Methods 1.3", {
-
-	// Function.create
-
-	'should return a new function': function(){
-		var fnc = $empty.create();
-		value_of($empty === fnc).should_be_false();
-	},
-
-	'should return a new function with specified argument': function(){
-		var fnc = fn.create({'arguments': 'rocks'});
-		value_of(fnc()).should_be(['rocks']);
-	},
-
-	'should return a new function with multiple arguments': function(){
-		var fnc = fn.create({'arguments': ['MooTools', 'rocks']});
-		value_of(fnc()).should_be(['MooTools', 'rocks']);
-	},
-
-	'should return a new function bound to an object': function(){
-		var fnc = Rules.create({'bind': 'MooTools'});
-		value_of(fnc()).should_be('MooTools rules');
-	},
-
-	'should return a new function as an event': function(){
-		var fnc = fn.create({'arguments': [0, 1], 'event': true});
-		value_of(fnc('an Event occurred')).should_be(['an Event occurred', 0, 1]);
-	},
 
 	// Function.bind
 
@@ -64,16 +37,6 @@ describe("Function Methods 1.3", {
 	'should return the function bound to an object with multiple arguments': function(){
 		var fnc = Args.bind('MooTools', ['rocks', 'da house']);
 		value_of(fnc()).should_be(['MooTools', 'rocks', 'da house']);
-	},
-
-	'should return the function bound to an object and make the function an event listener': function(){
-		var fnc = Args.bindWithEvent('MooTools');
-		value_of(fnc('an Event ocurred')).should_be(['MooTools', 'an Event ocurred']);
-	},
-
-	'should return the function bound to an object and make the function event listener with multiple arguments': function(){
-		var fnc = Args.bindWithEvent('MooTools', ['rocks', 'da house']);
-		value_of(fnc('an Event ocurred')).should_be(['MooTools', 'an Event ocurred', 'rocks', 'da house']);
 	},
 
 	// Function.pass
@@ -123,7 +86,7 @@ describe("Function Methods 1.3", {
 	},
 
 	"should return the function's return value": function(){
-		var fnc = $lambda('hello world!');
+		var fnc = Function.from('hello world!');
 		value_of(fnc.attempt()).should_be('hello world!');
 	},
 
@@ -136,18 +99,19 @@ describe("Function Methods 1.3", {
 
 	// Function.delay
 
-	'delay should return a timer pointer': function(){
-		var timer = $empty.delay(10000);
-		value_of(Type.isNumber(timer)).should_be_true();
-		$clear(timer);
+	'should return a timer pointer': function(){
+		var timer = fn.delay(10000);
+		// NodeJS uses Timer Objects
+		value_of(Type.isNumber(timer) || (Type.isObject(timer) && timer.start)).should_be_true();
+		fn(timer);
 	},
 
 	// Function.periodical
 
-	'periodical should return a timer pointer': function(){
-		var timer = $empty.periodical(10000);
-		value_of(Type.isNumber(timer)).should_be_true();
-		$clear(timer);
+	'should return a periodical timer pointer': function(){
+		var timer = fn.periodical(10000);
+		value_of(Type.isNumber(timer) || (Type.isObject(timer) && timer.start)).should_be_true();
+		fn(timer);
 	}
 
 });

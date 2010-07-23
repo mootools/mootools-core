@@ -59,7 +59,7 @@ describe('typeOf', {
 	},
 
 	"should return 'arguments' for Function arguments": function(){
-		if (window.opera){ // Seems like the Opera guys can't decide on this
+		if (typeof window != 'undefined' && window.opera){ // Seems like the Opera guys can't decide on this
 			var type = $type(arguments);
 			value_of(type == 'array' || type == 'arguments').should_be_true();
 			return;
@@ -74,27 +74,6 @@ describe('typeOf', {
 
 	"should return 'null' for undefined objects": function(){
 		value_of(typeOf(undefined)).should_be('null');
-	},
-
-	"should return 'collection' for HTMLElements collections": function(){
-		value_of(typeOf(document.getElementsByTagName('*'))).should_be('collection');
-	},
-
-	"should return 'element' for an Element": function(){
-		var div = document.createElement('div');
-		value_of(typeOf(div)).should_be('element');
-	},
-	
-	"should return 'elements' for Elements": function(){
-		if ('Elements' in window) value_of(typeOf(new Elements)).should_be('elements');
-	},
-	
-	"should return 'window' for the window object": function(){
-		value_of(typeOf(window)).should_be('window');
-	},
-
-	"should return 'document' for the document object": function(){
-		value_of(typeOf(document)).should_be('document');
 	}
 
 });
@@ -143,18 +122,6 @@ describe('Array.from', {
 		var arr1 = [1,2,3];
 		var arr2 = Array.from(arr1);
 		value_of(arr1 === arr2).should_be_true();
-	},
-
-	'should return an array for an Elements collection': function(){
-		var div1 = document.createElement('div');
-		var div2 = document.createElement('div');
-		var div3 = document.createElement('div');
-
-		div1.appendChild(div2);
-		div1.appendChild(div3);
-
-		var array = Array.from(div1.getElementsByTagName('*'));
-		value_of(Type.isArray(array)).should_be_true();
 	},
 
 	'should return an array for arguments': function(){

@@ -153,33 +153,12 @@ describe("Array Methods 1.3", {
 		value_of(obj).should_be({a:1, b:2, c:3, d:0});
 	},
 
-	// Array.link
-
-	'should link an array items to a new object according to the specified matchers': function(){
-		var el = document.createElement('div');
-		var assoc2 = [100, 'Hello', {foo: 'bar'}, el, false].link({
-			myNumber: Type.isNumber,
-			myElement: Type.isElement,
-			myObject: Type.isObject,
-			myString: Type.isString,
-			myBoolean: $defined
-		});
-
-		value_of(assoc2).should_be({
-			myNumber: 100,
-			myElement: el,
-			myObject: {foo: 'bar'},
-			myString: 'Hello',
-			myBoolean: false
-		});
-	},
-
-	// Array.extend
+	// Array.append
 
 	'should extend an array': function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
-		a.extend(b);
+		a.append(b);
 		value_of(a).should_be([1,2,4,2,3,4,5]);
 		value_of(b).should_be([2,3,4,5]);
 	},

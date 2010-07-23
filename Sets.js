@@ -9,10 +9,14 @@ context.Sets = {
 		'Element/Element', 'Element/Element.Style', 'Element/Element.Dimensions'
 	],
 
-	'1.3': [
+	'1.3base': [
 		'Core/Core',
 		'Types/Array', 'Types/Function', 'Types/Object',
-		'Class/Class',
+		'Class/Class'
+	],
+
+	'1.3client': [
+		'Core/Core',
 		'Browser/Browser',
 		'Element/NewElement'
 	]

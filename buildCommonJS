@@ -7,9 +7,9 @@ $stderr = fopen('php://stderr', 'w');
 
 require dirname(__FILE__) . '/Packager/packager.php';
 
-array_shift($argv);
+$options = json_decode($argv[1], true);
+$path = !empty($options['path']) ? $options['path'] : '../';
 
-$path = array_shift($argv);
 $pkg = new Packager(array(
 	dirname(__FILE__) . '/' . $path,
 	dirname(__FILE__) . '/CommonJS-Loader/'

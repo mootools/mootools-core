@@ -51,7 +51,7 @@ var getSpecs = function(Sets, queryString){
 loadLibrary = function(Source, queryString){
 	var query = parseQueryString(queryString),
 		version = query.version,
-		path = query.path || '../Source/',
+		path = (query.path || '../') + 'Source/',
 		types = query.types || [],
 		source = Source[version];
 	

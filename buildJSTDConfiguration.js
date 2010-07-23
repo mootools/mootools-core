@@ -3,21 +3,8 @@
 
 (function(){
 
-var puts = require('sys').puts;
-
-var arg = process.argv[2];
-if (!arg){
-	puts('Please provide options for the Spec Runner');
-	return;
-}
-
-var options;
-try {
-	options = JSON.parse(arg);
-} catch(e){
-	puts('Please provide a proper JSON-Object');
-	return;
-}
+var options = require('./Helpers/RunnerOptions').parseOptions(process.argv[2]);
+if (!options) return;
 
 var data = 'server: http://localhost:9876\n\n';
 data += 'load:\n';
