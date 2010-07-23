@@ -1,0 +1,3 @@
+./buildCommonJS.js > MooTools.js
+./runner.js $0
+rm -f MooTools.js

@@ -27,7 +27,7 @@ foreach ($files as $file)
 
 $output = $pkg->build($files, array(), array(), array('1.2compat'));
 
-file_put_contents('MooTools.js', $output);
+echo $output;
 
 fclose($stderr);
 

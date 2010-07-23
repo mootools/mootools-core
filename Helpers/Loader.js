@@ -14,6 +14,8 @@ var forEach = function(array, fn, bind){
 // Uses String.parseQueryString from MooTools-More
 // TODO Needs compat for other browsers
 var parseQueryString = function(string){
+	if (typeof string != 'string') return string;
+
 	var vars = string.split(/[&;]/), res = {};
 	if (vars.length) forEach(vars, function(val){
 		var index = val.indexOf('='),
@@ -33,7 +35,7 @@ var parseQueryString = function(string){
 	return res;
 };
 
-var getSpecs = function(queryString){
+var getSpecs = function(Sets, queryString){
 	queryString = parseQueryString(queryString);
 
 	var requestedSpecs = [],
@@ -46,7 +48,7 @@ var getSpecs = function(queryString){
 	return requestedSpecs;
 };
 
-this.loadLibrary = function(Source, queryString){
+loadLibrary = function(Source, queryString){
 	var query = parseQueryString(queryString),
 		version = query.version,
 		path = query.path || '../Source/',
@@ -61,10 +63,12 @@ this.loadLibrary = function(Source, queryString){
 		if (source[types[i]])
 			load(source[types[i]], path);
 
+	return version;
+
 };
 
-this.loadSpecs = function(Sets, queryString){
-	var requestedSpecs = getSpecs(queryString);
+loadSpecs = function(Sets, queryString){
+	var requestedSpecs = getSpecs(Sets, queryString);
 	for (var i = 0; i < requestedSpecs.length; i++){
 		var specs = Sets[requestedSpecs[i]];
 		load(specs, requestedSpecs[i] + '/');
