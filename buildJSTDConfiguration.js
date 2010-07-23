@@ -34,7 +34,7 @@ for (var base in Source[version]){
 		data += '  - "' + path + files[i] + '.js"\n';
 }
 
-for (var i = 0; i < sets.length; i++){
+for (i = 0; i < sets.length; i++){
 	var set = sets[i];
 	for (i = 0; i < Sets[set].length; i++)
 		data += '  - "' + set + '/' + Sets[set][i] + '.js"\n';

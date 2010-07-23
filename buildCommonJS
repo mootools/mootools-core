@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+
+$list = array('Loader/Prefix', 'Core/Class', 'Core/Class.Extras', 'Loader/Loader');
+
+$stderr = fopen('php://stderr', 'w');
+
+require dirname(__FILE__) . '/Packager/packager.php';
+
+array_shift($argv);
+
+$path = array_shift($argv);
+$pkg = new Packager(array(
+	dirname(__FILE__) . '/' . $path,
+	dirname(__FILE__) . '/CommonJS-Loader/'
+));
+
+fwrite($stderr, "Packager is building MooTools Core + MooTools Loader for CommonJS use\n\n");
+fwrite($stderr, "Included Components:\n");
+
+$files = $pkg->components_to_files($list);
+
+$files = $pkg->complete_files($files);
+
+foreach ($files as $file)
+	fwrite($stderr, "- $file: [" . implode(", ", $pkg->get_file_provides($file)) . "]\n");
+
+$output = $pkg->build($files, array(), array(), array('1.2compat'));
+
+file_put_contents('MooTools.js', $output);
+
+fclose($stderr);
+
+?>
