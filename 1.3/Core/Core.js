@@ -288,61 +288,38 @@ describe('Type', {
 
 });
 
-// describe('Function.clear', {
-// 
-// 	'should clear timeouts': function(){
-// 		var timeout = setTimeout(function(){}, 100);
-// 		value_of(Function.clear(timeout)).should_be_null();
-// 	},
-// 
-// 	'should clear intervals': function(){
-// 		var interval = setInterval(function(){}, 100);
-// 		value_of(Function.clear(interval)).should_be_null();
-// 	}
-// 
-// });
+describe('Function.attempt', {
 
-// describe('Number.random', {
-// 
-// 	'should return a number between two numbers specified': function(){
-// 		var rand = Number.random(1, 3);
-// 		value_of((rand <= 3 && rand >= 1)).should_be_true();
-// 	}
-// 
-// });
+	'should return the result of the first successful function without executing successive functions': function(){
+		var calls = 0;
+		var attempt = Function.attempt(function(){
+			calls++;
+			throw new Exception();
+		}, function(){
+			calls++;
+			return 'success';
+		}, function(){
+			calls++;
+			return 'moo';
+		});
+		value_of(calls).should_be(2);
+		value_of(attempt).should_be('success');
+	},
 
-// describe('Function.stab', {
-// 
-// 	'should return the result of the first successful function without executing successive functions': function(){
-// 		var calls = 0;
-// 		var attempt = Function.stab(function(){
-// 			calls++;
-// 			throw new Exception();
-// 		}, function(){
-// 			calls++;
-// 			return 'success';
-// 		}, function(){
-// 			calls++;
-// 			return 'moo';
-// 		});
-// 		value_of(calls).should_be(2);
-// 		value_of(attempt).should_be('success');
-// 	},
-// 
-// 	'should return null when no function succeeded': function(){
-// 		var calls = 0;
-// 		var attempt = Function.stab(function(){
-// 			calls++;
-// 			return I_invented_this();
-// 		}, function(){
-// 			calls++;
-// 			return uninstall_ie();
-// 		});
-// 		value_of(calls).should_be(2);
-// 		value_of(attempt).should_be_null();
-// 	}
-// 
-// });
+	'should return null when no function succeeded': function(){
+		var calls = 0;
+		var attempt = Function.attempt(function(){
+			calls++;
+			return I_invented_this();
+		}, function(){
+			calls++;
+			return uninstall_ie();
+		});
+		value_of(calls).should_be(2);
+		value_of(attempt).should_be_null();
+	}
+
+});
 
 })();
 

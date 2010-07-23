@@ -89,7 +89,7 @@ var Attributes = new Class({
 });
 
 
-describe('Class creation', {
+describe('Class creation 1.3', {
 
 	"Classes should be of type 'class'": function(){
 		value_of(typeOf(Animal)).should_be('class');
@@ -208,36 +208,9 @@ describe('Class creation', {
 		value_of(rover.say()).should_be('NEW:animal:say:rover');
 	}
 
-	//We might attempt to add support for the following at a later date
-
-	/*
-	"should access the proper parent when it is overwritten after instantiation": function(){
-		var Dog = new Class({
-			Extends: Animal,
-			say: function(){
-				return this.parent();
-			}
-		});
-
-		var rover = new Dog('rover');
-		value_of(rover.say()).should_be('animal:say:rover');
-
-		Animal.implement({
-			say: function(){
-				return 'NEW:animal:say:' + this.name;
-			}
-		});
-
-		var spot = new Dog('spot');
-
-		value_of(spot.say()).should_be('NEW:animal:say:spot');
-		value_of(rover.say()).should_be('NEW:animal:say:rover');
-	}
-	*/
-
 });
 
-describe('Class::implement', {
+describe('Class::implement 1.3', {
 
 	'should implement an object': function(){
 		var Dog = new Class({

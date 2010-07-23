@@ -16,7 +16,7 @@ var getTestArray = function(){
 };
 
 
-describe("Array Methods", {
+describe("Array Methods 1.3", {
 
 	// Array.flatten
 
@@ -218,7 +218,7 @@ describe("Array Methods", {
 
 });
 
-describe("Array Color Methods", {
+describe("Array Color Methods 1.3", {
 
 	// Array.hexToRgb
 

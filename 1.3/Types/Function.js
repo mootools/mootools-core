@@ -20,7 +20,7 @@ var Args = function(){
 	return [this].concat($A(arguments));
 };
 
-describe("Function Methods", {
+describe("Function Methods 1.3", {
 
 	// Function.create
 
