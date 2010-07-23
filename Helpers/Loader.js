@@ -1,4 +1,4 @@
-var loadSpecs = function(Sets){
+(function(){
 
 var toString = Object.prototype.toString;
 var isArray = Array.isArray || function(array){
@@ -35,29 +35,42 @@ var parseQueryString = function(string){
 
 var getSpecs = function(queryString){
 	queryString = parseQueryString(queryString);
-	
+
 	var requestedSpecs = [],
 		specs = queryString.specs;
-	
+
 	forEach(specs && isArray(specs) ? specs : [specs], function(spec){
 		if (Sets[spec] && requestedSpecs.indexOf(spec) == -1) requestedSpecs.push(spec);
 	});
-	
+
 	return requestedSpecs;
 };
 
-var load = function(obj){
-	for (var i = 0; i < obj.length; i++){
-		SpecNames.push(obj[i]);
-		
-		var specs = Sets[obj[i]];
-		for (var j = 0; j < specs.length; j++){
-			document.write('<scr'+'ipt src="' + obj[i] + '/' + specs[j] + '.js" type="text/javascript"><\/script>');
-		}
+this.loadLibrary = function(Source, queryString){
+	var query = parseQueryString(queryString),
+		version = query.version,
+		path = query.path || '../Source/',
+		types = query.types || [],
+		source = Source[version];
+	
+	if (!source) return;
+
+	if (!types.length) for (var type in source) types.push(type);
+
+	for (var i = 0; i < types.length; i++)
+		if (source[types[i]])
+			load(source[types[i]], path);
+
+};
+
+this.loadSpecs = function(Sets, queryString){
+	var requestedSpecs = getSpecs(queryString);
+	for (var i = 0; i < requestedSpecs.length; i++){
+		var specs = Sets[requestedSpecs[i]];
+		load(specs, requestedSpecs[i] + '/');
 	}
+
+	return requestedSpecs;
 };
 
-var requestedSpecs = getSpecs(document.location.search.substr(1));
-load(requestedSpecs);
-
-};
+})();
