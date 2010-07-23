@@ -27,6 +27,13 @@ load([
 loadLibrary(Source, options);
 loadSpecs(Sets, options);
 
+// TODO check why JSTD Coverage fails
+if (options.coverage){
+	data += 'plugin:\n';
+	data += '  - name: "coverage"\n';
+	data += '    jar: "JSTestDriver/plugins/coverage.jar"\n';
+}
+
 var fs = require('fs');
 fs.writeFile('./jsTestDriver.conf', data);
 

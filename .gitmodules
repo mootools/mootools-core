@@ -10,3 +10,6 @@
 [submodule "Packager"]
 	path = Packager
 	url = http://github.com/kamicane/packager.git
+[submodule "JSTestDriver"]
+	path = JSTestDriver
+	url = git://github.com/cpojer/jstestdriver-build.git
