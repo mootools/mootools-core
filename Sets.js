@@ -19,4 +19,4 @@ context.Sets = {
 
 };
 
-})(this.exports || this);
+})(typeof exports != 'undefined' ? exports : this);

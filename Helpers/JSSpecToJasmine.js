@@ -1,15 +1,19 @@
 var value_of = expect;
 
-jasmine.Matchers.prototype.should_be = jasmine.Matchers.prototype.toEqual;
-jasmine.Matchers.prototype.should_not_be = jasmine.Matchers.prototype.toNotEqual;
+(function(prototype){
 
-jasmine.Matchers.prototype.should_be_true = jasmine.Matchers.prototype.toBeTruthy;
-jasmine.Matchers.prototype.should_be_false = jasmine.Matchers.prototype.toBeFalsy;
-jasmine.Matchers.prototype.should_be_null = jasmine.Matchers.prototype.toBeNull;
-jasmine.Matchers.prototype.should_match = jasmine.Matchers.prototype.toMatch;
-jasmine.Matchers.prototype.should_be_empty = function(){
+prototype.should_be = prototype.toEqual;
+prototype.should_not_be = prototype.toNotEqual;
+
+prototype.should_be_true = prototype.toBeTruthy;
+prototype.should_be_false = prototype.toBeFalsy;
+prototype.should_be_null = prototype.toBeNull;
+prototype.should_match = prototype.toMatch;
+prototype.should_be_empty = function(){
 	return !this.actual || (this.actual.length == 0);
 };
+
+})(jasmine.Matchers.prototype);
 
 describe = (function(original){
 	var each = 'before each',
@@ -17,6 +21,11 @@ describe = (function(original){
 		after = 'after all';
 
 	return function(name, object){
+		if (object instanceof Function){
+			original(name, object);
+			return;
+		}
+
 		original(name, function(){
 			var beforeAll = object[all],
 				bfEach = object[each],
