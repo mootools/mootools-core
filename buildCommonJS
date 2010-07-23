@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+error_reporting(0);
 
 $list = array('Loader/Prefix', 'Core/Class', 'Core/Class.Extras', 'Loader/Loader');
 
