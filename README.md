@@ -13,8 +13,7 @@ Clone the MooTools Core repository and initialize the submodules.
 Set up the Specs:
 
 	cd Specs
-	git fetch origin
-	git co -t origin/new
+	git pull origin master
 	git submodule update --init
 	chmod +x server test runner runner.js buildCommonJS buildJSTDConfiguration
 
