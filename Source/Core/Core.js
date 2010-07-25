@@ -105,6 +105,8 @@ Function.prototype.implement = function(key, value){
 
 // From
 
+var slice = Array.prototype.slice;
+
 Function.from = function(item){
 	return (typeOf(item) == 'function') ? item : function(){
 		return item;
@@ -113,7 +115,7 @@ Function.from = function(item){
 
 Array.from = function(item){
 	if (item == null) return [];
-	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
+	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -198,7 +200,7 @@ var implement = function(name, method){
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
 	
 	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
-		return method.apply(item, Array.prototype.slice.call(arguments, 1));
+		return method.apply(item, slice.call(arguments, 1));
 	});
 	
 	return this;
@@ -417,11 +419,10 @@ Native.implement = function(objects, methods){
 	return Native;
 };
 
-(function(check){
-	Array.type = function(item){
-		return instanceOf(item, Array) || check(item);
-	};
-})(Array.type);
+var arrayType = Array.type;
+Array.type = function(item){
+	return instanceOf(item, Array) || arrayType(item);
+};
 
 this.$A = function(item){
 	return Array.from(item).slice();
@@ -449,14 +450,13 @@ this.$defined = function(obj){
 
 this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Object).each(iterable, fn, bind);
+	((type == 'arguments' || type == 'collection' || type == 'array' || type == 'elements') ? Array : Object).each(iterable, fn, bind);
 };
 
 this.$empty = function(){};
 
 this.$extend = function(original, extended){
-	for (var key in (extended || {})) original[key] = extended[key];
-	return original;
+	return Object.append(original, extended);
 };
 
 this.$H = function(object){
