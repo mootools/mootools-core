@@ -277,9 +277,9 @@ force('String', String, [
 ])('Date', Date, ['now']);
 
 protect(Object, [
-	'create', 'defineProperty', 'defineProperties', 'keys', 'values',
+	'create', 'defineProperty', 'defineProperties', 'keys',
 	'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
-	'preventExtensions', 'isExtensible', 'seal', 'freeze', 'isSealed', 'isFrozen'
+	'preventExtensions', 'isExtensible', 'seal', 'isSealed', 'freeze', 'isFrozen'
 ]);
 
 Object.extend = extend.overloadSetter();
