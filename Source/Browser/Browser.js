@@ -94,14 +94,16 @@ Browser.Features.xhr = !!(Browser.Request);
 
 // Flash detection
 
-Browser.Plugins.Flash = (function(){
-	var version = (Function.attempt(function(){
-		return navigator.plugins['Shockwave Flash'].description;
-	}, function(){
-		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
-	}) || '0 r0').match(/\d+/g);
-	return {version: Number(version[0] || 0 + '.' + version[1]) || 0, build: Number(version[2]) || 0};
-})();
+var version = (Function.attempt(function(){
+	return navigator.plugins['Shockwave Flash'].description;
+}, function(){
+	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
+}) || '0 r0').match(/\d+/g);
+
+Browser.Plugins.Flash = {
+	version: Number(version[0] || '0.' + version[1]) || 0,
+	build: Number(version[2]) || 0
+};
 
 // String scripts
 
@@ -183,11 +185,13 @@ try {
 		}
 		return arrayFrom(item);
 	};
-	
+
+	var prototype = Array.prototype,
+		slice = prototype.slice;
 	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
-		var method = Array.prototype[name];
+		var method = prototype[name];
 		Array[name] = function(item){
-			return method.apply(Array.from(item), Array.prototype.slice.call(arguments, 1));
+			return method.apply(Array.from(item), slice.call(arguments, 1));
 		};
 	});
 }
