@@ -27,13 +27,16 @@ var load = function(object, base){
 <script type="text/javascript" charset="utf-8" src="Sets.js"></script>
 
 <script type="text/javascript" charset="utf-8">
+var Name = 'MooTools Core',
+	SpecNames = [];
+
 (function(){
 var queryString = document.location.search.substr(1);
 
 var version = loadLibrary(Source, queryString);
 
-this.Name = 'MooTools Core ' + version;
-this.SpecNames = loadSpecs(Sets, queryString);
+Name += version;
+SpecNames = loadSpecs(Sets, queryString);
 
 window.onload = function(){
 	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());

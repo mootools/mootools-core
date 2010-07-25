@@ -5,6 +5,14 @@ var isArray = Array.isArray || function(array){
 	return toString.call(array) == '[object Array]';
 };
 
+var indexOf = function(array, item, from){
+	var len = array.length;
+	for (var i = (from < 0) ? Math.max(0, len + from) : from || 0; i < len; i++){
+		if (array[i] === item) return i;
+	}
+	return -1;
+};
+
 var forEach = function(array, fn, bind){
 	for (var i = 0, l = array.length; i < l; i++){
 		if (i in array) fn.call(bind, array[i], i, array);
@@ -42,7 +50,7 @@ var getSpecs = function(Sets, queryString){
 		specs = queryString.specs;
 
 	forEach(specs && isArray(specs) ? specs : [specs], function(spec){
-		if (Sets[spec] && requestedSpecs.indexOf(spec) == -1) requestedSpecs.push(spec);
+		if (Sets[spec] && indexOf(requestedSpecs, spec) == -1) requestedSpecs.push(spec);
 	});
 
 	return requestedSpecs;
