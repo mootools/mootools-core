@@ -234,16 +234,22 @@ new Type('Type', Type);
 
 // Default Types
 
+var protect = function(object, methods){
+	for (var i = 0, l = methods.length; i < l; i++){
+		var method = methods[i];
+		if (object[method]) object[method].protect();
+	}
+};
+
 var force = function(name, type, methods){
 	var object = new Type(name, type),
 		prototype = object.prototype;
-	
+
+	protect(object, methods);
+
 	for (var i = 0, l = methods.length; i < l; i++){
 		var key = methods[i],
-			generic = object[key],
 			proto = prototype[key];
-		
-		if (generic) generic.protect();
 		
 		if (proto){
 			delete prototype[key];
@@ -266,7 +272,17 @@ force('String', String, [
 	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
 ])('Function', Function, [
 	'apply', 'call'
-])('RegExp', RegExp, ['exec', 'test'])('Date', Date, ['now']);
+])('RegExp', RegExp, [
+	'exec', 'test'
+])('Date', Date, ['now']);
+
+protect(Object, [
+	'create', 'defineProperty', 'defineProperties', 'keys', 'values',
+	'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
+	'preventExtensions', 'isExtensible', 'seal', 'freeze', 'isSealed', 'isFrozen'
+]);
+
+Object.extend = extend.overloadSetter();
 
 Date.extend('now', function(){
 	return +(new Date);
