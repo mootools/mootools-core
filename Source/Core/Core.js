@@ -235,10 +235,10 @@ new Type('Type', Type);
 // Default Types
 
 var force = function(name, object, methods){
-	var isObject = (object == Object),
+	var isType = (object != Object),
 		prototype = object.prototype;
 
-	if (!isObject) object = new Type(name, object);
+	if (isType) object = new Type(name, object);
 
 	for (var i = 0, l = methods.length; i < l; i++){
 		var key = methods[i],
@@ -247,13 +247,13 @@ var force = function(name, object, methods){
 
 		if (generic) generic.protect();
 
-		if (!isObject && proto){
+		if (isType && proto){
 			delete prototype[key];
 			prototype[key] = proto.protect();
 		}
 	}
 	
-	object.implement(object.prototype);
+	if (isType) object.implement(prototype);
 	
 	return force;
 };
