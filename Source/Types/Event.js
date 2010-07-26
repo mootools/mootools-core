@@ -7,7 +7,7 @@ description: Contains the Event Class, to make the event object cross-browser.
 
 license: MIT-style license.
 
-requires: [Window, Document, Array, Function, String]
+requires: [Window, Document, Array, Function, String, Object]
 
 provides: Event
 
