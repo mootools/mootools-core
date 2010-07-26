@@ -351,12 +351,12 @@ Element.implement({
 
 	set: function(prop, value){
 		var property = Element.Properties[prop];
-		(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
+		(property && property.set) ? property.set.call(this, value) : this.setProperty(prop, value);
 	}.overloadSetter(),
 
 	get: function(prop){
 		var property = Element.Properties[prop];
-		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
+		return (property && property.get) ? property.get.apply(this) : this.getProperty(prop);
 	}.overloadGetter(),
 
 	erase: function(prop){
