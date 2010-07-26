@@ -40,11 +40,9 @@ this.Element = function(tag, props){
 	return document.newElement(tag, props);
 };
 	
-if (Browser.Element){
-	Element.prototype = Browser.Element.prototype;
-}
+if (Browser.Element) Element.prototype = Browser.Element.prototype;
 
-new Type('Element', Element).mirror(function(name, method){
+new Type('Element', Element).mirror(function(name){
 	var obj = {};
 	obj[name] = function(){
 		var results = [], args = arguments, elements = true;
