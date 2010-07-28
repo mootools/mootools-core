@@ -56,6 +56,11 @@ describe('Element.getStyle', {
 	'should `getStyle` with a dash in it': function() {
 		var el = new Element('div').set('html', '<div style="list-style-type:square"></div>');
 		value_of(el.getElement('div').getStyle('list-style-type')).should_be('square');
+	},
+
+	'should `getStyle` padding': function() {
+		var el = new Element('div').set('html', '<div style="padding:20px"></div>');
+		value_of(el.getElement('div').getStyle('padding-left')).should_be('20px');
 	}
 
 });
