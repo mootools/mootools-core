@@ -1,4 +1,4 @@
-// returnsType: String {#String}
+Type: String {#String}
 ====================
 
 A collection of the String Object methods and functions.
@@ -28,8 +28,8 @@ Returns the passed parameter as a String.
 
 ### Example:
 
-	String.from(2)	// returns '2'
-	String.from(true)	// returns 'true'
+	String.from(2); // returns '2'
+	String.from(true); // returns 'true'
 
 
 
@@ -41,7 +41,7 @@ For more information see [MDC Regexp:test][].
 
 ### Syntax:
 
-	myString.test(regex[,params]);
+	myString.test(regex[, params]);
 
 ### Arguments:
 
@@ -127,7 +127,7 @@ Removes all extraneous whitespace from a string and trims it ([String:trim][]).
 
 ### Examples:
 
-	' i      like     cookies      \n\n.clean(); // returns 'i like cookies'
+	' i      like     cookies      \n\n'.clean(); // returns 'i like cookies'
 
 
 
@@ -282,8 +282,8 @@ Converts a hexadecimal color value to RGB. Input string must be in one of the fo
 
 ### Examples:
 
-	'#123'.hexToRgb(); // returns 'rgb(17,34,51)'
-	'112233'.hexToRgb(); // returns 'rgb(17,34,51)'
+	'#123'.hexToRgb(); // returns 'rgb(17, 34, 51)'
+	'112233'.hexToRgb(); // returns 'rgb(17, 34, 51)'
 	'#112233'.hexToRgb(true); // returns [17, 34, 51]
 
 
@@ -292,7 +292,7 @@ String method: rgbToHex {#String:rgbToHex}
 -----------------------------------
 
 Converts an RGB color value to hexadecimal. Input string must be in one of the following RGB color formats.
-"rgb(255,255,255)", or "rgba(255,255,255,1)"
+"rgb(255, 255, 255)", or "rgba(255, 255, 255, 1)"
 
 ### Syntax:
 
@@ -300,7 +300,7 @@ Converts an RGB color value to hexadecimal. Input string must be in one of the f
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff','33','00'\]) instead of a string (e.g. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff', '33', '00'\]) instead of a string (e.g. "#ff3300").
 
 ### Returns:
 
@@ -309,9 +309,9 @@ Converts an RGB color value to hexadecimal. Input string must be in one of the f
 
 ### Examples:
 
-	'rgb(17,34,51)'.rgbToHex(); // returns '#112233'
-	'rgb(17,34,51)'.rgbToHex(true); // returns ['11','22','33']
-	'rgba(17,34,51,0)'.rgbToHex(); // returns 'transparent'
+	'rgb(17, 34, 51)'.rgbToHex(); // returns '#112233'
+	'rgb(17, 34, 51)'.rgbToHex(true); // returns ['11', '22', '33']
+	'rgba(17, 34, 51, 0)'.rgbToHex(); // returns 'transparent'
 
 ### See Also:
 

@@ -37,7 +37,7 @@ Used to iterate through arrays, or iterables that are not regular arrays, such a
 
 ### Example:
 
-	Array.each(['Sun','Mon','Tue'], function(day, index){
+	Array.each(['Sun', 'Mon', 'Tue'], function(day, index){
 		alert('name:' + day + ', index: ' + index);
 	}); // alerts 'name: Sun, index: 0', 'name: Mon, index: 1', etc.
 
@@ -220,7 +220,7 @@ This method is provided only for browsers without native [Array:every][] support
 
 	var areAllBigEnough = [10, 4, 25, 100].every(function(item, index){
 		return item > 20;
-	}); //areAllBigEnough = false
+	}); // areAllBigEnough = false
 
 
 ### See Also:
@@ -264,7 +264,7 @@ This method is provided only for browsers without native [Array:filter][] suppor
 
 	var biggerThanTwenty = [10, 3, 25, 100].filter(function(item, index){
 		return item > 20;
-	}); //biggerThanTwenty = [25, 100]
+	}); // biggerThanTwenty = [25, 100]
 
 ### See Also:
 
@@ -400,7 +400,7 @@ This method is provided only for browsers without native [Array:some][] support.
 
 	var isAnyBigEnough = [10, 4, 25, 100].some(function(item, index){
 		return item > 20;
-	}); //isAnyBigEnough = true
+	}); // isAnyBigEnough = true
 
 ### See Also:
 
@@ -455,9 +455,14 @@ Accepts an object of key / function pairs to assign values.
 
 	var el = document.createElement('div');
 	var arr2 = [100, 'Hello', {foo: 'bar'}, el, false];
-	arr2.link({myNumber: Number.type, myElement: Element.type, myObject: Object.type, myString: String.type, myBoolean: $defined});
+	arr2.link({
+		myNumber: Type.isNumber,
+		myElement: Type.isElement,
+		myObject: Type.isObject,
+		myString: Type.isString,
+		myBoolean: function(obj){ return obj != null; }
+	});
 	// returns {myNumber: 100, myElement: el, myObject: {foo: 'bar'}, myString: 'Hello', myBoolean: false}
-
 
 
 Array method: contains {#Array:contains}
@@ -480,8 +485,8 @@ Tests an array for the presence of an item.
 
 ### Examples:
 
-	['a','b','c'].contains('a'); // returns true
-	['a','b','c'].contains('d'); // returns false
+	['a', 'b', 'c'].contains('a'); // returns true
+	['a', 'b', 'c'].contains('d'); // returns false
 
 ### See Also:
 
@@ -709,7 +714,7 @@ Array method: hexToRgb {#Array:hexToRgb}
 ----------------------------------
 
 Converts an hexadecimal color value to RGB. Input array must be the following hexadecimal color format.
-\['FF','FF','FF'\]
+\['FF', 'FF', 'FF'\]
 
 ### Syntax:
 
@@ -717,7 +722,7 @@ Converts an hexadecimal color value to RGB. Input array must be the following he
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \[255, 51, 0\]) instead of a string (e.g. "rgb(255,51,0)").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \[255, 51, 0\]) instead of a string (e.g. "rgb(255, 51, 0)").
 
 ### Returns:
 
@@ -726,8 +731,8 @@ Converts an hexadecimal color value to RGB. Input array must be the following he
 
 ### Examples:
 
-	['11','22','33'].hexToRgb(); // returns 'rgb(17,34,51)'
-	['11','22','33'].hexToRgb(true); // returns [17, 34, 51]
+	['11', '22', '33'].hexToRgb(); // returns 'rgb(17, 34, 51)'
+	['11', '22', '33'].hexToRgb(true); // returns [17, 34, 51]
 
 ### See Also:
 
@@ -739,7 +744,7 @@ Array method: rgbToHex {#Array:rgbToHex}
 ----------------------------------
 
 Converts an RGB color value to hexadecimal. Input array must be in one of the following RGB color formats.
-\[255,255,255\], or \[255,255,255,1\]
+\[255, 255, 255\], or \[255, 255, 255, 1\]
 
 ### Syntax:
 
@@ -747,7 +752,7 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff','33','00'\]) instead of a string (e.g. '#ff3300').
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff', '33', '00'\]) instead of a string (e.g. '#ff3300').
 
 ### Returns:
 
@@ -756,9 +761,9 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 ### Examples:
 
-	[17,34,51].rgbToHex(); // returns '#112233'
-	[17,34,51].rgbToHex(true); // returns ['11','22','33']
-	[17,34,51,0].rgbToHex(); // returns 'transparent'
+	[17, 34, 51].rgbToHex(); // returns '#112233'
+	[17, 34, 51].rgbToHex(true); // returns ['11', '22', '33']
+	[17, 34, 51, 0].rgbToHex(); // returns 'transparent'
 
 ### See Also:
 
@@ -766,7 +771,6 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 
 
-[Array]: /core/Native/Array
 [Function:bind]: /core/Native/Function/#Function:bind
 [MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
 [MDC Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every

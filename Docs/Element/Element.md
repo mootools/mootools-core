@@ -46,7 +46,7 @@ The document.id function has a dual purpose: Getting the element by its id, and 
 Function: $ {#Window:dollar}
 ----------------------------
 
-The dollar function is a alias for [document:id][] if the $ variable is not set already.
+The dollar function is an alias for [document:id][] if the $ variable is not set already.
 However it is not recommended to use more frameworks, the $ variable can be set by another framework or script. MooTools will detect this and determine if it will set the $ function so it will not be overwritten.
 
 ### Examples: 
@@ -59,7 +59,7 @@ However it is not recommended to use more frameworks, the $ variable can be set 
 	
 	(function($){
 		
-		//Now you can use $ safely in this closure
+		// Now you can use $ safely in this closure
 	
 	})(document.id)
 

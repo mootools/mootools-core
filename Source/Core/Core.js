@@ -410,6 +410,8 @@ var Native = this.Native = function(properties){
 	return new Type(properties.name, properties.initialize);
 };
 
+Native.type = Type.type;
+
 Native.implement = function(objects, methods){
 	for (var i = 0; i < objects.length; i++) objects[i].implement(methods);
 	return Native;
