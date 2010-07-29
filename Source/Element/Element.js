@@ -649,11 +649,12 @@ Element.implement('hasChild', function(element){
 });
 
 // purge
-
-window.addListener('unload', function(){
-	Object.each(collected, clean);
-	if (window.CollectGarbage) CollectGarbage();
-});
+if(window.attachEvent && !window.addEventListener){
+	window.addListener('unload', function(){
+		Object.each(collected, clean);
+		if (window.CollectGarbage) CollectGarbage();
+	});
+}
 
 })();
 
