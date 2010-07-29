@@ -1,6 +1,21 @@
 (function(context){
 
-context.Sets = {
+var Configuration = context.Configuration = {};
+
+Configuration.name = 'MooTools Core';
+
+Configuration.presets = [
+	{
+		version: '1.2',
+		specs: ['1.2']
+	},
+	{
+		version: '1.3',
+		specs: ['1.2', '1.3base', '1.3client']
+	}
+];
+
+Configuration.sets = {
 
 	'1.2': [
 		'Core/Core', 'Core/Native', 'Core/Browser',
@@ -23,7 +38,7 @@ context.Sets = {
 
 };
 
-context.Source = {
+Configuration.source = {
 
 	'1.2': {
 		'client': [
