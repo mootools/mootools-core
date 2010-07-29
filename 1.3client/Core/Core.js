@@ -10,7 +10,7 @@ describe('typeOf Client', {
 	},
 
 	"should return 'elements' for Elements": function(){
-		if ('Elements' in window) value_of(typeOf(new Elements)).should_be('elements');
+		value_of(typeOf(new Elements)).should_be('elements');
 	},
 
 	"should return 'window' for the window object": function(){
@@ -23,9 +23,9 @@ describe('typeOf Client', {
 
 });
 
-describe('Array.from', {
+describe('Array.from', function(){
 
-	'should return an array for an Elements collection': function(){
+	it('should return an array for an Elements collection', function(){
 		var div1 = document.createElement('div');
 		var div2 = document.createElement('div');
 		var div3 = document.createElement('div');
@@ -34,7 +34,15 @@ describe('Array.from', {
 		div1.appendChild(div3);
 
 		var array = Array.from(div1.getElementsByTagName('*'));
-		value_of(Type.isArray(array)).should_be_true();
-	}
+		expect(Type.isArray(array)).toEqual(true);
+	});
+	
+	it('should return an array for an Options collection', function(){
+		var div = document.createElement('div');
+		div.innerHTML = '<select><option>a</option></select>';
+		var select = div.firstChild;
+		var array = Array.from(select.options);
+		expect(Type.isArray(array)).toEqual(true);
+	});
 
 });
