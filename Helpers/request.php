@@ -18,24 +18,29 @@ $content_types = array(
 	'json'	=> 'application/json'
 );
 
-// you can defined the default sleep time by passing the '__sleep' variable (get or post)
-check_special_parameter('sleep', 0);
-check_special_parameter('response', false);
-check_special_parameter('type', 'html');
+check_special_parameter('sleep', 0); // you can define the default sleep time by passing the '__sleep' variable (get or post)
+check_special_parameter('response', NULL);
+check_special_parameter('type', NULL);
+check_special_parameter('retrieve', NULL);
 
 header('Content-Type: ' . (isset($content_types[$type]) ? $content_types[$type] : $type));
 
 sleep($sleep);
 
-if ($response !== false){
+if ($response !== NULL){
 	echo $response;
 	die();
 }
 
-echo json_encode(array(
-	'method'	=> strtolower($_SERVER['REQUEST_METHOD']),
-	'get'		=> $_GET,
-	'post'		=> $_POST
-));
+$info = array('method' => strtolower($_SERVER['REQUEST_METHOD']));
+if (!empty($_GET)) $info['get'] = $_GET;
+if (!empty($_POST)) $info['post'] = $_POST;
+
+if ($retrieve !== NULL){
+	echo json_encode(isset($info[$retrieve]) ? $info[$retrieve] : '');
+	die();
+}
+
+echo json_encode($info);
 
 ?>

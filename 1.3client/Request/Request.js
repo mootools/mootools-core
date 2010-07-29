@@ -30,6 +30,49 @@ describe('Request', function(){
 		
 	});
 	
+	it('should create a Request with method get and sending data', function(){
+
+		runs(function(){
+			this.onComplete = jasmine.createSpy();
+			this.request = new Request({
+				url: 'Helpers/request.php',
+				method: 'get',
+				onComplete: this.onComplete
+			}).send({data: {'some': 'data'}});
+		});
+		
+		waitsFor(800, function(){
+			return this.onComplete.wasCalled;
+		});
+		
+		runs(function(){
+			expect(this.onComplete).toHaveBeenCalledWith('{"method":"get","get":{"some":"data"}}', null);
+		});
+		
+	});
+	
+	it('the options passed on the send method should rewrite the curret ones', function(){
+
+		runs(function(){
+			this.onComplete = jasmine.createSpy();
+			this.request = new Request({
+				url: 'Helpers/request.php',
+				method: 'get',
+				data: {'setup': 'data'},
+				onComplete: this.onComplete
+			}).send({method: 'post', data: {'send': 'senddata'}});
+		});
+		
+		waitsFor(800, function(){
+			return this.onComplete.wasCalled;
+		});
+		
+		runs(function(){
+			expect(this.onComplete).toHaveBeenCalledWith('{"method":"post","post":{"send":"senddata"}}', null);
+		});
+		
+	});
+	
 	it('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
 
 		runs(function(){
