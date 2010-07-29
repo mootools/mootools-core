@@ -648,13 +648,11 @@ Element.implement('hasChild', function(element){
 
 });
 
-// purge
-if(window.attachEvent && !window.addEventListener){
-	window.addListener('unload', function(){
-		Object.each(collected, clean);
-		if (window.CollectGarbage) CollectGarbage();
-	});
-}
+// IE purge
+if (window.attachEvent && !window.addEventListener) window.addListener('unload', function(){
+	Object.each(collected, clean);
+	if (window.CollectGarbage) CollectGarbage();
+});
 
 })();
 
