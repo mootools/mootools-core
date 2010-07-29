@@ -33,7 +33,8 @@ Configuration.sets = {
 	'1.3client': [
 		'Core/Core',
 		'Browser/Browser',
-		'Element/NewElement'
+		'Element/NewElement',
+		'Request/Request'
 	]
 
 };

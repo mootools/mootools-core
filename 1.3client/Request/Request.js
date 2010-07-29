@@ -13,7 +13,7 @@ describe('Request', function(){
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
 			this.request = new Request({
-				url: 'Helpers/request.php',
+				url: '../Helpers/request.php',
 				onComplete: this.onComplete
 			}).send({data: {
 				'__response': 'response'
@@ -35,7 +35,7 @@ describe('Request', function(){
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
 			this.request = new Request({
-				url: 'Helpers/request.php',
+				url: '../Helpers/request.php',
 				method: 'get',
 				onComplete: this.onComplete
 			}).send({data: {'some': 'data'}});
@@ -56,7 +56,7 @@ describe('Request', function(){
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
 			this.request = new Request({
-				url: 'Helpers/request.php',
+				url: '../Helpers/request.php',
 				method: 'get',
 				data: {'setup': 'data'},
 				onComplete: this.onComplete
@@ -78,7 +78,7 @@ describe('Request', function(){
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
 			this.request = new Request({
-				url: 'Helpers/request.php',
+				url: '../Helpers/request.php',
 				onComplete: this.onComplete
 			}).send({data: {
 				'__type': 'xml',
@@ -120,7 +120,7 @@ describe('Request', function(){
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
 			this.request = new Request({
-				url: 'Helpers/request.php',
+				url: '../Helpers/request.php',
 				onComplete: this.onComplete
 			}).send({data: {
 				'__response': '<node>response</node><no></no>'
