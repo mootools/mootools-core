@@ -14,7 +14,8 @@ Set up the Specs:
 
 	cd Specs
 	git pull origin master
-	git submodule update --init
+	git submodule update --init --recursive
+	cd Runner
 	chmod +x server test runner runner.js buildCommonJS buildJSTDConfiguration
 
 ### Requirements
