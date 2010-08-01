@@ -4,45 +4,63 @@ var Configuration = context.Configuration = {};
 
 Configuration.name = 'MooTools Core';
 
-Configuration.presets = [
-	{
-		version: '1.2',
-		specs: ['1.2']
+Configuration.presets = {
+	'core-1.2': {
+		sets: ['1.2'],
+		source: ['1.2']
 	},
-	{
-		version: '1.3',
-		specs: ['1.2', '1.3base', '1.3client']
+	'core-1.3-base': {
+		sets: ['core-1.3-base'],
+		source: ['core-1.3-base']
+	},
+	'core-1.3-client': {
+		sets: ['core-1.3-base', 'core-1.3-client'],
+		source: ['core-1.3-base', 'core-1.3-client']
+	},
+	'core-1.3 + core-1.2': {
+		sets: ['1.2', 'core-1.3-base', 'core-1.3-client'],
+		source: ['core-1.3-base', 'core-1.3-client']		
 	}
-];
+};
 
 Configuration.sets = {
 
-	'1.2': [
-		'Core/Core', 'Core/Native', 'Core/Browser',
-		'Native/Array', 'Native/String', 'Native/Function', 'Native/Number', 'Native/Hash',
-		'Class/Class', 'Class/Class.Extras',
-		'Element/Element', 'Element/Element.Style', 'Element/Element.Dimensions'
-	],
-
-	'1.3base': [
-		'Core/Core',
-		'Types/Array', 'Types/Function', 'Types/Object',
-		'Class/Class'
-	],
-
-	'1.3client': [
-		'Core/Core',
-		'Browser/Browser',
-		'Element/NewElement',
-		'Request/Request'
-	]
-
+	'1.2': {
+		path: '1.2/',
+		files: [
+			'Core/Core', 'Core/Native', 'Core/Browser',
+			'Native/Array', 'Native/String', 'Native/Function', 'Native/Number', 'Native/Hash',
+			'Class/Class', 'Class/Class.Extras',
+			'Element/Element', 'Element/Element.Style', 'Element/Element.Dimensions'
+		]
+	},
+	
+	'core-1.3-base': {
+		path: '1.3base/',
+		files: [		
+			'Core/Core',
+			'Types/Array', 'Types/Function', 'Types/Object',
+			'Class/Class'
+		]
+	},
+	
+	'core-1.3-client': {
+		path: '1.3client/',
+		files: [
+			'Core/Core',
+			'Browser/Browser',
+			'Element/NewElement',
+			'Request/Request'
+		]
+	}
 };
+
 
 Configuration.source = {
 
 	'1.2': {
-		'client': [
+		path: '../Source/',
+		files: [
 			'Core/Core',
 			'Core/Browser',
 
@@ -79,8 +97,9 @@ Configuration.source = {
 		]
 	},
 
-	'1.3': {
-		'base': [
+	'core-1.3-base': {
+		path: '../Source/',
+		files: [
 			'Core/Core',
 
 			'Types/Array',
@@ -91,8 +110,12 @@ Configuration.source = {
 
 			'Class/Class',
 			'Class/Class.Extras'
-		],
-		'client': [
+		]
+	},
+	
+	'core-1.3-client': {
+		path: '../Source/',
+		files: [
 			'Types/Event',
 
 			'Browser/Browser',
