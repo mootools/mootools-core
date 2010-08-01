@@ -14,7 +14,7 @@
 <ul id="prebuilt">
 	<script>
 	(function(){
-		for (name in Configuration.presets){
+		for (var name in Configuration.presets){
 			document.write('<li><a href="Runner/runner.html?preset=' + name + '">&rarr; ' + name + ': [' + Configuration.presets[name].sets.join(', ') + '] Specs</a></li>');
 		}
 	})();
