@@ -6,9 +6,11 @@ License:
 	MIT-style license.
 */
 
-(function(){
+describe('Element.Dimensions', function(){
+
 	var div, relDiv, absDiv, scrollDiv, tallDiv;
-	window.addEvent('domready', function(){
+
+	beforeEach(function(){
 		div = new Element('div', {
 			id: 'ElementDimensionsTest',
 			styles: {
@@ -74,48 +76,53 @@ License:
 				visibility: 'hidden'			
 			}
 		}).inject(scrollDiv);
-	
 	});
 
-	describe('Element.getSize', {
+	describe('Element.getSize', function(){
 		
-		'should measure the width and height of the element': function(){
-			value_of(div.getSize().x).should_be(108);
-			value_of(div.getSize().y).should_be(108);
-		}
-		
-	});
-	
-	describe('Element.getPosition', {
-		
-		'should measure the x and y position of the element': function(){
-			value_of(div.getPosition()).should_be({x: 102, y: 102});
-		}
-		
-	});
-
-	describe('Element.getCoordinates', {
-		
-		'should return the coordinates relative to parent': function(){
-			value_of(absDiv.getCoordinates(relDiv)).should_be({left:16, top:16, width:22, height:22, right:38, bottom:38});
-		}
+		it('should measure the width and height of the element', function(){
+			expect(div.getSize().x).toEqual(108);
+			expect(div.getSize().y).toEqual(108);
+		});
 		
 	});
 	
-	describe('Element.getScrollSize', {
+	describe('Element.getPosition', function(){
 		
-		'should return the scrollSize': function(){
-			value_of(scrollDiv.getScrollSize()).should_be({x:200, y:200});
-		}
-		
-	});
-	
-	describe('Element.scrollTo', {
-		
-		'should scroll the element': function(){
-			value_of(scrollDiv.scrollTo(20,20).getScroll()).should_be({x:20, y:20});
-		}
+		it('should measure the x and y position of the element', function(){
+			expect(div.getPosition()).toEqual({x: 102, y: 102});
+		});
 		
 	});
 
-})();
+	describe('Element.getCoordinates', function(){
+		
+		it('should return the coordinates relative to parent', function(){
+			expect(absDiv.getCoordinates(relDiv)).toEqual({left:16, top:16, width:22, height:22, right:38, bottom:38});
+		});
+		
+	});
+	
+	describe('Element.getScrollSize', function(){
+		
+		it('should return the scrollSize', function(){
+			expect(scrollDiv.getScrollSize()).toEqual({x:200, y:200});
+		});
+		
+	});
+	
+	describe('Element.scrollTo', function(){
+		
+		it('should scroll the element', function(){
+			expect(scrollDiv.scrollTo(20,20).getScroll()).toEqual({x:20, y:20});
+		});
+		
+	});
+	
+	afterEach(function(){
+		[div, relDiv, absDiv, scrollDiv, tallDiv].each(function(el){
+			el.destroy();
+		});		
+	});	
+
+});
