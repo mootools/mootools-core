@@ -56,6 +56,7 @@ Configuration.sets = {
 			'Core/Core',
 			'Browser/Browser',
 			'Element/NewElement',
+			'Element/Element.Event',
 			'Request/Request'
 		]
 	}
