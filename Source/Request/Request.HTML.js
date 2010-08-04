@@ -60,7 +60,7 @@ Element.Properties.load = {
 	get: function(){
 		var load = this.retrieve('load');
 		if (!load){
-			load = new Request({data: this, link: 'cancel', update: this, method: 'get'});
+			load = new Request.HTML({data: this, link: 'cancel', update: this, method: 'get'});
 			this.store('load', load);
 		}
 		return load;
