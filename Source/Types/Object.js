@@ -197,6 +197,8 @@ Hash.implement({
 
 });
 
+Hash.extend = Object.append;
+
 Hash.alias({indexOf: 'keyOf', contains: 'hasValue'});
 
 //</1.2compat>
