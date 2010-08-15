@@ -29,8 +29,74 @@ flushPause();
 <html>
 <head>
 <script>var	START_TIME = +new Date</script>
+<script>
+
+var Browser = {}
+
+function log(message){
+	try {
+		console.log('' + message)
+	}
+	catch (e){}
+}
+
+document.addListener = function(type, fn){
+	if (this.addEventListener) this.addEventListener(type, fn, false);
+	else this.attachEvent('on' + type, fn);
+	return this;
+};
+
+document.removeListener = function(type, fn){
+	if (this.removeEventListener) this.removeEventListener(type, fn, false);
+	else this.detachEvent('on' + type, fn);
+	return this;
+};
+
+var domreadyCallbacks = []
+
+window.fireEvent = 
+document.fireEvent = function(type){
+	if (type == 'domready')
+	for (var i = 0; i < domreadyCallbacks.length; ++i){
+		domreadyCallbacks[i]()
+	}
+}
+
+function DomReady(fn){
+	domreadyCallbacks.push(fn)
+}
+
+var Element = this.Element || {}
+Element.Events = {}
+
+<?php
+// require dirname(__FILE__) . '/../../Packager/packager.php';
+// 
+// $pkg = new Packager(Array( dirname(__FILE__) . '/../..' ));
+// echo $pkg->build(Array( 'DomReady' ), Array(), Array(), Array());
+?>
+
+document.write('<script src="DomReady.js?_=' + (new Date) + '"><\/script>')
+</script>
+
+<script>
+// window.addEvent('load', function(){
+// 	window.LOADED = true
+// 	somethingHappened('MooTools load', function(){
+// 		return !!window.READY
+// 	})
+// })
+// window.addEvent('domready', function(){
+// 	window.READY = true
+// 	somethingHappened('MooTools domready', isNotLoaded)
+// })
+DomReady(function(){
+	window.READY = true
+	somethingHappened('MooTools domready', isNotLoaded)
+});
+</script>
 	<meta http-equiv=Content-type content="text/html; charset=utf-8">
-	<title>domready.html5.test.html</title>
+	<title>DomReady Test</title>
 <style>
 
 iframe {
@@ -70,21 +136,6 @@ small{
 
 </style>
 <script>
-<?php
-require dirname(__FILE__) . '/../../Packager/packager.php';
-
-$pkg = new Packager(Array( dirname(__FILE__) . '/../..' ));
-echo $pkg->build(Array( 'DomReady' ), Array(), Array(), Array());
-
-?>
-</script>
-<script>
-window.addEvent('domready', function(){
-	window.READY = true
-	somethingHappened('MooTools domready', isNotLoaded)
-})
-</script>
-<script>
 var	MESSAGES = document.createElement('div')
 
 thingsThatHappened = {}
@@ -99,13 +150,14 @@ function somethingHappened(id, result){
 	if (thingsThatHappened[id] === result) return
 	thingsThatHappened[id] = result
 	
+	log((+new Date - START_TIME) +' '+ id + ' ' + result)
+	
 	MESSAGES.innerHTML
 		+=	'<p id="' + id + '" class="' + result + '">'
 		+	'<b>' + (+new Date - START_TIME) + 'ms </b>'
 		+	id
 		+	' '
 		+	result
-	
 }
 
 if (document.addEventListener) document.addEventListener('DOMContentLoaded', function(){ window.READY = true; somethingHappened('DOMContentLoaded (addEventListener)', isNotLoaded) }, false)
@@ -129,6 +181,7 @@ function pollDoScroll(){
 		PASS = false
 	}
 	
+	window.CANSCROLL = PASS
 	somethingHappened('TEST_ELEMENT.doScroll()', PASS)
 	
 	if (!PASS) setTimeout(pollDoScroll, 10)
@@ -197,31 +250,31 @@ function pollAugmentBody(){
 var readyTests = {
 	readyState: function(){return document.readyState}
 	
-	,'has body': function(){return !!document.body}
+	,'has body': function(){return document.body ?'Yes':'No'}
 	
-	,parsed: function(){return window.PARSED}
-	,img_onload: function(){return window.IMG_ONLOAD}
-	,img_onload_uncached: function(){return window.IMG_ONLOAD_UNCACHED}
-	,ready: function(){return window.READY}
-	,onload: function(){return window.ONLOAD}
+	,parsed: function(){return window.PARSED ?'Yes':'No'}
+	,img_onload: function(){return window.IMG_ONLOAD ?'Yes':'No'}
+	,img_onload_uncached: function(){return window.IMG_ONLOAD_UNCACHED ?'Yes':'No'}
+	,ready: function(){return window.READY ?'Yes':'No'}
+	,onload: function(){return window.ONLOAD ?'Yes':'No'}
 	
 	,"doScroll": function(){
 		try {
 			TEST_ELEMENT.doScroll()
-			return true
+			return 'Yes'
 		}
 		catch (e){
-			return false
+			return 'No'
 		}
 	}
 	
 	,"body.doScroll": function(){
 		try {
 			document.body.doScroll('left')
-			return true
+			return 'Yes'
 		}
 		catch (e){
-			return false
+			return 'No'
 		}
 	}
 }
@@ -242,6 +295,18 @@ function poll(){
 		++ hasDifferentResults
 		somethingHappened(id, results[id])
 	}
+	
+	var shouldBeReady
+	
+	if (window.CANSCROLL && this.window == this.top) shouldBeReady = true
+	if ({loaded:1,complete:1}[document.readyState]) shouldBeReady = true
+	if (window.LOADED) shouldBeReady = true
+	if (window.IMG_ONLOAD_UNCACHED) shouldBeReady = true
+	
+	if (shouldBeReady)
+	somethingHappened('Should be Ready!', function(){
+		return window.READY ?true:'Not yet...'
+	})
 	
 	if (hasDifferentResults) readyTestResults.push(results)
 	if (!window.ONLOAD) setTimeout(poll, 10)
@@ -280,7 +345,7 @@ poll()
 
 // //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  // //
 
-function isNotLoaded(){ return !!(window.PARSED && !window.ONLOAD && !window.IMG_ONLOAD_UNCACHED) }
+function isNotLoaded(){ return !!(window.PARSED && !window.ONLOAD) }
 
 </script>
 </head>
@@ -329,11 +394,11 @@ flushPause(0.5);
 <script
 	onload="window.SCRIPT_ONLOAD = true; somethingHappened('script[onload]')"
 	onreadystatechange="somethingHappened('script[onreadystatechange]', this.readyState)"
-	src="blank.js"></script>
+	src="http://projects.subtlegradient.com/domready/blank.js"></script>
 <script
 	onload="window.SCRIPT_ONLOAD = true; somethingHappened('script[onload][defer]')"
 	onreadystatechange="somethingHappened('script[defer][onreadystatechange]', this.readyState)"
-	defer src="blank.js?123"></script>
+	defer src="http://projects.subtlegradient.com/domready/blank.js?123"></script>
 
 </div>
 	<?php flushPause(0.25); ?>
