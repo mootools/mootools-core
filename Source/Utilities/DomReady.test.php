@@ -28,7 +28,10 @@ flushPause();
 <!DOCTYPE html>
 <html>
 <head>
-<script>var	START_TIME = +new Date</script>
+<script>
+var	START_TIME = +new Date
+function isNotLoaded(){ return !!(window.PARSED && !window.ONLOAD) }
+</script>
 <script>
 
 var Browser = {}
@@ -62,6 +65,8 @@ document.fireEvent = function(type){
 	}
 }
 
+window.addEvent = function(){}
+
 function DomReady(fn){
 	domreadyCallbacks.push(fn)
 }
@@ -76,7 +81,7 @@ Element.Events = {}
 // echo $pkg->build(Array( 'DomReady' ), Array(), Array(), Array());
 ?>
 
-document.write('<script src="DomReady.js?_=' + (new Date) + '"><\/script>')
+document.write('<scr'+'ipt src="DomReady.js?_=' + (new Date) + '"><'+'/script>')
 </script>
 
 <script>
@@ -343,10 +348,6 @@ function report(){
 
 poll()
 
-// //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  //  // //
-
-function isNotLoaded(){ return !!(window.PARSED && !window.ONLOAD) }
-
 </script>
 </head>
 <body
@@ -386,11 +387,11 @@ flushPause(0.5);
 <img height=16 width=16 onload="window.IMG_ONLOAD = true; somethingHappened('img[onload][src=' + this.src + ']')" src="http://projects.subtlegradient.com/domready/big_image.jpg">
 <script>document.write("<img height=16 width=16 onload=\"window.IMG_ONLOAD = true; window.IMG_ONLOAD_UNCACHED = true; somethingHappened('img[onload][src=' + this.src + ']')\" src=\"http://projects.subtlegradient.com/domready/big_image.jpg?_=" + +new Date + "\">")</script>
 
-<script
+<!-- <script
 	onload="window.SCRIPT_ONLOAD = true; somethingHappened('script[onload][src=about:blank]')"
 	onreadystatechange="somethingHappened('script[src=about:blank][onreadystatechange]', this.readyState)"
 	onerror="somethingHappened('script[src=about:blank][onerror]')"
-	src="about:blank"></script>
+	src="about:blank"></script> -->
 <script
 	onload="window.SCRIPT_ONLOAD = true; somethingHappened('script[onload]')"
 	onreadystatechange="somethingHappened('script[onreadystatechange]', this.readyState)"
