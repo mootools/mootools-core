@@ -145,7 +145,7 @@ var	MESSAGES = document.createElement('div')
 
 thingsThatHappened = {}
 function somethingHappened(id, result){
-	if (window.ONLOAD) document.body.appendChild(MESSAGES)
+	if (window.ONLOAD) document.body.insertBefore(MESSAGES, document.body.firstChild)
 	
 	if (typeof result == 'function') result = result()
 	if (result == null) result = ''
@@ -343,7 +343,7 @@ function report(){
 	}
 	
 	EL.innerHTML = HTML
-	document.body.appendChild(EL)
+	document.body.insertBefore(EL, document.body.firstChild)
 }
 
 poll()
@@ -355,27 +355,22 @@ poll()
 	onDOMContentLoaded="window.READY = true; somethingHappened('DOMContentLoaded body[onDOMContentLoaded]', isNotLoaded)"
 	onReadyStateChange="somethingHappened('body[onReadyStateChange]')"
 >
+
 <div>
 
 <div id=thingsthathappened></div>
-<script>if (window != top) {somethingHappened('This is a frame!'); document.getElementsByTagName('html')[0].className += ' framed'} </script>
 
 <hr>
+
+<script> somethingHappened('before serverSide flush/sleep') </script>
+<?php flushPause(1.0); ?>
+<script> somethingHappened('after serverSide flush/sleep') </script>
 
 <small>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 </small>
-
-<script> somethingHappened('before serverSide flush/sleep') </script>
-<div><?php
-flushPause(0.5);
-if(!isset($_GET['iframe']))
-    echo    '<iframe src="'.curPageURL().'?iframe=true"></iframe>';
-flushPause(0.5);
-?></div>
-<script> somethingHappened('after serverSide flush/sleep') </script>
 
 <small>
 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -402,12 +397,15 @@ flushPause(0.5);
 	defer src="http://projects.subtlegradient.com/domready/blank.js?123"></script>
 
 </div>
-	<?php flushPause(0.25); ?>
+
+<script>if (window != top) {somethingHappened('This is a frame!'); document.getElementsByTagName('html')[0].className += ' framed'} </script>
+<?php if (!isset($_GET['iframe'])) echo '<iframe src="'.curPageURL().'?iframe=true"></iframe>'; ?>
+
 <script>
-somethingHappened('parsed')
+somethingHappened('Last &lt;SCRIPT&gt; on page')
 window.PARSED = true
 </script>
-	<?php flushPause(0.25); ?>
+
 </body>
 </html>
 <?php flushPause(); ?>
