@@ -14,8 +14,7 @@ provides: [Element, Elements, $, $$, Iframe]
 ...
 */
 
-// it needs to be this.Element cause IE8 erases the Element Object while pre-processing this script
-this.Element = function(tag, props){
+var Element = function(tag, props){
 	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
