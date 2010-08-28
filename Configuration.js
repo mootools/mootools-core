@@ -55,6 +55,7 @@ Configuration.sets = {
 		files: [
 			'Core/Core',
 			'Browser/Browser',
+			'Element/Element',
 			'Element/NewElement',
 			'Element/Element.Event',
 			'Request/Request'
