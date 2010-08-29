@@ -233,15 +233,14 @@ Window.implement({
 //<1.2compat>
 
 (function(search, find, match){
-	if (!this.Selectors) this.Selectors = {};
-	var pseudos = this.Selectors.Pseudo = new Hash(this.Selectors.Pseudo);
+
+	this.Selectors = {};
+	var pseudos = this.Selectors.Pseudo = new Hash();
 
 	var addSlickPseudos = function(){
-		for (var name in pseudos){
-			if (pseudos.hasOwnProperty(name)){
-				Slick.definePseudo(name, pseudos[name])
-				delete pseudos[name];
-			}
+		for (var name in pseudos) if (pseudos.hasOwnProperty(name)){
+			Slick.definePseudo(name, pseudos[name])
+			delete pseudos[name];
 		}
 	}
 
@@ -249,14 +248,17 @@ Window.implement({
 		addSlickPseudos();
 		return search.apply(this, arguments);
 	}
+
 	Slick.find = function(){
 		addSlickPseudos();
 		return find.apply(this, arguments);
 	}
+
 	Slick.match = function(){
 		addSlickPseudos();
 		return match.apply(this, arguments);
 	}
+
 })(Slick.search, Slick.find, Slick.match);
 
 if (window.$$ == null) Window.implement('$$', function(selector){
