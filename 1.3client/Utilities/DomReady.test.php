@@ -1,6 +1,8 @@
  <?php
 // http://www.webcheatsheet.com/PHP/get_current_page_url.php
 function curPageURL() {
+	if (empty($_SERVER["HTTPS"])) $_SERVER["HTTPS"] = '';
+	
 	$pageURL = 'http';
 	if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
 	$pageURL .= "://";
@@ -81,7 +83,7 @@ Element.Events = {}
 // echo $pkg->build(Array( 'DomReady' ), Array(), Array(), Array());
 ?>
 
-document.write('<scr'+'ipt src="DomReady.js?_=' + (new Date) + '"><'+'/script>')
+document.write('<scr'+'ipt src="../../../Source/Utilities/DomReady.js?_=' + (new Date) + '"><'+'/script>')
 </script>
 
 <script>
