@@ -244,19 +244,19 @@ Window.implement({
 		}
 	}
 
-	Slick.search = function(){
+	Slick.search = function(context, expression, append){
 		addSlickPseudos();
-		return search.apply(this, arguments);
+		return search.call(this, context, expression, append);
 	}
 
-	Slick.find = function(){
+	Slick.find = function(context, expression){
 		addSlickPseudos();
-		return find.apply(this, arguments);
+		return find.call(this, context, expression);
 	}
 
-	Slick.match = function(){
+	Slick.match = function(node, selector){
 		addSlickPseudos();
-		return match.apply(this, arguments);
+		return match.call(this, node, selector);
 	}
 
 })(Slick.search, Slick.find, Slick.match);
