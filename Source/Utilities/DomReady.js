@@ -16,39 +16,36 @@ provides: DomReady
 
 (function(window, document){
 
-var	ready
-,	checks = []
-,	shouldPoll
-,	timer;
+var ready,
+	checks = [],
+	shouldPoll,
+	timer;
 
-function domready(){
+var domready = function(){
 	clearTimeout(timer);
 	if (ready) return;
 	Browser.loaded = ready = true;
-	document.removeListener('DOMContentLoaded', domready);
-	document.removeListener('readystatechange', check);
+	document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
 	
 	document.fireEvent('domready');
 	window.fireEvent('domready');
 };
 
-document.addListener('DOMContentLoaded', domready);
-
-
-function check(){
-	var i = checks.length;
-	while (i--) if (checks[i]()){
+var check = function(){
+	for (var i = checks.length; i--; ) if (checks[i]()){
 		domready();
 		return true;
 	}
+	
 	return false;
-}
+};
 
-function poll(){
+var poll = function(){
 	clearTimeout(timer);
 	if (!check()) timer = setTimeout(poll, 10);
-}
+};
 
+document.addListener('DOMContentLoaded', domready);
 
 // doScroll technique by Diego Perini http://javascript.nwbox.com/IEContentLoaded/
 var testElement = document.createElement('div');
@@ -57,43 +54,42 @@ if (testElement.doScroll && this.window == this.top){
 		try {
 			testElement.doScroll();
 			return true;
-		}
-		catch (e){
-			return false;
-		}
+		} catch (e){}
+
+		return false;
 	});
 	shouldPoll = true;
 }
 
-
-var stateReady = { loaded:1, complete:1 };
 if (document.readyState) checks.push(function(){
-	return stateReady[document.readyState];
-});
+	var state = document.readyState;
 
+	return (state == 'loaded' || state == 'complete');
+});
 
 if ('onreadystatechange' in document) document.addListener('readystatechange', check);
 else shouldPoll = true;
 
-
 if (shouldPoll) poll();
 
+var onAdd = function(fn){
+	if (ready) fn.call(this);
+};
 
 Element.Events.domready = {
-	onAdd: function(fn){
-		if (ready) fn.call(this);
-	}
+	onAdd: onAdd
 };
 
 // Make sure that domready fires before load
 Element.Events.load = {
 	base: 'load',
-	onAdd: Element.Events.domready.onAdd,
+	onAdd: onAdd,
 	condition: function(){
 		domready();
 		return true;
 	}
 };
+
 window.addEvent('load',function(){
 	delete Element.Events.load;
 });
