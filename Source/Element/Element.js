@@ -354,10 +354,8 @@ var injectCombinator = function(expression, combinator){
 	expression = Slick.parse(expression);
 	
 	var expressions = expression.expressions;
-	for (var i = expressions.length; i--;){
-		var first = expressions[i][0];
-		first.combinator = combinator + (first.combinator == ' ' ? '' : first.combinator);
-	}
+	for (var i = expressions.length; i--;)
+		expressions[i][0].combinator = combinator;
 	
 	return expression;
 };
