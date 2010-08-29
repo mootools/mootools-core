@@ -348,6 +348,20 @@ Object.each(inserters, function(inserter, where){
 
 //</1.2compat>
 
+var injectCombinator = function(expression, combinator){
+	if (!expression) return combinator;
+
+	expression = Slick.parse(expression);
+	
+	var expressions = expression.expressions;
+	for (var i = expressions.length; i--;){
+		var first = expressions[i][0];
+		first.combinator = combinator + (first.combinator == ' ' ? '' : first.combinator);
+	}
+	
+	return expression;
+};
+
 Element.implement({
 
 	set: function(prop, value){
@@ -465,44 +479,44 @@ Element.implement({
 		return this.replaces(el).grab(el, where);
 	},
 
-	getPrevious: function(match){
-		return document.id(Slick.find(this, '!~ ' + (match || '')));
+	getPrevious: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '!~')));
 	},
 
-	getAllPrevious: function(match){
-		return Slick.search(this, '!~ ' + (match || ''), new Elements);
+	getAllPrevious: function(expression){
+		return Slick.search(this, injectCombinator(expression, '!~'), new Elements);
 	},
 
-	getNext: function(match){
-		return document.id(Slick.find(this, '~ ' + (match || '')));
+	getNext: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '~')));
 	},
 
-	getAllNext: function(match){
-		return Slick.search(this, '~ ' + (match || ''), new Elements);
+	getAllNext: function(expression){
+		return Slick.search(this, injectCombinator(expression, '~'), new Elements);
 	},
 
-	getFirst: function(match){
-		return document.id(Slick.find(this, '> ' + (match || '')));
+	getFirst: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '>')));
 	},
 
-	getLast: function(match){
-		return document.id(Slick.find(this, '!^ ' + (match || '')));
+	getLast: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '!^')));
 	},
 
-	getParent: function(match){
-		return document.id(Slick.find(this, '! ' + (match || '')));
+	getParent: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '!')));
 	},
 
-	getParents: function(match){
-		return Slick.search(this, '! ' + (match || ''), new Elements);
+	getParents: function(expression){
+		return Slick.search(this, injectCombinator(expression, '!'), new Elements);
 	},
 	
-	getSiblings: function(match){
-		return Slick.search(this, '~~ ' + (match || ''), new Elements);
+	getSiblings: function(expression){
+		return Slick.search(this, injectCombinator(expression, '~~'), new Elements);
 	},
 
-	getChildren: function(match){
-		return Slick.search(this, '> ' + (match || ''), new Elements);
+	getChildren: function(expression){
+		return Slick.search(this, injectCombinator(expression, '>'), new Elements);
 	},
 
 	getWindow: function(){
