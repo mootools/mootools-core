@@ -32,14 +32,15 @@ Function.implement({
 	attempt: function(args, bind){
 		try {
 			return this.apply(bind, Array.from(args));
-		} catch (e){
-			return null;
-		}
+		} catch (e){}
+		
+		return null;
 	},
 
-	bind: function(bind, args){
-		var self = this;
-		if (args != null) args = Array.from(args);
+	bind: function(bind){
+		var self = this,
+			args = (arguments.length > 1) ? Array.slice(arguments, 1) : null;
+
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
@@ -50,7 +51,11 @@ Function.implement({
 	},
 
 	pass: function(args, bind){
-		return this.bind(bind, args);
+		var self = this;
+		if (args != null) args = Array.from(args);
+		return function(){
+			return self.apply(bind, args || arguments);
+		};
 	},
 
 	periodical: function(periodical, bind, args){
@@ -65,7 +70,17 @@ Function.implement({
 
 //<1.2compat>
 
+delete Function.prototype.bind;
+
 Function.implement({
+
+	bind: function(bind, args){
+		var self = this;
+		if (args != null) args = Array.from(args);
+		return function(){
+			return self.apply(bind, args || arguments);
+		};
+	},
 
 	create: function(options){
 		var self = this;

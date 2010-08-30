@@ -267,7 +267,7 @@ force('String', String, [
 ])('Number', Number, [
 	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
 ])('Function', Function, [
-	'apply', 'call'
+	'apply', 'call', 'bind'
 ])('RegExp', RegExp, [
 	'exec', 'test'
 ])('Object', Object, [
