@@ -14,7 +14,10 @@ provides: Request
 ...
 */
 
-var Request = new Class({
+
+(function(){
+
+var Request = this.Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
@@ -146,18 +149,16 @@ var Request = new Class({
 			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
-		if (this.options.noCache){
-			var noCache = 'noCache=' + new Date().getTime();
-			data = (data) ? noCache + '&' + data : noCache;
-		}
-
 		if (!url) url = document.location.pathname;
 		
 		var trimPosition = url.lastIndexOf('/');
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
+		if (this.options.noCache)
+			url += (url.contains('?') ? '&' : '?') + 'noCache=' + new Date().getTime();
+
 		if (data && method == 'get'){
-			url = url + (url.contains('?') ? '&' : '?') + data;
+			url += (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
 
@@ -190,8 +191,6 @@ var Request = new Class({
 	}
 
 });
-
-(function(){
 
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
