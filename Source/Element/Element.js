@@ -238,25 +238,25 @@ Window.implement({
 
 	var addSlickPseudos = function(){
 		for (var name in pseudos) if (pseudos.hasOwnProperty(name)){
-			Slick.definePseudo(name, pseudos[name])
+			Slick.definePseudo(name, pseudos[name]);
 			delete pseudos[name];
 		}
-	}
+	};
 
 	Slick.search = function(context, expression, append){
 		addSlickPseudos();
 		return search.call(this, context, expression, append);
-	}
+	};
 
 	Slick.find = function(context, expression){
 		addSlickPseudos();
 		return find.call(this, context, expression);
-	}
+	};
 
 	Slick.match = function(node, selector){
 		addSlickPseudos();
 		return match.call(this, node, selector);
-	}
+	};
 
 })(Slick.search, Slick.find, Slick.match);
 
