@@ -43,7 +43,7 @@ Returns the type of object that matches the item passed in.
 
 	var myString = 'hello';
 	typeOf(myString); // returns "string".
-	
+
 ### Notes:
 
 This method is equivalent to *$type* from MooTools 1.2.
@@ -58,7 +58,7 @@ Checks to see if an object is an instance of a particular Type.
 ### Syntax:
 
 	instanceOf(item, object)
-	
+
 ### Arguments:
 
 1. item - (*mixed*) The item which you want to check
@@ -73,7 +73,7 @@ Checks to see if an object is an instance of a particular Type.
 	var foo = [];
 	instanceOf(foo, Array)	// returns true
 	instanceOf(foo, String)	// returns false
-	
+
 	var myClass = new Class();
 	var bar = new myClass();
 	instanceOf(bar, myClass)	// returns true
@@ -96,7 +96,7 @@ If you really need this function you can implement it like so:
 		return !!(obj || obj === 0);
 	};
 
-	
+
 
 Function: $clear {#Deprecated-Functions:clear}
 -------------------------
@@ -154,7 +154,7 @@ This method has been deprecated. Use [Function.from](/core/Types/Function#Functi
 	var myFunc = Function.from();
 	// or better:
 	var myFunc = function(){};
-	
+
 
 
 Function: $lambda {#Deprecated-Functions:lambda}

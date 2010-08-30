@@ -16,7 +16,7 @@ provides: [Object, Hash]
 
 
 Object.extend({
-	
+
 	subset: function(object, keys){
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){
@@ -25,7 +25,7 @@ Object.extend({
 		}
 		return results;
 	},
-	
+
 	map: function(object, fn, bind){
 		var results = {};
 		for (var key in object){
@@ -33,7 +33,7 @@ Object.extend({
 		}
 		return results;
 	},
-	
+
 	filter: function(object, fn, bind){
 		var results = {};
 		Object.each(object, function(value, key){
@@ -41,21 +41,21 @@ Object.extend({
 		});
 		return results;
 	},
-	
+
 	every: function(object, fn, bind){
 		for (var key in object){
 			if (object.hasOwnProperty(key) && !fn.call(bind, object[key], key)) return false;
 		}
 		return true;
 	},
-	
+
 	some: function(object, fn, bind){
 		for (var key in object){
 			if (object.hasOwnProperty(key) && fn.call(bind, object[key], key)) return true;
 		}
 		return false;
 	},
-	
+
 	keys: function(object){
 		var keys = [];
 		for (var key in object){
@@ -63,7 +63,7 @@ Object.extend({
 		}
 		return keys;
 	},
-	
+
 	values: function(object){
 		var values = [];
 		for (var key in object){
@@ -71,25 +71,25 @@ Object.extend({
 		}
 		return values;
 	},
-	
+
 	getLength: function(object){
 		return Object.keys(object).length;
 	},
-	
+
 	keyOf: function(object, value){
 		for (var key in object){
 			if (object.hasOwnProperty(key) && object[key] === value) return key;
 		}
 		return null;
 	},
-	
+
 	contains: function(object, value){
 		return Object.keyOf(object, value) != null;
 	},
-	
+
 	toQueryString: function(object, base){
 		var queryString = [];
-		
+
 		Object.each(object, function(value, key){
 			if (base) key = base + '[' + key + ']';
 			var result;
@@ -109,7 +109,7 @@ Object.extend({
 
 		return queryString.join('&');
 	}
-	
+
 });
 
 

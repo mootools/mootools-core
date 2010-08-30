@@ -17,7 +17,7 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 ### Syntax:
 
 	var foo = Function.from(obj);
-	
+
 ### Arguments:
 
 1. obj - (*mixed*) If this argument is a function, it will simply return itself. Otherwise, an object you wish to convert into a function that returns the argument.
@@ -30,10 +30,10 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 
 	var fn = Function.from(42);
 	alert(fn());	// alerts '42'
-	
+
 	var fn2 = Function.from(fn);
 	alert(fn2());	// alerts '42'
-	
+
 ### Notes:
 
 This function is equivalent to the following deprecated MooTools 1.2 methods:
@@ -103,7 +103,7 @@ Add methods to a function
 1. key - (*string*) The key of the prototype
 2. value - (*mixed*) The function or another value of the prototype
 
-### Example: 
+### Example:
 
 	var myFunction = function(){};
 	myFunction.extend('alert', function(text){
@@ -126,7 +126,7 @@ Add methods to the prototype
 1. key - (*string*) The key of the prototype
 2. value - (*mixed*) The function or another value of the prototype
 
-### Example: 
+### Example:
 
 	var myFunction = function(){};
 	myFunction.implement('alert', function(text){
@@ -306,13 +306,13 @@ Delays the execution of a function by a specified duration.
 ### Example:
 
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
-	
+
 	//wait 50 milliseconds, then call myFunction and bind myElement to it
 	myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
 
 	//an anonymous function which waits a second and then alerts
 	(function(){ alert('one second later...'); }).delay(1000);
-	
+
 	//to stop the delay, clearTimeout can be used like so:
 	var timer = myFunction.delay(50);
 	clearTimeout(timer);
@@ -348,7 +348,7 @@ Executes a function in the specified intervals of time. Periodic execution can b
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
 	addCount.periodical(1000, Site); //adds the number of seconds at the Site.
-	
+
 	// the interval can be stopped using the clearInterval function
 	var timer = myFunction.periodical(1000);
 	clearInterval(timer);

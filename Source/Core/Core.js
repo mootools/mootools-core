@@ -32,7 +32,7 @@ this.MooTools = {
 var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
 	if (item.$family) return item.$family();
-	
+
 	if (item.nodeName){
 		if (item.nodeType == 1) return 'element';
 		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
@@ -130,7 +130,7 @@ String.from = function(item){
 // hide, protect
 
 Function.implement({
-	
+
 	hide: function(){
 		this.$hidden = true;
 		return this;
@@ -140,7 +140,7 @@ Function.implement({
 		this.$protected = true;
 		return this;
 	}
-	
+
 });
 
 // Type
@@ -151,7 +151,7 @@ var Type = this.Type = function(name, object){
 		var typeCheck = function(item){
 			return (typeOf(item) == lower);
 		};
-		
+
 		Type['is' + name] = typeCheck;
 		if (object != null){
 			object.prototype.$family = (function(){
@@ -164,11 +164,11 @@ var Type = this.Type = function(name, object){
 	}
 
 	if (object == null) return null;
-	
+
 	object.extend(this);
 	object.$constructor = Type;
 	object.prototype.$constructor = object;
-	
+
 	return object;
 };
 
@@ -187,9 +187,9 @@ var hooksOf = function(object){
 
 var implement = function(name, method){
 	if (method && method.$hidden) return this;
-	
+
 	var hooks = hooksOf(this);
-	
+
 	for (var i = 0; i < hooks.length; i++){
 		var hook = hooks[i];
 		if (typeOf(hook) == 'type') implement.call(hook, name, method);
@@ -198,11 +198,11 @@ var implement = function(name, method){
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
-	
+
 	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
 		return method.apply(item, slice.call(arguments, 1));
 	});
-	
+
 	return this;
 };
 
@@ -214,9 +214,9 @@ var extend = function(name, method){
 };
 
 Type.implement({
-	
+
 	implement: implement.overloadSetter(),
-	
+
 	extend: extend.overloadSetter(),
 
 	alias: function(name, existing){
@@ -227,7 +227,7 @@ Type.implement({
 		hooksOf(this).push(hook);
 		return this;
 	}
-	
+
 });
 
 new Type('Type', Type);
@@ -252,9 +252,9 @@ var force = function(name, object, methods){
 			prototype[key] = proto.protect();
 		}
 	}
-	
+
 	if (isType) object.implement(prototype);
-	
+
 	return force;
 };
 
@@ -307,18 +307,18 @@ Object.extend('forEach', function(object, fn, bind){
 Object.each = Object.forEach;
 
 Array.implement({
-	
+
 	forEach: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
 			if (i in this) fn.call(bind, this[i], i, this);
 		}
 	},
-	
+
 	each: function(fn, bind){
 		Array.forEach(this, fn, bind);
 		return this;
 	}
-	
+
 });
 
 // Array & Object cloning, Object merging and appending
@@ -350,7 +350,7 @@ var mergeOne = function(source, key, current){
 };
 
 Object.extend({
-	
+
 	merge: function(source, k, v){
 		if (typeOf(k) == 'string') return mergeOne(source, k, v);
 		for (var i = 1, l = arguments.length; i < l; i++){
@@ -359,13 +359,13 @@ Object.extend({
 		}
 		return source;
 	},
-	
+
 	clone: function(object){
 		var clone = {};
 		for (var key in object) clone[key] = cloneOf(object[key]);
 		return clone;
 	},
-	
+
 	append: function(original){
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var extended = arguments[i] || {};
@@ -373,7 +373,7 @@ Object.extend({
 		}
 		return original;
 	}
-	
+
 });
 
 // Object-less types

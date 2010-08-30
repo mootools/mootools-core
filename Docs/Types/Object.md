@@ -40,7 +40,7 @@ Used to iterate through an object.
 	Object.each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
 		alert('The ' + key + ' day of the week is ' + value);
 	});
-	
+
 ### Notes:
 
 This method is an object-specific equivalent of *$each* from MooTools 1.2.
@@ -89,7 +89,7 @@ Returns a copy of an object.
 ### Syntax:
 
 	var clone = Object.clone(obj);
-	
+
 ### Arguments:
 
 1. (obj) The object to clone
@@ -102,7 +102,7 @@ Returns a copy of an object.
 
 	var obj1 = {a: 0, b: 1};
 	var obj2 = Object.clone(obj1);
-	
+
 	obj1.a = 42;
 	alert(obj1.a);	// alerts '42'
 	alert(obj2.a);	// alerts '0'
@@ -171,8 +171,8 @@ Get a subset of an object.
 ### Examples:
 
 	var obj = {
-		a: 'one', 
-		b: 'two', 
+		a: 'one',
+		b: 'two',
 		c: 'three'
 	};
 	Object.subset(['a', 'c']); // returns {a: 'one', c: 'three'}
@@ -526,7 +526,7 @@ Use `delete myObject.a`
 
 Hash Method: get {#Deprecated-Functions:Hash:get}
 -------------------------------------------------
-	
+
 Use `myObject.myKey`
 
 

@@ -15,7 +15,7 @@ provides: Array
 */
 
 Array.implement({
-	
+
 	invoke: function(methodName){
 		var args = Array.slice(arguments, 1);
 		return this.map(function(item){
@@ -95,7 +95,7 @@ Array.implement({
 		this.push.apply(this, array);
 		return this;
 	},
-	
+
 	getLast: function(){
 		return (this.length) ? this[this.length - 1] : null;
 	},
@@ -135,7 +135,7 @@ Array.implement({
 		}
 		return array;
 	},
-	
+
 	pick: function(){
 		for (var i = 0, l = this.length; i < l; i++){
 			if (this[i] != null) return this[i];

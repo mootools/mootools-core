@@ -35,9 +35,9 @@ var ua = navigator.userAgent.toLowerCase(),
 	UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
-	
+
 	extend: Function.prototype.extend,
-	
+
 	name: (UA[1] == 'version') ? UA[3] : UA[1],
 
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
@@ -68,15 +68,15 @@ Browser.Request = (function(){
 	var XMLHTTP = function(){
 		return new XMLHttpRequest();
 	};
- 
+
 	var MSXML2 = function(){
 		return new ActiveXObject('MSXML2.XMLHTTP');
 	};
- 
+
 	var MSXML = function(){
 		return new ActiveXObject('Microsoft.XMLHTTP');
 	};
- 
+
 	return Function.attempt(function(){
 		XMLHTTP();
 		return XMLHTTP;
@@ -87,7 +87,7 @@ Browser.Request = (function(){
 		MSXML();
 		return MSXML;
 	});
- 
+
 })();
 
 Browser.Features.xhr = !!(Browser.Request);
@@ -133,7 +133,7 @@ String.implement('stripScripts', function(exec){
 });
 
 // Window, Document
-	
+
 Browser.extend({
 	Document: this.Document,
 	Window: this.Window,
@@ -210,7 +210,7 @@ var setEngine = function(name, version){
 
 if (Browser.ie){
 	Browser.Engine.trident = true;
-	
+
 	switch (Browser.version){
 		case 6: setEngine('trident', 4); break;
 		case 7: setEngine('trident', 5); break;
@@ -220,14 +220,14 @@ if (Browser.ie){
 
 if (Browser.firefox){
 	Browser.Engine.gecko = true;
-	
+
 	if (Browser.version >= 3) setEngine('gecko', 19);
 	else setEngine('gecko', 18);
 }
 
 if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
-	
+
 	switch (Browser.version){
 		case 2: setEngine('webkit', 419); break;
 		case 3: setEngine('webkit', 420); break;
@@ -237,7 +237,7 @@ if (Browser.safari || Browser.chrome){
 
 if (Browser.opera){
 	Browser.Engine.presto = true;
-	
+
 	if (Browser.version >= 9.6) setEngine('presto', 960);
 	else if (Browser.version >= 9.5) setEngine('presto', 950);
 	else setEngine('presto', 925);

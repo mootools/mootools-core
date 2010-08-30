@@ -59,7 +59,7 @@ Returns a copy of the passed array.
 ### Syntax:
 
 	var clone = Array.clone(myArray);
-	
+
 ### Arguments:
 
 1. myArray	- (*array*) The array you wish to copy.
@@ -72,9 +72,9 @@ Returns a copy of the passed array.
 
 	var myArray = ['red', 'blue', 'green'];
 	var otherArray = Array.clone(myArray);
-	
+
 	var myArray[0] = 'yellow';
-	
+
 	alert(myArray[0]);		// alerts 'yellow'
 	alert(otherArray[0])	// alerts 'red'
 
@@ -168,7 +168,7 @@ Returns an array with the named method applied to the array's contents.
 ### Syntax:
 
 	var arr = myArray.invoke(method[, arg, arg, arg ...])
-	
+
 ### Arguments:
 
 1. method - (*string*) The method to apply to each item in the array.
@@ -588,7 +588,7 @@ Pushes the passed element into the array if it's not already present (case and t
 If you want to push the passed element even if it's already present, use
 the vanilla javascript:
 
-	myArray.push(item); 
+	myArray.push(item);
 
 Array method: combine {#Array:combine}
 --------------------------------
@@ -702,7 +702,7 @@ Returns the first defined value of the array passed in, or null.
 	say(); // alerts 'There was no message supplied.'
     say('This is an info message.'); // alerts 'This is an info message.'
     say('This message will be ignored.', 'This is the error message.'); // alerts 'This is the error message.'
-	
+
 
 ### Notes:
 

@@ -18,32 +18,32 @@ var Element = function(tag, props){
 	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
-	
+
 	if (!props) props = {};
-	
+
 	if (!tag.test(/^[\w-]+$/)){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
-		
+
 		var attributes = parsed.attributes;
 		if (attributes) for (var i = 0, l = attributes.length; i < l; i++){
 			var attr = attributes[i];
 			if (attr.value != null && attr.operator == '=' && props[attr.key] == null)
 				props[attr.key] = attr.value;
 		}
-		
+
 		if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
 	}
-	
+
 	return document.newElement(tag, props);
 };
-	
+
 if (Browser.Element) Element.prototype = Browser.Element.prototype;
 
 new Type('Element', Element).mirror(function(name){
 	if (Array[name]) return;
-	
+
 	var obj = {};
 	obj[name] = function(){
 		var results = [], args = arguments, elements = true;
@@ -53,7 +53,7 @@ new Type('Element', Element).mirror(function(name){
 		}
 		return (elements) ? new Elements(results) : results;
 	};
-	
+
 	Elements.implement(obj);
 });
 
@@ -105,7 +105,7 @@ var IFrame = new Type('IFrame', function(){
 	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
 	return iframe;
 });
- 
+
 var Elements = this.Elements = function(nodes){
 	if (nodes && nodes.length){
 		var uniques = {}, node;
@@ -118,19 +118,19 @@ var Elements = this.Elements = function(nodes){
 		}
 	}
 };
- 
+
 Elements.prototype = {length: 0};
 Elements.parent = Array;
 
 new Type('Elements', Elements).implement({
- 
+
 	filter: function(filter, bind){
 		if (!filter) return this;
 		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 			return item.match(filter);
 		} : filter, bind));
 	}.protect(),
- 
+
 	push: function(){
 		var length = this.length;
 		for (var i = 0, l = arguments.length; i < l; i++){
@@ -139,9 +139,9 @@ new Type('Elements', Elements).implement({
 		}
 		return (this.length = length);
 	}.protect()
- 
+
 }).implement(Array.prototype);
- 
+
 Array.mirror(Elements);
 
 Document.implement({
@@ -162,16 +162,16 @@ Document.implement({
 	getWindow: function(){
 		return this.window;
 	},
-	
+
 	id: (function(){
-		
+
 		var types = {
 
 			string: function(id, nocash, doc){
 				id = Slick.find(doc, '#' + id);
 				return (id) ? types.element(id, nocash) : null;
 			},
-			
+
 			element: function(el, nocash){
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
@@ -179,18 +179,18 @@ Document.implement({
 				}
 				return el;
 			},
-			
+
 			object: function(obj, nocash, doc){
 				if (obj.toElement) return types.element(obj.toElement(doc), nocash);
 				return null;
 			}
-			
+
 		};
 
 		types.textnode = types.whitespace = types.window = types.document = function(zero){
 			return zero;
 		};
-		
+
 		return function(el, nocash, doc){
 			if (el && el.$family && el.uid) return el;
 			var type = typeOf(el);
@@ -218,15 +218,15 @@ Window.implement({
 });
 
 [Document, Element].invoke('implement', {
- 
+
 	getElements: function(expression){
 		return Slick.search(this, expression, new Elements);
 	},
- 
+
 	getElement: function(expression){
 		return document.id(Slick.find(this, expression));
 	}
- 
+
 });
 
 //<1.2compat>
@@ -358,14 +358,14 @@ inserters.inside = inserters.bottom;
 Object.each(inserters, function(inserter, where){
 
 	where = where.capitalize();
-	
+
 	var methods = {};
-	
+
 	methods['inject' + where] = function(el){
 		inserter(this, document.id(el, true));
 		return this;
 	};
-	
+
 	methods['grab' + where] = function(el){
 		inserter(document.id(el, true), this);
 		return this;
@@ -381,11 +381,11 @@ var injectCombinator = function(expression, combinator){
 	if (!expression) return combinator;
 
 	expression = Slick.parse(expression);
-	
+
 	var expressions = expression.expressions;
 	for (var i = expressions.length; i--;)
 		expressions[i][0].combinator = combinator;
-	
+
 	return expression;
 };
 
@@ -470,14 +470,14 @@ Element.implement({
 	adopt: function(){
 		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
 		if (length > 1) parent = fragment = document.createDocumentFragment();
-		
+
 		for (var i = 0; i < length; i++){
 			var element = document.id(elements[i], true);
 			if (element) parent.appendChild(element);
 		}
-		
+
 		if (fragment) this.appendChild(fragment);
-		
+
 		return this;
 	},
 
@@ -537,7 +537,7 @@ Element.implement({
 	getParents: function(expression){
 		return Slick.search(this, injectCombinator(expression, '!'), new Elements);
 	},
-	
+
 	getSiblings: function(expression){
 		return Slick.search(this, injectCombinator(expression, '~~'), new Elements);
 	},
@@ -570,12 +570,12 @@ Element.implement({
 		this.getElements('input, select, textarea').each(function(el){
 			var type = el.type;
 			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
-			
+
 			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
 				// IE
 				return document.id(opt).get('value');
 			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
-			
+
 			Array.from(value).each(function(val){
 				if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
 			});
@@ -609,14 +609,14 @@ Element.implement({
 		clean(clone, this);
 		return document.id(clone);
 	},
-	
+
 	destroy: function(){
 		var children = clean(this).getElementsByTagName('*');
 		Array.each(children, clean);
 		Element.dispose(this);
 		return null;
 	},
-	
+
 	empty: function(){
 		Array.from(this.childNodes).each(Element.dispose);
 		return this;
@@ -740,12 +740,12 @@ Element.Properties.tag = {
 })(document.createElement('input').getAttribute('maxLength'));
 
 Element.Properties.html = (function(){
-	
+
 	var tableTest = Function.attempt(function(){
 		var table = document.createElement('table');
 		table.innerHTML = '<tr><td></td></tr>';
 	});
-	
+
 	var wrapper = document.createElement('div');
 
 	var translations = {

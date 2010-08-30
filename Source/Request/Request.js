@@ -114,7 +114,7 @@ var Request = new Class({
 
 	send: function(options){
 		if (!this.check(options)) return this;
-		
+
 		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.running = true;
 
@@ -206,7 +206,7 @@ Request.implement(methods);
 })();
 
 Element.Properties.send = {
-	
+
 	set: function(options){
 		var send = this.get('send').cancel();
 		send.setOptions(options);

@@ -49,18 +49,18 @@ Function: $ {#Window:dollar}
 The dollar function is an alias for [document:id][] if the $ variable is not set already.
 However it is not recommended to use more frameworks, the $ variable can be set by another framework or script. MooTools will detect this and determine if it will set the $ function so it will not be overwritten.
 
-### Examples: 
+### Examples:
 
 	var myElement = $('myElement');
 	var myElement2 = document.id('myElement');
-	
+
 	myElement == myElement2; // returns true
-	
-	
+
+
 	(function($){
-		
+
 		// Now you can use $ safely in this closure
-	
+
 	})(document.id)
 
 
@@ -93,11 +93,11 @@ The Element instance returned is an array-like object, supporting every [Array][
 #### Get Elements by Their Tag Names:
 
 	$$('a'); // returns all anchor elements in the page.
-	
+
 #### Get an Elements instance by passing multiple elements:
 
 	$$(element1, element2, element3); // returns an Elements instance containing these 3 elements.
-	
+
 #### Convert any array or collection of elements to an Elements instance:
 
 	$$([element1, element2, element3]); // returns an Elements instance containing these 3 elements.
@@ -1833,11 +1833,11 @@ Element Method: hasChild {#Deprecated-Functions:hasChild}
 This method has been deprecated. Use [Element:contains][] instead.
 
 ### Example:
-	
+
 	var myElement = document.id('element1');
 	var myElement2 = document.id('element2');
 	myElement !== myElement2 && myElement.contains(element2);
-	
+
 	// could be implemented as:
 	Element.implement('hasChild', function(element){
 		return this !== element && this.contains(element);

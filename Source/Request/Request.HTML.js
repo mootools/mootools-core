@@ -30,8 +30,8 @@ Request.HTML = new Class({
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
-		}); 
-		
+		});
+
 		var match = response.html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		if (match) response.html = match[1];
 		var temp = new Element('div').set('html', response.html);
@@ -50,7 +50,7 @@ Request.HTML = new Class({
 });
 
 Element.Properties.load = {
-	
+
 	set: function(options){
 		var load = this.get('load').cancel();
 		load.setOptions(options);

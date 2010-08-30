@@ -393,7 +393,7 @@ Options in combination with Events
 
 If a Class has [Events][] as well as [Options][] implemented, every option beginning with 'on' and followed by a capital letter (e.g. 'onComplete') becomes a Class instance event, assuming the value of the option is a function.
 
-### Example: 
+### Example:
 
 	var Widget = new Class({
 		Implements: [Options, Events],
@@ -409,10 +409,10 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 		},
 		show: function(){
 			// Do some cool stuff
-			
+
 			this.fireEvent('show');
 		}
-		
+
 	});
 
 	var myWidget = new Widget({

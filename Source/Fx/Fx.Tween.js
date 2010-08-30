@@ -43,7 +43,7 @@ Fx.Tween = new Class({
 });
 
 Element.Properties.tween = {
-	
+
 	set: function(options){
 		this.get('tween').cancel().setOptions(options);
 		return this;

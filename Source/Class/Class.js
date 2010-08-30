@@ -17,9 +17,9 @@ provides: Class
 (function(){
 
 var Class = this.Class = new Type('Class', function(params){
-	
+
 	if (instanceOf(params, Function)) params = {'initialize': params};
-	
+
 	var newClass = function(){
 		reset(this);
 		if (newClass.$prototyping) return this;
@@ -30,7 +30,7 @@ var Class = this.Class = new Type('Class', function(params){
 	}.extend(this);
 
 	newClass.implement(params);
-	
+
 	newClass.$constructor = Class;
 	newClass.prototype.$constructor = newClass;
 	newClass.prototype.parent = parent;
@@ -77,21 +77,21 @@ var wrap = function(self, key, method){
 };
 
 var implement = function(key, value, retain){
-	
+
 	if (Class.Mutators.hasOwnProperty(key)){
 		value = Class.Mutators[key].call(this, value);
 		if (value == null) return this;
 	}
-	
+
 	if (typeOf(value) == 'function'){
 		if (value.$hidden) return this;
 		this.prototype[key] = (retain) ? value : wrap(this, key, value);
 	} else {
 		Object.merge(this.prototype, key, value);
 	}
-	
+
 	return this;
-	
+
 };
 
 var getInstance = function(klass){
@@ -104,12 +104,12 @@ var getInstance = function(klass){
 Class.implement('implement', implement.overloadSetter());
 
 Class.Mutators = {
-	
+
 	Extends: function(parent){
 		this.parent = parent;
 		this.prototype = getInstance(parent);
 	},
-	
+
 	Implements: function(items){
 		Array.from(items).each(function(item){
 			var instance = new item;

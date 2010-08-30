@@ -28,7 +28,7 @@ JSON = new Hash({
 //</1.2compat>
 
 Object.append(JSON, {
-	
+
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
 	$replaceChars: function(chr){

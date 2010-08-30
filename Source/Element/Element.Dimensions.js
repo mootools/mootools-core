@@ -174,7 +174,7 @@ Element.implement({
 		var doc = getCompatElement(this),
 			min = this.getSize(),
 			body = this.getDocument().body;
-		
+
 		return {x: Math.max(doc.scrollWidth, body.scrollWidth, min.x), y: Math.max(doc.scrollHeight, body.scrollHeight, min.y)};
 	},
 

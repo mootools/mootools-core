@@ -7,7 +7,7 @@ provides: Slick.Parser
 */
 
 (function(){
-	
+
 var parsed,
 	separatorIndex,
 	combinatorIndex,
@@ -44,14 +44,14 @@ var reverse = function(expression){
 	for (var i = 0; i < expressions.length; i++){
 		var exp = expressions[i];
 		var last = {parts: [], tag: '*', combinator: reverseCombinator(exp[0].combinator)};
-		
+
 		for (var j = 0; j < exp.length; j++){
 			var cexp = exp[j];
 			if (!cexp.reverseCombinator) cexp.reverseCombinator = ' ';
 			cexp.combinator = cexp.reverseCombinator;
 			delete cexp.reverseCombinator;
 		}
-		
+
 		exp.reverse().push(last);
 	}
 	return expression;
@@ -98,20 +98,20 @@ __END__
 
 function parser(
 	rawMatch,
-	
+
 	separator,
 	combinator,
 	combinatorChildren,
-	
+
 	tagName,
 	id,
 	className,
-	
+
 	attributeKey,
 	attributeOperator,
 	attributeQuote,
 	attributeValue,
-	
+
 	pseudoClass,
 	pseudoQuote,
 	pseudoClassValue
@@ -121,7 +121,7 @@ function parser(
 		combinatorIndex = -1;
 		if (separator) return '';
 	}
-	
+
 	if (combinator || combinatorChildren || combinatorIndex === -1){
 		combinator = combinator || ' ';
 		var currentSeparator = parsed.expressions[separatorIndex];
@@ -129,7 +129,7 @@ function parser(
 			currentSeparator[combinatorIndex].reverseCombinator = reverseCombinator(combinator);
 		currentSeparator[++combinatorIndex] = {combinator: combinator, tag: '*'};
 	}
-	
+
 	var currentParsed = parsed.expressions[separatorIndex][combinatorIndex];
 
 	if (tagName){
@@ -148,22 +148,22 @@ function parser(
 			value: className,
 			regexp: new RegExp('(^|\\s)' + escapeRegExp(className) + '(\\s|$)')
 		});
-		
+
 	} else if (pseudoClass){
 		pseudoClassValue = pseudoClassValue ? pseudoClassValue.replace(reUnescape, '') : null;
-		
+
 		if (!currentParsed.pseudos) currentParsed.pseudos = [];
 		currentParsed.pseudos.push({
 			key: pseudoClass.replace(reUnescape, ''),
 			value: pseudoClassValue
 		});
-		
+
 	} else if (attributeKey){
 		attributeKey = attributeKey.replace(reUnescape, '');
 		attributeValue = (attributeValue || '').replace(reUnescape, '');
-		
+
 		var test, regexp;
-		
+
 		switch (attributeOperator){
 			case '^=' : regexp = new RegExp(       '^'+ escapeRegExp(attributeValue)            ); break;
 			case '$=' : regexp = new RegExp(            escapeRegExp(attributeValue) +'$'       ); break;
@@ -182,11 +182,11 @@ function parser(
 				return !!value;
 			};
 		}
-		
+
 		if (!test) test = function(value){
 			return value && regexp.test(value);
 		};
-		
+
 		if (!currentParsed.attributes) currentParsed.attributes = [];
 		currentParsed.attributes.push({
 			key: attributeKey,
@@ -194,9 +194,9 @@ function parser(
 			value: attributeValue,
 			test: test
 		});
-		
+
 	}
-	
+
 	return '';
 };
 
@@ -211,5 +211,5 @@ Slick.parse = function(expression){
 Slick.escapeRegExp = escapeRegExp;
 
 if (!this.Slick) this.Slick = Slick;
-	
+
 }).apply(/*<CommonJS>*/(typeof exports != 'undefined') ? exports : /*</CommonJS>*/this);
