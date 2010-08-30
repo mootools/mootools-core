@@ -42,5 +42,3 @@ if ($retrieve !== NULL){
 }
 
 echo json_encode($info);
-
-?>
