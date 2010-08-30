@@ -17,7 +17,11 @@ provides: Swiff
 ...
 */
 
-var Swiff = new Class({
+(function(){
+
+var id = 0;
+
+var Swiff = this.Swiff = new Class({
 
 	Implements: Options,
 
@@ -42,7 +46,7 @@ var Swiff = new Class({
 	},
 
 	initialize: function(path, options){
-		this.instance = 'Swiff_' + Date.now();
+		this.instance = 'Swiff_' + id++;
 
 		this.setOptions(options);
 		options = this.options;
@@ -107,3 +111,5 @@ Swiff.remote = function(obj, fn){
 	var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 2) + '</invoke>');
 	return eval(rs);
 };
+
+})();
