@@ -151,6 +151,8 @@ var Request = new Class({
 			data = (data) ? noCache + '&' + data : noCache;
 		}
 
+		if (!url) url = document.location.pathname;
+		
 		var trimPosition = url.lastIndexOf('/');
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
