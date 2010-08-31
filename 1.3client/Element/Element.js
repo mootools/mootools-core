@@ -3,10 +3,14 @@ describe('Elements implement order', function(){
 	it('should give precedence to Array over Element', function(){
 		var anchor = new Element('a');
 
-		expect(new Element('div').adopt(
+		var element = new Element('div').adopt(
 			new Element('span'),
 			anchor
-		).getLast()).toBe(anchor);
+		);
+
+		expect(element.getLast()).toBe(anchor);
+		
+		expect(new Elements([element, anchor]).getLast()).toBe(anchor);
 	});
 
 });
