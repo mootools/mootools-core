@@ -42,7 +42,7 @@ var Element = function(tag, props){
 if (Browser.Element) Element.prototype = Browser.Element.prototype;
 
 new Type('Element', Element).mirror(function(name){
-	if (Array[name]) return;
+	if (Array.prototype[name]) return;
 
 	var obj = {};
 	obj[name] = function(){
