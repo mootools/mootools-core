@@ -60,10 +60,6 @@ Function.implement({
 
 	periodical: function(periodical, bind, args){
 		return setInterval(this.pass(args || [], bind), periodical);
-	},
-
-	run: function(args, bind){
-		return this.apply(bind, Array.from(args));
 	}
 
 });
@@ -105,6 +101,10 @@ Function.implement({
 		return function(event){
 			return self.apply(bind, (args == null) ? arguments : [event].concat(args));
 		};
+	},
+
+	run: function(args, bind){
+		return this.apply(bind, Array.from(args));
 	}
 
 });

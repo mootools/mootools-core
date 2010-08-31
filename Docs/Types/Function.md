@@ -179,46 +179,6 @@ Tries to execute a single function. Returns immediately the return value of the 
 - See [Function.attempt](#Function:Function-attempt) for using more than one functions.
 
 
-
-Function method: run {#Function:run}
----------------------------
-
-Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
-
-### Syntax:
-
-	var myFunctionResult = myFunction.run(args[, bind]);
-
-### Arguments:
-
-1. args - (*mixed*) An argument, or array of arguments to run the function with.
-2. bind - (*object*, optional) The object that the "this" of the function will refer to.
-
-### Returns:
-
-* (*mixed*) This Function's return value.
-
-### Examples:
-
-#### Simple Run:
-
-	var myFn = function(a, b, c){
-		return a + b + c;
-	}
-	var myArgs = [1,2,3];
-	myFn.run(myArgs); // returns 6
-
-
-#### Run With Binding:
-
-	var myFn = function(a, b, c) {
-		return a + b + c + this;
-	}
-	var myArgs = [1,2,3];
-	myFn.run(myArgs, 6); // returns 12
-
-
-
 Function method: pass {#Function:pass}
 -----------------------------
 
@@ -367,7 +327,7 @@ Function method: create {#Deprecated-Functions:create}
 This function has been deprecated.
 
 Function method: bindWithEvent {#Deprecated-Functions:bindWithEvent}
-------------------------------------------------------------------
+--------------------------------------------------------------------
 
 This function has been deprecated.
 
@@ -376,6 +336,15 @@ This function has been deprecated.
 	myElement.addEvent('click', function(e){
 		myFunction.bind(bind, [e]);
 	});
+
+Function method: run {#Deprecated-Functions:run}
+------------------------------------------------
+
+This function has been deprecated.
+
+### Replacement example
+	
+	fn.apply(thisArg, arguments); // Old API: fn.run(arguments, thisArg);
 
 
 [options]: #Function:create:options
