@@ -37,12 +37,14 @@ Function.implement({
 		return null;
 	},
 
-	bind: function(bind){
-		var self = this,
+	bind: function(bind) {
+		var fn = this,
 			args = (arguments.length > 1) ? Array.slice(arguments, 1) : null;
-
-		return function(){
-			return self.apply(bind, args || arguments);
+		
+		return function() {
+			if (!args && !arguments.length) return fn.call(bind);
+			if (arguments.length && args) return fn.apply(bind, args.concat(Array.from(arguments)));
+			return fn.apply(bind, args || arguments);
 		};
 	},
 
