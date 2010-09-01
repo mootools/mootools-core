@@ -10,7 +10,7 @@ describe('Element.Event', function(){
 	
 	it('Should trigger the click event', function(){
 		
-		var clicked = jasmine.createSpy()
+		var callback = jasmine.createSpy();
 
 		var el = new Element('a', {
 			text: 'test',
@@ -20,29 +20,21 @@ describe('Element.Event', function(){
 				height: '1px'
 			},
 			events: {
-				click: clicked
+				click: callback
 			}
 		}).inject(document.body);
 
-
-		Syn.click({}, el);
-
-		waitsFor(2, function(){
-			return clicked.wasCalled;
-		});
-		
-		runs(function(){
-			expect(clicked).toHaveBeenCalled();
+		simulateEvent('click', [{}, el], function(){
+			expect(callback).toHaveBeenCalled();
 			el.destroy();
-		});	
+		});
 
 	});
 	
 	it('Should watch for a key-down event', function(){
 		
 		var pressed = jasmine.createSpy(),
-		
-		called = false,
+			called = false,
 		
 		callback = function(event){
 			called = true;
