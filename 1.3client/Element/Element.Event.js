@@ -33,29 +33,30 @@ describe('Element.Event', function(){
 	
 	it('Should watch for a key-down event', function(){
 		
-		var pressed = jasmine.createSpy(),
-			called = false,
-		
-		callback = function(event){
+		var callback = jasmine.createSpy(), called = false;
+
+		var listener = function(event){
 			called = true;
-			if (event.key == 'esc') pressed();
-		},
+			if (event.key == 'esc') callback();
+		};
 		
-		body = document.body;
+		var body = document.body;
 		
-		body.addEvent('keydown', callback);
+		body.addEvent('keydown', listener);
 		
-		Syn.key('escape', body);
+		Syn.key('escape', body, function(){
+			called = true;
+		});
 		
 		waitsFor(2, function(){
 			return called;
 		});
-		
+
 		runs(function(){
-			expect(pressed).toHaveBeenCalled();
-			body.removeEvent('keydown', callback);
-		});	
-		
+			expect(callback).toHaveBeenCalled();
+			body.removeEvent('keydown', listener);
+		});
+
 	});
 
 });
