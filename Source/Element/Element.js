@@ -36,7 +36,8 @@ var Element = function(tag, props){
 		if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
 	}
 
-	return document.newElement(tag, props);
+	var doc = (typeof props.document != 'undefined') ? props.document : document;
+	return doc.newElement(tag, props);
 };
 
 if (Browser.Element) Element.prototype = Browser.Element.prototype;
