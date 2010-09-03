@@ -90,7 +90,9 @@ Element.Properties.events = {set: function(events){
 			for (type in attached) this.removeEvents(type);
 			this.eliminate('events');
 		} else if (attached[events]){
-			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
+			var list = attached[events].keys;
+			for (var i = list.length; i--;)
+				this.removeEvent(events, list[i]);
 			delete attached[events];
 		}
 		return this;
