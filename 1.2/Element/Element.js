@@ -160,6 +160,16 @@ describe('Element.set', {
 		value_of(td.getFirst().className).should_be('span');
 	},
 
+	"should set the html of a tr Element, even when it has no parentNode": function(){
+		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
+		var tr = new Element('tr').set('html', html);
+		value_of(tr.parentNode).should_be_null();
+		tr.inject(new Element('tbody').inject(new Element('table')));
+		value_of(tr.get('html')).should_be(html);
+		value_of(tr.getChildren().length).should_be(2);
+		value_of(tr.getFirst().className).should_be('cell');
+	},
+
 	"should set the style attribute of an Element": function(){
 		var style = 'font-size:12px;line-height:23px;';
 		var div = new Element('div').set('style', style);
