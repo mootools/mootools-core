@@ -24,7 +24,11 @@ var triggerEvent = function(type, args, delay){
 	var events = this.retrieve('events');
 	if (!events || !events[type]) return this;
 	args = Array.from(args);
-	events[type].keys.each(function(fn){
+
+	var list = events[type].keys;
+	list.clone().each(function(fn){
+		if (!list.contains(fn)) return;
+		
 		if (delay) fn.delay(delay, this, args);
 		else fn.apply(this, args);
 	}, this);

@@ -386,10 +386,9 @@ Object.extend({
 
 var UID = Date.now();
 
-String.uniqueID = function(){
+String.extend({uniqueID: function(){
 	return (UID++).toString(36);
-};
-
+}});
 
 //<1.2compat>
 
