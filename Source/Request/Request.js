@@ -17,17 +17,22 @@ provides: Request
 
 (function(){
 
+var progressSupport = ('onprogress' in new Browser.Request);
+
 var Request = this.Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: nil,
-		onComplete: nil,
-		onCancel: nil,
-		onSuccess: nil,
-		onFailure: nil,
-		onException: nil,*/
+		onRequest: function(){},
+		onLoadstart: function(event, xhr){},
+		onProgress: function(event, xhr){},
+		onComplete: function(){},
+		onCancel: function(){},
+		onSuccess: function(responseText, responseXML){},
+		onFailure: function(xhr){},
+		onException: function(headerName, value){},
+		onTimeout: function(){},*/
 		url: '',
 		data: '',
 		headers: {
@@ -44,6 +49,7 @@ var Request = this.Request = new Class({
 		encoding: 'utf-8',
 		evalScripts: false,
 		evalResponse: false,
+		timeout: 0,
 		noCache: false
 	},
 
@@ -61,6 +67,7 @@ var Request = this.Request = new Class({
 			this.status = this.xhr.status;
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
+		clearTimeout(this.timer);
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: (this.xhr.responseText || ''), xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
@@ -84,7 +91,7 @@ var Request = this.Request = new Class({
 	},
 
 	onSuccess: function(){
-		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
+		this.triggerEvent('complete', arguments).triggerEvent('success', arguments).callChain();
 	},
 
 	failure: function(){
@@ -92,7 +99,19 @@ var Request = this.Request = new Class({
 	},
 
 	onFailure: function(){
-		this.fireEvent('complete').fireEvent('failure', this.xhr);
+		this.triggerEvent('complete').triggerEvent('failure', this.xhr);
+	},
+	
+	loadstart: function(event){
+		this.triggerEvent('loadstart', [event, this.xhr]);
+	},
+	
+	progress: function(event){
+		this.triggerEvent('progress', [event, this.xhr]);
+	},
+	
+	timeout: function(){
+		this.triggerEvent('timeout', this.xhr);
 	},
 
 	setHeader: function(name, value){
@@ -144,7 +163,7 @@ var Request = this.Request = new Class({
 			method = 'post';
 		}
 
-		if (this.options.urlEncoded && method == 'post'){
+		if (this.options.urlEncoded && ['post', 'put'].contains(method)){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
@@ -155,28 +174,34 @@ var Request = this.Request = new Class({
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
 		if (this.options.noCache)
-			url += (url.contains('?') ? '&' : '?') + 'noCache=' + Date.now();
+			url += (url.contains('?') ? '&' : '?') + Date.now();
 
 		if (data && method == 'get'){
 			url += (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
 
+		if (progressSupport){
+			this.xhr.onloadstart = this.loadstart.bind(this);
+			this.xhr.onprogress = this.progress.bind(this);
+		}
+		
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
-
+		
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
 		Object.each(this.headers, function(value, key){
 			try {
 				this.xhr.setRequestHeader(key, value);
 			} catch (e){
-				this.fireEvent('exception', [key, value]);
+				this.triggerEvent('exception', [key, value]);
 			}
 		}, this);
 
-		this.fireEvent('request');
+		this.triggerEvent('request');
 		this.xhr.send(data);
 		if (!this.options.async) this.onStateChange();
+		if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
 		return this;
 	},
 
@@ -184,9 +209,12 @@ var Request = this.Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
+		clearTimeout(this.timer);
 		this.xhr.onreadystatechange = function(){};
+		this.xhr.onprogress = function(){};
+		this.xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
-		this.fireEvent('cancel');
+		this.triggerEvent('cancel');
 		return this;
 	}
 

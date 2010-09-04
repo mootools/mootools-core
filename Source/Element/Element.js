@@ -601,12 +601,20 @@ Element.implement({
 			if (prop && element[prop]) node[prop] = element[prop];
 		};
 
+		var i;
 		if (contents){
 			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-			for (var i = ce.length; i--;) clean(ce[i], te[i]);
+			for (i = ce.length; i--;) clean(ce[i], te[i]);
 		}
 
 		clean(clone, this);
+		if (Browser.ie){
+			var ts = this.getElementsByTagName('object'),
+				cs = clone.getElementsByTagName('object'),
+				tl = ts.length, cl = cs.length;
+			for (i = 0; i < tl && i < cl; i++)
+				cs[i].outerHTML = ts[i].outerHTML;
+		}
 		return document.id(clone);
 	},
 

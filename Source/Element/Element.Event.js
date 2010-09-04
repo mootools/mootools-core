@@ -101,7 +101,9 @@ var triggerEvent = function(type, args, delay){
 			for (type in attached) this.removeEvents(type);
 			this.eliminate('events');
 		} else if (attached[events]){
-			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
+			var list = attached[events].keys;
+			for (var i = list.length; i--;)
+				this.removeEvent(events, list[i]);
 			delete attached[events];
 		}
 		return this;
@@ -125,11 +127,11 @@ var triggerEvent = function(type, args, delay){
 
 });
 
-try {
-	[Element, Window, Document].invoke('implement', {
-		fireEvent: triggerEvent
-	});
-} catch(e){};
+//<1.2compat>
+[Element, Window, Document].invoke('implement', {
+	fireEvent: triggerEvent
+});
+//</1.2compat>
 
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons

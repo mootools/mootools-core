@@ -26,7 +26,8 @@ var Cookie = new Class({
 		domain: false,
 		duration: false,
 		secure: false,
-		document: document
+		document: document,
+		encode: true
 	},
 
 	initialize: function(key, options){
@@ -35,7 +36,7 @@ var Cookie = new Class({
 	},
 
 	write: function(value){
-		value = encodeURIComponent(value);
+		if (this.options.encode) value = encodeURIComponent(value);
 		if (this.options.domain) value += '; domain=' + this.options.domain;
 		if (this.options.path) value += '; path=' + this.options.path;
 		if (this.options.duration){
