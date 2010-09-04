@@ -24,14 +24,15 @@ var Request = this.Request = new Class({
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: nil,
-		onLoadstart: nil,
-		onComplete: nil,
-		onCancel: nil,
-		onSuccess: nil,
-		onFailure: nil,
-		onException: nil,
-		onProgress: nil,*/
+		onRequest: function(){},
+		onLoadstart: function(event, xhr){},
+		onProgress: function(event, xhr){},
+		onComplete: function(){},
+		onCancel: function(){},
+		onSuccess: function(responseText, responseXML){},
+		onFailure: function(xhr){},
+		onException: function(headerName, value){},
+		onTimeout: function(){},*/
 		url: '',
 		data: '',
 		headers: {
@@ -48,6 +49,7 @@ var Request = this.Request = new Class({
 		encoding: 'utf-8',
 		evalScripts: false,
 		evalResponse: false,
+		timeout: 0,
 		noCache: false
 	},
 
@@ -65,6 +67,7 @@ var Request = this.Request = new Class({
 			this.status = this.xhr.status;
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
+		clearTimeout(this.timer);
 		if (this.options.isSuccess.call(this, this.status)){
 			this.response = {text: (this.xhr.responseText || ''), xml: this.xhr.responseXML};
 			this.success(this.response.text, this.response.xml);
@@ -99,12 +102,16 @@ var Request = this.Request = new Class({
 		this.fireEvent('complete').fireEvent('failure', this.xhr);
 	},
 	
-	loadstart: function(event) {
+	loadstart: function(event){
 		this.fireEvent('loadstart', [event, this.xhr]);
 	},
 	
-	progress: function(event) {
+	progress: function(event){
 		this.fireEvent('progress', [event, this.xhr]);
+	},
+	
+	timeout: function(){
+		this.fireEvent('timeout', this.xhr);
 	},
 
 	setHeader: function(name, value){
@@ -193,6 +200,7 @@ var Request = this.Request = new Class({
 		this.fireEvent('request');
 		this.xhr.send(data);
 		if (!this.options.async) this.onStateChange();
+		if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
 		return this;
 	},
 
@@ -200,6 +208,7 @@ var Request = this.Request = new Class({
 		if (!this.running) return this;
 		this.running = false;
 		this.xhr.abort();
+		clearTimeout(this.timer);
 		this.xhr.onreadystatechange = function(){};
 		this.xhr.onprogress = function(){};
 		this.xhr.onloadstart = function(){};
