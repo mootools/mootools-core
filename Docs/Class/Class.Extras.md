@@ -165,7 +165,7 @@ Events in a Class that implements [Events][] must be either added as an option o
 			// ...
 		},
 		complete: function(){
-			this.fireEvent('complete');
+			this.triggerEvent('complete');
 		}
 	});
 
@@ -237,14 +237,14 @@ The same as [addEvent][], but accepts an object to add multiple events at once.
 
 
 
-Events Method: fireEvent {#Events:fireEvent}
+Events Method: triggerEvent {#Events:triggerEvent}
 --------------------------------------------
 
 Fires all events of the specified type in the Class instance.
 
 ### Syntax:
 
-	myClass.fireEvent(type[, args[, delay]]);
+	myClass.triggerEvent(type[, args[, delay]]);
 
 ### Arguments:
 
@@ -262,7 +262,7 @@ Fires all events of the specified type in the Class instance.
 		Implements: Events,
 		initialize: function(arg1, arg2){
 			//...
-			this.fireEvent('initialize', [arg1, arg2], 50);
+			this.triggerEvent('initialize', [arg1, arg2], 50);
 		}
 	});
 
@@ -410,7 +410,7 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 		show: function(){
 			// Do some cool stuff
 
-			this.fireEvent('show');
+			this.triggerEvent('show');
 		}
 
 	});

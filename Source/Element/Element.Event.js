@@ -127,11 +127,11 @@ var triggerEvent = function(type, args, delay){
 
 });
 
-try {
-	[Element, Window, Document].invoke('implement', {
-		fireEvent: triggerEvent
-	});
-} catch(e){};
+//<1.2compat>
+[Element, Window, Document].invoke('implement', {
+	fireEvent: triggerEvent
+});
+//</1.2compat>
 
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
