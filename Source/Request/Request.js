@@ -17,17 +17,21 @@ provides: Request
 
 (function(){
 
+var progressSupport = ('onprogress' in new Browser.Request);
+
 var Request = this.Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
 	options: {/*
 		onRequest: nil,
+		onLoadstart: nil,
 		onComplete: nil,
 		onCancel: nil,
 		onSuccess: nil,
 		onFailure: nil,
-		onException: nil,*/
+		onException: nil,
+		onProgress: nil,*/
 		url: '',
 		data: '',
 		headers: {
@@ -93,6 +97,14 @@ var Request = this.Request = new Class({
 
 	onFailure: function(){
 		this.fireEvent('complete').fireEvent('failure', this.xhr);
+	},
+	
+	loadstart: function(event) {
+		this.fireEvent('loadstart', [event, this.xhr]);
+	},
+	
+	progress: function(event) {
+		this.fireEvent('progress', [event, this.xhr]);
 	},
 
 	setHeader: function(name, value){
@@ -162,8 +174,12 @@ var Request = this.Request = new Class({
 			data = null;
 		}
 
+		if (progressSupport) this.xhr.onprogress = this.progress.bind(this);
+		
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
-
+		
+		if (progressSupport) this.xhr.onloadstart = this.loadstart.bind(this);
+		
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
 		Object.each(this.headers, function(value, key){
@@ -185,6 +201,10 @@ var Request = this.Request = new Class({
 		this.running = false;
 		this.xhr.abort();
 		this.xhr.onreadystatechange = function(){};
+		if (progressSupport) {
+			this.xhr.onprogress = function(){};
+			this.xhr.onloadstart = function(){};
+		}
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
