@@ -382,6 +382,15 @@ Object.extend({
 	new Type(name);
 });
 
+// Unique ID
+
+var UID = Date.now();
+
+String.extend('uniqueID', function(){
+	return (UID++).toString(36);
+});
+
+
 //<1.2compat>
 
 var Hash = this.Hash = new Type('Hash', function(object){
