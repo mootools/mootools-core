@@ -449,7 +449,7 @@ Element.implement({
 	},
 
 	hasClass: function(className){
-		return this.className.contains(className, ' ');
+		return this.className.clean().contains(className, ' ');
 	},
 
 	addClass: function(className){
