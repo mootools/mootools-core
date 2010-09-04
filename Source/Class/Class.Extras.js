@@ -47,7 +47,9 @@ var triggerEvent = function(type, args, delay){
 	var events = this.$events[type];
 	if (!events) return this;
 	args = Array.from(args);
-	events.each(function(fn){
+	events.clone().each(function(fn){
+		if (!events.contains(fn)) return;
+
 		if (delay) fn.delay(delay, this, args);
 		else fn.apply(this, args);
 	}, this);
