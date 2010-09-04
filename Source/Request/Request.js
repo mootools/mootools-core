@@ -91,7 +91,7 @@ var Request = this.Request = new Class({
 	},
 
 	onSuccess: function(){
-		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
+		this.triggerEvent('complete', arguments).triggerEvent('success', arguments).callChain();
 	},
 
 	failure: function(){
@@ -99,19 +99,19 @@ var Request = this.Request = new Class({
 	},
 
 	onFailure: function(){
-		this.fireEvent('complete').fireEvent('failure', this.xhr);
+		this.triggerEvent('complete').triggerEvent('failure', this.xhr);
 	},
 	
 	loadstart: function(event){
-		this.fireEvent('loadstart', [event, this.xhr]);
+		this.triggerEvent('loadstart', [event, this.xhr]);
 	},
 	
 	progress: function(event){
-		this.fireEvent('progress', [event, this.xhr]);
+		this.triggerEvent('progress', [event, this.xhr]);
 	},
 	
 	timeout: function(){
-		this.fireEvent('timeout', this.xhr);
+		this.triggerEvent('timeout', this.xhr);
 	},
 
 	setHeader: function(name, value){
@@ -181,7 +181,7 @@ var Request = this.Request = new Class({
 			data = null;
 		}
 
-		if (progressSupport) {
+		if (progressSupport){
 			this.xhr.onloadstart = this.loadstart.bind(this);
 			this.xhr.onprogress = this.progress.bind(this);
 		}
@@ -194,11 +194,11 @@ var Request = this.Request = new Class({
 			try {
 				this.xhr.setRequestHeader(key, value);
 			} catch (e){
-				this.fireEvent('exception', [key, value]);
+				this.triggerEvent('exception', [key, value]);
 			}
 		}, this);
 
-		this.fireEvent('request');
+		this.triggerEvent('request');
 		this.xhr.send(data);
 		if (!this.options.async) this.onStateChange();
 		if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
@@ -214,7 +214,7 @@ var Request = this.Request = new Class({
 		this.xhr.onprogress = function(){};
 		this.xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
-		this.fireEvent('cancel');
+		this.triggerEvent('cancel');
 		return this;
 	}
 
