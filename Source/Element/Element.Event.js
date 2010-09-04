@@ -20,6 +20,17 @@ Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
 
+var triggerEvent = function(type, args, delay){
+	var events = this.retrieve('events');
+	if (!events || !events[type]) return this;
+	args = Array.from(args);
+	events[type].keys.each(function(fn){
+		if (delay) fn.delay(delay, this, args);
+		else fn.apply(this, args);
+	}, this);
+	return this;
+};
+
 [Element, Window, Document].invoke('implement', {
 
 	addEvent: function(type, fn){
@@ -96,16 +107,7 @@ Element.Properties.events = {set: function(events){
 		return this;
 	},
 
-	fireEvent: function(type, args, delay){
-		var events = this.retrieve('events');
-		if (!events || !events[type]) return this;
-		args = Array.from(args);
-		events[type].keys.each(function(fn){
-			if (delay) fn.delay(delay, this, args);
-			else fn.apply(this, args);
-		}, this);
-		return this;
-	},
+	triggerEvent: triggerEvent,
 
 	cloneEvents: function(from, type){
 		from = document.id(from);
@@ -122,6 +124,12 @@ Element.Properties.events = {set: function(events){
 	}
 
 });
+
+try {
+	[Element, Window, Document].invoke('implement', {
+		fireEvent: triggerEvent
+	});
+} catch(e){};
 
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons

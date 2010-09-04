@@ -27,8 +27,8 @@ var domready = function(){
 	Browser.loaded = ready = true;
 	document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
 	
-	document.fireEvent('domready');
-	window.fireEvent('domready');
+	document.triggerEvent('domready');
+	window.triggerEvent('domready');
 };
 
 var check = function(){
