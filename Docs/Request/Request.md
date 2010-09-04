@@ -43,6 +43,32 @@ Fired when the Request is sent.
 ##### Signature:
 
 	onRequest()
+	
+#### loadstart
+
+Fired when the Request loaded, right before any progress starts.
+
+##### Signature:
+
+	onLoadstart(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The loadstart event.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+#### progress
+
+Fired when the Request is making progresses in the download or upload.
+
+##### Signature:
+
+	onProgress(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The progress event, containing currently downloaded bytes and total bytes.
+2. xhr - (XMLHttpRequest) The transport instance.
 
 #### complete
 
