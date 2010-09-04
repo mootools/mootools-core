@@ -174,7 +174,7 @@ var Request = this.Request = new Class({
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
 		if (this.options.noCache)
-			url += (url.contains('?') ? '&' : '?') + Date.now();
+			url += (url.contains('?') ? '&' : '?') + String.generateUID();
 
 		if (data && method == 'get'){
 			url += (url.contains('?') ? '&' : '?') + data;
