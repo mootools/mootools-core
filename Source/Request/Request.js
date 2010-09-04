@@ -181,11 +181,12 @@ var Request = this.Request = new Class({
 			data = null;
 		}
 
-		if (progressSupport) this.xhr.onprogress = this.progress.bind(this);
+		if (progressSupport) {
+			this.xhr.onloadstart = this.loadstart.bind(this);
+			this.xhr.onprogress = this.progress.bind(this);
+		}
 		
 		this.xhr.open(method.toUpperCase(), url, this.options.async);
-		
-		if (progressSupport) this.xhr.onloadstart = this.loadstart.bind(this);
 		
 		this.xhr.onreadystatechange = this.onStateChange.bind(this);
 
