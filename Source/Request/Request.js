@@ -163,7 +163,7 @@ var Request = this.Request = new Class({
 			method = 'post';
 		}
 
-		if (this.options.urlEncoded && method == 'post'){
+		if (this.options.urlEncoded && ['post', 'put'].contains(method)){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
 			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
