@@ -32,6 +32,7 @@ An XMLHttpRequest Wrapper.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
+* timeout - (*integer*: defaults to 0) In conjuction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
 * noCache - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
 
 ### Events:
@@ -43,6 +44,49 @@ Fired when the Request is sent.
 ##### Signature:
 
 	onRequest()
+	
+#### loadstart
+
+Fired when the Request loaded, right before any progress starts. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
+
+##### Signature:
+
+	onLoadstart(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The loadstart event.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+#### progress
+
+Fired when the Request is making progresses in the download or upload. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
+
+##### Signature:
+
+	onProgress(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The progress event, containing currently downloaded bytes and total bytes.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+### Example:
+
+	var myRequest = new Request({
+		url: 'image.jpg',
+		onProgress: function(event, xhr) {
+			var loaded = event.loaded, total = event.total;
+
+			console.log(parseInt(loaded / total * 100, 10));
+		}
+	});
+	
+	myRequest.send();
+
+### See Also:
+
+ - [MDC: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)
 
 #### complete
 
@@ -115,6 +159,14 @@ Fired when setting a request header fails.
 ### See Also:
 
  - [Wikipedia: XMLHttpRequest](http://en.wikipedia.org/wiki/XMLHttpRequest)
+
+#### timeout
+
+Fired when a request doesn't change state for `options.timeout` milliseconds.
+
+##### Signature:
+
+	onTimeout()
 
 Request Method: setHeader {#Request:setHeader}
 --------------------------------------
