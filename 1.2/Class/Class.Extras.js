@@ -192,22 +192,6 @@ var runEventSpecs = function(type, create){
 			value_of(Local.called).should_be(5);
 		},*/
 
-		'should add a protected event': function(){
-			var object = create();
-
-			//TODO 2.0; 1.2 intentionally has a different API
-			if (type == 'element'){
-				value_of(1).should_be(1);
-				return;
-			}
-
-			var protectedFn = (function(){ Local.fn(); });
-
-			object.addEvent('protected', protectedFn, true).removeEvent('protected', protectedFn).fireEvent('protected');
-
-			value_of(Local.called).should_be(1);
-		},
-
 		'should remove a specific method for an event': function(){
 			var object = create();
 			var x = 0, fn = function(){ x++; };
@@ -278,7 +262,34 @@ var runEventSpecs = function(type, create){
 
 			object.fireEvent('event');
 			value_of(methods).should_be([1, 2, 1, 2]);
+		},
+
+		'should clone events at start of fireEvent': function(){
+			var object = create();
+
+			var methods = [];
+
+			var one = function(){
+				object.removeEvent('event', one);
+				methods.push(1);
+			};
+			var two = function(){
+				object.removeEvent('event', two);
+				methods.push(2);
+			};
+			var three = function(){
+				methods.push(3);
+			};
+
+			object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
+
+			object.fireEvent('event');
+			value_of(methods).should_be([1, 2, 3]);
+
+			object.fireEvent('event');
+			value_of(methods).should_be([1, 2, 3, 3]);
 		}
+		
 	});
 };
 
