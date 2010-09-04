@@ -33,6 +33,24 @@ Returns the passed parameter as a String.
 
 
 
+Function: String.uniqueID {#String:String-uniqueID}
+---------------------------------------------------
+
+Generates a unique ID
+
+### Syntax:
+
+	String.uniqueID();
+
+### Returns:
+
+* (*string*) A unique ID.
+
+### Example:
+
+	String.uniqueID();
+
+
 String method: test {#String:test}
 ---------------------------
 
