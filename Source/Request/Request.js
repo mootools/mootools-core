@@ -201,10 +201,8 @@ var Request = this.Request = new Class({
 		this.running = false;
 		this.xhr.abort();
 		this.xhr.onreadystatechange = function(){};
-		if (progressSupport) {
-			this.xhr.onprogress = function(){};
-			this.xhr.onloadstart = function(){};
-		}
+		this.xhr.onprogress = function(){};
+		this.xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
