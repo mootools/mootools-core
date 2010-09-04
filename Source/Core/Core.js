@@ -384,7 +384,7 @@ Object.extend({
 
 // Unique ID
 
-var UID = Math.floor(Math.random() * 10e12);
+var UID = Date.now();
 
 String.uniqueID = function(){
 	return (UID++).toString(36);
