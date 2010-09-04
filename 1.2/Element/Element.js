@@ -153,13 +153,6 @@ describe('Element.set', {
 		value_of(tr.getFirst().className).should_be('cell');
 	},
 
-	"should set the html of a td Element": function(){
-		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
-		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
-		value_of(td.getChildren().length).should_be(2);
-		value_of(td.getFirst().className).should_be('span');
-	},
-
 	"should set the html of a tr Element, even when it has no parentNode": function(){
 		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
 		var tr = new Element('tr').set('html', html);
@@ -168,6 +161,13 @@ describe('Element.set', {
 		value_of(tr.get('html')).should_be(html);
 		value_of(tr.getChildren().length).should_be(2);
 		value_of(tr.getFirst().className).should_be('cell');
+	},
+
+	"should set the html of a td Element": function(){
+		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
+		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
+		value_of(td.getChildren().length).should_be(2);
+		value_of(td.getFirst().className).should_be('span');
 	},
 
 	"should set the style attribute of an Element": function(){
