@@ -9,8 +9,8 @@ License:
 describe('Element.Event', function(){
 	
 	it('Should trigger the click event', function(){
-
-		var callback = jasmine.createSpy(), called = false;
+		
+		var callback = jasmine.createSpy();
 
 		var el = new Element('a', {
 			text: 'test',
@@ -24,19 +24,10 @@ describe('Element.Event', function(){
 			}
 		}).inject(document.body);
 
-
-		Syn.click({}, el, function(){
-			called = true;
-		});
-
-		waitsFor(2, function(){
-			return called;
-		});
-		
-		runs(function(){
+		simulateEvent('click', [{}, el], function(){
 			expect(callback).toHaveBeenCalled();
 			el.destroy();
-		});	
+		});
 
 	});
 	
