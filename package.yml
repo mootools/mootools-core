@@ -1,42 +1,41 @@
 name: "Core"
-
-version: 1.2.4
-
 web: "[mootools.net](http://mootools.net)"
-
+ 
 description: "MooTools, The JavaScript framework"
-
+ 
 license: "[MIT License](http://mootools.net/license.txt)"
-
+ 
 copyright: "&copy; [MooTools](http://mootools.net)"
-
+ 
 authors: "[The MooTools development team](http://mootools.net/developers)"
 
+version: "1.2.5-dev"
+ 
 sources:
-  - "Source/Core/Core.js"
-  - "Source/Core/Browser.js"
-  - "Source/Native/Array.js"
-  - "Source/Native/String.js"
-  - "Source/Native/Number.js"
-  - "Source/Native/Function.js"
-  - "Source/Native/Hash.js"
-  - "Source/Native/Event.js"
-  - "Source/Class/Class.js"
   - "Source/Class/Class.Extras.js"
+  - "Source/Class/Class.js"
+  - "Source/Core/Browser.js"
+  - "Source/Core/Core.js"
+  - "Source/Element/Element.Dimensions.js"
+  - "Source/Element/Element.Event.js"
   - "Source/Element/Element.js"
   - "Source/Element/Element.Style.js"
-  - "Source/Element/Element.Event.js"
-  - "Source/Element/Element.Dimensions.js"
-  - "Source/Fx/Fx.js"
   - "Source/Fx/Fx.CSS.js"
+  - "Source/Fx/Fx.js"
   - "Source/Fx/Fx.Morph.js"
-  - "Source/Fx/Fx.Tween.js"
   - "Source/Fx/Fx.Transitions.js"
-  - "Source/Request/Request.js"
+  - "Source/Fx/Fx.Tween.js"
+  - "Source/Native/Array.js"
+  - "Source/Native/Event.js"
+  - "Source/Native/Function.js"
+  - "Source/Native/Hash.js"
+  - "Source/Native/Number.js"
+  - "Source/Native/String.js"
   - "Source/Request/Request.HTML.js"
+  - "Source/Request/Request.js"
   - "Source/Request/Request.JSON.js"
   - "Source/Utilities/Cookie.js"
-  - "Source/Utilities/JSON.js"
   - "Source/Utilities/DomReady.js"
-  - "Source/Utilities/Swiff.js"
+  - "Source/Utilities/JSON.js"
   - "Source/Utilities/Selectors.js"
+  - "Source/Utilities/Swiff.js"
