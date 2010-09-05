@@ -418,3 +418,11 @@ describe('Date.now', {
 	}
 
 });
+
+describe('String.generageUID', function(){
+	
+	it("should generate unique ids", function(){
+		expect(String.uniqueID()).not.toEqual(String.uniqueID());
+	});
+	
+});
