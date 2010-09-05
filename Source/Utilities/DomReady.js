@@ -19,7 +19,13 @@ provides: DomReady
 var ready,
 	checks = [],
 	shouldPoll,
-	timer;
+	timer,
+	isFramed = true;
+
+// Thanks to Rich Dougherty <http://www.richdougherty.com/>
+try {
+	isFramed = window.frameElement != null;
+} catch(e){}
 
 var domready = function(){
 	clearTimeout(timer);
@@ -49,7 +55,7 @@ document.addListener('DOMContentLoaded', domready);
 
 // doScroll technique by Diego Perini http://javascript.nwbox.com/IEContentLoaded/
 var testElement = document.createElement('div');
-if (testElement.doScroll && this.window == this.top){
+if (testElement.doScroll && !isFramed){
 	checks.push(function(){
 		try {
 			testElement.doScroll();
