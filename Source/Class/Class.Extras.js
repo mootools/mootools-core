@@ -47,9 +47,7 @@ var triggerEvent = function(type, args, delay){
 	var events = this.$events[type];
 	if (!events) return this;
 	args = Array.from(args);
-	events.clone().each(function(fn){
-		if (!events.contains(fn)) return;
-
+	events.each(function(fn){
 		if (delay) fn.delay(delay, this, args);
 		else fn.apply(this, args);
 	}, this);
@@ -82,7 +80,10 @@ this.Events = new Class({
 	removeEvent: function(type, fn){
 		type = removeOn(type);
 		var events = this.$events[type];
-		if (events && !fn.internal) events.erase(fn);
+		if (events && !fn.internal){
+			var index =  events.indexOf(fn);
+			if (index != -1) delete events[index];
+		}
 		return this;
 	},
 

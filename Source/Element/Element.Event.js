@@ -25,10 +25,7 @@ var triggerEvent = function(type, args, delay){
 	if (!events || !events[type]) return this;
 	args = Array.from(args);
 
-	var list = events[type].keys;
-	list.clone().each(function(fn){
-		if (!list.contains(fn)) return;
-		
+	events[type].keys.each(function(fn){
 		if (delay) fn.delay(delay, this, args);
 		else fn.apply(this, args);
 	}, this);
@@ -76,10 +73,12 @@ var triggerEvent = function(type, args, delay){
 	removeEvent: function(type, fn){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
-		var index = events[type].keys.indexOf(fn);
+		var list = events[type];
+		var index = list.keys.indexOf(fn);
 		if (index == -1) return this;
-		events[type].keys.splice(index, 1);
-		var value = events[type].values.splice(index, 1)[0];
+		var value = list.values[index];
+		delete list.keys[index];
+		delete list.values[index];
 		var custom = Element.Events[type];
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
