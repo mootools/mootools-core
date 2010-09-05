@@ -244,4 +244,36 @@ describe('Class::implement 1.3', {
 
 });
 
+describe('Class toString', function(){
+
+	it('should allow to implement toString', function(){
+		var Person = new Class({
+
+			initialize: function(name){
+				this.name = name;
+			},
+
+			toString: function(){
+				return this.name;
+			}
+
+		});
+
+		var Italian = new Class({
+
+			Extends: Person,
+			
+			toString: function(){
+				return "It's me, " + this.name;
+			}
+
+		})
+
+		expect((new Person('Valerio')) + '').toBe('Valerio');
+
+		expect((new Italian('Valerio')) + '').toBe("It's me, Valerio");
+	})
+
+});
+
 })();
