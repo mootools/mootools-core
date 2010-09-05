@@ -154,13 +154,12 @@ describe('Element.set', {
 	},
 
 	"should set the html of a tr Element, even when it has no parentNode": function(){
-		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
+		var html = '<td class="cell c">cell 1</td><td>cell 2</td>';
 		var tr = new Element('tr').set('html', html);
-		value_of(tr.parentNode).should_be_null();
 		tr.inject(new Element('tbody').inject(new Element('table')));
-		value_of(tr.get('html')).should_be(html);
+		value_of(tr.get('html').toLowerCase().replace(/>\s+</, '><')).should_be(html);
 		value_of(tr.getChildren().length).should_be(2);
-		value_of(tr.getFirst().className).should_be('cell');
+		value_of(tr.getFirst().className).should_be('cell c');
 	},
 
 	"should set the html of a td Element": function(){
