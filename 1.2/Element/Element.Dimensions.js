@@ -62,10 +62,10 @@ describe('Element.Dimensions', function(){
 				width: 100,
 				height: 100,
 				overflow: 'scroll',
-				visibility: 'hidden', 
+				visibility: 'hidden',
 				position: 'absolute',
 				top: 0,
-				left: 0			
+				left: 0
 			}
 		}).inject($(document.body));
 	
@@ -73,7 +73,7 @@ describe('Element.Dimensions', function(){
 			styles: {
 				width: 200,
 				height: 200,
-				visibility: 'hidden'			
+				visibility: 'hidden'
 			}
 		}).inject(scrollDiv);
 	});
@@ -114,15 +114,15 @@ describe('Element.Dimensions', function(){
 	describe('Element.scrollTo', function(){
 		
 		it('should scroll the element', function(){
-			expect(scrollDiv.scrollTo(20,20).getScroll()).toEqual({x:20, y:20});
+			expect(scrollDiv.scrollTo(20, 20).getScroll()).toEqual({x:20, y:20});
 		});
 		
 	});
 	
 	afterEach(function(){
 		[div, relDiv, absDiv, scrollDiv, tallDiv].each(function(el){
-			el.destroy();
-		});		
-	});	
+			$(el).destroy();
+		});
+	});
 
 });
