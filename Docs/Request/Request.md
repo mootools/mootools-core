@@ -144,7 +144,6 @@ Fired when setting a request header fails.
 
 ### Properties:
 
-* running  - (*boolean*) True if the request is running.
 * response - (*object*) Object with text and XML as keys. You can access this property in the 'success' event.
 
 ### Returns:
@@ -274,6 +273,24 @@ Cancels the currently running request, if any.
 	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
 	myRequest.cancel();
 
+Request Method: isRunning {#Request:isRunning}
+--------------------------------
+
+Returns true if the request is currently running
+
+### Syntax:
+
+	myRequest.isRunning()
+
+### Returns:
+
+* (*boolean*) True if the request is running
+
+### Example:
+
+	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
+	
+	if (myRequest.isRunning()) // It runs!
 
 
 Object: Element.Properties {#Element-Properties}

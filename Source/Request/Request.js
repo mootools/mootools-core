@@ -80,6 +80,10 @@ var Request = this.Request = new Class({
 		return ((status >= 200 && status < 300) || status == 1223); // IE
 	},
 
+	isRunning: function(){
+		return !!this.running;
+	},
+
 	processScripts: function(text){
 		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
 		return text.stripScripts(this.options.evalScripts);
