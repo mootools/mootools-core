@@ -31,10 +31,43 @@ flushPause();
 <html>
 <head>
 <script>
+
+var	MESSAGES = document.createElement('div')
+,	thingsThatHappened = {}
+
+function somethingHappened(id, result){
+	if (window.ONLOAD) document.body.insertBefore(MESSAGES, document.body.firstChild)
+	
+	if (typeof result == 'function') result = result()
+	if (result == null) result = ''
+	if (result === true) result = 'PASS'
+	if (result === false) result = 'FAIL'
+	
+	if (thingsThatHappened[id] === result) return
+	thingsThatHappened[id] = result
+	
+	log((+new Date - START_TIME) +' '+ id + ' ' + result)
+	
+	MESSAGES.innerHTML
+		+=	'<p id="' + id + '" class="' + result + '">'
+		+	'<b>' + (+new Date - START_TIME) + 'ms </b>'
+		+	id
+		+	' '
+		+	result
+}
+
 var	START_TIME = +new Date
 function isNotLoaded(){ return !!(window.PARSED && !window.ONLOAD) }
-</script>
-<script>
+
+if (false <?php if (isset($_GET['iframe'])) echo '|| true'; ?>){
+	try {
+		document.domain = 'localhost'
+		somethingHappened("document.domain = 'localhost'", true)
+	}
+	catch(e) {
+		somethingHappened("document.domain = 'localhost'; " + e, false)
+	}
+}
 
 var Browser = {}
 
@@ -76,12 +109,12 @@ function DomReady(fn){
 var Element = this.Element || {}
 Element.Events = {}
 
-<?php
+// <?php
 // require dirname(__FILE__) . '/../../Packager/packager.php';
 // 
 // $pkg = new Packager(Array( dirname(__FILE__) . '/../..' ));
 // echo $pkg->build(Array( 'DomReady' ), Array(), Array(), Array());
-?>
+// ?>
 
 document.write('<scr'+'ipt src="../../../Source/Utilities/DomReady.js?_=' + (new Date) + '"><'+'/script>')
 </script>
@@ -137,36 +170,15 @@ p{
 .PASS{background:#0f0;}
 .FAIL{background:#f00;}
 
+.Yes{background:#cfc;}
+.No{background:#fcc;}
+
 small{
 	font-size: 9px;
 }
 
 </style>
 <script>
-var	MESSAGES = document.createElement('div')
-
-thingsThatHappened = {}
-function somethingHappened(id, result){
-	if (window.ONLOAD) document.body.insertBefore(MESSAGES, document.body.firstChild)
-	
-	if (typeof result == 'function') result = result()
-	if (result == null) result = ''
-	if (result === true) result = 'PASS'
-	if (result === false) result = 'FAIL'
-	
-	if (thingsThatHappened[id] === result) return
-	thingsThatHappened[id] = result
-	
-	log((+new Date - START_TIME) +' '+ id + ' ' + result)
-	
-	MESSAGES.innerHTML
-		+=	'<p id="' + id + '" class="' + result + '">'
-		+	'<b>' + (+new Date - START_TIME) + 'ms </b>'
-		+	id
-		+	' '
-		+	result
-}
-
 if (document.addEventListener) document.addEventListener('DOMContentLoaded', function(){ window.READY = true; somethingHappened('DOMContentLoaded (addEventListener)', isNotLoaded) }, false)
 if (document.attachEvent) document.attachEvent('onDOMContentLoaded', function(){ window.READY = true; somethingHappened('DOMContentLoaded (attachEvent)', isNotLoaded) }, false)
 
@@ -284,6 +296,14 @@ var readyTests = {
 			return 'No'
 		}
 	}
+	
+	,'isFramed': function(){
+		return isFramed() ?'Yes':'No'
+	}
+	
+	,'is top frame': function(){
+		return window.window === window.top ?'Yes':'No'
+	}
 }
 
 var readyTestResults = []
@@ -305,7 +325,7 @@ function poll(){
 	
 	var shouldBeReady
 	
-	if (window.CANSCROLL && this.window == this.top) shouldBeReady = true
+	if (window.CANSCROLL && !isFramed()) shouldBeReady = true
 	if ({loaded:1,complete:1}[document.readyState]) shouldBeReady = true
 	if (window.LOADED) shouldBeReady = true
 	if (window.IMG_ONLOAD_UNCACHED) shouldBeReady = true
@@ -319,6 +339,15 @@ function poll(){
 	if (!window.ONLOAD) setTimeout(poll, 10)
 	else report()
 }
+
+function isFramed(){
+	try {
+		return window.frameElement != null
+	} catch(e) {
+		return true
+	}
+}
+
 
 function report(){
 	var	EL = document.createElement('div')
@@ -365,7 +394,7 @@ poll()
 <hr>
 
 <script> somethingHappened('before serverSide flush/sleep') </script>
-<?php flushPause(1.0); ?>
+ <?php flushPause(1.0); ?>
 <script> somethingHappened('after serverSide flush/sleep') </script>
 
 <small>
@@ -401,7 +430,7 @@ poll()
 </div>
 
 <script>if (window != top) {somethingHappened('This is a frame!'); document.getElementsByTagName('html')[0].className += ' framed'} </script>
-<?php if (!isset($_GET['iframe'])) echo '<iframe src="'.curPageURL().'?iframe=true"></iframe>'; ?>
+ <?php if (!isset($_GET['iframe'])) echo '<iframe src="'.curPageURL().'?iframe=true"></iframe>'; ?>
 
 <script>
 somethingHappened('Last &lt;SCRIPT&gt; on page')
@@ -410,4 +439,4 @@ window.PARSED = true
 
 </body>
 </html>
-<?php flushPause(); ?>
+ <?php flushPause(); ?>
