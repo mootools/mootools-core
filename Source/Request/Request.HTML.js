@@ -22,7 +22,10 @@ Request.HTML = new Class({
 		update: false,
 		append: false,
 		evalScripts: true,
-		filter: false
+		filter: false,
+		headers: {
+			Accept: 'text/html, application/xml, text/xml, */*'
+		}
 	},
 
 	success: function(text){
