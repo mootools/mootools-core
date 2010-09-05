@@ -155,6 +155,9 @@ describe("Chain Class", {
 
 });
 
+var fire = (parseFloat(MooTools.version) == 1.3) ? 'triggerEvent' : 'fireEvent';
+if ('console' in this) console.log('Using "' + fire + '" to trigger events.');
+
 var runEventSpecs = function(type, create){
 	describe('Events API: ' + type.capitalize(), {
 
@@ -168,7 +171,7 @@ var runEventSpecs = function(type, create){
 		'should add an Event to the Class': function(){
 			var object = create();
 			
-			object.addEvent('event', Local.fn).triggerEvent('event');
+			object.addEvent('event', Local.fn)[fire]('event');
 
 			value_of(Local.called).should_be(1);
 		},
@@ -177,7 +180,7 @@ var runEventSpecs = function(type, create){
 			create().addEvents({
 				event1: Local.fn,
 				event2: Local.fn
-			}).triggerEvent('event1').triggerEvent('event2');
+			})[fire]('event1')[fire]('event2');
 
 			value_of(Local.called).should_be(2);
 		},
@@ -187,7 +190,7 @@ var runEventSpecs = function(type, create){
 			create().addEvent('event', Local.fn).addEvent('event', function(){
 				Local.fn();
 				this.removeEvent('event', arguments.callee);
-			}).addEvent('event', function(){ Local.fn(); }).triggerEvent('event').triggerEvent('event');
+			}).addEvent('event', function(){ Local.fn(); })[fire]('event')[fire]('event');
 
 			value_of(Local.called).should_be(5);
 		},*/
@@ -196,7 +199,7 @@ var runEventSpecs = function(type, create){
 			var object = create();
 			var x = 0, fn = function(){ x++; };
 
-			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn).triggerEvent('event');
+			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn)[fire]('event');
 
 			value_of(x).should_be(1);
 			value_of(Local.called).should_be(0);
@@ -206,7 +209,7 @@ var runEventSpecs = function(type, create){
 			var object = create();
 			var x = 0, fn = function(){ x++; };
 
-			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event').triggerEvent('event');
+			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event')[fire]('event');
 
 			value_of(x).should_be(0);
 			value_of(Local.called).should_be(0);
@@ -217,7 +220,7 @@ var runEventSpecs = function(type, create){
 			var x = 0, fn = function(){ x++; };
 
 			object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
-			object.triggerEvent('event1').triggerEvent('event2');
+			object[fire]('event1')[fire]('event2');
 
 			value_of(x).should_be(0);
 			value_of(Local.called).should_be(0);
@@ -230,14 +233,14 @@ var runEventSpecs = function(type, create){
 				event2: Local.fn
 			};
 
-			object.addEvent('event1', function(){ Local.fn(); }).addEvents(events).triggerEvent('event1');
+			object.addEvent('event1', function(){ Local.fn(); }).addEvents(events)[fire]('event1');
 			value_of(Local.called).should_be(2);
 
 			object.removeEvents(events);
-			object.triggerEvent('event1');
+			object[fire]('event1');
 			value_of(Local.called).should_be(3);
 
-			object.triggerEvent('event2');
+			object[fire]('event2');
 			value_of(Local.called).should_be(3);
 		},
 
@@ -257,10 +260,10 @@ var runEventSpecs = function(type, create){
 				methods.push(2);
 			}).addEvent('event', three);
 
-			object.triggerEvent('event');
+			object[fire]('event');
 			value_of(methods).should_be([1, 2]);
 
-			object.triggerEvent('event');
+			object[fire]('event');
 			value_of(methods).should_be([1, 2, 1, 2]);
 		},
 
@@ -283,10 +286,10 @@ var runEventSpecs = function(type, create){
 
 			object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
 
-			object.triggerEvent('event');
+			object[fire]('event');
 			value_of(methods).should_be([1, 2, 3]);
 
-			object.triggerEvent('event');
+			object[fire]('event');
 			value_of(methods).should_be([1, 2, 3, 3]);
 		}
 		
