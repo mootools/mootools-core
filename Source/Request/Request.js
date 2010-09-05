@@ -78,7 +78,8 @@ var Request = this.Request = new Class({
 	},
 
 	isSuccess: function(){
-		return ((this.status >= 200) && (this.status < 300));
+		var status = this.status;
+		return ((status >= 200 && status < 300) || status == 1223); // IE
 	},
 
 	processScripts: function(text){
