@@ -8,11 +8,21 @@ License:
 
 describe('Element.Event', function(){
 	
+	// Restore native fireEvent in IE for Syn
+	var createElement = function(tag, props){
+		var el = document.createElement(tag),
+			fireEvent = el.fireEvent;
+		
+		$(el);
+		el.fireEvent = fireEvent;
+		return el.set(props);
+	};
+
 	it('Should trigger the click event', function(){
 
 		var callback = jasmine.createSpy(), called = false;
 
-		var el = new Element('a', {
+		var el = createElement('a', {
 			text: 'test',
 			styles: {
 				display: 'block',

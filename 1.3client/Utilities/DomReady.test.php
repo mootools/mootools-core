@@ -59,8 +59,8 @@ document.removeListener = function(type, fn){
 
 var domreadyCallbacks = []
 
-window.fireEvent = 
-document.fireEvent = function(type){
+window.triggerEvent =
+document.triggerEvent = function(type){
 	if (type == 'domready')
 	for (var i = 0; i < domreadyCallbacks.length; ++i){
 		domreadyCallbacks[i]()

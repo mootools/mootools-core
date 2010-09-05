@@ -1,3 +1,44 @@
+describe('Element.clone', function(){
+
+	it('should clone children of object elements', function(){
+		var div = new Element('div').set('html', '<div id="swfobject-video" class="video">' +
+			'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="425" height="344">' +
+				'<param name="movie" value="http://www.youtube.com/v/6nOVQDMOvvE&amp;rel=0&amp;color1=0xb1b1b1&amp;color2=0xcfcfcf&amp;hl=en_US&amp;feature=player_embedded&amp;fs=1" />' +
+				'<param name="wmode" value="opaque" />' +
+				'<param name="quality" value="high" />' +
+				'<param name="bgcolor" value="#000616" />' +
+				'<param name="allowFullScreen" value="true" />' +
+				'<!--[if !IE]>-->' +
+				'<object type="application/x-shockwave-flash" data="http://www.youtube.com/v/6nOVQDMOvvE&amp;rel=0&amp;color1=0xb1b1b1&amp;color2=0xcfcfcf&amp;hl=en_US&amp;feature=player_embedded&amp;fs=1" width="425" height="344">' +
+				'<param name="wmode" value="opaque" />' +
+				'<param name="quality" value="high" />' +
+				'<param name="bgcolor" value="#000616" />' +
+				'<param name="allowFullScreen" value="true" />' +
+				'<!--<![endif]-->' +
+				'<p class="flash-required">Flash is required to view this video.</p>' +
+				'<!--[if !IE]>-->' +
+				'</object>' +
+				'<!--<![endif]-->' +
+			'</object>' +
+		'</div>');
+
+		expect(div.clone().getElementsByTagName('param').length != 0).toBeTruthy();
+
+		div = new Element('div').set('html', '<div id="ie-video" class="video">' +
+			'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="425" height="344">' +
+				'<param name="movie" value="http://www.youtube.com/v/6nOVQDMOvvE&amp;rel=0&amp;color1=0xb1b1b1&amp;color2=0xcfcfcf&amp;hl=en_US&amp;feature=player_embedded&amp;fs=1" />' +
+				'<param name="wmode" value="opaque" />' +
+				'<param name="quality" value="high" />' +
+				'<param name="bgcolor" value="#000616" />' +
+				'<param name="allowFullScreen" value="true" />' +
+			'</object>' +
+		'</div>');
+
+		expect(div.clone().getElementsByTagName('param').length != 0).toBeTruthy();
+	});
+
+});
+
 describe('Elements implement order', function(){
 
 	it('should give precedence to Array over Element', function(){

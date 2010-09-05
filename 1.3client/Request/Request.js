@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-describe('Request', function(){
+xdescribe('Request', function(){
 
 	it('should create an ajax request', function(){
 
