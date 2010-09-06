@@ -64,7 +64,8 @@ var Request = this.Request = new Class({
 		this.running = false;
 		this.status = 0;
 		Function.attempt(function(){
-			this.status = this.xhr.status;
+			var status = this.xhr.status;
+			this.status = (status == 1223) ? 204 : status;
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
 		clearTimeout(this.timer);
@@ -77,7 +78,7 @@ var Request = this.Request = new Class({
 
 	isSuccess: function(){
 		var status = this.status;
-		return ((status >= 200 && status < 300) || status == 1223); // IE
+		return (status >= 200 && status < 300);
 	},
 
 	isRunning: function(){
