@@ -95,5 +95,60 @@ describe('Request.HTML', function(){
 
 	});
 	
+	it('should create an ajax request and correctly update an element with the response', function(){
+		
+		runs(function(){
+			new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
+			this.request = new Request.HTML({
+				url: '../Helpers/request.php',
+				onComplete: this.spy,
+				update: 'update'
+			}).send({data: {
+				'__response': '<span>text</span>', '__type': 'html'
+			}});
+		});
+
+		waitsFor(800, function(){
+			return this.spy.wasCalled;
+		});
+
+		runs(function(){
+			var update = $('update');
+			expect(update.getChildren().length).toEqual(1);
+			expect(update.getFirst().get('tag')).toEqual('span');
+			expect(update.getFirst().get('text')).toEqual('text');
+			update.dispose();
+		});
+		
+	});
+	
+	it('should create an ajax request and correctly append the response to an element', function(){
+		
+		runs(function(){
+			new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
+			this.request = new Request.HTML({
+				url: '../Helpers/request.php',
+				onComplete: this.spy,
+				append: 'update'
+			}).send({data: {
+				'__response': '<span>text</span>', '__type': 'html'
+			}});
+		});
+
+		waitsFor(800, function(){
+			return this.spy.wasCalled;
+		});
+
+		runs(function(){
+			var update = $('update');
+			expect(update.getChildren().length).toEqual(2);
+			expect(update.getFirst().get('tag')).toEqual('div');
+			expect(update.getFirst().get('text')).toEqual('some');
+			expect(update.getLast().get('tag')).toEqual('span');
+			expect(update.getLast().get('text')).toEqual('text');
+			update.dispose();
+		});
+		
+	});
 	
 });
