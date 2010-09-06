@@ -135,7 +135,7 @@ Creates a new Element of the type passed in.
 
 ### Arguments:
 
-1. element - (*mixed*) The tag name for the Element to be created or an actual DOM element.
+1. element - (*mixed*) The tag name for the Element to be created or an actual DOM element or a CSS selector.
 2. properties - (*object*, optional) Calls the Single Argument version of [Element:set][] with the properties object passed in.
 
 ### Returns:
@@ -144,6 +144,7 @@ Creates a new Element of the type passed in.
 
 ### Examples:
 
+	// Creating an new anchor with an Object
 	var myAnchor = new Element('a', {
 		href: 'http://mootools.net',
 		'class': 'myClass',
@@ -161,6 +162,9 @@ Creates a new Element of the type passed in.
 			}
 		}
 	});
+	
+	// Using Selectors
+	var myNewElement = new Element('a.myClass');
 
 ### See Also:
 
