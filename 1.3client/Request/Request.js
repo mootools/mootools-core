@@ -135,8 +135,8 @@ describe('Request', function(){
 			var onCompleteArgs = this.onComplete.argsForCall[0];
 			var rootNode = onCompleteArgs[1].documentElement;
 			expect(onCompleteArgs[0]).toEqual('<root>response</root>');
-			expect(rootNode.nodeName.toLowerCase()).toEqual('root');
-			expect(rootNode.firstChild.nodeValue.toLowerCase()).toEqual('response');
+			expect(rootNode.nodeName).toEqual('root');
+			expect(rootNode.firstChild.nodeValue).toEqual('response');
 		});
 		
 	});
