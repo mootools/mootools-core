@@ -213,9 +213,7 @@ var Request = this.Request = new Class({
 		this.running = false;
 		this.xhr.abort();
 		clearTimeout(this.timer);
-		this.xhr.onreadystatechange = function(){};
-		this.xhr.onprogress = function(){};
-		this.xhr.onloadstart = function(){};
+		this.xhr.onreadystatechange = this.xhr.onprogress = this.xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
 		this.triggerEvent('cancel');
 		return this;
