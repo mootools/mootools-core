@@ -104,9 +104,9 @@ var triggerEvent = function(type, args, delay){
 			for (type in attached) this.removeEvents(type);
 			this.eliminate('events');
 		} else if (attached[events]){
-			var list = attached[events].keys;
-			for (var i = list.length; i--;)
-				this.removeEvent(events, list[i]);
+			attached[events].keys.each(function(fn){
+				this.removeEvent(events, fn);
+			}, this);
 			delete attached[events];
 		}
 		return this;
