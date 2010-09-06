@@ -15,7 +15,7 @@ provides: Request
 */
 
 
-(function(){
+(function(global){
 
 var progressSupport = ('onprogress' in new Browser.Request);
 
@@ -69,7 +69,10 @@ var Request = this.Request = new Class({
 		}.bind(this));
 		this.xhr.onreadystatechange = function(){};
 		clearTimeout(this.timer);
-		this.response = {text: (this.xhr.responseText || ''), xml: this.xhr.responseXML};
+		
+		var text = this.xhr.responseText || '', xml = this.xhr.responseXML;
+		if (text && (!xml || !(xml && xml.documentElement))) xml = this.parseXML(text); // forces xml parsing
+		this.response = {text: text, xml: xml};
 		if (this.options.isSuccess.call(this, this.status))
 			this.success(this.response.text, this.response.xml);
 		else
@@ -137,7 +140,31 @@ var Request = this.Request = new Class({
 		}
 		return false;
 	},
+	
+	parseXML: (function(){
+		if (global.DOMParser){
+			var domParser = new DOMParser();
+			return function(text){
+				return domParser.parseFromString(text, 'text/xml');
+			};
+		}
 
+		var xml = Function.attempt(function(){
+			return new ActiveXObject('MSXML2.DOMDocument');
+		}, function(){
+			return new ActiveXObject('Microsoft.XMLDOM');
+		});
+		if (xml) xml.async = 'false';
+		
+		return function(text){
+			if (xml){
+				xml.loadXML(text);
+				return xml;
+			}
+			return null;
+		};
+	})(),
+	
 	send: function(options){
 		if (!this.check(options)) return this;
 
@@ -234,7 +261,7 @@ var methods = {};
 
 Request.implement(methods);
 
-})();
+})(window || this);
 
 Element.Properties.send = {
 
