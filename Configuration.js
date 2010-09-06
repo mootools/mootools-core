@@ -58,7 +58,8 @@ Configuration.sets = {
 			'Element/Element',
 			'Element/NewElement',
 			'Element/Element.Event',
-			'Request/Request'
+			'Request/Request',
+			'Request/Request.HTML'
 		]
 	}
 };

@@ -13,17 +13,20 @@ function check_special_parameter($name, $default){
 };
 
 $content_types = array(
+	'text'	=> 'text/plain',
 	'html'	=> 'text/html',
 	'xml'	=> 'application/xml',
-	'json'	=> 'application/json'
+	'json'	=> 'application/json',
+	'script' => 'application/javascript'
 );
+$content_types['javascript'] = $content_types['script'];
 
 check_special_parameter('sleep', 0); // you can define the default sleep time by passing the '__sleep' variable (get or post)
 check_special_parameter('response', NULL);
 check_special_parameter('type', NULL);
 check_special_parameter('retrieve', NULL);
 
-header('Content-Type: ' . (isset($content_types[$type]) ? $content_types[$type] : $type));
+if ($type !== NULL) header('Content-Type: ' . (isset($content_types[$type]) ? $content_types[$type] : $type));
 
 sleep($sleep);
 
