@@ -6,7 +6,7 @@ License:
 	MIT-style license.
 */
 
-xdescribe('Request', function(){
+describe('Request', function(){
 
 	it('should create an ajax request', function(){
 
@@ -25,7 +25,8 @@ xdescribe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete).toHaveBeenCalledWith('response', null);
+			// checks the first argument from the first call
+			expect(this.onComplete.argsForCall[0][0]).toEqual('response');
 		});
 		
 	});
@@ -46,12 +47,12 @@ xdescribe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete).toHaveBeenCalledWith('{"method":"get","get":{"some":"data"}}', null);
+			expect(this.onComplete.argsForCall[0][0]).toEqual('{"method":"get","get":{"some":"data"}}');
 		});
 		
 	});
 	
-	it('the options passed on the send method should rewrite the curret ones', function(){
+	it('the options passed on the send method should rewrite the current ones', function(){
 
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
@@ -68,12 +69,12 @@ xdescribe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete).toHaveBeenCalledWith('{"method":"post","post":{"send":"senddata"}}', null);
+			expect(this.onComplete.argsForCall[0][0]).toEqual('{"method":"post","post":{"send":"senddata"}}');
 		});
 		
 	});
 	
-	it('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
+	xit('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
 
 		runs(function(){
 			this.onComplete = jasmine.createSpy();
@@ -91,8 +92,7 @@ xdescribe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete).toHaveBeenCalledWith('response', null);
-			expect(this.request.response.xml).toEqual(null);
+			expect(this.onComplete.argsForCall[0][0]).toEqual('response');
 			expect(this.request.response.text).toEqual('response');
 		});
 		
@@ -109,7 +109,7 @@ xdescribe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.request.response.xml).toEqual(null);
+			expect(this.onComplete.argsForCall[0][0]).toEqual('<node>response</node><no></no>');
 			expect(this.request.response.text).toEqual('<node>response</node><no></no>');
 		});
 		
@@ -123,7 +123,7 @@ xdescribe('Request', function(){
 				url: '../Helpers/request.php',
 				onComplete: this.onComplete
 			}).send({data: {
-				'__response': '<node>response</node><no></no>'
+				'__response': '<root>response</root>'
 			}});
 		});
 		
@@ -132,7 +132,11 @@ xdescribe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete).toHaveBeenCalledWith('<node>response</node><no></no>', null);
+			var onCompleteArgs = this.onComplete.argsForCall[0];
+			var rootNode = onCompleteArgs[1].documentElement;
+			expect(onCompleteArgs[0]).toEqual('<root>response</root>');
+			expect(rootNode.nodeName.toLowerCase()).toEqual('root');
+			expect(rootNode.firstChild.nodeValue.toLowerCase()).toEqual('response');
 		});
 		
 	});
