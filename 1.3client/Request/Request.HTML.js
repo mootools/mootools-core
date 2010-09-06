@@ -12,14 +12,14 @@ describe('Request.HTML', function(){
 		this.spy = jasmine.createSpy();
 	});
 
-	it('should create an ajax request and detect the correct type of the response (html)', function(){
+	it('should create an ajax request and pass the right arguments to the onComplete event', function(){
 
 		runs(function(){
 			this.request = new Request.HTML({
 				url: '../Helpers/request.php',
 				onComplete: this.spy
 			}).send({data: {
-				'__response': '<body><div><span></span></div></body>', '__type': 'html'
+				'__response': '<body><div><span></span></div><script>___SPEC___=5;</script></body>', '__type': 'html'
 			}});
 		});
 
@@ -35,7 +35,8 @@ describe('Request.HTML', function(){
 			expect(onCompleteArgs[0][0].nodeName).toEqual('DIV');
 			expect(onCompleteArgs[1][1].nodeName).toEqual('SPAN');
 			expect(onCompleteArgs[2]).toEqual('<div><span></span></div>');
-			expect(onCompleteArgs[3]).toBeFalsy();
+			expect(onCompleteArgs[3].trim()).toEqual('___SPEC___=5;');
+			expect(___SPEC___).toEqual(5);
 		});
 
 	});
@@ -134,7 +135,7 @@ describe('Request.HTML', function(){
 				'__response': '<span>text</span>', '__type': 'html'
 			}});
 		});
-
+		
 		waitsFor(800, function(){
 			return this.spy.wasCalled;
 		});
@@ -147,6 +148,31 @@ describe('Request.HTML', function(){
 			expect(update.getLast().get('tag')).toEqual('span');
 			expect(update.getLast().get('text')).toEqual('text');
 			update.dispose();
+		});
+		
+	});
+	
+	it('should create an ajax request and correctly filter it by the passed selector', function(){
+		
+		runs(function(){
+			this.request = new Request.HTML({
+				url: '../Helpers/request.php',
+				onComplete: this.spy,
+				filter: 'a'
+			}).send({data: {
+				'__response': '<span>text</span><a>aaa</a>', '__type': 'html'
+			}});
+		});
+		
+		waitsFor(800, function(){
+			return this.spy.wasCalled;
+		});
+
+		runs(function(){
+			var onCompleteArgs = this.spy.argsForCall[0];
+			expect(onCompleteArgs[0].length).toEqual(1);
+			expect(onCompleteArgs[0][0].get('tag')).toEqual('a');
+			expect(onCompleteArgs[0][0].get('text')).toEqual('aaa');
 		});
 		
 	});
