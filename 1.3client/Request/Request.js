@@ -16,7 +16,7 @@ describe('Request', function(){
 				url: '../Helpers/request.php',
 				onComplete: this.onComplete
 			}).send({data: {
-				'__response': 'response'
+				'__response': 'res&amp;ponsé'
 			}});
 		});
 		
@@ -26,7 +26,7 @@ describe('Request', function(){
 		
 		runs(function(){
 			// checks the first argument from the first call
-			expect(this.onComplete.argsForCall[0][0]).toEqual('response');
+			expect(this.onComplete.argsForCall[0][0]).toEqual('res&amp;ponsé');
 		});
 		
 	});

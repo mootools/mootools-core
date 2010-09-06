@@ -19,7 +19,7 @@ describe('Request.HTML', function(){
 				url: '../Helpers/request.php',
 				onComplete: this.spy
 			}).send({data: {
-				'__response': '<body><div><span></span></div><script>___SPEC___=5;</script></body>', '__type': 'html'
+				'__response': '<body><img><div><span>res&amp;ponsé</span></div><script>___SPEC___=5;</script></body>', '__type': 'html'
 			}});
 		});
 
@@ -32,9 +32,10 @@ describe('Request.HTML', function(){
 			// checks arguments order
 			expect(this.spy).toHaveBeenCalledWith(response.tree, response.elements, response.html, response.javascript);
 			var onCompleteArgs = this.spy.argsForCall[0];
-			expect(onCompleteArgs[0][0].nodeName).toEqual('DIV');
-			expect(onCompleteArgs[1][1].nodeName).toEqual('SPAN');
-			expect(onCompleteArgs[2]).toEqual('<div><span></span></div>');
+			expect(onCompleteArgs[0][0].nodeName).toEqual('IMG');
+			expect(onCompleteArgs[0][1].nodeName).toEqual('DIV');
+			expect(onCompleteArgs[1][2].nodeName).toEqual('SPAN');
+			expect(onCompleteArgs[2]).toEqual('<img><div><span>res&amp;ponsé</span></div>');
 			expect(onCompleteArgs[3].trim()).toEqual('___SPEC___=5;');
 			expect(___SPEC___).toEqual(5);
 		});
