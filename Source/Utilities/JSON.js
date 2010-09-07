@@ -22,7 +22,13 @@ provides: [JSON]
 */
 
 var JSON = new Hash(this.JSON && {
-	stringify: JSON.stringify,
+	stringify: function(obj) {
+            if($type(obj)=='object') {
+                return $H(obj).toJSON();
+            } else {
+                return JSON.stringify(obj);
+            }
+        },
 	parse: JSON.parse
 }).extend({
 	
