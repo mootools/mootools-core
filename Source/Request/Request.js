@@ -59,14 +59,15 @@ var Request = this.Request = new Class({
 	},
 
 	onStateChange: function(){
-		if (this.xhr.readyState != 4 || !this.running) return;
+		var xhr = this.xhr;
+		if (xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
 		Function.attempt(function(){
-			var status = this.xhr.status;
+			var status = xhr.status;
 			this.status = (status == 1223) ? 204 : status;
 		}.bind(this));
-		this.xhr.onreadystatechange = function(){};
+		xhr.onreadystatechange = function(){};
 		clearTimeout(this.timer);
 		
 		this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
@@ -185,25 +186,25 @@ var Request = this.Request = new Class({
 			data = null;
 		}
 
+		var xhr = this.xhr;
 		if (progressSupport){
-			this.xhr.onloadstart = this.loadstart.bind(this);
-			this.xhr.onprogress = this.progress.bind(this);
+			xhr.onloadstart = this.loadstart.bind(this);
+			xhr.onprogress = this.progress.bind(this);
 		}
-		
-		this.xhr.open(method.toUpperCase(), url, this.options.async);
-		
-		this.xhr.onreadystatechange = this.onStateChange.bind(this);
+
+		xhr.open(method.toUpperCase(), url, this.options.async);
+		xhr.onreadystatechange = this.onStateChange.bind(this);
 
 		Object.each(this.headers, function(value, key){
 			try {
-				this.xhr.setRequestHeader(key, value);
+				xhr.setRequestHeader(key, value);
 			} catch (e){
 				this.triggerEvent('exception', [key, value]);
 			}
 		}, this);
 
 		this.triggerEvent('request');
-		this.xhr.send(data);
+		xhr.send(data);
 		if (!this.options.async) this.onStateChange();
 		if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
 		return this;
@@ -212,9 +213,10 @@ var Request = this.Request = new Class({
 	cancel: function(){
 		if (!this.running) return this;
 		this.running = false;
-		this.xhr.abort();
+		var xhr = this.xhr;
+		xhr.abort();
 		clearTimeout(this.timer);
-		this.xhr.onreadystatechange = this.xhr.onprogress = this.xhr.onloadstart = function(){};
+		xhr.onreadystatechange = xhr.onprogress = xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
 		this.triggerEvent('cancel');
 		return this;
