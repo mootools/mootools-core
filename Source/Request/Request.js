@@ -14,32 +14,9 @@ provides: Request
 ...
 */
 
-
 (function(){
 
 var progressSupport = ('onprogress' in new Browser.Request);
-
-var parseXML;
-if (this.DOMParser){
-	var domParser = new DOMParser();
-	parseXML = function(text){
-		return domParser.parseFromString(text, 'text/xml');
-	};
-} else {
-	var xml = Function.attempt(function(){
-		return new ActiveXObject('MSXML2.DOMDocument');
-	}, function(){
-		return new ActiveXObject('Microsoft.XMLDOM');
-	});
-	if (xml) xml.async = 'false';
-
-	parseXML = function(text){
-		if (!xml) return null;
-
-		xml.loadXML(text);
-		return xml;
-	};
-}
 
 var Request = this.Request = new Class({
 
@@ -92,13 +69,7 @@ var Request = this.Request = new Class({
 		this.xhr.onreadystatechange = function(){};
 		clearTimeout(this.timer);
 		
-		var text = this.xhr.responseText || '',
-			xml = this.xhr.responseXML;
-
-		// forces xml parsing
-		if (text && (!xml || !(xml && xml.documentElement))) xml = parseXML(text);
-
-		this.response = {text: text, xml: xml};
+		this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
 		if (this.options.isSuccess.call(this, this.status))
 			this.success(this.response.text, this.response.xml);
 		else
