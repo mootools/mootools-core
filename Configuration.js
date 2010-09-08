@@ -55,10 +55,13 @@ Configuration.sets = {
 		files: [
 			'Core/Core',
 			'Browser/Browser',
+			'Class/Class.Extras',
 			'Element/Element',
 			'Element/NewElement',
 			'Element/Element.Event',
-			'Request/Request'
+			'Element/IFrame',
+			'Request/Request',
+			'Request/Request.HTML'
 		]
 	}
 };

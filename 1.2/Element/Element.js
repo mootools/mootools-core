@@ -54,7 +54,7 @@ describe('Element constructor', {
 
 		value_of(check1.checked).should_be_false();
 		value_of(check2.checked).should_be_true();
-		value_of(check2.checked).should_be_true();
+		value_of(check3.checked).should_be_true();
 	},
 
 	"should return a select Element that retains it's selected options": function(){
@@ -154,13 +154,14 @@ describe('Element.set', {
 	},
 
 	"should set the html of a tr Element, even when it has no parentNode": function(){
-		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
-		var tr = new Element('tr').set('html', html);
-		value_of(tr.parentNode).should_be_null();
-		tr.inject(new Element('tbody').inject(new Element('table')));
-		value_of(tr.get('html')).should_be(html);
+		var html = '<td class="cell c">cell 1</td><td>cell 2</td>';
+		var tr = new Element('tr');
+		value_of(tr.parentNode).should_be(null);
+		// In IE using appendChild like in set('html') sets the parentNode to a documentFragment
+		tr.set('html', html).inject(new Element('tbody').inject(new Element('table')));
+		value_of(tr.get('html').toLowerCase().replace(/>\s+</, '><')).should_be(html);
 		value_of(tr.getChildren().length).should_be(2);
-		value_of(tr.getFirst().className).should_be('cell');
+		value_of(tr.getFirst().className).should_be('cell c');
 	},
 	
 	"adopting should not change the parent of the element doing the adopting": function(){

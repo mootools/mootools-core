@@ -38,7 +38,9 @@ describe('Element.Dimensions', function(){
 				border: '1px solid green',
 				visibility: 'hidden',
 				position: 'relative',
-				overflow: 'hidden'
+				overflow: 'hidden',
+				'float': 'left',
+				'display': 'inline'
 			}
 		}).inject(div);
 		
@@ -62,10 +64,10 @@ describe('Element.Dimensions', function(){
 				width: 100,
 				height: 100,
 				overflow: 'scroll',
-				visibility: 'hidden', 
+				visibility: 'hidden',
 				position: 'absolute',
 				top: 0,
-				left: 0			
+				left: 0
 			}
 		}).inject($(document.body));
 	
@@ -73,7 +75,7 @@ describe('Element.Dimensions', function(){
 			styles: {
 				width: 200,
 				height: 200,
-				visibility: 'hidden'			
+				visibility: 'hidden'
 			}
 		}).inject(scrollDiv);
 	});
@@ -93,12 +95,16 @@ describe('Element.Dimensions', function(){
 			expect(div.getPosition()).toEqual({x: 102, y: 102});
 		});
 		
+		it('should measure the x and y position of the element relative to another', function(){
+			expect(relDiv.getPosition(div)).toEqual({x: 8, y: 8});
+		});
+		
 	});
 
 	describe('Element.getCoordinates', function(){
 		
 		it('should return the coordinates relative to parent', function(){
-			expect(absDiv.getCoordinates(relDiv)).toEqual({left:16, top:16, width:22, height:22, right:38, bottom:38});
+			expect(absDiv.getCoordinates(relDiv)).toEqual({left:15, top:15, width:22, height:22, right:37, bottom:37});
 		});
 		
 	});
@@ -114,15 +120,15 @@ describe('Element.Dimensions', function(){
 	describe('Element.scrollTo', function(){
 		
 		it('should scroll the element', function(){
-			expect(scrollDiv.scrollTo(20,20).getScroll()).toEqual({x:20, y:20});
+			expect(scrollDiv.scrollTo(20, 20).getScroll()).toEqual({x:20, y:20});
 		});
 		
 	});
 	
 	afterEach(function(){
 		[div, relDiv, absDiv, scrollDiv, tallDiv].each(function(el){
-			el.destroy();
-		});		
-	});	
+			$(el).destroy();
+		});
+	});
 
 });
