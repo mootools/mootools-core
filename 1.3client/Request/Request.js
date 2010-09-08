@@ -114,31 +114,5 @@ describe('Request', function(){
 		});
 		
 	});
-	
-	it('should return null if the response has no xml mime/type', function(){
-
-		runs(function(){
-			this.onComplete = jasmine.createSpy();
-			this.request = new Request({
-				url: '../Helpers/request.php',
-				onComplete: this.onComplete
-			}).send({data: {
-				'__response': '<root>response</root>'
-			}});
-		});
-		
-		waitsFor(800, function(){
-			return this.onComplete.wasCalled;
-		});
-		
-		runs(function(){
-			var onCompleteArgs = this.onComplete.argsForCall[0];
-			var rootNode = onCompleteArgs[1].documentElement;
-			expect(onCompleteArgs[0]).toEqual('<root>response</root>');
-			expect(rootNode.nodeName).toEqual('root');
-			expect(rootNode.firstChild.nodeValue).toEqual('response');
-		});
-		
-	});
 
 });
