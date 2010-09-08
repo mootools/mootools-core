@@ -19,7 +19,7 @@ Configuration.presets = {
 	},
 	'core-1.3 + core-1.2': {
 		sets: ['1.2', 'core-1.3-base', 'core-1.3-client'],
-		source: ['core-1.3-base', 'core-1.3-client']		
+		source: ['core-1.3-base', 'core-1.3-client']
 	}
 };
 
@@ -40,16 +40,17 @@ Configuration.sets = {
 			'Element/Element', 'Element/Element.Style', 'Element/Element.Dimensions'
 		]
 	},
-	
+
 	'core-1.3-base': {
 		path: '1.3base/',
-		files: [		
+		files: [
 			'Core/Core',
 			'Types/Array', 'Types/Function', 'Types/Object',
-			'Class/Class'
+			'Class/Class',
+			'Fx/Fx'
 		]
 	},
-	
+
 	'core-1.3-client': {
 		path: '1.3client/',
 		files: [
@@ -58,7 +59,9 @@ Configuration.sets = {
 			'Element/Element',
 			'Element/NewElement',
 			'Element/Element.Event',
-			'Request/Request'
+			'Request/Request',
+			'Fx/Fx.Tween',
+			'Fx/Fx.Morph'
 		]
 	}
 };
@@ -117,10 +120,12 @@ Configuration.source = {
 			'Types/Object',
 
 			'Class/Class',
-			'Class/Class.Extras'
+			'Class/Class.Extras',
+
+			'Fx/Fx'
 		]
 	},
-	
+
 	'core-1.3-client': {
 		path: '../Source/',
 		files: [
@@ -141,7 +146,6 @@ Configuration.source = {
 			'Utilities/Cookie',
 			'Utilities/Swiff',
 
-			'Fx/Fx',
 			'Fx/Fx.CSS',
 			'Fx/Fx.Tween',
 			'Fx/Fx.Morph',
