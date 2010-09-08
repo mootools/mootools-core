@@ -37,7 +37,6 @@ describe('Element constructor', {
 	'should return input Elements with name and type attributes': function(){
 		var username = new Element('input', { type: 'text', name: 'username', value: 'username' });
 		var password = new Element('input', { type: 'password', name: 'password', value: 'password' });
-
 		value_of(username.type).should_be('text');
 		value_of(username.name).should_be('username');
 		value_of(username.value).should_be('username');
@@ -45,6 +44,11 @@ describe('Element constructor', {
 		value_of(password.type).should_be('password');
 		value_of(password.name).should_be('password');
 		value_of(password.value).should_be('password');
+		
+		var dad = new Element('div');
+		dad.adopt(username, password);
+		value_of(dad.getElementsByTagName('*')['username']).should_be(username);
+		value_of(dad.getElementsByTagName('*')['password']).should_be(password);
 	},
 
 	'should return input Elements that are checked': function(){
@@ -162,6 +166,15 @@ describe('Element.set', {
 		value_of(tr.get('html').toLowerCase().replace(/>\s+</, '><')).should_be(html);
 		value_of(tr.getChildren().length).should_be(2);
 		value_of(tr.getFirst().className).should_be('cell c');
+	},
+	
+	"adopting should not change the parent of the element doing the adopting": function(){
+		var baldGuy = new Element('div');
+		var annie = new Element('span');
+		
+		gramps = baldGuy.getParent();
+		baldGuy.adopt(annie);
+		value_of(baldGuy.getParent()).should_be(gramps)
 	},
 
 	"should set the html of a td Element": function(){
