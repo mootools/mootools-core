@@ -162,6 +162,15 @@ describe('Element.set', {
 		value_of(tr.getChildren().length).should_be(2);
 		value_of(tr.getFirst().className).should_be('cell');
 	},
+	
+	"adopting should not change the parent of the element doing the adopting": function(){
+		var baldGuy = new Element('div');
+		var annie = new Element('span');
+		
+		gramps = baldGuy.getParent();
+		baldGuy.adopt(annie);
+		value_of(baldGuy.getParent()).should_be(gramps)
+	},
 
 	"should set the html of a td Element": function(){
 		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
