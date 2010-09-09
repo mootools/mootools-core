@@ -53,6 +53,20 @@ describe('Element constructor', {
 		dad.dispose();
 	},
 
+	'should be able to use all kinds of silly characters in your name attribute values': function(){
+		["foo","bar[]","b'a'z",'b"a"ng','boi ng'].each(function(name){
+			var input = new Element('input', { type: 'text', name: name, value: name });
+			value_of(input.type).should_be('text');
+			value_of(input.name).should_be(name);
+			value_of(input.value).should_be(name);
+			var dad = new Element('div');
+			dad.adopt(input);
+			dad.inject(document.body);
+			value_of(document.getElementsByName(name)[0]).should_be(input);
+			dad.dispose();
+		});
+	},
+
 	'should return input Elements that are checked': function(){
 		var check1 = new Element('input', { type: 'checkbox' });
 		var check2 = new Element('input', { type: 'checkbox', checked: true });
