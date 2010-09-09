@@ -23,7 +23,7 @@ Interesting Blogposts
 - [A Better Way to use Elements](http://mootools.net/blog/2010/03/19/a-better-way-to-use-elements/)
 
 
-Previous Versions Documetiation
+Previous Versions Documentation
 -------------------------------
 
 - [MooTools 1.1 Docs](http://docs111.mootools.net/)
