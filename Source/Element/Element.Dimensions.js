@@ -48,7 +48,7 @@ Element.implement({
 	},
 
 	getScrolls: function(){
-		var element = this, position = {x: 0, y: 0};
+		var element = this.parentNode, position = {x: 0, y: 0};
 		while (element && !isBody(element)){
 			position.x += element.scrollLeft;
 			position.y += element.scrollTop;
@@ -73,12 +73,11 @@ Element.implement({
 				html = document.id(this.getDocument().documentElement),
 				htmlScroll = html.getScroll(),
 				elemScrolls = this.getScrolls(),
-				elemScroll = this.getScroll(),
 				isFixed = (styleString(this, 'position') == 'fixed');
 
 			return {
-				x: bound.left.toInt() + elemScrolls.x - elemScroll.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
-				y: bound.top.toInt()  + elemScrolls.y - elemScroll.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
+				x: bound.left.toInt() + elemScrolls.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
+				y: bound.top.toInt()  + elemScrolls.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
 			};
 		}
 
