@@ -47,8 +47,10 @@ describe('Element constructor', {
 		
 		var dad = new Element('div');
 		dad.adopt(username, password);
-		value_of(dad.getElementsByTagName('*')['username']).should_be(username);
-		value_of(dad.getElementsByTagName('*')['password']).should_be(password);
+		dad.inject(document.body);
+		value_of(document.getElementsByName('username')[0]).should_be(username);
+		value_of(document.getElementsByName('password')[0]).should_be(password);
+		dad.dispose();
 	},
 
 	'should return input Elements that are checked': function(){
