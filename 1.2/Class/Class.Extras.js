@@ -155,11 +155,10 @@ describe("Chain Class", {
 
 });
 
-var fire = (parseFloat(MooTools.version) == 1.3) ? 'triggerEvent' : 'fireEvent';
-if ('console' in this) console.log('Using "' + fire + '" to trigger events.');
+var fire = 'fireEvent';
 
 var runEventSpecs = function(type, create){
-	describe('Events API: ' + type.capitalize(), {
+	describe('1.2 Events API: ' + type.capitalize(), {
 
 		'before each': function(){
 			Local.called = 0;
