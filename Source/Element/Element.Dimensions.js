@@ -161,10 +161,6 @@ Element.implement({
 [Document, Window].invoke('implement', {
 
 	getSize: function(){
-		if (Browser.opera || Browser.safari){
-			var win = this.getWindow();
-			return {x: win.innerWidth, y: win.innerHeight};
-		}
 		var doc = getCompatElement(this);
 		return {x: doc.clientWidth, y: doc.clientHeight};
 	},
