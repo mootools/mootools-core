@@ -134,6 +134,12 @@ var triggerEvent = function(type, args, delay){
 [Element, Window, Document].invoke('implement', {
 	fireEvent: triggerEvent
 });
+
+// IE9
+try {
+	if (typeof HTMLElement != 'undefined')
+		HTMLElement.prototype.fireEvent = Element.prototype.fireEvent;
+} catch(e){}
 //</1.2compat>
 
 Element.NativeEvents = {
