@@ -1749,9 +1749,8 @@ Creates an IFrame HTML Element and extends its window and document with MooTools
 
 ### Notes:
 
-- If the IFrame is from the same domain as the "host" or running locally, its document and window will be extended with MooTools functionalities, allowing you to fully use MooTools within it.
 - If the IFrame already exists and has a different name than id, the name will be made the same as the id.
-- If the IFrame is from a different domain, its window and document will not be extended with MooTools methods.
+- An IFrame's window and document will not be extended with MooTools methods.
 
 
 
