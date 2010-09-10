@@ -100,42 +100,62 @@ describe("Function Methods 1.3", {
 	// Function.delay
 
 	'should return a timer pointer': function(){
-		var timer = fn.delay(10000);
-		// NodeJS uses Timer Objects
-		value_of(Type.isNumber(timer) || (Type.isObject(timer) && timer.start)).should_be_true();
-		fn(timer);
+		var spyA = jasmine.createSpy('Alice');
+		var spyB = jasmine.createSpy('Bob');
 
-		// Third argument == 0
-		var value;
-		(function(arg){
-			value = arg;
-		}).delay(2, null, 0);
+		var timerA = spyA.delay(200);
+		var timerB = spyB.delay(200);
 
-		waits(3);
-
+		waits(100);
 		runs(function(){
-			expect(value).toEqual(0);
+			expect(spyA).not.toHaveBeenCalled();
+			expect(spyB).not.toHaveBeenCalled();
+			clearTimeout(timerB);
+		});
+		waits(150);
+		runs(function(){
+			expect(spyA.callCount).toBe(1);
+			expect(spyB.callCount).toBe(0);
+		});
+	},
+
+	'should pass parameter 0 [Function.delay]': function(){
+		var spy = jasmine.createSpy();
+		spy.delay(50, null, 0);
+		waits(100);
+		runs(function(){
+			expect(spy).toHaveBeenCalledWith(0);
 		});
 	},
 
 	// Function.periodical
 
-	'should return a periodical timer pointer': function(){
-		var timer = fn.periodical(10000);
-		value_of(Type.isNumber(timer) || (Type.isObject(timer) && timer.start)).should_be_true();
-		fn(timer);
+	'should return an interval pointer': function(){
+		var spy = jasmine.createSpy('Bond');
 
-		// Third argument == 0
-		var value;
-		var timer2 = (function(arg){
-			value = arg;
-		}).periodical(2, null, 0);
+		var interval = spy.periodical(10);
+		expect(spy).not.toHaveBeenCalled();
 
-		waits(3);
-
+		waits(100);
 		runs(function(){
-			clearInterval(timer2);
-			expect(value).toEqual(0);
+			expect(spy.callCount).toBeGreaterThan(2);
+			expect(spy.callCount).toBeLessThan(15);
+			clearInterval(interval);
+			spy.reset();
+		});
+		waits(100);
+		runs(function(){
+			expect(spy).not.toHaveBeenCalled();
+		});
+	},
+
+	'should pass parameter 0 [Function.periodical]': function(){
+		var spy = jasmine.createSpy();
+		var timer = spy.periodical(10, null, 0);
+		waits(100);
+		runs(function(){
+			expect(spy).toHaveBeenCalledWith(0);
+			clearInterval(timer);
 		});
 	}
 
