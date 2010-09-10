@@ -104,6 +104,18 @@ describe("Function Methods 1.3", {
 		// NodeJS uses Timer Objects
 		value_of(Type.isNumber(timer) || (Type.isObject(timer) && timer.start)).should_be_true();
 		fn(timer);
+
+		// Third argument == 0
+		var value;
+		(function(arg){
+			value = arg;
+		}).delay(2, null, 0);
+
+		waits(3);
+
+		runs(function(){
+			expect(value).toEqual(0);
+		});		
 	},
 
 	// Function.periodical
@@ -112,6 +124,19 @@ describe("Function Methods 1.3", {
 		var timer = fn.periodical(10000);
 		value_of(Type.isNumber(timer) || (Type.isObject(timer) && timer.start)).should_be_true();
 		fn(timer);
+
+		// Third argument == 0
+		var value;
+		var timer2 = (function(arg){
+			value = arg;
+		}).periodical(2, null, 0);
+
+		waits(3);
+
+		runs(function(){
+			clearInterval(timer2);
+			expect(value).toEqual(0);
+		});
 	}
 
 });
