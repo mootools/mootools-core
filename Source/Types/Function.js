@@ -48,16 +48,16 @@ Function.implement({
 		};
 	},
 
-	delay: function(delay, bind, args){
-		return setTimeout(this.pass(args, bind), delay);
-	},
-
 	pass: function(args, bind){
 		var self = this;
 		if (args != null) args = Array.from(args);
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
+	},
+
+	delay: function(delay, bind, args){
+		return setTimeout(this.pass(args, bind), delay);
 	},
 
 	periodical: function(periodical, bind, args){
@@ -71,14 +71,6 @@ Function.implement({
 delete Function.prototype.bind;
 
 Function.implement({
-
-	bind: function(bind, args){
-		var self = this;
-		if (args != null) args = Array.from(args);
-		return function(){
-			return self.apply(bind, args || arguments);
-		};
-	},
 
 	create: function(options){
 		var self = this;
@@ -94,6 +86,14 @@ Function.implement({
 			if (options.periodical) return setInterval(returns, options.periodical);
 			if (options.attempt) return Function.attempt(returns);
 			return returns();
+		};
+	},
+
+	bind: function(bind, args){
+		var self = this;
+		if (args != null) args = Array.from(args);
+		return function(){
+			return self.apply(bind, args || arguments);
 		};
 	},
 
