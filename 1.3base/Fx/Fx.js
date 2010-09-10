@@ -16,7 +16,7 @@ describe('Fx', function(){
 
 		expect(onStart).toHaveBeenCalled();
 
-		waits(105);
+		waits(150);
 
 		runs(function(){
 			expect(onComplete).toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('Fx', function(){
 			duration: 100
 		}).start(0, 10);
 
-		waits(105);
+		waits(150);
 
 		runs(function(){
 			expect(fx.foo).toEqual(10);
