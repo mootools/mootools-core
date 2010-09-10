@@ -241,55 +241,6 @@ var runEventSpecs = function(type, create){
 
 			object[fire]('event2');
 			value_of(Local.called).should_be(3);
-		},
-
-		'should remove an event immediately': function(){
-			var object = create();
-
-			var methods = [];
-
-			var three = function(){
-				methods.push(3);
-			};
-
-			object.addEvent('event', function(){
-				methods.push(1);
-				this.removeEvent('event', three);
-			}).addEvent('event', function(){
-				methods.push(2);
-			}).addEvent('event', three);
-
-			object[fire]('event');
-			value_of(methods).should_be([1, 2]);
-
-			object[fire]('event');
-			value_of(methods).should_be([1, 2, 1, 2]);
-		},
-
-		'should clone events at start of triggerEvent': function(){
-			var object = create();
-
-			var methods = [];
-
-			var one = function(){
-				object.removeEvent('event', one);
-				methods.push(1);
-			};
-			var two = function(){
-				object.removeEvent('event', two);
-				methods.push(2);
-			};
-			var three = function(){
-				methods.push(3);
-			};
-
-			object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
-
-			object[fire]('event');
-			value_of(methods).should_be([1, 2, 3]);
-
-			object[fire]('event');
-			value_of(methods).should_be([1, 2, 3, 3]);
 		}
 		
 	});

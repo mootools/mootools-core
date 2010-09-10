@@ -132,7 +132,7 @@ var runEventSpecs = function(type, create){
 			value_of(methods).should_be([1, 2, 1, 2]);
 		},
 
-		'should clone events at start of triggerEvent': function(){
+		'should be able to remove itself': function(){
 			var object = create();
 
 			var methods = [];
