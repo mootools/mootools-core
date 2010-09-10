@@ -12,9 +12,12 @@ describe('Fx', function(){
 			onStart: onStart
 		});
 
+		expect(onStart).not.toHaveBeenCalled();
+
 		fx.start(10, 10);
 
 		expect(onStart).toHaveBeenCalled();
+		expect(onComplete).not.toHaveBeenCalled();
 
 		waits(150);
 
@@ -71,26 +74,31 @@ describe('Fx', function(){
 		});
 
 		var fx = new FxLog({
-			duration: 100
-		}).start(0, 5);
+			duration: 200
+		}).start(0, 1);
 
-		waits(50);
+		waits(100);
+
+		var value;
 
 		runs(function(){
 			fx.pause();
+			value = fx.foo;
+			expect(fx.foo).toBeGreaterThan(0);
+			expect(fx.foo).toBeLessThan(1);
 		});
 
-		waits(10);
+		waits(100);
 
 		runs(function(){
+			expect(fx.foo).toEqual(value);
 			fx.resume();
 		});
 
-		waits(70);
+		waits(150);
 
 		runs(function(){
-			// Does not work... fx.foo is the (last-1)th result
-			expect(fx.foo).toEqual(5);
+			expect(fx.foo).toEqual(1);
 		});
 
 	});
