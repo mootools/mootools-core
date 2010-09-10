@@ -37,6 +37,9 @@ describe('Fx', function(){
 		});
 
 		fx.start();
+
+		expect(onCancel).not.toHaveBeenCalled();
+
 		fx.cancel();
 
 		expect(onCancel).toHaveBeenCalled();
