@@ -6,66 +6,89 @@ License:
 	MIT-style license.
 */
 
-(function(){
-
-var fn = function(){
-	return Array.from(arguments);
-};
-
-var Rules = function(){
-	return this + ' rules';
-};
-
-var Args = function(){
-	return [this].concat(Array.from(arguments));
-};
-
 describe("Function Methods 1.3", {
 
 	// Function.bind
 
 	'should return the function bound to an object': function(){
-		var fnc = Rules.bind('MooTools');
-		value_of(fnc()).should_be('MooTools rules');
+		var spy = jasmine.createSpy();
+		var f = spy.bind('MooTools');
+		expect(spy).not.toHaveBeenCalled();
+		f();
+		expect(spy).toHaveBeenCalledWith();
+		f('foo', 'bar');
+		expect(spy).toHaveBeenCalledWith('foo', 'bar');
 	},
 
 	'should return the function bound to an object with specified argument': function(){
-		var fnc = Args.bind('MooTools', 'rocks');
-		value_of(fnc()).should_be(['MooTools', 'rocks']);
+		var binding = {some: 'binding'};
+		var spy = jasmine.createSpy().andReturn('something');
+		var f = spy.bind(binding, 'arg');
+
+		expect(spy).not.toHaveBeenCalled();
+		expect(f('additional', 'arguments')).toEqual('something');
+		expect(spy).toHaveBeenCalledWith('arg');
+		expect(spy.mostRecentCall.object).toEqual(binding);
 	},
 
 	'should return the function bound to an object with multiple arguments': function(){
-		var fnc = Args.bind('MooTools', ['rocks', 'da house']);
-		value_of(fnc()).should_be(['MooTools', 'rocks', 'da house']);
+		var binding = {some: 'binding'};
+		var spy = jasmine.createSpy().andReturn('something');
+		var f = spy.bind(binding, ['foo', 'bar']);
+
+		expect(spy).not.toHaveBeenCalled();
+		expect(f('additional', 'arguments')).toEqual('something');
+		expect(spy).toHaveBeenCalledWith('foo', 'bar');
+		expect(spy.mostRecentCall.object).toEqual(binding);
 	},
 
 	// Function.pass
 
 	'should return a function that when called passes the specified arguments to the original function': function(){
-		var fnc = fn.pass('MooTools is beautiful and elegant');
-		value_of(fnc()).should_be(['MooTools is beautiful and elegant']);
+		var spy = jasmine.createSpy().andReturn('the result');
+		var fnc = spy.pass('an argument');
+		expect(spy).not.toHaveBeenCalled();
+		expect(fnc('additional', 'arguments')).toBe('the result');
+		expect(spy).toHaveBeenCalledWith('an argument');
+		expect(spy.callCount).toBe(1);
 	},
 
 	'should pass multiple arguments and bind the function to a specific object when it is called': function(){
-		var fnc = Args.pass(['rocks', 'da house'], 'MooTools');
-		value_of(fnc()).should_be(['MooTools', 'rocks', 'da house']);
+		var spy = jasmine.createSpy().andReturn('the result');
+		var binding = {some: 'binding'};
+		var fnc = spy.pass(['multiple', 'arguments'], binding);
+		expect(spy).not.toHaveBeenCalled();
+		expect(fnc('additional', 'arguments')).toBe('the result');
+		expect(spy.mostRecentCall.object).toEqual(binding);
+		expect(spy).toHaveBeenCalledWith('multiple', 'arguments');
 	},
 
 	// Function.run
 
 	'should run the function': function(){
-		var result = fn.run();
-		value_of(result).should_be([]);
+		var spy = jasmine.createSpy().andReturn('something');
+		expect(spy.run()).toEqual('something');
+		expect(spy).toHaveBeenCalledWith();
+	},
+
+	'should run the function with a single argument': function(){
+		var spy = jasmine.createSpy().andReturn('something');
+		expect(spy.run('arg')).toEqual('something');
+		expect(spy).toHaveBeenCalledWith('arg');
 	},
 
 	'should run the function with multiple arguments': function(){
-		var result = fn.run(['MooTools', 'beautiful', 'elegant']);
-		value_of(result).should_be(['MooTools', 'beautiful', 'elegant']);
+		var spy = jasmine.createSpy().andReturn('something');
+		expect(spy.run(['foo', 'bar'])).toEqual('something');
+		expect(spy).toHaveBeenCalledWith('foo', 'bar');
 	},
 
 	'should run the function with multiple arguments and bind the function to an object': function(){
-		var result = Args.run(['beautiful', 'elegant'], 'MooTools');
-		value_of(result).should_be(['MooTools', 'beautiful', 'elegant']);
+		var spy = jasmine.createSpy().andReturn('something');
+		var binding = {some: 'binding'};
+		expect(spy.run(['foo', 'bar'], binding)).toEqual('something');
+		expect(spy).toHaveBeenCalledWith('foo', 'bar');
+		expect(spy.mostRecentCall.object).toEqual(binding);
 	},
 
 	// Function.extend
@@ -80,21 +103,21 @@ describe("Function Methods 1.3", {
 
 	'should call the function without raising an exception': function(){
 		var fnc = function(){
-			this_should_not_work();
+			throw 'up';
 		};
 		fnc.attempt();
 	},
 
 	"should return the function's return value": function(){
-		var fnc = Function.from('hello world!');
-		value_of(fnc.attempt()).should_be('hello world!');
+		var spy = jasmine.createSpy().andReturn('hello world!');
+		value_of(spy.attempt()).should_be('hello world!');
 	},
 
 	'should return null if the function raises an exception': function(){
 		var fnc = function(){
-			this_should_not_work();
+			throw 'up';
 		};
-		value_of(fnc.attempt()).should_be_null();
+		expect(fnc.attempt()).toBeNull();
 	},
 
 	// Function.delay
@@ -160,5 +183,3 @@ describe("Function Methods 1.3", {
 	}
 
 });
-
-})();
