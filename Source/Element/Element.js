@@ -82,27 +82,20 @@ var IFrame = new Type('IFrame', function(){
 			return (obj != null);
 		}
 	});
-	var props = params.properties || {};
-	var iframe = document.id(params.iframe);
+
+	var props = params.properties || {}, iframe;
+	if (params.iframe) iframe = document.id(params.iframe);
 	var onload = props.onload || function(){};
 	delete props.onload;
-	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + Date.now()].pick();
+	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.generateUID()].pick();
 	iframe = new Element(iframe || 'iframe', props);
-	var onFrameLoad = function(){
-		var host = Function.attempt(function(){
-			return iframe.contentWindow.location.host;
-		});
-		if (!host || host == window.location.host){
-			var win = new Window(iframe.contentWindow);
-			new Document(iframe.contentWindow.document);
-			Object.append(win.Element.prototype, Element.ProtoType);
-		}
-		onload.call(iframe.contentWindow, iframe.contentWindow.document);
+
+	var onLoad = function(){
+		onload.call(iframe.contentWindow);
 	};
-	var contentWindow = Function.attempt(function(){
-		return iframe.contentWindow;
-	});
-	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
+	
+	if (window.frames[props.id]) onLoad();
+	else iframe.addListener('load', onLoad);
 	return iframe;
 });
 
