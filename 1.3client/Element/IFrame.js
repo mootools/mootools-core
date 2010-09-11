@@ -13,7 +13,7 @@ describe('IFrame', function(){
 		waitsFor(500, function(){
 			(function(){
 				this.iframe.destroy();
-			}).delay(100, this);
+			}).delay(500, this);
 
 			return this.onComplete.wasCalled;
 		});
