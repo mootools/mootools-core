@@ -9,7 +9,7 @@ License:
 describe('Browser', {
 
 	'should think it is executed in a browser': function(){
-		value_of(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).should_be(true);
+		expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
 	}
 
 });

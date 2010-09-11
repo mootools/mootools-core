@@ -95,8 +95,8 @@ describe("Function Methods 1.3", {
 
 	"should extend the function's properties": function(){
 		var fnc = (function(){}).extend({a: 1, b: 'c'});
-		value_of(fnc.a).should_be(1);
-		value_of(fnc.b).should_be('c');
+		expect(fnc.a).toEqual(1);
+		expect(fnc.b).toEqual('c');
 	},
 
 	// Function.attempt
@@ -110,7 +110,7 @@ describe("Function Methods 1.3", {
 
 	"should return the function's return value": function(){
 		var spy = jasmine.createSpy().andReturn('hello world!');
-		value_of(spy.attempt()).should_be('hello world!');
+		expect(spy.attempt()).toEqual('hello world!');
 	},
 
 	'should return null if the function raises an exception': function(){

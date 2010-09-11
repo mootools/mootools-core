@@ -39,18 +39,18 @@ describe("Chain Class", {
 			return str;
 		});
 		var ret;
-		value_of(arr).should_be([]);
+		expect(arr).toEqual([]);
 		ret = chain.callChain("a", "A");
-		value_of(ret).should_be("0Aa");
-		value_of(arr).should_be(["0Aa"]);
+		expect(ret).toEqual("0Aa");
+		expect(arr).toEqual(["0Aa"]);
 
 		ret = chain.callChain("b", "B");
-		value_of(ret).should_be("1Bb");
-		value_of(arr).should_be(["0Aa", "1Bb"]);
+		expect(ret).toEqual("1Bb");
+		expect(arr).toEqual(["0Aa", "1Bb"]);
 
 		ret = chain.callChain();
-		value_of(ret).should_be(false);
-		value_of(arr).should_be(["0Aa", "1Bb"]);
+		expect(ret).toEqual(false);
+		expect(arr).toEqual(["0Aa", "1Bb"]);
 	},
 
 	"should chain any number of functions": function(){
@@ -63,18 +63,18 @@ describe("Chain Class", {
 			arr.push(1);
 		});
 
-		value_of(arr).should_be([]);
+		expect(arr).toEqual([]);
 		chain.callChain();
-		value_of(arr).should_be([0]);
+		expect(arr).toEqual([0]);
 		chain.chain(function(){
 			arr.push(2);
 		});
 		chain.callChain();
-		value_of(arr).should_be([0, 1]);
+		expect(arr).toEqual([0, 1]);
 		chain.callChain();
-		value_of(arr).should_be([0, 1, 2]);
+		expect(arr).toEqual([0, 1, 2]);
 		chain.callChain();
-		value_of(arr).should_be([0, 1, 2]);
+		expect(arr).toEqual([0, 1, 2]);
 	},
 
 	"should allow an array of functions": function(){
@@ -89,15 +89,15 @@ describe("Chain Class", {
 			arr.push(2);
 		}]);
 
-		value_of(arr).should_be([]);
+		expect(arr).toEqual([]);
 		chain.callChain();
-		value_of(arr).should_be([0]);
+		expect(arr).toEqual([0]);
 		chain.callChain();
-		value_of(arr).should_be([0, 1]);
+		expect(arr).toEqual([0, 1]);
 		chain.callChain();
-		value_of(arr).should_be([0, 1, 2]);
+		expect(arr).toEqual([0, 1, 2]);
 		chain.callChain();
-		value_of(arr).should_be([0, 1, 2]);
+		expect(arr).toEqual([0, 1, 2]);
 	},
 
 	"each instance should have its own chain": function(){
@@ -111,12 +111,12 @@ describe("Chain Class", {
 		bar.chain(function(){
 			this.val += 'AR';
 		});
-		value_of(foo.val).should_be('F');
-		value_of(bar.val).should_be('B');
+		expect(foo.val).toEqual('F');
+		expect(bar.val).toEqual('B');
 		foo.callChain();
 		bar.callChain();
-		value_of(foo.val).should_be('FOO');
-		value_of(bar.val).should_be('BAR');
+		expect(foo.val).toEqual('FOO');
+		expect(bar.val).toEqual('BAR');
 	},
 	
 	"should be able to clear the chain": function(){
@@ -129,13 +129,13 @@ describe("Chain Class", {
 		chain.chain(fn, fn, fn, fn);
 
 		chain.callChain();
-		value_of(called).should_be_true();
+		expect(called).toBeTruthy();
 		called = false;
 
 		chain.clearChain();
 
 		chain.callChain();
-		value_of(called).should_be_false();
+		expect(called).toBeFalsy();
 		called = false;
 	},
 
@@ -150,7 +150,7 @@ describe("Chain Class", {
 			test++;
 		}).callChain();
 
-		value_of(test).should_be(1);
+		expect(test).toEqual(1);
 	}
 
 });
@@ -172,7 +172,7 @@ var runEventSpecs = function(type, create){
 			
 			object.addEvent('event', Local.fn)[fire]('event');
 
-			value_of(Local.called).should_be(1);
+			expect(Local.called).toEqual(1);
 		},
 
 		'should add multiple Events to the Class': function(){
@@ -181,7 +181,7 @@ var runEventSpecs = function(type, create){
 				event2: Local.fn
 			})[fire]('event1')[fire]('event2');
 
-			value_of(Local.called).should_be(2);
+			expect(Local.called).toEqual(2);
 		},
 
 		// TODO 2.0only
@@ -191,7 +191,7 @@ var runEventSpecs = function(type, create){
 				this.removeEvent('event', arguments.callee);
 			}).addEvent('event', function(){ Local.fn(); })[fire]('event')[fire]('event');
 
-			value_of(Local.called).should_be(5);
+			expect(Local.called).toEqual(5);
 		},*/
 
 		'should remove a specific method for an event': function(){
@@ -200,8 +200,8 @@ var runEventSpecs = function(type, create){
 
 			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn)[fire]('event');
 
-			value_of(x).should_be(1);
-			value_of(Local.called).should_be(0);
+			expect(x).toEqual(1);
+			expect(Local.called).toEqual(0);
 		},
 
 		'should remove an event and its methods': function(){
@@ -210,8 +210,8 @@ var runEventSpecs = function(type, create){
 
 			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event')[fire]('event');
 
-			value_of(x).should_be(0);
-			value_of(Local.called).should_be(0);
+			expect(x).toEqual(0);
+			expect(Local.called).toEqual(0);
 		},
 
 		'should remove all events': function(){
@@ -221,8 +221,8 @@ var runEventSpecs = function(type, create){
 			object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
 			object[fire]('event1')[fire]('event2');
 
-			value_of(x).should_be(0);
-			value_of(Local.called).should_be(0);
+			expect(x).toEqual(0);
+			expect(Local.called).toEqual(0);
 		},
 
 		'should remove events with an object': function(){
@@ -233,14 +233,14 @@ var runEventSpecs = function(type, create){
 			};
 
 			object.addEvent('event1', function(){ Local.fn(); }).addEvents(events)[fire]('event1');
-			value_of(Local.called).should_be(2);
+			expect(Local.called).toEqual(2);
 
 			object.removeEvents(events);
 			object[fire]('event1');
-			value_of(Local.called).should_be(3);
+			expect(Local.called).toEqual(3);
 
 			object[fire]('event2');
-			value_of(Local.called).should_be(3);
+			expect(Local.called).toEqual(3);
 		}
 		
 	});
@@ -273,13 +273,13 @@ describe("Options Class", {
 
 	"should set options": function(){
 		var myTest = new Local.OptionsTest({a: 1, b: 3});
-		value_of(myTest.options).should_not_be(undefined);
+		expect(myTest.options).not.toEqual(undefined);
 	},
 
 	"should override default options": function(){
 		var myTest = new Local.OptionsTest({a: 3, b: 4});
-		value_of(myTest.options.a).should_be(3);
-		value_of(myTest.options.b).should_be(4);
+		expect(myTest.options.a).toEqual(3);
+		expect(myTest.options.b).toEqual(4);
 	}
 
 });
@@ -316,9 +316,9 @@ describe("Options Class with Events", {
 			}
 		});
 
-		value_of(myTest.$events.event1.length).should_be(1);
-		value_of(myTest.$events.event2.length).should_be(1);
-		value_of(myTest.$events.event3.length).should_be(1);
+		expect(myTest.$events.event1.length).toEqual(1);
+		expect(myTest.$events.event2.length).toEqual(1);
+		expect(myTest.$events.event3.length).toEqual(1);
 	}
 
 });

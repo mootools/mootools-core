@@ -1,24 +1,24 @@
 describe('typeOf Client', {
 
 	"should return 'collection' for HTMLElements collections": function(){
-		value_of(typeOf(document.getElementsByTagName('*'))).should_be('collection');
+		expect(typeOf(document.getElementsByTagName('*'))).toEqual('collection');
 	},
 
 	"should return 'element' for an Element": function(){
 		var div = document.createElement('div');
-		value_of(typeOf(div)).should_be('element');
+		expect(typeOf(div)).toEqual('element');
 	},
 
 	"should return 'elements' for Elements": function(){
-		value_of(typeOf(new Elements)).should_be('elements');
+		expect(typeOf(new Elements)).toEqual('elements');
 	},
 
 	"should return 'window' for the window object": function(){
-		value_of(typeOf(window)).should_be('window');
+		expect(typeOf(window)).toEqual('window');
 	},
 
 	"should return 'document' for the document object": function(){
-		value_of(typeOf(document)).should_be('document');
+		expect(typeOf(document)).toEqual('document');
 	}
 
 });

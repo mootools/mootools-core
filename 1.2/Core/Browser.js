@@ -10,11 +10,11 @@ describe('$exec', {
 
 	'should evaluate on global scope': function(){
 		$exec.call($exec, 'var execSpec = 42');
-		value_of(window.execSpec).should_be(42);
+		expect(window.execSpec).toEqual(42);
 	},
 
 	'should return the evaluated script': function(){
-		value_of($exec('$empty();')).should_be('$empty();');
+		expect($exec('$empty();')).toEqual('$empty();');
 	}
 
 });
@@ -22,11 +22,11 @@ describe('$exec', {
 describe('Document', {
 
 	'should hold the parent window': function(){
-		value_of(document.window).should_be(window);
+		expect(document.window).toEqual(window);
 	},
 
 	'should hold the head element': function(){
-		value_of(document.head.tagName.toLowerCase()).should_be('head');
+		expect(document.head.tagName.toLowerCase()).toEqual('head');
 	}
 
 });
@@ -34,7 +34,7 @@ describe('Document', {
 describe('Window', {
 
 	'should set the Element prototype': function(){
-		value_of($defined(window.Element.prototype)).should_be_true();
+		expect($defined(window.Element.prototype)).toBeTruthy();
 	}
 
 });

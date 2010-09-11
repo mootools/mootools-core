@@ -22,16 +22,16 @@ describe("Array Methods 1.3", {
 
 	'should flatten a multidimensional array': function(){
 		var arr = [1,2,3,[4,5,[6,7,[8]]], [[[[[9]]]]]];
-		value_of(arr.flatten()).should_be([1,2,3,4,5,6,7,8,9]);
+		expect(arr.flatten()).toEqual([1,2,3,4,5,6,7,8,9]);
 	},
 
 	'should flatten arguments': function(){
 		var test = function(){
 			return Array.flatten(arguments);
 		};
-		value_of(test(1,2,3)).should_be([1,2,3]);
-		value_of(test([1,2,3])).should_be([1,2,3]);
-		value_of(test(1,2,[3])).should_be([1,2,3]);
+		expect(test(1,2,3)).toEqual([1,2,3]);
+		expect(test([1,2,3])).toEqual([1,2,3]);
+		expect(test(1,2,[3])).toEqual([1,2,3]);
 	},
 
 	// Array.filter
@@ -39,7 +39,7 @@ describe("Array Methods 1.3", {
 	'should filter an array': function(){
 		var array = [1,2,3,0,0,0];
 		var arr = array.concat([false, null, 4]).filter(Type.isNumber);
-		value_of(arr).should_be(array.concat(4));
+		expect(arr).toEqual(array.concat(4));
 	},
 	
 	'filter should skip deleted elements': function(){
@@ -49,7 +49,7 @@ describe("Array Methods 1.3", {
 			return true;
 		});
 		
-		value_of(i).should_be(2);
+		expect(i).toEqual(2);
 	},
 
 	// Array.clean
@@ -57,7 +57,7 @@ describe("Array Methods 1.3", {
 	'should clean an array from undefined and null values': function(){
 		var array = [null, 1, 0, true, false, "foo", undefined];
 		var arr = array.clean();
-		value_of(arr).should_be([1, 0, true, false, "foo"]);
+		expect(arr).toEqual([1, 0, true, false, "foo"]);
 	},
 
 	// Array.map
@@ -67,7 +67,7 @@ describe("Array Methods 1.3", {
 			return (item + 1);
 		});
 
-		value_of(arr).should_be([2,3,4,1,1,1]);
+		expect(arr).toEqual([2,3,4,1,1,1]);
 	},
 
 	'map should skip deleted elements': function(){
@@ -76,15 +76,15 @@ describe("Array Methods 1.3", {
 			return i++;
 		});
 		
-		value_of(i).should_be(2);
+		expect(i).toEqual(2);
 	},
 	
 	// Array.every
 
 	'should return true if every item matches the comparator, otherwise false': function(){
-		value_of([1,2,3,0,0,0].every(Type.isNumber)).should_be_true();
+		expect([1,2,3,0,0,0].every(Type.isNumber)).toBeTruthy();
 
-		value_of(['1',2,3,0].every(Type.isNumber)).should_be_false();
+		expect(['1',2,3,0].every(Type.isNumber)).toBeFalsy();
 	},
 	
 	'every should skip deleted elements': function(){
@@ -94,15 +94,15 @@ describe("Array Methods 1.3", {
 			return true;
 		});
 		
-		value_of(i).should_be(2);
+		expect(i).toEqual(2);
 	},
 
 	// Array.some
 
 	'should return true if some of the items in the array match the comparator, otherwise false': function(){
-		value_of(['1',2,3,0].some(Type.isNumber)).should_be_true();
+		expect(['1',2,3,0].some(Type.isNumber)).toBeTruthy();
 
-		value_of([1,2,3,0,0,0].map(String).some(Type.isNumber)).should_be_false();
+		expect([1,2,3,0,0,0].map(String).some(Type.isNumber)).toBeFalsy();
 	},
 	
 	'some should skip deleted elements': function(){
@@ -116,41 +116,41 @@ describe("Array Methods 1.3", {
 			return true;
 		});
 		
-		value_of(i).should_be(3);
+		expect(i).toEqual(3);
 	},
 
 	// Array.indexOf
 
 	'should return the index of the item': function(){
-		value_of([1,2,3,0,0,0].indexOf(0)).should_be(3);
+		expect([1,2,3,0,0,0].indexOf(0)).toEqual(3);
 	},
 
 	'should return -1 if the item is not found in the array': function(){
-		value_of([1,2,3,0,0,0].indexOf('not found')).should_be(-1);
+		expect([1,2,3,0,0,0].indexOf('not found')).toEqual(-1);
 	},
 
 	// Array.erase
 
 	'should remove all items in the array that match the specified item': function(){
 		var arr = [1,2,3,0,0,0].erase(0);
-		value_of(arr).should_be([1,2,3]);
+		expect(arr).toEqual([1,2,3]);
 	},
 
 	// Array.contains
 
 	'should return true if the array contains the specified item': function(){
-		value_of([1,2,3,0,0,0].contains(0)).should_be_true();
+		expect([1,2,3,0,0,0].contains(0)).toBeTruthy();
 	},
 
 	'should return false if the array does not contain the specified item': function(){
-		value_of([0,1,2].contains('not found')).should_be_false();
+		expect([0,1,2].contains('not found')).toBeFalsy();
 	},
 
 	// Array.associate
 
 	'should associate an array with a specified array': function(){
 		var obj = [1,2,3,0,0,0].associate(['a', 'b', 'c', 'd']);
-		value_of(obj).should_be({a:1, b:2, c:3, d:0});
+		expect(obj).toEqual({a:1, b:2, c:3, d:0});
 	},
 
 	// Array.append
@@ -159,40 +159,40 @@ describe("Array Methods 1.3", {
 		var a = [1,2,4];
 		var b = [2,3,4,5];
 		a.append(b);
-		value_of(a).should_be([1,2,4,2,3,4,5]);
-		value_of(b).should_be([2,3,4,5]);
+		expect(a).toEqual([1,2,4,2,3,4,5]);
+		expect(b).toEqual([2,3,4,5]);
 	},
 
 	// Array.combine
 
 	'should combine an array': function(){
 		var arr = [1,2,3,4].combine([3,1,4,5,6,7]);
-		value_of(arr).should_be([1,2,3,4,5,6,7]);
+		expect(arr).toEqual([1,2,3,4,5,6,7]);
 	},
 
 	// Array.include
 
 	'should include only new items': function(){
 		var arr = [1,2,3,4].include(1).include(5);
-		value_of(arr).should_be([1,2,3,4,5]);
+		expect(arr).toEqual([1,2,3,4,5]);
 	},
 
 	// Array.getLast
 
 	'should return the last item in the array': function(){
-		value_of([1,2,3,0,0,0].getLast()).should_be(0);
-		value_of([3].getLast()).should_be(3);
+		expect([1,2,3,0,0,0].getLast()).toEqual(0);
+		expect([3].getLast()).toEqual(3);
 	},
 
 	'should return null if there are no items': function(){
-		value_of([].getLast()).should_be(null);
+		expect([].getLast()).toEqual(null);
 	},
 
 	// Array.empty
 
 	'should empty the array': function(){
 		var arr = [1,2,3,4].empty();
-		value_of(arr).should_be([]);
+		expect(arr).toEqual([]);
 	}
 
 });
@@ -202,38 +202,38 @@ describe("Array Color Methods 1.3", {
 	// Array.hexToRgb
 
 	'should return null if the length of the array is not 3': function(){
-		value_of([].hexToRgb()).should_be_null();
+		expect([].hexToRgb()).toBeNull();
 	},
 
 	'should return a CSS rgb string': function(){
-		value_of(['0','0','0'].hexToRgb()).should_be('rgb(0,0,0)');
+		expect(['0','0','0'].hexToRgb()).toEqual('rgb(0,0,0)');
 	},
 
 	'should support shorthand hex': function(){
-		value_of(['c','c','c'].hexToRgb()).should_be('rgb(204,204,204)');
+		expect(['c','c','c'].hexToRgb()).toEqual('rgb(204,204,204)');
 	},
 
 	'should return an array with 16-based numbers when passed true': function(){
-		value_of(['ff','ff','ff'].hexToRgb(true)).should_be([255,255,255]);
+		expect(['ff','ff','ff'].hexToRgb(true)).toEqual([255,255,255]);
 	},
 
 	// Array.rgbToHex
 
 	'should return null if the array does not have at least 3 times': function(){
-		value_of([0,1].rgbToHex()).should_be_null();
+		expect([0,1].rgbToHex()).toBeNull();
 	},
 
 	'should return a css hexadecimal string': function(){
-		value_of(['255', '0', '0'].rgbToHex()).should_be('#ff0000');
-		value_of([0,0,255].rgbToHex()).should_be('#0000ff');
+		expect(['255', '0', '0'].rgbToHex()).toEqual('#ff0000');
+		expect([0,0,255].rgbToHex()).toEqual('#0000ff');
 	},
 
 	'should return an array with hexadecimal string items': function(){
-		value_of([0,255,0].rgbToHex(true)).should_be(['00', 'ff', '00']);
+		expect([0,255,0].rgbToHex(true)).toEqual(['00', 'ff', '00']);
 	},
 
 	'should return `transparent` if the fourth item is 0 and first param is not true': function(){
-		value_of([0,0,0,0].rgbToHex()).should_be('transparent');
+		expect([0,0,0,0].rgbToHex()).toEqual('transparent');
 	}
 
 });

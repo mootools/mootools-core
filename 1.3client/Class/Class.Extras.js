@@ -38,7 +38,7 @@ var runEventSpecs = function(type, create){
 
 			object.addEvent('event', Local.fn)[fire]('event');
 
-			value_of(Local.called).should_be(1);
+			expect(Local.called).toEqual(1);
 		},
 
 		'should add multiple Events to the Class': function(){
@@ -47,7 +47,7 @@ var runEventSpecs = function(type, create){
 				event2: Local.fn
 			})[fire]('event1')[fire]('event2');
 
-			value_of(Local.called).should_be(2);
+			expect(Local.called).toEqual(2);
 		},
 
 		// TODO 2.0only
@@ -57,7 +57,7 @@ var runEventSpecs = function(type, create){
 				this.removeEvent('event', arguments.callee);
 			}).addEvent('event', function(){ Local.fn(); })[fire]('event')[fire]('event');
 
-			value_of(Local.called).should_be(5);
+			expect(Local.called).toEqual(5);
 		},*/
 
 		'should remove a specific method for an event': function(){
@@ -66,8 +66,8 @@ var runEventSpecs = function(type, create){
 
 			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn)[fire]('event');
 
-			value_of(x).should_be(1);
-			value_of(Local.called).should_be(0);
+			expect(x).toEqual(1);
+			expect(Local.called).toEqual(0);
 		},
 
 		'should remove an event and its methods': function(){
@@ -76,8 +76,8 @@ var runEventSpecs = function(type, create){
 
 			object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event')[fire]('event');
 
-			value_of(x).should_be(0);
-			value_of(Local.called).should_be(0);
+			expect(x).toEqual(0);
+			expect(Local.called).toEqual(0);
 		},
 
 		'should remove all events': function(){
@@ -87,8 +87,8 @@ var runEventSpecs = function(type, create){
 			object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
 			object[fire]('event1')[fire]('event2');
 
-			value_of(x).should_be(0);
-			value_of(Local.called).should_be(0);
+			expect(x).toEqual(0);
+			expect(Local.called).toEqual(0);
 		},
 
 		'should remove events with an object': function(){
@@ -99,14 +99,14 @@ var runEventSpecs = function(type, create){
 			};
 
 			object.addEvent('event1', function(){ Local.fn(); }).addEvents(events)[fire]('event1');
-			value_of(Local.called).should_be(2);
+			expect(Local.called).toEqual(2);
 
 			object.removeEvents(events);
 			object[fire]('event1');
-			value_of(Local.called).should_be(3);
+			expect(Local.called).toEqual(3);
 
 			object[fire]('event2');
-			value_of(Local.called).should_be(3);
+			expect(Local.called).toEqual(3);
 		},
 
 		'should remove an event immediately': function(){
@@ -126,10 +126,10 @@ var runEventSpecs = function(type, create){
 			}).addEvent('event', three);
 
 			object[fire]('event');
-			value_of(methods).should_be([1, 2]);
+			expect(methods).toEqual([1, 2]);
 
 			object[fire]('event');
-			value_of(methods).should_be([1, 2, 1, 2]);
+			expect(methods).toEqual([1, 2, 1, 2]);
 		},
 
 		'should be able to remove itself': function(){
@@ -152,10 +152,10 @@ var runEventSpecs = function(type, create){
 			object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
 
 			object[fire]('event');
-			value_of(methods).should_be([1, 2, 3]);
+			expect(methods).toEqual([1, 2, 3]);
 
 			object[fire]('event');
-			value_of(methods).should_be([1, 2, 3, 3]);
+			expect(methods).toEqual([1, 2, 3, 3]);
 		}
 
 	});
