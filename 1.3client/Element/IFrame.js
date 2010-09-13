@@ -7,14 +7,15 @@ describe('IFrame', function(){
 			this.iframe = new IFrame({
 				src: 'http://' + document.location.host,
 				onload: this.onComplete
+			}).setStyles({
+				position: 'absolute',
+				left: -5000,
+				width: 1,
+				height: 1
 			}).inject(document.body);
 		});
 
-		waitsFor(500, function(){
-			(function(){
-				this.iframe.destroy();
-			}).delay(500, this);
-
+		waitsFor(1000, function(){
 			return this.onComplete.wasCalled;
 		});
 
