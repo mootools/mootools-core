@@ -292,17 +292,6 @@ describe('Function.attempt', {
 
 describe('Object.each', {
 
-	'should call the function for each item in Function arguments': function(){
-		var daysArr = [];
-		(function(){
-			Object.each(Array.from(arguments), function(value, key){
-				daysArr[key] = value;
-			});
-		})('Sun','Mon','Tue');
-
-		expect(daysArr).toEqual(['Sun','Mon','Tue']);
-	},
-
 	'should call the function for each item in the object': function(){
 		var daysObj = {};
 		Object.each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
@@ -315,6 +304,17 @@ describe('Object.each', {
 });
 
 describe('Array.each', {
+
+	'should call the function for each item in Function arguments': function(){
+		var daysArr = [];
+		(function(){
+			Array.each(Array.from(arguments), function(value, key){
+				daysArr[key] = value;
+			});
+		})('Sun','Mon','Tue');
+
+		expect(daysArr).toEqual(['Sun','Mon','Tue']);
+	},
 
 	'should call the function for each item in the array': function(){
 		var daysArr = [];
