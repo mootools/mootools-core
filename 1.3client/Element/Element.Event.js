@@ -40,8 +40,9 @@ describe('Element.Event', function(){
 		});
 
 	});
-	
-	it('Should watch for a key-down event', function(){
+
+	// Only run this spec in browsers other than IE6-8 because they can't properly simulate key events
+	if (window.addEventListener) it('Should watch for a key-down event', function(){
 		
 		var callback = jasmine.createSpy(), called = false;
 
