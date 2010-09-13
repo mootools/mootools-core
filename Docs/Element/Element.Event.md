@@ -322,6 +322,15 @@ This event fires when the mouse wheel is rotated;
 
 
 
+Deprecated Functions {#Deprecated-Functions}
+============================================
+
+Element Method: fireEvent {#Deprecated-Functions:fireEvent}
+----------------------------------------------------------
+
+This method has been deprecated. Please use [triggerEvent](#Element:triggerEvent) instead.
+
+
 [$]: /core/Element/Element#Window:dollar
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#bind
