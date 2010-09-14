@@ -53,11 +53,3 @@ var JSON = new Hash(this.JSON && {
 	}
 
 });
-
-Native.implement([Hash, Array, String, Number], {
-
-	toJSON: function(){
-		return JSON.encode(this);
-	}
-
-});
