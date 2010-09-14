@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Browser, Element, Element.Event]
 
-provides: DOMReady
+provides: [DOMReady, DomReady]
 
 ...
 */
