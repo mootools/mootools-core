@@ -21,15 +21,6 @@ describe('Element.set `opacity`', {
 		expect(div.get('opacity') == 0.4).toBeTruthy();
 		div.set('opacity', 0);
 		expect(div.get('opacity') == 0).toBeTruthy();
-	},
-	
-	'should not remove existent filters on browsers with filters': function(){
-		var div = new Element('div');
-		if (document.html.style.filter != null && !window.opera && !Syn.browser.gecko){
-			div.style.filter = 'blur(strength=50)';
-			div.set('opacity', 0.4);
-			expect(div.style.filter).toMatch(/blur\(strength=50\)/i);
-		}
 	}
 
 });
