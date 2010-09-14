@@ -340,7 +340,7 @@ describe('$$', {
 
 	'should return all Elements of a specific tag': function(){
 		var divs1 = $$('div');
-		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
+		var divs2 = new Elements($A(document.getElementsByTagName('div')));
 		expect(divs1).toEqual(divs2);
 	},
 
@@ -1161,37 +1161,6 @@ describe('Element.toQueryString', {
 		expect(form.toQueryString()).toEqual('');
 	},
 
-	"should return a query string from the Element's form Elements": function(){
-		var form = new Element('form', { 'html': '' +
-			'<input type="checkbox" name="input" value="checked" checked="checked" />' +
-			'<select name="select[]" multiple="multiple" size="5">' +
-				'<option name="none" value="">--</option>' +
-				'<option name="volvo" value="volvo">Volvo</option>' +
-				'<option name="saab" value="saab" selected="selected">Saab</option>' +
-				'<option name="opel" value="opel" selected="selected">Opel</option>' +
-				'<option name="bmw" value="bmw">BMW</option>' +
-			'</select>' +
-			'<textarea name="textarea">textarea-value</textarea>'
-		});
-		expect(form.toQueryString()).toEqual('input=checked&select%5B%5D=saab&select%5B%5D=opel&textarea=textarea-value');
-	},
-
-	"should return a query string containing even empty values, single select must have a selected option": function() {
-		var form = new Element('form').adopt(
-			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
-			new Element('select', {name: 'select[]'}).adopt(
-				new Element('option', {name: 'none', value: '', html: '--', selected: true}),
-				new Element('option', {name: 'volvo', value: 'volvo', html: 'Volvo'}),
-				new Element('option', {name: 'saab', value: 'saab', html: 'Saab'}),
-				new Element('option', {name: 'opel', value: 'opel', html: 'Opel'}),
-				new Element('option', {name: 'bmw', value: 'bmw', html: 'BMW'})
-			),
-			new Element('textarea', {name: 'textarea', value: ''})
-		);
-		expect(form.toQueryString()).toEqual('input=&select%5B%5D=&textarea=');
-		expect(form.getElementsByTagName('select')[0].selectedIndex).toEqual(0);
-	},
-
 	"should return a query string containing even empty values, multiple select may have no selected options": function() {
 		var form = new Element('form',{'html':
 			'<input type="checkbox" name="input" value="" checked="checked" />' +
@@ -1372,21 +1341,6 @@ describe('Element.setProperties', {
 		var readonly = new Element('input').setProperties({ type: 'text', readonly: 'readonly' });
 		var props = readonly.getProperties('type', 'readonly');
 		expect(props).toEqual({ type: 'text', readonly: true });
-	}
-
-});
-
-describe('Element.removeProperty', {
-
-	'should removeProperty from an Element': function () {
-		var readonly = new Element('input', { type: 'text', readonly: 'readonly', maxlenght: 10 });
-		readonly.removeProperty('readonly');
-		readonly.removeProperty('maxlength');
-		var props = readonly.getProperties('type', 'readonly');
-		expect(props).toEqual({ type: 'text', readonly: false});
-		
-		var maxlength = readonly.getProperty('maxlength');
-		expect(!maxlength || maxlength == 2147483647).toBeTruthy(); // ie6/7 Bug
 	}
 
 });

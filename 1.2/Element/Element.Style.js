@@ -23,13 +23,6 @@ describe('Element.set `opacity`', {
 		expect(div.get('opacity') == 0).toBeTruthy();
 	},
 	
-	'should return the opacity of an Element without seting it before': function() {
-		var div = new Element('div');
-		if (document.html.style.opacity == null) div.style.filter = 'alpha(opacity=40)';
-		else div.style.opacity = 0.4;
-		expect(div.get('opacity') == 0.4).toBeTruthy();
-	},
-	
 	'should not remove existent filters on browsers with filters': function(){
 		var div = new Element('div');
 		if (document.html.style.filter != null && !window.opera && !Syn.browser.gecko){
