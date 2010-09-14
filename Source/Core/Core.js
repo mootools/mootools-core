@@ -21,8 +21,8 @@ provides: [MooTools, Native, Hash.base, Array.each, $util]
 */
 
 var MooTools = {
-	'version': '1.2.5dev',
-	'build': '%build%'
+	'version': '1.2.5',
+	'build': '008d8f0f2fcc2044e54fdd3635341aaab274e757'
 };
 
 var Native = function(options){
