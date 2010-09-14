@@ -14,6 +14,10 @@ provides: Function
 ...
 */
 
+try {
+	delete Function.prototype.bind;
+} catch(e){}
+
 Function.implement({
 
 	extend: function(properties){
