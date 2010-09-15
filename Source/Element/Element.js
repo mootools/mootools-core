@@ -131,6 +131,13 @@ new Type('Elements', Elements).implement({
 			if (item) this[length++] = item;
 		}
 		return (this.length = length);
+	}.protect(),
+
+	empty: function(){
+		while (this.length)
+			delete this[--this.length];
+
+		return this;
 	}.protect()
 
 });
