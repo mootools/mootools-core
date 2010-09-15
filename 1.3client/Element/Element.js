@@ -190,9 +190,30 @@ describe('Elements.append', function(){
 		).getChildren();
 
 		var appended = list.append(p);
-		
+
 		expect(appended).toBe(list);
 		expect(appended).toEqual(new Elements([list[0], list[1], p[0], p[1]]));
+	});
+
+});
+
+describe('Elements.concat', function(){
+
+	it('should concat an Elements collection', function(){
+		var list = new Element('div').adopt(
+			new Element('div'),
+			new Element('div')
+		).getChildren();
+
+		var p = new Element('div').adopt(
+			new Element('p'),
+			new Element('p')
+		).getChildren();
+
+		var concatenated = list.concat(p[0], p[1]);
+
+		expect(concatenated).not.toBe(list);
+		expect(concatenated).toEqual(new Elements([list[0], list[1], p[0], p[1]]));
 	});
 
 });
