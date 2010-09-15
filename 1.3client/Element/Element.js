@@ -126,3 +126,26 @@ describe('Element traversal', function(){
 	});
 
 });
+
+describe('Elements.prototype.erase', function(){
+
+	var element = new Element('div', {
+		html: '<div></div><p></p><span></span>'
+	});
+
+	var original = element.getChildren();
+	var altered = element.getChildren().erase(original[1]);
+
+	it('should decrease the length of the collection', function(){
+		expect(altered.length).toEqual(2);
+	});
+
+	it('should remove an element from the collection', function(){
+		expect(altered[1]).toEqual(original[2]);
+	});
+
+	it('should remove the last element from the collection', function(){
+		expect(altered[2]).toEqual(undefined);
+	});
+
+});
