@@ -134,9 +134,7 @@ new Type('Elements', Elements).implement({
 	}.protect(),
 
 	empty: function(){
-		while (this.length)
-			delete this[--this.length];
-
+		while (this.length) delete this[--this.length];
 		return this;
 	}.protect()
 
