@@ -104,7 +104,7 @@ Object.extend({
 				break;
 				default: result = key + '=' + encodeURIComponent(value);
 			}
-			if (value != undefined) queryString.push(result);
+			if (value != null) queryString.push(result);
 		});
 
 		return queryString.join('&');
@@ -163,7 +163,7 @@ Hash.implement({
 	},
 
 	include: function(key, value){
-		if (this[key] == undefined) this[key] = value;
+		if (this[key] == null) this[key] = value;
 		return this;
 	},
 
