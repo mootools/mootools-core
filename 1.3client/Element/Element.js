@@ -214,6 +214,8 @@ describe('Elements.concat', function(){
 
 		expect(concatenated).not.toBe(list);
 		expect(concatenated).toEqual(new Elements([list[0], list[1], p[0], p[1]]));
+
+		expect(typeOf(concatenated)).toBe('elements');
 	});
 
 });
