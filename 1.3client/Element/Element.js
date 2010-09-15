@@ -164,3 +164,14 @@ describe('Element.set("html")', function(){
 	});
 
 });
+
+describe('Elements.empty', function(){
+
+	it('should empty the Elements collection', function(){
+		var div = $$('div').empty();
+
+		expect(div.length).toEqual(0);
+		expect(div[0]).toBe(undefined);
+	});
+
+});
