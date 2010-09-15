@@ -168,10 +168,31 @@ describe('Element.set("html")', function(){
 describe('Elements.empty', function(){
 
 	it('should empty the Elements collection', function(){
-		var div = $$('div').empty();
+		var list = $$('div').empty();
 
-		expect(div.length).toEqual(0);
-		expect(div[0]).toBe(undefined);
+		expect(list.length).toEqual(0);
+		expect(list[0]).toBe(undefined);
+	});
+
+});
+
+describe('Elements.append', function(){
+
+	it('should append an Elements collection', function(){
+		var list = new Element('div').adopt(
+			new Element('div'),
+			new Element('div')
+		).getChildren();
+
+		var p = new Element('div').adopt(
+			new Element('p'),
+			new Element('p')
+		).getChildren();
+
+		var appended = list.append(p);
+		
+		expect(appended).toBe(list);
+		expect(appended).toEqual(new Elements([list[0], list[1], p[0], p[1]]));
 	});
 
 });

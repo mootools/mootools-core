@@ -155,7 +155,7 @@ describe("Array Methods 1.3", {
 
 	// Array.append
 
-	'should extend an array': function(){
+	'should append to an array': function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
 		a.append(b);
