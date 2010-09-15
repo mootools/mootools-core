@@ -150,10 +150,7 @@ splice.call(object, 1, 1);
 if (object[1] == 1) Elements.implement('splice', function(){
 	var length = this.length;
 	splice.apply(this, arguments);
-
-	while (length >= this.length)
-		delete this[length--];
-
+	while (length >= this.length) delete this[length--];
 	return this;
 }.protect());
 
