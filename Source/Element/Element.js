@@ -131,6 +131,15 @@ new Type('Elements', Elements).implement({
 			if (item) this[length++] = item;
 		}
 		return (this.length = length);
+	}.protect(),
+
+	concat: function(){
+		return new Elements(Array.from(this).append(arguments));
+	}.protect(),
+
+	append: function(array){
+		this.push.apply(this, Array.from(array));
+		return this;
 	}.protect()
 
 });
