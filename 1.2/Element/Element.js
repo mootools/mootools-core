@@ -172,17 +172,6 @@ describe('Element.set', {
 		expect(tr.getChildren().length).toEqual(2);
 		expect(tr.getFirst().className).toEqual('cell');
 	},
-
-	"should set the html of a tr Element, even when it has no parentNode": function(){
-		var html = '<td class="cell c">cell 1</td><td>cell 2</td>';
-		var tr = new Element('tr');
-		expect(tr.parentNode).toEqual(null);
-		// In IE using appendChild like in set('html') sets the parentNode to a documentFragment
-		tr.set('html', html).inject(new Element('tbody').inject(new Element('table')));
-		expect(tr.get('html').toLowerCase().replace(/>\s+</, '><')).toEqual(html);
-		expect(tr.getChildren().length).toEqual(2);
-		expect(tr.getFirst().className).toEqual('cell c');
-	},
 	
 	"adopting should not change the parent of the element doing the adopting": function(){
 		var baldGuy = new Element('div');
