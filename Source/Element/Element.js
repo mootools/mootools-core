@@ -133,11 +133,28 @@ new Type('Elements', Elements).implement({
 		return (this.length = length);
 	}.protect()
 
-}).implement(Array.prototype);
-
-Array.mirror(Elements);
+});
 
 (function(){
+
+// FF, IE
+var splice = Array.prototype.splice,
+	object = {'0': 0, '1': 1, length: 2};
+
+splice.call(object, 1, 1);
+if (object[1] == 1) Elements.implement('splice', function(){
+	var length = this.length;
+	splice.apply(this, arguments);
+
+	while (length >= this.length)
+		delete this[length--];
+
+	return this;
+}.protect());
+
+Elements.implement(Array.prototype);
+
+Array.mirror(Elements);
 
 /*<ltIE8>*/
 var createElementAcceptsHTML;
@@ -147,7 +164,7 @@ try {
 } catch(e){}
 
 var escapeQuotes = function(html){
-	return ('' + html).replace(/&/g,'&amp;').replace(/"/g,'&quot;');
+	return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 };
 /*</ltIE8>*/
 
