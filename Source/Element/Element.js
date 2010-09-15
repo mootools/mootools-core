@@ -137,8 +137,8 @@ new Type('Elements', Elements).implement({
 		return new Elements(Array.from(this).append(arguments));
 	}.protect(),
 
-	append: function(array){
-		this.push.apply(this, Array.from(array));
+	append: function(collection){
+		for (var i = 0; i <= collection.length; i++) this.push(collection[i]);
 		return this;
 	}.protect()
 
