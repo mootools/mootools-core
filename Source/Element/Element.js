@@ -134,11 +134,17 @@ new Type('Elements', Elements).implement({
 	}.protect(),
 
 	concat: function(){
-		return new Elements(Array.from(this).append(arguments));
+		var newElements = new Elements(this);
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = arguments[i];
+			if (Type.isEnumerable(item)) newElements.append(item);
+			else newElements.push(item);
+		}
+		return newElements;
 	}.protect(),
 
 	append: function(collection){
-		for (var i = 0; i <= collection.length; i++) this.push(collection[i]);
+		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
 		return this;
 	}.protect()
 
@@ -147,8 +153,7 @@ new Type('Elements', Elements).implement({
 (function(){
 
 // FF, IE
-var splice = Array.prototype.splice,
-	object = {'0': 0, '1': 1, length: 2};
+var splice = Array.prototype.splice, object = {'0': 0, '1': 1, length: 2};
 
 splice.call(object, 1, 1);
 if (object[1] == 1) Elements.implement('splice', function(){
