@@ -42,18 +42,6 @@ var removeOn = function(string){
 	});
 };
 
-var triggerEvent = function(type, args, delay){
-	type = removeOn(type);
-	var events = this.$events[type];
-	if (!events) return this;
-	args = Array.from(args);
-	events.each(function(fn){
-		if (delay) fn.delay(delay, this, args);
-		else fn.apply(this, args);
-	}, this);
-	return this;
-};
-
 this.Events = new Class({
 
 	$events: {},
@@ -75,7 +63,17 @@ this.Events = new Class({
 		return this;
 	},
 
-	triggerEvent: triggerEvent,
+	fireEvent: function(type, args, delay){
+		type = removeOn(type);
+		var events = this.$events[type];
+		if (!events) return this;
+		args = Array.from(args);
+		events.each(function(fn){
+			if (delay) fn.delay(delay, this, args);
+			else fn.apply(this, args);
+		}, this);
+		return this;
+	},
 	
 	removeEvent: function(type, fn){
 		type = removeOn(type);
@@ -103,10 +101,6 @@ this.Events = new Class({
 	}
 
 });
-
-/*<1.2compat>*/
-Events.implement({fireEvent: triggerEvent});
-/*</1.2compat>*/
 
 this.Options = new Class({
 

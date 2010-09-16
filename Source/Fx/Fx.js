@@ -95,16 +95,16 @@ var Fx = this.Fx = new Class({
 	},
 
 	onStart: function(){
-		this.triggerEvent('start', this.subject);
+		this.fireEvent('start', this.subject);
 	},
 
 	onComplete: function(){
-		this.triggerEvent('complete', this.subject);
-		if (!this.callChain()) this.triggerEvent('chainComplete', this.subject);
+		this.fireEvent('complete', this.subject);
+		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
 	},
 
 	onCancel: function(){
-		this.triggerEvent('cancel', this.subject).clearChain();
+		this.fireEvent('cancel', this.subject).clearChain();
 	},
 
 	pause: function(){

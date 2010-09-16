@@ -20,18 +20,6 @@ Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
 
-var triggerEvent = function(type, args, delay){
-	var events = this.retrieve('events');
-	if (!events || !events[type]) return this;
-	args = Array.from(args);
-
-	events[type].keys.each(function(fn){
-		if (delay) fn.delay(delay, this, args);
-		else fn.apply(this, args);
-	}, this);
-	return this;
-};
-
 [Element, Window, Document].invoke('implement', {
 
 	addEvent: function(type, fn){
@@ -112,7 +100,17 @@ var triggerEvent = function(type, args, delay){
 		return this;
 	},
 
-	triggerEvent: triggerEvent,
+	fireEvent: function(type, args, delay){
+		var events = this.retrieve('events');
+		if (!events || !events[type]) return this;
+		args = Array.from(args);
+
+		events[type].keys.each(function(fn){
+			if (delay) fn.delay(delay, this, args);
+			else fn.apply(this, args);
+		}, this);
+		return this;
+	},
 
 	cloneEvents: function(from, type){
 		from = document.id(from);
@@ -130,17 +128,11 @@ var triggerEvent = function(type, args, delay){
 
 });
 
-//<1.2compat>
-[Element, Window, Document].invoke('implement', {
-	fireEvent: triggerEvent
-});
-
 // IE9
 try {
 	if (typeof HTMLElement != 'undefined')
 		HTMLElement.prototype.fireEvent = Element.prototype.fireEvent;
 } catch(e){}
-//</1.2compat>
 
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons

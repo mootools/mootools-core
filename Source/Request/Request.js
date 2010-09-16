@@ -96,7 +96,7 @@ var Request = this.Request = new Class({
 	},
 
 	onSuccess: function(){
-		this.triggerEvent('complete', arguments).triggerEvent('success', arguments).callChain();
+		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
 	},
 
 	failure: function(){
@@ -104,19 +104,19 @@ var Request = this.Request = new Class({
 	},
 
 	onFailure: function(){
-		this.triggerEvent('complete').triggerEvent('failure', this.xhr);
+		this.fireEvent('complete').fireEvent('failure', this.xhr);
 	},
 	
 	loadstart: function(event){
-		this.triggerEvent('loadstart', [event, this.xhr]);
+		this.fireEvent('loadstart', [event, this.xhr]);
 	},
 	
 	progress: function(event){
-		this.triggerEvent('progress', [event, this.xhr]);
+		this.fireEvent('progress', [event, this.xhr]);
 	},
 	
 	timeout: function(){
-		this.triggerEvent('timeout', this.xhr);
+		this.fireEvent('timeout', this.xhr);
 	},
 
 	setHeader: function(name, value){
@@ -199,11 +199,11 @@ var Request = this.Request = new Class({
 			try {
 				xhr.setRequestHeader(key, value);
 			} catch (e){
-				this.triggerEvent('exception', [key, value]);
+				this.fireEvent('exception', [key, value]);
 			}
 		}, this);
 
-		this.triggerEvent('request');
+		this.fireEvent('request');
 		xhr.send(data);
 		if (!this.options.async) this.onStateChange();
 		if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
@@ -218,7 +218,7 @@ var Request = this.Request = new Class({
 		clearTimeout(this.timer);
 		xhr.onreadystatechange = xhr.onprogress = xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
-		this.triggerEvent('cancel');
+		this.fireEvent('cancel');
 		return this;
 	}
 

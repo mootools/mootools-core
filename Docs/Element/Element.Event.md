@@ -5,7 +5,7 @@ Type: Element {#Element}
 - These methods are also available on window and document.
 
 ### Notes:
-- Internet Explorer fires element events in random order if they are not fired by [Element:triggerEvent](#Element:triggerEvent).
+- Internet Explorer fires element events in random order if they are not fired by [Element:fireEvent](#Element:fireEvent).
 
 
 Element Method: addEvent {#Element:addEvent}
@@ -179,14 +179,14 @@ Removes all events of a certain type from an Element. If no argument is passed, 
 
 - [Element:removeEvent](#Element:removeEvent)
 
-Element Method: triggerEvent {#Element:triggerEvent}
+Element Method: fireEvent {#Element:fireEvent}
 ----------------------------------------------
 
 Executes all events of the specified type present in the Element.
 
 ### Syntax:
 
-	myElement.triggerEvent(type[, args[, delay]]);
+	myElement.fireEvent(type[, args[, delay]]);
 
 ### Arguments:
 
@@ -200,7 +200,7 @@ Executes all events of the specified type present in the Element.
 
 ### Examples:
 	// fires all the added 'click' events and passes the Element 'anElement' after one second
-	$('myElement').triggerEvent('click', $('anElement'), 1000);
+	$('myElement').fireEvent('click', $('anElement'), 1000);
 
 ### Notes:
 
@@ -324,11 +324,6 @@ This event fires when the mouse wheel is rotated;
 
 Deprecated Functions {#Deprecated-Functions}
 ============================================
-
-Element Method: fireEvent {#Deprecated-Functions:fireEvent}
-----------------------------------------------------------
-
-This method has been deprecated. Please use [triggerEvent](#Element:triggerEvent) instead.
 
 
 [$]: /core/Element/Element#Window:dollar

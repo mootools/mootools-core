@@ -33,8 +33,8 @@ var domready = function(){
 	Browser.loaded = ready = true;
 	document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
 	
-	document.triggerEvent('domready');
-	window.triggerEvent('domready');
+	document.fireEvent('domready');
+	window.fireEvent('domready');
 };
 
 var check = function(){
