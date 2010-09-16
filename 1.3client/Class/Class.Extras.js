@@ -21,7 +21,7 @@ describe('setOptions', function(){
 
 var Local = Local || {};
 
-var fire = 'triggerEvent';
+var fire = 'fireEvent';
 
 var runEventSpecs = function(type, create){
 	describe('1.3 Events API: ' + type.capitalize(), {
