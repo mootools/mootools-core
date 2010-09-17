@@ -61,9 +61,14 @@ var Event = new Type('Event', function(event, win){
 	} else if (type.test(/gesture|touch/i)){
 		this.rotation = event.rotation;
 		this.scale = event.scale;
-		this.touches = event.touches;
 		this.targetTouches = event.targetTouches;
 		this.changedTouches = event.changedTouches;
+		var touches = this.touches = event.touches;
+		if (touches && touches[0]){
+			var touch = touches[0];
+			page = {x: touch.pageX, y: touch.pageY};
+			client = {x: touch.clientX, y: touch.clientY};
+		}
 	}
 
 	return Object.append(this, {
