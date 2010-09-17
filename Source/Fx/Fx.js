@@ -33,20 +33,21 @@ var Fx = this.Fx = new Class({
 	},
 
 	initialize: function(options){
+		this.durationFraction = 1 / duration;
 		this.subject = this.subject || this;
 		this.setOptions(options);
 	},
 
 	getTransition: function(){
 		return function(p){
-			return -(Math.cos(Math.PI * p) - 1) / 2;
+			return -(Math.cos(Math.PI * p) - 1) * 0.5;
 		};
 	},
 
 	step: function(){
 		var time = Date.now();
 		if (time < this.time + this.options.duration){
-			var delta = this.transition((time - this.time) / this.options.duration);
+			var delta = this.transition((time - this.time) * this.durationFraction);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
 			this.set(this.compute(this.from, this.to, 1));
@@ -153,7 +154,7 @@ var addInstance = function(instance){
 	var fps = instance.options.fps,
 		list = instances[fps] || (instances[fps] = []);
 	list.push(instance);
-	if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), list);
+	if (!timers[fps]) timers[fps] = loop.periodical(Math.round(fps * 0.001), list);
 	return true;
 };
 

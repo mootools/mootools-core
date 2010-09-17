@@ -42,7 +42,7 @@ Fx.Transition = function(transition, params){
 			return 1 - transition(1 - pos, params);
 		},
 		easeInOut: function(pos){
-			return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+			return (pos <= 0.5) ? transition(2 * pos, params) * 0.5 : (2 - transition(2 * (1 - pos), params)) * 0.5;
 		}
 	});
 };
@@ -80,7 +80,7 @@ Fx.Transitions.extend({
 	},
 
 	Sine: function(p){
-		return 1 - Math.sin((1 - p) * Math.PI / 2);
+		return 1 - Math.sin((1 - p) * 1.570796);
 	},
 
 	Back: function(p, x){
@@ -90,9 +90,9 @@ Fx.Transitions.extend({
 
 	Bounce: function(p){
 		var value;
-		for (var a = 0, b = 1; 1; a += b, b /= 2){
-			if (p >= (7 - 4 * a) / 11){
-				value = b * b - Math.pow((11 - 6 * a - 11 * p) / 4, 2);
+		for (var a = 0, b = 1; 1; a += b, b *= 0.5){
+			if (p >= (7 - 4 * a) * 0.909091){
+				value = b * b - Math.pow((11 - 6 * a - 11 * p) * 0.25, 2);
 				break;
 			}
 		}
@@ -100,7 +100,7 @@ Fx.Transitions.extend({
 	},
 
 	Elastic: function(p, x){
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) * .333333);
 	}
 
 });
