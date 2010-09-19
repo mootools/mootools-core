@@ -39,6 +39,7 @@ var Request = this.Request = new Class({
 			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
 		},
 		async: true,
+		credentials: {user: '', pass: ''},
 		format: false,
 		method: 'post',
 		link: 'ignore',
@@ -192,7 +193,10 @@ var Request = this.Request = new Class({
 			xhr.onprogress = this.progress.bind(this);
 		}
 
-		xhr.open(method.toUpperCase(), url, this.options.async);
+		var auth = this.options.credentials;
+		xhr.open(method.toUpperCase(), url, this.options.async, auth.user, auth.pass);
+		if (auth.user.length && 'withCredentials' in xhr) xhr.withCredentials = true;
+		
 		xhr.onreadystatechange = this.onStateChange.bind(this);
 
 		Object.each(this.headers, function(value, key){
