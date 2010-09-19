@@ -31,7 +31,9 @@ var Request = this.Request = new Class({
 		onSuccess: function(responseText, responseXML){},
 		onFailure: function(xhr){},
 		onException: function(headerName, value){},
-		onTimeout: function(){},*/
+		onTimeout: function(){},
+		user: '',
+		pass: '',*/
 		url: '',
 		data: '',
 		headers: {
@@ -39,7 +41,6 @@ var Request = this.Request = new Class({
 			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
 		},
 		async: true,
-		credentials: {user: '', pass: ''},
 		format: false,
 		method: 'post',
 		link: 'ignore',
@@ -193,9 +194,8 @@ var Request = this.Request = new Class({
 			xhr.onprogress = this.progress.bind(this);
 		}
 
-		var auth = this.options.credentials;
-		xhr.open(method.toUpperCase(), url, this.options.async, auth.user, auth.pass);
-		if (auth.user.length && 'withCredentials' in xhr) xhr.withCredentials = true;
+		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.pass);
+		if (this.options.user && 'withCredentials' in xhr) xhr.withCredentials = true;
 		
 		xhr.onreadystatechange = this.onStateChange.bind(this);
 
