@@ -33,7 +33,9 @@ An XMLHttpRequest Wrapper.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
 * timeout - (*integer*: defaults to 0) In conjunction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
-* noCache - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* noCache - (*boolean*; defaults to false) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* user - (*string*: defaults to undefined) When username is set the Request will open with credentials and try to authenticate.
+* pass - (*string*: defaults to undefined) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
 
 ### Events:
 
