@@ -161,7 +161,7 @@ document.html = document.documentElement;
 document.head = document.getElementsByTagName('head')[0];
 
 if (document.execCommand) try {
-	document.execCommand("BackgroundImageCache", false, true);
+	document.execCommand('BackgroundImageCache', false, true);
 } catch (e){}
 
 if (this.attachEvent && !this.addEventListener){
@@ -227,11 +227,12 @@ if (Browser.firefox){
 
 if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
+	var webkit = 'webkit';
 
 	switch (Browser.version){
-		case 2: setEngine('webkit', 419); break;
-		case 3: setEngine('webkit', 420); break;
-		case 4: setEngine('webkit', 525);
+		case 2: setEngine(webkit, 419); break;
+		case 3: setEngine(webkit, 420); break;
+		case 4: setEngine(webkit, 525);
 	}
 }
 
