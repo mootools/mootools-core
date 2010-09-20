@@ -39,5 +39,5 @@ sources:
   - "Source/Request/Request.JSON.js"
   - "Source/Utilities/Cookie.js"
   - "Source/Utilities/JSON.js"
-  - "Source/Utilities/DomReady.js"
+  - "Source/Utilities/DOMReady.js"
   - "Source/Utilities/Swiff.js"

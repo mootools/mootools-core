@@ -1,7 +1,7 @@
 /*
 ---
 
-name: DomReady
+name: DOMReady
 
 description: Contains the custom event domready.
 
@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Browser, Element, Element.Event]
 
-provides: DomReady
+provides: DOMReady
 
 ...
 */
