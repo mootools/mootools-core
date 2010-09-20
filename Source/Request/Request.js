@@ -33,7 +33,7 @@ var Request = this.Request = new Class({
 		onException: function(headerName, value){},
 		onTimeout: function(){},
 		user: '',
-		pass: '',*/
+		password: '',*/
 		url: '',
 		data: '',
 		headers: {
@@ -194,7 +194,7 @@ var Request = this.Request = new Class({
 			xhr.onprogress = this.progress.bind(this);
 		}
 
-		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.pass);
+		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.password);
 		if (this.options.user && 'withCredentials' in xhr) xhr.withCredentials = true;
 		
 		xhr.onreadystatechange = this.onStateChange.bind(this);
