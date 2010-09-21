@@ -2,31 +2,29 @@
 ---
 name: Fx
 description: Contains the basic animation logic to be extended by all other Fx Classes.
-requires: [typeOf, Array, String, Number, Function, Class, Chain, Events, Options]
+requires: [Type, Array, String, Number, Function, Class, Chain, Events, Options]
 provides: Fx
 ...
 */
 
 (function(){
 
-this.Fx = new Class({
+var Fx = this.Fx = new Class({
 
-	Implements: [Chain, Events, Options],
+	Implements: Options,
 
 	options: {
-		/*
-		onStart: nil,
-		onCancel: nil,
-		onComplete: nil,
-		*/
 		duration: '500ms',
 		equation: 'default',
-		link: 'ignore'
+		behavior: 'cancel'
 	},
 	
-	'protected initialize': function(options){
+	initialize: function(options){
 		this.setOptions(options);
+		this.stack = [];
 	},
+	
+	/* public methods */
 	
 	start: function(from, to){
 		if (!this.check(from, to)) return this;
@@ -36,35 +34,34 @@ this.Fx = new Class({
 		this.equation = Fx.parseEquation(this.getOption('equation'));
 		this.duration = Fx.parseDuration(this.getOption('duration'));
 		this.startTimer();
-		this.onStart();
 		return this;
 	},
 	
 	cancel: function(){
-		if (this.stopTimer()) this.onCancel();
-		return this;
+		this.time = 0;
+		return this.stopTimer();
 	},
 	
 	pause: function(){
-		this.stopTimer();
-		return this;
+		return this.stopTimer();
 	},
 
 	resume: function(){
-		this.startTimer();
-		return this;
+		return this.startTimer();
 	},
 	
 	complete: function(){
-		this.stopTimer();
-		this.onComplete();
-		return this;
+		if (this.stack.length) this.stack.shift()();
+		return this.stopTimer();
 	},
+	
+	/* private methods */
 	
 	step: function(){
 		var time = Date.now();
 		var factor = (time - this.time) / this.duration;
-		var delta = this.equation((factor < 1) ? factor : 1);
+		if (factor >= 1) factor = 1;
+		var delta = this.equation(factor);
 		this.render(this.compute(delta));
 		if (factor == 1) this.complete();
 	},
@@ -77,24 +74,11 @@ this.Fx = new Class({
 
 	'protected check': function(){
 		if (!this.timer) return true;
-		switch (this.getOption('link')){
+		switch (this.getOption('behavior')){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
+			case 'stack': this.stack.push(this.caller.pass(arguments, this)); return false;
 		}
 		return false;
-	},
-
-	'protected onStart': function(){
-		this.fireEvent('start', this.item || null);
-	},
-
-	'protected onComplete': function(){
-		this.fireEvent('complete', this.item || null);
-		if (!this.callChain()) this.fireEvent('chainComplete', this.item || null);
-	},
-
-	'protected onCancel': function(){
-		this.fireEvent('cancel', this.item || null).clearChain();
 	},
 
 	'protected stopTimer': function(){
@@ -113,9 +97,9 @@ this.Fx = new Class({
 
 });
 
-Fx.compute = function(from, to, delta){
+Fx.extend('compute', function(from, to, delta){
 	return (to - from) * delta + from;
-};
+});
 
 Fx.extend(new Accessor('Duration')).extend(new Accessor('Equation'));
 
@@ -131,8 +115,8 @@ Fx.extend('parseDuration', function(duration){
 	if (d != null) return d;
 	d = duration.match(/^[\d.]+([ms]{1,2})?$/);
 	if (!d) return 0;
-	else if (d[1] == 's') return n * 1000;
-	else return n;
+	if (d[1] == 's') return n * 1000;
+	return n;
 });
 
 // global timer
@@ -151,7 +135,7 @@ var addInstance = function(instance){
 
 var removeInstance = function(instance){
 	instances.erase(instance);
-	if (!instances.length && timer) timer = Function.clear(timer);
+	if (!instances.length && timer) timer = clearInterval(timer);
 	return false;
 };
 
@@ -174,28 +158,28 @@ Fx.defineEquations({
 		return -(Math.cos(Math.PI * p) - 1) / 2;
 	},
 
-	pow: function(p, x){
+	'pow': function(p, x){
 		return Math.pow(p, (x != null) ? x : 6);
 	},
 
-	expo: function(p){
+	'expo': function(p){
 		return Math.pow(2, 8 * (p - 1));
 	},
 
-	circ: function(p){
+	'circ': function(p){
 		return 1 - Math.sin(Math.acos(p));
 	},
 
-	sine: function(p){
+	'sine': function(p){
 		return 1 - Math.sin((1 - p) * Math.PI / 2);
 	},
 
-	back: function(p, x){
+	'back': function(p, x){
 		x = (x != null) ? x : 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
-	bounce: function(p){
+	'bounce': function(p){
 		var value;
 		for (var a = 0, b = 1; 1; a += b, b /= 2){
 			if (p >= (7 - 4 * a) / 11){
@@ -206,7 +190,7 @@ Fx.defineEquations({
 		return value;
 	},
 
-	elastic: function(p, x){
+	'elastic': function(p, x){
 		x = (x != null) ? x : 1;
 		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * x / 3);
 	}
