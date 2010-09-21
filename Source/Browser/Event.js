@@ -2,25 +2,25 @@
 ---
 name: Event
 description: Contains the Event Class, to make the event object cross-browser.
-requires: [Type, Browser, Array, Function, String, Accessor]
+requires: [Type, Browser, Array, Function, String, Accessor, $]
 provides: Event
 ...
 */
 
 (function(){
 
-var Event = this.Event = new Type('Event', function(event){
+var Event = DOM.Event = new Type('Event', function(event){
 	if (!event) event = window.event || {};
 	if (event.event) event = event.event;
 	this.event = event;
-	Browser.event = this;
+	this.properties = {};
 });
 
 Event.extend(new Accessor('KeyCode')).defineKeyCodes({
 	13: 'enter', 38: 'up', 40: 'down', 37: 'left', 39: 'right', 27: 'esc', 32: 'space', 8: 'backspace', 9: 'tab', 46: 'delete'
 });
 
-Event.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
+Event.extend(new Accessor('Getter'));
 
 Event.defineGetters({
 
@@ -40,7 +40,7 @@ Event.defineGetters({
 		return this.event.metaKey;
 	},
 
-	rightClick: function(){
+	rightButton: function(){
 		var event = this.event;
 		return (event.which == 3) || (event.button == 2);
 	},
@@ -55,8 +55,8 @@ Event.defineGetters({
 
 		var code = event.which || event.keyCode;
 
-		var named = Event.lookupKeyCode(code);
-		if (named) return named;
+		var name = Event.lookupKeyCode(code);
+		if (name) return name;
 
 		if (event.type == 'keydown'){
 			var fKey = code - 111;
@@ -70,7 +70,7 @@ Event.defineGetters({
 		var event = this.event;
 		var target = event.target || event.srcElement;
 		while (target && target.nodeType == 3) target = target.parentNode;
-		return document.id(target);
+		return DOM.$(target);
 	},
 	
 	relatedTarget: function(){
@@ -83,8 +83,8 @@ Event.defineGetters({
 			while (related && related.nodeType == 3) related = related.parentNode;
 			return true;
 		};
-		var hasRelated = (Browser.firefox2) ? Function.stab(test) : test();
-		return (hasRelated) ? document.id(related) : null;
+		var hasRelated = (Browser.firefox2) ? Function.attempt(test) : test();
+		return (hasRelated) ? DOM.$(related) : null;
 	},
 	
 	client: function(){
@@ -97,7 +97,7 @@ Event.defineGetters({
 	
 	page: function(){
 		var event = this.event, doc = document;
-		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.documentElement : doc.body;
 		return {
 			x: event.pageX || event.clientX + doc.scrollLeft,
 			y: event.pageY || event.clientY + doc.scrollTop
@@ -108,15 +108,10 @@ Event.defineGetters({
 
 Event.implement({
 	
-	set: function(key, value/*object*/){
-		var setter = Event.lookupSetter(key = key.camelCase());
-		(setter) ? setter.call(this, value) : this[key] = value;
-	}.overloadSetter(),
-	
 	get: function(key){
-		if (this.hasOwnProperty(key = key.camelCase())) return this[key];
+		if (this.properties.hasOwnProperty(key = key.camelCase())) return this.properties[key];
 		var getter = Event.lookupGetter(key);
-		return this[key] = (getter) ? getter.call(this) : this.event[key];
+		return this.properties[key] = (getter) ? getter.call(this) : this.event[key];
 	}.overloadGetter(),
 
 	stopPropagation: function(){
@@ -131,11 +126,7 @@ Event.implement({
 		if (event.preventDefault) event.preventDefault();
 		else event.returnValue = false;
 		return this;
-	},
-	
-	stop: function(){
-		return this.stopPropagation().preventDefault();
-	}
+	}  
 
 });
 
