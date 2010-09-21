@@ -7,25 +7,16 @@ provides: Accessor
 ...
 */
 
-(function(global){
-
-/* Accessor */
+(function(){
 
 this.Accessor = function(singular, plural){
+	
+	var accessor = {}, matchers = [];
 	
 	singular = (singular || '').capitalize();
 	if (!plural) plural = singular + 's';
 	
 	var define = 'define', lookup = 'lookup', match = 'match', each = 'each';
-	
-	if (this === global) return [define + singular, define + plural, lookup + singular, lookup + plural, match + singular, each + singular].pair(function(name){
-		return function(){
-			Object.append(this, new Accessor(singular, plural));
-			return this[name].apply(this, arguments);
-		};
-	});
-	
-	var accessor = {}, matchers = [];
 	
 	this[define + singular] = function(key, value){
 		if (typeOf(key) == 'regexp') matchers.push({'regexp': key, 'action': value});
@@ -59,9 +50,7 @@ this.Accessor = function(singular, plural){
 	this[each + singular] = function(fn, bind){
 		for (var p in accessor) fn.call(bind, accessor[p], p);
 	};
-	
-	return this;
 
 };
 
-})(this);
+})();
