@@ -1,3 +1,36 @@
+describe('document.id', function(){
+
+	it('should find IDs with special characters', function(){
+		var element = new Element('div#id\\.part.class').inject(document.body);
+
+		var found = document.id('id.part');
+		expect(found).toBe(element);
+		expect(found.id).toBe('id.part');
+		expect(found.className).toBe('class');
+
+		element.destroy();
+
+		element = new Element('div#id\\#part').inject(document.body);
+
+		found = document.id('id#part');
+		expect(found).toBe(element);
+		expect(found.id).toBe('id#part');
+	});
+
+});
+
+describe('Element.getElementById', function(){
+
+	it('should find IDs with special characters', function(){
+		var inner = new Element('div#id\\.part');
+		var outer = new Element('div').adopt(inner);
+
+		expect(outer.getElementById('id.part')).toBe(inner);
+		expect(inner.id).toBe('id.part');
+	});
+
+});
+
 describe('Element.removeProperty', function(){
 
 	it('should removeProperty from an Element', function (){
