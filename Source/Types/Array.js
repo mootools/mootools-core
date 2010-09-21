@@ -8,6 +8,8 @@ provides: Array
 */
 
 Array.implement({
+	
+	/* standard */
 
 	filter: function(fn, bind){
 		var results = [];
@@ -15,14 +17,6 @@ Array.implement({
 			if ((i in this) && fn.call(bind, this[i], i, this)) results.push(this[i]);
 		}
 		return results;
-	},
-	
-	pair: function(fn, bind){
-		var object = {};
-		for (var i = 0, l = this.length; i < l; i++){
-			if (i in this) object[this[i]] = fn.call(bind, this[i], i, this);
-		}
-		return object;
 	},
 
 	indexOf: function(item, from){
@@ -54,6 +48,16 @@ Array.implement({
 		return false;
 	},
 	
+	/* non standard */
+	
+	pair: function(fn, bind){
+		var object = {};
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) object[this[i]] = fn.call(bind, this[i], i, this);
+		}
+		return object;
+	},
+	
 	clean: function(){
 		return this.filter(function(item){
 			return item != null;
@@ -67,7 +71,7 @@ Array.implement({
 		return null;
 	},
 	
-	call: function(name){
+	invoke: function(name){
 		var args = Array.slice(arguments, 1), results = [];
 		for (var i = 0, j = this.length; i < j; i++){
 			var item = this[i];
