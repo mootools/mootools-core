@@ -2,64 +2,51 @@
 ---
 name: Color
 description: Class to create and manipulate colors. Includes HSB «-» RGB «-» HEX conversions. Supports alpha for each type.
-requires: [Core/Type, Core/Array]
+requires: [Type, Array, Number, String, Accessor]
 provides: Color
 ...
 */
 
 (function(){
 
-var colors = {
-	maroon: '#800000', red: '#ff0000', orange: '#ffA500', yellow: '#ffff00', olive: '#808000',
-	purple: '#800080', fuchsia: "#ff00ff", white: '#ffffff', lime: '#00ff00', green: '#008000',
-	navy: '#000080', blue: '#0000ff', aqua: '#00ffff', teal: '#008080', 'tealc': '#1dd',
-	black: '#000000', silver: '#c0c0c0', gray: '#808080'
-};
-
-var Color = this.Color = function(color, type){
+var Color = this.Color = new Type('color', function(color, type){
 	
-	if (color.isColor){
-		
-		this.red = color.red;
-		this.green = color.green;
-		this.blue = color.blue;
-		this.alpha = color.alpha;
-
-	} else {
-		
-		var namedColor = colors[color];
-		if (namedColor){
-			color = namedColor;
-			type = 'hex';
-		}
-
-		switch (typeof color){
-			case 'string': if (!type) type = (type = color.match(/^rgb|^hsb/)) ? type[0] : 'hex'; break;
-			case 'object': type = type || 'rgb'; color = color.toString(); break;
-			case 'number': type = 'hex'; color = color.toString(16); break;
-		}
-
-		color = Color['parse' + type.toUpperCase()](color);
-		this.red = color[0];
-		this.green = color[1];
-		this.blue = color[2];
-		this.alpha = color[3];
+	switch(typeOf(color)){
+		case 'string':
+			var namedColor = Color.lookupColor(color);
+			if (namedColor){
+				color = namedColor;
+				type = 'hex';
+			} else if (!type){
+				type = (type = color.match(/^rgb|^hsb/)) ? type[0] : 'hex';
+			}
+		break;
+		case 'color': color = [color.red, color.green, color.blue, color.alpha]; type = null; break;
+		case 'array': type = type || 'rgb'; color = color.toString(); break;
+		case 'number': type = 'hex'; color = color.toString(16); break;
 	}
 	
-	this.isColor = true;
+	if (type) color = Color['parse' + type.toUpperCase()](color);
+	this.red = color[0];
+	this.green = color[1];
+	this.blue = color[2];
+	this.alpha = color[3];
 
-};
+});
 
-var limit = function(number, min, max){
-	return Math.min(max, Math.max(min, number));
-};
+Color.extend(new Accessor('Color')).defineColors({
+	maroon: '#800000', red: '#ff0000', orange: '#ffA500', yellow: '#ffff00', olive: '#808000',
+	purple: '#800080', fuchsia: "#ff00ff", white: '#ffffff', lime: '#00ff00', green: '#008000',
+	navy: '#000080', blue: '#0000ff', aqua: '#00ffff', teal: '#008080',
+	black: '#000000', silver: '#c0c0c0', gray: '#808080'
+});
 
 var listMatch = /([-.\d]+)\s*,\s*([-.\d]+)\s*,\s*([-.\d]+)\s*,?\s*([-.\d]*)/;
 var hexMatch = /^#?([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{1,2})([a-f0-9]{0,2})$/i;
 
 Color.parseRGB = function(color){
 	return color.match(listMatch).slice(1).map(function(bit, i){
-		return (i < 3) ? Math.round(((bit %= 256) < 0) ? bit + 256 : bit) : limit(((bit === '') ? 1 : Number(bit)), 0, 1);
+		return (i < 3) ? Math.round(((bit %= 256) < 0) ? bit + 256 : bit) : (((bit === '') ? 1 : Number(bit))).limit(0, 1);
 	});
 };
 	
@@ -70,12 +57,12 @@ Color.parseHEX = function(color){
 		return parseInt((bit.length == 1) ? bit + bit : bit, 16);
 	});
 };
-	
+
 Color.parseHSB = function(color){
 	var hsb = color.match(listMatch).slice(1).map(function(bit, i){
 		if (i === 0) return Math.round(((bit %= 360) < 0) ? (bit + 360) : bit);
-		else if (i < 3) return limit(Math.round(bit), 0, 100);
-		else return limit(((bit === '') ? 1 : Number(bit)), 0, 1);
+		else if (i < 3) return Math.round(bit).limit(0, 100);
+		else return ((bit === '') ? 1 : Number(bit)).limit(0, 1);
 	});
 	
 	var a = hsb[3];
@@ -104,7 +91,7 @@ var toString = function(type, array){
 	return type + '(' + array.join(', ') + ')';
 };
 
-Color.prototype = {
+Color.implement({
 
 	toHSB: function(array){
 		var red = this.red, green = this.green, blue = this.blue, alpha = this.alpha;
@@ -140,7 +127,7 @@ Color.prototype = {
 		return (array) ? rgb : toString('rgb', rgb);
 	}
 
-};
+});
 
 Color.prototype.toString = Color.prototype.toRGB;
 
@@ -161,7 +148,5 @@ Color.rgb = function(r, g, b, a){
 };
 
 if (this.rgb == null) this.rgb = Color.rgb;
-
-if (this.Type) new Type('Color', Color);
 
 })();

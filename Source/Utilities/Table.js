@@ -32,7 +32,7 @@ var Table = this.Table = function(){
 		return (index == -1) ? null : values[index];
 	};
 
-	this.erase = function(key){
+	this.unset = function(key){
 		var index = keys.indexOf(key);
 		if (index != -1){
 			this.length--;
@@ -41,9 +41,20 @@ var Table = this.Table = function(){
 		}
 		return null;
 	};
+	
+	this.erase = function(value){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (values[i] === value){
+				this.length--;
+				keys.splice(i, 1);
+				values.splice(i, 1);
+			}
+		}
+		return this;
+	};
 
-	this.each = this.forEach = function(fn, bind){
-		for (var i = 0, l = this.length; i < l; i++) fn.call(bind, keys[i], values[i], this);
+	this.each = this.forEach = function(fn, context){
+		for (var i = 0, l = this.length; i < l; i++) fn.call(context, values[i], keys[i], this);
 	};
 	
 };
