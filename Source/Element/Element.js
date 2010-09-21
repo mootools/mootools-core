@@ -219,7 +219,7 @@ Document.implement({
 		var types = {
 
 			string: function(id, nocash, doc){
-				id = Slick.find(doc, '#' + id);
+				id = Slick.find(doc, '#' + id.replace(/(\W)/g, '\\$1'));
 				return (id) ? types.element(id, nocash) : null;
 			},
 
@@ -606,7 +606,7 @@ Element.implement({
 	},
 
 	getElementById: function(id){
-		return document.id(Slick.find(this, '#' + id));
+		return document.id(Slick.find(this, '#' + ('' + id).replace(/(\W)/g, '\\$1')));
 	},
 
 	getSelected: function(){
