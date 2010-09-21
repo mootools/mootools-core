@@ -2,7 +2,7 @@
 ---
 name: Class
 description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
-requires: [typeOf, instanceOf, Array, String, Function, Number, Accessor]
+requires: [Type, Array, String, Function, Number, Object, Accessor]
 provides: Class
 ...
 */
@@ -20,7 +20,7 @@ var Class = this.Class = new Type('Class', function(params){
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 		this.$caller = this.caller = null;
 		return value;
-	}.extend(this);
+	}.extend(this).hide();
 
 	newClass.implement(params);
 	
@@ -38,7 +38,7 @@ var parent = function(){
 	var previous = (parent) ? parent.prototype[name] : null;
 	if (!previous) throw new Error('The method "' + name + '" has no parent.');
 	return previous.apply(this, arguments);
-};
+}.hide();
 
 var reset = function(object){
 	for (var key in object){
