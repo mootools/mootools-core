@@ -1,17 +1,11 @@
  <?php
 // http://www.webcheatsheet.com/PHP/get_current_page_url.php
-function curPageURL() {
-	if (empty($_SERVER["HTTPS"])) $_SERVER["HTTPS"] = '';
+function getCurrentURL(){
+	$pageURL = 'http' . (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on" ? 's' : '');
+	$pageURL .= "://" . $_SERVER["SERVER_NAME"];
+	if ($_SERVER["SERVER_PORT"] != "80") $pageURL .= ":".$_SERVER["SERVER_PORT"];
 	
-	$pageURL = 'http';
-	if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
-	$pageURL .= "://";
-	if ($_SERVER["SERVER_PORT"] != "80") {
-		$pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
-	} else {
-		$pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-	}
-	return $pageURL;
+	return $pageURL.$_SERVER["REQUEST_URI"];
 }
 
 // http://forum.jquery.com/topic/implementation-of-domcontentloaded-failing-when-no-assets
@@ -78,58 +72,50 @@ function log(message){
 	catch (e){}
 }
 
-document.addListener = function(type, fn){
-	if (this.addEventListener) this.addEventListener(type, fn, false);
-	else this.attachEvent('on' + type, fn);
-	return this;
-};
-
-document.removeListener = function(type, fn){
-	if (this.removeEventListener) this.removeEventListener(type, fn, false);
-	else this.detachEvent('on' + type, fn);
-	return this;
-};
-
 var domreadyCallbacks = []
-
-window.fireEvent =
-document.fireEvent = function(type){
-	if (type == 'domready')
-	for (var i = 0; i < domreadyCallbacks.length; ++i){
-		domreadyCallbacks[i]()
-	}
-}
-
-window.addEvent = function(){}
-
 function DomReady(fn){
 	domreadyCallbacks.push(fn)
 }
+<?php if (!isset($_GET['plain'])):
+	$core = dirname(__FILE__) . '/../../../';
+	require $core . 'Packager/packager.php';
 
-var Element = this.Element || {}
-Element.Events = {}
-
-// <?php
-// require dirname(__FILE__) . '/../../Packager/packager.php';
-// 
-// $pkg = new Packager(Array( dirname(__FILE__) . '/../..' ));
-// echo $pkg->build(Array( 'DomReady' ), Array(), Array(), Array());
-// ?>
-
-document.write('<scr'+'ipt src="../../../Source/Utilities/DomReady.js?_=' + (new Date) + '"><'+'/script>')
+	$pkg = new Packager(array($core));
+	echo $pkg->build(array('DOMReady'), array(), array(), array());
+else: ?>
+document.write('<scr'+'ipt src="./DOMReady.js?' + (new Date) + '"><'+'/script>');
+document.write('<scr'+'ipt src="../../../Source/Utilities/DOMReady.js?' + (new Date) + '"><'+'/script>');
+<?php endif; ?>
 </script>
 
 <script>
-// window.addEvent('load', function(){
-// 	window.LOADED = true
-// 	somethingHappened('MooTools load', function(){
-// 		return !!window.READY
-// 	})
-// })
-// window.addEvent('domready', function(){
-// 	window.READY = true
-// 	somethingHappened('MooTools domready', isNotLoaded)
-// })
+var loadScript = function(type){
+	var count = 0;
+	new Element('script', {
+		src: '../../Configuration.js?' + type + (new Date),
+		events: {
+			load: function(){
+				log('>> ' + type + ': JavaSript Loaded, load called: ' + (++count));
+			}
+		}
+	}).inject(document.body);
+	console.log('>> ' + type + ': Loading JavaScript');
+};
+
+window.addEvent('load', function(){
+	loadScript('load');
+	
+	window.LOADED = true
+	somethingHappened('MooTools load', function(){
+		return !!window.READY
+	})
+});
+window.addEvent('domready', function(){
+	loadScript('domready');
+
+	window.READY = true
+	somethingHappened('MooTools domready', isNotLoaded)
+});
 DomReady(function(){
 	window.READY = true
 	somethingHappened('MooTools domready', isNotLoaded)
@@ -430,8 +416,13 @@ poll()
 </div>
 
 <script>if (window != top) {somethingHappened('This is a frame!'); document.getElementsByTagName('html')[0].className += ' framed'} </script>
- <?php if (!isset($_GET['iframe'])) echo '<iframe src="'.curPageURL().'?iframe=true"></iframe>'; ?>
-
+ <?php
+ if (!isset($_GET['iframe'])){
+	 $url = getCurrentURL();
+	 $url .= (strpos($url, '?') !== false ? '&' : '?') . 'iframe';
+	 echo '<iframe src="' . $url . '"></iframe>';
+ }
+?>
 <script>
 somethingHappened('Last &lt;SCRIPT&gt; on page')
 window.PARSED = true
