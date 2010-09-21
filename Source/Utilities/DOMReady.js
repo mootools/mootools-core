@@ -17,6 +17,7 @@ provides: DOMReady
 (function(window, document){
 
 var ready,
+	loaded,
 	checks = [],
 	shouldPoll,
 	timer,
@@ -38,11 +39,11 @@ var domready = function(){
 };
 
 var check = function(){
-	for (var i = checks.length; i--; ) if (checks[i]()){
+	for (var i = checks.length; i--;) if (checks[i]()){
 		domready();
 		return true;
 	}
-	
+
 	return false;
 };
 
@@ -69,7 +70,6 @@ if (testElement.doScroll && !isFramed){
 
 if (document.readyState) checks.push(function(){
 	var state = document.readyState;
-
 	return (state == 'loaded' || state == 'complete');
 });
 
@@ -78,26 +78,31 @@ else shouldPoll = true;
 
 if (shouldPoll) poll();
 
-var onAdd = function(fn){
-	if (ready) fn.call(this);
-};
-
 Element.Events.domready = {
-	onAdd: onAdd
+	onAdd: function(fn){
+		if (ready) fn.call(this);
+	}
 };
 
 // Make sure that domready fires before load
 Element.Events.load = {
 	base: 'load',
-	onAdd: onAdd,
+	onAdd: function(fn){
+		if (loaded && this == window) fn.call(this);
+	},
 	condition: function(){
-		domready();
+		if (this == window){
+			domready();
+			delete Element.Events.load;
+		}
+		
 		return true;
 	}
 };
 
-window.addEvent('load',function(){
-	delete Element.Events.load;
+// This is based on the custom load event
+window.addEvent('load', function(){
+	loaded = true;
 });
 
 })(window, document);
