@@ -2,203 +2,239 @@
 ---
 name: Element
 description: The MooTools DOM library.
-requires: [Type, typeOf, instanceOf, Browser, Window, Document, Array, String, Function, Number, Object, Accessor, Slick.Parser, Slick.Finder]
+requires: [Type, typeOf, instanceOf, Array, String, Function, Number, Object, Accessor, Slick.Parser, Slick.Finder, Store]
 provides: [Element, Elements, $, $$]
 ...
 */
 
 (function(){
 
-var document = this.document;
+var DOM = this.DOM = new Class({
 
-var Element = this.Element = function(item, props){
-	var element = (typeOf(item) == 'string') ? document.build(item) : document.id(item);
-	return (element) ? element.set(props) : null;
-};
+	Implements: [Store, Events],
 
-var types = {
-
-	object: function(item){
-		return (item.toElement) ? item.toElement() : null;
-	},
-
-	string: function(item){
-		return types.element(document.getElementById(item));
+	initialize: function(node){
+		this.node = nodeOf(node);
 	}
 
-};
-
-types.element = types.window = types.document = types.textnode = types.whitespace = function(item){
-	return item;
-};
-
-if (Browser.Element){
-	
-	Element.prototype = Browser.Element.prototype;
-	
-} else {
-	
-	Element.parent = Object;
-	
-	var protoElement = document.createElement('div');
-	protoElement.$family = Function.from('element').hide();
-	
-	Element.mirror(function(name, method){
-		protoElement[name] = method;
-	});
-
-	types.element = function(item){
-		item.mergeAttributes(protoElement);
-		item.constructor = Element;
-		return item;
-	};
-	
-}
-
-// mirror element methods to Elements
-
-new Type('Element', Element).mirror(function(name, method){
-	if (Array[name]) return;
-	Elements.implement(name, function(){
-		var results = [], args = arguments, elements = true;
-		for (var i = 0, l = this.length; i < l; i++){
-			var element = this[i], result = results[i] = element[name].apply(element, args);
-			elements = (elements && typeOf(result) == 'element');
-		}
-		return (elements) ? new Elements(results) : results;
-	});
 });
 
-var Elements = this.Elements = function(elements){
-	if (elements && elements.length) Slick.uniques(elements, this);
+DOM.prototype.toNode = DOM.prototype.log = function(){
+	return this.node;
 };
 
-Elements.prototype = {length: 0};
-Elements.parent = Array;
+var html = document.documentElement;
 
-new Type('Elements', Elements).implement({
+DOM.implement({
 
-	filter: function(filter, bind){
+	addEventListener: ((html.addEventListener) ? function(type, fn){
+		this.node.addEventListener(type, fn, false);
+		return this;
+	} : function(type, fn){
+		this.node.attachEvent('on' + type, fn);
+		return this;
+	}),
+
+	removeEventListener: ((html.removeEventListener) ? function(type, fn){
+		this.node.removeEventListener(type, fn, false);
+		return this;
+	} : function(type, fn){
+		this.node.detachEvent('on' + type, fn);
+		return this;
+	})
+
+});
+
+var wrappers = {}, matchers = [];
+
+Class.defineMutator('Matches', function(match){
+	matchers.push({_match: match, _class: this});
+});
+
+var id = function(item){
+	if (item == null) return null;
+	
+	if (item.toElement) item = item.toElement();
+	if (item.toNode) item = item.toNode();
+
+	var type = typeOf(item);
+
+	if (type == 'string'){
+		item = Slick.find(document, item);
+		if (!item) return null;
+		type = 'element';
+	}
+	
+	if (type == 'element' || item === window || item === document) return item;
+	
+	return null;
+};
+
+var nodeOf = function(item){
+	return (item != null && item.toNode) ? item.toNode() : item;
+};
+
+var $ = DOM.$ = function(item){
+	if (item == null) return null;
+	if (item instanceof DOM) return item;
+	if (item === window) return hostWindow;
+	if (item === document) return hostDocument;
+	item = id(item);
+	if (item == null) return null;
+	var uid = Slick.uidOf(item), wrapper = wrappers[uid];
+	if (wrapper) return wrapper;
+	for (var l = matchers.length; l--; l){
+		var current = matchers[i];
+		if (Slick.match(item, current._match)) return (wrappers[uid] = new current._class(item));
+	}
+	return null;
+};
+
+var $$ = DOM.$$ = function(){
+	var elements = [];
+	for (var i = 0, l = arguments.length; i < l; i++){
+		var argument = arguments[i];
+		if (typeof argument == 'string') Slick.search(document, argument, elements);
+		else elements.push(nodeOf(argument));
+	}
+	return new Elements(elements);
+};
+
+if (this.$ == null) this.$ = DOM.$;
+if (this.$$ == null) this.$$ = DOM.$$;
+
+var Element = DOM.Element = new Class({
+	Matches: '*',
+	Extends: DOM
+});
+
+// from now on, everytime you implement to Element you also implement to Elements.
+
+var elementImplement = Element.implement;
+
+Element.implement = function(key, value){
+	elementImplement.call(Element, key, value);
+	Elements.implement(key, function(){
+		var results = [], isElements = true;
+		for (var i = 0; i < this.length; i++){
+			var element = this[i], result = element[key].apply(element, arguments);
+			if (isElements && !(result instanceof Element)) isElements = false;
+			results[i] = nodeOf(result);
+		}
+		return (isElements) ? new Elements(results) : results;
+	});
+}.overloadSetter();
+
+var Elements = DOM.Elements = new Type('Elements', function(nodes){
+	if (nodes && nodes.length){
+		var uniques = {}, node;
+		for (var i = 0; node = nodes[i++];){
+			var uid = Slick.uidOf(node);
+			if (!uniques[uid]){
+				uniques[uid] = true;
+				this.push(node);
+			}
+		}
+	}
+});
+
+Elements.implement({
+
+	length: 0,
+	
+	filter: function(filter, context){
 		if (!filter) return this;
 		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 			return item.match(filter);
-		} : filter, bind));
-	}.protect(),
+		} : filter, context));
+	},
 	
 	push: function(){
-		var length = this.length;
 		for (var i = 0, l = arguments.length; i < l; i++){
-			var item = document.id(arguments[i]);
-			if (item) this[length++] = item;
+			var item = $(arguments[i]);
+			if (item) this[this.length++] = item;
 		}
-		return (this.length = length);
-	}.protect()
-
-}).implement(Array.prototype);
-
-Array.mirror(Elements);
-
-Document.implement({
-	
-	id: function(item){
-		if (instanceOf(item, Element)) return item;
-		var processor = types[typeOf(item)];
-		return (processor) ? processor(item) : null;
+		return this.length;
 	},
 	
-	newElement: function(tag, props){
-		if (props && props.checked != null) props.defaultChecked = props.checked;
-		return this.id(this.createElement(tag)).set(props);
-	},
-
-	newTextNode: function(text){
-		return this.createTextNode(text);
-	},
-	
-	build: function(selector){
-
-		if ((/^[\w-]+$/).test(selector)) return this.newElement(selector);
-			
-		var props = {},
-			parsed = Slick.parse(selector).expressions[0][0],
-			tag = (parsed.tag == '*') ? 'div' : parsed.tag;
-
-		props.id = parsed.id;
-
-		var classes = [];
-
-		for (var part in parsed.parts){
-			var current = parsed.parts[part];
-			if (current.type == 'class') classes.push(current.value);
-			else if (current.type == 'attribute' && current.operator == '=') props[current.key] = current.value;
-		}
-
-		if (classes.length) props['class'] = classes.join(' ');
-		
-		return this.newElement(tag, props);
-		
+	log: function(){
+		return this.map(function(wrapper){
+			return wrapper.toNode();
+		});
 	}
 	
 });
 
-// search and find, Slick integration
+// fetch all Array methods and put them in Elements
 
-[Document, Element].call('implement', {
-	
-	search: function(expression){
-		return Slick(this, expression, new Elements);
-	},
-	
-	find: function(expression){
-		var element = Slick(this, expression)[0];
-		return (element) ? document.id(element) : null;
-	}
-	
+var arrayMethods = ['pop', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
+'indexOf', 'lastIndexOf', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'].pair(function(m){
+	return Array.prototype[m];
 });
 
-Element.protect('contains').implement({
-	
-	contains: function(element){
-		return Slick.contains(this, element);
+Elements.implement(arrayMethods).implement(Array.prototype);
+
+// from now on, everytime you implement to Array you also implement to Elements.
+
+var arrayImplement = Array.implement;
+
+Array.implement = function(key, value){
+	arrayImplement.call(Array, key, value);
+	Elements.implement(key, value);
+}.overloadSetter();
+
+Element.implement({
+
+	appendChild: function(child){
+		return this.node.appendChild(id(child));
 	},
-	
+
+	setAttribute: function(name, value){
+		return this.node.setAttribute(name, value);
+	},
+
+	getAttribute: function(name){
+		return this.node.getAttribute(name);
+	},
+
+	contains: function(node){
+		return Slick.contains(this.node, id(node));
+	},
+
 	match: function(expression){
-		return Slick.match(this, expression);
+		return Slick.match(this.node, expression);
 	}
-	
+
 });
 
-Document.implement('contains', function(element){
-	var html = this.html;
-	return (element == html) || Slick.contains(html, element);
-});
-
-if (this.$ == null) this.$ = document.id;
-
-if (this.$$ == null) this.$$ = function(expression){
-	return document.search(expression);
+Element.prototype.toString = function(){
+	var tag = this.get('tag'), id = this.get('id'), className = this.get('class');
+	var str = '<' + tag;
+	if (id) str += '#' + id;
+	if (className) str += '.' + className.replace(/\s+/, '.');
+	return str + '>';
 };
 
-/* ClassNames Accessor */
-
-var regexes = {};
-var regexOf = function(string){
-	return regexes[string] || (regexes[string] = new RegExp('(^|\\s)' + string.escapeRegExp() + '(?:\\s|$)'));
+var classRegExps = {};
+var classRegExpOf = function(string){
+	return classRegExps[string] || (classRegExps[string] = new RegExp('(^|\\s)' + string.escapeRegExp() + '(?:\\s|$)'));
 };
 
 Element.implement({
 
 	hasClass: function(className){
-		return regexOf(className).test(this.className);
+		return classRegExpOf(className).test(this.node.className);
 	},
 
 	addClass: function(className){
-		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
+		var node = this.node;
+		if (!this.hasClass(className)) node.className = (node.className + ' ' + className).clean();
 		return this;
 	},
 
 	removeClass: function(className){
-		this.className = this.className.replace(regexOf(className), '$1').clean();
+		var node = this.node;
+		node.className = node.className.replace(classRegExpOf(className), '$1').clean();
 		return this;
 	},
 
@@ -209,7 +245,7 @@ Element.implement({
 });
 
 /* Injections / Dejections */
-	
+
 var inserters = {
 
 	before: function(context, element){
@@ -232,45 +268,44 @@ var inserters = {
 
 };
 
-inserters.inside = inserters.bottom;
-
 Element.implement({
-	
-	eject: function(){
-		var parent = this.parentNode;
-		return (parent) ? parent.removeChild(this) : this;
+
+	inject: function(element, where){
+		inserters[where || 'bottom'](this.node, id(element));
+		return this;
 	},
-	
+
+	eject: function(){
+		var parent = this.node.parentNode;
+		if (parent) parent.removeChild(this.node);
+		return this;
+	},
+
 	adopt: function(){
-		Array.flatten(arguments).each(function(element){
-			if ((element = document.id(element))) this.appendChild(element);
+		Array.each(arguments, function(element){
+			if ((element = id(element))) this.node.appendChild(element);
 		}, this);
 		return this;
 	},
 
 	appendText: function(text, where){
-		return this.grab(document.newTextNode(text), where);
-	},
-
-	grab: function(el, where){
-		inserters[where || 'bottom'](document.id(el), this);
+		inserters[where || 'bottom'](document.createTextNode(text), this.node);
 		return this;
 	},
 
-	inject: function(el, where){
-		inserters[where || 'bottom'](this, document.id(el));
+	grab: function(element, where){
+		inserters[where || 'bottom'](id(element), this.node);
 		return this;
 	},
 
-	replaces: function(el){
-		el = document.id(el);
-		el.parentNode.replaceChild(this, el);
+	replace: function(element){
+		element = id(element);
+		element.parentNode.replaceChild(this.node, element);
 		return this;
 	},
 
-	wraps: function(el, where){
-		el = document.id(el);
-		return this.replaces(el).grab(el, where);
+	wrap: function(element, where){
+		return this.replace(element).grab(element, where);
 	}
 
 });
@@ -278,9 +313,9 @@ Element.implement({
 var methods = {};
 
 Object.each(inserters, function(inserter, where){
-	
+
 	var Where = where.capitalize();
-	
+
 	methods['inject' + Where] = function(el){
 		return this.inject(el, where);
 	};
@@ -313,26 +348,28 @@ methods = {
 };
 
 Object.each(methods, function(getters, method){
-	
+
 	Element.implement(Object.map(getters, function(combinator){
 		return function(expression){
 			return this[method](combinator + (expression || '*'));
 		};
 	}));
-	
+
 });
-
-/* Element Storage */
-
-Element.implement(Storage());
 
 /* Attribute Getters, Setters, using Slick */
 
 Element.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
 
 var properties = [
-	'checked', 'defaultChecked', 'type', 'name', 'id', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
+	'checked', 'defaultChecked', 'type', 'value', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap',
+	// Attributes
+	'id', 'attributes', 'childNodes', 'className', 'clientHeight', 'clientLeft', 'clientTop', 'clientWidth', 'dir', 'firstChild',
+	'lang', 'lastChild', 'name', 'nextSibling', 'nodeName', 'nodeType', 'nodeValue',
+	'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth',
+	'ownerDocument', 'parentNode', 'prefix', 'previousSibling', 'scrollHeight', 'scrollWidth', 'tabIndex', 'tagName',
+	'textContent', 'innerHTML', 'title'
 ];
 
 properties = Object.append(Object.from(properties, properties), {
@@ -347,9 +384,9 @@ properties = Object.append(Object.from(properties, properties), {
 
 Object.each(properties, function(real, key){
 	Element.defineSetter(key, function(value){
-		return this[real] = value;
+		return this.node[real] = value;
 	}).defineGetter(key, function(){
-		return this[real];
+		return this.node[real];
 	});
 });
 
@@ -358,42 +395,49 @@ var booleans = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 
 booleans.each(function(bool){
 	Element.defineSetter(bool, function(value){
-		return this[bool] = !!value;
+		return this.node[bool] = !!value;
 	}).defineGetter(bool, function(){
-		return !!this[bool];
+		return !!this.node[bool];
 	});
 });
 
 Element.defineGetters({
 
 	'class': function(){
-		return ('className' in this) ? this.className : this.getAttribute('class');
+		var node = this.node;
+		return ('className' in node) ? node.className : node.getAttribute('class');
 	},
 
 	'for': function(){
-		return ('htmlFor' in this) ? this.htmlFor : this.getAttribute('for');
+		var node = this.node;
+		return ('htmlFor' in node) ? node.htmlFor : node.getAttribute('for');
 	},
 
 	'href': function(){
-		return ('href' in this) ? this.getAttribute('href', 2) : this.getAttribute('href');
+		var node = this.node;
+		return ('href' in node) ? node.getAttribute('href', 2) : node.getAttribute('href');
 	},
 
 	'style': function(){
-		return (this.style) ? this.style.cssText : this.getAttribute('style');
+		var node = this.node;
+		return (node.style) ? node.style.cssText : node.getAttribute('style');
 	}
 
 }).defineSetters({
 
 	'class': function(value){
-		return ('className' in this) ? this.className = value : this.setAttribute('class', value);
+		var node = this.node;
+		return ('className' in node) ? node.className = value : node.setAttribute('class', value);
 	},
 
 	'for': function(value){
-		return ('htmlFor' in this) ? this.htmlFor = value : this.setAttribute('for', value);
+		var node = this.node;
+		return ('htmlFor' in node) ? node.htmlFor = value : node.setAttribute('for', value);
 	},
 
 	'style': function(value){
-		return (this.style) ? this.style.cssText = value : this.setAttribute('style', value);
+		var node = this.node;
+		return (node.style) ? node.style.cssText = value : node.setAttribute('style', value);
 	}
 
 });
@@ -401,27 +445,27 @@ Element.defineGetters({
 /* get, set */
 
 Element.implement({
-	
+
 	set: function(name, value){
 		var setter = Element.lookupSetter(name = name.camelCase());
 		if (setter) setter.call(this, value);
-		else if (value == null) this.removeAttribute(name);
-		else this.setAttribute(name, value);
+		else if (value == null) this.node.removeAttribute(name);
+		else this.node.setAttribute(name, value);
 	}.overloadSetter(),
 
 	get: function(name){
 		var getter = Element.lookupGetter(name = name.camelCase());
 		if (getter) return getter.call(this);
-		return this.getAttribute(name);
+		return this.node.getAttribute(name);
 	}.overloadGetter()
 
 });
 
 Element.defineGetter('tag', function(){
-	return this.tagName.toLowerCase();
+	return this.node.tagName.toLowerCase();
 });
 
-var tableTest = Function.stab(function(){
+var tableTest = Function.attempt(function(){
 	var table = document.createElement('table');
 	table.innerHTML = '<tr><td></td></tr>';
 });
@@ -447,6 +491,73 @@ Element.defineSetter('html', function(html){
 		this.innerHTML = html;
 	}
 	return html;
+});
+
+var Document = DOM.Document = new Class({
+
+	Extends: DOM,
+
+	newElement: function(tag, props){
+		if (props && props.checked != null) props.defaultChecked = props.checked;
+		return $(this.node.createElement(tag)).set(props);
+	},
+
+	newTextNode: function(text){
+		return this.node.createTextNode(text);
+	},
+
+	build: function(selector){
+		if ((/^[\w-]+$/).test(selector)) return this.newElement(selector);
+
+		var props = {},
+			parsed = Slick.parse(selector).expressions[0][0],
+			tag = (parsed.tag == '*') ? 'div' : parsed.tag;
+
+		props.id = parsed.id;
+
+		var classes = [];
+
+		for (var part in parsed.parts){
+			var current = parsed.parts[part];
+			if (current.type == 'class') classes.push(current.value);
+			else if (current.type == 'attribute' && current.operator == '=') props[current.key] = current.value;
+		}
+
+		if (classes.length) props['class'] = classes.join(' ');
+
+		return this.newElement(tag, props);
+	}
+
+});
+
+Document.prototype.toString = function(){
+	return "<document>";
+};
+
+var hostDocument = new Document(document);
+
+var Window = DOM.Window = new Class({
+
+	Extends: DOM
+
+});
+
+Window.prototype.toString = function(){
+	return "<window>";
+};
+
+var hostWindow = new Window(window);
+
+[Element, Document].invoke('implement', {
+
+	search: function(expression){
+		return Slick.search(this.node, expression, new Elements);
+	},
+
+	find: function(expression){
+		return $(Slick.find(this.node, nodeOf(expression)));
+	}
+
 });
 
 })();
