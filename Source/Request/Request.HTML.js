@@ -35,7 +35,7 @@ Request.HTML = new Class({
 
 		if (options.filter) response.tree = response.elements.filter(options.filter);
 		if (options.update){
-			var update = document.id(options.update);
+			var update = DOM.$(options.update);
 			if (options.append) update.append(response.tree);
 			else update.set('html', response.html);
 		}
@@ -46,16 +46,16 @@ Request.HTML = new Class({
 
 });
 
-Element.defineSetter('load', function(options){
+DOM.Element.defineSetter('load', function(options){
 	this.get('load').cancel().setOptions(options);
 });
 
-Element.defineGetter('load', function(){
+DOM.Element.defineGetter('load', function(){
 	if (!this.retrieve('load')) this.store('load', new Request.HTML({link: 'cancel', update: this, method: 'get'}));
 	return this.retrieve('load');
 });
 
-Element.implement('load', function(url, data){
+DOM.Element.implement('load', function(url, data){
 	this.get('load').setOption('url', url).send(data);
 	return this;
 });

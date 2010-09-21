@@ -29,7 +29,7 @@ Request.JSON = new Class({
 			this.response.json = JSON.decode(text, this.options.secure);
 			this.onSuccess(this.response.json, text);
 		} catch(error) {
-			this.fireEvent('error', [text, error]);
+			this.fire('error', [text, error]);
 		}
 	}
 

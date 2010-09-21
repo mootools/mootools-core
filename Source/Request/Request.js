@@ -92,12 +92,12 @@ this.Request = new Class({
 
 		Object.each(headers, function(value, key){
 			var xhr = this.xhr;
-			if (!Function.stab(function(){
+			if (!Function.attempt(function(){
 				xhr.setRequestHeader(key, value);
-			})) this.fireEvent('exception', [key, value]);
+			})) this.fire('exception', [key, value]);
 		}, this);
 
-		this.fireEvent('request');
+		this.fire('request');
 		this.xhr.send(data);
 		if (!this.getOption('async')) this.onStateChange();
 
@@ -109,7 +109,7 @@ this.Request = new Class({
 		this.running = false;
 		this.xhr.abort();
 		this.xhr = new Browser.Request();
-		this.fireEvent('cancel');
+		this.fire('cancel');
 		return this;
 	},
 	
@@ -119,7 +119,7 @@ this.Request = new Class({
 	},
 
 	getHeader: function(name){
-		return Function.stab(function(){
+		return Function.attempt(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},
@@ -129,7 +129,7 @@ this.Request = new Class({
 		this.running = false;
 		this.status = 0;
 		
-		Function.stab(function(){
+		Function.attempt(function(){
 			this.status = this.xhr.status;
 		}.bind(this));
 		
@@ -156,7 +156,7 @@ this.Request = new Class({
 	},
 
 	'protected onSuccess': function(){
-		this.fireEvent('complete', arguments).fireEvent('success', arguments).callChain();
+		this.fire('complete', arguments).fire('success', arguments).callChain();
 	},
 
 	'protected failure': function(){
@@ -164,14 +164,14 @@ this.Request = new Class({
 	},
 
 	'protected onFailure': function(){
-		this.fireEvent('complete').fireEvent('failure', this.xhr);
+		this.fire('complete').fire('failure', this.xhr);
 	},
 
 	'protected check': function(){
 		if (!this.running) return true;
 		switch (this.getOption('link')){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
+			case 'chain': this.chain(this.caller.pass(arguments, this)); return false;
 		}
 		return false;
 	}
@@ -184,18 +184,18 @@ this.Request = new Class({
 	Request.implement(name, method).implement(name.toUpperCase(), method);
 });
 
-Element.defineSetter('send', function(options){
+DOM.Element.defineSetter('send', function(options){
 	this.get('send').cancel().setOptions(options);
 });
 
-Element.defineGetter('send', function(){
+DOM.Element.defineGetter('send', function(){
 	if (!this.retrieve('send')) this.store('send', new Request({
 		data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
 	}));
 	return this.retrieve('send');
 });
 
-Element.implement('send', function(data){
+DOM.Element.implement('send', function(data){
 	this.get('send').send(data);
 	return this;
 });
