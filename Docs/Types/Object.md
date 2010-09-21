@@ -69,7 +69,9 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var obj1 = {a: 0, b: 1};
 	var obj2 = {c: 2, d: 3};
 	var obj3 = {a: 4, d: 5};
-	var merged = Object.merge(obj1, obj2, obj3); // returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
+	var merged = Object.merge(obj1, obj2, obj3); // returns {a: 4, b: 1, c: 2, d: 5}, (obj2, and obj3 are unaltered)
+
+	merged === obj1; // true, obj1 gets altered and returned as merged object
 
 	var nestedObj1 = {a: {b: 1, c: 1}};
 	var nestedObj2 = {a: {b: 2}};
