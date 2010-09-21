@@ -2,7 +2,7 @@
 ---
 name: Core
 description: The heart of MooTools.
-provides: [Core, MooTools, Type, typeOf, instanceOf]
+provides: [MooTools, Type, typeOf, instanceOf, uniqueID, nil]
 ...
 */
 
@@ -19,11 +19,25 @@ this.nil = function(item){
 	return (item != null) ? item : null;
 };
 
+// slicing is good for you
+
+var slice = Array.prototype.slice;
+
+var Function = this.Function;
+
+var enumerables = true;
+for (var i in {toString: 1}) enumerables = null;
+if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
+
 Function.prototype.overloadSetter = function(usePlural){
 	var self = this;
 	return function(a, b){
 		if (usePlural || typeof a != 'string'){
 			for (var k in a) self.call(this, k, a[k]);
+			if (enumerables) for (var i = enumerables.length; i--;){
+				k = enumerables[i];
+				if (a.hasOwnProperty(k)) self.call(this, k, a[k]);
+			}
 		} else {
 			self.call(this, a, b);
 		}
@@ -93,7 +107,7 @@ Function.from = function(item){
 
 Array.from = function(item){
 	if (item == null) return [];
-	return (Type.isEnumerable(item)) ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
+	return (Type.isEnumerable(item)) ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -137,52 +151,39 @@ var Type = this.Type = function(name, object){
 		object.prototype.$family = function(){
 			return lower;
 		}.hide();
-		object.$name = lower;
 	}
 
 	object.extend(this);
 	object.$constructor = Type;
-	object.prototype.$constructor = object;
+	object.prototype.$constructor = object.hide();
 	
 	return object;
-};
+
+}.hide();
 
 Type.isEnumerable = function(item){
 	return (typeof item == 'object' && typeof item.length == 'number');
 };
 
-var hooks = {};
+var extend = function(name, method){
+	if (method && method.$hidden) return this;
+	
+	var previous = this[name];
+	if (previous == null || !previous.$protected) this[name] = method;
 
-var hooksOf = function(object){
-	var type = typeOf(object.prototype);
-	return hooks[type] || (hooks[type] = []);
+	return this;
 };
 
 var implement = function(name, method){
 	if (method && method.$hidden) return this;
-	
-	var hooks = hooksOf(this);
-	
-	for (var i = 0; i < hooks.length; i++){
-		var hook = hooks[i];
-		if (typeOf(hook) == 'type') implement.call(hook, name, method);
-		else hook.call(this, name, method);
-	}
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
 	
-	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
-		return method.apply(item, Array.prototype.slice.call(arguments, 1));
+	if (this[name] == null && typeof method == 'function') extend.call(this, name, function(item){
+		return method.apply(item, slice.call(arguments, 1));
 	});
 	
-	return this;
-};
-
-var extend = function(name, method){
-	if (method && method.$hidden) return this;
-	var previous = this[name];
-	if (previous == null || !previous.$protected) this[name] = method;
 	return this;
 };
 
@@ -194,57 +195,46 @@ Type.implement({
 
 	alias: function(key, value){
 		implement.call(this, key, this.prototype[value]);
-	}.overloadSetter(),
-
-	mirror: function(hook){
-		hooksOf(this).push(hook);
-		return this;
-	}
+	}.overloadSetter()
 	
 });
 
 new Type('Type', Type);
 
-// Default Types
+// Protect Types
 
-var force = function(type, methods){
+var protect = function(type, methods){
 	var object = new Type(type, this[type]);
-	
-	var prototype = object.prototype;
-	
+	var generics = {};
+
 	for (var i = 0, l = methods.length; i < l; i++){
-		var name = methods[i];
-		
-		var generic = object[name];
-		if (generic) generic.protect();
-		
-		var proto = prototype[name];
-		if (proto){
-			delete prototype[name];
-			prototype[name] = proto.protect();
-		}
+		var name = methods[i], generic = object[name], proto = object.prototype[name];
+		if (!proto) continue;
+		proto.protect();
+		if (!generic) generics[name] = proto;
+		else generic.protect();
 	}
 	
-	return object.implement(object.prototype);
+	object.implement(generics);
 };
 
-force('String', [
+protect('String', [
 	'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 	'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
 ]);
 
-force('Array', [
+protect('Array', [
 	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
 	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
 ]);
 
-force('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
+protect('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
 
-force('Function', ['apply', 'call']);
+protect('Function', ['apply', 'call']);
 
-force('RegExp', ['exec', 'test']);
+protect('RegExp', ['exec', 'test']);
 
-force('Date', ['now']);
+protect('Date', ['now']);
 
 Date.extend('now', function(){
 	return +(new Date);
@@ -252,7 +242,7 @@ Date.extend('now', function(){
 
 new Type('Boolean', Boolean);
 
-// fixes NaN returning as Number
+// fixes typeOf(NaN) returning as "number"
 
 Number.prototype.$family = function(){
 	return (isFinite(this)) ? 'number' : 'null';
@@ -260,21 +250,19 @@ Number.prototype.$family = function(){
 
 // forEach, each
 
-Object.extend('forEach', function(object, fn, bind){
-	for (var key in object) fn.call(bind, object[key], key, object);
-});
+Object.extend('forEach', function(object, fn, context){
+	for (var key in object) fn.call(context, object[key], key, object);
+}).extend('each', Object.forEach);
 
-Object.each = Object.forEach;
-
-Array.implement('forEach', function(fn, bind){
+Array.implement('forEach', function(fn, context){
 	for (var i = 0, l = this.length; i < l; i++){
-		if (i in this) fn.call(bind, this[i], i, this);
+		if (i in this) fn.call(context, this[i], i, this);
 	}
 }).alias('each', 'forEach');
 
 // Array & Object cloning
 
-var cloneOf = function(item){
+var clone = function(item){
 	switch (typeOf(item)){
 		case 'array': return item.clone();
 		case 'object': return Object.clone(item);
@@ -283,15 +271,15 @@ var cloneOf = function(item){
 };
 
 Array.implement('clone', function(){
-	var i = this.length, clone = new Array(i);
-	while (i--) clone[i] = cloneOf(this[i]);
-	return clone;
+	var i = this.length, cloned = new Array(i);
+	while (i--) cloned[i] = clone(this[i]);
+	return cloned;
 });
 
 Object.extend('clone', function(object){
-	var clone = {};
-	for (var key in object) clone[key] = cloneOf(object[key]);
-	return clone;
+	var cloned = {};
+	for (var key in object) cloned[key] = clone(object[key]);
+	return cloned;
 });
 
 // Object merging
