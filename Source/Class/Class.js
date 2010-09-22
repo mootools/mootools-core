@@ -17,8 +17,7 @@ provides: Class
 (function(){
 
 var Class = this.Class = new Type('Class', function(params){
-
-	if (instanceOf(params, Function)) params = {'initialize': params};
+	if (instanceOf(params, Function)) params = {initialize: params};
 
 	var newClass = function(){
 		reset(this);
@@ -27,22 +26,20 @@ var Class = this.Class = new Type('Class', function(params){
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 		this.$caller = this.caller = null;
 		return value;
-	}.extend(this);
-
-	newClass.implement(params);
+	}.extend(this).implement(params);
 
 	newClass.$constructor = Class;
 	newClass.prototype.$constructor = newClass;
 	newClass.prototype.parent = parent;
 
 	return newClass;
-
 });
 
 var parent = function(){
 	if (!this.$caller) throw new Error('The method "parent" cannot be called.');
-	var name = this.$caller.$name, parent = this.$caller.$owner.parent;
-	var previous = (parent) ? parent.prototype[name] : null;
+	var name = this.$caller.$name,
+		parent = this.$caller.$owner.parent,
+		previous = (parent) ? parent.prototype[name] : null;
 	if (!previous) throw new Error('The method "' + name + '" has no parent.');
 	return previous.apply(this, arguments);
 };
@@ -54,8 +51,7 @@ var reset = function(object){
 			case 'object':
 				var F = function(){};
 				F.prototype = value;
-				var instance = new F;
-				object[key] = reset(instance);
+				object[key] = reset(new F);
 			break;
 			case 'array': object[key] = value.clone(); break;
 		}
@@ -77,7 +73,6 @@ var wrap = function(self, key, method){
 };
 
 var implement = function(key, value, retain){
-
 	if (Class.Mutators.hasOwnProperty(key)){
 		value = Class.Mutators[key].call(this, value);
 		if (value == null) return this;
@@ -91,7 +86,6 @@ var implement = function(key, value, retain){
 	}
 
 	return this;
-
 };
 
 var getInstance = function(klass){
