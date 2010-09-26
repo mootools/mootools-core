@@ -122,7 +122,7 @@ Array.implement({
 	},
 
 	empty: function(){
-		this.splice(0);
+		this.length = 0;
 		return this;
 	},
 

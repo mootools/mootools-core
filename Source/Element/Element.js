@@ -146,6 +146,11 @@ new Type('Elements', Elements).implement({
 	append: function(collection){
 		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
 		return this;
+	},
+
+	empty: function(){
+		while (this.length) delete this[--this.length];
+		return this;
 	}.protect()
 
 });
