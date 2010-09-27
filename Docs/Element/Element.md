@@ -114,7 +114,7 @@ The Element instance returned is an array-like object, supporting every [Array][
 - Since MooTools 1.3 this function does not accept multiple collections or multiple strings as arguments.
 - If an expression doesn't find any elements, an empty Elements instance will be returned.
 - The return type of element methods run through [$$][] is always an Elements instance, regardless of the amount of results.
-
+- Default Selectors supported are the same as you can find on [W3C CSS3 selectors](http://www.w3.org/TR/css3-selectors/#selectors).
 
 
 Type: Element {#Element}
@@ -193,9 +193,10 @@ Gets the first descendant element whose tag name matches the tag provided. CSS s
 
 	var firstDiv = $(document.body).getElement('div');
 
-### Note:
+### Notes:
 
-This method is also available for Document instances.
+- This method is also available for Document instances.
+- Default Selectors supported are the same as you can find on [W3C CSS3 selectors](http://www.w3.org/TR/css3-selectors/#selectors).
 
 
 
@@ -220,9 +221,10 @@ Collects all decedent elements whose tag name matches the tag provided. CSS sele
 
 	var allAnchors = $(document.body).getElements('a');
 
-### Note:
+### Notes:
 
-This method is also available for Document instances.
+- This method is also available for Document instances.
+- Default Selectors supported are the same as you can find on [W3C CSS3 selectors](http://www.w3.org/TR/css3-selectors/#selectors).
 
 
 
