@@ -21,7 +21,7 @@ var Element = function(tag, props){
 
 	if (!props) props = {};
 
-	if (!tag.test(/^[\w-]+$/)){
+	if (!(/^[\w-]+$/).test(tag)){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
@@ -230,7 +230,7 @@ Document.implement({
 
 			element: function(el, nocash){
 				$uid(el);
-				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
+				if (!nocash && !el.$family && !(/^(?:object|embed)$/i).test(el.tagName)){
 					Object.append(el, Element.ProtoType);
 				}
 				return el;
@@ -377,7 +377,7 @@ var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'dis
 };
 var readOnly = ['type'];
 var expandos = ['value', 'defaultValue'];
-var uriAttrs = /^href|src|usemap$/i;
+var uriAttrs = /^(?:href|src|usemap)$/i;
 
 bools = bools.associate(bools);
 camels = camels.associate(camels.map(String.toLowerCase));

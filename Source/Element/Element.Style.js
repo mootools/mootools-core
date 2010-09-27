@@ -32,7 +32,7 @@ var setOpacity = function(element, opacity){
 	} else {
 		opacity = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
 		var filter = element.style.filter || element.getComputedStyle('filter') || '';
-		element.style.filter = filter.test(reAlpha) ? filter.replace(reAlpha, opacity) : filter + opacity;
+		element.style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
 	}
 };
 
@@ -118,15 +118,15 @@ Element.implement({
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
 		if (Browser.opera || (Browser.ie && isNaN(parseFloat(result)))){
-			if (property.test(/^(height|width)$/)){
+			if ((/^(height|width)$/).test(property)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
 					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
-			if (Browser.opera && String(result).test('px')) return result;
-			if (property.test(/(border(.+)Width|margin|padding)/)) return '0px';
+			if (Browser.opera && String(result).indexOf('px') != -1) return result;
+			if ((/^border(.+)Width|margin|padding/).test(property)) return '0px';
 		}
 		return result;
 	},
