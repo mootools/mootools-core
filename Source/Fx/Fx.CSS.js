@@ -80,7 +80,7 @@ Fx.CSS = new Class({
 
 	search: function(selector){
 		if (Fx.CSS.Cache[selector]) return Fx.CSS.Cache[selector];
-		var to = {};
+		var to = {}, selectorTest = new RegExp('^' + selector.escapeRegExp() + '$');
 		Array.each(document.styleSheets, function(sheet, j){
 			var href = sheet.href;
 			if (href && href.contains('://') && !href.contains(document.domain)) return;
@@ -90,11 +90,11 @@ Fx.CSS = new Class({
 				var selectorText = (rule.selectorText) ? rule.selectorText.replace(/^\w+/, function(m){
 					return m.toLowerCase();
 				}) : null;
-				if (!selectorText || !selectorText.test('^' + selector + '$')) return;
+				if (!selectorText || !selectorTest.test(selectorText)) return;
 				Object.each(Element.Styles, function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = String(rule.style[style]);
-					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
+					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
 				});
 			});
 		});
