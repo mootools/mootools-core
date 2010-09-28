@@ -60,10 +60,10 @@ new Type('Element', Element).mirror(function(name){
 if (!Browser.Element){
 	Element.parent = Object;
 
-	Element.ProtoType = {'$family': Function.from('element').hide()};
+	Element.Prototype = {'$family': Function.from('element').hide()};
 
 	Element.mirror(function(name, method){
-		Element.ProtoType[name] = method;
+		Element.Prototype[name] = method;
 	});
 }
 
@@ -231,7 +231,7 @@ Document.implement({
 			element: function(el, nocash){
 				$uid(el);
 				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-					Object.append(el, Element.ProtoType);
+					Object.append(el, Element.Prototype);
 				}
 				return el;
 			},
