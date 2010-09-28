@@ -26,7 +26,7 @@ var Event = new Type('Event', function(event, win){
 		client = {};
 	while (target && target.nodeType == 3) target = target.parentNode;
 
-	if (type.test(/key/)){
+	if (type.indexOf('key') != -1){
 		var code = event.which || event.keyCode;
 		var key = Object.keyOf(Event.Keys, code);
 		if (type == 'keydown'){

@@ -377,7 +377,7 @@ var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'dis
 };
 var readOnly = ['type'];
 var expandos = ['value', 'defaultValue'];
-var uriAttrs = /^href|src|usemap$/i;
+var uriAttrs = /^(?:href|src|usemap)$/i;
 
 bools = bools.associate(bools);
 camels = camels.associate(camels.map(String.toLowerCase));
