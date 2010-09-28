@@ -337,27 +337,24 @@ Array.implement('clone', function(){
 	return clone;
 });
 
-var mergeOne = function(source, key, current){
-	switch (typeOf(current)){
-		case 'object':
-			if (typeOf(source[key]) == 'object') Object.merge(source[key], current);
-			else source[key] = Object.clone(current);
-		break;
-		case 'array': source[key] = current.clone(); break;
-		default: source[key] = current;
-	}
-	return source;
-};
-
 Object.extend({
 
-	merge: function(source, k, v){
-		if (typeOf(k) == 'string') return mergeOne(source, k, v);
+	merge: function(target){
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var object = arguments[i];
-			for (var key in object) mergeOne(source, key, object[key]);
+			for (var key in object) {
+				var value = object[key];
+				switch (typeOf(value)){
+					case 'object':
+						if (typeOf(target[key]) == 'object') Object.merge(target[key], value);
+						else target[key] = Object.clone(value);
+					break;
+					case 'array': target[key] = value.clone(); break;
+					default: target[key] = value;
+				}
+			}
 		}
-		return source;
+		return target;
 	},
 
 	clone: function(object){
