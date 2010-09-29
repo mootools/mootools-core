@@ -265,7 +265,7 @@ describe('Element.getElement', function(){
 		div.adopt(p);
 
 		var element = div.getElement();
-		expect(element).toBe(p);
+		expect(element).toBe(null);
 	});
 
 });
@@ -282,10 +282,7 @@ describe('Element.getElements', function(){
 		div.adopt(p);
 
 		var elements = div.getElements();
-		expect(elements.length).toBe(3);
-		expect(elements).toContain(a);
-		expect(elements).toContain(span);
-		expect(elements).toContain(p);
+		expect(elements.length).toBe(0);
 	});
 
 });

@@ -1444,7 +1444,7 @@ describe('Element.getFirst', {
 
 });
 
-describe('Element.getLast | Element.getLastChild', {
+describe('Element.getLast', {
 
 	'should return the last Element in the Element, otherwise null': function(){
 		var container = new Element('div');
