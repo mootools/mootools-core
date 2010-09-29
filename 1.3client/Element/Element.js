@@ -255,7 +255,7 @@ describe('Elements.concat', function(){
 
 describe('Element.getElement', function(){
 
-	it('should get the first matched element', function(){
+	it('should return null', function(){
 		var div = new Element('div'),
 			a = new Element('a'),
 			span = new Element('span'),
@@ -272,7 +272,7 @@ describe('Element.getElement', function(){
 
 describe('Element.getElements', function(){
 
-	it('should get all elements with the container', function(){
+	it('should return an empty collection', function(){
 		var div = new Element('div'),
 			a = new Element('a'),
 			span = new Element('span'),
@@ -283,6 +283,10 @@ describe('Element.getElements', function(){
 
 		var elements = div.getElements();
 		expect(elements.length).toBe(0);
+	});
+
+	it('should return an empty collection if called on document.body', function(){
+		expect(document.body.getElements()).toEqual(new Elements);
 	});
 
 });
