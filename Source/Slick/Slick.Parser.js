@@ -185,7 +185,7 @@ function parser(
 			};
 		}
 
-		if ((/^[*$^]=$/).test(attributeOperator) && attributeValue == '') test = function(){
+		if (attributeValue == '' && (/^[*$^]=$/).test(attributeOperator)) test = function(){
 			return false;
 		};
 
