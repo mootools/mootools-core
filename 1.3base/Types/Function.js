@@ -135,7 +135,7 @@ describe("Function Methods 1.3", function(){
 			expect(spyB).not.toHaveBeenCalled();
 			clearTimeout(timerB);
 		});
-		waits(150);
+		waits(250);
 		runs(function(){
 			expect(spyA.callCount).toBe(1);
 			expect(spyB.callCount).toBe(0);
@@ -165,7 +165,9 @@ describe("Function Methods 1.3", function(){
 			expect(spy.callCount).toBeLessThan(15);
 			clearInterval(interval);
 			spy.reset();
+			expect(spy).not.toHaveBeenCalled();
 		});
+
 		waits(100);
 		runs(function(){
 			expect(spy).not.toHaveBeenCalled();
