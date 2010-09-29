@@ -289,7 +289,7 @@ describe('Element.getElements', function(){
 
 describe('Element.getFirst', function(){
 
-	it('should return the first Element in the Element that matches, otherwise null', function(){
+	it('should return last the first element only if it matches the expression', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('div')];
 		container.adopt(children);
@@ -301,7 +301,7 @@ describe('Element.getFirst', function(){
 
 describe('Element.getLast', function(){
 
-	it('should return the last Element in the Element that matches, otherwise null', function(){
+	it('should return the last element only if it matches the expression', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('div')];
 		container.adopt(children);
