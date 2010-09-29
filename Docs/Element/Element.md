@@ -1021,7 +1021,7 @@ Like Element.getNext, but returns a collection of all the matched nextSiblings.
 Element Method: getFirst {#Element:getFirst}
 --------------------------------------------
 
-Works as [Element:getPrevious][], but tries to find the firstChild (excluding text nodes).
+Gets the first element that matches the passed in expression.
 
 
 ### Syntax:
@@ -1030,18 +1030,18 @@ Works as [Element:getPrevious][], but tries to find the firstChild (excluding te
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
+1. match - (*string*, optional): A full CSS selector to match the found element(s) with.
 
 ### Returns:
 
-* (*mixed*) The first sibling Element or null if none found.
+* (*mixed*) The first found element or null if none found.
 
 
 
 Element Method: getLast {#Element:getLast}
 ------------------------------------------
 
-Works as [Element:getPrevious][], but tries to find the lastChild.
+Gets the last element that matches the passed in expression.
 
 ### Syntax:
 
@@ -1049,11 +1049,11 @@ Works as [Element:getPrevious][], but tries to find the lastChild.
 
 ### Arguments:
 
-1. match - (*string*, optional): A tag name to match the found element(s) with. A full CSS selector can be passed.
+1. match - (*string*, optional): A full CSS selector to match the found element(s) with.
 
 ### Returns:
 
-* (*mixed*) The first sibling Element, or returns null if none found.
+* (*mixed*) The last found element, or returns null if none found.
 
 
 

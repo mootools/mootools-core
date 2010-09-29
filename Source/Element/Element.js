@@ -579,11 +579,12 @@ Element.implement({
 	},
 
 	getFirst: function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, '^')));
+		var elements = this.search(expression);
+		return (elements.length) ? elements[0] : null;
 	},
 
 	getLast: function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, '!^')));
+		return this.search(expression).getLast();
 	},
 
 	getParent: function(expression){
