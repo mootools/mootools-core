@@ -579,7 +579,7 @@ Element.implement({
 	},
 
 	getFirst: function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, '>')));
+		return document.id(Slick.find(this, injectCombinator(expression, '^')));
 	},
 
 	getLast: function(expression){
