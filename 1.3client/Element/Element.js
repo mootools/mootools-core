@@ -295,10 +295,10 @@ describe('Element.getFirst', function(){
 
 	it('should return last the first element only if it matches the expression', function(){
 		var container = new Element('div');
-		var children = [new Element('div'), new Element('a'), new Element('div')];
+		var children = [new Element('div').adopt(new Element('a')), new Element('a'), new Element('div')];
 		container.adopt(children);
-		expect(container.getFirst('div')).toEqual(children[0]);
-		expect(container.getFirst('a')).toBeNull();
+		expect(container.getFirst('div')).toBe(children[0]);
+		expect(container.getFirst('a')).toBe(children[1]);
 		expect(container.getFirst('span')).toBeNull();
 	});
 });
@@ -307,10 +307,10 @@ describe('Element.getLast', function(){
 
 	it('should return the last element only if it matches the expression', function(){
 		var container = new Element('div');
-		var children = [new Element('div'), new Element('a'), new Element('div')];
+		var children = [new Element('div').adopt(new Element('a')), new Element('a'), new Element('div')];
 		container.adopt(children);
-		expect(container.getLast('div')).toEqual(children[2]);
-		expect(container.getLast('a')).toBeNull();
+		expect(container.getLast('div')).toBe(children[2]);
+		expect(container.getLast('a')).toBe(children[1]);
 		expect(container.getLast('span')).toBeNull();
 	});
 });
