@@ -579,12 +579,12 @@ Element.implement({
 	},
 
 	getFirst: function(expression){
-		var elements = this.search(expression);
+		var elements = this.getChildren(expression);
 		return (elements.length) ? elements[0] : null;
 	},
 
 	getLast: function(expression){
-		return this.search(expression).getLast();
+		return this.getChildren(expression).getLast();
 	},
 
 	getParent: function(expression){
