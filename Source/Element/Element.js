@@ -276,11 +276,11 @@ Window.implement({
 [Document, Element].invoke('implement', {
 
 	getElements: function(expression){
-		return Slick.search(this, expression, new Elements);
+		return Slick.search(this, expression || '*', new Elements);
 	},
 
 	getElement: function(expression){
-		return document.id(Slick.find(this, expression));
+		return document.id(Slick.find(this, expression || '*'));
 	}
 
 });
