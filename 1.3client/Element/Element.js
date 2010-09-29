@@ -252,3 +252,40 @@ describe('Elements.concat', function(){
 	});
 
 });
+
+describe('Element.getElement', function(){
+
+	it('should get the first matched element', function(){
+		var div = new Element('div'),
+			a = new Element('a'),
+			span = new Element('span'),
+			p = new Element('span');
+
+		p.adopt(span, a);
+		div.adopt(p);
+
+		var element = div.getElement();
+		expect(element).toBe(p);
+	});
+
+});
+
+describe('Element.getElements', function(){
+
+	it('should get all elements with the container', function(){
+		var div = new Element('div'),
+			a = new Element('a'),
+			span = new Element('span'),
+			p = new Element('span');
+
+		p.adopt(span, a);
+		div.adopt(p);
+
+		var elements = div.getElements();
+		expect(elements.length).toBe(3);
+		expect(elements).toContain(a);
+		expect(elements).toContain(span);
+		expect(elements).toContain(p);
+	});
+
+});
