@@ -21,6 +21,7 @@ local.isXML = function(document){
 	return (!!document.xmlVersion) || (!!document.xml) || (Object.prototype.toString.call(document) === '[object XMLDocument]') ||
 	(document.nodeType === 9 && document.documentElement.nodeName !== 'HTML');
 };
+
 local.setDocument = function(document){
 
 	// convert elements / window arguments to document. if document cannot be extrapolated, the function returns.
@@ -181,13 +182,6 @@ local.setDocument = function(document){
 local.search = function(context, expression, append, first){
 
 	var found = this.found = (first) ? null : (append || []);
-
-	// no need to pass a context if its the current document
-
-	if (expression == null){
-		expression = context;
-		context = document; // the current document, not local.document, cause it would be confusing
-	}
 
 	// context checks
 
