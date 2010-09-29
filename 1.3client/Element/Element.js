@@ -286,3 +286,27 @@ describe('Element.getElements', function(){
 	});
 
 });
+
+describe('Element.getFirst', function(){
+
+	it('should return the first Element in the Element that matches, otherwise null', function(){
+		var container = new Element('div');
+		var children = [new Element('div'), new Element('a'), new Element('div')];
+		container.adopt(children);
+		expect(container.getFirst('div')).toEqual(children[0]);
+		expect(container.getFirst('a')).toBeNull();
+		expect(container.getFirst('span')).toBeNull();
+	});
+});
+
+describe('Element.getLast', function(){
+
+	it('should return the last Element in the Element that matches, otherwise null', function(){
+		var container = new Element('div');
+		var children = [new Element('div'), new Element('a'), new Element('div')];
+		container.adopt(children);
+		expect(container.getLast('div')).toEqual(children[2]);
+		expect(container.getLast('a')).toBeNull();
+		expect(container.getLast('span')).toBeNull();
+	});
+});

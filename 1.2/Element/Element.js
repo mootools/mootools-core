@@ -1432,14 +1432,6 @@ describe('Element.getFirst', {
 		container.adopt(children);
 		expect(container.getFirst()).toEqual(children[0]);
 		expect(children[0].getFirst()).toBeNull();
-	},
-
-	'should return the first Element in the Element that matches, otherwise null': function(){
-		var container = new Element('div');
-		var children = [new Element('div'), new Element('a'), new Element('div')];
-		container.adopt(children);
-		expect(container.getFirst('a')).toEqual(children[1]);
-		expect(container.getFirst('span')).toBeNull();
 	}
 
 });
