@@ -70,4 +70,32 @@ describe('Element.Event', function(){
 
 	});
 
+	it('should clone events of an element', function(){
+
+		var calls = 0;
+
+		var element = new Element('div').addEvent('click', function(){ calls++; });
+		element.fireEvent('click');
+
+		expect(calls).toBe(1);
+
+		var clone = new Element('div').cloneEvents(element, 'click');
+		clone.fireEvent('click');
+
+		expect(calls).toBe(2);
+
+		element.addEvent('custom', function(){ calls += 2; }).fireEvent('custom');
+
+		expect(calls).toBe(4);
+
+		clone.cloneEvents(element);
+		clone.fireEvent('click');
+
+		expect(calls).toBe(5);
+
+		clone.fireEvent('custom');
+
+		expect(calls).toBe(7);
+	});
+
 });

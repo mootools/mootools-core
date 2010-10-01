@@ -100,4 +100,21 @@ describe('Fx.Tween', function(){
 
 	});
 
+	it('should fade an element with toggle', function(){
+
+		var element = new Element('div', {
+			tween: {
+				duration: 10
+			}
+		}).setStyle('background-color', '#fff').inject(document.body);
+
+		element.highlight('#f00');
+
+		runs(function(){
+			expect(element.getStyle('background-color').toLowerCase()).toEqual('#ffffff');
+			element.destroy();
+		});
+
+	});
+
 });

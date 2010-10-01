@@ -14,4 +14,10 @@ describe('JSON', function(){
 		expect(JSON.decode(JSON.encode(object))).toEqual(object);
 	});
 
+	it('should encode an unknown type as null', function(){
+		expect(JSON.encode({
+			$family: function(){ return 'some unknown type' }
+		})).toBeNull();
+	});
+
 });
