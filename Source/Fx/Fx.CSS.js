@@ -74,6 +74,12 @@ Fx.CSS = new Class({
 
 	render: function(element, property, value, unit){
 		element.setStyle(property, this.serve(value, unit));
+		this.triggerEvent('update', {
+			target: element,
+			property: property,
+			value: value,
+			unit: unit
+		});
 	},
 
 	//searches inside the page css to find the values for a selector
