@@ -4,6 +4,7 @@ describe('JSON', function(){
 		var object = {
 			a: [0, 1, 2],
 			s: "It's-me-Valerio!",
+			u: '\x01',
 			n: 1,
 			f: 3.14,
 			b: false,

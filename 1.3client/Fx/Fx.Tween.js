@@ -25,6 +25,26 @@ describe('Fx.Tween', function(){
 
 	});
 
+	it('should tween the style of an element via Element.tween', function(){
+
+		var element = new Element('div', {
+			styles: {
+				height: 100
+			},
+			tween: {
+				duration: 100
+			}
+		}).inject(document.body).tween('width', 50);
+
+		waits(130);
+
+		runs(function(){
+			expect(element.getStyle('width').toInt()).toEqual(50);
+			element.destroy();
+		});
+
+	});
+
 	it('should fade an element', function(){
 
 		var element = new Element('div', {
@@ -41,6 +61,27 @@ describe('Fx.Tween', function(){
 
 		runs(function(){
 			expect(element.getStyle('opacity').toInt()).toEqual(1);
+			element.destroy();
+		});
+
+	});
+
+	it('should fade an element with toggle', function(){
+
+		var element = new Element('div', {
+			styles: { opacity: 1 }
+		}).inject(document.body);
+
+		element.set('tween', {
+			duration: 100
+		});
+
+		element.fade('toggle');
+
+		waits(130);
+
+		runs(function(){
+			expect(element.getStyle('opacity').toInt()).toEqual(0);
 			element.destroy();
 		});
 

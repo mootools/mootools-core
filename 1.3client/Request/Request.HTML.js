@@ -169,5 +169,32 @@ describe('Request.HTML', function(){
 		});
 		
 	});
+
+	it('should create an ajax request through Element.load', function(){
+
+		var element = new Element('div');
+		runs(function(){
+			var request = element.set('load', {
+				url: '../Helpers/request.php',
+				onComplete: this.spy
+			}).get('load');
+
+			expect(instanceOf(request, Request.HTML)).toBeTruthy();
+
+			element.load({
+				'__response': 'hello world!', '__type': 'html'
+			});
+		});
+
+		waitsFor(800, function(){
+			return this.spy.wasCalled;
+		});
+
+		runs(function(){
+			var onCompleteArgs = this.spy.argsForCall[0];
+			expect(element.get('text')).toEqual('hello world!');
+		});
+
+	});
 	
 });

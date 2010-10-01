@@ -1,5 +1,5 @@
 
-describe('Fx.Tween', function(){
+describe('Fx.Morph', function(){
 
 	it('should morph the style of an element', function(){
 
@@ -29,7 +29,7 @@ describe('Fx.Tween', function(){
 
 	});
 
-	it('should set morph options with the element getter en setter', function(){
+	it('should set morph options with the element getter and setter', function(){
 
 		var element = new Element('div');
 
