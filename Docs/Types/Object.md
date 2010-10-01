@@ -77,11 +77,6 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var nestedObj2 = {a: {b: 2}};
 	var nested = Object.merge(nestedObj1, nestedObj2); // returns: {a: {b: 2, c: 1}}
 
-### Notes:
-
-This method is an object-specific equivalent of *$merge* from MooTools 1.2.
-
-
 
 Function: Object.clone {#Object:Object-clone}
 --------------------------------------
@@ -172,12 +167,12 @@ Get a subset of an object.
 
 ### Examples:
 
-	var obj = {
+	var object = {
 		a: 'one',
 		b: 'two',
 		c: 'three'
 	};
-	Object.subset(['a', 'c']); // returns {a: 'one', c: 'three'}
+	Object.subset(object, ['a', 'c']); // returns {a: 'one', c: 'three'}
 
 
 
