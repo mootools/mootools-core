@@ -1,30 +1,35 @@
 
 describe('Fx', function(){
 
-	it('should start a Fx and call the onComplete event', function(){
+	Object.each(Fx.Transitions, function(value, transition){
+		if (transition == 'extend') return;
 
-		var onComplete = jasmine.createSpy('complete'),
-			onStart = jasmine.createSpy('start');
+		it('should start a Fx and call the onComplete event with ' + transition + ' as timing function', function(){
 
-		var fx = new Fx({
-			duration: 100,
-			onComplete: onComplete,
-			onStart: onStart
+			var onComplete = jasmine.createSpy('complete'),
+				onStart = jasmine.createSpy('start');
+
+			var fx = new Fx({
+				duration: 50,
+				transition: Fx.Transitions[transition],
+				onComplete: onComplete,
+				onStart: onStart
+			});
+
+			expect(onStart).not.toHaveBeenCalled();
+
+			fx.start(10, 20);
+
+			expect(onStart).toHaveBeenCalled();
+			expect(onComplete).not.toHaveBeenCalled();
+
+			waits(80);
+
+			runs(function(){
+				expect(onComplete).toHaveBeenCalled();
+			});
+
 		});
-
-		expect(onStart).not.toHaveBeenCalled();
-
-		fx.start(10, 10);
-
-		expect(onStart).toHaveBeenCalled();
-		expect(onComplete).not.toHaveBeenCalled();
-
-		waits(150);
-
-		runs(function(){
-			expect(onComplete).toHaveBeenCalled();
-		});
-
 	});
 
 	it('should cancel a Fx', function(){
@@ -33,6 +38,7 @@ describe('Fx', function(){
 
 		var fx = new Fx({
 			duration: 50,
+			transition: 'sine:in:out',
 			onCancel: onCancel
 		});
 

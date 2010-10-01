@@ -128,7 +128,8 @@ Configuration.source = {
 			'Class/Class',
 			'Class/Class.Extras',
 
-			'Fx/Fx'
+			'Fx/Fx',
+			'Fx/Fx.Transitions'
 		]
 	},
 
@@ -155,7 +156,6 @@ Configuration.source = {
 			'Fx/Fx.CSS',
 			'Fx/Fx.Tween',
 			'Fx/Fx.Morph',
-			'Fx/Fx.Transitions',
 
 			'Request/Request',
 			'Request/Request.HTML',
