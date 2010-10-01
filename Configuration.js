@@ -63,9 +63,11 @@ Configuration.sets = {
 			'Element/IFrame',
 			'Request/Request',
 			'Request/Request.HTML',
-			'Request/Request',
+			'Request/Request.JSON',
 			'Fx/Fx.Tween',
-			'Fx/Fx.Morph'
+			'Fx/Fx.Morph',
+			'Utilities/Cookie',
+			'Utilities/JSON'
 		]
 	}
 };

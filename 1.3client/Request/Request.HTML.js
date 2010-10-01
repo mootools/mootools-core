@@ -1,11 +1,3 @@
-/*
-Script: Request.HTML.js
-	Public Specs for Request.HTML.js 1.3
-
-License:
-	MIT-style license.
-*/
-
 describe('Request.HTML', function(){
 
 	beforeEach(function(){

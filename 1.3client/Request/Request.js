@@ -1,11 +1,3 @@
-/*
-Script: Request.js
-	Public Specs for Request.js 1.3
-
-License:
-	MIT-style license.
-*/
-
 describe('Request', function(){
 
 	it('should create an ajax request', function(){
