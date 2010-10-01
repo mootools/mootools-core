@@ -183,7 +183,12 @@ Returns an array with the named method applied to the array's contents.
 	var foo = [4, 8, 15, 16, 23, 42];
 	var bar = foo.invoke('limit', 10, 30);	//bar is now [10, 10, 15, 16, 23, 30]
 
+### Notes:
 
+The method that is invoked is a method of each of the items.
+If the method does not exist, then an error will be thrown. For example:
+
+	[0, false, 'string'].invoke('limit', 0, 10); // throws an error!
 
 Array method: every {#Array:every}
 ----------------------------
@@ -515,6 +520,9 @@ Appends the passed array to the end of the current array.
 
 	var myOtherArray = ['green', 'yellow'];
 	['red', 'blue'].append(myOtherArray); // returns ['red', 'blue', 'green', 'yellow'];
+	myOtheArray; // is now ['red', 'blue', 'green', 'yellow'];
+
+	[0, 1, 2].append([3, [4]]); // [0, 1, 2, 3, [4]]
 
 ### Notes:
 
