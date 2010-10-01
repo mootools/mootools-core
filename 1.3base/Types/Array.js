@@ -238,4 +238,34 @@ describe("Array Color Methods 1.3", {
 
 });
 
+describe('Array.getRandom', function(){
+
+	it('should get a random element from an array', function(){
+		var a = [1];
+
+		expect(a.getRandom()).toEqual(1);
+
+		a.push(2);
+
+		// Let's try a few times
+		expect(a).toContain(a.getRandom());
+		expect(a).toContain(a.getRandom());
+		expect(a).toContain(a.getRandom());
+		expect(a).toContain(a.getRandom());
+	});
+
+});
+
+describe('Array.pick', function(){
+
+	it('should pick a value that is not null from the array', function(){
+		expect([null, undefined, true, 1].pick()).toEqual(true);
+	});
+
+	it('should return null', function(){
+		expect([].pick()).toBeNull();
+	});
+
+});
+
 })();

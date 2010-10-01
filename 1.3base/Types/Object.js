@@ -93,4 +93,24 @@ describe("Object Methods", {
 
 });
 
+describe('Object.getLength', function(){
+
+	it('should get the amount of items in an object', function(){
+		var object = {
+			a: [0, 1, 2],
+			s: "It's-me-Valerio!",
+			n: 1,
+			f: 3.14,
+			b: false
+		};
+
+		expect(Object.getLength(object)).toEqual(5);
+
+		object.n = null;
+
+		expect(Object.getLength(object)).toEqual(5);
+	});
+
+});
+
 })();

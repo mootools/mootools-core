@@ -26,6 +26,31 @@ describe('Function.prototype.implement', {
 	
 });
 
+describe('Function.prototype.overloadGetter', function(){
+
+	it('should call a getter for each argument', function(){
+		var object = {
+			a: 1,
+			b: 2,
+			c: 3
+		};
+
+		var getter = (function(key){
+			return object[key] || null;
+		}).overloadGetter();
+
+		expect(getter('a')).toEqual(1);
+		expect(getter('b')).toEqual(2);
+		expect(getter('c')).toEqual(3);
+		expect(getter('d')).toBeNull();
+
+		expect(getter('a', 'b', 'c')).toEqual(object);
+		expect(getter(['a', 'b', 'c'])).toEqual(object);
+		expect(getter(['a', 'c', 'd'])).toEqual({a: 1, c: 3, d: null});
+	});
+
+});
+
 describe('typeOf', {
 
 	"should return 'array' for Array objects": function(){
@@ -159,6 +184,20 @@ describe('Array.from', {
 		
 		expect((type == 'array') ? (copy === args) : (copy !== args)).toBeTruthy();
 	}
+
+});
+
+describe('String.from', function(){
+
+	it('should convert to type string', function(){
+		expect(typeOf(String.from('string'))).toBe('string');
+
+		expect(typeOf(String.from(1))).toBe('string');
+
+		expect(typeOf(String.from(new Date))).toBe('string');
+		
+		expect(typeOf(String.from(function(){}))).toBe('string');
+	});
 
 });
 
