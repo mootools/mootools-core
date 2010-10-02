@@ -7,7 +7,7 @@ description: One of the most important items in MooTools. Contains the dollar fu
 
 license: MIT-style license.
 
-requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder]
+requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder, Selectors]
 
 provides: [Element, Elements, $, $$, Iframe]
 
@@ -579,12 +579,11 @@ Element.implement({
 	},
 
 	getFirst: function(expression){
-		var elements = this.getChildren(expression);
-		return (elements.length) ? elements[0] : null;
+		return document.id(Slick.search(this, injectCombinator(expression, '>'))[0]);
 	},
 
 	getLast: function(expression){
-		return this.getChildren(expression).getLast();
+		return document.id(Slick.search(this, injectCombinator(expression, '>')).getLast());
 	},
 
 	getParent: function(expression){
