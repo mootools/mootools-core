@@ -68,7 +68,7 @@ Fx.Transitions.extend = function(transitions){
 Fx.Transitions.extend({
 
 	Pow: function(p, x){
-		return Math.pow(p, x[0] || 6);
+		return Math.pow(p, x && x[0] || 6);
 	},
 
 	Expo: function(p){
@@ -84,7 +84,7 @@ Fx.Transitions.extend({
 	},
 
 	Back: function(p, x){
-		x = x[0] || 1.618;
+		x = x && x[0] || 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -100,7 +100,7 @@ Fx.Transitions.extend({
 	},
 
 	Elastic: function(p, x){
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x && x[0] || 1) / 3);
 	}
 
 });
