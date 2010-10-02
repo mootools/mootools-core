@@ -111,7 +111,7 @@ describe('Fx.Tween', function(){
 		element.highlight('#f00');
 
 		runs(function(){
-			expect(element.getStyle('background-color').toLowerCase()).toEqual('#ffffff');
+			expect(['#fff', '#ffffff']).toContain(element.getStyle('background-color').toLowerCase());
 			element.destroy();
 		});
 

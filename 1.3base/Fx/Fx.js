@@ -23,7 +23,9 @@ describe('Fx', function(){
 			expect(onStart).toHaveBeenCalled();
 			expect(onComplete).not.toHaveBeenCalled();
 
-			waits(80);
+			waitsFor(300, function(){
+				return onComplete.wasCalled;
+			});
 
 			runs(function(){
 				expect(onComplete).toHaveBeenCalled();
@@ -34,7 +36,7 @@ describe('Fx', function(){
 
 	it('should cancel a Fx', function(){
 
-		onCancel = jasmine.createSpy();
+		var onCancel = jasmine.createSpy();
 
 		var fx = new Fx({
 			duration: 50,
@@ -136,7 +138,6 @@ describe('Fx', function(){
 
 		var onCancel = jasmine.createSpy('cancel');
 
-		var counter = 0;
 		var fx = new Fx({
 			duration: 50,
 			onCancel: onCancel,
