@@ -7,9 +7,9 @@ description: One of the most important items in MooTools. Contains the dollar fu
 
 license: MIT-style license.
 
-requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder, Selectors]
+requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder]
 
-provides: [Element, Elements, $, $$, Iframe]
+provides: [Element, Elements, $, $$, Iframe, Selectors]
 
 ...
 */
