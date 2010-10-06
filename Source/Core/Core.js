@@ -30,7 +30,7 @@ this.MooTools = {
 // typeOf, instanceOf
 
 var typeOf = this.typeOf = function(item){
-	if (item == null) return 'null';
+	if (typeof item == 'undefined' || item == null) return 'null';
 	if (item.$family) return item.$family();
 
 	if (item.nodeName){
@@ -463,7 +463,7 @@ this.$clear = function(timer){
 };
 
 this.$defined = function(obj){
-	return (obj != null);
+	return (typeof obj != 'undefined');
 };
 
 this.$each = function(iterable, fn, bind){
