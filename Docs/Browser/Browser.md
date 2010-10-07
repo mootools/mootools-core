@@ -30,6 +30,8 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.chrome - (*boolean*) True if the current browser is Chrome
 * Browser.opera - (*boolean*) True if the current browser is Opera
 
+If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
+
 ### Platform:
 
 * Browser.Platform.mac - (*boolean*) True if the platform is Mac.
