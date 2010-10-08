@@ -93,7 +93,7 @@ var IFrame = new Type('IFrame', function(){
 	var onLoad = function(){
 		onload.call(iframe.contentWindow);
 	};
-	
+
 	if (window.frames[props.id]) onLoad();
 	else iframe.addListener('load', onLoad);
 	return iframe;
@@ -514,7 +514,7 @@ Element.implement({
 	},
 
 	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+		this.className = this.className.replace(new RegExp('\\b(' + classNames.replace(/\s+/g, "|") + '\\b)', 'g'), '').clean();
 		return this;
 	},
 
