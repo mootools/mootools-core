@@ -458,14 +458,14 @@ describe('Date.now', {
 
 });
 
-describe('String.generateUID', function(){
+describe('String.uniqueID', function(){
 
 	it('should be a string', function(){
-		expect(typeof String.generateUID()).toBe('string');
+		expect(typeof String.uniqueID()).toBe('string');
 	});
 
 	it("should generate unique ids", function(){
-		expect(String.generateUID()).not.toEqual(String.generateUID());
+		expect(String.uniqueID()).not.toEqual(String.uniqueID());
 	});
 	
 });
