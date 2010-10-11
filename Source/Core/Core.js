@@ -386,7 +386,7 @@ Object.extend({
 
 var UID = Date.now();
 
-String.extend('generateUID', function(){
+String.extend('uniqueID', function(){
 	return (UID++).toString(36);
 });
 

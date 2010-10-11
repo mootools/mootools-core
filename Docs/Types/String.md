@@ -33,14 +33,14 @@ Returns the passed parameter as a String.
 
 
 
-Function: String.generateUID {#String:String-generateUID}
+Function: String.uniqueID {#String:String-uniqueID}
 ---------------------------------------------------
 
 Generates a unique ID
 
 ### Syntax:
 
-	String.generateUID();
+	String.uniqueID();
 
 ### Returns:
 
@@ -48,7 +48,7 @@ Generates a unique ID
 
 ### Example:
 
-	String.generateUID();
+	String.uniqueID();
 
 
 String method: test {#String:test}

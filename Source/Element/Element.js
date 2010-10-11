@@ -87,7 +87,7 @@ var IFrame = new Type('IFrame', function(){
 	if (params.iframe) iframe = document.id(params.iframe);
 	var onload = props.onload || function(){};
 	delete props.onload;
-	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.generateUID()].pick();
+	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.uniqueID()].pick();
 	iframe = new Element(iframe || 'iframe', props);
 
 	var onLoad = function(){

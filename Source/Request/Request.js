@@ -181,7 +181,7 @@ var Request = this.Request = new Class({
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
 		if (this.options.noCache)
-			url += (url.contains('?') ? '&' : '?') + String.generateUID();
+			url += (url.contains('?') ? '&' : '?') + String.uniqueID();
 
 		if (data && method == 'get'){
 			url += (url.contains('?') ? '&' : '?') + data;
