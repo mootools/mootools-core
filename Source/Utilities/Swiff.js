@@ -10,7 +10,7 @@ license: MIT-style license.
 credits:
   - Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
 
-requires: [Options, Object]
+requires: [Options, Object, Element]
 
 provides: Swiff
 
