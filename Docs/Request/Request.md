@@ -46,7 +46,7 @@ Fired when the Request is sent.
 ##### Signature:
 
 	onRequest()
-	
+
 #### loadstart
 
 Fired when the Request loaded, right before any progress starts. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
@@ -83,7 +83,7 @@ Fired when the Request is making progresses in the download or upload. (This is 
 			console.log(parseInt(loaded / total * 100, 10));
 		}
 	});
-	
+
 	myRequest.send();
 
 ### See Also:
@@ -257,6 +257,10 @@ MooTools provides several aliases for [Request:send][] to make it easier to use 
 		data: 'save=username&name=John'
 	});
 
+
+
+By default the emulation option is set to true, so the *post* and *delete* send methods are emulated and will actually send as *post* while the method is send as e.g. `_method=delete`.
+
 Request Method: cancel {#Request:cancel}
 --------------------------------
 
@@ -291,7 +295,7 @@ Returns true if the request is currently running
 ### Example:
 
 	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
-	
+
 	if (myRequest.isRunning()) // It runs!
 
 
