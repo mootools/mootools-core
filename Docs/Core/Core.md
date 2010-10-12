@@ -86,7 +86,7 @@ Deprecated Functions {#Deprecated-Functions}
 Function: $chk {#Deprecated-Functions:chk}
 ---------------------
 
-This method has been deprecated and will have no equivalent in MooTools 2.0.
+This method has been deprecated and will have no equivalent in MooTools 1.3.
 
 If you really need this function you can implement it like so:
 
@@ -130,7 +130,7 @@ If you really need this function you can implement it like so:
 Function: $arguments {#Deprecated-Functions:arguments}
 ---------------------------------
 
-This method has been deprecated and will have no equivalent in MooTools 2.0.
+This method has been deprecated and will have no equivalent in MooTools 1.3.
 
 If you really need this function you can implement it like so:
 
