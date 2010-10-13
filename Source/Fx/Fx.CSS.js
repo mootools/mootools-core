@@ -91,7 +91,7 @@ Fx.CSS = new Class({
 					return m.toLowerCase();
 				}) : null;
 				if (!selectorText || !selectorText.test('^' + selector + '$')) return;
-				Element.Styles.each(function(value, style){
+				Object.each(Element.Styles, function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = String(rule.style[style]);
 					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
