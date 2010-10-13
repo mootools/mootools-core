@@ -100,7 +100,7 @@ var Swiff = this.Swiff = new Class({
 	},
 
 	remote: function(){
-		return Swiff.remote.apply(Swiff, [this.toElement()].extend(arguments));
+		return Swiff.remote.apply(Swiff, [this.toElement()].append(arguments));
 	}
 
 });
