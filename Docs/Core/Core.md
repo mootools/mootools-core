@@ -37,7 +37,7 @@ Returns the type of object that matches the item passed in.
 * 'window'     - (*string*) If object is the window object.
 * 'document'   - (*string*) If object is the document object.
 * 'event'      - (*string*) If object is an event.
-* false        - (*boolean*) If object is undefined, null, NaN or none of the above.
+* 'null'        - (*boolean*) If object is undefined, null, NaN or none of the above.
 
 ### Example:
 
@@ -46,7 +46,7 @@ Returns the type of object that matches the item passed in.
 
 ### Notes:
 
-This method is equivalent to *$type* from MooTools 1.2.
+This method is equivalent to *$type* from MooTools 1.2, with the exception that undefined and null values now return 'null' as a string, instead of false.
 
 
 
