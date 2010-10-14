@@ -45,7 +45,7 @@ var Fx = this.Fx = new Class({
 
 	step: function(time){
 		if (!this.time || this.stopped){
-			this.time = Date.now() - this.time;
+			this.time = time - this.time;
 			this.stopped = false;
 		}
 		if (time < this.time + this.options.duration){
@@ -89,14 +89,15 @@ var Fx = this.Fx = new Class({
 	},
 
 	complete: function(){
-		if (this.stopTimer()) this.onComplete();
-		this.completed = true;
+		if (this.stopTimer()){
+			this.onComplete();
+			this.completed = true;
+		}
 		return this;
 	},
 
 	cancel: function(){
 		if (this.stopTimer()) this.onCancel();
-		this.completed = true;
 		return this;
 	},
 
