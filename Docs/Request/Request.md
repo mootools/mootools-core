@@ -259,7 +259,7 @@ MooTools provides several aliases for [Request:send][] to make it easier to use 
 
 
 
-By default the emulation option is set to true, so the *post* and *delete* send methods are emulated and will actually send as *post* while the method is send as e.g. `_method=delete`.
+By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method is send as e.g. `_method=delete`.
 
 Request Method: cancel {#Request:cancel}
 --------------------------------
