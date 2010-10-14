@@ -222,12 +222,12 @@ Changes the scope of `this` within the target function to refer to the bind para
 
 ### Syntax:
 
-	myFunction.bind([bind[, args]]);
+	myFunction.bind([bind[, arg1, arg2, ...]]);
 
 ### Arguments:
 
 1. bind - (*object*, optional) The object that the "this" of the function will refer to.
-2. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. arg1, arg2, ... - (*mixed*, optional) The arguments to pass to the function. If the bound function is called with other arguments the arguments are concatenated.
 
 ### Returns:
 
@@ -343,7 +343,7 @@ Function method: run {#Deprecated-Functions:run}
 This function has been deprecated.
 
 ### Replacement example
-	
+
 	fn.apply(thisArg, arguments); // Old API: fn.run(arguments, thisArg);
 
 
