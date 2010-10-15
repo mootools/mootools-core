@@ -26,9 +26,10 @@ var Fx = this.Fx = new Class({
 		onCancel: nil,
 		onComplete: nil,
 		*/
-		fps: 50,
+		fps: 60,
 		unit: false,
 		duration: 500,
+		frames: null,
 		link: 'ignore'
 	},
 
@@ -43,17 +44,12 @@ var Fx = this.Fx = new Class({
 		};
 	},
 
-	step: function(time){
-		if (!this.time || this.stopped){
-			this.time = time - this.time;
-			this.stopped = false;
-		}
-		if (time < this.time + this.options.duration){
-			var delta = this.transition((time - this.time) / this.options.duration);
+	step: function(){
+		if (this.frames > this.frame){
+			var delta = this.transition(++this.frame / this.frames);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
-			this.set(this.compute(this.from, this.to, 1));
-			this.complete();
+			this.stop();
 		}
 	},
 
@@ -66,7 +62,7 @@ var Fx = this.Fx = new Class({
 	},
 
 	check: function(){
-		if (!this.timer) return true;
+		if (!this.isRunning()) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
 			case 'chain': this.chain(this.caller.pass(arguments, this)); return false;
@@ -76,66 +72,51 @@ var Fx = this.Fx = new Class({
 
 	start: function(from, to){
 		if (!this.check(from, to)) return this;
-		var duration = this.options.duration;
-		this.options.duration = Fx.Durations[duration] || duration.toInt();
 		this.from = from;
 		this.to = to;
-		this.time = 0;
-		this.completed = this.stopped = false;
+		this.frame = -1;
 		this.transition = this.getTransition();
-		this.startTimer();
-		this.onStart();
+		var frames = this.options.frames, fps = this.options.fps, duration = this.options.duration;
+		this.frames = frames || Math.round((Fx.Durations[duration] || duration.toInt()) / (1000 / fps));
+		pushInstance.call(this, fps);
 		return this;
 	},
-
-	complete: function(){
-		if (this.stopTimer()){
-			this.onComplete();
-			this.completed = true;
+	
+	stop: function(){
+		if (this.isRunning){
+			pullInstance.call(this, this.options.fps);
+			if (this.frames == this.frame){
+				this.fireEvent('complete', this.subject);
+				if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
+			} else {
+				this.fireEvent('stop', this.subject);
+			}
 		}
 		return this;
 	},
-
+	
 	cancel: function(){
-		if (this.stopTimer()) this.onCancel();
+		if (this.isRunning()){
+			pullInstance.call(this, this.options.fps);
+			this.frame = this.frames;
+			this.fireEvent('cancel', this.subject).clearChain();
+		}
 		return this;
 	},
-
-	onStart: function(){
-		this.fireEvent('start', this.subject);
-	},
-
-	onComplete: function(){
-		this.fireEvent('complete', this.subject);
-		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
-	},
-
-	onCancel: function(){
-		this.fireEvent('cancel', this.subject).clearChain();
-	},
-
+	
 	pause: function(){
-		this.stopTimer();
+		if (this.isRunning()) pullInstance.call(this, this.options.fps);
 		return this;
 	},
-
+	
 	resume: function(){
-		if (!this.completed) this.startTimer();
+		if ((this.frames > this.frame) && !this.isRunning()) pushInstance.call(this, this.options.fps);
 		return this;
 	},
-
-	stopTimer: function(){
-		if (!this.timer) return false;
-		this.time = Date.now() - this.time;
-		this.stopped = true;
-		this.timer = removeInstance(this, this.options.fps);
-		return true;
-	},
-
-	startTimer: function(){
-		if (this.timer) return false;
-		this.timer = addInstance(this, this.options.fps);
-		return true;
+	
+	isRunning: function(){
+		var list = instances[this.options.fps];
+		return list && list.contains(this);
 	}
 
 });
@@ -151,26 +132,26 @@ Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
 var instances = {}, timers = {};
 
 var loop = function(){
-	var time = Date.now();
 	for (var i = this.length; i--;){
-		if (this[i]) this[i].step(time);
+		if ((instance = this[i])) instance.step();
 	}
 };
 
-var addInstance = function(instance, fps){
+var pushInstance = function(fps){
 	var list = instances[fps] || (instances[fps] = []);
-	list.push(instance);
+	list.push(this);
 	if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), list);
-	return true;
 };
 
-var removeInstance = function(instance, fps){
+var pullInstance = function(fps){
 	var list = instances[fps];
 	if (list){
-		list.erase(instance);
-		if (!list.length && timers[fps]) timers[fps] = clearInterval(timers[fps]);
+		list.erase(this);
+		if (!list.length && timers[fps]){
+			delete instances[fps];
+			timers[fps] = clearInterval(timers[fps]);
+		}
 	}
-	return false;
 };
 
 })();
