@@ -614,11 +614,11 @@ var pseudos = {
 		return this['pseudo:nth-child'](node, '' + index + 1);
 	},
 
-	'even': function(node, argument){
+	'even': function(node){
 		return this['pseudo:nth-child'](node, '2n');
 	},
 
-	'odd': function(node, argument){
+	'odd': function(node){
 		return this['pseudo:nth-child'](node, '2n+1');
 	},
 

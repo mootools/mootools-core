@@ -451,7 +451,7 @@ Object.each(inserters, function(inserter, where){
 var injectCombinator = function(expression, combinator){
 	if (!expression) return combinator;
 
-	expression = Slick.parse(expression);
+	expression = Object.clone(Slick.parse(expression));
 
 	var expressions = expression.expressions;
 	for (var i = expressions.length; i--;)
