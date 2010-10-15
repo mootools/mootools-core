@@ -210,7 +210,7 @@ Creates a new map with the results of calling a provided function on every value
 ### Examples:
 
 	var myObject = {a: 1, b: 2, c: 3};
-	var timesTwo = Object.map(timesTwo, function(value, key){
+	var timesTwo = Object.map(myObject, function(value, key){
 		return value * 2;
 	}); // timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
 
