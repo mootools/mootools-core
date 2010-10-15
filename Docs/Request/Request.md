@@ -5,7 +5,7 @@ An XMLHttpRequest Wrapper.
 
 ### Implements:
 
-[Chain](/Class/Class.Extras#Chain), [Events](/Class/Class.Extras#Events), [Options](/Class/Class.Extras#Options)
+[Chain][], [Events][], [Options][]
 
 ### Syntax:
 
@@ -32,7 +32,10 @@ An XMLHttpRequest Wrapper.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
-* noCache - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* timeout - (*integer*: defaults to 0) In conjunction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
+* noCache - (*boolean*; defaults to false) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* user - (*string*: defaults to undefined) When username is set the Request will open with credentials and try to authenticate.
+* password - (*string*: defaults to undefined) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
 
 ### Events:
 
@@ -43,6 +46,49 @@ Fired when the Request is sent.
 ##### Signature:
 
 	onRequest()
+
+#### loadstart
+
+Fired when the Request loaded, right before any progress starts. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
+
+##### Signature:
+
+	onLoadstart(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The loadstart event.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+#### progress
+
+Fired when the Request is making progresses in the download or upload. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
+
+##### Signature:
+
+	onProgress(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The progress event, containing currently downloaded bytes and total bytes.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+### Example:
+
+	var myRequest = new Request({
+		url: 'image.jpg',
+		onProgress: function(event, xhr) {
+			var loaded = event.loaded, total = event.total;
+
+			console.log(parseInt(loaded / total * 100, 10));
+		}
+	});
+
+	myRequest.send();
+
+### See Also:
+
+ - [MDC: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)
 
 #### complete
 
@@ -100,7 +146,6 @@ Fired when setting a request header fails.
 
 ### Properties:
 
-* running  - (*boolean*) True if the request is running.
 * response - (*object*) Object with text and XML as keys. You can access this property in the 'success' event.
 
 ### Returns:
@@ -115,6 +160,14 @@ Fired when setting a request header fails.
 ### See Also:
 
  - [Wikipedia: XMLHttpRequest](http://en.wikipedia.org/wiki/XMLHttpRequest)
+
+#### timeout
+
+Fired when a request doesn't change state for `options.timeout` milliseconds.
+
+##### Signature:
+
+	onTimeout()
 
 Request Method: setHeader {#Request:setHeader}
 --------------------------------------
@@ -160,7 +213,7 @@ Returns the given response header or null if not found.
 ### Example:
 
 	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML) {
-		alert(this.getHeader('Date')); // Alerts the server date (for example, "Thu, 26 Feb 2009 20:26:06 GMT")
+		alert(this.getHeader('Date')); // alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
 	}});
 
 Request Method: send {#Request:send}
@@ -182,7 +235,31 @@ Opens the Request connection and sends the provided data with the specified opti
 
 ### Examples:
 
-	var myRequest = new Request({url: 'http://localhost/some_url'}).send("save=username&name=John");
+	var myRequest = new Request({url: 'http://localhost/some_url'}).send('save=username&name=John');
+
+### Notes:
+
+MooTools provides several aliases for [Request:send][] to make it easier to use different methods. These aliases are post() and POST(), get() and GET(), put() and PUT() and delete() and DELETE().
+
+	var myRequest = new Request({url: 'http://localhost/some_url'});
+
+	myRequest.post('save=username&name=John');
+	//...is equivalent to:
+	myRequest.send({
+		method: 'post',
+		data: 'save=username&name=John'
+	});
+
+	myRequest.get('save=username&name=John');
+	//...is equivalent to:
+	myRequest.send({
+		method: 'get',
+		data: 'save=username&name=John'
+	});
+
+
+
+By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method is send as e.g. `_method=delete`.
 
 Request Method: cancel {#Request:cancel}
 --------------------------------
@@ -202,12 +279,30 @@ Cancels the currently running request, if any.
 	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
 	myRequest.cancel();
 
+Request Method: isRunning {#Request:isRunning}
+--------------------------------
+
+Returns true if the request is currently running
+
+### Syntax:
+
+	myRequest.isRunning()
+
+### Returns:
+
+* (*boolean*) True if the request is running
+
+### Example:
+
+	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
+
+	if (myRequest.isRunning()) // It runs!
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: send {#Element-Properties:send}
 -------------------------------------------------
@@ -239,11 +334,11 @@ Returns the previously set Request instance (or a new one with default options).
 
 #### Syntax:
 
-	el.get('send'[, options]);
+	el.get('send');
 
 #### Arguments:
 
-1. options - (*object*, optional) The Request options.  If passed, this method will generate a new instance of the Request class.
+1. property - (*string*) the Request property argument.
 
 ### Returns:
 
@@ -253,12 +348,12 @@ Returns the previously set Request instance (or a new one with default options).
 
 	el.get('send', {method: 'get'});
 	el.send();
-	el.get('send'); //Returns the Request instance.
+	el.get('send'); // returns the Request instance.
 
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 
 Element Method: send {#Element:send}
@@ -284,8 +379,8 @@ Sends a form or a container of inputs with an HTML request.
 
 	<form id="myForm" action="submit.php">
 		<p>
-			<input name="email" value="bob@bob.com">
-			<input name="zipCode" value="90210">
+			<input name="email" value="bob@bob.com" />
+			<input name="zipCode" value="90210" />
 		</p>
 	</form>
 
@@ -299,6 +394,10 @@ Sends a form or a container of inputs with an HTML request.
 
 
 
-[$]: /core/Element/Element/#dollar
+[$]: /core/Element/Element/#Window:dollar
 [Request:send]: #Request:send
+[Element.Properties]: /core/Element/Element/#Element-Properties
 [URI]: /more/Native/URI
+[Chain]: /core/Class/Class.Extras#Chain
+[Events]: /core/Class/Class.Extras#Events
+[Options]: /core/Class/Class.Extras#Options

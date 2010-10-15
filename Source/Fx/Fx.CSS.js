@@ -1,9 +1,17 @@
 /*
-Script: Fx.CSS.js
-	Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements.
+---
 
-License:
-	MIT-style license.
+name: Fx.CSS
+
+description: Contains the CSS animation logic. Used by Fx.Tween, Fx.Morph, Fx.Elements.
+
+license: MIT-style license.
+
+requires: [Fx, Element.Style]
+
+provides: Fx.CSS
+
+...
 */
 
 Fx.CSS = new Class({
@@ -13,9 +21,8 @@ Fx.CSS = new Class({
 	//prepares the base from/to object
 
 	prepare: function(element, property, values){
-		values = $splat(values);
-		var values1 = values[1];
-		if (!$chk(values1)){
+		values = Array.from(values);
+		if (values[1] == null){
 			values[1] = values[0];
 			values[0] = element.getStyle(property);
 		}
@@ -26,15 +33,15 @@ Fx.CSS = new Class({
 	//parses a value into an array
 
 	parse: function(value){
-		value = $lambda(value)();
-		value = (typeof value == 'string') ? value.split(' ') : $splat(value);
+		value = Function.from(value)();
+		value = (typeof value == 'string') ? value.split(' ') : Array.from(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
-			Fx.CSS.Parsers.each(function(parser, key){
+			Object.each(Fx.CSS.Parsers, function(parser, key){
 				if (found) return;
 				var parsed = parser.parse(val);
-				if ($chk(parsed)) found = {value: parsed, parser: parser};
+				if (parsed || parsed === 0) found = {value: parsed, parser: parser};
 			});
 			found = found || {value: val, parser: Fx.CSS.Parsers.String};
 			return found;
@@ -48,14 +55,14 @@ Fx.CSS = new Class({
 		(Math.min(from.length, to.length)).times(function(i){
 			computed.push({value: from[i].parser.compute(from[i].value, to[i].value, delta), parser: from[i].parser});
 		});
-		computed.$family = {name: 'fx:css:value'};
+		computed.$family = Function.from('fx:css:value');
 		return computed;
 	},
 
 	//serves the value as settable
 
 	serve: function(value, unit){
-		if ($type(value) != 'fx:css:value') value = this.parse(value);
+		if (typeOf(value) != 'fx:css:value') value = this.parse(value);
 		var returned = [];
 		value.each(function(bit){
 			returned = returned.concat(bit.parser.serve(bit.value, unit));
@@ -73,7 +80,7 @@ Fx.CSS = new Class({
 
 	search: function(selector){
 		if (Fx.CSS.Cache[selector]) return Fx.CSS.Cache[selector];
-		var to = {};
+		var to = {}, selectorTest = new RegExp('^' + selector.escapeRegExp() + '$');
 		Array.each(document.styleSheets, function(sheet, j){
 			var href = sheet.href;
 			if (href && href.contains('://') && !href.contains(document.domain)) return;
@@ -83,11 +90,11 @@ Fx.CSS = new Class({
 				var selectorText = (rule.selectorText) ? rule.selectorText.replace(/^\w+/, function(m){
 					return m.toLowerCase();
 				}) : null;
-				if (!selectorText || !selectorText.test('^' + selector + '$')) return;
-				Element.Styles.each(function(value, style){
+				if (!selectorText || !selectorTest.test(selectorText)) return;
+				Object.each(Element.Styles, function(value, style){
 					if (!rule.style[style] || Element.ShortStyles[style]) return;
 					value = String(rule.style[style]);
-					to[style] = (value.test(/^rgb/)) ? value.rgbToHex() : value;
+					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
 				});
 			});
 		});
@@ -98,7 +105,7 @@ Fx.CSS = new Class({
 
 Fx.CSS.Cache = {};
 
-Fx.CSS.Parsers = new Hash({
+Fx.CSS.Parsers = {
 
 	Color: {
 		parse: function(value){
@@ -124,9 +131,19 @@ Fx.CSS.Parsers = new Hash({
 	},
 
 	String: {
-		parse: $lambda(false),
-		compute: $arguments(1),
-		serve: $arguments(0)
+		parse: Function.from(false),
+		compute: function(zero, one){
+			return one;
+		},
+		serve: function(zero){
+			return zero;
+		}
 	}
 
-});
+};
+
+//<1.2compat>
+
+Fx.CSS.Parsers = new Hash(Fx.CSS.Parsers);
+
+//</1.2compat>

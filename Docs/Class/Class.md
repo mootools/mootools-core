@@ -1,4 +1,4 @@
-Native: Class {#Class}
+Class {#Class}
 ======================
 
 The base Class of the [MooTools](http://mootools.net/) framework.
@@ -12,13 +12,15 @@ Class Method: constructor {#Class:constructor}
 
 ### Arguments:
 
-1. properties - (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
+1. properties - Can be one of the following types:
+	* (*object*) The collection of properties that apply to the Class. Also accepts some special properties such as Extends, Implements, and initialize (see below).
+	* (*function*) The initialize function (see below).
 
 #### Property: Extends
 
 * (*class*) The Class that this class will extend.
 
-The methods of This Class that have the same name as the Extends Class, will have a parent property, that allows you to call the other overridden method.
+The methods of this Class that have the same name as the Extends Class, will have a parent property, that allows you to call the other overridden method. The Extends property should be the first.
 
 #### Property: Implements
 
@@ -26,8 +28,8 @@ The methods of This Class that have the same name as the Extends Class, will hav
 * (*class*)  The properties of a passed Class will be copied into the target Class.
 * (*array*)  An array of objects or Classes, the properties of which will be copied into this Class.
 
-Implements is similar to Extends, except that it overrides properties without inheritance.
-Useful when implementing a default set of properties in multiple Classes.
+Implements is similar to Extends, except that it adopts properties from one or more other classes without inheritance.
+Useful when implementing a default set of properties in multiple Classes.  The Implements property should come after Extends but before all other properties.
 
 #### Property: initialize
 
@@ -47,14 +49,13 @@ Useful when implementing a default set of properties in multiple Classes.
 		}
 	});
 	var myCat = new Cat('Micia');
-	alert(myCat.name); //alerts 'Micia'
+	alert(myCat.name); // alerts 'Micia'
 
 	var Cow = new Class({
 		initialize: function(){
 			alert('moooo');
 		}
 	});
-	var Effie = new Cow($empty); //Will not alert 'moooo', because the initialize method is overridden by the $empty function.
 
 #### Extends Example:
 
@@ -66,13 +67,13 @@ Useful when implementing a default set of properties in multiple Classes.
 	var Cat = new Class({
 		Extends: Animal,
 		initialize: function(name, age){
-			this.parent(age); //will call initalize of Animal
+			this.parent(age); // calls initalize method of Animal class
 			this.name = name;
 		}
 	});
 	var myCat = new Cat('Micia', 20);
-	alert(myCat.name); //Alerts 'Micia'.
-	alert(myCat.age); //Alerts 20.
+	alert(myCat.name); // alerts 'Micia'.
+	alert(myCat.age); // alerts 20.
 
 #### Implements Example:
 
@@ -89,7 +90,7 @@ Useful when implementing a default set of properties in multiple Classes.
 	});
 	var myAnimal = new Cat(20);
 	myAnimal.setName('Micia');
-	alert(myAnimal.name); //Alerts 'Micia'.
+	alert(myAnimal.name); // alerts 'Micia'.
 
 
 
@@ -122,4 +123,4 @@ The same as creating a [new Class](#Class:constructor) with the Implements prope
 	});
 	var myAnimal = new Animal(20);
 	myAnimal.setName('Micia');
-	alert(myAnimal.name); //alerts 'Micia'
+	alert(myAnimal.name); // alerts 'Micia'

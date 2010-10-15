@@ -1,23 +1,36 @@
 /*
-Script: Element.Event.js
-	Contains Element methods for dealing with events, and custom Events.
+---
 
-License:
-	MIT-style license.
+name: Element.Event
+
+description: Contains Element methods for dealing with events. This file also includes mouseenter and mouseleave custom Element Events.
+
+license: MIT-style license.
+
+requires: [Element, Event]
+
+provides: Element.Event
+
+...
 */
+
+(function(){
 
 Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
 
-Native.implement([Element, Window, Document], {
+[Element, Window, Document].invoke('implement', {
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
-		events[type] = events[type] || {'keys': [], 'values': []};
+		if (!events[type]) events[type] = {keys: [], values: []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
-		var realType = type, custom = Element.Events.get(type), condition = fn, self = this;
+		var realType = type,
+			custom = Element.Events[type],
+			condition = fn,
+			self = this;
 		if (custom){
 			if (custom.onAdd) custom.onAdd.call(this, fn);
 			if (custom.condition){
@@ -48,11 +61,13 @@ Native.implement([Element, Window, Document], {
 	removeEvent: function(type, fn){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
-		var pos = events[type].keys.indexOf(fn);
-		if (pos == -1) return this;
-		events[type].keys.splice(pos, 1);
-		var value = events[type].values.splice(pos, 1)[0];
-		var custom = Element.Events.get(type);
+		var list = events[type];
+		var index = list.keys.indexOf(fn);
+		if (index == -1) return this;
+		var value = list.values[index];
+		delete list.keys[index];
+		delete list.values[index];
+		var custom = Element.Events[type];
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
@@ -67,7 +82,7 @@ Native.implement([Element, Window, Document], {
 
 	removeEvents: function(events){
 		var type;
-		if ($type(events) == 'object'){
+		if (typeOf(events) == 'object'){
 			for (type in events) this.removeEvent(type, events[type]);
 			return this;
 		}
@@ -77,8 +92,10 @@ Native.implement([Element, Window, Document], {
 			for (type in attached) this.removeEvents(type);
 			this.eliminate('events');
 		} else if (attached[events]){
-			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
-			attached[events] = null;
+			attached[events].keys.each(function(fn){
+				this.removeEvent(events, fn);
+			}, this);
+			delete attached[events];
 		}
 		return this;
 	},
@@ -86,20 +103,23 @@ Native.implement([Element, Window, Document], {
 	fireEvent: function(type, args, delay){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
+		args = Array.from(args);
+
 		events[type].keys.each(function(fn){
-			fn.create({'bind': this, 'delay': delay, 'arguments': args})();
+			if (delay) fn.delay(delay, this, args);
+			else fn.apply(this, args);
 		}, this);
 		return this;
 	},
 
 	cloneEvents: function(from, type){
 		from = document.id(from);
-		var fevents = from.retrieve('events');
-		if (!fevents) return this;
+		var events = from.retrieve('events');
+		if (!events) return this;
 		if (!type){
-			for (var evType in fevents) this.cloneEvents(from, evType);
-		} else if (fevents[type]){
-			fevents[type].keys.each(function(fn){
+			for (var eventType in events) this.cloneEvents(from, eventType);
+		} else if (events[type]){
+			events[type].keys.each(function(fn){
 				this.addEvent(type, fn);
 			}, this);
 		}
@@ -108,41 +128,54 @@ Native.implement([Element, Window, Document], {
 
 });
 
+// IE9
+try {
+	if (typeof HTMLElement != 'undefined')
+		HTMLElement.prototype.fireEvent = Element.prototype.fireEvent;
+} catch(e){}
+
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
 	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
 	mouseover: 2, mouseout: 2, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
 	keydown: 2, keypress: 2, keyup: 2, //keyboard
+	orientationchange: 2, // mobile
+	touchstart: 2, touchmove: 2, touchend: 2, touchcancel: 2, // touch
+	gesturestart: 2, gesturechange: 2, gestureend: 2, // gesture
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, //form elements
-	load: 1, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
+	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 	error: 1, abort: 1, scroll: 1 //misc
 };
 
-(function(){
-
-var $check = function(event){
+var check = function(event){
 	var related = event.relatedTarget;
-	if (related == undefined) return true;
-	if (related === false) return false;
-	return ($type(this) != 'document' && related != this && related.prefix != 'xul' && !this.hasChild(related));
+	if (related == null) return true;
+	if (!related) return false;
+	return (related != this && related.prefix != 'xul' && typeOf(this) != 'document' && !this.contains(related));
 };
 
-Element.Events = new Hash({
+Element.Events = {
 
 	mouseenter: {
 		base: 'mouseover',
-		condition: $check
+		condition: check
 	},
 
 	mouseleave: {
 		base: 'mouseout',
-		condition: $check
+		condition: check
 	},
 
 	mousewheel: {
-		base: (Browser.Engine.gecko) ? 'DOMMouseScroll' : 'mousewheel'
+		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
 	}
 
-});
+};
+
+//<1.2compat>
+
+Element.Events = new Hash(Element.Events);
+
+//</1.2compat>
 
 })();

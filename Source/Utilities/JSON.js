@@ -1,15 +1,33 @@
 /*
-Script: JSON.js
-	JSON encoder and decoder.
+---
 
-License:
-	MIT-style license.
+name: JSON
 
-See Also:
-	<http://www.json.org/>
+description: JSON encoder and decoder.
+
+license: MIT-style license.
+
+See Also: <http://www.json.org/>
+
+requires: [Array, String, Number, Function]
+
+provides: JSON
+
+...
 */
 
-var JSON = new Hash({
+if (!this.JSON) this.JSON = {};
+
+//<1.2compat>
+
+JSON = new Hash({
+	stringify: JSON.stringify,
+	parse: JSON.parse
+});
+
+//</1.2compat>
+
+Object.append(JSON, {
 
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
@@ -18,37 +36,28 @@ var JSON = new Hash({
 	},
 
 	encode: function(obj){
-		switch ($type(obj)){
+		switch (typeOf(obj)){
 			case 'string':
 				return '"' + obj.replace(/[\x00-\x1f\\"]/g, JSON.$replaceChars) + '"';
 			case 'array':
 				return '[' + String(obj.map(JSON.encode).clean()) + ']';
 			case 'object': case 'hash':
 				var string = [];
-				Hash.each(obj, function(value, key){
+				Object.each(obj, function(value, key){
 					var json = JSON.encode(value);
 					if (json) string.push(JSON.encode(key) + ':' + json);
 				});
 				return '{' + string + '}';
 			case 'number': case 'boolean': return String(obj);
-			case false: return 'null';
+			case 'null': return 'null';
 		}
 		return null;
 	},
 
 	decode: function(string, secure){
-		if ($type(string) != 'string' || !string.length) return null;
-		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) 
-			throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
+		if (typeOf(string) != 'string' || !string.length) return null;
+		if (secure && !(/^[,:{}\[\]0-9.\-+Eaeflnr-u \n\r\t]*$/).test(string.replace(/\\./g, '@').replace(/"[^"\\\n\r]*"/g, ''))) return null;
 		return eval('(' + string + ')');
-	}
-
-});
-
-Native.implement([Hash, Array, String, Number], {
-
-	toJSON: function(){
-		return JSON.encode(this);
 	}
 
 });

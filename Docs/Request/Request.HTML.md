@@ -1,5 +1,3 @@
-[Request]: /core/Request/Request
-
 Class: Request.HTML {#Request-HTML}
 ===================================
 
@@ -21,6 +19,8 @@ Request Specifically made for receiving HTML.
 
 * evalScripts  - (*boolean*: defaults to true) If set to true, `script` tags inside the response will be evaluated. This overrides the `false` default from Request.
 * update - (*element*: defaults to null) The Element to insert the response text of the Request into upon completion of the request.
+* append - (*element*: defaults to null) The Element to append the response text of the Request into upon completion of the request.
+* filter - (*mixed*: defaults to null) To filter the response tree by a selector or function. See [Elements:filter][]
 
 ### Events:
 
@@ -51,7 +51,7 @@ Request Specifically made for receiving HTML.
 
 #### POST Request with data as String:
 
-	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post("user_id=25&save=true");
+	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post('user_id=25&save=true');
 
 #### Data from Object Passed via GET:
 
@@ -80,10 +80,10 @@ Request Specifically made for receiving HTML.
 [Request][]
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: load {#Element-Properties:load}
 -------------------------------------------------
@@ -116,11 +116,11 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 #### Syntax:
 
-	el.get('load', options);
+	el.get('load');
 
 #### Arguments:
 
-1. options - (*object*, optional) The Request.HTML options.  If these are passed in, a new instance will be generated, regardless of whether or not one is set.
+1. property - (*string*) the Request.HTML property argument.
 
 #### Returns:
 
@@ -130,15 +130,15 @@ Returns either the previously set Request.HTML instance or a new one with defaul
 
 	el.set('load', {method: 'get'});
 	el.load('test.html');
-	//The getter returns the Request.HTML instance, making its class methods available.
+	// the getter returns the Request.HTML instance, making its class methods available.
 	el.get('load').post('http://localhost/script');
 
 
 
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
 Element Method: load {#Element:load}
 ------------------------------------
@@ -173,4 +173,7 @@ Updates the content of the Element with a Request.HTML GET request.
 
 - [$][], [Request](/Request/Request)
 
-[$]: /core/Element/Element/#dollar
+[Request]: /core/Request/Request
+[$]: /core/Element/Element/#Window:dollar
+[Element.Properties]: /core/Element/Element/#Element-Properties
+[Elements:filter]: /core/Element/Element#Elements:filter
