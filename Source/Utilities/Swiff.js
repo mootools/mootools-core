@@ -19,8 +19,6 @@ provides: Swiff
 
 (function(){
 
-var id = 0;
-
 var Swiff = this.Swiff = new Class({
 
 	Implements: Options,
@@ -46,7 +44,7 @@ var Swiff = this.Swiff = new Class({
 	},
 
 	initialize: function(path, options){
-		this.instance = 'Swiff_' + id++;
+		this.instance = 'Swiff_' + String.uniqueID();
 
 		this.setOptions(options);
 		options = this.options;
