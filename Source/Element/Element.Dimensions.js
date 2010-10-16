@@ -73,6 +73,7 @@ Element.implement({
 		return function(){
 			var element = this;
 			if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
 			if (!brokenOffsetParent){
 				// orphan nodes on ie8 fire exception while accessing offsetParent
 				try {
