@@ -58,8 +58,10 @@ Element.implement({
 	},
 
 	getOffsetParent: (function(){
-		var brokenOffsetParent = !!(document.documentElement.lastChild.offsetParent);
-		
+		var rootLastChild = document.documentElement.lastChild;
+		var brokenOffsetParent = !(('offsetParent' in rootLastChild) && !rootLastChild.offsetParent);
+		rootLastChild = null;
+
 		var isOffset = function(el){
 			return styleString(el, 'position') != 'static' || isBody(el);
 		};
@@ -71,7 +73,7 @@ Element.implement({
 		return function(){
 			var element = this;
 			if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
-			if (!brokenOffsetParent && ('offsetParent' in element)){
+			if (!brokenOffsetParent){
 				// orphan nodes on ie8 fire exception while accessing offsetParent
 				try {
 					return element.offsetParent;
