@@ -57,15 +57,41 @@ Element.implement({
 		return position;
 	},
 
-	getOffsetParent: function(){
-		var element = this;
-		if (isBody(element)) return null;
-		if (!Browser.ie) return element.offsetParent;
-		while ((element = element.parentNode)){
-			if (styleString(element, 'position') != 'static' || isBody(element)) return element;
-		}
-		return null;
-	},
+	getOffsetParent: (function(){
+		var offsetParentDiv = new Element('div');
+		var brokenOffsetParent = !!(offsetParentDiv.inject(document.documentElement.lastChild).offsetParent);
+		offsetParentDiv.destroy();
+		offsetParentDiv = null;
+		
+		var isOffset = function(el){
+			return styleString(el, 'position') != 'static' || isBody(el);
+		};
+		
+		var isOffsetStatic = function(el){
+			return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
+		};
+		
+		return function(){
+			var element = this;
+			if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+			if (!brokenOffsetParent && ('offsetParent' in element)){
+				// orphan nodes on ie8 fire exception while accessing offsetParent
+				try {
+					return element.offsetParent;
+				} catch(e) {
+					return null;
+				}
+			}
+			
+			var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
+			
+			while ((element = element.parentNode)){
+				if (isOffsetCheck(element)) return element;
+			}
+			return null;
+		};
+		
+	})(),
 
 	getOffsets: function(){
 		if (this.getBoundingClientRect && !Browser.Platform.ios){
