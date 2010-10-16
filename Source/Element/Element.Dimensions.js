@@ -58,10 +58,7 @@ Element.implement({
 	},
 
 	getOffsetParent: (function(){
-		var offsetParentDiv = new Element('div');
-		var brokenOffsetParent = !!(offsetParentDiv.inject(document.documentElement.lastChild).offsetParent);
-		offsetParentDiv.destroy();
-		offsetParentDiv = null;
+		var brokenOffsetParent = !!(document.documentElement.lastChild.offsetParent);
 		
 		var isOffset = function(el){
 			return styleString(el, 'position') != 'static' || isBody(el);
@@ -90,7 +87,6 @@ Element.implement({
 			}
 			return null;
 		};
-		
 	})(),
 
 	getOffsets: function(){
