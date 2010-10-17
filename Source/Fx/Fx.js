@@ -133,7 +133,8 @@ var instances = {}, timers = {};
 
 var loop = function(){
 	for (var i = this.length; i--;){
-		if ((instance = this[i])) instance.step();
+		var instance = this[i];
+		if (instance) instance.step();
 	}
 };
 
