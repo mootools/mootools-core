@@ -87,6 +87,9 @@ var runEventSpecs = function(type, create){
 			object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
 			object[fire]('event1')[fire]('event2');
 
+			// Should not fail
+			object.removeEvents()[fire]('event1')[fire]('event2');
+
 			expect(x).toEqual(0);
 			expect(Local.called).toEqual(0);
 		},
