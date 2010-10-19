@@ -30,6 +30,7 @@ var Fx = this.Fx = new Class({
 		unit: false,
 		duration: 500,
 		frames: null,
+		frameSkip: true,
 		link: 'ignore'
 	},
 
@@ -44,11 +45,21 @@ var Fx = this.Fx = new Class({
 		};
 	},
 
-	step: function(){
-		if (this.frames > this.frame){
-			var delta = this.transition(++this.frame / this.frames);
+	step: function(now){
+		if (this.options.frameSkip){
+			var diff = (this.time != null) ? (now - this.time) : 0, frames = diff / this.frameInterval;
+			this.time = now;
+			this.frame += frames;
+		} else {
+			this.frame++;
+		}
+		
+		if (this.frame < this.frames){
+			var delta = this.transition(this.frame / this.frames);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
+			this.frame = this.frames;
+			this.set(this.compute(this.from, this.to, 1));
 			this.stop();
 		}
 	},
@@ -74,16 +85,20 @@ var Fx = this.Fx = new Class({
 		if (!this.check(from, to)) return this;
 		this.from = from;
 		this.to = to;
-		this.frame = -1;
+		this.frame = (this.options.frameSkip) ? 0 : -1;
+		this.time = null;
 		this.transition = this.getTransition();
 		var frames = this.options.frames, fps = this.options.fps, duration = this.options.duration;
-		this.frames = frames || Math.round((Fx.Durations[duration] || duration.toInt()) / (1000 / fps));
+		this.duration = Fx.Durations[duration] || duration.toInt();
+		this.frameInterval = 1000 / fps;
+		this.frames = frames || Math.round(this.duration / this.frameInterval);
 		pushInstance.call(this, fps);
 		return this;
 	},
 	
 	stop: function(){
-		if (this.isRunning){
+		if (this.isRunning()){
+			this.time = null;
 			pullInstance.call(this, this.options.fps);
 			if (this.frames == this.frame){
 				this.fireEvent('complete', this.subject);
@@ -97,6 +112,7 @@ var Fx = this.Fx = new Class({
 	
 	cancel: function(){
 		if (this.isRunning()){
+			this.time = null;
 			pullInstance.call(this, this.options.fps);
 			this.frame = this.frames;
 			this.fireEvent('cancel', this.subject).clearChain();
@@ -105,12 +121,15 @@ var Fx = this.Fx = new Class({
 	},
 	
 	pause: function(){
-		if (this.isRunning()) pullInstance.call(this, this.options.fps);
+		if (this.isRunning()){
+			this.time = null;
+			pullInstance.call(this, this.options.fps);
+		}
 		return this;
 	},
 	
 	resume: function(){
-		if ((this.frames > this.frame) && !this.isRunning()) pushInstance.call(this, this.options.fps);
+		if ((this.frame < this.frames) && !this.isRunning()) pushInstance.call(this, this.options.fps);
 		return this;
 	},
 	
@@ -132,9 +151,10 @@ Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
 var instances = {}, timers = {};
 
 var loop = function(){
+	var now = Date.now();
 	for (var i = this.length; i--;){
 		var instance = this[i];
-		if (instance) instance.step();
+		if (instance) instance.step(now);
 	}
 };
 
