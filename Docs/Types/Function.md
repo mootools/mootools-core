@@ -287,7 +287,7 @@ Delays the execution of a function by a specified duration.
 Function method: periodical {#Function:periodical}
 -----------------------------------------
 
-Executes a function in the specified intervals of time. Periodic execution can be stopped using the [$clear][] function.
+Executes a function in the specified intervals of time. Periodic execution can be stopped using the *clearInterval* function.
 
 ### Syntax:
 
