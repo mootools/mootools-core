@@ -16,7 +16,7 @@ provides: JSON
 ...
 */
 
-if (!this.JSON) this.JSON = {};
+if (typeof JSON == 'undefined') this.JSON = {};
 
 //<1.2compat>
 
