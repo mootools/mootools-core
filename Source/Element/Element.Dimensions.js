@@ -58,10 +58,18 @@ Element.implement({
 	},
 
 	getOffsetParent: (function(){
-		var rootLastChild = document.documentElement.lastChild;
+		var rootLastChild = document.documentElement.lastChild, brokenOffsetParentOrphan = false;
 		var brokenOffsetParent = !(('offsetParent' in rootLastChild) && !rootLastChild.offsetParent);
 		rootLastChild = null;
-
+		
+		if (!brokenOffsetParent){
+			try{
+				document.createElement('div').offsetParent;
+			} catch(e) {
+				brokenOffsetParentOrphan = true;
+			}
+		}
+		
 		var isOffset = function(el){
 			return styleString(el, 'position') != 'static' || isBody(el);
 		};
@@ -75,12 +83,14 @@ Element.implement({
 			if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
 
 			if (!brokenOffsetParent){
-				// orphan nodes on ie8 fire exception while accessing offsetParent
-				try {
-					return document.id(element.offsetParent);
-				} catch(e) {
-					return null;
+				if (brokenOffsetParentOrphan){
+					try {
+						return document.id(element.offsetParent);
+					} catch(e) {
+						return null;
+					}
 				}
+				return document.id(element.offsetParent);
 			}
 			
 			var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
