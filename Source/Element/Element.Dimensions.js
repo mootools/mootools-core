@@ -77,7 +77,7 @@ Element.implement({
 			if (!brokenOffsetParent){
 				// orphan nodes on ie8 fire exception while accessing offsetParent
 				try {
-					return element.offsetParent;
+					return document.id(element.offsetParent);
 				} catch(e) {
 					return null;
 				}
@@ -86,7 +86,7 @@ Element.implement({
 			var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
 			
 			while ((element = element.parentNode)){
-				if (isOffsetCheck(element)) return element;
+				if (isOffsetCheck(element)) return document.id(element);
 			}
 			return null;
 		};
