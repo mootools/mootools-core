@@ -65,29 +65,31 @@ Element.implement({
 		var isOffset = function(el){
 			return styleString(el, 'position') != 'static' || isBody(el);
 		};
-		
+
 		var isOffsetStatic = function(el){
 			return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
 		};
-		
-		return function(){
+
+		return (brokenOffsetParent) ? function(){
 			var element = this;
 			if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
-			if (!brokenOffsetParent){
-				// orphan nodes on ie8 fire exception while accessing offsetParent
-				try {
-					return element.offsetParent;
-				} catch(e) {
-					return null;
-				}
-			}
-			
+
 			var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
-			
+
 			while ((element = element.parentNode)){
 				if (isOffsetCheck(element)) return element;
 			}
+
 			return null;
+		} : function(){
+			var element = this;
+			if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+			try {
+				return element.offsetParent;
+			} catch(e) {
+				return null;
+			}
 		};
 	})(),
 
