@@ -58,9 +58,12 @@ Element.implement({
 	},
 
 	getOffsetParent: (function(){
-		var rootLastChild = document.documentElement.lastChild;
-		var brokenOffsetParent = !(('offsetParent' in rootLastChild) && !rootLastChild.offsetParent);
-		rootLastChild = null;
+		var element = document.createElement('div'),
+			child = document.createElement('div');
+		element.style.height = '0';
+		element.appendChild(child);
+		var brokenOffsetParent = (child.offsetParent === element);
+		element = child = null;
 
 		var isOffset = function(el){
 			return styleString(el, 'position') != 'static' || isBody(el);
