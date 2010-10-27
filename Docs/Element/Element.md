@@ -1777,7 +1777,7 @@ Elements Method: constructor {#Elements:constructor}
 
 ### Returns:
 
-* (*array*) An extended array with the [Element][], [Elements][] and [Array][] methods.
+* (*array*) An array-like Elements collection with the [Element][], [Elements][] and [Array][] methods.
 
 ### Examples:
 
@@ -1800,7 +1800,7 @@ Elements Method: constructor {#Elements:constructor}
 ### Notes:
 
 - In MooTools, every DOM function which returns a collection of nodes (such as [$$][]) returns the nodes as instances of Elements.
-- Because Elements is an Array, it accepts all the [Array][] methods, while giving precedence to [Element][] and [Elements][] methods.
+- Because Elements is an array-like-object, it accepts all the [Array][] methods, while giving precedence to [Element][] and [Elements][] methods.
 - Every node of the Elements instance has all the [Element][] methods.
 
 ### See Also:
