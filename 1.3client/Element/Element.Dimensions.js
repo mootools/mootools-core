@@ -1,22 +1,27 @@
 describe('Element.getOffsetParent', function(){
 
-	var container = new Element('div'),
+	var container, offsetParent, wrapper, child, table, td;
+
+	beforeEach(function(){
+		container = new Element('div');
 
 		offsetParent = new Element('div', {
 			styles: {position: 'relative'}
-		}).inject(container),
+		}).inject(container);
 
 		wrapper = new Element('div', {
 			styles: {height: 0}
-		}).inject(offsetParent),
+		}).inject(offsetParent);
 
-		child = new Element('div').inject(wrapper),
+		child = new Element('div').inject(wrapper);
 
-		table = new Element('table').inject(offsetParent),
+		table = new Element('table').inject(offsetParent);
 
 		td = new Element('td').inject(new Element('tr').inject(table));
 
-	container.inject(document.body);
+		container.inject(document.body);
+		
+	});
 
 	it('Should return the right offsetParent', function(){
 
@@ -66,6 +71,8 @@ describe('Element.getOffsetParent', function(){
 
 	});
 
-	container.destroy();
+	afterEach(function(){
+		container.destroy();
+	});
 
 });
