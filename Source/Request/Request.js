@@ -231,10 +231,11 @@ var Request = this.Request = new Class({
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
 	methods[method] = function(data){
-		return this.send({
-			data: data,
+		var object = {
 			method: method
-		});
+		};
+		if (data != null) object.data = data;
+		return this.send(object);
 	};
 });
 
