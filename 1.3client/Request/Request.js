@@ -107,4 +107,28 @@ describe('Request', function(){
 		
 	});
 
+	it('should not overwrite the data object', function(){
+
+		runs(function(){
+			this.onComplete = jasmine.createSpy();
+			this.request = new Request({
+				url: '../Helpers/request.php',
+				data: {
+					__response: 'data'
+				},
+				onComplete: this.onComplete
+			}).post();
+		});
+
+		waitsFor(800, function(){
+			return this.onComplete.wasCalled;
+		});
+
+		runs(function(){
+			expect(this.onComplete.argsForCall[0][0]).toEqual('data');
+		});
+
+	});
+
+
 });
