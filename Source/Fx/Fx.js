@@ -92,6 +92,7 @@ var Fx = this.Fx = new Class({
 		this.duration = Fx.Durations[duration] || duration.toInt();
 		this.frameInterval = 1000 / fps;
 		this.frames = frames || Math.round(this.duration / this.frameInterval);
+		this.fireEvent('start', this.subject);
 		pushInstance.call(this, fps);
 		return this;
 	},
