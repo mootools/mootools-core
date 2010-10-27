@@ -106,7 +106,7 @@ describe('Fx', function(){
 			fx.resume();
 		});
 
-		waits(150);
+		waits(200);
 
 		runs(function(){
 			expect(fx.foo).toEqual(1);
