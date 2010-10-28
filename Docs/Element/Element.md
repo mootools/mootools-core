@@ -690,7 +690,7 @@ A text node will be created inside this Element, in either the top or bottom pos
 
 ### Syntax:
 
-	myElement.appendText(text);
+	myElement.appendText(text[, where]);
 
 ### Arguments:
 
