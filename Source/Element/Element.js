@@ -343,7 +343,7 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 (function(){
 
 var collected = {}, storage = {};
-var props = {input: 'checked', option: 'selected', textarea: 'value'};
+var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
@@ -640,41 +640,6 @@ Element.implement({
 		return queryString.join('&');
 	},
 
-	clone: function(contents, keepid){
-		contents = contents !== false;
-		var clone = this.cloneNode(contents);
-		var clean = function(node, element){
-			if (!keepid) node.removeAttribute('id');
-			if (Browser.ie){
-				node.clearAttributes();
-				node.mergeAttributes(element);
-				node.removeAttribute('uid');
-				if (node.options){
-					var no = node.options, eo = element.options;
-					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
-				}
-			}
-			var prop = props[element.tagName.toLowerCase()];
-			if (prop && element[prop]) node[prop] = element[prop];
-		};
-
-		var i;
-		if (contents){
-			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-			for (i = ce.length; i--;) clean(ce[i], te[i]);
-		}
-
-		clean(clone, this);
-		if (Browser.ie){
-			var ts = this.getElementsByTagName('object'),
-				cs = clone.getElementsByTagName('object'),
-				tl = ts.length, cl = cs.length;
-			for (i = 0; i < tl && i < cl; i++)
-				cs[i].outerHTML = ts[i].outerHTML;
-		}
-		return document.id(clone);
-	},
-
 	destroy: function(){
 		var children = clean(this).getElementsByTagName('*');
 		Array.each(children, clean);
@@ -695,6 +660,42 @@ Element.implement({
 		return !expression || Slick.match(this, expression);
 	}
 
+});
+
+var cleanClone = function(node, element, keepid){
+	if (!keepid) node.removeAttribute('id');
+	if (Browser.ie){
+		node.clearAttributes();
+		node.mergeAttributes(element);
+		node.removeAttribute('uid');
+		if (node.options){
+			var no = node.options, eo = element.options;
+			for (var j = no.length; j--;) no[j].selected = eo[j].selected;
+		}
+	}
+	var prop = formProps[element.tagName.toLowerCase()];
+	if (prop && element[prop]) node[prop] = element[prop];
+};
+
+Element.implement('clone', function(contents, keepid){
+	contents = contents !== false;
+	var i, clone = this.cloneNode(contents);
+
+	if (contents){
+		var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+		for (i = ce.length; i--;) clean(ce[i], te[i]);
+	}
+
+	cleanClone(clone, this, keepid);
+
+	if (Browser.ie){
+		var ts = this.getElementsByTagName('object'),
+			cs = clone.getElementsByTagName('object'),
+			tl = ts.length, cl = cs.length;
+		for (i = 0; i < tl && i < cl; i++)
+			cs[i].outerHTML = ts[i].outerHTML;
+	}
+	return document.id(clone);
 });
 
 var contains = {contains: function(element){
