@@ -682,7 +682,7 @@ Element.implement('clone', function(contents, keepid){
 
 	if (contents){
 		var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-		for (i = ce.length; i--;) clean(ce[i], te[i]);
+		for (i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
 	}
 
 	cleanClone(clone, this, keepid);
