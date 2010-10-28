@@ -669,7 +669,7 @@ var cleanClone = function(node, element, keepid){
 		node.removeAttribute('uid');
 		if (node.options){
 			var no = node.options, eo = element.options;
-			for (var j = no.length; j--;) no[j].selected = eo[j].selected;
+			for (var i = no.length; i--;) no[i].selected = eo[i].selected;
 		}
 	}
 	var prop = formProps[element.tagName.toLowerCase()];
@@ -678,21 +678,18 @@ var cleanClone = function(node, element, keepid){
 
 Element.implement('clone', function(contents, keepid){
 	contents = contents !== false;
-	var i, clone = this.cloneNode(contents);
+	var clone = this.cloneNode(contents);
 
 	if (contents){
 		var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-		for (i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
+		for (var i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
 	}
 
 	cleanClone(clone, this, keepid);
 
 	if (Browser.ie){
-		var ts = this.getElementsByTagName('object'),
-			cs = clone.getElementsByTagName('object'),
-			tl = ts.length, cl = cs.length;
-		for (i = 0; i < tl && i < cl; i++)
-			cs[i].outerHTML = ts[i].outerHTML;
+		var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
+		for (var i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
 	}
 	return document.id(clone);
 });
