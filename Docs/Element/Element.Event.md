@@ -276,8 +276,8 @@ If you use the condition option you NEED to specify a base type, unless you plan
 
 
 
-Build in Custom Events
------------------------
+Built-in Custom Events
+----------------------
 
 
 ### Event: mouseenter {#Element-Events:mouseenter}
