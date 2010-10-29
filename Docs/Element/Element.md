@@ -662,9 +662,7 @@ Inserts the passed element(s) inside the Element (which will then become the par
 Element Method: wraps {#Element:wraps}
 --------------------------------------
 
-Works like [Element:grab](#Element:grab), but instead of moving the grabbed element from its place, this method moves this Element around its target.
-
-The Element is moved to the position of the passed element and becomes the parent.
+Works like [Element:grab](#Element:grab), but replaces the element in its place, and then appends the replaced element in the location specified inside the this element.
 
 ### Syntax:
 
@@ -683,20 +681,46 @@ The Element is moved to the position of the passed element and becomes the paren
 
 ##### HTML
 
-	<div id="myFirstElement"></div>
+	<div id="first"></div>
 
 ##### JavaScript
 
-	var mySecondElement = new Element('div', {id: 'mySecondElement'});
-	mySecondElement.wraps($('myFirstElement'));
+	var mySecondElement = new Element('div#second').wraps('first');
 
 ##### Resulting HTML
 
-	<div id="mySecondElement">
-		<div id="myFirstElement"></div>
+	<div id="second">
+		<div id="first"></div>
 	</div>
 
+##### HTML
 
+	<div id="first"></div>
+	<div id="second">
+		<div id="child"></div>
+	</div>
+
+##### JavaScript
+
+	$('second').wraps('first');
+
+##### Resulting HTML
+
+	<div id="second">
+		<div id="child"></div>
+		<div id="first"></div>
+	</div>
+
+##### JavaScript
+
+	$('second').wraps('first', 'top');
+
+##### Resulting HTML
+
+	<div id="second">
+		<div id="first"></div>
+		<div id="child"></div>
+	</div>
 
 Element Method: appendText {#Element:appendText}
 ------------------------------------------------
