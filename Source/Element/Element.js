@@ -611,7 +611,8 @@ Element.implement({
 	},
 
 	getElementById: function(id){
-		return document.id(Slick.find(this, '#' + ('' + id).replace(/(\W)/g, '\\$1')));
+		var el = document.id('' + id);
+		return (el && this.contains(el)) ? el : null;
 	},
 
 	getSelected: function(){
