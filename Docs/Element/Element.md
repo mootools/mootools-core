@@ -162,7 +162,7 @@ Creates a new Element of the type passed in.
 			}
 		}
 	});
-	
+
 	// Using Selectors
 	var myNewElement = new Element('a.myClass');
 
@@ -571,17 +571,34 @@ Appends the Element at a particular place relative to the Element's children (sp
 
 ### Examples:
 
+##### HTML
+
+	<div id="first">
+		<div id="child"></div>
+	</div>
+
 ##### JavaScript
 
-	var myFirstElement = new Element('div', {id: 'myFirstElement'});
-	var mySecondElement = new Element('div', {id: 'mySecondElement'});
-
-	myFirstElement.grab(mySecondElement);
+	var mySecondElement = new Element('div#second');
+	$('first').grab(mySecondElement);
 
 ##### Resulting HTML
 
-	<div id="myFirstElement">
-		<div id="mySecondElement"></div>
+	<div id="first">
+		<div id="child"></div>
+		<div id="second"></div>
+	</div>
+
+##### JavaScript
+
+	var mySecondElement = new Element('div#second');
+	myFirstElement.grab(mySecondElement, 'top');
+
+##### Resulting HTML
+
+	<div id="first">
+		<div id="second"></div>
+		<div id="child"></div>
 	</div>
 
 ### See Also:
@@ -593,7 +610,7 @@ Appends the Element at a particular place relative to the Element's children (sp
 Element Method: adopt {#Element:adopt}
 --------------------------------------
 
-Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted.
+Works like [Element:grab](#Element:grab), but allows multiple elements to be adopted and only appended at the bottom.
 
 Inserts the passed element(s) inside the Element (which will then become the parent element).
 
