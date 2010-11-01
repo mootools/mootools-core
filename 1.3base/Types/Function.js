@@ -151,6 +151,18 @@ describe("Function Methods 1.3", function(){
 		});
 	});
 
+	it('should not pass any argument when no arguments passed [Function.delay]', function(){
+		var argumentCount = null;
+		var spy = function(){
+			argumentCount = arguments.length;
+		}
+		spy.delay(50);
+		waits(100);
+		runs(function(){
+			expect(argumentCount).toEqual(0);
+		});
+	});
+
 	// Function.periodical
 
 	it('should return an interval pointer', function(){
@@ -180,6 +192,19 @@ describe("Function Methods 1.3", function(){
 		waits(100);
 		runs(function(){
 			expect(spy).toHaveBeenCalledWith(0);
+			clearInterval(timer);
+		});
+	});
+
+	it('should not pass any argument when no arguments passed [Function.periodical]', function(){
+		var argumentCount = null;
+		var spy = function(){
+			argumentCount = arguments.length;
+		}
+		var timer = spy.periodical(50);
+		waits(100);
+		runs(function(){
+			expect(argumentCount).toEqual(0);
 			clearInterval(timer);
 		});
 	});
