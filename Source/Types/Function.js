@@ -57,11 +57,11 @@ Function.implement({
 	},
 
 	delay: function(delay, bind, args){
-		return setTimeout(this.pass(args, bind), delay);
+		return setTimeout(this.pass((args == null ? [] : args), bind), delay);
 	},
 
 	periodical: function(periodical, bind, args){
-		return setInterval(this.pass(args, bind), periodical);
+		return setInterval(this.pass((args == null ? [] : args), bind), periodical);
 	}
 
 });
