@@ -6,9 +6,7 @@ License:
 	MIT-style license.
 */
 
-describe("Function Methods 1.3", function(){
-
-	// Function.bind
+describe('Function.bind', function(){
 
 	it('should return the function bound to an object', function(){
 		var spy = jasmine.createSpy();
@@ -42,7 +40,9 @@ describe("Function Methods 1.3", function(){
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
-	// Function.pass
+});
+
+describe('Function.pass', function(){
 
 	it('should return a function that when called passes the specified arguments to the original function', function(){
 		var spy = jasmine.createSpy().andReturn('the result');
@@ -63,7 +63,9 @@ describe("Function Methods 1.3", function(){
 		expect(spy).toHaveBeenCalledWith('multiple', 'arguments');
 	});
 
-	// Function.run
+});
+
+describe('Function.run', function(){
 
 	it('should run the function', function(){
 		var spy = jasmine.createSpy().andReturn('something');
@@ -91,15 +93,19 @@ describe("Function Methods 1.3", function(){
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
-	// Function.extend
+});
 
-	it('should extend the function\'s properties', function(){
+describe('Function.extend', function(){
+
+	it("should extend the function's properties", function(){
 		var fnc = (function(){}).extend({a: 1, b: 'c'});
 		expect(fnc.a).toEqual(1);
 		expect(fnc.b).toEqual('c');
 	});
 
-	// Function.attempt
+});
+
+describe('Function.attempt', function(){
 
 	it('should call the function without raising an exception', function(){
 		var fnc = function(){
@@ -108,7 +114,7 @@ describe("Function Methods 1.3", function(){
 		fnc.attempt();
 	});
 
-	it('should return the function\'s return value', function(){
+	it("should return the function's return value", function(){
 		var spy = jasmine.createSpy().andReturn('hello world!');
 		expect(spy.attempt()).toEqual('hello world!');
 	});
@@ -120,7 +126,9 @@ describe("Function Methods 1.3", function(){
 		expect(fnc.attempt()).toBeNull();
 	});
 
-	// Function.delay
+});
+
+describe('Function.delay', function(){
 
 	it('should return a timer pointer', function(){
 		var spyA = jasmine.createSpy('Alice');
@@ -142,7 +150,7 @@ describe("Function Methods 1.3", function(){
 		});
 	});
 
-	it('should pass parameter 0 [Function.delay]', function(){
+	it('should pass parameter 0', function(){
 		var spy = jasmine.createSpy();
 		spy.delay(50, null, 0);
 		waits(100);
@@ -151,7 +159,7 @@ describe("Function Methods 1.3", function(){
 		});
 	});
 
-	it('should not pass any argument when no arguments passed [Function.delay]', function(){
+	it('should not pass any argument when no arguments passed', function(){
 		var argumentCount = null;
 		var spy = function(){
 			argumentCount = arguments.length;
@@ -163,7 +171,9 @@ describe("Function Methods 1.3", function(){
 		});
 	});
 
-	// Function.periodical
+});
+
+describe('Function.periodical', function(){
 
 	it('should return an interval pointer', function(){
 		var spy = jasmine.createSpy('Bond');
@@ -186,7 +196,7 @@ describe("Function Methods 1.3", function(){
 		});
 	});
 
-	it('should pass parameter 0 [Function.periodical]', function(){
+	it('should pass parameter 0', function(){
 		var spy = jasmine.createSpy();
 		var timer = spy.periodical(10, null, 0);
 		waits(100);
@@ -196,7 +206,7 @@ describe("Function Methods 1.3", function(){
 		});
 	});
 
-	it('should not pass any argument when no arguments passed [Function.periodical]', function(){
+	it('should not pass any argument when no arguments passed', function(){
 		var argumentCount = null;
 		var spy = function(){
 			argumentCount = arguments.length;
