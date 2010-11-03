@@ -23,8 +23,8 @@ Event Method: constructor {#Event:constructor}
 * client.y      - (*number*) The y position of the mouse, relative to the viewport.
 * rightClick	- (*boolean*) True if the user clicked the right mousebutton
 * wheel         - (*number*) The amount of third button scrolling.
-* relatedTarget - (*element*) The event related target, NOT `extended` with [$][].
-* target        - (*element*) The event target, not extended with [$][] for performance reasons.
+* relatedTarget - (*element*) The event related target, extended with document.id ($).
+* target        - (*element*) The event target, extended with document.id ($).
 * code          - (*number*) The keycode of the key pressed.
 * key           - (*string*) The key pressed as a lowercase string. key can be 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
 * shift         - (*boolean*) True if the user pressed the shift key.
