@@ -409,7 +409,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 
 ### Syntax:
 
-	var key = Object.keyOf(object);
+	var key = Object.keyOf(object, item);
 
 ### Arguments:
 
@@ -424,9 +424,9 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 ### Examples:
 
 	var myObject = {a: 'one', b: 'two', c: 3};
-	Object.keyOf(myObject,'two'); // returns 'b'
-	Object.keyOf(myObject,3); // returns 'c'
-	Object.keyOf(myObject,'four'); // returns false
+	Object.keyOf(myObject, 'two'); // returns 'b'
+	Object.keyOf(myObject, 3); // returns 'c'
+	Object.keyOf(myObject, 'four'); // returns false
 
 
 
