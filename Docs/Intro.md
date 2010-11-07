@@ -26,6 +26,7 @@ Interesting Blogposts
 Previous Versions Documentation
 -------------------------------
 
+- [MooTools 1.2.5 Docs](http://mootools.net/docs/core125)
 - [MooTools 1.1 Docs](http://docs111.mootools.net/)
 
 [Element]: /core/Element/Element
