@@ -235,11 +235,36 @@ Opens the Request connection and sends the provided data with the specified opti
 
 ### Examples:
 
-	var myRequest = new Request({url: 'http://localhost/some_url'}).send('save=username&name=John');
+	var myRequest = new Request({
+		url: 'http://localhost/some_url'
+	}).send('save=username&name=John');
 
-### Notes:
 
-MooTools provides several aliases for [Request:send][] to make it easier to use different methods. These aliases are post() and POST(), get() and GET(), put() and PUT() and delete() and DELETE().
+Request Methods: send aliases {#Request:send-aliases}
+-----------------------------------------------------
+
+MooTools provides several aliases for [Request:send][] to make it easier to use different methods.
+
+These aliases are:
+
+- `post()` and `POST()`
+- `get()` and `GET()`
+- `put()` and `PUT()`
+- `delete()` and `DELETE()`
+
+### Syntax:
+
+	myRequest.post([data]);
+
+### Arguments:
+
+1. data - (*string*, optional) Equivalent with the `data` option of Request.
+
+### Returns:
+
+* (*object*) This Request instance.
+
+### Examples:
 
 	var myRequest = new Request({url: 'http://localhost/some_url'});
 
@@ -257,9 +282,11 @@ MooTools provides several aliases for [Request:send][] to make it easier to use 
 		data: 'save=username&name=John'
 	});
 
+### Note:
+
+By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method name is send as e.g. `_method=delete`.
 
 
-By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method is send as e.g. `_method=delete`.
 
 Request Method: cancel {#Request:cancel}
 --------------------------------
