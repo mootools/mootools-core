@@ -284,7 +284,7 @@ These aliases are:
 
 ### Note:
 
-By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method name is send as e.g. `_method=delete`.
+By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method name is sent as e.g. `_method=delete`.
 
 
 
