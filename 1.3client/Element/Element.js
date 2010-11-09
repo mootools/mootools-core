@@ -314,3 +314,25 @@ describe('Element.getLast', function(){
 		expect(container.getLast('span')).toBeNull();
 	});
 });
+
+describe('Elements.unshift', function(){
+
+	it('should not allow to unshift any value', function(){
+		var container = new Element('div').adopt(
+			new Element('span'),
+			new Element('p')
+		);
+
+		var collection = container.getElements('*'),
+			length = collection.length;
+		collection.unshift('someRandomValue');
+		
+		expect(collection.length).toBe(length);
+
+		collection.unshift(new Element('p'), new Element('span'));
+		expect(collection.length).toBe(length + 2);
+		expect(collection.filter('p').length).toBe(2);
+		expect(collection.filter('span').length).toBe(2);
+	});
+
+});
