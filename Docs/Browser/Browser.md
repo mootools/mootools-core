@@ -3,7 +3,8 @@ Object: Browser {#Browser}
 
 Some browser properties are attached to the Browser Object for browser and platform detection.
 
-### Features:
+Browser.Features {#Browser:Browser-Features}
+------------------------------------
 
 * Browser.Features.xpath - (*boolean*) True if the browser supports DOM queries using XPath.
 * Browser.Features.air - (*boolean*)  True if the browser supports AIR.
@@ -11,11 +12,13 @@ Some browser properties are attached to the Browser Object for browser and platf
 * Browser.Features.json - (*boolean*) True if the browser has a native JSON object.
 * Browser.Features.xhr - (*boolean*) True if the browser supports native XMLHTTP object.
 
-### Request:
+Browser.Request {#Browser:Browser-Request}
+------------------------------------
 
 * Browser.Request - (*object*) The XMLHTTP object or equivalent.
 
-### Name:
+Browser.name {#Browser:Browser-name}
+------------------------------------
 
 * Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
 * Browser.ie6 - (*boolean*) True if the current browser is Internet Explorer 6.
@@ -32,7 +35,8 @@ Some browser properties are attached to the Browser Object for browser and platf
 
 If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
-### Platform:
+Browser.Platform {#Browser:Browser-Platform}
+--------------------------------------------
 
 * Browser.Platform.mac - (*boolean*) True if the platform is Mac.
 * Browser.Platform.win - (*boolean*) True if the platform is Windows.
@@ -43,14 +47,15 @@ If an IE document is set to backwards compatibility mode using the X-UA-Compatib
 * Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iOS.
 * Browser.Platform.name - (*string*) The name of the platform.
 
-### Plugins:
+Browser.Plugins {#Browser:Browser-Plugins}
+--------------------------------------------
 
 * Browser.Plugins.Flash - (*boolean*) - True if Flash is present.
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
 * Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
-Deprecated
-----------
+Deprecated {#Deprecated}
+------------------------
 
 The *Browser.Engine* object is deprecated since MooTools 1.3.
 
