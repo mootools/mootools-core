@@ -4,18 +4,13 @@ Object: Browser {#Browser}
 Some browser properties are attached to the Browser Object for browser and platform detection.
 
 Browser.Features {#Browser:Browser-Features}
-------------------------------------
+--------------------------------------------
 
 * Browser.Features.xpath - (*boolean*) True if the browser supports DOM queries using XPath.
 * Browser.Features.air - (*boolean*)  True if the browser supports AIR.
 * Browser.Features.query - (*boolean*) True if the browser supports querySelectorAll.
 * Browser.Features.json - (*boolean*) True if the browser has a native JSON object.
 * Browser.Features.xhr - (*boolean*) True if the browser supports native XMLHTTP object.
-
-Browser.Request {#Browser:Browser-Request}
-------------------------------------
-
-* Browser.Request - (*object*) The XMLHTTP object or equivalent.
 
 Browser.name {#Browser:Browser-name}
 ------------------------------------
@@ -48,11 +43,25 @@ Browser.Platform {#Browser:Browser-Platform}
 * Browser.Platform.name - (*string*) The name of the platform.
 
 Browser.Plugins {#Browser:Browser-Plugins}
---------------------------------------------
+------------------------------------------
 
 * Browser.Plugins.Flash - (*boolean*) - True if Flash is present.
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
 * Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
+
+Browser.Request {#Browser:Browser-Request}
+------------------------------------------
+
+* Browser.Request - (*object*) The XMLHTTP object or equivalent.
+
+Browser.exec {#Browser:Browser-exec}
+------------------------------------
+
+Executes the passed in string in the browser context.
+
+### Example:
+
+	Browser.exec('alert("Moo!");');
 
 Deprecated {#Deprecated}
 ------------------------
