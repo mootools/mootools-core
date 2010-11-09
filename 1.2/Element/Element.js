@@ -1546,3 +1546,22 @@ describe('Element.hasChild', {
 	}
 
 });
+
+describe('Elements.extend', function(){
+
+	it('should be able to extend a collection', function(){
+		var items = [
+			new Element('span'),
+			new Element('span'),
+			new Element('p'),
+			new Element('p')
+		];
+		var container = new Element('div').adopt(items);
+
+		container.getElements('span').extend(container.getElements('p'));
+		expect($$(items)).toEqual(container.getElements('*'));
+		expect(items.length).toEqual(4);
+	});
+
+
+});
