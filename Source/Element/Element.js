@@ -133,6 +133,15 @@ new Type('Elements', Elements).implement({
 		return (this.length = length);
 	}.protect(),
 
+	unshift: function(){
+		var items = [];
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = document.id(arguments[i]);
+			if (item) items.push(item);
+		}
+		return Array.prototype.unshift.apply(this, items);
+	}.protect(),
+
 	concat: function(){
 		var newElements = new Elements(this);
 		for (var i = 0, l = arguments.length; i < l; i++){
