@@ -563,7 +563,7 @@ Appends the Element at a particular place relative to the Element's children (sp
 ### Arguments:
 
 1. el - (*mixed*) el can be the id of an element or an Element.
-2. where - (*string*, optional: default 'bottom') The place to append this Element. Can be 'top' or 'bottom'.
+2. where - (*string*, optional: default 'bottom') The place to append this Element. Can be 'top', 'bottom', 'before' or 'after'.
 
 ### Returns:
 
