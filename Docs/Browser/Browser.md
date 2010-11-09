@@ -46,6 +46,8 @@ If an IE document is set to backwards compatibility mode using the X-UA-Compatib
 ### Plugins:
 
 * Browser.Plugins.Flash - (*boolean*) - True if Flash is present.
+* Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
+* Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
 Deprecated
 ----------
@@ -60,5 +62,3 @@ The *Browser.Engine* object is deprecated since MooTools 1.3.
 * Browser.Engine.presto - (*boolean*) True if the current browser uses the presto engine (e.g. Opera 9).
 * Browser.Engine.name - (*string*) The name of the engine.
 * Browser.Engine.version - (*number*) The version of the engine. (e.g. 950)
-* Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
-* Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
