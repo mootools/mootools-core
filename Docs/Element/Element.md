@@ -1560,7 +1560,7 @@ This Object contains the functions that respond to the first argument passed in 
 
 		get: function(){
 			return this.disabled;
-		}
+		},
 
 		set: function(value){
 			this.disabled = !!value;
