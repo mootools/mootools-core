@@ -155,6 +155,12 @@ new Type('Elements', Elements).implement({
 
 });
 
+//<1.2compat>
+
+Elements.alias('extend', 'append');
+
+//</1.2compat>
+
 (function(){
 
 // FF, IE
