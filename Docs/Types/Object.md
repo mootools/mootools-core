@@ -463,12 +463,12 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 
 ### Syntax:
 
-	var queryString = Object.toQueryString(object);
+	var queryString = Object.toQueryString(object[, base]);
 
 ### Arguments:
 
-1. object - (*object*) The object.
-2. source - (*object*) The object to generate the query string from.
+1. object - (*object*) The object to generate the query string from.
+2. base - (*string*, optional) Will be used as base variable in the query string.
 
 ### Returns:
 
@@ -477,6 +477,8 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 ### Examples:
 
 	Object.toQueryString({apple: 'red', lemon: 'yellow'}); // returns 'apple=red&lemon=yellow'
+
+	Object.toQueryString({apple: 'red', lemon: 'yellow'}, 'fruits'); // returns 'fruits[apple]=red&fruits[lemon]=yellow'
 
 
 Deprecated Functions {#Deprecated-Functions}
