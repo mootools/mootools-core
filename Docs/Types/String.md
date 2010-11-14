@@ -183,7 +183,7 @@ Converts a camelcased string to a hyphenated string.
 
 ### Examples:
 
-	'ILikeCookies'.hyphenate(); // returns 'I-like-cookies'
+	'ILikeCookies'.hyphenate(); // returns '-i-like-cookies'
 
 
 
