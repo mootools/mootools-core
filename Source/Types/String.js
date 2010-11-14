@@ -39,7 +39,7 @@ String.implement({
 	},
 
 	hyphenate: function(){
-		return this.replace(/[A-Z]/g, function(match){
+		return this.charAt(0) + this.substr(1).replace(/[A-Z]/g, function(match){
 			return ('-' + match.charAt(0).toLowerCase());
 		});
 	},
