@@ -92,7 +92,14 @@ Useful when implementing a default set of properties in multiple Classes.  The I
 	myAnimal.setName('Micia');
 	alert(myAnimal.name); // alerts 'Micia'.
 
-
+#### Getters/Setters Example
+	var Foo = new Class({
+		get bar(age){
+			return 'Only in modern browsers';
+		}
+	});
+	var foo = new Foo();
+	alert(foo.bar); // alerts 'Only in modern browsers'
 
 
 Class Method: implement {#Class:implement}

@@ -16,6 +16,21 @@ provides: Class
 
 (function(){
 
+
+var implementGettersSetters = (typeof {}.__lookupGetter__ == 'function') ?
+	function (target, source) {
+		for (var key in source) {
+			var g = source.__lookupGetter__(key),
+				s = source.__lookupSetter__(key);
+			if ( g || s ) {
+				if (g) target.__defineGetter__(key, g);
+				if (s) target.__defineSetter__(key, s);
+			}
+		}
+		return target;
+	} : function (target, source) { return target; };
+	
+	
 var Class = this.Class = new Type('Class', function(params){
 	if (instanceOf(params, Function)) params = {initialize: params};
 
@@ -27,6 +42,7 @@ var Class = this.Class = new Type('Class', function(params){
 		this.$caller = this.caller = null;
 		return value;
 	}.extend(this).implement(params);
+	implementGettersSetters(newClass.prototype, params);
 
 	newClass.$constructor = Class;
 	newClass.prototype.$constructor = newClass;
@@ -108,6 +124,7 @@ Class.Mutators = {
 		Array.from(items).each(function(item){
 			var instance = new item;
 			for (var key in instance) implement.call(this, key, instance[key], true);
+			implementGettersSetters(this.prototype, instance);
 		}, this);
 	}
 };
