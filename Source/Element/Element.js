@@ -734,7 +734,7 @@ Element.implement('hasChild', function(element){
 				old();
 			};
 		} else {
-			collected[this.uid] = this;
+			collected[$uid(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, false);
 		else this.attachEvent('on' + type, fn);
@@ -748,19 +748,19 @@ Element.implement('hasChild', function(element){
 	},
 
 	retrieve: function(property, dflt){
-		var storage = get(this.uid), prop = storage[property];
+		var storage = get($uid(this)), prop = storage[property];
 		if (dflt != null && prop == null) prop = storage[property] = dflt;
 		return prop != null ? prop : null;
 	},
 
 	store: function(property, value){
-		var storage = get(this.uid);
+		var storage = get($uid(this));
 		storage[property] = value;
 		return this;
 	},
 
 	eliminate: function(property){
-		var storage = get(this.uid);
+		var storage = get($uid(this));
 		delete storage[property];
 		return this;
 	}
