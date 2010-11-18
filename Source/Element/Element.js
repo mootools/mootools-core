@@ -726,7 +726,7 @@ Element.implement('hasChild', function(element){
 
 [Element, Window, Document].invoke('implement', {
 
-	addListener: function(type, fn){
+	addListener: function(type, fn, capture){ //ADD: capture argument
 		if (type == 'unload'){
 			var old = fn, self = this;
 			fn = function(){
@@ -736,13 +736,13 @@ Element.implement('hasChild', function(element){
 		} else {
 			collected[this.uid] = this;
 		}
-		if (this.addEventListener) this.addEventListener(type, fn, false);
+		if (this.addEventListener) this.addEventListener(type, fn, capture || false); //ADD: capture argument
 		else this.attachEvent('on' + type, fn);
 		return this;
 	},
 
-	removeListener: function(type, fn){
-		if (this.removeEventListener) this.removeEventListener(type, fn, false);
+	removeListener: function(type, fn, capture){ //ADD: capture argument
+		if (this.removeEventListener) this.removeEventListener(type, fn, capture || false); //ADD: capture argument
 		else this.detachEvent('on' + type, fn);
 		return this;
 	},

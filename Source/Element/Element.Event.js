@@ -22,7 +22,7 @@ Element.Properties.events = {set: function(events){
 
 [Element, Window, Document].invoke('implement', {
 
-	addEvent: function(type, fn){
+	addEvent: function(type, fn, capture){
 		var events = this.retrieve('events', {});
 		if (!events[type]) events[type] = {keys: [], values: []};
 		if (events[type].keys.contains(fn)) return this;
@@ -52,13 +52,13 @@ Element.Properties.events = {set: function(events){
 					if (condition.call(self, event) === false) event.stop();
 				};
 			}
-			this.addListener(realType, defn);
+			this.addListener(realType, defn, capture || false);
 		}
 		events[type].values.push(defn);
 		return this;
 	},
 
-	removeEvent: function(type, fn){
+	removeEvent: function(type, fn, capture){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
 		var list = events[type];
@@ -72,7 +72,7 @@ Element.Properties.events = {set: function(events){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
 		}
-		return (Element.NativeEvents[type]) ? this.removeListener(type, value) : this;
+		return (Element.NativeEvents[type]) ? this.removeListener(type, value, capture || false) : this;
 	},
 
 	addEvents: function(events){
@@ -168,6 +168,18 @@ Element.Events = {
 
 	mousewheel: {
 		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
+	},
+	
+	focus: {
+		base: (Browser.ie) ? 'focusin' : 'focus'
+	},
+	
+	blur: {
+		base: (Browser.ie) ? 'focusout' : 'blur'
+	},
+	
+	change: {
+		base: (Browser.ie) ? 'onchange' : 'change'
 	}
 
 };
