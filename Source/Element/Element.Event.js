@@ -168,18 +168,6 @@ Element.Events = {
 
 	mousewheel: {
 		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
-	},
-	
-	focus: {
-		base: (Browser.ie) ? 'focusin' : 'focus'
-	},
-	
-	blur: {
-		base: (Browser.ie) ? 'focusout' : 'blur'
-	},
-	
-	change: {
-		base: (Browser.ie) ? 'onchange' : 'change'
 	}
 
 };
