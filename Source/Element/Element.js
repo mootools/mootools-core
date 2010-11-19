@@ -736,13 +736,13 @@ Element.implement('hasChild', function(element){
 		} else {
 			collected[$uid(this)] = this;
 		}
-		if (this.addEventListener) this.addEventListener(type, fn, false);
+		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
 		else this.attachEvent('on' + type, fn);
 		return this;
 	},
 
 	removeListener: function(type, fn){
-		if (this.removeEventListener) this.removeEventListener(type, fn, false);
+		if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
 		else this.detachEvent('on' + type, fn);
 		return this;
 	},

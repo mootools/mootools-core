@@ -52,7 +52,7 @@ Element.Properties.events = {set: function(events){
 					if (condition.call(self, event) === false) event.stop();
 				};
 			}
-			this.addListener(realType, defn);
+			this.addListener(realType, defn, arguments[2]);
 		}
 		events[type].values.push(defn);
 		return this;
@@ -72,7 +72,7 @@ Element.Properties.events = {set: function(events){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
 		}
-		return (Element.NativeEvents[type]) ? this.removeListener(type, value) : this;
+		return (Element.NativeEvents[type]) ? this.removeListener(type, value, arguments[2]) : this;
 	},
 
 	addEvents: function(events){
