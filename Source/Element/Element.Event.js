@@ -171,7 +171,10 @@ Element.Events = {
 	},
 	
 	modified: {
-		base: (Browser.ie) ? 'propertychange' : 'DOMAttrModified'
+		base: (Browser.ie) ? 'propertychange' : (Browser.chrome || Browser.safari) ? 'DOMSubtreeModified' : 'DOMAttrModified',
+		condition: function(event){
+			if(event.target != this) return false;
+		}
 	}
 
 };
