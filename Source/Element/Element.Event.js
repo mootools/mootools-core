@@ -168,6 +168,10 @@ Element.Events = {
 
 	mousewheel: {
 		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
+	},
+	
+	modified: {
+		base: (Browser.ie) ? 'propertychange' : 'DOMAttrModified'
 	}
 
 };
