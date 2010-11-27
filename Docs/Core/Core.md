@@ -21,6 +21,7 @@ Returns the type of object that matches the item passed in.
 ### Returns:
 
 * 'element'    - (*string*) If object is a DOM element node.
+* 'elements'   - (*string*) If object is a an instance of `Elements`
 * 'textnode'   - (*string*) If object is a DOM text node.
 * 'whitespace' - (*string*) If object is a DOM whitespace node.
 * 'arguments'  - (*string*) If object is an arguments object.
