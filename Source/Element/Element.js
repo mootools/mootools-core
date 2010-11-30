@@ -379,7 +379,7 @@ var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpa
 	'rowSpan', 'tabIndex', 'useMap'
 ];
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readOnly', 'multiple', 'selected',
-	'noresize', 'defer'
+	'noresize', 'defer', 'defaultChecked'
 ];
  var attributes = {
 	'html': 'innerHTML',
