@@ -1,17 +1,18 @@
-Native: Element {#Element}
-==========================
+Type: Element {#Element}
+=========================
 
-Custom Native to allow all of its methods to be used with any DOM element via the dollar function [$][].
+Custom Type to allow all of its methods to be used with any DOM element via the dollar function [$][].
 
-### Note:
+### Notes:
 
-These methods don't take into consideration the body element margins and borders.
-If you need margin/borders on the body, consider adding a wrapper div, but always reset the margin and borders of body to 0.
+* These methods don't take into consideration the body element margins and borders. If you need margin/borders on the body, consider adding a wrapper div, but always reset the margin and borders of body to 0.
+* If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
 ### Credits:
 
 - Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
 - Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+
 
 
 Element Method: scrollTo {#Element:scrollTo}
@@ -39,7 +40,6 @@ The following method is also available on the Window object.
 
 
 
-
 Element Method: getSize {#Element:getSize}
 ------------------------------------------
 
@@ -57,9 +57,11 @@ The following method is also available on the Window object.
 ### Example:
 
 	var size = myElement.getSize();
-	alert("The element is "+size.x+" pixels wide and "+size.y+"pixels high.");
+	alert('The element is ' + size.x + ' pixels wide and ' + size.y + 'pixels high.');
 
+### Note:
 
+If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
 
 Element Method: getScrollSize {#Element:getScrollSize}
@@ -79,12 +81,15 @@ The following method is also available on the Window object.
 ### Example:
 
 	var scroll = $('myElement').getScrollSize();
-	alert('My element can scroll to ' + scroll.y + 'px'); //alerts 'My element can scroll down to 820px'
+	alert('My element can scroll to ' + scroll.y + 'px'); // alerts 'My element can scroll down to 820px'
 
 ### See Also:
 
 - [MDC Element:scrollLeft][], [MDC Element:scrollTop][], [MDC Element:offsetWidth][], [MDC Element:offsetHeight][], [MDC Element:scrollWidth][], [MDC Element:scrollHeight][]
 
+### Note:
+
+If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
 
 Element Method: getScroll {#Element:getScroll}
@@ -104,7 +109,11 @@ The following method is also available on the Window object.
 ### Example:
 
 	var scroll = $('myElement').getScroll();
-	alert('My element is scrolled down ' + scroll.y + 'px'); //alerts 'My element is scrolled down to 620px'
+	alert('My element is scrolled down ' + scroll.y + 'px'); // alerts 'My element is scrolled down to 620px'
+
+### Note:
+
+If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
 
 
 Element Method: getPosition {#Element:getPosition}
@@ -126,11 +135,16 @@ relative - (Element, defaults to the document) If set, the position will be rela
 
 ### Example:
 
-	$('element').getPosition(); //returns {x: 100, y: 500};
+	$('element').getPosition(); // returns {x: 100, y: 500};
 
 ### See Also:
 
 - [QuirksMode: Find position](http://www.quirksmode.org/js/findpos.html)
+
+### Note:
+
+If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
+
 
 Element Method: setPosition {#Element:setPosition}
 --------------------------------------------------
@@ -152,6 +166,8 @@ Sets the position of the element's *left* and *top* values to the x/y positions 
 ### Example
 
 	myElement.setPosition({x: 10, y: 100});
+
+
 
 Element Method: getCoordinates {#Element:getCoordinates}
 --------------------------------------------------------
@@ -189,6 +205,10 @@ relative - (*element*, optional) if set, the position will be relative to this e
 
 [Element:getPosition](#Element:getPosition)
 
+### Note:
+
+If you need to measure the properties of elements that are not displayed (either their display style is none or one of their parents display style is none), you will need to use [Element.measure][] to expose it.
+
 
 Element Method: getOffsetParent {#Element:getOffsetParent}
 ----------------------------------------------------------
@@ -203,10 +223,13 @@ Returns the parent of the element that is positioned, if there is one.
 
 * (*mixed*) If the element has a parent that is positioned, it returns that element, otherwise it returns *null*.
 
-[$]: /core/Element/Element#dollar
+
+
+[$]: /core/Element/Element#Window:dollar
 [MDC Element:scrollLeft]: http://developer.mozilla.org/en/docs/DOM:element.scrollLeft
 [MDC Element:scrollTop]: http://developer.mozilla.org/en/docs/DOM:element.scrollTop
 [MDC Element:offsetWidth]: http://developer.mozilla.org/en/docs/DOM:element.offsetWidth
 [MDC Element:offsetHeight]: http://developer.mozilla.org/en/docs/DOM:element.offsetHeight
 [MDC Element:scrollWidth]: http://developer.mozilla.org/en/docs/DOM:element.scrollWidth
 [MDC Element:scrollHeight]: http://developer.mozilla.org/en/docs/DOM:element.scrollHeight
+[Element.measure]: /more/Element/Element.Measure

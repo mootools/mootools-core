@@ -10,7 +10,7 @@ Sets and accesses cookies.
 ### Options: {#Cookie-options}
 
 * domain   - (*string*: defaults to false) The domain the Cookie belongs to.
-* path     - (*string*: defaults to false) The path the Cookie belongs to.
+* path     - (*string*: defaults to '/') The path the Cookie belongs to.
 * duration - (*number*: defaults to false) The duration of the Cookie before it expires, in days. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
 * secure   - (*boolean*: defaults to false) Stored cookie information can be accessed only from a secure environment.
 
@@ -70,7 +70,7 @@ Reads the value of a Cookie.
 
 ### Examples:
 
-	Cookie.read("username");
+	Cookie.read('username');
 
 
 
@@ -97,7 +97,7 @@ Remove a Cookie:
 Creating a Cookie and Removing it Right Away:
 
 	var myCookie = Cookie.write('username', 'Aaron', {domain: 'mootools.net'});
-	if (Cookie.read('username') == 'Aaron') { Cookie.dispose(myCookie); }
+	if (Cookie.read('username') == 'Aaron') { myCookie.dispose(); }
 
 
 

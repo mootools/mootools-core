@@ -1,152 +1,115 @@
 /*
-Script: Class.js
-	Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+---
 
-License:
-	MIT-style license.
+name: Class
+
+description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+
+license: MIT-style license.
+
+requires: [Array, String, Function, Number]
+
+provides: Class
+
+...
 */
 
-function Class(params){
-	
-	if (params instanceof Function) params = {initialize: params};
-	
+(function(){
+
+var Class = this.Class = new Type('Class', function(params){
+	if (instanceOf(params, Function)) params = {initialize: params};
+
 	var newClass = function(){
-		Object.reset(this);
-		if (newClass._prototyping) return this;
-		this._current = $empty;
+		reset(this);
+		if (newClass.$prototyping) return this;
+		this.$caller = null;
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		delete this._current; delete this.caller;
+		this.$caller = this.caller = null;
 		return value;
-	}.extend(this);
-	
-	newClass.implement(params);
-	
-	newClass.constructor = Class;
-	newClass.prototype.constructor = newClass;
+	}.extend(this).implement(params);
+
+	newClass.$constructor = Class;
+	newClass.prototype.$constructor = newClass;
+	newClass.prototype.parent = parent;
 
 	return newClass;
+});
 
+var parent = function(){
+	if (!this.$caller) throw new Error('The method "parent" cannot be called.');
+	var name = this.$caller.$name,
+		parent = this.$caller.$owner.parent,
+		previous = (parent) ? parent.prototype[name] : null;
+	if (!previous) throw new Error('The method "' + name + '" has no parent.');
+	return previous.apply(this, arguments);
 };
 
-Function.prototype.protect = function(){
-	this._protected = true;
+var reset = function(object){
+	for (var key in object){
+		var value = object[key];
+		switch (typeOf(value)){
+			case 'object':
+				var F = function(){};
+				F.prototype = value;
+				object[key] = reset(new F);
+			break;
+			case 'array': object[key] = value.clone(); break;
+		}
+	}
+	return object;
+};
+
+var wrap = function(self, key, method){
+	if (method.$origin) method = method.$origin;
+	var wrapper = function(){
+		if (method.$protected && this.$caller == null) throw new Error('The method "' + key + '" cannot be called.');
+		var caller = this.caller, current = this.$caller;
+		this.caller = current; this.$caller = wrapper;
+		var result = method.apply(this, arguments);
+		this.$caller = current; this.caller = caller;
+		return result;
+	}.extend({$owner: self, $origin: method, $name: key});
+	return wrapper;
+};
+
+var implement = function(key, value, retain){
+	if (Class.Mutators.hasOwnProperty(key)){
+		value = Class.Mutators[key].call(this, value);
+		if (value == null) return this;
+	}
+
+	if (typeOf(value) == 'function'){
+		if (value.$hidden) return this;
+		this.prototype[key] = (retain) ? value : wrap(this, key, value);
+	} else {
+		Object.merge(this.prototype, key, value);
+	}
+
 	return this;
 };
 
-Object.reset = function(object, key){
-		
-	if (key == null){
-		for (var p in object) Object.reset(object, p);
-		return object;
-	}
-	
-	delete object[key];
-	
-	switch ($type(object[key])){
-		case 'object':
-			var F = function(){};
-			F.prototype = object[key];
-			var i = new F;
-			object[key] = Object.reset(i);
-		break;
-		case 'array': object[key] = $unlink(object[key]); break;
-	}
-	
-	return object;
-	
+var getInstance = function(klass){
+	klass.$prototyping = true;
+	var proto = new klass;
+	delete klass.$prototyping;
+	return proto;
 };
 
-new Native({name: 'Class', initialize: Class}).extend({
-
-	instantiate: function(F){
-		F._prototyping = true;
-		var proto = new F;
-		delete F._prototyping;
-		return proto;
-	},
-	
-	wrap: function(self, key, method){
-		if (method._origin) method = method._origin;
-		
-		return function(){
-			if (method._protected && this._current == null) throw new Error('The method "' + key + '" cannot be called.');
-			var caller = this.caller, current = this._current;
-			this.caller = current; this._current = arguments.callee;
-			var result = method.apply(this, arguments);
-			this._current = current; this.caller = caller;
-			return result;
-		}.extend({_owner: self, _origin: method, _name: key});
-
-	}
-	
-});
-
-Class.implement({
-	
-	implement: function(key, value){
-		
-		if ($type(key) == 'object'){
-			for (var p in key) this.implement(p, key[p]);
-			return this;
-		}
-		
-		var mutator = Class.Mutators[key];
-		
-		if (mutator){
-			value = mutator.call(this, value);
-			if (value == null) return this;
-		}
-		
-		var proto = this.prototype;
-
-		switch ($type(value)){
-			
-			case 'function':
-				if (value._hidden) return this;
-				proto[key] = Class.wrap(this, key, value);
-			break;
-			
-			case 'object':
-				var previous = proto[key];
-				if ($type(previous) == 'object') $mixin(previous, value);
-				else proto[key] = $unlink(value);
-			break;
-			
-			case 'array':
-				proto[key] = $unlink(value);
-			break;
-			
-			default: proto[key] = value;
-
-		}
-		
-		return this;
-
-	}
-	
-});
+Class.implement('implement', implement.overloadSetter());
 
 Class.Mutators = {
-	
+
 	Extends: function(parent){
-
 		this.parent = parent;
-		this.prototype = Class.instantiate(parent);
-
-		this.implement('parent', function(){
-			var name = this.caller._name, previous = this.caller._owner.parent.prototype[name];
-			if (!previous) throw new Error('The method "' + name + '" has no parent.');
-			return previous.apply(this, arguments);
-		}.protect());
-
+		this.prototype = getInstance(parent);
 	},
 
 	Implements: function(items){
-		$splat(items).each(function(item){
-			if (item instanceof Function) item = Class.instantiate(item);
-			this.implement(item);
+		Array.from(items).each(function(item){
+			var instance = new item;
+			for (var key in instance) implement.call(this, key, instance[key], true);
 		}, this);
-
 	}
-	
 };
+
+})();

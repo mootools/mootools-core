@@ -1,33 +1,42 @@
 /*
-Script: Fx.js
-	Contains the basic animation logic to be extended by all other Fx Classes.
+---
 
-License:
-	MIT-style license.
+name: Fx
+
+description: Contains the basic animation logic to be extended by all other Fx Classes.
+
+license: MIT-style license.
+
+requires: [Chain, Events, Options]
+
+provides: Fx
+
+...
 */
 
-var Fx = new Class({
+(function(){
+
+var Fx = this.Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
 	options: {
 		/*
-		onStart: $empty,
-		onCancel: $empty,
-		onComplete: $empty,
+		onStart: nil,
+		onCancel: nil,
+		onComplete: nil,
 		*/
-		fps: 50,
+		fps: 60,
 		unit: false,
 		duration: 500,
+		frames: null,
+		frameSkip: true,
 		link: 'ignore'
 	},
 
 	initialize: function(options){
 		this.subject = this.subject || this;
 		this.setOptions(options);
-		this.options.duration = Fx.Durations[this.options.duration] || this.options.duration.toInt();
-		var wait = this.options.wait;
-		if (wait === false) this.options.link = 'cancel';
 	},
 
 	getTransition: function(){
@@ -36,14 +45,22 @@ var Fx = new Class({
 		};
 	},
 
-	step: function(){
-		var time = $time();
-		if (time < this.time + this.options.duration){
-			var delta = this.transition((time - this.time) / this.options.duration);
+	step: function(now){
+		if (this.options.frameSkip){
+			var diff = (this.time != null) ? (now - this.time) : 0, frames = diff / this.frameInterval;
+			this.time = now;
+			this.frame += frames;
+		} else {
+			this.frame++;
+		}
+		
+		if (this.frame < this.frames){
+			var delta = this.transition(this.frame / this.frames);
 			this.set(this.compute(this.from, this.to, delta));
 		} else {
+			this.frame = this.frames;
 			this.set(this.compute(this.from, this.to, 1));
-			this.complete();
+			this.stop();
 		}
 	},
 
@@ -56,10 +73,10 @@ var Fx = new Class({
 	},
 
 	check: function(){
-		if (!this.timer) return true;
+		if (!this.isRunning()) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
+			case 'chain': this.chain(this.caller.pass(arguments, this)); return false;
 		}
 		return false;
 	},
@@ -68,58 +85,58 @@ var Fx = new Class({
 		if (!this.check(from, to)) return this;
 		this.from = from;
 		this.to = to;
-		this.time = 0;
+		this.frame = (this.options.frameSkip) ? 0 : -1;
+		this.time = null;
 		this.transition = this.getTransition();
-		this.startTimer();
-		this.onStart();
-		return this;
-	},
-
-	complete: function(){
-		if (this.stopTimer()) this.onComplete();
-		return this;
-	},
-
-	cancel: function(){
-		if (this.stopTimer()) this.onCancel();
-		return this;
-	},
-
-	onStart: function(){
+		var frames = this.options.frames, fps = this.options.fps, duration = this.options.duration;
+		this.duration = Fx.Durations[duration] || duration.toInt();
+		this.frameInterval = 1000 / fps;
+		this.frames = frames || Math.round(this.duration / this.frameInterval);
 		this.fireEvent('start', this.subject);
+		pushInstance.call(this, fps);
+		return this;
 	},
-
-	onComplete: function(){
-		this.fireEvent('complete', this.subject);
-		if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
+	
+	stop: function(){
+		if (this.isRunning()){
+			this.time = null;
+			pullInstance.call(this, this.options.fps);
+			if (this.frames == this.frame){
+				this.fireEvent('complete', this.subject);
+				if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
+			} else {
+				this.fireEvent('stop', this.subject);
+			}
+		}
+		return this;
 	},
-
-	onCancel: function(){
-		this.fireEvent('cancel', this.subject).clearChain();
+	
+	cancel: function(){
+		if (this.isRunning()){
+			this.time = null;
+			pullInstance.call(this, this.options.fps);
+			this.frame = this.frames;
+			this.fireEvent('cancel', this.subject).clearChain();
+		}
+		return this;
 	},
-
+	
 	pause: function(){
-		this.stopTimer();
+		if (this.isRunning()){
+			this.time = null;
+			pullInstance.call(this, this.options.fps);
+		}
 		return this;
 	},
-
+	
 	resume: function(){
-		this.startTimer();
+		if ((this.frame < this.frames) && !this.isRunning()) pushInstance.call(this, this.options.fps);
 		return this;
 	},
-
-	stopTimer: function(){
-		if (!this.timer) return false;
-		this.time = $time() - this.time;
-		this.timer = $clear(this.timer);
-		return true;
-	},
-
-	startTimer: function(){
-		if (this.timer) return false;
-		this.time = $time() - this.time;
-		this.timer = this.step.periodical(Math.round(1000 / this.options.fps), this);
-		return true;
+	
+	isRunning: function(){
+		var list = instances[this.options.fps];
+		return list && list.contains(this);
 	}
 
 });
@@ -129,3 +146,34 @@ Fx.compute = function(from, to, delta){
 };
 
 Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
+
+// global timers
+
+var instances = {}, timers = {};
+
+var loop = function(){
+	var now = Date.now();
+	for (var i = this.length; i--;){
+		var instance = this[i];
+		if (instance) instance.step(now);
+	}
+};
+
+var pushInstance = function(fps){
+	var list = instances[fps] || (instances[fps] = []);
+	list.push(this);
+	if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), list);
+};
+
+var pullInstance = function(fps){
+	var list = instances[fps];
+	if (list){
+		list.erase(this);
+		if (!list.length && timers[fps]){
+			delete instances[fps];
+			timers[fps] = clearInterval(timers[fps]);
+		}
+	}
+};
+
+})();

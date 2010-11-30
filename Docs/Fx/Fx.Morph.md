@@ -46,7 +46,7 @@ Morphing one Element to match the CSS values within a CSS class:
 
 	var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
 
-	//The styles of myClassName will be applied to the target Element.
+	// the styles of myClassName will be applied to the target Element.
 	myEffect.start('.myClassName');
 
 
@@ -120,10 +120,10 @@ Executes a transition for any number of CSS properties in tandem.
 - Multiple selectors (with commas) are not supported.
 
 
-Hash: Element.Properties {#Element-Properties}
+Object: Element.Properties {#Element-Properties}
 ==============================================
 
-see [Element.Properties](/Element/Element/#Element-Properties)
+see [Element.Properties][]
 
 Element Property: morph {#Element-Properties:morph}
 ---------------------------------------------------
@@ -159,7 +159,7 @@ Gets the default Fx.Morph instance for the Element.
 
 #### Arguments:
 
-1. options - (*object*, optional) The Fx.Morph options. If these are passed in, a new instance will be generated.
+1. property - (*string*) the Fx.Morph property argument.
 
 #### Returns:
 
@@ -169,11 +169,11 @@ Gets the default Fx.Morph instance for the Element.
 
 	el.set('morph', {duration: 'long', transition: 'bounce:out'});
 	el.morph({height: 100, width: 100});
-	el.get('morph'); //The Fx.Morph instance.
+	el.get('morph'); // the Fx.Morph instance.
 
 
 
-Native: Element {#Element}
+Type: Element {#Element}
 ==========================
 
 Element Method: morph {#Element:morph}
@@ -209,6 +209,7 @@ With a selector:
 
 
 
-[$]: /core/Element/Element#dollar
+[$]: /core/Element/Element#Window:dollar
 [Fx]: /core/Fx/Fx
 [Fx.Morph]: #Fx-Morph
+[Element.Properties]: /core/Element/Element/#Element-Properties

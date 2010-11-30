@@ -1,22 +1,39 @@
 /*
-Script: Request.js
-	Powerful all purpose Request Class. Uses XMLHTTPRequest.
+---
 
-License:
-	MIT-style license.
+name: Request
+
+description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
+
+license: MIT-style license.
+
+requires: [Object, Element, Chain, Events, Options, Browser]
+
+provides: Request
+
+...
 */
 
-var Request = new Class({
+(function(){
+
+var progressSupport = ('onprogress' in new Browser.Request);
+
+var Request = this.Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
 	options: {/*
-		onRequest: $empty,
-		onComplete: $empty,
-		onCancel: $empty,
-		onSuccess: $empty,
-		onFailure: $empty,
-		onException: $empty,*/
+		onRequest: function(){},
+		onLoadstart: function(event, xhr){},
+		onProgress: function(event, xhr){},
+		onComplete: function(){},
+		onCancel: function(){},
+		onSuccess: function(responseText, responseXML){},
+		onFailure: function(xhr){},
+		onException: function(headerName, value){},
+		onTimeout: function(){},
+		user: '',
+		password: '',*/
 		url: '',
 		data: '',
 		headers: {
@@ -33,39 +50,46 @@ var Request = new Class({
 		encoding: 'utf-8',
 		evalScripts: false,
 		evalResponse: false,
+		timeout: 0,
 		noCache: false
 	},
 
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
-		this.headers = new Hash(this.options.headers);
+		this.headers = this.options.headers;
 	},
 
 	onStateChange: function(){
-		if (this.xhr.readyState != 4 || !this.running) return;
+		var xhr = this.xhr;
+		if (xhr.readyState != 4 || !this.running) return;
 		this.running = false;
 		this.status = 0;
-		$try(function(){
-			this.status = this.xhr.status;
+		Function.attempt(function(){
+			var status = xhr.status;
+			this.status = (status == 1223) ? 204 : status;
 		}.bind(this));
-		this.xhr.onreadystatechange = $empty;
-		if (this.options.isSuccess.call(this, this.status)){
-			this.response = {text: this.xhr.responseText, xml: this.xhr.responseXML};
+		xhr.onreadystatechange = function(){};
+		clearTimeout(this.timer);
+		
+		this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
+		if (this.options.isSuccess.call(this, this.status))
 			this.success(this.response.text, this.response.xml);
-		} else {
-			this.response = {text: null, xml: null};
+		else
 			this.failure();
-		}
 	},
 
 	isSuccess: function(){
-		return ((this.status >= 200) && (this.status < 300));
+		var status = this.status;
+		return (status >= 200 && status < 300);
+	},
+
+	isRunning: function(){
+		return !!this.running;
 	},
 
 	processScripts: function(text){
-		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return $exec(text);
+		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
 		return text.stripScripts(this.options.evalScripts);
 	},
 
@@ -84,14 +108,26 @@ var Request = new Class({
 	onFailure: function(){
 		this.fireEvent('complete').fireEvent('failure', this.xhr);
 	},
+	
+	loadstart: function(event){
+		this.fireEvent('loadstart', [event, this.xhr]);
+	},
+	
+	progress: function(event){
+		this.fireEvent('progress', [event, this.xhr]);
+	},
+	
+	timeout: function(){
+		this.fireEvent('timeout', this.xhr);
+	},
 
 	setHeader: function(name, value){
-		this.headers.set(name, value);
+		this.headers[name] = value;
 		return this;
 	},
 
 	getHeader: function(name){
-		return $try(function(){
+		return Function.attempt(function(){
 			return this.xhr.getResponseHeader(name);
 		}.bind(this));
 	},
@@ -100,25 +136,27 @@ var Request = new Class({
 		if (!this.running) return true;
 		switch (this.options.link){
 			case 'cancel': this.cancel(); return true;
-			case 'chain': this.chain(this.caller.bind(this, arguments)); return false;
+			case 'chain': this.chain(this.caller.pass(arguments, this)); return false;
 		}
 		return false;
 	},
-
+	
 	send: function(options){
 		if (!this.check(options)) return this;
+
+		this.options.isSuccess = this.options.isSuccess || this.isSuccess;
 		this.running = true;
 
-		var type = $type(options);
+		var type = typeOf(options);
 		if (type == 'string' || type == 'element') options = {data: options};
 
 		var old = this.options;
-		options = $extend({data: old.data, url: old.url, method: old.method}, options);
+		options = Object.append({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = String(options.url), method = options.method.toLowerCase();
 
-		switch ($type(data)){
+		switch (typeOf(data)){
 			case 'element': data = document.id(data).toQueryString(); break;
-			case 'object': case 'hash': data = Hash.toQueryString(data);
+			case 'object': case 'hash': data = Object.toQueryString(data);
 		}
 
 		if (this.options.format){
@@ -132,47 +170,57 @@ var Request = new Class({
 			method = 'post';
 		}
 
-		if (this.options.urlEncoded && method == 'post'){
+		if (this.options.urlEncoded && ['post', 'put'].contains(method)){
 			var encoding = (this.options.encoding) ? '; charset=' + this.options.encoding : '';
-			this.headers.set('Content-type', 'application/x-www-form-urlencoded' + encoding);
+			this.headers['Content-type'] = 'application/x-www-form-urlencoded' + encoding;
 		}
 
-		if (this.options.noCache){
-			var noCache = 'noCache=' + new Date().getTime();
-			data = (data) ? noCache + '&' + data : noCache;
-		}
-
+		if (!url) url = document.location.pathname;
+		
 		var trimPosition = url.lastIndexOf('/');
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
+		if (this.options.noCache)
+			url += (url.contains('?') ? '&' : '?') + String.uniqueID();
+
 		if (data && method == 'get'){
-			url = url + (url.contains('?') ? '&' : '?') + data;
+			url += (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
 
-		this.xhr.open(method.toUpperCase(), url, this.options.async);
+		var xhr = this.xhr;
+		if (progressSupport){
+			xhr.onloadstart = this.loadstart.bind(this);
+			xhr.onprogress = this.progress.bind(this);
+		}
 
-		this.xhr.onreadystatechange = this.onStateChange.bind(this);
+		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.password);
+		if (this.options.user && 'withCredentials' in xhr) xhr.withCredentials = true;
+		
+		xhr.onreadystatechange = this.onStateChange.bind(this);
 
-		this.headers.each(function(value, key){
+		Object.each(this.headers, function(value, key){
 			try {
-				this.xhr.setRequestHeader(key, value);
+				xhr.setRequestHeader(key, value);
 			} catch (e){
 				this.fireEvent('exception', [key, value]);
 			}
 		}, this);
 
 		this.fireEvent('request');
-		this.xhr.send(data);
+		xhr.send(data);
 		if (!this.options.async) this.onStateChange();
+		if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
 		return this;
 	},
 
 	cancel: function(){
 		if (!this.running) return this;
 		this.running = false;
-		this.xhr.abort();
-		this.xhr.onreadystatechange = $empty;
+		var xhr = this.xhr;
+		xhr.abort();
+		clearTimeout(this.timer);
+		xhr.onreadystatechange = xhr.onprogress = xhr.onloadstart = function(){};
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
@@ -180,36 +228,36 @@ var Request = new Class({
 
 });
 
-(function(){
-
 var methods = {};
 ['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
-	methods[method] = function(){
-		var params = Array.link(arguments, {url: String.type, data: $defined});
-		return this.send($extend(params, {method: method}));
+	methods[method] = function(data){
+		var object = {
+			method: method
+		};
+		if (data != null) object.data = data;
+		return this.send(object);
 	};
 });
 
 Request.implement(methods);
 
-})();
-
 Element.Properties.send = {
 
 	set: function(options){
-		var send = this.retrieve('send');
-		if (send) send.cancel();
-		return this.eliminate('send').store('send:options', $extend({
-			data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
-		}, options));
+		var send = this.get('send').cancel();
+		send.setOptions(options);
+		return this;
 	},
 
-	get: function(options){
-		if (options || !this.retrieve('send')){
-			if (options || !this.retrieve('send:options')) this.set('send', options);
-			this.store('send', new Request(this.retrieve('send:options')));
+	get: function(){
+		var send = this.retrieve('send');
+		if (!send){
+			send = new Request({
+				data: this, link: 'cancel', method: this.get('method') || 'post', url: this.get('action')
+			});
+			this.store('send', send);
 		}
-		return this.retrieve('send');
+		return send;
 	}
 
 };
@@ -223,3 +271,5 @@ Element.implement({
 	}
 
 });
+
+})();

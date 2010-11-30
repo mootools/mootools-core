@@ -1,9 +1,17 @@
 /*
-Script: Fx.Tween.js
-	Formerly Fx.Style, effect to transition any CSS property for an element.
+---
 
-License:
-	MIT-style license.
+name: Fx.Tween
+
+description: Formerly Fx.Style, effect to transition any CSS property for an element.
+
+license: MIT-style license.
+
+requires: Fx.CSS
+
+provides: [Fx.Tween, Element.fade, Element.highlight]
+
+...
 */
 
 Fx.Tween = new Class({
@@ -37,17 +45,17 @@ Fx.Tween = new Class({
 Element.Properties.tween = {
 
 	set: function(options){
-		var tween = this.retrieve('tween');
-		if (tween) tween.cancel();
-		return this.eliminate('tween').store('tween:options', $extend({link: 'cancel'}, options));
+		this.get('tween').cancel().setOptions(options);
+		return this;
 	},
 
-	get: function(options){
-		if (options || !this.retrieve('tween')){
-			if (options || !this.retrieve('tween:options')) this.set('tween', options);
-			this.store('tween', new Fx.Tween(this, this.retrieve('tween:options')));
+	get: function(){
+		var tween = this.retrieve('tween');
+		if (!tween){
+			tween = new Fx.Tween(this, {link: 'cancel'});
+			this.store('tween', tween);
 		}
-		return this.retrieve('tween');
+		return tween;
 	}
 
 };
@@ -61,7 +69,7 @@ Element.implement({
 
 	fade: function(how){
 		var fade = this.get('tween'), o = 'opacity', toggle;
-		how = $pick(how, 'toggle');
+		how = [how, 'toggle'].pick();
 		switch (how){
 			case 'in': fade.start(o, 1); break;
 			case 'out': fade.start(o, 0); break;

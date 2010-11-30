@@ -1,0 +1,43 @@
+name: "Core"
+
+exports: "mootools-core.js"
+
+web: "[mootools.net](http://mootools.net)"
+
+description: "MooTools, The JavaScript framework"
+
+license: "[MIT License](http://mootools.net/license.txt)"
+
+copyright: "&copy; [MooTools](http://mootools.net)"
+
+authors: "[MooTools Development Team](http://mootools.net/developers)"
+
+sources:
+  - "Source/Core/Core.js"
+  - "Source/Types/Array.js"
+  - "Source/Types/String.js"
+  - "Source/Types/Number.js"
+  - "Source/Types/Function.js"
+  - "Source/Types/Object.js"
+  - "Source/Types/Event.js"
+  - "Source/Browser/Browser.js"
+  - "Source/Class/Class.js"
+  - "Source/Class/Class.Extras.js"
+  - "Source/Slick/Slick.Parser.js"
+  - "Source/Slick/Slick.Finder.js"
+  - "Source/Element/Element.js"
+  - "Source/Element/Element.Style.js"
+  - "Source/Element/Element.Event.js"
+  - "Source/Element/Element.Dimensions.js"
+  - "Source/Fx/Fx.js"
+  - "Source/Fx/Fx.CSS.js"
+  - "Source/Fx/Fx.Tween.js"
+  - "Source/Fx/Fx.Morph.js"
+  - "Source/Fx/Fx.Transitions.js"
+  - "Source/Request/Request.js"
+  - "Source/Request/Request.HTML.js"
+  - "Source/Request/Request.JSON.js"
+  - "Source/Utilities/Cookie.js"
+  - "Source/Utilities/JSON.js"
+  - "Source/Utilities/DOMReady.js"
+  - "Source/Utilities/Swiff.js"

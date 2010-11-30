@@ -50,7 +50,7 @@ Converts a JSON string into an JavaScript object.
 
 ### Examples:
 
-	var myObject = JSON.decode('{"apple":"red","lemon":"yellow"}'); //returns: {apple: 'red', lemon: 'yellow'}
+	var myObject = JSON.decode('{"apple":"red","lemon":"yellow"}'); // returns: {apple: 'red', lemon: 'yellow'}
 
 ### Credits:
 

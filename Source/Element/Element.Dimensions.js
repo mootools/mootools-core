@@ -1,16 +1,39 @@
 /*
-Script: Element.Dimensions.js
-	Contains methods to work with size, scroll, or positioning of Elements and the window object.
+---
 
-License:
-	MIT-style license.
+name: Element.Dimensions
 
-Credits:
-	- Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
-	- Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+description: Contains methods to work with size, scroll, or positioning of Elements and the window object.
+
+license: MIT-style license.
+
+credits:
+  - Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
+  - Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+
+requires: [Element, Element.Style]
+
+provides: [Element.Dimensions]
+
+...
 */
 
 (function(){
+
+var element = document.createElement('div'),
+	child = document.createElement('div');
+element.style.height = '0';
+element.appendChild(child);
+var brokenOffsetParent = (child.offsetParent === element);
+element = child = null;
+
+var isOffset = function(el){
+	return styleString(el, 'position') != 'static' || isBody(el);
+};
+
+var isOffsetStatic = function(el){
+	return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
+};
 
 Element.implement({
 
@@ -40,7 +63,7 @@ Element.implement({
 	},
 
 	getScrolls: function(){
-		var element = this, position = {x: 0, y: 0};
+		var element = this.parentNode, position = {x: 0, y: 0};
 		while (element && !isBody(element)){
 			position.x += element.scrollLeft;
 			position.y += element.scrollTop;
@@ -49,17 +72,38 @@ Element.implement({
 		return position;
 	},
 
-	getOffsetParent: function(){
+	getOffsetParent: brokenOffsetParent ? function(){
 		var element = this;
-		if (isBody(element)) return null;
-		if (!Browser.Engine.trident) return element.offsetParent;
-		while ((element = element.parentNode) && !isBody(element)){
-			if (styleString(element, 'position') != 'static') return element;
+		if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+		var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
+		while ((element = element.parentNode)){
+			if (isOffsetCheck(element)) return element;
 		}
+		return null;
+	} : function(){
+		var element = this;
+		if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+		try {
+			return element.offsetParent;
+		} catch(e) {}
 		return null;
 	},
 
 	getOffsets: function(){
+		if (this.getBoundingClientRect && !Browser.Platform.ios){
+			var bound = this.getBoundingClientRect(),
+				html = document.id(this.getDocument().documentElement),
+				htmlScroll = html.getScroll(),
+				elemScrolls = this.getScrolls(),
+				isFixed = (styleString(this, 'position') == 'fixed');
+
+			return {
+				x: bound.left.toInt() + elemScrolls.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
+				y: bound.top.toInt()  + elemScrolls.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
+			};
+		}
 
 		var element = this, position = {x: 0, y: 0};
 		if (isBody(this)) return position;
@@ -68,7 +112,7 @@ Element.implement({
 			position.x += element.offsetLeft;
 			position.y += element.offsetTop;
 
-			if (Browser.Engine.gecko){
+			if (Browser.firefox){
 				if (!borderBox(element)){
 					position.x += leftBorder(element);
 					position.y += topBorder(element);
@@ -78,14 +122,14 @@ Element.implement({
 					position.x += leftBorder(parent);
 					position.y += topBorder(parent);
 				}
-			} else if (element != this && Browser.Engine.webkit){
+			} else if (element != this && Browser.safari){
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 			}
 
 			element = element.offsetParent;
 		}
-		if (Browser.Engine.gecko && !borderBox(this)){
+		if (Browser.firefox && !borderBox(this)){
 			position.x -= leftBorder(this);
 			position.y -= topBorder(this);
 		}
@@ -94,23 +138,40 @@ Element.implement({
 
 	getPosition: function(relative){
 		if (isBody(this)) return {x: 0, y: 0};
-		var offset = this.getOffsets(), scroll = this.getScrolls();
-		var position = {x: offset.x - scroll.x, y: offset.y - scroll.y};
-		var relativePosition = (relative && (relative = document.id(relative))) ? relative.getPosition() : {x: 0, y: 0};
-		return {x: position.x - relativePosition.x, y: position.y - relativePosition.y};
+		var offset = this.getOffsets(),
+			scroll = this.getScrolls();
+		var position = {
+			x: offset.x - scroll.x,
+			y: offset.y - scroll.y
+		};
+		
+		if (relative && (relative = document.id(relative))){
+			var relativePosition = relative.getPosition();
+			return {x: position.x - relativePosition.x - leftBorder(relative), y: position.y - relativePosition.y - topBorder(relative)};
+		}
+		return position;
 	},
 
 	getCoordinates: function(element){
 		if (isBody(this)) return this.getWindow().getCoordinates();
-		var position = this.getPosition(element), size = this.getSize();
-		var obj = {left: position.x, top: position.y, width: size.x, height: size.y};
+		var position = this.getPosition(element),
+			size = this.getSize();
+		var obj = {
+			left: position.x,
+			top: position.y,
+			width: size.x,
+			height: size.y
+		};
 		obj.right = obj.left + obj.width;
 		obj.bottom = obj.top + obj.height;
 		return obj;
 	},
 
 	computePosition: function(obj){
-		return {left: obj.x - styleNumber(this, 'margin-left'), top: obj.y - styleNumber(this, 'margin-top')};
+		return {
+			left: obj.x - styleNumber(this, 'margin-left'),
+			top: obj.y - styleNumber(this, 'margin-top')
+		};
 	},
 
 	setPosition: function(obj){
@@ -120,13 +181,9 @@ Element.implement({
 });
 
 
-Native.implement([Document, Window], {
+[Document, Window].invoke('implement', {
 
 	getSize: function(){
-		if (Browser.Engine.presto || Browser.Engine.webkit) {
-			var win = this.getWindow();
-			return {x: win.innerWidth, y: win.innerHeight};
-		}
 		var doc = getCompatElement(this);
 		return {x: doc.clientWidth, y: doc.clientHeight};
 	},
@@ -137,8 +194,11 @@ Native.implement([Document, Window], {
 	},
 
 	getScrollSize: function(){
-		var doc = getCompatElement(this), min = this.getSize();
-		return {x: Math.max(doc.scrollWidth, min.x), y: Math.max(doc.scrollHeight, min.y)};
+		var doc = getCompatElement(this),
+			min = this.getSize(),
+			body = this.getDocument().body;
+
+		return {x: Math.max(doc.scrollWidth, body.scrollWidth, min.x), y: Math.max(doc.scrollHeight, body.scrollHeight, min.y)};
 	},
 
 	getPosition: function(){
@@ -184,9 +244,9 @@ function getCompatElement(element){
 })();
 
 //aliases
-Element.alias('setPosition', 'position'); //compatability
+Element.alias({position: 'setPosition'}); //compatability
 
-Native.implement([Window, Document, Element], {
+[Window, Document, Element].invoke('implement', {
 
 	getHeight: function(){
 		return this.getSize().y;

@@ -40,15 +40,9 @@ Fired when the request completes. This overrides the signature of the Request su
 
 ### Example:
 
-	//This code will send a data object via a GET request and alert the retrieved data.
-	var jsonRequest = new Request.JSON({url: "http://site.com/tellMeAge.php", onSuccess: function(person){
-		alert(person.age);    //Alerts "25 years".
-		alert(person.height); //Alerts "170 cm".
-		alert(person.weight); //Alerts "120 kg".
+	// this code will send a data object via a GET request and alert the retrieved data.
+	var jsonRequest = new Request.JSON({url: 'http://site.com/tellMeAge.php', onSuccess: function(person){
+		alert(person.age);    // alerts "25 years".
+		alert(person.height); // alerts "170 cm".
+		alert(person.weight); // alerts "120 kg".
 	}}).get({'firstName': 'John', 'lastName': 'Doe'});
-
-### failure
-
-Request.JSON fires the *failure* event when the JSON value is not parsed due to security tests. If the option for *secure* is set to true and the JSON value is *not* secure, [JSON.decode][] will throw an exception. Request.JSON catches this and fires its *failure* event.
-
-[JSON.decode]: /core/docs/Utilities/JSON#JSON:decode
