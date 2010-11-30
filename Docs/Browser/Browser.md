@@ -25,6 +25,7 @@ Browser.name {#Browser:Browser-name}
 * Browser.safari - (*boolean*) True if the current browser is Safari
 * Browser.safari3 - (*boolean*) True if the current browser is Safari 3
 * Browser.safari4 - (*boolean*) True if the current browser is Safari 4
+* Browser.safari5 - (*boolean*) True if the current browser is Safari 5
 * Browser.chrome - (*boolean*) True if the current browser is Chrome
 * Browser.opera - (*boolean*) True if the current browser is Opera
 
