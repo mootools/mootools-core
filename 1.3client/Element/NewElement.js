@@ -108,6 +108,15 @@ describe('new Element(expression)', {
 		
 		expect(table.tagName.toLowerCase()).toEqual('table');
 		expect(table.cellPadding == 0).toBeTruthy();
+	},
+	
+	'should allow false to be passed for checked': function() {
+		var input = new Element('input', {
+			type: 'checkbox',
+			checked: false
+		});
+		
+		expect(input.checked).toEqual(false);
 	}
 	
 });
