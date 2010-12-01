@@ -15,18 +15,31 @@ Browser.Features {#Browser:Browser-Features}
 Browser.name {#Browser:Browser-name}
 ------------------------------------
 
+'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values: 
+
 * Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
-* Browser.ie6 - (*boolean*) True if the current browser is Internet Explorer 6.
-* Browser.ie7 - (*boolean*) True if the current browser is Internet Explorer 7.
-* Browser.ie8 - (*boolean*) True if the current browser is Internet Explorer 8.
-* Browser.firefox - (*boolean*) True if the current browser is Firefox
-* Browser.firefox2 - (*boolean*) True if the current browser is Firefox 2
-* Browser.firefox3 - (*boolean*) True if the current browser is Firefox 3
-* Browser.safari - (*boolean*) True if the current browser is Safari
-* Browser.safari3 - (*boolean*) True if the current browser is Safari 3
-* Browser.safari4 - (*boolean*) True if the current browser is Safari 4
-* Browser.chrome - (*boolean*) True if the current browser is Chrome
-* Browser.opera - (*boolean*) True if the current browser is Opera
+* Browser.firefox - (*boolean*) True if the current browser is Firefox.
+* Browser.safari - (*boolean*) True if the current browser is Safari.
+* Browser.chrome - (*boolean*) True if the current browser is Chrome.
+* Browser.opera - (*boolean*) True if the current browser is Opera.
+
+In addition to one of the above properties a second property consisting of the name and the major version is provided ('Browser.ie6', 'Browser.chrome15', ...).
+
+### Example:
+
+	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
+	
+	if (Browser.ie){
+		// This code will only run in IE
+	}
+	
+	if (Browser.firefox2){
+		// This code will only run in Firefox 2
+	}
+	
+	if (Browser.ie6 || Browser.ie7){
+		// Please upgrade your browser
+	}
 
 If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
