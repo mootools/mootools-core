@@ -81,7 +81,7 @@ Removes a cookie from the browser.
 
 ### Syntax:
 
-	var oldCookie = Cookie.dispose(cookie[, options]);
+	var oldCookie = Cookie.dispose(name[, options]);
 
 ### Arguments:
 
