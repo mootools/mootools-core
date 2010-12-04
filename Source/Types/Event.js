@@ -105,6 +105,9 @@ Event.Keys = {
 	'backspace': 8,
 	'tab': 9,
 	'delete': 46
+    'shift' : 16, 
+    'control' : 17,
+    'alt' : 18
 };
 
 //<1.2compat>
