@@ -40,7 +40,7 @@ Attaches an event listener to a DOM element.
 
 ### Notes:
 
-- You can stop the Event by returning false in the listener or calling [Event:stop](#Event:stop).
+- You can stop the Event by returning false in the listener or calling [Event:stop][].
 - This method is also attached to Document and Window.
 
 ### See Also:
@@ -322,11 +322,8 @@ This event fires when the mouse wheel is rotated;
 
 
 
-Deprecated Functions {#Deprecated-Functions}
-============================================
-
-
 [$]: /core/Element/Element#Window:dollar
+[Event:stop]: /core/Types/Event#Event:stop
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#bind
 [Function:pass]: /core/Types/Function/#pass
