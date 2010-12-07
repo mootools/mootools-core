@@ -35,6 +35,11 @@ Useful when implementing a default set of properties in multiple Classes.  The I
 
 * (*function*) The initialize function will be the constructor for this class when new instances are created.
 
+#### Property: toElement
+
+* (*function*) A method which returns an element. This method will be automatically called when passing an instance of a class in the [document.id][] function.
+
+
 ### Returns:
 
 * (*class*) The created Class.
@@ -124,3 +129,5 @@ The same as creating a [new Class](#Class:constructor) with the Implements prope
 	var myAnimal = new Animal(20);
 	myAnimal.setName('Micia');
 	alert(myAnimal.name); // alerts 'Micia'
+
+[document.id]: /core/Element/Element#Window:document-id
