@@ -365,9 +365,9 @@ var get = function(uid){
 };
 
 var clean = function(item){
+	var uid = item.uid;
 	if (item.removeEvents) item.removeEvents();
 	if (item.clearAttributes) item.clearAttributes();
-	var uid = item.uid;
 	if (uid != null){
 		delete collected[uid];
 		delete storage[uid];
