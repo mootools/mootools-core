@@ -169,6 +169,37 @@ Fired when a request doesn't change state for `options.timeout` milliseconds.
 
 	onTimeout()
 
+
+### Example:
+
+This example fetches some text with Request. When the user clicks the link, the returned text by the server is used to update
+the element's text. It uses the `onRequest`, `onSuccess` and `onFailure` events to inform the user about the current state of
+the request. The `method` option is set to `get` because we get some text instead of posting it to the server. It gets the
+data-userid attribute of the clicked link, which will be used for the querystring.
+
+	var myElement = document.id('myElement');
+
+	var myRequest = new Request({
+		url: 'getMyText.php',
+		method: 'get',
+		onRequest: function(){
+			myElement.set('text', 'loading...');
+		},
+		onSuccess: function(responseText){
+			myElement.set('text', responseText);
+		},
+		onFailure: function(){
+			myElement.set('text', 'Sorry, your request failed :(');
+		}
+	});
+
+	document.id('myLink').addEvent('click', function(event){
+		event.stop();
+		myRequest.send('userid=' + this.get('data-userid'));
+	});
+
+
+
 Request Method: setHeader {#Request:setHeader}
 --------------------------------------
 
