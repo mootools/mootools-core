@@ -80,6 +80,157 @@ Checks to see if an object is an instance of a particular Type.
 	instanceOf(bar, myClass)	// returns true
 
 
+Type {#Type}
+============
+
+MooTools extends native types, like String, Array and Number to make them even more useful.
+
+The Types MooTools uses are:
+
+- String
+- Array
+- Number
+- Function
+- RegExp
+- Date
+- Boolean
+
+Custom MooTools types are:
+
+- Element
+- Elements
+- Event
+
+Type method: implement {#Type:implement}
+----------------------------------------
+
+This method implements a new method to the Type's prototype.
+
+### Syntax:
+
+	myType.implement(name, method);
+
+	// OR
+
+	myType.implement(methods);
+
+### Arguments:
+
+1. name: - (*string*) The method name
+2. method: - (*function*) The method function
+
+Or
+
+1. methods: - (*object*) An object with key-value pairs. The key is the method name, the value is the method function.
+
+### Returns:
+
+* (*object*) The Type
+
+### Examples:
+
+	Array.implement('limitTop', function(top){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (this[i] > top) this[i] = top;
+		}
+		return this;
+	});
+
+	// which we now can use as:
+	[1, 2, 3, 4, 5, 6].limitTop(4); // returns [1, 2, 3, 4, 4, 4];
+
+	// It is also possible to pass an object of methods
+	String.implement({
+		repeat: function(times){
+			var string = '';
+			while (times--) string += this;
+			return string;
+		},
+		ftw: function(){
+			return this + ' FTW!';
+		}
+	});
+
+	// which we now can use as:
+	'moo! '.repeat(3); // returns 'moo! moo! moo!'
+	'MooTools'.ftw(); // returns 'MooTools FTW!'
+	// or combined
+	('MooTools'.ftw() + ' ').repeat(2); // returns 'MooTools FTW! MooTools FTW!'
+
+
+Type method: extend {#Type:extend}
+----------------------------------
+
+Adds one or more functions to the Type. These are static functions that accept for example other types
+to parse them into the Type, or other utility functions that belong to the certain Type.
+
+### Syntax:
+
+	myType.extend(name, method);
+
+	// OR
+
+	myType.extend(methods);
+
+### Arguments:
+
+1. name: - (*string*) The method name
+2. method: - (*function*) The function
+
+Or
+
+1. methods: - (*object*) An object with key-value pairs. The key is the method name, the value is the function.
+
+### Returns:
+
+* (*object*) The Type
+
+### Examples:
+
+	RegExp.extend('from', function(regexp, flags){
+		return new RegExp(regexp, flags);
+	});
+
+	Number.extend('parseCurrency', function(currency){
+		// takes a string and transforms it into a number to
+		// do certain calculations
+	});
+
+Generics {#Type:generics}
+-------------------------
+
+Most methods of types can be used as generic functions. These are the already
+existing JavaScript methods, methods MooTools adds, or methods you
+[implemented][implement] yourself. It becomes more clear in the following example.
+
+### Example:
+
+	var everyArgBiggerThanTwo = function(){
+		// Instead of this
+		return Array.prototype.every.call(arguments, someFunction);
+		// we can use
+		return Array.every(arguments, someFunction);
+	};
+
+This is useful if methods of a certain type should be used as function of another type.
+As the example above it is used for the Arguments type, which is not an real array, so
+`arguments.every(fn)` would not work however `Array.every(arguments, fn)` does work in
+MooTools.
+
+### Syntax:
+
+	Type.methodName(thisArg[, arg1, arg2, ...]);
+
+### Arguments:
+
+1. thisArg - (*mixed*) This is the subject, which is usually `thisArg.method([arg1, arg2, ...]);`
+2. arg1, arg2, ... - (*mixed*) Additional arguments which will be passed as method arguments
+
+### Returns:
+
+- (*mixed*) anything the method usually returns
+
+
 Deprecated Functions {#Deprecated-Functions}
 ============================================
 
@@ -240,7 +391,7 @@ This method has been deprecated. Please use [typeOf](#Core:typeOf) instead.
 
 
 
-
+[implement]: core/Core/Core#Type:implement
 [Array]: /core/Types/Array
 [Function:bind]: /core/Types/Function/#bind
 [Function:delay]: /core/Types/Function/#delay
