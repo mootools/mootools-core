@@ -15,7 +15,7 @@ Browser.Features {#Browser:Browser-Features}
 Browser.name {#Browser:Browser-name}
 ------------------------------------
 
-'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values: 
+'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
 
 * Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
 * Browser.firefox - (*boolean*) True if the current browser is Firefox.
@@ -25,18 +25,20 @@ Browser.name {#Browser:Browser-name}
 
 In addition to one of the above properties a second property consisting of the name and the major version is provided ('Browser.ie6', 'Browser.chrome15', ...).
 
+If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefox', 'Browser.ie', ... , will be `undefined`.
+
 ### Example:
 
 	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
-	
+
 	if (Browser.ie){
 		// This code will only run in IE
 	}
-	
+
 	if (Browser.firefox2){
 		// This code will only run in Firefox 2
 	}
-	
+
 	if (Browser.ie6 || Browser.ie7){
 		// Please upgrade your browser
 	}
