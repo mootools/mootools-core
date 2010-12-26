@@ -80,7 +80,7 @@ Fx.Transitions.extend({
 	},
 
 	Sine: function(p){
-		return 1 - Math.sin((1 - p) * Math.PI / 2);
+		return 1 - Math.cos(p * Math.PI / 2);
 	},
 
 	Back: function(p, x){
