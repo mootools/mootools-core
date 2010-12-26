@@ -34,15 +34,16 @@ Fx.implement({
 
 Fx.Transition = function(transition, params){
 	params = Array.from(params);
-	return Object.append(transition, {
-		easeIn: function(pos){
-			return transition(pos, params);
-		},
+	var easeIn = function(pos){
+		return transition(pos, params);
+	};
+	return Object.append(easeIn, {
+		easeIn: easeIn,
 		easeOut: function(pos){
 			return 1 - transition(1 - pos, params);
 		},
 		easeInOut: function(pos){
-			return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+			return (pos <= 0.5 ? transition(2 * pos, params) : (2 - transition(2 * (1 - pos), params))) / 2;
 		}
 	});
 };
@@ -107,6 +108,6 @@ Fx.Transitions.extend({
 
 ['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
 	Fx.Transitions[transition] = new Fx.Transition(function(p){
-		return Math.pow(p, [i + 2]);
+		return Math.pow(p, i + 2);
 	});
 });
