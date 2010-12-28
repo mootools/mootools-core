@@ -744,7 +744,7 @@ Converts an hexadecimal color value to RGB. Input array must be the following he
 
 ### See Also:
 
-- [String:hexToRgb](/Types/String/#hexToRgb)
+- [String:hexToRgb][]
 
 
 
@@ -775,11 +775,13 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 ### See Also:
 
-- [String:rgbToHex](/Types/String/#rgbToHex)
+- [String:rgbToHex][]
 
 
 
 [Function:bind]: /core/Native/Function/#Function:bind
+[String:hexToRgb]: /core/Types/String/#String:hexToRgb
+[String:rgbToHex]: /core/Types/String/#String:rgbToHex
 [MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
 [MDC Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
 [MDC Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
