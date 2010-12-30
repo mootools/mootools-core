@@ -24,27 +24,37 @@ Allows for the animation of multiple CSS properties at once, even by a CSS selec
 
 Multiple styles with start and end values using an object:
 
-	var myEffect = new Fx.Morph('myElement', {duration: 'long', transition: Fx.Transitions.Sine.easeOut});
+	var myEffect = new Fx.Morph('myElement', {
+		duration: 'long',
+		transition: Fx.Transitions.Sine.easeOut
+	});
 
 	myEffect.start({
-		'height': [10, 100], //Morphs the 'height' style from 10px to 100px.
-		'width': [900, 300]  //Morphs the 'width' style from 900px to 300px.
+		'height': [10, 100], // Morphs the 'height' style from 10px to 100px.
+		'width': [900, 300]  // Morphs the 'width' style from 900px to 300px.
 	});
 
 
 Multiple styles with the start value omitted will default to the current Element's value:
 
-	var myEffect = new Fx.Morph('myElement', {duration: 'short', transition: Fx.Transitions.Sine.easeOut});
+	var myEffect = new Fx.Morph('myElement', {
+		duration: 'short',
+		transition: Fx.Transitions.Sine.easeOut
+	});
 
 	myEffect.start({
-		'height': 100, //Morphs the height from the current to 100px.
-		'width': 300   //Morphs the width from the current to 300px.
+		'height': 100, // Morphs the height from the current to 100px.
+		'width': 300   // Morphs the width from the current to 300px.
 	});
 
 
-Morphing one Element to match the CSS values within a CSS class:
+Morphing one Element to match the CSS values within a CSS class. This is useful when
+separating the logic and styles:
 
-	var myEffect = new Fx.Morph('myElement', {duration: 1000, transition: Fx.Transitions.Sine.easeOut});
+	var myEffect = new Fx.Morph('myElement', {
+		duration: 1000,
+		transition: Fx.Transitions.Sine.easeOut
+	});
 
 	// the styles of myClassName will be applied to the target Element.
 	myEffect.start('.myClassName');

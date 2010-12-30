@@ -32,15 +32,16 @@ $uid(document);
 
 var ua = navigator.userAgent.toLowerCase(),
 	platform = navigator.platform.toLowerCase(),
-	UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+	UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0],
+	mode = UA[1] == 'ie' && document.documentMode;
 
 var Browser = this.Browser = {
-	
+
 	extend: Function.prototype.extend,
-	
+
 	name: (UA[1] == 'version') ? UA[3] : UA[1],
 
-	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
+	version: mode || parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
 		name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
@@ -68,15 +69,15 @@ Browser.Request = (function(){
 	var XMLHTTP = function(){
 		return new XMLHttpRequest();
 	};
- 
+
 	var MSXML2 = function(){
 		return new ActiveXObject('MSXML2.XMLHTTP');
 	};
- 
+
 	var MSXML = function(){
 		return new ActiveXObject('Microsoft.XMLHTTP');
 	};
- 
+
 	return Function.attempt(function(){
 		XMLHTTP();
 		return XMLHTTP;
@@ -87,21 +88,23 @@ Browser.Request = (function(){
 		MSXML();
 		return MSXML;
 	});
- 
+
 })();
 
 Browser.Features.xhr = !!(Browser.Request);
 
 // Flash detection
 
-Browser.Plugins.Flash = (function(){
-	var version = (Function.attempt(function(){
-		return navigator.plugins['Shockwave Flash'].description;
-	}, function(){
-		return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
-	}) || '0 r0').match(/\d+/g);
-	return {version: Number(version[0] || 0 + '.' + version[1]) || 0, build: Number(version[2]) || 0};
-})();
+var version = (Function.attempt(function(){
+	return navigator.plugins['Shockwave Flash'].description;
+}, function(){
+	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
+}) || '0 r0').match(/\d+/g);
+
+Browser.Plugins.Flash = {
+	version: Number(version[0] || '0.' + version[1]) || 0,
+	build: Number(version[2]) || 0
+};
 
 // String scripts
 
@@ -131,7 +134,7 @@ String.implement('stripScripts', function(exec){
 });
 
 // Window, Document
-	
+
 Browser.extend({
 	Document: this.Document,
 	Window: this.Window,
@@ -183,11 +186,13 @@ try {
 		}
 		return arrayFrom(item);
 	};
-	
+
+	var prototype = Array.prototype,
+		slice = prototype.slice;
 	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
-		var method = Array.prototype[name];
+		var method = prototype[name];
 		Array[name] = function(item){
-			return method.apply(Array.from(item), Array.prototype.slice.call(arguments, 1));
+			return method.apply(Array.from(item), slice.call(arguments, 1));
 		};
 	});
 }
@@ -206,7 +211,7 @@ var setEngine = function(name, version){
 
 if (Browser.ie){
 	Browser.Engine.trident = true;
-	
+
 	switch (Browser.version){
 		case 6: setEngine('trident', 4); break;
 		case 7: setEngine('trident', 5); break;
@@ -216,14 +221,14 @@ if (Browser.ie){
 
 if (Browser.firefox){
 	Browser.Engine.gecko = true;
-	
+
 	if (Browser.version >= 3) setEngine('gecko', 19);
 	else setEngine('gecko', 18);
 }
 
 if (Browser.safari || Browser.chrome){
 	Browser.Engine.webkit = true;
-	
+
 	switch (Browser.version){
 		case 2: setEngine('webkit', 419); break;
 		case 3: setEngine('webkit', 420); break;
@@ -233,7 +238,7 @@ if (Browser.safari || Browser.chrome){
 
 if (Browser.opera){
 	Browser.Engine.presto = true;
-	
+
 	if (Browser.version >= 9.6) setEngine('presto', 960);
 	else if (Browser.version >= 9.5) setEngine('presto', 950);
 	else setEngine('presto', 925);

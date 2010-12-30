@@ -22,7 +22,10 @@ Request.HTML = new Class({
 		update: false,
 		append: false,
 		evalScripts: true,
-		filter: false
+		filter: false,
+		headers: {
+			Accept: 'text/html, application/xml, text/xml, */*'
+		}
 	},
 
 	success: function(text){
@@ -30,8 +33,8 @@ Request.HTML = new Class({
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
-		}); 
-		
+		});
+
 		var match = response.html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		if (match) response.html = match[1];
 		var temp = new Element('div').set('html', response.html);
@@ -50,7 +53,7 @@ Request.HTML = new Class({
 });
 
 Element.Properties.load = {
-	
+
 	set: function(options){
 		var load = this.get('load').cancel();
 		load.setOptions(options);
@@ -60,7 +63,7 @@ Element.Properties.load = {
 	get: function(){
 		var load = this.retrieve('load');
 		if (!load){
-			load = new Request({data: this, link: 'cancel', update: this, method: 'get'});
+			load = new Request.HTML({data: this, link: 'cancel', update: this, method: 'get'});
 			this.store('load', load);
 		}
 		return load;

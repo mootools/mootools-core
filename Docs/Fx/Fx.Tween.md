@@ -38,6 +38,40 @@ The Tween effect, used to transition any CSS property from one value to another.
 
 - [Fx][]
 
+### Examples:
+
+Tweens the height of a element while clicking a link (which stops the default behavior), using a transition and a long duration.
+It uses the `link` option so when clicking the link twice it behaves smoothly. When the start value is omitted, the current
+value of the property (in this example the height property) will be used.
+
+	var myFx = new Fx.Tween('myElement', {
+		duration: 'long',
+		transition: 'bounce:out',
+		link: 'cancel',
+		property: 'height'
+	});
+
+	document.id('myLink').addEvent('click', function(event){
+		event.stop();
+		myFx.start(40, 100);
+	});
+
+It is also possible to use the Element properties: `.get('tween')` and `.set('tween')` and the `tween` method.
+In this example the property method is not set as an option, now it should be set as argument of the `tween` method.
+This is something you can choose for both the `Fx.Tween` constructor or this approach.
+
+	var myElement = document.id('myElement');
+	myElement.set('tween', {
+		duration: 'long',
+		transition: 'bounce:out',
+		link: 'cancel'
+	});
+
+	document.id('myLink').addEvent('click', function(event){
+		event.stop();
+		myElement.tween('height', 40, 100);
+	});
+
 
 
 Fx.Tween Method: set {#Fx-Tween:set}

@@ -21,7 +21,7 @@ Returns the passed parameter as a Number, or null if not a number.
 ### Syntax:
 
 	Number.from(arg);
-	
+
 ### Arguments:
 
 1. arg - (*mixed*) The argument to return as a number.

@@ -32,12 +32,23 @@ Function.implement({
 	attempt: function(args, bind){
 		try {
 			return this.apply(bind, Array.from(args));
-		} catch (e){
-			return null;
-		}
+		} catch (e){}
+		
+		return null;
 	},
 
-	bind: function(bind, args){
+	bind: function(bind){
+		var self = this,
+			args = (arguments.length > 1) ? Array.slice(arguments, 1) : null;
+		
+		return function(){
+			if (!args && !arguments.length) return self.call(bind);
+			if (args && arguments.length) return self.apply(bind, args.concat(Array.from(arguments)));
+			return self.apply(bind, args || arguments);
+		};
+	},
+
+	pass: function(args, bind){
 		var self = this;
 		if (args != null) args = Array.from(args);
 		return function(){
@@ -46,24 +57,18 @@ Function.implement({
 	},
 
 	delay: function(delay, bind, args){
-		return setTimeout(this.bind(bind, args || []), delay);
-	},
-
-	pass: function(args, bind){
-		return this.bind(bind, args);
+		return setTimeout(this.pass((args == null ? [] : args), bind), delay);
 	},
 
 	periodical: function(periodical, bind, args){
-		return setInterval(this.bind(bind, args || []), periodical);
-	},
-
-	run: function(args, bind){
-		return this.apply(bind, Array.from(args));
+		return setInterval(this.pass((args == null ? [] : args), bind), periodical);
 	}
 
 });
 
 //<1.2compat>
+
+delete Function.prototype.bind;
 
 Function.implement({
 
@@ -72,7 +77,7 @@ Function.implement({
 		options = options || {};
 		return function(event){
 			var args = options.arguments;
-			args = (args != undefined) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			args = (args != null) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
 			if (options.event) args = [event || window.event].extend(args);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
@@ -84,12 +89,24 @@ Function.implement({
 		};
 	},
 
+	bind: function(bind, args){
+		var self = this;
+		if (args != null) args = Array.from(args);
+		return function(){
+			return self.apply(bind, args || arguments);
+		};
+	},
+
 	bindWithEvent: function(bind, args){
 		var self = this;
 		if (args != null) args = Array.from(args);
 		return function(event){
 			return self.apply(bind, (args == null) ? arguments : [event].concat(args));
 		};
+	},
+
+	run: function(args, bind){
+		return this.apply(bind, Array.from(args));
 	}
 
 });

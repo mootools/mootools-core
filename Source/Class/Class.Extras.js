@@ -74,11 +74,14 @@ this.Events = new Class({
 		}, this);
 		return this;
 	},
-
+	
 	removeEvent: function(type, fn){
 		type = removeOn(type);
 		var events = this.$events[type];
-		if (events && !fn.internal) events.erase(fn);
+		if (events && !fn.internal){
+			var index =  events.indexOf(fn);
+			if (index != -1) delete events[index];
+		}
 		return this;
 	},
 
@@ -92,7 +95,9 @@ this.Events = new Class({
 		for (type in this.$events){
 			if (events && events != type) continue;
 			var fns = this.$events[type];
-			for (var i = fns.length; i--;) this.removeEvent(type, fns[i]);
+			for (var i = fns.length; i--;) if (i in fns){
+				this.removeEvent(type, fns[i]);
+			}
 		}
 		return this;
 	}
@@ -102,9 +107,8 @@ this.Events = new Class({
 this.Options = new Class({
 
 	setOptions: function(){
-		var options = this.options = Object.merge.run([{}, this.options].append(arguments));
-		if (!this.addEvent) return this;
-		for (var option in options){
+		var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments));
+		if (this.addEvent) for (var option in options){
 			if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
 			this.addEvent(option, options[option]);
 			delete options[option];

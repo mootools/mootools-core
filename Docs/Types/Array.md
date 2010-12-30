@@ -59,7 +59,7 @@ Returns a copy of the passed array.
 ### Syntax:
 
 	var clone = Array.clone(myArray);
-	
+
 ### Arguments:
 
 1. myArray	- (*array*) The array you wish to copy.
@@ -72,9 +72,9 @@ Returns a copy of the passed array.
 
 	var myArray = ['red', 'blue', 'green'];
 	var otherArray = Array.clone(myArray);
-	
+
 	var myArray[0] = 'yellow';
-	
+
 	alert(myArray[0]);		// alerts 'yellow'
 	alert(otherArray[0])	// alerts 'red'
 
@@ -168,7 +168,7 @@ Returns an array with the named method applied to the array's contents.
 ### Syntax:
 
 	var arr = myArray.invoke(method[, arg, arg, arg ...])
-	
+
 ### Arguments:
 
 1. method - (*string*) The method to apply to each item in the array.
@@ -183,7 +183,12 @@ Returns an array with the named method applied to the array's contents.
 	var foo = [4, 8, 15, 16, 23, 42];
 	var bar = foo.invoke('limit', 10, 30);	//bar is now [10, 10, 15, 16, 23, 30]
 
+### Notes:
 
+The method that is invoked is a method of each of the items.
+If the method does not exist, then an error will be thrown. For example:
+
+	[0, false, 'string'].invoke('limit', 0, 10); // throws an error!
 
 Array method: every {#Array:every}
 ----------------------------
@@ -515,6 +520,9 @@ Appends the passed array to the end of the current array.
 
 	var myOtherArray = ['green', 'yellow'];
 	['red', 'blue'].append(myOtherArray); // returns ['red', 'blue', 'green', 'yellow'];
+	myOtheArray; // is now ['red', 'blue', 'green', 'yellow'];
+
+	[0, 1, 2].append([3, [4]]); // [0, 1, 2, 3, [4]]
 
 ### Notes:
 
@@ -588,7 +596,7 @@ Pushes the passed element into the array if it's not already present (case and t
 If you want to push the passed element even if it's already present, use
 the vanilla javascript:
 
-	myArray.push(item); 
+	myArray.push(item);
 
 Array method: combine {#Array:combine}
 --------------------------------
@@ -702,7 +710,7 @@ Returns the first defined value of the array passed in, or null.
 	say(); // alerts 'There was no message supplied.'
     say('This is an info message.'); // alerts 'This is an info message.'
     say('This message will be ignored.', 'This is the error message.'); // alerts 'This is the error message.'
-	
+
 
 ### Notes:
 

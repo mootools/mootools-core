@@ -7,17 +7,19 @@ description: Wrapper for embedding SWF movies. Supports External Interface Commu
 
 license: MIT-style license.
 
-credits: 
+credits:
   - Flash detection & Internet Explorer + Flash Player 9 fix inspired by SWFObject.
 
-requires: [Options, Object]
+requires: [Options, Object, Element]
 
 provides: Swiff
 
 ...
 */
 
-var Swiff = new Class({
+(function(){
+
+var Swiff = this.Swiff = new Class({
 
 	Implements: Options,
 
@@ -42,7 +44,7 @@ var Swiff = new Class({
 	},
 
 	initialize: function(path, options){
-		this.instance = 'Swiff_' + Date.now();
+		this.instance = 'Swiff_' + String.uniqueID();
 
 		this.setOptions(options);
 		options = this.options;
@@ -73,7 +75,7 @@ var Swiff = new Class({
 			properties.type = 'application/x-shockwave-flash';
 		}
 		properties.data = path;
-		
+
 		var build = '<object id="' + id + '"';
 		for (var property in properties) build += ' ' + property + '="' + properties[property] + '"';
 		build += '>';
@@ -96,7 +98,7 @@ var Swiff = new Class({
 	},
 
 	remote: function(){
-		return Swiff.remote.apply(Swiff, [this.toElement()].extend(arguments));
+		return Swiff.remote.apply(Swiff, [this.toElement()].append(arguments));
 	}
 
 });
@@ -107,3 +109,5 @@ Swiff.remote = function(obj, fn){
 	var rs = obj.CallFunction('<invoke name="' + fn + '" returntype="javascript">' + __flash__argumentsToXML(arguments, 2) + '</invoke>');
 	return eval(rs);
 };
+
+})();

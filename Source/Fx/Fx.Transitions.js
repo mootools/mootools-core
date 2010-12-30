@@ -34,15 +34,16 @@ Fx.implement({
 
 Fx.Transition = function(transition, params){
 	params = Array.from(params);
-	return Object.append(transition, {
-		easeIn: function(pos){
-			return transition(pos, params);
-		},
+	var easeIn = function(pos){
+		return transition(pos, params);
+	};
+	return Object.append(easeIn, {
+		easeIn: easeIn,
 		easeOut: function(pos){
 			return 1 - transition(1 - pos, params);
 		},
 		easeInOut: function(pos){
-			return (pos <= 0.5) ? transition(2 * pos, params) / 2 : (2 - transition(2 * (1 - pos), params)) / 2;
+			return (pos <= 0.5 ? transition(2 * pos, params) : (2 - transition(2 * (1 - pos), params))) / 2;
 		}
 	});
 };
@@ -68,7 +69,7 @@ Fx.Transitions.extend = function(transitions){
 Fx.Transitions.extend({
 
 	Pow: function(p, x){
-		return Math.pow(p, x[0] || 6);
+		return Math.pow(p, x && x[0] || 6);
 	},
 
 	Expo: function(p){
@@ -80,11 +81,11 @@ Fx.Transitions.extend({
 	},
 
 	Sine: function(p){
-		return 1 - Math.sin((1 - p) * Math.PI / 2);
+		return 1 - Math.cos(p * Math.PI / 2);
 	},
 
 	Back: function(p, x){
-		x = x[0] || 1.618;
+		x = x && x[0] || 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -100,13 +101,13 @@ Fx.Transitions.extend({
 	},
 
 	Elastic: function(p, x){
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x[0] || 1) / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x && x[0] || 1) / 3);
 	}
 
 });
 
 ['Quad', 'Cubic', 'Quart', 'Quint'].each(function(transition, i){
 	Fx.Transitions[transition] = new Fx.Transition(function(p){
-		return Math.pow(p, [i + 2]);
+		return Math.pow(p, i + 2);
 	});
 });

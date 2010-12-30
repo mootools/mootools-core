@@ -118,7 +118,7 @@ Returns an [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' 
 ### Arguments:
 
 1. transition - (*function*) Can be a [Fx.Transitions][] function or a user-provided function which will be extended with easing functions.
-2. params     - (*mixed*, optional) Single value or an array for multiple values to pass as the second parameter for the transition function.
+2. params     - (*mixed*, optional) Single value or an array for multiple values to pass as the second parameter for the transition function. A single value will be transformed to an array.
 
 ### Returns:
 
@@ -126,9 +126,15 @@ Returns an [Fx][] transition function with 'easeIn', 'easeOut', and 'easeInOut' 
 
 ### Examples:
 
-	//Elastic.easeOut with user-defined value for elasticity.
-	var myTransition = new Fx.Transition(Fx.Transitions.Elastic, 3);
-	var myFx = $('myElement').effect('margin', {transition: myTransition.easeOut});
+	// Your own function. Here overshoot is bigger (now 1.3) when base -> 1 and base != 1.
+	var myTransition = new Fx.Transition(function(pos, x){
+		return 1 - Math.pow(Math.abs(Math.log(pos) / Math.log(x && x[0] || Math.E)), pos);
+	}, 1.3);
+
+	var myFx = new Fx.Tween('myElement', {
+		property: 'height',
+		transition: myTransition.easeOut
+	}).start(30, 100);
 
 ### See Also:
 

@@ -40,7 +40,7 @@ Used to iterate through an object.
 	Object.each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
 		alert('The ' + key + ' day of the week is ' + value);
 	});
-	
+
 ### Notes:
 
 This method is an object-specific equivalent of *$each* from MooTools 1.2.
@@ -69,16 +69,13 @@ Merges any number of objects recursively without referencing them or their sub-o
 	var obj1 = {a: 0, b: 1};
 	var obj2 = {c: 2, d: 3};
 	var obj3 = {a: 4, d: 5};
-	var merged = Object.merge(obj1, obj2, obj3); // returns {a: 4, b: 1, c: 2, d: 5}, (obj1, obj2, and obj3 are unaltered)
+	var merged = Object.merge(obj1, obj2, obj3); // returns {a: 4, b: 1, c: 2, d: 5}, (obj2, and obj3 are unaltered)
+
+	merged === obj1; // true, obj1 gets altered and returned as merged object
 
 	var nestedObj1 = {a: {b: 1, c: 1}};
 	var nestedObj2 = {a: {b: 2}};
 	var nested = Object.merge(nestedObj1, nestedObj2); // returns: {a: {b: 2, c: 1}}
-
-### Notes:
-
-This method is an object-specific equivalent of *$merge* from MooTools 1.2.
-
 
 
 Function: Object.clone {#Object:Object-clone}
@@ -89,7 +86,7 @@ Returns a copy of an object.
 ### Syntax:
 
 	var clone = Object.clone(obj);
-	
+
 ### Arguments:
 
 1. (obj) The object to clone
@@ -102,7 +99,7 @@ Returns a copy of an object.
 
 	var obj1 = {a: 0, b: 1};
 	var obj2 = Object.clone(obj1);
-	
+
 	obj1.a = 42;
 	alert(obj1.a);	// alerts '42'
 	alert(obj2.a);	// alerts '0'
@@ -170,12 +167,12 @@ Get a subset of an object.
 
 ### Examples:
 
-	var obj = {
-		a: 'one', 
-		b: 'two', 
+	var object = {
+		a: 'one',
+		b: 'two',
 		c: 'three'
 	};
-	Object.subset(['a', 'c']); // returns {a: 'one', c: 'three'}
+	Object.subset(object, ['a', 'c']); // returns {a: 'one', c: 'three'}
 
 
 
@@ -213,7 +210,7 @@ Creates a new map with the results of calling a provided function on every value
 ### Examples:
 
 	var myObject = {a: 1, b: 2, c: 3};
-	var timesTwo = Object.map(timesTwo, function(value, key){
+	var timesTwo = Object.map(myObject, function(value, key){
 		return value * 2;
 	}); // timesTwo now holds an object containing: {a: 2, b: 4, c: 6};
 
@@ -412,7 +409,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 
 ### Syntax:
 
-	var key = Object.keyOf(object);
+	var key = Object.keyOf(object, item);
 
 ### Arguments:
 
@@ -427,9 +424,9 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 ### Examples:
 
 	var myObject = {a: 'one', b: 'two', c: 3};
-	Object.keyOf(myObject,'two'); // returns 'b'
-	Object.keyOf(myObject,3); // returns 'c'
-	Object.keyOf(myObject,'four'); // returns false
+	Object.keyOf(myObject, 'two'); // returns 'b'
+	Object.keyOf(myObject, 3); // returns 'c'
+	Object.keyOf(myObject, 'four'); // returns false
 
 
 
@@ -466,12 +463,12 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 
 ### Syntax:
 
-	var queryString = Object.toQueryString(object);
+	var queryString = Object.toQueryString(object[, base]);
 
 ### Arguments:
 
-1. object - (*object*) The object.
-2. source - (*object*) The object to generate the query string from.
+1. object - (*object*) The object to generate the query string from.
+2. base - (*string*, optional) Will be used as base variable in the query string.
 
 ### Returns:
 
@@ -480,6 +477,8 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 ### Examples:
 
 	Object.toQueryString({apple: 'red', lemon: 'yellow'}); // returns 'apple=red&lemon=yellow'
+
+	Object.toQueryString({apple: 'red', lemon: 'yellow'}, 'fruits'); // returns 'fruits[apple]=red&fruits[lemon]=yellow'
 
 
 Deprecated Functions {#Deprecated-Functions}
@@ -526,7 +525,7 @@ Use `delete myObject.a`
 
 Hash Method: get {#Deprecated-Functions:Hash:get}
 -------------------------------------------------
-	
+
 Use `myObject.myKey`
 
 

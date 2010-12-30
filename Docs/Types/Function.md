@@ -17,7 +17,7 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 ### Syntax:
 
 	var foo = Function.from(obj);
-	
+
 ### Arguments:
 
 1. obj - (*mixed*) If this argument is a function, it will simply return itself. Otherwise, an object you wish to convert into a function that returns the argument.
@@ -30,10 +30,10 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 
 	var fn = Function.from(42);
 	alert(fn());	// alerts '42'
-	
+
 	var fn2 = Function.from(fn);
 	alert(fn2());	// alerts '42'
-	
+
 ### Notes:
 
 This function is equivalent to the following deprecated MooTools 1.2 methods:
@@ -103,7 +103,7 @@ Add methods to a function
 1. key - (*string*) The key of the prototype
 2. value - (*mixed*) The function or another value of the prototype
 
-### Example: 
+### Example:
 
 	var myFunction = function(){};
 	myFunction.extend('alert', function(text){
@@ -126,7 +126,7 @@ Add methods to the prototype
 1. key - (*string*) The key of the prototype
 2. value - (*mixed*) The function or another value of the prototype
 
-### Example: 
+### Example:
 
 	var myFunction = function(){};
 	myFunction.implement('alert', function(text){
@@ -179,46 +179,6 @@ Tries to execute a single function. Returns immediately the return value of the 
 - See [Function.attempt](#Function:Function-attempt) for using more than one functions.
 
 
-
-Function method: run {#Function:run}
----------------------------
-
-Runs the Function with specified arguments and binding. The same as apply but reversed and with support for a single argument.
-
-### Syntax:
-
-	var myFunctionResult = myFunction.run(args[, bind]);
-
-### Arguments:
-
-1. args - (*mixed*) An argument, or array of arguments to run the function with.
-2. bind - (*object*, optional) The object that the "this" of the function will refer to.
-
-### Returns:
-
-* (*mixed*) This Function's return value.
-
-### Examples:
-
-#### Simple Run:
-
-	var myFn = function(a, b, c){
-		return a + b + c;
-	}
-	var myArgs = [1,2,3];
-	myFn.run(myArgs); // returns 6
-
-
-#### Run With Binding:
-
-	var myFn = function(a, b, c) {
-		return a + b + c + this;
-	}
-	var myArgs = [1,2,3];
-	myFn.run(myArgs, 6); // returns 12
-
-
-
 Function method: pass {#Function:pass}
 -----------------------------
 
@@ -262,12 +222,12 @@ Changes the scope of `this` within the target function to refer to the bind para
 
 ### Syntax:
 
-	myFunction.bind([bind[, args]]);
+	myFunction.bind([bind[, arg1, arg2, ...]]);
 
 ### Arguments:
 
 1. bind - (*object*, optional) The object that the "this" of the function will refer to.
-2. args - (*mixed*, optional) The arguments to pass to the function (must be an array if passing more than one argument).
+2. arg1, arg2, ... - (*mixed*, optional) The arguments to pass to the function. If the bound function is called with other arguments the arguments are concatenated.
 
 ### Returns:
 
@@ -306,13 +266,13 @@ Delays the execution of a function by a specified duration.
 ### Example:
 
 	var myFunction = function(){ alert('moo! Element id is: ' + this.id); };
-	
+
 	//wait 50 milliseconds, then call myFunction and bind myElement to it
 	myFunction.delay(50, myElement); // alerts: 'moo! Element id is: ... '
 
 	//an anonymous function which waits a second and then alerts
 	(function(){ alert('one second later...'); }).delay(1000);
-	
+
 	//to stop the delay, clearTimeout can be used like so:
 	var timer = myFunction.delay(50);
 	clearTimeout(timer);
@@ -327,7 +287,7 @@ Delays the execution of a function by a specified duration.
 Function method: periodical {#Function:periodical}
 -----------------------------------------
 
-Executes a function in the specified intervals of time. Periodic execution can be stopped using the [$clear][] function.
+Executes a function in the specified intervals of time. Periodic execution can be stopped using the *clearInterval* function.
 
 ### Syntax:
 
@@ -348,7 +308,7 @@ Executes a function in the specified intervals of time. Periodic execution can b
 	var Site = { counter: 0 };
 	var addCount = function(){ this.counter++; };
 	addCount.periodical(1000, Site); //adds the number of seconds at the Site.
-	
+
 	// the interval can be stopped using the clearInterval function
 	var timer = myFunction.periodical(1000);
 	clearInterval(timer);
@@ -367,7 +327,7 @@ Function method: create {#Deprecated-Functions:create}
 This function has been deprecated.
 
 Function method: bindWithEvent {#Deprecated-Functions:bindWithEvent}
-------------------------------------------------------------------
+--------------------------------------------------------------------
 
 This function has been deprecated.
 
@@ -376,6 +336,15 @@ This function has been deprecated.
 	myElement.addEvent('click', function(e){
 		myFunction.bind(bind, [e]);
 	});
+
+Function method: run {#Deprecated-Functions:run}
+------------------------------------------------
+
+This function has been deprecated.
+
+### Replacement example
+
+	fn.apply(thisArg, arguments); // Old API: fn.run(arguments, thisArg);
 
 
 [options]: #Function:create:options

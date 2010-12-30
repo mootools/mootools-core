@@ -20,6 +20,21 @@ provides: [Element.Dimensions]
 
 (function(){
 
+var element = document.createElement('div'),
+	child = document.createElement('div');
+element.style.height = '0';
+element.appendChild(child);
+var brokenOffsetParent = (child.offsetParent === element);
+element = child = null;
+
+var isOffset = function(el){
+	return styleString(el, 'position') != 'static' || isBody(el);
+};
+
+var isOffsetStatic = function(el){
+	return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
+};
+
 Element.implement({
 
 	scrollTo: function(x, y){
@@ -48,7 +63,7 @@ Element.implement({
 	},
 
 	getScrolls: function(){
-		var element = this, position = {x: 0, y: 0};
+		var element = this.parentNode, position = {x: 0, y: 0};
 		while (element && !isBody(element)){
 			position.x += element.scrollLeft;
 			position.y += element.scrollTop;
@@ -57,28 +72,36 @@ Element.implement({
 		return position;
 	},
 
-	getOffsetParent: function(){
+	getOffsetParent: brokenOffsetParent ? function(){
 		var element = this;
-		if (isBody(element)) return null;
-		if (!Browser.ie) return element.offsetParent;
+		if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+		var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
 		while ((element = element.parentNode)){
-			if (styleString(element, 'position') != 'static' || isBody(element)) return element;
+			if (isOffsetCheck(element)) return element;
 		}
+		return null;
+	} : function(){
+		var element = this;
+		if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+		try {
+			return element.offsetParent;
+		} catch(e) {}
 		return null;
 	},
 
 	getOffsets: function(){
-		if (this.getBoundingClientRect && !Browser.Platform.ipod){
+		if (this.getBoundingClientRect && !Browser.Platform.ios){
 			var bound = this.getBoundingClientRect(),
 				html = document.id(this.getDocument().documentElement),
 				htmlScroll = html.getScroll(),
 				elemScrolls = this.getScrolls(),
-				elemScroll = this.getScroll(),
 				isFixed = (styleString(this, 'position') == 'fixed');
 
 			return {
-				x: bound.left.toInt() + elemScrolls.x - elemScroll.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
-				y: bound.top.toInt()  + elemScrolls.y - elemScroll.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
+				x: bound.left.toInt() + elemScrolls.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
+				y: bound.top.toInt()  + elemScrolls.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
 			};
 		}
 
@@ -116,19 +139,23 @@ Element.implement({
 	getPosition: function(relative){
 		if (isBody(this)) return {x: 0, y: 0};
 		var offset = this.getOffsets(),
-				scroll = this.getScrolls();
+			scroll = this.getScrolls();
 		var position = {
 			x: offset.x - scroll.x,
 			y: offset.y - scroll.y
 		};
-		var relativePosition = (relative && (relative = document.id(relative))) ? relative.getPosition() : {x: 0, y: 0};
-		return {x: position.x - relativePosition.x, y: position.y - relativePosition.y};
+		
+		if (relative && (relative = document.id(relative))){
+			var relativePosition = relative.getPosition();
+			return {x: position.x - relativePosition.x - leftBorder(relative), y: position.y - relativePosition.y - topBorder(relative)};
+		}
+		return position;
 	},
 
 	getCoordinates: function(element){
 		if (isBody(this)) return this.getWindow().getCoordinates();
 		var position = this.getPosition(element),
-				size = this.getSize();
+			size = this.getSize();
 		var obj = {
 			left: position.x,
 			top: position.y,
@@ -157,10 +184,6 @@ Element.implement({
 [Document, Window].invoke('implement', {
 
 	getSize: function(){
-		if (Browser.opera || Browser.safari){
-			var win = this.getWindow();
-			return {x: win.innerWidth, y: win.innerHeight};
-		}
 		var doc = getCompatElement(this);
 		return {x: doc.clientWidth, y: doc.clientHeight};
 	},
@@ -171,8 +194,11 @@ Element.implement({
 	},
 
 	getScrollSize: function(){
-		var doc = getCompatElement(this), min = this.getSize();
-		return {x: Math.max(doc.scrollWidth, min.x), y: Math.max(doc.scrollHeight, min.y)};
+		var doc = getCompatElement(this),
+			min = this.getSize(),
+			body = this.getDocument().body;
+
+		return {x: Math.max(doc.scrollWidth, body.scrollWidth, min.x), y: Math.max(doc.scrollHeight, body.scrollHeight, min.y)};
 	},
 
 	getPosition: function(){

@@ -16,7 +16,7 @@ provides: JSON
 ...
 */
 
-if (!this.JSON) this.JSON = {};
+if (typeof JSON == 'undefined') this.JSON = {};
 
 //<1.2compat>
 
@@ -28,7 +28,7 @@ JSON = new Hash({
 //</1.2compat>
 
 Object.append(JSON, {
-	
+
 	$specialChars: {'\b': '\\b', '\t': '\\t', '\n': '\\n', '\f': '\\f', '\r': '\\r', '"' : '\\"', '\\': '\\\\'},
 
 	$replaceChars: function(chr){

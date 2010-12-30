@@ -9,42 +9,41 @@ license: MIT-style license.
 
 requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder]
 
-provides: [Element, Elements, $, $$, Iframe]
+provides: [Element, Elements, $, $$, Iframe, Selectors]
 
 ...
 */
 
-// it needs to be this.Element cause IE8 erases the Element Object while pre-processing this script
-this.Element = function(tag, props){
+var Element = function(tag, props){
 	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
-	
+
 	if (!props) props = {};
-	
-	if (!tag.test(/^[\w-]+$/)){
+
+	if (!(/^[\w-]+$/).test(tag)){
 		var parsed = Slick.parse(tag).expressions[0][0];
 		tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 		if (parsed.id && props.id == null) props.id = parsed.id;
-		
+
 		var attributes = parsed.attributes;
 		if (attributes) for (var i = 0, l = attributes.length; i < l; i++){
 			var attr = attributes[i];
 			if (attr.value != null && attr.operator == '=' && props[attr.key] == null)
 				props[attr.key] = attr.value;
 		}
-		
+
 		if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
 	}
-	
+
 	return document.newElement(tag, props);
 };
-	
-if (Browser.Element){
-	Element.prototype = Browser.Element.prototype;
-}
 
-new Type('Element', Element).mirror(function(name, method){
+if (Browser.Element) Element.prototype = Browser.Element.prototype;
+
+new Type('Element', Element).mirror(function(name){
+	if (Array.prototype[name]) return;
+
 	var obj = {};
 	obj[name] = function(){
 		var results = [], args = arguments, elements = true;
@@ -54,17 +53,17 @@ new Type('Element', Element).mirror(function(name, method){
 		}
 		return (elements) ? new Elements(results) : results;
 	};
-	
+
 	Elements.implement(obj);
 });
 
 if (!Browser.Element){
 	Element.parent = Object;
 
-	Element.ProtoType = {'$family': Function.from('element').hide()};
+	Element.Prototype = {'$family': Function.from('element').hide()};
 
 	Element.mirror(function(name, method){
-		Element.ProtoType[name] = method;
+		Element.Prototype[name] = method;
 	});
 }
 
@@ -83,30 +82,23 @@ var IFrame = new Type('IFrame', function(){
 			return (obj != null);
 		}
 	});
-	var props = params.properties || {};
-	var iframe = document.id(params.iframe);
+
+	var props = params.properties || {}, iframe;
+	if (params.iframe) iframe = document.id(params.iframe);
 	var onload = props.onload || function(){};
 	delete props.onload;
-	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + Date.now()].pick();
+	props.id = props.name = [props.id, props.name, iframe ? (iframe.id || iframe.name) : 'IFrame_' + String.uniqueID()].pick();
 	iframe = new Element(iframe || 'iframe', props);
-	var onFrameLoad = function(){
-		var host = Function.attempt(function(){
-			return iframe.contentWindow.location.host;
-		});
-		if (!host || host == window.location.host){
-			var win = new Window(iframe.contentWindow);
-			new Document(iframe.contentWindow.document);
-			Object.append(win.Element.prototype, Element.ProtoType);
-		}
-		onload.call(iframe.contentWindow, iframe.contentWindow.document);
+
+	var onLoad = function(){
+		onload.call(iframe.contentWindow);
 	};
-	var contentWindow = Function.attempt(function(){
-		return iframe.contentWindow;
-	});
-	((contentWindow && contentWindow.document.body) || window.frames[props.id]) ? onFrameLoad() : iframe.addListener('load', onFrameLoad);
+
+	if (window.frames[props.id]) onLoad();
+	else iframe.addListener('load', onLoad);
 	return iframe;
 });
- 
+
 var Elements = this.Elements = function(nodes){
 	if (nodes && nodes.length){
 		var uniques = {}, node;
@@ -119,19 +111,19 @@ var Elements = this.Elements = function(nodes){
 		}
 	}
 };
- 
+
 Elements.prototype = {length: 0};
 Elements.parent = Array;
 
 new Type('Elements', Elements).implement({
- 
+
 	filter: function(filter, bind){
 		if (!filter) return this;
 		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 			return item.match(filter);
 		} : filter, bind));
 	}.protect(),
- 
+
 	push: function(){
 		var length = this.length;
 		for (var i = 0, l = arguments.length; i < l; i++){
@@ -139,18 +131,96 @@ new Type('Elements', Elements).implement({
 			if (item) this[length++] = item;
 		}
 		return (this.length = length);
+	}.protect(),
+
+	unshift: function(){
+		var items = [];
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = document.id(arguments[i]);
+			if (item) items.push(item);
+		}
+		return Array.prototype.unshift.apply(this, items);
+	}.protect(),
+
+	concat: function(){
+		var newElements = new Elements(this);
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = arguments[i];
+			if (Type.isEnumerable(item)) newElements.append(item);
+			else newElements.push(item);
+		}
+		return newElements;
+	}.protect(),
+
+	append: function(collection){
+		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
+		return this;
+	}.protect(),
+
+	empty: function(){
+		while (this.length) delete this[--this.length];
+		return this;
 	}.protect()
- 
-}).implement(Array.prototype);
- 
+
+});
+
+//<1.2compat>
+
+Elements.alias('extend', 'append');
+
+//</1.2compat>
+
+(function(){
+
+// FF, IE
+var splice = Array.prototype.splice, object = {'0': 0, '1': 1, length: 2};
+
+splice.call(object, 1, 1);
+if (object[1] == 1) Elements.implement('splice', function(){
+	var length = this.length;
+	splice.apply(this, arguments);
+	while (length >= this.length) delete this[length--];
+	return this;
+}.protect());
+
+Elements.implement(Array.prototype);
+
 Array.mirror(Elements);
+
+/*<ltIE8>*/
+var createElementAcceptsHTML;
+try {
+	var x = document.createElement('<input name=x>');
+	createElementAcceptsHTML = (x.name == 'x');
+} catch(e){}
+
+var escapeQuotes = function(html){
+	return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+};
+/*</ltIE8>*/
 
 Document.implement({
 
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
+		/*<ltIE8>*/// Fix for readonly name and type properties in IE < 8
+		if (createElementAcceptsHTML && props){
+			tag = '<' + tag;
+			if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
+			if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
+			tag += '>';
+			delete props.name;
+			delete props.type;
+		}
+		/*</ltIE8>*/
 		return this.id(this.createElement(tag)).set(props);
-	},
+	}
+
+});
+
+})();
+
+Document.implement({
 
 	newTextNode: function(text){
 		return this.createTextNode(text);
@@ -163,35 +233,35 @@ Document.implement({
 	getWindow: function(){
 		return this.window;
 	},
-	
+
 	id: (function(){
-		
+
 		var types = {
 
 			string: function(id, nocash, doc){
-				id = Slick.find(doc, '#' + id);
+				id = Slick.find(doc, '#' + id.replace(/(\W)/g, '\\$1'));
 				return (id) ? types.element(id, nocash) : null;
 			},
-			
+
 			element: function(el, nocash){
 				$uid(el);
-				if (!nocash && !el.$family && !(/^object|embed$/i).test(el.tagName)){
-					Object.append(el, Element.ProtoType);
+				if (!nocash && !el.$family && !(/^(?:object|embed)$/i).test(el.tagName)){
+					Object.append(el, Element.Prototype);
 				}
 				return el;
 			},
-			
+
 			object: function(obj, nocash, doc){
 				if (obj.toElement) return types.element(obj.toElement(doc), nocash);
 				return null;
 			}
-			
+
 		};
 
 		types.textnode = types.whitespace = types.window = types.document = function(zero){
 			return zero;
 		};
-		
+
 		return function(el, nocash, doc){
 			if (el && el.$family && el.uid) return el;
 			var type = typeOf(el);
@@ -219,18 +289,47 @@ Window.implement({
 });
 
 [Document, Element].invoke('implement', {
- 
+
 	getElements: function(expression){
 		return Slick.search(this, expression, new Elements);
 	},
- 
+
 	getElement: function(expression){
 		return document.id(Slick.find(this, expression));
 	}
- 
+
 });
 
 //<1.2compat>
+
+(function(search, find, match){
+
+	this.Selectors = {};
+	var pseudos = this.Selectors.Pseudo = new Hash();
+
+	var addSlickPseudos = function(){
+		for (var name in pseudos) if (pseudos.hasOwnProperty(name)){
+			Slick.definePseudo(name, pseudos[name]);
+			delete pseudos[name];
+		}
+	};
+
+	Slick.search = function(context, expression, append){
+		addSlickPseudos();
+		return search.call(this, context, expression, append);
+	};
+
+	Slick.find = function(context, expression){
+		addSlickPseudos();
+		return find.call(this, context, expression);
+	};
+
+	Slick.match = function(node, selector){
+		addSlickPseudos();
+		return match.call(this, node, selector);
+	};
+
+})(Slick.search, Slick.find, Slick.match);
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
@@ -259,16 +358,16 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 (function(){
 
 var collected = {}, storage = {};
-var props = {input: 'checked', option: 'selected', textarea: 'value'};
+var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
 };
 
 var clean = function(item){
+	var uid = item.uid;
 	if (item.removeEvents) item.removeEvents();
 	if (item.clearAttributes) item.clearAttributes();
-	var uid = item.uid;
 	if (uid != null){
 		delete collected[uid];
 		delete storage[uid];
@@ -280,7 +379,7 @@ var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpa
 	'rowSpan', 'tabIndex', 'useMap'
 ];
 var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readOnly', 'multiple', 'selected',
-	'noresize', 'defer'
+	'noresize', 'defer', 'defaultChecked'
 ];
  var attributes = {
 	'html': 'innerHTML',
@@ -288,12 +387,12 @@ var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'dis
 	'for': 'htmlFor',
 	'text': (function(){
 		var temp = document.createElement('div');
-		return (temp.innerText == null) ? 'textContent' : 'innerText';
+		return (temp.textContent == null) ? 'innerText' : 'textContent';
 	})()
 };
 var readOnly = ['type'];
 var expandos = ['value', 'defaultValue'];
-var uriAttrs = /^href|src|usemap$/i;
+var uriAttrs = /^(?:href|src|usemap)$/i;
 
 bools = bools.associate(bools);
 camels = camels.associate(camels.map(String.toLowerCase));
@@ -330,14 +429,14 @@ inserters.inside = inserters.bottom;
 Object.each(inserters, function(inserter, where){
 
 	where = where.capitalize();
-	
+
 	var methods = {};
-	
+
 	methods['inject' + where] = function(el){
 		inserter(this, document.id(el, true));
 		return this;
 	};
-	
+
 	methods['grab' + where] = function(el){
 		inserter(document.id(el, true), this);
 		return this;
@@ -349,16 +448,28 @@ Object.each(inserters, function(inserter, where){
 
 //</1.2compat>
 
+var injectCombinator = function(expression, combinator){
+	if (!expression) return combinator;
+
+	expression = Slick.parse(expression);
+
+	var expressions = expression.expressions;
+	for (var i = expressions.length; i--;)
+		expressions[i][0].combinator = combinator;
+
+	return expression;
+};
+
 Element.implement({
 
 	set: function(prop, value){
 		var property = Element.Properties[prop];
-		(property && property.set) ? property.set.apply(this, Array.slice(arguments, 1)) : this.setProperty(prop, value);
+		(property && property.set) ? property.set.call(this, value) : this.setProperty(prop, value);
 	}.overloadSetter(),
 
 	get: function(prop){
 		var property = Element.Properties[prop];
-		return (property && property.get) ? property.get.apply(this, Array.slice(arguments, 1)) : this.getProperty(prop);
+		return (property && property.get) ? property.get.apply(this) : this.getProperty(prop);
 	}.overloadGetter(),
 
 	erase: function(prop){
@@ -409,7 +520,7 @@ Element.implement({
 	},
 
 	hasClass: function(className){
-		return this.className.contains(className, ' ');
+		return this.className.clean().contains(className, ' ');
 	},
 
 	addClass: function(className){
@@ -430,14 +541,14 @@ Element.implement({
 	adopt: function(){
 		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
 		if (length > 1) parent = fragment = document.createDocumentFragment();
-		
+
 		for (var i = 0; i < length; i++){
 			var element = document.id(elements[i], true);
 			if (element) parent.appendChild(element);
 		}
-		
+
 		if (fragment) this.appendChild(fragment);
-		
+
 		return this;
 	},
 
@@ -466,44 +577,44 @@ Element.implement({
 		return this.replaces(el).grab(el, where);
 	},
 
-	getPrevious: function(match){
-		return document.id(Slick.find(this, '!~ ' + (match || '')));
+	getPrevious: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '!~')));
 	},
 
-	getAllPrevious: function(match){
-		return Slick.search(this, '!~ ' + (match || ''), new Elements);
+	getAllPrevious: function(expression){
+		return Slick.search(this, injectCombinator(expression, '!~'), new Elements);
 	},
 
-	getNext: function(match){
-		return document.id(Slick.find(this, '~ ' + (match || '')));
+	getNext: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '~')));
 	},
 
-	getAllNext: function(match){
-		return Slick.search(this, '~ ' + (match || ''), new Elements);
+	getAllNext: function(expression){
+		return Slick.search(this, injectCombinator(expression, '~'), new Elements);
 	},
 
-	getFirst: function(match){
-		return document.id(Slick.find(this, '> ' + (match || '')));
+	getFirst: function(expression){
+		return document.id(Slick.search(this, injectCombinator(expression, '>'))[0]);
 	},
 
-	getLast: function(match){
-		return document.id(Slick.find(this, '!^ ' + (match || '')));
+	getLast: function(expression){
+		return document.id(Slick.search(this, injectCombinator(expression, '>')).getLast());
 	},
 
-	getParent: function(match){
-		return document.id(Slick.find(this, '! ' + (match || '')));
+	getParent: function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, '!')));
 	},
 
-	getParents: function(match){
-		return Slick.search(this, '! ' + (match || ''), new Elements);
-	},
-	
-	getSiblings: function(match){
-		return Slick.search(this, '~~ ' + (match || ''), new Elements);
+	getParents: function(expression){
+		return Slick.search(this, injectCombinator(expression, '!'), new Elements);
 	},
 
-	getChildren: function(match){
-		return Slick.search(this, '> ' + (match || ''), new Elements);
+	getSiblings: function(expression){
+		return Slick.search(this, injectCombinator(expression, '~~'), new Elements);
+	},
+
+	getChildren: function(expression){
+		return Slick.search(this, injectCombinator(expression, '>'), new Elements);
 	},
 
 	getWindow: function(){
@@ -515,7 +626,7 @@ Element.implement({
 	},
 
 	getElementById: function(id){
-		return document.id(Slick.find(this, '#' + id));
+		return document.id(Slick.find(this, '#' + ('' + id).replace(/(\W)/g, '\\$1')));
 	},
 
 	getSelected: function(){
@@ -530,12 +641,12 @@ Element.implement({
 		this.getElements('input, select, textarea').each(function(el){
 			var type = el.type;
 			if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
-			
+
 			var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
 				// IE
 				return document.id(opt).get('value');
 			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
-			
+
 			Array.from(value).each(function(val){
 				if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
 			});
@@ -543,40 +654,13 @@ Element.implement({
 		return queryString.join('&');
 	},
 
-	clone: function(contents, keepid){
-		contents = contents !== false;
-		var clone = this.cloneNode(contents);
-		var clean = function(node, element){
-			if (!keepid) node.removeAttribute('id');
-			if (Browser.ie){
-				node.clearAttributes();
-				node.mergeAttributes(element);
-				node.removeAttribute('uid');
-				if (node.options){
-					var no = node.options, eo = element.options;
-					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
-				}
-			}
-			var prop = props[element.tagName.toLowerCase()];
-			if (prop && element[prop]) node[prop] = element[prop];
-		};
-
-		if (contents){
-			var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-			for (var i = ce.length; i--;) clean(ce[i], te[i]);
-		}
-
-		clean(clone, this);
-		return document.id(clone);
-	},
-	
 	destroy: function(){
 		var children = clean(this).getElementsByTagName('*');
 		Array.each(children, clean);
 		Element.dispose(this);
 		return null;
 	},
-	
+
 	empty: function(){
 		Array.from(this.childNodes).each(Element.dispose);
 		return this;
@@ -590,6 +674,39 @@ Element.implement({
 		return !expression || Slick.match(this, expression);
 	}
 
+});
+
+var cleanClone = function(node, element, keepid){
+	if (!keepid) node.removeAttribute('id');
+	if (Browser.ie){
+		node.clearAttributes();
+		node.mergeAttributes(element);
+		node.removeAttribute('uid');
+		if (node.options){
+			var no = node.options, eo = element.options;
+			for (var i = no.length; i--;) no[i].selected = eo[i].selected;
+		}
+	}
+	var prop = formProps[element.tagName.toLowerCase()];
+	if (prop && element[prop]) node[prop] = element[prop];
+};
+
+Element.implement('clone', function(contents, keepid){
+	contents = contents !== false;
+	var clone = this.cloneNode(contents);
+
+	if (contents){
+		var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+		for (var i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
+	}
+
+	cleanClone(clone, this, keepid);
+
+	if (Browser.ie){
+		var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
+		for (var i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
+	}
+	return document.id(clone);
 });
 
 var contains = {contains: function(element){
@@ -617,42 +734,41 @@ Element.implement('hasChild', function(element){
 				old();
 			};
 		} else {
-			collected[this.uid] = this;
+			collected[$uid(this)] = this;
 		}
-		if (this.addEventListener) this.addEventListener(type, fn, false);
+		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
 		else this.attachEvent('on' + type, fn);
 		return this;
 	},
 
 	removeListener: function(type, fn){
-		if (this.removeEventListener) this.removeEventListener(type, fn, false);
+		if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
 		else this.detachEvent('on' + type, fn);
 		return this;
 	},
 
 	retrieve: function(property, dflt){
-		var storage = get(this.uid), prop = storage[property];
+		var storage = get($uid(this)), prop = storage[property];
 		if (dflt != null && prop == null) prop = storage[property] = dflt;
 		return prop != null ? prop : null;
 	},
 
 	store: function(property, value){
-		var storage = get(this.uid);
+		var storage = get($uid(this));
 		storage[property] = value;
 		return this;
 	},
 
 	eliminate: function(property){
-		var storage = get(this.uid);
+		var storage = get($uid(this));
 		delete storage[property];
 		return this;
 	}
 
 });
 
-// purge
-
-window.addListener('unload', function(){
+// IE purge
+if (window.attachEvent && !window.addEventListener) window.addListener('unload', function(){
 	Object.each(collected, clean);
 	if (window.CollectGarbage) CollectGarbage();
 });
@@ -701,12 +817,12 @@ Element.Properties.tag = {
 })(document.createElement('input').getAttribute('maxLength'));
 
 Element.Properties.html = (function(){
-	
+
 	var tableTest = Function.attempt(function(){
 		var table = document.createElement('table');
 		table.innerHTML = '<tr><td></td></tr>';
 	});
-	
+
 	var wrapper = document.createElement('div');
 
 	var translations = {

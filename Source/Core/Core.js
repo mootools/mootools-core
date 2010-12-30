@@ -15,7 +15,7 @@ inspiration:
   - Class implementation inspired by [Base.js](http://dean.edwards.name/weblog/2006/03/base/) Copyright (c) 2006 Dean Edwards, [GNU Lesser General Public License](http://opensource.org/licenses/lgpl-license.php)
   - Some functionality inspired by [Prototype.js](http://prototypejs.org) Copyright (c) 2005-2007 Sam Stephenson, [MIT License](http://opensource.org/licenses/mit-license.php)
 
-provides: [Core, MooTools, Type, typeOf, instanceOf]
+provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 
 ...
 */
@@ -23,7 +23,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 (function(){
 
 this.MooTools = {
-	version: '1.3dev',
+	version: '1.3.1dev',
 	build: '%build%'
 };
 
@@ -32,7 +32,7 @@ this.MooTools = {
 var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
 	if (item.$family) return item.$family();
-	
+
 	if (item.nodeName){
 		if (item.nodeType == 1) return 'element';
 		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
@@ -105,6 +105,8 @@ Function.prototype.implement = function(key, value){
 
 // From
 
+var slice = Array.prototype.slice;
+
 Function.from = function(item){
 	return (typeOf(item) == 'function') ? item : function(){
 		return item;
@@ -113,7 +115,7 @@ Function.from = function(item){
 
 Array.from = function(item){
 	if (item == null) return [];
-	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : Array.prototype.slice.call(item) : [item];
+	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
 };
 
 Number.from = function(item){
@@ -128,7 +130,7 @@ String.from = function(item){
 // hide, protect
 
 Function.implement({
-	
+
 	hide: function(){
 		this.$hidden = true;
 		return this;
@@ -138,7 +140,7 @@ Function.implement({
 		this.$protected = true;
 		return this;
 	}
-	
+
 });
 
 // Type
@@ -149,7 +151,7 @@ var Type = this.Type = function(name, object){
 		var typeCheck = function(item){
 			return (typeOf(item) == lower);
 		};
-		
+
 		Type['is' + name] = typeCheck;
 		if (object != null){
 			object.prototype.$family = (function(){
@@ -162,11 +164,11 @@ var Type = this.Type = function(name, object){
 	}
 
 	if (object == null) return null;
-	
+
 	object.extend(this);
 	object.$constructor = Type;
 	object.prototype.$constructor = object;
-	
+
 	return object;
 };
 
@@ -185,22 +187,22 @@ var hooksOf = function(object){
 
 var implement = function(name, method){
 	if (method && method.$hidden) return this;
-	
+
 	var hooks = hooksOf(this);
-	
+
 	for (var i = 0; i < hooks.length; i++){
 		var hook = hooks[i];
 		if (typeOf(hook) == 'type') implement.call(hook, name, method);
 		else hook.call(this, name, method);
 	}
-
+	
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
-	
+
 	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
-		return method.apply(item, Array.prototype.slice.call(arguments, 1));
+		return method.apply(item, slice.call(arguments, 1));
 	});
-	
+
 	return this;
 };
 
@@ -212,9 +214,9 @@ var extend = function(name, method){
 };
 
 Type.implement({
-	
+
 	implement: implement.overloadSetter(),
-	
+
 	extend: extend.overloadSetter(),
 
 	alias: function(name, existing){
@@ -225,32 +227,34 @@ Type.implement({
 		hooksOf(this).push(hook);
 		return this;
 	}
-	
+
 });
 
 new Type('Type', Type);
 
 // Default Types
 
-var force = function(name, type, methods){
-	var object = new Type(name, type),
+var force = function(name, object, methods){
+	var isType = (object != Object),
 		prototype = object.prototype;
-	
+
+	if (isType) object = new Type(name, object);
+
 	for (var i = 0, l = methods.length; i < l; i++){
 		var key = methods[i],
 			generic = object[key],
 			proto = prototype[key];
-		
+
 		if (generic) generic.protect();
-		
-		if (proto){
+
+		if (isType && proto){
 			delete prototype[key];
 			prototype[key] = proto.protect();
 		}
 	}
-	
-	object.implement(object.prototype);
-	
+
+	if (isType) object.implement(prototype);
+
 	return force;
 };
 
@@ -263,8 +267,16 @@ force('String', String, [
 ])('Number', Number, [
 	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
 ])('Function', Function, [
-	'apply', 'call'
-])('RegExp', RegExp, ['exec', 'test'])('Date', Date, ['now']);
+	'apply', 'call', 'bind'
+])('RegExp', RegExp, [
+	'exec', 'test'
+])('Object', Object, [
+	'create', 'defineProperty', 'defineProperties', 'keys',
+	'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
+	'preventExtensions', 'isExtensible', 'seal', 'isSealed', 'freeze', 'isFrozen'
+])('Date', Date, ['now']);
+
+Object.extend = extend.overloadSetter();
 
 Date.extend('now', function(){
 	return +(new Date);
@@ -295,18 +307,18 @@ Object.extend('forEach', function(object, fn, bind){
 Object.each = Object.forEach;
 
 Array.implement({
-	
+
 	forEach: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
 			if (i in this) fn.call(bind, this[i], i, this);
 		}
 	},
-	
+
 	each: function(fn, bind){
 		Array.forEach(this, fn, bind);
 		return this;
 	}
-	
+
 });
 
 // Array & Object cloning, Object merging and appending
@@ -338,7 +350,7 @@ var mergeOne = function(source, key, current){
 };
 
 Object.extend({
-	
+
 	merge: function(source, k, v){
 		if (typeOf(k) == 'string') return mergeOne(source, k, v);
 		for (var i = 1, l = arguments.length; i < l; i++){
@@ -347,13 +359,13 @@ Object.extend({
 		}
 		return source;
 	},
-	
+
 	clone: function(object){
 		var clone = {};
 		for (var key in object) clone[key] = cloneOf(object[key]);
 		return clone;
 	},
-	
+
 	append: function(original){
 		for (var i = 1, l = arguments.length; i < l; i++){
 			var extended = arguments[i] || {};
@@ -361,13 +373,21 @@ Object.extend({
 		}
 		return original;
 	}
-	
+
 });
 
 // Object-less types
 
 ['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(name){
 	new Type(name);
+});
+
+// Unique ID
+
+var UID = Date.now();
+
+String.extend('uniqueID', function(){
+	return (UID++).toString(36);
 });
 
 //<1.2compat>
@@ -417,11 +437,10 @@ Native.implement = function(objects, methods){
 	return Native;
 };
 
-(function(check){
-	Array.type = function(item){
-		return instanceOf(item, Array) || check(item);
-	};
-})(Array.type);
+var arrayType = Array.type;
+Array.type = function(item){
+	return instanceOf(item, Array) || arrayType(item);
+};
 
 this.$A = function(item){
 	return Array.from(item).slice();
@@ -449,14 +468,13 @@ this.$defined = function(obj){
 
 this.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
-	((type == 'arguments' || type == 'collection' || type == 'array') ? Array : Object).each(iterable, fn, bind);
+	((type == 'arguments' || type == 'collection' || type == 'array' || type == 'elements') ? Array : Object).each(iterable, fn, bind);
 };
 
 this.$empty = function(){};
 
 this.$extend = function(original, extended){
-	for (var key in (extended || {})) original[key] = extended[key];
-	return original;
+	return Object.append(original, extended);
 };
 
 this.$H = function(object){

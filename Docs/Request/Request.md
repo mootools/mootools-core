@@ -32,7 +32,10 @@ An XMLHttpRequest Wrapper.
 * evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
 * emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
 * urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
-* noCache - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* timeout - (*integer*: defaults to 0) In conjunction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
+* noCache - (*boolean*; defaults to false) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* user - (*string*: defaults to undefined) When username is set the Request will open with credentials and try to authenticate.
+* password - (*string*: defaults to undefined) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
 
 ### Events:
 
@@ -43,6 +46,49 @@ Fired when the Request is sent.
 ##### Signature:
 
 	onRequest()
+
+#### loadstart
+
+Fired when the Request loaded, right before any progress starts. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
+
+##### Signature:
+
+	onLoadstart(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The loadstart event.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+#### progress
+
+Fired when the Request is making progresses in the download or upload. (This is limited to Browsers that support the event. At this time: Gecko and WebKit).
+
+##### Signature:
+
+	onProgress(event, xhr)
+
+##### Arguments:
+
+1. event - (Event) The progress event, containing currently downloaded bytes and total bytes.
+2. xhr - (XMLHttpRequest) The transport instance.
+
+### Example:
+
+	var myRequest = new Request({
+		url: 'image.jpg',
+		onProgress: function(event, xhr) {
+			var loaded = event.loaded, total = event.total;
+
+			console.log(parseInt(loaded / total * 100, 10));
+		}
+	});
+
+	myRequest.send();
+
+### See Also:
+
+ - [MDC: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)
 
 #### complete
 
@@ -100,7 +146,6 @@ Fired when setting a request header fails.
 
 ### Properties:
 
-* running  - (*boolean*) True if the request is running.
 * response - (*object*) Object with text and XML as keys. You can access this property in the 'success' event.
 
 ### Returns:
@@ -115,6 +160,45 @@ Fired when setting a request header fails.
 ### See Also:
 
  - [Wikipedia: XMLHttpRequest](http://en.wikipedia.org/wiki/XMLHttpRequest)
+
+#### timeout
+
+Fired when a request doesn't change state for `options.timeout` milliseconds.
+
+##### Signature:
+
+	onTimeout()
+
+
+### Example:
+
+This example fetches some text with Request. When the user clicks the link, the returned text by the server is used to update
+the element's text. It uses the `onRequest`, `onSuccess` and `onFailure` events to inform the user about the current state of
+the request. The `method` option is set to `get` because we get some text instead of posting it to the server. It gets the
+data-userid attribute of the clicked link, which will be used for the querystring.
+
+	var myElement = document.id('myElement');
+
+	var myRequest = new Request({
+		url: 'getMyText.php',
+		method: 'get',
+		onRequest: function(){
+			myElement.set('text', 'loading...');
+		},
+		onSuccess: function(responseText){
+			myElement.set('text', responseText);
+		},
+		onFailure: function(){
+			myElement.set('text', 'Sorry, your request failed :(');
+		}
+	});
+
+	document.id('myLink').addEvent('click', function(event){
+		event.stop();
+		myRequest.send('userid=' + this.get('data-userid'));
+	});
+
+
 
 Request Method: setHeader {#Request:setHeader}
 --------------------------------------
@@ -182,11 +266,36 @@ Opens the Request connection and sends the provided data with the specified opti
 
 ### Examples:
 
-	var myRequest = new Request({url: 'http://localhost/some_url'}).send('save=username&name=John');
+	var myRequest = new Request({
+		url: 'http://localhost/some_url'
+	}).send('save=username&name=John');
 
-### Notes:
 
-MooTools provides several aliases for [Request:send][] to make it easier to use different methods. These aliases are post() and POST(), get() and GET(), put() and PUT() and delete() and DELETE().
+Request Methods: send aliases {#Request:send-aliases}
+-----------------------------------------------------
+
+MooTools provides several aliases for [Request:send][] to make it easier to use different methods.
+
+These aliases are:
+
+- `post()` and `POST()`
+- `get()` and `GET()`
+- `put()` and `PUT()`
+- `delete()` and `DELETE()`
+
+### Syntax:
+
+	myRequest.post([data]);
+
+### Arguments:
+
+1. data - (*string*, optional) Equivalent with the `data` option of Request.
+
+### Returns:
+
+* (*object*) This Request instance.
+
+### Examples:
 
 	var myRequest = new Request({url: 'http://localhost/some_url'});
 
@@ -203,6 +312,12 @@ MooTools provides several aliases for [Request:send][] to make it easier to use 
 		method: 'get',
 		data: 'save=username&name=John'
 	});
+
+### Note:
+
+By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method name is sent as e.g. `_method=delete`.
+
+
 
 Request Method: cancel {#Request:cancel}
 --------------------------------
@@ -222,6 +337,24 @@ Cancels the currently running request, if any.
 	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
 	myRequest.cancel();
 
+Request Method: isRunning {#Request:isRunning}
+--------------------------------
+
+Returns true if the request is currently running
+
+### Syntax:
+
+	myRequest.isRunning()
+
+### Returns:
+
+* (*boolean*) True if the request is running
+
+### Example:
+
+	var myRequest = new Request({url: 'mypage.html', method: 'get'}).send('some=data');
+
+	if (myRequest.isRunning()) // It runs!
 
 
 Object: Element.Properties {#Element-Properties}

@@ -40,7 +40,7 @@ Attaches an event listener to a DOM element.
 
 ### Notes:
 
-- You can stop the Event by returning false in the listener or calling [Event:stop](#Event:stop).
+- You can stop the Event by returning false in the listener or calling [Event:stop][].
 - This method is also attached to Document and Window.
 
 ### See Also:
@@ -276,8 +276,8 @@ If you use the condition option you NEED to specify a base type, unless you plan
 
 
 
-Build in Custom Events
------------------------
+Built-in Custom Events
+----------------------
 
 
 ### Event: mouseenter {#Element-Events:mouseenter}
@@ -323,6 +323,7 @@ This event fires when the mouse wheel is rotated;
 
 
 [$]: /core/Element/Element#Window:dollar
+[Event:stop]: /core/Types/Event#Event:stop
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#bind
 [Function:pass]: /core/Types/Function/#pass

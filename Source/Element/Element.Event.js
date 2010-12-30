@@ -14,6 +14,8 @@ provides: Element.Event
 ...
 */
 
+(function(){
+
 Element.Properties.events = {set: function(events){
 	this.addEvents(events);
 }};
@@ -22,10 +24,13 @@ Element.Properties.events = {set: function(events){
 
 	addEvent: function(type, fn){
 		var events = this.retrieve('events', {});
-		events[type] = events[type] || {keys: [], values: []};
+		if (!events[type]) events[type] = {keys: [], values: []};
 		if (events[type].keys.contains(fn)) return this;
 		events[type].keys.push(fn);
-		var realType = type, custom = Element.Events[type], condition = fn, self = this;
+		var realType = type,
+			custom = Element.Events[type],
+			condition = fn,
+			self = this;
 		if (custom){
 			if (custom.onAdd) custom.onAdd.call(this, fn);
 			if (custom.condition){
@@ -47,7 +52,7 @@ Element.Properties.events = {set: function(events){
 					if (condition.call(self, event) === false) event.stop();
 				};
 			}
-			this.addListener(realType, defn);
+			this.addListener(realType, defn, arguments[2]);
 		}
 		events[type].values.push(defn);
 		return this;
@@ -56,16 +61,18 @@ Element.Properties.events = {set: function(events){
 	removeEvent: function(type, fn){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
-		var pos = events[type].keys.indexOf(fn);
-		if (pos == -1) return this;
-		events[type].keys.splice(pos, 1);
-		var value = events[type].values.splice(pos, 1)[0];
+		var list = events[type];
+		var index = list.keys.indexOf(fn);
+		if (index == -1) return this;
+		var value = list.values[index];
+		delete list.keys[index];
+		delete list.values[index];
 		var custom = Element.Events[type];
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn);
 			type = custom.base || type;
 		}
-		return (Element.NativeEvents[type]) ? this.removeListener(type, value) : this;
+		return (Element.NativeEvents[type]) ? this.removeListener(type, value, arguments[2]) : this;
 	},
 
 	addEvents: function(events){
@@ -85,8 +92,10 @@ Element.Properties.events = {set: function(events){
 			for (type in attached) this.removeEvents(type);
 			this.eliminate('events');
 		} else if (attached[events]){
-			while (attached[events].keys[0]) this.removeEvent(events, attached[events].keys[0]);
-			attached[events] = null;
+			attached[events].keys.each(function(fn){
+				this.removeEvent(events, fn);
+			}, this);
+			delete attached[events];
 		}
 		return this;
 	},
@@ -94,8 +103,11 @@ Element.Properties.events = {set: function(events){
 	fireEvent: function(type, args, delay){
 		var events = this.retrieve('events');
 		if (!events || !events[type]) return this;
+		args = Array.from(args);
+
 		events[type].keys.each(function(fn){
-			(delay) ? fn.delay(delay, this, args) : fn.run(args, this);
+			if (delay) fn.delay(delay, this, args);
+			else fn.apply(this, args);
 		}, this);
 		return this;
 	},
@@ -116,6 +128,12 @@ Element.Properties.events = {set: function(events){
 
 });
 
+// IE9
+try {
+	if (typeof HTMLElement != 'undefined')
+		HTMLElement.prototype.fireEvent = Element.prototype.fireEvent;
+} catch(e){}
+
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
 	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
@@ -129,25 +147,23 @@ Element.NativeEvents = {
 	error: 1, abort: 1, scroll: 1 //misc
 };
 
-(function(){
-
-var $check = function(event){
+var check = function(event){
 	var related = event.relatedTarget;
-	if (related == undefined) return true;
-	if (related === false) return false;
-	return (typeOf(this) != 'document' && related != this && related.prefix != 'xul' && !this.contains(related));
+	if (related == null) return true;
+	if (!related) return false;
+	return (related != this && related.prefix != 'xul' && typeOf(this) != 'document' && !this.contains(related));
 };
 
 Element.Events = {
 
 	mouseenter: {
 		base: 'mouseover',
-		condition: $check
+		condition: check
 	},
 
 	mouseleave: {
 		base: 'mouseout',
-		condition: $check
+		condition: check
 	},
 
 	mousewheel: {
