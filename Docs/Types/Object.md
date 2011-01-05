@@ -26,12 +26,12 @@ Used to iterate through an object.
 
 ##### Syntax:
 
-	fn(item, index, object)
+	fn(item, key, object)
 
 ##### Arguments:
 
 1. item   - (*mixed*) The current item in the array.
-2. index  - (*number*) The current item's key.
+2. key  - (*mixed*) The current item's key.
 3. object - (*mixed*) The actual array/object.
 
 ### Example:
