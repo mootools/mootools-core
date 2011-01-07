@@ -10,7 +10,7 @@ Function Methods.
 
 
 Function: Function.from {#Function:Function-from}
-----------------------------------------
+-------------------------------------------------
 
 If the passed argument is a function, it will return itself. Otherwise, it will return a function that returns the passed argument.
 
@@ -43,7 +43,7 @@ This function is equivalent to the following deprecated MooTools 1.2 methods:
 
 
 Function: Function.attempt {#Function:Function-attempt}
------------------------------
+-------------------------------------------------------
 
 Tries to execute a number of functions. Returns immediately the return value of the first non-failed function without executing successive functions, or null.
 
@@ -90,18 +90,30 @@ This method is an equivalent of *$try* from MooTools 1.2.
 
 
 Function method: extend {#Function:extend}
----------------------------------
+------------------------------------------
 
-Add methods to a function
+Extends a function with a new method or property.
 
 ### Syntax:
 
-	myFunction.extend(key,value);
+	myFunction.extend(key, value);
+
+	// Or
+
+	myFunction.extend(object);
 
 ### Arguments:
 
-1. key - (*string*) The key of the prototype
-2. value - (*mixed*) The function or another value of the prototype
+1. key - (*string*) The key of the method or property
+2. value - (*mixed*) The function or property value
+
+Or
+
+1. object - (*object*) An object with the key value pairs to add multiple methods or properties
+
+### Returns:
+
+* (*function*) The function
 
 ### Example:
 
@@ -111,20 +123,38 @@ Add methods to a function
 	});
 	myFunction.alert('Hello!'); // alerts Hello!
 
+	// Using objects
+	myFunction.extend({
+		alert: function(text){
+			alert(text);
+		}
+	});
 
 Function method: implement {#Function:implement}
----------------------------------------
+------------------------------------------------
 
-Add methods to the prototype
+Implements a method to the prototype of the function.
 
 ### Syntax:
 
-	myFunction.implement(key,value);
+	myFunction.implement(key, value);
+
+	// Or
+
+	myFunction.implement(object);
 
 ### Arguments:
 
-1. key - (*string*) The key of the prototype
-2. value - (*mixed*) The function or another value of the prototype
+1. key - (*string*) The method of property name in the prototype
+2. value - (*mixed*) The function or another value in the prototype
+
+Or
+
+1. object - (*object*) An object with key-value pairs to add multiple methods or properties to the function it's prototype.
+
+### Returns:
+
+* (*function*) The function
 
 ### Example:
 
@@ -135,6 +165,13 @@ Add methods to the prototype
 	var myInstance = new myFunction();
 	myInstance.alert('Hello!'); // alerts Hello!
 
+	// Using objects
+	myInstance.implement({
+		alert: function(text){
+			alert(text);
+		}
+	});
+
 ### Notes:
 
 The difference between *implement* and *extend*, is that implement adds the value to the prototype.
@@ -143,7 +180,7 @@ the method or property is added to a single instance.
 
 
 Function method: attempt {#Function:attempt}
----------------------------
+--------------------------------------------
 
 Tries to execute a single function. Returns immediately the return value of the function if it does not fail, or null.
 
@@ -180,7 +217,7 @@ Tries to execute a single function. Returns immediately the return value of the 
 
 
 Function method: pass {#Function:pass}
------------------------------
+--------------------------------------
 
 Returns a closure with arguments and bind.
 
@@ -209,14 +246,18 @@ Returns a closure with arguments and bind.
 	var myHello = myFunction.pass('hello');
 	var myItems = myFunction.pass(['peach', 'apple', 'orange']);
 
-	//Later in the code, the functions can be executed:
+	// Later in the code, the functions can be executed:
 	alert(myHello()); // passes 'hello' to myFunction.
 	alert(myItems()); // passes the array of items to myFunction.
 
 
+### See Also:
+
+[Function:bind][]
+
 
 Function method: bind {#Function:bind}
------------------------------
+--------------------------------------
 
 Changes the scope of `this` within the target function to refer to the bind parameter.
 
@@ -236,16 +277,26 @@ Changes the scope of `this` within the target function to refer to the bind para
 ### Example:
 
 	function myFunction(){
-		//Note that 'this' here refers to window, not an element.
+		// Note that 'this' here refers to window, not an element.
 		// the function must be bound to the element we want to manipulate.
 		this.setStyle('color', 'red');
 	};
 	var myBoundFunction = myFunction.bind(myElement);
 	myBoundFunction(); // makes myElement's text red
 
+	// To show how bind works the following example:
+	var myBoundFunction = myFunction.bind(anyVar);
+	// is roughly equivalent with
+	var myBoundFunction = function(){
+		return myFunction.call(this);
+	};
+
+### See Also:
+
+[Function:pass][]
 
 Function method: delay {#Function:delay}
--------------------------------
+----------------------------------------
 
 Delays the execution of a function by a specified duration.
 
@@ -285,7 +336,7 @@ Delays the execution of a function by a specified duration.
 
 
 Function method: periodical {#Function:periodical}
------------------------------------------
+--------------------------------------------------
 
 Executes a function in the specified intervals of time. Periodic execution can be stopped using the *clearInterval* function.
 
@@ -347,13 +398,12 @@ This function has been deprecated.
 	fn.apply(thisArg, arguments); // Old API: fn.run(arguments, thisArg);
 
 
-[options]: #Function:create:options
+[Function:bind]: /core/Types/Function/#Function:bind
+[Function:pass]: /core/Types/Function/#Function:pass
 [Element:addEvent]: /core/Element/Element.Event/#Element:addEvent
 [MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
 [MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
 [MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
 [MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
 [MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
-[Function:delay]: /core/Types/Function/#delay
-[Function:periodical]: /core/Types/Function/#periodical
 
