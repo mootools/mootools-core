@@ -1,9 +1,13 @@
 Window Event: domready
 ========================
 
-Contains the window Event 'domready', which will execute when the DOM has loaded.  To ensure that DOM elements exist when the code attempting to access them is executed, they should be placed within the 'domready' event.
+Contains the window [Event][] 'domready', which executes when the DOM is loaded.
 
-This event is only available to the window Element.
+To ensure that DOM elements exist when the code attempts to access them is executed, they need to be placed within the 'domready' event.
+
+### Note:
+
+This event is only available to the window element.
 
 ### Example:
 
@@ -14,4 +18,5 @@ This event is only available to the window Element.
 ### See Also:
 [Element.Event][]
 
+[Event]: /core/Element/Element.Event
 [Element.Event]: /core/Element/Element.Event

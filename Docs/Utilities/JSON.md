@@ -1,11 +1,11 @@
 Object: JSON {#JSON}
 ====================
 
-JSON parser and encoder.
+JSON decoder and encoder.
 
 ### See Also:
 
-- [JavaScript Object Notation (JSON.org)](http://www.json.org/)
+- [JSON (JavaScript Object Notation)][]
 
 JSON Method: encode {#JSON:encode}
 ----------------------------------
@@ -33,7 +33,7 @@ Converts an object or array to a JSON string.
 JSON Method: decode {#JSON:decode}
 ----------------------------------
 
-Converts a JSON string into an JavaScript object.
+Converts a JSON string into a JavaScript object.
 
 ### Syntax:
 
@@ -54,4 +54,8 @@ Converts a JSON string into an JavaScript object.
 
 ### Credits:
 
-- JSON test regexp is by [Douglas Crockford](http://crockford.com/) and [Tobie Langel](http://tobielangel.com/).
+- JSON test regular expression by [Douglas Crockford][] and [Tobie Langel][].
+
+[JSON (JavaScript Object Notation)]: http://www.json.org/
+[Douglas Crockford]: http://crockford.com/
+[Tobie Langel]: http://tobielangel.com/
