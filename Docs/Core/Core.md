@@ -1,27 +1,23 @@
-Type: Core {#Core}
-==================
+## Type: Core {#Core}
 
-Core contains a handful of common sense functions used in [MooTools](http://mootools.net).
+Core contains common functions used in [MooTools][].
 
+### Function: typeOf {#Core:typeOf}
 
+Returns the type of an object.
 
-Function: typeOf {#Core:typeOf}
---------------------------
-
-Returns the type of object that matches the item passed in.
-
-### Syntax:
+#### Syntax:
 
 	typeOf(obj);
 
-### Arguments:
+#### Arguments:
 
 1. obj - (*object*) The object to inspect.
 
-### Returns:
+#### Returns:
 
 * 'element'    - (*string*) If object is a DOM element node.
-* 'elements'   - (*string*) If object is a an instance of `Elements`
+* 'elements'   - (*string*) If object is an instance of [Elements][].
 * 'textnode'   - (*string*) If object is a DOM text node.
 * 'whitespace' - (*string*) If object is a DOM whitespace node.
 * 'arguments'  - (*string*) If object is an arguments object.
@@ -33,59 +29,54 @@ Returns the type of object that matches the item passed in.
 * 'boolean'    - (*string*) If object is a boolean.
 * 'function'   - (*string*) If object is a function.
 * 'regexp'     - (*string*) If object is a regular expression.
-* 'class'      - (*string*) If object is a Class (created with new Class, or the extend of another class).
-* 'collection' - (*string*) If object is a native htmlelements collection, such as childNodes, getElementsByTagName, etc.
+* 'class'      - (*string*) If object is a [Class][] (created with new Class or the extend of another class).
+* 'collection' - (*string*) If object is a native HTML elements collection, such as childNodes or getElementsByTagName.
 * 'window'     - (*string*) If object is the window object.
 * 'document'   - (*string*) If object is the document object.
 * 'event'      - (*string*) If object is an event.
-* 'null'        - (*boolean*) If object is undefined, null, NaN or none of the above.
+* 'null'       - (*boolean*) If object is undefined, null, NaN or none of the above.
 
-### Example:
+#### Example:
 
 	var myString = 'hello';
-	typeOf(myString); // returns "string".
+	typeOf(myString); // returns "string"
 
-### Notes:
+#### Note:
 
 This method is equivalent to *$type* from MooTools 1.2, with the exception that undefined and null values now return 'null' as a string, instead of false.
 
+### Function: instanceOf {#Core:instanceOf}
 
+Checks if an object is an instance of a particular type.
 
-Function: instanceOf {#Core:instanceOf}
-----------------------------------
-
-Checks to see if an object is an instance of a particular Type.
-
-### Syntax:
+#### Syntax:
 
 	instanceOf(item, object)
 
-### Arguments:
+#### Arguments:
 
-1. item - (*mixed*) The item which you want to check
-2. object - (*mixed*) The Type you wish to compare with
+1. item - (*mixed*) The item to check.
+2. object - (*mixed*) The type to compare it with.
 
-### Returns:
+#### Returns:
 
 * (*boolean*) Whether or not the item is an instance of the object.
 
-### Examples:
+#### Examples:
 
 	var foo = [];
-	instanceOf(foo, Array)	// returns true
-	instanceOf(foo, String)	// returns false
+	instanceOf(foo, Array) // returns true
+	instanceOf(foo, String) // returns false
 
 	var myClass = new Class();
 	var bar = new myClass();
-	instanceOf(bar, myClass)	// returns true
+	instanceOf(bar, myClass) // returns true
 
+## Type {#Type}
 
-Type {#Type}
-============
+MooTools extends native types, like string, array or number to make them even more useful.
 
-MooTools extends native types, like String, Array and Number to make them even more useful.
-
-The Types MooTools uses are:
+The types MooTools uses are:
 
 - String
 - Array
@@ -101,33 +92,32 @@ Custom MooTools types are:
 - Elements
 - Event
 
-Type method: implement {#Type:implement}
-----------------------------------------
+### Type method: implement {#Type:implement}
 
-This method implements a new method to the Type's prototype.
+This method implements a new method to the type's prototype.
 
-### Syntax:
+#### Syntax:
 
 	myType.implement(name, method);
 
-	// OR
+**or**
 
 	myType.implement(methods);
 
-### Arguments:
+#### Arguments:
 
-1. name: - (*string*) The method name
-2. method: - (*function*) The method function
+1. name - (*string*) The method name.
+2. method - (*function*) The method function.
 
-Or
+**or**
 
-1. methods: - (*object*) An object with key-value pairs. The key is the method name, the value is the method function.
+1. methods - (*object*) An object with key-value pairs. The key is the method name, the value is the method function.
 
-### Returns:
+#### Returns:
 
-* (*object*) The Type
+* (*object*) The type.
 
-### Examples:
+#### Examples:
 
 	Array.implement('limitTop', function(top){
 		for (var i = 0, l = this.length; i < l; i++){
@@ -136,10 +126,10 @@ Or
 		return this;
 	});
 
-	// which we now can use as:
-	[1, 2, 3, 4, 5, 6].limitTop(4); // returns [1, 2, 3, 4, 4, 4];
+	[1, 2, 3, 4, 5, 6].limitTop(4); // returns [1, 2, 3, 4, 4, 4]
 
-	// It is also possible to pass an object of methods
+It is also possible to pass an object of methods:
+
 	String.implement({
 		repeat: function(times){
 			var string = '';
@@ -151,41 +141,36 @@ Or
 		}
 	});
 
-	// which we now can use as:
-	'moo! '.repeat(3); // returns 'moo! moo! moo!'
-	'MooTools'.ftw(); // returns 'MooTools FTW!'
-	// or combined
-	('MooTools'.ftw() + ' ').repeat(2); // returns 'MooTools FTW! MooTools FTW!'
+	'moo! '.repeat(3); // returns "moo! moo! moo! "
+	'MooTools'.ftw(); // returns "MooTools FTW!"
+	('MooTools'.ftw() + ' ').repeat(2); // returns "MooTools FTW! MooTools FTW! "
 
+### Type method: extend {#Type:extend}
 
-Type method: extend {#Type:extend}
-----------------------------------
+Adds one or more functions to the type. These are static functions that accept for example other types to parse them into the type, or other utility functions that belong to the certain type.
 
-Adds one or more functions to the Type. These are static functions that accept for example other types
-to parse them into the Type, or other utility functions that belong to the certain Type.
-
-### Syntax:
+#### Syntax:
 
 	myType.extend(name, method);
 
-	// OR
+**or**
 
 	myType.extend(methods);
 
-### Arguments:
+#### Arguments:
 
-1. name: - (*string*) The method name
-2. method: - (*function*) The function
+1. name - (*string*) The method name.
+2. method - (*function*) The method function.
 
-Or
+**or**
 
-1. methods: - (*object*) An object with key-value pairs. The key is the method name, the value is the function.
+1. methods - (*object*) An object with key-value pairs. The key is the method name, the value is the method function.
 
-### Returns:
+#### Returns:
 
-* (*object*) The Type
+* (*object*) The type.
 
-### Examples:
+#### Examples:
 
 	RegExp.extend('from', function(regexp, flags){
 		return new RegExp(regexp, flags);
@@ -196,40 +181,41 @@ Or
 		// do certain calculations
 	});
 
-Generics {#Type:generics}
--------------------------
+### Generics {#Type:generics}
 
-Most methods of types can be used as generic functions. These are the already
-existing JavaScript methods, methods MooTools adds, or methods you
-[implemented][implement] yourself. It becomes more clear in the following example.
+Most methods of types can be used as generic functions. These are the already existing JavaScript methods, methods MooTools adds, or methods you [implemented][implement] yourself.
 
-### Example:
+#### Example:
 
 	var everyArgBiggerThanTwo = function(){
 		// Instead of this
 		return Array.prototype.every.call(arguments, someFunction);
-		// we can use
+		// you can use
 		return Array.every(arguments, someFunction);
 	};
 
 This is useful if methods of a certain type should be used as function of another type.
-As the example above it is used for the Arguments type, which is not an real array, so
-`arguments.every(fn)` would not work however `Array.every(arguments, fn)` does work in
-MooTools.
+ As the example above, it is used for the Arguments type, which is not a real array, so `arguments.every(fn)` would not work. However, `Array.every(arguments, fn)` does work in MooTools.
 
-### Syntax:
+#### Syntax:
 
 	Type.methodName(thisArg[, arg1, arg2, ...]);
 
-### Arguments:
+#### Arguments:
 
-1. thisArg - (*mixed*) This is the subject, which is usually `thisArg.method([arg1, arg2, ...]);`
-2. arg1, arg2, ... - (*mixed*) Additional arguments which will be passed as method arguments
+1. thisArg - (*mixed*) This is the subject, which is usually `thisArg.method([arg1, arg2, ...]);`.
+2. arg1, arg2, ... - (*mixed*) Additional arguments which will be passed as method arguments.
 
-### Returns:
+#### Returns:
 
-- (*mixed*) anything the method usually returns
+- (*mixed*) Anything the method usually returns.
 
+[Class]: /core/Class/Class
+[Elements]: /core/Element/Element
+[implement]: core/Core/Core#Type:implement
+[MooTools]: http://mootools.net
+
+---
 
 Deprecated Functions {#Deprecated-Functions}
 ============================================
@@ -391,7 +377,6 @@ This method has been deprecated. Please use [typeOf](#Core:typeOf) instead.
 
 
 
-[implement]: core/Core/Core#Type:implement
 [Array]: /core/Types/Array
 [Function:bind]: /core/Types/Function/#bind
 [Function:delay]: /core/Types/Function/#delay
