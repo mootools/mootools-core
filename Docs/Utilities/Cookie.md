@@ -1,5 +1,4 @@
-Object: Cookie {#Cookie}
-========================
+## Object: Cookie {#Cookie}
 
 Reads and writes a cookie.
 
@@ -10,30 +9,25 @@ Reads and writes a cookie.
 * duration - (*number*: defaults to false) The duration of the cookie (in days) before it expires. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
 * secure   - (*boolean*: defaults to false) Stored cookie information can be accessed only from a secure environment.
 
-### Note:
-
-In order to share the cookie with pages located in a different path, the [Cookie.options.domain][] value must be set.
-
-Cookie Method: write {#Cookie:write}
---------------------------------
+### Cookie Method: write {#Cookie:write}
 
 Writes a cookie in the browser.
 
-### Syntax:
+#### Syntax:
 
 	var myCookie = Cookie.write(key, value[, options]);
 
-### Arguments:
+#### Arguments:
 
 1. key     - (*string*) The key (or name) of the cookie.
 2. value   - (*string*) The value to set. Cannot contain semicolons.
 3. options - (*mixed*, optional) See [Cookie][].
 
-### Returns:
+#### Returns:
 
 * (*object*) An object with the options, the key and the value. You can give it as first parameter to [Cookie.dispose][].
 
-### Examples:
+#### Examples:
 
 Saves the cookie for the duration of the session:
 
@@ -41,48 +35,46 @@ Saves the cookie for the duration of the session:
 
 Saves the cookie for a day:
 
-	var myCookie  = Cookie.write('username', 'JackBauer', {duration: 1});
+	var myCookie = Cookie.write('username', 'JackBauer', {duration: 1});
 
+#### Note:
 
+In order to share the cookie with pages located in a different path, the [Cookie.options.domain][Cookie.options] value must be set.
 
-Cookie Method: read {#Cookie:read}
---------------------------------
+### Cookie Method: read {#Cookie:read}
 
 Reads the value of a cookie.
 
-### Syntax:
+#### Syntax:
 
 	var myCookie = Cookie.read(name);
 
-### Arguments:
+#### Arguments:
 
 1. name - (*string*) The name of the cookie to read.
 
-### Returns:
+#### Returns:
 
 * (*mixed*) The cookie string value, or null if not found.
 
-### Examples:
+#### Example:
 
 	Cookie.read('username');
 
-
-
-Cookie Method: dispose {#Cookie:dispose}
---------------------------------------
+### Cookie Method: dispose {#Cookie:dispose}
 
 Removes a cookie from the browser.
 
-### Syntax:
+#### Syntax:
 
 	var oldCookie = Cookie.dispose(name[, options]);
 
-### Arguments:
+#### Arguments:
 
-1. name  - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
+1. name - (*string*) The name of the cookie to remove or a previously saved Cookie instance.
 2. options - (*object*, optional) See [Cookie][].
 
-### Examples:
+#### Examples:
 
 Remove a Cookie:
 
@@ -97,8 +89,7 @@ Creating a cookie and removing it right away:
 
 - Based on the functions by Peter-Paul Koch of [QuirksMode][].
 
-[Cookie]: #Cookie
-[Cookie.options]: #Cookie-options
-[Cookie.options.domain]: #Cookie-options
 [Cookie.dispose]: #Cookie:dispose
+[Cookie.options]: #Cookie-options
+[Cookie]: #Cookie
 [QuirksMode]: http://www.quirksmode.org

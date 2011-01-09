@@ -1,18 +1,17 @@
-Class: Swiff {#Swiff}
-=====================
+## Class: Swiff {#Swiff}
 
 Creates and returns a Flash object using supplied parameters.
 
-### Syntax:
+#### Syntax:
 
 	var mySwiff = new Swiff(path[, options]);
 
-### Arguments:
+#### Arguments:
 
 1. path    - (*string*) The path to the SWF file.
 2. options - (*object*, optional) See Options below.
 
-### Options:
+#### Options:
 
 * id - (*string*: defaults to 'Swiff\_' + unique id) The id of the SWF object.
 * width - (*number*: defaults to 1) The width of the SWF object.
@@ -27,11 +26,11 @@ Creates and returns a Flash object using supplied parameters.
 * vars - (*object*) Vars will be passed to the SWF as query string in flashVars.
 * callBacks - (*object*) Functions to call from the SWF. These will be available globally in the movie, and bound to the object.
 
-### Returns:
+#### Returns:
 
 * (*element*) A new HTML object element.
 
-### Example:
+#### Example:
 
 	var obj = new Swiff('myMovie.swf', {
 		id: 'myBeautifulMovie',
@@ -50,42 +49,41 @@ Creates and returns a Flash object using supplied parameters.
 		}
 	});
 
-### Note:
+#### Note:
 
 1. Although Swiff returns the object, this element will NOT have any [Element][] methods applied to it.
 2. The $ function on an object/embed tag will only return its reference without further processing.
 
-Swiff Function: remote {#Swiff:remote}
---------------------------------------
+### Swiff Function: remote {#Swiff:remote}
 
 Calls an ActionScript function from JavaScript.
 
-### Syntax:
+#### Syntax:
 
 	var result = Swiff.remote(obj, fn[, arg, arg, arg ...]);
 
-### Arguments:
+#### Arguments:
 
 1. obj - (*element*) A Swiff instance (a HTML object element).
 2. fn  - (*string*) The function name to execute in the SWF.
 3. arg - (*mixed*) Any number of arguments to pass to the named function.
 
-### Returns:
+#### Returns:
 
 * (*mixed*) The ActionScript function's result.
 
-### Example:
+#### Example:
 
 	var obj = new Swiff('myMovie.swf');
 	alert(Swiff.remote(obj, 'myFlashFn')); // alerts "This is from the .swf file!".
 
-### Note:
+#### Note:
 
 The SWF file must be compiled with the ExternalInterface component.  See the Adobe documentation on [External Interface][] for more information.
 
 ### Credits:
 
-Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject][].
+- Flash detection and Internet Explorer/Flash Player 9 fix adapted from [SWFObject][].
 
 [Element]: /core/Element/Element
 [External Interface]: http://www.adobe.com/livedocs/flash/9.0/ActionScriptLangRefV3/flash/external/ExternalInterface.html
