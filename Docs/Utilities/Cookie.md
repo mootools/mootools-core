@@ -1,24 +1,18 @@
 Object: Cookie {#Cookie}
 ========================
 
-Sets and accesses cookies.
-
-### Credits:
-
-- Based on the functions by Peter-Paul Koch [QuirksMode][].
+Reads and writes a cookie.
 
 ### Options: {#Cookie-options}
 
-* domain   - (*string*: defaults to false) The domain the Cookie belongs to.
-* path     - (*string*: defaults to '/') The path the Cookie belongs to.
-* duration - (*number*: defaults to false) The duration of the Cookie before it expires, in days. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
+* domain   - (*string*: defaults to false) The domain the cookie belongs to.
+* path     - (*string*: defaults to '/') The path the cookie belongs to.
+* duration - (*number*: defaults to false) The duration of the cookie (in days) before it expires. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
 * secure   - (*boolean*: defaults to false) Stored cookie information can be accessed only from a secure environment.
 
-### Notes:
+### Note:
 
-- In order to share the Cookie with pages located in a different path, the [Cookie.options.domain][] value must be set.
-
-
+In order to share the cookie with pages located in a different path, the [Cookie.options.domain][] value must be set.
 
 Cookie Method: write {#Cookie:write}
 --------------------------------
@@ -37,15 +31,15 @@ Writes a cookie in the browser.
 
 ### Returns:
 
-* (*object*) An object with the options, the key and the value. You can give it as first parameter to Cookie.remove.
+* (*object*) An object with the options, the key and the value. You can give it as first parameter to [Cookie.dispose][].
 
 ### Examples:
 
-Saves the Cookie for the Duration of the Session:
+Saves the cookie for the duration of the session:
 
-	var myCookie = Cookie.write('username', 'Harald');
+	var myCookie = Cookie.write('username', 'JackBauer');
 
-Saves the Cookie for a Day:
+Saves the cookie for a day:
 
 	var myCookie  = Cookie.write('username', 'JackBauer', {duration: 1});
 
@@ -54,7 +48,7 @@ Saves the Cookie for a Day:
 Cookie Method: read {#Cookie:read}
 --------------------------------
 
-Reads the value of a Cookie.
+Reads the value of a cookie.
 
 ### Syntax:
 
@@ -62,7 +56,7 @@ Reads the value of a Cookie.
 
 ### Arguments:
 
-1. name - (*string*) The name of the Cookie to retrieve.
+1. name - (*string*) The name of the cookie to read.
 
 ### Returns:
 
@@ -92,16 +86,19 @@ Removes a cookie from the browser.
 
 Remove a Cookie:
 
-	Cookie.dispose('username'); //Bye-bye JackBauer! Seeya in 24 Hours.
+	Cookie.dispose('username'); // Bye-bye JackBauer!
 
-Creating a Cookie and Removing it Right Away:
+Creating a cookie and removing it right away:
 
-	var myCookie = Cookie.write('username', 'Aaron', {domain: 'mootools.net'});
-	if (Cookie.read('username') == 'Aaron') { myCookie.dispose(); }
+	var myCookie = Cookie.write('username', 'JackBauer', {domain: 'mootools.net'});
+	if (Cookie.read('username') == 'JackBauer') { myCookie.dispose(); }
 
+### Credits:
 
+- Based on the functions by Peter-Paul Koch of [QuirksMode][].
 
 [Cookie]: #Cookie
 [Cookie.options]: #Cookie-options
 [Cookie.options.domain]: #Cookie-options
+[Cookie.dispose]: #Cookie:dispose
 [QuirksMode]: http://www.quirksmode.org
