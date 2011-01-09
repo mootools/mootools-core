@@ -1,20 +1,20 @@
-## Type: Core {#Core}
+# Type: Core {#Core}
 
 Core contains common functions used in [MooTools][].
 
-### Function: typeOf {#Core:typeOf}
+## Function: typeOf {#Core:typeOf}
 
 Returns the type of an object.
 
-#### Syntax:
+### Syntax:
 
 	typeOf(obj);
 
-#### Arguments:
+### Arguments:
 
 1. obj - (*object*) The object to inspect.
 
-#### Returns:
+### Returns:
 
 * 'element'    - (*string*) If object is a DOM element node.
 * 'elements'   - (*string*) If object is an instance of [Elements][].
@@ -36,33 +36,33 @@ Returns the type of an object.
 * 'event'      - (*string*) If object is an event.
 * 'null'       - (*boolean*) If object is undefined, null, NaN or none of the above.
 
-#### Example:
+### Example:
 
 	var myString = 'hello';
 	typeOf(myString); // returns "string"
 
-#### Note:
+### Note:
 
 This method is equivalent to *$type* from MooTools 1.2, with the exception that undefined and null values now return 'null' as a string, instead of false.
 
-### Function: instanceOf {#Core:instanceOf}
+## Function: instanceOf {#Core:instanceOf}
 
 Checks if an object is an instance of a particular type.
 
-#### Syntax:
+### Syntax:
 
 	instanceOf(item, object)
 
-#### Arguments:
+### Arguments:
 
 1. item - (*mixed*) The item to check.
 2. object - (*mixed*) The type to compare it with.
 
-#### Returns:
+### Returns:
 
 * (*boolean*) Whether or not the item is an instance of the object.
 
-#### Examples:
+### Examples:
 
 	var foo = [];
 	instanceOf(foo, Array) // returns true
@@ -72,7 +72,7 @@ Checks if an object is an instance of a particular type.
 	var bar = new myClass();
 	instanceOf(bar, myClass) // returns true
 
-## Type {#Type}
+### Type {#Type}
 
 MooTools extends native types, like string, array or number to make them even more useful.
 
@@ -92,11 +92,11 @@ Custom MooTools types are:
 - Elements
 - Event
 
-### Type method: implement {#Type:implement}
+## Type method: implement {#Type:implement}
 
 This method implements a new method to the type's prototype.
 
-#### Syntax:
+### Syntax:
 
 	myType.implement(name, method);
 
@@ -104,7 +104,7 @@ This method implements a new method to the type's prototype.
 
 	myType.implement(methods);
 
-#### Arguments:
+### Arguments:
 
 1. name - (*string*) The method name.
 2. method - (*function*) The method function.
@@ -113,11 +113,11 @@ This method implements a new method to the type's prototype.
 
 1. methods - (*object*) An object with key-value pairs. The key is the method name, the value is the method function.
 
-#### Returns:
+### Returns:
 
 * (*object*) The type.
 
-#### Examples:
+### Examples:
 
 	Array.implement('limitTop', function(top){
 		for (var i = 0, l = this.length; i < l; i++){
@@ -145,11 +145,11 @@ It is also possible to pass an object of methods:
 	'MooTools'.ftw(); // returns "MooTools FTW!"
 	('MooTools'.ftw() + ' ').repeat(2); // returns "MooTools FTW! MooTools FTW! "
 
-### Type method: extend {#Type:extend}
+## Type method: extend {#Type:extend}
 
 Adds one or more functions to the type. These are static functions that accept for example other types to parse them into the type, or other utility functions that belong to the certain type.
 
-#### Syntax:
+### Syntax:
 
 	myType.extend(name, method);
 
@@ -157,7 +157,7 @@ Adds one or more functions to the type. These are static functions that accept f
 
 	myType.extend(methods);
 
-#### Arguments:
+### Arguments:
 
 1. name - (*string*) The method name.
 2. method - (*function*) The method function.
@@ -166,11 +166,11 @@ Adds one or more functions to the type. These are static functions that accept f
 
 1. methods - (*object*) An object with key-value pairs. The key is the method name, the value is the method function.
 
-#### Returns:
+### Returns:
 
 * (*object*) The type.
 
-#### Examples:
+### Examples:
 
 	RegExp.extend('from', function(regexp, flags){
 		return new RegExp(regexp, flags);
@@ -181,11 +181,11 @@ Adds one or more functions to the type. These are static functions that accept f
 		// do certain calculations
 	});
 
-### Generics {#Type:generics}
+## Generics {#Type:generics}
 
 Most methods of types can be used as generic functions. These are the already existing JavaScript methods, methods MooTools adds, or methods you [implemented][implement] yourself.
 
-#### Example:
+### Example:
 
 	var everyArgBiggerThanTwo = function(){
 		// Instead of this
@@ -197,16 +197,16 @@ Most methods of types can be used as generic functions. These are the already ex
 This is useful if methods of a certain type should be used as function of another type.
  As the example above, it is used for the Arguments type, which is not a real array, so `arguments.every(fn)` would not work. However, `Array.every(arguments, fn)` does work in MooTools.
 
-#### Syntax:
+### Syntax:
 
 	Type.methodName(thisArg[, arg1, arg2, ...]);
 
-#### Arguments:
+### Arguments:
 
 1. thisArg - (*mixed*) This is the subject, which is usually `thisArg.method([arg1, arg2, ...]);`.
 2. arg1, arg2, ... - (*mixed*) Additional arguments which will be passed as method arguments.
 
-#### Returns:
+### Returns:
 
 - (*mixed*) Anything the method usually returns.
 

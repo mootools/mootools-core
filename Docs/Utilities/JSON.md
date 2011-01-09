@@ -1,45 +1,45 @@
-## Object: JSON {#JSON}
+# Object: JSON {#JSON}
 
 JSON decoder and encoder.
 
-### JSON Method: encode {#JSON:encode}
+## JSON Method: encode {#JSON:encode}
 
 Converts an object or array to a JSON string.
 
-#### Syntax:
+### Syntax:
 
 	var myJSON = JSON.encode(obj);
 
-#### Arguments:
+### Arguments:
 
 1. obj - (*object*) The object to convert to string.
 
-#### Returns:
+### Returns:
 
 * (*string*) A JSON string.
 
-#### Examples:
+### Examples:
 
 	var fruitsJSON = JSON.encode({apple: 'red', lemon: 'yellow'}); // returns: '{"apple":"red","lemon":"yellow"}'
 
-### JSON Method: decode {#JSON:decode}
+## JSON Method: decode {#JSON:decode}
 
 Converts a JSON string into a JavaScript object.
 
-#### Syntax:
+### Syntax:
 
 	var object = JSON.decode(string[, secure]);
 
-#### Arguments:
+### Arguments:
 
 1. string - (*string*) The string to evaluate.
 2. secure - (*boolean*, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
 
-#### Returns:
+### Returns:
 
 * (*object*) The object represented by the JSON string.
 
-#### Examples:
+### Examples:
 
 	var myObject = JSON.decode('{"apple":"red","lemon":"yellow"}'); // returns: {apple: 'red', lemon: 'yellow'}
 
