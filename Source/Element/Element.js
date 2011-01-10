@@ -539,12 +539,16 @@ Element.implement({
 	},
 
 	adopt: function(){
-		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
-		if (length > 1) parent = fragment = document.createDocumentFragment();
+		var fragment, elements = Array.flatten(arguments), length = elements.length;
+		if (length > 1){
+			fragment = document.createDocumentFragment();
 
-		for (var i = 0; i < length; i++){
-			var element = document.id(elements[i], true);
-			if (element) parent.appendChild(element);
+			for (var i = length; i--;){
+				var element = document.id(elements[i], true);
+				if (element) fragment.insertBefore(element, fragment.firstChild);
+			}
+		} else {
+			fragment = document.id(elements[0], true);
 		}
 
 		if (fragment) this.appendChild(fragment);
