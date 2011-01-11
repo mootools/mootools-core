@@ -27,10 +27,9 @@ var parse = function(expression, isReversed){
 		return parse(this.raw, true);
 	}};
 	separatorIndex = -1;
-	var cacheKey = expression;
 	while (expression != (expression = expression.replace(regexp, parser)));
 	parsed.length = parsed.expressions.length;
-	return currentCache[cacheKey] = (reversed) ? reverse(parsed) : parsed;
+	return currentCache[parsed.raw] = (reversed) ? reverse(parsed) : parsed;
 };
 
 var reverseCombinator = function(combinator){
