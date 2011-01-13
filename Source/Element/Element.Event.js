@@ -32,14 +32,14 @@ Element.Properties.events = {set: function(events){
 			condition = fn,
 			self = this;
 		if (custom){
-			if (custom.onAdd) custom.onAdd.call(this, fn);
+			realType = ((typeOf(custom.base) == 'function') ? custom.base.call(this) : custom.base) || realType;
+			if (custom.onAdd) custom.onAdd.call(this, fn, realType);
 			if (custom.condition){
 				condition = function(event){
 					if (custom.condition.call(this, event)) return fn.call(this, event);
 					return true;
 				};
 			}
-			realType = custom.base || realType;
 		}
 		var defn = function(){
 			return fn.call(self);
@@ -69,8 +69,8 @@ Element.Properties.events = {set: function(events){
 		delete list.values[index];
 		var custom = Element.Events[type];
 		if (custom){
-			if (custom.onRemove) custom.onRemove.call(this, fn);
-			type = custom.base || type;
+			type = ((typeOf(custom.base) == 'function') ? custom.base.call(this) : custom.base) || type;
+			if (custom.onRemove) custom.onRemove.call(this, fn, type);
 		}
 		return (Element.NativeEvents[type]) ? this.removeListener(type, value, arguments[2]) : this;
 	},
@@ -154,6 +154,10 @@ var check = function(event){
 	return (related != this && related.prefix != 'xul' && typeOf(this) != 'document' && !this.contains(related));
 };
 
+var setChange = function(){
+	if(this.retrieve('change:last') == '$empty') this.store('change:last', this.checked || !this.checked);
+};
+
 Element.Events = {
 
 	mouseenter: {
@@ -168,7 +172,40 @@ Element.Events = {
 
 	mousewheel: {
 		base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
-	}
+	},
+	
+	change: !window.addEventListener ? {
+		base: function(){
+			var type = this.get('type');
+			return (type == 'checkbox' || type == 'radio') ? 'mouseup' : 'change';
+		},
+		condition: function(){
+			return (this.get('type') == 'radio') ? this.retrieve('change:last') != this.checked : true;
+		},
+		onAdd: function(fn, base){
+			if(base == 'mouseup'){
+				var events = {
+					mousedown: setChange,
+					keyup: function(e){
+						setChange.call(this);
+						var type = this.get('type');
+						switch(e.key){
+							case 'up': case 'down': case 'left': case 'right':
+								if(type == 'radio') fn.call(this, e);
+							break;
+							case 'space':
+								if(type == 'checkbox') fn.call(this, e);
+							break;
+						}
+					} 
+				};
+				this.store('change:last', '$empty').store('change:events', events).addEvents(events);
+			}
+		},
+		onRemove: function(){
+			this.removeEvents(this.retrieve('change:events')).store('change:events', null).store('change:last', null);
+		}
+	} : { base: 'change' }
 
 };
 
