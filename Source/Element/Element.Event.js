@@ -177,28 +177,27 @@ Element.Events = {
 		},
 		condition: function(event){
 			if(this.get('type') == 'radio'){
-				return (event.type == 'keyup') ? !!this.checked : this.retrieve('change:last') && !this.checked;
+				return (event.type == 'keyup') ? this.checked : !this.checked;
 			}
 			return true;
 		},
 		onAdd: function(fn, base){
 			if(base == 'mouseup'){
 				var events = {
-						keyup: function(e){
-							var type = this.get('type');
-							switch(e.key){
-								case 'up': case 'down': case 'left': case 'right':
-									if(type == 'radio') fn.call(this, e);
-								break;
-								case 'space':
-									if(type == 'checkbox') fn.call(this, e);
-								break;
-							}
-						} 
-					},
-					last = this.retrieve('change:last');
+					keyup: function(e){
+						var type = this.get('type');
+						switch(e.key){
+							case 'up': case 'down': case 'left': case 'right':
+								if(type == 'radio') fn.call(this, e);
+							break;
+							case 'space':
+								if(type == 'checkbox') fn.call(this, e);
+							break;
+						}
+					} 
+				};
 					
-				this.store('change:last', (last != null) ? last : '$empty').store('change:events', events).addEvents(events);
+				this.store('change:events', events).addEvents(events);
 			}
 		},
 		onRemove: function(){
