@@ -154,10 +154,6 @@ var check = function(event){
 	return (related != this && related.prefix != 'xul' && typeOf(this) != 'document' && !this.contains(related));
 };
 
-var setChange = function(){
-	if(this.retrieve('change:last') == '$empty') this.store('change:last', this.checked || !this.checked);
-};
-
 Element.Events = {
 
 	mouseenter: {
@@ -179,31 +175,34 @@ Element.Events = {
 			var type = this.get('type');
 			return (type == 'checkbox' || type == 'radio') ? 'mouseup' : 'change';
 		},
-		condition: function(){
-			return (this.get('type') == 'radio') ? this.retrieve('change:last') != this.checked : true;
+		condition: function(event){
+			if(this.get('type') == 'radio'){
+				return (event.type == 'keyup') ? !!this.checked : this.retrieve('change:last') && !this.checked;
+			}
+			return true;
 		},
 		onAdd: function(fn, base){
 			if(base == 'mouseup'){
 				var events = {
-					mousedown: setChange,
-					keyup: function(e){
-						setChange.call(this);
-						var type = this.get('type');
-						switch(e.key){
-							case 'up': case 'down': case 'left': case 'right':
-								if(type == 'radio') fn.call(this, e);
-							break;
-							case 'space':
-								if(type == 'checkbox') fn.call(this, e);
-							break;
-						}
-					} 
-				};
-				this.store('change:last', '$empty').store('change:events', events).addEvents(events);
+						keyup: function(e){
+							var type = this.get('type');
+							switch(e.key){
+								case 'up': case 'down': case 'left': case 'right':
+									if(type == 'radio') fn.call(this, e);
+								break;
+								case 'space':
+									if(type == 'checkbox') fn.call(this, e);
+								break;
+							}
+						} 
+					},
+					last = this.retrieve('change:last');
+					
+				this.store('change:last', (last != null) ? last : '$empty').store('change:events', events).addEvents(events);
 			}
 		},
 		onRemove: function(){
-			this.removeEvents(this.retrieve('change:events')).store('change:events', null).store('change:last', null);
+			this.removeEvents(this.retrieve('change:events')).store('change:events', null)
 		}
 	} : { base: 'change' }
 
