@@ -195,8 +195,7 @@ Element.Events = {
 							break;
 						}
 					} 
-				};
-					
+				};	
 				this.store('change:events', events).addEvents(events);
 			}
 		},
