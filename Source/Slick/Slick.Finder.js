@@ -64,9 +64,9 @@ local.setDocument = function(document){
 	} catch(e){};
 
 	if (this.isHTMLDocument){
-
+		
 		testNode.style.display = 'none';
-
+		
 		// IE returns comment nodes for getElementsByTagName('*') for some documents
 		testNode.appendChild(document.createComment(''));
 		starSelectsComments = (testNode.getElementsByTagName('*').length > 0);
@@ -114,19 +114,19 @@ local.setDocument = function(document){
 		} catch(e){};
 
 		this.brokenGEBCN = cachedGetElementsByClassName || brokenSecondClassNameGEBCN;
-
+		
 		// Webkit dont return selected options on querySelectorAll
 		try {
 			testNode.innerHTML = '<select><option selected="selected">a</option></select>';
 			this.brokenCheckedQSA = (testNode.querySelectorAll(':checked').length == 0);
 		} catch(e){};
-
+		
 		// IE returns incorrect results for attr[*^$]="" selectors on querySelectorAll
 		try {
 			testNode.innerHTML = '<a class=""></a>';
 			this.brokenEmptyAttributeQSA = (testNode.querySelectorAll('[class*=""]').length != 0);
 		} catch(e){};
-
+		
 	}
 
 	root.removeChild(testNode);
@@ -353,12 +353,12 @@ local.createNTHPseudo = function(child, sibling, positions, ofType){
 			if (ofType){
 				var nodeName = node.nodeName;
 				do {
-					if (el.nodeName !== nodeName) continue;
+					if (el.nodeName != nodeName) continue;
 					this[positions][this.getUID(el)] = count++;
 				} while ((el = el[sibling]));
 			} else {
 				do {
-					if (el.nodeType !== 1) continue;
+					if (el.nodeType != 1) continue;
 					this[positions][this.getUID(el)] = count++;
 				} while ((el = el[sibling]));
 			}
@@ -404,7 +404,7 @@ local.matchNode = function(node, selector){
 			simpleExpCounter++;
 		}
 	}
-
+	
 	if (simpleExpCounter == parsed.length) return false;
 
 	var nodes = this.search(this.document, parsed), item;
@@ -423,10 +423,11 @@ local.matchPseudo = function(node, name, argument){
 
 local.matchSelector = function(node, tag, id, classes, attributes, pseudos){
 	if (tag){
+		var nodeName = (this.isXMLDocument) ? node.nodeName : node.nodeName.toUpperCase();
 		if (tag == '*'){
-			if (node.nodeName < '@') return false; // Fix for comment nodes and closed nodes
+			if (nodeName < '@') return false; // Fix for comment nodes and closed nodes
 		} else {
-			if (node.nodeName != tag) return false;
+			if (nodeName != tag) return false;
 		}
 	}
 
@@ -434,7 +435,7 @@ local.matchSelector = function(node, tag, id, classes, attributes, pseudos){
 
 	var i, part, cls;
 	if (classes) for (i = classes.length; i--;){
-		cls = ('className' in node) ? node.className : node.getAttribute('class');
+		cls = node.getAttribute('class') || node.className;
 		if (!(cls && classes[i].regexp.test(cls))) return false;
 	}
 	if (attributes) for (i = attributes.length; i--;){
@@ -466,7 +467,7 @@ var combinators = {
 					for (i = 0; item = children[i++];) if (item.getAttributeNode('id').nodeValue == id){
 						this.push(item, tag, null, classes, attributes, pseudos);
 						break;
-					}
+					} 
 					return;
 				}
 				if (!item){
@@ -675,7 +676,7 @@ var pseudos = {
 	'root': function(node){
 		return (node === this.root);
 	},
-
+	
 	'selected': function(node){
 		return node.selected;
 	}
@@ -690,7 +691,7 @@ for (var p in pseudos) local['pseudo:' + p] = pseudos[p];
 local.attributeGetters = {
 
 	'class': function(){
-		return ('className' in this) ? this.className : this.getAttribute('class');
+		return this.getAttribute('class') || this.className;
 	},
 
 	'for': function(){
@@ -703,6 +704,11 @@ local.attributeGetters = {
 
 	'style': function(){
 		return (this.style) ? this.style.cssText : this.getAttribute('style');
+	},
+	
+	'tabindex': function(){
+		var attributeNode = this.getAttributeNode('tabindex');
+		return (attributeNode && attributeNode.specified) ? attributeNode.nodeValue : null;
 	}
 
 };
@@ -713,7 +719,7 @@ local.getAttribute = function(node, name){
 	var method = this.attributeGetters[name];
 	if (method) return method.call(node);
 	var attributeNode = node.getAttributeNode(name);
-	return attributeNode ? attributeNode.nodeValue : null;
+	return (attributeNode) ? attributeNode.nodeValue : null;
 };
 
 // overrides
@@ -744,7 +750,7 @@ local.override(/./, function(expression, found, first){ //querySelectorAll overr
 		this.setAttribute('id', id);
 		expression = '#' + id + ' ' + expression;
 	}
-
+	
 	try {
 		if (first) return this.querySelector(expression) || null;
 		else nodes = this.querySelectorAll(expression);
@@ -849,7 +855,7 @@ if (typeof document != 'undefined') local.setDocument(document);
 
 var Slick = local.Slick = (this.Slick || {});
 
-Slick.version = '1.0';
+Slick.version = '1.0.0';
 
 // Slick finder
 
@@ -879,7 +885,6 @@ Slick.getAttribute = function(node, name){
 Slick.match = function(node, selector){
 	if (!(node && selector)) return false;
 	if (!selector || selector === node) return true;
-	if (typeof selector != 'string') return false;
 	local.setDocument(node);
 	return local.matchNode(node, selector);
 };
