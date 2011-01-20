@@ -385,7 +385,7 @@ This function has been deprecated.
 ### Example how you could replace this method:
 
 	myElement.addEvent('click', function(e){
-		myFunction.bind(bind, [e]);
+		myFunction.call(bind, e);
 	});
 
 Function method: run {#Deprecated-Functions:run}
