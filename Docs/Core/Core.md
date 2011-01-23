@@ -345,7 +345,7 @@ Function: $splat {#Deprecated-Functions:splat}
 -------------------------
 
 This method has been deprecated. Please use [Array.from](/core/Types/Array#Array:Array-from) instead.
-
+However `$splat` does *not* transform Array-like objects such as NodeList or FileList in arrays, `Array.from` does.
 
 
 Function: $time {#Deprecated-Functions:time}

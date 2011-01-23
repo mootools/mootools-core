@@ -108,7 +108,8 @@ Converts the argument passed in to an array if it is defined and not already an 
 
 ### Notes:
 
-This is equivalent to *$splat* from MooTools 1.2.
+This is equivalent to *$splat* from MooTools 1.2, with the exception of Array-like Objects such as NodeList or FileList which `Array.from` does transform in
+Arrays and `$splat` not.
 
 
 
