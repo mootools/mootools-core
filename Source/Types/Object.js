@@ -87,6 +87,24 @@ Object.extend({
 		return Object.keyOf(object, value) != null;
 	},
 
+	inject: function(object, newKey, newVal, fn, bind){
+		var prevKey=null, prevVal=null, inserted=false, newobject={};
+		for(var currKey in object){
+			if (object.hasOwnProperty(currKey)){
+				var currVal = object[currKey];
+				if( !inserted && fn.call(bind, prevKey, prevVal, currKey, currVal) ){
+					newobject[newKey] = newVal;
+					inserted=true;
+				}
+				newobject[currKey] = currVal;
+				prevKey = currKey;
+				prevVal = object[currKey];
+			} 
+		}
+		if(!inserted) newobject[newKey] = newVal;
+		return newobject;
+	},
+
 	toQueryString: function(object, base){
 		var queryString = [];
 
