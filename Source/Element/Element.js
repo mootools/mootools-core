@@ -678,7 +678,7 @@ Element.implement({
 
 var cleanClone = function(node, element, keepid){
 	if (!keepid) node.removeAttribute('id');
-	if (Browser.ie){
+	if (node.clearAttributes){
 		node.clearAttributes();
 		node.mergeAttributes(element);
 		node.removeAttribute('uid');
@@ -693,18 +693,18 @@ var cleanClone = function(node, element, keepid){
 
 Element.implement('clone', function(contents, keepid){
 	contents = contents !== false;
-	var clone = this.cloneNode(contents);
+	var clone = this.cloneNode(contents), i;
 
 	if (contents){
 		var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-		for (var i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
+		for (i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
 	}
 
 	cleanClone(clone, this, keepid);
 
 	if (Browser.ie){
 		var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
-		for (var i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
+		for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
 	}
 	return document.id(clone);
 });
