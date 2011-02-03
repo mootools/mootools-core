@@ -186,7 +186,7 @@ var hooksOf = function(object){
 };
 
 var implement = function(name, method){
-	if (method && method.$hidden) return this;
+	if (method && method.$hidden) return;
 
 	var hooks = hooksOf(this);
 
@@ -202,15 +202,12 @@ var implement = function(name, method){
 	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
 		return method.apply(item, slice.call(arguments, 1));
 	});
-
-	return this;
 };
 
 var extend = function(name, method){
-	if (method && method.$hidden) return this;
+	if (method && method.$hidden) return;
 	var previous = this[name];
 	if (previous == null || !previous.$protected) this[name] = method;
-	return this;
 };
 
 Type.implement({
