@@ -227,31 +227,29 @@ describe('Number.from', {
 
 });
 
-(function(){
+describe('Type', function(){
 
-var Instrument = new Type('Instrument', function(name){
-	this.name = name;
-}).implement({
+	var Instrument = new Type('Instrument', function(name){
+		this.name = name;
+	}).implement({
 
-	method: function(){
-		return 'playing ' + this.name;
-	}
+		method: function(){
+			return 'playing ' + this.name;
+		}
 
-});
+	});
 
-var Car = new Type('Car', function(name){
-	this.name = name;
-}).implement({
+	var Car = new Type('Car', function(name){
+		this.name = name;
+	}).implement({
 
-	method: (function(){
-		return 'driving a ' + this.name;
-	}).protect()
+		method: (function(){
+			return 'driving a ' + this.name;
+		}).protect()
 
-});
+	});
 
-describe('Type', {
-
-	'should allow implementation over existing methods when a method is not protected': function(){
+	it('should allow implementation over existing methods when a method is not protected', function(){
 		Instrument.implement({
 			method: function(){
 				return 'playing a guitar';
@@ -259,9 +257,9 @@ describe('Type', {
 		});
 		var myInstrument = new Instrument('Guitar');
 		expect(myInstrument.method()).toEqual('playing a guitar');
-	},
+	});
 
-	'should not override a method when it is protected': function(){
+	it('should not override a method when it is protected', function(){
 		Car.implement({
 			method: function(){
 				return 'hell no!';
@@ -269,28 +267,40 @@ describe('Type', {
 		});
 		var myCar = new Car('nice car');
 		expect(myCar.method()).toEqual('driving a nice car');
-	},
+	});
 
-	'should allow generic calls': function(){
+	it('should allow generic calls', function(){
 		expect(Car.method({name: 'not so nice car'})).toEqual('driving a not so nice car');
-	},
+	});
 
-	"should be a Type": function(){
+	it("should be a Type", function(){
 		expect(Type.isType(Instrument)).toBeTruthy();
-	},
+	});
 	
-	"should generate and evaluate correct types": function(){
+	it("should generate and evaluate correct types", function(){
 		var myCar = new Car('nice car');
 		expect(Type.isCar(myCar)).toBeTruthy();
-	},
+	});
 	
-	"isEnumerable method on Type should return true for arrays, arguments, objects with a numerical length property": function(){
+	it("isEnumerable method on Type should return true for arrays, arguments, objects with a numerical length property", function(){
 		expect(Type.isEnumerable([1,2,3])).toBeTruthy();
 		(function(){
 			expect(Type.isEnumerable(arguments)).toBeTruthy();
 		})(1,2,3);
 		expect(Type.isEnumerable({length: 2})).toBeTruthy();
-	}
+	});
+
+	it('sould chain any function on a type', function(){
+		var MyType = new Type('MyType', function(){}.implement({
+			a: function(){}
+		}));
+
+		expect(MyType.alias('a', 'b').implement({
+			method: function(){}
+		}).extend({
+			staticMethod: function(){}
+		})).toBe(MyType);
+	});
 
 });
 
@@ -326,8 +336,6 @@ describe('Function.attempt', {
 	}
 
 });
-
-})();
 
 describe('Object.each', {
 
