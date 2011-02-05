@@ -12,7 +12,7 @@
 ---
 name: Core
 description: The heart of MooTools.
-provides: [MooTools, Type, typeOf, instanceOf, uniqueID, nil]
+provides: [MooTools, Type, typeOf, instanceOf, uniqueID]
 ...
 */
 
@@ -21,12 +21,6 @@ provides: [MooTools, Type, typeOf, instanceOf, uniqueID, nil]
 this.MooTools = {
 	version: '1.99dev',
 	build: '%build%'
-};
-
-// nil
-
-this.nil = function(item){
-	return (item != null) ? item : null;
 };
 
 // slicing is good for you
