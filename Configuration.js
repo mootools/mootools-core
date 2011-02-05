@@ -79,7 +79,10 @@ Configuration.sets = {
 	'core-2.0-base': {
 		path: '2.0base/',
 		files: [
-			'Core/Core'
+			'Core/Core',
+
+			'Types/Function',
+			'Types/Object'
 		]
 	}
 };
