@@ -217,7 +217,7 @@ var protect = function(type, methods){
 		}
 	}
 	
-	object.implement(prototype);
+	if (isType) object.implement(prototype);
 
 	return protect;
 };
@@ -242,6 +242,8 @@ protect('String', [
 	'now'
 ]);
 
+Object.extend = extend.overloadSetter();
+
 Date.extend('now', function(){
 	return +(new Date);
 });
@@ -256,8 +258,10 @@ Number.prototype.$family = function(){
 
 // forEach, each
 
-Object.extend('forEach', function(object, fn, context){
-	for (var key in object) fn.call(context, object[key], key, object);
+Object.extend('forEach', function(object, fn, bind){
+	for (var key in object){
+		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+	}
 }).extend('each', Object.forEach);
 
 Array.implement('forEach', function(fn, context){
