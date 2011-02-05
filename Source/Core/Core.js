@@ -12,7 +12,7 @@
 ---
 name: Core
 description: The heart of MooTools.
-provides: [MooTools, Type, typeOf, instanceOf, uniqueID]
+provides: [MooTools, Type, typeOf, instanceOf, String.uniqueID]
 ...
 */
 
@@ -318,9 +318,8 @@ Object.extend('merge', function(source, k, v){
 // UID generator
 
 var UID = 0;
-
-this.uniqueID = function(){
+String.extend('uniqueID', function(){
 	return (Date.now() + (UID++)).toString(36);
-};
+});
 
 })();

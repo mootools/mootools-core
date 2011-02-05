@@ -2,14 +2,14 @@
 ---
 name: Store
 description: Store
-requires: [Type, uniqueID, Class]
+requires: [Type, String.uniqueID, Class]
 provides: Store
 ...
 */
 
 (function(){
 	
-var uid = uniqueID();
+var uid = String.uniqueID();
 
 var storageOf = function(object){
 	return object[uid] || (object[uid] = {});
