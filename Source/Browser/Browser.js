@@ -11,9 +11,9 @@ provides: Browser
 
 var document = this.document, window = this;
 
-var UARegExp = /(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/;
-
-var UA = navigator.userAgent.toLowerCase().match(UARegExp) || [null, 'unknown', 0];
+var UARegExp = /(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/,
+	ua = navigator.userAgent.toLowerCase(),
+	UA = ua.match(UARegExp) || [null, 'unknown', 0];
 
 var Browser = this.Browser = {
 	
@@ -24,7 +24,7 @@ var Browser = this.Browser = {
 	version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
 
 	Platform: {
-		name: (this.orientation != null) ? 'ipod' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
+		name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (navigator.platform.toLowerCase().match(/mac|win|linux/) || ['other'])[0]
 	},
 
 	Features: {
