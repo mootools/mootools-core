@@ -31,26 +31,22 @@ Function.implement({
 
 	attempt: function(args, bind){
 		try {
-			return this.run(args, bind);
+			return this.apply(bind, args);
 		} catch (e){}
 
 		return null;
-	},
-
-	delay: function(delay, bind, args){
-		return setTimeout(this.pass(args, bind), delay);
 	},
 
 	pass: function(args, bind){
 		return this.bind.apply(this, [bind].append(args));
 	},
 
-	periodical: function(periodical, bind, args){
-		return setInterval(this.pass(args, bind), periodical);
+	delay: function(delay, bind, args){
+		return setTimeout(this.pass((args == null ? [] : args), bind), delay);
 	},
 
-	run: function(args, bind){
-		return this.apply(bind, Array.from(args));
+	periodical: function(periodical, bind, args){
+		return setInterval(this.pass((args == null ? [] : args), bind), periodical);
 	}
 
 });
