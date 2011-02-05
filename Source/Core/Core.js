@@ -90,7 +90,6 @@ var typeOf = this.typeOf = function(item){
 this.instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
-	if (object == null) return constructor;
 	while (constructor){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
@@ -161,29 +160,25 @@ var Type = this.Type = function(name, object){
 }.hide();
 
 Type.isEnumerable = function(item){
-	return (typeof item == 'object' && typeof item.length == 'number');
+	return (item != null && typeof item.length == 'number' && toString.call(item) != '[object Function]' );
 };
 
 var extend = function(name, method){
-	if (method && method.$hidden) return this;
-	
+	if (method && method.$hidden) return;
+
 	var previous = this[name];
 	if (previous == null || !previous.$protected) this[name] = method;
-
-	return this;
 };
 
 var implement = function(name, method){
-	if (method && method.$hidden) return this;
+	if (method && method.$hidden) return;
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
 	
-	if (this[name] == null && typeof method == 'function') extend.call(this, name, function(item){
+	if (this[name] == null && typeOf(method) == 'function') extend.call(this, name, function(item){
 		return method.apply(item, slice.call(arguments, 1));
 	});
-	
-	return this;
 };
 
 Type.implement({
