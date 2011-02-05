@@ -208,37 +208,47 @@ new Type('Type', Type);
 // Protect Types
 
 var protect = function(type, methods){
-	var object = new Type(type, this[type]);
-	var generics = {};
+	var object = this[type],
+		prototype = object.prototype,
+		isType = (object != Object);
+
+	if (isType) new Type(type, object)
 
 	for (var i = 0, l = methods.length; i < l; i++){
-		var name = methods[i], generic = object[name], proto = object.prototype[name];
-		if (!proto) continue;
-		proto.protect();
-		if (!generic) generics[name] = proto;
-		else generic.protect();
+		var name = methods[i],
+			generic = object[name],
+			proto = prototype[name];
+
+		if (generic) generic.protect();
+
+		if (isType && proto){
+			delete prototype[name];
+			prototype[name] = proto.protect();
+		}
 	}
 	
-	object.implement(generics);
+	object.implement(prototype);
+
+	return protect;
 };
 
 protect('String', [
 	'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 	'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
-]);
-
-protect('Array', [
+])('Array', [
 	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
 	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
-]);
-
-protect('Number', ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision']);
-
-protect('Function', ['apply', 'call']);
-
-protect('RegExp', ['exec', 'test']);
-
-protect('Date', ['now']);
+])('Number', [
+	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
+])('Function', [
+	'apply', 'call', 'bind'
+])('RegExp', [
+	'exec', 'test'
+])('Object', [
+	'create', 'defineProperty', 'defineProperties', 'keys',
+	'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
+	'preventExtensions', 'isExtensible', 'seal', 'isSealed', 'freeze', 'isFrozen'
+])('Date', ['now']);
 
 Date.extend('now', function(){
 	return +(new Date);
