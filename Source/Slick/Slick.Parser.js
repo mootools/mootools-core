@@ -23,9 +23,14 @@ var parse = function(expression, isReversed){
 	reversed = !!isReversed;
 	var currentCache = (reversed) ? reverseCache : cache;
 	if (currentCache[expression]) return currentCache[expression];
-	parsed = {Slick: true, expressions: [], raw: expression, reverse: function(){
-		return parse(this.raw, true);
-	}};
+	parsed = {
+		Slick: true,
+		expressions: [],
+		raw: expression,
+		reverse: function(){
+			return parse(this.raw, true);
+		}
+	};
 	separatorIndex = -1;
 	while (expression != (expression = expression.replace(regexp, parser)));
 	parsed.length = parsed.expressions.length;
