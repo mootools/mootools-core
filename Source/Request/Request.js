@@ -13,12 +13,12 @@ this.Request = new Class({
 
 	options: {
 		/*
-		onRequest: nil,
-		onComplete: nil,
-		onCancel: nil,
-		onSuccess: nil,
-		onFailure: nil,
-		onException: nil,
+		onRequest: function(){},
+		onComplete: function(){},
+		onCancel: function(){},
+		onSuccess: function(){},
+		onFailure: function(){},
+		onException: function(){},
 		*/
 		url: '',
 		data: '',

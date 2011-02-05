@@ -17,7 +17,10 @@ Object.extend({
 	
 	from: function(keys, values){
 		var object = {};
-		for (var i = 0; i < keys.length; i++) object[keys[i]] = nil(values[i]);
+		for (var i = 0; i < keys.length; i++){
+			var value = values[i];
+			object[keys[i]] = (value != null) ? value : null;
+		}
 		return object;
 	},
 	
@@ -33,7 +36,7 @@ Object.extend({
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){
 			var k = keys[i], value = object[k];
-			results[k] = nil(value);
+			results[k] = (value != null) ? value : null;
 		}
 		return results;
 	},

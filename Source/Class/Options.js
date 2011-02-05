@@ -18,8 +18,10 @@ var classSetOption = function(key, value){
 };
 
 var classGetOption = function(key){
-	if (!this.options) return null;
-	return nil(this.options[key]);
+	var options = this.options;
+	if (!options) return null;
+	var value = options[key];
+	return (value != null) ? value : null;
 };
 
 this.Options = new Class({

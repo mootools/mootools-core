@@ -13,7 +13,7 @@ Request.JSON = new Class({
 
 	options: {
 		/*
-		onError: nil,
+		onError: function(){},
 		*/
 		secure: true
 	},
