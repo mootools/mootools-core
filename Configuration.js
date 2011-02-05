@@ -82,6 +82,7 @@ Configuration.sets = {
 			'Core/Core',
 
 			'Types/Function',
+			'Types/Number',
 			'Types/Object'
 		]
 	}
