@@ -90,11 +90,13 @@ Array.implement({
 	},
 
 	last: function(){
-		return (this.length) ? this[this.length - 1] : null;
+		var length = this.length;
+		return (length) ? this[length - 1] : null;
 	},
 
 	random: function(){
-		return (this.length) ? this[Number.random(0, this.length - 1)] : null;
+		var length = this.length;
+		return (length) ? this[Number.random(0, length - 1)] : null;
 	},
 
 	include: function(item){
@@ -130,8 +132,9 @@ Array.implement({
 	},
 
 	item: function(at){
-		if (at < 0) at = (at % this.length) + this.length;
-		return (at < 0 || at >= this.length || this[at] == null) ? null : this[at];
+		var length = this.length;
+		if (at < 0) at = (at % length) + length;
+		return (at < 0 || at >= length || this[at] == null) ? null : this[at];
 	}
 
 });
