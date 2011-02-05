@@ -81,6 +81,7 @@ Configuration.sets = {
 		files: [
 			'Core/Core',
 
+			'Types/Array',
 			'Types/Function',
 			'Types/Number',
 			'Types/String',
