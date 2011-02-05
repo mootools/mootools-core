@@ -34,11 +34,11 @@ var emCSS = function(element){
 
 Element.implement({
 
-	PXToEM: function(){
+	PXToEM: function(value){
 		return PXToEM(this.node, value);
 	},
 
-	EMToPX: function(){
+	EMToPX: function(value){
 		return EMToPX(this.node, value);
 	}
 
@@ -143,12 +143,15 @@ var oparse = function(value){
 Element[defineStyleParser](opacity, oparse);
 
 if (html.style[opacity] == null && filterName){
-	
+	var matchOp = /alpha\(opacity=([\d.]+)\)/i;
 	Element[defineStyleSetter](opacity, function(value){
 		value = oparse(value);
-		this.node.style[filterName] = (value == 1) ? '' : 'alpha(' + opacity + '=' + (value * 100) + ')';
+		value = (value == 1) ? '' : 'alpha(' + opacity + '=' + (value * 100) + ')';
+		var node = this.node,
+			filter = getStyle(this.node, filterName) || '';
+		node.style[filterName] = matchOp.test(filter) ? filter.replace(matchOp, value) : filter + value;
 	})[defineStyleGetter](opacity, function(){
-		var match = getStyle(this.node, filterName).match(/alpha\(opacity=([\d.]+)\)/i);
+		var match = getStyle(this.node, filterName).match(matchOp);
 		return oparse((match == null) ? 1 : match[1] / 100);
 	});
 
