@@ -71,13 +71,17 @@ Object.extend({
 	
 	keys: function(object){
 		var keys = [];
-		for (var key in object) keys.push(key);
+		for (var key in object){
+			if (object.hasOwnProperty(key)) keys.push(key);
+		}
 		return keys;
 	},
 	
 	values: function(object){
 		var values = [];
-		for (var key in object) values.push(object[key]);
+		for (var key in object){
+			if (object.hasOwnProperty(key)) values.push(object[key]);
+		}
 		return values;
 	}
 	
