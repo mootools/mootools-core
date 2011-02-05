@@ -9,7 +9,7 @@ provides: Object
 
 Object.extend({
 	
-	length: function(object){
+	getLength: function(object){
 		var length = 0;
 		for (var key in object) length++;
 		return length;
