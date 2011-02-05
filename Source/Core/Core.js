@@ -264,11 +264,20 @@ Object.extend('forEach', function(object, fn, bind){
 	}
 }).extend('each', Object.forEach);
 
-Array.implement('forEach', function(fn, context){
-	for (var i = 0, l = this.length; i < l; i++){
-		if (i in this) fn.call(context, this[i], i, this);
+Array.implement({
+
+	forEach: function(fn, context){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) fn.call(context, this[i], i, this);
+		}
+	},
+
+	each: function(fn, bind){
+		Array.forEach(this, fn, bind);
+		return this;
 	}
-}).alias('each', 'forEach');
+
+});
 
 // Array & Object cloning
 
