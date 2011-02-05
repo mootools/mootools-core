@@ -38,7 +38,9 @@ Function.implement({
 	},
 
 	pass: function(args, bind){
-		return this.bind.apply(this, [bind].append(args));
+		args = (args != null) ? Array.from(args) : [];
+		args.unshift(bind);
+		return this.bind.apply(this, args);
 	},
 
 	delay: function(delay, bind, args){
