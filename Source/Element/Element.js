@@ -9,6 +9,8 @@ provides: [Element, Elements, $, $$]
 
 (function(){
 
+var document = this.document, window = this;
+
 var DOM = this.DOM = new Class({
 
 	Implements: [Store, Events],
@@ -84,7 +86,7 @@ var $ = DOM.$ = function(item){
 	var uid = Slick.uidOf(item), wrapper = wrappers[uid];
 	if (wrapper) return wrapper;
 	for (var l = matchers.length; l--; l){
-		var current = matchers[i];
+		var current = matchers[l];
 		if (Slick.match(item, current._match)) return (wrappers[uid] = new current._class(item));
 	}
 	return null;
@@ -531,7 +533,7 @@ var Document = DOM.Document = new Class({
 });
 
 Document.prototype.toString = function(){
-	return "<document>";
+	return '<document>';
 };
 
 var hostDocument = new Document(document);
@@ -543,7 +545,7 @@ var Window = DOM.Window = new Class({
 });
 
 Window.prototype.toString = function(){
-	return "<window>";
+	return '<window>';
 };
 
 var hostWindow = new Window(window);
@@ -560,4 +562,4 @@ var hostWindow = new Window(window);
 
 });
 
-})();
+}).call(this);
