@@ -1,5 +1,5 @@
 /*=
-name: DomReady
+name: DOMReady
 description: The custom domready event. Fires as soon as the page loads (does not wait for images).
 requires: Element.Event
 =*/
