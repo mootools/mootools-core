@@ -75,7 +75,7 @@ Configuration.sets = {
 			'Utilities/JSON'
 		]
 	},
-	
+
 	'core-2.0-base': {
 		path: '2.0base/',
 		files: [
@@ -83,7 +83,15 @@ Configuration.sets = {
 
 			'Types/Function',
 			'Types/Number',
-			'Types/Object'
+			'Types/String',
+			'Types/Object',
+		]
+	},
+
+	'core-2.0-client': {
+		path: '2.0client/',
+		files: [
+			'Browser/Browser'
 		]
 	}
 };
