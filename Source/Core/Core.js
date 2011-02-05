@@ -23,9 +23,8 @@ this.MooTools = {
 	build: '%build%'
 };
 
-// slicing is good for you
-
 var slice = Array.prototype.slice,
+	toString = Object.prototype.toString,
 	Function = this.Function,
 	enumerables = true;
 
@@ -149,11 +148,9 @@ var Type = this.Type = function(name, object){
 	
 	if (object == null) return null;
 	
-	if (name){
-		object.prototype.$family = function(){
-			return lower;
-		}.hide();
-	}
+	if (name) object.prototype.$family = function(){
+		return lower;
+	}.hide();
 
 	object.extend(this);
 	object.$constructor = Type;
@@ -246,7 +243,9 @@ protect('String', [
 	'create', 'defineProperty', 'defineProperties', 'keys',
 	'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
 	'preventExtensions', 'isExtensible', 'seal', 'isSealed', 'freeze', 'isFrozen'
-])('Date', ['now']);
+])('Date', [
+	'now'
+]);
 
 Date.extend('now', function(){
 	return +(new Date);
@@ -320,7 +319,7 @@ Object.extend('merge', function(source, k, v){
 // Object-less types
 
 ['Object', 'WhiteSpace', 'TextNode', 'Collection', 'Arguments'].each(function(name){
-	Type(name);
+	new Type(name);
 });
 
 // UID generator
