@@ -83,6 +83,17 @@ Object.extend({
 			if (object.hasOwnProperty(key)) values.push(object[key]);
 		}
 		return values;
+	},
+
+	keyOf: function(object, value){
+		for (var key in object){
+			if (object.hasOwnProperty(key) && object[key] === value) return key;
+		}
+		return null;
+	},
+
+	contains: function(object, value){
+		return Object.keyOf(object, value) != null;
 	}
 	
 });
