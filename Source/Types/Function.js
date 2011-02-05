@@ -19,18 +19,22 @@ Function.extend('attempt', function(){
 Function.implement({
 	
 	bind: function(bind){
-		var self = this, args = Array.slice(arguments, 1);
+		var self = this,
+			args = (arguments.length > 1) ? Array.slice(arguments, 1) : null;
+
 		return function(){
-			return self.apply(bind, (args.length) ? args : arguments);
+			if (!args && !arguments.length) return self.call(bind);
+			if (args && arguments.length) return self.apply(bind, args.concat(Array.from(arguments)));
+			return self.apply(bind, args || arguments);
 		};
 	},
 
 	attempt: function(args, bind){
 		try {
 			return this.run(args, bind);
-		} catch (e){
-			return null;
-		}
+		} catch (e){}
+
+		return null;
 	},
 
 	delay: function(delay, bind, args){
@@ -38,7 +42,7 @@ Function.implement({
 	},
 
 	pass: function(args, bind){
-		return this.bind.apply(this, [bind].concat(args));
+		return this.bind.apply(this, [bind].append(args));
 	},
 
 	periodical: function(periodical, bind, args){
