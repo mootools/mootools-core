@@ -25,11 +25,10 @@ this.MooTools = {
 
 // slicing is good for you
 
-var slice = Array.prototype.slice;
+var slice = Array.prototype.slice,
+	Function = this.Function,
+	enumerables = true;
 
-var Function = this.Function;
-
-var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 
@@ -90,7 +89,7 @@ var typeOf = this.typeOf = function(item){
 	return typeof item;
 };
 
-var instanceOf = this.instanceOf = function(item, object){
+this.instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
 	if (object == null) return constructor;
@@ -126,7 +125,7 @@ String.from = function(item){
 // hide, protect
 
 Function.implement({
-	
+
 	hide: function(){
 		this.$hidden = true;
 		return this;
@@ -136,7 +135,7 @@ Function.implement({
 		this.$protected = true;
 		return this;
 	}
-	
+
 });
 
 // Type
@@ -332,4 +331,4 @@ String.extend('uniqueID', function(){
 	return (Date.now() + (UID++)).toString(36);
 });
 
-})();
+}).call(this);

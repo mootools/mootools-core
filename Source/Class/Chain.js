@@ -28,4 +28,4 @@ this.Chain = new Class({
 	
 });
 
-})();
+}).call(this);

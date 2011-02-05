@@ -9,9 +9,9 @@ provides: Events
 
 (function(){
 	
-var Events = this.Events = new Class({
+this.Events = new Class({
 
-	listen: function(type, fn, check){
+	listen: function(type, fn){
 		if (!this.$events) this.$events = {};
 
 		if (!this.$events[type]) this.$events[type] = new Table;
@@ -34,7 +34,7 @@ var Events = this.Events = new Class({
 		if (type == null){ //ignore all
 			for (var ty in this.$events) this.ignore(ty);
 		} else if (fn == null){ // ignore every of type
-			events.each(function(fn, bound){
+			events.each(function(fn){
 				this.ignore(type, fn);
 			}, this);
 		} else { // ignore one
@@ -60,4 +60,4 @@ var Events = this.Events = new Class({
 
 });
 
-})();
+}).call(this);

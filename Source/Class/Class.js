@@ -104,9 +104,7 @@ Class.implement('implement', function(a, b){
 	
 	return this;
 	
-});
-
-Class.defineMutators({
+}).defineMutators({
 
 	Extends: function(parent){
 		this.parent = parent;
@@ -122,14 +120,10 @@ Class.defineMutators({
 		}, this);
 	}
 
-});
-
-Class.defineMutator(/^protected\s(\w+)$/, function(fn, name){
+}).defineMutator(/^protected\s(\w+)$/, function(fn, name){
 	implement.call(this, name, fn.protect());
-});
-
-Class.defineMutator(/^linked\s(\w+)$/, function(value, name){
+}).defineMutator(/^linked\s(\w+)$/, function(value, name){
 	this.prototype[name] = value;
 });
 
-})();
+}).call(this);

@@ -13,7 +13,8 @@ var classSetOption = function(key, value){
 	if (!this.options) this.options = {};
 	if (this.listen && (/^on[A-Z]/).test(key) && typeOf(value) == 'function') this.listen(key.replace(/^on([A-Z])/, function(full, first){
 		return first.toLowerCase();
-	}), value); else Object.merge(this.options, key, value);
+	}), value);
+	else Object.merge(this.options, key, value);
 	return this;
 };
 
@@ -31,4 +32,4 @@ this.Options = new Class({
 	getOptions: classGetOption.overloadGetter(true)
 });
 
-})();
+}).call(this);

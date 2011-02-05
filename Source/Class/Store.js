@@ -15,7 +15,7 @@ var storageOf = function(object){
 	return object[uid] || (object[uid] = {});
 };
 
-var Store = this.Store = new Class({
+this.Store = new Class({
 
 	store: function(key, value){
 		storageOf(this)[key] = value;
@@ -37,4 +37,4 @@ var Store = this.Store = new Class({
 
 });
 
-})();
+}).call(this);
