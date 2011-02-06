@@ -8,14 +8,16 @@ provides: Events
 */
 
 (function(){
-	
+
+var uid = '$' + String.uniqueID();
+
 this.Events = new Class({
 
 	listen: function(type, fn){
-		if (!this.$events) this.$events = {};
+		if (!this[uid]) this[uid] = {};
 
-		if (!this.$events[type]) this.$events[type] = new Table;
-		var events = this.$events[type];
+		if (!this[uid][type]) this[uid][type] = new Table;
+		var events = this[uid][type];
 		if (events.get(fn)) return this;
 
 		var bound = fn.bind(this);
@@ -26,13 +28,13 @@ this.Events = new Class({
 	}.overloadSetter(),
 
 	ignore: function(type, fn){
-		if (!this.$events) return this;
+		if (!this[uid]) return this;
 
-		var events = this.$events[type];
+		var events = this[uid][type];
 		if (!events) return this;
 		
 		if (type == null){ //ignore all
-			for (var ty in this.$events) this.ignore(ty);
+			for (var ty in this[uid]) this.ignore(ty);
 		} else if (fn == null){ // ignore every of type
 			events.each(function(fn){
 				this.ignore(type, fn);
@@ -45,8 +47,8 @@ this.Events = new Class({
 	}.overloadSetter(),
 
 	fire: function(type){
-		if (!this.$events) return this;
-		var events = this.$events[type];
+		if (!this[uid]) return this;
+		var events = this[uid][type];
 		if (!events) return this;
 
 		var args = Array.slice(arguments, 1);
