@@ -51,12 +51,12 @@ JSON.encode = JSON.stringify || function(obj){
 			return '"' + obj.replace(/[\x00-\x1f\\"]/g, escape) + '"';
 		case 'array':
 			return '[' + obj.map(JSON.encode).clean() + ']';
-		case 'object':
+		case 'object': case 'hash':
 			var string = [];
-			for (var key in obj){
-				var json = JSON.encode(obj[key]);
+			Object.each(obj, function(value, key){
+				var json = JSON.encode(value);
 				if (json) string.push(JSON.encode(key) + ':' + json);
-			}
+			});
 			return '{' + string + '}';
 		case 'number': case 'boolean': return '' + obj;
 		case 'null': return 'null';
