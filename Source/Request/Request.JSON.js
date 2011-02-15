@@ -19,6 +19,7 @@ Request.JSON = new Class({
 	Extends: Request,
 
 	options: {
+		/*onError: function(text, error){},*/
 		secure: true
 	},
 
@@ -31,11 +32,13 @@ Request.JSON = new Class({
 	},
 
 	success: function(text){
-		var secure = this.options.secure;
-		var json = this.response.json = Function.attempt(function(){
-			return JSON.decode(text, secure);
-		});
-
+		var json;
+		try {
+			json = this.response.json = JSON.decode(text, this.options.secure);
+		} catch (error){
+			this.fireEvent('error', [text, error]);
+			return;
+		}
 		if (json == null) this.onFailure();
 		else this.onSuccess(json, text);
 	}

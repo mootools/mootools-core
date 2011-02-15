@@ -34,6 +34,19 @@ Fired when the request completes. This overrides the signature of the Request su
 1. responseJSON - (*object*) The JSON response object from the remote request.
 2. responseText - (*string*) The JSON response as string.
 
+#### error
+
+Fired when the parsed JSON is not valid and the secure option is set.
+
+##### Signature:
+
+	onError(text, error)
+
+##### Arguments:
+
+1. text - (string) The response text.
+2. error - (string) The error message.
+
 ### Returns:
 
 * (*object*) A new Request.JSON instance.
