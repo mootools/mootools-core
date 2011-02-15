@@ -20,6 +20,10 @@ Configuration.presets = {
 	'core-1.3 + core-1.2': {
 		sets: ['1.2', 'core-1.3-base', 'core-1.3-client'],
 		source: ['core-1.3-base', 'core-1.3-client']
+	},
+	'core-2.0': {
+		sets: ['core-2.0-base', 'core-2.0-client'],
+		source: ['core-2.0-base', 'core-2.0-client']
 	}
 };
 
@@ -70,6 +74,26 @@ Configuration.sets = {
 			'Utilities/Cookie',
 			'Utilities/JSON'
 		]
+	},
+
+	'core-2.0-base': {
+		path: '2.0base/',
+		files: [
+			'Core/Core',
+
+			'Types/Array',
+			'Types/Function',
+			'Types/Number',
+			'Types/String',
+			'Types/Object',
+		]
+	},
+
+	'core-2.0-client': {
+		path: '2.0client/',
+		files: [
+			'Browser/Browser'
+		]
 	}
 };
 
@@ -111,7 +135,7 @@ Configuration.source = {
 
 			'Request/Request',
 			'Request/Request.HTML',
-			'Request/Request.JSON',
+			'Request/Request.JSON'
 		]
 	},
 
@@ -156,6 +180,56 @@ Configuration.source = {
 
 			'Fx/Fx.CSS',
 			'Fx/Fx.Tween',
+			'Fx/Fx.Morph',
+
+			'Request/Request',
+			'Request/Request.HTML',
+			'Request/Request.JSON'
+		]
+	},
+	
+	'core-2.0-base': {
+		path: '../Source/',
+		files: [
+			'Core/Core',
+
+			'Types/Array',
+			'Types/Function',
+			'Types/Number',
+			'Types/String',
+			'Types/Object',
+
+			'Utilities/Accessor',
+			'Utilities/Color',
+			'Utilities/Table',
+			'Utilities/JSON',
+			
+			'Class/Class',
+			'Class/Chain',
+			'Class/Events',
+			'Class/Options',
+			'Class/Store',
+			
+			'Fx/Fx'
+		]
+	},
+
+	'core-2.0-client': {
+		path: '../Source/',
+		files: [
+			'Browser/Browser',
+			
+			'Slick/Slick.Parser',
+			'Slick/Slick.Finder',
+
+			'Element/Element',
+			
+			'Browser/Event',
+			
+			'Element/Element.Style',
+
+			'Utilities/DOMReady',
+
 			'Fx/Fx.Morph',
 
 			'Request/Request',
