@@ -43,7 +43,9 @@ JSON.validate = function(string){
 	return (/^[\],:{}\s]*$/).test(string);
 };
 
-JSON.encode = JSON.stringify || function(obj){
+JSON.encode = JSON.stringify ? function(obj){
+	return JSON.stringify(obj);
+} : function(obj){
 	if (obj && obj.toJSON) obj = obj.toJSON();
 
 	switch (typeOf(obj)){
