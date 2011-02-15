@@ -8,7 +8,7 @@ describe('JSON', function(){
 			n: 1,
 			f: 3.14,
 			b: false,
-			n: null,
+			nil: null,
 			o: {
 				a: 1,
 				b: [1, 2],
