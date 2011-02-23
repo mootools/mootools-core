@@ -677,7 +677,7 @@ Element.implement({
 });
 
 var cleanClone = function(node, element, keepid){
-	if (!keepid) node.removeAttribute('id');
+	if (!keepid) node.setAttributeNode(document.createAttribute('id'));
 	if (node.clearAttributes){
 		node.clearAttributes();
 		node.mergeAttributes(element);
@@ -687,6 +687,7 @@ var cleanClone = function(node, element, keepid){
 			for (var i = no.length; i--;) no[i].selected = eo[i].selected;
 		}
 	}
+
 	var prop = formProps[element.tagName.toLowerCase()];
 	if (prop && element[prop]) node[prop] = element[prop];
 };
