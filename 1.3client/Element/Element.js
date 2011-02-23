@@ -120,6 +120,16 @@ describe('Element.clone', function(){
 		expect(div.clone().getElementsByTagName('param').length != 0).toBeTruthy();
 	});
 
+	it('should set the ID of the cloned element and then fetch it with document.id', function(){
+		var cloneMe = new Element('div', {id: 'cloneMe', text: 'cloneMe'}).inject(document.body);
+		var cloned = $('cloneMe').clone();
+		expect(cloned.get('id')).toEqual(null);
+		cloned.set('id', 'sauce').inject(cloneMe.parentNode);
+		expect($('sauce')).toEqual(cloned);
+		cloneMe.destroy();
+		cloned.destroy();
+	});
+
 });
 
 describe('Elements implement order', function(){
@@ -286,7 +296,7 @@ describe('Element.getElements', function(){
 	});
 
 	it('should return an empty collection if called on document.body', function(){
-		expect(document.body.getElements()).toEqual(new Elements);
+		expect($(document.body).getElements()).toEqual(new Elements);
 	});
 
 });
