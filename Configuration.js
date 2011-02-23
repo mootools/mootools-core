@@ -59,6 +59,7 @@ Configuration.sets = {
 		path: '1.3client/',
 		files: [
 			'Core/Core',
+			'Types/Object',
 			'Browser/Browser',
 			'Class/Class.Extras',
 			'Element/Element',
