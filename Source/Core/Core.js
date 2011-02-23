@@ -295,9 +295,10 @@ Number.extend('random', function(min, max){
 
 // forEach, each
 
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 Object.extend('forEach', function(object, fn, bind){
 	for (var key in object){
-		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+		if (hasOwnProperty.call(object, key)) fn.call(bind, object[key], key, object);
 	}
 });
 
