@@ -618,9 +618,12 @@ var combinators = {
 					children = node.all[id];
 					if (!children) return;
 					if (!children[0]) children = [children];
-					for (i = 0; item = children[i++];) if (item.getAttributeNode('id').nodeValue == id){
-						this.push(item, tag, null, classes, attributes, pseudos);
-						break;
+					for (i = 0; item = children[i++];){
+						var idNode = item.getAttributeNode('id');
+						if (idNode && idNode.nodeValue == id){
+							this.push(item, tag, null, classes, attributes, pseudos);
+							break;
+						}
 					} 
 					return;
 				}
@@ -875,7 +878,7 @@ local.attributeGetters = {
 
 var Slick = local.Slick = (this.Slick || {});
 
-Slick.version = '1.1.3';
+Slick.version = '1.1.4';
 
 // Slick finder
 
