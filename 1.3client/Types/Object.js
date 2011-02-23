@@ -19,7 +19,7 @@ describe('Object hasOwnProperty', function(){
 			Object.map(window, fn);
 			Object.every(window, fn);
 			Object.some(window, fn);
-			Object.keyOf(window, window);
+			Object.keyOf(window, document);
 		}).not.toThrow();
 	});
 
