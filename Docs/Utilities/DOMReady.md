@@ -10,9 +10,10 @@ To ensure that DOM elements exist when the code attempts to access them is execu
 		alert('The DOM is ready!');
 	});
 
-### Note:
+### Notes:
 
-This event is only available to the window element.
+- This event is only available to the window element.
+- In some versions of Internet Explorer (ie. IE6) a script tag might be executed twice if the content-type meta-tag declaration is put after a script tag. The content-type should always be declared before any script tags.
 
 ### See Also:
 [Element.Event][Event]
