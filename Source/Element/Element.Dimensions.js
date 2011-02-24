@@ -218,28 +218,28 @@ var styleString = Element.getComputedStyle;
 
 function styleNumber(element, style){
 	return styleString(element, style).toInt() || 0;
-};
+}
 
 function borderBox(element){
 	return styleString(element, '-moz-box-sizing') == 'border-box';
-};
+}
 
 function topBorder(element){
 	return styleNumber(element, 'border-top-width');
-};
+}
 
 function leftBorder(element){
 	return styleNumber(element, 'border-left-width');
-};
+}
 
 function isBody(element){
 	return (/^(?:body|html)$/i).test(element.tagName);
-};
+}
 
 function getCompatElement(element){
 	var doc = element.getDocument();
 	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-};
+}
 
 }).call(this);
 
