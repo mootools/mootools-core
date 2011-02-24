@@ -792,7 +792,7 @@ Removes the Element from the DOM.
 
 ### See Also:
 
-- [MDC Element:removeChild](http://developer.mozilla.org/en/docs/DOM:element.removeChild)
+- [MDC Element:removeChild][]
 
 
 
@@ -868,7 +868,7 @@ Replaces the passed Element with Element.
 
 ### See Also:
 
-- [MDC Element:replaceChild](http://developer.mozilla.org/en/docs/DOM:element.replaceChild)
+- [MDC Element:replaceChild][]
 
 
 
@@ -1920,3 +1920,6 @@ This method has been deprecated. Use [Element:contains][] instead.
 [Element:setStyles]: /core/Element/Element.Style#Element:setStyles
 
 [The Dollar Save Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/
+
+[MDC Element:removeChild]: https://developer.mozilla.org/En/DOM/Node.removeChild
+[MDC Element:replaceChild]: https://developer.mozilla.org/En/DOM/Node.replaceChild

@@ -122,7 +122,7 @@ Cross browser method to stop the propagation of an event (this stops the event f
 ### See Also:
 
 - [Element:addEvent][]
-- [MDC event.stopPropagation](http://developer.mozilla.org/en/docs/DOM:event.stopPropagation)
+- [MDC event.stopPropagation][]
 
 
 
@@ -156,7 +156,7 @@ Cross browser method to prevent the default action of the event.
 ### See Also:
 
 - [Element:addEvent][]
-- [MDC event.preventDefault](http://developer.mozilla.org/en/docs/DOM:event.preventDefault)
+- [MDC event.preventDefault][]
 
 
 Object: Event.Keys {#Event-Keys}
@@ -199,3 +199,6 @@ Since MooTools 1.3 this is a native JavaScript Object and not an instance of the
 [Function:pass]: /core/Types/Function/#Function:pass
 [Function:delay]: /core/Types/Function/#Function:delay
 [MooTools More Keyboard]: /more/Interface/Keyboard
+
+[MDC event.stopPropagation]: https://developer.mozilla.org/en/DOM/event.stopPropagation
+[MDC event.preventDefault]: https://developer.mozilla.org/en/DOM/event.preventDefault
