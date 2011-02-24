@@ -780,7 +780,7 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 
 
-[Function:bind]: /core/Native/Function/#Function:bind
+[Function:bind]: /core/Types/Function/#Function:bind
 [String:hexToRgb]: /core/Types/String/#String:hexToRgb
 [String:rgbToHex]: /core/Types/String/#String:rgbToHex
 [MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array

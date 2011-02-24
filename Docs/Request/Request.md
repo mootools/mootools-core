@@ -455,7 +455,7 @@ Sends a form or a container of inputs with an HTML request.
 [$]: /core/Element/Element/#Window:dollar
 [Request:send]: #Request:send
 [Element.Properties]: /core/Element/Element/#Element-Properties
-[URI]: /more/Native/URI
+[URI]: /more/Types/URI
 [Chain]: /core/Class/Class.Extras#Chain
 [Events]: /core/Class/Class.Extras#Events
 [Options]: /core/Class/Class.Extras#Options

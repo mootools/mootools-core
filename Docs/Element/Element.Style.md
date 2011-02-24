@@ -118,5 +118,4 @@ Returns an object of styles of the Element for each argument passed in.
 
 
 [$]: /core/Element/Element/#Window:dollar
-[Function]: /core/Native/Function
 [Element:getStyle]: #Element:getStyle
