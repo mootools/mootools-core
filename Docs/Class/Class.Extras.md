@@ -440,9 +440,6 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 	myWidget.show(); // fires the event and alerts 'Lets show it!'
 
 
-Deprecated Functions {#Deprecated-Functions}
-============================================
-
 [Class]: /core/Class/Class
 [Class:implement]: /core/Class/Class/#Class:implement
 [Fx]: /core/Fx/Fx
