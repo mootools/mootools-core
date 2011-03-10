@@ -1206,8 +1206,7 @@ Empties an Element of all its children.
 Element Method: destroy {#Element:destroy}
 ------------------------------------------
 
-Empties an Element of all its children, removes and garbages the Element.
-Useful to clear memory before the pageUnload.
+Removes the Element and its children from the DOM and prepares them for garbage collection.
 
 ### Syntax:
 
