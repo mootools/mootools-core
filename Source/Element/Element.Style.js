@@ -180,4 +180,4 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
 
-}).call(this);
+})();

@@ -110,4 +110,4 @@ Swiff.remote = function(obj, fn){
 	return eval(rs);
 };
 
-}).call(this);
+})();

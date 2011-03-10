@@ -78,4 +78,4 @@ JSON.decode = function(string, secure){
 	return eval('(' + string + ')');
 };
 
-}).call(this);
+})();

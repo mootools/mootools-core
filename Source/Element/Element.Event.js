@@ -172,4 +172,4 @@ Element.Events = new Hash(Element.Events);
 
 //</1.2compat>
 
-}).call(this);
+})();

@@ -241,7 +241,7 @@ function getCompatElement(element){
 	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 }
 
-}).call(this);
+})();
 
 //aliases
 Element.alias({position: 'setPosition'}); //compatability
