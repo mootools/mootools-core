@@ -88,9 +88,12 @@ var Fx = this.Fx = new Class({
 		this.frame = (this.options.frameSkip) ? 0 : -1;
 		this.time = null;
 		this.transition = this.getTransition();
-		var frames = this.options.frames, fps = this.options.fps, duration = this.options.duration;
+		var frames = this.options.frames,
+			fps = this.options.fps,
+			duration = this.options.duration;
+		if (fps == _animationFrame && !requestAnimationFrame) fps = this.options.fps = 60;
 		this.duration = Fx.Durations[duration] || duration.toInt();
-		this.frameInterval = 1000 / fps;
+		this.frameInterval = 1000 / ((fps == _animationFrame) ? 60 : fps);
 		this.frames = frames || Math.round(this.duration / this.frameInterval);
 		this.fireEvent('start', this.subject);
 		pushInstance.call(this, fps);
@@ -162,7 +165,10 @@ var loop = function(){
 var pushInstance = function(fps){
 	var list = instances[fps] || (instances[fps] = []);
 	list.push(this);
-	if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), list);
+	if (!timers[fps]){
+		if (fps == _animationFrame) requestAnimation();
+		else timers[fps] = loop.periodical(Math.round(1000 / fps), list);
+	}
 };
 
 var pullInstance = function(fps){
@@ -171,9 +177,27 @@ var pullInstance = function(fps){
 		list.erase(this);
 		if (!list.length && timers[fps]){
 			delete instances[fps];
-			timers[fps] = clearInterval(timers[fps]);
+			if (fps != _animationFrame) timers[fps] = clearInterval(timers[fps]);
 		}
 	}
+};
+
+// Request Animation timers
+
+var _animationFrame = 'animationFrame';
+
+var requestAnimationFrame = this.requestAnimationFrame
+	|| this.webkitRequestAnimationFrame
+	|| this.mozRequestAnimationFrame
+	|| this.oRequestAnimationFrame
+	|| this.msRequestAnimationFrame;
+
+var requestAnimation = function(){
+	var list = instances[_animationFrame];
+	if (list && list.length) requestAnimationFrame(function(){
+		loop.call(list);
+		requestAnimation();
+	});
 };
 
 })();
