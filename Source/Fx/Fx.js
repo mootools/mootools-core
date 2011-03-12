@@ -46,17 +46,20 @@ var Fx = this.Fx = new Class({
 	},
 
 	step: function(now){
-		if (this.options.frameSkip){
+		if (this.duration == 0 || this.options.frameSkip){
 			var diff = (this.time != null) ? (now - this.time) : 0, frames = diff / this.frameInterval;
 			this.time = now;
+			if (!this.startTime) this.startTime = now;
 			this.frame += frames;
 		} else {
 			this.frame++;
 		}
-		
-		if (this.frame < this.frames){
-			var delta = this.transition(this.frame / this.frames);
-			this.set(this.compute(this.from, this.to, delta));
+
+		if (this.duration == 0 || this.frame < this.frames){
+			this.set(this.duration
+				? this.compute(this.from, this.to, this.transition(this.frame / this.frames))
+				: diff
+			);
 		} else {
 			this.frame = this.frames;
 			this.set(this.compute(this.from, this.to, 1));
@@ -87,9 +90,12 @@ var Fx = this.Fx = new Class({
 		this.to = to;
 		this.frame = (this.options.frameSkip) ? 0 : -1;
 		this.time = null;
+		this.startTime = null;
 		this.transition = this.getTransition();
-		var frames = this.options.frames, fps = this.options.fps, duration = this.options.duration;
-		this.duration = Fx.Durations[duration] || duration.toInt();
+		var frames = this.options.frames,
+			fps = this.options.fps,
+			duration = this.options.duration;
+		this.duration = duration in Fx.Durations ? Fx.Durations[duration] : (duration || 0).toInt();
 		this.frameInterval = 1000 / fps;
 		this.frames = frames || Math.round(this.duration / this.frameInterval);
 		this.fireEvent('start', this.subject);
@@ -101,7 +107,7 @@ var Fx = this.Fx = new Class({
 		if (this.isRunning()){
 			this.time = null;
 			pullInstance.call(this, this.options.fps);
-			if (this.frames == this.frame){
+			if (this.frames == this.frame || this.duration == 0){
 				this.fireEvent('complete', this.subject);
 				if (!this.callChain()) this.fireEvent('chainComplete', this.subject);
 			} else {
@@ -145,7 +151,7 @@ Fx.compute = function(from, to, delta){
 	return (to - from) * delta + from;
 };
 
-Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000};
+Fx.Durations = {'short': 250, 'normal': 500, 'long': 1000, 'continues': 0};
 
 // global timers
 
