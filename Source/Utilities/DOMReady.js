@@ -21,12 +21,11 @@ var ready,
 	checks = [],
 	shouldPoll,
 	timer,
-	isFramed = true;
-
-// Thanks to Rich Dougherty <http://www.richdougherty.com/>
-try {
-	isFramed = window.frameElement != null;
-} catch(e){}
+	testElement = document.createElement('div'),
+	hasOperationAborted = (
+		testElement.innerHTML = '<!--[if lt IE 8]>1<![endif]-->',
+		!!+div.innerText
+	);
 
 var domready = function(){
 	clearTimeout(timer);
@@ -54,18 +53,30 @@ var poll = function(){
 
 document.addListener('DOMContentLoaded', domready);
 
-// doScroll technique by Diego Perini http://javascript.nwbox.com/IEContentLoaded/
-var testElement = document.createElement('div');
-if (testElement.doScroll && !isFramed){
-	checks.push(function(){
-		try {
-			testElement.doScroll();
-			return true;
-		} catch (e){}
-
-		return false;
-	});
-	shouldPoll = true;
+if (hasOperationAborted){
+	var isFramed = true;
+	// isFramed technique by Rich Dougherty http://www.richdougherty.com/
+	// Accessing top or parent may take many seconds
+	//   only in browsers that also experience the dreaded Operation Aborted
+	//   other browsers may throw an uncatchable security error
+	try {
+		isFramed = window.frameElement != null;
+	} catch(e){}
+	
+	// doScroll technique by Diego Perini http://javascript.nwbox.com/IEContentLoaded/
+	// doScroll() throws when the DOM is not ready
+	//   only in browsers that also experience the dreaded Operation Aborted
+	//   only in the top window
+	if (testElement.doScroll && !isFramed){
+		checks.push(function(){
+			try {
+				testElement.doScroll();
+				return true;
+			} catch (e){}
+			return false;
+		});
+		shouldPoll = true;
+	}
 }
 
 if (document.readyState) checks.push(function(){
