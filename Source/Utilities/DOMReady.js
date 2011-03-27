@@ -20,12 +20,7 @@ var ready,
 	loaded,
 	checks = [],
 	shouldPoll,
-	timer,
-	testElement = document.createElement('div'),
-	hasOperationAborted = (
-		testElement.innerHTML = '<!--[if lt IE 8]>1<![endif]-->',
-		!!+div.innerText
-	);
+	timer;
 
 var domready = function(){
 	clearTimeout(timer);
@@ -52,6 +47,13 @@ var poll = function(){
 
 document.addListener('DOMContentLoaded', domready);
 
+/*<ltIE8>*/
+var testElement = document.createElement('div'),
+	hasOperationAborted = (
+		testElement.innerHTML = '<!--[if lt IE 8]>1<![endif]-->',
+		!!+div.innerText
+	);
+
 if (hasOperationAborted){
 	var isFramed = true;
 	// isFramed technique by Rich Dougherty http://www.richdougherty.com/
@@ -77,6 +79,7 @@ if (hasOperationAborted){
 		shouldPoll = true;
 	}
 }
+/*</ltIE8>*/
 
 if (document.readyState) checks.push(function(){
 	var state = document.readyState;
