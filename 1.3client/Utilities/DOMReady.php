@@ -76,7 +76,7 @@ var domreadyCallbacks = []
 function DomReady(fn){
 	domreadyCallbacks.push(fn)
 }
-<?php if (!isset($_GET['plain'])):
+ <?php if (!isset($_GET['plain'])):
 	$core = dirname(__FILE__) . '/../../../';
 	require $core . 'Packager/packager.php';
 
@@ -85,7 +85,7 @@ function DomReady(fn){
 else: ?>
 document.write('<scr'+'ipt src="./DOMReady.js?' + (new Date) + '"><'+'/script>');
 document.write('<scr'+'ipt src="../../../Source/Utilities/DOMReady.js?' + (new Date) + '"><'+'/script>');
-<?php endif; ?>
+ <?php endif; ?>
 </script>
 
 <script>
