@@ -113,11 +113,11 @@ window.addEvent('load', function(){
 window.addEvent('domready', function(){
 	loadScript('domready');
 
-	window.READY = true
+	window.READY = +new Date
 	somethingHappened('MooTools domready', isNotLoaded)
 });
 DomReady(function(){
-	window.READY = true
+	window.READY = +new Date
 	somethingHappened('MooTools domready', isNotLoaded)
 });
 </script>
@@ -165,8 +165,8 @@ small{
 
 </style>
 <script>
-if (document.addEventListener) document.addEventListener('DOMContentLoaded', function(){ window.READY = true; somethingHappened('DOMContentLoaded (addEventListener)', isNotLoaded) }, false)
-if (document.attachEvent) document.attachEvent('onDOMContentLoaded', function(){ window.READY = true; somethingHappened('DOMContentLoaded (attachEvent)', isNotLoaded) }, false)
+if (document.addEventListener) document.addEventListener('DOMContentLoaded', function(){ window.READY = +new Date; somethingHappened('DOMContentLoaded (addEventListener)', isNotLoaded) }, false)
+if (document.attachEvent) document.attachEvent('onDOMContentLoaded', function(){ window.READY = +new Date; somethingHappened('DOMContentLoaded (attachEvent)', isNotLoaded) }, false)
 
 if (document.addEventListener) document.addEventListener('readyStateChange', function(){ somethingHappened('readyStateChange (addEventListener)', document.readyState) }, false)
 if (document.attachEvent) document.attachEvent('onReadyStateChange', function(){ somethingHappened('onReadyStateChange (attachEvent)', document.readyState) }, false)
@@ -260,8 +260,8 @@ var readyTests = {
 	,parsed: function(){return window.PARSED ?'Yes':'No'}
 	,img_onload: function(){return window.IMG_ONLOAD ?'Yes':'No'}
 	,img_onload_uncached: function(){return window.IMG_ONLOAD_UNCACHED ?'Yes':'No'}
-	,ready: function(){return window.READY ?'Yes':'No'}
-	,onload: function(){return window.ONLOAD ?'Yes':'No'}
+	,ready: function(){return !!window.READY ?'Yes':'No'}
+	,onload: function(){return !!window.ONLOAD ?'Yes':'No'}
 	
 	,"doScroll": function(){
 		try {
@@ -318,7 +318,7 @@ function poll(){
 	
 	if (shouldBeReady)
 	somethingHappened('Should be Ready!', function(){
-		return window.READY ?true:'Not yet...'
+		return !!window.READY ?true:'Not yet...'
 	})
 	
 	if (hasDifferentResults) readyTestResults.push(results)
@@ -368,8 +368,8 @@ poll()
 </script>
 </head>
 <body
-	onload="window.ONLOAD = true; somethingHappened('body[onload]', function(){return window.READY})"
-	onDOMContentLoaded="window.READY = true; somethingHappened('DOMContentLoaded body[onDOMContentLoaded]', isNotLoaded)"
+	onload="window.ONLOAD = +new Date; somethingHappened('body[onload] ' + (window.READY ? (window.ONLOAD - window.READY) + 'ms after Ready' : ''), function(){return !!window.READY})"
+	onDOMContentLoaded="window.READY = +new Date; somethingHappened('DOMContentLoaded body[onDOMContentLoaded]', isNotLoaded)"
 	onReadyStateChange="somethingHappened('body[onReadyStateChange]')"
 >
 
