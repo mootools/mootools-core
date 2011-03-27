@@ -51,7 +51,7 @@ document.addListener('DOMContentLoaded', domready);
 var testElement = document.createElement('div'),
 	hasOperationAborted = (
 		testElement.innerHTML = '<!--[if lt IE 8]>1<![endif]-->',
-		!!+div.innerText
+		!!+testElement.innerText
 	);
 
 if (hasOperationAborted){
