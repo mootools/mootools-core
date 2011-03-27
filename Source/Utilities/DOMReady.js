@@ -20,7 +20,8 @@ var ready,
 	loaded,
 	checks = [],
 	shouldPoll,
-	timer;
+	timer,
+	testElement = document.createElement('div');
 
 var domready = function(){
 	clearTimeout(timer);
@@ -48,36 +49,20 @@ var poll = function(){
 document.addListener('DOMContentLoaded', domready);
 
 /*<ltIE8>*/
-var testElement = document.createElement('div'),
-	hasOperationAborted = (
-		testElement.innerHTML = '<!--[if lt IE 8]>1<![endif]-->',
-		!!+testElement.innerText
-	);
-
-if (hasOperationAborted){
-	var isFramed = true;
-	// isFramed technique by Rich Dougherty http://www.richdougherty.com/
-	// Accessing top or parent may take many seconds
-	//   only in browsers that also experience the dreaded Operation Aborted
-	//   other browsers may throw an uncatchable security error
+// doScroll technique by Diego Perini http://javascript.nwbox.com/IEContentLoaded/
+// testElement.doScroll() throws when the DOM is not ready, only in the top window
+var doScrollWorks = function(){
 	try {
-		isFramed = window.frameElement != null;
-	} catch(e){}
-	
-	// doScroll technique by Diego Perini http://javascript.nwbox.com/IEContentLoaded/
-	// doScroll() throws when the DOM is not ready
-	//   only in browsers that also experience the dreaded Operation Aborted
-	//   only in the top window
-	if (testElement.doScroll && !isFramed){
-		checks.push(function(){
-			try {
-				testElement.doScroll();
-				return true;
-			} catch (e){}
-			return false;
-		});
-		shouldPoll = true;
-	}
+		testElement.doScroll();
+		return true;
+	} catch (e){}
+	return false;
+}
+// If doScroll works already, it can't be used to determine domready
+//   e.g. in an iframe
+if (testElement.doScroll && !doScrollWorks()){
+	checks.push(doScrollWorks);
+	shouldPoll = true;
 }
 /*</ltIE8>*/
 
