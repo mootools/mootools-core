@@ -42,7 +42,6 @@ var check = function(){
 		domready();
 		return true;
 	}
-
 	return false;
 };
 
@@ -106,7 +105,6 @@ Element.Events.load = {
 			domready();
 			delete Element.Events.load;
 		}
-		
 		return true;
 	}
 };
