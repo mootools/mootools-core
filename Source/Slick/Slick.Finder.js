@@ -329,17 +329,28 @@ local.search = function(context, expression, append, first){
 		/*<query-selector-override>*/
 		querySelector: if (context.querySelectorAll) {
 
-			if (!this.isHTMLDocument || this.brokenMixedCaseQSA || qsaFailExpCache[expression] ||
-			(this.brokenCheckedQSA && expression.indexOf(':checked') > -1) ||
-			(this.brokenEmptyAttributeQSA && reEmptyAttribute.test(expression)) || Slick.disableQSA) break querySelector;
+			if (!this.isHTMLDocument
+				|| qsaFailExpCache[expression]
+				//TODO: only skip when expression is actually mixed case
+				|| this.brokenMixedCaseQSA
+				|| (this.brokenCheckedQSA && expression.indexOf(':checked') > -1)
+				|| (this.brokenEmptyAttributeQSA && reEmptyAttribute.test(expression))
+				|| (!contextIsDocument //Abort when !contextIsDocument and...
+					//  there are multiple expressions in the selector
+					//  since we currently only fix non-document rooted QSA for single expression selectors
+					&& expression.indexOf(',') > -1
+				)
+				|| Slick.disableQSA
+			) break querySelector;
 
-			var _expression = expression;
+			var _expression = expression, _context = context;
 			if (!contextIsDocument){
 				// non-document rooted QSA
 				// credits to Andrew Dupont
-				var currentId = context.getAttribute('id'), slickid = 'slickid__';
-				context.setAttribute('id', slickid);
+				var currentId = _context.getAttribute('id'), slickid = 'slickid__';
+				_context.setAttribute('id', slickid);
 				_expression = '#' + slickid + ' ' + _expression;
+				context = _context.parentNode;
 			}
 
 			try {
@@ -350,8 +361,9 @@ local.search = function(context, expression, append, first){
 				break querySelector;
 			} finally {
 				if (!contextIsDocument){
-					if (currentId) context.setAttribute('id', currentId);
-					else context.removeAttribute('id');
+					if (currentId) _context.setAttribute('id', currentId);
+					else _context.removeAttribute('id');
+					context = _context;
 				}
 			}
 
