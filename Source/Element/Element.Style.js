@@ -147,8 +147,7 @@ if (html.style[opacity] == null && filterName){
 	Element[defineStyleSetter](opacity, function(value){
 		value = oparse(value);
 		value = (value == 1) ? '' : 'alpha(' + opacity + '=' + (value * 100) + ')';
-		var node = this.node,
-			filter = getStyle(this.node, filterName) || '';
+		var node = this.node, filter = getStyle(this.node, filterName) || '';
 		node.style[filterName] = matchOp.test(filter) ? filter.replace(matchOp, value) : filter + value;
 	})[defineStyleGetter](opacity, function(){
 		var match = getStyle(this.node, filterName).match(matchOp);

@@ -18,18 +18,18 @@ this.Accessor = function(singular, plural){
 	
 	var define = 'define', lookup = 'lookup', match = 'match', each = 'each';
 	
-	this[define + singular] = function(key, value){
+	var defineSingular = this[define + singular] = function(key, value){
 		if (typeOf(key) == 'regexp') matchers.push({'regexp': key, 'action': value});
 		else accessor[key] = value;
 		return this;
 	};
 	
-	this[define + plural] = function(object){
+	var definePlural = this[define + plural] = function(object){
 		for (var key in object) accessor[key] = object[key];
 		return this;
 	};
 	
-	this[match + singular] = function(name){
+	var matchSingular = this[match + singular] = function(name){
 		for (var l = matchers.length; l--; l){
 			var matcher = matchers[l], match = name.match(matcher.regexp);
 			if (match && (match = match.slice(1))) return function(){
@@ -39,16 +39,14 @@ this.Accessor = function(singular, plural){
 		return null;
 	};
 	
-	this[lookup + singular] = function(key){
-		return accessor[key] || null;
+	var lookupSingular = this[lookup + singular] = function(key){
+		return (accessor.hasOwnProperty(key) && accessor[key]) || null;
 	};
 	
-	this[lookup + plural] = function(keys){
-		return Object.subset(accessor, keys);
-	};
+	var lookupPlural = this[lookup + plural] = lookupSingular.overloadGetter(true);
 	
-	this[each + singular] = function(fn, bind){
-		for (var p in accessor) fn.call(bind, accessor[p], p);
+	var eachSingular = this[each + singular] = function(fn, bind){
+		Object.each(accessor, fn, bind);
 	};
 
 };
