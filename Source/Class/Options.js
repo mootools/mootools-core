@@ -32,4 +32,4 @@ this.Options = new Class({
 	getOptions: classGetOption.overloadGetter(true)
 });
 
-}).call(this);
+})();

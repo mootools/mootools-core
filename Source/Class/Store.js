@@ -37,4 +37,4 @@ this.Store = new Class({
 
 });
 
-}).call(this);
+})();

@@ -108,4 +108,4 @@ if (document.execCommand) try {
 	document.execCommand("BackgroundImageCache", false, true);
 } catch (e){}
 	
-}).call(this);
+})();

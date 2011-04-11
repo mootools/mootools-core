@@ -62,4 +62,4 @@ this.Events = new Class({
 
 });
 
-}).call(this);
+})();

@@ -126,4 +126,4 @@ Class.implement('implement', function(a, b){
 	this.prototype[name] = value;
 });
 
-}).call(this);
+})();

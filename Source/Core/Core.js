@@ -202,7 +202,7 @@ var protect = function(type, methods){
 		prototype = object.prototype,
 		isType = (object != Object);
 
-	if (isType) new Type(type, object)
+	if (isType) new Type(type, object);
 
 	for (var i = 0, l = methods.length; i < l; i++){
 		var name = methods[i],
@@ -337,4 +337,4 @@ String.extend('uniqueID', function(){
 	return (Date.now() + (UID++)).toString(36);
 });
 
-}).call(this);
+})();

@@ -562,4 +562,4 @@ var hostWindow = new Window(window);
 
 });
 
-}).call(this);
+})();
