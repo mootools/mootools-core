@@ -12,7 +12,7 @@
 ---
 name: Core
 description: The heart of MooTools.
-provides: [MooTools, Type, typeOf, instanceOf, String.uniqueID]
+provides: [MooTools, Type, typeOf, instanceOf, String.uniqueID, Object.each, Object.merge, Object.clone, Array.each, Array.clone, Date.new, Function.from, Array.from, Number.from, String.from]
 ...
 */
 
@@ -31,11 +31,11 @@ var slice = Array.prototype.slice,
 for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 
-Function.prototype.overloadSetter = function(){
+Function.prototype.overloadSetter = function(forceObjectArgument){
 	var self = this;
 	return function(a, b){
 		if (a == null) return this;
-		if (typeof a != 'string'){
+		if (forceObjectArgument || typeof a != 'string'){
 			for (var k in a) self.call(this, k, a[k]);
 			if (enumerables) for (var i = enumerables.length; i--;){
 				k = enumerables[i];
@@ -269,11 +269,20 @@ Object.extend('forEach', function(object, fn, bind){
 	}
 }).extend('each', Object.forEach);
 
-Array.implement('forEach', function(fn, context){
-	for (var i = 0, l = this.length; i < l; i++){
-		if (i in this) fn.call(context, this[i], i, this);
+Array.implement({
+
+	forEach: function(fn, context){
+		for (var i = 0, l = this.length; i < l; i++){
+			if (i in this) fn.call(context, this[i], i, this);
+		}
+	},
+	
+	each: function(fn, context){
+		this.forEach(fn, context);
+		return this;
 	}
-}).alias('each', 'forEach');
+
+});
 
 // Array & Object cloning
 
