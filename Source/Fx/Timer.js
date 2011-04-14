@@ -93,37 +93,37 @@ this.Timer = new Class({
 	'protected stopTimer': function(){
 		if (!this.timer) return;
 		this.time = Date.now() - this.time;
-		this.timer = removeInstance(this);
+		this.timer = this.stepper && Timer.remove(this.stepper, this.getOption('fps'));
 	},
 
 	'protected startTimer': function(){
 		if (this.timer) return;
 		this.time = Date.now() - this.time;
-		this.timer = addInstance(this);
+		this.stepper = this.step.bind(this);
+		this.timer = Timer.add(this.stepper, this.getOption('fps'));
 	}
 
 });
 
 // global timer
 
-var instances = {}, timers = {};
+var functions = {}, timers = {};
 
 var loop = function(fps){
-	for (var i = 0; i < instances[fps].length; i++) instances[fps][i].step();
+	for (var i = 0, l = functions[fps].length; i < l; i++) functions[fps][i]();
 };
 
-var addInstance = function(instance){
-	var fps = instance.getOption('fps') || 60;
-	(instances[fps] || (instances[fps] = [])).push(instance);
-	if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), null, fps);
-	return true;
-};
-
-var removeInstance = function(instance){
-	var fps = instance.getOption('fps');
-	if (instances[fps]) instances[fps].erase(instance);
-	if (!instances[fps].length && timers[fps]) timers[fps] = clearInterval(timers[fps]);
-	return false;
-};
+Timer.extend({
+	add: function(fn, fps){
+		(functions[fps] || (functions[fps] = [])).push(fn);
+		if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), null, fps);
+		return true;
+	},
+	remove: function(fn, fps){
+		if (functions[fps]) functions[fps].erase(fn);
+		if (!functions[fps].length && timers[fps]) timers[fps] = clearInterval(timers[fps]);
+		return false;
+	}
+});
 
 })();
