@@ -24,7 +24,7 @@ Object.extend({
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){
 			var k = keys[i];
-			results[k] = object[k];
+			if (k in object) results[k] = object[k];
 		}
 		return results;
 	},
