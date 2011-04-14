@@ -30,7 +30,8 @@ var setOpacity = function(element, opacity){
 	if (hasOpacity){
 		element.style.opacity = opacity;
 	} else {
-		opacity = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		opacity = (opacity * 100).limit(0, 100).round();
+		opacity = (opacity == 100) ? '' : 'alpha(opacity=' + opacity + ')';
 		var filter = element.style.filter || element.getComputedStyle('filter') || '';
 		element.style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
 	}
