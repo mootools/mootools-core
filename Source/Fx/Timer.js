@@ -107,19 +107,26 @@ this.Timer = new Class({
 
 var functions = {}, timers = {};
 
-var loop = function(fps){
-	for (var i = 0; i < functions[fps].length; i++) functions[fps][i]();
+var loop = function(){
+	for (var i = this.length, fn; fn = this[--i];) if (fn) fn();
 };
 
 Timer.extend({
 	add: function(fn, fps){
-		(functions[fps] || (functions[fps] = [])).push(fn);
-		if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), null, fps);
+		var list = (functions[fps] || (functions[fps] = []));
+		list.push(fn);
+		if (!timers[fps]) timers[fps] = loop.periodical(Math.round(1000 / fps), list);
 		return true;
 	},
 	remove: function(fn, fps){
-		if (functions[fps]) functions[fps].erase(fn);
-		if (!functions[fps].length && timers[fps]) timers[fps] = clearInterval(timers[fps]);
+		var list = functions[fps];
+		if (list){
+			list.erase(fn);
+			if (!list.length && timers[fps]){
+				delete functions[fps];
+				timers[fps] = clearInterval(timers[fps]);
+			}
+		}
 		return false;
 	}
 });
