@@ -2,7 +2,7 @@
 ---
 name: Fx
 description: Contains the basic animation logic to be extended by all other Fx Classes.
-requires: [Type, Array, String, Number, Function, Class, Chain, Events, Options]
+requires: [Class, Timer, typeOf, Accessor]
 provides: Fx
 ...
 */

@@ -2,7 +2,7 @@
 ---
 name: Timer
 description: Contains basic timing logic animation logic to be extended by Fx.
-requires: [Function, Class, Events, Options, Chain]
+requires: [Date.now, Array, Function, Class, Events, Options, Chain]
 provides: Timer
 ...
 */

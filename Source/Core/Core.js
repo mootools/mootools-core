@@ -12,7 +12,7 @@
 ---
 name: Core
 description: The heart of MooTools.
-provides: [MooTools, Type, typeOf, instanceOf, String.uniqueID, Object.each, Object.merge, Object.clone, Array.each, Array.clone, Date.new, Function.from, Array.from, Number.from, String.from]
+provides: [MooTools, Type, typeOf, instanceOf, String.uniqueID, Object.each, Object.merge, Object.clone, Array.each, Array.clone, Date.now, Function.from, Array.from, Number.from, String.from]
 ...
 */
 
