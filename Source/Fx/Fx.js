@@ -105,8 +105,7 @@ Fx.defineEquations({
 	},
 
 	'pow': function(p, x){
-		x = (x && x[0] || 6);
-		return Math.pow(p, x);
+		return Math.pow(p, x || 6);
 	},
 
 	'expo': function(p){
@@ -122,7 +121,7 @@ Fx.defineEquations({
 	},
 
 	'back': function(p, x){
-		x = (x && x[0] || 1.618);
+		if (x == null) x = 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -138,8 +137,7 @@ Fx.defineEquations({
 	},
 
 	'elastic': function(p, x){
-		x = (x && x[0] || 1);
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * x / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x || 1) / 3);
 	}
 
 });
@@ -158,7 +156,7 @@ Fx.extend('parseEquation', function(name){
 	if (t != 'string') name = 'linear';
 	var match = name.match(/^([\w]+)([:inout]+)?(\(([\d.]+)\))?$/);
 	var equation = Fx.lookupEquation(match[1]) || Fx.lookupEquation('default');
-	var end = equation(1), param = parseFloat(match[4]), type = match[2];
+	var end = equation(1), param = (match[4] != null) ? parseFloat(match[4]) : null, type = match[2];
 	switch (type){
 		case ':out': return function(pos){
 			return end - equation(1 - pos, param);
