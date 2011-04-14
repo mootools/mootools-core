@@ -11,54 +11,28 @@ provides: Fx
 
 var Fx = this.Fx = new Class({
 
-	Implements: Options,
+	Extends: Timer,
 
 	options: {
 		duration: '500ms',
-		equation: 'default',
-		behavior: 'cancel'
-	},
-	
-	initialize: function(options){
-		this.setOptions(options);
-		this.stack = [];
-	},
-	
-	/* public methods */
-	
-	start: function(from, to){
-		if (!this.check(from, to)) return this;
-		this.from = from;
-		this.to = to;
-		this.time = 0;
-		this.equation = Fx.parseEquation(this.getOption('equation'));
-		this.duration = Fx.parseDuration(this.getOption('duration'));
-		this.startTimer();
-		return this;
-	},
-	
-	cancel: function(){
-		this.time = 0;
-		return this.stopTimer();
-	},
-	
-	pause: function(){
-		return this.stopTimer();
+		equation: 'default'
 	},
 
-	resume: function(){
-		return this.startTimer();
+	initialize: function(options){
+		(options || (options = {})).fps = fps;
+		this.parent(options);
 	},
-	
-	complete: function(){
-		if (this.stack.length) this.stack.shift()();
-		return this.stopTimer();
-	},
-	
+
 	/* private methods */
-	
-	step: function(){
-		var time = Date.now();
+
+	'protected onStart': function(from, to){
+		this.from = from;
+		this.to = to;
+		this.equation = Fx.parseEquation(this.getOption('equation'));
+		this.duration = Fx.parseDuration(this.getOption('duration'));
+	},
+
+	'protected onStep': function(time){
 		var factor = (time - this.time) / this.duration;
 		if (factor >= 1) factor = 1;
 		var delta = this.equation(factor);
@@ -70,29 +44,6 @@ var Fx = this.Fx = new Class({
 
 	'protected compute': function(delta){
 		return Fx.compute(this.from, this.to, delta);
-	},
-
-	'protected check': function(){
-		if (!this.timer) return true;
-		switch (this.getOption('behavior')){
-			case 'cancel': this.cancel(); return true;
-			case 'stack': this.stack.push(this.caller.pass(arguments, this)); return false;
-		}
-		return false;
-	},
-
-	'protected stopTimer': function(){
-		if (!this.timer) return false;
-		this.time = Date.now() - this.time;
-		this.timer = removeInstance(this);
-		return true;
-	},
-
-	'protected startTimer': function(){
-		if (this.timer) return false;
-		this.time = Date.now() - this.time;
-		this.timer = addInstance(this);
-		return true;
 	}
 
 });
@@ -119,27 +70,9 @@ Fx.extend('parseDuration', function(duration){
 	return n;
 });
 
-// global timer
+// fps
 
-var fps = 60, instances = [], timer;
-
-var loop = function(){
-	for (var i = 0; i < instances.length; i++) instances[i].step();
-};
-
-var addInstance = function(instance){
-	instances.push(instance);
-	if (!timer) timer = loop.periodical(Math.round(1000 / fps));
-	return true;
-};
-
-var removeInstance = function(instance){
-	instances.erase(instance);
-	if (!instances.length && timer) timer = clearInterval(timer);
-	return false;
-};
-
-// fps set
+var fps = 60;
 
 Fx.extend('setFPS', function(value){
 	fps = value;
@@ -159,7 +92,8 @@ Fx.defineEquations({
 	},
 
 	'pow': function(p, x){
-		return Math.pow(p, (x != null) ? x : 6);
+		x = (x && x[0] || 6);
+		return Math.pow(p, x);
 	},
 
 	'expo': function(p){
@@ -171,11 +105,11 @@ Fx.defineEquations({
 	},
 
 	'sine': function(p){
-		return 1 - Math.sin((1 - p) * Math.PI / 2);
+		return 1 - Math.cos(p * Math.PI / 2);
 	},
 
 	'back': function(p, x){
-		x = (x != null) ? x : 1.618;
+		x = (x && x[0] || 1.618);
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -191,7 +125,7 @@ Fx.defineEquations({
 	},
 
 	'elastic': function(p, x){
-		x = (x != null) ? x : 1;
+		x = (x && x[0] || 1);
 		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * x / 3);
 	}
 
@@ -210,8 +144,7 @@ Fx.extend('parseEquation', function(name){
 	if (t == 'function') return name;
 	if (t != 'string') name = 'linear';
 	var match = name.match(/^([\w]+)([:inout]+)?(\(([\d.]+)\))?$/);
-	var n = match[1], equation = Fx.lookupEquation(n);
-	if (!equation) return null;
+	var equation = Fx.lookupEquation(match[1]) || Fx.lookupEquation('default');
 	var end = equation(1), param = parseFloat(match[4]), type = match[2];
 	switch (type){
 		case ':out': return function(pos){

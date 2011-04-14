@@ -11,19 +11,27 @@ Fx.Morph = new Class({
 
 	Extends: Fx,
 	
-	Implements: Events,
-	
-	// onCancel, onPause, onResume, onComplete
-	
 	initialize: function(element, options){
 		this.item = DOM.$(element);
 		this.parent(options);
+		this.items.push(this.item);
 	},
-	
+
 	/* public methods */
-	
-	start: function(data){
-		if (!this.check(property, data)) return this;
+
+	morph: function(selector){
+		if (!this.check(selector)) return this;
+		var element = $(document).build(selector).setStyles({visibility: 'hidden', position: 'absolute'}).injectAfter(this.item), styles = {};
+		DOM.Element.eachStyleParser(function(parser, name){
+			if (!parser.shortHand) styles[name] = element.getStyle(name);
+		});
+		element.eject();
+		return this.start(styles);
+	},
+
+	/* overrides */
+
+	'protected onStart': function(data){
 		var matchColor = /^rgb/, matchUnit = /^[\d.]+[a-zA-Z]+$/, matchFloat = /^[\d.]+$/, matchString = /^\w+$/;
 		
 		if (typeOf(data) == 'string'){
@@ -49,8 +57,6 @@ Fx.Morph = new Class({
 			if (from == null) from = this.item.getStyle(camel);
 			var froms = Array.from(parse(from)), tos = Array.from(parse(to));
 			if (!froms || !tos) continue;
-			
-			var units = [];
 			
 			var l = froms.length;
 			if (l != tos.length) continue;
@@ -84,18 +90,6 @@ Fx.Morph = new Class({
 		return (length) ? this.parent() : this;
 		
 	},
-	
-	morph: function(selector){
-		if (!this.check(selector)) return this;
-		var element = $(document).build(selector).setStyles({visibility: 'hidden', position: 'absolute'}).injectAfter(this.item), styles = {};
-		DOM.Element.eachStyleParser(function(parser, name){
-			if (!parser.shortHand) styles[name] = element.getStyle(name);
-		});
-		element.eject();
-		return this.start(styles);
-	},
-	
-	/* overrides */
 	
 	'protected render': function(styles){
 		this.item.setStyles(styles);
@@ -158,28 +152,6 @@ Fx.Morph = new Class({
 	
 	'protected parseFloat': function(from, to){
 		return [parseFloat(from), parseFloat(to)];
-	},
-	
-	/* events integration */
-	
-	cancel: function(){
-		if (this.parent()) this.fire('cancel', this.item);
-		return this;
-	},
-	
-	pause: function(){
-		if (this.parent()) this.fire('pause', this.item);
-		return this;
-	},
-	
-	resume: function(){
-		if (this.parent()) this.fire('resume', this.item);
-		return this;
-	},
-	
-	complete: function(){
-		if (this.parent()) this.fire('complete', this.item);
-		return this;
 	},
 	
 	/* $ */

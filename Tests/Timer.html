@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Timer</title>
+
+	<script src="../Source/Core/Core.js"></script>
+	<script src="../Source/Types/Array.js"></script>
+	<script src="../Source/Types/Function.js"></script>
+	<script src="../Source/Types/String.js"></script>
+	<script src="../Source/Utilities/Accessor.js"></script>
+	<script src="../Source/Utilities/Table.js"></script>
+	<script src="../Source/Class/Class.js"></script>
+	<script src="../Source/Class/Options.js"></script>
+	<script src="../Source/Class/Events.js"></script>
+	<script src="../Source/Class/Chain.js"></script>
+	<script src="../Source/Fx/Timer.js"></script>
+	<script src="../Source/Fx/Fx.js"></script>
+
+	<script>
+
+	$ = document.getElementById.bind(document);
+
+	window.addEventListener('DOMContentLoaded', function(){
+
+		var ball = $('ball'),
+			style = ball.style,
+			logDiv = $('log'),
+			log = function(msg){
+				logDiv.innerHTML += '<br>' + msg;
+			}
+
+		// Test Timer
+		Timer.Circle = new Class({
+
+			Extends: Timer,
+
+			options: {
+				rpm: 30,
+				radius: 50
+			},
+
+			'protected onStart': function(){
+				this.phi = 0;
+				this.rounds = 0;
+			},
+	
+			'protected onStep': function(time, dt){
+				this.phi += 2 * Math.PI * (dt / 1000) * (this.getOption('rpm') / 60);
+
+				var r = this.getOption('radius');
+				style.left = Math.round(Math.cos(this.phi) * r) + 'px';
+				style.top = Math.round(-Math.sin(this.phi) * r) + 'px';
+
+				var rounds = this.rounds;
+				this.rounds = Math.floor(this.phi / (2 * Math.PI));
+				if (rounds != this.rounds) this.fire('round', this.rounds);
+			}
+
+		});
+
+		var timer = new Timer.Circle({
+			behavior: 'chain',
+			onStart: log.pass('start'),
+			onCancel: log.pass('cancel'),
+			onPause: log.pass('pause'),
+			onResume: log.pass('resume'),
+			onComplete: log.pass('complete'),
+			onRound: function(rounds){
+				console.log(rounds + ' rounds in ' + Math.round((Date.now() - this.time) / 1000) + 's');
+			}
+		});
+
+		// Test Fx
+		var radiusFx = new Fx({
+			duration: '5000',
+			behavior: 'chain',
+			equation: 'pow'
+		});
+		radiusFx.render = function(now){
+			timer.setOption('radius', now);
+		};
+		var rpmFx = new Fx({duration: '3s'});
+		rpmFx.render = function(now){
+			timer.setOption('rpm', now);
+		}
+		timer.listen('start', function(){
+			radiusFx.start(50, 200).start(200, 100);
+			rpmFx.start(0, 40);
+		});
+
+		['start', 'cancel', 'pause', 'resume', 'complete'].forEach(function(method){
+
+			$(method).addEventListener('click', function(){
+				timer[method]();
+			}, false);
+			
+		});
+
+	}, false);
+
+	</script>
+
+	<style>
+		body {
+			margin: 200px;
+			position: relative;
+		}
+
+		#ball {
+			border-radius: 10px;
+			width: 20px;
+			height: 20px;
+			background: red;
+			position: absolute;
+		}
+
+		#buttons {
+			position: absolute;
+			top: 200px;
+		}
+	</style>
+
+</head>
+<body>
+	<div id="ball"></div>
+
+	<div id="buttons">
+		<button id="start">Start</button>
+		<button id="cancel">Cancel</button>
+		<button id="pause">Pause</button>
+		<button id="resume">Resume</button>
+		<button id="complete">Complete</button>
+		<p id="log"><strong>log:</strong></p>
+	</div>
+
+</body>
+</html>
