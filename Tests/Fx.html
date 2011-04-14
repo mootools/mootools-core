@@ -36,7 +36,9 @@
 
 		});
 
-		var myFx = new Fx.My();
+		var myFx = new Fx.My({
+			duration: '3s'
+		});
 
 		['start', 'cancel', 'pause', 'resume', 'complete'].forEach(function(method){
 

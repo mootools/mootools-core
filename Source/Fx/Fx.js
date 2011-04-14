@@ -15,7 +15,9 @@ var Fx = this.Fx = new Class({
 
 	options: {
 		duration: '500ms',
-		equation: 'default'
+		equation: 'default',
+		frameSkip: true,
+		frames: null
 	},
 
 	initialize: function(options){

@@ -24,6 +24,7 @@ this.Timer = new Class({
 	},
 
 	start: function(){
+		if (this.paused) return this.resume();
 		if (this.check.apply(this, arguments)){
 			this.time = 0;
 			this.onStart.apply(this, arguments);
@@ -34,9 +35,10 @@ this.Timer = new Class({
 	},
 
 	cancel: function(){
-		this.time = 0;
 		this.stopTimer(this);
-		return this.fire('cancel', this.items);
+		this.fire('cancel', this.items);
+		this.elapsed = 0;
+		return this;
 	},
 
 	pause: function(){
@@ -59,6 +61,7 @@ this.Timer = new Class({
 		this.stopTimer();
 		this.fire('complete', this.items);
 		if (!this.callChain()) this.fire('chainComplete', this.items);
+		this.elapsed = 0;
 		return this;
 	},
 
