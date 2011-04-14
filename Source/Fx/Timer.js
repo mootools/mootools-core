@@ -97,8 +97,7 @@ this.Timer = new Class({
 	'protected startTimer': function(){
 		if (this.timer) return;
 		this.time = Date.now() - this.time;
-		this.stepper = this.step.bind(this);
-		this.timer = Timer.add(this.stepper, this.getOption('fps'));
+		this.timer = Timer.add(this.stepper || (this.stepper = this.step.bind(this)), this.getOption('fps'));
 	}
 
 });
