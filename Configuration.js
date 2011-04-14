@@ -66,6 +66,7 @@ Configuration.sets = {
 			'Element/NewElement',
 			'Element/Element.Event',
 			'Element/Element.Dimensions',
+			'Element/Element.Style',
 			'Element/IFrame',
 			'Request/Request',
 			'Request/Request.HTML',

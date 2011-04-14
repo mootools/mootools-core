@@ -16,4 +16,14 @@ describe('Element.set opacity', function(){
 		}
 	});
 
+	it('should handle very small numbers with scientific notation like 1.1e-20 with opacity', function(){
+		var div = new Element('div');
+		div.set('opacity', 1e-20);
+		div.set('opacity', 0.5);
+		expect(+div.get('opacity')).toEqual(0.5);
+		if (document.html.style.filter != null && !window.opera && !Syn.browser.gecko){
+			expect(div.style.filter.split('opacity').length - 1).toEqual(1);
+		}
+	});
+
 });
