@@ -18,6 +18,18 @@ describe("Object Methods", {
 		expect(Object.subset(object, ['a', 'b'])).toEqual({a:'string',b:233});
 	},
 
+	'should ignore undefined keys': function(){
+		var obj = {
+			b: 'string',
+			d: null
+		};
+		var subset = Object.subset(obj, ['a', 'b', 'c', 'd']);
+		expect(subset).toEqual({b: 'string', d: null});
+		// To equal doesn't check for undefined properties
+		expect('a' in subset).toBeFalsy();
+		expect('c' in subset).toBeFalsy();
+	},
+
 	// Object keyOf
 
 	'should return the key of the value or null if not found': function(){
