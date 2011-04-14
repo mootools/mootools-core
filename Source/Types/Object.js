@@ -39,9 +39,9 @@ Object.extend({
 
 	filter: function(object, fn, bind){
 		var results = {};
-		Object.each(object, function(value, key){
-			if (fn.call(bind, value, key, object)) results[key] = value;
-		});
+		for (var key in object){
+			if (fn.call(bind, object[key], key, object)) results[key] = object[key];
+		}
 		return results;
 	},
 
