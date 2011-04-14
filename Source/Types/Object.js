@@ -40,7 +40,8 @@ Object.extend({
 	filter: function(object, fn, bind){
 		var results = {};
 		for (var key in object){
-			if (fn.call(bind, object[key], key, object)) results[key] = object[key];
+			var value = object[key];
+			if (hasOwnProperty.call(object, key) && fn.call(bind, value, key, object)) results[key] = value;
 		}
 		return results;
 	},
