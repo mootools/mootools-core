@@ -62,15 +62,21 @@ this.Timer = new Class({
 		return this;
 	},
 
+	isRunning: function(){
+		return !!this.timer;
+	},
+
 	/* private methods */
 
 	step: function(){
-		if (this.onStep){
-			var now = Date.now(), dt = now - this.prevTime;
-			this.onStep(now, dt);
-			this.prevTime = now;
-		}
+		var now = Date.now(), previous = this.elapsed || 0;
+		this.elapsed = now - this.time;
+		this.onStep(now, this.elapsed - previous);
 	},
+
+	'protected onStep': function(){},
+
+	'protected onStart': function(){},
 
 	'protected check': function(){
 		if (!this.timer) return true;
@@ -89,9 +95,7 @@ this.Timer = new Class({
 
 	'protected startTimer': function(){
 		if (this.timer) return;
-		var now = Date.now();
-		this.time = now - this.time;
-		this.prevTime = now;
+		this.time = Date.now() - this.time;
 		this.timer = addInstance(this);
 	}
 
