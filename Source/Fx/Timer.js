@@ -26,7 +26,7 @@ this.Timer = new Class({
 	start: function(){
 		if (this.check.apply(this, arguments)){
 			this.time = 0;
-			if (this.onStart) this.onStart.apply(this, arguments);
+			this.onStart.apply(this, arguments);
 			this.startTimer(this);
 			this.fire('start', this.items);
 		}
@@ -71,7 +71,7 @@ this.Timer = new Class({
 	step: function(){
 		var now = Date.now(), previous = this.elapsed || 0;
 		this.elapsed = now - this.time;
-		this.onStep(now, this.elapsed - previous);
+		this.onStep(this.elapsed - previous, now);
 	},
 
 	'protected onStep': function(){},

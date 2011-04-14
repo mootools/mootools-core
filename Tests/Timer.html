@@ -37,7 +37,8 @@
 
 			options: {
 				rpm: 30,
-				radius: 50
+				radius: 50,
+				fps: 6
 			},
 
 			'protected onStart': function(){
@@ -45,7 +46,7 @@
 				this.rounds = 0;
 			},
 	
-			'protected onStep': function(time, dt){
+			'protected onStep': function(dt){
 				this.phi += 2 * Math.PI * (dt / 1000) * (this.getOption('rpm') / 60);
 
 				var r = this.getOption('radius');

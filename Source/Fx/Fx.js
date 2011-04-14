@@ -19,8 +19,8 @@ var Fx = this.Fx = new Class({
 	},
 
 	initialize: function(options){
-		(options || (options = {})).fps = fps;
 		this.parent(options);
+		this.setOption('fps', fps);
 	},
 
 	/* private methods */
@@ -28,18 +28,29 @@ var Fx = this.Fx = new Class({
 	'protected onStart': function(from, to){
 		this.from = from;
 		this.to = to;
+
 		this.equation = Fx.parseEquation(this.getOption('equation'));
 		this.duration = Fx.parseDuration(this.getOption('duration'));
+
+		this.frameInterval = 1000 / fps;
+		this.frame = this.getOption('frameSkip') ? 0 : -1;
+		this.frames = this.getOption('frames') || Math.round(this.duration / this.frameInterval);
 	},
 
-	'protected onStep': function(time){
-		var factor = (time - this.time) / this.duration;
-		if (factor >= 1) factor = 1;
-		var delta = this.equation(factor);
-		this.render(this.compute(delta));
-		if (factor == 1) this.complete();
+	'protected onStep': function(dt){
+		this.frame += this.getOption('frameSkip')
+			? dt / this.frameInterval : 1;
+
+		if (this.frame < this.frames){
+			var delta = this.equation(this.frame / this.frames);
+			this.render(this.compute(delta));
+		} else {
+			this.frame = this.frames;
+			this.render(this.compute(1));
+			this.complete();
+		}
 	},
-	
+
 	'protected render': function(now){},
 
 	'protected compute': function(delta){

@@ -9,9 +9,11 @@
 	<script src="../Source/Types/Function.js"></script>
 	<script src="../Source/Types/String.js"></script>
 	<script src="../Source/Utilities/Accessor.js"></script>
+	<script src="../Source/Utilities/Table.js"></script>
 	<script src="../Source/Class/Class.js"></script>
 	<script src="../Source/Class/Options.js"></script>
 	<script src="../Source/Class/Events.js"></script>
+	<script src="../Source/Class/Chain.js"></script>
 	<script src="../Source/Fx/Timer.js"></script>
 	<script src="../Source/Fx/Fx.js"></script>
 
@@ -24,17 +26,26 @@
 		var ball = $('ball'),
 			style = ball.style;
 
-		var timer = new Timer();
-		timer.step = function(){
-			var dt = (Date.now() - this.time) / 500;
-			style.left = Math.round(Math.cos(dt) * 50) + 'px';
-			style.top = Math.round(-Math.sin(dt) * 50) + 'px';
-		};
+		Fx.My = new Class({
+
+			Extends: Fx,
+
+			'protected render': function(now){
+				style.left = Math.round(now) + 'px';
+			}
+
+		});
+
+		var myFx = new Fx.My();
 
 		['start', 'cancel', 'pause', 'resume', 'complete'].forEach(function(method){
 
 			$(method).addEventListener('click', function(){
-				timer[method]();
+				if (method == 'start') {
+					myFx.start(0, 300);
+				} else {
+					myFx[method]();
+				}
 			}, false);
 			
 		});
@@ -50,7 +61,6 @@
 		}
 
 		#ball {
-			border-radius: 10px;
 			width: 20px;
 			height: 20px;
 			background: red;
