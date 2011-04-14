@@ -108,7 +108,7 @@ this.Timer = new Class({
 var functions = {}, timers = {};
 
 var loop = function(fps){
-	for (var i = 0, l = functions[fps].length; i < l; i++) functions[fps][i]();
+	for (var i = 0; i < functions[fps].length; i++) functions[fps][i]();
 };
 
 Timer.extend({
