@@ -71,7 +71,7 @@ this.Timer = new Class({
 	step: function(){
 		var now = Date.now(), previous = this.elapsed || 0;
 		this.elapsed = now - this.time;
-		this.onStep(this.elapsed - previous, now);
+		this.onStep(this.elapsed - previous, this.elapsed, now);
 	},
 
 	'protected onStep': function(){},
