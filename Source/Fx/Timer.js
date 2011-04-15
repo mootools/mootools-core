@@ -69,8 +69,9 @@ var Timer = this.Timer = new Class({
 
 	/* private methods */
 
-	step: function(){
-		var now = Date.now(), previous = this.elapsed;
+	step: function(now){
+		if (!this.time) this.time = now - this.elapsed;
+		var previous = this.elapsed;
 		this.elapsed = now - this.time;
 		this.onStep(this.elapsed - previous, this.elapsed, now);
 	},
@@ -90,13 +91,12 @@ var Timer = this.Timer = new Class({
 
 	'protected stopTimer': function(){
 		if (!this.timer) return;
-		this.time = Date.now() - this.time;
+		this.time = null;
 		this.timer = this.stepper && Timer.remove(this.stepper, this.getOption('fps'));
 	},
 
 	'protected startTimer': function(){
 		if (this.timer) return;
-		this.time = Date.now() - this.time;
 		this.timer = Timer.add(this.stepper || (this.stepper = this.step.bind(this)), this.getOption('fps'));
 	}
 
@@ -107,7 +107,8 @@ var Timer = this.Timer = new Class({
 var functions = {}, timers = {};
 
 var loop = function(){
-	for (var i = this.length, fn; i--;) (fn = this[i]) && fn();
+	var now = Date.now();
+	for (var i = this.length, fn; i--;) (fn = this[i]) && fn(now);
 };
 
 Timer.extend({
