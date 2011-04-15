@@ -9,7 +9,7 @@ provides: Timer
 
 (function(){
 
-this.Timer = new Class({
+var Timer = this.Timer = new Class({
 
 	Implements: [Options, Events, Chain],
 
