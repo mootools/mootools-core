@@ -89,12 +89,31 @@
 			rpmFx.start(0, 40);
 		});
 
+		var log2 = $('log2'), log3 = $('log3');
+
+		var timer2 = new Timer();
+		timer2.onStep = function(dt, elapsed){
+			log2.innerHTML = (dt + ' -- ' + elapsed);
+		};
+		var timer3 = new Timer();
+		timer3.onStep = function(dt, elapsed){
+			log3.innerHTML = (dt + ' -- ' + elapsed);
+		};
+
 		['start', 'cancel', 'pause', 'resume', 'complete'].forEach(function(method){
 
 			$(method).addEventListener('click', function(){
 				timer[method]();
 			}, false);
 			
+			$(method + '2').addEventListener('click', function(){
+				timer2[method]();
+			}, false);
+
+			$(method + '3').addEventListener('click', function(){
+				timer3[method]();
+			}, false);
+
 		});
 
 	}, false);
@@ -107,6 +126,11 @@
 			position: relative;
 		}
 
+		#ballwrapper {
+			position: absolute;
+			right: 100px;
+		}
+
 		#ball {
 			border-radius: 10px;
 			width: 20px;
@@ -115,15 +139,12 @@
 			position: absolute;
 		}
 
-		#buttons {
-			position: absolute;
-			top: 200px;
-		}
 	</style>
 
 </head>
 <body>
-	<div id="ball"></div>
+
+	<div id="ballwrapper"><div id="ball"></div></div>
 
 	<div id="buttons">
 		<button id="start">Start</button>
@@ -132,6 +153,24 @@
 		<button id="resume">Resume</button>
 		<button id="complete">Complete</button>
 		<p id="log"><strong>log:</strong></p>
+	</div>
+
+	<div id="timer2">
+		<button id="start2">Start</button>
+		<button id="cancel2">Cancel</button>
+		<button id="pause2">Pause</button>
+		<button id="resume2">Resume</button>
+		<button id="complete2">Complete</button>
+		<p id="log2"></p>
+	</div>
+
+	<div id="timer3">
+		<button id="start3">Start</button>
+		<button id="cancel3">Cancel</button>
+		<button id="pause3">Pause</button>
+		<button id="resume3">Resume</button>
+		<button id="complete3">Complete</button>
+		<p id="log3"></p>
 	</div>
 
 </body>

@@ -107,7 +107,7 @@ var Timer = this.Timer = new Class({
 var functions = {}, timers = {};
 
 var loop = function(){
-	for (var i = this.length, fn; fn = this[--i];) if (fn) fn();
+	for (var i = this.length, fn; i--;) (fn = this[i]) && fn();
 };
 
 Timer.extend({
