@@ -19,7 +19,7 @@ describe('Fx.Morph', function(){
 			width: [10, 50]
 		});
 
-		waits(130);
+		waits(200);
 
 		runs(function(){
 			expect(element.getStyle('height').toInt()).toEqual(50);
