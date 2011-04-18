@@ -39,7 +39,7 @@ describe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete.argsForCall[0][0]).toEqual('{"method":"get","get":{"some":"data"}}');
+			expect(JSON.decode(this.onComplete.argsForCall[0][0])).toEqual({method: 'get', 'get': {'some':'data'}});
 		});
 		
 	});
@@ -61,7 +61,7 @@ describe('Request', function(){
 		});
 		
 		runs(function(){
-			expect(this.onComplete.argsForCall[0][0]).toEqual('{"method":"post","post":{"send":"senddata"}}');
+			expect(JSON.decode(this.onComplete.argsForCall[0][0])).toEqual({method: 'post', 'post': {'send':'senddata'}});
 		});
 		
 	});
