@@ -132,7 +132,7 @@ describe('Function.delay', function(){
 		var argumentCount = null;
 		var spy = function(){
 			argumentCount = arguments.length;
-		}
+		};
 		spy.delay(50);
 		waits(100);
 		runs(function(){
@@ -179,7 +179,7 @@ describe('Function.periodical', function(){
 		var argumentCount = null;
 		var spy = function(){
 			argumentCount = arguments.length;
-		}
+		};
 		var timer = spy.periodical(50);
 		waits(100);
 		runs(function(){

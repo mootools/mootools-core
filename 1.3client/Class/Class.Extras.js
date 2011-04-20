@@ -173,7 +173,7 @@ var runEventSpecs = function(type, create){
 };
 
 runEventSpecs('mixin', function(){
-	return new Events
+	return new Events;
 });
 
 runEventSpecs('element', function(){

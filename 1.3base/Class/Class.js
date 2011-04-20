@@ -268,12 +268,12 @@ describe('Class toString', function(){
 				return "It's me, " + this.name;
 			}
 
-		})
+		});
 
 		expect((new Person('Valerio')) + '').toBe('Valerio');
 
 		expect((new Italian('Valerio')) + '').toBe("It's me, Valerio");
-	})
+	});
 
 });
 
