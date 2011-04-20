@@ -1,9 +1,10 @@
 /*
-Script: Core.js
-	Examples for Core.js
-
-License:
-	MIT-style license.
+---
+name: Core Specs
+description: n/a
+requires: [Core/Core]
+provides: [Core.Specs]
+...
 */
 
 describe('Function.prototype.extend', {

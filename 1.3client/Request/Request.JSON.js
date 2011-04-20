@@ -1,3 +1,11 @@
+/*
+---
+name: Request.JSON Specs
+description: n/a
+requires: [Core/Request.JSON]
+provides: [Request.JSON.Specs]
+...
+*/
 describe('Request.JSON', function(){
 
 	it('should create a JSON request', function(){

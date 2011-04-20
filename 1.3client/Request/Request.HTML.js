@@ -1,3 +1,11 @@
+/*
+---
+name: Request.HTML Specs
+description: n/a
+requires: [Core/Request.HTML]
+provides: [Request.HTML.Specs]
+...
+*/
 describe('Request.HTML', function(){
 
 	beforeEach(function(){

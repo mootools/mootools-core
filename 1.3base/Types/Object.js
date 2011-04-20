@@ -1,11 +1,11 @@
 /*
-Script: Object.js
-	Specs for Object.js
-
-License:
-	MIT-style license.
+---
+name: Object Specs
+description: n/a
+requires: [Core/Object]
+provides: [Object.Specs]
+...
 */
-
 (function(){
 
 var object = { a: 'string', b: 233, c: {} };

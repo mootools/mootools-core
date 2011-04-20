@@ -1,3 +1,11 @@
+/*
+---
+name: IFrame Specs
+description: n/a
+requires: [Core/Element]
+provides: [IFrame.Specs]
+...
+*/
 describe('IFrame', function(){
 
 	it('should call onload', function(){

@@ -1,3 +1,11 @@
+/*
+---
+name: DomReady Specs
+description: n/a
+requires: [Core/DomReady]
+provides: [DomReady.Specs]
+...
+*/
 document.addListener = function(type, fn){
 	if (this.addEventListener) this.addEventListener(type, fn, false);
 	else this.attachEvent('on' + type, fn);

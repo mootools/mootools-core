@@ -1,3 +1,12 @@
+/*
+---
+name: Element Specs
+description: n/a
+requires: [Core/Element]
+provides: [Element.Specs]
+...
+*/
+
 describe('document.id', function(){
 
 	it('should find IDs with special characters', function(){

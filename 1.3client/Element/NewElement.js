@@ -1,9 +1,10 @@
 /*
-Script: NewElement.js
-	Behavior Spec for new Element(expression)
-
-License:
-	MIT-style license.
+---
+name: NewElement Specs
+description: n/a
+requires: [Core/Element]
+provides: [NewElement.Specs]
+...
 */
 
 describe('new Element(expression)', function(){

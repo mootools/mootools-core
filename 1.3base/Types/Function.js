@@ -1,9 +1,10 @@
 /*
-Script: Function.js
-	Specs for Function.js
-
-License:
-	MIT-style license.
+---
+name: Function Specs
+description: n/a
+requires: [Core/Function]
+provides: [Function.Specs]
+...
 */
 
 describe('Function.bind', function(){

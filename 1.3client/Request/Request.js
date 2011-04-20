@@ -1,3 +1,11 @@
+/*
+---
+name: Request Specs
+description: n/a
+requires: [Core/Request]
+provides: [Request.Specs]
+...
+*/
 describe('Request', function(){
 
 	it('should create an ajax request', function(){

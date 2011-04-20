@@ -1,3 +1,11 @@
+/*
+---
+name: Cookie Specs
+description: n/a
+requires: [Core/Cookie]
+provides: [Cookie.Specs]
+...
+*/
 describe('Cookie', function(){
 
 	it('should read and write a cookie', function(){

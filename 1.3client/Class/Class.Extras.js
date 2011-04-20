@@ -1,3 +1,11 @@
+/*
+---
+name: Class.Extras Specs
+description: n/a
+requires: [Core/Class.Extras]
+provides: [Class.Extras.Specs]
+...
+*/
 describe('setOptions', function(){
 
 	it('should allow to pass the document', function(){

@@ -1,4 +1,11 @@
-
+/*
+---
+name: Fx.Morph Specs
+description: n/a
+requires: [Core/Fx.Morph]
+provides: [Fx.Morph.Specs]
+...
+*/
 describe('Fx.Morph', function(){
 
 	it('should morph the style of an element', function(){

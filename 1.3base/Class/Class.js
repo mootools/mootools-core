@@ -1,9 +1,10 @@
 /*
-Script: Class.js
-	Specs for Class.js
-
-License:
-	MIT-style license.
+---
+name: Class Specs
+description: n/a
+requires: [Core/Class]
+provides: [Class.Specs]
+...
 */
 
 (function(){
