@@ -773,11 +773,12 @@ Element.implement('hasChild', function(element){
 
 });
 
-// IE purge
+/*<ltIE9>*/
 if (window.attachEvent && !window.addEventListener) window.addListener('unload', function(){
 	Object.each(collected, clean);
 	if (window.CollectGarbage) CollectGarbage();
 });
+/*</ltIE9>*/
 
 })();
 
@@ -813,6 +814,7 @@ Element.Properties.tag = {
 
 };
 
+/*<ltIE9>*/
 (function(maxLength){
 	if (maxLength != null) Element.Properties.maxlength = Element.Properties.maxLength = {
 		get: function(){
@@ -821,7 +823,9 @@ Element.Properties.tag = {
 		}
 	};
 })(document.createElement('input').getAttribute('maxLength'));
+/*</ltIE9>*/
 
+/*<!webkit>*/
 Element.Properties.html = (function(){
 
 	var tableTest = Function.attempt(function(){
@@ -858,3 +862,4 @@ Element.Properties.html = (function(){
 
 	return html;
 })();
+/*</!webkit>*/

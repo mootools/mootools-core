@@ -37,6 +37,7 @@ Function.implement({
 		return null;
 	},
 
+	/*<!ES5>*/
 	bind: function(bind){
 		var self = this,
 			args = (arguments.length > 1) ? Array.slice(arguments, 1) : null;
@@ -47,6 +48,7 @@ Function.implement({
 			return self.apply(bind, args || arguments);
 		};
 	},
+	/*</!ES5>*/
 
 	pass: function(args, bind){
 		var self = this;
