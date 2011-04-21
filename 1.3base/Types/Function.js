@@ -25,7 +25,6 @@ describe('Function.bind', function(){
 
 		expect(spy).not.toHaveBeenCalled();
 		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('arg');
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
@@ -36,7 +35,6 @@ describe('Function.bind', function(){
 
 		expect(spy).not.toHaveBeenCalled();
 		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('foo', 'bar');
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
@@ -61,36 +59,6 @@ describe('Function.pass', function(){
 		expect(fnc('additional', 'arguments')).toBe('the result');
 		expect(spy.mostRecentCall.object).toEqual(binding);
 		expect(spy).toHaveBeenCalledWith('multiple', 'arguments');
-	});
-
-});
-
-describe('Function.run', function(){
-
-	it('should run the function', function(){
-		var spy = jasmine.createSpy().andReturn('something');
-		expect(spy.run()).toEqual('something');
-		expect(spy).toHaveBeenCalledWith();
-	});
-
-	it('should run the function with a single argument', function(){
-		var spy = jasmine.createSpy().andReturn('something');
-		expect(spy.run('arg')).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('arg');
-	});
-
-	it('should run the function with multiple arguments', function(){
-		var spy = jasmine.createSpy().andReturn('something');
-		expect(spy.run(['foo', 'bar'])).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('foo', 'bar');
-	});
-
-	it('should run the function with multiple arguments and bind the function to an object', function(){
-		var spy = jasmine.createSpy().andReturn('something');
-		var binding = {some: 'binding'};
-		expect(spy.run(['foo', 'bar'], binding)).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('foo', 'bar');
-		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
 });

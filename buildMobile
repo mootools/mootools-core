@@ -1,0 +1,1 @@
+packager build Core/Class.Extras Core/DOMReady Core/Element.Style Core/Element.Event Core/Element.Dimensions Core/Request.HTML Request.JSON Core/Fx.Tween Core/Fx.Morph Core/Fx.Transitions Core/Cookie -blocks 1.2compat ltIE8 ltIE9 \!ES5 \!webkit > mootools-core-mobile.js

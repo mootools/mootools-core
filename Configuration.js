@@ -21,6 +21,10 @@ Configuration.presets = {
 		sets: ['1.2', 'core-1.3-base', 'core-1.3-client'],
 		source: ['core-1.3-base', 'core-1.3-client']
 	},
+	'mobile core-1.3': {
+		sets: ['core-1.3-base', 'core-1.3-client'],
+		source: ['1.3mobile']
+	},
 	'core-2.0': {
 		sets: ['core-2.0-base', 'core-2.0-client'],
 		source: ['core-2.0-base', 'core-2.0-client']
@@ -189,7 +193,12 @@ Configuration.source = {
 			'Request/Request.JSON'
 		]
 	},
-	
+
+	'1.3mobile': {
+		path: './',
+		files: ['mootools-core-mobile']
+	},
+
 	'core-2.0-base': {
 		path: '../Source/',
 		files: [
