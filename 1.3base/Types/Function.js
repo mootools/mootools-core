@@ -25,7 +25,6 @@ describe('Function.bind', function(){
 
 		expect(spy).not.toHaveBeenCalled();
 		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('arg');
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
@@ -36,7 +35,6 @@ describe('Function.bind', function(){
 
 		expect(spy).not.toHaveBeenCalled();
 		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy).toHaveBeenCalledWith('foo', 'bar');
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
