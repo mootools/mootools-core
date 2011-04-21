@@ -159,7 +159,7 @@ Document.mirror(function(name, method){
 });
 
 document.html = document.documentElement;
-document.head = document.getElementsByTagName('head')[0];
+if (!document.head) document.head = document.getElementsByTagName('head')[0];
 
 if (document.execCommand) try {
 	document.execCommand("BackgroundImageCache", false, true);
