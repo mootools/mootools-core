@@ -820,7 +820,7 @@ Element.Properties.tag = {
 })(document.createElement('input').getAttribute('maxLength'));
 /*</ltIE9>*/
 
-/*<!mobile>*/
+/*<!webkit>*/
 Element.Properties.html = (function(){
 
 	var tableTest = Function.attempt(function(){
@@ -857,4 +857,4 @@ Element.Properties.html = (function(){
 
 	return html;
 })();
-/*</!mobile>*/
+/*</!webkit>*/

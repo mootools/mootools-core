@@ -16,7 +16,7 @@ provides: Array
 
 Array.implement({
 
-	/*<ltIE9>*/
+	/*<!ES5>*/
 	every: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
 			if ((i in this) && !fn.call(bind, this[i], i, this)) return false;
@@ -54,7 +54,7 @@ Array.implement({
 		}
 		return false;
 	},
-	/*</ltIE9>*/
+	/*</!ES5>*/
 
 	clean: function(){
 		return this.filter(function(item){
