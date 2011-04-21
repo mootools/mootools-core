@@ -29,8 +29,13 @@ var Element = function(tag, props){
 		var attributes = parsed.attributes;
 		if (attributes) for (var i = 0, l = attributes.length; i < l; i++){
 			var attr = attributes[i];
-			if (attr.value != null && attr.operator == '=' && props[attr.key] == null)
-				props[attr.key] = attr.value;
+			if (props[attr.key] == null){
+				if (attr.value != null && attr.operator == '='){
+					props[attr.key] = attr.value;
+				} else if (!attr.value && !attr.operator){
+					props[attr.key] = true;
+				}
+			}
 		}
 
 		if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
