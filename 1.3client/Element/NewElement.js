@@ -110,6 +110,11 @@ describe('new Element(expression)', function(){
 		expect(table.cellPadding == 0).toBeTruthy();
 	});
 
+	it('should allow empty boolean attributes', function(){
+		var script = new Element('script[async]');
+		expect(script.hasAttribute('async')).toBeTruthy();
+	});
+
 	it('should allow false to be passed for checked', function() {
 		var input = new Element('input', {
 			type: 'checkbox',
