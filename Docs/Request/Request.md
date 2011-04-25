@@ -77,7 +77,7 @@ Fired when the Request is making progresses in the download or upload. (This is 
 
 	var myRequest = new Request({
 		url: 'image.jpg',
-		onProgress: function(event, xhr) {
+		onProgress: function(event, xhr){
 			var loaded = event.loaded, total = event.total;
 
 			console.log(parseInt(loaded / total * 100, 10));
@@ -221,7 +221,7 @@ Add or modify a header for the request. It will not override headers from the op
 ### Example:
 
 	var myRequest = new Request({url: 'getData.php', method: 'get', headers: {'X-Request': 'JSON'}});
-	myRequest.setHeader('Last-Modified','Sat, 1 Jan 2005 05:00:00 GMT');
+	myRequest.setHeader('Last-Modified', 'Sat, 1 Jan 2005 05:00:00 GMT');
 
 Request Method: getHeader {#Request:getHeader}
 --------------------------------------
@@ -243,7 +243,7 @@ Returns the given response header or null if not found.
 
 ### Example:
 
-	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML) {
+	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML){
 		alert(this.getHeader('Date')); // alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
 	}});
 
@@ -404,7 +404,7 @@ Returns the previously set Request instance (or a new one with default options).
 
 #### Example:
 
-	el.get('send', {method: 'get'});
+	el.set('send', {method: 'get'});
 	el.send();
 	el.get('send'); // returns the Request instance.
 
