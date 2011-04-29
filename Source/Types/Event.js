@@ -70,8 +70,10 @@ var Event = new Type('Event', function(event, win){
 			page = {x: touch.pageX, y: touch.pageY};
 			client = {x: touch.clientX, y: touch.clientY};
 		}
+	} else if ((/(drop|drag(?:start|enter|leave|over|end)?)$/i).test(type)){
+		this.dataTransfer = event.dataTransfer;
 	}
-
+	
 	return Object.append(this, {
 		event: event,
 		type: type,
