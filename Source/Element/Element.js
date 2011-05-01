@@ -27,8 +27,8 @@ var Element = function(tag, props){
 		if (parsed.id && props.id == null) props.id = parsed.id;
 
 		var attributes = parsed.attributes;
-		if (attributes) for (var i = 0, l = attributes.length; i < l; i++){
-			var attr = attributes[i];
+		if (attributes) for (var attr, i = 0, l = attributes.length; i < l; i++){
+			attr = attributes[i];
 			if (props[attr.key] != null) continue;
 
 			if (attr.value != null && attr.operator == '=') props[attr.key] = attr.value;
