@@ -1,4 +1,11 @@
-
+/*
+---
+name: Fx Specs
+description: n/a
+requires: [Core/Fx]
+provides: [Fx.Specs]
+...
+*/
 describe('Fx', function(){
 
 	Object.each(Fx.Transitions, function(value, transition){

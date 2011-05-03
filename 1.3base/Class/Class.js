@@ -1,9 +1,10 @@
 /*
-Script: Class.js
-	Specs for Class.js
-
-License:
-	MIT-style license.
+---
+name: Class Specs
+description: n/a
+requires: [Core/Class]
+provides: [Class.Specs]
+...
 */
 
 (function(){
@@ -267,12 +268,12 @@ describe('Class toString', function(){
 				return "It's me, " + this.name;
 			}
 
-		})
+		});
 
 		expect((new Person('Valerio')) + '').toBe('Valerio');
 
 		expect((new Italian('Valerio')) + '').toBe("It's me, Valerio");
-	})
+	});
 
 });
 

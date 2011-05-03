@@ -1,9 +1,10 @@
 /*
-Script: Function.js
-	Specs for Function.js
-
-License:
-	MIT-style license.
+---
+name: Function Specs
+description: n/a
+requires: [Core/Function]
+provides: [Function.Specs]
+...
 */
 
 describe('Function.bind', function(){
@@ -131,7 +132,7 @@ describe('Function.delay', function(){
 		var argumentCount = null;
 		var spy = function(){
 			argumentCount = arguments.length;
-		}
+		};
 		spy.delay(50);
 		waits(100);
 		runs(function(){
@@ -178,7 +179,7 @@ describe('Function.periodical', function(){
 		var argumentCount = null;
 		var spy = function(){
 			argumentCount = arguments.length;
-		}
+		};
 		var timer = spy.periodical(50);
 		waits(100);
 		runs(function(){

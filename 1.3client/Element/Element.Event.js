@@ -1,11 +1,11 @@
 /*
-Script: Element.Event.js
-	Behavior Spec for new Element.Event
-
-License:
-	MIT-style license.
+---
+name: Element.Event Specs
+description: n/a
+requires: [Core/Element.Event]
+provides: [Element.Event.Specs]
+...
 */
-
 describe('Element.Event', function(){
 	
 	// Restore native fireEvent in IE for Syn

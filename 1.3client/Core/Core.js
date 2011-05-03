@@ -1,3 +1,11 @@
+/*
+---
+name: Core Specs
+description: n/a
+requires: [Core/Core]
+provides: [Core.Specs]
+...
+*/
 describe('typeOf Client', {
 
 	"should return 'collection' for HTMLElements collections": function(){

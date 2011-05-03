@@ -1,3 +1,11 @@
+/*
+---
+name: Element.Dimensions Specs
+description: n/a
+requires: [Core/Element.Dimensions]
+provides: [Element.Dimensions.Specs]
+...
+*/
 describe('Element.getOffsetParent', function(){
 
 	var container, offsetParent, wrapper, child, table, td;

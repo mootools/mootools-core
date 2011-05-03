@@ -1,3 +1,11 @@
+/*
+---
+name: DomReady Specs
+description: n/a
+requires: [Core/DomReady]
+provides: [DomReady.Specs]
+...
+*/
 document.addListener = function(type, fn){
 	if (this.addEventListener) this.addEventListener(type, fn, false);
 	else this.attachEvent('on' + type, fn);
@@ -15,9 +23,9 @@ window.fireEvent =
 document.fireEvent = function(type){
 	if (type == 'domready')
 	for (var i = 0; i < domreadyCallbacks.length; ++i){
-		domreadyCallbacks[i]()
 	}
-}
+		domreadyCallbacks[i]();
+};
 
 window.addEvent = function(){};
 

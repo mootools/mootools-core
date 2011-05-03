@@ -1,4 +1,11 @@
-
+/*
+---
+name: Fx.Tween Specs
+description: n/a
+requires: [Core/Fx.Tween]
+provides: [Fx.Tween.Specs]
+...
+*/
 describe('Fx.Tween', function(){
 
 	it('should tween the style of an element', function(){

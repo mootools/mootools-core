@@ -1,3 +1,11 @@
+/*
+---
+name: Element.Style Specs
+description: n/a
+requires: [Core/Element.Style]
+provides: [Element.Style.Specs]
+...
+*/
 describe('Element.set opacity', function(){
 
 	it('should return the opacity of an Element without seting it before', function(){
