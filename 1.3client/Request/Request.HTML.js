@@ -115,7 +115,7 @@ describe('Request.HTML', function(){
 		});
 		
 	});
-	
+
 	it('should create an ajax request and correctly append the response to an element', function(){
 		
 		runs(function(){
@@ -166,6 +166,34 @@ describe('Request.HTML', function(){
 			expect(onCompleteArgs[0].length).toEqual(1);
 			expect(onCompleteArgs[0][0].get('tag')).toEqual('a');
 			expect(onCompleteArgs[0][0].get('text')).toEqual('aaa');
+		});
+		
+	});
+
+	it('should create an ajax request that filters the response and updates the target', function(){
+		
+		runs(function(){
+			new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
+			this.request = new Request.HTML({
+				url: '../Helpers/request.php',
+				onComplete: this.spy,
+				update: 'update',
+				filter: 'a'
+			}).send({data: {
+				'__response': '<div>text<p><a>a link</a></p></div>', '__type': 'html'
+			}});
+		});
+
+		waitsFor(800, function(){
+			return this.spy.wasCalled;
+		});
+
+		runs(function(){
+			var update = $('update');
+			expect(update.getChildren().length).toEqual(1);
+			expect(update.getFirst().get('tag')).toEqual('a');
+			expect(update.getFirst().get('text')).toEqual('a link');
+			update.dispose();
 		});
 		
 	});
