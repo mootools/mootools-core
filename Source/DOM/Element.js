@@ -112,10 +112,7 @@ var Element = DOM.Element = new Class({
 
 // from now on, everytime you implement to Element you also implement to Elements.
 
-var elementImplement = Element.implement;
-
-Element.implement = function(key, value){
-	elementImplement.call(Element, key, value);
+Element.mirror(function(key){
 	Elements.implement(key, function(){
 		var results = [], isElements = true;
 		for (var i = 0; i < this.length; i++){
@@ -125,7 +122,7 @@ Element.implement = function(key, value){
 		}
 		return (isElements) ? new Elements(results) : results;
 	});
-}.overloadSetter();
+});
 
 var Elements = DOM.Elements = new Type('Elements', function(nodes){
 	if (nodes && nodes.length){
