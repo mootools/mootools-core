@@ -1,158 +1,137 @@
 /*
 ---
-name: Element
-description: The MooTools DOM library.
-requires: [Type, typeOf, instanceOf, Array, String, Function, Number, Object, Accessor, Slick.Parser, Slick.Finder, Store]
-provides: [Element, Elements, $, $$]
+name: DOM.Element
+description: The DOM.Element Class
+provides: DOM.Element
+requires: [Type, typeOf, Array, String, Function, Number, Object, Accessor, Slick.Parser, Store]
 ...
 */
 
 (function(){
 
-var document = this.document, window = this;
-
-var DOM = this.DOM = new Class({
-
-	Implements: [Store, Events],
-
-	initialize: function(node){
-		this.node = nodeOf(node);
-	}
-
-});
-
-DOM.prototype.toNode = DOM.prototype.log = function(){
-	return this.node;
+var nodeOf = function(item){
+	return (item != null && item.toNode) ? item.toNode() : item;
 };
 
-var html = document.documentElement;
+// Basic Selector Engine methods
 
-DOM.implement({
+DOM.node = {};
 
-	addEventListener: ((html.addEventListener) ? function(type, fn){
-		this.node.addEventListener(type, fn, false);
-		return this;
-	} : function(type, fn){
-		this.node.attachEvent('on' + type, fn);
-		return this;
-	}),
+DOM.extend('defineSelectorEngine', function(engine){
+	if (!engine) return this;
 
-	removeEventListener: ((html.removeEventListener) ? function(type, fn){
-		this.node.removeEventListener(type, fn, false);
-		return this;
-	} : function(type, fn){
-		this.node.detachEvent('on' + type, fn);
-		return this;
-	})
+	['search', 'find', 'match', 'contains', 'uidOf', 'parse'].each(function(name){
+		var method = engine[name];
+		if (!method) return;
 
-});
+		DOM.node[name] = method;
 
-DOM.extend({
+		DOM[name] = name == 'search' ? function(expression){
+			return method(document, expression, new Elements);
+		} : (name == 'find') ? function(expression){
+			return new Element(method(document, expression));
+		} : name == 'match' ? function(node, expression){
+			return method(nodeOf(node), expression);
+		} : name == 'contains' ? function(container, node){
+			return method(nodeOf(container), nodeOf(node));
+		} : name == 'uidOf' ? function(node){
+			return method(nodeOf(node));
+		} : method;
+	});
 
-	defineSelectorEngine: function(engine){
-		if (!engine) return this;
+	return this;
 
-		['search', 'find', 'match', 'contains', 'uidOf', 'parse'].each(function(fn){
-			if (engine[name]) DOM[name] = engine[name];
-		});
+}).defineSelectorEngine({
 
-		return this;
-	},
-	
 	search: function(){
-		return new Elements;
+		return [];
 	},
-	
+
 	find: function(){
 		return null;
 	},
-	
+
 	match: function(){
 		return false;
 	},
-	
+
 	contains: function(){
 		return false;
 	},
-	
+
 	uidOf: function(node){
 		return node.uniqueID || (node.uniqueID = String.uniqueID());
 	},
-	
+
 	parse: Slick.parse
 
 });
 
-var wrappers = {}, matchers = [];
+// No more bling bling $ or $$
+var id = DOM.id = function(item){
+	var type;
+	return (item == null) ? null
+		: (item instanceof Element) ? item
+		: (item == window) ? hostWindow
+		: (item == document) ? hostDocument
+		: ((type = typeOf(item)) == 'element') ? new Element(item)
+		: (type == 'string') ? DOM.find('#' + item)
+		: null;
+};
+
+
+// Element and Element subclassing
+
+var matchers = [];
 
 Class.defineMutator('Matches', function(match){
 	matchers.push({_match: match, _class: this});
 });
 
-var id = function(item){
-	if (item == null) return null;
-	
-	if (item.toElement) item = item.toElement();
-	if (item.toNode) item = item.toNode();
-
-	var type = typeOf(item);
-
-	if (type == 'string'){
-		item = DOM.find(document, item);
-		if (!item) return null;
-		type = 'element';
-	}
-	
-	if (type == 'element' || item === window || item === document) return item;
-	
-	return null;
-};
-
-var nodeOf = function(item){
-	return (item != null && item.toNode) ? item.toNode() : item;
-};
-
-var $ = DOM.$ = function(item){
-	if (item == null) return null;
-	if (item instanceof DOM) return item;
-	if (item === window) return hostWindow;
-	if (item === document) return hostDocument;
-	item = id(item);
-	if (item == null) return null;
-	var uid = DOM.uidOf(item), wrapper = wrappers[uid];
-	if (wrapper) return wrapper;
-	for (var l = matchers.length; l--; l){
-		var current = matchers[l];
-		if (DOM.match(item, current._match)) return (wrappers[uid] = new current._class(item));
-	}
-	return null;
-};
-
-var $$ = DOM.$$ = function(){
-	var elements = [];
-	for (var i = 0, l = arguments.length; i < l; i++){
-		var argument = arguments[i];
-		if (typeof argument == 'string') DOM.search(document, argument, elements);
-		else elements.push(nodeOf(argument));
-	}
-	return new Elements(elements);
-};
-
-if (this.$ == null) this.$ = DOM.$;
-if (this.$$ == null) this.$$ = DOM.$$;
-
 var Element = DOM.Element = new Class({
-	Matches: '*',
-	Extends: DOM
+
+	Extends: DOM,
+
+	initialize: function(node, props, nomatch){
+		if (node == null) return null;
+
+		if (typeof node == 'string') return hostDocument.build(node);
+
+		if (node.toElement) node = node.toElement();
+		if (node.toNode) node = node.toNode();
+
+		if (!nomatch) for (var l = matchers.length; l--;){
+			var current = matchers[l];
+			if (DOM.match(node, current._match)){
+				return new current._class(node, props, true);
+			}
+		}
+
+		return this.parent(node).set(props);
+	}
+
 });
 
-// from now on, everytime you implement to Element you also implement to Elements.
+// Collections of Elements
+
+var Elements = DOM.Elements = new Type('Elements', function(nodes){
+	if (!(nodes && nodes.length)) return;
+	var i = 0, uniques = {}, node;
+	while ((node = nodes[i++])){
+		var uid = DOM.uidOf(node);
+		if (!uniques[uid]){
+			uniques[uid] = true;
+			this.push(node);
+		}
+	}
+});
 
 Element.mirror(function(key){
 	Elements.implement(key, function(){
 		var results = [], isElements = true;
-		for (var i = 0; i < this.length; i++){
-			var element = this[i], result = element[key].apply(element, arguments);
+		for (var i = 0, l = this.length; i < l; i++){
+			var element = this[i],
+				result = element[key].apply(element, arguments);
 			if (isElements && !(result instanceof Element)) isElements = false;
 			results[i] = nodeOf(result);
 		}
@@ -160,30 +139,17 @@ Element.mirror(function(key){
 	});
 });
 
-var Elements = DOM.Elements = new Type('Elements', function(nodes){
-	if (nodes && nodes.length){
-		var uniques = {}, node;
-		for (var i = 0; node = nodes[i++];){
-			var uid = DOM.uidOf(node);
-			if (!uniques[uid]){
-				uniques[uid] = true;
-				this.push(node);
-			}
-		}
-	}
-});
-
 Elements.implement({
 
 	length: 0,
-	
+
 	filter: function(filter, context){
 		if (!filter) return this;
 		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 			return item.match(filter);
 		} : filter, context));
 	},
-	
+
 	push: function(){
 		for (var i = 0, l = arguments.length; i < l; i++){
 			var item = $(arguments[i]);
@@ -191,13 +157,13 @@ Elements.implement({
 		}
 		return this.length;
 	},
-	
+
 	log: function(){
 		return this.map(function(wrapper){
 			return wrapper.toNode();
 		});
 	}
-	
+
 });
 
 // fetch all Array methods and put them in Elements
@@ -211,12 +177,12 @@ Elements.implement(arrayMethods).implement(Array.prototype);
 
 // from now on, everytime you implement to Array you also implement to Elements.
 
-var arrayImplement = Array.implement;
-
-Array.implement = function(key, value){
-	arrayImplement.call(Array, key, value);
+Array.mirror(function(key, value){
 	Elements.implement(key, value);
-}.overloadSetter();
+});
+
+
+// Put all those useful methods in Element
 
 Element.implement({
 
@@ -233,11 +199,11 @@ Element.implement({
 	},
 
 	contains: function(node){
-		return DOM.contains(this.node, id(node));
+		return DOM.node.contains(this.node, id(node));
 	},
 
 	match: function(expression){
-		return DOM.match(this.node, expression);
+		return DOM.node.match(this.node, expression);
 	}
 
 });
@@ -249,6 +215,8 @@ Element.prototype.toString = function(){
 	if (className) str += '.' + className.replace(/\s+/, '.');
 	return str + '>';
 };
+
+/* Classes */
 
 var classRegExps = {};
 var classRegExpOf = function(string){
@@ -345,27 +313,9 @@ Element.implement({
 
 });
 
-var methods = {};
-
-Object.each(inserters, function(inserter, where){
-
-	var Where = where.capitalize();
-
-	methods['inject' + Where] = function(el){
-		return this.inject(el, where);
-	};
-
-	methods['grab' + Where] = function(el){
-		return this.grab(el, where);
-	};
-
-});
-
-Element.implement(methods);
-
 /* Tree Walking */
 
-methods = {
+var methods = {
 	find: {
 		getNext: '+',
 		getPrevious: '!+',
@@ -391,6 +341,7 @@ Object.each(methods, function(getters, method){
 	}));
 
 });
+
 
 /* Attribute Getters, Setters, using Slick */
 
@@ -528,71 +479,80 @@ Element.defineSetter('html', function(html){
 	return html;
 });
 
+
+// TODO: Cloning?
+
+
+// Wrap Document and Window
+
 var Document = DOM.Document = new Class({
 
 	Extends: DOM,
 
 	newElement: function(tag, props){
-		if (props && props.checked != null) props.defaultChecked = props.checked;
-		return $(this.node.createElement(tag)).set(props);
+		return new Element(this.node.createElement(tag), props);
 	},
 
 	newTextNode: function(text){
 		return this.node.createTextNode(text);
 	},
 
-	build: function(selector){
-		if ((/^[\w-]+$/).test(selector)) return this.newElement(selector);
+	build: function(tag){
+		var props = {};
 
-		var props = {},
-			parsed = DOM.parse(selector).expressions[0][0],
+		if (!(/^[\w-]+$/).test(tag)){
+			var parsed = Slick.parse(tag).expressions[0][0];
 			tag = (parsed.tag == '*') ? 'div' : parsed.tag;
+			if (parsed.id && props.id == null) props.id = parsed.id;
 
-		props.id = parsed.id;
+			var attributes = parsed.attributes;
+			if (attributes) for (var attr, i = 0, l = attributes.length; i < l; i++){
+				attr = attributes[i];
+				if (props[attr.key] != null) continue;
 
-		var classes = [];
+				if (attr.value != null && attr.operator == '=') props[attr.key] = attr.value;
+				else if (!attr.value && !attr.operator) props[attr.key] = true;
+			}
 
-		for (var part in parsed.parts){
-			var current = parsed.parts[part];
-			if (current.type == 'class') classes.push(current.value);
-			else if (current.type == 'attribute' && current.operator == '=') props[current.key] = current.value;
+			if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
 		}
-
-		if (classes.length) props['class'] = classes.join(' ');
-
 		return this.newElement(tag, props);
+	},
+
+	toString: function(){
+		return '<document>';
 	}
 
 });
 
-Document.prototype.toString = function(){
-	return '<document>';
-};
-
-var hostDocument = new Document(document);
+var hostDocument = DOM.document = new Document(document);
 
 var Window = DOM.Window = new Class({
 
-	Extends: DOM
+	Extends: DOM,
+
+	toString: function(){
+		return '<window>';
+	}
 
 });
 
-Window.prototype.toString = function(){
-	return '<window>';
-};
+var hostWindow = DOM.window = new Window(window);
 
-var hostWindow = new Window(window);
+
+/* Add search and find methods */
 
 [Element, Document].invoke('implement', {
 
 	search: function(expression){
-		return DOM.search(this.node, expression, new Elements);
+		return DOM.node.search(this.node, expression, new Elements);
 	},
 
 	find: function(expression){
-		return $(DOM.find(this.node, nodeOf(expression)));
+		return new Element(DOM.node.find(this.node, nodeOf(expression)));
 	}
 
 });
+
 
 })();
