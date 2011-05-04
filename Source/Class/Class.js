@@ -83,6 +83,12 @@ var implement = function(key, value, retainOwner){
 	if (typeOf(value) == 'function'){
 		if (value.$hidden) return;
 		this.prototype[key] = (retainOwner) ? value : wrap(this, key, value);
+		
+		var hooks = this.$hooks;
+		if (hooks) for (var i = 0, l = hooks.length; i < l; i++){
+			hooks[i].call(this, key, value);
+		}
+
 	} else {
 		Object.merge(this.prototype, key, value);
 	}
@@ -104,6 +110,11 @@ Class.implement('implement', function(a, b){
 	
 	return this;
 	
+}).implement('mirror', function(hook){
+
+	(this.$hooks || (this.$hooks = [])).push(hook);
+	return this;
+
 }).defineMutators({
 
 	Extends: function(parent){
