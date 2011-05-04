@@ -48,7 +48,9 @@ Request.HTML = new Class({
 			if (options.filter) update.adopt(response.elements);
 			else update.set('html', response.html);
 		} else if (options.append){
-			response.elements.inject(document.id(options.append));
+			var append = document.id(options.append);
+			if (options.filter) response.elements.reverse().inject(append);
+			else append.adopt(temp.getChildren());
 		}
 		if (options.evalScripts) Browser.exec(response.javascript);
 
