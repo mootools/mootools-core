@@ -47,6 +47,42 @@ DOM.implement({
 
 });
 
+DOM.extend({
+
+	defineSelectorEngine: function(engine){
+		if (!engine) return this;
+
+		['search', 'find', 'match', 'contains', 'uidOf', 'parse'].each(function(fn){
+			if (engine[name]) DOM[name] = engine[name];
+		});
+
+		return this;
+	},
+	
+	search: function(){
+		return new Elements;
+	},
+	
+	find: function(){
+		return null;
+	},
+	
+	match: function(){
+		return false;
+	},
+	
+	contains: function(){
+		return false;
+	},
+	
+	uidOf: function(node){
+		return node.uniqueID || (node.uniqueID = String.uniqueID());
+	},
+	
+	parse: Slick.parse
+
+});
+
 var wrappers = {}, matchers = [];
 
 Class.defineMutator('Matches', function(match){
@@ -62,7 +98,7 @@ var id = function(item){
 	var type = typeOf(item);
 
 	if (type == 'string'){
-		item = Slick.find(document, item);
+		item = DOM.find(document, item);
 		if (!item) return null;
 		type = 'element';
 	}
@@ -83,11 +119,11 @@ var $ = DOM.$ = function(item){
 	if (item === document) return hostDocument;
 	item = id(item);
 	if (item == null) return null;
-	var uid = Slick.uidOf(item), wrapper = wrappers[uid];
+	var uid = DOM.uidOf(item), wrapper = wrappers[uid];
 	if (wrapper) return wrapper;
 	for (var l = matchers.length; l--; l){
 		var current = matchers[l];
-		if (Slick.match(item, current._match)) return (wrappers[uid] = new current._class(item));
+		if (DOM.match(item, current._match)) return (wrappers[uid] = new current._class(item));
 	}
 	return null;
 };
@@ -96,7 +132,7 @@ var $$ = DOM.$$ = function(){
 	var elements = [];
 	for (var i = 0, l = arguments.length; i < l; i++){
 		var argument = arguments[i];
-		if (typeof argument == 'string') Slick.search(document, argument, elements);
+		if (typeof argument == 'string') DOM.search(document, argument, elements);
 		else elements.push(nodeOf(argument));
 	}
 	return new Elements(elements);
@@ -128,7 +164,7 @@ var Elements = DOM.Elements = new Type('Elements', function(nodes){
 	if (nodes && nodes.length){
 		var uniques = {}, node;
 		for (var i = 0; node = nodes[i++];){
-			var uid = Slick.uidOf(node);
+			var uid = DOM.uidOf(node);
 			if (!uniques[uid]){
 				uniques[uid] = true;
 				this.push(node);
@@ -197,11 +233,11 @@ Element.implement({
 	},
 
 	contains: function(node){
-		return Slick.contains(this.node, id(node));
+		return DOM.contains(this.node, id(node));
 	},
 
 	match: function(expression){
-		return Slick.match(this.node, expression);
+		return DOM.match(this.node, expression);
 	}
 
 });
@@ -509,7 +545,7 @@ var Document = DOM.Document = new Class({
 		if ((/^[\w-]+$/).test(selector)) return this.newElement(selector);
 
 		var props = {},
-			parsed = Slick.parse(selector).expressions[0][0],
+			parsed = DOM.parse(selector).expressions[0][0],
 			tag = (parsed.tag == '*') ? 'div' : parsed.tag;
 
 		props.id = parsed.id;
@@ -550,11 +586,11 @@ var hostWindow = new Window(window);
 [Element, Document].invoke('implement', {
 
 	search: function(expression){
-		return Slick.search(this.node, expression, new Elements);
+		return DOM.search(this.node, expression, new Elements);
 	},
 
 	find: function(expression){
-		return $(Slick.find(this.node, nodeOf(expression)));
+		return $(DOM.find(this.node, nodeOf(expression)));
 	}
 
 });
