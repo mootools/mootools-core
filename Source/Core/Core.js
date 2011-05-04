@@ -168,6 +168,13 @@ Type.isEnumerable = function(item){
 	return (item != null && typeof item.length == 'number' && toString.call(item) != '[object Function]' );
 };
 
+var hooks = {};
+
+var hooksOf = function(object){
+	var type = typeOf(object.prototype);
+	return hooks[type] || (hooks[type] = []);
+};
+
 var extend = function(name, method){
 	if (method && method.$hidden) return;
 
@@ -177,6 +184,14 @@ var extend = function(name, method){
 
 var implement = function(name, method){
 	if (method && method.$hidden) return;
+
+	var hooks = hooksOf(this);
+
+	for (var i = 0; i < hooks.length; i++){
+		var hook = hooks[i];
+		if (typeOf(hook) == 'type') implement.call(hook, name, method);
+		else hook.call(this, name, method);
+	}
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
@@ -194,7 +209,12 @@ Type.implement({
 
 	alias: function(key, value){
 		implement.call(this, key, this.prototype[value]);
-	}.overloadSetter()
+	}.overloadSetter(),
+	
+	mirror: function(hook){
+		hooksOf(this).push(hook);
+		return this;
+	}
 	
 });
 
