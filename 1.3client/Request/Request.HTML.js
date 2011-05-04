@@ -133,7 +133,7 @@ describe('Request.HTML', function(){
 				onComplete: this.spy,
 				append: 'update'
 			}).send({data: {
-				'__response': '<span>text</span>', '__type': 'html'
+				'__response': '<div><span>text</span><p>paragraph</p></div>', '__type': 'html'
 			}});
 		});
 		
@@ -146,8 +146,12 @@ describe('Request.HTML', function(){
 			expect(update.getChildren().length).toEqual(2);
 			expect(update.getFirst().get('tag')).toEqual('div');
 			expect(update.getFirst().get('text')).toEqual('some');
-			expect(update.getLast().get('tag')).toEqual('span');
-			expect(update.getLast().get('text')).toEqual('text');
+			var div = update.getFirst().getNext();
+			expect(div.get('tag')).toEqual('div');
+			expect(div.getFirst().get('tag')).toEqual('span');
+			expect(div.getFirst().get('text')).toEqual('text');
+			expect(div.getLast().get('tag')).toEqual('p');
+			expect(div.getLast().get('text')).toEqual('paragraph');
 			update.dispose();
 		});
 		
@@ -201,6 +205,33 @@ describe('Request.HTML', function(){
 			expect(update.getChildren().length).toEqual(1);
 			expect(update.getFirst().get('tag')).toEqual('a');
 			expect(update.getFirst().get('text')).toEqual('a link');
+			update.dispose();
+		});
+		
+	});
+
+	it('should create an ajax request that filters the response and appends to the target', function(){
+		
+		runs(function(){
+			new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
+			this.request = new Request.HTML({
+				url: '../Helpers/request.php',
+				onComplete: this.spy,
+				append: 'update',
+				filter: 'a'
+			}).send({data: {
+				'__response': '<div>text<p><a>a link</a></p></div>', '__type': 'html'
+			}});
+		});
+
+		waitsFor(800, function(){
+			return this.spy.wasCalled;
+		});
+
+		runs(function(){
+			var update = $('update');
+			expect(update.getChildren().length).toEqual(2);
+			expect(update.get('html')).toEqual('<div>some</div><a>a link</a>');
 			update.dispose();
 		});
 		
