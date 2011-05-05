@@ -188,7 +188,7 @@ Array.mirror(function(key, value){
 Element.implement({
 
 	appendChild: function(child){
-		return this.node.appendChild(id(child));
+		return this.node.appendChild(id(child).toNode());
 	},
 
 	setAttribute: function(name, value){
@@ -200,7 +200,7 @@ Element.implement({
 	},
 
 	contains: function(node){
-		return DOM.node.contains(this.node, id(node));
+		return DOM.node.contains(this.node, id(node).toNode());
 	},
 
 	match: function(expression){
@@ -275,7 +275,7 @@ var inserters = {
 Element.implement({
 
 	inject: function(element, where){
-		inserters[where || 'bottom'](this.node, id(element));
+		inserters[where || 'bottom'](this.node, id(element).toNode());
 		return this;
 	},
 
@@ -298,12 +298,12 @@ Element.implement({
 	},
 
 	grab: function(element, where){
-		inserters[where || 'bottom'](id(element), this.node);
+		inserters[where || 'bottom'](id(element).toNode(), this.node);
 		return this;
 	},
 
 	replace: function(element){
-		element = id(element);
+		element = id(element).toNode();
 		element.parentNode.replaceChild(this.node, element);
 		return this;
 	},
