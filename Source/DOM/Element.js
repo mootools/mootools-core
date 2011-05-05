@@ -205,17 +205,17 @@ Element.implement({
 
 	match: function(expression){
 		return DOM.node.match(this.node, expression);
+	},
+	
+	toString: function(){
+		var tag = this.get('tag'), id = this.get('id'), className = this.get('class');
+		var str = '<' + tag;
+		if (id) str += '#' + id;
+		if (className) str += '.' + className.replace(/\s+/g, '.');
+		return str + '>';		
 	}
 
 });
-
-Element.prototype.toString = function(){
-	var tag = this.get('tag'), id = this.get('id'), className = this.get('class');
-	var str = '<' + tag;
-	if (id) str += '#' + id;
-	if (className) str += '.' + className.replace(/\s+/g, '.');
-	return str + '>';
-};
 
 /* Classes */
 
