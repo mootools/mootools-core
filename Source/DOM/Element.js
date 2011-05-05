@@ -29,7 +29,8 @@ DOM.extend('defineSelectorEngine', function(engine){
 		DOM[name] = name == 'search' ? function(expression){
 			return method(document, expression, new Elements);
 		} : (name == 'find') ? function(expression){
-			return new Element(method(document, expression));
+			var found = method(document, expression);
+			return found ? new Element(found) : null;
 		} : name == 'match' ? function(node, expression){
 			return method(nodeOf(node), expression);
 		} : name == 'contains' ? function(container, node){
@@ -93,7 +94,7 @@ var Element = DOM.Element = new Class({
 	Extends: DOM,
 
 	initialize: function(node, props, nomatch){
-		if (node == null) return null;
+		if (node == null) node = 'div';
 
 		if (typeof node == 'string') return hostDocument.build(node);
 
@@ -549,7 +550,8 @@ var hostWindow = DOM.window = new Window(window);
 	},
 
 	find: function(expression){
-		return new Element(DOM.node.find(this.node, nodeOf(expression)));
+		var found = DOM.node.find(this.node, nodeOf(expression));
+		return found ? new Element(found) : null;
 	}
 
 });
