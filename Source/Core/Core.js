@@ -62,7 +62,7 @@ Function.prototype.overloadGetter = function(forceObjectResult){
 			for (var i = 0; i < args.length; i++) result[args[i]] = self.call(this, args[i]);
 			return result;
 		} else {
-			return self.call(this, a);
+			return self.call(this, argument);
 		}
 	};
 };
