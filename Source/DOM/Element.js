@@ -96,14 +96,14 @@ var Element = DOM.Element = new Class({
 	initialize: function(node, props, nomatch){
 		if (node == null) node = 'div';
 
-		if (typeof node == 'string') return hostDocument.build(node);
+		if (typeof node == 'string') return hostDocument.build(node, props);
 
 		if (node.toElement) node = node.toElement();
 		if (node.toNode) node = node.toNode();
 
 		if (!nomatch) for (var l = matchers.length; l--;){
 			var current = matchers[l];
-			if (DOM.match(node, current._match)){
+			if (DOM.node.match(node, current._match)){
 				return new current._class(node, props, true);
 			}
 		}
@@ -213,7 +213,7 @@ Element.prototype.toString = function(){
 	var tag = this.get('tag'), id = this.get('id'), className = this.get('class');
 	var str = '<' + tag;
 	if (id) str += '#' + id;
-	if (className) str += '.' + className.replace(/\s+/, '.');
+	if (className) str += '.' + className.replace(/\s+/g, '.');
 	return str + '>';
 };
 
@@ -498,8 +498,8 @@ var Document = DOM.Document = new Class({
 		return this.node.createTextNode(text);
 	},
 
-	build: function(tag){
-		var props = {};
+	build: function(tag, props){
+		if (!props) props = {};
 
 		if (!(/^[\w-]+$/).test(tag)){
 			var parsed = Slick.parse(tag).expressions[0][0];
