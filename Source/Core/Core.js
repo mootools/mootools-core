@@ -283,11 +283,14 @@ Number.prototype.$family = function(){
 
 // forEach, each
 
-Object.extend('forEach', function(object, fn, bind){
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+Object.extend('forEach', function(object, fn, context){
 	for (var key in object){
-		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+		if (hasOwnProperty.call(object, key)) fn.call(context, object[key], key, object);
 	}
-}).extend('each', Object.forEach);
+});
+
+Object.each = Object.forEach;
 
 Array.implement({
 
@@ -296,9 +299,9 @@ Array.implement({
 			if (i in this) fn.call(context, this[i], i, this);
 		}
 	},
-	
+
 	each: function(fn, context){
-		this.forEach(fn, context);
+		Array.forEach(this, fn, context);
 		return this;
 	}
 
