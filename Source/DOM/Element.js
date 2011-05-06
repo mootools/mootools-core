@@ -153,7 +153,7 @@ Elements.implement({
 
 	push: function(){
 		for (var i = 0, l = arguments.length; i < l; i++){
-			var item = $(arguments[i]);
+			var item = id(arguments[i]);
 			if (item) this[this.length++] = item;
 		}
 		return this.length;
@@ -200,13 +200,13 @@ Element.implement({
 	},
 
 	contains: function(node){
-		return DOM.node.contains(this.node, id(node).toNode());
+		return !!((node = id(node)) && node.toNode && DOM.node.contains(this.node, node.toNode()));
 	},
 
 	match: function(expression){
 		return DOM.node.match(this.node, expression);
 	},
-	
+
 	toString: function(){
 		var tag = this.get('tag'), id = this.get('id'), className = this.get('class');
 		var str = '<' + tag;
@@ -287,7 +287,8 @@ Element.implement({
 
 	adopt: function(){
 		Array.each(arguments, function(element){
-			if ((element = id(element))) this.node.appendChild(element);
+			element = (element = id(element)) && element.toNode && element.toNode();
+			if (element) this.node.appendChild(element);
 		}, this);
 		return this;
 	},
@@ -309,6 +310,7 @@ Element.implement({
 	},
 
 	wrap: function(element, where){
+		element = id(element).toNode();
 		return this.replace(element).grab(element, where);
 	}
 
@@ -475,7 +477,7 @@ Element.defineSetter('html', function(html){
 		for (var i = wrap[0]; i--; i) first = first.firstChild;
 		this.set('html', '').adopt(first.childNodes);
 	} else {
-		this.innerHTML = html;
+		this.node.innerHTML = html;
 	}
 	return html;
 });
