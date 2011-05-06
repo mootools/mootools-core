@@ -50,12 +50,13 @@ Function.implement({
 
 	pass: function(args, bind){
 		var self = this;
-		if (args != null) args = Array.from(args);
+		args = (args != null) ? Array.from(args) : [];
+			
 		return function(){
-			return self.apply(bind, args || arguments);
+			return self.apply(typeof bind != 'undefined' ? bind : this, [args, Array.from(arguments)].flatten());
 		};
 	},
-
+	
 	delay: function(delay, bind, args){
 		return setTimeout(this.pass((args == null ? [] : args), bind), delay);
 	},
