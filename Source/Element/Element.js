@@ -559,12 +559,12 @@ Element.implement({
 	},
 
 	grab: function(el, where){
-		inserters[where || 'bottom'](document.id(el, true), this);
+		inserters[where || 'bottom'](document.id(el, true) || document.getElement(el), this);
 		return this;
 	},
 
 	inject: function(el, where){
-		inserters[where || 'bottom'](this, document.id(el, true));
+		inserters[where || 'bottom'](this, document.id(el, true) || document.getElement(el));
 		return this;
 	},
 
