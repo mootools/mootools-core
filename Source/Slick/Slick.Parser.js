@@ -6,7 +6,7 @@ provides: Slick.Parser
 ...
 */
 
-(function(){
+;(function(){
 
 var parsed,
 	separatorIndex,
@@ -63,7 +63,9 @@ var reverse = function(expression){
 };
 
 var escapeRegExp = function(string){// Credit: XRegExp 0.6.1 (c) 2007-2008 Steven Levithan <http://stevenlevithan.com/regex/xregexp/> MIT License
-	return string.replace(/[-[\]{}()*+?.\\^$|,#\s]/g, "\\$&");
+	return string.replace(/[-[\]{}()*+?.\\^$|,#\s]/g, function(match){
+		return '\\' + match;
+	});
 };
 
 var regexp = new RegExp(
