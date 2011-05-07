@@ -111,23 +111,9 @@ var Element = DOM.Element = new Class({
 		return this.parent(node).set(props);
 	}
 
-});
+}).mirror(function(key){
+	if (Array.prototype[key]) return;
 
-// Collections of Elements
-
-var Elements = DOM.Elements = new Type('Elements', function(nodes){
-	if (!(nodes && nodes.length)) return;
-	var i = 0, uniques = {}, node;
-	while ((node = nodes[i++])){
-		var uid = DOM.uidOf(node);
-		if (!uniques[uid]){
-			uniques[uid] = true;
-			this.push(node);
-		}
-	}
-});
-
-Element.mirror(function(key){
 	Elements.implement(key, function(){
 		var results = [], isElements = true;
 		for (var i = 0, l = this.length; i < l; i++){
@@ -140,47 +126,93 @@ Element.mirror(function(key){
 	});
 });
 
-Elements.implement({
+// Collections of Elements
 
-	length: 0,
+var Elements = DOM.Elements = function(nodes){
+	if (nodes && nodes.length){
+		var uniques = {}, node;
+		for (var i = 0; node = id(nodes[i++]);){
+			var uid = DOM.uidOf(node);
+			if (!uniques[uid]){
+				uniques[uid] = true;
+				this.push(node);
+			}
+		}
+	}
+};
+
+Elements.prototype = {length: 0};
+Elements.parent = Array;
+
+new Type('Elements', Elements).implement({
 
 	filter: function(filter, context){
 		if (!filter) return this;
 		return new Elements(Array.filter(this, (typeOf(filter) == 'string') ? function(item){
 			return item.match(filter);
 		} : filter, context));
-	},
+	}.protect(),
 
 	push: function(){
+		var length = this.length;
 		for (var i = 0, l = arguments.length; i < l; i++){
 			var item = id(arguments[i]);
-			if (item) this[this.length++] = item;
+			if (item) this[length++] = item;
 		}
-		return this.length;
-	},
+		return (this.length = length);
+	}.protect(),
+
+	unshift: function(){
+		var items = [];
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = id(arguments[i]);
+			if (item) items.push(item);
+		}
+		return Array.prototype.unshift.apply(this, items);
+	}.protect(),
+
+	concat: function(){
+		var newElements = new Elements(this);
+		for (var i = 0, l = arguments.length; i < l; i++){
+			var item = arguments[i];
+			if (Type.isEnumerable(item)) newElements.append(item);
+			else newElements.push(item);
+		}
+		return newElements;
+	}.protect(),
+
+	append: function(collection){
+		for (var i = 0, l = collection.length; i < l; i++) this.push(collection[i]);
+		return this;
+	}.protect(),
+
+	empty: function(){
+		while (this.length) delete this[--this.length];
+		return this;
+	}.protect(),
 
 	log: function(){
 		return this.map(function(wrapper){
 			return wrapper.toNode();
 		});
-	}
+	}.protect()
 
 });
 
-// fetch all Array methods and put them in Elements
+// FF, IE
+var splice = Array.prototype.splice, object = {'0': 0, '1': 1, length: 2};
 
-var arrayMethods = ['pop', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
-'indexOf', 'lastIndexOf', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'].pair(function(m){
-	return Array.prototype[m];
-});
+splice.call(object, 1, 1);
+if (object[1] == 1) Elements.implement('splice', function(){
+	var length = this.length;
+	splice.apply(this, arguments);
+	while (length >= this.length) delete this[length--];
+	return this;
+}.protect());
 
-Elements.implement(arrayMethods).implement(Array.prototype);
+Elements.implement(Array.prototype);
 
-// from now on, everytime you implement to Array you also implement to Elements.
-
-Array.mirror(function(key, value){
-	Elements.implement(key, value);
-});
+Array.mirror(Elements);
 
 
 // Put all those useful methods in Element
@@ -303,12 +335,14 @@ Element.implement({
 		return this;
 	},
 
+	// No replaces like 1.x ??
 	replace: function(element){
 		element = id(element).toNode();
 		element.parentNode.replaceChild(this.node, element);
 		return this;
 	},
 
+	// No wraps like 1.x ??
 	wrap: function(element, where){
 		element = id(element).toNode();
 		return this.replace(element).grab(element, where);
