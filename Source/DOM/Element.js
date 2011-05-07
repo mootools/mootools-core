@@ -1,45 +1,68 @@
 /*
 ---
 name: DOM.Element
-description: The DOM.Element Class
-provides: DOM.Element
+description: The MooTools DOM library, making the DOM FUN FUN FUN!
+provides: [DOM, DOM.id, DOM.Element, DOM.Elements, DOM.Document, DOM.document, DOM.Window, DOM.window]
 requires: [Type, typeOf, Array, String, Function, Number, Object, Accessor, Slick.Parser, Store]
 ...
 */
 
 (function(){
 
-var window = this, document = window.document;
+var window = this, document = window.document,
+	html = document.documentElement;
 
 var nodeOf = function(item){
 	return (item != null && item.toNode) ? item.toNode() : item;
 };
 
+var wrappers = {};
+
+// Base DOM Class
+
+var DOM = this.DOM = new Class({
+
+	implement: [Events, Store],
+
+	initialize: function(node){
+		node = this.node = nodeOf(node);
+		var uid = SelectorEngine.uidOf(node);
+		return (wrappers[uid] || (wrappers[uid] = this));
+	},
+
+	toNode: function(){
+		return this.node;
+	},
+
+	addEventListener: ((html.addEventListener) ? function(type, fn){
+		this.node.addEventListener(type, fn, false);
+		return this;
+	} : function(type, fn){
+		this.node.attachEvent('on' + type, fn);
+		return this;
+	}),
+
+	removeEventListener: ((html.removeEventListener) ? function(type, fn){
+		this.node.removeEventListener(type, fn, false);
+		return this;
+	} : function(type, fn){
+		this.node.detachEvent('on' + type, fn);
+		return this;
+	})
+
+});
+
+DOM.prototype.log = DOM.prototype.toNode;
+
 // Basic Selector Engine methods
 
-DOM.node = {};
+SelectorEngine = {};
 
 DOM.extend('defineSelectorEngine', function(engine){
 	if (!engine) return this;
 
 	['search', 'find', 'match', 'contains', 'uidOf', 'parse'].each(function(name){
-		var method = engine[name];
-		if (!method) return;
-
-		DOM.node[name] = method;
-
-		DOM[name] = name == 'search' ? function(expression){
-			return method(document, expression, new Elements);
-		} : (name == 'find') ? function(expression){
-			var found = method(document, expression);
-			return found ? new Element(found) : null;
-		} : name == 'match' ? function(node, expression){
-			return method(nodeOf(node), expression);
-		} : name == 'contains' ? function(container, node){
-			return method(nodeOf(container), nodeOf(node));
-		} : name == 'uidOf' ? function(node){
-			return method(nodeOf(node));
-		} : method;
+		if (engine[name]) SelectorEngine[name] = engine[name];
 	});
 
 	return this;
@@ -68,7 +91,20 @@ DOM.extend('defineSelectorEngine', function(engine){
 
 	parse: Slick.parse
 
+}).extend({
+
+	search: function(expression){
+		SelectorEngine.search(document, expression, new Elements);
+	},
+
+	find: function(expression){
+		var found = SelectorEngine.find(document, expression);
+		return found ? new Element(found) : null;
+	}
+
 });
+
+
 
 // No more bling bling $ or $$
 var id = DOM.id = function(item){
@@ -105,7 +141,7 @@ var Element = DOM.Element = new Class({
 
 		if (!nomatch) for (var l = matchers.length; l--;){
 			var current = matchers[l];
-			if (DOM.node.match(node, current._match)){
+			if (SelectorEngine.match(node, current._match)){
 				return new current._class(node, props, true);
 			}
 		}
@@ -134,7 +170,7 @@ var Elements = DOM.Elements = function(nodes){
 	if (nodes && nodes.length){
 		var uniques = {}, node;
 		for (var i = 0; node = id(nodes[i++]);){
-			var uid = DOM.uidOf(node);
+			var uid = SelectorEngine.uidOf(nodeOf(node));
 			if (!uniques[uid]){
 				uniques[uid] = true;
 				this.push(node);
@@ -222,7 +258,7 @@ Array.mirror(Elements);
 Element.implement({
 
 	appendChild: function(child){
-		return this.node.appendChild(id(child).toNode());
+		return this.node.appendChild(nodeOf(id(child)));
 	},
 
 	setAttribute: function(name, value){
@@ -234,11 +270,11 @@ Element.implement({
 	},
 
 	contains: function(node){
-		return !!((node = id(node)) && node.toNode && DOM.node.contains(this.node, node.toNode()));
+		return !!((node = id(node)) && SelectorEngine.contains(this.node, nodeOf(node)));
 	},
 
 	match: function(expression){
-		return DOM.node.match(this.node, expression);
+		return SelectorEngine.match(this.node, expression);
 	},
 
 	toString: function(){
@@ -309,7 +345,7 @@ var inserters = {
 Element.implement({
 
 	inject: function(element, where){
-		inserters[where || 'bottom'](this.node, id(element).toNode());
+		inserters[where || 'bottom'](this.node, nodeOf(id(element)));
 		return this;
 	},
 
@@ -340,20 +376,20 @@ Element.implement({
 	},
 
 	grab: function(element, where){
-		inserters[where || 'bottom'](id(element).toNode(), this.node);
+		inserters[where || 'bottom'](nodeOf(id(element)), this.node);
 		return this;
 	},
 
 	// No replaces like 1.x ??
 	replace: function(element){
-		element = id(element).toNode();
+		element = nodeOf(id(element));
 		element.parentNode.replaceChild(this.node, element);
 		return this;
 	},
 
 	// No wraps like 1.x ??
 	wrap: function(element, where){
-		element = id(element).toNode();
+		element = nodeOf(id(element));
 		return this.replace(element).grab(element, where);
 	}
 
@@ -591,11 +627,11 @@ var hostWindow = DOM.window = new Window(window);
 [Element, Document].invoke('implement', {
 
 	search: function(expression){
-		return DOM.node.search(this.node, expression, new Elements);
+		return SelectorEngine.search(this.node, expression, new Elements);
 	},
 
 	find: function(expression){
-		var found = DOM.node.find(this.node, nodeOf(expression));
+		var found = SelectorEngine.find(this.node, nodeOf(expression));
 		return found ? new Element(found) : null;
 	}
 
