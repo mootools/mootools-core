@@ -512,13 +512,14 @@ var tableTranslations = {
 };
 
 Element.defineSetter('html', function(node, html){
-	if (typeOf(html) == 'array') html = html.join(' ');
+	if (typeOf(html) == 'array') html = html.join('');
 	var wrap = (!tableTest && tableTranslations[this.get('tag')]);
 	if (wrap){
 		var first = tableWrapper;
 		first.innerHTML = wrap[1] + html + wrap[2];
-		for (var i = wrap[0]; i--; i) first = first.firstChild;
-		this.set('html', '').adopt(first.childNodes);
+		for (var i = wrap[0]; i--;) first = first.firstChild;
+		this.node.innerHTML = '';
+		this.adopt(first.childNodes);
 	} else {
 		node.innerHTML = html;
 	}
