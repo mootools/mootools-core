@@ -410,15 +410,15 @@ properties = Object.append(Object.from(properties, properties), {
 	'for': 'htmlFor',
 	'text': (function(){
 		var temp = document.createElement('div');
-		return (temp.innerText == null) ? 'textContent' : 'innerText';
+		return (temp.innerText == null) ? 'innerText' : 'textContent';
 	})()
 });
 
 Object.each(properties, function(real, key){
-	Element.defineSetter(key, function(value){
-		return this.node[real] = value;
-	}).defineGetter(key, function(){
-		return this.node[real];
+	Element.defineSetter(key, function(node, value){
+		return node[real] = value;
+	}).defineGetter(key, function(node){
+		return node[real];
 	});
 });
 
@@ -426,50 +426,50 @@ var booleans = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 	'disabled', 'multiple', 'readonly', 'selected', 'noresize', 'defer'];
 
 booleans.each(function(bool){
-	Element.defineSetter(bool, function(value){
-		return this.node[bool] = !!value;
-	}).defineGetter(bool, function(){
-		return !!this.node[bool];
+	Element.defineSetter(bool, function(node, value){
+		return node[bool] = !!value;
+	}).defineGetter(bool, function(node){
+		return !!node[bool];
 	});
 });
 
+// Can't we use Slick.getAttribute ?
+
 Element.defineGetters({
 
-	'class': function(){
-		var node = this.node;
-		return ('className' in node) ? node.className : node.getAttribute('class');
+	'class': function(node){
+		return node.getAttribute('class') || node.className;
 	},
 
-	'for': function(){
-		var node = this.node;
+	'for': function(node){
 		return ('htmlFor' in node) ? node.htmlFor : node.getAttribute('for');
 	},
 
-	'href': function(){
-		var node = this.node;
+	'href': function(node){
 		return ('href' in node) ? node.getAttribute('href', 2) : node.getAttribute('href');
 	},
 
-	'style': function(){
-		var node = this.node;
+	'style': function(node){
 		return (node.style) ? node.style.cssText : node.getAttribute('style');
+	},
+
+	'tabindex': function(node){
+		var attributeNode = node.getAttributeNode('tabindex');
+		return (attributeNode && attributeNode.specified) ? attributeNode.nodeValue : null;
 	}
 
 }).defineSetters({
 
-	'class': function(value){
-		var node = this.node;
-		return ('className' in node) ? node.className = value : node.setAttribute('class', value);
+	'class': function(node, value){
+		('className' in node) ? node.className = value : node.setAttribute('class', value);
 	},
 
-	'for': function(value){
-		var node = this.node;
-		return ('htmlFor' in node) ? node.htmlFor = value : node.setAttribute('for', value);
+	'for': function(node, value){
+		('htmlFor' in node) ? node.htmlFor = value : node.setAttribute('for', value);
 	},
 
-	'style': function(value){
-		var node = this.node;
-		return (node.style) ? node.style.cssText = value : node.setAttribute('style', value);
+	'style': function(node, value){
+		(node.style) ? node.style.cssText = value : node.setAttribute('style', value);
 	}
 
 });
@@ -480,21 +480,21 @@ Element.implement({
 
 	set: function(name, value){
 		var setter = Element.lookupSetter(name = name.camelCase());
-		if (setter) setter.call(this, value);
+		if (setter) setter.call(this, this.node, value);
 		else if (value == null) this.node.removeAttribute(name);
 		else this.node.setAttribute(name, value);
 	}.overloadSetter(),
 
 	get: function(name){
 		var getter = Element.lookupGetter(name = name.camelCase());
-		if (getter) return getter.call(this);
+		if (getter) return getter.call(this, this.node);
 		return this.node.getAttribute(name);
 	}.overloadGetter()
 
 });
 
-Element.defineGetter('tag', function(){
-	return this.node.tagName.toLowerCase();
+Element.defineGetter('tag', function(node){
+	return node.tagName.toLowerCase();
 });
 
 var tableTest = Function.attempt(function(){
@@ -511,7 +511,7 @@ var tableTranslations = {
 	'tr': [3, '<table><tbody><tr>', '</tr></tbody></table>']
 };
 
-Element.defineSetter('html', function(html){
+Element.defineSetter('html', function(node, html){
 	if (typeOf(html) == 'array') html = html.join(' ');
 	var wrap = (!tableTest && tableTranslations[this.get('tag')]);
 	if (wrap){
@@ -520,9 +520,8 @@ Element.defineSetter('html', function(html){
 		for (var i = wrap[0]; i--; i) first = first.firstChild;
 		this.set('html', '').adopt(first.childNodes);
 	} else {
-		this.node.innerHTML = html;
+		node.innerHTML = html;
 	}
-	return html;
 });
 
 
