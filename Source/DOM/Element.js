@@ -9,6 +9,8 @@ requires: [Type, typeOf, Array, String, Function, Number, Object, Accessor, Slic
 
 (function(){
 
+var window = this, document = window.document;
+
 var nodeOf = function(item){
 	return (item != null && item.toNode) ? item.toNode() : item;
 };
@@ -318,10 +320,17 @@ Element.implement({
 	},
 
 	adopt: function(){
-		Array.each(arguments, function(element){
-			element = (element = id(element)) && element.toNode && element.toNode();
-			if (element) this.node.appendChild(element);
-		}, this);
+		var parent = this.node, fragment,
+			elements = Array.flatten(arguments), length = elements.length;
+		if (length > 1) parent = fragment = document.createDocumentFragment();
+
+		for (var i = 0; i < length; i++){
+			var element = id(elements[i], true);
+			if (element) parent.appendChild(element.node);
+		}
+
+		if (fragment) this.node.appendChild(fragment);
+
 		return this;
 	},
 
