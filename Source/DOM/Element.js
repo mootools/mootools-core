@@ -78,7 +78,7 @@ var id = DOM.id = function(item){
 		: (item == window) ? hostWindow
 		: (item == document) ? hostDocument
 		: ((type = typeOf(item)) == 'element') ? new Element(item)
-		: (type == 'string') ? DOM.find('#' + item)
+		: (type == 'string') ? DOM.find('#' + item.replace(/(\W)/g, '\\$1'))
 		: null;
 };
 
@@ -389,7 +389,7 @@ Object.each(methods, function(getters, method){
 });
 
 
-/* Attribute Getters, Setters, using Slick */
+/* Attribute Getters, Setters */
 
 Element.extend(new Accessor('Getter')).extend(new Accessor('Setter'));
 
