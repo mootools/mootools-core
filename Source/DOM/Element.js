@@ -95,7 +95,7 @@ DOM.extend('defineSelectorEngine', function(engine){
 }).extend({
 
 	search: function(expression){
-		SelectorEngine.search(document, expression, new Elements);
+		return SelectorEngine.search(document, expression, new Elements);
 	},
 
 	find: function(expression){
