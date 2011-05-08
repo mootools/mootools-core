@@ -23,7 +23,7 @@ var wrappers = {};
 
 var DOM = this.DOM = new Class({
 
-	implement: [Events, Store],
+	Implements: [Events, Store],
 
 	initialize: function(node){
 		node = this.node = nodeOf(node);
@@ -105,16 +105,23 @@ DOM.extend('defineSelectorEngine', function(engine){
 
 });
 
+var nodeByID = function(item){
+	var type;
+	return (!item) ? null
+		: (item == window || item == document || ((type = typeOf(item)) && type == 'element')) ? item
+		: (type == 'string') ? SelectorEngine.find(document, '#' + item.replace(/(\W)/g, '\\$1'))
+		: (item.toElement) ? nodeOf(item.toElement())
+		: (item instanceof DOM) ? item.toNode()
+		: null;
+};
+
 // No more bling bling $ or $$
 var id = DOM.id = function(item){
-	var type;
-	return (item == null) ? null
-		: (item instanceof Element) ? item
+	return (!item) ? null
+		: (item instanceof DOM) ? item
 		: (item == window) ? hostWindow
 		: (item == document) ? hostDocument
-		: ((type = typeOf(item)) == 'element') ? new Element(item)
-		: (type == 'string') ? DOM.find('#' + item.replace(/(\W)/g, '\\$1'))
-		: null;
+		: (item = nodeByID(item)) && new Element(item);
 };
 
 // Element and Element subclassing
@@ -134,7 +141,7 @@ var Element = DOM.Element = new Class({
 
 		if (typeof node == 'string') return hostDocument.build(node, props);
 
-		node = nodeOf(node.toElement && node.toElement() || node);
+		node = nodeByID(node);
 
 		if (!nomatch) for (var l = matchers.length; l--;){
 			var current = matchers[l];
@@ -161,12 +168,12 @@ var Element = DOM.Element = new Class({
 
 var Elements = DOM.Elements = function(nodes){
 	if (nodes && nodes.length){
-		var uniques = {}, node;
-		for (var i = 0; node = id(nodes[i++]);){
-			var uid = SelectorEngine.uidOf(nodeOf(node));
+		var uniques = {}, item;
+		for (var i = 0; item = id(nodes[i++]);){
+			var uid = SelectorEngine.uidOf(item.node);
 			if (!uniques[uid]){
 				uniques[uid] = true;
-				this.push(node);
+				this.push(item);
 			}
 		}
 	}
@@ -260,7 +267,7 @@ Array.mirror(Elements);
 Element.implement({
 
 	appendChild: function(child){
-		return this.node.appendChild(nodeOf(id(child)));
+		return this.node.appendChild(nodeByID(child));
 	},
 
 	setAttribute: function(name, value){
@@ -272,7 +279,7 @@ Element.implement({
 	},
 
 	contains: function(node){
-		return !!((node = id(node)) && SelectorEngine.contains(this.node, nodeOf(node)));
+		return SelectorEngine.contains(this.node, nodeByID(node));
 	},
 
 	match: function(expression){
@@ -347,7 +354,7 @@ var inserters = {
 Element.implement({
 
 	inject: function(element, where){
-		inserters[where || 'bottom'](this.node, nodeOf(id(element)));
+		inserters[where || 'bottom'](this.node, nodeByID(element));
 		return this;
 	},
 
@@ -363,7 +370,7 @@ Element.implement({
 		if (length > 1) parent = fragment = document.createDocumentFragment();
 
 		for (var i = 0; i < length; i++){
-			var element = nodeOf(id(elements[i]));
+			var element = nodeByID(elements[i]);
 			if (element) parent.appendChild(element);
 		}
 
@@ -378,20 +385,20 @@ Element.implement({
 	},
 
 	grab: function(element, where){
-		inserters[where || 'bottom'](nodeOf(id(element)), this.node);
+		inserters[where || 'bottom'](nodeByID(element), this.node);
 		return this;
 	},
 
 	// No replaces like 1.x ??
 	replace: function(element){
-		element = nodeOf(id(element));
+		element = nodeByID(element);
 		element.parentNode.replaceChild(this.node, element);
 		return this;
 	},
 
 	// No wraps like 1.x ??
 	wrap: function(element, where){
-		element = nodeOf(id(element));
+		element = nodeByID(element);
 		return this.replace(element).grab(element, where);
 	}
 
