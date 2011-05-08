@@ -79,16 +79,16 @@ var implement = function(key, value, retainOwner){
 		value = mutator.call(this, value);
 		if (value == null) return;
 	}
-	
+
+	var hooks = this.$hooks;
+	if (hooks) for (var i = 0, l = hooks.length; i < l; i++){
+		if (typeOf(hooks[i]) == 'class') hooks[i].implement(key, value);
+		else hooks[i].call(this, key, value);
+	}
+
 	if (typeOf(value) == 'function'){
 		if (value.$hidden) return;
 		this.prototype[key] = (retainOwner) ? value : wrap(this, key, value);
-		
-		var hooks = this.$hooks;
-		if (hooks) for (var i = 0, l = hooks.length; i < l; i++){
-			hooks[i].call(this, key, value);
-		}
-
 	} else {
 		Object.merge(this.prototype, key, value);
 	}
