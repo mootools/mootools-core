@@ -150,14 +150,10 @@ var Element = DOM.Element = new Class({
 	if (Array.prototype[key]) return;
 
 	Elements.implement(key, function(){
-		var results = [], isElements = true;
-		for (var i = 0, l = this.length; i < l; i++){
-			var element = this[i],
-				result = element[key].apply(element, arguments);
-			if (isElements && !(result instanceof Element)) isElements = false;
-			results[i] = nodeOf(result);
-		}
-		return (isElements) ? new Elements(results) : results;
+		var args = arguments;
+		return this.map(function(element){
+			return element[key].apply(element, args);
+		});
 	});
 });
 
@@ -224,6 +220,16 @@ new Type('Elements', Elements).implement({
 	empty: function(){
 		while (this.length) delete this[--this.length];
 		return this;
+	}.protect(),
+
+	map: function(fn, context){
+		var isElements = true;
+		var results = Array.map(this, function(value, key, self){
+			var result = fn.call(context, value, key, self);
+			if (isElements && !(result instanceof Element)) isElements = false;
+			return result;
+		}, context);
+		return isElements ? this : results;
 	}.protect(),
 
 	log: function(){
@@ -629,7 +635,7 @@ var hostWindow = DOM.window = new Window(window);
 	},
 
 	find: function(expression){
-		var found = SelectorEngine.find(this.node, nodeOf(expression));
+		var found = SelectorEngine.find(this.node, expression);
 		return found ? new Element(found) : null;
 	}
 
