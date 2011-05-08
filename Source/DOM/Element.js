@@ -455,7 +455,7 @@ properties = Object.append(Object.from(properties, properties), {
 	'for': 'htmlFor',
 	'text': (function(){
 		var temp = document.createElement('div');
-		return (temp.innerText == null) ? 'innerText' : 'textContent';
+		return (temp.textContent == null) ? 'innerText' : 'textContent';
 	})()
 });
 
