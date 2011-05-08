@@ -10,7 +10,8 @@ requires: [Type, typeOf, Array, String, Function, Number, Object, Accessor, Slic
 (function(){
 
 var window = this, document = window.document,
-	html = document.documentElement;
+	html = document.documentElement,
+	DOM2Events = !!html.addEventListener;
 
 var nodeOf = function(item){
 	return (item != null && item.toNode) ? item.toNode() : item;
@@ -34,7 +35,7 @@ var DOM = this.DOM = new Class({
 		return this.node;
 	},
 
-	addEventListener: ((html.addEventListener) ? function(type, fn){
+	addEventListener: (DOM2Events ? function(type, fn){
 		this.node.addEventListener(type, fn, false);
 		return this;
 	} : function(type, fn){
@@ -42,7 +43,7 @@ var DOM = this.DOM = new Class({
 		return this;
 	}),
 
-	removeEventListener: ((html.removeEventListener) ? function(type, fn){
+	removeEventListener: (DOM2Events ? function(type, fn){
 		this.node.removeEventListener(type, fn, false);
 		return this;
 	} : function(type, fn){
@@ -104,8 +105,6 @@ DOM.extend('defineSelectorEngine', function(engine){
 
 });
 
-
-
 // No more bling bling $ or $$
 var id = DOM.id = function(item){
 	var type;
@@ -117,7 +116,6 @@ var id = DOM.id = function(item){
 		: (type == 'string') ? DOM.find('#' + item.replace(/(\W)/g, '\\$1'))
 		: null;
 };
-
 
 // Element and Element subclassing
 
@@ -136,8 +134,7 @@ var Element = DOM.Element = new Class({
 
 		if (typeof node == 'string') return hostDocument.build(node, props);
 
-		if (node.toElement) node = node.toElement();
-		if (node.toNode) node = node.toNode();
+		node = nodeOf(node.toElement && node.toElement() || node);
 
 		if (!nomatch) for (var l = matchers.length; l--;){
 			var current = matchers[l];
@@ -252,7 +249,6 @@ Elements.implement(Array.prototype);
 
 Array.mirror(Elements);
 
-
 // Put all those useful methods in Element
 
 Element.implement({
@@ -361,8 +357,8 @@ Element.implement({
 		if (length > 1) parent = fragment = document.createDocumentFragment();
 
 		for (var i = 0; i < length; i++){
-			var element = id(elements[i], true);
-			if (element) parent.appendChild(element.node);
+			var element = nodeOf(id(elements[i]));
+			if (element) parent.appendChild(element);
 		}
 
 		if (fragment) this.node.appendChild(fragment);
@@ -469,8 +465,6 @@ booleans.each(function(bool){
 	});
 });
 
-// Can't we use Slick.getAttribute ?
-
 Element.defineGetters({
 
 	'class': function(node){
@@ -492,6 +486,10 @@ Element.defineGetters({
 	'tabindex': function(node){
 		var attributeNode = node.getAttributeNode('tabindex');
 		return (attributeNode && attributeNode.specified) ? attributeNode.nodeValue : null;
+	},
+
+	'tag': function(node){
+		return node.tagName.toLowerCase();
 	}
 
 }).defineSetters({
@@ -506,7 +504,39 @@ Element.defineGetters({
 
 	'style': function(node, value){
 		(node.style) ? node.style.cssText = value : node.setAttribute('style', value);
-	}
+	},
+
+	'html': (function(){
+
+		var tableTest = Function.attempt(function(){
+			var table = document.createElement('table');
+			table.innerHTML = '<tr><td></td></tr>';
+		});
+
+		var tableWrapper = document.createElement('div');
+
+		var tableTranslations = {
+			'table': [1, '<table>', '</table>'],
+			'select': [1, '<select>', '</select>'],
+			'tbody': [2, '<table><tbody>', '</tbody></table>'],
+			'tr': [3, '<table><tbody><tr>', '</tr></tbody></table>']
+		};
+
+		return function(node, html){
+			if (typeOf(html) == 'array') html = html.join('');
+			var wrap = (!tableTest && tableTranslations[this.get('tag')]);
+			if (wrap){
+				var first = tableWrapper;
+				first.innerHTML = wrap[1] + html + wrap[2];
+				for (var i = wrap[0]; i--;) first = first.firstChild;
+				node.innerHTML = '';
+				this.adopt(first.childNodes);
+			} else {
+				node.innerHTML = html;
+			}
+		};
+
+	})()
 
 });
 
@@ -527,38 +557,6 @@ Element.implement({
 		return this.node.getAttribute(name);
 	}.overloadGetter()
 
-});
-
-Element.defineGetter('tag', function(node){
-	return node.tagName.toLowerCase();
-});
-
-var tableTest = Function.attempt(function(){
-	var table = document.createElement('table');
-	table.innerHTML = '<tr><td></td></tr>';
-});
-
-var tableWrapper = document.createElement('div');
-
-var tableTranslations = {
-	'table': [1, '<table>', '</table>'],
-	'select': [1, '<select>', '</select>'],
-	'tbody': [2, '<table><tbody>', '</tbody></table>'],
-	'tr': [3, '<table><tbody><tr>', '</tr></tbody></table>']
-};
-
-Element.defineSetter('html', function(node, html){
-	if (typeOf(html) == 'array') html = html.join('');
-	var wrap = (!tableTest && tableTranslations[this.get('tag')]);
-	if (wrap){
-		var first = tableWrapper;
-		first.innerHTML = wrap[1] + html + wrap[2];
-		for (var i = wrap[0]; i--;) first = first.firstChild;
-		this.node.innerHTML = '';
-		this.adopt(first.childNodes);
-	} else {
-		node.innerHTML = html;
-	}
 });
 
 
