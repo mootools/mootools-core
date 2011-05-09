@@ -379,6 +379,12 @@ Element.implement({
 		return this;
 	},
 
+	empty: function(){
+		var childNodes = this.node.childNodes;
+		if (childNodes) for (var l = childNodes.length; l--;) id(childNodes[i]).eject();
+		return this;
+	},
+
 	appendText: function(text, where){
 		inserters[where || 'bottom'](document.createTextNode(text), this.node);
 		return this;
@@ -542,8 +548,7 @@ Element.defineGetters({
 				var first = tableWrapper;
 				first.innerHTML = wrap[1] + html + wrap[2];
 				for (var i = wrap[0]; i--;) first = first.firstChild;
-				node.innerHTML = '';
-				this.adopt(first.childNodes);
+				this.empty().adopt(first.childNodes);
 			} else {
 				node.innerHTML = html;
 			}
