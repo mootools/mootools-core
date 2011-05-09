@@ -74,7 +74,7 @@ Class.extend(new Accessor('Mutator'));
 var implement = function(key, value, retainOwner){
 	
 	var mutator = Class.matchMutator(key) || Class.lookupMutator(key);
-	
+
 	if (mutator){
 		value = mutator.call(this, value);
 		if (value == null) return;
@@ -100,13 +100,12 @@ var implementClass = function(item){
 	for (var key in instance) implement.call(this, key, instance[key], true);
 };
 
+var implementValues = implement.overloadSetter();
+
 Class.implement('implement', function(a, b){
 	
-	switch (typeOf(a)){
-		case 'string': implement.call(this, a, b); break;
-		case 'class': implementClass.call(this, a); break;
-		default: for (var p in a) implement.call(this, p, a[p]); break;
-	}
+	if (typeOf(a) == 'class') implementClass.call(this, a);
+	else implementValues.call(this, a, b);
 	
 	return this;
 	
