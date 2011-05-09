@@ -578,11 +578,33 @@ Element.implement({
 
 // Wrap Document and Window
 
+/*<ltIE8>*/
+var createElementAcceptsHTML;
+try {
+	var x = document.createElement('<input name=x>');
+	createElementAcceptsHTML = (x.name == 'x');
+} catch(e){}
+
+var escapeQuotes = function(html){
+	return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+};
+/*</ltIE8>*/
+
 var Document = DOM.Document = new Class({
 
 	Extends: DOM,
 
 	newElement: function(tag, props){
+		/*<ltIE8>*/// Fix for readonly name and type properties in IE < 8
+		if (createElementAcceptsHTML && props){
+			tag = '<' + tag;
+			if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
+			if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
+			tag += '>';
+			delete props.name;
+			delete props.type;
+		}
+		/*</ltIE8>*/
 		return new Element(this.node.createElement(tag), props);
 	},
 
