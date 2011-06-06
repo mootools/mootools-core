@@ -17,25 +17,25 @@ An XMLHttpRequest Wrapper.
 
 ### Options:
 
-* url        - (*string*: defaults to null) The URL to request. (Note, this can also be an instance of [URI][])
-* method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
+* url        - (*string*: defaults to *null*) The URL to request. (Note, this can also be an instance of [URI][])
 * data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
 	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.11)
 	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
-* async      - (*boolean*: defaults to true) If set to false, the requests will be synchronous and freeze the browser during request.
-* encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
+* method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
+* emulation  - (*boolean*: defaults to *true*) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (as used in rails)
+* async      - (*boolean*: defaults to *true*) If set to false, the requests will be synchronous and freeze the browser during request.
+* timeout    - (*integer*: defaults to 0) In conjunction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
 * headers    - (*object*) An object to use in order to set the request headers.
+* urlEncoded - (*boolean*: defaults to *true*) If set to true, the content-type header is set to www-form-urlencoded + encoding
+* encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
+* noCache    - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
-* evalScripts  - (*boolean*: defaults to false) If set to true, `script` tags inside the response will be evaluated.
-* evalResponse - (*boolean*: defaults to false) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
-* emulation  - (*boolean*: defaults to true) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (used in rails)
-* urlEncoded - (*boolean*: defaults to true) If set to true, the content-type header is set to www-form-urlencoded + encoding
-* timeout - (*integer*: defaults to 0) In conjunction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
-* noCache - (*boolean*; defaults to false) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
-* user - (*string*: defaults to undefined) When username is set the Request will open with credentials and try to authenticate.
-* password - (*string*: defaults to undefined) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
+* evalScripts  - (*boolean*: defaults to *false*) If set to true, `script` tags inside the response will be evaluated.
+* evalResponse - (*boolean*: defaults to *false*) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
+* user       - (*string*: defaults to *null*) When username is set the Request will open with credentials and try to authenticate.
+* password   - (*string*: defaults to *null*) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
 
 ### Events:
 
