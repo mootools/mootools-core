@@ -52,7 +52,7 @@ var Element = new Class({
 
 	initialize: function(el, props){
 		if ($type(el) == 'string'){
-			if (window.ie && props && (props.name || props.type)){
+			if (window.ie && (typeof window.performance == 'undefined')  && props && (props.name || props.type)){
 				var name = (props.name) ? ' name="' + props.name + '"' : '';
 				var type = (props.type) ? ' type="' + props.type + '"' : '';
 				delete props.name;
