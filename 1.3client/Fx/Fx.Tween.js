@@ -7,6 +7,15 @@ provides: [Fx.Tween.Specs]
 ...
 */
 describe('Fx.Tween', function(){
+	
+	beforeEach(function(){
+		this.clock = sinon.useFakeTimers();
+	});
+	
+	afterEach(function(){
+		this.clock.reset();
+		this.clock.restore();
+	});
 
 	it('should tween the style of an element', function(){
 
@@ -18,17 +27,21 @@ describe('Fx.Tween', function(){
 
 		var fx = new Fx.Tween(element, {
 			duration: 100,
-			property: 'height'
+			property: 'height',
+			onStart: function(){
+				console.log('start');
+			},
+			onComplete: function(){
+				console.log('done');
+			}
 		});
-
+		
 		fx.start(10, 50);
+		
+		this.clock.tick(200);
 
-		waits(130);
-
-		runs(function(){
-			expect(element.getStyle('height').toInt()).toEqual(50);
-			element.destroy();
-		});
+		expect(element.offsetHeight).toEqual(50);
+		element.destroy();
 
 	});
 
@@ -43,12 +56,10 @@ describe('Fx.Tween', function(){
 			}
 		}).inject(document.body).tween('width', 50);
 
-		waits(130);
+		this.clock.tick(200);
 
-		runs(function(){
-			expect(element.getStyle('width').toInt()).toEqual(50);
-			element.destroy();
-		});
+		expect(element.getStyle('width').toInt()).toEqual(50);
+		element.destroy();
 
 	});
 
@@ -64,12 +75,10 @@ describe('Fx.Tween', function(){
 
 		element.fade('in');
 
-		waits(130);
+		this.clock.tick(130);
 
-		runs(function(){
-			expect(element.getStyle('opacity').toInt()).toEqual(1);
-			element.destroy();
-		});
+		expect(element.getStyle('opacity').toInt()).toEqual(1);
+		element.destroy();
 
 	});
 
@@ -85,12 +94,10 @@ describe('Fx.Tween', function(){
 
 		element.fade('toggle');
 
-		waits(130);
+		this.clock.tick(130);
 
-		runs(function(){
-			expect(element.getStyle('opacity').toInt()).toEqual(0);
-			element.destroy();
-		});
+		expect(element.getStyle('opacity').toInt()).toEqual(0);
+		element.destroy();
 
 	});
 
@@ -104,7 +111,6 @@ describe('Fx.Tween', function(){
 
 		expect(element.get('tween').options.duration).toEqual(100);
 
-
 	});
 
 	it('should fade an element with toggle', function(){
@@ -117,10 +123,10 @@ describe('Fx.Tween', function(){
 
 		element.highlight('#f00');
 
-		runs(function(){
-			expect(['#fff', '#ffffff']).toContain(element.getStyle('background-color').toLowerCase());
-			element.destroy();
-		});
+		this.clock.tick(40);
+		
+		expect(['#fff', '#ffffff']).toContain(element.getStyle('background-color').toLowerCase());
+		element.destroy();
 
 	});
 

@@ -7,6 +7,15 @@ provides: [Fx.Specs]
 ...
 */
 describe('Fx', function(){
+	
+	beforeEach(function(){
+		this.clock = sinon.useFakeTimers();
+	});
+	
+	afterEach(function(){
+		this.clock.reset();
+		this.clock.restore();
+	});
 
 	Object.each(Fx.Transitions, function(value, transition){
 		if (transition == 'extend') return;
@@ -27,16 +36,12 @@ describe('Fx', function(){
 
 			fx.start(10, 20);
 
+			this.clock.tick(10);
 			expect(onStart).toHaveBeenCalled();
 			expect(onComplete).not.toHaveBeenCalled();
 
-			waitsFor(300, function(){
-				return onComplete.wasCalled;
-			});
-
-			runs(function(){
-				expect(onComplete).toHaveBeenCalled();
-			});
+			this.clock.tick(100);
+			expect(onComplete).toHaveBeenCalled();
 
 		});
 	});
@@ -74,12 +79,10 @@ describe('Fx', function(){
 			duration: 100
 		}).start(0, 10);
 
-		waits(200);
+		this.clock.tick(200);
 
-		runs(function(){
-			expect(fx.foo).toEqual(10);
-		});
-
+		expect(fx.foo).toEqual(10);
+		
 	});
 
 	it('should pause and resume', function(){
@@ -95,30 +98,24 @@ describe('Fx', function(){
 			duration: 200
 		}).start(0, 1);
 
-		waits(100);
+		this.clock.tick(100);
 
 		var value;
 
-		runs(function(){
-			fx.pause();
-			value = fx.foo;
-			expect(fx.foo).toBeGreaterThan(0);
-			expect(fx.foo).toBeLessThan(1);
-		});
+		fx.pause();
+		value = fx.foo;
+		expect(fx.foo).toBeGreaterThan(0);
+		expect(fx.foo).toBeLessThan(1);
 
-		waits(100);
+		this.clock.tick(100);
 
-		runs(function(){
-			expect(fx.foo).toEqual(value);
-			fx.resume();
-		});
+		expect(fx.foo).toEqual(value);
+		fx.resume();
 
-		waits(200);
+		this.clock.tick(200);
 
-		runs(function(){
-			expect(fx.foo).toEqual(1);
-		});
-
+		expect(fx.foo).toEqual(1);
+		
 	});
 
 	it('should chain the Fx', function(){
@@ -134,11 +131,10 @@ describe('Fx', function(){
 
 		fx.start().start();
 
-		waits(210);
+		this.clock.tick(100);
+		this.clock.tick(100);
 
-		runs(function(){
-			expect(counter).toEqual(2);
-		});
+		expect(counter).toEqual(2);
 	});
 
 	it('should cancel the Fx after a new Fx:start with the link = cancel option', function(){
@@ -152,6 +148,8 @@ describe('Fx', function(){
 		});
 
 		fx.start().start();
+		
+		this.clock.tick(100);
 
 		expect(onCancel).toHaveBeenCalled();
 
