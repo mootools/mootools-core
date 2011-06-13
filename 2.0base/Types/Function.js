@@ -169,7 +169,7 @@ describe('Function.delay', function(){
 		}
 		spy.delay(50);
 
-		this.clokc.tick(100);
+		this.clock.tick(100);
 
 		expect(argumentCount).toEqual(0);
 	});
