@@ -125,6 +125,15 @@ describe('Function.extend', function(){
 });
 
 describe('Function.delay', function(){
+	
+	beforeEach(function(){
+		this.clock = sinon.useFakeTimers();
+	});
+	
+	afterEach(function(){
+		this.clock.reset();
+		this.clock.restore();
+	});
 
 	it('should return a timer pointer', function(){
 		var spyA = jasmine.createSpy('Alice');
@@ -133,26 +142,24 @@ describe('Function.delay', function(){
 		var timerA = spyA.delay(200);
 		var timerB = spyB.delay(200);
 
-		waits(100);
-		runs(function(){
-			expect(spyA).not.toHaveBeenCalled();
-			expect(spyB).not.toHaveBeenCalled();
-			clearTimeout(timerB);
-		});
-		waits(250);
-		runs(function(){
-			expect(spyA.callCount).toBe(1);
-			expect(spyB.callCount).toBe(0);
-		});
+		this.clock.tick(100);
+
+		expect(spyA).not.toHaveBeenCalled();
+		expect(spyB).not.toHaveBeenCalled();
+		clearTimeout(timerB);
+
+		this.clock.tick(250);
+
+		expect(spyA.callCount).toBe(1);
+		expect(spyB.callCount).toBe(0);
 	});
 
 	it('should pass parameter 0', function(){
 		var spy = jasmine.createSpy();
 		spy.delay(50, null, 0);
-		waits(100);
-		runs(function(){
-			expect(spy).toHaveBeenCalledWith(0);
-		});
+		this.clock.tick(100);
+
+		expect(spy).toHaveBeenCalledWith(0);
 	});
 
 	it('should not pass any argument when no arguments passed', function(){
@@ -161,45 +168,52 @@ describe('Function.delay', function(){
 			argumentCount = arguments.length;
 		}
 		spy.delay(50);
-		waits(100);
-		runs(function(){
-			expect(argumentCount).toEqual(0);
-		});
+
+		this.clock.tick(100);
+
+		expect(argumentCount).toEqual(0);
 	});
 
 });
 
 describe('Function.periodical', function(){
-
+	
+	beforeEach(function(){
+		this.clock = sinon.useFakeTimers();
+	});
+	
+	afterEach(function(){
+		this.clock.reset();
+		this.clock.restore();
+	});
+	
 	it('should return an interval pointer', function(){
 		var spy = jasmine.createSpy('Bond');
 
 		var interval = spy.periodical(10);
 		expect(spy).not.toHaveBeenCalled();
 
-		waits(100);
-		runs(function(){
-			expect(spy.callCount).toBeGreaterThan(2);
-			expect(spy.callCount).toBeLessThan(15);
-			clearInterval(interval);
-			spy.reset();
-			expect(spy).not.toHaveBeenCalled();
-		});
+		this.clock.tick(100);
 
-		waits(100);
-		runs(function(){
-			expect(spy).not.toHaveBeenCalled();
-		});
+		expect(spy.callCount).toBeGreaterThan(2);
+		expect(spy.callCount).toBeLessThan(15);
+		clearInterval(interval);
+		spy.reset();
+		expect(spy).not.toHaveBeenCalled();
+
+		this.clock.tick(100);
+
+		expect(spy).not.toHaveBeenCalled();
 	});
 
 	it('should pass parameter 0', function(){
 		var spy = jasmine.createSpy();
 		var timer = spy.periodical(10, null, 0);
-		waits(100);
-		runs(function(){
-			expect(spy).toHaveBeenCalledWith(0);
-			clearInterval(timer);
-		});
+
+		this.clock.tick(100);
+
+		expect(spy).toHaveBeenCalledWith(0);
+		clearInterval(timer);
 	});
 
 	it('should not pass any argument when no arguments passed', function(){
@@ -208,11 +222,11 @@ describe('Function.periodical', function(){
 			argumentCount = arguments.length;
 		}
 		var timer = spy.periodical(50);
-		waits(100);
-		runs(function(){
-			expect(argumentCount).toEqual(0);
-			clearInterval(timer);
-		});
+
+		this.clock.tick(100);
+
+		expect(argumentCount).toEqual(0);
+		clearInterval(timer);
 	});
 
 });
