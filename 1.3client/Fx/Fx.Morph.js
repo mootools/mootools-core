@@ -7,6 +7,15 @@ provides: [Fx.Morph.Specs]
 ...
 */
 describe('Fx.Morph', function(){
+	
+	beforeEach(function(){
+		this.clock = sinon.useFakeTimers();
+	});
+	
+	afterEach(function(){
+		this.clock.reset();
+		this.clock.restore();
+	});
 
 	it('should morph the style of an element', function(){
 
@@ -26,13 +35,11 @@ describe('Fx.Morph', function(){
 			width: [10, 50]
 		});
 
-		waits(200);
+		this.clock.tick(200);
 
-		runs(function(){
-			expect(element.getStyle('height').toInt()).toEqual(50);
-			expect(element.getStyle('width').toInt()).toEqual(50);
-			element.destroy();
-		});
+		expect(element.getStyle('height').toInt()).toEqual(50);
+		expect(element.getStyle('width').toInt()).toEqual(50);
+		element.destroy();
 
 	});
 
@@ -45,7 +52,6 @@ describe('Fx.Morph', function(){
 		});
 
 		expect(element.get('morph').options.duration).toEqual(100);
-
 
 	});
 

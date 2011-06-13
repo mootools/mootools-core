@@ -27,13 +27,7 @@ describe('Fx.Tween', function(){
 
 		var fx = new Fx.Tween(element, {
 			duration: 100,
-			property: 'height',
-			onStart: function(){
-				console.log('start');
-			},
-			onComplete: function(){
-				console.log('done');
-			}
+			property: 'height'
 		});
 		
 		fx.start(10, 50);
