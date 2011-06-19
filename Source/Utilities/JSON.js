@@ -7,7 +7,7 @@ description: JSON encoder and decoder.
 
 license: MIT-style license.
 
-See Also: <http://www.json.org/>
+SeeAlso: <http://www.json.org/>
 
 requires: [Array, String, Number, Function]
 
