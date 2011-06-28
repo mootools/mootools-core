@@ -150,7 +150,8 @@ Window.mirror(function(name, method){
 	window[name] = method;
 });
 
-this.Document = document.$constructor = new Type('Document', function(){});
+// Creating a "Document" variable interferes with some versions of Java
+// this.Document = document.$constructor = new Type('Document', function(){});
 
 document.$family = Function.from('document').hide();
 
