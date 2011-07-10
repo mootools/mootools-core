@@ -162,7 +162,7 @@ Gets the element in focus.
 Selector: not {#Slick:not}
 -------------------------------------
 
-Matches all elements that do not match the single selector.
+Matches all elements that do not match the selector.
 
 ### Examples:
 
@@ -172,7 +172,7 @@ Matches all elements that do not match the single selector.
 
 	myElement.getElements(':not(a)');
 
-	$$(':not(ul li)'); // NOT allowed! Only single selectors might be passed.
+	$$(':not(ul li)');
 
 
 Selector: nth-child {#Slick:nth-child}
