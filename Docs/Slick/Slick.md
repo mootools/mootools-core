@@ -142,7 +142,7 @@ Matches all the Elements which contains the text.
 Selector: not {#Selector:not}
 -------------------------------------
 
-Matches all elements that do not match the single selector.
+Matches all elements that do not match the selector.
 
 ### Usage:
 
@@ -156,7 +156,7 @@ Matches all elements that do not match the single selector.
 
 	myElement.getElements(':not(a)');
 
-	$$(':not(ul li)'); // NOT allowed! Only single selectors might be passed.
+	$$(':not(ul li)');
 
 
 Selector: nth-child {#Selector:nth-child}
