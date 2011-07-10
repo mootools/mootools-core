@@ -139,6 +139,16 @@ Matches all the Elements which contains the text.
 	$$('p:contains("find me")');
 
 
+Selector: focus {#Selector:focus}
+---------------------------------------
+
+Gets the element in focus.
+
+### Example:
+
+	$$(':focus');		// Gets the element in focus
+
+
 Selector: not {#Selector:not}
 -------------------------------------
 
@@ -215,10 +225,6 @@ Selector: even {#Selector:even}
 
 Matches every even child.
 
-### Usage:
-
-	':even'
-
 ### Example:
 
 	$$('td:even');
@@ -233,10 +239,6 @@ Selector: odd {#Selector:odd}
 
 Matches every odd child.
 
-### Usage:
-
-	':odd'
-
 ### Example:
 
 	$$('td:odd');
@@ -244,6 +246,20 @@ Matches every odd child.
 ### Note:
 
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(odd), as this will return the real odd children.
+
+
+Selector: index {#Selector:index}
+-----------------------------
+
+Matches the node at the specified index
+
+### Example:
+
+	$$('p:index(2)');		// Gets the third <p> tag.
+
+### Note:
+
+This is zero-indexed.
 
 
 Selector: first-child {#Selector:first-child}
