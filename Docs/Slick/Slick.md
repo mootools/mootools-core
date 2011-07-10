@@ -24,6 +24,32 @@ Reversed Combinators redirect the flow of selectors and combinators. Slick imple
 Reversed Combinators are used internally by MooTools for many of our traversal methods. They offer an extremely concise and powerful alternative to traversal methods like getParent().
 
 
+Slick.definePseudo
+-------------------------------------
+
+definePseudo allows you to create your own custom pseudo selectors.
+
+### Examples:
+
+	Slick.definePseudo('myCustomPseudo', function(){
+		return document.id(this).get('text').contains('foo');	// 'this' is the node to check
+	});
+	
+	<p>foo</p>
+	<p>bar</p>
+	
+	$$(':myCustomPseudo')		// Will return the first <p> tag
+	
+	Slick.definePseudo('isColor', function(color){
+   		return document.id(this).getStyle('color') == color;
+	});
+	
+	<p style="color: red">foo</p>
+	<p style="color: blue">bar</p>
+	
+	$$(':isColor(red)');		// Will return the first <p> tag
+
+
 Selector: Next Siblings ('~') {#Selector:nextsiblings}
 -------------------------------------
 
@@ -80,10 +106,6 @@ Selector: checked {#Selector:checked}
 
 Matches all Elements that are checked.
 
-### Usage:
-
-	':checked'
-
 ### Examples:
 
 	$$('*:checked')
@@ -95,10 +117,6 @@ Selector: enabled {#Selector:enabled}
 -------------------------------------
 
 Matches all Elements that are enabled.
-
-### Usage:
-
-	':enabled'
 
 ### Examples:
 
@@ -112,10 +130,6 @@ Selector: empty {#Selector:empty}
 
 Matches all elements which are empty.
 
-### Usage:
-
-	':empty'
-
 ### Example:
 
 	$$('div:empty');
@@ -125,10 +139,6 @@ Selector: contains {#Selector:contains}
 ---------------------------------------
 
 Matches all the Elements which contains the text.
-
-### Usage:
-
-	':contains(text)'
 
 ### Variables:
 
@@ -153,10 +163,6 @@ Selector: not {#Selector:not}
 -------------------------------------
 
 Matches all elements that do not match the selector.
-
-### Usage:
-
-	':not(selector)'
 
 ### Examples:
 
