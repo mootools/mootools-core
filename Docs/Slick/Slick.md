@@ -48,7 +48,7 @@ definePseudo allows you to create your own custom pseudo selectors.
 	$$(':has-color(red)');		// Will return the first <p> tag
 
 
-Selector: Next Siblings ('~') {#Selector:nextsiblings}
+Selector: Next Siblings ('~') {#Slick:nextsiblings}
 -------------------------------------
 
 Gets the next siblings.
@@ -59,7 +59,7 @@ Gets the next siblings.
 	$$('p.foo ~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *before* it
 
 
-Selector: Previous Siblings ('!~') {#Selector:previoussiblings}
+Selector: Previous Siblings ('!~') {#Slick:previoussiblings}
 -------------------------------------
 
 Gets the previous siblings.
@@ -70,7 +70,7 @@ Gets the previous siblings.
 	$$('p.foo !~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *after* it
 	
 
-Selector: All Siblings ('~~') {#Selector:allsiblings}
+Selector: All Siblings ('~~') {#Slick:allsiblings}
 -------------------------------------
 
 Gets all siblings.
@@ -80,7 +80,7 @@ Gets all siblings.
 	$$('p.foo ~~')            // Gets all previous and next siblings of <p class='foo'>
 	$$('p.foo ~~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling before OR after it
 
-Selector: First Child ('^') {#Selector:firstchild}
+Selector: First Child ('^') {#Slick:firstchild}
 -------------------------------------
 
 Gets the first child of an element.
@@ -91,7 +91,7 @@ Gets the first child of an element.
 	$$('p.foo ^ strong')	// Gets every <strong> that is the first element child of a <p class='foo'>
 
 
-Selector: Last Child ('!^') {#Selector:lastchild}
+Selector: Last Child ('!^') {#Slick:lastchild}
 -------------------------------------
 
 Gets the last child of an element.
@@ -103,7 +103,7 @@ Gets the last child of an element.
 
 
 
-Selector: checked {#Selector:checked}
+Selector: checked {#Slick:checked}
 -------------------------------------
 
 Matches all Elements that are checked.
@@ -115,7 +115,7 @@ Matches all Elements that are checked.
 	$('myForm').getElements('input:checked');
 
 
-Selector: enabled {#Selector:enabled}
+Selector: enabled {#Slick:enabled}
 -------------------------------------
 
 Matches all Elements that are enabled.
@@ -127,7 +127,7 @@ Matches all Elements that are enabled.
 	$('myElement').getElements(':enabled');
 	
 
-Selector: empty {#Selector:empty}
+Selector: empty {#Slick:empty}
 ---------------------------------
 
 Matches all elements which are empty.
@@ -137,7 +137,7 @@ Matches all elements which are empty.
 	$$(':empty');
 
 
-Selector: contains {#Selector:contains}
+Selector: contains {#Slick:contains}
 ---------------------------------------
 
 Matches all the Elements which contains the text.
@@ -151,7 +151,7 @@ Matches all the Elements which contains the text.
 	$$('p:contains("find me")');
 
 
-Selector: focus {#Selector:focus}
+Selector: focus {#Slick:focus}
 ---------------------------------------
 
 Gets the element in focus.
@@ -161,7 +161,7 @@ Gets the element in focus.
 	$$(':focus');		// Gets the element in focus
 
 
-Selector: not {#Selector:not}
+Selector: not {#Slick:not}
 -------------------------------------
 
 Matches all elements that do not match the selector.
@@ -179,7 +179,7 @@ Matches all elements that do not match the selector.
 	$$(':not(ul li)');
 
 
-Selector: nth-child {#Selector:nth-child}
+Selector: nth-child {#Slick:nth-child}
 -----------------------------------------
 
 Matches every nth child.
@@ -230,7 +230,7 @@ Last Child:
 This selector respects the w3c specifications, so it has 1 as its first child, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
 
 
-Selector: even {#Selector:even}
+Selector: even {#Slick:even}
 -------------------------------
 
 Matches every even child.
@@ -244,7 +244,7 @@ Matches every even child.
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(even), as this will return the real even children.
 
 
-Selector: odd {#Selector:odd}
+Selector: odd {#Slick:odd}
 -----------------------------
 
 Matches every odd child.
@@ -258,7 +258,7 @@ Matches every odd child.
 This selector is not part of the w3c specification, therefore its index starts at 0. This selector is highly recommended over nth-child(odd), as this will return the real odd children.
 
 
-Selector: index {#Selector:index}
+Selector: index {#Slick:index}
 -----------------------------
 
 Matches the node at the specified index
@@ -272,7 +272,7 @@ Matches the node at the specified index
 This is zero-indexed.
 
 
-Selector: first-child {#Selector:first-child}
+Selector: first-child {#Slick:first-child}
 ---------------------------------
 
 Matches the first child.
@@ -286,7 +286,7 @@ Matches the first child.
 	$$('td:first-child');
 
 
-Selector: last-child {#Selector:last-child}
+Selector: last-child {#Slick:last-child}
 -------------------------------------
 
 	Matches the last child.
@@ -300,7 +300,7 @@ Selector: last-child {#Selector:last-child}
 	$$('td:last-child');
 
 
-Selector: only-child {#Selector:only-child}
+Selector: only-child {#Slick:only-child}
 -------------------------------------
 
 Matches an only child of its parent Element.
