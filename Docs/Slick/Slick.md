@@ -8,7 +8,7 @@ Slick is the selector engine used by MooTools. It supports many CSS3 selectors a
 - [W3C Pseudo Classes](http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#pseudo-classes)
 
 
-Reverse Combinators
+Reversed Combinators
 -------------------------------------
 
 Reversed Combinators redirect the flow of selectors and combinators. Slick implements these by prepending ! to a selector or combinator.
@@ -18,6 +18,10 @@ Reversed Combinators redirect the flow of selectors and combinators. Slick imple
 	$$('p ! div')		// A <div> that is a parent of a <p>
 	$$('p !> div')		// A <div> that is a direct parent of a <p>
 	$$('.foo !+ p')		// Gets the previous adjacent <p> sibling
+
+### Notes:
+
+Reversed Combinators are used internally by MooTools for many of our traversal methods. They offer an extremely concise and powerful alternative to traversal methods like getParent().
 
 
 Slick.definePseudo
