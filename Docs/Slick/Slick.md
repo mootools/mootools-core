@@ -108,7 +108,7 @@ Matches all Elements that are checked.
 
 ### Examples:
 
-	$$('*:checked')
+	$$(':checked')
 
 	$('myForm').getElements('input:checked');
 
@@ -120,7 +120,7 @@ Matches all Elements that are enabled.
 
 ### Examples:
 
-	$$('*:enabled')
+	$$(':enabled')
 
 	$('myElement').getElements(':enabled');
 	
