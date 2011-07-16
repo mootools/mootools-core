@@ -11,17 +11,17 @@ Slick is the selector engine used by MooTools. It supports many CSS3 selectors a
 Reversed Combinators
 -------------------------------------
 
-Reversed Combinators redirect the flow of selectors and combinators. Slick implements these by prepending ! to a selector or combinator.
+Reversed Combinators redirect the flow of selectors and combinators. Slick implements these by prepending `!` to a selector or combinator.
 
 ### Examples:
 
-	$$('p ! div')		// A <div> that is a parent of a <p>
+	$$('p ! div')		// A <div> that is an ancestor of a <p>
 	$$('p !> div')		// A <div> that is a direct parent of a <p>
 	$$('.foo !+ p')		// Gets the previous adjacent <p> sibling
 
 ### Notes:
 
-Reversed Combinators are used internally by MooTools for many of our traversal methods. They offer an extremely concise and powerful alternative to traversal methods like getParent().
+Reversed Combinators are used internally by MooTools for many of our traversal methods. They offer an extremely concise and powerful alternative to traversal methods like `getParent()`.
 
 
 Slick.definePseudo
@@ -31,23 +31,21 @@ definePseudo allows you to create your own custom pseudo selectors.
 
 ### Examples:
 
-	Slick.definePseudo('myCustomPseudo', function(){
-		return document.id(this).get('text').contains('foo');	// 'this' is the node to check
+	Slick.definePseudo('my-custom-pseudo', function(){
+		// 'this' is the node to check
+		return document.id(this).retrieve('something-custom').isAwesome;
 	});
 	
-	<p>foo</p>
-	<p>bar</p>
+	$$(':my-custom-pseudo')		// Will return the first <p> tag that is awesome
 	
-	$$(':myCustomPseudo')		// Will return the first <p> tag
-	
-	Slick.definePseudo('isColor', function(color){
+	Slick.definePseudo('has-color', function(color){
    		return document.id(this).getStyle('color') == color;
 	});
 	
 	<p style="color: red">foo</p>
 	<p style="color: blue">bar</p>
 	
-	$$(':isColor(red)');		// Will return the first <p> tag
+	$$(':has-color(red)');		// Will return the first <p> tag
 
 
 Selector: Next Siblings ('~') {#Slick:nextsiblings}
@@ -57,7 +55,8 @@ Gets the next siblings.
 
 ### Example:
 	
-	$$('p.foo ~')		// Gets all next siblings of <p class='foo'>
+	$$('p.foo ~')		 // Gets all next siblings of <p class='foo'>
+	$$('p.foo ~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *before* it
 
 
 Selector: Previous Siblings ('!~') {#Slick:previoussiblings}
@@ -67,7 +66,8 @@ Gets the previous siblings.
 
 ### Example:
 	
-	$$('p.foo !~')		// Gets all previous siblings of <p class='foo'>
+	$$('p.foo !~')            // Gets all previous siblings of <p class='foo'>
+	$$('p.foo !~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *after* it
 	
 
 Selector: All Siblings ('~~') {#Slick:allsiblings}
@@ -77,8 +77,8 @@ Gets all siblings.
 
 ### Example:
 
-	$$('p.foo ~~')		// Gets all previous and next siblings of <p class='foo'>
-	
+	$$('p.foo ~~')            // Gets all previous and next siblings of <p class='foo'>
+	$$('p.foo ~~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling before OR after it
 
 Selector: First Child ('^') {#Slick:firstchild}
 -------------------------------------
@@ -88,7 +88,8 @@ Gets the first child of an element.
 ### Example:
 
 	$$('p.foo ^')		// Gets the first child of <p class='foo'>
-	
+	$$('p.foo ^ strong')	// Gets every <strong> that is the first element child of a <p class='foo'>
+
 
 Selector: Last Child ('!^') {#Slick:lastchild}
 -------------------------------------
@@ -98,6 +99,7 @@ Gets the last child of an element.
 ### Example:
 
 	$$('p.foo !^')		// Gets the last child of <p class='foo'>
+	$$('p.foo ^ strong')	// Gets every <strong> that is the last element child of a <p class='foo'>
 
 
 
@@ -108,7 +110,7 @@ Matches all Elements that are checked.
 
 ### Examples:
 
-	$$('*:checked')
+	$$(':checked')
 
 	$('myForm').getElements('input:checked');
 
@@ -120,7 +122,7 @@ Matches all Elements that are enabled.
 
 ### Examples:
 
-	$$('*:enabled')
+	$$(':enabled')
 
 	$('myElement').getElements(':enabled');
 	
@@ -132,7 +134,7 @@ Matches all elements which are empty.
 
 ### Example:
 
-	$$('div:empty');
+	$$(':empty');
 
 
 Selector: contains {#Slick:contains}
@@ -163,6 +165,8 @@ Selector: not {#Slick:not}
 -------------------------------------
 
 Matches all elements that do not match the selector.
+
+<small>Note: The Slick implementation of the `:not` pseudoClass is a superset of the standard. i.e. it can do more stuff.</small>
 
 ### Examples:
 
