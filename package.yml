@@ -28,6 +28,7 @@ sources:
   - "Source/Element/Element.js"
   - "Source/Element/Element.Style.js"
   - "Source/Element/Element.Event.js"
+  - "Source/Element/Element.Delegation.js"
   - "Source/Element/Element.Dimensions.js"
   - "Source/Fx/Fx.js"
   - "Source/Fx/Fx.CSS.js"
