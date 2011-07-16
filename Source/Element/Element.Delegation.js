@@ -41,9 +41,9 @@ var formObserver = function(type){
 		base: 'focusin',
 
 		remove: function(self, uid){
-			var listener = self.retrieve(_key + type + 'listeners', {})[uid];
-			if (listener && listener.forms) for (var i = listener.forms.length; i--;){
-				listener.forms[i].removeEvent(type, listener.callbacks[i]);
+			var list = self.retrieve(_key + type + 'listeners', {})[uid];
+			if (list && list.forms) for (var i = list.forms.length; i--;){
+				list.forms[i].removeEvent(type, list.fns[i]);
 			}
 		},
 
@@ -53,20 +53,19 @@ var formObserver = function(type){
 			if (!form) return;
 
 			var listeners = self.retrieve(_key + type + 'listeners', {}),
-				listener = listeners[uid] || {},
-				forms = listener.forms || [],
-				callbacks = listener.callbacks || [];
+				listener = listeners[uid] || {forms: [], fns: []},
+				forms = listener.forms, fns = listener.fns;
 
-			if (forms.indexOf(form) > -1) return;
+			if (forms.indexOf(form) != -1) return;
 			forms.push(form);
 
-			var callback = function(event){
+			var _fn = function(event){
 				bubbleUp(self, match, fn, event);
 			};
-			form.addEvent(type, callback);
-			callbacks.push(callback);
+			form.addEvent(type, _fn);
+			fns.push(_fn);
 
-			listeners[uid] = {forms: forms, callbacks: callbacks};
+			listeners[uid] = listener;
 			self.store(_key + type + 'listeners', listeners);
 		}
 	};
