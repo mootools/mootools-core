@@ -38,8 +38,8 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 
 This function is equivalent to the following deprecated MooTools 1.2 methods:
 
-	var fn1 = Function.from();		// equivalent to var fn1 = $empty();
-	var fn2 = Function.from(foo);	// equivalent to var fn2 = $lambda(foo);
+	var fn1 = Function.from();		// equivalent to var fn1 = function(){};
+	var fn2 = Function.from(foo);	// equivalent to var fn2 = function(){ return foo; };
 
 
 Function: Function.attempt {#Function:Function-attempt}
