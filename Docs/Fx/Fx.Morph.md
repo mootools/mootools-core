@@ -131,6 +131,7 @@ Executes a transition for any number of CSS properties in tandem.
 
 - If a string is passed as the CSS selector, the selector must be identical to the one within the CSS.
 - Multiple selectors (with commas) are not supported.
+- @import'ed CSS rules will not be available for Morph calls. All CSS selectors must be present in CSS directly loaded into the page.
 
 
 Object: Element.Properties {#Element-Properties}
