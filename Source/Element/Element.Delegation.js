@@ -23,9 +23,9 @@ nativeEvents.focusin = 2;
 nativeEvents.focusout = 2;
 
 var bubbleUp = function(self, match, fn, event){
-	for (var target = event.target; target && target != this;){
+	for (var target = event.target; target && target != self;){
 		if (target && match(target, event)){
-			fn.call(self, event, target);
+			fn.call(target, event, target);
 			break;
 		}
 		target = document.id(target.parentNode);
@@ -110,9 +110,18 @@ if (!eventListenerSupport) Object.append(map, {
 	select: inputObserver('select')
 });
 
+var proto = Element.prototype, relay = function(old, method){
+	return function(type, fn, useCapture){
+		if (type.indexOf(':relay') == -1) return old.call(this, type, fn, useCapture);
+		var parsed = Slick.parse(type).expressions[0][0];
+		if (parsed.pseudos[0].key != 'relay') return old.call(this, type, fn, useCapture);
+		return method.call(this, old, parsed.tag, parsed.pseudos[0].value, fn);
+	}
+};
+
 [Element, Window, Document].invoke('implement', {
 
-	delegate: function(type, match, fn){
+	addEvent: relay(proto.addEvent, function(addEvent, type, match, fn){
 		var storage = this.retrieve('delegates', {}), stored = storage[type];
 
 		if (stored) for (var _uid in stored){
@@ -122,7 +131,7 @@ if (!eventListenerSupport) Object.append(map, {
 		var _type = type, _match = match, _fn = fn, _map = map[type] || {};
 		type = _map.base || _type;
 
-		if (typeof match == 'string') match = function(target){
+		match = function(target){
 			return Slick.match(target, _match);
 		};
 
@@ -134,7 +143,8 @@ if (!eventListenerSupport) Object.append(map, {
 			};
 		}
 
-		var self = this, uid = String.uniqueID(), delegator = _map.listen ? function(event){
+		var self = this, uid = String.uniqueID();
+		var delegator = _map.listen ? function(event){
 			_map.listen(self, match, fn, event, uid);
 		} : function(event){
 			bubbleUp(self, match, fn, event);
@@ -148,15 +158,11 @@ if (!eventListenerSupport) Object.append(map, {
 		};
 		storage[_type] = stored;
 
-		return this.addEvent(type, delegator, _map.capture).store('delegates', storage)
-	},
+		this.store('delegates', storage);
+		return addEvent.call(this, type, delegator, _map.capture);
+	}),
 
-	delegates: function(match, events){
-		for (var type in events) this.delegate(type, match, events[type]);
-		return this;
-	},
-
-	undelegate: function(type, match, fn, _uid){
+	removeEvent: relay(proto.removeEvent, function(removeEvent, type, match, fn, _uid){
 		var storage = this.retrieve('delegates', {}), stored = storage[type];
 		if (!stored) return this;
 
@@ -166,44 +172,21 @@ if (!eventListenerSupport) Object.append(map, {
 			if (_map.remove) _map.remove(this, _uid);
 			delete stored[_uid];
 			storage[_type] = stored;
-			return this.removeEvent(type, delegator).store('delegates', storage);
+			this.store('delegates', storage);
+			return removeEvent.call(this, type, delegator);
 		}
 
 		var __uid, s;
 		if (fn) for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match && s.fn == fn) return this.undelegate(type, match, fn, __uid);
-		} else if (match) for (__uid in stored){
-			s = stored[__uid];
-			if (s.match == match) this.undelegate(type, match, s.fn, __uid);
+			if (s.match == match && s.fn == fn) return arguments.callee.call(this, removeEvent, type, match, fn, __uid);
 		} else for (__uid in stored){
 			s = stored[__uid];
-			this.undelegate(type, s.match, s.fn, __uid);
+			if (s.match == match) arguments.callee.call(this, removeEvent, type, match, s.fn, __uid);
 		}
 		return this;
-	},
+	})
 
-	undelegates: function(match, events){
-		for (var type in events) this.undelegate(type, match, events[type]);
-		return this;
-	}
-
-});
-
-// Old API support
-
-var proto = Element.prototype, relay = function(old, method){
-	return function(type, fn){
-		if (type.indexOf(':') == -1) return old.apply(this, arguments);
-		var parsed = Slick.parse(type).expressions[0][0];
-		if (parsed.pseudos[0].key != 'relay') return old.apply(this, arguments);
-		return this[method](parsed.tag, parsed.pseudos[0].value, fn);
-	}
-};
-
-[Element, Window, Document].invoke('implement', {
-	addEvent: relay(proto.addEvent, 'delegate'),
-	removeEvent: relay(proto.removeEvent, 'undelegate')
 });
 
 })();
