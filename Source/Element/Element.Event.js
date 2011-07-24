@@ -32,14 +32,14 @@ Element.Properties.events = {set: function(events){
 			condition = fn,
 			self = this;
 		if (custom){
-			if (custom.onAdd) custom.onAdd.call(this, fn, type);
+			realType = Function.from(custom.base).call(this) || realType;
+			if (custom.onAdd) custom.onAdd.call(this, fn, realType);
 			if (custom.condition){
 				condition = function(event){
-					if (custom.condition.call(this, event, type)) return fn.call(this, event);
+					if (custom.condition.call(this, event)) return fn.call(this, event);
 					return true;
 				};
 			}
-			realType = custom.base || realType;
 		}
 		var defn = function(){
 			return fn.call(self);
@@ -69,8 +69,8 @@ Element.Properties.events = {set: function(events){
 		delete list.values[index];
 		var custom = Element.Events[type];
 		if (custom){
+			type = Function.from(custom.base).call(this) || type;
 			if (custom.onRemove) custom.onRemove.call(this, fn, type);
-			type = custom.base || type;
 		}
 		return (Element.NativeEvents[type]) ? this.removeListener(type, value, arguments[2]) : this;
 	},
@@ -165,6 +165,36 @@ Element.Events = {
 	}
 
 };
+
+if (!window.addEventListener) {
+	Element.Events.keychange = {
+		base: 'keyup',
+		condition: function(e){
+			switch(e.key){
+				case 'up': case 'down': case 'left': case 'right': if(this.get('type') == 'radio') return this.checked;
+					break;
+				case 'space': return this.get('type') == 'checkbox';
+					break;
+			}
+		}
+	};
+	
+	Element.Events.change = {
+		base: function(){
+			var type = this.get('type');
+			return (type == 'checkbox' || type == 'radio') ? 'mouseup' : 'change';
+		},
+		condition: function(event){
+			return (this.get('type') == 'radio') ? ((event.type == 'keyup') ? this.checked : !this.checked) : true;
+		},
+		onAdd: function(fn, base){
+			if (base == 'mouseup') this.addEvent('keychange', fn);
+		},
+		onRemove: function(fn, base){
+			(base == 'mouseup' ? this.removeEvent('keychange', fn) : this).removeEvent(base, fn);
+		}
+	}
+}
 
 //<1.2compat>
 
