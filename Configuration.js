@@ -25,10 +25,14 @@ Configuration.presets = {
 		sets: ['core-1.3-base', 'core-1.3-client'],
 		source: ['1.3mobile']
 	},
+	'core-1.4': {
+		sets: ['1.2', 'core-1.3-base', 'core-1.3-client', 'core-1.4-client'],
+		source: ['core-1.4-base', 'core-1.4-client']
+	},
 	'core-2.0': {
 		sets: ['core-2.0-base', 'core-2.0-client'],
 		source: ['core-2.0-base', 'core-2.0-client']
-	}
+	},
 };
 
 Configuration.defaultPresets = {
@@ -79,6 +83,13 @@ Configuration.sets = {
 			'Fx/Fx.Morph',
 			'Utilities/Cookie',
 			'Utilities/JSON'
+		]
+	},
+
+	'core-1.4-client': {
+		path: '1.4client/',
+		files: [
+			'Element/Element.Event'
 		]
 	},
 
@@ -194,6 +205,56 @@ Configuration.source = {
 		]
 	},
 
+	'core-1.4-base': {
+		path: '../Source/',
+		files: [
+			'Core/Core',
+
+			'Types/Array',
+			'Types/Function',
+			'Types/Number',
+			'Types/String',
+			'Types/Object',
+
+			'Class/Class',
+			'Class/Class.Extras',
+
+			'Fx/Fx',
+			'Fx/Fx.Transitions'
+		]
+	},
+
+	'core-1.4-client': {
+		path: '../Source/',
+		files: [
+			'Types/Event',
+
+			'Browser/Browser',
+
+			'Slick/Slick.Parser',
+			'Slick/Slick.Finder',
+
+			'Element/Element',
+			'Element/Element.Event',
+			'Element/Element.Delegation',
+			'Element/Element.Style',
+			'Element/Element.Dimensions',
+
+			'Utilities/DOMReady',
+			'Utilities/JSON',
+			'Utilities/Cookie',
+			'Utilities/Swiff',
+
+			'Fx/Fx.CSS',
+			'Fx/Fx.Tween',
+			'Fx/Fx.Morph',
+
+			'Request/Request',
+			'Request/Request.HTML',
+			'Request/Request.JSON'
+		]
+	},
+
 	'1.3mobile': {
 		path: './',
 		files: ['mootools-core-mobile']
@@ -214,13 +275,13 @@ Configuration.source = {
 			'Utilities/Color',
 			'Utilities/Table',
 			'Utilities/JSON',
-			
+
 			'Class/Class',
 			'Class/Chain',
 			'Class/Events',
 			'Class/Options',
 			'Class/Store',
-			
+
 			'Fx/Fx'
 		]
 	},
@@ -229,14 +290,14 @@ Configuration.source = {
 		path: '../Source/',
 		files: [
 			'Browser/Browser',
-			
+
 			'Slick/Slick.Parser',
 			'Slick/Slick.Finder',
 
 			'Element/Element',
-			
+
 			'Browser/Event',
-			
+
 			'Element/Element.Style',
 
 			'Utilities/DOMReady',
