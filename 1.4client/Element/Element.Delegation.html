@@ -39,6 +39,7 @@
 				position: absolute;
 				overflow: auto;
 				padding-bottom: 150px;
+				right: 0;
 			}
 
 			#aside {
@@ -203,7 +204,9 @@
 			<h1>Change</h1>
 
 			<p>
-				Change the text. When you blur the input field, the change event should fire for both the form and the input fields
+				Change the text. When you blur the input field, the change event
+				should fire for both the element which wraps the input fields
+				and bubble to it, and the input fields itself.
 			</p>
 
 			<div id="change">
@@ -220,6 +223,9 @@
 			<script>
 				$('change').addEvent('change:relay(input.someClass,select,input[type="checkbox"],input[type="radio"])', function(){
 					log('change', true);
+				});
+				$(document.body).addEvent('change:relay(#change)', function(){
+					log('change bubbles', true);
 				});
 			</script>
 
@@ -243,6 +249,18 @@
 				});
 			</script>
 
+			<h1>Paste</h1>
+
+			<div id="paste">
+				<textarea></textarea>
+			</div>
+
+			<script>
+				$('paste').addEvent('paste:relay(textarea)', function(event){
+					log('Paste', true);
+				});
+			</script>
+			
 		</div>
 
 	</body>
