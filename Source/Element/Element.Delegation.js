@@ -110,18 +110,24 @@ if (!eventListenerSupport) Object.append(map, {
 	select: inputObserver('select')
 });
 
-var proto = Element.prototype, relay = function(old, method){
+var proto = Element.prototype, addEvent = proto.addEvent, removeEvent = proto.removeEvent;
+
+var relay = function(old, method){
 	return function(type, fn, useCapture){
 		if (type.indexOf(':relay') == -1) return old.call(this, type, fn, useCapture);
 		var parsed = Slick.parse(type).expressions[0][0];
 		if (parsed.pseudos[0].key != 'relay') return old.call(this, type, fn, useCapture);
-		return method.call(this, old, parsed.tag, parsed.pseudos[0].value, fn);
+		var newType = parsed.tag;
+		parsed.pseudos.slice(1).each(function(pseudo){
+			newType += ':' + pseudo.key + (pseudo.value ? '(' + pseudo.value + ')' : '');
+		});
+		return method.call(this, newType, parsed.pseudos[0].value, fn);
 	}
 };
 
 [Element, Window, Document].invoke('implement', {
 
-	addEvent: relay(proto.addEvent, function(addEvent, type, match, fn){
+	addEvent: relay(addEvent, function(type, match, fn){
 		var storage = this.retrieve('delegates', {}), stored = storage[type];
 
 		if (stored) for (var _uid in stored){
@@ -162,7 +168,7 @@ var proto = Element.prototype, relay = function(old, method){
 		return addEvent.call(this, type, delegator, _map.capture);
 	}),
 
-	removeEvent: relay(proto.removeEvent, function(removeEvent, type, match, fn, _uid){
+	removeEvent: relay(removeEvent, function(type, match, fn, _uid){
 		var storage = this.retrieve('delegates', {}), stored = storage[type];
 		if (!stored) return this;
 
