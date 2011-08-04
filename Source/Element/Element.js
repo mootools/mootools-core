@@ -679,7 +679,10 @@ Element.implement({
 });
 
 var cleanClone = function(node, element, keepid){
-	if (!keepid) node.setAttributeNode(document.createAttribute('id'));
+	var attr = node.getAttributeNode('id');
+	if (attr) node.removeAttributeNode(attr);
+	if (keepid) node.setAttribute('id', element.getAttribute('id'));
+
 	if (node.clearAttributes){
 		node.clearAttributes();
 		node.mergeAttributes(element);
