@@ -360,7 +360,6 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 (function(){
 
 var collected = {}, storage = {};
-var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 
 var get = function(uid){
 	return (storage[uid] || (storage[uid] = {}));
@@ -674,45 +673,49 @@ Element.implement({
 
 	match: function(expression){
 		return !expression || Slick.match(this, expression);
-	}
+	},
 
-});
+	clone: (function(){
+		var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 
-var cleanClone = function(node, element, keepid){
-	var attr = node.getAttributeNode('id');
-	if (attr) node.removeAttributeNode(attr);
-	if (keepid) node.setAttribute('id', element.getAttribute('id'));
+		var cleanClone = function(node, element, keepid){
+			var attr = node.getAttributeNode('id');
+			if (attr) node.removeAttributeNode(attr);
+			if (keepid) node.setAttribute('id', element.getAttribute('id'));
 
-	if (node.clearAttributes){
-		node.clearAttributes();
-		node.mergeAttributes(element);
-		node.removeAttribute('uid');
-		if (node.options){
-			var no = node.options, eo = element.options;
-			for (var i = no.length; i--;) no[i].selected = eo[i].selected;
-		}
-	}
+			if (node.clearAttributes){
+				node.clearAttributes();
+				node.mergeAttributes(element);
+				node.removeAttribute('uid');
+				if (node.options){
+					var no = node.options, eo = element.options;
+					for (var i = no.length; i--;) no[i].selected = eo[i].selected;
+				}
+			}
 
-	var prop = formProps[element.tagName.toLowerCase()];
-	if (prop && element[prop]) node[prop] = element[prop];
-};
+			var prop = formProps[element.tagName.toLowerCase()];
+			if (prop && element[prop]) node[prop] = element[prop];
+		};
 
-Element.implement('clone', function(contents, keepid){
-	contents = contents !== false;
-	var clone = this.cloneNode(contents), i;
+		return function(contents, keepid){
+			contents = contents !== false;
+			var clone = this.cloneNode(contents), i;
 
-	if (contents){
-		var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-		for (i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
-	}
+			if (contents){
+				var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
+				for (i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
+			}
 
-	cleanClone(clone, this, keepid);
+			cleanClone(clone, this, keepid);
 
-	if (Browser.ie){
-		var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
-		for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
-	}
-	return document.id(clone);
+			if (Browser.ie){
+				var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
+				for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
+			}
+			return document.id(clone);
+		};
+	})()
+
 });
 
 var contains = {contains: function(element){
