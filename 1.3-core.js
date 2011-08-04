@@ -3892,9 +3892,8 @@ provides: Element.Style
 var html = document.html;
 var styleMap = Browser.Features.styles = {};
 var hasPrefix = /(moz-|ms-|webkit-|o-)([\w-]+)/;
-var computed = window.getComputedStyle ? window.getComputedStyle(document.body) : document.body.currentStyle;
 
-Object.each(computed, function(value, key){
+Object.each(document.body.currentStyle || window.getComputedStyle(document.body), function(value, key){
 	var dashed = isNaN(key) ? key.hyphenate() : value,
 		prefix = hasPrefix.exec(dashed) || [],
 		name = prefix[2] || dashed;
