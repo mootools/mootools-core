@@ -257,7 +257,7 @@ var force = function(name, object, methods){
 
 force('String', String, [
 	'charAt', 'charCodeAt', 'concat', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
-	'slice', 'split', 'substr', 'substring', 'toLowerCase', 'toUpperCase'
+	'slice', 'split', 'substr', 'substring', 'trim', 'toLowerCase', 'toUpperCase'
 ])('Array', Array, [
 	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
 	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight'
