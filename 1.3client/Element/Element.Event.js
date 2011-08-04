@@ -42,30 +42,17 @@ describe('Element.Event', function(){
 	});
 
 	// Only run this spec in browsers other than IE6-8 because they can't properly simulate key events
-	if (window.addEventListener) it('Should watch for a key-down event', function(){
+	it('Should watch for a key-down event', function(){
 		
-		var callback = jasmine.createSpy(), called = false;
+		var callback = jasmine.createSpy('keydown');
 
-		var listener = function(event){
-			called = true;
-			if (event.key == 'esc') callback();
-		};
-		
-		var body = document.body;
-		
-		body.addEvent('keydown', listener);
-		
-		Syn.key('escape', body, function(){
-			called = true;
-		});
-		
-		waitsFor(2, function(){
-			return called;
-		});
+		var div = createElement('div').addEvent('keydown', function(event){
+			callback(event.key);
+		}).inject(document.body);
 
-		runs(function(){
-			expect(callback).toHaveBeenCalled();
-			body.removeEvent('keydown', listener);
+		simulateEvent('key', ['escape', div], function(){
+			expect(callback).toHaveBeenCalledWith('esc');
+			div.destroy();
 		});
 
 	});
