@@ -69,7 +69,7 @@ Browser.Platform {#Browser:Browser-Platform}
 Browser.Plugins {#Browser:Browser-Plugins}
 ------------------------------------------
 
-* Browser.Plugins.Flash - (*boolean*) - True if Flash is present.
+* Browser.Plugins.Flash - (*object*) - An object with properties corresponding to the `version` and `build` number of the installed Flash plugin. Note: if flash is not installed, both `Browser.Plugins.Flash.version` and `Browser.Plugins.Flash.build` will return zero.
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
 * Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
