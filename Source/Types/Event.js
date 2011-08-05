@@ -33,7 +33,7 @@ var Event = new Type('Event', function(event, win){
 		key = Object.keyOf(Event.Keys, code);
 		if (type == 'keydown'){
 			if (code > 111 && code < 124) key = 'f' + (code - 111);
-			if (code > 95 && code <= 106) key = code - 96;
+			if (code > 95 && code < 106) key = code - 96;
 		}
 		if (!key) key = String.fromCharCode(code).toLowerCase();
 	} else if ((/click|mouse|menu/i).test(type)){
