@@ -58,10 +58,10 @@ separating the logic and styles:
 
 	// the styles of myClassName will be applied to the target Element.
 	myEffect.start('.myClassName');
-	
 
-Whilst some complex CSS selectors will work, only simple selectors are supported. Eg a single class name or ID.
+### Notes:
 
+- This feature only works for simple selectors like a single class or id due to limited browser support for complex selectors.
 
 ### See Also:
 

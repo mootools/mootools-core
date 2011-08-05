@@ -8,70 +8,70 @@ Slick is the selector engine used by MooTools. It supports many CSS3 selectors a
 - [W3C Pseudo Classes](http://www.w3.org/TR/2005/WD-css3-selectors-20051215/#pseudo-classes)
 
 
-Reversed Combinators
--------------------------------------
+Reverse Combinators
+-------------------
 
-Reversed Combinators redirect the flow of selectors and combinators. Slick implements these by prepending `!` to a selector or combinator.
+Reverse Combinators redirect the flow of selectors and combinators. Slick implements these by prepending `!` to a selector or combinator.
 
 ### Examples:
 
-	$$('p ! div')		// A <div> that is an ancestor of a <p>
-	$$('p !> div')		// A <div> that is a direct parent of a <p>
-	$$('.foo !+ p')		// Gets the previous adjacent <p> sibling
+	document.getElement('p ! div')    // A <div> that is an ancestor of a <p>
+	document.getElement('p !> div')   // A <div> that is a direct parent of a <p>
+	document.getElement('.foo !+ p')  // Gets the previous adjacent <p> sibling
 
 ### Notes:
 
-Reversed Combinators are used internally by MooTools for many of our traversal methods. They offer an extremely concise and powerful alternative to traversal methods like `getParent()`.
+Reverse Combinators are used internally by MooTools for many of our traversal methods. They offer an extremely concise and powerful alternative to traversal methods like `getParent()`.
 
 
-Slick.definePseudo
--------------------------------------
+Function: Slick.definePseudo  {#Slick:Slick-definePseudo}
+---------------------------------------------------------
 
 definePseudo allows you to create your own custom pseudo selectors.
 
 ### Examples:
 
+	Slick.definePseudo('display', function(value){
+   		return Element.getStyle(this, 'display') == value;
+	});
+
+	<div style="display: none">foo</div>
+	<div style="display: block">bar</div>
+
+	$$(':display(block)');		// Will return the block element
+
 	Slick.definePseudo('my-custom-pseudo', function(){
 		// 'this' is the node to check
-		return document.id(this).retrieve('something-custom').isAwesome;
+		return Element.retrieve(this, 'something-custom').isAwesome;
 	});
-	
+
 	$$(':my-custom-pseudo')		// Will return the first <p> tag that is awesome
-	
-	Slick.definePseudo('has-color', function(color){
-   		return document.id(this).getStyle('color') == color;
-	});
-	
-	<p style="color: red">foo</p>
-	<p style="color: blue">bar</p>
-	
-	$$(':has-color(red)');		// Will return the first <p> tag
 
 
-Selector: Next Siblings ('~') {#Slick:nextsiblings}
--------------------------------------
+Selector: Next Siblings ('~') {#Slick:nextSiblings}
+---------------------------------------------------
 
 Gets the next siblings.
 
 ### Example:
-	
-	$$('p.foo ~')		 // Gets all next siblings of <p class='foo'>
-	$$('p.foo ~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *before* it
+
+	$$('p.foo ~')		 // Gets all next siblings of <p class="foo">
+	$$('p.foo ~ blockquote') // Gets every <blockquote> with a <p class="foo"> sibling somewhere *before* it
 
 
-Selector: Previous Siblings ('!~') {#Slick:previoussiblings}
--------------------------------------
+Selector: Previous Siblings ('!~') {#Slick:previouSiblings}
+------------------------------------------------------------
 
 Gets the previous siblings.
 
 ### Example:
-	
+
 	$$('p.foo !~')            // Gets all previous siblings of <p class='foo'>
 	$$('p.foo !~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *after* it
-	
 
-Selector: All Siblings ('~~') {#Slick:allsiblings}
--------------------------------------
+
+Selector: All Siblings ('~~') {#Slick:allSiblings}
+--------------------------------------------------
 
 Gets all siblings.
 
@@ -80,8 +80,8 @@ Gets all siblings.
 	$$('p.foo ~~')            // Gets all previous and next siblings of <p class='foo'>
 	$$('p.foo ~~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling before OR after it
 
-Selector: First Child ('^') {#Slick:firstchild}
--------------------------------------
+Selector: First Child ('^') {#Slick:firstChild}
+-----------------------------------------------
 
 Gets the first child of an element.
 
@@ -91,8 +91,8 @@ Gets the first child of an element.
 	$$('p.foo ^ strong')	// Gets every <strong> that is the first element child of a <p class='foo'>
 
 
-Selector: Last Child ('!^') {#Slick:lastchild}
--------------------------------------
+Selector: Last Child ('!^') {#Slick:lastChild}
+----------------------------------------------
 
 Gets the last child of an element.
 
@@ -104,7 +104,7 @@ Gets the last child of an element.
 
 
 Selector: checked {#Slick:checked}
--------------------------------------
+----------------------------------
 
 Matches all Elements that are checked.
 
@@ -116,7 +116,7 @@ Matches all Elements that are checked.
 
 
 Selector: enabled {#Slick:enabled}
--------------------------------------
+----------------------------------
 
 Matches all Elements that are enabled.
 
@@ -125,10 +125,10 @@ Matches all Elements that are enabled.
 	$$(':enabled')
 
 	$('myElement').getElements(':enabled');
-	
+
 
 Selector: empty {#Slick:empty}
----------------------------------
+------------------------------
 
 Matches all elements which are empty.
 
@@ -138,7 +138,7 @@ Matches all elements which are empty.
 
 
 Selector: contains {#Slick:contains}
----------------------------------------
+------------------------------------
 
 Matches all the Elements which contains the text.
 
@@ -152,7 +152,7 @@ Matches all the Elements which contains the text.
 
 
 Selector: focus {#Slick:focus}
----------------------------------------
+------------------------------
 
 Gets the element in focus.
 
@@ -162,11 +162,11 @@ Gets the element in focus.
 
 
 Selector: not {#Slick:not}
--------------------------------------
+--------------------------
 
 Matches all elements that do not match the selector.
 
-<small>Note: The Slick implementation of the `:not` pseudoClass is a superset of the standard. i.e. it can do more stuff.</small>
+<small>Note: The Slick implementation of the `:not` pseudoClass is a superset of the standard. i.e. it is more advanced than the specification.</small>
 
 ### Examples:
 
@@ -180,7 +180,7 @@ Matches all elements that do not match the selector.
 
 
 Selector: nth-child {#Slick:nth-child}
------------------------------------------
+--------------------------------------
 
 Matches every nth child.
 
@@ -231,7 +231,7 @@ This selector respects the w3c specifications, so it has 1 as its first child, n
 
 
 Selector: even {#Slick:even}
--------------------------------
+----------------------------
 
 Matches every even child.
 
@@ -245,7 +245,7 @@ This selector is not part of the w3c specification, therefore its index starts a
 
 
 Selector: odd {#Slick:odd}
------------------------------
+--------------------------
 
 Matches every odd child.
 
@@ -259,7 +259,7 @@ This selector is not part of the w3c specification, therefore its index starts a
 
 
 Selector: index {#Slick:index}
------------------------------
+------------------------------
 
 Matches the node at the specified index
 
@@ -273,7 +273,7 @@ This is zero-indexed.
 
 
 Selector: first-child {#Slick:first-child}
----------------------------------
+------------------------------------------
 
 Matches the first child.
 
@@ -287,7 +287,7 @@ Matches the first child.
 
 
 Selector: last-child {#Slick:last-child}
--------------------------------------
+----------------------------------------
 
 	Matches the last child.
 
@@ -301,7 +301,7 @@ Selector: last-child {#Slick:last-child}
 
 
 Selector: only-child {#Slick:only-child}
--------------------------------------
+----------------------------------------
 
 Matches an only child of its parent Element.
 
