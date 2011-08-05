@@ -21,6 +21,7 @@ sources:
   - "Source/Types/Object.js"
   - "Source/Types/Event.js"
   - "Source/Browser/Browser.js"
+  - "Source/Browser/Browser.Styles.js"
   - "Source/Class/Class.js"
   - "Source/Class/Class.Extras.js"
   - "Source/Slick/Slick.Parser.js"

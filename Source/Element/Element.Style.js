@@ -17,16 +17,6 @@ provides: Element.Style
 (function(){
 
 var html = document.html;
-var styleMap = Browser.Features.styles = {};
-var hasPrefix = /(moz-|ms-|webkit-|o-)([\w-]+)/;
-
-Object.each(document.body.currentStyle || window.getComputedStyle(document.body), function(value, key){
-	var dashed = isNaN(key) ? key.hyphenate() : value,
-		prefix = hasPrefix.exec(dashed) || [],
-		name = prefix[2] || dashed;
-	styleMap[name] = prefix[0] ? '-' + prefix[0] : dashed;	
-	styleMap[name.camelCase()] = prefix[1] === 'ms-' ? key : dashed.camelCase();
-});
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
@@ -103,7 +93,7 @@ Element.implement({
 		} else if (value == String(Number(value))){
 			value = Math.round(value);
 		}
-		this.style[styleMap[property] || property] = value;
+		this.style[Browser.Styles.js[property] || property] = value;
 		return this;
 	},
 
@@ -113,7 +103,7 @@ Element.implement({
 			case 'float': property = floatName;
 		}
 		property = property.camelCase();
-		var result = this.style[styleMap[property] || property];
+		var result = this.style[Browser.Styles.js[property] || property];
 		if (!result || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
