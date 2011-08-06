@@ -302,7 +302,18 @@ Window.implement({
 
 });
 
+var contains = {contains: function(element){
+	return Slick.contains(this, element);
+}};
+
+if (!document.contains) Document.implement(contains);
+if (!document.createElement('div').contains) Element.implement(contains);
+
 //<1.2compat>
+
+Element.implement('hasChild', function(element){
+	return this !== element && this.contains(element);
+});
 
 (function(search, find, match){
 
@@ -333,6 +344,70 @@ Window.implement({
 
 })(Slick.search, Slick.find, Slick.match);
 
+// tree walking
+
+var injectCombinator = function(expression, combinator){
+	if (!expression) return combinator;
+
+	expression = Object.clone(Slick.parse(expression));
+
+	var expressions = expression.expressions;
+	for (var i = expressions.length; i--;)
+		expressions[i][0].combinator = combinator;
+
+	return expression;
+};
+
+Object.forEach({
+	getNext: '~',
+	getPrevious: '!~',
+	getParent: '!'
+}, function(combinator, method){
+	Element.implement(method, function(expression){
+		return this.getElement(injectCombinator(expression, combinator));
+	});
+});
+
+Object.forEach({
+	getAllNext: '~',
+	getAllPrevious: '!~',
+	getSiblings: '~~',
+	getChildren: '>',
+	getParents: '!'
+}, function(combinator, method){
+	Element.implement(method, function(expression){
+		return this.getElements(injectCombinator(expression, combinator));
+	});
+});
+
+Element.implement({
+
+	getFirst: function(expression){
+		return document.id(Slick.search(this, injectCombinator(expression, '>'))[0]);
+	},
+
+	getLast: function(expression){
+		return document.id(Slick.search(this, injectCombinator(expression, '>')).getLast());
+	},
+
+	getWindow: function(){
+		return this.ownerDocument.window;
+	},
+
+	getDocument: function(){
+		return this.ownerDocument;
+	},
+
+	getElementById: function(id){
+		return document.id(Slick.find(this, '#' + ('' + id).replace(/(\W)/g, '\\$1')));
+	},
+
+	match: function(expression){
+		return !expression || Slick.match(this, expression);
+	}
+
+});
+
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
@@ -358,23 +433,6 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 });
 
 (function(){
-
-var collected = {}, storage = {};
-
-var get = function(uid){
-	return (storage[uid] || (storage[uid] = {}));
-};
-
-var clean = function(item){
-	var uid = item.uid;
-	if (item.removeEvents) item.removeEvents();
-	if (item.clearAttributes) item.clearAttributes();
-	if (uid != null){
-		delete collected[uid];
-		delete storage[uid];
-	}
-	return item;
-};
 
 // Inserters
 
@@ -428,8 +486,7 @@ Object.each(inserters, function(inserter, where){
 
 // getProperty / setProperty
 
-var propertyGetters = {};
-var propertySetters = {};
+var propertyGetters = {}, propertySetters = {};
 
 // properties
 
@@ -437,12 +494,6 @@ var properties = {};
 Array.forEach([
 	'type', 'value', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
 	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap',
-	// Attributes
-	'attributes', 'childNodes', 'className', 'clientHeight', 'clientLeft', 'clientTop', 'clientWidth', 'firstChild',
-	'lastChild', 'nextSibling', 'nodeName', 'nodeType', 'nodeValue',
-	'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth',
-	'ownerDocument', 'parentNode', 'prefix', 'previousSibling', 'scrollHeight', 'scrollWidth', 'tabIndex', 'tagName',
-	'textContent', 'innerHTML'
 ], function(property){
 	properties[property.toLowerCase()] = property;
 });
@@ -491,7 +542,7 @@ var hasAttribute = document.documentElement.hasAttribute ? function(node, attrib
 
 // Special cases
 
-Object.append(propertyGetters, Object.map({
+Object.forEach({
 
 	'class': function(node){
 		return ('className' in node) ? node.className : node.getAttribute('class');
@@ -513,12 +564,12 @@ Object.append(propertyGetters, Object.map({
 		return node.getAttribute('maxLength', 2);
 	}
 
-}, function(getter){
-	return function(node, name){
+}, function(getter, property){
+	propertyGetters[property] = function(node, name){
 		var result = getter(node);
 		return (!result && !hasAttribute(node, name)) ? null : result;
 	};
-}));
+});
 
 Object.append(propertySetters, {
 
@@ -648,66 +699,6 @@ Element.implement({
 	wraps: function(el, where){
 		el = document.id(el, true);
 		return this.replaces(el).grab(el, where);
-	}
-
-});
-
-// tree walking
-
-var injectCombinator = function(expression, combinator){
-	if (!expression) return combinator;
-
-	expression = Object.clone(Slick.parse(expression));
-
-	var expressions = expression.expressions;
-	for (var i = expressions.length; i--;)
-		expressions[i][0].combinator = combinator;
-
-	return expression;
-};
-
-Object.forEach({
-	getNext: '~',
-	getPrevious: '!~',
-	getParent: '!'
-}, function(combinator, method){
-	Element.implement(method, function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, combinator)));
-	});
-});
-
-Object.forEach({
-	getAllNext: '~',
-	getAllPrevious: '!~',
-	getSiblings: '~~',
-	getChildren: '>',
-	getParents: '!'
-}, function(combinator, method){
-	Element.implement(method, function(expression){
-		return Slick.search(this, injectCombinator(expression, combinator), new Elements);
-	});
-});
-
-Element.implement({
-
-	getFirst: function(expression){
-		return document.id(Slick.search(this, injectCombinator(expression, '>'))[0]);
-	},
-
-	getLast: function(expression){
-		return document.id(Slick.search(this, injectCombinator(expression, '>')).getLast());
-	},
-
-	getWindow: function(){
-		return this.ownerDocument.window;
-	},
-
-	getDocument: function(){
-		return this.ownerDocument;
-	},
-
-	getElementById: function(id){
-		return document.id(Slick.find(this, '#' + ('' + id).replace(/(\W)/g, '\\$1')));
 	},
 
 	getSelected: function(){
@@ -735,12 +726,24 @@ Element.implement({
 		return queryString.join('&');
 	},
 
-	destroy: function(){
-		var children = clean(this).getElementsByTagName('*');
-		Array.each(children, clean);
-		Element.dispose(this);
-		return null;
-	},
+	destroy: (function(){
+		var clean = function(item){
+			var uid = item.uid;
+			if (item.removeEvents) item.removeEvents();
+			if (item.clearAttributes) item.clearAttributes();
+			if (uid != null){
+				delete collected[uid];
+				delete storage[uid];
+			}
+			return item;
+		};
+		return function(){
+			var children = clean(this).getElementsByTagName('*');
+			Array.each(children, clean);
+			Element.dispose(this);
+			return null;
+		}
+	})(),
 
 	empty: function(){
 		Array.from(this.childNodes).each(Element.dispose);
@@ -749,10 +752,6 @@ Element.implement({
 
 	dispose: function(){
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
-	},
-
-	match: function(expression){
-		return !expression || Slick.match(this, expression);
 	},
 
 	clone: (function(){
@@ -795,20 +794,11 @@ Element.implement({
 
 });
 
-var contains = {contains: function(element){
-	return Slick.contains(this, element);
-}};
+var collected = {}, storage = {};
 
-if (!document.contains) Document.implement(contains);
-if (!document.createElement('div').contains) Element.implement(contains);
-
-//<1.2compat>
-
-Element.implement('hasChild', function(element){
-	return this !== element && this.contains(element);
-});
-
-//</1.2compat>
+var get = function(uid){
+	return (storage[uid] || (storage[uid] = {}));
+};
 
 [Element, Window, Document].invoke('implement', {
 
@@ -893,17 +883,6 @@ Element.Properties.tag = {
 	}
 
 };
-
-/*<ltIE9>*/
-(function(maxLength){
-	if (maxLength != null) Element.Properties.maxlength = Element.Properties.maxLength = {
-		get: function(){
-			var maxlength = this.getAttribute('maxLength');
-			return maxlength == maxLength ? null : maxlength;
-		}
-	};
-})(document.createElement('input').getAttribute('maxLength'));
-/*</ltIE9>*/
 
 /*<!webkit>*/
 Element.Properties.html = (function(){
