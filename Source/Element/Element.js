@@ -344,6 +344,8 @@ Element.implement('hasChild', function(element){
 
 })(Slick.search, Slick.find, Slick.match);
 
+//</1.2compat>
+
 // tree walking
 
 var injectCombinator = function(expression, combinator){
@@ -422,7 +424,7 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	return elements;
 });
 
-//</1.2compat>
+//<1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	if (arguments.length == 1){
@@ -431,6 +433,8 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	}
 	return new Elements(arguments);
 });
+
+//</1.2compat>
 
 (function(){
 
