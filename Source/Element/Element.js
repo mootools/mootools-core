@@ -724,26 +724,35 @@ Element.implement({
 			});
 		});
 		return queryString.join('&');
-	},
+	}
 
-	destroy: (function(){
-		var clean = function(item){
-			var uid = item.uid;
-			if (item.removeEvents) item.removeEvents();
-			if (item.clearAttributes) item.clearAttributes();
-			if (uid != null){
-				delete collected[uid];
-				delete storage[uid];
-			}
-			return item;
-		};
-		return function(){
-			var children = clean(this).getElementsByTagName('*');
-			Array.each(children, clean);
-			Element.dispose(this);
-			return null;
-		}
-	})(),
+});
+
+var collected = {}, storage = {};
+
+var get = function(uid){
+	return (storage[uid] || (storage[uid] = {}));
+};
+
+var clean = function(item){
+	var uid = item.uid;
+	if (item.removeEvents) item.removeEvents();
+	if (item.clearAttributes) item.clearAttributes();
+	if (uid != null){
+		delete collected[uid];
+		delete storage[uid];
+	}
+	return item;
+};
+
+Element.implement({
+
+	destroy: function(){
+		var children = clean(this).getElementsByTagName('*');
+		Array.each(children, clean);
+		Element.dispose(this);
+		return null;
+	},
 
 	empty: function(){
 		Array.from(this.childNodes).each(Element.dispose);
@@ -793,12 +802,6 @@ Element.implement({
 	})()
 
 });
-
-var collected = {}, storage = {};
-
-var get = function(uid){
-	return (storage[uid] || (storage[uid] = {}));
-};
 
 [Element, Window, Document].invoke('implement', {
 
