@@ -185,10 +185,10 @@ var relay = function(old, method){
 		var __uid, s;
 		if (fn) for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match && s.fn == fn) return arguments.callee.call(this, removeEvent, type, match, fn, __uid);
+			if (s.match == match && s.fn == fn) return arguments.callee.call(this, type, match, fn, __uid);
 		} else for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match) arguments.callee.call(this, removeEvent, type, match, s.fn, __uid);
+			if (s.match == match) arguments.callee.call(this, type, match, s.fn, __uid);
 		}
 		return this;
 	})
