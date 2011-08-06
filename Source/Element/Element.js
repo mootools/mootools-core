@@ -7,7 +7,7 @@ description: One of the most important items in MooTools. Contains the dollar fu
 
 license: MIT-style license.
 
-requires: [Window, Document, Array, String, Function, Number, Slick.Parser, Slick.Finder]
+requires: [Window, Document, Array, String, Function, Object, Number, Slick.Parser, Slick.Finder]
 
 provides: [Element, Elements, $, $$, Iframe, Selectors]
 
@@ -376,30 +376,7 @@ var clean = function(item){
 	return item;
 };
 
-var camels = ['defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan', 'frameBorder', 'maxLength', 'readOnly',
-	'rowSpan', 'tabIndex', 'useMap'
-];
-var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readOnly', 'multiple', 'selected',
-	'noresize', 'defer', 'defaultChecked'
-];
- var attributes = {
-	'html': 'innerHTML',
-	'class': 'className',
-	'for': 'htmlFor',
-	'text': (function(){
-		var temp = document.createElement('div');
-		return (temp.textContent == null) ? 'innerText' : 'textContent';
-	})()
-};
-var readOnly = ['type'];
-var expandos = ['value', 'defaultValue'];
-var uriAttrs = /^(?:href|src|usemap)$/i;
-
-bools = bools.associate(bools);
-camels = camels.associate(camels.map(String.toLowerCase));
-readOnly = readOnly.associate(readOnly);
-
-Object.append(attributes, expandos.associate(expandos));
+// Inserters
 
 var inserters = {
 
@@ -449,19 +426,155 @@ Object.each(inserters, function(inserter, where){
 
 //</1.2compat>
 
-var injectCombinator = function(expression, combinator){
-	if (!expression) return combinator;
+// getProperty / setProperty
 
-	expression = Object.clone(Slick.parse(expression));
+var propertyGetters = {};
+var propertySetters = {};
 
-	var expressions = expression.expressions;
-	for (var i = expressions.length; i--;)
-		expressions[i][0].combinator = combinator;
+// properties
 
-	return expression;
+var properties = {};
+Array.forEach([
+	'type', 'value', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
+	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap',
+	// Attributes
+	'attributes', 'childNodes', 'className', 'clientHeight', 'clientLeft', 'clientTop', 'clientWidth', 'firstChild',
+	'lastChild', 'nextSibling', 'nodeName', 'nodeType', 'nodeValue',
+	'offsetHeight', 'offsetLeft', 'offsetParent', 'offsetTop', 'offsetWidth',
+	'ownerDocument', 'parentNode', 'prefix', 'previousSibling', 'scrollHeight', 'scrollWidth', 'tabIndex', 'tagName',
+	'textContent', 'innerHTML'
+], function(property){
+	properties[property.toLowerCase()] = property;
+});
+
+Object.append(properties, {
+	'html': 'innerHTML',
+	'text': (function(){
+		var temp = document.createElement('div');
+		return (temp.innerText == null) ? 'textContent' : 'innerText';
+	})()
+});
+
+Object.forEach(properties, function(real, key){
+	propertySetters[key] = function(node, value){
+		return node[real] = value;
+	};
+	propertyGetters[key] = function(node){
+		return node[real];
+	};
+});
+
+// Booleans
+
+var bools = ['compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked', 'disabled', 'readOnly', 'multiple', 'selected',
+	'noresize', 'defer', 'defaultChecked'
+];
+
+var booleans = {};
+Array.forEach(bools, function(bool){
+	var lower = bool.toLowerCase();
+	booleans[lower] = bool;
+	propertySetters[lower] = function(node, value){
+		return node[bool] = !!value;
+	};
+	propertyGetters[lower] = function(node){
+		return !!node[bool];
+	};
+});
+
+var hasAttribute = document.documentElement.hasAttribute ? function(node, attribute) {
+	return node.hasAttribute(attribute);
+} : function(node, attribute) {
+	node = node.getAttributeNode(attribute);
+	return !!(node && (node.specified || node.nodeValue));
 };
 
+// Special cases
+
+Object.append(propertyGetters, Object.map({
+
+	'class': function(node){
+		return ('className' in node) ? node.className : node.getAttribute('class');
+	},
+
+	'for': function(node){
+		return ('htmlFor' in node) ? node.htmlFor : node.getAttribute('for');
+	},
+
+	'href': function(node){
+		return node.getAttribute('href', 2);
+	},
+
+	'style': function(node){
+		return (node.style) ? node.style.cssText : node.getAttribute('style');
+	},
+
+	'maxlength': function(node){
+		return node.getAttribute('maxLength', 2);
+	}
+
+}, function(getter){
+	return function(node, name){
+		var result = getter(node);
+		return (!result && !hasAttribute(node, name)) ? null : result;
+	};
+}));
+
+Object.append(propertySetters, {
+
+	'class': function(node, value){
+		return ('className' in node) ? node.className = value : node.setAttribute('class', value);
+	},
+
+	'for': function(node, value){
+		return ('htmlFor' in node) ? node.htmlFor = value : node.setAttribute('for', value);
+	},
+
+	'style': function(node, value){
+		return (node.style) ? node.style.cssText = value : node.setAttribute('style', value);
+	}
+
+});
+
+/* getProperty, setProperty */
+
 Element.implement({
+
+	setProperty: function(name, value){
+		var setter = propertySetters[name.toLowerCase()];
+		if (setter) setter(this, value);
+		else this.setAttribute(name, value);
+		return this;
+	},
+
+	setProperties: function(attributes){
+		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
+		return this;
+	},
+
+	getProperty: function(name){
+		var getter = propertyGetters[name.toLowerCase()];
+		if (getter) return getter(this);
+		var result = this.getAttribute(name);
+		return (!result && !hasAttribute(this, name)) ? null : result;
+	},
+
+	getProperties: function(){
+		var args = Array.from(arguments);
+		return args.map(this.getProperty, this).associate(args);
+	},
+
+	removeProperty: function(name){
+		name = name.toLowerCase();
+		if (booleans[name]) this.setProperty(name, false)
+		this.removeAttribute(name);
+		return this;
+	},
+
+	removeProperties: function(){
+		Array.each(arguments, this.removeProperty, this);
+		return this;
+	},
 
 	set: function(prop, value){
 		var property = Element.Properties[prop];
@@ -476,47 +589,6 @@ Element.implement({
 	erase: function(prop){
 		var property = Element.Properties[prop];
 		(property && property.erase) ? property.erase.apply(this) : this.removeProperty(prop);
-		return this;
-	},
-
-	setProperty: function(attribute, value){
-		attribute = camels[attribute] || attribute;
-		if (value == null) return this.removeProperty(attribute);
-		var key = attributes[attribute];
-		(key) ? this[key] = value :
-			(bools[attribute]) ? this[attribute] = !!value : this.setAttribute(attribute, '' + value);
-		return this;
-	},
-
-	setProperties: function(attributes){
-		for (var attribute in attributes) this.setProperty(attribute, attributes[attribute]);
-		return this;
-	},
-
-	getProperty: function(attribute){
-		attribute = camels[attribute] || attribute;
-		var key = attributes[attribute] || readOnly[attribute];
-		return (key) ? this[key] :
-			(bools[attribute]) ? !!this[attribute] :
-			(uriAttrs.test(attribute) ? this.getAttribute(attribute, 2) :
-			(key = this.getAttributeNode(attribute)) ? key.nodeValue : null) || null;
-	},
-
-	getProperties: function(){
-		var args = Array.from(arguments);
-		return args.map(this.getProperty, this).associate(args);
-	},
-
-	removeProperty: function(attribute){
-		attribute = camels[attribute] || attribute;
-		var key = attributes[attribute];
-		(key) ? this[key] = '' :
-			(bools[attribute]) ? this[attribute] = false : this.removeAttribute(attribute);
-		return this;
-	},
-
-	removeProperties: function(){
-		Array.each(arguments, this.removeProperty, this);
 		return this;
 	},
 
@@ -576,23 +648,47 @@ Element.implement({
 	wraps: function(el, where){
 		el = document.id(el, true);
 		return this.replaces(el).grab(el, where);
-	},
+	}
 
-	getPrevious: function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, '!~')));
-	},
+});
 
-	getAllPrevious: function(expression){
-		return Slick.search(this, injectCombinator(expression, '!~'), new Elements);
-	},
+// tree walking
 
-	getNext: function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, '~')));
-	},
+var injectCombinator = function(expression, combinator){
+	if (!expression) return combinator;
 
-	getAllNext: function(expression){
-		return Slick.search(this, injectCombinator(expression, '~'), new Elements);
-	},
+	expression = Object.clone(Slick.parse(expression));
+
+	var expressions = expression.expressions;
+	for (var i = expressions.length; i--;)
+		expressions[i][0].combinator = combinator;
+
+	return expression;
+};
+
+Object.forEach({
+	getNext: '~',
+	getPrevious: '!~',
+	getParent: '!'
+}, function(combinator, method){
+	Element.implement(method, function(expression){
+		return document.id(Slick.find(this, injectCombinator(expression, combinator)));
+	});
+});
+
+Object.forEach({
+	getAllNext: '~',
+	getAllPrevious: '!~',
+	getSiblings: '~~',
+	getChildren: '>',
+	getParents: '!'
+}, function(combinator, method){
+	Element.implement(method, function(expression){
+		return Slick.search(this, injectCombinator(expression, combinator), new Elements);
+	});
+});
+
+Element.implement({
 
 	getFirst: function(expression){
 		return document.id(Slick.search(this, injectCombinator(expression, '>'))[0]);
@@ -600,22 +696,6 @@ Element.implement({
 
 	getLast: function(expression){
 		return document.id(Slick.search(this, injectCombinator(expression, '>')).getLast());
-	},
-
-	getParent: function(expression){
-		return document.id(Slick.find(this, injectCombinator(expression, '!')));
-	},
-
-	getParents: function(expression){
-		return Slick.search(this, injectCombinator(expression, '!'), new Elements);
-	},
-
-	getSiblings: function(expression){
-		return Slick.search(this, injectCombinator(expression, '~~'), new Elements);
-	},
-
-	getChildren: function(expression){
-		return Slick.search(this, injectCombinator(expression, '>'), new Elements);
 	},
 
 	getWindow: function(){
@@ -676,13 +756,11 @@ Element.implement({
 	},
 
 	clone: (function(){
+
 		var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 
 		var cleanClone = function(node, element, keepid){
-			var attr = node.getAttributeNode('id');
-			if (attr) node.removeAttributeNode(attr);
-			if (keepid) node.setAttribute('id', element.getAttribute('id'));
-
+			if (!keepid) node.removeAttribute('id');
 			if (node.clearAttributes){
 				node.clearAttributes();
 				node.mergeAttributes(element);
@@ -692,7 +770,6 @@ Element.implement({
 					for (var i = no.length; i--;) no[i].selected = eo[i].selected;
 				}
 			}
-
 			var prop = formProps[element.tagName.toLowerCase()];
 			if (prop && element[prop]) node[prop] = element[prop];
 		};
