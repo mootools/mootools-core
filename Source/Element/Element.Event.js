@@ -166,33 +166,47 @@ Element.Events = {
 
 };
 
-if (!window.addEventListener) {
-	Element.Events.keychange = {
-		base: 'keyup',
-		condition: function(e){
-			switch(e.key){
-				case 'up': case 'down': case 'left': case 'right': if(this.get('type') == 'radio') return this.checked;
+var hasListener = window.addEventListener;
+var updateChange = function(event){
+	event.target.store('change:value', event.target.value);
+};
+
+Element.Events.keychange = {
+	base: 'keyup',
+	condition: function(event){
+		var el = event.target;
+		if(el.get('tag') == 'select' && el.retrieve('change:value') != el.value) return true;
+		if(!hasListener) {
+			switch(event.key){
+				case 'up': case 'down': case 'left': case 'right': if(el.get('type') == 'radio') return el.checked;
 					break;
-				case 'space': return this.get('type') == 'checkbox';
+				case 'space': return el.get('type') == 'checkbox';
 					break;
 			}
 		}
-	};
-	
-	Element.Events.change = {
-		base: function(){
-			var type = this.get('type');
-			return (type == 'checkbox' || type == 'radio') ? 'mouseup' : 'change';
-		},
-		condition: function(event){
-			return (this.get('type') == 'radio') ? ((event.type == 'keyup') ? this.checked : !this.checked) : true;
-		},
-		onAdd: function(fn, base){
-			if (base == 'mouseup') this.addEvent('keychange', fn);
-		},
-		onRemove: function(fn, base){
-			(base == 'mouseup' ? this.removeEvent('keychange', fn) : this).removeEvent(base, fn);
-		}
+	},
+	onAdd: function(){
+		this.addEvent('keydown', updateChange);
+	},
+	onRemove: function(){
+		this.removeEvent('keydown', updateChange);
+	}
+};
+
+Element.Events.change = {
+	base: function(){
+		var type = this.get('type');
+		return (!hasListener && (type == 'checkbox' || type == 'radio')) ? 'mouseup' : 'change';
+	},
+	condition: function(event){
+		if(!hasListener && this.get('type') == 'radio' && event.type != 'keyup') return  !this.checked;
+		return !(this.get('tag') == 'select' && this.retrieve('change:value') == this.value);
+	},
+	onAdd: function(fn){
+		this.addEvent('keychange', fn);
+	},
+	onRemove: function(fn){
+		this.removeEvent('keychange', fn);
 	}
 }
 
