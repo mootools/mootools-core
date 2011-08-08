@@ -32,6 +32,7 @@ var bubbleUp = function(self, match, fn, event){
 	}
 };
 
+/*<ltIE9>*/
 var formObserver = function(type){
 
 	var _key = '_delegation:';
@@ -85,6 +86,7 @@ var inputObserver = function(type){
 		}
 	};
 };
+/*</ltIE9>*/
 
 var map = {
 	mouseenter: {
@@ -103,12 +105,14 @@ var map = {
 	}
 };
 
+/*<ltIE9>*/
 if (!eventListenerSupport) Object.append(map, {
 	submit: formObserver('submit'),
 	reset: formObserver('reset'),
 	change: inputObserver('change'),
 	select: inputObserver('select')
 });
+/*</ltIE9>*/
 
 var proto = Element.prototype, addEvent = proto.addEvent, removeEvent = proto.removeEvent;
 
