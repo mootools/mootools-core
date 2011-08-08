@@ -178,7 +178,7 @@ Element.Events.keychange = {
 		if(el.get('tag') == 'select' && el.retrieve('change:value') != el.value) return true;
 		if(!hasListener) {
 			switch(event.key){
-				case 'up': case 'down': case 'left': case 'right': if(el.get('type') == 'radio') return el.checked;
+				case 'up': case 'down': case 'left': case 'right': return el.get('type') == 'radio' && el.checked;
 					break;
 				case 'space': return el.get('type') == 'checkbox';
 					break;
@@ -199,7 +199,9 @@ Element.Events.change = {
 		return (!hasListener && (type == 'checkbox' || type == 'radio')) ? 'mouseup' : 'change';
 	},
 	condition: function(event){
-		if(!hasListener && this.get('type') == 'radio' && event.type != 'keyup') return  !this.checked;
+		if(!hasListener) {
+			return (this.get('type') == 'radio') ? ((event.type == 'keyup') ? this.checked : !this.checked) : true;
+		}
 		return !(this.get('tag') == 'select' && this.retrieve('change:value') == this.value);
 	},
 	onAdd: function(fn){
