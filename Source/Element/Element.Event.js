@@ -167,42 +167,45 @@ Element.Events = {
 };
 
 var hasListener = window.addEventListener;
-var updateChange = function(event){
-	event.target.store('change:value', event.target.value);
+var getValue = function(element){
+	var type = element.get('type');
+	return element[type == 'radio' || type == 'checkbox' ? 'checked' : 'value'];
+}
+var storeChange = function(event){
+	event.target.store('change:value', getValue(event.target));
+};
+var hasChanged = function(element){
+	var value =  element.retrieve('change:value');
+	return value != null && value != getValue(element);
 };
 
 Element.Events.keychange = {
 	base: 'keyup',
 	condition: function(event){
-		var el = event.target;
-		if(el.get('tag') == 'select' && el.retrieve('change:value') != el.value) return true;
+		var element = event.target;
+		if(element.get('tag') == 'select' && hasChanged(element)) return true;
 		if(!hasListener) {
 			switch(event.key){
-				case 'up': case 'down': case 'left': case 'right': return el.get('type') == 'radio' && el.checked;
-					break;
-				case 'space': return el.get('type') == 'checkbox';
-					break;
+				case 'up': case 'down': case 'left': case 'right': return element.get('type') == 'radio' && hasChanged(element);
+				case 'space': return element.get('type') == 'checkbox' && hasChanged(element);
 			}
 		}
 	},
 	onAdd: function(){
-		this.addEvent('keydown', updateChange);
+		this.addEvent('keydown', storeChange);
 	},
 	onRemove: function(){
-		this.removeEvent('keydown', updateChange);
+		this.removeEvent('keydown', storeChange);
 	}
 };
 
 Element.Events.change = {
 	base: function(){
 		var type = this.get('type');
-		return (!hasListener && (type == 'checkbox' || type == 'radio')) ? 'mouseup' : 'change';
+		return (!hasListener && (type == 'checkbox' || type == 'radio')) ? 'click' : 'change';
 	},
 	condition: function(event){
-		if(!hasListener) {
-			return (this.get('type') == 'radio') ? ((event.type == 'keyup') ? this.checked : !this.checked) : true;
-		}
-		return !(this.get('tag') == 'select' && this.retrieve('change:value') == this.value);
+		return (this.get('type') == 'radio' && !hasListener) ? ((event.type == 'keyup') ? false : this.checked) : true;
 	},
 	onAdd: function(fn){
 		this.addEvent('keychange', fn);
