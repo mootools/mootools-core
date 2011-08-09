@@ -32,6 +32,7 @@ var bubbleUp = function(self, match, fn, event){
 	}
 };
 
+/*<ltIE9>*/
 var formObserver = function(type){
 
 	var _key = '_delegation:';
@@ -85,6 +86,7 @@ var inputObserver = function(type){
 		}
 	};
 };
+/*</ltIE9>*/
 
 var map = {
 	mouseenter: {
@@ -103,12 +105,14 @@ var map = {
 	}
 };
 
+/*<ltIE9>*/
 if (!eventListenerSupport) Object.append(map, {
 	submit: formObserver('submit'),
 	reset: formObserver('reset'),
 	change: inputObserver('change'),
 	select: inputObserver('select')
 });
+/*</ltIE9>*/
 
 var proto = Element.prototype, addEvent = proto.addEvent, removeEvent = proto.removeEvent;
 
@@ -185,10 +189,10 @@ var relay = function(old, method){
 		var __uid, s;
 		if (fn) for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match && s.fn == fn) return arguments.callee.call(this, removeEvent, type, match, fn, __uid);
+			if (s.match == match && s.fn == fn) return arguments.callee.call(this, type, match, fn, __uid);
 		} else for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match) arguments.callee.call(this, removeEvent, type, match, s.fn, __uid);
+			if (s.match == match) arguments.callee.call(this, type, match, s.fn, __uid);
 		}
 		return this;
 	})
