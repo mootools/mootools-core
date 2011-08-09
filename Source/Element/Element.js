@@ -410,6 +410,8 @@ Element.implement({
 
 });
 
+//<1.2compat>
+
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
@@ -424,7 +426,7 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	return elements;
 });
 
-//<1.2compat>
+//</1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	if (arguments.length == 1){
@@ -433,8 +435,6 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	}
 	return new Elements(arguments);
 });
-
-//</1.2compat>
 
 (function(){
 
@@ -749,6 +749,8 @@ var clean = function(item){
 	return item;
 };
 
+var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
+
 Element.implement({
 
 	destroy: function(){
@@ -767,43 +769,41 @@ Element.implement({
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},
 
-	clone: (function(){
+	clone: function(contents, keepid){
+		contents = contents !== false;
+		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
 
-		var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
+		if (contents){
+			ce.append(Array.from(clone.getElementsByTagName('*')));
+			te.append(Array.from(this.getElementsByTagName('*')));
+		}
 
-		var cleanClone = function(node, element, keepid){
+		for (i = ce.length; i--;){
+			var node = ce[i], element = te[i];
 			if (!keepid) node.removeAttribute('id');
+			/*<ltIE9>*/
 			if (node.clearAttributes){
 				node.clearAttributes();
 				node.mergeAttributes(element);
 				node.removeAttribute('uid');
 				if (node.options){
 					var no = node.options, eo = element.options;
-					for (var i = no.length; i--;) no[i].selected = eo[i].selected;
+					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
 				}
 			}
+			/*</ltIE9>*/
 			var prop = formProps[element.tagName.toLowerCase()];
 			if (prop && element[prop]) node[prop] = element[prop];
-		};
+		}
 
-		return function(contents, keepid){
-			contents = contents !== false;
-			var clone = this.cloneNode(contents), i;
-
-			if (contents){
-				var ce = clone.getElementsByTagName('*'), te = this.getElementsByTagName('*');
-				for (i = ce.length; i--;) cleanClone(ce[i], te[i], keepid);
-			}
-
-			cleanClone(clone, this, keepid);
-
-			if (Browser.ie){
-				var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
-				for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
-			}
-			return document.id(clone);
-		};
-	})()
+		/*<ltIE9>*/
+		if (Browser.ie){
+			var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
+			for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
+		}
+		/*</ltIE9>*/
+		return document.id(clone);
+	}
 
 });
 
