@@ -410,6 +410,8 @@ Element.implement({
 
 });
 
+//<1.2compat>
+
 if (window.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
@@ -424,7 +426,7 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	return elements;
 });
 
-//<1.2compat>
+//</1.2compat>
 
 if (window.$$ == null) Window.implement('$$', function(selector){
 	if (arguments.length == 1){
@@ -433,8 +435,6 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	}
 	return new Elements(arguments);
 });
-
-//</1.2compat>
 
 (function(){
 
