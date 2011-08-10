@@ -113,6 +113,8 @@ Function.implement({
 
 });
 
+if (Object.create == Function.prototype.create) Object.create = null;
+
 var $try = Function.attempt;
 
 //</1.2compat>
