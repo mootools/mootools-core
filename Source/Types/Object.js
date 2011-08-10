@@ -18,7 +18,14 @@ provides: [Object, Hash]
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
+function F(){}
+
 Object.extend({
+	
+	create: function(object){
+		F.prototype = object;
+		return new F;
+	},
 
 	subset: function(object, keys){
 		var results = {};
