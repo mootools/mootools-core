@@ -7,7 +7,7 @@ provides: [Element.Event.Specs]
 ...
 */
 
-describe('Custom Event Extensions', function(){
+describe('Element.Event.js', function(){
 	// This is private API. Do not use.
 
 	it('should allow base to be a function', function(){
