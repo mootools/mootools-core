@@ -35,7 +35,7 @@ var Event = new Type('Event', function(event, win){
 			if (code > 111 && code < 124) key = 'f' + (code - 111);
 			if (code > 95 && code < 106) key = code - 96;
 		}
-		if (key == undefined) key = String.fromCharCode(code).toLowerCase();
+		if (key == null) key = String.fromCharCode(code).toLowerCase();
 	} else if ((/click|mouse|menu/i).test(type)){
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		page = {
