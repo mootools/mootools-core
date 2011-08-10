@@ -1609,11 +1609,11 @@ Sets the innerHTML of the Element.
 
 #### Syntax:
 
-	myElement.set('html', [htmlString[, htmlString2[, htmlString3[, ..]]]);
+	myElement.set('html', html);
 
 #### Arguments:
 
-1. Any number of string parameters with HTML.
+1. html - (*string*) The new content as HTML string.
 
 #### Returns:
 
@@ -1627,7 +1627,7 @@ Sets the innerHTML of the Element.
 
 ##### JavaScript
 
-	$('myElement').set('html', '<div></div>', '<p></p>');
+	$('myElement').set('html', '<div></div><p></p>');
 
 ##### Resulting HTML
 
