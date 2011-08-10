@@ -224,7 +224,7 @@ describe('Request.HTML', function(){
 
 		var update = $('update');
 		expect(update.getChildren().length).toEqual(2);
-		expect(update.get('html')).toEqual('<div>some</div><a>a link</a>');
+		expect(update.get('html').toLowerCase()).toEqual('<div>some</div><a>a link</a>');
 		update.dispose();
 		
 	});

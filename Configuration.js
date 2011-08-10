@@ -32,7 +32,7 @@ Configuration.presets = {
 	'core-2.0': {
 		sets: ['core-2.0-base', 'core-2.0-client'],
 		source: ['core-2.0-base', 'core-2.0-client']
-	},
+	}
 };
 
 Configuration.defaultPresets = {
