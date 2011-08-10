@@ -169,7 +169,7 @@ Element.Events = {
 var hasListener = window.addEventListener;
 var getValue = function(element){
 	var type = element.get('type');
-	return element[type == 'radio' || type == 'checkbox' ? 'checked' : 'value'];
+	return element[(type == 'radio' || type == 'checkbox') ? 'checked' : 'value'];
 }
 var storeChange = function(event){
 	event.target.store('change:last', { type: event.type, value: getValue(event.target) });
@@ -182,11 +182,12 @@ var hasChanged = function(element){
 Element.Events.keychange = {
 	base: 'keyup',
 	condition: function(event){
-		var target = event.target, change = hasChanged(target);
-		if(target.get('tag') == 'select' && change) return true;
-		if(!hasListener) switch(event.key){
-			case 'up': case 'down': case 'left': case 'right': return target.get('type') == 'radio' && change;
-			case 'space': return target.get('type') == 'checkbox' && change;
+		var target = event.target;
+		if (!hasChanged(target)) return false;
+		if (target.get('tag') == 'select') return true;
+		if (!hasListener) switch(event.key){
+			case 'up': case 'down': case 'left': case 'right': return target.get('type') == 'radio';
+			case 'space': return target.get('type') == 'checkbox';
 		}
 	}
 };
@@ -199,7 +200,7 @@ Element.Events.change = {
 	condition: function(event){
 		var target = event.target;
 		if(hasListener && event.type == 'change' && target.get('tag') == 'select' && target.retrieve('change:last').type == 'keydown') return false;
-		return target.get('type') == 'radio' ? (event.type == 'keyup' ? !target.checked : target.checked) : true;
+		return (target.get('type') == 'radio') ? ((event.type == 'keyup') ? !target.checked : target.checked) : true;
 	},
 	onAdd: function(fn){
 		this.addEvents({
