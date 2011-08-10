@@ -16,14 +16,9 @@ provides: [Object, Hash]
 
 (function(){
 
-var hasOwnProperty = Object.prototype.hasOwnProperty, F = function(){};
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 Object.extend({
-	
-	create: function(object){
-		F.prototype = object;
-		return new F;
-	},
 
 	subset: function(object, keys){
 		var results = {};
