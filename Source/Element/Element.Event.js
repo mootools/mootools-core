@@ -172,30 +172,22 @@ var getValue = function(element){
 	return element[type == 'radio' || type == 'checkbox' ? 'checked' : 'value'];
 }
 var storeChange = function(event){
-	event.target.store('change:value', getValue(event.target));
+	event.target.store('change:last', { type: event.type, value: getValue(event.target) });
 };
 var hasChanged = function(element){
-	var value =  element.retrieve('change:value');
+	var value =  element.retrieve('change:last').value;
 	return value != null && value != getValue(element);
 };
 
 Element.Events.keychange = {
 	base: 'keyup',
 	condition: function(event){
-		var element = event.target;
-		if(element.get('tag') == 'select' && hasChanged(element)) return true;
-		if(!hasListener) {
-			switch(event.key){
-				case 'up': case 'down': case 'left': case 'right': return element.get('type') == 'radio' && hasChanged(element);
-				case 'space': return element.get('type') == 'checkbox' && hasChanged(element);
-			}
+		var target = event.target, change = hasChanged(target);
+		if(target.get('tag') == 'select' && change) return true;
+		if(!hasListener) switch(event.key){
+			case 'up': case 'down': case 'left': case 'right': return target.get('type') == 'radio' && change;
+			case 'space': return target.get('type') == 'checkbox' && change;
 		}
-	},
-	onAdd: function(){
-		this.addEvent('keydown', storeChange);
-	},
-	onRemove: function(){
-		this.removeEvent('keydown', storeChange);
 	}
 };
 
@@ -205,13 +197,23 @@ Element.Events.change = {
 		return (!hasListener && (type == 'checkbox' || type == 'radio')) ? 'click' : 'change';
 	},
 	condition: function(event){
-		return (this.get('type') == 'radio' && !hasListener) ? ((event.type == 'keyup') ? false : this.checked) : true;
+		var target = event.target;
+		if(hasListener && event.type == 'change' && target.get('tag') == 'select' && target.retrieve('change:last').type == 'keydown') return false;
+		return target.get('type') == 'radio' ? (event.type == 'keyup' ? !target.checked : target.checked) : true;
 	},
 	onAdd: function(fn){
-		this.addEvent('keychange', fn);
+		this.addEvents({
+			'keychange': fn,
+			'focus': storeChange,
+			'keydown': storeChange
+		});
 	},
 	onRemove: function(fn){
-		this.removeEvent('keychange', fn);
+		this.removeEvents({
+			'keychange': fn,
+			'focus': storeChange,
+			'keydown': storeChange
+		});
 	}
 }
 
