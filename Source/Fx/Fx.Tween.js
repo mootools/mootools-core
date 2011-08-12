@@ -76,7 +76,7 @@ Element.implement({
 			case 'show': fade.set(o, 1); break;
 			case 'hide': fade.set(o, 0); break;
 			case 'toggle':
-				var flag = this.retrieve('fade:flag', this.get('opacity') == 1);
+				var flag = this.retrieve('fade:flag', this.getStyle('opacity') == 1);
 				fade.start(o, (flag) ? 0 : 1);
 				this.store('fade:flag', !flag);
 				toggle = true;
