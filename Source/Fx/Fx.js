@@ -53,7 +53,7 @@ var Fx = this.Fx = new Class({
 		} else {
 			this.frame++;
 		}
-		
+
 		if (this.frame < this.frames){
 			var delta = this.transition(this.frame / this.frames);
 			this.set(this.compute(this.from, this.to, delta));
@@ -96,7 +96,7 @@ var Fx = this.Fx = new Class({
 		pushInstance.call(this, fps);
 		return this;
 	},
-	
+
 	stop: function(){
 		if (this.isRunning()){
 			this.time = null;
@@ -110,7 +110,7 @@ var Fx = this.Fx = new Class({
 		}
 		return this;
 	},
-	
+
 	cancel: function(){
 		if (this.isRunning()){
 			this.time = null;
@@ -120,7 +120,7 @@ var Fx = this.Fx = new Class({
 		}
 		return this;
 	},
-	
+
 	pause: function(){
 		if (this.isRunning()){
 			this.time = null;
@@ -128,12 +128,12 @@ var Fx = this.Fx = new Class({
 		}
 		return this;
 	},
-	
+
 	resume: function(){
 		if ((this.frame < this.frames) && !this.isRunning()) pushInstance.call(this, this.options.fps);
 		return this;
 	},
-	
+
 	isRunning: function(){
 		var list = instances[this.options.fps];
 		return list && list.contains(this);
