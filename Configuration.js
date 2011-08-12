@@ -26,7 +26,7 @@ Configuration.presets = {
 		source: ['1.3mobile']
 	},
 	'core-1.4': {
-		sets: ['1.2', 'core-1.3-base', 'core-1.3-client', 'core-1.4-client'],
+		sets: ['1.2', 'core-1.3-base', 'core-1.3-client', 'core-1.4-base', 'core-1.4-client'],
 		source: ['core-1.4-base', 'core-1.4-client']
 	},
 	'core-2.0': {
@@ -83,6 +83,13 @@ Configuration.sets = {
 			'Fx/Fx.Morph',
 			'Utilities/Cookie',
 			'Utilities/JSON'
+		]
+	},
+
+	'core-1.4-base': {
+		path: '1.4base/',
+		files: [
+			'Types/Array'
 		]
 	},
 
