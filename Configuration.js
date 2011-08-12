@@ -89,6 +89,7 @@ Configuration.sets = {
 	'core-1.4-client': {
 		path: '1.4client/',
 		files: [
+			'Element/Element',
 			'Element/Element.Event'
 		]
 	},
