@@ -857,8 +857,6 @@ if (window.attachEvent && !window.addEventListener) window.addListener('unload',
 });
 /*</ltIE9>*/
 
-})();
-
 Element.Properties = {};
 
 //<1.2compat>
@@ -929,3 +927,23 @@ Element.Properties.html = (function(){
 	return html;
 })();
 /*</!webkit>*/
+
+/*<ltIE9>*/
+var testForm = document.createElement('form');
+testForm.innerHTML = '<select><option>s</option></select>';
+
+if (testForm.firstChild.value != 's') Element.Properties.value = {
+	get: function(){
+		var option = this, tag = option.get('tag');
+
+		if (tag != 'select' && tag != 'option') return this.getProperty('value');
+
+		if (tag == 'select') if (!(option = option.getSelected()[0])) return '';
+
+		var attr = option.getAttributeNode('value');
+		return (attr && attr.specified) ? option.value : option.get('text');
+	}
+};
+/*</ltIE9>*/
+
+})();
