@@ -497,7 +497,7 @@ var propertyGetters = {}, propertySetters = {};
 var properties = {};
 Array.forEach([
 	'type', 'value', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-	'frameBorder', 'maxLength', 'readOnly', 'rowSpan', 'tabIndex', 'useMap',
+	'frameBorder', 'readOnly', 'rowSpan', 'tabIndex', 'useMap',
 ], function(property){
 	properties[property.toLowerCase()] = property;
 });
@@ -512,7 +512,7 @@ Object.append(properties, {
 
 Object.forEach(properties, function(real, key){
 	propertySetters[key] = function(node, value){
-		return node[real] = value;
+		node[real] = value;
 	};
 	propertyGetters[key] = function(node){
 		return node[real];
@@ -530,63 +530,27 @@ Array.forEach(bools, function(bool){
 	var lower = bool.toLowerCase();
 	booleans[lower] = bool;
 	propertySetters[lower] = function(node, value){
-		return node[bool] = !!value;
+		node[bool] = !!value;
 	};
 	propertyGetters[lower] = function(node){
 		return !!node[bool];
 	};
 });
 
-var hasAttribute = document.documentElement.hasAttribute ? function(node, attribute) {
-	return node.hasAttribute(attribute);
-} : function(node, attribute) {
-	node = node.getAttributeNode(attribute);
-	return !!(node && (node.specified || node.nodeValue));
-};
-
 // Special cases
-
-Object.forEach({
-
-	'class': function(node){
-		return ('className' in node) ? node.className : node.getAttribute('class');
-	},
-
-	'for': function(node){
-		return ('htmlFor' in node) ? node.htmlFor : node.getAttribute('for');
-	},
-
-	'href': function(node){
-		return node.getAttribute('href', 2);
-	},
-
-	'style': function(node){
-		return (node.style) ? node.style.cssText : node.getAttribute('style');
-	},
-
-	'maxlength': function(node){
-		return node.getAttribute('maxLength', 2);
-	}
-
-}, function(getter, property){
-	propertyGetters[property] = function(node, name){
-		var result = getter(node);
-		return (!result && !hasAttribute(node, name)) ? null : result;
-	};
-});
 
 Object.append(propertySetters, {
 
 	'class': function(node, value){
-		return ('className' in node) ? node.className = value : node.setAttribute('class', value);
+		('className' in node) ? node.className = value : node.setAttribute('class', value);
 	},
 
 	'for': function(node, value){
-		return ('htmlFor' in node) ? node.htmlFor = value : node.setAttribute('for', value);
+		('htmlFor' in node) ? node.htmlFor = value : node.setAttribute('for', value);
 	},
 
 	'style': function(node, value){
-		return (node.style) ? node.style.cssText = value : node.setAttribute('style', value);
+		(node.style) ? node.style.cssText = value : node.setAttribute('style', value);
 	}
 
 });
@@ -610,8 +574,8 @@ Element.implement({
 	getProperty: function(name){
 		var getter = propertyGetters[name.toLowerCase()];
 		if (getter) return getter(this);
-		var result = this.getAttribute(name);
-		return (!result && !hasAttribute(this, name)) ? null : result;
+		var result = Slick.getAttribute(this, name);
+		return (!result && !Slick.hasAttribute(this, name)) ? null : result;
 	},
 
 	getProperties: function(){
