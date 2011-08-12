@@ -129,9 +129,9 @@ var relay = function(old, method){
 	}
 };
 
-[Element, Window, Document].invoke('implement', {
+var delegation = {
 
-	addEvent: relay(addEvent, function(type, match, fn){
+	addEvent: function(type, match, fn){
 		var storage = this.retrieve('delegates', {}), stored = storage[type];
 
 		if (stored) for (var _uid in stored){
@@ -170,9 +170,9 @@ var relay = function(old, method){
 
 		this.store('delegates', storage);
 		return addEvent.call(this, type, delegator, _map.capture);
-	}),
+	},
 
-	removeEvent: relay(removeEvent, function(type, match, fn, _uid){
+	removeEvent: function(type, match, fn, _uid){
 		var storage = this.retrieve('delegates', {}), stored = storage[type];
 		if (!stored) return this;
 
@@ -189,14 +189,19 @@ var relay = function(old, method){
 		var __uid, s;
 		if (fn) for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match && s.fn == fn) return arguments.callee.call(this, type, match, fn, __uid);
+			if (s.match == match && s.fn == fn) return delegation.removeEvent.call(this, type, match, fn, __uid);
 		} else for (__uid in stored){
 			s = stored[__uid];
-			if (s.match == match) arguments.callee.call(this, type, match, s.fn, __uid);
+			if (s.match == match) delegation.removeEvent.call(this, type, match, s.fn, __uid);
 		}
 		return this;
-	})
+	}
 
+};
+
+[Element, Window, Document].invoke('implement', {
+	addEvent: relay(addEvent, delegation.addEvent),
+	removeEvent: relay(removeEvent, delegation.removeEvent)
 });
 
 })();
