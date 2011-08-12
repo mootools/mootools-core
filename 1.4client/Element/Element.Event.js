@@ -10,9 +10,18 @@ provides: [Element.Event.Specs]
 describe('Element.Event.js', function(){
 	// This is private API. Do not use.
 
+	// Restore native fireEvent in IE for Syn
+	var createElement = function(tag, props){
+		var el = document.createElement(tag),
+			fireEvent = el.fireEvent;
+
+		$(el);
+		el.fireEvent = fireEvent;
+		return el.set(props);
+	};
+
 	it('should allow base to be a function', function(){
-		var called;
-		var callback = jasmine.createSpy();
+		var callback = jasmine.createSpy('myClick');
 
 		Element.Events.myClick = {
 			base: function(){
@@ -20,7 +29,7 @@ describe('Element.Event.js', function(){
 			}
 		};
 
-		var div = new Element('div').addEvent('myClick', callback).inject(document.body);
+		var div = createElement('div').addEvent('myClick', callback).inject(document.body);
 
 		simulateEvent('click', [{}, div], function(){
 			expect(callback).toHaveBeenCalled();
@@ -53,7 +62,7 @@ describe('Element.Event.js', function(){
 
 		};
 
-		var div = new Element('div').addEvent('customEvent', callback).inject(document.body);
+		var div = createElement('div').addEvent('customEvent', callback).inject(document.body);
 
 		simulateEvent('click', [{}, div], function(){
 			expect(callback).toHaveBeenCalled();

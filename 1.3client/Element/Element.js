@@ -114,7 +114,7 @@ describe('Element.clone', function(){
 			'</object>' +
 		'</div>');
 
-		expect(div.clone().getElementsByTagName('param').length != 0).toBeTruthy();
+		expect(div.clone().getElementsByTagName('param').length).toBeGreaterThan(0);
 
 		div = new Element('div').set('html', '<div id="ie-video" class="video">' +
 			'<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="425" height="344">' +
@@ -126,7 +126,7 @@ describe('Element.clone', function(){
 			'</object>' +
 		'</div>');
 
-		expect(div.clone().getElementsByTagName('param').length != 0).toBeTruthy();
+		expect(div.clone().getElementsByTagName('param').length).toBeGreaterThan(0);
 	});
 
 	it('should set the ID of the cloned element and then fetch it with document.id', function(){

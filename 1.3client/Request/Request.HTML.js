@@ -28,9 +28,7 @@ describe('Request.HTML', function(){
 		var request = new Request.HTML({
 			url: '../Helpers/request.php',
 			onComplete: this.spy
-		}).send({data: {
-			'__response': response, '__type': 'html'
-		}});
+		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		
@@ -112,9 +110,7 @@ describe('Request.HTML', function(){
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
 			update: 'update'
-		}).send({data: {
-			'__response': response, '__type': 'html'
-		}});
+		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		
@@ -136,9 +132,7 @@ describe('Request.HTML', function(){
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
 			append: 'update'
-		}).send({data: {
-			'__response': response, '__type': 'html'
-		}});
+		}).send();
 		
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		
@@ -166,9 +160,7 @@ describe('Request.HTML', function(){
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
 			filter: 'a'
-		}).send({data: {
-			'__response': response, '__type': 'html'
-		}});
+		}).send();
 		
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		expect(this.spy.wasCalled).toBe(true);
@@ -190,9 +182,7 @@ describe('Request.HTML', function(){
 			onComplete: this.spy,
 			update: 'update',
 			filter: 'a'
-		}).send({data: {
-			'__response': response, '__type': 'html'
-		}});
+		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		expect(this.spy.wasCalled).toBe(true);
@@ -215,9 +205,7 @@ describe('Request.HTML', function(){
 			onComplete: this.spy,
 			append: 'update',
 			filter: 'a'
-		}).send({data: {
-			'__response': response, '__type': 'html'
-		}});
+		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		expect(this.spy.wasCalled).toBe(true);

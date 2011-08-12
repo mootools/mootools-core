@@ -29,7 +29,7 @@ describe('Element.set opacity', function(){
 		div.set('opacity', 1e-20);
 		div.set('opacity', 0.5);
 		expect(+div.get('opacity')).toEqual(0.5);
-		if (document.html.style.filter != null && !window.opera && !Syn.browser.gecko){
+		if (Browser.ie && Browser.version <= 8){
 			expect(div.style.filter.split('opacity').length - 1).toEqual(1);
 		}
 	});
