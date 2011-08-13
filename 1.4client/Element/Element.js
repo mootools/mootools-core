@@ -69,3 +69,14 @@ describe('Element.get', function(){
 	});
 
 });
+
+describe('tabIndex', function(){
+
+	it('should get and set the correct tabIndex', function(){
+		var div = document.createElement('div');
+		div.innerHTML = '<input tabindex="2">';
+		expect($(div.firstChild).get('tabindex')).toEqual(2);
+		expect($(div.firstChild).set('tabindex', 3).get('tabindex')).toEqual(3);
+	});
+
+});
