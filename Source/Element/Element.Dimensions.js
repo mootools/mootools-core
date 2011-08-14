@@ -137,7 +137,6 @@ Element.implement({
 	},
 
 	getPosition: function(relative){
-		if (isBody(this)) return {x: 0, y: 0};
 		var offset = this.getOffsets(),
 			scroll = this.getScrolls();
 		var position = {
