@@ -16,7 +16,7 @@ provides: Element.Event.Change
 
 (function(){
 
-var hasListener = window.addEventListener;
+var hasListener = !!window.addEventListener;
 var getValue = function(element){
 	var type = element.get('type');
 	return element[(type == 'radio' || type == 'checkbox') ? 'checked' : 'value'];
