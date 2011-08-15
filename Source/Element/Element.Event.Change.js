@@ -19,7 +19,7 @@ provides: Element.Event.Change
 var hasListener = window.addEventListener;
 var getValue = function(element){
 	var type = element.get('type');
-	return element[type == 'radio' || type == 'checkbox' ? 'checked' : 'value'];
+	return element[(type == 'radio' || type == 'checkbox') ? 'checked' : 'value'];
 }
 var storeChange = function(event){
 	event.target.store('$change', {
@@ -53,7 +53,7 @@ Element.Events.change = {
 	condition: function(event){
 		var target = event.target;
 		if (hasListener && event.type == 'change' && target.get('tag') == 'select' && target.retrieve('$change').type == 'keydown') return false;
-		return target.get('type') == 'radio' ? (event.type == 'keyup' ? !target.checked : target.checked) : true;
+		return (target.get('type') == 'radio') ? ((event.type == 'keyup') ? !target.checked : target.checked) : true;
 	},
 	onAdd: function(fn){
 		this.addEvents({
