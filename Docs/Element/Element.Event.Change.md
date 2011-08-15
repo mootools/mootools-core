@@ -1,4 +1,4 @@
-Type: Event {#Event}
+Custom Event: Change
 ==========================
 
 - This custom change event ensures the onchange event behaves the same across browsers.
