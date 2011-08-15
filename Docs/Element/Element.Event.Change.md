@@ -3,7 +3,7 @@ Custom Event: Change
 
 - This custom change event ensures the onchange event behaves the same across browsers.
 - The change event is strictly intended for elements that support the native onchange event.
-- For further information on cross-browser issues with the change event, visit Peter-Paul Koch's Quirksmode change event page: http://www.quirksmode.org/dom/events/change.html
+- For further information on cross-browser issues with the change event, visit Peter-Paul Koch's Quirksmode [change event compatibility page](http://www.quirksmode.org/dom/events/change.html).
 
 Element.Events.change
 ----------------------
