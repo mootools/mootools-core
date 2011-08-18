@@ -497,7 +497,7 @@ var propertyGetters = {}, propertySetters = {};
 var properties = {};
 Array.forEach([
 	'type', 'value', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-	'frameBorder', 'readOnly', 'rowSpan', 'tabIndex', 'useMap',
+	'frameBorder', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
 ], function(property){
 	properties[property.toLowerCase()] = property;
 });
@@ -587,7 +587,7 @@ Element.implement({
 
 	removeProperty: function(name){
 		name = name.toLowerCase();
-		if (booleans[name]) this.setProperty(name, false)
+		if (booleans[name]) this.setProperty(name, false);
 		this.removeAttribute(name);
 		return this;
 	},
