@@ -874,8 +874,8 @@ Element.Properties.html = (function(){
 	translations.thead = translations.tfoot = translations.tbody;
 
 	var html = {
-		set: function(){
-			var html = Array.flatten(arguments).join('');
+		set: function(html){
+			if (typeof html != 'string') html = html.join('');
 			var wrap = (!tableTest && translations[this.get('tag')]);
 			if (wrap){
 				var first = wrapper;
