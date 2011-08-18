@@ -1,7 +1,7 @@
 Class: Request.JSON {#Request-JSON}
 =================================
 
-Wrapped Request with automated sending and receiving of JavaScript Objects in JSON Format.
+Wrapped Request with automated receiving of JavaScript Objects in JSON Format.
 
 ### Extends:
 
