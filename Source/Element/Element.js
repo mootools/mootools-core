@@ -524,7 +524,8 @@ Object.forEach(properties, function(real, key){
 var bools = [
 	'compact', 'nowrap', 'ismap', 'declare', 'noshade', 'checked',
 	'disabled', 'readOnly', 'multiple', 'selected', 'noresize',
-	'defer', 'defaultChecked', 'autofocus'
+	'defer', 'defaultChecked', 'autofocus', 'controls', 'autoplay',
+	'loop'
 ];
 
 var booleans = {};
