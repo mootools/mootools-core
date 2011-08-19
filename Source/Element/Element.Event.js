@@ -39,7 +39,7 @@ Element.Properties.events = {set: function(events){
 					return true;
 				};
 			}
-			realType = Function.from(custom.base).call(this, type) || realType;
+			if (custom.base) realType = custom.base;
 		}
 		var defn = function(){
 			return fn.call(self);
@@ -70,7 +70,7 @@ Element.Properties.events = {set: function(events){
 		var custom = Element.Events[type];
 		if (custom){
 			if (custom.onRemove) custom.onRemove.call(this, fn, type);
-			type = Function.from(custom.base).call(this, type) || type;
+			if (custom.base) type = custom.base;
 		}
 		return (Element.NativeEvents[type]) ? this.removeListener(type, value, arguments[2]) : this;
 	},
