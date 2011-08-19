@@ -20,23 +20,6 @@ describe('Element.Event.js', function(){
 		return el.set(props);
 	};
 
-	it('should allow base to be a function', function(){
-		var callback = jasmine.createSpy('myClick');
-
-		Element.Events.myClick = {
-			base: function(){
-				return 'click';
-			}
-		};
-
-		var div = createElement('div').addEvent('myClick', callback).inject(document.body);
-
-		simulateEvent('click', [{}, div], function(){
-			expect(callback).toHaveBeenCalled();
-			div.destroy();
-		});
-	});
-
 	it('should pass the name of the custom event to the callbacks', function(){
 		var callbacks = 0;
 		var callback = jasmine.createSpy();
@@ -47,10 +30,7 @@ describe('Element.Event.js', function(){
 		}
 		Element.Events.customEvent = {
 
-			base: function(type){
-				expect(type).toEqual('customEvent');
-				return 'click';
-			},
+			base: 'click',
 
 			condition: function(event, type){
 				fn(null, type);
