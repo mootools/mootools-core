@@ -16,58 +16,43 @@ provides: Element.Event.Change
 
 (function(){
 
-var hasListener = !!window.addEventListener;
-var getValue = function(element){
-	var type = element.get('type');
-	return element[(type == 'radio' || type == 'checkbox') ? 'checked' : 'value'];
-}
-var storeChange = function(event){
-	event.target.store('$change', {
-		type: event.type,
-		value: getValue(event.target)
-	});
-};
-var hasChanged = function(element){
-	var value =  element.retrieve('$change').value;
-	return (value != null && value != getValue(element));
-};
+if (!window.addEventListener) {
+	var update = function(event){
+		event.target.store('$change:last', {
+			type: event.type,
+			value: event.target.checked
+		});
+	};
 
-Element.Events.keychange = {
-	base: 'keyup',
-	condition: function(event){
-		var target = event.target;
-		if (!hasChanged(target)) return false;
-		if (target.get('tag') == 'select') return true;
-		if (!hasListener) switch(event.key){
-			case 'up': case 'down': case 'left': case 'right': return target.get('type') == 'radio';
-			case 'space': return target.get('type') == 'checkbox';
+	Element.Events._change = {
+		base: 'change'
+	};
+
+	Element.Events.change = {
+		base: 'click',
+		condition: function(event){
+			var target = event.target, type = target.get('type'), last = target.retrieve('$change:last', {});
+			if (type == 'text' || 'textarea select'.test(target.get('tag'))) return event.type == 'change';
+			if (type == 'radio' && last.type != 'mousedown' && target.retrieve('$change:key', '').match(/up|down|left|right/)) return true;	
+			return target.checked != last.value;
+		},
+		onAdd: function(fn){
+			var events = {
+				keydown: update,
+				mousedown: update,
+				_change: function(event){
+					if (!'radio checkbox'.test(event.target.type)) fn.call(this, event);
+				},
+				keyup: function(event) {
+					event.target.store('$change:key', event.key);
+					return event.code != 16 && event.key != 'tab';
+				}
+			};
+			this.store('$change:events', events).addEvents(events);
+		},
+		onRemove: function(){
+			this.removeEvents(this.retrieve('$change:events')).eliminate('$change:events');
 		}
-	}
-};
-
-Element.Events.change = {
-	base: function(){
-		var type = this.get('type');
-		return (!hasListener && (type == 'checkbox' || type == 'radio')) ? 'click' : 'change';
-	},
-	condition: function(event){
-		var target = event.target;
-		if (hasListener && event.type == 'change' && target.get('tag') == 'select' && target.retrieve('$change').type == 'keydown') return false;
-		return (target.get('type') == 'radio') ? ((event.type == 'keyup') ? !target.checked : target.checked) : true;
-	},
-	onAdd: function(fn){
-		this.addEvents({
-			keychange: fn,
-			focus: storeChange,
-			keydown: storeChange
-		});
-	},
-	onRemove: function(fn){
-		this.removeEvents({
-			keychange: fn,
-			focus: storeChange,
-			keydown: storeChange
-		});
 	}
 }
 

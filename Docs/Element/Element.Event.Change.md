@@ -1,8 +1,8 @@
 Custom Event: Change
 ==========================
 
-- This custom change event ensures the onchange event behaves the same across browsers.
-- The change event is strictly intended for elements that support the native onchange event.
+- This custom change event unifies the behavior of radios and checkboxes across browsers and enables accurate delegation support for the change event.
+- The change event is strictly intended for elements that support the native onchange event. This custom event does not unify the behavior of the key cycling of options on select elements.
 - For further information on cross-browser issues with the change event, visit Peter-Paul Koch's Quirksmode [change event compatibility page](http://www.quirksmode.org/dom/events/change.html).
 
 Element.Events.change
