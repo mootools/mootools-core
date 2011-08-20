@@ -100,4 +100,16 @@ describe('Element', function(){
 		});
 	}
 
+	describe("Element.set('html')", function(){
+
+		describe('HTML5 tags', function(){
+
+			it('should create childNodes for html5 tags', function(){
+				expect(new Element('div', {html: '<nav>Muu</nav><p>Tuuls</p><section>!</section>'}).childNodes.length).toEqual(3);
+			});
+
+		});
+
+	});
+
 });
