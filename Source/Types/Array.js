@@ -18,6 +18,7 @@ Array.implement({
 
 	/*<!ES5>*/
 	every: function(fn, bind){
+		if (this == null) throw new TypeError;
 		for (var i = 0, l = this.length >>> 0; i < l; i++){
 			if ((i in this) && !fn.call(bind, this[i], i, this)) return false;
 		}
@@ -25,6 +26,7 @@ Array.implement({
 	},
 
 	filter: function(fn, bind){
+		if (this == null) throw new TypeError;
 		var results = [];
 		for (var i = 0, l = this.length >>> 0; i < l; i++){
 			if ((i in this) && fn.call(bind, this[i], i, this)) results.push(this[i]);
@@ -33,6 +35,7 @@ Array.implement({
 	},
 
 	indexOf: function(item, from){
+		if (this == null) throw new TypeError;
 		var length = this.length >>> 0;
 		for (var i = (from < 0) ? Math.max(0, length + from) : from || 0; i < length; i++){
 			if (this[i] === item) return i;
@@ -41,6 +44,7 @@ Array.implement({
 	},
 
 	map: function(fn, bind){
+		if (this == null) throw new TypeError;
 		var length = this.length >>> 0, results = Array(length);
 		for (var i = 0; i < length; i++){
 			if (i in this) results[i] = fn.call(bind, this[i], i, this);
@@ -49,6 +53,7 @@ Array.implement({
 	},
 
 	some: function(fn, bind){
+		if (this == null) throw new TypeError;
 		for (var i = 0, l = this.length >>> 0; i < l; i++){
 			if ((i in this) && fn.call(bind, this[i], i, this)) return true;
 		}
