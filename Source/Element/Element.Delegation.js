@@ -16,26 +16,38 @@ provides: [Element.Delegation]
 
 (function(){
 
-var eventListenerSupport = !(window.attachEvent && !window.addEventListener),
-	nativeEvents = Element.NativeEvents;
+var eventListenerSupport = !!window.addEventListener;
 
-nativeEvents.focusin = 2;
-nativeEvents.focusout = 2;
+Element.NativeEvents.focusin = Element.NativeEvents.focusout = 2;
 
 var bubbleUp = function(self, match, fn, event){
-	for (var target = event.target; target && target != self;){
-		if (target && match(target, event)){
-			fn.call(target, event, target);
-			break;
-		}
+	var target = event.target;
+	while (target && target != self){
+		if (match(target, event)) return fn.call(target, event, target);
 		target = document.id(target.parentNode);
 	}
 };
 
-/*<ltIE9>*/
-var formObserver = function(type){
+var map = {
+	mouseenter: {
+		base: 'mouseover'
+	},
+	mouseleave: {
+		base: 'mouseout'
+	},
+	focus: {
+		base: 'focus' + (eventListenerSupport ? '' : 'in'),
+		capture: true
+	},
+	blur: {
+		base: eventListenerSupport ? 'blur' : 'focusout',
+		capture: true
+	}
+};
 
-	var _key = '_delegation:';
+/*<ltIE9>*/
+var _key = '$delegation:';
+var formObserver = function(type){
 
 	return {
 
@@ -86,26 +98,7 @@ var inputObserver = function(type){
 		}
 	};
 };
-/*</ltIE9>*/
 
-var map = {
-	mouseenter: {
-		base: 'mouseover'
-	},
-	mouseleave: {
-		base: 'mouseout'
-	},
-	focus: {
-		base: 'focus' + (eventListenerSupport ? '' : 'in'),
-		capture: true
-	},
-	blur: {
-		base: eventListenerSupport ? 'blur' : 'focusout',
-		capture: true
-	}
-};
-
-/*<ltIE9>*/
 if (!eventListenerSupport) Object.append(map, {
 	submit: formObserver('submit'),
 	reset: formObserver('reset'),
@@ -114,7 +107,9 @@ if (!eventListenerSupport) Object.append(map, {
 });
 /*</ltIE9>*/
 
-var proto = Element.prototype, addEvent = proto.addEvent, removeEvent = proto.removeEvent;
+var proto = Element.prototype,
+	addEvent = proto.addEvent,
+	removeEvent = proto.removeEvent;
 
 var relay = function(old, method){
 	return function(type, fn, useCapture){
@@ -126,14 +121,13 @@ var relay = function(old, method){
 			newType += ':' + pseudo.key + (pseudo.value ? '(' + pseudo.value + ')' : '');
 		});
 		return method.call(this, newType, parsed.pseudos[0].value, fn);
-	}
+	};
 };
 
 var delegation = {
 
 	addEvent: function(type, match, fn){
-		var storage = this.retrieve('delegates', {}), stored = storage[type];
-
+		var storage = this.retrieve('$delegates', {}), stored = storage[type];
 		if (stored) for (var _uid in stored){
 			if (stored[_uid].fn == fn && stored[_uid].match == match) return this;
 		}
@@ -149,7 +143,7 @@ var delegation = {
 		if (elementEvent && elementEvent.condition){
 			var __match = match, condition = elementEvent.condition;
 			match = function(target, event){
-				return __match(target, event) && (condition.call(target, event));
+				return __match(target, event) && condition.call(target, event);
 			};
 		}
 
@@ -167,13 +161,11 @@ var delegation = {
 			delegator: delegator
 		};
 		storage[_type] = stored;
-
-		this.store('delegates', storage);
 		return addEvent.call(this, type, delegator, _map.capture);
 	},
 
 	removeEvent: function(type, match, fn, _uid){
-		var storage = this.retrieve('delegates', {}), stored = storage[type];
+		var storage = this.retrieve('$delegates', {}), stored = storage[type];
 		if (!stored) return this;
 
 		if (_uid){
@@ -182,7 +174,6 @@ var delegation = {
 			if (_map.remove) _map.remove(this, _uid);
 			delete stored[_uid];
 			storage[_type] = stored;
-			this.store('delegates', storage);
 			return removeEvent.call(this, type, delegator);
 		}
 
