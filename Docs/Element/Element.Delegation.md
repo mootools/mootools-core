@@ -1,9 +1,9 @@
 Type: Element {#Element}
 ========================
 
-Extends the [Element][] type to include delegations in the addEvent and addEvents methods.
+Extends the [Element][] type to include event-delegation in its event system.
 
-Event delegation is a common practice where an event listener is attached to a parent element to monitor its children rather than attach events to all the children. It's far more efficient for dynamic content or when you have numerous items on a page that you want to interact with.
+Event delegation is a common practice where an event listener is attached to a parent element to monitor its children rather than attach events to every single children element. It's more efficient for dynamic content or highly interactive pages with a lot of DOM elements.
 
 ### Demo:
 
@@ -11,16 +11,17 @@ Event delegation is a common practice where an event listener is attached to a p
 
 ### Example:
 
-An example how delegation is usually used. Delegation is extra useful when working with dynamic content like AJAX.
+An example of how delegation is usually applied. Delegation is extra useful when working with dynamic content like AJAX.
 
 	var myElement = $('myElement');
 	var request = new Request({
 		// other options…
 		onSuccess: function(text){
-			myElement.set('html', text); // no need to attach more click events.
+			myElement.set('html', text); // No need to attach more click events.
 		}
 	});
-	// adding the event, notice the :relay syntax with the selector which matches the target element.
+	// Adding the event, notice the :relay syntax with the selector that matches the target element inside of myElement.
+	// Every click on an anchor-tag inside of myElement executes this function.
 	myElement.addEvent('click:relay(a)', function(event, target){
 		event.preventDefault();
 		request.send({
@@ -53,17 +54,17 @@ Delegates the methods of an element's children to the parent element for greater
 
 ### Example:
 
-	// Alerts when an anchor element is clicked with class myStyle in myElement
+	// Alerts when an anchor element with class 'myStyle' is clicked inside of myElement
 	document.id(myElement).addEvent('click:relay(a.myStyle)', function(){
 		alert('hello');
 	});
 
 
-	$('myElement').addEvent('click:relay(a)', function(event, clicked){
+	document.id('myElement').addEvent('click:relay(a)', function(event, clicked){
 		event.preventDefault(); //don't follow the link
 		alert('you clicked a link!');
-		//you can reference the element clicked with the second
-		//argument passed to your callback
+		// You can reference the element clicked with the second
+		// Argument passed to your callback
 		clicked.setStyle('color', '#777');
 	});
 
@@ -81,7 +82,7 @@ Delegates the events to the parent just as with addEvent above. Works like [addE
 	$('myElement').addEvents({
 		// monitor an element for mouseover
 		mouseover: fn,
-		// but only monitor child links for click
+		// but only monitor child links for clicks
 		'click:relay(a)': fn2
 	});
 
