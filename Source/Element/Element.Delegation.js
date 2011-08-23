@@ -23,7 +23,7 @@ Element.NativeEvents.focusin = Element.NativeEvents.focusout = 2;
 var bubbleUp = function(self, match, fn, event){
 	var target = event.target;
 	while (target && target != self){
-		if (match(target, event)) return fn.call(target, event, target);
+		if (match(target, event)) return fn.call(self, event, target);
 		target = document.id(target.parentNode);
 	}
 };
