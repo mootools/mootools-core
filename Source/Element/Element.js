@@ -873,10 +873,25 @@ Element.Properties.html = (function(){
 	};
 	translations.thead = translations.tfoot = translations.tbody;
 
+	/*<ltIE9>*/
+	// technique by jdbarlett - http://jdbartlett.com/innershiv/
+	wrapper.innerHTML = '<nav></nav>';
+	var HTML5Test = wrapper.childNodes.length == 1;
+	if (!HTML5Test){
+		var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+			fragment = document.createDocumentFragment(), l = tags.length;
+		while (l--) fragment.createElement(tags[l]);
+		fragment.appendChild(wrapper);
+	}
+	/*</ltIE9>*/
+
 	var html = {
 		set: function(html){
 			if (typeof html != 'string') html = html.join('');
 			var wrap = (!tableTest && translations[this.get('tag')]);
+			/*<ltIE9>*/
+			if (!wrap && !HTML5Test) wrap = [0, '', ''];
+			/*</ltIE9>*/
 			if (wrap){
 				var first = wrapper;
 				first.innerHTML = wrap[1] + html + wrap[2];
