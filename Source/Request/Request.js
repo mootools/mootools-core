@@ -49,6 +49,7 @@ var Request = this.Request = new Class({
 		emulation: true,
 		urlEncoded: true,
 		encoding: 'utf-8',
+		processScripts: true,
 		evalScripts: false,
 		evalResponse: false,
 		timeout: 0,
@@ -96,7 +97,9 @@ var Request = this.Request = new Class({
 	},
 
 	success: function(text, xml){
-		this.onSuccess(this.processScripts(text), xml);
+		if(this.options.processScripts)
+			text = this.processScripts(text);
+		this.onSuccess(text, xml);
 	},
 
 	onSuccess: function(){
