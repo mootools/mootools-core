@@ -179,7 +179,8 @@ if (!window.addEventListener){
 	Element.Events.change = {
 		base: 'click',
 		condition: function(event){
-			return (event.type == 'change' || this.type == 'checkbox' || (this.type == 'radio' && this.retrieve('$change:last', '') == 'propertychange'));
+			var target = event.target;
+			return (event.type == 'change' || target.type == 'checkbox' || (target.type == 'radio' && target.retrieve('$change:last', '') == 'propertychange'));
 		},
 		onAdd: function(fn){
 			this.addEvents(this.store('$change:events', {
@@ -187,7 +188,8 @@ if (!window.addEventListener){
 				mouseup: record,
 				propertychange: record,
 				$change: function(event){
-					if (this.type != 'radio' && this.type != 'checkbox') fn.call(this, event);
+					var type = event.target.type;
+					if (type != 'radio' && type != 'checkbox') fn.call(this, event);
 				}
 			}).retrieve('$change:events'));
 		},
