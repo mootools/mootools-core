@@ -166,6 +166,41 @@ Element.Events = {
 
 };
 
+/*<ltIE9>*/
+if (!window.addEventListener){
+	var record = function(event){
+		event.target.store('$change:last', event.type);
+	};
+	
+	Element.NativeEvents.propertychange = 2;
+	Element.Events.$change = {
+		base: 'change'
+	};
+
+	Element.Events.change = {
+		base: 'click',
+		condition: function(event){
+			var target = event.target;
+			return (event.type == 'change' || target.type == 'checkbox' || (target.type == 'radio' && target.retrieve('$change:last', '') == 'propertychange'));
+		},
+		onAdd: function(fn){
+			this.addEvents(this.store('$change:events', {
+				keyup: record,
+				mouseup: record,
+				propertychange: record,
+				$change: function(event){
+					var type = event.target.type;
+					if (type != 'radio' && type != 'checkbox') fn.call(this, event);
+				}
+			}).retrieve('$change:events'));
+		},
+		onRemove: function(){
+			this.removeEvents(this.retrieve('$change:events')).eliminate('$change:events');
+		}
+	}
+}
+/*</ltIE9>*/
+
 //<1.2compat>
 
 Element.Events = new Hash(Element.Events);
