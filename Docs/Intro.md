@@ -33,6 +33,7 @@ Previous Versions Documentation
 
 [Element]: /core/Element/Element
 [Element.Event]: /core/Element/Element.Event
+[Element.Delegation]: /core/Element/Element.Delegation
 [Class]: /core/Class/Class
 [Fx.Tween]: /core/Fx/Fx.Tween
 [Request]: /core/Request/Request
