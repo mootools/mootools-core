@@ -166,6 +166,7 @@ Element.Events = {
 
 };
 
+/*<ltIE9>*/
 if (!window.addEventListener){
 	var record = function(event){
 		event.target.store('$change:last', event.type);
@@ -198,6 +199,7 @@ if (!window.addEventListener){
 		}
 	}
 }
+/*</ltIE9>*/
 
 //<1.2compat>
 
