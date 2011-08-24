@@ -14,6 +14,9 @@ provides: [Object, Hash]
 ...
 */
 
+(function(){
+
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 Object.extend({
 
@@ -21,7 +24,7 @@ Object.extend({
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){
 			var k = keys[i];
-			results[k] = object[k];
+			if (k in object) results[k] = object[k];
 		}
 		return results;
 	},
@@ -29,29 +32,30 @@ Object.extend({
 	map: function(object, fn, bind){
 		var results = {};
 		for (var key in object){
-			if (object.hasOwnProperty(key)) results[key] = fn.call(bind, object[key], key, object);
+			if (hasOwnProperty.call(object, key)) results[key] = fn.call(bind, object[key], key, object);
 		}
 		return results;
 	},
 
 	filter: function(object, fn, bind){
 		var results = {};
-		Object.each(object, function(value, key){
-			if (fn.call(bind, value, key, object)) results[key] = value;
-		});
+		for (var key in object){
+			var value = object[key];
+			if (hasOwnProperty.call(object, key) && fn.call(bind, value, key, object)) results[key] = value;
+		}
 		return results;
 	},
 
 	every: function(object, fn, bind){
 		for (var key in object){
-			if (object.hasOwnProperty(key) && !fn.call(bind, object[key], key)) return false;
+			if (hasOwnProperty.call(object, key) && !fn.call(bind, object[key], key)) return false;
 		}
 		return true;
 	},
 
 	some: function(object, fn, bind){
 		for (var key in object){
-			if (object.hasOwnProperty(key) && fn.call(bind, object[key], key)) return true;
+			if (hasOwnProperty.call(object, key) && fn.call(bind, object[key], key)) return true;
 		}
 		return false;
 	},
@@ -59,7 +63,7 @@ Object.extend({
 	keys: function(object){
 		var keys = [];
 		for (var key in object){
-			if (object.hasOwnProperty(key)) keys.push(key);
+			if (hasOwnProperty.call(object, key)) keys.push(key);
 		}
 		return keys;
 	},
@@ -67,7 +71,7 @@ Object.extend({
 	values: function(object){
 		var values = [];
 		for (var key in object){
-			if (object.hasOwnProperty(key)) values.push(object[key]);
+			if (hasOwnProperty.call(object, key)) values.push(object[key]);
 		}
 		return values;
 	},
@@ -78,7 +82,7 @@ Object.extend({
 
 	keyOf: function(object, value){
 		for (var key in object){
-			if (object.hasOwnProperty(key) && object[key] === value) return key;
+			if (hasOwnProperty.call(object, key) && object[key] === value) return key;
 		}
 		return null;
 	},
@@ -112,6 +116,7 @@ Object.extend({
 
 });
 
+})();
 
 //<1.2compat>
 

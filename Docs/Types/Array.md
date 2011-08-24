@@ -108,7 +108,8 @@ Converts the argument passed in to an array if it is defined and not already an 
 
 ### Notes:
 
-This is equivalent to *$splat* from MooTools 1.2.
+This is equivalent to *$splat* from MooTools 1.2, with the exception of Array-like Objects such as NodeList or FileList which `Array.from` does transform in
+Arrays and `$splat` not.
 
 
 
@@ -779,7 +780,7 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 
 
 
-[Function:bind]: /core/Native/Function/#Function:bind
+[Function:bind]: /core/Types/Function/#Function:bind
 [String:hexToRgb]: /core/Types/String/#String:hexToRgb
 [String:rgbToHex]: /core/Types/String/#String:rgbToHex
 [MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array

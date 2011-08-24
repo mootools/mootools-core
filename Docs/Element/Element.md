@@ -792,7 +792,7 @@ Removes the Element from the DOM.
 
 ### See Also:
 
-- [MDC Element:removeChild](http://developer.mozilla.org/en/docs/DOM:element.removeChild)
+- [MDC Element:removeChild][]
 
 
 
@@ -868,7 +868,7 @@ Replaces the passed Element with Element.
 
 ### See Also:
 
-- [MDC Element:replaceChild](http://developer.mozilla.org/en/docs/DOM:element.replaceChild)
+- [MDC Element:replaceChild][]
 
 
 
@@ -1206,8 +1206,7 @@ Empties an Element of all its children.
 Element Method: destroy {#Element:destroy}
 ------------------------------------------
 
-Empties an Element of all its children, removes and garbages the Element.
-Useful to clear memory before the pageUnload.
+Removes the Element and its children from the DOM and prepares them for garbage collection.
 
 ### Syntax:
 
@@ -1610,11 +1609,11 @@ Sets the innerHTML of the Element.
 
 #### Syntax:
 
-	myElement.set('html', [htmlString[, htmlString2[, htmlString3[, ..]]]);
+	myElement.set('html', html);
 
 #### Arguments:
 
-1. Any number of string parameters with HTML.
+1. html - (*string*) The new content as HTML string.
 
 #### Returns:
 
@@ -1628,7 +1627,7 @@ Sets the innerHTML of the Element.
 
 ##### JavaScript
 
-	$('myElement').set('html', '<div></div>', '<p></p>');
+	$('myElement').set('html', '<div></div><p></p>');
 
 ##### Resulting HTML
 
@@ -1920,3 +1919,6 @@ This method has been deprecated. Use [Element:contains][] instead.
 [Element:setStyles]: /core/Element/Element.Style#Element:setStyles
 
 [The Dollar Save Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/
+
+[MDC Element:removeChild]: https://developer.mozilla.org/En/DOM/Node.removeChild
+[MDC Element:replaceChild]: https://developer.mozilla.org/En/DOM/Node.replaceChild

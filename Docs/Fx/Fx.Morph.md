@@ -1,7 +1,7 @@
 Class: Fx.Morph {#Fx-Morph}
 ===========================
 
-Allows for the animation of multiple CSS properties at once, even by a CSS selector. Inherits methods, properties, options and events from [Fx][].
+Allows for the animation of multiple CSS properties at once, even by a simple CSS selector. Inherits methods, properties, options and events from [Fx][].
 
 ### Extends:
 
@@ -59,6 +59,9 @@ separating the logic and styles:
 	// the styles of myClassName will be applied to the target Element.
 	myEffect.start('.myClassName');
 
+### Notes:
+
+- This feature only works for simple selectors like a single class or id due to limited browser support for complex selectors.
 
 ### See Also:
 
@@ -128,6 +131,7 @@ Executes a transition for any number of CSS properties in tandem.
 
 - If a string is passed as the CSS selector, the selector must be identical to the one within the CSS.
 - Multiple selectors (with commas) are not supported.
+- @import'ed CSS rules will not be available for Morph calls. All CSS selectors must be present in CSS directly loaded into the page.
 
 
 Object: Element.Properties {#Element-Properties}

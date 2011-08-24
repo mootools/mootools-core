@@ -32,14 +32,14 @@ Element.Properties.events = {set: function(events){
 			condition = fn,
 			self = this;
 		if (custom){
-			if (custom.onAdd) custom.onAdd.call(this, fn);
+			if (custom.onAdd) custom.onAdd.call(this, fn, type);
 			if (custom.condition){
 				condition = function(event){
-					if (custom.condition.call(this, event)) return fn.call(this, event);
+					if (custom.condition.call(this, event, type)) return fn.call(this, event);
 					return true;
 				};
 			}
-			realType = custom.base || realType;
+			realType = Function.from(custom.base).call(this, type) || realType;
 		}
 		var defn = function(){
 			return fn.call(self);
@@ -69,8 +69,8 @@ Element.Properties.events = {set: function(events){
 		delete list.values[index];
 		var custom = Element.Events[type];
 		if (custom){
-			if (custom.onRemove) custom.onRemove.call(this, fn);
-			type = custom.base || type;
+			if (custom.onRemove) custom.onRemove.call(this, fn, type);
+			type = Function.from(custom.base).call(this, type) || type;
 		}
 		return (Element.NativeEvents[type]) ? this.removeListener(type, value, arguments[2]) : this;
 	},
@@ -128,12 +128,6 @@ Element.Properties.events = {set: function(events){
 
 });
 
-// IE9
-try {
-	if (typeof HTMLElement != 'undefined')
-		HTMLElement.prototype.fireEvent = Element.prototype.fireEvent;
-} catch(e){}
-
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
 	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
@@ -142,7 +136,7 @@ Element.NativeEvents = {
 	orientationchange: 2, // mobile
 	touchstart: 2, touchmove: 2, touchend: 2, touchcancel: 2, // touch
 	gesturestart: 2, gesturechange: 2, gestureend: 2, // gesture
-	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, //form elements
+	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, paste: 2, oninput: 2, //form elements
 	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 	error: 1, abort: 1, scroll: 1 //misc
 };
@@ -171,6 +165,38 @@ Element.Events = {
 	}
 
 };
+
+if (!window.addEventListener){
+	var record = function(event){
+		event.target.store('$change:last', event.type);
+	};
+	
+	Element.NativeEvents.propertychange = 2;
+	Element.Events.$change = {
+		base: 'change'
+	};
+
+	Element.Events.change = {
+		base: 'click',
+		condition: function(event){
+			var target = event.target;
+			return (event.type == 'change' || target.type == 'checkbox' || (target.type == 'radio' && target.retrieve('$change:last', '') == 'propertychange'));
+		},
+		onAdd: function(fn){
+			this.addEvents(this.store('$change:events', {
+				keyup: record,
+				mouseup: record,
+				propertychange: record,
+				$change: function(event){
+					if (event.target.type != 'radio' && event.target.type != 'checkbox') fn.call(this, event);
+				}
+			}).retrieve('$change:events'));
+		},
+		onRemove: function(){
+			this.removeEvents(this.retrieve('$change:events')).eliminate('$change:events');
+		}
+	}
+}
 
 //<1.2compat>
 

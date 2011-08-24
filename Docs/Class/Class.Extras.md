@@ -344,7 +344,7 @@ Will also add Class [Events][] when the option property begins with 'on' and is 
 Options Method: setOptions {#Options:setOptions}
 ------------------------------------------------
 
-Merges the default options of the Class with the options passed in.
+Merges the default options of the Class with the options passed in. Every value passed in to this method will be deep copied. Therefore other class instances or objects that are not intended for copying must be passed to a class in other ways.
 
 ### Syntax:
 
@@ -382,6 +382,18 @@ Merges the default options of the Class with the options passed in.
 	});
 
 	//myWidget.options is now: {color: #f00, size: {width: 200, height: 100}}
+
+	// Deep copy example
+	var mySize = {
+		width: 50,
+		height: 50
+	};
+
+	var myWidget = new Widget({
+		size: mySize
+	});
+
+	(mySize == myWidget.options.size) // false! mySize was copied in the setOptions call.
 
 ### Notes:
 
@@ -427,9 +439,6 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 
 	myWidget.show(); // fires the event and alerts 'Lets show it!'
 
-
-Deprecated Functions {#Deprecated-Functions}
-============================================
 
 [Class]: /core/Class/Class
 [Class:implement]: /core/Class/Class/#Class:implement

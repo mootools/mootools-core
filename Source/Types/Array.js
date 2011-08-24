@@ -16,13 +16,7 @@ provides: Array
 
 Array.implement({
 
-	invoke: function(methodName){
-		var args = Array.slice(arguments, 1);
-		return this.map(function(item){
-			return item[methodName].apply(item, args);
-		});
-	},
-
+	/*<!ES5>*/
 	every: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
 			if ((i in this) && !fn.call(bind, this[i], i, this)) return false;
@@ -38,23 +32,17 @@ Array.implement({
 		return results;
 	},
 
-	clean: function(){
-		return this.filter(function(item){
-			return item != null;
-		});
-	},
-
 	indexOf: function(item, from){
-		var len = this.length;
-		for (var i = (from < 0) ? Math.max(0, len + from) : from || 0; i < len; i++){
+		var length = this.length;
+		for (var i = (from < 0) ? Math.max(0, length + from) : from || 0; i < length; i++){
 			if (this[i] === item) return i;
 		}
 		return -1;
 	},
 
 	map: function(fn, bind){
-		var results = [];
-		for (var i = 0, l = this.length; i < l; i++){
+		var length = this.length, results = Array(length);
+		for (var i = 0; i < length; i++){
 			if (i in this) results[i] = fn.call(bind, this[i], i, this);
 		}
 		return results;
@@ -65,6 +53,20 @@ Array.implement({
 			if ((i in this) && fn.call(bind, this[i], i, this)) return true;
 		}
 		return false;
+	},
+	/*</!ES5>*/
+
+	clean: function(){
+		return this.filter(function(item){
+			return item != null;
+		});
+	},
+
+	invoke: function(methodName){
+		var args = Array.slice(arguments, 1);
+		return this.map(function(item){
+			return item[methodName].apply(item, args);
+		});
 	},
 
 	associate: function(keys){

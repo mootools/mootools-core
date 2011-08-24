@@ -23,17 +23,19 @@ var Event = new Type('Event', function(event, win){
 	var type = event.type,
 		target = event.target || event.srcElement,
 		page = {},
-		client = {};
+		client = {},
+		related = null,
+		rightClick, wheel, code, key;
 	while (target && target.nodeType == 3) target = target.parentNode;
 
 	if (type.indexOf('key') != -1){
-		var code = event.which || event.keyCode;
-		var key = Object.keyOf(Event.Keys, code);
+		code = event.which || event.keyCode;
+		key = Object.keyOf(Event.Keys, code);
 		if (type == 'keydown'){
-			var fKey = code - 111;
-			if (fKey > 0 && fKey < 13) key = 'f' + fKey;
+			if (code > 111 && code < 124) key = 'f' + (code - 111);
+			if (code > 95 && code < 106) key = code - 96;
 		}
-		if (!key) key = String.fromCharCode(code).toLowerCase();
+		if (key == null) key = String.fromCharCode(code).toLowerCase();
 	} else if ((/click|mouse|menu/i).test(type)){
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		page = {
@@ -45,10 +47,9 @@ var Event = new Type('Event', function(event, win){
 			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
 		if ((/DOMMouseScroll|mousewheel/).test(type)){
-			var wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+			wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
 		}
-		var rightClick = (event.which == 3) || (event.button == 2),
-			related = null;
+		rightClick = (event.which == 3) || (event.button == 2);
 		if ((/over|out/).test(type)){
 			related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
 			var testRelated = function(){
