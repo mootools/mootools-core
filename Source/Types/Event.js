@@ -52,12 +52,7 @@ var Event = new Type('Event', function(event, win){
 		rightClick = (event.which == 3) || (event.button == 2);
 		if ((/over|out/).test(type)){
 			related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
-			var testRelated = function(){
-				while (related && related.nodeType == 3) related = related.parentNode;
-				return true;
-			};
-			var hasRelated = (Browser.firefox2) ? testRelated.attempt() : testRelated();
-			related = (hasRelated) ? related : null;
+			while (related && related.nodeType == 3) related = related.parentNode;
 		}
 	} else if ((/gesture|touch/i).test(type)){
 		this.rotation = event.rotation;
