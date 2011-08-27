@@ -915,16 +915,30 @@ var testForm = document.createElement('form');
 testForm.innerHTML = '<select><option>s</option></select>';
 
 if (testForm.firstChild.value != 's') Element.Properties.value = {
+
+	set: function(value){
+		var tag = this.get('tag');
+		if (tag != 'select') return this.setProperty('value', value);
+		var options = this.getElements('option');
+		for (var i = 0; i < options.length; i++){
+			var option = options[i],
+				attr = option.getAttributeNode('value'),
+				optionValue = (attr && attr.specified) ? option.value : option.get('text');
+			if (optionValue == value) return option.selected = true;
+		}
+	},
+
 	get: function(){
 		var option = this, tag = option.get('tag');
 
 		if (tag != 'select' && tag != 'option') return this.getProperty('value');
 
-		if (tag == 'select') if (!(option = option.getSelected()[0])) return '';
+		if (tag == 'select' && !(option = option.getSelected()[0])) return '';
 
 		var attr = option.getAttributeNode('value');
 		return (attr && attr.specified) ? option.value : option.get('text');
 	}
+
 };
 /*</ltIE9>*/
 
