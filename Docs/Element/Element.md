@@ -820,7 +820,7 @@ Clones the Element and returns the cloned one.
 
 ##### HTML
 
-	<div id="myElement"></div>
+	<div id="myElement">ciao</div>
 
 ##### JavaScript
 
