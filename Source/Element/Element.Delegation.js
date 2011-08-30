@@ -143,7 +143,7 @@ var delegation = {
 		if (elementEvent && elementEvent.condition){
 			var __match = match, condition = elementEvent.condition;
 			match = function(target, event){
-				return __match(target, event) && condition.call(target, event);
+				return __match(target, event) && condition.call(target, event, type);
 			};
 		}
 
