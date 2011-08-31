@@ -36,5 +36,3 @@ $output = $pkg->build($files, array(), array(), ($no_compat) ? array("1.2compat"
 echo $output;
 
 fclose($stderr);
-
-?>
