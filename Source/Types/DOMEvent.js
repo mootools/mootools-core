@@ -3,7 +3,7 @@
 
 name: Event
 
-description: Contains the Event Class, to make the event object cross-browser.
+description: Contains the Event Type, to make the event object cross-browser.
 
 license: MIT-style license.
 
@@ -14,7 +14,11 @@ provides: Event
 ...
 */
 
-var Event = new Type('Event', function(event, win){
+(function() {
+
+var _keys = {};
+
+var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	if (!win) win = window;
 	var doc = win.document;
 	event = event || win.event;
@@ -30,7 +34,7 @@ var Event = new Type('Event', function(event, win){
 
 	if (type.indexOf('key') != -1){
 		code = event.which || event.keyCode;
-		key = Object.keyOf(Event.Keys, code);
+		key = _keys[code]/*<1.3compat>*/ || Object.keyOf(Event.Keys, code)/*</1.3compat>*/;
 		if (type == 'keydown'){
 			if (code > 111 && code < 124) key = 'f' + (code - 111);
 			if (code > 95 && code < 106) key = code - 96;
@@ -90,29 +94,10 @@ var Event = new Type('Event', function(event, win){
 	});
 });
 
-Event.Keys = {
-	'enter': 13,
-	'up': 38,
-	'down': 40,
-	'left': 37,
-	'right': 39,
-	'esc': 27,
-	'space': 32,
-	'backspace': 8,
-	'tab': 9,
-	'delete': 46
-};
-
-//<1.2compat>
-
-Event.Keys = new Hash(Event.Keys);
-
-//</1.2compat>
-
-Event.implement({
+DOMEvent.implement({
 
 	stop: function(){
-		return this.stopPropagation().preventDefault();
+		return this.preventDefault().stopPropagation();
 	},
 
 	stopPropagation: function(){
@@ -128,3 +113,36 @@ Event.implement({
 	}
 
 });
+
+DOMEvent.defineKey = function(code, key){
+	_keys[code] = key;
+	return this;
+};
+
+DOMEvent.defineKeys = DOMEvent.defineKey.overloadSetter(true);
+
+DOMEvent.defineKeys({
+	'13': 'enter',
+	'38': 'up',
+	'40': 'down',
+	'37': 'left',
+	'39': 'right',
+	'27': 'esc',
+	'32': 'space',
+	'8': 'backspace',
+	'9': 'tab',
+	'46': 'delete'
+});
+
+})();
+
+/*<1.3compat>*/
+var Event = DOMEvent;
+Event.Keys = {};
+/*</1.3compat>*/
+
+/*<1.2compat>*/
+
+Event.Keys = new Hash(Event.Keys);
+
+/*</1.2compat>*/
