@@ -20,45 +20,48 @@ var _keys = {};
 
 var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	if (!win) win = window;
-	var doc = win.document;
 	event = event || win.event;
 	if (event.$extended) return event;
+	this.event = event;
 	this.$extended = true;
-	var type = event.type,
-		target = event.target || event.srcElement,
-		page = {},
-		client = {},
-		related = null,
-		rightClick, wheel, code, key;
+	this.shift = event.shiftKey;
+	this.control = event.ctrlKey;
+	this.alt = event.altKey;
+	this.meta = event.metaKey;
+	var type = this.type = event.type;
+	var target = event.target || event.srcElement;
 	while (target && target.nodeType == 3) target = target.parentNode;
+	this.target = document.id(target);
 
-	if (type.indexOf('key') != -1){
-		code = event.which || event.keyCode;
-		key = _keys[code]/*<1.3compat>*/ || Object.keyOf(Event.Keys, code)/*</1.3compat>*/;
+	if (type.indexOf('key') == 0){
+		var code = this.code = (event.which || event.keyCode);
+		this.key = _keys[code]/*<1.3compat>*/ || Object.keyOf(Event.Keys, code)/*</1.3compat>*/;
 		if (type == 'keydown'){
-			if (code > 111 && code < 124) key = 'f' + (code - 111);
-			if (code > 95 && code < 106) key = code - 96;
+			if (code > 111 && code < 124) this.key = 'f' + (code - 111);
+			else if (code > 95 && code < 106) this.key = code - 96;
 		}
-		if (key == null) key = String.fromCharCode(code).toLowerCase();
-	} else if ((/click|mouse|menu/i).test(type)){
+		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
+	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type.indexOf('mouse') == 0){
+		var doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-		page = {
+		this.page = {
 			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
 			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
 		};
-		client = {
+		this.client = {
 			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
 			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
-		if ((/DOMMouseScroll|mousewheel/).test(type)){
-			wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-		}
-		rightClick = (event.which == 3) || (event.button == 2);
-		if ((/over|out/).test(type)){
-			related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
+		if (type == 'DOMMouseScroll' || type == 'mousewheel')
+			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+
+		this.rightClick = (event.which == 3 || event.button == 2);
+		if (type == 'mouseover' || type == 'mouseout'){
+			var related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
 			while (related && related.nodeType == 3) related = related.parentNode;
+			this.relatedTarget = document.id(related);
 		}
-	} else if ((/gesture|touch/i).test(type)){
+	} else if (type.indexOf('touch') == 0 || type.indexOf('gesture') == 0){
 		this.rotation = event.rotation;
 		this.scale = event.scale;
 		this.targetTouches = event.targetTouches;
@@ -66,32 +69,13 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 		var touches = this.touches = event.touches;
 		if (touches && touches[0]){
 			var touch = touches[0];
-			page = {x: touch.pageX, y: touch.pageY};
-			client = {x: touch.clientX, y: touch.clientY};
+			this.page = {x: touch.pageX, y: touch.pageY};
+			this.client = {x: touch.clientX, y: touch.clientY};
 		}
 	}
 
-	return Object.append(this, {
-		event: event,
-		type: type,
-
-		page: page,
-		client: client,
-		rightClick: rightClick,
-
-		wheel: wheel,
-
-		relatedTarget: document.id(related),
-		target: document.id(target),
-
-		code: code,
-		key: key,
-
-		shift: event.shiftKey,
-		control: event.ctrlKey,
-		alt: event.altKey,
-		meta: event.metaKey
-	});
+	if (!this.client) this.client = {};
+	if (!this.page) this.page = {};
 });
 
 DOMEvent.implement({
@@ -122,16 +106,9 @@ DOMEvent.defineKey = function(code, key){
 DOMEvent.defineKeys = DOMEvent.defineKey.overloadSetter(true);
 
 DOMEvent.defineKeys({
-	'13': 'enter',
-	'38': 'up',
-	'40': 'down',
-	'37': 'left',
-	'39': 'right',
-	'27': 'esc',
-	'32': 'space',
-	'8': 'backspace',
-	'9': 'tab',
-	'46': 'delete'
+	'38': 'up', '40': 'down', '37': 'left', '39': 'right',
+	'27': 'esc', '32': 'space', '8': 'backspace', '9': 'tab',
+	'46': 'delete', '13': 'enter'
 });
 
 })();
