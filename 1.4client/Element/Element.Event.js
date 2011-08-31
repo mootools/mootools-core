@@ -7,7 +7,47 @@ provides: [Element.Event.Specs]
 ...
 */
 
-describe('Element.Event.js', function(){
+describe('Element.Event + DOMEvent', function(){
+
+	// Restore native fireEvent in IE for Syn
+	var createElement = function(tag, props){
+		var el = document.createElement(tag),
+			fireEvent = el.fireEvent;
+
+		$(el);
+		el.fireEvent = fireEvent;
+		return el.set(props);
+	};
+
+	it('Should trigger the click event and prevent the default behavior', function(){
+
+		var callback = jasmine.createSpy();
+
+		var el = createElement('a', {
+			text: 'test',
+			styles: {
+				display: 'block',
+				overflow: 'hidden',
+				height: '1px'
+			},
+			events: {
+				click: function(event){
+					event.preventDefault();
+					callback();
+				}
+			}
+		}).inject(document.body);
+
+		simulateEvent('click', [{}, el], function(){
+			expect(callback).toHaveBeenCalled();
+			el.destroy();
+		});
+
+	});
+
+});
+
+describe('Element.Event', function(){
 	// This is private API. Do not use.
 
 	// Restore native fireEvent in IE for Syn

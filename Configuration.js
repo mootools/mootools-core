@@ -246,7 +246,7 @@ Configuration.source = {
 	'core-1.4-client': {
 		path: '../Source/',
 		files: [
-			'Types/Event',
+			'Types/DOMEvent',
 
 			'Browser/Browser',
 
