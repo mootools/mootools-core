@@ -157,6 +157,10 @@ Fx.CSS3Funcs = {
 	
 	animatable: function() {
 		return animatable;
+	},
+	
+	transitionTimings: function() {
+		return transitionTimings;
 	}
 };
 

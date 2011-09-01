@@ -41,7 +41,7 @@ Fx.Tween = new Class({
 			}.bind(this);
 			this.element.addEvent('transitionend', this.boundComplete);
 			var trans = function(){
-				this.element.setStyle(this.transition, this.property + ' ' + this.options.duration + 'ms cubic-bezier(' + transitionTimings[this.options.transition] + ')');
+				this.element.setStyle(this.transition, this.property + ' ' + this.options.duration + 'ms cubic-bezier(' + this.transitionTimings()[this.options.transition] + ')');
 				this.set(this.compute(parsed.from, parsed.to, 1));
 			}.bind(this);
 			if (args[1]){

@@ -49,7 +49,7 @@ Fx.Morph = new Class({
 				var transStyles = {};
 				transStyles[this.transitionProperty] = Object.keys(properties).reduce(function(a, b) { return a + ', '  + b; });
 				transStyles[this.transitionDuration] = this.options.duration + 'ms';
-				transStyles[this.transitionTimingFunction] = 'cubic-bezier(' + transitionTimings[this.options.transition] + ')';
+				transStyles[this.transitionTimingFunction] = 'cubic-bezier(' + this.transitionTimings()[this.options.transition] + ')';
 				this.element.setStyles(transStyles);
 				this.set(this.compute(from, to, 1));
 			}.bind(this);
