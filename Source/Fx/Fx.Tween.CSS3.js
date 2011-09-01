@@ -21,7 +21,7 @@ Fx.Tween = new Class({
 	Extends: tweenCSS2,
 	
 	check: function(property){
-		return (this.css3Supported && !this.boundComplete && animatable.contains(property)) || this.parent();
+		return (this.css3Supported && !this.boundComplete && this.animatable.contains(property)) || this.parent();
 	},
 
 	start: function(property, from, to){
