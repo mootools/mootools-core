@@ -1,7 +1,7 @@
 /*
 ---
-name: Fx.Tween.CSS3
-script: Fx.Tween.CSS3.js
+name: Fx.Morph.CSS3
+script: Fx.Morph.CSS3.js
 license: MIT-style license.
 description: Provides a CSS3 implementaton of Fx.Morph
 copyright: Copyright (c) 2010, Dipl.-Ing. (FH) André Fiedler <kontakt at visualdrugs dot net>, based on code by eskimoblood (mootools users group)

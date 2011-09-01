@@ -40,10 +40,10 @@ var setOpacity = function(element, opacity){
 Element.Properties.opacity = {
 
 	set: function(opacity){
-		var visibility = this.style.visibility;
-		if (opacity == 0 && visibility != 'hidden') this.style.visibility = 'hidden';
-		else if (opacity != 0 && visibility != 'visible') this.style.visibility = 'visible';
-
+		//var visibility = this.style.visibility;
+		//if (opacity == 0 && visibility != 'hidden') this.style.visibility = 'hidden';
+		//else if (opacity != 0 && visibility != 'visible') this.style.visibility = 'visible';
+		
 		setOpacity(this, opacity);
 	},
 
