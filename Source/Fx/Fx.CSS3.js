@@ -94,7 +94,13 @@ var transitionTimings = {
 	'quint:in:out'	: '0.9,0,0.1,1'
 };
 
-var 
+var animatable = ['background-color', 'background-image', 'background-position', 'border-bottom-color', 'border-bottom-width',
+	'border-color', 'border-left-color', 'border-left-width', 'border-right-color', 'border-right-width', 'border-spacing',
+	'border-top-color', 'border-top-width', 'border-width', 'bottom', 'color', 'crop', 'font-size', 'font-weight',
+	'grid-*', 'height', 'left', 'letter-spacing', 'line-height', 'margin-bottom', 'margin-left', 'margin-right',
+	'margin-top', 'max-height', 'max-width', 'min-height', 'min-width', 'opacity', 'outline-color', 'outline-offset',
+	'outline-width', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'right', 'text-indent', 'text-shadow',
+	'top', 'vertical-align', 'visibility', 'width', 'word-spacing', 'z-index', 'zoom'];
 	
 
 Fx.CSS3Funcs = {
@@ -149,13 +155,9 @@ Fx.CSS3Funcs = {
 		return this.parent();
 	},
 	
-	animatable: ['background-color', 'background-image', 'background-position', 'border-bottom-color', 'border-bottom-width',
-		'border-color', 'border-left-color', 'border-left-width', 'border-right-color', 'border-right-width', 'border-spacing',
-		'border-top-color', 'border-top-width', 'border-width', 'bottom', 'color', 'crop', 'font-size', 'font-weight',
-		'grid-*', 'height', 'left', 'letter-spacing', 'line-height', 'margin-bottom', 'margin-left', 'margin-right',
-		'margin-top', 'max-height', 'max-width', 'min-height', 'min-width', 'opacity', 'outline-color', 'outline-offset',
-		'outline-width', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'right', 'text-indent', 'text-shadow',
-		'top', 'vertical-align', 'visibility', 'width', 'word-spacing', 'z-index', 'zoom']
+	animatable: function() {
+		return animatable;
+	}
 };
 
 })();

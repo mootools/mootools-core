@@ -21,7 +21,7 @@ Fx.Morph = new Class({
 	Extends: morphCSS2,
 	
 	check: function(properties){
-		return (this.css3Supported && !this.boundComplete && this.animatable.containsArray(Object.keys(properties))) || this.parent();
+		return (this.css3Supported && !this.boundComplete && this.animatable().containsArray(Object.keys(properties))) || this.parent();
 	},
 
 	start: function(properties){
