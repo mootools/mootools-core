@@ -19,7 +19,7 @@ sources:
   - "Source/Types/Number.js"
   - "Source/Types/Function.js"
   - "Source/Types/Object.js"
-  - "Source/Types/Event.js"
+  - "Source/Types/DOMEvent.js"
   - "Source/Browser/Browser.js"
   - "Source/Class/Class.js"
   - "Source/Class/Class.Extras.js"
