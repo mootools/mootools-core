@@ -112,6 +112,22 @@ describe('Element', function(){
 
 		});
 
+		describe('Numbers', function(){
+
+			it('should set a number (so no string) as html', function(){
+				expect(new Element('div', {html: 20}).innerHTML).toEqual('20');
+			});
+			
+		});
+
+		describe('Arrays', function(){
+
+			it('should allow an Array as input, the text is concatenated', function(){
+				expect(new Element('div', {html: ['moo', 'rocks', 'your', 'socks', 1]}).innerHTML).toEqual('moorocksyoursocks1');
+			});
+			
+		});
+
 	});
 
 });
