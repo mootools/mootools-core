@@ -888,7 +888,8 @@ Element.Properties.html = (function(){
 
 	var html = {
 		set: function(html){
-			if (typeof html != 'string') html = html.join('');
+			if (typeOf(html) == 'array') html = html.join('');
+
 			var wrap = (!tableTest && translations[this.get('tag')]);
 			/*<ltIE9>*/
 			if (!wrap && !HTML5Test) wrap = [0, '', ''];
