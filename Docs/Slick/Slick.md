@@ -66,8 +66,8 @@ Gets the previous siblings.
 
 ### Example:
 
-	$$('p.foo !~')            // Gets all previous siblings of <p class='foo'>
-	$$('p.foo !~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling somewhere *after* it
+	$$('p.foo !~')            // Gets all previous siblings of <p class="foo">
+	$$('p.foo !~ blockquote') // Gets every <blockquote> with a <p class="foo"> sibling somewhere *after* it
 
 
 Selector: All Siblings ('~~') {#Slick:allSiblings}
@@ -77,8 +77,8 @@ Gets all siblings.
 
 ### Example:
 
-	$$('p.foo ~~')            // Gets all previous and next siblings of <p class='foo'>
-	$$('p.foo ~~ blockquote') // Gets every <blockquote> with a <p class='foo'> sibling before OR after it
+	$$('p.foo ~~')            // Gets all previous and next siblings of <p class="foo">
+	$$('p.foo ~~ blockquote') // Gets every <blockquote> with a <p class="foo"> sibling before OR after it
 
 Selector: First Child ('^') {#Slick:firstChild}
 -----------------------------------------------
@@ -87,8 +87,8 @@ Gets the first child of an element.
 
 ### Example:
 
-	$$('p.foo ^')		// Gets the first child of <p class='foo'>
-	$$('p.foo ^ strong')	// Gets every <strong> that is the first element child of a <p class='foo'>
+	$$('p.foo ^')		// Gets the first child of <p class="foo">
+	$$('p.foo ^ strong')	// Gets every <strong> that is the first element child of a <p class="foo">
 
 
 Selector: Last Child ('!^') {#Slick:lastChild}
@@ -98,8 +98,8 @@ Gets the last child of an element.
 
 ### Example:
 
-	$$('p.foo !^')		// Gets the last child of <p class='foo'>
-	$$('p.foo !^ strong')	// Gets every <strong> that is the last element child of a <p class='foo'>
+	$$('p.foo !^')		// Gets the last child of <p class="foo">
+	$$('p.foo !^ strong')	// Gets every <strong> that is the last element child of a <p class="foo">
 
 
 
