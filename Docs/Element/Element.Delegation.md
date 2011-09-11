@@ -95,7 +95,7 @@ Removes a method from an element like [removeEvent][].
 ### Example:
 
 	var monitor = function(event, element){
-		alert('you clicked a link!')
+		alert('you clicked a link!');
 	};
 
 	$('myElement').addEvent('click:relay(a)', monitor);
