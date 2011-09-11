@@ -15,7 +15,7 @@ An example of how delegation is usually applied. Delegation is extra useful when
 
 	var myElement = $('myElement');
 	var request = new Request({
-		// other options‚Ä¶
+		// other options…
 		onSuccess: function(text){
 			myElement.set('html', text); // No need to attach more click events.
 		}
