@@ -99,7 +99,7 @@ Gets the last child of an element.
 ### Example:
 
 	$$('p.foo !^')		// Gets the last child of <p class='foo'>
-	$$('p.foo ^ strong')	// Gets every <strong> that is the last element child of a <p class='foo'>
+	$$('p.foo !^ strong')	// Gets every <strong> that is the last element child of a <p class='foo'>
 
 
 
