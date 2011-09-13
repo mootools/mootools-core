@@ -72,7 +72,7 @@ Stop an event from propagating and also executes preventDefault.
 		event.stop(); //Prevents the browser from following the link.
 		this.set('text', 'Where do you think you\'re going?'); //'this' is Element that fires the Event.
 		(function(){
-			this.set('text','Instead visit the Blog.').set('href', 'http://blog.mootools.net');
+			this.set('text', 'Instead visit the Blog.').set('href', 'http://blog.mootools.net');
 		}).delay(500, this);
 	});
 
