@@ -506,7 +506,7 @@ Object.append(properties, {
 	'html': 'innerHTML',
 	'text': (function(){
 		var temp = document.createElement('div');
-		return (temp.innerText == null) ? 'textContent' : 'innerText';
+		return (temp.textContent == null) ? 'innerText': 'textContent';
 	})()
 });
 
