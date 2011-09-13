@@ -51,12 +51,12 @@ Request Specifically made for receiving HTML.
 
 #### POST Request with data as String:
 
-	var myHTMLRequest = new Request.HTML({url:'myPage.html'}).post('user_id=25&save=true');
+	var myHTMLRequest = new Request.HTML({url: 'myPage.html'}).post('user_id=25&save=true');
 
 #### Data from Object Passed via GET:
 
 	//Loads "load/?user_id=25".
-	var myHTMLRequest = new Request.HTML({url:'load/'}).get({'user_id': 25});
+	var myHTMLRequest = new Request.HTML({url: 'load/'}).get({'user_id': 25});
 
 #### Data from Element via POST:
 
@@ -73,7 +73,7 @@ Request Specifically made for receiving HTML.
 ##### JavaScript
 
 	//Needs to be in a submit event or the form handler.
-	var myHTMLRequest = new Request.HTML({url:'save/'}).post($('user-form'));
+	var myHTMLRequest = new Request.HTML({url: 'save/'}).post($('user-form'));
 
 ### See Also:
 

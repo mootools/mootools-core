@@ -15,7 +15,7 @@ An example of how delegation is usually applied. Delegation is extra useful when
 
 	var myElement = $('myElement');
 	var request = new Request({
-		// other options…
+		// other options
 		onSuccess: function(text){
 			myElement.set('html', text); // No need to attach more click events.
 		}
@@ -95,7 +95,7 @@ Removes a method from an element like [removeEvent][].
 ### Example:
 
 	var monitor = function(event, element){
-		alert('you clicked a link!')
+		alert('you clicked a link!');
 	};
 
 	$('myElement').addEvent('click:relay(a)', monitor);

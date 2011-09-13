@@ -74,7 +74,7 @@ For more information see [MDC Regexp:test][].
 ### Examples:
 
 	'I like cookies'.test('cookie'); // returns true
-	'I like cookies'.test('COOKIE', "i"); // returns true (ignore case)
+	'I like cookies'.test('COOKIE', 'i'); // returns true (ignore case)
 	'I like cookies'.test('cake'); // returns false
 
 ### See Also:
@@ -291,7 +291,7 @@ Converts a hexadecimal color value to RGB. Input string must be in one of the fo
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \[255, 51, 0\]) instead of a string (e.g. "rgb(255,51,0)").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \[255, 51, 0\]) instead of a string (e.g. 'rgb(255, 51, 0)').
 
 ### Returns:
 
@@ -310,7 +310,7 @@ String method: rgbToHex {#String:rgbToHex}
 -----------------------------------
 
 Converts an RGB color value to hexadecimal. Input string must be in one of the following RGB color formats.
-"rgb(255, 255, 255)", or "rgba(255, 255, 255, 1)"
+'rgb(255, 255, 255)', or 'rgba(255, 255, 255, 1)'
 
 ### Syntax:
 
@@ -318,7 +318,7 @@ Converts an RGB color value to hexadecimal. Input string must be in one of the f
 
 ### Arguments:
 
-1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff', '33', '00'\]) instead of a string (e.g. "#ff3300").
+1. array - (*boolean*, optional) If true is passed, will output an array (e.g. \['ff', '33', '00'\]) instead of a string (e.g. '#ff3300').
 
 ### Returns:
 

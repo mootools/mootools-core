@@ -304,7 +304,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 		// the 'events' property passes the object to Element:addEvents.
 		events: {
 			click: function(){ alert('click'); },
-			mouseover: function(){ this.addClass('over') }
+			mouseover: function(){ this.addClass('over'); }
 		},
 		//Any other property uses Element:setProperty.
 		id: 'documentBody'
