@@ -41,7 +41,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			else if (code > 95 && code < 106) this.key = code - 96;
 		}
 		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
-	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type.indexOf('mouse') == 0){
+	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
 		var doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		this.page = {
@@ -61,7 +61,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			while (related && related.nodeType == 3) related = related.parentNode;
 			this.relatedTarget = document.id(related);
 		}
-	} else if (type.indexOf('touch') == 0 || type.indexOf('gesture') == 0){
+	} else if (type.indexOf('touch') == 0 || type.indexOf('gesture') == 0){
 		this.rotation = event.rotation;
 		this.scale = event.scale;
 		this.targetTouches = event.targetTouches;
