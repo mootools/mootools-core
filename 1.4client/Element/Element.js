@@ -69,6 +69,17 @@ describe('Element', function(){
 
 		});
 
+		describe('text', function(){
+
+			it('should return the original text with `text-transform: uppercase`', function(){
+				var div = new Element('div', {html: '<div style="text-transform: uppercase">text</div>'});
+				div.inject(document.body);
+				expect($(div.firstChild).get('text')).toEqual('text');
+				div.destroy();
+			});
+
+		});
+
 	});
 
 	describe('tabIndex', function(){
