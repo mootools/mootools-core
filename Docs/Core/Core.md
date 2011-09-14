@@ -34,7 +34,7 @@ Returns the type of an object.
 * 'window'     - (*string*) If object is the window object.
 * 'document'   - (*string*) If object is the document object.
 * 'event'      - (*string*) If object is an event.
-* 'null'       - (*boolean*) If object is undefined, null, NaN or none of the above.
+* 'null'       - (*string*) If object is undefined, null, NaN or none of the above.
 
 ### Example:
 
