@@ -108,7 +108,8 @@ Configuration.sets = {
 		path: '1.4client/',
 		files: [
 			'Element/Element',
-			'Element/Element.Event'
+			'Element/Element.Event',
+			'Fx/Fx.Tween'
 		]
 	},
 
