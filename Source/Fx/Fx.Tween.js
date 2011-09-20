@@ -68,28 +68,27 @@ Element.implement({
 	},
 
 	fade: function(how){
-		var fade = this.get('tween'), self = this, start = 'start', set = 'set',
-			method, toggle;
+		var fade = this.get('tween'), method, to, toggle;
 		if (how == null) how = 'toggle';
 		switch (how){
-			case 'in': method = start; to = 1; break;
-			case 'out': method = start; to = 0; break;
-			case 'show': method = set; to = 1; break;
-			case 'hide': method = set; to = 0; break;
+			case 'in': method = 'start'; to = 1; break;
+			case 'out': method = 'start'; to = 0; break;
+			case 'show': method = 'set'; to = 1; break;
+			case 'hide': method = 'set'; to = 0; break;
 			case 'toggle':
 				var flag = this.retrieve('fade:flag', this.getStyle('opacity') == 1);
-				method = start;
+				method = 'start';
 				to = flag ? 0 : 1;
 				this.store('fade:flag', !flag);
 				toggle = true;
 			break;
-			default: method = start; to = how;
+			default: method = 'start'; to = how;
 		}
 		if (!toggle) this.eliminate('fade:flag');
 		fade[method]('opacity', to);
-		if (method == set || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
+		if (method == 'set' || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
 		else fade.chain(function(){
-			self.setStyle('visibility', 'hidden');
+			this.element.setStyle('visibility', 'hidden');
 		});
 		return this;
 	},
