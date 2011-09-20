@@ -18,6 +18,19 @@ describe('Element', function(){
 
 	});
 
+	describe('Element.set', function(){
+
+		describe('value', function(){
+
+			it('should return `null` when the value of a input element is set to `undefined`', function(){
+				var value;
+				expect(new Element('input', {value: value}).get('value')).toEqual('');
+			});
+
+		});
+
+	});
+
 	describe('Element.get', function(){
 
 		describe('value', function(){

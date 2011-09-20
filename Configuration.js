@@ -40,7 +40,7 @@ Configuration.presets = {
 };
 
 Configuration.defaultPresets = {
-	browser: 'core-1.3 + core-1.2',
+	browser: 'core-1.4',
 	nodejs: 'core-1.3-base',
 	jstd: 'core-1.3 + core-1.2'
 };
