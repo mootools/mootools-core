@@ -67,7 +67,7 @@ Element.implement({
 		return this;
 	},
 
-	fade: function(how, visibility){
+	fade: function(how){
 		var fade = this.get('tween'), self = this, start = 'start', set = 'set',
 			method, toggle;
 		if (how == null) how = 'toggle';
@@ -87,12 +87,10 @@ Element.implement({
 		}
 		if (!toggle) this.eliminate('fade:flag');
 		fade[method]('opacity', to);
-		if (visibility != false){
-			if (method == set || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
-			else fade.chain(function(){
-				self.setStyle('visibility', 'hidden');
-			});
-		}
+		if (method == set || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
+		else fade.chain(function(){
+			self.setStyle('visibility', 'hidden');
+		});
 		return this;
 	},
 
