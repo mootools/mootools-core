@@ -563,6 +563,7 @@ Object.append(propertySetters, {
 Element.implement({
 
 	setProperty: function(name, value){
+		if (value == null) return this.removeProperty(name);
 		var setter = propertySetters[name.toLowerCase()];
 		if (setter) setter(this, value);
 		else this.setAttribute(name, value);
@@ -589,7 +590,7 @@ Element.implement({
 	removeProperty: function(name){
 		name = name.toLowerCase();
 		if (booleans[name]) this.setProperty(name, false);
-		this.removeAttribute(name);
+		else this.removeAttribute(name);
 		return this;
 	},
 
