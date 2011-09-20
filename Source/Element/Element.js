@@ -563,8 +563,15 @@ Object.append(propertySetters, {
 Element.implement({
 
 	setProperty: function(name, value){
-		if (value == null) return this.removeProperty(name);
-		var setter = propertySetters[name.toLowerCase()];
+		var lower = name.toLowerCase();
+		if (value == null){
+			if (!booleans[lower]){
+				this.removeAttribute(name);
+				return this;
+			}
+			value = false;
+		}
+		var setter = propertySetters[lower];
 		if (setter) setter(this, value);
 		else this.setAttribute(name, value);
 		return this;
@@ -588,10 +595,7 @@ Element.implement({
 	},
 
 	removeProperty: function(name){
-		name = name.toLowerCase();
-		if (booleans[name]) this.setProperty(name, false);
-		else this.removeAttribute(name);
-		return this;
+		return this.setProperty(name, null);
 	},
 
 	removeProperties: function(){
