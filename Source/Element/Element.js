@@ -752,7 +752,10 @@ Element.implement({
 
 		for (i = ce.length; i--;){
 			var node = ce[i], element = te[i];
-			if (!keepid) node.removeAttributeNode(node.getAttributeNode('id'));
+			if (!keepid){
+				var attr = node.getAttributeNode('id');
+				if (attr) node.removeAttributeNode(attr);
+			}
 			
 			/*<ltIE9>*/
 			if (node.clearAttributes){
