@@ -33,7 +33,7 @@ Returns the type of an object.
 * 'collection' - (*string*) If object is a native HTML elements collection, such as childNodes or getElementsByTagName.
 * 'window'     - (*string*) If object is the window object.
 * 'document'   - (*string*) If object is the document object.
-* 'event'      - (*string*) If object is an event.
+* 'domevent'   - (*string*) If object is an event.
 * 'null'       - (*string*) If object is undefined, null, NaN or none of the above.
 
 ### Example:
