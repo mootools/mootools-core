@@ -20,8 +20,7 @@ var eventListenerSupport = !!window.addEventListener;
 
 Element.NativeEvents.focusin = Element.NativeEvents.focusout = 2;
 
-var bubbleUp = function(self, match, fn, event){
-	var target = event.target;
+var bubbleUp = function(self, match, fn, event, target){
 	while (target && target != self){
 		if (match(target, event)) return fn.call(target, event, target);
 		target = document.id(target.parentNode);
@@ -60,9 +59,8 @@ var formObserver = function(type){
 			}
 		},
 
-		listen: function(self, match, fn, event, uid){
-			var target = event.target,
-				form = (target.get('tag') == 'form') ? target : event.target.getParent('form');
+		listen: function(self, match, fn, event, target, uid){
+			var form = (target.get('tag') == 'form') ? target : event.target.getParent('form');
 			if (!form) return;
 
 			var listeners = self.retrieve(_key + type + 'listeners', {}),
@@ -73,7 +71,7 @@ var formObserver = function(type){
 			forms.push(form);
 
 			var _fn = function(event){
-				bubbleUp(self, match, fn, event);
+				bubbleUp(self, match, fn, event, target);
 			};
 			form.addEvent(type, _fn);
 			fns.push(_fn);
@@ -87,12 +85,12 @@ var formObserver = function(type){
 var inputObserver = function(type){
 	return {
 		base: 'focusin',
-		listen: function(self, match, fn, event){
+		listen: function(self, match, fn, event, target){
 			var events = {blur: function(){
 				this.removeEvents(events);
 			}};
 			events[type] = function(event){
-				bubbleUp(self, match, fn, event);
+				bubbleUp(self, match, fn, event, target);
 			};
 			event.target.addEvents(events);
 		}
@@ -120,6 +118,7 @@ var relay = function(old, method){
 		parsed.pseudos.slice(1).each(function(pseudo){
 			newType += ':' + pseudo.key + (pseudo.value ? '(' + pseudo.value + ')' : '');
 		});
+		old.call(this, type, fn);
 		return method.call(this, newType, parsed.pseudos[0].value, fn);
 	};
 };
@@ -148,10 +147,12 @@ var delegation = {
 		}
 
 		var self = this, uid = String.uniqueID();
-		var delegator = _map.listen ? function(event){
-			_map.listen(self, match, fn, event, uid);
-		} : function(event){
-			bubbleUp(self, match, fn, event);
+		var delegator = _map.listen ? function(event, target){
+			if (!target && event && event.target) target = event.target;
+			if (target) _map.listen(self, match, fn, event, target, uid);
+		} : function(event, target){
+			if (!target && event && event.target) target = event.target;
+			if (target) bubbleUp(self, match, fn, event, target);
 		};
 
 		if (!stored) stored = {};
