@@ -61,8 +61,13 @@ var formObserver = function(type){
 		},
 
 		listen: function(self, match, fn, event, uid){
-			var target = event.target,
-				form = (target.get('tag') == 'form') ? target : event.target.getParent('form');
+			var target = event.target;
+			var form;
+			if(target.get && target.get('tag') == 'form'){
+				form = target;
+			}else if(event.target.getParent) {
+				form = event.target.getParent('form');
+			} 
 			if (!form) return;
 
 			var listeners = self.retrieve(_key + type + 'listeners', {}),
@@ -94,7 +99,7 @@ var inputObserver = function(type){
 			events[type] = function(event){
 				bubbleUp(self, match, fn, event);
 			};
-			event.target.addEvents(events);
+			if(event.target.addEvents) event.target.addEvents(events);
 		}
 	};
 };
