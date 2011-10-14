@@ -31,7 +31,7 @@ this.MooTools = {
 
 var typeOf = this.typeOf = function(item){
 	if (item == null) return 'null';
-	if (item.$family) return item.$family();
+	if (item.$family != null) return item.$family();
 
 	if (item.nodeName){
 		if (item.nodeType == 1) return 'element';
