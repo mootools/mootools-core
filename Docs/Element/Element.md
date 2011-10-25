@@ -65,7 +65,7 @@ However it is not recommended to use more frameworks, the $ variable can be set 
 
 
 ### See Also:
- - MooTools Blogpost: [The Dollar Save Mode][]
+ - MooTools Blogpost: [The Dollar Safe Mode][]
 
 
 Function: $$ {#Window:dollars}
