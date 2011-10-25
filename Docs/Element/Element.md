@@ -1918,7 +1918,7 @@ This method has been deprecated. Use [Element:contains][] instead.
 [Element:addEvents]: /core/Element/Element.Event#Element:addEvents
 [Element:setStyles]: /core/Element/Element.Style#Element:setStyles
 
-[The Dollar Save Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/
+[The Dollar Safe Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/
 
 [MDC Element:removeChild]: https://developer.mozilla.org/En/DOM/Node.removeChild
 [MDC Element:replaceChild]: https://developer.mozilla.org/En/DOM/Node.replaceChild
