@@ -18,7 +18,8 @@ An XMLHttpRequest Wrapper.
 ### Options:
 
 * url        - (*string*: defaults to *null*) The URL to request. (Note, this can also be an instance of [URI][])
-* data       - (*string*: defaults to '') The default data for [Request:send][], used when no data is given.
+* data       - (*mixed*: defaults to '') The default data for [Request:send][], used when no data is given. Can be an Element, Object or String. If an Object is passed the [Object:toQueryString][] method will be used to convert the object to a string. If an Element is passed the [Element:toQueryString][] method will be used to convert the Element to a string. 
+* format     - (*string*: defaults to '') If passed, an additional key 'format' will be appended to 'data' with the passed value. e.g. '&format=json'
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
 	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.11)
@@ -459,3 +460,5 @@ Sends a form or a container of inputs with an HTML request.
 [Chain]: /core/Class/Class.Extras#Chain
 [Events]: /core/Class/Class.Extras#Events
 [Options]: /core/Class/Class.Extras#Options
+[Object:toQueryString]: /core/Types/Object#Object:Object-toQueryString
+[Element:toQueryString]: /core/Element/Element#Element:toQueryString
