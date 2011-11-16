@@ -89,6 +89,7 @@ Element.implement({
 		if (method == 'set' || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
 		else fade.chain(function(){
 			this.element.setStyle('visibility', 'hidden');
+			this.callChain();
 		});
 		return this;
 	},
