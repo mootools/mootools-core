@@ -300,6 +300,10 @@ Object.extend('forEach', function(object, fn, bind){
 	for (var key in object){
 		if (hasOwnProperty.call(object, key)) fn.call(bind, object[key], key, object);
 	}
+	if (enumerables) for (var key, i = enumerables.length; i--;){
+		key = enumerables[i];
+		if (hasOwnProperty.call(object, key)) fn.call(bind, object[key], key, object);
+	}
 });
 
 Object.each = Object.forEach;
