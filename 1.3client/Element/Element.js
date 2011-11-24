@@ -137,7 +137,7 @@ describe('Element.clone', function(){
 		expect(cloned.get('id')).toEqual('sauce');
 		var sauceHTML = new Element('div').adopt($('sauce')).get('html');
 		var cloneHTML = new Element('div').adopt(cloned).get('html');
-		expect(cloneHTML).toEqual(sauceHTML);
+		expect(sauceHTML).toEqual(cloneHTML);
 		cloneMe.destroy();
 		cloned.destroy();
 	});
