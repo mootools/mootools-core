@@ -746,17 +746,14 @@ Element.implement({
 		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
 
 		if (contents){
-			ce.append(Array.from(clone.getElementsByTagName('*')));
-			te.append(Array.from(this.getElementsByTagName('*')));
+			ce.append(Array.slice(clone.getElementsByTagName('*')));
+			te.append(Array.slice(this.getElementsByTagName('*')));
 		}
 
 		for (i = ce.length; i--;){
 			var node = ce[i], element = te[i];
-			if (!keepid){
-				var attr = node.getAttributeNode('id');
-				if (attr) node.removeAttributeNode(attr);
-			}
-			
+			if (!keepid) node.removeAttribute('id');
+
 			/*<ltIE9>*/
 			if (node.clearAttributes){
 				node.clearAttributes();
@@ -949,6 +946,20 @@ if (testForm.firstChild.value != 's') Element.Properties.value = {
 		return (attr && attr.specified) ? option.value : option.get('text');
 	}
 
+};
+/*</ltIE9>*/
+
+/*<ltIE9*/
+Element.Properties.id = {
+	set: function(id){
+		this.id = this.getAttributeNode('id').value = id;
+	},
+	get: function(){
+		return this.id;
+	},
+	erase: function(){
+		this.id = this.getAttributeNode('id').value = '';
+	}
 };
 /*</ltIE9>*/
 
