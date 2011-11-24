@@ -134,7 +134,10 @@ describe('Element.clone', function(){
 		var cloned = $('cloneMe').clone();
 		expect(cloned.get('id')).toEqual(null);
 		cloned.set('id', 'sauce').inject(cloneMe.parentNode);
-		expect($('sauce')).toEqual(cloned);
+		expect(cloned.get('id')).toEqual('sauce');
+		var sauceHTML = new Element('div').adopt($('sauce')).get('html');
+		var cloneHTML = new Element('div').adopt(cloned).get('html');
+		expect(cloneHTML).toEqual(sauceHTML);
 		cloneMe.destroy();
 		cloned.destroy();
 	});
@@ -152,7 +155,7 @@ describe('Elements implement order', function(){
 		);
 
 		expect(element.getLast()).toBe(anchor);
-		
+
 		expect(new Elements([element, anchor]).getLast()).toBe(anchor);
 	});
 
@@ -345,7 +348,7 @@ describe('Elements.unshift', function(){
 		var collection = container.getElements('*'),
 			length = collection.length;
 		collection.unshift('someRandomValue');
-		
+
 		expect(collection.length).toBe(length);
 
 		collection.unshift(new Element('p'), new Element('span'));
