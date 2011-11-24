@@ -948,4 +948,19 @@ if (testForm.firstChild.value != 's') Element.Properties.value = {
 };
 /*</ltIE9>*/
 
+/*<IE>*/
+var el = document.createElement('div');
+if (el.getAttributeNode('id')) Element.Properties.id = {
+	set: function(id){
+		this.id = this.getAttributeNode('id').value = id;
+	},
+	get: function(){
+		return this.id || null;
+	},
+	erase: function(){
+		this.id = this.getAttributeNode('id').value = null;
+	}
+};
+/*</IE>*/
+
 })();
