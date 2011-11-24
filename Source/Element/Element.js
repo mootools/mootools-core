@@ -753,7 +753,6 @@ Element.implement({
 		for (i = ce.length; i--;){
 			var node = ce[i], element = te[i];
 			if (!keepid) node.removeAttribute('id');
-
 			/*<ltIE9>*/
 			if (node.clearAttributes){
 				node.clearAttributes();
@@ -959,8 +958,7 @@ if (el.getAttributeNode('id')) Element.Properties.id = {
 		return this.id || null;
 	},
 	erase: function(){
-		this.id = this.getAttributeNode('id').value = null
-		;
+		this.id = this.getAttributeNode('id').value = null;
 	}
 };
 /*</IE>*/
