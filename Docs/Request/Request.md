@@ -18,7 +18,7 @@ An XMLHttpRequest Wrapper.
 ### Options:
 
 * url        - (*string*: defaults to *null*) The URL to request. (Note, this can also be an instance of [URI][])
-* data       - (*mixed*: defaults to '') The default data for [Request:send][], used when no data is given. Can be an Element, Object or String. If an Object is passed the [Object:toQueryString][] method will be used to convert the object to a string. If an Element is passed the [Element:toQueryString][] method will be used to convert the Element to a string. 
+* data       - (*mixed*: defaults to '') The default data for [Request:send][], used when no data is given. Can be an Element, Object or String. If an Object is passed the [Object:toQueryString][] method will be used to convert the object to a string. If an Element is passed the [Element:toQueryString][] method will be used to convert the Element to a string.
 * format     - (*string*: defaults to '') If passed, an additional key 'format' will be appended to 'data' with the passed value. e.g. '&format=json'
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
@@ -318,6 +318,7 @@ These aliases are:
 
 By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method name is sent as e.g. `_method=delete`.
 
+`Async` and `timeout` options are mutually exclusive. If you set `async` to true, then there's no need to set the `timeout` since the server and browser will set their own timeouts to return executing the rest of your script.
 
 
 Request Method: cancel {#Request:cancel}
