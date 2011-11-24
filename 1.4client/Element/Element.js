@@ -164,7 +164,6 @@ describe('Element', function(){
 			var container = $('testContainer'),
 			template = container.getElement('li#template').dispose();
 
-			// http://local/mootools-core/Specs/Runner/runner.html?preset=core-1.4&spec=Element%20Element.clone%20should%20not%20crash%20IE%20for%20multiple%20clones.
 			template.clone().set('html', 'Clone #1').inject('testContainer');
 			template.clone().set('html', 'Clone #2').inject('testContainer');
 
