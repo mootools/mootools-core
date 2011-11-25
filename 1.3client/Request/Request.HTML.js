@@ -16,24 +16,25 @@ describe('Request.HTML', function(){
 			requests.push(xhr);
 		};
 	});
-	
+
 	afterEach(function(){
-		this.xhr.restore();		
+		this.xhr.restore();
 	});
 
 	it('should create an ajax request and pass the right arguments to the onComplete event', function(){
 
 		var response = '<body><img><div><span>res&amp;ponsé</span></div><script>___SPEC___=5;</script></body>';
-	
+
+		this.spy.identity = 'Request.HTML onComplete';
 		var request = new Request.HTML({
 			url: '../Helpers/request.php',
 			onComplete: this.spy
 		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		
+
 		expect(this.spy.wasCalled).toBe(true);
-		
+
 		// checks arguments order
 		expect(this.spy).toHaveBeenCalledWith(request.response.tree, request.response.elements, request.response.html, request.response.javascript);
 		var onCompleteArgs = this.spy.argsForCall[0];
@@ -45,8 +46,8 @@ describe('Request.HTML', function(){
 		expect(___SPEC___).toEqual(5);
 
 	});
-	
-	xit('should create an ajax request and correctly generate the tree response from a tr', function(){
+
+	xit('(async) should create an ajax request and correctly generate the tree response from a tr', function(){
 
 		runs(function(){
 			this.request = new Request.HTML({
@@ -63,15 +64,15 @@ describe('Request.HTML', function(){
 
 		runs(function(){
 			var onCompleteArgs = this.spy.argsForCall[0];
-			
+
 			expect(onCompleteArgs[0][0].nodeName).toEqual('TR');
 			expect(onCompleteArgs[1][1].nodeName).toEqual('TD');
 			expect(onCompleteArgs[2]).toEqual('<tr><td>text</td></tr>');
 		});
 
 	});
-	
-	xit('should create an ajax request and correctly generate the tree response from options', function(){
+
+	xit('(async) should create an ajax request and correctly generate the tree response from options', function(){
 
 		runs(function(){
 			this.request = new Request.HTML({
@@ -88,23 +89,24 @@ describe('Request.HTML', function(){
 
 		runs(function(){
 			var onCompleteArgs = this.spy.argsForCall[0];
-			
+
 			expect(onCompleteArgs[0].length).toEqual(3);
 			expect(onCompleteArgs[1].length).toEqual(3);
 			expect(onCompleteArgs[2]).toEqual('<option>1</option><option>2</option><option>3</option>');
 			expect(onCompleteArgs[3]).toBeFalsy();
-			
+
 			var firstOption = onCompleteArgs[0][0];
 			expect(firstOption.tagName).toEqual('OPTION');
 			expect(firstOption.innerHTML).toEqual('1');
 		});
 
 	});
-	
+
 	it('should create an ajax request and correctly update an element with the response', function(){
-		
+
 		var response = '<span>text</span>';
-		
+
+		this.spy.identity = 'Request.HTML onComplete update element';
 		new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
 		this.request = new Request.HTML({
 			url: '../Helpers/request.php',
@@ -113,7 +115,7 @@ describe('Request.HTML', function(){
 		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		
+
 		expect(this.spy.wasCalled).toBe(true);
 
 		var update = $('update');
@@ -124,18 +126,19 @@ describe('Request.HTML', function(){
 	});
 
 	it('should create an ajax request and correctly append the response to an element', function(){
-		
+
 		var response = '<div><span>text</span><p>paragraph</p></div>';
-		
+
 		new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
+		this.spy.identity = 'Request.HTML onComplete ajax append';
 		this.request = new Request.HTML({
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
 			append: 'update'
 		}).send();
-		
+
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		
+
 		expect(this.spy.wasCalled).toBe(true);
 
 		var update = $('update');
@@ -149,19 +152,20 @@ describe('Request.HTML', function(){
 		expect(div.getLast().get('tag')).toEqual('p');
 		expect(div.getLast().get('text')).toEqual('paragraph');
 		update.dispose();
-				
+
 	});
-	
+
 	it('should create an ajax request and correctly filter it by the passed selector', function(){
-		
+
 		var response = '<span>text</span><a>aaa</a>';
-		
+
+		this.spy.identity = 'Request.HTML onComplete filter';
 		var request = new Request.HTML({
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
 			filter: 'a'
 		}).send();
-		
+
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		expect(this.spy.wasCalled).toBe(true);
 
@@ -169,13 +173,14 @@ describe('Request.HTML', function(){
 		expect(onCompleteArgs[0].length).toEqual(1);
 		expect(onCompleteArgs[0][0].get('tag')).toEqual('a');
 		expect(onCompleteArgs[0][0].get('text')).toEqual('aaa');
-		
+
 	});
 
 	it('should create an ajax request that filters the response and updates the target', function(){
-		
+
 		var response = '<div>text<p><a>a link</a></p></div>';
-		
+
+		this.spy.identity = 'Request.HTML onComplete update and filter';
 		new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
 		this.request = new Request.HTML({
 			url: '../Helpers/request.php',
@@ -192,14 +197,15 @@ describe('Request.HTML', function(){
 		expect(update.getFirst().get('tag')).toEqual('a');
 		expect(update.getFirst().get('text')).toEqual('a link');
 		update.dispose();
-		
+
 	});
 
 	it('should create an ajax request that filters the response and appends to the target', function(){
-		
+
 		var response = '<div>text<p><a>a link</a></p></div>';
-		
+
 		new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
+		this.spy.identity = 'Request.HTML onComplete append and filter';
 		this.request = new Request.HTML({
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
@@ -214,7 +220,7 @@ describe('Request.HTML', function(){
 		expect(update.getChildren().length).toEqual(2);
 		expect(update.get('html').toLowerCase()).toEqual('<div>some</div><a>a link</a>');
 		update.dispose();
-		
+
 	});
 
 	it('should create an ajax request through Element.load', function(){
@@ -222,7 +228,8 @@ describe('Request.HTML', function(){
 		var element = new Element('div');
 
 		var response = 'hello world!';
-		
+
+		this.spy.identity = 'Request.HTML onComplete load';
 		var request = element.set('load', {
 			url: '../Helpers/request.php',
 			onComplete: this.spy
@@ -243,5 +250,5 @@ describe('Request.HTML', function(){
 		});
 
 	});
-	
+
 });

@@ -7,20 +7,17 @@ provides: [Element.Event.Specs]
 ...
 */
 describe('Element.Event', function(){
-	
+
 	// Restore native fireEvent in IE for Syn
 	var createElement = function(tag, props){
-		var el = document.createElement(tag),
-			fireEvent = el.fireEvent;
-		
-		$(el);
-		el.fireEvent = fireEvent;
+		var el = $(document.createElement(tag));
+		el.fireEvent = el._fireEvent;
 		return el.set(props);
 	};
 
 	it('Should trigger the click event', function(){
-		
-		var callback = jasmine.createSpy();
+
+		var callback = jasmine.createSpy('Element.Event click');
 
 		var el = createElement('a', {
 			text: 'test',
@@ -34,23 +31,24 @@ describe('Element.Event', function(){
 			}
 		}).inject(document.body);
 
-		simulateEvent('click', [{}, el], function(){
+		Syn.click({}, el, function(){
+			alert('click!');
 			expect(callback).toHaveBeenCalled();
 			el.destroy();
 		});
-
 	});
 
 	// Only run this spec in browsers other than IE6-8 because they can't properly simulate key events
 	it('Should watch for a key-down event', function(){
-		
+
 		var callback = jasmine.createSpy('keydown');
 
 		var div = createElement('div').addEvent('keydown', function(event){
 			callback(event.key);
 		}).inject(document.body);
 
-		simulateEvent('key', ['escape', div], function(){
+		Syn.key('escape', div, function(){
+			alert('escape');
 			expect(callback).toHaveBeenCalledWith('esc');
 			div.destroy();
 		});

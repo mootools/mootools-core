@@ -8,9 +8,9 @@ provides: [IFrame.Specs]
 */
 describe('IFrame', function(){
 
-	it('should call onload', function(){
+	it('(async) should call onload', function(){
 		runs(function(){
-			this.onComplete = jasmine.createSpy();
+			this.onComplete = jasmine.createSpy('IFrame onComplete');
 
 			this.iframe = new IFrame({
 				src: 'http://' + document.location.host,

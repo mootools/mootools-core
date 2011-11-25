@@ -42,7 +42,7 @@ describe('Function.attempt', function(){
 	});
 
 	it("should return the function's return value", function(){
-		var spy = jasmine.createSpy().andReturn('hello world!');
+		var spy = jasmine.createSpy('Function attempt return').andReturn('hello world!');
 		expect(spy.attempt()).toEqual('hello world!');
 	});
 
@@ -58,7 +58,7 @@ describe('Function.attempt', function(){
 describe('Function.bind', function(){
 
 	it('should return the function bound to an object', function(){
-		var spy = jasmine.createSpy();
+		var spy = jasmine.createSpy('Function.bind bound');
 		var f = spy.bind('MooTools');
 		expect(spy).not.toHaveBeenCalled();
 		f();
@@ -69,7 +69,7 @@ describe('Function.bind', function(){
 
 	it('should return the function bound to an object with specified argument', function(){
 		var binding = {some: 'binding'};
-		var spy = jasmine.createSpy().andReturn('something');
+		var spy = jasmine.createSpy('Function.bind binding').andReturn('something');
 		var f = spy.bind(binding, 'arg');
 
 		expect(spy).not.toHaveBeenCalled();
@@ -80,7 +80,7 @@ describe('Function.bind', function(){
 
 	it('should return the function bound to an object with multiple arguments', function(){
 		var binding = {some: 'binding'};
-		var spy = jasmine.createSpy().andReturn('something');
+		var spy = jasmine.createSpy('Function.bind binding with arguments').andReturn('something');
 		var f = spy.bind(binding, 'foo', 'bar');
 
 		expect(spy).not.toHaveBeenCalled();
@@ -94,7 +94,7 @@ describe('Function.bind', function(){
 describe('Function.pass', function(){
 
 	it('should return a function that when called passes the specified arguments to the original function', function(){
-		var spy = jasmine.createSpy().andReturn('the result');
+		var spy = jasmine.createSpy('Function.pass with argument').andReturn('the result');
 		var fnc = spy.pass('an argument');
 		expect(spy).not.toHaveBeenCalled();
 		expect(fnc('additional', 'arguments')).toBe('the result');
@@ -103,7 +103,7 @@ describe('Function.pass', function(){
 	});
 
 	it('should pass multiple arguments and bind the function to a specific object when it is called', function(){
-		var spy = jasmine.createSpy().andReturn('the result');
+		var spy = jasmine.createSpy('Function.pass many arguments').andReturn('the result');
 		var binding = {some: 'binding'};
 		var fnc = spy.pass(['multiple', 'arguments'], binding);
 		expect(spy).not.toHaveBeenCalled();
@@ -125,11 +125,11 @@ describe('Function.extend', function(){
 });
 
 describe('Function.delay', function(){
-	
+
 	beforeEach(function(){
 		this.clock = sinon.useFakeTimers();
 	});
-	
+
 	afterEach(function(){
 		this.clock.reset();
 		this.clock.restore();
@@ -155,7 +155,7 @@ describe('Function.delay', function(){
 	});
 
 	it('should pass parameter 0', function(){
-		var spy = jasmine.createSpy();
+		var spy = jasmine.createSpy('Function.pass with 0');
 		spy.delay(50, null, 0);
 		this.clock.tick(100);
 
@@ -177,16 +177,16 @@ describe('Function.delay', function(){
 });
 
 describe('Function.periodical', function(){
-	
+
 	beforeEach(function(){
 		this.clock = sinon.useFakeTimers();
 	});
-	
+
 	afterEach(function(){
 		this.clock.reset();
 		this.clock.restore();
 	});
-	
+
 	it('should return an interval pointer', function(){
 		var spy = jasmine.createSpy('Bond');
 
@@ -207,7 +207,7 @@ describe('Function.periodical', function(){
 	});
 
 	it('should pass parameter 0', function(){
-		var spy = jasmine.createSpy();
+		var spy = jasmine.createSpy('Function.periodical with 0');
 		var timer = spy.periodical(10, null, 0);
 
 		this.clock.tick(100);
