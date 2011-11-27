@@ -7,11 +7,11 @@ provides: [Fx.Specs]
 ...
 */
 describe('Fx', function(){
-	
+
 	beforeEach(function(){
 		this.clock = sinon.useFakeTimers();
 	});
-	
+
 	afterEach(function(){
 		this.clock.reset();
 		this.clock.restore();
@@ -48,7 +48,7 @@ describe('Fx', function(){
 
 	it('should cancel a Fx', function(){
 
-		var onCancel = jasmine.createSpy();
+		var onCancel = jasmine.createSpy('Fx.cancel');
 
 		var fx = new Fx({
 			duration: 50,
@@ -82,7 +82,7 @@ describe('Fx', function(){
 		this.clock.tick(200);
 
 		expect(fx.foo).toEqual(10);
-		
+
 	});
 
 	it('should pause and resume', function(){
@@ -115,7 +115,7 @@ describe('Fx', function(){
 		this.clock.tick(200);
 
 		expect(fx.foo).toEqual(1);
-		
+
 	});
 
 	it('should chain the Fx', function(){
@@ -139,7 +139,7 @@ describe('Fx', function(){
 
 	it('should cancel the Fx after a new Fx:start with the link = cancel option', function(){
 
-		var onCancel = jasmine.createSpy('cancel');
+		var onCancel = jasmine.createSpy('Fx.cancel');
 
 		var fx = new Fx({
 			duration: 50,
@@ -148,7 +148,7 @@ describe('Fx', function(){
 		});
 
 		fx.start().start();
-		
+
 		this.clock.tick(100);
 
 		expect(onCancel).toHaveBeenCalled();
