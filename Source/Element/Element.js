@@ -256,7 +256,6 @@ Document.implement({
 
 			element: function(el, nocash){
 				$uid(el);
-				if (jasmine.annoy) alert('doh');
 				if (!nocash && !el.$family && !(/^(?:object|embed)$/i).test(el.tagName)){
 					el._fireEvent = el.fireEvent;
 					Object.append(el, Element.Prototype);
