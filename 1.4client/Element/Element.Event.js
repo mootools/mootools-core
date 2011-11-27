@@ -7,14 +7,16 @@ provides: [Element.Event.Specs]
 ...
 */
 
-describe('Element.Event + DOMEvent', function(){
+(function(){
 
-	// Restore native fireEvent in IE for Syn
-	var createElement = function(tag, props){
-		var el = $(document.createElement(tag));
-		el.fireEvent = el._fireEvent;
-		return el.set(props);
-	};
+// Restore native fireEvent in IE for Syn
+var createElement = function(tag, props){
+	var el = new Element(tag);
+	if (el._fireEvent) el.fireEvent = el._fireEvent;
+	return el.set(props);
+};
+
+describe('Element.Event + DOMEvent', function(){
 
 	it('Should trigger the click event and prevent the default behavior', function(){
 
@@ -35,10 +37,10 @@ describe('Element.Event + DOMEvent', function(){
 			}
 		}).inject(document.body);
 
-		Syn.click({}, el, function(){
-			expect(callback).toHaveBeenCalled();
-			el.destroy();
-		});
+		Syn.trigger('click', null, el);
+
+		expect(callback).toHaveBeenCalled();
+		el.destroy();
 
 	});
 
@@ -46,16 +48,6 @@ describe('Element.Event + DOMEvent', function(){
 
 describe('Element.Event', function(){
 	// This is private API. Do not use.
-
-	// Restore native fireEvent in IE for Syn
-	var createElement = function(tag, props){
-		var el = document.createElement(tag),
-			fireEvent = el.fireEvent;
-
-		$(el);
-		el.fireEvent = fireEvent;
-		return el.set(props);
-	};
 
 	it('should pass the name of the custom event to the callbacks', function(){
 		var callbacks = 0;
@@ -81,11 +73,13 @@ describe('Element.Event', function(){
 
 		var div = createElement('div').addEvent('customEvent', callback).inject(document.body);
 
-		Syn.click({}, div, function(){
-			expect(callback).toHaveBeenCalled();
-			div.removeEvent('customEvent', callback).destroy();
-			expect(callbacks).toEqual(3);
-		});
+		Syn.trigger('click', null, div);
+
+		expect(callback).toHaveBeenCalled();
+		div.removeEvent('customEvent', callback).destroy();
+		expect(callbacks).toEqual(3);
 	});
 
 });
+
+})();

@@ -6,11 +6,13 @@ requires: [Core/Element.Event]
 provides: [Element.Event.Specs]
 ...
 */
+
 describe('Element.Event', function(){
 
+	var fragment = document.createDocumentFragment();
 	// Restore native fireEvent in IE for Syn
 	var createElement = function(tag, props){
-		var el = $(document.createElement(tag));
+		var el = new Element(tag);
 		el.fireEvent = el._fireEvent;
 		return el.set(props);
 	};
@@ -31,11 +33,10 @@ describe('Element.Event', function(){
 			}
 		}).inject(document.body);
 
-		Syn.click({}, el, function(){
-			alert('click!');
-			expect(callback).toHaveBeenCalled();
-			el.destroy();
-		});
+		Syn.trigger('click', null, el);
+
+		expect(callback).toHaveBeenCalled();
+		el.destroy();
 	});
 
 	// Only run this spec in browsers other than IE6-8 because they can't properly simulate key events
@@ -47,12 +48,10 @@ describe('Element.Event', function(){
 			callback(event.key);
 		}).inject(document.body);
 
-		Syn.key('escape', div, function(){
-			alert('escape');
-			expect(callback).toHaveBeenCalledWith('esc');
-			div.destroy();
-		});
+		Syn.key('escape', div);
 
+		expect(callback).toHaveBeenCalledWith('esc');
+		div.destroy();
 	});
 
 	it('should clone events of an element', function(){
