@@ -41,10 +41,16 @@ var Element = function(tag, props){
 	return document.newElement(tag, props);
 };
 
-var docFragment = document.createDocumentFragment();
-var FIRE_EVENT = docFragment.createElement && docFragment.createElement('div').fireEvent;
 
-if (Browser.Element) Element.prototype = Browser.Element.prototype;
+if (Browser.Element){
+	Element.prototype = Browser.Element.prototype;
+	// IE8 and IE9 require the wrapping.
+	Element.prototype._fireEvent = (function(fireEvent){
+		return function(type, event){
+			return fireEvent.call(this, type, event);
+		};
+	})(Element.prototype.fireEvent);
+}
 
 new Type('Element', Element).mirror(function(name){
 	if (Array.prototype[name]) return;
@@ -250,12 +256,11 @@ Document.implement({
 
 			element: function(el, nocash){
 				$uid(el);
+				if (jasmine.annoy) alert('doh');
 				if (!nocash && !el.$family && !(/^(?:object|embed)$/i).test(el.tagName)){
+					el._fireEvent = el.fireEvent;
 					Object.append(el, Element.Prototype);
 				}
-				if (FIRE_EVENT && !el._fireEvent) el._fireEvent = function(){
-					return FIRE_EVENT.apply(el, arguments);
-				};
 				return el;
 			},
 
