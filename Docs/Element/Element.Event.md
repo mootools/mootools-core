@@ -314,6 +314,8 @@ This event fires when the mouse wheel is rotated;
 
 #### Notes:
 
+- `mouseenter` and `mouseleave` events are supported natively by Internet Explorer, Opera 11, and Firefox 10. MooTools will only add the custom events if necessary.
+
 - This custom event just redirects DOMMouseScroll (Mozilla) to mousewheel (Opera, Internet Explorer), making it work across browsers.
 
 #### See Also:
