@@ -172,4 +172,37 @@ describe('Element', function(){
 
 	});
 
+	describe('Element.erase', function(){
+
+		var subject, image;
+
+		beforeEach(function(){
+			subject = new Element('div').inject(document.body);
+			image = new Element('img').inject(document.body);
+		});
+
+		afterEach(function(){
+			[subject, image].invoke('destroy');
+		});
+
+		it('should erase the class of an Element', function(){
+			subject.set('class', 'test');
+			subject.erase('class');
+			expect(subject.get('class')).toEqual(null);
+		});
+
+		it('should erase the id of an Element', function(){
+			subject.set('id', 'test');
+			subject.erase('id');
+			expect(subject.get('id')).toEqual(null);
+		});
+
+		it('should erase the random attribute of an Element', function(){
+			subject.set('random', 'test');
+			subject.erase('random');
+			expect(subject.get('random')).toEqual(null);
+		});
+
+	});
+
 });
