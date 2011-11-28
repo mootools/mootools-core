@@ -570,6 +570,11 @@ Object.append(propertySetters, {
 
 /* getProperty, setProperty */
 
+var needsEmptyString = (function(element){
+	element.setAttribute('id', null);
+	return element.getAttribute('id') == 'null';
+})(document.createElement('div'));
+
 Element.implement({
 
 	setProperty: function(name, value){
@@ -583,7 +588,7 @@ Element.implement({
 		}
 		var setter = propertySetters[lower];
 		if (setter) setter(this, value);
-		else this.setAttribute(name, value);
+		else this.setAttribute(name, (value == null && needsEmptyString) ? '' : value);
 		return this;
 	},
 
@@ -863,6 +868,20 @@ Element.Properties.style = {
 
 };
 
+if ('className' in document.documentElement){
+	Element.Properties['class'] = {
+		set: function(name){
+			this.className = name;
+		},
+		get: function(){
+			return this.className || null;
+		},
+		erase: function(){
+			this.className = '';
+		}
+	};
+}
+
 Element.Properties.tag = {
 
 	get: function(){
@@ -968,7 +987,7 @@ if (el.getAttributeNode('id')) Element.Properties.id = {
 		return this.id || null;
 	},
 	erase: function(){
-		this.id = this.getAttributeNode('id').value = null;
+		this.id = this.getAttributeNode('id').value = '';
 	}
 };
 /*</IE>*/
