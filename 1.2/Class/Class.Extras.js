@@ -118,7 +118,7 @@ describe("Chain Class", {
 		expect(foo.val).toEqual('FOO');
 		expect(bar.val).toEqual('BAR');
 	},
-	
+
 	"should be able to clear the chain": function(){
 		var called;
 		var fn = function(){
@@ -169,7 +169,7 @@ var runEventSpecs = function(type, create){
 
 		'should add an Event to the Class': function(){
 			var object = create();
-			
+
 			object.addEvent('event', Local.fn)[fire]('event');
 
 			expect(Local.called).toEqual(1);
@@ -242,7 +242,7 @@ var runEventSpecs = function(type, create){
 			object[fire]('event2');
 			expect(Local.called).toEqual(3);
 		}
-		
+
 	});
 };
 
@@ -259,7 +259,7 @@ describe("Options Class", {
 	"before all": function(){
 		Local.OptionsTest = new Class({
 			Implements: [Options, Events],
-			
+
 			options: {
 				a: 1,
 				b: 2
@@ -289,7 +289,7 @@ describe("Options Class with Events", {
 	"before all": function(){
 		Local.OptionsTest = new Class({
 			Implements: [Options, Events],
-			
+
 			options: {
 				onEvent1: function(){
 					return true;
@@ -298,19 +298,19 @@ describe("Options Class with Events", {
 					return false;
 				}
 			},
-	
+
 			initialize: function(options){
 				this.setOptions(options);
 			}
 		});
 	},
-	
+
 	"should add events in the options object if class has implemented the Events class": function(){
 		var myTest = new Local.OptionsTest({
 			onEvent2: function(){
 				return true;
 			},
-			
+
 			onEvent3: function(){
 				return true;
 			}

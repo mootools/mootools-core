@@ -44,7 +44,7 @@ describe('Element constructor', {
 		expect(password.type).toEqual('password');
 		expect(password.name).toEqual('password');
 		expect(password.value).toEqual('password');
-		
+
 		var dad = new Element('div');
 		dad.adopt(username, password);
 		dad.inject(document.body);
@@ -172,11 +172,11 @@ describe('Element.set', {
 		expect(tr.getChildren().length).toEqual(2);
 		expect(tr.getFirst().className).toEqual('cell');
 	},
-	
+
 	"adopting should not change the parent of the element doing the adopting": function(){
 		var baldGuy = new Element('div');
 		var annie = new Element('span');
-		
+
 		gramps = baldGuy.getParent();
 		baldGuy.adopt(annie);
 		expect(baldGuy.getParent()).toEqual(gramps)
@@ -335,7 +335,7 @@ describe('$$', {
 
 	'should return multiple Elements for each specific tag': function(){
 		var sortBy = function(a, b){
-			a = $uid(a); b = $uid(b);
+			a = a.uid; b = b.uid;
 			return a > b ? 1 : -1;
 		};
 		var headers1 = $$('h3', 'h4').sort(sortBy);
@@ -1049,7 +1049,7 @@ describe('Element.clone', {
 	'should clone custom attributes': function(){
 		var div = new Element('div');
 		div.setAttribute('foo', 'FOO');
-		
+
 		expect(div.clone().getAttribute('foo')).toEqual('FOO');
 	}
 
@@ -1196,9 +1196,9 @@ describe('Element.getProperty', {
 
 		var input2 = new Element('input', {type: 'checkbox'});
 		expect(input2.getProperty('type')).toEqual('checkbox');
-		
+
 		var div = new Element('div', {'html':
-			'<select name="test" id="test" multiple="multiple">' + 
+			'<select name="test" id="test" multiple="multiple">' +
 				'<option value="1">option-value</option>' +
 			'</select>'
 		});
@@ -1301,7 +1301,7 @@ describe('Element.setProperty', {
 		var readonly3 = new Element('input', { type: 'text' }).setProperty('readonly', false);
 		expect(readonly3.getProperty('readonly')).toBeFalsy();
 	},
-	
+
 	'should setProperty defaultValue of an input Element': function(){
 		var form = new Element('form');
 		var defaultValue = new Element('input', {'type': 'text', 'value': '321'});
