@@ -335,7 +335,7 @@ describe('$$', {
 
 	'should return multiple Elements for each specific tag': function(){
 		var sortBy = function(a, b){
-			a = a.uid; b = b.uid;
+			a = Slick.uidOf(a); b = Slick.uidOf(b);
 			return a > b ? 1 : -1;
 		};
 		var headers1 = $$('h3', 'h4').sort(sortBy);
