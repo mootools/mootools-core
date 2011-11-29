@@ -172,4 +172,45 @@ describe('Element', function(){
 
 	});
 
+	describe('Element.erase', function(){
+
+		var elements, subject, image, textarea;
+
+		beforeEach(function(){
+			elements = [
+				subject = new Element('div'),
+				image = new Element('img'),
+				textarea = new Element('div', {html: '<textarea id="t1">hello</textarea>'}).getFirst()
+			].invoke('inject', document.body);
+		});
+
+		afterEach(function(){
+			elements.invoke('destroy');
+		});
+
+		it('should erase the class of an Element', function(){
+			subject.set('class', 'test');
+			subject.erase('class');
+			expect(subject.get('class')).toEqual(null);
+		});
+
+		it('should erase the id of an Element', function(){
+			subject.set('id', 'test');
+			subject.erase('id');
+			expect(subject.get('id')).toEqual(null);
+		});
+
+		it('should erase the random attribute of an Element', function(){
+			subject.set('random', 'test');
+			subject.erase('random');
+			expect(subject.get('random')).toEqual(null);
+		});
+
+		it('should erase the value attribute of a textarea', function(){
+			textarea.erase('value');
+			expect(textarea.get('value')).toEqual('');
+		});
+
+	});
+
 });
