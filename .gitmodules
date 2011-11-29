@@ -1,6 +1,7 @@
 [submodule "Packager"]
 	path = Packager
 	url = git://github.com/kamicane/packager.git
-[submodule "Specs"]
-	path = Specs
-	url = git://github.com/mootools/mootools-core-specs.git
+[submodule "Specs/Runner"]
+	path = Specs/Runner
+	url = git://github.com/mootools/mootools-runner.git
+
