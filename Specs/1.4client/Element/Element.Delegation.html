@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+		<title>Element Delegation Tests</title>
+
+		<script src="../../../Source/Core/Core.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Array.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Function.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Number.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/String.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Object.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/DOMEvent.js" type="text/javascript"></script>
+		<script src="../../../Source/Browser/Browser.js" type="text/javascript"></script>
+		<script src="../../../Source/Slick/Slick.Parser.js" type="text/javascript"></script>
+		<script src="../../../Source/Slick/Slick.Finder.js" type="text/javascript"></script>
+		<script src="../../../Source/Element/Element.js" type="text/javascript"></script>
+		<script src="../../../Source/Element/Element.Event.js" type="text/javascript"></script>
+		<script src="../../../Source/Element/Element.Delegation.js" type="text/javascript"></script>
+
+		<style>
+
+			body {
+				font: 13px sans-serif;
+			}
+
+			h1 {
+				border-top: 1px dashed #AAA;
+				font: normal 22px sans-serif;
+				margin: 5px 0;
+				padding-top: 10px;
+			}
+
+			#content {
+				top: 0;
+				bottom: 0;
+				left: 370px;
+				position: absolute;
+				overflow: auto;
+				padding-bottom: 150px;
+				right: 0;
+			}
+
+			#aside {
+				background: #F5F5F5;
+				border-right: 1px dashed #AAA;
+				bottom: 0;
+				font-family: monospace;
+				left: 0;
+				margin-right: 10px;
+				overflow: auto;
+				padding: 10px;
+				position: absolute;
+				top: 0;
+				width: 340px;
+			}
+
+			.success {
+				background: greenyellow;
+			}
+
+			.fail {
+				background: orangered;
+			}
+
+			.box {
+				background: greenyellow;
+				border: 1px solid black;
+				padding: 10px;
+				width: 300px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+
+		<div id="aside">
+			<h2>Log</h2>
+			<div id="log"></div>
+		</div>
+
+		<script>
+
+			var logger = $('log');
+			var log = function(msg, success){
+				new Element('div', {
+					'class': success == true ? 'success' : (success == false ? 'fail' : ''),
+					text: msg
+				}).inject(logger, 'top');
+			};
+
+		</script>
+
+		<div id="content">
+
+			<h1>Simple Click events</h1>
+
+			<ul id="list">
+				<li>First</li>
+				<li><div style="font-weight: bold">Second</div></li>
+				<li>Third</li>
+			</ul>
+
+			<script>
+
+				var secondLI = document.getElement('#list li:nth-child(2)');
+				var listListener = function(event, matched){
+					log('Matched element is <li>', matched.get('tag') == 'li');
+					log('`this` == arguments[1]', matched == this);
+					if (matched == secondLI) log('2nd event target tag == p', event.target.get('tag') == 'div');
+					log('---');
+				};
+				var list = $('list');
+				var listAdd = list.addEvent.pass(['click:relay(li)', listListener], list);
+				var listRemove = list.removeEvent.pass(['click:relay(li)', listListener], list);
+				listAdd();
+
+			</script>
+
+			<p>
+				<button onclick="listAdd()">Add Events</button> -
+				<button onclick="listRemove()">Remove Events</button>
+			</p>
+
+			<h1>Mouseenter / Mouseleave</h1>
+
+			<div id="mouseenter_leave">
+				<div class="mouse box">
+					Enter or <strong>leave</strong> this element with your <em>mouse</em>.
+					The event should only fire once for each time you perform the action.
+				</div>
+			</div>
+
+			<script>
+				$('mouseenter_leave').addEvents({
+					'mouseenter:relay(.mouse)': log.pass(['enter', true]),
+					'mouseleave:relay(.mouse)': function(){
+						log('leave', true);
+						log('---');
+					}
+				});
+			</script>
+
+			<h1>Focus / Blur</h1>
+
+			<p>
+				Click or tab to one of the input fields and the focus and blur
+				events should fire.
+			</p>
+
+			<div id="focus_blur">
+				<input type="text" /><br />
+				<input type="text" />
+			</div>
+
+			<script>
+				$('focus_blur').addEvents({
+					'focus:relay(input)': log.pass(['focus', true]),
+					'blur:relay(input)': function(){
+						log('blur', true);
+						log('---');
+					}
+				})
+			</script>
+
+			<h1>Submit / Reset</h1>
+
+			<p>
+				Should work on the form and on a div wrapping the form.
+				Try tabbing to the buttons and press enter, or tabbing to
+				the element and press enter.
+			</p>
+
+			<div id="submit_wrapper">
+				<div>
+					<form>
+						<input type="text" value="some text" />
+						<input type="submit" value="Submit" />
+						<input type="reset" value="reset" />
+					</form>
+					<input type="submit" value="Does nothing" />
+				</div>
+			</div>
+
+			<script>
+				$('submit_wrapper').addEvents({
+					'submit:relay(div)': function(event, matcher){
+						event.preventDefault();
+						log('submit on div', matcher.get('tag') == 'div');
+						log('`event.target.tagName == form`', event.target.get('tag') == 'form');
+					},
+					'submit:relay(form)': function(event, matcher){
+						event.preventDefault();
+						log('submit on form', matcher.get('tag') == 'form');
+					},
+					'reset:relay(div)': function(){
+						log('reset', true);
+					}
+				});
+			</script>
+
+			<h1>Change</h1>
+
+			<p>
+				Change the text. When you blur the input field, the change event
+				should fire for both the element which wraps the input fields
+				and bubble to it, and the input fields itself.
+			</p>
+
+			<div id="change">
+				<input type="text" value="some text" class="someClass" /><br />
+				<select name="yo">
+					<option>First</option>
+					<option>Second</option>
+					<option>Third</option>
+				</select><br />
+				<input type="checkbox" value="1" /><br />
+				<input type="radio" name="rad[]" value="1" /><input type="radio" name="rad[]" value="2" />
+			</div>
+
+			<script>
+				$('change').addEvent('change:relay(input.someClass,select,input[type="checkbox"],input[type="radio"])', function(){
+					log('change', true);
+				});
+				$(document.body).addEvent('change:relay(#change)', function(){
+					log('change bubbles', true);
+				});
+			</script>
+
+			<h1>Select</h1>
+
+			<p>
+				Select some text and the select event should fire
+			</p>
+
+			<div id="select">
+				<form>
+					<input type="text" value="select some text in this input" id="select_input" />
+				</form>
+			</div>
+
+			<script>
+				var select_input = $('select_input');
+				$('select').addEvent('select:relay(form)', function(event){
+					log('select', true);
+					log('`event.target.tagName == input`', event.target.get('tag') == 'input');
+				});
+			</script>
+
+			<h1>Paste</h1>
+
+			<div id="paste">
+				<textarea></textarea>
+			</div>
+
+			<script>
+				$('paste').addEvent('paste:relay(textarea)', function(event){
+					log('Paste', true);
+				});
+			</script>
+
+		</div>
+
+	</body>
+</html>
+
