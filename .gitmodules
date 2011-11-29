@@ -1,3 +1,3 @@
-[submodule "Runner"]
-	path = Runner
+[submodule "Specs/Runner"]
+	path = Specs/Runner
 	url = git://github.com/mootools/mootools-runner.git
