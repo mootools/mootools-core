@@ -1,0 +1,10 @@
+name: "Core-Specs-1.4client"
+
+license: "[MIT License](http://mootools.net/license.txt)"
+
+copyright: "&copy; [MooTools](http://mootools.net)"
+
+authors: "[MooTools Development Team](http://mootools.net/developers)"
+
+sources:
+  - "Element/Element.Event.js"
