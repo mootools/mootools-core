@@ -507,7 +507,7 @@ var propertyGetters = {}, propertySetters = {};
 var properties = {};
 Array.forEach([
 	'type', 'value', 'defaultValue', 'accessKey', 'cellPadding', 'cellSpacing', 'colSpan',
-	'frameBorder', 'readOnly', 'rowSpan', 'tabIndex', 'useMap'
+	'frameBorder', 'rowSpan', 'tabIndex', 'useMap'
 ], function(property){
 	properties[property.toLowerCase()] = property;
 });
@@ -555,7 +555,7 @@ Array.forEach(bools, function(bool){
 Object.append(propertySetters, {
 
 	'class': function(node, value){
-		('className' in node) ? node.className = value : node.setAttribute('class', value);
+		('className' in node) ? node.className = (value || '') : node.setAttribute('class', value);
 	},
 
 	'for': function(node, value){
@@ -564,31 +564,30 @@ Object.append(propertySetters, {
 
 	'style': function(node, value){
 		(node.style) ? node.style.cssText = value : node.setAttribute('style', value);
+	},
+
+	'value': function(node, value){
+		node.value = value || '';
 	}
 
 });
 
-/* getProperty, setProperty */
+propertyGetters['class'] = function(node){
+	return ('className' in node) ? node.className || null : node.getAttribute('class');
+};
 
-var needsEmptyString = (function(element){
-	element.setAttribute('id', null);
-	return element.getAttribute('id') == 'null';
-})(document.createElement('div'));
+/* getProperty, setProperty */
 
 Element.implement({
 
 	setProperty: function(name, value){
-		var lower = name.toLowerCase();
-		if (value == null){
-			if (!booleans[lower]){
-				this.removeAttribute(name);
-				return this;
-			}
-			value = false;
+		var setter = propertySetters[name.toLowerCase()];
+		if (setter){
+			setter(this, value);
+		} else {
+			if (value == null) this.removeAttribute(name);
+			else this.setAttribute(name, value);
 		}
-		var setter = propertySetters[lower];
-		if (setter) setter(this, value);
-		else this.setAttribute(name, (value == null && needsEmptyString) ? '' : value);
 		return this;
 	},
 
@@ -867,20 +866,6 @@ Element.Properties.style = {
 	}
 
 };
-
-if ('className' in document.documentElement){
-	Element.Properties['class'] = {
-		set: function(name){
-			this.className = name;
-		},
-		get: function(){
-			return this.className || null;
-		},
-		erase: function(){
-			this.className = '';
-		}
-	};
-}
 
 Element.Properties.tag = {
 
