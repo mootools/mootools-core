@@ -576,6 +576,15 @@ propertyGetters['class'] = function(node){
 	return ('className' in node) ? node.className || null : node.getAttribute('class');
 };
 
+/* <webkit> */
+var el = document.createElement('button');
+// IE sets type as readonly and throws
+try { el.type = 'button'; } catch(e){}
+if (el.type != 'button') propertySetters.type = function(node, value){
+	node.setAttribute('type', value);
+};
+/* </webkit> */
+
 /* getProperty, setProperty */
 
 Element.implement({
