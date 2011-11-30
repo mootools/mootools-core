@@ -231,6 +231,11 @@ Document.implement({
 
 })();
 
+(function(){
+
+Slick.uidOf(window);
+Slick.uidOf(document);
+
 Document.implement({
 
 	newTextNode: function(text){
@@ -255,7 +260,7 @@ Document.implement({
 			},
 
 			element: function(el, nocash){
-				$uid(el);
+				Slick.uidOf(el);
 				if (!nocash && !el.$family && !(/^(?:object|embed)$/i).test(el.tagName)){
 					el._fireEvent = el.fireEvent;
 					Object.append(el, Element.Prototype);
@@ -275,7 +280,7 @@ Document.implement({
 		};
 
 		return function(el, nocash, doc){
-			if (el && el.$family && el.uid) return el;
+			if (el && el.$family && el.uniqueNumber) return el;
 			var type = typeOf(el);
 			return (types[type]) ? types[type](el, nocash, doc || document) : null;
 		};
@@ -445,8 +450,6 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 	}
 	return new Elements(arguments);
 });
-
-(function(){
 
 // Inserters
 
@@ -812,7 +815,7 @@ Element.implement({
 				old();
 			};
 		} else {
-			collected[$uid(this)] = this;
+			collected[Slick.uidOf(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
 		else this.attachEvent('on' + type, fn);
@@ -826,19 +829,19 @@ Element.implement({
 	},
 
 	retrieve: function(property, dflt){
-		var storage = get($uid(this)), prop = storage[property];
+		var storage = get(Slick.uidOf(this)), prop = storage[property];
 		if (dflt != null && prop == null) prop = storage[property] = dflt;
 		return prop != null ? prop : null;
 	},
 
 	store: function(property, value){
-		var storage = get($uid(this));
+		var storage = get(Slick.uidOf(this));
 		storage[property] = value;
 		return this;
 	},
 
 	eliminate: function(property){
-		var storage = get($uid(this));
+		var storage = get(Slick.uidOf(this));
 		delete storage[property];
 		return this;
 	}
