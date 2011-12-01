@@ -448,7 +448,7 @@ Checks all descendants of this Element for a match.
 
 ### Arguments:
 
-1. el - (*mixed*) Can be an Element reference or string id.
+1. el - (*element*) The element to search for.
 
 ### Returns:
 
@@ -464,7 +464,7 @@ Checks all descendants of this Element for a match.
 
 ##### JavaScript
 
-	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); //tan tan tannn...
+	if ($('Darth_Vader').contains($('Luke'))) alert('Luke, I am your father.'); //tan tan tannn...
 
 
 
