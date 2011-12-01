@@ -464,7 +464,7 @@ Checks all descendants of this Element for a match.
 
 ##### JavaScript
 
-	if ($('Darth_Vader').contains('Luke')) alert('Luke, I am your father.'); //tan tan tannn...
+	if ($('Darth_Vader').contains($('Luke'))) alert('Luke, I am your father.'); //tan tan tannn...
 
 
 
