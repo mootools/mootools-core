@@ -730,6 +730,37 @@ Element.implement({
 
 });
 
+
+// appendHTML
+
+var appendInserters = {
+	before: 'beforeBegin',
+	after: 'afterEnd',
+	bottom: 'beforeEnd',
+	top: 'afterBegin',
+	inside: 'beforeEnd'
+};
+
+Element.implement('appendHTML', ('insertAdjacentHTML' in document.createElement('div')) ? function(html, where){
+	this.insertAdjacentHTML(appendInserters[where || 'bottom'], html);
+	return this;
+} : function(html, where){
+	var temp = new Element('div', {html: html}),
+		children = temp.childNodes,
+		fragment = temp.firstChild;
+
+	if (!fragment) return this;
+	if (children.length > 1){
+		fragment = document.createDocumentFragment();
+		for (var i = 0, l = children.length; i < l; i++){
+			fragment.appendChild(children[i]);
+		}
+	}
+
+	inserters[where || 'bottom'](fragment, this);
+	return this;
+});
+
 var collected = {}, storage = {};
 
 var get = function(uid){
