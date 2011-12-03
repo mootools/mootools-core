@@ -161,6 +161,25 @@ Resume a previously paused effect.
 
 
 
+Fx Method: isRunning {#Fx:isRunning}
+------------------------------------
+
+Returns true if the animation is running.
+
+### Syntax:
+
+	var isRunning = myFx.isRunning();
+
+### Returns:
+
+* (*boolean*) - If the animation is running, returns true. Otherwise, returns false.
+
+### Notes:
+
+- Returns false if the animation is paused.
+
+
+
 [Fx]: #Fx
 [Fx.Transitions]: /core/Fx/Fx.Transitions
 [Fx.Transitions:sine]: /core/Fx/Fx.Transitions#Fx-Transitions:sine
