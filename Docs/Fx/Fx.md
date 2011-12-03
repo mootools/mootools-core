@@ -24,6 +24,8 @@ Fx Method: constructor {#Fx:constructor}
 ### Options:
 
 * fps        - (*number*: defaults to 50) The frames per second for the transition.
+* frames     - (*number*) The numbers of frames in the animation, defaults to the duration and fps calculations.
+* frameSkip  - (*boolean*: defaults to true) If sets to true, it evaluates the current frame based on the current time.
 * unit       - (*string*: defaults to false) The unit, e.g. 'px', 'em', or '%'. See [Element:setStyle][].
 * link       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
