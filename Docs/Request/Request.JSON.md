@@ -47,6 +47,18 @@ Fired when the parsed JSON is not valid and the secure option is set.
 1. text - (string) The response text.
 2. error - (string) The error message.
 
+#### failure
+
+Fired when the request failed (error status code), or when JSON string could not be parsed.
+
+##### Signature:
+
+	onFailure(xhr)
+
+##### Arguments:
+
+xhr - (XMLHttpRequest) The transport instance.
+
 ### Returns:
 
 * (*object*) A new Request.JSON instance.
@@ -59,3 +71,7 @@ Fired when the parsed JSON is not valid and the secure option is set.
 		alert(person.height); // alerts "170 cm".
 		alert(person.weight); // alerts "120 kg".
 	}}).get({'firstName': 'John', 'lastName': 'Doe'});
+
+### See Also:
+
+[Request](/core/Request/Request)
