@@ -182,6 +182,21 @@ Returns true if the animation is running.
 
 
 
+Fx Method: isPaused {#Fx:isPaused}
+------------------------------------
+
+Returns true if the animation is paused. You can use this to check if you need to call [Fx:resume](#Fx:resume) to resume an animation instead of restarting it.
+
+### Syntax:
+
+	var isPaused = myFx.isPaused();
+
+### Returns:
+
+* (*boolean*) - If the animation is paused, returns true. Otherwise, returns false.
+
+
+
 [Fx]: #Fx
 [Fx.Transitions]: /core/Fx/Fx.Transitions
 [Fx.Transitions:sine]: /core/Fx/Fx.Transitions#Fx-Transitions:sine
