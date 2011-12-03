@@ -130,13 +130,17 @@ var Fx = this.Fx = new Class({
 	},
 
 	resume: function(){
-		if ((this.frame < this.frames) && !this.isRunning()) pushInstance.call(this, this.options.fps);
+		if (this.isPaused()) pushInstance.call(this, this.options.fps);
 		return this;
 	},
 
 	isRunning: function(){
 		var list = instances[this.options.fps];
 		return list && list.contains(this);
+	},
+
+	isPaused: function(){
+		return (this.frame < this.frames) && !this.isRunning();
 	}
 
 });
