@@ -1851,12 +1851,65 @@ Elements Method: constructor {#Elements:constructor}
 - [$$][], [$][], [Element][], [Elements][], [Array][]
 
 
+Elements Method: append {#Elements:append}
+------------------------------------------
+
+Adds the items of the collection to this [Elements][] array, and return the this array.
+
+### Syntax:
+
+	elements.append(collection);
+
+### Arguments:
+
+1. collection - (*array*) [Elements][] array or an array of HTML Elements.
+
+### Returns:
+
+* (*array*) This [Elements][] array.
+
+### Notes:
+
+- This method doesn't process ([document:id][] or filters) the items of the array.
+
+
+Elements Method: concat {#Elements:concat}
+------------------------------------------
+
+Adds the element, or array of Elements, to this [Elements][] array, and returns a new [Elements][] array.
+
+### Syntax:
+
+	var newElements = elements.concat(element[, list, id, ...]]);
+
+### Arguments:
+
+1. element - (*mixed*) An HTML Element, or a string id.
+2. list, id, ... - (*mixed*) Additional [Elements][], array of ids, or string ids.
+
+### Returns:
+
+* (*array*) A new [Elements][] array.
+
+
+Elements Method: empty {#Elements:empty}
+------------------------------------------
+
+Removes every item from the [Elements][] array, and the empty array.
+
+### Syntax:
+
+	elements.empty();
+
+### Returns:
+
+* (*array*) This empty [Elements][] array.
+
 
 Elements Method: filter {#Elements:filter}
-----------------------------------------------
+------------------------------------------
 
-Filters a collection of elements by a given tag name.  This method will be able to filter by any selector.
-It also works like [Array:filter][], by filtering collection of elements with a function.
+Filters a collection of elements by a given css selector, or filtering function like [Array:filter][].
 
 
 ### Syntax:
@@ -1865,11 +1918,50 @@ It also works like [Array:filter][], by filtering collection of elements with a 
 
 ### Arguments:
 
-1. selector - (*mixed*) A single CSS selector.
+1. selector - (*mixed*) A single CSS selector, or filtering function.
 
 ### Returns:
 
 * (*array*) A subset of this [Elements][] instance.
+
+
+Elements Method: push {#Elements:push}
+--------------------------------------
+
+Adds the element, or elements, to the end of this [Elements][] array and returns the length of the array.
+
+
+### Syntax:
+
+	var length = elements.push(element[, id, ...]]);
+
+### Arguments:
+
+1. element - (*mixed*) An HTML Element, or a string id.
+2. id, ... - (*mixed*) Additional HTML Element, or string ids.
+
+### Returns:
+
+* (*number*) The new length of the [Elements][] array.
+
+
+Elements Method: unshift {#Elements:unshift}
+--------------------------------------------
+
+Adds the element, or elements, to the front of this [Elements][] array and returns the length of the array.
+
+### Syntax:
+
+	var length = elements.unshift(element[, id, ...]]);
+
+### Arguments:
+
+1. element - (*mixed*) An HTML Element, or a string id.
+2. id, ... - (*mixed*) Additional HTML Element, or string ids.
+
+### Returns:
+
+* (*number*) The new length of the [Elements][] array.
 
 
 Deprecated Functions {#Deprecated-Functions}
@@ -1891,6 +1983,61 @@ This method has been deprecated. Use [Element:contains][] instead.
 		return this !== element && this.contains(element);
 	});
 
+Element Method: injectBefore {#Deprecated-Functions:injectBefore}
+-----------------------------------------------------------------
+
+This method has been deprecated. Use [Element:inject][] instead.
+
+Element Method: injectAfter {#Deprecated-Functions:injectAfter}
+---------------------------------------------------------------
+
+This method has been deprecated. Use [Element:inject][] instead.
+
+Element Method: injectBottom {#Deprecated-Functions:injectBottom}
+-----------------------------------------------------------------
+
+This method has been deprecated. Use [Element:inject][] instead.
+
+Element Method: injectTop {#Deprecated-Functions:injectTop}
+-----------------------------------------------------------
+
+This method has been deprecated. Use [Element:inject][] instead.
+
+Element Method: injectInside {#Deprecated-Functions:injectInside}
+-----------------------------------------------------------------
+
+This method has been deprecated. Use [Element:inject][] instead.
+
+Element Method: grabBefore {#Deprecated-Functions:grabBefore}
+-----------------------------------------------------------------
+
+This method has been deprecated. Use [Element:grab][] instead.
+
+Element Method: grabAfter {#Deprecated-Functions:grabAfter}
+---------------------------------------------------------------
+
+This method has been deprecated. Use [Element:grab][] instead.
+
+Element Method: grabBottom {#Deprecated-Functions:grabBottom}
+-----------------------------------------------------------------
+
+This method has been deprecated. Use [Element:grab][] instead.
+
+Element Method: grabTop {#Deprecated-Functions:grabTop}
+-----------------------------------------------------------
+
+This method has been deprecated. Use [Element:grab][] instead.
+
+Element Method: grabInside {#Deprecated-Functions:grabInside}
+-----------------------------------------------------------------
+
+This method has been deprecated. Use [Element:grab][] instead.
+
+
+Elements Method: extend {#Deprecated-Functions:extend}
+------------------------------------------------------
+
+This method has been deprecated. Use [Elements:append][] instead.
 
 
 [document:id]: #Window:document-id
@@ -1902,8 +2049,11 @@ This method has been deprecated. Use [Element:contains][] instead.
 
 [Element]: #Element
 [Elements]: #Elements
+[Elements:append]: #Elements:append
+[Element:inject]: #Element:inject
 [Element:set]: #Element:set
 [Element:get]: #Element:get
+[Element:grab]: #Element:grab
 [Element:erase]: #Element:erase
 [Element:setProperty]: #Element:setProperty
 [Element:getProperty]: #Element:getProperty
