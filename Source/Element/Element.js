@@ -199,11 +199,10 @@ Elements.implement(Array.prototype);
 Array.mirror(Elements);
 
 /*<ltIE8>*/
-var createElementAcceptsHTML;
-try {
+var createElementAcceptsHTML = Function.attempt(function(){
 	var x = document.createElement('<input name=x>');
-	createElementAcceptsHTML = (x.name == 'x');
-} catch(e){}
+	return (x.name == 'x');
+});
 
 var escapeQuotes = function(html){
 	return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
@@ -519,13 +518,7 @@ Array.forEach([
 	properties[property.toLowerCase()] = property;
 });
 
-Object.append(properties, {
-	'html': 'innerHTML',
-	'text': (function(){
-		var temp = document.createElement('div');
-		return (temp.textContent == null) ? 'innerText': 'textContent';
-	})()
-});
+properties.text = (document.createElement('div').textContent == null) ? 'innerText': 'textContent';
 
 Object.forEach(properties, function(real, key){
 	propertySetters[key] = function(node, value){
@@ -590,6 +583,7 @@ try { el.type = 'button'; } catch(e){}
 if (el.type != 'button') propertySetters.type = function(node, value){
 	node.setAttribute('type', value);
 };
+el = null;
 /* </webkit> */
 
 /* getProperty, setProperty */
@@ -912,60 +906,55 @@ Element.Properties.tag = {
 
 };
 
+/*<ltIE9>*/
+// technique by jdbarlett - http://jdbartlett.com/innershiv/
+var div = document.createElement('div');
+div.innerHTML = '<nav></nav>';
+var supportsHTML5Elements = div.childNodes.length == 1;
+if (!supportsHTML5Elements){
+	var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+		fragment = document.createDocumentFragment(), l = tags.length;
+	while (l--) fragment.createElement(tags[l]);
+	fragment.appendChild(div);
+}
+div = null;
+/*</ltIE9>*/
+
 /*<!webkit>*/
-Element.Properties.html = (function(){
 
-	var tableTest = Function.attempt(function(){
-		var table = document.createElement('table');
-		table.innerHTML = '<tr><td></td></tr>';
-	});
+var translations = {
+	table: [1, '<table>', '</table>'],
+	select: [1, '<select>', '</select>'],
+	tbody: [2, '<table><tbody>', '</tbody></table>'],
+	tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
+};
+translations.thead = translations.tfoot = translations.tbody;
 
-	var wrapper = document.createElement('div');
+var tableTest = Function.attempt(function(){
+	var table = document.createElement('table');
+	table.innerHTML = '<tr><td></td></tr>';
+});
 
-	var translations = {
-		table: [1, '<table>', '</table>'],
-		select: [1, '<select>', '</select>'],
-		tbody: [2, '<table><tbody>', '</tbody></table>'],
-		tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
-	};
-	translations.thead = translations.tfoot = translations.tbody;
+var html;
+Element.Properties.html = html = {set: function(html){
+	if (typeOf(html) == 'array') html = html.join('');
+	else if (html == null) html = '';
 
+	var wrap = (!tableTest && translations[this.get('tag')]);
 	/*<ltIE9>*/
-	// technique by jdbarlett - http://jdbartlett.com/innershiv/
-	wrapper.innerHTML = '<nav></nav>';
-	var HTML5Test = wrapper.childNodes.length == 1;
-	if (!HTML5Test){
-		var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-			fragment = document.createDocumentFragment(), l = tags.length;
-		while (l--) fragment.createElement(tags[l]);
-		fragment.appendChild(wrapper);
-	}
+	if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
 	/*</ltIE9>*/
-
-	var html = {
-		set: function(html){
-			if (typeOf(html) == 'array') html = html.join('');
-			else if (html == null) html = '';
-
-			var wrap = (!tableTest && translations[this.get('tag')]);
-			/*<ltIE9>*/
-			if (!wrap && !HTML5Test) wrap = [0, '', ''];
-			/*</ltIE9>*/
-			if (wrap){
-				var first = wrapper;
-				first.innerHTML = wrap[1] + html + wrap[2];
-				for (var i = wrap[0]; i--;) first = first.firstChild;
-				this.empty().adopt(first.childNodes);
-			} else {
-				this.innerHTML = html;
-			}
-		}
-	};
-
-	html.erase = html.set;
-
-	return html;
-})();
+	if (wrap){
+		var first = document.createElement('div');
+		first.innerHTML = wrap[1] + html + wrap[2];
+		for (var i = wrap[0]; i--;) first = first.firstChild;
+		this.empty().adopt(first.childNodes);
+		first = null;
+	} else {
+		this.innerHTML = html;
+	}
+}};
+html.erase = html.set;
 /*</!webkit>*/
 
 /*<ltIE9>*/
@@ -998,11 +987,11 @@ if (testForm.firstChild.value != 's') Element.Properties.value = {
 	}
 
 };
+testForm = null;
 /*</ltIE9>*/
 
 /*<IE>*/
-var el = document.createElement('div');
-if (el.getAttributeNode('id')) Element.Properties.id = {
+if (document.createElement('div').getAttributeNode('id')) Element.Properties.id = {
 	set: function(id){
 		this.id = this.getAttributeNode('id').value = id;
 	},
