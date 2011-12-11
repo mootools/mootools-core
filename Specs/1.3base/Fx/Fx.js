@@ -121,7 +121,7 @@ describe('Fx', function(){
 	it('should return the paused state', function(){
 		var fx = new Fx({
 			duration: 50
-		})..start();
+		}).start();
 
 		expect(fx.isPaused()).toEqual(false);
 
