@@ -16,6 +16,16 @@ describe('Element', function(){
 			expect($(div.firstChild).getProperty('action')).toEqual('s');
 		});
 
+		it('should ignore expandos', function(){
+			var div = new Element('div');
+			expect(div.getProperty('inject')).toBeNull();
+		});
+
+		it('should work in collaboration with setProperty', function(){
+			var div = new Element('div', {random: 'attribute'});
+			expect(div.getProperty('random')).toEqual('attribute');
+		});
+
 	});
 
 	describe('Element.set', function(){
