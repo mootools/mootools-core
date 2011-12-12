@@ -596,8 +596,6 @@ var pollutesGetAttribute = (function(div){
 	return (div.getAttribute('random') == 'attribute');
 })(document.createElement('div'));
 
-alert(pollutesGetAttribute);
-
 if (pollutesGetAttribute) var attributeWhiteList = {};
 /* <ltIE9> */
 
