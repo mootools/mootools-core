@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 
-		<title>Element Delegation Tests</title>
+		<title>Element.set('src') specs</title>
 
 		<script src="../../../Source/Core/Core.js" type="text/javascript"></script>
 		<script src="../../../Source/Types/Array.js" type="text/javascript"></script>
@@ -17,7 +17,6 @@
 		<script src="../../../Source/Slick/Slick.Finder.js" type="text/javascript"></script>
 		<script src="../../../Source/Element/Element.js" type="text/javascript"></script>
 		<script src="../../../Source/Element/Element.Event.js" type="text/javascript"></script>
-		<script src="../../../Source/Element/Element.Delegation.js" type="text/javascript"></script>
 
 		<style>
 
@@ -71,6 +70,11 @@
 				width: 300px;
 			}
 
+			.note {
+				font-size: small;
+				color: gray;
+			}
+
 		</style>
 
 	</head>
@@ -94,33 +98,34 @@
 		</script>
 
 		<div id="content">
+			<h2>Instructions</h2>
+			<ol>
+				<li>Refresh a couple of times so that Internet Explorer caches the image.</li>
+				<li>Click on each image to swap the image with another (much smaller) image.</li>
+			</ol>
 
-			<h1>Change</h1>
+			<div id="sandbox">
+				<h3>Original</h3>
+				<img id="original" src="http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif" alt="">
 
-			<p>
-				It should fire events in a consistent way
-			</p>
+				<h3>Half as large</h3>
+				<p class="note">Note: this should stay the size specified (90px).</p>
+				<img id="half-as-large" width="90" src="http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif" alt="">
 
-			<div id="change">
-				<input type="text" value="some text" class="someClass" /><br />
-				<select name="yo">
-					<option>First</option>
-					<option>Second</option>
-					<option>Third</option>
-				</select><br />
-				<input type="checkbox" value="1" /><br />
-				<input type="radio" name="rad[]" value="1" /><input type="radio" name="rad[]" value="2" />
+				<h3>Dynamically Created</h3>
+			</div>
+
+			<div id="actions">
 			</div>
 
 			<script>
-				$$('input.someClass,select,input[type="checkbox"],input[type="radio"]').addEvent('change', function(){
-					log('native change', true);
-				});
-				$('change').addEvent('change:relay(input.someClass,select,input[type="checkbox"],input[type="radio"])', function(){
-					log('change delegation', true);
-				});
-				$(document.body).addEvent('change:relay(#change)', function(){
-					log('change bubbles', true);
+				var img = new Element('img', {
+					id: 'dynamic',
+					src: 'http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif'
+				}).inject('sandbox');
+
+				$$('#sandbox img').addEvent('click', function(){
+					this.set('src', 'http://www.figureone.com/favicon.png');
 				});
 			</script>
 

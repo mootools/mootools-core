@@ -579,6 +579,19 @@ propertyGetters['class'] = function(node){
 	return ('className' in node) ? node.className || null : node.getAttribute('class');
 };
 
+/* <ltIE9> */
+if (Browser.ie && Browser.version < 9) propertySetters.src = function(node, value){
+	var isNew = !node.parentNode,
+		width = node.getAttributeNode('width'),
+		height = node.getAttributeNode('height');
+
+	node.src = value;
+
+	if (isNew || width && !width.specified) node.removeAttribute('width');
+	if (isNew || height && !height.specified) node.removeAttribute('height');
+};
+/* </ltIE9> */
+
 /* <webkit> */
 var el = document.createElement('button');
 // IE sets type as readonly and throws
