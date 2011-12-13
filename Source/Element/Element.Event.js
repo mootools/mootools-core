@@ -175,7 +175,7 @@ if (!window.addEventListener){
 			return (this.get('tag') == 'input' && (type == 'radio' || type == 'checkbox')) ? 'propertychange' : 'change'
 		},
 		condition: function(event){
-            return !!((this.type != 'radio' || this.checked) && event.event.propertyName == 'checked');
+            return !!(event.type === 'change' || event.type === 'propertychange' && event.event.propertyName == 'checked')
 		}
 	}
 }
