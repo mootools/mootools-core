@@ -26,4 +26,20 @@ describe('Array', function(){
 		expect([].some.call(object, fn)).toBe(false);
 	});
 
+	describe('Array.filter', function(){
+
+		it('should return the original item, and not any mutations.', function(){
+
+			var result = [0, 1, 2].filter(function(num, i, array){
+				if (num == 1){
+					array[i] = 'mutation';
+					return true;
+				}
+			});
+
+			expect(result[0]).toEqual(1);
+		});
+
+	});
+
 });
