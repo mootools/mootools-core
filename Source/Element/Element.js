@@ -941,15 +941,15 @@ var supportsTableInnerHTML = Function.attempt(function(){
 	return true;
 });
 
-/*<ltFFx4>*/
+/*<ltFF4>*/
 var tr = document.createElement('tr'), html = '<td></td>';
 tr.innerHTML = html;
 var supportsTRInnerHTML = (tr.innerHTML == html);
-/*</ltFFx4>*/
+/*</ltFF4>*/
 
 if (!supportsTableInnerHTML || !supportsTRInnerHTML){
 
-	Element.Properties.html.set = (function(original){
+	Element.Properties.html.set = (function(set){
 
 		var translations = {
 			table: [1, '<table>', '</table>'],
@@ -963,7 +963,7 @@ if (!supportsTableInnerHTML || !supportsTRInnerHTML){
 		return function(html){
 			var wrap = translations[this.get('tag')];
 			if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
-			if (!wrap) return original.call(this, html);
+			if (!wrap) return set.call(this, html);
 
 			var level = wrap[0], wrapper = document.createElement('div'), target = wrapper;
 			if (!supportsHTML5Elements) fragment.appendChild(wrapper);
