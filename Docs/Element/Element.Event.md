@@ -323,6 +323,40 @@ This event fires when the mouse wheel is rotated;
 - [Element:addEvent](#Element:addEvent)
 
 
+Object: Element.NativeEvents {#Element-NativeEvents}
+====================================================
+
+This is an object with all known DOM event types, like click, mouseover, load, etc.
+Each event type has a value, possible values are `0` (`undefined`, `null`), `1`, and `2`.
+
+### Type 0 Events
+
+By default it is undefined. In this case you can add events, but you should manually fire them.
+
+#### Example:
+
+	element.addEvent('pizza', fn);
+	element.fireEvent('pizza', 'yum!');
+	
+The event is not actually added to the DOM, but is only registered in a JS object.
+
+### Type 1 Events
+
+The second case is if the value is 1. This time the object is attached to the DOM. Usually by element.addEventListener, or element.attacheEvent in older versions of IE. You can still use `element.fireEvent('load')` to manually fire events.
+
+### Type 2 Events
+
+The final case is if the value is 2. This is the same as case 1. The only difference is that the event object, containing interesting data, is wrapped and normalized by event wrapper ([DOMEvent][]). This is the most used variant, for mouse events (like *click*) and keyboard events.
+
+The reason to differentiate between 1 and 2 is that 1 is usually used for events that don't have interesting data, like onload, onscroll, onresize. Those last two fire an awful lot as well.
+
+### Adding unsupported events
+
+As browsers evolve, new event types appear that you want to use, or browser specific events that are not supported by MooTools because they are only useful in specific cases. If you want to use those through the MooTools API there is a problem. The problem is that the event type has to be registered in the object, otherwise it will handle the event as case 0. This can be done with, for example:
+
+	Element.NativeEvents.popstate = 2;
+	// Now element.addEvent('popstate', fn); will work everywhere
+
 
 [$]: /core/Element/Element#Window:dollar
 [Event:stop]: /core/Types/Event#Event:stop
@@ -330,3 +364,4 @@ This event fires when the mouse wheel is rotated;
 [Function:bind]: /core/Types/Function/#bind
 [Function:pass]: /core/Types/Function/#pass
 [Function:delay]: /core/Types/Function/#delay
+[DOMEvent]: /core/Types/DOMEvent
