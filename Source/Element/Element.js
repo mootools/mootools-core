@@ -737,7 +737,7 @@ var get = function(uid){
 };
 
 var clean = function(item){
-	var uid = item.uid;
+	var uid = item.uniqueNumber;
 	if (item.removeEvents) item.removeEvents();
 	if (item.clearAttributes) item.clearAttributes();
 	if (uid != null){
@@ -783,7 +783,7 @@ Element.implement({
 			if (node.clearAttributes){
 				node.clearAttributes();
 				node.mergeAttributes(element);
-				node.removeAttribute('uid');
+				node.removeAttribute('uniqueNumber');
 				if (node.options){
 					var no = node.options, eo = element.options;
 					for (var j = no.length; j--;) no[j].selected = eo[j].selected;
