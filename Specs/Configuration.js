@@ -33,6 +33,10 @@ Configuration.presets = {
 		sets: ['core-1.3-base', 'core-1.3-client', 'core-1.4-base-nocompat', 'core-1.4-client'],
 		source: ['1.4nocompat']
 	},
+	'core-1.5': {
+		sets: ['1.2', 'core-1.3-base', 'core-1.3-client', 'core-1.4-base', 'core-1.4-client', 'core-1.5-base'],
+		source: ['core-1.4-base', 'core-1.4-client']
+	},
 	'core-2.0': {
 		sets: ['core-2.0-base', 'core-2.0-client'],
 		source: ['core-2.0-base', 'core-2.0-client']
@@ -114,6 +118,13 @@ Configuration.sets = {
 			'Element/Element.appendHTML',
 			'Fx/Fx.Tween',
 			'Fx/Fx.Morph'
+		]
+	},
+
+	'core-1.5-base': {
+		path: '1.5base/',
+		files: [
+			'Fx/Fx'
 		]
 	},
 
