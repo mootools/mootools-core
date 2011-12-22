@@ -546,10 +546,18 @@ Array.forEach(bools, function(bool){
 	var lower = bool.toLowerCase();
 	booleans[lower] = bool;
 	propertySetters[lower] = function(node, value){
-		node[bool] = !!value;
+		try {
+			node[bool] = !!value;
+		} catch (ex) {
+			// Nothing here.
+		}
 	};
 	propertyGetters[lower] = function(node){
-		return !!node[bool];
+		try {
+			return !!node[bool];
+		} catch (ex) {
+			return false;
+		}
 	};
 });
 
