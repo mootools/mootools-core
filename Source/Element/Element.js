@@ -589,6 +589,17 @@ if (el.type != 'button') propertySetters.type = function(node, value){
 el = null;
 /* </webkit> */
 
+/*<IE>*/
+var input = document.createElement('input');
+input.value = 't';
+input.type = 'submit';
+if (input.value != 't') propertySetters.type = function(node, value){
+	var inputValue = node.value;
+	node.type = value;
+	node.value = inputValue;
+};
+/*</IE>*/
+
 /* getProperty, setProperty */
 
 /* <ltIE9> */
