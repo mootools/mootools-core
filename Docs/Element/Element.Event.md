@@ -45,7 +45,7 @@ Attaches an event listener to a DOM element.
 
 ### See Also:
 
-- [w3schools Event Attributes](http://www.w3schools.com/html/html_eventattributes.asp)
+- [MDN DOM Event Reference](https://developer.mozilla.org/en/DOM/DOM_event_reference)
 
 
 
