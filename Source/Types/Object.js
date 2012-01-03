@@ -20,6 +20,29 @@ var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 Object.extend({
 
+	get: function(object, path){
+		if (typeof path == 'string') path = path.split('.');
+		for (var i = 0, l = path.length; i < l; i++){
+			if (hasOwnProperty.call(object, path[i])) object = object[path[i]];
+			else return null;
+		}
+		return object;
+	},
+	
+	set: function(object, path, value){
+		var path = path.split ? path.split('.') : path,
+			key = path.pop(),
+			len = path.length,
+			i = 0,
+			current;
+		while (len--){
+			current = path[i++];
+			object = current in object ? object[current] : (object[current] = {});
+		}
+		object[key] = value;
+		return object;
+	},
+	
 	subset: function(object, keys){
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){
