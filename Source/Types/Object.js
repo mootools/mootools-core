@@ -22,19 +22,16 @@ Object.extend({
 
 	get: function(object, path){
 		if (typeof path == 'string') path = path.split('.');
-		var len = path.length,
-			i = 0;
-		while (len--){
+		for (var i = 0, l = path.length; i < l; i++){
 			if (hasOwnProperty.call(object, path[i])) object = object[path[i]];
-			else return;
-			i++;
+			else return null;
 		}
 		return object;
 	},
 	
 	set: function(object, path, value){
 		if (typeof path == 'string') path = path.split('.');
-		var	key = path.pop(),
+		var key = path.pop(),
 			len = path.length,
 			i = 0,
 			current;
