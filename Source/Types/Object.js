@@ -40,7 +40,6 @@ Object.extend({
 			object = current in object ? object[current] : (object[current] = {});
 		}
 		object[key] = value;
-		return object;
 	},
 	
 	subset: function(object, keys){
