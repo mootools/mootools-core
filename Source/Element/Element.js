@@ -920,6 +920,7 @@ Element.Properties.html = (function(){
 	var html = {
 		set: function(html){
 			if (typeOf(html) == 'array') html = html.join('');
+			else if (!html) html = '';
 
 			var wrap = (!tableTest && translations[this.get('tag')]);
 			/*<ltIE9>*/
