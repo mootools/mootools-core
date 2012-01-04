@@ -521,7 +521,6 @@ Appends the passed array to the end of the current array.
 
 	var myOtherArray = ['green', 'yellow'];
 	['red', 'blue'].append(myOtherArray); // returns ['red', 'blue', 'green', 'yellow'];
-	myOtheArray; // is now ['red', 'blue', 'green', 'yellow'];
 
 	[0, 1, 2].append([3, [4]]); // [0, 1, 2, 3, [4]]
 
