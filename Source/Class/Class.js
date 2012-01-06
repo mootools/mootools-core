@@ -82,7 +82,9 @@ var implement = function(key, value, retain){
 		if (value.$hidden) return this;
 		this.prototype[key] = (retain) ? value : wrap(this, key, value);
 	} else {
-		Object.merge(this.prototype, key, value);
+		var obj = {};
+		obj[key] = value;
+		Object.merge(this.prototype, obj);
 	}
 
 	return this;
