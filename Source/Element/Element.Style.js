@@ -81,7 +81,9 @@ Element.implement({
 		} else if (value == String(Number(value))){
 			value = Math.round(value);
 		}
-		this.style[property] = value;
+		try {
+			this.style[property] = value;
+		}catch(e){}
 		return this;
 	},
 
