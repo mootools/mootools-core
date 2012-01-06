@@ -91,7 +91,8 @@ var version = (Function.attempt(function(){
 }) || '0 r0').match(/\d+/g);
 
 Browser.Plugins.Flash = {
-	version: Number(version[0] || '0.' + version[1]) || 0,
+	version: Number(version[0]) || 0,
+	minorversion: Number(version[1]) || 0,
 	build: Number(version[2]) || 0
 };
 
