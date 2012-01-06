@@ -655,7 +655,9 @@ Element.implement({
 	},
 
 	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+		className.split(/\s+/).each(function(str) {
+			this.className = this.className.replace(new RegExp('(^|\\s)' + str + '(?:\\s|$)'), '$1').clean();
+		}, this);
 		return this;
 	},
 
