@@ -910,13 +910,13 @@ Element.Properties.tag = {
 Element.Properties.html = {
 
 	set: function(html){
-		if (typeOf(html) == 'array') html = html.join('');
-		else if (html == null) html = '';
+		if (html == null) html = '';
+		else if (typeOf(html) == 'array') html = html.join('');
 		this.innerHTML = html;
 	},
 
 	erase: function(){
-		this.set('');
+		this.innerHTML = '';
 	}
 
 };
