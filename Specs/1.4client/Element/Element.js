@@ -162,6 +162,14 @@ describe('Element', function(){
 
 	});
 
+	describe("Element.erase('html')", function(){
+
+		it('should empty the html inside an element', function(){
+			expect(new Element('div', {html: '<p>foo bar</p>'}).erase('html').innerHTML).toEqual('');
+		});
+
+	});
+
 	describe('Element.clone', function(){
 
 		it('should not crash IE for multiple clones', function(){
