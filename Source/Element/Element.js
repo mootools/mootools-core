@@ -590,6 +590,15 @@ if (el.type != 'button') propertySetters.type = function(node, value){
 
 /* getProperty, setProperty */
 
+/* <ltIE9> */
+var pollutesGetAttribute = (function(div){
+	div.random = 'attribute';
+	return (div.getAttribute('random') == 'attribute');
+})(document.createElement('div'));
+
+if (pollutesGetAttribute) var attributeWhiteList = {};
+/* <ltIE9> */
+
 Element.implement({
 
 	setProperty: function(name, value){
@@ -597,8 +606,14 @@ Element.implement({
 		if (setter){
 			setter(this, value);
 		} else {
-			if (value == null) this.removeAttribute(name);
-			else this.setAttribute(name, value);
+			if (value == null){
+				this.removeAttribute(name);
+			} else {
+				this.setAttribute(name, value);
+				/* <ltIE9> */
+				if (pollutesGetAttribute) attributeWhiteList[name] = true;
+				/* </ltIE9> */
+			}
 		}
 		return this;
 	},
@@ -611,6 +626,12 @@ Element.implement({
 	getProperty: function(name){
 		var getter = propertyGetters[name.toLowerCase()];
 		if (getter) return getter(this);
+		/* <ltIE9> */
+		if (pollutesGetAttribute && !attributeWhiteList[name]){
+			var attr = this.getAttributeNode(name);
+			if (!attr || attr.expando) return null;
+		}
+		/* </ltIE9> */
 		var result = Slick.getAttribute(this, name);
 		return (!result && !Slick.hasAttribute(this, name)) ? null : result;
 	},

@@ -43,7 +43,7 @@ describe('Element.getElementById', function(){
 describe('Element.removeProperty', function(){
 
 	it('should removeProperty from an Element', function (){
-		var readonly = new Element('input', { type: 'text', readonly: 'readonly', maxlenght: 10 });
+		var readonly = new Element('input', { type: 'text', readonly: 'readonly', maxlength: 10 });
 		readonly.removeProperty('readonly');
 		readonly.removeProperty('maxlength');
 		var props = readonly.getProperties('type', 'readonly');
