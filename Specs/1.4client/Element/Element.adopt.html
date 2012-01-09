@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+		<title>Element Adopt Leak Test</title>
+
+		<script src="../../../Source/Core/Core.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Array.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Function.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Number.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/String.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/Object.js" type="text/javascript"></script>
+		<script src="../../../Source/Types/DOMEvent.js" type="text/javascript"></script>
+		<script src="../../../Source/Browser/Browser.js" type="text/javascript"></script>
+		<script src="../../../Source/Slick/Slick.Parser.js" type="text/javascript"></script>
+		<script src="../../../Source/Slick/Slick.Finder.js" type="text/javascript"></script>
+		<script src="../../../Source/Element/Element.js" type="text/javascript"></script>
+		<script src="../../../Source/Element/Element.Event.js" type="text/javascript"></script>
+
+	<body>
+
+		<script>
+			window.addEvent('domready', function(){
+				var newDiv = new Element('div', { id: 'newrDiv' });
+				$(document.body).adopt(newDiv);
+			});
+		</script>
+	</body>
+</html>
+
