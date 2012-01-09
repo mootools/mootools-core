@@ -201,9 +201,8 @@ Array.mirror(Elements);
 /*<ltIE8>*/
 var createElementAcceptsHTML;
 try {
-	var x = document.createElement('<input name=x>');
-	createElementAcceptsHTML = (x.name == 'x');
-} catch(e){}
+    createElementAcceptsHTML = (document.createElement('<input name=x>').name == 'x');
+} catch (e){}
 
 var escapeQuotes = function(html){
 	return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
@@ -519,13 +518,8 @@ Array.forEach([
 	properties[property.toLowerCase()] = property;
 });
 
-Object.append(properties, {
-	'html': 'innerHTML',
-	'text': (function(){
-		var temp = document.createElement('div');
-		return (temp.textContent == null) ? 'innerText': 'textContent';
-	})()
-});
+properties.html = 'innerHTML';
+properties.text = (document.createElement('div').textContent == null) ? 'innerText': 'textContent';
 
 Object.forEach(properties, function(real, key){
 	propertySetters[key] = function(node, value){
@@ -590,6 +584,7 @@ try { el.type = 'button'; } catch(e){}
 if (el.type != 'button') propertySetters.type = function(node, value){
 	node.setAttribute('type', value);
 };
+el = null;
 /* </webkit> */
 
 /* getProperty, setProperty */
@@ -912,61 +907,77 @@ Element.Properties.tag = {
 
 };
 
-/*<!webkit>*/
-Element.Properties.html = (function(){
+Element.Properties.html = {
 
-	var tableTest = Function.attempt(function(){
-		var table = document.createElement('table');
-		table.innerHTML = '<tr><td></td></tr>';
-	});
+	set: function(html){
+		if (html == null) html = '';
+		else if (typeOf(html) == 'array') html = html.join('');
+		this.innerHTML = html;
+	},
 
-	var wrapper = document.createElement('div');
-
-	var translations = {
-		table: [1, '<table>', '</table>'],
-		select: [1, '<select>', '</select>'],
-		tbody: [2, '<table><tbody>', '</tbody></table>'],
-		tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
-	};
-	translations.thead = translations.tfoot = translations.tbody;
-
-	/*<ltIE9>*/
-	// technique by jdbarlett - http://jdbartlett.com/innershiv/
-	wrapper.innerHTML = '<nav></nav>';
-	var HTML5Test = wrapper.childNodes.length == 1;
-	if (!HTML5Test){
-		var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-			fragment = document.createDocumentFragment(), l = tags.length;
-		while (l--) fragment.createElement(tags[l]);
-		fragment.appendChild(wrapper);
+	erase: function(){
+		this.innerHTML = '';
 	}
-	/*</ltIE9>*/
 
-	var html = {
-		set: function(html){
-			if (typeOf(html) == 'array') html = html.join('');
-			else if (html == null) html = '';
+};
 
-			var wrap = (!tableTest && translations[this.get('tag')]);
-			/*<ltIE9>*/
-			if (!wrap && !HTML5Test) wrap = [0, '', ''];
-			/*</ltIE9>*/
-			if (wrap){
-				var first = wrapper;
-				first.innerHTML = wrap[1] + html + wrap[2];
-				for (var i = wrap[0]; i--;) first = first.firstChild;
-				this.empty().adopt(first.childNodes);
-			} else {
-				this.innerHTML = html;
-			}
-		}
-	};
+/*<ltIE9>*/
+// technique by jdbarlett - http://jdbartlett.com/innershiv/
+var div = document.createElement('div');
+div.innerHTML = '<nav></nav>';
+var supportsHTML5Elements = (div.childNodes.length == 1);
+if (!supportsHTML5Elements){
+	var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
+		fragment = document.createDocumentFragment(), l = tags.length;
+	while (l--) fragment.createElement(tags[l]);
+}
+div = null;
+/*</ltIE9>*/
 
-	html.erase = html.set;
+/*<IE>*/
+var supportsTableInnerHTML = Function.attempt(function(){
+	var table = document.createElement('table');
+	table.innerHTML = '<tr><td></td></tr>';
+	return true;
+});
 
-	return html;
-})();
-/*</!webkit>*/
+/*<ltFF4>*/
+var tr = document.createElement('tr'), html = '<td></td>';
+tr.innerHTML = html;
+var supportsTRInnerHTML = (tr.innerHTML == html);
+tr = null;
+/*</ltFF4>*/
+
+if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements){
+
+	Element.Properties.html.set = (function(set){
+
+		var translations = {
+			table: [1, '<table>', '</table>'],
+			select: [1, '<select>', '</select>'],
+			tbody: [2, '<table><tbody>', '</tbody></table>'],
+			tr: [3, '<table><tbody><tr>', '</tr></tbody></table>']
+		};
+
+		translations.thead = translations.tfoot = translations.tbody;
+
+		return function(html){
+			var wrap = translations[this.get('tag')];
+			if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
+			if (!wrap) return set.call(this, html);
+
+			var level = wrap[0], wrapper = document.createElement('div'), target = wrapper;
+			if (!supportsHTML5Elements) fragment.appendChild(wrapper);
+			wrapper.innerHTML = [wrap[1], html, wrap[2]].flatten().join('');
+			while (level--) target = target.firstChild;
+			this.empty().adopt(target.childNodes);
+			if (!supportsHTML5Elements) fragment.removeChild(wrapper);
+			wrapper = null;
+		};
+
+	})(Element.Properties.html.set);
+}
+/*</IE>*/
 
 /*<ltIE9>*/
 var testForm = document.createElement('form');
@@ -998,11 +1009,11 @@ if (testForm.firstChild.value != 's') Element.Properties.value = {
 	}
 
 };
+testForm = null;
 /*</ltIE9>*/
 
 /*<IE>*/
-var el = document.createElement('div');
-if (el.getAttributeNode('id')) Element.Properties.id = {
+if (document.createElement('div').getAttributeNode('id')) Element.Properties.id = {
 	set: function(id){
 		this.id = this.getAttributeNode('id').value = id;
 	},
