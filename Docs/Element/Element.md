@@ -1905,6 +1905,17 @@ Removes every item from the [Elements][] array, and the empty array.
 
 * (*array*) This empty [Elements][] array.
 
+### Note:
+
+`Elements.empty` does not destroy the elements inside. As best practice, always destroy your elements if they're no longer in use. For example:
+
+    $$('div').destroy().empty();
+
+### See Also
+
+ - [Element:destroy][]
+
+
 
 Elements Method: filter {#Elements:filter}
 ------------------------------------------
@@ -2053,6 +2064,7 @@ This method has been deprecated. Use [Elements:append][] instead.
 [Element:inject]: #Element:inject
 [Element:set]: #Element:set
 [Element:get]: #Element:get
+[Element:destroy]: #Element:destroy
 [Element:grab]: #Element:grab
 [Element:erase]: #Element:erase
 [Element:setProperty]: #Element:setProperty
