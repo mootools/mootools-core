@@ -568,7 +568,7 @@ Object.append(propertySetters, {
 	},
 
 	'value': function(node, value){
-		node.value = value || '';
+		node.value = (value != null) ? value : '';
 	}
 
 });
