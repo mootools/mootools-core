@@ -199,10 +199,10 @@ Elements.implement(Array.prototype);
 Array.mirror(Elements);
 
 /*<ltIE8>*/
-var createElementAcceptsHTML = Function.attempt(function(){
-	var x = document.createElement('<input name=x>');
-	return (x.name == 'x');
-});
+var createElementAcceptsHTML;
+try {
+    createElementAcceptsHTML = (document.createElement('<input name=x>').name == 'x');
+} catch (e){}
 
 var escapeQuotes = function(html){
 	return ('' + html).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
@@ -945,9 +945,10 @@ var supportsTableInnerHTML = Function.attempt(function(){
 var tr = document.createElement('tr'), html = '<td></td>';
 tr.innerHTML = html;
 var supportsTRInnerHTML = (tr.innerHTML == html);
+tr = null;
 /*</ltFF4>*/
 
-if (!supportsTableInnerHTML || !supportsTRInnerHTML){
+if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements){
 
 	Element.Properties.html.set = (function(set){
 
