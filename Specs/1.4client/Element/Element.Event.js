@@ -82,4 +82,23 @@ describe('Element.Event', function(){
 
 });
 
+describe('Element.Event.change', function(){
+
+	it('should not fire "change" for any property', function(){
+		var callback = jasmine.createSpy('Element.Event.change');
+
+		var input = new Element('input', {
+			'type': 'radio',
+			'class': 'someClass',
+			'checked': 'checked'
+		}).addEvent('change', callback).inject(document.body);
+
+		input.removeClass('someClass');
+		expect(callback).not.toHaveBeenCalled();
+
+		input.destroy();
+	});
+
+});
+
 })();
