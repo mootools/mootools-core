@@ -96,7 +96,16 @@ describe('Element.Event.change', function(){
 		input.removeClass('someClass');
 		expect(callback).not.toHaveBeenCalled();
 
-		input.destroy();
+		var text = new Element('input', {
+			'type': 'text',
+			'class': 'otherClass',
+			'value': 'text value'
+		}).addEvent('change', callback).inject(document.body);
+
+		text.removeClass('otherClass');
+		expect(callback).not.toHaveBeenCalled();
+
+		[input, text].invoke('destroy');
 	});
 
 });
