@@ -639,21 +639,22 @@ Inserts the passed element(s) inside the Element (which will then become the par
 	var mySecondElement = new Element('p#second');
 	var myThirdElement  = new Element('ul#third');
 	var myFourthElement = new Element('a#fourth');
-
+	
 	var myParentElement = new Element('div#parent');
-
+	
 	myFirstElement.adopt(mySecondElement);
-	mySecondElement.adopt('third', myFourthElement);
-
-	myParent3.adopt([myFirstElement, new Element('span#another')]);
+	mySecondElement.adopt(myThirdElement, myFourthElement);
+	myParentElement.adopt([myFirstElement, new Element('span#another')]);
 
 ##### Resulting HTML
 
 	<div id="parent">
-		<p id="second">
-			<ul id="third"></ul>
-			<a id="fourth"></a>
-		</p>
+		<div id="first">
+			<p id="second">
+				<ul id="third"></ul>
+				<a id="fourth"></a>
+			</p>
+		</div>
 		<span id="another"></span>
 	</div>
 
