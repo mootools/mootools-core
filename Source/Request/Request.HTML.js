@@ -29,7 +29,7 @@ Request.HTML = new Class({
 	},
 
 	success: function(text){
-		var options = Object.merge({}, oldOptions, this.requestOptions), this.options), response = this.response;
+		var options = Object.merge({}, this.options, this.requestOptions), response = this.response;
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
