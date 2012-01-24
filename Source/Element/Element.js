@@ -607,6 +607,9 @@ Element.implement({
 		} else {
 			if (value == null){
 				this.removeAttribute(name);
+				/* <ltIE9> */
+				if (pollutesGetAttribute) delete attributeWhiteList[name];
+				/* </ltIE9> */
 			} else {
 				this.setAttribute(name, value);
 				/* <ltIE9> */
@@ -627,8 +630,9 @@ Element.implement({
 		if (getter) return getter(this);
 		/* <ltIE9> */
 		if (pollutesGetAttribute && !attributeWhiteList[name]){
-			var attr = this.getAttributeNode(name);
-			if (!attr || attr.expando) return null;
+			var outer = this.outerHTML, i = outer.indexOf(name);
+			if ((i < 0) || (i > outer.indexOf('><'))) return null;
+			attributeWhiteList[name] = true;
 		}
 		/* </ltIE9> */
 		var result = Slick.getAttribute(this, name);
