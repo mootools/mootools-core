@@ -26,6 +26,20 @@ describe('Element', function(){
 			expect(div.getProperty('random')).toEqual('attribute');
 		});
 
+		it('should get custom attributes in html', function(){
+			var div = new Element('div', {html: '<div data-load="test"></div>'}).getFirst();
+			expect(div.get('data-load')).toEqual('test');
+
+			div = new Element('div', {html: '<div data-custom></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('');
+
+			div = new Element('div', {html: '<div data-custom="test"><a data-custom="other"></a></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('test');
+
+			div = new Element('div', {html: '<div><a data-custom="other"></a></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual(null);
+		});
+
 	});
 
 	describe('Element.set', function(){
