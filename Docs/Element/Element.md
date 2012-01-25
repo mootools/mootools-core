@@ -1129,7 +1129,7 @@ Similar to [Element:getParent](#Element:getParent), but returns a collection of 
 
 ### Returns:
 
-* (*mixed*) If no matching parents are found, an empty array is returned.
+* (*array*) If no matching parents are found, an empty array is returned.
 
 
 
