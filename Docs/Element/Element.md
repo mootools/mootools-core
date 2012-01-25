@@ -1127,6 +1127,10 @@ Element Method: getParents {#Element:getParents}
 
 Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
 
+### Returns:
+
+* (*array*) If no matching parents are found, an empty array is returned.
+
 
 
 Element Method: getSiblings {#Element:getSiblings}
