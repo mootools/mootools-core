@@ -243,14 +243,18 @@ var force = function(name, object, methods){
 			proto = prototype[key];
 
 		if (generic) generic.protect();
-
-		if (isType && proto){
-			delete prototype[key];
-			prototype[key] = proto.protect();
-		}
+		if (isType && proto) object.implement(key, proto.protect());
 	}
 
-	if (isType) object.implement(prototype);
+	if (isType){
+		var methodsEnumerable = prototype.propertyIsEnumerable(methods[0]);
+		object.forEachMethod = function(fn){
+			if (!methodsEnumerable) for (var i = 0, l = methods.length; i < l; i++){
+				fn.call(prototype, prototype[methods[i]], methods[i]);
+			}
+			for (var key in prototype) fn.call(prototype, prototype[key], key)
+		};
+	}
 
 	return force;
 };
