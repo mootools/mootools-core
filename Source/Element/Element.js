@@ -194,11 +194,9 @@ if (object[1] == 1) Elements.implement('splice', function(){
 	return result;
 }.protect());
 
-Array.$methods.each(function(method){
-	Elements.implement(method, Array.prototype[method]);
+Array.forEachMethod(function(method, name){
+	Elements.implement(name, method);
 });
-
-Elements.implement(Array.prototype);
 
 Array.mirror(Elements);
 
