@@ -1125,7 +1125,7 @@ Works as [Element:getPrevious][], but tries to find the parentNode.
 Element Method: getParents {#Element:getParents}
 ------------------------------------------------
 
-Similar to [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
+Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
 
 ### Returns:
 
