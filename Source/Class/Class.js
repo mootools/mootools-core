@@ -100,12 +100,16 @@ Class.implement('implement', implement.overloadSetter());
 Class.Mutators = {
 
 	Extends: function(parent){
+		if (!instanceOf(parent, Class)) throw new Error('Extends only accepts a Class.');
 		this.parent = parent;
 		this.prototype = getInstance(parent);
 	},
 
 	Implements: function(items){
+		var errMsg = 'Implements accepts a Class or array of Classes.';
+		if (!items || !items.length) throw new Error(errMsg);
 		Array.from(items).each(function(item){
+			if (!instanceOf(item, Class)) throw new Error(errMsg);
 			var instance = new item;
 			for (var key in instance) implement.call(this, key, instance[key], true);
 		}, this);
