@@ -597,7 +597,6 @@ var pollutesGetAttribute = (function(div){
 	return (div.getAttribute('random') == 'attribute');
 })(document.createElement('div'));
 
-if (pollutesGetAttribute) var attributeWhiteList = {};
 /* <ltIE9> */
 
 Element.implement({
@@ -607,6 +606,10 @@ Element.implement({
 		if (setter){
 			setter(this, value);
 		} else {
+			/* <ltIE9> */
+			if (pollutesGetAttribute) var attributeWhiteList = this.retrieve('$attributeWhiteList', {});
+			/* </ltIE9> */
+
 			if (value == null){
 				this.removeAttribute(name);
 				/* <ltIE9> */
@@ -631,10 +634,14 @@ Element.implement({
 		var getter = propertyGetters[name.toLowerCase()];
 		if (getter) return getter(this);
 		/* <ltIE9> */
-		if (pollutesGetAttribute && !attributeWhiteList[name]){
-			var outer = this.outerHTML, i = outer.indexOf(name);
-			if ((i < 0) || (i > outer.indexOf('><'))) return null;
-			attributeWhiteList[name] = true;
+		if (pollutesGetAttribute){
+			var attr = this.getAttributeNode(name), attributeWhiteList = this.retrieve('$attributeWhiteList', {});
+			if (!attr) return null;
+			if (attr.expando && !attributeWhiteList[name]){
+				var outer = this.outerHTML, i = outer.indexOf(name), l = outer.indexOf('><');
+				if ((i < 0) || (i > l && l > 0)) return null;
+				attributeWhiteList[name] = true;
+			}
 		}
 		/* </ltIE9> */
 		var result = Slick.getAttribute(this, name);
