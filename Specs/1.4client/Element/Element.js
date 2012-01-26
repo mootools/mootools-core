@@ -27,17 +27,20 @@ describe('Element', function(){
 		});
 
 		it('should get custom attributes in html', function(){
-			var div = new Element('div', {html: '<div data-load="test"></div>'}).getFirst();
-			expect(div.get('data-load')).toEqual('test');
+			var div = new Element('div', {html: '<div data-load="typical"></div>'}).getFirst();
+			expect(div.get('data-load')).toEqual('typical');
 
 			div = new Element('div', {html: '<div data-custom></div>'}).getFirst();
 			expect(div.get('data-custom')).toEqual('');
 
-			div = new Element('div', {html: '<div data-custom="test"><a data-custom="other"></a></div>'}).getFirst();
-			expect(div.get('data-custom')).toEqual('test');
+			div = new Element('div', {html: '<div data-custom="nested"><a data-custom="other"></a></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('nested');
 
 			div = new Element('div', {html: '<div><a data-custom="other"></a></div>'}).getFirst();
 			expect(div.get('data-custom')).toEqual(null);
+
+			div = new Element('div', {html: '<a data-custom="singular" href="#">href</a>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('singular');
 		});
 
 	});
