@@ -41,7 +41,17 @@ describe('Element', function(){
 
 			div = new Element('div', {html: '<a data-custom="singular" href="#">href</a>'}).getFirst();
 			expect(div.get('data-custom')).toEqual('singular');
+
+			div = new Element('div', {html: '<div class="><" data-custom="evil attribute values"></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('evil attribute values');
+
+			div = new Element('div', {html: '<div class="> . <" data-custom="aggrevated evil attribute values"></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('aggrevated evil attribute values');
+
+			div = new Element('div', {html: '<a href="#"> data-custom="singular"</a>'}).getFirst();
+			expect(div.get('data-custom')).toEqual(null);
 		});
+
 
 	});
 
