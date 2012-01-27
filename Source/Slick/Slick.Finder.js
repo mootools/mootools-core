@@ -860,7 +860,7 @@ for (var p in pseudos) local['pseudo:' + p] = pseudos[p];
 var attributeGetters = local.attributeGetters = {
 
 	'class': function(){
-		return this.getAttribute('class') || this.className;
+		return this.getAttribute('class') || typeOf(this.className) == 'string' ? this.className : null;
 	},
 
 	'for': function(){
