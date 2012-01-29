@@ -88,11 +88,11 @@
 		<script>
 
 			var logger = $('log');
-			var log = function(msg, success){
+			function log(msg, success){
 				new Element('div', {
 					'class': success == true ? 'success' : (success == false ? 'fail' : ''),
 					text: msg
-				}).inject(logger, 'top');
+				}).inject(logger);
 			};
 
 		</script>
@@ -108,25 +108,42 @@
 				<h3>Original</h3>
 				<img id="original" src="http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif" alt="">
 
+				<h3>Styled</h3>
+				<p class="note">Note: this should stay the size specified (90px).</p>
+				<img src="http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif" style="width:90px" alt="">
+
 				<h3>Half as large</h3>
 				<p class="note">Note: this should stay the size specified (90px).</p>
 				<img id="half-as-large" width="90" src="http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif" alt="">
 
-				<h3>Dynamically Created</h3>
+				<h3>Pull and Push</h3>
+				<p class="note">Note: this should stay the size specified (90px).</p>
+				<div id="target">
+					<img id="pull-push" src="http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif" width="90" alt="">
+				</div>
+
+				<h3>Missing src</h3>
+				<img id="missing" alt="">
+
+				<h3>Dynamically Created (this is buggy in IE)</h3>
 			</div>
 
 			<div id="actions">
 			</div>
 
 			<script>
-				var img = new Element('img', {
+				new Element('img', {
 					id: 'dynamic',
 					src: 'http://blog.accessko.nl/wp-content/uploads/2009/06/logo-mootools.gif'
-				}).inject('sandbox');
+				}).inject('sandbox')
+
+				$('pull-push').dispose().set('src', 'http://www.figureone.com/favicon.png').inject('target');
 
 				$$('#sandbox img').addEvent('click', function(){
 					this.set('src', 'http://www.figureone.com/favicon.png');
 				});
+
+				$('missing').set('src', 'http://www.figureone.com/favicon.png');
 			</script>
 
 		</div>

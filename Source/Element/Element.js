@@ -581,14 +581,18 @@ propertyGetters['class'] = function(node){
 
 /* <ltIE9> */
 if (Browser.ie && Browser.version < 9) propertySetters.src = function(node, value){
-	var isNew = !node.parentNode,
-		width = node.getAttributeNode('width'),
-		height = node.getAttributeNode('height');
+	if (node.get('tag') != 'img') return node.src = value;
+
+	var width = Object.clone(node.getAttributeNode('width')),
+		height = Object.clone(node.getAttributeNode('height'));
 
 	node.src = value;
 
-	if (isNew || width && !width.specified) node.removeAttribute('width');
-	if (isNew || height && !height.specified) node.removeAttribute('height');
+	if (width.specified) node.style.width = width.nodeValue;
+	if (height.specified) node.style.height = height.nodeValue;
+
+	node.removeAttribute('width');
+	node.removeAttribute('height');
 };
 /* </ltIE9> */
 
