@@ -110,7 +110,8 @@ Configuration.sets = {
 			'Element/Element',
 			'Element/Element.Event',
 			'Element/Element.Delegation',
-			'Fx/Fx.Tween'
+			'Fx/Fx.Tween',
+			'Fx/Fx.Morph'
 		]
 	},
 
