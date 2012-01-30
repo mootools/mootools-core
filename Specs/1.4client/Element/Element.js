@@ -81,6 +81,21 @@ describe('Element', function(){
 
 	});
 
+	describe("Element.setProperty('type')", function(){
+
+		it('should keep the input value after setting a input field to another type (submit button)', function(){
+			var input = new Element('input', {value: 'myValue', type: 'text'});
+			input.setProperty('type', 'submit');
+			expect(input.getProperty('value')).toEqual('myValue');
+		});
+
+		it('should set the right type and value of input fields when a input field is created with CSS selectors', function(){
+			var input = new Element('input[type="submit"]', {value: 'myValue'});
+			expect(input.getProperty('value')).toEqual('myValue');
+		});
+
+	});
+
 	describe('Element.get', function(){
 
 		describe('value', function(){

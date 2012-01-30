@@ -319,6 +319,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 	- use 'class', not 'className'
 	- use 'frameborder', not 'frameBorder'
 	- etc.
+- In IE8 or lower, it is not possible to set `type` multiple times. It will throw an error.
 
 
 ### See Also:
