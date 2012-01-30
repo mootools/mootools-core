@@ -593,11 +593,12 @@ el = null;
 var input = document.createElement('input');
 input.value = 't';
 input.type = 'submit';
-if (input.value != 't') propertySetters.type = function(node, value){
-	var inputValue = node.value;
-	node.type = value;
-	node.value = inputValue;
+if (input.value != 't') propertySetters.type = function(node, type){
+	var value = node.value;
+	node.type = type;
+	node.value = value;
 };
+input = null;
 /*</IE>*/
 
 /* getProperty, setProperty */

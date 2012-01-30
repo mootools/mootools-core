@@ -74,7 +74,11 @@ describe('Element', function(){
 		describe('type', function(){
 
 			it('should set the type of a button', function(){
-				expect(new Element('button', {type: 'button'}).get('type')).toEqual('button');
+				var button = new Element('button', {type: 'button'})
+				expect(button.get('type')).toEqual('button');
+				expect(function(){
+					button.set('type', 'text');
+				}).not.toThrow();
 			});
 
 		});
