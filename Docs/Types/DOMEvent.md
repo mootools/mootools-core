@@ -45,7 +45,7 @@ DOMEvent Method: constructor {#DOMEvent:constructor}
 
 - Accessing event.page / event.client requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 - Every event added with addEvent gets the MooTools method automatically, without the need to manually instance it.
-
+- `event.key` is only reliable with `keydown` or `keyup` events. See [PPK](http://www.quirksmode.org/js/keys.html).
 
 DOMEvent Method: stop {#DOMEvent:stop}
 --------------------------------------
