@@ -45,7 +45,7 @@ var typeOf = this.typeOf = function(item){
 };
 
 var instanceOf = this.instanceOf = function(item, object){
-	if (item == null) return false;
+	if (item == null /*<ltIE8>*/ || !item.hasOwnProperty /*</ltIE8>*/) return false;
 	var constructor = item.$constructor || item.constructor;
 	while (constructor){
 		if (constructor === object) return true;
