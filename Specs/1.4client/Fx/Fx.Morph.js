@@ -5,7 +5,8 @@ describe('Fx.Morph', function(){
 		this.clock = sinon.useFakeTimers();
 
 		this.div = new Element('div', {'class': 'pos-abs-left'});
-		this.style = new Element('style', {html: [
+		this.style = new Element('style');
+		var definition = [
 			'.pos-abs-left {',
 				'position: absolute;',
 				'width: 200px;',
@@ -13,8 +14,12 @@ describe('Fx.Morph', function(){
 				'left: 10%;',
 				'background: red',
 			'}'
-		].join('')});
+		].join('');
+
 		[this.style, this.div].invoke('inject', document.body);
+
+		if (this.style.styleSheet) this.style.styleSheet.cssText = definition;
+		else this.style.set('text', definition);
 	});
 
 	afterEach(function(){
@@ -24,16 +29,13 @@ describe('Fx.Morph', function(){
 	});
 
 	it('should morph between % units', function(){
-  	this.div.set('morph', {unit : '%'});
-
   	var spy = spyOn(this.div, 'setStyle').andCallThrough();
-
-  	this.div.morph({'left': 50});
+  	this.div.set('morph', {unit : '%'}).morph({'left': 50});
 
   	this.clock.tick(1000);
+
   	expect(this.div.setStyle).toHaveBeenCalledWith('left', ['10%']);
   	expect(this.div.setStyle).toHaveBeenCalledWith('left', ['50%']);
-
 	});
 
 });
