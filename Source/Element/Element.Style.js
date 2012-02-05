@@ -18,6 +18,13 @@ provides: Element.Style
 
 var html = document.html;
 
+// Check for oldIE, which does not remove styles when they're set to null
+var el = document.createElement('div');
+el.style.color = 'red';
+el.style.color = null;
+var doesNotRemoveStyles = el.style.color == 'red';
+el = null;
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
@@ -34,11 +41,13 @@ var setVisibility = function(element, opacity){
 var setOpacity = (hasOpacity ? function(element, opacity){
 	element.style.opacity = opacity;
 } : (hasFilter ? function(element, opacity){
-	if (!element.currentStyle || !element.currentStyle.hasLayout) element.style.zoom = 1;
+	var style = element.style;
+	if (!element.currentStyle || !element.currentStyle.hasLayout) style.zoom = 1;
 	if (opacity == null) opacity = '';
 	else opacity = 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')';
-	var filter = element.style.filter || element.getComputedStyle('filter') || '';
-	element.style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
+	var filter = style.filter || element.getComputedStyle('filter') || '';
+	style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
+	if (!style.filter) style.removeAttribute('filter');
 } : setVisibility));
 
 var getOpacity = (hasOpacity ? function(element){
@@ -82,6 +91,9 @@ Element.implement({
 			value = Math.round(value);
 		}
 		this.style[property] = value;
+		if ((value == '' || value == null) && doesNotRemoveStyles && this.style.removeAttribute){
+			this.style.removeAttribute(property);
+		}
 		return this;
 	},
 

@@ -14,7 +14,13 @@ describe('Element.Style', function(){
 			var className = String.uniqueID();
 			var style = this.style = document.createElement('style');
 			style.type = 'text/css';
-			var definition = '.' + className + '{ opacity: 0.5; filter: alpha(opacity=50); }';
+			var definition = [
+				'.' + className + '{',
+					'opacity: 0.5;',
+					'filter: alpha(opacity=50);',
+					'color: #ff0000;',
+				'}'
+			].join('');
 
 			// fix this, see https://github.com/mootools/mootools-core/issues/2265
 			if (style.styleSheet) style.styleSheet.cssText = definition;
@@ -42,6 +48,13 @@ describe('Element.Style', function(){
 			expect(this.element.getStyle('opacity')).toEqual(1);
 			this.element.setStyle('opacity', null);
 			expect(this.element.getStyle('opacity')).toEqual(0.5);
+		});
+
+		it('should remove the style by setting it to `null`', function(){
+			this.element.setStyle('color', '#FF9900');
+			expect(this.element.getStyle('color')).toEqual('#ff9900');
+			this.element.setStyle('color', null);
+			expect(this.element.getStyle('color')).toEqual('#ff0000');
 		});
 
 	});
