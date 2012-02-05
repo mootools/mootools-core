@@ -24,7 +24,7 @@ Object.extend({
 		if (typeof path == 'string') path = path.split('.');
 		for (var i = 0, l = path.length; i < l; i++){
 			if (hasOwnProperty.call(object, path[i])) object = object[path[i]];
-			else return null;
+			else return object[path[i]];
 		}
 		return object;
 	},
