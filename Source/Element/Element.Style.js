@@ -28,15 +28,15 @@ var hasOpacity = (html.style.opacity != null),
 
 var setVisibility = function(element, opacity){
 	element.store('$opacity', opacity);
-	element.style.visibility = opacity > 0 ? 'visible' : 'hidden';
+	element.style.visibility = opacity > 0 || opacity == null ? 'visible' : 'hidden';
 };
 
 var setOpacity = (hasOpacity ? function(element, opacity){
 	element.style.opacity = opacity;
 } : (hasFilter ? function(element, opacity){
 	if (!element.currentStyle || !element.currentStyle.hasLayout) element.style.zoom = 1;
-	opacity = (opacity * 100).limit(0, 100).round();
-	opacity = (opacity == 100) ? '' : 'alpha(opacity=' + opacity + ')';
+	if (opacity == null) opacity = '';
+	else opacity = 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')';
 	var filter = element.style.filter || element.getComputedStyle('filter') || '';
 	element.style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
 } : setVisibility));
@@ -68,7 +68,7 @@ Element.implement({
 
 	setStyle: function(property, value){
 		if (property == 'opacity'){
-			setOpacity(this, parseFloat(value));
+			setOpacity(this, value == null ? value : parseFloat(value));
 			return this;
 		}
 		property = (property == 'float' ? floatName : property).camelCase();
