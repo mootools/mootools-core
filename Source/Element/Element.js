@@ -579,6 +579,23 @@ propertyGetters['class'] = function(node){
 	return ('className' in node) ? node.className || null : node.getAttribute('class');
 };
 
+/* <ltIE9> */
+if (Browser.ie && Browser.version < 9) propertySetters.src = function(node, value){
+	if (node.get('tag') != 'img') return node.src = value;
+
+	var width = Object.clone(node.getAttributeNode('width')),
+		height = Object.clone(node.getAttributeNode('height'));
+
+	node.src = value;
+
+	if (width.specified) node.style.width = width.nodeValue;
+	if (height.specified) node.style.height = height.nodeValue;
+
+	node.removeAttribute('width');
+	node.removeAttribute('height');
+};
+/* </ltIE9> */
+
 /* <webkit> */
 var el = document.createElement('button');
 // IE sets type as readonly and throws
