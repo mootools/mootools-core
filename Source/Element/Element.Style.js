@@ -18,12 +18,14 @@ provides: Element.Style
 
 var html = document.html;
 
+//<ltIE9>
 // Check for oldIE, which does not remove styles when they're set to null
 var el = document.createElement('div');
 el.style.color = 'red';
 el.style.color = null;
 var doesNotRemoveStyles = el.style.color == 'red';
 el = null;
+//</ltIE9>
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
@@ -77,7 +79,8 @@ Element.implement({
 
 	setStyle: function(property, value){
 		if (property == 'opacity'){
-			setOpacity(this, value == null ? value : parseFloat(value));
+			if (value != null) value = parseFloat(value);
+			setOpacity(this, value);
 			return this;
 		}
 		property = (property == 'float' ? floatName : property).camelCase();
@@ -91,9 +94,11 @@ Element.implement({
 			value = Math.round(value);
 		}
 		this.style[property] = value;
+		//<ltIE9>
 		if ((value == '' || value == null) && doesNotRemoveStyles && this.style.removeAttribute){
 			this.style.removeAttribute(property);
 		}
+		//</ltIE9>
 		return this;
 	},
 
