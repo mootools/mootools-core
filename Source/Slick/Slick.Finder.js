@@ -860,7 +860,9 @@ for (var p in pseudos) local['pseudo:' + p] = pseudos[p];
 var attributeGetters = local.attributeGetters = {
 
 	'class': function(){
-		return this.getAttribute('class') || this.className;
+		var className = this.className;
+		if (className && className.baseVal !== undefined) className = className.baseVal;
+		return className || this.getAttribute('class');
 	},
 
 	'for': function(){
