@@ -1381,7 +1381,7 @@ Sets an attribute or special property for this Element.
 	- use 'class', not 'className'
 	- use 'frameborder', not 'frameBorder'
 	- etc.
-
+- When setting the `src` property for an image file, be sure to remove the `width` and `height` attribute (use `Element.removeAttribute`). IE7, and less, set and freeze the `width` and `height` of an image if previously specified. 
 
 Element Method: setProperties {#Element:setProperties}
 ------------------------------------------------------
