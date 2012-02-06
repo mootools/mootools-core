@@ -72,7 +72,7 @@ if (!Browser.Element){
 	Element.parent = Object;
 
 	Element.Prototype = {
-		'$constructor': Element.prototype.$constructor,
+		'$constructor': Element,
 		'$family': Function.from('element').hide()
 	};
 
