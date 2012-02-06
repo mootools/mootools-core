@@ -89,6 +89,7 @@ Element.implement({
 		if (property == 'opacity') return getOpacity(this);
 		property = (property == 'float' ? floatName : property).camelCase();
 		var result = this.style[property];
+		if (property == 'clip') result = result.replace(/,\s*/g, ' ');
 		if (!result || property == 'zIndex'){
 			result = [];
 			for (var style in Element.ShortStyles){
