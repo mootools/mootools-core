@@ -205,8 +205,14 @@ local.setDocument = function(document){
 
 	// contains
 	// FIXME: Add specs: local.contains should be different for xml and html documents?
-	features.contains = (root && this.isNativeCode(root.contains)) ? function(context, node){
+	var nativeRootContains = root && this.isNativeCode(root.contains),
+		nativeDocumentContains = document && this.isNativeCode(document.contains);
+
+	features.contains = (nativeRootContains && nativeDocumentContains) ? function(context, node){
 		return context.contains(node);
+	} : (nativeRootContains && !nativeDocumentContains) ? function(context, node){
+		// IE8 does not have .contains on document.
+		return context === node || ((context === document) ? document.documentElement : context).contains(node);
 	} : (root && root.compareDocumentPosition) ? function(context, node){
 		return context === node || !!(context.compareDocumentPosition(node) & 16);
 	} : function(context, node){
@@ -601,7 +607,7 @@ local.matchSelector = function(node, tag, id, classes, attributes, pseudos){
 
 	var i, part, cls;
 	if (classes) for (i = classes.length; i--;){
-		cls = node.getAttribute('class') || node.className;
+		cls = this.getAttribute(node, 'class');
 		if (!(cls && classes[i].regexp.test(cls))) return false;
 	}
 	if (attributes) for (i = attributes.length; i--;){
@@ -787,7 +793,7 @@ var pseudos = {
 	'nth-last-of-type': local.createNTHPseudo('lastChild', 'previousSibling', 'posNTHTypeLast', true),
 
 	'index': function(node, index){
-		return this['pseudo:nth-child'](node, '' + index + 1);
+		return this['pseudo:nth-child'](node, '' + (index + 1));
 	},
 
 	'even': function(node){
@@ -858,10 +864,6 @@ for (var p in pseudos) local['pseudo:' + p] = pseudos[p];
 // attributes methods
 
 var attributeGetters = local.attributeGetters = {
-
-	'class': function(){
-		return this.getAttribute('class') || this.className;
-	},
 
 	'for': function(){
 		return ('htmlFor' in this) ? this.htmlFor : this.getAttribute('for');
