@@ -8,23 +8,23 @@ provides: [Core.Specs]
 */
 
 describe('Function.prototype.extend', {
-	
+
 	"should extend the function": function(){
 		var fn = (function(){}).extend({a: 1});
 		expect(fn.a).toEqual(1);
 		expect((new fn).a).toEqual(undefined);
 	}
-	
+
 });
 
 describe('Function.prototype.implement', {
-	
+
 	"should implement the function prototype": function(){
 		var fn = (function(){}).implement({a: 1});
 		expect(fn.a).toEqual(undefined);
 		expect((new fn).a).toEqual(1);
 	}
-	
+
 });
 
 describe('Function.prototype.overloadGetter', function(){
@@ -90,7 +90,7 @@ describe('typeOf', {
 			expect(type == 'array' || type == 'arguments').toBeTruthy();
 			return;
 		}
-		
+
 		expect(typeOf(arguments)).toEqual('arguments');
 	},
 
@@ -105,41 +105,45 @@ describe('typeOf', {
 });
 
 describe('instanceOf', {
-	
+
 	"should return false on null object": function(){
 		expect(instanceOf(null, null)).toBeFalsy();
 	},
-	
+
 	"should return true for Arrays": function(){
 		expect(instanceOf([], Array)).toBeTruthy();
 	},
-	
+
 	"should return true for Numbers": function(){
 		expect(instanceOf(1, Number)).toBeTruthy();
 	},
-	
+
 	"should return true for Objects": function(){
 		expect(instanceOf({}, Object)).toBeTruthy();
 	},
-	
+
 	"should return true for Dates": function(){
 		expect(instanceOf(new Date(), Date)).toBeTruthy();
 	},
-	
+
 	"should return true for Booleans": function(){
 		expect(instanceOf(true, Boolean)).toBeTruthy();
 	},
-	
+
 	"should return true for RegExps": function(){
 		expect(instanceOf(/_/, RegExp)).toBeTruthy();
 	},
-	
+
 	"should respect the parent property of a custom object": function(){
 		var X = function(){};
 		X.parent = Array;
 		expect(instanceOf(new X, Array)).toBeTruthy();
+	},
+
+	"should return true for Element instances": function(){
+		expect(instanceOf(new Element('div'), Element)).toBeTruthy();
 	}
-	
+
 });
 
 describe('Array.from', {
@@ -171,7 +175,7 @@ describe('Array.from', {
 	'should ignore and return an array': function(){
 		expect(Array.from([1,2,3])).toEqual([1,2,3]);
 	},
-	
+
 	'should return a copy of arguments or the arguments if it is of type array': function(){
 		// In Opera arguments is an array so it does not return a copy
 		// This is intended. Array.from is expected to return an Array from an array-like-object
@@ -179,10 +183,10 @@ describe('Array.from', {
 		var args, type, copy = (function(){
 			type = typeOf(arguments);
 			args = arguments;
-			
+
 			return Array.from(arguments);
 		})(1, 2);
-		
+
 		expect((type == 'array') ? (copy === args) : (copy !== args)).toBeTruthy();
 	}
 
@@ -196,7 +200,7 @@ describe('String.from', function(){
 		expect(typeOf(String.from(1))).toBe('string');
 
 		expect(typeOf(String.from(new Date))).toBe('string');
-		
+
 		expect(typeOf(String.from(function(){}))).toBe('string');
 	});
 
@@ -277,12 +281,12 @@ describe('Type', function(){
 	it("should be a Type", function(){
 		expect(Type.isType(Instrument)).toBeTruthy();
 	});
-	
+
 	it("should generate and evaluate correct types", function(){
 		var myCar = new Car('nice car');
 		expect(Type.isCar(myCar)).toBeTruthy();
 	});
-	
+
 	it("isEnumerable method on Type should return true for arrays, arguments, objects with a numerical length property", function(){
 		expect(Type.isEnumerable([1,2,3])).toBeTruthy();
 		(function(){
@@ -369,7 +373,7 @@ describe('Array.each', {
 		Array.each(['Sun','Mon','Tue'], function(value, i){
 			daysArr.push(value);
 		});
-	
+
 		expect(daysArr).toEqual(['Sun','Mon','Tue']);
 	},
 
@@ -385,7 +389,7 @@ describe('Array.each', {
 
 		expect(testArray).toEqual([0, 3]);
 	}
-	
+
 });
 
 describe('Array.clone', {
@@ -396,7 +400,7 @@ describe('Array.clone', {
 		expect(a[3] === b[3]).toBeFalsy();
 		expect(a[3][3] === b[3][3]).toBeFalsy();
 		expect(a[3][3].a === b[3][3].a).toBeFalsy();
-		
+
 		expect(a[3]).toEqual(b[3]);
 		expect(a[3][3]).toEqual(b[3][3]);
 		expect(a[3][3].a).toEqual(b[3][3].a);
@@ -411,7 +415,7 @@ describe('Object.clone', {
 		expect(a.a[3] === b.a[3]).toBeFalsy();
 		expect(a.a[3][3] === b.a[3][3]).toBeFalsy();
 		expect(a.a[3][3].a === b.a[3][3].a).toBeFalsy();
-		
+
 		expect(a.a[3]).toEqual(b.a[3]);
 		expect(a.a[3][3]).toEqual(b.a[3][3]);
 		expect(a.a[3][3].a).toEqual(b.a[3][3].a);
@@ -419,40 +423,40 @@ describe('Object.clone', {
 });
 
 describe('Object.merge', {
-	
+
 	'should merge any object inside the passed in object, and should return the passed in object': function(){
 		var a = {a:1, b:2, c: {a:1, b:2, c:3}};
 		var b = {c: {d:4}, d:4};
 		var c = {a: 5, c: {a:5}};
-		
+
 		var merger = Object.merge(a, b);
-		
+
 		expect(merger).toEqual({a:1, b:2, c:{a:1, b:2, c:3, d:4}, d:4});
 		expect(merger === a).toBeTruthy();
-		
+
 		expect(Object.merge(a, b, c)).toEqual({a:5, b:2, c:{a:5, b:2, c:3, d:4}, d:4});
 	},
-	
+
 	'should recursively clone sub objects and sub-arrays': function(){
 		var a = {a:1, b:2, c: {a:1, b:2, c:3}, d: [1,2,3]};
 		var b = {e: {a:1}, f: [1,2,3]};
-		
+
 		var merger = Object.merge(a, b);
-		
+
 		expect(a.e === b.e).toBeFalsy();
 		expect(a.f === b.f).toBeFalsy();
 	}
-	
+
 });
 
 describe('Object.append', {
 	'should combine two objects': function(){
 		var a = {a: 1, b: 2}, b = {b: 3, c: 4};
 		expect(Object.append(a, b)).toEqual({a: 1, b: 3, c: 4});
-		
+
 		a = {a: 1, b: 2}; b = {b: 3, c: 4};
 		expect(Object.append(a, b)).toEqual(a);
-		
+
 		a = {a: 1, b: 2}; b = {b: 3, c: 4};
 		var c = {a: 2, d: 5};
 		expect(Object.append(a, b, c)).toEqual({a: 2, b: 3, c: 4, d: 5});
@@ -476,5 +480,5 @@ describe('String.uniqueID', function(){
 	it("should generate unique ids", function(){
 		expect(String.uniqueID()).not.toEqual(String.uniqueID());
 	});
-	
+
 });

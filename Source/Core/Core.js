@@ -51,6 +51,9 @@ var instanceOf = this.instanceOf = function(item, object){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
 	}
+	/*<ltIE8>*/
+	if (!item.hasOwnProperty) return false;
+	/*</ltIE8>*/
 	return item instanceof object;
 };
 
