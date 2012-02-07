@@ -109,6 +109,7 @@ Configuration.sets = {
 		files: [
 			'Element/Element',
 			'Element/Element.Event',
+			'Element/Element.Style',
 			'Element/Element.Delegation',
 			'Fx/Fx.Tween',
 			'Fx/Fx.Morph'
