@@ -7,38 +7,78 @@ provides: [Core.Specs]
 ...
 */
 
-describe('Function.prototype.extend', {
+describe('Function.prototype.overloadSetter', function(){
 
-	"should extend the function": function(){
-		var fn = (function(){}).extend({a: 1});
-		expect(fn.a).toEqual(1);
-		expect((new fn).a).toEqual(undefined);
-	}
+	var collector, setter;
+	beforeEach(function(){
+		collector = {};
+		setter = (function(key, value){
+			collector[key] = value;
+		});
+	});
 
-});
+	it('should call a specific setter', function(){
+		setter = setter.overloadSetter();
+		setter('key', 'value');
 
-describe('Function.prototype.implement', {
+		expect(collector).toEqual({key: 'value'});
 
-	"should implement the function prototype": function(){
-		var fn = (function(){}).implement({a: 1});
-		expect(fn.a).toEqual(undefined);
-		expect((new fn).a).toEqual(1);
-	}
+		setter({
+			otherKey: 1,
+			property: 2
+		});
+
+		expect(collector).toEqual({
+			key: 'value',
+			otherKey: 1,
+			property: 2
+		});
+
+		setter({
+			key: 3
+		});
+		setter('otherKey', 4);
+
+		expect(collector).toEqual({
+			key: 3,
+			otherKey: 4,
+			property: 2
+		});
+	});
+
+	it('should only works with objects in plural mode', function(){
+		setter = setter.overloadSetter(true);
+
+		setter({
+			a: 'b',
+			c: 'd'
+		});
+
+		expect(collector).toEqual({
+			a: 'b',
+			c: 'd'
+		});
+	});
 
 });
 
 describe('Function.prototype.overloadGetter', function(){
 
-	it('should call a getter for each argument', function(){
-		var object = {
+	var object, getter;
+	beforeEach(function(){
+		object = {
 			a: 1,
 			b: 2,
 			c: 3
 		};
 
-		var getter = (function(key){
+		getter = (function(key){
 			return object[key] || null;
-		}).overloadGetter();
+		});
+	});
+
+	it('should call a getter for each argument', function(){
+		getter = getter.overloadGetter();
 
 		expect(getter('a')).toEqual(1);
 		expect(getter('b')).toEqual(2);
@@ -49,6 +89,19 @@ describe('Function.prototype.overloadGetter', function(){
 		expect(getter(['a', 'b', 'c'])).toEqual(object);
 		expect(getter(['a', 'c', 'd'])).toEqual({a: 1, c: 3, d: null});
 	});
+
+	it('should work in plural mode', function(){
+		getter = getter.overloadGetter(true);
+
+		expect(getter('a')).toEqual({
+			a: 1
+		});
+
+		expect(getter(['a', 'b'])).toEqual({
+			a: 1,
+			b: 2
+		});
+	})
 
 });
 
