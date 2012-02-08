@@ -26,7 +26,7 @@ Fx.CSS = new Class({
 			values[1] = values[0];
 			values[0] = element.getStyle(property);
 			// adapted from: https://github.com/ryanmorr/fx/blob/master/fx.js#L299
-			if (this.options.unit != 'px'){
+			if (this.options.unit && this.options.unit != 'px'){
 				element.setStyle(property, values[1] + this.options.unit);
 				values[0] = (values[1] || 1) / parseFloat(element.getComputedStyle(property)) * (parseFloat(values[0]) || 0);
 				element.setStyle(property, values[0] + this.options.unit);
