@@ -22,18 +22,20 @@ Fx.CSS = new Class({
 
 	prepare: function(element, property, values){
 		values = Array.from(values);
-		if (values[1] == null){
-			values[1] = values[0];
-			values[0] = element.getStyle(property);
+		var from = values[0], to = values[1];
+		if (to == null){
+			to = from;
 			// adapted from: https://github.com/ryanmorr/fx/blob/master/fx.js#L299
 			if (this.options.unit && this.options.unit != 'px'){
-				element.setStyle(property, values[1] + this.options.unit);
-				values[0] = (values[1] || 1) / parseFloat(element.getComputedStyle(property)) * (parseFloat(values[0]) || 0);
-				element.setStyle(property, values[0] + this.options.unit);
+				from = element.getComputedStyle(property);
+				element.setStyle(property, to + this.options.unit);
+				from = (to || 1) / parseFloat(element.getComputedStyle(property)) * (parseFloat(from) || 0);
+				element.setStyle(property, from + this.options.unit);
+			} else {
+				from = element.getStyle(property);
 			}
 		}
-		var parsed = values.map(this.parse);
-		return {from: parsed[0], to: parsed[1]};
+		return {from: this.parse(from), to: this.parse(to)};
 	},
 
 	//parses a value into an array

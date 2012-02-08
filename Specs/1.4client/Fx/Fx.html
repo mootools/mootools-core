@@ -173,7 +173,8 @@
 					duration: 2000
 				});
 				var sunToggle = true;
-				$('fx-sun').addEvent('click', function(){
+				$('fx-sun').addEvent('click', function(event){
+					event.preventDefault();
 					sun.morph(sunToggle ? {
 						width: '300px'
 					} : {
@@ -200,7 +201,6 @@
 
 				$('units-fx-morph-link').addEvent('click', function(event){
 					event.preventDefault();
-					// TODO doesn't start at the current size yet.
 					unitsFxMorph.start(unitsFxMorphToggle ? {
 						width: 50,
 						height: 50
