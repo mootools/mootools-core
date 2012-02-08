@@ -25,14 +25,24 @@ Fx.CSS = new Class({
 		var from = values[0], to = values[1];
 		if (to == null){
 			to = from;
+			from = element.getStyle(property);
+			var unit = this.options.unit;
 			// adapted from: https://github.com/ryanmorr/fx/blob/master/fx.js#L299
-			if (this.options.unit && this.options.unit != 'px'){
-				from = element.getComputedStyle(property);
-				element.setStyle(property, to + this.options.unit);
-				from = (to || 1) / parseFloat(element.getComputedStyle(property)) * (parseFloat(from) || 0);
-				element.setStyle(property, from + this.options.unit);
-			} else {
-				from = element.getStyle(property);
+			if (unit && from.slice(-unit.length) != unit){
+				// get pixel value adapted from: http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
+				element.setStyle(property, to + unit);
+				var value = element.getComputedStyle(property);
+				if (!(/px$/.test(value)) && element.runtimeStyle){
+					var style = element.style.left;
+					var runtimeStyle = element.runtimeStyle.left;
+					element.runtimeStyle.left = element.currentStyle.left;
+					element.style.left = value || 0;
+					value = element.style.pixelLeft;
+					element.style.left = style;
+					element.runtimeStyle.left = runtimeStyle;
+				}
+				from = (to || 1) / parseFloat(value) * (parseFloat(from) || 0);
+				element.setStyle(property, from + unit);
 			}
 		}
 		return {from: this.parse(from), to: this.parse(to)};
