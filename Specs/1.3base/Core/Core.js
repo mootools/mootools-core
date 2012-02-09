@@ -67,9 +67,9 @@ describe('Function.prototype.overloadGetter', function(){
 	var object, getter;
 	beforeEach(function(){
 		object = {
-			a: 1,
-			b: 2,
-			c: 3
+			aa: 1,
+			bb: 2,
+			cc: 3
 		};
 
 		getter = (function(key){
@@ -80,27 +80,28 @@ describe('Function.prototype.overloadGetter', function(){
 	it('should call a getter for each argument', function(){
 		getter = getter.overloadGetter();
 
-		expect(getter('a')).toEqual(1);
-		expect(getter('b')).toEqual(2);
-		expect(getter('c')).toEqual(3);
-		expect(getter('d')).toBeNull();
+		expect(getter('aa')).toEqual(1);
+		expect(getter('bb')).toEqual(2);
+		expect(getter('cc')).toEqual(3);
+		expect(getter('dd')).toBeNull();
 
-		expect(getter('a', 'b', 'c')).toEqual(object);
-		expect(getter(['a', 'b', 'c'])).toEqual(object);
-		expect(getter(['a', 'c', 'd'])).toEqual({a: 1, c: 3, d: null});
+		expect(getter('aa', 'bb', 'cc')).toEqual(object);
+		expect(getter(['aa', 'bb', 'cc'])).toEqual(object);
+		expect(getter(['aa', 'cc', 'dd'])).toEqual({aa: 1, cc: 3, dd: null});
 	});
 
 	it('should work in plural mode', function(){
 		getter = getter.overloadGetter(true);
 
-		expect(getter('a')).toEqual({
-			a: 1
+		expect(getter('aa')).toEqual({
+			aa: 1
 		});
 
-		expect(getter(['a', 'b'])).toEqual({
-			a: 1,
-			b: 2
+		expect(getter(['aa', 'bb'])).toEqual({
+			aa: 1,
+			bb: 2
 		});
+
 	})
 
 });
