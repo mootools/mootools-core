@@ -12,7 +12,7 @@ describe('Element.Style', function(){
 
 		beforeEach(function(){
 			var className = String.uniqueID();
-			var style = this.style = document.createElement('style');
+			var style = this.style = $(document.createElement('style'));
 			style.type = 'text/css';
 			var definition = [
 				'.' + className + '{',
@@ -44,10 +44,14 @@ describe('Element.Style', function(){
 		});
 
 		it('should set/overwrite the opacity', function(){
-			this.element.setStyle('opacity', 1);
-			expect(this.element.getStyle('opacity')).toEqual(1);
-			this.element.setStyle('opacity', null);
-			expect(this.element.getStyle('opacity')).toEqual(0.5);
+			// this test is disabled in IE, because of the ugly aliasing with
+			// opacity we have to remove the filter in oldIE
+			if (document.html.style.filter == null || window.opera || Syn.browser.gecko){
+				this.element.setStyle('opacity', 1);
+				expect(this.element.getStyle('opacity')).toEqual(1);
+				this.element.setStyle('opacity', null);
+				expect(this.element.getStyle('opacity')).toEqual(0.5);
+			}
 		});
 
 		it('should remove the style by setting it to `null`', function(){
