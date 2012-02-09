@@ -77,6 +77,12 @@
 				width: 300px;
 			}
 
+			.wrapper {
+				width: 500px;
+				height: 300px;
+				background: #eee;
+			}
+
 		</style>
 
 	</head>
@@ -190,10 +196,8 @@
 				<a href="#" id="units-fx-morph-link">morph</a>
 			</p>
 
-			<div style="width: 500px; height: 300px; background: #eee;">
-
+			<div class="wrapper">
 				<div id="units-fx-morph" class="box"></div>
-
 			</div>
 
 			<script>
@@ -219,6 +223,40 @@
 
 			</script>
 
+			<h1>.fade</h1>
+
+			<p>
+				<a href="#" id="fade-link">fade</a><br>
+				<span id="fade-opacity"></span>
+			</p>
+
+			<div class="wrapper">
+				<div id="fade" class="box"></div>
+				<h1 id="fade2" class="box">test</h1>
+			</div>
+
+			<script>
+			var fadeToggle = 1;
+			var fade = $('fade').set('tween', {
+				onStart: function(){
+					$('fade-opacity').set('text', fade.getStyle('opacity'))
+						.appendText(' ' + fade.getStyle('visibility'));
+				},
+				onComplete: function(){
+					$('fade-opacity').set('text', fade.getStyle('opacity'))
+						.appendText(' ' + fade.getStyle('visibility'));
+				}
+			});
+			fade.fade('hide');
+			var fade2 = $('fade2');
+			$('fade-link').addEvent('click', function(event){
+				event.preventDefault();
+				var to = fadeToggle++ % 5 / 4;
+				fade.fade(to == 1 ? 'in' : (to == 0 ? 'out' : to));
+				fade2.fade('hide');
+				fade2.fade('in');
+			});
+			</script>
 
 		</div>
 
