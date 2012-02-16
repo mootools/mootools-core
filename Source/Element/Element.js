@@ -631,7 +631,7 @@ Element.implement({
 				if (pollutesGetAttribute) delete attributeWhiteList[name];
 				/* </ltIE9> */
 			} else {
-				this.setAttribute(name, value);
+				this.setAttribute(name, '' + value);
 				/* <ltIE9> */
 				if (pollutesGetAttribute) attributeWhiteList[name] = true;
 				/* </ltIE9> */
