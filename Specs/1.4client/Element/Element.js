@@ -79,6 +79,15 @@ describe('Element', function(){
 
 		});
 
+		describe('value as object with toString()', function(){
+
+			it('should call the toString() method of a passed object', function(){
+				var a = new Element('a').set('href', {toString: function(){ return '1'; }});
+				expect(a.get('href')).toEqual('1');
+			});
+
+		});
+
 	});
 
 	describe("Element.setProperty('type')", function(){
