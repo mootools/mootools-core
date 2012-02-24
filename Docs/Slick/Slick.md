@@ -224,7 +224,7 @@ Every Even Child (same as 2n):
 This selector respects the w3c specifications, so it has 1 as its first index, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
 
 
-Selector: nth-child {#Slick:nth-last-child}
+Selector: nth-last-child {#Slick:nth-last-child}
 --------------------------------------
 
 Matches every nth child, starting from the last child.
