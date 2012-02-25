@@ -63,4 +63,59 @@ describe('Element.Style', function(){
 
 	});
 
+	describe('getStyle height / width / margin with CSS', function(){
+
+		var style, element;
+
+		it('[beforeAll]', function(){
+			var className = String.uniqueID();
+			style = $(document.createElement('style'));
+			style.type = 'text/css';
+			var definition = [
+				'.' + className + '{',
+					'height: 200px;',
+					'width: 50%;',
+					'margin-left: 20%;',
+				'}'
+			].join('');
+
+			// fix this, see https://github.com/mootools/mootools-core/issues/2265
+			if (style.styleSheet) style.styleSheet.cssText = definition;
+			else style.set('text', definition);
+
+			document.head.appendChild(style);
+
+			element = new Element('div', {
+				'class': className,
+				text: 'yo'
+			}).inject(document.body);
+
+		});
+
+		it('should get the height from the CSS', function(){
+			expect(element.getStyle('height')).toEqual('200px');
+		});
+
+		it('should get the width from the CSS', function(){
+			expect(element.getStyle('width')).toMatch(/\d+px/);
+		});
+
+		it('should get the left margin from the CSS', function(){
+			// FireFox returns px (and maybe even as floats)
+			var re = /^(20\%|(\d+|\d+\.\d+)px)$/;
+			expect(re.test('20%')).toBe(true);
+			expect(re.test('20px')).toBe(true);
+			expect(re.test('20.43px')).toBe(true);
+			expect(re.test('20')).toBe(false);
+			expect(re.test('auto')).toBe(false);
+			expect(element.getStyle('margin-left')).toMatch(re);
+		});
+
+		it('[afterAll]', function(){
+			style.destroy();
+			element.destroy();
+		});
+
+	});
+
 });
