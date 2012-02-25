@@ -101,7 +101,14 @@ describe('Element.Style', function(){
 		});
 
 		it('should get the left margin from the CSS', function(){
-			expect(element.getStyle('margin-left')).toEqual('20%');
+			// FireFox returns px (and maybe even as floats)
+			var re = /^(20\%|(\d+|\d+\.\d+)px)$/;
+			expect(re.test('20%')).toBe(true);
+			expect(re.test('20px')).toBe(true);
+			expect(re.test('20.43px')).toBe(true);
+			expect(re.test('20')).toBe(false);
+			expect(re.test('auto')).toBe(false);
+			expect(element.getStyle('margin-left')).toMatch(re);
 		});
 
 		it('[afterAll]', function(){
