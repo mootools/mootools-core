@@ -319,6 +319,7 @@ This is a "dynamic arguments" method. Properties passed in can be any of the 'se
 	- use 'class', not 'className'
 	- use 'frameborder', not 'frameBorder'
 	- etc.
+- In IE8 or lower, it is not possible to set `type` multiple times. It will throw an error.
 
 
 ### See Also:
@@ -639,21 +640,22 @@ Inserts the passed element(s) inside the Element (which will then become the par
 	var mySecondElement = new Element('p#second');
 	var myThirdElement  = new Element('ul#third');
 	var myFourthElement = new Element('a#fourth');
-
+	
 	var myParentElement = new Element('div#parent');
-
+	
 	myFirstElement.adopt(mySecondElement);
-	mySecondElement.adopt('third', myFourthElement);
-
-	myParent3.adopt([myFirstElement, new Element('span#another')]);
+	mySecondElement.adopt(myThirdElement, myFourthElement);
+	myParentElement.adopt([myFirstElement, new Element('span#another')]);
 
 ##### Resulting HTML
 
 	<div id="parent">
-		<p id="second">
-			<ul id="third"></ul>
-			<a id="fourth"></a>
-		</p>
+		<div id="first">
+			<p id="second">
+				<ul id="third"></ul>
+				<a id="fourth"></a>
+			</p>
+		</div>
 		<span id="another"></span>
 	</div>
 
@@ -1126,6 +1128,10 @@ Element Method: getParents {#Element:getParents}
 
 Like [Element:getParent](#Element:getParent), but returns a collection of all the matched parentNodes up the tree.
 
+### Returns:
+
+* (*array*) If no matching parents are found, an empty array is returned.
+
 
 
 Element Method: getSiblings {#Element:getSiblings}
@@ -1375,7 +1381,7 @@ Sets an attribute or special property for this Element.
 	- use 'class', not 'className'
 	- use 'frameborder', not 'frameBorder'
 	- etc.
-
+- When setting the `src` property for an image file, be sure to remove the `width` and `height` attribute (use `Element.removeAttribute`). IE7, and less, set and freeze the `width` and `height` of an image if previously specified. 
 
 Element Method: setProperties {#Element:setProperties}
 ------------------------------------------------------
@@ -1905,6 +1911,17 @@ Removes every item from the [Elements][] array, and the empty array.
 
 * (*array*) This empty [Elements][] array.
 
+### Note:
+
+`Elements.empty` does not destroy the elements inside. As best practice, always destroy your elements if they're no longer in use. For example:
+
+    $$('div').destroy().empty();
+
+### See Also
+
+ - [Element:destroy][]
+
+
 
 Elements Method: filter {#Elements:filter}
 ------------------------------------------
@@ -2053,6 +2070,7 @@ This method has been deprecated. Use [Elements:append][] instead.
 [Element:inject]: #Element:inject
 [Element:set]: #Element:set
 [Element:get]: #Element:get
+[Element:destroy]: #Element:destroy
 [Element:grab]: #Element:grab
 [Element:erase]: #Element:erase
 [Element:setProperty]: #Element:setProperty

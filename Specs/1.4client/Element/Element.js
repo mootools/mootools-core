@@ -16,6 +16,43 @@ describe('Element', function(){
 			expect($(div.firstChild).getProperty('action')).toEqual('s');
 		});
 
+		it('should ignore expandos', function(){
+			var div = new Element('div');
+			expect(div.getProperty('inject')).toBeNull();
+		});
+
+		it('should work in collaboration with setProperty', function(){
+			var div = new Element('div', {random: 'attribute'});
+			expect(div.getProperty('random')).toEqual('attribute');
+		});
+
+		it('should get custom attributes in html', function(){
+			var div = new Element('div', {html: '<div data-load="typical"></div>'}).getFirst();
+			expect(div.get('data-load')).toEqual('typical');
+
+			div = new Element('div', {html: '<div data-custom></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('');
+
+			div = new Element('div', {html: '<div data-custom="nested"><a data-custom="other"></a></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('nested');
+
+			div = new Element('div', {html: '<div><a data-custom="other"></a></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual(null);
+
+			div = new Element('div', {html: '<a data-custom="singular" href="#">href</a>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('singular');
+
+			div = new Element('div', {html: '<div class="><" data-custom="evil attribute values"></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('evil attribute values');
+
+			div = new Element('div', {html: '<div class="> . <" data-custom="aggrevated evil attribute values"></div>'}).getFirst();
+			expect(div.get('data-custom')).toEqual('aggrevated evil attribute values');
+
+			div = new Element('div', {html: '<a href="#"> data-custom="singular"</a>'}).getFirst();
+			expect(div.get('data-custom')).toEqual(null);
+		});
+
+
 	});
 
 	describe('Element.set', function(){
@@ -27,6 +64,11 @@ describe('Element', function(){
 				expect(new Element('input', {value: value}).get('value')).toEqual('');
 			});
 
+			it('should set a falsey value and not an empty string', function(){
+				expect(new Element('input', {value: false}).get('value')).toEqual('false');
+				expect(new Element('input', {value: 0}).get('value')).toEqual('0');
+			});
+
 		});
 
 		describe('type', function(){
@@ -35,6 +77,30 @@ describe('Element', function(){
 				expect(new Element('button', {type: 'button'}).get('type')).toEqual('button');
 			});
 
+		});
+
+		describe('value as object with toString()', function(){
+
+			it('should call the toString() method of a passed object', function(){
+				var a = new Element('a').set('href', {toString: function(){ return '1'; }});
+				expect(a.get('href')).toEqual('1');
+			});
+
+		});
+
+	});
+
+	describe("Element.setProperty('type')", function(){
+
+		it('should keep the input value after setting a input field to another type (submit button)', function(){
+			var input = new Element('input', {value: 'myValue', type: 'text'});
+			input.setProperty('type', 'submit');
+			expect(input.getProperty('value')).toEqual('myValue');
+		});
+
+		it('should set the right type and value of input fields when a input field is created with CSS selectors', function(){
+			var input = new Element('input[type="submit"]', {value: 'myValue'});
+			expect(input.getProperty('value')).toEqual('myValue');
 		});
 
 	});
@@ -158,6 +224,14 @@ describe('Element', function(){
 				expect(new Element('div', {html: ['moo', 'rocks', 'your', 'socks', 1]}).innerHTML).toEqual('moorocksyoursocks1');
 			});
 
+		});
+
+	});
+
+	describe("Element.erase('html')", function(){
+
+		it('should empty the html inside an element', function(){
+			expect(new Element('div', {html: '<p>foo bar</p>'}).erase('html').innerHTML).toEqual('');
 		});
 
 	});

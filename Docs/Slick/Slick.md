@@ -196,38 +196,76 @@ Nth Expression:
 
 ### Examples:
 
-	$$('#myDiv:nth-child(2n)'); //Returns every even child.
+	<span id="i1"></span>
+	<span id="i2"></span>
+	<span id="i3"></span>
+	<span id="i4"></span>
+	<span id="i5"></span>
 
-	$$('#myDiv:nth-child(n)'); //Returns all children.
+	$$(':nth-child(1)'); //Returns Element #i1.
 
-	$$('#myDiv:nth-child(2n+1)') //Returns every odd child.
+	$$(':nth-child(2n)'); //Returns Elements #i2 and #i4.
 
-	$$('#myDiv:nth-child(4n+3)') //Returns Elements 3, 7, 11, 15, etc.
+	$$(':nth-child(2n+1)') //Returns Elements #i1, #i3 and #i5.
+
+	$$(':nth-child(3n+2)') //Returns Elements #i2 and #i5.
 
 
-Every Odd Child:
+Every Odd Child (same as 2n+1):
 
 	':nth-child(odd)'
 
-Every Even Child:
+Every Even Child (same as 2n):
 
 	':nth-child(even)'
 
-Only Child:
+### Note:
 
-	':nth-child(only)'
+This selector respects the w3c specifications, so it has 1 as its first index, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
 
-First Child:
 
-	'nth-child(first)'
+Selector: nth-last-child {#Slick:nth-last-child}
+--------------------------------------
 
-Last Child:
+Matches every nth child, starting from the last child.
 
-	'nth-child(last)'
+### Usage:
+
+Nth Expression:
+
+	':nth-last-child(nExpression)'
+
+### Variables:
+
+* nExpression - (string) A nth expression for the "every" nth-child.
+
+### Examples:
+	
+	<span id="i1"></span>
+	<span id="i2"></span>
+	<span id="i3"></span>
+	<span id="i4"></span>
+	<span id="i5"></span>
+
+	$$(':nth-last-child(1)'); //Returns Element #i5.
+
+	$$(':nth-last-child(2n)'); //Returns Elements #i2 and #i4.
+
+	$$(':nth-last-child(2n+1)') //Returns Elements #i1, #i3 and #i5.
+	
+	$$(':nth-last-child(3n+2)') //Returns Elements #i1 and #i4.
+
+Every Odd Child (same as 2n+1):
+
+	':nth-last-child(odd)'
+
+Every Even Child  (same as 2n):
+
+	':nth-last-child(even)'
 
 ### Note:
 
-This selector respects the w3c specifications, so it has 1 as its first child, not 0. Therefore nth-child(odd) will actually select the even children, if you think in zero-based indexes.
+This selector respects the w3c specifications, so it has 1 as its first index, not 0. Therefore nth-last-child(odd) will actually select the even last-children, if you think in zero-based indexes.
 
 
 Selector: even {#Slick:even}
