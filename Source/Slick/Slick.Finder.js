@@ -214,6 +214,7 @@ local.setDocument = function(document){
 		// IE8 does not have .contains on document.
 		return context === node || ((context === document) ? document.documentElement : context).contains(node);
 	} : (root && root.compareDocumentPosition) ? function(context, node){
+		if (node === null) return false; /* Fix for Firefox 5 throwing NS_ERROR_ILLEGAL_VALUE when calling compareDocumentPosition(null) */
 		return context === node || !!(context.compareDocumentPosition(node) & 16);
 	} : function(context, node){
 		if (node) do {
