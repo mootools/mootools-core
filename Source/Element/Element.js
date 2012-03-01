@@ -611,8 +611,7 @@ var pollutesGetAttribute = (function(div){
 	div.random = 'attribute';
 	return (div.getAttribute('random') == 'attribute');
 })(document.createElement('div'));
-
-/* <ltIE9> */
+/* </ltIE9> */
 
 Element.implement({
 
