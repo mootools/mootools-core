@@ -949,11 +949,13 @@ Element.Properties.html = {
 
 };
 
+var supportsHTML5Elements, supportsTableInnerHTML, supportsTRInnerHTML;
+
 /*<ltIE9>*/
 // technique by jdbarlett - http://jdbartlett.com/innershiv/
 var div = document.createElement('div');
 div.innerHTML = '<nav></nav>';
-var supportsHTML5Elements = (div.childNodes.length == 1);
+supportsHTML5Elements = (div.childNodes.length == 1);
 if (!supportsHTML5Elements){
 	var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
 		fragment = document.createDocumentFragment(), l = tags.length;
@@ -963,7 +965,7 @@ div = null;
 /*</ltIE9>*/
 
 /*<IE>*/
-var supportsTableInnerHTML = Function.attempt(function(){
+supportsTableInnerHTML = Function.attempt(function(){
 	var table = document.createElement('table');
 	table.innerHTML = '<tr><td></td></tr>';
 	return true;
@@ -972,7 +974,7 @@ var supportsTableInnerHTML = Function.attempt(function(){
 /*<ltFF4>*/
 var tr = document.createElement('tr'), html = '<td></td>';
 tr.innerHTML = html;
-var supportsTRInnerHTML = (tr.innerHTML == html);
+supportsTRInnerHTML = (tr.innerHTML == html);
 tr = null;
 /*</ltFF4>*/
 
