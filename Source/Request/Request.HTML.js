@@ -29,7 +29,7 @@ Request.HTML = new Class({
 	},
 
 	success: function(text){
-		var options = this.options, response = this.response;
+		var options = Object.merge({}, this.options, this.requestOptions), response = this.response;
 
 		response.html = text.stripScripts(function(script){
 			response.javascript = script;
@@ -55,6 +55,14 @@ Request.HTML = new Class({
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
+	},
+
+	send: function(options){
+		this.requestOptions = options;
+
+		this.parent(options);
+
+		return this;
 	}
 
 });
