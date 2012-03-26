@@ -138,6 +138,7 @@ Element.NativeEvents = {
 	gesturestart: 2, gesturechange: 2, gestureend: 2, // gesture
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, paste: 2, input: 2, //form elements
 	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
+	hashchange: 1, popstate: 2, // history
 	error: 1, abort: 1, scroll: 1 //misc
 };
 
@@ -172,12 +173,12 @@ if (!window.addEventListener){
 	Element.Events.change = {
 		base: function(){
 			var type = this.type;
-			return (this.get('tag') == 'input' && (type == 'radio' || type == 'checkbox')) ? 'propertychange' : 'change'
+			return (this.get('tag') == 'input' && (type == 'radio' || type == 'checkbox')) ? 'propertychange' : 'change';
 		},
 		condition: function(event){
 			return this.type != 'radio' || (event.event.propertyName == 'checked' && this.checked);
 		}
-	}
+	};
 }
 /*</ltIE9>*/
 
