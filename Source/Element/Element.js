@@ -198,7 +198,19 @@ if (object[1] == 1) Elements.implement('splice', function(){
 }.protect());
 
 Array.forEachMethod(function(method, name){
-	Elements.implement(name, method);
+	var wrap;
+	
+	if(name in {map:1,splice:1,slice:1,clone:1}){
+		wrap = function(){
+			var result = method.apply(this, arguments);
+			if(typeOf(result) == 'array' && result.every(function(el){return typeOf(el) == 'element';})){
+				result = new Elements(result);
+			}
+			return result;
+		};
+	}
+	
+	Elements.implement(name, wrap || method);
 });
 
 Array.mirror(Elements);
