@@ -200,10 +200,12 @@ if (object[1] == 1) Elements.implement('splice', function(){
 Array.forEachMethod(function(method, name){
 	var wrap;
 	
-	if(name in {map:1,splice:1,slice:1,clone:1}){
+	if (({map: 1, splice: 1, slice: 1, clone: 1, flatten: 1})[name]){
 		wrap = function(){
 			var result = method.apply(this, arguments);
-			if(typeOf(result) == 'array' && result.every(function(el){return typeOf(el) == 'element';})){
+			if (name != 'map' || result.every(function(el){
+				return typeOf(el) == 'element';				
+			})){
 				result = new Elements(result);
 			}
 			return result;
