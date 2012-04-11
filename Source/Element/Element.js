@@ -198,12 +198,12 @@ if (object[1] == 1) Elements.implement('splice', function(){
 }.protect());
 
 Array.forEachMethod(function(method, name){
-	var wrap, kind = {map: 2, splice: 1, slice: 1, clone: 1, flatten: 1};
+	var wrap, kind = ({map: 2, splice: 1, slice: 1, clone: 1, flatten: 1})[name];
 	
-	if (kind[name]){
+	if (kind){
 		wrap = function(){
 			var result = method.apply(this, arguments);
-			if (kind[name] == 1 || result.every(function(el){
+			if (kind == 1 || result.every(function(el){
 				return typeOf(el) == 'element';				
 			})){
 				result = new Elements(result);
