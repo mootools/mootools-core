@@ -800,7 +800,6 @@ var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 Element.implement({
 
 	destroy: function(){
-        if(! this.getElementsByTagName) return null; //textNode
 		var children = clean(this).getElementsByTagName('*');
 		Array.each(children, clean);
 		Element.dispose(this);
@@ -808,12 +807,11 @@ Element.implement({
 	},
 
 	empty: function(){
-		Array.from(this.childNodes).each(Element.destroy);
+		Array.from(this.childNodes).each(Element.dispose);
 		return this;
 	},
 
 	dispose: function(){
-        this._fireEvent = null;
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
 	},
 
@@ -950,13 +948,6 @@ Element.Properties.html = {
 	}
 
 };
-
-// fix for IE leak on Element.set('text','')
-Element.Properties.text = {
-    set: function(text){
-        Element.prototype.empty.call(this).setProperty('text',text);
-    }
-}
 
 var supportsHTML5Elements, supportsTableInnerHTML, supportsTRInnerHTML;
 
