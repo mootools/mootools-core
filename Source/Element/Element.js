@@ -792,6 +792,11 @@ var clean = function(item){
 		delete collected[uid];
 		delete storage[uid];
 	}
+    var props = ['_fireEvent','$family','$constructor'];
+    props.each(function(property){
+        if(property in item) delete item[property];
+    });
+    
 	return item;
 };
 
@@ -800,14 +805,16 @@ var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 Element.implement({
 
 	destroy: function(){
-		var children = clean(this).getElementsByTagName('*');
-		Array.each(children, clean);
-		Element.dispose(this);
+        if(this.nodeType == 1){
+            var children = clean(this).getElementsByTagName('*');
+            Array.each(children, clean);
+        }
+        Element.dispose(this);
 		return null;
 	},
 
 	empty: function(){
-		Array.from(this.childNodes).each(Element.dispose);
+		Array.from(this.childNodes).each(Element.destroy);
 		return this;
 	},
 
@@ -948,6 +955,13 @@ Element.Properties.html = {
 	}
 
 };
+
+// fix for IE leak on Element.set('text','')
+Element.Properties.text = {
+    set: function(text){
+        this.empty().setProperty('text',text);
+    }
+}
 
 var supportsHTML5Elements, supportsTableInnerHTML, supportsTRInnerHTML;
 
