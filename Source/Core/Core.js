@@ -256,7 +256,7 @@ var force = function(name, object, methods){
 			if (!methodsEnumerable) for (var i = 0, l = methods.length; i < l; i++){
 				fn.call(prototype, prototype[methods[i]], methods[i]);
 			}
-			for (var key in prototype) fn.call(prototype, prototype[key], key)
+			for (var key in prototype) fn.call(prototype, prototype[key], key);
 		};
 	}
 
@@ -314,11 +314,13 @@ Object.each = Object.forEach;
 
 Array.implement({
 
+	/*<!ES5>*/
 	forEach: function(fn, bind){
 		for (var i = 0, l = this.length; i < l; i++){
 			if (i in this) fn.call(bind, this[i], i, this);
 		}
 	},
+	/*</!ES5>*/
 
 	each: function(fn, bind){
 		Array.forEach(this, fn, bind);
