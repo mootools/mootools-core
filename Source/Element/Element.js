@@ -621,7 +621,8 @@ Element.implement({
 			setter(this, value);
 		} else {
 			/* <ltIE9> */
-			if (pollutesGetAttribute) var attributeWhiteList = this.retrieve('$attributeWhiteList', {});
+			var attributeWhiteList;
+			if (pollutesGetAttribute) attributeWhiteList = this.retrieve('$attributeWhiteList', {});
 			/* </ltIE9> */
 
 			if (value == null){
@@ -949,7 +950,7 @@ Element.Properties.html = {
 
 };
 
-var supportsHTML5Elements, supportsTableInnerHTML, supportsTRInnerHTML;
+var supportsHTML5Elements = true, supportsTableInnerHTML = true, supportsTRInnerHTML = true;
 
 /*<ltIE9>*/
 // technique by jdbarlett - http://jdbartlett.com/innershiv/
