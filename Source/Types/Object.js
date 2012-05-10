@@ -30,7 +30,7 @@ Object.extend({
 	},
 	
 	set: function(object, path, value){
-		path = (path == 'string') ? path.split('.') : path.slice(0);
+		path = (typeof path == 'string') ? path.split('.') : path.slice(0);
 		var key = path.pop(),
 			len = path.length,
 			i = 0,
