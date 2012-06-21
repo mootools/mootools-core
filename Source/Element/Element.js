@@ -1017,7 +1017,7 @@ testForm.innerHTML = '<select><option>s</option></select>';
 if (testForm.firstChild.value != 's') Element.Properties.value = {
 
 	set: function(value){
-		var tag = this.get('tag');
+        var tag = this.get('tag');
 		if (tag != 'select') return this.setProperty('value', value);
 		var options = this.getElements('option');
 		value = String(value);
