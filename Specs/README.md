@@ -6,16 +6,35 @@ This repository is intended to provide the specification infrastructure for MooT
 The infrastructure uses Jasmine as a UnitTest-Library. It is possible to run Specs via
 the browser, via JSTestDriver and via NodeJS.
 
+## Running the tests in a browser
+
+**Setup:**
+
+	# init all git submodules
+	git submodule update --init --recursive
+	
+**Run:**
+
+To run the tests, you could just open the file `Specs/Runner/runner.html` in a browser, however for 
+some tests you you need some webserver, like apache or python SimpleServer:
+
+	python -m SimpleHTTPServer 8080
+
+Now you can open `http://localhost:8080/Specs/` in the browser to choose a preset or open 
+`http://localhost:8080/Specs/Runner/runner.html?preset=core-1.4` to run the 1.4 tests.	
+
+## JSTD
+
+*The JSTestDriver setup might be outdated*
+
 ### Setup
 
 Clone the MooTools Core repository and initialize the submodules.
 
 Set up the Specs:
 
-	cd Specs
-	git pull origin master
 	git submodule update --init --recursive
-	cd Runner
+	cd Specs/Runner
 	chmod +x server test runner runner.js buildCommonJS buildJSTDConfiguration
 
 ### Requirements
