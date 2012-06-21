@@ -1021,7 +1021,7 @@ if (testForm.firstChild.value != 's') Element.Properties.value = {
 		if (tag != 'select') return this.setProperty('value', value);
 		var options = this.getElements('option');
 		value = String(value);
-        for (var i = 0; i < options.length; i++){
+		for (var i = 0; i < options.length; i++){
 			var option = options[i],
 				attr = option.getAttributeNode('value'),
 				optionValue = (attr && attr.specified) ? option.value : option.get('text');
