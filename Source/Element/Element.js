@@ -206,7 +206,7 @@ Array.mirror(Elements);
 /*<ltIE8>*/
 var createElementAcceptsHTML;
 try {
-    createElementAcceptsHTML = (document.createElement('<input name=x>').name == 'x');
+	createElementAcceptsHTML = (document.createElement('<input name=x>').name == 'x');
 } catch (e){}
 
 var escapeQuotes = function(html){
@@ -779,30 +779,11 @@ Element.implement({
 
 });
 
-var collected = {}, storage = {};
-
-var get = function(uid){
-	return (storage[uid] || (storage[uid] = {}));
-};
-
-var clean = function(item){
-	var uid = item.uniqueNumber;
-	if (item.removeEvents) item.removeEvents();
-	if (item.clearAttributes) item.clearAttributes();
-	if (uid != null){
-		delete collected[uid];
-		delete storage[uid];
-	}
-	return item;
-};
-
 var formProps = {input: 'checked', option: 'selected', textarea: 'value'};
 
 Element.implement({
 
 	destroy: function(){
-		var children = clean(this).getElementsByTagName('*');
-		Array.each(children, clean);
 		Element.dispose(this);
 		return null;
 	},
@@ -863,8 +844,6 @@ Element.implement({
 				self.removeListener('unload', fn);
 				old();
 			};
-		} else {
-			collected[Slick.uidOf(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
 		else this.attachEvent('on' + type, fn);
@@ -878,20 +857,20 @@ Element.implement({
 	},
 
 	retrieve: function(property, dflt){
-		var storage = get(Slick.uidOf(this)), prop = storage[property];
-		if (dflt != null && prop == null) prop = storage[property] = dflt;
+		if (!this.$storage) this.$storage = {};
+		var prop = this.$storage[property];
+		if (dflt != null && prop == null) prop = this.$storage[property] = dflt;
 		return prop != null ? prop : null;
 	},
 
 	store: function(property, value){
-		var storage = get(Slick.uidOf(this));
-		storage[property] = value;
+		if (!this.$storage) this.$storage = {};
+		this.$storage[property] = value;
 		return this;
 	},
 
 	eliminate: function(property){
-		var storage = get(Slick.uidOf(this));
-		delete storage[property];
+		if (this.$storage) delete this.$storage[property];
 		return this;
 	}
 
@@ -899,7 +878,6 @@ Element.implement({
 
 /*<ltIE9>*/
 if (window.attachEvent && !window.addEventListener) window.addListener('unload', function(){
-	Object.each(collected, clean);
 	if (window.CollectGarbage) CollectGarbage();
 });
 /*</ltIE9>*/
