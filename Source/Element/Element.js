@@ -863,7 +863,7 @@ Element.implement({
 				self.removeListener('unload', fn);
 				old();
 			};
-		} else {
+		} else if (window.attachEvent && !window.addEventListener){
 			collected[Slick.uidOf(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
