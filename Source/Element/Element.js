@@ -365,7 +365,7 @@ Element.implement('hasChild', function(element){
 		return match.call(this, node, selector);
 	};
 
-})(Slick.search, Slick.find, Slick.match);
+}).call(this, Slick.search, Slick.find, Slick.match);
 
 //</1.2compat>
 

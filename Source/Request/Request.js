@@ -275,4 +275,4 @@ Element.implement({
 
 });
 
-})();
+}).call(this);

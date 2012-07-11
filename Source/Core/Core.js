@@ -518,4 +518,4 @@ this.$unlink = function(object){
 
 //</1.2compat>
 
-})();
+}).call(this);
