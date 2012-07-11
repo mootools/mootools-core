@@ -112,4 +112,4 @@ Class.Mutators = {
 	}
 };
 
-}).call(this);
+}).call(this.window || global);

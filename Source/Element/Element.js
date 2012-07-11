@@ -1058,4 +1058,4 @@ if (document.createElement('div').getAttributeNode('id')) Element.Properties.id 
 };
 /*</IE>*/
 
-})();
+}).call(this.window || global);

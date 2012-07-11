@@ -116,7 +116,7 @@ Object.extend({
 
 });
 
-}).call(this);
+})();
 
 //<1.2compat>
 

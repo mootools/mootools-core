@@ -118,4 +118,4 @@ this.Options = new Class({
 
 });
 
-}).call(this);
+}).call(this.window || global);

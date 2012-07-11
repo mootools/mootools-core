@@ -111,7 +111,7 @@ DOMEvent.defineKeys({
 	'46': 'delete', '13': 'enter'
 });
 
-}).call(this);
+}).call(this.window || global);
 
 /*<1.3compat>*/
 var Event = DOMEvent;

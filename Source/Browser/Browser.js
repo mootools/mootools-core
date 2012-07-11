@@ -250,4 +250,4 @@ this.$exec = Browser.exec;
 
 //</1.2compat>
 
-}).call(this);
+}).call(this.window || global);

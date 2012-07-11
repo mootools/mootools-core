@@ -176,4 +176,4 @@ var pullInstance = function(fps){
 	}
 };
 
-}).call(this);
+}).call(this.window || global);
