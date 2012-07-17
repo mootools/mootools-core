@@ -28,7 +28,7 @@ Fx.CSS = new Class({
 			from = element.getStyle(property);
 			var unit = this.options.unit;
 			// adapted from: https://github.com/ryanmorr/fx/blob/master/fx.js#L299
-			if (unit && from.slice(-unit.length) != unit && parseFloat(from) != 0){
+			if (unit && from && typeof from == 'string' && from.slice(-unit.length) != unit && parseFloat(from) != 0){
 				element.setStyle(property, to + unit);
 				var value = element.getComputedStyle(property);
 				// IE and Opera support pixelLeft or pixelWidth
