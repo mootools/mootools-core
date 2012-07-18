@@ -65,7 +65,7 @@ this.Events = new Class({
 	},
 
 	fireEvent: function(type, args, delay){
-		if (!this.$events) return;
+		if (!this.$events) return this;
 
 		type = removeOn(type);
 		var events = this.$events[type];
@@ -79,7 +79,7 @@ this.Events = new Class({
 	},
 
 	removeEvent: function(type, fn){
-		if (!this.$events) return;
+		if (!this.$events) return this;
 
 		type = removeOn(type);
 		var events = this.$events[type];
@@ -91,7 +91,7 @@ this.Events = new Class({
 	},
 
 	removeEvents: function(events){
-		if (!this.$events) return;
+		if (!this.$events) return this;
 
 		var type;
 		if (typeOf(events) == 'object'){

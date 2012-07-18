@@ -169,6 +169,14 @@ var runEventSpecs = function(type, create){
 			expect(methods).toEqual([1, 2, 3, 3]);
 		},
 
+		'should be chainable': function(){
+			var object = create();
+			object.addEvent('event', $empty).addEvent('event2', $empty);
+
+			object = create();
+			object[fire]('event')[fire]('event');
+		},
+
 		'should have isolated handlers collections': function(){
 			var object2 = create();
 			var object1 = create();
