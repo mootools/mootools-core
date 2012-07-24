@@ -100,11 +100,13 @@ Fx.CSS = new Class({
 	search: function(selector){
 		if (Fx.CSS.Cache[selector]) return Fx.CSS.Cache[selector];
 		var to = {}, selectorTest = new RegExp('^' + selector.escapeRegExp() + '$');
-		Array.each(document.styleSheets, function(sheet, j){
-			var href = sheet.href;
-			if (href && href.contains('://') && !href.contains(document.domain)) return;
-			var rules = sheet.rules || sheet.cssRules;
+
+		var searchStyles = function(rules) {
 			Array.each(rules, function(rule, i){
+				if (rule.media){
+					searchStyles(rule.rules || rule.cssRules);
+					return;
+				}
 				if (!rule.style) return;
 				var selectorText = (rule.selectorText) ? rule.selectorText.replace(/^\w+/, function(m){
 					return m.toLowerCase();
@@ -116,6 +118,13 @@ Fx.CSS = new Class({
 					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
 				});
 			});
+		}
+
+		Array.each(document.styleSheets, function(sheet, j){
+			var href = sheet.href;
+			if (href && href.contains('://') && !href.contains(document.domain)) return;
+			var rules = sheet.rules || sheet.cssRules;
+			searchStyles(rules);
 		});
 		return Fx.CSS.Cache[selector] = to;
 	}
