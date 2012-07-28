@@ -36,10 +36,12 @@ var Request = this.Request = new Class({
 		user: '',
 		password: '',*/
 		url: '',
-		data: '',
+		raw: '',
+		data: {},
+		files: {},
 		headers: {
 			'X-Requested-With': 'XMLHttpRequest',
-			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
+			'Accept': 'text/javascript, application/json, application/xml, text/xml, text/html, */*'
 		},
 		async: true,
 		format: false,
@@ -185,7 +187,8 @@ var Request = this.Request = new Class({
 		if (this.options.noCache)
 			url += (url.contains('?') ? '&' : '?') + String.uniqueID();
 
-		if (data && method == 'get'){
+		// if we have a RAW body, treat data as a query string
+		if (data && (method == 'get' || this.options.raw != undefined)) {
 			url += (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
@@ -210,7 +213,31 @@ var Request = this.Request = new Class({
 		}, this);
 
 		this.fireEvent('request');
-		xhr.send(data);
+
+		// special handling of files
+		if (this.options.files.length > 0) {
+			// make sure the content-type header is reset
+			delete this.options.headers['Content-Type'];
+
+			var upload = new FormData();
+
+			// restructure the upload object with the request params
+			Object.each(this.options.data, function(value, key) {
+				upload.append(key, value);
+			});
+
+			// add files
+			Object.each(this.options.files, function(file, name) {
+				upload.append(name, file);
+			});
+
+			xhr.send(upload);
+		} else if (this.options.raw != undefined) {
+			xhr.send(this.options.raw);
+		} else {
+			xhr.send(data);
+		}
+
 		if (!this.options.async) this.onStateChange();
 		else if (this.options.timeout) this.timer = this.timeout.delay(this.options.timeout, this);
 		return this;
