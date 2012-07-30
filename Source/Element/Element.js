@@ -821,7 +821,7 @@ Element.implement({
 		var oldID;
 		/*<ltIE8>*/
 		if (Browser.ie6 || Browser.ie7 && !keepid){
-			oldID = this.removeAttribute('id');
+			oldID = this.removeAttribute('id'); //if element has ID, IE6/7 will break document.id
 		}
 		/*</ltIE8>*/
 		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
