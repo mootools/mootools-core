@@ -9,6 +9,22 @@ provides: [Element.Event.Specs]
 describe('Element', function(){
 
 	describe('Element.getProperty', function(){
+		it('should cloneNode properly on IE6/7', function(){
+			var div = new Element('div');
+			div.innerHTML = "<input id='Q1' class='foo' rel='hai' />​";
+
+			var div = new Element('div');
+			div.inject(document.documentElement);
+			div.innerHTML = "<input id='Q1' class='foo' rel='hai' />";
+
+			var q1 = document.id('Q1');
+			var clone = q1.clone();
+			clone.replaces(q1);
+
+			expect($$('input[id=Q1]').length).toEqual(0)
+			expect($$('input#Q1').length).toEqual(0)
+			clone.dispose();
+		})
 
 		it('should get the attrubte of a form when the form has an input with as ID the attribute name', function(){
 			var div = new Element('div');

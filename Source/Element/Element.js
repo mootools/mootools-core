@@ -820,13 +820,15 @@ Element.implement({
 		contents = contents !== false;
 		var oldID;
 		/*<ltIE8>*/
-		if(Browser.ie6 || Browser.ie7 && !keepid){
+		if (Browser.ie6 || Browser.ie7 && !keepid){
 			oldID = this.removeAttribute('id');
 		}
 		/*</ltIE8>*/
 		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
 		/*<ltIE8>*/
-		oldID && Browser.ie6 || Browser.ie7 && this.setAttribute('id', oldID);
+		if (oldID && (Browser.ie6 || Browser.ie7)){
+			this.setAttribute('id', oldID);
+		}
 		/*</ltIE8>*/
 
 		if (contents){
