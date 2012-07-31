@@ -612,45 +612,6 @@ var pollutesGetAttribute = (function(div){
 	return (div.getAttribute('random') == 'attribute');
 })(document.createElement('div'));
 /* </ltIE9> */
-var
-    classParamToArray = function(classParam) {
-        var classes = dirtyClasses = [],
-            cleanClass = '';
-
-        switch (typeof classParam) {
-            case "string":
-                dirtyClasses = classParam.split(/\s+/);
-                break;
-            case "object":
-                dirtyClasses = classParam;
-                break;
-            case "function":
-                dirtyClasses = classParam();
-                break;
-        }
-
-        dirtyClasses.each(function(className) {
-            if (className === null)
-                return;
-            var cleanClass = String.from(className).trim();
-            if (cleanClass) {
-                classes.push(cleanClass);
-            }
-        });
-        return classes;
-    },
-
-    classExists = function(className) {
-        return this.className.clean().contains(className, ' ');
-    },
-
-    classAdd = function(className) {
-        this.className = (this.className + ' ' + className).clean();
-    },
-
-    classRemove = function(className) {
-        this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
-    };
 
 
 Element.implement({
@@ -734,38 +695,6 @@ Element.implement({
 		return this;
 	},
 
-    hasClass: function(classParam) {
-        return classParamToArray(classParam).every(function(className){
-            return classExists.call(this, className);
-        }, this);
-    },
-
-    addClass: function(classParam) {
-        classParamToArray(classParam).each(function(className){
-            if (!classExists.call(this, className)) {
-                classAdd.call(this, className);
-            }
-        }, this);
-
-        return this;
-    },
-
-    removeClass: function(classParam) {
-        classParamToArray(classParam).each(function(className){
-            classRemove.call(this, className);
-        }, this);
-        return this;
-    },
-
-    toggleClass: function(classParam, force){
-        classParamToArray(classParam).each(function(className){
-            var add = force;
-            if (add == null) add = !classExists.call(this, className);
-            (add) ? classAdd.call(this, className) : classRemove.call(this, className);
-        }, this);
-        return this;
-    },
-
 	adopt: function(){
 		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
 		if (length > 1) parent = fragment = document.createDocumentFragment();
@@ -828,6 +757,84 @@ Element.implement({
 			});
 		});
 		return queryString.join('&');
+	}
+
+});
+
+var
+	classParamToArray = function(classParam) {
+		if (typeOf(classParam) == "function") {
+			classParam = classParam();
+		}
+
+		switch (typeOf(classParam)) {
+			case "element":
+				classParam = classParam.get('class');
+			case "string":
+				dirtyClasses = classParam.split(/\s+/);
+				break;
+			case "array":
+				dirtyClasses = classParam;
+				break;
+		}
+
+		return dirtyClasses.map(function(className) {
+			if (className === null) {
+				return null;
+			}
+			return String.from(className).trim() || null;
+		}).clean();
+	},
+
+	classExists = function(className) {
+		if (typeof this.classList != "undefined") {
+			return this.classList.contains(className);
+		}
+		return this.className.clean().contains(className, ' ');
+	},
+
+	classAdd = function(className) {
+		if (typeof this.classList != "undefined") {
+			return this.classList.add(className);
+		}
+		this.className = (this.className + ' ' + className).clean();
+	},
+
+	classRemove = function(className) {
+		if (typeof this.classList != "undefined") {
+			return this.classList.remove(className);
+		}
+		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+	};
+
+Element.implement({
+
+	hasClass: function(classParam) {
+		return classParamToArray(classParam).every(classExists, this);
+	},
+
+	addClass: function(classParam) {
+		classParamToArray(classParam).each(function(className){
+			if (!classExists.call(this, className)) {
+				classAdd.call(this, className);
+			}
+		}, this);
+
+		return this;
+	},
+
+	removeClass: function(classParam) {
+		classParamToArray(classParam).each(classRemove, this);
+		return this;
+	},
+
+	toggleClass: function(classParam, force){
+		classParamToArray(classParam).each(function(className){
+			var add = force;
+			if (add == null) add = !classExists.call(this, className);
+			(add) ? classAdd.call(this, className) : classRemove.call(this, className);
+		}, this);
+		return this;
 	}
 
 });
