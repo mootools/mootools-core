@@ -613,6 +613,7 @@ var pollutesGetAttribute = (function(div){
 })(document.createElement('div'));
 /* </ltIE9> */
 
+
 Element.implement({
 
 	setProperty: function(name, value){
@@ -694,25 +695,6 @@ Element.implement({
 		return this;
 	},
 
-	hasClass: function(className){
-		return this.className.clean().contains(className, ' ');
-	},
-
-	addClass: function(className){
-		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
-		return this;
-	},
-
-	removeClass: function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
-		return this;
-	},
-
-	toggleClass: function(className, force){
-		if (force == null) force = !this.hasClass(className);
-		return (force) ? this.addClass(className) : this.removeClass(className);
-	},
-
 	adopt: function(){
 		var parent = this, fragment, elements = Array.flatten(arguments), length = elements.length;
 		if (length > 1) parent = fragment = document.createDocumentFragment();
@@ -775,6 +757,84 @@ Element.implement({
 			});
 		});
 		return queryString.join('&');
+	}
+
+});
+
+var
+	classParamToArray = function(classParam) {
+		if (typeOf(classParam) == "function") {
+			classParam = classParam();
+		}
+
+		switch (typeOf(classParam)) {
+			case "element":
+				classParam = classParam.get('class');
+			case "string":
+				dirtyClasses = classParam.split(/\s+/);
+				break;
+			case "array":
+				dirtyClasses = classParam;
+				break;
+		}
+
+		return dirtyClasses.map(function(className) {
+			if (className === null) {
+				return null;
+			}
+			return String.from(className).trim() || null;
+		}).clean();
+	},
+
+	classExists = function(className) {
+		if (typeof this.classList != "undefined") {
+			return this.classList.contains(className);
+		}
+		return this.className.clean().contains(className, ' ');
+	},
+
+	classAdd = function(className) {
+		if (typeof this.classList != "undefined") {
+			return this.classList.add(className);
+		}
+		this.className = (this.className + ' ' + className).clean();
+	},
+
+	classRemove = function(className) {
+		if (typeof this.classList != "undefined") {
+			return this.classList.remove(className);
+		}
+		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+	};
+
+Element.implement({
+
+	hasClass: function(classParam) {
+		return classParamToArray(classParam).every(classExists, this);
+	},
+
+	addClass: function(classParam) {
+		classParamToArray(classParam).each(function(className){
+			if (!classExists.call(this, className)) {
+				classAdd.call(this, className);
+			}
+		}, this);
+
+		return this;
+	},
+
+	removeClass: function(classParam) {
+		classParamToArray(classParam).each(classRemove, this);
+		return this;
+	},
+
+	toggleClass: function(classParam, force){
+		classParamToArray(classParam).each(function(className){
+			var add = force;
+			if (add == null) add = !classExists.call(this, className);
+			(add) ? classAdd.call(this, className) : classRemove.call(this, className);
+		}, this);
+		return this;
 	}
 
 });
