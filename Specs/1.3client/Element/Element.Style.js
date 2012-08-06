@@ -17,8 +17,18 @@ describe('Element.set opacity', function(){
 	});
 
 	it('should not remove existent filters on browsers with filters', function(){
-		var div = new Element('div');
-		if (document.html.style.filter != null && !window.opera && !Syn.browser.gecko){
+		var div = new Element('div'),
+			supports_filters;
+
+		if (Syn.browser.msie) {
+			var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/),
+				version = parseFloat(UA[2]);
+			supports_filters = (version < 10);
+		} else {
+			supports_filters = (document.html.style.filter !== null && !window.opera && !Syn.browser.gecko);
+		}
+
+		if (supports_filters){
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
 			expect(div.style.filter).toMatch(/blur\(strength=50\)/i);
