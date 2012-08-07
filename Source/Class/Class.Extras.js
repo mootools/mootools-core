@@ -44,14 +44,15 @@ var removeOn = function(string){
 
 this.Events = new Class({
 
-	$events: {},
-
 	addEvent: function(type, fn, internal){
 		type = removeOn(type);
 
 		/*<1.2compat>*/
 		if (fn == $empty) return this;
 		/*</1.2compat>*/
+
+		if (!this.$events)
+			this.$events = {};
 
 		this.$events[type] = (this.$events[type] || []).include(fn);
 		if (internal) fn.internal = true;
@@ -64,6 +65,8 @@ this.Events = new Class({
 	},
 
 	fireEvent: function(type, args, delay){
+		if (!this.$events) return this;
+
 		type = removeOn(type);
 		var events = this.$events[type];
 		if (!events) return this;
@@ -76,6 +79,8 @@ this.Events = new Class({
 	},
 
 	removeEvent: function(type, fn){
+		if (!this.$events) return this;
+
 		type = removeOn(type);
 		var events = this.$events[type];
 		if (events && !fn.internal){
@@ -86,6 +91,8 @@ this.Events = new Class({
 	},
 
 	removeEvents: function(events){
+		if (!this.$events) return this;
+
 		var type;
 		if (typeOf(events) == 'object'){
 			for (type in events) this.removeEvent(type, events[type]);
