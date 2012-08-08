@@ -110,4 +110,32 @@ describe('Element.Event.change', function(){
 
 });
 
+describe('Element.Event keyup with f<key>', function(){
+
+	it('should pass event.key == f2 when pressing f2 on keyup and keydown', function(){
+
+		var keydown = jasmine.createSpy('keydown');
+		var keyup = jasmine.createSpy('keyup');
+
+		var div = createElement('div')
+			.addEvent('keydown', function(event){
+				keydown(event.key);
+			})
+			.addEvent('keyup', function(event){
+				keyup(event.key);
+			})
+			.inject(document.body);
+
+		Syn.trigger('keydown', 'f2', div);
+		Syn.trigger('keyup', 'f2', div);
+
+		expect(keydown).toHaveBeenCalledWith('f2');
+		expect(keyup).toHaveBeenCalledWith('f2');
+
+		div.destroy();
+
+	});
+
+});
+
 })();
