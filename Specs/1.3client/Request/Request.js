@@ -136,5 +136,40 @@ describe('Request', function(){
 
 	});
 
+	it('should store last method and url or request on send', function(){
+
+		var firstUrl = '../Helpers/request.php?first',
+			firstMethod = 'GET',
+
+			secondUrl = '../Helpers/request.php?second',
+			secondMethod = 'POST',
+
+			request = new Request({
+				url: firstUrl,
+				method: firstMethod,
+				data: {
+					'__response': 'hello world'
+				}
+			}),
+
+			fake = this.requests[0];
+
+		request.send();
+		fake.respond(200, {'Content-Type': 'text/plain'});
+
+		expect(request.url).toBe(firstUrl);
+		expect(request.method).toBe(firstMethod);
+
+		request.setOptions({
+			url: secondUrl,
+			method: secondMethod
+		}).send();
+		fake.respond(200, {'Content-Type': 'text/plain'});
+
+		expect(request.getUrl()).toBe(secondUrl);
+		expect(request.getMethod()).toBe(secondMethod);
+
+	});
+
 
 });

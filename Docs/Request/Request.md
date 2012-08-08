@@ -248,6 +248,46 @@ Returns the given response header or null if not found.
 		alert(this.getHeader('Date')); // alerts the server date (for example, 'Thu, 26 Feb 2009 20:26:06 GMT')
 	}});
 
+Request Method: getUrl {#Request:getUrl}
+--------------------------------------
+
+Returns the last URL requested.
+
+### Syntax:
+
+	myRequest.getUrl();
+
+### Returns:
+
+* (*string*) The value last URL requested.
+* (*null*) `null` if no request has yet been made.
+
+### Example:
+
+	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML){
+		alert(this.getUrl()); // alerts 'getData.php'
+	}});
+
+Request Method: getMethod {#Request:getMethod}
+--------------------------------------
+
+Returns the method used in the last request.
+
+### Syntax:
+
+	myRequest.getMethod();
+
+### Returns:
+
+* (*string*) The method used in the last request.
+* (*null*) `null` if no request has yet been made.
+
+### Example:
+
+	var myRequest = new Request({url: 'getData.php', method: 'get', onSuccess: function(responseText, responseXML){
+		alert(this.getMethod()); // alerts 'GET'
+	}});
+
 Request Method: send {#Request:send}
 ----------------------------
 
