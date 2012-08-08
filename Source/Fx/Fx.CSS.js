@@ -101,7 +101,7 @@ Fx.CSS = new Class({
 		if (Fx.CSS.Cache[selector]) return Fx.CSS.Cache[selector];
 		var to = {}, selectorTest = new RegExp('^' + selector.escapeRegExp() + '$');
 
-		var searchStyles = function(rules) {
+		var searchStyles = function(rules){
 			Array.each(rules, function(rule, i){
 				if (rule.media){
 					searchStyles(rule.rules || rule.cssRules);
@@ -118,7 +118,7 @@ Fx.CSS = new Class({
 					to[style] = ((/^rgb/).test(value)) ? value.rgbToHex() : value;
 				});
 			});
-		}
+		};
 
 		Array.each(document.styleSheets, function(sheet, j){
 			var href = sheet.href;
