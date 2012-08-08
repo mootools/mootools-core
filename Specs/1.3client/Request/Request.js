@@ -136,7 +136,7 @@ describe('Request', function(){
 
 	});
 
-	it('should store last method and url or request on send', function(){
+	it('should store last method and url of request on send', function(){
 
 		var firstUrl = '../Helpers/request.php?first',
 			firstMethod = 'GET',
