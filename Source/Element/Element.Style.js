@@ -128,7 +128,7 @@ Element.implement({
 				}, this);
 				return this['offset' + property.capitalize()] - size + 'px';
 			}
-			if (Browser.ie && (/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
+			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
 				return '0px';
 			}
 		}
