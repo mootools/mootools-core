@@ -117,5 +117,46 @@ describe('Element.Style', function(){
 		});
 
 	});
+	
+	describe('getStyle height / width / borders from auto values', function(){
+
+		var element;
+
+		it('[beforeAll]', function(){
+			// the test framework stylesheet pollutes this test by setting border at 0px.
+			// create an unknown element to bypass it and use browser defaults.
+			element = new Element('unknown', {
+				styles: {
+					display: 'block'
+				}
+			});
+			
+			var child = new Element('div', {
+				styles: {
+					width: '200px',
+					height: '100px',
+				}
+			});
+			
+			element.adopt(child).inject(document.body);
+		});
+
+		it('should inherit the height from the child', function(){
+			expect(element.getStyle('height')).toEqual('100px');
+		});
+
+		it('should get a pixel based width', function(){
+			expect(element.getStyle('width')).toMatch(/\d+px/);
+		});
+		
+		it('should have a 0px border left', function(){
+			expect(element.getStyle('borderLeftWidth')).toEqual('0px');
+		});
+
+		it('[afterAll]', function(){
+			element.destroy();
+		});
+
+	});
 
 });
