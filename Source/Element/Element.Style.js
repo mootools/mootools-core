@@ -79,7 +79,7 @@ Element.implement({
 		if (this.currentStyle) return this.currentStyle[property.camelCase()];
 		var defaultView = Element.getDocument(this).defaultView,
 			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
-		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : null;
+		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
 	},
 
 	setStyle: function(property, value){
