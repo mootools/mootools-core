@@ -134,7 +134,7 @@ describe('Element.Style', function(){
 			var child = new Element('div', {
 				styles: {
 					width: '200px',
-					height: '100px',
+					height: '100px'
 				}
 			});
 			
