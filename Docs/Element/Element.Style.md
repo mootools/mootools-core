@@ -109,7 +109,7 @@ Returns an object of styles of the Element for each argument passed in.
 ### Examples:
 
 	$('myElement').getStyles('width', 'height', 'padding');
-	// returns {width: '10px', height: '10px', padding: /10px 0px 10px 0px'}
+	// returns {width: '10px', height: '10px', padding: '10px 0px 10px 0px'}
 
 ### See Also:
 
