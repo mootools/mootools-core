@@ -24,6 +24,11 @@ var el = document.createElement('div');
 el.style.color = 'red';
 el.style.color = null;
 var doesNotRemoveStyles = el.style.color == 'red';
+
+// check for oldIE, which returns border* shorthand styles in the wrong order (color-width-style instead of width-style-color)
+var border = '1px solid #123abc';
+el.style.border = border;
+var returnsBordersInWrongOrder = el.style.border != border;
 el = null;
 //</ltIE9>
 
@@ -131,6 +136,11 @@ Element.implement({
 			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
 				return '0px';
 			}
+			//<ltIE9>
+			if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
+				return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
+			}
+			//</ltIE9>
 		}
 		return result;
 	},

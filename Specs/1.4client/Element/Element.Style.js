@@ -158,5 +158,14 @@ describe('Element.Style', function(){
 		});
 
 	});
+	
+	describe('getStyle border after setStyle', function(){
+
+		it('should have same order when getting a previously set border', function(){
+			var border = '2px solid #123abc';
+			expect(new Element('div').setStyle('border', border).getStyle('border')).toEqual(border);
+		});
+
+	});
 
 });
