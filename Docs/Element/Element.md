@@ -207,7 +207,7 @@ Gets the first descendant element whose tag name matches the tag provided. CSS s
 Element Method: getElements {#Element:getElements}
 --------------------------------------------------
 
-Collects all decedent elements whose tag name matches the tag provided. CSS selectors may also be passed.
+Collects all descendant elements whose tag name matches the tag provided. CSS selectors may also be passed.
 
 ### Syntax:
 
