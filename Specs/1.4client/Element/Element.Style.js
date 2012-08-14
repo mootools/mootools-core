@@ -158,5 +158,12 @@ describe('Element.Style', function(){
 		});
 
 	});
+	
+	describe('getComputedStyle margin-left on detached element', function(){
 
+		it('should have a non-null margin-left', function(){
+			expect(new Element('div').getComputedStyle('margin-left')).not.toEqual(null);
+		});
+
+	});
 });
