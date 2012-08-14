@@ -11,8 +11,6 @@ describe('Element', function(){
 	describe('Element.getProperty', function(){
 
 		it('should cloneNode properly on IE6/7', function(){
-			var div = new Element('div');
-			div.innerHTML = "<input id='Q1' class='foo' rel='hai' />​";
 
 			var div = new Element('div');
 			div.inject(document.documentElement);
