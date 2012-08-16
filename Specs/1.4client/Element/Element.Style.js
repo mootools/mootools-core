@@ -117,7 +117,7 @@ describe('Element.Style', function(){
 		});
 
 	});
-	
+
 	describe('getStyle height / width / borders from auto values', function(){
 
 		var element;
@@ -130,14 +130,14 @@ describe('Element.Style', function(){
 					display: 'block'
 				}
 			});
-			
+
 			var child = new Element('div', {
 				styles: {
 					width: '200px',
 					height: '100px'
 				}
 			});
-			
+
 			element.adopt(child).inject(document.body);
 		});
 
@@ -148,7 +148,7 @@ describe('Element.Style', function(){
 		it('should get a pixel based width', function(){
 			expect(element.getStyle('width')).toMatch(/\d+px/);
 		});
-		
+
 		it('should have a 0px border left', function(){
 			expect(element.getStyle('borderLeftWidth')).toEqual('0px');
 		});
@@ -168,4 +168,11 @@ describe('Element.Style', function(){
 
 	});
 
+	describe('getComputedStyle margin-left on detached element', function(){
+
+		it('should have a non-null margin-left', function(){
+			expect(new Element('div').getComputedStyle('margin-left')).not.toEqual(null);
+		});
+
+	});
 });
