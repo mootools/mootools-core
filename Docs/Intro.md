@@ -1,8 +1,6 @@
 MooTools API Documentation
 ==========================
 
-
-
 Popular Pages
 -------------
 
@@ -13,8 +11,6 @@ Popular Pages
 - [Fx.Tween][] - Create effects for single properties
 - [Request][] - An XMLHttpRequest Wrapper
 
-
-
 Interesting Blogposts
 ---------------------
 
@@ -23,7 +19,7 @@ Interesting Blogposts
 - [Get friendly with the Natives](http://mootools.net/blog/2010/03/23/get-friendly-with-the-natives/)
 - [A Better Way to use Elements](http://mootools.net/blog/2010/03/19/a-better-way-to-use-elements/)
 - [Events with MooTools - Element, Class, Delegation and Pseudos](http://mootools.net/blog/2011/03/28/events-with-mootools-element-class-delegation-and-pseudos/)
-
+- [Optimizing MooTools builds sans Internet Explorer](http://mootools.net/blog/2012/08/13/optimizing-mootools-builds-sans-internet-explorer/)
 
 Previous Versions Documentation
 -------------------------------
