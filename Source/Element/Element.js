@@ -365,7 +365,7 @@ Element.implement('hasChild', function(element){
 		return match.call(this, node, selector);
 	};
 
-})(Slick.search, Slick.find, Slick.match);
+}).call(this, Slick.search, Slick.find, Slick.match);
 
 //</1.2compat>
 
@@ -1068,4 +1068,4 @@ if (document.createElement('div').getAttributeNode('id')) Element.Properties.id 
 };
 /*</IE>*/
 
-})();
+}).call(this.window || global);
