@@ -185,7 +185,7 @@ var Request = this.Request = new Class({
 		if (this.options.noCache)
 			url += (url.contains('?') ? '&' : '?') + String.uniqueID();
 
-		if (data && method == 'get'){
+		if (data && (method == 'get' || method == 'delete')){
 			url += (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
