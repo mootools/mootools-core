@@ -728,6 +728,52 @@ Works like [Element:grab](#Element:grab), but replaces the element in its place,
 		<div id="child"></div>
 	</div>
 
+Element Method: appendHTML {#Element:appendHTML}
+------------------------------------------------
+
+Works like [Element:grab](#Element:grab), but instead of accepting an id or an element, it only accepts an HTML string.
+The HTML string will be parsed to create new DOM elements, and then injected relative to the element from where the method
+was called.
+
+### Syntax:
+
+	myElement.appendHTML(html[, where]);
+
+### Arguments:
+
+1. html - (*string*) The HTML string to append.
+1. where - (*string*, optional: default 'bottom') The position to inject the text to. Values accepted are 'top', 'bottom', 'before' and 'after'.
+
+### Returns:
+
+* (*element*) The current Element instance.
+
+### Examples:
+
+##### HTML
+
+	<div id="myElement">Hey.</div>
+
+##### JavaScript
+
+	$('myElement').appendHTML(' <strong>Howdy.</strong>');
+
+##### Resulting HTML
+
+	<div id="myElement">Hey. <strong>Howdy.</strong></div>
+
+### Notes:
+
+- This method does *not* use the `innerHTML` property of an element but instead creates elements
+directly before injecting them. Thus, it is safe to use in cases where you don't want to destroy
+any descendant elements already present in the parent.
+- This method uses `insertAdjacentHTML` when available.
+
+### See Also:
+
+- [MDC Element:insertAdjacentHTML][].
+
+
 Element Method: appendText {#Element:appendText}
 ------------------------------------------------
 
@@ -2090,3 +2136,4 @@ This method has been deprecated. Use [Elements:append][] instead.
 
 [MDC Element:removeChild]: https://developer.mozilla.org/En/DOM/Node.removeChild
 [MDC Element:replaceChild]: https://developer.mozilla.org/En/DOM/Node.replaceChild
+[MDC Element:insertAdjacentHTML]: https://developer.mozilla.org/en/DOM/Element.insertAdjacentHTML
