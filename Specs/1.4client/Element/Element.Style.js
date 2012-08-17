@@ -178,7 +178,7 @@ describe('Element.Style', function(){
 	
 	describe('getStyle background-position', function(){
 		beforeEach(function(){
-			var className = String.uniqueID();
+			var className = 'getStyleBackgroundPosition';
 			var style = this.style = $(document.createElement('style'));
 			style.type = 'text/css';
 			var definition = [
@@ -202,6 +202,7 @@ describe('Element.Style', function(){
 		afterEach(function(){
 			this.style.destroy();
 			this.element.destroy();
+			this.element = null;
 		});
 		
 		it('should have non-empty background-position shorthand', function(){

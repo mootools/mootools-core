@@ -122,12 +122,12 @@ Element.implement({
 			}
 			result = this.getComputedStyle(property);
 		}
-		if (hasBackgroundPositionXY && /^backgroundPosition[XY]$/.test(property) || property == 'backgroundPosition' && /(top|right|bottom|left)/.test(result)){
-			return result.replace(/(\w+)/g, function(value) { return value && namedPositions[value] || value || '0px'; }) || '0px';
+		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
+			return result.replace(/(top|right|bottom|left)/g, function(position){
+				return namedPositions[position];
+			}) || '0px';
 		}
-		if (!result && property == 'backgroundPosition') {
-			return '0px 0px';
-		}
+		if (!result && property == 'backgroundPosition') return '0px 0px';
 		if (result){
 			result = String(result);
 			var color = result.match(/rgba?\([\d\s,]+\)/);
@@ -232,7 +232,5 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
 
-if (hasBackgroundPositionXY) {
-	Object.merge(Element.ShortStyles, {backgroundPosition: {backgroundPositionX: '@', backgroundPositionY: '@'}});
-}
+if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
 })();
