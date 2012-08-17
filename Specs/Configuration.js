@@ -111,6 +111,7 @@ Configuration.sets = {
 			'Element/Element.Event',
 			'Element/Element.Style',
 			'Element/Element.Delegation',
+			'Element/Element.appendHTML',
 			'Fx/Fx.Tween',
 			'Fx/Fx.Morph'
 		]
