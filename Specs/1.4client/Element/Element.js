@@ -23,6 +23,17 @@ describe('Element', function(){
 			expect($$('input[id=Q1]').length).toEqual(0);
 			expect($$('input#Q1').length).toEqual(0);
 			clone.dispose();
+
+			var ul = new Element('ul',{id:'test'});
+			ul.set('html', '<li id="li1"></li><li id="li2"></li>'));
+			ul.inject(document.documentElement);
+
+			var ulc = ul.clone();
+			ulc.replaces(ul);
+
+			expect($$('li#li1').length).toEqual(1);
+
+
 		});
 
 		it('should get the attrubte of a form when the form has an input with as ID the attribute name', function(){
