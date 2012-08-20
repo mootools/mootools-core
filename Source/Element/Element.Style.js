@@ -114,10 +114,9 @@ Element.implement({
 		property = (property == 'float' ? floatName : property).camelCase();
 		var result = this.style[property];
 		if (!result || property == 'zIndex'){
-			result = [];
-			for (var style in Element.ShortStyles){
-				if (property != style) continue;
-				for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
+			if (Element.ShortStyles.hasOwnProperty(property)){
+				result = [];
+				for (var s in Element.ShortStyles[property]) result.push(this.getStyle(s));
 				return result.join(' ');
 			}
 			result = this.getComputedStyle(property);
