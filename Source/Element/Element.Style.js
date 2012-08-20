@@ -71,7 +71,9 @@ var getOpacity = (hasOpacity ? function(element){
 	return opacity;
 }));
 
-var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
+	namedPositions = {left: '0%', top: '0%', center: '50%', right: '100%', bottom: '100%'},
+	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
 
 Element.implement({
 
@@ -120,6 +122,12 @@ Element.implement({
 			}
 			result = this.getComputedStyle(property);
 		}
+		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
+			return result.replace(/(top|right|bottom|left)/g, function(position){
+				return namedPositions[position];
+			}) || '0px';
+		}
+		if (!result && property == 'backgroundPosition') return '0px 0px';
 		if (result){
 			result = String(result);
 			var color = result.match(/rgba?\([\d\s,]+\)/);
@@ -224,4 +232,5 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
 
+if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
 })();
