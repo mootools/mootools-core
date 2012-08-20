@@ -827,6 +827,7 @@ Element.implement({
 				self.removeAttribute('id');
 				var clonedHTML = self.outerHTML;
 				var cloned = document.createElement('div');
+				if(!keepid) clonedHTML = clonedHTML.replace(/id=[^\ \>]/gim,'');
 				cloned.innerHTML = clonedHTML;
 				self.id = oldID;
 				var clone = cloned.firstChild;
