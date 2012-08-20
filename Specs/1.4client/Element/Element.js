@@ -22,17 +22,19 @@ describe('Element', function(){
 
 			expect($$('input[id=Q1]').length).toEqual(0);
 			expect($$('input#Q1').length).toEqual(0);
+			expect($$('input[id=Q1]').length).toEqual(0); //<- element.erase will fail on this :(
 			clone.dispose();
 
 			var ul = new Element('ul',{id:'test'});
-			ul.set('html', '<li id="li1"></li><li id="li2"></li>'));
+			ul.set('html', '<li id="li1"></li><li id="li2"></li>');
 			ul.inject(document.documentElement);
 
 			var ulc = ul.clone();
 			ulc.replaces(ul);
 
-			expect($$('li#li1').length).toEqual(1);
+			expect($$('li#li1').length).toEqual(0);
 
+			ulc.destroy();
 
 		});
 
