@@ -45,16 +45,25 @@ var setVisibility = function(element, opacity){
 	element.style.visibility = opacity > 0 || opacity == null ? 'visible' : 'hidden';
 };
 
+//<ltIE9>
+var setFilter = function(element, regexp, value){
+	var style = element.style,
+		filter = style.filter || element.getComputedStyle('filter') || '';
+	style.filter = (regexp.test(filter) ? filter.replace(regexp, value) : filter + ' ' + value).trim();
+	if (!style.filter) style.removeAttribute('filter');
+};
+//</ltIE9>
+
 var setOpacity = (hasOpacity ? function(element, opacity){
 	element.style.opacity = opacity;
 } : (hasFilter ? function(element, opacity){
-	var style = element.style;
-	if (!element.currentStyle || !element.currentStyle.hasLayout) style.zoom = 1;
-	if (opacity == null || opacity == 1) opacity = '';
-	else opacity = 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')';
-	var filter = style.filter || element.getComputedStyle('filter') || '';
-	style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
-	if (!style.filter) style.removeAttribute('filter');
+	if (!element.currentStyle || !element.currentStyle.hasLayout) element.style.zoom = 1;
+	if (opacity == null || opacity == 1){
+		setFilter(element, reAlpha, '');
+		if (opacity == 1 && getOpacity(element) != 1) setFilter(element, reAlpha, 'alpha(opacity=100)');
+	} else {
+		setFilter(element, reAlpha, 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')');
+	}
 } : setVisibility));
 
 var getOpacity = (hasOpacity ? function(element){
