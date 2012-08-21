@@ -76,6 +76,16 @@ var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
 	namedPositions = {left: '0%', top: '0%', center: '50%', right: '100%', bottom: '100%'},
 	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
 
+function getSetter(property){
+	property = Element.Styles[property];
+	return property && property.set;
+}
+
+function getMap(property){
+	property = Element.Styles[property];
+	return property && property.map || '@';
+}
+
 Element.implement({
 
 	getComputedStyle: function(property){
@@ -86,14 +96,11 @@ Element.implement({
 	},
 
 	setStyle: function(property, value){
-		if (property == 'opacity'){
-			if (value != null) value = parseFloat(value);
-			setOpacity(this, value);
-			return this;
-		}
-		property = (property == 'float' ? floatName : property).camelCase();
+
+		property = (property == 'float') ? floatName : property.camelCase();
+
 		if (typeOf(value) != 'string'){
-			var map = (Element.Styles[property] || '@').split(' ');
+			var map = getMap(property).split(' ');
 			value = Array.from(value).map(function(val, i){
 				if (!map[i]) return '';
 				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
@@ -101,7 +108,11 @@ Element.implement({
 		} else if (value == String(Number(value))){
 			value = Math.round(value);
 		}
-		this.style[property] = value;
+
+		var setter = getSetter(property);
+		if (setter) setter(element, value);
+		else this.style[property] = value;
+
 		//<ltIE9>
 		if ((value == '' || value == null) && doesNotRemoveStyles && this.style.removeAttribute){
 			this.style.removeAttribute(property);
@@ -206,69 +217,76 @@ Element.Styles = new Hash(Element.Styles);
 //</1.2compat>
 
 Element.Styles = {
-	left: '@px',
-	top: '@px',
-	bottom: '@px',
-	right: '@px',
-	width: '@px',
-	height: '@px',
-	letterSpacing: '@px',
-	lineHeight: '@px',
-	clip: 'rect(@px @px @px @px)',
-	zIndex: '@',
-	'zoom': '@',
-	textIndent: '@px',
-	opacity: '@',
-	color: 'rgb(@, @, @)',
+	left: {map: '@px'},
+	top: {map: '@px'},
+	bottom: {map: '@px'},
+	right: {map: '@px'},
+	width: {map: '@px'},
+	height: {map: '@px'},
+	letterSpacing: {map: '@px'},
+	lineHeight: {map: '@px'},
+	clip: {map: 'rect(@px @px @px @px)'},
+	zIndex: {map: '@'},
+	'zoom': {map: '@'},
+	textIndent: {map: '@px'},
+	opacity: {
+		map: '@',
+		set: function(element, value){
+			if (value != null) value = parseFloat(value);
+			setOpacity(this, value);
+			return this;
+		}
+	},
+	color: {map: 'rgb(@, @, @)'},
 
-	maxWidth: '@px',
-	maxHeight: '@px',
+	maxWidth: {map: '@px'},
+	maxHeight: {map: '@px'},
 
-	minWidth: '@px',
-	minHeight: '@px',
+	minWidth: {map: '@px'},
+	minHeight: {map: '@px'},
 
-	backgroundColor: 'rgb(@, @, @)',
-	backgroundPosition: '@px @px',
+	backgroundColor: {map: 'rgb(@, @, @)'},
+	backgroundPosition: {map: '@px @px'},
 
-	fontWeight: '@',
-	fontSize: '@px',
+	fontWeight: {map: '@'},
+	fontSize: {map: '@px'},
 
-	margin: '@px @px @px @px',
-	marginTop: '@px',
-	marginRight: '@px',
-	marginBottom: '@px',
-	marginLeft: '@px',
+	margin: {map: '@px @px @px @px'},
+	marginTop: {map: '@px'},
+	marginRight: {map: '@px'},
+	marginBottom: {map: '@px'},
+	marginLeft: {map: '@px'},
 
-	padding: '@px @px @px @px',
-	paddingTop: '@px',
-	paddingRight: '@px',
-	paddingBottom: '@px',
-	paddingLeft: '@px',
+	padding: {map: '@px @px @px @px'},
+	paddingTop: {map: '@px'},
+	paddingRight: {map: '@px'},
+	paddingBottom: {map: '@px'},
+	paddingLeft: {map: '@px'},
 
-	border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-	borderWidth: '@px @px @px @px',
-	borderStyle: '@ @ @ @',
-	borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+	border: {map: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)'},
+	borderWidth: {map: '@px @px @px @px'},
+	borderStyle: {map: '@ @ @ @'},
+	borderColor: {map: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)'},
 
-	borderTop: '@px @ rgb(@, @, @)',
-	borderTopWidth: '@px',
-	borderTopColor: '@px',
-	borderTopStyle: '@px',
+	borderTop: {map: '@px @ rgb(@, @, @)'},
+	borderTopWidth: {map: '@px'},
+	borderTopColor: {map: '@px'},
+	borderTopStyle: {map: '@px'},
 
-	borderRight: '@px @ rgb(@, @, @)',
-	borderRightWidth: '@px',
-	borderRightStyle: '@px',
-	borderRightColor: '@px',
+	borderRight: {map: '@px @ rgb(@, @, @)'},
+	borderRightWidth: {map: '@px'},
+	borderRightStyle: {map: '@px'},
+	borderRightColor: {map: '@px'},
 
-	borderBottom: '@px @ rgb(@, @, @)',
-	borderBottomStyle: '@px',
-	borderBottomColor: '@px',
-	borderBottomWidth: '@px',
+	borderBottom: {map: '@px @ rgb(@, @, @)'},
+	borderBottomStyle: {map: '@px'},
+	borderBottomColor: {map: '@px'},
+	borderBottomWidth: {map: '@px'},
 
-	borderLeft: '@px @ rgb(@, @, @)',
-	borderLeftWidth: '@px',
-	borderLeftStyle: '@px',
-	borderLeftColor: '@px'
+	borderLeft: {map: '@px @ rgb(@, @, @)'},
+	borderLeftWidth: {map: '@px'},
+	borderLeftStyle: {map: '@px'},
+	borderLeftColor: {map: '@px'}
 };
 
 Element.ShortStyles = {
