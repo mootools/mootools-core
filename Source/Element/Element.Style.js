@@ -1,3 +1,4 @@
+
 /*
 ---
 
@@ -167,15 +168,6 @@ Element.implement({
 
 });
 
-Element.Styles = {
-	left: '@px', top: '@px', bottom: '@px', right: '@px',
-	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
-	backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
-	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
-	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
-};
 
 //<1.3compat>
 
@@ -213,23 +205,166 @@ Element.Styles = new Hash(Element.Styles);
 
 //</1.2compat>
 
-Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
+Element.Styles = {
+	left: '@px',
+	top: '@px',
+	bottom: '@px',
+	right: '@px',
+	width: '@px',
+	height: '@px',
+	letterSpacing: '@px',
+	lineHeight: '@px',
+	clip: 'rect(@px @px @px @px)',
+	zIndex: '@',
+	'zoom': '@',
+	textIndent: '@px',
+	opacity: '@',
+	color: 'rgb(@, @, @)',
 
-['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-	var Short = Element.ShortStyles;
-	var All = Element.Styles;
-	['margin', 'padding'].each(function(style){
-		var sd = style + direction;
-		Short[style][sd] = All[sd] = '@px';
-	});
-	var bd = 'border' + direction;
-	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
-	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
-	Short[bd] = {};
-	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
-	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
-	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
-});
+	maxWidth: '@px',
+	maxHeight: '@px',
+
+	minWidth: '@px',
+	minHeight: '@px',
+
+	backgroundColor: 'rgb(@, @, @)',
+	backgroundPosition: '@px @px',
+
+	fontWeight: '@',
+	fontSize: '@px',
+
+	margin: '@px @px @px @px',
+	marginTop: '@px',
+	marginRight: '@px',
+	marginBottom: '@px',
+	marginLeft: '@px',
+
+	padding: '@px @px @px @px',
+	paddingTop: '@px',
+	paddingRight: '@px',
+	paddingBottom: '@px',
+	paddingLeft: '@px',
+
+	border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
+	borderWidth: '@px @px @px @px',
+	borderStyle: '@ @ @ @',
+	borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+
+	borderTop: '@px @ rgb(@, @, @)',
+	borderTopWidth: '@px',
+	borderTopColor: '@px',
+	borderTopStyle: '@px',
+
+	borderRight: '@px @ rgb(@, @, @)',
+	borderRightWidth: '@px',
+	borderRightStyle: '@px',
+	borderRightColor: '@px',
+
+	borderBottom: '@px @ rgb(@, @, @)',
+	borderBottomStyle: '@px',
+	borderBottomColor: '@px',
+	borderBottomWidth: '@px',
+
+	borderLeft: '@px @ rgb(@, @, @)',
+	borderLeftWidth: '@px',
+	borderLeftStyle: '@px',
+	borderLeftColor: '@px'
+};
+
+Element.ShortStyles = {
+	margin: {
+		marginTop: '@px',
+		marginRight: '@px',
+		marginBottom: '@px',
+		marginLeft: '@px'
+	},
+	padding: {
+		paddingTop: '@px',
+		paddingRight: '@px',
+		paddingBottom: '@px',
+		paddingLeft: '@px'
+	},
+	border: {
+		borderTop: '@px @ rgb(@, @, @)',
+		borderRight: '@px @ rgb(@, @, @)',
+		borderBottom: '@px @ rgb(@, @, @)',
+		borderLeft: '@px @ rgb(@, @, @)'
+	},
+	borderTop: {
+		borderTopWidth: '@px',
+		borderTopColor: '@px',
+		borderTopStyle: '@px',
+		borderRightWidth: '@px',
+		borderRightStyle: '@px',
+		borderRightColor: '@px',
+		borderBottomStyle: '@px',
+		borderBottomColor: '@px',
+		borderBottomWidth: '@px',
+		borderLeftWidth: '@px',
+		borderLeftStyle: '@px',
+		borderLeftColor: '@px'
+	},
+	borderRight: {
+		borderTopWidth: '@px',
+		borderTopColor: '@px',
+		borderTopStyle: '@px',
+		borderRightWidth: '@px',
+		borderRightStyle: '@px',
+		borderRightColor: '@px',
+		borderBottomStyle: '@px',
+		borderBottomColor: '@px',
+		borderBottomWidth: '@px',
+		borderLeftWidth: '@px',
+		borderLeftStyle: '@px',
+		borderLeftColor: '@px'
+	},
+	borderBottom: {
+		borderTopWidth: '@px',
+		borderTopColor: '@px',
+		borderTopStyle: '@px',
+		borderRightWidth: '@px',
+		borderRightStyle: '@px',
+		borderRightColor: '@px',
+		borderBottomStyle: '@px',
+		borderBottomColor: '@px',
+		borderBottomWidth: '@px',
+		borderLeftWidth: '@px',
+		borderLeftStyle: '@px',
+		borderLeftColor: '@px'
+	},
+	borderLeft: {
+		borderTopWidth: '@px',
+		borderTopColor: '@px',
+		borderTopStyle: '@px',
+		borderRightWidth: '@px',
+		borderRightStyle: '@px',
+		borderRightColor: '@px',
+		borderBottomStyle: '@px',
+		borderBottomColor: '@px',
+		borderBottomWidth: '@px',
+		borderLeftWidth: '@px',
+		borderLeftStyle: '@px',
+		borderLeftColor: '@px'
+	},
+	borderWidth: {
+		borderTopWidth: '@px',
+		borderRightWidth: '@px',
+		borderBottomWidth: '@px',
+		borderLeftWidth: '@px'
+	},
+	borderStyle: {
+		borderTopStyle: '@px', q
+		borderRightStyle: '@px',
+		borderBottomStyle: '@px',
+		borderLeftStyle: '@px'
+	},
+	borderColor: {
+		borderTopColor: '@px',
+		borderRightColor: '@px',
+		borderBottomColor: '@px',
+		borderLeftColor: '@px'
+	}
+};
 
 if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
 })();
