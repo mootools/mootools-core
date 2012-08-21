@@ -7,7 +7,7 @@ provides: [Array.Specs]
 ...
 */
 (function(){
-	
+
 var getTestArray = function(){
 	var a = [0, 1, 2, 3];
 	delete a[1];
@@ -41,14 +41,14 @@ describe("Array Methods 1.3", {
 		var arr = array.concat([false, null, 4]).filter(Type.isNumber);
 		expect(arr).toEqual(array.concat(4));
 	},
-	
+
 	'filter should skip deleted elements': function(){
 		var i = 0;
 		getTestArray().filter(function(){
 			i++;
 			return true;
 		});
-		
+
 		expect(i).toEqual(2);
 	},
 
@@ -75,10 +75,10 @@ describe("Array Methods 1.3", {
 		getTestArray().map(function(){
 			return i++;
 		});
-		
+
 		expect(i).toEqual(2);
 	},
-	
+
 	// Array.every
 
 	'should return true if every item matches the comparator, otherwise false': function(){
@@ -86,14 +86,14 @@ describe("Array Methods 1.3", {
 
 		expect(['1',2,3,0].every(Type.isNumber)).toBeFalsy();
 	},
-	
+
 	'every should skip deleted elements': function(){
 		var i = 0;
 		getTestArray().every(function(){
 			i++;
 			return true;
 		});
-		
+
 		expect(i).toEqual(2);
 	},
 
@@ -104,18 +104,18 @@ describe("Array Methods 1.3", {
 
 		expect([1,2,3,0,0,0].map(String).some(Type.isNumber)).toBeFalsy();
 	},
-	
+
 	'some should skip deleted elements': function(){
 		var i = 0;
 		var a = getTestArray();
 		delete a[0];
-		
+
 		// skips the first three elements
 		a.some(function(value, index){
 			i = index;
 			return true;
 		});
-		
+
 		expect(i).toEqual(3);
 	},
 

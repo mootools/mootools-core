@@ -28,7 +28,7 @@ describe('Element.getOffsetParent', function(){
 		td = new Element('td').inject(new Element('tr').inject(table));
 
 		container.inject(document.body);
-		
+
 	});
 
 	it('Should return the right offsetParent', function(){

@@ -4,17 +4,17 @@ function getCurrentURL(){
 	$pageURL = 'http' . (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on" ? 's' : '');
 	$pageURL .= "://" . $_SERVER["SERVER_NAME"];
 	if ($_SERVER["SERVER_PORT"] != "80") $pageURL .= ":".$_SERVER["SERVER_PORT"];
-	
+
 	return $pageURL.$_SERVER["REQUEST_URI"];
 }
 
 // http://forum.jquery.com/topic/implementation-of-domcontentloaded-failing-when-no-assets
 // by andrea.giammarchi on 13-Jul-2008 10:21 PM
 function flushPause($pause = 0){
-    echo ob_get_clean();
-    @ob_flush();
-    flush();
-    usleep($pause * 1000000);
+	echo ob_get_clean();
+	@ob_flush();
+	flush();
+	usleep($pause * 1000000);
 }
 
 ob_start();
@@ -36,17 +36,17 @@ var	MESSAGES = document.createElement('div')
 
 function somethingHappened(id, result){
 	if (window.ONLOAD) document.body.insertBefore(MESSAGES, document.body.firstChild)
-	
+
 	if (typeof result == 'function') result = result()
 	if (result == null) result = ''
 	if (result === true) result = 'PASS'
 	if (result === false) result = 'FAIL'
-	
+
 	if (thingsThatHappened[id] === result) return
 	thingsThatHappened[id] = result
-	
+
 	log((+new Date - START_TIME) +' '+ id + ' ' + result)
-	
+
 	MESSAGES.innerHTML
 		+=	'<p id="' + id + '" class="' + result + '">'
 		+	'<b>' + (+new Date - START_TIME) + 'ms </b>'
@@ -109,7 +109,7 @@ var loadScript = function(type){
 
 window.addEvent('load', function(){
 	loadScript('load');
-	
+
 	window.LOADED = true
 	somethingHappened('<i>MooTools load</i>', function(){
 		return !!window.READY
@@ -184,7 +184,7 @@ var TEST_ELEMENT = document.createElement('div')
 function pollDoScroll(){
 	if (!TEST_ELEMENT.doScroll) return
 	var PASS
-	
+
 	try {
 		TEST_ELEMENT.doScroll('left')
 		PASS = true
@@ -192,17 +192,17 @@ function pollDoScroll(){
 	catch (e){
 		PASS = false
 	}
-	
+
 	window.CANSCROLL = PASS
 	somethingHappened('TEST_ELEMENT.doScroll()', PASS)
-	
+
 	if (!PASS) setTimeout(pollDoScroll, 10)
 }
 
 function pollDoScroll_body(){
 	if (!document.body.doScroll) return
 	var PASS
-	
+
 	try {
 		document.body.doScroll('left')
 		PASS = true
@@ -210,9 +210,9 @@ function pollDoScroll_body(){
 	catch (e){
 		PASS = false
 	}
-	
+
 	somethingHappened('document.body.doScroll()', PASS)
-	
+
 	if (!PASS) setTimeout(pollDoScroll_body, 10)
 }
 
@@ -228,7 +228,7 @@ function pollReadyState(){
 
 function pollBodyExists(){
 	var	PASS
-	
+
 	try {
 		document.body.lastChild
 		PASS = true
@@ -245,7 +245,7 @@ function pollAugmentBody(){
 	,	body = document.body
 	,	root = body.parentNode
 	,	sibling = body.nextSibling
-	
+
 	try {
 		body.appendChild(document.createTextNode( new Date - START_TIME + 'ms:Body ') )
 		PASS = true
@@ -261,15 +261,15 @@ function pollAugmentBody(){
 
 var readyTests = {
 	"document.readyState ==": function(){return document.readyState}
-	
+
 	,'document.body exists?': function(){return document.body ?'Yes':'No'}
-	
+
 	,"All page content loaded and parsed?": function(){return window.PARSED ?'Yes':'No'}
 	,"cached IMG onload fired?": function(){return window.IMG_ONLOAD ?'Yes':'No'}
 	,"uncached IMG onload fired?": function(){return window.IMG_ONLOAD_UNCACHED ?'Yes':'No'}
 	,"document ready?": function(){return !!window.READY ?'Yes':'No'}
 	,"onload fired?": function(){return !!window.ONLOAD ?'Yes':'No'}
-	
+
 	,"el.doScroll()": function(){
 		try {
 			TEST_ELEMENT.doScroll()
@@ -279,7 +279,7 @@ var readyTests = {
 			return 'No'
 		}
 	}
-	
+
 	,"body.doScroll('left')": function(){
 		try {
 			document.body.doScroll('left')
@@ -289,11 +289,11 @@ var readyTests = {
 			return 'No'
 		}
 	}
-	
+
 	,'isFramed?': function(){
 		return isFramed() ?'Yes':'No'
 	}
-	
+
 	,'Is top frame?': function(){
 		return window.window === window.top ?'Yes':'No'
 	}
@@ -318,29 +318,29 @@ function poll(){
 	var	results = {}
 	,	lastResults = readyTestResults[readyTestResults.length - 1] || {}
 	,	hasDifferentResults = 0
-	
+
 	results.ms = new Date - START_TIME
-	
+
 	for (var id in readyTests){
 		results[id] = readyTests[id]()
 		if (results[id] == lastResults[id]) continue
-		
+
 		++ hasDifferentResults
 		somethingHappened(id, results[id])
 	}
-	
+
 	var shouldBeReady
-	
+
 	if (window.CANSCROLL && !isFramed()) shouldBeReady = true
 	if ({loaded:1,complete:1}[document.readyState]) shouldBeReady = true
 	if (window.LOADED) shouldBeReady = true
 	if (window.IMG_ONLOAD_UNCACHED) shouldBeReady = true
-	
+
 	if (shouldBeReady)
 	somethingHappened('Should be Ready!', function(){
 		return !!window.READY ?true:'Not yet...'
 	})
-	
+
 	if (hasDifferentResults) readyTestResults.push(results)
 	if (!window.ONLOAD) setTimeout(poll, 10)
 	else report()
@@ -358,7 +358,7 @@ function isFramed(){
 function report(){
 	var	EL = document.createElement('div')
 	,	HTML = '<table class=results>'
-	
+
 	for (var i = 0; i < readyTestResults.length; ++i){
 		if (i == 0){
 			HTML += '<thead><tr>'
@@ -378,7 +378,7 @@ function report(){
 		}
 		HTML += '</tr>'
 	}
-	
+
 	EL.innerHTML = HTML
 	document.body.insertBefore(EL, document.body.firstChild)
 }

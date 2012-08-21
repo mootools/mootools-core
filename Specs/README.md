@@ -12,16 +12,16 @@ the browser, via JSTestDriver and via NodeJS.
 
 	# init all git submodules
 	git submodule update --init --recursive
-	
+
 **Run:**
 
-To run the tests, you could just open the file `Specs/Runner/runner.html` in a browser, however for 
+To run the tests, you could just open the file `Specs/Runner/runner.html` in a browser, however for
 some tests you you need some webserver, like apache or python SimpleServer:
 
 	python -m SimpleHTTPServer 8080
 
-Now you can open `http://localhost:8080/Specs/` in the browser to choose a preset or open 
-`http://localhost:8080/Specs/Runner/runner.html?preset=core-1.4` to run the 1.4 tests.	
+Now you can open `http://localhost:8080/Specs/` in the browser to choose a preset or open
+`http://localhost:8080/Specs/Runner/runner.html?preset=core-1.4` to run the 1.4 tests.
 
 ## JSTD
 

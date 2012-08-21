@@ -37,7 +37,7 @@ describe('Fx.Morph', function(){
 		expect(this.div.setStyle).toHaveBeenCalledWith('left', ['10%']);
 		expect(this.div.setStyle).toHaveBeenCalledWith('left', ['50%']);
 	});
-	
+
 	it('it should morph when the unit option is set, but an empty value', function(){
 
 		this.div.set('morph', {
@@ -49,7 +49,7 @@ describe('Fx.Morph', function(){
 		});
 
 		this.clock.tick(150);
-		
+
 		expect(this.div.getStyle('top')).toEqual('100px');
 		expect(this.div.getStyle('opacity')).toEqual(1);
 
@@ -69,7 +69,7 @@ describe('Fx.Morph', function(){
 		});
 
 		this.clock.tick(150);
-		
+
 		expect(this.div.getStyle('top')).toEqual('100px');
 		expect(this.div.getStyle('opacity')).toEqual(1);
 

@@ -7,11 +7,11 @@ provides: [Fx.Tween.Specs]
 ...
 */
 describe('Fx.Tween', function(){
-	
+
 	beforeEach(function(){
 		this.clock = sinon.useFakeTimers();
 	});
-	
+
 	afterEach(function(){
 		this.clock.reset();
 		this.clock.restore();
@@ -29,9 +29,9 @@ describe('Fx.Tween', function(){
 			duration: 100,
 			property: 'height'
 		});
-		
+
 		fx.start(10, 50);
-		
+
 		this.clock.tick(200);
 
 		expect(element.offsetHeight).toEqual(50);
@@ -118,7 +118,7 @@ describe('Fx.Tween', function(){
 		element.highlight('#f00');
 
 		this.clock.tick(40);
-		
+
 		expect(['#fff', '#ffffff']).toContain(element.getStyle('background-color').toLowerCase());
 		element.destroy();
 

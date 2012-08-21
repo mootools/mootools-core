@@ -12,7 +12,7 @@ describe('Cookie', function(){
 		var options = {
 			duration: 1
 		};
-		
+
 		Cookie.write('key', 'value', options);
 
 		expect(Cookie.read('key', options)).toBe('value');

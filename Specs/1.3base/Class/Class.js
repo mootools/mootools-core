@@ -263,7 +263,7 @@ describe('Class toString', function(){
 		var Italian = new Class({
 
 			Extends: Person,
-			
+
 			toString: function(){
 				return "It's me, " + this.name;
 			}

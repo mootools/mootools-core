@@ -7,11 +7,11 @@ License:
 */
 
 describe('Cookie', {
-	
+
 	"should set a cookie": function(){
 		Cookie.write('test', 1);
-		
-		
+
+
 	}
-	
+
 });

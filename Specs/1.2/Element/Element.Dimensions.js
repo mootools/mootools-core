@@ -28,7 +28,7 @@ describe('Element.Dimensions', function(){
 				zIndex: 1
 			}
 		}).inject($(document.body));
-		
+
 		relDiv = new Element('div', {
 			styles: {
 				width: 50,
@@ -43,7 +43,7 @@ describe('Element.Dimensions', function(){
 				'display': 'inline'
 			}
 		}).inject(div);
-		
+
 		absDiv = new Element('div', {
 			styles: {
 				width: 10,
@@ -58,7 +58,7 @@ describe('Element.Dimensions', function(){
 				overflow: 'hidden'
 			}
 		}).inject(relDiv);
-	
+
 		scrollDiv = new Element('div', {
 			styles: {
 				width: 100,
@@ -70,7 +70,7 @@ describe('Element.Dimensions', function(){
 				left: 0
 			}
 		}).inject($(document.body));
-	
+
 		tallDiv = new Element('div', {
 			styles: {
 				width: 200,
@@ -81,50 +81,50 @@ describe('Element.Dimensions', function(){
 	});
 
 	describe('Element.getSize', function(){
-		
+
 		it('should measure the width and height of the element', function(){
 			expect(div.getSize().x).toEqual(108);
 			expect(div.getSize().y).toEqual(108);
 		});
-		
+
 	});
-	
+
 	describe('Element.getPosition', function(){
-		
+
 		it('should measure the x and y position of the element', function(){
 			expect(div.getPosition()).toEqual({x: 102, y: 102});
 		});
-		
+
 		it('should measure the x and y position of the element relative to another', function(){
 			expect(relDiv.getPosition(div)).toEqual({x: 8, y: 8});
 		});
-		
+
 	});
 
 	describe('Element.getCoordinates', function(){
-		
+
 		it('should return the coordinates relative to parent', function(){
 			expect(absDiv.getCoordinates(relDiv)).toEqual({left:15, top:15, width:22, height:22, right:37, bottom:37});
 		});
-		
+
 	});
-	
+
 	describe('Element.getScrollSize', function(){
-		
+
 		it('should return the scrollSize', function(){
 			expect(scrollDiv.getScrollSize()).toEqual({x:200, y:200});
 		});
-		
+
 	});
-	
+
 	describe('Element.scrollTo', function(){
-		
+
 		it('should scroll the element', function(){
 			expect(scrollDiv.scrollTo(20, 20).getScroll()).toEqual({x:20, y:20});
 		});
-		
+
 	});
-	
+
 	afterEach(function(){
 		[div, relDiv, absDiv, scrollDiv, tallDiv].each(function(el){
 			$(el).destroy();

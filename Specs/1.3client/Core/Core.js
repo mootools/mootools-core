@@ -44,7 +44,7 @@ describe('Array.from', function(){
 		var array = Array.from(div1.getElementsByTagName('*'));
 		expect(Type.isArray(array)).toEqual(true);
 	});
-	
+
 	it('should return an array for an Options collection', function(){
 		var div = document.createElement('div');
 		div.innerHTML = '<select><option>a</option></select>';

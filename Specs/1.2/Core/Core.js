@@ -240,7 +240,7 @@ describe('$time', {
 	'should return a timestamp': function(){
 		expect(Number.type($time())).toBeTruthy();
 	},
-	
+
 	'should be within a reasonable range': function(){
 		expect($time() < 1e13 && $time() > 1e12).toBeTruthy();
 	}
@@ -318,7 +318,7 @@ describe('$type', {
 			expect(type == 'array' || type == 'arguments').toBeTruthy();
 			return;
 		}
-		
+
 		expect($type(arguments)).toEqual('arguments');
 	},
 
@@ -338,11 +338,11 @@ describe('$type', {
 		var div = document.createElement('div');
 		expect($type(div)).toEqual('element');
 	},
-	
+
 	"should return 'array' for Elements": function(){
 		expect($type(new Elements)).toEqual('array');
 	},
-	
+
 	"should return 'window' for the window object": function(){
 		expect($type(window)).toEqual('window');
 	},

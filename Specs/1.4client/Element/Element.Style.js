@@ -158,7 +158,7 @@ describe('Element.Style', function(){
 		});
 
 	});
-	
+
 	describe('getStyle border after setStyle', function(){
 
 		it('should have same order when getting a previously set border', function(){
@@ -175,7 +175,7 @@ describe('Element.Style', function(){
 		});
 
 	});
-	
+
 	describe('getStyle background-position', function(){
 		beforeEach(function(){
 			var className = 'getStyleBackgroundPosition';
@@ -204,17 +204,17 @@ describe('Element.Style', function(){
 			this.element.destroy();
 			this.element = null;
 		});
-		
+
 		it('should have non-empty background-position shorthand', function(){
 			expect(this.element.getStyle('background-position')).not.toEqual(null);
 			expect(this.element.getStyle('background-position')).toMatch(/\w+/);
 		});
-		
+
 		it('should not return a keyword-based background-position shorthand', function(){
 			expect(this.element.getStyle('background-position')).not.toMatch(/(top|right|bottom|left)/);
 			expect(this.element.getStyle('background-position')).toEqual('0% 100%');
 		});
-		
+
 		it('should have non-empty background-position on an element with no set styles', function(){
 			var element = new Element('div');
 			expect(element.getStyle('background-position')).not.toEqual(null);

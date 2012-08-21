@@ -18,8 +18,8 @@ describe('Function.bind', function(){
 		var fn = function(){
 			return [this.foo].concat(Array.slice(arguments));
 		};
-		
-		expect(fn.bind({foo: 'bar'})()).toEqual(['bar'])
+
+		expect(fn.bind({foo: 'bar'})()).toEqual(['bar']);
 		expect(fn.bind({foo: 'bar'}, 'first').call({foo: 'yeah!'}, 'yooo')).toEqual(['bar', 'first', 'yooo']);
 
 		var bound = fn.bind({foo: 'bar'});

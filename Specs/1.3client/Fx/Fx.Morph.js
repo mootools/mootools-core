@@ -7,11 +7,11 @@ provides: [Fx.Morph.Specs]
 ...
 */
 describe('Fx.Morph', function(){
-	
+
 	beforeEach(function(){
 		this.clock = sinon.useFakeTimers();
 	});
-	
+
 	afterEach(function(){
 		this.clock.reset();
 		this.clock.restore();

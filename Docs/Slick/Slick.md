@@ -240,7 +240,7 @@ Nth Expression:
 * nExpression - (string) A nth expression for the "every" nth-child.
 
 ### Examples:
-	
+
 	<span id="i1"></span>
 	<span id="i2"></span>
 	<span id="i3"></span>
@@ -252,7 +252,7 @@ Nth Expression:
 	$$(':nth-last-child(2n)'); //Returns Elements #i2 and #i4.
 
 	$$(':nth-last-child(2n+1)') //Returns Elements #i1, #i3 and #i5.
-	
+
 	$$(':nth-last-child(3n+2)') //Returns Elements #i1 and #i4.
 
 Every Odd Child (same as 2n+1):

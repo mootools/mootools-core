@@ -640,9 +640,9 @@ Inserts the passed element(s) inside the Element (which will then become the par
 	var mySecondElement = new Element('p#second');
 	var myThirdElement  = new Element('ul#third');
 	var myFourthElement = new Element('a#fourth');
-	
+
 	var myParentElement = new Element('div#parent');
-	
+
 	myFirstElement.adopt(mySecondElement);
 	mySecondElement.adopt(myThirdElement, myFourthElement);
 	myParentElement.adopt([myFirstElement, new Element('span#another')]);
@@ -1427,7 +1427,7 @@ Sets an attribute or special property for this Element.
 	- use 'class', not 'className'
 	- use 'frameborder', not 'frameBorder'
 	- etc.
-- When setting the `src` property for an image file, be sure to remove the `width` and `height` attribute (use `Element.removeAttribute`). IE7, and less, set and freeze the `width` and `height` of an image if previously specified. 
+- When setting the `src` property for an image file, be sure to remove the `width` and `height` attribute (use `Element.removeAttribute`). IE7, and less, set and freeze the `width` and `height` of an image if previously specified.
 
 Element Method: setProperties {#Element:setProperties}
 ------------------------------------------------------
