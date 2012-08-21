@@ -42,7 +42,7 @@ describe('Element.appendHTML', function(){
 
 		expect(children.length).toBe(2);
 		children.each(function(child, i){
-			expect(child.innerText).toBe('HI!');
+			expect(child.get('text')).toBe('HI!');
 			expect(child.nextSibling.getAttribute('rel')).toBe('' + i);
 		});
 	});
@@ -55,7 +55,7 @@ describe('Element.appendHTML', function(){
 
 		expect(children.length).toBe(2);
 		children.each(function(child, i){
-			expect(child.innerText).toBe('HI!');
+			expect(child.get('text')).toBe('HI!');
 			expect(child.previousSibling.getAttribute('rel')).toBe('' + i);
 		});
 	});
@@ -68,9 +68,9 @@ describe('Element.appendHTML', function(){
 
 		expect(children.length).toBe(2);
 		expect(children.each(function(child, i){
-			expect(child.innerText).toBe('HI!');
+			expect(child.get('text')).toBe('HI!');
 			expect(child.parentNode.getAttribute('rel')).toBe('' + i);
-			expect(child.parentNode.innerText).toBe('contentHI!');
+			expect(child.parentNode.get('text')).toBe('contentHI!');
 		}));
 	});
 
@@ -82,9 +82,9 @@ describe('Element.appendHTML', function(){
 
 		expect(children.length).toBe(2);
 		children.each(function(child, i){
-			expect(child.innerText).toBe('HI!');
+			expect(child.get('text')).toBe('HI!');
 			expect(child.parentNode.getAttribute('rel')).toBe('' + i);
-			expect(child.parentNode.innerText).toBe('HI!content');
+			expect(child.parentNode.get('text')).toBe('HI!content');
 		});
 	});
 
@@ -96,9 +96,9 @@ describe('Element.appendHTML', function(){
 
 		expect(children.length).toBe(2);
 		children.each(function(child, i){
-			expect(child.innerText).toBe('HI!');
+			expect(child.get('text')).toBe('HI!');
 			expect(child.parentNode.getAttribute('rel')).toBe('' + i);
-			expect(child.parentNode.innerText).toBe('contentHI!');
+			expect(child.parentNode.get('text')).toBe('contentHI!');
 		});
 	});
 
