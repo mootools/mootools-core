@@ -122,45 +122,29 @@ Element.implement({
 	},
 
 	getStyle: function(property){
-		if (property == 'opacity') return getOpacity(this);
-		property = (property == 'float' ? floatName : property).camelCase();
+
+		property = (property == 'float') ? floatName : property.camelCase();
+
+		var getter = getGetter(property);
+		if (getter) return getter(property);
+
 		var result = this.style[property];
-		if (!result || property == 'zIndex'){
-			if (Element.ShortStyles.hasOwnProperty(property)){
-				result = [];
-				for (var s in Element.ShortStyles[property]) result.push(this.getStyle(s));
-				return result.join(' ');
-			}
+
+		if (!result && Element.ShortStyles.hasOwnProperty(property)){
+			result = [];
+			for (var s in Element.ShortStyles[property]) result.push(this.getStyle(s));
+			return result.join(' ');
+		} else {
 			result = this.getComputedStyle(property);
 		}
-		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
-			return result.replace(/(top|right|bottom|left)/g, function(position){
-				return namedPositions[position];
-			}) || '0px';
-		}
-		if (!result && property == 'backgroundPosition') return '0px 0px';
+
+		// todo(ibolmo): normalization is needed for which properties? and when
 		if (result){
 			result = String(result);
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.opera || Browser.ie){
-			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
-				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
-				values.each(function(value){
-					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
-				}, this);
-				return this['offset' + property.capitalize()] - size + 'px';
-			}
-			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
-				return '0px';
-			}
-			//<ltIE9>
-			if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
-				return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
-			}
-			//</ltIE9>
-		}
+
 		return result;
 	},
 
@@ -226,11 +210,19 @@ Element.Styles = {
 	letterSpacing: {map: '@px'},
 	lineHeight: {map: '@px'},
 	clip: {map: 'rect(@px @px @px @px)'},
-	zIndex: {map: '@'},
+	zIndex: {
+		map: '@',
+		get: function(element){
+			return element.getComputedStyle('zIndex');
+		}
+	},
 	'zoom': {map: '@'},
 	textIndent: {map: '@px'},
 	opacity: {
 		map: '@',
+		get: function(element){
+			return getOpacity(this);
+		},
 		set: function(element, value){
 			if (value != null) value = parseFloat(value);
 			setOpacity(this, value);
@@ -246,7 +238,12 @@ Element.Styles = {
 	minHeight: {map: '@px'},
 
 	backgroundColor: {map: 'rgb(@, @, @)'},
-	backgroundPosition: {map: '@px @px'},
+	backgroundPosition: {
+		map: '@px @px',
+		get: function(element){
+			return element.getComputedStyle('backgroundPosition') || '0px 0px';
+		}
+	},
 
 	fontWeight: {map: '@'},
 	fontSize: {map: '@px'},
@@ -384,5 +381,51 @@ Element.ShortStyles = {
 	}
 };
 
-if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
+
+// todo(ibolmo): collisions?
+
+if (hasBackgroundPositionXY){
+	['backgroundPositionX', 'backgroundPositionY'].forEach(function(property){
+		Element.Styles[property] = {get: function(element){
+			return element.getComputedStyle(property).replace(/(top|right|bottom|left)/g, function(position){
+				return namedPosition[position];
+			}) || '0px';
+		}};
+	});
+	Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
+}
+
+if (Browser.opera || Browser.ie){
+	Object.each({
+		width: ['borderTopWidth', 'borderBottomWidth', 'paddingTop', 'paddingBottom'],
+		height: ['borderLeftWidth', 'borderRightWidth', 'paddingLeft', 'paddingRight']
+	}, function(styles, property){
+		Element.Styles[property].get = function(element){
+			var result = element.getComputedStyle(property), size = 0;
+			if (result.substr(-2) == 'px') return result;
+
+			Object.forEach(element.getStyles(styles), function(value){ size += value; });
+			return (element['offset' + property.capitalize()] - size) + 'px';
+		};
+	});
+
+	for (var property in Element.Styles) if (/^border(.+)Width|margin|padding/.test(property)){
+		Element.Styles[property].get = function(element){
+			var result = element.getComputedStyle(property);
+			return isNaN(parseFloat(result)) ? '0px' : result;
+		}
+	}
+}
+
+//<ltIE9>
+if (returnsBordersInWrongOrder){
+	for (var property in Element.Styles) if (/^border(Top|Right|Bottom|Left)?$/.test(property)){
+		Element.Styles[property].get = function(element){
+			var result = element.getComputedStyle(property);
+			return /^#/.test(result) ? result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1') : result;
+		};
+	}
+}
+//</ltIE9>
+
 })();
