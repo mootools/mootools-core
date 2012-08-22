@@ -7,31 +7,31 @@ provides: [Element.Style.Specs]
 ...
 */
 describe('Element.set opacity', function(){
+	var hasOpacity = (document.html.style.opacity != null);
 
 	it('should return the opacity of an Element without seting it before', function(){
 		var div = new Element('div');
-		if (document.html.style.opacity != null) div.style.opacity = 0.4;
+		if (hasOpacity) div.style.opacity = 0.4;
 		else if (document.html.style.filter != null) div.style.filter = 'alpha(opacity=40)';
 		else div.setStyle('opacity', 0.4); // We only have visibility available but opacity should still report a 0..1 value
 		expect(div.get('opacity') == 0.4).toBeTruthy();
 	});
 
-	it('should not remove existent filters on browsers with filters', function(){
+	it('should not remove existent filters on browsers with non-standard filters', function(){
 		var div = new Element('div'),
-			supports_filters;
+			supportsOldFilters;
 
 		if (Syn.browser.msie) {
 			var UA = navigator.userAgent.toLowerCase().match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/),
 				version = parseFloat(UA[2]);
-			supports_filters = (version < 10);
-		} else {
-			supports_filters = (document.html.style.filter !== null && !window.opera && !Syn.browser.gecko);
+			supportsOldFilters = (document.html.style.filter != null) && (version < 9);
 		}
 
-		if (supports_filters){
+		if (supportsOldFilters){
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
 			expect(div.style.filter).toMatch(/blur\(strength=50\)/i);
+			expect(div.style.filter).toEqual('blur(strength=50) alpha(opacity=40)');
 		}
 	});
 
