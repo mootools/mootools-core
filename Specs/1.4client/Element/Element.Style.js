@@ -96,6 +96,14 @@ describe('Element.Style', function(){
 		it('should get the width from the CSS', function(){
 			expect(element.getStyle('width')).toMatch(/\d+px/);
 		});
+		
+		it('should not mangle the units from inline width in %', function(){
+			expect(new Element('div').setStyle('width', '40%').getStyle('width')).toEqual('40%');
+		});
+		
+		it('should not mangle the units from inline auto width', function(){
+			expect(new Element('div').setStyle('width', 'auto').getStyle('width')).toEqual('auto');
+		});
 
 		it('should get the left margin from the CSS', function(){
 			// FireFox returns px (and maybe even as floats)

@@ -166,7 +166,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (!hasGetComputedStyle || brokenGetComputedStyle){
+		if (!hasGetComputedStyle || brokenGetComputedStyle && !this.style[property]){
 			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
