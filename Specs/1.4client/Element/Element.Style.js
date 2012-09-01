@@ -173,6 +173,20 @@ describe('Element.Style', function(){
 
 	});
 
+	describe('set/getStyle background-size', function(){
+
+		it('should return the correct pixel size', function(){
+			var foo = new Element('div', {
+				styles: {
+					backgroundSize: '44px'
+				}
+			});
+			foo.setStyle('background-size', 20);​
+			expect(foo.getStyle('backgroundSize')).toEqual('20px');
+		});
+
+	});
+
 	describe('getStyle background-position', function(){
 		beforeEach(function(){
 			var className = 'getStyleBackgroundPosition';
