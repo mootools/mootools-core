@@ -82,6 +82,8 @@ Browser.Request = (function(){
 
 Browser.Features.xhr = !!(Browser.Request);
 
+//<1.4compat>
+
 // Flash detection
 
 var version = (Function.attempt(function(){
@@ -94,6 +96,8 @@ Browser.Plugins.Flash = {
 	version: Number(version[0] || '0.' + version[1]) || 0,
 	build: Number(version[2]) || 0
 };
+
+//</1.4compat>
 
 // String scripts
 
