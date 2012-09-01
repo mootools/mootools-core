@@ -41,4 +41,3 @@ sources:
   - "Source/Utilities/Cookie.js"
   - "Source/Utilities/JSON.js"
   - "Source/Utilities/DOMReady.js"
-  - "Source/Utilities/Swiff.js"

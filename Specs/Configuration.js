@@ -177,7 +177,6 @@ Configuration.source = {
 			'Utilities/DomReady',
 			'Utilities/JSON',
 			'Utilities/Cookie',
-			'Utilities/Swiff',
 
 			'Fx/Fx',
 			'Fx/Fx.CSS',
@@ -228,7 +227,6 @@ Configuration.source = {
 			'Utilities/DOMReady',
 			'Utilities/JSON',
 			'Utilities/Cookie',
-			'Utilities/Swiff',
 
 			'Fx/Fx.CSS',
 			'Fx/Fx.Tween',
@@ -278,7 +276,6 @@ Configuration.source = {
 			'Utilities/DOMReady',
 			'Utilities/JSON',
 			'Utilities/Cookie',
-			'Utilities/Swiff',
 
 			'Fx/Fx.CSS',
 			'Fx/Fx.Tween',
