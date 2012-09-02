@@ -10,6 +10,15 @@ describe('Element', function(){
 
 	describe('Element.getProperty', function(){
 
+		it('should remove the onunload method', function(){
+			var text;
+			var handler = function(){ text = 'nope'; };
+			window.addEvent('unload', handler);
+			window.removeEvent('unload', handler);
+			window.fireEvent('unload');
+			expect(text).toBe(undefined);
+		});
+
 		it('should get the attrubte of a form when the form has an input with as ID the attribute name', function(){
 			var div = new Element('div');
 			div.innerHTML = '<form action="s"><input id="action"></form>';
