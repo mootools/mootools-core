@@ -10,6 +10,34 @@ describe('Element', function(){
 
 	describe('Element.getProperty', function(){
 
+		it('should cloneNode properly on IE6/7', function(){
+
+			var div = new Element('div');
+			div.inject(document.documentElement);
+			div.innerHTML = "<input id='Q1' class='foo' rel='hai' />";
+
+			var q1 = document.id('Q1');
+			var clone = q1.clone();
+			clone.replaces(q1);
+
+			expect($$('input[id=Q1]').length).toEqual(0);
+			expect($$('input#Q1').length).toEqual(0);
+			expect($$('input[id=Q1]').length).toEqual(0); //<- element.erase will fail on this :(
+			clone.dispose();
+
+			var ul = new Element('ul',{id:'test'});
+			ul.set('html', '<li id="li1"></li><li id="li2"></li>');
+			ul.inject(document.documentElement);
+
+			var ulc = ul.clone();
+			ulc.replaces(ul);
+
+			expect($$('li#li1').length).toEqual(0);
+
+			ulc.destroy();
+
+		});
+
 		it('should get the attrubte of a form when the form has an input with as ID the attribute name', function(){
 			var div = new Element('div');
 			div.innerHTML = '<form action="s"><input id="action"></form>';

@@ -859,7 +859,26 @@ Element.implement({
 
 	clone: function(contents, keepid){
 		contents = contents !== false;
-		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
+		var cloneNode = function(){return false};
+		/*<ltIE8>*/
+		if (Browser.ie6 || Browser.ie7){
+			var self = this;
+			cloneNode = function(contents){
+				var oldID = '' + self.id;
+				self.removeAttribute('id');
+				var clonedHTML = self.outerHTML;
+				var cloned = document.createElement('div');
+				if(!keepid) clonedHTML = clonedHTML.replace(/id=[^\ \>]/gim,'');
+				cloned.innerHTML = clonedHTML;
+				self.id = oldID;
+				var clone = cloned.firstChild;
+				if (keepid) clone.id = oldID;
+				if (!contents & clone.tagName !== 'INPUT' ) clone.innerHTML = '';
+				return clone;
+			}
+		}
+		/*</ltIE8>*/
+		var clone = cloneNode(contents) || this.cloneNode(contents), ce = [clone], te = [this], i;
 
 		if (contents){
 			ce.append(Array.from(clone.getElementsByTagName('*')));
@@ -890,6 +909,8 @@ Element.implement({
 			for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
 		}
 		/*</ltIE9>*/
+
+
 		return document.id(clone);
 	}
 
