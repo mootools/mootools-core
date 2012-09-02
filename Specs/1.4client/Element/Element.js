@@ -8,6 +8,49 @@ provides: [Element.Event.Specs]
 */
 describe('Element', function(){
 
+	it('should remove the onunload method', function(){
+		var text;
+		var handler = function(){ text = 'nope'; };
+		window.addEvent('unload', handler);
+		window.removeEvent('unload', handler);
+		window.fireEvent('unload');
+		expect(text).toBe(undefined);
+	});
+
+	it('should returns an Elements instance on slice / splice / map methods', function(){
+		var div = new Element('div',{
+			html:[
+				'<div>1</div>',
+				'<div>2</div>',
+				'<div>3</div>',
+				'<div>4</div>',
+				'<div>5</div>',
+				'<span class="whatever"><b></b><b></b></span>',
+				'<span class="whatever"><b></b><b></b></span>',
+				'<span class="whatever"><b></b><b></b></span>',
+				'<span class="whatever"><b></b><b></b></span>'].join('')
+		});
+		div.inject(document.documentElement);
+
+		expect(typeOf($$('div').map(function(el){
+			return el;
+		}))).toEqual('elements');
+
+		/* map for anything else than Elements will return an array */
+		expect(typeOf($$('div').map(function(el){
+			return '';
+		}))).toEqual('array');
+
+		expect(typeOf($$('div').append($$('div')))).toEqual('elements');
+		expect(typeOf($$('div').combine($$('div')))).toEqual('elements');
+		expect(typeOf($$('div').slice(3, 2))).toEqual('elements');
+		expect(typeOf($$('div').splice(1, 2))).toEqual('elements');
+		expect(typeOf($$('div').flatten())).toEqual('elements');
+		expect(typeOf($$('.whatever').getElements('b').flatten())).toEqual('array');
+		expect(typeOf($$('.whatever')[0].getElements('b').flatten())).toEqual('elements');
+		div.destroy();
+	});
+
 	describe('Element.getProperty', function(){
 
 		it('should get the attrubte of a form when the form has an input with as ID the attribute name', function(){

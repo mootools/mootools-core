@@ -198,7 +198,21 @@ if (object[1] == 1) Elements.implement('splice', function(){
 }.protect());
 
 Array.forEachMethod(function(method, name){
-	Elements.implement(name, method);
+	var wrap, kind = ({map: 2, splice: 1, slice: 1, clone: 1, flatten: 1})[name];
+	
+	if (kind){
+		wrap = function(){
+			var result = method.apply(this, arguments);
+			if (kind == 1 || result.every(function(el){
+				return typeOf(el) == 'element';				
+			})){
+				result = new Elements(result);
+			}
+			return result;
+		};
+	}
+	
+	Elements.implement(name, wrap || method);
 });
 
 Array.mirror(Elements);
@@ -900,7 +914,7 @@ Element.implement({
 	addListener: function(type, fn){
 		if (type == 'unload'){
 			var old = fn, self = this;
-			fn = function(){
+			old.$ref = fn = function(){
 				self.removeListener('unload', fn);
 				old();
 			};
@@ -913,6 +927,11 @@ Element.implement({
 	},
 
 	removeListener: function(type, fn){
+		if (fn.$ref){
+			var old = fn;
+			fn = fn.$ref;
+			delete old.$ref;
+		}
 		if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
 		else this.detachEvent('on' + type, fn);
 		return this;
