@@ -7,6 +7,16 @@ provides: [Element.Event.Specs]
 ...
 */
 describe('Element', function(){
+
+	it('should remove the onunload method', function(){
+		var text;
+		var handler = function(){ text = 'nope'; };
+		window.addEvent('unload', handler);
+		window.removeEvent('unload', handler);
+		window.fireEvent('unload');
+		expect(text).toBe(undefined);
+	});
+
 	it('should returns an Elements instance on slice / splice / map methods', function(){
 		var div = new Element('div',{
 			html:[
