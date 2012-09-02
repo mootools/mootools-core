@@ -914,7 +914,7 @@ Element.implement({
 	addListener: function(type, fn){
 		if (type == 'unload'){
 			var old = fn, self = this;
-			fn = function(){
+			old.$ref = fn = function(){
 				self.removeListener('unload', fn);
 				old();
 			};
@@ -927,6 +927,11 @@ Element.implement({
 	},
 
 	removeListener: function(type, fn){
+		if (fn.$ref){
+			var old = fn;
+			fn = fn.$ref;
+			delete old.$ref;
+		}
 		if (this.removeEventListener) this.removeEventListener(type, fn, !!arguments[2]);
 		else this.detachEvent('on' + type, fn);
 		return this;
