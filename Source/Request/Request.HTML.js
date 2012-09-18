@@ -30,14 +30,21 @@ Request.HTML = new Class({
 
 	success: function(text){
 		var options = this.options, response = this.response;
-
-		response.html = text.stripScripts(function(script){
-			response.javascript = script;
-		});
+    
+    response.html = text;
 
 		var match = response.html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
 		if (match) response.html = match[1];
-		var temp = new Element('div').set('html', response.html);
+		var temp = new Element('div', {html: response.html});
+
+    if (options.filter)
+      response.html = temp.getElement(options.filter).outerHTML;
+
+		response.html = response.html.stripScripts(function(script){
+			response.javascript = script;
+		});
+
+		temp = new Element('div', {html: response.html});
 
 		response.tree = temp.childNodes;
 		response.elements = temp.getElements(options.filter || '*');
