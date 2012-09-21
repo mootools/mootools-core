@@ -31,7 +31,7 @@ An XMLHttpRequest Wrapper.
 * headers    - (*object*) An object to use in order to set the request headers.
 * urlEncoded - (*boolean*: defaults to *true*) If set to true, the content-type header is set to www-form-urlencoded + encoding
 * encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
-* noCache    - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
+* noCache    - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE and iOS 6 have a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
 * evalScripts  - (*boolean*: defaults to *false*) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (*boolean*: defaults to *false*) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
