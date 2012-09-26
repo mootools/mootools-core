@@ -142,7 +142,7 @@ Element.implement({
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
 		if (Browser.opera || Browser.ie){
-			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
+			if ((/^(height|width)$/).test(property) && !(/px$/.test(result)) && !this.style[property]){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
 					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
