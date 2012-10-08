@@ -30,6 +30,7 @@ An XMLHttpRequest Wrapper.
 * timeout    - (*integer*: defaults to 0) In conjunction with `onTimeout` event, it determines the amount of milliseconds before considering a connection timed out. (It's suggested to not use timeout with big files and only when knowing what's expected.)
 * headers    - (*object*) An object to use in order to set the request headers.
 * urlEncoded - (*boolean*: defaults to *true*) If set to true, the content-type header is set to www-form-urlencoded + encoding
+* responseType - (*string*: defaults to *null*, may be *arrayBuffer* or *blob*) Provides access to the  XHR Level 2  *responseType*, allowing requests of binary data.
 * encoding   - (*string*: defaults to 'utf-8') The encoding to be set in the request header.
 * noCache    - (*boolean*; defaults to *false*) If *true*, appends a unique *noCache* value to the request to prevent caching. (IE has a bad habit of caching ajax request values. Including this script and setting the *noCache* value to true will prevent it from caching. The server should ignore the *noCache* value.)
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
@@ -87,10 +88,23 @@ Fired when the Request is making progresses in the download or upload. (This is 
 
 	myRequest.send();
 
+	var mySound = new Request({
+		method: 	'get',
+		url:		'squarepusher.wav',
+		responseType: 'arraybuffer',
+		onSuccess:	function(res){
+			myAudioContext.decodeAudioData(res, function(buffer){
+				if (buffer) myAudioBuffer = buffer;
+			});
+		}
+	}).send();
+	
 ### See Also:
 
  - [MDC: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)
 
+ - [W3C: XHR Level 2](http://www.w3.org/TR/XMLHttpRequest/)
+ 
 #### complete
 
 Fired when the Request is completed.

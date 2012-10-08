@@ -74,11 +74,23 @@ var Request = this.Request = new Class({
 		if (progressSupport) xhr.onprogress = xhr.onloadstart = empty;
 		clearTimeout(this.timer);
 
-		this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
-		if (this.options.isSuccess.call(this, this.status))
-			this.success(this.response.text, this.response.xml);
-		else
-			this.failure();
+		if (this.options.responseType 
+		 && (this.options.responseType == 'arraybuffer' || this.options.responseType == 'blob')
+		 ){
+			this.response = {};
+			this.response[this.options.responseType] = this.xhr.response || '';
+			if (this.options.isSuccess.call(this, this.status))
+				this.success(this.response[this.options.responseType]);
+			else
+				this.failure();
+		}
+		else {
+			this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
+			if (this.options.isSuccess.call(this, this.status))
+				this.success(this.response.text, this.response.xml);
+			else
+				this.failure();
+		}
 	},
 
 	isSuccess: function(){
@@ -91,6 +103,7 @@ var Request = this.Request = new Class({
 	},
 
 	processScripts: function(text){
+		if (typeof text != 'string') return text;
 		if (this.options.evalResponse || (/(ecma|java)script/).test(this.getHeader('Content-type'))) return Browser.exec(text);
 		return text.stripScripts(this.options.evalScripts);
 	},
@@ -198,7 +211,7 @@ var Request = this.Request = new Class({
 
 		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.password);
 		if (this.options.user && 'withCredentials' in xhr) xhr.withCredentials = true;
-
+		if (this.options.responseType) xhr.responseType = this.options.responseType;
 		xhr.onreadystatechange = this.onStateChange.bind(this);
 
 		Object.each(this.headers, function(value, key){
