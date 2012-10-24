@@ -1,6 +1,7 @@
 MooTools Core
 =============
-This repository is for MooTools developers, not users.
-All users should download MooTools from [MooTools.net](http://mootools.net "MooTools")
 
-[See the MooTools Wiki for more information](http://github.com/mootools/mootools-core/wikis)
+This MooTools 2.0wip branch is no longer maintained.
+Checkout the other projects on the MooTools GitHub account.
+
+This branch is still here for historical reasons.
