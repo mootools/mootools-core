@@ -16,12 +16,12 @@ provides: String
 
 String.implement({
 
-	test: function(regex, params){
-		return ((typeOf(regex) == 'regexp') ? regex : new RegExp('' + regex, params)).test(this);
+	contains: function(string, index){
+		return (index ? String(this).slice(index) : String(this)).indexOf(string) > -1;
 	},
 
-	contains: function(string, separator){
-		return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : String(this).indexOf(string) > -1;
+	test: function(regex, params){
+		return ((typeOf(regex) == 'regexp') ? regex : new RegExp('' + regex, params)).test(this);
 	},
 
 	trim: function(){
@@ -80,3 +80,11 @@ String.implement({
 	}
 
 });
+
+//<1.4compat>
+
+String.prototype.contains = function(string, separator){
+	return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : String(this).indexOf(string) > -1;
+};
+
+//</1.4compat>
