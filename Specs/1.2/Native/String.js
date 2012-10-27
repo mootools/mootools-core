@@ -44,7 +44,7 @@ describe("String Methods", {
 	},
 
 	// String.contains
-
+//<1.4compat>
 	'should return true if the string contains a string otherwise false': function(){
 		expect('i like cookies'.contains('cookies')).toBeTruthy();
 		expect('i,like,cookies'.contains('cookies')).toBeTruthy();
@@ -58,7 +58,7 @@ describe("String Methods", {
 		expect('i,like,cookies'.contains('cookies', ' ')).toBeFalsy();
 		expect('i,like,cookies'.contains('cookies', ',')).toBeTruthy();
 	},
-
+//</1.4compat>
 	// String.test
 
 	'should return true if the test matches the string otherwise false': function(){
