@@ -16,9 +16,11 @@ provides: String
 
 String.implement({
 
+	//<!ES6>
 	contains: function(string, index){
 		return (index ? String(this).slice(index) : String(this)).indexOf(string) > -1;
 	},
+	//</!ES6>
 
 	test: function(regex, params){
 		return ((typeOf(regex) == 'regexp') ? regex : new RegExp('' + regex, params)).test(this);
@@ -82,9 +84,7 @@ String.implement({
 });
 
 //<1.4compat>
-
 String.prototype.contains = function(string, separator){
 	return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : String(this).indexOf(string) > -1;
 };
-
 //</1.4compat>
