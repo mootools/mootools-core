@@ -699,7 +699,7 @@ Element.implement({
 	hasClass: hasClassList ? function(className) {
 		return this.classList.contains(className);
 	} : function(className){
-		return this.className.clean().contains(className, ' ');
+		return (' ' + this.className.clean() + ' ').indexOf(' ' + className + ' ') > -1;
 	},
 
 	addClass: hasClassList ? function(className) {

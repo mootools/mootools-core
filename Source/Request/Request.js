@@ -183,10 +183,10 @@ var Request = this.Request = new Class({
 		if (trimPosition > -1 && (trimPosition = url.indexOf('#')) > -1) url = url.substr(0, trimPosition);
 
 		if (this.options.noCache)
-			url += (url.contains('?') ? '&' : '?') + String.uniqueID();
+			url += (url.indexOf('?') > -1 ? '&' : '?') + String.uniqueID();
 
 		if (data && (method == 'get' || method == 'delete')){
-			url += (url.contains('?') ? '&' : '?') + data;
+			url += (url.indexOf('?') > -1 ? '&' : '?') + data;
 			data = null;
 		}
 

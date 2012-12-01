@@ -122,7 +122,7 @@ Fx.CSS = new Class({
 
 		Array.each(document.styleSheets, function(sheet, j){
 			var href = sheet.href;
-			if (href && href.contains('://') && !href.contains(document.domain)) return;
+			if (href && href.indexOf('://') > -1 && href.indexOf(document.domain) == -1) return;
 			var rules = sheet.rules || sheet.cssRules;
 			searchStyles(rules);
 		});

@@ -87,16 +87,16 @@ String method: contains {#String:contains}
 -----------------------------------
 
 Checks to see if the string passed in is contained in this string.
-If the separator parameter is passed, will check to see if the string is contained in the list of values separated by that parameter.
+If the position parameter is passed, it will only check for the string from that point.
 
 ### Syntax:
 
-	myString.contains(string[, separator]);
+	myString.contains(string[, position]);
 
 ### Arguments:
 
 1. string    - (*string*) The string to search for.
-2. separator - (*string*, optional) The string that separates the values in this string (e.g. Element classNames are separated by a ' ').
+2. position - (*number*, optional) Position in the string to begin searching for `string`, defaults to `0`.
 
 ### Returns:
 
@@ -106,10 +106,18 @@ If the separator parameter is passed, will check to see if the string is contain
 ### Examples:
 
 	'a bc'.contains('bc'); // returns true
-	'a b c'.contains('c', ' '); // returns true
-	'a bc'.contains('b', ' '); // returns false
+	'abc'.contains('b', 1); // returns true
+	'abc'.contains('b', 2); // returns false
 
+### See Also:
 
+- [MDC String:indexOf][]
+- [MDC String:contains][]
+
+### Note:
+
+Since MooTools 1.5 the second parameter changed from `separator` to `position` so it conforms the ES6 specification.
+If using the 1.4 compatibility layer, this method will be overwritten to have the old behavior.
 
 String method: trim {#String:trim}
 ---------------------------
@@ -128,7 +136,9 @@ Trims the leading and trailing spaces off a string.
 
 	'    i like cookies     '.trim(); // returns 'i like cookies'
 
+### See Also:
 
+- [MDC String:trim][]
 
 String method: clean {#String:clean}
 -----------------------------
@@ -390,6 +400,9 @@ Strips the String of its *<script>* tags and anything in between them.
 
 
 [MDC String]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
+[MDC String:contains]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/contains
+[MDC String:indexOf]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf
+[MDC String:trim]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/trim
 [MDC Regexp:test]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/RegExp/test
 [MDC Regular Expressions]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Regular_Expressions
 [MDC parseInt]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Functions/parseInt
