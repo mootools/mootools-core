@@ -181,7 +181,7 @@ describe('Element.Style', function(){
 					backgroundSize: '44px'
 				}
 			});
-			foo.setStyle('background-size', 20);​
+			foo.setStyle('background-size', 20);
 			expect(foo.getStyle('backgroundSize')).toEqual('20px');
 		});
 
