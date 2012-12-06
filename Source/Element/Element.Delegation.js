@@ -175,7 +175,7 @@ var delegation = {
 			if (_map.remove) _map.remove(this, _uid);
 			delete stored[_uid];
 			storage[_type] = stored;
-			return removeEvent.call(this, type, delegator);
+			return removeEvent.call(this, type, delegator,_map.capture);
 		}
 
 		var __uid, s;
