@@ -155,14 +155,26 @@
 				<input type="text" />
 			</div>
 
+			<p>
+				<button onclick="focusAdd()">Add Events</button> -
+				<button onclick="focusRemove()">Remove Events</button>
+			</p>
+
 			<script>
-				$('focus_blur').addEvents({
+				var focusEvents = {
 					'focus:relay(input)': log.pass(['focus', true]),
 					'blur:relay(input)': function(){
 						log('blur', true);
 						log('---');
 					}
-				})
+				};
+				$('focus_blur').addEvents(focusEvents);
+				var focusAdd = function(){
+					$('focus_blur').addEvents(focusEvents);
+				}
+				var focusRemove = function(){
+					$('focus_blur').removeEvents(focusEvents);
+				}
 			</script>
 
 			<h1>Submit / Reset</h1>
