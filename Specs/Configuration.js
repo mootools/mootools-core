@@ -124,6 +124,7 @@ Configuration.sets = {
 	'core-1.5-base': {
 		path: '1.5base/',
 		files: [
+			'Core/Core',
 			'Fx/Fx'
 		]
 	},
@@ -137,7 +138,7 @@ Configuration.sets = {
 			'Types/Function',
 			'Types/Number',
 			'Types/String',
-			'Types/Object',
+			'Types/Object'
 		]
 	},
 

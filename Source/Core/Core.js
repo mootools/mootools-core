@@ -37,7 +37,7 @@ var typeOf = this.typeOf = function(item){
 		if (item.nodeType == 1) return 'element';
 		if (item.nodeType == 3) return (/\S/).test(item.nodeValue) ? 'textnode' : 'whitespace';
 	} else if (typeof item.length == 'number'){
-		if (item.callee) return 'arguments';
+		if ('callee' in item) return 'arguments';
 		if ('item' in item) return 'collection';
 	}
 
