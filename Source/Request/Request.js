@@ -75,16 +75,14 @@ var Request = this.Request = new Class({
 		clearTimeout(this.timer);
 
 		if (this.options.responseType 
-		 && (this.options.responseType == 'arraybuffer' || this.options.responseType == 'blob')
-		 ){
+		 && (this.options.responseType == 'arraybuffer' || this.options.responseType == 'blob') ){
 			this.response = {};
 			this.response[this.options.responseType] = this.xhr.response || '';
 			if (this.options.isSuccess.call(this, this.status))
 				this.success(this.response[this.options.responseType]);
 			else
 				this.failure();
-		}
-		else {
+		} else {
 			this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
 			if (this.options.isSuccess.call(this, this.status))
 				this.success(this.response.text, this.response.xml);

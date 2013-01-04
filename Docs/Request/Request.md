@@ -81,7 +81,6 @@ Fired when the Request is making progresses in the download or upload. (This is 
 		url: 'image.jpg',
 		onProgress: function(event, xhr){
 			var loaded = event.loaded, total = event.total;
-
 			console.log(parseInt(loaded / total * 100, 10));
 		}
 	});
