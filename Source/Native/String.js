@@ -14,6 +14,10 @@ provides: String
 ...
 */
 
+try {
+	delete String.prototype.contains;
+} catch(e){}
+
 String.implement({
 
 	test: function(regex, params){
