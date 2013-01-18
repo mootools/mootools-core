@@ -88,10 +88,10 @@ Fired when the Request is making progresses in the download or upload. (This is 
 	myRequest.send();
 
 	var mySound = new Request({
-		method: 	'get',
-		url:		'squarepusher.wav',
+		method: 'get',
+		url: 'squarepusher.wav',
 		responseType: 'arraybuffer',
-		onSuccess:	function(res){
+		onSuccess: function(res){
 			myAudioContext.decodeAudioData(res, function(buffer){
 				if (buffer) myAudioBuffer = buffer;
 			});

@@ -74,20 +74,21 @@ var Request = this.Request = new Class({
 		if (progressSupport) xhr.onprogress = xhr.onloadstart = empty;
 		clearTimeout(this.timer);
 
-		if (this.options.responseType 
-		 && (this.options.responseType == 'arraybuffer' || this.options.responseType == 'blob') ){
+		if (this.options.responseType && (this.options.responseType == 'arraybuffer' || this.options.responseType == 'blob')){
 			this.response = {};
 			this.response[this.options.responseType] = this.xhr.response || '';
-			if (this.options.isSuccess.call(this, this.status))
+			if (this.options.isSuccess.call(this, this.status)){
 				this.success(this.response[this.options.responseType]);
-			else
+			} else {
 				this.failure();
+			}
 		} else {
 			this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
-			if (this.options.isSuccess.call(this, this.status))
+			if (this.options.isSuccess.call(this, this.status)){
 				this.success(this.response.text, this.response.xml);
-			else
+			} else {
 				this.failure();
+			}
 		}
 	},
 
