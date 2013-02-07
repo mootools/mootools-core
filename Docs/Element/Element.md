@@ -168,7 +168,7 @@ Creates a new Element of the type passed in.
 
 ### Note:
 
-Because the element name is parsed as a CSS selector, colons in namespaced tags have to be escaped. So `new Element('fb\:name)` becomes `<fb:name>`.
+Because the element name is parsed as a CSS selector, colons in namespaced tags have to be escaped. So `new Element('fb\:name')` becomes `<fb:name>`.
 
 ### See Also:
 
