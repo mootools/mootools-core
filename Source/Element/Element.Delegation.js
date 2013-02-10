@@ -123,6 +123,12 @@ var relay = function(old, method){
 	};
 };
 
+var addMatchCondition = function (type, match, condition) {
+	return function(target, event){
+		return match(target, event) && condition.call(target, event, type);
+	};
+};
+
 var delegation = {
 
 	addEvent: function(type, match, fn){
@@ -140,10 +146,12 @@ var delegation = {
 
 		var elementEvent = Element.Events[_type];
 		if (elementEvent && elementEvent.condition){
-			var __match = match, condition = elementEvent.condition;
-			match = function(target, event){
-				return __match(target, event) && condition.call(target, event, type);
-			};
+			match = addMatchCondition(type, match, elementEvent.condition);
+		} else {
+			elementEventCondition = Element.NativeEventsConditions[_type];
+			if (elementEventCondition){
+				match = addMatchCondition(type, match, elementEventCondition);
+			}
 		}
 
 		var self = this, uid = String.uniqueID();
