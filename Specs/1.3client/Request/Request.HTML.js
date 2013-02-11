@@ -157,7 +157,7 @@ describe('Request.HTML', function(){
 
 	it('should create an ajax request and correctly filter it by the passed selector', function(){
 
-		var response = '<span>text</span><a>aaa</a>';
+		var response = '<span>text</span><script>___SPEC___=1;</script><a>aaa<script>___SPEC___=2;</script></a><script>___SPEC___=3;</script>';
 
 		this.spy.identity = 'Request.HTML onComplete filter';
 		var request = new Request.HTML({
@@ -173,7 +173,8 @@ describe('Request.HTML', function(){
 		expect(onCompleteArgs[0].length).toEqual(1);
 		expect(onCompleteArgs[0][0].get('tag')).toEqual('a');
 		expect(onCompleteArgs[0][0].get('text')).toEqual('aaa');
-
+		expect(onCompleteArgs[3].trim()).toEqual('___SPEC___=2;');
+		expect(___SPEC___).toEqual(2);
 	});
 
 	it('should create an ajax request that filters the response and updates the target', function(){
