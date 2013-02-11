@@ -29,10 +29,12 @@ var bubbleUp = function(self, match, fn, event, target){
 
 var map = {
 	mouseenter: {
-		base: 'mouseover'
+		base: 'mouseover',
+		condition: Element.MouseenterCheck
 	},
 	mouseleave: {
-		base: 'mouseout'
+		base: 'mouseout',
+		condition: Element.MouseenterCheck
 	},
 	focus: {
 		base: 'focus' + (eventListenerSupport ? '' : 'in'),
@@ -139,8 +141,8 @@ var delegation = {
 		};
 
 		var elementEvent = Element.Events[_type];
-		if (elementEvent && elementEvent.condition){
-			var __match = match, condition = elementEvent.condition;
+		if (_map.condition || elementEvent && elementEvent.condition){
+			var __match = match, condition = _map.condition || elementEvent.condition;
 			match = function(target, event){
 				return __match(target, event) && condition.call(target, event, type);
 			};
