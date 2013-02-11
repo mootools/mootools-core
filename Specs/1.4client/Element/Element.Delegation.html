@@ -71,6 +71,20 @@
 				width: 300px;
 			}
 
+			#mouseenter_table {
+				border-collapse: collapse;
+			}
+
+			#mouseenter_table tr {
+				background-color: cyan;
+				color: blue;
+			}
+
+			#mouseenter_table td {
+				border: 1px solid white;
+				padding: 10px;
+			}
+
 		</style>
 
 	</head>
@@ -133,6 +147,17 @@
 				</div>
 			</div>
 
+			<h1>Mouseenter / Mouseleave with tr</h1>
+
+			<table id="mouseenter_table">
+				<tbody>
+					<tr class="box">
+						<td>COLUMN 1</td>
+						<td>COLUMN 2</td>
+					</tr>
+				</tbody>
+			</table>
+
 			<script>
 				$('mouseenter_leave').addEvents({
 					'mouseenter:relay(.mouse)': log.pass(['enter', true]),
@@ -141,6 +166,13 @@
 						log('---');
 					}
 				});
+				$('mouseenter_table').addEvents({
+					'mouseenter:relay(tr)': log.pass(['entered tr', true]),
+					'mouseleave:relay(tr)': function(){
+						log('left tr', true);
+						log('---');
+					}
+				})
 			</script>
 
 			<h1>Focus / Blur</h1>

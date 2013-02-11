@@ -146,16 +146,17 @@ Element.Events = {mousewheel: {
 	base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
 }};
 
+var check = function(event){
+	var related = event.relatedTarget;
+	if (related == null) return true;
+	if (!related) return false;
+	return (related != this && related.prefix != 'xul' && typeOf(this) != 'document' && !this.contains(related));
+};
+
 if ('onmouseenter' in document.documentElement){
 	Element.NativeEvents.mouseenter = Element.NativeEvents.mouseleave = 2;
+	Element.MouseenterCheck = check;
 } else {
-	var check = function(event){
-		var related = event.relatedTarget;
-		if (related == null) return true;
-		if (!related) return false;
-		return (related != this && related.prefix != 'xul' && typeOf(this) != 'document' && !this.contains(related));
-	};
-
 	Element.Events.mouseenter = {
 		base: 'mouseover',
 		condition: check
