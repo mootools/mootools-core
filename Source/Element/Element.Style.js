@@ -16,11 +16,11 @@ provides: Element.Style
 
 (function(){
 
-var html = document.html;
+var html = document.html, el;
 
 //<ltIE9>
 // Check for oldIE, which does not remove styles when they're set to null
-var el = document.createElement('div');
+el = document.createElement('div');
 el.style.color = 'red';
 el.style.color = null;
 var doesNotRemoveStyles = el.style.color == 'red';
@@ -33,17 +33,19 @@ el = null;
 //</ltIE9>
 
 var hasGetComputedStyle = !!window.getComputedStyle,
-	brokenGetComputedStyle; // Opera rounds sub-pixel values
+	brokenGetComputedStyle = !hasGetComputedStyle; // Opera rounds sub-pixel values
 
+//<opera>
 if (hasGetComputedStyle){
-	var el = document.createElement('div');
+	el = document.createElement('div');
 	el.style.display = 'none';
-	el.style.paddingLeft = '1.5px';
+	var padding = el.style.paddingLeft = '1.5px';
 	document.html.appendChild(el);
-	brokenGetComputedStyle = window.getComputedStyle(el, null).paddingLeft != el.style.paddingLeft;
+	brokenGetComputedStyle = window.getComputedStyle(el, null).paddingLeft != padding;
 	document.html.removeChild(el);
 	el = null;
 }
+//</opera>
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
