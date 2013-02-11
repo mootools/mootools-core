@@ -34,7 +34,7 @@ Configuration.presets = {
 		source: ['1.4nocompat']
 	},
 	'core-1.5': {
-		sets: ['1.2', 'core-1.3-base', 'core-1.3-client', 'core-1.4-base', 'core-1.4-client', 'core-1.5-base'],
+		sets: ['1.2', 'core-1.3-base', 'core-1.3-client', 'core-1.4-base', 'core-1.4-client', 'core-1.5-base', 'core-1.5-client'],
 		source: ['core-1.4-base', 'core-1.4-client']
 	},
 	'core-2.0': {
@@ -126,6 +126,13 @@ Configuration.sets = {
 		files: [
 			'Core/Core',
 			'Fx/Fx'
+		]
+	},
+
+	'core-1.5-client': {
+		path: '1.5client/',
+		files: [
+			'Element/Element'
 		]
 	},
 
