@@ -16,11 +16,11 @@ provides: Element.Style
 
 (function(){
 
-var html = document.html;
+var html = document.html, el;
 
 //<ltIE9>
 // Check for oldIE, which does not remove styles when they're set to null
-var el = document.createElement('div');
+el = document.createElement('div');
 el.style.color = 'red';
 el.style.color = null;
 var doesNotRemoveStyles = el.style.color == 'red';
@@ -31,6 +31,21 @@ el.style.border = border;
 var returnsBordersInWrongOrder = el.style.border != border;
 el = null;
 //</ltIE9>
+
+var hasGetComputedStyle = !!window.getComputedStyle,
+	brokenGetComputedStyle = !hasGetComputedStyle; // Opera rounds sub-pixel values
+
+//<opera>
+if (hasGetComputedStyle){
+	el = document.createElement('div');
+	el.style.display = 'none';
+	var padding = el.style.paddingLeft = '1.5px';
+	document.html.appendChild(el);
+	brokenGetComputedStyle = window.getComputedStyle(el, null).paddingLeft != padding;
+	document.html.removeChild(el);
+	el = null;
+}
+//</opera>
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
@@ -87,7 +102,7 @@ var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
 Element.implement({
 
 	getComputedStyle: function(property){
-		if (this.currentStyle) return this.currentStyle[property.camelCase()];
+		if ((!hasGetComputedStyle || brokenGetComputedStyle) && this.currentStyle) return this.currentStyle[property.camelCase()];
 		var defaultView = Element.getDocument(this).defaultView,
 			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
 		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
@@ -141,7 +156,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.opera || Browser.ie){
+		if (!hasGetComputedStyle || brokenGetComputedStyle){
 			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
@@ -152,12 +167,12 @@ Element.implement({
 			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
 				return '0px';
 			}
-			//<ltIE9>
-			if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
-				return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
-			}
-			//</ltIE9>
 		}
+		//<ltIE9>
+		if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
+			return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
+		}
+		//</ltIE9>
 		return result;
 	},
 
