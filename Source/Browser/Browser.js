@@ -162,7 +162,7 @@ if (document.execCommand) try {
 if (this.attachEvent && !this.addEventListener){
 	var unloadEvent = function(){
 		this.detachEvent('onunload', unloadEvent);
-		document.head = document.html = document.window = null;
+		document.head = document.html = document.window = this.Window = this.Document = null;
 	};
 	this.attachEvent('onunload', unloadEvent);
 }
