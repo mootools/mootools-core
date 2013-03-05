@@ -28,7 +28,7 @@ var domready = function(){
 	if (ready) return;
 	Browser.loaded = ready = true;
 	document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
-
+	testElement = null;
 	document.fireEvent('domready');
 	window.fireEvent('domready');
 };
