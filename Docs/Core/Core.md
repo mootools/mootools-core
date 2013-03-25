@@ -243,7 +243,7 @@ This method has been deprecated. Please use *clearInterval* or *clearTimeout* in
 
 ### See Also:
 
-- [MDC clearTimeout][], [MDC clearInterval][]
+- [MDN clearTimeout][], [MDN clearInterval][]
 
 
 Function: $defined {#Deprecated-Functions:defined}
@@ -381,5 +381,5 @@ This method has been deprecated. Please use [typeOf](#Core:typeOf) instead.
 [Function:bind]: /core/Types/Function/#bind
 [Function:delay]: /core/Types/Function/#delay
 [Function:periodical]: /core/Types/Function/#periodical
-[MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
-[MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
+[MDN clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
+[MDN clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout

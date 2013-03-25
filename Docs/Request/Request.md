@@ -89,7 +89,7 @@ Fired when the Request is making progresses in the download or upload. (This is 
 
 ### See Also:
 
- - [MDC: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)
+ - [MDN: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)
 
 #### complete
 

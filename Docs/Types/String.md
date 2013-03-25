@@ -5,7 +5,7 @@ A collection of the String Object methods and functions.
 
 ### See Also:
 
-- [MDC String][]
+- [MDN String][]
 
 
 
@@ -55,7 +55,7 @@ String method: test {#String:test}
 ---------------------------
 
 Searches for a match between the string and a regular expression.
-For more information see [MDC Regexp:test][].
+For more information see [MDN Regexp:test][].
 
 ### Syntax:
 
@@ -79,7 +79,7 @@ For more information see [MDC Regexp:test][].
 
 ### See Also:
 
-- [MDC Regular Expressions][]
+- [MDN Regular Expressions][]
 
 
 
@@ -111,8 +111,8 @@ If the position parameter is passed, it will only check for the string from that
 
 ### See Also:
 
-- [MDC String:indexOf][]
-- [MDC String:contains][]
+- [MDN String:indexOf][]
+- [MDN String:contains][]
 
 ### Note:
 
@@ -138,7 +138,7 @@ Trims the leading and trailing spaces off a string.
 
 ### See Also:
 
-- [MDC String:trim][]
+- [MDN String:trim][]
 
 String method: clean {#String:clean}
 -----------------------------
@@ -260,7 +260,7 @@ Parses this string and returns a number of the specified radix or base.
 
 ### See Also:
 
-- [MDC parseInt][]
+- [MDN parseInt][]
 
 
 
@@ -285,7 +285,7 @@ Parses this string and returns a floating point number.
 
 ### See Also:
 
-- [MDC parseFloat][]
+- [MDN parseFloat][]
 
 
 
@@ -399,15 +399,15 @@ Strips the String of its *<script>* tags and anything in between them.
 
 
 
-[MDC String]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
-[MDC String:contains]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/contains
-[MDC String:indexOf]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf
-[MDC String:trim]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/trim
-[MDC Regexp:test]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/RegExp/test
-[MDC Regular Expressions]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Regular_Expressions
-[MDC parseInt]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Functions/parseInt
-[MDC parseFloat]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Functions/parseFloat
-[MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
+[MDN String]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
+[MDN String:contains]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/contains
+[MDN String:indexOf]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf
+[MDN String:trim]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/trim
+[MDN Regexp:test]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Objects/RegExp/test
+[MDN Regular Expressions]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Guide/Regular_Expressions
+[MDN parseInt]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Functions/parseInt
+[MDN parseFloat]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Functions/parseFloat
+[MDN Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
 [String:trim]: #String:trim
 [Array:rgbToHex]: /core/Types/Array/#Array:rgbToHex
 [String:trim]: #String:trim

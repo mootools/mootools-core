@@ -5,7 +5,7 @@ A collection of Object functions.
 
 ### See Also:
 
-- [MDC Object][]
+- [MDN Object][]
 
 Function: Object.each {#Object:Object-each}
 ------------------------------------
@@ -591,7 +591,7 @@ Use [Object.toQueryString](#Object:Object-toQueryString)
 
 
 
-[MDC Object]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Object
+[MDN Object]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Object
 [Object]: #Object
 [Array:indexOf]: /core/Types/Array/#Array:indexOf
 [Object:values]: #Object:values

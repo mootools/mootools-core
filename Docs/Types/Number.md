@@ -5,7 +5,7 @@ A collection of the Number Object methods and functions.
 
 ### See Also:
 
-- [MDC Number][]
+- [MDN Number][]
 
 ### Notes:
 
@@ -209,4 +209,4 @@ There are several methods available from the Math object that can be used as Num
 
 
 [Function:bind]: /core/Types/Function/#Function:bind
-[MDC Number]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Number
+[MDN Number]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Number
