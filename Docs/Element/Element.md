@@ -771,7 +771,7 @@ any descendant elements already present in the parent.
 
 ### See Also:
 
-- [MDC Element:insertAdjacentHTML][].
+- [MDN Element:insertAdjacentHTML][].
 
 
 Element Method: appendText {#Element:appendText}
@@ -840,7 +840,7 @@ Removes the Element from the DOM.
 
 ### See Also:
 
-- [MDC Element:removeChild][]
+- [MDN Element:removeChild][]
 
 
 
@@ -916,7 +916,7 @@ Replaces the passed Element with Element.
 
 ### See Also:
 
-- [MDC Element:replaceChild][]
+- [MDN Element:replaceChild][]
 
 
 
@@ -2134,6 +2134,6 @@ This method has been deprecated. Use [Elements:append][] instead.
 
 [The Dollar Safe Mode]: http://mootools.net/blog/2009/06/22/the-dollar-safe-mode/
 
-[MDC Element:removeChild]: https://developer.mozilla.org/En/DOM/Node.removeChild
-[MDC Element:replaceChild]: https://developer.mozilla.org/En/DOM/Node.replaceChild
-[MDC Element:insertAdjacentHTML]: https://developer.mozilla.org/en/DOM/Element.insertAdjacentHTML
+[MDN Element:removeChild]: https://developer.mozilla.org/En/DOM/Node.removeChild
+[MDN Element:replaceChild]: https://developer.mozilla.org/En/DOM/Node.replaceChild
+[MDN Element:insertAdjacentHTML]: https://developer.mozilla.org/en/DOM/Element.insertAdjacentHTML

@@ -5,7 +5,7 @@ A collection of Array methods and functions.
 
 ### See Also:
 
-- [MDC Array][]
+- [MDN Array][]
 
 
 Function: Array.each {#Array:Array-each}
@@ -150,11 +150,11 @@ Calls a function for each element in the array.
 ### See Also:
 
 - [Array.each](#Array:Array-each)
-- [MDC Array:forEach][]
+- [MDN Array:forEach][]
 
 ### Notes:
 
-- This method is only available for browsers without native [MDC Array:forEach][] support.
+- This method is only available for browsers without native [MDN Array:forEach][] support.
 
 
 
@@ -231,7 +231,7 @@ This method is provided only for browsers without native [Array:every][] support
 
 ### See Also:
 
-- [MDC Array:every][]
+- [MDN Array:every][]
 
 
 
@@ -274,7 +274,7 @@ This method is provided only for browsers without native [Array:filter][] suppor
 
 ### See Also:
 
-- [MDC Array:filter][]
+- [MDN Array:filter][]
 
 
 
@@ -324,7 +324,7 @@ This method is provided only for browsers without native [Array:indexOf][] suppo
 
 ### See Also:
 
-- [MDC Array:indexOf][]
+- [MDN Array:indexOf][]
 
 
 
@@ -367,7 +367,7 @@ This method is provided only for browsers without native [Array:map][] support.
 
 ### See Also:
 
-- [MDC Array:map][]
+- [MDN Array:map][]
 
 
 
@@ -410,7 +410,7 @@ This method is provided only for browsers without native [Array:some][] support.
 
 ### See Also:
 
-- [MDC Array:some][]
+- [MDN Array:some][]
 
 
 
@@ -496,7 +496,7 @@ Tests an array for the presence of an item.
 
 ### See Also:
 
-- [MDC Array:indexOf][]
+- [MDN Array:indexOf][]
 
 
 
@@ -782,13 +782,13 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 [Function:bind]: /core/Types/Function/#Function:bind
 [String:hexToRgb]: /core/Types/String/#String:hexToRgb
 [String:rgbToHex]: /core/Types/String/#String:rgbToHex
-[MDC Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
-[MDC Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
-[MDC Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
-[MDC Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
-[MDC Array:map]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
-[MDC Array:some]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
-[MDC Array:forEach]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/forEach
+[MDN Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
+[MDN Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
+[MDN Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
+[MDN Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
+[MDN Array:map]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
+[MDN Array:some]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/some
+[MDN Array:forEach]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/forEach
 [Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
 [Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
 [Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
