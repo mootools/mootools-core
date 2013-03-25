@@ -5,7 +5,7 @@ Function Methods.
 
 ### See Also:
 
-- [MDC Function][]
+- [MDN Function][]
 
 
 
@@ -331,7 +331,7 @@ Delays the execution of a function by a specified duration.
 
 ### See Also:
 
-- [MDC setTimeout][], [MDC clearTimeout][]
+- [MDN setTimeout][], [MDN clearTimeout][]
 
 
 
@@ -366,7 +366,7 @@ Executes a function in the specified intervals of time. Periodic execution can b
 
 ### See Also:
 
-- [MDC setInterval][], [MDC clearInterval][]
+- [MDN setInterval][], [MDN clearInterval][]
 
 
 Deprecated Functions {#Deprecated-Functions}
@@ -401,9 +401,9 @@ This function has been deprecated.
 [Function:bind]: /core/Types/Function/#Function:bind
 [Function:pass]: /core/Types/Function/#Function:pass
 [Element:addEvent]: /core/Element/Element.Event/#Element:addEvent
-[MDC Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
-[MDC setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
-[MDC setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
-[MDC clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
-[MDC clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
+[MDN Function]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Function
+[MDN setInterval]: https://developer.mozilla.org/en/DOM/window.setInterval
+[MDN setTimeout]: https://developer.mozilla.org/en/DOM/window.setTimeout
+[MDN clearInterval]: https://developer.mozilla.org/en/DOM/window.clearInterval
+[MDN clearTimeout]: https://developer.mozilla.org/en/DOM/window.clearTimeout
 

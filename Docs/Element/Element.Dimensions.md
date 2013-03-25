@@ -36,7 +36,7 @@ The following method is also available on the Window object.
 
 ### See Also:
 
-- [MDC Element:scrollLeft][], [MDC Element:scrollTop][]
+- [MDN Element:scrollLeft][], [MDN Element:scrollTop][]
 
 
 
@@ -85,7 +85,7 @@ The following method is also available on the Window object.
 
 ### See Also:
 
-- [MDC Element:scrollLeft][], [MDC Element:scrollTop][], [MDC Element:offsetWidth][], [MDC Element:offsetHeight][], [MDC Element:scrollWidth][], [MDC Element:scrollHeight][]
+- [MDN Element:scrollLeft][], [MDN Element:scrollTop][], [MDN Element:offsetWidth][], [MDN Element:offsetHeight][], [MDN Element:scrollWidth][], [MDN Element:scrollHeight][]
 
 ### Note:
 
@@ -226,10 +226,10 @@ Returns the parent of the element that is positioned, if there is one.
 
 
 [$]: /core/Element/Element#Window:dollar
-[MDC Element:scrollLeft]: https://developer.mozilla.org/en/DOM/element.scrollLeft
-[MDC Element:scrollTop]: https://developer.mozilla.org/en/DOM/element.scrollTop
-[MDC Element:offsetWidth]: https://developer.mozilla.org/en/DOM/element.offsetWidth
-[MDC Element:offsetHeight]: https://developer.mozilla.org/en/DOM/element.offsetHeight
-[MDC Element:scrollWidth]: https://developer.mozilla.org/en/DOM/element.scrollWidth
-[MDC Element:scrollHeight]: https://developer.mozilla.org/en/DOM/element.scrollHeight
+[MDN Element:scrollLeft]: https://developer.mozilla.org/en/DOM/element.scrollLeft
+[MDN Element:scrollTop]: https://developer.mozilla.org/en/DOM/element.scrollTop
+[MDN Element:offsetWidth]: https://developer.mozilla.org/en/DOM/element.offsetWidth
+[MDN Element:offsetHeight]: https://developer.mozilla.org/en/DOM/element.offsetHeight
+[MDN Element:scrollWidth]: https://developer.mozilla.org/en/DOM/element.scrollWidth
+[MDN Element:scrollHeight]: https://developer.mozilla.org/en/DOM/element.scrollHeight
 [Element.measure]: /more/Element/Element.Measure

@@ -121,7 +121,7 @@ Cross browser method to stop the propagation of an event (this stops the event f
 ### See Also:
 
 - [Element:addEvent][]
-- [MDC event.stopPropagation][]
+- [MDN event.stopPropagation][]
 
 
 DOMEvent Method: preventDefault {#DOMEvent:preventDefault}
@@ -154,7 +154,7 @@ Cross browser method to prevent the default action of the event.
 ### See Also:
 
 - [Element:addEvent][]
-- [MDC event.preventDefault][]
+- [MDN event.preventDefault][]
 
 
 Function: DOMEvent.defineKey {#DOMEvent:DOMEvent-defineKey}
@@ -210,5 +210,5 @@ This function allows to add additional event key codes.
 [Function:delay]: /core/Types/Function/#Function:delay
 [MooTools More Keyboard]: /more/Interface/Keyboard
 
-[MDC event.stopPropagation]: https://developer.mozilla.org/en/DOM/event.stopPropagation
-[MDC event.preventDefault]: https://developer.mozilla.org/en/DOM/event.preventDefault
+[MDN event.stopPropagation]: https://developer.mozilla.org/en/DOM/event.stopPropagation
+[MDN event.preventDefault]: https://developer.mozilla.org/en/DOM/event.preventDefault
