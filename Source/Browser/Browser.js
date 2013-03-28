@@ -189,8 +189,10 @@ if (document.execCommand) try {
 /*<ltIE9>*/
 if (this.attachEvent && !this.addEventListener){
 	var unloadEvent = function(){
-		this.detachEvent('onunload', unloadEvent);
-		document.head = document.html = document.window = this.Window = this.Document = null;
+	  this.detachEvent('onunload', unloadEvent);
+	  document.head = document.html = document.window;
+	  // cleanup scope vars
+	  window = this.Window = document = null;
 	};
 	this.attachEvent('onunload', unloadEvent);
 }
