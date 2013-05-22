@@ -93,6 +93,10 @@ DOMEvent.implement({
 	preventDefault: function(){
 		if (this.event.preventDefault) this.event.preventDefault();
 		else this.event.returnValue = false;
+        //Fix Issue #2481
+        try{
+            this.event.keyCode = 0;
+        } catch (e) { }
 		return this;
 	}
 
