@@ -87,7 +87,7 @@ Browser.Features.xhr = !!(Browser.Request);
 // Flash detection
 
 var version = (Function.attempt(function(){
-	return navigator.plugins['Shockwave Flash'].description;
+    	return navigator.plugins['Shockwave Flash']?navigator.plugins['Shockwave Flash'].description:null;	
 }, function(){
 	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
 }) || '0 r0').match(/\d+/g);
