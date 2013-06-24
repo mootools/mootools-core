@@ -92,7 +92,7 @@ Fx.CSS = new Class({
 	//renders the change to an element
 
 	render: function(element, property, value, unit){
-		element.setStyle(property, this.serve(value, unit));
+		$(element).setStyle(property, this.serve(value, unit));
 	},
 
 	//searches inside the page css to find the values for a selector
