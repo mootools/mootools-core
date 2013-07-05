@@ -56,7 +56,7 @@ describe('Element.Event', function(){
 		var fn = function(anything, type){
 			expect(type).toEqual('customEvent');
 			callbacks++;
-		}
+		};
 		Element.Events.customEvent = {
 
 			base: 'click',
@@ -87,13 +87,22 @@ describe('Element.Event.change', function(){
 	it('should not fire "change" for any property', function(){
 		var callback = jasmine.createSpy('Element.Event.change');
 
-		var input = new Element('input', {
+		var radio = new Element('input', {
 			'type': 'radio',
 			'class': 'someClass',
 			'checked': 'checked'
 		}).addEvent('change', callback).inject(document.body);
 
-		input.removeClass('someClass');
+		radio.removeClass('someClass');
+		expect(callback).not.toHaveBeenCalled();
+
+		var checkbox = new Element('input', {
+			'type': 'checkbox',
+			'class': 'someClass',
+			'checked': 'checked'
+		}).addEvent('change', callback).inject(document.body);
+
+		checkbox.removeClass('someClass');
 		expect(callback).not.toHaveBeenCalled();
 
 		var text = new Element('input', {
@@ -105,7 +114,7 @@ describe('Element.Event.change', function(){
 		text.removeClass('otherClass');
 		expect(callback).not.toHaveBeenCalled();
 
-		[input, text].invoke('destroy');
+		[radio, checkbox, text].invoke('destroy');
 	});
 
 });
