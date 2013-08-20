@@ -49,7 +49,10 @@ Element.implement({
 
 	getSize: function(){
 		if (isBody(this)) return this.getWindow().getSize();
-		return {x: this.offsetWidth, y: this.offsetHeight};
+		return {
+			x: this.offsetWidth  || styleNumber(this, 'width'), 
+			y: this.offsetHeight || styleNumber(this, 'height')
+		};
 	},
 
 	getScrollSize: function(){
