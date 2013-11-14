@@ -21,16 +21,16 @@ var window = document.window = this;
 
 var ua = navigator.userAgent.toLowerCase(),
 	platform = navigator.platform.toLowerCase(),
-	UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0],
-	mode = UA[1] == 'ie' && document.documentMode;
+	UA = ua.match(/(opera|ie|trident|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|rv:(\d.?)|$)/) || [null, 'unknown', 0],
+	mode = (UA[1] == 'ie' || UA[1] == 'trident') && document.documentMode;
 
 var Browser = this.Browser = {
 
 	extend: Function.prototype.extend,
 
-	name: (UA[1] == 'version') ? UA[3] : UA[1],
+	name: (UA[1] == 'version') ? UA[3] : (UA[1] == 'trident' ? 'ie' : UA[1]),
 
-	version: mode || parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
+	version: mode || parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : ((UA[1] == 'trident' && UA[5]) ? UA[5] : UA[2])),
 
 	Platform: {
 		name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
