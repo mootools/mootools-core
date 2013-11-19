@@ -703,7 +703,7 @@ Element.implement({
 	},
 
 	addClass: hasClassList ? function(className) {
-		this.classList.add(className);
+		if (className.trim()) this.classList.add(className);
 		return this;
 	} : function(className){
 		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
@@ -711,7 +711,7 @@ Element.implement({
 	},
 
 	removeClass: hasClassList ? function(className) {
-		this.classList.remove(className);
+		if (className.trim()) this.classList.remove(className);
 		return this;
 	} : function(className){
 		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
