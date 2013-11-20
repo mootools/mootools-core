@@ -132,7 +132,8 @@ Configuration.sets = {
 	'core-1.5-client': {
 		path: '1.5client/',
 		files: [
-			'Browser/Browser'
+			'Browser/Browser',
+			'Element/Element'
 		]
 	},
 
