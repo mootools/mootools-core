@@ -613,8 +613,6 @@ var pollutesGetAttribute = (function(div){
 })(document.createElement('div'));
 /* </ltIE9> */
 
-var hasClassList = !!document.createElement('div').classList;
-
 Element.implement({
 
 	setProperty: function(name, value){
@@ -696,24 +694,16 @@ Element.implement({
 		return this;
 	},
 
-	hasClass: hasClassList ? function(className) {
-		return this.classList.contains(className);
-	} : function(className){
-		return (' ' + this.className.clean() + ' ').indexOf(' ' + className + ' ') > -1;
+	hasClass: function(className){
+		return this.className.clean().contains(className, ' ');
 	},
 
-	addClass: hasClassList ? function(className) {
-		this.classList.add(className);
-		return this;
-	} : function(className){
+	addClass: function(className){
 		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
 		return this;
 	},
 
-	removeClass: hasClassList ? function(className) {
-		this.classList.remove(className);
-		return this;
-	} : function(className){
+	removeClass: function(className){
 		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
 		return this;
 	},
