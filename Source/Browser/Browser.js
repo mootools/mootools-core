@@ -36,23 +36,24 @@ var parse = function(ua, platform){
 
 		Platform: {
 			name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
-		},
-
-		Features: {
-			xpath: !!(document.evaluate),
-			air: !!(window.runtime),
-			query: !!(document.querySelector),
-			json: !!(window.JSON)
-		},
-
-		Plugins: {}
+		}
 
 	};
 };
 
 var Browser = this.Browser = parse(ua, platform);
 
-Browser.parse = parse;
+Browser.extend({
+	Features: {
+		xpath: !!(document.evaluate),
+		air: !!(window.runtime),
+		query: !!(document.querySelector),
+		json: !!(window.JSON)
+	},
+	Plugins: {},
+	parse: parse
+});
+
 Browser[Browser.name] = true;
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 Browser.Platform[Browser.Platform.name] = true;
