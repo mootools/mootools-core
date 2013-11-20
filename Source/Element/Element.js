@@ -615,6 +615,21 @@ var pollutesGetAttribute = (function(div){
 
 var hasClassList = !!document.createElement('div').classList;
 
+var classes = function(className){
+	var classNames = (className || '').clean().split(" "), uniques = {};
+	return classNames.filter(function(className){
+		if (className !== "" && !uniques[className]) return uniques[className] = className;
+	});
+};
+
+var addToClassList = function(name){
+	this.classList.add(name);
+};
+
+var removeFromClassList = function(name){
+	this.classList.remove(name);
+};
+
 Element.implement({
 
 	setProperty: function(name, value){
@@ -697,24 +712,26 @@ Element.implement({
 	},
 
 	hasClass: hasClassList ? function(className) {
-    return this.classList.contains(className);
-  } : function(className){
+		return this.classList.contains(className);
+	} : function(className){
 		return this.className.clean().contains(className, ' ');
 	},
 
-	addClass: hasClassList ? function(className) {
-    this.classList.add(className);
-    return this;
-  } : function(className){
-		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
+	addClass: hasClassList ? function(className){
+		classes(className).forEach(addToClassList, this);
+		return this;
+	} : function(className){
+		this.className = classes(className + ' ' + this.className).join(' ');
 		return this;
 	},
 
-	removeClass: hasClassList ? function(className) {
-    this.classList.remove(className);
-    return this;
-  } : function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+	removeClass: hasClassList ? function(className){
+		classes(className).forEach(removeFromClassList, this);
+		return this;
+	} : function(className){
+		var classNames = classes(this.className);
+		classes(className).forEach(classNames.erase, classNames);
+		this.className = classNames.join(' ');
 		return this;
 	},
 

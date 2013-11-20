@@ -21,6 +21,18 @@ describe('Element', function(){
 			expect(element.className).toEqual('bar foo');
 		});
 
+		it('should add multiple equal classes', function(){
+			var element = new Element('div');
+			element.addClass('bar bar ');
+			expect(element.className).toEqual('bar');
+		});
+
+		it('should add class with some newline', function(){
+			var element = new Element('div');
+			element.addClass('bar\nfoo');
+			expect(element.className).toEqual('bar foo');
+		});
+
 	});
 
 });
