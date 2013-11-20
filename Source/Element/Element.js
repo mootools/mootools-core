@@ -620,6 +620,21 @@ var hasCloneBug = (function(test){
 
 var hasClassList = !!document.createElement('div').classList;
 
+var classes = function(className){
+	var classNames = (className || '').clean().split(" "), uniques = {};
+	return classNames.filter(function(className){
+		if (className !== "" && !uniques[className]) return uniques[className] = className;
+	});
+};
+
+var addToClassList = function(name){
+	this.classList.add(name);
+};
+
+var removeFromClassList = function(name){
+	this.classList.remove(name);
+};
+
 Element.implement({
 
 	setProperty: function(name, value){
@@ -708,18 +723,20 @@ Element.implement({
 	},
 
 	addClass: hasClassList ? function(className){
-		this.classList.add(className);
+		classes(className).forEach(addToClassList, this);
 		return this;
 	} : function(className){
-		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
+		this.className = classes(className + ' ' + this.className).join(' ');
 		return this;
 	},
 
 	removeClass: hasClassList ? function(className){
-		this.classList.remove(className);
+		classes(className).forEach(removeFromClassList, this);
 		return this;
 	} : function(className){
-		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
+		var classNames = classes(this.className);
+		classes(className).forEach(classNames.erase, classNames);
+		this.className = classNames.join(' ');
 		return this;
 	},
 
