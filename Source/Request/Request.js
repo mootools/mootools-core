@@ -37,6 +37,7 @@ var Request = this.Request = new Class({
 		password: '',*/
 		url: '',
 		data: '',
+		processData: true,
 		headers: {
 			'X-Requested-With': 'XMLHttpRequest',
 			'Accept': 'text/javascript, text/html, application/xml, text/xml, */*'
@@ -58,6 +59,11 @@ var Request = this.Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
+		if (options.data instanceof ArrayBuffer || options.data instanceof Blob || options.data instanceof Uint8Array){
+			// set data in directly if we're passing binary data because
+			// otherwise setOptions will convert the data into an empty object
+			this.options.data = options.data;
+		}
 		this.headers = this.options.headers;
 	},
 
@@ -156,20 +162,22 @@ var Request = this.Request = new Class({
 		options = Object.append({data: old.data, url: old.url, method: old.method}, options);
 		var data = options.data, url = String(options.url), method = options.method.toLowerCase();
 
-		switch (typeOf(data)){
-			case 'element': data = document.id(data).toQueryString(); break;
-			case 'object': case 'hash': data = Object.toQueryString(data);
-		}
+		if (this.options.processData || method == 'get' || method == 'delete'){
+			switch (typeOf(data)){
+				case 'element': data = document.id(data).toQueryString(); break;
+				case 'object': case 'hash': data = Object.toQueryString(data);
+			}
 
-		if (this.options.format){
-			var format = 'format=' + this.options.format;
-			data = (data) ? format + '&' + data : format;
-		}
+			if (this.options.format){
+				var format = 'format=' + this.options.format;
+				data = (data) ? format + '&' + data : format;
+			}
 
-		if (this.options.emulation && !['get', 'post'].contains(method)){
-			var _method = '_method=' + method;
-			data = (data) ? _method + '&' + data : _method;
-			method = 'post';
+			if (this.options.emulation && !['get', 'post'].contains(method)){
+				var _method = '_method=' + method;
+				data = (data) ? _method + '&' + data : _method;
+				method = 'post';
+			}
 		}
 
 		if (this.options.urlEncoded && ['post', 'put'].contains(method)){

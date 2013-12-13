@@ -19,6 +19,7 @@ An XMLHttpRequest Wrapper.
 
 * url        - (*string*: defaults to *null*) The URL to request. (Note, this can also be an instance of [URI][])
 * data       - (*mixed*: defaults to '') The default data for [Request:send][], used when no data is given. Can be an Element, Object or String. If an Object is passed the [Object:toQueryString][] method will be used to convert the object to a string. If an Element is passed the [Element:toQueryString][] method will be used to convert the Element to a string.
+* processData  - (*boolean*: defaults to *true*) If set to false, the object passed in via 'data' will be given, as-is, to the underlying XHR object. This can be used to bass binary data through the request (via Blob, Uint8Array, etc).
 * format     - (*string*: defaults to '') If passed, an additional key 'format' will be appended to 'data' with the passed value. e.g. '&format=json'
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
