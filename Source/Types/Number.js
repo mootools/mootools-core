@@ -35,6 +35,10 @@ Number.implement({
 
 	toInt: function(base){
 		return parseInt(this, base || 10);
+	},
+
+	toBase: function(base){
+		return (this >>> 0).toString(base);
 	}
 
 });
