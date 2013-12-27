@@ -59,7 +59,7 @@ var Request = this.Request = new Class({
 	initialize: function(options){
 		this.xhr = new Browser.Request();
 		this.setOptions(options);
-		if (options.data instanceof ArrayBuffer || options.data instanceof Blob || options.data instanceof Uint8Array || options.data instanceof FormData){
+		if ((typeof ArrayBuffer != 'undefined' && options.data instanceof ArrayBuffer) || (typeof Blob != 'undefined' && options.data instanceof Blob) || (typeof Uint8Array != 'undefined' && options.data instanceof Uint8Array)){
 			// set data in directly if we're passing binary data because
 			// otherwise setOptions will convert the data into an empty object
 			this.options.data = options.data;
