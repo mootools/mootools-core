@@ -10,7 +10,8 @@ provides: [Browser.Specs]
 describe('Browser', {
 
 	'should think it is executed in a browser': function(){
-		expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
+		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
 	},
 
 	'should assume the IE version is emulated by the documentMode (X-UA-Compatible)': function(){

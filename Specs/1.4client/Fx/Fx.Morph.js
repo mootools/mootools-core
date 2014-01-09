@@ -30,7 +30,7 @@ describe('Fx.Morph', function(){
 
 	it('should morph between % units', function(){
 		var spy = spyOn(this.div, 'setStyle').andCallThrough();
-		this.div.set('morph', {unit : '%'}).morph({'left': 50});
+		this.div.set('morph', {unit : '%'}).morph({'left': [10, 50]});
 
 		this.clock.tick(1000);
 
