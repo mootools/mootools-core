@@ -30,6 +30,7 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.11",
-    "grunt-jasmine-html-spec-runner": "~0.2.5"
+    "grunt-jasmine-html-spec-runner": "~0.2.5",
+    "grunt-contrib-connect": "~0.5.0"
   }
 }
