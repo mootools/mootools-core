@@ -1,0 +1,30 @@
+{
+  "name": "mootools-core",
+  "version": "1.4.5",
+  "description": "MooTools is a compact, modular, Object-Oriented JavaScript framework designed for the intermediate to advanced JavaScript developer.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mootools/mootools-core.git"
+  },
+  "keywords": [
+    "mootools",
+    "browser",
+    "class",
+    "utilities",
+    "types",
+    "framework",
+    "DOM",
+    "Fx",
+    "Request"
+  ],
+  "author": "MooTools Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mootools/mootools-core/issues"
+  },
+  "homepage": "https://github.com/mootools/mootools-core"
+}
