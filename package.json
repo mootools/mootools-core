@@ -26,5 +26,10 @@
   "bugs": {
     "url": "https://github.com/mootools/mootools-core/issues"
   },
-  "homepage": "https://github.com/mootools/mootools-core"
+  "homepage": "http://mootools.net",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.11",
+    "grunt-jasmine-html-spec-runner": "~0.2.5"
+  }
 }
