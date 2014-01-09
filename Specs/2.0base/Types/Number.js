@@ -1,6 +1,10 @@
 /*
 Specs for Number.js
 License: MIT-style license.
+
+requires: [Core/Number]
+provides: [2.0.base.Number.Specs]
+
 */
 
 describe('Number.random', function(){

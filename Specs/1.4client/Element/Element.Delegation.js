@@ -3,7 +3,7 @@
 name: Element.Delegation Specs
 description: n/a
 requires: [Core/Element.Delegation]
-provides: [Element.Delegation.Specs]
+provides: [1.4client.Element.Delegation.Specs]
 ...
 */
 

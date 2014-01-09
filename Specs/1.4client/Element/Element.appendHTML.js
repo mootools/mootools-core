@@ -3,7 +3,7 @@
 name: Element.appendHTML Specs
 description: test for appendHTML feature
 requires: [Core/Element]
-provides: [Element.appendHTML.Specs]
+provides: [1.4client.Element.appendHTML.Specs]
 ...
 */
 

@@ -1,6 +1,10 @@
 /*
 Specs for Function.js
 License: MIT-style license.
+
+requires: [Core/Function]
+provides: [2.0.base.Function.Specs]
+
 */
 
 describe('Function.attempt', function(){

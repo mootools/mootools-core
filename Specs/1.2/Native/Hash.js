@@ -1,9 +1,15 @@
 /*
-Script: Hash.js
-	Specs for Hash.js
+---
 
-License:
-	MIT-style license.
+Script: Hash.js
+description: Specs forHash.js
+
+License: MIT-style license.
+
+requires: [Core/Object]
+provides: [1.2.Object.Specs]
+
+...
 */
 
 (function(){

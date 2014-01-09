@@ -1,4 +1,11 @@
-
+/*
+---
+name: Array Specs
+description: n/a
+requires: [Core/Fx]
+provides: [1.5base.Fx.Specs]
+...
+*/
 describe('Fx', function(){
 
 	beforeEach(function(){

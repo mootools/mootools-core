@@ -3,7 +3,7 @@
 name: Element Specs
 description: n/a
 requires: [Core/Element.Style]
-provides: [Element.Style.Specs]
+provides: [1.4client.Element.Style.Specs]
 ...
 */
 describe('Element.Style', function(){

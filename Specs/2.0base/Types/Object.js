@@ -1,6 +1,10 @@
 /*
-Specs for Function.js
+Specs for Object.js
 License: MIT-style license.
+
+requires: [Core/Object]
+provides: [2.0.base.Object.Specs]
+
 */
 
 (function(){
@@ -36,7 +40,7 @@ describe('Object.from', function(){
 			b: 2
 		});
 	});
-	
+
 	it('should fill values with null if keys are overspecified', function(){
 		expect(Object.from(
 			[1, 2, 3],

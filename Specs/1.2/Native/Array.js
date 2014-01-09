@@ -1,9 +1,15 @@
 /*
-Script: Array.js
-	Specs for Array.js
+---
 
-License:
-	MIT-style license.
+Script: Array.js
+description: Specs forArray.js
+
+License: MIT-style license.
+
+requires: [Core/Array]
+provides: [1.2.Array.Specs]
+
+...
 */
 
 describe("Array Methods", {

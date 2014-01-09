@@ -1,0 +1,23 @@
+name: "Core-Specs-1.2"
+
+license: "[MIT License](http://mootools.net/license.txt)"
+
+copyright: "&copy; [MooTools](http://mootools.net)"
+
+authors: "[MooTools Development Team](http://mootools.net/developers)"
+
+sources:
+  - "Class/Class.js"
+  - "Class/Class.Extras.js"
+  - "Core/Browser.js"
+  - "Core/Core.js"
+  - "Core/Native.js"
+  - "Element/Element.Dimensions.js"
+  - "Element/Element.js"
+  - "Element/Element.Style.js"
+  - "Native/Array.js"
+  - "Native/Function.js"
+  - "Native/Hash.js"
+  - "Native/Number.js"
+  - "Native/String.js"
+  - "Utilities/Cookie.js"

@@ -3,7 +3,7 @@
 name: Class Specs
 description: n/a
 requires: [Core/Class]
-provides: [Class.Specs]
+provides: [1.3base.Class.Specs]
 ...
 */
 

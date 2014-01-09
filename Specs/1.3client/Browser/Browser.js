@@ -3,7 +3,7 @@
 name: Browser Specs
 description: n/a
 requires: [Core/Browser]
-provides: [Browser.Specs]
+provides: [1.3client.Browser.Specs]
 ...
 */
 

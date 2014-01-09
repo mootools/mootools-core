@@ -3,7 +3,7 @@
 name: Fx Specs
 description: n/a
 requires: [Core/Fx]
-provides: [Fx.Specs]
+provides: [1.3base.Fx.Specs]
 ...
 */
 describe('Fx', function(){

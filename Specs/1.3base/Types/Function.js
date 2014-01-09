@@ -3,7 +3,7 @@
 name: Function Specs
 description: n/a
 requires: [Core/Function]
-provides: [Function.Specs]
+provides: [1.3base.Function.Specs]
 ...
 */
 

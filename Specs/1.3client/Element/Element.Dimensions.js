@@ -3,7 +3,7 @@
 name: Element.Dimensions Specs
 description: n/a
 requires: [Core/Element.Dimensions]
-provides: [Element.Dimensions.Specs]
+provides: [1.3client.Element.Dimensions.Specs]
 ...
 */
 describe('Element.getOffsetParent', function(){

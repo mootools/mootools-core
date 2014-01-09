@@ -3,7 +3,7 @@
 name: IFrame Specs
 description: n/a
 requires: [Core/Element]
-provides: [IFrame.Specs]
+provides: [1.3client.IFrame.Specs]
 ...
 */
 describe('IFrame', function(){

@@ -1,9 +1,15 @@
 /*
-Script: Browser.js
-	Public Specs for Browser.js 1.2
+---
 
-License:
-	MIT-style license.
+Script: Browser.js
+description: Public Specs for Browser.js 1.2
+
+License: MIT-style license.
+
+requires: [Core/Browser]
+provides: [1.2.Browser.Specs]
+
+...
 */
 
 describe('$exec', {

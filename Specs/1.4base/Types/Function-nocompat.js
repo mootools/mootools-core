@@ -1,3 +1,11 @@
+/*
+---
+name: Function Specs
+description: n/a
+requires: [Core/Function]
+provides: [1.4base.Function.Specs]
+...
+*/
 
 describe('Function.bind', function(){
 

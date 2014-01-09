@@ -3,7 +3,7 @@
 name: Element Specs
 description: n/a
 requires: [Core/Element.Event]
-provides: [Element.Event.Specs]
+provides: [1.4client.Element.Event.Specs]
 ...
 */
 describe('Element', function(){

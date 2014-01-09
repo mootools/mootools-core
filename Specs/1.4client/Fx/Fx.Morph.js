@@ -1,3 +1,12 @@
+/*
+---
+name: Array Specs
+description: n/a
+requires: [Core/FX.Morph]
+provides: [1.4client.Fx.Morph.Specs]
+...
+*/
+
 
 describe('Fx.Morph', function(){
 

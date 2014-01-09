@@ -3,7 +3,7 @@
 name: Request.JSON Specs
 description: n/a
 requires: [Core/Request.JSON]
-provides: [Request.JSON.Specs]
+provides: [1.3client.Request.JSON.Specs]
 ...
 */
 describe('Request.JSON', function(){

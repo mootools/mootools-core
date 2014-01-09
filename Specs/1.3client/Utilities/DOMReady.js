@@ -3,7 +3,7 @@
 name: DomReady Specs
 description: n/a
 requires: [Core/DomReady]
-provides: [DomReady.Specs]
+provides: [1.3client.DomReady.Specs]
 ...
 */
 document.addListener = function(type, fn){

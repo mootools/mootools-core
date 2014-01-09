@@ -1,3 +1,11 @@
+/*
+---
+name: Core Specs
+description: n/a
+requires: [Core/Core]
+provides: [1.5base.Core.Specs]
+...
+*/
 
 describe('Core', function(){
 

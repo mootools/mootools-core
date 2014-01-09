@@ -1,3 +1,12 @@
+/*
+---
+name: Array Specs
+description: n/a
+requires: [Core/Array]
+provides: [1.4base.Array.Specs]
+...
+*/
+
 
 describe('Array', function(){
 

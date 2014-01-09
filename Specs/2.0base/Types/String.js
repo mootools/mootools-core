@@ -1,6 +1,10 @@
 /*
 Specs for String.js
 License: MIT-style license.
+
+requires: [Core/String]
+provides: [2.0.base.String.Specs]
+
 */
 
 describe('String.test', function(){

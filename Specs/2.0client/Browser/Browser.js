@@ -1,6 +1,10 @@
 /*
 Specs for Browser.js
 License: MIT-style license.
+
+requires: [Core/Browser]
+provides: [2.0.client.Browser.Specs]
+
 */
 
 describe('String.stripScripts', function(){

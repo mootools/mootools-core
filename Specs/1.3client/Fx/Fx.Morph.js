@@ -3,7 +3,7 @@
 name: Fx.Morph Specs
 description: n/a
 requires: [Core/Fx.Morph]
-provides: [Fx.Morph.Specs]
+provides: [1.3client.Fx.Morph.Specs]
 ...
 */
 describe('Fx.Morph', function(){

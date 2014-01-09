@@ -3,7 +3,7 @@
 name: Fx.Tween Specs
 description: n/a
 requires: [Core/Fx.Tween]
-provides: [Fx.Tween.Specs]
+provides: [1.3client.Fx.Tween.Specs]
 ...
 */
 describe('Fx.Tween', function(){

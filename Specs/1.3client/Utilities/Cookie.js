@@ -3,7 +3,7 @@
 name: Cookie Specs
 description: n/a
 requires: [Core/Cookie]
-provides: [Cookie.Specs]
+provides: [1.3client.Cookie.Specs]
 ...
 */
 describe('Cookie', function(){

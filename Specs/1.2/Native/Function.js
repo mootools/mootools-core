@@ -1,9 +1,15 @@
 /*
-Script: Function.js
-	Specs for Function.js
+---
 
-License:
-	MIT-style license.
+Script: Function.js
+description: Specs forFunction.js
+
+License: MIT-style license.
+
+requires: [Core/Function]
+provides: [1.2.Function.Specs]
+
+...
 */
 
 (function(){

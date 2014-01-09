@@ -2,5 +2,6 @@ mootools-core.js
 mootools-core.tmproj
 mootools-core.esproj
 mootools-core-mobile.js
+.DS_Store
 *~
 node_modules

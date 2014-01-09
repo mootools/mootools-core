@@ -3,7 +3,7 @@
 name: Class.Extras Specs
 description: n/a
 requires: [Core/Class.Extras]
-provides: [Class.Extras.Specs]
+provides: [1.3client.Class.Extras.Specs]
 ...
 */
 describe('setOptions', function(){

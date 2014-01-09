@@ -3,7 +3,7 @@
 name: Request.HTML Specs
 description: n/a
 requires: [Core/Request.HTML]
-provides: [Request.HTML.Specs]
+provides: [1.3client.Request.HTML.Specs]
 ...
 */
 describe('Request.HTML', function(){

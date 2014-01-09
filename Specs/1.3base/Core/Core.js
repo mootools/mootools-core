@@ -2,8 +2,8 @@
 ---
 name: Core Specs
 description: n/a
-requires: [Core/Core]
-provides: [Core.Specs]
+requires: [Core/Core, Core/Element]
+provides: [1.3base.Core.Specs]
 ...
 */
 

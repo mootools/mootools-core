@@ -1,6 +1,10 @@
 /*
 Specs for Array.js
 License: MIT-style license.
+
+requires: [Core/Array]
+provides: [2.0.base.Array.Specs]
+
 */
 
 (function(){

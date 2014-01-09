@@ -3,7 +3,7 @@
 name: Core Specs
 description: n/a
 requires: [Core/Core]
-provides: [Core.Specs]
+provides: [1.3client.Core.Specs]
 ...
 */
 describe('typeOf Client', {

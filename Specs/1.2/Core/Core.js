@@ -1,9 +1,15 @@
 /*
-Script: Core.js
-	Public Specs for Core.js 1.2
+---
 
-License:
-	MIT-style license.
+Script: Core.js
+description: Public Specs for Core.js 1.2
+
+License: MIT-style license.
+
+requires: [Core/Core]
+provides: [1.2.Core.Specs]
+
+...
 */
 
 describe('$A', {

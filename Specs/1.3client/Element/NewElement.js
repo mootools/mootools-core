@@ -3,7 +3,7 @@
 name: NewElement Specs
 description: n/a
 requires: [Core/Element]
-provides: [NewElement.Specs]
+provides: [1.3client.NewElement.Specs]
 ...
 */
 
