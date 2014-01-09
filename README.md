@@ -1,5 +1,8 @@
 MooTools Core
 =============
+
+[![Build Status](https://travis-ci.org/mootools/mootools-core.png?branch=master)](https://travis-ci.org/mootools/mootools-core)
+
 This repository is for MooTools developers; not users.
 All users should download MooTools from [MooTools.net](http://mootools.net/download "Download MooTools")
 
