@@ -147,12 +147,12 @@ Element.implement({
 		if (property == 'opacity') return getOpacity(this);
 		property = (property == 'float' ? floatName : property).camelCase();
 		var result = this.style[property];
+		if (!result && property == 'backgroundPosition') return '0px 0px';
 		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
 			return result.replace(/(top|right|bottom|left)/g, function(position){
 				return namedPositions[position];
 			}) || '0px';
 		}
-		if (!result && property == 'backgroundPosition') return '0px 0px';
 		if (!result || property == 'zIndex'){
 			if (Element.ShortStyles.hasOwnProperty(property)){
 				result = [];
