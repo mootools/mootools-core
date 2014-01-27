@@ -42,6 +42,11 @@ var parse = function(ua, platform){
 
 var Browser = this.Browser = parse(ua, platform);
 
+// check if browser is IE11
+if (Object.hasOwnProperty.call(window, "ActiveXObject") && !window.ActiveXObject) {
+	Browser.ie = true;
+}
+
 if (Browser.ie){
 	Browser.version = document.documentMode;
 }
