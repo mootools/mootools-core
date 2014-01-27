@@ -245,7 +245,7 @@ describe('Element.Style', function(){
 			var element = new Element('div');
 			element.setStyle('background-position', '40px 10px');
 			element.setStyle('background-position', null);
-			expect(element.getStyle('background-position')).toEqual('0px 0px');
+			expect(element.getStyle('background-position')).toMatch(/0px 0px|0% 0%/);
 		});
 
 	});
