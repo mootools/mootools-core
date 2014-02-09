@@ -14,6 +14,10 @@ provides: Element.Style
 ...
 */
 
+(function(){
+
+var floatName = (document.html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
@@ -53,7 +57,7 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.set('opacity', parseFloat(value));
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		if ($type(value) != 'string'){
@@ -72,7 +76,7 @@ Element.implement({
 	getStyle: function(property){
 		switch (property){
 			case 'opacity': return this.get('opacity');
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		var result = this.style[property];
@@ -146,3 +150,5 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
+
+})();
