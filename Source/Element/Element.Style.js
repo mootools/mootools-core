@@ -16,11 +16,16 @@ provides: Element.Style
 
 (function(){
 
-var floatName = (document.html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+var html = document.html;
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
+
+var hasOpacity = (html.style.opacity != null),
+	hasFilter = (html.style.filter != null);
 
 Element.Properties.opacity = {
 
@@ -32,9 +37,13 @@ Element.Properties.opacity = {
 				if (this.style.visibility != 'visible') this.style.visibility = 'visible';
 			}
 		}
-		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
-		this.style.opacity = opacity;
+
+		if (hasOpacity){
+			this.style.opacity = opacity;
+		} else if (hasFilter){
+			if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
+			this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		}
 		this.store('opacity', opacity);
 	},
 
