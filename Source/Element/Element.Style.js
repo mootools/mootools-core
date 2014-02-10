@@ -14,9 +14,18 @@ provides: Element.Style
 ...
 */
 
+(function(){
+
+var html = document.html;
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
+
+var hasOpacity = (html.style.opacity != null),
+	hasFilter = (html.style.filter != null);
 
 Element.Properties.opacity = {
 
@@ -28,9 +37,13 @@ Element.Properties.opacity = {
 				if (this.style.visibility != 'visible') this.style.visibility = 'visible';
 			}
 		}
-		if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
-		if (Browser.Engine.trident) this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
-		this.style.opacity = opacity;
+
+		if (hasOpacity){
+			this.style.opacity = opacity;
+		} else if (hasFilter){
+			if (!this.currentStyle || !this.currentStyle.hasLayout) this.style.zoom = 1;
+			this.style.filter = (opacity == 1) ? '' : 'alpha(opacity=' + opacity * 100 + ')';
+		}
 		this.store('opacity', opacity);
 	},
 
@@ -53,7 +66,7 @@ Element.implement({
 	setStyle: function(property, value){
 		switch (property){
 			case 'opacity': return this.set('opacity', parseFloat(value));
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		if ($type(value) != 'string'){
@@ -72,7 +85,7 @@ Element.implement({
 	getStyle: function(property){
 		switch (property){
 			case 'opacity': return this.get('opacity');
-			case 'float': property = (Browser.Engine.trident) ? 'styleFloat' : 'cssFloat';
+			case 'float': property = floatName;
 		}
 		property = property.camelCase();
 		var result = this.style[property];
@@ -90,7 +103,7 @@ Element.implement({
 			var color = result.match(/rgba?\([\d\s,]+\)/);
 			if (color) result = result.replace(color[0], color[0].rgbToHex());
 		}
-		if (Browser.Engine.presto || (Browser.Engine.trident && !$chk(parseInt(result, 10)))){
+		if (!window.getComputedStyle && !$chk(parseInt(result, 10))){
 			if (property.test(/^(height|width)$/)){
 				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
 				values.each(function(value){
@@ -146,3 +159,5 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
 	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
 });
+
+})();
