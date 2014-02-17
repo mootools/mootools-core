@@ -29,7 +29,6 @@
   "homepage": "http://mootools.net",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "js-yaml": "~3.0.1",
-    "debug": "~0.7.4"
+    "grunt-mootools-packager": "0.0.1"
   }
 }
