@@ -122,7 +122,8 @@ module.exports = function(grunt){
 
 			// strip blocks
 			toArray(options.strip).forEach(function(block){
-				buffer.replace(RegExp(STRIP_EXP.join(block), 'gm'), '');
+				var regexp = RegExp(STRIP_EXP.join(block), 'gm');
+				buffer = buffer.replace(regexp, '');
 			});
 
 			grunt.file.write(f.dest, buffer);
