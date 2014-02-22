@@ -1,14 +1,8 @@
 /*
 ---
-
-Script: Number.js
-description: Specs forNumber.js
-
-License: MIT-style license.
-
-requires: [Core/Number]
-provides: [1.2.Number.Specs]
-
+name: Number
+requires: ~
+provides: ~
 ...
 */
 

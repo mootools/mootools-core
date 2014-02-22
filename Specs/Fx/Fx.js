@@ -1,9 +1,8 @@
 /*
 ---
-name: Fx Specs
-description: n/a
-requires: [Core/Fx]
-provides: [1.3base.Fx.Specs]
+name: Fx
+requires: ~
+provides: ~
 ...
 */
 describe('Fx', function(){

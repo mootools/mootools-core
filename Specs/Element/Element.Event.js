@@ -1,9 +1,8 @@
 /*
 ---
-name: Element.Event Specs
-description: n/a
-requires: [Core/Element.Event]
-provides: [1.4client.Element.Event.Specs]
+name: Element.Event
+requires: ~
+provides: ~
 ...
 */
 

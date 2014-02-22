@@ -1,9 +1,8 @@
 /*
 ---
 name: Element Specs
-description: n/a
-requires: [Core/Element]
-provides: [Element.Specs]
+requires: ~
+provides: ~
 ...
 */
 

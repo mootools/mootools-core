@@ -1,9 +1,15 @@
 /*
 ---
+<<<<<<< HEAD
 name: Element.Style Specs
 description: n/a
 requires: [Core/Element.Style]
 provides: [1.4client.Element.Style.Specs]
+=======
+name: Element.Style
+requires: ~
+provides: ~
+>>>>>>> 9b856a8... Fixing YAML headers.
 ...
 */
 

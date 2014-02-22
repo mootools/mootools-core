@@ -1,9 +1,8 @@
 /*
 ---
-name: Fx.Morph Specs
-description: n/a
-requires: [Core/Fx.Morph]
-provides: [Fx.Morph.Specs]
+name: Fx.Morph
+requires: ~
+provides: ~
 ...
 */
 describe('Fx.Morph', function(){

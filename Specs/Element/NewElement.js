@@ -1,9 +1,8 @@
 /*
 ---
-name: NewElement Specs
-description: n/a
-requires: [Core/Element]
-provides: [1.3client.NewElement.Specs]
+name: NewElement
+requires: ~
+provides: ~
 ...
 */
 

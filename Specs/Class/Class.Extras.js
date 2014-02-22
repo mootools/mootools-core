@@ -1,9 +1,8 @@
 /*
 ---
-name: Class.Extras Specs
-description: n/a
-requires: [Core/Class.Extras]
-provides: [Class.Extras.Specs]
+name: Class.Extras
+requires: ~
+provides: ~
 ...
 */
 

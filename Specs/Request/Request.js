@@ -1,9 +1,8 @@
 /*
 ---
-name: Request Specs
-description: n/a
-requires: [Core/Request]
-provides: [1.3client.Request.Specs]
+name: Request
+requires: ~
+provides: ~
 ...
 */
 describe('Request', function(){

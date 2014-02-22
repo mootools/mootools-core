@@ -1,9 +1,8 @@
 /*
 ---
-name: Browser Specs
-description: n/a
-requires: [Core/Browser]
-provides: [Browser.Specs]
+name: Browser
+requires: ~
+provides: ~
 ...
 */
 

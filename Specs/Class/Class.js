@@ -1,9 +1,8 @@
 /*
 ---
-name: Class Specs
-description: n/a
-requires: [Core/Class]
-provides: [1.3base.Class.Specs]
+name: Class
+requires: ~
+provides: ~
 ...
 */
 
