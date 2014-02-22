@@ -1,16 +1,11 @@
 /*
 ---
-
-Script: Hash.js
-description: Specs forHash.js
-
-License: MIT-style license.
-
-requires: [Core/Object]
-provides: [1.2.Object.Specs]
-
+name: Hash
+requires: ~
+provides: ~
 ...
 */
+
 
 //<1.2compat>
 

@@ -1,9 +1,8 @@
 /*
 ---
-name: Element.Delegation Specs
-description: n/a
-requires: [Core/Element.Delegation]
-provides: [1.4client.Element.Delegation.Specs]
+name: Element.Delegation
+requires: ~
+provides: ~
 ...
 */
 

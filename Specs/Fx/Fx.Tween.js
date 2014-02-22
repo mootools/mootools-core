@@ -1,9 +1,8 @@
 /*
 ---
-name: Fx.Tween Specs
-description: n/a
-requires: [Core/Fx.Tween]
-provides: [1.3client.Fx.Tween.Specs]
+name: Fx.Tween
+requires: ~
+provides: ~
 ...
 */
 describe('Fx.Tween', function(){

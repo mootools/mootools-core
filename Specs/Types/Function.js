@@ -1,9 +1,8 @@
 /*
 ---
-name: Function Specs
-description: n/a
-requires: [Core/Function]
-provides: [1.3base.Function.Specs]
+name: Function
+requires: ~
+provides: ~
 ...
 */
 

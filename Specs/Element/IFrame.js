@@ -1,9 +1,8 @@
 /*
 ---
-name: IFrame Specs
-description: n/a
-requires: [Core/Element]
-provides: [1.3client.IFrame.Specs]
+name: IFrame
+requires: ~
+provides: ~
 ...
 */
 describe('IFrame', function(){
