@@ -16,7 +16,7 @@ var getTestArray = function(){
 };
 
 
-describe("Array Methods 1.3", {
+describe("Array", {
 
 	// Array.flatten
 
@@ -163,6 +163,37 @@ describe("Array Methods 1.3", {
 		expect(b).toEqual([2,3,4,5]);
 	},
 
+	// Array.link
+
+	'should link an array items to a new object according to the specified matchers': function(){
+		var el = document.createElement('div');
+		var assoc2 = [100, 'Hello', {foo: 'bar'}, el, false].link({
+			myNumber: Number.type,
+			myElement: Element.type,
+			myObject: Object.type,
+			myString: String.type,
+			myBoolean: $defined
+		});
+
+		expect(assoc2).toEqual({
+			myNumber: 100,
+			myElement: el,
+			myObject: {foo: 'bar'},
+			myString: 'Hello',
+			myBoolean: false
+		});
+	},
+
+	// Array.extend
+
+	'should extend an array': function(){
+		var a = [1,2,4];
+		var b = [2,3,4,5];
+		a.extend(b);
+		expect(a).toEqual([1,2,4,2,3,4,5]);
+		expect(b).toEqual([2,3,4,5]);
+	},
+
 	// Array.combine
 
 	'should combine an array': function(){
@@ -197,7 +228,7 @@ describe("Array Methods 1.3", {
 
 });
 
-describe("Array Color Methods 1.3", {
+describe("Array Color Methods", {
 
 	// Array.hexToRgb
 
