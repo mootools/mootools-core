@@ -22,7 +22,7 @@ module.exports = function(grunt){
 			nocompat: {
 				options: {
 					strip: ['.*compat'],
-					only: '<%= grunt.option("only") || "" %>'
+					only: '<%= grunt.option("file") && "Core/" + grunt.option("file") %>'
 				},
 				src: 'Source/**/*.js',
 				dest: 'mootools-nocompat.js'

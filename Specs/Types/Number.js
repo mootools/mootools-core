@@ -84,16 +84,19 @@ describe("Number Methods", function(){
 
 });
 
+
 (function(math){
-	var examples = {};
-	new Hash(math).each(function(value, key){
-		var example = {};
-		var b = value.test[1];
-		examples['should return the ' + value.title + ' value of the number' + ((b) ? ' and the passed number' : '')] = function(){
-			expect(value.test[0][key](b)).toEqual(Math[key].apply(null, value.test));
-		};
+
+	describe('Number Math Methods', function(){
+		Object.each(math, function(value, key){
+			var example = {};
+			var b = value.test[1];
+			it('should return the ' + value.title + ' value of the number' + ((b) ? ' and the passed number' : ''), function(){
+				expect(value.test[0][key](b)).toEqual(Math[key].apply(null, value.test));
+			});
+		});
 	});
-	describe("Number Math Methods", examples);
+
 })({
 	abs: { test: [-1], title: 'absolute' },
 	acos: { test: [0], title: 'arc cosine' },
