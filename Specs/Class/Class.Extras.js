@@ -10,22 +10,22 @@ provides: ~
 
 var Local = Local || {};
 
-describe("Chain Class", {
+describe('Chain', function(){
 
-	"before all": function(){
+	beforeEach(function(){
 		Local.Chain = new Class({
 
 			Implements: Chain
 
 		});
-	},
+	});
 
-	"callChain should not fail when nothing was added to the chain": function(){
+	it('callChain should not fail when nothing was added to the chain', function(){
 		var chain = new Local.Chain();
 		chain.callChain();
-	},
+	});
 
-	"should pass arguments to the function and return values": function(){
+	it('should pass arguments to the function and return values', function(){
 		var chain = new Local.Chain();
 		var arr = [];
 		chain.chain(function(a, b){
@@ -51,9 +51,9 @@ describe("Chain Class", {
 		ret = chain.callChain();
 		expect(ret).toEqual(false);
 		expect(arr).toEqual(["0Aa", "1Bb"]);
-	},
+	});
 
-	"should chain any number of functions": function(){
+	it('should chain any number of functions', function(){
 		var chain = new Local.Chain();
 		var arr = [];
 
@@ -75,9 +75,9 @@ describe("Chain Class", {
 		expect(arr).toEqual([0, 1, 2]);
 		chain.callChain();
 		expect(arr).toEqual([0, 1, 2]);
-	},
+	});
 
-	"should allow an array of functions": function(){
+	it('should allow an array of functions', function(){
 		var chain = new Local.Chain();
 		var arr = [];
 
@@ -98,9 +98,9 @@ describe("Chain Class", {
 		expect(arr).toEqual([0, 1, 2]);
 		chain.callChain();
 		expect(arr).toEqual([0, 1, 2]);
-	},
+	});
 
-	"each instance should have its own chain": function(){
+	it('each instance should have its own chain', function(){
 		var foo = new Local.Chain();
 		var bar = new Local.Chain();
 		foo.val = "F";
@@ -117,9 +117,9 @@ describe("Chain Class", {
 		bar.callChain();
 		expect(foo.val).toEqual('FOO');
 		expect(bar.val).toEqual('BAR');
-	},
+	});
 
-	"should be able to clear the chain": function(){
+	it('should be able to clear the chain', function(){
 		var called;
 		var fn = function(){
 			called = true;
@@ -137,9 +137,9 @@ describe("Chain Class", {
 		chain.callChain();
 		expect(called).toBeFalsy();
 		called = false;
-	},
+	});
 
-	"should be able to clear the chain from within": function(){
+	it('should be able to clear the chain from within', function(){
 		var foo = new Local.Chain();
 
 		var test = 0;
@@ -151,7 +151,7 @@ describe("Chain Class", {
 		}).callChain();
 
 		expect(test).toEqual(1);
-	}
+	});
 
 });
 
@@ -160,41 +160,31 @@ var fire = 'fireEvent';
 var runEventSpecs = function(type, create){
 	describe('Events API: ' + type.capitalize(), {
 
-		'before each': function(){
+		beforeEach(function(){
 			Local.called = 0;
 			Local.fn = function(){
 				return Local.called++;
 			};
-		},
+		});
 
-		'should add an Event to the Class': function(){
+		it('should add an Event to the Class', function(){
 			var object = create();
 
 			object.addEvent('event', Local.fn)[fire]('event');
 
 			expect(Local.called).toEqual(1);
-		},
+		});
 
-		'should add multiple Events to the Class': function(){
+		it('should add multiple Events to the Class', function(){
 			create().addEvents({
 				event1: Local.fn,
 				event2: Local.fn
 			})[fire]('event1')[fire]('event2');
 
 			expect(Local.called).toEqual(2);
-		},
+		});
 
-		// TODO 2.0only
-		/*'should be able to remove event during firing': function(){
-			create().addEvent('event', Local.fn).addEvent('event', function(){
-				Local.fn();
-				this.removeEvent('event', arguments.callee);
-			}).addEvent('event', function(){ Local.fn(); })[fire]('event')[fire]('event');
-
-			expect(Local.called).toEqual(5);
-		},*/
-
-		'should remove a specific method for an event': function(){
+		it('should remove a specific method for an event', function(){
 			var object = create();
 			var x = 0, fn = function(){ x++; };
 
@@ -202,9 +192,9 @@ var runEventSpecs = function(type, create){
 
 			expect(x).toEqual(1);
 			expect(Local.called).toEqual(0);
-		},
+		});
 
-		'should remove an event and its methods': function(){
+		it('should remove an event and its methods', function(){
 			var object = create();
 			var x = 0, fn = function(){ x++; };
 
@@ -212,9 +202,9 @@ var runEventSpecs = function(type, create){
 
 			expect(x).toEqual(0);
 			expect(Local.called).toEqual(0);
-		},
+		});
 
-		'should remove all events': function(){
+		it('should remove all events', function(){
 			var object = create();
 			var x = 0, fn = function(){ x++; };
 
@@ -226,9 +216,9 @@ var runEventSpecs = function(type, create){
 
 			expect(x).toEqual(0);
 			expect(Local.called).toEqual(0);
-		},
+		});
 
-		'should remove events with an object': function(){
+		it('should remove events with an object', function(){
 			var object = create();
 			var events = {
 				event1: Local.fn,
@@ -244,9 +234,9 @@ var runEventSpecs = function(type, create){
 
 			object[fire]('event2');
 			expect(Local.called).toEqual(3);
-		},
+		});
 
-		'should remove an event immediately': function(){
+		it('should remove an event immediately', function(){
 			var object = create();
 
 			var methods = [];
@@ -267,9 +257,9 @@ var runEventSpecs = function(type, create){
 
 			object[fire]('event');
 			expect(methods).toEqual([1, 2, 1, 2]);
-		},
+		});
 
-		'should be able to remove itself': function(){
+		it('should be able to remove itself', function(){
 			var object = create();
 
 			var methods = [];
@@ -293,7 +283,7 @@ var runEventSpecs = function(type, create){
 
 			object[fire]('event');
 			expect(methods).toEqual([1, 2, 3, 3]);
-		}
+		});
 
 	});
 };
@@ -306,9 +296,9 @@ runEventSpecs('element', function(){
 	return new Element('div');
 });
 
-describe("Options Class", {
+describe('Options Class', function(){
 
-	"before all": function(){
+	beforeEach(function(){
 		Local.OptionsTest = new Class({
 			Implements: [Options, Events],
 
@@ -321,24 +311,24 @@ describe("Options Class", {
 				this.setOptions(options);
 			}
 		});
-	},
+	});
 
-	"should set options": function(){
+	it('should set options', function(){
 		var myTest = new Local.OptionsTest({a: 1, b: 3});
 		expect(myTest.options).not.toEqual(undefined);
-	},
+	});
 
-	"should override default options": function(){
+	it('should override default options', function(){
 		var myTest = new Local.OptionsTest({a: 3, b: 4});
 		expect(myTest.options.a).toEqual(3);
 		expect(myTest.options.b).toEqual(4);
-	}
+	});
 
 });
 
-describe("Options Class with Events", {
+describe('Options Class with Events', {
 
-	"before all": function(){
+	beforeEach(function(){
 		Local.OptionsTest = new Class({
 			Implements: [Options, Events],
 
@@ -355,9 +345,9 @@ describe("Options Class with Events", {
 				this.setOptions(options);
 			}
 		});
-	},
+	});
 
-	"should add events in the options object if class has implemented the Events class": function(){
+	it('should add events in the options object if class has implemented the Events class', function(){
 		var myTest = new Local.OptionsTest({
 			onEvent2: function(){
 				return true;
@@ -371,7 +361,7 @@ describe("Options Class with Events", {
 		expect(myTest.$events.event1.length).toEqual(1);
 		expect(myTest.$events.event2.length).toEqual(1);
 		expect(myTest.$events.event3.length).toEqual(1);
-	}
+	});
 
 });
 
