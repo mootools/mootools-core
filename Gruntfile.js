@@ -4,6 +4,7 @@ module.exports = function(grunt){
 
 	grunt.loadNpmTasks('grunt-mootools-packager');
 	grunt.loadNpmTasks('grunt-karma');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 
 	grunt.initConfig({
 
@@ -30,8 +31,8 @@ module.exports = function(grunt){
 				options: {
 					name: 'Specs'
 				},
-				src: 'Specs/**/*.js',
-				dest: 'specs.js'
+				src: 'Specs/<%= grunt.option("module") || "**" %>/<%= grunt.option("file") || "*" %>.js',
+				dest: 'mootools-specs.js'
 			}
 
 		},
@@ -39,7 +40,9 @@ module.exports = function(grunt){
 		'karma': {
 
 			options: {
-				browsers: ['Chrome']
+				browsers: ['PhantomJS'],
+				frameworks: ['jasmine'],
+				files: ['mootools-all.js', 'mootools-specs.js']
 			},
 
 			continuous: {
@@ -50,10 +53,15 @@ module.exports = function(grunt){
 				reporters: 'dots'
 			}
 
+		},
+
+		'clean': {
+			all: {
+				src: ['mootools-all.js', 'mootools-specs.js']
+			}
 		}
 
 	});
 
-	grunt.registerTask('default', ['packager:all', 'packager:specs']);
-
+	grunt.registerTask('default', ['clean', 'packager:all', 'packager:specs', 'karma:continuous']);
 };

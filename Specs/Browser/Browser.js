@@ -7,50 +7,50 @@ provides: ~
 */
 
 //<1.2compat>
-describe('$exec', {
+describe('$exec', function(){
 
-	'should evaluate on global scope': function(){
+	it('should evaluate on global scope', function(){
 		$exec.call($exec, 'var execSpec = 42');
 		expect(window.execSpec).toEqual(42);
-	},
+	});
 
-	'should return the evaluated script': function(){
+	it('should return the evaluated script', function(){
 		expect($exec('$empty();')).toEqual('$empty();');
-	}
+	});
 
 });
 //</1.2compat>
 
-describe('Document', {
+describe('Document', function(){
 
-	'should hold the parent window': function(){
+	it('should hold the parent window', function(){
 		expect(document.window).toEqual(window);
-	},
+	});
 
-	'should hold the head element': function(){
+	it('should hold the head element', function(){
 		expect(document.head.tagName.toLowerCase()).toEqual('head');
-	}
+	});
 
 });
 
-describe('Window', {
+describe('Window', function(){
 
-	'should set the Element prototype': function(){
+	it('should set the Element prototype', function(){
 		expect($defined(window.Element.prototype)).toBeTruthy();
-	}
+	});
 
 });
 
-describe('Browser', {
+describe('Browser', function(){
 
-	'should think it is executed in a browser': function(){
+	it('should think it is executed in a browser', function(){
 		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
-	},
+	});
 
-	'should assume the IE version is emulated by the documentMode (X-UA-Compatible)': function(){
+	it('should assume the IE version is emulated by the documentMode (X-UA-Compatible)', function(){
 		if (Browser.ie && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
-	}
+	});
 
 });
 
