@@ -1,12 +1,17 @@
 /*
 ---
 name: Element.Event
-requires: ~
+requires: Class.Extras
 provides: ~
 ...
 */
 
 (function(){
+
+// todo(ibolmo): from Class.Extras
+runEventSpecs('element', function(){
+	return new Element('div');
+});
 
 var fragment = document.createDocumentFragment();
 
