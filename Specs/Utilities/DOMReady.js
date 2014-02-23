@@ -23,7 +23,7 @@ document.fireEvent = function(type){
 	if (type == 'domready')
 	for (var i = 0; i < domreadyCallbacks.length; ++i){
 	}
-		domreadyCallbacks[i]();
+	domreadyCallbacks[i]();
 };
 
 window.addEvent = function(){};
