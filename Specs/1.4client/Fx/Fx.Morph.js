@@ -1,8 +1,8 @@
 /*
 ---
-name: Array Specs
+name: Fx.Morph Specs
 description: n/a
-requires: [Core/FX.Morph]
+requires: [Core/Fx.Morph]
 provides: [1.4client.Fx.Morph.Specs]
 ...
 */
