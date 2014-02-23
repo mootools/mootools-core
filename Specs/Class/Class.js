@@ -91,9 +91,15 @@ var Attributes = new Class({
 
 describe('Class creation', function(){
 
+	//<1.2compat>
 	it("Classes should be of type 'class'", function(){
 		expect($type(Animal)).toEqual('class');
 		expect(Class.type(Animal)).toBeTruthy();
+	});
+	//</1.2compat>
+
+	it("Classes should be of type 'class'", function(){
+		expect(typeOf(Animal)).toEqual('class');
 	});
 
 	it('should call initialize upon instantiation', function(){
