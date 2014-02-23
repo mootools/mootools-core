@@ -1,9 +1,8 @@
 /*
 ---
-name: Element.appendHTML Specs
-description: test for appendHTML feature
-requires: [Core/Element]
-provides: [1.4client.Element.appendHTML.Specs]
+name: Element.appendHTML
+requires: ~
+provides: ~
 ...
 */
 
