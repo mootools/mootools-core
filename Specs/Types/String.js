@@ -43,8 +43,8 @@ describe("String Methods", function(){
 		expect('  i  \tlike  cookies  '.trim()).toEqual('i  \tlike  cookies');
 	});
 
+	//<1.4compat>
 	// String.contains
-//<1.4compat>
 	it('should return true if the string contains a string otherwise false', function(){
 		expect('i like cookies'.contains('cookies')).toBeTruthy();
 		expect('i,like,cookies'.contains('cookies')).toBeTruthy();
@@ -58,7 +58,8 @@ describe("String Methods", function(){
 		expect('i,like,cookies'.contains('cookies', ' ')).toBeFalsy();
 		expect('i,like,cookies'.contains('cookies', ',')).toBeTruthy();
 	});
-//</1.4compat>
+	//</1.4compat>
+
 	// String.test
 
 	it('should return true if the test matches the string otherwise false', function(){

@@ -163,16 +163,21 @@ describe("Array", function(){
 		expect(b).toEqual([2,3,4,5]);
 	});
 
-	// Array.link
+	var isType = function(type){
+		return function(obj){
+			return typeOf(obj) == type;
+		};
+	};
 
+	// Array.link
 	it('should link an array items to a new object according to the specified matchers', function(){
 		var el = document.createElement('div');
 		var assoc2 = [100, 'Hello', {foo: 'bar'}, el, false].link({
-			myNumber: Number.type,
-			myElement: Element.type,
-			myObject: Object.type,
-			myString: String.type,
-			myBoolean: $defined
+			myNumber: isType('number'),
+			myElement: isType('element'),
+			myObject: isType('object'),
+			myString: isType('string'),
+			myBoolean: isType('boolean')
 		});
 
 		expect(assoc2).toEqual({
@@ -184,12 +189,21 @@ describe("Array", function(){
 		});
 	});
 
+	//<1.2compat>
 	// Array.extend
-
 	it('should extend an array', function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
 		a.extend(b);
+		expect(a).toEqual([1,2,4,2,3,4,5]);
+		expect(b).toEqual([2,3,4,5]);
+	});
+	//</1.2compat>
+
+	it('should append an array', function(){
+		var a = [1,2,4];
+		var b = [2,3,4,5];
+		a.append(b);
 		expect(a).toEqual([1,2,4,2,3,4,5]);
 		expect(b).toEqual([2,3,4,5]);
 	});
