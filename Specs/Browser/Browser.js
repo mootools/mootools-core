@@ -24,12 +24,12 @@ describe('$exec', function(){
 describe('Browser.exec', function(){
 
 	it('should evaluate on global scope', function(){
-		Browser.exec.call($exec, 'var execSpec = 42');
+		Browser.exec.call(Browser.exec, 'var execSpec = 42');
 		expect(window.execSpec).toEqual(42);
 	});
 
 	it('should return the evaluated script', function(){
-		expect(Browser.exec('function(){ return "evil"; }()')).toEqual('evil');
+		expect(Browser.exec('function test(){}')).toEqual('function test(){}');
 	});
 
 });
@@ -69,7 +69,7 @@ describe('Document', function(){
 describe('Window', function(){
 
 	it('should set the Element prototype', function(){
-		expect($defined(window.Element.prototype)).toBeTruthy();
+		expect(window.Element.prototype).toBeDefined();
 	});
 
 });
