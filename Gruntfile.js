@@ -21,7 +21,8 @@ module.exports = function(grunt){
 
 			nocompat: {
 				options: {
-					strip: ['.*compat']
+					strip: ['.*compat'],
+					only: '<%= grunt.option("only") || "" %>'
 				},
 				src: 'Source/**/*.js',
 				dest: 'mootools-nocompat.js'
@@ -30,6 +31,15 @@ module.exports = function(grunt){
 			specs: {
 				options: {
 					name: 'Specs'
+				},
+				src: 'Specs/<%= grunt.option("module") || "**" %>/<%= grunt.option("file") || "*" %>.js',
+				dest: 'mootools-specs.js'
+			},
+
+			'specs-nocompat': {
+				options: {
+					name: 'Specs',
+					strip: ['.*compat']
 				},
 				src: 'Specs/<%= grunt.option("module") || "**" %>/<%= grunt.option("file") || "*" %>.js',
 				dest: 'mootools-specs.js'
@@ -42,7 +52,7 @@ module.exports = function(grunt){
 			options: {
 				browsers: ['PhantomJS'],
 				frameworks: ['jasmine', 'sinon'],
-				files: ['mootools-all.js', 'mootools-specs.js']
+				files: ['mootools-all.js', 'mootools-nocompat.js', 'mootools-specs.js']
 			},
 
 			continuous: {
@@ -64,4 +74,5 @@ module.exports = function(grunt){
 	});
 
 	grunt.registerTask('default', ['clean', 'packager:all', 'packager:specs', 'karma:continuous']);
+	grunt.registerTask('nocompat', ['clean', 'packager:nocompat', 'packager:specs-nocompat', 'karma:continuous'])
 };
