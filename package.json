@@ -30,6 +30,7 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-mootools-packager": "0.0.1",
-    "grunt-karma": "^0.6.2"
+    "grunt-karma": "^0.6.2",
+    "karma-jasmine": "^0.1.5"
   }
 }

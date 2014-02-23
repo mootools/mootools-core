@@ -211,4 +211,6 @@ describe('Element.Event keyup with f<key>', function(){
 
 	});
 
+});
+
 })();
