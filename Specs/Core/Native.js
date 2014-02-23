@@ -48,21 +48,21 @@ Car.implement({
 
 });
 
-describe('Native (private)', {
+describe('Native (private)', function(){
 
-	'should allow implementation over existing methods when browser option is not set': function(){
+	it('should allow implementation over existing methods when browser option is not set', function(){
 		Instrument.implement({ property: 'staff' });
 		var myInstrument = new Instrument('xeelophone');
 		expect(myInstrument.method()).toEqual('staff xeelophone');
-	},
+	});
 
-	'should allow generic calls': function(){
+	it('should allow generic calls', function(){
 		expect(Car.method({name: 'ciccio', property: 'bello'})).toEqual('ciccio_bello');
-	},
+	});
 
-	"should have a 'native' type": function(){
+	it("should have a 'native' type", function(){
 		expect(Native.type(Car)).toBeTruthy();
-	}
+	});
 
 });
 
