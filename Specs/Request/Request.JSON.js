@@ -1,15 +1,8 @@
 /*
 ---
-<<<<<<< HEAD
-name: Request.JSON Specs
-description: n/a
-requires: [Core/Request.JSON]
-provides: [1.3client.Request.JSON.Specs]
-=======
 name: Request.JSON
 requires: ~
 provides: ~
->>>>>>> 9b856a8... Fixing YAML headers.
 ...
 */
 describe('Request.JSON', function(){
