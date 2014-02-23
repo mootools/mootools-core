@@ -10,7 +10,7 @@ provides: ~
 (function(){
 
 var fn = function(){
-	return $A(arguments);
+	return Array.from(arguments).slice();
 };
 
 var Rules = function(){
@@ -18,12 +18,17 @@ var Rules = function(){
 };
 
 var Args = function(){
-	return [this].concat($A(arguments));
+	return [this].concat(Array.prototype.slice.call(arguments));
 };
 
 describe("Function Methods", function(){
 
+	//<1.2compat>
 	// Function.create
+	it('should return a new function', function(){
+		var fnc = $empty.create();
+		expect($empty === fnc).toBeFalsy();
+	});
 
 	it('should return a new function', function(){
 		var fnc = $empty.create();
@@ -49,6 +54,7 @@ describe("Function Methods", function(){
 		var fnc = fn.create({'arguments': [0, 1], 'event': true});
 		expect(fnc('an Event occurred')).toEqual(['an Event occurred', 0, 1]);
 	});
+	//</1.2compat>
 
 	// Function.bind
 
@@ -67,6 +73,7 @@ describe("Function Methods", function(){
 		expect(fnc()).toEqual(['MooTools', 'rocks', 'da house']);
 	});
 
+	//<1.2compat>
 	it('should return the function bound to an object and make the function an event listener', function(){
 		var fnc = Args.bindWithEvent('MooTools');
 		expect(fnc('an Event ocurred')).toEqual(['MooTools', 'an Event ocurred']);
@@ -76,6 +83,7 @@ describe("Function Methods", function(){
 		var fnc = Args.bindWithEvent('MooTools', ['rocks', 'da house']);
 		expect(fnc('an Event ocurred')).toEqual(['MooTools', 'an Event ocurred', 'rocks', 'da house']);
 	});
+	//</1.2compat>
 
 	// Function.pass
 
@@ -89,8 +97,8 @@ describe("Function Methods", function(){
 		expect(fnc()).toEqual(['MooTools', 'rocks', 'da house']);
 	});
 
+	//<1.2compat>
 	// Function.run
-
 	it('should run the function', function(){
 		var result = fn.run();
 		expect(result).toEqual([]);
@@ -105,6 +113,7 @@ describe("Function Methods", function(){
 		var result = Args.run(['beautiful', 'elegant'], 'MooTools');
 		expect(result).toEqual(['MooTools', 'beautiful', 'elegant']);
 	});
+	//</1.2compat>
 
 	// Function.extend
 
@@ -124,7 +133,7 @@ describe("Function Methods", function(){
 	});
 
 	it("should return the function's return value", function(){
-		var fnc = $lambda('hello world!');
+		var fnc = Function.from('hello world!');
 		expect(fnc.attempt()).toEqual('hello world!');
 	});
 
@@ -138,17 +147,17 @@ describe("Function Methods", function(){
 	// Function.delay
 
 	it('delay should return a timer pointer', function(){
-		var timer = $empty.delay(10000);
-		expect(Number.type(timer)).toBeTruthy();
-		$clear(timer);
+		var timer = (function(){}).delay(10000);
+		expect(typeOf(timer) == 'number').toBeTruthy();
+		clearTimeout(timer);
 	});
 
 	// Function.periodical
 
 	it('periodical should return a timer pointer', function(){
-		var timer = $empty.periodical(10000);
-		expect(Number.type(timer)).toBeTruthy();
-		$clear(timer);
+		var timer = (function(){}).periodical(10000);
+		expect(typeOf(timer) == 'number').toBeTruthy();
+		clearInterval(timer);
 	});
 
 });
@@ -187,7 +196,9 @@ describe('Function.bind', function(){
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
 
-	it('should still be possible to use it as constructor', function(){
+	var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // don't run unless no compat
+
+	dit('should still be possible to use it as constructor', function(){
 		function Alien(type) {
 			this.type = type;
 		}
@@ -200,7 +211,7 @@ describe('Function.bind', function(){
 		expect(fuzzball.type).toEqual('Polygeminus grex');
 	});
 
-	it('when using .call(thisArg) on a bound function, it should ignore the thisArg of .call', function(){
+	dit('when using .call(thisArg) on a bound function, it should ignore the thisArg of .call', function(){
 		var fn = function(){
 			return [this.foo].concat(Array.slice(arguments));
 		};
