@@ -23,11 +23,11 @@ var ua = navigator.userAgent.toLowerCase(),
 	platform = navigator.platform.toLowerCase();
 
 var parse = function(ua, platform){
-	var UA = ua.match(/(opera|ie|firefox|chrome|trident|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+	var UA = ua.match(/(opera|ie|firefox|chrome|trident|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 	if (UA[1] == 'trident'){
 		UA[1] = 'ie';
-		UA[2] = parseInt(UA[2], 10) + 4; // noticed pattern to version: Trident/6.0 => IE10
+		if (UA[4]) UA[2] = UA[4];
 	}
 
 	return {
