@@ -57,7 +57,7 @@ module.exports = function(grunt){
 
 		'clean': {
 			all: {
-				src: ['mootools-all.js', 'mootools-specs.js']
+				src: 'mootools-*.js'
 			}
 		}
 

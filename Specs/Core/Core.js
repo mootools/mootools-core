@@ -346,7 +346,7 @@ describe('$type', function(){
 
 	it("should return 'window' for the window object", function(){
 		expect($type(window)).toEqual('window');
-	},
+	});
 
 	it("should return 'document' for the document object", function(){
 		expect($type(document)).toEqual('document');
@@ -875,7 +875,7 @@ describe('Array.clone', function(){
 	});
 });
 
-describe('Object.clone', {
+describe('Object.clone', function(){
 	it('should recursively clone and dereference arrays and objects, while mantaining the primitive values', function(){
 		var a = {a:[1,2,3, [1,2,3, {a: [1,2,3]}]]};
 		var b = Object.clone(a);

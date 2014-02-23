@@ -158,7 +158,7 @@ describe('Chain', function(){
 var fire = 'fireEvent';
 
 var runEventSpecs = function(type, create){
-	describe('Events API: ' + type.capitalize(), {
+	describe('Events API: ' + type.capitalize(), function(){
 
 		beforeEach(function(){
 			Local.called = 0;
@@ -326,7 +326,7 @@ describe('Options Class', function(){
 
 });
 
-describe('Options Class with Events', {
+describe('Options Class with Events', function(){
 
 	beforeEach(function(){
 		Local.OptionsTest = new Class({

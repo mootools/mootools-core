@@ -656,7 +656,7 @@ describe('Element.replaces', function(){
 		var el = new Element('div', {id: 'replaced'});
 		el.replaces(div);
 		expect(parent.childNodes[0]).toEqual(el);
-	}
+	});
 
 });
 
