@@ -6,18 +6,14 @@ provides: ~
 ...
 */
 
-(function(){
-
 var Local = Local || {};
 
 describe('Chain', function(){
 
-	beforeEach(function(){
-		Local.Chain = new Class({
+	Local.Chain = new Class({
 
-			Implements: Chain
+		Implements: Chain
 
-		});
 	});
 
 	it('callChain should not fail when nothing was added to the chain', function(){
@@ -292,25 +288,19 @@ runEventSpecs('mixin', function(){
 	return new Events();
 });
 
-runEventSpecs('element', function(){
-	return new Element('div');
-});
-
 describe('Options Class', function(){
 
-	beforeEach(function(){
-		Local.OptionsTest = new Class({
-			Implements: [Options, Events],
+	Local.OptionsTest = new Class({
+		Implements: [Options, Events],
 
-			options: {
-				a: 1,
-				b: 2
-			},
+		options: {
+			a: 1,
+			b: 2
+		},
 
-			initialize: function(options){
-				this.setOptions(options);
-			}
-		});
+		initialize: function(options){
+			this.setOptions(options);
+		}
 	});
 
 	it('should set options', function(){
@@ -364,8 +354,6 @@ describe('Options Class with Events', function(){
 	});
 
 });
-
-})();
 
 describe('setOptions', function(){
 
