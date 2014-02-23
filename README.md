@@ -37,16 +37,16 @@ See the [Gruntfile](https://github.com/ibolmo/mootools-core/blob/1.4.6/Gruntfile
 
 **Examples**
   
-  # with compat
-  grunt --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
-  grunt --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
+	# with compat
+	grunt --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
+	grunt --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
 
 	# without compat
 	grunt nocompat --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
 	grunt nocompat --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
 
 #### Removing Other Packager Blocks
-You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/ibolmo/mootools-core/blob/1.4.6/Gruntfile.js#24] for an example.
+You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/ibolmo/mootools-core/blob/1.4.6/Gruntfile.js#L24) for an example.
 
 #### Browsers, Platforms, and More
 This is a todo. We'll support SauceLabs soon™ and browsers will be added in a specific build target soon™. 
