@@ -41,7 +41,7 @@ module.exports = function(grunt){
 
 			options: {
 				browsers: ['PhantomJS'],
-				frameworks: ['jasmine'],
+				frameworks: ['jasmine', 'sinon'],
 				files: ['mootools-all.js', 'mootools-specs.js']
 			},
 
