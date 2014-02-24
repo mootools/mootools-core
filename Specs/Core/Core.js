@@ -6,7 +6,7 @@ provides: ~
 ...
 */
 
-// <1.2compat>
+//<1.2compat>
 describe('$A', function(){
 
 	it('should return a copy for an array', function(){
@@ -281,6 +281,7 @@ describe('$try', function(){
 
 });
 
+
 describe('$type', function(){
 
 	it("should return 'array' for Array objects", function(){
@@ -418,7 +419,7 @@ describe('$H', function(){
 
 });
 
-// </1.2compat>
+//</1.2compat>
 
 
 describe('Function.prototype.overloadSetter', function(){
@@ -554,7 +555,7 @@ describe('typeOf', function(){
 
 	it("should return 'arguments' for Function arguments", function(){
 		if (typeof window != 'undefined' && window.opera){ // Seems like the Opera guys can't decide on this
-			var type = $type(arguments);
+			var type = typeOf(arguments);
 			expect(type == 'array' || type == 'arguments').toBeTruthy();
 			return;
 		}
@@ -608,7 +609,8 @@ describe('instanceOf', function(){
 		expect(instanceOf(new X, Array)).toBeTruthy();
 	});
 
-	it("should return true for Element instances", function(){
+	// todo(ibolmo)
+	if (window.Element && Element.set) it("should return true for Element instances", function(){
 		expect(instanceOf(new Element('div'), Element)).toBeTruthy();
 	});
 
@@ -777,39 +779,6 @@ describe('Type', function(){
 
 });
 
-describe('Function.attempt', function(){
-
-	it('should return the result of the first successful function without executing successive functions', function(){
-		var calls = 0;
-		var attempt = Function.attempt(function(){
-			calls++;
-			throw new Exception();
-		}, function(){
-			calls++;
-			return 'success';
-		}, function(){
-			calls++;
-			return 'moo';
-		});
-		expect(calls).toEqual(2);
-		expect(attempt).toEqual('success');
-	});
-
-	it('should return null when no function succeeded', function(){
-		var calls = 0;
-		var attempt = Function.attempt(function(){
-			calls++;
-			return I_invented_this();
-		}, function(){
-			calls++;
-			return uninstall_ie();
-		});
-		expect(calls).toEqual(2);
-		expect(attempt).toBeNull();
-	});
-
-});
-
 describe('Object.each', function(){
 
 	it('should call the function for each item in the object', function(){
@@ -962,15 +931,16 @@ describe('typeOf Client', function(){
 		expect(typeOf(div)).toEqual('element');
 	});
 
-	it("should return 'elements' for Elements", function(){
+	// todo(ibolmo)
+	if (window.Elements) it("should return 'elements' for Elements", function(){
 		expect(typeOf(new Elements)).toEqual('elements');
 	});
 
-	it("should return 'window' for the window object", function(){
+	if (window.Browser) it("should return 'window' for the window object", function(){
 		expect(typeOf(window)).toEqual('window');
 	});
 
-	it("should return 'document' for the document object", function(){
+	if (window.Browser) it("should return 'document' for the document object", function(){
 		expect(typeOf(document)).toEqual('document');
 	});
 
