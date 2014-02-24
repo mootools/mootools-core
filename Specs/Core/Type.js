@@ -1,22 +1,15 @@
 /*
 ---
-name: Native
+name: Type
 requires: ~
 provides: ~
 ...
 */
 
-//<1.2compat>
 (function(){
 
-var Instrument = new Native({
-
-	name: 'instrument',
-
-	initialize: function(name){
-		this.name = name;
-	}
-
+var Instrument = new Type('Instrument', function(name){
+	this.name = name;
 });
 
 Instrument.implement({
@@ -29,14 +22,8 @@ Instrument.implement({
 
 });
 
-var Car = new Native({
-
-	name: 'car',
-
-	initialize: function(name){
-		this.name = name;
-	}
-
+var Car = new Type('Car', function(name){
+	this.name = name;
 });
 
 Car.implement({
@@ -49,7 +36,7 @@ Car.implement({
 
 });
 
-describe('Native (private)', function(){
+describe('Type (private)', function(){
 
 	it('should allow implementation over existing methods when browser option is not set', function(){
 		Instrument.implement({ property: 'staff' });
@@ -62,10 +49,9 @@ describe('Native (private)', function(){
 	});
 
 	it("should have a 'native' type", function(){
-		expect(Native.type(Car)).toBeTruthy();
+		expect(Type.isType(Car)).toBeTruthy();
 	});
 
 });
 
 })();
-//</1.2compat>
