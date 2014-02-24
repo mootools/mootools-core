@@ -123,6 +123,7 @@ describe("Function Methods", function(){
 		expect(fnc.b).toEqual('c');
 	});
 
+
 	// Function.attempt
 
 	it('should call the function without raising an exception', function(){
@@ -158,6 +159,39 @@ describe("Function Methods", function(){
 		var timer = (function(){}).periodical(10000);
 		expect(typeOf(timer) == 'number').toBeTruthy();
 		clearInterval(timer);
+	});
+
+});
+
+describe('Function.attempt', function(){
+
+	it('should return the result of the first successful function without executing successive functions', function(){
+		var calls = 0;
+		var attempt = Function.attempt(function(){
+			calls++;
+			throw new Exception();
+		}, function(){
+			calls++;
+			return 'success';
+		}, function(){
+			calls++;
+			return 'moo';
+		});
+		expect(calls).toEqual(2);
+		expect(attempt).toEqual('success');
+	});
+
+	it('should return null when no function succeeded', function(){
+		var calls = 0;
+		var attempt = Function.attempt(function(){
+			calls++;
+			return I_invented_this();
+		}, function(){
+			calls++;
+			return uninstall_ie();
+		});
+		expect(calls).toEqual(2);
+		expect(attempt).toBeNull();
 	});
 
 });
