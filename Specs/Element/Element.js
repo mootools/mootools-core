@@ -1,6 +1,6 @@
 /*
 ---
-name: Element Specs
+name: Element
 requires: ~
 provides: ~
 ...
@@ -10,8 +10,8 @@ describe('Element constructor', function(){
 
 	it("should return an Element with the correct tag", function(){
 		var element = new Element('div');
-		expect($type(element)).toEqual('element');
-		expect($defined(element.addEvent)).toBeTruthy();
+		expect(typeOf(element)).toEqual('element');
+		expect(element.getFirst).toBeDefined();
 		expect(element.tagName.toLowerCase()).toEqual('div');
 	});
 
@@ -231,21 +231,27 @@ describe('Element.set', function(){
 var myElements = new Elements([
 	new Element('div'),
 	document.createElement('a'),
-	new Element('div', {id: 'el-' + $time()})
+	new Element('div', {id: 'el-' + Date.now()})
 ]);
 
 describe('Elements', function(){
 
+	//<1.3compat>
 	it('should return an array type', function(){
-		expect(Array.type(myElements)).toBeTruthy();
+		expect(typeOf(myElements) == 'array').toBeTruthy();
+	});
+	//</1.3compat>
+
+	it('should return an elements type', function(){
+		expect(typeOf(myElements) == 'elements').toBeTruthy();
 	});
 
 	it('should return an array of Elements', function(){
-		expect(myElements.every(Element.type)).toBeTruthy();
+		expect(myElements.every(function(e){ return typeOf(e) == 'element'; })).toBeTruthy();
 	});
 
 	it('should apply Element prototypes to the returned array', function(){
-		expect($defined(myElements.addEvent)).toBeTruthy();
+		expect(myElements.getFirst).toBeDefined();
 	});
 
 	it('should return all Elements that match the string matcher', function(){
@@ -267,7 +273,7 @@ describe('TextNode.constructor', function(){
 
 	it('should return a new textnode element', function(){
 		var text = document.newTextNode('yo');
-		expect($type(text)).toEqual('textnode');
+		expect(typeOf(text)).toEqual('textnode');
 	});
 
 });
@@ -306,7 +312,7 @@ describe('$', function(){
 		var dollar2 = $('dollar');
 
 		expect(dollar1).toEqual(dollar2);
-		expect($defined(dollar1.addEvent)).toBeTruthy();
+		expect(dollar1.getFirst).toBeDefined();
 	});
 
 	it('should return the window if passed', function(){
@@ -329,7 +335,7 @@ describe('$$', function(){
 
 	it('should return all Elements of a specific tag', function(){
 		var divs1 = $$('div');
-		var divs2 = new Elements($A(document.getElementsByTagName('div')));
+		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
 		expect(divs1).toEqual(divs2);
 	});
 
@@ -761,9 +767,8 @@ describe('Element.wraps', function(){
 
 describe('Element.appendText', function(){
 
-	Container = new Element('div', {style: 'position:absolute;top:0;left:0;visibility:hidden;'}).inject(document.body);
-
 	beforeEach(function(){
+		Container = new Element('div', {style: 'position:absolute;top:0;left:0;visibility:hidden;'}).inject(document.body);
 		var html = [
 			'<div id="first"></div>',
 			'<div id="second">',
@@ -847,16 +852,16 @@ describe('Element.appendText', function(){
 
 describe('Element.adopt', function(){
 
-	Container = new Element('div').inject(document.body);
+
+	beforeEach(function(){
+		Container = new Element('div').inject(document.body);
+		Container.empty();
+	});
 
 	afterEach(function(){
 		document.body.removeChild(Container);
 		Container.set('html', '');
 		Container = null;
-	});
-
-	beforeEach(function(){
-		Container.empty();
 	});
 
 	it('should adopt an Element by its id', function(){
@@ -884,26 +889,26 @@ describe('Element.adopt', function(){
 
 describe('Element.dispose', function(){
 
-	Container = new Element('div').inject(document.body);
-
-	afterEach(function(){
-		document.body.removeChild(Container);
-		Container.set('html', '');
-		Container = null;
-	});
-
 	it('should dispose the Element from the DOM', function(){
+		var Container = new Element('div').inject(document.body);
+
 		var child = new Element('div').inject(Container);
 		child.dispose();
 		expect(Container.childNodes.length).toEqual(0);
+
+		document.body.removeChild(Container);
+		Container.set('html', '');
+		Container = null;
 	});
 
 });
 
 describe('Element.clone', function(){
 
-	Container = new Element('div', {'id': 'outer', 'class': 'moo'});
-	Container.innerHTML = '<span class="foo" id="inner1"><div class="movie" id="sixfeet">under</div></span><span id="inner2"></span>';
+	beforeEach(function(){
+		Container = new Element('div', {'id': 'outer', 'class': 'moo'});
+		Container.innerHTML = '<span class="foo" id="inner1"><div class="movie" id="sixfeet">under</div></span><span id="inner2"></span>';
+	});
 
 	afterEach(function(){
 		Container = null;
@@ -913,8 +918,8 @@ describe('Element.clone', function(){
 		var div = new Element('div');
 		var clone = div.clone();
 		expect(div).not.toEqual(clone);
-		expect($type(div)).toEqual('element');
-		expect($type(clone)).toEqual('element');
+		expect(typeOf(div)).toEqual('element');
+		expect(typeOf(clone)).toEqual('element');
 	});
 
 	it('should remove id from clone and clone children by default', function(){
@@ -958,12 +963,23 @@ describe('Element.clone', function(){
 		expect(Container.retrieve('drink')).toEqual('milk');
 	});
 
+	//<1.2compat>
 	it('should clone child nodes and not copy their uid', function(){
 		var cloned = Container.clone(true).getElements('*');
 		var old = Container.getElements('*');
 		expect(cloned.length).toEqual(3);
 		expect(old.length).toEqual(3);
 		expect($$(old, cloned).length).toEqual(6);
+	});
+	//</1.2compat>
+
+	// todo
+	it('should clone child nodes and not copy their uid', function(){
+		var cloned = Container.clone(true).getElements('*');
+		var old = Container.getElements('*');
+		expect(cloned.length).toEqual(3);
+		expect(old.length).toEqual(3);
+		expect(new Elements([old, cloned]).length).toEqual(6);
 	});
 
 	it('should clone a text input and retain value', function(){
@@ -1511,16 +1527,19 @@ describe('Element.getChildren', function(){
 
 describe('Element.hasChild', function(){
 
-	window.Local = {};
-	Local.container = new Element('div');
-	Local.children = [new Element('div'), new Element('div'), new Element('div')];
-	Local.container.adopt(Local.children);
-	Local.grandchild = new Element('div').inject(Local.children[1]);
+	beforeEach(function(){
+		Local = {};
+		Local.container = new Element('div');
+		Local.children = [new Element('div'), new Element('div'), new Element('div')];
+		Local.container.adopt(Local.children);
+		Local.grandchild = new Element('div').inject(Local.children[1]);
+	});
 
 	afterEach(function(){
 		Local = null;
 	});
 
+	//<1.3compat>
 	it("should return true if the Element is a child or grandchild", function(){
 		expect(Local.container.hasChild(Local.children[0])).toBeTruthy();
 		expect(Local.container.hasChild(Local.children[2])).toBeTruthy();
@@ -1535,11 +1554,28 @@ describe('Element.hasChild', function(){
 		expect(Local.children[2].hasChild(Local.container)).toBeFalsy();
 		expect(Local.children[2].hasChild(Local.children[1])).toBeFalsy();
 	});
+	//</1.3compat>
+
+	it("should return true if the Element is a child or grandchild", function(){
+		expect(Local.container.contains(Local.children[0])).toBeTruthy();
+		expect(Local.container.contains(Local.children[2])).toBeTruthy();
+		expect(Local.container.contains(Local.grandchild)).toBeTruthy();
+	});
+
+	it("should return true if it's the Element itself", function(){
+		expect(Local.container.contains(Local.container)).toBeTruthy();
+	});
+
+	it("should return false if the Element is the parent or a sibling", function(){
+		expect(Local.children[2].contains(Local.container)).toBeFalsy();
+		expect(Local.children[2].contains(Local.children[1])).toBeFalsy();
+	});
 
 });
 
 describe('Elements.extend', function(){
 
+	//<1.2compat>
 	it('should be able to extend a collection', function(){
 		var items = [
 			new Element('span'),
@@ -1553,7 +1589,21 @@ describe('Elements.extend', function(){
 		expect($$(items)).toEqual(container.getElements('*'));
 		expect(items.length).toEqual(4);
 	});
+	//</1.2compat>
 
+	it('should be able to append a collection', function(){
+		var items = [
+			new Element('span'),
+			new Element('span'),
+			new Element('p'),
+			new Element('p')
+		];
+		var container = new Element('div').adopt(items);
+
+		container.getElements('span').append(container.getElements('p'));
+		expect(new Elements(items)).toEqual(container.getElements('*'));
+		expect(items.length).toEqual(4);
+	});
 
 });
 
@@ -1911,15 +1961,6 @@ describe('Elements.unshift', function(){
 
 describe('Element.getProperty', function(){
 
-	it('should remove the onunload method', function(){
-		var text;
-		var handler = function(){ text = 'nope'; };
-		window.addEvent('unload', handler);
-		window.removeEvent('unload', handler);
-		window.fireEvent('unload');
-		expect(text).toBe(undefined);
-	});
-
 	it('should get the attrubte of a form when the form has an input with as ID the attribute name', function(){
 		var div = new Element('div');
 		div.innerHTML = '<form action="s"><input id="action"></form>';
@@ -2210,6 +2251,243 @@ describe('Element.erase', function(){
 	it('should erase the value attribute of a textarea', function(){
 		textarea.erase('value');
 		expect(textarea.get('value')).toEqual('');
+	});
+
+});
+
+describe('Element.appendHTML', function(){
+
+	var check, base, baseFallBack;
+
+	beforeEach(function(){
+		check = new Element('span', {
+			html: '<div>content</div><div>content</div>',
+			styles: {
+				display: 'none'
+			}
+		});
+
+		check.inject(document.documentElement);
+		base = $(check.getChildren()[0]);
+		baseFallBack = $(check.getChildren()[1]);
+
+		base.set('rel', '0');
+		baseFallBack.set('rel', '1');
+	});
+
+	afterEach(function(){
+		baseFallBack = baseFallBack.destroy();
+		base = base.destroy();
+		check = check.destroy();
+	});
+
+	it('should insert element before', function(){
+
+		base.appendHTML('<span>HI!</span>', 'before');
+		baseFallBack.appendHTML('<span>HI!</span>', 'before');
+
+		var children = check.getElements('span');
+
+		expect(children.length).toBe(2);
+		children.each(function(child, i){
+			expect(child.get('text')).toBe('HI!');
+			expect(child.nextSibling.getAttribute('rel')).toBe('' + i);
+		});
+	});
+
+	it('should insert element after', function(){
+		base.appendHTML('<span>HI!</span>', 'after');
+		baseFallBack.appendHTML('<span>HI!</span>', 'after');
+
+		var children = check.getElements('span');
+
+		expect(children.length).toBe(2);
+		children.each(function(child, i){
+			expect(child.get('text')).toBe('HI!');
+			expect(child.previousSibling.getAttribute('rel')).toBe('' + i);
+		});
+	});
+
+	it('should insert element on bottom', function(){
+		base.appendHTML('<span>HI!</span>', 'bottom');
+		baseFallBack.appendHTML('<span>HI!</span>', 'bottom');
+
+		var children = check.getElements('span');
+
+		expect(children.length).toBe(2);
+		expect(children.each(function(child, i){
+			expect(child.get('text')).toBe('HI!');
+			expect(child.parentNode.getAttribute('rel')).toBe('' + i);
+			expect(child.parentNode.get('text')).toBe('contentHI!');
+		}));
+	});
+
+	it('should insert element on top', function(){
+		base.appendHTML('<span>HI!</span>', 'top');
+		baseFallBack.appendHTML('<span>HI!</span>', 'top');
+
+		var children = check.getElements('span');
+
+		expect(children.length).toBe(2);
+		children.each(function(child, i){
+			expect(child.get('text')).toBe('HI!');
+			expect(child.parentNode.getAttribute('rel')).toBe('' + i);
+			expect(child.parentNode.get('text')).toBe('HI!content');
+		});
+	});
+
+	it('should insert element on inside (bottom)', function(){
+		base.appendHTML('<span>HI!</span>', 'inside');
+		baseFallBack.appendHTML('<span>HI!</span>', 'inside');
+
+		var children = check.getElements('span');
+
+		expect(children.length).toBe(2);
+		children.each(function(child, i){
+			expect(child.get('text')).toBe('HI!');
+			expect(child.parentNode.getAttribute('rel')).toBe('' + i);
+			expect(child.parentNode.get('text')).toBe('contentHI!');
+		});
+	});
+
+});
+
+describe('IFrame', function(){
+
+	it('(async) should call onload', function(){
+		runs(function(){
+			this.onComplete = jasmine.createSpy('IFrame onComplete');
+
+			this.iframe = new IFrame({
+				src: 'http://' + document.location.host + '/random',
+				onload: this.onComplete
+			}).inject(document.body);
+		});
+
+		waitsFor(1000, function(){
+			return this.onComplete.wasCalled;
+		});
+
+	});
+
+});
+
+describe('new Element(expression)', function(){
+
+	it('should create a new div element', function(){
+		var div = new Element('div');
+
+		expect(div.tagName.toLowerCase()).toEqual('div');
+		expect(!div.className && div.className.length == 0).toBeTruthy();
+		expect(!div.id && div.id.length == 0).toBeTruthy();
+		expect(typeOf(div)).toEqual('element');
+	});
+
+	it('should create a new element with id and class', function(){
+		var p = new Element('p', {
+			id: 'myParagraph',
+			'class': 'test className'
+		});
+
+		expect(p.tagName.toLowerCase()).toEqual('p');
+		expect(p.className).toEqual('test className');
+	});
+
+	it('should create a new element with id and class from css expression', function(){
+		var p = new Element('p#myParagraph.test.className');
+
+		expect(p.tagName.toLowerCase()).toEqual('p');
+		expect(p.className).toEqual('test className');
+	});
+
+	it('should create attributes from css expression', function(){
+		var input = new Element('input[type=text][readonly=true][value=Some Text]');
+
+		expect(input.tagName.toLowerCase()).toEqual('input');
+		expect(input.type).toEqual('text');
+		expect(input.readOnly).toEqual(true);
+		expect(input.value).toEqual('Some Text');
+	});
+
+	it('should overwrite ids and classes', function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: 'myOverwrittenId',
+			'class': 'overwrittenClass'
+		});
+
+		expect(div.tagName.toLowerCase()).toEqual('div');
+		expect(div.id).toEqual('myOverwrittenId');
+		expect(div.className).toEqual('overwrittenClass');
+	});
+
+	it('should overwrite attributes', function(){
+		var a = new Element('a[href=http://dojotoolkit.org/]', {
+			href: 'http://mootools.net/'
+		});
+
+		expect(a.tagName.toLowerCase()).toEqual('a');
+		expect(a.href).toEqual('http://mootools.net/');
+	});
+
+	it('should reset attributes and classes with empty string', function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: '',
+			'class': ''
+		});
+
+		expect(div.tagName.toLowerCase()).toEqual('div');
+		expect(div.id).toEqual('');
+		expect(div.className).toEqual('');
+	});
+
+	it('should not reset attributes and classes with null', function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: null,
+			'class': null
+		});
+
+		expect(div.tagName.toLowerCase()).toEqual('div');
+		expect(div.id).toEqual('myDiv');
+		expect(div.className).toEqual('myClass');
+	});
+
+	it('should not reset attributes and classes with undefined', function(){
+		var div = new Element('div#myDiv.myClass', {
+			id: undefined,
+			'class': undefined
+		});
+
+		expect(div.tagName.toLowerCase()).toEqual('div');
+		expect(div.id).toEqual('myDiv');
+		expect(div.className).toEqual('myClass');
+	});
+
+	it('should fall back to a div tag', function(){
+		var someElement = new Element('#myId');
+
+		expect(someElement.tagName.toLowerCase()).toEqual('div');
+		expect(someElement.id).toEqual('myId');
+	});
+
+	it('should allow zero (0) values', function(){
+		var table = new Element('table[cellpadding=0]');
+
+		expect(table.tagName.toLowerCase()).toEqual('table');
+		expect(table.cellPadding == 0).toBeTruthy();
+	});
+
+	it('should allow empty boolean attributes', function(){
+		var script = new Element('script[async]');
+		expect(script.get('async')).toBeTruthy();
+	});
+
+	it('should allow false to be passed for checked', function() {
+		var input = new Element('input', {
+			type: 'checkbox',
+			checked: false
+		});
+
+		expect(input.checked).toEqual(false);
 	});
 
 });

@@ -1,16 +1,146 @@
 /*
 ---
 name: Element.Event
-requires: Class.Extras
+requires: ~
 provides: ~
 ...
 */
 
 (function(){
 
-// todo(ibolmo): from Class.Extras
-runEventSpecs('element', function(){
+var Local = Local || {};
+
+var fire = 'fireEvent', create = function(){
 	return new Element('div');
+};
+
+describe('Events API: Element', function(){
+
+	beforeEach(function(){
+		Local.called = 0;
+		Local.fn = function(){
+			return Local.called++;
+		};
+	});
+
+	it('should add an Event to the Class', function(){
+		var object = create();
+
+		object.addEvent('event', Local.fn)[fire]('event');
+
+		expect(Local.called).toEqual(1);
+	});
+
+	it('should add multiple Events to the Class', function(){
+		create().addEvents({
+			event1: Local.fn,
+			event2: Local.fn
+		})[fire]('event1')[fire]('event2');
+
+		expect(Local.called).toEqual(2);
+	});
+
+	it('should remove a specific method for an event', function(){
+		var object = create();
+		var x = 0, fn = function(){ x++; };
+
+		object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn)[fire]('event');
+
+		expect(x).toEqual(1);
+		expect(Local.called).toEqual(0);
+	});
+
+	it('should remove an event and its methods', function(){
+		var object = create();
+		var x = 0, fn = function(){ x++; };
+
+		object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event')[fire]('event');
+
+		expect(x).toEqual(0);
+		expect(Local.called).toEqual(0);
+	});
+
+	it('should remove all events', function(){
+		var object = create();
+		var x = 0, fn = function(){ x++; };
+
+		object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
+		object[fire]('event1')[fire]('event2');
+
+		// Should not fail
+		object.removeEvents()[fire]('event1')[fire]('event2');
+
+		expect(x).toEqual(0);
+		expect(Local.called).toEqual(0);
+	});
+
+	it('should remove events with an object', function(){
+		var object = create();
+		var events = {
+			event1: Local.fn,
+			event2: Local.fn
+		};
+
+		object.addEvent('event1', function(){ Local.fn(); }).addEvents(events)[fire]('event1');
+		expect(Local.called).toEqual(2);
+
+		object.removeEvents(events);
+		object[fire]('event1');
+		expect(Local.called).toEqual(3);
+
+		object[fire]('event2');
+		expect(Local.called).toEqual(3);
+	});
+
+	it('should remove an event immediately', function(){
+		var object = create();
+
+		var methods = [];
+
+		var three = function(){
+			methods.push(3);
+		};
+
+		object.addEvent('event', function(){
+			methods.push(1);
+			this.removeEvent('event', three);
+		}).addEvent('event', function(){
+			methods.push(2);
+		}).addEvent('event', three);
+
+		object[fire]('event');
+		expect(methods).toEqual([1, 2]);
+
+		object[fire]('event');
+		expect(methods).toEqual([1, 2, 1, 2]);
+	});
+
+	it('should be able to remove itself', function(){
+		var object = create();
+
+		var methods = [];
+
+		var one = function(){
+			object.removeEvent('event', one);
+			methods.push(1);
+		};
+		var two = function(){
+			object.removeEvent('event', two);
+			methods.push(2);
+		};
+		var three = function(){
+			methods.push(3);
+		};
+
+		object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
+
+		object[fire]('event');
+		expect(methods).toEqual([1, 2, 3]);
+
+		object[fire]('event');
+		expect(methods).toEqual([1, 2, 3, 3]);
+	});
+
 });
 
 var fragment = document.createDocumentFragment();
@@ -215,6 +345,20 @@ describe('Element.Event keyup with f<key>', function(){
 		div.destroy();
 
 	});
+
+});
+
+describe('Element.removeEvent', function(){
+
+	it('should remove the onunload method', function(){
+		var text;
+		var handler = function(){ text = 'nope'; };
+		window.addEvent('unload', handler);
+		window.removeEvent('unload', handler);
+		window.fireEvent('unload');
+		expect(text).toBe(undefined);
+	});
+
 
 });
 

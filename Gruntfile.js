@@ -39,9 +39,10 @@ module.exports = function(grunt){
 			'specs-nocompat': {
 				options: {
 					name: 'Specs',
-					strip: ['.*compat']
+					strip: ['.*compat'],
+					only: '<%= grunt.option("file") && "Specs/" + grunt.option("file") %>'
 				},
-				src: 'Specs/<%= grunt.option("module") || "**" %>/<%= grunt.option("file") || "*" %>.js',
+				src: 'Specs/**/*.js',
 				dest: 'mootools-specs.js'
 			}
 
@@ -52,7 +53,7 @@ module.exports = function(grunt){
 			options: {
 				browsers: ['PhantomJS'],
 				frameworks: ['jasmine', 'sinon'],
-				files: ['mootools-all.js', 'mootools-nocompat.js', 'mootools-specs.js']
+				files: ['http://rawgithub.com/bitovi/legacy-syn/master/dist/syn.js', 'mootools-*.js']
 			},
 
 			continuous: {

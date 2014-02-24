@@ -11,7 +11,7 @@ describe('Element.set `opacity`', function(){
 	it('should set the opacity of an Element', function() {
 		var el = new Element('div').set('opacity', 0.4);
 		if (document.html.style.opacity != null)
-			expect(el.style.opacity == 0.4).toBeTruthy();
+			expect(el.style.opacity).toEqual(0.4);
 		else if (document.html.style.filter != null)
 			expect(el.style.filter).toEqual('alpha(opacity=40)');
 		else
@@ -87,14 +87,6 @@ describe('Element.setStyles', function(){
 });
 
 describe('Element.set opacity', function(){
-
-	it('should return the opacity of an Element without seting it before', function(){
-		var div = new Element('div');
-		if (document.html.style.opacity != null) div.style.opacity = 0.4;
-		else if (document.html.style.filter != null) div.style.filter = 'alpha(opacity=40)';
-		else div.setStyle('opacity', 0.4); // We only have visibility available but opacity should still report a 0..1 value
-		expect(div.get('opacity') == 0.4).toBeTruthy();
-	});
 
 	it('should not remove existent filters on browsers with filters', function(){
 		var div = new Element('div');
