@@ -5,6 +5,10 @@ requires: ~
 provides: ~
 ...
 */
+
+// todo. See: https://github.com/cjohansen/Sinon.JS/issues/319
+if (~navigator.userAgent.indexOf('PhantomJS')) ProgressEvent = function(){};
+
 describe('Request', function(){
 
 	beforeEach(function(){
@@ -46,12 +50,11 @@ describe('Request', function(){
 			onComplete: onComplete
 		}).send({data: {'some': 'data'}});
 
-		var response = {method: 'get', 'get': {'some':'data'}};
-		this.requests[0].respond(200, {'Content-Type': 'text/json'}, JSON.encode(response));
+		this.requests[0].respond(200, {'Content-Type': 'text/json'}, 'data');
 
 		expect(onComplete.wasCalled).toBe(true);
 
-		expect(JSON.decode(onComplete.argsForCall[0][0])).toEqual(response);
+		expect(onComplete.argsForCall[0][0]).toEqual('data');
 
 	});
 
