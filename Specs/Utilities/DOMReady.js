@@ -5,6 +5,8 @@ requires: ~
 provides: ~
 ...
 */
+
+/* todo
 document.addListener = function(type, fn){
 	if (this.addEventListener) this.addEventListener(type, fn, false);
 	else this.attachEvent('on' + type, fn);
@@ -30,3 +32,4 @@ window.addEvent = function(){};
 
 var Element = this.Element || {};
 Element.Events = {};
+*/
