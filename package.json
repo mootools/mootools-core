@@ -33,7 +33,6 @@
     "grunt-karma": "^0.6.2",
     "karma-jasmine": "^0.1.5",
     "grunt-contrib-clean": "~0.5.0",
-    "js-yaml": "~3.0.1",
     "karma-sinon": "~1.0.2"
   }
 }
