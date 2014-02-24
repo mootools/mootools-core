@@ -64,6 +64,19 @@ describe("Function Methods", function(){
 	});
 
 	it('should return the function bound to an object with specified argument', function(){
+		var results = Args.bind('MooTools', 'rocks')();
+		expect(results[0] + '').toEqual(new String('MooTools') + '');
+		expect(results[1]).toEqual('rocks');
+	});
+
+	it('should return the function bound to an object with multiple arguments', function(){
+		var results = Args.bind('MooTools', ['rocks', 'da house'])();
+		expect(results[0] + '').toEqual(new String('MooTools') + '');
+		expect(results[1]).toEqual(['rocks', 'da house']);
+	});
+
+	//<1.2compat>
+	it('should return the function bound to an object with specified argument', function(){
 		var fnc = Args.bind('MooTools', 'rocks');
 		expect(fnc()).toEqual(['MooTools', 'rocks']);
 	});
@@ -73,7 +86,6 @@ describe("Function Methods", function(){
 		expect(fnc()).toEqual(['MooTools', 'rocks', 'da house']);
 	});
 
-	//<1.2compat>
 	it('should return the function bound to an object and make the function an event listener', function(){
 		var fnc = Args.bindWithEvent('MooTools');
 		expect(fnc('an Event ocurred')).toEqual(['MooTools', 'an Event ocurred']);
