@@ -177,7 +177,7 @@ module.exports = function(grunt) {
 				browsers: [
 					'chrome_linux', 
 					'firefox_linux', 
-					'opera_win2000',
+					'opera_win2000'
 					// 'safari7',
 					// 'safari6',
 					// 'safari5_osx10_6',
