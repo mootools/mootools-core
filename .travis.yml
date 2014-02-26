@@ -1,10 +1,15 @@
 language: node_js
+
 node_js:
 - 0.1
+
 env:
   global:
   - secure: j85J3thkEWHWOspNSPSfWQ5DDsWQZdsvNeM13GfrGrGwrbNVjyuFVf6vunlzh8f9J7WQeA4bWE6/iaZoBi0hBIOz4Vhm/FlpfbgICKFWwXQJC/kLoD3fPRQpSLOtic0rXd4BdkYEiJzYMcebYR3jPMMNNzOdisNaOAPxEGPcOQE=
   - secure: RzRR074+chjVzJb4y1522wlzNECt+91p21bIuVrOE7N0NI6VFQWWFeUJK+M4gw27S6MF4rBv1CwDntI9rlFvpALQW4Pbz2xHQgJd677F2iCVL0nqx0aVkYK900B+hG6xst+jarVt5etFhv8VyVi0jPbNwTh+artimg+pev2CU68=
+
+before_install:
+  - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
 
 before_script:
   - export SAUCE_ACCESS_KEY=`echo $SAUCE_ACCESS_KEY | rev`
