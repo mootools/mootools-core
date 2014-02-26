@@ -79,11 +79,7 @@ module.exports = function(grunt) {
 
 			options: {
 				frameworks: ['jasmine', 'sinon'],
-				files: ['http://rawgithub.com/bitovi/legacy-syn/master/dist/syn.js', 'mootools-*.js']
-			},
-
-			continuous: {
-				singleRun: true,
+				files: ['http://rawgithub.com/bitovi/legacy-syn/master/dist/syn.js', 'mootools-*.js'],
 				sauceLabs: {
 					username: process.env.SAUCE_USERNAME,
 					accessKey: process.env.SAUCE_ACCESS_KEY,
@@ -174,23 +170,62 @@ module.exports = function(grunt) {
 						version: '6'
 					}
 				},
+			},
+
+			continuous: {
+				singleRun: true,
+				browsers: ['PhantomJS']
+			},
+
+			sauce1: {
+				singleRun: true,
 				browsers: [
 					'chrome_linux', 
 					'firefox_linux', 
 					'opera_win2000'
-					// 'safari7',
-					// 'safari6',
-					// 'safari5_osx10_6',
-					// 'safari5_win7',
-					// 'ie11',
-					// 'ie10',
-					// 'ie9',
-					// 'ie8',
-					// 'ie7',
-					// 'ie6',
-					// 'iphone_7',
-					// 'iphone_6_1',
-					// 'iphone_6'
+				]
+			},
+
+			sauce2: {
+				singleRun: true,
+				browsers: [
+					'safari7',
+					'safari6',
+					'safari5_osx10_6'
+				],
+			},
+
+			sauce3: {
+				singleRun: true,
+				browsers: [
+					'safari5_win7',
+					'ie11',
+					'ie10'
+				]
+			},
+
+			sauce4: {
+				singleRun: true,
+				browsers: [
+					'ie9',
+					'ie8',
+					'ie7'
+				]
+			},
+
+			sauce5: {
+				singleRun: true,
+				browsers: [
+					'ie6',
+					'iphone_7',
+					'iphone_6_1',
+				]
+			},
+
+			sauce6: {
+				singleRun: true,
+				browsers: [
+					'iphone_6'
 				]
 			},
 
@@ -211,5 +246,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', ['clean', 'packager:all', 'packager:specs', 'karma:continuous']);
 	grunt.registerTask('nocompat', ['clean', 'packager:nocompat', 'packager:specs-nocompat', 'karma:continuous']);
-	grunt.registerTask('default:travis', ['clean', 'packager:all', 'packager:specs', 'karma:continuous'])
+	grunt.registerTask('default:travis', ['clean', 'packager:all', 'packager:specs', 'karma:continuous', 'karma:sauce1', 'karma:sauce2', 'karma:sauce3', 'karma:sauce4', 'karma:sauce5', 'karma:sauce6'])
 };
