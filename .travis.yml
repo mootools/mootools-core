@@ -1,12 +1,12 @@
 language: node_js
 
 node_js:
-- 0.1
+- 0.11
 
 env:
   global:
-  - secure: j85J3thkEWHWOspNSPSfWQ5DDsWQZdsvNeM13GfrGrGwrbNVjyuFVf6vunlzh8f9J7WQeA4bWE6/iaZoBi0hBIOz4Vhm/FlpfbgICKFWwXQJC/kLoD3fPRQpSLOtic0rXd4BdkYEiJzYMcebYR3jPMMNNzOdisNaOAPxEGPcOQE=
-  - secure: RzRR074+chjVzJb4y1522wlzNECt+91p21bIuVrOE7N0NI6VFQWWFeUJK+M4gw27S6MF4rBv1CwDntI9rlFvpALQW4Pbz2xHQgJd677F2iCVL0nqx0aVkYK900B+hG6xst+jarVt5etFhv8VyVi0jPbNwTh+artimg+pev2CU68=
+  - secure: hxXNl/FkYm4lukIM+drQ4qXe6swmVyUvZRFhUCnMUZBTGsEHjySq/S1Z7KH69/3I+ULqERMeFo/Hsuw3fmZqtGwbFS+XyPm2ulCdhRy/ypCupSeTx/DbHV5Aej4QeGKb5J0N1jEEowMs5zTjpCoyNiSW/oFP/xS5tiuwUOvL+AQ=
+  - secure: DdWSqy6Qzbnl3bTUIk+2oTEOghakK/UxtGow3ZUbzLxX9Lu924ve/7d+BQbJl+QsTqt+PYMPdpg6n7Y6oqOop6sAIRECPx/7lMx57whd0XHRXpLPbs2abXkFdG6w1x0ybm+6G2CiWUQ1BnmI1MqlkMmikK+X4jWgyJ7s1qYk4Us=
 
 before_script:
   - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
