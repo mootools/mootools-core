@@ -11,7 +11,7 @@ describe('Element.set `opacity`', function(){
 	it('should set the opacity of an Element', function() {
 		var el = new Element('div').set('opacity', 0.4);
 		if (document.html.style.opacity != null)
-			expect(el.style.opacity).toEqual(0.4);
+			expect(el.style.opacity).toEqual('0.4');
 		else if (document.html.style.filter != null)
 			expect(el.style.filter).toEqual('alpha(opacity=40)');
 		else
