@@ -246,5 +246,5 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', ['clean', 'packager:all', 'packager:specs', 'karma:continuous']);
 	grunt.registerTask('nocompat', ['clean', 'packager:nocompat', 'packager:specs-nocompat', 'karma:continuous']);
-	grunt.registerTask('default:travis', ['clean', 'packager:all', 'packager:specs', 'karma:continuous', 'karma:sauce1', 'karma:sauce2', 'karma:sauce3', 'karma:sauce4', 'karma:sauce5', 'karma:sauce6'])
+	grunt.registerTask('default:travis', ['clean', 'packager:all', 'packager:specs', 'karma:sauce1', 'karma:sauce2', 'karma:sauce3', 'karma:sauce4', 'karma:sauce5', 'karma:sauce6'])
 };
