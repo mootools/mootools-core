@@ -238,7 +238,7 @@ describe('Elements', function(){
 
 	//<1.3compat>
 	it('should return an array type', function(){
-		expect(typeOf(myElements) == 'array').toBeTruthy();
+		expect(Array.type(myElements)).toBeTruthy();
 	});
 	//</1.3compat>
 
