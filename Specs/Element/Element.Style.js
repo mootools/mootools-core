@@ -6,6 +6,7 @@ provides: ~
 ...
 */
 
+/*<1.2compat>*/
 describe('Element.set `opacity`', function(){
 
 	it('should set the opacity of an Element', function() {
@@ -26,8 +27,28 @@ describe('Element.set `opacity`', function(){
 	});
 
 });
+/*</1.2compat>*/
 
+describe('Element.set `opacity`', function(){
 
+	it('should set the opacity of an Element', function() {
+		var el = new Element('div').setStyle('opacity', 0.4);
+		if (document.html.style.opacity != null)
+			expect(el.style.opacity).toEqual('0.4');
+		else if (document.html.style.filter != null)
+			expect(el.style.filter).toEqual('alpha(opacity=40)');
+		else
+			expect(el.getStyle('opacity')).toEqual(0.4);
+	});
+
+	it('should return the opacity of an Element', function() {
+		var div = new Element('div').setStyle('opacity', 0.4);
+		expect(div.getStyle('opacity') == 0.4).toBeTruthy();
+		div.setStyle('opacity', 0);
+		expect(div.getStyle('opacity') == 0).toBeTruthy();
+	});
+
+});
 
 describe('Element.getStyle', function(){
 
