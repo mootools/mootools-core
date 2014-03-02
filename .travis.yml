@@ -14,4 +14,4 @@ before_script:
 
 script:
   #- grunt test --reporters dots --browsers SL_Chrome
-  - grunt --verbose default:travis
+  - grunt default:travis
