@@ -1252,6 +1252,10 @@ Empties an Element of all its children.
 ##### Resulting HTML
 
 	<div id="myElement"></div>
+	
+### Note:
+
+This method does not garbage college the children. Use [Element:destroy][] instead.
 
 
 
