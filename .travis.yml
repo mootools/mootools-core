@@ -10,7 +10,6 @@ env:
 
 before_script:
   - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
-  - npm install -g grunt-cli
 
 script:
   #- grunt test --reporters dots --browsers SL_Chrome
