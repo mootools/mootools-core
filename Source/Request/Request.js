@@ -134,6 +134,14 @@ var Request = this.Request = new Class({
 		}.bind(this));
 	},
 
+	getUrl: function(){
+		return this.url;
+	},
+
+	getMethod: function(){
+		return this.method;
+	},
+
 	check: function(){
 		if (!this.running) return true;
 		switch (this.options.link){
@@ -166,6 +174,11 @@ var Request = this.Request = new Class({
 			data = (data) ? format + '&' + data : format;
 		}
 
+		var upperMethod = method.toUpperCase();
+
+		this.method = upperMethod;
+		this.url = url;
+
 		if (this.options.emulation && !['get', 'post'].contains(method)){
 			var _method = '_method=' + method;
 			data = (data) ? _method + '&' + data : _method;
@@ -196,7 +209,7 @@ var Request = this.Request = new Class({
 			xhr.onprogress = this.progress.bind(this);
 		}
 
-		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.password);
+		xhr.open(upperMethod, url, this.options.async, this.options.user, this.options.password);
 		if (this.options.user && 'withCredentials' in xhr) xhr.withCredentials = true;
 
 		xhr.onreadystatechange = this.onStateChange.bind(this);
