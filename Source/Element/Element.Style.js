@@ -111,7 +111,7 @@ Element.implement({
 			setOpacity(this, value);
 			return this;
 		}
-		property = (property == 'float' ? floatName : property).camelCase();
+		property = (String(property == 'float' ? floatName : property)).camelCase();
 		if (typeOf(value) != 'string'){
 			var map = (Element.Styles[property] || '@').split(' ');
 			value = Array.from(value).map(function(val, i){
@@ -132,7 +132,7 @@ Element.implement({
 
 	getStyle: function(property){
 		if (property == 'opacity') return getOpacity(this);
-		property = (property == 'float' ? floatName : property).camelCase();
+		property = (String(property == 'float' ? floatName : property)).camelCase();
 		var result = this.style[property];
 		if (!result || property == 'zIndex'){
 			if (Element.ShortStyles.hasOwnProperty(property)){
