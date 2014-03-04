@@ -6,7 +6,6 @@ provides: ~
 ...
 */
 
-// todo. See: https://github.com/cjohansen/Sinon.JS/issues/319
 if (~navigator.userAgent.indexOf('PhantomJS')) ProgressEvent = function(){};
 
 describe('Request.JSON', function(){

@@ -78,7 +78,8 @@ module.exports = function(grunt) {
 				frameworks: ['jasmine', 'sinon'],
 				files: [
 					'http://rawgithub.com/bitovi/legacy-syn/master/dist/syn.js', 
-					'http://sinonjs.org/releases/sinon-ie-1.8.2.js',
+					'Sinon/sinon-master.js',        // adding file locally until this version is released in npm
+					'Sinon/sinon-ie-master.js',     // adding file locally until this version is released
 					'mootools-*.js'
 				],
 				sauceLabs: {
