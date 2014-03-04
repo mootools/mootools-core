@@ -76,12 +76,7 @@ module.exports = function(grunt) {
 				captureTimeout: 60000 * 2,
 				singleRun: true,
 				frameworks: ['jasmine', 'sinon'],
-				files: [
-					'http://rawgithub.com/bitovi/legacy-syn/master/dist/syn.js', 
-					'Sinon/sinon-master.js',        // adding file locally until this version is released in npm
-					'Sinon/sinon-ie-master.js',     // adding file locally until this version is released
-					'mootools-*.js'
-				],
+				files: ['Tests/Utilities/*.js', 'mootools-*.js'],
 				sauceLabs: {
 					username: process.env.SAUCE_USERNAME,
 					accessKey: process.env.SAUCE_ACCESS_KEY,

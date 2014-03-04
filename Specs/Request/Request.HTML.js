@@ -6,8 +6,6 @@ provides: ~
 ...
 */
 
-if (~navigator.userAgent.indexOf('PhantomJS')) ProgressEvent = function(){};
-
 describe('Request.HTML', function(){
 
 	beforeEach(function(){
