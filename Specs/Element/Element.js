@@ -2157,8 +2157,9 @@ if (document.createElement('video').canPlayType){
 				expect(video.getProperty('autoplay')).toBe(true);
 				expect(video.setProperty('autoplay', false).getProperty('autoplay')).toBe(false);
 			}catch(O_o){
-				// need to get the exception message (probably not implemented)
-				expect(O_o.message + " : "+O_o).toBe("")
+				if(O_o.indexOf('Not implemented') == -1){
+					expect(O_o.message + " : "+O_o).toBe("")
+				}
 			}
 	});
 
