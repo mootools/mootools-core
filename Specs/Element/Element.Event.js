@@ -211,9 +211,9 @@ describe('Element.Event', function(){
 			callback(event.key);
 		}).inject(document.body);
 
-		Syn.key('escape', div);
+		Syn.key('a', div);
 
-		expect(callback).toHaveBeenCalledWith('esc');
+		expect(callback).toHaveBeenCalledWith('a');
 		div.destroy();
 	});
 
