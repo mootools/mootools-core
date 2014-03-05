@@ -12,7 +12,7 @@ You are welcome to contribute to MooTools! What we ask of you:
 
 a. __To report a bug:__
 
-   1. Crete a [jsFiddle](https://github.com/ibolmo/mootools-core/pull/18/jsfiddle.net) with the minimal amount of code to reproduce the bug.
+   1. Crete a [jsFiddle](http://jsfiddle.net/) with the minimal amount of code to reproduce the bug.
    2. Create a [Github Issue](https://github.com/mootools/mootools-core/issues), and link to the jsFiddle.
     
 b. __To fix a bug:__
@@ -69,6 +69,8 @@ See the [Gruntfile](https://github.com/ibolmo/mootools-core/blob/1.4.6/Gruntfile
 	grunt nocompat --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
 	grunt nocompat --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
 
+#### Removing Other Packager Blocks
+You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/ibolmo/mootools-core/blob/master/Gruntfile.js#L46) for an example.
 
 ### Testing locally 
 
