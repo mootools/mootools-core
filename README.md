@@ -52,6 +52,53 @@ Example:
 If the log is too long, or if you want to store it in a file you can do:
 
     $ grunt > logs.txt   # This will create a new file called logs.txt in the local directory
+    
+### Testing on Travis & Sauce Labs
+
+Every new Build and Pull Request is now tested on [Travis](https://travis-ci.org/) and [Sauce Labs](https://saucelabs.com/). You can also open your own free account on [Travis](https://travis-ci.org/) and [Sauce Labs](https://saucelabs.com/) to test new code ideas there.
+
+[Travis](https://travis-ci.org/) testing uses [PhantomJS](http://phantomjs.org/) which is a virtual testing system. When connected to [Sauce Labs](https://saucelabs.com/) then it is possible to choose thru a big number of [different Browsers](https://saucelabs.com/platforms) and choose which on to test them in the Gruntfile.
+You will need in this case to change the log in key so it will match your account.
+
+To add new Browsers in [Sauce Labs](https://saucelabs.com/) testing you can do some changes in the __[Gruntfile.js](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js)__:
+
+ - add a new browser to the custom launchers already in the Gruntfile.
+
+		customLaunchers: {
+			chrome_linux: {
+				base: 'SauceLabs',
+				browserName: 'chrome',
+				platform: 'linux'
+			}, 
+ 
+
+ - add the chosen browser to a task (max 3 browsers per task if you are using a free account):
+ 
+		sauce2: {
+			port: 9877,
+			browsers: [
+				'safari7',
+				'safari6',
+				'safari5_osx10_6'
+			],
+
+	These tasks can be chained so its possible to test more than 3 browsers on the same test. But not more than 3 paralel.
+
+ - register your task and eventual task chain:
+
+		grunt.registerTask('default:travis', [
+			'clean',
+			'packager:all',
+			'packager:specs',
+			'karma:sauce1',
+			'karma:sauce2',
+			'karma:sauce3',
+			'karma:sauce4'
+			// 'karma:sauce5',
+			// 'karma:sauce6'
+		])
+ 
+ 
 
 ### Building MooTools _With_ Compatibility
 This means `1.4.6` that is compatible with: `1.3.x`, `1.2.x`, and so on. 
