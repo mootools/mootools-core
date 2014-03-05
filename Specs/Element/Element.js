@@ -2157,7 +2157,7 @@ if (document.createElement('video').canPlayType){
 				expect(video.getProperty('autoplay')).toBe(true);
 				expect(video.setProperty('autoplay', false).getProperty('autoplay')).toBe(false);
 			}catch(O_o){
-				if(O_o.indexOf('Not implemented') == -1){
+				if(O_o.message.indexOf('Not implemented') == -1){
 					expect(O_o.message + " : "+O_o).toBe("")
 				}
 			}
