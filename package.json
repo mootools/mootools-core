@@ -4,7 +4,7 @@
   "description": "MooTools is a compact, modular, Object-Oriented JavaScript framework designed for the intermediate to advanced JavaScript developer.",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test -v"
+    "test": "./node_modules/.bin/grunt --verbose"
   },
   "repository": {
     "type": "git",
@@ -29,8 +29,22 @@
   "homepage": "http://mootools.net",
   "devDependencies": {
     "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.11",
-    "grunt-jasmine-html-spec-runner": "~0.2.5",
-    "grunt-contrib-connect": "~0.5.0"
+    "grunt-mootools-packager": "^0.1.2",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-connect": "~0.7.0",
+    "grunt-karma": "~0.7.2",
+    "load-grunt-tasks": "~0.4.0",
+    "requirejs": "~2.1.11",
+    "karma": "~0.11.14",
+    "karma-requirejs": "~0.2.1",
+    "karma-jasmine": "~0.1.5",
+    "karma-sinon": "~1.0.2",
+    "karma-sauce-launcher": "~0.2.0",
+    "karma-script-launcher": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.2",
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-ie-launcher": "~0.1",
+    "karma-safari-launcher": "~0.1"
   }
 }
