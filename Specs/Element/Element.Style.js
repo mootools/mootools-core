@@ -110,8 +110,10 @@ describe('Element.setStyles', function(){
 describe('Element.set opacity', function(){
 
 	it('should not remove existent filters on browsers with filters', function(){
-		var div = new Element('div');
-		if (document.html.style.filter != null && !window.opera && !Syn.browser.gecko){
+		var div = new Element('div'), 
+		hasOpacity = document.html.style.opacity != null
+		
+		if (!hasOpacity && document.html.style.filter != null && !window.opera && !Syn.browser.gecko){ //we can prolly remove the last two check
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
 			expect(div.style.filter).toMatch(/blur\(strength=50\)/i);
