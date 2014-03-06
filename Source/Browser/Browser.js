@@ -23,7 +23,12 @@ var ua = navigator.userAgent.toLowerCase(),
 	platform = navigator.platform.toLowerCase();
 
 var parse = function(ua, platform){
-	var UA = ua.match(/(opera|ie|firefox|chrome|version)[\s\/:]([\w\d\.]+)?.*?(safari|version[\s\/:]([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+	var UA = ua.match(/(opera|ie|firefox|chrome|trident|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+
+	if (UA[1] == 'trident'){
+		UA[1] = 'ie';
+		if (UA[4]) UA[2] = UA[4];
+	}
 
 	return {
 
@@ -57,7 +62,16 @@ Browser.extend({
 	parse: parse
 });
 
-Browser[Browser.name] = true;
+if (Browser.name == 'ie'){
+	if (Browser.version >= '11') {
+		Browser.modernie = true;
+	} else {
+		Browser.ie = true;
+	}
+} else {
+	Browser[Browser.name] = true;
+}
+
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 Browser.Platform[Browser.Platform.name] = true;
 
