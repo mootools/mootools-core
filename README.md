@@ -57,7 +57,7 @@ See the changelog or the blog related to each version for migrating your code.
 	
 
 ### Advanced Building and Testing
-See the [Gruntfile](https://github.com/ibolmo/mootools-core/blob/1.4.6/Gruntfile.js) for further options.
+See the [Gruntfile](https://github.com/mootools/mootools-core/blob/1.4.6/Gruntfile.js) for further options.
 
 **Examples**
   
@@ -70,7 +70,7 @@ See the [Gruntfile](https://github.com/ibolmo/mootools-core/blob/1.4.6/Gruntfile
 	grunt nocompat --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
 
 #### Removing Other Packager Blocks
-You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/ibolmo/mootools-core/blob/master/Gruntfile.js#L46) for an example.
+You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js#L46) for an example.
 
 ### Testing locally 
 
