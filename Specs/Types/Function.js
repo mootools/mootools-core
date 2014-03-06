@@ -6,6 +6,7 @@ provides: ~
 ...
 */
 
+var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // don't run unless no compat
 
 (function(){
 
@@ -69,7 +70,7 @@ describe("Function Methods", function(){
 		expect(results[1]).toEqual('rocks');
 	});
 
-	it('should return the function bound to an object with multiple arguments', function(){
+	dit('should return the function bound to an object with multiple arguments', function(){
 		var results = Args.bind('MooTools', ['rocks', 'da house'])();
 		expect(results[0] + '').toEqual(new String('MooTools') + '');
 		expect(results[1]).toEqual(['rocks', 'da house']);
@@ -241,8 +242,6 @@ describe('Function.bind', function(){
 		expect(f('additional', 'arguments')).toEqual('something');
 		expect(spy.mostRecentCall.object).toEqual(binding);
 	});
-
-	var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // don't run unless no compat
 
 	dit('should still be possible to use it as constructor', function(){
 		function Alien(type) {
