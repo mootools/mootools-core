@@ -33,7 +33,9 @@ Converts a JSON string into a JavaScript object.
 ### Arguments:
 
 1. string - (*string*) The string to evaluate.
-2. secure - (*boolean*, optional: defaults to false) If set to true, checks for any hazardous syntax and returns null if any found.
+2. secure - (*boolean*, optional) If set to true, checks for any hazardous syntax and returns null if any found.
+
+There is also a global option `JSON.secure` (*boolean*: defaults to true). If the optional `secure` argument is not defined, the value of `JSON.secure` will be used.
 
 ### Returns:
 
