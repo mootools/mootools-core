@@ -9,6 +9,7 @@ env:
   - secure: DdWSqy6Qzbnl3bTUIk+2oTEOghakK/UxtGow3ZUbzLxX9Lu924ve/7d+BQbJl+QsTqt+PYMPdpg6n7Y6oqOop6sAIRECPx/7lMx57whd0XHRXpLPbs2abXkFdG6w1x0ybm+6G2CiWUQ1BnmI1MqlkMmikK+X4jWgyJ7s1qYk4Us=
 
 before_script:
+  - npm install grunt-cli -g
   - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
 
 script:
