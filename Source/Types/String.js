@@ -7,7 +7,7 @@ description: Contains String Prototypes like camelCase, capitalize, test, and to
 
 license: MIT-style license.
 
-requires: Type
+requires: [Type, Array]
 
 provides: String
 
