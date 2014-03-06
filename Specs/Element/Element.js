@@ -2144,18 +2144,24 @@ if (document.createElement('video').canPlayType){
 	describe('Video/Audio loop, controls, and autoplay set/get attributes', function(){
 
 		it('should set/get the boolean value of loop, controls, and autoplay', function(){
-			var div = new Element('div', {html: '<video loop controls autoplay>'}),
-				video = div.getElement('video');
+			try{
+				var div = new Element('div', {html: '<video loop controls autoplay>'}),
+					video = div.getElement('video');
 
-			if ('loop' in video){
-				expect(video.getProperty('loop')).toBe(true);
-				expect(video.setProperty('loop', false).getProperty('loop')).toBe(false);
+				if ('loop' in video){
+					expect(video.getProperty('loop')).toBe(true);
+					expect(video.setProperty('loop', false).getProperty('loop')).toBe(false);
+				}
+				expect(video.getProperty('controls')).toBe(true);
+				expect(video.setProperty('controls', false).getProperty('controls')).toBe(false);
+				expect(video.getProperty('autoplay')).toBe(true);
+				expect(video.setProperty('autoplay', false).getProperty('autoplay')).toBe(false);
+			}catch(O_o){
+				if(O_o.message.indexOf('Not implemented') == -1){
+					expect(O_o.message + " : "+O_o).toBe("")
+				}
 			}
-			expect(video.getProperty('controls')).toBe(true);
-			expect(video.setProperty('controls', false).getProperty('controls')).toBe(false);
-			expect(video.getProperty('autoplay')).toBe(true);
-			expect(video.setProperty('autoplay', false).getProperty('autoplay')).toBe(false);
-		});
+	});
 
 	});
 }
