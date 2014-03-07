@@ -84,6 +84,10 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 
 If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
+### Browser.ie vs. Browser.modernie:
+
+The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Having `Browser.ie == true` for modern IE in this deprecated functionality would do more harm than good, even though it's technically correct. Since this functionality is deprecated, this technical incorrectness shouldn't cause any problems. Moreover, `Browser.ie11` will still work and `Browser.name` will still equal "ie".
+
 Browser.version {#Browser:Browser-version}
 ------------------------------------------
 
