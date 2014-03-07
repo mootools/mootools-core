@@ -55,8 +55,7 @@ Browser.name {#Browser:Browser-name}
 
 'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
 
-* Browser.ie - (*boolean*) True if the current browser is Internet Explorer &lt;= 10.
-* Browser.modernie - (*boolean*) True if the current browser is Internet Explorer &gt;= 11.
+* Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
 * Browser.firefox - (*boolean*) True if the current browser is Firefox.
 * Browser.safari - (*boolean*) True if the current browser is Safari.
 * Browser.chrome - (*boolean*) True if the current browser is Chrome.
@@ -71,7 +70,7 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
 
 	if (Browser.ie){
-		// This code will only run in IE &lt;= 10
+		// This code will only run in IE
 	}
 
 	if (Browser.firefox2){
@@ -84,9 +83,11 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 
 If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
-### Browser.ie vs. Browser.modernie:
+### Browser.ie in the compatibility build:
 
-The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Having `Browser.ie == true` for modern IE in this deprecated functionality would do more harm than good, even though it's technically correct. Since this functionality is deprecated, this technical incorrectness shouldn't cause any problems. Moreover, `Browser.ie11` will still work and `Browser.name` will still equal "ie".
+In the compatibility build, for IE&gt;=11, `Browser.ie` will remain `false` and `Browser.modernie` will be `true`. See below:
+
+The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Changing `Browser.ie == true` for modern IE (IE &gt;= 11) in the compatibility build would do more harm than good, even though it's technically correct. Since we did not want to break existing projects that have come to rely on `Browser.ie` being false for the newer version(s) of IE, the compatibility build will set `Browser.modernie` for these versions of IE instead. However, `Browser.ie11` will work correctly, `Browser.name` will equal "ie".
 
 Browser.version {#Browser:Browser-version}
 ------------------------------------------
