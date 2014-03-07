@@ -1,16 +1,12 @@
 language: node_js
-
 node_js:
 - 0.11
-
 env:
   global:
-  - secure: NN8Ev2bYZzsfhj3OXspWwaM4TP3HEy8SpJwGvYj4oqomrlKGxSNyJSsroB/XuYLWEINnNV4An+7WnweT5ScIVJz0lQxaJOVbfwYwFtPbzD++o29TOFhsj+kAtvYY/ZrukfqYhqI7nDJQ8dlP5EPDikR0itnJ+NK/WUq+3WG6FAQ=
-  - secure: gFAeFU1mHbVVJieRlRkL2kSUWiiQkQfviUQFzrnQyxKmUVgDUVbXUFBARi4KqQLSDNeyODXJdbjX4nhEHL2hI/hgsNtvc+4XNzvWE8mZvkBPqbtkbJRnWwqBPUXOLLSgBiiucfK3nLRlZ2GXM/9/x9gM3DsGMN3Ac5xoqK5dq5U=
-
+  - secure: ENRabkYnBb4RCp+RXPhiZX+BtRYYKks0TQ+XOTIXE/BEAGzXQuDzoo+Zter0el1f3Ma38vAugdyBs/IKY9nRNaZtgFmckaPva6r58X8KSNapm8kIWb68EVY+tSmuTXPzrDF38UqASIIC+E+tq8eaKUxI8cpP+q518rRr0I5R36E=
+  - secure: rrJCGSEqgE6ZerozquzOmfwtW2j7Pjoi5tDNTGipogmBrp7gFzraA6r8Us4F71ZH1PXfVMpSNX3Ifv4O+ZyKrwW0wqiFG1xLQ0DHT46lKnVr+8vU7MFMmLFfDhGgv1O4FnkiNQDReh1giDNZQVqexnnGLVzT6gOJe0z5rjfMBgI=
 before_script:
-  - npm install grunt-cli -g
-  - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
-
+- npm install grunt-cli -g
+- curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
 script:
-  - grunt default:travis
+- grunt default:travis
