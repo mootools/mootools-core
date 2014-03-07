@@ -26,7 +26,7 @@ DOMEvent Method: constructor {#DOMEvent:constructor}
 * relatedTarget - (*element*) The event related target.
 * target        - (*element*) The event target.
 * code          - (*number*) The keycode of the key pressed.
-* key           - (*string*) The key pressed as a lowercase string. key can be 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'delete', and 'esc'.
+* key           - (*string*) The key pressed as a lowercase string. key can be 'enter', 'up', 'down', 'left', 'right', 'space', 'backspace', 'tab', 'delete', and 'esc'.
 * shift         - (*boolean*) True if the user pressed the shift key.
 * control       - (*boolean*) True if the user pressed the control key.
 * alt           - (*boolean*) True if the user pressed the alt key.
