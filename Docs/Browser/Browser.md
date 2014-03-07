@@ -12,60 +12,6 @@ Browser.Features {#Browser:Browser-Features}
 * Browser.Features.json - (*boolean*) True if the browser has a native JSON object.
 * Browser.Features.xhr - (*boolean*) True if the browser supports native XMLHTTP object.
 
-Browser.name {#Browser:Browser-name}
-------------------------------------
-
-'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
-
-* Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
-* Browser.firefox - (*boolean*) True if the current browser is Firefox.
-* Browser.safari - (*boolean*) True if the current browser is Safari.
-* Browser.chrome - (*boolean*) True if the current browser is Chrome.
-* Browser.opera - (*boolean*) True if the current browser is Opera.
-
-In addition to one of the above properties a second property consisting of the name and the major version is provided ('Browser.ie6', 'Browser.chrome15', ...).
-
-If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefox', 'Browser.ie', ... , will be `undefined`.
-
-### Example:
-
-	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
-
-	if (Browser.ie){
-		// This code will only run in IE
-	}
-
-	if (Browser.firefox2){
-		// This code will only run in Firefox 2
-	}
-
-	if (Browser.ie6 || Browser.ie7){
-		// Please upgrade your browser
-	}
-
-If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
-
-Browser.version {#Browser:Browser-version}
-------------------------------------------
-
-'Browser.version' reports the version of the Browser as number.
-
-### Example:
-
-	alert(Browser.version); // Alerts '3.6' in FireFox 3.6.13
-
-Browser.Platform {#Browser:Browser-Platform}
---------------------------------------------
-
-* Browser.Platform.mac - (*boolean*) True if the platform is Mac.
-* Browser.Platform.win - (*boolean*) True if the platform is Windows.
-* Browser.Platform.linux - (*boolean*) True if the platform is Linux.
-* Browser.Platform.ios - (*boolean*) True if the platform is iOS.
-* Browser.Platform.android - (*boolean*) True if the platform is Android
-* Browser.Platform.webos - (*boolean*) True if the platform is WebOS
-* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iOS.
-* Browser.Platform.name - (*string*) The name of the platform.
-
 Browser.Plugins {#Browser:Browser-Plugins}
 ------------------------------------------
 
@@ -87,10 +33,86 @@ Executes the passed in string in the browser context.
 
 	Browser.exec('alert("Moo!");');
 
-Deprecated {#Deprecated}
-------------------------
 
-The *Browser.Engine* object is deprecated since MooTools 1.3.
+Deprecated {#Deprecated}
+========================
+
+### User Agent detection
+
+The functionality described below uses User Agent detection (either the UA string or platform string) to determine the correct values. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js][]), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
+
+#### See also:
+
+[MDN about Browser detection using the user agent][]
+
+[has.js]: https://github.com/phiggins42/has.js
+[MDN about Browser detection using theu ser agent]: https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent
+
+Browser.name {#Browser:Browser-name}
+------------------------------------
+
+**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
+
+'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
+
+* Browser.ie - (*boolean*) True if the current browser is Internet Explorer &lt;= 10.
+* Browser.modernie - (*boolean*) True if the current browser is Internet Explorer &gt;= 11.
+* Browser.firefox - (*boolean*) True if the current browser is Firefox.
+* Browser.safari - (*boolean*) True if the current browser is Safari.
+* Browser.chrome - (*boolean*) True if the current browser is Chrome.
+* Browser.opera - (*boolean*) True if the current browser is Opera.
+
+In addition to one of the above properties a second property consisting of the name and the major version is provided ('Browser.ie6', 'Browser.chrome15', ...).
+
+If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefox', 'Browser.ie', ... , will be `undefined`.
+
+### Example:
+
+	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
+
+	if (Browser.ie){
+		// This code will only run in IE &lt;= 10
+	}
+
+	if (Browser.firefox2){
+		// This code will only run in Firefox 2
+	}
+
+	if (Browser.ie6 || Browser.ie7){
+		// Please upgrade your browser
+	}
+
+If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
+
+Browser.version {#Browser:Browser-version}
+------------------------------------------
+
+**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
+
+'Browser.version' reports the version of the Browser as number.
+
+### Example:
+
+	alert(Browser.version); // Alerts '3.6' in FireFox 3.6.13
+
+Browser.Platform {#Browser:Browser-Platform}
+--------------------------------------------
+
+**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
+
+* Browser.Platform.mac - (*boolean*) True if the platform is Mac.
+* Browser.Platform.win - (*boolean*) True if the platform is Windows.
+* Browser.Platform.linux - (*boolean*) True if the platform is Linux.
+* Browser.Platform.ios - (*boolean*) True if the platform is iOS.
+* Browser.Platform.android - (*boolean*) True if the platform is Android
+* Browser.Platform.webos - (*boolean*) True if the platform is WebOS
+* Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iOS.
+* Browser.Platform.name - (*string*) The name of the platform.
+
+Browser.Engine {#Browser:Browser-Engine}
+----------------------------------------
+
+**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.3, and only available in the 1.2-compatibility version.
 
 ### Engine:
 
