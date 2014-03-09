@@ -611,6 +611,11 @@ var pollutesGetAttribute = (function(div){
 	div.random = 'attribute';
 	return (div.getAttribute('random') == 'attribute');
 })(document.createElement('div'));
+
+var hasCloneBug = (function(test){
+	test.innerHTML = '<div></div>';
+	return test.cloneNode(true).childNodes.length != 1;
+})(document.createElement('object'));
 /* </ltIE9> */
 
 Element.implement({
@@ -875,7 +880,7 @@ Element.implement({
 		}
 
 		/*<ltIE9>*/
-		if (Browser.ie){
+		if (hasCloneBug){
 			var co = clone.getElementsByTagName('object'), to = this.getElementsByTagName('object');
 			for (i = co.length; i--;) co[i].outerHTML = to[i].outerHTML;
 		}
