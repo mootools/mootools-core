@@ -142,9 +142,11 @@ Element.NativeEvents = {
 	error: 1, abort: 1, scroll: 1 //misc
 };
 
-Element.Events = {mousewheel: {
-	base: (Browser.firefox) ? 'DOMMouseScroll' : 'mousewheel'
-}};
+Element.Events = {
+	mousewheel: {
+		base: "onwheel" in document.createElement("div") ? "wheel" : document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll"
+	}
+};
 
 var check = function(event){
 	var related = event.relatedTarget;
