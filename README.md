@@ -14,7 +14,7 @@ a. __To report a bug:__
 
    1. Crete a [jsFiddle](http://jsfiddle.net/) with the minimal amount of code to reproduce the bug.
    2. Create a [Github Issue](https://github.com/mootools/mootools-core/issues), and link to the jsFiddle.
-    
+
 b. __To fix a bug:__
 
    1. Clone the repo.
@@ -24,7 +24,7 @@ b. __To fix a bug:__
    5. Push to your Github fork.
    6. Create Pull Request, and send Pull Request.
 
- 
+
 __Do try to contibute!__ This is a community project.
 
 
@@ -35,7 +35,7 @@ Current build process uses [Grunt](http://github.com/gruntjs), [Grunt MooTools P
 **By default**, the build process runs the tests (specs) relevant to the build. To build without testing see the `packager` build targets.
 
 ### Building MooTools _With_ Compatibility
-This means `1.4.6` that is compatible with: `1.3.x`, `1.2.x`, and so on. 
+This means `1.4.6` that is compatible with: `1.3.x`, `1.2.x`, and so on.
 
 **Examples**
 
@@ -54,13 +54,13 @@ See the changelog or the blog related to each version for migrating your code.
 
 	grunt nocompat           # or
 	grunt packager:nocompat  # to only build the source
-	
+
 
 ### Advanced Building and Testing
 See the [Gruntfile](https://github.com/mootools/mootools-core/blob/1.4.6/Gruntfile.js) for further options.
 
 **Examples**
-  
+
 	# with compat
 	grunt --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
 	grunt --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
@@ -72,7 +72,7 @@ See the [Gruntfile](https://github.com/mootools/mootools-core/blob/1.4.6/Gruntfi
 #### Removing Other Packager Blocks
 You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js#L46) for an example.
 
-### Testing locally 
+### Testing locally
 
 I you want to test your local repo you need just some small steps. Follow these in order:
 
@@ -81,9 +81,9 @@ I you want to test your local repo you need just some small steps. Follow these 
     $ npm install                                          # install de testing tools
     $ npm install grunt-cli -g                             # install the Grunt command line interface
     $ grunt default                                        # run the specs!
-    
 
-You can also change which browser to call in the Gruntfile.js.     
+
+You can also change which browser to call in the Gruntfile.js.
 __Note that__ _most browsers need to be closed when starting tests so Grunt-Karma opens and closes the browser. Otherwise they might not close on its own and fire a timeout error for inactivity._
 
 Example:
@@ -91,16 +91,16 @@ Example:
 	continuous: {
 		browsers: ['PhantomJS', 'IE', 'Chrome', 'Firefox', 'Safari']
 	},
-	
+
 If the log is too long, or if you want to store it in a file you can do:
 
     $ grunt > logs.txt   # This will create a new file called logs.txt in the local directory
-    
+
 ### Testing on Travis & Sauce Labs
 
 Every new Build and Pull Request is now tested on [Travis](https://travis-ci.org/) and [Sauce Labs](https://saucelabs.com/). You can also open your own free account on [Travis](https://travis-ci.org/) and [Sauce Labs](https://saucelabs.com/) to test new code ideas there.
 
-[Travis](https://travis-ci.org/) testing uses [PhantomJS](http://phantomjs.org/) which is a virtual testing system. When connected to [Sauce Labs](https://saucelabs.com/) then it is possible to choose any number of [different Browsers and Platforms](https://saucelabs.com/platforms). You will need in this case to change the login key so it will match your account.
+[Travis](https://travis-ci.org/) testing uses [PhantomJS](http://phantomjs.org/) which is a headless browser. When connected to [Sauce Labs](https://saucelabs.com/) then it is possible to choose any number of [different Browsers and Platforms](https://saucelabs.com/platforms). You will need in this case to change the login key so it will match your account.
 
 To add new Browsers in [Sauce Labs](https://saucelabs.com/) testing you can do some changes in the __[Gruntfile.js](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js)__:
 
@@ -111,11 +111,11 @@ To add new Browsers in [Sauce Labs](https://saucelabs.com/) testing you can do s
 				base: 'SauceLabs',
 				browserName: 'chrome',
 				platform: 'linux'
-			}, 
- 
+			},
+
 
  - add the chosen browser to a task (max 3 browsers per task if you are using a free account):
- 
+
 		sauce2: {
 			port: 9877,
 			browsers: [
@@ -140,7 +140,7 @@ __Example of a task chain:__
 			// 'karma:sauce5',
 			// 'karma:sauce6'
 		])
- 
+
 #### Browsers, Platforms, and More
 
 This test suite is ready for Travis & SauceLabs.
