@@ -144,7 +144,7 @@ Element.NativeEvents = {
 
 Element.Events = {
 	mousewheel: {
-		base: "onwheel" in document.createElement("div") ? "wheel" : document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll"
+		base: 'onwheel' in document ? 'wheel' : 'onmousewheel' in document ? 'mousewheel' : 'DOMMouseScroll'
 	}
 };
 
