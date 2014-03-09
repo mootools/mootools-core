@@ -4,7 +4,7 @@
   "description": "MooTools is a compact, modular, Object-Oriented JavaScript framework designed for the intermediate to advanced JavaScript developer.",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/grunt --verbose"
+    "test": "grunt default:travis --verbose"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "homepage": "http://mootools.net",
   "devDependencies": {
     "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.13",
     "grunt-mootools-packager": "^0.1.2",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-connect": "~0.7.0",
