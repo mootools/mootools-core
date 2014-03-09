@@ -613,7 +613,7 @@ var pollutesGetAttribute = (function(div){
 })(document.createElement('div'));
 
 var hasCloneBug = (function(test){
-	test.innerHTML = '<marquee></marquee>';
+	test.innerHTML = '<div></div>';
 	return test.cloneNode(true).childNodes.length != 1;
 })(document.createElement('object'));
 /* </ltIE9> */
