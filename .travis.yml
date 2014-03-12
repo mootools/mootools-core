@@ -2,6 +2,9 @@ language: node_js
 node_js:
 - 0.11
 env:
+  matrix:
+    - BUILD='nocompat'
+    - BUILD='default'
   global:
   - secure: Y3xG8HHMX3rKYqG+OmucEHXSbC2JojqLd1ZijcR2D/Ca7t09kAGpqOHBu+j8wFCj6FZOUcMLQS3f7OygTelyvNGPMlhb0Wx1OCR4Cuj4UQjkXQebHbzMn+f4JXDgXWCEgczFv4joQw9ERGFSIOxZ75jed6bO09a1q9EDMlxHPBI=
   - secure: FabKSSkcb1n1N2S9esOhD/dziZZ3RzYYzCxHqL2EUe3E6WpkjK/m6ZuCu/3e76u35s2uUqpBOoJawC/eiQiJrMhGxpFMpTNI3133wSf/iCA7LDv5G5RWxYQMtwSwjKUwM2WzV3dtUfzLbqj9H/XZT1Q/wf+/NQvFWFljG5XyktU=

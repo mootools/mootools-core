@@ -257,12 +257,17 @@ module.exports = function(grunt) {
 		}
 
 	});
+	var travisBuild = process.env.BUILD;
 	var pullRequest = process.env.TRAVIS_PULL_REQUEST;
-	var tasks = ['clean', 'packager:all', 'packager:specs'];
-	var sauceTasks = ['karma:sauce1', 'karma:sauce2', 'karma:sauce3', 'karma:sauce4', 'karma:sauce5', 'karma:sauce6'];   
+
+	var compatBuild = ['clean', 'packager:all', 'packager:specs'];
+	var nocompatBuild = ['clean', 'packager:nocompat', 'packager:specs-nocompat'];
+	var sauceTasks = ['karma:sauce1', 'karma:sauce2', 'karma:sauce3', 'karma:sauce4', 'karma:sauce5', 'karma:sauce6'];
+
+	var tasks = travisBuild == 'compat' ? compatBuild : nocompatBuild;
 	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat(sauceTasks);
     
-	grunt.registerTask('default', ['clean', 'packager:all', 'packager:specs', 'karma:continuous']);
-	grunt.registerTask('nocompat', ['clean', 'packager:nocompat', 'packager:specs-nocompat', 'karma:continuous']);
+	grunt.registerTask('default', compatBuild);
+	grunt.registerTask('nocompat', nocompatBuild);
 	grunt.registerTask('default:travis', tasks);
 };
