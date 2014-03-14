@@ -12,13 +12,6 @@ Browser.Features {#Browser:Browser-Features}
 * Browser.Features.json - (*boolean*) True if the browser has a native JSON object.
 * Browser.Features.xhr - (*boolean*) True if the browser supports native XMLHTTP object.
 
-Browser.Plugins {#Browser:Browser-Plugins}
-------------------------------------------
-
-* Browser.Plugins.Flash - (*object*) - An object with properties corresponding to the `version` and `build` number of the installed Flash plugin. Note: if flash is not installed, both `Browser.Plugins.Flash.version` and `Browser.Plugins.Flash.build` will return zero.
-* Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
-* Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
-
 Browser.Request {#Browser:Browser-Request}
 ------------------------------------------
 
@@ -113,6 +106,15 @@ Browser.Platform {#Browser:Browser-Platform}
 * Browser.Platform.webos - (*boolean*) True if the platform is WebOS
 * Browser.Platform.other - (*boolean*) True if the platform is neither Mac, Windows, Linux, Android, WebOS nor iOS.
 * Browser.Platform.name - (*string*) The name of the platform.
+
+Browser.Plugins {#Browser:Browser-Plugins}
+------------------------------------------
+
+**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.5, and only available in the 1.4-compatibility version.
+
+* Browser.Plugins.Flash - (*object*) - An object with properties corresponding to the `version` and `build` number of the installed Flash plugin. Note: if flash is not installed, both `Browser.Plugins.Flash.version` and `Browser.Plugins.Flash.build` will return zero.
+* Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
+* Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
 Browser.Engine {#Browser:Browser-Engine}
 ----------------------------------------
