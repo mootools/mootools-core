@@ -1,13 +1,42 @@
 language: node_js
+
 node_js:
-- 0.11
+  - 0.11
+
 env:
   matrix:
-    - BUILD='nocompat'
-    - BUILD='default'
+    - BROWSER='chrome_linux'    BUILD='default'
+    - BROWSER='firefox_linux'   BUILD='default'
+    - BROWSER='opera_win2000'   BUILD='default'
+    - BROWSER='safari7'         BUILD='default'
+    - BROWSER='safari6'         BUILD='default'
+    - BROWSER='safari5_osx10_6' BUILD='default'
+    - BROWSER='safari5_win7'    BUILD='default'
+    - BROWSER='ie11'            BUILD='default'
+    - BROWSER='ie10'            BUILD='default'
+    - BROWSER='ie9'             BUILD='default'
+    - BROWSER='ie8'             BUILD='default'
+    - BROWSER='ie7'             BUILD='default'
+    - BROWSER='ie6'             BUILD='default'
+    
+    - BROWSER='chrome_linux'    BUILD='nocompat'
+    - BROWSER='firefox_linux'   BUILD='nocompat'
+    - BROWSER='opera_win2000'   BUILD='nocompat'
+    - BROWSER='safari7'         BUILD='nocompat'
+    - BROWSER='safari6'         BUILD='nocompat'
+    - BROWSER='safari5_osx10_6' BUILD='nocompat'
+    - BROWSER='safari5_win7'    BUILD='nocompat'
+    - BROWSER='ie11'            BUILD='nocompat'
+    - BROWSER='ie10'            BUILD='nocompat'
+    - BROWSER='ie9'             BUILD='nocompat'
+    - BROWSER='ie8'             BUILD='nocompat'
+    - BROWSER='ie7'             BUILD='nocompat'
+    - BROWSER='ie6'             BUILD='nocompat'
+    
   global:
-  - secure: Y3xG8HHMX3rKYqG+OmucEHXSbC2JojqLd1ZijcR2D/Ca7t09kAGpqOHBu+j8wFCj6FZOUcMLQS3f7OygTelyvNGPMlhb0Wx1OCR4Cuj4UQjkXQebHbzMn+f4JXDgXWCEgczFv4joQw9ERGFSIOxZ75jed6bO09a1q9EDMlxHPBI=
-  - secure: FabKSSkcb1n1N2S9esOhD/dziZZ3RzYYzCxHqL2EUe3E6WpkjK/m6ZuCu/3e76u35s2uUqpBOoJawC/eiQiJrMhGxpFMpTNI3133wSf/iCA7LDv5G5RWxYQMtwSwjKUwM2WzV3dtUfzLbqj9H/XZT1Q/wf+/NQvFWFljG5XyktU=
+    - secure: Y3xG8HHMX3rKYqG+OmucEHXSbC2JojqLd1ZijcR2D/Ca7t09kAGpqOHBu+j8wFCj6FZOUcMLQS3f7OygTelyvNGPMlhb0Wx1OCR4Cuj4UQjkXQebHbzMn+f4JXDgXWCEgczFv4joQw9ERGFSIOxZ75jed6bO09a1q9EDMlxHPBI=
+    - secure: FabKSSkcb1n1N2S9esOhD/dziZZ3RzYYzCxHqL2EUe3E6WpkjK/m6ZuCu/3e76u35s2uUqpBOoJawC/eiQiJrMhGxpFMpTNI3133wSf/iCA7LDv5G5RWxYQMtwSwjKUwM2WzV3dtUfzLbqj9H/XZT1Q/wf+/NQvFWFljG5XyktU=
+
 before_script:
-- curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
+  - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
 
