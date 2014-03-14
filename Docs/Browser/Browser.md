@@ -85,9 +85,9 @@ If an IE document is set to backwards compatibility mode using the X-UA-Compatib
 
 ### Browser.ie in the compatibility build:
 
-In the compatibility build, for IE&gt;=11, `Browser.ie` will remain `false` and `Browser.modernie` will be `true`. See below:
+In the compatibility build, for IE&gt;=11, `Browser.ie` will remain `undefined`. See below:
 
-The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Changing `Browser.ie == true` for modern IE (IE &gt;= 11) in the compatibility build would do more harm than good, even though it's technically correct. Since we did not want to break existing projects that have come to rely on `Browser.ie` being false for the newer version(s) of IE, the compatibility build will set `Browser.modernie` for these versions of IE instead. However, `Browser.ie11` will work correctly, `Browser.name` will equal "ie".
+The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Changing `Browser.ie == true` for modern IE (IE &gt;= 11) in the compatibility build would do more harm than good, even though it's technically correct. Since we did not want to break existing projects that have come to rely on `Browser.ie` not being true for the newer version(s) of IE, the compatibility build will not set `Browser.ie` for these versions of IE. However, `Browser.ie11` will work correctly and `Browser.name` will equal "ie".
 
 Browser.version {#Browser:Browser-version}
 ------------------------------------------

@@ -67,7 +67,6 @@ Browser[Browser.name] = true;
 //<1.4compat>
 if (Browser.name == 'ie' && Browser.version >= '11') {
 	delete Browser.ie;
-	Browser.modernie = true;
 }
 //</1.4compat>
 
