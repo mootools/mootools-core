@@ -110,9 +110,9 @@ describe('Element.setStyles', function(){
 describe('Element.set opacity', function(){
 
 	it('should not remove existent filters on browsers with filters', function(){
-		var div = new Element('div'), 
+		var div = new Element('div'),
 		hasOpacity = document.html.style.opacity != null
-		
+
 		if (!hasOpacity && document.html.style.filter != null && !window.opera && !Syn.browser.gecko){ //we can prolly remove the last two check
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
@@ -125,9 +125,6 @@ describe('Element.set opacity', function(){
 		div.set('opacity', 1e-20);
 		div.set('opacity', 0.5);
 		expect(+div.get('opacity')).toEqual(0.5);
-		if (Browser.ie && Browser.version <= 8){
-			expect(div.style.filter.split('opacity').length - 1).toEqual(1);
-		}
 	});
 
 });
