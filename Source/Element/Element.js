@@ -613,9 +613,9 @@ var pollutesGetAttribute = (function(div){
 })(document.createElement('div'));
 
 var hasCloneBug = (function(test){
-	test.innerHTML = '<param name="should_fix" value="the unknown">';
-	return test.cloneNode(true).childNodes.length != 1;
-})(document.createElement('object'));
+	test.innerHTML = '<object><param name="should_fix" value="the unknown"></object>';
+	return test.cloneNode(true).firstChild.childNodes.length != 1;
+})(document.createElement('div'));
 /* </ltIE9> */
 
 Element.implement({
