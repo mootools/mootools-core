@@ -3,6 +3,7 @@
 module.exports = function(grunt) {
 
 	require('load-grunt-tasks')(grunt);
+	var browser = process.env.BROWSER;
 
 	grunt.initConfig({
 		'connect': {
@@ -187,60 +188,9 @@ module.exports = function(grunt) {
 				browsers: ['PhantomJS']
 			},
 
-			sauce1: {
-				port: 9876,
-				browsers: [
-					'chrome_linux', 
-					'firefox_linux', 
-					'opera_win2000'
-				]
+			sauceTask: {
+				browsers: [browser]
 			},
-
-			sauce2: {
-				port: 9877,
-				browsers: [
-					'safari7',
-					'safari6',
-					'safari5_osx10_6'
-				],
-			},
-
-			// safari5_win7, ie11 and ie10 are not loading the test page
-			sauce3: {
-				port: 9999,
-				browsers: [
-					'safari5_win7',
-					'ie11',
-					'ie10'
-				]
-			},
-
-			// ie9, ie8, and ie7 are not loading the test page
-			sauce4: {
-				port: 3000,
-				browsers: [
-					'ie9',
-					'ie8',
-					'ie7'
-				]
-			},
-
-			// ie6 is not loading the test page
-			// sauce5: {
-			//  port: 9876,
-			//  browsers: [
-			//      'ie6',
-			//      'iphone_7',
-			//      'iphone_6_1',
-			//  ]
-			// },
-
-			// sauce6: {
-			//  port: 9805,
-			//  browsers: [
-			//      'iphone_6'
-			//  ]
-			// },
 
 			dev: {
 				singleRun: false,
@@ -257,12 +207,16 @@ module.exports = function(grunt) {
 		}
 
 	});
+	var travisBuild = process.env.BUILD;
 	var pullRequest = process.env.TRAVIS_PULL_REQUEST;
-	var tasks = ['clean', 'packager:all', 'packager:specs'];
-	var sauceTasks = ['karma:sauce1', 'karma:sauce2', 'karma:sauce3', 'karma:sauce4', 'karma:sauce5', 'karma:sauce6'];   
-	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat(sauceTasks);
-    
-	grunt.registerTask('default', ['clean', 'packager:all', 'packager:specs', 'karma:continuous']);
-	grunt.registerTask('nocompat', ['clean', 'packager:nocompat', 'packager:specs-nocompat', 'karma:continuous']);
+
+	var compatBuild = ['clean', 'packager:all', 'packager:specs'];
+	var nocompatBuild = ['clean', 'packager:nocompat', 'packager:specs-nocompat'];
+
+	var tasks = travisBuild == 'compat' ? compatBuild : nocompatBuild;
+	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
+
+	grunt.registerTask('default', compatBuild);
+	grunt.registerTask('nocompat', nocompatBuild);
 	grunt.registerTask('default:travis', tasks);
 };
