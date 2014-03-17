@@ -73,7 +73,7 @@ describe('Window', function(){
 	});
 
 });
-
+//<1.4compat>
 describe('Browser', function(){
 
 	it('should think it is executed in a browser', function(){
@@ -86,7 +86,7 @@ describe('Browser', function(){
 	});
 
 });
-//<1.4compat>
+
 describe('Browser.parse', function(){
 
 	var parse = Browser.parse;
