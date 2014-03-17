@@ -78,7 +78,7 @@ describe('Browser', function(){
 
 	it('should think it is executed in a browser', function(){
 		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
-		expect(isPhantomJS || Browser.ie || Browser.modernie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
 	});
 
 	it('should assume the IE version is emulated by the documentMode (X-UA-Compatible)', function(){
