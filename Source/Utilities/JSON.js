@@ -67,10 +67,16 @@ JSON.encode = JSON.stringify ? function(obj){
 	return null;
 };
 
+JSON.secure = true;
+//<1.4compat>
+JSON.secure = false;
+//</1.4compat>
+
 JSON.decode = function(string, secure){
 	if (!string || typeOf(string) != 'string') return null;
-
-	if (secure || JSON.secure){
+    
+	if (secure == null) secure = JSON.secure; 
+	if (secure){
 		if (JSON.parse) return JSON.parse(string);
 		if (!JSON.validate(string)) throw new Error('JSON could not decode the input; security is enabled and the value is not secure.');
 	}
