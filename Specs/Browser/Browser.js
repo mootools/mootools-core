@@ -86,7 +86,7 @@ describe('Browser', function(){
 	});
 
 });
-
+//<1.5compat>
 describe('Browser.parse', function(){
 
 	var parse = Browser.parse;
@@ -221,3 +221,4 @@ describe('Browser.parse', function(){
 	});
 
 });
+//</1.5compat>
