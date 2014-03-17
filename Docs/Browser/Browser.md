@@ -12,8 +12,39 @@ Browser.Features {#Browser:Browser-Features}
 * Browser.Features.json - (*boolean*) True if the browser has a native JSON object.
 * Browser.Features.xhr - (*boolean*) True if the browser supports native XMLHTTP object.
 
+Browser.Request {#Browser:Browser-Request}
+------------------------------------------
+
+* Browser.Request - (*object*) The XMLHTTP object or equivalent.
+
+Browser.exec {#Browser:Browser-exec}
+------------------------------------
+
+Executes the passed in string in the browser context.
+
+### Example:
+
+	Browser.exec('alert("Moo!");');
+
+
+Deprecated {#Deprecated}
+========================
+
+### User Agent detection
+
+The functionality described below uses User Agent detection (either the UA string or platform string) to determine the correct values. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js][]), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
+
+#### See also:
+
+[MDN about Browser detection using the user agent][]
+
+[has.js]: https://github.com/phiggins42/has.js
+[MDN about Browser detection using theu ser agent]: https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent
+
 Browser.name {#Browser:Browser-name}
 ------------------------------------
+
+**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
 
 'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
 
@@ -45,8 +76,16 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 
 If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
+### Browser.ie in the compatibility build:
+
+In the compatibility build, for IE&gt;=11, `Browser.ie` will remain `undefined`. See below:
+
+The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Changing `Browser.ie == true` for modern IE (IE &gt;= 11) in the compatibility build would do more harm than good, even though it's technically correct. Since we did not want to break existing projects that have come to rely on `Browser.ie` not being true for the newer version(s) of IE, the compatibility build will not set `Browser.ie` for these versions of IE. However, `Browser.ie11` will work correctly and `Browser.name` will equal "ie".
+
 Browser.version {#Browser:Browser-version}
 ------------------------------------------
+
+**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
 
 'Browser.version' reports the version of the Browser as number.
 
@@ -56,6 +95,8 @@ Browser.version {#Browser:Browser-version}
 
 Browser.Platform {#Browser:Browser-Platform}
 --------------------------------------------
+
+**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
 
 * Browser.Platform.mac - (*boolean*) True if the platform is Mac.
 * Browser.Platform.win - (*boolean*) True if the platform is Windows.
@@ -69,28 +110,16 @@ Browser.Platform {#Browser:Browser-Platform}
 Browser.Plugins {#Browser:Browser-Plugins}
 ------------------------------------------
 
+**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.5, and only available in the 1.4-compatibility version.
+
 * Browser.Plugins.Flash - (*object*) - An object with properties corresponding to the `version` and `build` number of the installed Flash plugin. Note: if flash is not installed, both `Browser.Plugins.Flash.version` and `Browser.Plugins.Flash.build` will return zero.
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
 * Browser.Plugins.Flash.build - (*number*) The build version of the flash plugin installed.
 
-Browser.Request {#Browser:Browser-Request}
-------------------------------------------
+Browser.Engine {#Browser:Browser-Engine}
+----------------------------------------
 
-* Browser.Request - (*object*) The XMLHTTP object or equivalent.
-
-Browser.exec {#Browser:Browser-exec}
-------------------------------------
-
-Executes the passed in string in the browser context.
-
-### Example:
-
-	Browser.exec('alert("Moo!");');
-
-Deprecated {#Deprecated}
-------------------------
-
-The *Browser.Engine* object is deprecated since MooTools 1.3.
+**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.3, and only available in the 1.2-compatibility version.
 
 ### Engine:
 

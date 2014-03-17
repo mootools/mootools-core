@@ -62,15 +62,13 @@ Browser.extend({
 	parse: parse
 });
 
-if (Browser.name == 'ie'){
-	if (Browser.version >= '11') {
-		Browser.modernie = true;
-	} else {
-		Browser.ie = true;
-	}
-} else {
-	Browser[Browser.name] = true;
+Browser[Browser.name] = true;
+
+//<1.4compat>
+if (Browser.name == 'ie' && Browser.version >= '11') {
+	delete Browser.ie;
 }
+//</1.4compat>
 
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 Browser.Platform[Browser.Platform.name] = true;
