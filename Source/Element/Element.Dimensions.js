@@ -92,7 +92,11 @@ Element.implement({
 	},
 
 	getOffsets: function(){
-		if (this.getBoundingClientRect && !Browser.Platform.ios){
+    var hasGetBoundingClientRect = this.getBoundingClientRect;
+//<1.5compat>
+        hasGetBoundingClientRect = hasGetBoundingClientRect && !Browser.Platform.ios
+//</1.5compat>
+		if (hasGetBoundingClientRect){
 			var bound = this.getBoundingClientRect(),
 				html = document.id(this.getDocument().documentElement),
 				htmlScroll = html.getScroll(),
@@ -111,7 +115,7 @@ Element.implement({
 		while (element && !isBody(element)){
 			position.x += element.offsetLeft;
 			position.y += element.offsetTop;
-
+//<1.5compat>
 			if (Browser.firefox){
 				if (!borderBox(element)){
 					position.x += leftBorder(element);
@@ -126,13 +130,15 @@ Element.implement({
 				position.x += leftBorder(element);
 				position.y += topBorder(element);
 			}
-
+//</1.5compat>
 			element = element.offsetParent;
 		}
+//<1.5compat>
 		if (Browser.firefox && !borderBox(this)){
 			position.x -= leftBorder(this);
 			position.y -= topBorder(this);
 		}
+//</1.5compat>
 		return position;
 	},
 
