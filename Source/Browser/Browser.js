@@ -18,7 +18,7 @@ provides: [Browser, Window, Document]
 
 var document = this.document;
 var window = document.window = this;
-//<1.5compat>
+//<1.4compat>
 var ua = navigator.userAgent.toLowerCase(),
 	platform = navigator.platform.toLowerCase();
 
@@ -44,15 +44,15 @@ var parse = function(ua, platform){
 
 	};
 };
-//</1.5compat>
+//</1.4compat>
 var Browser = this.Browser = {extend: Function.prototype.extend}
-//<1.5compat>
+//<1.4compat>
     Browser = this.Browser = parse(ua, platform);
 
 if (Browser.ie){
 	Browser.version = document.documentMode;
 }
-//</1.5compat>
+//</1.4compat>
 Browser.extend({
 	Features: {
 		xpath: !!(document.evaluate),
@@ -64,20 +64,20 @@ Browser.extend({
 });
 
 
-//<1.5compat>
+//<1.4compat>
 Browser.extend({parse: parse})
 
 Browser[Browser.name] = true;
-//</1.5compat>
+//</1.4compat>
 //<1.4compat>
 if (Browser.name == 'ie' && Browser.version >= '11') {
 	delete Browser.ie;
 }
 //</1.4compat>
-//<1.5compat>
+//<1.4compat>
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 Browser.Platform[Browser.Platform.name] = true;
-//</1.5compat>
+//</1.4compat>
 // Request
 
 Browser.Request = (function(){
