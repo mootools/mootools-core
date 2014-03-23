@@ -218,6 +218,7 @@ Document.implement({
 
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
+		if (tag == 'input' && (props.type == 'checkbox' || props.type == 'radio') && !props.hasOwnProperty('value')) props.value = 'on';
 		/*<ltIE8>*/// Fix for readonly name and type properties in IE < 8
 		if (createElementAcceptsHTML && props){
 			tag = '<' + tag;
