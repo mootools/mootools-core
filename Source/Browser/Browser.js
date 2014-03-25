@@ -1,7 +1,7 @@
 /*
 ---
 
-name: Browser
+name: Browser 
 
 description: The Browser Object. Contains Browser initialization, Window and Document, and the Browser Hash.
 
