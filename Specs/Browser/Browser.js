@@ -202,6 +202,14 @@ describe('Browser.parse', function(){
 				name: 'chrome',
 				version: 31
 			}
+		},
+		chromeios: {
+			desc: 'Chrome 33 on iOS',
+			string: 'Mozilla/5.0 (iPad; CPU OS 7_0_4 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) CriOS/33.0.1750.21 Mobile/11B554a Safari/9537.53',
+			expect: {
+				name: 'chrome',
+				version: 33
+			}
 		}
 	};
 
