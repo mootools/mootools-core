@@ -23,11 +23,13 @@ var ua = navigator.userAgent.toLowerCase(),
 	platform = navigator.platform.toLowerCase();
 
 var parse = function(ua, platform){
-	var UA = ua.match(/(opera|ie|firefox|chrome|trident|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+	var UA = ua.match(/(opera|ie|firefox|chrome|trident|crios|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 	if (UA[1] == 'trident'){
 		UA[1] = 'ie';
 		if (UA[4]) UA[2] = UA[4];
+	} else if (UA[1] == 'crios') {
+		UA[1] = 'chrome';
 	}
 
 	return {
