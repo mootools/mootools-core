@@ -96,7 +96,7 @@ Browser.version {#Browser:Browser-version}
 Browser.Platform {#Browser:Browser-Platform}
 --------------------------------------------
 
-**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
+**Important note:** The *Browser.Platform* object is deprecated since MooTools 1.5, and is only available in the 1.4-compatibility version.
 
 * Browser.Platform.mac - (*boolean*) True if the platform is Mac.
 * Browser.Platform.win - (*boolean*) True if the platform is Windows.
