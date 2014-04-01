@@ -110,7 +110,7 @@ Browser.Platform {#Browser:Browser-Platform}
 Browser.Plugins {#Browser:Browser-Plugins}
 ------------------------------------------
 
-**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.5, and only available in the 1.4-compatibility version.
+**Important note:** The *Browser.Plugins* object is deprecated since MooTools 1.5, and is only available in the 1.4-compatibility version.
 
 * Browser.Plugins.Flash - (*object*) - An object with properties corresponding to the `version` and `build` number of the installed Flash plugin. Note: if flash is not installed, both `Browser.Plugins.Flash.version` and `Browser.Plugins.Flash.build` will return zero.
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
@@ -119,7 +119,7 @@ Browser.Plugins {#Browser:Browser-Plugins}
 Browser.Engine {#Browser:Browser-Engine}
 ----------------------------------------
 
-**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.3, and only available in the 1.2-compatibility version.
+**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.3, and is only available in the 1.2-compatibility version.
 
 ### Engine:
 
