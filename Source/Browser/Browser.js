@@ -19,10 +19,10 @@ provides: [Browser, Window, Document]
 var document = this.document;
 var window = document.window = this;
 
-var ua = navigator.userAgent.toLowerCase(),
-	platform = navigator.platform.toLowerCase();
-
 var parse = function(ua, platform){
+	ua = ua.toLowerCase();
+	platform = (platform ? platform.toLowerCase() : '');
+
 	var UA = ua.match(/(opera|ie|firefox|chrome|trident|crios|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 	if (UA[1] == 'trident'){
@@ -40,7 +40,7 @@ var parse = function(ua, platform){
 	};
 };
 
-var Browser = this.Browser = parse(ua, platform);
+var Browser = this.Browser = parse(navigator.userAgent, navigator.platform);
 
 if (Browser.ie){
 	Browser.version = document.documentMode;
@@ -261,7 +261,7 @@ if (Browser.opera){
 }
 
 if (Browser.name == 'unknown'){
-	switch ((ua.match(/(?:webkit|khtml|gecko)/) || [])[0]){
+	switch ((navigator.userAgent.toLowerCase().match(/(?:webkit|khtml|gecko)/) || [])[0]){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;
