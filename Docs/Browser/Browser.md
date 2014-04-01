@@ -26,8 +26,8 @@ Executes the passed in string in the browser context.
 
 	Browser.exec('alert("Moo!");');
 
-Browser.parse {#Browser:Browser-parse}
---------------------------------------
+Browser.parseUA {#Browser:Browser-parseUA}
+------------------------------------------
 
 A function to parse a user agent string to an object, intended for informational or statistical purposes. If also passed a platform string, it will use that string in addition to the user agent to attempt to determine the platform.
 
@@ -37,7 +37,7 @@ For more information regarding User Agent detection, please refer to the [Deprec
 
 ### Syntax:
 
-	var parsed = Browser.parse(userAgentString[, platformString]);
+	var parsed = Browser.parseUA(userAgentString[, platformString]);
 
 ### Arguments:
 
@@ -50,14 +50,14 @@ For more information regarding User Agent detection, please refer to the [Deprec
 
 ### Examples:
 
-	console.log(Browser.parse("Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20140319 Firefox/24.0 Iceweasel/24.4.0", "Linux x86_64"));
+	console.log(Browser.parseUA("Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20140319 Firefox/24.0 Iceweasel/24.4.0", "Linux x86_64"));
 
 	// This logs: {name: "firefox", version: 24, platform: "linux"}
 
 Browser.name {#Browser:Browser-name}
 ------------------------------------
 
-'Browser.name' reports the name found in the Browser's userAgent string as string, intended for informational or statistical purposes. See [Browser.parse](#Browser:Browser-parse).
+'Browser.name' reports the name found in the Browser's userAgent string as string, intended for informational or statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
 
 
 ### Example:
@@ -67,7 +67,7 @@ Browser.name {#Browser:Browser-name}
 Browser.version {#Browser:Browser-version}
 ------------------------------------------
 
-'Browser.version' reports the version found in the Browser's userAgent string as number, intended for informational and statistical purposes. See [Browser.parse](#Browser:Browser-parse).
+'Browser.version' reports the version found in the Browser's userAgent string as number, intended for informational and statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
 
 ### Example:
 
@@ -76,7 +76,7 @@ Browser.version {#Browser:Browser-version}
 Browser.platform {#Browser:Browser-platform}
 --------------------------------------------
 
-'Browser.platform' reports the platform found in the Browser's userAgent or platform string as string, intended for informational and statistical purposes. See [Browser.parse](#Browser:Browser-parse).
+'Browser.platform' reports the platform found in the Browser's userAgent or platform string as string, intended for informational and statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
 
 ### Example:
 

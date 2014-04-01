@@ -53,7 +53,7 @@ Browser.extend({
 		query: !!(document.querySelector),
 		json: !!(window.JSON)
 	},
-	parse: parse
+	parseUA: parse
 });
 
 //<1.4compat>

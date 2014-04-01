@@ -87,9 +87,9 @@ describe('Browser', function(){
 
 });
 
-describe('Browser.parse', function(){
+describe('Browser.parseUA', function(){
 
-	var parse = Browser.parse;
+	var parse = Browser.parseUA;
 	var userAgents = {
 		ie6: {
 			desc: 'Internet Explorer 6',
@@ -215,7 +215,7 @@ describe('Browser.parse', function(){
 
 	var testUA = function(ua){
 		return function(){
-			var browser = parse(ua.string.toLowerCase(), '');
+			var browser = parse(ua.string, '');
 			Object.forEach(ua.expect, runExpects, browser);
 		}
 	}
