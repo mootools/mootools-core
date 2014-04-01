@@ -60,7 +60,6 @@ Browser.extend({
 		query: !!(document.querySelector),
 		json: !!(window.JSON)
 	},
-	Plugins: {},
 	parse: parse
 });
 
@@ -116,10 +115,12 @@ var version = (Function.attempt(function(){
 	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
 }) || '0 r0').match(/\d+/g);
 
-Browser.Plugins.Flash = {
-	version: Number(version[0] || '0.' + version[1]) || 0,
-	build: Number(version[2]) || 0
-};
+Browser.Plugins = {
+	Flash: {
+		version: Number(version[0] || '0.' + version[1]) || 0,
+		build: Number(version[2]) || 0
+	}
+}
 
 //</1.4compat>
 
