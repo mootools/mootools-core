@@ -54,6 +54,35 @@ For more information regarding User Agent detection, please refer to the [Deprec
 
 	// This logs: {name: "firefox", version: 24, platform: "linux"}
 
+Browser.name {#Browser:Browser-name}
+------------------------------------
+
+'Browser.name' reports the name found in the Browser's userAgent string as string, intended for informational or statistical purposes. See [Browser.parse](#Browser:Browser-parse).
+
+
+### Example:
+
+	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
+
+Browser.version {#Browser:Browser-version}
+------------------------------------------
+
+'Browser.version' reports the version found in the Browser's userAgent string as number, intended for informational and statistical purposes. See [Browser.parse](#Browser:Browser-parse).
+
+### Example:
+
+	alert(Browser.version); // Alerts '33' in Chrome 33.0.1750.152
+
+Browser.platform {#Browser:Browser-platform}
+--------------------------------------------
+
+'Browser.platform' reports the platform found in the Browser's userAgent or platform string as string, intended for informational and statistical purposes. See [Browser.parse](#Browser:Browser-parse).
+
+### Example:
+
+	alert(Browser.platform); // Alerts 'mac' on OS X 10.9 Mavericks
+
+
 Deprecated {#Deprecated}
 ========================
 
@@ -68,12 +97,12 @@ The features described below uses User Agent detection (either the UA string or 
 [has.js]: https://github.com/phiggins42/has.js
 [MDN about Browser detection using theu ser agent]: https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent
 
-Browser.name {#Browser:Browser-name}
-------------------------------------
+Browser[Browser.name] {#Browser:Browser-Browser-name}
+-----------------------------------------------------
 
 **Important note:** These properties are deprecated since MooTools 1.5, and are only available in the 1.4-compatibility version.
 
-'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
+The name found in the Browser's userAgent string is stored as property names of the following Boolean values:
 
 * Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
 * Browser.firefox - (*boolean*) True if the current browser is Firefox.
@@ -87,14 +116,12 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 
 ### Example:
 
-	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
-
 	if (Browser.ie){
 		// This code will only run in IE
 	}
 
-	if (Browser.firefox2){
-		// This code will only run in Firefox 2
+	if (Browser.firefox24){
+		// This code will only run in Firefox 24
 	}
 
 	if (Browser.ie6 || Browser.ie7){
@@ -103,22 +130,11 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 
 If an IE document is set to backward compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
-### Browser.ie in the compatibility build:
+### Special note about Browser.ie:
 
 In the compatibility build, for IE&gt;=11, `Browser.ie` will remain `undefined`. See below:
 
 The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Changing `Browser.ie == true` for modern IE (IE &gt;= 11) in the compatibility build would do more harm than good, even though it's technically correct. Since we did not want to break existing projects that have come to rely on `Browser.ie` not being true for the newer version(s) of IE, the compatibility build will not set `Browser.ie` for these versions of IE. However, `Browser.ie11` will work correctly and `Browser.name` will equal "ie".
-
-Browser.version {#Browser:Browser-version}
-------------------------------------------
-
-**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
-
-'Browser.version' reports the version of the Browser as number.
-
-### Example:
-
-	alert(Browser.version); // Alerts '3.6' in FireFox 3.6.13
 
 Browser.Platform {#Browser:Browser-Platform}
 --------------------------------------------
