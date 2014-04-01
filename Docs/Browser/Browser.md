@@ -88,14 +88,11 @@ Deprecated {#Deprecated}
 
 ### User Agent detection
 
-The features described below uses User Agent detection (either the UA string or platform string) to determine values or properties aimed at activating/deactivating functionality easily. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js][]), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
+The features described below uses User Agent detection (either the UA string or platform string) to determine values or properties aimed at activating/deactivating functionality easily. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js](https://github.com/phiggins42/has.js)), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
 
 #### See also:
 
-[MDN about Browser detection using the user agent][]
-
-[has.js]: https://github.com/phiggins42/has.js
-[MDN about Browser detection using theu ser agent]: https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent
+- [MDN about Browser detection using the user agent](https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent)
 
 Browser[Browser.name] {#Browser:Browser-Browser-name}
 -----------------------------------------------------
