@@ -74,7 +74,7 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 		// Please upgrade your browser
 	}
 
-If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
+If an IE document is set to backward compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
 ### Browser.ie in the compatibility build:
 
