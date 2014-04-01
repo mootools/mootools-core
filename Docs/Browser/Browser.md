@@ -26,13 +26,40 @@ Executes the passed in string in the browser context.
 
 	Browser.exec('alert("Moo!");');
 
+Browser.parse {#Browser:Browser-parse}
+--------------------------------------
+
+A function to parse a user agent string to an object, intended for informational or statistical purposes. If also passed a platform string, it will use that string in addition to the user agent to attempt to determine the platform.
+
+The results of this function for the currently active user agent and platform strings are saved on the Browser object upon load. See below.
+
+For more information regarding User Agent detection, please refer to the [Deprecated section](#Deprecated).
+
+### Syntax:
+
+	var parsed = Browser.parse(userAgentString[, platformString]);
+
+### Arguments:
+
+1. userAgentString - (*string*) A user agent string, like the one found in `window.navigator.userAgent`.
+2. platformString - (*string*, optional) A platform string, like the one found in `window.navigator.platform`.
+
+### Returns:
+
+* (*object*) - An object containing information parsed from the strings passed.
+
+### Examples:
+
+	console.log(Browser.parse("Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20140319 Firefox/24.0 Iceweasel/24.4.0", "Linux x86_64"));
+
+	// This logs: {name: "firefox", version: 24, platform: "linux"}
 
 Deprecated {#Deprecated}
 ========================
 
 ### User Agent detection
 
-The functionality described below uses User Agent detection (either the UA string or platform string) to determine the correct values. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js][]), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
+The features described below uses User Agent detection (either the UA string or platform string) to determine values or properties aimed at activating/deactivating functionality easily. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js][]), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
 
 #### See also:
 
