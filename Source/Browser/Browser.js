@@ -56,10 +56,10 @@ Browser.extend({
 	parse: parse
 });
 
+//<1.4compat>
 Browser[Browser.name] = true;
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 
-//<1.4compat>
 if (Browser.name == 'ie' && Browser.version >= '11') {
 	delete Browser.ie;
 }

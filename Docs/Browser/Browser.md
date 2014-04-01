@@ -44,7 +44,7 @@ The functionality described below uses User Agent detection (either the UA strin
 Browser.name {#Browser:Browser-name}
 ------------------------------------
 
-**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
+**Important note:** These properties are deprecated since MooTools 1.5, and are only available in the 1.4-compatibility version.
 
 'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
 
