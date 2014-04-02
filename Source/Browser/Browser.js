@@ -32,11 +32,14 @@ var parse = function(ua, platform){
 		UA[1] = 'chrome';
 	}
 
+	var platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
+	if (platform == 'win') platform = 'windows';
+
 	return {
 		extend: Function.prototype.extend,
 		name: (UA[1] == 'version') ? UA[3] : UA[1],
 		version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
-		platform: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
+		platform: platform
 	};
 };
 
@@ -64,10 +67,14 @@ if (Browser.name == 'ie' && Browser.version >= '11') {
 	delete Browser.ie;
 }
 
+var platform = Browser.platform;
+if (platform == 'windows'){
+	platform = 'win';
+}
 Browser.Platform = {
-	name: Browser.platform
+	name: platform
 };
-Browser.Platform[Browser.Platform.name] = true;
+Browser.Platform[platform] = true;
 //</1.4compat>
 
 // Request
