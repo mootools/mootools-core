@@ -59,7 +59,6 @@ Browser.name {#Browser:Browser-name}
 
 'Browser.name' reports the name found in the Browser's userAgent string as string, intended for informational or statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
 
-
 ### Example:
 
 	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
@@ -88,7 +87,7 @@ Deprecated {#Deprecated}
 
 ### User Agent detection
 
-The features described below uses User Agent detection (either the UA string or platform string) to determine values or properties aimed at activating/deactivating functionality easily. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js](https://github.com/phiggins42/has.js)), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
+The features described below use user agent detection (either the userAgent string or platform string) to determine values or properties aimed at activating/deactivating functionality easily. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js](https://github.com/phiggins42/has.js)), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
 
 #### See also:
 
