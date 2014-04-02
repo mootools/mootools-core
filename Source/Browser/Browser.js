@@ -116,7 +116,7 @@ Browser.Plugins = {
 		version: Number(version[0] || '0.' + version[1]) || 0,
 		build: Number(version[2]) || 0
 	}
-}
+};
 
 //</1.4compat>
 
