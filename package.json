@@ -40,7 +40,7 @@
     "karma-requirejs": "~0.2.1",
     "karma-jasmine": "~0.1.5",
     "karma-sinon": "~1.0.2",
-    "karma-sauce-launcher": "~0.2.0",
+    "karma-sauce-launcher": "~0.2.5",
     "karma-script-launcher": "~0.1.0",
     "karma-phantomjs-launcher": "~0.1.2",
     "karma-chrome-launcher": "~0.1.2",

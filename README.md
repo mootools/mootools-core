@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/mootools/mootools-core.png?branch=master)](https://travis-ci.org/mootools/mootools-core)
 
+[![Selenium Test Status](https://saucelabs.com/browser-matrix/MooTools-Core.svg)](https://saucelabs.com/u/MooTools-Core)
+
+---
+
 This repository is for MooTools developers; not users.
 All users should download MooTools from [MooTools.net](http://mootools.net/download "Download MooTools")
 
