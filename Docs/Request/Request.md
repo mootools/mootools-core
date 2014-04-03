@@ -87,6 +87,12 @@ Fired when the Request is making progresses in the download or upload. (This is 
 
 	myRequest.send();
 
+### Cross-Origin Resource Sharing (CORS) note:
+
+The Request class will (by default) add a custom header that, if used for a cross-origin request, will have to be reported as allowed in the preflight request, in addition to any other headers you may set yourself:
+
+	Access-Control-Allow-Headers: X-Requested-With
+
 ### See Also:
 
  - [MDN: nsIDOMProgressEvent](https://developer.mozilla.org/en/XPCOM_Interface_Reference/nsIDOMProgressEvent)

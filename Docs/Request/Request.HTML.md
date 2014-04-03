@@ -167,7 +167,11 @@ Updates the content of the Element with a Request.HTML GET request.
 
 	$('content').load('page_1.html');
 
+### Cross-Origin Resource Sharing (CORS) note:
 
+The Request.HTML class will (by default) add a custom header that, if used for a cross-origin request, will have to be reported as allowed in the preflight request, in addition to any other headers you may set yourself:
+
+	Access-Control-Allow-Headers: X-Requested-With
 
 ### See Also:
 
