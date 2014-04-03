@@ -4,6 +4,8 @@ module.exports = function(grunt) {
 
 	require('load-grunt-tasks')(grunt);
 	var browser = process.env.BROWSER;
+	var travisBuild = process.env.BUILD;
+	var pullRequest = process.env.TRAVIS_PULL_REQUEST;
 
 	grunt.initConfig({
 		'connect': {
@@ -81,8 +83,9 @@ module.exports = function(grunt) {
 				sauceLabs: {
 					username: process.env.SAUCE_USERNAME,
 					accessKey: process.env.SAUCE_ACCESS_KEY,
-					testName: 'MooTools-Core'
+					testName: 'MooTools-Core. Build: ' + travisBuild + '. Browser: ' + browser
 				},
+				reporters: ['progress', 'saucelabs'],
 				customLaunchers: {
 					chrome_linux: {
 						base: 'SauceLabs',
@@ -207,8 +210,6 @@ module.exports = function(grunt) {
 		}
 
 	});
-	var travisBuild = process.env.BUILD;
-	var pullRequest = process.env.TRAVIS_PULL_REQUEST;
 
 	var compatBuild = ['clean', 'packager:all', 'packager:specs'];
 	var nocompatBuild = ['clean', 'packager:nocompat', 'packager:specs-nocompat'];
