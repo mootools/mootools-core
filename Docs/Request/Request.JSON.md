@@ -72,7 +72,7 @@ xhr - (XMLHttpRequest) The transport instance.
 		alert(person.weight); // alerts "120 kg".
 	}}).get({'firstName': 'John', 'lastName': 'Doe'});
 
-### Cross-Origin Request Sharing (CORS) note:
+### Cross-Origin Resource Sharing (CORS) note:
 
 The Request.JSON class will (by default) add two custom headers that, if used for a cross-origin request, will have to be reported as allowed in the preflight request, in addition to any other headers you may set yourself:
 
