@@ -214,7 +214,7 @@ module.exports = function(grunt) {
 	var compatBuild = ['clean', 'packager:all', 'packager:specs'];
 	var nocompatBuild = ['clean', 'packager:nocompat', 'packager:specs-nocompat'];
 
-	var tasks = travisBuild == 'compat' ? compatBuild : nocompatBuild;
+	var tasks = travisBuild == 'default' ? compatBuild : nocompatBuild;
 	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
 
 	grunt.registerTask('default', compatBuild.concat('karma:continuous'));
