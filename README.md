@@ -17,15 +17,15 @@ You are welcome to contribute to MooTools! What we ask of you:
 a. __To report a bug:__
 
    1. Crete a [jsFiddle](http://jsfiddle.net/) with the minimal amount of code to reproduce the bug.
-   2. Create a [Github Issue](https://github.com/mootools/mootools-core/issues), and link to the jsFiddle.
+   2. Create a [GitHub Issue](https://github.com/mootools/mootools-core/issues), and link to the jsFiddle.
 
 b. __To fix a bug:__
 
    1. Clone the repo.
-   2. Fix the bug.
-   3. Add a [spec](http://jasmine.github.io/1.3/introduction.html).
+   2. Add a [spec](http://jasmine.github.io/1.3/introduction.html).
+   3. Fix the bug.
    4. Build and run the specs.
-   5. Push to your Github fork.
+   5. Push to your GitHub fork.
    6. Create Pull Request, and send Pull Request.
 
 
@@ -157,9 +157,7 @@ Support:
  - Safari
  - Chrome
  - Opera
- - PhantomJS (virtual browser)
-
-
+ - PhantomJS (headless browser)
 
 ## More Information
 
