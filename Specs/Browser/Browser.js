@@ -74,20 +74,25 @@ describe('Window', function(){
 
 });
 
-//<1.4compat>
 describe('Browser', function(){
 
 	it('should think it is executed in a browser', function(){
 		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
-		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera']).toContain(Browser.name);
 	});
 
+//<1.4compat>
+	it('should assign a Browser[Browser.name] property', function(){
+		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
+		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+	});
+//</1.4compat>
+
 	it('should assume the IE version is emulated by the documentMode (X-UA-Compatible)', function(){
-		if (Browser.ie && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
+		if (Browser.name == 'ie' && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
 	});
 
 });
-//</1.4compat>
 
 describe('Browser.parseUA', function(){
 
