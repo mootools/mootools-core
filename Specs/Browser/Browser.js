@@ -82,9 +82,17 @@ describe('Browser', function(){
 	});
 
 //<1.4compat>
-	it('should assign a Browser[Browser.name] property', function(){
-		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
-		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+	it('should assign a Browser[Browser.name] property for all browsers, except IE v11 or higher', function(){
+		if (Browser.name != 'ie' || Browser.version < 11){
+			var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
+			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+		}
+	});
+
+	it('should not assign a Browser[Browser.name] property for IE v11 or higher', function(){
+		if (Browser.name == 'ie' && Browser.version >= 11){
+			expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toBeUndefined();
+		}
 	});
 //</1.4compat>
 
