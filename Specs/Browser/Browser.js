@@ -78,18 +78,33 @@ describe('Browser', function(){
 
 	it('should think it is executed in a browser', function(){
 		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
-		expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera']).toContain(Browser.name);
 	});
 
+//<1.4compat>
+	it('should assign a Browser[Browser.name] property for all browsers, except IE v11 or higher', function(){
+		if (Browser.name != 'ie' || Browser.version < 11){
+			var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
+			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+		}
+	});
+
+	it('should not assign a Browser[Browser.name] property for IE v11 or higher', function(){
+		if (Browser.name == 'ie' && Browser.version >= 11){
+			expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toBeUndefined();
+		}
+	});
+//</1.4compat>
+
 	it('should assume the IE version is emulated by the documentMode (X-UA-Compatible)', function(){
-		if (Browser.ie && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
+		if (Browser.name == 'ie' && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
 	});
 
 });
 
-describe('Browser.parse', function(){
+describe('Browser.parseUA', function(){
 
-	var parse = Browser.parse;
+	var parse = Browser.parseUA;
 	var userAgents = {
 		ie6: {
 			desc: 'Internet Explorer 6',
@@ -215,7 +230,7 @@ describe('Browser.parse', function(){
 
 	var testUA = function(ua){
 		return function(){
-			var browser = parse(ua.string.toLowerCase(), '');
+			var browser = parse(ua.string, '');
 			Object.forEach(ua.expect, runExpects, browser);
 		}
 	}
