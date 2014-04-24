@@ -19,10 +19,10 @@ provides: [Browser, Window, Document]
 var document = this.document;
 var window = document.window = this;
 
-var ua = navigator.userAgent.toLowerCase(),
-	platform = navigator.platform.toLowerCase();
-
 var parse = function(ua, platform){
+	ua = ua.toLowerCase();
+	platform = (platform ? platform.toLowerCase() : '');
+
 	var UA = ua.match(/(opera|ie|firefox|chrome|trident|crios|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
 
 	if (UA[1] == 'trident'){
@@ -32,22 +32,18 @@ var parse = function(ua, platform){
 		UA[1] = 'chrome';
 	}
 
+	var platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
+	if (platform == 'win') platform = 'windows';
+
 	return {
-
 		extend: Function.prototype.extend,
-
 		name: (UA[1] == 'version') ? UA[3] : UA[1],
-
 		version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
-
-		Platform: {
-			name: ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0]
-		}
-
+		platform: platform
 	};
 };
 
-var Browser = this.Browser = parse(ua, platform);
+var Browser = this.Browser = parse(navigator.userAgent, navigator.platform);
 
 if (Browser.ie){
 	Browser.version = document.documentMode;
@@ -60,20 +56,26 @@ Browser.extend({
 		query: !!(document.querySelector),
 		json: !!(window.JSON)
 	},
-	Plugins: {},
-	parse: parse
+	parseUA: parse
 });
 
-Browser[Browser.name] = true;
-
 //<1.4compat>
+Browser[Browser.name] = true;
+Browser[Browser.name + parseInt(Browser.version, 10)] = true;
+
 if (Browser.name == 'ie' && Browser.version >= '11') {
 	delete Browser.ie;
 }
-//</1.4compat>
 
-Browser[Browser.name + parseInt(Browser.version, 10)] = true;
-Browser.Platform[Browser.Platform.name] = true;
+var platform = Browser.platform;
+if (platform == 'windows'){
+	platform = 'win';
+}
+Browser.Platform = {
+	name: platform
+};
+Browser.Platform[platform] = true;
+//</1.4compat>
 
 // Request
 
@@ -116,9 +118,11 @@ var version = (Function.attempt(function(){
 	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
 }) || '0 r0').match(/\d+/g);
 
-Browser.Plugins.Flash = {
-	version: Number(version[0] || '0.' + version[1]) || 0,
-	build: Number(version[2]) || 0
+Browser.Plugins = {
+	Flash: {
+		version: Number(version[0] || '0.' + version[1]) || 0,
+		build: Number(version[2]) || 0
+	}
 };
 
 //</1.4compat>
@@ -264,7 +268,7 @@ if (Browser.opera){
 }
 
 if (Browser.name == 'unknown'){
-	switch ((ua.match(/(?:webkit|khtml|gecko)/) || [])[0]){
+	switch ((navigator.userAgent.toLowerCase().match(/(?:webkit|khtml|gecko)/) || [])[0]){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;

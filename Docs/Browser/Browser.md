@@ -26,27 +26,79 @@ Executes the passed in string in the browser context.
 
 	Browser.exec('alert("Moo!");');
 
+Browser.parseUA {#Browser:Browser-parseUA}
+------------------------------------------
+
+A function to parse a user agent string to an object, intended for informational or statistical purposes. If also passed a platform string, it will use that string in addition to the user agent to attempt to determine the platform.
+
+The results of this function for the currently active user agent and platform strings are saved on the Browser object upon load. See below.
+
+For more information regarding User Agent detection, please refer to the [Deprecated section](#Deprecated).
+
+### Syntax:
+
+	var parsed = Browser.parseUA(userAgentString[, platformString]);
+
+### Arguments:
+
+1. userAgentString - (*string*) A user agent string, like the one found in `window.navigator.userAgent`.
+2. platformString - (*string*, optional) A platform string, like the one found in `window.navigator.platform`.
+
+### Returns:
+
+* (*object*) - An object containing information parsed from the strings passed.
+
+### Examples:
+
+	console.log(Browser.parseUA("Mozilla/5.0 (X11; Linux x86_64; rv:24.0) Gecko/20140319 Firefox/24.0 Iceweasel/24.4.0", "Linux x86_64"));
+
+	// This logs: {name: "firefox", version: 24, platform: "linux"}
+
+Browser.name {#Browser:Browser-name}
+------------------------------------
+
+'Browser.name' reports the name found in the Browser's userAgent string as string, intended for informational or statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
+
+### Example:
+
+	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
+
+Browser.version {#Browser:Browser-version}
+------------------------------------------
+
+'Browser.version' reports the version found in the Browser's userAgent string as number, intended for informational and statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
+
+### Example:
+
+	alert(Browser.version); // Alerts '33' in Chrome 33.0.1750.152
+
+Browser.platform {#Browser:Browser-platform}
+--------------------------------------------
+
+'Browser.platform' reports the platform found in the Browser's userAgent or platform string as string, intended for informational and statistical purposes. See [Browser.parseUA](#Browser:Browser-parseUA).
+
+### Example:
+
+	alert(Browser.platform); // Alerts 'mac' on OS X 10.9 Mavericks
+
 
 Deprecated {#Deprecated}
 ========================
 
 ### User Agent detection
 
-The functionality described below uses User Agent detection (either the UA string or platform string) to determine the correct values. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js][]), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
+The features described below use user agent detection (either the userAgent string or platform string) to determine values or properties aimed at activating/deactivating functionality easily. You are encouraged to use other ways of reaching your goal, like feature detection (`Browser.Features`, your own or [has.js](https://github.com/phiggins42/has.js)), progressive enhancement (the act of having the least compatible features "on top", so the other features still work) and/or graceful degredation (building with all features, but tweaking to have non-compatible things "fall back").
 
 #### See also:
 
-[MDN about Browser detection using the user agent][]
+- [MDN about Browser detection using the user agent](https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent)
 
-[has.js]: https://github.com/phiggins42/has.js
-[MDN about Browser detection using theu ser agent]: https://developer.mozilla.org/en-US/docs/Browser_detection_using_the_user_agent
+Browser[Browser.name] {#Browser:Browser-Browser-name}
+-----------------------------------------------------
 
-Browser.name {#Browser:Browser-name}
-------------------------------------
+**Important note:** These properties are deprecated since MooTools 1.5, and are only available in the 1.4-compatibility version.
 
-**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
-
-'Browser.name' reports the name of the Browser as string, identical to the property names of the following Boolean values:
+The name found in the Browser's userAgent string is stored as property names of the following Boolean values:
 
 * Browser.ie - (*boolean*) True if the current browser is Internet Explorer.
 * Browser.firefox - (*boolean*) True if the current browser is Firefox.
@@ -60,43 +112,30 @@ If 'Browser.chrome' is True, all other possible properties, like 'Browser.firefo
 
 ### Example:
 
-	alert(Browser.name); // Alerts "ie" in Internet Explorer, "firefox" in Mozilla Firefox, "chrome" in Google Chrome, "safari" or "opera".
-
 	if (Browser.ie){
 		// This code will only run in IE
 	}
 
-	if (Browser.firefox2){
-		// This code will only run in Firefox 2
+	if (Browser.firefox24){
+		// This code will only run in Firefox 24
 	}
 
 	if (Browser.ie6 || Browser.ie7){
 		// Please upgrade your browser
 	}
 
-If an IE document is set to backwards compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
+If an IE document is set to backward compatibility mode using the X-UA-Compatible header, then the Browser object is treated as if the earlier version of the browser is running.
 
-### Browser.ie in the compatibility build:
+### Special note about Browser.ie:
 
 In the compatibility build, for IE&gt;=11, `Browser.ie` will remain `undefined`. See below:
 
 The primary use of `Browser.ie` is activating "legacy code", such "legacy code" is no longer required in more recent versions of Internet Explorer (and may not even work anymore). Changing `Browser.ie == true` for modern IE (IE &gt;= 11) in the compatibility build would do more harm than good, even though it's technically correct. Since we did not want to break existing projects that have come to rely on `Browser.ie` not being true for the newer version(s) of IE, the compatibility build will not set `Browser.ie` for these versions of IE. However, `Browser.ie11` will work correctly and `Browser.name` will equal "ie".
 
-Browser.version {#Browser:Browser-version}
-------------------------------------------
-
-**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
-
-'Browser.version' reports the version of the Browser as number.
-
-### Example:
-
-	alert(Browser.version); // Alerts '3.6' in FireFox 3.6.13
-
 Browser.Platform {#Browser:Browser-Platform}
 --------------------------------------------
 
-**Important note:** The use of this feature is deprecated and it will be moved to a compatibility-only version in the future.
+**Important note:** The *Browser.Platform* object is deprecated since MooTools 1.5, and is only available in the 1.4-compatibility version.
 
 * Browser.Platform.mac - (*boolean*) True if the platform is Mac.
 * Browser.Platform.win - (*boolean*) True if the platform is Windows.
@@ -110,7 +149,7 @@ Browser.Platform {#Browser:Browser-Platform}
 Browser.Plugins {#Browser:Browser-Plugins}
 ------------------------------------------
 
-**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.5, and only available in the 1.4-compatibility version.
+**Important note:** The *Browser.Plugins* object is deprecated since MooTools 1.5, and is only available in the 1.4-compatibility version.
 
 * Browser.Plugins.Flash - (*object*) - An object with properties corresponding to the `version` and `build` number of the installed Flash plugin. Note: if flash is not installed, both `Browser.Plugins.Flash.version` and `Browser.Plugins.Flash.build` will return zero.
 * Browser.Plugins.Flash.version - (*number*) The major version of the flash plugin installed.
@@ -119,7 +158,7 @@ Browser.Plugins {#Browser:Browser-Plugins}
 Browser.Engine {#Browser:Browser-Engine}
 ----------------------------------------
 
-**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.3, and only available in the 1.2-compatibility version.
+**Important note:** The *Browser.Engine* object is deprecated since MooTools 1.3, and is only available in the 1.2-compatibility version.
 
 ### Engine:
 
