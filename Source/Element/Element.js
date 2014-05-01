@@ -9,7 +9,7 @@ license: MIT-style license.
 
 requires: [Window, Document, Array, String, Function, Object, Number, Slick.Parser, Slick.Finder]
 
-provides: [Element, Elements, $, $$, Iframe, Selectors]
+provides: [Element, Elements, $, $$, IFrame, Selectors]
 
 ...
 */
