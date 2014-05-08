@@ -23,7 +23,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 (function(){
 
 this.MooTools = {
-	version: '1.5.0dev',
+	version: '1.5.0-dev',
 	build: '%build%'
 };
 
