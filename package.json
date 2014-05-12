@@ -1,6 +1,6 @@
 {
   "name": "mootools-core",
-  "version": "1.4.5",
+  "version": "1.5.0-dev",
   "description": "MooTools is a compact, modular, Object-Oriented JavaScript framework designed for the intermediate to advanced JavaScript developer.",
   "main": "index.js",
   "scripts": {
