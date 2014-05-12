@@ -419,7 +419,7 @@ Returns the key of the specified value. Synonymous with [Array:indexOf][].
 ### Returns:
 
 * (*string*) If the object has a the specified item in it, returns the key of that item.
-* (*boolean*) Otherwise, returns false.
+* (*boolean*) Otherwise, returns null.
 
 ### Examples:
 
