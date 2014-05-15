@@ -45,6 +45,7 @@ var removeOn = function(string){
 this.Events = new Class({
 
 	$events: {},
+	$disabledEvents: {},
 
 	addEvent: function(type, fn, internal){
 		type = removeOn(type);
@@ -64,6 +65,7 @@ this.Events = new Class({
 	},
 
 	fireEvent: function(type, args, delay){
+		if (this.$disabledEvents[type]) return this;
 		type = removeOn(type);
 		var events = this.$events[type];
 		if (!events) return this;
@@ -100,6 +102,14 @@ this.Events = new Class({
 			}
 		}
 		return this;
+	},
+
+	disableEvent: function(type){
+		this.$disabledEvents[type] = (this.$disabledEvents[type] || 0) + 1;
+	},
+
+	enableEvent: function(type){
+		this.$disabledEvents[type] = (this.$disabledEvents[type] || 0) - 1;
 	}
 
 });
