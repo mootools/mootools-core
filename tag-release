@@ -1,0 +1,68 @@
+#!/bin/sh
+
+COREFILE='Source/Core/Core.js'
+PKGFILE='package.json'
+TAGLENGTH=3
+
+DIR=`dirname "$0"`
+COREFILE="$DIR/$COREFILE"
+PKGFILE="$DIR/$PKGFILE"
+TAG=`echo "$1" | cut -d'.' -f-$TAGLENGTH`
+SUFFIX="`echo "$2" | tr '[A-Z]' '[a-z]'`"
+BUILD=`sh -c "cd '$DIR' && git rev-parse HEAD"`
+CUTLENGTH=`echo "$TAGLENGTH - 1" | bc`
+
+moo(){
+	echo -e "$1" >&2
+	exit 1
+}
+
+get_suffixnumber(){
+	NUMBER=`echo "$1" | sed 's/^[a-z]*[ 	]*\([0-9]*\).*/\1/'`
+	[ -n "$NUMBER" ] && echo "$NUMBER" || echo "1"
+}
+
+[ -z "$1" -o "$1" == '-h' -o "$1" == '--help' ] && moo "Usage: $0 <tag> [suffix]\n\n  suffix: alpha, beta or rc*"
+[ -z "$BUILD" ] && moo 'Unable to determine build.'
+
+until [ -n "`echo "$TAG." | cut -d'.' -f$TAGLENGTH`" ]; do
+	TAG="$TAG.0"
+done
+
+case "$SUFFIX" in
+	'') RELEASE=''; SUFFIX='';;
+	a*) NUMBER="`get_suffixnumber $SUFFIX`"; RELEASE=" Alpha $NUMBER"; SUFFIX="-a$NUMBER";;
+	b*) NUMBER="`get_suffixnumber $SUFFIX`"; RELEASE=" Beta $NUMBER"; SUFFIX="-b$NUMBER";;
+	rc*) NUMBER="`get_suffixnumber $SUFFIX`"; RELEASE=" Release Candidate $NUMBER"; SUFFIX="-rc$NUMBER";;
+	*) moo 'Invalid suffix specified.';;
+esac
+
+if [ "$TAG" != "$1" ]; then
+	echo -n "Did you mean $TAG$SUFFIX? (y/n): "
+	read FIXTAG
+	[ "$FIXTAG" = "y" ] || moo "Invalid tag specified, this project's tags consist of $TAGLENGTH parts."
+fi
+
+sh -c "cd '$DIR' && git show-ref --quiet --tags '$TAG$SUFFIX'" && moo "Tag $TAG$SUFFIX already exists."
+
+if [ -z "$SUFFIX" ]; then
+	MINOR=`echo "$TAG" | cut -d'.' -f$TAGLENGTH-`
+	[ -z "$MINOR" ] && MINOR='0'
+	NEXTTAG="`echo "$TAG" | cut -d'.' -f-$CUTLENGTH`.`echo "$MINOR + 1" | bc`-dev"
+else
+	NEXTTAG="${TAG}-dev"
+fi
+
+sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$TAG$SUFFIX'/" -e "s/\(build:[ 	]*\)'%build%'/\1'$BUILD'/" "$COREFILE" || moo "Error setting version and build for $TAG$SUFFIX in $COREFILE."
+sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$TAG$SUFFIX\"/" "$PKGFILE" || moo "Error setting version for $TAG$SUFFIX in $PKGFILE."
+sh -c "cd $DIR && git add '$COREFILE' '$PKGFILE' && git commit -qm 'Welcome $TAG$SUFFIX.'" || moo "Error committing $TAG$SUFFIX."
+sh -c "cd $DIR && git tag -am '$TAG$RELEASE.' '$TAG$SUFFIX'" || moo "Error tagging $TAG$SUFFIX."
+echo "Tagged $TAG$SUFFIX." >&2
+
+mv "$COREFILE.$BUILD" "$COREFILE" || moo "Error reverting version and build in $COREFILE."
+mv "$PKGFILE.$BUILD" "$PKGFILE" || moo "Error reverting version in $PKFILE."
+sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$NEXTTAG'/" "$COREFILE" || moo "Error setting version $NEXTTAG in $COREFILE."
+sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$NEXTTAG\"/" "$PKGFILE" || moo "Error setting version for $NEXTTAG in $PKGFILE."
+rm "$COREFILE.$BUILD" "$PKGFILE.$BUILD" || moo "Error cleaning up $COREFILE.$BUILD and/or $PKGFILE.$BUILD."
+sh -c "cd $DIR && git add '$COREFILE' '$PKGFILE' && git commit -qm 'Hello $NEXTTAG.'" || moo "Error committing $NEXTTAG."
+echo "Committed $NEXTTAG." >&2
