@@ -53,7 +53,7 @@ Element.implement({
 		var width = this.offsetWidth;
 		var height = this.offsetHeight;
 
-		if (width === undefined || height === undefined) && this.getBoundingClientRect) {
+		if ((width === undefined || height === undefined) && this.getBoundingClientRect) {
 			
 			var bound = this.getBoundingClientRect();
 
