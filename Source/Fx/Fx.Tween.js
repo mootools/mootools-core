@@ -87,11 +87,26 @@ Element.implement({
 		if (!toggle) this.eliminate('fade:flag');
 		fade[method].apply(fade, args);
 		var to = args[args.length - 1];
-		if (method == 'set' || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
-		else fade.chain(function(){
-			this.element.setStyle('visibility', 'hidden');
-			this.callChain();
-		});
+		
+		if (method == 'set'){
+			this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
+		} else if (to != 0){
+			if (fade.$chain.length){
+				fade.chain(function (){
+					this.element.setStyle('visibility', 'visible');
+					this.callChain();
+				});
+			} else {
+				this.setStyle('visibility', 'visible');
+			}
+		} else {
+			fade.chain(function (){
+				if (this.element.getStyle('opacity')) return;
+				this.element.setStyle('visibility', 'hidden');
+				this.callChain();
+			});
+		}
+
 		return this;
 	},
 
