@@ -130,7 +130,7 @@ Element.Properties.events = {set: function(events){
 
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
-	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
+	wheel: 2, mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
 	mouseover: 2, mouseout: 2, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
 	keydown: 2, keypress: 2, keyup: 2, //keyboard
 	orientationchange: 2, // mobile
