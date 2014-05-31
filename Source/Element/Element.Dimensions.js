@@ -27,6 +27,8 @@ element.appendChild(child);
 var brokenOffsetParent = (child.offsetParent === element);
 element = child = null;
 
+var hasGetComputedStyle = !!window.getComputedStyle;
+
 var isOffset = function(el){
 	return styleString(el, 'position') != 'static' || isBody(el);
 };
@@ -35,7 +37,7 @@ var isOffsetStatic = function(el){
 	return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
 };
 
-var computeSize = function(v){
+var parseComputedStyle = function(v){
 	return parseFloat(v.match(/([0-9.?]{1,})/));
 };
 
@@ -53,12 +55,15 @@ Element.implement({
 
 	getSize: function(){
 		if (isBody(this)) return this.getWindow().getSize();
-		
+
+		//<ltIE9>
 		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with hidden visibility.
-		if (!document.addEventListener) return {x: this.offsetWidth, y: this.offsetHeight};
-		
+		if (!hasGetComputedStyle) return {x: this.offsetWidth, y: this.offsetHeight};
+		//</ltIE9>
+
 		// This section inside the `if == true` can be removed when FF fixed the svg size bug.
-		// The same applies to the computeSize function at L38 `var computeSize = function(v){`.
+		// Bug info: https://bugzilla.mozilla.org/show_bug.cgi?id=530985
+		// The same applies to the parseComputedStyle function starting with `var parseComputedStyle = function(v){`.
 		if (this.get('tag') == 'svg'){
 
 			var gCS = window.getComputedStyle(this), bounds;
@@ -68,10 +73,10 @@ Element.implement({
 			};
 			bounds = {x: 0, y: 0};
 			gCScomponents.height.each(function(css){
-				bounds.y += computeSize(gCS[css]);
+				bounds.y += parseComputedStyle(gCS[css]);
 			});
 			gCScomponents.width.each(function(css){
-				bounds.x += computeSize(gCS[css]);
+				bounds.x += parseComputedStyle(gCS[css]);
 			});
 			return bounds;
 
