@@ -45,7 +45,7 @@ var parse = function(ua, platform){
 
 var Browser = this.Browser = parse(navigator.userAgent, navigator.platform);
 
-if (Browser.ie){
+if (Browser.name == 'ie'){
 	Browser.version = document.documentMode;
 }
 
