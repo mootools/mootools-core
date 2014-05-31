@@ -35,6 +35,10 @@ var isOffsetStatic = function(el){
 	return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
 };
 
+var computeSize = function(v){
+	return parseFloat(v.match(/([0-9.?]{1,})/));
+};
+
 Element.implement({
 
 	scrollTo: function(x, y){
@@ -49,7 +53,32 @@ Element.implement({
 
 	getSize: function(){
 		if (isBody(this)) return this.getWindow().getSize();
-		return {x: this.offsetWidth, y: this.offsetHeight};
+		
+		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with hidden visibility.
+		if (!document.addEventListener) return {x: this.offsetWidth, y: this.offsetHeight};
+		
+		// This section inside the `if == true` can be removed when FF fixed the svg size bug.
+		// The same applies to the computeSize function at L38 `var computeSize = function(v){`.
+		if (this.get('tag') == 'svg'){
+
+			var gCS = window.getComputedStyle(this), bounds;
+			var gCScomponents = {
+				height: ['height', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
+				width: ['width', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
+			};
+			bounds = {x: 0, y: 0};
+			gCScomponents.height.each(function(css){
+				bounds.y += computeSize(gCS[css]);
+			});
+			gCScomponents.width.each(function(css){
+				bounds.x += computeSize(gCS[css]);
+			});
+			return bounds;
+
+		} else {
+			bounds = this.getBoundingClientRect();
+			return {x: bounds.width, y: bounds.height};
+		}
 	},
 
 	getScrollSize: function(){
@@ -87,7 +116,7 @@ Element.implement({
 
 		try {
 			return element.offsetParent;
-		} catch(e) {}
+		} catch(e){}
 		return null;
 	},
 
