@@ -3,9 +3,12 @@
 module.exports = function(grunt) {
 
 	require('load-grunt-tasks')(grunt);
+	var YAML = require('js-yaml');
+	var fs   = require('fs');
 	var browser = process.env.BROWSER;
 	var travisBuild = process.env.BUILD;
 	var pullRequest = process.env.TRAVIS_PULL_REQUEST;
+	var ymlPackage = YAML.safeLoad(fs.readFileSync('package.yml', 'utf8'));
 
 	grunt.initConfig({
 		'connect': {
@@ -40,7 +43,7 @@ module.exports = function(grunt) {
 			},
 
 			all: {
-				src: 'Source/**/*.js',
+				src: ymlPackage.sources,
 				dest: 'mootools-all.js'
 			},
 
@@ -49,7 +52,7 @@ module.exports = function(grunt) {
 					strip: ['.*compat'],
 					only: '<%= grunt.option("file") && "Core/" + grunt.option("file") %>'
 				},
-				src: 'Source/**/*.js',
+				src: ymlPackage.sources,
 				dest: 'mootools-nocompat.js'
 			},
 
