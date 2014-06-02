@@ -67,6 +67,11 @@ describe('Element constructor', function(){
 		});
 	});
 
+	it('should create an element with type="email"', function(){
+		var el = new Element('input', {type: 'email'});
+		expect(el.get('type').match(/email|text/)).toBeTruthy();
+	});
+
 	it('should return input Elements that are checked', function(){
 		var check1 = new Element('input', { type: 'checkbox' });
 		var check2 = new Element('input', { type: 'checkbox', checked: true });
