@@ -49,7 +49,7 @@ Fired when the parsed JSON is not valid and the secure option is set.
 
 #### failure
 
-Fired when the request failed (error status code), or when JSON string could not be parsed.
+Fired when the request failed (error status code).
 
 ##### Signature:
 
