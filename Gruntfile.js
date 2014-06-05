@@ -2,6 +2,8 @@
 
 module.exports = function(grunt) {
 
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+
 	require('load-grunt-tasks')(grunt);
 	var YAML = require('js-yaml');
 	var fs   = require('fs');
@@ -72,10 +74,37 @@ module.exports = function(grunt) {
 				},
 				src: 'Specs/**/*.js',
 				dest: 'mootools-specs.js'
+			},
+			
+			'dist-nocompat': {
+				options: {
+					strip: ['.*compat'],
+					only: '<%= grunt.option("file") && "Core/" + grunt.option("file") %>'
+				},
+				src: ymlPackage.sources,
+				dest: 'dist/mootools-core.js'
+			},
+			
+			'dist-all': {
+				src: ymlPackage.sources,
+				dest: 'dist/mootools-core-compat.js'
 			}
 
 		},
-
+		
+		uglify: {
+			options: {
+				mangle: false,
+				compress: true
+			},
+			dist: {
+				files: [
+					{'dist/mootools-core.min.js': ['dist/mootools-core.js']},
+					{'dist/mootools-core-compat.min.js': ['dist/mootools-core-compat.js']}
+				]
+			}
+		},
+		
 		'karma': {
 
 			options: {
@@ -202,25 +231,56 @@ module.exports = function(grunt) {
 				singleRun: false,
 				browsers: ['PhantomJS'],
 				reporters: 'dots'
+			},
+			
+			// Testers for dist build files
+			compatFull: {
+				options: {
+					browsers: ['PhantomJS'], 
+					files: ['dist/mootools-core-compat.js', 'mootools-specs.js', 'Tests/Utilities/*.js']
+				}
+			},
+			compatUglyfied: {
+				options: {
+					browsers: ['PhantomJS'], 
+					files: ['dist/mootools-core-compat.min.js', 'mootools-specs.js', 'Tests/Utilities/*.js']
+				}
+			},
+			nocompatFull: {
+				options: {
+					browsers: ['PhantomJS'], 
+					files: ['dist/mootools-core.js', 'mootools-specs.js', 'Tests/Utilities/*.js']
+				}
+			},
+			nocompatUglified: {
+				options: {
+					browsers: ['PhantomJS'], 
+					files: ['dist/mootools-core.min.js', 'mootools-specs.js', 'Tests/Utilities/*.js']
+				}
 			}
-
 		},
 
 		'clean': {
-			all: {
-				src: 'mootools-*.js'
-			}
+			dist: {src: 'dist/mootools-*.js'},
+			specs: {src: 'mootools-*.js'}
 		}
 
 	});
 
-	var compatBuild = ['clean', 'packager:all', 'packager:specs'];
-	var nocompatBuild = ['clean', 'packager:nocompat', 'packager:specs-nocompat'];
-
+	var compatBuild = ['clean:specs', 'packager:all', 'packager:specs'];
+	var nocompatBuild = ['clean:specs', 'packager:nocompat', 'packager:specs-nocompat'];
 	var tasks = travisBuild == 'default' ? compatBuild : nocompatBuild;
 	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
 
 	grunt.registerTask('default', compatBuild.concat('karma:continuous'));
 	grunt.registerTask('nocompat', nocompatBuild.concat('karma:continuous'));
 	grunt.registerTask('default:travis', tasks);
+	grunt.registerTask('distBuild', [
+		// Build dist files
+		'clean:dist', 'packager:dist-all', 'packager:dist-nocompat', 'uglify',
+		// Test specs against dist files
+		'clean:specs', 'packager:specs', 'karma:compatFull', 'karma:compatUglyfied',
+		'clean:specs', 'packager:specs-nocompat', 'karma:nocompatFull', 'karma:nocompatUglified'
+	]);
+
 };
