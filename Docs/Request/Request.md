@@ -289,6 +289,8 @@ These aliases are:
 - `get()` and `GET()`
 - `put()` and `PUT()`
 - `delete()` and `DELETE()`
+- `patch()` and `PATCH()`
+- `head()` and `HEAD()`
 
 ### Syntax:
 
@@ -322,7 +324,7 @@ These aliases are:
 
 ### Note:
 
-By default the emulation option is set to true, so the *put* and *delete* send methods are emulated and will actually send as *post* while the method name is sent as e.g. `_method=delete`.
+By default the emulation option is set to true, so the *put*, *delete* and *patch* send methods are emulated and will actually send as *post* while the method name is sent as e.g. `_method=delete`.
 
 `Async` and `timeout` options are mutually exclusive. If you set `async` to `false`, then there's no need to set the `timeout` since the server and browser will set their own timeouts to return executing the rest of your script.
 
