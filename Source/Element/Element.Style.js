@@ -34,6 +34,18 @@ el = null;
 
 var hasGetComputedStyle = !!window.getComputedStyle;
 
+var supportBorderRadius = false;
+['borderRadius', 'MozBorderRadius', 'WebkitBorderRadius', 'OBorderRadius', 'KhtmlBorderRadius'].each(function(el){
+		if(document.body.style[el] != null) supportBorderRadius = true;
+});
+var getBorderRadius = function(el){
+	result = [];
+	['border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius'].each(function(corner){
+		result.push(el.getStyle(corner) || '0px');
+	});
+	return result.join(' ');
+}
+
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
 }};
@@ -133,6 +145,7 @@ Element.implement({
 	getStyle: function(property){
 		if (property == 'opacity') return getOpacity(this);
 		property = (property == 'float' ? floatName : property).camelCase();
+		if (property.match(/borderRadius/)) return supportBorderRadius ? getBorderRadius(this) : null;
 		var result = this.style[property];
 		if (!result || property == 'zIndex'){
 			if (Element.ShortStyles.hasOwnProperty(property)){
@@ -170,6 +183,7 @@ Element.implement({
 			return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
 		}
 		//</ltIE9>
+
 		return result;
 	},
 
@@ -195,7 +209,7 @@ Element.Styles = {
 	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
 	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
 	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
+	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@', borderRadius: '@px @px @px @px'
 };
 
 //<1.3compat>
