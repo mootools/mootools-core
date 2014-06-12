@@ -1170,7 +1170,7 @@ describe('Element.toQueryString', function(){
 		expect(form.toQueryString()).toEqual('');
 	});
 
-	it("should return a query string containing even empty values, multiple select may have no selected options", function() {
+	it("should return a query string containing even empty values, multiple select may have no selected options", function(){
 		var form = new Element('form',{'html':
 			'<input type="checkbox" name="input" value="" checked="checked" />' +
 			'<select name="select[]" multiple="multiple" size="5">' +
@@ -1683,7 +1683,7 @@ describe('Element.toQueryString', function(){
 		expect(form.toQueryString()).toEqual('input=checked&select%5B%5D=saab&select%5B%5D=opel&textarea=textarea-value');
 	});
 
-	it("should return a query string containing even empty values, single select must have a selected option", function() {
+	it("should return a query string containing even empty values, single select must have a selected option", function(){
 		var form = new Element('form').adopt(
 			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
 			new Element('select', {name: 'select[]'}).adopt(
@@ -1827,6 +1827,43 @@ describe('Element.set("html")', function(){
 		expect(tr.get('html').toLowerCase().replace(/>\s+</, '><')).toEqual(html);
 		expect(tr.getChildren().length).toEqual(2);
 		expect(tr.getFirst().className).toEqual('cell c');
+	});
+
+	it("should set the html of a style Element", function(){
+
+		var styleElement = document.createElement('style');
+		var def = 'body {color: red;}';
+		styleElement.setAttribute("type", "text/css");
+		var docHead = document.getElementsByTagName('head')[0];
+		docHead.appendChild(styleElement);
+		if (styleElement.styleSheet){       // IE
+			styleElement.styleSheet.cssText = def;
+		} else {                             // the world
+			var node = document.createTextNode(def);
+			styleElement.appendChild(node);
+		}
+
+		styleElement = $(styleElement),
+			innerStyleA = '* { color: #a0a}',
+			innerStyleB = '.testStyling { font: 44px/44px Courier}';
+
+		function fixString(s){
+			// because browsers return content with different case/space formatting
+			return s.toLowerCase().replace(/\t|\s/g,'');
+		}
+		function getStyles(){
+			return fixString(styleElement.get('html'));
+		}
+
+		styleElement.set('html', innerStyleA);
+		expect(getStyles()).toEqual(fixString(innerStyleA));
+
+		styleElement.erase('html');
+		expect(getStyles()).toEqual('');
+
+		styleElement.set('html', innerStyleB);
+		expect(getStyles()).toEqual(fixString(innerStyleB));
+		styleElement.destroy();
 	});
 
 });
@@ -2498,7 +2535,7 @@ describe('new Element(expression)', function(){
 		expect(script.get('async')).toBeTruthy();
 	});
 
-	it('should allow false to be passed for checked', function() {
+	it('should allow false to be passed for checked', function(){
 		var input = new Element('input', {
 			type: 'checkbox',
 			checked: false

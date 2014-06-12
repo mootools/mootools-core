@@ -593,6 +593,20 @@ el = null;
 /* </webkit> */
 
 /*<IE>*/
+
+/*<ltIE9>*/
+// #2479 - IE8 Cannot set HTML of style element
+var canChangeStyleHtml = (function(){
+    var div = document.createElement('style'),
+        flag = false;
+    try {
+        div.innerHTML = '#justTesing{margin: 0px;}';
+        flag = !!div.innerHTML;
+    } catch(e){}
+    return flag;
+})();
+/*</ltIE9>*/
+
 var input = document.createElement('input'), volatileInputValue, html5InputSupport;
 
 // #2178
@@ -1015,11 +1029,15 @@ Element.Properties.html = {
 	set: function(html){
 		if (html == null) html = '';
 		else if (typeOf(html) == 'array') html = html.join('');
-		this.innerHTML = html;
-	},
 
+		/*<ltIE9>*/
+		if (!canChangeStyleHtml && this.styleSheet) this.styleSheet.cssText = html;
+		else /*</ltIE9>*/this.innerHTML = html;
+	},
 	erase: function(){
-		this.innerHTML = '';
+		/*<ltIE9>*/
+		this.set('html', '');
+		// /*</ltIE9>*/this.innerHTML = '';
 	}
 
 };
@@ -1068,6 +1086,9 @@ if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements){
 
 		return function(html){
 			var wrap = translations[this.get('tag')];
+			/*<ltIE9>*/
+			if (!wrap && this.styleSheet) return set.call(this, html);
+			/*</ltIE9>*/
 			if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
 			if (!wrap) return set.call(this, html);
 
