@@ -1,0 +1,88 @@
+{
+    "build": {
+        "nocompat": {
+            "options": {
+                "strip": [
+                    ".*compat"
+                ],
+                "only": "<%=grunt.option(\"file\")&&\"Core/\"+grunt.option(\"file\")%>"
+            },
+            "src": "Source/**/*.js",
+            "dest": "dist/mootools-core.js"
+        },
+        "compat": {
+            "src": "Source/**/*.js",
+            "dest": "dist/mootools-core-compat.js"
+        }
+    },
+    "uglify": {
+        "options": {
+            "mangle": false,
+            "compress": true
+        },
+        "dist": {
+            "files": [
+                {
+                    "dist/mootools-core.min.js": [
+                        "dist/mootools-core.js"
+                    ]
+                },
+                {
+                    "dist/mootools-core-compat.min.js": [
+                        "dist/mootools-core-compat.js"
+                    ]
+                }
+            ]
+        }
+    },
+    "testTasks": {
+        "compatFull": {
+            "options": {
+                "browsers": [
+                    "PhantomJS"
+                ],
+                "files": [
+                    "dist/mootools-core-compat.js",
+                    "mootools-specs.js",
+                    "Tests/Utilities/*.js"
+                ]
+            }
+        },
+        "compatUglyfied": {
+            "options": {
+                "browsers": [
+                    "PhantomJS"
+                ],
+                "files": [
+                    "dist/mootools-core-compat.min.js",
+                    "mootools-specs.js",
+                    "Tests/Utilities/*.js"
+                ]
+            }
+        },
+        "nocompatFull": {
+            "options": {
+                "browsers": [
+                    "PhantomJS"
+                ],
+                "files": [
+                    "dist/mootools-core.js",
+                    "mootools-specs.js",
+                    "Tests/Utilities/*.js"
+                ]
+            }
+        },
+        "nocompatUglified": {
+            "options": {
+                "browsers": [
+                    "PhantomJS"
+                ],
+                "files": [
+                    "dist/mootools-core.min.js",
+                    "mootools-specs.js",
+                    "Tests/Utilities/*.js"
+                ]
+            }
+        }
+    }
+}
