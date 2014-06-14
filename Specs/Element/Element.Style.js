@@ -375,11 +375,8 @@ describe('Element.Style', function(){
 	
 	describe('Border Radius', function(){
 	
-		var supportBorderRadius = false;
-		['borderRadius', 'MozBorderRadius', 'WebkitBorderRadius', 'OBorderRadius', 'KhtmlBorderRadius'].each(function(el){
-			if(document.body.style[el] != null) supportBorderRadius = true;
-		});
-
+		var supportBorderRadius = document.body.style.borderRadius != null ? true : false;
+		if (navigator.userAgent.match(/PhantomJS\/1./)) supportBorderRadius = false;
 		var dit = supportBorderRadius ? it : xit; // don't run unless border-radius is supported
 		var element = new Element('div');
 		
