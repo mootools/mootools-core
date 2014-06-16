@@ -1078,6 +1078,12 @@ describe('Element className methods', function(){
 		expect(div.hasClass('random')).toBeFalsy();
 	});
 
+	it('should return false if the element does not have the given class', function(){
+		var div = new Element('div', {'class': 'header bold'});
+		expect(div.hasClass('italics')).toBeFalsy();
+		expect(div.hasClass('head')).toBeFalsy();
+	});
+
 	it('should add the class to the Element', function(){
 		var div = new Element('div');
 		div.addClass('myclass');
