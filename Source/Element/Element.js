@@ -732,7 +732,7 @@ Element.implement({
 	hasClass: hasClassList ? function(className){
 		return this.classList.contains(className);
 	} : function(className){
-		return this.className.clean().contains(className, ' ');
+		return classes(this.className).contains(className);
 	},
 
 	addClass: hasClassList ? function(className){
