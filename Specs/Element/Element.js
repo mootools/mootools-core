@@ -1072,10 +1072,10 @@ describe('Element.clone', function(){
 describe('Element className methods', function(){
 
 	it('should return true if the Element has the given class', function(){
-		var div = new Element('div', {'class': 'header bold'});
+		var div = new Element('div', {'class': 'header bold\tunderline'});
 		expect(div.hasClass('header')).toBeTruthy();
 		expect(div.hasClass('bold')).toBeTruthy();
-		expect(div.hasClass('random')).toBeFalsy();
+		expect(div.hasClass('underline')).toBeTruthy();
 	});
 
 	it('should return false if the element does not have the given class', function(){
