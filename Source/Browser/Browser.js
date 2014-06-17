@@ -32,7 +32,7 @@ var parse = function(ua, platform){
 		UA[1] = 'chrome';
 	}
 
-	var platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
+	platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
 	if (platform == 'win') platform = 'windows';
 
 	return {
