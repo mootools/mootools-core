@@ -135,5 +135,41 @@ describe('Request', function(){
 
 	});
 
+	it('should not set xhr.withCredentials flag by default', function(){
+		var request = new Request({
+			url: '/something/or/other'
+		}).send();
 
+		expect(request.xhr.withCredentials).toBe(false);
+	});
+
+	/*<1.4compat>*/
+	it('should set xhr.withCredentials flag in 1.4 for this.options.user', function(){
+		var request = new Request({
+			url: '/something/or/other',
+			user: 'someone'
+		}).send();
+
+		expect(request.xhr.withCredentials).toBe(true);
+	});
+	/*</1.4compat>*/
+
+	var dit = /*<1.4compat>*/xit || /*</1.4compat>*/it; // don't run unless no compat
+	dit('should not set xhr.withCredentials flag in 1.5 for this.options.user', function(){
+		var request = new Request({
+			url: '/something/or/other',
+			user: 'someone'
+		}).send();
+
+		expect(request.xhr.withCredentials).toBe(false);
+	});
+
+	dit('should set xhr.withCredentials flag if options.withCredentials is set', function(){
+		var request = new Request({
+			url: '/something/or/other',
+			withCredentials: true
+		}).send();
+
+		expect(request.xhr.withCredentials).toBe(true);
+	});
 });

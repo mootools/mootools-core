@@ -35,8 +35,9 @@ An XMLHttpRequest Wrapper.
 * isSuccess  - (*function*) Overrides the built-in isSuccess function.
 * evalScripts  - (*boolean*: defaults to *false*) If set to true, `script` tags inside the response will be evaluated.
 * evalResponse - (*boolean*: defaults to *false*) If set to true, the entire response will be evaluated. Responses with javascript content-type will be evaluated automatically.
-* user       - (*string*: defaults to *null*) When username is set the Request will open with credentials and try to authenticate.
+* user       - (*string*: defaults to *null*) The username to use for http basic authentication.
 * password   - (*string*: defaults to *null*) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
+* withCredentials   - (*boolean*: defaults to *false*) If set to true, xhr.withCredentials will be set to true allowing cookies/auth to be passed for cross origin requests
 
 ### Events:
 
