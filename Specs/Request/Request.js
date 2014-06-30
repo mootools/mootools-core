@@ -7,6 +7,7 @@ provides: ~
 */
 
 describe('Request', function(){
+	var hasWithCredentials = 'withCredentials' in new Browser.Request;
 
 	beforeEach(function(){
 		this.xhr = sinon.useFakeXMLHttpRequest();
@@ -144,7 +145,8 @@ describe('Request', function(){
 	});
 
 	/*<1.4compat>*/
-	it('should set xhr.withCredentials flag in 1.4 for this.options.user', function(){
+	var dit = hasWithCredentials ? it : xit;
+	dit('should set xhr.withCredentials flag in 1.4 for this.options.user', function(){
 		var request = new Request({
 			url: '/something/or/other',
 			user: 'someone'
@@ -154,7 +156,7 @@ describe('Request', function(){
 	});
 	/*</1.4compat>*/
 
-	var dit = /*<1.4compat>*/xit || /*</1.4compat>*/it; // don't run unless no compat
+	var dit = hasWithCredentials ? /*<1.4compat>*/xit || /*</1.4compat>*/it : xit; // don't run unless no compat
 	dit('should not set xhr.withCredentials flag in 1.5 for this.options.user', function(){
 		var request = new Request({
 			url: '/something/or/other',
