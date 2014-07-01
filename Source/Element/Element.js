@@ -1083,10 +1083,11 @@ if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements){
 		translations.thead = translations.tfoot = translations.tbody;
 
 		return function(html){
-			var wrap = translations[this.get('tag')];
+
 			/*<ltIE9>*/
-			if (!wrap && this.styleSheet) return set.call(this, html);
+			if (this.styleSheet) return set.call(this, html);
 			/*</ltIE9>*/
+			var wrap = translations[this.get('tag')];
 			if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
 			if (!wrap) return set.call(this, html);
 
