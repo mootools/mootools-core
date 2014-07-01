@@ -134,7 +134,7 @@ Element.implement({
 	getStyle: function(property){
 		if (property == 'opacity') return getOpacity(this);
 		property = (property == 'float' ? floatName : property).camelCase();
-		if (supportBorderRadius && ~property.indexOf('borderRadius')){
+		if (supportBorderRadius && property.indexOf('borderRadius') != -1){
 			return ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'].map(function(corner){
 				return this.style[corner] || '0px';
 			}, this).join(' ');
