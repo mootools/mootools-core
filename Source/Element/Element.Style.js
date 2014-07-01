@@ -32,7 +32,8 @@ var returnsBordersInWrongOrder = el.style.border != border;
 el = null;
 //</ltIE9>
 
-var hasGetComputedStyle = !!window.getComputedStyle;
+var hasGetComputedStyle = !!window.getComputedStyle,
+	supportBorderRadius = document.body.style.borderRadius != null;
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
@@ -133,6 +134,11 @@ Element.implement({
 	getStyle: function(property){
 		if (property == 'opacity') return getOpacity(this);
 		property = (property == 'float' ? floatName : property).camelCase();
+		if (supportBorderRadius && property.indexOf('borderRadius') != -1){
+			return ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'].map(function(corner){
+				return this.style[corner] || '0px';
+			}, this).join(' ');
+		}
 		var result = this.style[property];
 		if (!result || property == 'zIndex'){
 			if (Element.ShortStyles.hasOwnProperty(property)){
@@ -170,6 +176,7 @@ Element.implement({
 			return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
 		}
 		//</ltIE9>
+
 		return result;
 	},
 
@@ -195,7 +202,7 @@ Element.Styles = {
 	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
 	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
 	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
+	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@', borderRadius: '@px @px @px @px'
 };
 
 //<1.3compat>
