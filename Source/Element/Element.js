@@ -1031,13 +1031,11 @@ Element.Properties.html = {
 		else if (typeOf(html) == 'array') html = html.join('');
 
 		/*<ltIE9>*/
-		if (!canChangeStyleHtml && this.styleSheet) this.styleSheet.cssText = html;
+		if (this.styleSheet && !canChangeStyleHtml) this.styleSheet.cssText = html;
 		else /*</ltIE9>*/this.innerHTML = html;
 	},
 	erase: function(){
-		/*<ltIE9>*/
 		this.set('html', '');
-		// /*</ltIE9>*/this.innerHTML = '';
 	}
 
 };
