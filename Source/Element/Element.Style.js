@@ -32,17 +32,8 @@ var returnsBordersInWrongOrder = el.style.border != border;
 el = null;
 //</ltIE9>
 
-var hasGetComputedStyle = !!window.getComputedStyle;
-
-var borderRadiusRegEx = new RegExp(/borderRadius/), 
-	supportBorderRadius = document.body.style.borderRadius != null ? true : false;
-var getBorderRadius = function(el){
-	result = [];
-	['border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius'].each(function(corner){
-		result.push(el.getStyle(corner) || '0px');
-	});
-	return result.join(' ');
-};
+var hasGetComputedStyle = !!window.getComputedStyle,
+	supportBorderRadius = document.body.style.borderRadius != null;
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
@@ -143,7 +134,11 @@ Element.implement({
 	getStyle: function(property){
 		if (property == 'opacity') return getOpacity(this);
 		property = (property == 'float' ? floatName : property).camelCase();
-		if (property.match(borderRadiusRegEx)) return supportBorderRadius ? getBorderRadius(this) : null;
+		if (supportBorderRadius && ~property.indexOf('borderRadius')){
+			return ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'].map(function(corner){
+				return this.style[corner] || '0px';
+			}, this).join(' ');
+		}
 		var result = this.style[property];
 		if (!result || property == 'zIndex'){
 			if (Element.ShortStyles.hasOwnProperty(property)){
