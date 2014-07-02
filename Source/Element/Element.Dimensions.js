@@ -27,7 +27,23 @@ element.appendChild(child);
 var brokenOffsetParent = (child.offsetParent === element);
 element = child = null;
 
-var hasGetComputedStyle = !!window.getComputedStyle;
+var hasLimitedGetClientBoudingRect = !document.body.getBoundingClientRect().width;
+var heightComponents = ['height', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
+	widthComponents = ['width', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'];
+
+var svgCalculateSize = function(el){
+
+	var gCS = window.getComputedStyle(el),
+		bounds = {x: 0, y: 0};
+
+	heightComponents.each(function(css){
+		bounds.y += parseFloat(gCS[css]);
+	});
+	widthComponents.each(function(css){
+		bounds.x += parseFloat(gCS[css]);
+	});
+	return bounds;
+};
 
 var isOffset = function(el){
 	return styleString(el, 'position') != 'static' || isBody(el);
@@ -35,10 +51,6 @@ var isOffset = function(el){
 
 var isOffsetStatic = function(el){
 	return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
-};
-
-var parseComputedStyle = function(v){
-	return parseFloat(v.match(/([0-9.?]{1,})/));
 };
 
 Element.implement({
@@ -57,33 +69,16 @@ Element.implement({
 		if (isBody(this)) return this.getWindow().getSize();
 
 		//<ltIE9>
-		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with hidden visibility.
-		if (!hasGetComputedStyle) return {x: this.offsetWidth, y: this.offsetHeight};
+		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with visibility hidden.
+		if (hasLimitedGetClientBoudingRect) return {x: this.offsetWidth, y: this.offsetHeight};
 		//</ltIE9>
 
-		// This section inside the `if == true` can be removed when FF fixed the svg size bug.
+		// This svg section under, calling `svgCalculateSize()`, can be removed when FF fixed the svg size bug.
 		// Bug info: https://bugzilla.mozilla.org/show_bug.cgi?id=530985
-		// The same applies to the parseComputedStyle function starting with `var parseComputedStyle = function(v){`.
-		if (this.get('tag') == 'svg'){
-
-			var gCS = window.getComputedStyle(this), bounds;
-			var gCScomponents = {
-				height: ['height', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
-				width: ['width', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth']
-			};
-			bounds = {x: 0, y: 0};
-			gCScomponents.height.each(function(css){
-				bounds.y += parseComputedStyle(gCS[css]);
-			});
-			gCScomponents.width.each(function(css){
-				bounds.x += parseComputedStyle(gCS[css]);
-			});
-			return bounds;
-
-		} else {
-			bounds = this.getBoundingClientRect();
-			return {x: bounds.width, y: bounds.height};
-		}
+		if (this.get('tag') == 'svg') return svgCalculateSize(this);
+		
+		var bounds = this.getBoundingClientRect();
+		return {x: bounds.width, y: bounds.height};
 	},
 
 	getScrollSize: function(){
