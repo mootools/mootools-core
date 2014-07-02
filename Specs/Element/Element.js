@@ -2422,6 +2422,9 @@ describe('IFrame', function(){
 			return this.onComplete.wasCalled;
 		});
 
+		runs(function(){
+			this.iframe.destroy();
+		});
 	});
 
 });
