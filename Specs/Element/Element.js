@@ -2586,3 +2586,36 @@ describe('Element', function(){
 	});
 
 });
+describe('normalize value for new Element type == checkbox || radio', function(){
+
+	it('value of new created checkbox should be "on" if none specified', function() {
+		var input = new Element('input', {
+			type: 'checkbox'
+		});
+		input.set('checked', true);
+		expect(input.get('value')).toEqual('on');
+	});
+	it('value of new created checkbox should be the specified in constructor', function() {
+		var input = new Element('input', {
+			type: 'checkbox',
+			value: 'someValue'
+		});
+		input.set('checked', true);
+		expect(input.get('value')).toEqual('someValue');
+	});
+	it('value of new created radio button should be "on" if none specified', function() {
+		var input = new Element('input', {
+			type: 'radio'
+		});
+		input.set('checked', true);
+		expect(input.get('value')).toEqual('on');
+	});
+	it('value of new created radio should be the specified in constructor', function() {
+		var input = new Element('input', {
+			type: 'radio',
+			value: 'someValue'
+		});
+		input.set('checked', true);
+		expect(input.get('value')).toEqual('someValue');
+	});
+});
