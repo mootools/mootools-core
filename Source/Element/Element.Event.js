@@ -139,6 +139,8 @@ Element.NativeEvents = {
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, paste: 2, input: 2, //form elements
 	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 	hashchange: 1, popstate: 2, // history
+	loadstart: 2, progress: 2, suspend: 2, emptied: 2, stalled: 2, play: 2, pause: 2, loadedmetadata: 2, loadeddata: 2, // audio
+	waiting: 2, playing: 2, canplay: 2, canplaythrough: 2, seeking: 2, seeked: 2, timeupdate: 2, ended: 2, ratechange: 2, durationchange: 2, volumechange: 2, // audio
 	error: 1, abort: 1, scroll: 1 //misc
 };
 
