@@ -1866,6 +1866,29 @@ describe('Element.set("html")', function(){
 		styleElement.destroy();
 	});
 
+	it('should set the text of a style Element', function(){
+		
+		var docHead = $(document.head);
+		var styleElement = new Element('style', {type: 'text/css'}).inject(docHead);
+		var definition = [
+			'.pos-abs-left {',
+				'position: absolute;',
+				'width: 200px;',
+				'height: 200px;',
+				'left: 10%;',
+				'background: red;',
+			'}'
+		].join('');
+		styleElement.set('text', definition);
+		var returned = styleElement.get('text').toLowerCase();
+		expect(returned.indexOf('position: absolute')).not.toEqual(-1);
+		expect(returned.indexOf('width: 200px')).not.toEqual(-1);
+		expect(returned.indexOf('height: 200px')).not.toEqual(-1);
+		expect(returned.indexOf('left: 10%')).not.toEqual(-1);
+		expect(returned.indexOf('background: red')).not.toEqual(-1);
+		styleElement.destroy();
+	});
+
 });
 
 describe('Elements.empty', function(){
