@@ -237,7 +237,7 @@ Document.implement({
 			if (!canChangeStyleHTML && tag == 'style'){
 				var styleElement = document.createElement('style');
 				styleElement.setAttribute('type', 'text/css');
-				props.type && delete props.type;
+				if (props.type) delete props.type;
 				return this.id(styleElement).set(props);
 			}
 			/*</ltIE9>*/
@@ -552,15 +552,27 @@ properties.text = (document.createElement('div').textContent == null) ? 'innerTe
 
 Object.forEach(properties, function(real, key){
 	propertySetters[key] = function(node, value){
-		/*<ltIE9>*/
-		if (node.get('tag') == 'style' && node.styleSheet) node.set('html', value);
-		else /*</ltIE9>*/node[real] = value;		
+		node[real] = value;		
 	};
 	propertyGetters[key] = function(node){
-		if (node.get('tag') == 'style' && node.styleSheet) return node.innerHTML;
 		return node[real];
 	};
 });
+
+/*<ltIE9>*/
+propertySetters.text = (function(setter){
+	return function(node, value){
+		if (node.get('tag') == 'style') node.set('html', value);
+		else node[properties.text] = value;
+	};
+})(propertySetters.text);
+
+propertyGetters.text = (function(getter){
+	return function(node){
+		return (node.get('tag') == 'style') ? node.innerHTML : getter(node);
+	};
+})(propertyGetters.text);
+/*</ltIE9>*/
 
 // Booleans
 
