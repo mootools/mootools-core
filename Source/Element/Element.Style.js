@@ -33,7 +33,7 @@ el = null;
 //</ltIE9>
 
 var hasGetComputedStyle = !!window.getComputedStyle,
-	supportBorderRadius = document.body.style.borderRadius != null;
+	supportBorderRadius = document.createElement('div').style.borderRadius != null;
 
 Element.Properties.styles = {set: function(styles){
 	this.setStyles(styles);
