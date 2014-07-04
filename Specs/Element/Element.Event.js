@@ -202,7 +202,13 @@ describe('Element.Event', function(){
 
 	});
 
-	// Only run this spec in browsers other than IE6-8 because they can't properly simulate key events
+	if (window.postMessage && !navigator.userAgent.match(/phantomjs/i)) it('Should trigger message event', function(){
+		var spy = jasmine.createSpy('message');
+		window.addEvent('message', spy);
+		window.postMessage('test', 'http://localhost/');
+		expect(spy).toHaveBeenCalled();
+	});
+
 	it('Should watch for a key-down event', function(){
 
 		var callback = jasmine.createSpy('keydown');
