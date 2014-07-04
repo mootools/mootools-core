@@ -552,7 +552,7 @@ properties.text = (document.createElement('div').textContent == null) ? 'innerTe
 
 Object.forEach(properties, function(real, key){
 	propertySetters[key] = function(node, value){
-		node[real] = value;		
+		node[real] = value;
 	};
 	propertyGetters[key] = function(node){
 		return node[real];
