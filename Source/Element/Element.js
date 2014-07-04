@@ -214,12 +214,33 @@ var escapeQuotes = function(html){
 };
 /*</ltIE8>*/
 
+/*<ltIE9>*/
+// #2479 - IE8 Cannot set HTML of style element
+var canChangeStyleHTML = (function(){
+    var div = document.createElement('style'),
+        flag = false;
+    try {
+        div.innerHTML = '#justTesing{margin: 0px;}';
+        flag = !!div.innerHTML;
+    } catch(e){}
+    return flag;
+})();
+/*</ltIE9>*/
+
 Document.implement({
 
 	newElement: function(tag, props){
 		if (props){
 			if (props.checked != null) props.defaultChecked = props.checked;
 			if ((props.type == 'checkbox' || props.type == 'radio') && props.value == null) props.value = 'on'; 
+			/*<ltIE9>*/ // IE needs the type to be set before changing content of style element
+			if (!canChangeStyleHTML && tag == 'style'){
+				var styleElement = document.createElement('style');
+				styleElement.setAttribute('type', 'text/css');
+				if (props.type) delete props.type;
+				return this.id(styleElement).set(props);
+			}
+			/*</ltIE9>*/
 			/*<ltIE8>*/// Fix for readonly name and type properties in IE < 8
 			if (createElementAcceptsHTML){
 				tag = '<' + tag;
@@ -531,12 +552,27 @@ properties.text = (document.createElement('div').textContent == null) ? 'innerTe
 
 Object.forEach(properties, function(real, key){
 	propertySetters[key] = function(node, value){
-		node[real] = value;
+		node[real] = value;		
 	};
 	propertyGetters[key] = function(node){
 		return node[real];
 	};
 });
+
+/*<ltIE9>*/
+propertySetters.text = (function(setter){
+	return function(node, value){
+		if (node.get('tag') == 'style') node.set('html', value);
+		else node[properties.text] = value;
+	};
+})(propertySetters.text);
+
+propertyGetters.text = (function(getter){
+	return function(node){
+		return (node.get('tag') == 'style') ? node.innerHTML : getter(node);
+	};
+})(propertyGetters.text);
+/*</ltIE9>*/
 
 // Booleans
 
@@ -599,7 +635,7 @@ el = null;
 
 /*<ltIE9>*/
 // #2479 - IE8 Cannot set HTML of style element
-var canChangeStyleHtml = (function(){
+var canChangeStyleHTML = (function(){
     var div = document.createElement('style'),
         flag = false;
     try {
@@ -1034,7 +1070,7 @@ Element.Properties.html = {
 		else if (typeOf(html) == 'array') html = html.join('');
 
 		/*<ltIE9>*/
-		if (this.styleSheet && !canChangeStyleHtml) this.styleSheet.cssText = html;
+		if (this.styleSheet && !canChangeStyleHTML) this.styleSheet.cssText = html;
 		else /*</ltIE9>*/this.innerHTML = html;
 	},
 	erase: function(){
