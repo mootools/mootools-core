@@ -27,7 +27,6 @@ element.appendChild(child);
 var brokenOffsetParent = (child.offsetParent === element);
 element = child = null;
 
-var hasLimitedGetClientBoudingRect = !document.body.getBoundingClientRect().width;
 var heightComponents = ['height', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
 	widthComponents = ['width', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'];
 
@@ -70,7 +69,7 @@ Element.implement({
 
 		//<ltIE9>
 		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with visibility hidden.
-		if (hasLimitedGetClientBoudingRect) return {x: this.offsetWidth, y: this.offsetHeight};
+		if (!window.getComputedStyle) return {x: this.offsetWidth, y: this.offsetHeight};
 		//</ltIE9>
 
 		// This svg section under, calling `svgCalculateSize()`, can be removed when FF fixed the svg size bug.
