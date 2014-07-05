@@ -203,10 +203,18 @@ describe('Element.Event', function(){
 	});
 
 	if (window.postMessage && !navigator.userAgent.match(/phantomjs/i)) it('Should trigger message event', function(){
-		var spy = jasmine.createSpy('message');
-		window.addEvent('message', spy);
-		window.postMessage('test', 'http://localhost/');
-		expect(spy).toHaveBeenCalled();
+
+		var theMessage, spy = jasmine.createSpy('message');
+		window.addEvent('message', function(e){
+			theMessage = e.event.data;
+			spy();
+		});
+		window.postMessage('I am a message from outer space...', '*');
+		waits(150);
+		runs(function(){
+			expect(spy).toHaveBeenCalled();
+			expect(theMessage).toEqual('I am a message from outer space...');
+		});
 	});
 
 	it('Should watch for a key-down event', function(){
