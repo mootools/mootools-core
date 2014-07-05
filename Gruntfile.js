@@ -6,7 +6,6 @@ module.exports = function(grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	var fs = require('fs');
-	var pullRequest = process.env.TRAVIS_PULL_REQUEST;	
 	var distTasks = JSON.parse(fs.readFileSync('Tests/dist-tasks.json'));
 	var options = require('./Tests/gruntfile-options');
 
@@ -48,10 +47,9 @@ module.exports = function(grunt) {
 		}
 	});
 
-	var compatBuild = ['clean:specs', 'packager:all', 'packager:specs'];
-	var nocompatBuild = ['clean:specs', 'packager:nocompat', 'packager:specs-nocompat'];
+	var compatBuild = ['clean:specs', 'packager:all', 'packager:specs', 'karma:sauceTask'];
+	var nocompatBuild = ['clean:specs', 'packager:nocompat', 'packager:specs-nocompat', 'karma:sauceTask'];
 	var tasks = options.travis.build == 'default' ? compatBuild : nocompatBuild;
-	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
 
 	grunt.registerTask('default', compatBuild.concat('karma:continuous'));		// local testing - compat build
 	grunt.registerTask('nocompat', nocompatBuild.concat('karma:continuous'));	// local testing - no compat build
