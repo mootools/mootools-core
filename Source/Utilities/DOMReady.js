@@ -24,15 +24,15 @@ var ready,
 	testElement = document.createElement('div');
 
 var domready = function(){
-  clearTimeout(timer);
-  if (!ready) {
-    Browser.loaded = ready = true;
-    document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
-    document.fireEvent('domready');
-    window.fireEvent('domready');
-  }
-  // cleanup scope vars
-  document = window = testElement = null;
+	clearTimeout(timer);
+	if (!ready) {
+		Browser.loaded = ready = true;
+		document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
+		document.fireEvent('domready');
+		window.fireEvent('domready');
+	}
+	// cleanup scope vars
+	document = window = testElement = null;
 };
 
 var check = function(){
