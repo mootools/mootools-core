@@ -14,10 +14,10 @@ provides: [Browser, Window, Document]
 ...
 */
 
-(function(){
+(function(global){
 
-var document = this.document;
-var window = document.window = this;
+var document = global.document;
+var window = document.window = global;
 
 var parse = function(ua, platform){
 	ua = ua.toLowerCase();
@@ -52,9 +52,9 @@ if (Browser.name == 'ie'){
 Browser.extend({
 	Features: {
 		xpath: !!(document.evaluate),
-		air: !!(window.runtime),
+		air: !!(global.runtime),
 		query: !!(document.querySelector),
-		json: !!(window.JSON)
+		json: !!(global.JSON)
 	},
 	parseUA: parse
 });
@@ -131,8 +131,8 @@ Browser.Plugins = {
 
 Browser.exec = function(text){
 	if (!text) return text;
-	if (window.execScript){
-		window.execScript(text);
+	if (global.execScript){
+		global.execScript(text);
 	} else {
 		var script = document.createElement('script');
 		script.setAttribute('type', 'text/javascript');
@@ -163,15 +163,15 @@ Browser.extend({
 	Event: this.Event
 });
 
-this.Window = this.$constructor = new Type('Window', function(){});
+global.Window = global.$constructor = new Type('Window', function(){});
 
-this.$family = Function.from('window').hide();
+global.$family = Function.from('window').hide();
 
 Window.mirror(function(name, method){
-	window[name] = method;
+	global[name] = method;
 });
 
-this.Document = document.$constructor = new Type('Document', function(){});
+global.Document = document.$constructor = new Type('Document', function(){});
 
 document.$family = Function.from('document').hide();
 
@@ -187,12 +187,12 @@ if (document.execCommand) try {
 } catch (e){}
 
 /*<ltIE9>*/
-if (this.attachEvent && !this.addEventListener){
+if (global.attachEvent && !global.addEventListener){
 	var unloadEvent = function(){
-		this.detachEvent('onunload', unloadEvent);
+		global.detachEvent('onunload', unloadEvent);
 		document.head = document.html = document.window = null;
 	};
-	this.attachEvent('onunload', unloadEvent);
+	global.attachEvent('onunload', unloadEvent);
 }
 
 // IE fails on collections and <select>.options (refers to <select>)
@@ -278,8 +278,8 @@ if (Browser.name == 'unknown'){
 	}
 }
 
-this.$exec = Browser.exec;
+global.$exec = Browser.exec;
 
 //</1.2compat>
 
-})();
+})(this);

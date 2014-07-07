@@ -13,8 +13,8 @@ provides: [Element, Elements, $, $$, IFrame, Selectors]
 
 ...
 */
-
-var Element = this.Element = function(tag, props){
+(function(global){
+var Element = global.Element = function(tag, props){
 	var konstructor = Element.Constructors[tag];
 	if (konstructor) return konstructor(props);
 	if (typeof tag != 'string') return document.id(tag).set(props);
@@ -89,7 +89,7 @@ Element.Constructors = new Hash;
 
 //</1.2compat>
 
-var IFrame = new Type('IFrame', function(){
+var IFrame = global.IFrame = new Type('IFrame', function(){
 	var params = Array.link(arguments, {
 		properties: Type.isObject,
 		iframe: function(obj){
@@ -108,12 +108,12 @@ var IFrame = new Type('IFrame', function(){
 		onload.call(iframe.contentWindow);
 	};
 
-	if (window.frames[props.id]) onLoad();
+	if (global.frames[props.id]) onLoad();
 	else iframe.addListener('load', onLoad);
 	return iframe;
 });
 
-var Elements = this.Elements = function(nodes){
+var Elements = global.Elements = function(nodes){
 	if (nodes && nodes.length){
 		var uniques = {}, node;
 		for (var i = 0; node = nodes[i++];){
@@ -183,6 +183,8 @@ new Type('Elements', Elements).implement({
 Elements.alias('extend', 'append');
 
 //</1.2compat>
+
+})(this);
 
 (function(){
 
@@ -259,9 +261,9 @@ Document.implement({
 
 })();
 
-(function(){
+(function(global){
 
-Slick.uidOf(window);
+Slick.uidOf(global);
 Slick.uidOf(document);
 
 Document.implement({
@@ -321,7 +323,7 @@ Document.implement({
 
 });
 
-if (window.$ == null) Window.implement('$', function(el, nc){
+if (global.$ == null) Window.implement('$', function(el, nc){
 	return document.id(el, nc, this.document);
 });
 
@@ -364,8 +366,8 @@ Element.implement('hasChild', function(element){
 
 (function(search, find, match){
 
-	this.Selectors = {};
-	var pseudos = this.Selectors.Pseudo = new Hash();
+	global.Selectors = {};
+	var pseudos = global.Selectors.Pseudo = new Hash();
 
 	var addSlickPseudos = function(){
 		for (var name in pseudos) if (pseudos.hasOwnProperty(name)){
@@ -459,7 +461,7 @@ Element.implement({
 
 //<1.2compat>
 
-if (window.$$ == null) Window.implement('$$', function(selector){
+if (global.$$ == null) Window.implement('$$', function(selector){
 	var elements = new Elements;
 	if (arguments.length == 1 && typeof selector == 'string') return Slick.search(this.document, selector, elements);
 	var args = Array.flatten(arguments);
@@ -475,7 +477,7 @@ if (window.$$ == null) Window.implement('$$', function(selector){
 
 //</1.2compat>
 
-if (window.$$ == null) Window.implement('$$', function(selector){
+if (global.$$ == null) Window.implement('$$', function(selector){
 	if (arguments.length == 1){
 		if (typeof selector == 'string') return Slick.search(this.document, selector, new Elements);
 		else if (Type.isEnumerable(selector)) return new Elements(selector);
@@ -986,7 +988,7 @@ Element.implement({
 [Element, Window, Document].invoke('implement', {
 
 	addListener: function(type, fn){
-		if (window.attachEvent && !window.addEventListener){
+		if (global.attachEvent && !global.addEventListener){
 			collected[Slick.uidOf(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
@@ -1021,13 +1023,13 @@ Element.implement({
 });
 
 /*<ltIE9>*/
-if (window.attachEvent && !window.addEventListener){
+if (global.attachEvent && !global.addEventListener){
 	var gc = function(){
 		Object.each(collected, clean);
-		if (window.CollectGarbage) CollectGarbage();
-		window.removeListener('unload', gc);
+		if (global.CollectGarbage) CollectGarbage();
+		global.removeListener('unload', gc);
 	}
-	window.addListener('unload', gc);
+	global.addListener('unload', gc);
 }
 /*</ltIE9>*/
 
@@ -1191,4 +1193,4 @@ if (document.createElement('div').getAttributeNode('id')) Element.Properties.id 
 };
 /*</IE>*/
 
-})();
+})(this);

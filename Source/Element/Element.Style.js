@@ -14,7 +14,7 @@ provides: Element.Style
 ...
 */
 
-(function(){
+(function(global){
 
 var html = document.html, el;
 
@@ -32,7 +32,7 @@ var returnsBordersInWrongOrder = el.style.border != border;
 el = null;
 //</ltIE9>
 
-var hasGetComputedStyle = !!window.getComputedStyle,
+var hasGetComputedStyle = !!global.getComputedStyle,
 	supportBorderRadius = document.createElement('div').style.borderRadius != null;
 
 Element.Properties.styles = {set: function(styles){
@@ -260,4 +260,4 @@ Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, bor
 });
 
 if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
-})();
+})(this);
