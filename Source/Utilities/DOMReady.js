@@ -14,7 +14,7 @@ provides: [DOMReady, DomReady]
 ...
 */
 
-(function(window, document){
+(function(global, document){
 
 var ready,
 	loaded,
@@ -30,7 +30,7 @@ var domready = function(){
 	document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
 
 	document.fireEvent('domready');
-	window.fireEvent('domready');
+	global.fireEvent('domready');
 };
 
 var check = function(){
@@ -86,10 +86,10 @@ Element.Events.domready = {
 Element.Events.load = {
 	base: 'load',
 	onAdd: function(fn){
-		if (loaded && this == window) fn.call(this);
+		if (loaded && this == global) fn.call(this);
 	},
 	condition: function(){
-		if (this == window){
+		if (this == global){
 			domready();
 			delete Element.Events.load;
 		}
@@ -98,8 +98,8 @@ Element.Events.load = {
 };
 
 // This is based on the custom load event
-window.addEvent('load', function(){
+global.addEvent('load', function(){
 	loaded = true;
 });
 
-})(window, document);
+})(this, document);

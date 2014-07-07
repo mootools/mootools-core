@@ -14,12 +14,12 @@ provides: Request
 ...
 */
 
-(function(){
+(function(global){
 
 var empty = function(){},
 	progressSupport = ('onprogress' in new Browser.Request);
 
-var Request = this.Request = new Class({
+var Request = global.Request = new Class({
 
 	Implements: [Chain, Events, Options],
 
@@ -282,4 +282,4 @@ Element.implement({
 
 });
 
-})();
+})(this);

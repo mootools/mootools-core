@@ -14,9 +14,9 @@ provides: Fx
 ...
 */
 
-(function(){
+(function(global){
 
-var Fx = this.Fx = new Class({
+var Fx = global.Fx = new Class({
 
 	Implements: [Chain, Events, Options],
 
@@ -180,4 +180,4 @@ var pullInstance = function(fps){
 	}
 };
 
-})();
+})(this);

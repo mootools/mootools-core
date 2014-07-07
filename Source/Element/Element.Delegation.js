@@ -14,9 +14,9 @@ provides: [Element.Delegation]
 ...
 */
 
-(function(){
+(function(global){
 
-var eventListenerSupport = !!window.addEventListener;
+var eventListenerSupport = !!global.addEventListener;
 
 Element.NativeEvents.focusin = Element.NativeEvents.focusout = 2;
 
@@ -198,4 +198,4 @@ var delegation = {
 	removeEvent: relay(removeEvent, delegation.removeEvent)
 });
 
-})();
+})(this);

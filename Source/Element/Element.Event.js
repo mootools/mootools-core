@@ -14,7 +14,7 @@ provides: Element.Event
 ...
 */
 
-(function(){
+(function(global){
 
 Element.Properties.events = {set: function(events){
 	this.addEvents(events);
@@ -171,7 +171,7 @@ if ('onmouseenter' in document.documentElement){
 }
 
 /*<ltIE9>*/
-if (!window.addEventListener){
+if (!global.addEventListener){
 	Element.NativeEvents.propertychange = 2;
 	Element.Events.change = {
 		base: function(){
@@ -191,4 +191,4 @@ Element.Events = new Hash(Element.Events);
 
 //</1.2compat>
 
-})();
+})(this);

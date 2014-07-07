@@ -18,7 +18,7 @@ provides: [Element.Dimensions]
 ...
 */
 
-(function(){
+(function(global){
 
 var element = document.createElement('div'),
 	child = document.createElement('div');
@@ -32,7 +32,7 @@ var heightComponents = ['height', 'paddingTop', 'paddingBottom', 'borderTopWidth
 
 var svgCalculateSize = function(el){
 
-	var gCS = window.getComputedStyle(el),
+	var gCS = global.getComputedStyle(el),
 		bounds = {x: 0, y: 0};
 
 	heightComponents.each(function(css){
@@ -69,7 +69,7 @@ Element.implement({
 
 		//<ltIE9>
 		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with visibility hidden.
-		if (!window.getComputedStyle) return {x: this.offsetWidth, y: this.offsetHeight};
+		if (!global.getComputedStyle) return {x: this.offsetWidth, y: this.offsetHeight};
 		//</ltIE9>
 
 		// This svg section under, calling `svgCalculateSize()`, can be removed when FF fixed the svg size bug.
@@ -274,7 +274,7 @@ function getCompatElement(element){
 	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 }
 
-})();
+})(this);
 
 //aliases
 Element.alias({position: 'setPosition'}); //compatability

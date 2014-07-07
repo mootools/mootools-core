@@ -14,12 +14,12 @@ provides: Event
 ...
 */
 
-(function() {
+(function(global) {
 
 var _keys = {};
 
-var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
-	if (!win) win = window;
+var DOMEvent = global.DOMEvent = new Type('DOMEvent', function(event, win){
+	if (!win) win = global;
 	event = event || win.event;
 	if (event.$extended) return event;
 	this.event = event;
@@ -111,10 +111,8 @@ DOMEvent.defineKeys({
 	'46': 'delete', '13': 'enter'
 });
 
-})();
-
 /*<1.3compat>*/
-var Event = DOMEvent;
+global.Event = DOMEvent;
 Event.Keys = {};
 /*</1.3compat>*/
 
@@ -123,3 +121,4 @@ Event.Keys = {};
 Event.Keys = new Hash(Event.Keys);
 
 /*</1.2compat>*/
+})(this);

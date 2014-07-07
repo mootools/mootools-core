@@ -20,16 +20,16 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 ...
 */
 
-(function(){
+(function(global){
 
-this.MooTools = {
+global.MooTools = {
 	version: '1.5.1-dev',
 	build: '%build%'
 };
 
 // typeOf, instanceOf
 
-var typeOf = this.typeOf = function(item){
+var typeOf = global.typeOf = function(item){
 	if (item == null) return 'null';
 	if (item.$family != null) return item.$family();
 
@@ -44,7 +44,7 @@ var typeOf = this.typeOf = function(item){
 	return typeof item;
 };
 
-var instanceOf = this.instanceOf = function(item, object){
+var instanceOf = global.instanceOf = function(item, object){
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
 	while (constructor){
@@ -59,7 +59,7 @@ var instanceOf = this.instanceOf = function(item, object){
 
 // Function overloading
 
-var Function = this.Function;
+var Function = global.Function;
 
 var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
@@ -149,7 +149,7 @@ Function.implement({
 
 // Type
 
-var Type = this.Type = function(name, object){
+var Type = global.Type = function(name, object){
 	if (name){
 		var lower = name.toLowerCase();
 		var typeCheck = function(item){
@@ -400,7 +400,7 @@ String.extend('uniqueID', function(){
 
 //<1.2compat>
 
-var Hash = this.Hash = new Type('Hash', function(object){
+var Hash = global.Hash = new Type('Hash', function(object){
 	if (typeOf(object) == 'hash') object = Object.clone(object.getClean());
 	for (var key in object) this[key] = object[key];
 	return this;
@@ -434,7 +434,7 @@ Hash.alias('each', 'forEach');
 
 Object.type = Type.isObject;
 
-var Native = this.Native = function(properties){
+var Native = global.Native = function(properties){
 	return new Type(properties.name, properties.initialize);
 };
 
@@ -450,64 +450,64 @@ Array.type = function(item){
 	return instanceOf(item, Array) || arrayType(item);
 };
 
-this.$A = function(item){
+global.$A = function(item){
 	return Array.from(item).slice();
 };
 
-this.$arguments = function(i){
+global.$arguments = function(i){
 	return function(){
 		return arguments[i];
 	};
 };
 
-this.$chk = function(obj){
+global.$chk = function(obj){
 	return !!(obj || obj === 0);
 };
 
-this.$clear = function(timer){
+global.$clear = function(timer){
 	clearTimeout(timer);
 	clearInterval(timer);
 	return null;
 };
 
-this.$defined = function(obj){
+global.$defined = function(obj){
 	return (obj != null);
 };
 
-this.$each = function(iterable, fn, bind){
+global.$each = function(iterable, fn, bind){
 	var type = typeOf(iterable);
 	((type == 'arguments' || type == 'collection' || type == 'array' || type == 'elements') ? Array : Object).each(iterable, fn, bind);
 };
 
-this.$empty = function(){};
+global.$empty = function(){};
 
-this.$extend = function(original, extended){
+global.$extend = function(original, extended){
 	return Object.append(original, extended);
 };
 
-this.$H = function(object){
+global.$H = function(object){
 	return new Hash(object);
 };
 
-this.$merge = function(){
+global.$merge = function(){
 	var args = Array.slice(arguments);
 	args.unshift({});
 	return Object.merge.apply(null, args);
 };
 
-this.$lambda = Function.from;
-this.$mixin = Object.merge;
-this.$random = Number.random;
-this.$splat = Array.from;
-this.$time = Date.now;
+global.$lambda = Function.from;
+global.$mixin = Object.merge;
+global.$random = Number.random;
+global.$splat = Array.from;
+global.$time = Date.now;
 
-this.$type = function(object){
+global.$type = function(object){
 	var type = typeOf(object);
 	if (type == 'elements') return 'array';
 	return (type == 'null') ? false : type;
 };
 
-this.$unlink = function(object){
+global.$unlink = function(object){
 	switch (typeOf(object)){
 		case 'object': return Object.clone(object);
 		case 'array': return Array.clone(object);
@@ -518,4 +518,4 @@ this.$unlink = function(object){
 
 //</1.2compat>
 
-})();
+})(this);
