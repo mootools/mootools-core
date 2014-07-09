@@ -213,6 +213,7 @@ var Request = this.Request = new Class({
 			}
 		}, this);
 
+		this.url = url;
 		this.fireEvent('request');
 		xhr.send(data);
 		if (!this.options.async) this.onStateChange();
@@ -231,6 +232,7 @@ var Request = this.Request = new Class({
 		}
 		xhr.onreadystatechange = empty;
 		if (progressSupport) xhr.onprogress = xhr.onloadstart = empty;
+		this.url = undefined;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
 		return this;
