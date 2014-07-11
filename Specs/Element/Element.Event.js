@@ -376,4 +376,98 @@ describe('Element.removeEvent', function(){
 
 });
 
+describe('Mouse wheel', function(){
+
+	function attachProperties(e, direction){
+		e.detail = 1 * direction;
+		e.wheelDelta = 1 * direction;
+		e.deltaY = -1 * direction;
+	}
+
+	function createFakeWheel(event, wheelDirection){
+
+		var evt;
+		try{
+			// Firefox
+			evt = document.createEvent("MouseEvents");
+			evt.initMouseEvent(event, true, true, window, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
+			attachProperties(evt, wheelDirection);
+			window.dispatchEvent(evt);
+		}catch(ignore){}
+
+		try{
+			// Chrome, PhantomJS, Safari
+			evt = document.createEvent("WheelEvent");
+			evt.initMouseEvent(event, 0, 100, window, 0, 0, 0, 0, null, null, null, null);
+			attachProperties(evt, wheelDirection);
+			window.dispatchEvent(evt);
+		}catch(ignore2){}
+
+		try{
+			// IE9
+			evt = document.createEvent("HTMLEvents");
+			evt.initEvent(event, true, false);
+			attachProperties(evt, wheelDirection);
+			window.dispatchEvent(evt);
+		}catch(ignore3){}
+
+		try{
+			// IE10+, Safari
+			var evt = document.createEvent("MouseEvents");
+			evt.initEvent(event, true, true);
+			attachProperties(evt, wheelDirection);
+			window.dispatchEvent(evt);
+		}catch(ignore4){}
+
+		try{
+			// IE8
+			var evt = document.createEventObject();
+			document.documentElement.fireEvent(event, evt);
+		}catch(ignore5){}
+	}
+
+	var triggered = false,
+		wheel = false, 
+		testWheel = !!window.addEventListener,
+		callback = function(e){
+			if (e.wheel) wheel = e.wheel > 0 ? 'wheel moved up' : 'wheel moved down';
+			triggered = 'triggered';
+		}
+
+	beforeEach(function(){
+		wheel = triggered = false;
+		window.addEvent('mousewheel', callback);
+		document.documentElement.addEvent('mousewheel', callback);
+	});
+
+	afterEach(function(){
+		window.removeEvent('mousewheel', callback);
+		document.documentElement.removeEvent('mousewheel', callback);
+	});
+
+	it('should trigger/listen to mousewheel event', function(){
+		// http://jsfiddle.net/W6QrS/3
+
+		Array.each(['mousewheel', 'wheel' ,'DOMMouseScroll' ], createFakeWheel);
+		expect(triggered).toBeTruthy();
+	});
+
+	it('should listen to mouse wheel direction', function(){
+		// http://jsfiddle.net/58yCr/
+
+		// fire event with wheel going up
+		Array.each(['mousewheel', 'wheel' ,'DOMMouseScroll' ], function(ev){
+			createFakeWheel(ev, 120);
+		});
+		testWheel && expect(wheel).toEqual('wheel moved up');
+		wheel = false;
+
+		// fire event with wheel going down
+		Array.each(['mousewheel', 'wheel' ,'DOMMouseScroll' ], function(ev){
+			createFakeWheel(ev, -120);
+		});
+		testWheel && expect(wheel).toEqual('wheel moved down');
+	});
+});
+
 })();
