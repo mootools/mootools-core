@@ -14,7 +14,7 @@ provides: Event
 ...
 */
 
-(function() {
+(function(){
 
 var _keys = {};
 

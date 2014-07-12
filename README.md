@@ -16,13 +16,13 @@ You are welcome to contribute to MooTools! What we ask of you:
 
 a. __To report a bug:__
 
-   1. Crete a [jsFiddle](http://jsfiddle.net/) with the minimal amount of code to reproduce the bug.
+   1. Create a [jsFiddle](http://jsfiddle.net/) with the minimal amount of code to reproduce the bug.
    2. Create a [GitHub Issue](https://github.com/mootools/mootools-core/issues), and link to the jsFiddle.
 
 b. __To fix a bug:__
 
    1. Clone the repo.
-   2. Add a [spec](http://jasmine.github.io/1.3/introduction.html).
+   2. Add a [spec](http://jasmine.github.io/1.3/introduction.html). ([example](http://jsfiddle.net/q7RgN/))
    3. Fix the bug.
    4. Build and run the specs.
    5. Push to your GitHub fork.
@@ -39,7 +39,7 @@ Current build process uses [Grunt](http://github.com/gruntjs), [Grunt MooTools P
 **By default**, the build process runs the tests (specs) relevant to the build. To build without testing see the `packager` build targets.
 
 ### Building MooTools _With_ Compatibility
-This means `1.4.6` that is compatible with: `1.3.x`, `1.2.x`, and so on.
+This means `1.5.1` that is compatible with: `1.4.6`, `1.3.x`, `1.2.x`, and so on.
 
 **Examples**
 
@@ -47,7 +47,7 @@ This means `1.4.6` that is compatible with: `1.3.x`, `1.2.x`, and so on.
 	grunt packager:all  # to only build the source
 
 ### Building MooTools _Without_ Compatibility
-This means `1.4.6` **without** deprecated code in `1.3.x`, `1.2.x`, and so on.
+This means `1.5.1` **without** deprecated code in `1.4.6`, `1.3.x`, `1.2.x`, and so on.
 
 ``` js
 'Proceed at your own risk'
@@ -61,7 +61,7 @@ See the changelog or the blog related to each version for migrating your code.
 
 
 ### Advanced Building and Testing
-See the [Gruntfile](https://github.com/mootools/mootools-core/blob/1.4.6/Gruntfile.js) for further options.
+See the [Gruntfile](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js) and [MooTools packager](https://github.com/ibolmo/grunt-mootools-packager) for further options.
 
 **Examples**
 
@@ -74,7 +74,7 @@ See the [Gruntfile](https://github.com/mootools/mootools-core/blob/1.4.6/Gruntfi
 	grunt nocompat --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
 
 #### Removing Other Packager Blocks
-You'll need to add a specific task to the Gruntfile. See [line 24](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js#L46) for an example.
+You'll need to add a specific task to the Gruntfile. See [packager's documentation](https://github.com/ibolmo/grunt-mootools-packager) for more examples.
 
 ### Testing locally
 
@@ -128,7 +128,7 @@ To add new Browsers in [Sauce Labs](https://saucelabs.com/) testing you can do s
 				'safari5_osx10_6'
 			],
 
-	These tasks can be chained so its possible to test more than 3 browsers on the same test. But not more than 3 paralel.
+	These tasks can be chained so its possible to test more than 3 browsers on the same test. But not more than 3 parallel.
 
 __Example of a task chain:__
 (This will run [registered tasks](http://gruntjs.com/api/grunt.task)that have been defined in the steps described before.)
