@@ -28,7 +28,7 @@ var parse = function(ua, platform){
 	if (UA[1] == 'trident'){
 		UA[1] = 'ie';
 		if (UA[4]) UA[2] = UA[4];
-	} else if (UA[1] == 'crios') {
+	} else if (UA[1] == 'crios'){
 		UA[1] = 'chrome';
 	}
 
@@ -63,7 +63,7 @@ Browser.extend({
 Browser[Browser.name] = true;
 Browser[Browser.name + parseInt(Browser.version, 10)] = true;
 
-if (Browser.name == 'ie' && Browser.version >= '11') {
+if (Browser.name == 'ie' && Browser.version >= '11'){
 	delete Browser.ie;
 }
 

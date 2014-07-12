@@ -175,7 +175,7 @@ local.setDocument = function(document){
 		root.slick_expando = 1;
 		delete root.slick_expando;
 		features.getUID = this.getUIDHTML;
-	} catch(e) {
+	} catch(e){
 		features.getUID = this.getUIDXML;
 	}
 
@@ -196,9 +196,9 @@ local.setDocument = function(document){
 
 	// hasAttribute
 
-	features.hasAttribute = (root && this.isNativeCode(root.hasAttribute)) ? function(node, attribute) {
+	features.hasAttribute = (root && this.isNativeCode(root.hasAttribute)) ? function(node, attribute){
 		return node.hasAttribute(attribute);
-	} : function(node, attribute) {
+	} : function(node, attribute){
 		node = node.getAttributeNode(attribute);
 		return !!(node && (node.specified || node.nodeValue));
 	};
@@ -280,7 +280,7 @@ local.search = function(context, expression, append, first){
 
 		/*<simple-selectors-override>*/
 		var simpleSelector = expression.match(reSimpleSelector);
-		simpleSelectors: if (simpleSelector) {
+		simpleSelectors: if (simpleSelector){
 
 			var symbol = simpleSelector[1],
 				name = simpleSelector[2],
@@ -333,7 +333,7 @@ local.search = function(context, expression, append, first){
 		/*</simple-selectors-override>*/
 
 		/*<query-selector-override>*/
-		querySelector: if (context.querySelectorAll) {
+		querySelector: if (context.querySelectorAll){
 
 			if (!this.isHTMLDocument
 				|| qsaFailExpCache[expression]
@@ -362,7 +362,7 @@ local.search = function(context, expression, append, first){
 			try {
 				if (first) return context.querySelector(_expression) || null;
 				else nodes = context.querySelectorAll(_expression);
-			} catch(e) {
+			} catch(e){
 				qsaFailExpCache[expression] = 1;
 				break querySelector;
 			} finally {
@@ -561,7 +561,7 @@ local.matchNode = function(node, selector){
 	if (this.isHTMLDocument && this.nativeMatchesSelector){
 		try {
 			return this.nativeMatchesSelector.call(node, selector.replace(/\[([^=]+)=\s*([^'"\]]+?)\s*\]/g, '[$1="$2"]'));
-		} catch(matchError) {}
+		} catch(matchError){}
 	}
 
 	var parsed = this.Slick.parse(selector);
