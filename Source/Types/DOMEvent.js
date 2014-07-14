@@ -17,6 +17,16 @@ provides: Event
 (function(){
 
 var _keys = {};
+var normalizeWheelSpeed = function(evt){
+    var normalized;
+    if (evt.wheelDelta){
+        normalized = (evt.wheelDelta % 120 - 0) == -0 ? evt.wheelDelta / 120 : evt.wheelDelta / 12;
+    } else {
+        var rawAmount = evt.deltaY ? evt.deltaY : evt.detail;
+        normalized = -(rawAmount % 3 ? rawAmount * 10 : rawAmount / 3);
+    }
+    return normalized;
+}
 
 var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	if (!win) win = window;
@@ -53,7 +63,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
 		if (type == 'DOMMouseScroll' || type == 'wheel' || type == 'mousewheel')
-			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
+			this.wheel = normalizeWheelSpeed(event);
 		this.rightClick = (event.which == 3 || event.button == 2);
 		if (type == 'mouseover' || type == 'mouseout'){
 			var related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
