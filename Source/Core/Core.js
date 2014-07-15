@@ -19,7 +19,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 
 ...
 */
-
+/*! MooTools: the javascript framework. license: MIT-style license. copyright: Copyright (c) 2006-2014 [Valerio Proietti](http://mad4milk.net/).*/
 (function(){
 
 this.MooTools = {

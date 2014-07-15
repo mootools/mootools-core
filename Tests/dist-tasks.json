@@ -18,7 +18,8 @@
     "uglify": {
         "options": {
             "mangle": false,
-            "compress": true
+            "compress": true,
+            "preserveComments": "some"
         },
         "dist": {
             "files": [
