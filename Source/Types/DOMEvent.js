@@ -17,12 +17,12 @@ provides: Event
 (function(){
 
 var _keys = {};
-var normalizeWheelSpeed = function(evt){
+var normalizeWheelSpeed = function(event){
     var normalized;
-    if (evt.wheelDelta){
-        normalized = (evt.wheelDelta % 120 - 0) == -0 ? evt.wheelDelta / 120 : evt.wheelDelta / 12;
+    if (event.wheelDelta){
+        normalized = event.wheelDelta % 120 == 0 ? event.wheelDelta / 120 : event.wheelDelta / 12;
     } else {
-        var rawAmount = evt.deltaY ? evt.deltaY : evt.detail;
+        var rawAmount = event.deltaY ? event.deltaY : event.detail;
         normalized = -(rawAmount % 3 ? rawAmount * 10 : rawAmount / 3);
     }
     return normalized;
