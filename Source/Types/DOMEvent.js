@@ -22,8 +22,8 @@ var normalizeWheelSpeed = function(event){
     if (event.wheelDelta){
         normalized = event.wheelDelta % 120 == 0 ? event.wheelDelta / 120 : event.wheelDelta / 12;
     } else {
-        var rawAmount = event.deltaY ? event.deltaY : event.detail;
-        normalized = -(rawAmount % 3 ? rawAmount * 10 : rawAmount / 3);
+        var rawAmount = event.deltaY || event.detail || 0;
+        normalized = -(rawAmount % 3 == 0 ? rawAmount / 3 : rawAmount * 10);
     }
     return normalized;
 }
