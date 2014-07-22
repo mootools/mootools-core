@@ -191,6 +191,7 @@ if (this.attachEvent && !this.addEventListener){
 	var unloadEvent = function(){
 		this.detachEvent('onunload', unloadEvent);
 		document.head = document.html = document.window = null;
+		window = this.Window = document = null;
 	};
 	this.attachEvent('onunload', unloadEvent);
 }
