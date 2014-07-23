@@ -62,8 +62,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
 			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
 		};
-		if (type == 'DOMMouseScroll' || type == 'wheel' || type == 'mousewheel')
-			this.wheel = normalizeWheelSpeed(event);
+		if (type == 'DOMMouseScroll' || type == 'wheel' || type == 'mousewheel') this.wheel = normalizeWheelSpeed(event);
 		this.rightClick = (event.which == 3 || event.button == 2);
 		if (type == 'mouseover' || type == 'mouseout'){
 			var related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
