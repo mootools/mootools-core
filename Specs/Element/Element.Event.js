@@ -376,4 +376,100 @@ describe('Element.removeEvent', function(){
 
 });
 
+describe('Mouse wheel', function(){
+
+	function attachProperties(e, direction){
+		e.detail = 1 * direction;
+		e.wheelDelta = 1 * direction;
+		e.deltaY = -1 * direction;
+	}
+
+	function dispatchFakeWheel(type, wheelDirection){
+
+		var event;
+		try {
+			// Firefox
+			event = document.createEvent("MouseEvents");
+			event.initMouseEvent(type, true, true, window, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
+			attachProperties(event, wheelDirection);
+			window.dispatchEvent(event);
+		} catch(e){}
+
+		try {
+			// Chrome, PhantomJS, Safari
+			event = document.createEvent("WheelEvent");
+			event.initMouseEvent(type, 0, 100, window, 0, 0, 0, 0, null, null, null, null);
+			attachProperties(event, wheelDirection);
+			window.dispatchEvent(event);
+		} catch(e){}
+
+		try {
+			// IE9
+			event = document.createEvent("HTMLEvents");
+			event.initEvent(type, true, false);
+			attachProperties(event, wheelDirection);
+			window.dispatchEvent(event);
+		} catch(e){}
+
+		try {
+			// IE10+, Safari
+			var event = document.createEvent("MouseEvents");
+			event.initEvent(type, true, true);
+			attachProperties(event, wheelDirection);
+			window.dispatchEvent(event);
+		} catch(e){}
+
+		try {
+			// IE8
+			var event = document.createEventObject();
+			document.documentElement.fireEvent(type, event);
+		} catch(e){}
+	}
+
+	var triggered = false;
+	var wheel = false;
+	var testWheel = !!window.addEventListener;
+	var callback = function(e){
+		if (e.wheel) wheel = e.wheel > 0 ? 'wheel moved up' : 'wheel moved down';
+		triggered = 'triggered';
+	};
+
+	beforeEach(function(){
+		wheel = triggered = false;
+		window.addEvent('mousewheel', callback);
+		document.documentElement.addEvent('mousewheel', callback);
+	});
+
+	afterEach(function(){
+		window.removeEvent('mousewheel', callback);
+		document.documentElement.removeEvent('mousewheel', callback);
+	});
+
+	it('should trigger/listen to mousewheel event', function(){
+		// http://jsfiddle.net/W6QrS/3
+
+		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(dispatchFakeWheel);
+		expect(triggered).toBeTruthy();
+	});
+
+	it('should listen to mouse wheel direction', function(){
+		// http://jsfiddle.net/58yCr/
+
+		if (!testWheel) return;
+
+		// fire event with wheel going up
+		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(function(type){
+			dispatchFakeWheel(type, 120);
+		});
+		expect(wheel).toEqual('wheel moved up');
+		wheel = false;
+
+		// fire event with wheel going down
+		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(function(type){
+			dispatchFakeWheel(type, -120);
+		});
+		expect(wheel).toEqual('wheel moved down');
+	});
+});
+
 })();
