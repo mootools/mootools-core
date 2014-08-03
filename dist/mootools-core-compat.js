@@ -7,7 +7,7 @@ description: The heart of MooTools.
 
 license: MIT-style license.
 
-copyright: Copyright (c) 2006-2012 [Valerio Proietti](http://mad4milk.net/).
+copyright: Copyright (c) 2006-2014 [Valerio Proietti](http://mad4milk.net/).
 
 authors: The MooTools production team (http://mootools.net/developers/)
 
@@ -23,8 +23,8 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 (function(){
 
 this.MooTools = {
-	version: '1.5.0',
-	build: '0f7b690afee9349b15909f33016a25d2e4d9f4e3'
+	version: '1.5.1',
+	build: '%build%'
 };
 
 // typeOf, instanceOf
@@ -703,150 +703,6 @@ var $pick = function(){
 /*
 ---
 
-name: String
-
-description: Contains String Prototypes like camelCase, capitalize, test, and toInt.
-
-license: MIT-style license.
-
-requires: [Type, Array]
-
-provides: String
-
-...
-*/
-
-String.implement({
-
-	//<!ES6>
-	contains: function(string, index){
-		return (index ? String(this).slice(index) : String(this)).indexOf(string) > -1;
-	},
-	//</!ES6>
-
-	test: function(regex, params){
-		return ((typeOf(regex) == 'regexp') ? regex : new RegExp('' + regex, params)).test(this);
-	},
-
-	trim: function(){
-		return String(this).replace(/^\s+|\s+$/g, '');
-	},
-
-	clean: function(){
-		return String(this).replace(/\s+/g, ' ').trim();
-	},
-
-	camelCase: function(){
-		return String(this).replace(/-\D/g, function(match){
-			return match.charAt(1).toUpperCase();
-		});
-	},
-
-	hyphenate: function(){
-		return String(this).replace(/[A-Z]/g, function(match){
-			return ('-' + match.charAt(0).toLowerCase());
-		});
-	},
-
-	capitalize: function(){
-		return String(this).replace(/\b[a-z]/g, function(match){
-			return match.toUpperCase();
-		});
-	},
-
-	escapeRegExp: function(){
-		return String(this).replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
-	},
-
-	toInt: function(base){
-		return parseInt(this, base || 10);
-	},
-
-	toFloat: function(){
-		return parseFloat(this);
-	},
-
-	hexToRgb: function(array){
-		var hex = String(this).match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
-		return (hex) ? hex.slice(1).hexToRgb(array) : null;
-	},
-
-	rgbToHex: function(array){
-		var rgb = String(this).match(/\d{1,3}/g);
-		return (rgb) ? rgb.rgbToHex(array) : null;
-	},
-
-	substitute: function(object, regexp){
-		return String(this).replace(regexp || (/\\?\{([^{}]+)\}/g), function(match, name){
-			if (match.charAt(0) == '\\') return match.slice(1);
-			return (object[name] != null) ? object[name] : '';
-		});
-	}
-
-});
-
-//<1.4compat>
-String.prototype.contains = function(string, separator){
-	return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : String(this).indexOf(string) > -1;
-};
-//</1.4compat>
-
-/*
----
-
-name: Number
-
-description: Contains Number Prototypes like limit, round, times, and ceil.
-
-license: MIT-style license.
-
-requires: Type
-
-provides: Number
-
-...
-*/
-
-Number.implement({
-
-	limit: function(min, max){
-		return Math.min(max, Math.max(min, this));
-	},
-
-	round: function(precision){
-		precision = Math.pow(10, precision || 0).toFixed(precision < 0 ? -precision : 0);
-		return Math.round(this * precision) / precision;
-	},
-
-	times: function(fn, bind){
-		for (var i = 0; i < this; i++) fn.call(bind, i, this);
-	},
-
-	toFloat: function(){
-		return parseFloat(this);
-	},
-
-	toInt: function(base){
-		return parseInt(this, base || 10);
-	}
-
-});
-
-Number.alias('each', 'times');
-
-(function(math){
-	var methods = {};
-	math.each(function(name){
-		if (!Number[name]) methods[name] = function(){
-			return Math[name].apply(null, [this].concat(Array.from(arguments)));
-		};
-	});
-	Number.implement(methods);
-})(['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan']);
-
-/*
----
-
 name: Function
 
 description: Contains Function Prototypes like create, bind, pass, and delay.
@@ -972,6 +828,675 @@ if (Object.create == Function.prototype.create) Object.create = null;
 var $try = Function.attempt;
 
 //</1.2compat>
+
+/*
+---
+
+name: Number
+
+description: Contains Number Prototypes like limit, round, times, and ceil.
+
+license: MIT-style license.
+
+requires: Type
+
+provides: Number
+
+...
+*/
+
+Number.implement({
+
+	limit: function(min, max){
+		return Math.min(max, Math.max(min, this));
+	},
+
+	round: function(precision){
+		precision = Math.pow(10, precision || 0).toFixed(precision < 0 ? -precision : 0);
+		return Math.round(this * precision) / precision;
+	},
+
+	times: function(fn, bind){
+		for (var i = 0; i < this; i++) fn.call(bind, i, this);
+	},
+
+	toFloat: function(){
+		return parseFloat(this);
+	},
+
+	toInt: function(base){
+		return parseInt(this, base || 10);
+	}
+
+});
+
+Number.alias('each', 'times');
+
+(function(math){
+	var methods = {};
+	math.each(function(name){
+		if (!Number[name]) methods[name] = function(){
+			return Math[name].apply(null, [this].concat(Array.from(arguments)));
+		};
+	});
+	Number.implement(methods);
+})(['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan']);
+
+/*
+---
+
+name: String
+
+description: Contains String Prototypes like camelCase, capitalize, test, and toInt.
+
+license: MIT-style license.
+
+requires: [Type, Array]
+
+provides: String
+
+...
+*/
+
+String.implement({
+
+	//<!ES6>
+	contains: function(string, index){
+		return (index ? String(this).slice(index) : String(this)).indexOf(string) > -1;
+	},
+	//</!ES6>
+
+	test: function(regex, params){
+		return ((typeOf(regex) == 'regexp') ? regex : new RegExp('' + regex, params)).test(this);
+	},
+
+	trim: function(){
+		return String(this).replace(/^\s+|\s+$/g, '');
+	},
+
+	clean: function(){
+		return String(this).replace(/\s+/g, ' ').trim();
+	},
+
+	camelCase: function(){
+		return String(this).replace(/-\D/g, function(match){
+			return match.charAt(1).toUpperCase();
+		});
+	},
+
+	hyphenate: function(){
+		return String(this).replace(/[A-Z]/g, function(match){
+			return ('-' + match.charAt(0).toLowerCase());
+		});
+	},
+
+	capitalize: function(){
+		return String(this).replace(/\b[a-z]/g, function(match){
+			return match.toUpperCase();
+		});
+	},
+
+	escapeRegExp: function(){
+		return String(this).replace(/([-.*+?^${}()|[\]\/\\])/g, '\\$1');
+	},
+
+	toInt: function(base){
+		return parseInt(this, base || 10);
+	},
+
+	toFloat: function(){
+		return parseFloat(this);
+	},
+
+	hexToRgb: function(array){
+		var hex = String(this).match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
+		return (hex) ? hex.slice(1).hexToRgb(array) : null;
+	},
+
+	rgbToHex: function(array){
+		var rgb = String(this).match(/\d{1,3}/g);
+		return (rgb) ? rgb.rgbToHex(array) : null;
+	},
+
+	substitute: function(object, regexp){
+		return String(this).replace(regexp || (/\\?\{([^{}]+)\}/g), function(match, name){
+			if (match.charAt(0) == '\\') return match.slice(1);
+			return (object[name] != null) ? object[name] : '';
+		});
+	}
+
+});
+
+//<1.4compat>
+String.prototype.contains = function(string, separator){
+	return (separator) ? (separator + this + separator).indexOf(separator + string + separator) > -1 : String(this).indexOf(string) > -1;
+};
+//</1.4compat>
+
+/*
+---
+
+name: Browser
+
+description: The Browser Object. Contains Browser initialization, Window and Document, and the Browser Hash.
+
+license: MIT-style license.
+
+requires: [Array, Function, Number, String]
+
+provides: [Browser, Window, Document]
+
+...
+*/
+
+(function(){
+
+var document = this.document;
+var window = document.window = this;
+
+var parse = function(ua, platform){
+	ua = ua.toLowerCase();
+	platform = (platform ? platform.toLowerCase() : '');
+
+	var UA = ua.match(/(opera|ie|firefox|chrome|trident|crios|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
+
+	if (UA[1] == 'trident'){
+		UA[1] = 'ie';
+		if (UA[4]) UA[2] = UA[4];
+	} else if (UA[1] == 'crios'){
+		UA[1] = 'chrome';
+	}
+
+	platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
+	if (platform == 'win') platform = 'windows';
+
+	return {
+		extend: Function.prototype.extend,
+		name: (UA[1] == 'version') ? UA[3] : UA[1],
+		version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
+		platform: platform
+	};
+};
+
+var Browser = this.Browser = parse(navigator.userAgent, navigator.platform);
+
+if (Browser.name == 'ie'){
+	Browser.version = document.documentMode;
+}
+
+Browser.extend({
+	Features: {
+		xpath: !!(document.evaluate),
+		air: !!(window.runtime),
+		query: !!(document.querySelector),
+		json: !!(window.JSON)
+	},
+	parseUA: parse
+});
+
+//<1.4compat>
+Browser[Browser.name] = true;
+Browser[Browser.name + parseInt(Browser.version, 10)] = true;
+
+if (Browser.name == 'ie' && Browser.version >= '11'){
+	delete Browser.ie;
+}
+
+var platform = Browser.platform;
+if (platform == 'windows'){
+	platform = 'win';
+}
+Browser.Platform = {
+	name: platform
+};
+Browser.Platform[platform] = true;
+//</1.4compat>
+
+// Request
+
+Browser.Request = (function(){
+
+	var XMLHTTP = function(){
+		return new XMLHttpRequest();
+	};
+
+	var MSXML2 = function(){
+		return new ActiveXObject('MSXML2.XMLHTTP');
+	};
+
+	var MSXML = function(){
+		return new ActiveXObject('Microsoft.XMLHTTP');
+	};
+
+	return Function.attempt(function(){
+		XMLHTTP();
+		return XMLHTTP;
+	}, function(){
+		MSXML2();
+		return MSXML2;
+	}, function(){
+		MSXML();
+		return MSXML;
+	});
+
+})();
+
+Browser.Features.xhr = !!(Browser.Request);
+
+//<1.4compat>
+
+// Flash detection
+
+var version = (Function.attempt(function(){
+	return navigator.plugins['Shockwave Flash'].description;
+}, function(){
+	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
+}) || '0 r0').match(/\d+/g);
+
+Browser.Plugins = {
+	Flash: {
+		version: Number(version[0] || '0.' + version[1]) || 0,
+		build: Number(version[2]) || 0
+	}
+};
+
+//</1.4compat>
+
+// String scripts
+
+Browser.exec = function(text){
+	if (!text) return text;
+	if (window.execScript){
+		window.execScript(text);
+	} else {
+		var script = document.createElement('script');
+		script.setAttribute('type', 'text/javascript');
+		script.text = text;
+		document.head.appendChild(script);
+		document.head.removeChild(script);
+	}
+	return text;
+};
+
+String.implement('stripScripts', function(exec){
+	var scripts = '';
+	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
+		scripts += code + '\n';
+		return '';
+	});
+	if (exec === true) Browser.exec(scripts);
+	else if (typeOf(exec) == 'function') exec(scripts, text);
+	return text;
+});
+
+// Window, Document
+
+Browser.extend({
+	Document: this.Document,
+	Window: this.Window,
+	Element: this.Element,
+	Event: this.Event
+});
+
+this.Window = this.$constructor = new Type('Window', function(){});
+
+this.$family = Function.from('window').hide();
+
+Window.mirror(function(name, method){
+	window[name] = method;
+});
+
+this.Document = document.$constructor = new Type('Document', function(){});
+
+document.$family = Function.from('document').hide();
+
+Document.mirror(function(name, method){
+	document[name] = method;
+});
+
+document.html = document.documentElement;
+if (!document.head) document.head = document.getElementsByTagName('head')[0];
+
+if (document.execCommand) try {
+	document.execCommand("BackgroundImageCache", false, true);
+} catch (e){}
+
+/*<ltIE9>*/
+if (this.attachEvent && !this.addEventListener){
+	var unloadEvent = function(){
+		this.detachEvent('onunload', unloadEvent);
+		document.head = document.html = document.window = null;
+		window = this.Window = document = null;
+	};
+	this.attachEvent('onunload', unloadEvent);
+}
+
+// IE fails on collections and <select>.options (refers to <select>)
+var arrayFrom = Array.from;
+try {
+	arrayFrom(document.html.childNodes);
+} catch(e){
+	Array.from = function(item){
+		if (typeof item != 'string' && Type.isEnumerable(item) && typeOf(item) != 'array'){
+			var i = item.length, array = new Array(i);
+			while (i--) array[i] = item[i];
+			return array;
+		}
+		return arrayFrom(item);
+	};
+
+	var prototype = Array.prototype,
+		slice = prototype.slice;
+	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
+		var method = prototype[name];
+		Array[name] = function(item){
+			return method.apply(Array.from(item), slice.call(arguments, 1));
+		};
+	});
+}
+/*</ltIE9>*/
+
+//<1.2compat>
+
+if (Browser.Platform.ios) Browser.Platform.ipod = true;
+
+Browser.Engine = {};
+
+var setEngine = function(name, version){
+	Browser.Engine.name = name;
+	Browser.Engine[name + version] = true;
+	Browser.Engine.version = version;
+};
+
+if (Browser.ie){
+	Browser.Engine.trident = true;
+
+	switch (Browser.version){
+		case 6: setEngine('trident', 4); break;
+		case 7: setEngine('trident', 5); break;
+		case 8: setEngine('trident', 6);
+	}
+}
+
+if (Browser.firefox){
+	Browser.Engine.gecko = true;
+
+	if (Browser.version >= 3) setEngine('gecko', 19);
+	else setEngine('gecko', 18);
+}
+
+if (Browser.safari || Browser.chrome){
+	Browser.Engine.webkit = true;
+
+	switch (Browser.version){
+		case 2: setEngine('webkit', 419); break;
+		case 3: setEngine('webkit', 420); break;
+		case 4: setEngine('webkit', 525);
+	}
+}
+
+if (Browser.opera){
+	Browser.Engine.presto = true;
+
+	if (Browser.version >= 9.6) setEngine('presto', 960);
+	else if (Browser.version >= 9.5) setEngine('presto', 950);
+	else setEngine('presto', 925);
+}
+
+if (Browser.name == 'unknown'){
+	switch ((navigator.userAgent.toLowerCase().match(/(?:webkit|khtml|gecko)/) || [])[0]){
+		case 'webkit':
+		case 'khtml':
+			Browser.Engine.webkit = true;
+		break;
+		case 'gecko':
+			Browser.Engine.gecko = true;
+	}
+}
+
+this.$exec = Browser.exec;
+
+//</1.2compat>
+
+})();
+
+/*
+---
+
+name: Class
+
+description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
+
+license: MIT-style license.
+
+requires: [Array, String, Function, Number]
+
+provides: Class
+
+...
+*/
+
+(function(){
+
+var Class = this.Class = new Type('Class', function(params){
+	if (instanceOf(params, Function)) params = {initialize: params};
+
+	var newClass = function(){
+		reset(this);
+		if (newClass.$prototyping) return this;
+		this.$caller = null;
+		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
+		this.$caller = this.caller = null;
+		return value;
+	}.extend(this).implement(params);
+
+	newClass.$constructor = Class;
+	newClass.prototype.$constructor = newClass;
+	newClass.prototype.parent = parent;
+
+	return newClass;
+});
+
+var parent = function(){
+	if (!this.$caller) throw new Error('The method "parent" cannot be called.');
+	var name = this.$caller.$name,
+		parent = this.$caller.$owner.parent,
+		previous = (parent) ? parent.prototype[name] : null;
+	if (!previous) throw new Error('The method "' + name + '" has no parent.');
+	return previous.apply(this, arguments);
+};
+
+var reset = function(object){
+	for (var key in object){
+		var value = object[key];
+		switch (typeOf(value)){
+			case 'object':
+				var F = function(){};
+				F.prototype = value;
+				object[key] = reset(new F);
+			break;
+			case 'array': object[key] = value.clone(); break;
+		}
+	}
+	return object;
+};
+
+var wrap = function(self, key, method){
+	if (method.$origin) method = method.$origin;
+	var wrapper = function(){
+		if (method.$protected && this.$caller == null) throw new Error('The method "' + key + '" cannot be called.');
+		var caller = this.caller, current = this.$caller;
+		this.caller = current; this.$caller = wrapper;
+		var result = method.apply(this, arguments);
+		this.$caller = current; this.caller = caller;
+		return result;
+	}.extend({$owner: self, $origin: method, $name: key});
+	return wrapper;
+};
+
+var implement = function(key, value, retain){
+	if (Class.Mutators.hasOwnProperty(key)){
+		value = Class.Mutators[key].call(this, value);
+		if (value == null) return this;
+	}
+
+	if (typeOf(value) == 'function'){
+		if (value.$hidden) return this;
+		this.prototype[key] = (retain) ? value : wrap(this, key, value);
+	} else {
+		Object.merge(this.prototype, key, value);
+	}
+
+	return this;
+};
+
+var getInstance = function(klass){
+	klass.$prototyping = true;
+	var proto = new klass;
+	delete klass.$prototyping;
+	return proto;
+};
+
+Class.implement('implement', implement.overloadSetter());
+
+Class.Mutators = {
+
+	Extends: function(parent){
+		this.parent = parent;
+		this.prototype = getInstance(parent);
+	},
+
+	Implements: function(items){
+		Array.from(items).each(function(item){
+			var instance = new item;
+			for (var key in instance) implement.call(this, key, instance[key], true);
+		}, this);
+	}
+};
+
+})();
+
+/*
+---
+
+name: Class.Extras
+
+description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
+
+license: MIT-style license.
+
+requires: Class
+
+provides: [Class.Extras, Chain, Events, Options]
+
+...
+*/
+
+(function(){
+
+this.Chain = new Class({
+
+	$chain: [],
+
+	chain: function(){
+		this.$chain.append(Array.flatten(arguments));
+		return this;
+	},
+
+	callChain: function(){
+		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
+	},
+
+	clearChain: function(){
+		this.$chain.empty();
+		return this;
+	}
+
+});
+
+var removeOn = function(string){
+	return string.replace(/^on([A-Z])/, function(full, first){
+		return first.toLowerCase();
+	});
+};
+
+this.Events = new Class({
+
+	$events: {},
+
+	addEvent: function(type, fn, internal){
+		type = removeOn(type);
+
+		/*<1.2compat>*/
+		if (fn == $empty) return this;
+		/*</1.2compat>*/
+
+		this.$events[type] = (this.$events[type] || []).include(fn);
+		if (internal) fn.internal = true;
+		return this;
+	},
+
+	addEvents: function(events){
+		for (var type in events) this.addEvent(type, events[type]);
+		return this;
+	},
+
+	fireEvent: function(type, args, delay){
+		type = removeOn(type);
+		var events = this.$events[type];
+		if (!events) return this;
+		args = Array.from(args);
+		events.each(function(fn){
+			if (delay) fn.delay(delay, this, args);
+			else fn.apply(this, args);
+		}, this);
+		return this;
+	},
+
+	removeEvent: function(type, fn){
+		type = removeOn(type);
+		var events = this.$events[type];
+		if (events && !fn.internal){
+			var index = events.indexOf(fn);
+			if (index != -1) delete events[index];
+		}
+		return this;
+	},
+
+	removeEvents: function(events){
+		var type;
+		if (typeOf(events) == 'object'){
+			for (type in events) this.removeEvent(type, events[type]);
+			return this;
+		}
+		if (events) events = removeOn(events);
+		for (type in this.$events){
+			if (events && events != type) continue;
+			var fns = this.$events[type];
+			for (var i = fns.length; i--;) if (i in fns){
+				this.removeEvent(type, fns[i]);
+			}
+		}
+		return this;
+	}
+
+});
+
+this.Options = new Class({
+
+	setOptions: function(){
+		var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments));
+		if (this.addEvent) for (var option in options){
+			if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
+			this.addEvent(option, options[option]);
+			delete options[option];
+		}
+		return this;
+	}
+
+});
+
+})();
 
 /*
 ---
@@ -1182,656 +1707,6 @@ Hash.extend = Object.append;
 Hash.alias({indexOf: 'keyOf', contains: 'hasValue'});
 
 //</1.2compat>
-
-/*
----
-
-name: Browser
-
-description: The Browser Object. Contains Browser initialization, Window and Document, and the Browser Hash.
-
-license: MIT-style license.
-
-requires: [Array, Function, Number, String]
-
-provides: [Browser, Window, Document]
-
-...
-*/
-
-(function(){
-
-var document = this.document;
-var window = document.window = this;
-
-var parse = function(ua, platform){
-	ua = ua.toLowerCase();
-	platform = (platform ? platform.toLowerCase() : '');
-
-	var UA = ua.match(/(opera|ie|firefox|chrome|trident|crios|version)[\s\/:]([\w\d\.]+)?.*?(safari|(?:rv[\s\/:]|version[\s\/:])([\w\d\.]+)|$)/) || [null, 'unknown', 0];
-
-	if (UA[1] == 'trident'){
-		UA[1] = 'ie';
-		if (UA[4]) UA[2] = UA[4];
-	} else if (UA[1] == 'crios') {
-		UA[1] = 'chrome';
-	}
-
-	var platform = ua.match(/ip(?:ad|od|hone)/) ? 'ios' : (ua.match(/(?:webos|android)/) || platform.match(/mac|win|linux/) || ['other'])[0];
-	if (platform == 'win') platform = 'windows';
-
-	return {
-		extend: Function.prototype.extend,
-		name: (UA[1] == 'version') ? UA[3] : UA[1],
-		version: parseFloat((UA[1] == 'opera' && UA[4]) ? UA[4] : UA[2]),
-		platform: platform
-	};
-};
-
-var Browser = this.Browser = parse(navigator.userAgent, navigator.platform);
-
-if (Browser.ie){
-	Browser.version = document.documentMode;
-}
-
-Browser.extend({
-	Features: {
-		xpath: !!(document.evaluate),
-		air: !!(window.runtime),
-		query: !!(document.querySelector),
-		json: !!(window.JSON)
-	},
-	parseUA: parse
-});
-
-//<1.4compat>
-Browser[Browser.name] = true;
-Browser[Browser.name + parseInt(Browser.version, 10)] = true;
-
-if (Browser.name == 'ie' && Browser.version >= '11') {
-	delete Browser.ie;
-}
-
-var platform = Browser.platform;
-if (platform == 'windows'){
-	platform = 'win';
-}
-Browser.Platform = {
-	name: platform
-};
-Browser.Platform[platform] = true;
-//</1.4compat>
-
-// Request
-
-Browser.Request = (function(){
-
-	var XMLHTTP = function(){
-		return new XMLHttpRequest();
-	};
-
-	var MSXML2 = function(){
-		return new ActiveXObject('MSXML2.XMLHTTP');
-	};
-
-	var MSXML = function(){
-		return new ActiveXObject('Microsoft.XMLHTTP');
-	};
-
-	return Function.attempt(function(){
-		XMLHTTP();
-		return XMLHTTP;
-	}, function(){
-		MSXML2();
-		return MSXML2;
-	}, function(){
-		MSXML();
-		return MSXML;
-	});
-
-})();
-
-Browser.Features.xhr = !!(Browser.Request);
-
-//<1.4compat>
-
-// Flash detection
-
-var version = (Function.attempt(function(){
-	return navigator.plugins['Shockwave Flash'].description;
-}, function(){
-	return new ActiveXObject('ShockwaveFlash.ShockwaveFlash').GetVariable('$version');
-}) || '0 r0').match(/\d+/g);
-
-Browser.Plugins = {
-	Flash: {
-		version: Number(version[0] || '0.' + version[1]) || 0,
-		build: Number(version[2]) || 0
-	}
-};
-
-//</1.4compat>
-
-// String scripts
-
-Browser.exec = function(text){
-	if (!text) return text;
-	if (window.execScript){
-		window.execScript(text);
-	} else {
-		var script = document.createElement('script');
-		script.setAttribute('type', 'text/javascript');
-		script.text = text;
-		document.head.appendChild(script);
-		document.head.removeChild(script);
-	}
-	return text;
-};
-
-String.implement('stripScripts', function(exec){
-	var scripts = '';
-	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
-		scripts += code + '\n';
-		return '';
-	});
-	if (exec === true) Browser.exec(scripts);
-	else if (typeOf(exec) == 'function') exec(scripts, text);
-	return text;
-});
-
-// Window, Document
-
-Browser.extend({
-	Document: this.Document,
-	Window: this.Window,
-	Element: this.Element,
-	Event: this.Event
-});
-
-this.Window = this.$constructor = new Type('Window', function(){});
-
-this.$family = Function.from('window').hide();
-
-Window.mirror(function(name, method){
-	window[name] = method;
-});
-
-this.Document = document.$constructor = new Type('Document', function(){});
-
-document.$family = Function.from('document').hide();
-
-Document.mirror(function(name, method){
-	document[name] = method;
-});
-
-document.html = document.documentElement;
-if (!document.head) document.head = document.getElementsByTagName('head')[0];
-
-if (document.execCommand) try {
-	document.execCommand("BackgroundImageCache", false, true);
-} catch (e){}
-
-/*<ltIE9>*/
-if (this.attachEvent && !this.addEventListener){
-	var unloadEvent = function(){
-		this.detachEvent('onunload', unloadEvent);
-		document.head = document.html = document.window = null;
-	};
-	this.attachEvent('onunload', unloadEvent);
-}
-
-// IE fails on collections and <select>.options (refers to <select>)
-var arrayFrom = Array.from;
-try {
-	arrayFrom(document.html.childNodes);
-} catch(e){
-	Array.from = function(item){
-		if (typeof item != 'string' && Type.isEnumerable(item) && typeOf(item) != 'array'){
-			var i = item.length, array = new Array(i);
-			while (i--) array[i] = item[i];
-			return array;
-		}
-		return arrayFrom(item);
-	};
-
-	var prototype = Array.prototype,
-		slice = prototype.slice;
-	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
-		var method = prototype[name];
-		Array[name] = function(item){
-			return method.apply(Array.from(item), slice.call(arguments, 1));
-		};
-	});
-}
-/*</ltIE9>*/
-
-//<1.2compat>
-
-if (Browser.Platform.ios) Browser.Platform.ipod = true;
-
-Browser.Engine = {};
-
-var setEngine = function(name, version){
-	Browser.Engine.name = name;
-	Browser.Engine[name + version] = true;
-	Browser.Engine.version = version;
-};
-
-if (Browser.ie){
-	Browser.Engine.trident = true;
-
-	switch (Browser.version){
-		case 6: setEngine('trident', 4); break;
-		case 7: setEngine('trident', 5); break;
-		case 8: setEngine('trident', 6);
-	}
-}
-
-if (Browser.firefox){
-	Browser.Engine.gecko = true;
-
-	if (Browser.version >= 3) setEngine('gecko', 19);
-	else setEngine('gecko', 18);
-}
-
-if (Browser.safari || Browser.chrome){
-	Browser.Engine.webkit = true;
-
-	switch (Browser.version){
-		case 2: setEngine('webkit', 419); break;
-		case 3: setEngine('webkit', 420); break;
-		case 4: setEngine('webkit', 525);
-	}
-}
-
-if (Browser.opera){
-	Browser.Engine.presto = true;
-
-	if (Browser.version >= 9.6) setEngine('presto', 960);
-	else if (Browser.version >= 9.5) setEngine('presto', 950);
-	else setEngine('presto', 925);
-}
-
-if (Browser.name == 'unknown'){
-	switch ((navigator.userAgent.toLowerCase().match(/(?:webkit|khtml|gecko)/) || [])[0]){
-		case 'webkit':
-		case 'khtml':
-			Browser.Engine.webkit = true;
-		break;
-		case 'gecko':
-			Browser.Engine.gecko = true;
-	}
-}
-
-this.$exec = Browser.exec;
-
-//</1.2compat>
-
-})();
-
-/*
----
-
-name: Event
-
-description: Contains the Event Type, to make the event object cross-browser.
-
-license: MIT-style license.
-
-requires: [Window, Document, Array, Function, String, Object]
-
-provides: Event
-
-...
-*/
-
-(function() {
-
-var _keys = {};
-
-var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
-	if (!win) win = window;
-	event = event || win.event;
-	if (event.$extended) return event;
-	this.event = event;
-	this.$extended = true;
-	this.shift = event.shiftKey;
-	this.control = event.ctrlKey;
-	this.alt = event.altKey;
-	this.meta = event.metaKey;
-	var type = this.type = event.type;
-	var target = event.target || event.srcElement;
-	while (target && target.nodeType == 3) target = target.parentNode;
-	this.target = document.id(target);
-
-	if (type.indexOf('key') == 0){
-		var code = this.code = (event.which || event.keyCode);
-		this.key = _keys[code]/*<1.3compat>*/ || Object.keyOf(Event.Keys, code)/*</1.3compat>*/;
-		if (type == 'keydown' || type == 'keyup'){
-			if (code > 111 && code < 124) this.key = 'f' + (code - 111);
-			else if (code > 95 && code < 106) this.key = code - 96;
-		}
-		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
-	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
-		var doc = win.document;
-		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
-		this.page = {
-			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
-			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
-		};
-		this.client = {
-			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
-			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
-		};
-		if (type == 'DOMMouseScroll' || type == 'mousewheel')
-			this.wheel = (event.wheelDelta) ? event.wheelDelta / 120 : -(event.detail || 0) / 3;
-
-		this.rightClick = (event.which == 3 || event.button == 2);
-		if (type == 'mouseover' || type == 'mouseout'){
-			var related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
-			while (related && related.nodeType == 3) related = related.parentNode;
-			this.relatedTarget = document.id(related);
-		}
-	} else if (type.indexOf('touch') == 0 || type.indexOf('gesture') == 0){
-		this.rotation = event.rotation;
-		this.scale = event.scale;
-		this.targetTouches = event.targetTouches;
-		this.changedTouches = event.changedTouches;
-		var touches = this.touches = event.touches;
-		if (touches && touches[0]){
-			var touch = touches[0];
-			this.page = {x: touch.pageX, y: touch.pageY};
-			this.client = {x: touch.clientX, y: touch.clientY};
-		}
-	}
-
-	if (!this.client) this.client = {};
-	if (!this.page) this.page = {};
-});
-
-DOMEvent.implement({
-
-	stop: function(){
-		return this.preventDefault().stopPropagation();
-	},
-
-	stopPropagation: function(){
-		if (this.event.stopPropagation) this.event.stopPropagation();
-		else this.event.cancelBubble = true;
-		return this;
-	},
-
-	preventDefault: function(){
-		if (this.event.preventDefault) this.event.preventDefault();
-		else this.event.returnValue = false;
-		return this;
-	}
-
-});
-
-DOMEvent.defineKey = function(code, key){
-	_keys[code] = key;
-	return this;
-};
-
-DOMEvent.defineKeys = DOMEvent.defineKey.overloadSetter(true);
-
-DOMEvent.defineKeys({
-	'38': 'up', '40': 'down', '37': 'left', '39': 'right',
-	'27': 'esc', '32': 'space', '8': 'backspace', '9': 'tab',
-	'46': 'delete', '13': 'enter'
-});
-
-})();
-
-/*<1.3compat>*/
-var Event = DOMEvent;
-Event.Keys = {};
-/*</1.3compat>*/
-
-/*<1.2compat>*/
-
-Event.Keys = new Hash(Event.Keys);
-
-/*</1.2compat>*/
-
-/*
----
-
-name: Class
-
-description: Contains the Class Function for easily creating, extending, and implementing reusable Classes.
-
-license: MIT-style license.
-
-requires: [Array, String, Function, Number]
-
-provides: Class
-
-...
-*/
-
-(function(){
-
-var Class = this.Class = new Type('Class', function(params){
-	if (instanceOf(params, Function)) params = {initialize: params};
-
-	var newClass = function(){
-		reset(this);
-		if (newClass.$prototyping) return this;
-		this.$caller = null;
-		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
-		this.$caller = this.caller = null;
-		return value;
-	}.extend(this).implement(params);
-
-	newClass.$constructor = Class;
-	newClass.prototype.$constructor = newClass;
-	newClass.prototype.parent = parent;
-
-	return newClass;
-});
-
-var parent = function(){
-	if (!this.$caller) throw new Error('The method "parent" cannot be called.');
-	var name = this.$caller.$name,
-		parent = this.$caller.$owner.parent,
-		previous = (parent) ? parent.prototype[name] : null;
-	if (!previous) throw new Error('The method "' + name + '" has no parent.');
-	return previous.apply(this, arguments);
-};
-
-var reset = function(object){
-	for (var key in object){
-		var value = object[key];
-		switch (typeOf(value)){
-			case 'object':
-				var F = function(){};
-				F.prototype = value;
-				object[key] = reset(new F);
-			break;
-			case 'array': object[key] = value.clone(); break;
-		}
-	}
-	return object;
-};
-
-var wrap = function(self, key, method){
-	if (method.$origin) method = method.$origin;
-	var wrapper = function(){
-		if (method.$protected && this.$caller == null) throw new Error('The method "' + key + '" cannot be called.');
-		var caller = this.caller, current = this.$caller;
-		this.caller = current; this.$caller = wrapper;
-		var result = method.apply(this, arguments);
-		this.$caller = current; this.caller = caller;
-		return result;
-	}.extend({$owner: self, $origin: method, $name: key});
-	return wrapper;
-};
-
-var implement = function(key, value, retain){
-	if (Class.Mutators.hasOwnProperty(key)){
-		value = Class.Mutators[key].call(this, value);
-		if (value == null) return this;
-	}
-
-	if (typeOf(value) == 'function'){
-		if (value.$hidden) return this;
-		this.prototype[key] = (retain) ? value : wrap(this, key, value);
-	} else {
-		Object.merge(this.prototype, key, value);
-	}
-
-	return this;
-};
-
-var getInstance = function(klass){
-	klass.$prototyping = true;
-	var proto = new klass;
-	delete klass.$prototyping;
-	return proto;
-};
-
-Class.implement('implement', implement.overloadSetter());
-
-Class.Mutators = {
-
-	Extends: function(parent){
-		this.parent = parent;
-		this.prototype = getInstance(parent);
-	},
-
-	Implements: function(items){
-		Array.from(items).each(function(item){
-			var instance = new item;
-			for (var key in instance) implement.call(this, key, instance[key], true);
-		}, this);
-	}
-};
-
-})();
-
-/*
----
-
-name: Class.Extras
-
-description: Contains Utility Classes that can be implemented into your own Classes to ease the execution of many common tasks.
-
-license: MIT-style license.
-
-requires: Class
-
-provides: [Class.Extras, Chain, Events, Options]
-
-...
-*/
-
-(function(){
-
-this.Chain = new Class({
-
-	$chain: [],
-
-	chain: function(){
-		this.$chain.append(Array.flatten(arguments));
-		return this;
-	},
-
-	callChain: function(){
-		return (this.$chain.length) ? this.$chain.shift().apply(this, arguments) : false;
-	},
-
-	clearChain: function(){
-		this.$chain.empty();
-		return this;
-	}
-
-});
-
-var removeOn = function(string){
-	return string.replace(/^on([A-Z])/, function(full, first){
-		return first.toLowerCase();
-	});
-};
-
-this.Events = new Class({
-
-	$events: {},
-
-	addEvent: function(type, fn, internal){
-		type = removeOn(type);
-
-		/*<1.2compat>*/
-		if (fn == $empty) return this;
-		/*</1.2compat>*/
-
-		this.$events[type] = (this.$events[type] || []).include(fn);
-		if (internal) fn.internal = true;
-		return this;
-	},
-
-	addEvents: function(events){
-		for (var type in events) this.addEvent(type, events[type]);
-		return this;
-	},
-
-	fireEvent: function(type, args, delay){
-		type = removeOn(type);
-		var events = this.$events[type];
-		if (!events) return this;
-		args = Array.from(args);
-		events.each(function(fn){
-			if (delay) fn.delay(delay, this, args);
-			else fn.apply(this, args);
-		}, this);
-		return this;
-	},
-
-	removeEvent: function(type, fn){
-		type = removeOn(type);
-		var events = this.$events[type];
-		if (events && !fn.internal){
-			var index =  events.indexOf(fn);
-			if (index != -1) delete events[index];
-		}
-		return this;
-	},
-
-	removeEvents: function(events){
-		var type;
-		if (typeOf(events) == 'object'){
-			for (type in events) this.removeEvent(type, events[type]);
-			return this;
-		}
-		if (events) events = removeOn(events);
-		for (type in this.$events){
-			if (events && events != type) continue;
-			var fns = this.$events[type];
-			for (var i = fns.length; i--;) if (i in fns){
-				this.removeEvent(type, fns[i]);
-			}
-		}
-		return this;
-	}
-
-});
-
-this.Options = new Class({
-
-	setOptions: function(){
-		var options = this.options = Object.merge.apply(null, [{}, this.options].append(arguments));
-		if (this.addEvent) for (var option in options){
-			if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
-			this.addEvent(option, options[option]);
-			delete options[option];
-		}
-		return this;
-	}
-
-});
-
-})();
 
 /*
 ---
@@ -2241,7 +2116,7 @@ local.setDocument = function(document){
 		root.slick_expando = 1;
 		delete root.slick_expando;
 		features.getUID = this.getUIDHTML;
-	} catch(e) {
+	} catch(e){
 		features.getUID = this.getUIDXML;
 	}
 
@@ -2262,9 +2137,9 @@ local.setDocument = function(document){
 
 	// hasAttribute
 
-	features.hasAttribute = (root && this.isNativeCode(root.hasAttribute)) ? function(node, attribute) {
+	features.hasAttribute = (root && this.isNativeCode(root.hasAttribute)) ? function(node, attribute){
 		return node.hasAttribute(attribute);
-	} : function(node, attribute) {
+	} : function(node, attribute){
 		node = node.getAttributeNode(attribute);
 		return !!(node && (node.specified || node.nodeValue));
 	};
@@ -2346,7 +2221,7 @@ local.search = function(context, expression, append, first){
 
 		/*<simple-selectors-override>*/
 		var simpleSelector = expression.match(reSimpleSelector);
-		simpleSelectors: if (simpleSelector) {
+		simpleSelectors: if (simpleSelector){
 
 			var symbol = simpleSelector[1],
 				name = simpleSelector[2],
@@ -2399,7 +2274,7 @@ local.search = function(context, expression, append, first){
 		/*</simple-selectors-override>*/
 
 		/*<query-selector-override>*/
-		querySelector: if (context.querySelectorAll) {
+		querySelector: if (context.querySelectorAll){
 
 			if (!this.isHTMLDocument
 				|| qsaFailExpCache[expression]
@@ -2428,7 +2303,7 @@ local.search = function(context, expression, append, first){
 			try {
 				if (first) return context.querySelector(_expression) || null;
 				else nodes = context.querySelectorAll(_expression);
-			} catch(e) {
+			} catch(e){
 				qsaFailExpCache[expression] = 1;
 				break querySelector;
 			} finally {
@@ -2627,14 +2502,14 @@ local.matchNode = function(node, selector){
 	if (this.isHTMLDocument && this.nativeMatchesSelector){
 		try {
 			return this.nativeMatchesSelector.call(node, selector.replace(/\[([^=]+)=\s*([^'"\]]+?)\s*\]/g, '[$1="$2"]'));
-		} catch(matchError) {}
+		} catch(matchError){}
 	}
 
 	var parsed = this.Slick.parse(selector);
 	if (!parsed) return true;
 
 	// simple (single) selectors
-	var expressions = parsed.expressions, simpleExpCounter = 0, i;
+	var expressions = parsed.expressions, simpleExpCounter = 0, i, currentExpression;
 	for (i = 0; (currentExpression = expressions[i]); i++){
 		if (currentExpression.length == 1){
 			var exp = currentExpression[0];
@@ -3266,20 +3141,44 @@ var escapeQuotes = function(html){
 };
 /*</ltIE8>*/
 
+/*<ltIE9>*/
+// #2479 - IE8 Cannot set HTML of style element
+var canChangeStyleHTML = (function(){
+    var div = document.createElement('style'),
+        flag = false;
+    try {
+        div.innerHTML = '#justTesing{margin: 0px;}';
+        flag = !!div.innerHTML;
+    } catch(e){}
+    return flag;
+})();
+/*</ltIE9>*/
+
 Document.implement({
 
 	newElement: function(tag, props){
-		if (props && props.checked != null) props.defaultChecked = props.checked;
-		/*<ltIE8>*/// Fix for readonly name and type properties in IE < 8
-		if (createElementAcceptsHTML && props){
-			tag = '<' + tag;
-			if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
-			if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
-			tag += '>';
-			delete props.name;
-			delete props.type;
+		if (props){
+			if (props.checked != null) props.defaultChecked = props.checked;
+			if ((props.type == 'checkbox' || props.type == 'radio') && props.value == null) props.value = 'on'; 
+			/*<ltIE9>*/ // IE needs the type to be set before changing content of style element
+			if (!canChangeStyleHTML && tag == 'style'){
+				var styleElement = document.createElement('style');
+				styleElement.setAttribute('type', 'text/css');
+				if (props.type) delete props.type;
+				return this.id(styleElement).set(props);
+			}
+			/*</ltIE9>*/
+			/*<ltIE8>*/// Fix for readonly name and type properties in IE < 8
+			if (createElementAcceptsHTML){
+				tag = '<' + tag;
+				if (props.name) tag += ' name="' + escapeQuotes(props.name) + '"';
+				if (props.type) tag += ' type="' + escapeQuotes(props.type) + '"';
+				tag += '>';
+				delete props.name;
+				delete props.type;
+			}
+			/*</ltIE8>*/
 		}
-		/*</ltIE8>*/
 		return this.id(this.createElement(tag)).set(props);
 	}
 
@@ -3587,6 +3486,21 @@ Object.forEach(properties, function(real, key){
 	};
 });
 
+/*<ltIE9>*/
+propertySetters.text = (function(setter){
+	return function(node, value){
+		if (node.get('tag') == 'style') node.set('html', value);
+		else node[properties.text] = value;
+	};
+})(propertySetters.text);
+
+propertyGetters.text = (function(getter){
+	return function(node){
+		return (node.get('tag') == 'style') ? node.innerHTML : getter(node);
+	};
+})(propertyGetters.text);
+/*</ltIE9>*/
+
 // Booleans
 
 var bools = [
@@ -3645,15 +3559,42 @@ el = null;
 /* </webkit> */
 
 /*<IE>*/
-var input = document.createElement('input');
+
+/*<ltIE9>*/
+// #2479 - IE8 Cannot set HTML of style element
+var canChangeStyleHTML = (function(){
+    var div = document.createElement('style'),
+        flag = false;
+    try {
+        div.innerHTML = '#justTesing{margin: 0px;}';
+        flag = !!div.innerHTML;
+    } catch(e){}
+    return flag;
+})();
+/*</ltIE9>*/
+
+var input = document.createElement('input'), volatileInputValue, html5InputSupport;
+
+// #2178
 input.value = 't';
 input.type = 'submit';
-if (input.value != 't') propertySetters.type = function(node, type){
-	var value = node.value;
-	node.type = type;
-	node.value = value;
-};
+volatileInputValue = input.value != 't';
+
+// #2443 - IE throws "Invalid Argument" when trying to use html5 input types
+try {
+	input.type = 'email';
+	html5InputSupport = input.type == 'email';
+} catch(e){}
+
 input = null;
+
+if (volatileInputValue || !html5InputSupport) propertySetters.type = function(node, type){
+	try {
+		var value = node.value;
+		node.type = type;
+		node.value = value;
+	} catch (e){}
+};
 /*</IE>*/
 
 /* getProperty, setProperty */
@@ -3665,7 +3606,7 @@ var pollutesGetAttribute = (function(div){
 })(document.createElement('div'));
 
 var hasCloneBug = (function(test){
-	test.innerHTML = '<object><param name="should_fix" value="the unknown"></object>';
+	test.innerHTML = '<object><param name="should_fix" value="the unknown" /></object>';
 	return test.cloneNode(true).firstChild.childNodes.length != 1;
 })(document.createElement('div'));
 /* </ltIE9> */
@@ -3771,7 +3712,7 @@ Element.implement({
 	hasClass: hasClassList ? function(className){
 		return this.classList.contains(className);
 	} : function(className){
-		return this.className.clean().contains(className, ' ');
+		return classes(this.className).contains(className);
 	},
 
 	addClass: hasClassList ? function(className){
@@ -4054,11 +3995,13 @@ Element.Properties.html = {
 	set: function(html){
 		if (html == null) html = '';
 		else if (typeOf(html) == 'array') html = html.join('');
-		this.innerHTML = html;
-	},
 
+		/*<ltIE9>*/
+		if (this.styleSheet && !canChangeStyleHTML) this.styleSheet.cssText = html;
+		else /*</ltIE9>*/this.innerHTML = html;
+	},
 	erase: function(){
-		this.innerHTML = '';
+		this.set('html', '');
 	}
 
 };
@@ -4106,6 +4049,10 @@ if (!supportsTableInnerHTML || !supportsTRInnerHTML || !supportsHTML5Elements){
 		translations.thead = translations.tfoot = translations.tbody;
 
 		return function(html){
+
+			/*<ltIE9>*/
+			if (this.styleSheet) return set.call(this, html);
+			/*</ltIE9>*/
 			var wrap = translations[this.get('tag')];
 			if (!wrap && !supportsHTML5Elements) wrap = [0, '', ''];
 			if (!wrap) return set.call(this, html);
@@ -4176,259 +4123,136 @@ if (document.createElement('div').getAttributeNode('id')) Element.Properties.id 
 /*
 ---
 
-name: Element.Style
+name: Event
 
-description: Contains methods for interacting with the styles of Elements in a fashionable way.
+description: Contains the Event Type, to make the event object cross-browser.
 
 license: MIT-style license.
 
-requires: Element
+requires: [Window, Document, Array, Function, String, Object]
 
-provides: Element.Style
+provides: Event
 
 ...
 */
 
 (function(){
 
-var html = document.html, el;
+var _keys = {};
+var normalizeWheelSpeed = function(event){
+    var normalized;
+    if (event.wheelDelta){
+        normalized = event.wheelDelta % 120 == 0 ? event.wheelDelta / 120 : event.wheelDelta / 12;
+    } else {
+        var rawAmount = event.deltaY || event.detail || 0;
+        normalized = -(rawAmount % 3 == 0 ? rawAmount / 3 : rawAmount * 10);
+    }
+    return normalized;
+}
 
-//<ltIE9>
-// Check for oldIE, which does not remove styles when they're set to null
-el = document.createElement('div');
-el.style.color = 'red';
-el.style.color = null;
-var doesNotRemoveStyles = el.style.color == 'red';
+var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
+	if (!win) win = window;
+	event = event || win.event;
+	if (event.$extended) return event;
+	this.event = event;
+	this.$extended = true;
+	this.shift = event.shiftKey;
+	this.control = event.ctrlKey;
+	this.alt = event.altKey;
+	this.meta = event.metaKey;
+	var type = this.type = event.type;
+	var target = event.target || event.srcElement;
+	while (target && target.nodeType == 3) target = target.parentNode;
+	this.target = document.id(target);
 
-// check for oldIE, which returns border* shorthand styles in the wrong order (color-width-style instead of width-style-color)
-var border = '1px solid #123abc';
-el.style.border = border;
-var returnsBordersInWrongOrder = el.style.border != border;
-el = null;
-//</ltIE9>
-
-var hasGetComputedStyle = !!window.getComputedStyle;
-
-Element.Properties.styles = {set: function(styles){
-	this.setStyles(styles);
-}};
-
-var hasOpacity = (html.style.opacity != null),
-	hasFilter = (html.style.filter != null),
-	reAlpha = /alpha\(opacity=([\d.]+)\)/i;
-
-var setVisibility = function(element, opacity){
-	element.store('$opacity', opacity);
-	element.style.visibility = opacity > 0 || opacity == null ? 'visible' : 'hidden';
-};
-
-//<ltIE9>
-var setFilter = function(element, regexp, value){
-	var style = element.style,
-		filter = style.filter || element.getComputedStyle('filter') || '';
-	style.filter = (regexp.test(filter) ? filter.replace(regexp, value) : filter + ' ' + value).trim();
-	if (!style.filter) style.removeAttribute('filter');
-};
-//</ltIE9>
-
-var setOpacity = (hasOpacity ? function(element, opacity){
-	element.style.opacity = opacity;
-} : (hasFilter ? function(element, opacity){
-	if (!element.currentStyle || !element.currentStyle.hasLayout) element.style.zoom = 1;
-	if (opacity == null || opacity == 1){
-		setFilter(element, reAlpha, '');
-		if (opacity == 1 && getOpacity(element) != 1) setFilter(element, reAlpha, 'alpha(opacity=100)');
-	} else {
-		setFilter(element, reAlpha, 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')');
+	if (type.indexOf('key') == 0){
+		var code = this.code = (event.which || event.keyCode);
+		this.key = _keys[code]/*<1.3compat>*/ || Object.keyOf(Event.Keys, code)/*</1.3compat>*/;
+		if (type == 'keydown' || type == 'keyup'){
+			if (code > 111 && code < 124) this.key = 'f' + (code - 111);
+			else if (code > 95 && code < 106) this.key = code - 96;
+		}
+		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
+	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
+		var doc = win.document;
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		this.page = {
+			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
+			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
+		};
+		this.client = {
+			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
+		};
+		if (type == 'DOMMouseScroll' || type == 'wheel' || type == 'mousewheel') this.wheel = normalizeWheelSpeed(event);
+		this.rightClick = (event.which == 3 || event.button == 2);
+		if (type == 'mouseover' || type == 'mouseout'){
+			var related = event.relatedTarget || event[(type == 'mouseover' ? 'from' : 'to') + 'Element'];
+			while (related && related.nodeType == 3) related = related.parentNode;
+			this.relatedTarget = document.id(related);
+		}
+	} else if (type.indexOf('touch') == 0 || type.indexOf('gesture') == 0){
+		this.rotation = event.rotation;
+		this.scale = event.scale;
+		this.targetTouches = event.targetTouches;
+		this.changedTouches = event.changedTouches;
+		var touches = this.touches = event.touches;
+		if (touches && touches[0]){
+			var touch = touches[0];
+			this.page = {x: touch.pageX, y: touch.pageY};
+			this.client = {x: touch.clientX, y: touch.clientY};
+		}
 	}
-} : setVisibility));
 
-var getOpacity = (hasOpacity ? function(element){
-	var opacity = element.style.opacity || element.getComputedStyle('opacity');
-	return (opacity == '') ? 1 : opacity.toFloat();
-} : (hasFilter ? function(element){
-	var filter = (element.style.filter || element.getComputedStyle('filter')),
-		opacity;
-	if (filter) opacity = filter.match(reAlpha);
-	return (opacity == null || filter == null) ? 1 : (opacity[1] / 100);
-} : function(element){
-	var opacity = element.retrieve('$opacity');
-	if (opacity == null) opacity = (element.style.visibility == 'hidden' ? 0 : 1);
-	return opacity;
-}));
+	if (!this.client) this.client = {};
+	if (!this.page) this.page = {};
+});
 
-var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
-	namedPositions = {left: '0%', top: '0%', center: '50%', right: '100%', bottom: '100%'},
-	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
+DOMEvent.implement({
 
-//<ltIE9>
-var removeStyle = function(style, property){
-	if (property == 'backgroundPosition'){
-		style.removeAttribute(property + 'X');
-		property += 'Y';
-	}
-	style.removeAttribute(property);
-};
-//</ltIE9>
-
-Element.implement({
-
-	getComputedStyle: function(property){
-		if (!hasGetComputedStyle && this.currentStyle) return this.currentStyle[property.camelCase()];
-		var defaultView = Element.getDocument(this).defaultView,
-			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
-		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
+	stop: function(){
+		return this.preventDefault().stopPropagation();
 	},
 
-	setStyle: function(property, value){
-		if (property == 'opacity'){
-			if (value != null) value = parseFloat(value);
-			setOpacity(this, value);
-			return this;
-		}
-		property = (property == 'float' ? floatName : property).camelCase();
-		if (typeOf(value) != 'string'){
-			var map = (Element.Styles[property] || '@').split(' ');
-			value = Array.from(value).map(function(val, i){
-				if (!map[i]) return '';
-				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
-			}).join(' ');
-		} else if (value == String(Number(value))){
-			value = Math.round(value);
-		}
-		this.style[property] = value;
-		//<ltIE9>
-		if ((value == '' || value == null) && doesNotRemoveStyles && this.style.removeAttribute){
-			removeStyle(this.style, property);
-		}
-		//</ltIE9>
+	stopPropagation: function(){
+		if (this.event.stopPropagation) this.event.stopPropagation();
+		else this.event.cancelBubble = true;
 		return this;
 	},
 
-	getStyle: function(property){
-		if (property == 'opacity') return getOpacity(this);
-		property = (property == 'float' ? floatName : property).camelCase();
-		var result = this.style[property];
-		if (!result || property == 'zIndex'){
-			if (Element.ShortStyles.hasOwnProperty(property)){
-				result = [];
-				for (var s in Element.ShortStyles[property]) result.push(this.getStyle(s));
-				return result.join(' ');
-			}
-			result = this.getComputedStyle(property);
-		}
-		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
-			return result.replace(/(top|right|bottom|left)/g, function(position){
-				return namedPositions[position];
-			}) || '0px';
-		}
-		if (!result && property == 'backgroundPosition') return '0px 0px';
-		if (result){
-			result = String(result);
-			var color = result.match(/rgba?\([\d\s,]+\)/);
-			if (color) result = result.replace(color[0], color[0].rgbToHex());
-		}
-		if (!hasGetComputedStyle && !this.style[property]){
-			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
-				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
-				values.each(function(value){
-					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
-				}, this);
-				return this['offset' + property.capitalize()] - size + 'px';
-			}
-			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
-				return '0px';
-			}
-		}
-		//<ltIE9>
-		if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
-			return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
-		}
-		//</ltIE9>
-		return result;
-	},
-
-	setStyles: function(styles){
-		for (var style in styles) this.setStyle(style, styles[style]);
+	preventDefault: function(){
+		if (this.event.preventDefault) this.event.preventDefault();
+		else this.event.returnValue = false;
 		return this;
-	},
-
-	getStyles: function(){
-		var result = {};
-		Array.flatten(arguments).each(function(key){
-			result[key] = this.getStyle(key);
-		}, this);
-		return result;
 	}
 
 });
 
-Element.Styles = {
-	left: '@px', top: '@px', bottom: '@px', right: '@px',
-	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
-	backgroundColor: 'rgb(@, @, @)', backgroundSize: '@px', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
-	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
-	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
-	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
-	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
+DOMEvent.defineKey = function(code, key){
+	_keys[code] = key;
+	return this;
 };
 
-//<1.3compat>
+DOMEvent.defineKeys = DOMEvent.defineKey.overloadSetter(true);
 
-Element.implement({
-
-	setOpacity: function(value){
-		setOpacity(this, value);
-		return this;
-	},
-
-	getOpacity: function(){
-		return getOpacity(this);
-	}
-
+DOMEvent.defineKeys({
+	'38': 'up', '40': 'down', '37': 'left', '39': 'right',
+	'27': 'esc', '32': 'space', '8': 'backspace', '9': 'tab',
+	'46': 'delete', '13': 'enter'
 });
 
-Element.Properties.opacity = {
-
-	set: function(opacity){
-		setOpacity(this, opacity);
-		setVisibility(this, opacity);
-	},
-
-	get: function(){
-		return getOpacity(this);
-	}
-
-};
-
-//</1.3compat>
-
-//<1.2compat>
-
-Element.Styles = new Hash(Element.Styles);
-
-//</1.2compat>
-
-Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
-
-['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
-	var Short = Element.ShortStyles;
-	var All = Element.Styles;
-	['margin', 'padding'].each(function(style){
-		var sd = style + direction;
-		Short[style][sd] = All[sd] = '@px';
-	});
-	var bd = 'border' + direction;
-	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
-	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
-	Short[bd] = {};
-	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
-	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
-	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
-});
-
-if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
 })();
+
+/*<1.3compat>*/
+var Event = DOMEvent;
+Event.Keys = {};
+/*</1.3compat>*/
+
+/*<1.2compat>*/
+
+Event.Keys = new Hash(Event.Keys);
+
+/*</1.2compat>*/
 
 /*
 ---
@@ -4562,7 +4386,7 @@ Element.Properties.events = {set: function(events){
 
 Element.NativeEvents = {
 	click: 2, dblclick: 2, mouseup: 2, mousedown: 2, contextmenu: 2, //mouse buttons
-	mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
+	wheel: 2, mousewheel: 2, DOMMouseScroll: 2, //mouse wheel
 	mouseover: 2, mouseout: 2, mousemove: 2, selectstart: 2, selectend: 2, //mouse movement
 	keydown: 2, keypress: 2, keyup: 2, //keyboard
 	orientationchange: 2, // mobile
@@ -4571,7 +4395,7 @@ Element.NativeEvents = {
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, paste: 2, input: 2, //form elements
 	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 	hashchange: 1, popstate: 2, // history
-	error: 1, abort: 1, scroll: 1 //misc
+	error: 1, abort: 1, scroll: 1, message: 2 //misc
 };
 
 Element.Events = {
@@ -4830,6 +4654,270 @@ var delegation = {
 /*
 ---
 
+name: Element.Style
+
+description: Contains methods for interacting with the styles of Elements in a fashionable way.
+
+license: MIT-style license.
+
+requires: Element
+
+provides: Element.Style
+
+...
+*/
+
+(function(){
+
+var html = document.html, el;
+
+//<ltIE9>
+// Check for oldIE, which does not remove styles when they're set to null
+el = document.createElement('div');
+el.style.color = 'red';
+el.style.color = null;
+var doesNotRemoveStyles = el.style.color == 'red';
+
+// check for oldIE, which returns border* shorthand styles in the wrong order (color-width-style instead of width-style-color)
+var border = '1px solid #123abc';
+el.style.border = border;
+var returnsBordersInWrongOrder = el.style.border != border;
+el = null;
+//</ltIE9>
+
+var hasGetComputedStyle = !!window.getComputedStyle,
+	supportBorderRadius = document.createElement('div').style.borderRadius != null;
+
+Element.Properties.styles = {set: function(styles){
+	this.setStyles(styles);
+}};
+
+var hasOpacity = (html.style.opacity != null),
+	hasFilter = (html.style.filter != null),
+	reAlpha = /alpha\(opacity=([\d.]+)\)/i;
+
+var setVisibility = function(element, opacity){
+	element.store('$opacity', opacity);
+	element.style.visibility = opacity > 0 || opacity == null ? 'visible' : 'hidden';
+};
+
+//<ltIE9>
+var setFilter = function(element, regexp, value){
+	var style = element.style,
+		filter = style.filter || element.getComputedStyle('filter') || '';
+	style.filter = (regexp.test(filter) ? filter.replace(regexp, value) : filter + ' ' + value).trim();
+	if (!style.filter) style.removeAttribute('filter');
+};
+//</ltIE9>
+
+var setOpacity = (hasOpacity ? function(element, opacity){
+	element.style.opacity = opacity;
+} : (hasFilter ? function(element, opacity){
+	if (!element.currentStyle || !element.currentStyle.hasLayout) element.style.zoom = 1;
+	if (opacity == null || opacity == 1){
+		setFilter(element, reAlpha, '');
+		if (opacity == 1 && getOpacity(element) != 1) setFilter(element, reAlpha, 'alpha(opacity=100)');
+	} else {
+		setFilter(element, reAlpha, 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')');
+	}
+} : setVisibility));
+
+var getOpacity = (hasOpacity ? function(element){
+	var opacity = element.style.opacity || element.getComputedStyle('opacity');
+	return (opacity == '') ? 1 : opacity.toFloat();
+} : (hasFilter ? function(element){
+	var filter = (element.style.filter || element.getComputedStyle('filter')),
+		opacity;
+	if (filter) opacity = filter.match(reAlpha);
+	return (opacity == null || filter == null) ? 1 : (opacity[1] / 100);
+} : function(element){
+	var opacity = element.retrieve('$opacity');
+	if (opacity == null) opacity = (element.style.visibility == 'hidden' ? 0 : 1);
+	return opacity;
+}));
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
+	namedPositions = {left: '0%', top: '0%', center: '50%', right: '100%', bottom: '100%'},
+	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
+
+//<ltIE9>
+var removeStyle = function(style, property){
+	if (property == 'backgroundPosition'){
+		style.removeAttribute(property + 'X');
+		property += 'Y';
+	}
+	style.removeAttribute(property);
+};
+//</ltIE9>
+
+Element.implement({
+
+	getComputedStyle: function(property){
+		if (!hasGetComputedStyle && this.currentStyle) return this.currentStyle[property.camelCase()];
+		var defaultView = Element.getDocument(this).defaultView,
+			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
+		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
+	},
+
+	setStyle: function(property, value){
+		if (property == 'opacity'){
+			if (value != null) value = parseFloat(value);
+			setOpacity(this, value);
+			return this;
+		}
+		property = (property == 'float' ? floatName : property).camelCase();
+		if (typeOf(value) != 'string'){
+			var map = (Element.Styles[property] || '@').split(' ');
+			value = Array.from(value).map(function(val, i){
+				if (!map[i]) return '';
+				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
+			}).join(' ');
+		} else if (value == String(Number(value))){
+			value = Math.round(value);
+		}
+		this.style[property] = value;
+		//<ltIE9>
+		if ((value == '' || value == null) && doesNotRemoveStyles && this.style.removeAttribute){
+			removeStyle(this.style, property);
+		}
+		//</ltIE9>
+		return this;
+	},
+
+	getStyle: function(property){
+		if (property == 'opacity') return getOpacity(this);
+		property = (property == 'float' ? floatName : property).camelCase();
+		if (supportBorderRadius && property.indexOf('borderRadius') != -1){
+			return ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'].map(function(corner){
+				return this.style[corner] || '0px';
+			}, this).join(' ');
+		}
+		var result = this.style[property];
+		if (!result || property == 'zIndex'){
+			if (Element.ShortStyles.hasOwnProperty(property)){
+				result = [];
+				for (var s in Element.ShortStyles[property]) result.push(this.getStyle(s));
+				return result.join(' ');
+			}
+			result = this.getComputedStyle(property);
+		}
+		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
+			return result.replace(/(top|right|bottom|left)/g, function(position){
+				return namedPositions[position];
+			}) || '0px';
+		}
+		if (!result && property == 'backgroundPosition') return '0px 0px';
+		if (result){
+			result = String(result);
+			var color = result.match(/rgba?\([\d\s,]+\)/);
+			if (color) result = result.replace(color[0], color[0].rgbToHex());
+		}
+		if (!hasGetComputedStyle && !this.style[property]){
+			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
+				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
+				values.each(function(value){
+					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+				}, this);
+				return this['offset' + property.capitalize()] - size + 'px';
+			}
+			if ((/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
+				return '0px';
+			}
+		}
+		//<ltIE9>
+		if (returnsBordersInWrongOrder && /^border(Top|Right|Bottom|Left)?$/.test(property) && /^#/.test(result)){
+			return result.replace(/^(.+)\s(.+)\s(.+)$/, '$2 $3 $1');
+		}
+		//</ltIE9>
+
+		return result;
+	},
+
+	setStyles: function(styles){
+		for (var style in styles) this.setStyle(style, styles[style]);
+		return this;
+	},
+
+	getStyles: function(){
+		var result = {};
+		Array.flatten(arguments).each(function(key){
+			result[key] = this.getStyle(key);
+		}, this);
+		return result;
+	}
+
+});
+
+Element.Styles = {
+	left: '@px', top: '@px', bottom: '@px', right: '@px',
+	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
+	backgroundColor: 'rgb(@, @, @)', backgroundSize: '@px', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
+	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
+	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
+	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@', borderRadius: '@px @px @px @px'
+};
+
+//<1.3compat>
+
+Element.implement({
+
+	setOpacity: function(value){
+		setOpacity(this, value);
+		return this;
+	},
+
+	getOpacity: function(){
+		return getOpacity(this);
+	}
+
+});
+
+Element.Properties.opacity = {
+
+	set: function(opacity){
+		setOpacity(this, opacity);
+		setVisibility(this, opacity);
+	},
+
+	get: function(){
+		return getOpacity(this);
+	}
+
+};
+
+//</1.3compat>
+
+//<1.2compat>
+
+Element.Styles = new Hash(Element.Styles);
+
+//</1.2compat>
+
+Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
+
+['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
+	var Short = Element.ShortStyles;
+	var All = Element.Styles;
+	['margin', 'padding'].each(function(style){
+		var sd = style + direction;
+		Short[style][sd] = All[sd] = '@px';
+	});
+	var bd = 'border' + direction;
+	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
+	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
+	Short[bd] = {};
+	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
+	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
+	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
+});
+
+if (hasBackgroundPositionXY) Element.ShortStyles.backgroundPosition = {backgroundPositionX: '@', backgroundPositionY: '@'};
+})();
+
+/*
+---
+
 name: Element.Dimensions
 
 description: Contains methods to work with size, scroll, or positioning of Elements and the window object.
@@ -4856,6 +4944,23 @@ element.appendChild(child);
 var brokenOffsetParent = (child.offsetParent === element);
 element = child = null;
 
+var heightComponents = ['height', 'paddingTop', 'paddingBottom', 'borderTopWidth', 'borderBottomWidth'],
+	widthComponents = ['width', 'paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'];
+
+var svgCalculateSize = function(el){
+
+	var gCS = window.getComputedStyle(el),
+		bounds = {x: 0, y: 0};
+
+	heightComponents.each(function(css){
+		bounds.y += parseFloat(gCS[css]);
+	});
+	widthComponents.each(function(css){
+		bounds.x += parseFloat(gCS[css]);
+	});
+	return bounds;
+};
+
 var isOffset = function(el){
 	return styleString(el, 'position') != 'static' || isBody(el);
 };
@@ -4878,7 +4983,18 @@ Element.implement({
 
 	getSize: function(){
 		if (isBody(this)) return this.getWindow().getSize();
-		return {x: this.offsetWidth, y: this.offsetHeight};
+
+		//<ltIE9>
+		// This if clause is because IE8- cannot calculate getBoundingClientRect of elements with visibility hidden.
+		if (!window.getComputedStyle) return {x: this.offsetWidth, y: this.offsetHeight};
+		//</ltIE9>
+
+		// This svg section under, calling `svgCalculateSize()`, can be removed when FF fixed the svg size bug.
+		// Bug info: https://bugzilla.mozilla.org/show_bug.cgi?id=530985
+		if (this.get('tag') == 'svg') return svgCalculateSize(this);
+		
+		var bounds = this.getBoundingClientRect();
+		return {x: bounds.width, y: bounds.height};
 	},
 
 	getScrollSize: function(){
@@ -4916,7 +5032,7 @@ Element.implement({
 
 		try {
 			return element.offsetParent;
-		} catch(e) {}
+		} catch(e){}
 		return null;
 	},
 
@@ -4934,7 +5050,7 @@ Element.implement({
 
 			return {
 				x: bound.left.toInt() + elemScrolls.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
-				y: bound.top.toInt()  + elemScrolls.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
+				y: bound.top.toInt() + elemScrolls.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
 			};
 		}
 
@@ -5481,118 +5597,6 @@ Fx.CSS.Parsers = new Hash(Fx.CSS.Parsers);
 /*
 ---
 
-name: Fx.Tween
-
-description: Formerly Fx.Style, effect to transition any CSS property for an element.
-
-license: MIT-style license.
-
-requires: Fx.CSS
-
-provides: [Fx.Tween, Element.fade, Element.highlight]
-
-...
-*/
-
-Fx.Tween = new Class({
-
-	Extends: Fx.CSS,
-
-	initialize: function(element, options){
-		this.element = this.subject = document.id(element);
-		this.parent(options);
-	},
-
-	set: function(property, now){
-		if (arguments.length == 1){
-			now = property;
-			property = this.property || this.options.property;
-		}
-		this.render(this.element, property, now, this.options.unit);
-		return this;
-	},
-
-	start: function(property, from, to){
-		if (!this.check(property, from, to)) return this;
-		var args = Array.flatten(arguments);
-		this.property = this.options.property || args.shift();
-		var parsed = this.prepare(this.element, this.property, args);
-		return this.parent(parsed.from, parsed.to);
-	}
-
-});
-
-Element.Properties.tween = {
-
-	set: function(options){
-		this.get('tween').cancel().setOptions(options);
-		return this;
-	},
-
-	get: function(){
-		var tween = this.retrieve('tween');
-		if (!tween){
-			tween = new Fx.Tween(this, {link: 'cancel'});
-			this.store('tween', tween);
-		}
-		return tween;
-	}
-
-};
-
-Element.implement({
-
-	tween: function(property, from, to){
-		this.get('tween').start(property, from, to);
-		return this;
-	},
-
-	fade: function(how){
-		var fade = this.get('tween'), method, args = ['opacity'].append(arguments), toggle;
-		if (args[1] == null) args[1] = 'toggle';
-		switch (args[1]){
-			case 'in': method = 'start'; args[1] = 1; break;
-			case 'out': method = 'start'; args[1] = 0; break;
-			case 'show': method = 'set'; args[1] = 1; break;
-			case 'hide': method = 'set'; args[1] = 0; break;
-			case 'toggle':
-				var flag = this.retrieve('fade:flag', this.getStyle('opacity') == 1);
-				method = 'start';
-				args[1] = flag ? 0 : 1;
-				this.store('fade:flag', !flag);
-				toggle = true;
-			break;
-			default: method = 'start';
-		}
-		if (!toggle) this.eliminate('fade:flag');
-		fade[method].apply(fade, args);
-		var to = args[args.length - 1];
-		if (method == 'set' || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
-		else fade.chain(function(){
-			this.element.setStyle('visibility', 'hidden');
-			this.callChain();
-		});
-		return this;
-	},
-
-	highlight: function(start, end){
-		if (!end){
-			end = this.retrieve('highlight:original', this.getStyle('background-color'));
-			end = (end == 'transparent') ? '#fff' : end;
-		}
-		var tween = this.get('tween');
-		tween.start('background-color', start || '#ffff88', end).chain(function(){
-			this.setStyle('background-color', this.retrieve('highlight:original'));
-			tween.callChain();
-		}.bind(this));
-		return this;
-	}
-
-});
-
-/*
----
-
 name: Fx.Morph
 
 description: Formerly Fx.Styles, effect to transition any number of CSS properties for an element using an object of rules, or CSS based selector rules.
@@ -5785,6 +5789,118 @@ Fx.Transitions.extend({
 /*
 ---
 
+name: Fx.Tween
+
+description: Formerly Fx.Style, effect to transition any CSS property for an element.
+
+license: MIT-style license.
+
+requires: Fx.CSS
+
+provides: [Fx.Tween, Element.fade, Element.highlight]
+
+...
+*/
+
+Fx.Tween = new Class({
+
+	Extends: Fx.CSS,
+
+	initialize: function(element, options){
+		this.element = this.subject = document.id(element);
+		this.parent(options);
+	},
+
+	set: function(property, now){
+		if (arguments.length == 1){
+			now = property;
+			property = this.property || this.options.property;
+		}
+		this.render(this.element, property, now, this.options.unit);
+		return this;
+	},
+
+	start: function(property, from, to){
+		if (!this.check(property, from, to)) return this;
+		var args = Array.flatten(arguments);
+		this.property = this.options.property || args.shift();
+		var parsed = this.prepare(this.element, this.property, args);
+		return this.parent(parsed.from, parsed.to);
+	}
+
+});
+
+Element.Properties.tween = {
+
+	set: function(options){
+		this.get('tween').cancel().setOptions(options);
+		return this;
+	},
+
+	get: function(){
+		var tween = this.retrieve('tween');
+		if (!tween){
+			tween = new Fx.Tween(this, {link: 'cancel'});
+			this.store('tween', tween);
+		}
+		return tween;
+	}
+
+};
+
+Element.implement({
+
+	tween: function(property, from, to){
+		this.get('tween').start(property, from, to);
+		return this;
+	},
+
+	fade: function(how){
+		var fade = this.get('tween'), method, args = ['opacity'].append(arguments), toggle;
+		if (args[1] == null) args[1] = 'toggle';
+		switch (args[1]){
+			case 'in': method = 'start'; args[1] = 1; break;
+			case 'out': method = 'start'; args[1] = 0; break;
+			case 'show': method = 'set'; args[1] = 1; break;
+			case 'hide': method = 'set'; args[1] = 0; break;
+			case 'toggle':
+				var flag = this.retrieve('fade:flag', this.getStyle('opacity') == 1);
+				method = 'start';
+				args[1] = flag ? 0 : 1;
+				this.store('fade:flag', !flag);
+				toggle = true;
+			break;
+			default: method = 'start';
+		}
+		if (!toggle) this.eliminate('fade:flag');
+		fade[method].apply(fade, args);
+		var to = args[args.length - 1];
+		if (method == 'set' || to != 0) this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
+		else fade.chain(function(){
+			this.element.setStyle('visibility', 'hidden');
+			this.callChain();
+		});
+		return this;
+	},
+
+	highlight: function(start, end){
+		if (!end){
+			end = this.retrieve('highlight:original', this.getStyle('background-color'));
+			end = (end == 'transparent') ? '#fff' : end;
+		}
+		var tween = this.get('tween');
+		tween.start('background-color', start || '#ffff88', end).chain(function(){
+			this.setStyle('background-color', this.retrieve('highlight:original'));
+			tween.callChain();
+		}.bind(this));
+		return this;
+	}
+
+});
+
+/*
+---
+
 name: Request
 
 description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
@@ -5818,7 +5934,8 @@ var Request = this.Request = new Class({
 		onException: function(headerName, value){},
 		onTimeout: function(){},
 		user: '',
-		password: '',*/
+		password: '',
+		withCredentials: false,*/
 		url: '',
 		data: '',
 		headers: {
@@ -5856,7 +5973,10 @@ var Request = this.Request = new Class({
 		}.bind(this));
 		xhr.onreadystatechange = empty;
 		if (progressSupport) xhr.onprogress = xhr.onloadstart = empty;
-		clearTimeout(this.timer);
+		if (this.timer){
+			clearTimeout(this.timer);
+			delete this.timer;
+		}
 
 		this.response = {text: this.xhr.responseText || '', xml: this.xhr.responseXML};
 		if (this.options.isSuccess.call(this, this.status))
@@ -5981,7 +6101,7 @@ var Request = this.Request = new Class({
 		}
 
 		xhr.open(method.toUpperCase(), url, this.options.async, this.options.user, this.options.password);
-		if (this.options.user && 'withCredentials' in xhr) xhr.withCredentials = true;
+		if ((/*<1.4compat>*/this.options.user || /*</1.4compat>*/this.options.withCredentials) && 'withCredentials' in xhr) xhr.withCredentials = true;
 
 		xhr.onreadystatechange = this.onStateChange.bind(this);
 
@@ -6005,7 +6125,10 @@ var Request = this.Request = new Class({
 		this.running = false;
 		var xhr = this.xhr;
 		xhr.abort();
-		clearTimeout(this.timer);
+		if (this.timer){
+			clearTimeout(this.timer);
+			delete this.timer;
+		}
 		xhr.onreadystatechange = empty;
 		if (progressSupport) xhr.onprogress = xhr.onloadstart = empty;
 		this.xhr = new Browser.Request();
@@ -6016,7 +6139,7 @@ var Request = this.Request = new Class({
 });
 
 var methods = {};
-['get', 'post', 'put', 'delete', 'GET', 'POST', 'PUT', 'DELETE'].each(function(method){
+['get', 'post', 'put', 'delete', 'patch', 'head', 'GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD'].each(function(method){
 	methods[method] = function(data){
 		var object = {
 			method: method
@@ -6387,12 +6510,14 @@ var ready,
 
 var domready = function(){
 	clearTimeout(timer);
-	if (ready) return;
-	Browser.loaded = ready = true;
-	document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
-
-	document.fireEvent('domready');
-	window.fireEvent('domready');
+	if (!ready) {
+		Browser.loaded = ready = true;
+		document.removeListener('DOMContentLoaded', domready).removeListener('readystatechange', check);
+		document.fireEvent('domready');
+		window.fireEvent('domready');
+	}
+	// cleanup scope vars
+	document = window = testElement = null;
 };
 
 var check = function(){
