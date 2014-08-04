@@ -3,7 +3,7 @@
   "homepage": "https://github.com/mootools/mootools-core",
   "version": "1.5.1",
   "authors": [
-    "Valerio Pioretti"
+    "Valerio Proietti"
   ],
   "main": [
     "dist/mootools-core.js",
