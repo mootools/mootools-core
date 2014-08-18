@@ -79,6 +79,10 @@ String.implement({
 			if (match.charAt(0) == '\\') return match.slice(1);
 			return (object[name] != null) ? object[name] : '';
 		});
+	},
+
+	splice: function(pos, rem, ins) {
+		return (this.slice(0,pos) + ins + this.slice(pos + Math.abs(rem)));
 	}
 
 });

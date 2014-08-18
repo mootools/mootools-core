@@ -399,6 +399,34 @@ Strips the String of its *<script>* tags and anything in between them.
 
 
 
+String method: splice {#String:splice}
+--------------------------------------
+
+Similar to the [array.splice][], inserts a string before the specified position and removes unnecessary elements.
+
+### Syntax:
+
+	myString.splice(position, remove, insert);
+
+### Arguments:
+
+1. position - (*integer*) The position before which the insertion is made.
+1. remove - (*integer*) Length of the text to be removed.
+1. insert - (*string*) String to insert.
+
+### Returns:
+
+* (*string*) Modified string.
+
+### Examples:
+
+	'Hello, big world!'.splice(6, 4, ''); // returns 'Hello, world!'
+	'Add here'.splice(3, 0, ' substring'); // returns 'Add substring here'
+	'Replace this word'.splice(8, 4, 'that'); // returns 'Replace that word'
+	'You can count from an end'.splice(-6, 2, 'the'); // returns 'You can count from the end'
+
+
+
 [MDN String]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
 [MDN String:contains]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/contains
 [MDN String:indexOf]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf
@@ -411,3 +439,4 @@ Strips the String of its *<script>* tags and anything in between them.
 [String:trim]: #String:trim
 [Array:rgbToHex]: /core/Types/Array/#Array:rgbToHex
 [String:trim]: #String:trim
+[array.splice]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice

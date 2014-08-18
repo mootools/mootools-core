@@ -141,4 +141,13 @@ describe("String Methods", function(){
 		expect('this {should {break} mo} betta'.substitute({ 'break':'work' })).toEqual('this {should work mo} betta');
 	});
 
+	// String.splice
+
+	it('should add substrings and remove characters next to added', function () {
+		expect('Hello, big world!'.splice(6, 4, '')).toEqual('Hello, world!');
+		expect('Add here'.splice(3, 0, ' substring')).toEqual('Add substring here');
+		expect('Replace this word'.splice(8, 4, 'that')).toEqual('Replace that word');
+		expect('You can count from an end'.splice(-6, 2, 'the')).toEqual('You can count from the end');
+	});
+
 });
