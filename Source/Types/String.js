@@ -82,7 +82,7 @@ String.implement({
 	},
 
 	splice: function(pos, rem, ins) {
-		return (this.slice(0,pos) + ins + this.slice(pos + Math.abs(rem)));
+		return (this.slice(0, pos) + ins + this.slice(pos + Math.abs(rem)));
 	}
 
 });
