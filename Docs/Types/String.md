@@ -406,24 +406,32 @@ Similar to the [array.splice][], inserts a string before the specified position 
 
 ### Syntax:
 
-	myString.splice(position, remove, insert);
+	myString.splice(position, remove[, element1[, ...[, elementN]]][, changes]);
 
 ### Arguments:
 
-1. position - (*integer*) The position before which the insertion is made.
+1. position - (*integer*) The position before which the operation is performed.
+   Use negative numbers to count from the end: -1 to append, -2 to insert before last character etc.
 1. remove - (*integer*) Length of the text to be removed.
-1. insert - (*string*) String to insert.
+1. elements - (*string*, optional) Strings to insert. Or anything which can be converted to a string.
+   If you don't specify any, splice simply removes characters.
+1. changes - (*boolean*, optional) If you wish to know what was removed, set this flag true.
+   Any boolean value at the end of the args array will be recognized as changes flag.
 
 ### Returns:
 
 * (*string*) Modified string.
+* (*array*) If the changes flag is set, returns an array of two strings: modified string and removed string.
 
 ### Examples:
 
-	'Hello, big world!'.splice(6, 4, ''); // returns 'Hello, world!'
-	'Add here'.splice(3, 0, ' substring'); // returns 'Add substring here'
+	'Hello, big world!'.splice(6, 4); // returns 'Hello, world!'
+	'Add here'.splice(3, 0, ' two', ' substrings'); // returns 'Add two substrings here'
 	'Replace this word'.splice(8, 4, 'that'); // returns 'Replace that word'
-	'You can count from an end'.splice(-6, 2, 'the'); // returns 'You can count from the end'
+	'You can count from an end'.splice(-7, 2, 'the'); // returns 'You can count from the end'
+	'Such a beautiful'.splice(-1, 0, ' array: ', [1, 1, 2, 3, 5]) // returns 'Such a beautiful array: 1,1,2,3,5'
+	'You can get removed string'.splice(12, 14, 'into ', 'the car', true) // returns ['You can get into the car', 'removed string']
+	'You can get removed string'.splice(12, 14, 'into ', 'the car', false) // returns 'You can get into the car'
 
 
 
