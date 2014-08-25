@@ -1,12 +1,14 @@
 #!/bin/sh
 
-COREFILE='Source/Core/Core.js'
-PKGFILE='package.json'
+COREFILES=('Source/Core/Core.js' 'dist/mootools-core-compat.js' 'dist/mootools-core-compat.min.js' 'dist/mootools-core.js' 'dist/mootools-core.min.js')
+JSONFILES=('package.json' 'bower.json')
 TAGLENGTH=3
 
 DIR=`dirname "$0"`
-COREFILE="$DIR/$COREFILE"
-PKGFILE="$DIR/$PKGFILE"
+for file in "${COREFILES[@]}"; do echo "$file=$DIR/$file" | sh >/dev/null 2>&1; done
+for file in "${JSONFILES[@]}"; do echo "$file=$DIR/$file" | sh >/dev/null 2>&1; done
+TARGET_FILES=( "${COREFILES[@]}" "${JSONFILES[@]}" )
+TARGET_FILES_STRING=`IFS=$' '; echo "${TARGET_FILES[*]}"`
 TAG=`echo "$1" | cut -d'.' -f-$TAGLENGTH`
 SUFFIX="`echo "$2" | tr '[A-Z]' '[a-z]'`"
 BUILD=`sh -c "cd '$DIR' && git rev-parse HEAD"`
@@ -37,6 +39,10 @@ case "$SUFFIX" in
 	*) moo 'Invalid suffix specified.';;
 esac
 
+if [ ! -d "$DIR/dist" ]; then
+  moo '"./dist" directory not found. Please run "grunt distBuild" first.'
+fi
+
 if [ "$TAG" != "$1" ]; then
 	echo -n "Did you mean $TAG$SUFFIX? (y/n): "
 	read FIXTAG
@@ -53,16 +59,20 @@ else
 	NEXTTAG="${TAG}-dev"
 fi
 
-sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$TAG$SUFFIX'/" -e "s/\(build:[ 	]*\)'%build%'/\1'$BUILD'/" "$COREFILE" || moo "Error setting version and build for $TAG$SUFFIX in $COREFILE."
-sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$TAG$SUFFIX\"/" "$PKGFILE" || moo "Error setting version for $TAG$SUFFIX in $PKGFILE."
-sh -c "cd $DIR && git add '$COREFILE' '$PKGFILE' && git commit -qm 'Welcome $TAG$SUFFIX.'" || moo "Error committing $TAG$SUFFIX."
+for FILE in "${COREFILES[@]}" "${JSONFILES[0]}"; do
+	sed -i".$BUILD" -e "s/\(version:[ 	]*\)[\"'][0-9.]*-dev[\"']/\1'$TAG$SUFFIX'/" -e "s/\(build:[ 	]*\)[\"']%build%[\"']/\1'$BUILD'/" "$FILE" || moo "Error setting version and/or build for $TAG$SUFFIX in $FILE."
+done
+sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$TAG$SUFFIX\"/" "${JSONFILES[0]}" || moo "Error setting version for $TAG$SUFFIX in ${JSONFILES[0]}."
+sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*\"/\1\"$TAG\"/" "${JSONFILES[1]}" || moo "Error, setting version for $TAG in ${JSONFILES[1]}."
+sh -c "cd $DIR && git add $TARGET_FILES_STRING && git commit -qm 'Welcome $TAG$SUFFIX.'" || moo "Error committing $TAG$SUFFIX."
 sh -c "cd $DIR && git tag -am '$TAG$RELEASE.' '$TAG$SUFFIX'" || moo "Error tagging $TAG$SUFFIX."
 echo "Tagged $TAG$SUFFIX." >&2
 
-mv "$COREFILE.$BUILD" "$COREFILE" || moo "Error reverting version and build in $COREFILE."
-mv "$PKGFILE.$BUILD" "$PKGFILE" || moo "Error reverting version in $PKFILE."
-sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$NEXTTAG'/" "$COREFILE" || moo "Error setting version $NEXTTAG in $COREFILE."
-sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$NEXTTAG\"/" "$PKGFILE" || moo "Error setting version for $NEXTTAG in $PKGFILE."
-rm "$COREFILE.$BUILD" "$PKGFILE.$BUILD" || moo "Error cleaning up $COREFILE.$BUILD and/or $PKGFILE.$BUILD."
-sh -c "cd $DIR && git add '$COREFILE' '$PKGFILE' && git commit -qm 'Hello $NEXTTAG.'" || moo "Error committing $NEXTTAG."
+mv "${COREFILES[0]}.$BUILD" "$COREFILES" || moo "Error reverting version and build in ${COREFILES[0]}."
+mv "${JSONFILES[0]}.$BUILD" "${JSONFILES[0]}" || moo "Error reverting version in ${JSONFILES[0]}."
+sh -c "rm -r $DIR/dist && git add -u $DIR/dist" || moo "Error deleting dist folder"
+sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$NEXTTAG'/" "${COREFILES[0]}" || moo "Error setting version $NEXTTAG in ${COREFILES[0]}."
+sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$NEXTTAG\"/" "${JSONFILES[0]}" || moo "Error setting version for $NEXTTAG in ${JSONFILES[0]}."
+rm "${COREFILES[0]}.$BUILD" "${JSONFILES[0]}.$BUILD" "${JSONFILES[1]}.$BUILD" || moo "Error cleaning up ${COREFILES[0]}.$BUILD and/or ${JSONFILES[0]}.$BUILD, ${JSONFILES[1]}.$BUILD"
+sh -c "cd $DIR && git add '${COREFILES[0]}' '${JSONFILES[0]}' && git commit -qm 'Hello $NEXTTAG.'" || moo "Error committing $NEXTTAG."
 echo "Committed $NEXTTAG." >&2
