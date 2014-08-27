@@ -54,4 +54,35 @@ describe('Element.Delegation', function(){
 
 	});
 
+	describe('removeEvent', function(){
+
+		describe('submit', function(){
+
+			it('should remove nicely', function(){
+				var element = new Element('div', {
+					html: '<div><form><input type="text"></form></div>'
+				});
+
+				var input = element.getElement('input');
+				var listener = function(){};
+
+				element.addEvent('submit:relay(form)', listener);
+
+				// IE8, fireEvent on the observer element. This adds the
+				// submit event to the <form> element.
+				element.fireEvent('focusin', [{target: input}, input]);
+
+				// remove element, which also removes the form
+				element.getElement('div').destroy();
+
+				// now removing the event, should remove the submit event from the
+				// form, but it's not there anymore, so it may not throw an error.
+				element.removeEvent('submit:relay(form)', listener);
+
+			});
+
+		});
+
+	});
+
 });
