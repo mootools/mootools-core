@@ -60,9 +60,7 @@ var formObserver = function(type){
 				// the form may have been destroyed, so it won't have the
 				// removeEvent method anymore. In that case the event was
 				// removed as well.
-				if (list.forms[i].removeEvent){
-					list.forms[i].removeEvent(type, list.fns[i]);
-				}
+				if (list.forms[i].removeEvent) list.forms[i].removeEvent(type, list.fns[i]);
 			}
 		},
 
