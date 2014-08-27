@@ -57,7 +57,12 @@ var formObserver = function(type){
 		remove: function(self, uid){
 			var list = self.retrieve(_key + type + 'listeners', {})[uid];
 			if (list && list.forms) for (var i = list.forms.length; i--;){
-				list.forms[i].removeEvent(type, list.fns[i]);
+				// the form may have been destroyed, so it won't have the
+				// removeEvent method anymore. In that case the event was
+				// removed as well.
+				if (list.forms[i].removeEvent){
+					list.forms[i].removeEvent(type, list.fns[i]);
+				}
 			}
 		},
 
