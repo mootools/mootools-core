@@ -13,6 +13,14 @@
         "compat": {
             "src": "Source/**/*.js",
             "dest": "dist/mootools-core-compat.js"
+        },
+        "server": {
+            "options":{
+                "strip": [".*compat"],
+                "only": ["Core/Core", "Core/Array", "Core/String", "Core/Number", "Core/Function", "Core/Object", "Core/Class", "Core/Class.Extras", "Core/JSON"]
+            },
+            "src": "Source/**/*.js",
+            "dest": "dist/mootools-core-server.js"
         }
     },
     "uglify": {
