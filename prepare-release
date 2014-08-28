@@ -1,0 +1,126 @@
+#!/bin/sh
+
+TAGLENGTH=3
+COREFILE='Source/Core/Core.js'
+PKGFILES='package.json bower.json'
+
+DIST='node_modules/.bin/grunt'
+DIST_ARGS='distBuild'
+DIST_DIR='dist'
+
+DIR=`dirname "$0"`
+COREFILE="$DIR/$COREFILE"
+TAG=`echo "$1" | cut -d'.' -f-$TAGLENGTH`
+SUFFIX="`echo "$2" | tr '[A-Z]' '[a-z]'`"
+BUILD=`sh -c "cd '$DIR' && git rev-parse HEAD"`
+CUTLENGTH=`echo "$TAGLENGTH - 1" | bc`
+
+usage(){
+	moo "Usage: $0 <tag> [suffix]
+
+  suffix: alpha, beta or rc*"
+}
+
+moo(){
+	echo "$1" >&2
+	exit 1
+}
+
+get_suffixnumber(){
+	NUMBER=`echo "$1" | sed 's/^[a-z]*[ 	]*\([0-9]*\).*/\1/'`
+	[ -n "$NUMBER" ] && echo "$NUMBER" || echo "1"
+}
+
+[ -z "$1" -o "$1" = '-h' -o "$1" = '--help' ] && usage
+[ -z "$BUILD" ] && moo 'Unable to determine build.'
+[ -z "$DIST" -o -x "$DIR/$DIST" ] || moo "Cannot execute '$DIST', did you npm install?"
+
+until [ -n "`echo "$TAG." | cut -d'.' -f$TAGLENGTH`" ]; do
+	TAG="$TAG.0"
+done
+
+case "$SUFFIX" in
+	'') RELEASE=''; SUFFIX='';;
+	a*) NUMBER="`get_suffixnumber $SUFFIX`"; RELEASE=" Alpha $NUMBER"; SUFFIX="-a$NUMBER";;
+	b*) NUMBER="`get_suffixnumber $SUFFIX`"; RELEASE=" Beta $NUMBER"; SUFFIX="-b$NUMBER";;
+	rc*) NUMBER="`get_suffixnumber $SUFFIX`"; RELEASE=" Release Candidate $NUMBER"; SUFFIX="-rc$NUMBER";;
+	*) moo 'Invalid suffix specified.';;
+esac
+
+if [ "$TAG" != "$1" ]; then
+	echo -n "Did you mean $TAG$SUFFIX? (y/n): "
+	read FIXTAG
+	[ "$FIXTAG" = "y" ] || moo "Invalid tag specified, this project's tags consist of $TAGLENGTH parts."
+fi
+
+sh -c "cd '$DIR' && git show-ref --quiet --tags '$TAG$SUFFIX'" && moo "Tag $TAG$SUFFIX already exists."
+
+if [ -z "$SUFFIX" ]; then
+	MINOR=`echo "$TAG" | cut -d'.' -f$TAGLENGTH-`
+	[ -z "$MINOR" ] && MINOR='0'
+	NEXTTAG="`echo "$TAG" | cut -d'.' -f-$CUTLENGTH`.`echo "$MINOR + 1" | bc`-dev"
+else
+	NEXTTAG="${TAG}-dev"
+fi
+
+if [ -n "$DIST" -a -d "$DIR/$DIST_DIR" ]; then
+	echo -n "The '$DIST_DIR' directory already exists. Overwrite it? (y/n): "
+	read DELETEDIST
+	if [ "$DELETEDIST" = "y" ]; then
+		sh -c "cd '$DIR' && git rm -r '$DIR/$DIST_DIR'"
+	else
+		moo "Aborting, will not overwrite '$DIST_DIR'."
+	fi
+fi
+
+# Replace build and version strings.
+sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$TAG$SUFFIX'/" -e "s/\(build:[ 	]*\)'%build%'/\1'$BUILD'/" "$COREFILE" || moo "Error setting version and build for $TAG$SUFFIX in $COREFILE."
+sh -c "cd '$DIR' && git add '$COREFILE'" || moo "Error adding changed $COREFILE for $TAG$SUFFIX to repository."
+for PKGFILE in $PKGFILES; do
+	PKGFILE="$DIR/$PKGFILE"
+	sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$TAG$SUFFIX\"/" "$PKGFILE" || moo "Error setting version for $TAG$SUFFIX in $PKGFILE."
+	sh -c "cd '$DIR' && git add '$PKGFILE'" || moo "Error adding changed $PKGFILE for $TAG$SUFFIX to repository."
+done
+
+# Build dist files.
+if [ -n "$DIST" ]; then
+	echo "Building '$DIST_DIR' files." >&2
+	sh -c "cd '$DIR' && $DIST $DIST_ARGS" || moo "Error building '$DIST_DIR' files."
+	sh -c "cd '$DIR' && git add -f '$DIR/$DIST_DIR'" || moo "Error adding '$DIST_DIR' files to repository."
+	echo "Succesfully built '$DIST_DIR' files." >&2
+fi
+
+# Make the new release final.
+sh -c "cd '$DIR' && git commit -qm 'Welcome $TAG$SUFFIX.'" || moo "Error committing $TAG$SUFFIX."
+sh -c "cd '$DIR' && git tag -am '$TAG$RELEASE.' '$TAG$SUFFIX'" || moo "Error tagging $TAG$SUFFIX."
+echo "Tagged $TAG$SUFFIX." >&2
+
+# Revert to old corefile and pkgfiles.
+mv "$COREFILE.$BUILD" "$COREFILE" || moo "Error reverting version and build in $COREFILE."
+for PKGFILE in $PKGFILES; do
+	PKGFILE="$DIR/$PKGFILE"
+	mv "$PKGFILE.$BUILD" "$PKGFILE" || moo "Error reverting version in $PKFILE."
+done
+
+# Replace build and version strings.
+sed -i".$BUILD" -e "s/\(version:[ 	]*\)'[0-9.]*-dev'/\1'$NEXTTAG'/" "$COREFILE" || moo "Error setting version $NEXTTAG in $COREFILE."
+sh -c "cd '$DIR' && git add '$COREFILE'" || moo "Error adding changed $COREFILE for $NEXTTAG to repository."
+for PKGFILE in $PKGFILES; do
+	PKGFILE="$DIR/$PKGFILE"
+	sed -i".$BUILD" -e "s/^\([ 	]*\"version\":[ 	]*\)\"[0-9.]*-dev\"/\1\"$NEXTTAG\"/" "$PKGFILE" || moo "Error setting version for $NEXTTAG in $PKGFILE."
+	sh -c "cd '$DIR' && git add '$PKGFILE'" || moo "Error adding changed $PKGFILE for $NEXTTAG to repository."
+done
+
+# Clean up temporary and dist files.
+rm "$COREFILE.$BUILD" || moo "Error cleaning up $COREFILE.$BUILD."
+for PKGFILE in $PKGFILES; do
+	PKGFILE="$DIR/$PKGFILE"
+	rm "$PKGFILE.$BUILD" || moo "Error cleaning up $PKGFILE.$BUILD."
+done
+if [ -n "$DIST" ]; then
+	sh -c "cd '$DIR' && git rm -qr '$DIR/$DIST_DIR'" || moo "Error cleaning up '$DIST_DIR' files."
+fi
+
+# Make the new dev version final.
+sh -c "cd '$DIR' && git commit -qm 'Hello $NEXTTAG.'" || moo "Error committing $NEXTTAG."
+echo "Committed $NEXTTAG." >&2
