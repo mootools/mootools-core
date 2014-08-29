@@ -1,7 +1,7 @@
 {
   "name": "mootools",
   "homepage": "https://github.com/mootools/mootools-core",
-  "version": "1.5.1-dev",
+  "version": "1.5.1",
   "authors": [
     "Valerio Proietti"
   ],
