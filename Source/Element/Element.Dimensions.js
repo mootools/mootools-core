@@ -76,8 +76,12 @@ Element.implement({
 		// Bug info: https://bugzilla.mozilla.org/show_bug.cgi?id=530985
 		if (this.get('tag') == 'svg') return svgCalculateSize(this);
 		
-		var bounds = this.getBoundingClientRect();
-		return {x: bounds.width, y: bounds.height};
+		try {
+			var bounds = this.getBoundingClientRect();
+			return {x: bounds.width, y: bounds.height};
+		} catch(e) {
+			return {x: 0, y: 0};
+		}
 	},
 
 	getScrollSize: function(){
