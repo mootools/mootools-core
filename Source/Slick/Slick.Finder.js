@@ -82,7 +82,7 @@ local.setDocument = function(document){
 	try {
 		testNode.innerHTML = '<a id="'+id+'"></a>';
 		features.isHTMLDocument = !!document.getElementById(id);
-	} catch(e){};
+	} catch(e){}
 
 	if (features.isHTMLDocument){
 
@@ -105,7 +105,7 @@ local.setDocument = function(document){
 		try {
 			testNode.innerHTML = '<a name="'+ id +'"></a><b id="'+ id +'"></b>';
 			features.idGetsName = document.getElementById(id) === testNode.firstChild;
-		} catch(e){};
+		} catch(e){}
 
 		if (testNode.getElementsByClassName){
 
@@ -121,7 +121,7 @@ local.setDocument = function(document){
 			try {
 				testNode.innerHTML = '<a class="a"></a><a class="f b a"></a>';
 				brokenSecondClassNameGEBCN = (testNode.getElementsByClassName('a').length != 2);
-			} catch(e){};
+			} catch(e){}
 
 			features.brokenGEBCN = cachedGetElementsByClassName || brokenSecondClassNameGEBCN;
 		}
@@ -132,13 +132,13 @@ local.setDocument = function(document){
 				testNode.innerHTML = 'foo</foo>';
 				selected = testNode.querySelectorAll('*');
 				features.starSelectsClosedQSA = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
-			} catch(e){};
+			} catch(e){}
 
 			// Safari 3.2 querySelectorAll doesnt work with mixedcase on quirksmode
 			try {
 				testNode.innerHTML = '<a class="MiX"></a>';
 				features.brokenMixedCaseQSA = !testNode.querySelectorAll('.MiX').length;
-			} catch(e){};
+			} catch(e){}
 
 			// Webkit and Opera dont return selected options on querySelectorAll
 			try {
@@ -150,7 +150,7 @@ local.setDocument = function(document){
 			try {
 				testNode.innerHTML = '<a class=""></a>';
 				features.brokenEmptyAttributeQSA = (testNode.querySelectorAll('[class*=""]').length != 0);
-			} catch(e){};
+			} catch(e){}
 
 		}
 
@@ -158,7 +158,7 @@ local.setDocument = function(document){
 		try {
 			testNode.innerHTML = '<form action="s"><input id="action"/></form>';
 			brokenFormAttributeGetter = (testNode.firstChild.getAttribute('action') != 's');
-		} catch(e){};
+		} catch(e){}
 
 		// native matchesSelector function
 
@@ -167,7 +167,7 @@ local.setDocument = function(document){
 			// if matchesSelector trows errors on incorrect sintaxes we can use it
 			features.nativeMatchesSelector.call(root, ':slick');
 			features.nativeMatchesSelector = null;
-		} catch(e){};
+		} catch(e){}
 
 	}
 
