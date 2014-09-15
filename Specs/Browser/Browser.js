@@ -75,16 +75,15 @@ describe('Window', function(){
 });
 
 describe('Browser', function(){
+	var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 
 	it('should think it is executed in a browser', function(){
-		var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera']).toContain(Browser.name);
 	});
 
 //<1.4compat>
 	it('should assign a Browser[Browser.name] property for all browsers, except IE v11 or higher', function(){
 		if (Browser.name != 'ie' || Browser.version < 11){
-			var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
 		}
 	});
@@ -98,6 +97,10 @@ describe('Browser', function(){
 
 	it('should assume the IE version is emulated by the documentMode (X-UA-Compatible)', function(){
 		if (Browser.name == 'ie' && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
+	});
+	it('should find a browser version', function(){
+		expect(Browser.version || isPhantomJS).toBeTruthy();
+		expect(typeof Browser.version).toEqual('number');
 	});
 
 });
