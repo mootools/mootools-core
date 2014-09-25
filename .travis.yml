@@ -17,7 +17,7 @@ env:
     - BROWSER='ie9'             BUILD='default'
     - BROWSER='ie8'             BUILD='default'
     - BROWSER='ie7'             BUILD='default'
-#    - BROWSER='ie6'             BUILD='default'
+    - BROWSER='phantomjs'       BUILD='default'
 
     - BROWSER='chrome_linux'    BUILD='nocompat'
     - BROWSER='firefox_linux'   BUILD='nocompat'
@@ -31,7 +31,7 @@ env:
     - BROWSER='ie9'             BUILD='nocompat'
     - BROWSER='ie8'             BUILD='nocompat'
     - BROWSER='ie7'             BUILD='nocompat'
-#    - BROWSER='ie6'             BUILD='nocompat'
+    - BROWSER='phantomjs'       BUILD='nocompat'
 
   global:
     - secure: myFP8vndNuVGr2b+WtP4efJ2fJL7By7PUi2yxgbUlaqK82qgkayrp7zu6G7YKYBtWRTaRvwybX4XVZn9zCvFm2xTB8xSeWy3bB63JZcYPGzLpwusgJ69Kr+K5dAn/EzIj23pIjqVic9XmEEFK1FqCLp8V2Ty4kl3RG7onfwALUo=

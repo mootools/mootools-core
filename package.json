@@ -4,7 +4,7 @@
   "description": "MooTools is a compact, modular, Object-Oriented JavaScript framework designed for the intermediate to advanced JavaScript developer.",
   "main": "dist/mootools-core.js",
   "scripts": {
-    "test": "grunt default:travis --verbose"
+    "test": "test $TRAVIS_PULL_REQUEST != false && test $BROWSER != phantomjs || grunt default:travis --verbose"
   },
   "repository": {
     "type": "git",
