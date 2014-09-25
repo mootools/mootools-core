@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - 0.11
+  - "0.10"
 
 env:
   matrix:
@@ -18,7 +18,7 @@ env:
     - BROWSER='ie8'             BUILD='default'
     - BROWSER='ie7'             BUILD='default'
 #    - BROWSER='ie6'             BUILD='default'
-    
+
     - BROWSER='chrome_linux'    BUILD='nocompat'
     - BROWSER='firefox_linux'   BUILD='nocompat'
     - BROWSER='opera_win2000'   BUILD='nocompat'
@@ -32,7 +32,7 @@ env:
     - BROWSER='ie8'             BUILD='nocompat'
     - BROWSER='ie7'             BUILD='nocompat'
 #    - BROWSER='ie6'             BUILD='nocompat'
-    
+
   global:
     - secure: myFP8vndNuVGr2b+WtP4efJ2fJL7By7PUi2yxgbUlaqK82qgkayrp7zu6G7YKYBtWRTaRvwybX4XVZn9zCvFm2xTB8xSeWy3bB63JZcYPGzLpwusgJ69Kr+K5dAn/EzIj23pIjqVic9XmEEFK1FqCLp8V2Ty4kl3RG7onfwALUo=
     - secure: PFKH8/mY7hD82ipfa46znhWJQzEZ8226ZgHLVFLiM2LAxHP6aWGDgyYaSZVGlpulAGXx2Pq+RLPjetQRpjy7CA6NWr/2YtAxvx88QkufRRylKyNgEy5Pf1ej/V88SHnfdpGIizNeF/ofAMPmsGfBaDUm3+gU1RT+zLNj5gl3J/4=
