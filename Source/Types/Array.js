@@ -93,7 +93,7 @@ Array.implement({
 	contains: function contains(item) {
 		var length = this.length;
 		if (length < 1) return false;
-		var from = Math.floor((arguments[1] || 0) -0);
+		var from = Math.floor(arguments[1] || 0);
 		if (from < 0) from = length + from;
 		if (from === -Infinity || from < 0) from = 0;
 		/* in ES6 max length is 2^53-1, currently limited to 2^32-1*/
