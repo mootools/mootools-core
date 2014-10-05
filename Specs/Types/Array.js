@@ -424,7 +424,7 @@ describe("Array", function(){
 					expect(propertyDescriptor.configurable).toBeTruthy();
 				});
 			});
-			describe('should skip holes, and does not treat them as undefined', function(){
+			describe('should not skip holes, and does treat them as undefined', function(){
 				var arrayWithHoles = [,,,];
 				it('Expected array with many holes to contain undefined', function(){
 					expect(Array.prototype.contains.call(arrayWithHoles, undefined)).toBeTruthy();
