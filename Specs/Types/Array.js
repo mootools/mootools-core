@@ -414,9 +414,11 @@ describe("Array", function(){
 				it('s length should be 1', function(){
 					expect([].contains.length).toEqual(1);
 				});
-				it('s name should be "contains"', function(){
-					expect([].contains.name).toEqual('contains');
-				});
+				if(Function.prototype.name !== undefined){ //IE doesn't have that yet (I could use function serialization but cba).
+					it('s name should be "contains"', function(){
+						expect([].contains.name).toEqual('contains');
+					});
+				}
 				it('s property descriptor should be right', function(){
 					var propertyDescriptor = Object.getOwnPropertyDescriptor(Array.prototype, 'contains');
 					expect(propertyDescriptor.writable).toBeTruthy();
