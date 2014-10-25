@@ -57,15 +57,8 @@ var patched_buttons = []; // needed for a Firefox patch - see below
 			this.addListener(realType, defn, arguments[2]);
 		}
 		events[type].values.push(defn);
-		/**
-		 * Patch for Firefox - firing mouseenter and mouseleave events of elements inside <button>
-		 *
-		 * Firefox, as well as other browsers except IE, does not have a native support
-		 * for mouseenter/mouseleave events, so MooTools does some custom implementation.
-		 *
-		 * But when we add these events to an element which is nested inside a <button>,
-		 * they are not fired
-		**/
+		// Patch for Firefox - firing mouseenter and mouseleave events of elements
+		// nested inside <button>.
 		if (Browser.name == 'firefox' && ['mouseenter', 'mouseleave'].contains(type)){
 			// check if the element is nested in a <button>
 			var button = (function(elem){
