@@ -57,65 +57,65 @@ var patched_buttons = []; // needed for a Firefox patch - see below
 			this.addListener(realType, defn, arguments[2]);
 		}
 		events[type].values.push(defn);
-      /**
-       * Patch for Firefox - firing mouseenter and mouseleave events of elements inside <button>
-       *
-       * Firefox, as well as other browsers except IE, does not have a native support
-       * for mouseenter/mouseleave events, so MooTools does some custom implementation.
-       *
-       * But when we add these events to an element which is nested inside a <button>,
-       * they are not fired
-      **/
-      if (Browser.name == 'firefox' && ['mouseenter', 'mouseleave'].contains(type)){
-         // check if the element is nested in a <button>
-         var button = (function(elem){
-            // search DOM tree above up to `limit` elements
-            var limit = 20;
-            do {
-              elem = elem.parentNode; 
-            } while (elem && elem.tagName !== 'BUTTON' && --limit);
-            return limit ? document.id(elem) : null;
-         })(this);
-         if (button && !button.retrieve('ff:patchedelements', []).contains(this)){
-            // this element is descendant of a <button> and is not yet patched
-            if (!patched_buttons.contains(button)){
-               patched_buttons.push(button); // mark the button as patched
-               // add handlers to <button>
-               button.addEvents({
-                  // onmousemove: check if the cursor is over each patched element
-                  mousemove: function(e) {
-                     this.retrieve('ff:patchedelements').each(function(el){
-                        var coords = el.getCoordinates();
-                        if (
-                           coords.left <= e.page.x && coords.right   >= e.page.x &&
-                           coords.top  <= e.page.y && coords.bottom  >= e.page.y
-                        ){
-                           if (!el.retrieve('ff:mouseenter')){
-                              // make sure we fire onmouseenter only once
-                              el.store('ff:mouseenter', true);
-                              el.fireEvent('mouseenter', [new DOMEvent({type:'mouseenter',target:el})]);
-                           }
-                        } else if (el.retrieve('ff:mouseenter')){
-                           // make sure we fire onmouseleave only once
-                           el.store('ff:mouseenter', false);
-                           el.fireEvent('mouseleave', [new DOMEvent({type:'mouseleave',target:el})]);
-                        }
-                     });
-                  },
-                  // onmouseleave: just in case check if we need to fire onmouseleave over patched elements
-                  mouseleave: function(e){
-                     this.retrieve('ff:patchedelements').each(function(el){
-                        if (el.retrieve('ff:mouseenter')){
-                           el.store('ff:mouseenter', false);
-                           el.fireEvent('mouseleave', [new DOMEvent({type:'mouseleave',target:el})]);
-                        }
-                     });
-                  }
-               });
-            }
-            button.retrieve('ff:patchedelements').push(this);
-         }
-      }
+		/**
+		 * Patch for Firefox - firing mouseenter and mouseleave events of elements inside <button>
+		 *
+		 * Firefox, as well as other browsers except IE, does not have a native support
+		 * for mouseenter/mouseleave events, so MooTools does some custom implementation.
+		 *
+		 * But when we add these events to an element which is nested inside a <button>,
+		 * they are not fired
+		**/
+		if (Browser.name == 'firefox' && ['mouseenter', 'mouseleave'].contains(type)){
+			// check if the element is nested in a <button>
+			var button = (function(elem){
+				// search DOM tree above up to `limit` elements
+				var limit = 20;
+				do {
+				  elem = elem.parentNode; 
+				} while (elem && elem.tagName !== 'BUTTON' && --limit);
+				return limit ? document.id(elem) : null;
+			})(this);
+			if (button && !button.retrieve('ff:patchedelements', []).contains(this)){
+				// this element is descendant of a <button> and is not yet patched
+				if (!patched_buttons.contains(button)){
+					patched_buttons.push(button); // mark the button as patched
+					// add handlers to <button>
+					button.addEvents({
+						// onmousemove: check if the cursor is over each patched element
+						mousemove: function(e) {
+							this.retrieve('ff:patchedelements').each(function(el){
+								var coords = el.getCoordinates();
+								if (
+									coords.left <= e.page.x && coords.right   >= e.page.x &&
+									coords.top  <= e.page.y && coords.bottom  >= e.page.y
+								){
+									if (!el.retrieve('ff:mouseenter')){
+										// make sure we fire onmouseenter only once
+										el.store('ff:mouseenter', true);
+										el.fireEvent('mouseenter', [new DOMEvent({type:'mouseenter',target:el})]);
+									}
+								} else if (el.retrieve('ff:mouseenter')){
+									// make sure we fire onmouseleave only once
+									el.store('ff:mouseenter', false);
+									el.fireEvent('mouseleave', [new DOMEvent({type:'mouseleave',target:el})]);
+								}
+							});
+						},
+						// onmouseleave: just in case check if we need to fire onmouseleave over patched elements
+						mouseleave: function(e){
+							this.retrieve('ff:patchedelements').each(function(el){
+								if (el.retrieve('ff:mouseenter')){
+									el.store('ff:mouseenter', false);
+									el.fireEvent('mouseleave', [new DOMEvent({type:'mouseleave',target:el})]);
+								}
+							});
+						}
+					});
+				}
+				button.retrieve('ff:patchedelements').push(this);
+			}
+		}
 		return this;
 	},
 
