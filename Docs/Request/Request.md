@@ -5,7 +5,7 @@ An XMLHttpRequest Wrapper.
 
 ### Implements:
 
-[Chain][], [Events][], [Options][]
+[Chain][], [Class.Thenable][], [Events][], [Options][]
 
 ### Syntax:
 
@@ -23,7 +23,7 @@ An XMLHttpRequest Wrapper.
 * link       - (*string*: defaults to 'ignore') Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the request is running will be ignored. (Synonymous with 'wait': true from 1.11)
 	* 'cancel' - Any calls made to start while the request is running will take precedence over the currently running request. The new request will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.11)
-	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another.
+	* 'chain'  - Any calls made to start while the request is running will be chained up, and will take place as soon as the current request has finished, one after another. [Take care][resetThenable-note] when using "chain" in combination with Request's thenable properties.
 * method     - (*string*: defaults to 'post') The HTTP method for the request, can be either 'post' or 'get'.
 * emulation  - (*boolean*: defaults to *true*) If set to true, other methods than 'post' or 'get' are appended as post-data named '\_method' (as used in rails)
 * async      - (*boolean*: defaults to *true*) If set to false, the requests will be synchronous and freeze the browser during request.
@@ -38,6 +38,10 @@ An XMLHttpRequest Wrapper.
 * user       - (*string*: defaults to *null*) The username to use for http basic authentication.
 * password   - (*string*: defaults to *null*) You can use this option together with the `user` option to set authentication credentials when necessary. Note that the password will be passed as plain text and is therefore readable by anyone through the source code. It is therefore encouraged to use this option carefully
 * withCredentials   - (*boolean*: defaults to *false*) If set to true, xhr.withCredentials will be set to true allowing cookies/auth to be passed for cross origin requests
+
+### Thenable:
+
+Request implements `Class.Thenable` to make a Request instance "thenable", i.e. `myRequest.send().then(function(response){ console.log(response.text); });`. See [Class.Thenable][] for more information.
 
 ### Events:
 
@@ -468,7 +472,9 @@ Sends a form or a container of inputs with an HTML request.
 [Element.Properties]: /core/Element/Element/#Element-Properties
 [URI]: /more/Types/URI
 [Chain]: /core/Class/Class.Extras#Chain
+[Class.Thenable]: /core/Class/Class.Thenable
 [Events]: /core/Class/Class.Extras#Events
 [Options]: /core/Class/Class.Extras#Options
 [Object:toQueryString]: /core/Types/Object#Object:Object-toQueryString
 [Element:toQueryString]: /core/Element/Element#Element:toQueryString
+[resetThenable-note]: /core/Class/Class.Thenable#Class.Thenable:resetThenable-note

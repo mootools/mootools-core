@@ -39,8 +39,12 @@ Request.JSON = new Class({
 			this.fireEvent('error', [text, error]);
 			return;
 		}
-		if (json == null) this.onFailure();
-		else this.onSuccess(json, text);
+		if (json == null){
+			this.failure();
+		} else {
+			this.onSuccess(json, text);
+			this.resolve({json: json, text: text});
+		}
 	}
 
 });
