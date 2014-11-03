@@ -26,7 +26,7 @@ module.exports = function(grunt){
 				server: {
 					name: 'mootools-core-server',
 					sources: pkg.sources,
-					components: ['Core/Core', 'Core/Array', 'Core/String', 'Core/Number', 'Core/Function', 'Core/Object', 'Core/Class', 'Core/Class.Extras', 'Core/JSON'],
+					components: ['Core/Core', 'Core/Array', 'Core/String', 'Core/Number', 'Core/Function', 'Core/Object', 'Core/Class', 'Core/Class.Extras', 'Core/Class.Thenable', 'Core/JSON'],
 					strip: ['1.2compat', '1.3compat', '1.4compat', '*compat', 'IE', 'ltIE8', 'ltIE9', '!ES5', '!ES5-bind', 'webkit', 'ltFF4'],
 					specs: ['Specs/Core/*.js', 'Specs/Class/*.js', 'Specs/Types/*.js', 'Specs/Utilities/JSON.js'],
 					uglify: false

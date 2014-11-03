@@ -74,6 +74,9 @@ Adds functions to the end of the call stack of the Chain instance.
 		function(){ this.start(0,1); }
 	); //Will fade the Element out and in twice.
 
+### Note:
+
+[Take care][resetThenable-note] when using Chain and [Class.Thenable][] together. When multiple "thenable" resolutions are chained, the registration of callbacks for later resolutions has to be chained as well.
 
 ### See Also:
 
@@ -442,6 +445,7 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 
 [Class]: /core/Class/Class
 [Class:implement]: /core/Class/Class/#Class:implement
+[Class.Thenable]: /core/Class/Class/Class.Thenable
 [Fx]: /core/Fx/Fx
 [Fx.Tween]: /core/Fx/Fx.Tween
 [Request]: /core/Request/Request
@@ -451,3 +455,4 @@ If a Class has [Events][] as well as [Options][] implemented, every option begin
 [Options]: #Options
 [addEvent]: #Events:addEvent
 [addEvents]: #Events:addEvents
+[resetThenable-note]: /core/Class/Class.Thenable#Class.Thenable:resetThenable-note
