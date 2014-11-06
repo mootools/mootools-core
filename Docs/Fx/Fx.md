@@ -6,7 +6,7 @@ All of the other Fx Classes inherit from this one.
 
 ### Implements:
 
-- [Chain][], [Events][], [Options][]
+- [Chain][], [Class.Thenable][], [Events][], [Options][]
 
 
 
@@ -30,7 +30,7 @@ Fx Method: constructor {#Fx:constructor}
 * link       - (*string*: defaults to ignore) Can be 'ignore', 'cancel' and 'chain'.
 	* 'ignore' - Any calls made to start while the effect is running will be ignored. (Synonymous with 'wait': true from 1.x)
 	* 'cancel' - Any calls made to start while the effect is running will take precedence over the currently running transition. The new transition will start immediately, canceling the one that is currently running. (Synonymous with 'wait': false from 1.x)
-	* 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another.
+	* 'chain'  - Any calls made to start while the effect is running will be chained up, and will take place as soon as the current effect has finished, one after another. [Take care][resetThenable-note] when using "chain" in combination with Fx's thenable properties.
 * duration   - (*number*: defaults to 500) The duration of the effect in ms. Can also be one of:
 	* 'short'  - 250ms
 	* 'normal' - 500ms
@@ -38,6 +38,10 @@ Fx Method: constructor {#Fx:constructor}
 * transition - (*function*: defaults to ['sine:in:out'][Fx.Transitions:sine] The equation to use for the effect see [Fx.Transitions][]. Also accepts a string in the following form:
 
   transition\[:in\]\[:out\] - for example, 'linear', 'quad:in', 'back:in', 'bounce:out', 'elastic:out', 'sine:in:out'
+
+### Thenable:
+
+Fx implements `Class.Thenable` to make an Fx instance "thenable", i.e. `myFx.start().then(function(){ console.log('Done.'); });`. See [Class.Thenable][] for more information.
 
 ### Events:
 
@@ -202,7 +206,9 @@ Returns true if the animation is paused. You can use this to check if you need t
 [Fx.Transitions:sine]: /core/Fx/Fx.Transitions#Fx-Transitions:sine
 [Element:setStyle]: /core/Element/Element.Style#Element:setStyle
 [Chain]: /core/Class/Class.Extras#Chain
+[Class.Thenable]: /core/Class/Class.Thenable
 [Events]: /core/Class/Class.Extras#Events
 [Options]: /core/Class/Class.Extras#Options
 [Fx.Tween]: /core/Fx/Fx.Tween
 [Fx.Morph]: /core/Fx/Fx.Morph
+[resetThenable-note]: /core/Class/Class.Thenable#Class.Thenable:resetThenable-note

@@ -7,7 +7,7 @@ description: Contains the basic animation logic to be extended by all other Fx C
 
 license: MIT-style license.
 
-requires: [Chain, Events, Options]
+requires: [Chain, Events, Options, Class.Thenable]
 
 provides: Fx
 
@@ -18,7 +18,7 @@ provides: Fx
 
 var Fx = this.Fx = new Class({
 
-	Implements: [Chain, Events, Options],
+	Implements: [Chain, Events, Options, Class.Thenable],
 
 	options: {
 		/*
@@ -92,6 +92,9 @@ var Fx = this.Fx = new Class({
 		this.duration = Fx.Durations[duration] || duration.toInt();
 		this.frameInterval = 1000 / fps;
 		this.frames = frames || Math.round(this.duration / this.frameInterval);
+		if (this.getThenableState() !== 'pending'){
+			this.resetThenable(this.subject);
+		}
 		this.fireEvent('start', this.subject);
 		pushInstance.call(this, fps);
 		return this;
@@ -107,6 +110,7 @@ var Fx = this.Fx = new Class({
 			} else {
 				this.fireEvent('stop', this.subject);
 			}
+			this.resolve(this.subject === this ? null : this.subject);
 		}
 		return this;
 	},
@@ -117,6 +121,7 @@ var Fx = this.Fx = new Class({
 			pullInstance.call(this, this.options.fps);
 			this.frame = this.frames;
 			this.fireEvent('cancel', this.subject).clearChain();
+			this.reject(this.subject);
 		}
 		return this;
 	},
