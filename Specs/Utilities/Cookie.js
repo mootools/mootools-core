@@ -28,4 +28,12 @@ describe('Cookie', function(){
 		expect(Cookie.read('key', options)).toBeNull();
 	});
 
+	it('should set HttpCookie flag correctly', function(){
+		Cookie.write('http-key', 'value', {
+			httpOnly: true
+		});
+
+		expect(Cookie.read('http-key')).toBeNull();
+	});
+
 });

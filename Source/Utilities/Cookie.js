@@ -27,7 +27,8 @@ var Cookie = new Class({
 		duration: false,
 		secure: false,
 		document: document,
-		encode: true
+		encode: true,
+		httpOnly: false
 	},
 
 	initialize: function(key, options){
@@ -45,6 +46,7 @@ var Cookie = new Class({
 			value += '; expires=' + date.toGMTString();
 		}
 		if (this.options.secure) value += '; secure';
+		if (this.options.httpOnly) value += '; HttpOnly';
 		this.options.document.cookie = this.key + '=' + value;
 		return this;
 	},
