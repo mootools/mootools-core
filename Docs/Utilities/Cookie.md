@@ -8,6 +8,7 @@ Reads and writes a cookie.
 * path     - (*string*: defaults to '/') The path the cookie belongs to.
 * duration - (*number*: defaults to false) The duration of the cookie (in days) before it expires. If set to false or 0, the cookie will be a session cookie that expires when the browser is closed.
 * secure   - (*boolean*: defaults to false) Stored cookie information can be accessed only from a secure environment.
+* httpOnly - (*boolean*: defaults to false) Stored cookie information can be accessed only on the server.
 
 ## Cookie Method: write {#Cookie:write}
 
