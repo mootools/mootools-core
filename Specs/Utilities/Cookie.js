@@ -29,11 +29,14 @@ describe('Cookie', function(){
 	});
 
 	it('should set HttpCookie flag correctly', function(){
-		Cookie.write('http-key', 'value', {
-			httpOnly: true
-		});
+		var instance = new Cookie('key', {
+			httpOnly: true,
+			document: {
+				cookie: ''
+			}
+		}).write('value');
 
-		expect(Cookie.read('http-key')).toBeNull();
+		expect(instance.options.document.cookie.indexOf('HttpOnly')).not.toBe(-1);
 	});
 
 });
