@@ -1255,7 +1255,7 @@ Empties an Element of all its children.
 	
 ### Note:
 
-This method does not garbage college the children. Use [Element:destroy][] instead.
+This method does not garbage collect the children. Use [Element:destroy][] instead.
 
 
 
