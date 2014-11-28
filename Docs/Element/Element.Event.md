@@ -300,6 +300,10 @@ This event fires when the mouse leaves the area of the DOM Element and will not 
 
 	$('myElement').addEvent('mouseleave', myFunction);
 
+#### Notes:
+
+- `mouseenter` and `mouseleave` events are supported natively by Internet Explorer, Opera 11, and Firefox 10. MooTools will only add the custom events if necessary.
+
 #### See Also:
 
 - [Element:addEvent](#Element:addEvent)
@@ -313,8 +317,6 @@ This event fires when the mouse wheel is rotated;
 	$('myElement').addEvent('mousewheel', myFunction);
 
 #### Notes:
-
-- `mouseenter` and `mouseleave` events are supported natively by Internet Explorer, Opera 11, and Firefox 10. MooTools will only add the custom events if necessary.
 
 - This custom event just redirects DOMMouseScroll (Mozilla) to mousewheel (Opera, Internet Explorer), making it work across browsers.
 
