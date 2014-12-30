@@ -85,7 +85,12 @@ var getOpacity = (hasOpacity ? function(element){
 
 var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
 	namedPositions = {left: '0%', top: '0%', center: '50%', right: '100%', bottom: '100%'},
-	hasBackgroundPositionXY = (html.style.backgroundPositionX != null);
+	hasBackgroundPositionXY = (html.style.backgroundPositionX != null),
+	prefixPattern = /^-(ms)-/;
+
+var camelCase = function(property){
+	return property.replace(prefixPattern, '$1-').camelCase();
+}
 
 //<ltIE9>
 var removeStyle = function(style, property){
@@ -100,7 +105,7 @@ var removeStyle = function(style, property){
 Element.implement({
 
 	getComputedStyle: function(property){
-		if (!hasGetComputedStyle && this.currentStyle) return this.currentStyle[property.camelCase()];
+		if (!hasGetComputedStyle && this.currentStyle) return this.currentStyle[camelCase(property)];
 		var defaultView = Element.getDocument(this).defaultView,
 			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
 		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : '';
@@ -112,7 +117,7 @@ Element.implement({
 			setOpacity(this, value);
 			return this;
 		}
-		property = (property == 'float' ? floatName : property).camelCase();
+		property = camelCase(property == 'float' ? floatName : property);
 		if (typeOf(value) != 'string'){
 			var map = (Element.Styles[property] || '@').split(' ');
 			value = Array.from(value).map(function(val, i){
@@ -133,7 +138,7 @@ Element.implement({
 
 	getStyle: function(property){
 		if (property == 'opacity') return getOpacity(this);
-		property = (property == 'float' ? floatName : property).camelCase();
+		property = camelCase(property == 'float' ? floatName : property);
 		if (supportBorderRadius && property.indexOf('borderRadius') != -1){
 			return ['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'].map(function(corner){
 				return this.style[corner] || '0px';
