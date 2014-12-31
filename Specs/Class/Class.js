@@ -282,4 +282,67 @@ describe('Class toString', function(){
 
 });
 
+describe('Class.toElement', function(){
+
+	var MyParentElement = new Class({
+
+		initialize: function(element){
+			this.element = element;
+		},
+
+		toElement: function(){
+			return this.element;
+		}
+
+	});
+
+	var MyChildElement = new Class({
+
+		Extends: MyParentElement,
+
+		initialize: function(element){
+			this.parent(element);
+		}
+
+	});
+
+	var MyArrayElement = new Class({
+
+		Extends: Array,
+
+		initialize: function(element){
+			this.element = element;
+		},
+
+		toElement: function(){
+			return this.element;
+		}
+
+	});
+
+	it('should return an element when a class instance is passed to document.id', function(){
+		var element = new Element('div', {'class': 'my-element'});
+		var instance = new MyParentElement(element);
+
+		expect(document.id(instance)).toBe(element);
+	});
+
+	it('should call the toElement() method in parent class if none is defined in child', function(){
+		var element = new Element('div', {'class': 'my-element'});
+		var instance = new MyChildElement(element);
+
+		expect(document.id(instance)).toBe(element);
+		expect(instance instanceof MyParentElement).toEqual(true);
+	});
+
+	it('should call toElement() when extending natives (String, Array, Object)', function(){
+		var element = new Element('div', {'class': 'my-element'});
+		var instance = new MyArrayElement(element);
+
+		expect(document.id(instance)).toBe(element);
+		expect(instance instanceof Array).toEqual(true);
+	});
+
+});
+
 })();
