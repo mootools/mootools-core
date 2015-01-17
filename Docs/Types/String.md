@@ -385,7 +385,12 @@ Strips the String of its *<script>* tags and anything in between them.
 
 ### Arguments:
 
-1. evaluate - (*boolean*, optional) If true is passed, the scripts within the String will be evaluated.
+1. evaluate - (*boolean* or *function*, optional) If true is passed, the scripts within the String will be evaluated. All external scripts are loaded synchronously & executed. If "evaluate" is a function, it is called back with the following arguments:
+
+* (*string*) - JavaScript Code between <script> and </script> tags.
+* (*string*) - The stripped text.
+* (*array*) - Array of urls of external JavaScript files (if any).
+* (*function*) - Callback function that executes all stripped JavaScript (inline + external) synchronously.
 
 ### Returns:
 
@@ -396,6 +401,18 @@ Strips the String of its *<script>* tags and anything in between them.
 	var myString = "<script>alert('Hello')</script>Hello, World.";
 	myString.stripScripts(); // returns 'Hello, World.'
 	myString.stripScripts(true); // alerts 'Hello', then returns 'Hello, World.'
+	
+	var html = '<div id="placeholder"></div>' +
+					'<script src="https://rawgithub.com/mootools/mootools-more/master/Source/More/More.js"></script>' +
+					'<script>document.id("placeholder").set("text", "Hello, world")</script>';
+	html.stripScripts(function(code, html, urls, exec){
+		// inject the stripped HTML
+		document.body.innerHTML = html;
+		// execute all JavaScript
+		exec(function(){
+			alert('All scripts loaded and executed!');
+		});
+	});
 
 
 

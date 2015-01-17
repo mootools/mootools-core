@@ -144,13 +144,40 @@ Browser.exec = function(text){
 };
 
 String.implement('stripScripts', function(exec){
-	var scripts = '';
-	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
-		scripts += code + '\n';
+	var scripts = [];
+	var inline = '';
+	
+	var text = this.replace(/<script[^>]*?(?:src=(?:"|')?([^"]+)(?:"|')?[^>]*)?>([\s\S]*?)<\/script>/gi, function( all, src, code ) {
+		inline += code + '\n';
+		scripts.push({
+			type: src ? 'src' : 'code',
+			source: src || code
+		});
 		return '';
 	});
-	if (exec === true) Browser.exec(scripts);
-	else if (typeOf(exec) == 'function') exec(scripts, text);
+	
+	var urls = scripts.map(function(el){ return el.type == 'src' ? el.source : undefined; }).clean();
+	var next = function(callback){
+		if (!scripts.length){
+			typeof callback == 'function' && callback();
+			return;
+		}
+		var script = scripts.shift();
+		if (script.type == 'code'){
+			Browser.exec(script.source);
+			next(callback);
+		} else {
+			new Element('script', {
+				src: script.source,
+				events: {
+					load: function(){ next(callback); }
+				}
+			}).inject(document.head);
+		}
+	}
+	
+	if (exec === true) next();
+	else if (typeof exec == 'function') exec(inline, text, urls, next);
 	return text;
 });
 
