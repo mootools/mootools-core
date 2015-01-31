@@ -308,6 +308,14 @@ Object.extend('forEach', function(object, fn, bind){
 	for (var key in object){
 		if (hasOwnProperty.call(object, key)) fn.call(bind, object[key], key, object);
 	}
+	/*<ltIE8>*/
+	if (enumerables){
+		for (var i = 0; i < enumerables.length; i++){
+			var key = enumerables[i];
+			if (hasOwnProperty.call(object, key)) fn.call(bind, object[key], key, object);
+		}
+	}
+	/*</ltIE8>*/
 });
 
 Object.each = Object.forEach;

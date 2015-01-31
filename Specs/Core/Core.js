@@ -790,6 +790,32 @@ describe('Object.each', function(){
 		expect(daysObj).toEqual({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
 	});
 
+	/*<ltIE8>*/
+	it('should call non-enumerable properties too', function(){
+		var obj = {
+			foo: 'bar',
+			constructor: "constructor",
+			hasOwnProperty: "hasOwnProperty",
+			isPrototypeOf: "isPrototypeOf",
+			propertyIsEnumerable: "propertyIsEnumerable",
+			toLocaleString: "toLocaleString",
+			toString: "toString",
+			valueOf: "valueOf"
+		};
+
+		var keysInObject = true, iteration = 0;
+		var props = ['foo', 'hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'].join('');
+
+		Object.each(obj, function(i, k){
+			iteration++;
+			if (props.indexOf(k) == -1) keysInObject = false;  
+		});
+
+		expect(keysInObject).toBeTruthy();
+		expect(iteration).toEqual(8);
+	});
+	/*</ltIE8>*/
+
 });
 
 describe('Array.each', function(){
