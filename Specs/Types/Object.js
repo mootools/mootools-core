@@ -70,16 +70,6 @@ describe("Object Methods", function(){
 		expect(Object.some(object, Type.isArray)).toBeFalsy();
 	});
 
-	// Object.keys
-
-	it('keys should return an empty array', function(){
-		expect(Object.keys({})).toEqual([]);
-	});
-
-	it('should return an array containing the keys of the object', function(){
-		expect(Object.keys(object)).toEqual(['a', 'b', 'c']);
-	});
-
 	// Object.values
 
 	it('values should return an empty array', function(){

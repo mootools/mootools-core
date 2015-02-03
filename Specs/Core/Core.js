@@ -779,6 +779,27 @@ describe('Type', function(){
 
 });
 
+describe('Object.keys', function(){	
+
+	var object = { a: 'string', b: 233, c: {} };
+
+	it('keys should return an empty array', function(){
+		expect(Object.keys({})).toEqual([]);
+	});
+
+	it('should return an array containing the keys of the object', function(){
+		expect(Object.keys(object)).toEqual(['a', 'b', 'c']);
+	});
+
+	it('should return an array containing non-enum keys', function(){
+		var buggy = {constructor: 'foo', valueOf: 'bar'};
+		var keys = Object.keys(buggy).join('');
+		expect(keys.indexOf('constructor') != -1).toBeTruthy();
+		expect(keys.indexOf('valueOf') != -1).toBeTruthy();
+	});
+
+});
+
 describe('Object.each', function(){
 
 	it('should call the function for each item in the object', function(){
