@@ -92,7 +92,7 @@ Element.implement({
 			this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
 		} else if (to != 0){
 			if (fade.$chain.length){
-				fade.chain(function (){
+				fade.chain(function(){
 					this.element.setStyle('visibility', 'visible');
 					this.callChain();
 				});
@@ -100,7 +100,7 @@ Element.implement({
 				this.setStyle('visibility', 'visible');
 			}
 		} else {
-			fade.chain(function (){
+			fade.chain(function(){
 				if (this.element.getStyle('opacity')) return;
 				this.element.setStyle('visibility', 'hidden');
 				this.callChain();
