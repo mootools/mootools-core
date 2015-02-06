@@ -68,9 +68,13 @@ Object.extend({
 	},
 
 	values: function(object){
-		return Object.keys(object).map(function(key){
-			return object[key];
-		});
+		var values = [];
+		var keys = Object.keys(object);
+		for (var i = 0; i < keys.length; i++){
+			var k = keys[i];
+			values.push(object[k]);
+		}
+		return values;
 	},
 
 	getLength: function(object){

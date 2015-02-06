@@ -63,14 +63,19 @@ for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 /*</ltIE8>*/
 var hasOwnProperty = Object.prototype.hasOwnProperty;
-function eachKey(object, fn, thisArg){
-    for (var k in object) fn.call(thisArg, k, object[k]);
+function objectKeys(object, alsoPrototypeChain){
+	var keys = [];
+    for (var k in object){
+		if (alsoPrototypeChain) keys.push(k);
+		else hasOwnProperty.call(object, k) && keys.push(k);
+	}
 	/*<ltIE8>*/
 	if (enumerables) for (var i = enumerables.length; i--;){
 		k = enumerables[i];
-		if (hasOwnProperty.call(object, k)) fn.call(thisArg, k, object[k]);
+		if (hasOwnProperty.call(object, k)) keys.push(k);
 	}
 	/*</ltIE8>*/
+	return keys;
 }
 
 // Function overloading
@@ -81,8 +86,12 @@ Function.prototype.overloadSetter = function(usePlural){
 	var self = this;
 	return function(a, b){
 		if (a == null) return this;
-		if (usePlural || typeof a != 'string') eachKey(a, self, this);
-		else self.call(this, a, b);
+		if (usePlural || typeof a != 'string'){
+			var keys = objectKeys(a, true), k;
+			for (var i = 0; k = keys[i]; i++) self.call(this, k, a[k]);
+		} else {
+			self.call(this, a, b);
+		}
 		return this;
 	};
 };
@@ -308,26 +317,6 @@ Number.extend('random', function(min, max){
 
 // forEach, each, keys
 
-Object.extend({
-
-	keys: function(object){
-		var keys = [];
-		eachKey(object, function(key, value){
-			if (hasOwnProperty.call(object, key)) keys.push(key);
-		}, this);
-		return keys;
-	},
-
-	forEach: function(object, fn, bind){
-		Object.keys(object).forEach(function(key){
-			fn.call(bind, object[key], key, object);
-		});
-	}
-
-});
-
-Object.each = Object.forEach;
-
 Array.implement({
 
 	/*<!ES5>*/
@@ -344,6 +333,21 @@ Array.implement({
 	}
 
 });
+
+Object.extend({
+
+	keys: objectKeys,
+
+	forEach: function(object, fn, bind){
+		Object.keys(object).forEach(function(key){
+			fn.call(bind, object[key], key, object);
+		});
+	}
+
+});
+
+Object.each = Object.forEach;
+
 
 // Array & Object cloning, Object merging and appending
 
