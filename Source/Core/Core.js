@@ -57,13 +57,25 @@ var instanceOf = this.instanceOf = function(item, object){
 	return item instanceof object;
 };
 
-// Function overloading
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var Function = this.Function;
-
+/*<ltIE8>*/
 var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
+function forEachObjectEnumberableKey(object, fn, bind) {
+	if (enumerables) for (var i = enumerables.length; i--;){
+		var k = enumberables[i];
+		// signature has key-value, so overloadSetter can directly pass the
+		// method function, without swapping arguments.
+		if (hasOwnProperty.call(object, k)) fn.call(bind, k, object[k]);
+	}
+}
+/*</ltIE8>*/
+
+// Function overloading
+
+var Function = this.Function;
 
 Function.prototype.overloadSetter = function(usePlural){
 	var self = this;
@@ -71,10 +83,9 @@ Function.prototype.overloadSetter = function(usePlural){
 		if (a == null) return this;
 		if (usePlural || typeof a != 'string'){
 			for (var k in a) self.call(this, k, a[k]);
-			if (enumerables) for (var i = enumerables.length; i--;){
-				k = enumerables[i];
-				if (a.hasOwnProperty(k)) self.call(this, k, a[k]);
-			}
+			/*<ltIE8>*/
+			forEachObjectEnumberableKey(a, self, this);
+			/*</ltIE8>*/
 		} else {
 			self.call(this, a, b);
 		}
@@ -301,16 +312,7 @@ Number.extend('random', function(min, max){
 	return Math.floor(Math.random() * (max - min + 1) + min);
 });
 
-// forEach, each
-
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-Object.extend('forEach', function(object, fn, bind){
-	for (var key in object){
-		if (hasOwnProperty.call(object, key)) fn.call(bind, object[key], key, object);
-	}
-});
-
-Object.each = Object.forEach;
+// forEach, each, keys
 
 Array.implement({
 
@@ -328,6 +330,32 @@ Array.implement({
 	}
 
 });
+
+Object.extend({
+
+	keys: function(object){
+		var keys = [];
+		for (var k in a){
+			if (hasOwnProperty.call(object, k)) keys.push(k);
+		}
+		/*<ltIE8>*/
+		forEachObjectEnumberableKey(object, function(k){
+			keys.push(k);
+		});
+		/*</ltIE8>*/
+		return keys;
+	},
+
+	forEach: function(object, fn, bind){
+		Object.keys(object).forEach(function(key){
+			fn.call(bind, object[key], key, object);
+		});
+	}
+
+});
+
+Object.each = Object.forEach;
+
 
 // Array & Object cloning, Object merging and appending
 
