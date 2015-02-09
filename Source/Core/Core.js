@@ -65,7 +65,7 @@ for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
 function forEachObjectEnumberableKey(object, fn, bind) {
 	if (enumerables) for (var i = enumerables.length; i--;){
-		var k = enumberables[i];
+		var k = enumerables[i];
 		// signature has key-value, so overloadSetter can directly pass the
 		// method function, without swapping arguments.
 		if (hasOwnProperty.call(object, k)) fn.call(bind, k, object[k]);
