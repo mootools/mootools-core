@@ -23,6 +23,7 @@ var Class = this.Class = new Type('Class', function(params){
 		reset(this);
 		if (newClass.$prototyping) return this;
 		this.$caller = null;
+		this.$family = null;
 		var value = (this.initialize) ? this.initialize.apply(this, arguments) : this;
 		this.$caller = this.caller = null;
 		return value;
