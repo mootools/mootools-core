@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+
+		<title>Element Mouseenter Event</title>
+
+		<script src="../../Source/Core/Core.js" type="text/javascript"></script>
+		<script src="../../Source/Types/Array.js" type="text/javascript"></script>
+		<script src="../../Source/Types/Function.js" type="text/javascript"></script>
+		<script src="../../Source/Types/Number.js" type="text/javascript"></script>
+		<script src="../../Source/Types/String.js" type="text/javascript"></script>
+		<script src="../../Source/Types/Object.js" type="text/javascript"></script>
+		<script src="../../Source/Types/DOMEvent.js" type="text/javascript"></script>
+		<script src="../../Source/Browser/Browser.js" type="text/javascript"></script>
+		<script src="../../Source/Slick/Slick.Parser.js" type="text/javascript"></script>
+		<script src="../../Source/Slick/Slick.Finder.js" type="text/javascript"></script>
+		<script src="../../Source/Element/Element.js" type="text/javascript"></script>
+		<script src="../../Source/Element/Element.Event.js" type="text/javascript"></script>
+		<script src="../../Source/Element/Element.Style.js" type="text/javascript"></script>
+		<script src="../../Source/Element/Element.Dimensions.js" type="text/javascript"></script>
+
+		<style>
+
+			body {
+				font: 13px sans-serif;
+			}
+			h1 {
+			   color: white;
+			   background: red;
+			}
+
+		</style>
+
+	</head>
+	<body>
+
+		<button>
+			<h1>Mouse-enter me</h1>
+		</button>
+		<button>
+			<h1>Mouse-enter me</h1>
+		</button>
+		<button>
+			<h1>Mouse-enter me</h1>
+		</button>
+		
+		<script type="text/javascript">
+		document.body.getElements('h1').addEvents({
+			mouseenter: function(e){
+				e.target.style.color = 'yellow';
+				this.style.background = 'green';
+			},
+			mouseleave: function(e){
+				this.style.color = '';
+				e.target.style.background = '';
+			}
+		})
+		</script>
+
+	</body>
+</html>
+
