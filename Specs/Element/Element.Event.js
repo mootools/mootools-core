@@ -370,6 +370,7 @@ describe('Keypress key code', function(){
 	/*</ltIE8>*/
 
 	var input, key, shift, done;
+	DOMEvent.defineKey(33, 'pageup');
 
 	function keyHandler(e){
 		key = e.key;
@@ -413,13 +414,19 @@ describe('Keypress key code', function(){
 		});
 	});
 
-	it('should return false when pressing SHIFT + 1', function(){
+	it('should return "!" when pressing SHIFT + 1', function(){
 		typeWriter('[shift]![shift-up]');
 		waits(50);
 		runs(function(){
-			expect(key).toBe(false);
+			expect(key).toBe('!');
 			expect(shift).toBeTruthy();
 		});
+	});
+
+	it('should map code 33 correctly with keypress event', function(){
+		var mock = {type: 'keypress', which: 33, shiftKey: true};
+		var e = new DOMEvent(mock);
+		expect(e.key).toBe('!');
 	});
 
 });
