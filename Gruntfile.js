@@ -1,4 +1,14 @@
 "use strict";
+var fs = require('fs');
+var path = require('path');
+var http = require('http');
+var build = (function(){
+	// travis testing
+	if (process.env && process.env.BUILD) return process.env.BUILD == 'default' ? 'all' : 'nocompat'; 
+	// local testing
+	else return process.argv[2] == null || process.argv[2] == 'all' ? 'all' : 'nocompat';
+})();
+require('./Tests/httpServer.js')(build);
 
 module.exports = function(grunt) {
 
