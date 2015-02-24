@@ -445,6 +445,23 @@ describe('Element.removeEvent', function(){
 
 });
 
+describe('relatedTarget', function () {
+
+	var outer = new Element('div');
+	var el = new Element('div').inject(outer);
+	['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].each(function(event, i){
+		it('should listen to a ' + event + ' event and set the correct relatedTarget', function(){
+			var mockEvent = {type: event};
+			mockEvent[(i % 2 == 0 ? 'from' : 'to') + 'Element'] = outer; // simulate FF that does not set relatedTarget
+
+			var e = new DOMEvent(mockEvent);
+			expect(e.type).toBe(event);
+			expect(e.relatedTarget).toBe(outer);
+		});
+	});
+
+});
+
 describe('Mouse wheel', function(){
 
 	function attachProperties(e, direction){
