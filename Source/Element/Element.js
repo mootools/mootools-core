@@ -655,6 +655,7 @@ volatileInputValue = input.value != 't';
 
 // #2443 - IE throws "Invalid Argument" when trying to use html5 input types
 try {
+	input.value = '';
 	input.type = 'email';
 	html5InputSupport = input.type == 'email';
 } catch(e){}
