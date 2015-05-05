@@ -228,6 +228,15 @@ describe('Browser.parseUA', function(){
 				name: 'chrome',
 				version: 33
 			}
+		},
+		edge12: {
+			desc: 'Edge 12',
+			string: 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0',
+			expect: {
+				name: 'edge',
+				version: 12,
+				platform: 'windows'
+			}
 		}
 	};
 
@@ -235,12 +244,12 @@ describe('Browser.parseUA', function(){
 		return function(){
 			var browser = parse(ua.string, '');
 			Object.forEach(ua.expect, runExpects, browser);
-		}
-	}
+		};
+	};
 
 	var runExpects = function(val, key){
 		expect(this[key]).toEqual(val);
-	}
+	};
 
 	Object.forEach(userAgents, function(obj){
 		it('should parse ' + obj.desc + ' user agent string', testUA(obj));
