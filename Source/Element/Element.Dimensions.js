@@ -257,9 +257,11 @@ function styleNumber(element, style){
 	return styleString(element, style).toInt() || 0;
 }
 
+//<1.4compat>
 function borderBox(element){
 	return styleString(element, '-moz-box-sizing') == 'border-box';
 }
+//</1.4compat>
 
 function topBorder(element){
 	return styleNumber(element, 'border-top-width');
