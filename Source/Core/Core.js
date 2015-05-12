@@ -368,6 +368,7 @@ var cloneOf = function(item){
 };
 
 Array.implement('clone', function(){
+	if(this.slice) return this.slice(0);
 	var i = this.length, clone = new Array(i);
 	while (i--) clone[i] = cloneOf(this[i]);
 	return clone;
@@ -397,6 +398,7 @@ Object.extend({
 	},
 
 	clone: function(object){
+		if(Object.create) return Object.create(object);
 		var clone = {};
 		for (var key in object) clone[key] = cloneOf(object[key]);
 		return clone;
