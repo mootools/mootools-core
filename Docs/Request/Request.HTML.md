@@ -175,7 +175,7 @@ The Request.HTML class will (by default) add a custom header that, if used for a
 
 ### See Also:
 
-- [$][], [Request](/Request/Request)
+- [$][], [Request](/core/Request/Request)
 
 [Request]: /core/Request/Request
 [$]: /core/Element/Element/#Window:dollar

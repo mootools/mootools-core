@@ -5,7 +5,7 @@ Wrapped Request with automated receiving of JavaScript Objects in JSON Format.
 
 ### Extends:
 
-[Request](/Request/Request)
+[Request](/core/Request/Request)
 
 ### Syntax:
 
