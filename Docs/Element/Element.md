@@ -882,13 +882,13 @@ Clones the Element and returns the cloned one.
 
 ### Note:
 
-- The returned Element does not have attached events. To clone the events use [Element:cloneEvents](/Element/Element.Event#Element:cloneEvents).
+- The returned Element does not have attached events. To clone the events use [Element:cloneEvents](/core/Element/Element.Event#Element:cloneEvents).
 - Values stored in Element.Storage are not cloned.
 - The clone element and its children are stripped of ids, unless otherwise specified by the keepid parameter.
 
 ### See Also:
 
-- [Element:cloneEvents](/Element/Element.Event#Element:cloneEvents).
+- [Element:cloneEvents](/core/Element/Element.Event#Element:cloneEvents).
 
 
 
