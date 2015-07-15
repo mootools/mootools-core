@@ -193,6 +193,33 @@ describe('Element.Dimensions', function(){
 			expect(relDiv.getPosition(div)).toEqual({x: 8, y: 8});
 		});
 
+		it('should match subpixels if needed', function(){
+			var oddSizedDiv = new Element('div', {
+				styles: {
+					width: 51,
+					height: 51,
+					margin: 5,
+					visibility: 'hidden',
+					position: 'relative',
+					overflow: 'hidden',
+					'float': 'left'
+				}
+			}).inject($(document.body));
+
+			var insideOddSizedDiv = new Element('div', {
+				styles: {
+					width: 10,
+					height: 10,
+					margin: 5.5,
+					visibility: 'hidden',
+					overflow: 'hidden'
+				}
+			}).inject(oddSizedDiv);
+
+			expect(insideOddSizedDiv.getPosition(oddSizedDiv).x)
+				.toEqual(insideOddSizedDiv.getBoundingClientRect().left - oddSizedDiv.getBoundingClientRect().left);
+		});
+
 	});
 
 	describe('Element.getCoordinates', function(){
