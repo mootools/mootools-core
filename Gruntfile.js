@@ -6,11 +6,10 @@ var build = (function(){
 	// travis testing
 	if (process.env && process.env.BUILD) return process.env.BUILD == 'default' ? 'all' : 'nocompat'; 
 	// local testing
-	else return process.argv[2] == null || process.argv[2] == 'all' ? 'all' : 'nocompat';
+	else return process.argv[2] == 'default' || process.argv[2] == null ? 'all' : 'nocompat';
 })();
-require('./Tests/httpServer.js')(build);
 
-module.exports = function(grunt) {
+module.exports = function(grunt){
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	require('load-grunt-tasks')(grunt);
@@ -59,11 +58,14 @@ module.exports = function(grunt) {
 		}
 	});
 
-	var compatBuild = ['clean:specs', 'packager:all', 'packager:specs'];
-	var nocompatBuild = ['clean:specs', 'packager:nocompat', 'packager:specs-nocompat'];
+	var compatBuild = ['clean:specs', 'packager:all', 'packager:specs', 'specsserver'];
+	var nocompatBuild = ['clean:specs', 'packager:nocompat', 'packager:specs-nocompat', 'specsserver'];
 	var tasks = options.travis.build == 'default' ? compatBuild : nocompatBuild;
 	tasks = usePhantom ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
 
+	grunt.registerTask('specsserver', function(){
+		require('./Tests/httpServer.js')(build);
+	});
 	grunt.registerTask('default', compatBuild.concat('karma:continuous'));		// local testing - compat build
 	grunt.registerTask('nocompat', nocompatBuild.concat('karma:continuous'));	// local testing - no compat build
 	grunt.registerTask('default:travis', tasks);								// Travis & Sauce Labs
