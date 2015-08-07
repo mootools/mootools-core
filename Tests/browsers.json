@@ -15,6 +15,12 @@
         "platform": "Windows 2008",
         "version": "12"
     },
+    "safari8": {
+        "base": "SauceLabs",
+        "browserName": "safari",
+        "platform": "OS X 10.11",
+        "version": "8.1"
+    },
     "safari7": {
         "base": "SauceLabs",
         "browserName": "safari",

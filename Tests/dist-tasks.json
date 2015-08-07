@@ -16,7 +16,7 @@
         },
         "server": {
             "options":{
-                "strip": [".*compat"],
+                "strip": ["1.2compat", "1.3compat", "1.4compat", "*compat", "IE", "ltIE8", "ltIE9", "!ES5", "!ES5-bind", "webkit", "ltFF4"],
                 "only": ["Core/Core", "Core/Array", "Core/String", "Core/Number", "Core/Function", "Core/Object", "Core/Class", "Core/Class.Extras", "Core/JSON"]
             },
             "src": "Source/**/*.js",

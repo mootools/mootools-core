@@ -2,12 +2,15 @@ language: node_js
 
 node_js:
   - "0.10"
+  - "0.12"
+  - "iojs"
 
 env:
   matrix:
     - BROWSER='chrome_linux'    BUILD='default'
     - BROWSER='firefox_linux'   BUILD='default'
     - BROWSER='opera_win2000'   BUILD='default'
+    - BROWSER='safari8'         BUILD='default'
     - BROWSER='safari7'         BUILD='default'
     - BROWSER='safari6'         BUILD='default'
     - BROWSER='ie11'            BUILD='default'
@@ -20,6 +23,7 @@ env:
     - BROWSER='chrome_linux'    BUILD='nocompat'
     - BROWSER='firefox_linux'   BUILD='nocompat'
     - BROWSER='opera_win2000'   BUILD='nocompat'
+    - BROWSER='safari8'         BUILD='nocompat'
     - BROWSER='safari7'         BUILD='nocompat'
     - BROWSER='safari6'         BUILD='nocompat'
     - BROWSER='ie11'            BUILD='nocompat'
@@ -29,6 +33,8 @@ env:
     - BROWSER='ie7'             BUILD='nocompat'
     - BROWSER='phantomjs'       BUILD='nocompat'
 
+    - BUILD='server'
+
   global:
     - secure: myFP8vndNuVGr2b+WtP4efJ2fJL7By7PUi2yxgbUlaqK82qgkayrp7zu6G7YKYBtWRTaRvwybX4XVZn9zCvFm2xTB8xSeWy3bB63JZcYPGzLpwusgJ69Kr+K5dAn/EzIj23pIjqVic9XmEEFK1FqCLp8V2Ty4kl3RG7onfwALUo=
     - secure: PFKH8/mY7hD82ipfa46znhWJQzEZ8226ZgHLVFLiM2LAxHP6aWGDgyYaSZVGlpulAGXx2Pq+RLPjetQRpjy7CA6NWr/2YtAxvx88QkufRRylKyNgEy5Pf1ej/V88SHnfdpGIizNeF/ofAMPmsGfBaDUm3+gU1RT+zLNj5gl3J/4=
@@ -36,3 +42,8 @@ env:
 before_script:
   - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
 
+cache:
+  directories:
+  - node_modules
+
+sudo: false
