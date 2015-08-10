@@ -43,12 +43,10 @@
     "karma-ie-launcher": "~0.1",
     "karma-jasmine": "~0.1.5",
     "karma-phantomjs-launcher": "~0.1.2",
-    "karma-requirejs": "~0.2.1",
     "karma-safari-launcher": "~0.1",
     "karma-sauce-launcher": "~0.2.5",
     "karma-script-launcher": "~0.1.0",
     "karma-sinon": "~1.0.2",
-    "load-grunt-tasks": "~0.4.0",
-    "requirejs": "~2.1.11"
+    "load-grunt-tasks": "~0.4.0"
   }
 }

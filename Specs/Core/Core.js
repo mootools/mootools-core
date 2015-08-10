@@ -610,7 +610,8 @@ describe('instanceOf', function(){
 	});
 
 	// todo(ibolmo)
-	if (typeof window != 'undefined' && window.Element && Element.set) it("should return true for Element instances", function(){
+	var dit = typeof window != 'undefined' && window.Element && Element.set ? it : xit;
+	dit("should return true for Element instances", function(){
 		expect(instanceOf(new Element('div'), Element)).toBeTruthy();
 	});
 
