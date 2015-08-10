@@ -73,7 +73,11 @@ if (document.readyState) checks.push(function(){
 	return (state == 'loaded' || state == 'complete');
 });
 
-if ('onreadystatechange' in document) document.addListener('readystatechange', check);
+if ('onreadystatechange' in document){
+	document.addListener('readystatechange', check);
+	var state = document.readyState;
+	if (state == 'loaded' || state == 'complete') domready();
+}
 else shouldPoll = true;
 
 if (shouldPoll) poll();

@@ -66,7 +66,15 @@ var karmaOptions = {
     captureTimeout: 60000 * 2,
     singleRun: true,
     frameworks: ['jasmine', 'sinon'],
-    files: ['Tests/Utilities/*.js', 'mootools-*.js'],
+    files: [
+		'Tests/Utilities/*.js',
+		'mootools-*.js',
+		{pattern: 'Source/**/*.*', included: false, served: true},
+		{pattern: 'Tests/**/*.*', included: false, served: true}
+	],
+	proxies: {
+        '/specsserver/': 'http://localhost:9000/'
+	},
     sauceLabs: {
         username: process.env.SAUCE_USERNAME,
         accessKey: process.env.SAUCE_ACCESS_KEY,

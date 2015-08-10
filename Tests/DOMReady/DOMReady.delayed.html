@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+		<title>Add MooTools when page is already ready</title>
+	</head>
+	<body>
+
+		<script>
+		function callback(){
+			window.callbackFired = true;
+		}
+
+		function addScript(path){
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.src = path;
+			document.getElementsByTagName('head')[0].appendChild(script);
+		}
+
+		window.callbackFired = false;
+		window.onload = function(){
+			addScript('mootoolsPath.js');
+		}
+		</script>
+	</body>
+</html>
