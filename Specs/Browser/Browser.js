@@ -165,6 +165,15 @@ describe('Browser.parseUA', function(){
 				version: 11
 			}
 		},
+		ie11mobile: {
+			desc: 'Internet Explorer 11, Windows Phone',
+			string: 'Mozilla/5.0 (Mobile; Windows Phone 8.1; Android 4.0; ARM; Trident/7.0; Touch; rv:11.0; IEMobile/11.0; SAMSUNG; GT-I8750) like iPhone OS 7_0_3 Mac OS X AppleWebKit/537 (KHTML, like Gecko) Mobile Safari/537',
+			expect: {
+				name: 'ie',
+				version: 11,
+				platform: 'windowsmobile'
+			}
+		},
 		ieCompat: {
 			desc: 'Internet Explorer 10 in IE7 compatibility',
 			string: 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; Trident/6.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)',
@@ -173,12 +182,22 @@ describe('Browser.parseUA', function(){
 				version: 7
 			}
 		},
-		firefox: {
+		firefox24: {
 			desc: 'Firefox v24',
 			string: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:24.0) Gecko/20100101 Firefox/24.0',
 			expect: {
 				name: 'firefox',
-				version: 24
+				version: 24,
+				platform: 'mac'
+			}
+		},
+		firefox38: {
+			desc: 'Firefox 38',
+			string: 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0',
+			expect: {
+				name: 'firefox',
+				version: 38,
+				platform: 'windows'
 			}
 		},
 		opera10: {
@@ -205,20 +224,47 @@ describe('Browser.parseUA', function(){
 				version: 12.14
 			}
 		},
-		safari: {
+		safari6: {
 			desc: 'Safari 6.1',
 			string: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.71 (KHTML, like Gecko) Version/6.1 Safari/537.71',
 			expect: {
 				name: 'safari',
-				version: 6.1
+				version: 6.1,
+				platform: 'mac'
 			}
 		},
-		chrome: {
+		safari7: {
+			desc: 'Safari 7.0.3',
+			string: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A',
+			expect: {
+				name: 'safari',
+				version: 7,
+				platform: 'mac'
+			}
+		},
+		safari8mobile: {
+			desc: 'Safari 8 mobile',
+			string: 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_4 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12H143 Safari/600.1.4',
+			expect: {
+				name: 'safari',
+				version: 8,
+				platform: 'ios'
+			}
+		},
+		chrome31: {
 			desc: 'Chrome 31',
 			string: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36',
 			expect: {
 				name: 'chrome',
 				version: 31
+			}
+		},
+		chrome44: {
+			desc: 'Chrome 44',
+			string: 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.107 Safari/537.36',
+			expect: {
+				name: 'chrome',
+				version: 44
 			}
 		},
 		chromeios: {
