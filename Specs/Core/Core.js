@@ -610,7 +610,8 @@ describe('instanceOf', function(){
 	});
 
 	// todo(ibolmo)
-	if (window.Element && Element.set) it("should return true for Element instances", function(){
+	var dit = typeof window != 'undefined' && window.Element && Element.set ? it : xit;
+	dit("should return true for Element instances", function(){
 		expect(instanceOf(new Element('div'), Element)).toBeTruthy();
 	});
 
@@ -967,25 +968,26 @@ describe('String.uniqueID', function(){
 
 describe('typeOf Client', function(){
 
-	it("should return 'collection' for HTMLElements collections", function(){
+	var dit = typeof document == 'undefined' ? xit : it;
+	dit("should return 'collection' for HTMLElements collections", function(){
 		expect(typeOf(document.getElementsByTagName('*'))).toEqual('collection');
 	});
 
-	it("should return 'element' for an Element", function(){
+	dit("should return 'element' for an Element", function(){
 		var div = document.createElement('div');
 		expect(typeOf(div)).toEqual('element');
 	});
 
 	// todo(ibolmo)
-	if (window.Elements) it("should return 'elements' for Elements", function(){
+	if (typeof window != 'undefined' && window.Elements) dit("should return 'elements' for Elements", function(){
 		expect(typeOf(new Elements)).toEqual('elements');
 	});
 
-	if (window.Browser) it("should return 'window' for the window object", function(){
+	if (typeof window != 'undefined' && window.Browser) dit("should return 'window' for the window object", function(){
 		expect(typeOf(window)).toEqual('window');
 	});
 
-	if (window.Browser) it("should return 'document' for the document object", function(){
+	if (typeof window != 'undefined' && window.Browser) dit("should return 'document' for the document object", function(){
 		expect(typeOf(document)).toEqual('document');
 	});
 
@@ -993,7 +995,8 @@ describe('typeOf Client', function(){
 
 describe('Array.from', function(){
 
-	it('should return an array for an Elements collection', function(){
+	var dit = typeof document == 'undefined' ? xit : it;
+	dit('should return an array for an Elements collection', function(){
 		var div1 = document.createElement('div');
 		var div2 = document.createElement('div');
 		var div3 = document.createElement('div');
@@ -1005,7 +1008,7 @@ describe('Array.from', function(){
 		expect(Type.isArray(array)).toEqual(true);
 	});
 
-	it('should return an array for an Options collection', function(){
+	dit('should return an array for an Options collection', function(){
 		var div = document.createElement('div');
 		div.innerHTML = '<select><option>a</option></select>';
 		var select = div.firstChild;

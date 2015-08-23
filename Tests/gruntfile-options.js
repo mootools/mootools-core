@@ -6,6 +6,12 @@ var ymlPackage = YAML.safeLoad(fs.readFileSync('package.yml', 'utf8'));
 var travisBuild = process.env.BUILD;
 var travisBrowser = process.env.BROWSER;
 var sauceBrowsers = JSON.parse(fs.readFileSync('Tests/browsers.json'));
+var serverBuildOptions = JSON.parse(fs.readFileSync('Tests/dist-tasks.json')).build.server.options;
+var serverBuild = {
+	modules: serverBuildOptions.only,
+	specFiles: ['Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js'],
+	strip: serverBuildOptions.strip
+}
 
 var packagerOptions = {
 
@@ -21,6 +27,14 @@ var packagerOptions = {
         src: ymlPackage.sources,
         dest: 'mootools-nocompat.js'
     },
+    server: {
+        options: {
+            strip: serverBuild.strip,
+            only: serverBuild.modules
+        },
+        src: ymlPackage.sources,
+        dest: 'mootools-server.js'
+	},
     specs: {
         options: {
             name: 'Specs'
@@ -36,6 +50,14 @@ var packagerOptions = {
         },
         src: 'Specs/**/*.js',
         dest: 'mootools-specs.js'
+    },
+    specsServer: {
+        options: {
+            name: 'Specs',
+            strip: serverBuild.strip,
+        },
+        src: serverBuild.specFiles,
+        dest: 'mootools-server-specs.js'
     }
 }
 
