@@ -32,7 +32,7 @@
     "grunt-cli": "~0.1.13",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-contrib-connect": "~0.7.0",
-    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-contrib-uglify": "^0.9.2",
     "grunt-karma": "~0.8.0",
     "grunt-mootools-packager": "^0.1.2",
     "jasmine": "^2.3.2",
