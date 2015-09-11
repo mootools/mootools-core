@@ -7,7 +7,7 @@ description: The heart of MooTools.
 
 license: MIT-style license.
 
-copyright: Copyright (c) 2006-2014 [Valerio Proietti](http://mad4milk.net/).
+copyright: Copyright (c) 2006-2015 [Valerio Proietti](http://mad4milk.net/).
 
 authors: The MooTools production team (http://mootools.net/developers/)
 
@@ -19,7 +19,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 
 ...
 */
-/*! MooTools: the javascript framework. license: MIT-style license. copyright: Copyright (c) 2006-2014 [Valerio Proietti](http://mad4milk.net/).*/
+/*! MooTools: the javascript framework. license: MIT-style license. copyright: Copyright (c) 2006-2015 [Valerio Proietti](http://mad4milk.net/).*/
 (function(){
 
 this.MooTools = {
