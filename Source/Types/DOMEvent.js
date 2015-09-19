@@ -123,7 +123,7 @@ DOMEvent.defineKeys({
 })();
 
 /*<1.3compat>*/
-var Event = DOMEvent;
+var Event = this.Event = DOMEvent;
 Event.Keys = {};
 /*</1.3compat>*/
 
