@@ -202,18 +202,24 @@ describe('Element.Event', function(){
 
 	});
 
-	if (window.postMessage && !navigator.userAgent.match(/phantomjs/i)) it('Should trigger message event', function(){
+	var ddescribe = (window.postMessage && !navigator.userAgent.match(/phantomjs/i)) ? describe : xdescribe;
+	ddescribe('(async)', function(){
 
-		var theMessage, spy = sinon.spy();
-		window.addEvent('message', function(e){
-			theMessage = e.event.data;
-			spy();
+		beforeEach(function(done){
+			this.message = null;
+			this.spy = sinon.spy();
+			var self = this;
+			window.addEvent('message', function(e){
+				self.message = e.event.data;
+				self.spy();
+			});
+			window.postMessage('I am a message from outer space...', '*');
+			setTimeout(done, 150);
 		});
-		window.postMessage('I am a message from outer space...', '*');
-		waits(150);
-		runs(function(){
-			expect(spy.called).toBe(true);
-			expect(theMessage).toEqual('I am a message from outer space...');
+
+		it('Should trigger a message event', function(){
+			expect(this.spy.called).toBe(true);
+			expect(this.message).toEqual('I am a message from outer space...');
 		});
 	});
 
@@ -372,6 +378,8 @@ describe('Keypress key code', function(){
 	var input, key, shift, done;
 	DOMEvent.defineKey(33, 'pageup');
 
+	var tests = ['[enter]', '1', '[shift]![shift-up]'];
+
 	function keyHandler(e){
 		key = e.key;
 		shift = !!e.event.shiftKey;
@@ -384,11 +392,19 @@ describe('Keypress key code', function(){
 		if (done) return true;
 	}
 
-	beforeEach(function(){
+	beforeEach(function(done){
 		input = new Element('input', {
 			'type': 'text',
 			'id': 'keyTester'
 		}).addEvent('keypress', keyHandler).inject(document.body);
+
+		var test = tests.shift();
+		if (test != null){
+			typeWriter(test);
+			setTimeout(done, 50);
+		} else {
+			done();
+		}
 	});
 
 	afterEach(function(){
@@ -397,30 +413,18 @@ describe('Keypress key code', function(){
 	});
 
 	it('should return "enter" in event.key', function(){
-		typeWriter('[enter]');
-		waits(50);
-		runs(function(){
-			expect(key).toBe('enter');
-			expect(shift).not.toBeTruthy();
-		});
+		expect(key).toBe('enter');
+		expect(shift).not.toBeTruthy();
 	});
 
 	it('should return "1" in event.key', function(){
-		typeWriter('1');
-		waits(50);
-		runs(function(){
-			expect(key).toBe('1');
-			expect(shift).not.toBeTruthy();
-		});
+		expect(key).toBe('1');
+		expect(shift).not.toBeTruthy();
 	});
 
 	it('should return "!" when pressing SHIFT + 1', function(){
-		typeWriter('[shift]![shift-up]');
-		waits(50);
-		runs(function(){
-			expect(key).toBe('!');
-			expect(shift).toBeTruthy();
-		});
+		expect(key).toBe('!');
+		expect(shift).toBeTruthy();
 	});
 
 	it('should map code 33 correctly with keypress event', function(){

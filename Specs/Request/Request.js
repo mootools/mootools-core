@@ -75,10 +75,9 @@ describe('Request', function(){
 		expect(onComplete.called).toBe(true);
 	});
 
-	xit('(async) should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
-
-		runs(function(){
-			this.onComplete = sinon.spy();
+	xdescribe('(async 1)', function(){
+		beforeEach(function(done){
+			this.onComplete = sinon.spy(function(){ done(); });
 			this.request = new Request({
 				url: '../Helpers/request.php',
 				onComplete: this.onComplete
@@ -88,31 +87,38 @@ describe('Request', function(){
 			}});
 		});
 
-		waitsFor(800, function(){
-			return this.onComplete.called;
-		});
-
-		runs(function(){
+		it('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
+			expect(this.onComplete.called).toBe(true);
 			expect(this.onComplete.args[0][0]).toEqual('response');
 			expect(this.request.response.text).toEqual('response');
-		});
+		}, 1500);
 
-		runs(function(){
-			this.chain = sinon.spy();
+	});
+
+	xdescribe('(async 2)', function(){
+		beforeEach(function(done){
+			this.onComplete = sinon.spy();
+			this.request = new Request({
+				url: '../Helpers/request.php',
+				onComplete: this.onComplete
+			}).send({data: {
+				'__type': 'xml',
+				'__response': 'response'
+			}});
+
+			this.chain = sinon.spy(function(){ done(); });
 			this.request.chain(this.chain).send({data: {
 				'__type': 'xml',
 				'__response': '<node>response</node><no></no>'
 			}});
 		});
 
-		waitsFor(800, function(){
-			return this.chain.called;
-		});
-
-		runs(function(){
+		it('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
+			expect(this.chain.called).toBe(true);
+			expect(this.onComplete.called).toBe(true);
 			expect(this.onComplete.args[0][0]).toEqual('<node>response</node><no></no>');
 			expect(this.request.response.text).toEqual('<node>response</node><no></no>');
-		});
+		}, 800);
 
 	});
 

@@ -2448,23 +2448,21 @@ describe('Element.appendHTML', function(){
 
 describe('IFrame', function(){
 
+	beforeEach(function(done){
+		this.onComplete = sinon.spy(function(){ done(); });
+
+		this.iframe = new IFrame({
+			src: 'http://' + document.location.host + '/random',
+			onload: this.onComplete
+		}).inject(document.body);
+	});
+
 	it('(async) should call onload', function(){
-		runs(function(){
-			this.onComplete = sinon.spy();
+		expect(this.onComplete.called).toBe(true);
+	}, 1000);
 
-			this.iframe = new IFrame({
-				src: 'http://' + document.location.host + '/random',
-				onload: this.onComplete
-			}).inject(document.body);
-		});
-
-		waitsFor(1000, function(){
-			return this.onComplete.called;
-		});
-
-		runs(function(){
-			this.iframe.destroy();
-		});
+	afterEach(function(){
+		this.iframe.destroy();
 	});
 
 });

@@ -47,48 +47,46 @@ describe('Request.HTML', function(){
 
 	});
 
-	xit('(async) should create an ajax request and correctly generate the tree response from a tr', function(){
+	xdescribe('(async 1)', function(){
 
-		runs(function(){
+		beforeEach(function(done){
+			this.onComplete = sinon.spy(function(){ done(); });
 			this.request = new Request.HTML({
 				url: '../Helpers/request.php',
-				onComplete: this.spy
+				onComplete: this.onComplete
 			}).send({data: {
 				'__response': '<tr><td>text</td></tr>', '__type': 'html'
 			}});
 		});
 
-		waitsFor(800, function(){
-			return this.spy.called;
-		});
+		it('should create an ajax request and correctly generate the tree response from a tr', function(){
+			expect(this.onComplete.called).toBe(true);
 
-		runs(function(){
-			var onCompleteArgs = this.spy.args[0];
+			var onCompleteArgs = this.onComplete.args[0];
 
 			expect(onCompleteArgs[0][0].nodeName).toEqual('TR');
 			expect(onCompleteArgs[1][1].nodeName).toEqual('TD');
 			expect(onCompleteArgs[2]).toEqual('<tr><td>text</td></tr>');
-		});
+		}, 800);
 
 	});
 
-	xit('(async) should create an ajax request and correctly generate the tree response from options', function(){
+	xdescribe('(async 2)', function(){
 
-		runs(function(){
+		beforeEach(function(done){
+			this.onComplete = sinon.spy(function(){ done(); });
 			this.request = new Request.HTML({
 				url: '../Helpers/request.php',
-				onComplete: this.spy
+				onComplete: this.onComplete
 			}).send({data: {
 				'__response': '<option>1</option><option>2</option><option>3</option>', '__type': 'html'
 			}});
 		});
 
-		waitsFor(800, function(){
-			return this.spy.called;
-		});
+		it('should create an ajax request and correctly generate the tree response from options', function(){
+			expect(this.onComplete.called).toBe(true);
 
-		runs(function(){
-			var onCompleteArgs = this.spy.args[0];
+			var onCompleteArgs = this.onComplete.args[0];
 
 			expect(onCompleteArgs[0].length).toEqual(3);
 			expect(onCompleteArgs[1].length).toEqual(3);
@@ -98,7 +96,7 @@ describe('Request.HTML', function(){
 			var firstOption = onCompleteArgs[0][0];
 			expect(firstOption.tagName).toEqual('OPTION');
 			expect(firstOption.innerHTML).toEqual('1');
-		});
+		}, 800);
 
 	});
 
@@ -223,7 +221,7 @@ describe('Request.HTML', function(){
 
 	});
 
-	it('should create an ajax request through Element.load', function(){
+	it('should create an ajax request through Element.load', function(done){
 
 		var element = new Element('div');
 
@@ -244,10 +242,10 @@ describe('Request.HTML', function(){
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 		expect(this.spy.called).toBe(true);
 
-		runs(function(){
-			var onCompleteArgs = this.spy.args[0];
+		setTimeout(function(){
 			expect(element.get('text')).toEqual('hello world!');
-		});
+			done();
+		}, 0);
 
 	});
 
