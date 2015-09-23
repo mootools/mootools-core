@@ -52,8 +52,7 @@
                 ],
                 "files": [
                     "dist/mootools-core-compat.js",
-                    "mootools-specs.js",
-                    "Tests/Utilities/*.js"
+                    "mootools-specs.js"
                 ]
             }
         },
@@ -64,8 +63,7 @@
                 ],
                 "files": [
                     "dist/mootools-core-compat.min.js",
-                    "mootools-specs.js",
-                    "Tests/Utilities/*.js"
+                    "mootools-specs.js"
                 ]
             }
         },
@@ -76,8 +74,7 @@
                 ],
                 "files": [
                     "dist/mootools-core.js",
-                    "mootools-specs.js",
-                    "Tests/Utilities/*.js"
+                    "mootools-specs.js"
                 ]
             }
         },
@@ -88,8 +85,7 @@
                 ],
                 "files": [
                     "dist/mootools-core.min.js",
-                    "mootools-specs.js",
-                    "Tests/Utilities/*.js"
+                    "mootools-specs.js"
                 ]
             }
         }

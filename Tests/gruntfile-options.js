@@ -90,7 +90,7 @@ var karmaOptions = {
     singleRun: true,
     frameworks: ['jasmine', 'sinon', 'syn'],
     plugins: ['karma-*', path.resolve('Tests/Plugins/syn')],
-    files: ['Tests/Utilities/*.js', 'mootools-*.js'],
+    files: ['mootools-*.js'],
     sauceLabs: {
         username: process.env.SAUCE_USERNAME,
         accessKey: process.env.SAUCE_ACCESS_KEY,
