@@ -113,7 +113,7 @@ describe('Element.set opacity', function(){
 		var div = new Element('div'),
 		hasOpacity = document.html.style.opacity != null
 
-		if (!hasOpacity && document.html.style.filter != null && !window.opera && !Syn.browser.gecko){ //we can prolly remove the last two check
+		if (!hasOpacity && document.html.style.filter != null && !window.opera && !syn.browser.gecko){ // we can probably remove the last two checks
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
 			expect(div.style.filter).toMatch(/blur\(strength=50\)/i);

@@ -170,7 +170,7 @@ describe('Element.Event', function(){
 			}
 		}).inject(document.body);
 
-		Syn.trigger('click', null, el);
+		syn.trigger(el, 'click');
 
 		expect(callback).toHaveBeenCalled();
 		el.destroy();
@@ -195,7 +195,7 @@ describe('Element.Event', function(){
 			}
 		}).inject(document.body);
 
-		Syn.trigger('click', null, el);
+		syn.trigger(el, 'click');
 
 		expect(callback).toHaveBeenCalled();
 		el.destroy();
@@ -225,7 +225,7 @@ describe('Element.Event', function(){
 			callback(event.key);
 		}).inject(document.body);
 
-		Syn.key('a', div);
+		syn.key(div, 'a');
 
 		expect(callback).toHaveBeenCalledWith('a');
 		div.destroy();
@@ -288,7 +288,7 @@ describe('Element.Event', function(){
 
 		var div = createElement('div').addEvent('customEvent', callback).inject(document.body);
 
-		Syn.trigger('click', null, div);
+		syn.trigger(div, 'click');
 
 		expect(callback).toHaveBeenCalled();
 		div.removeEvent('customEvent', callback).destroy();
@@ -350,8 +350,8 @@ describe('Element.Event keyup with f<key>', function(){
 			})
 			.inject(document.body);
 
-		Syn.trigger('keydown', 'f2', div);
-		Syn.trigger('keyup', 'f2', div);
+		syn.trigger(div, 'keydown', 'f2');
+		syn.trigger(div, 'keyup', 'f2');
 
 		expect(keydown).toHaveBeenCalledWith('f2');
 		expect(keyup).toHaveBeenCalledWith('f2');
@@ -379,7 +379,7 @@ describe('Keypress key code', function(){
 
 	function typeWriter(action){
 		setTimeout(function () {
-			Syn.type(action, 'keyTester');
+			syn.type('keyTester', action);
 		}, 1);
 		if (done) return true;
 	}

@@ -1,6 +1,7 @@
 "use strict";
 
 var fs = require('fs');
+var path = require('path');
 var YAML = require('js-yaml');
 var ymlPackage = YAML.safeLoad(fs.readFileSync('package.yml', 'utf8'));
 var travisBuild = process.env.BUILD;
@@ -87,7 +88,8 @@ var gruntOptions = {
 var karmaOptions = {
     captureTimeout: 60000 * 2,
     singleRun: true,
-    frameworks: ['jasmine', 'sinon'],
+    frameworks: ['jasmine', 'sinon', 'syn'],
+    plugins: ['karma-*', path.resolve('Tests/Plugins/syn')],
     files: ['Tests/Utilities/*.js', 'mootools-*.js'],
     sauceLabs: {
         username: process.env.SAUCE_USERNAME,

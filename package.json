@@ -50,6 +50,7 @@
     "karma-sinon-ie": "^1.0",
     "load-grunt-tasks": "^3.2",
     "phantomjs": "^1.9",
-    "sinon": "~1.14"
+    "sinon": "~1.14",
+    "syn": "^0.1.2"
   }
 }
