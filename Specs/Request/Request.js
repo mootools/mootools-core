@@ -34,7 +34,7 @@ describe('Request', function(){
 		this.requests[0].respond(200, {'Content-Type': 'text/plain'}, 'res&amp;ponsé');
 
 		// checks the first argument from the first call
-		expect(onComplete.args[0][0]).toEqual('res&amp;ponsé');
+		expect(onComplete.args[0][0]).to.equal('res&amp;ponsé');
 
 	});
 
@@ -50,9 +50,9 @@ describe('Request', function(){
 
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, 'data');
 
-		expect(onComplete.called).toBe(true);
+		expect(onComplete.called).to.equal(true);
 
-		expect(onComplete.args[0][0]).toEqual('data');
+		expect(onComplete.args[0][0]).to.equal('data');
 
 	});
 
@@ -68,11 +68,11 @@ describe('Request', function(){
 
 		var requested = this.requests[0];
 
-		expect(requested.method.toLowerCase()).toBe('post');
+		expect(requested.method.toLowerCase()).to.equal('post');
 
 		requested.respond(200, {'Content-Type': 'text/plain'}, '');
 
-		expect(onComplete.called).toBe(true);
+		expect(onComplete.called).to.equal(true);
 	});
 
 	xdescribe('(async 1)', function(){
@@ -88,9 +88,9 @@ describe('Request', function(){
 		});
 
 		it('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
-			expect(this.onComplete.called).toBe(true);
-			expect(this.onComplete.args[0][0]).toEqual('response');
-			expect(this.request.response.text).toEqual('response');
+			expect(this.onComplete.called).to.equal(true);
+			expect(this.onComplete.args[0][0]).to.equal('response');
+			expect(this.request.response.text).to.equal('response');
 		}, 1500);
 
 	});
@@ -114,10 +114,10 @@ describe('Request', function(){
 		});
 
 		it('should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
-			expect(this.chain.called).toBe(true);
-			expect(this.onComplete.called).toBe(true);
-			expect(this.onComplete.args[0][0]).toEqual('<node>response</node><no></no>');
-			expect(this.request.response.text).toEqual('<node>response</node><no></no>');
+			expect(this.chain.called).to.equal(true);
+			expect(this.onComplete.called).to.equal(true);
+			expect(this.onComplete.args[0][0]).to.equal('<node>response</node><no></no>');
+			expect(this.request.response.text).to.equal('<node>response</node><no></no>');
 		}, 800);
 
 	});
@@ -136,9 +136,9 @@ describe('Request', function(){
 		var requested = this.requests[0];
 		requested.respond(200, {'Content-Type': 'text/plain'}, requested.requestBody)
 
-		expect(onComplete.called).toBe(true);
+		expect(onComplete.called).to.equal(true);
 
-		expect(onComplete.args[0][0]).toEqual('__response=data');
+		expect(onComplete.args[0][0]).to.equal('__response=data');
 
 	});
 
@@ -147,7 +147,7 @@ describe('Request', function(){
 			url: '/something/or/other'
 		}).send();
 
-		expect(request.xhr.withCredentials).toBeFalsy();
+		expect(request.xhr.withCredentials).to.not.be.ok;
 	});
 
 	/*<1.4compat>*/
@@ -158,7 +158,7 @@ describe('Request', function(){
 			user: 'someone'
 		}).send();
 
-		expect(request.xhr.withCredentials).toBe(true);
+		expect(request.xhr.withCredentials).to.equal(true);
 	});
 	/*</1.4compat>*/
 
@@ -169,7 +169,7 @@ describe('Request', function(){
 			user: 'someone'
 		}).send();
 
-		expect(request.xhr.withCredentials).toBeFalsy();
+		expect(request.xhr.withCredentials).to.not.be.ok;
 	});
 
 	dit('should set xhr.withCredentials flag if options.withCredentials is set', function(){
@@ -178,6 +178,6 @@ describe('Request', function(){
 			withCredentials: true
 		}).send();
 
-		expect(request.xhr.withCredentials).toBe(true);
+		expect(request.xhr.withCredentials).to.equal(true);
 	});
 });

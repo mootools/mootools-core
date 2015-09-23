@@ -34,10 +34,10 @@ describe('Request.JSON', function(){
 		}});
 
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, response);
-		expect(this.spy.called).toBe(true);
+		expect(this.spy.called).to.equal(true);
 
 		// checks the first argument from the first call
-		expect(this.spy.args[0][0]).toEqual({ok: true});
+		expect(this.spy.args[0][0]).to.deep.equal({ok: true});
 
 	});
 
@@ -54,10 +54,10 @@ describe('Request.JSON', function(){
 		}});
 
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, response);
-		expect(this.spy.called).toBe(true);
+		expect(this.spy.called).to.equal(true);
 
 		// checks the first argument from the first call
-		expect(this.spy.args[0][0]).toEqual('{"ok":function(){invalid;}}');
+		expect(this.spy.args[0][0]).to.equal('{"ok":function(){invalid;}}');
 
 	});
 

@@ -22,7 +22,7 @@ a. __To report a bug:__
 b. __To fix a bug:__
 
    1. Clone the repo.
-   2. Add a [spec](http://jasmine.github.io/1.3/introduction.html). ([example](http://jsfiddle.net/q7RgN/))
+   2. Add a [spec](http://chaijs.com/guide/styles/#expect-section).
    3. Fix the bug.
    4. Build and run the specs.
    5. Push to your GitHub fork.

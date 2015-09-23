@@ -12,18 +12,18 @@ describe('Element.set `opacity`', function(){
 	it('should set the opacity of an Element', function(){
 		var el = new Element('div').set('opacity', 0.4);
 		if (document.html.style.opacity != null)
-			expect(el.style.opacity).toEqual('0.4');
+			expect(el.style.opacity).to.equal('0.4');
 		else if (document.html.style.filter != null)
-			expect(el.style.filter).toEqual('alpha(opacity=40)');
+			expect(el.style.filter).to.equal('alpha(opacity=40)');
 		else
-			expect(el.getStyle('opacity')).toEqual(0.4);
+			expect(el.getStyle('opacity')).to.equal(0.4);
 	});
 
 	it('should return the opacity of an Element', function(){
 		var div = new Element('div').set('opacity', 0.4);
-		expect(div.get('opacity') == 0.4).toBeTruthy();
+		expect(div.get('opacity')).to.equal(0.4);
 		div.set('opacity', 0);
-		expect(div.get('opacity') == 0).toBeTruthy();
+		expect(div.get('opacity')).to.equal(0);
 	});
 
 });
@@ -34,18 +34,18 @@ describe('Element.set `opacity`', function(){
 	it('should set the opacity of an Element', function(){
 		var el = new Element('div').setStyle('opacity', 0.4);
 		if (document.html.style.opacity != null)
-			expect(el.style.opacity).toEqual('0.4');
+			expect(el.style.opacity).to.equal('0.4');
 		else if (document.html.style.filter != null)
-			expect(el.style.filter).toEqual('alpha(opacity=40)');
+			expect(el.style.filter).to.equal('alpha(opacity=40)');
 		else
-			expect(el.getStyle('opacity')).toEqual(0.4);
+			expect(el.getStyle('opacity')).to.equal(0.4);
 	});
 
 	it('should return the opacity of an Element', function(){
 		var div = new Element('div').setStyle('opacity', 0.4);
-		expect(div.getStyle('opacity') == 0.4).toBeTruthy();
+		expect(div.getStyle('opacity')).to.equal(0.4);
 		div.setStyle('opacity', 0);
-		expect(div.getStyle('opacity') == 0).toBeTruthy();
+		expect(div.getStyle('opacity')).to.equal(0);
 	});
 
 });
@@ -54,22 +54,22 @@ describe('Element.getStyle', function(){
 
 	it('should get a six digit hex code from a three digit hex code', function(){
 		var el = new Element('div').set('html', '<div style="color:#00ff00"></div>');
-		expect(el.getElement('div').getStyle('color')).toEqual('#00ff00');
+		expect(el.getElement('div').getStyle('color')).to.equal('#00ff00');
 	});
 
 	it('should getStyle a six digit hex code from an RGB value', function(){
 		var el = new Element('div').set('html', '<div style="color:rgb(0, 255, 0)"></div>');
-		expect(el.getElement('div').getStyle('color')).toEqual('#00ff00');
+		expect(el.getElement('div').getStyle('color')).to.equal('#00ff00');
 	});
 
 	it('should `getStyle` with a dash in it', function(){
 		var el = new Element('div').set('html', '<div style="list-style-type:square"></div>');
-		expect(el.getElement('div').getStyle('list-style-type')).toEqual('square');
+		expect(el.getElement('div').getStyle('list-style-type')).to.equal('square');
 	});
 
 	it('should `getStyle` padding', function(){
 		var el = new Element('div').set('html', '<div style="padding:20px"></div>');
-		expect(el.getElement('div').getStyle('padding-left')).toEqual('20px');
+		expect(el.getElement('div').getStyle('padding-left')).to.equal('20px');
 	});
 
 });
@@ -77,15 +77,15 @@ describe('Element.getStyle', function(){
 describe('Element.setStyle', function(){
 
 	it('should set the `styles` property on an Element using the Element constructor', function(){
-		expect(new Element('div', {styles:{'color':'#00ff00'}}).getStyle('color')).toEqual('#00ff00');
+		expect(new Element('div', {styles:{'color':'#00ff00'}}).getStyle('color')).to.equal('#00ff00');
 	});
 
 	it('should `setStyle` on an Element', function(){
-		expect(new Element('div').setStyle('color','#00ff00').getStyle('color')).toEqual('#00ff00');
+		expect(new Element('div').setStyle('color','#00ff00').getStyle('color')).to.equal('#00ff00');
 	});
 
 	it('should properly `setStyle` for a property with a dash in it', function(){
-		expect(new Element('div').setStyle('list-style-type', 'square').getStyle('list-style-type')).toEqual('square');
+		expect(new Element('div').setStyle('list-style-type', 'square').getStyle('list-style-type')).to.equal('square');
 	});
 
 });
@@ -94,7 +94,7 @@ describe('Element.getStyles', function(){
 
 	it('should return multiple styles', function(){
 		var el = new Element('div').set('html', '<div style="color:#00ff00;list-style-type:square"></div>');
-		expect(el.getElement('div').getStyles('color', 'list-style-type')).toEqual({color:'#00ff00', 'list-style-type':'square'});
+		expect(el.getElement('div').getStyles('color', 'list-style-type')).to.deep.equal({color:'#00ff00', 'list-style-type':'square'});
 	});
 
 });
@@ -102,7 +102,7 @@ describe('Element.getStyles', function(){
 describe('Element.setStyles', function(){
 
 	it('should set multiple styles', function(){
-		expect(new Element('div').setStyles({'list-style-type':'square', 'color':'#00ff00'}).getStyles('list-style-type', 'color')).toEqual({'list-style-type':'square', color:'#00ff00'});
+		expect(new Element('div').setStyles({'list-style-type':'square', 'color':'#00ff00'}).getStyles('list-style-type', 'color')).to.deep.equal({'list-style-type':'square', color:'#00ff00'});
 	});
 
 });
@@ -116,7 +116,7 @@ describe('Element.set opacity', function(){
 		if (!hasOpacity && document.html.style.filter != null && !window.opera && !syn.browser.gecko){ // we can probably remove the last two checks
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
-			expect(div.style.filter).toMatch(/blur\(strength=50\)/i);
+			expect(div.style.filter).to.match(/blur\(strength=50\)/i);
 		}
 	});
 
@@ -124,7 +124,7 @@ describe('Element.set opacity', function(){
 		var div = new Element('div');
 		div.set('opacity', 1e-20);
 		div.set('opacity', 0.5);
-		expect(+div.get('opacity')).toEqual(0.5);
+		expect(+div.get('opacity')).to.equal(0.5);
 	});
 
 });
@@ -164,21 +164,21 @@ describe('Element.Style', function(){
 		});
 
 		it('should get the opacity defined by the CSS', function(){
-			expect(this.element.getStyle('opacity')).toEqual(0.5);
+			expect(this.element.getStyle('opacity')).to.equal(0.5);
 		});
 
 		it('should set/overwrite the opacity', function(){
 			this.element.setStyle('opacity', 1);
-			expect(this.element.getStyle('opacity')).toEqual(1);
+			expect(this.element.getStyle('opacity')).to.equal(1);
 			this.element.setStyle('opacity', null);
-			expect(this.element.getStyle('opacity')).toEqual(0.5);
+			expect(this.element.getStyle('opacity')).to.equal(0.5);
 		});
 
 		it('should remove the style by setting it to `null`', function(){
 			this.element.setStyle('color', '#FF9900');
-			expect(this.element.getStyle('color')).toEqual('#ff9900');
+			expect(this.element.getStyle('color')).to.equal('#ff9900');
 			this.element.setStyle('color', null);
-			expect(this.element.getStyle('color')).toEqual('#ff0000');
+			expect(this.element.getStyle('color')).to.equal('#ff0000');
 		});
 
 	});
@@ -213,30 +213,30 @@ describe('Element.Style', function(){
 		});
 
 		it('should get the height from the CSS', function(){
-			expect(element.getStyle('height')).toEqual('200px');
+			expect(element.getStyle('height')).to.equal('200px');
 		});
 
 		it('should get the width from the CSS', function(){
-			expect(element.getStyle('width')).toMatch(/\d+px/);
+			expect(element.getStyle('width')).to.match(/\d+px/);
 		});
 
 		it('should not mangle the units from inline width in %', function(){
-			expect(new Element('div').setStyle('width', '40%').getStyle('width')).toEqual('40%');
+			expect(new Element('div').setStyle('width', '40%').getStyle('width')).to.equal('40%');
 		});
 
 		it('should not mangle the units from inline auto width', function(){
-			expect(new Element('div').setStyle('width', 'auto').getStyle('width')).toEqual('auto');
+			expect(new Element('div').setStyle('width', 'auto').getStyle('width')).to.equal('auto');
 		});
 
 		it('should get the left margin from the CSS', function(){
 			// FireFox returns px (and maybe even as floats)
 			var re = /^(20\%|(\d+|\d+\.\d+)px)$/;
-			expect(re.test('20%')).toBe(true);
-			expect(re.test('20px')).toBe(true);
-			expect(re.test('20.43px')).toBe(true);
-			expect(re.test('20')).toBe(false);
-			expect(re.test('auto')).toBe(false);
-			expect(element.getStyle('margin-left')).toMatch(re);
+			expect(re.test('20%')).to.equal(true);
+			expect(re.test('20px')).to.equal(true);
+			expect(re.test('20.43px')).to.equal(true);
+			expect(re.test('20')).to.equal(false);
+			expect(re.test('auto')).to.equal(false);
+			expect(element.getStyle('margin-left')).to.match(re);
 		});
 
 		it('[afterAll]', function(){
@@ -270,15 +270,15 @@ describe('Element.Style', function(){
 		});
 
 		it('should inherit the height from the child', function(){
-			expect(element.getStyle('height')).toEqual('100px');
+			expect(element.getStyle('height')).to.equal('100px');
 		});
 
 		it('should get a pixel based width', function(){
-			expect(element.getStyle('width')).toMatch(/\d+px/);
+			expect(element.getStyle('width')).to.match(/\d+px/);
 		});
 
 		it('should have a 0px border left', function(){
-			expect(element.getStyle('borderLeftWidth')).toEqual('0px');
+			expect(element.getStyle('borderLeftWidth')).to.equal('0px');
 		});
 
 		it('[afterAll]', function(){
@@ -291,7 +291,7 @@ describe('Element.Style', function(){
 
 		it('should have same order when getting a previously set border', function(){
 			var border = '2px solid #123abc';
-			expect(new Element('div').setStyle('border', border).getStyle('border')).toEqual(border);
+			expect(new Element('div').setStyle('border', border).getStyle('border')).to.equal(border);
 		});
 
 	});
@@ -299,7 +299,7 @@ describe('Element.Style', function(){
 	describe('getComputedStyle margin-left on detached element', function(){
 
 		it('should have a non-null margin-left', function(){
-			expect(new Element('div').getComputedStyle('margin-left')).not.toEqual(null);
+			expect(new Element('div').getComputedStyle('margin-left')).to.not.equal(null);
 		});
 
 	});
@@ -313,7 +313,7 @@ describe('Element.Style', function(){
 				}
 			});
 			foo.setStyle('background-size', 20);
-			expect(foo.getStyle('backgroundSize')).toEqual('20px');
+			expect(foo.getStyle('backgroundSize')).to.equal('20px');
 		});
 
 	});
@@ -348,19 +348,19 @@ describe('Element.Style', function(){
 		});
 
 		it('should have non-empty background-position shorthand', function(){
-			expect(this.element.getStyle('background-position')).not.toEqual(null);
-			expect(this.element.getStyle('background-position')).toMatch(/\w+/);
+			expect(this.element.getStyle('background-position')).to.not.equal(null);
+			expect(this.element.getStyle('background-position')).to.match(/\w+/);
 		});
 
 		it('should not return a keyword-based background-position shorthand', function(){
-			expect(this.element.getStyle('background-position')).not.toMatch(/(top|right|bottom|left)/);
-			expect(this.element.getStyle('background-position')).toEqual('0% 100%');
+			expect(this.element.getStyle('background-position')).to.not.match(/(top|right|bottom|left)/);
+			expect(this.element.getStyle('background-position')).to.equal('0% 100%');
 		});
 
 		it('should have non-empty background-position on an element with no set styles', function(){
 			var element = new Element('div');
-			expect(element.getStyle('background-position')).not.toEqual(null);
-			expect(element.getStyle('background-position')).toMatch(/\w+/);
+			expect(element.getStyle('background-position')).to.not.equal(null);
+			expect(element.getStyle('background-position')).to.match(/\w+/);
 			element = null;
 		});
 
@@ -368,7 +368,7 @@ describe('Element.Style', function(){
 			var element = new Element('div');
 			element.setStyle('background-position', '40px 10px');
 			element.setStyle('background-position', null);
-			expect(element.getStyle('background-position')).toMatch(/0px 0px|0% 0%/);
+			expect(element.getStyle('background-position')).to.match(/0px 0px|0% 0%/);
 		});
 
 	});
@@ -382,27 +382,27 @@ describe('Element.Style', function(){
 		
 		dit("should set and read each borderRadius corner", function(){
 
-			expect(element.getStyle('borderRadius')).toEqual('0px 0px 0px 0px');
+			expect(element.getStyle('borderRadius')).to.equal('0px 0px 0px 0px');
 			element.setStyle('border-top-left-radius', '15px');
-			expect(element.getStyle('border-top-left-radius')).toEqual('15px');
-			expect(element.getStyle('borderRadius')).toEqual('15px 0px 0px 0px');
+			expect(element.getStyle('border-top-left-radius')).to.equal('15px');
+			expect(element.getStyle('borderRadius')).to.equal('15px 0px 0px 0px');
 
 			element.setStyle('border-radius', '10px');
-			expect(element.getStyle('border-top-left-radius')).not.toEqual('15px');
-			expect(element.getStyle('border-top-left-radius')).toEqual('10px');
+			expect(element.getStyle('border-top-left-radius')).to.not.equal('15px');
+			expect(element.getStyle('border-top-left-radius')).to.equal('10px');
 
 			element.setStyle('border-radius', '2em');
 			element.setStyle('border-bottom-left-radius', '1em');
-			expect(element.getStyle('border-bottom-left-radius')).toEqual('1em');
-			expect(element.getStyle('border-radius')).toEqual('2em 2em 2em 1em');
+			expect(element.getStyle('border-bottom-left-radius')).to.equal('1em');
+			expect(element.getStyle('border-radius')).to.equal('2em 2em 2em 1em');
 
 			element.setStyle('border-radius', '2px 2px 0px 0px');
-			expect(element.getStyle('border-radius')).toEqual('2px 2px 0px 0px');
+			expect(element.getStyle('border-radius')).to.equal('2px 2px 0px 0px');
 			element.setStyle('borderRadius', '10px');
 			element.setStyle('border-top-left-radius', '20px');
 			element.setStyle('border-bottom-left-radius', '0px');
-			expect(element.getStyle('border-top-left-radius')).toEqual('20px');
-			expect(element.getStyle('border-radius')).toEqual('20px 10px 10px 0px');
+			expect(element.getStyle('border-top-left-radius')).to.equal('20px');
+			expect(element.getStyle('border-radius')).to.equal('20px 10px 10px 0px');
 			
 		});
 		element.destroy();

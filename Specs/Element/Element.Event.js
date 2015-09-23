@@ -28,7 +28,7 @@ describe('Events API: Element', function(){
 
 		object.addEvent('event', Local.fn)[fire]('event');
 
-		expect(Local.called).toEqual(1);
+		expect(Local.called).to.equal(1);
 	});
 
 	it('should add multiple Events to the Class', function(){
@@ -37,7 +37,7 @@ describe('Events API: Element', function(){
 			event2: Local.fn
 		})[fire]('event1')[fire]('event2');
 
-		expect(Local.called).toEqual(2);
+		expect(Local.called).to.equal(2);
 	});
 
 	it('should remove a specific method for an event', function(){
@@ -46,8 +46,8 @@ describe('Events API: Element', function(){
 
 		object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn)[fire]('event');
 
-		expect(x).toEqual(1);
-		expect(Local.called).toEqual(0);
+		expect(x).to.equal(1);
+		expect(Local.called).to.equal(0);
 	});
 
 	it('should remove an event and its methods', function(){
@@ -56,8 +56,8 @@ describe('Events API: Element', function(){
 
 		object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event')[fire]('event');
 
-		expect(x).toEqual(0);
-		expect(Local.called).toEqual(0);
+		expect(x).to.equal(0);
+		expect(Local.called).to.equal(0);
 	});
 
 	it('should remove all events', function(){
@@ -70,8 +70,8 @@ describe('Events API: Element', function(){
 		// Should not fail
 		object.removeEvents()[fire]('event1')[fire]('event2');
 
-		expect(x).toEqual(0);
-		expect(Local.called).toEqual(0);
+		expect(x).to.equal(0);
+		expect(Local.called).to.equal(0);
 	});
 
 	it('should remove events with an object', function(){
@@ -82,14 +82,14 @@ describe('Events API: Element', function(){
 		};
 
 		object.addEvent('event1', function(){ Local.fn(); }).addEvents(events)[fire]('event1');
-		expect(Local.called).toEqual(2);
+		expect(Local.called).to.equal(2);
 
 		object.removeEvents(events);
 		object[fire]('event1');
-		expect(Local.called).toEqual(3);
+		expect(Local.called).to.equal(3);
 
 		object[fire]('event2');
-		expect(Local.called).toEqual(3);
+		expect(Local.called).to.equal(3);
 	});
 
 	it('should remove an event immediately', function(){
@@ -109,10 +109,10 @@ describe('Events API: Element', function(){
 		}).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2]);
+		expect(methods).to.deep.equal([1, 2]);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2, 1, 2]);
+		expect(methods).to.deep.equal([1, 2, 1, 2]);
 	});
 
 	it('should be able to remove itself', function(){
@@ -135,10 +135,10 @@ describe('Events API: Element', function(){
 		object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2, 3]);
+		expect(methods).to.deep.equal([1, 2, 3]);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2, 3, 3]);
+		expect(methods).to.deep.equal([1, 2, 3, 3]);
 	});
 
 });
@@ -172,7 +172,7 @@ describe('Element.Event', function(){
 
 		syn.trigger(el, 'click');
 
-		expect(callback.called).toBe(true);
+		expect(callback.called).to.equal(true);
 		el.destroy();
 	});
 
@@ -197,7 +197,7 @@ describe('Element.Event', function(){
 
 		syn.trigger(el, 'click');
 
-		expect(callback.called).toBe(true);
+		expect(callback.called).to.equal(true);
 		el.destroy();
 
 	});
@@ -218,8 +218,8 @@ describe('Element.Event', function(){
 		});
 
 		it('Should trigger a message event', function(){
-			expect(this.spy.called).toBe(true);
-			expect(this.message).toEqual('I am a message from outer space...');
+			expect(this.spy.called).to.equal(true);
+			expect(this.message).to.equal('I am a message from outer space...');
 		});
 	});
 
@@ -233,7 +233,7 @@ describe('Element.Event', function(){
 
 		syn.key(div, 'a');
 
-		expect(callback.calledWith('a')).toBe(true);
+		expect(callback.calledWith('a')).to.equal(true);
 		div.destroy();
 	});
 
@@ -244,25 +244,25 @@ describe('Element.Event', function(){
 		var element = new Element('div').addEvent('click', function(){ calls++; });
 		element.fireEvent('click');
 
-		expect(calls).toBe(1);
+		expect(calls).to.equal(1);
 
 		var clone = new Element('div').cloneEvents(element, 'click');
 		clone.fireEvent('click');
 
-		expect(calls).toBe(2);
+		expect(calls).to.equal(2);
 
 		element.addEvent('custom', function(){ calls += 2; }).fireEvent('custom');
 
-		expect(calls).toBe(4);
+		expect(calls).to.equal(4);
 
 		clone.cloneEvents(element);
 		clone.fireEvent('click');
 
-		expect(calls).toBe(5);
+		expect(calls).to.equal(5);
 
 		clone.fireEvent('custom');
 
-		expect(calls).toBe(7);
+		expect(calls).to.equal(7);
 	});
 
 });
@@ -275,7 +275,7 @@ describe('Element.Event', function(){
 		var callback = sinon.spy();
 
 		var fn = function(anything, type){
-			expect(type).toEqual('customEvent');
+			expect(type).to.equal('customEvent');
 			callbacks++;
 		};
 		Element.Events.customEvent = {
@@ -296,9 +296,9 @@ describe('Element.Event', function(){
 
 		syn.trigger(div, 'click');
 
-		expect(callback.called).toBe(true);
+		expect(callback.called).to.equal(true);
 		div.removeEvent('customEvent', callback).destroy();
-		expect(callbacks).toEqual(3);
+		expect(callbacks).to.equal(3);
 	});
 
 });
@@ -315,7 +315,7 @@ describe('Element.Event.change', function(){
 		}).addEvent('change', callback).inject(document.body);
 
 		radio.removeClass('someClass');
-		expect(callback.called).toBe(false);
+		expect(callback.called).to.equal(false);
 
 		var checkbox = new Element('input', {
 			'type': 'checkbox',
@@ -324,7 +324,7 @@ describe('Element.Event.change', function(){
 		}).addEvent('change', callback).inject(document.body);
 
 		checkbox.removeClass('someClass');
-		expect(callback.called).toBe(false);
+		expect(callback.called).to.equal(false);
 
 		var text = new Element('input', {
 			'type': 'text',
@@ -333,7 +333,7 @@ describe('Element.Event.change', function(){
 		}).addEvent('change', callback).inject(document.body);
 
 		text.removeClass('otherClass');
-		expect(callback.called).toBe(false);
+		expect(callback.called).to.equal(false);
 
 		[radio, checkbox, text].invoke('destroy');
 	});
@@ -359,8 +359,8 @@ describe('Element.Event keyup with f<key>', function(){
 		syn.trigger(div, 'keydown', 'f2');
 		syn.trigger(div, 'keyup', 'f2');
 
-		expect(keydown.calledWith('f2')).toBe(true);
-		expect(keyup.calledWith('f2')).toBe(true);
+		expect(keydown.calledWith('f2')).to.equal(true);
+		expect(keyup.calledWith('f2')).to.equal(true);
 
 		div.destroy();
 
@@ -413,24 +413,24 @@ describe('Keypress key code', function(){
 	});
 
 	it('should return "enter" in event.key', function(){
-		expect(key).toBe('enter');
-		expect(shift).not.toBeTruthy();
+		expect(key).to.equal('enter');
+		expect(shift).to.equal(false);
 	});
 
 	it('should return "1" in event.key', function(){
-		expect(key).toBe('1');
-		expect(shift).not.toBeTruthy();
+		expect(key).to.equal('1');
+		expect(shift).to.equal(false);
 	});
 
 	it('should return "!" when pressing SHIFT + 1', function(){
-		expect(key).toBe('!');
-		expect(shift).toBeTruthy();
+		expect(key).to.equal('!');
+		expect(shift).to.equal(true);
 	});
 
 	it('should map code 33 correctly with keypress event', function(){
 		var mock = {type: 'keypress', which: 33, shiftKey: true};
 		var e = new DOMEvent(mock);
-		expect(e.key).toBe('!');
+		expect(e.key).to.equal('!');
 	});
 
 });
@@ -443,7 +443,7 @@ describe('Element.removeEvent', function(){
 		window.addEvent('unload', handler);
 		window.removeEvent('unload', handler);
 		window.fireEvent('unload');
-		expect(text).toBe(undefined);
+		expect(text).to.equal(undefined);
 	});
 
 
@@ -459,8 +459,8 @@ describe('relatedTarget', function () {
 			mockEvent[(i % 2 == 0 ? 'from' : 'to') + 'Element'] = outer; // simulate FF that does not set relatedTarget
 
 			var e = new DOMEvent(mockEvent);
-			expect(e.type).toBe(event);
-			expect(e.relatedTarget).toBe(outer);
+			expect(e.type).to.equal(event);
+			expect(e.relatedTarget).to.equal(outer);
 		});
 	});
 
@@ -521,7 +521,7 @@ describe('Mouse wheel', function(){
 	var testWheel = !!window.addEventListener;
 	var callback = function(e){
 		if (e.wheel) wheel = e.wheel > 0 ? 'wheel moved up' : 'wheel moved down';
-		triggered = 'triggered';
+		triggered = true;
 	};
 
 	beforeEach(function(){
@@ -539,7 +539,7 @@ describe('Mouse wheel', function(){
 		// http://jsfiddle.net/W6QrS/3
 
 		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(dispatchFakeWheel);
-		expect(triggered).toBeTruthy();
+		expect(triggered).to.equal(true);
 	});
 
 	it('should listen to mouse wheel direction', function(){
@@ -551,14 +551,14 @@ describe('Mouse wheel', function(){
 		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(function(type){
 			dispatchFakeWheel(type, 120);
 		});
-		expect(wheel).toEqual('wheel moved up');
+		expect(wheel).to.equal('wheel moved up');
 		wheel = false;
 
 		// fire event with wheel going down
 		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(function(type){
 			dispatchFakeWheel(type, -120);
 		});
-		expect(wheel).toEqual('wheel moved down');
+		expect(wheel).to.equal('wheel moved down');
 	});
 });
 

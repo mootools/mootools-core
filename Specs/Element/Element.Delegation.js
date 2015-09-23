@@ -18,8 +18,8 @@ describe('Element.Delegation', function(){
 				self = this;
 			}).fireEvent('click:relay(a)', [null, a]);
 
-			expect(result).toEqual(a);
-			expect(self).toEqual(div);
+			expect(result).to.equal(a);
+			expect(self).to.equal(div);
 
 			div.destroy();
 
@@ -33,8 +33,8 @@ describe('Element.Delegation', function(){
 				self = this;
 			}).fireEvent('click', [null, a]);
 
-			expect(result).toEqual(a);
-			expect(self).toEqual(a);
+			expect(result).to.equal(a);
+			expect(self).to.equal(a);
 
 			div.destroy();
 
@@ -46,7 +46,7 @@ describe('Element.Delegation', function(){
 			var a = new Element('a[text="Hello World"]');
 			var div = new Element('div').inject(document.body).adopt(a).addEvent('click:relay(a)', spy).fireEvent('click');
 
-			expect(spy.called).toBe(false);
+			expect(spy.called).to.equal(false);
 
 			div.destroy();
 

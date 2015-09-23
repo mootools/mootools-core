@@ -1,9 +1,13 @@
 "use strict";
 
 var Jasmine = require('jasmine'),
+	chai = require('chai'),
 	sinon = require('sinon');
 
 function injectLibraries(object){
+	object.should = chai.should();
+	object.expect = chai.expect;
+	object.assert = chai.assert;
 	object.sinon = sinon;
 }
 

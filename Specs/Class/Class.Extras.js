@@ -35,18 +35,18 @@ describe('Chain', function(){
 			return str;
 		});
 		var ret;
-		expect(arr).toEqual([]);
+		expect(arr).to.deep.equal([]);
 		ret = chain.callChain("a", "A");
-		expect(ret).toEqual("0Aa");
-		expect(arr).toEqual(["0Aa"]);
+		expect(ret).to.equal("0Aa");
+		expect(arr).to.deep.equal(["0Aa"]);
 
 		ret = chain.callChain("b", "B");
-		expect(ret).toEqual("1Bb");
-		expect(arr).toEqual(["0Aa", "1Bb"]);
+		expect(ret).to.equal("1Bb");
+		expect(arr).to.deep.equal(["0Aa", "1Bb"]);
 
 		ret = chain.callChain();
-		expect(ret).toEqual(false);
-		expect(arr).toEqual(["0Aa", "1Bb"]);
+		expect(ret).to.equal(false);
+		expect(arr).to.deep.equal(["0Aa", "1Bb"]);
 	});
 
 	it('should chain any number of functions', function(){
@@ -59,18 +59,18 @@ describe('Chain', function(){
 			arr.push(1);
 		});
 
-		expect(arr).toEqual([]);
+		expect(arr).to.deep.equal([]);
 		chain.callChain();
-		expect(arr).toEqual([0]);
+		expect(arr).to.deep.equal([0]);
 		chain.chain(function(){
 			arr.push(2);
 		});
 		chain.callChain();
-		expect(arr).toEqual([0, 1]);
+		expect(arr).to.deep.equal([0, 1]);
 		chain.callChain();
-		expect(arr).toEqual([0, 1, 2]);
+		expect(arr).to.deep.equal([0, 1, 2]);
 		chain.callChain();
-		expect(arr).toEqual([0, 1, 2]);
+		expect(arr).to.deep.equal([0, 1, 2]);
 	});
 
 	it('should allow an array of functions', function(){
@@ -85,15 +85,15 @@ describe('Chain', function(){
 			arr.push(2);
 		}]);
 
-		expect(arr).toEqual([]);
+		expect(arr).to.deep.equal([]);
 		chain.callChain();
-		expect(arr).toEqual([0]);
+		expect(arr).to.deep.equal([0]);
 		chain.callChain();
-		expect(arr).toEqual([0, 1]);
+		expect(arr).to.deep.equal([0, 1]);
 		chain.callChain();
-		expect(arr).toEqual([0, 1, 2]);
+		expect(arr).to.deep.equal([0, 1, 2]);
 		chain.callChain();
-		expect(arr).toEqual([0, 1, 2]);
+		expect(arr).to.deep.equal([0, 1, 2]);
 	});
 
 	it('each instance should have its own chain', function(){
@@ -107,12 +107,12 @@ describe('Chain', function(){
 		bar.chain(function(){
 			this.val += 'AR';
 		});
-		expect(foo.val).toEqual('F');
-		expect(bar.val).toEqual('B');
+		expect(foo.val).to.equal('F');
+		expect(bar.val).to.equal('B');
 		foo.callChain();
 		bar.callChain();
-		expect(foo.val).toEqual('FOO');
-		expect(bar.val).toEqual('BAR');
+		expect(foo.val).to.equal('FOO');
+		expect(bar.val).to.equal('BAR');
 	});
 
 	it('should be able to clear the chain', function(){
@@ -125,13 +125,13 @@ describe('Chain', function(){
 		chain.chain(fn, fn, fn, fn);
 
 		chain.callChain();
-		expect(called).toBeTruthy();
+		expect(called).to.equal(true);
 		called = false;
 
 		chain.clearChain();
 
 		chain.callChain();
-		expect(called).toBeFalsy();
+		expect(called).to.equal(false);
 		called = false;
 	});
 
@@ -146,7 +146,7 @@ describe('Chain', function(){
 			test++;
 		}).callChain();
 
-		expect(test).toEqual(1);
+		expect(test).to.equal(1);
 	});
 
 });
@@ -169,7 +169,7 @@ describe('Events API: Mixin', function(){
 
 		object.addEvent('event', Local.fn)[fire]('event');
 
-		expect(Local.called).toEqual(1);
+		expect(Local.called).to.equal(1);
 	});
 
 	it('should add multiple Events to the Class', function(){
@@ -178,7 +178,7 @@ describe('Events API: Mixin', function(){
 			event2: Local.fn
 		})[fire]('event1')[fire]('event2');
 
-		expect(Local.called).toEqual(2);
+		expect(Local.called).to.equal(2);
 	});
 
 	it('should remove a specific method for an event', function(){
@@ -187,8 +187,8 @@ describe('Events API: Mixin', function(){
 
 		object.addEvent('event', Local.fn).addEvent('event', fn).removeEvent('event', Local.fn)[fire]('event');
 
-		expect(x).toEqual(1);
-		expect(Local.called).toEqual(0);
+		expect(x).to.equal(1);
+		expect(Local.called).to.equal(0);
 	});
 
 	it('should remove an event and its methods', function(){
@@ -197,8 +197,8 @@ describe('Events API: Mixin', function(){
 
 		object.addEvent('event', Local.fn).addEvent('event', fn).removeEvents('event')[fire]('event');
 
-		expect(x).toEqual(0);
-		expect(Local.called).toEqual(0);
+		expect(x).to.equal(0);
+		expect(Local.called).to.equal(0);
 	});
 
 	it('should remove all events', function(){
@@ -211,8 +211,8 @@ describe('Events API: Mixin', function(){
 		// Should not fail
 		object.removeEvents()[fire]('event1')[fire]('event2');
 
-		expect(x).toEqual(0);
-		expect(Local.called).toEqual(0);
+		expect(x).to.equal(0);
+		expect(Local.called).to.equal(0);
 	});
 
 	it('should remove events with an object', function(){
@@ -223,14 +223,14 @@ describe('Events API: Mixin', function(){
 		};
 
 		object.addEvent('event1', function(){ Local.fn(); }).addEvents(events)[fire]('event1');
-		expect(Local.called).toEqual(2);
+		expect(Local.called).to.equal(2);
 
 		object.removeEvents(events);
 		object[fire]('event1');
-		expect(Local.called).toEqual(3);
+		expect(Local.called).to.equal(3);
 
 		object[fire]('event2');
-		expect(Local.called).toEqual(3);
+		expect(Local.called).to.equal(3);
 	});
 
 	it('should remove an event immediately', function(){
@@ -250,10 +250,10 @@ describe('Events API: Mixin', function(){
 		}).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2]);
+		expect(methods).to.deep.equal([1, 2]);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2, 1, 2]);
+		expect(methods).to.deep.equal([1, 2, 1, 2]);
 	});
 
 	it('should be able to remove itself', function(){
@@ -276,10 +276,10 @@ describe('Events API: Mixin', function(){
 		object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2, 3]);
+		expect(methods).to.deep.equal([1, 2, 3]);
 
 		object[fire]('event');
-		expect(methods).toEqual([1, 2, 3, 3]);
+		expect(methods).to.deep.equal([1, 2, 3, 3]);
 	});
 
 });
@@ -301,13 +301,13 @@ describe('Options Class', function(){
 
 	it('should set options', function(){
 		var myTest = new Local.OptionsTest({a: 1, b: 3});
-		expect(myTest.options).not.toEqual(undefined);
+		expect(myTest.options).to.not.equal(undefined);
 	});
 
 	it('should override default options', function(){
 		var myTest = new Local.OptionsTest({a: 3, b: 4});
-		expect(myTest.options.a).toEqual(3);
-		expect(myTest.options.b).toEqual(4);
+		expect(myTest.options.a).to.equal(3);
+		expect(myTest.options.b).to.equal(4);
 	});
 
 });
@@ -344,9 +344,9 @@ describe('Options Class with Events', function(){
 			}
 		});
 
-		expect(myTest.$events.event1.length).toEqual(1);
-		expect(myTest.$events.event2.length).toEqual(1);
-		expect(myTest.$events.event3.length).toEqual(1);
+		expect(myTest.$events.event1.length).to.equal(1);
+		expect(myTest.$events.event2.length).to.equal(1);
+		expect(myTest.$events.event3.length).to.equal(1);
 	});
 
 });
@@ -366,7 +366,7 @@ describe('setOptions', function(){
 
 		});
 
-		expect(new A({document: document}).options.document == document).toBeTruthy();
+		expect(new A({document: document}).options.document).to.equal(document);
 	});
 
 });

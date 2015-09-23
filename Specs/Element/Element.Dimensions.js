@@ -83,8 +83,8 @@ describe('Element.Dimensions', function(){
 	describe('Element.getSize', function(){
 
 		it('should measure the width and height of the element', function(){
-			expect(div.getSize().x).toEqual(108);
-			expect(div.getSize().y).toEqual(108);
+			expect(div.getSize().x).to.equal(108);
+			expect(div.getSize().y).to.equal(108);
 		});
 
 	});
@@ -177,8 +177,8 @@ describe('Element.Dimensions', function(){
 		var svgElement = document.getElement('svg');
 
 		it("should get the correct height and width of a svg element", function(){
-			expect(svgElement.getSize().y).toEqual(200);
-			expect(svgElement.getSize().x).toEqual(142);
+			expect(svgElement.getSize().y).to.equal(200);
+			expect(svgElement.getSize().x).to.equal(142);
 			svgElement.destroy();
 		});
 	});
@@ -186,11 +186,11 @@ describe('Element.Dimensions', function(){
 	describe('Element.getPosition', function(){
 
 		it('should measure the x and y position of the element', function(){
-			expect(div.getPosition()).toEqual({x: 102, y: 102});
+			expect(div.getPosition()).to.deep.equal({x: 102, y: 102});
 		});
 
 		it('should measure the x and y position of the element relative to another', function(){
-			expect(relDiv.getPosition(div)).toEqual({x: 8, y: 8});
+			expect(relDiv.getPosition(div)).to.deep.equal({x: 8, y: 8});
 		});
 
 		it('should match subpixels if needed', function(){
@@ -217,7 +217,7 @@ describe('Element.Dimensions', function(){
 			}).inject(oddSizedDiv);
 
 			expect(insideOddSizedDiv.getPosition(oddSizedDiv).x)
-				.toEqual(insideOddSizedDiv.getBoundingClientRect().left - oddSizedDiv.getBoundingClientRect().left);
+				.to.equal(insideOddSizedDiv.getBoundingClientRect().left - oddSizedDiv.getBoundingClientRect().left);
 		});
 
 	});
@@ -225,7 +225,7 @@ describe('Element.Dimensions', function(){
 	describe('Element.getCoordinates', function(){
 
 		it('should return the coordinates relative to parent', function(){
-			expect(absDiv.getCoordinates(relDiv)).toEqual({left:15, top:15, width:22, height:22, right:37, bottom:37});
+			expect(absDiv.getCoordinates(relDiv)).to.deep.equal({left:15, top:15, width:22, height:22, right:37, bottom:37});
 		});
 
 	});
@@ -233,7 +233,7 @@ describe('Element.Dimensions', function(){
 	describe('Element.getScrollSize', function(){
 
 		it('should return the scrollSize', function(){
-			expect(scrollDiv.getScrollSize()).toEqual({x:200, y:200});
+			expect(scrollDiv.getScrollSize()).to.deep.equal({x:200, y:200});
 		});
 
 	});
@@ -241,7 +241,7 @@ describe('Element.Dimensions', function(){
 	describe('Element.scrollTo', function(){
 
 		it('should scroll the element', function(){
-			expect(scrollDiv.scrollTo(20, 20).getScroll()).toEqual({x:20, y:20});
+			expect(scrollDiv.scrollTo(20, 20).getScroll()).to.deep.equal({x:20, y:20});
 		});
 
 	});
@@ -281,19 +281,19 @@ describe('Element.getOffsetParent', function(){
 
 	it('Should return the right offsetParent', function(){
 
-		expect(child.getOffsetParent()).toEqual(offsetParent);
+		expect(child.getOffsetParent()).to.equal(offsetParent);
 
 	});
 
 	it('Should return body for elements with body as offsetParent', function(){
 
-		expect(offsetParent.getOffsetParent()).toEqual(document.body);
+		expect(offsetParent.getOffsetParent()).to.equal(document.body);
 
 	});
 
 	it('Should return a table element for td-elements', function(){
 
-		expect(td.getOffsetParent()).toEqual(table);
+		expect(td.getOffsetParent()).to.equal(table);
 
 	});
 
@@ -301,7 +301,7 @@ describe('Element.getOffsetParent', function(){
 
 		child.inject(td);
 
-		expect(child.getOffsetParent()).toEqual(td);
+		expect(child.getOffsetParent()).to.equal(td);
 
 	});
 
@@ -309,7 +309,7 @@ describe('Element.getOffsetParent', function(){
 
 		child.setStyle('position', 'absolute');
 
-		expect(child.getOffsetParent()).toEqual(offsetParent);
+		expect(child.getOffsetParent()).to.equal(offsetParent);
 
 	});
 
@@ -317,13 +317,13 @@ describe('Element.getOffsetParent', function(){
 
 		table.setStyle('position', 'fixed');
 
-		expect(table.getOffsetParent()).toBeNull();
+		expect(table.getOffsetParent()).to.equal(null);
 
 	});
 
 	it('Should return null for the body element', function(){
 
-		expect($(document.body).getOffsetParent()).toBeNull();
+		expect($(document.body).getOffsetParent()).to.equal(null);
 
 	});
 

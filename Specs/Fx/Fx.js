@@ -31,16 +31,16 @@ describe('Fx', function(){
 				onStart: onStart
 			});
 
-			expect(onStart.called).toBe(false);
+			expect(onStart.called).to.equal(false);
 
 			fx.start(10, 20);
 
 			this.clock.tick(100);
-			expect(onStart.called).toBe(true);
-			expect(onComplete.called).toBe(false);
+			expect(onStart.called).to.equal(true);
+			expect(onComplete.called).to.equal(false);
 
 			this.clock.tick(1000);
-			expect(onComplete.called).toBe(true);
+			expect(onComplete.called).to.equal(true);
 
 		});
 	});
@@ -57,11 +57,11 @@ describe('Fx', function(){
 
 		fx.start();
 
-		expect(onCancel.called).toBe(false);
+		expect(onCancel.called).to.equal(false);
 
 		fx.cancel();
 
-		expect(onCancel.called).toBe(true);
+		expect(onCancel.called).to.equal(true);
 
 	});
 
@@ -80,7 +80,7 @@ describe('Fx', function(){
 
 		this.clock.tick(2000);
 
-		expect(fx.foo).toEqual(10);
+		expect(fx.foo).to.equal(10);
 
 	});
 
@@ -103,17 +103,17 @@ describe('Fx', function(){
 
 		fx.pause();
 		value = fx.foo;
-		expect(fx.foo).toBeGreaterThan(0);
-		expect(fx.foo).toBeLessThan(1);
+		expect(fx.foo).to.be.greaterThan(0);
+		expect(fx.foo).to.be.lessThan(1);
 
 		this.clock.tick(1000);
 
-		expect(fx.foo).toEqual(value);
+		expect(fx.foo).to.equal(value);
 		fx.resume();
 
 		this.clock.tick(2000);
 
-		expect(fx.foo).toEqual(1);
+		expect(fx.foo).to.equal(1);
 
 	});
 
@@ -133,7 +133,7 @@ describe('Fx', function(){
 		this.clock.tick(1000);
 		this.clock.tick(1000);
 
-		expect(counter).toEqual(2);
+		expect(counter).to.equal(2);
 	});
 
 	it('should cancel the Fx after a new Fx:start with the link = cancel option', function(){
@@ -150,7 +150,7 @@ describe('Fx', function(){
 
 		this.clock.tick(1000);
 
-		expect(onCancel.called).toBe(true);
+		expect(onCancel.called).to.equal(true);
 
 	});
 
@@ -172,16 +172,16 @@ describe('Fx', function(){
 			duration: 500
 		}).start();
 
-		expect(fx.isPaused()).toEqual(false);
+		expect(fx.isPaused()).to.equal(false);
 
 		this.clock.tick(300);
 		fx.pause();
 
-		expect(fx.isPaused()).toEqual(true);
+		expect(fx.isPaused()).to.equal(true);
 
 		fx.resume();
 		this.clock.tick(600);
-		expect(fx.isPaused()).toEqual(false);
+		expect(fx.isPaused()).to.equal(false);
 	});
 
 });
