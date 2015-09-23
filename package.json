@@ -47,8 +47,9 @@
     "karma-safari-launcher": "^0.1.1",
     "karma-sauce-launcher": "^0.2.14",
     "karma-script-launcher": "^0.1.0",
-    "karma-sinon": "^1.0",
+    "karma-sinon-ie": "^1.0",
     "load-grunt-tasks": "^3.2",
-    "phantomjs": "^1.9"
+    "phantomjs": "^1.9",
+    "sinon": "~1.14"
   }
 }
