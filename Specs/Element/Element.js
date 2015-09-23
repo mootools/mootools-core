@@ -939,7 +939,7 @@ describe('Element.clone', function(){
 	it('should return a clone', function(){
 		var div = new Element('div');
 		var clone = div.clone();
-		expect(div).not.toEqual(clone);
+		expect(div).not.toBe(clone);
 		expect(typeOf(div)).toEqual('element');
 		expect(typeOf(clone)).toEqual('element');
 	});
