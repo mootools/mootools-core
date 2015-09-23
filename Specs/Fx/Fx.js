@@ -21,8 +21,8 @@ describe('Fx', function(){
 
 		it('should start a Fx and call the onComplete event with ' + transition + ' as timing function', function(){
 
-			var onComplete = jasmine.createSpy('complete'),
-				onStart = jasmine.createSpy('start');
+			var onComplete = sinon.spy(),
+				onStart = sinon.spy();
 
 			var fx = new Fx({
 				duration: 500,
@@ -31,23 +31,23 @@ describe('Fx', function(){
 				onStart: onStart
 			});
 
-			expect(onStart).not.toHaveBeenCalled();
+			expect(onStart.called).toBe(false);
 
 			fx.start(10, 20);
 
 			this.clock.tick(100);
-			expect(onStart).toHaveBeenCalled();
-			expect(onComplete).not.toHaveBeenCalled();
+			expect(onStart.called).toBe(true);
+			expect(onComplete.called).toBe(false);
 
 			this.clock.tick(1000);
-			expect(onComplete).toHaveBeenCalled();
+			expect(onComplete.called).toBe(true);
 
 		});
 	});
 
 	it('should cancel a Fx', function(){
 
-		var onCancel = jasmine.createSpy('Fx.cancel');
+		var onCancel = sinon.spy();
 
 		var fx = new Fx({
 			duration: 500,
@@ -57,11 +57,11 @@ describe('Fx', function(){
 
 		fx.start();
 
-		expect(onCancel).not.toHaveBeenCalled();
+		expect(onCancel.called).toBe(false);
 
 		fx.cancel();
 
-		expect(onCancel).toHaveBeenCalled();
+		expect(onCancel.called).toBe(true);
 
 	});
 
@@ -138,7 +138,7 @@ describe('Fx', function(){
 
 	it('should cancel the Fx after a new Fx:start with the link = cancel option', function(){
 
-		var onCancel = jasmine.createSpy('Fx.cancel');
+		var onCancel = sinon.spy();
 
 		var fx = new Fx({
 			duration: 500,
@@ -150,7 +150,7 @@ describe('Fx', function(){
 
 		this.clock.tick(1000);
 
-		expect(onCancel).toHaveBeenCalled();
+		expect(onCancel.called).toBe(true);
 
 	});
 

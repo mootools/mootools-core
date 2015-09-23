@@ -9,7 +9,7 @@ provides: ~
 describe('Request.JSON', function(){
 
 	beforeEach(function(){
-		this.spy = jasmine.createSpy();
+		this.spy = sinon.spy();
 		this.xhr = sinon.useFakeXMLHttpRequest();
 		var requests = this.requests = [];
 		this.xhr.onCreate = function(xhr){
@@ -34,10 +34,10 @@ describe('Request.JSON', function(){
 		}});
 
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, response);
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		// checks the first argument from the first call
-		expect(this.spy.argsForCall[0][0]).toEqual({ok: true});
+		expect(this.spy.args[0][0]).toEqual({ok: true});
 
 	});
 
@@ -54,10 +54,10 @@ describe('Request.JSON', function(){
 		}});
 
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, response);
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		// checks the first argument from the first call
-		expect(this.spy.argsForCall[0][0]).toEqual('{"ok":function(){invalid;}}');
+		expect(this.spy.args[0][0]).toEqual('{"ok":function(){invalid;}}');
 
 	});
 

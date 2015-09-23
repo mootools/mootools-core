@@ -42,11 +42,11 @@ describe('Element.Delegation', function(){
 
 		it('Should not fire click events through fireEvent when added as delegated events without an target', function(){
 
-			var spy = jasmine.createSpy('click');
+			var spy = sinon.spy();
 			var a = new Element('a[text="Hello World"]');
 			var div = new Element('div').inject(document.body).adopt(a).addEvent('click:relay(a)', spy).fireEvent('click');
 
-			expect(spy).not.toHaveBeenCalled();
+			expect(spy.called).toBe(false);
 
 			div.destroy();
 

@@ -73,13 +73,15 @@ describe('Fx.Morph', function(){
 	});
 
 	it('should morph between % units', function(){
-		var spy = spyOn(this.div, 'setStyle').andCallThrough();
+		sinon.spy(this.div, 'setStyle');
 		this.div.set('morph', {unit : '%'}).morph({'left': [10, 50]});
 
 		this.clock.tick(1000);
 
-		expect(this.div.setStyle).toHaveBeenCalledWith('left', ['10%']);
-		expect(this.div.setStyle).toHaveBeenCalledWith('left', ['50%']);
+		expect(this.div.setStyle.calledWith('left', ['10%'])).toBe(true);
+		expect(this.div.setStyle.calledWith('left', ['50%'])).toBe(true);
+
+		this.div.setStyle.restore();
 	});
 
 	it('it should morph when the unit option is set, but an empty value', function(){

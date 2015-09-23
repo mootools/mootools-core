@@ -2450,7 +2450,7 @@ describe('IFrame', function(){
 
 	it('(async) should call onload', function(){
 		runs(function(){
-			this.onComplete = jasmine.createSpy('IFrame onComplete');
+			this.onComplete = sinon.spy();
 
 			this.iframe = new IFrame({
 				src: 'http://' + document.location.host + '/random',
@@ -2459,7 +2459,7 @@ describe('IFrame', function(){
 		});
 
 		waitsFor(1000, function(){
-			return this.onComplete.wasCalled;
+			return this.onComplete.called;
 		});
 
 		runs(function(){

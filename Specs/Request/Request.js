@@ -22,7 +22,7 @@ describe('Request', function(){
 	});
 
 	it('should create an ajax request', function(){
-		var onComplete = jasmine.createSpy('Request onComplete');
+		var onComplete = sinon.spy();
 
 		var request = new Request({
 			url: '/',
@@ -34,13 +34,13 @@ describe('Request', function(){
 		this.requests[0].respond(200, {'Content-Type': 'text/plain'}, 'res&amp;ponsé');
 
 		// checks the first argument from the first call
-		expect(onComplete.argsForCall[0][0]).toEqual('res&amp;ponsé');
+		expect(onComplete.args[0][0]).toEqual('res&amp;ponsé');
 
 	});
 
 	it('should create a Request with method get and sending data', function(){
 
-		var onComplete = jasmine.createSpy('Request onComplete data');
+		var onComplete = sinon.spy();
 
 		var request = new Request({
 			url: '../Helpers/request.php',
@@ -50,15 +50,15 @@ describe('Request', function(){
 
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, 'data');
 
-		expect(onComplete.wasCalled).toBe(true);
+		expect(onComplete.called).toBe(true);
 
-		expect(onComplete.argsForCall[0][0]).toEqual('data');
+		expect(onComplete.args[0][0]).toEqual('data');
 
 	});
 
 	it('the options passed on the send method should rewrite the current ones', function(){
 
-		var onComplete = jasmine.createSpy('Request onComplete rewrite data');
+		var onComplete = sinon.spy();
 		var request = new Request({
 			url: '../Helpers/request.php',
 			method: 'get',
@@ -72,13 +72,13 @@ describe('Request', function(){
 
 		requested.respond(200, {'Content-Type': 'text/plain'}, '');
 
-		expect(onComplete.wasCalled).toBe(true);
+		expect(onComplete.called).toBe(true);
 	});
 
 	xit('(async) should create an ajax request and as it\'s an invalid XML, onComplete will receive null as the xml document', function(){
 
 		runs(function(){
-			this.onComplete = jasmine.createSpy();
+			this.onComplete = sinon.spy();
 			this.request = new Request({
 				url: '../Helpers/request.php',
 				onComplete: this.onComplete
@@ -89,16 +89,16 @@ describe('Request', function(){
 		});
 
 		waitsFor(800, function(){
-			return this.onComplete.wasCalled;
+			return this.onComplete.called;
 		});
 
 		runs(function(){
-			expect(this.onComplete.argsForCall[0][0]).toEqual('response');
+			expect(this.onComplete.args[0][0]).toEqual('response');
 			expect(this.request.response.text).toEqual('response');
 		});
 
 		runs(function(){
-			this.chain = jasmine.createSpy();
+			this.chain = sinon.spy();
 			this.request.chain(this.chain).send({data: {
 				'__type': 'xml',
 				'__response': '<node>response</node><no></no>'
@@ -106,11 +106,11 @@ describe('Request', function(){
 		});
 
 		waitsFor(800, function(){
-			return this.chain.wasCalled;
+			return this.chain.called;
 		});
 
 		runs(function(){
-			expect(this.onComplete.argsForCall[0][0]).toEqual('<node>response</node><no></no>');
+			expect(this.onComplete.args[0][0]).toEqual('<node>response</node><no></no>');
 			expect(this.request.response.text).toEqual('<node>response</node><no></no>');
 		});
 
@@ -118,7 +118,7 @@ describe('Request', function(){
 
 	it('should not overwrite the data object', function(){
 
-		var onComplete = jasmine.createSpy('Request onComplete overwrite protection');
+		var onComplete = sinon.spy();
 		var request = new Request({
 			url: '../Helpers/request.php',
 			data: {
@@ -130,9 +130,9 @@ describe('Request', function(){
 		var requested = this.requests[0];
 		requested.respond(200, {'Content-Type': 'text/plain'}, requested.requestBody)
 
-		expect(onComplete.wasCalled).toBe(true);
+		expect(onComplete.called).toBe(true);
 
-		expect(onComplete.argsForCall[0][0]).toEqual('__response=data');
+		expect(onComplete.args[0][0]).toEqual('__response=data');
 
 	});
 

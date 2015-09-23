@@ -9,7 +9,7 @@ provides: ~
 describe('Request.HTML', function(){
 
 	beforeEach(function(){
-		this.spy = jasmine.createSpy();
+		this.spy = sinon.spy();
 		this.xhr = sinon.useFakeXMLHttpRequest();
 		var requests = this.requests = [];
 		this.xhr.onCreate = function(xhr){
@@ -33,11 +33,11 @@ describe('Request.HTML', function(){
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		// checks arguments order
-		expect(this.spy).toHaveBeenCalledWith(request.response.tree, request.response.elements, request.response.html, request.response.javascript);
-		var onCompleteArgs = this.spy.argsForCall[0];
+		expect(this.spy.calledWith(request.response.tree, request.response.elements, request.response.html, request.response.javascript)).toBe(true);
+		var onCompleteArgs = this.spy.args[0];
 		expect(onCompleteArgs[0][0].nodeName).toEqual('IMG');
 		expect(onCompleteArgs[0][1].nodeName).toEqual('DIV');
 		expect(onCompleteArgs[1][2].nodeName).toEqual('SPAN');
@@ -59,11 +59,11 @@ describe('Request.HTML', function(){
 		});
 
 		waitsFor(800, function(){
-			return this.spy.wasCalled;
+			return this.spy.called;
 		});
 
 		runs(function(){
-			var onCompleteArgs = this.spy.argsForCall[0];
+			var onCompleteArgs = this.spy.args[0];
 
 			expect(onCompleteArgs[0][0].nodeName).toEqual('TR');
 			expect(onCompleteArgs[1][1].nodeName).toEqual('TD');
@@ -84,11 +84,11 @@ describe('Request.HTML', function(){
 		});
 
 		waitsFor(800, function(){
-			return this.spy.wasCalled;
+			return this.spy.called;
 		});
 
 		runs(function(){
-			var onCompleteArgs = this.spy.argsForCall[0];
+			var onCompleteArgs = this.spy.args[0];
 
 			expect(onCompleteArgs[0].length).toEqual(3);
 			expect(onCompleteArgs[1].length).toEqual(3);
@@ -116,7 +116,7 @@ describe('Request.HTML', function(){
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		var update = $('update');
 		expect(update.getChildren().length).toEqual(1);
@@ -139,7 +139,7 @@ describe('Request.HTML', function(){
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
 
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		var update = $('update');
 		expect(update.getChildren().length).toEqual(2);
@@ -167,9 +167,9 @@ describe('Request.HTML', function(){
 		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
-		var onCompleteArgs = this.spy.argsForCall[0];
+		var onCompleteArgs = this.spy.args[0];
 		expect(onCompleteArgs[0].length).toEqual(1);
 		expect(onCompleteArgs[0][0].get('tag')).toEqual('a');
 		expect(onCompleteArgs[0][0].get('text')).toEqual('aaa');
@@ -190,7 +190,7 @@ describe('Request.HTML', function(){
 		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		var update = $('update');
 		expect(update.getChildren().length).toEqual(1);
@@ -214,7 +214,7 @@ describe('Request.HTML', function(){
 		}).send();
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		var update = $('update');
 		expect(update.getChildren().length).toEqual(2);
@@ -242,10 +242,10 @@ describe('Request.HTML', function(){
 		});
 
 		this.requests[0].respond(200, {'Content-Type': 'text/html'}, response);
-		expect(this.spy.wasCalled).toBe(true);
+		expect(this.spy.called).toBe(true);
 
 		runs(function(){
-			var onCompleteArgs = this.spy.argsForCall[0];
+			var onCompleteArgs = this.spy.args[0];
 			expect(element.get('text')).toEqual('hello world!');
 		});
 

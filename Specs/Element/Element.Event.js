@@ -156,7 +156,7 @@ describe('Element.Event', function(){
 
 	it('Should trigger the click event', function(){
 
-		var callback = jasmine.createSpy('Element.Event click');
+		var callback = sinon.spy();
 
 		var el = createElement('a', {
 			text: 'test',
@@ -172,13 +172,13 @@ describe('Element.Event', function(){
 
 		syn.trigger(el, 'click');
 
-		expect(callback).toHaveBeenCalled();
+		expect(callback.called).toBe(true);
 		el.destroy();
 	});
 
 	it('Should trigger the click event and prevent the default behavior', function(){
 
-		var callback = jasmine.createSpy('Element.Event click with prevent');
+		var callback = sinon.spy();
 
 		var el = createElement('a', {
 			text: 'test',
@@ -197,14 +197,14 @@ describe('Element.Event', function(){
 
 		syn.trigger(el, 'click');
 
-		expect(callback).toHaveBeenCalled();
+		expect(callback.called).toBe(true);
 		el.destroy();
 
 	});
 
 	if (window.postMessage && !navigator.userAgent.match(/phantomjs/i)) it('Should trigger message event', function(){
 
-		var theMessage, spy = jasmine.createSpy('message');
+		var theMessage, spy = sinon.spy();
 		window.addEvent('message', function(e){
 			theMessage = e.event.data;
 			spy();
@@ -212,14 +212,14 @@ describe('Element.Event', function(){
 		window.postMessage('I am a message from outer space...', '*');
 		waits(150);
 		runs(function(){
-			expect(spy).toHaveBeenCalled();
+			expect(spy.called).toBe(true);
 			expect(theMessage).toEqual('I am a message from outer space...');
 		});
 	});
 
 	it('Should watch for a key-down event', function(){
 
-		var callback = jasmine.createSpy('keydown');
+		var callback = sinon.spy();
 
 		var div = createElement('div').addEvent('keydown', function(event){
 			callback(event.key);
@@ -227,7 +227,7 @@ describe('Element.Event', function(){
 
 		syn.key(div, 'a');
 
-		expect(callback).toHaveBeenCalledWith('a');
+		expect(callback.calledWith('a')).toBe(true);
 		div.destroy();
 	});
 
@@ -266,7 +266,7 @@ describe('Element.Event', function(){
 
 	it('should pass the name of the custom event to the callbacks', function(){
 		var callbacks = 0;
-		var callback = jasmine.createSpy('Element.Event custom');
+		var callback = sinon.spy();
 
 		var fn = function(anything, type){
 			expect(type).toEqual('customEvent');
@@ -290,7 +290,7 @@ describe('Element.Event', function(){
 
 		syn.trigger(div, 'click');
 
-		expect(callback).toHaveBeenCalled();
+		expect(callback.called).toBe(true);
 		div.removeEvent('customEvent', callback).destroy();
 		expect(callbacks).toEqual(3);
 	});
@@ -300,7 +300,7 @@ describe('Element.Event', function(){
 describe('Element.Event.change', function(){
 
 	it('should not fire "change" for any property', function(){
-		var callback = jasmine.createSpy('Element.Event.change');
+		var callback = sinon.spy();
 
 		var radio = new Element('input', {
 			'type': 'radio',
@@ -309,7 +309,7 @@ describe('Element.Event.change', function(){
 		}).addEvent('change', callback).inject(document.body);
 
 		radio.removeClass('someClass');
-		expect(callback).not.toHaveBeenCalled();
+		expect(callback.called).toBe(false);
 
 		var checkbox = new Element('input', {
 			'type': 'checkbox',
@@ -318,7 +318,7 @@ describe('Element.Event.change', function(){
 		}).addEvent('change', callback).inject(document.body);
 
 		checkbox.removeClass('someClass');
-		expect(callback).not.toHaveBeenCalled();
+		expect(callback.called).toBe(false);
 
 		var text = new Element('input', {
 			'type': 'text',
@@ -327,7 +327,7 @@ describe('Element.Event.change', function(){
 		}).addEvent('change', callback).inject(document.body);
 
 		text.removeClass('otherClass');
-		expect(callback).not.toHaveBeenCalled();
+		expect(callback.called).toBe(false);
 
 		[radio, checkbox, text].invoke('destroy');
 	});
@@ -338,8 +338,8 @@ describe('Element.Event keyup with f<key>', function(){
 
 	it('should pass event.key == f2 when pressing f2 on keyup and keydown', function(){
 
-		var keydown = jasmine.createSpy('keydown');
-		var keyup = jasmine.createSpy('keyup');
+		var keydown = sinon.spy();
+		var keyup = sinon.spy();
 
 		var div = createElement('div')
 			.addEvent('keydown', function(event){
@@ -353,8 +353,8 @@ describe('Element.Event keyup with f<key>', function(){
 		syn.trigger(div, 'keydown', 'f2');
 		syn.trigger(div, 'keyup', 'f2');
 
-		expect(keydown).toHaveBeenCalledWith('f2');
-		expect(keyup).toHaveBeenCalledWith('f2');
+		expect(keydown.calledWith('f2')).toBe(true);
+		expect(keyup.calledWith('f2')).toBe(true);
 
 		div.destroy();
 
