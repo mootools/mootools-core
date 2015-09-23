@@ -88,7 +88,7 @@ var gruntOptions = {
 var karmaOptions = {
     captureTimeout: 60000 * 2,
     singleRun: true,
-    frameworks: ['expect', 'jasmine', 'sinon', 'syn'],
+    frameworks: ['expect', 'mocha', 'sinon', 'syn'],
     plugins: ['karma-*', path.resolve('Tests/Plugins/syn')],
     files: ['mootools-*.js'],
     sauceLabs: {

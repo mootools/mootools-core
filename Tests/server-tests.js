@@ -1,8 +1,15 @@
 "use strict";
 
-var Jasmine = require('jasmine'),
+var path = require('path'),
+	Mocha = require('mocha'),
 	expect = require('expect.js'),
 	sinon = require('sinon');
+
+var dir = path.join(__dirname, '..'),
+	files = [
+		'mootools-server.js',
+		'mootools-server-specs.js'
+	];
 
 function injectLibraries(object){
 	object.expect = expect;
@@ -11,26 +18,19 @@ function injectLibraries(object){
 
 module.exports = function(cb){
 
-	var jasmine = new Jasmine();
-	jasmine.loadConfig({
-		spec_dir: '/',
-		spec_files: [
-			'mootools-server.js',
-			'mootools-server-specs.js'
-		],
-		helpers: []
+	var mocha = new Mocha({
+		reporter: 'dot'
 	});
 
-	jasmine.configureDefaultReporter({
-		showColors: true
-	});
+	for (var i = 0, l = files.length; i < l; ++i){
+		mocha.addFile(path.join(dir, files[i]));
+	}
 
 	injectLibraries(global);
 
-	jasmine.onComplete(function(passed){
-		if(passed) cb();
+	mocha.run(function(failures){
+		var passed = (failures === 0);
+		if (passed) cb();
 		else process.exit(1);
 	});
-
-	jasmine.execute();
 }
