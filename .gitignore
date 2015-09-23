@@ -8,4 +8,6 @@ node_modules
 mootools-all.js
 mootools-nocompat.js
 mootools-specs.js
+mootools-server.js
+mootools-server-specs.js
 sauce*.log
