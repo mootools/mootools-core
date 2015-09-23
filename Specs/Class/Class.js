@@ -320,14 +320,16 @@ describe('Class.toElement', function(){
 
 	});
 
-	it('should return an element when a class instance is passed to document.id', function(){
+	var dit = (typeof Element === 'undefined' ? xit : it);
+
+	dit('should return an element when a class instance is passed to document.id', function(){
 		var element = new Element('div', {'class': 'my-element'});
 		var instance = new MyParentElement(element);
 
 		expect(document.id(instance)).toBe(element);
 	});
 
-	it('should call the toElement() method in parent class if none is defined in child', function(){
+	dit('should call the toElement() method in parent class if none is defined in child', function(){
 		var element = new Element('div', {'class': 'my-element'});
 		var instance = new MyChildElement(element);
 
@@ -335,7 +337,7 @@ describe('Class.toElement', function(){
 		expect(instance instanceof MyParentElement).toEqual(true);
 	});
 
-	it('should call toElement() when extending natives (String, Array, Object)', function(){
+	dit('should call toElement() when extending natives (String, Array, Object)', function(){
 		var element = new Element('div', {'class': 'my-element'});
 		var instance = new MyArrayElement(element);
 

@@ -118,7 +118,8 @@ describe('Object.getLength', function(){
 
 describe('Object hasOwnProperty', function(){
 
-	it('should not fail on window', function(){
+	var dit = (typeof window === 'undefined' ? xit : it);
+	dit('should not fail on window', function(){
 		expect(function(){
 			var fn = function(){};
 			Object.each(window, fn);

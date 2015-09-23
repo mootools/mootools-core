@@ -353,7 +353,8 @@ describe('Options Class with Events', function(){
 
 describe('setOptions', function(){
 
-	it('should allow to pass the document', function(){
+	var dit = (typeof document === 'undefined' ? xit : it);
+	dit('should allow to pass the document', function(){
 
 		var A = new Class({
 

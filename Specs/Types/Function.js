@@ -161,17 +161,21 @@ describe("Function Methods", function(){
 	// Function.delay
 
 	it('delay should return a timer pointer', function(){
+		var referenceTimer = setTimeout(function(){}, 10000);
 		var timer = (function(){}).delay(10000);
-		expect(typeOf(timer) == 'number').toBeTruthy();
+		expect(typeOf(timer)).toEqual(typeOf(referenceTimer));
 		clearTimeout(timer);
+		clearTimeout(referenceTimer);
 	});
 
 	// Function.periodical
 
 	it('periodical should return a timer pointer', function(){
+		var referenceTimer = setInterval(function(){}, 10000);
 		var timer = (function(){}).periodical(10000);
-		expect(typeOf(timer) == 'number').toBeTruthy();
+		expect(typeOf(timer)).toEqual(typeOf(referenceTimer));
 		clearInterval(timer);
+		clearInterval(referenceTimer);
 	});
 
 });
