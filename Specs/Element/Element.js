@@ -338,6 +338,17 @@ describe('$', function(){
 
 describe('$$', function(){
 
+	beforeEach(function(){
+		this.elements = [
+			document.createElement('div'),
+			document.createElement('h3'),
+			document.createElement('h4')
+		];
+		for (var i = 0, l = this.elements.length; i < l; ++i){
+			document.body.appendChild(this.elements[i]);
+		}
+	});
+
 	it('should return all Elements of a specific tag', function(){
 		var divs1 = $$('div');
 		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
@@ -350,13 +361,19 @@ describe('$$', function(){
 			a = uidOf(a); b = uidOf(b);
 			return a > b ? 1 : -1;
 		};
-		var headers1 = $$('h3', 'h4').sort(sortBy);
+		var headers1 = $$('h3, h4').sort(sortBy);
 		var headers2 = new Elements(Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')])).sort(sortBy);
 		expect(headers1).toEqual(headers2);
 	});
 
 	it('should return an empty array if not is found', function(){
 		expect($$('not_found')).toEqual(new Elements([]));
+	});
+
+	afterEach(function(){
+		for (var i = 0, l = this.elements.length; i < l; ++i){
+			document.body.removeChild(this.elements[i]);
+		}
 	});
 
 });
