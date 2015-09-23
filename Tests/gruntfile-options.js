@@ -10,7 +10,7 @@ var sauceBrowsers = JSON.parse(fs.readFileSync('Tests/browsers.json'));
 var serverBuildOptions = JSON.parse(fs.readFileSync('Tests/dist-tasks.json')).build.server.options;
 var serverBuild = {
 	modules: serverBuildOptions.only,
-	specFiles: ['Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js'],
+	specFiles: ['Specs/Core/*.js', 'Specs/Class/*.js', 'Specs/Types/*.js', 'Specs/Utilities/JSON.js'],
 	strip: serverBuildOptions.strip
 }
 

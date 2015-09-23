@@ -1,6 +1,11 @@
 "use strict";
 
-var Jasmine = require('jasmine');
+var Jasmine = require('jasmine'),
+	sinon = require('sinon');
+
+function injectLibraries(object){
+	object.sinon = sinon;
+}
 
 module.exports = function(cb){
 
@@ -17,6 +22,9 @@ module.exports = function(cb){
 	jasmine.configureDefaultReporter({
 		showColors: true
 	});
+
+	injectLibraries(global);
+
 	jasmine.onComplete(function(passed){
 		if(passed) cb();
 		else process.exit(1);
