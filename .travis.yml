@@ -1,9 +1,7 @@
 language: node_js
 
 node_js:
-  - "0.10"
   - "0.12"
-  - "iojs"
 
 env:
   matrix:
@@ -41,6 +39,13 @@ env:
 
 before_script:
   - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
+
+matrix:
+  include:
+    - node_js: '0.10'
+      env: BUILD='server'
+    - node_js: 'iojs'
+      env: BUILD='server'
 
 cache:
   directories:

@@ -59,9 +59,6 @@ module.exports = function(grunt) {
 	var tasks = options.travis.build == 'default' ? compatBuild : options.travis.build == 'server' ? serverBuild : nocompatBuild;
 	tasks = options.travis.build == 'server' ? tasks.concat('server-spec-runner') : usePhantom ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
 
-	// to run only server specs and avoid running browser specs for in the different versions of node and iojs
-	if (options.travis.build && options.travis.build != 'server' && process.version.slice(1, 5) != '0.10') tasks = [];
-
 	grunt.registerTask('default', compatBuild.concat('karma:continuous'));		// local testing - compat build
 	grunt.registerTask('nocompat', nocompatBuild.concat('karma:continuous'));	// local testing - no compat build
 	grunt.registerTask('server', serverBuild.concat('server-spec-runner'));	// local testing - server build
