@@ -22,16 +22,16 @@ describe("Array", function(){
 
 	it('should flatten a multidimensional array', function(){
 		var arr = [1,2,3,[4,5,[6,7,[8]]], [[[[[9]]]]]];
-		expect(arr.flatten()).to.deep.equal([1,2,3,4,5,6,7,8,9]);
+		expect(arr.flatten()).to.eql([1,2,3,4,5,6,7,8,9]);
 	});
 
 	it('should flatten arguments', function(){
 		var test = function(){
 			return Array.flatten(arguments);
 		};
-		expect(test(1,2,3)).to.deep.equal([1,2,3]);
-		expect(test([1,2,3])).to.deep.equal([1,2,3]);
-		expect(test(1,2,[3])).to.deep.equal([1,2,3]);
+		expect(test(1,2,3)).to.eql([1,2,3]);
+		expect(test([1,2,3])).to.eql([1,2,3]);
+		expect(test(1,2,[3])).to.eql([1,2,3]);
 	});
 
 	// Array.filter
@@ -39,7 +39,7 @@ describe("Array", function(){
 	it('should filter an array', function(){
 		var array = [1,2,3,0,0,0];
 		var arr = array.concat([false, null, 4]).filter(Type.isNumber);
-		expect(arr).to.deep.equal(array.concat(4));
+		expect(arr).to.eql(array.concat(4));
 	});
 
 	it('filter should skip deleted elements', function(){
@@ -57,7 +57,7 @@ describe("Array", function(){
 	it('should clean an array from undefined and null values', function(){
 		var array = [null, 1, 0, true, false, "foo", undefined];
 		var arr = array.clean();
-		expect(arr).to.deep.equal([1, 0, true, false, "foo"]);
+		expect(arr).to.eql([1, 0, true, false, "foo"]);
 	});
 
 	// Array.map
@@ -67,7 +67,7 @@ describe("Array", function(){
 			return (item + 1);
 		});
 
-		expect(arr).to.deep.equal([2,3,4,1,1,1]);
+		expect(arr).to.eql([2,3,4,1,1,1]);
 	});
 
 	it('map should skip deleted elements', function(){
@@ -133,7 +133,7 @@ describe("Array", function(){
 
 	it('should remove all items in the array that match the specified item', function(){
 		var arr = [1,2,3,0,0,0].erase(0);
-		expect(arr).to.deep.equal([1,2,3]);
+		expect(arr).to.eql([1,2,3]);
 	});
 
 	// Array.contains
@@ -150,7 +150,7 @@ describe("Array", function(){
 
 	it('should associate an array with a specified array', function(){
 		var obj = [1,2,3,0,0,0].associate(['a', 'b', 'c', 'd']);
-		expect(obj).to.deep.equal({a:1, b:2, c:3, d:0});
+		expect(obj).to.eql({a:1, b:2, c:3, d:0});
 	});
 
 	// Array.append
@@ -159,8 +159,8 @@ describe("Array", function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
 		a.append(b);
-		expect(a).to.deep.equal([1,2,4,2,3,4,5]);
-		expect(b).to.deep.equal([2,3,4,5]);
+		expect(a).to.eql([1,2,4,2,3,4,5]);
+		expect(b).to.eql([2,3,4,5]);
 	});
 
 	var isType = function(type){
@@ -185,7 +185,7 @@ describe("Array", function(){
 			myBoolean: isType('boolean')
 		});
 
-		expect(assoc2).to.deep.equal({
+		expect(assoc2).to.eql({
 			myNumber: 100,
 			myElement: el,
 			myObject: {foo: 'bar'},
@@ -200,8 +200,8 @@ describe("Array", function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
 		a.extend(b);
-		expect(a).to.deep.equal([1,2,4,2,3,4,5]);
-		expect(b).to.deep.equal([2,3,4,5]);
+		expect(a).to.eql([1,2,4,2,3,4,5]);
+		expect(b).to.eql([2,3,4,5]);
 	});
 	//</1.2compat>
 
@@ -209,22 +209,22 @@ describe("Array", function(){
 		var a = [1,2,4];
 		var b = [2,3,4,5];
 		a.append(b);
-		expect(a).to.deep.equal([1,2,4,2,3,4,5]);
-		expect(b).to.deep.equal([2,3,4,5]);
+		expect(a).to.eql([1,2,4,2,3,4,5]);
+		expect(b).to.eql([2,3,4,5]);
 	});
 
 	// Array.combine
 
 	it('should combine an array', function(){
 		var arr = [1,2,3,4].combine([3,1,4,5,6,7]);
-		expect(arr).to.deep.equal([1,2,3,4,5,6,7]);
+		expect(arr).to.eql([1,2,3,4,5,6,7]);
 	});
 
 	// Array.include
 
 	it('should include only new items', function(){
 		var arr = [1,2,3,4].include(1).include(5);
-		expect(arr).to.deep.equal([1,2,3,4,5]);
+		expect(arr).to.eql([1,2,3,4,5]);
 	});
 
 	// Array.getLast
@@ -242,7 +242,7 @@ describe("Array", function(){
 
 	it('should empty the array', function(){
 		var arr = [1,2,3,4].empty();
-		expect(arr).to.deep.equal([]);
+		expect(arr).to.eql([]);
 	});
 
 });
@@ -264,7 +264,7 @@ describe("Array Color Methods", function(){
 	});
 
 	it('should return an array with 16-based numbers when passed true', function(){
-		expect(['ff','ff','ff'].hexToRgb(true)).to.deep.equal([255,255,255]);
+		expect(['ff','ff','ff'].hexToRgb(true)).to.eql([255,255,255]);
 	});
 
 	// Array.rgbToHex
@@ -279,7 +279,7 @@ describe("Array Color Methods", function(){
 	});
 
 	it('should return an array with hexadecimal string items', function(){
-		expect([0,255,0].rgbToHex(true)).to.deep.equal(['00', 'ff', '00']);
+		expect([0,255,0].rgbToHex(true)).to.eql(['00', 'ff', '00']);
 	});
 
 	it('should return `transparent` if the fourth item is 0 and first param is not true', function(){
@@ -331,7 +331,7 @@ describe('Array', function(){
 		it('shoud return an empty array when the thisArg does not has a length property', function(){
 			expect([].map.call({}, function(){
 				return 1;
-			})).to.deep.equal([]);
+			})).to.eql([]);
 		});
 
 	});
@@ -339,9 +339,9 @@ describe('Array', function(){
 	it('should accept thisArgs without length property', function(){
 		var object = {}, fn = function(){};
 		expect([].every.call(object, fn)).to.equal(true);
-		expect([].filter.call(object, fn)).to.deep.equal([]);
+		expect([].filter.call(object, fn)).to.eql([]);
 		expect([].indexOf.call(object)).to.equal(-1);
-		expect([].map.call(object, fn)).to.deep.equal([]);
+		expect([].map.call(object, fn)).to.eql([]);
 		expect([].some.call(object, fn)).to.equal(false);
 	});
 

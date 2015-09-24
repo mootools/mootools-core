@@ -99,7 +99,7 @@ describe('Browser', function(){
 		if (Browser.name == 'ie' && document.documentMode) expect(Browser.version).to.equal(document.documentMode);
 	});
 	it('should find a browser version', function(){
-		expect(Browser.version || isPhantomJS).to.be.ok;
+		expect(Browser.version || isPhantomJS).to.be.ok();
 		expect(typeof Browser.version).to.equal('number');
 	});
 

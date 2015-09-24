@@ -35,18 +35,18 @@ describe('Chain', function(){
 			return str;
 		});
 		var ret;
-		expect(arr).to.deep.equal([]);
+		expect(arr).to.eql([]);
 		ret = chain.callChain("a", "A");
 		expect(ret).to.equal("0Aa");
-		expect(arr).to.deep.equal(["0Aa"]);
+		expect(arr).to.eql(["0Aa"]);
 
 		ret = chain.callChain("b", "B");
 		expect(ret).to.equal("1Bb");
-		expect(arr).to.deep.equal(["0Aa", "1Bb"]);
+		expect(arr).to.eql(["0Aa", "1Bb"]);
 
 		ret = chain.callChain();
 		expect(ret).to.equal(false);
-		expect(arr).to.deep.equal(["0Aa", "1Bb"]);
+		expect(arr).to.eql(["0Aa", "1Bb"]);
 	});
 
 	it('should chain any number of functions', function(){
@@ -59,18 +59,18 @@ describe('Chain', function(){
 			arr.push(1);
 		});
 
-		expect(arr).to.deep.equal([]);
+		expect(arr).to.eql([]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0]);
+		expect(arr).to.eql([0]);
 		chain.chain(function(){
 			arr.push(2);
 		});
 		chain.callChain();
-		expect(arr).to.deep.equal([0, 1]);
+		expect(arr).to.eql([0, 1]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0, 1, 2]);
+		expect(arr).to.eql([0, 1, 2]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0, 1, 2]);
+		expect(arr).to.eql([0, 1, 2]);
 	});
 
 	it('should allow an array of functions', function(){
@@ -85,15 +85,15 @@ describe('Chain', function(){
 			arr.push(2);
 		}]);
 
-		expect(arr).to.deep.equal([]);
+		expect(arr).to.eql([]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0]);
+		expect(arr).to.eql([0]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0, 1]);
+		expect(arr).to.eql([0, 1]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0, 1, 2]);
+		expect(arr).to.eql([0, 1, 2]);
 		chain.callChain();
-		expect(arr).to.deep.equal([0, 1, 2]);
+		expect(arr).to.eql([0, 1, 2]);
 	});
 
 	it('each instance should have its own chain', function(){
@@ -250,10 +250,10 @@ describe('Events API: Mixin', function(){
 		}).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2]);
+		expect(methods).to.eql([1, 2]);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2, 1, 2]);
+		expect(methods).to.eql([1, 2, 1, 2]);
 	});
 
 	it('should be able to remove itself', function(){
@@ -276,10 +276,10 @@ describe('Events API: Mixin', function(){
 		object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2, 3]);
+		expect(methods).to.eql([1, 2, 3]);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2, 3, 3]);
+		expect(methods).to.eql([1, 2, 3, 3]);
 	});
 
 });

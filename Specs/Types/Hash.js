@@ -25,19 +25,19 @@ describe("Hash Methods", function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
 		var copy = new Hash(hash);
 		expect(copy).to.not.equal(hash);
-		expect(copy).to.deep.equal(hash);
+		expect(copy).to.eql(hash);
 	});
 
 	// Hash.erase
 
 	it('should remove a key and its value from the hash', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.erase('a')).to.deep.equal(new Hash({b:2,c:3}));
-		expect(hash.erase('d')).to.deep.equal(new Hash({b:2,c:3}));
+		expect(hash.erase('a')).to.eql(new Hash({b:2,c:3}));
+		expect(hash.erase('d')).to.eql(new Hash({b:2,c:3}));
 
 		hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.erase('a')).to.deep.equal(new Hash({b:2,c:3}));
-		expect(hash.erase('d')).to.deep.equal(new Hash({b:2,c:3}));
+		expect(hash.erase('a')).to.eql(new Hash({b:2,c:3}));
+		expect(hash.erase('d')).to.eql(new Hash({b:2,c:3}));
 	});
 
 	// Hash.get
@@ -52,22 +52,22 @@ describe("Hash Methods", function(){
 
 	it('should set the key with the corresponding value', function(){
 		var myHash = new Hash({a: 1, b: 2, c: 3}).set('c', 7).set('d', 8);
-		expect(myHash).to.deep.equal(new Hash({a:1,b:2,c:7,d:8}));
+		expect(myHash).to.eql(new Hash({a:1,b:2,c:7,d:8}));
 	});
 
 	// Hash.empty
 
 	it('should empty the hash', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.empty()).to.deep.equal(new Hash());
+		expect(hash.empty()).to.eql(new Hash());
 	});
 
 	// Hash.include
 
 	it('should include a key value if the hash does not have the key otherwise ignore', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.include('e', 7)).to.deep.equal(new Hash({a:1,b:2,c:3,e:7}));
-		expect(hash.include('a', 7)).to.deep.equal(new Hash({a:1,b:2,c:3,e:7}));
+		expect(hash.include('e', 7)).to.eql(new Hash({a:1,b:2,c:3,e:7}));
+		expect(hash.include('a', 7)).to.eql(new Hash({a:1,b:2,c:3,e:7}));
 	});
 
 	// Hash.keyOf | Hash.indexOf
@@ -104,31 +104,31 @@ describe("Hash Methods", function(){
 
 	it('should getClean JavaScript object', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.getClean()).to.deep.equal({a:1,b:2,c:3});
+		expect(hash.getClean()).to.eql({a:1,b:2,c:3});
 	});
 
 	// Hash.extend
 
 	it('should extend a Hash with an object', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.extend({a:4,d:7,e:8})).to.deep.equal(new Hash({a:4,b:2,c:3,d:7,e:8}));
+		expect(hash.extend({a:4,d:7,e:8})).to.eql(new Hash({a:4,b:2,c:3,d:7,e:8}));
 	});
 
 	it('should extend a Hash with another Hash', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.extend(new Hash({a:4,d:7,e:8}))).to.deep.equal(new Hash({a:4,b:2,c:3,d:7,e:8}));
+		expect(hash.extend(new Hash({a:4,d:7,e:8}))).to.eql(new Hash({a:4,b:2,c:3,d:7,e:8}));
 	});
 
 	// Hash.combine
 
 	it('should merge a Hash with an object', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.combine({a:4,d:7,e:8})).to.deep.equal(new Hash({a:1,b:2,c:3,d:7,e:8}));
+		expect(hash.combine({a:4,d:7,e:8})).to.eql(new Hash({a:1,b:2,c:3,d:7,e:8}));
 	});
 
 	it('should merge a Hash with another Hash', function(){
 		var hash = new Hash({a: 1, b: 2, c: 3});
-		expect(hash.combine(new Hash({a:4,d:7,e:8}))).to.deep.equal(new Hash({a:1,b:2,c:3,d:7,e:8}));
+		expect(hash.combine(new Hash({a:4,d:7,e:8}))).to.eql(new Hash({a:1,b:2,c:3,d:7,e:8}));
 	});
 
 	// Hash.each
@@ -139,19 +139,19 @@ describe("Hash Methods", function(){
 		hash.each(function(value, key){
 			newHash.set(key, value);
 		});
-		expect(newHash).to.deep.equal(hash);
+		expect(newHash).to.eql(hash);
 	});
 
 	// Hash.map
 
 	it('should map a new Hash according to the comparator', function(){
-		expect(hash2.map(Number.type)).to.deep.equal(new Hash({a:false,b:true,c:false}));
+		expect(hash2.map(Number.type)).to.eql(new Hash({a:false,b:true,c:false}));
 	});
 
 	// Hash.filter
 
 	it('should filter the Hash according to the comparator', function(){
-		expect(hash2.filter(Number.type)).to.deep.equal(new Hash({b:233}));
+		expect(hash2.filter(Number.type)).to.eql(new Hash({b:233}));
 	});
 
 	// Hash.every
@@ -171,21 +171,21 @@ describe("Hash Methods", function(){
 	// Hash.getKeys
 
 	it('getKeys should return an empty array', function(){
-		expect(new Hash().getKeys()).to.deep.equal([]);
+		expect(new Hash().getKeys()).to.eql([]);
 	});
 
 	it('should return an array containing the keys of the hash', function(){
-		expect(hash2.getKeys()).to.deep.equal(['a', 'b', 'c']);
+		expect(hash2.getKeys()).to.eql(['a', 'b', 'c']);
 	});
 
 	// Hash.getValues
 
 	it('getValues should return an empty array', function(){
-		expect(new Hash().getValues()).to.deep.equal([]);
+		expect(new Hash().getValues()).to.eql([]);
 	});
 
 	it('should return an array with the values of the hash', function(){
-		expect(hash2.getValues()).to.deep.equal(['string', 233, {}]);
+		expect(hash2.getValues()).to.eql(['string', 233, {}]);
 	});
 
 	// Hash.toQueryString

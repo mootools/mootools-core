@@ -119,7 +119,7 @@ describe('$each', function(){
 			});
 		})('Sun','Mon','Tue');
 
-		expect(daysArr).to.deep.equal(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun','Mon','Tue']);
 	});
 
 	it('should call the function for each item in the array', function(){
@@ -128,7 +128,7 @@ describe('$each', function(){
 			daysArr[key] = value;
 		});
 
-		expect(daysArr).to.deep.equal(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun','Mon','Tue']);
 	});
 
 	it('should call the function for each item in the object', function(){
@@ -137,7 +137,7 @@ describe('$each', function(){
 			daysObj[key] = value;
 		});
 
-		expect(daysObj).to.deep.equal({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
+		expect(daysObj).to.eql({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
 	});
 
 });
@@ -148,20 +148,20 @@ describe('$extend', function(){
 		var obj1 = {a: 1, b: 2};
 		var obj2 = {b: 3, c: 4};
 		$extend(obj1, obj2);
-		expect(obj1).to.deep.equal({a: 1, b: 3, c: 4});
+		expect(obj1).to.eql({a: 1, b: 3, c: 4});
 	});
 
 	it('should overwrite properties', function(){
 		var obj1 = {a: 1, b: 2};
 		var obj2 = {b: 3, c: 4, a: 5};
 		$extend(obj1, obj2);
-		expect(obj1).to.deep.equal({a: 5, b: 3, c: 4});
+		expect(obj1).to.eql({a: 5, b: 3, c: 4});
 	});
 
 	it('should not extend with null argument', function(){
 		var obj1 = {a: 1, b: 2};
 		$extend(obj1);
-		expect(obj1).to.deep.equal({a: 1, b: 2});
+		expect(obj1).to.eql({a: 1, b: 2});
 	});
 
 });
@@ -191,7 +191,7 @@ describe('$merge', function(){
 		var obj1 = {a: {a: 1, b: 2, c: 3}, b: 2};
 		var obj2 = {a: {a: 2, b: 8, c: 3, d: 8}, b: 3, c: 4};
 		var obj3 = {a: {a: 3}, b: 3, c: false};
-		expect($merge(obj1, obj2, obj3)).to.deep.equal({a: {a: 3, b: 8, c: 3, d: 8}, b: 3, c: false});
+		expect($merge(obj1, obj2, obj3)).to.eql({a: {a: 3, b: 8, c: 3, d: 8}, b: 3, c: false});
 	});
 
 });
@@ -205,7 +205,7 @@ describe('$pick', function(){
 
 	it('should return the first defined argument', function(){
 		var picked1 = $pick(null, undefined, null, [1,2,3], {});
-		expect(picked1).to.deep.equal([1,2,3]);
+		expect(picked1).to.eql([1,2,3]);
 	});
 
 });
@@ -214,8 +214,7 @@ describe('$random', function(){
 
 	it('should return a number between two numbers specified', function(){
 		var rand = $random(1, 3);
-		expect(rand).to.be.at.least(1);
-		expect(rand).to.be.at.most(3);
+		expect(rand).to.be.within(1, 3);
 	});
 
 });
@@ -223,16 +222,16 @@ describe('$random', function(){
 describe('$splat', function(){
 
 	it('should transform a non array into an array', function(){
-		expect($splat(1)).to.deep.equal([1]);
+		expect($splat(1)).to.eql([1]);
 	});
 
 	it('should transforum an undefined or null into an empty array', function(){
-		expect($splat(null)).to.deep.equal([]);
-		expect($splat(undefined)).to.deep.equal([]);
+		expect($splat(null)).to.eql([]);
+		expect($splat(undefined)).to.eql([]);
 	});
 
 	it('should ignore and return an array', function(){
-		expect($splat([1,2,3])).to.deep.equal([1,2,3]);
+		expect($splat([1,2,3])).to.eql([1,2,3]);
 	});
 
 });
@@ -439,14 +438,14 @@ describe('Function.prototype.overloadSetter', function(){
 		setter = setter.overloadSetter();
 		setter('key', 'value');
 
-		expect(collector).to.deep.equal({key: 'value'});
+		expect(collector).to.eql({key: 'value'});
 
 		setter({
 			otherKey: 1,
 			property: 2
 		});
 
-		expect(collector).to.deep.equal({
+		expect(collector).to.eql({
 			key: 'value',
 			otherKey: 1,
 			property: 2
@@ -457,7 +456,7 @@ describe('Function.prototype.overloadSetter', function(){
 		});
 		setter('otherKey', 4);
 
-		expect(collector).to.deep.equal({
+		expect(collector).to.eql({
 			key: 3,
 			otherKey: 4,
 			property: 2
@@ -472,7 +471,7 @@ describe('Function.prototype.overloadSetter', function(){
 			c: 'd'
 		});
 
-		expect(collector).to.deep.equal({
+		expect(collector).to.eql({
 			a: 'b',
 			c: 'd'
 		});
@@ -503,19 +502,19 @@ describe('Function.prototype.overloadGetter', function(){
 		expect(getter('cc')).to.equal(3);
 		expect(getter('dd')).to.equal(null);
 
-		expect(getter('aa', 'bb', 'cc')).to.deep.equal(object);
-		expect(getter(['aa', 'bb', 'cc'])).to.deep.equal(object);
-		expect(getter(['aa', 'cc', 'dd'])).to.deep.equal({aa: 1, cc: 3, dd: null});
+		expect(getter('aa', 'bb', 'cc')).to.eql(object);
+		expect(getter(['aa', 'bb', 'cc'])).to.eql(object);
+		expect(getter(['aa', 'cc', 'dd'])).to.eql({aa: 1, cc: 3, dd: null});
 	});
 
 	it('should work in plural mode', function(){
 		getter = getter.overloadGetter(true);
 
-		expect(getter('aa')).to.deep.equal({
+		expect(getter('aa')).to.eql({
 			aa: 1
 		});
 
-		expect(getter(['aa', 'bb'])).to.deep.equal({
+		expect(getter(['aa', 'bb'])).to.eql({
 			aa: 1,
 			bb: 2
 		});
@@ -638,16 +637,16 @@ describe('Array.from', function(){
 	});
 
 	it('should transform a non array into an array', function(){
-		expect(Array.from(1)).to.deep.equal([1]);
+		expect(Array.from(1)).to.eql([1]);
 	});
 
 	it('should transforum an undefined or null into an empty array', function(){
-		expect(Array.from(null)).to.deep.equal([]);
-		expect(Array.from(undefined)).to.deep.equal([]);
+		expect(Array.from(null)).to.eql([]);
+		expect(Array.from(undefined)).to.eql([]);
 	});
 
 	it('should ignore and return an array', function(){
-		expect(Array.from([1,2,3])).to.deep.equal([1,2,3]);
+		expect(Array.from([1,2,3])).to.eql([1,2,3]);
 	});
 
 	it('should return a copy of arguments or the arguments if it is of type array', function(){
@@ -792,11 +791,11 @@ describe('Object.keys', function(){
 	var object = { a: 'string', b: 233, c: {} };
 
 	it('keys should return an empty array', function(){
-		expect(Object.keys({})).to.deep.equal([]);
+		expect(Object.keys({})).to.eql([]);
 	});
 
 	it('should return an array containing the keys of the object', function(){
-		expect(Object.keys(object)).to.deep.equal(['a', 'b', 'c']);
+		expect(Object.keys(object)).to.eql(['a', 'b', 'c']);
 	});
 
 	it('should return an array containing non-enum keys', function(){
@@ -816,7 +815,7 @@ describe('Object.each', function(){
 			daysObj[key] = value;
 		});
 
-		expect(daysObj).to.deep.equal({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
+		expect(daysObj).to.eql({first: 'Sunday', second: 'Monday', third: 'Tuesday'});
 	});
 
 	it('should call non-enumerable properties too', function(){
@@ -855,7 +854,7 @@ describe('Array.each', function(){
 			});
 		})('Sun','Mon','Tue');
 
-		expect(daysArr).to.deep.equal(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun','Mon','Tue']);
 	});
 
 	it('should call the function for each item in the array', function(){
@@ -864,7 +863,7 @@ describe('Array.each', function(){
 			daysArr.push(value);
 		});
 
-		expect(daysArr).to.deep.equal(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun','Mon','Tue']);
 	});
 
 	it('should not iterate over deleted elements', function(){
@@ -877,7 +876,7 @@ describe('Array.each', function(){
 			testArray.push(value);
 		});
 
-		expect(testArray).to.deep.equal([0, 3]);
+		expect(testArray).to.eql([0, 3]);
 	});
 
 });
@@ -891,9 +890,9 @@ describe('Array.clone', function(){
 		expect(a[3][3]).to.not.equal(b[3][3]);
 		expect(a[3][3].a).to.not.equal(b[3][3].a);
 
-		expect(a[3]).to.deep.equal(b[3]);
-		expect(a[3][3]).to.deep.equal(b[3][3]);
-		expect(a[3][3].a).to.deep.equal(b[3][3].a);
+		expect(a[3]).to.eql(b[3]);
+		expect(a[3][3]).to.eql(b[3][3]);
+		expect(a[3][3].a).to.eql(b[3][3].a);
 	});
 });
 
@@ -906,9 +905,9 @@ describe('Object.clone', function(){
 		expect(a.a[3][3]).to.not.equal(b.a[3][3]);
 		expect(a.a[3][3].a).to.not.equal(b.a[3][3].a);
 
-		expect(a.a[3]).to.deep.equal(b.a[3]);
-		expect(a.a[3][3]).to.deep.equal(b.a[3][3]);
-		expect(a.a[3][3].a).to.deep.equal(b.a[3][3].a);
+		expect(a.a[3]).to.eql(b.a[3]);
+		expect(a.a[3][3]).to.eql(b.a[3][3]);
+		expect(a.a[3][3].a).to.eql(b.a[3][3].a);
 	});
 });
 
@@ -921,10 +920,10 @@ describe('Object.merge', function(){
 
 		var merger = Object.merge(a, b);
 
-		expect(merger).to.deep.equal({a:1, b:2, c:{a:1, b:2, c:3, d:4}, d:4});
+		expect(merger).to.eql({a:1, b:2, c:{a:1, b:2, c:3, d:4}, d:4});
 		expect(merger).to.equal(a);
 
-		expect(Object.merge(a, b, c)).to.deep.equal({a:5, b:2, c:{a:5, b:2, c:3, d:4}, d:4});
+		expect(Object.merge(a, b, c)).to.eql({a:5, b:2, c:{a:5, b:2, c:3, d:4}, d:4});
 	});
 
 	it('should recursively clone sub objects and sub-arrays', function(){
@@ -942,14 +941,14 @@ describe('Object.merge', function(){
 describe('Object.append', function(){
 	it('should combine two objects', function(){
 		var a = {a: 1, b: 2}, b = {b: 3, c: 4};
-		expect(Object.append(a, b)).to.deep.equal({a: 1, b: 3, c: 4});
+		expect(Object.append(a, b)).to.eql({a: 1, b: 3, c: 4});
 
 		a = {a: 1, b: 2}; b = {b: 3, c: 4};
 		expect(Object.append(a, b)).to.equal(a);
 
 		a = {a: 1, b: 2}; b = {b: 3, c: 4};
 		var c = {a: 2, d: 5};
-		expect(Object.append(a, b, c)).to.deep.equal({a: 2, b: 3, c: 4, d: 5});
+		expect(Object.append(a, b, c)).to.eql({a: 2, b: 3, c: 4, d: 5});
 	});
 });
 

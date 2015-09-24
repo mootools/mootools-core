@@ -37,7 +37,7 @@ describe('Request.JSON', function(){
 		expect(this.spy.called).to.equal(true);
 
 		// checks the first argument from the first call
-		expect(this.spy.args[0][0]).to.deep.equal({ok: true});
+		expect(this.spy.args[0][0]).to.eql({ok: true});
 
 	});
 

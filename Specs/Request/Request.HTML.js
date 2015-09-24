@@ -91,7 +91,7 @@ describe('Request.HTML', function(){
 			expect(onCompleteArgs[0].length).to.equal(3);
 			expect(onCompleteArgs[1].length).to.equal(3);
 			expect(onCompleteArgs[2]).to.equal('<option>1</option><option>2</option><option>3</option>');
-			expect(onCompleteArgs[3]).to.not.be.ok;
+			expect(onCompleteArgs[3]).to.not.be.ok();
 
 			var firstOption = onCompleteArgs[0][0];
 			expect(firstOption.tagName).to.equal('OPTION');

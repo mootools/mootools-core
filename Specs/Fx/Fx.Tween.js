@@ -156,19 +156,19 @@ describe('Fx.Tween', function(){
 
 			var element = new Element('div', {styles: {'visibility': 'visible'}}).inject(document.body);
 
-			expect(element.getStyles('opacity', 'visibility')).to.deep.equal({opacity: 1, visibility: 'visible'});
+			expect(element.getStyles('opacity', 'visibility')).to.eql({opacity: 1, visibility: 'visible'});
 
 			element.fade(0.5);
 			this.clock.tick(600);
-			expect(element.getStyles('opacity', 'visibility')).to.deep.equal({opacity: 0.5, visibility: 'visible'});
+			expect(element.getStyles('opacity', 'visibility')).to.eql({opacity: 0.5, visibility: 'visible'});
 
 			element.fade(0);
 			this.clock.tick(600);
-			expect(element.getStyles('opacity', 'visibility')).to.deep.equal({opacity: 0, visibility: 'hidden'});
+			expect(element.getStyles('opacity', 'visibility')).to.eql({opacity: 0, visibility: 'hidden'});
 
 			element.fade(1);
 			this.clock.tick(600);
-			expect(element.getStyles('opacity', 'visibility')).to.deep.equal({opacity: 1, visibility: 'visible'});
+			expect(element.getStyles('opacity', 'visibility')).to.eql({opacity: 1, visibility: 'visible'});
 
 			element.destroy();
 

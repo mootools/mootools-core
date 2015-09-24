@@ -147,7 +147,7 @@ describe('Request', function(){
 			url: '/something/or/other'
 		}).send();
 
-		expect(request.xhr.withCredentials).to.not.be.ok;
+		expect(request.xhr.withCredentials).to.not.be.ok();
 	});
 
 	/*<1.4compat>*/
@@ -169,7 +169,7 @@ describe('Request', function(){
 			user: 'someone'
 		}).send();
 
-		expect(request.xhr.withCredentials).to.not.be.ok;
+		expect(request.xhr.withCredentials).to.not.be.ok();
 	});
 
 	dit('should set xhr.withCredentials flag if options.withCredentials is set', function(){

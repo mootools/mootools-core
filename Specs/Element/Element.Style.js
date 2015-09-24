@@ -94,7 +94,7 @@ describe('Element.getStyles', function(){
 
 	it('should return multiple styles', function(){
 		var el = new Element('div').set('html', '<div style="color:#00ff00;list-style-type:square"></div>');
-		expect(el.getElement('div').getStyles('color', 'list-style-type')).to.deep.equal({color:'#00ff00', 'list-style-type':'square'});
+		expect(el.getElement('div').getStyles('color', 'list-style-type')).to.eql({color:'#00ff00', 'list-style-type':'square'});
 	});
 
 });
@@ -102,7 +102,7 @@ describe('Element.getStyles', function(){
 describe('Element.setStyles', function(){
 
 	it('should set multiple styles', function(){
-		expect(new Element('div').setStyles({'list-style-type':'square', 'color':'#00ff00'}).getStyles('list-style-type', 'color')).to.deep.equal({'list-style-type':'square', color:'#00ff00'});
+		expect(new Element('div').setStyles({'list-style-type':'square', 'color':'#00ff00'}).getStyles('list-style-type', 'color')).to.eql({'list-style-type':'square', color:'#00ff00'});
 	});
 
 });

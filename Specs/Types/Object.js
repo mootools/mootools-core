@@ -15,7 +15,7 @@ describe("Object Methods", function(){
 	// Object subset
 
 	it('should return an object with only the specified keys', function(){
-		expect(Object.subset(object, ['a', 'b'])).to.deep.equal({a:'string',b:233});
+		expect(Object.subset(object, ['a', 'b'])).to.eql({a:'string',b:233});
 	});
 
 	it('should ignore undefined keys', function(){
@@ -24,7 +24,7 @@ describe("Object Methods", function(){
 			d: null
 		};
 		var subset = Object.subset(obj, ['a', 'b', 'c', 'd']);
-		expect(subset).to.deep.equal({b: 'string', d: null});
+		expect(subset).to.eql({b: 'string', d: null});
 		// To equal doesn't check for undefined properties
 		expect('a' in subset).to.equal(false);
 		expect('c' in subset).to.equal(false);
@@ -47,13 +47,13 @@ describe("Object Methods", function(){
 	// Object.map
 
 	it('should map a new object according to the comparator', function(){
-		expect(Object.map(object, Type.isNumber)).to.deep.equal({a:false,b:true,c:false});
+		expect(Object.map(object, Type.isNumber)).to.eql({a:false,b:true,c:false});
 	});
 
 	// Object.filter
 
 	it('should filter the object according to the comparator', function(){
-		expect(Object.filter(object, Type.isNumber)).to.deep.equal({b:233});
+		expect(Object.filter(object, Type.isNumber)).to.eql({b:233});
 	});
 
 	// Object.every
@@ -73,11 +73,11 @@ describe("Object Methods", function(){
 	// Object.values
 
 	it('values should return an empty array', function(){
-		expect(Object.values({})).to.deep.equal([]);
+		expect(Object.values({})).to.eql([]);
 	});
 
 	it('should return an array with the values of the object', function(){
-		expect(Object.values(object)).to.deep.equal(['string', 233, {}]);
+		expect(Object.values(object)).to.eql(['string', 233, {}]);
 	});
 
 	// Object.toQueryString
@@ -129,7 +129,7 @@ describe('Object hasOwnProperty', function(){
 			Object.every(window, fn);
 			Object.some(window, fn);
 			Object.keyOf(window, document);
-		}).to.not.throw(Error);
+		}).to.not.throwError();
 	});
 
 });

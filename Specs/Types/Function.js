@@ -35,12 +35,12 @@ describe("Function Methods", function(){
 
 	it('should return a new function with specified argument', function(){
 		var fnc = fn.create({'arguments': 'rocks'});
-		expect(fnc()).to.deep.equal(['rocks']);
+		expect(fnc()).to.eql(['rocks']);
 	});
 
 	it('should return a new function with multiple arguments', function(){
 		var fnc = fn.create({'arguments': ['MooTools', 'rocks']});
-		expect(fnc()).to.deep.equal(['MooTools', 'rocks']);
+		expect(fnc()).to.eql(['MooTools', 'rocks']);
 	});
 
 	it('should return a new function bound to an object', function(){
@@ -50,7 +50,7 @@ describe("Function Methods", function(){
 
 	it('should return a new function as an event', function(){
 		var fnc = fn.create({'arguments': [0, 1], 'event': true});
-		expect(fnc('an Event occurred')).to.deep.equal(['an Event occurred', 0, 1]);
+		expect(fnc('an Event occurred')).to.eql(['an Event occurred', 0, 1]);
 	});
 	//</1.2compat>
 
@@ -70,7 +70,7 @@ describe("Function Methods", function(){
 	dit('should return the function bound to an object with multiple arguments', function(){
 		var results = Args.bind(MooTools, ['rocks', 'da house'])();
 		expect(results[0]).to.equal(MooTools);
-		expect(results[1]).to.deep.equal(['rocks', 'da house']);
+		expect(results[1]).to.eql(['rocks', 'da house']);
 	});
 
 	//<1.2compat>
@@ -78,28 +78,28 @@ describe("Function Methods", function(){
 		var fnc = Args.bind(MooTools, 'rocks');
 		var result = fnc();
 		expect(result[0]).to.equal(MooTools);
-		expect(result).to.deep.equal([MooTools, 'rocks']);
+		expect(result).to.eql([MooTools, 'rocks']);
 	});
 
 	it('should return the function bound to an object with multiple arguments', function(){
 		var fnc = Args.bind(MooTools, ['rocks', 'da house']);
 		var result = fnc();
 		expect(result[0]).to.equal(MooTools);
-		expect(result).to.deep.equal([MooTools, 'rocks', 'da house']);
+		expect(result).to.eql([MooTools, 'rocks', 'da house']);
 	});
 
 	it('should return the function bound to an object and make the function an event listener', function(){
 		var fnc = Args.bindWithEvent(MooTools);
 		var result = fnc('an Event occurred');
 		expect(result[0]).to.equal(MooTools);
-		expect(result).to.deep.equal([MooTools, 'an Event occurred']);
+		expect(result).to.eql([MooTools, 'an Event occurred']);
 	});
 
 	it('should return the function bound to an object and make the function event listener with multiple arguments', function(){
 		var fnc = Args.bindWithEvent(MooTools, ['rocks', 'da house']);
 		var result = fnc('an Event occurred');
 		expect(result[0]).to.equal(MooTools);
-		expect(result).to.deep.equal([MooTools, 'an Event occurred', 'rocks', 'da house']);
+		expect(result).to.eql([MooTools, 'an Event occurred', 'rocks', 'da house']);
 	});
 	//</1.2compat>
 
@@ -107,32 +107,32 @@ describe("Function Methods", function(){
 
 	it('should return a function that when called passes the specified arguments to the original function', function(){
 		var fnc = fn.pass('MooTools is beautiful and elegant');
-		expect(fnc()).to.deep.equal(['MooTools is beautiful and elegant']);
+		expect(fnc()).to.eql(['MooTools is beautiful and elegant']);
 	});
 
 	it('should pass multiple arguments and bind the function to a specific object when it is called', function(){
 		var fnc = Args.pass(['rocks', 'da house'], MooTools);
 		var result = fnc();
 		expect(result[0]).to.equal(MooTools);
-		expect(result).to.deep.equal([MooTools, 'rocks', 'da house']);
+		expect(result).to.eql([MooTools, 'rocks', 'da house']);
 	});
 
 	//<1.2compat>
 	// Function.run
 	it('should run the function', function(){
 		var result = fn.run();
-		expect(result).to.deep.equal([]);
+		expect(result).to.eql([]);
 	});
 
 	it('should run the function with multiple arguments', function(){
 		var result = fn.run(['MooTools', 'beautiful', 'elegant']);
-		expect(result).to.deep.equal(['MooTools', 'beautiful', 'elegant']);
+		expect(result).to.eql(['MooTools', 'beautiful', 'elegant']);
 	});
 
 	it('should run the function with multiple arguments and bind the function to an object', function(){
 		var result = Args.run(['beautiful', 'elegant'], MooTools);
 		expect(result[0]).to.equal(MooTools);
-		expect(result).to.deep.equal([MooTools, 'beautiful', 'elegant']);
+		expect(result).to.eql([MooTools, 'beautiful', 'elegant']);
 	});
 	//</1.2compat>
 
@@ -273,14 +273,14 @@ describe('Function.bind', function(){
 			return [this.foo].concat(Array.slice(arguments));
 		};
 
-		expect(fn.bind({foo: 'bar'})()).to.deep.equal(['bar']);
-		expect(fn.bind({foo: 'bar'}, 'first').call({foo: 'yeah!'}, 'yooo')).to.deep.equal(['bar', 'first', 'yooo']);
+		expect(fn.bind({foo: 'bar'})()).to.eql(['bar']);
+		expect(fn.bind({foo: 'bar'}, 'first').call({foo: 'yeah!'}, 'yooo')).to.eql(['bar', 'first', 'yooo']);
 
 		var bound = fn.bind({foo: 'bar'});
 		var bound2 = fn.bind({foo: 'yep'});
 		var inst = new bound;
 		inst.foo = 'noo!!';
-		expect(bound2.call(inst, 'yoo', 'howdy')).to.deep.equal(['yep', 'yoo', 'howdy']);
+		expect(bound2.call(inst, 'yoo', 'howdy')).to.eql(['yep', 'yoo', 'howdy']);
 	});
 
 });

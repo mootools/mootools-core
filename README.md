@@ -22,7 +22,7 @@ a. __To report a bug:__
 b. __To fix a bug:__
 
    1. Clone the repo.
-   2. Add a [spec](http://chaijs.com/guide/styles/#expect-section).
+   2. Add a [spec](https://github.com/Automattic/expect.js#api).
    3. Fix the bug.
    4. Build and run the specs.
    5. Push to your GitHub fork.

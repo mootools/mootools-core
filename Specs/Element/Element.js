@@ -77,9 +77,9 @@ describe('Element constructor', function(){
 		var check2 = new Element('input', { type: 'checkbox', checked: true });
 		var check3 = new Element('input', { type: 'checkbox', checked: 'checked' });
 
-		expect(check1.checked).to.not.be.ok;
-		expect(check2.checked).to.be.ok;
-		expect(check3.checked).to.be.ok;
+		expect(check1.checked).to.not.be.ok();
+		expect(check2.checked).to.be.ok();
+		expect(check3.checked).to.be.ok();
 	});
 
 	it("should return a select Element that retains it's selected options", function(){
@@ -102,8 +102,8 @@ describe('Element constructor', function(){
 			new Element('option', { name: 'bmw', value: 'bmw', html: 'BMW' })
 		);
 
-		expect(select1.multiple).to.be.ok;
-		expect(select2.multiple).to.be.ok;
+		expect(select1.multiple).to.be.ok();
+		expect(select2.multiple).to.be.ok();
 
 		expect(select1.name).to.equal(select2.name);
 		expect(select1.options.length).to.equal(select2.options.length);
@@ -122,8 +122,8 @@ describe('Element.set', function(){
 	it("should set the checked attribute of an Element", function(){
 		var input1 = new Element('input', {type: 'checkbox'}).set('checked', 'checked');
 		var input2 = new Element('input', {type: 'checkbox'}).set('checked', true);
-		expect(input1.checked).to.be.ok;
-		expect(input2.checked).to.be.ok;
+		expect(input1.checked).to.be.ok();
+		expect(input2.checked).to.be.ok();
 	});
 
 	it("should set the class name of an element", function(){
@@ -217,17 +217,17 @@ describe('Element.set', function(){
 	it("should set various attributes of a script Element", function(){
 		var script = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
 		expect(script.type).to.equal('text/javascript');
-		expect(script.defer).to.be.ok;
+		expect(script.defer).to.be.ok();
 	});
 
 	it("should set various attributes of a table Element", function(){
 		var table1 = new Element('table').set({ border: '2', cellpadding: '3', cellspacing: '4', align: 'center' });
 		var table2 = new Element('table').set({ cellPadding: '3', cellSpacing: '4' });
-		expect(table1.border == 2).to.be.ok;
-		expect(table1.cellPadding == 3).to.be.ok;
-		expect(table2.cellPadding == 3).to.be.ok;
-		expect(table1.cellSpacing == 4).to.be.ok;
-		expect(table2.cellSpacing == 4).to.be.ok;
+		expect(table1.border == 2).to.be.ok();
+		expect(table1.cellPadding == 3).to.be.ok();
+		expect(table2.cellPadding == 3).to.be.ok();
+		expect(table1.cellSpacing == 4).to.be.ok();
+		expect(table2.cellSpacing == 4).to.be.ok();
 		expect(table1.align).to.equal('center');
 	});
 
@@ -355,7 +355,7 @@ describe('$$', function(){
 	it('should return all Elements of a specific tag', function(){
 		var divs1 = $$('div');
 		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
-		expect(divs1).to.deep.equal(divs2);
+		expect(divs1).to.eql(divs2);
 	});
 
 	it('should return multiple Elements for each specific tag', function(){
@@ -366,11 +366,11 @@ describe('$$', function(){
 		};
 		var headers1 = $$('h3, h4').sort(sortBy);
 		var headers2 = new Elements(Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')])).sort(sortBy);
-		expect(headers1).to.deep.equal(headers2);
+		expect(headers1).to.eql(headers2);
 	});
 
 	it('should return an empty array if not is found', function(){
-		expect($$('not_found')).to.deep.equal(new Elements([]));
+		expect($$('not_found')).to.eql(new Elements([]));
 	});
 
 	afterEach(function(){
@@ -480,7 +480,7 @@ describe('Document.getElements', function(){
 	it('should return all the elements that match the tag', function(){
 		var divs = document.getElements('div');
 		var ndivs = new Elements(document.getElementsByTagName('div'));
-		expect(divs).to.deep.equal(ndivs);
+		expect(divs).to.eql(ndivs);
 	});
 
 	it('should return all the elements that match the tags', function(){
@@ -1016,7 +1016,7 @@ describe('Element.clone', function(){
 		var input1 = inputs[0].clone();
 		var input2 = inputs[1].clone(false, true);
 
-		expect(input1.id).to.not.be.ok;
+		expect(input1.id).to.not.be.ok();
 		expect(input2.id).to.equal('input2');
 		expect(input1.value).to.equal('Some Value');
 		expect(input2.value).to.equal('');
@@ -1031,7 +1031,7 @@ describe('Element.clone', function(){
 		var textarea1 = textareas[0].clone();
 		var textarea2 = textareas[1].clone(false, true);
 
-		expect(textarea1.id).to.not.be.ok;
+		expect(textarea1.id).to.not.be.ok();
 		expect(textarea2.id).to.equal('textarea2');
 		expect(textarea1.value).to.equal('');
 		expect(textarea2.value).to.equal('Some-Text-Here');
@@ -1046,10 +1046,10 @@ describe('Element.clone', function(){
 		var check1 = checks[0].clone();
 		var check2 = checks[1].clone(false, true);
 
-		expect(check1.id).to.not.be.ok;
+		expect(check1.id).to.not.be.ok();
 		expect(check2.id).to.equal('check2');
-		expect(check1.checked).to.not.be.ok;
-		expect(check2.checked).to.be.ok;
+		expect(check1.checked).to.not.be.ok();
+		expect(check2.checked).to.be.ok();
 	});
 
 	it('should clone a select and retain selected state', function(){
@@ -1073,11 +1073,11 @@ describe('Element.clone', function(){
 		var select1 = selects[0].clone(true);
 		var select2 = selects[1].clone(true, true);
 
-		expect(select1.id).to.not.be.ok;
+		expect(select1.id).to.not.be.ok();
 		expect(select2.id).to.equal('select2');
 		expect(select1.selectedIndex).to.equal(3);
-		expect(select2.options[3].selected).to.be.ok;
-		expect(select2.options[4].selected).to.be.ok;
+		expect(select2.options[3].selected).to.be.ok();
+		expect(select2.options[4].selected).to.be.ok();
 	});
 
 	it('should clone custom attributes', function(){
@@ -1251,43 +1251,43 @@ describe('Element.getProperty', function(){
 	it('should getPropety checked from an input Element', function(){
 		var checked1 = new Element('input', { type: 'checkbox' });
 		checked1.checked = 'checked';
-		expect(checked1.getProperty('checked')).to.be.ok;
+		expect(checked1.getProperty('checked')).to.be.ok();
 
 		var checked2 = new Element('input', { type: 'checkbox' });
 		checked2.checked = true;
-		expect(checked2.getProperty('checked')).to.be.ok;
+		expect(checked2.getProperty('checked')).to.be.ok();
 
 		var checked3 = new Element('input', { type: 'checkbox' });
 		checked3.checked = false;
-		expect(checked3.getProperty('checked')).to.not.be.ok;
+		expect(checked3.getProperty('checked')).to.not.be.ok();
 	});
 
 	it('should getProperty disabled from an input Element', function(){
 		var disabled1 = new Element('input', { type: 'text' });
 		disabled1.disabled = 'disabled';
-		expect(disabled1.getProperty('disabled')).to.be.ok;
+		expect(disabled1.getProperty('disabled')).to.be.ok();
 
 		var disabled2 = new Element('input', { type: 'text' });
 		disabled2.disabled = true;
-		expect(disabled2.getProperty('disabled')).to.be.ok;
+		expect(disabled2.getProperty('disabled')).to.be.ok();
 
 		var disabled3 = new Element('input', { type: 'text' });
 		disabled3.disabled = false;
-		expect(disabled3.getProperty('disabled')).to.not.be.ok;
+		expect(disabled3.getProperty('disabled')).to.not.be.ok();
 	});
 
 	it('should getProperty readonly from an input Element', function(){
 		var readonly1 = new Element('input', { type: 'text' });
 		readonly1.readOnly = 'readonly';
-		expect(readonly1.getProperty('readonly')).to.be.ok;
+		expect(readonly1.getProperty('readonly')).to.be.ok();
 
 		var readonly2 = new Element('input', { type: 'text' });
 		readonly2.readOnly = true;
-		expect(readonly2.getProperty('readonly')).to.be.ok;
+		expect(readonly2.getProperty('readonly')).to.be.ok();
 
 		var readonly3 = new Element('input', { type: 'text' });
 		readonly3.readOnly = false;
-		expect(readonly3.getProperty('readonly')).to.not.be.ok;
+		expect(readonly3.getProperty('readonly')).to.not.be.ok();
 	});
 
 });
@@ -1312,35 +1312,35 @@ describe('Element.setProperty', function(){
 
 	it('should setProperty checked from an input Element', function(){
 		var checked1 = new Element('input', { type: 'checkbox' }).setProperty('checked', 'checked');
-		expect(checked1.getProperty('checked')).to.be.ok;
+		expect(checked1.getProperty('checked')).to.be.ok();
 
 		var checked2 = new Element('input', { type: 'checkbox' }).setProperty('checked', true);
-		expect(checked2.getProperty('checked')).to.be.ok;
+		expect(checked2.getProperty('checked')).to.be.ok();
 
 		var checked3 = new Element('input', { type: 'checkbox' }).setProperty('checked', false);
-		expect(checked3.getProperty('checked')).to.not.be.ok;
+		expect(checked3.getProperty('checked')).to.not.be.ok();
 	});
 
 	it('should setProperty disabled of an input Element', function(){
 		var disabled1 = new Element('input', { type: 'text' }).setProperty('disabled', 'disabled');
-		expect(disabled1.getProperty('disabled')).to.be.ok;
+		expect(disabled1.getProperty('disabled')).to.be.ok();
 
 		var disabled2 = new Element('input', { type: 'text' }).setProperty('disabled', true);
-		expect(disabled2.getProperty('disabled')).to.be.ok;
+		expect(disabled2.getProperty('disabled')).to.be.ok();
 
 		var disabled3 = new Element('input', { type: 'text' }).setProperty('disabled', false);
-		expect(disabled3.getProperty('disabled')).to.not.be.ok;
+		expect(disabled3.getProperty('disabled')).to.not.be.ok();
 	});
 
 	it('should setProperty readonly of an input Element', function(){
 		var readonly1 = new Element('input', { type: 'text' }).setProperty('readonly', 'readonly');
-		expect(readonly1.getProperty('readonly')).to.be.ok;
+		expect(readonly1.getProperty('readonly')).to.be.ok();
 
 		var readonly2 = new Element('input', { type: 'text' }).setProperty('readonly', true);
-		expect(readonly2.getProperty('readonly')).to.be.ok;
+		expect(readonly2.getProperty('readonly')).to.be.ok();
 
 		var readonly3 = new Element('input', { type: 'text' }).setProperty('readonly', false);
-		expect(readonly3.getProperty('readonly')).to.not.be.ok;
+		expect(readonly3.getProperty('readonly')).to.not.be.ok();
 	});
 
 	it('should setProperty defaultValue of an input Element', function(){
@@ -1360,7 +1360,7 @@ describe('Element.getProperties', function(){
 	it('should return an object associate with the properties passed', function(){
 		var readonly = new Element('input', { type: 'text', readonly: 'readonly' });
 		var props = readonly.getProperties('type', 'readonly');
-		expect(props).to.deep.equal({ type: 'text', readonly: true });
+		expect(props).to.eql({ type: 'text', readonly: true });
 	});
 
 });
@@ -1370,7 +1370,7 @@ describe('Element.setProperties', function(){
 	it('should set each property to the Element', function(){
 		var readonly = new Element('input').setProperties({ type: 'text', readonly: 'readonly' });
 		var props = readonly.getProperties('type', 'readonly');
-		expect(props).to.deep.equal({ type: 'text', readonly: true });
+		expect(props).to.eql({ type: 'text', readonly: true });
 	});
 
 });
@@ -1380,7 +1380,7 @@ describe('Element.removeProperties', function(){
 	it('should remove each property from the Element', function(){
 		var anchor = new Element('a', {href: '#', title: 'title', rel: 'left'});
 		anchor.removeProperties('title', 'rel');
-		expect(anchor.getProperties('href', 'title', 'rel')).to.deep.equal({ href: '#', title: null, rel: null });
+		expect(anchor.getProperties('href', 'title', 'rel')).to.eql({ href: '#', title: null, rel: null });
 	});
 
 });
@@ -1411,16 +1411,16 @@ describe('Element.getAllPrevious', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
-		expect(children[2].getAllPrevious()).to.deep.equal(new Elements([children[1], children[0]]));
-		expect(children[0].getAllPrevious()).to.deep.equal(new Elements([]));
+		expect(children[2].getAllPrevious()).to.eql(new Elements([children[1], children[0]]));
+		expect(children[0].getAllPrevious()).to.eql(new Elements([]));
 	});
 
 	it('should return all the previous Elements that match, otherwise an empty array', function(){
 		var container = new Element('div');
 		var children = [new Element('a'), new Element('div'), new Element('a'), new Element('div')];
 		container.adopt(children);
-		expect(children[3].getAllPrevious('a')).to.deep.equal(new Elements([children[2], children[0]]));
-		expect(children[1].getAllPrevious('span')).to.deep.equal(new Elements([]));
+		expect(children[3].getAllPrevious('a')).to.eql(new Elements([children[2], children[0]]));
+		expect(children[1].getAllPrevious('span')).to.eql(new Elements([]));
 	});
 
 });
@@ -1451,16 +1451,16 @@ describe('Element.getAllNext', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
-		expect(children[0].getAllNext()).to.deep.equal(new Elements(children.slice(1)));
-		expect(children[2].getAllNext()).to.deep.equal(new Elements([]));
+		expect(children[0].getAllNext()).to.eql(new Elements(children.slice(1)));
+		expect(children[2].getAllNext()).to.eql(new Elements([]));
 	});
 
 	it('should return all the next Elements that match, otherwise an empty array', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('div'), new Element('a')];
 		container.adopt(children);
-		expect(children[0].getAllNext('a')).to.deep.equal(new Elements([children[1], children[3]]));
-		expect(children[0].getAllNext('span')).to.deep.equal(new Elements([]));
+		expect(children[0].getAllNext('a')).to.eql(new Elements([children[1], children[3]]));
+		expect(children[0].getAllNext('span')).to.eql(new Elements([]));
 	});
 
 });
@@ -1523,16 +1523,16 @@ describe('Element.getParents', function(){
 		var container = new Element('p');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(new Element('div').adopt(new Element('div').adopt(children)));
-		expect(children[1].getParents()).to.deep.equal(new Elements([container.getFirst().getFirst(), container.getFirst(), container]));
-		expect(container.getParents()).to.deep.equal(new Elements([]));
+		expect(children[1].getParents()).to.eql(new Elements([container.getFirst().getFirst(), container.getFirst(), container]));
+		expect(container.getParents()).to.eql(new Elements([]));
 	});
 
 	it('should return the parents of the Element that match, otherwise returns an empty array', function(){
 		var container = new Element('p');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(new Element('div').adopt(new Element('div').adopt(children)));
-		expect(children[1].getParents('div')).to.deep.equal(new Elements([container.getFirst().getFirst(), container.getFirst()]));
-		expect(children[1].getParents('table')).to.deep.equal(new Elements([]));
+		expect(children[1].getParents('div')).to.eql(new Elements([container.getFirst().getFirst(), container.getFirst()]));
+		expect(children[1].getParents('table')).to.eql(new Elements([]));
 	});
 
 });
@@ -1543,16 +1543,16 @@ describe('Element.getChildren', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
-		expect(container.getChildren()).to.deep.equal(new Elements(children));
-		expect(children[0].getChildren()).to.deep.equal(new Elements([]));
+		expect(container.getChildren()).to.eql(new Elements(children));
+		expect(children[0].getChildren()).to.eql(new Elements([]));
 	});
 
 	it("should return the Element's children that match, otherwise returns an empty array", function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('a')];
 		container.adopt(children);
-		expect(container.getChildren('a')).to.deep.equal(new Elements([children[1], children[2]]));
-		expect(container.getChildren('span')).to.deep.equal(new Elements([]));
+		expect(container.getChildren('a')).to.eql(new Elements([children[1], children[2]]));
+		expect(container.getChildren('span')).to.eql(new Elements([]));
 	});
 
 });
@@ -1618,7 +1618,7 @@ describe('Elements.extend', function(){
 		var container = new Element('div').adopt(items);
 
 		container.getElements('span').extend(container.getElements('p'));
-		expect($$(items)).to.deep.equal(container.getElements('*'));
+		expect($$(items)).to.eql(container.getElements('*'));
 		expect(items.length).to.equal(4);
 	});
 	//</1.2compat>
@@ -1633,7 +1633,7 @@ describe('Elements.extend', function(){
 		var container = new Element('div').adopt(items);
 
 		container.getElements('span').append(container.getElements('p'));
-		expect(new Elements(items)).to.deep.equal(container.getElements('*'));
+		expect(new Elements(items)).to.eql(container.getElements('*'));
 		expect(items.length).to.equal(4);
 	});
 
@@ -1679,10 +1679,10 @@ describe('Element.removeProperty', function(){
 		readonly.removeProperty('readonly');
 		readonly.removeProperty('maxlength');
 		var props = readonly.getProperties('type', 'readonly');
-		expect(props).to.deep.equal({type: 'text', readonly: false});
+		expect(props).to.eql({type: 'text', readonly: false});
 
 		var maxlength = readonly.getProperty('maxlength');
-		expect(!maxlength || maxlength == 2147483647).to.be.ok; // ie6/7 Bug
+		expect(!maxlength || maxlength == 2147483647).to.be.ok(); // ie6/7 Bug
 	});
 
 });
@@ -1939,7 +1939,7 @@ describe('Elements.append', function(){
 		var appended = list.append(p);
 
 		expect(appended).to.equal(list);
-		expect(appended).to.deep.equal(new Elements([list[0], list[1], p[0], p[1]]));
+		expect(appended).to.eql(new Elements([list[0], list[1], p[0], p[1]]));
 	});
 
 });
@@ -1960,7 +1960,7 @@ describe('Elements.concat', function(){
 		var concatenated = list.concat(p[0], p[1]);
 
 		expect(concatenated).to.not.equal(list);
-		expect(concatenated).to.deep.equal(new Elements([list[0], list[1], p[0], p[1]]));
+		expect(concatenated).to.eql(new Elements([list[0], list[1], p[0], p[1]]));
 
 		expect(typeOf(concatenated)).to.equal('elements');
 	});
@@ -2000,7 +2000,7 @@ describe('Element.getElements', function(){
 	});
 
 	it('should return an empty collection if called on document.body', function(){
-		expect($(document.body).getElements()).to.deep.equal(new Elements);
+		expect($(document.body).getElements()).to.eql(new Elements);
 	});
 
 });
@@ -2572,12 +2572,12 @@ describe('new Element(expression)', function(){
 		var table = new Element('table[cellpadding=0]');
 
 		expect(table.tagName.toLowerCase()).to.equal('table');
-		expect(table.cellPadding == 0).to.be.ok;
+		expect(table.cellPadding == 0).to.be.ok();
 	});
 
 	it('should allow empty boolean attributes', function(){
 		var script = new Element('script[async]');
-		expect(script.get('async')).to.be.ok;
+		expect(script.get('async')).to.be.ok();
 	});
 
 	it('should allow false to be passed for checked', function(){

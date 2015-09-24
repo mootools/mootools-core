@@ -186,11 +186,11 @@ describe('Element.Dimensions', function(){
 	describe('Element.getPosition', function(){
 
 		it('should measure the x and y position of the element', function(){
-			expect(div.getPosition()).to.deep.equal({x: 102, y: 102});
+			expect(div.getPosition()).to.eql({x: 102, y: 102});
 		});
 
 		it('should measure the x and y position of the element relative to another', function(){
-			expect(relDiv.getPosition(div)).to.deep.equal({x: 8, y: 8});
+			expect(relDiv.getPosition(div)).to.eql({x: 8, y: 8});
 		});
 
 		it('should match subpixels if needed', function(){
@@ -225,7 +225,7 @@ describe('Element.Dimensions', function(){
 	describe('Element.getCoordinates', function(){
 
 		it('should return the coordinates relative to parent', function(){
-			expect(absDiv.getCoordinates(relDiv)).to.deep.equal({left:15, top:15, width:22, height:22, right:37, bottom:37});
+			expect(absDiv.getCoordinates(relDiv)).to.eql({left:15, top:15, width:22, height:22, right:37, bottom:37});
 		});
 
 	});
@@ -233,7 +233,7 @@ describe('Element.Dimensions', function(){
 	describe('Element.getScrollSize', function(){
 
 		it('should return the scrollSize', function(){
-			expect(scrollDiv.getScrollSize()).to.deep.equal({x:200, y:200});
+			expect(scrollDiv.getScrollSize()).to.eql({x:200, y:200});
 		});
 
 	});
@@ -241,7 +241,7 @@ describe('Element.Dimensions', function(){
 	describe('Element.scrollTo', function(){
 
 		it('should scroll the element', function(){
-			expect(scrollDiv.scrollTo(20, 20).getScroll()).to.deep.equal({x:20, y:20});
+			expect(scrollDiv.scrollTo(20, 20).getScroll()).to.eql({x:20, y:20});
 		});
 
 	});

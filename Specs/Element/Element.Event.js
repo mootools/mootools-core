@@ -109,10 +109,10 @@ describe('Events API: Element', function(){
 		}).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2]);
+		expect(methods).to.eql([1, 2]);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2, 1, 2]);
+		expect(methods).to.eql([1, 2, 1, 2]);
 	});
 
 	it('should be able to remove itself', function(){
@@ -135,10 +135,10 @@ describe('Events API: Element', function(){
 		object.addEvent('event', one).addEvent('event', two).addEvent('event', three);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2, 3]);
+		expect(methods).to.eql([1, 2, 3]);
 
 		object[fire]('event');
-		expect(methods).to.deep.equal([1, 2, 3, 3]);
+		expect(methods).to.eql([1, 2, 3, 3]);
 	});
 
 });

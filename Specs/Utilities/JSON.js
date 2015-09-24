@@ -27,7 +27,7 @@ describe('JSON', function(){
 			}
 		};
 
-		expect(JSON.decode(JSON.encode(object))).to.deep.equal(object);
+		expect(JSON.decode(JSON.encode(object))).to.eql(object);
 	});
 
 });
