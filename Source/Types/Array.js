@@ -172,7 +172,7 @@ Array.implement({
 
 Array.alias('extend', 'append');
 
-var $pick = function(){
+var $pick = this.$pick = function(){
 	return Array.from(arguments).pick();
 };
 
