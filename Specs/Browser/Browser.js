@@ -45,10 +45,32 @@ describe('String.stripScripts', function(){
 	it('should execute the stripped tags from the string', function(){
 		expect('<div><script type="text/javascript"> var stripScriptsSpec = 42; </script></div>'.stripScripts(true)).toEqual('<div></div>');
 		expect(window.stripScriptsSpec).toEqual(42);
-		expect('<div><script>\n// <!--\nvar stripScriptsSpec = 24;\n//-->\n</script></div>'.stripScripts(true)).toEqual('<div></div>');
+		expect('<div><script id="my-script">\n// <!--\nvar stripScriptsSpec = 24;\n//-->\n</script></div>'.stripScripts(true)).toEqual('<div></div>');
 		expect(window.stripScriptsSpec).toEqual(24);
 		expect('<div><script>\n/*<![CDATA[*/\nvar stripScriptsSpec = 4242;\n/*]]>*/</script></div>'.stripScripts(true)).toEqual('<div></div>');
 		expect(window.stripScriptsSpec).toEqual(4242);
+	});
+	
+	it('should load & execute script files synchronously', function(){
+		var div = new Element('div').inject(document.body);
+		[
+			'<div id="my-container"></div>',
+			'<script>',
+			'document.id("my-container").set("text", "dynamic content");',
+			'</script>',
+			'<script id="mt-more-More">',
+			'Drag = undefined;',
+			'</script>',
+			'<script type="text/javascript" id="mt-more-Drag" src="https://rawgithub.com/mootools/mootools-more/master/Source/Drag/Drag.js"></script>',
+			'<script src="https://rawgithub.com/mootools/mootools-more/master/Source/Drag/Drag.Move.js" id="mt-more-Drag-Move" type="text/javascript"></script>',
+			'<script>',
+			'new Drag.Move(div);',
+			'</script>'
+		].join('').stripScripts(function(code, html, urls, fn){
+			div.set('html', html);
+			fn();
+			expect(div.get('text')).toEqual('dynamic content');
+		});
 	});
 
 });
