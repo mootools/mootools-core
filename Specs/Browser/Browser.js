@@ -78,19 +78,19 @@ describe('Browser', function(){
 	var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 
 	it('should think it is executed in a browser', function(){
-		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera']).toContain(Browser.name);
+		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera', 'edge']).toContain(Browser.name);
 	});
 
 //<1.4compat>
 	it('should assign a Browser[Browser.name] property for all browsers, except IE v11 or higher', function(){
 		if (Browser.name != 'ie' || Browser.version < 11){
-			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toEqual(true);
+			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera || Browser.edge).toEqual(true);
 		}
 	});
 
 	it('should not assign a Browser[Browser.name] property for IE v11 or higher', function(){
 		if (Browser.name == 'ie' && Browser.version >= 11){
-			expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera).toBeUndefined();
+			expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera || Browser.edge).toBeUndefined();
 		}
 	});
 //</1.4compat>
