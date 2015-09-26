@@ -36,8 +36,8 @@ module.exports = function(grunt) {
 			},
 			dev: {
 				singleRun: false,
-				browsers: ['PhantomJS'],
-				reporters: 'dots'
+				captureTimeout: 0,
+				browsers: ['PhantomJS']
 			},
 			// Testers for dist build files
 			compatFull: distTasks.testTasks.compatFull,
@@ -60,7 +60,9 @@ module.exports = function(grunt) {
 	tasks = options.travis.build == 'server' ? tasks.concat('server-spec-runner') : usePhantom ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
 
 	grunt.registerTask('default', compatBuild.concat('karma:continuous'));		// local testing - compat build
+	grunt.registerTask('default:dev', compatBuild.concat('karma:dev'));		// local dev testing - compat build
 	grunt.registerTask('nocompat', nocompatBuild.concat('karma:continuous'));	// local testing - no compat build
+	grunt.registerTask('nocompat:dev', nocompatBuild.concat('karma:dev'));		// local dev testing - no compat build
 	grunt.registerTask('server', serverBuild.concat('server-spec-runner'));	// local testing - server build
 	grunt.registerTask('server-spec-runner', function(){						// Travis server specs
 		var done = this.async();
