@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-  - "0.12"
+  - '4'
 
 env:
   matrix:
@@ -39,9 +39,9 @@ env:
 
 matrix:
   include:
-    - node_js: '0.10'
+    - node_js: '0.12'
       env: BUILD='server'
-    - node_js: 'iojs'
+    - node_js: '0.10'
       env: BUILD='server'
 
 cache:
