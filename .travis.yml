@@ -1,9 +1,7 @@
 language: node_js
 
 node_js:
-  - "0.10"
-  - "0.12"
-  - "iojs"
+  - '4'
 
 env:
   matrix:
@@ -39,8 +37,12 @@ env:
     - secure: myFP8vndNuVGr2b+WtP4efJ2fJL7By7PUi2yxgbUlaqK82qgkayrp7zu6G7YKYBtWRTaRvwybX4XVZn9zCvFm2xTB8xSeWy3bB63JZcYPGzLpwusgJ69Kr+K5dAn/EzIj23pIjqVic9XmEEFK1FqCLp8V2Ty4kl3RG7onfwALUo=
     - secure: PFKH8/mY7hD82ipfa46znhWJQzEZ8226ZgHLVFLiM2LAxHP6aWGDgyYaSZVGlpulAGXx2Pq+RLPjetQRpjy7CA6NWr/2YtAxvx88QkufRRylKyNgEy5Pf1ej/V88SHnfdpGIizNeF/ofAMPmsGfBaDUm3+gU1RT+zLNj5gl3J/4=
 
-before_script:
-  - curl https://gist.github.com/santiycr/5139565/raw/sauce_connect_setup.sh | bash
+matrix:
+  include:
+    - node_js: '0.12'
+      env: BUILD='server'
+    - node_js: '0.10'
+      env: BUILD='server'
 
 cache:
   directories:

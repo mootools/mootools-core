@@ -1,6 +1,7 @@
 "use strict";
 
 var fs = require('fs');
+var path = require('path');
 var YAML = require('js-yaml');
 var ymlPackage = YAML.safeLoad(fs.readFileSync('package.yml', 'utf8'));
 var travisBuild = process.env.BUILD;
@@ -9,7 +10,7 @@ var sauceBrowsers = JSON.parse(fs.readFileSync('Tests/browsers.json'));
 var serverBuildOptions = JSON.parse(fs.readFileSync('Tests/dist-tasks.json')).build.server.options;
 var serverBuild = {
 	modules: serverBuildOptions.only,
-	specFiles: ['Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js', 'Specs/Core/*.js'],
+	specFiles: ['Specs/Core/*.js', 'Specs/Class/*.js', 'Specs/Types/*.js', 'Specs/Utilities/JSON.js'],
 	strip: serverBuildOptions.strip
 }
 
@@ -87,8 +88,9 @@ var gruntOptions = {
 var karmaOptions = {
     captureTimeout: 60000 * 2,
     singleRun: true,
-    frameworks: ['jasmine', 'sinon'],
-    files: ['Tests/Utilities/*.js', 'mootools-*.js'],
+    frameworks: ['jasmine', 'sinon', 'syn'],
+    plugins: ['karma-*', path.resolve('Tests/Plugins/syn')],
+    files: ['mootools-*.js'],
     sauceLabs: {
         username: process.env.SAUCE_USERNAME,
         accessKey: process.env.SAUCE_ACCESS_KEY,

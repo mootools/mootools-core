@@ -338,6 +338,17 @@ describe('$', function(){
 
 describe('$$', function(){
 
+	beforeEach(function(){
+		this.elements = [
+			document.createElement('div'),
+			document.createElement('h3'),
+			document.createElement('h4')
+		];
+		for (var i = 0, l = this.elements.length; i < l; ++i){
+			document.body.appendChild(this.elements[i]);
+		}
+	});
+
 	it('should return all Elements of a specific tag', function(){
 		var divs1 = $$('div');
 		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
@@ -350,13 +361,19 @@ describe('$$', function(){
 			a = uidOf(a); b = uidOf(b);
 			return a > b ? 1 : -1;
 		};
-		var headers1 = $$('h3', 'h4').sort(sortBy);
+		var headers1 = $$('h3, h4').sort(sortBy);
 		var headers2 = new Elements(Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')])).sort(sortBy);
 		expect(headers1).toEqual(headers2);
 	});
 
 	it('should return an empty array if not is found', function(){
 		expect($$('not_found')).toEqual(new Elements([]));
+	});
+
+	afterEach(function(){
+		for (var i = 0, l = this.elements.length; i < l; ++i){
+			document.body.removeChild(this.elements[i]);
+		}
 	});
 
 });
@@ -922,7 +939,7 @@ describe('Element.clone', function(){
 	it('should return a clone', function(){
 		var div = new Element('div');
 		var clone = div.clone();
-		expect(div).not.toEqual(clone);
+		expect(div).not.toBe(clone);
 		expect(typeOf(div)).toEqual('element');
 		expect(typeOf(clone)).toEqual('element');
 	});
@@ -2431,23 +2448,21 @@ describe('Element.appendHTML', function(){
 
 describe('IFrame', function(){
 
+	beforeEach(function(done){
+		this.onComplete = sinon.spy(function(){ done(); });
+
+		this.iframe = new IFrame({
+			src: 'http://' + document.location.host + '/random',
+			onload: this.onComplete
+		}).inject(document.body);
+	});
+
 	it('(async) should call onload', function(){
-		runs(function(){
-			this.onComplete = jasmine.createSpy('IFrame onComplete');
+		expect(this.onComplete.called).toBe(true);
+	}, 1000);
 
-			this.iframe = new IFrame({
-				src: 'http://' + document.location.host + '/random',
-				onload: this.onComplete
-			}).inject(document.body);
-		});
-
-		waitsFor(1000, function(){
-			return this.onComplete.wasCalled;
-		});
-
-		runs(function(){
-			this.iframe.destroy();
-		});
+	afterEach(function(){
+		this.iframe.destroy();
 	});
 
 });

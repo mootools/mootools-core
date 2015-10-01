@@ -171,7 +171,12 @@ describe("Array", function(){
 
 	// Array.link
 	it('should link an array items to a new object according to the specified matchers', function(){
-		var el = document.createElement('div');
+		if (typeof document === 'undefined'){
+			var el = {$family: function(){ return 'element'; }};
+		} else {
+			var el = document.createElement('div');
+		}
+
 		var assoc2 = [100, 'Hello', {foo: 'bar'}, el, false].link({
 			myNumber: isType('number'),
 			myElement: isType('element'),

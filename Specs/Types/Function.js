@@ -161,17 +161,21 @@ describe("Function Methods", function(){
 	// Function.delay
 
 	it('delay should return a timer pointer', function(){
+		var referenceTimer = setTimeout(function(){}, 10000);
 		var timer = (function(){}).delay(10000);
-		expect(typeOf(timer) == 'number').toBeTruthy();
+		expect(typeOf(timer)).toEqual(typeOf(referenceTimer));
 		clearTimeout(timer);
+		clearTimeout(referenceTimer);
 	});
 
 	// Function.periodical
 
 	it('periodical should return a timer pointer', function(){
+		var referenceTimer = setInterval(function(){}, 10000);
 		var timer = (function(){}).periodical(10000);
-		expect(typeOf(timer) == 'number').toBeTruthy();
+		expect(typeOf(timer)).toEqual(typeOf(referenceTimer));
 		clearInterval(timer);
+		clearInterval(referenceTimer);
 	});
 
 });
@@ -214,33 +218,33 @@ describe('Function.attempt', function(){
 describe('Function.bind', function(){
 
 	it('should return the function bound to an object', function(){
-		var spy = jasmine.createSpy('Function.bind');
+		var spy = sinon.spy();
 		var f = spy.bind('MooTools');
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 		f();
-		expect(spy).toHaveBeenCalledWith();
+		expect(spy.calledWith()).toBe(true);
 		f('foo', 'bar');
-		expect(spy).toHaveBeenCalledWith('foo', 'bar');
+		expect(spy.calledWith('foo', 'bar')).toBe(true);
 	});
 
 	it('should return the function bound to an object with specified argument', function(){
 		var binding = {some: 'binding'};
-		var spy = jasmine.createSpy('Function.bind with arg').andReturn('something');
+		var spy = sinon.stub().returns('something');
 		var f = spy.bind(binding, 'arg');
 
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy.mostRecentCall.object).toEqual(binding);
+		expect(spy.lastCall.thisValue).toEqual(binding);
 	});
 
 	it('should return the function bound to an object with multiple arguments', function(){
 		var binding = {some: 'binding'};
-		var spy = jasmine.createSpy('Function.bind with multiple args').andReturn('something');
+		var spy = sinon.stub().returns('something');
 		var f = spy.bind(binding, ['foo', 'bar']);
 
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy.mostRecentCall.object).toEqual(binding);
+		expect(spy.lastCall.thisValue).toEqual(binding);
 	});
 
 	dit('should still be possible to use it as constructor', function(){
@@ -276,22 +280,22 @@ describe('Function.bind', function(){
 describe('Function.pass', function(){
 
 	it('should return a function that when called passes the specified arguments to the original function', function(){
-		var spy = jasmine.createSpy('Function.pass').andReturn('the result');
+		var spy = sinon.stub().returns('the result');
 		var fnc = spy.pass('an argument');
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 		expect(fnc('additional', 'arguments')).toBe('the result');
-		expect(spy).toHaveBeenCalledWith('an argument');
+		expect(spy.calledWith('an argument')).toBe(true);
 		expect(spy.callCount).toBe(1);
 	});
 
 	it('should pass multiple arguments and bind the function to a specific object when it is called', function(){
-		var spy = jasmine.createSpy('Function.pass with bind').andReturn('the result');
+		var spy = sinon.stub().returns('the result');
 		var binding = {some: 'binding'};
 		var fnc = spy.pass(['multiple', 'arguments'], binding);
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 		expect(fnc('additional', 'arguments')).toBe('the result');
-		expect(spy.mostRecentCall.object).toEqual(binding);
-		expect(spy).toHaveBeenCalledWith('multiple', 'arguments');
+		expect(spy.lastCall.thisValue).toEqual(binding);
+		expect(spy.calledWith('multiple', 'arguments')).toBe(true);
 	});
 
 });
@@ -316,7 +320,7 @@ describe('Function.attempt', function(){
 	});
 
 	it("should return the function's return value", function(){
-		var spy = jasmine.createSpy('Function.attempt').andReturn('hello world!');
+		var spy = sinon.stub().returns('hello world!');
 		expect(spy.attempt()).toEqual('hello world!');
 	});
 
@@ -341,16 +345,16 @@ describe('Function.delay', function(){
 	});
 
 	it('should return a timer pointer', function(){
-		var spyA = jasmine.createSpy('Alice');
-		var spyB = jasmine.createSpy('Bob');
+		var spyA = sinon.spy();
+		var spyB = sinon.spy();
 
 		var timerA = spyA.delay(200);
 		var timerB = spyB.delay(200);
 
 		this.clock.tick(100);
 
-		expect(spyA).not.toHaveBeenCalled();
-		expect(spyB).not.toHaveBeenCalled();
+		expect(spyA.called).toBe(false);
+		expect(spyB.called).toBe(false);
 		clearTimeout(timerB);
 
 		this.clock.tick(250);
@@ -359,11 +363,11 @@ describe('Function.delay', function(){
 	});
 
 	it('should pass parameter 0', function(){
-		var spy = jasmine.createSpy('Function.delay with 0');
+		var spy = sinon.spy();
 		spy.delay(50, null, 0);
 
 		this.clock.tick(100);
-		expect(spy).toHaveBeenCalledWith(0);
+		expect(spy.calledWith(0)).toBe(true);
 	});
 
 	it('should not pass any argument when no arguments passed', function(){
@@ -390,10 +394,10 @@ describe('Function.periodical', function(){
 	});
 
 	it('should return an interval pointer', function(){
-		var spy = jasmine.createSpy('Bond');
+		var spy = sinon.spy();
 
 		var interval = spy.periodical(10);
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 
 		this.clock.tick(100);
 
@@ -401,20 +405,20 @@ describe('Function.periodical', function(){
 		expect(spy.callCount).toBeLessThan(15);
 		clearInterval(interval);
 		spy.reset();
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 
 		this.clock.tick(100);
 
-		expect(spy).not.toHaveBeenCalled();
+		expect(spy.called).toBe(false);
 	});
 
 	it('should pass parameter 0', function(){
-		var spy = jasmine.createSpy('Function.periodical with 0');
+		var spy = sinon.spy();
 		var timer = spy.periodical(10, null, 0);
 
 		this.clock.tick(100);
 
-		expect(spy).toHaveBeenCalledWith(0);
+		expect(spy.calledWith(0)).toBe(true);
 		clearInterval(timer);
 	});
 
