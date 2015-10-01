@@ -54,8 +54,8 @@ describe('Fx.Morph', function(){
 
 		this.clock.tick(200);
 
-		expect(element.getStyle('height').toInt()).toEqual(50);
-		expect(element.getStyle('width').toInt()).toEqual(50);
+		expect(element.getStyle('height').toInt()).to.equal(50);
+		expect(element.getStyle('width').toInt()).to.equal(50);
 		element.destroy();
 
 	});
@@ -68,7 +68,7 @@ describe('Fx.Morph', function(){
 			duration: 100
 		});
 
-		expect(element.get('morph').options.duration).toEqual(100);
+		expect(element.get('morph').options.duration).to.equal(100);
 
 	});
 
@@ -78,8 +78,8 @@ describe('Fx.Morph', function(){
 
 		this.clock.tick(1000);
 
-		expect(this.div.setStyle.calledWith('left', ['10%'])).toBe(true);
-		expect(this.div.setStyle.calledWith('left', ['50%'])).toBe(true);
+		expect(this.div.setStyle.calledWith('left', ['10%'])).to.equal(true);
+		expect(this.div.setStyle.calledWith('left', ['50%'])).to.equal(true);
 
 		this.div.setStyle.restore();
 	});
@@ -96,8 +96,8 @@ describe('Fx.Morph', function(){
 
 		this.clock.tick(150);
 
-		expect(this.div.getStyle('top')).toEqual('100px');
-		expect(this.div.getStyle('opacity')).toEqual(1);
+		expect(this.div.getStyle('top')).to.equal('100px');
+		expect(this.div.getStyle('opacity')).to.equal(1);
 
 	});
 
@@ -116,8 +116,8 @@ describe('Fx.Morph', function(){
 
 		this.clock.tick(150);
 
-		expect(this.div.getStyle('top')).toEqual('100px');
-		expect(this.div.getStyle('opacity')).toEqual(1);
+		expect(this.div.getStyle('top')).to.equal('100px');
+		expect(this.div.getStyle('opacity')).to.equal(1);
 
 	});
 

@@ -21,11 +21,11 @@ describe('Cookie', function(){
 
 		Cookie.write('key', 'value', options);
 
-		expect(Cookie.read('key', options)).toBe('value');
+		expect(Cookie.read('key', options)).to.equal('value');
 
 		Cookie.dispose('key', options);
 
-		expect(Cookie.read('key', options)).toBeNull();
+		expect(Cookie.read('key', options)).to.equal(null);
 	});
 
 	it('should set HttpCookie flag correctly', function(){
@@ -36,7 +36,7 @@ describe('Cookie', function(){
 			}
 		}).write('value');
 
-		expect(instance.options.document.cookie.indexOf('HttpOnly')).not.toBe(-1);
+		expect(instance.options.document.cookie.indexOf('HttpOnly')).to.not.equal(-1);
 	});
 
 });

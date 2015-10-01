@@ -10,6 +10,8 @@ var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // don't run unless no compa
 
 (function(){
 
+var MooTools = new String('MooTools');
+
 var fn = function(){
 	return Array.from(arguments).slice();
 };
@@ -28,32 +30,27 @@ describe("Function Methods", function(){
 	// Function.create
 	it('should return a new function', function(){
 		var fnc = $empty.create();
-		expect($empty === fnc).toBeFalsy();
-	});
-
-	it('should return a new function', function(){
-		var fnc = $empty.create();
-		expect($empty === fnc).toBeFalsy();
+		expect($empty).to.not.equal(fnc);
 	});
 
 	it('should return a new function with specified argument', function(){
 		var fnc = fn.create({'arguments': 'rocks'});
-		expect(fnc()).toEqual(['rocks']);
+		expect(fnc()).to.eql(['rocks']);
 	});
 
 	it('should return a new function with multiple arguments', function(){
 		var fnc = fn.create({'arguments': ['MooTools', 'rocks']});
-		expect(fnc()).toEqual(['MooTools', 'rocks']);
+		expect(fnc()).to.eql(['MooTools', 'rocks']);
 	});
 
 	it('should return a new function bound to an object', function(){
 		var fnc = Rules.create({'bind': 'MooTools'});
-		expect(fnc()).toEqual('MooTools rules');
+		expect(fnc()).to.equal('MooTools rules');
 	});
 
 	it('should return a new function as an event', function(){
 		var fnc = fn.create({'arguments': [0, 1], 'event': true});
-		expect(fnc('an Event occurred')).toEqual(['an Event occurred', 0, 1]);
+		expect(fnc('an Event occurred')).to.eql(['an Event occurred', 0, 1]);
 	});
 	//</1.2compat>
 
@@ -61,40 +58,48 @@ describe("Function Methods", function(){
 
 	it('should return the function bound to an object', function(){
 		var fnc = Rules.bind('MooTools');
-		expect(fnc()).toEqual('MooTools rules');
+		expect(fnc()).to.equal('MooTools rules');
 	});
 
 	it('should return the function bound to an object with specified argument', function(){
-		var results = Args.bind('MooTools', 'rocks')();
-		expect(results[0] + '').toEqual(new String('MooTools') + '');
-		expect(results[1]).toEqual('rocks');
+		var results = Args.bind(MooTools, 'rocks')();
+		expect(results[0]).to.equal(MooTools);
+		expect(results[1]).to.equal('rocks');
 	});
 
 	dit('should return the function bound to an object with multiple arguments', function(){
-		var results = Args.bind('MooTools', ['rocks', 'da house'])();
-		expect(results[0] + '').toEqual(new String('MooTools') + '');
-		expect(results[1]).toEqual(['rocks', 'da house']);
+		var results = Args.bind(MooTools, ['rocks', 'da house'])();
+		expect(results[0]).to.equal(MooTools);
+		expect(results[1]).to.eql(['rocks', 'da house']);
 	});
 
 	//<1.2compat>
 	it('should return the function bound to an object with specified argument', function(){
-		var fnc = Args.bind('MooTools', 'rocks');
-		expect(fnc()).toEqual(['MooTools', 'rocks']);
+		var fnc = Args.bind(MooTools, 'rocks');
+		var result = fnc();
+		expect(result[0]).to.equal(MooTools);
+		expect(result).to.eql([MooTools, 'rocks']);
 	});
 
 	it('should return the function bound to an object with multiple arguments', function(){
-		var fnc = Args.bind('MooTools', ['rocks', 'da house']);
-		expect(fnc()).toEqual(['MooTools', 'rocks', 'da house']);
+		var fnc = Args.bind(MooTools, ['rocks', 'da house']);
+		var result = fnc();
+		expect(result[0]).to.equal(MooTools);
+		expect(result).to.eql([MooTools, 'rocks', 'da house']);
 	});
 
 	it('should return the function bound to an object and make the function an event listener', function(){
-		var fnc = Args.bindWithEvent('MooTools');
-		expect(fnc('an Event ocurred')).toEqual(['MooTools', 'an Event ocurred']);
+		var fnc = Args.bindWithEvent(MooTools);
+		var result = fnc('an Event occurred');
+		expect(result[0]).to.equal(MooTools);
+		expect(result).to.eql([MooTools, 'an Event occurred']);
 	});
 
 	it('should return the function bound to an object and make the function event listener with multiple arguments', function(){
-		var fnc = Args.bindWithEvent('MooTools', ['rocks', 'da house']);
-		expect(fnc('an Event ocurred')).toEqual(['MooTools', 'an Event ocurred', 'rocks', 'da house']);
+		var fnc = Args.bindWithEvent(MooTools, ['rocks', 'da house']);
+		var result = fnc('an Event occurred');
+		expect(result[0]).to.equal(MooTools);
+		expect(result).to.eql([MooTools, 'an Event occurred', 'rocks', 'da house']);
 	});
 	//</1.2compat>
 
@@ -102,29 +107,32 @@ describe("Function Methods", function(){
 
 	it('should return a function that when called passes the specified arguments to the original function', function(){
 		var fnc = fn.pass('MooTools is beautiful and elegant');
-		expect(fnc()).toEqual(['MooTools is beautiful and elegant']);
+		expect(fnc()).to.eql(['MooTools is beautiful and elegant']);
 	});
 
 	it('should pass multiple arguments and bind the function to a specific object when it is called', function(){
-		var fnc = Args.pass(['rocks', 'da house'], 'MooTools');
-		expect(fnc()).toEqual(['MooTools', 'rocks', 'da house']);
+		var fnc = Args.pass(['rocks', 'da house'], MooTools);
+		var result = fnc();
+		expect(result[0]).to.equal(MooTools);
+		expect(result).to.eql([MooTools, 'rocks', 'da house']);
 	});
 
 	//<1.2compat>
 	// Function.run
 	it('should run the function', function(){
 		var result = fn.run();
-		expect(result).toEqual([]);
+		expect(result).to.eql([]);
 	});
 
 	it('should run the function with multiple arguments', function(){
 		var result = fn.run(['MooTools', 'beautiful', 'elegant']);
-		expect(result).toEqual(['MooTools', 'beautiful', 'elegant']);
+		expect(result).to.eql(['MooTools', 'beautiful', 'elegant']);
 	});
 
 	it('should run the function with multiple arguments and bind the function to an object', function(){
-		var result = Args.run(['beautiful', 'elegant'], 'MooTools');
-		expect(result).toEqual(['MooTools', 'beautiful', 'elegant']);
+		var result = Args.run(['beautiful', 'elegant'], MooTools);
+		expect(result[0]).to.equal(MooTools);
+		expect(result).to.eql([MooTools, 'beautiful', 'elegant']);
 	});
 	//</1.2compat>
 
@@ -132,8 +140,8 @@ describe("Function Methods", function(){
 
 	it("should extend the function's properties", function(){
 		var fnc = (function(){}).extend({a: 1, b: 'c'});
-		expect(fnc.a).toEqual(1);
-		expect(fnc.b).toEqual('c');
+		expect(fnc.a).to.equal(1);
+		expect(fnc.b).to.equal('c');
 	});
 
 
@@ -148,14 +156,14 @@ describe("Function Methods", function(){
 
 	it("should return the function's return value", function(){
 		var fnc = Function.from('hello world!');
-		expect(fnc.attempt()).toEqual('hello world!');
+		expect(fnc.attempt()).to.equal('hello world!');
 	});
 
 	it('should return null if the function raises an exception', function(){
 		var fnc = function(){
 			this_should_not_work();
 		};
-		expect(fnc.attempt()).toBeNull();
+		expect(fnc.attempt()).to.equal(null);
 	});
 
 	// Function.delay
@@ -163,7 +171,7 @@ describe("Function Methods", function(){
 	it('delay should return a timer pointer', function(){
 		var referenceTimer = setTimeout(function(){}, 10000);
 		var timer = (function(){}).delay(10000);
-		expect(typeOf(timer)).toEqual(typeOf(referenceTimer));
+		expect(typeOf(timer)).to.equal(typeOf(referenceTimer));
 		clearTimeout(timer);
 		clearTimeout(referenceTimer);
 	});
@@ -173,7 +181,7 @@ describe("Function Methods", function(){
 	it('periodical should return a timer pointer', function(){
 		var referenceTimer = setInterval(function(){}, 10000);
 		var timer = (function(){}).periodical(10000);
-		expect(typeOf(timer)).toEqual(typeOf(referenceTimer));
+		expect(typeOf(timer)).to.equal(typeOf(referenceTimer));
 		clearInterval(timer);
 		clearInterval(referenceTimer);
 	});
@@ -194,8 +202,8 @@ describe('Function.attempt', function(){
 			calls++;
 			return 'moo';
 		});
-		expect(calls).toEqual(2);
-		expect(attempt).toEqual('success');
+		expect(calls).to.equal(2);
+		expect(attempt).to.equal('success');
 	});
 
 	it('should return null when no function succeeded', function(){
@@ -207,8 +215,8 @@ describe('Function.attempt', function(){
 			calls++;
 			return uninstall_ie();
 		});
-		expect(calls).toEqual(2);
-		expect(attempt).toBeNull();
+		expect(calls).to.equal(2);
+		expect(attempt).to.equal(null);
 	});
 
 });
@@ -220,11 +228,11 @@ describe('Function.bind', function(){
 	it('should return the function bound to an object', function(){
 		var spy = sinon.spy();
 		var f = spy.bind('MooTools');
-		expect(spy.called).toBe(false);
+		expect(spy.called).to.equal(false);
 		f();
-		expect(spy.calledWith()).toBe(true);
+		expect(spy.calledWith()).to.equal(true);
 		f('foo', 'bar');
-		expect(spy.calledWith('foo', 'bar')).toBe(true);
+		expect(spy.calledWith('foo', 'bar')).to.equal(true);
 	});
 
 	it('should return the function bound to an object with specified argument', function(){
@@ -232,9 +240,9 @@ describe('Function.bind', function(){
 		var spy = sinon.stub().returns('something');
 		var f = spy.bind(binding, 'arg');
 
-		expect(spy.called).toBe(false);
-		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy.lastCall.thisValue).toEqual(binding);
+		expect(spy.called).to.equal(false);
+		expect(f('additional', 'arguments')).to.equal('something');
+		expect(spy.lastCall.thisValue).to.equal(binding);
 	});
 
 	it('should return the function bound to an object with multiple arguments', function(){
@@ -242,9 +250,9 @@ describe('Function.bind', function(){
 		var spy = sinon.stub().returns('something');
 		var f = spy.bind(binding, ['foo', 'bar']);
 
-		expect(spy.called).toBe(false);
-		expect(f('additional', 'arguments')).toEqual('something');
-		expect(spy.lastCall.thisValue).toEqual(binding);
+		expect(spy.called).to.equal(false);
+		expect(f('additional', 'arguments')).to.equal('something');
+		expect(spy.lastCall.thisValue).to.equal(binding);
 	});
 
 	dit('should still be possible to use it as constructor', function(){
@@ -257,7 +265,7 @@ describe('Function.bind', function(){
 
 		// `thisArg` should **not** be used for the `this` binding when called as a constructor
 		var fuzzball = new Tribble('Klingon');
-		expect(fuzzball.type).toEqual('Polygeminus grex');
+		expect(fuzzball.type).to.equal('Polygeminus grex');
 	});
 
 	dit('when using .call(thisArg) on a bound function, it should ignore the thisArg of .call', function(){
@@ -265,14 +273,14 @@ describe('Function.bind', function(){
 			return [this.foo].concat(Array.slice(arguments));
 		};
 
-		expect(fn.bind({foo: 'bar'})()).toEqual(['bar']);
-		expect(fn.bind({foo: 'bar'}, 'first').call({foo: 'yeah!'}, 'yooo')).toEqual(['bar', 'first', 'yooo']);
+		expect(fn.bind({foo: 'bar'})()).to.eql(['bar']);
+		expect(fn.bind({foo: 'bar'}, 'first').call({foo: 'yeah!'}, 'yooo')).to.eql(['bar', 'first', 'yooo']);
 
 		var bound = fn.bind({foo: 'bar'});
 		var bound2 = fn.bind({foo: 'yep'});
 		var inst = new bound;
 		inst.foo = 'noo!!';
-		expect(bound2.call(inst, 'yoo', 'howdy')).toEqual(['yep', 'yoo', 'howdy']);
+		expect(bound2.call(inst, 'yoo', 'howdy')).to.eql(['yep', 'yoo', 'howdy']);
 	});
 
 });
@@ -282,20 +290,20 @@ describe('Function.pass', function(){
 	it('should return a function that when called passes the specified arguments to the original function', function(){
 		var spy = sinon.stub().returns('the result');
 		var fnc = spy.pass('an argument');
-		expect(spy.called).toBe(false);
-		expect(fnc('additional', 'arguments')).toBe('the result');
-		expect(spy.calledWith('an argument')).toBe(true);
-		expect(spy.callCount).toBe(1);
+		expect(spy.called).to.equal(false);
+		expect(fnc('additional', 'arguments')).to.equal('the result');
+		expect(spy.calledWith('an argument')).to.equal(true);
+		expect(spy.callCount).to.equal(1);
 	});
 
 	it('should pass multiple arguments and bind the function to a specific object when it is called', function(){
 		var spy = sinon.stub().returns('the result');
 		var binding = {some: 'binding'};
 		var fnc = spy.pass(['multiple', 'arguments'], binding);
-		expect(spy.called).toBe(false);
-		expect(fnc('additional', 'arguments')).toBe('the result');
-		expect(spy.lastCall.thisValue).toEqual(binding);
-		expect(spy.calledWith('multiple', 'arguments')).toBe(true);
+		expect(spy.called).to.equal(false);
+		expect(fnc('additional', 'arguments')).to.equal('the result');
+		expect(spy.lastCall.thisValue).to.equal(binding);
+		expect(spy.calledWith('multiple', 'arguments')).to.equal(true);
 	});
 
 });
@@ -304,8 +312,8 @@ describe('Function.extend', function(){
 
 	it("should extend the function's properties", function(){
 		var fnc = (function(){}).extend({a: 1, b: 'c'});
-		expect(fnc.a).toEqual(1);
-		expect(fnc.b).toEqual('c');
+		expect(fnc.a).to.equal(1);
+		expect(fnc.b).to.equal('c');
 	});
 
 });
@@ -321,14 +329,14 @@ describe('Function.attempt', function(){
 
 	it("should return the function's return value", function(){
 		var spy = sinon.stub().returns('hello world!');
-		expect(spy.attempt()).toEqual('hello world!');
+		expect(spy.attempt()).to.equal('hello world!');
 	});
 
 	it('should return null if the function raises an exception', function(){
 		var fnc = function(){
 			throw 'up';
 		};
-		expect(fnc.attempt()).toBeNull();
+		expect(fnc.attempt()).to.equal(null);
 	});
 
 });
@@ -353,13 +361,13 @@ describe('Function.delay', function(){
 
 		this.clock.tick(100);
 
-		expect(spyA.called).toBe(false);
-		expect(spyB.called).toBe(false);
+		expect(spyA.called).to.equal(false);
+		expect(spyB.called).to.equal(false);
 		clearTimeout(timerB);
 
 		this.clock.tick(250);
-		expect(spyA.callCount).toBe(1);
-		expect(spyB.callCount).toBe(0);
+		expect(spyA.callCount).to.equal(1);
+		expect(spyB.callCount).to.equal(0);
 	});
 
 	it('should pass parameter 0', function(){
@@ -367,7 +375,7 @@ describe('Function.delay', function(){
 		spy.delay(50, null, 0);
 
 		this.clock.tick(100);
-		expect(spy.calledWith(0)).toBe(true);
+		expect(spy.calledWith(0)).to.equal(true);
 	});
 
 	it('should not pass any argument when no arguments passed', function(){
@@ -377,7 +385,7 @@ describe('Function.delay', function(){
 		};
 		spy.delay(50);
 		this.clock.tick(100);
-		expect(argumentCount).toEqual(0);
+		expect(argumentCount).to.equal(0);
 	});
 
 });
@@ -397,19 +405,19 @@ describe('Function.periodical', function(){
 		var spy = sinon.spy();
 
 		var interval = spy.periodical(10);
-		expect(spy.called).toBe(false);
+		expect(spy.called).to.equal(false);
 
 		this.clock.tick(100);
 
-		expect(spy.callCount).toBeGreaterThan(2);
-		expect(spy.callCount).toBeLessThan(15);
+		expect(spy.callCount).to.be.greaterThan(2);
+		expect(spy.callCount).to.be.lessThan(15);
 		clearInterval(interval);
 		spy.reset();
-		expect(spy.called).toBe(false);
+		expect(spy.called).to.equal(false);
 
 		this.clock.tick(100);
 
-		expect(spy.called).toBe(false);
+		expect(spy.called).to.equal(false);
 	});
 
 	it('should pass parameter 0', function(){
@@ -418,7 +426,7 @@ describe('Function.periodical', function(){
 
 		this.clock.tick(100);
 
-		expect(spy.calledWith(0)).toBe(true);
+		expect(spy.calledWith(0)).to.equal(true);
 		clearInterval(timer);
 	});
 
@@ -430,7 +438,7 @@ describe('Function.periodical', function(){
 		var timer = spy.periodical(50);
 		this.clock.tick(100);
 
-		expect(argumentCount).toEqual(0);
+		expect(argumentCount).to.equal(0);
 		clearInterval(timer);
 	});
 

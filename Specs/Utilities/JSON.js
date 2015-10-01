@@ -27,7 +27,7 @@ describe('JSON', function(){
 			}
 		};
 
-		expect(JSON.decode(JSON.encode(object))).toEqual(object);
+		expect(JSON.decode(JSON.encode(object))).to.eql(object);
 	});
 
 });
@@ -38,11 +38,11 @@ describe('JSON', function(){
     var badString = 'alert("I\'m a bad string!")';
 
     it('should parse a valid JSON string by default', function(){
-        expect(typeOf(JSON.decode(goodString))).toEqual("object");
+        expect(typeOf(JSON.decode(goodString))).to.equal("object");
     });
 
     it('should parse a valid JSON string when secure is set to false', function(){
-        expect(typeOf(JSON.decode(goodString, false))).toEqual("object");
+        expect(typeOf(JSON.decode(goodString, false))).to.equal("object");
     });
 
     it('should parse a hazarous string when secure is set to false', function(){
@@ -51,7 +51,7 @@ describe('JSON', function(){
             if (string == "I'm a bad string!") return true;
             return false;
         };
-        expect(JSON.decode(badString, false)).toEqual(true);
+        expect(JSON.decode(badString, false)).to.equal(true);
         win.alert = _old_alert;
     }); 
     it('should parse a hazarous string when JSON.secure is set to false and secure is not defined', function(){
@@ -61,7 +61,7 @@ describe('JSON', function(){
             return false;
         };
         JSON.secure = false;
-        expect(JSON.decode(badString)).toEqual(true);
+        expect(JSON.decode(badString)).to.equal(true);
         win.alert = _old_alert;
         JSON.secure = true;
     });     
@@ -72,7 +72,7 @@ describe('JSON', function(){
         } catch (e){
             err = !!e;
         };
-        expect(err).toEqual(true);
+        expect(err).to.equal(true);
     });  
 
 });

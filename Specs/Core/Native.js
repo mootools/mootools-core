@@ -54,15 +54,15 @@ describe('Native (private)', function(){
 	it('should allow implementation over existing methods when browser option is not set', function(){
 		Instrument.implement({ property: 'staff' });
 		var myInstrument = new Instrument('xeelophone');
-		expect(myInstrument.method()).toEqual('staff xeelophone');
+		expect(myInstrument.method()).to.equal('staff xeelophone');
 	});
 
 	it('should allow generic calls', function(){
-		expect(Car.method({name: 'ciccio', property: 'bello'})).toEqual('ciccio_bello');
+		expect(Car.method({name: 'ciccio', property: 'bello'})).to.equal('ciccio_bello');
 	});
 
 	it("should have a 'native' type", function(){
-		expect(Native.type(Car)).toBeTruthy();
+		expect(Native.type(Car)).to.equal(true);
 	});
 
 });

@@ -11,11 +11,11 @@ describe('$exec', function(){
 
 	it('should evaluate on global scope', function(){
 		$exec.call($exec, 'var execSpec = 42');
-		expect(window.execSpec).toEqual(42);
+		expect(window.execSpec).to.equal(42);
 	});
 
 	it('should return the evaluated script', function(){
-		expect($exec('$empty();')).toEqual('$empty();');
+		expect($exec('$empty();')).to.equal('$empty();');
 	});
 
 });
@@ -25,11 +25,11 @@ describe('Browser.exec', function(){
 
 	it('should evaluate on global scope', function(){
 		Browser.exec.call(Browser.exec, 'var execSpec = 42');
-		expect(window.execSpec).toEqual(42);
+		expect(window.execSpec).to.equal(42);
 	});
 
 	it('should return the evaluated script', function(){
-		expect(Browser.exec('function test(){}')).toEqual('function test(){}');
+		expect(Browser.exec('function test(){}')).to.equal('function test(){}');
 	});
 
 });
@@ -39,16 +39,16 @@ describe('Browser.exec', function(){
 describe('String.stripScripts', function(){
 
 	it('should strip all script tags from a string', function(){
-		expect('<div><script type="text/javascript" src="file.js"></script></div>'.stripScripts()).toEqual('<div></div>');
+		expect('<div><script type="text/javascript" src="file.js"></script></div>'.stripScripts()).to.equal('<div></div>');
 	});
 
 	it('should execute the stripped tags from the string', function(){
-		expect('<div><script type="text/javascript"> var stripScriptsSpec = 42; </script></div>'.stripScripts(true)).toEqual('<div></div>');
-		expect(window.stripScriptsSpec).toEqual(42);
-		expect('<div><script>\n// <!--\nvar stripScriptsSpec = 24;\n//-->\n</script></div>'.stripScripts(true)).toEqual('<div></div>');
-		expect(window.stripScriptsSpec).toEqual(24);
-		expect('<div><script>\n/*<![CDATA[*/\nvar stripScriptsSpec = 4242;\n/*]]>*/</script></div>'.stripScripts(true)).toEqual('<div></div>');
-		expect(window.stripScriptsSpec).toEqual(4242);
+		expect('<div><script type="text/javascript"> var stripScriptsSpec = 42; </script></div>'.stripScripts(true)).to.equal('<div></div>');
+		expect(window.stripScriptsSpec).to.equal(42);
+		expect('<div><script>\n// <!--\nvar stripScriptsSpec = 24;\n//-->\n</script></div>'.stripScripts(true)).to.equal('<div></div>');
+		expect(window.stripScriptsSpec).to.equal(24);
+		expect('<div><script>\n/*<![CDATA[*/\nvar stripScriptsSpec = 4242;\n/*]]>*/</script></div>'.stripScripts(true)).to.equal('<div></div>');
+		expect(window.stripScriptsSpec).to.equal(4242);
 	});
 
 });
@@ -57,11 +57,11 @@ describe('String.stripScripts', function(){
 describe('Document', function(){
 
 	it('should hold the parent window', function(){
-		expect(document.window).toEqual(window);
+		expect(document.window).to.equal(window);
 	});
 
 	it('should hold the head element', function(){
-		expect(document.head.tagName.toLowerCase()).toEqual('head');
+		expect(document.head.tagName.toLowerCase()).to.equal('head');
 	});
 
 });
@@ -69,7 +69,7 @@ describe('Document', function(){
 describe('Window', function(){
 
 	it('should set the Element prototype', function(){
-		expect(window.Element.prototype).toBeDefined();
+		expect(window.Element.prototype).to.not.equal(undefined);
 	});
 
 });
@@ -78,29 +78,29 @@ describe('Browser', function(){
 	var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 
 	it('should think it is executed in a browser', function(){
-		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera', 'edge']).toContain(Browser.name);
+		if (!isPhantomJS) expect(['ie', 'safari', 'chrome', 'firefox', 'opera', 'edge']).to.contain(Browser.name);
 	});
 
 //<1.4compat>
 	it('should assign a Browser[Browser.name] property for all browsers, except IE v11 or higher', function(){
 		if (Browser.name != 'ie' || Browser.version < 11){
-			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera || Browser.edge).toEqual(true);
+			expect(isPhantomJS || Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera || Browser.edge).to.equal(true);
 		}
 	});
 
 	it('should not assign a Browser[Browser.name] property for IE v11 or higher', function(){
 		if (Browser.name == 'ie' && Browser.version >= 11){
-			expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera || Browser.edge).toBeUndefined();
+			expect(Browser.ie || Browser.safari || Browser.chrome || Browser.firefox || Browser.opera || Browser.edge).to.equal(undefined);
 		}
 	});
 //</1.4compat>
 
 	it('should assume the IE version is emulated by the documentMode (X-UA-Compatible)', function(){
-		if (Browser.name == 'ie' && document.documentMode) expect(Browser.version).toEqual(document.documentMode);
+		if (Browser.name == 'ie' && document.documentMode) expect(Browser.version).to.equal(document.documentMode);
 	});
 	it('should find a browser version', function(){
-		expect(Browser.version || isPhantomJS).toBeTruthy();
-		expect(typeof Browser.version).toEqual('number');
+		expect(Browser.version || isPhantomJS).to.be.ok();
+		expect(typeof Browser.version).to.equal('number');
 	});
 
 });
@@ -248,7 +248,7 @@ describe('Browser.parseUA', function(){
 	};
 
 	var runExpects = function(val, key){
-		expect(this[key]).toEqual(val);
+		expect(this[key]).to.equal(val);
 	};
 
 	Object.forEach(userAgents, function(obj){
