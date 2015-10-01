@@ -375,56 +375,54 @@ describe('Keypress key code', function(){
 	if (!document.addEventListener) return;
 	/*</ltIE8>*/
 
-	var input, key, shift, done;
+	var _input, _key, _shift;
 	DOMEvent.defineKey(33, 'pageup');
 
-	var tests = ['[enter]', '1', '[shift]![shift-up]'];
-
 	function keyHandler(e){
-		key = e.key;
-		shift = !!e.event.shiftKey;
+		_key = e.key;
+		_shift = !!e.event.shiftKey;
 	}
 
-	function typeWriter(action){
-		setTimeout(function () {
-			syn.type('keyTester', action);
-		}, 1);
-		if (done) return true;
-	}
-
-	beforeEach(function(done){
-		input = new Element('input', {
+	function typeWriter(action, cb){
+		_input = new Element('input', {
 			'type': 'text',
 			'id': 'keyTester'
 		}).addEvent('keypress', keyHandler).inject(document.body);
 
-		var test = tests.shift();
-		if (test != null){
-			typeWriter(test);
-			setTimeout(done, 50);
-		} else {
-			done();
-		}
-	});
+		setTimeout(function () {
+			syn.type('keyTester', action);
+			setTimeout(function(){
+				cb(_key, _shift);
+			}, 50);
+		}, 1);
+	}
 
 	afterEach(function(){
-		input.removeEvent('keypress', keyHandler).destroy();
-		input = key = shift = done = null;
+		_input.removeEvent('keypress', keyHandler).destroy();
 	});
 
-	it('should return "enter" in event.key', function(){
-		expect(key).to.equal('enter');
-		expect(shift).to.equal(false);
+	it('should return "enter" in event.key', function(done){
+		typeWriter('[enter]', function(key, shift){
+			expect(key).to.equal('enter');
+			expect(shift).to.equal(false);
+			done();
+		});
 	});
 
-	it('should return "1" in event.key', function(){
-		expect(key).to.equal('1');
-		expect(shift).to.equal(false);
+	it('should return "1" in event.key', function(done){
+		typeWriter('1', function(key, shift){
+			expect(key).to.equal('1');
+			expect(shift).to.equal(false);
+			done();
+		});
 	});
 
-	it('should return "!" when pressing SHIFT + 1', function(){
-		expect(key).to.equal('!');
-		expect(shift).to.equal(true);
+	it('should return "!" when pressing SHIFT + 1', function(done){
+		typeWriter('[shift]![shift-up]', function(key, shift){
+			expect(key).to.equal('!');
+			expect(shift).to.equal(true);
+			done();
+		});
 	});
 
 	it('should map code 33 correctly with keypress event', function(){
