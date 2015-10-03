@@ -5,31 +5,33 @@ node_js:
 
 env:
   matrix:
-    - BROWSER='chrome_linux'    BUILD='default'
-    - BROWSER='firefox_linux'   BUILD='default'
-    - BROWSER='opera_win2000'   BUILD='default'
-    - BROWSER='safari8'         BUILD='default'
-    - BROWSER='safari7'         BUILD='default'
-    - BROWSER='safari6'         BUILD='default'
-    - BROWSER='ie11'            BUILD='default'
-    - BROWSER='ie10'            BUILD='default'
-    - BROWSER='ie9'             BUILD='default'
-    - BROWSER='ie8'             BUILD='default'
-    - BROWSER='ie7'             BUILD='default'
-    - BROWSER='phantomjs'       BUILD='default'
+    - BUILD='compat'     BROWSER='phantomjs'
+    - BUILD='compat'     BROWSER='chrome'
+    - BUILD='compat'     BROWSER='firefox'
+    - BUILD='compat'     BROWSER='edge'
+    - BUILD='compat'     BROWSER='opera12'
+    - BUILD='compat'     BROWSER='safari8'
+    - BUILD='compat'     BROWSER='safari7'
+    - BUILD='compat'     BROWSER='safari6'
+    - BUILD='compat'     BROWSER='ie11'
+    - BUILD='compat'     BROWSER='ie10'
+    - BUILD='compat'     BROWSER='ie9'
+    - BUILD='compat'     BROWSER='ie8'
+    - BUILD='compat'     BROWSER='ie7'
 
-    - BROWSER='chrome_linux'    BUILD='nocompat'
-    - BROWSER='firefox_linux'   BUILD='nocompat'
-    - BROWSER='opera_win2000'   BUILD='nocompat'
-    - BROWSER='safari8'         BUILD='nocompat'
-    - BROWSER='safari7'         BUILD='nocompat'
-    - BROWSER='safari6'         BUILD='nocompat'
-    - BROWSER='ie11'            BUILD='nocompat'
-    - BROWSER='ie10'            BUILD='nocompat'
-    - BROWSER='ie9'             BUILD='nocompat'
-    - BROWSER='ie8'             BUILD='nocompat'
-    - BROWSER='ie7'             BUILD='nocompat'
-    - BROWSER='phantomjs'       BUILD='nocompat'
+    - BUILD='nocompat'   BROWSER='phantomjs'
+    - BUILD='nocompat'   BROWSER='chrome'
+    - BUILD='nocompat'   BROWSER='firefox'
+    - BUILD='nocompat'   BROWSER='edge'
+    - BUILD='nocompat'   BROWSER='opera12'
+    - BUILD='nocompat'   BROWSER='safari8'
+    - BUILD='nocompat'   BROWSER='safari7'
+    - BUILD='nocompat'   BROWSER='safari6'
+    - BUILD='nocompat'   BROWSER='ie11'
+    - BUILD='nocompat'   BROWSER='ie10'
+    - BUILD='nocompat'   BROWSER='ie9'
+    - BUILD='nocompat'   BROWSER='ie8'
+    - BUILD='nocompat'   BROWSER='ie7'
 
     - BUILD='server'
 
@@ -46,6 +48,6 @@ matrix:
 
 cache:
   directories:
-  - node_modules
+    - node_modules
 
 sudo: false
