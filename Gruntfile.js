@@ -1,80 +1,73 @@
-"use strict";
+'use strict';
 
-module.exports = function(grunt) {
-
-	grunt.loadNpmTasks('grunt-contrib-uglify');
+module.exports = function(grunt){
 	require('load-grunt-tasks')(grunt);
 
-	var fs = require('fs');
-	var usePhantom = process.env.TRAVIS_PULL_REQUEST != 'false' || process.env.BROWSER == 'phantomjs';
-	var distTasks = JSON.parse(fs.readFileSync('Tests/dist-tasks.json'));
-	var serverTests = require('./Tests/server-tests');
-	var options = require('./Tests/gruntfile-options');
+	var pkg = grunt.file.readYAML('package.yml');
 
-	grunt.initConfig({
-		'connect': options.grunt,
-		'packager': {
-			options: {name: 'Core'},
-			'all':options.packager.all,
-			'nocompat':options.packager.nocompat,
-			'server':options.packager.server,
-			'specs':options.packager.specs,
-			'specs-nocompat':options.packager.specsNoCompat,
-			'specs-server':options.packager.specsServer,
-			'dist-all': distTasks.build.compat,
-			'dist-nocompat': distTasks.build.nocompat,
-			'dist-server': distTasks.build.server
-		},
-		uglify: distTasks.uglify,
-		'karma': {
-			options: options.karma,
-			continuous: {
-				browsers: ['PhantomJS']
+	var config = {
+		environment: {
+			dir: {
+				dist: 'dist',
+				build: 'build'
 			},
-			sauceTask: {
-				browsers: [options.travis.browser]
+			build: {
+				compat: {
+					name: 'mootools-core-compat',
+					sources: pkg.sources,
+					specs: 'Specs/**/*.js'
+				},
+				nocompat: {
+					name: 'mootools-core',
+					sources: pkg.sources,
+					strip: ['.*compat'],
+					specs: 'Specs/**/*.js'
+				},
+				server: {
+					name: 'mootools-core-server',
+					sources: pkg.sources,
+					components: ['Core/Core', 'Core/Array', 'Core/String', 'Core/Number', 'Core/Function', 'Core/Object', 'Core/Class', 'Core/Class.Extras', 'Core/JSON'],
+					strip: ['1.2compat', '1.3compat', '1.4compat', '*compat', 'IE', 'ltIE8', 'ltIE9', '!ES5', '!ES5-bind', 'webkit', 'ltFF4'],
+					specs: ['Specs/Core/*.js', 'Specs/Class/*.js', 'Specs/Types/*.js', 'Specs/Utilities/JSON.js'],
+					uglify: false
+				}
 			},
-			dev: {
-				singleRun: false,
-				captureTimeout: 0,
-				browsers: ['PhantomJS']
+			travis: {
+				enabled: (process.env.TRAVIS === 'true'),
+				pullRequest: (process.env.TRAVIS_PULL_REQUEST !== 'false'),
+				browser: process.env.BROWSER,
+				build: process.env.BUILD
 			},
-			// Testers for dist build files
-			compatFull: distTasks.testTasks.compatFull,
-			compatUglyfied: distTasks.testTasks.compatUglyfied,
-			nocompatFull: distTasks.testTasks.nocompatFull,
-			nocompatUglified: distTasks.testTasks.nocompatUglified
-		},
-
-		'clean': {
-			dist: {src: 'dist/mootools-*.js'},
-			specs: {src: 'mootools-*.js'}
+			sauceLabs: {
+				username: process.env.SAUCE_USERNAME,
+				accessKey: process.env.SAUCE_ACCESS_KEY
+			}
 		}
+	};
+
+	if (grunt.option('file') || grunt.option('module')){
+		Object.getOwnPropertyNames(config.environment.build).forEach(function(name){
+			var build = config.environment.build[name];
+			if (grunt.option('file')){
+				if (build.components == null || build.components.indexOf('Core/' + grunt.option('file')) !== -1){
+					build.components = 'Core/' + grunt.option('file');
+					build.specs = grunt.file.match('Specs/**/' + grunt.option('file') + '.js', grunt.file.expand(build.specs));
+				} else {
+					build.components = [];
+					build.specs = [];
+				}
+			}
+			if (grunt.option('module')){
+				build.specs = grunt.file.match('Specs/' + grunt.option('module') + '/**.js', grunt.file.expand(build.specs));
+			}
+		});
+	}
+
+	grunt.initConfig(config);
+
+	grunt.file.expand('./Grunt/options/*.js').forEach(function(file){
+		grunt.config.merge(require(file)(grunt));
 	});
 
-	var compatBuild = ['clean:specs', 'packager:all', 'packager:specs'];
-	var nocompatBuild = ['clean:specs', 'packager:nocompat', 'packager:specs-nocompat'];
-	var serverBuild = ['clean:specs', 'packager:server', 'packager:specs-server'];
-
-	var tasks = options.travis.build == 'default' ? compatBuild : options.travis.build == 'server' ? serverBuild : nocompatBuild;
-	tasks = options.travis.build == 'server' ? tasks.concat('server-spec-runner') : usePhantom ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
-
-	grunt.registerTask('default', compatBuild.concat('karma:continuous'));		// local testing - compat build
-	grunt.registerTask('default:dev', compatBuild.concat('karma:dev'));		// local dev testing - compat build
-	grunt.registerTask('nocompat', nocompatBuild.concat('karma:continuous'));	// local testing - no compat build
-	grunt.registerTask('nocompat:dev', nocompatBuild.concat('karma:dev'));		// local dev testing - no compat build
-	grunt.registerTask('server', serverBuild.concat('server-spec-runner'));	// local testing - server build
-	grunt.registerTask('server-spec-runner', function(){						// Travis server specs
-		var done = this.async();
-		serverTests(done);
-	});
-	grunt.registerTask('default:travis', tasks);								// Travis & Sauce Labs
-	grunt.registerTask('distBuild', [											// task to build and test /dist files
-		// Build dist files
-		'clean:dist', 'packager:dist-all', 'packager:dist-nocompat', 'packager:dist-server', 'uglify',
-		// Test specs against dist files
-		'clean:specs', 'packager:specs', 'karma:compatFull', 'karma:compatUglyfied',
-		'clean:specs', 'packager:specs-nocompat', 'karma:nocompatFull', 'karma:nocompatUglified'
-	]);
-
+	grunt.loadTasks('Grunt/tasks');
 };

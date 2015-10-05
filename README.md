@@ -43,8 +43,8 @@ This means `1.5.1` that is compatible with: `1.4.6`, `1.3.x`, `1.2.x`, and so on
 
 **Examples**
 
-	grunt               # or
-	grunt packager:all  # to only build the source
+	grunt compat             # or
+	grunt packager:compat    # to only build the source
 
 ### Building MooTools _Without_ Compatibility
 This means `1.5.1` **without** deprecated code in `1.4.6`, `1.3.x`, `1.2.x`, and so on.
@@ -66,12 +66,12 @@ See the [Gruntfile](https://github.com/mootools/mootools-core/blob/master/Gruntf
 **Examples**
 
 	# with compat
-	grunt --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
-	grunt --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
+	grunt compat --file=Function    # builds with only Core/Function and dependencies, then tests against specs in Specs/Core/Function
+	grunt compat --module=Class     # tests against all specs in the Specs/Class *folder* (use --file to limit the build)
 
 	# without compat
-	grunt nocompat --file=Function    # builds all deps on Core/Function, builds all Specs on Specs/Core/Function, runs karma
-	grunt nocompat --module=Class     # builds all deps on Class *folder*, builds all Specs on Specs/Class *folder*
+	grunt nocompat --file=Function  # builds with only Core/Function and dependencies, then tests against specs in Specs/Core/Function
+	grunt nocompat --module=Class   # tests against all specs in the Specs/Class *folder* (use --file to limit the build)
 
 #### Removing Other Packager Blocks
 You'll need to add a specific task to the Gruntfile. See [packager's documentation](https://github.com/ibolmo/grunt-mootools-packager) for more examples.
@@ -83,18 +83,14 @@ I you want to test your local repo you need just some small steps. Follow these 
     $ git clone https://github.com/mootools/mootools-core  # clone the MooTools repo
     $ cd mootools-core                                     # get into the directory
     $ npm install                                          # install de testing tools
-    $ npm install grunt-cli -g                             # install the Grunt command line interface
-    $ grunt default                                        # run the specs!
+    $ `npm bin`/grunt test                                 # run the specs!
 
 
-You can also change which browser to call in the Gruntfile.js.
-__Note that__ _most browsers need to be closed when starting tests so Grunt-Karma opens and closes the browser. Otherwise they might not close on its own and fire a timeout error for inactivity._
+To test a build in a local browser, you can run the `:dev` target of that build to start a test server at `http://localhost:9876/` and point your browser to it. When you're done testing, pressing `Ctrl+c` in the window running the grunt process should stop the server.
 
 Example:
 
-	continuous: {
-		browsers: ['PhantomJS', 'IE', 'Chrome', 'Firefox', 'Safari']
-	},
+	$ `npm bin`/grunt compat:dev
 
 If the log is too long, or if you want to store it in a file you can do:
 
@@ -106,44 +102,24 @@ Every new Build and Pull Request is now tested on [Travis](https://travis-ci.org
 
 [Travis](https://travis-ci.org/) testing uses [PhantomJS](http://phantomjs.org/) which is a headless browser. When connected to [Sauce Labs](https://saucelabs.com/) then it is possible to choose any number of [different Browsers and Platforms](https://saucelabs.com/platforms). You will need in this case to change the login key so it will match your account.
 
-To add new Browsers in [Sauce Labs](https://saucelabs.com/) testing you can do some changes in the __[Gruntfile.js](https://github.com/mootools/mootools-core/blob/master/Gruntfile.js)__:
+To add new Browsers in [Sauce Labs](https://saucelabs.com/) testing you can make changes to __[Grunt/options/browsers.json](Grunt/options/browsers.json)__:
 
  - add a new browser to the custom launchers already in the Gruntfile.
 
-		customLaunchers: {
-			chrome_linux: {
-				base: 'SauceLabs',
-				browserName: 'chrome',
-				platform: 'linux'
-			},
+		...
+		chrome: {
+			base: 'SauceLabs',
+			platform: 'Linux',
+			browserName: 'chrome',
+		},
+		...
 
 
- - add the chosen browser to a task (max 3 browsers per task if you are using a free account):
+ - add the chosen browser, with the correct builds to .travis.yml:
 
-		sauce2: {
-			port: 9877,
-			browsers: [
-				'safari7',
-				'safari6',
-				'safari5_osx10_6'
-			],
-
-	These tasks can be chained so its possible to test more than 3 browsers on the same test. But not more than 3 parallel.
-
-__Example of a task chain:__
-(This will run [registered tasks](http://gruntjs.com/api/grunt.task)that have been defined in the steps described before.)
-
-		grunt.registerTask('default:travis', [
-			'clean',
-			'packager:all',
-			'packager:specs',
-			'karma:sauce1',
-			'karma:sauce2',
-			'karma:sauce3',
-			'karma:sauce4'
-			// 'karma:sauce5',
-			// 'karma:sauce6'
-		])
+		env:
+			matrix:
+				- BUILD='compat'     BROWSER='chrome'
 
 #### Browsers, Platforms, and More
 
@@ -153,6 +129,7 @@ You can also run locally.
 Support:
 
  - IE
+ - Edge
  - Firefox
  - Safari
  - Chrome

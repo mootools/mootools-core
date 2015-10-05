@@ -12,7 +12,7 @@ var createPattern = function(path) {
 
 var initSyn = function(files) {
 	// Local version that works in IE9 and IE10.
-	files.unshift(createPattern(path.resolve('Tests/Utilities/syn.js')));
+	files.unshift(createPattern(path.join(__dirname, 'lib/syn.js')));
 };
 
 initSyn.$inject = ['config.files'];

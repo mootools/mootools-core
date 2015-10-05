@@ -5,7 +5,7 @@ COREFILE='Source/Core/Core.js'
 PKGFILES='package.json bower.json'
 
 DIST='node_modules/.bin/grunt'
-DIST_ARGS='distBuild'
+DIST_ARGS='dist'
 DIST_DIR='dist'
 
 DIR=`dirname "$0"`
