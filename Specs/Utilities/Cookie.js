@@ -8,10 +8,8 @@ provides: ~
 
 describe('Cookie', function(){
 
-	it("should set a cookie", function(){
-
+	it('should set a cookie', function(){
 		Cookie.write('test', 1);
-
 	});
 
 	it('should read and write a cookie', function(){
@@ -20,11 +18,9 @@ describe('Cookie', function(){
 		};
 
 		Cookie.write('key', 'value', options);
-
 		expect(Cookie.read('key', options)).to.equal('value');
 
 		Cookie.dispose('key', options);
-
 		expect(Cookie.read('key', options)).to.equal(null);
 	});
 

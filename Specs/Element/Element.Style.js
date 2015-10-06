@@ -6,7 +6,7 @@ provides: ~
 ...
 */
 
-/*<1.2compat>*/
+//<1.2compat>
 describe('Element.set `opacity`', function(){
 
 	it('should set the opacity of an Element', function(){
@@ -27,7 +27,7 @@ describe('Element.set `opacity`', function(){
 	});
 
 });
-/*</1.2compat>*/
+//</1.2compat>
 
 describe('Element.set `opacity`', function(){
 
@@ -81,7 +81,7 @@ describe('Element.setStyle', function(){
 	});
 
 	it('should `setStyle` on an Element', function(){
-		expect(new Element('div').setStyle('color','#00ff00').getStyle('color')).to.equal('#00ff00');
+		expect(new Element('div').setStyle('color', '#00ff00').getStyle('color')).to.equal('#00ff00');
 	});
 
 	it('should properly `setStyle` for a property with a dash in it', function(){
@@ -113,7 +113,7 @@ describe('Element.set opacity', function(){
 		var div = new Element('div'),
 		hasOpacity = document.html.style.opacity != null
 
-		if (!hasOpacity && document.html.style.filter != null && !window.opera && !syn.browser.gecko){ // we can probably remove the last two checks
+		if (!hasOpacity && document.html.style.filter != null && !window.opera && !syn.browser.gecko){ // We can probably remove the last two checks.
 			div.style.filter = 'blur(strength=50)';
 			div.set('opacity', 0.4);
 			expect(div.style.filter).to.match(/blur\(strength=50\)/i);
@@ -145,7 +145,7 @@ describe('Element.Style', function(){
 				'}'
 			].join('');
 
-			// fix this, see https://github.com/mootools/mootools-core/issues/2265
+			// Fix this. See: https://github.com/mootools/mootools-core/issues/2265
 			if (style.styleSheet) style.styleSheet.cssText = definition;
 			else style.set('text', definition);
 
@@ -199,7 +199,7 @@ describe('Element.Style', function(){
 				'}'
 			].join('');
 
-			// fix this, see https://github.com/mootools/mootools-core/issues/2265
+			// Fix this. See: https://github.com/mootools/mootools-core/issues/2265
 			if (style.styleSheet) style.styleSheet.cssText = definition;
 			else style.set('text', definition);
 
@@ -229,7 +229,7 @@ describe('Element.Style', function(){
 		});
 
 		it('should get the left margin from the CSS', function(){
-			// FireFox returns px (and maybe even as floats)
+			// FireFox returns px (and maybe even as floats).
 			var re = /^(20\%|(\d+|\d+\.\d+)px)$/;
 			expect(re.test('20%')).to.equal(true);
 			expect(re.test('20px')).to.equal(true);
@@ -251,8 +251,8 @@ describe('Element.Style', function(){
 		var element;
 
 		it('[beforeAll]', function(){
-			// the test framework stylesheet pollutes this test by setting border at 0px.
-			// create an unknown element to bypass it and use browser defaults.
+			// The test framework stylesheet pollutes this test by setting border at 0px.
+			// Create an unknown element to bypass it and use browser defaults.
 			element = new Element('unknown', {
 				styles: {
 					display: 'block'
@@ -329,7 +329,7 @@ describe('Element.Style', function(){
 				'}'
 			].join('');
 
-			// fix this, see https://github.com/mootools/mootools-core/issues/2265
+			// Fix this. See: https://github.com/mootools/mootools-core/issues/2265
 			if (style.styleSheet) style.styleSheet.cssText = definition;
 			else style.set('text', definition);
 
@@ -372,16 +372,15 @@ describe('Element.Style', function(){
 		});
 
 	});
-	
+
 	describe('Border Radius', function(){
-	
+
 		var supportBorderRadius = document.body.style.borderRadius != null ? true : false;
 		if (navigator.userAgent.match(/PhantomJS\/1./)) supportBorderRadius = false;
-		var dit = supportBorderRadius ? it : xit; // don't run unless border-radius is supported
+		var dit = supportBorderRadius ? it : xit; // Don't run unless border-radius is supported.
 		var element = new Element('div');
-		
-		dit("should set and read each borderRadius corner", function(){
 
+		dit('should set and read each borderRadius corner', function(){
 			expect(element.getStyle('borderRadius')).to.equal('0px 0px 0px 0px');
 			element.setStyle('border-top-left-radius', '15px');
 			expect(element.getStyle('border-top-left-radius')).to.equal('15px');
@@ -403,9 +402,10 @@ describe('Element.Style', function(){
 			element.setStyle('border-bottom-left-radius', '0px');
 			expect(element.getStyle('border-top-left-radius')).to.equal('20px');
 			expect(element.getStyle('border-radius')).to.equal('20px 10px 10px 0px');
-			
 		});
+
 		element.destroy();
+
 	});
-	
+
 });

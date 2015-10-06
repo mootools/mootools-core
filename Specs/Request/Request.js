@@ -7,6 +7,7 @@ provides: ~
 */
 
 describe('Request', function(){
+
 	var hasWithCredentials = 'withCredentials' in new Browser.Request;
 
 	beforeEach(function(){
@@ -33,13 +34,11 @@ describe('Request', function(){
 
 		this.requests[0].respond(200, {'Content-Type': 'text/plain'}, 'res&amp;ponsé');
 
-		// checks the first argument from the first call
+		// Checks the first argument from the first call.
 		expect(onComplete.args[0][0]).to.equal('res&amp;ponsé');
-
 	});
 
 	it('should create a Request with method get and sending data', function(){
-
 		var onComplete = sinon.spy();
 
 		var request = new Request({
@@ -51,13 +50,10 @@ describe('Request', function(){
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, 'data');
 
 		expect(onComplete.called).to.equal(true);
-
 		expect(onComplete.args[0][0]).to.equal('data');
-
 	});
 
 	it('the options passed on the send method should rewrite the current ones', function(){
-
 		var onComplete = sinon.spy();
 		var request = new Request({
 			url: '../Helpers/request.php',
@@ -76,6 +72,7 @@ describe('Request', function(){
 	});
 
 	xdescribe('(async 1)', function(){
+
 		beforeEach(function(done){
 			this.onComplete = sinon.spy(function(){ done(); });
 			this.request = new Request({
@@ -96,6 +93,7 @@ describe('Request', function(){
 	});
 
 	xdescribe('(async 2)', function(){
+
 		beforeEach(function(done){
 			this.onComplete = sinon.spy();
 			this.request = new Request({
@@ -123,7 +121,6 @@ describe('Request', function(){
 	});
 
 	it('should not overwrite the data object', function(){
-
 		var onComplete = sinon.spy();
 		var request = new Request({
 			url: '../Helpers/request.php',
@@ -137,9 +134,7 @@ describe('Request', function(){
 		requested.respond(200, {'Content-Type': 'text/plain'}, requested.requestBody)
 
 		expect(onComplete.called).to.equal(true);
-
 		expect(onComplete.args[0][0]).to.equal('__response=data');
-
 	});
 
 	it('should not set xhr.withCredentials flag by default', function(){
@@ -150,7 +145,7 @@ describe('Request', function(){
 		expect(request.xhr.withCredentials).to.not.be.ok();
 	});
 
-	/*<1.4compat>*/
+//<1.4compat>
 	var dit = hasWithCredentials ? it : xit;
 	dit('should set xhr.withCredentials flag in 1.4 for this.options.user', function(){
 		var request = new Request({
@@ -160,9 +155,9 @@ describe('Request', function(){
 
 		expect(request.xhr.withCredentials).to.equal(true);
 	});
-	/*</1.4compat>*/
+//</1.4compat>
 
-	var dit = hasWithCredentials ? /*<1.4compat>*/xit || /*</1.4compat>*/it : xit; // don't run unless no compat
+	var dit = hasWithCredentials ? /*<1.4compat>*/xit || /*</1.4compat>*/it : xit; // Don't run unless no compat.
 	dit('should not set xhr.withCredentials flag in 1.5 for this.options.user', function(){
 		var request = new Request({
 			url: '/something/or/other',
@@ -180,4 +175,5 @@ describe('Request', function(){
 
 		expect(request.xhr.withCredentials).to.equal(true);
 	});
+
 });

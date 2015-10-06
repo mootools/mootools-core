@@ -25,28 +25,28 @@ describe('Chain', function(){
 		var chain = new Local.Chain();
 		var arr = [];
 		chain.chain(function(a, b){
-			var str = "0" + b + a;
+			var str = '0' + b + a;
 			arr.push(str);
 			return str;
 		});
 		chain.chain(function(a, b){
-			var str = "1" + b + a;
+			var str = '1' + b + a;
 			arr.push(str);
 			return str;
 		});
 		var ret;
 		expect(arr).to.eql([]);
-		ret = chain.callChain("a", "A");
-		expect(ret).to.equal("0Aa");
-		expect(arr).to.eql(["0Aa"]);
+		ret = chain.callChain('a', 'A');
+		expect(ret).to.equal('0Aa');
+		expect(arr).to.eql(['0Aa']);
 
-		ret = chain.callChain("b", "B");
-		expect(ret).to.equal("1Bb");
-		expect(arr).to.eql(["0Aa", "1Bb"]);
+		ret = chain.callChain('b', 'B');
+		expect(ret).to.equal('1Bb');
+		expect(arr).to.eql(['0Aa', '1Bb']);
 
 		ret = chain.callChain();
 		expect(ret).to.equal(false);
-		expect(arr).to.eql(["0Aa", "1Bb"]);
+		expect(arr).to.eql(['0Aa', '1Bb']);
 	});
 
 	it('should chain any number of functions', function(){
@@ -99,8 +99,8 @@ describe('Chain', function(){
 	it('each instance should have its own chain', function(){
 		var foo = new Local.Chain();
 		var bar = new Local.Chain();
-		foo.val = "F";
-		bar.val = "B";
+		foo.val = 'F';
+		bar.val = 'B';
 		foo.chain(function(){
 			this.val += 'OO';
 		});
@@ -208,7 +208,7 @@ describe('Events API: Mixin', function(){
 		object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
 		object[fire]('event1')[fire]('event2');
 
-		// Should not fail
+		// Should not fail.
 		object.removeEvents()[fire]('event1')[fire]('event2');
 
 		expect(x).to.equal(0);

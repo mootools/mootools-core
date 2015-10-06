@@ -5,6 +5,7 @@ requires: ~
 provides: ~
 ...
 */
+
 describe('Fx.Morph', function(){
 
 	beforeEach(function(){
@@ -35,7 +36,6 @@ describe('Fx.Morph', function(){
 	});
 
 	it('should morph the style of an element', function(){
-
 		var element = new Element('div', {
 			styles: {
 				height: 100,
@@ -57,11 +57,9 @@ describe('Fx.Morph', function(){
 		expect(element.getStyle('height').toInt()).to.equal(50);
 		expect(element.getStyle('width').toInt()).to.equal(50);
 		element.destroy();
-
 	});
 
 	it('should set morph options with the element getter and setter', function(){
-
 		var element = new Element('div');
 
 		element.set('morph', {
@@ -69,7 +67,6 @@ describe('Fx.Morph', function(){
 		});
 
 		expect(element.get('morph').options.duration).to.equal(100);
-
 	});
 
 	it('should morph between % units', function(){
@@ -85,7 +82,6 @@ describe('Fx.Morph', function(){
 	});
 
 	it('it should morph when the unit option is set, but an empty value', function(){
-
 		this.div.set('morph', {
 			duration: 100,
 			unit: 'px'
@@ -98,11 +94,9 @@ describe('Fx.Morph', function(){
 
 		expect(this.div.getStyle('top')).to.equal('100px');
 		expect(this.div.getStyle('opacity')).to.equal(1);
-
 	});
 
 	it('it should morph when the unit option is set, but the style value is a number', function(){
-
 		this.div.setStyles({
 			top: '50px',
 			opacity: 0
@@ -118,7 +112,6 @@ describe('Fx.Morph', function(){
 
 		expect(this.div.getStyle('top')).to.equal('100px');
 		expect(this.div.getStyle('opacity')).to.equal(1);
-
 	});
 
 });

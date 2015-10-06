@@ -22,7 +22,6 @@ describe('Request.HTML', function(){
 	});
 
 	it('should create an ajax request and pass the right arguments to the onComplete event', function(){
-
 		var response = '<body><img><div><span>res&amp;ponsé</span></div><script>___SPEC___=5;</script></body>';
 
 		this.spy.identity = 'Request.HTML onComplete';
@@ -35,7 +34,7 @@ describe('Request.HTML', function(){
 
 		expect(this.spy.called).to.equal(true);
 
-		// checks arguments order
+		// Checks arguments order.
 		expect(this.spy.calledWith(request.response.tree, request.response.elements, request.response.html, request.response.javascript)).to.equal(true);
 		var onCompleteArgs = this.spy.args[0];
 		expect(onCompleteArgs[0][0].nodeName).to.equal('IMG');
@@ -44,7 +43,6 @@ describe('Request.HTML', function(){
 		expect(onCompleteArgs[2]).to.equal('<img><div><span>res&amp;ponsé</span></div>');
 		expect(onCompleteArgs[3].trim()).to.equal('___SPEC___=5;');
 		expect(___SPEC___).to.equal(5);
-
 	});
 
 	xdescribe('(async 1)', function(){
@@ -101,7 +99,6 @@ describe('Request.HTML', function(){
 	});
 
 	it('should create an ajax request and correctly update an element with the response', function(){
-
 		var response = '<span>text</span>';
 
 		this.spy.identity = 'Request.HTML onComplete update element';
@@ -124,7 +121,6 @@ describe('Request.HTML', function(){
 	});
 
 	it('should create an ajax request and correctly append the response to an element', function(){
-
 		var response = '<div><span>text</span><p>paragraph</p></div>';
 
 		new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
@@ -154,7 +150,6 @@ describe('Request.HTML', function(){
 	});
 
 	it('should create an ajax request and correctly filter it by the passed selector', function(){
-
 		var response = '<span>text</span><a>aaa</a>';
 
 		this.spy.identity = 'Request.HTML onComplete filter';
@@ -175,7 +170,6 @@ describe('Request.HTML', function(){
 	});
 
 	it('should create an ajax request that filters the response and updates the target', function(){
-
 		var response = '<div>text<p><a>a link</a></p></div>';
 
 		this.spy.identity = 'Request.HTML onComplete update and filter';
@@ -195,11 +189,9 @@ describe('Request.HTML', function(){
 		expect(update.getFirst().get('tag')).to.equal('a');
 		expect(update.getFirst().get('text')).to.equal('a link');
 		update.dispose();
-
 	});
 
 	it('should create an ajax request that filters the response and appends to the target', function(){
-
 		var response = '<div>text<p><a>a link</a></p></div>';
 
 		new Element('div', {'id': 'update', 'html': '<div>some</div>'}).inject(document.body);
@@ -218,11 +210,9 @@ describe('Request.HTML', function(){
 		expect(update.getChildren().length).to.equal(2);
 		expect(update.get('html').toLowerCase()).to.equal('<div>some</div><a>a link</a>');
 		update.dispose();
-
 	});
 
 	it('should create an ajax request through Element.load', function(done){
-
 		var element = new Element('div');
 
 		var response = 'hello world!';
@@ -246,7 +236,6 @@ describe('Request.HTML', function(){
 			expect(element.get('text')).to.equal('hello world!');
 			done();
 		}, 0);
-
 	});
 
 });

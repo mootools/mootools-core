@@ -22,7 +22,6 @@ describe('Request.JSON', function(){
 	});
 
 	it('should create a JSON request', function(){
-
 		var response = '{"ok":true}';
 
 		this.spy.identity = 'Requst.JSON';
@@ -36,13 +35,11 @@ describe('Request.JSON', function(){
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, response);
 		expect(this.spy.called).to.equal(true);
 
-		// checks the first argument from the first call
+		// Checks the first argument from the first call.
 		expect(this.spy.args[0][0]).to.eql({ok: true});
-
 	});
 
 	it('should fire the error event', function(){
-
 		var response = '{"ok":function(){invalid;}}';
 
 		this.spy.identity = 'Requst.JSON error';
@@ -56,9 +53,8 @@ describe('Request.JSON', function(){
 		this.requests[0].respond(200, {'Content-Type': 'text/json'}, response);
 		expect(this.spy.called).to.equal(true);
 
-		// checks the first argument from the first call
+		// Checks the first argument from the first call.
 		expect(this.spy.args[0][0]).to.equal('{"ok":function(){invalid;}}');
-
 	});
 
 });

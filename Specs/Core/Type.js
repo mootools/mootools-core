@@ -48,7 +48,7 @@ describe('Type (private)', function(){
 		expect(Car.method({name: 'ciccio', property: 'bello'})).to.equal('ciccio_bello');
 	});
 
-	it("should have a 'native' type", function(){
+	it('should have a "native" type', function(){
 		expect(Type.isType(Car)).to.equal(true);
 	});
 

@@ -10,7 +10,7 @@ provides: ~
 describe('$A', function(){
 
 	it('should return a copy for an array', function(){
-		var arr1 = [1,2,3];
+		var arr1 = [1, 2, 3];
 		var arr2 = $A(arr1);
 		expect(arr1).to.not.equal(arr2);
 	});
@@ -31,7 +31,7 @@ describe('$A', function(){
 		var fnTest = function(){
 			return $A(arguments);
 		};
-		var arr = fnTest(1,2,3);
+		var arr = fnTest(1, 2, 3);
 		expect(Array.type(arr)).to.equal(true);
 		expect(arr.length).to.equal(3);
 	});
@@ -41,10 +41,10 @@ describe('$A', function(){
 describe('$arguments', function(){
 
 	it('should return the argument passed according to the index', function(){
-		expect($arguments(0)('a','b','c','d')).to.equal('a');
-		expect($arguments(1)('a','b','c','d')).to.equal('b');
-		expect($arguments(2)('a','b','c','d')).to.equal('c');
-		expect($arguments(3)('a','b','c','d')).to.equal('d');
+		expect($arguments(0)('a', 'b', 'c', 'd')).to.equal('a');
+		expect($arguments(1)('a', 'b', 'c', 'd')).to.equal('b');
+		expect($arguments(2)('a', 'b', 'c', 'd')).to.equal('c');
+		expect($arguments(3)('a', 'b', 'c', 'd')).to.equal('d');
 	});
 
 });
@@ -117,23 +117,23 @@ describe('$each', function(){
 			$each(arguments, function(value, key){
 				daysArr[key] = value;
 			});
-		})('Sun','Mon','Tue');
+		})('Sun', 'Mon', 'Tue');
 
-		expect(daysArr).to.eql(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun', 'Mon', 'Tue']);
 	});
 
 	it('should call the function for each item in the array', function(){
 		var daysArr = [];
-		$each(['Sun','Mon','Tue'], function(value, key){
+		$each(['Sun', 'Mon', 'Tue'], function(value, key){
 			daysArr[key] = value;
 		});
 
-		expect(daysArr).to.eql(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun', 'Mon', 'Tue']);
 	});
 
 	it('should call the function for each item in the object', function(){
 		var daysObj = {};
-		$each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+		$each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
 			daysObj[key] = value;
 		});
 
@@ -169,7 +169,7 @@ describe('$extend', function(){
 describe('$lambda', function(){
 
 	it('if a function is passed in that function should be returned', function(){
-		var fn = function(a,b){ return a; };
+		var fn = function(a, b){ return a; };
 		expect($lambda(fn)).to.equal(fn);
 	});
 
@@ -199,13 +199,13 @@ describe('$merge', function(){
 describe('$pick', function(){
 
 	it('should return the first false argument', function(){
-		var picked1 = $pick(null, undefined, false, [1,2,3], {});
+		var picked1 = $pick(null, undefined, false, [1, 2, 3], {});
 		expect(picked1).to.equal(false);
 	});
 
 	it('should return the first defined argument', function(){
-		var picked1 = $pick(null, undefined, null, [1,2,3], {});
-		expect(picked1).to.eql([1,2,3]);
+		var picked1 = $pick(null, undefined, null, [1, 2, 3], {});
+		expect(picked1).to.eql([1, 2, 3]);
 	});
 
 });
@@ -231,7 +231,7 @@ describe('$splat', function(){
 	});
 
 	it('should ignore and return an array', function(){
-		expect($splat([1,2,3])).to.eql([1,2,3]);
+		expect($splat([1, 2, 3])).to.eql([1, 2, 3]);
 	});
 
 });
@@ -283,41 +283,40 @@ describe('$try', function(){
 
 });
 
-
 describe('$type', function(){
 
-	it("should return 'array' for Array objects", function(){
-		expect($type([1,2])).to.equal('array');
+	it('should return "array" for Array objects', function(){
+		expect($type([1, 2])).to.equal('array');
 	});
 
-	it("should return 'string' for String objects", function(){
+	it('should return "string" for String objects', function(){
 		expect($type('ciao')).to.equal('string');
 	});
 
-	it("should return 'regexp' for RegExp objects", function(){
+	it('should return "regexp" for RegExp objects', function(){
 		expect($type(/_/)).to.equal('regexp');
 	});
 
-	it("should return 'function' for Function objects", function(){
+	it('should return "function" for Function objects', function(){
 		expect($type(function(){})).to.equal('function');
 	});
 
-	it("should return 'number' for Number objects", function(){
+	it('should return "number" for Number objects', function(){
 		expect($type(10)).to.equal('number');
 		expect($type(NaN)).to.not.equal('number');
 	});
 
-	it("should return 'boolean' for Boolean objects", function(){
+	it('should return "boolean" for Boolean objects', function(){
 		expect($type(true)).to.equal('boolean');
 		expect($type(false)).to.equal('boolean');
 	});
 
-	it("should return 'object' for Object objects", function(){
+	it('should return "object" for Object objects', function(){
 		expect($type({a:2})).to.equal('object');
 	});
 
-	it("should return 'arguments' for Function arguments", function(){
-		if (window.opera){ // Seems like the Opera guys can't decide on this
+	it('should return "arguments" for Function arguments', function(){
+		if (window.opera){ // Seems like the Opera guys can't decide on this.
 			var type = $type(arguments);
 			expect(type == 'array' || type == 'arguments').to.equal(true);
 			return;
@@ -326,32 +325,32 @@ describe('$type', function(){
 		expect($type(arguments)).to.equal('arguments');
 	});
 
-	it("should return false for null objects", function(){
+	it('should return false for null objects', function(){
 		expect($type(null)).to.equal(false);
 	});
 
-	it("should return false for undefined objects", function(){
+	it('should return false for undefined objects', function(){
 		expect($type(undefined)).to.equal(false);
 	});
 
-	it("should return 'collection' for HTMLElements collections", function(){
+	it('should return "collection" for HTMLElements collections', function(){
 		expect($type(document.getElementsByTagName('*'))).to.equal('collection');
 	});
 
-	it("should return 'element' for an Element", function(){
+	it('should return "element" for an Element', function(){
 		var div = document.createElement('div');
 		expect($type(div)).to.equal('element');
 	});
 
-	it("should return 'array' for Elements", function(){
+	it('should return "array" for Elements', function(){
 		expect($type(new Elements)).to.equal('array');
 	});
 
-	it("should return 'window' for the window object", function(){
+	it('should return "window" for the window object', function(){
 		expect($type(window)).to.equal('window');
 	});
 
-	it("should return 'document' for the document object", function(){
+	it('should return "document" for the document object', function(){
 		expect($type(document)).to.equal('document');
 	});
 
@@ -359,7 +358,7 @@ describe('$type', function(){
 
 describe('$unlink', function(){
 
-	it("should unlink an object recursivly", function(){
+	it('should unlink an object recursivly', function(){
 		var inner = {b: 2};
 		var obj = {a: 1, inner: inner};
 		var copy = $unlink(obj);
@@ -375,7 +374,7 @@ describe('$unlink', function(){
 		expect($type(copy)).to.equal('object');
 	});
 
-	it("should unlink an Hash", function(){
+	it('should unlink an Hash', function(){
 		var hash = new Hash({a: 'one'});
 		var copy = $unlink(hash);
 
@@ -392,7 +391,7 @@ describe('$unlink', function(){
 
 describe('Hash.getLength', function(){
 
-	it("should return the number of items in it", function(){
+	it('should return the number of items in it', function(){
 		var hash = new Hash({});
 		expect(hash.getLength()).to.equal(0);
 		hash.set('mootools', 'awesome');
@@ -400,12 +399,12 @@ describe('Hash.getLength', function(){
 		expect(hash.getLength()).to.equal(2);
 	});
 
-	it("should not fail when length is set", function(){
+	it('should not fail when length is set', function(){
 		var hash = new Hash({'length': 10});
 		expect(hash.getLength()).to.equal(1);
 	});
 
-	it("should work as a generic on objects", function(){
+	it('should work as a generic on objects', function(){
 		expect(Hash.getLength({})).to.equal(0);
 		expect(Hash.getLength({'': '', '0': '0', 'length': 99})).to.equal(3);
 	});
@@ -414,15 +413,13 @@ describe('Hash.getLength', function(){
 
 describe('$H', function(){
 
-	it("should create a new hash", function(){
+	it('should create a new hash', function(){
 		var hash = $H({});
 		expect($type(hash)).to.equal('hash');
 	});
 
 });
-
 //</1.2compat>
-
 
 describe('Function.prototype.overloadSetter', function(){
 
@@ -518,44 +515,43 @@ describe('Function.prototype.overloadGetter', function(){
 			aa: 1,
 			bb: 2
 		});
-
-	})
+	});
 
 });
 
 describe('typeOf', function(){
 
-	it("should return 'array' for Array objects", function(){
-		expect(typeOf([1,2])).to.equal('array');
+	it('should return "array" for Array objects', function(){
+		expect(typeOf([1, 2])).to.equal('array');
 	});
 
-	it("should return 'string' for String objects", function(){
+	it('should return "string" for String objects', function(){
 		expect(typeOf('ciao')).to.equal('string');
 	});
 
-	it("should return 'regexp' for RegExp objects", function(){
+	it('should return "regexp" for RegExp objects', function(){
 		expect(typeOf(/_/)).to.equal('regexp');
 	});
 
-	it("should return 'function' for Function objects", function(){
+	it('should return "function" for Function objects', function(){
 		expect(typeOf(function(){})).to.equal('function');
 	});
 
-	it("should return 'number' for Number objects", function(){
+	it('should return "number" for Number objects', function(){
 		expect(typeOf(10)).to.equal('number');
 		expect(typeOf(NaN)).to.not.equal('number');
 	});
 
-	it("should return 'boolean' for Boolean objects", function(){
+	it('should return "boolean" for Boolean objects', function(){
 		expect(typeOf(true)).to.equal('boolean');
 		expect(typeOf(false)).to.equal('boolean');
 	});
 
-	it("should return 'object' for Object objects", function(){
+	it('should return "object" for Object objects', function(){
 		expect(typeOf({a:2})).to.equal('object');
 	});
 
-	it("should return 'arguments' for Function arguments", function(){
+	it('should return "arguments" for Function arguments', function(){
 		if (typeof window != 'undefined' && window.opera){ // Seems like the Opera guys can't decide on this
 			var type = typeOf(arguments);
 			expect(type == 'array' || type == 'arguments').to.equal(true);
@@ -565,11 +561,11 @@ describe('typeOf', function(){
 		expect(typeOf(arguments)).to.equal('arguments');
 	});
 
-	it("should return 'null' for null objects", function(){
+	it('should return "null" for null objects', function(){
 		expect(typeOf(null)).to.equal('null');
 	});
 
-	it("should return 'null' for undefined objects", function(){
+	it('should return "null" for undefined objects', function(){
 		expect(typeOf(undefined)).to.equal('null');
 	});
 
@@ -577,35 +573,35 @@ describe('typeOf', function(){
 
 describe('instanceOf', function(){
 
-	it("should return false on null object", function(){
+	it('should return false on null object', function(){
 		expect(instanceOf(null, null)).to.equal(false);
 	});
 
-	it("should return true for Arrays", function(){
+	it('should return true for Arrays', function(){
 		expect(instanceOf([], Array)).to.equal(true);
 	});
 
-	it("should return true for Numbers", function(){
+	it('should return true for Numbers', function(){
 		expect(instanceOf(1, Number)).to.equal(true);
 	});
 
-	it("should return true for Objects", function(){
+	it('should return true for Objects', function(){
 		expect(instanceOf({}, Object)).to.equal(true);
 	});
 
-	it("should return true for Dates", function(){
+	it('should return true for Dates', function(){
 		expect(instanceOf(new Date(), Date)).to.equal(true);
 	});
 
-	it("should return true for Booleans", function(){
+	it('should return true for Booleans', function(){
 		expect(instanceOf(true, Boolean)).to.equal(true);
 	});
 
-	it("should return true for RegExps", function(){
+	it('should return true for RegExps', function(){
 		expect(instanceOf(/_/, RegExp)).to.equal(true);
 	});
 
-	it("should respect the parent property of a custom object", function(){
+	it('should respect the parent property of a custom object', function(){
 		var X = function(){};
 		X.parent = Array;
 		expect(instanceOf(new X, Array)).to.equal(true);
@@ -613,7 +609,7 @@ describe('instanceOf', function(){
 
 	// todo(ibolmo)
 	var dit = typeof window != 'undefined' && window.Element && Element.set ? it : xit;
-	dit("should return true for Element instances", function(){
+	dit('should return true for Element instances', function(){
 		expect(instanceOf(new Element('div'), Element)).to.equal(true);
 	});
 
@@ -622,7 +618,7 @@ describe('instanceOf', function(){
 describe('Array.from', function(){
 
 	it('should return the same array', function(){
-		var arr1 = [1,2,3];
+		var arr1 = [1, 2, 3];
 		var arr2 = Array.from(arr1);
 		expect(arr1).to.equal(arr2);
 	});
@@ -631,7 +627,7 @@ describe('Array.from', function(){
 		var fnTest = function(){
 			return Array.from(arguments);
 		};
-		var arr = fnTest(1,2,3);
+		var arr = fnTest(1, 2, 3);
 		expect(Type.isArray(arr)).to.equal(true);
 		expect(arr.length).to.equal(3);
 	});
@@ -646,7 +642,7 @@ describe('Array.from', function(){
 	});
 
 	it('should ignore and return an array', function(){
-		expect(Array.from([1,2,3])).to.eql([1,2,3]);
+		expect(Array.from([1, 2, 3])).to.eql([1, 2, 3]);
 	});
 
 	it('should return a copy of arguments or the arguments if it is of type array', function(){
@@ -673,11 +669,8 @@ describe('String.from', function(){
 
 	it('should convert to type string', function(){
 		expect(typeOf(String.from('string'))).to.equal('string');
-
 		expect(typeOf(String.from(1))).to.equal('string');
-
 		expect(typeOf(String.from(new Date))).to.equal('string');
-
 		expect(typeOf(String.from(function(){}))).to.equal('string');
 	});
 
@@ -686,7 +679,7 @@ describe('String.from', function(){
 describe('Function.from', function(){
 
 	it('if a function is passed in that function should be returned', function(){
-		var fn = function(a,b){ return a; };
+		var fn = function(a, b){ return a; };
 		expect(Function.from(fn)).to.equal(fn);
 	});
 
@@ -699,12 +692,12 @@ describe('Function.from', function(){
 describe('Number.from', function(){
 
 	it('should return the number representation of a string', function(){
-		expect(Number.from("10")).to.equal(10);
-		expect(Number.from("10px")).to.equal(10);
+		expect(Number.from('10')).to.equal(10);
+		expect(Number.from('10px')).to.equal(10);
 	});
 
 	it('should return null when it fails to return a number type', function(){
-		expect(Number.from("ciao")).to.equal(null);
+		expect(Number.from('ciao')).to.equal(null);
 	});
 
 });
@@ -755,20 +748,20 @@ describe('Type', function(){
 		expect(Car.method({name: 'not so nice car'})).to.equal('driving a not so nice car');
 	});
 
-	it("should be a Type", function(){
+	it('should be a Type', function(){
 		expect(Type.isType(Instrument)).to.equal(true);
 	});
 
-	it("should generate and evaluate correct types", function(){
+	it('should generate and evaluate correct types', function(){
 		var myCar = new Car('nice car');
 		expect(Type.isCar(myCar)).to.equal(true);
 	});
 
-	it("isEnumerable method on Type should return true for arrays, arguments, objects with a numerical length property", function(){
-		expect(Type.isEnumerable([1,2,3])).to.equal(true);
+	it('isEnumerable method on Type should return true for arrays, arguments, objects with a numerical length property', function(){
+		expect(Type.isEnumerable([1, 2, 3])).to.equal(true);
 		(function(){
 			expect(Type.isEnumerable(arguments)).to.equal(true);
-		})(1,2,3);
+		})(1, 2, 3);
 		expect(Type.isEnumerable({length: 2})).to.equal(true);
 	});
 
@@ -786,7 +779,7 @@ describe('Type', function(){
 
 });
 
-describe('Object.keys', function(){	
+describe('Object.keys', function(){
 
 	var object = { a: 'string', b: 233, c: {} };
 
@@ -811,7 +804,7 @@ describe('Object.each', function(){
 
 	it('should call the function for each item in the object', function(){
 		var daysObj = {};
-		Object.each({first: "Sunday", second: "Monday", third: "Tuesday"}, function(value, key){
+		Object.each({first: 'Sunday', second: 'Monday', third: 'Tuesday'}, function(value, key){
 			daysObj[key] = value;
 		});
 
@@ -821,13 +814,13 @@ describe('Object.each', function(){
 	it('should call non-enumerable properties too', function(){
 		var obj = {
 			foo: 'bar',
-			constructor: "constructor",
-			hasOwnProperty: "hasOwnProperty",
-			isPrototypeOf: "isPrototypeOf",
-			propertyIsEnumerable: "propertyIsEnumerable",
-			toLocaleString: "toLocaleString",
-			toString: "toString",
-			valueOf: "valueOf"
+			constructor: 'constructor',
+			hasOwnProperty: 'hasOwnProperty',
+			isPrototypeOf: 'isPrototypeOf',
+			propertyIsEnumerable: 'propertyIsEnumerable',
+			toLocaleString: 'toLocaleString',
+			toString: 'toString',
+			valueOf: 'valueOf'
 		};
 
 		var keysInObject = true, iteration = 0;
@@ -835,7 +828,7 @@ describe('Object.each', function(){
 
 		Object.each(obj, function(i, k){
 			iteration++;
-			if (props.indexOf(k) == -1) keysInObject = false;  
+			if (props.indexOf(k) == -1) keysInObject = false;
 		});
 
 		expect(keysInObject).to.equal(true);
@@ -852,18 +845,18 @@ describe('Array.each', function(){
 			Array.each(Array.from(arguments), function(value, key){
 				daysArr[key] = value;
 			});
-		})('Sun','Mon','Tue');
+		})('Sun', 'Mon', 'Tue');
 
-		expect(daysArr).to.eql(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun', 'Mon', 'Tue']);
 	});
 
 	it('should call the function for each item in the array', function(){
 		var daysArr = [];
-		Array.each(['Sun','Mon','Tue'], function(value, i){
+		Array.each(['Sun', 'Mon', 'Tue'], function(value, i){
 			daysArr.push(value);
 		});
 
-		expect(daysArr).to.eql(['Sun','Mon','Tue']);
+		expect(daysArr).to.eql(['Sun', 'Mon', 'Tue']);
 	});
 
 	it('should not iterate over deleted elements', function(){
@@ -882,8 +875,9 @@ describe('Array.each', function(){
 });
 
 describe('Array.clone', function(){
+
 	it('should recursively clone and dereference arrays and objects, while mantaining the primitive values', function(){
-		var a = [1,2,3, [1,2,3, {a: [1,2,3]}]];
+		var a = [1, 2, 3, [1, 2, 3, {a: [1, 2, 3]}]];
 		var b = Array.clone(a);
 		expect(a).to.not.equal(b);
 		expect(a[3]).to.not.equal(b[3]);
@@ -894,11 +888,13 @@ describe('Array.clone', function(){
 		expect(a[3][3]).to.eql(b[3][3]);
 		expect(a[3][3].a).to.eql(b[3][3].a);
 	});
+
 });
 
 describe('Object.clone', function(){
+
 	it('should recursively clone and dereference arrays and objects, while mantaining the primitive values', function(){
-		var a = {a:[1,2,3, [1,2,3, {a: [1,2,3]}]]};
+		var a = {a:[1, 2, 3, [1, 2, 3, {a: [1, 2, 3]}]]};
 		var b = Object.clone(a);
 		expect(a).to.not.equal(b);
 		expect(a.a[3]).to.not.equal(b.a[3]);
@@ -909,6 +905,7 @@ describe('Object.clone', function(){
 		expect(a.a[3][3]).to.eql(b.a[3][3]);
 		expect(a.a[3][3].a).to.eql(b.a[3][3].a);
 	});
+
 });
 
 describe('Object.merge', function(){
@@ -927,8 +924,8 @@ describe('Object.merge', function(){
 	});
 
 	it('should recursively clone sub objects and sub-arrays', function(){
-		var a = {a:1, b:2, c: {a:1, b:2, c:3}, d: [1,2,3]};
-		var b = {e: {a:1}, f: [1,2,3]};
+		var a = {a:1, b:2, c: {a:1, b:2, c:3}, d: [1, 2, 3]};
+		var b = {e: {a:1}, f: [1, 2, 3]};
 
 		var merger = Object.merge(a, b);
 
@@ -939,6 +936,7 @@ describe('Object.merge', function(){
 });
 
 describe('Object.append', function(){
+
 	it('should combine two objects', function(){
 		var a = {a: 1, b: 2}, b = {b: 3, c: 4};
 		expect(Object.append(a, b)).to.eql({a: 1, b: 3, c: 4});
@@ -950,6 +948,7 @@ describe('Object.append', function(){
 		var c = {a: 2, d: 5};
 		expect(Object.append(a, b, c)).to.eql({a: 2, b: 3, c: 4, d: 5});
 	});
+
 });
 
 describe('Date.now', function(){
@@ -966,7 +965,7 @@ describe('String.uniqueID', function(){
 		expect(typeof String.uniqueID()).to.equal('string');
 	});
 
-	it("should generate unique ids", function(){
+	it('should generate unique ids', function(){
 		expect(String.uniqueID()).to.not.equal(String.uniqueID());
 	});
 
@@ -975,25 +974,25 @@ describe('String.uniqueID', function(){
 describe('typeOf Client', function(){
 
 	var dit = typeof document == 'undefined' ? xit : it;
-	dit("should return 'collection' for HTMLElements collections", function(){
+	dit('should return "collection" for HTMLElements collections', function(){
 		expect(typeOf(document.getElementsByTagName('*'))).to.equal('collection');
 	});
 
-	dit("should return 'element' for an Element", function(){
+	dit('should return "element" for an Element', function(){
 		var div = document.createElement('div');
 		expect(typeOf(div)).to.equal('element');
 	});
 
 	// todo(ibolmo)
-	if (typeof window != 'undefined' && window.Elements) dit("should return 'elements' for Elements", function(){
+	if (typeof window != 'undefined' && window.Elements) dit('should return "elements" for Elements', function(){
 		expect(typeOf(new Elements)).to.equal('elements');
 	});
 
-	if (typeof window != 'undefined' && window.Browser) dit("should return 'window' for the window object", function(){
+	if (typeof window != 'undefined' && window.Browser) dit('should return "window" for the window object', function(){
 		expect(typeOf(window)).to.equal('window');
 	});
 
-	if (typeof window != 'undefined' && window.Browser) dit("should return 'document' for the document object", function(){
+	if (typeof window != 'undefined' && window.Browser) dit('should return "document" for the document object', function(){
 		expect(typeOf(document)).to.equal('document');
 	});
 
@@ -1024,14 +1023,15 @@ describe('Array.from', function(){
 
 });
 
-
 describe('Core', function(){
 
 	describe('typeOf', function(){
+
 		it('should correctly report the type of arguments when using "use strict"', function(){
-			"use strict";
+			'use strict';
 			expect(typeOf(arguments)).to.equal('arguments');
 		});
+
 	});
 
 });

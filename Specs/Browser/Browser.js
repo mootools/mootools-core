@@ -34,8 +34,6 @@ describe('Browser.exec', function(){
 
 });
 
-// String.stripScripts
-
 describe('String.stripScripts', function(){
 
 	it('should strip all script tags from a string', function(){
@@ -52,7 +50,6 @@ describe('String.stripScripts', function(){
 	});
 
 });
-
 
 describe('Document', function(){
 
@@ -75,6 +72,7 @@ describe('Window', function(){
 });
 
 describe('Browser', function(){
+
 	var isPhantomJS = !!navigator.userAgent.match(/phantomjs/i);
 
 	it('should think it is executed in a browser', function(){

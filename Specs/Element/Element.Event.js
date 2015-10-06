@@ -67,7 +67,7 @@ describe('Events API: Element', function(){
 		object.addEvent('event1', Local.fn).addEvent('event2', fn).removeEvents();
 		object[fire]('event1')[fire]('event2');
 
-		// Should not fail
+		// Should not fail.
 		object.removeEvents()[fire]('event1')[fire]('event2');
 
 		expect(x).to.equal(0);
@@ -145,7 +145,7 @@ describe('Events API: Element', function(){
 
 var fragment = document.createDocumentFragment();
 
-// Restore native fireEvent in IE for Syn
+// Restore native fireEvent in IE for Syn.
 var createElement = function(tag, props){
 	var el = new Element(tag);
 	if (el._fireEvent) el.fireEvent = el._fireEvent;
@@ -155,7 +155,6 @@ var createElement = function(tag, props){
 describe('Element.Event', function(){
 
 	it('Should trigger the click event', function(){
-
 		var callback = sinon.spy();
 
 		var el = createElement('a', {
@@ -177,7 +176,6 @@ describe('Element.Event', function(){
 	});
 
 	it('Should trigger the click event and prevent the default behavior', function(){
-
 		var callback = sinon.spy();
 
 		var el = createElement('a', {
@@ -199,7 +197,6 @@ describe('Element.Event', function(){
 
 		expect(callback.called).to.equal(true);
 		el.destroy();
-
 	});
 
 	var ddescribe = (window.postMessage && !navigator.userAgent.match(/phantomjs/i)) ? describe : xdescribe;
@@ -221,10 +218,10 @@ describe('Element.Event', function(){
 			expect(this.spy.called).to.equal(true);
 			expect(this.message).to.equal('I am a message from outer space...');
 		});
+
 	});
 
 	it('Should watch for a key-down event', function(){
-
 		var callback = sinon.spy();
 
 		var div = createElement('div').addEvent('keydown', function(event){
@@ -238,7 +235,6 @@ describe('Element.Event', function(){
 	});
 
 	it('should clone events of an element', function(){
-
 		var calls = 0;
 
 		var element = new Element('div').addEvent('click', function(){ calls++; });
@@ -343,7 +339,6 @@ describe('Element.Event.change', function(){
 describe('Element.Event keyup with f<key>', function(){
 
 	it('should pass event.key == f2 when pressing f2 on keyup and keydown', function(){
-
 		var keydown = sinon.spy();
 		var keyup = sinon.spy();
 
@@ -363,17 +358,16 @@ describe('Element.Event keyup with f<key>', function(){
 		expect(keyup.calledWith('f2')).to.equal(true);
 
 		div.destroy();
-
 	});
 
 });
 
 describe('Keypress key code', function(){
 
-	/*<ltIE8>*/
-	// return early for IE8- because Syn.js does not fire events
+//<ltIE8>
+	// Return early for IE8- because Syn.js does not fire events.
 	if (!document.addEventListener) return;
-	/*</ltIE8>*/
+//</ltIE8>
 
 	var _input, _key, _shift;
 	DOMEvent.defineKey(33, 'pageup');
@@ -444,7 +438,6 @@ describe('Element.removeEvent', function(){
 		expect(text).to.equal(undefined);
 	});
 
-
 });
 
 describe('relatedTarget', function () {
@@ -454,7 +447,7 @@ describe('relatedTarget', function () {
 	['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].each(function(event, i){
 		it('should listen to a ' + event + ' event and set the correct relatedTarget', function(){
 			var mockEvent = {type: event};
-			mockEvent[(i % 2 == 0 ? 'from' : 'to') + 'Element'] = outer; // simulate FF that does not set relatedTarget
+			mockEvent[(i % 2 == 0 ? 'from' : 'to') + 'Element'] = outer; // Simulate FF that does not set relatedTarget.
 
 			var e = new DOMEvent(mockEvent);
 			expect(e.type).to.equal(event);
@@ -477,7 +470,7 @@ describe('Mouse wheel', function(){
 		var event;
 		try {
 			// Firefox
-			event = document.createEvent("MouseEvents");
+			event = document.createEvent('MouseEvents');
 			event.initMouseEvent(type, true, true, window, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
@@ -485,7 +478,7 @@ describe('Mouse wheel', function(){
 
 		try {
 			// Chrome, PhantomJS, Safari
-			event = document.createEvent("WheelEvent");
+			event = document.createEvent('WheelEvent');
 			event.initMouseEvent(type, 0, 100, window, 0, 0, 0, 0, null, null, null, null);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
@@ -493,7 +486,7 @@ describe('Mouse wheel', function(){
 
 		try {
 			// IE9
-			event = document.createEvent("HTMLEvents");
+			event = document.createEvent('HTMLEvents');
 			event.initEvent(type, true, false);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
@@ -501,7 +494,7 @@ describe('Mouse wheel', function(){
 
 		try {
 			// IE10+, Safari
-			var event = document.createEvent("MouseEvents");
+			var event = document.createEvent('MouseEvents');
 			event.initEvent(type, true, true);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
@@ -536,7 +529,7 @@ describe('Mouse wheel', function(){
 	it('should trigger/listen to mousewheel event', function(){
 		// http://jsfiddle.net/W6QrS/3
 
-		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(dispatchFakeWheel);
+		['mousewheel', 'wheel', 'DOMMouseScroll' ].each(dispatchFakeWheel);
 		expect(triggered).to.equal(true);
 	});
 
@@ -545,19 +538,20 @@ describe('Mouse wheel', function(){
 
 		if (!testWheel) return;
 
-		// fire event with wheel going up
-		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(function(type){
+		// Fire event with wheel going up.
+		['mousewheel', 'wheel', 'DOMMouseScroll' ].each(function(type){
 			dispatchFakeWheel(type, 120);
 		});
 		expect(wheel).to.equal('wheel moved up');
 		wheel = false;
 
-		// fire event with wheel going down
-		['mousewheel', 'wheel' ,'DOMMouseScroll' ].each(function(type){
+		// Fire event with wheel going down.
+		['mousewheel', 'wheel', 'DOMMouseScroll' ].each(function(type){
 			dispatchFakeWheel(type, -120);
 		});
 		expect(wheel).to.equal('wheel moved down');
 	});
+
 });
 
 })();

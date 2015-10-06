@@ -8,7 +8,7 @@ provides: ~
 
 describe('Element constructor', function(){
 
-	it("should return an Element with the correct tag", function(){
+	it('should return an Element with the correct tag', function(){
 		var element = new Element('div');
 		expect(typeOf(element)).to.equal('element');
 		expect(element.getFirst).to.not.equal(undefined);
@@ -54,7 +54,7 @@ describe('Element constructor', function(){
 	});
 
 	it('should be able to use all kinds of silly characters in your name attribute values', function(){
-		["foo","bar[]","b'a'z",'b"a"ng','boi ng'].each(function(name){
+		['foo', 'bar[]', "b'a'z", 'b"a"ng', 'boi ng'].each(function(name){
 			var input = new Element('input', { type: 'text', name: name, value: name });
 			expect(input.type).to.equal('text');
 			expect(input.name).to.equal(name);
@@ -82,7 +82,7 @@ describe('Element constructor', function(){
 		expect(check3.checked).to.be.ok();
 	});
 
-	it("should return a select Element that retains it's selected options", function(){
+	it('should return a select Element that retains its selected options', function(){
 		var div = new Element('div', { 'html':
 			'<select multiple="multiple" name="select[]">' +
 				'<option value="" name="none">--</option>' +
@@ -114,41 +114,41 @@ describe('Element constructor', function(){
 
 describe('Element.set', function(){
 
-	it("should set a single attribute of an Element", function(){
+	it('should set a single attribute of an Element', function(){
 		var div = new Element('div').set('id', 'some_id');
 		expect(div.id).to.equal('some_id');
 	});
 
-	it("should set the checked attribute of an Element", function(){
+	it('should set the checked attribute of an Element', function(){
 		var input1 = new Element('input', {type: 'checkbox'}).set('checked', 'checked');
 		var input2 = new Element('input', {type: 'checkbox'}).set('checked', true);
 		expect(input1.checked).to.be.ok();
 		expect(input2.checked).to.be.ok();
 	});
 
-	it("should set the class name of an element", function(){
+	it('should set the class name of an element', function(){
 		var div = new Element('div').set('class', 'some_class');
 		expect(div.className).to.equal('some_class');
 	});
 
-	it("should set the for attribute of an element", function(){
+	it('should set the for attribute of an element', function(){
 		var input = new Element('label', {type: 'text'}).set('for', 'some_element');
 		expect(input.htmlFor).to.equal('some_element');
 	});
 
-	it("should set the html of an Element", function(){
+	it('should set the html of an Element', function(){
 		var html = '<a href="http://mootools.net/">Link</a>';
 		var parent = new Element('div').set('html', html);
 		expect(parent.innerHTML.toLowerCase()).to.equal(html.toLowerCase());
 	});
 
-	it("should set the html of an Element with multiple arguments", function(){
+	it('should set the html of an Element with multiple arguments', function(){
 		var html = ['<p>Paragraph</p>', '<a href="http://mootools.net/">Link</a>'];
 		var parent = new Element('div').set('html', html);
 		expect(parent.innerHTML.toLowerCase()).to.equal(html.join('').toLowerCase());
 	});
 
-	it("should set the html of a select Element", function(){
+	it('should set the html of a select Element', function(){
 		var html = '<option>option 1</option><option selected="selected">option 2</option>';
 		var select = new Element('select').set('html', html);
 		expect(select.getChildren().length).to.equal(2);
@@ -156,7 +156,7 @@ describe('Element.set', function(){
 		expect(select.selectedIndex).to.equal(1);
 	});
 
-	it("should set the html of a table Element", function(){
+	it('should set the html of a table Element', function(){
 		var html = '<tbody><tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr></tbody>';
 		var table = new Element('table').set('html', html);
 		expect(table.getChildren().length).to.equal(1);
@@ -164,21 +164,21 @@ describe('Element.set', function(){
 		expect(table.getFirst().getLast().getFirst().className).to.equal('cell');
 	});
 
-	it("should set the html of a tbody Element", function(){
+	it('should set the html of a tbody Element', function(){
 		var html = '<tr><td>cell 1</td><td>cell 2</td></tr><tr><td class="cell">cell 1</td><td>cell 2</td></tr>';
 		var tbody = new Element('tbody').inject(new Element('table')).set('html', html);
 		expect(tbody.getChildren().length).to.equal(2);
 		expect(tbody.getLast().getFirst().className).to.equal('cell');
 	});
 
-	it("should set the html of a tr Element", function(){
+	it('should set the html of a tr Element', function(){
 		var html = '<td class="cell">cell 1</td><td>cell 2</td>';
 		var tr = new Element('tr').inject(new Element('tbody').inject(new Element('table'))).set('html', html);
 		expect(tr.getChildren().length).to.equal(2);
 		expect(tr.getFirst().className).to.equal('cell');
 	});
 
-	it("adopting should not change the parent of the element doing the adopting", function(){
+	it('adopting should not change the parent of the element doing the adopting', function(){
 		var baldGuy = new Element('div');
 		var annie = new Element('span');
 
@@ -187,40 +187,40 @@ describe('Element.set', function(){
 		expect(baldGuy.getParent()).to.equal(gramps)
 	});
 
-	it("should set the html of a td Element", function(){
+	it('should set the html of a td Element', function(){
 		var html = '<span class="span">Some Span</span><a href="#">Some Link</a>';
 		var td = new Element('td').inject(new Element('tr').inject(new Element('tbody').inject(new Element('table')))).set('html', html);
 		expect(td.getChildren().length).to.equal(2);
 		expect(td.getFirst().className).to.equal('span');
 	});
 
-	it("should set the style attribute of an Element", function(){
+	it('should set the style attribute of an Element', function(){
 		var style = 'font-size:12px;line-height:23px;';
 		var div = new Element('div').set('style', style);
 		expect(div.style.lineHeight).to.equal('23px');
 		expect(div.style.fontSize).to.equal('12px');
 	});
 
-	it("should set the text of an element", function(){
+	it('should set the text of an element', function(){
 		var div = new Element('div').set('text', 'some text content');
 		expect(div.get('text')).to.equal('some text content');
 		expect(div.innerHTML).to.equal('some text content');
 	});
 
-	it("should set multiple attributes of an Element", function(){
+	it('should set multiple attributes of an Element', function(){
 		var div = new Element('div').set({ id: 'some_id', 'title': 'some_title', 'html': 'some_content' });
 		expect(div.id).to.equal('some_id');
 		expect(div.title).to.equal('some_title');
 		expect(div.innerHTML).to.equal('some_content');
 	});
 
-	it("should set various attributes of a script Element", function(){
+	it('should set various attributes of a script Element', function(){
 		var script = new Element('script').set({ type: 'text/javascript', defer: 'defer' });
 		expect(script.type).to.equal('text/javascript');
 		expect(script.defer).to.be.ok();
 	});
 
-	it("should set various attributes of a table Element", function(){
+	it('should set various attributes of a table Element', function(){
 		var table1 = new Element('table').set({ border: '2', cellpadding: '3', cellspacing: '4', align: 'center' });
 		var table2 = new Element('table').set({ cellPadding: '3', cellSpacing: '4' });
 		expect(table1.border == 2).to.be.ok();
@@ -241,11 +241,11 @@ var myElements = new Elements([
 
 describe('Elements', function(){
 
-	//<1.3compat>
+//<1.3compat>
 	it('should return an array type', function(){
 		expect(Array.type(myElements)).to.equal(true);
 	});
-	//</1.3compat>
+//</1.3compat>
 
 	it('should return an elements type', function(){
 		expect(typeOf(myElements)).to.equal('elements');
@@ -455,7 +455,7 @@ describe('Element.getElements', function(){
 	});
 
 	it('should return all the elements that match the tags', function(){
-		var children = Container.getElements('div,a');
+		var children = Container.getElements('div, a');
 		expect(children.length).to.equal(3);
 		expect(children[2].tagName.toLowerCase()).to.equal('a');
 	});
@@ -484,7 +484,7 @@ describe('Document.getElements', function(){
 	});
 
 	it('should return all the elements that match the tags', function(){
-		var headers = document.getElements('h3,h4');
+		var headers = document.getElements('h3, h4');
 		var headers2 = new Elements(Array.flatten([document.getElementsByTagName('h3'), document.getElementsByTagName('h4')]));
 		expect(headers.length).to.equal(headers2.length);
 	});
@@ -513,18 +513,18 @@ describe('Element.getElementById', function(){
 
 describe('Element.get style', function(){
 
-	it("should return a CSS string representing the Element's styles", function(){
+	it('should return a CSS string representing the styles of an Element', function(){
 		var style = 'font-size:12px;color:rgb(255,255,255)';
 		var myElement = new Element('div').set('style', style);
 		expect(myElement.get('style').toLowerCase().replace(/\s/g, '').replace(/;$/, '')).to.match(/(font-size:12px;color:rgb\(255,255,255\))|(color:rgb\(255,255,255\);font-size:12px)/);
-		//I'm replacing these characters (space and the last semicolon) as they are not vital to the style, and browsers sometimes include them, sometimes not.
+		// I'm replacing these characters (space and the last semicolon) as they are not vital to the style, and browsers sometimes include them, sometimes not.
 	});
 
 });
 
 describe('Element.get tag', function(){
 
-	it("should return the Element's tag", function(){
+	it('should return the tag of an Element', function(){
 		var myElement = new Element('div');
 		expect(myElement.get('tag')).to.equal('div');
 	});
@@ -533,27 +533,27 @@ describe('Element.get tag', function(){
 
 describe('Element.get', function(){
 
-	it("should get an absolute href", function(){
-		var link = new Element('a', {href: "http://google.com/"});
-		expect(link.get('href')).to.equal("http://google.com/");
+	it('should get an absolute href', function(){
+		var link = new Element('a', {href: 'http://google.com/'});
+		expect(link.get('href')).to.equal('http://google.com/');
 	});
 
-	it("should get an absolute href to the same domain", function(){
+	it('should get an absolute href to the same domain', function(){
 		var link = new Element('a', {href: window.location.href});
 		expect(link.get('href')).to.equal(window.location.href);
 	});
 
-	it("should get a relative href", function(){
-		var link = new Element('a', {href: "../index.html"});
-		expect(link.get('href')).to.equal("../index.html");
+	it('should get a relative href', function(){
+		var link = new Element('a', {href: '../index.html'});
+		expect(link.get('href')).to.equal('../index.html');
 	});
 
-	it("should get a host absolute href", function(){
-		var link = new Element('a', {href: "/developers"});
-		expect(link.get('href')).to.equal("/developers");
+	it('should get a host absolute href', function(){
+		var link = new Element('a', {href: '/developers'});
+		expect(link.get('href')).to.equal('/developers');
 	});
 
-	it("should return null when attribute is missing", function(){
+	it('should return null when attribute is missing', function(){
 		var link = new Element('a');
 		expect(link.get('href')).to.equal(null);
 	});
@@ -562,14 +562,14 @@ describe('Element.get', function(){
 
 describe('Element.erase', function(){
 
-	it("should erase an Element's property", function(){
+	it('should erase the property of an Element', function(){
 		var myElement = new Element('a', {href: 'http://mootools.net/', title: 'mootools!'});
 		expect(myElement.get('title')).to.equal('mootools!');
 		expect(myElement.erase('title').get('title')).to.equal(null);
 	});
 
-	it("should erase an Element's style", function(){
-		var myElement = new Element('div', {style: "color:rgb(255, 255, 255); font-size:12px;"});
+	it('should erase the style of an Element', function(){
+		var myElement = new Element('div', {style: 'color:rgb(255, 255, 255); font-size:12px;'});
 		myElement.erase('style');
 		expect(myElement.get('style')).to.equal('');
 	});
@@ -583,7 +583,7 @@ describe('Element.match', function(){
 		expect(element.match()).to.equal(true);
 	});
 
-	it("should return true if the Element's tag matches", function(){
+	it('should return true if the tag of an Element matches', function(){
 		var element = new Element('div');
 		expect(element.match('div')).to.equal(true);
 	});
@@ -877,7 +877,6 @@ describe('Element.appendText', function(){
 
 describe('Element.adopt', function(){
 
-
 	beforeEach(function(){
 		Container = new Element('div').inject(document.body);
 		Container.empty();
@@ -988,7 +987,7 @@ describe('Element.clone', function(){
 		expect(Container.retrieve('drink')).to.equal('milk');
 	});
 
-	//<1.2compat>
+//<1.2compat>
 	it('should clone child nodes and not copy their uid', function(){
 		var cloned = Container.clone(true).getElements('*');
 		var old = Container.getElements('*');
@@ -996,9 +995,9 @@ describe('Element.clone', function(){
 		expect(old.length).to.equal(3);
 		expect($$(old, cloned).length).to.equal(6);
 	});
-	//</1.2compat>
+//</1.2compat>
 
-	var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // don't run unless no compat
+	var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // Don't run unless no compat.
 	dit('should clone child nodes and not copy their uid', function(){
 		var cloned = Container.clone(true).getElements('*');
 		var old = Container.getElements('*');
@@ -1191,8 +1190,8 @@ describe('Element.toQueryString', function(){
 		expect(form.toQueryString()).to.equal('');
 	});
 
-	it("should return a query string containing even empty values, multiple select may have no selected options", function(){
-		var form = new Element('form',{'html':
+	it('should return a query string containing even empty values, multiple select may have no selected options', function(){
+		var form = new Element('form', {'html':
 			'<input type="checkbox" name="input" value="" checked="checked" />' +
 			'<select name="select[]" multiple="multiple" size="5">' +
 				'<option name="none" value="">--</option>' +
@@ -1206,7 +1205,7 @@ describe('Element.toQueryString', function(){
 		expect(form.toQueryString()).to.equal('input=&textarea=');
 	});
 
-	it("should return a query string ignoring submit, reset and file form Elements", function(){
+	it('should return a query string ignoring submit, reset and file form Elements', function(){
 		var form = new Element('form', { 'html': '' +
 			'<input type="checkbox" name="input" value="checked" checked="checked" />' +
 			'<input type="file" name="file" />' +
@@ -1539,7 +1538,7 @@ describe('Element.getParents', function(){
 
 describe('Element.getChildren', function(){
 
-	it("should return the Element's children, otherwise returns an empty array", function(){
+	it('should return the children of an Element, otherwise returns an empty array', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('div'), new Element('div')];
 		container.adopt(children);
@@ -1547,7 +1546,7 @@ describe('Element.getChildren', function(){
 		expect(children[0].getChildren()).to.eql(new Elements([]));
 	});
 
-	it("should return the Element's children that match, otherwise returns an empty array", function(){
+	it('should return the children of an Element that match, otherwise returns an empty array', function(){
 		var container = new Element('div');
 		var children = [new Element('div'), new Element('a'), new Element('a')];
 		container.adopt(children);
@@ -1571,34 +1570,34 @@ describe('Element.hasChild', function(){
 		Local = null;
 	});
 
-	//<1.3compat>
-	it("should return true if the Element is a child or grandchild", function(){
+//<1.3compat>
+	it('should return true if the Element is a child or grandchild', function(){
 		expect(Local.container.hasChild(Local.children[0])).to.equal(true);
 		expect(Local.container.hasChild(Local.children[2])).to.equal(true);
 		expect(Local.container.hasChild(Local.grandchild)).to.equal(true);
 	});
 
-	it("should return false if it's the Element itself", function(){
+	it('should return false if it is the Element itself', function(){
 		expect(Local.container.hasChild(Local.container)).to.equal(false);
 	});
 
-	it("should return false if the Element is the parent or a sibling", function(){
+	it('should return false if the Element is the parent or a sibling', function(){
 		expect(Local.children[2].hasChild(Local.container)).to.equal(false);
 		expect(Local.children[2].hasChild(Local.children[1])).to.equal(false);
 	});
-	//</1.3compat>
+//</1.3compat>
 
-	it("should return true if the Element is a child or grandchild", function(){
+	it('should return true if the Element is a child or grandchild', function(){
 		expect(Local.container.contains(Local.children[0])).to.equal(true);
 		expect(Local.container.contains(Local.children[2])).to.equal(true);
 		expect(Local.container.contains(Local.grandchild)).to.equal(true);
 	});
 
-	it("should return true if it's the Element itself", function(){
+	it('should return true if it is the Element itself', function(){
 		expect(Local.container.contains(Local.container)).to.equal(true);
 	});
 
-	it("should return false if the Element is the parent or a sibling", function(){
+	it('should return false if the Element is the parent or a sibling', function(){
 		expect(Local.children[2].contains(Local.container)).to.equal(false);
 		expect(Local.children[2].contains(Local.children[1])).to.equal(false);
 	});
@@ -1607,7 +1606,7 @@ describe('Element.hasChild', function(){
 
 describe('Elements.extend', function(){
 
-	//<1.2compat>
+//<1.2compat>
 	it('should be able to extend a collection', function(){
 		var items = [
 			new Element('span'),
@@ -1621,7 +1620,7 @@ describe('Elements.extend', function(){
 		expect($$(items)).to.eql(container.getElements('*'));
 		expect(items.length).to.equal(4);
 	});
-	//</1.2compat>
+//</1.2compat>
 
 	it('should be able to append a collection', function(){
 		var items = [
@@ -1682,14 +1681,14 @@ describe('Element.removeProperty', function(){
 		expect(props).to.eql({type: 'text', readonly: false});
 
 		var maxlength = readonly.getProperty('maxlength');
-		expect(!maxlength || maxlength == 2147483647).to.be.ok(); // ie6/7 Bug
+		expect(!maxlength || maxlength == 2147483647).to.be.ok(); // IE6/7 bug.
 	});
 
 });
 
 describe('Element.toQueryString', function(){
 
-	it("should return a query string from the Element's form Elements", function(){
+	it('should return a query string from the form Elements of an Element', function(){
 		var form = new Element('form', { 'html': '' +
 			'<input type="checkbox" name="input" value="checked" checked="checked" />' +
 			'<select name="select[]" multiple="multiple" size="5">' +
@@ -1704,7 +1703,7 @@ describe('Element.toQueryString', function(){
 		expect(form.toQueryString()).to.equal('input=checked&select%5B%5D=saab&select%5B%5D=opel&textarea=textarea-value');
 	});
 
-	it("should return a query string containing even empty values, single select must have a selected option", function(){
+	it('should return a query string containing even empty values, single select must have a selected option', function(){
 		var form = new Element('form').adopt(
 			new Element('input', {name: 'input', type: 'checkbox', checked: true, value: ''}),
 			new Element('select', {name: 'select[]'}).adopt(
@@ -1839,27 +1838,27 @@ describe('Elements.prototype.erase', function(){
 
 describe('Element.set("html")', function(){
 
-	it("should set the html of a tr Element, even when it has no parentNode", function(){
+	it('should set the html of a tr Element, even when it has no parentNode', function(){
 		var html = '<td class="cell c">cell 1</td><td>cell 2</td>';
 		var tr = new Element('tr');
 		expect(tr.parentNode).to.equal(null);
-		// In IE using appendChild like in set('html') sets the parentNode to a documentFragment
+		// In IE using appendChild like in set('html') sets the parentNode to a documentFragment.
 		tr.set('html', html).inject(new Element('tbody').inject(new Element('table')));
 		expect(tr.get('html').toLowerCase().replace(/>\s+</, '><')).to.equal(html);
 		expect(tr.getChildren().length).to.equal(2);
 		expect(tr.getFirst().className).to.equal('cell c');
 	});
 
-	it("should set the html of a style Element", function(){
+	it('should set the html of a style Element', function(){
 
 		var styleElement = document.createElement('style');
 		var def = 'body {color: red;}';
-		styleElement.setAttribute("type", "text/css");
+		styleElement.setAttribute('type', 'text/css');
 		var docHead = document.getElementsByTagName('head')[0];
 		docHead.appendChild(styleElement);
-		if (styleElement.styleSheet){       // IE
+		if (styleElement.styleSheet){ // IE.
 			styleElement.styleSheet.cssText = def;
-		} else {                             // the world
+		} else {                      // The world.
 			var node = document.createTextNode(def);
 			styleElement.appendChild(node);
 		}
@@ -1869,8 +1868,8 @@ describe('Element.set("html")', function(){
 			innerStyleB = '.testStyling { font: 44px/44px Courier}';
 
 		function fixString(s){
-			// because browsers return content with different case/space formatting
-			return s.toLowerCase().replace(/\t|\s/g,'');
+			// Because browsers return content with different case/space formatting.
+			return s.toLowerCase().replace(/\t|\s/g, '');
 		}
 		function getStyles(){
 			return fixString(styleElement.get('html'));
@@ -1888,7 +1887,7 @@ describe('Element.set("html")', function(){
 	});
 
 	it('should set the text of a style Element', function(){
-		
+
 		var docHead = $(document.head);
 		var styleElement = new Element('style', {type: 'text/css'}).inject(docHead);
 		var definition = [
@@ -2142,7 +2141,7 @@ describe('Element.set', function(){
 
 });
 
-describe("Element.setProperty('type')", function(){
+describe('Element.setProperty("type")', function(){
 
 	it('should keep the input value after setting a input field to another type (submit button)', function(){
 		var input = new Element('input', {value: 'myValue', type: 'text'});
@@ -2250,7 +2249,7 @@ if (document.createElement('video').canPlayType){
 				expect(video.setProperty('autoplay', false).getProperty('autoplay')).to.equal(false);
 			}catch(O_o){
 				if(O_o.message.indexOf('Not implemented') == -1){
-					expect(O_o.message + " : "+O_o).to.equal('')
+					expect(O_o.message + ' : ' + O_o).to.equal('')
 				}
 			}
 	});
@@ -2258,7 +2257,7 @@ if (document.createElement('video').canPlayType){
 	});
 }
 
-describe("Element.set('html')", function(){
+describe('Element.set("html")', function(){
 
 	describe('HTML5 tags', function(){
 
@@ -2286,7 +2285,7 @@ describe("Element.set('html')", function(){
 
 });
 
-describe("Element.erase('html')", function(){
+describe('Element.erase("html")', function(){
 
 	it('should empty the html inside an element', function(){
 		expect(new Element('div', {html: '<p>foo bar</p>'}).erase('html').innerHTML).to.equal('');
@@ -2380,7 +2379,6 @@ describe('Element.appendHTML', function(){
 	});
 
 	it('should insert element before', function(){
-
 		base.appendHTML('<span>HI!</span>', 'before');
 		baseFallBack.appendHTML('<span>HI!</span>', 'before');
 

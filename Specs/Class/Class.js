@@ -88,17 +88,16 @@ var Attributes = new Class({
 
 });
 
-
 describe('Class creation', function(){
 
-	//<1.2compat>
-	it("Classes should be of type 'class'", function(){
+//<1.2compat>
+	it('Classes should be of type "class"', function(){
 		expect($type(Animal)).to.equal('class');
 		expect(Class.type(Animal)).to.equal(true);
 	});
-	//</1.2compat>
+//</1.2compat>
 
-	it("Classes should be of type 'class'", function(){
+	it('Classes should be of type "class"', function(){
 		expect(typeOf(Animal)).to.equal('class');
 	});
 
@@ -109,7 +108,7 @@ describe('Class creation', function(){
 		expect(animal.say()).to.equal('animal:say:lamina');
 	});
 
-	it("should use 'Extend' property to extend another class", function(){
+	it('should use "Extend" property to extend another class', function(){
 		var cat = new Cat('fluffy');
 		expect(cat.name).to.equal('fluffy');
 		expect(cat.sound).to.equal('miao');
@@ -119,7 +118,7 @@ describe('Class creation', function(){
 		expect(cat.play()).to.equal('cat:play:fluffy');
 	});
 
-	it("should use 'Extend' property to extend an extended class", function(){
+	it('should use "Extend" property to extend an extended class', function(){
 		var leo = new Lion('leo');
 		expect(leo.name).to.equal('leo');
 		expect(leo.sound).to.equal('rarr');
@@ -129,7 +128,7 @@ describe('Class creation', function(){
 		expect(leo.play()).to.equal('cat:play:leo');
 	});
 
-	it("should use 'Implements' property to implement another class", function(){
+	it('should use "Implements" property to implement another class', function(){
 		var Dog = new Class({
 			Implements: Animal
 		});
@@ -140,7 +139,7 @@ describe('Class creation', function(){
 		expect(rover.eat()).to.equal('animal:eat:rover');
 	});
 
-	it("should use 'Implements' property to implement any number of classes", function(){
+	it('should use "Implements" property to implement any number of classes', function(){
 		var Dog = new Class({
 			Extends: Animal,
 			Implements: [Actions, Attributes]
@@ -156,7 +155,7 @@ describe('Class creation', function(){
 		expect(rover.color()).to.equal('attributes:color:rover');
 	});
 
-	it("should alter the Class's prototype when implementing new methods", function(){
+	it('should alter the prototype of a Class when implementing new methods', function(){
 		var Dog = new Class({
 			Extends: Animal
 		});
@@ -175,7 +174,7 @@ describe('Class creation', function(){
 		expect(rover.jump()).to.equal('dog:jump:rover');
 	});
 
-	it("should alter the Class's prototype when implementing new methods into the super class", function(){
+	it('should alter the prototype of a Class when implementing new methods into the super class', function(){
 		var Dog = new Class({
 			Extends: Animal
 		});
@@ -194,7 +193,7 @@ describe('Class creation', function(){
 		expect(rover.jump()).to.equal('animal:jump:rover');
 	});
 
-	it("should alter the Class's prototype when overwriting methods in the super class", function(){
+	it('should alter the prototype of a Class when overwriting methods in the super class', function(){
 		var Dog = new Class({
 			Extends: Animal
 		});
@@ -276,7 +275,6 @@ describe('Class toString', function(){
 		});
 
 		expect((new Person('Valerio')) + '').to.equal('Valerio');
-
 		expect((new Italian('Valerio')) + '').to.equal("It's me, Valerio");
 	});
 
