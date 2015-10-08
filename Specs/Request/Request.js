@@ -145,6 +145,71 @@ describe('Request', function(){
 		expect(request.xhr.withCredentials).to.not.be.ok();
 	});
 
+	describe('(thenable)', function(){
+
+		beforeEach(function(){
+			this.request = new Request({
+				url: '../Helpers/request.php'
+			});
+
+			var self = this;
+			this.onFulfilled = sinon.spy(function(){ self.expectations.apply(self, arguments); });
+			this.onRejected = sinon.spy(function(){ self.expectations.apply(self, arguments); });
+
+			this.request.then(this.onFulfilled, this.onRejected);
+			this.request.send();
+		});
+
+		it('should fulfill when completed', function(done){
+			this.requests[0].respond(200, {'Content-Type': 'text/plain'}, 'res&amp;ponsé');
+
+			this.expectations = function(){
+				var error;
+				try {
+					expect(this.onRejected.called).to.equal(false);
+					expect(this.onFulfilled.called).to.equal(true);
+					expect(this.onFulfilled.args[0][0]).to.eql({text: 'res&amp;ponsé', xml: null});
+				} catch (thrown){
+					error = thrown;
+				}
+				done(error);
+			}
+		});
+
+		it('should reject when failed', function(done){
+			this.requests[0].respond(400, {'Content-Type': 'text/plain'}, 'Nope.');
+
+			this.expectations = function(){
+				var error;
+				try {
+					expect(this.onFulfilled.called).to.equal(false);
+					expect(this.onRejected.called).to.equal(true);
+					expect(this.onRejected.args[0][0].reason).to.equal('failure');
+				} catch (thrown){
+					error = thrown;
+				}
+				done(error);
+			}
+		});
+
+		it('should reject when cancelled', function(done){
+			this.request.cancel();
+
+			this.expectations = function(){
+				var error;
+				try {
+					expect(this.onFulfilled.called).to.equal(false);
+					expect(this.onRejected.called).to.equal(true);
+					expect(this.onRejected.args[0][0].reason).to.equal('cancel');
+				} catch (thrown){
+					error = thrown;
+				}
+				done(error);
+			}
+		});
+
+	});
+
 //<1.4compat>
 	var dit = hasWithCredentials ? it : xit;
 	dit('should set xhr.withCredentials flag in 1.4 for this.options.user', function(){

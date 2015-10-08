@@ -157,3 +157,60 @@ describe('Fx', function(){
 	});
 
 });
+
+describe('Fx (thenable)', function(){
+
+	beforeEach(function(){
+		this.fx = new Fx({
+			duration: 1,
+			transition: 'sine:in:out'
+		});
+
+		var self = this;
+		this.onFulfilled = sinon.spy(function(){ self.expectations.apply(self, arguments); });
+		this.onRejected = sinon.spy(function(){ self.expectations.apply(self, arguments); });
+
+		this.fx.then(this.onFulfilled, this.onRejected);
+	});
+
+	it('should fulfill when completed', function(done){
+		this.fx.start(10, 20);
+
+		expect(this.onRejected.called).to.equal(false);
+		expect(this.onFulfilled.called).to.equal(false);
+
+		this.expectations = function(){
+			var error;
+			try {
+				expect(this.onRejected.called).to.equal(false);
+				expect(this.onFulfilled.called).to.equal(true);
+				expect(this.onFulfilled.args[0][0]).to.equal(null);
+			} catch (thrown){
+				error = thrown;
+			}
+			done(error);
+		}
+	});
+
+	it('should reject when cancelled', function(done){
+		this.fx.start();
+
+		expect(this.onFulfilled.called).to.equal(false);
+		expect(this.onRejected.called).to.equal(false);
+
+		this.fx.cancel();
+
+		this.expectations = function(){
+			var error;
+			try {
+				expect(this.onFulfilled.called).to.equal(false);
+				expect(this.onRejected.called).to.equal(true);
+				expect(this.onRejected.args[0][0]).to.equal(this.fx);
+			} catch (thrown){
+				error = thrown;
+			}
+			done(error);
+		}
+	});
+
+});
