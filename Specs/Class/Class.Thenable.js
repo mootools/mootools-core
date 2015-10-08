@@ -16,24 +16,6 @@ describe('Class.Thenable', function(){
 
 	});
 
-	var aplusAdapter = {
-
-		resolved: Class.Thenable.resolve,
-
-		rejected: Class.Thenable.reject,
-
-		deferred: function(){
-			var thenable = new Class.Thenable();
-
-			return {
-				promise: thenable,
-				resolve: thenable.resolve.bind(thenable),
-				reject: thenable.reject.bind(thenable)
-			};
-		}
-
-	};
-
 	function asyncExpectations(done, fn){
 		var error,
 			finished = false;
@@ -52,6 +34,29 @@ describe('Class.Thenable', function(){
 			if (finished) return done(error);
 		}
 	}
+
+	describe('(Promises/A+)', function(){
+		var specs;
+		try {
+			specs = require('promises-aplus-tests');
+		} catch (error){
+			xspecify('specs cannot be run in this environment');
+		}
+		if (specs){
+			specs.mocha({
+				resolved: Thenable.resolve,
+				rejected: Thenable.reject,
+				deferred: function(){
+					var thenable = new Thenable();
+					return {
+						promise: thenable,
+						resolve: thenable.resolve.bind(thenable),
+						reject: thenable.reject.bind(thenable)
+					};
+				}
+			});
+		}
+	});
 
 	// Tests below are adapted versions of the tests in domenic/promises-unwrapping:
 	// https://github.com/domenic/promises-unwrapping/tree/master/reference-implementation/test
