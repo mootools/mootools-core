@@ -7,7 +7,7 @@ description: Powerful all purpose Request Class. Uses XMLHTTPRequest.
 
 license: MIT-style license.
 
-requires: [Object, Element, Chain, Events, Options, Browser]
+requires: [Object, Element, Chain, Events, Options, Class.Thenable, Browser]
 
 provides: Request
 
@@ -21,7 +21,7 @@ var empty = function(){},
 
 var Request = this.Request = new Class({
 
-	Implements: [Chain, Events, Options],
+	Implements: [Chain, Events, Options, Class.Thenable],
 
 	options: {/*
 		onRequest: function(){},
@@ -101,6 +101,7 @@ var Request = this.Request = new Class({
 
 	success: function(text, xml){
 		this.onSuccess(this.processScripts(text), xml);
+		this.resolve({text: text, xml: xml});
 	},
 
 	onSuccess: function(){
@@ -109,6 +110,7 @@ var Request = this.Request = new Class({
 
 	failure: function(){
 		this.onFailure();
+		this.reject({reason: 'failure', xhr: this.xhr});
 	},
 
 	onFailure: function(){
@@ -125,6 +127,7 @@ var Request = this.Request = new Class({
 
 	timeout: function(){
 		this.fireEvent('timeout', this.xhr);
+		this.reject({reason: 'timeout', xhr: this.xhr});
 	},
 
 	setHeader: function(name, value){
@@ -210,9 +213,13 @@ var Request = this.Request = new Class({
 				xhr.setRequestHeader(key, value);
 			} catch (e){
 				this.fireEvent('exception', [key, value]);
+				this.reject({reason: 'exception', xhr: xhr, exception: e});
 			}
 		}, this);
 
+		if (this.getThenableState() !== 'pending'){
+			this.resetThenable({reason: 'send'});
+		}
 		this.fireEvent('request');
 		xhr.send(data);
 		if (!this.options.async) this.onStateChange();
@@ -233,6 +240,7 @@ var Request = this.Request = new Class({
 		if (progressSupport) xhr.onprogress = xhr.onloadstart = empty;
 		this.xhr = new Browser.Request();
 		this.fireEvent('cancel');
+		this.reject({reason: 'cancel', xhr: xhr});
 		return this;
 	}
 

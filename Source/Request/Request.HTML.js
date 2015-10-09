@@ -55,6 +55,7 @@ Request.HTML = new Class({
 		if (options.evalScripts) Browser.exec(response.javascript);
 
 		this.onSuccess(response.tree, response.elements, response.html, response.javascript);
+		this.resolve({tree: response.tree, elements: response.elements, html: response.html, javascript: response.javascript});
 	}
 
 });

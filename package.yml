@@ -23,6 +23,7 @@ sources:
   - "Source/Browser/Browser.js"
   - "Source/Class/Class.js"
   - "Source/Class/Class.Extras.js"
+  - "Source/Class/Class.Thenable.js"
   - "Source/Slick/Slick.Parser.js"
   - "Source/Slick/Slick.Finder.js"
   - "Source/Element/Element.js"
