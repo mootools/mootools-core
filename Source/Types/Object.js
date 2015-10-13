@@ -99,19 +99,18 @@ Object.extend({
 
 		Object.each(object, function(value, key){
 			if (base) key = base + '[' + key + ']';
-			var result;
 			switch (typeOf(value)){
-				case 'object': result = Object.toQueryString(value, key); break;
+				case 'object': queryString.push(Object.toQueryString(value, key)); break;
 				case 'array':
-					var qs = {};
-					value.each(function(val, i){
-						qs[i] = val;
+					value.each(function(v) {
+						queryString.push(key + '=' + encodeURIComponent(v));
 					});
-					result = Object.toQueryString(qs, key);
-				break;
-				default: result = key + '=' + encodeURIComponent(value);
+					break;
+				default:
+					if (value != null) {
+						queryString.push(key + '=' + encodeURIComponent(value));
+					}
 			}
-			if (value != null) queryString.push(result);
 		});
 
 		return queryString.join('&');
