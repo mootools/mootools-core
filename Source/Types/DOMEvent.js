@@ -51,7 +51,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			else if (code > 95 && code < 106) this.key = code - 96;
 		}
 		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
-	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
+	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0 || type.indexOf('pointer') == 0){
 		var doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		this.page = {
@@ -64,8 +64,8 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 		};
 		if (type == 'DOMMouseScroll' || type == 'wheel' || type == 'mousewheel') this.wheel = normalizeWheelSpeed(event);
 		this.rightClick = (event.which == 3 || event.button == 2);
-		if (type == 'mouseover' || type == 'mouseout' || type == 'mouseenter' || type == 'mouseleave'){
-			var overTarget = type == 'mouseover' || type == 'mouseenter';
+		if (type == 'mouseover' || type == 'mouseout' || type == 'mouseenter' || type == 'mouseleave' || type == 'pointerover' || type == 'pointerout' || type == 'pointerenter' || type == 'pointerleave'){
+			var overTarget = type == 'mouseover' || type == 'mouseenter' || type == 'pointerover' || type == 'pointerenter';
 			var related = event.relatedTarget || event[(overTarget ? 'from' : 'to') + 'Element'];
 			while (related && related.nodeType == 3) related = related.parentNode;
 			this.relatedTarget = document.id(related);

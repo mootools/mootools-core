@@ -443,7 +443,7 @@ describe('relatedTarget', function(){
 
 	var outer = new Element('div');
 	new Element('div').inject(outer);
-	['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].each(function(event, i){
+	['mouseenter', 'mouseleave', 'mouseover', 'mouseout', 'pointerenter', 'pointerleave', 'pointerover', 'pointerout'].each(function(event, i){
 		it('should listen to a ' + event + ' event and set the correct relatedTarget', function(){
 			var mockEvent = {type: event};
 			mockEvent[(i % 2 == 0 ? 'from' : 'to') + 'Element'] = outer; // Simulate FF that does not set relatedTarget.
