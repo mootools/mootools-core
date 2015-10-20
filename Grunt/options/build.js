@@ -69,6 +69,17 @@ module.exports = function(grunt){
 				src: build.server.sources,
 				dest: dir.build + '/mootools-core.js'
 			}
+		},
+		eslint: {
+			'compat': {
+				src: ['Gruntfile.js', 'Grunt/{options,tasks}/*.js', build.compat.sources, build.compat.specs]
+			},
+			'nocompat': {
+				src: ['Gruntfile.js', 'Grunt/{options,tasks}/*.js', build.nocompat.sources, build.nocompat.specs]
+			},
+			'server': {
+				src: ['Gruntfile.js', 'Grunt/{options,tasks}/*.js', build.server.sources, build.server.specs]
+			}
 		}
 	};
 

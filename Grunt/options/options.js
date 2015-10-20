@@ -46,6 +46,11 @@ module.exports = function(grunt){
 				compress: true,
 				preserveComments: 'some'
 			}
+		},
+		eslint: {
+			options: {
+				rulePaths: ['Grunt/plugins/eslint/rules']
+			}
 		}
 	};
 
