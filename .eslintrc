@@ -16,4 +16,5 @@ rules:
   quotes: [2, single, avoid-escape]
   semi: 2
   semi-spacing: 2
+  mootools-indent: [2, tab, {SwitchCase: 1, VariableDeclarator: 1, IndentRootIIFE: false}]
   mootools-whitespace: 2
