@@ -15,11 +15,11 @@ describe('Fx.Morph', function(){
 		this.style = new Element('style');
 		var definition = [
 			'.pos-abs-left {',
-				'position: absolute;',
-				'width: 200px;',
-				'height: 200px;',
-				'left: 10%;',
-				'background: red',
+			'    position: absolute;',
+			'    width: 200px;',
+			'    height: 200px;',
+			'    left: 10%;',
+			'    background: red',
 			'}'
 		].join('');
 

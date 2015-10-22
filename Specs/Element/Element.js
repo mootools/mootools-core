@@ -184,7 +184,7 @@ describe('Element.set', function(){
 
 		gramps = baldGuy.getParent();
 		baldGuy.adopt(annie);
-		expect(baldGuy.getParent()).to.equal(gramps)
+		expect(baldGuy.getParent()).to.equal(gramps);
 	});
 
 	it('should set the html of a td Element', function(){
@@ -596,8 +596,8 @@ describe('Element.inject', function(){
 		var html = [
 			'<div id="first"></div>',
 			'<div id="second">',
-				'<div id="first-child"></div>',
-				'<div id="second-child"></div>',
+			'<div id="first-child"></div>',
+			'<div id="second-child"></div>',
 			'</div>'
 		].join('');
 		Container = new Element('div', {style: 'position:absolute;top:0;left:0;visibility:hidden;', html: html});
@@ -697,8 +697,8 @@ describe('Element.grab', function(){
 		var html = [
 			'<div id="first"></div>',
 			'<div id="second">',
-				'<div id="first-child"></div>',
-				'<div id="second-child"></div>',
+			'<div id="first-child"></div>',
+			'<div id="second-child"></div>',
 			'</div>'
 		].join('');
 		Container = new Element('div', {style: 'position:absolute;top:0;left:0;visibility:hidden;', html: html}).inject(document.body);
@@ -797,8 +797,8 @@ describe('Element.appendText', function(){
 		var html = [
 			'<div id="first"></div>',
 			'<div id="second">',
-				'<div id="first-child"></div>',
-				'<div id="second-child"></div>',
+			'<div id="first-child"></div>',
+			'<div id="second-child"></div>',
 			'</div>'
 		].join('');
 		Container.set('html', html);
@@ -1673,7 +1673,7 @@ describe('Element.getElementById', function(){
 
 describe('Element.removeProperty', function(){
 
-	it('should removeProperty from an Element', function (){
+	it('should removeProperty from an Element', function(){
 		var readonly = new Element('input', { type: 'text', readonly: 'readonly', maxlength: 10 });
 		readonly.removeProperty('readonly');
 		readonly.removeProperty('maxlength');
@@ -1892,11 +1892,11 @@ describe('Element.set("html")', function(){
 		var styleElement = new Element('style', {type: 'text/css'}).inject(docHead);
 		var definition = [
 			'.pos-abs-left {',
-				'position: absolute;',
-				'width: 200px;',
-				'height: 200px;',
-				'left: 10%;',
-				'background: red;',
+			'    position: absolute;',
+			'    width: 200px;',
+			'    height: 200px;',
+			'    left: 10%;',
+			'    background: red;',
 			'}'
 		].join('');
 		styleElement.set('text', definition);
@@ -2112,11 +2112,13 @@ describe('Element.set', function(){
 
 		it('should set the selected option for a select element to matching string w/o falsy matches', function(){
 			var form = new Element('form');
-			form.set('html', '<select>\
-				<option value="">no value</option>\
-				<option value="0">value 0</option>\
-				<option value="1">value 1</option>\
-				</select>');
+			form.set('html',
+				'<select>' +
+				'    <option value="">no value</option>' +
+				'    <option value="0">value 0</option>' +
+				'    <option value="1">value 1</option>' +
+				'</select>'
+			);
 			expect(form.getElement('select').set('value', 0).get('value')).to.equal('0');
 		});
 
@@ -2167,41 +2169,49 @@ describe('Element.get', function(){
 
 		it('should return the text of the selected option for a select element', function(){
 			var form = new Element('form');
-			form.set('html', '<select>\
-				<option>value 1</option>\
-				<option>value 2</option>\
-				<option selected>value 3</option>\
-				<option>value 4</option>\
-				</select>');
+			form.set('html',
+				'<select>' +
+				'    <option>value 1</option>' +
+				'    <option>value 2</option>' +
+				'    <option selected>value 3</option>' +
+				'    <option>value 4</option>' +
+				'</select>'
+			);
 			expect(form.getElement('select').get('value')).to.equal('value 3');
 		});
 
 		it('should return the text of the selected option for a multiple select element', function(){
 			var form = new Element('form');
-			form.set('html', '<select multiple>\
-				<option>value 1</option>\
-				<option selected>value 2</option>\
-				<option selected>value 3</option>\
-				<option>value 4</option>\
-				</select>');
+			form.set('html',
+				'<select multiple>' +
+				'    <option>value 1</option>' +
+				'    <option selected>value 2</option>' +
+				'    <option selected>value 3</option>' +
+				'    <option>value 4</option>' +
+				'</select>'
+			);
 			expect(form.getElement('select').get('value')).to.equal('value 2');
 		});
 
 		it('should return the text of the first option of aselect element', function(){
 			var form = new Element('form');
-			form.set('html', '<select>\
-				<option>value 1</option>\
-				<option>value 2</option>\
-				</select>');
+			form.set('html',
+				'<select>' +
+				'    <option>value 1</option>' +
+				'    <option>value 2</option>' +
+				'</select>'
+			);
 			expect(form.getElement('select').get('value')).to.equal('value 1');
 		});
 
 		it('should return value of a select element', function(){
 			var form = new Element('form');
-			form.set('html', '<select multiple>\
-				<option value="one">value 1</option>\
-				<option selected value="two">value 2</option>\
-				</select>');
+			form.set('html',
+				'<select multiple>' +
+				'    <option value="one">value 1</option>' +
+				'    <option selected value="two">value 2</option>' +
+				'</select>'
+			);
 			expect(form.getElement('select').get('value')).to.equal('two');
 		});
 
@@ -2235,7 +2245,7 @@ if (document.createElement('video').canPlayType){
 	describe('Video/Audio loop, controls, and autoplay set/get attributes', function(){
 
 		it('should set/get the boolean value of loop, controls, and autoplay', function(){
-			try{
+			try {
 				var div = new Element('div', {html: '<video loop controls autoplay>'}),
 					video = div.getElement('video');
 
@@ -2247,12 +2257,12 @@ if (document.createElement('video').canPlayType){
 				expect(video.setProperty('controls', false).getProperty('controls')).to.equal(false);
 				expect(video.getProperty('autoplay')).to.equal(true);
 				expect(video.setProperty('autoplay', false).getProperty('autoplay')).to.equal(false);
-			}catch(O_o){
-				if(O_o.message.indexOf('Not implemented') == -1){
-					expect(O_o.message + ' : ' + O_o).to.equal('')
+			} catch (O_o){
+				if (O_o.message.indexOf('Not implemented') == -1){
+					expect(O_o.message + ' : ' + O_o).to.equal('');
 				}
 			}
-	});
+		});
 
 	});
 }
@@ -2301,7 +2311,7 @@ describe('Element.clone', function(){
 		}).inject(document.body);
 
 		var container = $('testContainer'),
-		template = container.getElement('li#template').dispose();
+			template = container.getElement('li#template').dispose();
 
 		template.clone().set('html', 'Clone #1').inject('testContainer');
 		template.clone().set('html', 'Clone #2').inject('testContainer');
@@ -2313,12 +2323,11 @@ describe('Element.clone', function(){
 
 describe('Element.erase', function(){
 
-	var elements, subject, image, textarea;
+	var elements, subject, textarea;
 
 	beforeEach(function(){
 		elements = [
 			subject = new Element('div'),
-			image = new Element('img'),
 			textarea = new Element('div', {html: '<textarea id="t1">hello</textarea>'}).getFirst()
 		].invoke('inject', document.body);
 	});
@@ -2628,14 +2637,14 @@ describe('Element', function(){
 });
 describe('normalize value for new Element type == checkbox || radio', function(){
 
-	it('value of new created checkbox should be "on" if none specified', function() {
+	it('value of new created checkbox should be "on" if none specified', function(){
 		var input = new Element('input', {
 			type: 'checkbox'
 		});
 		input.set('checked', true);
 		expect(input.get('value')).to.equal('on');
 	});
-	it('value of new created checkbox should be the specified in constructor', function() {
+	it('value of new created checkbox should be the specified in constructor', function(){
 		var input = new Element('input', {
 			type: 'checkbox',
 			value: 'someValue'
@@ -2643,14 +2652,14 @@ describe('normalize value for new Element type == checkbox || radio', function()
 		input.set('checked', true);
 		expect(input.get('value')).to.equal('someValue');
 	});
-	it('value of new created radio button should be "on" if none specified', function() {
+	it('value of new created radio button should be "on" if none specified', function(){
 		var input = new Element('input', {
 			type: 'radio'
 		});
 		input.set('checked', true);
 		expect(input.get('value')).to.equal('on');
 	});
-	it('value of new created radio should be the specified in constructor', function() {
+	it('value of new created radio should be the specified in constructor', function(){
 		var input = new Element('input', {
 			type: 'radio',
 			value: 'someValue'

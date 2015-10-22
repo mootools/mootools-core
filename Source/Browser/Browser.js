@@ -188,7 +188,7 @@ document.html = document.documentElement;
 if (!document.head) document.head = document.getElementsByTagName('head')[0];
 
 if (document.execCommand) try {
-	document.execCommand("BackgroundImageCache", false, true);
+	document.execCommand('BackgroundImageCache', false, true);
 } catch (e){}
 
 /*<ltIE9>*/
@@ -205,7 +205,7 @@ if (this.attachEvent && !this.addEventListener){
 var arrayFrom = Array.from;
 try {
 	arrayFrom(document.html.childNodes);
-} catch(e){
+} catch (e){
 	Array.from = function(item){
 		if (typeof item != 'string' && Type.isEnumerable(item) && typeOf(item) != 'array'){
 			var i = item.length, array = new Array(i);
@@ -278,7 +278,7 @@ if (Browser.name == 'unknown'){
 		case 'webkit':
 		case 'khtml':
 			Browser.Engine.webkit = true;
-		break;
+			break;
 		case 'gecko':
 			Browser.Engine.gecko = true;
 	}

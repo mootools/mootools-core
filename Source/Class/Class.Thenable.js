@@ -105,8 +105,9 @@ function resolve(thenable, value){
 		if (thenable === value){
 			reject(thenable, new TypeError('Tried to resolve a thenable with itself.'));
 		} else if (value && (typeof value === 'object' || typeof value === 'function')){
+			var then;
 			try {
-				var then = value.then;
+				then = value.then;
 			} catch (exception){
 				reject(thenable, exception);
 			}
@@ -129,7 +130,7 @@ function resolve(thenable, value){
 								}
 							}
 						);
-					} catch (exception) {
+					} catch (exception){
 						if (!resolved){
 							resolved = true;
 							reject(thenable, exception);
@@ -201,7 +202,7 @@ function handle(result, reactions, type){
 		} else {
 			try {
 				resolve(reaction.thenable, handler(result));
-			} catch (exception) {
+			} catch (exception){
 				reject(reaction.thenable, exception);
 			}
 		}

@@ -4,9 +4,7 @@ var path = require('path');
 var browsers = require('./browsers');
 
 module.exports = function(grunt){
-	var dir = grunt.config.get('environment.dir'),
-		build = grunt.config.get('environment.build'),
-		travis = grunt.config.get('environment.travis'),
+	var travis = grunt.config.get('environment.travis'),
 		sauceLabs = grunt.config.get('environment.sauceLabs');
 
 	var config = {

@@ -272,7 +272,7 @@ describe('Function.bind', function(){
 	});
 
 	dit('should still be possible to use it as constructor', function(){
-		function Alien(type) {
+		function Alien(type){
 			this.type = type;
 		}
 
@@ -384,6 +384,7 @@ describe('Function.delay', function(){
 		this.clock.tick(250);
 		expect(spyA.callCount).to.equal(1);
 		expect(spyB.callCount).to.equal(0);
+		clearTimeout(timerA);
 	});
 
 	it('should pass parameter 0', function(){

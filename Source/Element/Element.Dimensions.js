@@ -75,11 +75,11 @@ Element.implement({
 		// This svg section under, calling `svgCalculateSize()`, can be removed when FF fixed the svg size bug.
 		// Bug info: https://bugzilla.mozilla.org/show_bug.cgi?id=530985
 		if (this.get('tag') == 'svg') return svgCalculateSize(this);
-		
+
 		try {
 			var bounds = this.getBoundingClientRect();
 			return {x: bounds.width, y: bounds.height};
-		} catch(e) {
+		} catch (e){
 			return {x: 0, y: 0};
 		}
 	},
@@ -119,14 +119,14 @@ Element.implement({
 
 		try {
 			return element.offsetParent;
-		} catch(e){}
+		} catch (e){}
 		return null;
 	},
 
 	getOffsets: function(){
 		var hasGetBoundingClientRect = this.getBoundingClientRect;
 //<1.4compat>
-		hasGetBoundingClientRect = hasGetBoundingClientRect && !Browser.Platform.ios
+		hasGetBoundingClientRect = hasGetBoundingClientRect && !Browser.Platform.ios;
 //</1.4compat>
 		if (hasGetBoundingClientRect){
 			var bound = this.getBoundingClientRect(),

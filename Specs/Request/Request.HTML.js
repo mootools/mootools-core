@@ -153,7 +153,7 @@ describe('Request.HTML', function(){
 		var response = '<span>text</span><a>aaa</a>';
 
 		this.spy.identity = 'Request.HTML onComplete filter';
-		var request = new Request.HTML({
+		new Request.HTML({
 			url: '../Helpers/request.php',
 			onComplete: this.spy,
 			filter: 'a'

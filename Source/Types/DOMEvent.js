@@ -18,15 +18,15 @@ provides: Event
 
 var _keys = {};
 var normalizeWheelSpeed = function(event){
-    var normalized;
-    if (event.wheelDelta){
-        normalized = event.wheelDelta % 120 == 0 ? event.wheelDelta / 120 : event.wheelDelta / 12;
-    } else {
-        var rawAmount = event.deltaY || event.detail || 0;
-        normalized = -(rawAmount % 3 == 0 ? rawAmount / 3 : rawAmount * 10);
-    }
-    return normalized;
-}
+	var normalized;
+	if (event.wheelDelta){
+		normalized = event.wheelDelta % 120 == 0 ? event.wheelDelta / 120 : event.wheelDelta / 12;
+	} else {
+		var rawAmount = event.deltaY || event.detail || 0;
+		normalized = -(rawAmount % 3 == 0 ? rawAmount / 3 : rawAmount * 10);
+	}
+	return normalized;
+};
 
 var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	if (!win) win = window;

@@ -169,7 +169,7 @@ describe('$extend', function(){
 describe('$lambda', function(){
 
 	it('if a function is passed in that function should be returned', function(){
-		var fn = function(a, b){ return a; };
+		var fn = function(a){ return a; };
 		expect($lambda(fn)).to.equal(fn);
 	});
 
@@ -649,12 +649,14 @@ describe('Array.from', function(){
 		// In Opera arguments is an array so it does not return a copy
 		// This is intended. Array.from is expected to return an Array from an array-like-object
 		// It does not make a copy when the passed in value is an array already
-		var args, type, copy = (function(){
-			type = typeOf(arguments);
-			args = arguments;
+		var args,
+			type,
+			copy = (function(){
+				type = typeOf(arguments);
+				args = arguments;
 
-			return Array.from(arguments);
-		})(1, 2);
+				return Array.from(arguments);
+			})(1, 2);
 
 		if (type === 'array'){
 			expect(copy).to.equal(args);
@@ -679,7 +681,7 @@ describe('String.from', function(){
 describe('Function.from', function(){
 
 	it('if a function is passed in that function should be returned', function(){
-		var fn = function(a, b){ return a; };
+		var fn = function(a){ return a; };
 		expect(Function.from(fn)).to.equal(fn);
 	});
 
@@ -852,7 +854,7 @@ describe('Array.each', function(){
 
 	it('should call the function for each item in the array', function(){
 		var daysArr = [];
-		Array.each(['Sun', 'Mon', 'Tue'], function(value, i){
+		Array.each(['Sun', 'Mon', 'Tue'], function(value){
 			daysArr.push(value);
 		});
 
@@ -927,7 +929,7 @@ describe('Object.merge', function(){
 		var a = {a:1, b:2, c: {a:1, b:2, c:3}, d: [1, 2, 3]};
 		var b = {e: {a:1}, f: [1, 2, 3]};
 
-		var merger = Object.merge(a, b);
+		Object.merge(a, b);
 
 		expect(a.e).to.not.equal(b.e);
 		expect(a.f).to.not.equal(b.f);

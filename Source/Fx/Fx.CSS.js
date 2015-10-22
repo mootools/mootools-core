@@ -57,7 +57,7 @@ Fx.CSS = new Class({
 		return value.map(function(val){
 			val = String(val);
 			var found = false;
-			Object.each(Fx.CSS.Parsers, function(parser, key){
+			Object.each(Fx.CSS.Parsers, function(parser){
 				if (found) return;
 				var parsed = parser.parse(val);
 				if (parsed || parsed === 0) found = {value: parsed, parser: parser};
@@ -102,7 +102,7 @@ Fx.CSS = new Class({
 		var to = {}, selectorTest = new RegExp('^' + selector.escapeRegExp() + '$');
 
 		var searchStyles = function(rules){
-			Array.each(rules, function(rule, i){
+			Array.each(rules, function(rule){
 				if (rule.media){
 					searchStyles(rule.rules || rule.cssRules);
 					return;
@@ -120,7 +120,7 @@ Fx.CSS = new Class({
 			});
 		};
 
-		Array.each(document.styleSheets, function(sheet, j){
+		Array.each(document.styleSheets, function(sheet){
 			var href = sheet.href;
 			if (href && href.indexOf('://') > -1 && href.indexOf(document.domain) == -1) return;
 			var rules = sheet.rules || sheet.cssRules;

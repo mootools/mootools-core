@@ -16,8 +16,6 @@ provides: [Object, Hash]
 
 (function(){
 
-var hasOwnProperty = Object.prototype.hasOwnProperty;
-
 Object.extend({
 
 	subset: function(object, keys){
@@ -108,7 +106,7 @@ Object.extend({
 						qs[i] = val;
 					});
 					result = Object.toQueryString(qs, key);
-				break;
+					break;
 				default: result = key + '=' + encodeURIComponent(value);
 			}
 			if (value != null) queryString.push(result);
