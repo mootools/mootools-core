@@ -23,11 +23,17 @@
 		"browserName": "opera",
 		"version": "12"
 	},
-	"safari8": {
+	"safari9": {
 		"base": "SauceLabs",
 		"platform": "OS X 10.11",
 		"browserName": "safari",
-		"version": "8.1"
+		"version": "9"
+	},
+	"safari8": {
+		"base": "SauceLabs",
+		"platform": "OS X 10.10",
+		"browserName": "safari",
+		"version": "8"
 	},
 	"safari7": {
 		"base": "SauceLabs",
