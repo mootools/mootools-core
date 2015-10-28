@@ -51,7 +51,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			else if (code > 95 && code < 106) this.key = code - 96;
 		}
 		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
-	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0 || type.indexOf('pointer') == 0){
+	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
 		var doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		this.page = {
@@ -81,6 +81,25 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			this.page = {x: touch.pageX, y: touch.pageY};
 			this.client = {x: touch.clientX, y: touch.clientY};
 		}
+	} else if (type.indexOf('pointer') == 0 || type == 'gotpointercapture' || type == 'lostpointercapture') {
+		var doc = win.document;
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		this.page = {
+			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
+			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
+		};
+		this.client = {
+			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
+		};
+		this.pointerId = event.pointerId;
+		this.width = event.width;
+		this.height = event.height;
+		this.pressure = event.pressure;
+		this.tiltX = event.tiltX;
+		this.tiltY = event.tiltY;
+		this.pointerType = event.pointerType;
+		this.isPrimary = event.isPrimary;
 	}
 
 	if (!this.client) this.client = {};
