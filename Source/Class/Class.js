@@ -53,7 +53,7 @@ var reset = function(object){
 				var F = function(){};
 				F.prototype = value;
 				object[key] = reset(new F);
-			break;
+				break;
 			case 'array': object[key] = value.clone(); break;
 		}
 	}

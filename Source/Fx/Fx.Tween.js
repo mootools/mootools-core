@@ -67,7 +67,7 @@ Element.implement({
 		return this;
 	},
 
-	fade: function(how){
+	fade: function(){
 		var fade = this.get('tween'), method, args = ['opacity'].append(arguments), toggle;
 		if (args[1] == null) args[1] = 'toggle';
 		switch (args[1]){
@@ -81,13 +81,13 @@ Element.implement({
 				args[1] = flag ? 0 : 1;
 				this.store('fade:flag', !flag);
 				toggle = true;
-			break;
+				break;
 			default: method = 'start';
 		}
 		if (!toggle) this.eliminate('fade:flag');
 		fade[method].apply(fade, args);
 		var to = args[args.length - 1];
-		
+
 		if (method == 'set'){
 			this.setStyle('visibility', to == 0 ? 'hidden' : 'visible');
 		} else if (to != 0){

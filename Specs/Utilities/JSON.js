@@ -48,7 +48,7 @@ describe('JSON', function(){
 
 	it('should parse a hazarous string when secure is set to false', function(){
 		var _old_alert = win.alert;
-		win.alert = function (string) {
+		win.alert = function(string){
 			if (string == "I'm a bad string!") return true;
 			return false;
 		};
@@ -58,7 +58,7 @@ describe('JSON', function(){
 
 	it('should parse a hazarous string when JSON.secure is set to false and secure is not defined', function(){
 		var _old_alert = win.alert;
-		win.alert = function (string) {
+		win.alert = function(string){
 			if (string == "I'm a bad string!") return true;
 			return false;
 		};

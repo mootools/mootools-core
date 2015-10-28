@@ -83,7 +83,7 @@ describe('Number Method', function(){
 		it('should bind and call the function for the specified number of times', function(){
 			var aTest = 'hi';
 			var found3 = false;
-			(1).times(function(i){
+			(1).times(function(){
 				found3 = (this == aTest);
 			}, aTest);
 			expect(found3).to.equal(true);
@@ -95,17 +95,16 @@ describe('Number Method', function(){
 
 (function(math){
 
-	describe('Number Math Methods', function(){
+describe('Number Math Methods', function(){
 
-		Object.each(math, function(value, key){
-			var example = {};
-			var b = value.test[1];
-			it('should return the ' + value.title + ' value of the number' + ((b) ? ' and the passed number' : ''), function(){
-				expect(value.test[0][key](b)).to.equal(Math[key].apply(null, value.test));
-			});
+	Object.each(math, function(value, key){
+		var b = value.test[1];
+		it('should return the ' + value.title + ' value of the number' + ((b) ? ' and the passed number' : ''), function(){
+			expect(value.test[0][key](b)).to.equal(Math[key].apply(null, value.test));
 		});
-
 	});
+
+});
 
 })({
 	abs: { test: [-1], title: 'absolute' },

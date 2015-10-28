@@ -1,0 +1,20 @@
+root: true
+
+extends: 'eslint:recommended'
+
+rules:
+  no-cond-assign: 0
+  no-constant-condition: 0
+  no-empty: 0
+  no-extra-semi: 0
+  no-octal: 0
+  no-undef: 0
+  no-unused-vars: 0
+  linebreak-style: [2, unix]
+  no-trailing-spaces: 2
+  no-unneeded-ternary: 2
+  quotes: [2, single, avoid-escape]
+  semi: 2
+  semi-spacing: 2
+  mootools-indent: [2, tab, {SwitchCase: 1, VariableDeclarator: 1, IndentRootIIFE: false}]
+  mootools-whitespace: 2

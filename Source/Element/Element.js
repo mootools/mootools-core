@@ -217,13 +217,13 @@ var escapeQuotes = function(html){
 /*<ltIE9>*/
 // #2479 - IE8 Cannot set HTML of style element
 var canChangeStyleHTML = (function(){
-    var div = document.createElement('style'),
-        flag = false;
-    try {
-        div.innerHTML = '#justTesing{margin: 0px;}';
-        flag = !!div.innerHTML;
-    } catch(e){}
-    return flag;
+	var div = document.createElement('style'),
+		flag = false;
+	try {
+		div.innerHTML = '#justTesing{margin: 0px;}';
+		flag = !!div.innerHTML;
+	} catch (e){}
+	return flag;
 })();
 /*</ltIE9>*/
 
@@ -232,7 +232,7 @@ Document.implement({
 	newElement: function(tag, props){
 		if (props){
 			if (props.checked != null) props.defaultChecked = props.checked;
-			if ((props.type == 'checkbox' || props.type == 'radio') && props.value == null) props.value = 'on'; 
+			if ((props.type == 'checkbox' || props.type == 'radio') && props.value == null) props.value = 'on';
 			/*<ltIE9>*/ // IE needs the type to be set before changing content of style element
 			if (!canChangeStyleHTML && tag == 'style'){
 				var styleElement = document.createElement('style');
@@ -560,7 +560,7 @@ Object.forEach(properties, function(real, key){
 });
 
 /*<ltIE9>*/
-propertySetters.text = (function(setter){
+propertySetters.text = (function(){
 	return function(node, value){
 		if (node.get('tag') == 'style') node.set('html', value);
 		else node[properties.text] = value;
@@ -624,7 +624,7 @@ propertyGetters['class'] = function(node){
 /* <webkit> */
 var el = document.createElement('button');
 // IE sets type as readonly and throws
-try { el.type = 'button'; } catch(e){}
+try { el.type = 'button'; } catch (e){}
 if (el.type != 'button') propertySetters.type = function(node, value){
 	node.setAttribute('type', value);
 };
@@ -636,13 +636,13 @@ el = null;
 /*<ltIE9>*/
 // #2479 - IE8 Cannot set HTML of style element
 var canChangeStyleHTML = (function(){
-    var div = document.createElement('style'),
-        flag = false;
-    try {
-        div.innerHTML = '#justTesing{margin: 0px;}';
-        flag = !!div.innerHTML;
-    } catch(e){}
-    return flag;
+	var div = document.createElement('style'),
+		flag = false;
+	try {
+		div.innerHTML = '#justTesing{margin: 0px;}';
+		flag = !!div.innerHTML;
+	} catch (e){}
+	return flag;
 })();
 /*</ltIE9>*/
 
@@ -658,7 +658,7 @@ try {
 	input.value = '';
 	input.type = 'email';
 	html5InputSupport = input.type == 'email';
-} catch(e){}
+} catch (e){}
 
 input = null;
 
@@ -688,9 +688,9 @@ var hasCloneBug = (function(test){
 var hasClassList = !!document.createElement('div').classList;
 
 var classes = function(className){
-	var classNames = (className || '').clean().split(" "), uniques = {};
+	var classNames = (className || '').clean().split(' '), uniques = {};
 	return classNames.filter(function(className){
-		if (className !== "" && !uniques[className]) return uniques[className] = className;
+		if (className !== '' && !uniques[className]) return uniques[className] = className;
 	});
 };
 
@@ -1085,11 +1085,12 @@ var supportsHTML5Elements = true, supportsTableInnerHTML = true, supportsTRInner
 /*<ltIE9>*/
 // technique by jdbarlett - http://jdbartlett.com/innershiv/
 var div = document.createElement('div');
+var fragment;
 div.innerHTML = '<nav></nav>';
 supportsHTML5Elements = (div.childNodes.length == 1);
 if (!supportsHTML5Elements){
-	var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' '),
-		fragment = document.createDocumentFragment(), l = tags.length;
+	var tags = 'abbr article aside audio canvas datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video'.split(' ');
+	fragment = document.createDocumentFragment(), l = tags.length;
 	while (l--) fragment.createElement(tags[l]);
 }
 div = null;

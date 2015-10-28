@@ -4,9 +4,9 @@ module.exports = function(grunt){
 	var travis = grunt.config.get('environment.travis');
 
 	var build = {
-			compat: ['clean:build', 'packager:compat', 'packager:specs-compat'],
-			nocompat: ['clean:build', 'packager:nocompat', 'packager:specs-nocompat'],
-			server: ['clean:build', 'packager:server', 'packager:specs-server']
+			compat: ['eslint:compat', 'clean:build', 'packager:compat', 'packager:specs-compat'],
+			nocompat: ['eslint:nocompat', 'clean:build', 'packager:nocompat', 'packager:specs-nocompat'],
+			server: ['eslint:server', 'clean:build', 'packager:server', 'packager:specs-server']
 		},
 		dist = {
 			compat: ['clean:dist-compat', 'clean:specs', 'packager:dist-compat', 'uglify:dist-compat', 'packager:specs-compat'],

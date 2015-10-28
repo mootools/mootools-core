@@ -151,9 +151,10 @@ describe('Chain', function(){
 
 });
 
-var fire = 'fireEvent', create = function(){
-	return new Events();
-};
+var fire = 'fireEvent',
+	create = function(){
+		return new Events();
+	};
 
 describe('Events API: Mixin', function(){
 

@@ -189,7 +189,7 @@ describe('Fx (thenable)', function(){
 				error = thrown;
 			}
 			done(error);
-		}
+		};
 	});
 
 	it('should reject when cancelled', function(done){
@@ -210,7 +210,7 @@ describe('Fx (thenable)', function(){
 				error = thrown;
 			}
 			done(error);
-		}
+		};
 	});
 
 });

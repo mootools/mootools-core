@@ -111,7 +111,7 @@ describe('Element.set opacity', function(){
 
 	it('should not remove existent filters on browsers with filters', function(){
 		var div = new Element('div'),
-		hasOpacity = document.html.style.opacity != null
+			hasOpacity = document.html.style.opacity != null;
 
 		if (!hasOpacity && document.html.style.filter != null && !window.opera && !syn.browser.gecko){ // We can probably remove the last two checks.
 			div.style.filter = 'blur(strength=50)';
@@ -139,9 +139,9 @@ describe('Element.Style', function(){
 			style.type = 'text/css';
 			var definition = [
 				'.' + className + '{',
-					'opacity: 0.5;',
-					'filter: alpha(opacity=50);',
-					'color: #ff0000;',
+				'    opacity: 0.5;',
+				'    filter: alpha(opacity=50);',
+				'    color: #ff0000;',
 				'}'
 			].join('');
 
@@ -193,9 +193,9 @@ describe('Element.Style', function(){
 			style.type = 'text/css';
 			var definition = [
 				'.' + className + '{',
-					'height: 200px;',
-					'width: 50%;',
-					'margin-left: 20%;',
+				'    height: 200px;',
+				'    width: 50%;',
+				'    margin-left: 20%;',
 				'}'
 			].join('');
 
@@ -325,7 +325,7 @@ describe('Element.Style', function(){
 			style.type = 'text/css';
 			var definition = [
 				'.' + className + '{',
-					'background: #69a none no-repeat left bottom;',
+				'    background: #69a none no-repeat left bottom;',
 				'}'
 			].join('');
 
@@ -375,7 +375,7 @@ describe('Element.Style', function(){
 
 	describe('Border Radius', function(){
 
-		var supportBorderRadius = document.body.style.borderRadius != null ? true : false;
+		var supportBorderRadius = (document.body.style.borderRadius != null);
 		if (navigator.userAgent.match(/PhantomJS\/1./)) supportBorderRadius = false;
 		var dit = supportBorderRadius ? it : xit; // Don't run unless border-radius is supported.
 		var element = new Element('div');

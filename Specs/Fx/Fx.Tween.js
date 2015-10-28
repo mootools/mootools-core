@@ -76,7 +76,7 @@ describe('Fx.Tween', function(){
 		element.set('tween', {
 			duration: 100,
 			onComplete: function(){
-				if(runOnce){
+				if (runOnce){
 					firstOpacity = this.element.getStyle('opacity');
 					runOnce && this.element.fade();
 					runOnce = false;

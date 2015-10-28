@@ -63,7 +63,7 @@ var hasOwnProperty = Object.prototype.hasOwnProperty;
 var enumerables = true;
 for (var i in {toString: 1}) enumerables = null;
 if (enumerables) enumerables = ['hasOwnProperty', 'valueOf', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'constructor'];
-function forEachObjectEnumberableKey(object, fn, bind) {
+function forEachObjectEnumberableKey(object, fn, bind){
 	if (enumerables) for (var i = enumerables.length; i--;){
 		var k = enumerables[i];
 		// signature has key-value, so overloadSetter can directly pass the
@@ -378,7 +378,7 @@ var mergeOne = function(source, key, current){
 		case 'object':
 			if (typeOf(source[key]) == 'object') Object.merge(source[key], current);
 			else source[key] = Object.clone(current);
-		break;
+			break;
 		case 'array': source[key] = current.clone(); break;
 		default: source[key] = current;
 	}

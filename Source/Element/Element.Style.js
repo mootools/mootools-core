@@ -90,7 +90,7 @@ var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat',
 
 var camelCase = function(property){
 	return property.replace(prefixPattern, '$1-').camelCase();
-}
+};
 
 //<ltIE9>
 var removeStyle = function(style, property){

@@ -32,7 +32,7 @@ describe('Class.Thenable', function(){
 				error = thrown;
 			}
 			if (finished) return done(error);
-		}
+		};
 	}
 
 	describe('(Promises/A+)', function(){
@@ -288,7 +288,7 @@ describe('Class.Thenable', function(){
 	});
 
 	it('should reset correctly', function(){
-		var thenable = new Thenable.resolve(3)
+		var thenable = new Thenable.resolve(3);
 		expect(thenable.getThenableState()).to.equal('fulfilled');
 
 		thenable.resetThenable();

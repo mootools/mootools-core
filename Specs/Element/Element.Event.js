@@ -10,9 +10,10 @@ provides: ~
 
 var Local = Local || {};
 
-var fire = 'fireEvent', create = function(){
-	return new Element('div');
-};
+var fire = 'fireEvent',
+	create = function(){
+		return new Element('div');
+	};
 
 describe('Events API: Element', function(){
 
@@ -142,8 +143,6 @@ describe('Events API: Element', function(){
 	});
 
 });
-
-var fragment = document.createDocumentFragment();
 
 // Restore native fireEvent in IE for Syn.
 var createElement = function(tag, props){
@@ -383,7 +382,7 @@ describe('Keypress key code', function(){
 			'id': 'keyTester'
 		}).addEvent('keypress', keyHandler).inject(document.body);
 
-		setTimeout(function () {
+		setTimeout(function(){
 			syn.type('keyTester', action);
 			setTimeout(function(){
 				cb(_key, _shift);
@@ -440,10 +439,10 @@ describe('Element.removeEvent', function(){
 
 });
 
-describe('relatedTarget', function () {
+describe('relatedTarget', function(){
 
 	var outer = new Element('div');
-	var el = new Element('div').inject(outer);
+	new Element('div').inject(outer);
 	['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].each(function(event, i){
 		it('should listen to a ' + event + ' event and set the correct relatedTarget', function(){
 			var mockEvent = {type: event};
@@ -474,7 +473,7 @@ describe('Mouse wheel', function(){
 			event.initMouseEvent(type, true, true, window, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
-		} catch(e){}
+		} catch (e){}
 
 		try {
 			// Chrome, PhantomJS, Safari
@@ -482,7 +481,7 @@ describe('Mouse wheel', function(){
 			event.initMouseEvent(type, 0, 100, window, 0, 0, 0, 0, null, null, null, null);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
-		} catch(e){}
+		} catch (e){}
 
 		try {
 			// IE9
@@ -490,21 +489,21 @@ describe('Mouse wheel', function(){
 			event.initEvent(type, true, false);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
-		} catch(e){}
+		} catch (e){}
 
 		try {
 			// IE10+, Safari
-			var event = document.createEvent('MouseEvents');
+			event = document.createEvent('MouseEvents');
 			event.initEvent(type, true, true);
 			attachProperties(event, wheelDirection);
 			window.dispatchEvent(event);
-		} catch(e){}
+		} catch (e){}
 
 		try {
 			// IE8
-			var event = document.createEventObject();
+			event = document.createEventObject();
 			document.documentElement.fireEvent(type, event);
-		} catch(e){}
+		} catch (e){}
 	}
 
 	var triggered = false;

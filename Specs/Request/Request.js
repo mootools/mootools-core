@@ -25,7 +25,7 @@ describe('Request', function(){
 	it('should create an ajax request', function(){
 		var onComplete = sinon.spy();
 
-		var request = new Request({
+		new Request({
 			url: '/',
 			onComplete: onComplete
 		}).send({data: {
@@ -41,7 +41,7 @@ describe('Request', function(){
 	it('should create a Request with method get and sending data', function(){
 		var onComplete = sinon.spy();
 
-		var request = new Request({
+		new Request({
 			url: '../Helpers/request.php',
 			method: 'get',
 			onComplete: onComplete
@@ -55,7 +55,8 @@ describe('Request', function(){
 
 	it('the options passed on the send method should rewrite the current ones', function(){
 		var onComplete = sinon.spy();
-		var request = new Request({
+
+		new Request({
 			url: '../Helpers/request.php',
 			method: 'get',
 			data: {'setup': 'data'},
@@ -122,7 +123,8 @@ describe('Request', function(){
 
 	it('should not overwrite the data object', function(){
 		var onComplete = sinon.spy();
-		var request = new Request({
+
+		new Request({
 			url: '../Helpers/request.php',
 			data: {
 				__response: 'data'
@@ -131,7 +133,7 @@ describe('Request', function(){
 		}).post();
 
 		var requested = this.requests[0];
-		requested.respond(200, {'Content-Type': 'text/plain'}, requested.requestBody)
+		requested.respond(200, {'Content-Type': 'text/plain'}, requested.requestBody);
 
 		expect(onComplete.called).to.equal(true);
 		expect(onComplete.args[0][0]).to.equal('__response=data');
@@ -173,7 +175,7 @@ describe('Request', function(){
 					error = thrown;
 				}
 				done(error);
-			}
+			};
 		});
 
 		it('should reject when failed', function(done){
@@ -189,7 +191,7 @@ describe('Request', function(){
 					error = thrown;
 				}
 				done(error);
-			}
+			};
 		});
 
 		it('should reject when cancelled', function(done){
@@ -205,13 +207,14 @@ describe('Request', function(){
 					error = thrown;
 				}
 				done(error);
-			}
+			};
 		});
 
 	});
 
+	var dit;
 //<1.4compat>
-	var dit = hasWithCredentials ? it : xit;
+	dit = hasWithCredentials ? it : xit;
 	dit('should set xhr.withCredentials flag in 1.4 for this.options.user', function(){
 		var request = new Request({
 			url: '/something/or/other',
@@ -222,7 +225,7 @@ describe('Request', function(){
 	});
 //</1.4compat>
 
-	var dit = hasWithCredentials ? /*<1.4compat>*/xit || /*</1.4compat>*/it : xit; // Don't run unless no compat.
+	dit = hasWithCredentials ? /*<1.4compat>*/xit || /*</1.4compat>*/it : xit; // Don't run unless no compat.
 	dit('should not set xhr.withCredentials flag in 1.5 for this.options.user', function(){
 		var request = new Request({
 			url: '/something/or/other',

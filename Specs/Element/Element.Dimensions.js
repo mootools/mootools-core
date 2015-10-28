@@ -165,13 +165,13 @@ describe('Element.Dimensions', function(){
 		}];
 
 		var svgContainer;
-		svgElements.each(function (e, i){
+		svgElements.each(function(e, i){
 			var thisElement = document.createElementNS('http://www.w3.org/2000/svg', e.el);
 			thisElement.setProperties(e.prop);
 			if (i == 0){
-				svgContainer = thisElement
+				svgContainer = thisElement;
 				$(document.body).adopt(thisElement);
-				return
+				return;
 			};
 			svgContainer.adopt(thisElement);
 		});

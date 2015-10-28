@@ -82,7 +82,7 @@ local.setDocument = function(document){
 	try {
 		testNode.innerHTML = '<a id="'+id+'"></a>';
 		features.isHTMLDocument = !!document.getElementById(id);
-	} catch(e){}
+	} catch (e){}
 
 	if (features.isHTMLDocument){
 
@@ -97,7 +97,7 @@ local.setDocument = function(document){
 			testNode.innerHTML = 'foo</foo>';
 			selected = testNode.getElementsByTagName('*');
 			starSelectsClosed = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
-		} catch(e){};
+		} catch (e){};
 
 		features.brokenStarGEBTN = starSelectsComments || starSelectsClosed;
 
@@ -105,7 +105,7 @@ local.setDocument = function(document){
 		try {
 			testNode.innerHTML = '<a name="'+ id +'"></a><b id="'+ id +'"></b>';
 			features.idGetsName = document.getElementById(id) === testNode.firstChild;
-		} catch(e){}
+		} catch (e){}
 
 		if (testNode.getElementsByClassName){
 
@@ -115,13 +115,13 @@ local.setDocument = function(document){
 				testNode.getElementsByClassName('b').length;
 				testNode.firstChild.className = 'b';
 				cachedGetElementsByClassName = (testNode.getElementsByClassName('b').length != 2);
-			} catch(e){};
+			} catch (e){};
 
 			// Opera 9.6 getElementsByClassName doesnt detects the class if its not the first one
 			try {
 				testNode.innerHTML = '<a class="a"></a><a class="f b a"></a>';
 				brokenSecondClassNameGEBCN = (testNode.getElementsByClassName('a').length != 2);
-			} catch(e){}
+			} catch (e){}
 
 			features.brokenGEBCN = cachedGetElementsByClassName || brokenSecondClassNameGEBCN;
 		}
@@ -132,25 +132,25 @@ local.setDocument = function(document){
 				testNode.innerHTML = 'foo</foo>';
 				selected = testNode.querySelectorAll('*');
 				features.starSelectsClosedQSA = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
-			} catch(e){}
+			} catch (e){}
 
 			// Safari 3.2 querySelectorAll doesnt work with mixedcase on quirksmode
 			try {
 				testNode.innerHTML = '<a class="MiX"></a>';
 				features.brokenMixedCaseQSA = !testNode.querySelectorAll('.MiX').length;
-			} catch(e){}
+			} catch (e){}
 
 			// Webkit and Opera dont return selected options on querySelectorAll
 			try {
 				testNode.innerHTML = '<select><option selected="selected">a</option></select>';
 				features.brokenCheckedQSA = (testNode.querySelectorAll(':checked').length == 0);
-			} catch(e){};
+			} catch (e){};
 
 			// IE returns incorrect results for attr[*^$]="" selectors on querySelectorAll
 			try {
 				testNode.innerHTML = '<a class=""></a>';
 				features.brokenEmptyAttributeQSA = (testNode.querySelectorAll('[class*=""]').length != 0);
-			} catch(e){}
+			} catch (e){}
 
 		}
 
@@ -158,7 +158,7 @@ local.setDocument = function(document){
 		try {
 			testNode.innerHTML = '<form action="s"><input id="action"/></form>';
 			brokenFormAttributeGetter = (testNode.firstChild.getAttribute('action') != 's');
-		} catch(e){}
+		} catch (e){}
 
 		// native matchesSelector function
 
@@ -167,7 +167,7 @@ local.setDocument = function(document){
 			// if matchesSelector trows errors on incorrect sintaxes we can use it
 			features.nativeMatchesSelector.call(root, ':slick');
 			features.nativeMatchesSelector = null;
-		} catch(e){}
+		} catch (e){}
 
 	}
 
@@ -175,7 +175,7 @@ local.setDocument = function(document){
 		root.slick_expando = 1;
 		delete root.slick_expando;
 		features.getUID = this.getUIDHTML;
-	} catch(e){
+	} catch (e){
 		features.getUID = this.getUIDXML;
 	}
 
@@ -239,7 +239,7 @@ local.setDocument = function(document){
 		bRange.setStart(b, 0);
 		bRange.setEnd(b, 0);
 		return aRange.compareBoundaryPoints(Range.START_TO_END, bRange);
-	} : null ;
+	} : null;
 
 	root = null;
 
@@ -264,7 +264,7 @@ local.search = function(context, expression, append, first){
 
 	// setup
 
-	var parsed, i,
+	var parsed, i, node, nodes,
 		uniques = this.uniques = {},
 		hasOthers = !!(append && append.length),
 		contextIsDocument = (context.nodeType == 9);
@@ -283,8 +283,7 @@ local.search = function(context, expression, append, first){
 		simpleSelectors: if (simpleSelector){
 
 			var symbol = simpleSelector[1],
-				name = simpleSelector[2],
-				node, nodes;
+				name = simpleSelector[2];
 
 			if (!symbol){
 
@@ -349,11 +348,11 @@ local.search = function(context, expression, append, first){
 				|| Slick.disableQSA
 			) break querySelector;
 
-			var _expression = expression, _context = context;
+			var _expression = expression, _context = context, currentId;
 			if (!contextIsDocument){
 				// non-document rooted QSA
 				// credits to Andrew Dupont
-				var currentId = _context.getAttribute('id'), slickid = 'slickid__';
+				currentId = _context.getAttribute('id'), slickid = 'slickid__';
 				_context.setAttribute('id', slickid);
 				_expression = '#' + slickid + ' ' + _expression;
 				context = _context.parentNode;
@@ -362,7 +361,7 @@ local.search = function(context, expression, append, first){
 			try {
 				if (first) return context.querySelector(_expression) || null;
 				else nodes = context.querySelectorAll(_expression);
-			} catch(e){
+			} catch (e){
 				qsaFailExpCache[expression] = 1;
 				break querySelector;
 			} finally {
@@ -561,7 +560,7 @@ local.matchNode = function(node, selector){
 	if (this.isHTMLDocument && this.nativeMatchesSelector){
 		try {
 			return this.nativeMatchesSelector.call(node, selector.replace(/\[([^=]+)=\s*([^'"\]]+?)\s*\]/g, '[$1="$2"]'));
-		} catch(matchError){}
+		} catch (matchError){}
 	}
 
 	var parsed = this.Slick.parse(selector);
