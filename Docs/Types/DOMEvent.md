@@ -32,6 +32,19 @@ DOMEvent Method: constructor {#DOMEvent:constructor}
 * alt           - (*boolean*) True if the user pressed the alt key.
 * meta          - (*boolean*) True if the user pressed the meta key.
 
+#### Pointer event properties:
+
+See [w3.org](http://www.w3.org/TR/pointerevents/#pointerevent-interface) for more information. Additional properties available for pointer events (if supported).
+
+* pointerId     - (*number*) A unique identifier for the pointer causing the event.
+* width         - (*number*) The width in CSS pixels of the contact geometry of the pointer.
+* height        - (*number*) The height in CSS pixels of the contact geometry of the pointer.
+* pressure      - (*number*) The normalized pressure of the pointer input in the range of (0,1).
+* tiltX         - (*number*) The angle (in degrees, in the range of -90, 90) of the pointer between the Y-Z plane.
+* tiltY         - (*number*) The angle (in degrees, in the range of -90, 90) of the pointer between the X-Z plane.
+* pointerType   - (*string*) The device type that caused the event. Generally 'mouse', 'pen' or 'touch'.
+* isPrimary     - (*boolean*) Inidicates if the pointer represents the primary pointer of this pointer type.
+
 ### Examples:
 
 	$('myLink').addEvent('keydown', function(event){
@@ -43,6 +56,7 @@ DOMEvent Method: constructor {#DOMEvent:constructor}
 
 ### Notes:
 
+- [Touch](http://www.w3.org/TR/touch-events/#list-of-touchevent-types) and [Pointer Events](http://www.w3.org/TR/pointerevents/#pointerevent-interface) are only available in modern browsers that support it.
 - Accessing event.page / event.client requires the page to be in [Standards Mode](http://hsivonen.iki.fi/doctype/).
 - Every event added with addEvent gets the MooTools method automatically, without the need to manually instance it.
 - `event.key` is only reliable with `keydown` or `keyup` events. See [PPK](http://www.quirksmode.org/js/keys.html).
