@@ -443,7 +443,7 @@ describe('relatedTarget', function(){
 
 	var outer = new Element('div');
 	new Element('div').inject(outer);
-	['mouseenter', 'mouseleave', 'mouseover', 'mouseout', 'pointerenter', 'pointerleave', 'pointerover', 'pointerout'].each(function(event, i){
+	['mouseenter', 'mouseleave', 'mouseover', 'mouseout'].each(function(event, i){
 		it('should listen to a ' + event + ' event and set the correct relatedTarget', function(){
 			var mockEvent = {type: event};
 			mockEvent[(i % 2 == 0 ? 'from' : 'to') + 'Element'] = outer; // Simulate FF that does not set relatedTarget.
@@ -467,8 +467,8 @@ describe('Pointer events', function(){
 		e.pointerType = 'pen';
 		e.isPrimary = false;
 	}
-	
-	function dispatchFakePointer(type) {
+
+	function dispatchFakePointer(type){
 		var event;
 
 		try {
@@ -477,44 +477,44 @@ describe('Pointer events', function(){
 			attachProperties(event);
 			window.dispatchEvent(event);
 			return;
-		} catch(e){}
-		
+		} catch (e){}
+
 		try {
 			// IE9
 			event = document.createEvent('HTMLEvents');
 			event.initEvent(type, true, false);
 			attachProperties(event);
 			window.dispatchEvent(event);
-		} catch(e){}
-		
+		} catch (e){}
+
 		try {
 			// IE10+, Safari
-			var event = document.createEvent('MouseEvents');
+			event = document.createEvent('MouseEvents');
 			event.initEvent(type, true, true);
 			attachProperties(event);
 			window.dispatchEvent(event);
-		} catch(e){}
-		
+		} catch (e){}
+
 		try {
 			// IE8
-			var event = document.createEventObject();
+			event = document.createEventObject();
 			document.documentElement.fireEvent(type, event);
-		} catch(e){}
+		} catch (e){}
 	}
-	
+
 	var triggered = false;
 	var triggeredEvent;
 	var callback = function(e){
 		triggered = true;
 		triggeredEvent = e;
 	};
-	
+
 	beforeEach(function(){
 		triggered = false;
 		triggeredEvent = null;
 	});
-	
-	it('should attach appropriate properties', function() {
+
+	it('should attach appropriate properties', function(){
 		window.addEvent('pointerdown', callback);
 		document.documentElement.addEvent('pointerdown', callback);
 		dispatchFakePointer('pointerdown');
@@ -535,14 +535,14 @@ describe('Pointer events', function(){
 		expect(triggeredEvent.client.x).to.equal(0);
 		expect(triggeredEvent.client.y).to.equal(0);
 	});
-	
+
 	var allPointerEvents = [
 		'pointerover', 'pointerenter', 'pointerdown', 'pointermove', 'pointerup',
 		'pointercancel', 'pointerout', 'pointerleave', 'gotpointercapture', 'lostpointercapture'
 	];
-	
-	allPointerEvents.forEach(function(name) {
-		it('should listen to ' + name, function() {
+
+	allPointerEvents.forEach(function(name){
+		it('should listen to ' + name, function(){
 			window.addEvent(name, callback);
 			document.documentElement.addEvent(name, callback);
 			dispatchFakePointer(name);
@@ -551,7 +551,7 @@ describe('Pointer events', function(){
 		});
 	});
 });
-	
+
 describe('Mouse wheel', function(){
 
 	function attachProperties(e, direction){

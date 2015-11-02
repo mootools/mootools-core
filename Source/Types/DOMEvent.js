@@ -38,6 +38,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	this.control = event.ctrlKey;
 	this.alt = event.altKey;
 	this.meta = event.metaKey;
+	var doc;
 	var type = this.type = event.type;
 	var target = event.target || event.srcElement;
 	while (target && target.nodeType == 3) target = target.parentNode;
@@ -52,7 +53,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 		}
 		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
 	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
-		var doc = win.document;
+		doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		this.page = {
 			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
@@ -81,8 +82,8 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			this.page = {x: touch.pageX, y: touch.pageY};
 			this.client = {x: touch.clientX, y: touch.clientY};
 		}
-	} else if (type.indexOf('pointer') == 0 || type == 'gotpointercapture' || type == 'lostpointercapture') {
-		var doc = win.document;
+	} else if (type.indexOf('pointer') == 0 || type == 'gotpointercapture' || type == 'lostpointercapture'){
+		doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		this.page = {
 			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
