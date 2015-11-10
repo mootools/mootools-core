@@ -368,6 +368,34 @@ Executes a function in the specified intervals of time. Periodic execution can b
 
 - [MDN setInterval][], [MDN clearInterval][]
 
+Function: Function.debounce {#Function:Function-debounce}
+---------------------------------------------------------
+
+This method will return a new function that will be called only once per group of close calls. After a defined delay it will be able to be called again.
+
+### Syntax:
+
+	var debounceFn = myFn.debounce(delay, leading);
+
+### Arguments:
+
+1. delay - (*number*, optional, defaults to 250ms) The delay to wait before a call to the debounced function can happen again.
+2. leading - (*boolean*, optional, defaults to false) If the call to the debounced function should happen in leading phase of group of calls or after.
+
+### Returns:
+
+* (*function*) A debounce function that will be called only once per group of close function calls.
+
+### Examples:
+
+	// get scroll position after scroll has stopped
+	var getNewScrollPosition = function () {
+		var scroll = window.getScroll();
+		alert(scroll.y);
+	}
+	window.addEvent('scroll', getNewScrollPosition.debounce(500));
+
+
 
 Deprecated Functions {#Deprecated-Functions}
 ============================================

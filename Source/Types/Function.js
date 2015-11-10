@@ -72,6 +72,35 @@ Function.implement({
 
 	periodical: function(periodical, bind, args){
 		return setInterval(this.pass((args == null ? [] : args), bind), periodical);
+	},
+
+	debounce: function(delay, leading){
+
+		// in case delay is omitted and `leading` is first argument
+		if (typeof delay == 'boolean'){
+			leading = delay;
+			delay = false;
+		}
+
+		var timeout, args, self,
+			fn = this,
+			callNow = leading;
+
+		var later = function(){
+			if (leading) callNow = true;
+			else fn.apply(self, args);
+			timeout = null;
+		};
+
+		return function(){
+			self = this;
+			args = arguments;
+
+			clearTimeout(timeout);
+			timeout = setTimeout(later, delay || 250);
+			if (callNow) fn.apply(self, args);
+			callNow = false;
+		};
 	}
 
 });
