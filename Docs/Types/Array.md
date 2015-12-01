@@ -327,6 +327,34 @@ This method is provided only for browsers without native [Array:indexOf][] suppo
 - [MDN Array:indexOf][]
 
 
+Array method: of {#Array:of}
+--------------------------------
+
+Creates a new array from the arguments passed to the method. 
+This method is provided only for browsers without native [Array:of][] support.
+
+### Syntax:
+
+	var arr = Array.of(item0[, item1[, ...[, itemN]]]);
+
+### Returns:
+
+* (*array*) A array were the elements are the arguments passed to the method.
+
+### Arguments:
+
+1. item(s) - (*mixed*) Variable number of arguments.
+
+### Examples:
+
+	Array.of('apple', 'lemon', 'banana'); // returns ['apple', 'lemon', 'banana']
+	Array.of(19); // returns [19]
+
+### See Also:
+
+- [MDN Array:of][]
+
+
 
 Array method: map {#Array:map}
 ------------------------
@@ -792,5 +820,6 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 [Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
 [Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
 [Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
+[Array:of]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of
 [Array:map]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/map
 [Array:some]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/some

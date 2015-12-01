@@ -168,6 +168,12 @@ Array.implement({
 
 });
 
+/*<!ES6>*/
+Array.extend('of', function(){
+	return Array.from(arguments);
+});
+/*</!ES6>*/
+
 //<1.2compat>
 
 Array.alias('extend', 'append');
