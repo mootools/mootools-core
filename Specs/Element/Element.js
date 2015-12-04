@@ -354,7 +354,7 @@ describe('$$', function(){
 
 	it('should return all Elements of a specific tag', function(){
 		var divs1 = $$('div');
-		var divs2 = new Elements(Array.from(document.getElementsByTagName('div')));
+		var divs2 = new Elements(Array.convert(document.getElementsByTagName('div')));
 		expect(divs1).to.eql(divs2);
 	});
 

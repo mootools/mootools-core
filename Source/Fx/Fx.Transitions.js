@@ -33,7 +33,7 @@ Fx.implement({
 });
 
 Fx.Transition = function(transition, params){
-	params = Array.from(params);
+	params = Array.convert(params);
 	var easeIn = function(pos){
 		return transition(pos, params);
 	};

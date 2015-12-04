@@ -202,11 +202,11 @@ if (this.attachEvent && !this.addEventListener){
 }
 
 // IE fails on collections and <select>.options (refers to <select>)
-var arrayFrom = Array.from;
+var arrayFrom = Array.convert;
 try {
 	arrayFrom(document.html.childNodes);
 } catch (e){
-	Array.from = function(item){
+	Array.convert = function(item){
 		if (typeof item != 'string' && Type.isEnumerable(item) && typeOf(item) != 'array'){
 			var i = item.length, array = new Array(i);
 			while (i--) array[i] = item[i];
@@ -220,7 +220,7 @@ try {
 	['pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice'].each(function(name){
 		var method = prototype[name];
 		Array[name] = function(item){
-			return method.apply(Array.from(item), slice.call(arguments, 1));
+			return method.apply(Array.convert(item), slice.call(arguments, 1));
 		};
 	});
 }

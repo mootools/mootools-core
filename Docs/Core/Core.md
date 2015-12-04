@@ -344,8 +344,8 @@ This method has been deprecated. Please use [Number.random](/core/Types/Number#N
 Function: $splat {#Deprecated-Functions:splat}
 -------------------------
 
-This method has been deprecated. Please use [Array.from](/core/Types/Array#Array:Array-from) instead.
-However `$splat` does *not* transform Array-like objects such as NodeList or FileList in arrays, `Array.from` does.
+This method has been deprecated. Please use [Array.convert](/core/Types/Array#Array:Array:convert) instead.
+However `$splat` does *not* transform Array-like objects such as NodeList or FileList in arrays, `Array.convert` does.
 
 
 Function: $time {#Deprecated-Functions:time}
