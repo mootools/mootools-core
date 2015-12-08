@@ -782,7 +782,7 @@ Function: Array.from {#Deprecated-Functions:Array:Array:from}
 
 This method has been deprecated in MooTools 1.6, please use *[Array:convert][]* instead. 
 For backwards compatibility you can use the _compat layer_ that still uses the old implementation, overriding the Native ES6 implementation. 
-Please use instead _no compat_ version, unless you know why you have to use the _compat layer_.
+Please use the no compat version instead, unless you know why you have to use the _compat layer_.
 
 ### See Also:
 

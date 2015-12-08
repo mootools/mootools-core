@@ -118,14 +118,14 @@ Function.prototype.implement = function(key, value){
 	this.prototype[key] = value;
 }.overloadSetter();
 
+// From
+
+var slice = Array.prototype.slice;
+
 Array.convert = function(item){
 	if (item == null) return [];
 	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
 };
-
-// From
-
-var slice = Array.prototype.slice;
 
 Function.from = function(item){
 	return (typeOf(item) == 'function') ? item : function(){
