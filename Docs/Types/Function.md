@@ -9,14 +9,14 @@ Function Methods.
 
 
 
-Function: Function.from {#Function:Function-from}
+Function: Function.convert {#Function:Function:convert}
 -------------------------------------------------
 
 If the passed argument is a function, it will return itself. Otherwise, it will return a function that returns the passed argument.
 
 ### Syntax:
 
-	var foo = Function.from(obj);
+	var foo = Function.convert(obj);
 
 ### Arguments:
 
@@ -28,18 +28,18 @@ If the passed argument is a function, it will return itself. Otherwise, it will 
 
 ### Examples:
 
-	var fn = Function.from(42);
+	var fn = Function.convert(42);
 	alert(fn());	// alerts '42'
 
-	var fn2 = Function.from(fn);
+	var fn2 = Function.convert(fn);
 	alert(fn2());	// alerts '42'
 
 ### Notes:
 
 This function is equivalent to the following deprecated MooTools 1.2 methods:
 
-	var fn1 = Function.from();		// equivalent to var fn1 = function(){};
-	var fn2 = Function.from(foo);	// equivalent to var fn2 = function(){ return foo; };
+	var fn1 = Function.convert();		// equivalent to var fn1 = function(){};
+	var fn2 = Function.convert(foo);	// equivalent to var fn2 = function(){ return foo; };
 
 
 Function: Function.attempt {#Function:Function-attempt}

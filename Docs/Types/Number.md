@@ -13,14 +13,14 @@ Every Math method is mirrored in the Number object, both as prototype and generi
 
 
 
-Function: Number.from {#Number:Number-from}
+Function: Number.convert {#Number:Number:convert}
 ------------------------------------
 
 Returns the passed parameter as a Number, or null if not a number.
 
 ### Syntax:
 
-	Number.from(arg);
+	Number.convert(arg);
 
 ### Arguments:
 
@@ -33,8 +33,8 @@ Returns the passed parameter as a Number, or null if not a number.
 
 ### Example:
 
-	Number.from('12')		// returns 12
-	Number.from('hello')	// returns null
+	Number.convert('12')		// returns 12
+	Number.convert('hello')	// returns null
 
 
 

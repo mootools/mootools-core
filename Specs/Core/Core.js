@@ -666,39 +666,39 @@ describe('Array.convert', function(){
 	});
 });
 
-describe('String.from', function(){
+describe('String.convert', function(){
 
 	it('should convert to type string', function(){
-		expect(typeOf(String.from('string'))).to.equal('string');
-		expect(typeOf(String.from(1))).to.equal('string');
-		expect(typeOf(String.from(new Date))).to.equal('string');
-		expect(typeOf(String.from(function(){}))).to.equal('string');
+		expect(typeOf(String.convert('string'))).to.equal('string');
+		expect(typeOf(String.convert(1))).to.equal('string');
+		expect(typeOf(String.convert(new Date))).to.equal('string');
+		expect(typeOf(String.convert(function(){}))).to.equal('string');
 	});
 
 });
 
-describe('Function.from', function(){
+describe('Function.convert', function(){
 
 	it('if a function is passed in that function should be returned', function(){
 		var fn = function(a){ return a; };
-		expect(Function.from(fn)).to.equal(fn);
+		expect(Function.convert(fn)).to.equal(fn);
 	});
 
 	it('should return a function that returns the value passed when called', function(){
-		expect(Function.from('hello world!')()).to.equal('hello world!');
+		expect(Function.convert('hello world!')()).to.equal('hello world!');
 	});
 
 });
 
-describe('Number.from', function(){
+describe('Number.convert', function(){
 
 	it('should return the number representation of a string', function(){
-		expect(Number.from('10')).to.equal(10);
-		expect(Number.from('10px')).to.equal(10);
+		expect(Number.convert('10')).to.equal(10);
+		expect(Number.convert('10px')).to.equal(10);
 	});
 
 	it('should return null when it fails to return a number type', function(){
-		expect(Number.from('ciao')).to.equal(null);
+		expect(Number.convert('ciao')).to.equal(null);
 	});
 
 });

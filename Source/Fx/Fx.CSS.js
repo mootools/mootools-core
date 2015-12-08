@@ -52,7 +52,7 @@ Fx.CSS = new Class({
 	//parses a value into an array
 
 	parse: function(value){
-		value = Function.from(value)();
+		value = Function.convert(value)();
 		value = (typeof value == 'string') ? value.split(' ') : Array.convert(value);
 		return value.map(function(val){
 			val = String(val);
@@ -74,7 +74,7 @@ Fx.CSS = new Class({
 		(Math.min(from.length, to.length)).times(function(i){
 			computed.push({value: from[i].parser.compute(from[i].value, to[i].value, delta), parser: from[i].parser});
 		});
-		computed.$family = Function.from('fx:css:value');
+		computed.$family = Function.convert('fx:css:value');
 		return computed;
 	},
 
@@ -159,7 +159,7 @@ Fx.CSS.Parsers = {
 	},
 
 	String: {
-		parse: Function.from(false),
+		parse: Function.convert(false),
 		compute: function(zero, one){
 			return one;
 		},
