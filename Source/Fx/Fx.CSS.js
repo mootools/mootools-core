@@ -21,7 +21,7 @@ Fx.CSS = new Class({
 	//prepares the base from/to object
 
 	prepare: function(element, property, values){
-		values = Array.from(values);
+		values = Array.convert(values);
 		var from = values[0], to = values[1];
 		if (to == null){
 			to = from;
@@ -53,7 +53,7 @@ Fx.CSS = new Class({
 
 	parse: function(value){
 		value = Function.from(value)();
-		value = (typeof value == 'string') ? value.split(' ') : Array.from(value);
+		value = (typeof value == 'string') ? value.split(' ') : Array.convert(value);
 		return value.map(function(val){
 			val = String(val);
 			var found = false;

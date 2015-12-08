@@ -122,16 +122,20 @@ Function.prototype.implement = function(key, value){
 
 var slice = Array.prototype.slice;
 
+Array.convert = function(item){
+	if (item == null) return [];
+	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
+};
+
 Function.from = function(item){
 	return (typeOf(item) == 'function') ? item : function(){
 		return item;
 	};
 };
 
-Array.from = function(item){
-	if (item == null) return [];
-	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
-};
+/*<1.5compat>*/
+Array.from = Array.convert;
+/*</1.5compat>*/
 
 Number.from = function(item){
 	var number = parseFloat(item);
@@ -479,7 +483,7 @@ Array.type = function(item){
 };
 
 this.$A = function(item){
-	return Array.from(item).slice();
+	return Array.convert(item).slice();
 };
 
 this.$arguments = function(i){
@@ -526,7 +530,7 @@ this.$merge = function(){
 this.$lambda = Function.from;
 this.$mixin = Object.merge;
 this.$random = Number.random;
-this.$splat = Array.from;
+this.$splat = Array.convert;
 this.$time = Date.now;
 
 this.$type = function(object){

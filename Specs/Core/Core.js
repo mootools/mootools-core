@@ -615,17 +615,17 @@ describe('instanceOf', function(){
 
 });
 
-describe('Array.from', function(){
+describe('Array.convert', function(){
 
 	it('should return the same array', function(){
 		var arr1 = [1, 2, 3];
-		var arr2 = Array.from(arr1);
+		var arr2 = Array.convert(arr1);
 		expect(arr1).to.equal(arr2);
 	});
 
 	it('should return an array for arguments', function(){
 		var fnTest = function(){
-			return Array.from(arguments);
+			return Array.convert(arguments);
 		};
 		var arr = fnTest(1, 2, 3);
 		expect(Type.isArray(arr)).to.equal(true);
@@ -633,21 +633,21 @@ describe('Array.from', function(){
 	});
 
 	it('should transform a non array into an array', function(){
-		expect(Array.from(1)).to.eql([1]);
+		expect(Array.convert(1)).to.eql([1]);
 	});
 
 	it('should transforum an undefined or null into an empty array', function(){
-		expect(Array.from(null)).to.eql([]);
-		expect(Array.from(undefined)).to.eql([]);
+		expect(Array.convert(null)).to.eql([]);
+		expect(Array.convert(undefined)).to.eql([]);
 	});
 
 	it('should ignore and return an array', function(){
-		expect(Array.from([1, 2, 3])).to.eql([1, 2, 3]);
+		expect(Array.convert([1, 2, 3])).to.eql([1, 2, 3]);
 	});
 
 	it('should return a copy of arguments or the arguments if it is of type array', function(){
 		// In Opera arguments is an array so it does not return a copy
-		// This is intended. Array.from is expected to return an Array from an array-like-object
+		// This is intended. Array.convert is expected to return an Array from an array-like-object
 		// It does not make a copy when the passed in value is an array already
 		var args,
 			type,
@@ -655,7 +655,7 @@ describe('Array.from', function(){
 				type = typeOf(arguments);
 				args = arguments;
 
-				return Array.from(arguments);
+				return Array.convert(arguments);
 			})(1, 2);
 
 		if (type === 'array'){
@@ -664,7 +664,6 @@ describe('Array.from', function(){
 			expect(copy).to.not.equal(args);
 		}
 	});
-
 });
 
 describe('String.from', function(){
@@ -844,7 +843,7 @@ describe('Array.each', function(){
 	it('should call the function for each item in Function arguments', function(){
 		var daysArr = [];
 		(function(){
-			Array.each(Array.from(arguments), function(value, key){
+			Array.each(Array.convert(arguments), function(value, key){
 				daysArr[key] = value;
 			});
 		})('Sun', 'Mon', 'Tue');
@@ -953,6 +952,7 @@ describe('Object.append', function(){
 
 });
 
+/*<!ES5>*/
 describe('Date.now', function(){
 
 	it('should return a timestamp', function(){
@@ -960,6 +960,7 @@ describe('Date.now', function(){
 	});
 
 });
+/*</!ES5>*/
 
 describe('String.uniqueID', function(){
 
@@ -1000,7 +1001,7 @@ describe('typeOf Client', function(){
 
 });
 
-describe('Array.from', function(){
+describe('Array.convert', function(){
 
 	var dit = typeof document == 'undefined' ? xit : it;
 	dit('should return an array for an Elements collection', function(){
@@ -1011,7 +1012,7 @@ describe('Array.from', function(){
 		div1.appendChild(div2);
 		div1.appendChild(div3);
 
-		var array = Array.from(div1.getElementsByTagName('*'));
+		var array = Array.convert(div1.getElementsByTagName('*'));
 		expect(Type.isArray(array)).to.equal(true);
 	});
 
@@ -1019,7 +1020,7 @@ describe('Array.from', function(){
 		var div = document.createElement('div');
 		div.innerHTML = '<select><option>a</option></select>';
 		var select = div.firstChild;
-		var array = Array.from(select.options);
+		var array = Array.convert(select.options);
 		expect(Type.isArray(array)).to.equal(true);
 	});
 

@@ -31,7 +31,7 @@ Function.implement({
 
 	attempt: function(args, bind){
 		try {
-			return this.apply(bind, Array.from(args));
+			return this.apply(bind, Array.convert(args));
 		} catch (e){}
 
 		return null;
@@ -60,7 +60,7 @@ Function.implement({
 
 	pass: function(args, bind){
 		var self = this;
-		if (args != null) args = Array.from(args);
+		if (args != null) args = Array.convert(args);
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
@@ -87,7 +87,7 @@ Function.implement({
 		options = options || {};
 		return function(event){
 			var args = options.arguments;
-			args = (args != null) ? Array.from(args) : Array.slice(arguments, (options.event) ? 1 : 0);
+			args = (args != null) ? Array.convert(args) : Array.slice(arguments, (options.event) ? 1 : 0);
 			if (options.event) args.unshift(event || window.event);
 			var returns = function(){
 				return self.apply(options.bind || null, args);
@@ -101,7 +101,7 @@ Function.implement({
 
 	bind: function(bind, args){
 		var self = this;
-		if (args != null) args = Array.from(args);
+		if (args != null) args = Array.convert(args);
 		return function(){
 			return self.apply(bind, args || arguments);
 		};
@@ -109,14 +109,14 @@ Function.implement({
 
 	bindWithEvent: function(bind, args){
 		var self = this;
-		if (args != null) args = Array.from(args);
+		if (args != null) args = Array.convert(args);
 		return function(event){
 			return self.apply(bind, (args == null) ? arguments : [event].concat(args));
 		};
 	},
 
 	run: function(args, bind){
-		return this.apply(bind, Array.from(args));
+		return this.apply(bind, Array.convert(args));
 	}
 
 });

@@ -67,7 +67,7 @@ this.Events = new Class({
 		type = removeOn(type);
 		var events = this.$events[type];
 		if (!events) return this;
-		args = Array.from(args);
+		args = Array.convert(args);
 		events.each(function(fn){
 			if (delay) fn.delay(delay, this, args);
 			else fn.apply(this, args);

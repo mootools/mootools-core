@@ -754,7 +754,7 @@ Element.implement({
 	},
 
 	getProperties: function(){
-		var args = Array.from(arguments);
+		var args = Array.convert(arguments);
 		return args.map(this.getProperty, this).associate(args);
 	},
 
@@ -853,7 +853,7 @@ Element.implement({
 
 	getSelected: function(){
 		this.selectedIndex; // Safari 3.2.1
-		return new Elements(Array.from(this.options).filter(function(option){
+		return new Elements(Array.convert(this.options).filter(function(option){
 			return option.selected;
 		}));
 	},
@@ -869,7 +869,7 @@ Element.implement({
 				return document.id(opt).get('value');
 			}) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
 
-			Array.from(value).each(function(val){
+			Array.convert(value).each(function(val){
 				if (typeof val != 'undefined') queryString.push(encodeURIComponent(el.name) + '=' + encodeURIComponent(val));
 			});
 		});
@@ -938,7 +938,7 @@ Element.implement({
 	},
 
 	empty: function(){
-		Array.from(this.childNodes).each(Element.dispose);
+		Array.convert(this.childNodes).each(Element.dispose);
 		return this;
 	},
 
@@ -951,8 +951,8 @@ Element.implement({
 		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
 
 		if (contents){
-			ce.append(Array.from(clone.getElementsByTagName('*')));
-			te.append(Array.from(this.getElementsByTagName('*')));
+			ce.append(Array.convert(clone.getElementsByTagName('*')));
+			te.append(Array.convert(this.getElementsByTagName('*')));
 		}
 
 		for (i = ce.length; i--;){

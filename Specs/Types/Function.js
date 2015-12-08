@@ -13,7 +13,7 @@ var dit = /*<1.2compat>*/xit || /*</1.2compat>*/it; // Don't run unless no compa
 var MooTools = new String('MooTools');
 
 var fn = function(){
-	return Array.from(arguments).slice();
+	return Array.convert(arguments).slice();
 };
 
 var Rules = function(){

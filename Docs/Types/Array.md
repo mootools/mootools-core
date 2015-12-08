@@ -82,16 +82,14 @@ Returns a copy of the passed array.
 
 This is an array-specific equivalent of *$unlink* from MooTools 1.2.
 
-
-
-Function: Array.from {#Array:Array-from}
+Function: Array.convert {#Array:Array:convert}
 ----------------------------------
 
 Converts the argument passed in to an array if it is defined and not already an array.
 
 ### Syntax:
 
-	var splatted = Array.from(obj);
+	var splatted = Array.convert(obj);
 
 ### Arguments:
 
@@ -103,15 +101,13 @@ Converts the argument passed in to an array if it is defined and not already an 
 
 ### Example:
 
-	Array.from('hello'); // returns ['hello'].
-	Array.from(['a', 'b', 'c']); // returns ['a', 'b', 'c'].
+	Array.convert('hello'); // returns ['hello'].
+	Array.convert(['a', 'b', 'c']); // returns ['a', 'b', 'c'].
 
 ### Notes:
 
-This is equivalent to *$splat* from MooTools 1.2, with the exception of Array-like Objects such as NodeList or FileList which `Array.from` does transform in
+This is equivalent to *$splat* from MooTools 1.2, with the exception of Array-like Objects such as NodeList or FileList which `Array.convert` does transform in
 Arrays and `$splat` not.
-
-
 
 Array method: each {#Array:each}
 ---------------------------------
@@ -778,11 +774,28 @@ Converts an RGB color value to hexadecimal. Input array must be in one of the fo
 - [String:rgbToHex][]
 
 
+Deprecated Functions {#Deprecated-Functions}
+============================================
 
+Function: Array.from {#Deprecated-Functions:Array:Array:from}
+----------------------------------
+
+This method has been deprecated in MooTools 1.6, please use *[Array:convert][]* instead. 
+For backwards compatibility you can use the _compat layer_ that still uses the old implementation, overriding the Native ES6 implementation. 
+Please use the no compat version instead, unless you know why you have to use the _compat layer_.
+
+### See Also:
+
+ - [MDN Array:from][]
+
+
+
+[Array:convert]: /core/Types/Array/#Array:convert
 [Function:bind]: /core/Types/Function/#Function:bind
 [String:hexToRgb]: /core/Types/String/#String:hexToRgb
 [String:rgbToHex]: /core/Types/String/#String:rgbToHex
 [MDN Array]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array
+[MDN Array:from]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from
 [MDN Array:every]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/every
 [MDN Array:filter]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/filter
 [MDN Array:indexOf]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/Array/indexOf
