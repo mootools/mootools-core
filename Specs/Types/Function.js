@@ -165,7 +165,7 @@ describe('Function Method', function(){
 		});
 
 		it('should return the return value of a function', function(){
-			var fnc = Function.from('hello world!');
+			var fnc = Function.convert('hello world!');
 			expect(fnc.attempt()).to.equal('hello world!');
 		});
 

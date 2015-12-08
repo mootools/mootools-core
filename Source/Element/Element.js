@@ -73,7 +73,7 @@ if (!Browser.Element){
 
 	Element.Prototype = {
 		'$constructor': Element,
-		'$family': Function.from('element').hide()
+		'$family': Function.convert('element').hide()
 	};
 
 	Element.mirror(function(name, method){

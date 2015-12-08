@@ -127,24 +127,29 @@ Array.convert = function(item){
 	return (Type.isEnumerable(item) && typeof item != 'string') ? (typeOf(item) == 'array') ? item : slice.call(item) : [item];
 };
 
-Function.from = function(item){
+Function.convert = function(item){
 	return (typeOf(item) == 'function') ? item : function(){
 		return item;
 	};
+};
+
+
+Number.convert = function(item){
+	var number = parseFloat(item);
+	return isFinite(number) ? number : null;
+};
+
+String.convert = function(item){
+	return item + '';
 };
 
 /*<1.5compat>*/
 Array.from = Array.convert;
 /*</1.5compat>*/
 
-Number.from = function(item){
-	var number = parseFloat(item);
-	return isFinite(number) ? number : null;
-};
-
-String.from = function(item){
-	return item + '';
-};
+Function.from = Function.convert;
+Number.from = Number.convert;
+String.from = String.convert;
 
 // hide, protect
 
@@ -527,7 +532,7 @@ this.$merge = function(){
 	return Object.merge.apply(null, args);
 };
 
-this.$lambda = Function.from;
+this.$lambda = Function.convert;
 this.$mixin = Object.merge;
 this.$random = Number.random;
 this.$splat = Array.convert;
