@@ -478,28 +478,6 @@ describe('Pointer events', function(){
 			window.dispatchEvent(event);
 			return;
 		} catch (e){}
-
-		try {
-			// IE9
-			event = document.createEvent('HTMLEvents');
-			event.initEvent(type, true, false);
-			attachProperties(event);
-			window.dispatchEvent(event);
-		} catch (e){}
-
-		try {
-			// IE10+, Safari
-			event = document.createEvent('MouseEvents');
-			event.initEvent(type, true, true);
-			attachProperties(event);
-			window.dispatchEvent(event);
-		} catch (e){}
-
-		try {
-			// IE8
-			event = document.createEventObject();
-			document.documentElement.fireEvent(type, event);
-		} catch (e){}
 	}
 
 	var triggered = false;
