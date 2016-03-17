@@ -76,7 +76,7 @@ describe('String Method', function(){
 	describe('String.test', function(){
 
 		it('should return true if the test matches the string otherwise false', function(){
-			expect('i like teh cookies'.test('cookies')).to.equal(true);
+			expect('i like the cookies'.test('cookies')).to.equal(true);
 			expect('i like cookies'.test('ke coo')).to.equal(true);
 			expect('I LIKE COOKIES'.test('cookie', 'i')).to.equal(true);
 			expect('i like cookies'.test('cookiez')).to.equal(false);

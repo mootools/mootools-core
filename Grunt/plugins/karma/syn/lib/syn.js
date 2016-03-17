@@ -2558,7 +2558,7 @@ extend(syn, {
 				prevents = autoPrevent ? -1 : 0;
 
 			//automatically prevents the default behavior for this event
-			//this is to protect agianst nasty browser freezing bug in safari
+			//this is to protect against nasty browser freezing bug in safari
 			if (autoPrevent) {
 				bind(element, type, function ontype(ev) {
 					ev.preventDefault();

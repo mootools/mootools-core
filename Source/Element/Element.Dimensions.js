@@ -283,7 +283,7 @@ function getCompatElement(element){
 })();
 
 //aliases
-Element.alias({position: 'setPosition'}); //compatability
+Element.alias({position: 'setPosition'}); //compatibility
 
 [Window, Document, Element].invoke('implement', {
 

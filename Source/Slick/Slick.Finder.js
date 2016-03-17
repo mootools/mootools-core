@@ -78,7 +78,7 @@ local.setDocument = function(document){
 	var testRoot = document.body || document.getElementsByTagName('body')[0] || root;
 	testRoot.appendChild(testNode);
 
-	// on non-HTML documents innerHTML and getElementsById doesnt work properly
+	// on non-HTML documents innerHTML and getElementsById don't work properly
 	try {
 		testNode.innerHTML = '<a id="'+id+'"></a>';
 		features.isHTMLDocument = !!document.getElementById(id);
@@ -117,7 +117,7 @@ local.setDocument = function(document){
 				cachedGetElementsByClassName = (testNode.getElementsByClassName('b').length != 2);
 			} catch (e){};
 
-			// Opera 9.6 getElementsByClassName doesnt detects the class if its not the first one
+			// Opera 9.6 getElementsByClassName doesn't detects the class if its not the first one
 			try {
 				testNode.innerHTML = '<a class="a"></a><a class="f b a"></a>';
 				brokenSecondClassNameGEBCN = (testNode.getElementsByClassName('a').length != 2);
@@ -134,13 +134,13 @@ local.setDocument = function(document){
 				features.starSelectsClosedQSA = (selected && !!selected.length && selected[0].nodeName.charAt(0) == '/');
 			} catch (e){}
 
-			// Safari 3.2 querySelectorAll doesnt work with mixedcase on quirksmode
+			// Safari 3.2 querySelectorAll doesn't work with mixedcase on quirksmode
 			try {
 				testNode.innerHTML = '<a class="MiX"></a>';
 				features.brokenMixedCaseQSA = !testNode.querySelectorAll('.MiX').length;
 			} catch (e){}
 
-			// Webkit and Opera dont return selected options on querySelectorAll
+			// Webkit and Opera don't return selected options on querySelectorAll
 			try {
 				testNode.innerHTML = '<select><option selected="selected">a</option></select>';
 				features.brokenCheckedQSA = (testNode.querySelectorAll(':checked').length == 0);

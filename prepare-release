@@ -87,7 +87,7 @@ if [ -n "$DIST" ]; then
 	echo "Building '$DIST_DIR' files." >&2
 	sh -c "cd '$DIR' && $DIST $DIST_ARGS" || moo "Error building '$DIST_DIR' files."
 	sh -c "cd '$DIR' && git add -f '$DIR/$DIST_DIR'" || moo "Error adding '$DIST_DIR' files to repository."
-	echo "Succesfully built '$DIST_DIR' files." >&2
+	echo "Successfully built '$DIST_DIR' files." >&2
 fi
 
 # Make the new release final.
