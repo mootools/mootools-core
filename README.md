@@ -29,7 +29,7 @@ b. __To fix a bug:__
    6. Create Pull Request, and send Pull Request.
 
 
-__Do try to contibute!__ This is a community project.
+__Do try to contribute!__ This is a community project.
 
 
 ## Building & Testing

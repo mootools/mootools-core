@@ -54,7 +54,7 @@ It makes a Class "thenable" (see [Promises/A+][]), which means you can call its 
 Class.Thenable Method: then {#Class.Thenable:then}
 --------------------------------------------------
 
-Registers callbacks to receive the class's eventual value or the reason why it cannot be succesfully resolved.
+Registers callbacks to receive the class's eventual value or the reason why it cannot be successfully resolved.
 
 ### Syntax:
 
@@ -62,8 +62,8 @@ Registers callbacks to receive the class's eventual value or the reason why it c
 
 ### Arguments:
 
-1. onFulfilled - (*function*, optional) Function to execute when the value is succesfully resolved.
-2. onRejected  - (*function*, optional) Function to execute when the value cannot be succesfully resolved.
+1. onFulfilled - (*function*, optional) Function to execute when the value is successfully resolved.
+2. onRejected  - (*function*, optional) Function to execute when the value cannot be successfully resolved.
 
 ### Returns:
 
@@ -78,7 +78,7 @@ Registers callbacks to receive the class's eventual value or the reason why it c
 Class.Thenable Method: catch {#Class.Thenable:catch}
 ----------------------------------------------------
 
-Registers a callback to receive the reason why an eventual value cannot be succesfully resolved.
+Registers a callback to receive the reason why an eventual value cannot be successfully resolved.
 
 ### Syntax:
 
@@ -86,7 +86,7 @@ Registers a callback to receive the reason why an eventual value cannot be succe
 
 ### Arguments:
 
-1. onRejected  - (*function*, optional) Function to execute when the value cannot be succesfully resolved.
+1. onRejected  - (*function*, optional) Function to execute when the value cannot be successfully resolved.
 
 ### Returns:
 
@@ -136,7 +136,7 @@ Function to make a `Thenable` rejected, that is to say it will not receive an ev
 
 ### Arguments:
 
-1. reason  - (*mixed*, optional) The reason the `Thenable` will not be succesfully resolved, often an `Error` instance.
+1. reason  - (*mixed*, optional) The reason the `Thenable` will not be successfully resolved, often an `Error` instance.
 
 ### Returns:
 
@@ -147,7 +147,7 @@ Function to make a `Thenable` rejected, that is to say it will not receive an ev
 	var MyClass = new Class({
 		Implements: Class.Thenable,
 		initialize: function(){
-			this.reject(new Error('Cannot be succesfully resolved.'));
+			this.reject(new Error('Cannot be successfully resolved.'));
 		}
 	});
 

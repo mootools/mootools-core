@@ -65,7 +65,7 @@ Tries to execute a number of functions. Returns immediately the return value of 
 	var result = Function.attempt(function(){
 		return some.made.up.object;
 	}, function(){
-		return jibberish.that.doesnt.exists;
+		return jibberish.that.does.not.exist;
 	}, function(){
 		return false;
 	});

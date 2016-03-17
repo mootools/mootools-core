@@ -72,7 +72,7 @@ Useful when implementing a default set of properties in multiple Classes. The Im
 	var Cat = new Class({
 		Extends: Animal,
 		initialize: function(name, age){
-			this.parent(age); // calls initalize method of Animal class
+			this.parent(age); // calls initialize method of Animal class
 			this.name = name;
 		}
 	});

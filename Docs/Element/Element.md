@@ -952,7 +952,7 @@ Tests the Element to see if it has the passed in className.
 Element Method: addClass {#Element:addClass}
 --------------------------------------------
 
-Adds the passed in class to the Element, if the Element doesnt already have it.
+Adds the passed in class to the Element, if the Element doesn't already have it.
 
 ### Syntax:
 
@@ -1096,7 +1096,7 @@ As [Element:getPrevious][], but tries to find the nextSibling (excluding text no
 
 ### Arguments:
 
-1. match - (*string*, optional): A comma seperated list of tag names to match the found element(s) with. A full CSS selector can be passed.
+1. match - (*string*, optional): A comma separated list of tag names to match the found element(s) with. A full CSS selector can be passed.
 
 ### Returns:
 
