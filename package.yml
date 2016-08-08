@@ -32,6 +32,7 @@ sources:
   - "Source/Slick/Slick.Finder.js"
   - "Source/Element/Element.js"
   - "Source/Element/Element.Style.js"
+  - "Source/Fx/Timer.js"
   - "Source/Fx/Fx.js"
   - "Source/Fx/Fx.Morph.js"
   - "Source/Utilities/Accessor.js"

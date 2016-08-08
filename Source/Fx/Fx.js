@@ -2,7 +2,7 @@
 ---
 name: Fx
 description: Contains the basic animation logic to be extended by all other Fx Classes.
-requires: [Type, Array, String, Number, Function, Class, Chain, Events, Options]
+requires: [Class, Timer, typeOf, Accessor]
 provides: Fx
 ...
 */
@@ -11,88 +11,52 @@ provides: Fx
 
 var Fx = this.Fx = new Class({
 
-	Implements: Options,
+	Extends: Timer,
 
 	options: {
 		duration: '500ms',
 		equation: 'default',
-		behavior: 'cancel'
-	},
-	
-	initialize: function(options){
-		this.setOptions(options);
-		this.stack = [];
-	},
-	
-	/* public methods */
-	
-	start: function(from, to){
-		if (!this.check(from, to)) return this;
-		this.from = from;
-		this.to = to;
-		this.time = 0;
-		this.equation = Fx.parseEquation(this.getOption('equation'));
-		this.duration = Fx.parseDuration(this.getOption('duration'));
-		this.startTimer();
-		return this;
-	},
-	
-	cancel: function(){
-		this.time = 0;
-		return this.stopTimer();
-	},
-	
-	pause: function(){
-		return this.stopTimer();
+		frameSkip: true,
+		frames: null
 	},
 
-	resume: function(){
-		return this.startTimer();
+	initialize: function(options){
+		this.parent(options);
+		this.setOption('fps', fps);
 	},
-	
-	complete: function(){
-		if (this.stack.length) this.stack.shift()();
-		return this.stopTimer();
-	},
-	
+
 	/* private methods */
-	
-	step: function(){
-		var time = Date.now();
-		var factor = (time - this.time) / this.duration;
-		if (factor >= 1) factor = 1;
-		var delta = this.equation(factor);
-		this.render(this.compute(delta));
-		if (factor == 1) this.complete();
+
+	'protected onStart': function(from, to){
+		this.from = from;
+		this.to = to;
+
+		this.equation = Fx.parseEquation(this.getOption('equation'));
+		this.duration = Fx.parseDuration(this.getOption('duration'));
+
+		this.frameInterval = 1000 / fps;
+		this.frame = this.getOption('frameSkip') ? 0 : -1;
+		this.frames = this.getOption('frames') || Math.round(this.duration / this.frameInterval);
 	},
-	
+
+	'protected onStep': function(dt){
+		this.frame += this.getOption('frameSkip')
+			? dt / this.frameInterval : 1;
+
+		if (this.frame < this.frames){
+			var delta = this.equation(this.frame / this.frames);
+			this.render(this.compute(delta));
+		} else {
+			this.frame = this.frames;
+			this.render(this.compute(1));
+			this.complete();
+		}
+	},
+
 	'protected render': function(now){},
 
 	'protected compute': function(delta){
 		return Fx.compute(this.from, this.to, delta);
-	},
-
-	'protected check': function(){
-		if (!this.timer) return true;
-		switch (this.getOption('behavior')){
-			case 'cancel': this.cancel(); return true;
-			case 'stack': this.stack.push(this.caller.pass(arguments, this)); return false;
-		}
-		return false;
-	},
-
-	'protected stopTimer': function(){
-		if (!this.timer) return false;
-		this.time = Date.now() - this.time;
-		this.timer = removeInstance(this);
-		return true;
-	},
-
-	'protected startTimer': function(){
-		if (this.timer) return false;
-		this.time = Date.now() - this.time;
-		this.timer = addInstance(this);
-		return true;
 	}
 
 });
@@ -119,27 +83,9 @@ Fx.extend('parseDuration', function(duration){
 	return n;
 });
 
-// global timer
+// fps
 
-var fps = 60, instances = [], timer;
-
-var loop = function(){
-	for (var i = 0; i < instances.length; i++) instances[i].step();
-};
-
-var addInstance = function(instance){
-	instances.push(instance);
-	if (!timer) timer = loop.periodical(Math.round(1000 / fps));
-	return true;
-};
-
-var removeInstance = function(instance){
-	instances.erase(instance);
-	if (!instances.length && timer) timer = clearInterval(timer);
-	return false;
-};
-
-// fps set
+var fps = 60;
 
 Fx.extend('setFPS', function(value){
 	fps = value;
@@ -159,7 +105,7 @@ Fx.defineEquations({
 	},
 
 	'pow': function(p, x){
-		return Math.pow(p, (x != null) ? x : 6);
+		return Math.pow(p, x || 6);
 	},
 
 	'expo': function(p){
@@ -171,11 +117,11 @@ Fx.defineEquations({
 	},
 
 	'sine': function(p){
-		return 1 - Math.sin((1 - p) * Math.PI / 2);
+		return 1 - Math.cos(p * Math.PI / 2);
 	},
 
 	'back': function(p, x){
-		x = (x != null) ? x : 1.618;
+		if (x == null) x = 1.618;
 		return Math.pow(p, 2) * ((x + 1) * p - x);
 	},
 
@@ -191,8 +137,7 @@ Fx.defineEquations({
 	},
 
 	'elastic': function(p, x){
-		x = (x != null) ? x : 1;
-		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * x / 3);
+		return Math.pow(2, 10 * --p) * Math.cos(20 * p * Math.PI * (x || 1) / 3);
 	}
 
 });
@@ -210,9 +155,8 @@ Fx.extend('parseEquation', function(name){
 	if (t == 'function') return name;
 	if (t != 'string') name = 'linear';
 	var match = name.match(/^([\w]+)([:inout]+)?(\(([\d.]+)\))?$/);
-	var n = match[1], equation = Fx.lookupEquation(n);
-	if (!equation) return null;
-	var end = equation(1), param = parseFloat(match[4]), type = match[2];
+	var equation = Fx.lookupEquation(match[1]) || Fx.lookupEquation('default');
+	var end = equation(1), param = (match[4] != null) ? parseFloat(match[4]) : null, type = match[2];
 	switch (type){
 		case ':out': return function(pos){
 			return end - equation(1 - pos, param);
