@@ -65,11 +65,13 @@ var getStyle = (window.getComputedStyle) ? function(element, name){
 	return (isEm) ? EMToPx(element, isEm[1]) + 'px' : style;
 };
 
-Slick.definePseudo('positioned', function(){
-	return getStyle(this, 'position') != 'static';
-}).definePseudo('static', function(){
-	return getStyle(this, 'position') == 'static';
-});
+if (this.Slick){
+	Slick.definePseudo('positioned', function(){
+		return getStyle(this, 'position') != 'static';
+	}).definePseudo('static', function(){
+		return getStyle(this, 'position') == 'static';
+	});
+}
 
 /* css values utilities */
 

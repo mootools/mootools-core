@@ -62,7 +62,7 @@ Function.prototype.overloadGetter = function(forceObjectResult){
 			for (var i = 0; i < args.length; i++) result[args[i]] = self.call(this, args[i]);
 			return result;
 		} else {
-			return self.call(this, a);
+			return self.call(this, argument);
 		}
 	};
 };
@@ -168,6 +168,13 @@ Type.isEnumerable = function(item){
 	return (item != null && typeof item.length == 'number' && toString.call(item) != '[object Function]' );
 };
 
+var hooks = {};
+
+var hooksOf = function(object){
+	var type = typeOf(object.prototype);
+	return hooks[type] || (hooks[type] = []);
+};
+
 var extend = function(name, method){
 	if (method && method.$hidden) return;
 
@@ -177,6 +184,14 @@ var extend = function(name, method){
 
 var implement = function(name, method){
 	if (method && method.$hidden) return;
+
+	var hooks = hooksOf(this);
+
+	for (var i = 0; i < hooks.length; i++){
+		var hook = hooks[i];
+		if (typeOf(hook) == 'type') implement.call(hook, name, method);
+		else hook.call(this, name, method);
+	}
 
 	var previous = this.prototype[name];
 	if (previous == null || !previous.$protected) this.prototype[name] = method;
@@ -194,7 +209,12 @@ Type.implement({
 
 	alias: function(key, value){
 		implement.call(this, key, this.prototype[value]);
-	}.overloadSetter()
+	}.overloadSetter(),
+	
+	mirror: function(hook){
+		hooksOf(this).push(hook);
+		return this;
+	}
 	
 });
 
@@ -263,11 +283,14 @@ Number.prototype.$family = function(){
 
 // forEach, each
 
-Object.extend('forEach', function(object, fn, bind){
+var hasOwnProperty = Object.prototype.hasOwnProperty;
+Object.extend('forEach', function(object, fn, context){
 	for (var key in object){
-		if (object.hasOwnProperty(key)) fn.call(bind, object[key], key, object);
+		if (hasOwnProperty.call(object, key)) fn.call(context, object[key], key, object);
 	}
-}).extend('each', Object.forEach);
+});
+
+Object.each = Object.forEach;
 
 Array.implement({
 
@@ -276,9 +299,9 @@ Array.implement({
 			if (i in this) fn.call(context, this[i], i, this);
 		}
 	},
-	
+
 	each: function(fn, context){
-		this.forEach(fn, context);
+		Array.forEach(this, fn, context);
 		return this;
 	}
 
