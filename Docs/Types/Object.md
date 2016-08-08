@@ -480,6 +480,33 @@ Generates a query string from key/value pairs in an object and URI encodes the v
 
 	Object.toQueryString({apple: 'red', lemon: 'yellow'}, 'fruits'); // returns 'fruits[apple]=red&fruits[lemon]=yellow'
 
+Function: Object.create {#Object:Object-create}
+------------------------------------------------
+
+Creates a new object with the old object as its prototype.
+
+### Syntax:
+
+	var object = Object.create(proto);
+
+### Arguments:
+
+1. proto - (*object*) The object which should be the prototype of the newly-created object.
+
+### Returns:
+
+* (*object*) The new object.
+
+### Examples:
+
+	var proto = {a: 1, b: 2};
+	var newObject = Object.create(proto);
+	newObject.a; // returns 1
+
+### Note
+
+Does not take the second argument like native `Object.create` support.
+
 
 Deprecated Functions {#Deprecated-Functions}
 ============================================
