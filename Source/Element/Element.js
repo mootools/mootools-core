@@ -38,7 +38,8 @@ var Element = this.Element = function(tag, props){
 		if (parsed.classList && props['class'] == null) props['class'] = parsed.classList.join(' ');
 	}
 
-	return document.newElement(tag, props);
+	if (typeof props.document == 'undefined') props.document = document;
+	return props.document.newElement(tag, props);
 };
 
 
