@@ -55,6 +55,7 @@ var reset = function(object){
 				object[key] = reset(new F);
 				break;
 			case 'array': object[key] = value.clone(); break;
+			default: object[key] = value;
 		}
 	}
 	return object;
