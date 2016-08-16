@@ -64,6 +64,7 @@ module.exports = function(grunt){
 	}
 
 	grunt.initConfig(config);
+	grunt.util.linefeed = '\n';
 
 	grunt.file.expand('./Grunt/options/*.js').forEach(function(file){
 		grunt.config.merge(require(file)(grunt));
