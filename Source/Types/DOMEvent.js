@@ -38,6 +38,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 	this.control = event.ctrlKey;
 	this.alt = event.altKey;
 	this.meta = event.metaKey;
+	var doc;
 	var type = this.type = event.type;
 	var target = event.target || event.srcElement;
 	while (target && target.nodeType == 3) target = target.parentNode;
@@ -52,7 +53,7 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 		}
 		if (this.key == null) this.key = String.fromCharCode(code).toLowerCase();
 	} else if (type == 'click' || type == 'dblclick' || type == 'contextmenu' || type == 'wheel' || type == 'DOMMouseScroll' || type.indexOf('mouse') == 0){
-		var doc = win.document;
+		doc = win.document;
 		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
 		this.page = {
 			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
@@ -64,8 +65,8 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 		};
 		if (type == 'DOMMouseScroll' || type == 'wheel' || type == 'mousewheel') this.wheel = normalizeWheelSpeed(event);
 		this.rightClick = (event.which == 3 || event.button == 2);
-		if (type == 'mouseover' || type == 'mouseout' || type == 'mouseenter' || type == 'mouseleave'){
-			var overTarget = type == 'mouseover' || type == 'mouseenter';
+		if (type == 'mouseover' || type == 'mouseout' || type == 'mouseenter' || type == 'mouseleave' || type == 'pointerover' || type == 'pointerout' || type == 'pointerenter' || type == 'pointerleave'){
+			var overTarget = type == 'mouseover' || type == 'mouseenter' || type == 'pointerover' || type == 'pointerenter';
 			var related = event.relatedTarget || event[(overTarget ? 'from' : 'to') + 'Element'];
 			while (related && related.nodeType == 3) related = related.parentNode;
 			this.relatedTarget = document.id(related);
@@ -81,6 +82,25 @@ var DOMEvent = this.DOMEvent = new Type('DOMEvent', function(event, win){
 			this.page = {x: touch.pageX, y: touch.pageY};
 			this.client = {x: touch.clientX, y: touch.clientY};
 		}
+	} else if (type.indexOf('pointer') == 0 || type == 'gotpointercapture' || type == 'lostpointercapture'){
+		doc = win.document;
+		doc = (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+		this.page = {
+			x: (event.pageX != null) ? event.pageX : event.clientX + doc.scrollLeft,
+			y: (event.pageY != null) ? event.pageY : event.clientY + doc.scrollTop
+		};
+		this.client = {
+			x: (event.pageX != null) ? event.pageX - win.pageXOffset : event.clientX,
+			y: (event.pageY != null) ? event.pageY - win.pageYOffset : event.clientY
+		};
+		this.pointerId = event.pointerId;
+		this.width = event.width;
+		this.height = event.height;
+		this.pressure = event.pressure;
+		this.tiltX = event.tiltX;
+		this.tiltY = event.tiltY;
+		this.pointerType = event.pointerType;
+		this.isPrimary = event.isPrimary;
 	}
 
 	if (!this.client) this.client = {};

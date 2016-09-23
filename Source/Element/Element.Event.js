@@ -135,6 +135,8 @@ Element.NativeEvents = {
 	keydown: 2, keypress: 2, keyup: 2, //keyboard
 	orientationchange: 2, // mobile
 	touchstart: 2, touchmove: 2, touchend: 2, touchcancel: 2, // touch
+	pointerup: 2, pointerdown: 2, pointerover: 2, pointerout: 2, pointermove: 2, // Pointer events
+	pointercancel: 2, pointerenter: 2, pointerleave: 2, gotpointercapture: 2, lostpointercapture: 2,
 	gesturestart: 2, gesturechange: 2, gestureend: 2, // gesture
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, paste: 2, input: 2, //form elements
 	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window

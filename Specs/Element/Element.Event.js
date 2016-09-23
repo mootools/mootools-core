@@ -456,6 +456,80 @@ describe('relatedTarget', function(){
 
 });
 
+describe('Pointer events', function(){
+	function attachProperties(e){
+		e.pointerId = 234525;
+		e.width = 234;
+		e.height = 150;
+		e.pressure = 0.6;
+		e.tiltX = 25;
+		e.tiltY = 73;
+		e.pointerType = 'pen';
+		e.isPrimary = false;
+	}
+
+	function dispatchFakePointer(type){
+		var event;
+
+		try {
+			event = document.createEvent('MouseEvents');
+			event.initMouseEvent(type, true, true, window, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, null);
+			attachProperties(event);
+			window.dispatchEvent(event);
+			return;
+		} catch (e){}
+	}
+
+	var triggered = false;
+	var triggeredEvent;
+	var callback = function(e){
+		triggered = true;
+		triggeredEvent = e;
+	};
+
+	beforeEach(function(){
+		triggered = false;
+		triggeredEvent = null;
+	});
+
+	it('should attach appropriate properties', function(){
+		window.addEvent('pointerdown', callback);
+		document.documentElement.addEvent('pointerdown', callback);
+		dispatchFakePointer('pointerdown');
+		expect(triggered).to.equal(true);
+		expect(triggeredEvent).to.be.ok();
+		expect(triggeredEvent.pointerId).to.equal(234525);
+		expect(triggeredEvent.width).to.equal(234);
+		expect(triggeredEvent.height).to.equal(150);
+		expect(triggeredEvent.pressure).to.equal(0.6);
+		expect(triggeredEvent.tiltX).to.equal(25);
+		expect(triggeredEvent.tiltY).to.equal(73);
+		expect(triggeredEvent.pointerType).to.equal('pen');
+		expect(triggeredEvent.isPrimary).to.equal(false);
+		expect(triggeredEvent.page).to.be.ok();
+		expect(triggeredEvent.page.x).to.equal(0);
+		expect(triggeredEvent.page.y).to.equal(0);
+		expect(triggeredEvent.client).to.be.ok();
+		expect(triggeredEvent.client.x).to.equal(0);
+		expect(triggeredEvent.client.y).to.equal(0);
+	});
+
+	var allPointerEvents = [
+		'pointerover', 'pointerenter', 'pointerdown', 'pointermove', 'pointerup',
+		'pointercancel', 'pointerout', 'pointerleave', 'gotpointercapture', 'lostpointercapture'
+	];
+
+	allPointerEvents.forEach(function(name){
+		it('should listen to ' + name, function(){
+			window.addEvent(name, callback);
+			document.documentElement.addEvent(name, callback);
+			dispatchFakePointer(name);
+			expect(triggered).to.equal(true);
+			expect(triggeredEvent).to.be.ok();
+		});
+	});
+});
+
 describe('Mouse wheel', function(){
 
 	function attachProperties(e, direction){
