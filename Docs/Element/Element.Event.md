@@ -361,7 +361,7 @@ Not all events are supported by MooTools' Element Events API because of edge use
 
 
 [$]: /core/Element/Element#Window:dollar
-[Event:stop]: /core/Types/Event#Event:stop
+[Event:stop]: /core/Types/DOMEvent#DOMEvent:stop
 [Function]: /core/Types/Function
 [Function:bind]: /core/Types/Function/#bind
 [Function:pass]: /core/Types/Function/#pass
