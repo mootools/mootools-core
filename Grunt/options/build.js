@@ -5,6 +5,11 @@ module.exports = function(grunt){
 		build = grunt.config.get('environment.build'),
 		travis = grunt.config.get('environment.travis');
 
+	// Prepare karma preprocessor options for karma.
+	// ES5 does not support to write dynamic object attribtues directly.
+	var karmaPreProcessor = {};
+	karmaPreProcessor[dir.build + '/mootools-core.js'] = ['coverage'];
+
 	var config = {
 		clean: {
 			'build': {src: dir.build + '/mootools-*.js'}
@@ -13,6 +18,14 @@ module.exports = function(grunt){
 			'run': {
 				options: {
 					files: [dir.build + '/mootools-core.js', dir.build + '/mootools-specs.js']
+				},
+				reporters: ['coverage'],
+				preprocessors: karmaPreProcessor,
+				coverageReporter: {
+					dir: dir.build + '/reports/coverage',
+					reporters: [
+						{type: 'html', subdir: 'report-html'}
+					]
 				}
 			},
 			'dev': {
@@ -26,8 +39,23 @@ module.exports = function(grunt){
 				options: {
 					files: [dir.build + '/mootools-core.js', dir.build + '/mootools-specs.js']
 				},
-				reporters: ['progress', 'saucelabs'],
-				browsers: [travis.browser]
+				reporters: ['progress', 'saucelabs', 'coverage'],
+				browsers: [travis.browser],
+				preprocessors: karmaPreProcessor,
+				coverageReporter: {
+					dir: dir.build + '/reports/coverage',
+					reporters: [
+						// TODO: pass this files to a coverage service e.g. "coveralls.io".
+						{type: 'lcov', subdir: 'report-lcov'},
+						{type: 'lcovonly', subdir: '.', file: 'report-lcovonly.txt'}
+					],
+					// Don't minify instrumenter output
+					instrumenterOptions: {
+						istanbul: {
+							noCompact: true
+						}
+					}
+				}
 			}
 		},
 		mochaTest: {
