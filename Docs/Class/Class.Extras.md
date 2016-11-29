@@ -324,6 +324,61 @@ Removes all events of the given type from the stack of events of a Class instanc
 - removeEvents will not remove internal events. See [Events:removeEvent][].
 
 
+Events Method: disableEvent {#Events:disableEvent}
+--------------------------------------------------
+
+Disable an event type, preventing it from being fired.
+
+The function is nested, that is if you disable an event type twice you'll need to enable it twice for it to fire again.
+
+### Syntax:
+
+	myClass.disableEvent(type);
+
+### Arguments:
+
+1. type - The type of event (e.g. 'change').
+
+### Returns:
+
+* (*object*) The current class instance.
+
+### Example:
+
+We disable our 'change' event to prevent it from being fired after each criterion is reseted. The event type is finally enabled and a single 'change' event is fired.
+
+	var Criteria = new Class({
+		Implements: [ Events ],
+		change: function(){
+			this.fireEvent('change', this.getValue())
+		},
+		reset: function(){
+			this.disableEvent('change')
+			Object.each(this.criteria, function(criterion){
+				criterion.reset();
+			});
+			this.enableEvent('change').change()
+		}
+	});
+
+
+Events Method: enableEvent {#Events:enableEvent}
+
+Enable a previously disabled event type so that it can be fired again.
+
+### Syntax:
+
+	myClass.enableEvent(type);
+
+### Arguments:
+
+1. type - Type type of event (e.g. 'change').
+
+### Returns:
+
+* (*object*) The current class instance.
+
+
 
 Class: Options {#Options}
 =========================
