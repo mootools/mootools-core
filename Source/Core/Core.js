@@ -287,7 +287,7 @@ force('String', String, [
 	'charAt', 'charCodeAt', 'concat', 'contains', 'indexOf', 'lastIndexOf', 'match', 'quote', 'replace', 'search',
 	'slice', 'split', 'substr', 'substring', 'trim', 'toLowerCase', 'toUpperCase'
 ])('Array', Array, [
-	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice',
+	'pop', 'push', 'reverse', 'shift', 'sort', 'splice', 'unshift', 'concat', 'join', 'slice', 'of',
 	'indexOf', 'lastIndexOf', 'filter', 'forEach', 'every', 'map', 'some', 'reduce', 'reduceRight', 'contains'
 ])('Number', Number, [
 	'toExponential', 'toFixed', 'toLocaleString', 'toPrecision'
@@ -296,7 +296,7 @@ force('String', String, [
 ])('RegExp', RegExp, [
 	'exec', 'test'
 ])('Object', Object, [
-	'create', 'defineProperty', 'defineProperties', 'keys',
+	'create', 'defineProperty', 'defineProperties', 'keys', 'values',
 	'getPrototypeOf', 'getOwnPropertyDescriptor', 'getOwnPropertyNames',
 	'preventExtensions', 'isExtensible', 'seal', 'isSealed', 'freeze', 'isFrozen'
 ])('Date', Date, ['now']);

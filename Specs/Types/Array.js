@@ -86,6 +86,15 @@ describe('Array', function(){
 
 	});
 
+	describe('Array.of', function(){
+
+		it('should create a array from the arguments received', function(){
+			var arr = Array.of(1, 2, 3, 0, 0, 0);
+			expect(arr).to.eql([1, 2, 3, 0, 0, 0]);
+		});
+
+	});
+
 	describe('Array.every', function(){
 
 		it('should return true if every item matches the comparator, otherwise false', function(){
