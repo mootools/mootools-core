@@ -145,6 +145,12 @@ Element.implement({
 			}, this).join(' ');
 		}
 		var result = this.style[property];
+		if (!result && property == 'backgroundPosition') return '0px 0px';
+		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
+			return result.replace(/(top|right|bottom|left)/g, function(position){
+				return namedPositions[position];
+			}) || '0px';
+		}
 		if (!result || property == 'zIndex'){
 			if (Element.ShortStyles.hasOwnProperty(property)){
 				result = [];
@@ -153,12 +159,6 @@ Element.implement({
 			}
 			result = this.getComputedStyle(property);
 		}
-		if (hasBackgroundPositionXY && /^backgroundPosition[XY]?$/.test(property)){
-			return result.replace(/(top|right|bottom|left)/g, function(position){
-				return namedPositions[position];
-			}) || '0px';
-		}
-		if (!result && property == 'backgroundPosition') return '0px 0px';
 		if (result){
 			result = String(result);
 			var color = result.match(/rgba?\([\d\s,]+\)/);
