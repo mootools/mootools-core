@@ -31,18 +31,23 @@ var Class = this.Class = new Type('Class', function(params){
 
 	newClass.$constructor = Class;
 	newClass.prototype.$constructor = newClass;
+	newClass.prototype.getParent = getParent;
 	newClass.prototype.parent = parent;
 
 	return newClass;
 });
 
-var parent = function(){
-	if (!this.$caller) throw new Error('The method "parent" cannot be called.');
+var getParent = function(){
 	var name = this.$caller.$name,
 		parent = this.$caller.$owner.parent,
 		previous = (parent) ? parent.prototype[name] : null;
 	if (!previous) throw new Error('The method "' + name + '" has no parent.');
-	return previous.apply(this, arguments);
+	return previous;
+};
+
+var parent = function(){
+	if (!this.$caller) throw new Error('The method "parent" cannot be called, use getParent instead.');
+	return this.getParent().apply(this, arguments);
 };
 
 var reset = function(object){

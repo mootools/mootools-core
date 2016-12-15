@@ -67,6 +67,9 @@ Useful when implementing a default set of properties in multiple Classes. The Im
 	var Animal = new Class({
 		initialize: function(age){
 			this.age = age;
+		},
+		jump: function(size){
+			
 		}
 	});
 	var Cat = new Class({
@@ -74,6 +77,13 @@ Useful when implementing a default set of properties in multiple Classes. The Im
 		initialize: function(name, age){
 			this.parent(age); // calls initialize method of Animal class
 			this.name = name;
+		},
+		maow: function(callback){
+			// maow
+			callback.call(this);
+		},
+		jump: function(size){
+			this.maow(this.getParent());
 		}
 	});
 	var myCat = new Cat('Micia', 20);
