@@ -990,8 +990,15 @@ Element.implement({
 		if (window.attachEvent && !window.addEventListener){
 			collected[Slick.uidOf(this)] = this;
 		}
-		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
-		else this.attachEvent('on' + type, fn);
+
+        //Fix Issue #2481
+        if (type == 'keydown') {
+            if (this.attachEvent) this.attachEvent('on' + type, fn);
+            else this.addEventListener(type, fn, !!arguments[2]);
+        } else {
+            if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
+            else this.attachEvent('on' + type, fn);
+        }
 		return this;
 	},
 
