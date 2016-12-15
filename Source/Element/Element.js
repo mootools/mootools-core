@@ -649,9 +649,9 @@ var canChangeStyleHTML = (function(){
 var input = document.createElement('input'), volatileInputValue, html5InputSupport;
 
 // #2178
-input.value = 't';
+input.value = 'test@test.com';
 input.type = 'submit';
-volatileInputValue = input.value != 't';
+volatileInputValue = input.value != 'test@test.com';
 
 // #2443 - IE throws "Invalid Argument" when trying to use html5 input types
 try {
