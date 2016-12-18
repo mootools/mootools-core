@@ -18,6 +18,28 @@ provides: [Object, Hash]
 
 Object.extend({
 
+	get: function(object, path){
+		if (typeof path == 'string') path = path.split('.');
+		for (var i = 0, l = path.length; i < l; i++){
+			if (hasOwnProperty.call(object, path[i])) object = object[path[i]];
+			else return object[path[i]];
+		}
+		return object;
+	},
+	
+	set: function(object, path, value){
+		path = (typeof path == 'string') ? path.split('.') : path.slice(0);
+		var key = path.pop(),
+			len = path.length,
+			i = 0,
+			current;
+		while (len--){
+			current = path[i++];
+			object = current in object ? object[current] : (object[current] = {});
+		}
+		object[key] = value;
+	},
+	
 	subset: function(object, keys){
 		var results = {};
 		for (var i = 0, l = keys.length; i < l; i++){

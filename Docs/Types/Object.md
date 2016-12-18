@@ -7,6 +7,60 @@ A collection of Object functions.
 
 - [MDN Object][]
 
+Function: Object.get {#Object:Object-get}
+------------------------------------
+
+Retrieves a value from an object from a given key path
+
+### Syntax:
+
+	Object.get(obj, path);
+
+### Arguments:
+
+1. obj		- (*object*) The object to iterate through.
+2. path       - (*mixed*) A dot-delimited string or array of keys
+
+### Example:
+
+    // alerts 'The value of path one.two.three is 3':
+	var object = { one: { two: { three: 3 } } };
+	alert('The value of path one.two.three is ' + Object.get(object, 'one.two.three'));
+
+### Notes:
+
+If any part of the path does not exist in the object, this method returns *null*.
+
+
+
+Function: Object.set {#Object:Object-set}
+------------------------------------
+
+Sets a key path on an object to a given value
+
+### Syntax:
+
+	Object.set(obj, path, value);
+
+### Arguments:
+
+1. obj		- (*object*) The object to iterate through.
+2. path       - (*mixed*) A dot-delimited string or array of keys
+3. value       - (*mixed*) Any valid JSON value
+
+### Example:
+
+    // alerts 'The value of path one.two is now {"three":3}':
+	var object = { one: { two: 2 } };
+	Object.set(object, 'one.two', { three: 3 });
+	alert('The value of path one.two is now ' + JSON.encode(object.one.two));
+
+### Notes:
+
+If the specified path does not yet exist in the object, this method will create the path one level at a time and set the final key to the value provided.
+
+
+
 Function: Object.each {#Object:Object-each}
 ------------------------------------
 
