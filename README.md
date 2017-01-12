@@ -1,5 +1,7 @@
 # MooTools Core
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mootools/mootools-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/mootools/mootools-core.png?branch=master)](https://travis-ci.org/mootools/mootools-core)
 
 [![Selenium Test Status](https://saucelabs.com/browser-matrix/MooTools-Core.svg)](https://saucelabs.com/u/MooTools-Core)
