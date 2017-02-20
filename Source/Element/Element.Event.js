@@ -35,7 +35,7 @@ Element.Properties.events = {set: function(events){
 			if (custom.onAdd) custom.onAdd.call(this, fn, type);
 			if (custom.condition){
 				condition = function(event){
-					if (custom.condition.call(this, event, type)) return fn.call(this, event);
+					if (custom.condition.call(this, event, type)) return fn.call(this, event, type);
 					return true;
 				};
 			}
