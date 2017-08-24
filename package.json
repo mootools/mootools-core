@@ -41,7 +41,7 @@
     "karma-expect": "^1.1",
     "karma-mocha": "^0.2.0",
     "karma-phantomjs-launcher": "^1.0.4",
-    "karma-sauce-launcher": "^0.2.14",
+    "karma-sauce-launcher": "^1.2.0",
     "karma-sinon-ie": "^1.0",
     "load-grunt-tasks": "^3.2",
     "mocha": "^2.3",
