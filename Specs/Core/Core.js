@@ -607,6 +607,38 @@ describe('instanceOf', function(){
 		expect(instanceOf(new X, Array)).to.equal(true);
 	});
 
+	it('should not go into infinite loop', function(){
+		// self reference case
+		var Foo = function Foo(){
+			var ctor = this.constructor;
+			ctor.parent = ctor;
+		};
+		expect(instanceOf(new Foo(), Foo)).to.equal(true);
+		expect(instanceOf(new Foo(), String)).to.equal(false);
+
+		// circular reference case
+		var A, B;
+		A = function(){this.init();};
+		B = function(){this.init();};
+
+		A.prototype.init = function(){
+			this.constructor = B;
+		};
+		A.prototype.parent = B;
+
+		B.prototype.init = function(){
+			this.constructor = A;
+		};
+		B.prototype.parent = A;
+
+		expect(instanceOf(new A(), B)).to.equal(true);
+		expect(instanceOf(new A(), A)).to.equal(true);
+		expect(instanceOf(new B(), B)).to.equal(true);
+		expect(instanceOf(new B(), A)).to.equal(true);
+
+		expect(instanceOf(new A(), String)).to.equal(false);
+	});
+
 	// todo(ibolmo)
 	var dit = typeof window != 'undefined' && window.Element && Element.set ? it : xit;
 	dit('should return true for Element instances', function(){
