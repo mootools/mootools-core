@@ -460,3 +460,136 @@ describe('Function.periodical', function(){
 	});
 
 });
+
+describe('Debounce', function(){
+	var periodical,
+		counter = 0,
+		debounceCalls = 0;
+
+	// spy, to count when original fn was called
+	function targetFn(){
+		debounceCalls++;
+	}
+
+	// call function every 10ms
+	function caller(debounceFn, cb){
+		periodical = setInterval(function(){
+			counter++;
+			debounceFn();
+		}, 10);
+	}
+
+	beforeEach(function(){
+		expect(counter).to.equal(0);
+		expect(debounceCalls).to.equal(0);
+	});
+
+	afterEach(function(){
+		counter = debounceCalls = 0;
+		clearInterval(periodical);
+	});
+
+	it('should debounce with default values', function(done){
+		var debounceFn = targetFn.debounce();
+		caller(debounceFn);
+
+		var firstCheck = false;
+		var wait = setInterval(function(){
+			// keep calling for 400ms, no call should be done
+			if (!firstCheck && counter > 40){
+				clearInterval(periodical);
+				expect(debounceCalls).to.equal(0);
+				firstCheck = true;
+			}
+			// wait for debouced call to come
+			if (firstCheck && debounceCalls > 0){
+				clearInterval(wait);
+				done();
+			}
+		}, 10);
+	});
+
+	it('should debounce early', function(done){
+		var debounceFn = targetFn.debounce(100, true),
+			time = 0,
+			firstCheck;
+		caller(debounceFn);
+		var wait = setInterval(function(){
+			time++;
+			// there should already be a function called
+			if (counter > 5 && !firstCheck){
+				clearInterval(periodical);
+				expect(debounceCalls).to.equal(1);
+				firstCheck = true;
+			}
+			// no more debounced call should be done
+			if (time > 40){
+				expect(debounceCalls).to.equal(1);
+				clearInterval(wait);
+				done();
+			}
+		}, 10);
+	});
+
+	it('should debounce early when `leading` is passed alone', function(done){
+		var debounceFn = targetFn.debounce(true),
+			time = 0,
+			firstCheck;
+		caller(debounceFn);
+		var wait = setInterval(function(){
+			time++;
+			// there should already be a function called
+			if (counter > 5 && !firstCheck){
+				clearInterval(periodical);
+				expect(debounceCalls).to.equal(1);
+				firstCheck = true;
+			}
+			// no more debounced call should be done
+			if (time > 40){
+				expect(debounceCalls).to.equal(1);
+				clearInterval(wait);
+				done();
+			}
+		}, 10);
+	});
+
+	it('should debounce late', function(done){
+		var debounceFn = targetFn.debounce(150);
+		caller(debounceFn);
+		var time = 0;
+		var firstCheck;
+		var wait = setInterval(function(){
+			time++;
+			// no early calls
+			if (counter > 5 && !firstCheck){
+				clearInterval(periodical);
+				expect(debounceCalls).to.equal(0);
+				firstCheck = true;
+			}
+			// should have been called after
+			if (time > 30){
+				expect(debounceCalls).to.equal(1);
+				clearInterval(wait);
+				done();
+			}
+		}, 10);
+	});
+
+	it('should have the right context', function(done){
+		var context = {};
+		var _context;
+		var fn = function(){
+			_context = this;
+		}.bind(context);
+		var debounceFn = fn.debounce();
+		debounceFn(); // trigger the function, once is enough
+		var wait = setInterval(function(){
+			if (_context){
+				clearInterval(wait);
+				expect(_context).to.equal(context);
+				done();
+			}
+		}, 10);
+	});
+
+});
