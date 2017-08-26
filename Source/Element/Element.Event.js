@@ -139,7 +139,12 @@ Element.NativeEvents = {
 	focus: 2, blur: 2, change: 2, reset: 2, select: 2, submit: 2, paste: 2, input: 2, //form elements
 	load: 2, unload: 1, beforeunload: 2, resize: 1, move: 1, DOMContentLoaded: 1, readystatechange: 1, //window
 	hashchange: 1, popstate: 2, pageshow: 2, pagehide: 2, // history
-	error: 1, abort: 1, scroll: 1, message: 2 //misc
+	error: 1, abort: 1, scroll: 1, message: 2, //misc
+	
+	// media events - media events do not need to be wrapped as they can't be cancelled nor do they bubble
+	loadstart: 1, progress: 1, suspend: 1, abort: 1, emptied: 1, stalled: 1, play: 1, pause: 1,
+	loadedmetadata: 1, loadeddata: 1, waiting: 1, playing: 1, canplay: 1, canplaythrough: 1, seeking: 1,
+	seeked: 1, timeupdate: 1, ended: 1, ratechange: 1, durationchange: 1, volumechange: 1
 };
 
 Element.Events = {
