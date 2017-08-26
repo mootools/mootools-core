@@ -45,12 +45,17 @@ var typeOf = this.typeOf = function(item){
 };
 
 var instanceOf = this.instanceOf = function(item, object){
+	var ctors = [];
 	if (item == null) return false;
 	var constructor = item.$constructor || item.constructor;
 	while (constructor){
+		if (ctors.contains(constructor)) break;
+		ctors.push(constructor);
+
 		if (constructor === object) return true;
 		constructor = constructor.parent;
 	}
+	ctors = null;
 	/*<ltIE8>*/
 	if (!item.hasOwnProperty) return false;
 	/*</ltIE8>*/
