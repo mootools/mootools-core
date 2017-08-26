@@ -79,6 +79,15 @@ String.implement({
 			if (match.charAt(0) == '\\') return match.slice(1);
 			return (object[name] != null) ? object[name] : '';
 		});
+	},
+
+	splice: function() {
+		arguments[0] += (arguments[0] < 0 ? this.length + 1 : 0);
+		var return_both = (typeof arguments[arguments.length - 1] === 'boolean' ? arguments[--arguments.length] : false),
+			t = this.split(""),
+			change = t.splice.apply(t, arguments).join(""),
+			out = t.join("");
+		return (return_both ? [out, change] : out);
 	}
 
 });

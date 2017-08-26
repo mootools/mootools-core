@@ -399,6 +399,42 @@ Strips the String of its `<script>` tags and anything in between them.
 
 
 
+String method: splice {#String:splice}
+--------------------------------------
+
+Similar to the [array.splice][], inserts a string before the specified position and removes unnecessary elements.
+
+### Syntax:
+
+	myString.splice(position, remove[, element1[, ...[, elementN]]][, changes]);
+
+### Arguments:
+
+1. position - (*integer*) The position before which the operation is performed.
+   Use negative numbers to count from the end: -1 to append, -2 to insert before last character etc.
+1. remove - (*integer*) Length of the text to be removed.
+1. elements - (*string*, optional) Strings to insert. Or anything which can be converted to a string.
+   If you don't specify any, splice simply removes characters.
+1. changes - (*boolean*, optional) If you wish to know what was removed, set this flag true.
+   Any boolean value at the end of the args array will be recognized as changes flag.
+
+### Returns:
+
+* (*string*) Modified string.
+* (*array*) If the changes flag is set, returns an array of two strings: modified string and removed string.
+
+### Examples:
+
+	'Hello, big world!'.splice(6, 4); // returns 'Hello, world!'
+	'Add here'.splice(3, 0, ' two', ' substrings'); // returns 'Add two substrings here'
+	'Replace this word'.splice(8, 4, 'that'); // returns 'Replace that word'
+	'You can count from an end'.splice(-7, 2, 'the'); // returns 'You can count from the end'
+	'Such a beautiful'.splice(-1, 0, ' array: ', [1, 1, 2, 3, 5]) // returns 'Such a beautiful array: 1,1,2,3,5'
+	'You can get removed string'.splice(12, 14, 'into ', 'the car', true) // returns ['You can get into the car', 'removed string']
+	'You can get removed string'.splice(12, 14, 'into ', 'the car', false) // returns 'You can get into the car'
+
+
+
 [MDN String]: https://developer.mozilla.org/en/Core_JavaScript_1.5_Reference/Global_Objects/String
 [MDN String:contains]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/contains
 [MDN String:indexOf]: https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/indexOf
@@ -411,3 +447,4 @@ Strips the String of its `<script>` tags and anything in between them.
 [String:trim]: #String:trim
 [Array:rgbToHex]: /core/Types/Array/#Array:rgbToHex
 [String:trim]: #String:trim
+[array.splice]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice

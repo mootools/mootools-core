@@ -166,4 +166,40 @@ describe('String Method', function(){
 
 	});
 
+	// String.splice
+
+	it('should remove characters', function () {
+		expect('Hello, big world!'.splice(6, 4)).toEqual('Hello, world!');
+		expect('Hello, big world!'.splice(6, -4)).toEqual('Hello, big world!');
+		expect('Hello, big world!'.splice(6, -4)).not.toEqual('Hello, world!');
+		expect('Hello, big world!'.splice(100, 5)).toEqual('Hello, big world!');
+		expect('Hello, big world!'.splice(100, 5)).not.toEqual('Hello, world!');
+		expect('Hello, big world!'.splice(-11, 4)).toEqual('Hello, world!');
+		expect('Hello, big world!'.splice(5, 100)).toEqual('Hello');
+	});
+
+	it('should add strings and objects', function () {
+		expect('Add here'.splice(3, 0, ' two', ' substrings')).toEqual('Add two substrings here');
+		expect('Such a beautiful'.splice(-1, 0, ' array: ', [1, 1, 2, 3, 5])).toEqual('Such a beautiful array: 1,1,2,3,5');
+		expect('Add here'.splice(-6, 0, ' substring')).toEqual('Add substring here');
+		expect('Add here'.splice(100, 0, ' a substring')).toEqual('Add here a substring');
+		expect('added here'.splice(-100, 0, 'Substring is ')).toEqual('Substring is added here');
+	});
+
+	it('should combine both add strings and remove characters next to added', function () {
+		expect('Replace this word'.splice(8, 4, 'that')).toEqual('Replace that word');
+		expect('You can count from an end'.splice(-7, 2, 'the', ' very')).toEqual('You can count from the very end');
+	});
+
+	it('should recognize flag', function () {
+		expect('Hello, big world!'.splice(6, 4, true)).toEqual(['Hello, world!', ' big']);
+		expect('Add here'.splice(100, 0, ' a substring', true)).toEqual(['Add here a substring', '']);
+		expect('Replace this word'.splice(8, 4, 'that', true)).toEqual(['Replace that word', 'this']);
+		expect('Hello, big world!'.splice(6, 4, false)).toEqual('Hello, world!');
+		expect('Add here'.splice(100, 0, ' a substring', false)).toEqual('Add here a substring');
+		expect('Replace this word'.splice(8, 4, 'that', false)).toEqual('Replace that word');
+		expect('You can get removed string'.splice(12, 14, 'into ', 'the car', true)).toEqual(['You can get into the car', 'removed string']);
+		expect('Such a beautiful'.splice(-1, 0, ' array: ', [1, 1, 2, 3, 5], true)).toEqual(['Such a beautiful array: 1,1,2,3,5', '']);
+	});
+
 });
