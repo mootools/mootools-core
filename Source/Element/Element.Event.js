@@ -171,6 +171,15 @@ if ('onmouseenter' in document.documentElement){
 }
 
 /*<ltIE9>*/
+var inputClickWatcher = false;
+function isBuggyType(e){
+	return e.type == 'propertychange' && e.event.propertyName == 'checked';
+}
+function isSyntetic(){
+	var clicked = inputClickWatcher;
+	inputClickWatcher = false; // reset the flag
+	return clicked ? false : true;
+}
 if (!window.addEventListener){
 	Element.NativeEvents.propertychange = 2;
 	Element.Events.change = {
@@ -178,7 +187,17 @@ if (!window.addEventListener){
 			var type = this.type;
 			return (this.get('tag') == 'input' && (type == 'radio' || type == 'checkbox')) ? 'propertychange' : 'change';
 		},
+		onAdd: function(event){
+			this.addEvent('click', function(event){
+				inputClickWatcher = true;
+				event.stop();
+			});
+		},
 		condition: function(event){
+			if (isBuggyType(event) && isSyntetic(event)) return false;
+			var el = event.target;
+			if (el.type == 'checkbox') el.checked = !el.checked;
+			if (el.type == 'radio' && !el.checked) el.checked = !el.checked;
 			return event.type != 'propertychange' || event.event.propertyName == 'checked';
 		}
 	};

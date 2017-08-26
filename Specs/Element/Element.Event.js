@@ -335,6 +335,34 @@ describe('Element.Event.change', function(){
 
 });
 
+describe('Element.Event.change', function(){
+    /*<ltIE9>*/
+
+    var checked, eventFired;
+    var input = new Element('input', {
+        type: 'checkbox'
+    });
+    input.addEvent('change', function(e){
+        eventFired = true;
+    }).inject(document.body);
+    it('should not fire any event when setting a "checked" property', function(){
+        input.set('checked', true);
+        checked = input.get('checked');
+
+        expect(checked).toBeTruthy();
+        expect(eventFired).not.toBeTruthy();
+    });
+
+    it('should fire a change event when clicking a input[type=checkbox]', function(){
+        input.click();
+        checked = input.get('checked');
+
+        expect(checked).not.toBeTruthy();
+        expect(eventFired).toBeTruthy();
+    });
+});
+ /*</ltIE9>*/
+
 describe('Element.Event keyup with f<key>', function(){
 
 	it('should pass event.key == f2 when pressing f2 on keyup and keydown', function(){
