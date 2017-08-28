@@ -77,24 +77,6 @@
 		"browserName": "internet explorer",
 		"version": "9"
 	},
-	"ie8": {
-		"base": "SauceLabs",
-		"platform": "Windows 7",
-		"browserName": "internet explorer",
-		"version": "8"
-	},
-	"ie7": {
-		"base": "SauceLabs",
-		"platform": "Windows XP",
-		"browserName": "internet explorer",
-		"version": "7"
-	},
-	"ie6": {
-		"base": "SauceLabs",
-		"platform": "Windows XP",
-		"browserName": "internet explorer",
-		"version": "6"
-	},
 	"android": {
 		"base": "SauceLabs",
 		"platform": "Linux",
