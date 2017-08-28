@@ -17,8 +17,6 @@ env:
     - BUILD='compat'     BROWSER='ie11'
     - BUILD='compat'     BROWSER='ie10'
     - BUILD='compat'     BROWSER='ie9'
-    - BUILD='compat'     BROWSER='ie8'
-    - BUILD='compat'     BROWSER='ie7'
 
     - BUILD='nocompat'   BROWSER='phantomjs'
     - BUILD='nocompat'   BROWSER='chrome'
@@ -32,8 +30,6 @@ env:
     - BUILD='nocompat'   BROWSER='ie11'
     - BUILD='nocompat'   BROWSER='ie10'
     - BUILD='nocompat'   BROWSER='ie9'
-    - BUILD='nocompat'   BROWSER='ie8'
-    - BUILD='nocompat'   BROWSER='ie7'
 
     - BUILD='server'
 
