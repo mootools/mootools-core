@@ -1,0 +1,5 @@
+<pre data-enlighter-language="js">
+Element.implement({
+...some js code..
+});
+</pre>
