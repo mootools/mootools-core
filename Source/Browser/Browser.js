@@ -150,8 +150,10 @@ Browser.exec = function(text){
 
 String.implement('stripScripts', function(exec){
 	var scripts = '';
-	var text = this.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, function(all, code){
-		scripts += code + '\n';
+	var text = this.replace(/<script([^>]*)>([\s\S]*?)<\/script>/gi, function(all, type, code){
+		if (type == '' || type.indexOf('javascript') != -1){
+			scripts += code + '\n';
+		}
 		return '';
 	});
 	if (exec === true) Browser.exec(scripts);

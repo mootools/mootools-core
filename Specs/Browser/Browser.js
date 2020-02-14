@@ -49,6 +49,11 @@ describe('String.stripScripts', function(){
 		expect(window.stripScriptsSpec).to.equal(4242);
 	});
 
+	it('should not execute json scripts', function(){
+		expect('<div><script type="application/json">var stripScriptsSpec424242 = 424242;</script></div>'.stripScripts()).to.equal('<div></div>');
+		expect(window.stripScriptsSpec424242).to.equal(undefined);
+	});
+
 });
 
 describe('Document', function(){
